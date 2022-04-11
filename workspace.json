@@ -1,0 +1,7 @@
+{
+  "version": 2,
+  "projects": {
+    "gateway-ui": "apps/gateway-ui",
+    "gateway-ui-e2e": "apps/gateway-ui-e2e"
+  }
+}
