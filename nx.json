@@ -1,10 +1,10 @@
 {
-  "npmScope": "ui",
+  "npmScope": "gateway",
   "affected": {
     "defaultBase": "main"
   },
   "cli": {
-    "defaultCollection": "@nrwl/next"
+    "defaultCollection": "@nrwl/react"
   },
   "implicitDependencies": {
     "package.json": {
@@ -17,7 +17,13 @@
     "default": {
       "runner": "nx/tasks-runners/default",
       "options": {
-        "cacheableOperations": ["build", "lint", "test", "e2e"]
+        "cacheableOperations": [
+          "build",
+          "lint",
+          "test",
+          "e2e",
+          "build-storybook"
+        ]
       }
     }
   },
@@ -32,7 +38,9 @@
   "generators": {
     "@nrwl/react": {
       "application": {
-        "babel": true
+        "babel": true,
+        "style": "@emotion/styled",
+        "linter": "eslint"
       }
     },
     "@nrwl/next": {
@@ -42,5 +50,5 @@
       }
     }
   },
-  "defaultProject": "gateway-ui"
+  "defaultProject": "ui"
 }

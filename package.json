@@ -12,6 +12,9 @@
     "@emotion/react": "11.8.2",
     "@emotion/server": "11.4.0",
     "@emotion/styled": "11.8.1",
+    "@fontsource/be-vietnam": "^4.5.2",
+    "@fontsource/poppins": "^4.5.5",
+    "@mui/material": "^5.6.1",
     "@nrwl/next": "13.10.1",
     "core-js": "^3.6.5",
     "next": "12.1.2",
@@ -21,6 +24,8 @@
     "tslib": "^2.0.0"
   },
   "devDependencies": {
+    "@babel/core": "7.12.13",
+    "@babel/preset-typescript": "7.12.13",
     "@emotion/babel-plugin": "11.7.2",
     "@nrwl/cli": "13.10.1",
     "@nrwl/cypress": "13.10.1",
@@ -28,8 +33,15 @@
     "@nrwl/jest": "13.10.1",
     "@nrwl/linter": "13.10.1",
     "@nrwl/react": "13.10.1",
+    "@nrwl/storybook": "^13.10.1",
     "@nrwl/web": "13.10.1",
     "@nrwl/workspace": "13.10.1",
+    "@storybook/addon-essentials": "~6.4.12",
+    "@storybook/builder-webpack5": "~6.4.12",
+    "@storybook/core-server": "~6.4.12",
+    "@storybook/manager-webpack5": "~6.4.12",
+    "@storybook/react": "~6.4.12",
+    "@svgr/webpack": "^5.4.0",
     "@testing-library/react": "12.1.4",
     "@testing-library/react-hooks": "7.0.2",
     "@types/jest": "27.0.2",
@@ -39,6 +51,7 @@
     "@typescript-eslint/eslint-plugin": "~5.18.0",
     "@typescript-eslint/parser": "~5.18.0",
     "babel-jest": "27.2.3",
+    "babel-loader": "8.1.0",
     "cypress": "^9.1.0",
     "eslint": "~8.12.0",
     "eslint-config-next": "12.1.2",
@@ -53,6 +66,7 @@
     "prettier": "^2.5.1",
     "react-test-renderer": "18.0.0",
     "ts-jest": "27.0.5",
-    "typescript": "~4.6.2"
+    "typescript": "~4.6.2",
+    "url-loader": "^3.0.0"
   }
 }
