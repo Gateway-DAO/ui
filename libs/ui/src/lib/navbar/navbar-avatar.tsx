@@ -1,4 +1,3 @@
-import { useMenu } from '@gateway/ui.hooks';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
@@ -6,6 +5,7 @@ import Avatar from '@mui/material/Avatar';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import { useTheme } from '@mui/material/styles';
+import { useMenu } from '../../hooks/use-menu';
 
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 

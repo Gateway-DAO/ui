@@ -3,9 +3,9 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Button from '@mui/material/Button';
 // import { GatewayIcon } from '@gateway/assets.icons';
-import { NavBarNotifications } from './nav-bar-notifications';
-import { NavBarAvatar } from './nav-bar-avatar';
-import { NavBarMobile } from './nav-bar-mobile';
+import { NavBarNotifications } from './navbar-notifications';
+import { NavBarAvatar } from './navbar-avatar';
+import { NavBarMobile } from './navbar-mobile';
 
 const pages = ['DAOs', 'Gates', 'People'];
 export interface NavbarProps {
