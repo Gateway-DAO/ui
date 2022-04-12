@@ -10,5 +10,4 @@ const Template: Story<NavbarProps> = (args) => <Navbar {...args} />;
 
 export const Primary = Template.bind({});
 Primary.args = {
-  text: 'Hello World',
 };

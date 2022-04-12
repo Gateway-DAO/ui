@@ -2,18 +2,19 @@ import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Button from '@mui/material/Button';
-// import { GatewayIcon } from '@gateway/assets.icons';
+import { GatewayIcon } from '@gateway/assets';
 import { NavBarNotifications } from './navbar-notifications';
 import { NavBarAvatar } from './navbar-avatar';
 import { NavBarMobile } from './navbar-mobile';
 
 const pages = ['DAOs', 'Gates', 'People'];
+
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface NavbarProps {
-  text: string;
 }
 
 
-export function Navbar({text}: NavbarProps) {
+export function Navbar(props: NavbarProps) {
     return (
       <AppBar color="transparent" position="static">
         <Toolbar disableGutters sx={{ px: 2 }}>
@@ -21,7 +22,7 @@ export function Navbar({text}: NavbarProps) {
             <NavBarMobile />
           </Box>
           <Box display={['none', null, 'flex']} flexGrow={1} alignItems="center" gap={1}>
-            {/* <GatewayIcon sx={{ mx: 2, color: 'primary.dark' }} /> */}
+            <GatewayIcon sx={{ mx: 2 }} />
             {pages.map((page) => (
               <Button
                 key={page}
