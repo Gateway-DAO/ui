@@ -1,6 +1,3 @@
-import { addons } from '@storybook/addons';
-import theme from "./theme";
+import { createManager } from "../../storybook/.storybook/manager";
 
-addons.setConfig({
-  theme,
-});
+createManager();
