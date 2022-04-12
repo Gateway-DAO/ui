@@ -21,7 +21,8 @@ export const parameters = {
 }
 
 export const decorators = [
-  (Story) => (
-    <ThemeProvider><Story /></ThemeProvider>
-  ),
+  (Story, {parameters}) => {
+    return(
+    <ThemeProvider withGlobalStyles={parameters?.layout === "fullscreen"}><Story /></ThemeProvider>
+  )},
 ];

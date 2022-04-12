@@ -16,7 +16,7 @@ export interface NavbarProps {
 
 export function Navbar(props: NavbarProps) {
     return (
-      <AppBar color="transparent" position="static">
+      <AppBar color="transparent" position="relative">
         <Toolbar disableGutters sx={{ px: 2 }}>
           <Box display={['flex', null, 'none']} flexGrow={1} alignItems="center">
             <NavBarMobile />

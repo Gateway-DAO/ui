@@ -1,7 +1,6 @@
 import { createTheme } from '@mui/material/styles';
 import palette from './config/palette';
 import typography from './config/typography';
-// import * as components from './config/components';
 
 export const theme = createTheme({
   palette,
