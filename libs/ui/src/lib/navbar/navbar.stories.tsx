@@ -3,7 +3,7 @@ import { Navbar, NavbarProps } from './navbar';
 
 export default {
   component: Navbar,
-  title: 'Navbar',
+  title: 'Design System/Site components/Navbar',
 } as Meta;
 
 const Template: Story<NavbarProps> = (args) => <Navbar {...args} />;

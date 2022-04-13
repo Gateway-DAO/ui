@@ -3,7 +3,7 @@ import { DashboardTemplate, DashboardTemplateProps } from './dashboard-template'
 
 export default {
   component: DashboardTemplate,
-  title: 'Dashboard Template',
+  title: 'Templates/Dashboard Template',
   parameters: {
     layout: 'fullscreen',
   },
