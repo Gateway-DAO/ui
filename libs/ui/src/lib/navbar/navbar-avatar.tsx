@@ -19,7 +19,7 @@ export function NavBarAvatar() {
           <Avatar
             alt="Remy Sharp"
             src="/static/images/avatar/2.jpg"
-            sx={{ width: theme.spacing(3), height: theme.spacing(3) }}
+            sx={{ width: theme.spacing(3), height: theme.spacing(3), fontSize: theme.spacing(2) }}
           />
         </IconButton>
       </Tooltip>

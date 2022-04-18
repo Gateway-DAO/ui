@@ -1,4 +1,4 @@
-import AppBar from '@mui/material/AppBar';
+import AppBar, { AppBarProps } from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Button from '@mui/material/Button';
@@ -9,14 +9,11 @@ import { NavBarMobile } from './navbar-mobile';
 
 const pages = ['DAOs', 'Gates', 'People'];
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface NavbarProps {
-}
-
+export type NavbarProps = AppBarProps;
 
 export function Navbar(props: NavbarProps) {
     return (
-      <AppBar color="transparent" position="relative">
+      <AppBar color="transparent" position="relative" {...props}>
         <Toolbar disableGutters sx={{ px: 2 }}>
           <Box display={['flex', null, 'none']} flexGrow={1} alignItems="center">
             <NavBarMobile />

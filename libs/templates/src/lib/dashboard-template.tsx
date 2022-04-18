@@ -12,6 +12,7 @@ import ListItemText from '@mui/material/ListItemText';
 import MailIcon from '@mui/icons-material/Mail';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
+import { useTheme } from '@mui/material/styles';
 
 const drawerWidth = 240;
 
@@ -27,39 +28,11 @@ export function DashboardTemplate(props: DashboardTemplateProps) {
     setMobileOpen(!mobileOpen);
   };
 
-  const drawer = (
-    <div>
-      <Toolbar />
-      <Divider />
-      <List>
-        {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon sx={{color: "white"}}>
-              {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-            </ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
-      </List>
-      <Divider />
-      <List>
-        {['All mail', 'Trash', 'Spam'].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>
-              {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-            </ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
-      </List>
-    </div>
-  );
-
-  const container = window !== undefined ? () => window.document.body : undefined;
+  const theme = useTheme()
 
   return (
     <>
-      <Navbar />
+      <Navbar sx={{ borderBottom: 1, borderBottomColor: theme.palette.divider }} />
       <Box sx={{ display: 'flex' }}>
         <Box
           component="nav"
@@ -72,11 +45,35 @@ export function DashboardTemplate(props: DashboardTemplateProps) {
             sx={{
               display: { xs: 'none', sm: 'block' },
               height: "100%",
-              '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth, position: "relative" },
+              '& .MuiDrawer-paper': { width: drawerWidth, position: "relative", background: "transparent" },
             }}
             open
           >
-            {drawer}
+            <div>
+              <Toolbar />
+              <Divider />
+              <List>
+                {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
+                  <ListItem button key={text}>
+                    <ListItemIcon sx={{color: "white"}}>
+                      {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                    </ListItemIcon>
+                    <ListItemText primary={text} />
+                  </ListItem>
+                ))}
+              </List>
+              <Divider />
+              <List>
+                {['All mail', 'Trash', 'Spam'].map((text, index) => (
+                  <ListItem button key={text}>
+                    <ListItemIcon>
+                      {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                    </ListItemIcon>
+                    <ListItemText primary={text} />
+                  </ListItem>
+                ))}
+              </List>
+            </div>
           </Drawer>
         </Box>
         <Box
