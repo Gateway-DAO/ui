@@ -1,9 +1,10 @@
 module.exports = {
-  displayName: 'templates',
-  preset: '../../jest.preset.js',
+  displayName: 'storybook',
+
   transform: {
     '^.+\\.[tj]sx?$': 'babel-jest',
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
-  coverageDirectory: '../../coverage/libs/templates',
+  coverageDirectory: '../../coverage/libs/storybook',
+  preset: '../../jest.preset.ts',
 };
