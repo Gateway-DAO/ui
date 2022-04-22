@@ -5,7 +5,7 @@ import { SEOSocial, SEOFavicon } from '../components/atoms/seo';
 
 function CustomApp({ Component, pageProps }: AppProps) {
   return (
-    <ThemeProvider>
+    <ThemeProvider containerId='__next'>
       <>
         <Head>
           <title>Gateway</title>
@@ -13,9 +13,7 @@ function CustomApp({ Component, pageProps }: AppProps) {
           <SEOFavicon />
           <SEOSocial />
         </Head>
-        <main className="app">
-          <Component {...pageProps} />
-        </main>
+        <Component {...pageProps} />
       </>
     </ThemeProvider>
   );

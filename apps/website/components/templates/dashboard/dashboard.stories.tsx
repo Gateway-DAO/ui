@@ -1,5 +1,5 @@
 import { Story, Meta } from '@storybook/react';
-import { DashboardTemplate, DashboardTemplateProps } from './dashboard-template';
+import { DashboardTemplate, DashboardTemplateProps } from './dashboard';
 
 export default {
   component: DashboardTemplate,

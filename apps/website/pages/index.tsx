@@ -1,4 +1,4 @@
-import { DashboardTemplate } from "@gateway/templates";
+import { DashboardTemplate } from "../components/templates/dashboard";
 
 export function Index() {
   return (

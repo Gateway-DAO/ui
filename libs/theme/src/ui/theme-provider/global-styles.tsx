@@ -1,11 +1,10 @@
-import GlobalStyles from '@mui/material/GlobalStyles';
+import MUIGlobalStyles from '@mui/material/GlobalStyles';
 
-export const globalStyles = <GlobalStyles styles={{
-  "html, body, #root": {
-    minHeight: "100%",
+export const GlobalStyles = (container: string) => <MUIGlobalStyles styles={{
+  [`html, body, #${container}`]: {
+    height: "100%",
   },
   body: {
     padding: 0,
-    height: "100%"
   }
 }} />
