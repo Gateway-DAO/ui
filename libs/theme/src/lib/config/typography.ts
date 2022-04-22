@@ -1,19 +1,15 @@
 import type { TypographyOptions } from '@mui/material/styles/createTypography';
-import '@fontsource/be-vietnam';
-import '@fontsource/poppins';
+import '@fontsource/plus-jakarta-sans';
 
 export const fonts = {
-  BE_VIETNAM: 'Be Vietnam',
-  POPPINS: 'Poppins',
+  PLUS_JAKARTA_SANS: "Plus Jakarta Sans",
+  get primary(){return this.PLUS_JAKARTA_SANS}
 };
 
 const typography: TypographyOptions = {
   allVariants: {
-    fontFamily: `"${fonts.BE_VIETNAM}", sans-serif`,
-  },
-  body2: {
-    fontFamily: `"${fonts.POPPINS}", sans-serif`,
-  },
+    fontFamily: `"${fonts.primary}", sans-serif`,
+  }
 };
 
 export default typography;

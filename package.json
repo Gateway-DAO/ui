@@ -6,15 +6,16 @@
     "start": "nx serve",
     "build": "nx build",
     "test": "nx test",
-    "storybook": "nx storybook storybook"
+    "storybook": "nx storybook storybook",
+    "website:dev": "nx serve website",
+    "website:build": "nx build website"
   },
   "private": true,
   "dependencies": {
     "@emotion/react": "11.8.2",
     "@emotion/server": "11.4.0",
     "@emotion/styled": "11.8.1",
-    "@fontsource/be-vietnam": "^4.5.2",
-    "@fontsource/poppins": "^4.5.5",
+    "@fontsource/plus-jakarta-sans": "^4.5.6",
     "@mui/icons-material": "^5.6.1",
     "@mui/material": "^5.6.1",
     "@nrwl/next": "14.0.0",
@@ -47,7 +48,6 @@
     "@storybook/core-server": "~6.4.12",
     "@storybook/manager-webpack5": "~6.4.12",
     "@storybook/react": "~6.4.12",
-    "@storybook/react-docgen-typescript-plugin": "~6.4.12",
     "@svgr/webpack": "^5.4.0",
     "@testing-library/react": "13.1.1",
     "@types/jest": "27.4.1",
