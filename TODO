@@ -1,3 +1,4 @@
 [] - Improve documentation
 [] - Read further (https://storybook.js.org/tutorials/ui-testing-handbook/react/en/visual-testing/)
 [] - Discuss about chromatic
+[] - Improve Vercel ignore build step https://vercel.com/docs/concepts/projects/overview#ignored-build-step
