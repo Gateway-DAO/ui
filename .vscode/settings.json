@@ -1,5 +1,13 @@
 {
   "files.associations": {
     "TODO": "markdown"
+  },
+  "editor.codeActionsOnSave": {
+    "source.fixAll": true,
+    "source.fixAll.eslint": true
+  },
+  "[markdown]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+
   }
 }

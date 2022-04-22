@@ -1,7 +1,9 @@
+# Global TODO
+
 [] - Improve documentation
-[] - Read further (https://storybook.js.org/tutorials/ui-testing-handbook/react/en/visual-testing/)
+[] - Read further (<https://storybook.js.org/tutorials/ui-testing-handbook/react/en/visual-testing/>)
 [] - Discuss about chromatic
 
-## Tools
+## Settings
 
-[] - Improve Vercel ignore build step for all projects (currently only supports apps via `tools/scripts/build-ignore-apps.sh`) https://nx.dev/guides/deploy-nextjs-to-vercel
+[] - Improve Format on save on TSX files
