@@ -5,17 +5,23 @@
   "tags": [],
   "targets": {
     "build": {
-      "executor": "@nrwl/js:tsc",
-      "outputs": ["dist/libs/ui"],
-      "dependsOn": [
-        {
-          "target": "build",
-          "projects": "dependencies"
-        }
-      ],
+      "executor": "@nrwl/web:rollup",
+      "outputs": ["{options.outputPath}"],
       "options": {
+        "outputPath": "dist/libs/ui",
         "tsConfig": "libs/ui/tsconfig.lib.json",
-        "main": "libs/ui/src/index.ts"
+        "project": "libs/ui/package.json",
+        "entryFile": "libs/ui/src/index.ts",
+        "external": ["react/jsx-runtime", "@emotion/styled/base"],
+        "rollupConfig": "@nrwl/react/plugins/bundle-rollup",
+        "compiler": "babel",
+        "assets": [
+          {
+            "glob": "libs/ui/README.md",
+            "input": ".",
+            "output": "."
+          }
+        ]
       }
     },
     "lint": {

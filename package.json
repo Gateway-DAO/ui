@@ -49,6 +49,8 @@
     "@storybook/manager-webpack5": "~6.4.12",
     "@storybook/react": "~6.4.12",
     "@svgr/webpack": "^5.4.0",
+    "@swc/core": "~1.2.143",
+    "@swc/jest": "0.2.20",
     "@testing-library/react": "13.1.1",
     "@types/jest": "27.4.1",
     "@types/node": "16.11.7",

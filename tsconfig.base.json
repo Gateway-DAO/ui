@@ -16,14 +16,10 @@
     "baseUrl": ".",
     "paths": {
       "@gateway/assets": ["libs/assets/src/index.ts"],
-      "@gateway/assets/*": ["libs/assets/src/*"],
       "@gateway/storybook/*": ["libs/storybook/.storybook/*"],
       "@gateway/templates": ["libs/templates/src/index.ts"],
-      "@gateway/templates/*": ["libs/templates/src/*"],
       "@gateway/theme": ["libs/theme/src/index.ts"],
-      "@gateway/theme/*": ["libs/theme/src/*"],
-      "@gateway/ui": ["libs/ui/src/index.ts"],
-      "@gateway/ui/*": ["libs/ui/src/*"]
+      "@gateway/ui": ["libs/ui/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
