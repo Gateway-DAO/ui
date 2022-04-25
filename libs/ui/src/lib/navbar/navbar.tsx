@@ -1,13 +1,13 @@
 import AppBar, { AppBarProps } from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
-import Button from '@mui/material/Button';
-import { GatewayIcon } from '@gateway/assets';
+import TextField from '@mui/material/TextField';
+import Autocomplete from '@mui/material/Autocomplete';
+import InputAdornment from '@mui/material/InputAdornment';
+import SearchIcon from '@mui/icons-material/Search';
 import { NavBarNotifications } from './navbar-notifications';
 import { NavBarAvatar } from './navbar-avatar';
 import { NavBarMobile } from './navbar-mobile';
-
-const pages = ['DAOs', 'Gates', 'People'];
 
 export type NavbarProps = AppBarProps;
 
@@ -19,18 +19,21 @@ export function Navbar(props: NavbarProps) {
             <NavBarMobile />
           </Box>
           <Box display={['none', null, 'flex']} flexGrow={1} alignItems="center" gap={1}>
-            <GatewayIcon sx={{ mx: 2 }} />
-            {pages.map((page) => (
-              <Button
-                key={page}
-                color="inherit"
-                sx={{ textTransform: 'none' }}
-              >
-                {page}
-              </Button>
-            ))}
+            {/* TODO: Shrinked input with adornment https://github.com/mui/material-ui/issues/13898 */}
+          <Autocomplete
+            options={[]}
+            fullWidth
+            renderInput={(params) => <TextField {...params} label="Search on Gateway"
+            InputProps={{
+              startAdornment:(<InputAdornment position="start" ><SearchIcon /></InputAdornment>),
+              fullWidth: true,
+              sx: {borderRadius: 100},
+              size: "small"
+            }}
+            />}
+          />
           </Box>
-          <Box flexGrow={0}>
+          <Box display="flex" flexGrow={.5} justifyContent="flex-end">
             <NavBarNotifications />
             <NavBarAvatar />
           </Box>

@@ -6,9 +6,6 @@ import * as components from './components';
 export const theme = createTheme({
   palette,
   typography,
-  shape: {
-    borderRadius: 100,
-  },
   components: {
     ...components,
   },

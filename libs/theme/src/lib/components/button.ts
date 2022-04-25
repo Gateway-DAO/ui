@@ -7,7 +7,7 @@ import { Theme } from '@mui/material/styles';
 export const MuiButton: Extract<Theme["components"], object>["MuiButton"]= {
   styleOverrides: {
     root: ({theme}) => ({
-      borderRadius: theme.shape.borderRadius,
+      borderRadius: 100,
     })
   }
 };
