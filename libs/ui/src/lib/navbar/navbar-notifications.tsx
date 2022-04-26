@@ -3,7 +3,7 @@ import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
 import Avatar from '@mui/material/Avatar';
 import Badge from '@mui/material/Badge';
-import MailIcon from '@mui/icons-material/Mail';
+import NotificationsIcon from '@mui/icons-material/Notifications';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import { useMenu } from '../../hooks/use-menu';
@@ -13,14 +13,13 @@ const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 export function NavBarNotifications() {
   const userMenu = useMenu();
-  const theme = useTheme();
   return (
     <>
       <Tooltip title="Open settings">
         <IconButton onClick={userMenu.onOpen}>
           <Badge color="secondary" variant="dot" overlap="circular">
-            <Avatar sx={{background: theme.palette.grey["800"] }}>
-              <MailIcon sx={{ color: 'text.primary' }} />
+            <Avatar sx={{ }}>
+              <NotificationsIcon />
             </Avatar>
           </Badge>
         </IconButton>

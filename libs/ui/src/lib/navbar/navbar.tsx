@@ -19,11 +19,23 @@ export function Navbar(props: NavbarProps) {
             <NavBarMobile />
           </Box>
           <Box display={['none', null, 'flex']} flexGrow={1} alignItems="center" gap={1}>
-            {/* TODO: Shrinked input with adornment https://github.com/mui/material-ui/issues/13898 */}
           <Autocomplete
             options={[]}
             fullWidth
-            renderInput={(params) => <TextField {...params} label="Search on Gateway"
+            renderInput={(params) => <TextField label="Search on Gateway" {...params}
+            InputLabelProps={{
+              sx: {
+                '&.MuiInputLabel-root': {
+                  transform: `translate(36px, 0.5rem)`,
+                },
+                '&.Mui-focused': {
+                  transform: "translate(14px, -9px) scale(0.75)",
+                },
+                '&.MuiInputLabel-root:not(.Mui-focused) ~ .MuiInputBase-root .MuiOutlinedInput-notchedOutline legend': {
+                  maxWidth: 0,
+                }
+              }
+            }}
             InputProps={{
               startAdornment:(<InputAdornment position="start" ><SearchIcon /></InputAdornment>),
               fullWidth: true,
