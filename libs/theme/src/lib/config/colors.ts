@@ -11,7 +11,7 @@ export const grays: PaletteColorOptions= {
   light: '#FFFFFF',
 };
 export const background: PaletteColorOptions= {
-  main: '#170627',
+  main: '#10041C',
 };
 export const red: PaletteColorOptions= {
   main: '#FF002E',
