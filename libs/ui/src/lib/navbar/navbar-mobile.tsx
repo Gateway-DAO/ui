@@ -1,15 +1,16 @@
-import IconButton from '@mui/material/IconButton';
+import { useToggle } from 'react-use';
+
+import MailIcon from '@mui/icons-material/Mail';
+import MenuIcon from '@mui/icons-material/Menu';
+import InboxIcon from '@mui/icons-material/MoveToInbox';
 import Box from '@mui/material/Box';
+import Divider from '@mui/material/Divider';
+import Drawer from '@mui/material/Drawer';
+import IconButton from '@mui/material/IconButton';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
-import Drawer from '@mui/material/Drawer';
-import Divider from '@mui/material/Divider';
-import MenuIcon from '@mui/icons-material/Menu';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
-import { useToggle } from 'react-use';
 
 export function NavBarMobile() {
   const [isOpen, toggleOpen] = useToggle(false);
@@ -25,11 +26,7 @@ export function NavBarMobile() {
       >
         <MenuIcon />
       </IconButton>
-      <Drawer
-        anchor="left"
-        open={isOpen}
-        onClose={toggleOpen}
-      >
+      <Drawer anchor="left" open={isOpen} onClose={toggleOpen}>
         <Box
           width={250}
           role="presentation"

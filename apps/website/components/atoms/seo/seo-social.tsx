@@ -1,6 +1,6 @@
 /**
  * Everything related to Social media SEO tags
-*/
+ */
 export function SEOSocial() {
   return (
     <>
@@ -22,16 +22,12 @@ export function SEOSocial() {
       {/* Twitter */}
       <meta property="twitter:card" content="summary_large_image" />
       <meta property="twitter:url" content="https://mygateway.xyz/" />
-      <meta
-        property="twitter:title"
-        content="Gateway - Find your Community"
-      />
+      <meta property="twitter:title" content="Gateway - Find your Community" />
       <meta
         property="twitter:description"
         content="Are you hungry to find your online community? We provide you all the information you need to make your decision all in one spot. Let us be your Gateway."
       />
       <meta property="twitter:image" content="/social.png" />
-
     </>
-  )
+  );
 }

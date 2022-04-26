@@ -1,4 +1,5 @@
 import { Story, Meta } from '@storybook/react';
+
 import { DashboardTemplate, DashboardTemplateProps } from './dashboard';
 
 export default {
@@ -9,7 +10,9 @@ export default {
   },
 } as Meta;
 
-const Template: Story<DashboardTemplateProps> = (args) => <DashboardTemplate {...args} />;
+const Template: Story<DashboardTemplateProps> = (args) => (
+  <DashboardTemplate {...args} />
+);
 
 export const Primary = Template.bind({});
 Primary.args = {};

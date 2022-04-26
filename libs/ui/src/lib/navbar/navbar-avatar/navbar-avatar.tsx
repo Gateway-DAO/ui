@@ -5,7 +5,6 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
-import { useTheme } from '@mui/material/styles';
 
 import { useMenu } from '../../../hooks/use-menu';
 import { CenterBadge } from './styles';
@@ -14,7 +13,6 @@ const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 export function NavBarAvatar() {
   const userMenu = useMenu();
-  const theme = useTheme();
   return (
     <>
       <Tooltip title="Open menu">

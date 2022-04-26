@@ -1,13 +1,14 @@
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import Menu from '@mui/material/Menu';
+import NotificationsIcon from '@mui/icons-material/Notifications';
 import Avatar from '@mui/material/Avatar';
 import Badge from '@mui/material/Badge';
-import NotificationsIcon from '@mui/icons-material/Notifications';
-import Tooltip from '@mui/material/Tooltip';
+import IconButton from '@mui/material/IconButton';
+import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import { useMenu } from '../../hooks/use-menu';
+import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
 import { useTheme } from '@mui/material/styles';
+
+import { useMenu } from '../../hooks/use-menu';
 
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
@@ -18,7 +19,7 @@ export function NavBarNotifications() {
       <Tooltip title="Open settings">
         <IconButton onClick={userMenu.onOpen}>
           <Badge color="secondary" variant="dot" overlap="circular">
-            <Avatar sx={{ }}>
+            <Avatar sx={{}}>
               <NotificationsIcon />
             </Avatar>
           </Badge>
