@@ -1,7 +1,16 @@
 {
   "root": true,
   "ignorePatterns": ["**/*"],
-  "plugins": ["@nrwl/nx"],
+  "extends": [
+    "plugin:@nrwl/nx/typescript",
+    "prettier",
+    "plugin:editorconfig/noconflict"
+  ],
+  "plugins": ["@nrwl/nx",
+    "editorconfig",
+    "eslint-plugin-import-helpers",
+    "prettier"
+  ],
   "overrides": [
     {
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
@@ -18,18 +27,26 @@
               }
             ]
           }
-        ]
+        ],
+        "editorconfig/indent": "off",
+        "import-helpers/order-imports": [
+        "warn",
+        {
+          "newlinesBetween": "always",
+          "groups": [
+            ["/^react$/", "/^react-(native|dom)$/", "/^next/"],
+            "module",
+            "/^@gateway\//",
+            "/^@mui\//",
+            ["parent", "sibling"],
+            "index"
+          ],
+          "alphabetize": { "order": "asc", "ignoreCase": false }
+        }
+      ],
+      "sort-imports": "off",
+      "prettier/prettier": "error"
       }
-    },
-    {
-      "files": ["*.ts", "*.tsx"],
-      "extends": ["plugin:@nrwl/nx/typescript"],
-      "rules": {}
-    },
-    {
-      "files": ["*.js", "*.jsx"],
-      "extends": ["plugin:@nrwl/nx/javascript"],
-      "rules": {}
     }
   ]
 }

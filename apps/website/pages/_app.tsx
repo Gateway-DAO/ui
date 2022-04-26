@@ -1,11 +1,13 @@
-import { ThemeProvider } from '@gateway/theme';
 import { AppProps } from 'next/app';
 import Head from 'next/head';
+
+import { ThemeProvider } from '@gateway/theme';
+
 import { SEOSocial, SEOFavicon } from '../components/atoms/seo';
 
 function CustomApp({ Component, pageProps }: AppProps) {
   return (
-    <ThemeProvider containerId='__next'>
+    <ThemeProvider containerId="__next">
       <>
         <Head>
           <title>Gateway</title>
