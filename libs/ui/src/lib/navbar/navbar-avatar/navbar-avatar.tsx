@@ -1,5 +1,6 @@
 import { ArrowDropDown } from '@mui/icons-material';
 import Avatar from '@mui/material/Avatar';
+import Badge, { badgeClasses } from '@mui/material/Badge';
 import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
@@ -7,7 +8,6 @@ import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 
 import { useMenu } from '../../../hooks/use-menu';
-import { CenterBadge } from './styles';
 
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
@@ -17,7 +17,7 @@ export function NavBarAvatar() {
     <>
       <Tooltip title="Open menu">
         <IconButton onClick={userMenu.onOpen}>
-          <CenterBadge
+          <Badge
             overlap="circular"
             badgeContent={
               <ArrowDropDown
@@ -28,9 +28,21 @@ export function NavBarAvatar() {
                 }}
               />
             }
+            sx={{
+              [`.${badgeClasses.badge}`]: {
+                borderRadius: '100%',
+                backgroundColor: (theme) => theme.palette.common.white,
+                color: (theme) => theme.palette.secondary.contrastText,
+                width: (theme) => theme.spacing(2.5),
+                height: (theme) => theme.spacing(2.5),
+                top: 'unset',
+                bottom: (theme) => `calc(50% - ${theme.spacing(2.5)})`,
+                right: '-10%',
+              },
+            }}
           >
             <Avatar>R</Avatar>
-          </CenterBadge>
+          </Badge>
         </IconButton>
       </Tooltip>
       <Menu
