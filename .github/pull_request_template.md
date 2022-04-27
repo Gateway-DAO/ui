@@ -1,7 +1,5 @@
 # [PR Name]
 
-[Asana link](https://example.com)
-
 ## Type of PR
 
 <!--(please remove unused ones)-->
