@@ -38,6 +38,7 @@ export function NavBarAvatar() {
                 top: 'unset',
                 bottom: (theme) => `calc(50% - ${theme.spacing(2.5)})`,
                 right: '-10%',
+                boxShadow: (theme) => theme.shadows[1],
               },
             }}
           >
