@@ -1,6 +1,6 @@
 import type { PaletteOptions } from '@mui/material/styles/createPalette';
-import brandColors from "./colors"
 
+import brandColors from './colors';
 
 const palette: PaletteOptions = {
   mode: 'dark',

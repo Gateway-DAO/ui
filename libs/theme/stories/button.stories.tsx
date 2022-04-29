@@ -1,8 +1,10 @@
 import { Story, Meta } from '@storybook/react';
-import { ButtonProps } from '@mui/material/Button';
-import { Button } from './button';
+
 import DeleteIcon from '@mui/icons-material/Delete';
 import SendIcon from '@mui/icons-material/Send';
+import { ButtonProps } from '@mui/material/Button';
+
+import { Button } from './button';
 
 export default {
   component: Button,
