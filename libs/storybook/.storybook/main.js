@@ -1,14 +1,12 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 const rootMain = require('../../../.storybook/main');
 
 module.exports = {
   ...rootMain,
 
   core: { ...rootMain.core, builder: 'webpack5' },
-
-  stories: [
-    ...rootMain.stories,
-    '../../**/*.stories.@(mdx|js|jsx|ts|tsx)',
-  ],
+  /* TODO: Fix ../../../apps/ stories */
+  stories: [...rootMain.stories, '../../**/*.stories.@(mdx|js|jsx|ts|tsx)'],
   addons: [...rootMain.addons, '@nrwl/react/plugins/storybook'],
   webpackFinal: async (config, { configType }) => {
     // apply any global webpack configs that might have been specified in .storybook/main.js
