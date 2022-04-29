@@ -11,6 +11,7 @@ export const GlobalStyles = (container: string) => (
         padding: 0,
         '&:after': {
           content: "''",
+          pointerEvents: 'none',
           position: 'absolute',
           bottom: 0,
           inset: 'auto 0 0',
