@@ -1,24 +1,50 @@
-import { PropsWithChildren } from 'react';
+import { useRouter } from 'next/router';
+import { PropsWithChildren, useMemo } from 'react';
+
+import clsx from 'clsx';
+import { AnimatePresence } from 'framer-motion';
 
 import { GatewayIcon } from '@gateway/assets';
-import { Navbar } from '@gateway/ui';
+import { MotionListItemButton, MotionTooltip } from '@gateway/ui';
 
 import ExploreIcon from '@mui/icons-material/Explore';
-import MailIcon from '@mui/icons-material/Mail';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import { Avatar, IconButton, Tooltip } from '@mui/material';
-import Box from '@mui/material/Box';
+import { Avatar, ListItemButton } from '@mui/material';
+import Box, { BoxProps } from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 
+import { Dao } from '../../../types/dao';
+import { DaosList } from './daos-list';
+import { TemporaryDao } from './temporary-dao';
+
 // eslint-disable-next-line @typescript-eslint/ban-types
-export type DashboardTemplateProps = {};
+export type DashboardTemplateProps = {
+  followingDaos?: Dao[];
+  currentDao?: Dao;
+  containerProps?: BoxProps;
+};
+
+/* TODO: buttons to next/link */
 
 export function DashboardTemplate({
+  followingDaos,
+  currentDao,
   children,
+  containerProps,
 }: PropsWithChildren<DashboardTemplateProps>) {
+  /* Checks if currentDao isn't in followingDaos */
+  const isCurrentDaoTemporary = useMemo(() => {
+    if (!currentDao) {
+      return false;
+    }
+    if (followingDaos) {
+      return !followingDaos.find((dao) => dao.id === currentDao.id);
+    }
+    return true;
+  }, [currentDao, followingDaos]);
+
+  const router = useRouter();
+
   return (
     <Box sx={{ display: 'flex', height: '100%' }}>
       <Box
@@ -39,53 +65,66 @@ export function DashboardTemplate({
           }}
           open
         >
-          <IconButton color="primary" sx={{ mx: 0.5, mb: 2.5 }}>
-            <Avatar sx={{ background: 'transparent' }}>
-              <GatewayIcon />
-            </Avatar>
-          </IconButton>
-          <List
-            sx={{
-              gap: 1.5,
-              px: 0,
-              display: 'flex',
-              flexFlow: 'column',
-              '.MuiListItem-root': {
-                p: 0,
-                borderRadius: '100%',
-                justifyContent: 'center',
-              },
-              '.MuiListItemIcon-root': {
-                color: 'white',
-                minWidth: 'auto',
-              },
-            }}
-          >
-            {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-              <Tooltip key={text} title={text} placement="right">
-                <ListItem button aria-label={`Go to ${text}`}>
-                  <ListItemIcon>
-                    <Avatar>
-                      {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                    </Avatar>
-                  </ListItemIcon>
-                </ListItem>
-              </Tooltip>
-            ))}
-            <Tooltip title="Explore" placement="right">
-              <ListItem button>
+          <DaosList>
+            <AnimatePresence>
+              <MotionListItemButton
+                layoutId="profile"
+                aria-label="Go to Profile"
+                sx={{ mb: 2.75 }}
+                className={clsx({ active: router.pathname === '/' })}
+              >
                 <ListItemIcon>
-                  <Avatar>
-                    <ExploreIcon />
+                  <Avatar sx={{ background: 'transparent' }}>
+                    <GatewayIcon />
                   </Avatar>
                 </ListItemIcon>
-              </ListItem>
-            </Tooltip>
-          </List>
+              </MotionListItemButton>
+              {!!currentDao && isCurrentDaoTemporary && (
+                <TemporaryDao
+                  key={currentDao.id}
+                  layoutId={currentDao.id}
+                  dao={currentDao}
+                />
+              )}
+              {followingDaos?.map((dao) => (
+                <MotionTooltip
+                  key={dao.id}
+                  layoutId={dao.id}
+                  title={dao.name}
+                  placement="right"
+                >
+                  <ListItemButton
+                    aria-label={`Go to ${dao.name}`}
+                    className={clsx({ active: dao.id === currentDao?.id })}
+                  >
+                    <ListItemIcon>
+                      <Avatar src={dao.image}>{dao.name[0]}</Avatar>
+                    </ListItemIcon>
+                  </ListItemButton>
+                </MotionTooltip>
+              ))}
+              <MotionTooltip
+                layoutId="Explore"
+                title="Explore"
+                placement="right"
+              >
+                <ListItemButton>
+                  <ListItemIcon>
+                    <Avatar>
+                      <ExploreIcon />
+                    </Avatar>
+                  </ListItemIcon>
+                </ListItemButton>
+              </MotionTooltip>
+            </AnimatePresence>
+          </DaosList>
         </Drawer>
       </Box>
-      <Box component="main" sx={{ flexGrow: 1, pt: 1 }}>
-        <Navbar />
+      <Box
+        component="main"
+        {...containerProps}
+        sx={{ ...containerProps?.sx, flexGrow: 1 }}
+      >
         {children}
       </Box>
     </Box>
