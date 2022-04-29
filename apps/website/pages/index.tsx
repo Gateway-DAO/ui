@@ -27,6 +27,7 @@ export function Index() {
       <button type="button" onClick={() => setCurrentDao(undefined)}>
         reset
       </button>
+      Just a test
     </DashboardTemplate>
   );
 }
