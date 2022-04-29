@@ -1,5 +1,5 @@
 export type Dao = {
-  id: unknown;
+  id: string;
   name: string;
   image?: string;
 };

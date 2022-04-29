@@ -20,7 +20,7 @@ export function Index() {
       </button>
       <button
         type="button"
-        onClick={() => setCurrentDao({ id: 999, name: 'Temporary Dao' })}
+        onClick={() => setCurrentDao({ id: '999', name: 'Temporary Dao' })}
       >
         Go to temporary dao
       </button>

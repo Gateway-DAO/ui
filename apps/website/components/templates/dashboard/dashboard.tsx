@@ -80,11 +80,7 @@ export function DashboardTemplate({
                 </ListItemIcon>
               </MotionListItemButton>
               {!!currentDao && isCurrentDaoTemporary && (
-                <TemporaryDao
-                  key={currentDao.id}
-                  layoutId={currentDao.id}
-                  dao={currentDao}
-                />
+                <TemporaryDao key={currentDao.id} dao={currentDao} />
               )}
               {followingDaos?.map((dao) => (
                 <MotionTooltip
