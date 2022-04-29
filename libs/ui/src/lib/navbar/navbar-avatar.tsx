@@ -7,7 +7,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 
-import { useMenu } from '../../../hooks/use-menu';
+import { useMenu } from '../../hooks/use-menu';
 
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
@@ -47,7 +47,7 @@ export function NavBarAvatar() {
         </IconButton>
       </Tooltip>
       <Menu
-        sx={{ mt: '45px' }}
+        sx={{ mt: (theme) => theme.spacing(7) }}
         id="menu-appbar"
         anchorEl={userMenu.element}
         anchorOrigin={{

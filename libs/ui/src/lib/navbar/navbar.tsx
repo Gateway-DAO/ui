@@ -16,15 +16,7 @@ export function Navbar(props: NavbarProps) {
   return (
     <AppBar color="transparent" position="relative" {...props}>
       <Toolbar disableGutters sx={{ px: 2 }}>
-        <Box display={['flex', null, 'none']} flexGrow={1} alignItems="center">
-          <NavBarMobile />
-        </Box>
-        <Box
-          display={['none', null, 'flex']}
-          flexGrow={1}
-          alignItems="center"
-          gap={1}
-        >
+        <Box flexGrow={1} alignItems="center" gap={1}>
           <Autocomplete
             options={[]}
             fullWidth
@@ -33,6 +25,13 @@ export function Navbar(props: NavbarProps) {
                 label="Search on Gateway"
                 {...params}
                 InputLabelProps={{
+                  sx: {
+                    '&.MuiInputLabel-root:not(.MuiInputLabel-shrink)': {
+                      lineHeight: 1,
+                    },
+                  },
+                  /*
+                  start adornment:
                   sx: {
                     '&.MuiInputLabel-root': {
                       transform: `translate(36px, 0.5rem)`,
@@ -44,11 +43,11 @@ export function Navbar(props: NavbarProps) {
                       {
                         maxWidth: 0,
                       },
-                  },
+                  }, */
                 }}
                 InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
+                  endAdornment: (
+                    <InputAdornment position="end">
                       <SearchIcon />
                     </InputAdornment>
                   ),
