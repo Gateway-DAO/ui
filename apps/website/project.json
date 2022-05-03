@@ -21,7 +21,13 @@
       "configurations": {
         "development": {},
         "production": {}
-      }
+      },
+      "dependsOn": [
+        {
+          "target": "generate",
+          "projects": "self"
+        }
+      ]
     },
     "serve": {
       "executor": "@nrwl/next:server",

@@ -1,9 +1,4 @@
 import { IGraphQLProjects } from "graphql-config";
-/* dotenv is needed for vscode graphql extension */
-const dotenv = require("dotenv");
-
-dotenv.config({path: "./.env"})
-
 
 const config: IGraphQLProjects = {
   projects: {
