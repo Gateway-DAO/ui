@@ -11,3 +11,5 @@ export const theme = createTheme({
     ...components,
   },
 });
+
+export type GatewayTheme = typeof theme;

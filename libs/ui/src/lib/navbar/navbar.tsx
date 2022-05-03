@@ -1,3 +1,5 @@
+import { TOKENS } from '@gateway/theme';
+
 import SearchIcon from '@mui/icons-material/Search';
 import AppBar, { AppBarProps } from '@mui/material/AppBar';
 import Autocomplete from '@mui/material/Autocomplete';
@@ -15,7 +17,7 @@ export type NavbarProps = AppBarProps;
 export function Navbar(props: NavbarProps) {
   return (
     <AppBar color="transparent" position="relative" {...props}>
-      <Toolbar disableGutters sx={{ px: 2 }}>
+      <Toolbar disableGutters sx={{ px: TOKENS.CONTAINER_PX }}>
         <Box flexGrow={1} alignItems="center" gap={1}>
           <Autocomplete
             options={[]}

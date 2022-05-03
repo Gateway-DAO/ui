@@ -1,3 +1,4 @@
+import { TOKENS } from '@gateway/theme';
 import { Navbar } from '@gateway/ui';
 
 import { Box, Button, Divider, Stack, Typography } from '@mui/material';
@@ -14,7 +15,12 @@ export function Index() {
       containerProps={{ sx: { pt: 2 } }}
     >
       <Navbar />
-      <Typography variant="h4" whiteSpace="pre-line">
+      <Typography
+        variant="h4"
+        whiteSpace="pre-line"
+        px={TOKENS.CONTAINER_PX}
+        pt={6}
+      >
         Welcome,{'\n'}Lucas Inacio
       </Typography>
       <Stack
@@ -27,9 +33,13 @@ export function Index() {
         }}
       >
         <Box component="section">
-          <Stack direction="row" justifyContent="space-between">
+          <Stack
+            direction="row"
+            justifyContent="space-between"
+            px={TOKENS.CONTAINER_PX}
+          >
             <Box>
-              <Typography variant="h6">Recommended Gates</Typography>
+              <Typography variant="h6">Featured Gates</Typography>
               <Typography variant="caption">
                 Your journey starts now.
               </Typography>
@@ -38,9 +48,13 @@ export function Index() {
           </Stack>
         </Box>
         <Box component="section">
-          <Stack direction="row" justifyContent="space-between">
+          <Stack
+            direction="row"
+            justifyContent="space-between"
+            px={TOKENS.CONTAINER_PX}
+          >
             <Box>
-              <Typography variant="h6">Recommended DAOs</Typography>
+              <Typography variant="h6">Featured DAOs</Typography>
               <Typography variant="caption">
                 We thought you'd like some DAOs recommendations.
               </Typography>
@@ -49,7 +63,11 @@ export function Index() {
           </Stack>
         </Box>
         <Box component="section">
-          <Stack direction="row" justifyContent="space-between">
+          <Stack
+            direction="row"
+            justifyContent="space-between"
+            px={TOKENS.CONTAINER_PX}
+          >
             <Box>
               <Typography variant="h6">Featured people</Typography>
               <Typography variant="caption">
