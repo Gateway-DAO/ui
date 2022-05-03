@@ -6,7 +6,6 @@
     "generate": {
       "executor": "@nrwl/workspace:run-commands",
       "options": {
-          "envFile": ".env",
           "command": "yarn graphql-codegen --config .graphqlrc.ts -r dotenv/config --project website"
       }
     },
