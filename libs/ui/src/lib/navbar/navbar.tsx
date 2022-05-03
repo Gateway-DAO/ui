@@ -29,7 +29,7 @@ export function Navbar(props: NavbarProps) {
                 InputLabelProps={{
                   sx: {
                     '&.MuiInputLabel-root:not(.MuiInputLabel-shrink)': {
-                      lineHeight: 1,
+                      transform: 'translate(14px, 8px) scale(1)',
                     },
                   },
                   /*
