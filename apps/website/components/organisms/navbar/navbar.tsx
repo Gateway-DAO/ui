@@ -69,5 +69,3 @@ export function Navbar(props: NavbarProps) {
     </AppBar>
   );
 }
-
-export default Navbar;

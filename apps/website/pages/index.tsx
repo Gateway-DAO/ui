@@ -1,14 +1,12 @@
 import useTranslation from 'next-translate/useTranslation';
 
 import { TOKENS } from '@gateway/theme';
-import { Navbar } from '@gateway/ui';
 
 import { Box, Button, Divider, Stack, Typography } from '@mui/material';
 
 import { mockDaos } from '../__mock__/daos';
+import { Navbar } from '../components/organisms/navbar/navbar';
 import { DashboardTemplate } from '../components/templates/dashboard';
-
-/* TODO: Pass text to i18n */
 
 export function Index() {
   const { t } = useTranslation('dashboard-home');

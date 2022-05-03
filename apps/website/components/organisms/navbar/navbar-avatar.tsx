@@ -1,3 +1,5 @@
+import { useMenu } from '@gateway/ui';
+
 import { ArrowDropDown } from '@mui/icons-material';
 import Avatar from '@mui/material/Avatar';
 import Badge, { badgeClasses } from '@mui/material/Badge';
@@ -6,8 +8,6 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
-
-import { useMenu } from '../../hooks/use-menu';
 
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
