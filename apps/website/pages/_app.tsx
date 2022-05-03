@@ -4,8 +4,10 @@ import Head from 'next/head';
 import { ThemeProvider } from '@gateway/theme';
 
 import { SEOSocial, SEOFavicon } from '../components/atoms/seo';
+import { usePersistLocale } from '../hooks/usePersistLocale';
 
 function CustomApp({ Component, pageProps }: AppProps) {
+  usePersistLocale();
   return (
     <ThemeProvider containerId="__next">
       <>

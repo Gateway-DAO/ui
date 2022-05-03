@@ -1,0 +1,18 @@
+{
+  "title": "Bem vindo,\n{{name}}",
+  "featured-gates": {
+    "title": "Gates em destaque",
+    "caption": "Sua jornada começa agora.",
+    "see-more": "Ver mais gates"
+  },
+  "featured-daos": {
+    "title": "DAOs em destaque",
+    "caption":"Achamos que você gostaria de ver algumas recomendações de DAOs.",
+    "see-more": "Ver mais DAOs"
+  },
+  "featured-people": {
+    "title": "Pessoas em destaque",
+    "caption": "As pessoas mais proeminentes na Web3.",
+    "see-more": "Ver mais pessoas"
+  }
+}

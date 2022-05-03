@@ -1,3 +1,5 @@
+import useTranslation from 'next-translate/useTranslation';
+
 import { TOKENS } from '@gateway/theme';
 import { Navbar } from '@gateway/ui';
 
@@ -9,6 +11,7 @@ import { DashboardTemplate } from '../components/templates/dashboard';
 /* TODO: Pass text to i18n */
 
 export function Index() {
+  const { t } = useTranslation('dashboard-home');
   return (
     <DashboardTemplate
       followingDaos={mockDaos}
@@ -21,7 +24,7 @@ export function Index() {
         px={TOKENS.CONTAINER_PX}
         pt={6}
       >
-        Welcome,{'\n'}Lucas Inacio
+        {t('title', { name: 'Lucas Inacio' })}
       </Typography>
       <Stack
         direction="column"
@@ -36,45 +39,48 @@ export function Index() {
           <Stack
             direction="row"
             justifyContent="space-between"
+            alignItems="center"
             px={TOKENS.CONTAINER_PX}
           >
             <Box>
-              <Typography variant="h6">Featured Gates</Typography>
+              <Typography variant="h6">{t('featured-gates.title')}</Typography>
               <Typography variant="caption">
-                Your journey starts now.
+                {t('featured-gates.caption')}
               </Typography>
             </Box>
-            <Button>View more gates</Button>
+            <Button>{t('featured-gates.see-more')}</Button>
           </Stack>
         </Box>
         <Box component="section">
           <Stack
             direction="row"
             justifyContent="space-between"
+            alignItems="center"
             px={TOKENS.CONTAINER_PX}
           >
             <Box>
-              <Typography variant="h6">Featured DAOs</Typography>
+              <Typography variant="h6">{t('featured-daos.title')}</Typography>
               <Typography variant="caption">
-                We thought you'd like some DAOs recommendations.
+                {t('featured-daos.caption')}
               </Typography>
             </Box>
-            <Button>View more DAOs</Button>
+            <Button>{t('featured-daos.see-more')}</Button>
           </Stack>
         </Box>
         <Box component="section">
           <Stack
             direction="row"
             justifyContent="space-between"
+            alignItems="center"
             px={TOKENS.CONTAINER_PX}
           >
             <Box>
-              <Typography variant="h6">Featured people</Typography>
+              <Typography variant="h6">{t('featured-people.title')}</Typography>
               <Typography variant="caption">
-                Follow the most prominent professionals on the Web3.
+                {t('featured-people.caption')}
               </Typography>
             </Box>
-            <Button>view more people</Button>
+            <Button>{t('featured-people.see-more')}</Button>
           </Stack>
         </Box>
       </Stack>
