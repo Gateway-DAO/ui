@@ -1,3 +1,8 @@
+import setLanguage from 'next-translate/setLanguage';
+import { useCallback } from 'react';
+
+import { NestedMenuItem } from 'mui-nested-menu';
+
 import { useMenu } from '@gateway/ui';
 
 import { ArrowDropDown } from '@mui/icons-material';
@@ -9,20 +14,25 @@ import MenuItem from '@mui/material/MenuItem';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
-
 export function NavBarAvatar() {
-  const userMenu = useMenu();
+  const { element, isOpen, onClose, onOpen } = useMenu();
+  const onChangeLanguage = useCallback(
+    (lang: string) => async () => {
+      await setLanguage(lang);
+      onClose();
+    },
+    [onClose]
+  );
   return (
     <>
       <Tooltip title="Open menu">
-        <IconButton onClick={userMenu.onOpen}>
+        <IconButton onClick={onOpen}>
           <Badge
             overlap="circular"
             badgeContent={
               <ArrowDropDown
                 sx={{
-                  transform: userMenu.isOpen ? 'rotate(180deg)' : undefined,
+                  transform: isOpen ? 'rotate(180deg)' : undefined,
                   transition: '.2s ease-in-out',
                   transitionProperty: 'transform',
                 }}
@@ -49,7 +59,7 @@ export function NavBarAvatar() {
       <Menu
         sx={{ mt: (theme) => theme.spacing(7) }}
         id="menu-appbar"
-        anchorEl={userMenu.element}
+        anchorEl={element}
         anchorOrigin={{
           vertical: 'top',
           horizontal: 'right',
@@ -59,14 +69,18 @@ export function NavBarAvatar() {
           vertical: 'top',
           horizontal: 'right',
         }}
-        open={userMenu.isOpen}
-        onClose={userMenu.onClose}
+        open={isOpen}
+        onClose={onClose}
       >
-        {settings.map((setting) => (
-          <MenuItem key={setting} onClick={userMenu.onClose}>
-            <Typography textAlign="center">{setting}</Typography>
+        <NestedMenuItem label="Languages" parentMenuOpen={isOpen}>
+          <MenuItem onClick={onChangeLanguage('en')}>English</MenuItem>
+          <MenuItem onClick={onChangeLanguage('pt-BR')}>
+            Portuguese (Brazil)
           </MenuItem>
-        ))}
+        </NestedMenuItem>
+        <MenuItem key="Profile" onClick={onClose}>
+          <Typography textAlign="center">Profile</Typography>
+        </MenuItem>
       </Menu>
     </>
   );
