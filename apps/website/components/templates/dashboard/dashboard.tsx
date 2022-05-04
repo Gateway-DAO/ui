@@ -45,6 +45,8 @@ export function DashboardTemplate({
 
   const router = useRouter();
 
+  console.log(followingDaos);
+
   return (
     <Box sx={{ display: 'flex', height: '100%' }}>
       <Box
@@ -68,6 +70,7 @@ export function DashboardTemplate({
           <DaosList>
             <AnimatePresence>
               <MotionListItemButton
+                key="profile"
                 layoutId="profile"
                 aria-label="Go to Profile"
                 sx={{ mb: 2.75 }}
@@ -100,6 +103,7 @@ export function DashboardTemplate({
                 </MotionTooltip>
               ))}
               <MotionTooltip
+                key="explore"
                 layoutId="Explore"
                 title="Explore"
                 placement="right"
