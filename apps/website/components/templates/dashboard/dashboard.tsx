@@ -45,8 +45,6 @@ export function DashboardTemplate({
 
   const router = useRouter();
 
-  console.log(followingDaos);
-
   return (
     <Box sx={{ display: 'flex', height: '100%' }}>
       <Box

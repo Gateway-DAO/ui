@@ -12,7 +12,6 @@ export function DaoCard() {
     <MUICard
       sx={{ maxWidth: (theme) => theme.spacing(51), borderRadius: 2 }}
       variant="outlined"
-      elevation={1}
     >
       <CardMedia
         component="img"

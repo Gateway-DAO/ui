@@ -16,13 +16,13 @@ import Typography from '@mui/material/Typography';
 
 export function NavBarAvatar() {
   const { element, isOpen, onClose, onOpen } = useMenu();
-  const onChangeLanguage = useCallback(
+  /*   const onChangeLanguage = useCallback(
     (lang: string) => async () => {
       await setLanguage(lang);
       onClose();
     },
     [onClose]
-  );
+  ); */
   return (
     <>
       <Tooltip title="Open menu">
@@ -72,14 +72,14 @@ export function NavBarAvatar() {
         open={isOpen}
         onClose={onClose}
       >
-        <NestedMenuItem label="Languages" parentMenuOpen={isOpen}>
+        {/* <NestedMenuItem label="Languages" parentMenuOpen={isOpen}>
           <MenuItem onClick={onChangeLanguage('en')}>English</MenuItem>
           <MenuItem onClick={onChangeLanguage('pt-BR')}>
             Portuguese (Brazil)
           </MenuItem>
-        </NestedMenuItem>
-        <MenuItem key="Profile" onClick={onClose}>
-          <Typography textAlign="center">Profile</Typography>
+        </NestedMenuItem> */}
+        <MenuItem key="disconnect" onClick={onClose}>
+          <Typography textAlign="center">Disconnect</Typography>
         </MenuItem>
       </Menu>
     </>

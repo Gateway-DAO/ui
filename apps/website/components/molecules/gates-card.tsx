@@ -12,7 +12,6 @@ export function GatesCard() {
     <MUICard
       sx={{ maxWidth: (theme) => theme.spacing(37.75), borderRadius: 2 }}
       variant="outlined"
-      elevation={1}
     >
       <CardMedia
         component="img"
@@ -28,7 +27,7 @@ export function GatesCard() {
           </Avatar>
         }
         action={
-          <IconButton sx={{ color: 'white' }} aria-label="settings">
+          <IconButton color="secondary" aria-label="settings">
             <BookmarkBorderIcon />
           </IconButton>
         }
@@ -43,8 +42,8 @@ export function GatesCard() {
           color="text.secondary"
           sx={{
             display: '-webkit-box',
-            '-webkit-line-clamp': '2',
-            '-webkit-box-orient': 'vertical',
+            WebkitLineClamp: 2,
+            webkitBoxOrient: 'vertical',
             overflow: 'hidden',
           }}
         >

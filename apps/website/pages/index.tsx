@@ -1,98 +1,53 @@
 import useTranslation from 'next-translate/useTranslation';
 
-import { TOKENS } from '@gateway/theme';
-
-import { Box, Button, Divider, Stack, Typography } from '@mui/material';
+import { Button } from '@mui/material';
 
 import { mockDaos } from '../__mock__/daos';
 import { DaoCard } from '../components/molecules/dao-card';
 import { GatesCard } from '../components/molecules/gates-card';
 import { PersonCard } from '../components/molecules/person-card';
-import { Navbar } from '../components/organisms/navbar/navbar';
-import { DashboardTemplate } from '../components/templates/dashboard';
+import {
+  HomeTemplate,
+  IndexSectionWithGrid,
+  IndexSectionWithSlider,
+} from '../components/templates/home';
 
-export function Index() {
+export default function Index() {
   const { t } = useTranslation('dashboard-home');
   return (
-    <DashboardTemplate
-      followingDaos={mockDaos}
-      containerProps={{ sx: { pt: 2 } }}
+    <HomeTemplate
+      title={t('title', { name: 'Lucas Inacio' })}
+      DashboardProps={{
+        followingDaos: mockDaos,
+      }}
     >
-      <Navbar />
-      <Typography
-        variant="h4"
-        whiteSpace="pre-line"
-        px={TOKENS.CONTAINER_PX}
-        pt={6}
+      <IndexSectionWithSlider
+        title={t('featured-gates.title')}
+        caption={t('featured-gates.caption')}
+        action={<Button>{t('featured-gates.see-more')}</Button>}
       >
-        {t('title', { name: 'Lucas Inacio' })}
-      </Typography>
-      <Stack
-        direction="column"
-        divider={<Divider />}
-        sx={{
-          section: {
-            py: 4,
-          },
-        }}
+        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((id) => (
+          <GatesCard key={id} />
+        ))}
+      </IndexSectionWithSlider>
+      <IndexSectionWithSlider
+        title={t('featured-daos.title')}
+        caption={t('featured-daos.caption')}
+        action={<Button>{t('featured-daos.see-more')}</Button>}
       >
-        <Box component="section">
-          <Stack
-            direction="row"
-            justifyContent="space-between"
-            alignItems="center"
-            px={TOKENS.CONTAINER_PX}
-            mb={4}
-          >
-            <Box>
-              <Typography variant="h6">{t('featured-gates.title')}</Typography>
-              <Typography variant="caption">
-                {t('featured-gates.caption')}
-              </Typography>
-            </Box>
-            <Button>{t('featured-gates.see-more')}</Button>
-          </Stack>
-          <GatesCard />
-        </Box>
-        <Box component="section">
-          <Stack
-            direction="row"
-            justifyContent="space-between"
-            alignItems="center"
-            px={TOKENS.CONTAINER_PX}
-            mb={4}
-          >
-            <Box>
-              <Typography variant="h6">{t('featured-daos.title')}</Typography>
-              <Typography variant="caption">
-                {t('featured-daos.caption')}
-              </Typography>
-            </Box>
-            <Button>{t('featured-daos.see-more')}</Button>
-          </Stack>
-          <DaoCard />
-        </Box>
-        <Box component="section">
-          <Stack
-            direction="row"
-            justifyContent="space-between"
-            alignItems="center"
-            px={TOKENS.CONTAINER_PX}
-            mb={4}
-          >
-            <Box>
-              <Typography variant="h6">{t('featured-people.title')}</Typography>
-              <Typography variant="caption">
-                {t('featured-people.caption')}
-              </Typography>
-            </Box>
-            <Button>{t('featured-people.see-more')}</Button>
-          </Stack>
-          <PersonCard />
-        </Box>
-      </Stack>
-    </DashboardTemplate>
+        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((id) => (
+          <DaoCard key={id} />
+        ))}
+      </IndexSectionWithSlider>
+      <IndexSectionWithGrid
+        title={t('featured-people.title')}
+        caption={t('featured-people.caption')}
+        action={<Button>{t('featured-people.see-more')}</Button>}
+      >
+        {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((id) => (
+          <PersonCard key={id} />
+        ))}
+      </IndexSectionWithGrid>
+    </HomeTemplate>
   );
 }
-
-export default Index;

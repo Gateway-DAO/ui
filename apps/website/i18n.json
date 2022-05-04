@@ -1,8 +1,9 @@
 {
-  "locales": ["en","pt-BR"],
+  "locales": ["en"],
   "defaultLocale": "en",
   "pages": {
     "*": ["common"],
     "/": ["dashboard-home"]
-  }
+  },
+  "localeDetection": false
 }

@@ -7,6 +7,9 @@ const palette: PaletteOptions = {
   primary: {
     ...brandColors.purple,
   },
+  secondary: {
+    main: '#ffffff',
+  },
   background: {
     default: brandColors.background.main,
   },
