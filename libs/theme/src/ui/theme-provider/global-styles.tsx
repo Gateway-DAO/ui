@@ -5,16 +5,18 @@ export const GlobalStyles = (container: string) => (
   <MUIGlobalStyles
     styles={(theme) => ({
       [`html, body, #${container}`]: {
-        height: '100%',
+        minHeight: '100%',
       },
       body: {
         padding: 0,
+        position: 'relative',
         '&:after': {
           content: "''",
           pointerEvents: 'none',
           position: 'absolute',
           bottom: 0,
-          inset: 'auto 0 0',
+          left: 0,
+          right: 0,
           background: `linear-gradient(170deg, ${alpha(
             theme.palette.primary.main,
             0
