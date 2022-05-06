@@ -9,10 +9,7 @@ import Typography from '@mui/material/Typography';
 
 export function GatesCard() {
   return (
-    <MUICard
-      sx={{ maxWidth: (theme) => theme.spacing(37.75), borderRadius: 2 }}
-      variant="outlined"
-    >
+    <MUICard sx={{ borderRadius: 2 }} variant="outlined">
       <CardMedia
         component="img"
         image="https://mui.com/static/images/cards/contemplative-reptile.jpg"

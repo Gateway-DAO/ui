@@ -6,6 +6,8 @@ import { ThemeProvider } from '@gateway/theme';
 import { SEOSocial, SEOFavicon } from '../components/atoms/seo';
 import { usePersistLocale } from '../hooks/usePersistLocale';
 
+import '../components/atoms/global-dependencies';
+
 function CustomApp({ Component, pageProps }: AppProps) {
   usePersistLocale();
   return (

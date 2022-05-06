@@ -8,12 +8,13 @@ import { GatesCard } from '../components/molecules/gates-card';
 import { PersonCard } from '../components/molecules/person-card';
 import {
   HomeTemplate,
-  IndexSectionWithGrid,
-  IndexSectionWithSlider,
+  SectionWithGrid,
+  SectionWithSlider,
 } from '../components/templates/home';
 
 export default function Index() {
   const { t } = useTranslation('dashboard-home');
+  const arrays = new Array(20).fill(1).map((_, i) => i);
   return (
     <HomeTemplate
       title={t('title', { name: 'Lucas Inacio' })}
@@ -21,25 +22,27 @@ export default function Index() {
         followingDaos: mockDaos,
       }}
     >
-      <IndexSectionWithSlider
+      <SectionWithSlider
         title={t('featured-gates.title')}
         caption={t('featured-gates.caption')}
         action={<Button>{t('featured-gates.see-more')}</Button>}
+        itemWidth={(theme) => theme.spacing(37.75)}
       >
-        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((id) => (
+        {arrays.map((id) => (
           <GatesCard key={id} />
         ))}
-      </IndexSectionWithSlider>
-      <IndexSectionWithSlider
+      </SectionWithSlider>
+      <SectionWithSlider
         title={t('featured-daos.title')}
         caption={t('featured-daos.caption')}
         action={<Button>{t('featured-daos.see-more')}</Button>}
+        itemWidth={(theme) => theme.spacing(51)}
       >
-        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((id) => (
+        {arrays.map((id) => (
           <DaoCard key={id} />
         ))}
-      </IndexSectionWithSlider>
-      <IndexSectionWithGrid
+      </SectionWithSlider>
+      <SectionWithGrid
         title={t('featured-people.title')}
         caption={t('featured-people.caption')}
         action={<Button>{t('featured-people.see-more')}</Button>}
@@ -47,7 +50,7 @@ export default function Index() {
         {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((id) => (
           <PersonCard key={id} />
         ))}
-      </IndexSectionWithGrid>
+      </SectionWithGrid>
     </HomeTemplate>
   );
 }

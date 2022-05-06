@@ -4,7 +4,7 @@ import { TOKENS } from '@gateway/theme';
 
 import { Box, Stack, Typography } from '@mui/material';
 
-export function IndexSectionWithGrid({
+export function SectionWithGrid({
   title,
   caption,
   action,

@@ -9,10 +9,7 @@ import { Box } from '@mui/system';
 
 export function DaoCard() {
   return (
-    <MUICard
-      sx={{ maxWidth: (theme) => theme.spacing(51), borderRadius: 2 }}
-      variant="outlined"
-    >
+    <MUICard sx={{ borderRadius: 2 }} variant="outlined">
       <CardMedia
         component="img"
         image="https://mui.com/static/images/cards/contemplative-reptile.jpg"
