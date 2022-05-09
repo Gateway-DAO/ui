@@ -3,7 +3,8 @@
   "defaultLocale": "en",
   "pages": {
     "*": ["common"],
-    "/": ["dashboard-home"]
+    "/": ["dashboard-home"],
+    "/home": ["dashboard-home"]
   },
   "localeDetection": false
 }
