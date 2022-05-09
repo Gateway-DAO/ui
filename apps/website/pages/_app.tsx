@@ -11,7 +11,7 @@ import '../components/atoms/global-dependencies';
 function CustomApp({ Component, pageProps }: AppProps) {
   usePersistLocale();
   return (
-    <ThemeProvider containerId="__next">
+    <ThemeProvider containerId="#__next">
       <>
         <Head>
           <title>Gateway</title>

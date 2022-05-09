@@ -15,6 +15,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 
 import { Dao } from '../../../types/dao';
 import { DaosList } from './daos-list';
+import { withGradientAfter } from './styles';
 import { TemporaryDao } from './temporary-dao';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
@@ -46,7 +47,15 @@ export function DashboardTemplate({
   const router = useRouter();
 
   return (
-    <Box sx={{ display: 'flex', height: '100%' }}>
+    <Box
+      sx={{
+        display: 'flex',
+        height: '100%',
+        position: 'relative',
+        zIndex: 1,
+        ':after': withGradientAfter,
+      }}
+    >
       <Box
         component="nav"
         sx={{ flexShrink: { sm: 0 } }}
