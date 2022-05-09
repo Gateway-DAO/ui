@@ -5,30 +5,17 @@ import { TOKENS } from '@gateway/theme';
 import { Divider, Stack, Typography } from '@mui/material';
 
 import { Navbar } from '../../organisms/navbar/navbar';
-import { DashboardTemplate, type DashboardTemplateProps } from '../dashboard';
 
-type Props = {
+type TemplateProps = {
   title: string;
-  DashboardProps?: DashboardTemplateProps;
 };
 
 export function HomeTemplate({
   title,
-  DashboardProps,
   children,
-}: PropsWithChildren<Props>) {
+}: PropsWithChildren<TemplateProps>) {
   return (
-    <DashboardTemplate
-      {...DashboardProps}
-      containerProps={{
-        ...DashboardProps?.containerProps,
-        sx: {
-          pt: 2,
-          overflow: 'hidden',
-          ...DashboardProps?.containerProps?.sx,
-        },
-      }}
-    >
+    <>
       <Navbar />
       <Typography
         variant="h4"
@@ -49,6 +36,6 @@ export function HomeTemplate({
       >
         {children}
       </Stack>
-    </DashboardTemplate>
+    </>
   );
 }
