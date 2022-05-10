@@ -10,7 +10,7 @@ import '../components/atoms/global-dependencies';
 
 import '../styles/next.css';
 
-function CustomApp({ Component, pageProps }: AppProps) {
+function CustomApp({ Component, pageProps, router }: AppProps) {
   usePersistLocale();
   return (
     <ThemeProvider containerId="#__next">
@@ -20,6 +20,7 @@ function CustomApp({ Component, pageProps }: AppProps) {
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <SEOFavicon />
           <SEOSocial />
+          {router.asPath === '/' && <body style={{ height: '100%' }} />}
         </Head>
         <Component {...pageProps} />
       </>

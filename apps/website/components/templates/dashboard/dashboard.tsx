@@ -81,7 +81,7 @@ export function DashboardTemplate({
                 layoutId="profile"
                 aria-label="Go to Profile"
                 sx={{ mb: 2.75 }}
-                className={clsx({ active: router.pathname === '/' })}
+                className={clsx({ active: router.asPath === '/home' })}
               >
                 <ListItemIcon>
                   <Avatar sx={{ background: 'transparent' }}>
