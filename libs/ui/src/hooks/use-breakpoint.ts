@@ -17,6 +17,7 @@ export const useBreakpoint = createBreakpoint(
 ) as () => Breakpoint;
 
 /**
+ * @author Lucas Inacio <@kbooz>
  * Port of useBreakpointValue from @chakra/media-query to Mui usage
  * <https://github.com/chakra-ui/chakra-ui/tree/next/packages/media-query>
  *
@@ -43,7 +44,7 @@ export function useBreakpointValue<T = any>(
   const breakpoints = theme.breakpoints.keys;
 
   /**
-   * values array to object with  breakpoints as keys
+   * values array to object with breakpoints as keys
    */
   const valuesObj = Array.isArray(values)
     ? values.reduce(
