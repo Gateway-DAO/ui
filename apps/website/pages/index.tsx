@@ -43,6 +43,11 @@ export default function Index() {
           <Button  ></Button>
         </Box> */}
       </Modal>
+      <style jsx global>{`
+        #__next {
+          height: 100%;
+        }
+      `}</style>
     </>
   );
 }

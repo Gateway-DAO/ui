@@ -13,7 +13,7 @@ import '../styles/next.css';
 function CustomApp({ Component, pageProps, router }: AppProps) {
   usePersistLocale();
   return (
-    <ThemeProvider containerId="#__next">
+    <ThemeProvider>
       <>
         <Head>
           <title>Gateway</title>
