@@ -1,21 +1,28 @@
-import { ThemeProvider } from '@gateway/theme';
 import { AppProps } from 'next/app';
 import Head from 'next/head';
-import { SEOSocial, SEOFavicon } from '../components/atoms/seo';
 
-function CustomApp({ Component, pageProps }: AppProps) {
+import { ThemeProvider } from '@gateway/theme';
+
+import { SEOSocial, SEOFavicon } from '../components/atoms/seo';
+import { usePersistLocale } from '../hooks/usePersistLocale';
+
+import '../components/atoms/global-dependencies';
+
+import '../styles/next.css';
+
+function CustomApp({ Component, pageProps, router }: AppProps) {
+  usePersistLocale();
   return (
-    <ThemeProvider>
+    <ThemeProvider containerId="#__next">
       <>
         <Head>
           <title>Gateway</title>
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <SEOFavicon />
           <SEOSocial />
+          {router.asPath === '/' && <body style={{ height: '100%' }} />}
         </Head>
-        <main className="app">
-          <Component {...pageProps} />
-        </main>
+        <Component {...pageProps} />
       </>
     </ThemeProvider>
   );

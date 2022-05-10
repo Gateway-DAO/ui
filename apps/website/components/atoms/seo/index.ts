@@ -1,2 +1,2 @@
-export * from "./seo-social"
-export * from "./seo-favicon"
+export * from './seo-social';
+export * from './seo-favicon';

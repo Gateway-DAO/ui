@@ -1,6 +1,8 @@
 import { Story, Meta } from '@storybook/react';
+
+import { ButtonGroupProps } from '@mui/material/ButtonGroup';
+
 import { ButtonGroup } from './button-group';
-import { ButtonGroupProps } from "@mui/material/ButtonGroup"
 
 export default {
   component: ButtonGroup,

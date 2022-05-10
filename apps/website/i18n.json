@@ -1,0 +1,10 @@
+{
+  "locales": ["en"],
+  "defaultLocale": "en",
+  "pages": {
+    "*": ["common"],
+    "/": ["index"],
+    "/home": ["dashboard-home"]
+  },
+  "localeDetection": false
+}

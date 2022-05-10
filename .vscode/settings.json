@@ -3,11 +3,10 @@
     "TODO": "markdown"
   },
   "editor.codeActionsOnSave": {
-    "source.fixAll": true,
-    "source.fixAll.eslint": true
+    "source.fixAll": true
   },
+  "eslint.format.enable": true,
   "[markdown]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   }
 }

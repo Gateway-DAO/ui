@@ -1,4 +1,6 @@
-// eslint-disable-next-line @typescript-eslint/no-var-requires
+/*eslint-disable @typescript-eslint/no-var-requires*/
+const nextTranslate = require('next-translate');
+
 const withNx = require('@nrwl/next/plugins/with-nx');
 
 /**
@@ -12,4 +14,4 @@ const nextConfig = {
   },
 };
 
-module.exports = withNx(nextConfig);
+module.exports = nextTranslate(withNx(nextConfig));

@@ -3,6 +3,12 @@
   "sourceRoot": "apps/website",
   "projectType": "application",
   "targets": {
+    "generate": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+          "command": "yarn graphql-codegen --config .graphqlrc.ts -r dotenv/config --project website"
+      }
+    },
     "build": {
       "executor": "@nrwl/next:build",
       "outputs": ["{options.outputPath}"],
@@ -14,7 +20,13 @@
       "configurations": {
         "development": {},
         "production": {}
-      }
+      },
+      "dependsOn": [
+        {
+          "target": "generate",
+          "projects": "self"
+        }
+      ]
     },
     "serve": {
       "executor": "@nrwl/next:server",
