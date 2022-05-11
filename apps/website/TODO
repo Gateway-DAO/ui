@@ -1,17 +1,18 @@
-## General
-[] - Add Eslint + Prettier formatting configuration
-[] - Add format on save using eslint on vscode
+General:
+  ✔ Add Eslint + Prettier formatting configuration @done(22-05-11 11:43)
+  ✔ Add format on save using eslint on vscode @done(22-05-11 11:43)
 
-## SEO
+SSR:
+  ☐ Add `_middlewares.ts` to parse user-agent
+  ☐ Implement user-agent detection hook based on middleware res
+  ☐ add useBreakpoint default value
 
-[] - Add project target script to generate favicon and manifest.json data, aka "build-public" target
-  - https://nx.dev/packages/workspace/executors/run-script
-  - Add build-public on "dependsOn" property on both "build" and "serve" targets
-  - Generate all manifest.json (theme, description) based on a @gateway/assets folder
-[] - Add everything related to SEO (images, theme, description) inside @gateway/assets
+SEO:
+  ☐ Add project target script to generate favicon and manifest.json data, aka "build-public" target <https://nx.dev/packages/workspace/executors/run-script>
+  ☐ Add build-public on "dependsOn" property on both "build" and "serve" targets
+  ☐ Generate all manifest.json (theme, description) based on a @gateway/assets folder
+  ☐ Add everything related to SEO (images, theme, description) inside @gateway/assets @started(22-05-11 11:42)
+  ☐ Redo `apps/website/components/atoms/seo/seo-social.tsx`
 
-[] - Redo `apps/website/components/atoms/seo/seo-social.tsx`
-
-## Analytics
-
-[] - Migrate / install / document evevery analytics tools
+Analytics:
+  ☐ Migrate / install / document evevery analytics tools

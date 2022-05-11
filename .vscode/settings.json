@@ -1,6 +1,6 @@
 {
   "files.associations": {
-    "TODO": "markdown"
+    "TODO": "todo"
   },
   "editor.codeActionsOnSave": {
     "source.fixAll": true
