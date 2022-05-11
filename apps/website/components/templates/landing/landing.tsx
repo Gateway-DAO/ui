@@ -5,7 +5,9 @@ import { GatewayIcon } from '@gateway/assets';
 import { TOKENS } from '@gateway/theme';
 import { MotionBox } from '@gateway/ui';
 
-import { Stack, Box, Typography, alpha } from '@mui/material';
+import { Stack, Box, alpha } from '@mui/material';
+
+import { Title } from './title';
 
 type Props = {
   title: string;
@@ -25,7 +27,7 @@ export function LandingTemplate({ title, connectButton }: Props) {
         <GatewayIcon sx={{ width: 50, height: 50 }} />
         {connectButton}
       </Stack>
-      <Box
+      <MotionBox
         sx={{
           display: 'flex',
           position: 'absolute',
@@ -35,18 +37,16 @@ export function LandingTemplate({ title, connectButton }: Props) {
           right: 0,
           justifyContent: 'center',
         }}
+        initial={{ translateY: 20, opacity: 0 }}
+        animate={{ translateY: 0, opacity: 1 }}
+        transition={{
+          ease: 'easeOut',
+          duration: 0.75,
+          opacity: { duration: 0.5 },
+        }}
       >
-        <Typography
-          variant="h2"
-          component="h1"
-          sx={{
-            textAlign: 'center',
-            whiteSpace: 'pre-wrap',
-          }}
-        >
-          {title}
-        </Typography>
-      </Box>
+        <Title>{title}</Title>
+      </MotionBox>
       <Box
         sx={{
           flex: 1,
@@ -65,9 +65,6 @@ export function LandingTemplate({ title, connectButton }: Props) {
         }}
       >
         <MotionBox
-          /*         initial={{ clipPath: 'circle(0% at 50% 75%)' }}
-        animate={{ clipPath: 'circle(100% at 50% 75%)' }}
-        transition={{ duration: 0.75 }} */
           initial={{ scale: 1.2, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{

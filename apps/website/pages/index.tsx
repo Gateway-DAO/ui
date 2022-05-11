@@ -1,4 +1,5 @@
 import useTranslation from 'next-translate/useTranslation';
+import Link from 'next/link';
 
 import { useToggle } from 'react-use';
 
@@ -17,9 +18,9 @@ export default function Index() {
       <LandingTemplate
         title={t('title')}
         connectButton={
-          <Button variant="contained" onClick={toggleOpen}>
-            Connect Wallet
-          </Button>
+          <Link href="/home" passHref>
+            <Button variant="contained">Connect Wallet</Button>
+          </Link>
         }
       />
       <Modal
@@ -27,22 +28,23 @@ export default function Index() {
         onClose={toggleOpen}
         sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
       >
-        <Paper sx={{ width: 500, height: 500 }}>Wawo</Paper>
-        {/*
-        <Box
+        <Paper
           sx={{
-            borderRadius: 4,
-            backgroundColor: 'background.paper',
-            width: 250,
-            height: 250,
-            border: 1,
-            padding: 4,
-            borderColor: alpha('#ffffff', 0.5),
+            width: {
+              xs: `calc(100% - 2rem)`,
+              sm: 100,
+            },
+            height: 500,
           }}
         >
-          <Button  ></Button>
-        </Box> */}
+          Wawo
+        </Paper>
       </Modal>
+      <style jsx global>{`
+        #__next {
+          height: 100%;
+        }
+      `}</style>
     </>
   );
 }
