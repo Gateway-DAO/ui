@@ -1,13 +1,11 @@
-# Global TODO
-
+Global TODO:
 [] - Improve documentation
 [] - Read further (<https://storybook.js.org/tutorials/ui-testing-handbook/react/en/visual-testing/>)
 [] - Discuss about chromatic
 
-## Website
+Website:
 
 [] - Implement watch mode on nx website:generate using nx watch plugin <https://gist.github.com/jhesgodi/2d530753c551ace665a8c3010d3a719c>
 
-## Settings
+Settings:
 
-[] - Improve Format on save on TSX files

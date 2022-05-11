@@ -36,7 +36,8 @@
     "regenerator-runtime": "0.13.7",
     "swiper": "^8.1.4",
     "tslib": "^2.0.0",
-    "urql": "^2.2.0"
+    "urql": "^2.2.0",
+    "use-breakpoint": "^3.0.2"
   },
   "devDependencies": {
     "@babel/core": "7.12.13",

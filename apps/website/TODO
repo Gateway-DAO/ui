@@ -1,11 +1,9 @@
 General:
-  ✔ Add Eslint + Prettier formatting configuration @done(22-05-11 11:43)
-  ✔ Add format on save using eslint on vscode @done(22-05-11 11:43)
+  ☐ react-use vs ahooks
 
 SSR:
   ☐ Add `_middlewares.ts` to parse user-agent
   ☐ Implement user-agent detection hook based on middleware res
-  ☐ add useBreakpoint default value
 
 SEO:
   ☐ Add project target script to generate favicon and manifest.json data, aka "build-public" target <https://nx.dev/packages/workspace/executors/run-script>
@@ -16,3 +14,8 @@ SEO:
 
 Analytics:
   ☐ Migrate / install / document evevery analytics tools
+
+Archive:
+  ✔ Add Eslint + Prettier formatting configuration @done(22-05-11 11:43) @project(General)
+  ✔ Add format on save using eslint on vscode @done(22-05-11 11:43) @project(General)
+  ✔ add useBreakpoint default value @done(22-05-11 12:46) @project(SSR)

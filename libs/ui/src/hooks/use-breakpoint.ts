@@ -1,4 +1,4 @@
-import { createBreakpoint } from 'react-use';
+import useBreakpointHook from 'use-breakpoint';
 
 import { BreakpointsValue, theme } from '@gateway/theme';
 
@@ -7,14 +7,19 @@ import { Breakpoint } from '@mui/system';
 
 import { getClosestValue } from './use-breakpoint.utils';
 
-/**
- * Returns the current breakpoint.
- * @example
- * const breakpoint = useBreakpoint();
- */
-export const useBreakpoint = createBreakpoint(
-  theme.breakpoints.values
-) as () => Breakpoint;
+type GenericBreakpoints<T> = BreakpointsValue<T> | Array<T | null>;
+
+export function useBreakpoint(
+  defaultBreakpoint?: Breakpoint,
+  ssrOnlyHydration = false
+) {
+  const theme = useTheme();
+  return useBreakpointHook(
+    theme.breakpoints.values,
+    defaultBreakpoint,
+    ssrOnlyHydration
+  );
+}
 
 /**
  * @author Lucas Inacio <@kbooz>
@@ -33,10 +38,12 @@ export const useBreakpoint = createBreakpoint(
  * const width = useBreakpointValue({ base: '150px', md: '250px' }
  */
 export function useBreakpointValue<T = any>(
-  values: BreakpointsValue<T> | Array<T | null>
+  values: GenericBreakpoints<T>,
+  defaultBreakpoint?: Breakpoint,
+  ssrOnlyHydration = false
 ): T | undefined {
-  const breakpoint = useBreakpoint();
   const theme = useTheme();
+  const { breakpoint } = useBreakpoint(defaultBreakpoint, ssrOnlyHydration);
 
   /**
    * Get the sorted breakpoint keys from the provided breakpoints
