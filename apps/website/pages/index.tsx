@@ -40,11 +40,6 @@ export default function Index() {
           Wawo
         </Paper>
       </Modal>
-      <style jsx global>{`
-        #__next {
-          height: 100%;
-        }
-      `}</style>
     </>
   );
 }

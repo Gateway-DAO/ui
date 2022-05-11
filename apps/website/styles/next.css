@@ -1,4 +1,6 @@
 #__next {
+  display: flex;
+  min-height: 100%;
   transition: .25s ease-in-out filter;
 }
 

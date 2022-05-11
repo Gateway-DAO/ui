@@ -23,6 +23,7 @@ export type DashboardTemplateProps = {
   followingDaos?: Dao[];
   currentDao?: Dao;
   containerProps?: BoxProps;
+  showExplore?: boolean;
 };
 
 /* TODO: buttons to next/link */
@@ -32,6 +33,7 @@ export function DashboardTemplate({
   currentDao,
   children,
   containerProps,
+  showExplore = true,
 }: PropsWithChildren<DashboardTemplateProps>) {
   /* Checks if currentDao isn't in followingDaos */
   const isCurrentDaoTemporary = useMemo(() => {
@@ -50,7 +52,8 @@ export function DashboardTemplate({
     <Box
       sx={{
         display: 'flex',
-        height: '100%',
+        flex: 1,
+        width: '100%',
         position: 'relative',
         zIndex: 1,
         ':after': withGradientAfter,
@@ -109,20 +112,22 @@ export function DashboardTemplate({
                   </ListItemButton>
                 </MotionTooltip>
               ))}
-              <MotionTooltip
-                key="explore"
-                layoutId="Explore"
-                title="Explore"
-                placement="right"
-              >
-                <ListItemButton>
-                  <ListItemIcon>
-                    <Avatar>
-                      <ExploreIcon />
-                    </Avatar>
-                  </ListItemIcon>
-                </ListItemButton>
-              </MotionTooltip>
+              {showExplore && (
+                <MotionTooltip
+                  key="explore"
+                  layoutId="Explore"
+                  title="Explore"
+                  placement="right"
+                >
+                  <ListItemButton>
+                    <ListItemIcon>
+                      <Avatar>
+                        <ExploreIcon />
+                      </Avatar>
+                    </ListItemIcon>
+                  </ListItemButton>
+                </MotionTooltip>
+              )}
             </AnimatePresence>
           </DaosList>
         </Drawer>

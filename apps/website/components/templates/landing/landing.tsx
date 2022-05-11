@@ -16,7 +16,7 @@ type Props = {
 
 export function LandingTemplate({ title, connectButton }: Props) {
   return (
-    <Stack direction="column" sx={{ height: '100%' }}>
+    <Stack direction="column" sx={{ flex: 1, width: '100%' }}>
       <Stack
         direction="row"
         justifyContent="space-between"
