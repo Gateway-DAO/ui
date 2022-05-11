@@ -4,7 +4,7 @@
     "title": "Create Profile",
     "caption": "Information provided will be displayed on your Gateway profile.",
     "fields": {
-
+      "test": "test"
     }
   }
 }

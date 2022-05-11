@@ -4,7 +4,8 @@
   "pages": {
     "*": ["common"],
     "/": ["index"],
-    "/home": ["dashboard-home"]
+    "/home": ["dashboard-home"],
+    "/new-user": ["dashboard-new-user"]
   },
   "localeDetection": false
 }
