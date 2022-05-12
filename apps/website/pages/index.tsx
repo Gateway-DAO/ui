@@ -18,7 +18,7 @@ export default function Index() {
       <LandingTemplate
         title={t('title')}
         connectButton={
-          <Link href="/home" passHref>
+          <Link href="/new-user" passHref>
             <Button variant="contained">Connect Wallet</Button>
           </Link>
         }

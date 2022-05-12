@@ -20,7 +20,6 @@ function CustomApp({ Component, pageProps, router }: AppProps) {
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <SEOFavicon />
           <SEOSocial />
-          {router.asPath === '/' && <body style={{ height: '100%' }} />}
         </Head>
         <Component {...pageProps} />
       </>

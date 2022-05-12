@@ -1,13 +1,13 @@
+import dynamic from 'next/dynamic';
 import Image from 'next/image';
-import { ReactNode } from 'react';
+import { ReactNode, Suspense } from 'react';
 
 import { GatewayIcon } from '@gateway/assets';
 import { TOKENS } from '@gateway/theme';
 import { MotionBox } from '@gateway/ui';
 
 import { Stack, Box, alpha } from '@mui/material';
-
-import { Title } from './title';
+const Title = dynamic(() => import('./title'));
 
 type Props = {
   title: string;

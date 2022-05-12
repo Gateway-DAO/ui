@@ -4,7 +4,10 @@ import { useBreakpointValue } from '@gateway/ui';
 
 import Typography, { TypographyProps } from '@mui/material/Typography';
 
-export function Title({ children }: PropsWithChildren<unknown>) {
+export default function Title({ children }: PropsWithChildren<unknown>) {
+  /*
+  TODO: Fix SSR issue (client className vs server className)
+  */
   const variant = useBreakpointValue<TypographyProps['variant']>({
     xs: 'h4',
     sm: 'h3',
@@ -16,6 +19,10 @@ export function Title({ children }: PropsWithChildren<unknown>) {
       variant={variant}
       component="h1"
       sx={{
+        display: {
+          sm: 'none',
+          md: 'block',
+        },
         textAlign: 'center',
         whiteSpace: 'pre-wrap',
       }}

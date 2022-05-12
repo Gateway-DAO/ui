@@ -18,6 +18,7 @@
     "@emotion/server": "11.4.0",
     "@emotion/styled": "11.8.1",
     "@fontsource/plus-jakarta-sans": "^4.5.6",
+    "@hookform/resolvers": "^2.8.8",
     "@mui/icons-material": "^5.6.1",
     "@mui/material": "^5.6.1",
     "@mui/system": "^5.6.3",
@@ -31,13 +32,16 @@
     "next-translate": "^1.4.0",
     "react": "18.0.0",
     "react-dom": "18.0.0",
+    "react-hook-form": "^7.31.1",
+    "react-hook-form-mui": "^3.2.1",
     "react-json-view": "^1.21.3",
     "react-use": "^17.3.2",
     "regenerator-runtime": "0.13.7",
     "swiper": "^8.1.4",
     "tslib": "^2.0.0",
     "urql": "^2.2.0",
-    "use-breakpoint": "^3.0.2"
+    "use-breakpoint": "^3.0.2",
+    "yup": "^0.32.11"
   },
   "devDependencies": {
     "@babel/core": "7.12.13",

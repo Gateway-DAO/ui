@@ -7,5 +7,9 @@ Website:
 
 [] - Implement watch mode on nx website:generate using nx watch plugin <https://gist.github.com/jhesgodi/2d530753c551ace665a8c3010d3a719c>
 
+Codegen:
+☐ - Finish graphql-codegen-hasura configuration
+☐ - Read: https://www.the-guild.dev/blog/graphql-codegen-best-practices
+
 Settings:
 

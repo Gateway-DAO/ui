@@ -12,7 +12,7 @@ const palette: PaletteOptions = {
   },
   background: {
     default: brandColors.background.main,
-    /* TODO: paper bg */
+    paper: brandColors.background.main,
   },
   text: {
     primary: brandColors.grays.main,

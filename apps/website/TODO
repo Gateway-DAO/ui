@@ -15,6 +15,9 @@ SEO:
 Analytics:
   ☐ Migrate / install / document evevery analytics tools
 
+Server Connection:
+  ☐ Add server integration
+
 Archive:
   ✔ Add Eslint + Prettier formatting configuration @done(22-05-11 11:43) @project(General)
   ✔ Add format on save using eslint on vscode @done(22-05-11 11:43) @project(General)

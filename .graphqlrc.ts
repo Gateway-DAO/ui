@@ -19,6 +19,12 @@ const config: IGraphQLProjects = {
                 "typescript",
                 "typescript-operations",
               ],
+              config: {
+                scalars: {
+                  "_text": "string"
+                },
+                avoidOptionals: true
+              }
             }
           }
         }
