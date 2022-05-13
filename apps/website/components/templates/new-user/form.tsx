@@ -1,45 +1,55 @@
-import Link from 'next/link';
+import { useFormContext } from 'react-hook-form';
 
-import { Controller, useFormContext } from 'react-hook-form';
-
-import { Button, Input, Stack, TextField } from '@mui/material';
+import { Button, Stack, TextField } from '@mui/material';
 
 import { NewUserForm } from './schema';
 
-export function Form() {
-  const { control } = useFormContext<NewUserForm>();
+type Props = {
+  onSubmit: (data: NewUserForm) => void;
+};
+
+export function Form({ onSubmit }: Props) {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useFormContext<NewUserForm>();
+
   return (
-    <Stack component="form" direction="column" gap={1}>
-      <Controller
-        name="name"
-        control={control}
-        render={({ field, fieldState: { error } }) => (
-          <TextField required label="Display Name" id={field.name} {...field} />
-        )}
+    <Stack
+      component="form"
+      direction="column"
+      gap={2}
+      onSubmit={handleSubmit(onSubmit)}
+    >
+      <TextField
+        required
+        label="Display Name"
+        id="name"
+        {...register('name')}
+        error={!!errors.name}
+        helperText={errors.name?.message}
       />
-      <Controller
-        name="username"
-        control={control}
-        render={({ field, fieldState: { error } }) => (
-          <TextField required label="Username" id={field.name} {...field} />
-        )}
+      <TextField
+        required
+        label="Username"
+        id="username"
+        {...register('username')}
+        error={!!errors.username}
+        helperText={errors.username?.message}
       />
-      <Controller
-        name="email"
-        control={control}
-        render={({ field, fieldState: { error } }) => (
-          <TextField
-            required
-            label="E-mail"
-            type="email"
-            id={field.name}
-            {...field}
-          />
-        )}
+      <TextField
+        required
+        label="E-mail"
+        type="email"
+        id="email"
+        {...register('email')}
+        error={!!errors.email}
+        helperText={errors.email?.message}
       />
-      <Link passHref href="/home">
-        <Button variant="contained">Enter the Gateway</Button>
-      </Link>
+      <Button variant="contained" type="submit">
+        Enter the Gateway
+      </Button>
     </Stack>
   );
 }

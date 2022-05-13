@@ -1,4 +1,5 @@
 import useTranslation from 'next-translate/useTranslation';
+import { useRouter } from 'next/router';
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
@@ -14,6 +15,13 @@ export function NewUserTemplate() {
   const methods = useForm<NewUserForm>({
     resolver: yupResolver(schema),
   });
+
+  const router = useRouter();
+
+  const onSubmit = (_data: NewUserForm) => {
+    router.push('/home');
+  };
+
   return (
     <Stack
       direction={{ xs: 'column', md: 'row' }}
@@ -28,7 +36,7 @@ export function NewUserTemplate() {
         <Typography component="h1" variant="h4">
           {t('title')}
         </Typography>
-        <Stack direction="column" gap={1}>
+        <Stack direction="column" gap={4}>
           <Box>
             <Typography component="h2" variant="h5">
               {t('form.title')}
@@ -38,7 +46,7 @@ export function NewUserTemplate() {
             </Typography>
           </Box>
           <FormProvider {...methods}>
-            <Form />
+            <Form onSubmit={onSubmit} />
           </FormProvider>
         </Stack>
       </Stack>

@@ -1,7 +1,7 @@
-import { Controller, useFormContext } from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
 import { useMeasure } from 'react-use';
 
-import { Box, Card, CardContent, CardHeader, CardMedia } from '@mui/material';
+import { Card, CardHeader, CardMedia } from '@mui/material';
 
 import { NewUserForm } from './schema';
 export function AvatarUploadCard() {
@@ -25,13 +25,6 @@ export function AvatarUploadCard() {
         borderColor: 'rgba(255,255,255,.12)',
       }}
     >
-      {/* <Box
-        sx={{ width: '100%', aspectRatio: '1', height: '100%' }}
-        ref={ref}
-        style={{ width: bounds.height }}
-      >
-        Wawo
-      </Box> */}
       <CardMedia
         sx={{
           width: '100%',
@@ -46,7 +39,7 @@ export function AvatarUploadCard() {
         src="https://images.unsplash.com/photo-1650943574955-ac02c65cfc71?w=500"
       />
       <CardHeader
-        title={name ?? 'Display Name'}
+        title={name?.length > 0 ? name : 'Display Name'}
         subheader={`@${username?.length > 0 ? username : 'username'}`}
       />
     </Card>
