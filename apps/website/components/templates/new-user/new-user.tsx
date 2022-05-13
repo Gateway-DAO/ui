@@ -7,6 +7,7 @@ import { useForm, FormProvider } from 'react-hook-form';
 import { Box, Dialog, Stack, Typography } from '@mui/material';
 
 import { AvatarUploadCard } from './avatar-upload-card';
+import { AvatarUploadCardMobile } from './avatar-upload-card-mobile';
 import { Form } from './form';
 import { schema, NewUserForm } from './schema';
 
@@ -24,14 +25,21 @@ export function NewUserTemplate() {
 
   return (
     <Stack
-      direction={{ xs: 'column', md: 'row' }}
-      justifyContent={{ xs: 'flex-start', md: 'space-between' }}
+      direction="row"
+      justifyContent="space-between"
       alignItems="stretch"
+      gap={2}
+      sx={{
+        width: '100%',
+        display: { xs: 'block', md: 'flex' },
+        alignSelf: 'center',
+        maxWidth: (theme) => theme.breakpoints.values.lg,
+      }}
     >
       <Stack
         direction="column"
         gap={7.5}
-        sx={{ maxWidth: { xs: '100%', md: '40%' } }}
+        sx={{ maxWidth: { xs: '100%', md: '50%', lg: '40%' }, width: '100%' }}
       >
         <Typography component="h1" variant="h4">
           {t('title')}
@@ -46,6 +54,7 @@ export function NewUserTemplate() {
             </Typography>
           </Box>
           <FormProvider {...methods}>
+            <AvatarUploadCardMobile />
             <Form onSubmit={onSubmit} />
           </FormProvider>
         </Stack>

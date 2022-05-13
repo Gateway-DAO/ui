@@ -4,6 +4,7 @@ import { useMeasure } from 'react-use';
 import { Card, CardHeader, CardMedia } from '@mui/material';
 
 import { NewUserForm } from './schema';
+
 export function AvatarUploadCard() {
   /* TODO: Improve this */
   const [ref, bounds] = useMeasure();

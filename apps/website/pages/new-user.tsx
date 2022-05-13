@@ -20,17 +20,7 @@ export default function NewUser() {
         },
       }}
     >
-      <Box
-        sx={{
-          width: '100%',
-          display: { xs: 'block', md: 'flex' },
-          justifyContent: 'center',
-          flexDirection: 'column',
-          maxWidth: (theme) => theme.breakpoints.values.lg,
-        }}
-      >
-        <NewUserTemplate />
-      </Box>
+      <NewUserTemplate />
     </DashboardTemplate>
   );
 }
