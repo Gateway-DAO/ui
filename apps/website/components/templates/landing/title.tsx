@@ -9,6 +9,7 @@ export default function Title({ children }: PropsWithChildren<unknown>) {
       component="h1"
       sx={(theme) => ({
         textAlign: 'center',
+        whiteSpace: 'pre-wrap',
         [theme.breakpoints.down('md')]: {
           ...theme.typography.h3,
         },

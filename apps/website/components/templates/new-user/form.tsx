@@ -8,6 +8,8 @@ type Props = {
   onSubmit: (data: NewUserForm) => void;
 };
 
+/* TODO: Change hardcoded text to translate */
+
 export function Form({ onSubmit }: Props) {
   const {
     register,
@@ -47,7 +49,7 @@ export function Form({ onSubmit }: Props) {
         error={!!errors.email}
         helperText={errors.email?.message}
       />
-      <Button variant="contained" type="submit">
+      <Button variant="contained" type="submit" sx={{ mt: 2 }}>
         Enter the Gateway
       </Button>
     </Stack>
