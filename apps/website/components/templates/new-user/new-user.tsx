@@ -31,7 +31,7 @@ export function NewUserTemplate() {
       <Stack
         direction="column"
         gap={7.5}
-        sx={{ maxWidth: { xs: '100%', md: '35%' } }}
+        sx={{ maxWidth: { xs: '100%', md: '40%' } }}
       >
         <Typography component="h1" variant="h4">
           {t('title')}
