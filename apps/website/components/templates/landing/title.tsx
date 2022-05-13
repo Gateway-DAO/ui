@@ -1,31 +1,21 @@
 import { PropsWithChildren } from 'react';
 
-import { useBreakpointValue } from '@gateway/ui';
-
-import Typography, { TypographyProps } from '@mui/material/Typography';
+import Typography from '@mui/material/Typography';
 
 export default function Title({ children }: PropsWithChildren<unknown>) {
-  /*
-  TODO: Fix SSR issue (client className vs server className)
-  */
-  const variant = useBreakpointValue<TypographyProps['variant']>({
-    xs: 'h4',
-    sm: 'h3',
-    md: 'h1',
-  });
-
   return (
     <Typography
-      variant={variant}
+      variant="h1"
       component="h1"
-      sx={{
-        display: {
-          sm: 'none',
-          md: 'block',
-        },
+      sx={(theme) => ({
         textAlign: 'center',
-        whiteSpace: 'pre-wrap',
-      }}
+        [theme.breakpoints.down('md')]: {
+          ...theme.typography.h3,
+        },
+        [theme.breakpoints.down('sm')]: {
+          ...theme.typography.h4,
+        },
+      })}
     >
       {children}
     </Typography>
