@@ -1,4 +1,3 @@
-import { paramCase } from 'change-case';
 import { useFormContext } from 'react-hook-form';
 
 import { Button, Stack, TextField } from '@mui/material';
@@ -7,25 +6,29 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 
+import { mockCategories } from './__mock__';
 import { NewCredentialSchema } from './schema';
 
 /* TODO: Change hardcoded text to translate */
 /* TODO: Where does the categories comes from */
 /* FIXME: Select label background on focus */
-
-const categories = ['Credential', 'User'].map((category) => ({
-  value: paramCase(category),
-  label: category,
-}));
-
-export function Form() {
+type Props = {
+  onSubmit: (data?: NewCredentialSchema) => void;
+};
+export function Form({ onSubmit }: Props) {
   const {
     register,
     formState: { errors },
+    handleSubmit,
   } = useFormContext<NewCredentialSchema>();
 
   return (
-    <Stack direction="column" gap={2}>
+    <Stack
+      component="form"
+      direction="column"
+      gap={2}
+      onSubmit={handleSubmit(onSubmit)}
+    >
       <TextField
         required
         label="Title"
@@ -42,7 +45,7 @@ export function Form() {
           <MenuItem value="">
             <em>None</em>
           </MenuItem>
-          {categories.map((category) => (
+          {mockCategories.map((category) => (
             <MenuItem key={category.value} value={category.value}>
               {category.label}
             </MenuItem>
@@ -59,6 +62,7 @@ export function Form() {
         error={!!errors.description}
         helperText={errors.description?.message}
       />
+      {/* NOTE: validate each line with https://github.com/Swyftx/crypto-address-validator */}
       <TextField
         required
         label="Wallets Adressess"
@@ -72,6 +76,19 @@ export function Form() {
           (errors.wallets ? `\n${errors.wallets?.message}` : '')
         }
       />
+      <Stack
+        direction="row-reverse"
+        justifyContent="end"
+        gap={1}
+        sx={{ mt: 2 }}
+      >
+        <Button variant="contained" type="submit">
+          Submit
+        </Button>
+        <Button variant="outlined" type="button">
+          Cancel
+        </Button>
+      </Stack>
     </Stack>
   );
 }

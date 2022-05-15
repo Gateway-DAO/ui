@@ -1,11 +1,5 @@
-import { NewCredentialTemplate } from 'apps/website/components/templates/new-credential';
-
-import { Box, Stack, Typography } from '@mui/material';
+import { NewCredentialTemplate } from '../../components/templates/new-credential';
 
 export default function NewCredential() {
-  return (
-    <Box>
-      <NewCredentialTemplate />
-    </Box>
-  );
+  return <NewCredentialTemplate />;
 }
