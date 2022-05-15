@@ -1,6 +1,8 @@
 import { useFormContext } from 'react-hook-form';
 import { useMeasure } from 'react-use';
 
+import { showIfNotEmpty } from '@gateway/helpers';
+
 import { Card, CardHeader, CardMedia } from '@mui/material';
 
 import { NewUserSchema } from './schema';
@@ -40,8 +42,8 @@ export function AvatarUploadCard() {
         src="https://images.unsplash.com/photo-1650943574955-ac02c65cfc71?w=500"
       />
       <CardHeader
-        title={name?.length > 0 ? name : 'Display Name'}
-        subheader={`@${username?.length > 0 ? username : 'username'}`}
+        title={showIfNotEmpty(name, 'Display Name')}
+        subheader={`@${showIfNotEmpty(username, 'username')}`}
       />
     </Card>
   );

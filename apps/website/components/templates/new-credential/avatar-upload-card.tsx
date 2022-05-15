@@ -1,5 +1,7 @@
 import { useFormContext } from 'react-hook-form';
 
+import { showIfNotEmpty } from '@gateway/helpers';
+
 import { Card, CardHeader, CardMedia, Chip } from '@mui/material';
 
 import { NewCredentialSchema } from './schema';
@@ -37,13 +39,10 @@ export function AvatarUploadCard() {
         src="https://images.unsplash.com/photo-1650943574955-ac02c65cfc71?w=500"
       />
       <CardHeader
-        title={name?.length > 0 ? name : 'Title'}
-        subheader={`@${description?.length > 0 ? description : 'Desription'}`}
+        title={showIfNotEmpty(name, 'Title')}
+        subheader={showIfNotEmpty(description, 'Description')}
       >
-        <Chip
-          size="small"
-          label={category?.length > 0 ? category : 'Category'}
-        />
+        <Chip size="small" label={showIfNotEmpty(category, 'Category')} />
       </CardHeader>
     </Card>
   );
