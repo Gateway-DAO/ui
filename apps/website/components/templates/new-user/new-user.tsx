@@ -9,17 +9,17 @@ import { Box, Dialog, Stack, Typography } from '@mui/material';
 import { AvatarUploadCard } from './avatar-upload-card';
 import { AvatarUploadCardMobile } from './avatar-upload-card-mobile';
 import { Form } from './form';
-import { schema, NewUserForm } from './schema';
+import { schema, NewUserSchema } from './schema';
 
 export function NewUserTemplate() {
   const { t } = useTranslation('dashboard-new-user');
-  const methods = useForm<NewUserForm>({
+  const methods = useForm<NewUserSchema>({
     resolver: yupResolver(schema),
   });
 
   const router = useRouter();
 
-  const onSubmit = (_data: NewUserForm) => {
+  const onSubmit = (_data: NewUserSchema) => {
     router.push('/home');
   };
 

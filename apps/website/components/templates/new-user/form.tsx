@@ -2,10 +2,10 @@ import { useFormContext } from 'react-hook-form';
 
 import { Button, Stack, TextField } from '@mui/material';
 
-import { NewUserForm } from './schema';
+import { NewUserSchema } from './schema';
 
 type Props = {
-  onSubmit: (data: NewUserForm) => void;
+  onSubmit: (data: NewUserSchema) => void;
 };
 
 /* TODO: Change hardcoded text to translate */
@@ -15,7 +15,7 @@ export function Form({ onSubmit }: Props) {
     register,
     handleSubmit,
     formState: { errors },
-  } = useFormContext<NewUserForm>();
+  } = useFormContext<NewUserSchema>();
 
   return (
     <Stack

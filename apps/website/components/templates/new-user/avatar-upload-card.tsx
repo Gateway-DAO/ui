@@ -3,13 +3,13 @@ import { useMeasure } from 'react-use';
 
 import { Card, CardHeader, CardMedia } from '@mui/material';
 
-import { NewUserForm } from './schema';
+import { NewUserSchema } from './schema';
 
+/* TODO: Improve and make reusable */
 export function AvatarUploadCard() {
-  /* TODO: Improve this */
   const [ref, bounds] = useMeasure();
 
-  const { watch } = useFormContext<NewUserForm>();
+  const { watch } = useFormContext<NewUserSchema>();
 
   const name = watch('name');
   const username = watch('username');
