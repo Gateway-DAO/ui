@@ -2,6 +2,7 @@
   "version": 2,
   "projects": {
     "assets": "libs/assets",
+    "helpers": "libs/helpers",
     "storybook": "libs/storybook",
     "theme": "libs/theme",
     "ui": "libs/ui",

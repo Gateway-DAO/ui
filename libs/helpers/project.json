@@ -1,0 +1,32 @@
+{
+  "root": "libs/helpers",
+  "sourceRoot": "libs/helpers/src",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/helpers",
+        "main": "libs/helpers/src/index.ts",
+        "tsConfig": "libs/helpers/tsconfig.lib.json",
+        "assets": ["libs/helpers/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/helpers/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/helpers"],
+      "options": {
+        "jestConfig": "libs/helpers/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}
