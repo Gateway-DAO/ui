@@ -3,7 +3,7 @@ import MUICard from '@mui/material/Card';
 
 export function PersonCard() {
   return (
-    <MUICard sx={{ borderRadius: 2 }} variant="outlined">
+    <MUICard>
       <CardHeader
         sx={{ '.MuiCardHeader-action': { alignSelf: 'unset' } }}
         avatar={
