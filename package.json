@@ -14,10 +14,12 @@
   },
   "private": true,
   "dependencies": {
+    "@apollo/client": "^3.6.2",
     "@emotion/react": "11.8.2",
     "@emotion/server": "11.4.0",
     "@emotion/styled": "11.8.1",
     "@fontsource/plus-jakarta-sans": "^4.5.6",
+    "@graphql-codegen/typescript-react-apollo": "^3.2.14",
     "@hookform/resolvers": "^2.8.8",
     "@mui/icons-material": "^5.6.1",
     "@mui/material": "^5.6.1",
@@ -39,7 +41,6 @@
     "regenerator-runtime": "0.13.7",
     "swiper": "^8.1.4",
     "tslib": "^2.0.0",
-    "urql": "^2.2.0",
     "use-breakpoint": "^3.0.2",
     "yup": "^0.32.11"
   },

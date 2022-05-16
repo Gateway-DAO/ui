@@ -18,11 +18,13 @@ const config: IGraphQLProjects = {
               plugins: [
                 "typescript",
                 "typescript-operations",
+                "typescript-react-apollo",
               ],
               config: {
                 scalars: {
                   "_text": "string"
                 },
+                withHooks: true,
                 avoidOptionals: true
               }
             }

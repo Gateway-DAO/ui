@@ -12,6 +12,7 @@ import {
   SectionWithGrid,
   SectionWithSlider,
 } from '../components/templates/home';
+import { useHomepageQuery } from '../types/graphql';
 
 /** TODO: Prevent template remount when navigating between dashboard pages
  * https://nextjs.org/docs/basic-features/layouts
@@ -20,6 +21,8 @@ import {
 export default function Home() {
   const { t } = useTranslation('dashboard-home');
   const arrays = new Array(20).fill(1).map((_, i) => i);
+  const call = useHomepageQuery({ variables: { id: 'wawawa' } });
+  console.log(call);
   return (
     <DashboardTemplate
       containerProps={{

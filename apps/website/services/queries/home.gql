@@ -1,0 +1,43 @@
+query Homepage($id: uuid!) {
+  user: users(where: { id: { _eq: $id } }) {
+    id
+    name
+    credentialsByTargetId {
+      dao {
+        name
+      }
+    }
+    gate_progresses {
+      gate_id # gates {....}
+      status
+    }
+  }
+  gates {
+    id
+    gate_name
+    description
+    categories
+    dao {
+      id
+      logo_url
+      name
+    }
+  }
+  daos {
+    id
+    name
+    logo_url
+    background_url
+    description
+    categories
+    # gates {....}
+    # user is following ?
+  }
+
+  users {
+    id
+    name
+    pfp
+    about
+  }
+}

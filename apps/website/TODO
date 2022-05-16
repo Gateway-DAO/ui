@@ -1,8 +1,9 @@
 General:
   ☐ react-use vs ahooks
+  ☐ !important! re-structure all `pages/` files after finishing the Gates and Keys routes, to make them more readable and maintainable
 
 SSR:
-  ☐ Add `_middlewares.ts` to parse user-agent
+  x Add `_middlewares.ts` to parse user-agent
   ☐ Implement user-agent detection hook based on middleware res
 
 SEO:
@@ -16,7 +17,7 @@ Analytics:
   ☐ Migrate / install / document evevery analytics tools
 
 Server Connection:
-  ☐ Add server integration
+  ☐ Add server integration @started(22-05-16 16:06)
 
 Archive:
   ✔ Add Eslint + Prettier formatting configuration @done(22-05-11 11:43) @project(General)

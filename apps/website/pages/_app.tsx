@@ -1,6 +1,8 @@
 import { AppProps } from 'next/app';
 import Head from 'next/head';
 
+import { ApolloProvider } from '@apollo/client';
+
 import { ThemeProvider } from '@gateway/theme';
 
 import { SEOSocial, SEOFavicon } from '../components/atoms/seo';
@@ -9,8 +11,9 @@ import { usePersistLocale } from '../hooks/usePersistLocale';
 import '../components/atoms/global-dependencies';
 
 import '../styles/next.css';
+import { client } from '../services/api';
 
-function CustomApp({ Component, pageProps, router }: AppProps) {
+function CustomApp({ Component, pageProps }: AppProps) {
   usePersistLocale();
   return (
     <ThemeProvider>
@@ -21,7 +24,9 @@ function CustomApp({ Component, pageProps, router }: AppProps) {
           <SEOFavicon />
           <SEOSocial />
         </Head>
-        <Component {...pageProps} />
+        <ApolloProvider client={client}>
+          <Component {...pageProps} />
+        </ApolloProvider>
       </>
     </ThemeProvider>
   );

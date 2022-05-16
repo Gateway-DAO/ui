@@ -1,15 +1,12 @@
 Global TODO:
-[] - Improve documentation
-[] - Read further (<https://storybook.js.org/tutorials/ui-testing-handbook/react/en/visual-testing/>)
-[] - Discuss about chromatic
+☐ - Improve documentation
 
-Website:
+Storybook:
+☐ - Read further (<https://storybook.js.org/tutorials/ui-testing-handbook/react/en/visual-testing/>)
 
-[] - Implement watch mode on nx website:generate using nx watch plugin <https://gist.github.com/jhesgodi/2d530753c551ace665a8c3010d3a719c>
 
 Codegen:
-☐ - Finish graphql-codegen-hasura configuration
+☐ - Implement watch mode on nx website:generate using nx watch plugin <https://gist.github.com/jhesgodi/2d530753c551ace665a8c3010d3a719c>
 ☐ - Read: https://www.the-guild.dev/blog/graphql-codegen-best-practices
-
-Settings:
+☐ - Read further <https://wundergraph.hashnode.dev/nextjs-react-ssr-21-universal-data-fetching-patterns-and-best-practices>
 
