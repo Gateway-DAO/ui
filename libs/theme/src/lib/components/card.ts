@@ -6,7 +6,7 @@ export const MuiCard: Extract<Theme['components'], object>['MuiCard'] = {
     root: ({ theme }) => ({
       boxShadow: 'none',
       border: '1px solid',
-      borderColor: theme.palette.action.focus,
+      borderColor: theme.palette.divider,
     }),
   },
 };
