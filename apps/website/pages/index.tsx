@@ -18,9 +18,9 @@ export default function Index() {
       <LandingTemplate
         title={t('title')}
         connectButton={
-          <Link href="/new-user" passHref>
-            <Button variant="contained">Connect Wallet</Button>
-          </Link>
+          <Button variant="contained" onClick={toggleOpen}>
+            Connect Wallet
+          </Button>
         }
       />
       <Modal
@@ -37,7 +37,7 @@ export default function Index() {
             height: 500,
           }}
         >
-          Wawo
+          {/* Wallet connection stuff */}
         </Paper>
       </Modal>
     </>
