@@ -1,4 +1,7 @@
+import { InferGetServerSidePropsType } from 'next';
 import useTranslation from 'next-translate/useTranslation';
+
+// import { dehydrate, useQuery } from 'react-query';
 
 import { Button } from '@mui/material';
 
@@ -12,17 +15,34 @@ import {
   SectionWithGrid,
   SectionWithSlider,
 } from '../components/templates/home';
-import { useHomepageQuery } from '../types/graphql';
+import { gqlMethodsServer } from '../services/api-server';
 
 /** TODO: Prevent template remount when navigating between dashboard pages
  * https://nextjs.org/docs/basic-features/layouts
  * */
 
-export default function Home() {
+export async function getServerSideProps() {
+  /* TODO: React-query will only work after auth is done */
+  // await queryClient.prefetchQuery('home', () => gqlMethods.Users());
+  const homeProps = await gqlMethodsServer.get_home({
+    id: 'eb06a881-6cdb-487f-bac3-eb771c2add2f',
+  });
+
+  return {
+    props: {
+      // dehydratedState: dehydrate(queryClient),
+      homeProps,
+    },
+  };
+}
+
+export default function Home({
+  homeProps: { user, daos, gates, people },
+}: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const { t } = useTranslation('dashboard-home');
   const arrays = new Array(20).fill(1).map((_, i) => i);
-  const call = useHomepageQuery({ variables: { id: 'wawawa' } });
-  console.log(call);
+  console.log({ user, daos, gates, people });
+
   return (
     <DashboardTemplate
       containerProps={{
@@ -33,15 +53,15 @@ export default function Home() {
       }}
       followingDaos={mockDaos}
     >
-      <HomeTemplate title={t('title', { name: 'Lucas Inacio' })}>
+      <HomeTemplate title={t('title', { name: user.name })}>
         <SectionWithSlider
           title={t('featured-gates.title')}
           caption={t('featured-gates.caption')}
           action={<Button>{t('featured-gates.see-more')}</Button>}
           itemWidth={(theme) => theme.spacing(37.75)}
         >
-          {arrays.map((id) => (
-            <GatesCard key={id} />
+          {gates.map((gate) => (
+            <GatesCard key={gate.id} {...gate} />
           ))}
         </SectionWithSlider>
         <SectionWithSlider
@@ -50,8 +70,8 @@ export default function Home() {
           action={<Button>{t('featured-daos.see-more')}</Button>}
           itemWidth={(theme) => theme.spacing(51)}
         >
-          {arrays.map((id) => (
-            <DaoCard key={id} />
+          {daos.map((dao) => (
+            <DaoCard key={dao.id} {...dao} />
           ))}
         </SectionWithSlider>
         <SectionWithGrid
@@ -59,8 +79,8 @@ export default function Home() {
           caption={t('featured-people.caption')}
           action={<Button>{t('featured-people.see-more')}</Button>}
         >
-          {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((id) => (
-            <PersonCard key={id} />
+          {people.map((person) => (
+            <PersonCard key={person.id} {...person} />
           ))}
         </SectionWithGrid>
       </HomeTemplate>

@@ -10,22 +10,26 @@ const config: IGraphQLProjects = {
           }
         }
       }],
-      documents: ["./apps/website/**/*.{graphql,gql,js,ts,jsx,tsx}"],
+      documents: [
+        // "./apps/website/**/*.{graphql,gql,js,ts,jsx,tsx}",
+        "./apps/website/**/*.{graphql,gql}",
+        "!**/*.generated.{graphql,gql}",
+      ],
       extensions: {
         codegen: {
           generates: {
-            "./apps/website/types/graphql.ts": {
+            "./apps/website/services/graphql/types.generated.ts": {
               plugins: [
                 "typescript",
                 "typescript-operations",
-                "typescript-react-apollo",
+                "typescript-graphql-request"
               ],
               config: {
                 scalars: {
                   "_text": "string"
                 },
-                withHooks: true,
-                avoidOptionals: true
+                avoidOptionals: true,
+                fetcher: "graphql-request"
               }
             }
           }

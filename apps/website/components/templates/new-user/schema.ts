@@ -1,6 +1,6 @@
 import { object, string, SchemaOf } from 'yup';
 
-import { Users } from '../../../types/graphql';
+import { Users } from '../../../services/graphql/types.generated';
 
 export type NewUserSchema = Pick<Users, 'name' | 'username'> & {
   email: string;

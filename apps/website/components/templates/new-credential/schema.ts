@@ -1,6 +1,6 @@
 import { object, string, SchemaOf, array } from 'yup';
 
-import { Credentials } from '../../../types/graphql';
+import { Credentials } from '../../../services/graphql/types.generated';
 
 export type NewCredentialSchema = Pick<Credentials, 'name' | 'description'> & {
   category: string;

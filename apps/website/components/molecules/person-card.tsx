@@ -1,7 +1,13 @@
+import type { PartialDeep } from 'type-fest';
+
 import { Avatar, Button, CardHeader } from '@mui/material';
 import MUICard from '@mui/material/Card';
 
-export function PersonCard() {
+import { Users } from '../../services/graphql/types.generated';
+
+/* TODO: Arias and Labels */
+/* TODO: Clamp text */
+export function PersonCard({ name, about, pfp }: PartialDeep<Users>) {
   return (
     <MUICard>
       <CardHeader
@@ -13,8 +19,9 @@ export function PersonCard() {
               height: 40,
             }}
             aria-label="recipe"
+            src={pfp}
           >
-            R
+            {name[0]}
           </Avatar>
         }
         action={
@@ -22,8 +29,8 @@ export function PersonCard() {
             Connect
           </Button>
         }
-        title="Shrimp and Chorizo"
-        subheader="September 14, 2016"
+        title={name}
+        subheader={about}
       />
     </MUICard>
   );

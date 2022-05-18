@@ -17,7 +17,8 @@ Analytics:
   ☐ Migrate / install / document evevery analytics tools
 
 Server Connection:
-  ☐ Add server integration @started(22-05-16 16:06)
+  ✔ Add server integration @started(22-05-16 16:06) @done(22-05-17 23:22) @lasted(1d7h16m16s)
+  ☐ After auth is done, cache the user jwt on the server and implement `services/api` client side connection and react-query
 
 Archive:
   ✔ Add Eslint + Prettier formatting configuration @done(22-05-11 11:43) @project(General)

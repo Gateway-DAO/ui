@@ -1,5 +1,5 @@
-query Homepage($id: uuid!) {
-  user: users(where: { id: { _eq: $id } }) {
+query get_home($id: uuid!) {
+  user: users_by_pk (id: $id) {
     id
     name
     credentialsByTargetId {
@@ -8,7 +8,9 @@ query Homepage($id: uuid!) {
       }
     }
     gate_progresses {
-      gate_id # gates {....}
+      gate {
+         id
+      }
       status
     }
   }
@@ -17,6 +19,7 @@ query Homepage($id: uuid!) {
     gate_name
     description
     categories
+    badge
     dao {
       id
       logo_url
@@ -30,11 +33,11 @@ query Homepage($id: uuid!) {
     background_url
     description
     categories
+    created_at
     # gates {....}
     # user is following ?
   }
-
-  users {
+  people: users(where: {id: {_neq: $id}}) {
     id
     name
     pfp

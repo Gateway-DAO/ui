@@ -1,3 +1,5 @@
+import type { PartialDeep } from 'type-fest';
+
 import { Avatar, Button, CardHeader } from '@mui/material';
 import MUICard from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -7,28 +9,39 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { Box } from '@mui/system';
 
-export function DaoCard() {
+import { Daos } from '../../services/graphql/types.generated';
+
+/* TODO: Arias and Labels */
+
+export function DaoCard({
+  background_url,
+  logo_url,
+  name,
+  categories,
+  description,
+}: PartialDeep<Daos>) {
   return (
     <MUICard>
       <CardMedia
         component="img"
-        image="https://mui.com/static/images/cards/contemplative-reptile.jpg"
+        image={background_url}
         alt="green iguana"
         height={128}
       />
       <Box sx={{ position: 'relative', ml: 2 }}>
         <Avatar
+          src={logo_url}
           sx={{
             width: 40,
             height: 40,
             position: 'absolute',
             transform: 'translateY(-50%)',
             border: '2px solid',
-            borderColor: (theme) => theme.palette.background.default, // todo: change to elevation1
+            borderColor: (theme) => theme.palette.divider,
           }}
           aria-label="recipe"
         >
-          R
+          {name[0]}
         </Avatar>
       </Box>
       <CardHeader
@@ -38,20 +51,21 @@ export function DaoCard() {
             Follow
           </Button>
         }
-        title="Shrimp and Chorizo"
+        title={name}
         titleTypographyProps={{ variant: 'h6' }}
         subheader="September 14, 2016"
         subheaderTypographyProps={{ variant: 'body2' }}
       />
       <CardContent sx={{ py: 1 }}>
         <Typography variant="body2" color="text.secondary">
-          Lizards are a widespread group of squamate reptiles, with over 6,000
-          species, ranging across all continents except Antarctica
+          {/* TODO: add line clamp */}
+          {description}
         </Typography>
       </CardContent>
       <Stack direction="row" spacing={1} px={2} pt={1} pb={2}>
-        <Chip label="Onboarding" size="small" />
-        <Chip label="Beginner" size="small" />
+        {categories.map((category) => (
+          <Chip key={category} label={category} size="small" />
+        ))}
       </Stack>
     </MUICard>
   );

@@ -1,9 +1,13 @@
-import { ApolloClient, InMemoryCache } from '@apollo/client';
+import { GraphQLClient } from 'graphql-request';
 
-export const client = new ApolloClient({
-  uri: process.env.HASURA_ENDPOINT,
-  headers: {
-    'x-hasura-admin-secret': process.env.HASURA_ADMIN_SECRET,
-  },
-  cache: new InMemoryCache(),
-});
+import { getSdk } from './graphql/types.generated';
+
+export const gqlMethods = (auth: string) => {
+  const gqlClient = new GraphQLClient(process.env.NEXT_PUBLIC_HASURA_ENDPOINT, {
+    headers: {
+      Authentication: `Bearer ${auth}`,
+    },
+  });
+
+  return getSdk(gqlClient);
+};
