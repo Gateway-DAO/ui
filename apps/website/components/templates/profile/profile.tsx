@@ -3,7 +3,7 @@ import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import EmailIcon from '@mui/icons-material/Email';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import TwitterIcon from '@mui/icons-material/Twitter';
-import { Button, Avatar, Paper } from '@mui/material';
+import { Button, Avatar, Paper, Box } from '@mui/material';
 
 import DiscordIcon from '../../molecules/discord-icon';
 
@@ -25,29 +25,46 @@ const data = {
   ],
 };
 
-const styles = {
-  paperContainer: {
-    height: '280px',
-    background:
-      'linear-gradient(180deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0) 44.13%), linear-gradient(72.04deg, #98CEFF 6.5%, #8965D2 47.65%)',
-    backdropFilter: 'blur(40px)',
-  },
-};
-
 export function ProfileTemplate() {
   return (
     <>
-      <Paper className="cover" style={styles.paperContainer}>
-        <div className="avatar">
+      <Paper
+        sx={{
+          height: '280px',
+          background:
+            'linear-gradient(180deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0) 44.13%), linear-gradient(72.04deg, #98CEFF 6.5%, #8965D2 47.65%)',
+          backdropFilter: 'blur(40px)',
+        }}
+      >
+        <Box
+          sx={{
+            display: 'flex',
+            position: 'absolute',
+            top: '40px',
+            right: '50px',
+          }}
+        >
           <Avatar
             src="/images/random-nft.png"
-            sx={{ width: 100, height: 100 }}
+            sx={{
+              width: 30,
+              height: 30,
+            }}
           />
-        </div>
-        <div className="menu">
-          <Avatar src="/images/random-nft.png" sx={{ width: 30, height: 30 }} />
-          <ArrowDropDownIcon />
-        </div>
+          <ArrowDropDownIcon
+            sx={{ position: 'relative', right: '10px', top: '5px' }}
+          />
+        </Box>
+        <Avatar
+          src="/images/random-nft.png"
+          sx={{
+            width: 150,
+            height: 150,
+            top: '200px',
+            left: '50px',
+            border: '3px solid black',
+          }}
+        />
       </Paper>
       <header>
         <div className="links">
