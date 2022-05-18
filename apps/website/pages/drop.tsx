@@ -1,7 +1,7 @@
-import { forwardRef } from 'react';
+import { ChangeEvent, forwardRef, useCallback, useMemo, useRef } from 'react';
 
 import styled from '@emotion/styled';
-import { useForm, UseFormRegisterReturn } from 'react-hook-form';
+import { useController, useForm, UseFormRegisterReturn } from 'react-hook-form';
 
 import { useMenu } from '@gateway/ui';
 
@@ -28,34 +28,79 @@ const HiddenInput = styled.input`
   top: 0;
 `;
 
-/* NOTE: <Controller /> or ...register ? */
-const DropArea = forwardRef<HTMLInputElement, Props>(function DropArea(
-  { label, ...register },
-  ref
-) {
+const DropArea = function DropArea({ label, name, control }) {
+  const {
+    field: { ref, value, onChange, ...register },
+  } = useController({ name, control });
   const { element, isOpen, onClose, onOpen } = useMenu();
+
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const onSelectFile = (event: ChangeEvent<HTMLInputElement>) => {
+    if (!event.target.files?.length) {
+      onChange();
+      return;
+    }
+
+    /* TODO: Mimetype validation */
+    /* TODO: Filesize validation */
+    const file = event.target.files[0];
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      onChange(event.target.result);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const onClickChangeImage = () => {
+    inputRef.current?.click();
+    onClose();
+  };
 
   return (
     <Box
       component="label"
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        width: '100%',
-        height: '100%',
-        border: '1px dashed',
-        borderColor: (theme) => theme.palette.primary.main,
-        gap: 1,
-        position: 'relative',
-      }}
+      sx={[
+        {
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          width: '100%',
+          height: '100%',
+          gap: 1,
+          position: 'relative',
+        },
+        !value
+          ? {
+              border: '1px dashed',
+              borderColor: (theme) => theme.palette.primary.main,
+            }
+          : {
+              backgroundImage: `url(${value})`,
+              backgroundPosition: 'center',
+              backgroundSize: 'cover',
+            },
+      ]}
     >
-      <Avatar>
-        <UploadFileOutlined />
-      </Avatar>
-      <Typography>{label}</Typography>
-      <HiddenInput type="file" ref={ref} {...register} />
+      {!value && (
+        <>
+          <Avatar>
+            <UploadFileOutlined />
+          </Avatar>
+          <Typography>{label}</Typography>
+        </>
+      )}
+      <HiddenInput
+        type="file"
+        ref={(el) => {
+          ref(el);
+          inputRef.current = el;
+        }}
+        onChange={onSelectFile}
+        accept="image/*"
+        {...register}
+      />
       <IconButton
         color="secondary"
         sx={{ position: 'absolute', bottom: 6, left: 6 }}
@@ -72,7 +117,7 @@ const DropArea = forwardRef<HTMLInputElement, Props>(function DropArea(
         open={isOpen}
         onClose={onClose}
       >
-        <MenuItem onClick={onClose}>
+        <MenuItem onClick={onClickChangeImage}>
           <ListItemIcon>
             <Photo fontSize="small" color="secondary" />
           </ListItemIcon>
@@ -87,15 +132,14 @@ const DropArea = forwardRef<HTMLInputElement, Props>(function DropArea(
       </Menu>
     </Box>
   );
-});
+};
 
 export default function Drop() {
-  const { register, watch, control } = useForm();
-  console.log(watch('avatar'));
+  const { register, watch, control } = useForm({});
   return (
     <div>
       <Box sx={{ width: 500, height: 500 }}>
-        <DropArea label="drop area" id="avatar" {...register('avatar', {})} />
+        <DropArea label="drop area" name="avatar" control={control} />
       </Box>
     </div>
   );
