@@ -67,16 +67,24 @@ export function ProfileTemplate() {
         />
       </Paper>
       <header>
-        <div className="links">
-          <EmailIcon />
-          <GitHubIcon />
-          <TwitterIcon />
-          <DiscordIcon fontSize="large" />
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'end',
+            alignItems: 'center',
+            marginTop: '30px',
+            marginRight: '60px',
+          }}
+        >
+          <EmailIcon sx={{ marginRight: '8px' }} />
+          <GitHubIcon sx={{ marginRight: '8px' }} />
+          <TwitterIcon sx={{ marginRight: '8px' }} />
+          <DiscordIcon sx={{ marginRight: '8px' }} fontSize="large" />
           <Button variant="contained" color="secondary">
             nossirah.eth
-            <ContentCopyIcon />
+            <ContentCopyIcon sx={{ marginLeft: '8px' }} />
           </Button>
-        </div>
+        </Box>
         <div className="infos">
           <h1>Shriram Chandra</h1>
           <p>Master Ops at Gateway</p>
