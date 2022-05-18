@@ -3,7 +3,7 @@ import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import EmailIcon from '@mui/icons-material/Email';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import TwitterIcon from '@mui/icons-material/Twitter';
-import { Button, Avatar } from '@mui/material';
+import { Button, Avatar, Paper } from '@mui/material';
 
 import DiscordIcon from '../../molecules/discord-icon';
 
@@ -25,10 +25,19 @@ const data = {
   ],
 };
 
+const styles = {
+  paperContainer: {
+    height: '280px',
+    background:
+      'linear-gradient(180deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0) 44.13%), linear-gradient(72.04deg, #98CEFF 6.5%, #8965D2 47.65%)',
+    backdropFilter: 'blur(40px)',
+  },
+};
+
 export function ProfileTemplate() {
   return (
     <>
-      <div className="cover">
+      <Paper className="cover" style={styles.paperContainer}>
         <div className="avatar">
           <Avatar
             src="/images/random-nft.png"
@@ -39,7 +48,7 @@ export function ProfileTemplate() {
           <Avatar src="/images/random-nft.png" sx={{ width: 30, height: 30 }} />
           <ArrowDropDownIcon />
         </div>
-      </div>
+      </Paper>
       <header>
         <div className="links">
           <EmailIcon />
