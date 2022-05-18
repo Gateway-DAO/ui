@@ -73,29 +73,29 @@ export function ProfileTemplate() {
             justifyContent: 'end',
             alignItems: 'center',
             marginTop: '30px',
-            marginRight: '60px',
+            marginRight: '50px',
           }}
         >
-          <EmailIcon sx={{ marginRight: '8px' }} />
-          <GitHubIcon sx={{ marginRight: '8px' }} />
-          <TwitterIcon sx={{ marginRight: '8px' }} />
-          <DiscordIcon sx={{ marginRight: '8px' }} fontSize="large" />
+          <EmailIcon sx={{ marginRight: '10px' }} />
+          <GitHubIcon sx={{ marginRight: '10px' }} />
+          <TwitterIcon sx={{ marginRight: '10px' }} />
+          <DiscordIcon sx={{ marginRight: '10px' }} fontSize="large" />
           <Button variant="contained" color="secondary">
             nossirah.eth
-            <ContentCopyIcon sx={{ marginLeft: '8px' }} />
+            <ContentCopyIcon sx={{ marginLeft: '10px' }} />
           </Button>
         </Box>
-        <div className="infos">
-          <h1>Shriram Chandra</h1>
-          <p>Master Ops at Gateway</p>
+      </header>
+      <main style={{ padding: '0 50px' }}>
+        <div>
+          <h1 style={{ marginBottom: '0' }}>Shriram Chandra</h1>
+          <p style={{ marginTop: '0' }}>Master Ops at Gateway</p>
           <p>
             <b>120</b> Following &#183; <b>118</b> Followers
           </p>
         </div>
-      </header>
-      <main>
-        <div className="left">
-          <section className="about">
+        <div>
+          <section>
             <h2>About</h2>
             <p>
               I am a Design Director focused on User Experience, User
@@ -111,15 +111,15 @@ export function ProfileTemplate() {
               and carefully considered decision making.
             </p>
           </section>
-          <section className="poc">
+          <section>
             <h2>Proof of Credentials</h2>
             <Button variant="contained">Create a Proof of Credential</Button>
           </section>
         </div>
-        <div className="right">
-          <section className="skills">
+        <div>
+          <section>
             <h2>Skills</h2>
-            <div className="tags-container">
+            <div>
               {data.skills.map((skill, index) => {
                 return (
                   <Button key={index} variant="contained" color="secondary">
@@ -129,9 +129,9 @@ export function ProfileTemplate() {
               })}
             </div>
           </section>
-          <section className="knowledge">
+          <section>
             <h2>Knowledges</h2>
-            <div className="tags-container">
+            <div>
               {data.knowledges.map((skill, index) => {
                 return (
                   <Button key={index} variant="contained" color="secondary">
@@ -141,9 +141,9 @@ export function ProfileTemplate() {
               })}
             </div>
           </section>
-          <section className="attitudes">
+          <section>
             <h2>Attitudes</h2>
-            <div className="tags-container">
+            <div>
               {data.attitudes.map((skill, index) => {
                 return (
                   <Button key={index} variant="contained" color="secondary">
