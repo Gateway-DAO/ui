@@ -7,7 +7,6 @@ import { ImageDropField } from '../components/molecules/image-drop-field/image-d
 export default function Drop() {
   const { watch, control } = useForm({});
 
-  console.log(watch('avatar'));
   return (
     <Box
       sx={{
