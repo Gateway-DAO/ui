@@ -76,7 +76,7 @@ export default function EditDropdownMenu({
           <ListItemIcon>
             <Token fontSize="small" color="secondary" />
           </ListItemIcon>
-          <ListItemText>Select NFT</ListItemText>
+          <ListItemText>Select NFT (soon)</ListItemText>
         </MenuItem>
       </Menu>
     </>
