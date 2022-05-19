@@ -83,18 +83,18 @@ export function ProfileTemplate() {
         </Box>
       </header>
       <main>
-        <div>
+        <Box sx={{ margin: '30px 65px' }}>
           <h1 style={{ marginBottom: '0' }}>Shriram Chandra</h1>
           <p style={{ marginTop: '0' }}>Master Ops at Gateway</p>
           <p>
             <b>120</b> Following &#183; <b>118</b> Followers
           </p>
-        </div>
+        </Box>
         <hr
           style={{ border: 'none', height: '1px', backgroundColor: '#333' }}
         />
         <Grid container>
-          <Grid item className="left" xs={8}>
+          <Grid item className="left" xs={8} sx={{ padding: '0 65px' }}>
             <section>
               <h2>About</h2>
               <p>
@@ -112,20 +112,33 @@ export function ProfileTemplate() {
               </p>
             </section>
             <hr
-              style={{ border: 'none', height: '1px', backgroundColor: '#333' }}
+              style={{
+                border: 'none',
+                height: '1px',
+                backgroundColor: '#333',
+                margin: '80px 0',
+              }}
             />
-            <section>
+            <section style={{ paddingBottom: '150px' }}>
               <h2>Proof of Credentials</h2>
-              <Button variant="contained">Create a Proof of Credential</Button>
+              <Button variant="contained" size="small">
+                Create a Proof of Credential
+              </Button>
             </section>
           </Grid>
-          <Grid item className="right" xs={4}>
+          <Grid item className="right" xs={4} sx={{ padding: '0 65px' }}>
             <section>
               <h2>Skills</h2>
               <div>
                 {data.skills.map((skill, index) => {
                   return (
-                    <Button key={index} variant="contained" color="secondary">
+                    <Button
+                      key={index}
+                      variant="contained"
+                      color="secondary"
+                      size="small"
+                      sx={{ margin: '5px' }}
+                    >
                       {skill}
                     </Button>
                   );
@@ -137,7 +150,13 @@ export function ProfileTemplate() {
               <div>
                 {data.knowledges.map((skill, index) => {
                   return (
-                    <Button key={index} variant="contained" color="secondary">
+                    <Button
+                      key={index}
+                      variant="contained"
+                      color="secondary"
+                      size="small"
+                      sx={{ margin: '5px' }}
+                    >
                       {skill}
                     </Button>
                   );
@@ -149,7 +168,13 @@ export function ProfileTemplate() {
               <div>
                 {data.attitudes.map((skill, index) => {
                   return (
-                    <Button key={index} variant="contained" color="secondary">
+                    <Button
+                      key={index}
+                      variant="contained"
+                      color="secondary"
+                      size="small"
+                      sx={{ margin: '5px' }}
+                    >
                       {skill}
                     </Button>
                   );
