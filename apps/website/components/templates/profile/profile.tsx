@@ -24,6 +24,7 @@ const data = {
     'Innovative',
   ],
 };
+const randomNftUrl = 'https://i.ibb.co/bzzgBfT/random-nft.png';
 
 export function ProfileTemplate() {
   return (
@@ -45,7 +46,7 @@ export function ProfileTemplate() {
           }}
         >
           <Avatar
-            src="/images/random-nft.png"
+            src={randomNftUrl}
             sx={{
               width: 30,
               height: 30,
@@ -56,7 +57,7 @@ export function ProfileTemplate() {
           />
         </Box>
         <Avatar
-          src="/images/random-nft.png"
+          src={randomNftUrl}
           sx={{
             width: 150,
             height: 150,
