@@ -1,11 +1,8 @@
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import EmailIcon from '@mui/icons-material/Email';
-import GitHubIcon from '@mui/icons-material/GitHub';
-import TwitterIcon from '@mui/icons-material/Twitter';
-import { Button, Avatar, Paper, Box } from '@mui/material';
+import { FaDiscord, FaTwitter, FaGithub, FaCopy } from 'react-icons/fa';
+import { MdEmail } from 'react-icons/md';
+import { RiArrowDownSFill } from 'react-icons/ri';
 
-import DiscordIcon from '../../molecules/discord-icon';
+import { Button, Avatar, Paper, Box } from '@mui/material';
 
 const data = {
   skills: [
@@ -52,7 +49,7 @@ export function ProfileTemplate() {
               height: 30,
             }}
           />
-          <ArrowDropDownIcon
+          <RiArrowDownSFill
             sx={{ position: 'relative', right: '10px', top: '5px' }}
           />
         </Box>
@@ -77,13 +74,13 @@ export function ProfileTemplate() {
             marginRight: '50px',
           }}
         >
-          <EmailIcon sx={{ marginRight: '10px' }} />
-          <GitHubIcon sx={{ marginRight: '10px' }} />
-          <TwitterIcon sx={{ marginRight: '10px' }} />
-          <DiscordIcon sx={{ marginRight: '10px' }} fontSize="large" />
+          <MdEmail style={{ marginRight: '10px' }} />
+          <FaGithub style={{ marginRight: '10px' }} />
+          <FaTwitter style={{ marginRight: '10px' }} />
+          <FaDiscord style={{ marginRight: '10px' }} fontSize="large" />
           <Button variant="contained" color="secondary">
             nossirah.eth
-            <ContentCopyIcon sx={{ marginLeft: '10px' }} />
+            <FaCopy style={{ marginLeft: '10px' }} />
           </Button>
         </Box>
       </header>
