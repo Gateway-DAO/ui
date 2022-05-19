@@ -2,7 +2,7 @@ import { FaDiscord, FaTwitter, FaGithub, FaCopy } from 'react-icons/fa';
 import { MdEmail } from 'react-icons/md';
 import { RiArrowDownSFill } from 'react-icons/ri';
 
-import { Button, Avatar, Paper, Box } from '@mui/material';
+import { Button, Avatar, Paper, Box, Grid } from '@mui/material';
 
 const data = {
   skills: [
@@ -49,9 +49,7 @@ export function ProfileTemplate() {
               height: 30,
             }}
           />
-          <RiArrowDownSFill
-            sx={{ position: 'relative', right: '10px', top: '5px' }}
-          />
+          <RiArrowDownSFill style={{ position: 'relative', top: '5px' }} />
         </Box>
         <Avatar
           src={randomNftUrl}
@@ -84,7 +82,7 @@ export function ProfileTemplate() {
           </Button>
         </Box>
       </header>
-      <main style={{ padding: '0 50px' }}>
+      <main>
         <div>
           <h1 style={{ marginBottom: '0' }}>Shriram Chandra</h1>
           <p style={{ marginTop: '0' }}>Master Ops at Gateway</p>
@@ -92,66 +90,74 @@ export function ProfileTemplate() {
             <b>120</b> Following &#183; <b>118</b> Followers
           </p>
         </div>
-        <div>
-          <section>
-            <h2>About</h2>
-            <p>
-              I am a Design Director focused on User Experience, User
-              Interfaces, Experience Design, Creative and Digital Strategy.
-              I&#39;ve been lucky enough to work and solve problems for the most
-              prominent brands in the world.
-            </p>
-            <p>
-              I approach problems from the top-down, identifying the real issue
-              before forming my solution. I am always challenging the limits of
-              physical, social, and digital mediums through storytelling and
-              functions. Each of my projects is crafted with precise execution
-              and carefully considered decision making.
-            </p>
-          </section>
-          <section>
-            <h2>Proof of Credentials</h2>
-            <Button variant="contained">Create a Proof of Credential</Button>
-          </section>
-        </div>
-        <div>
-          <section>
-            <h2>Skills</h2>
-            <div>
-              {data.skills.map((skill, index) => {
-                return (
-                  <Button key={index} variant="contained" color="secondary">
-                    {skill}
-                  </Button>
-                );
-              })}
-            </div>
-          </section>
-          <section>
-            <h2>Knowledges</h2>
-            <div>
-              {data.knowledges.map((skill, index) => {
-                return (
-                  <Button key={index} variant="contained" color="secondary">
-                    {skill}
-                  </Button>
-                );
-              })}
-            </div>
-          </section>
-          <section>
-            <h2>Attitudes</h2>
-            <div>
-              {data.attitudes.map((skill, index) => {
-                return (
-                  <Button key={index} variant="contained" color="secondary">
-                    {skill}
-                  </Button>
-                );
-              })}
-            </div>
-          </section>
-        </div>
+        <hr
+          style={{ border: 'none', height: '1px', backgroundColor: '#333' }}
+        />
+        <Grid container>
+          <Grid item className="left" xs={8}>
+            <section>
+              <h2>About</h2>
+              <p>
+                I am a Design Director focused on User Experience, User
+                Interfaces, Experience Design, Creative and Digital Strategy.
+                I&#39;ve been lucky enough to work and solve problems for the
+                most prominent brands in the world.
+              </p>
+              <p>
+                I approach problems from the top-down, identifying the real
+                issue before forming my solution. I am always challenging the
+                limits of physical, social, and digital mediums through
+                storytelling and functions. Each of my projects is crafted with
+                precise execution and carefully considered decision making.
+              </p>
+            </section>
+            <hr
+              style={{ border: 'none', height: '1px', backgroundColor: '#333' }}
+            />
+            <section>
+              <h2>Proof of Credentials</h2>
+              <Button variant="contained">Create a Proof of Credential</Button>
+            </section>
+          </Grid>
+          <Grid item className="right" xs={4}>
+            <section>
+              <h2>Skills</h2>
+              <div>
+                {data.skills.map((skill, index) => {
+                  return (
+                    <Button key={index} variant="contained" color="secondary">
+                      {skill}
+                    </Button>
+                  );
+                })}
+              </div>
+            </section>
+            <section>
+              <h2>Knowledges</h2>
+              <div>
+                {data.knowledges.map((skill, index) => {
+                  return (
+                    <Button key={index} variant="contained" color="secondary">
+                      {skill}
+                    </Button>
+                  );
+                })}
+              </div>
+            </section>
+            <section>
+              <h2>Attitudes</h2>
+              <div>
+                {data.attitudes.map((skill, index) => {
+                  return (
+                    <Button key={index} variant="contained" color="secondary">
+                      {skill}
+                    </Button>
+                  );
+                })}
+              </div>
+            </section>
+          </Grid>
+        </Grid>
       </main>
     </>
   );
