@@ -90,7 +90,8 @@ export function ProfileTemplate() {
       <main>
         <Box sx={{ margin: '30px 65px' }}>
           <h1 style={{ marginBottom: '0' }}>Shriram Chandra</h1>
-          <p style={{ marginTop: '0' }}>Master Ops at Gateway</p>
+          <p style={{ margin: '0 auto' }}>Master Ops at Gateway</p>
+          <p style={{ marginTop: '0', fontSize: 'small' }}>@shriram</p>
           <p>
             <b>120</b> Following &#183; <b>118</b> Followers
           </p>
@@ -101,7 +102,7 @@ export function ProfileTemplate() {
         <Grid container>
           <Grid item className="left" xs={8} sx={{ padding: '0 65px' }}>
             <section>
-              <h2>About</h2>
+              <h2 style={{ margin: '20px 0' }}>About</h2>
               <p>
                 I am a Design Director focused on User Experience, User
                 Interfaces, Experience Design, Creative and Digital Strategy.
@@ -121,11 +122,11 @@ export function ProfileTemplate() {
                 border: 'none',
                 height: '1px',
                 backgroundColor: '#333',
-                margin: '80px 0',
+                margin: '20px 0',
               }}
             />
             <section style={{ paddingBottom: '150px' }}>
-              <h2>Proof of Credentials</h2>
+              <h2 style={{ margin: '30px 0' }}>Proof of Credentials</h2>
               <Button variant="contained" size="small">
                 Create a Proof of Credential
               </Button>
