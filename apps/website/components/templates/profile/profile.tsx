@@ -40,6 +40,7 @@ export function ProfileTemplate() {
             position: 'absolute',
             top: '40px',
             right: '50px',
+            cursor: 'pointer',
           }}
         >
           <Avatar
@@ -71,10 +72,10 @@ export function ProfileTemplate() {
           marginRight: '50px',
         }}
       >
-        <MdEmail style={{ marginRight: '10px' }} />
-        <FaGithub style={{ marginRight: '10px' }} />
-        <FaTwitter style={{ marginRight: '10px' }} />
-        <FaDiscord style={{ marginRight: '10px' }} fontSize="large" />
+        <MdEmail style={{ marginRight: '10px', cursor: 'pointer' }} />
+        <FaGithub style={{ marginRight: '10px', cursor: 'pointer' }} />
+        <FaTwitter style={{ marginRight: '10px', cursor: 'pointer' }} />
+        <FaDiscord style={{ marginRight: '10px', cursor: 'pointer' }} />
         <Button variant="contained" color="secondary">
           nossirah.eth
           <FaCopy style={{ marginLeft: '10px' }} />
