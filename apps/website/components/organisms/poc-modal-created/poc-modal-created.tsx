@@ -1,7 +1,8 @@
 import Image from 'next/image';
 
-import { AiOutlineClose } from 'react-icons/ai';
+import { AiOutlineClose, AiOutlineCopy } from 'react-icons/ai';
 
+import { Button } from '@mui/material';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Typography from '@mui/material/Typography';
@@ -66,6 +67,35 @@ export default function PocModalCreated({ open, handleClose }) {
             </span>{' '}
             credential.
           </Typography>
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <fieldset
+              style={{
+                display: 'flex',
+                border: '1px solid white',
+                borderRadius: '20px',
+              }}
+            >
+              <legend>Share</legend>
+              http://gtwy.xyz/olpmt
+              <AiOutlineCopy
+                size={24}
+                style={{ marginLeft: '10px', cursor: 'pointer' }}
+              />
+            </fieldset>
+            <Button
+              variant="outlined"
+              size="small"
+              sx={{ margin: '20px 0 0 20px' }}
+            >
+              Go to credentials
+            </Button>
+          </Box>
         </Box>
       </Modal>
     </div>
