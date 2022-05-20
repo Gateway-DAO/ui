@@ -6,7 +6,7 @@ Storybook:
 
 
 Codegen:
-☐ - Implement watch mode on nx website:generate using nx watch plugin <https://gist.github.com/jhesgodi/2d530753c551ace665a8c3010d3a719c>
+✔ - Implement watch mode on nx website:generate using nx watch plugin <https://gist.github.com/jhesgodi/2d530753c551ace665a8c3010d3a719c> @done(22-05-18 13:47)
 ☐ - Read: https://www.the-guild.dev/blog/graphql-codegen-best-practices
 ☐ - Read further <https://wundergraph.hashnode.dev/nextjs-react-ssr-21-universal-data-fetching-patterns-and-best-practices>
 
