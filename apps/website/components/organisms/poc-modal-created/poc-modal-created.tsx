@@ -1,3 +1,5 @@
+import Image from 'next/image';
+
 import { AiOutlineClose } from 'react-icons/ai';
 
 import Box from '@mui/material/Box';
@@ -28,12 +30,18 @@ export default function PocModalCreated({ open, handleClose }) {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
+          <Image
+            src="/favicon-512.png"
+            alt="gateway-logo"
+            height={40}
+            width={40}
+          />
           <AiOutlineClose
             size={28}
             style={{
               position: 'absolute',
               right: '50px',
-              top: '20px',
+              top: '32px',
               cursor: 'pointer',
             }}
             onClick={handleClose}

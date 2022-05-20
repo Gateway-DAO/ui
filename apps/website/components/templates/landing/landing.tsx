@@ -1,12 +1,15 @@
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import { ReactNode, Suspense } from 'react';
+import * as React from 'react';
 
 import { GatewayIcon } from '@gateway/assets';
 import { TOKENS } from '@gateway/theme';
 import { MotionBox } from '@gateway/ui';
 
-import { Stack, Box, alpha } from '@mui/material';
+import { Stack, Box, alpha, Button } from '@mui/material';
+
+import PocModalCreated from '../../organisms/poc-modal-created/poc-modal-created';
 const Title = dynamic(() => import('./title'));
 
 type Props = {
@@ -15,8 +18,13 @@ type Props = {
 };
 
 export function LandingTemplate({ title, connectButton }: Props) {
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
   return (
     <Stack direction="column" sx={{ flex: 1, width: '100%' }}>
+      <PocModalCreated open={open} handleClose={handleClose} />
       <Stack
         direction="row"
         justifyContent="space-between"
@@ -45,7 +53,9 @@ export function LandingTemplate({ title, connectButton }: Props) {
           opacity: { duration: 0.5 },
         }}
       >
-        <Title>{title}</Title>
+        <Title>
+          {title} <Button onClick={handleOpen}>Open modal</Button>
+        </Title>
       </MotionBox>
       <Box
         sx={{
