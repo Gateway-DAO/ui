@@ -21,6 +21,7 @@ const data = {
     'Innovative',
   ],
 };
+const socialIcons = [MdEmail, FaGithub, FaTwitter, FaDiscord];
 const randomNftUrl = 'https://i.ibb.co/bzzgBfT/random-nft.png';
 
 export function ProfileTemplate() {
@@ -72,19 +73,15 @@ export function ProfileTemplate() {
           marginRight: '50px',
         }}
       >
-        <MdEmail style={{ marginRight: '15px', cursor: 'pointer' }} size={28} />
-        <FaGithub
-          style={{ marginRight: '15px', cursor: 'pointer' }}
-          size={28}
-        />
-        <FaTwitter
-          style={{ marginRight: '15px', cursor: 'pointer' }}
-          size={28}
-        />
-        <FaDiscord
-          style={{ marginRight: '15px', cursor: 'pointer' }}
-          size={28}
-        />
+        {socialIcons.map((Icon, index) => {
+          return (
+            <Icon
+              key={index}
+              style={{ marginRight: '15px', cursor: 'pointer' }}
+              size={28}
+            />
+          );
+        })}
         <Button variant="contained" color="secondary">
           nossirah.eth
           <FaCopy style={{ marginLeft: '15px' }} />
