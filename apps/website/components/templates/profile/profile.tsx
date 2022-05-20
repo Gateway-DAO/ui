@@ -72,13 +72,22 @@ export function ProfileTemplate() {
           marginRight: '50px',
         }}
       >
-        <MdEmail style={{ marginRight: '10px', cursor: 'pointer' }} />
-        <FaGithub style={{ marginRight: '10px', cursor: 'pointer' }} />
-        <FaTwitter style={{ marginRight: '10px', cursor: 'pointer' }} />
-        <FaDiscord style={{ marginRight: '10px', cursor: 'pointer' }} />
+        <MdEmail style={{ marginRight: '15px', cursor: 'pointer' }} size={28} />
+        <FaGithub
+          style={{ marginRight: '15px', cursor: 'pointer' }}
+          size={28}
+        />
+        <FaTwitter
+          style={{ marginRight: '15px', cursor: 'pointer' }}
+          size={28}
+        />
+        <FaDiscord
+          style={{ marginRight: '15px', cursor: 'pointer' }}
+          size={28}
+        />
         <Button variant="contained" color="secondary">
           nossirah.eth
-          <FaCopy style={{ marginLeft: '10px' }} />
+          <FaCopy style={{ marginLeft: '15px' }} />
         </Button>
       </Box>
       <main>
