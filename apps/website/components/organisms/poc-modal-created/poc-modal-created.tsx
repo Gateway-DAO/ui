@@ -38,11 +38,24 @@ export default function PocModalCreated({ open, handleClose }) {
             }}
             onClick={handleClose}
           />
-          <Typography id="modal-modal-title" variant="h6" component="h2">
+          <Typography
+            id="modal-modal-title"
+            variant="h6"
+            component="h2"
+            fontSize={48}
+            textAlign="center"
+          >
             Proof of Credential created
           </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            You have created the Olympus Operations Working Group - Season 2
+          <Typography
+            id="modal-modal-description"
+            sx={{ mt: 2, textAlign: 'center' }}
+            fontSize={16}
+          >
+            You have created the{' '}
+            <span style={{ color: '#D083FF' }}>
+              Olympus Operations Working Group - Season 2
+            </span>{' '}
             credential.
           </Typography>
         </Box>
