@@ -62,26 +62,24 @@ export function ProfileTemplate() {
           }}
         />
       </Paper>
-      <header>
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'end',
-            alignItems: 'center',
-            marginTop: '30px',
-            marginRight: '50px',
-          }}
-        >
-          <MdEmail style={{ marginRight: '10px' }} />
-          <FaGithub style={{ marginRight: '10px' }} />
-          <FaTwitter style={{ marginRight: '10px' }} />
-          <FaDiscord style={{ marginRight: '10px' }} fontSize="large" />
-          <Button variant="contained" color="secondary">
-            nossirah.eth
-            <FaCopy style={{ marginLeft: '10px' }} />
-          </Button>
-        </Box>
-      </header>
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'end',
+          alignItems: 'center',
+          marginTop: '30px',
+          marginRight: '50px',
+        }}
+      >
+        <MdEmail style={{ marginRight: '10px' }} />
+        <FaGithub style={{ marginRight: '10px' }} />
+        <FaTwitter style={{ marginRight: '10px' }} />
+        <FaDiscord style={{ marginRight: '10px' }} fontSize="large" />
+        <Button variant="contained" color="secondary">
+          nossirah.eth
+          <FaCopy style={{ marginLeft: '10px' }} />
+        </Button>
+      </Box>
       <main>
         <Box sx={{ margin: '30px 65px' }}>
           <h1 style={{ marginBottom: '0' }}>Shriram Chandra</h1>
