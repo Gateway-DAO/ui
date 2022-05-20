@@ -62,7 +62,6 @@ export function ImageCropDialog({ image, onSubmit, onClose }: Props) {
           onCropComplete={onChangeCrop}
           onZoomChange={setZoom}
           zoomSpeed={0.5}
-          style={{}}
         />
       </Box>
 
