@@ -8,7 +8,11 @@ type Props = {
   onSubmit: (data: NewUserSchema) => void;
 };
 
-/* TODO: Change hardcoded text to translate */
+/*
+  TODO: Change hardcoded text to translate
+  TODO: Loading submit button
+  TODO: Disable submit button on form error
+  */
 
 export function Form({ onSubmit }: Props) {
   const {
@@ -44,10 +48,10 @@ export function Form({ onSubmit }: Props) {
         required
         label="E-mail"
         type="email"
-        id="email"
-        {...register('email')}
-        error={!!errors.email}
-        helperText={errors.email?.message}
+        id="email_address"
+        {...register('email_address')}
+        error={!!errors.email_address}
+        helperText={errors.email_address?.message}
       />
       <Button variant="contained" type="submit" sx={{ mt: 2 }}>
         Enter the Gateway

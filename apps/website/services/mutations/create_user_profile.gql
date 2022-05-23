@@ -1,0 +1,15 @@
+mutation update_user_profile(
+  $id: uuid!,
+  $name: String!,
+  $username: String!,
+  $pfp: String,
+  $email_address: citext!)
+  {
+  update_users_by_pk(pk_columns: {id: $id}, _set: {name: $name, username: $username, pfp: $pfp, email_address: $email_address}) {
+      id
+      name
+      username
+      pfp
+      email_address
+    }
+}

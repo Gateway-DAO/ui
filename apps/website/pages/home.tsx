@@ -40,8 +40,6 @@ export default function Home({
   homeProps: { user, daos, gates, people },
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const { t } = useTranslation('dashboard-home');
-  const arrays = new Array(20).fill(1).map((_, i) => i);
-  console.log({ user, daos, gates, people });
 
   return (
     <DashboardTemplate
