@@ -11,7 +11,7 @@ export default function CredentialCard() {
       <CardMedia
         component="img"
         height="302"
-        image="https://i.ibb.co/Lz8f6Mq/olympus-credential-picture.png"
+        image="https://i.postimg.cc/6QJDW2r1/olympus-credential-picture.png"
         alt="green iguana"
       />
       <CardContent>
