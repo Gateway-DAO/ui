@@ -12,7 +12,7 @@ export default function CredentialCard() {
         component="img"
         height="302"
         image="https://i.postimg.cc/6QJDW2r1/olympus-credential-picture.png"
-        alt="green iguana"
+        alt="credential image"
       />
       <CardContent>
         <Typography gutterBottom variant="h5" component="div" fontSize={20}>
