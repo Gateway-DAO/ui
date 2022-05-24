@@ -1,5 +1,5 @@
 General:
-  ☐ react-use vs ahooks
+  ☐ !important! Home is now the Explore page
   ☐ !important! re-structure all `pages/` files after finishing the Gates and Keys routes, to make them more readable and maintainable
 
 SSR:

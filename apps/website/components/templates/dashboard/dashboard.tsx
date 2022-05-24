@@ -79,19 +79,11 @@ export function DashboardTemplate({
         >
           <DaosList>
             <AnimatePresence>
-              <MotionListItemButton
-                key="profile"
-                layoutId="profile"
-                aria-label="Go to Profile"
-                sx={{ mb: 2.75 }}
-                className={clsx({ active: router.asPath === '/home' })}
-              >
-                <ListItemIcon>
-                  <Avatar sx={{ background: 'transparent' }}>
-                    <GatewayIcon />
-                  </Avatar>
-                </ListItemIcon>
-              </MotionListItemButton>
+              <ListItemIcon sx={{ mb: 2.75 }}>
+                <Avatar sx={{ background: 'transparent' }}>
+                  <GatewayIcon />
+                </Avatar>
+              </ListItemIcon>
               {!!currentDao && isCurrentDaoTemporary && (
                 <TemporaryDao key={currentDao.id} dao={currentDao} />
               )}

@@ -1,4 +1,4 @@
-query get_home($id: uuid!) {
+query get_explore($id: uuid!) {
   user: users_by_pk (id: $id) {
     id
     name
@@ -8,10 +8,19 @@ query get_home($id: uuid!) {
       }
     }
     gate_progresses {
+      id
+      status
       gate {
          id
+         badge
+         gate_name
+         categories
+         dao {
+           id
+           logo_url
+           name
+         }
       }
-      status
     }
   }
   gates {

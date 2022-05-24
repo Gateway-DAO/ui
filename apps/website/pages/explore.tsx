@@ -51,7 +51,7 @@ export default function Home({
       }}
       followingDaos={mockDaos}
     >
-      <HomeTemplate title={t('title', { name: user.name })}>
+      <HomeTemplate title={t('title')}>
         <SectionWithSlider
           title={t('featured-gates.title')}
           caption={t('featured-gates.caption')}

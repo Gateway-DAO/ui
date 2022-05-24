@@ -39,7 +39,7 @@ export function NewUserTemplate({ user }: Props) {
       onSuccess(data) {
         console.log('Profile updated!', data);
         snackbar.handleClick({ message: 'Profile updated!' });
-        router.push('/home');
+        router.push('/explore');
       },
     }
   );
