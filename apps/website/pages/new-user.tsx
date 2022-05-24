@@ -18,7 +18,7 @@ export async function getServerSideProps() {
 
   return {
     props: {
-      user,
+      user: clearObject(user),
     },
   };
 }
@@ -38,7 +38,7 @@ export default function Home({
         },
       }}
     >
-      <NewUserTemplate user={clearObject(user)} />
+      <NewUserTemplate user={user} />
     </DashboardTemplate>
   );
 }
