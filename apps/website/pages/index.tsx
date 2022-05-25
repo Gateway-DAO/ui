@@ -1,13 +1,11 @@
 import useTranslation from 'next-translate/useTranslation';
-import Link from 'next/link';
 
 import { useToggle } from 'react-use';
 
-import { Button, Box, Paper, alpha, Dialog } from '@mui/material';
-import Modal from '@mui/material/Modal';
+import { Button } from '@mui/material';
 
 import { LandingTemplate } from '../components/templates/landing';
-import { WalletModal } from '../components/templates/landing/wallet-modal';
+import { WalletModal } from '../components/templates/landing/wallet-modal/wallet-modal';
 import useToggleContainerClass from '../hooks/useToggleContainerClass';
 
 export default function Index() {
@@ -24,9 +22,7 @@ export default function Index() {
           </Button>
         }
       />
-      <Dialog open={isOpen} onClose={toggleOpen}>
-        <WalletModal />
-      </Dialog>
+      <WalletModal isOpen={isOpen} onClose={toggleOpen} />
     </>
   );
 }

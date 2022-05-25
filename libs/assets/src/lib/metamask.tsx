@@ -3,7 +3,7 @@ import SvgIcon, { SvgIconProps } from '@mui/material/SvgIcon';
 export function MetamaskIcon(props: SvgIconProps) {
   return (
     <SvgIcon viewBox="0 0 212 189" {...props}>
-      <g fill="none" fill-rule="evenodd">
+      <g fill="none" fillRule="evenodd">
         <path
           fill="#CDBDB2"
           d="m60.75 173.25 27.563 7.313V171l2.25-2.25h15.75v19.125H89.438l-20.813-9z"

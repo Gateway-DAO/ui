@@ -18,7 +18,8 @@ const gqlClientClient = new GraphQLClient(
   process.env.NEXT_PUBLIC_HASURA_ENDPOINT,
   {
     headers: {
-      'x-hasura-admin-secret': process.env.NEXT_PUBLIC_HASURA_ADMIN_SECRET,
+      //   'x-hasura-admin-secret': process.env.NEXT_PUBLIC_HASURA_ADMIN_SECRET,
+      // 'X-Hasura-Role': 'unauthenticated',
     },
   }
 );
