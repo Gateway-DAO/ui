@@ -56,6 +56,7 @@ export function ConnectedWallet({ onBack }: Props) {
     [sign]
   );
 
+  /* Handles nonce generation */
   const nonce = useQuery(
     [account.data?.address, 'nonce'],
     () => gqlMethodsClient.get_nonce({ wallet: account.data.address! }),
