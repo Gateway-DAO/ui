@@ -27,6 +27,7 @@
     "change-case": "^4.1.2",
     "clsx": "^1.1.1",
     "core-js": "^3.6.5",
+    "ethers": "^5.6.8",
     "framer-motion": "^6.3.3",
     "graphql": "^16.4.0",
     "graphql-request": "^4.2.0",
@@ -45,6 +46,7 @@
     "tslib": "^2.0.0",
     "type-fest": "^2.12.2",
     "use-breakpoint": "^3.0.2",
+    "wagmi": "^0.4.3",
     "yup": "^0.32.11"
   },
   "devDependencies": {
