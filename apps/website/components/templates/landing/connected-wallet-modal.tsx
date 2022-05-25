@@ -1,30 +1,137 @@
-import { useEffect, useState } from 'react';
+/* eslint-disable react/no-unescaped-entities */
+import { useRouter } from 'next/router';
+import { PropsWithChildren, useCallback, useMemo } from 'react';
 
 import { AnimatePresence } from 'framer-motion';
 import { useQuery } from 'react-query';
-import { useConnect, useAccount } from 'wagmi';
+import { useConnect, useAccount, useSignMessage } from 'wagmi';
 
 import { MotionBox } from '@gateway/ui';
 
-import { Box, CircularProgress, DialogTitle } from '@mui/material';
+import { Check, Close } from '@mui/icons-material';
+import {
+  Box,
+  Button,
+  CircularProgress,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from '@mui/material';
 
 import { gqlMethodsClient } from '../../../services/api';
 
-export function ConnectedWallet() {
-  const { activeConnector } = useConnect();
-  const { data, isError, isLoading, isSuccess } = useAccount();
+type Props = {
+  onBack: () => void;
+};
 
-  const [count, setCount] = useState(0);
+const AnimatedMessage = ({ children }: PropsWithChildren<unknown>) => (
+  <MotionBox
+    initial={{ opacity: 0, x: -100 }}
+    animate={{ opacity: 1, x: 0 }}
+    exit={{ opacity: 0, x: 100 }}
+    transition={{ ease: 'easeInOut' }}
+    sx={{
+      position: 'absolute',
+      textAlign: 'center',
+      width: '100%',
+    }}
+  >
+    {' '}
+    {children}
+  </MotionBox>
+);
+
+export function ConnectedWallet({ onBack }: Props) {
+  const { activeConnector } = useConnect();
+  const router = useRouter();
+  const account = useAccount();
+  const sign = useSignMessage();
+
+  const sendSignature = useCallback(
+    (nonce: number) =>
+      sign.signMessage({
+        message: `Welcome to Gateway!\n\nPlease sign this message for access: ${nonce}`,
+      }),
+    [sign]
+  );
 
   const nonce = useQuery(
-    [data?.address, 'nonce'],
-    () => gqlMethodsClient.get_nonce({ wallet: data.address! }),
+    [account.data?.address, 'nonce'],
+    () => gqlMethodsClient.get_nonce({ wallet: account.data.address! }),
     {
-      enabled: isSuccess && !!data.address,
+      enabled: account.isSuccess && !!account.data.address,
+      onSuccess({ get_nonce: { nonce } }) {
+        sendSignature(nonce);
+      },
     }
   );
 
-  console.table(nonce);
+  const login = useQuery(
+    [account.data?.address, sign.data, 'login'],
+    () =>
+      gqlMethodsClient.login({
+        signature: sign.data,
+        wallet: account.data.address!,
+      }),
+    {
+      enabled: sign.isSuccess && !!account.data.address,
+      onSuccess(data) {
+        router.push('/new-user');
+      },
+    }
+  );
+
+  const isLoading =
+    account.isLoading || nonce.isLoading || sign.isLoading || login.isLoading;
+
+  const error = useMemo(() => {
+    if (account.isError)
+      return {
+        label: 'Reconnect to Wallet',
+        message: account.error,
+        onClick: onBack,
+      };
+    if (nonce.isError)
+      return {
+        label: 'Try again',
+        message: (nonce.error as any)?.response?.errors?.[0]?.message,
+        onClick: () => nonce.refetch(),
+      };
+    if (sign.isError || (sign.isIdle && nonce.isSuccess))
+      return {
+        label: 'Try sign again',
+        message: sign.error,
+        onClick: () => sendSignature(nonce.data?.get_nonce?.nonce),
+      };
+    if (login.isError)
+      return {
+        label: 'Try again',
+        message: (login.error as any)?.response?.errors?.[0]?.message,
+        onClick: () => {
+          sign.reset();
+          nonce.remove();
+          login.remove();
+          onBack();
+        },
+      };
+    return undefined;
+  }, [
+    account.error,
+    account.isError,
+    login.error,
+    login.isError,
+    login.refetch,
+    nonce.data?.get_nonce?.nonce,
+    nonce.error,
+    nonce.isIdle,
+    nonce.isError,
+    nonce.refetch,
+    onBack,
+    sendSignature,
+    sign.error,
+    sign.isError,
+  ]);
 
   return (
     <Box>
@@ -33,37 +140,83 @@ export function ConnectedWallet() {
       </DialogTitle>
       <Box
         sx={{
-          height: 80,
+          height: 64,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
         }}
       >
-        <CircularProgress color="success" />
+        {login.isSuccess && (
+          <Check color="success" sx={{ height: 60, width: 60 }} />
+        )}
+        {!login.isSuccess && !error && (
+          <CircularProgress color="success" sx={{ height: 60, width: 60 }} />
+        )}
+        {!!error && <Close color="error" sx={{ height: 60, width: 60 }} />}
       </Box>
-      <Box
-        sx={{
-          height: 36,
-          paddingX: 2,
-          paddingBottom: 4,
-          overflow: 'hidden',
-        }}
-      >
-        <Box sx={{ position: 'relative' }}>
-          <AnimatePresence>
-            <MotionBox
-              key={count}
-              initial={{ opacity: 0, x: -100 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: 100 }}
-              transition={{ ease: 'easeInOut' }}
-              sx={{ position: 'absolute', textAlign: 'center', width: '100%' }}
-            >
-              Test {count}
-            </MotionBox>
-          </AnimatePresence>
+      {isLoading && (
+        <Box
+          sx={{
+            height: 36,
+            paddingX: 2,
+            paddingBottom: 4,
+            overflow: 'hidden',
+          }}
+        >
+          <Box sx={{ position: 'relative' }}>
+            <AnimatePresence>
+              {account.isLoading && (
+                <AnimatedMessage key="account">Loading account</AnimatedMessage>
+              )}
+              {nonce.isLoading && (
+                <AnimatedMessage key="nonce">
+                  Checking if you is you
+                </AnimatedMessage>
+              )}
+              {sign.isLoading && (
+                <AnimatedMessage key="sign">
+                  Waiting for signature
+                </AnimatedMessage>
+              )}
+              {login.isLoading && (
+                <AnimatedMessage key="login">
+                  Entering the Gateway
+                </AnimatedMessage>
+              )}
+            </AnimatePresence>
+          </Box>
         </Box>
-      </Box>
+      )}
+      {login.isSuccess && (
+        <>
+          <DialogContent>
+            <DialogContentText
+              sx={{ whiteSpace: 'pre-wrap', textAlign: 'center' }}
+            >
+              Success
+              <br />
+              We're redirecting you soon
+            </DialogContentText>
+          </DialogContent>
+        </>
+      )}
+      {error && (
+        <>
+          <DialogContent>
+            <DialogContentText>{error.message}</DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button
+              variant="contained"
+              onClick={error.onClick}
+              fullWidth
+              size="small"
+            >
+              {error.label}
+            </Button>
+          </DialogActions>
+        </>
+      )}
     </Box>
   );
 }

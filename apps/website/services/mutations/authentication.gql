@@ -1,6 +1,5 @@
 query get_nonce($wallet: String!) {
   get_nonce(wallet: $wallet) {
-    address
     nonce
   }
 }
