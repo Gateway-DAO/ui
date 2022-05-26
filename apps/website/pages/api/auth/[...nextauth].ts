@@ -11,12 +11,25 @@ export default NextAuth({
         wallet: { label: 'Wallet' },
         signature: { label: 'Signature' },
       },
-      async authorize(credentials, req) {
+      /* async authorize(credentials, req) {
         const res = await gqlMethodsClient.login({
           signature: credentials.signature,
           wallet: credentials.wallet,
         });
         return res.login;
+      }, */
+      async authorize(credentials, req) {
+        try {
+          const res = await gqlMethodsClient.login({
+            signature: credentials.signature,
+            wallet: credentials.wallet,
+          });
+          console.log(res);
+          return res.login;
+        } catch (e) {
+          console.error('Auth error', e);
+          throw e;
+        }
       },
     }),
     // ...add more providers here
@@ -28,12 +41,14 @@ export default NextAuth({
   callbacks: {
     async session({ session, token }) {
       session.address = token.sub;
+      session.user.id = 'e92ec36c-d003-46ac-ae3d-75f378070caa';
       session.user.name = token.sub;
       session.user.image = 'https://www.fillmurray.com/128/128';
+      session.user.isFirstTime = true; // TODO: validate if is a new user
       return session;
     },
     async jwt(options) {
-      console.log(options);
+      // console.log(options);
       return options.token;
     },
   },

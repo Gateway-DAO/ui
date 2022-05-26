@@ -1,6 +1,5 @@
-/* TODO: Gap using values */
-
-import { InferGetServerSidePropsType } from 'next';
+import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
+import { getSession } from 'next-auth/react';
 
 import { clearObject } from '@gateway/helpers';
 import { TOKENS } from '@gateway/theme';
@@ -9,10 +8,21 @@ import { DashboardTemplate } from '../components/templates/dashboard';
 import { NewUserTemplate } from '../components/templates/new-user';
 import { gqlMethodsServer } from '../services/api-server';
 
-export async function getServerSideProps() {
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+  const session = await getSession({ req });
+
+  if (!session?.user) {
+    return {
+      redirect: '/',
+      props: {
+        user: null,
+      },
+    };
+  }
+
   const user = (
     await gqlMethodsServer.get_new_user({
-      id: 'e92ec36c-d003-46ac-ae3d-75f378070caa',
+      id: session.user.id,
     })
   )?.user;
 
@@ -21,7 +31,7 @@ export async function getServerSideProps() {
       user: clearObject(user),
     },
   };
-}
+};
 
 export default function Home({
   user,

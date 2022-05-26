@@ -1,5 +1,7 @@
 /* eslint-disable react/no-unescaped-entities */
-import { signIn } from 'next-auth/react';
+import { signIn, useSession } from 'next-auth/react';
+import { getSession } from 'next-auth/react';
+import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import { useCallback, useMemo } from 'react';
 
@@ -11,6 +13,7 @@ import { Check, Close } from '@mui/icons-material';
 import {
   Box,
   Button,
+  Link,
   CircularProgress,
   DialogActions,
   DialogContent,
@@ -29,7 +32,7 @@ type Props = {
 /* TODO: Move this out from here, move to page level */
 export function ConnectedWallet({ onBack }: Props) {
   const { activeConnector } = useConnect();
-
+  const { data: session } = useSession();
   const router = useRouter();
   const account = useAccount();
   const sign = useSignMessage();
@@ -64,9 +67,9 @@ export function ConnectedWallet({ onBack }: Props) {
       }),
     {
       enabled: sign.isSuccess && !!account.data?.address,
-      onSuccess(data) {
-        console.log('login success', data);
-        // router.push('/new-user');
+      async onSuccess() {
+        const session = await getSession();
+        router.push(session.user.isFirstTime ? "'/new-user'" : '/home');
       },
     }
   );
@@ -168,9 +171,7 @@ export function ConnectedWallet({ onBack }: Props) {
                 </AnimatedMessage>
               )}
               {login.isLoading && (
-                <AnimatedMessage key="login">
-                  Entering the Gateway
-                </AnimatedMessage>
+                <AnimatedMessage key="login">Validating wallet</AnimatedMessage>
               )}
             </AnimatePresence>
           </Box>
@@ -184,7 +185,14 @@ export function ConnectedWallet({ onBack }: Props) {
             >
               Success
               <br />
-              We're redirecting you soon
+              now you're entering{' '}
+              <NextLink
+                passHref
+                href={session?.user?.isFirstTime ? '/new-user' : '/home'}
+              >
+                <Link color="primary">the Gateway</Link>
+              </NextLink>
+              <br />
             </DialogContentText>
           </DialogContent>
         </>

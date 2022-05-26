@@ -28,7 +28,7 @@ export function WalletModal({ isOpen, onClose }: Props) {
   const [canConnect, toggleCanConnect] = useToggle(false);
 
   return (
-    <Dialog open={isOpen} onClose={!canConnect && onClose}>
+    <Dialog open={isOpen} onClose={!canConnect ? onClose : null}>
       {!canConnect ? (
         <WalletSelect onSubmit={toggleCanConnect} />
       ) : (
