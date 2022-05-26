@@ -7,10 +7,10 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 
 import { mockTypes } from './__mock__';
-import { AccomplishmentsSchema } from './accomplishments-schema';
+import { AccomplishmentsTypes } from './accomplishments-schema';
 
 type Props = {
-  onSubmit: (data?: AccomplishmentsSchema) => void;
+  onSubmit: (data?: AccomplishmentsTypes) => void;
 };
 
 export function AccomplishmentsForm({ onSubmit }: Props) {
@@ -18,7 +18,7 @@ export function AccomplishmentsForm({ onSubmit }: Props) {
     register,
     formState: { errors },
     handleSubmit,
-  } = useFormContext<AccomplishmentsSchema>();
+  } = useFormContext<AccomplishmentsTypes>();
 
   return (
     <Stack
@@ -26,6 +26,7 @@ export function AccomplishmentsForm({ onSubmit }: Props) {
       direction="column"
       gap={2}
       onSubmit={handleSubmit(onSubmit)}
+      sx={{ backgroundColor: '#1C1027', padding: '50px', borderRadius: '10px' }}
     >
       {/* Title */}
       <TextField

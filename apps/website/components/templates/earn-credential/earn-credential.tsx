@@ -5,6 +5,7 @@ import { useForm, FormProvider } from 'react-hook-form';
 
 import { TOKENS } from '@gateway/theme';
 
+import AddBoxIcon from '@mui/icons-material/AddBox';
 import {
   Avatar,
   Box,
@@ -13,6 +14,7 @@ import {
   Stack,
   Typography,
   Divider,
+  Button,
 } from '@mui/material';
 
 import { AccomplishmentsForm } from './accomplishments-form';
@@ -141,7 +143,32 @@ export function EarnCredentialTemplate() {
             </Grid>
           </Grid>
         </FormProvider>
+        <Grid container>
+          <Grid item xs={5}></Grid>
+          <Grid
+            item
+            xs={5}
+            sx={{
+              display: 'flex',
+              border: '1px solid grey',
+              padding: '25px',
+              borderRadius: '5px',
+              cursor: 'pointer',
+            }}
+          >
+            <AddBoxIcon sx={{ marginRight: '15px' }} />
+            <Typography variant="subtitle1" fontWeight="bold">
+              Add an Accomplishment
+            </Typography>
+          </Grid>
+        </Grid>
       </Stack>
+      <Box alignSelf="flex-end" marginRight="300px">
+        <Button variant="outlined">Cancel</Button>
+        <Button variant="contained" sx={{ marginLeft: '10px' }}>
+          Submit
+        </Button>
+      </Box>
     </Stack>
   );
 }
