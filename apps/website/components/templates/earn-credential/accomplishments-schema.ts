@@ -1,6 +1,6 @@
 import { object, string, SchemaOf } from 'yup';
 
-export type AccomplishmentsSchema = {
+export type AccomplishmentsTypes = {
   accomplishment_title: string;
   accomplishment_description: string;
   pow_type: string;
@@ -8,7 +8,7 @@ export type AccomplishmentsSchema = {
   pow_description: string;
 };
 
-export const schema: SchemaOf<AccomplishmentsSchema> = object({
+export const accomplishmentsSchema: SchemaOf<AccomplishmentsTypes> = object({
   accomplishment_title: string().defined(),
   accomplishment_description: string().defined(),
   pow_type: string().defined(),
