@@ -26,7 +26,12 @@ export function AccomplishmentsForm({ onSubmit }: Props) {
       direction="column"
       gap={2}
       onSubmit={handleSubmit(onSubmit)}
-      sx={{ backgroundColor: '#1C1027', padding: '50px', borderRadius: '10px' }}
+      sx={{
+        backgroundColor: '#1C1027',
+        padding: '50px',
+        borderRadius: '10px',
+        marginBottom: '20px',
+      }}
     >
       {/* Title */}
       <TextField

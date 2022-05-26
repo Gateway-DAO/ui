@@ -1,4 +1,6 @@
 import Image from 'next/image';
+import * as React from 'react';
+import { useState } from 'react';
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
@@ -38,6 +40,22 @@ export function EarnCredentialTemplate() {
   const credentialImgUrl =
     'https://i.postimg.cc/6QJDW2r1/olympus-credential-picture.png';
   const randomNftUrl = 'https://i.ibb.co/bzzgBfT/random-nft.png';
+
+  const [accomplishmentsCount, setAccomplishmentsCount] = useState(1);
+
+  const getAccomplishmentCards = (count) => {
+    const cards = [];
+    for (let i = 0; i < count; i++) {
+      cards.push(
+        <AccomplishmentsForm
+          onSubmit={(data) => {
+            console.log(data);
+          }}
+        />
+      );
+    }
+    return cards;
+  };
 
   return (
     <Stack gap={6} p={TOKENS.CONTAINER_PX}>
@@ -135,11 +153,7 @@ export function EarnCredentialTemplate() {
               </Typography>
             </Grid>
             <Grid item xs={5}>
-              <AccomplishmentsForm
-                onSubmit={(data) => {
-                  console.log(data);
-                }}
-              />
+              {getAccomplishmentCards(accomplishmentsCount)}
             </Grid>
           </Grid>
         </FormProvider>
@@ -155,6 +169,7 @@ export function EarnCredentialTemplate() {
               borderRadius: '5px',
               cursor: 'pointer',
             }}
+            onClick={() => setAccomplishmentsCount(accomplishmentsCount + 1)}
           >
             <AddBoxIcon sx={{ marginRight: '15px' }} />
             <Typography variant="subtitle1" fontWeight="bold">
