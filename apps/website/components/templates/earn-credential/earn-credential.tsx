@@ -101,34 +101,45 @@ export function EarnCredentialTemplate() {
         <Divider light sx={{ width: '100%' }} />
         {/* Credential details form */}
         <FormProvider {...credentialDetailsMethods}>
-          <Box sx={{ width: '25%' }}>
-            <Typography variant="subtitle1" fontWeight="bold">
-              Your Details
-            </Typography>
-            <Typography variant="caption">Customize Your Credential</Typography>
-            <CredentialDetailsForm
-              onSubmit={(data) => {
-                console.log(data);
-              }}
-            />
-          </Box>
+          <Grid container>
+            <Grid item xs={5}>
+              <Typography variant="subtitle1" fontWeight="bold">
+                Your Details
+              </Typography>
+              <Typography variant="caption">
+                Customize Your Credential
+              </Typography>
+            </Grid>
+            <Grid item xs={5}>
+              <CredentialDetailsForm
+                onSubmit={(data) => {
+                  console.log(data);
+                }}
+              />
+            </Grid>
+          </Grid>
         </FormProvider>
+        <Divider light sx={{ width: '100%' }} />
         {/* Proudest Accomplishments form */}
         <FormProvider {...accomplishmentsMethods}>
-          <Box sx={{ width: '25%' }}>
-            <Typography variant="subtitle1" fontWeight="bold">
-              Proudest Accomplishments
-            </Typography>
-            <Typography variant="caption">
-              Tell the world about your greatest accomplishments and get it
-              verified!
-            </Typography>
-            <AccomplishmentsForm
-              onSubmit={(data) => {
-                console.log(data);
-              }}
-            />
-          </Box>
+          <Grid container>
+            <Grid item xs={5}>
+              <Typography variant="subtitle1" fontWeight="bold">
+                Proudest Accomplishments
+              </Typography>
+              <Typography variant="caption">
+                Tell the world about your greatest accomplishments and get it
+                verified!
+              </Typography>
+            </Grid>
+            <Grid item xs={5}>
+              <AccomplishmentsForm
+                onSubmit={(data) => {
+                  console.log(data);
+                }}
+              />
+            </Grid>
+          </Grid>
         </FormProvider>
       </Stack>
     </Stack>
