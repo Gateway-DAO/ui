@@ -7,10 +7,10 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 
 import { mockLevels } from './__mock__';
-import { CredentialDetailsSchema } from './credential-details-schema';
+import { CredentialDetailsTypes } from './credential-details-schema';
 
 type Props = {
-  onSubmit: (data?: CredentialDetailsSchema) => void;
+  onSubmit: (data?: CredentialDetailsTypes) => void;
 };
 
 export function CredentialDetailsForm({ onSubmit }: Props) {
@@ -18,7 +18,7 @@ export function CredentialDetailsForm({ onSubmit }: Props) {
     register,
     formState: { errors },
     handleSubmit,
-  } = useFormContext<CredentialDetailsSchema>();
+  } = useFormContext<CredentialDetailsTypes>();
 
   return (
     <Stack
