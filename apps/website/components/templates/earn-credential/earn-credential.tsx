@@ -1,5 +1,4 @@
 import Image from 'next/image';
-import * as React from 'react';
 import { useState } from 'react';
 
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -9,6 +8,7 @@ import { TOKENS } from '@gateway/theme';
 
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import ArrowCircleUpIcon from '@mui/icons-material/ArrowCircleUp';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import {
   Avatar,
   Box,
@@ -60,7 +60,35 @@ export function EarnCredentialTemplate() {
 
   return (
     <Stack gap={6} p={TOKENS.CONTAINER_PX}>
-      <Typography variant="h6">Earn Proof of Credential</Typography>
+      <Box>
+        <Image
+          src="/favicon-512.png"
+          alt="gateway-logo"
+          height={40}
+          width={40}
+        />
+      </Box>
+      <Box
+        sx={{
+          display: 'flex',
+          position: 'absolute',
+          top: '40px',
+          right: '50px',
+          cursor: 'pointer',
+        }}
+      >
+        <Avatar
+          src={randomNftUrl}
+          sx={{
+            width: 30,
+            height: 30,
+          }}
+        />
+        <ArrowDropDownIcon style={{ position: 'relative', top: '5px' }} />
+      </Box>
+      <Typography variant="h5" sx={{ marginBottom: '100px' }}>
+        Earn Proof of Credential
+      </Typography>
       <Stack
         direction="column"
         justifyContent="space-between"
@@ -70,7 +98,7 @@ export function EarnCredentialTemplate() {
         {/* Credential details */}
         <Grid container>
           <Grid item xs={5}>
-            <Typography variant="subtitle1" fontWeight="bold">
+            <Typography variant="h6" fontWeight="bold">
               Details
             </Typography>
             <Typography variant="caption">
@@ -124,7 +152,7 @@ export function EarnCredentialTemplate() {
         <FormProvider {...credentialDetailsMethods}>
           <Grid container>
             <Grid item xs={5}>
-              <Typography variant="subtitle1" fontWeight="bold">
+              <Typography variant="h6" fontWeight="bold">
                 Your Details
               </Typography>
               <Typography variant="caption">
@@ -145,7 +173,7 @@ export function EarnCredentialTemplate() {
         <FormProvider {...accomplishmentsMethods}>
           <Grid container>
             <Grid item xs={5}>
-              <Typography variant="subtitle1" fontWeight="bold">
+              <Typography variant="h6" fontWeight="bold">
                 Proudest Accomplishments
               </Typography>
               <Typography variant="caption">
@@ -173,7 +201,7 @@ export function EarnCredentialTemplate() {
             onClick={() => setAccomplishmentsCount(accomplishmentsCount + 1)}
           >
             <AddBoxIcon sx={{ marginRight: '15px' }} />
-            <Typography variant="subtitle1" fontWeight="bold">
+            <Typography variant="h6" fontWeight="bold">
               Add an Accomplishment
             </Typography>
           </Grid>
