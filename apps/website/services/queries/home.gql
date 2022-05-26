@@ -1,15 +1,15 @@
 query get_home($id: uuid!) {
-  user: users_by_pk (id: $id) {
+  user: users_by_pk(id: $id) {
     id
     name
-    credentialsByTargetId {
+    credentials {
       dao {
         name
       }
     }
     gate_progresses {
       gate {
-         id
+        id
       }
       status
     }
@@ -37,7 +37,7 @@ query get_home($id: uuid!) {
     # gates {....}
     # user is following ?
   }
-  people: users(where: {id: {_neq: $id}}) {
+  people: users(where: { id: { _neq: $id } }) {
     id
     name
     pfp
