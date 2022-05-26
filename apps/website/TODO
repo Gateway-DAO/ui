@@ -1,6 +1,6 @@
 General:
-  ☐ react-use vs ahooks
   ☐ !important! re-structure all `pages/` files after finishing the Gates and Keys routes, to make them more readable and maintainable
+  ☐ !important! add `NEXTAUTH_URL` to env on vercel dashboard
 
 SSR:
   x Add `_middlewares.ts` to parse user-agent

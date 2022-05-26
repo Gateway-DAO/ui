@@ -12,6 +12,7 @@ export default function Index() {
   const { t } = useTranslation('index');
   const [isOpen, toggleOpen] = useToggle(false);
   useToggleContainerClass('blur', isOpen);
+
   return (
     <>
       <LandingTemplate

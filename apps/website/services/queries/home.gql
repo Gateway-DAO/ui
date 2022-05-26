@@ -2,7 +2,7 @@ query get_home($id: uuid!) {
   user: users_by_pk (id: $id) {
     id
     name
-    credentialsByTargetId {
+    credentials {
       dao {
         name
       }

@@ -1,3 +1,4 @@
+import { SessionProvider } from 'next-auth/react';
 import { AppProps } from 'next/app';
 import Head from 'next/head';
 
@@ -16,7 +17,10 @@ import '../styles/next.css';
 import { queryClient } from '../services/query-client';
 import { web3client } from '../services/web3/client';
 
-function CustomApp({ Component, pageProps }: AppProps) {
+function CustomApp({
+  Component,
+  pageProps: { session, ...pageProps },
+}: AppProps) {
   usePersistLocale();
   return (
     <>
@@ -26,16 +30,18 @@ function CustomApp({ Component, pageProps }: AppProps) {
         <SEOFavicon />
         <SEOSocial />
       </Head>
-      <WagmiConfig client={web3client}>
-        <ThemeProvider>
-          <QueryClientProvider client={queryClient}>
-            <Hydrate state={pageProps.dehydratedState}>
-              <Component {...pageProps} />
-              {/* <ReactQueryDevtools initialIsOpen={false} /> */}
-            </Hydrate>
-          </QueryClientProvider>
-        </ThemeProvider>
-      </WagmiConfig>
+      <SessionProvider session={session}>
+        <WagmiConfig client={web3client}>
+          <ThemeProvider>
+            <QueryClientProvider client={queryClient}>
+              <Hydrate state={pageProps.dehydratedState}>
+                <Component {...pageProps} />
+                {/* <ReactQueryDevtools initialIsOpen={false} /> */}
+              </Hydrate>
+            </QueryClientProvider>
+          </ThemeProvider>
+        </WagmiConfig>
+      </SessionProvider>
     </>
   );
 }

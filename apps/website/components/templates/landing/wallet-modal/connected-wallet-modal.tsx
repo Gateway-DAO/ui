@@ -1,4 +1,5 @@
 /* eslint-disable react/no-unescaped-entities */
+import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { useCallback, useMemo } from 'react';
 
@@ -25,9 +26,10 @@ type Props = {
 };
 
 /* TODO: Improve state handling with state machine */
-
+/* TODO: Move this out from here, move to page level */
 export function ConnectedWallet({ onBack }: Props) {
   const { activeConnector } = useConnect();
+
   const router = useRouter();
   const account = useAccount();
   const sign = useSignMessage();
@@ -45,7 +47,7 @@ export function ConnectedWallet({ onBack }: Props) {
     [account.data?.address, 'nonce'],
     () => gqlMethodsClient.get_nonce({ wallet: account.data.address! }),
     {
-      enabled: account.isSuccess && !!account.data.address,
+      enabled: account.isSuccess && !!account.data?.address,
       onSuccess({ get_nonce: { nonce } }) {
         sendSignature(nonce);
       },
@@ -55,14 +57,16 @@ export function ConnectedWallet({ onBack }: Props) {
   const login = useQuery(
     [account.data?.address, sign.data, 'login'],
     () =>
-      gqlMethodsClient.login({
-        signature: sign.data,
+      signIn('credentials', {
+        redirect: false,
         wallet: account.data.address!,
+        signature: sign.data,
       }),
     {
-      enabled: sign.isSuccess && !!account.data.address,
+      enabled: sign.isSuccess && !!account.data?.address,
       onSuccess(data) {
-        router.push('/new-user');
+        console.log('login success', data);
+        // router.push('/new-user');
       },
     }
   );
