@@ -8,6 +8,7 @@ import { useForm, FormProvider } from 'react-hook-form';
 import { TOKENS } from '@gateway/theme';
 
 import AddBoxIcon from '@mui/icons-material/AddBox';
+import ArrowCircleUpIcon from '@mui/icons-material/ArrowCircleUp';
 import {
   Avatar,
   Box,
@@ -183,6 +184,13 @@ export function EarnCredentialTemplate() {
         <Button variant="contained" sx={{ marginLeft: '10px' }}>
           Submit
         </Button>
+      </Box>
+      <Box alignSelf="flex-end" marginRight="300px">
+        <ArrowCircleUpIcon
+          fontSize="large"
+          onClick={() => window.scrollTo(0, 0)}
+          style={{ cursor: 'pointer' }}
+        />
       </Box>
     </Stack>
   );
