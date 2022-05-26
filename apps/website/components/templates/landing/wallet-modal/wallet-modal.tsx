@@ -9,7 +9,7 @@ import {
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import { Dialog } from '@mui/material';
 
-import { ConnectedWallet } from '../connected-wallet-modal';
+import { ConnectedWallet } from './connected-wallet-modal';
 import { WalletSelect } from './wallet-select';
 
 export const icons = {

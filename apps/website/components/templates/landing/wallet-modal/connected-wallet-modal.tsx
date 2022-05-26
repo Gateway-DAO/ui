@@ -1,12 +1,10 @@
 /* eslint-disable react/no-unescaped-entities */
 import { useRouter } from 'next/router';
-import { PropsWithChildren, useCallback, useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 
 import { AnimatePresence } from 'framer-motion';
 import { useQuery } from 'react-query';
 import { useConnect, useAccount, useSignMessage } from 'wagmi';
-
-import { MotionBox } from '@gateway/ui';
 
 import { Check, Close } from '@mui/icons-material';
 import {
@@ -19,28 +17,14 @@ import {
   DialogTitle,
 } from '@mui/material';
 
-import { gqlMethodsClient } from '../../../services/api';
+import { gqlMethodsClient } from '../../../../services/api';
+import { AnimatedMessage } from './animated-message';
 
 type Props = {
   onBack: () => void;
 };
 
-const AnimatedMessage = ({ children }: PropsWithChildren<unknown>) => (
-  <MotionBox
-    initial={{ opacity: 0, x: -100 }}
-    animate={{ opacity: 1, x: 0 }}
-    exit={{ opacity: 0, x: 100 }}
-    transition={{ ease: 'easeInOut' }}
-    sx={{
-      position: 'absolute',
-      textAlign: 'center',
-      width: '100%',
-    }}
-  >
-    {' '}
-    {children}
-  </MotionBox>
-);
+/* TODO: Improve state handling with state machine */
 
 export function ConnectedWallet({ onBack }: Props) {
   const { activeConnector } = useConnect();
