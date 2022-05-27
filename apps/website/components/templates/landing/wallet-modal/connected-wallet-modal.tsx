@@ -6,7 +6,7 @@ import { useRouter } from 'next/router';
 import { useCallback, useMemo } from 'react';
 
 import { AnimatePresence } from 'framer-motion';
-import { useQuery } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
 import { useConnect, useAccount, useSignMessage } from 'wagmi';
 
 import { Check, Close } from '@mui/icons-material';
@@ -23,6 +23,7 @@ import {
 
 import { gqlMethodsClient } from '../../../../services/api';
 import { AnimatedMessage } from './animated-message';
+import { useConnectWallet } from './state';
 
 type Props = {
   onBack: () => void;
@@ -30,100 +31,13 @@ type Props = {
 
 /* TODO: Improve state handling with state machine */
 /* TODO: Move this out from here, move to page level */
+
 export function ConnectedWallet({ onBack }: Props) {
   const { activeConnector } = useConnect();
   const { data: session } = useSession();
   const router = useRouter();
-  const account = useAccount();
-  const sign = useSignMessage();
 
-  const sendSignature = useCallback(
-    (nonce: number) =>
-      sign.signMessage({
-        message: `Welcome to Gateway!\n\nPlease sign this message for access: ${nonce}`,
-      }),
-    [sign]
-  );
-
-  /* Handles nonce generation */
-  const nonce = useQuery(
-    [account.data?.address, 'nonce'],
-    () => gqlMethodsClient.get_nonce({ wallet: account.data.address! }),
-    {
-      enabled: account.isSuccess && !!account.data?.address,
-      onSuccess({ get_nonce: { nonce } }) {
-        sendSignature(nonce);
-      },
-    }
-  );
-
-  const login = useQuery(
-    [account.data?.address, sign.data, 'login'],
-    () =>
-      signIn('credentials', {
-        redirect: false,
-        wallet: account.data.address!,
-        signature: sign.data,
-      }),
-    {
-      enabled: sign.isSuccess && !!account.data?.address,
-      async onSuccess() {
-        const session = await getSession();
-        router.push(session.user.isFirstTime ? "'/new-user'" : '/home');
-      },
-    }
-  );
-
-  const isLoading =
-    account.isLoading || nonce.isLoading || sign.isLoading || login.isLoading;
-
-  const error = useMemo(() => {
-    if (account.isError)
-      return {
-        label: 'Reconnect to Wallet',
-        message: account.error,
-        onClick: onBack,
-      };
-    if (nonce.isError)
-      return {
-        label: 'Try again',
-        message: (nonce.error as any)?.response?.errors?.[0]?.message,
-        onClick: () => nonce.refetch(),
-      };
-    if (sign.isError || (sign.isIdle && nonce.isSuccess))
-      return {
-        label: 'Try sign again',
-        message: sign.error,
-        onClick: () => sendSignature(nonce.data?.get_nonce?.nonce),
-      };
-    if (login.isError)
-      return {
-        label: 'Try again',
-        message: (login.error as any)?.response?.errors?.[0]?.message,
-        onClick: () => {
-          sign.reset();
-          nonce.remove();
-          login.remove();
-          onBack();
-        },
-      };
-    return undefined;
-  }, [
-    account.error,
-    account.isError,
-    login.error,
-    login.isError,
-    login.refetch,
-    nonce.data?.get_nonce?.nonce,
-    nonce.error,
-    nonce.isIdle,
-    nonce.isError,
-    nonce.refetch,
-    onBack,
-    sendSignature,
-    sign.error,
-    sign.isError,
-  ]);
+  const { state, error, isLoading } = useConnectWallet();
 
   return (
     <Box>
@@ -138,10 +52,10 @@ export function ConnectedWallet({ onBack }: Props) {
           justifyContent: 'center',
         }}
       >
-        {login.isSuccess && (
+        {state === 'FINISHED' && (
           <Check color="success" sx={{ height: 60, width: 60 }} />
         )}
-        {!login.isSuccess && !error && (
+        {state !== 'FINISHED' && !error && (
           <CircularProgress color="success" sx={{ height: 60, width: 60 }} />
         )}
         {!!error && <Close color="error" sx={{ height: 60, width: 60 }} />}
@@ -157,27 +71,27 @@ export function ConnectedWallet({ onBack }: Props) {
         >
           <Box sx={{ position: 'relative' }}>
             <AnimatePresence>
-              {account.isLoading && (
+              {state === 'GET_ACCOUNT' && (
                 <AnimatedMessage key="account">Loading account</AnimatedMessage>
               )}
-              {nonce.isLoading && (
+              {state === 'GET_NONCE' && (
                 <AnimatedMessage key="nonce">
                   Checking if you is you
                 </AnimatedMessage>
               )}
-              {sign.isLoading && (
+              {state === 'GET_SIGNATURE' && (
                 <AnimatedMessage key="sign">
                   Waiting for signature
                 </AnimatedMessage>
               )}
-              {login.isLoading && (
+              {state === 'GET_TOKEN' && (
                 <AnimatedMessage key="login">Validating wallet</AnimatedMessage>
               )}
             </AnimatePresence>
           </Box>
         </Box>
       )}
-      {login.isSuccess && (
+      {state === 'FINISHED' && (
         <>
           <DialogContent>
             <DialogContentText
@@ -205,7 +119,7 @@ export function ConnectedWallet({ onBack }: Props) {
           <DialogActions>
             <Button
               variant="contained"
-              onClick={error.onClick}
+              onClick={error.onClick ?? onBack}
               fullWidth
               size="small"
             >

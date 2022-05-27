@@ -37,7 +37,6 @@ export function NewUserTemplate({ user }: Props) {
     gqlMethodsClient.update_user_profile,
     {
       onSuccess(data) {
-        console.log('Profile updated!', data);
         snackbar.handleClick({ message: 'Profile updated!' });
         router.push('/home');
       },

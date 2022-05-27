@@ -8,8 +8,8 @@ export default NextAuth({
     CredentialsProvider({
       name: 'credentials',
       credentials: {
-        wallet: { label: 'Wallet' },
-        signature: { label: 'Signature' },
+        wallet: { label: 'Wallet', type: 'text' },
+        signature: { label: 'Signature', type: 'text' },
       },
       /* async authorize(credentials, req) {
         const res = await gqlMethodsClient.login({
@@ -24,11 +24,16 @@ export default NextAuth({
             signature: credentials.signature,
             wallet: credentials.wallet,
           });
-          console.log(res);
+
+          const { error } = (res as any) ?? {};
+
+          if (error) {
+            throw error;
+          }
           return res.login;
         } catch (e) {
           console.error('Auth error', e);
-          throw e;
+          throw new Error(e);
         }
       },
     }),
@@ -39,17 +44,21 @@ export default NextAuth({
   },
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
-    async session({ session, token }) {
-      session.address = token.sub;
-      session.user.id = 'e92ec36c-d003-46ac-ae3d-75f378070caa';
-      session.user.name = token.sub;
-      session.user.image = 'https://www.fillmurray.com/128/128';
-      session.user.isFirstTime = true; // TODO: validate if is a new user
-      return session;
-    },
-    async jwt(options) {
-      // console.log(options);
-      return options.token;
-    },
+    // async signIn(data) {
+    //   console.log('signIn', data);
+    //   return true;
+    // },
+    // async session({ session, token }) {
+    //   session.address = token.sub;
+    //   session.user.id = 'e92ec36c-d003-46ac-ae3d-75f378070caa';
+    //   session.user.name = token.sub;
+    //   session.user.image = 'https://www.fillmurray.com/128/128';
+    //   session.user.isFirstTime = true; // TODO: validate if is a new user
+    //   return session;
+    // },
+    // async jwt(options) {
+    //   // console.log(options);
+    //   return options.token;
+    // },
   },
 });
