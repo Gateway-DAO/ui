@@ -3,7 +3,7 @@ import { ProfileTemplate } from '../components/templates/profile';
 
 export default function Profile() {
   return (
-    <DashboardTemplate showExplore={true}>
+    <DashboardTemplate showExplore={false}>
       <ProfileTemplate />
     </DashboardTemplate>
   );
