@@ -1,7 +1,7 @@
 import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 
-import { gqlMethodsClient } from '../../../services/api';
+import { gqlAnonMethods, gqlMethodsServer } from '../../../services/api-server';
 
 export default NextAuth({
   providers: [
@@ -20,17 +20,31 @@ export default NextAuth({
       }, */
       async authorize(credentials, req) {
         try {
-          const res = await gqlMethodsClient.login({
+          const res = await gqlAnonMethods.login({
             signature: credentials.signature,
             wallet: credentials.wallet,
           });
 
           const { error } = (res as any) ?? {};
 
-          if (error) {
+          if (error || !res.login) {
             throw error;
           }
-          return res.login;
+
+          console.log(res.login);
+
+          // const user = await
+          /* get current user from hasura based on the token */
+          const user = (
+            await gqlMethodsServer(res.login.token).get_current_user({
+              wallet: credentials.wallet,
+            })
+          )?.user?.[0];
+
+          return {
+            ...res.login,
+            ...user,
+          };
         } catch (e) {
           console.error('Auth error', e);
           throw new Error(e);

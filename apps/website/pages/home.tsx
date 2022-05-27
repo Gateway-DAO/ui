@@ -1,5 +1,5 @@
 import { InferGetServerSidePropsType, GetServerSideProps } from 'next';
-import { getSession } from 'next-auth/react';
+import { getSession, useSession } from 'next-auth/react';
 import useTranslation from 'next-translate/useTranslation';
 
 // import { dehydrate, useQuery } from 'react-query';
@@ -38,7 +38,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
     };
   }
 
-  const homeProps = await gqlMethodsServer.get_home({
+  const homeProps = await gqlMethodsServer(session.user.token).get_home({
     id: session.user.id,
   });
 
@@ -51,9 +51,13 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
 };
 
 export default function Home({
-  homeProps: { user, daos, gates, people },
+  homeProps: { daos, gates, people },
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const { t } = useTranslation('dashboard-home');
+  const user: any = {};
+
+  const session = useSession();
+  console.log(session);
 
   return (
     <DashboardTemplate

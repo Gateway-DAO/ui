@@ -21,7 +21,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   }
 
   const user = (
-    await gqlMethodsServer.get_new_user({
+    await gqlMethodsServer(session.user.token).get_new_user({
       id: session.user.id,
     })
   )?.user;
