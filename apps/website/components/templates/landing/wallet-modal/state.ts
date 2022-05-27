@@ -6,7 +6,7 @@ import { useAccount, useSignMessage } from 'wagmi';
 
 import { gqlMethodsClient } from '../../../../services/api';
 
-type State =
+type Step =
   | 'GET_ACCOUNT'
   | 'GET_NONCE'
   | 'GET_SIGNATURE'
@@ -17,7 +17,7 @@ type State =
 Get nonce -> sign message -> login using wallet and signature
 */
 export function useConnectWallet() {
-  const [state, setState] = useState<State>('GET_NONCE');
+  const [step, setStep] = useState<Step>('GET_NONCE');
   const [error, setError] = useState<{
     message: any;
     label: string;
@@ -28,7 +28,7 @@ export function useConnectWallet() {
   const sign = useSignMessage();
   const account = useAccount({
     onSuccess() {
-      setState('GET_NONCE');
+      setStep('GET_NONCE');
       nonce.mutate();
     },
     onError(e) {
@@ -45,7 +45,7 @@ export function useConnectWallet() {
     () => gqlMethodsClient.get_nonce({ wallet: account.data.address! }),
     {
       async onSuccess({ get_nonce: { nonce } }) {
-        setState('GET_SIGNATURE');
+        setStep('GET_SIGNATURE');
         sendSignature.mutate(nonce);
       },
       onError(e: any) {
@@ -66,7 +66,7 @@ export function useConnectWallet() {
       }),
     {
       onSuccess(signature) {
-        setState('GET_TOKEN');
+        setStep('GET_TOKEN');
         login.mutate({
           wallet: account.data.address!,
           signature,
@@ -98,6 +98,7 @@ export function useConnectWallet() {
     {
       async onSuccess(data) {
         console.log('Login success', data);
+        setStep('FINISHED');
       },
       onError(e) {
         console.error('Login error', e);
@@ -110,7 +111,7 @@ export function useConnectWallet() {
   );
 
   const onReset = () => {
-    setState('GET_NONCE');
+    setStep('GET_NONCE');
     setError(undefined);
     nonce.reset();
     sign.reset();
@@ -118,9 +119,9 @@ export function useConnectWallet() {
   };
 
   return {
-    state,
+    step,
     error,
-    isLoading: state !== 'FINISHED' && !error,
+    isLoading: step !== 'FINISHED' && !error,
     onReset,
   };
 }

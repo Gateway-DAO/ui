@@ -1,13 +1,11 @@
 /* eslint-disable react/no-unescaped-entities */
-import { signIn, useSession } from 'next-auth/react';
-import { getSession } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
-import { useCallback, useMemo } from 'react';
+import { useEffect } from 'react';
 
 import { AnimatePresence } from 'framer-motion';
-import { useMutation, useQuery } from 'react-query';
-import { useConnect, useAccount, useSignMessage } from 'wagmi';
+import { useConnect } from 'wagmi';
 
 import { Check, Close } from '@mui/icons-material';
 import {
@@ -21,7 +19,6 @@ import {
   DialogTitle,
 } from '@mui/material';
 
-import { gqlMethodsClient } from '../../../../services/api';
 import { AnimatedMessage } from './animated-message';
 import { useConnectWallet } from './state';
 
@@ -29,7 +26,6 @@ type Props = {
   onBack: () => void;
 };
 
-/* TODO: Improve state handling with state machine */
 /* TODO: Move this out from here, move to page level */
 
 export function ConnectedWallet({ onBack }: Props) {
@@ -37,7 +33,13 @@ export function ConnectedWallet({ onBack }: Props) {
   const { data: session } = useSession();
   const router = useRouter();
 
-  const { state, error, isLoading } = useConnectWallet();
+  const { step, error, isLoading } = useConnectWallet();
+
+  useEffect(() => {
+    if (step === 'FINISHED') {
+      router.push('/home');
+    }
+  }, [step]);
 
   return (
     <Box>
@@ -52,10 +54,10 @@ export function ConnectedWallet({ onBack }: Props) {
           justifyContent: 'center',
         }}
       >
-        {state === 'FINISHED' && (
+        {step === 'FINISHED' && (
           <Check color="success" sx={{ height: 60, width: 60 }} />
         )}
-        {state !== 'FINISHED' && !error && (
+        {step !== 'FINISHED' && !error && (
           <CircularProgress color="success" sx={{ height: 60, width: 60 }} />
         )}
         {!!error && <Close color="error" sx={{ height: 60, width: 60 }} />}
@@ -71,27 +73,27 @@ export function ConnectedWallet({ onBack }: Props) {
         >
           <Box sx={{ position: 'relative' }}>
             <AnimatePresence>
-              {state === 'GET_ACCOUNT' && (
+              {step === 'GET_ACCOUNT' && (
                 <AnimatedMessage key="account">Loading account</AnimatedMessage>
               )}
-              {state === 'GET_NONCE' && (
+              {step === 'GET_NONCE' && (
                 <AnimatedMessage key="nonce">
                   Checking if you is you
                 </AnimatedMessage>
               )}
-              {state === 'GET_SIGNATURE' && (
+              {step === 'GET_SIGNATURE' && (
                 <AnimatedMessage key="sign">
                   Waiting for signature
                 </AnimatedMessage>
               )}
-              {state === 'GET_TOKEN' && (
+              {step === 'GET_TOKEN' && (
                 <AnimatedMessage key="login">Validating wallet</AnimatedMessage>
               )}
             </AnimatePresence>
           </Box>
         </Box>
       )}
-      {state === 'FINISHED' && (
+      {step === 'FINISHED' && (
         <>
           <DialogContent>
             <DialogContentText
