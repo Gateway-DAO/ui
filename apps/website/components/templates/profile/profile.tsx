@@ -76,7 +76,11 @@ export function ProfileTemplate() {
         gap={2}
       >
         {socialIcons.map((Icon, index) => {
-          return <Icon key={index} style={{ cursor: 'pointer' }} size={28} />;
+          return (
+            <Avatar key={index}>
+              <Icon style={{ cursor: 'pointer' }} size={28} />
+            </Avatar>
+          );
         })}
         <Button variant="contained" color="secondary">
           nossirah.eth
