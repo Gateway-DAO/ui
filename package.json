@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "start": "nx serve",
+    "start": "yarn website:dev",
     "build": "nx build",
     "test": "nx test",
     "storybook": "nx storybook storybook",

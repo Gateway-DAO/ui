@@ -1,8 +1,11 @@
-import { ChangeEvent, ReactNode, useRef } from 'react';
+import { ChangeEvent, ReactNode, useEffect, useRef } from 'react';
 
-import { Control, useController } from 'react-hook-form';
+import { Control, FieldValues, Path, useController } from 'react-hook-form';
 import { useDropArea } from 'react-use';
 
+import { Snackbar } from '@mui/material';
+
+import { useSnackbar } from '../../../hooks/use-snackbar';
 import { BackgroundImage } from './background-image';
 import { Container } from './container';
 import EditDropdownMenu from './edit-dropdown-menu';
@@ -10,21 +13,34 @@ import { ImageCropDialog, useImageCropState } from './image-crop-dialog';
 import { Placeholder } from './placeholder';
 import { HiddenInput } from './styles';
 
-export type Props = {
+export type Props<TFormSchema> = {
   label: ReactNode;
-  name: string;
-  control: Control;
+  name: Path<TFormSchema>;
+  control: Control<TFormSchema>;
   withCrop?: boolean;
 };
 
 /* TODO: improve state handling with xState */
-export function ImageDropField({ label, name, control, withCrop }: Props) {
+export function ImageDropField<TFormSchema extends FieldValues = FieldValues>({
+  label,
+  name,
+  control,
+  withCrop,
+}: Props<TFormSchema>) {
   const {
     field: { ref, value, onChange, ...register },
-  } = useController({ name, control });
+    fieldState: { error },
+  } = useController<TFormSchema>({ control, name });
 
   const inputRef = useRef<HTMLInputElement>(null);
   const imageCropDialog = useImageCropState();
+  const snackbar = useSnackbar();
+
+  useEffect(() => {
+    if (error?.message) {
+      snackbar.onOpen({ message: error.message });
+    }
+  }, [error, snackbar.open]);
 
   const readFiles = (files: FileList | File[]) => {
     /* TODO: Mimetype validation */
@@ -102,6 +118,16 @@ export function ImageDropField({ label, name, control, withCrop }: Props) {
           onClose={imageCropDialog.onClose}
         />
       )}
+      <Snackbar
+        anchorOrigin={{
+          vertical: snackbar.vertical,
+          horizontal: snackbar.horizontal,
+        }}
+        open={snackbar.open}
+        onClose={snackbar.handleClose}
+        message={snackbar.message}
+        key={name + 'snackbar'}
+      />
     </>
   );
 }
