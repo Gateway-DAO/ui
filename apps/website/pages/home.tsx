@@ -25,7 +25,7 @@ export async function getServerSideProps() {
   /* TODO: React-query will only work after auth is done */
   // await queryClient.prefetchQuery('home', () => gqlMethods.Users());
   const homeProps = await gqlMethodsServer.get_home({
-    id: 'eb06a881-6cdb-487f-bac3-eb771c2add2f',
+    id: 'e92ec36c-d003-46ac-ae3d-75f378070caa',
   });
 
   return {
@@ -40,8 +40,6 @@ export default function Home({
   homeProps: { user, daos, gates, people },
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const { t } = useTranslation('dashboard-home');
-  const arrays = new Array(20).fill(1).map((_, i) => i);
-  console.log({ user, daos, gates, people });
 
   return (
     <DashboardTemplate

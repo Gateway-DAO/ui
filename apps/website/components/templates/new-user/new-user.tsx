@@ -3,71 +3,113 @@ import { useRouter } from 'next/router';
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
+import { useMutation } from 'react-query';
 
-import { Box, Dialog, Stack, Typography } from '@mui/material';
+import { Box, Dialog, Snackbar, Stack, Typography } from '@mui/material';
 
+import { useSnackbar } from '../../../hooks/use-snackbar';
+import { gqlMethodsClient } from '../../../services/api';
+import { Users } from '../../../services/graphql/types.generated';
 import { AvatarUploadCard } from './avatar-upload-card';
-import { AvatarUploadCardMobile } from './avatar-upload-card-mobile';
 import { Form } from './form';
-import { schema, NewUserSchema } from './schema';
+import { schema, NewUserSchema, defaultValues } from './schema';
 
-export function NewUserTemplate() {
+/*
+  TODO: Downsize the image to a max size
+  TODO: Create an api endpoint for photo manipulation
+*/
+type Props = {
+  user: Partial<Users>;
+};
+export function NewUserTemplate({ user }: Props) {
   const { t } = useTranslation('dashboard-new-user');
   const methods = useForm<NewUserSchema>({
     resolver: yupResolver(schema),
+    defaultValues: defaultValues(user),
   });
+
+  const snackbar = useSnackbar();
 
   const router = useRouter();
 
-  const onSubmit = (_data: NewUserSchema) => {
-    router.push('/home');
+  const { mutate } = useMutation(
+    'updateProfile',
+    gqlMethodsClient.update_user_profile,
+    {
+      onSuccess(data) {
+        console.log('Profile updated!', data);
+        snackbar.handleClick({ message: 'Profile updated!' });
+        router.push('/home');
+      },
+    }
+  );
+
+  const onSubmit = (data: NewUserSchema) => {
+    mutate({ id: 'e92ec36c-d003-46ac-ae3d-75f378070caa', ...data });
   };
 
   return (
-    <Stack
-      direction="row"
-      justifyContent="space-between"
-      alignItems="stretch"
-      gap={2}
-      sx={{
-        width: '100%',
-        display: { xs: 'block', md: 'flex' },
-        alignSelf: 'center',
-        maxWidth: (theme) => theme.breakpoints.values.lg,
-      }}
-    >
+    <>
       <Stack
-        direction="column"
-        gap={7.5}
-        sx={{ maxWidth: { xs: '100%', md: '50%', lg: '40%' }, width: '100%' }}
-      >
-        <Typography component="h1" variant="h4">
-          {t('title')}
-        </Typography>
-        <Stack direction="column" gap={4}>
-          <Box>
-            <Typography component="h2" variant="h5">
-              {t('form.title')}
-            </Typography>
-            <Typography component="p" variant="caption">
-              {t('form.caption')}
-            </Typography>
-          </Box>
-          <FormProvider {...methods}>
-            <AvatarUploadCardMobile />
-            <Form onSubmit={onSubmit} />
-          </FormProvider>
-        </Stack>
-      </Stack>
-      <Box
+        direction="row"
+        justifyContent="space-between"
+        alignItems="stretch"
+        gap={2}
         sx={{
-          display: { xs: 'none', md: 'block' },
+          width: '100%',
+          display: { xs: 'block', md: 'flex' },
+          alignSelf: 'center',
+          maxWidth: (theme) => theme.breakpoints.values.lg,
         }}
       >
+        <Stack
+          direction="column"
+          gap={7.5}
+          sx={{ maxWidth: { xs: '100%', md: '50%', lg: '40%' }, width: '100%' }}
+        >
+          <Typography component="h1" variant="h4">
+            {t('title')}
+          </Typography>
+          <Stack direction="column" gap={4}>
+            <Box>
+              <Typography component="h2" variant="h5">
+                {t('form.title')}
+              </Typography>
+              <Typography component="p" variant="caption">
+                {t('form.caption')}
+              </Typography>
+            </Box>
+            <FormProvider {...methods}>
+              <AvatarUploadCard
+                showUserData={false}
+                sx={{
+                  display: { xs: 'flex', md: 'none' },
+                }}
+              />
+              <Form onSubmit={onSubmit} />
+            </FormProvider>
+          </Stack>
+        </Stack>
+
         <FormProvider {...methods}>
-          <AvatarUploadCard />
+          <AvatarUploadCard
+            sx={{
+              display: { xs: 'none', md: 'flex' },
+              width: 400,
+            }}
+          />
         </FormProvider>
-      </Box>
-    </Stack>
+      </Stack>
+      <Snackbar
+        anchorOrigin={{
+          vertical: snackbar.vertical,
+          horizontal: snackbar.horizontal,
+        }}
+        open={snackbar.open}
+        onClose={snackbar.handleClose}
+        message={snackbar.message}
+        key={snackbar.vertical + snackbar.horizontal}
+      />
+    </>
   );
 }

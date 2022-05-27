@@ -1,13 +1,31 @@
 /* TODO: Gap using values */
 
-import { TOKENS } from '@gateway/theme';
+import { InferGetServerSidePropsType } from 'next';
 
-import { Box } from '@mui/system';
+import { clearObject } from '@gateway/helpers';
+import { TOKENS } from '@gateway/theme';
 
 import { DashboardTemplate } from '../components/templates/dashboard';
 import { NewUserTemplate } from '../components/templates/new-user';
+import { gqlMethodsServer } from '../services/api-server';
 
-export default function NewUser() {
+export async function getServerSideProps() {
+  const user = (
+    await gqlMethodsServer.get_new_user({
+      id: 'e92ec36c-d003-46ac-ae3d-75f378070caa',
+    })
+  )?.user;
+
+  return {
+    props: {
+      user: clearObject(user),
+    },
+  };
+}
+
+export default function Home({
+  user,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) {
   return (
     <DashboardTemplate
       showExplore={false}
@@ -20,7 +38,7 @@ export default function NewUser() {
         },
       }}
     >
-      <NewUserTemplate />
+      <NewUserTemplate user={user} />
     </DashboardTemplate>
   );
 }

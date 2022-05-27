@@ -14,6 +14,8 @@ import MenuItem from '@mui/material/MenuItem';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 
+/* TODO: Refactor */
+
 export function NavBarAvatar() {
   const { element, isOpen, onClose, onOpen } = useMenu();
   /*   const onChangeLanguage = useCallback(
