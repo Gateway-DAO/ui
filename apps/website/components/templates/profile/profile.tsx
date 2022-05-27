@@ -2,7 +2,7 @@ import { FaDiscord, FaTwitter, FaGithub, FaCopy } from 'react-icons/fa';
 import { MdEmail } from 'react-icons/md';
 import { RiArrowDownSFill } from 'react-icons/ri';
 
-import { Button, Avatar, Paper, Box, Grid } from '@mui/material';
+import { Button, Avatar, Paper, Box, Grid, Stack } from '@mui/material';
 
 const data = {
   skills: [
@@ -64,29 +64,25 @@ export function ProfileTemplate() {
           }}
         />
       </Paper>
-      <Box
+      <Stack
         sx={{
           display: 'flex',
+          flexDirection: 'row',
           justifyContent: 'end',
           alignItems: 'center',
           marginTop: 3.75,
           marginRight: 6.75,
         }}
+        gap={2}
       >
         {socialIcons.map((Icon, index) => {
-          return (
-            <Icon
-              key={index}
-              style={{ marginRight: 20, cursor: 'pointer' }}
-              size={28}
-            />
-          );
+          return <Icon key={index} style={{ cursor: 'pointer' }} size={28} />;
         })}
         <Button variant="contained" color="secondary">
           nossirah.eth
           <FaCopy style={{ marginLeft: 2 }} />
         </Button>
-      </Box>
+      </Stack>
       <main>
         <Box sx={{ margin: '30px 65px' }}>
           <h1 style={{ marginBottom: '0' }}>Shriram Chandra</h1>
