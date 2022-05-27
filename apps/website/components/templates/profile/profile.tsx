@@ -2,7 +2,15 @@ import { FaDiscord, FaTwitter, FaGithub, FaCopy } from 'react-icons/fa';
 import { MdEmail } from 'react-icons/md';
 import { RiArrowDownSFill } from 'react-icons/ri';
 
-import { Button, Avatar, Paper, Box, Grid, Stack } from '@mui/material';
+import {
+  Button,
+  Avatar,
+  Paper,
+  Box,
+  Grid,
+  Stack,
+  Divider,
+} from '@mui/material';
 
 const data = {
   skills: [
@@ -96,9 +104,7 @@ export function ProfileTemplate() {
             <b>120</b> Following &#183; <b>118</b> Followers
           </p>
         </Box>
-        <hr
-          style={{ border: 'none', height: '1px', backgroundColor: '#333' }}
-        />
+        <Divider light sx={{ width: '100%' }} />
         <Grid container>
           <Grid item className="left" xs={8} sx={{ padding: '0 65px' }}>
             <section>
@@ -117,14 +123,7 @@ export function ProfileTemplate() {
                 precise execution and carefully considered decision making.
               </p>
             </section>
-            <hr
-              style={{
-                border: 'none',
-                height: '1px',
-                backgroundColor: '#333',
-                margin: '20px 0',
-              }}
-            />
+            <Divider light sx={{ width: '100%' }} />
             <section style={{ paddingBottom: '150px' }}>
               <h2 style={{ margin: '30px 0' }}>Proof of Credentials</h2>
               <Button variant="contained" size="small">
