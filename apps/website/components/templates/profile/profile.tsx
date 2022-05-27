@@ -69,22 +69,22 @@ export function ProfileTemplate() {
           display: 'flex',
           justifyContent: 'end',
           alignItems: 'center',
-          marginTop: '30px',
-          marginRight: '50px',
+          marginTop: 3.75,
+          marginRight: 6.75,
         }}
       >
         {socialIcons.map((Icon, index) => {
           return (
             <Icon
               key={index}
-              style={{ marginRight: '15px', cursor: 'pointer' }}
+              style={{ marginRight: 20, cursor: 'pointer' }}
               size={28}
             />
           );
         })}
         <Button variant="contained" color="secondary">
           nossirah.eth
-          <FaCopy style={{ marginLeft: '15px' }} />
+          <FaCopy style={{ marginLeft: 2 }} />
         </Button>
       </Box>
       <main>
