@@ -1,12 +1,6 @@
 query get_explore($id: uuid!) {
   user: users_by_pk (id: $id) {
-    id
-    name
-    credentials {
-      dao {
-        name
-      }
-    }
+    ...current_user,
     gate_progresses {
       id
       status
@@ -23,6 +17,7 @@ query get_explore($id: uuid!) {
       }
     }
   }
+
   gates {
     id
     gate_name

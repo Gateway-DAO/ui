@@ -1,0 +1,18 @@
+fragment current_user on users {
+  id
+  name
+  pfp
+  username
+  email_address
+  credentials {
+    dao {
+      name
+    }
+  }
+  gate_progresses {
+    gate {
+      id
+    }
+    status
+  }
+}

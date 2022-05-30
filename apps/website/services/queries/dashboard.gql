@@ -1,0 +1,20 @@
+query get_current_user($wallet: String) {
+  user: users (where: {wallet: {_eq: $wallet}}) {
+  id
+  name
+  pfp
+  username
+  email_address
+  credentials {
+    dao {
+      name
+    }
+  }
+  gate_progresses {
+    gate {
+      id
+    }
+    status
+  }
+  }
+}

@@ -1,4 +1,5 @@
-import { InferGetServerSidePropsType } from 'next';
+import { InferGetServerSidePropsType, GetServerSideProps } from 'next';
+import { getSession, useSession } from 'next-auth/react';
 import useTranslation from 'next-translate/useTranslation';
 
 // import { dehydrate, useQuery } from 'react-query';
@@ -21,11 +22,24 @@ import { gqlMethodsServer } from '../services/api-server';
  * https://nextjs.org/docs/basic-features/layouts
  * */
 
-export async function getServerSideProps() {
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   /* TODO: React-query will only work after auth is done */
+  /* TODO: https://next-auth.js.org/getting-started/client#nextauthjs--react-query */
   // await queryClient.prefetchQuery('home', () => gqlMethods.Users());
-  const homeProps = await gqlMethodsServer.get_home({
-    id: 'e92ec36c-d003-46ac-ae3d-75f378070caa',
+  const session = await getSession({ req });
+
+  /* TODO: Implement Custom CLient Session Handling <https://next-auth.js.org/getting-started/client#custom-client-session-handling> */
+  if (!session?.user) {
+    return {
+      redirect: '/',
+      props: {
+        user: null,
+      },
+    };
+  }
+
+  const homeProps = await gqlMethodsServer(session.user.token).get_home({
+    id: session.user.id,
   });
 
   return {
@@ -34,12 +48,16 @@ export async function getServerSideProps() {
       homeProps,
     },
   };
-}
+};
 
 export default function Home({
-  homeProps: { user, daos, gates, people },
+  homeProps: { daos, gates, people },
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const { t } = useTranslation('dashboard-home');
+  const user: any = {};
+
+  const session = useSession();
+  console.log(session);
 
   return (
     <DashboardTemplate

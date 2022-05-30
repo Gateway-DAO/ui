@@ -2,10 +2,16 @@ import { GraphQLClient } from 'graphql-request';
 
 import { getSdk } from './graphql/types.generated';
 
-const gqlClientServer = new GraphQLClient(process.env.HASURA_ENDPOINT, {
-  headers: {
-    'x-hasura-admin-secret': process.env.HASURA_ADMIN_SECRET,
-  },
-});
+const glqAnonClient = new GraphQLClient(process.env.HASURA_ENDPOINT);
 
-export const gqlMethodsServer = getSdk(gqlClientServer);
+const gqlClientServer = (token: string) =>
+  new GraphQLClient(process.env.HASURA_ENDPOINT, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+export const gqlAnonMethods = getSdk(glqAnonClient);
+
+export const gqlMethodsServer = (token: string) =>
+  getSdk(gqlClientServer(token));
