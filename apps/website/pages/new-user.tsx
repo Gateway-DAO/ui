@@ -12,13 +12,19 @@ import { gqlMethodsServer } from '../services/api-server';
 export async function getServerSideProps() {
   const user = (
     await gqlMethodsServer.get_new_user({
-      id: 'e92ec36c-d003-46ac-ae3d-75f378070caa',
+      id: '274247ad-16df-42c1-a4f9-624b9fa95ac5',
     })
   )?.user;
 
+  if (!user) {
+    return {
+      redirect: '/',
+    };
+  }
+
   return {
     props: {
-      user: clearObject(user),
+      user,
     },
   };
 }
