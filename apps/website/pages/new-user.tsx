@@ -26,9 +26,16 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
     })
   )?.user;
 
+  if (!user) {
+    return {
+      redirect: '/',
+      props: {},
+    };
+  }
+
   return {
     props: {
-      user: clearObject(user),
+      user,
     },
   };
 };
