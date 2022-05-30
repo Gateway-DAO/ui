@@ -9,7 +9,7 @@ import { gqlMethodsServer } from '../services/api-server';
 export async function getServerSideProps() {
   const user = (
     await gqlMethodsServer.get_new_user({
-      id: '85cdb4aa-4ef7-4095-9414-119e1cdb0d1e',
+      id: 'af0550a2-fb46-4c36-96a5-e68cbbd0e26f',
     })
   )?.user;
 

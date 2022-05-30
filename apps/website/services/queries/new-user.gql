@@ -5,5 +5,10 @@ query get_new_user($id: uuid!) {
     pfp
     username
     email_address
+    about
+    bio
+    attitudes
+    skills
+    knowledges
   }
 }
