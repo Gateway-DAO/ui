@@ -22,6 +22,8 @@ const style = {
 export default function PocModalCreated({ open, handleClose }) {
   return (
     <div>
+      {/* TODO: Add dialog before making the modal appear */}
+      {/* TODO: Modal doesn't scroll when window is not full screen */}
       <Modal
         open={open}
         onClose={handleClose}
