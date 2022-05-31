@@ -25,7 +25,7 @@ export async function getServerSideProps() {
   /* TODO: React-query will only work after auth is done */
   // await queryClient.prefetchQuery('home', () => gqlMethods.Users());
   const homeProps = await gqlMethodsServer.get_home({
-    id: 'e92ec36c-d003-46ac-ae3d-75f378070caa',
+    id: '274247ad-16df-42c1-a4f9-624b9fa95ac5',
   });
 
   return {
