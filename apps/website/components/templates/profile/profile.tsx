@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import * as React from 'react';
 import { useState } from 'react';
 
@@ -36,6 +37,8 @@ const socialIcons = [MdEmail, FaGithub, FaTwitter, FaDiscord];
 const randomNftUrl = 'https://i.ibb.co/bzzgBfT/random-nft.png';
 
 export function ProfileTemplate() {
+  const router = useRouter();
+  // TODO: Get this from context
   const [isAdmin, setIsAdmin] = useState(true);
 
   return (
@@ -132,7 +135,11 @@ export function ProfileTemplate() {
             <section style={{ paddingBottom: '150px' }}>
               <h2 style={{ margin: '30px 0' }}>Proof of Credentials</h2>
               {isAdmin && (
-                <Button variant="contained" size="small">
+                <Button
+                  variant="contained"
+                  size="small"
+                  onClick={() => router.push('/credentials/new')}
+                >
                   Create a Proof of Credential
                 </Button>
               )}
