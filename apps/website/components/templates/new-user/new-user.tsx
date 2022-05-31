@@ -45,7 +45,15 @@ export function NewUserTemplate({ user }: Props) {
   );
 
   const onSubmit = (data: NewUserSchema) => {
-    mutate({ id: 'e92ec36c-d003-46ac-ae3d-75f378070caa', ...data });
+    mutate(
+      {
+        id: 'e92ec36c-d003-46ac-ae3d-75f378070caa',
+        ...data,
+      },
+      {
+        onSuccess: () => router.push('/profile'),
+      }
+    );
   };
 
   return (
