@@ -1,3 +1,6 @@
+import * as React from 'react';
+import { useState } from 'react';
+
 import { FaDiscord, FaTwitter, FaGithub, FaCopy } from 'react-icons/fa';
 import { MdEmail } from 'react-icons/md';
 import { RiArrowDownSFill } from 'react-icons/ri';
@@ -33,6 +36,8 @@ const socialIcons = [MdEmail, FaGithub, FaTwitter, FaDiscord];
 const randomNftUrl = 'https://i.ibb.co/bzzgBfT/random-nft.png';
 
 export function ProfileTemplate() {
+  const [isAdmin, setIsAdmin] = useState(true);
+
   return (
     <>
       <Paper
@@ -126,9 +131,11 @@ export function ProfileTemplate() {
             <Divider light sx={{ width: '100%' }} />
             <section style={{ paddingBottom: '150px' }}>
               <h2 style={{ margin: '30px 0' }}>Proof of Credentials</h2>
-              <Button variant="contained" size="small">
-                Create a Proof of Credential
-              </Button>
+              {isAdmin && (
+                <Button variant="contained" size="small">
+                  Create a Proof of Credential
+                </Button>
+              )}
             </section>
           </Grid>
           <Grid item className="right" xs={4} sx={{ padding: '0 65px' }}>
