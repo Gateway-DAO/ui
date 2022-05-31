@@ -1,7 +1,9 @@
 import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 
-import { gqlAnonMethods, gqlMethodsServer } from '../../../services/api-server';
+import { gqlAnonMethods, gqlMethods } from '../../../services/api';
+
+/* TODO: Implement refresh token */
 
 export default NextAuth({
   providers: [
@@ -31,15 +33,13 @@ export default NextAuth({
             throw error;
           }
 
-          console.log(res.login);
-
           // const user = await
           /* get current user from hasura based on the token */
           const user = (
-            await gqlMethodsServer(res.login.token).get_current_user({
-              wallet: credentials.wallet,
-            })
-          )?.user?.[0];
+            await gqlMethods({ token: res.login.token }).get_current_user()
+          )?.me;
+
+          console.log('user', user);
 
           return {
             ...res.login,
@@ -58,21 +58,42 @@ export default NextAuth({
   },
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
-    // async signIn(data) {
-    //   console.log('signIn', data);
-    //   return true;
-    // },
-    // async session({ session, token }) {
-    //   session.address = token.sub;
-    //   session.user.id = 'e92ec36c-d003-46ac-ae3d-75f378070caa';
-    //   session.user.name = token.sub;
-    //   session.user.image = 'https://www.fillmurray.com/128/128';
-    //   session.user.isFirstTime = true; // TODO: validate if is a new user
-    //   return session;
-    // },
-    // async jwt(options) {
-    //   // console.log(options);
-    //   return options.token;
-    // },
+    /*     async signIn(data) {
+      console.log('signIn:', data);
+      return true;
+    }, */
+    async session(data) {
+      // console.log('session:', data);
+      const { session, token } = data;
+      session.user = {
+        id: token.id,
+        token: token.token,
+      };
+      return session;
+    },
+    async jwt({ user, token }) {
+      if (user?.token) return user;
+      return token;
+    },
+    /* TODO: Implement jwt refresh token */
+    /* async jwt({ token, user, account }) {
+      // Initial sign in
+      if (account && user) {
+        return {
+          accessToken: account.access_token,
+          accessTokenExpires: Date.now() + account.expires_at * 1000,
+          refreshToken: account.refresh_token,
+          user,
+        }
+      }
+
+      // Return previous token if the access token has not expired yet
+      if (Date.now() < token.accessTokenExpires) {
+        return token
+      }
+
+      // Access token has expired, try to update it
+      return refreshAccessToken(token)
+    }, */
   },
 });
