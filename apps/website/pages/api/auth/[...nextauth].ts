@@ -20,7 +20,7 @@ export default NextAuth({
         });
         return res.login;
       }, */
-      async authorize(credentials, req) {
+      async authorize(credentials) {
         try {
           const res = await gqlAnonMethods.login({
             signature: credentials.signature,
@@ -33,13 +33,10 @@ export default NextAuth({
             throw error;
           }
 
-          // const user = await
           /* get current user from hasura based on the token */
           const user = (
             await gqlMethods({ token: res.login.token }).get_current_user()
           )?.me;
-
-          console.log('user', user);
 
           return {
             ...res.login,
@@ -68,6 +65,7 @@ export default NextAuth({
       session.user = {
         id: token.id,
         token: token.token,
+        init: token.init,
       };
       return session;
     },
