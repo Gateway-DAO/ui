@@ -11,7 +11,10 @@ export function PersonCard({ name, about, pfp }: PartialDeep<Users>) {
   return (
     <MUICard>
       <CardHeader
-        sx={{ '.MuiCardHeader-action': { alignSelf: 'unset' } }}
+        sx={{
+          '.MuiCardHeader-action': { alignSelf: 'unset', marginLeft: 2 },
+          '.MuiCardHeader-content': { minWidth: 0 },
+        }}
         avatar={
           <Avatar
             sx={{
@@ -31,6 +34,13 @@ export function PersonCard({ name, about, pfp }: PartialDeep<Users>) {
         }
         title={name}
         subheader={about}
+        subheaderTypographyProps={{
+          sx: {
+            textOverflow: 'ellipsis',
+            overflow: 'hidden',
+            whiteSpace: 'nowrap',
+          },
+        }}
       />
     </MUICard>
   );
