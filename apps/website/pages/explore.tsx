@@ -53,10 +53,12 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
 };
 
 export default function Explore({
-  explore: { daos, gates, people },
+  exploreProps,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const { t } = useTranslation('explore');
-  const user: any = {};
+  if (!exploreProps) return null;
+
+  const { daos, gates, people } = exploreProps;
 
   /*   const session = useSession();
   console.log(session);
