@@ -5,6 +5,7 @@ import { TOKENS } from '@gateway/theme';
 
 import { DashboardTemplate } from '../components/templates/dashboard';
 import { NewUserTemplate } from '../components/templates/new-user';
+import { ROUTES } from '../constants/routes';
 import { gqlMethods } from '../services/api';
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
@@ -30,7 +31,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
         user: null,
       },
       redirect: {
-        destination: '/home',
+        destination: ROUTES.EXPLORE,
         permanent: true,
       },
     };
@@ -42,7 +43,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   };
 };
 
-export default function Home({
+export default function NewUser({
   user,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   if (!user) return null;
@@ -62,3 +63,5 @@ export default function Home({
     </DashboardTemplate>
   );
 }
+
+NewUser.auth = true;
