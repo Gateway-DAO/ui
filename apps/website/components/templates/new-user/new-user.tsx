@@ -1,3 +1,4 @@
+import { useSession } from 'next-auth/react';
 import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
 
@@ -8,7 +9,7 @@ import { useMutation } from 'react-query';
 import { Box, Dialog, Snackbar, Stack, Typography } from '@mui/material';
 
 import { useSnackbar } from '../../../hooks/use-snackbar';
-import { gqlMethodsClient } from '../../../services/api';
+import { gqlMethods } from '../../../services/api';
 import { Users } from '../../../services/graphql/types.generated';
 import { AvatarUploadCard } from './avatar-upload-card';
 import { Form } from './form';
@@ -31,13 +32,13 @@ export function NewUserTemplate({ user }: Props) {
   const snackbar = useSnackbar();
 
   const router = useRouter();
+  const session = useSession();
 
-  const { mutate } = useMutation(
+  const updateMutation = useMutation(
     'updateProfile',
-    gqlMethodsClient.update_user_profile,
+    session.data?.user && gqlMethods(session.data.user).update_user_profile,
     {
-      onSuccess(data) {
-        console.log('Profile updated!', data);
+      onSuccess() {
         snackbar.handleClick({ message: 'Profile updated!' });
         router.push('/home');
       },
@@ -45,7 +46,7 @@ export function NewUserTemplate({ user }: Props) {
   );
 
   const onSubmit = (data: NewUserSchema) => {
-    mutate({ id: 'e92ec36c-d003-46ac-ae3d-75f378070caa', ...data });
+    updateMutation.mutate({ id: user.id, ...data });
   };
 
   return (
@@ -86,7 +87,7 @@ export function NewUserTemplate({ user }: Props) {
                   display: { xs: 'flex', md: 'none' },
                 }}
               />
-              <Form onSubmit={onSubmit} />
+              <Form onSubmit={onSubmit} isLoading={updateMutation.isLoading} />
             </FormProvider>
           </Stack>
         </Stack>

@@ -35,7 +35,7 @@ export function GatesCard({
             sx={{ width: 32, height: 32 }}
             aria-label="recipe"
           >
-            {dao.name[0]}
+            {dao.name?.[0]}
           </Avatar>
         }
         action={

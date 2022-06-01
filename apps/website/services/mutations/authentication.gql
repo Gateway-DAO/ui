@@ -1,0 +1,15 @@
+query get_nonce($wallet: String!) {
+  get_nonce(wallet: $wallet) {
+    nonce
+  }
+}
+
+mutation login(
+  $signature: String!,
+  $wallet: String!,
+) {
+  login(signature: $signature, wallet: $wallet) {
+    refresh_token
+    token
+  }
+}

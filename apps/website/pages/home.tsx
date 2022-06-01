@@ -1,4 +1,5 @@
-import { InferGetServerSidePropsType } from 'next';
+import { GetServerSideProps } from 'next';
+import { getSession } from 'next-auth/react';
 import useTranslation from 'next-translate/useTranslation';
 
 // import { dehydrate, useQuery } from 'react-query';
@@ -15,18 +16,42 @@ import {
   SectionWithGrid,
   SectionWithSlider,
 } from '../components/templates/home';
-import { gqlMethodsServer } from '../services/api-server';
+import { gqlMethods } from '../services/api';
+import { Get_HomeQuery } from '../services/graphql/types.generated';
 
-/** TODO: Prevent template remount when navigating between dashboard pages
- * https://nextjs.org/docs/basic-features/layouts
- * */
-
-export async function getServerSideProps() {
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   /* TODO: React-query will only work after auth is done */
+  /* TODO: https://next-auth.js.org/getting-started/client#nextauthjs--react-query */
   // await queryClient.prefetchQuery('home', () => gqlMethods.Users());
-  const homeProps = await gqlMethodsServer.get_home({
-    id: '274247ad-16df-42c1-a4f9-624b9fa95ac5',
+  const session = await getSession({ req });
+
+  /* TODO: Implement Custom CLient Session Handling <https://next-auth.js.org/getting-started/client#custom-client-session-handling> */
+  if (!session?.user) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: true,
+      },
+      props: {
+        homeProps: undefined,
+      },
+    };
+  }
+
+  const homeProps = await gqlMethods(session.user).get_home({
+    id: session.user.id,
   });
+
+  if (!homeProps.me.init)
+    return {
+      props: {
+        homeProps,
+      },
+      redirect: {
+        destination: '/new-user',
+        permanent: true,
+      },
+    };
 
   return {
     props: {
@@ -34,12 +59,17 @@ export async function getServerSideProps() {
       homeProps,
     },
   };
-}
+};
 
-export default function Home({
-  homeProps: { user, daos, gates, people },
-}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+/** TODO: Prevent template remount when navigating between dashboard pages
+ * https://nextjs.org/docs/basic-features/layouts
+ * */
+
+export default function Home({ homeProps }: { homeProps?: Get_HomeQuery }) {
   const { t } = useTranslation('dashboard-home');
+
+  if (!homeProps) return null;
+  const { daos, gates, people, me } = homeProps;
 
   return (
     <DashboardTemplate
@@ -51,7 +81,7 @@ export default function Home({
       }}
       followingDaos={mockDaos}
     >
-      <HomeTemplate title={t('title', { name: user.name })}>
+      <HomeTemplate title={t('title', { name: me.name })}>
         <SectionWithSlider
           title={t('featured-gates.title')}
           caption={t('featured-gates.caption')}

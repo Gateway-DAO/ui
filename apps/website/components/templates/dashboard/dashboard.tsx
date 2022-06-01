@@ -107,7 +107,7 @@ export function DashboardTemplate({
                     className={clsx({ active: dao.id === currentDao?.id })}
                   >
                     <ListItemIcon>
-                      <Avatar src={dao.image}>{dao.name[0]}</Avatar>
+                      <Avatar src={dao.image}>{dao.name?.[0]}</Avatar>
                     </ListItemIcon>
                   </ListItemButton>
                 </MotionTooltip>
