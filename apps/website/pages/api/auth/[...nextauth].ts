@@ -99,3 +99,10 @@ export default withSentry(
     },
   })
 );
+
+// Supress sentry warnings
+export const config = {
+  api: {
+    externalResolver: true,
+  },
+};
