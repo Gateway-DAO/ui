@@ -1,6 +1,7 @@
 query get_home($id: uuid!) {
   me {
-    ...current_user,
+    ...current_user
+    pfp
   }
 
   gates {

@@ -1,7 +1,7 @@
 fragment current_user on users {
   id
   name
-  pfp
+  #pfp
   username
   email_address
   init
