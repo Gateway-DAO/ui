@@ -1,6 +1,4 @@
 import { useRouter } from 'next/router';
-import * as React from 'react';
-import { useState } from 'react';
 
 import { BsFillPencilFill } from 'react-icons/bs';
 import { FaDiscord, FaTwitter, FaGithub, FaCopy } from 'react-icons/fa';
@@ -34,13 +32,29 @@ const data = {
     'Innovative',
   ],
 };
-const socialIcons = [MdEmail, FaGithub, FaTwitter, FaDiscord];
 const randomNftUrl = 'https://i.ibb.co/bzzgBfT/random-nft.png';
 
 export function ProfileTemplate() {
   const router = useRouter();
   // TODO: Get this from context
-  const [isAdmin, setIsAdmin] = useState(true);
+  const isAdmin = true;
+  // Load these through props
+  const email = 'user@mygateway.com';
+
+  const socials = [
+    {
+      icon: FaGithub,
+      value: 'https://github.com/Gateway-DAO',
+    },
+    {
+      icon: FaTwitter,
+      value: 'https://twitter.com/Gateway_xyz',
+    },
+    {
+      icon: FaDiscord,
+      value: 'https://discord.gg/3fFFFk5dBN',
+    },
+  ];
 
   return (
     <>
@@ -92,11 +106,26 @@ export function ProfileTemplate() {
         }}
         gap={2}
       >
-        {socialIcons.map((Icon, index) => {
+        {email && (
+          <Avatar
+            onClick={() => window.open('mailto:' + email)}
+            style={{ cursor: 'pointer' }}
+          >
+            <MdEmail size={28} />
+          </Avatar>
+        )}
+        {socials.map((icon, index) => {
+          const Icon = icon.icon;
           return (
-            <Avatar key={index}>
-              <Icon style={{ cursor: 'pointer' }} size={28} />
-            </Avatar>
+            icon.value && (
+              <Avatar
+                key={index}
+                onClick={() => window.open(icon.value, '_blank')}
+                style={{ cursor: 'pointer' }}
+              >
+                <Icon size={28} />
+              </Avatar>
+            )
           );
         })}
         <Button variant="contained" color="secondary">
