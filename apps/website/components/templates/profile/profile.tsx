@@ -2,6 +2,7 @@ import { useRouter } from 'next/router';
 import * as React from 'react';
 import { useState } from 'react';
 
+import { BsFillPencilFill } from 'react-icons/bs';
 import { FaDiscord, FaTwitter, FaGithub, FaCopy } from 'react-icons/fa';
 import { MdEmail } from 'react-icons/md';
 import { RiArrowDownSFill } from 'react-icons/ri';
@@ -105,7 +106,14 @@ export function ProfileTemplate() {
       </Stack>
       <main>
         <Box sx={{ margin: '30px 65px' }}>
-          <h1 style={{ marginBottom: '0' }}>Shriram Chandra</h1>
+          <Box sx={{ display: 'flex', alignItems: 'baseline' }}>
+            <h1 style={{ marginBottom: '0', marginRight: '15px' }}>
+              Shriram Chandra
+            </h1>
+            <Avatar>
+              <BsFillPencilFill />
+            </Avatar>
+          </Box>
           <p style={{ margin: '0 auto' }}>Master Ops at Gateway</p>
           <p style={{ marginTop: '0', fontSize: 'small' }}>@shriram</p>
           <p>
@@ -130,6 +138,14 @@ export function ProfileTemplate() {
                 storytelling and functions. Each of my projects is crafted with
                 precise execution and carefully considered decision making.
               </p>
+              <Button
+                variant="outlined"
+                size="small"
+                sx={{ marginBottom: '20px' }}
+                onClick={() => router.push('/')}
+              >
+                Add now
+              </Button>
             </section>
             <Divider light sx={{ width: '100%' }} />
             <section style={{ paddingBottom: '150px' }}>
@@ -147,7 +163,12 @@ export function ProfileTemplate() {
           </Grid>
           <Grid item className="right" xs={4} sx={{ padding: '0 65px' }}>
             <section>
-              <h2>Skills</h2>
+              <Box sx={{ display: 'flex', alignItems: 'baseline' }}>
+                <h2 style={{ marginRight: '15px' }}>Skills</h2>
+                <Avatar>
+                  <BsFillPencilFill />
+                </Avatar>
+              </Box>
               <div>
                 {data.skills.map((skill, index) => {
                   return (
@@ -165,7 +186,12 @@ export function ProfileTemplate() {
               </div>
             </section>
             <section>
-              <h2>Knowledges</h2>
+              <Box sx={{ display: 'flex', alignItems: 'baseline' }}>
+                <h2 style={{ marginRight: '15px' }}>Knowledges</h2>
+                <Avatar>
+                  <BsFillPencilFill />
+                </Avatar>
+              </Box>
               <div>
                 {data.knowledges.map((skill, index) => {
                   return (
@@ -183,7 +209,12 @@ export function ProfileTemplate() {
               </div>
             </section>
             <section>
-              <h2>Attitudes</h2>
+              <Box sx={{ display: 'flex', alignItems: 'baseline' }}>
+                <h2 style={{ marginRight: '15px' }}>Attitudes</h2>
+                <Avatar>
+                  <BsFillPencilFill />
+                </Avatar>
+              </Box>
               <div>
                 {data.attitudes.map((skill, index) => {
                   return (
