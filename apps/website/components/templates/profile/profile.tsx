@@ -110,7 +110,7 @@ export function ProfileTemplate() {
             <h1 style={{ marginBottom: '0', marginRight: '15px' }}>
               Shriram Chandra
             </h1>
-            <Avatar>
+            <Avatar sx={{ cursor: 'pointer' }}>
               <BsFillPencilFill />
             </Avatar>
           </Box>
@@ -164,7 +164,7 @@ export function ProfileTemplate() {
             <section>
               <Box sx={{ display: 'flex', alignItems: 'baseline' }}>
                 <h2 style={{ marginRight: '15px' }}>Skills</h2>
-                <Avatar>
+                <Avatar sx={{ cursor: 'pointer' }}>
                   <BsFillPencilFill />
                 </Avatar>
               </Box>
@@ -187,7 +187,7 @@ export function ProfileTemplate() {
             <section>
               <Box sx={{ display: 'flex', alignItems: 'baseline' }}>
                 <h2 style={{ marginRight: '15px' }}>Knowledges</h2>
-                <Avatar>
+                <Avatar sx={{ cursor: 'pointer' }}>
                   <BsFillPencilFill />
                 </Avatar>
               </Box>
@@ -210,7 +210,7 @@ export function ProfileTemplate() {
             <section>
               <Box sx={{ display: 'flex', alignItems: 'baseline' }}>
                 <h2 style={{ marginRight: '15px' }}>Attitudes</h2>
-                <Avatar>
+                <Avatar sx={{ cursor: 'pointer' }}>
                   <BsFillPencilFill />
                 </Avatar>
               </Box>
