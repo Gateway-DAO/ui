@@ -14,7 +14,7 @@ export function NewsSection({ children }: PropsWithChildren<unknown>) {
         gridTemplateRows: { md: '1fr 1fr' },
         gap: 2,
         px: TOKENS.CONTAINER_PX,
-        '> :first-child': {
+        '> :first-of-type': {
           gridRow: {
             xs: 1,
             md: '1/3',
