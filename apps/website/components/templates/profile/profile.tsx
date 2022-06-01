@@ -142,7 +142,6 @@ export function ProfileTemplate() {
                 variant="outlined"
                 size="small"
                 sx={{ marginBottom: '20px' }}
-                onClick={() => router.push('/')}
               >
                 Add now
               </Button>
