@@ -27,9 +27,9 @@ export function useConnectWallet() {
 
   const sign = useSignMessage();
   const account = useAccount({
-    onSuccess() {
+    onSuccess({ address }) {
       setStep('GET_NONCE');
-      nonce.mutate();
+      nonce.mutate(address);
     },
     onError(e) {
       setError({
@@ -42,7 +42,8 @@ export function useConnectWallet() {
   /* Handles nonce generation */
   const nonce = useMutation(
     [account.data?.address, 'nonce'],
-    () => gqlAnonMethods.get_nonce({ wallet: account.data.address! }),
+    (address?: string) =>
+      gqlAnonMethods.get_nonce({ wallet: address ?? account.data?.address }),
     {
       async onSuccess({ get_nonce: { nonce } }) {
         setStep('GET_SIGNATURE');
