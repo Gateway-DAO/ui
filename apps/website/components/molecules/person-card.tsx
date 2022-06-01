@@ -21,7 +21,7 @@ export function PersonCard({ name, about, pfp }: PartialDeep<Users>) {
             aria-label="recipe"
             src={pfp}
           >
-            {name[0]}
+            {name?.[0]}
           </Avatar>
         }
         action={
