@@ -1,21 +1,7 @@
-query get_explore($id: uuid!) {
-  user: users_by_pk (id: $id) {
-    ...current_user,
-    gate_progresses {
-      id
-      status
-      gate {
-         id
-         badge
-         gate_name
-         categories
-         dao {
-           id
-           logo_url
-           name
-         }
-      }
-    }
+query get_home($id: uuid!) {
+  me {
+    ...current_user
+    pfp
   }
 
   gates {

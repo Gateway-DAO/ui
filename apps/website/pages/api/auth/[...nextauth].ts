@@ -1,78 +1,108 @@
 import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 
-import { gqlAnonMethods, gqlMethodsServer } from '../../../services/api-server';
+import { withSentry } from '@sentry/nextjs';
 
-export default NextAuth({
-  providers: [
-    CredentialsProvider({
-      name: 'credentials',
-      credentials: {
-        wallet: { label: 'Wallet', type: 'text' },
-        signature: { label: 'Signature', type: 'text' },
-      },
-      /* async authorize(credentials, req) {
+import { gqlAnonMethods, gqlMethods } from '../../../services/api';
+
+/* TODO: Implement refresh token */
+
+export default withSentry(
+  NextAuth({
+    providers: [
+      CredentialsProvider({
+        name: 'credentials',
+        credentials: {
+          wallet: { label: 'Wallet', type: 'text' },
+          signature: { label: 'Signature', type: 'text' },
+        },
+        /* async authorize(credentials, req) {
         const res = await gqlMethodsClient.login({
           signature: credentials.signature,
           wallet: credentials.wallet,
         });
         return res.login;
       }, */
-      async authorize(credentials, req) {
-        try {
-          const res = await gqlAnonMethods.login({
-            signature: credentials.signature,
-            wallet: credentials.wallet,
-          });
-
-          const { error } = (res as any) ?? {};
-
-          if (error || !res.login) {
-            throw error;
-          }
-
-          console.log(res.login);
-
-          // const user = await
-          /* get current user from hasura based on the token */
-          const user = (
-            await gqlMethodsServer(res.login.token).get_current_user({
+        async authorize(credentials) {
+          try {
+            const res = await gqlAnonMethods.login({
+              signature: credentials.signature,
               wallet: credentials.wallet,
-            })
-          )?.user?.[0];
+            });
 
-          return {
-            ...res.login,
-            ...user,
-          };
-        } catch (e) {
-          console.error('Auth error', e);
-          throw new Error(e);
-        }
+            const { error } = (res as any) ?? {};
+
+            if (error || !res.login) {
+              throw error;
+            }
+
+            /* get current user from hasura based on the token */
+            const user = (
+              await gqlMethods({ token: res.login.token }).get_current_user()
+            )?.me;
+
+            return {
+              ...res.login,
+              ...user,
+            };
+          } catch (e) {
+            console.error('Auth error', e);
+            throw new Error(e);
+          }
+        },
+      }),
+      // ...add more providers here
+    ],
+    session: {
+      strategy: 'jwt',
+    },
+    secret: process.env.NEXTAUTH_SECRET,
+    callbacks: {
+      /*     async signIn(data) {
+      console.log('signIn:', data);
+      return true;
+    }, */
+      async session(data) {
+        // console.log('session:', data);
+        const { session, token } = data;
+        session.user = {
+          id: token.id,
+          token: token.token,
+          init: token.init,
+        };
+        return session;
       },
-    }),
-    // ...add more providers here
-  ],
-  session: {
-    strategy: 'jwt',
+      async jwt({ user, token }) {
+        if (user?.token) return user;
+        return token;
+      },
+      /* TODO: Implement jwt refresh token */
+      /* async jwt({ token, user, account }) {
+      // Initial sign in
+      if (account && user) {
+        return {
+          accessToken: account.access_token,
+          accessTokenExpires: Date.now() + account.expires_at * 1000,
+          refreshToken: account.refresh_token,
+          user,
+        }
+      }
+
+      // Return previous token if the access token has not expired yet
+      if (Date.now() < token.accessTokenExpires) {
+        return token
+      }
+
+      // Access token has expired, try to update it
+      return refreshAccessToken(token)
+    }, */
+    },
+  })
+);
+
+// Supress sentry warnings
+export const config = {
+  api: {
+    externalResolver: true,
   },
-  secret: process.env.NEXTAUTH_SECRET,
-  callbacks: {
-    // async signIn(data) {
-    //   console.log('signIn', data);
-    //   return true;
-    // },
-    // async session({ session, token }) {
-    //   session.address = token.sub;
-    //   session.user.id = 'e92ec36c-d003-46ac-ae3d-75f378070caa';
-    //   session.user.name = token.sub;
-    //   session.user.image = 'https://www.fillmurray.com/128/128';
-    //   session.user.isFirstTime = true; // TODO: validate if is a new user
-    //   return session;
-    // },
-    // async jwt(options) {
-    //   // console.log(options);
-    //   return options.token;
-    // },
-  },
-});
+};

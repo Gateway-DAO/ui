@@ -1,5 +1,6 @@
-query get_new_user($id: uuid!) {
-  user: users_by_pk(id: $id) {
-  ...current_user
+query get_new_user {
+  me {
+    ...current_user
+    pfp
   }
 }

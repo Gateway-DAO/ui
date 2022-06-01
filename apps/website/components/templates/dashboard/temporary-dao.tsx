@@ -25,7 +25,7 @@ export function TemporaryDao({ dao }: { dao: Dao }) {
           animate={{ scale: 1 }}
           exit={{ scale: 0 }}
         >
-          {dao.name[0]}
+          {dao.name?.[0]}
         </MotionAvatar>
       </ListItemIcon>
     </ListItemButton>

@@ -1,38 +1,40 @@
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import { getSession } from 'next-auth/react';
 
-import { clearObject } from '@gateway/helpers';
 import { TOKENS } from '@gateway/theme';
 
 import { DashboardTemplate } from '../components/templates/dashboard';
 import { NewUserTemplate } from '../components/templates/new-user';
-import { gqlMethodsServer } from '../services/api-server';
+import { gqlMethods } from '../services/api';
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   const session = await getSession({ req });
 
   if (!session?.user) {
     return {
-      redirect: '/',
+      redirect: {
+        destination: '/',
+        permanent: true,
+      },
       props: {
         user: null,
       },
     };
   }
 
-  const user = (
-    await gqlMethodsServer(session.user.token).get_new_user({
-      id: session.user.id,
-    })
-  )?.user;
+  const user = (await gqlMethods(session.user).get_new_user()).me;
 
-  if (!user) {
+  if (user.init) {
     return {
-      redirect: '/',
-      props: {},
+      props: {
+        user: null,
+      },
+      redirect: {
+        destination: '/home',
+        permanent: true,
+      },
     };
   }
-
   return {
     props: {
       user,
@@ -43,6 +45,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
 export default function Home({
   user,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+  if (!user) return null;
   return (
     <DashboardTemplate
       showExplore={false}

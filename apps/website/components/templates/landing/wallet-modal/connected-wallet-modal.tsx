@@ -104,7 +104,7 @@ export function ConnectedWallet({ onBack }: Props) {
               now you're entering{' '}
               <NextLink
                 passHref
-                href={session?.user?.isFirstTime ? '/new-user' : '/home'}
+                href={!session?.user?.init ? '/new-user' : '/home'}
               >
                 <Link color="primary">the Gateway</Link>
               </NextLink>
