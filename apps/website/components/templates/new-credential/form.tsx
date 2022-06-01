@@ -1,3 +1,5 @@
+import { useRouter } from 'next/router';
+
 import { useFormContext } from 'react-hook-form';
 
 import { Button, Stack, TextField } from '@mui/material';
@@ -16,6 +18,8 @@ type Props = {
   onSubmit: (data?: NewCredentialSchema) => void;
 };
 export function Form({ onSubmit }: Props) {
+  const router = useRouter();
+
   const {
     register,
     formState: { errors },
@@ -85,7 +89,13 @@ export function Form({ onSubmit }: Props) {
         <Button variant="contained" type="submit">
           Submit
         </Button>
-        <Button variant="outlined" type="button">
+        <Button
+          variant="outlined"
+          type="button"
+          onClick={() => {
+            router.back();
+          }}
+        >
           Cancel
         </Button>
       </Stack>
