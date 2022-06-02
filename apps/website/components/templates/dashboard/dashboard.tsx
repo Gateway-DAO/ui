@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { PropsWithChildren, useMemo } from 'react';
 
@@ -5,7 +6,7 @@ import clsx from 'clsx';
 import { AnimatePresence } from 'framer-motion';
 
 import { GatewayIcon } from '@gateway/assets';
-import { MotionListItemButton, MotionTooltip } from '@gateway/ui';
+import { MotionTooltip } from '@gateway/ui';
 
 import ExploreIcon from '@mui/icons-material/Explore';
 import { Avatar, ListItemButton } from '@mui/material';
@@ -13,6 +14,7 @@ import Box, { BoxProps } from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import ListItemIcon from '@mui/material/ListItemIcon';
 
+import { ROUTES } from '../../../constants/routes';
 import { Dao } from '../../../types/dao';
 import { DaosList } from './daos-list';
 import { withGradientAfter } from './styles';
@@ -79,10 +81,16 @@ export function DashboardTemplate({
         >
           <DaosList>
             <AnimatePresence>
-              <ListItemIcon sx={{ mb: 2.75 }}>
-                <Avatar sx={{ background: 'transparent' }}>
-                  <GatewayIcon />
-                </Avatar>
+              <ListItemIcon
+                sx={{
+                  mb: 2.75,
+                  px: 2,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  height: (theme) => theme.spacing(5),
+                }}
+              >
+                <GatewayIcon />
               </ListItemIcon>
               {!!currentDao && isCurrentDaoTemporary && (
                 <TemporaryDao key={currentDao.id} dao={currentDao} />
@@ -105,20 +113,25 @@ export function DashboardTemplate({
                 </MotionTooltip>
               ))}
               {showExplore && (
-                <MotionTooltip
-                  key="explore"
-                  layoutId="Explore"
-                  title="Explore"
-                  placement="right"
-                >
-                  <ListItemButton>
-                    <ListItemIcon>
-                      <Avatar>
-                        <ExploreIcon />
-                      </Avatar>
-                    </ListItemIcon>
-                  </ListItemButton>
-                </MotionTooltip>
+                <Link passHref href={ROUTES.EXPLORE} prefetch={false}>
+                  <MotionTooltip
+                    key="explore"
+                    layoutId="Explore"
+                    title="Explore"
+                    placement="right"
+                    className={clsx({
+                      active: router.pathname === ROUTES.EXPLORE,
+                    })}
+                  >
+                    <ListItemButton component="a">
+                      <ListItemIcon>
+                        <Avatar>
+                          <ExploreIcon />
+                        </Avatar>
+                      </ListItemIcon>
+                    </ListItemButton>
+                  </MotionTooltip>
+                </Link>
               )}
             </AnimatePresence>
           </DaosList>
