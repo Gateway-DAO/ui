@@ -19,7 +19,6 @@ export function ExploreTemplate({ title, subtitle, tabs }: TemplateProps) {
   const handleTabChange = (event: React.SyntheticEvent, newTab: number) => {
     setActiveTab(newTab);
   };
-  console.log(activeTab);
 
   return (
     <>

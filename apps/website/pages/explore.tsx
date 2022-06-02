@@ -87,3 +87,5 @@ export default function Explore({
     </DashboardTemplate>
   );
 }
+
+Explore.auth = true;

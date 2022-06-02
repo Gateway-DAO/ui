@@ -2,7 +2,7 @@ import setLanguage from 'next-translate/setLanguage';
 import { useCallback } from 'react';
 
 import { NestedMenuItem } from 'mui-nested-menu';
-import { useDisconnect } from 'wagmi';
+import { useDisconnect, useAccount } from 'wagmi';
 
 import { useMenu } from '@gateway/ui';
 
@@ -34,6 +34,8 @@ export function NavBarAvatar() {
     [onClose]
   );
   const { disconnect } = useDisconnect();
+
+  const { data } = useAccount();
 
   return (
     <>
