@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -32,6 +33,8 @@ import {
 } from './credential-details-schema';
 
 export function EarnCredentialTemplate() {
+  const router = useRouter();
+
   const credentialDetailsMethods = useForm<CredentialDetailsTypes>({
     resolver: yupResolver(credentialDetailsSchema),
   });
@@ -112,7 +115,7 @@ export function EarnCredentialTemplate() {
                 loader={() => credentialImgUrl}
                 src={credentialImgUrl}
                 height={300}
-                width={900}
+                width={1200}
                 alt="credential image"
                 style={{ borderRadius: '5px' }}
               />
@@ -208,7 +211,14 @@ export function EarnCredentialTemplate() {
         </Grid>
       </Stack>
       <Box alignSelf="flex-end" marginRight="300px">
-        <Button variant="outlined">Cancel</Button>
+        <Button
+          variant="outlined"
+          onClick={() => {
+            router.back();
+          }}
+        >
+          Cancel
+        </Button>
         <Button variant="contained" sx={{ marginLeft: '10px' }}>
           Submit
         </Button>
