@@ -21,6 +21,7 @@ import {
   Button,
 } from '@mui/material';
 
+import PocModalCompleted from '../../organisms/poc-modal-completed/poc-modal-completed';
 import { AccomplishmentsForm } from './accomplishments-form';
 import {
   accomplishmentsSchema,
@@ -34,6 +35,9 @@ import {
 
 export function EarnCredentialTemplate() {
   const router = useRouter();
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   const credentialDetailsMethods = useForm<CredentialDetailsTypes>({
     resolver: yupResolver(credentialDetailsSchema),
@@ -63,6 +67,7 @@ export function EarnCredentialTemplate() {
 
   return (
     <Stack gap={6} p={TOKENS.CONTAINER_PX}>
+      <PocModalCompleted open={open} handleClose={handleClose} />
       <Box>
         <Image
           src="/favicon-512.png"
@@ -219,7 +224,11 @@ export function EarnCredentialTemplate() {
         >
           Cancel
         </Button>
-        <Button variant="contained" sx={{ marginLeft: '10px' }}>
+        <Button
+          variant="contained"
+          sx={{ marginLeft: '10px' }}
+          onClick={() => handleOpen()}
+        >
           Submit
         </Button>
       </Box>
