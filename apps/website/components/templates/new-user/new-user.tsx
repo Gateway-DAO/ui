@@ -8,6 +8,7 @@ import { useMutation } from 'react-query';
 
 import { Box, Dialog, Snackbar, Stack, Typography } from '@mui/material';
 
+import { ROUTES } from '../../../constants/routes';
 import { useSnackbar } from '../../../hooks/use-snackbar';
 import { gqlMethods } from '../../../services/api';
 import { Users } from '../../../services/graphql/types.generated';
@@ -40,7 +41,7 @@ export function NewUserTemplate({ user }: Props) {
     {
       onSuccess() {
         snackbar.handleClick({ message: 'Profile updated!' });
-        router.push('/home');
+        router.push(ROUTES.EXPLORE);
       },
     }
   );

@@ -1,5 +1,6 @@
 query get_new_user {
   me {
-  ...current_user
+    ...current_user
+    pfp
   }
 }
