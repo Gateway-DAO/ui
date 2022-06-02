@@ -7,6 +7,7 @@ import useTranslation from 'next-translate/useTranslation';
 import { mockDaos } from '../__mock__/daos';
 import { DashboardTemplate } from '../components/templates/dashboard';
 import { AllTab, ExploreTemplate } from '../components/templates/explore';
+import GatesTab from '../components/templates/explore/tabs/gates-tab/gates-tab';
 import { gqlMethods } from '../services/api';
 
 /** TODO: Prevent template remount when navigating between dashboard pages
@@ -81,6 +82,11 @@ export default function Explore({
             key: 'all',
             label: t('tabs.all'),
             section: <AllTab {...{ daos, gates, people }} />,
+          },
+          {
+            key: 'gates',
+            label: t('tabs.gates'),
+            section: <GatesTab {...{ gates }} />,
           },
         ]}
       />
