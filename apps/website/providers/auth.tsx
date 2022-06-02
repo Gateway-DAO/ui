@@ -1,6 +1,12 @@
 import { signOut } from 'next-auth/react';
 import { useSession } from 'next-auth/react';
-import { PropsWithChildren, useEffect } from 'react';
+import {
+  createContext,
+  PropsWithChildren,
+  useCallback,
+  useContext,
+  useEffect,
+} from 'react';
 
 import { useAccount, useDisconnect } from 'wagmi';
 
@@ -9,6 +15,13 @@ import { ROUTES } from '../constants/routes';
 type Props = {
   isAuthPage?: boolean;
 };
+
+const AuthContext = createContext<{ onSignOut: () => void }>({
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  onSignOut: () => {},
+});
+
+export const useAuth = () => useContext(AuthContext);
 
 export function AuthProvider({
   isAuthPage,
@@ -19,6 +32,11 @@ export function AuthProvider({
   const { status: accountStatus, data: account } = useAccount();
   const { status: sessionStatus } = useSession();
 
+  const onSignOut = useCallback(() => {
+    disconnect();
+    signOut({ callbackUrl: ROUTES.LANDING, redirect: true });
+  }, [disconnect]);
+
   useEffect(() => {
     if (!isAuthPage) return;
     if (
@@ -28,10 +46,20 @@ export function AuthProvider({
     )
       return;
     if (sessionStatus === 'unauthenticated' || !account) {
-      disconnect();
-      signOut({ callbackUrl: ROUTES.LANDING, redirect: true });
+      onSignOut();
     }
-  }, [account, accountStatus, disconnect, isAuthPage, sessionStatus]);
+  }, [
+    account,
+    accountStatus,
+    disconnect,
+    isAuthPage,
+    onSignOut,
+    sessionStatus,
+  ]);
 
-  return <>{children}</>;
+  return (
+    <AuthContext.Provider value={{ onSignOut }}>
+      {children}
+    </AuthContext.Provider>
+  );
 }

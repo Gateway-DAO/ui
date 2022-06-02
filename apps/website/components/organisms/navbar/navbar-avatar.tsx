@@ -15,6 +15,8 @@ import MenuItem from '@mui/material/MenuItem';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 
+import { useAuth } from '../../../providers/auth';
+
 /* TODO: Refactor */
 
 export function NavBarAvatar() {
@@ -33,9 +35,7 @@ export function NavBarAvatar() {
     },
     [onClose]
   );
-  const { disconnect } = useDisconnect();
-
-  const { data } = useAccount();
+  const { onSignOut } = useAuth();
 
   return (
     <>
@@ -92,7 +92,7 @@ export function NavBarAvatar() {
             Portuguese (Brazil)
           </MenuItem>
         </NestedMenuItem> */}
-        <MenuItem key="disconnect" onClick={withOnClose(disconnect)}>
+        <MenuItem key="disconnect" onClick={withOnClose(onSignOut)}>
           <Typography textAlign="center">Disconnect</Typography>
         </MenuItem>
       </Menu>
