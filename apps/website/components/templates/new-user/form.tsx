@@ -1,11 +1,12 @@
 import { useFormContext } from 'react-hook-form';
 
-import { Button, Stack, TextField } from '@mui/material';
+import { Button, CircularProgress, Stack, TextField } from '@mui/material';
 
 import { NewUserSchema } from './schema';
 
 type Props = {
   onSubmit: (data: NewUserSchema) => void;
+  isLoading: boolean;
 };
 
 /*
@@ -14,7 +15,7 @@ type Props = {
   TODO: Disable submit button on form error
   */
 
-export function Form({ onSubmit }: Props) {
+export function Form({ onSubmit, isLoading }: Props) {
   const {
     register,
     handleSubmit,
@@ -53,8 +54,17 @@ export function Form({ onSubmit }: Props) {
         error={!!errors.email_address}
         helperText={errors.email_address?.message}
       />
-      <Button variant="contained" type="submit" sx={{ mt: 2 }}>
-        Enter the Gateway
+      <Button
+        variant="contained"
+        type="submit"
+        sx={{ mt: 2 }}
+        disabled={isLoading}
+      >
+        {isLoading ? (
+          <CircularProgress color="inherit" size={24} />
+        ) : (
+          'Enter the Gateway'
+        )}
       </Button>
     </Stack>
   );

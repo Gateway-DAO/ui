@@ -1,19 +1,9 @@
-query get_home($id: uuid!) {
-  user: users_by_pk(id: $id) {
-    id
-    name
-    credentials {
-      dao {
-        name
-      }
-    }
-    gate_progresses {
-      gate {
-        id
-      }
-      status
-    }
+query get_explore($id: uuid!) {
+  me {
+    ...current_user
+    pfp
   }
+
   gates {
     id
     gate_name
@@ -37,7 +27,7 @@ query get_home($id: uuid!) {
     # gates {....}
     # user is following ?
   }
-  people: users(where: { id: { _neq: $id } }) {
+  people: users(where: {id: {_neq: $id}, name: {_neq: "", _is_null: false }}) {
     id
     name
     pfp

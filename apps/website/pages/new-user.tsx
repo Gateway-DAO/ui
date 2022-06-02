@@ -1,31 +1,52 @@
-/* TODO: Gap using values */
+import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
+import { getSession } from 'next-auth/react';
 
-import { InferGetServerSidePropsType } from 'next';
-
-import { clearObject } from '@gateway/helpers';
 import { TOKENS } from '@gateway/theme';
 
 import { DashboardTemplate } from '../components/templates/dashboard';
 import { NewUserTemplate } from '../components/templates/new-user';
-import { gqlMethodsServer } from '../services/api-server';
+import { ROUTES } from '../constants/routes';
+import { gqlMethods } from '../services/api';
 
-export async function getServerSideProps() {
-  const user = (
-    await gqlMethodsServer.get_new_user({
-      id: 'e92ec36c-d003-46ac-ae3d-75f378070caa',
-    })
-  )?.user;
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+  const session = await getSession({ req });
 
+  if (!session?.user) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: true,
+      },
+      props: {
+        user: null,
+      },
+    };
+  }
+
+  const user = (await gqlMethods(session.user).get_new_user()).me;
+
+  if (user.init) {
+    return {
+      props: {
+        user: null,
+      },
+      redirect: {
+        destination: ROUTES.EXPLORE,
+        permanent: true,
+      },
+    };
+  }
   return {
     props: {
-      user: clearObject(user),
+      user,
     },
   };
-}
+};
 
-export default function Home({
+export default function NewUser({
   user,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+  if (!user) return null;
   return (
     <DashboardTemplate
       showExplore={false}
@@ -42,3 +63,5 @@ export default function Home({
     </DashboardTemplate>
   );
 }
+
+NewUser.auth = true;

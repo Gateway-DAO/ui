@@ -41,7 +41,7 @@ export function DaoCard({
           }}
           aria-label="recipe"
         >
-          {name[0]}
+          {name?.[0]}
         </Avatar>
       </Box>
       <CardHeader
