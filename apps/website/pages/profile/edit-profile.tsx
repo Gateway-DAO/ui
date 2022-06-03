@@ -1,4 +1,4 @@
-import { Box, Button, Container, Grid, TextField, Typography } from "@mui/material";
+import { Box, Button, Container, Grid, InputAdornment, TextField, Typography, IconButton, Menu, MenuItem } from "@mui/material";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -7,7 +7,7 @@ import { CardActionArea, CardActions } from '@mui/material';
 import React, { useState, useEffect } from "react";
 import EditIcon from '@mui/icons-material/Edit';
 
-
+import CancelIcon from '@mui/icons-material/Cancel';
 
 
 
@@ -27,6 +27,12 @@ const editProfile = () => {
 
     const [name, setName] = useState('');
     const [username, setUsername] = useState('');
+
+
+    const [email, setEmail] = useState('');
+    const [discord, setDiscord] = useState('');
+    const [github, setGithub] = useState('');
+    const [twitter, setTwitter] = useState('');
 
     const [image, setImage] = useState('/images/home.png');
 
@@ -48,6 +54,24 @@ const editProfile = () => {
             reader.readAsDataURL(file);
         });
     }
+
+
+    const nameHandler = () => {
+        setName('');
+    }
+
+    const userNameHandler = () => {
+        setUsername('');
+    }
+
+    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+    const open = Boolean(anchorEl);
+    const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
 
 
 
@@ -79,7 +103,7 @@ const editProfile = () => {
 
                                 <TextField id="outlined-basic" label="DISPLAY NAME" variant="outlined"
                                     style={{ width: '100%' }}
-                                    defaultValue={name ? name : ''}
+                                    value={name}
                                     onChange={(e) => {
                                         window.localStorage.setItem('name', e.target.value);
                                         setName(e.target.value)
@@ -87,7 +111,7 @@ const editProfile = () => {
                                 />
                                 <TextField id="outlined-basic" label="USERNAME" variant="outlined"
                                     style={{ width: '100%', marginTop: 20 }}
-                                    defaultValue={username ? username : ''}
+                                    value={username}
                                     onChange={(e) => {
                                         window.localStorage.setItem('username', e.target.value);
                                         setUsername(e.target.value)
@@ -95,7 +119,7 @@ const editProfile = () => {
                                 />
                                 <TextField
                                     id="standard-textarea"
-                                    label="Multiline Placeholder"
+                                    label="ABOUT"
                                     multiline
                                     style={{ width: '100%', marginTop: 20 }}
                                     variant="outlined"
@@ -104,20 +128,84 @@ const editProfile = () => {
                             </Box>
                             <Box>
                                 <Typography variant="h6" style={{ fontSize: 12, padding: '10px 0' }}>SOCIALS</Typography>
-                                <TextField id="outlined-basic" label="EMAIL" variant="outlined"
-                                    style={{ width: '100%' }}
-                                    defaultValue="Johndoe@gmail.com"
-                                />
-                                <TextField id="outlined-basic" label="TWITTER" variant="outlined"
-                                    style={{ width: '100%', marginTop: 20 }}
-                                    defaultValue="www.twitter.com/johndoe"
-                                />
-                                <TextField id="outlined-basic" label="DISCORD" variant="outlined"
-                                    style={{ width: '100%', marginTop: 20 }}
-                                    defaultValue="john.doe#1234"
-                                />
+                                <Box style={{ position: 'relative' }}>
+                                    <TextField id="outlined-basic" label="EMAIL" variant="outlined"
+                                        style={{ width: '100%' }}
+                                        // defaultValue={email}
+                                        onChange={(e) => {
+                                            setEmail(e.target.value)
+                                        }}
+                                        type="email"
+                                        value={email}
+                                        InputProps={{
+                                            endAdornment: email && (
+                                                <IconButton
+                                                    aria-label="toggle password visibility"
+                                                    onClick={() => setEmail("")}>
+                                                    <CancelIcon style={{ color: 'white' }} />
+                                                </IconButton>
+                                            )
+                                        }}
+                                    />
+                                </Box>
+                                <Box>
+                                    <TextField id="outlined-basic" label="TWITTER" variant="outlined"
+                                        style={{ width: '100%', marginTop: 20 }}
+                                        value={twitter}
+                                        onChange={(e) => {
+                                            setTwitter(e.target.value)
+                                        }}
+                                        type="text"
+                                        InputProps={{
+                                            endAdornment: twitter && (
+                                                <IconButton
+                                                    aria-label="toggle password visibility"
+                                                    onClick={() => setTwitter("")}>
+                                                    <CancelIcon style={{ color: 'white' }} />
+                                                </IconButton>
+                                            )
+                                        }}
+                                    />
+                                </Box>
+                                <Box>
+                                    <TextField id="outlined-basic" label="DISCORD" variant="outlined"
+                                        style={{ width: '100%', marginTop: 20 }}
+                                        value={discord}
+                                        onChange={(e) => {
+                                            setDiscord(e.target.value)
+                                        }
+                                        }
+                                        type="text"
+                                        InputProps={{
+                                            endAdornment: discord && (
+                                                <IconButton
+
+                                                    aria-label="toggle password visibility"
+                                                    onClick={() => setDiscord("")}>
+                                                    <CancelIcon style={{ color: 'white' }} />
+                                                </IconButton>
+                                            )
+                                        }}
+                                    />
+                                </Box>
                                 <TextField id="outlined-basic" label="Github" variant="outlined"
                                     style={{ width: '100%', marginTop: 20 }}
+                                    value={github}
+                                    onChange={(e) => {
+                                        setGithub(e.target.value)
+                                    }
+                                    }
+                                    type="text"
+                                    InputProps={{
+                                        endAdornment: github && (
+                                            <IconButton
+                                                aria-label="toggle password visibility"
+                                                onClick={() => setGithub("")}>
+                                                <CancelIcon style={{ color: 'white' }} />
+                                            </IconButton>
+                                        )
+                                    }}
+
                                 />
                             </Box>
                         </Grid>
@@ -139,24 +227,56 @@ const editProfile = () => {
                                         </Typography>
                                     </CardContent>
                                 </CardActionArea>
-                                <div style={{ background: "rgba(255,255,255,0.15)", padding: '8px', height: "42px", borderRadius: 100, width: 42, position: 'absolute', right: 10, top: 10, cursor: 'pointer' }} >
-                                    <input type="file" id="profile-image" hidden
-                                        style={{ width: 42, cursor: 'pointer' }}
-                                        onChange={(e) => {
-                                            readFileDataAsBase64(e).then((data) => {
-                                                setImage(data);
-                                                window.localStorage.setItem('image', data);
-                                            });
-                                        }}
-                                    />
-                                    <label htmlFor="profile-image"
-                                        style={{ cursor: 'pointer' }}
+                                <div style={{ background: "#9A53FF", padding: '8px', height: "42px", borderRadius: 100, width: 42, position: 'absolute', right: 10, bottom: 22, cursor: 'pointer' }} >
+                                    <Button
+                                        id="demo-positioned-button"
+                                        aria-controls={open ? 'demo-positioned-menu' : undefined}
+                                        aria-haspopup="true"
+                                        aria-expanded={open ? 'true' : undefined}
+                                        onClick={handleClick}
+                                        style={{ minWidth: 0, padding: 0 }}
                                     >
-                                        <EditIcon />
-                                    </label>
+                                        <EditIcon style={{ color: 'white' }} />
+                                    </Button>
+                                    <Menu
+                                        id="demo-positioned-menu"
+                                        aria-labelledby="demo-positioned-button"
+                                        anchorEl={anchorEl}
+                                        open={open}
+                                        onClose={handleClose}
+                                        anchorOrigin={{
+                                            vertical: 'top',
+                                            horizontal: 'left',
+                                        }}
+                                        transformOrigin={{
+                                            vertical: 'top',
+                                            horizontal: 'left',
+                                        }}
+                                    >
+                                        <MenuItem>
+                                            <input type="file" id="profile-image" hidden
+                                                style={{ width: 42, cursor: 'pointer' }}
+                                                onChange={(e) => {
+                                                    readFileDataAsBase64(e).then((data) => {
+                                                        setImage(data);
+                                                        window.localStorage.setItem('image', data);
+                                                    });
+                                                }}
+                                            />
+                                            <label htmlFor="profile-image"
+                                                style={{ cursor: 'pointer', width: '100%' }}
+                                            >
+                                                Upload
+                                            </label>
+                                        </MenuItem>
+                                        <MenuItem onClick={() => {
+                                            window.localStorage.removeItem('image')
+                                            window.location.reload()
+                                        }}>Remove Photo</MenuItem>
+                                        <MenuItem onClick={handleClose} disabled >Select NFT (soon)</MenuItem>
+                                    </Menu>
                                 </div>
                             </Card>
-
                         </Grid>
                     </Grid>
 
@@ -167,20 +287,25 @@ const editProfile = () => {
             </div>
         </div >
     );
-
-
-
-
-
-
-    const getBase64 = (file) => {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onload = () => resolve(reader.result);
-            reader.onerror = error => reject(error);
-            reader.readAsDataURL(file);
-        });
-    }
 }
 
 export default editProfile;
+
+
+
+{/* <div style={{ background: "#9A53FF", padding: '8px', height: "42px", borderRadius: 100, width: 42, position: 'absolute', right: 10, bottom: 22, cursor: 'pointer' }} >
+<input type="file" id="profile-image" hidden
+    style={{ width: 42, cursor: 'pointer' }}
+    onChange={(e) => {
+        readFileDataAsBase64(e).then((data) => {
+            setImage(data);
+            window.localStorage.setItem('image', data);
+        });
+    }}
+/>
+<label htmlFor="profile-image"
+    style={{ cursor: 'pointer', }}
+>
+    <EditIcon />
+</label>
+</div> */}

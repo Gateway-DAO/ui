@@ -5,7 +5,7 @@ import React, { useState } from "react";
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import { temporaryDropdown } from "apps/website/__mock__/daos";
-import CloseIcon  from '@mui/icons-material/Close';
+import CloseIcon from '@mui/icons-material/Close';
 
 
 
@@ -84,10 +84,22 @@ const editAttitudes = () => {
                                 arr.map((item) => {
                                     return (
                                         <div
-                                            style={{ borderRadius: 100,  display: 'flex', justifyContent: "space-between", alignItems: 'center', background: "rgba(255,255,255, .25)", padding: '12px', marginTop: 10, marginRight: 10 }}
+                                            key={item.key}
+                                            style={{ borderRadius: 100, display: 'flex', justifyContent: "space-between", alignItems: 'center', background: "rgba(255,255,255, .25)", padding: '6px 12px', marginTop: 10, marginRight: 10 }}
                                         >
-                                            <span style={{ marginRight: 6, fontSize: 14 }}>{item}</span>
-                                            <CloseIcon style={{ fontSize: 24, marginLeft: 'auto' }} />
+                                            <Typography style={{ marginRight: 6, fontSize: 14 }}>{item.label}</Typography>
+                                            <CloseIcon style={{ fontSize: 24, marginLeft: 'auto' }}
+                                                onClick={() => {
+                                                    let newArr = [...arr];
+                                                    for (let i = 0; i < newArr.length; i++) {
+                                                        if (newArr[i].key === item.key) {
+                                                            newArr.splice(i, 1);
+                                                        }
+                                                    }
+                                                    setArr(newArr);
+                                                    console.log(newArr);
+                                                }}
+                                            />
                                         </div>
                                     )
                                 })}
@@ -97,7 +109,7 @@ const editAttitudes = () => {
                         </Box>
                         <Box style={{ margin: '20px 0' }} >
                             <Box style={{ display: 'flex', justifyContent: 'space-between', margin: "10px 0" }}>
-                                <div style={{ borderRadius: 100,  display: 'flex', justifyContent: "space-between", alignItems: 'center', background: "rgba(255,255,255, .25)", padding: '12px', marginRight: 10 }}>
+                                <div style={{ borderRadius: 100, display: 'flex', justifyContent: "space-between", alignItems: 'center', background: "rgba(255,255,255, .25)", padding: '12px', marginRight: 10 }}>
                                     <span style={{ marginRight: 6, fontSize: 13 }}>Skills 1</span>
                                     <CloseIcon style={{ fontSize: 24 }} />
                                 </div>

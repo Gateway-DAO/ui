@@ -84,10 +84,22 @@ const editSkills = () => {
                                 arr.map((item) => {
                                     return (
                                         <div
+                                            key={item.key}
                                             style={{ borderRadius: 100, display: 'flex', justifyContent: "space-between", alignItems: 'center', background: "rgba(255,255,255, .25)", padding: '6px 12px', marginTop: 10, marginRight: 10 }}
                                         >
-                                            <Typography style={{ marginRight: 6, fontSize: 14 }}>{item}</Typography>
-                                            <CloseIcon style={{ fontSize: 24, marginLeft: 'auto' }} />
+                                            <Typography style={{ marginRight: 6, fontSize: 14 }}>{item.label}</Typography>
+                                            <CloseIcon style={{ fontSize: 24, marginLeft: 'auto' }}
+                                                onClick={() => {
+                                                    let newArr = [...arr];
+                                                    for (let i = 0; i < newArr.length; i++) {
+                                                        if (newArr[i].key === item.key) {
+                                                            newArr.splice(i, 1);
+                                                        }
+                                                    }
+                                                    setArr(newArr);
+                                                    console.log(newArr);
+                                                }}
+                                            />
                                         </div>
                                     )
                                 })}
