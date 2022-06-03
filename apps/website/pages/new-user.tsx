@@ -31,7 +31,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
         user: null,
       },
       redirect: {
-        destination: ROUTES.EXPLORE,
+        destination: ROUTES.PROFILE,
         permanent: true,
       },
     };

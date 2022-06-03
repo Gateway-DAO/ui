@@ -113,14 +113,14 @@ export function DashboardTemplate({
                 </MotionTooltip>
               ))}
               {showExplore && (
-                <Link passHref href={ROUTES.EXPLORE} prefetch={false}>
+                <Link passHref href={ROUTES.PROFILE} prefetch={false}>
                   <MotionTooltip
                     key="explore"
                     layoutId="Explore"
                     title="Explore"
                     placement="right"
                     className={clsx({
-                      active: router.pathname === ROUTES.EXPLORE,
+                      active: router.pathname === ROUTES.PROFILE,
                     })}
                   >
                     <ListItemButton component="a">
