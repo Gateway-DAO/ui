@@ -88,6 +88,16 @@ export default function Explore({
             label: t('tabs.gates'),
             section: <GatesTab {...{ gates }} />,
           },
+          {
+            key: 'daos',
+            label: t('tabs.daos'),
+            section: <GatesTab {...{ gates }} />,
+          },
+          {
+            key: 'people',
+            label: t('tabs.people'),
+            section: <GatesTab {...{ gates }} />,
+          },
         ]}
       />
     </DashboardTemplate>
