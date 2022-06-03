@@ -180,7 +180,17 @@ export function ProfileTemplate() {
             <Divider light sx={{ width: '100%' }} />
             <section style={{ paddingBottom: '150px' }}>
               <h2 style={{ margin: '30px 0' }}>Proof of Credentials</h2>
-              <CredentialCard smaller pending />
+              <Grid container>
+                <Grid item xs={4}>
+                  <CredentialCard smaller />
+                </Grid>
+                <Grid item xs={4}>
+                  <CredentialCard smaller pending />
+                </Grid>
+                <Grid item xs={4}>
+                  <CredentialCard smaller mintable />
+                </Grid>
+              </Grid>
               {isAdmin && (
                 <Button
                   variant="contained"

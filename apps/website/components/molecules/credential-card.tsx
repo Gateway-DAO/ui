@@ -1,4 +1,4 @@
-import { Chip } from '@mui/material';
+import { Button, CardActions, Chip } from '@mui/material';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
@@ -7,11 +7,13 @@ import Typography from '@mui/material/Typography';
 interface CredentialCardProps {
   smaller?: boolean;
   pending?: boolean;
+  mintable?: boolean;
 }
 
 export default function CredentialCard({
   smaller,
   pending,
+  mintable,
 }: CredentialCardProps) {
   return (
     <Card sx={{ maxWidth: smaller ? '250px' : '345px' }}>
@@ -47,6 +49,13 @@ export default function CredentialCard({
           />
         )}
       </CardContent>
+      <CardActions>
+        {mintable && (
+          <Button variant="contained" sx={{ width: '100%' }}>
+            Mint free NFT
+          </Button>
+        )}
+      </CardActions>
     </Card>
   );
 }
