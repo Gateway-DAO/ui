@@ -8,6 +8,7 @@ interface CredentialCardProps {
   smaller?: boolean;
   pending?: boolean;
   mintable?: boolean;
+  isNFT?: boolean;
   mint?: () => void;
 }
 
@@ -15,6 +16,7 @@ export default function CredentialCard({
   smaller,
   pending,
   mintable,
+  isNFT,
   mint,
 }: CredentialCardProps) {
   return (
@@ -50,6 +52,7 @@ export default function CredentialCard({
             sx={{ color: 'red', borderColor: 'red' }}
           />
         )}
+        {isNFT && <Chip label="NFT" />}
       </CardContent>
       <CardActions>
         {mintable && (

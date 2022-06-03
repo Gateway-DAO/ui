@@ -186,7 +186,7 @@ export function ProfileTemplate() {
             <Divider light sx={{ width: '100%' }} />
             <section style={{ paddingBottom: '150px' }}>
               <h2 style={{ margin: '30px 0' }}>Proof of Credentials</h2>
-              <Grid container>
+              <Grid container rowGap={2}>
                 <Grid item xs={4}>
                   <CredentialCard smaller />
                 </Grid>
@@ -195,6 +195,9 @@ export function ProfileTemplate() {
                 </Grid>
                 <Grid item xs={4}>
                   <CredentialCard smaller mintable mint={handleOpen} />
+                </Grid>
+                <Grid item xs={4}>
+                  <CredentialCard smaller isNFT />
                 </Grid>
               </Grid>
               {isAdmin && (
