@@ -153,9 +153,6 @@ export function ProfileTemplate() {
           </Box>
           <p style={{ margin: '0 auto' }}>Master Ops at Gateway</p>
           <p style={{ marginTop: '0', fontSize: 'small' }}>@shriram</p>
-          <p>
-            <b>120</b> Following &#183; <b>118</b> Followers
-          </p>
         </Box>
         <Divider light sx={{ width: '100%' }} />
         <Grid container>
