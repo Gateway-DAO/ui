@@ -1,8 +1,6 @@
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 
-import { AiOutlineClose } from 'react-icons/ai';
-
 import { Button } from '@mui/material';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
@@ -39,16 +37,6 @@ export default function PocModalMinted({ open, handleClose }) {
             alt="gateway-logo"
             height={40}
             width={40}
-          />
-          <AiOutlineClose
-            size={28}
-            style={{
-              position: 'absolute',
-              right: '50px',
-              top: '32px',
-              cursor: 'pointer',
-            }}
-            onClick={handleClose}
           />
           <Box
             sx={{
