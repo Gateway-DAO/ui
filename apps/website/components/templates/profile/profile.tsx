@@ -175,7 +175,20 @@ export function ProfileTemplate() {
             </section>
             <Divider light sx={{ width: '100%' }} />
             <section style={{ paddingBottom: '150px' }}>
-              <h2 style={{ margin: '30px 0' }}>Proof of Credentials</h2>
+              <Box sx={{ display: 'flex', alignItems: 'baseline' }}>
+                <h2 style={{ marginTop: '30px', marginRight: '15px' }}>
+                  Proof of Credentials
+                </h2>
+                {isAdmin && (
+                  <Button
+                    variant="contained"
+                    size="small"
+                    onClick={() => router.push('/credentials/new')}
+                  >
+                    Create a Proof of Credential
+                  </Button>
+                )}
+              </Box>
               <Grid container rowGap={2}>
                 <Grid item xs={4}>
                   <CredentialCard smaller />
@@ -190,16 +203,6 @@ export function ProfileTemplate() {
                   <CredentialCard smaller isNFT />
                 </Grid>
               </Grid>
-              {isAdmin && (
-                <Button
-                  variant="contained"
-                  size="small"
-                  sx={{ marginTop: '20px' }}
-                  onClick={() => router.push('/credentials/new')}
-                >
-                  Create a Proof of Credential
-                </Button>
-              )}
             </section>
           </Grid>
           <Grid item className="right" xs={4} sx={{ padding: '0 65px' }}>
