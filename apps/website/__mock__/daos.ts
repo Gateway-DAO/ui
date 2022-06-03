@@ -9,3 +9,15 @@ export const temporaryDao: Dao = {
   id: '999',
   name: 'Temporary Dao',
 };
+
+
+export const temporaryDropdown = [
+  'The Shawshank Redemption',
+  'The Godfather',
+  'The Godfather: Part II',
+  'The Dark Knight',
+  '12 Angry Men',
+  "Schindler's List",
+  'Pulp Fiction',
+  'Don'
+]

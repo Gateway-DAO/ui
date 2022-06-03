@@ -10560,6 +10560,11 @@ filelist@^1.0.1:
   dependencies:
     minimatch "^3.0.4"
 
+filereader@^0.10.3:
+  version "0.10.3"
+  resolved "https://registry.yarnpkg.com/filereader/-/filereader-0.10.3.tgz#c747d4a2cd8f61e5418a7c07fe1257a43f0acdb1"
+  integrity sha512-7F8w6GSXuHLN80ukaVOcHgBaiTRHUZr8GeEhNdqfAECcnBoROg4i8hTl+KqtF4yUPffOJVHEFg4iDJb7xIYFng==
+
 fill-range@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/fill-range/-/fill-range-4.0.0.tgz#d544811d428f98eb06a63dc402d2403c328c38f7"
