@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router';
+import { useState } from 'react';
 
 import { BsFillPencilFill } from 'react-icons/bs';
 import { FaDiscord, FaTwitter, FaGithub, FaCopy } from 'react-icons/fa';
@@ -16,6 +17,7 @@ import {
 } from '@mui/material';
 
 import CredentialCard from '../../molecules/credential-card';
+import PocModalMinted from '../../organisms/poc-modal-minted/poc-modal-minted';
 
 const data = {
   skills: [
@@ -37,6 +39,9 @@ const data = {
 const randomNftUrl = 'https://i.ibb.co/bzzgBfT/random-nft.png';
 
 export function ProfileTemplate() {
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
   const router = useRouter();
   // TODO: Get this from context
   const isAdmin = true;
@@ -60,6 +65,7 @@ export function ProfileTemplate() {
 
   return (
     <>
+      <PocModalMinted open={open} handleClose={handleClose} />
       <Paper
         sx={{
           height: '280px',
@@ -188,7 +194,7 @@ export function ProfileTemplate() {
                   <CredentialCard smaller pending />
                 </Grid>
                 <Grid item xs={4}>
-                  <CredentialCard smaller mintable />
+                  <CredentialCard smaller mintable mint={handleOpen} />
                 </Grid>
               </Grid>
               {isAdmin && (

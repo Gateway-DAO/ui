@@ -8,12 +8,14 @@ interface CredentialCardProps {
   smaller?: boolean;
   pending?: boolean;
   mintable?: boolean;
+  mint?: () => void;
 }
 
 export default function CredentialCard({
   smaller,
   pending,
   mintable,
+  mint,
 }: CredentialCardProps) {
   return (
     <Card sx={{ maxWidth: smaller ? '250px' : '345px' }}>
@@ -51,7 +53,11 @@ export default function CredentialCard({
       </CardContent>
       <CardActions>
         {mintable && (
-          <Button variant="contained" sx={{ width: '100%' }}>
+          <Button
+            variant="contained"
+            sx={{ width: '100%' }}
+            onClick={() => mint()}
+          >
             Mint free NFT
           </Button>
         )}
