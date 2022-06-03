@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 import { BsFillPencilFill } from 'react-icons/bs';
-import { FaDiscord, FaTwitter, FaGithub, FaCopy } from 'react-icons/fa';
+import { FaDiscord, FaTwitter, FaGithub } from 'react-icons/fa';
 import { MdEmail } from 'react-icons/md';
 import { RiArrowDownSFill } from 'react-icons/ri';
 
@@ -40,6 +40,8 @@ const randomNftUrl = 'https://i.ibb.co/bzzgBfT/random-nft.png';
 
 export function ProfileTemplate() {
   const [open, setOpen] = useState(false);
+  const aboutText =
+    "I am a Design Director focused on User Experience, User Interfaces, Experience Design, Creative and Digital Strategy. I've been lucky enough to work and solve problems for the most prominent brands in the world. I approach problems from the top-down, identifying the real issue before forming my solution. I am always challenging the limits of physical, social, and digital mediums through storytelling and functions. Each of my projects is crafted with precise execution and carefully considered decision making.";
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const router = useRouter();
@@ -136,10 +138,11 @@ export function ProfileTemplate() {
             )
           );
         })}
-        <Button variant="contained" color="secondary">
-          nossirah.eth
+        {/* TODO: Contains user's address, only visible if it's our profile */}
+        {/* <Button variant="contained" color="secondary">
+          0x0
           <FaCopy style={{ marginLeft: 2 }} />
-        </Button>
+        </Button> */}
       </Stack>
       <main>
         <Box sx={{ margin: '30px 65px' }}>
@@ -157,28 +160,18 @@ export function ProfileTemplate() {
         <Divider light sx={{ width: '100%' }} />
         <Grid container>
           <Grid item className="left" xs={8} sx={{ padding: '0 65px' }}>
-            <section>
+            <section style={{ marginBottom: '20px' }}>
               <h2 style={{ margin: '20px 0' }}>About</h2>
-              <p>
-                I am a Design Director focused on User Experience, User
-                Interfaces, Experience Design, Creative and Digital Strategy.
-                I&#39;ve been lucky enough to work and solve problems for the
-                most prominent brands in the world.
-              </p>
-              <p>
-                I approach problems from the top-down, identifying the real
-                issue before forming my solution. I am always challenging the
-                limits of physical, social, and digital mediums through
-                storytelling and functions. Each of my projects is crafted with
-                precise execution and carefully considered decision making.
-              </p>
-              <Button
-                variant="outlined"
-                size="small"
-                sx={{ marginBottom: '20px' }}
-              >
-                Add now
-              </Button>
+              <div className="about">{aboutText}</div>
+              {!aboutText && (
+                <Button
+                  variant="outlined"
+                  size="small"
+                  sx={{ marginBottom: '20px' }}
+                >
+                  Add now
+                </Button>
+              )}
             </section>
             <Divider light sx={{ width: '100%' }} />
             <section style={{ paddingBottom: '150px' }}>
