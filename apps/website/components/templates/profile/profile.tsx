@@ -15,6 +15,8 @@ import {
   Divider,
 } from '@mui/material';
 
+import CredentialCard from '../../molecules/credential-card';
+
 const data = {
   skills: [
     'UX Design',
@@ -178,10 +180,12 @@ export function ProfileTemplate() {
             <Divider light sx={{ width: '100%' }} />
             <section style={{ paddingBottom: '150px' }}>
               <h2 style={{ margin: '30px 0' }}>Proof of Credentials</h2>
+              <CredentialCard smaller pending />
               {isAdmin && (
                 <Button
                   variant="contained"
                   size="small"
+                  sx={{ marginTop: '20px' }}
                   onClick={() => router.push('/credentials/new')}
                 >
                   Create a Proof of Credential

@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 
 import { AiOutlineClose, AiOutlineCopy } from 'react-icons/ai';
 
@@ -20,6 +21,8 @@ const style = {
 };
 
 export default function PocModalCreated({ open, handleClose }) {
+  const router = useRouter();
+
   return (
     <div>
       {/* TODO: Add dialog before making the modal appear */}
@@ -104,6 +107,7 @@ export default function PocModalCreated({ open, handleClose }) {
                 variant="outlined"
                 size="small"
                 sx={{ margin: '20px 0 0 20px' }}
+                onClick={() => router.push('/profile')}
               >
                 Go to credentials
               </Button>

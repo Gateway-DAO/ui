@@ -1,16 +1,22 @@
 import { Chip } from '@mui/material';
 import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 
-export default function CredentialCard() {
+interface CredentialCardProps {
+  smaller?: boolean;
+  pending?: boolean;
+}
+
+export default function CredentialCard({
+  smaller,
+  pending,
+}: CredentialCardProps) {
   return (
-    <Card sx={{ maxWidth: 345 }}>
+    <Card sx={{ maxWidth: smaller ? '250px' : '345px' }}>
       <CardMedia
         component="img"
-        height="302"
         image="https://i.postimg.cc/6QJDW2r1/olympus-credential-picture.png"
         alt="credential image"
       />
@@ -23,10 +29,24 @@ export default function CredentialCard() {
           work...
         </Typography>
       </CardContent>
-      <CardActions>
+      <CardContent
+        sx={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          gap: '5px',
+          padding: '0 10px',
+        }}
+      >
         <Chip label="Operations" />
         <Chip label="Contributor" />
-      </CardActions>
+        {pending && (
+          <Chip
+            label="Pending Approval"
+            variant="outlined"
+            sx={{ color: 'red', borderColor: 'red' }}
+          />
+        )}
+      </CardContent>
     </Card>
   );
 }
