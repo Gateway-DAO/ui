@@ -5,7 +5,7 @@ import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import CloseIcon from '@mui/icons-material/Close';
 
-import { temporaryDropdown } from "apps/website/__mock__/daos";
+import { temporaryKnowledge } from "apps/website/__mock__/daos";
 
 
 const editKnowledge = () => {
@@ -45,7 +45,7 @@ const editKnowledge = () => {
 
                             <Autocomplete
                                 id="combo-box-demo"
-                                options={temporaryDropdown}
+                                options={temporaryKnowledge}
                                 sx={{ width: 300 }}
 
                                 value={value}

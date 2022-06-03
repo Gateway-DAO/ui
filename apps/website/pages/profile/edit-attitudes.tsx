@@ -4,7 +4,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import React, { useState } from "react";
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
-import { temporaryDropdown } from "apps/website/__mock__/daos";
+import { temporaryAttitudes } from "apps/website/__mock__/daos";
 import CloseIcon from '@mui/icons-material/Close';
 
 
@@ -47,7 +47,7 @@ const editAttitudes = () => {
                     <Box>
                         <Autocomplete
                             id="combo-box-demo"
-                            options={temporaryDropdown}
+                            options={temporaryAttitudes}
                             sx={{ width: 300 }}
 
                             value={value}
