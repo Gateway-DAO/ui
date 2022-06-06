@@ -17,13 +17,13 @@ type Props = {
 };
 export function TableView({ daos }: Props) {
   return (
-    <TableContainer sx={{ maxHeight: 440 }}>
+    <TableContainer>
       <Table stickyHeader aria-label="sticky table">
         <TableHead>
           <TableRow>
             <TableCell align="left">Dao</TableCell>
             <TableCell align="left">Category</TableCell>
-            <TableCell align="left">Dao</TableCell>
+            <TableCell align="left"></TableCell>
           </TableRow>
         </TableHead>
         <TableBody>

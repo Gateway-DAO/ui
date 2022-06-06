@@ -17,7 +17,7 @@ type Props = {
 };
 export function TableView({ gates }: Props) {
   return (
-    <TableContainer sx={{ maxHeight: 440 }}>
+    <TableContainer>
       <Table stickyHeader aria-label="sticky table">
         <TableHead>
           <TableRow>
