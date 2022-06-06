@@ -1,24 +1,66 @@
-import { ReactNode, useState } from 'react';
+import useTranslation from 'next-translate/useTranslation';
+import { ReactNode, useMemo, useState } from 'react';
 
 import { TOKENS } from '@gateway/theme';
 
 import { Box, Tabs, Tab, Typography } from '@mui/material';
 
+import { Daos, Gates, Users } from '../../../services/graphql/types.generated';
 import { a11yTabProps, TabPanel } from '../../atoms/tab-panel';
 import { Navbar } from '../../organisms/navbar/navbar';
+import { AllTab } from './tabs/all-tab';
+import { DaosTab } from './tabs/daos-tab';
+import { GatesTab } from './tabs/gates-tab';
+import { PeopleTab } from './tabs/people-tab';
 
 type TemplateProps = {
   title: string;
   subtitle: string;
-  tabs: Array<{ key: string; label: string; section: ReactNode }>;
+  data: {
+    daos: Daos[];
+    gates: Gates[];
+    people: Users[];
+  };
 };
 
-export function ExploreTemplate({ title, subtitle, tabs }: TemplateProps) {
+export function ExploreTemplate({ title, subtitle, data }: TemplateProps) {
   const [activeTab, setActiveTab] = useState<number>(0);
+  const { t } = useTranslation('explore');
 
   const handleTabChange = (event: React.SyntheticEvent, newTab: number) => {
     setActiveTab(newTab);
   };
+
+  const setTab = (tab: number) => {
+    setActiveTab(tab);
+    window?.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const tabs = useMemo(
+    () => [
+      {
+        key: 'all',
+        label: t('tabs.all'),
+        section: <AllTab {...data} setActiveTab={setTab} />,
+      },
+      {
+        key: 'gates',
+        label: t('tabs.gates'),
+        section: <GatesTab gates={data.gates} />,
+      },
+      {
+        key: 'daos',
+        label: t('tabs.daos'),
+        section: <DaosTab daos={data.daos} />,
+      },
+      {
+        key: 'people',
+        label: t('tabs.people'),
+        section: <PeopleTab people={data.people} />,
+      },
+    ],
+    []
+  );
 
   return (
     <>
