@@ -32,5 +32,6 @@ query get_explore($id: uuid!) {
     name
     pfp
     about
+    username
   }
 }
