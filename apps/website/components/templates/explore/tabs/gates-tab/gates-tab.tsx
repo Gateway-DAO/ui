@@ -1,64 +1,71 @@
-import { useMemo, useState } from 'react';
-
 import { TOKENS } from '@gateway/theme';
 
-import { Box, Button, Stack } from '@mui/material';
+import { AutoAwesomeMosaic, ViewList } from '@mui/icons-material';
+import { Box, IconButton, Stack } from '@mui/material';
 import Chip from '@mui/material/Chip';
 
 import { Gates } from '../../../../../services/graphql/types.generated';
 import { GatesCard } from '../../../../molecules/gates-card';
+import { usePropertyFilter } from '../use-property-filter';
+import { useViewMode, ViewMode } from '../use-view-modes';
 import { TableView } from './table-view';
 
 type Props = {
   gates: Gates[];
 };
 
-enum ViewMode {
-  grid,
-  table,
-}
-
 export default function GatesTab({ gates }: Props) {
-  const [view, setView] = useState<ViewMode>(ViewMode.table);
-  const toggleView = () => {
-    setView((oldView) =>
-      oldView === ViewMode.grid ? ViewMode.table : ViewMode.grid
-    );
-  };
-  const filters = useMemo(
-    () =>
-      gates.reduce(
-        (set, gate) => (gate.categories ? set.add(gate.categories) : set),
-        new Set<string>()
-      ),
-    [gates]
-  );
+  const { view, toggleView } = useViewMode();
+  const {
+    selectedFilters,
+    filteredItems: filteredGates,
+    availableFilters,
+    toggleFilter,
+  } = usePropertyFilter(gates, 'categories');
 
   return (
     <Box sx={{ px: TOKENS.CONTAINER_PX, py: 4 }}>
-      <Stack direction="row" justifyContent="space-between">
+      <Stack direction="row" justifyContent="space-between" sx={{ mb: 4 }}>
         <Stack direction="row" gap={1.5}>
-          {Array.from(filters).map((filter) => (
-            <Chip key={`filter-gate-${filter}`} label={filter} />
-          ))}
+          {availableFilters.map((filter) => {
+            const isActive = selectedFilters.includes(filter);
+            console.log(filter, isActive);
+            return (
+              <Chip
+                key={`gates-tab-filter-${filter}`}
+                label={filter}
+                {...(isActive
+                  ? { onDelete: () => toggleFilter(filter) }
+                  : { onClick: () => toggleFilter(filter) })}
+              />
+            );
+          })}
         </Stack>
-        <Button type="button" onClick={toggleView}>
-          Toggle View
-        </Button>
+        <IconButton
+          type="button"
+          onClick={toggleView}
+          color="secondary"
+          aria-label="Toggle View"
+        >
+          {view === ViewMode.grid ? <ViewList /> : <AutoAwesomeMosaic />}
+        </IconButton>
       </Stack>
-      <Box
-        sx={{
-          display: 'grid',
-          gridTemplateColumns: {
-            md: 'repeat(4, 1fr)',
-          },
-          gap: 2,
-        }}
-      >
-        {view === ViewMode.grid &&
-          gates.map((gate) => <GatesCard key={`gate-${gate.id}`} {...gate} />)}
-        {view === ViewMode.table && <TableView gates={gates} />}
-      </Box>
+      {view === ViewMode.grid && (
+        <Box
+          sx={{
+            display: 'grid',
+            gridTemplateColumns: {
+              md: 'repeat(4, 1fr)',
+            },
+            gap: 2,
+          }}
+        >
+          {filteredGates.map((gate) => (
+            <GatesCard key={`gate-${gate.id}`} {...gate} />
+          ))}
+        </Box>
+      )}
+      {view === ViewMode.table && <TableView gates={filteredGates} />}
     </Box>
   );
 }
