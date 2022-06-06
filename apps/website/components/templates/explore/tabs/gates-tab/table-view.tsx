@@ -1,3 +1,5 @@
+import { TOKENS } from '@gateway/theme';
+
 import { Avatar, Box, Chip, Stack, Typography } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -17,7 +19,7 @@ type Props = {
 };
 export function TableView({ gates }: Props) {
   return (
-    <TableContainer>
+    <TableContainer sx={{ px: TOKENS.CONTAINER_PX }}>
       <Table stickyHeader aria-label="sticky table">
         <TableHead>
           <TableRow>

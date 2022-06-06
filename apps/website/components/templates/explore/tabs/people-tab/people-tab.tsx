@@ -1,5 +1,3 @@
-import { TOKENS } from '@gateway/theme';
-
 import { Box } from '@mui/material';
 
 import { Users } from '../../../../../services/graphql/types.generated';
@@ -11,7 +9,7 @@ type Props = {
 
 export function PeopleTab({ people }: Props) {
   return (
-    <Box sx={{ px: TOKENS.CONTAINER_PX, py: 4 }}>
+    <Box sx={{ py: 4 }}>
       <TableView people={people} />
     </Box>
   );

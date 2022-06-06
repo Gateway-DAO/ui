@@ -24,8 +24,12 @@ export function GatesTab({ gates }: Props) {
   } = usePropertyFilter(gates, 'categories');
 
   return (
-    <Box sx={{ px: TOKENS.CONTAINER_PX, py: 4 }}>
-      <Stack direction="row" justifyContent="space-between" sx={{ mb: 4 }}>
+    <Box sx={{ py: 4 }}>
+      <Stack
+        direction="row"
+        justifyContent="space-between"
+        sx={{ mb: 4, px: TOKENS.CONTAINER_PX }}
+      >
         <Stack direction="row" gap={1.5}>
           {availableFilters.map((filter) => {
             const isActive = selectedFilters.includes(filter);
@@ -57,6 +61,7 @@ export function GatesTab({ gates }: Props) {
               md: 'repeat(4, 1fr)',
             },
             gap: 2,
+            px: TOKENS.CONTAINER_PX,
           }}
         >
           {filteredGates.map((gate) => (
