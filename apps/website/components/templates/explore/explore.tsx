@@ -33,7 +33,7 @@ export function ExploreTemplate({ title, subtitle, data }: TemplateProps) {
 
   const setTab = (tab: number) => {
     setActiveTab(tab);
-    window?.scrollTo({ top: 0, behavior: 'smooth' });
+    window?.scrollTo({ top: 0 });
   };
 
   const tabs = useMemo(
