@@ -6,17 +6,21 @@ import Typography from '@mui/material/Typography';
 
 interface CredentialCardProps {
   smaller?: boolean;
+  uncomplete?: boolean;
   pending?: boolean;
   mintable?: boolean;
   isNFT?: boolean;
+  earn?: () => void;
   mint?: () => void;
 }
 
 export default function CredentialCard({
   smaller,
+  uncomplete,
   pending,
   mintable,
   isNFT,
+  earn,
   mint,
 }: CredentialCardProps) {
   return (
@@ -55,6 +59,15 @@ export default function CredentialCard({
         {isNFT && <Chip label="NFT" />}
       </CardContent>
       <CardActions>
+        {uncomplete && (
+          <Button
+            variant="contained"
+            sx={{ width: '100%' }}
+            onClick={() => earn()}
+          >
+            Complete credential
+          </Button>
+        )}
         {mintable && (
           <Button
             variant="contained"

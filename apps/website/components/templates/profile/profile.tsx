@@ -191,7 +191,11 @@ export function ProfileTemplate() {
               </Box>
               <Grid container rowGap={2}>
                 <Grid item xs={4}>
-                  <CredentialCard smaller />
+                  <CredentialCard
+                    smaller
+                    uncomplete
+                    earn={() => router.push('/credentials/earn')}
+                  />
                 </Grid>
                 <Grid item xs={4}>
                   <CredentialCard smaller pending />
