@@ -17,8 +17,8 @@ export function TableView({ people }: Props) {
       <Table stickyHeader aria-label="sticky table">
         <TableHead>
           <TableRow>
-            <TableCell align="left">User</TableCell>
-            <TableCell align="right"></TableCell>
+            <TableCell>User</TableCell>
+            <TableCell></TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -46,7 +46,7 @@ export function TableView({ people }: Props) {
                   </Stack>
                 </TableCell>
 
-                <TableCell>
+                <TableCell align="right">
                   <Button variant="outlined" color="secondary">
                     Follow
                   </Button>

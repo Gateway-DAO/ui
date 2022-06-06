@@ -60,7 +60,7 @@ export function TableView({ daos }: Props) {
                     ))}
                   </Stack>
                 </TableCell>
-                <TableCell>
+                <TableCell align="right">
                   <Button variant="outlined" color="secondary">
                     Follow
                   </Button>
