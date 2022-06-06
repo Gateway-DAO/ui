@@ -60,7 +60,16 @@ export function SectionWithSlider({
           <Typography variant="h6">{title}</Typography>
           <Typography variant="caption">{caption}</Typography>
         </Box>
-        {action}
+        <Box
+          sx={{
+            display: {
+              xs: 'none',
+              md: 'block',
+            },
+          }}
+        >
+          {action}
+        </Box>
       </Stack>
       <Swiper
         modules={[A11y]}
@@ -73,6 +82,18 @@ export function SectionWithSlider({
           <SwiperSlide key={index}>{child}</SwiperSlide>
         ))}
       </Swiper>
+      <Box
+        sx={{
+          display: {
+            xs: 'block',
+            md: 'none',
+          },
+          px: TOKENS.CONTAINER_PX,
+          mt: 2,
+        }}
+      >
+        {action}
+      </Box>
     </Box>
   );
 }

@@ -23,7 +23,16 @@ export function SectionWithGrid({
           <Typography variant="h6">{title}</Typography>
           <Typography variant="caption">{caption}</Typography>
         </Box>
-        {action}
+        <Box
+          sx={{
+            display: {
+              xs: 'none',
+              md: 'block',
+            },
+          }}
+        >
+          {action}
+        </Box>
       </Stack>
       <Box
         sx={{
@@ -38,6 +47,18 @@ export function SectionWithGrid({
         }}
       >
         {children}
+      </Box>
+      <Box
+        sx={{
+          display: {
+            xs: 'block',
+            md: 'none',
+          },
+          px: TOKENS.CONTAINER_PX,
+          mt: 2,
+        }}
+      >
+        {action}
       </Box>
     </Box>
   );
