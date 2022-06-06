@@ -76,7 +76,6 @@ export default function Explore({
           overflow: 'hidden',
         },
       }}
-      followingDaos={mockDaos}
     >
       <ExploreTemplate
         title={t('title')}
