@@ -35,7 +35,7 @@ export function ExploreTemplate({ title, subtitle, tabs }: TemplateProps) {
           {subtitle}
         </Typography>
       </Box>
-      <Box>
+      <Box sx={{ mt: 5 }}>
         <Box
           sx={{
             borderBottom: 1,

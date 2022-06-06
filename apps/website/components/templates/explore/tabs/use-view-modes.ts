@@ -5,8 +5,8 @@ export enum ViewMode {
   table,
 }
 
-export function useViewMode() {
-  const [view, setView] = useState<ViewMode>(ViewMode.table);
+export function useViewMode(defaultView = ViewMode.grid) {
+  const [view, setView] = useState<ViewMode>(defaultView);
   const toggleView = () => {
     setView((oldView) =>
       oldView === ViewMode.grid ? ViewMode.table : ViewMode.grid

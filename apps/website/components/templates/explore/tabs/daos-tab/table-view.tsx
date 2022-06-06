@@ -1,0 +1,75 @@
+import { Avatar, Box, Button, Chip, Stack, Typography } from '@mui/material';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+
+import { Daos } from '../../../../../services/graphql/types.generated';
+import { badgeProps } from '../../../../../utils/badge-props';
+
+// TODO: make it generic
+// TODO: Fix Dao name column width
+
+type Props = {
+  daos: Daos[];
+};
+export function TableView({ daos }: Props) {
+  return (
+    <TableContainer sx={{ maxHeight: 440 }}>
+      <Table stickyHeader aria-label="sticky table">
+        <TableHead>
+          <TableRow>
+            <TableCell align="left">Dao</TableCell>
+            <TableCell align="left">Category</TableCell>
+            <TableCell align="left">Dao</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {daos.map((dao) => {
+            return (
+              <TableRow hover role="checkbox" tabIndex={-1} key={dao.id}>
+                <TableCell>
+                  <Stack alignItems="center" direction="row" gap={1}>
+                    <Avatar variant="rounded" src={dao.logo_url}>
+                      {dao.name?.[0]}
+                    </Avatar>
+                    <Box>
+                      <Typography>{dao.name}</Typography>
+                      <Typography
+                        variant="caption"
+                        sx={{
+                          textOverflow: 'ellipsis',
+                          overflow: 'hidden',
+                          whiteSpace: 'nowrap',
+                        }}
+                      >
+                        {dao.description}
+                      </Typography>
+                    </Box>
+                  </Stack>
+                </TableCell>
+                <TableCell>
+                  <Stack direction="row" gap={1}>
+                    {dao.categories?.map((category) => (
+                      <Chip
+                        key={`dao-${dao.id}-category-${category}`}
+                        label={category}
+                      />
+                    ))}
+                  </Stack>
+                </TableCell>
+                <TableCell>
+                  <Button variant="outlined" color="secondary">
+                    Follow
+                  </Button>
+                </TableCell>
+              </TableRow>
+            );
+          })}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  );
+}
