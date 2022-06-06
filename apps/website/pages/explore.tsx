@@ -4,12 +4,12 @@ import useTranslation from 'next-translate/useTranslation';
 
 // import { dehydrate, useQuery } from 'react-query';
 
-import { mockDaos } from '../__mock__/daos';
 import { DashboardTemplate } from '../components/templates/dashboard';
 import {
   AllTab,
   DaosTab,
   GatesTab,
+  PeopleTab,
   ExploreTemplate,
 } from '../components/templates/explore';
 import { gqlMethods } from '../services/api';
@@ -99,7 +99,7 @@ export default function Explore({
           {
             key: 'people',
             label: t('tabs.people'),
-            section: <GatesTab {...{ gates }} />,
+            section: <PeopleTab {...{ people }} />,
           },
         ]}
       />
