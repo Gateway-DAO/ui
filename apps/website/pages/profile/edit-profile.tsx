@@ -6,13 +6,22 @@ import CardMedia from '@mui/material/CardMedia';
 import { CardActionArea, CardActions } from '@mui/material';
 import React, { useState, useEffect } from "react";
 import EditIcon from '@mui/icons-material/Edit';
-
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useForm } from "react-hook-form";
+import * as yup from "yup";
 import CancelIcon from '@mui/icons-material/Cancel';
 
 
 
-
-
+type FormData = {
+    fullName: string;
+    username: string;
+    about: string;
+    email: string;
+    twitter: string;
+    discord: string;
+    github: string;
+};
 
 
 
@@ -23,6 +32,12 @@ const editProfile = () => {
         setName(window.localStorage.getItem('name'));
         setUsername(window.localStorage.getItem('username'));
     }, [])
+
+
+
+    const { register, setValue, handleSubmit, formState: { errors } } = useForm<FormData>();
+    const onSubmit = handleSubmit(data => console.log(data));
+
 
 
     const [name, setName] = useState('');
@@ -98,116 +113,105 @@ const editProfile = () => {
                             <Typography variant="h6">Details</Typography>
                             <Typography variant="body2" style={{ fontWeight: 300, padding: '2px 0', fontSize: 13 }}>Lorem ispum doler sit amet</Typography>
                         </Grid>
+
                         <Grid item xs={12} md={4} >
-                            <Box>
-
-                                <TextField id="outlined-basic" label="DISPLAY NAME" variant="outlined"
-                                    style={{ width: '100%' }}
-                                    value={name}
-                                    onChange={(e) => {
-                                        window.localStorage.setItem('name', e.target.value);
-                                        setName(e.target.value)
-                                    }}
-                                />
-                                <TextField id="outlined-basic" label="USERNAME" variant="outlined"
-                                    style={{ width: '100%', marginTop: 20 }}
-                                    value={username}
-                                    onChange={(e) => {
-                                        window.localStorage.setItem('username', e.target.value);
-                                        setUsername(e.target.value)
-                                    }}
-                                />
-                                <TextField
-                                    id="standard-textarea"
-                                    label="ABOUT"
-                                    multiline
-                                    style={{ width: '100%', marginTop: 20 }}
-                                    variant="outlined"
-                                    defaultValue={"It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English."}
-                                />
-                            </Box>
-                            <Box>
-                                <Typography variant="h6" style={{ fontSize: 12, padding: '10px 0' }}>SOCIALS</Typography>
-                                <Box style={{ position: 'relative' }}>
-                                    <TextField id="outlined-basic" label="EMAIL" variant="outlined"
-                                        style={{ width: '100%' }}
-                                        // defaultValue={email}
-                                        onChange={(e) => {
-                                            setEmail(e.target.value)
-                                        }}
-                                        type="email"
-                                        value={email}
-                                        InputProps={{
-                                            endAdornment: email && (
-                                                <IconButton
-                                                    aria-label="toggle password visibility"
-                                                    onClick={() => setEmail("")}>
-                                                    <CancelIcon style={{ color: 'white' }} />
-                                                </IconButton>
-                                            )
-                                        }}
-                                    />
-                                </Box>
-                                <Box>
-                                    <TextField id="outlined-basic" label="TWITTER" variant="outlined"
-                                        style={{ width: '100%', marginTop: 20 }}
-                                        value={twitter}
-                                        onChange={(e) => {
-                                            setTwitter(e.target.value)
-                                        }}
-                                        type="text"
-                                        InputProps={{
-                                            endAdornment: twitter && (
-                                                <IconButton
-                                                    aria-label="toggle password visibility"
-                                                    onClick={() => setTwitter("")}>
-                                                    <CancelIcon style={{ color: 'white' }} />
-                                                </IconButton>
-                                            )
-                                        }}
-                                    />
-                                </Box>
-                                <Box>
-                                    <TextField id="outlined-basic" label="DISCORD" variant="outlined"
-                                        style={{ width: '100%', marginTop: 20 }}
-                                        value={discord}
-                                        onChange={(e) => {
-                                            setDiscord(e.target.value)
-                                        }
-                                        }
-                                        type="text"
-                                        InputProps={{
-                                            endAdornment: discord && (
-                                                <IconButton
-
-                                                    aria-label="toggle password visibility"
-                                                    onClick={() => setDiscord("")}>
-                                                    <CancelIcon style={{ color: 'white' }} />
-                                                </IconButton>
-                                            )
-                                        }}
-                                    />
-                                </Box>
-                                <TextField id="outlined-basic" label="Github" variant="outlined"
-                                    style={{ width: '100%', marginTop: 20 }}
-                                    value={github}
-                                    onChange={(e) => {
-                                        setGithub(e.target.value)
-                                    }
-                                    }
-                                    type="text"
-                                    InputProps={{
-                                        endAdornment: github && (
-                                            <IconButton
-                                                aria-label="toggle password visibility"
-                                                onClick={() => setGithub("")}>
-                                                <CancelIcon style={{ color: 'white' }} />
-                                            </IconButton>
-                                        )
-                                    }}
-
-                                />
-                            </Box>
+                            <br />
+                            <TextField id="outlined-basic" label="DISPLAY NAME" variant="outlined"
+                                style={{ width: '100%' }}
+                                value={name}
+                                {...register("fullName")}
+                                onChange={(e) => {
+                                    window.localStorage.setItem('name', e.target.value);
+                                    setName(e.target.value)
+                                }}
+                            />
+                            <TextField id="outlined-basic" label="USERNAME" variant="outlined"
+                                style={{ width: '100%', marginTop: 20 }}
+                                value={username}
+                                onChange={(e) => {
+                                    window.localStorage.setItem('username', e.target.value);
+                                    setUsername(e.target.value)
+                                }}
+                            />
+                            <TextField
+                                id="standard-textarea"
+                                label="ABOUT"
+                                multiline
+                                style={{ width: '100%', marginTop: 20 }}
+                                variant="outlined"
+                                defaultValue={"It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English."}
+                            />
+                            <Typography variant="h6" style={{ fontSize: 12, padding: '10px 0' }}>SOCIALS</Typography>
+                            <TextField id="outlined-basic" label="EMAIL" variant="outlined"
+                                style={{ width: '100%' }}
+                                onChange={(e) => {
+                                    setEmail(e.target.value)
+                                }}
+                                type="email"
+                                value={email}
+                                InputProps={{
+                                    endAdornment: email && (
+                                        <IconButton
+                                            aria-label="toggle password visibility"
+                                            onClick={() => setEmail("")}>
+                                            <CancelIcon style={{ color: 'white' }} />
+                                        </IconButton>
+                                    )
+                                }}
+                            />
+                            <TextField id="outlined-basic" label="TWITTER" variant="outlined"
+                                style={{ width: '100%', marginTop: 20 }}
+                                value={twitter}
+                                onChange={(e) => {
+                                    setTwitter(e.target.value)
+                                }}
+                                type="text"
+                                InputProps={{
+                                    endAdornment: twitter && (
+                                        <IconButton
+                                            aria-label="toggle password visibility"
+                                            onClick={() => setTwitter("")}>
+                                            <CancelIcon style={{ color: 'white' }} />
+                                        </IconButton>
+                                    )
+                                }}
+                            />
+                            <TextField id="outlined-basic" label="DISCORD" variant="outlined"
+                                style={{ width: '100%', marginTop: 20 }}
+                                value={discord}
+                                onChange={(e) => {
+                                    setDiscord(e.target.value)
+                                }
+                                }
+                                type="text"
+                                InputProps={{
+                                    endAdornment: discord && (
+                                        <IconButton
+                                            aria-label="toggle password visibility"
+                                            onClick={() => setDiscord("")}>
+                                            <CancelIcon style={{ color: 'white' }} />
+                                        </IconButton>
+                                    )
+                                }}
+                            />
+                            <TextField id="outlined-basic" label="Github" variant="outlined"
+                                style={{ width: '100%', marginTop: 20 }}
+                                value={github}
+                                onChange={(e) => {
+                                    setGithub(e.target.value)
+                                }
+                                }
+                                type="text"
+                                InputProps={{
+                                    endAdornment: github && (
+                                        <IconButton
+                                            aria-label="toggle password visibility"
+                                            onClick={() => setGithub("")}>
+                                            <CancelIcon style={{ color: 'white' }} />
+                                        </IconButton>
+                                    )
+                                }}
+                            />
                         </Grid>
                         <Grid item xs={12} md={4} >
                             <Card sx={{ maxWidth: 325, borderRadius: '8px', margin: 'auto', width: '100%', position: 'relative' }}>
@@ -279,12 +283,9 @@ const editProfile = () => {
                             </Card>
                         </Grid>
                     </Grid>
-
                 </Box>
             </Container>
-            <div style={{ height: '20vh' }} >
-
-            </div>
+            <div style={{ height: '20vh' }} ></div>
         </div >
     );
 }

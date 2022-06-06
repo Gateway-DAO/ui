@@ -13,7 +13,7 @@ const editSkills = () => {
 
 
 
-    const [arr, setArr] = useState([]);
+    const [skills, setSkills] = useState([]);
 
     const [value, setValue] = useState('');
 
@@ -65,10 +65,10 @@ const editSkills = () => {
 
                             onKeyDown={(e) => {
                                 if (e.key === 'Enter') {
-                                    console.log('working', arr, value, inputValue);
-                                    let newArr = [...arr];
+                                    console.log('working', skills, value, inputValue);
+                                    let newArr = [...skills];
                                     newArr.push(value);
-                                    setArr(newArr);
+                                    setSkills(newArr);
                                 }
                             }}
 
@@ -81,7 +81,7 @@ const editSkills = () => {
                         />
                         <Box style={{ margin: '20px 0', display: 'flex', alignItems: 'center', flexWrap: 'wrap' }} >
                             {
-                                arr.map((item) => {
+                                skills.map((item) => {
                                     return (
                                         <div
                                             key={item.key}
@@ -90,13 +90,13 @@ const editSkills = () => {
                                             <Typography style={{ marginRight: 6, fontSize: 14 }}>{item.label}</Typography>
                                             <CloseIcon style={{ fontSize: 24, marginLeft: 'auto' }}
                                                 onClick={() => {
-                                                    let newArr = [...arr];
+                                                    let newArr = [...skills];
                                                     for (let i = 0; i < newArr.length; i++) {
                                                         if (newArr[i].key === item.key) {
                                                             newArr.splice(i, 1);
                                                         }
                                                     }
-                                                    setArr(newArr);
+                                                    setSkills(newArr);
                                                     console.log(newArr);
                                                 }}
                                             />

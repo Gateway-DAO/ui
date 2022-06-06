@@ -10,7 +10,7 @@ import { temporaryKnowledge } from "apps/website/__mock__/daos";
 
 const editKnowledge = () => {
 
-    const [arr, setArr] = useState([]);
+    const [Knowledges, setKnowledges] = useState([]);
 
     const [value, setValue] = useState('');
 
@@ -63,10 +63,10 @@ const editKnowledge = () => {
 
                                 onKeyDown={(e) => {
                                     if (e.key === 'Enter') {
-                                        console.log('working', arr, value, inputValue);
-                                        let newArr = [...arr];
+                                        console.log('working', Knowledges, value, inputValue);
+                                        let newArr = [...Knowledges];
                                         newArr.push(value);
-                                        setArr(newArr);
+                                        setKnowledges(newArr);
                                     }
                                 }}
 
@@ -80,7 +80,7 @@ const editKnowledge = () => {
 
                             <Box style={{ margin: '20px 0', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap' }} >
                                 {
-                                    arr.map((item) => {
+                                    Knowledges.map((item) => {
                                         return (
                                             <div
                                                 key={item.key}
@@ -89,13 +89,13 @@ const editKnowledge = () => {
                                                 <Typography style={{ marginRight: 6, fontSize: 14 }}>{item.label}</Typography>
                                                 <CloseIcon style={{ fontSize: 24, marginLeft: 'auto' }}
                                                     onClick={() => {
-                                                        let newArr = [...arr];
+                                                        let newArr = [...Knowledges];
                                                         for (let i = 0; i < newArr.length; i++) {
                                                             if (newArr[i].key === item.key) {
                                                                 newArr.splice(i, 1);
                                                             }
                                                         }
-                                                        setArr(newArr);
+                                                        setKnowledges(newArr);
                                                         console.log(newArr);
                                                     }}
                                                 />

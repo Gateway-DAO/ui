@@ -13,7 +13,7 @@ const editAttitudes = () => {
 
 
 
-    const [arr, setArr] = useState([]);
+    const [attitude, setAttitude] = useState([]);
 
     const [value, setValue] = useState('');
 
@@ -65,10 +65,10 @@ const editAttitudes = () => {
 
                             onKeyDown={(e) => {
                                 if (e.key === 'Enter') {
-                                    console.log('working', arr, value, inputValue);
-                                    let newArr = [...arr];
+                                    console.log('working', attitude, value, inputValue);
+                                    let newArr = [...attitude];
                                     newArr.push(value);
-                                    setArr(newArr);
+                                    setAttitude(newArr);
                                 }
                             }}
 
@@ -81,7 +81,7 @@ const editAttitudes = () => {
                         />
                         <Box style={{ margin: '20px 0', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap' }} >
                             {
-                                arr.map((item) => {
+                                attitude.map((item) => {
                                     return (
                                         <div
                                             key={item.key}
@@ -90,13 +90,13 @@ const editAttitudes = () => {
                                             <Typography style={{ marginRight: 6, fontSize: 14 }}>{item.label}</Typography>
                                             <CloseIcon style={{ fontSize: 24, marginLeft: 'auto' }}
                                                 onClick={() => {
-                                                    let newArr = [...arr];
+                                                    let newArr = [...attitude];
                                                     for (let i = 0; i < newArr.length; i++) {
                                                         if (newArr[i].key === item.key) {
                                                             newArr.splice(i, 1);
                                                         }
                                                     }
-                                                    setArr(newArr);
+                                                    setAttitude(newArr);
                                                     console.log(newArr);
                                                 }}
                                             />
