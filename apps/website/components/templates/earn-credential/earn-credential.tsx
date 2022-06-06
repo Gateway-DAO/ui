@@ -113,7 +113,7 @@ export function EarnCredentialTemplate() {
               Basic Details of Credential
             </Typography>
           </Grid>
-          <Grid item xs={5}>
+          <Grid item xs={6}>
             <Stack direction="row">
               {/* TODO: Responsiveness */}
               <Image
