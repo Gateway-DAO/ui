@@ -1,6 +1,7 @@
 import { TOKENS } from '@gateway/theme';
 
 import SearchIcon from '@mui/icons-material/Search';
+import { Stack } from '@mui/material';
 import AppBar, { AppBarProps } from '@mui/material/AppBar';
 import Autocomplete from '@mui/material/Autocomplete';
 import Box from '@mui/material/Box';
@@ -9,6 +10,7 @@ import TextField from '@mui/material/TextField';
 import Toolbar from '@mui/material/Toolbar';
 
 import { NavBarAvatar } from './navbar-avatar';
+import { NavbarMenu } from './navbar-menu';
 import { NavBarMobile } from './navbar-mobile';
 import { NavBarNotifications } from './navbar-notifications';
 
@@ -17,8 +19,27 @@ export type NavbarProps = AppBarProps;
 export function Navbar(props: NavbarProps) {
   return (
     <AppBar color="transparent" position="relative" {...props}>
-      <Toolbar disableGutters sx={{ px: TOKENS.CONTAINER_PX }}>
-        <Box flexGrow={1} alignItems="center" gap={1}>
+      <Toolbar
+        disableGutters
+        sx={{
+          px: TOKENS.CONTAINER_PX,
+          width: '100%',
+          justifyContent: 'space-between',
+        }}
+      >
+        <NavbarMenu />
+        <Stack
+          direction="row"
+          flexGrow={1}
+          alignItems="center"
+          gap={1}
+          sx={{
+            display: {
+              xs: 'none',
+              md: 'flex',
+            },
+          }}
+        >
           <Autocomplete
             options={[]}
             fullWidth
@@ -60,8 +81,16 @@ export function Navbar(props: NavbarProps) {
               />
             )}
           />
-        </Box>
-        <Box display="flex" flexGrow={0.5} justifyContent="flex-end">
+        </Stack>
+        <Box
+          display="flex"
+          justifyContent="flex-end"
+          sx={{
+            flexGrow: {
+              md: 0.5,
+            },
+          }}
+        >
           <NavBarNotifications />
           <NavBarAvatar />
         </Box>
