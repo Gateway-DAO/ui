@@ -1,8 +1,8 @@
 query Users {
   users {
+    id
     name
     pfp
-    id
     username
   }
 }

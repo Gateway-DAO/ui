@@ -1,0 +1,5 @@
+query get_current_user {
+  me {
+    ...current_user
+  }
+}

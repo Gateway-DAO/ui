@@ -2,6 +2,7 @@ import setLanguage from 'next-translate/setLanguage';
 import { useCallback } from 'react';
 
 import { NestedMenuItem } from 'mui-nested-menu';
+import { useDisconnect, useAccount } from 'wagmi';
 
 import { useMenu } from '@gateway/ui';
 
@@ -14,6 +15,8 @@ import MenuItem from '@mui/material/MenuItem';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 
+import { useAuth } from '../../../providers/auth';
+
 /* TODO: Refactor */
 
 export function NavBarAvatar() {
@@ -25,6 +28,15 @@ export function NavBarAvatar() {
     },
     [onClose]
   ); */
+  const withOnClose = useCallback(
+    (cb: () => void) => () => {
+      cb();
+      onClose();
+    },
+    [onClose]
+  );
+  const { onSignOut } = useAuth();
+
   return (
     <>
       <Tooltip title="Open menu">
@@ -80,7 +92,7 @@ export function NavBarAvatar() {
             Portuguese (Brazil)
           </MenuItem>
         </NestedMenuItem> */}
-        <MenuItem key="disconnect" onClick={onClose}>
+        <MenuItem key="disconnect" onClick={withOnClose(onSignOut)}>
           <Typography textAlign="center">Disconnect</Typography>
         </MenuItem>
       </Menu>
