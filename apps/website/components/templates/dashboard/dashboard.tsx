@@ -2,6 +2,7 @@ import { PropsWithChildren } from 'react';
 
 import { MotionBox } from '@gateway/ui';
 
+import { Button } from '@mui/material';
 import Box from '@mui/material/Box';
 
 import { useNav } from '../../../hooks/use-nav';
@@ -19,7 +20,7 @@ export function DashboardTemplate({
   containerProps,
   showExplore = true,
 }: PropsWithChildren<DashboardTemplateProps>) {
-  const { isOpen } = useNav();
+  const { isOpen, onOpen } = useNav();
 
   return (
     <MotionBox
@@ -62,6 +63,13 @@ export function DashboardTemplate({
             })),
         ]}
       >
+        <Button
+          sx={{ display: { md: 'none', xs: 'inline-block' } }}
+          type="button"
+          onClick={onOpen}
+        >
+          open
+        </Button>
         {children}
       </Box>
     </MotionBox>
