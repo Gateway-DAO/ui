@@ -1,5 +1,7 @@
 import { IGraphQLProjects } from "graphql-config";
 
+require('dotenv').config()
+
 const config: IGraphQLProjects = {
   projects: {
     website: {
