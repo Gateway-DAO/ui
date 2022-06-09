@@ -1,11 +1,8 @@
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import { getSession } from 'next-auth/react';
 
-import { TOKENS } from '@gateway/theme';
-
 import { DashboardTemplate } from '../components/templates/dashboard';
-import { NewUserTemplate } from '../components/templates/new-user';
-import { ROUTES } from '../constants/routes';
+import { ProfileTemplate } from '../components/templates/profile';
 import { gqlMethods } from '../services/api';
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
@@ -31,7 +28,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
         user: null,
       },
       redirect: {
-        destination: ROUTES.PROFILE,
+        destination: '/home',
         permanent: true,
       },
     };
@@ -43,25 +40,12 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   };
 };
 
-export default function NewUser({
+export default function Profile({
   user,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  if (!user) return null;
   return (
-    <DashboardTemplate
-      showExplore={false}
-      containerProps={{
-        sx: {
-          px: TOKENS.CONTAINER_PX,
-          py: TOKENS.CONTAINER_PX,
-          display: { xs: 'block', md: 'flex' },
-          justifyContent: 'center',
-        },
-      }}
-    >
-      <NewUserTemplate user={user} />
+    <DashboardTemplate showExplore={false}>
+      <ProfileTemplate user={user} />
     </DashboardTemplate>
   );
 }
-
-NewUser.auth = true;

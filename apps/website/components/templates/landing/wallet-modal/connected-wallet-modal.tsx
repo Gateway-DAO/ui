@@ -19,6 +19,7 @@ import {
   DialogTitle,
 } from '@mui/material';
 
+import { ROUTES } from '../../../../constants/routes';
 import { AnimatedMessage } from './animated-message';
 import { useConnectWallet } from './state';
 
@@ -37,7 +38,7 @@ export function ConnectedWallet({ onBack }: Props) {
 
   useEffect(() => {
     if (step === 'FINISHED') {
-      router.push('/home');
+      router.push(ROUTES.PROFILE);
     }
   }, [step]);
 
@@ -104,7 +105,7 @@ export function ConnectedWallet({ onBack }: Props) {
               now you're entering{' '}
               <NextLink
                 passHref
-                href={!session?.user?.init ? '/new-user' : '/home'}
+                href={!session?.user?.init ? ROUTES.NEW_USER : ROUTES.PROFILE}
               >
                 <Link color="primary">the Gateway</Link>
               </NextLink>

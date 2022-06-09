@@ -1,5 +1,13 @@
 query get_new_user {
   me {
-  ...current_user
+    ...current_user
+    pfp
+    username
+    email_address
+    about
+    bio
+    attitudes
+    skills
+    knowledges
   }
 }
