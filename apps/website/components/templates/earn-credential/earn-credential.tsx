@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -20,6 +21,7 @@ import {
   Button,
 } from '@mui/material';
 
+import PocModalCompleted from '../../organisms/poc-modal-completed/poc-modal-completed';
 import { AccomplishmentsForm } from './accomplishments-form';
 import {
   accomplishmentsSchema,
@@ -32,6 +34,11 @@ import {
 } from './credential-details-schema';
 
 export function EarnCredentialTemplate() {
+  const router = useRouter();
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
   const credentialDetailsMethods = useForm<CredentialDetailsTypes>({
     resolver: yupResolver(credentialDetailsSchema),
   });
@@ -60,6 +67,7 @@ export function EarnCredentialTemplate() {
 
   return (
     <Stack gap={6} p={TOKENS.CONTAINER_PX}>
+      <PocModalCompleted open={open} handleClose={handleClose} />
       <Box>
         <Image
           src="/favicon-512.png"
@@ -105,14 +113,14 @@ export function EarnCredentialTemplate() {
               Basic Details of Credential
             </Typography>
           </Grid>
-          <Grid item xs={5}>
+          <Grid item xs={6}>
             <Stack direction="row">
               {/* TODO: Responsiveness */}
               <Image
                 loader={() => credentialImgUrl}
                 src={credentialImgUrl}
                 height={300}
-                width={900}
+                width={1200}
                 alt="credential image"
                 style={{ borderRadius: '5px' }}
               />
@@ -208,8 +216,19 @@ export function EarnCredentialTemplate() {
         </Grid>
       </Stack>
       <Box alignSelf="flex-end" marginRight="300px">
-        <Button variant="outlined">Cancel</Button>
-        <Button variant="contained" sx={{ marginLeft: '10px' }}>
+        <Button
+          variant="outlined"
+          onClick={() => {
+            router.back();
+          }}
+        >
+          Cancel
+        </Button>
+        <Button
+          variant="contained"
+          sx={{ marginLeft: '10px' }}
+          onClick={() => handleOpen()}
+        >
           Submit
         </Button>
       </Box>

@@ -1,8 +1,6 @@
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 
-import { AiOutlineCopy } from 'react-icons/ai';
-
 import { Button } from '@mui/material';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
@@ -20,7 +18,7 @@ const style = {
   p: 4,
 };
 
-export default function PocModalCreated({ open, handleClose }) {
+export default function PocModalCompleted({ open, handleClose }) {
   const router = useRouter();
 
   return (
@@ -44,9 +42,7 @@ export default function PocModalCreated({ open, handleClose }) {
             sx={{
               display: 'flex',
               flexDirection: 'column',
-              justifyContent: 'space-around',
               alignItems: 'center',
-              minHeight: '830px',
             }}
           >
             <Box>
@@ -57,51 +53,30 @@ export default function PocModalCreated({ open, handleClose }) {
                 fontSize={48}
                 textAlign="center"
               >
-                Proof of Credential created
+                Submission completed with success
               </Typography>
               <Typography
                 id="modal-modal-description"
-                sx={{ mt: 2, textAlign: 'center' }}
+                sx={{ mt: 2, textAlign: 'center', marginBottom: '15px' }}
                 fontSize={16}
               >
-                You have created the{' '}
+                Your Proof of Credential submission{' '}
                 <span style={{ color: '#D083FF' }}>
                   Olympus Operations Working Group - Season 2
                 </span>{' '}
-                credential.
+                has submited with success, once confirmed you can mint it as
+                NFT.
               </Typography>
             </Box>
             <CredentialCard />
-            <Box
-              sx={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
+            <Button
+              variant="contained"
+              size="small"
+              sx={{ margin: '20px 0 0 20px' }}
+              onClick={() => router.push('/profile')}
             >
-              <fieldset
-                style={{
-                  display: 'flex',
-                  border: '1px solid white',
-                  borderRadius: '20px',
-                }}
-              >
-                <legend>Share</legend>
-                http://gtwy.xyz/olpmt
-                <AiOutlineCopy
-                  size={24}
-                  style={{ marginLeft: '10px', cursor: 'pointer' }}
-                />
-              </fieldset>
-              <Button
-                variant="outlined"
-                size="small"
-                sx={{ margin: '20px 0 0 20px' }}
-                onClick={() => router.push('/profile')}
-              >
-                Go to credentials
-              </Button>
-            </Box>
+              Check credential
+            </Button>
           </Box>
         </Box>
       </Modal>

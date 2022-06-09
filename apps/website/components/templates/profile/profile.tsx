@@ -1,4 +1,8 @@
-import { FaDiscord, FaTwitter, FaGithub, FaCopy } from 'react-icons/fa';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
+
+import { BsFillPencilFill } from 'react-icons/bs';
+import { FaDiscord, FaTwitter, FaGithub } from 'react-icons/fa';
 import { MdEmail } from 'react-icons/md';
 import { RiArrowDownSFill } from 'react-icons/ri';
 
@@ -13,16 +17,42 @@ import {
 } from '@mui/material';
 
 import { Users } from '../../../services/graphql/types.generated';
+import CredentialCard from '../../molecules/credential-card';
+import PocModalMinted from '../../organisms/poc-modal-minted/poc-modal-minted';
 
-const socialIcons = [MdEmail, FaGithub, FaTwitter, FaDiscord];
+// TODO: Get this from context
+const isAdmin = true;
+// Load these through props
+
+const socials = [
+  {
+    icon: FaGithub,
+    value: 'https://github.com/Gateway-DAO',
+  },
+  {
+    icon: FaTwitter,
+    value: 'https://twitter.com/Gateway_xyz',
+  },
+  {
+    icon: FaDiscord,
+    value: 'https://discord.gg/3fFFFk5dBN',
+  },
+];
 
 type Props = {
   user: Partial<Users>;
 };
 
 export function ProfileTemplate({ user }: Props) {
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
+  const router = useRouter();
+
   return (
     <>
+      <PocModalMinted open={open} handleClose={handleClose} />
       <Paper
         sx={{
           height: '280px',
@@ -71,45 +101,111 @@ export function ProfileTemplate({ user }: Props) {
         }}
         gap={2}
       >
-        {socialIcons.map((Icon, index) => {
+        {user.email_address && (
+          <Avatar
+            onClick={() => window.open('mailto:' + user.email_address)}
+            style={{ cursor: 'pointer' }}
+          >
+            <MdEmail size={28} />
+          </Avatar>
+        )}
+        {socials.map((icon, index) => {
+          const Icon = icon.icon;
           return (
-            <Avatar key={index}>
-              <Icon style={{ cursor: 'pointer' }} size={28} />
-            </Avatar>
+            icon.value && (
+              <Avatar
+                key={index}
+                onClick={() => window.open(icon.value, '_blank')}
+                style={{ cursor: 'pointer' }}
+              >
+                <Icon size={28} />
+              </Avatar>
+            )
           );
         })}
-        <Button variant="contained" color="secondary">
-          nossirah.eth
+        {/* TODO: Contains user's address, only visible if it's our profile */}
+        {/* <Button variant="contained" color="secondary">
+          0x0
           <FaCopy style={{ marginLeft: 2 }} />
-        </Button>
+        </Button> */}
       </Stack>
       <main>
         <Box sx={{ margin: '30px 65px' }}>
-          <h1 style={{ marginBottom: '0' }}>{user.name}</h1>
+          <Box sx={{ display: 'flex', alignItems: 'baseline' }}>
+            <h1 style={{ marginBottom: '0', marginRight: '15px' }}>
+              {user.name}
+            </h1>
+            <Avatar sx={{ cursor: 'pointer' }}>
+              <BsFillPencilFill />
+            </Avatar>
+          </Box>
           <p style={{ margin: '0 auto' }}>{user.bio}</p>
-          <p style={{ marginTop: '0', fontSize: 'small' }}>{user.username}</p>
-          <p>
-            <b>120</b> Following &#183; <b>118</b> Followers
-          </p>
+          {user.username && (
+            <p style={{ marginTop: '0', fontSize: 'small' }}>
+              @{user.username}
+            </p>
+          )}
         </Box>
         <Divider light sx={{ width: '100%' }} />
         <Grid container>
           <Grid item className="left" xs={8} sx={{ padding: '0 65px' }}>
-            <section>
+            <section style={{ marginBottom: '20px' }}>
               <h2 style={{ margin: '20px 0' }}>About</h2>
-              <p>{user.about}</p>
+              <div className="about">{user.about}</div>
+              {!user.about && (
+                <Button
+                  variant="outlined"
+                  size="small"
+                  sx={{ marginBottom: '20px' }}
+                >
+                  Add now
+                </Button>
+              )}
             </section>
             <Divider light sx={{ width: '100%' }} />
             <section style={{ paddingBottom: '150px' }}>
-              <h2 style={{ margin: '30px 0' }}>Proof of Credentials</h2>
-              <Button variant="contained" size="small">
-                Create a Proof of Credential
-              </Button>
+              <Box sx={{ display: 'flex', alignItems: 'baseline' }}>
+                <h2 style={{ marginTop: '30px', marginRight: '15px' }}>
+                  Proof of Credentials
+                </h2>
+                {isAdmin && (
+                  <Button
+                    variant="contained"
+                    size="small"
+                    onClick={() => router.push('/credentials/new')}
+                  >
+                    Create a Proof of Credential
+                  </Button>
+                )}
+              </Box>
+              <Grid container rowGap={2}>
+                <Grid item xs={4}>
+                  <CredentialCard
+                    smaller
+                    uncomplete
+                    earn={() => router.push('/credentials/earn')}
+                  />
+                </Grid>
+                <Grid item xs={4}>
+                  <CredentialCard smaller pending />
+                </Grid>
+                <Grid item xs={4}>
+                  <CredentialCard smaller mintable mint={handleOpen} />
+                </Grid>
+                <Grid item xs={4}>
+                  <CredentialCard smaller isNFT />
+                </Grid>
+              </Grid>
             </section>
           </Grid>
           <Grid item className="right" xs={4} sx={{ padding: '0 65px' }}>
             <section>
-              <h2>Skills</h2>
+              <Box sx={{ display: 'flex', alignItems: 'baseline' }}>
+                <h2 style={{ marginRight: '15px' }}>Skills</h2>
+                <Avatar sx={{ cursor: 'pointer' }}>
+                  <BsFillPencilFill />
+                </Avatar>
+              </Box>
               <div>
                 {user.skills?.map((skill, index) => {
                   return (
@@ -127,7 +223,12 @@ export function ProfileTemplate({ user }: Props) {
               </div>
             </section>
             <section>
-              <h2>Knowledges</h2>
+              <Box sx={{ display: 'flex', alignItems: 'baseline' }}>
+                <h2 style={{ marginRight: '15px' }}>Knowledges</h2>
+                <Avatar sx={{ cursor: 'pointer' }}>
+                  <BsFillPencilFill />
+                </Avatar>
+              </Box>
               <div>
                 {user.knowledges?.map((skill, index) => {
                   return (
@@ -145,7 +246,12 @@ export function ProfileTemplate({ user }: Props) {
               </div>
             </section>
             <section>
-              <h2>Attitudes</h2>
+              <Box sx={{ display: 'flex', alignItems: 'baseline' }}>
+                <h2 style={{ marginRight: '15px' }}>Attitudes</h2>
+                <Avatar sx={{ cursor: 'pointer' }}>
+                  <BsFillPencilFill />
+                </Avatar>
+              </Box>
               <div>
                 {user.attitudes?.map((skill, index) => {
                   return (

@@ -55,7 +55,7 @@ export function CredentialDetailsForm({ onSubmit }: Props) {
       {/* Start and end dates */}
       <TextField
         required
-        label="start_date"
+        label="Start date"
         id="start_date"
         {...register('start_date')}
         error={!!errors.start_date}
@@ -63,7 +63,7 @@ export function CredentialDetailsForm({ onSubmit }: Props) {
       />
       <TextField
         required
-        label="end_date"
+        label="End date"
         id="end_date"
         {...register('end_date')}
         error={!!errors.end_date}
