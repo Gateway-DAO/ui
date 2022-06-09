@@ -16,54 +16,39 @@ import {
   Divider,
 } from '@mui/material';
 
+import { Users } from '../../../services/graphql/types.generated';
 import CredentialCard from '../../molecules/credential-card';
 import PocModalMinted from '../../organisms/poc-modal-minted/poc-modal-minted';
 
-const data = {
-  skills: [
-    'UX Design',
-    'UI Design',
-    'Branding',
-    'Product Strategy',
-    'Product Design',
-  ],
-  knowledges: ['Web3', 'Blockchain', 'Cryptocurrency', 'Business Development'],
-  attitudes: [
-    'Pro-Active',
-    'Business Driven',
-    'Collaborative',
-    'Leadership',
-    'Innovative',
-  ],
-};
-const randomNftUrl = 'https://i.ibb.co/bzzgBfT/random-nft.png';
+// TODO: Get this from context
+const isAdmin = true;
+// Load these through props
 
-export function ProfileTemplate() {
+const socials = [
+  {
+    icon: FaGithub,
+    value: 'https://github.com/Gateway-DAO',
+  },
+  {
+    icon: FaTwitter,
+    value: 'https://twitter.com/Gateway_xyz',
+  },
+  {
+    icon: FaDiscord,
+    value: 'https://discord.gg/3fFFFk5dBN',
+  },
+];
+
+type Props = {
+  user: Partial<Users>;
+};
+
+export function ProfileTemplate({ user }: Props) {
   const [open, setOpen] = useState(false);
-  const aboutText =
-    "I am a Design Director focused on User Experience, User Interfaces, Experience Design, Creative and Digital Strategy. I've been lucky enough to work and solve problems for the most prominent brands in the world. I approach problems from the top-down, identifying the real issue before forming my solution. I am always challenging the limits of physical, social, and digital mediums through storytelling and functions. Each of my projects is crafted with precise execution and carefully considered decision making.";
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const router = useRouter();
-  // TODO: Get this from context
-  const isAdmin = true;
-  // Load these through props
-  const email = 'user@mygateway.com';
 
-  const socials = [
-    {
-      icon: FaGithub,
-      value: 'https://github.com/Gateway-DAO',
-    },
-    {
-      icon: FaTwitter,
-      value: 'https://twitter.com/Gateway_xyz',
-    },
-    {
-      icon: FaDiscord,
-      value: 'https://discord.gg/3fFFFk5dBN',
-    },
-  ];
+  const router = useRouter();
 
   return (
     <>
@@ -86,7 +71,7 @@ export function ProfileTemplate() {
           }}
         >
           <Avatar
-            src={randomNftUrl}
+            src={user.pfp}
             sx={{
               width: 30,
               height: 30,
@@ -95,7 +80,7 @@ export function ProfileTemplate() {
           <RiArrowDownSFill style={{ position: 'relative', top: '5px' }} />
         </Box>
         <Avatar
-          src={randomNftUrl}
+          src={user.pfp}
           sx={{
             width: 150,
             height: 150,
@@ -116,9 +101,9 @@ export function ProfileTemplate() {
         }}
         gap={2}
       >
-        {email && (
+        {user.email_address && (
           <Avatar
-            onClick={() => window.open('mailto:' + email)}
+            onClick={() => window.open('mailto:' + user.email_address)}
             style={{ cursor: 'pointer' }}
           >
             <MdEmail size={28} />
@@ -148,22 +133,26 @@ export function ProfileTemplate() {
         <Box sx={{ margin: '30px 65px' }}>
           <Box sx={{ display: 'flex', alignItems: 'baseline' }}>
             <h1 style={{ marginBottom: '0', marginRight: '15px' }}>
-              Shriram Chandra
+              {user.name}
             </h1>
             <Avatar sx={{ cursor: 'pointer' }}>
               <BsFillPencilFill />
             </Avatar>
           </Box>
-          <p style={{ margin: '0 auto' }}>Master Ops at Gateway</p>
-          <p style={{ marginTop: '0', fontSize: 'small' }}>@shriram</p>
+          <p style={{ margin: '0 auto' }}>{user.bio}</p>
+          {user.username && (
+            <p style={{ marginTop: '0', fontSize: 'small' }}>
+              @{user.username}
+            </p>
+          )}
         </Box>
         <Divider light sx={{ width: '100%' }} />
         <Grid container>
           <Grid item className="left" xs={8} sx={{ padding: '0 65px' }}>
             <section style={{ marginBottom: '20px' }}>
               <h2 style={{ margin: '20px 0' }}>About</h2>
-              <div className="about">{aboutText}</div>
-              {!aboutText && (
+              <div className="about">{user.about}</div>
+              {!user.about && (
                 <Button
                   variant="outlined"
                   size="small"
@@ -218,7 +207,7 @@ export function ProfileTemplate() {
                 </Avatar>
               </Box>
               <div>
-                {data.skills.map((skill, index) => {
+                {user.skills?.map((skill, index) => {
                   return (
                     <Button
                       key={index}
@@ -241,7 +230,7 @@ export function ProfileTemplate() {
                 </Avatar>
               </Box>
               <div>
-                {data.knowledges.map((skill, index) => {
+                {user.knowledges?.map((skill, index) => {
                   return (
                     <Button
                       key={index}
@@ -264,7 +253,7 @@ export function ProfileTemplate() {
                 </Avatar>
               </Box>
               <div>
-                {data.attitudes.map((skill, index) => {
+                {user.attitudes?.map((skill, index) => {
                   return (
                     <Button
                       key={index}
