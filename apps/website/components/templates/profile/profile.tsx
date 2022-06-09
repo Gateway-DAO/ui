@@ -12,27 +12,15 @@ import {
   Divider,
 } from '@mui/material';
 
-const data = {
-  skills: [
-    'UX Design',
-    'UI Design',
-    'Branding',
-    'Product Strategy',
-    'Product Design',
-  ],
-  knowledges: ['Web3', 'Blockchain', 'Cryptocurrency', 'Business Development'],
-  attitudes: [
-    'Pro-Active',
-    'Business Driven',
-    'Collaborative',
-    'Leadership',
-    'Innovative',
-  ],
-};
-const socialIcons = [MdEmail, FaGithub, FaTwitter, FaDiscord];
-const randomNftUrl = 'https://i.ibb.co/bzzgBfT/random-nft.png';
+import { Users } from '../../../services/graphql/types.generated';
 
-export function ProfileTemplate() {
+const socialIcons = [MdEmail, FaGithub, FaTwitter, FaDiscord];
+
+type Props = {
+  user: Partial<Users>;
+};
+
+export function ProfileTemplate({ user }: Props) {
   return (
     <>
       <Paper
@@ -53,7 +41,7 @@ export function ProfileTemplate() {
           }}
         >
           <Avatar
-            src={randomNftUrl}
+            src={user.pfp}
             sx={{
               width: 30,
               height: 30,
@@ -62,7 +50,7 @@ export function ProfileTemplate() {
           <RiArrowDownSFill style={{ position: 'relative', top: '5px' }} />
         </Box>
         <Avatar
-          src={randomNftUrl}
+          src={user.pfp}
           sx={{
             width: 150,
             height: 150,
@@ -97,9 +85,9 @@ export function ProfileTemplate() {
       </Stack>
       <main>
         <Box sx={{ margin: '30px 65px' }}>
-          <h1 style={{ marginBottom: '0' }}>Shriram Chandra</h1>
-          <p style={{ margin: '0 auto' }}>Master Ops at Gateway</p>
-          <p style={{ marginTop: '0', fontSize: 'small' }}>@shriram</p>
+          <h1 style={{ marginBottom: '0' }}>{user.name}</h1>
+          <p style={{ margin: '0 auto' }}>{user.bio}</p>
+          <p style={{ marginTop: '0', fontSize: 'small' }}>{user.username}</p>
           <p>
             <b>120</b> Following &#183; <b>118</b> Followers
           </p>
@@ -109,19 +97,7 @@ export function ProfileTemplate() {
           <Grid item className="left" xs={8} sx={{ padding: '0 65px' }}>
             <section>
               <h2 style={{ margin: '20px 0' }}>About</h2>
-              <p>
-                I am a Design Director focused on User Experience, User
-                Interfaces, Experience Design, Creative and Digital Strategy.
-                I&#39;ve been lucky enough to work and solve problems for the
-                most prominent brands in the world.
-              </p>
-              <p>
-                I approach problems from the top-down, identifying the real
-                issue before forming my solution. I am always challenging the
-                limits of physical, social, and digital mediums through
-                storytelling and functions. Each of my projects is crafted with
-                precise execution and carefully considered decision making.
-              </p>
+              <p>{user.about}</p>
             </section>
             <Divider light sx={{ width: '100%' }} />
             <section style={{ paddingBottom: '150px' }}>
@@ -135,7 +111,7 @@ export function ProfileTemplate() {
             <section>
               <h2>Skills</h2>
               <div>
-                {data.skills.map((skill, index) => {
+                {user.skills?.map((skill, index) => {
                   return (
                     <Button
                       key={index}
@@ -153,7 +129,7 @@ export function ProfileTemplate() {
             <section>
               <h2>Knowledges</h2>
               <div>
-                {data.knowledges.map((skill, index) => {
+                {user.knowledges?.map((skill, index) => {
                   return (
                     <Button
                       key={index}
@@ -171,7 +147,7 @@ export function ProfileTemplate() {
             <section>
               <h2>Attitudes</h2>
               <div>
-                {data.attitudes.map((skill, index) => {
+                {user.attitudes?.map((skill, index) => {
                   return (
                     <Button
                       key={index}
