@@ -23,8 +23,8 @@ export function GatesCard({
     <MUICard>
       <CardMedia
         component="img"
-        image="https://mui.com/static/images/cards/contemplative-reptile.jpg"
-        alt="green iguana"
+        src={badge?.ipfsURL && `https://ipfs.infura.io/ipfs/${badge.ipfsURL}`}
+        alt={badge?.name}
         sx={{ aspectRatio: '1/1' }}
       />
       <CardHeader
@@ -35,7 +35,7 @@ export function GatesCard({
             sx={{ width: 32, height: 32 }}
             aria-label="recipe"
           >
-            {dao.name[0]}
+            {dao.name?.[0]}
           </Avatar>
         }
         action={

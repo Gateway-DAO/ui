@@ -21,12 +21,6 @@ type Props = {
 };
 
 export function ProfileTemplate({ user }: Props) {
-  const data = {
-    skills: JSON.parse(user.skills),
-    knowledges: JSON.parse(user.knowledges),
-    attitudes: JSON.parse(user.attitudes),
-  };
-
   return (
     <>
       <Paper
@@ -117,7 +111,7 @@ export function ProfileTemplate({ user }: Props) {
             <section>
               <h2>Skills</h2>
               <div>
-                {data.skills.map((skill, index) => {
+                {user.skills?.map((skill, index) => {
                   return (
                     <Button
                       key={index}
@@ -135,7 +129,7 @@ export function ProfileTemplate({ user }: Props) {
             <section>
               <h2>Knowledges</h2>
               <div>
-                {data.knowledges.map((skill, index) => {
+                {user.knowledges?.map((skill, index) => {
                   return (
                     <Button
                       key={index}
@@ -153,7 +147,7 @@ export function ProfileTemplate({ user }: Props) {
             <section>
               <h2>Attitudes</h2>
               <div>
-                {data.attitudes.map((skill, index) => {
+                {user.attitudes?.map((skill, index) => {
                   return (
                     <Button
                       key={index}
