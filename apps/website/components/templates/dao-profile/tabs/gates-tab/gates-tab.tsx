@@ -1,3 +1,5 @@
+import { PartialDeep } from 'type-fest';
+
 import { TOKENS } from '@gateway/theme';
 
 import { AutoAwesomeMosaic, ViewList } from '@mui/icons-material';
@@ -11,7 +13,7 @@ import { GatesCard } from '../../../../molecules/gates-card';
 import { TableView } from './table-view';
 
 type Props = {
-  gates: Gates[];
+  gates: PartialDeep<Gates>[];
 };
 
 export function GatesTab({ gates }: Props) {

@@ -2,5 +2,33 @@
   "all": "All",
   "gates": "Gates",
   "daos": "DAOs",
-  "people": "People"
+  "people": "People",
+  "follow": "follow",
+  "gate-count": {
+    "0": "No gates",
+    "one": "{{count}} gate",
+    "other": "{{count}} gates"
+ },
+  "tabs": {
+    "all": "All",
+    "overview": "Overview",
+    "gates": "Gates",
+    "daos": "DAOs",
+    "people": "People"
+  },
+  "featured-gates": {
+    "title": "Featured Gates",
+    "caption": "People are really into these gates. We thought you would too.",
+    "see-more": "View more gates"
+  },
+  "featured-daos": {
+    "title": "Recommended DAOs",
+    "caption": "These DAOs are shining, you should check them out.",
+    "see-more": "View more DAOs"
+  },
+  "featured-people": {
+    "title": "Featured people",
+    "caption": "Follow the most prominent professionals on the Web3.",
+    "see-more": "View more people"
+  }
 }

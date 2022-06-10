@@ -1,6 +1,8 @@
+import { PartialDeep } from 'type-fest';
+
 import { TOKENS } from '@gateway/theme';
 
-import { Avatar, Box, Button, Chip, Stack, Typography } from '@mui/material';
+import { Avatar, Box, Chip, Stack, Typography } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -8,37 +10,36 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 
-import { Daos } from '../../../../../services/graphql/types.generated';
+import { Gates } from '../../../../../services/graphql/types.generated';
 import { badgeProps } from '../../../../../utils/badge-props';
 
 // TODO: make it generic
-// TODO: Fix Dao name column width
+// TODO: Fix Gate name column width
 
 type Props = {
-  daos: Daos[];
+  gates: PartialDeep<Gates>[];
 };
-export function TableView({ daos }: Props) {
+export function TableView({ gates }: Props) {
   return (
     <TableContainer sx={{ px: TOKENS.CONTAINER_PX }}>
       <Table stickyHeader aria-label="sticky table">
         <TableHead>
           <TableRow>
-            <TableCell align="left">Dao</TableCell>
+            <TableCell align="left">Gate</TableCell>
             <TableCell align="left">Category</TableCell>
-            <TableCell align="left"></TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {daos.map((dao) => {
+          {gates.map((gate) => {
             return (
-              <TableRow hover role="checkbox" tabIndex={-1} key={dao.id}>
+              <TableRow hover role="checkbox" tabIndex={-1} key={gate.id}>
                 <TableCell>
                   <Stack alignItems="center" direction="row" gap={1}>
-                    <Avatar variant="rounded" src={dao.logo_url}>
-                      {dao.name?.[0]}
+                    <Avatar variant="rounded" {...badgeProps(gate.badge)}>
+                      {gate.gate_name?.[0]}
                     </Avatar>
                     <Box>
-                      <Typography>{dao.name}</Typography>
+                      <Typography>{gate.gate_name}</Typography>
                       <Typography
                         variant="caption"
                         color="text.secondary"
@@ -48,25 +49,20 @@ export function TableView({ daos }: Props) {
                           whiteSpace: 'nowrap',
                         }}
                       >
-                        {dao.description}
+                        {gate.description}
                       </Typography>
                     </Box>
                   </Stack>
                 </TableCell>
                 <TableCell>
                   <Stack direction="row" gap={1}>
-                    {dao.categories?.map((category) => (
+                    {gate.categories?.map((category) => (
                       <Chip
-                        key={`dao-${dao.id}-category-${category}`}
+                        key={`gate-${gate.id}-category-${category}`}
                         label={category}
                       />
                     ))}
                   </Stack>
-                </TableCell>
-                <TableCell align="right">
-                  <Button variant="outlined" color="secondary">
-                    Follow
-                  </Button>
                 </TableCell>
               </TableRow>
             );

@@ -1,0 +1,26 @@
+query dao_profile($id: uuid!) {
+  me {
+    ...current_user
+    pfp
+  }
+
+  daos_by_pk(id: $id) {
+    id
+    name
+    description
+    background_url
+    logo_url
+    categories
+    socials {
+      network
+      url
+    }
+    gates {
+      id
+      gate_name
+      description
+      categories
+      badge
+    }
+  }
+}

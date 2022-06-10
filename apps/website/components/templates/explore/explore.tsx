@@ -6,7 +6,7 @@ import { TOKENS } from '@gateway/theme';
 import { Box, Tabs, Tab, Typography } from '@mui/material';
 
 import { Daos, Gates, Users } from '../../../services/graphql/types.generated';
-import { a11yTabProps, TabPanel } from '../../atoms/tab-panel';
+import { a11yTabProps, TabPanel, useTab } from '../../atoms/tabs';
 import { Navbar } from '../../organisms/navbar/navbar';
 import { AllTab } from './tabs/all-tab';
 import { DaosTab } from './tabs/daos-tab';
@@ -24,17 +24,8 @@ type TemplateProps = {
 };
 
 export function ExploreTemplate({ title, subtitle, data }: TemplateProps) {
-  const [activeTab, setActiveTab] = useState<number>(0);
   const { t } = useTranslation('explore');
-
-  const handleTabChange = (event: React.SyntheticEvent, newTab: number) => {
-    setActiveTab(newTab);
-  };
-
-  const setTab = (tab: number) => {
-    setActiveTab(tab);
-    window?.scrollTo({ top: 0 });
-  };
+  const { activeTab, handleTabChange, setTab } = useTab();
 
   const tabs = useMemo(
     () => [

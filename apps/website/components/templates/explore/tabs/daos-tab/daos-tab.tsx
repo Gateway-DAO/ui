@@ -4,10 +4,10 @@ import { AutoAwesomeMosaic, ViewList } from '@mui/icons-material';
 import { Box, IconButton, Stack } from '@mui/material';
 import Chip from '@mui/material/Chip';
 
+import { usePropertyFilter } from '../../../../../hooks/use-property-filter';
+import { useViewMode, ViewMode } from '../../../../../hooks/use-view-modes';
 import { Daos } from '../../../../../services/graphql/types.generated';
 import { DaoCard } from '../../../../molecules/dao-card';
-import { usePropertyFilter } from '../use-property-filter';
-import { useViewMode, ViewMode } from '../use-view-modes';
 import { TableView } from './table-view';
 
 type Props = {

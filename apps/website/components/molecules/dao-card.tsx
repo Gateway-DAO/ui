@@ -1,6 +1,8 @@
+import Link from 'next/link';
+
 import type { PartialDeep } from 'type-fest';
 
-import { Avatar, Button, CardHeader } from '@mui/material';
+import { Avatar, Button, CardActionArea, CardHeader } from '@mui/material';
 import MUICard from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
@@ -14,6 +16,7 @@ import { Daos } from '../../services/graphql/types.generated';
 /* TODO: Arias and Labels */
 
 export function DaoCard({
+  id,
   background_url,
   logo_url,
   name,
@@ -22,12 +25,16 @@ export function DaoCard({
 }: PartialDeep<Daos>) {
   return (
     <MUICard>
-      <CardMedia
-        component="img"
-        image={background_url}
-        alt="green iguana"
-        height={128}
-      />
+      <Link passHref href={`/dao/${id}`}>
+        <CardActionArea component="a">
+          <CardMedia
+            component="img"
+            image={background_url}
+            alt={`${name} cover`}
+            height={128}
+          />
+        </CardActionArea>
+      </Link>
       <Box sx={{ position: 'relative', ml: 2 }}>
         <Avatar
           src={logo_url}
