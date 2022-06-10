@@ -25,10 +25,8 @@ type AppProps = NextAppProps & {
 function CustomApp({
   Component,
   pageProps: { session, ...pageProps },
-  ...other
 }: AppProps) {
   usePersistLocale();
-  console.log(pageProps, other);
   return (
     <>
       <Head>
