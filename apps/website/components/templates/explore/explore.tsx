@@ -31,22 +31,22 @@ export function ExploreTemplate({ title, subtitle, data }: TemplateProps) {
     () => [
       {
         key: 'all',
-        label: t('tabs.all'),
+        label: t('common:tabs.all'),
         section: <AllTab {...data} setActiveTab={setTab} />,
       },
       {
         key: 'gates',
-        label: t('tabs.gates'),
+        label: t('common:tabs.gates'),
         section: <GatesTab gates={data.gates} />,
       },
       {
         key: 'daos',
-        label: t('tabs.daos'),
+        label: t('common:tabs.daos'),
         section: <DaosTab daos={data.daos} />,
       },
       {
         key: 'people',
-        label: t('tabs.people'),
+        label: t('common:tabs.people'),
         section: <PeopleTab people={data.people} />,
       },
     ],
