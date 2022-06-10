@@ -10,10 +10,12 @@ import {
 import { DaoCard } from '../../../../molecules/dao-card';
 import { GatesCard } from '../../../../molecules/gates-card';
 import { PersonCard } from '../../../../molecules/person-card';
+import {
+  SectionWithSlider,
+  SectionWithGrid,
+} from '../../../../molecules/sections';
 import { NewsItem } from './news-item';
 import { NewsSection } from './news-section';
-import { SectionWithGrid } from './section-with-grid';
-import { SectionWithSlider } from './section-with-slider';
 
 type Props = {
   gates: Partial<Gates>[];
