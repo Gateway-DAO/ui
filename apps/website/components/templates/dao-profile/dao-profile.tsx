@@ -18,6 +18,7 @@ import {
 
 import { Daos } from '../../../services/graphql/types.generated';
 import { a11yTabProps, TabPanel, useTab } from '../../atoms/tabs';
+import { Navbar } from '../../organisms/navbar/navbar';
 import { Socials } from './socials';
 import { GatesTab, OverviewTab } from './tabs';
 
@@ -58,8 +59,11 @@ export function DaoProfileTemplate({ dao }: Props) {
           background: `url(${dao.background_url})`,
           backgroundPosition: 'center',
           backgroundSize: 'cover',
+          pt: 2,
         }}
-      />
+      >
+        <Navbar />
+      </Box>
       <Box
         sx={{
           px: TOKENS.CONTAINER_PX,
