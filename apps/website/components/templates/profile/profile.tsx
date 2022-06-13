@@ -52,7 +52,7 @@ export function ProfileTemplate({ user }: Props) {
 
   const tmpUser = {
     pfp: 'https://i.ibb.co/bzzgBfT/random-nft.png',
-    email_address: '',
+    email_address: 'shriram@mygateway.xyz',
     name: 'Shriram Chandra',
     bio: 'You can write about your years of experience, industry, or skills.People also talk about their achievements or previous job experiences.',
     username: 'shriram',
@@ -165,7 +165,10 @@ export function ProfileTemplate({ user }: Props) {
             <h1 style={{ marginBottom: '0', marginRight: '15px' }}>
               {tmpUser.name}
             </h1>
-            <Avatar sx={{ cursor: 'pointer' }}>
+            <Avatar
+              sx={{ cursor: 'pointer' }}
+              onClick={() => router.push('/profile/edit-profile')}
+            >
               <BsFillPencilFill />
             </Avatar>
           </Box>
@@ -232,7 +235,10 @@ export function ProfileTemplate({ user }: Props) {
             <section>
               <Box sx={{ display: 'flex', alignItems: 'baseline' }}>
                 <h2 style={{ marginRight: '15px' }}>Skills</h2>
-                <Avatar sx={{ cursor: 'pointer' }}>
+                <Avatar
+                  sx={{ cursor: 'pointer' }}
+                  onClick={() => router.push('/profile/edit-skills')}
+                >
                   <BsFillPencilFill />
                 </Avatar>
               </Box>
@@ -255,7 +261,10 @@ export function ProfileTemplate({ user }: Props) {
             <section>
               <Box sx={{ display: 'flex', alignItems: 'baseline' }}>
                 <h2 style={{ marginRight: '15px' }}>Knowledges</h2>
-                <Avatar sx={{ cursor: 'pointer' }}>
+                <Avatar
+                  sx={{ cursor: 'pointer' }}
+                  onClick={() => router.push('/profile/edit-knowledge')}
+                >
                   <BsFillPencilFill />
                 </Avatar>
               </Box>
@@ -278,7 +287,10 @@ export function ProfileTemplate({ user }: Props) {
             <section>
               <Box sx={{ display: 'flex', alignItems: 'baseline' }}>
                 <h2 style={{ marginRight: '15px' }}>Attitudes</h2>
-                <Avatar sx={{ cursor: 'pointer' }}>
+                <Avatar
+                  sx={{ cursor: 'pointer' }}
+                  onClick={() => router.push('/profile/edit-attitudes')}
+                >
                   <BsFillPencilFill />
                 </Avatar>
               </Box>
