@@ -167,7 +167,7 @@ export function ProfileTemplate({ user }: Props) {
             </h1>
             <Avatar
               sx={{ cursor: 'pointer' }}
-              onClick={() => router.push('/profile/edit-profile')}
+              onClick={() => router.push('/profile/edit')}
             >
               <BsFillPencilFill />
             </Avatar>
@@ -237,7 +237,7 @@ export function ProfileTemplate({ user }: Props) {
                 <h2 style={{ marginRight: '15px' }}>Skills</h2>
                 <Avatar
                   sx={{ cursor: 'pointer' }}
-                  onClick={() => router.push('/profile/edit-skills')}
+                  onClick={() => router.push('/profile/edit/skills')}
                 >
                   <BsFillPencilFill />
                 </Avatar>
@@ -263,7 +263,7 @@ export function ProfileTemplate({ user }: Props) {
                 <h2 style={{ marginRight: '15px' }}>Knowledges</h2>
                 <Avatar
                   sx={{ cursor: 'pointer' }}
-                  onClick={() => router.push('/profile/edit-knowledge')}
+                  onClick={() => router.push('/profile/edit/knowledge')}
                 >
                   <BsFillPencilFill />
                 </Avatar>
@@ -289,7 +289,7 @@ export function ProfileTemplate({ user }: Props) {
                 <h2 style={{ marginRight: '15px' }}>Attitudes</h2>
                 <Avatar
                   sx={{ cursor: 'pointer' }}
-                  onClick={() => router.push('/profile/edit-attitudes')}
+                  onClick={() => router.push('/profile/edit/attitudes')}
                 >
                   <BsFillPencilFill />
                 </Avatar>
