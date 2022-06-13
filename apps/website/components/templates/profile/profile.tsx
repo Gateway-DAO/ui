@@ -50,6 +50,36 @@ export function ProfileTemplate({ user }: Props) {
 
   const router = useRouter();
 
+  const tmpUser = {
+    pfp: 'https://i.ibb.co/bzzgBfT/random-nft.png',
+    email_address: '',
+    name: 'Shriram Chandra',
+    bio: 'You can write about your years of experience, industry, or skills.People also talk about their achievements or previous job experiences.',
+    username: 'shriram',
+    about:
+      "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English.",
+    skills: [
+      'UX Design',
+      'UI Design',
+      'Branding',
+      'Product Strategy',
+      'Product Design',
+    ],
+    knowledges: [
+      'Web3',
+      'Blockchain',
+      'Cryptocurrency',
+      'Business Development',
+    ],
+    attitudes: [
+      'Pro-Active',
+      'Business Driven',
+      'Collaborative',
+      'Leadership',
+      'Innovative',
+    ],
+  };
+
   return (
     <>
       <PocModalMinted open={open} handleClose={handleClose} />
@@ -71,7 +101,7 @@ export function ProfileTemplate({ user }: Props) {
           }}
         >
           <Avatar
-            src={user.pfp}
+            src={tmpUser.pfp}
             sx={{
               width: 30,
               height: 30,
@@ -80,7 +110,7 @@ export function ProfileTemplate({ user }: Props) {
           <RiArrowDownSFill style={{ position: 'relative', top: '5px' }} />
         </Box>
         <Avatar
-          src={user.pfp}
+          src={tmpUser.pfp}
           sx={{
             width: 150,
             height: 150,
@@ -101,9 +131,9 @@ export function ProfileTemplate({ user }: Props) {
         }}
         gap={2}
       >
-        {user.email_address && (
+        {tmpUser.email_address && (
           <Avatar
-            onClick={() => window.open('mailto:' + user.email_address)}
+            onClick={() => window.open('mailto:' + tmpUser.email_address)}
             style={{ cursor: 'pointer' }}
           >
             <MdEmail size={28} />
@@ -133,16 +163,16 @@ export function ProfileTemplate({ user }: Props) {
         <Box sx={{ margin: '30px 65px' }}>
           <Box sx={{ display: 'flex', alignItems: 'baseline' }}>
             <h1 style={{ marginBottom: '0', marginRight: '15px' }}>
-              {user.name}
+              {tmpUser.name}
             </h1>
             <Avatar sx={{ cursor: 'pointer' }}>
               <BsFillPencilFill />
             </Avatar>
           </Box>
-          <p style={{ margin: '0 auto' }}>{user.bio}</p>
-          {user.username && (
+          <p style={{ margin: '0 auto' }}>{tmpUser.bio}</p>
+          {tmpUser.username && (
             <p style={{ marginTop: '0', fontSize: 'small' }}>
-              @{user.username}
+              @{tmpUser.username}
             </p>
           )}
         </Box>
@@ -151,8 +181,8 @@ export function ProfileTemplate({ user }: Props) {
           <Grid item className="left" xs={8} sx={{ padding: '0 65px' }}>
             <section style={{ marginBottom: '20px' }}>
               <h2 style={{ margin: '20px 0' }}>About</h2>
-              <div className="about">{user.about}</div>
-              {!user.about && (
+              <div className="about">{tmpUser.about}</div>
+              {!tmpUser.about && (
                 <Button
                   variant="outlined"
                   size="small"
@@ -207,7 +237,7 @@ export function ProfileTemplate({ user }: Props) {
                 </Avatar>
               </Box>
               <div>
-                {user.skills?.map((skill, index) => {
+                {tmpUser.skills?.map((skill, index) => {
                   return (
                     <Button
                       key={index}
@@ -230,7 +260,7 @@ export function ProfileTemplate({ user }: Props) {
                 </Avatar>
               </Box>
               <div>
-                {user.knowledges?.map((skill, index) => {
+                {tmpUser.knowledges?.map((skill, index) => {
                   return (
                     <Button
                       key={index}
@@ -253,7 +283,7 @@ export function ProfileTemplate({ user }: Props) {
                 </Avatar>
               </Box>
               <div>
-                {user.attitudes?.map((skill, index) => {
+                {tmpUser.attitudes?.map((skill, index) => {
                   return (
                     <Button
                       key={index}
