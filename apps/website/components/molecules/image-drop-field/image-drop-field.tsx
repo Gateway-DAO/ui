@@ -25,7 +25,7 @@ export function ImageDropField<TFormSchema extends FieldValues = FieldValues>({
   label,
   name,
   control,
-  withCrop,
+  withCrop = true,
 }: Props<TFormSchema>) {
   const {
     field: { ref, value, onChange, ...register },
