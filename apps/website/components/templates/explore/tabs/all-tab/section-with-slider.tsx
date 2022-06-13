@@ -9,19 +9,23 @@ import { useBreakpointValue } from '@gateway/ui';
 import { Box, Stack, Typography, useTheme } from '@mui/material';
 import { SystemCssProperties } from '@mui/system';
 
+type Props = {
+  title: string;
+  caption: string;
+  action: ReactNode;
+  children: ReactNode[];
+  itemWidth?: SystemCssProperties<GatewayTheme>['width'];
+  stretch?: boolean;
+};
+
 export function SectionWithSlider({
   title,
   caption,
   action,
   children,
   itemWidth,
-}: {
-  title: string;
-  caption: string;
-  action: ReactNode;
-  children: ReactNode[];
-  itemWidth?: SystemCssProperties<GatewayTheme>['width'];
-}) {
+  stretch = true,
+}: Props) {
   const theme = useTheme();
   const padding = useBreakpointValue(TOKENS.CONTAINER_PX);
   const offset = useMemo(
@@ -34,6 +38,14 @@ export function SectionWithSlider({
       sx={{
         '.swiper-slide': {
           width: itemWidth ?? 'auto',
+          ...(stretch && {
+            height: 'auto',
+            display: 'flex',
+            alignItems: 'stretch',
+            '> :first-of-type': {
+              width: '100%',
+            },
+          }),
         },
       }}
     >
@@ -48,7 +60,16 @@ export function SectionWithSlider({
           <Typography variant="h6">{title}</Typography>
           <Typography variant="caption">{caption}</Typography>
         </Box>
-        {action}
+        <Box
+          sx={{
+            display: {
+              xs: 'none',
+              md: 'block',
+            },
+          }}
+        >
+          {action}
+        </Box>
       </Stack>
       <Swiper
         modules={[A11y]}
@@ -61,6 +82,18 @@ export function SectionWithSlider({
           <SwiperSlide key={index}>{child}</SwiperSlide>
         ))}
       </Swiper>
+      <Box
+        sx={{
+          display: {
+            xs: 'block',
+            md: 'none',
+          },
+          px: TOKENS.CONTAINER_PX,
+          mt: 2,
+        }}
+      >
+        {action}
+      </Box>
     </Box>
   );
 }

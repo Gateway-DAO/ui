@@ -96,7 +96,7 @@ export function ViewCredentialTemplate() {
                 loader={() => credentialImgUrl}
                 src={credentialImgUrl}
                 height={300}
-                width={900}
+                width={1200}
                 alt="credential image"
                 style={{ borderRadius: '5px' }}
               />

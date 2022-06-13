@@ -3,12 +3,12 @@ import { AppProps as NextAppProps } from 'next/app';
 import Head from 'next/head';
 
 import { Hydrate, QueryClientProvider } from 'react-query';
-import { ReactQueryDevtools } from 'react-query/devtools';
-import { useAccount, WagmiConfig } from 'wagmi';
+import { WagmiConfig } from 'wagmi';
 
 import { ThemeProvider } from '@gateway/theme';
 
 import { SEOSocial, SEOFavicon } from '../components/atoms/seo';
+import { NavStateProvider } from '../hooks/use-nav';
 import { usePersistLocale } from '../hooks/usePersistLocale';
 
 import '../components/atoms/global-dependencies';
@@ -42,7 +42,9 @@ function CustomApp({
             <QueryClientProvider client={queryClient}>
               <Hydrate state={pageProps.dehydratedState}>
                 <AuthProvider isAuthPage={Component.auth}>
-                  <Component {...pageProps} />
+                  <NavStateProvider>
+                    <Component {...pageProps} />
+                  </NavStateProvider>
                 </AuthProvider>
               </Hydrate>
             </QueryClientProvider>

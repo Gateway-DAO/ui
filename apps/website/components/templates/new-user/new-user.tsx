@@ -47,7 +47,12 @@ export function NewUserTemplate({ user }: Props) {
   );
 
   const onSubmit = (data: NewUserSchema) => {
-    updateMutation.mutate({ id: user.id, ...data });
+    updateMutation.mutate(
+      { id: user.id, ...data },
+      {
+        onSuccess: () => router.push('/profile'),
+      }
+    );
   };
 
   return (
