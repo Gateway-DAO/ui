@@ -38,9 +38,9 @@ export function ConnectedWallet({ onBack }: Props) {
 
   useEffect(() => {
     if (step === 'FINISHED') {
-      router.push(ROUTES.EXPLORE);
+      router.push(!session?.user?.init ? ROUTES.NEW_USER : ROUTES.EXPLORE);
     }
-  }, [step]);
+  }, [router, session?.user?.init, step]);
 
   return (
     <Box>
