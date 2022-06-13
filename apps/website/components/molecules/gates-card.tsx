@@ -19,6 +19,7 @@ export function GatesCard({
   categories,
   dao,
 }: PartialDeep<Gates>) {
+  const hasDao = !!dao;
   return (
     <MUICard>
       <CardMedia
@@ -30,25 +31,29 @@ export function GatesCard({
       <CardHeader
         sx={{ pt: 2, pb: 1, '.MuiCardHeader-action': { alignSelf: 'unset' } }}
         avatar={
-          <Avatar
-            src={dao.logo_url}
-            sx={{ width: 32, height: 32 }}
-            aria-label={`${dao.name}'s DAO image`}
-          >
-            {dao.name?.[0]}
-          </Avatar>
+          hasDao && (
+            <Avatar
+              src={dao.logo_url}
+              sx={{ width: 32, height: 32 }}
+              aria-label={`${dao.name}'s DAO image`}
+            >
+              {dao.name?.[0]}
+            </Avatar>
+          )
         }
         action={
           <IconButton color="secondary" aria-label="settings">
             <BookmarkBorderIcon />
           </IconButton>
         }
-        title={dao.name}
+        title={hasDao ? dao.name : gate_name}
       />
       <CardContent sx={{ py: 1 }}>
-        <Typography gutterBottom variant="h5">
-          {gate_name}
-        </Typography>
+        {hasDao && (
+          <Typography gutterBottom variant="h5">
+            {gate_name}
+          </Typography>
+        )}
         <Typography
           variant="body2"
           color="text.secondary"

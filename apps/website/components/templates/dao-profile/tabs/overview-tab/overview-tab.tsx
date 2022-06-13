@@ -1,12 +1,10 @@
 import useTranslation from 'next-translate/useTranslation';
 
+import { PartialDeep } from 'type-fest';
+
 import { Button, Divider, Stack } from '@mui/material';
 
-import {
-  Gates,
-  Daos,
-  Users,
-} from '../../../../../services/graphql/types.generated';
+import { Daos } from '../../../../../services/graphql/types.generated';
 import { DaoCard } from '../../../../molecules/dao-card';
 import { GatesCard } from '../../../../molecules/gates-card';
 import { PersonCard } from '../../../../molecules/person-card';
@@ -14,17 +12,13 @@ import {
   SectionWithSlider,
   SectionWithGrid,
 } from '../../../../molecules/sections';
-import { NewsItem } from './news-item';
-import { NewsSection } from './news-section';
 
 type Props = {
-  gates: Partial<Gates>[];
-  daos: Partial<Daos>[];
-  people: Partial<Users>[];
-  setActiveTab: (tab: number) => void;
+  dao: PartialDeep<Daos>;
+  setTab: (tab: number) => void;
 };
 
-export function AllTab({ daos, gates, people, setActiveTab }: Props) {
+export function OverviewTab({ dao, setTab }: Props) {
   const { t } = useTranslation('explore');
 
   return (
@@ -51,46 +45,32 @@ export function AllTab({ daos, gates, people, setActiveTab }: Props) {
         }}
       >
         <SectionWithSlider
-          title={t('featured-gates.title')}
-          caption={t('featured-gates.caption')}
+          title={t('common:featured-gates.title')}
+          caption={t('common:featured-gates.caption')}
           action={
-            <Button onClick={() => setActiveTab(1)}>
-              {t('featured-gates.see-more')}
+            <Button onClick={() => setTab(1)}>
+              {t('common:featured-gates.see-more')}
             </Button>
           }
           itemWidth={(theme) => theme.spacing(37.75)}
         >
-          {gates.map((gate) => (
+          {dao.gates?.map((gate) => (
             <GatesCard key={gate.id} {...gate} />
           ))}
         </SectionWithSlider>
-        <SectionWithSlider
-          title={t('featured-daos.title')}
-          caption={t('featured-daos.caption')}
+        {/* <SectionWithGrid
+          title={t('common:featured-people.title')}
+          caption={t('common:featured-people.caption')}
           action={
-            <Button onClick={() => setActiveTab(2)}>
-              {t('featured-daos.see-more')}
-            </Button>
-          }
-          itemWidth={(theme) => theme.spacing(51)}
-        >
-          {daos.map((dao) => (
-            <DaoCard key={dao.id} {...dao} />
-          ))}
-        </SectionWithSlider>
-        <SectionWithGrid
-          title={t('featured-people.title')}
-          caption={t('featured-people.caption')}
-          action={
-            <Button onClick={() => setActiveTab(3)}>
-              {t('featured-people.see-more')}
+            <Button onClick={() => setTab(2)}>
+              {t('common:featured-people.see-more')}
             </Button>
           }
         >
           {people.map((person) => (
             <PersonCard key={person.id} {...person} />
           ))}
-        </SectionWithGrid>
+        </SectionWithGrid> */}
       </Stack>
     </Stack>
   );

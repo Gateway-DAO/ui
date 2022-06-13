@@ -36,6 +36,7 @@ export function TableView({ people }: Props) {
                       <Typography>{user.name}</Typography>
                       <Typography
                         variant="caption"
+                        color="text.secondary"
                         sx={{
                           textOverflow: 'ellipsis',
                           overflow: 'hidden',

@@ -6,6 +6,7 @@ import useTranslation from 'next-translate/useTranslation';
 
 import { DashboardTemplate } from '../components/templates/dashboard';
 import { ExploreTemplate } from '../components/templates/explore';
+import { ROUTES } from '../constants/routes';
 import { gqlMethods } from '../services/api';
 
 /** TODO: Prevent template remount when navigating between dashboard pages
@@ -19,11 +20,11 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   if (!session?.user) {
     return {
       redirect: {
-        destination: '/',
+        destination: ROUTES.LANDING,
         permanent: true,
       },
       props: {
-        exploreProps: undefined,
+        exploreProps: null,
       },
     };
   }
@@ -32,13 +33,14 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
     id: session.user.id,
   });
 
+  /* TODO: Make this reusable */
   if (!exploreProps.me.init)
     return {
       props: {
         exploreProps,
       },
       redirect: {
-        destination: '/new-user',
+        destination: ROUTES.NEW_USER,
         permanent: true,
       },
     };
@@ -55,6 +57,7 @@ export default function Explore({
   exploreProps,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const { t } = useTranslation('explore');
+
   if (!exploreProps) return null;
 
   /*   const session = useSession();
