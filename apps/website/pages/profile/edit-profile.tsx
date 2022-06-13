@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import React, { useState, useEffect } from 'react';
 
 import { useForm } from 'react-hook-form';
@@ -32,6 +33,8 @@ type FormData = {
 };
 
 const EditProfile = () => {
+  const router = useRouter();
+
   useEffect(() => {
     setImage(window.localStorage.getItem('image'));
     setName(window.localStorage.getItem('name'));
@@ -100,7 +103,13 @@ const EditProfile = () => {
             <ArrowBackIcon />
           </div>
           <div>
-            <Button variant="outlined" style={{ marginRight: 10 }}>
+            <Button
+              variant="outlined"
+              style={{ marginRight: 10 }}
+              onClick={() => {
+                router.back();
+              }}
+            >
               Cancel
             </Button>
             <Button variant="contained">Save</Button>

@@ -54,7 +54,7 @@ export function ProfileTemplate({ user }: Props) {
     pfp: 'https://i.ibb.co/bzzgBfT/random-nft.png',
     email_address: 'shriram@mygateway.xyz',
     name: 'Shriram Chandra',
-    bio: 'You can write about your years of experience, industry, or skills.People also talk about their achievements or previous job experiences.',
+    bio: 'You can write about your years of experience, industry, or skills. People also talk about their achievements or previous job experiences.',
     username: 'shriram',
     about:
       "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English.",
