@@ -4,24 +4,24 @@ import { AutoAwesomeMosaic, ViewList } from '@mui/icons-material';
 import { Box, IconButton, Stack } from '@mui/material';
 import Chip from '@mui/material/Chip';
 
-import { Gates } from '../../../../../services/graphql/types.generated';
-import { GatesCard } from '../../../../molecules/gates-card';
+import { Daos } from '../../../../../services/graphql/types.generated';
+import { DaoCard } from '../../../../molecules/dao-card';
 import { usePropertyFilter } from '../use-property-filter';
 import { useViewMode, ViewMode } from '../use-view-modes';
 import { TableView } from './table-view';
 
 type Props = {
-  gates: Gates[];
+  daos: Daos[];
 };
 
-export function GatesTab({ gates }: Props) {
+export function DaosTab({ daos }: Props) {
   const { view, toggleView } = useViewMode();
   const {
     selectedFilters,
-    filteredItems: filteredGates,
+    filteredItems: filteredDaos,
     availableFilters,
     toggleFilter,
-  } = usePropertyFilter(gates, 'categories');
+  } = usePropertyFilter(daos, 'categories');
 
   return (
     <Box sx={{ py: 4 }}>
@@ -35,7 +35,7 @@ export function GatesTab({ gates }: Props) {
             const isActive = selectedFilters.includes(filter);
             return (
               <Chip
-                key={`gates-tab-filter-${filter}`}
+                key={`daos-tab-filter-${filter}`}
                 label={filter}
                 {...(isActive
                   ? { onDelete: () => toggleFilter(filter) }
@@ -58,18 +58,18 @@ export function GatesTab({ gates }: Props) {
           sx={{
             display: 'grid',
             gridTemplateColumns: {
-              md: 'repeat(4, 1fr)',
+              md: 'repeat(3, 1fr)',
             },
             gap: 2,
             px: TOKENS.CONTAINER_PX,
           }}
         >
-          {filteredGates.map((gate) => (
-            <GatesCard key={`gate-${gate.id}`} {...gate} />
+          {filteredDaos.map((dao) => (
+            <DaoCard key={`dao-${dao.id}`} {...dao} />
           ))}
         </Box>
       )}
-      {view === ViewMode.table && <TableView gates={filteredGates} />}
+      {view === ViewMode.table && <TableView daos={filteredDaos} />}
     </Box>
   );
 }

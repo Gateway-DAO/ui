@@ -33,7 +33,7 @@ export function GatesCard({
           <Avatar
             src={dao.logo_url}
             sx={{ width: 32, height: 32 }}
-            aria-label="recipe"
+            aria-label={`${dao.name}'s DAO image`}
           >
             {dao.name?.[0]}
           </Avatar>

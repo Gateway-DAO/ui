@@ -7,9 +7,9 @@ import { MotionAvatar } from '@gateway/ui';
 import { ListItemButton } from '@mui/material';
 import ListItemIcon from '@mui/material/ListItemIcon';
 
-import { Dao } from '../../../types/dao';
+import { Daos } from '../../../../services/graphql/types.generated';
 
-export function TemporaryDao({ dao }: { dao: Dao }) {
+export function TemporaryDao({ dao }: { dao: Daos }) {
   const [isPresent, safeToRemove] = usePresence();
 
   useEffect(() => {
@@ -20,7 +20,7 @@ export function TemporaryDao({ dao }: { dao: Dao }) {
     <ListItemButton className={isPresent && 'active'}>
       <ListItemIcon>
         <MotionAvatar
-          src={dao.image}
+          src={dao.logo_url}
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
           exit={{ scale: 0 }}

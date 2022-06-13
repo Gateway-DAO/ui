@@ -4,10 +4,8 @@ import useTranslation from 'next-translate/useTranslation';
 
 // import { dehydrate, useQuery } from 'react-query';
 
-import { mockDaos } from '../__mock__/daos';
 import { DashboardTemplate } from '../components/templates/dashboard';
-import { AllTab, ExploreTemplate } from '../components/templates/explore';
-import GatesTab from '../components/templates/explore/tabs/gates-tab/gates-tab';
+import { ExploreTemplate } from '../components/templates/explore';
 import { gqlMethods } from '../services/api';
 
 /** TODO: Prevent template remount when navigating between dashboard pages
@@ -59,8 +57,6 @@ export default function Explore({
   const { t } = useTranslation('explore');
   if (!exploreProps) return null;
 
-  const { daos, gates, people } = exploreProps;
-
   /*   const session = useSession();
   console.log(session);
  */
@@ -72,23 +68,11 @@ export default function Explore({
           overflow: 'hidden',
         },
       }}
-      followingDaos={mockDaos}
     >
       <ExploreTemplate
         title={t('title')}
         subtitle={t('subtitle')}
-        tabs={[
-          {
-            key: 'all',
-            label: t('tabs.all'),
-            section: <AllTab {...{ daos, gates, people }} />,
-          },
-          {
-            key: 'gates',
-            label: t('tabs.gates'),
-            section: <GatesTab {...{ gates }} />,
-          },
-        ]}
+        data={exploreProps}
       />
     </DashboardTemplate>
   );

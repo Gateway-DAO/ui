@@ -19,9 +19,10 @@ type Props = {
   gates: Partial<Gates>[];
   daos: Partial<Daos>[];
   people: Partial<Users>[];
+  setActiveTab: (tab: number) => void;
 };
 
-export function AllTab({ daos, gates, people }: Props) {
+export function AllTab({ daos, gates, people, setActiveTab }: Props) {
   const { t } = useTranslation('explore');
 
   return (
@@ -50,7 +51,11 @@ export function AllTab({ daos, gates, people }: Props) {
         <SectionWithSlider
           title={t('featured-gates.title')}
           caption={t('featured-gates.caption')}
-          action={<Button>{t('featured-gates.see-more')}</Button>}
+          action={
+            <Button onClick={() => setActiveTab(1)}>
+              {t('featured-gates.see-more')}
+            </Button>
+          }
           itemWidth={(theme) => theme.spacing(37.75)}
         >
           {gates.map((gate) => (
@@ -60,7 +65,11 @@ export function AllTab({ daos, gates, people }: Props) {
         <SectionWithSlider
           title={t('featured-daos.title')}
           caption={t('featured-daos.caption')}
-          action={<Button>{t('featured-daos.see-more')}</Button>}
+          action={
+            <Button onClick={() => setActiveTab(2)}>
+              {t('featured-daos.see-more')}
+            </Button>
+          }
           itemWidth={(theme) => theme.spacing(51)}
         >
           {daos.map((dao) => (
@@ -70,7 +79,11 @@ export function AllTab({ daos, gates, people }: Props) {
         <SectionWithGrid
           title={t('featured-people.title')}
           caption={t('featured-people.caption')}
-          action={<Button>{t('featured-people.see-more')}</Button>}
+          action={
+            <Button onClick={() => setActiveTab(3)}>
+              {t('featured-people.see-more')}
+            </Button>
+          }
         >
           {people.map((person) => (
             <PersonCard key={person.id} {...person} />

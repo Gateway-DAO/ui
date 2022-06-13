@@ -1,32 +1,14 @@
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { PropsWithChildren, useMemo } from 'react';
+import { PropsWithChildren } from 'react';
 
-import clsx from 'clsx';
-import { AnimatePresence } from 'framer-motion';
+import { MotionBox } from '@gateway/ui';
 
-import { GatewayIcon } from '@gateway/assets';
-import { MotionTooltip } from '@gateway/ui';
+import Box from '@mui/material/Box';
 
-import ExploreIcon from '@mui/icons-material/Explore';
-import { Avatar, ListItemButton } from '@mui/material';
-import Box, { BoxProps } from '@mui/material/Box';
-import Drawer from '@mui/material/Drawer';
-import ListItemIcon from '@mui/material/ListItemIcon';
-
-import { ROUTES } from '../../../constants/routes';
-import { Dao } from '../../../types/dao';
-import { DaosList } from './daos-list';
+import { useNav } from '../../../hooks/use-nav';
+import { Drawer } from './drawer';
 import { withGradientAfter } from './styles';
-import { TemporaryDao } from './temporary-dao';
-
+import { DashboardTemplateProps } from './types';
 // eslint-disable-next-line @typescript-eslint/ban-types
-export type DashboardTemplateProps = {
-  followingDaos?: Dao[];
-  currentDao?: Dao;
-  containerProps?: BoxProps;
-  showExplore?: boolean;
-};
 
 /* TODO: buttons to next/link */
 
@@ -37,21 +19,10 @@ export function DashboardTemplate({
   containerProps,
   showExplore = true,
 }: PropsWithChildren<DashboardTemplateProps>) {
-  /* Checks if currentDao isn't in followingDaos */
-  const isCurrentDaoTemporary = useMemo(() => {
-    if (!currentDao) {
-      return false;
-    }
-    if (followingDaos) {
-      return !followingDaos.find((dao) => dao.id === currentDao.id);
-    }
-    return true;
-  }, [currentDao, followingDaos]);
-
-  const router = useRouter();
+  const { isOpen } = useNav();
 
   return (
-    <Box
+    <MotionBox
       sx={{
         display: 'flex',
         flex: 1,
@@ -60,91 +31,40 @@ export function DashboardTemplate({
         zIndex: 1,
         ':after': withGradientAfter,
       }}
+      animate={
+        isOpen
+          ? { overflowX: 'hidden' }
+          : {
+              overflowX: 'visible',
+              transition: {
+                delay: 0.225,
+              },
+            }
+      }
     >
-      <Box
-        component="nav"
-        sx={{ flexShrink: { sm: 0 } }}
-        aria-label="mailbox folders"
-      >
-        <Drawer
-          variant="permanent"
-          color="transparent"
-          sx={{
-            height: '100%',
-            '& .MuiDrawer-paper': {
-              pt: 2,
-              position: 'relative',
-              background: 'transparent',
-            },
-          }}
-          open
-        >
-          <DaosList>
-            <AnimatePresence>
-              <ListItemIcon
-                sx={{
-                  mb: 2.75,
-                  px: 2,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  height: (theme) => theme.spacing(5),
-                }}
-              >
-                <GatewayIcon />
-              </ListItemIcon>
-              {!!currentDao && isCurrentDaoTemporary && (
-                <TemporaryDao key={currentDao.id} dao={currentDao} />
-              )}
-              {followingDaos?.map((dao) => (
-                <MotionTooltip
-                  key={dao.id}
-                  layoutId={dao.id}
-                  title={dao.name}
-                  placement="right"
-                >
-                  <ListItemButton
-                    aria-label={`Go to ${dao.name}`}
-                    className={clsx({ active: dao.id === currentDao?.id })}
-                  >
-                    <ListItemIcon>
-                      <Avatar src={dao.image}>{dao.name?.[0]}</Avatar>
-                    </ListItemIcon>
-                  </ListItemButton>
-                </MotionTooltip>
-              ))}
-              {showExplore && (
-                <Link passHref href={ROUTES.PROFILE} prefetch={false}>
-                  <MotionTooltip
-                    key="explore"
-                    layoutId="Explore"
-                    title="Explore"
-                    placement="right"
-                    className={clsx({
-                      active: router.pathname === ROUTES.PROFILE,
-                    })}
-                  >
-                    <ListItemButton component="a">
-                      <ListItemIcon>
-                        <Avatar>
-                          <ExploreIcon />
-                        </Avatar>
-                      </ListItemIcon>
-                    </ListItemButton>
-                  </MotionTooltip>
-                </Link>
-              )}
-            </AnimatePresence>
-          </DaosList>
-        </Drawer>
-      </Box>
+      <Drawer {...{ followingDaos, currentDao, showExplore }} />
       <Box
         component="main"
         {...containerProps}
-        sx={{ ...containerProps?.sx, flexGrow: 1 }}
+        sx={[
+          containerProps?.sx as any,
+          (theme) => ({
+            flexGrow: 1,
+            [theme.breakpoints.down('md')]: {
+              transition: 'transform 225ms ease-out',
+            },
+          }),
+          isOpen &&
+            ((theme) => ({
+              [theme.breakpoints.down('md')]: {
+                transform: (theme) => `translateX(${theme.spacing(9)})`,
+              },
+            })),
+        ]}
       >
         {children}
       </Box>
-    </Box>
+    </MotionBox>
   );
 }
 
