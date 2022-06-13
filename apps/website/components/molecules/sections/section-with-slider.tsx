@@ -58,7 +58,9 @@ export function SectionWithSlider({
       >
         <Box>
           <Typography variant="h6">{title}</Typography>
-          <Typography variant="caption">{caption}</Typography>
+          <Typography variant="caption" color="text.secondary">
+            {caption}
+          </Typography>
         </Box>
         <Box
           sx={{
@@ -78,7 +80,7 @@ export function SectionWithSlider({
         slidesOffsetBefore={offset}
         slidesOffsetAfter={offset}
       >
-        {children.map((child, index) => (
+        {children?.map((child, index) => (
           <SwiperSlide key={index}>{child}</SwiperSlide>
         ))}
       </Swiper>

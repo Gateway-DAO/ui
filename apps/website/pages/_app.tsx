@@ -27,7 +27,6 @@ function CustomApp({
   pageProps: { session, ...pageProps },
 }: AppProps) {
   usePersistLocale();
-
   return (
     <>
       <Head>

@@ -42,18 +42,18 @@ export function Drawer({ currentDao, followingDaos, showExplore }: Props) {
     <DrawerContainer>
       <ResponsiveDrawer>
         <DaosList>
+          <ListItemIcon
+            sx={{
+              mb: 2.75,
+              px: 2,
+              alignItems: 'center',
+              justifyContent: 'center',
+              height: (theme) => theme.spacing(5),
+            }}
+          >
+            <GatewayIcon />
+          </ListItemIcon>
           <AnimatePresence>
-            <ListItemIcon
-              sx={{
-                mb: 2.75,
-                px: 2,
-                alignItems: 'center',
-                justifyContent: 'center',
-                height: (theme) => theme.spacing(5),
-              }}
-            >
-              <GatewayIcon />
-            </ListItemIcon>
             {!!currentDao && isCurrentDaoTemporary && (
               <TemporaryDao key={currentDao.id} dao={currentDao} />
             )}
@@ -74,28 +74,28 @@ export function Drawer({ currentDao, followingDaos, showExplore }: Props) {
                 </ListItemButton>
               </MotionTooltip>
             ))}
-            {showExplore && (
-              <Link passHref href={ROUTES.EXPLORE} prefetch={false}>
-                <MotionTooltip
-                  key="explore"
-                  layoutId="Explore"
-                  title="Explore"
-                  placement="right"
-                  className={clsx({
-                    active: router.pathname === ROUTES.EXPLORE,
-                  })}
-                >
-                  <ListItemButton component="a">
-                    <ListItemIcon>
-                      <Avatar>
-                        <ExploreIcon />
-                      </Avatar>
-                    </ListItemIcon>
-                  </ListItemButton>
-                </MotionTooltip>
-              </Link>
-            )}
           </AnimatePresence>
+          {showExplore && (
+            <Link passHref href={ROUTES.EXPLORE} prefetch={false}>
+              <MotionTooltip
+                key="explore"
+                layoutId="Explore"
+                title="Explore"
+                placement="right"
+                className={clsx({
+                  active: router.pathname === ROUTES.EXPLORE,
+                })}
+              >
+                <ListItemButton component="a">
+                  <ListItemIcon>
+                    <Avatar>
+                      <ExploreIcon />
+                    </Avatar>
+                  </ListItemIcon>
+                </ListItemButton>
+              </MotionTooltip>
+            </Link>
+          )}
         </DaosList>
       </ResponsiveDrawer>
     </DrawerContainer>

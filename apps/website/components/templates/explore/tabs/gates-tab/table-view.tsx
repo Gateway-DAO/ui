@@ -41,6 +41,7 @@ export function TableView({ gates }: Props) {
                       <Typography>{gate.gate_name}</Typography>
                       <Typography
                         variant="caption"
+                        color="text.secondary"
                         sx={{
                           textOverflow: 'ellipsis',
                           overflow: 'hidden',
