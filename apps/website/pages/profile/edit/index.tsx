@@ -1,3 +1,5 @@
+import { InferGetServerSidePropsType, GetServerSideProps } from 'next';
+import { getSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import React, { useState, useEffect } from 'react';
 
@@ -22,6 +24,8 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 
+import { gqlMethods } from '../../../services/api';
+
 type FormData = {
   fullName: string;
   username: string;
@@ -32,7 +36,21 @@ type FormData = {
   github: string;
 };
 
-const EditProfile = () => {
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+  const session = await getSession({ req });
+
+  const editProfileProps = await gqlMethods(session.user).get_current_user();
+
+  return {
+    props: {
+      editProfileProps,
+    },
+  };
+};
+
+const EditProfile = ({
+  editProfileProps,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const router = useRouter();
 
   useEffect(() => {

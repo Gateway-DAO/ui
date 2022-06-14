@@ -5,6 +5,15 @@ fragment current_user on users {
   username
   email_address
   init
+  about
+  skills
+  knowledges
+  attitudes
+  discord_id
+  socials {
+    network
+    user_id
+  }
 
   # credentials {
   #   dao {

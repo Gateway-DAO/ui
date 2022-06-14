@@ -22,17 +22,17 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
 
   const user = (await gqlMethods(session.user).get_new_user()).me;
 
-  if (user.init) {
-    return {
-      props: {
-        user: null,
-      },
-      redirect: {
-        destination: '/home',
-        permanent: true,
-      },
-    };
-  }
+  // if (user.init) {
+  //   return {
+  //     props: {
+  //       user: null,
+  //     },
+  //     redirect: {
+  //       destination: '/explore',
+  //       permanent: true,
+  //     },
+  //   };
+  // }
   return {
     props: {
       user,
