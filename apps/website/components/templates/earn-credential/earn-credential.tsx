@@ -167,7 +167,7 @@ export function EarnCredentialTemplate() {
                 Customize Your Credential
               </Typography>
             </Grid>
-            <Grid item xs={5}>
+            <Grid item xs={3}>
               <CredentialDetailsForm
                 onSubmit={(data) => {
                   console.log(data);
