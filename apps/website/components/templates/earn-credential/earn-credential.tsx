@@ -198,7 +198,7 @@ export function EarnCredentialTemplate() {
           <Grid item xs={5}></Grid>
           <Grid
             item
-            xs={5}
+            xs={6}
             sx={{
               display: 'flex',
               border: '1px solid grey',
