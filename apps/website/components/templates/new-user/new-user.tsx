@@ -41,13 +41,18 @@ export function NewUserTemplate({ user }: Props) {
     {
       onSuccess() {
         snackbar.handleClick({ message: 'Profile updated!' });
-        router.push(ROUTES.EXPLORE);
+        router.push(ROUTES.PROFILE);
       },
     }
   );
 
   const onSubmit = (data: NewUserSchema) => {
-    updateMutation.mutate({ id: user.id, ...data });
+    updateMutation.mutate(
+      { id: user.id, ...data },
+      {
+        onSuccess: () => router.push('/profile'),
+      }
+    );
   };
 
   return (

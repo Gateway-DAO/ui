@@ -38,7 +38,7 @@ export function ConnectedWallet({ onBack }: Props) {
 
   useEffect(() => {
     if (step === 'FINISHED') {
-      router.push(!session?.user?.init ? ROUTES.NEW_USER : ROUTES.EXPLORE);
+      router.push(!session?.user?.init ? ROUTES.NEW_USER : ROUTES.PROFILE);
     }
   }, [router, session?.user?.init, step]);
 
@@ -105,7 +105,7 @@ export function ConnectedWallet({ onBack }: Props) {
               now you're entering{' '}
               <NextLink
                 passHref
-                href={!session?.user?.init ? ROUTES.NEW_USER : ROUTES.EXPLORE}
+                href={!session?.user?.init ? ROUTES.NEW_USER : ROUTES.PROFILE}
               >
                 <Link color="primary">the Gateway</Link>
               </NextLink>
