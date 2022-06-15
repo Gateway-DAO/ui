@@ -65,11 +65,11 @@ export function Form({ userData, isLoading, onSubmit }: Props) {
 
   const router = useRouter();
 
-  const [name, setName] = useState(userData.name);
-  const [username, setUsername] = useState(userData.username);
-  const [about, setAbout] = useState(userData.about);
-  const [email, setEmail] = useState(userData.email_address);
-  const [discord, setDiscord] = useState(userData.discord_id);
+  const [name, setName] = useState(userData.name || '');
+  const [username, setUsername] = useState(userData.username || '');
+  const [about, setAbout] = useState(userData.about || '');
+  const [email, setEmail] = useState(userData.email_address || '');
+  const [discord, setDiscord] = useState(userData.discord_id || '');
   const [github, setGithub] = useState('');
   const [twitter, setTwitter] = useState('');
   const [image, setImage] = useState('/images/home.png');
