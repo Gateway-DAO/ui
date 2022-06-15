@@ -38,7 +38,6 @@ type FormData = {
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   const session = await getSession({ req });
-
   const editProfileProps = await gqlMethods(session.user).get_current_user();
 
   return {
@@ -56,8 +55,6 @@ const EditProfile = ({
 
   useEffect(() => {
     setImage(window.localStorage.getItem('image'));
-    setName(window.localStorage.getItem('name'));
-    setUsername(window.localStorage.getItem('username'));
   }, []);
 
   const { register } = useForm<FormData>();
@@ -92,9 +89,11 @@ const EditProfile = ({
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
+
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
+
   const handleClose = () => {
     setAnchorEl(null);
   };
