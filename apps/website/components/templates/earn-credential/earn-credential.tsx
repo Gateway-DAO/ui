@@ -167,7 +167,7 @@ export function EarnCredentialTemplate() {
                 Customize Your Credential
               </Typography>
             </Grid>
-            <Grid item xs={5}>
+            <Grid item xs={3}>
               <CredentialDetailsForm
                 onSubmit={(data) => {
                   console.log(data);
@@ -189,7 +189,7 @@ export function EarnCredentialTemplate() {
                 verified!
               </Typography>
             </Grid>
-            <Grid item xs={5}>
+            <Grid item xs={6}>
               {getAccomplishmentCards(accomplishmentsCount)}
             </Grid>
           </Grid>
@@ -198,7 +198,7 @@ export function EarnCredentialTemplate() {
           <Grid item xs={5}></Grid>
           <Grid
             item
-            xs={5}
+            xs={6}
             sx={{
               display: 'flex',
               border: '1px solid grey',
@@ -215,7 +215,7 @@ export function EarnCredentialTemplate() {
           </Grid>
         </Grid>
       </Stack>
-      <Box alignSelf="flex-end" marginRight="300px">
+      <Box alignSelf="flex-end" marginRight="100px">
         <Button
           variant="outlined"
           onClick={() => {
@@ -232,7 +232,7 @@ export function EarnCredentialTemplate() {
           Submit
         </Button>
       </Box>
-      <Box alignSelf="flex-end" marginRight="300px">
+      <Box alignSelf="flex-end" marginRight="100px">
         <ArrowCircleUpIcon
           fontSize="large"
           onClick={() => window.scrollTo(0, 0)}
