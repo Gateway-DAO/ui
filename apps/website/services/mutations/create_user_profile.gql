@@ -2,7 +2,7 @@ mutation update_user_profile(
   $id: uuid!
   $name: String!
   $username: String!
-  $about: jsonb
+  $about: String
   $pfp: String
   $email_address: citext!
   $discord_id: String!

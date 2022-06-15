@@ -36,7 +36,7 @@ export function EditProfileTemplate({ user }: Props) {
     // TODO: Image upload
     console.log(data);
     updateMutation.mutate(
-      { id: user.id, pfp: user.pfp, ...data },
+      { id: user.id, pfp: 'pfpurl', ...data },
       {
         onSuccess: () => router.push('/profile'),
       }

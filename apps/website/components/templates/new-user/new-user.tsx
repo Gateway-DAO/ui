@@ -6,7 +6,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
 import { useMutation } from 'react-query';
 
-import { Box, Dialog, Snackbar, Stack, Typography } from '@mui/material';
+import { Box, Snackbar, Stack, Typography } from '@mui/material';
 
 import { ROUTES } from '../../../constants/routes';
 import { useSnackbar } from '../../../hooks/use-snackbar';
