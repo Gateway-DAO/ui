@@ -52,6 +52,7 @@ const EditProfile = ({
   editProfileProps,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const router = useRouter();
+  const me = editProfileProps.me;
 
   useEffect(() => {
     setImage(window.localStorage.getItem('image'));
@@ -61,11 +62,11 @@ const EditProfile = ({
 
   const { register } = useForm<FormData>();
 
-  const [name, setName] = useState('');
-  const [username, setUsername] = useState('');
-
-  const [email, setEmail] = useState('');
-  const [discord, setDiscord] = useState('');
+  const [name, setName] = useState(me.name);
+  const [username, setUsername] = useState(me.username);
+  const [about, setAbout] = useState(me.about);
+  const [email, setEmail] = useState(me.email_address);
+  const [discord, setDiscord] = useState(me.discord_id);
   const [github, setGithub] = useState('');
   const [twitter, setTwitter] = useState('');
 
@@ -179,11 +180,13 @@ const EditProfile = ({
                 id="standard-textarea"
                 label="ABOUT"
                 multiline
+                minRows={5}
                 style={{ width: '100%', marginTop: 20 }}
                 variant="outlined"
-                defaultValue={
-                  "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English."
-                }
+                onChange={(e) => {
+                  setAbout(e.target.value);
+                }}
+                value={about}
               />
               <Typography
                 variant="h6"
