@@ -149,6 +149,8 @@ export function Form({ onSubmit, userData }: Props) {
               style={{ width: '100%' }}
               value={name}
               {...register('name')}
+              error={!!errors.name}
+              helperText={errors.name?.message}
               onChange={(e) => {
                 window.localStorage.setItem('name', e.target.value);
                 setName(e.target.value);
@@ -160,6 +162,9 @@ export function Form({ onSubmit, userData }: Props) {
               variant="outlined"
               style={{ width: '100%', marginTop: 20 }}
               value={username}
+              {...register('username')}
+              error={!!errors.username}
+              helperText={errors.username?.message}
               onChange={(e) => {
                 window.localStorage.setItem('username', e.target.value);
                 setUsername(e.target.value);
@@ -172,6 +177,9 @@ export function Form({ onSubmit, userData }: Props) {
               minRows={5}
               style={{ width: '100%', marginTop: 20 }}
               variant="outlined"
+              {...register('about')}
+              error={!!errors.about}
+              helperText={errors.about?.message}
               onChange={(e) => {
                 setAbout(e.target.value);
               }}
@@ -188,6 +196,9 @@ export function Form({ onSubmit, userData }: Props) {
               label="EMAIL"
               variant="outlined"
               style={{ width: '100%' }}
+              {...register('email_address')}
+              error={!!errors.email_address}
+              helperText={errors.email_address?.message}
               onChange={(e) => {
                 setEmail(e.target.value);
               }}
@@ -207,6 +218,7 @@ export function Form({ onSubmit, userData }: Props) {
             <TextField
               id="outlined-basic"
               label="TWITTER"
+              disabled
               variant="outlined"
               style={{ width: '100%', marginTop: 20 }}
               value={twitter}
@@ -231,6 +243,9 @@ export function Form({ onSubmit, userData }: Props) {
               variant="outlined"
               style={{ width: '100%', marginTop: 20 }}
               value={discord}
+              {...register('discord_id')}
+              error={!!errors.discord_id}
+              helperText={errors.discord_id?.message}
               onChange={(e) => {
                 setDiscord(e.target.value);
               }}
@@ -249,6 +264,7 @@ export function Form({ onSubmit, userData }: Props) {
             <TextField
               id="outlined-basic"
               label="Github"
+              disabled
               variant="outlined"
               style={{ width: '100%', marginTop: 20 }}
               value={github}
