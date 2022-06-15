@@ -13,6 +13,7 @@ import {
   CardActionArea,
   CardContent,
   CardMedia,
+  CircularProgress,
   Container,
   Grid,
   IconButton,
@@ -26,8 +27,9 @@ import { Users } from '../../../services/graphql/types.generated';
 import { EditUserSchema } from './schema';
 
 type Props = {
-  onSubmit: (data: EditUserSchema) => void;
   userData: Partial<Users>;
+  isLoading: boolean;
+  onSubmit: (data: EditUserSchema) => void;
 };
 
 function readFileDataAsBase64(e) {
@@ -54,7 +56,7 @@ function readFileDataAsBase64(e) {
   TODO: Disable submit button on form error
   */
 
-export function Form({ onSubmit, userData }: Props) {
+export function Form({ userData, isLoading, onSubmit }: Props) {
   const {
     register,
     handleSubmit,
@@ -88,7 +90,7 @@ export function Form({ onSubmit, userData }: Props) {
   };
 
   return (
-    <Container onSubmit={handleSubmit(onSubmit)}>
+    <Container component="form" onSubmit={handleSubmit(onSubmit)}>
       <Box
         style={{
           display: 'flex',
@@ -118,8 +120,12 @@ export function Form({ onSubmit, userData }: Props) {
           >
             Cancel
           </Button>
-          <Button variant="contained" type="submit">
-            Save
+          <Button variant="contained" type="submit" disabled={isLoading}>
+            {isLoading ? (
+              <CircularProgress color="inherit" size={24} />
+            ) : (
+              'Save'
+            )}
           </Button>
         </div>
       </Box>

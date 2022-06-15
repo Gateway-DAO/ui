@@ -60,7 +60,11 @@ const EditProfile = ({
   return (
     <div>
       <FormProvider {...methods}>
-        <Form onSubmit={onSubmit} userData={me} />
+        <Form
+          onSubmit={onSubmit}
+          userData={me}
+          isLoading={updateMutation.isLoading}
+        />
       </FormProvider>
       <div style={{ height: '20vh' }}></div>
     </div>
