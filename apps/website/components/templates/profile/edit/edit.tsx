@@ -34,7 +34,6 @@ export function EditProfileTemplate({ user }: Props) {
 
   const onSubmit = (data: EditUserSchema) => {
     // TODO: Image upload
-    console.log(data);
     updateMutation.mutate(
       { id: user.id, pfp: 'pfpurl', ...data },
       {
