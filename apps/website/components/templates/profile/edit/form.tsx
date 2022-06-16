@@ -296,6 +296,7 @@ export function Form({ userData, isLoading, onSubmit }: Props) {
                 maxWidth: 325,
                 borderRadius: '8px',
                 margin: 'auto',
+                marginTop:'22px',
                 width: '100%',
                 position: 'relative',
               }}
