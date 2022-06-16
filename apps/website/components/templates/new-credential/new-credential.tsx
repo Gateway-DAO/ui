@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
 import { useMutation } from 'react-query';
-import { v4 as uuidv4 } from 'uuid';
 
 import { TOKENS } from '@gateway/theme';
 
@@ -43,8 +42,14 @@ export function NewCredentialTemplate() {
   );
 
   const onSubmit = (data: NewCredentialSchema) => {
+    const parsedWallets: Array<string> = data.wallets.split('\n');
+
     updateMutation.mutate(
-      { id: uuidv4(), name: data.name, description: data.description },
+      {
+        ...data,
+        image: '',
+        wallets: parsedWallets,
+      },
       {
         onSuccess: () => handleOpen(),
       }
