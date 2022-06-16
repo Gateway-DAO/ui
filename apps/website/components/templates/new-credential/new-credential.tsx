@@ -1,12 +1,17 @@
+import { useSession } from 'next-auth/react';
 import { useState } from 'react';
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
+import { useMutation } from 'react-query';
+import { v4 as uuidv4 } from 'uuid';
 
 import { TOKENS } from '@gateway/theme';
 
 import { Box, Stack, Typography } from '@mui/material';
 
+import { useSnackbar } from '../../../hooks/use-snackbar';
+import { gqlMethods } from '../../../services/api';
 import PocModalCreated from '../../organisms/poc-modal-created/poc-modal-created';
 import { AvatarUploadCard } from './avatar-upload-card';
 import { Form } from './form';
@@ -20,6 +25,31 @@ export function NewCredentialTemplate() {
   const methods = useForm<NewCredentialSchema>({
     resolver: yupResolver(schema),
   });
+
+  const session = useSession();
+  const snackbar = useSnackbar();
+
+  const updateMutation = useMutation(
+    'updateCredential',
+    session.data?.user && gqlMethods(session.data.user).update_credential,
+    {
+      onSuccess() {
+        snackbar.handleClick({ message: 'Credential created!' });
+      },
+      onError(error: string) {
+        console.log('An error occurred: ' + error);
+      },
+    }
+  );
+
+  const onSubmit = (data: NewCredentialSchema) => {
+    updateMutation.mutate(
+      { id: uuidv4(), name: data.name, description: data.description },
+      {
+        onSuccess: () => handleOpen(),
+      }
+    );
+  };
 
   return (
     <Stack direction="column" gap={6} p={TOKENS.CONTAINER_PX}>
@@ -40,12 +70,7 @@ export function NewCredentialTemplate() {
         </Box>
         <FormProvider {...methods}>
           <Box sx={{ width: '25%' }}>
-            <Form
-              onSubmit={(data) => {
-                console.log(data);
-                handleOpen();
-              }}
-            />
+            <Form onSubmit={onSubmit} />
           </Box>
           <AvatarUploadCard />
         </FormProvider>

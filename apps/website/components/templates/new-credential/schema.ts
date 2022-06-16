@@ -1,4 +1,4 @@
-import { object, string, SchemaOf, array } from 'yup';
+import { object, string, SchemaOf } from 'yup';
 
 import { Credentials } from '../../../services/graphql/types.generated';
 
