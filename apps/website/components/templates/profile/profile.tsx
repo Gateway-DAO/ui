@@ -162,7 +162,7 @@ export function ProfileTemplate({ user }: Props) {
         </Button> */}
       </Stack>
       <main>
-        <Box sx={{ margin: '30px 65px' }}>
+        <Box sx={{ margin: '30px 65px',marginTop:'32px' }}>
           <Box sx={{ display: 'flex', alignItems: 'baseline' }}>
             <h1 style={{ marginBottom: '0', marginRight: '15px', fontSize:'34px' }}>
               {tmpUser.name}
