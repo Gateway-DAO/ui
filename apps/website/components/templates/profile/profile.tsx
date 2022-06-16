@@ -162,7 +162,7 @@ export function ProfileTemplate({ user }: Props) {
         </Button> */}
       </Stack>
       <main>
-        <Box sx={{ margin: '30px 65px' }}>
+        <Box sx={{ margin: '30px 65px',marginTop:'32px' }}>
           <Box sx={{ display: 'flex', alignItems: 'baseline' }}>
             <h1 style={{ marginBottom: '0', marginRight: '15px', fontSize:'34px' }}>
               {tmpUser.name}
@@ -200,7 +200,7 @@ export function ProfileTemplate({ user }: Props) {
             <Divider light sx={{ width: '100%' }} />
             <section style={{ paddingBottom: '150px' }}>
               <Box sx={{ display: 'flex', alignItems: 'baseline' }}>
-                <h2 style={{ marginTop: '30px', marginRight: '15px' }}>
+                <h2 style={{ marginTop: '30px', marginRight: '15px', fontSize:'20px' }}>
                   Proof of Credentials
                 </h2>
                 {isAdmin && (
@@ -236,7 +236,7 @@ export function ProfileTemplate({ user }: Props) {
           <Grid item className="right" xs={4} sx={{ padding: '0 65px' }}>
             <section>
               <Box sx={{ display: 'flex', alignItems: 'baseline' }}>
-                <h2 style={{ marginRight: '15px' }}>Skills</h2>
+                <h2 style={{ marginRight: '15px',fontSize:'20px' }}>Skills</h2>
                 <Avatar
                   sx={{ cursor: 'pointer' }}
                   onClick={() => router.push('/profile/edit/skills')}
@@ -262,7 +262,7 @@ export function ProfileTemplate({ user }: Props) {
             </section>
             <section>
               <Box sx={{ display: 'flex', alignItems: 'baseline' }}>
-                <h2 style={{ marginRight: '15px' }}>Knowledges</h2>
+                <h2 style={{ marginRight: '15px', fontSize:'20px' }}>Knowledges</h2>
                 <Avatar
                   sx={{ cursor: 'pointer' }}
                   onClick={() => router.push('/profile/edit/knowledge')}
@@ -288,7 +288,7 @@ export function ProfileTemplate({ user }: Props) {
             </section>
             <section>
               <Box sx={{ display: 'flex', alignItems: 'baseline' }}>
-                <h2 style={{ marginRight: '15px' }}>Attitudes</h2>
+                <h2 style={{ marginRight: '15px', fontSize:'20px' }}>Attitudes</h2>
                 <Avatar
                   sx={{ cursor: 'pointer' }}
                   onClick={() => router.push('/profile/edit/attitudes')}
