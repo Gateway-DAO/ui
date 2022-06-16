@@ -138,12 +138,12 @@ export function Form({ userData, isLoading, onSubmit }: Props) {
         <Grid container spacing={5}>
           <Grid item xs={12} md={4}>
             <Typography variant="h6">Details</Typography>
-            <Typography
+            {/* <Typography
               variant="body2"
               style={{ fontWeight: 300, padding: '2px 0', fontSize: 13 }}
             >
               Lorem ispum doler sit amet
-            </Typography>
+            </Typography> */}
           </Grid>
 
           <Grid item xs={12} md={4}>
@@ -191,7 +191,7 @@ export function Form({ userData, isLoading, onSubmit }: Props) {
               }}
               value={about}
             />
-            <Typography
+            {/* <Typography
               variant="h6"
               style={{ fontSize: 12, padding: '10px 0' }}
             >
@@ -288,7 +288,7 @@ export function Form({ userData, isLoading, onSubmit }: Props) {
                   </IconButton>
                 ),
               }}
-            />
+            /> */}
           </Grid>
           <Grid item xs={12} md={4}>
             <Card

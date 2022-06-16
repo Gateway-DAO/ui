@@ -131,15 +131,17 @@ export function ProfileTemplate({ user }: Props) {
         }}
         gap={2}
       >
-        {tmpUser.email_address && (
+        {/* Comment Social Icons for now */}
+
+        {/* {tmpUser.email_address && (
           <Avatar
             onClick={() => window.open('mailto:' + tmpUser.email_address)}
             style={{ cursor: 'pointer' }}
           >
             <MdEmail size={28} />
           </Avatar>
-        )}
-        {socials.map((icon, index) => {
+        )} */}
+        {/* {socials.map((icon, index) => {
           const Icon = icon.icon;
           return (
             icon.value && (
@@ -152,7 +154,7 @@ export function ProfileTemplate({ user }: Props) {
               </Avatar>
             )
           );
-        })}
+        })} */}
         {/* TODO: Contains user's address, only visible if it's our profile */}
         {/* <Button variant="contained" color="secondary">
           0x0
@@ -162,7 +164,7 @@ export function ProfileTemplate({ user }: Props) {
       <main>
         <Box sx={{ margin: '30px 65px' }}>
           <Box sx={{ display: 'flex', alignItems: 'baseline' }}>
-            <h1 style={{ marginBottom: '0', marginRight: '15px' }}>
+            <h1 style={{ marginBottom: '0', marginRight: '15px', fontSize:'34px' }}>
               {tmpUser.name}
             </h1>
             <Avatar
@@ -172,7 +174,7 @@ export function ProfileTemplate({ user }: Props) {
               <BsFillPencilFill />
             </Avatar>
           </Box>
-          <p style={{ margin: '0 auto' }}>{tmpUser.bio}</p>
+          {/* <p style={{ margin: '0 auto' }}>{tmpUser.bio}</p> */}
           {tmpUser.username && (
             <p style={{ marginTop: '0', fontSize: 'small' }}>
               @{tmpUser.username}
