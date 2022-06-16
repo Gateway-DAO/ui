@@ -200,7 +200,7 @@ export function ProfileTemplate({ user }: Props) {
             <Divider light sx={{ width: '100%' }} />
             <section style={{ paddingBottom: '150px' }}>
               <Box sx={{ display: 'flex', alignItems: 'baseline' }}>
-                <h2 style={{ marginTop: '30px', marginRight: '15px' }}>
+                <h2 style={{ marginTop: '30px', marginRight: '15px', fontSize:'20px' }}>
                   Proof of Credentials
                 </h2>
                 {isAdmin && (
