@@ -288,7 +288,7 @@ export function ProfileTemplate({ user }: Props) {
             </section>
             <section>
               <Box sx={{ display: 'flex', alignItems: 'baseline' }}>
-                <h2 style={{ marginRight: '15px' }}>Attitudes</h2>
+                <h2 style={{ marginRight: '15px', fontSize:'20px' }}>Attitudes</h2>
                 <Avatar
                   sx={{ cursor: 'pointer' }}
                   onClick={() => router.push('/profile/edit/attitudes')}
