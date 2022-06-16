@@ -162,7 +162,7 @@ export function ProfileTemplate({ user }: Props) {
       <main>
         <Box sx={{ margin: '30px 65px' }}>
           <Box sx={{ display: 'flex', alignItems: 'baseline' }}>
-            <h1 style={{ marginBottom: '0', marginRight: '15px' }}>
+            <h1 style={{ marginBottom: '0', marginRight: '15px', fontSize:'34px' }}>
               {tmpUser.name}
             </h1>
             <Avatar
@@ -172,7 +172,7 @@ export function ProfileTemplate({ user }: Props) {
               <BsFillPencilFill />
             </Avatar>
           </Box>
-          <p style={{ margin: '0 auto' }}>{tmpUser.bio}</p>
+          {/* <p style={{ margin: '0 auto' }}>{tmpUser.bio}</p> */}
           {tmpUser.username && (
             <p style={{ marginTop: '0', fontSize: 'small' }}>
               @{tmpUser.username}
