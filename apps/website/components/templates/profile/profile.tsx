@@ -236,7 +236,7 @@ export function ProfileTemplate({ user }: Props) {
           <Grid item className="right" xs={4} sx={{ padding: '0 65px' }}>
             <section>
               <Box sx={{ display: 'flex', alignItems: 'baseline' }}>
-                <h2 style={{ marginRight: '15px' }}>Skills</h2>
+                <h2 style={{ marginRight: '15px',fontSize:'20px' }}>Skills</h2>
                 <Avatar
                   sx={{ cursor: 'pointer' }}
                   onClick={() => router.push('/profile/edit/skills')}
