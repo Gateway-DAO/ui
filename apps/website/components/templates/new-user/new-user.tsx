@@ -48,7 +48,12 @@ export function NewUserTemplate({ user }: Props) {
 
   const onSubmit = (data: NewUserSchema) => {
     updateMutation.mutate(
-      { id: user.id, ...data },
+      {
+        id: user.id,
+        ...data,
+        about: '',
+        discord_id: '',
+      },
       {
         onSuccess: () => router.push('/profile'),
       }
