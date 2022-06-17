@@ -21,19 +21,26 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   }
 
   const user = (await gqlMethods(session.user).get_new_user()).me;
-  const claimableCredentials = (
-    await gqlMethods(session.user).get_claimable_credentials()
-  ).me.claimable_credentials;
   const adminPermissions = (
     await gqlMethods(session.user).get_admin_permissions()
   ).me.permissions;
   const isAdmin = adminPermissions.length > 0;
 
+  const claimableCredentials = (
+    await gqlMethods(session.user).get_claimable_credentials()
+  ).me.claimable_credentials;
+  const filteredClaimableCredentials = claimableCredentials.filter(
+    (credential) => {
+      return credential.id !== null;
+    }
+  );
+  console.log(filteredClaimableCredentials);
+
   return {
     props: {
       user,
       isAdmin,
-      claimableCredentials,
+      claimableCredentials: filteredClaimableCredentials,
     },
   };
 };
