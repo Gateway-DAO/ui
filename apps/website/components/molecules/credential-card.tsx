@@ -5,8 +5,10 @@ import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 
 interface CredentialCardProps {
+  name: string;
+  description: string;
   smaller?: boolean;
-  uncomplete?: boolean;
+  claimable?: boolean;
   pending?: boolean;
   mintable?: boolean;
   isNFT?: boolean;
@@ -15,8 +17,10 @@ interface CredentialCardProps {
 }
 
 export default function CredentialCard({
+  name,
+  description,
   smaller,
-  uncomplete,
+  claimable,
   pending,
   mintable,
   isNFT,
@@ -32,11 +36,10 @@ export default function CredentialCard({
       />
       <CardContent>
         <Typography gutterBottom variant="h5" component="div" fontSize={20}>
-          Olympus Operations Work...
+          {name}
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          The Operations Group at Olympus is responsible for making sure that
-          work...
+          {description}
         </Typography>
       </CardContent>
       <CardContent
@@ -59,7 +62,7 @@ export default function CredentialCard({
         {isNFT && <Chip label="NFT" />}
       </CardContent>
       <CardActions>
-        {uncomplete && (
+        {claimable && (
           <Button
             variant="contained"
             sx={{ width: '100%' }}

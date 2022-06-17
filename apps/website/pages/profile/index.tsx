@@ -21,20 +21,28 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   }
 
   const user = (await gqlMethods(session.user).get_new_user()).me;
+  const claimableCredentials = (
+    await gqlMethods(session.user).get_claimable_credentials()
+  ).me.claimable_credentials;
 
   return {
     props: {
       user,
+      claimableCredentials,
     },
   };
 };
 
 export default function Profile({
   user,
+  claimableCredentials,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   return (
     <DashboardTemplate showExplore={false}>
-      <ProfileTemplate user={user} />
+      <ProfileTemplate
+        user={user}
+        claimableCredentials={claimableCredentials}
+      />
     </DashboardTemplate>
   );
 }

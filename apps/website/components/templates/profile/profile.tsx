@@ -16,7 +16,7 @@ import {
   Divider,
 } from '@mui/material';
 
-import { Users } from '../../../services/graphql/types.generated';
+import { Users, Credentials } from '../../../services/graphql/types.generated';
 import CredentialCard from '../../molecules/credential-card';
 import PocModalMinted from '../../organisms/poc-modal-minted/poc-modal-minted';
 
@@ -41,9 +41,10 @@ const socials = [
 
 type Props = {
   user: Partial<Users>;
+  claimableCredentials: Array<Partial<Credentials>>;
 };
 
-export function ProfileTemplate({ user }: Props) {
+export function ProfileTemplate({ user, claimableCredentials }: Props) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -227,7 +228,7 @@ export function ProfileTemplate({ user }: Props) {
                 )}
               </Box>
               <Grid container rowGap={2}>
-                <Grid item xs={4}>
+                {/* <Grid item xs={4}>
                   <CredentialCard
                     smaller
                     uncomplete
@@ -242,7 +243,16 @@ export function ProfileTemplate({ user }: Props) {
                 </Grid>
                 <Grid item xs={4}>
                   <CredentialCard smaller isNFT />
-                </Grid>
+                </Grid> */}
+                {claimableCredentials.map((credential) => (
+                  <Grid item xs={4} key={credential.id}>
+                    <CredentialCard
+                      name={credential.name}
+                      description={credential.description}
+                      claimable
+                    />
+                  </Grid>
+                ))}
               </Grid>
             </section>
           </Grid>
