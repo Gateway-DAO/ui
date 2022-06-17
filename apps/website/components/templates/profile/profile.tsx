@@ -16,6 +16,7 @@ import {
   Divider,
 } from '@mui/material';
 
+import { ROUTES } from '../../../constants/routes';
 import { Users, Credentials } from '../../../services/graphql/types.generated';
 import CredentialCard from '../../molecules/credential-card';
 import PocModalMinted from '../../organisms/poc-modal-minted/poc-modal-minted';
@@ -51,6 +52,12 @@ export function ProfileTemplate({
   const handleClose = () => setOpen(false);
 
   const router = useRouter();
+
+  const goToEarn = (credentialId) => {
+    // Real redirection once id in route is implemented
+    // router.push(ROUTES.CREDENTIALS_EARN + credentialId);
+    router.push(ROUTES.CREDENTIALS_EARN);
+  };
 
   const tmpUser = {
     pfp: 'https://i.ibb.co/bzzgBfT/random-nft.png',
@@ -251,6 +258,7 @@ export function ProfileTemplate({
                       name={credential.name}
                       description={credential.description}
                       smaller
+                      claim={() => goToEarn(credential.id)}
                       claimable
                     />
                   </Grid>

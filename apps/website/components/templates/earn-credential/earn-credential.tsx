@@ -1,9 +1,11 @@
+import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
+import { useMutation } from 'react-query';
 
 import { TOKENS } from '@gateway/theme';
 
@@ -21,6 +23,7 @@ import {
   Button,
 } from '@mui/material';
 
+import { gqlMethods } from '../../../services/api';
 import PocModalCompleted from '../../organisms/poc-modal-completed/poc-modal-completed';
 import { AccomplishmentsForm } from './accomplishments-form';
 import {
@@ -34,8 +37,11 @@ import {
 } from './credential-details-schema';
 
 export function EarnCredentialTemplate() {
+  const session = useSession();
   const router = useRouter();
+
   const [open, setOpen] = useState(false);
+  const [accomplishmentsCount, setAccomplishmentsCount] = useState(1);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
@@ -49,7 +55,26 @@ export function EarnCredentialTemplate() {
     'https://i.postimg.cc/6QJDW2r1/olympus-credential-picture.png';
   const randomNftUrl = 'https://i.ibb.co/bzzgBfT/random-nft.png';
 
-  const [accomplishmentsCount, setAccomplishmentsCount] = useState(1);
+  const updateMutation = useMutation(
+    'claimCredential',
+    session.data?.user && gqlMethods(session.data.user).claim_credential,
+    {
+      onSuccess() {
+        handleOpen();
+      },
+    }
+  );
+
+  const claim = (credentialId) => {
+    updateMutation.mutate(
+      {
+        group_id: credentialId,
+      },
+      {
+        onSuccess: () => handleOpen(),
+      }
+    );
+  };
 
   const getAccomplishmentCards = (count) => {
     const cards = [];
@@ -227,7 +252,7 @@ export function EarnCredentialTemplate() {
         <Button
           variant="contained"
           sx={{ marginLeft: '10px' }}
-          onClick={() => handleOpen()}
+          onClick={() => claim('0x0000000000000000000000000000000000000000')}
         >
           Submit
         </Button>

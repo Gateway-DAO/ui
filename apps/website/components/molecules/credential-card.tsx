@@ -12,7 +12,7 @@ interface CredentialCardProps {
   pending?: boolean;
   mintable?: boolean;
   isNFT?: boolean;
-  earn?: () => void;
+  claim?: () => void;
   mint?: () => void;
 }
 
@@ -24,7 +24,7 @@ export default function CredentialCard({
   pending,
   mintable,
   isNFT,
-  earn,
+  claim,
   mint,
 }: CredentialCardProps) {
   return (
@@ -66,7 +66,7 @@ export default function CredentialCard({
           <Button
             variant="contained"
             sx={{ width: '100%' }}
-            onClick={() => earn()}
+            onClick={() => claim()}
           >
             Complete credential
           </Button>

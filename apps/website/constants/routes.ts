@@ -5,4 +5,5 @@ export const ROUTES = {
   NEW_USER: '/new-user',
   CREDENTIALS: '/credentials',
   CREDENTIALS_NEW: '/credentials/new',
+  CREDENTIALS_EARN: '/credentials/earn/',
 };
