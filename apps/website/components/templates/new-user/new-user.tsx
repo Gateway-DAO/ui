@@ -52,7 +52,7 @@ export function NewUserTemplate({ user }: Props) {
         id: user.id,
         ...data,
         about: '',
-        discord_id: '',
+        discord_id: null,
       },
       {
         onSuccess: () => router.push('/profile'),
