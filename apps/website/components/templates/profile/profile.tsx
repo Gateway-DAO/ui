@@ -20,10 +20,6 @@ import { Users, Credentials } from '../../../services/graphql/types.generated';
 import CredentialCard from '../../molecules/credential-card';
 import PocModalMinted from '../../organisms/poc-modal-minted/poc-modal-minted';
 
-// TODO: Get this from context
-const isAdmin = true;
-// Load these through props
-
 const socials = [
   {
     icon: FaGithub,
@@ -41,10 +37,15 @@ const socials = [
 
 type Props = {
   user: Partial<Users>;
+  isAdmin: boolean;
   claimableCredentials: Array<Partial<Credentials>>;
 };
 
-export function ProfileTemplate({ user, claimableCredentials }: Props) {
+export function ProfileTemplate({
+  user,
+  isAdmin,
+  claimableCredentials,
+}: Props) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -249,6 +250,7 @@ export function ProfileTemplate({ user, claimableCredentials }: Props) {
                     <CredentialCard
                       name={credential.name}
                       description={credential.description}
+                      smaller
                       claimable
                     />
                   </Grid>

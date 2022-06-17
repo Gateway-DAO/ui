@@ -24,10 +24,15 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   const claimableCredentials = (
     await gqlMethods(session.user).get_claimable_credentials()
   ).me.claimable_credentials;
+  const adminPermissions = (
+    await gqlMethods(session.user).get_admin_permissions()
+  ).me.permissions;
+  const isAdmin = adminPermissions.length > 0;
 
   return {
     props: {
       user,
+      isAdmin,
       claimableCredentials,
     },
   };
@@ -35,12 +40,14 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
 
 export default function Profile({
   user,
+  isAdmin,
   claimableCredentials,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   return (
     <DashboardTemplate showExplore={false}>
       <ProfileTemplate
         user={user}
+        isAdmin={isAdmin}
         claimableCredentials={claimableCredentials}
       />
     </DashboardTemplate>

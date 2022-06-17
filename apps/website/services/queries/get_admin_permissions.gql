@@ -1,0 +1,15 @@
+query get_admin_permissions {
+  me {
+    permissions(
+      where: {
+        _or: [
+          { permission: { _eq: "admin" } }
+          { permission: { _eq: "credential_admin" } }
+        ]
+      }
+    ) {
+      permission
+      dao_id
+    }
+  }
+}
