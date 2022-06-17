@@ -68,10 +68,10 @@ export function NewCredentialTemplate() {
       >
         <Box sx={{ width: '25%' }}>
           <Typography variant="h5">Details</Typography>
-          <Typography variant="caption">
+          {/* <Typography variant="caption">
             Use typography to present your design and content as clearly and
             efficiently as possible.
-          </Typography>
+          </Typography> */}
         </Box>
         <FormProvider {...methods}>
           <Box sx={{ width: '25%' }}>
