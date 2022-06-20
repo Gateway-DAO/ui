@@ -11,7 +11,6 @@ import { TOKENS } from '@gateway/theme';
 
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import ArrowCircleUpIcon from '@mui/icons-material/ArrowCircleUp';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import {
   Avatar,
   Box,
@@ -24,6 +23,7 @@ import {
 } from '@mui/material';
 
 import { gqlMethods } from '../../../services/api';
+import { NavBarAvatar } from '../../organisms/navbar/navbar-avatar';
 import PocModalCompleted from '../../organisms/poc-modal-completed/poc-modal-completed';
 import { AccomplishmentsForm } from './accomplishments-form';
 import {
@@ -163,14 +163,7 @@ export function EarnCredentialTemplate({ credentialInfo }) {
           cursor: 'pointer',
         }}
       >
-        <Avatar
-          src={randomNftUrl}
-          sx={{
-            width: 30,
-            height: 30,
-          }}
-        />
-        <ArrowDropDownIcon style={{ position: 'relative', top: '5px' }} />
+        <NavBarAvatar />
       </Box>
       <Typography variant="h5" sx={{ marginBottom: '100px' }}>
         Earn Proof of Credential

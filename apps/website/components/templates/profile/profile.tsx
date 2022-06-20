@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { BsFillPencilFill } from 'react-icons/bs';
 import { FaDiscord, FaTwitter, FaGithub } from 'react-icons/fa';
 import { MdEmail } from 'react-icons/md';
-import { RiArrowDownSFill } from 'react-icons/ri';
 
 import {
   Button,
@@ -19,6 +18,7 @@ import {
 import { ROUTES } from '../../../constants/routes';
 import { Users, Credentials } from '../../../services/graphql/types.generated';
 import CredentialCard from '../../molecules/credential-card';
+import { NavBarAvatar } from '../../organisms/navbar/navbar-avatar';
 import PocModalMinted from '../../organisms/poc-modal-minted/poc-modal-minted';
 
 const socials = [
@@ -107,14 +107,7 @@ export function ProfileTemplate({
             cursor: 'pointer',
           }}
         >
-          <Avatar
-            src={tmpUser.pfp}
-            sx={{
-              width: 30,
-              height: 30,
-            }}
-          />
-          <RiArrowDownSFill style={{ position: 'relative', top: '5px' }} />
+          <NavBarAvatar />
         </Box>
         <Avatar
           src={tmpUser.pfp}
