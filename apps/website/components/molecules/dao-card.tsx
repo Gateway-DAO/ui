@@ -36,20 +36,32 @@ export function DaoCard({
         </CardActionArea>
       </Link>
       <Box sx={{ position: 'relative', ml: 2 }}>
-        <Avatar
-          src={logo_url}
-          sx={{
-            width: 40,
-            height: 40,
-            position: 'absolute',
-            transform: 'translateY(-50%)',
-            border: '2px solid',
-            borderColor: (theme) => theme.palette.divider,
-          }}
-          aria-label="recipe"
-        >
-          {name?.[0]}
-        </Avatar>
+        <Link passHref href={`/dao/${id}`}>
+          <Button
+            component="a"
+            sx={{
+              position: 'absolute',
+              transform: 'translateY(-50%)',
+              p: 0.5,
+              m: 0,
+              ml: -0.5,
+              minWidth: 'unset',
+            }}
+          >
+            <Avatar
+              src={logo_url}
+              sx={{
+                width: 40,
+                height: 40,
+                border: '2px solid',
+                borderColor: (theme) => theme.palette.divider,
+              }}
+              aria-label="recipe"
+            >
+              {name?.[0]}
+            </Avatar>
+          </Button>
+        </Link>
       </Box>
       <CardHeader
         sx={{ pt: 4, pb: 1, '.MuiCardHeader-action': { alignSelf: 'unset' } }}
