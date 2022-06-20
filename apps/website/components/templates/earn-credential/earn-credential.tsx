@@ -43,6 +43,16 @@ export function EarnCredentialTemplate({ credentialInfo }) {
   const [credential, setCredential] = useState({ name: '', description: '' });
   const [open, setOpen] = useState(false);
   const [accomplishmentsCount, setAccomplishmentsCount] = useState(1);
+  const [accomplishments, setAccomplishments] = useState([
+    {
+      id: accomplishmentsCount,
+      title: '',
+      accomplishmentDescription: '',
+      type: '',
+      link: '',
+      description: '',
+    },
+  ]);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
@@ -86,18 +96,51 @@ export function EarnCredentialTemplate({ credentialInfo }) {
     );
   };
 
-  const getAccomplishmentCards = (count) => {
-    const cards = [];
-    for (let i = 0; i < count; i++) {
-      cards.push(
+  const addAccomplishment = () => {
+    setAccomplishmentsCount(accomplishmentsCount + 1);
+    setAccomplishments([
+      ...accomplishments,
+      {
+        id: accomplishmentsCount + 1,
+        title: '',
+        accomplishmentDescription: '',
+        type: '',
+        link: '',
+        description: '',
+      },
+    ]);
+  };
+
+  const updateAccomplishment = (accomplishmentId, key, value) => {
+    const newAccomplishments = accomplishments;
+    const accomplishmentIndex = newAccomplishments.findIndex(
+      (accomplishment) => {
+        return accomplishment.id === accomplishmentId;
+      }
+    );
+    newAccomplishments[accomplishmentIndex][key] = value;
+    setAccomplishments(newAccomplishments);
+  };
+
+  const deleteAccomplishment = (accomplishmentId) => {
+    setAccomplishments(
+      accomplishments.filter((accomplishment) => {
+        return accomplishment.id !== accomplishmentId;
+      })
+    );
+  };
+
+  const renderAccomplishmentCards = () => {
+    return accomplishments.map((accomplishment) => {
+      return (
         <AccomplishmentsForm
-          onSubmit={(data) => {
-            console.log(data);
-          }}
+          key={accomplishment.id}
+          accomplishmentId={accomplishment.id}
+          onUpdate={updateAccomplishment}
+          onDelete={() => deleteAccomplishment(accomplishment.id)}
         />
       );
-    }
-    return cards;
+    });
   };
 
   return (
@@ -223,7 +266,7 @@ export function EarnCredentialTemplate({ credentialInfo }) {
               </Typography>
             </Grid>
             <Grid item xs={6}>
-              {getAccomplishmentCards(accomplishmentsCount)}
+              {renderAccomplishmentCards()}
             </Grid>
           </Grid>
         </FormProvider>
@@ -239,7 +282,7 @@ export function EarnCredentialTemplate({ credentialInfo }) {
               borderRadius: '5px',
               cursor: 'pointer',
             }}
-            onClick={() => setAccomplishmentsCount(accomplishmentsCount + 1)}
+            onClick={() => addAccomplishment()}
           >
             <AddBoxIcon sx={{ marginRight: '15px' }} />
             <Typography variant="h6" fontWeight="bold">

@@ -34,7 +34,6 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
       return credential.id !== null;
     }
   );
-  console.log(filteredClaimableCredentials);
 
   return {
     props: {

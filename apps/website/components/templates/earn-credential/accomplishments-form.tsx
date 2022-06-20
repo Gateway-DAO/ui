@@ -1,6 +1,7 @@
 import { useFormContext } from 'react-hook-form';
 
-import { Stack, TextField } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { Avatar, Stack, TextField } from '@mui/material';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -10,23 +11,27 @@ import { mockTypes } from './__mock__';
 import { AccomplishmentsTypes } from './accomplishments-schema';
 
 type Props = {
-  onSubmit: (data?: AccomplishmentsTypes) => void;
+  accomplishmentId: number;
+  onUpdate: (index: number, key: string, value: string) => void;
+  onDelete: (index: number) => void;
 };
 
-export function AccomplishmentsForm({ onSubmit }: Props) {
+export function AccomplishmentsForm({
+  accomplishmentId,
+  onUpdate,
+  onDelete,
+}: Props) {
   const {
     register,
     formState: { errors },
-    handleSubmit,
   } = useFormContext<AccomplishmentsTypes>();
 
   return (
     <Stack
-      component="form"
       direction="column"
       gap={2}
-      onSubmit={handleSubmit(onSubmit)}
       sx={{
+        position: 'relative',
         backgroundColor: '#1C1027',
         padding: '50px',
         borderRadius: '10px',
@@ -38,7 +43,8 @@ export function AccomplishmentsForm({ onSubmit }: Props) {
         required
         label="Accomplishment Title"
         id="accomplishment_title"
-        {...register('accomplishment_title')}
+        onChange={(e) => onUpdate(accomplishmentId, 'title', e.target.value)}
+        //{...register('accomplishment_title')}
         error={!!errors.accomplishment_title}
         helperText={errors.accomplishment_title?.message}
       />
@@ -89,6 +95,18 @@ export function AccomplishmentsForm({ onSubmit }: Props) {
         error={!!errors.pow_description}
         helperText={errors.pow_description?.message}
       />
+      <Avatar
+        sx={{
+          position: 'absolute',
+          bottom: 10,
+          right: 10,
+          color: '#9A53FF',
+          cursor: 'pointer',
+        }}
+        onClick={() => onDelete(accomplishmentId)}
+      >
+        <DeleteIcon />
+      </Avatar>
     </Stack>
   );
 }
