@@ -22,7 +22,7 @@ export function AccomplishmentsForm({
   onDelete,
 }: Props) {
   const {
-    register,
+    // register,
     formState: { errors },
   } = useFormContext<AccomplishmentsTypes>();
 
@@ -55,7 +55,14 @@ export function AccomplishmentsForm({
         id="accomplishment_description"
         multiline
         minRows={4}
-        {...register('accomplishment_description')}
+        onChange={(e) =>
+          onUpdate(
+            accomplishmentId,
+            'accomplishmentDescription',
+            e.target.value
+          )
+        }
+        //{...register('accomplishment_description')}
         error={!!errors.accomplishment_description}
         helperText={errors.accomplishment_description?.message}
       />
@@ -64,7 +71,13 @@ export function AccomplishmentsForm({
         <InputLabel variant="outlined" htmlFor="pow_type">
           Type
         </InputLabel>
-        <Select id="pow_type" {...register('pow_type')}>
+        <Select
+          id="pow_type"
+          onChange={(e) =>
+            onUpdate(accomplishmentId, 'type', e.target.value.toString())
+          }
+          //{...register('pow_type')}
+        >
           <MenuItem value="">
             <em>None</em>
           </MenuItem>
@@ -80,7 +93,8 @@ export function AccomplishmentsForm({
         required
         label="Link"
         id="pow_link"
-        {...register('pow_link')}
+        onChange={(e) => onUpdate(accomplishmentId, 'link', e.target.value)}
+        //{...register('pow_link')}
         error={!!errors.pow_link}
         helperText={errors.pow_link?.message}
       />
@@ -91,7 +105,10 @@ export function AccomplishmentsForm({
         id="pow_description"
         multiline
         minRows={4}
-        {...register('pow_description')}
+        onChange={(e) =>
+          onUpdate(accomplishmentId, 'description', e.target.value)
+        }
+        //{...register('pow_description')}
         error={!!errors.pow_description}
         helperText={errors.pow_description?.message}
       />
