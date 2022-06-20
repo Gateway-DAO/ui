@@ -45,6 +45,9 @@ export function EarnCredentialTemplate({ credentialInfo }) {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  const credential = credentialInfo['credential_group_by_pk'];
+  console.log(credential);
+
   const credentialDetailsMethods = useForm<CredentialDetailsTypes>({
     resolver: yupResolver(credentialDetailsSchema),
   });
@@ -158,14 +161,12 @@ export function EarnCredentialTemplate({ credentialInfo }) {
                 }}
               >
                 <Typography variant="h6" sx={{ marginBottom: '10px' }}>
-                  Olympus Operations Working Group - Season 2
+                  {credential.name}
                 </Typography>
                 <Chip label="Contributor" sx={{ marginBottom: '20px' }} />
                 <Box>
                   <Typography variant="caption">
-                    The Operations Group at Olympus is responsible for making
-                    sure that work is going smoothly. Our key goals this season
-                    are to make a new onboarding flow and increase team morale.
+                    {credential.description}
                   </Typography>
                 </Box>
                 <Box sx={{ position: 'absolute', bottom: '0' }}>
