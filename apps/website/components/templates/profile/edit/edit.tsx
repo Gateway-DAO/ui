@@ -39,7 +39,7 @@ export function EditProfileTemplate({ user }: Props) {
         id: user.id,
         pfp: 'pfpurl',
         ...data,
-        discord_id: '',
+        discord_id: null,
       },
       {
         onSuccess: () => router.push('/profile'),
