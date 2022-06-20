@@ -1,7 +1,7 @@
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
@@ -40,12 +40,20 @@ export function EarnCredentialTemplate({ credentialInfo }) {
   const session = useSession();
   const router = useRouter();
 
+  const [credential, setCredential] = useState({ name: '', description: '' });
   const [open, setOpen] = useState(false);
   const [accomplishmentsCount, setAccomplishmentsCount] = useState(1);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const credential = credentialInfo['credential_group_by_pk'];
+  useEffect(() => {
+    if (credentialInfo) {
+      setCredential({
+        name: credentialInfo['credential_group_by_pk'].name,
+        description: credentialInfo['credential_group_by_pk'].description,
+      });
+    }
+  }, [credentialInfo]);
 
   const credentialDetailsMethods = useForm<CredentialDetailsTypes>({
     resolver: yupResolver(credentialDetailsSchema),
