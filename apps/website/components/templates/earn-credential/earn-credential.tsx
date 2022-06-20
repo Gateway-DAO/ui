@@ -36,7 +36,7 @@ import {
   CredentialDetailsTypes,
 } from './credential-details-schema';
 
-export function EarnCredentialTemplate() {
+export function EarnCredentialTemplate({ credentialId }) {
   const session = useSession();
   const router = useRouter();
 
@@ -252,7 +252,7 @@ export function EarnCredentialTemplate() {
         <Button
           variant="contained"
           sx={{ marginLeft: '10px' }}
-          onClick={() => claim('0x0000000000000000000000000000000000000000')}
+          onClick={() => claim(credentialId)}
         >
           Submit
         </Button>

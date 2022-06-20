@@ -54,9 +54,7 @@ export function ProfileTemplate({
   const router = useRouter();
 
   const goToEarn = (credentialId) => {
-    // Real redirection once id in route is implemented
-    // router.push(ROUTES.CREDENTIALS_EARN + credentialId);
-    router.push(ROUTES.CREDENTIALS_EARN);
+    router.push(ROUTES.CREDENTIALS_EARN + credentialId);
   };
 
   const tmpUser = {
