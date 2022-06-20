@@ -6,7 +6,7 @@ export type CredentialDetailsTypes = {
   start_date: Date;
   end_date: Date;
   currently_working: boolean;
-  responsabilities: string;
+  responsibilities: string;
 };
 
 export const credentialDetailsSchema: SchemaOf<CredentialDetailsTypes> = object(
@@ -16,6 +16,6 @@ export const credentialDetailsSchema: SchemaOf<CredentialDetailsTypes> = object(
     start_date: date().defined(),
     end_date: date().defined(),
     currently_working: bool().defined(),
-    responsabilities: string().defined(),
+    responsibilities: string().defined(),
   }
 );

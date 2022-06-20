@@ -42,6 +42,12 @@ export function EarnCredentialTemplate({ credentialInfo }) {
 
   const [credential, setCredential] = useState({ name: '', description: '' });
   const [open, setOpen] = useState(false);
+  const [role, setRole] = useState('');
+  const [commitmentLevel, setCommitmentLevel] = useState('');
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+  const [isStillWorking, setIsStillWorking] = useState(false);
+  const [responsibilities, setResponsibilities] = useState('');
   const [accomplishmentsCount, setAccomplishmentsCount] = useState(1);
   const [accomplishments, setAccomplishments] = useState([
     {
@@ -143,6 +149,13 @@ export function EarnCredentialTemplate({ credentialInfo }) {
     });
   };
 
+  const updateRole = (value) => setRole(value);
+  const updateCommitmentLevel = (value) => setCommitmentLevel(value);
+  const updateStartDate = (value) => setStartDate(value);
+  const updateEndDate = (value) => setEndDate(value);
+  const updateIsStillWorking = (value) => setIsStillWorking(value);
+  const updateResponsibilities = (value) => setResponsibilities(value);
+
   return (
     <Stack gap={6} p={TOKENS.CONTAINER_PX}>
       <PocModalCompleted open={open} handleClose={handleClose} />
@@ -238,9 +251,12 @@ export function EarnCredentialTemplate({ credentialInfo }) {
             </Grid>
             <Grid item xs={3}>
               <CredentialDetailsForm
-                onSubmit={(data) => {
-                  console.log(data);
-                }}
+                onRoleUpdate={updateRole}
+                onCommitmentLevelUpdate={updateCommitmentLevel}
+                onStartDateUpdate={updateStartDate}
+                onEndDateUpdate={updateEndDate}
+                onIsStillWorkingUpdate={updateIsStillWorking}
+                onResponsibilitiesUpdate={updateResponsibilities}
               />
             </Grid>
           </Grid>
@@ -296,7 +312,19 @@ export function EarnCredentialTemplate({ credentialInfo }) {
         <Button
           variant="contained"
           sx={{ marginLeft: '10px' }}
-          onClick={() => claim(credentialInfo.id)}
+          // onClick={() => claim(credentialInfo.id)}
+          onClick={() => {
+            const data = {
+              role,
+              commitmentLevel,
+              startDate,
+              endDate,
+              isStillWorking,
+              responsibilities,
+              accomplishments,
+            };
+            console.log(data);
+          }}
         >
           Submit
         </Button>
