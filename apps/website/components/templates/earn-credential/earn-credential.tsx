@@ -155,7 +155,7 @@ export function EarnCredentialTemplate({ credentialInfo }) {
                 loader={() => credentialImgUrl}
                 src={credentialImgUrl}
                 height={300}
-                width={1200}
+                width={400}
                 alt="credential image"
                 style={{ borderRadius: '5px' }}
               />
