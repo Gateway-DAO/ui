@@ -46,7 +46,6 @@ export function EarnCredentialTemplate({ credentialInfo }) {
   const handleClose = () => setOpen(false);
 
   const credential = credentialInfo['credential_group_by_pk'];
-  console.log(credential);
 
   const credentialDetailsMethods = useForm<CredentialDetailsTypes>({
     resolver: yupResolver(credentialDetailsSchema),
