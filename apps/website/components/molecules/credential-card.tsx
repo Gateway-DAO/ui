@@ -68,7 +68,7 @@ export default function CredentialCard({
             sx={{ width: '100%' }}
             onClick={() => claim()}
           >
-            Complete credential
+            Claim Credential
           </Button>
         )}
         {mintable && (

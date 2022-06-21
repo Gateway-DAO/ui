@@ -1,9 +1,11 @@
+import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 import { BsFillPencilFill } from 'react-icons/bs';
 import { FaDiscord, FaTwitter, FaGithub } from 'react-icons/fa';
 import { MdEmail } from 'react-icons/md';
+import { useMutation } from 'react-query';
 
 import {
   Button,
@@ -16,6 +18,7 @@ import {
 } from '@mui/material';
 
 import { ROUTES } from '../../../constants/routes';
+import { gqlMethods } from '../../../services/api';
 import { Users, Credentials } from '../../../services/graphql/types.generated';
 import CredentialCard from '../../molecules/credential-card';
 import { NavBarAvatar } from '../../organisms/navbar/navbar-avatar';
@@ -51,10 +54,29 @@ export function ProfileTemplate({
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  const session = useSession();
   const router = useRouter();
 
-  const goToEarn = (credentialId) => {
-    router.push(ROUTES.CREDENTIALS_EARN + credentialId);
+  const updateMutation = useMutation(
+    'claimCredential',
+    session.data?.user && gqlMethods(session.data.user).claim_credential,
+    {
+      onSuccess() {
+        handleOpen();
+      },
+    }
+  );
+
+  const claimAndGoToEarn = (credentialId) => {
+    console.log(credentialId);
+    updateMutation.mutate(
+      {
+        group_id: credentialId,
+      },
+      {
+        onSuccess: () => router.push(ROUTES.CREDENTIALS_EARN + credentialId),
+      }
+    );
   };
 
   const tmpUser = {
@@ -191,7 +213,7 @@ export function ProfileTemplate({
         <Grid container>
           <Grid item className="left" xs={8} sx={{ padding: '0 65px' }}>
             <section style={{ marginBottom: '20px' }}>
-              <h2 style={{ margin: '20px 0',marginTop:'51px' }}>About</h2>
+              <h2 style={{ margin: '20px 0', marginTop: '51px' }}>About</h2>
               <div className="about">{user.about}</div>
               {!user.about && (
                 <Button
@@ -249,7 +271,7 @@ export function ProfileTemplate({
                       name={credential.name}
                       description={credential.description}
                       smaller
-                      claim={() => goToEarn(credential.id)}
+                      claim={() => claimAndGoToEarn(credential.id)}
                       claimable
                     />
                   </Grid>
@@ -259,7 +281,13 @@ export function ProfileTemplate({
           </Grid>
           <Grid item className="right" xs={4} sx={{ padding: '0 65px' }}>
             <section>
-              <Box sx={{ display: 'flex', alignItems: 'baseline', marginTop:'51px' }}>
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'baseline',
+                  marginTop: '51px',
+                }}
+              >
                 <h2 style={{ marginRight: '15px', fontSize: '20px' }}>
                   Skills
                 </h2>
@@ -287,7 +315,13 @@ export function ProfileTemplate({
               </div>
             </section>
             <section>
-              <Box sx={{ display: 'flex', alignItems: 'baseline' , marginTop:'27px'}}>
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'baseline',
+                  marginTop: '27px',
+                }}
+              >
                 <h2 style={{ marginRight: '15px', fontSize: '20px' }}>
                   Knowledges
                 </h2>
@@ -315,7 +349,13 @@ export function ProfileTemplate({
               </div>
             </section>
             <section>
-              <Box sx={{ display: 'flex', alignItems: 'baseline',marginTop:'27px' }}>
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'baseline',
+                  marginTop: '27px',
+                }}
+              >
                 <h2 style={{ marginRight: '15px', fontSize: '20px' }}>
                   Attitudes
                 </h2>

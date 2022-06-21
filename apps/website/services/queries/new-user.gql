@@ -9,5 +9,12 @@ query get_new_user {
     attitudes
     skills
     knowledges
+    credentials {
+      id
+      name
+      description
+      image
+      status
+    }
   }
 }
