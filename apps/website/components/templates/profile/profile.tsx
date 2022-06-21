@@ -315,7 +315,7 @@ export function ProfileTemplate({
               </div>
             </section>
             <section>
-              <Box sx={{ display: 'flex', alignItems: 'baseline' }}>
+              <Box sx={{ display: 'flex', alignItems: 'baseline',marginTop:'27px' }}>
                 <h2 style={{ marginRight: '15px', fontSize: '20px' }}>
                   Attitudes
                 </h2>
