@@ -16,7 +16,8 @@ import {
   Divider,
 } from '@mui/material';
 
-import { Users } from '../../../services/graphql/types.generated';
+import { useBiconomyMint } from '../../../hooks/useMint';
+import { Credentials, Users } from '../../../services/graphql/types.generated';
 import CredentialCard from '../../molecules/credential-card';
 import PocModalMinted from '../../organisms/poc-modal-minted/poc-modal-minted';
 
@@ -49,6 +50,19 @@ export function ProfileTemplate({ user }: Props) {
   const handleClose = () => setOpen(false);
 
   const router = useRouter();
+
+  const { mint, loading, minted } = useBiconomyMint(
+    '0x273eA2e7fc1DA62C890A41D338B0dC24e7782DD7'
+  );
+
+  /**
+   * It mints an NFT.
+   * @param {Credentials} [credential=null] - Credentials = null
+   */
+  const mintNFT = async (credential: Credentials = null) => {
+    await mint('ipfs://');
+    minted && handleOpen();
+  };
 
   const tmpUser = {
     pfp: 'https://i.ibb.co/bzzgBfT/random-nft.png',
@@ -223,7 +237,7 @@ export function ProfileTemplate({ user }: Props) {
                   <CredentialCard smaller pending />
                 </Grid>
                 <Grid item xs={4}>
-                  <CredentialCard smaller mintable mint={handleOpen} />
+                  <CredentialCard smaller mintable mint={mintNFT} />
                 </Grid>
                 <Grid item xs={4}>
                   <CredentialCard smaller isNFT />

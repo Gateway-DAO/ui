@@ -1,7 +1,10 @@
+import { useState } from 'react';
+
 import { Button, CardActions, Chip } from '@mui/material';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
+import CircularProgress from '@mui/material/CircularProgress';
 import Typography from '@mui/material/Typography';
 
 interface CredentialCardProps {
@@ -23,6 +26,14 @@ export default function CredentialCard({
   earn,
   mint,
 }: CredentialCardProps) {
+  const [isMinting, setMinting] = useState<boolean>(false);
+
+  const handleMint = async () => {
+    setMinting(true);
+    await mint();
+    setMinting(false);
+  };
+
   return (
     <Card sx={{ maxWidth: smaller ? '250px' : '345px' }}>
       <CardMedia
@@ -70,11 +81,16 @@ export default function CredentialCard({
         )}
         {mintable && (
           <Button
+            startIcon={<i className="fas fa-coins" />}
             variant="contained"
             sx={{ width: '100%' }}
-            onClick={() => mint()}
+            onClick={() => handleMint()}
           >
-            Mint free NFT
+            {isMinting ? (
+              <CircularProgress color="inherit" size={24} />
+            ) : (
+              'Claim it as an NFT'
+            )}
           </Button>
         )}
       </CardActions>
