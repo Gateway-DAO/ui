@@ -1,7 +1,5 @@
 import Link from 'next/link';
 
-import { colord, extend } from 'colord';
-import mixPlugin from 'colord/plugins/mix';
 import type { PartialDeep } from 'type-fest';
 
 import {
@@ -20,8 +18,6 @@ import Typography from '@mui/material/Typography';
 import { Box } from '@mui/system';
 
 import { Daos } from '../../services/graphql/types.generated';
-
-extend([mixPlugin]);
 
 /* TODO: Arias and Labels */
 
