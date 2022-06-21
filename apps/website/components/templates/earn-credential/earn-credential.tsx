@@ -1,15 +1,16 @@
+import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
+import { useMutation } from 'react-query';
 
 import { TOKENS } from '@gateway/theme';
 
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import ArrowCircleUpIcon from '@mui/icons-material/ArrowCircleUp';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import {
   Avatar,
   Box,
@@ -21,6 +22,8 @@ import {
   Button,
 } from '@mui/material';
 
+import { gqlMethods } from '../../../services/api';
+import { NavBarAvatar } from '../../organisms/navbar/navbar-avatar';
 import PocModalCompleted from '../../organisms/poc-modal-completed/poc-modal-completed';
 import { AccomplishmentsForm } from './accomplishments-form';
 import {
@@ -33,11 +36,45 @@ import {
   CredentialDetailsTypes,
 } from './credential-details-schema';
 
-export function EarnCredentialTemplate() {
+export function EarnCredentialTemplate({ credentialInfo }) {
+  const session = useSession();
   const router = useRouter();
+
+  const [credential, setCredential] = useState({
+    id: null,
+    name: '',
+    description: '',
+  });
   const [open, setOpen] = useState(false);
+  const [role, setRole] = useState('');
+  const [commitmentLevel, setCommitmentLevel] = useState('');
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+  const [isStillWorking, setIsStillWorking] = useState(false);
+  const [responsibilities, setResponsibilities] = useState('');
+  const [accomplishmentsCount, setAccomplishmentsCount] = useState(1);
+  const [accomplishments, setAccomplishments] = useState([
+    {
+      id: accomplishmentsCount,
+      title: '',
+      accomplishmentDescription: '',
+      type: '',
+      link: '',
+      description: '',
+    },
+  ]);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  useEffect(() => {
+    if (credentialInfo) {
+      setCredential({
+        id: credentialInfo['credentials_by_pk'].id,
+        name: credentialInfo['credentials_by_pk'].name,
+        description: credentialInfo['credentials_by_pk'].description,
+      });
+    }
+  }, [credentialInfo]);
 
   const credentialDetailsMethods = useForm<CredentialDetailsTypes>({
     resolver: yupResolver(credentialDetailsSchema),
@@ -49,21 +86,93 @@ export function EarnCredentialTemplate() {
     'https://i.postimg.cc/6QJDW2r1/olympus-credential-picture.png';
   const randomNftUrl = 'https://i.ibb.co/bzzgBfT/random-nft.png';
 
-  const [accomplishmentsCount, setAccomplishmentsCount] = useState(1);
+  const updateMutation = useMutation(
+    'completeCredential',
+    session.data?.user && gqlMethods(session.data.user).complete_credential,
+    {
+      onSuccess() {
+        handleOpen();
+      },
+    }
+  );
 
-  const getAccomplishmentCards = (count) => {
-    const cards = [];
-    for (let i = 0; i < count; i++) {
-      cards.push(
+  const complete = (credentialId) => {
+    const data = {
+      details: {
+        role,
+        commitmentLevel,
+        startDate: new Date(startDate),
+        endDate: isStillWorking ? null : new Date(endDate),
+        isStillWorking,
+        responsibilities,
+      },
+      accomplishments,
+    };
+
+    updateMutation.mutate(
+      {
+        group_id: credentialId,
+        ...data,
+      },
+      {
+        onSuccess: () => handleOpen(),
+      }
+    );
+  };
+
+  const addAccomplishment = () => {
+    setAccomplishmentsCount(accomplishmentsCount + 1);
+    setAccomplishments([
+      ...accomplishments,
+      {
+        id: accomplishmentsCount + 1,
+        title: '',
+        accomplishmentDescription: '',
+        type: '',
+        link: '',
+        description: '',
+      },
+    ]);
+  };
+
+  const updateAccomplishment = (accomplishmentId, key, value) => {
+    const newAccomplishments = accomplishments;
+    const accomplishmentIndex = newAccomplishments.findIndex(
+      (accomplishment) => {
+        return accomplishment.id === accomplishmentId;
+      }
+    );
+    newAccomplishments[accomplishmentIndex][key] = value;
+    setAccomplishments(newAccomplishments);
+  };
+
+  const deleteAccomplishment = (accomplishmentId) => {
+    setAccomplishments(
+      accomplishments.filter((accomplishment) => {
+        return accomplishment.id !== accomplishmentId;
+      })
+    );
+  };
+
+  const renderAccomplishmentCards = () => {
+    return accomplishments.map((accomplishment) => {
+      return (
         <AccomplishmentsForm
-          onSubmit={(data) => {
-            console.log(data);
-          }}
+          key={accomplishment.id}
+          accomplishmentId={accomplishment.id}
+          onUpdate={updateAccomplishment}
+          onDelete={() => deleteAccomplishment(accomplishment.id)}
         />
       );
-    }
-    return cards;
+    });
   };
+
+  const updateRole = (value) => setRole(value);
+  const updateCommitmentLevel = (value) => setCommitmentLevel(value);
+  const updateStartDate = (value) => setStartDate(value);
+  const updateEndDate = (value) => setEndDate(value);
+  const updateIsStillWorking = (value) => setIsStillWorking(value);
+  const updateResponsibilities = (value) => setResponsibilities(value);
 
   return (
     <Stack gap={6} p={TOKENS.CONTAINER_PX}>
@@ -85,14 +194,7 @@ export function EarnCredentialTemplate() {
           cursor: 'pointer',
         }}
       >
-        <Avatar
-          src={randomNftUrl}
-          sx={{
-            width: 30,
-            height: 30,
-          }}
-        />
-        <ArrowDropDownIcon style={{ position: 'relative', top: '5px' }} />
+        <NavBarAvatar />
       </Box>
       <Typography variant="h5" sx={{ marginBottom: '100px' }}>
         Earn Proof of Credential
@@ -120,7 +222,7 @@ export function EarnCredentialTemplate() {
                 loader={() => credentialImgUrl}
                 src={credentialImgUrl}
                 height={300}
-                width={1200}
+                width={400}
                 alt="credential image"
                 style={{ borderRadius: '5px' }}
               />
@@ -133,14 +235,12 @@ export function EarnCredentialTemplate() {
                 }}
               >
                 <Typography variant="h6" sx={{ marginBottom: '10px' }}>
-                  Olympus Operations Working Group - Season 2
+                  {credential.name}
                 </Typography>
                 <Chip label="Contributor" sx={{ marginBottom: '20px' }} />
                 <Box>
                   <Typography variant="caption">
-                    The Operations Group at Olympus is responsible for making
-                    sure that work is going smoothly. Our key goals this season
-                    are to make a new onboarding flow and increase team morale.
+                    {credential.description}
                   </Typography>
                 </Box>
                 <Box sx={{ position: 'absolute', bottom: '0' }}>
@@ -169,9 +269,13 @@ export function EarnCredentialTemplate() {
             </Grid>
             <Grid item xs={3}>
               <CredentialDetailsForm
-                onSubmit={(data) => {
-                  console.log(data);
-                }}
+                isStillWorking={isStillWorking}
+                onRoleUpdate={updateRole}
+                onCommitmentLevelUpdate={updateCommitmentLevel}
+                onStartDateUpdate={updateStartDate}
+                onEndDateUpdate={updateEndDate}
+                onIsStillWorkingUpdate={updateIsStillWorking}
+                onResponsibilitiesUpdate={updateResponsibilities}
               />
             </Grid>
           </Grid>
@@ -190,7 +294,7 @@ export function EarnCredentialTemplate() {
               </Typography>
             </Grid>
             <Grid item xs={6}>
-              {getAccomplishmentCards(accomplishmentsCount)}
+              {renderAccomplishmentCards()}
             </Grid>
           </Grid>
         </FormProvider>
@@ -206,7 +310,7 @@ export function EarnCredentialTemplate() {
               borderRadius: '5px',
               cursor: 'pointer',
             }}
-            onClick={() => setAccomplishmentsCount(accomplishmentsCount + 1)}
+            onClick={() => addAccomplishment()}
           >
             <AddBoxIcon sx={{ marginRight: '15px' }} />
             <Typography variant="h6" fontWeight="bold">
@@ -227,7 +331,7 @@ export function EarnCredentialTemplate() {
         <Button
           variant="contained"
           sx={{ marginLeft: '10px' }}
-          onClick={() => handleOpen()}
+          onClick={() => complete(credential.id)}
         >
           Submit
         </Button>

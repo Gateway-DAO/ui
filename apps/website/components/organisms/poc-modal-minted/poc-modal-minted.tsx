@@ -66,7 +66,10 @@ export default function PocModalMinted({ open, handleClose }) {
                 <span style={{ color: '#D083FF' }}>Gateway</span> .
               </Typography>
             </Box>
-            <CredentialCard />
+            <CredentialCard
+              name="Olympus Operations Work..."
+              description="The Operations Group at Olympus is responsible for making sure that work..."
+            />
             <Button
               variant="outlined"
               size="small"

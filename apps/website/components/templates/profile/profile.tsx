@@ -1,10 +1,11 @@
+import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 import { BsFillPencilFill } from 'react-icons/bs';
 import { FaDiscord, FaTwitter, FaGithub } from 'react-icons/fa';
 import { MdEmail } from 'react-icons/md';
-import { RiArrowDownSFill } from 'react-icons/ri';
+import { useMutation } from 'react-query';
 
 import {
   Button,
@@ -16,14 +17,13 @@ import {
   Divider,
 } from '@mui/material';
 
+import { ROUTES } from '../../../constants/routes';
 import { useBiconomyMint } from '../../../hooks/useMint';
+import { gqlMethods } from '../../../services/api';
 import { Credentials, Users } from '../../../services/graphql/types.generated';
 import CredentialCard from '../../molecules/credential-card';
+import { NavBarAvatar } from '../../organisms/navbar/navbar-avatar';
 import PocModalMinted from '../../organisms/poc-modal-minted/poc-modal-minted';
-
-// TODO: Get this from context
-const isAdmin = true;
-// Load these through props
 
 const socials = [
   {
@@ -42,13 +42,20 @@ const socials = [
 
 type Props = {
   user: Partial<Users>;
+  isAdmin: boolean;
+  claimableCredentials: Array<Partial<Credentials>>;
 };
 
-export function ProfileTemplate({ user }: Props) {
+export function ProfileTemplate({
+  user,
+  isAdmin,
+  claimableCredentials,
+}: Props) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  const session = useSession();
   const router = useRouter();
 
   const { mint, loading, minted } = useBiconomyMint(
@@ -63,6 +70,28 @@ export function ProfileTemplate({ user }: Props) {
     await mint('ipfs://');
     minted && handleOpen();
   };
+
+  const updateMutation = useMutation(
+    'claimCredential',
+    session.data?.user && gqlMethods(session.data.user).claim_credential
+  );
+
+  const claimAndGoToEarn = (credentialGroupId) => {
+    updateMutation.mutate(
+      {
+        group_id: credentialGroupId,
+      },
+      {
+        onSuccess: (result) => {
+          const credential_id = result['claim_credential'].credential.id;
+          router.push(ROUTES.CREDENTIALS_EARN + credential_id);
+        },
+      }
+    );
+  };
+
+  const goToEarn = (credentialId) =>
+    router.push(ROUTES.CREDENTIALS_EARN + credentialId);
 
   const tmpUser = {
     pfp: 'https://i.ibb.co/bzzgBfT/random-nft.png',
@@ -114,14 +143,7 @@ export function ProfileTemplate({ user }: Props) {
             cursor: 'pointer',
           }}
         >
-          <Avatar
-            src={tmpUser.pfp}
-            sx={{
-              width: 30,
-              height: 30,
-            }}
-          />
-          <RiArrowDownSFill style={{ position: 'relative', top: '5px' }} />
+          <NavBarAvatar />
         </Box>
         <Avatar
           src={tmpUser.pfp}
@@ -145,15 +167,17 @@ export function ProfileTemplate({ user }: Props) {
         }}
         gap={2}
       >
-        {tmpUser.email_address && (
+        {/* Comment Social Icons for now */}
+
+        {/* {tmpUser.email_address && (
           <Avatar
             onClick={() => window.open('mailto:' + tmpUser.email_address)}
             style={{ cursor: 'pointer' }}
           >
             <MdEmail size={28} />
           </Avatar>
-        )}
-        {socials.map((icon, index) => {
+        )} */}
+        {/* {socials.map((icon, index) => {
           const Icon = icon.icon;
           return (
             icon.value && (
@@ -166,7 +190,7 @@ export function ProfileTemplate({ user }: Props) {
               </Avatar>
             )
           );
-        })}
+        })} */}
         {/* TODO: Contains user's address, only visible if it's our profile */}
         {/* <Button variant="contained" color="secondary">
           0x0
@@ -174,10 +198,16 @@ export function ProfileTemplate({ user }: Props) {
         </Button> */}
       </Stack>
       <main>
-        <Box sx={{ margin: '30px 65px' }}>
+        <Box sx={{ margin: '30px 65px', marginTop: '32px' }}>
           <Box sx={{ display: 'flex', alignItems: 'baseline' }}>
-            <h1 style={{ marginBottom: '0', marginRight: '15px' }}>
-              {tmpUser.name}
+            <h1
+              style={{
+                marginBottom: '0',
+                marginRight: '15px',
+                fontSize: '34px',
+              }}
+            >
+              {user.name}
             </h1>
             <Avatar
               sx={{ cursor: 'pointer' }}
@@ -186,10 +216,10 @@ export function ProfileTemplate({ user }: Props) {
               <BsFillPencilFill />
             </Avatar>
           </Box>
-          <p style={{ margin: '0 auto' }}>{tmpUser.bio}</p>
-          {tmpUser.username && (
+          {/* <p style={{ margin: '0 auto' }}>{tmpUser.bio}</p> */}
+          {user.username && (
             <p style={{ marginTop: '0', fontSize: 'small' }}>
-              @{tmpUser.username}
+              @{user.username}
             </p>
           )}
         </Box>
@@ -197,13 +227,14 @@ export function ProfileTemplate({ user }: Props) {
         <Grid container>
           <Grid item className="left" xs={8} sx={{ padding: '0 65px' }}>
             <section style={{ marginBottom: '20px' }}>
-              <h2 style={{ margin: '20px 0' }}>About</h2>
-              <div className="about">{tmpUser.about}</div>
-              {!tmpUser.about && (
+              <h2 style={{ margin: '20px 0', marginTop: '51px' }}>About</h2>
+              <div className="about">{user.about}</div>
+              {!user.about && (
                 <Button
                   variant="outlined"
                   size="small"
                   sx={{ marginBottom: '20px' }}
+                  onClick={() => router.push('/profile/edit')}
                 >
                   Add now
                 </Button>
@@ -212,7 +243,13 @@ export function ProfileTemplate({ user }: Props) {
             <Divider light sx={{ width: '100%' }} />
             <section style={{ paddingBottom: '150px' }}>
               <Box sx={{ display: 'flex', alignItems: 'baseline' }}>
-                <h2 style={{ marginTop: '30px', marginRight: '15px' }}>
+                <h2
+                  style={{
+                    marginTop: '51px',
+                    marginRight: '15px',
+                    fontSize: '20px',
+                  }}
+                >
                   Proof of Credentials
                 </h2>
                 {isAdmin && (
@@ -226,7 +263,7 @@ export function ProfileTemplate({ user }: Props) {
                 )}
               </Box>
               <Grid container rowGap={2}>
-                <Grid item xs={4}>
+                {/* <Grid item xs={4}>
                   <CredentialCard
                     smaller
                     uncomplete
@@ -241,14 +278,45 @@ export function ProfileTemplate({ user }: Props) {
                 </Grid>
                 <Grid item xs={4}>
                   <CredentialCard smaller isNFT />
-                </Grid>
+                </Grid> */}
+                {claimableCredentials.map((credential) => (
+                  <Grid item xs={4} key={credential.id}>
+                    <CredentialCard
+                      name={credential.name}
+                      description={credential.description}
+                      smaller
+                      claim={() => claimAndGoToEarn(credential.id)}
+                      claimable
+                    />
+                  </Grid>
+                ))}
+                {user.credentials.map((credential) => (
+                  <Grid item xs={4} key={credential.id}>
+                    <CredentialCard
+                      name={credential.name}
+                      description={credential.description}
+                      smaller
+                      to_complete={credential.status === 'to_complete'}
+                      complete={() => goToEarn(credential.id)}
+                      pending={credential.status === 'pending'}
+                    />
+                  </Grid>
+                ))}
               </Grid>
             </section>
           </Grid>
           <Grid item className="right" xs={4} sx={{ padding: '0 65px' }}>
             <section>
-              <Box sx={{ display: 'flex', alignItems: 'baseline' }}>
-                <h2 style={{ marginRight: '15px' }}>Skills</h2>
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'baseline',
+                  marginTop: '51px',
+                }}
+              >
+                <h2 style={{ marginRight: '15px', fontSize: '20px' }}>
+                  Skills
+                </h2>
                 <Avatar
                   sx={{ cursor: 'pointer' }}
                   onClick={() => router.push('/profile/edit/skills')}
@@ -273,8 +341,16 @@ export function ProfileTemplate({ user }: Props) {
               </div>
             </section>
             <section>
-              <Box sx={{ display: 'flex', alignItems: 'baseline' }}>
-                <h2 style={{ marginRight: '15px' }}>Knowledges</h2>
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'baseline',
+                  marginTop: '27px',
+                }}
+              >
+                <h2 style={{ marginRight: '15px', fontSize: '20px' }}>
+                  Knowledges
+                </h2>
                 <Avatar
                   sx={{ cursor: 'pointer' }}
                   onClick={() => router.push('/profile/edit/knowledge')}
@@ -299,8 +375,16 @@ export function ProfileTemplate({ user }: Props) {
               </div>
             </section>
             <section>
-              <Box sx={{ display: 'flex', alignItems: 'baseline' }}>
-                <h2 style={{ marginRight: '15px' }}>Attitudes</h2>
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'baseline',
+                  marginTop: '27px',
+                }}
+              >
+                <h2 style={{ marginRight: '15px', fontSize: '20px' }}>
+                  Attitudes
+                </h2>
                 <Avatar
                   sx={{ cursor: 'pointer' }}
                   onClick={() => router.push('/profile/edit/attitudes')}

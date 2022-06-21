@@ -71,7 +71,10 @@ export default function PocModalCreated({ open, handleClose }) {
                 credential.
               </Typography>
             </Box>
-            <CredentialCard />
+            <CredentialCard
+              name="Olympus Operations Work..."
+              description="The Operations Group at Olympus is responsible for making sure that work..."
+            />
             <Box
               sx={{
                 display: 'flex',

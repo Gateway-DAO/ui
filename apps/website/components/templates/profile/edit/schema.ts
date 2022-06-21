@@ -4,7 +4,7 @@ import { Users } from '../../../../services/graphql/types.generated';
 
 export type EditUserSchema = Pick<
   Users,
-  'name' | 'username' | 'about' | 'email_address' | 'discord_id'
+  'name' | 'username' | 'about' | 'email_address'
 >;
 
 export const schema: SchemaOf<EditUserSchema> = object({
@@ -12,7 +12,7 @@ export const schema: SchemaOf<EditUserSchema> = object({
   username: string().min(2).defined(),
   about: string().min(2).defined(),
   email_address: string().min(2).email().defined(),
-  discord_id: string().min(2).defined(),
+  // discord_id: string().min(2).defined(),
 });
 
 export const defaultValues = ({
@@ -20,11 +20,11 @@ export const defaultValues = ({
   username,
   about,
   email_address,
-  discord_id,
-}: Partial<Users>): EditUserSchema => ({
+}: //discord_id,
+Partial<Users>): EditUserSchema => ({
   name,
   username,
   about,
   email_address,
-  discord_id,
+  //discord_id,
 });

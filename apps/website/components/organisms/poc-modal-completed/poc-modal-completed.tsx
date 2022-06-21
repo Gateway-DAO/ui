@@ -68,7 +68,10 @@ export default function PocModalCompleted({ open, handleClose }) {
                 NFT.
               </Typography>
             </Box>
-            <CredentialCard />
+            <CredentialCard
+              name="Olympus Operations Work..."
+              description="The Operations Group at Olympus is responsible for making sure that work..."
+            />
             <Button
               variant="contained"
               size="small"

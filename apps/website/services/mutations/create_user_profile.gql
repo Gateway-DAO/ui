@@ -5,7 +5,7 @@ mutation update_user_profile(
   $about: String
   $pfp: String
   $email_address: citext!
-  $discord_id: String!
+  $discord_id: String
 ) {
   update_users_by_pk(
     pk_columns: { id: $id }

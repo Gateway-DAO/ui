@@ -8,22 +8,30 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Typography from '@mui/material/Typography';
 
 interface CredentialCardProps {
+  name: string;
+  description: string;
   smaller?: boolean;
-  uncomplete?: boolean;
+  claimable?: boolean;
+  to_complete?: boolean;
   pending?: boolean;
   mintable?: boolean;
   isNFT?: boolean;
-  earn?: () => void;
+  claim?: () => void;
+  complete?: () => void;
   mint?: () => void;
 }
 
 export default function CredentialCard({
+  name,
+  description,
   smaller,
-  uncomplete,
+  claimable,
+  to_complete,
   pending,
   mintable,
   isNFT,
-  earn,
+  claim,
+  complete,
   mint,
 }: CredentialCardProps) {
   const [isMinting, setMinting] = useState<boolean>(false);
@@ -43,11 +51,10 @@ export default function CredentialCard({
       />
       <CardContent>
         <Typography gutterBottom variant="h5" component="div" fontSize={20}>
-          Olympus Operations Work...
+          {name}
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          The Operations Group at Olympus is responsible for making sure that
-          work...
+          {description}
         </Typography>
       </CardContent>
       <CardContent
@@ -70,13 +77,22 @@ export default function CredentialCard({
         {isNFT && <Chip label="NFT" />}
       </CardContent>
       <CardActions>
-        {uncomplete && (
+        {claimable && (
           <Button
             variant="contained"
             sx={{ width: '100%' }}
-            onClick={() => earn()}
+            onClick={() => claim()}
           >
-            Complete credential
+            Complete Credential
+          </Button>
+        )}
+        {to_complete && (
+          <Button
+            variant="contained"
+            sx={{ width: '100%' }}
+            onClick={() => complete()}
+          >
+            Complete Credential
           </Button>
         )}
         {mintable && (

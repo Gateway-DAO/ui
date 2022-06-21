@@ -35,7 +35,12 @@ export function EditProfileTemplate({ user }: Props) {
   const onSubmit = (data: EditUserSchema) => {
     // TODO: Image upload
     updateMutation.mutate(
-      { id: user.id, pfp: 'pfpurl', ...data },
+      {
+        id: user.id,
+        pfp: 'pfpurl',
+        ...data,
+        discord_id: null,
+      },
       {
         onSuccess: () => router.push('/profile'),
       }

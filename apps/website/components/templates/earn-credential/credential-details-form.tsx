@@ -10,29 +10,38 @@ import { mockLevels } from './__mock__';
 import { CredentialDetailsTypes } from './credential-details-schema';
 
 type Props = {
-  onSubmit: (data?: CredentialDetailsTypes) => void;
+  isStillWorking: boolean;
+  onRoleUpdate: (value: string) => void;
+  onCommitmentLevelUpdate: (value: string) => void;
+  onStartDateUpdate: (value: string) => void;
+  onEndDateUpdate: (value: string) => void;
+  onIsStillWorkingUpdate: (value: boolean) => void;
+  onResponsibilitiesUpdate: (value: string) => void;
 };
 
-export function CredentialDetailsForm({ onSubmit }: Props) {
+export function CredentialDetailsForm({
+  isStillWorking,
+  onRoleUpdate,
+  onCommitmentLevelUpdate,
+  onStartDateUpdate,
+  onEndDateUpdate,
+  onIsStillWorkingUpdate,
+  onResponsibilitiesUpdate,
+}: Props) {
   const {
-    register,
+    //register,
     formState: { errors },
-    handleSubmit,
   } = useFormContext<CredentialDetailsTypes>();
 
   return (
-    <Stack
-      component="form"
-      direction="column"
-      gap={2}
-      onSubmit={handleSubmit(onSubmit)}
-    >
+    <Stack direction="column" gap={2}>
       {/* Role */}
       <TextField
         required
         label="Role"
         id="role"
-        {...register('role')}
+        onChange={(e) => onRoleUpdate(e.target.value)}
+        //{...register('role')}
         error={!!errors.role}
         helperText={errors.role?.message}
       />
@@ -41,7 +50,11 @@ export function CredentialDetailsForm({ onSubmit }: Props) {
         <InputLabel variant="outlined" htmlFor="commitment_level">
           Level of commitment
         </InputLabel>
-        <Select id="commitment_level" {...register('commitment_level')}>
+        <Select
+          id="commitment_level"
+          onChange={(e) => onCommitmentLevelUpdate(e.target.value.toString())}
+          //{...register('commitment_level')}
+        >
           <MenuItem value="">
             <em>None</em>
           </MenuItem>
@@ -57,7 +70,8 @@ export function CredentialDetailsForm({ onSubmit }: Props) {
         required
         label="Start date"
         id="start_date"
-        {...register('start_date')}
+        onChange={(e) => onStartDateUpdate(e.target.value)}
+        //{...register('start_date')}
         error={!!errors.start_date}
         helperText={errors.start_date?.message}
       />
@@ -65,7 +79,9 @@ export function CredentialDetailsForm({ onSubmit }: Props) {
         required
         label="End date"
         id="end_date"
-        {...register('end_date')}
+        disabled={isStillWorking}
+        onChange={(e) => onEndDateUpdate(e.target.value)}
+        //{...register('end_date')}
         error={!!errors.end_date}
         helperText={errors.end_date?.message}
       />
@@ -73,21 +89,26 @@ export function CredentialDetailsForm({ onSubmit }: Props) {
         control={
           <Checkbox
             name="currently_working"
-            {...register('currently_working')}
+            checked={isStillWorking}
+            onChange={(e) => {
+              onIsStillWorkingUpdate(!!e.target.checked);
+            }}
+            //{...register('currently_working')}
           />
         }
         label="I'm currently working on this role"
       />
-      {/* Responsabilities */}
+      {/* Responsibilities */}
       <TextField
         required
-        label="Day to day responsabilities"
-        id="responsabilities"
+        label="Day to day responsibilities"
+        id="responsibilities"
         multiline
         minRows={4}
-        {...register('responsabilities')}
-        error={!!errors.responsabilities}
-        helperText={errors.responsabilities?.message}
+        onChange={(e) => onResponsibilitiesUpdate(e.target.value)}
+        //{...register('responsibilities')}
+        error={!!errors.responsibilities}
+        helperText={errors.responsibilities?.message}
       />
     </Stack>
   );
