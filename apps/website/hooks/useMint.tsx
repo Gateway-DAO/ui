@@ -16,7 +16,9 @@ let contract: ethers.Contract, contractInterface: ethers.ContractInterface;
  * @param {string | null} [contractAddress=null] - The address of the contract you want to interact
  * with.
  */
-export function useBiconomyMint(contractAddress: string | null = null) {
+export function useBiconomyMint(
+  contractAddress: string | null = process.env.NEXT_PUBLIC_WEB3_NFT_ADDRESS
+) {
   // From Wagmi
   const { data: address } = useAccount();
 
