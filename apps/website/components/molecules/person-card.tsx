@@ -7,7 +7,7 @@ import { Users } from '../../services/graphql/types.generated';
 
 /* TODO: Arias and Labels */
 /* TODO: Clamp text */
-export function PersonCard({ name, about, pfp }: PartialDeep<Users>) {
+export function PersonCard({ name, username, pfp }: PartialDeep<Users>) {
   return (
     <MUICard>
       <CardHeader
@@ -33,7 +33,7 @@ export function PersonCard({ name, about, pfp }: PartialDeep<Users>) {
           </Button>
         }
         title={name}
-        subheader={about}
+        subheader={`@${username}`}
         subheaderTypographyProps={{
           sx: {
             textOverflow: 'ellipsis',

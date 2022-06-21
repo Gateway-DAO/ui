@@ -17,10 +17,6 @@ const palette: PaletteOptions = {
   text: {
     primary: brandColors.grays.main,
   },
-  action: {
-    hover: brandColors.purple.main,
-    active: brandColors.purple.main,
-  },
 };
 
 export default palette;

@@ -1,3 +1,4 @@
+import { colord } from 'colord';
 import type { PartialDeep } from 'type-fest';
 
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
@@ -42,7 +43,13 @@ export function GatesCard({
           )
         }
         action={
-          <IconButton color="secondary" aria-label="settings">
+          <IconButton
+            aria-label="settings"
+            sx={{
+              color: (theme) =>
+                colord(theme.palette.action.active).alpha(0.56).toRgbString(),
+            }}
+          >
             <BookmarkBorderIcon />
           </IconButton>
         }
