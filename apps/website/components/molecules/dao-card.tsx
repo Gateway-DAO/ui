@@ -1,8 +1,16 @@
 import Link from 'next/link';
 
+import { colord, extend } from 'colord';
+import mixPlugin from 'colord/plugins/mix';
 import type { PartialDeep } from 'type-fest';
 
-import { Avatar, Button, CardActionArea, CardHeader } from '@mui/material';
+import {
+  Avatar,
+  Button,
+  CardActionArea,
+  CardHeader,
+  lighten,
+} from '@mui/material';
 import MUICard from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
@@ -12,6 +20,8 @@ import Typography from '@mui/material/Typography';
 import { Box } from '@mui/system';
 
 import { Daos } from '../../services/graphql/types.generated';
+
+extend([mixPlugin]);
 
 /* TODO: Arias and Labels */
 
@@ -54,9 +64,9 @@ export function DaoCard({
                 width: 40,
                 height: 40,
                 border: '2px solid',
-                borderColor: (theme) => theme.palette.divider,
+                borderColor: (theme) =>
+                  lighten(theme.palette.background.default, 0.05),
               }}
-              aria-label="recipe"
             >
               {name?.[0]}
             </Avatar>
