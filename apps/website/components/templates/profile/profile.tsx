@@ -59,21 +59,19 @@ export function ProfileTemplate({
 
   const updateMutation = useMutation(
     'claimCredential',
-    session.data?.user && gqlMethods(session.data.user).claim_credential,
-    {
-      onSuccess() {
-        handleOpen();
-      },
-    }
+    session.data?.user && gqlMethods(session.data.user).claim_credential
   );
 
-  const claimAndGoToEarn = (credentialId) => {
+  const claimAndGoToEarn = (credentialGroupId) => {
     updateMutation.mutate(
       {
-        group_id: credentialId,
+        group_id: credentialGroupId,
       },
       {
-        onSuccess: () => router.push(ROUTES.CREDENTIALS_EARN + credentialId),
+        onSuccess: (result) => {
+          const credential_id = result['claim_credential'].credential.id;
+          router.push(ROUTES.CREDENTIALS_EARN + credential_id);
+        },
       }
     );
   };
