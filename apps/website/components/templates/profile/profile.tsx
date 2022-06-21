@@ -68,7 +68,6 @@ export function ProfileTemplate({
   );
 
   const claimAndGoToEarn = (credentialId) => {
-    console.log(credentialId);
     updateMutation.mutate(
       {
         group_id: credentialId,
@@ -78,6 +77,9 @@ export function ProfileTemplate({
       }
     );
   };
+
+  const goToEarn = (credentialId) =>
+    router.push(ROUTES.CREDENTIALS_EARN + credentialId);
 
   const tmpUser = {
     pfp: 'https://i.ibb.co/bzzgBfT/random-nft.png',
@@ -273,6 +275,18 @@ export function ProfileTemplate({
                       smaller
                       claim={() => claimAndGoToEarn(credential.id)}
                       claimable
+                    />
+                  </Grid>
+                ))}
+                {user.credentials.map((credential) => (
+                  <Grid item xs={4} key={credential.id}>
+                    <CredentialCard
+                      name={credential.name}
+                      description={credential.description}
+                      smaller
+                      to_complete={credential.status === 'to_complete'}
+                      complete={() => goToEarn(credential.id)}
+                      pending={credential.status === 'pending'}
                     />
                   </Grid>
                 ))}

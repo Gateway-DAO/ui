@@ -13,11 +13,11 @@ export default function EarnCredential() {
   const { credentialId } = router.query;
 
   const credentialQuery = useQuery(
-    ['credential-info'],
+    ['get-credential'],
     () => {
       if (!session.data.user) return;
-      return gqlMethods(session.data.user).get_credential_group_info({
-        credentialId,
+      return gqlMethods(session.data.user).get_credential({
+        credential_id: credentialId,
       });
     },
     {

@@ -9,10 +9,12 @@ interface CredentialCardProps {
   description: string;
   smaller?: boolean;
   claimable?: boolean;
+  to_complete?: boolean;
   pending?: boolean;
   mintable?: boolean;
   isNFT?: boolean;
   claim?: () => void;
+  complete?: () => void;
   mint?: () => void;
 }
 
@@ -21,10 +23,12 @@ export default function CredentialCard({
   description,
   smaller,
   claimable,
+  to_complete,
   pending,
   mintable,
   isNFT,
   claim,
+  complete,
   mint,
 }: CredentialCardProps) {
   return (
@@ -69,6 +73,15 @@ export default function CredentialCard({
             onClick={() => claim()}
           >
             Claim Credential
+          </Button>
+        )}
+        {to_complete && (
+          <Button
+            variant="contained"
+            sx={{ width: '100%' }}
+            onClick={() => complete()}
+          >
+            Complete Credential
           </Button>
         )}
         {mintable && (

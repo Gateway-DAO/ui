@@ -69,9 +69,9 @@ export function EarnCredentialTemplate({ credentialInfo }) {
   useEffect(() => {
     if (credentialInfo) {
       setCredential({
-        id: credentialInfo['credential_group_by_pk'].id,
-        name: credentialInfo['credential_group_by_pk'].name,
-        description: credentialInfo['credential_group_by_pk'].description,
+        id: credentialInfo['credentials_by_pk'].id,
+        name: credentialInfo['credentials_by_pk'].name,
+        description: credentialInfo['credentials_by_pk'].description,
       });
     }
   }, [credentialInfo]);
@@ -88,7 +88,7 @@ export function EarnCredentialTemplate({ credentialInfo }) {
 
   const updateMutation = useMutation(
     'completeCredential',
-    session.data?.user && gqlMethods(session.data.user).update_credential,
+    session.data?.user && gqlMethods(session.data.user).complete_credential,
     {
       onSuccess() {
         handleOpen();
