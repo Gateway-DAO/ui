@@ -191,7 +191,7 @@ export function ProfileTemplate({
         <Grid container>
           <Grid item className="left" xs={8} sx={{ padding: '0 65px' }}>
             <section style={{ marginBottom: '20px' }}>
-              <h2 style={{ margin: '20px 0' }}>About</h2>
+              <h2 style={{ margin: '20px 0',marginTop:'51px' }}>About</h2>
               <div className="about">{user.about}</div>
               {!user.about && (
                 <Button
@@ -259,7 +259,7 @@ export function ProfileTemplate({
           </Grid>
           <Grid item className="right" xs={4} sx={{ padding: '0 65px' }}>
             <section>
-              <Box sx={{ display: 'flex', alignItems: 'baseline' }}>
+              <Box sx={{ display: 'flex', alignItems: 'baseline', marginTop:'51px' }}>
                 <h2 style={{ marginRight: '15px', fontSize: '20px' }}>
                   Skills
                 </h2>
