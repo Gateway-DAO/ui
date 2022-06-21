@@ -209,7 +209,7 @@ export function ProfileTemplate({
               <Box sx={{ display: 'flex', alignItems: 'baseline' }}>
                 <h2
                   style={{
-                    marginTop: '30px',
+                    marginTop: '51px',
                     marginRight: '15px',
                     fontSize: '20px',
                   }}
