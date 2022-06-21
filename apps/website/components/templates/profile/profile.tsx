@@ -18,6 +18,7 @@ import {
 } from '@mui/material';
 
 import { ROUTES } from '../../../constants/routes';
+import { useSnackbar } from '../../../hooks/use-snackbar';
 import { useBiconomyMint } from '../../../hooks/useMint';
 import { gqlMethods } from '../../../services/api';
 import { Credentials, Users } from '../../../services/graphql/types.generated';
@@ -57,18 +58,33 @@ export function ProfileTemplate({
 
   const session = useSession();
   const router = useRouter();
+  const snackbar = useSnackbar();
+
+  const mintCredentialMutation = useMutation(
+    'mintCredential',
+    session.data?.user && gqlMethods(session.data.user).mint_credential
+  );
 
   const { mint, loading, minted } = useBiconomyMint(
-    '0x273eA2e7fc1DA62C890A41D338B0dC24e7782DD7'
+    process.env.NEXT_PUBLIC_WEB3_NFT_ADDRESS
   );
 
   /**
-   * It mints an NFT.
-   * @param {Credentials} [credential=null] - Credentials = null
+   * It mints a credential.
+   * @param {Credentials} credential - the credential to be referenced
    */
-  const mintNFT = async (credential: Credentials = null) => {
-    await mint('ipfs://');
-    minted && handleOpen();
+  const mintNFT = async (credential: Credentials) => {
+    const isMinted = await mint('ipfs://');
+
+    isMinted &&
+      mintCredentialMutation.mutate(
+        { id: credential.id },
+        {
+          onSuccess: () => {
+            handleOpen();
+          },
+        }
+      );
   };
 
   const updateMutation = useMutation(
@@ -299,6 +315,8 @@ export function ProfileTemplate({
                       to_complete={credential.status === 'to_complete'}
                       complete={() => goToEarn(credential.id)}
                       pending={credential.status === 'pending'}
+                      mintable={credential.status === 'to_mint'}
+                      mint={() => mintNFT(credential)}
                     />
                   </Grid>
                 ))}
