@@ -72,7 +72,7 @@ export default function CredentialCard({
             sx={{ width: '100%' }}
             onClick={() => claim()}
           >
-            Claim Credential
+            Complete Credential
           </Button>
         )}
         {to_complete && (
