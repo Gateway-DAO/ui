@@ -10,6 +10,7 @@ import { mockLevels } from './__mock__';
 import { CredentialDetailsTypes } from './credential-details-schema';
 
 type Props = {
+  isStillWorking: boolean;
   onRoleUpdate: (value: string) => void;
   onCommitmentLevelUpdate: (value: string) => void;
   onStartDateUpdate: (value: string) => void;
@@ -19,6 +20,7 @@ type Props = {
 };
 
 export function CredentialDetailsForm({
+  isStillWorking,
   onRoleUpdate,
   onCommitmentLevelUpdate,
   onStartDateUpdate,
@@ -77,6 +79,7 @@ export function CredentialDetailsForm({
         required
         label="End date"
         id="end_date"
+        disabled={isStillWorking}
         onChange={(e) => onEndDateUpdate(e.target.value)}
         //{...register('end_date')}
         error={!!errors.end_date}
@@ -86,7 +89,10 @@ export function CredentialDetailsForm({
         control={
           <Checkbox
             name="currently_working"
-            onChange={(e) => onIsStillWorkingUpdate(!!e.target.value)}
+            checked={isStillWorking}
+            onChange={(e) => {
+              onIsStillWorkingUpdate(!!e.target.checked);
+            }}
             //{...register('currently_working')}
           />
         }

@@ -40,7 +40,11 @@ export function EarnCredentialTemplate({ credentialInfo }) {
   const session = useSession();
   const router = useRouter();
 
-  const [credential, setCredential] = useState({ name: '', description: '' });
+  const [credential, setCredential] = useState({
+    id: null,
+    name: '',
+    description: '',
+  });
   const [open, setOpen] = useState(false);
   const [role, setRole] = useState('');
   const [commitmentLevel, setCommitmentLevel] = useState('');
@@ -65,6 +69,7 @@ export function EarnCredentialTemplate({ credentialInfo }) {
   useEffect(() => {
     if (credentialInfo) {
       setCredential({
+        id: credentialInfo['credential_group_by_pk'].id,
         name: credentialInfo['credential_group_by_pk'].name,
         description: credentialInfo['credential_group_by_pk'].description,
       });
@@ -82,8 +87,8 @@ export function EarnCredentialTemplate({ credentialInfo }) {
   const randomNftUrl = 'https://i.ibb.co/bzzgBfT/random-nft.png';
 
   const updateMutation = useMutation(
-    'claimCredential',
-    session.data?.user && gqlMethods(session.data.user).claim_credential,
+    'completeCredential',
+    session.data?.user && gqlMethods(session.data.user).update_credential,
     {
       onSuccess() {
         handleOpen();
@@ -91,10 +96,23 @@ export function EarnCredentialTemplate({ credentialInfo }) {
     }
   );
 
-  const claim = (credentialId) => {
+  const complete = (credentialId) => {
+    const data = {
+      details: {
+        role,
+        commitmentLevel,
+        startDate: new Date(startDate),
+        endDate: isStillWorking ? null : new Date(endDate),
+        isStillWorking,
+        responsibilities,
+      },
+      accomplishments,
+    };
+
     updateMutation.mutate(
       {
         group_id: credentialId,
+        ...data,
       },
       {
         onSuccess: () => handleOpen(),
@@ -251,6 +269,7 @@ export function EarnCredentialTemplate({ credentialInfo }) {
             </Grid>
             <Grid item xs={3}>
               <CredentialDetailsForm
+                isStillWorking={isStillWorking}
                 onRoleUpdate={updateRole}
                 onCommitmentLevelUpdate={updateCommitmentLevel}
                 onStartDateUpdate={updateStartDate}
@@ -312,19 +331,7 @@ export function EarnCredentialTemplate({ credentialInfo }) {
         <Button
           variant="contained"
           sx={{ marginLeft: '10px' }}
-          // onClick={() => claim(credentialInfo.id)}
-          onClick={() => {
-            const data = {
-              role,
-              commitmentLevel,
-              startDate,
-              endDate,
-              isStillWorking,
-              responsibilities,
-              accomplishments,
-            };
-            console.log(data);
-          }}
+          onClick={() => complete(credential.id)}
         >
           Submit
         </Button>

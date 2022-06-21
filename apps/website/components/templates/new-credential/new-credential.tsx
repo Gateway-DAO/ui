@@ -30,7 +30,7 @@ export function NewCredentialTemplate() {
 
   const updateMutation = useMutation(
     'updateCredential',
-    session.data?.user && gqlMethods(session.data.user).update_credential,
+    session.data?.user && gqlMethods(session.data.user).create_credential_group,
     {
       onSuccess() {
         snackbar.handleClick({ message: 'Credential created!' });
