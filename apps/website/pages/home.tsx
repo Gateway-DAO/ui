@@ -37,12 +37,17 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
       };
     }
     const spanGetExplore = transaction.startChild({ op: 'get_explore' });
-    const exploreProps = await gqlMethods(session.user).get_explore({
-      id: session.user.id,
-    });
+    const gql = gqlMethods(session.user);
+
+    const [exploreProps, { me }] = await Promise.all([
+      gql.get_explore({
+        id: session.user.id,
+      }),
+      gql.me(),
+    ]);
     spanGetExplore.finish();
     /* TODO: Make this reusable */
-    if (!exploreProps.me.init)
+    if (!me.init)
       return {
         props: {
           exploreProps,
@@ -57,6 +62,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
       props: {
         // dehydratedState: dehydrate(queryClient),
         exploreProps,
+        me,
       },
     };
   } catch (error) {
