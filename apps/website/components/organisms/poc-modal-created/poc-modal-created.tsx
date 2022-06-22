@@ -1,13 +1,17 @@
+import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
+import { useState, useEffect } from 'react';
 
 import { AiOutlineCopy } from 'react-icons/ai';
+import { useQuery } from 'react-query';
 
 import { Button } from '@mui/material';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Typography from '@mui/material/Typography';
 
+import { gqlMethods } from '../../../services/api';
 import CredentialCard from '../../molecules/credential-card';
 
 const style = {
@@ -20,8 +24,42 @@ const style = {
   p: 4,
 };
 
-export default function PocModalCreated({ open, handleClose }) {
+export default function PocModalCreated({
+  credentialGroupId,
+  open,
+  handleClose,
+}) {
+  const [credential, setCredential] = useState({
+    name: '',
+    description: '',
+  });
+
+  const session = useSession();
   const router = useRouter();
+
+  const { data, refetch } = useQuery(
+    ['get-credential-group'],
+    () => {
+      if (!session.data.user) return;
+      return gqlMethods(session.data.user).get_credential_group_info({
+        credentialId: credentialGroupId,
+      });
+    },
+    {
+      enabled: false,
+    }
+  );
+
+  useEffect(() => {
+    if (open) {
+      refetch().then((result) =>
+        setCredential({
+          name: result.data.credential_group_by_pk.name,
+          description: result.data.credential_group_by_pk.description,
+        })
+      );
+    }
+  }, [open, credentialGroupId, data, refetch]);
 
   return (
     <div>
@@ -65,15 +103,13 @@ export default function PocModalCreated({ open, handleClose }) {
                 fontSize={16}
               >
                 You have created the{' '}
-                <span style={{ color: '#D083FF' }}>
-                  Olympus Operations Working Group - Season 2
-                </span>{' '}
+                <span style={{ color: '#D083FF' }}>{credential.name}</span>{' '}
                 credential.
               </Typography>
             </Box>
             <CredentialCard
-              name="Olympus Operations Work..."
-              description="The Operations Group at Olympus is responsible for making sure that work..."
+              name={credential.name}
+              description={credential.description}
             />
             <Box
               sx={{
