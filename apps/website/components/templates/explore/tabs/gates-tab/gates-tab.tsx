@@ -6,12 +6,12 @@ import Chip from '@mui/material/Chip';
 
 import { usePropertyFilter } from '../../../../../hooks/use-property-filter';
 import { useViewMode, ViewMode } from '../../../../../hooks/use-view-modes';
-import { Gates } from '../../../../../services/graphql/types.generated';
 import { GatesCard } from '../../../../molecules/gates-card';
+import { ExploreProps } from '../../types';
 import { TableView } from './table-view';
 
 type Props = {
-  gates: Gates[];
+  gates: ExploreProps['gates'];
 };
 
 export function GatesTab({ gates }: Props) {

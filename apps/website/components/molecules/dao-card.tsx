@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { useMemo } from 'react';
 
 import type { PartialDeep } from 'type-fest';
 
@@ -17,6 +18,7 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { Box } from '@mui/system';
 
+import { ROUTES } from '../../constants/routes';
 import { Daos } from '../../services/graphql/types.generated';
 
 /* TODO: Arias and Labels */
@@ -29,9 +31,11 @@ export function DaoCard({
   categories,
   description,
 }: PartialDeep<Daos>) {
+  const url = useMemo(() => ROUTES.DAO_PROFILE.replace('[id]', id), [id]);
+
   return (
     <MUICard>
-      <Link passHref href={`/dao/${id}`}>
+      <Link passHref href={url}>
         <CardActionArea component="a">
           <CardMedia
             component="img"
@@ -42,7 +46,7 @@ export function DaoCard({
         </CardActionArea>
       </Link>
       <Box sx={{ position: 'relative', ml: 2 }}>
-        <Link passHref href={`/dao/${id}`}>
+        <Link passHref href={url}>
           <Button
             component="a"
             sx={{

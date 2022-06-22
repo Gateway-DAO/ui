@@ -6,12 +6,12 @@ import Chip from '@mui/material/Chip';
 
 import { usePropertyFilter } from '../../../../../hooks/use-property-filter';
 import { useViewMode, ViewMode } from '../../../../../hooks/use-view-modes';
-import { Daos } from '../../../../../services/graphql/types.generated';
 import { DaoCard } from '../../../../molecules/dao-card';
+import { ExploreProps } from '../../types';
 import { TableView } from './table-view';
 
 type Props = {
-  daos: Daos[];
+  daos: ExploreProps['daos'];
 };
 
 export function DaosTab({ daos }: Props) {

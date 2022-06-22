@@ -21,7 +21,7 @@ export function PersonCard({ name, username, pfp }: PartialDeep<Users>) {
               width: 40,
               height: 40,
             }}
-            aria-label="recipe"
+            aria-label={name}
             src={pfp}
           >
             {name?.[0]}

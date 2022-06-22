@@ -8,14 +8,13 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 
-import { Daos } from '../../../../../services/graphql/types.generated';
-import { badgeProps } from '../../../../../utils/badge-props';
+import { ExploreProps } from '../../types';
 
 // TODO: make it generic
 // TODO: Fix Dao name column width
 
 type Props = {
-  daos: Daos[];
+  daos: ExploreProps['daos'];
 };
 export function TableView({ daos }: Props) {
   return (

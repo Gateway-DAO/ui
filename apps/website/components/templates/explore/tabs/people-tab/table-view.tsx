@@ -8,10 +8,10 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 
-import { Users } from '../../../../../services/graphql/types.generated';
+import { ExploreProps } from '../../types';
 
 type Props = {
-  people: Users[];
+  people: ExploreProps['people'];
 };
 export function TableView({ people }: Props) {
   return (

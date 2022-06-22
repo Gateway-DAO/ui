@@ -10,12 +10,13 @@ import TableRow from '@mui/material/TableRow';
 
 import { Gates } from '../../../../../services/graphql/types.generated';
 import { badgeProps } from '../../../../../utils/badge-props';
+import { ExploreProps } from '../../types';
 
 // TODO: make it generic
 // TODO: Fix Gate name column width
 
 type Props = {
-  gates: Gates[];
+  gates: ExploreProps['gates'];
 };
 export function TableView({ gates }: Props) {
   return (

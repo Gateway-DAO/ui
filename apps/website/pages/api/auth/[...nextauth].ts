@@ -37,13 +37,11 @@ export default withSentry(
             }
 
             /* get current user from hasura based on the token */
-            const user = (
-              await gqlMethods({ token: res.login.token }).get_current_user()
-            )?.me;
+            const { me } = await gqlMethods({ token: res.login.token }).me();
 
             return {
               ...res.login,
-              ...user,
+              ...me,
             };
           } catch (e) {
             console.error('Auth error', e);
