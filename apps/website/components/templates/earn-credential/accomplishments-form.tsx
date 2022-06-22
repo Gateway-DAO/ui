@@ -115,8 +115,8 @@ export function AccomplishmentsForm({
       <Avatar
         sx={{
           position: 'absolute',
-          bottom: 10,
-          right: 10,
+          top: 60,
+          right: 8,
           color: '#9A53FF',
           cursor: 'pointer',
         }}
