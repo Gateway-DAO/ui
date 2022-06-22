@@ -196,7 +196,7 @@ export function EarnCredentialTemplate({ credentialInfo }) {
       >
         <NavBarAvatar />
       </Box>
-      <Typography variant="h5" sx={{ marginBottom: '100px' }}>
+      <Typography variant="h5" sx={{ marginLeft:'92px',marginBottom: '100px' }}>
         Earn Proof of Credential
       </Typography>
       <Stack
@@ -207,11 +207,11 @@ export function EarnCredentialTemplate({ credentialInfo }) {
       >
         {/* Credential details */}
         <Grid container>
-          <Grid item xs={5}>
-            <Typography variant="h6" fontWeight="bold">
+          <Grid item xs={5} >
+            <Typography variant="h6" fontWeight="bold" sx={{ marginLeft:'92px' }}>
               Details
             </Typography>
-            <Typography variant="caption">
+            <Typography variant="caption" sx={{ marginLeft:'92px' }}>
               Basic Details of Credential
             </Typography>
           </Grid>
@@ -260,10 +260,10 @@ export function EarnCredentialTemplate({ credentialInfo }) {
         <FormProvider {...credentialDetailsMethods}>
           <Grid container>
             <Grid item xs={5}>
-              <Typography variant="h6" fontWeight="bold">
+              <Typography variant="h6" fontWeight="bold" sx={{ marginLeft:'92px' }}>
                 Your Details
               </Typography>
-              <Typography variant="caption">
+              <Typography variant="caption" sx={{ marginLeft:'92px' }}>
                 Customize Your Credential
               </Typography>
             </Grid>
@@ -285,10 +285,10 @@ export function EarnCredentialTemplate({ credentialInfo }) {
         <FormProvider {...accomplishmentsMethods}>
           <Grid container>
             <Grid item xs={5}>
-              <Typography variant="h6" fontWeight="bold">
+              <Typography variant="h6" fontWeight="bold" sx={{ marginLeft:'92px' }}>
                 Proudest Accomplishments
               </Typography>
-              <Typography variant="caption">
+              <Typography variant="caption" sx={{ marginLeft:'92px' }}>
                 Tell the world about your greatest accomplishments and get it
                 verified!
               </Typography>
