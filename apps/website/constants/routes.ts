@@ -6,4 +6,5 @@ export const ROUTES = {
   CREDENTIALS: '/credentials',
   CREDENTIALS_NEW: '/credentials/new',
   CREDENTIALS_EARN: '/credentials/earn/',
+  CREDENTIALS_VIEW: '/credentials/view/',
 };
