@@ -24,3 +24,5 @@ export const gqlAnonMethods = getSdk(glqAnonClient);
 
 export const gqlMethods = (user: Partial<SessionUser>) =>
   getSdk(gqlClient(user));
+
+export type GqlMethods = ReturnType<typeof getSdk>;

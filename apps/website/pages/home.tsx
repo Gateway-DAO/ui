@@ -8,80 +8,23 @@ import * as Sentry from '@sentry/nextjs';
 
 import { DashboardTemplate } from '../components/templates/dashboard';
 import { ExploreTemplate } from '../components/templates/explore';
-import { ROUTES } from '../constants/routes';
-import { gqlMethods } from '../services/api';
+import { withAuth } from '../utils/withAuth';
 
 /** TODO: Prevent template remount when navigating between dashboard pages
  * https://nextjs.org/docs/basic-features/layouts
  * */
 
-export const getServerSideProps: GetServerSideProps = async ({ req }) => {
-  const transaction = Sentry.startTransaction({
-    name: 'Explore page getServerSideProps',
+export const getServerSideProps = withAuth(async ({ gql, session }) => {
+  const exploreProps = await gql.get_explore({
+    id: session.user.id,
   });
-  Sentry.getCurrentHub().configureScope((scope) => scope.setSpan(transaction));
 
-  try {
-    const span = transaction.startChild({ op: 'getSession' });
-    const session = await getSession({ req });
-    span.finish();
-    if (!session?.user) {
-      return {
-        redirect: {
-          destination: ROUTES.LANDING,
-          permanent: true,
-        },
-        props: {
-          exploreProps: null,
-        },
-      };
-    }
-    const spanGetExplore = transaction.startChild({ op: 'get_explore' });
-    const gql = gqlMethods(session.user);
-
-    const [exploreProps, { me }] = await Promise.all([
-      gql.get_explore({
-        id: session.user.id,
-      }),
-      gql.me(),
-    ]);
-    spanGetExplore.finish();
-    /* TODO: Make this reusable */
-    if (!me.init)
-      return {
-        props: {
-          exploreProps,
-        },
-        redirect: {
-          destination: ROUTES.NEW_USER,
-          permanent: true,
-        },
-      };
-
-    return {
-      props: {
-        // dehydratedState: dehydrate(queryClient),
-        exploreProps,
-        me,
-      },
-    };
-  } catch (error) {
-    Sentry.captureException(error);
-    return {
-      redirect: {
-        destination: ROUTES.LANDING,
-        permanent: true,
-      },
-      props: {
-        exploreProps: null,
-      },
-    };
-  } finally {
-    transaction.finish();
-  }
-
-  /* TODO: Implement Custom CLient Session Handling <https://next-auth.js.org/getting-started/client#custom-client-session-handling> */
-};
+  return {
+    props: {
+      exploreProps,
+    },
+  };
+});
 
 export default function Explore({
   exploreProps,
