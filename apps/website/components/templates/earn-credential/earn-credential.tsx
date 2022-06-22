@@ -243,7 +243,7 @@ export function EarnCredentialTemplate({ credentialInfo }) {
                 </Typography>
                 <Chip label="Contributor" sx={{ marginBottom: '20px' }} />
                 <Box>
-                  <Typography variant="caption">
+                  <Typography variant="caption" sx={{ fontSize:'16px' }}>
                     {credential.description}
                   </Typography>
                 </Box>
