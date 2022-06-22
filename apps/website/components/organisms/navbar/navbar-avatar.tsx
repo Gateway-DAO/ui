@@ -1,8 +1,4 @@
-import setLanguage from 'next-translate/setLanguage';
 import { useCallback } from 'react';
-
-import { NestedMenuItem } from 'mui-nested-menu';
-import { useDisconnect, useAccount } from 'wagmi';
 
 import { useMenu } from '@gateway/ui';
 
@@ -21,13 +17,7 @@ import { useAuth } from '../../../providers/auth';
 
 export function NavBarAvatar() {
   const { element, isOpen, onClose, onOpen } = useMenu();
-  /*   const onChangeLanguage = useCallback(
-    (lang: string) => async () => {
-      await setLanguage(lang);
-      onClose();
-    },
-    [onClose]
-  ); */
+
   const withOnClose = useCallback(
     (cb: () => void) => () => {
       cb();
@@ -35,7 +25,7 @@ export function NavBarAvatar() {
     },
     [onClose]
   );
-  const { onSignOut } = useAuth();
+  const { onSignOut, me } = useAuth();
 
   return (
     <>
@@ -66,7 +56,7 @@ export function NavBarAvatar() {
               },
             }}
           >
-            <Avatar>R</Avatar>
+            <Avatar>{me?.name?.[0]}</Avatar>
           </Badge>
         </IconButton>
       </Tooltip>

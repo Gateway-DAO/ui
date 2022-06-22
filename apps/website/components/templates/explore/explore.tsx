@@ -7,7 +7,7 @@ import { Box, Tabs, Tab, Typography } from '@mui/material';
 
 import { Daos, Gates, Users } from '../../../services/graphql/types.generated';
 import { a11yTabProps, TabPanel, useTab } from '../../atoms/tabs';
-import { Navbar } from '../../organisms/navbar/navbar';
+import { Navbar } from '../../organisms/navbar';
 import { AllTab } from './tabs/all-tab';
 import { DaosTab } from './tabs/daos-tab';
 import { GatesTab } from './tabs/gates-tab';

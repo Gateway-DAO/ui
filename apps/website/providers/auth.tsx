@@ -11,12 +11,14 @@ import {
 import { useAccount, useDisconnect } from 'wagmi';
 
 import { ROUTES } from '../constants/routes';
+import { Users } from '../services/graphql/types.generated';
 
 type Props = {
+  me?: Users;
   isAuthPage?: boolean;
 };
 
-const AuthContext = createContext<{ onSignOut: () => void }>({
+const AuthContext = createContext<{ onSignOut: () => void; me?: Users }>({
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   onSignOut: () => {},
 });
@@ -24,6 +26,7 @@ const AuthContext = createContext<{ onSignOut: () => void }>({
 export const useAuth = () => useContext(AuthContext);
 
 export function AuthProvider({
+  me,
   isAuthPage,
   children,
 }: PropsWithChildren<Props>) {
@@ -58,7 +61,7 @@ export function AuthProvider({
   ]);
 
   return (
-    <AuthContext.Provider value={{ onSignOut }}>
+    <AuthContext.Provider value={{ onSignOut, me }}>
       {children}
     </AuthContext.Provider>
   );
