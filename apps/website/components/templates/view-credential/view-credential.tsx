@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import { useState, useEffect } from 'react';
 
 import { TOKENS } from '@gateway/theme';
 
@@ -42,7 +43,27 @@ const details = [
   },
 ];
 
-export function ViewCredentialTemplate() {
+export function ViewCredentialTemplate({ credentialInfo }) {
+  const [credential, setCredential] = useState({
+    id: null,
+    name: '',
+    description: '',
+    details: {},
+    accomplishments: {},
+  });
+
+  useEffect(() => {
+    if (credentialInfo) {
+      setCredential({
+        id: credentialInfo['credentials_by_pk'].id,
+        name: credentialInfo['credentials_by_pk'].name,
+        description: credentialInfo['credentials_by_pk'].description,
+        details: credentialInfo['credentials_by_pk'].details,
+        accomplishments: credentialInfo['credentials_by_pk'].pow,
+      });
+    }
+  }, [credentialInfo]);
+
   const credentialImgUrl =
     'https://i.postimg.cc/6QJDW2r1/olympus-credential-picture.png';
   const randomNftUrl = 'https://i.ibb.co/bzzgBfT/random-nft.png';

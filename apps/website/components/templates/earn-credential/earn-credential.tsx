@@ -176,7 +176,11 @@ export function EarnCredentialTemplate({ credentialInfo }) {
 
   return (
     <Stack gap={6} p={TOKENS.CONTAINER_PX}>
-      <PocModalCompleted open={open} handleClose={handleClose} />
+      <PocModalCompleted
+        credentialId={credential.id}
+        open={open}
+        handleClose={handleClose}
+      />
       <Box>
         <Image
           src="/favicon-512.png"

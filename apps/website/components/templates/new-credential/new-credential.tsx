@@ -9,7 +9,6 @@ import { TOKENS } from '@gateway/theme';
 
 import { Box, Stack, Typography } from '@mui/material';
 
-import { useSnackbar } from '../../../hooks/use-snackbar';
 import { gqlMethods } from '../../../services/api';
 import PocModalCreated from '../../organisms/poc-modal-created/poc-modal-created';
 import { AvatarUploadCard } from './avatar-upload-card';
@@ -18,6 +17,7 @@ import { schema, NewCredentialSchema } from './schema';
 
 export function NewCredentialTemplate() {
   const [open, setOpen] = useState(false);
+  const [credentialGroupId, setCredentialGroupId] = useState('');
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
@@ -26,19 +26,10 @@ export function NewCredentialTemplate() {
   });
 
   const session = useSession();
-  const snackbar = useSnackbar();
 
   const updateMutation = useMutation(
     'updateCredential',
-    session.data?.user && gqlMethods(session.data.user).create_credential_group,
-    {
-      onSuccess() {
-        snackbar.handleClick({ message: 'Credential created!' });
-      },
-      onError(error: string) {
-        console.log('An error occurred: ' + error);
-      },
-    }
+    session.data?.user && gqlMethods(session.data.user).create_credential_group
   );
 
   const onSubmit = (data: NewCredentialSchema) => {
@@ -51,14 +42,22 @@ export function NewCredentialTemplate() {
         wallets: parsedWallets,
       },
       {
-        onSuccess: () => handleOpen(),
+        onSuccess: (response) => {
+          const createdGroupId = response.insert_credential_group_one.id;
+          setCredentialGroupId(createdGroupId);
+          handleOpen();
+        },
       }
     );
   };
 
   return (
     <Stack direction="column" gap={6} p={TOKENS.CONTAINER_PX}>
-      <PocModalCreated open={open} handleClose={handleClose} />
+      <PocModalCreated
+        open={open}
+        handleClose={handleClose}
+        credentialGroupId={credentialGroupId}
+      />
       <Typography variant="h4">Create Proof of Credential</Typography>
       <Stack
         direction="row"
