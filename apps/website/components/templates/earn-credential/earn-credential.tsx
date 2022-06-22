@@ -238,7 +238,7 @@ export function EarnCredentialTemplate({ credentialInfo }) {
                   marginLeft: '32px',
                 }}
               >
-                <Typography variant="h6" sx={{ marginBottom: '10px' }}>
+                <Typography variant="h4" sx={{ marginBottom: '10px' }}>
                   {credential.name}
                 </Typography>
                 <Chip label="Contributor" sx={{ marginBottom: '20px' }} />
