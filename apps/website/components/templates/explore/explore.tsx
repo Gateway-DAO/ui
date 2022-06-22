@@ -5,22 +5,18 @@ import { TOKENS } from '@gateway/theme';
 
 import { Box, Tabs, Tab, Typography } from '@mui/material';
 
-import { Daos, Gates, Users } from '../../../services/graphql/types.generated';
 import { a11yTabProps, TabPanel, useTab } from '../../atoms/tabs';
 import { Navbar } from '../../organisms/navbar';
 import { AllTab } from './tabs/all-tab';
 import { DaosTab } from './tabs/daos-tab';
 import { GatesTab } from './tabs/gates-tab';
 import { PeopleTab } from './tabs/people-tab';
+import { ExploreProps } from './types';
 
 type TemplateProps = {
   title: string;
   subtitle: string;
-  data: {
-    daos: Daos[];
-    gates: Gates[];
-    people: Users[];
-  };
+  data: ExploreProps;
 };
 
 export function ExploreTemplate({ title, subtitle, data }: TemplateProps) {

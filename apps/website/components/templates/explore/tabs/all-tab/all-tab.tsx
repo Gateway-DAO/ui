@@ -2,11 +2,6 @@ import useTranslation from 'next-translate/useTranslation';
 
 import { Button, Divider, Stack } from '@mui/material';
 
-import {
-  Gates,
-  Daos,
-  Users,
-} from '../../../../../services/graphql/types.generated';
 import { DaoCard } from '../../../../molecules/dao-card';
 import { GatesCard } from '../../../../molecules/gates-card';
 import { PersonCard } from '../../../../molecules/person-card';
@@ -14,15 +9,11 @@ import {
   SectionWithSlider,
   SectionWithGrid,
 } from '../../../../molecules/sections';
-import { NewsItem } from './news-item';
-import { NewsSection } from './news-section';
+import { ExploreProps } from '../../types';
 
 type Props = {
-  gates: Partial<Gates>[];
-  daos: Partial<Daos>[];
-  people: Partial<Users>[];
   setActiveTab: (tab: number) => void;
-};
+} & ExploreProps;
 
 export function AllTab({ daos, gates, people, setActiveTab }: Props) {
   const { t } = useTranslation('explore');

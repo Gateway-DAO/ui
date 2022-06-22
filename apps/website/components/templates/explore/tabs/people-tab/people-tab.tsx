@@ -1,10 +1,10 @@
 import { Box } from '@mui/material';
 
-import { Users } from '../../../../../services/graphql/types.generated';
+import { ExploreProps } from '../../types';
 import { TableView } from './table-view';
 
 type Props = {
-  people: Users[];
+  people: ExploreProps['people'];
 };
 
 export function PeopleTab({ people }: Props) {
