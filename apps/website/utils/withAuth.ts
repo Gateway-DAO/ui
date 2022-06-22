@@ -18,7 +18,7 @@ import { MeQuery } from '../services/graphql/types.generated';
 export function withAuth<
   P extends { [key: string]: any } = { [key: string]: any }
 >(
-  cb: (props: {
+  cb?: (props: {
     session: Session;
     gql: GqlMethods;
     ctx: GetStaticPropsContext;
@@ -46,7 +46,7 @@ export function withAuth<
     try {
       /* Fetches current user information w/ page data */
       const [callbackResult, { me }] = await Promise.all([
-        cb({ gql, ctx, session }),
+        cb?.({ gql, ctx, session }),
         gql.me(),
       ]);
 
