@@ -56,7 +56,9 @@ export function NavBarAvatar() {
               },
             }}
           >
-            <Avatar>{me?.name?.[0]}</Avatar>
+            <Avatar aria-label={me?.name} src={me?.pfp}>
+              {me?.name?.[0]}
+            </Avatar>
           </Badge>
         </IconButton>
       </Tooltip>
