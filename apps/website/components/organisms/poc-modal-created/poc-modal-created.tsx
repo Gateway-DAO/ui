@@ -37,7 +37,7 @@ export default function PocModalCreated({
   const session = useSession();
   const router = useRouter();
 
-  const { data, refetch } = useQuery(
+  const { refetch: getCredentialGroup } = useQuery(
     ['get-credential-group'],
     () => {
       if (!session.data.user) return;
@@ -52,14 +52,14 @@ export default function PocModalCreated({
 
   useEffect(() => {
     if (open) {
-      refetch().then((result) =>
+      getCredentialGroup().then((result) =>
         setCredential({
           name: result.data.credential_group_by_pk.name,
           description: result.data.credential_group_by_pk.description,
         })
       );
     }
-  }, [open, credentialGroupId, data, refetch]);
+  }, [open, credentialGroupId, getCredentialGroup]);
 
   return (
     <div>
