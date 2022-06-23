@@ -72,6 +72,7 @@ export function AccomplishmentsForm({
           Type
         </InputLabel>
         <Select
+          label ="Type"
           id="pow_type"
           onChange={(e) =>
             onUpdate(accomplishmentId, 'type', e.target.value.toString())
