@@ -34,7 +34,7 @@ export function GatesCard({
         avatar={
           hasDao && (
             <Avatar
-              src={dao.logo_url}
+              src={dao?.logo_url}
               sx={{ width: 32, height: 32 }}
               aria-label={`${dao.name}'s DAO image`}
             >

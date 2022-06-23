@@ -67,9 +67,9 @@ export function TableView({ gates }: Props) {
                 <TableCell>
                   <Stack alignItems="center" direction="row" gap={1}>
                     <Avatar
-                      src={gate.dao.logo_url}
+                      src={gate?.dao?.logo_url}
                       sx={{ width: 32, height: 32 }}
-                      aria-label={gate.dao.name}
+                      aria-label={gate?.dao?.name}
                     >
                       {gate.dao.name?.[0]}
                     </Avatar>

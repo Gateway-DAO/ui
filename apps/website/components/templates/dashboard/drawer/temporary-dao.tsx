@@ -20,7 +20,7 @@ export function TemporaryDao({ dao }: { dao: Daos }) {
     <ListItemButton className={isPresent && 'active'}>
       <ListItemIcon>
         <MotionAvatar
-          src={dao.logo_url}
+          src={dao?.logo_url}
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
           exit={{ scale: 0 }}

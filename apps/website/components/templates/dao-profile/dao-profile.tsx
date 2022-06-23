@@ -77,7 +77,7 @@ export function DaoProfileTemplate({ dao }: Props) {
             border: (theme) => `${theme.spacing(0.5)} solid`,
             borderColor: 'background.default',
           }}
-          src={dao.logo_url}
+          src={dao?.logo_url}
         ></Avatar>
         <Box>
           <Typography component="h1" variant="h4">

@@ -69,7 +69,7 @@ export function Drawer({ currentDao, followingDaos, showExplore }: Props) {
                   className={clsx({ active: dao.id === currentDao?.id })}
                 >
                   <ListItemIcon>
-                    <Avatar src={dao.logo_url}>{dao.name?.[0]}</Avatar>
+                    <Avatar src={dao?.logo_url}>{dao.name?.[0]}</Avatar>
                   </ListItemIcon>
                 </ListItemButton>
               </MotionTooltip>

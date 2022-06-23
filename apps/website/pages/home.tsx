@@ -33,9 +33,6 @@ export default function Explore({
 
   if (!exploreProps) return null;
 
-  /*   const session = useSession();
-  console.log(session);
- */
   return (
     <DashboardTemplate
       containerProps={{
