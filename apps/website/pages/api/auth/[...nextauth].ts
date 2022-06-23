@@ -39,6 +39,8 @@ export default withSentry(
             /* get current user from hasura based on the token */
             const { me } = await gqlMethods({ token: res.login.token }).me();
 
+            delete me.pfp;
+
             return {
               ...res.login,
               ...me,
