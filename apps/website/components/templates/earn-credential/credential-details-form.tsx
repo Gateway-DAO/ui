@@ -1,13 +1,23 @@
-import { useFormContext } from 'react-hook-form';
+import { useFormContext } from "react-hook-form";
+import * as React from "react";
+import {
+  Checkbox,
+  FormControlLabel,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
+//date picker components
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
-import { Checkbox, FormControlLabel, Stack, TextField } from '@mui/material';
-import FormControl from '@mui/material/FormControl';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import Select from '@mui/material/Select';
-
-import { mockLevels } from './__mock__';
-import { CredentialDetailsTypes } from './credential-details-schema';
+import { mockLevels } from "./__mock__";
+import { CredentialDetailsTypes } from "./credential-details-schema";
 
 type Props = {
   isStillWorking: boolean;
@@ -32,84 +42,115 @@ export function CredentialDetailsForm({
     //register,
     formState: { errors },
   } = useFormContext<CredentialDetailsTypes>();
-
+  //date picker states
+  const [startDate, setStartDate] = React.useState(new Date());
+  const [endDate, setEndDate] = React.useState(new Date());
   return (
-    <Stack direction="column" gap={2}>
-      {/* Role */}
-      <TextField
-        required
-        label="Role"
-        id="role"
-        onChange={(e) => onRoleUpdate(e.target.value)}
-        //{...register('role')}
-        error={!!errors.role}
-        helperText={errors.role?.message}
-      />
-      {/* Level of commitment */}
-      <FormControl fullWidth>
-        <InputLabel variant="outlined" htmlFor="commitment_level">
-          Level of commitment
-        </InputLabel>
-        <Select
-          id="commitment_level"
-          onChange={(e) => onCommitmentLevelUpdate(e.target.value.toString())}
-          //{...register('commitment_level')}
-        >
-          <MenuItem value="">
-            <em>None</em>
-          </MenuItem>
-          {mockLevels.map((level) => (
-            <MenuItem key={level.value} value={level.value}>
-              {level.label}
+    <LocalizationProvider dateAdapter={AdapterDateFns}>
+      <Stack direction="column" gap={2}>
+        {/* Role */}
+        <TextField
+          required
+          label="Role"
+          id="role"
+          onChange={(e) => onRoleUpdate(e.target.value)}
+          //{...register('role')}
+          error={!!errors.role}
+          helperText={errors.role?.message}
+        />
+        {/* Level of commitment */}
+        <FormControl fullWidth>
+          <InputLabel htmlFor="commitment_level">
+            Level of commitment
+          </InputLabel>
+          <Select
+            id="commitment_level"
+            onChange={(e) => onCommitmentLevelUpdate(e.target.value.toString())}
+            label="Level of commitment"
+            //{...register('commitment_level')}
+          >
+            <MenuItem value="">
+              <em>None</em>
             </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-      {/* Start and end dates */}
-      <TextField
-        required
-        label="Start date"
-        id="start_date"
-        onChange={(e) => onStartDateUpdate(e.target.value)}
-        //{...register('start_date')}
-        error={!!errors.start_date}
-        helperText={errors.start_date?.message}
-      />
-      <TextField
-        required
-        label="End date"
-        id="end_date"
-        disabled={isStillWorking}
-        onChange={(e) => onEndDateUpdate(e.target.value)}
-        //{...register('end_date')}
-        error={!!errors.end_date}
-        helperText={errors.end_date?.message}
-      />
-      <FormControlLabel
-        control={
-          <Checkbox
-            name="currently_working"
-            checked={isStillWorking}
-            onChange={(e) => {
-              onIsStillWorkingUpdate(!!e.target.checked);
-            }}
-            //{...register('currently_working')}
-          />
-        }
-        label="I'm currently working on this role"
-      />
-      {/* Responsibilities */}
-      <TextField
-        required
-        label="Day to day responsibilities"
-        id="responsibilities"
-        multiline
-        minRows={4}
-        onChange={(e) => onResponsibilitiesUpdate(e.target.value)}
-        //{...register('responsibilities')}
-        error={!!errors.responsibilities}
-        helperText={errors.responsibilities?.message}
-      />
-    </Stack>
+            {mockLevels.map((level) => (
+              <MenuItem key={level.value} value={level.value}>
+                {level.label}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+        <Typography
+          variant="caption"
+          sx={{ textTransform: "uppercase", display: "block" }}
+        >
+          Time period of contribution
+        </Typography>
+        {/* Start and end dates */}
+        <DatePicker
+          disableFuture
+          label="Start date"
+          inputFormat="dd-MM-yyyy"
+          openTo="year"
+          views={["year", "month", "day"]}
+          value={startDate}
+          onChange={(newValue) => {
+            setStartDate(newValue);
+          }}
+          renderInput={(params) => (
+            <TextField
+              error={!!errors.start_date}
+              helperText={errors.start_date?.message}
+              {...params}
+            />
+          )}
+        />
+        <DatePicker
+          disablePast
+          label="End date"
+          inputFormat="dd-MM-yyyy"
+          openTo="year"
+          views={["year", "month", "day"]}
+          value={endDate}
+          onChange={(newValue) => {
+            setEndDate(newValue);
+            
+          }}
+          renderInput={(params) => (
+            <TextField
+              disabled={isStillWorking}
+              id="end_date"
+              error={!!errors.end_date}
+              helperText={errors.end_date?.message}
+              {...params}
+            />
+          )}
+        />
+        <FormControlLabel
+          control={
+            <Checkbox
+              name="currently_working"
+              checked={isStillWorking}
+              onChange={(e) => {
+                onIsStillWorkingUpdate(!!e.target.checked);
+              }}
+              //{...register('currently_working')}
+            />
+          }
+          label="I'm currently working on this role"
+        />
+        {/* Responsibilities */}
+        <TextField
+          required
+          label="Day to day responsibilities"
+          id="responsibilities"
+          multiline
+          minRows={4}
+          onChange={(e) => onResponsibilitiesUpdate(e.target.value)}
+          //{...register('responsibilities')}
+          error={!!errors.responsibilities}
+          helperText={errors.responsibilities?.message}
+        />
+      </Stack>
+    </LocalizationProvider>
   );
 }
