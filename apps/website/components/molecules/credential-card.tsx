@@ -105,7 +105,7 @@ export default function CredentialCard({
             {isMinting ? (
               <CircularProgress color="inherit" size={24} />
             ) : (
-              'Claim it as an NFT'
+              'Mint NFT'
             )}
           </Button>
         )}

@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 // Web3
 import { Biconomy } from '@biconomy/mexa';
 import { ethers } from 'ethers';
-import { useAccount } from 'wagmi';
+import { useAccount, chain, useSigner, useNetwork } from 'wagmi';
 
 import { CREDENTIAL_ABI } from '../constants/web3';
 
@@ -12,8 +12,117 @@ let biconomy;
 let contract: ethers.Contract, contractInterface: ethers.ContractInterface;
 
 /**
+ * It mints a new NFT token
+ * @param {string | null} contractAddress - This is the address of the contract that you want to
+ * interact with.
+ * @returns It returns an object with the following properties:
+ * - mint: A function that mints a new NFT token.
+ * - loading: A boolean value that indicates if the minting process is in progress.
+ * - minted: A boolean value that indicates if the minting process was successful.
+ */
+export function useMint(
+  contractAddress: string | null = process.env.NEXT_PUBLIC_WEB3_NFT_ADDRESS
+) {
+  // From Wagmi
+  const { data: address } = useAccount();
+  const { data: signer } = useSigner();
+  const { activeChain } = useNetwork();
+
+  // State
+  const [loading, setLoading] = useState<boolean>(false);
+  const [minted, setMinted] = useState<boolean>(false);
+
+  // Effects
+  useEffect(() => {
+    /* It creates a new contract instance with the contract address, ABI and signer. */
+    contract = new ethers.Contract(contractAddress, CREDENTIAL_ABI, signer);
+
+    contractInterface = new ethers.utils.Interface(CREDENTIAL_ABI);
+  }, [address, activeChain]);
+
+  /**
+   * It mints a new NFT token.
+   * @param [token_uri] - This is the metadata that you want to attach to the token.
+   * @returns A boolean value.
+   */
+  async function mint(token_uri = ''): Promise<boolean> {
+    setLoading(true);
+
+    if (!(await switchToPolygon())) {
+      return false;
+    }
+
+    if (contract) {
+      try {
+        console.log('Sending normal transaction');
+
+        const tx = await contract.mint(address.address, token_uri);
+
+        console.log('Transaction hash : https://polygonscan.com/tx/' + tx.hash);
+
+        const confirmation = await tx.wait();
+        console.log(confirmation);
+
+        setLoading(false);
+        setMinted(true);
+        return true;
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    setLoading(false);
+    setMinted(false);
+    return false;
+  }
+
+  /**
+   * It switches the user's wallet to the Polygon network
+   * @returns A boolean value.
+   */
+  const switchToPolygon = async () => {
+    try {
+      await window.ethereum.request({
+        method: 'wallet_switchEthereumChain',
+        params: [{ chainId: `0x${(137).toString(16)}` }],
+      });
+      return true;
+    } catch (error) {
+      console.log(error);
+      if (error.code === 4902) {
+        try {
+          await window.ethereum.request({
+            method: 'wallet_addEthereumChain',
+            params: [
+              {
+                chainId: '0x' + (137).toString(16),
+                chainName: chain.polygon.name.toString(),
+                nativeCurrency: chain.polygon.nativeCurrency,
+                rpcUrls: [chain.polygon.rpcUrls.default],
+                blockExplorerUrls: [chain.polygon.blockExplorers.default.url],
+              },
+            ],
+          });
+          return true;
+        } catch (error) {
+          return false;
+        }
+      } else {
+        return false;
+      }
+    }
+  };
+
+  return {
+    mint,
+    loading,
+    minted,
+  };
+}
+
+/**
  * It creates a biconomy provider, signs the transaction and sends it to the contract
- * @param {string | null} [contractAddress=null] - The address of the contract you want to interact
+ * @param {string | null} contractAddress - The address of the contract you want to interact
  * with.
  */
 export function useBiconomyMint(
@@ -23,7 +132,7 @@ export function useBiconomyMint(
   const { data: address } = useAccount();
 
   // State
-  const metaTxEnabled = true;
+  const metaTxEnabled = false;
   const [loading, setLoading] = useState<boolean>(false);
   const [minted, setMinted] = useState<boolean>(false);
 
@@ -42,7 +151,7 @@ export function useBiconomyMint(
         biconomy = new Biconomy(jsonRpcProvider, {
           walletProvider: window.ethereum,
           apiKey: process.env.NEXT_PUBLIC_WEB3_BICONOMY_API_KEY,
-          debug: true,
+          debug: false,
         });
 
         biconomy
@@ -138,3 +247,5 @@ export function useBiconomyMint(
     minted,
   };
 }
+
+export default useMint;

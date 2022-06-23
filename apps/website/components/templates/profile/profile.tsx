@@ -19,7 +19,7 @@ import {
 
 import { ROUTES } from '../../../constants/routes';
 import { useSnackbar } from '../../../hooks/use-snackbar';
-import { useBiconomyMint } from '../../../hooks/useMint';
+import { useMint } from '../../../hooks/useMint';
 import { gqlMethods } from '../../../services/api';
 import { Credentials, Users } from '../../../services/graphql/types.generated';
 import CredentialCard from '../../molecules/credential-card';
@@ -53,19 +53,26 @@ export function ProfileTemplate({
   claimableCredentials,
 }: Props) {
   const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const [credential, setCredential] = useState<Credentials | null>(null);
+
+  const handleOpen = (credential: Credentials) => {
+    setCredential(credential);
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setCredential(null);
+    setOpen(false);
+  };
 
   const session = useSession();
   const router = useRouter();
-  const snackbar = useSnackbar();
 
   const mintCredentialMutation = useMutation(
     'mintCredential',
     session.data?.user && gqlMethods(session.data.user).mint_credential
   );
 
-  const { mint, loading, minted } = useBiconomyMint(
+  const { mint, loading, minted } = useMint(
     process.env.NEXT_PUBLIC_WEB3_NFT_ADDRESS
   );
 
@@ -74,14 +81,14 @@ export function ProfileTemplate({
    * @param {Credentials} credential - the credential to be referenced
    */
   const mintNFT = async (credential: Credentials) => {
-    const isMinted = await mint('ipfs://');
+    const isMinted = await mint(credential.id);
 
     isMinted &&
       mintCredentialMutation.mutate(
         { id: credential.id },
         {
           onSuccess: () => {
-            handleOpen();
+            handleOpen(credential);
           },
         }
       );
@@ -141,7 +148,11 @@ export function ProfileTemplate({
 
   return (
     <>
-      <PocModalMinted open={open} handleClose={handleClose} />
+      <PocModalMinted
+        open={open}
+        handleClose={handleClose}
+        credential={credential}
+      />
       <Paper
         sx={{
           height: '280px',

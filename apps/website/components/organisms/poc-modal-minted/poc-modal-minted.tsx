@@ -6,8 +6,10 @@ import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Typography from '@mui/material/Typography';
 
+import { Credentials } from '../../../services/graphql/types.generated';
 import CredentialCard from '../../molecules/credential-card';
 
+/* It's a style object that is used to position the modal in the center of the screen. */
 const style = {
   position: 'absolute' as const,
   top: '50%',
@@ -18,7 +20,20 @@ const style = {
   p: 4,
 };
 
-export default function PocModalMinted({ open, handleClose }) {
+/* It's defining the props that the modal will take. */
+interface ModalProps {
+  open: boolean;
+  credential: Credentials | null;
+  subsidised?: boolean;
+  handleClose: () => void;
+}
+
+export default function PocModalMinted({
+  open,
+  credential,
+  subsidised = false,
+  handleClose,
+}: ModalProps) {
   const router = useRouter();
 
   return (
@@ -57,18 +72,20 @@ export default function PocModalMinted({ open, handleClose }) {
               >
                 Congrats your work is verified and on-chain.{' '}
               </Typography>
-              <Typography
-                id="modal-modal-description"
-                sx={{ mt: 2, textAlign: 'center' }}
-                fontSize={16}
-              >
-                Your NFT has been minted at cost free subsidized by{' '}
-                <span style={{ color: '#D083FF' }}>Gateway</span> .
-              </Typography>
+              {subsidised && (
+                <Typography
+                  id="modal-modal-description"
+                  sx={{ mt: 2, textAlign: 'center' }}
+                  fontSize={16}
+                >
+                  Your NFT has been minted at cost free subsidized by{' '}
+                  <span style={{ color: '#D083FF' }}>Gateway</span> .
+                </Typography>
+              )}
             </Box>
             <CredentialCard
-              name="Olympus Operations Work..."
-              description="The Operations Group at Olympus is responsible for making sure that work..."
+              name={credential?.name}
+              description={credential?.description}
             />
             <Button
               variant="outlined"
