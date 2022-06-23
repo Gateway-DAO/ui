@@ -309,10 +309,10 @@ export function Form({ userData, isLoading, onSubmit }: Props) {
                   alt="green iguana"
                 />
                 <CardContent>
-                  <Typography gutterBottom variant="h5" component="div">
+                  <Typography sx={{wordBreak:"break-word"}} gutterBottom variant="h5" component="div">
                     {name ? name : 'Loading....'}
                   </Typography>
-                  <Typography variant="body2" color="text.secondary">
+                  <Typography sx={{wordBreak:"break-word"}} variant="body2" color="text.secondary">
                     {username ? username : 'Loading....'}
                   </Typography>
                 </CardContent>
