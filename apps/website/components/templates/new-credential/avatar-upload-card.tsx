@@ -41,6 +41,7 @@ export function AvatarUploadCard() {
         src="https://images.unsplash.com/photo-1650943574955-ac02c65cfc71?w=500"
       />
       <CardHeader
+        sx={{wordBreak:"break-word",maxWidth:'300px'}}
         title={showIfNotEmpty(name, 'Title')}
         subheader={showIfNotEmpty(description, 'Description')}
       />
