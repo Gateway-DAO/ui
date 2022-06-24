@@ -11,7 +11,7 @@ import Typography from '@mui/material/Typography';
 
 import CredentialCard from '../../../../components/molecules/credential-card';
 import { WalletModal } from '../../../../components/templates/landing/wallet-modal/wallet-modal';
-import { gqlMethods } from '../../../../services/api';
+import { gqlAnonMethods } from '../../../../services/api';
 
 export default function Claim() {
   const [isOpen, toggleOpen] = useToggle(false);
@@ -26,9 +26,7 @@ export default function Claim() {
   useQuery(
     ['get-credential-group'],
     () => {
-      return gqlMethods({}).get_credential_group_info({
-        credentialId,
-      });
+      return gqlAnonMethods.get_credential_group_info({ credentialId });
     },
     {
       onSuccess: (data) =>
