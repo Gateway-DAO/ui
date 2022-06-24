@@ -25,11 +25,12 @@ import { useConnectWallet } from './state';
 
 type Props = {
   onBack: () => void;
+  onClose: () => void;
 };
 
 /* TODO: Move this out from here, move to page level */
 
-export function ConnectedWallet({ onBack }: Props) {
+export function ConnectedWallet({ onBack, onClose }: Props) {
   const { activeConnector } = useConnect();
   const { data: session } = useSession();
   const router = useRouter();
@@ -101,16 +102,8 @@ export function ConnectedWallet({ onBack }: Props) {
               sx={{ whiteSpace: 'pre-wrap', textAlign: 'center' }}
             >
               Success
-              <br />
-              now you're entering{' '}
-              <NextLink
-                passHref
-                href={!session?.user?.init ? ROUTES.NEW_USER : ROUTES.EXPLORE}
-              >
-                <Link color="primary">the Gateway</Link>
-              </NextLink>
-              <br />
             </DialogContentText>
+            <Button onClick={onClose}>Close</Button>
           </DialogContent>
         </>
       )}

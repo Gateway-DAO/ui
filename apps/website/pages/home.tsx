@@ -1,36 +1,35 @@
-import { InferGetServerSidePropsType, GetServerSideProps } from 'next';
-import { getSession } from 'next-auth/react';
+import { InferGetStaticPropsType } from 'next';
 import useTranslation from 'next-translate/useTranslation';
-
-import * as Sentry from '@sentry/nextjs';
 
 // import { dehydrate, useQuery } from 'react-query';
 
 import { DashboardTemplate } from '../components/templates/dashboard';
 import { ExploreTemplate } from '../components/templates/explore';
-import { withAuth } from '../utils/withAuth';
+import { useMe } from '../hooks/use-me';
+import { gqlAdminMethods } from '../services/api';
 
 /** TODO: Prevent template remount when navigating between dashboard pages
  * https://nextjs.org/docs/basic-features/layouts
  * */
 
-export const getServerSideProps = withAuth(async ({ gql, session }) => {
-  const exploreProps = await gql.get_explore({
-    id: session.user.id,
-  });
+export const getStaticProps = async () => {
+  const exploreProps = await gqlAdminMethods.get_home();
 
   return {
     props: {
       exploreProps,
     },
+    revalidate: 10,
   };
-});
+};
 
 export default function Explore({
   exploreProps,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+}: InferGetStaticPropsType<typeof getStaticProps>) {
   const { t } = useTranslation('explore');
+  const me = useMe();
 
+  console.log(me);
   if (!exploreProps) return null;
 
   return (
@@ -50,5 +49,3 @@ export default function Explore({
     </DashboardTemplate>
   );
 }
-
-Explore.auth = true;

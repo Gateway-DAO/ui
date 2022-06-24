@@ -25,6 +25,7 @@ export default withSentry(
       }, */
         async authorize(credentials) {
           try {
+            console.time('login');
             const res = await gqlAnonMethods.login({
               signature: credentials.signature,
               wallet: credentials.wallet,
@@ -35,11 +36,12 @@ export default withSentry(
             if (error || !res.login) {
               throw error;
             }
-
+            console.timeLog('login');
             /* get current user from hasura based on the token */
             const { me } = await gqlMethods({ token: res.login.token }).me();
 
             delete me.pfp;
+            console.timeEnd('login');
 
             return {
               ...res.login,

@@ -1,12 +1,12 @@
-import { signIn } from 'next-auth/react';
 import { useState } from 'react';
 
 import { useMutation } from 'react-query';
 import { useAccount, useSignMessage } from 'wagmi';
 
+import { useLogin } from '../../../../hooks/use-me';
 import { gqlAnonMethods } from '../../../../services/api';
 
-type Step =
+export type Step =
   | 'GET_ACCOUNT'
   | 'GET_NONCE'
   | 'GET_SIGNATURE'
@@ -24,6 +24,8 @@ export function useConnectWallet() {
     // eslint-disable-next-line @typescript-eslint/ban-types
     onClick?: () => any;
   }>();
+
+  const signIn = useLogin();
 
   const sign = useSignMessage();
   const account = useAccount({
@@ -66,12 +68,14 @@ export function useConnectWallet() {
         message: `Welcome to Gateway!\n\nPlease sign this message for access: ${nonce}`,
       }),
     {
-      onSuccess(signature) {
+      async onSuccess(signature) {
         setStep('GET_TOKEN');
-        login.mutate({
+        const res = await signIn.mutateAsync({
           wallet: account.data.address!,
           signature,
         });
+        console.log(res);
+        setStep('FINISHED');
       },
       onError(e: any) {
         setError({
@@ -83,39 +87,12 @@ export function useConnectWallet() {
     }
   );
 
-  /* Handle login session authentication */
-  const login = useMutation(
-    [account.data?.address, nonce.data?.get_nonce?.nonce, 'signature'],
-    async ({ wallet, signature }: { wallet: string; signature: string }) => {
-      const res = await signIn('credentials', {
-        redirect: false,
-        wallet,
-        signature,
-      });
-      if (res.error) throw res.error;
-      return res;
-    },
-    {
-      async onSuccess(data) {
-        console.log('Login success', data);
-        setStep('FINISHED');
-      },
-      onError(e) {
-        console.error('Login error', e);
-        setError({
-          label: 'Try again',
-          message: (e as any)?.response?.errors?.[0]?.message,
-        });
-      },
-    }
-  );
-
   const onReset = () => {
     setStep('GET_NONCE');
     setError(undefined);
     nonce.reset();
     sign.reset();
-    login.reset();
+    signIn.reset();
   };
 
   return {

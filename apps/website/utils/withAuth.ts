@@ -3,13 +3,12 @@ import {
   GetServerSideProps,
   GetStaticPropsContext,
 } from 'next';
-import { Session } from 'next-auth';
 import { getSession } from 'next-auth/react';
 
 import * as Sentry from '@sentry/nextjs';
 
 import { ROUTES } from '../constants/routes';
-import { GqlMethods, gqlMethods } from '../services/api';
+import { gqlAdminMethods, GqlMethods, gqlMethods } from '../services/api';
 import { MeQuery } from '../services/graphql/types.generated';
 
 /**
@@ -19,16 +18,15 @@ export function withAuth<
   P extends { [key: string]: any } = { [key: string]: any }
 >(
   cb?: (props: {
-    session: Session;
     gql: GqlMethods;
     ctx: GetStaticPropsContext;
   }) => Promise<GetServerSidePropsResult<P>>
 ) {
   const getServerSideMethod: GetServerSideProps<
-    P & { me: MeQuery['me'] }
+    P /* & { me: MeQuery['me'] } */
   > = async (ctx) => {
     /* Verifies if session is in place */
-    const session = await getSession({ req: ctx.req });
+    /*     const session = await getSession({ req: ctx.req });
 
     if (!session?.user) {
       return {
@@ -38,16 +36,16 @@ export function withAuth<
         },
         props: {},
       };
-    }
+    } */
 
     /* Creates the authenticated gql calls method */
-    const gql = gqlMethods(session.user);
+    const gql = gqlAdminMethods;
 
     try {
       /* Fetches current user information w/ page data */
-      const [callbackResult, { me }] = await Promise.all([
-        cb?.({ gql, ctx, session }),
-        gql.me(),
+      const [callbackResult /* , { me } */] = await Promise.all([
+        cb?.({ gql, ctx }),
+        // gql.me(),
       ]);
 
       const callbackWithProp = callbackResult as Extract<
@@ -56,7 +54,7 @@ export function withAuth<
       >;
 
       /* Redirects to new user if it's not initialized yet */
-      if (!me.init) {
+      /* if (!me.init) {
         return {
           props: {
             me,
@@ -66,17 +64,18 @@ export function withAuth<
             permanent: true,
           },
         };
-      }
+      } */
 
       return {
         ...callbackResult,
         props: {
           ...callbackWithProp?.props,
-          me,
+          // me,
         },
       };
     } catch (e) {
       Sentry.captureException(e);
+      console.log(e);
       return {
         redirect: {
           destination: ROUTES.LANDING,

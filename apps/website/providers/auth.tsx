@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
 import { signOut } from 'next-auth/react';
 import { useSession } from 'next-auth/react';
 import {
@@ -8,37 +9,52 @@ import {
   useEffect,
 } from 'react';
 
+import { useToggle } from 'react-use';
+import { PartialDeep } from 'type-fest';
 import { useAccount, useDisconnect } from 'wagmi';
 
+import { WalletModal } from '../components/templates/landing/wallet-modal';
 import { ROUTES } from '../constants/routes';
-import { Users } from '../services/graphql/types.generated';
+import { useMe, useSignOut } from '../hooks/use-me';
+import useToggleContainerClass from '../hooks/useToggleContainerClass';
+import { SessionUser } from '../types/user';
 
 type Props = {
-  me?: Users;
   isAuthPage?: boolean;
 };
 
-const AuthContext = createContext<{ onSignOut: () => void; me?: Users }>({
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+type Context = {
+  onSignOut: () => void;
+  onOpenModal: () => void;
+  me?: PartialDeep<SessionUser>;
+};
+
+const AuthContext = createContext<Context>({
   onSignOut: () => {},
+  onOpenModal: () => {},
 });
 
 export const useAuth = () => useContext(AuthContext);
 
 export function AuthProvider({
-  me,
   isAuthPage,
   children,
 }: PropsWithChildren<Props>) {
+  const [isOpen, toggleOpen] = useToggle(false);
+  useToggleContainerClass('blur', isOpen);
+  const onOpenModal = () => toggleOpen(true);
+
   const { disconnect } = useDisconnect();
+  const me = useMe();
+  const signOut = useSignOut();
 
   const { status: accountStatus, data: account } = useAccount();
   const { status: sessionStatus } = useSession();
 
   const onSignOut = useCallback(() => {
     disconnect();
-    signOut({ callbackUrl: ROUTES.LANDING, redirect: true });
-  }, [disconnect]);
+    signOut();
+  }, [disconnect, signOut]);
 
   useEffect(() => {
     if (!isAuthPage) return;
@@ -61,8 +77,9 @@ export function AuthProvider({
   ]);
 
   return (
-    <AuthContext.Provider value={{ onSignOut, me }}>
+    <AuthContext.Provider value={{ onSignOut, onOpenModal, me }}>
       {children}
+      <WalletModal isOpen={isOpen} onClose={toggleOpen} />
     </AuthContext.Provider>
   );
 }

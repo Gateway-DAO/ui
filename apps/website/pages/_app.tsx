@@ -40,7 +40,7 @@ function CustomApp({
           <ThemeProvider>
             <QueryClientProvider client={queryClient}>
               <Hydrate state={pageProps.dehydratedState}>
-                <AuthProvider isAuthPage={Component.auth} me={pageProps.me}>
+                <AuthProvider isAuthPage={Component.auth}>
                   <NavStateProvider>
                     <Component {...pageProps} />
                   </NavStateProvider>
