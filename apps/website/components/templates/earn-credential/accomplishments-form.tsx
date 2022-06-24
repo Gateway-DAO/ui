@@ -1,7 +1,7 @@
 import { useFormContext } from 'react-hook-form';
 
 import DeleteIcon from '@mui/icons-material/Delete';
-import { Avatar, Stack, TextField } from '@mui/material';
+import { Avatar, Stack, TextField, Typography, Box } from '@mui/material';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -41,6 +41,7 @@ export function AccomplishmentsForm({
       {/* Title */}
       <TextField
         required
+        variant='standard'
         label="Accomplishment Title"
         id="accomplishment_title"
         onChange={(e) => onUpdate(accomplishmentId, 'title', e.target.value)}
@@ -66,38 +67,51 @@ export function AccomplishmentsForm({
         error={!!errors.accomplishment_description}
         helperText={errors.accomplishment_description?.message}
       />
+      {/* Proof of work text*/}
+      <Typography variant="h6" fontWeight="bold" sx={{ marginTop: '10px' }}>
+        Proof of Work
+      </Typography>
+      <Typography
+        variant="caption"
+        sx={{ marginTop: '-15px', display: 'block' }}
+      >
+        Showcase your work related to this accomplishment
+      </Typography>
       {/* Proof of Work: Type */}
-      <FormControl fullWidth>
-        <InputLabel variant="outlined" htmlFor="pow_type">
-          Type
-        </InputLabel>
-        <Select
-          id="pow_type"
-          onChange={(e) =>
-            onUpdate(accomplishmentId, 'type', e.target.value.toString())
-          }
-          //{...register('pow_type')}
-        >
-          <MenuItem value="">
-            <em>None</em>
-          </MenuItem>
-          {mockTypes.map((type) => (
-            <MenuItem key={type.value} value={type.value}>
-              {type.label}
+      <Box sx={{display:"grid",gridTemplateColumns:"1fr 3fr",columnGap:"15px"}}>
+        <FormControl fullWidth>
+          <InputLabel variant="outlined" htmlFor="pow_type">
+            Type
+          </InputLabel>
+          <Select
+            label="Type"
+            id="pow_type"
+            onChange={(e) =>
+              onUpdate(accomplishmentId, 'type', e.target.value.toString())
+            }
+            //{...register('pow_type')}
+            >
+            <MenuItem value="">
+              <em>None</em>
             </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-      {/* Proof of Work: Link */}
-      <TextField
-        required
-        label="Link"
-        id="pow_link"
-        onChange={(e) => onUpdate(accomplishmentId, 'link', e.target.value)}
-        //{...register('pow_link')}
-        error={!!errors.pow_link}
-        helperText={errors.pow_link?.message}
-      />
+            {mockTypes.map((type) => (
+              <MenuItem key={type.value} value={type.value}>
+                {type.label}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+        {/* Proof of Work: Link */}
+        <TextField
+          required
+          label="Link"
+          id="pow_link"
+          onChange={(e) => onUpdate(accomplishmentId, 'link', e.target.value)}
+          //{...register('pow_link')}
+          error={!!errors.pow_link}
+          helperText={errors.pow_link?.message}
+        />
+      </Box>
       {/* Proof of Work: Description */}
       <TextField
         required
@@ -115,8 +129,8 @@ export function AccomplishmentsForm({
       <Avatar
         sx={{
           position: 'absolute',
-          bottom: 10,
-          right: 10,
+          top: 60,
+          right: 8,
           color: '#9A53FF',
           cursor: 'pointer',
         }}

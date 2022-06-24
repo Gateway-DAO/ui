@@ -321,6 +321,9 @@ export function ProfileTemplate({
                       name={credential.name}
                       description={credential.description}
                       smaller
+                      view={() =>
+                        router.push(ROUTES.CREDENTIALS_VIEW + credential.id)
+                      }
                       claim={() => claimAndGoToEarn(credential.id)}
                       claimable
                     />
@@ -332,6 +335,9 @@ export function ProfileTemplate({
                       name={credential.name}
                       description={credential.description}
                       smaller
+                      view={() =>
+                        router.push(ROUTES.CREDENTIALS_VIEW + credential.id)
+                      }
                       to_complete={credential.status === 'to_complete'}
                       complete={() => goToEarn(credential.id)}
                       pending={credential.status === 'pending'}

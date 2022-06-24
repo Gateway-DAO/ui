@@ -16,6 +16,7 @@ interface CredentialCardProps {
   pending?: boolean;
   mintable?: boolean;
   isNFT?: boolean;
+  view?: () => void;
   claim?: () => void;
   complete?: () => void;
   mint?: () => void;
@@ -30,6 +31,7 @@ export default function CredentialCard({
   pending,
   mintable,
   isNFT,
+  view,
   claim,
   complete,
   mint,
@@ -48,9 +50,18 @@ export default function CredentialCard({
         component="img"
         image="https://i.postimg.cc/6QJDW2r1/olympus-credential-picture.png"
         alt="credential image"
+        sx={{ cursor: 'pointer' }}
+        onClick={view}
       />
       <CardContent>
-        <Typography gutterBottom variant="h5" component="div" fontSize={20}>
+        <Typography
+          gutterBottom
+          variant="h5"
+          component="div"
+          fontSize={20}
+          sx={{ cursor: 'pointer' }}
+          onClick={view}
+        >
           {name}
         </Typography>
         <Typography variant="body2" color="text.secondary">

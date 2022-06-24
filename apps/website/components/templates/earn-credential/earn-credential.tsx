@@ -176,7 +176,11 @@ export function EarnCredentialTemplate({ credentialInfo }) {
 
   return (
     <Stack gap={6} p={TOKENS.CONTAINER_PX}>
-      <PocModalCompleted open={open} handleClose={handleClose} />
+      <PocModalCompleted
+        credentialId={credential.id}
+        open={open}
+        handleClose={handleClose}
+      />
       <Box>
         <Image
           src="/favicon-512.png"
@@ -196,7 +200,11 @@ export function EarnCredentialTemplate({ credentialInfo }) {
       >
         <NavBarAvatar />
       </Box>
-      <Typography variant="h5" sx={{ marginBottom: '100px' }}>
+      <Typography
+        variant="h5"
+        sx={{ marginBottom: '40px', color: '#fff' }}
+        ml={{ xs: '0px', md: '92px' }}
+      >
         Earn Proof of Credential
       </Typography>
       <Stack
@@ -206,49 +214,72 @@ export function EarnCredentialTemplate({ credentialInfo }) {
         gap={6}
       >
         {/* Credential details */}
-        <Grid container>
+        <Grid
+          container
+          direction={{ xs: 'column', md: 'row' }}
+          sx={{ rowGap: '15px' }}
+        >
           <Grid item xs={5}>
-            <Typography variant="h6" fontWeight="bold">
+            <Typography
+              variant="h6"
+              fontWeight="bold"
+              sx={{ display: 'block' }}
+              ml={{ xs: '0px', md: '92px' }}
+            >
               Details
             </Typography>
-            <Typography variant="caption">
+            <Typography
+              variant="caption"
+              sx={{ display: 'block' }}
+              ml={{ xs: '0px', md: '92px' }}
+            >
               Basic Details of Credential
             </Typography>
           </Grid>
           <Grid item xs={6}>
-            <Stack direction="row">
+            <Stack direction={{xs:"column",sm:"row"}}>
               {/* TODO: Responsiveness */}
               <Image
                 loader={() => credentialImgUrl}
                 src={credentialImgUrl}
-                height={300}
-                width={400}
+                height={389}
+                width={389}
                 alt="credential image"
                 style={{ borderRadius: '5px' }}
               />
               <Box
                 sx={{
                   position: 'relative',
-                  minHeight: '300px',
                   maxWidth: '500px',
-                  marginLeft: '32px',
                 }}
+                ml={{ xs: '0px', sm: '32px' }}
+                minHeight={{ xs: '180px', md: '300px' }}
               >
-                <Typography variant="h6" sx={{ marginBottom: '10px' }}>
+                <Typography variant="h4" sx={{ marginBottom: '10px' }}>
                   {credential.name}
                 </Typography>
                 <Chip label="Contributor" sx={{ marginBottom: '20px' }} />
                 <Box>
-                  <Typography variant="caption">
+                  <Typography variant="caption" sx={{ fontSize:'16px' , color:'#FFFFFF' }}>
                     {credential.description}
                   </Typography>
                 </Box>
-                <Box sx={{ position: 'absolute', bottom: '0' }}>
-                  <Typography variant="caption">Created by</Typography>
+                <Box
+                  sx={{
+                    position: 'absolute',
+                    bottom: '0',
+                    display: 'flex',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                  }}
+                >
+                  <Typography sx={{ width: 'max-content' }} variant="caption">
+                    Created by
+                  </Typography>
                   <Chip
                     avatar={<Avatar alt="chip avatar" src={randomNftUrl} />}
                     label="Harisson Santos"
-                    sx={{ marginLeft: '10px' }}
+                    sx={{ marginLeft: '10px', width: 'max-content' }}
                   />
                 </Box>
               </Box>
@@ -258,16 +289,29 @@ export function EarnCredentialTemplate({ credentialInfo }) {
         <Divider light sx={{ width: '100%' }} />
         {/* Credential details form */}
         <FormProvider {...credentialDetailsMethods}>
-          <Grid container>
+          <Grid
+            container
+            direction={{ xs: 'column', md: 'row' }}
+            sx={{ rowGap: '15px' }}
+          >
             <Grid item xs={5}>
-              <Typography variant="h6" fontWeight="bold">
+              <Typography
+                variant="h6"
+                fontWeight="bold"
+                sx={{ display: 'block' }}
+                ml={{ xs: '0px', md: '92px' }}
+              >
                 Your Details
               </Typography>
-              <Typography variant="caption">
+              <Typography
+                variant="caption"
+                sx={{ display: 'block' }}
+                ml={{ xs: '0px', md: '92px' }}
+              >
                 Customize Your Credential
               </Typography>
             </Grid>
-            <Grid item xs={3}>
+            <Grid item xs={4}>
               <CredentialDetailsForm
                 isStillWorking={isStillWorking}
                 onRoleUpdate={updateRole}
@@ -283,12 +327,25 @@ export function EarnCredentialTemplate({ credentialInfo }) {
         <Divider light sx={{ width: '100%' }} />
         {/* Proudest Accomplishments form */}
         <FormProvider {...accomplishmentsMethods}>
-          <Grid container>
+          <Grid
+            container
+            direction={{ xs: 'column', md: 'row' }}
+            sx={{ rowGap: '15px' }}
+          >
             <Grid item xs={5}>
-              <Typography variant="h6" fontWeight="bold">
+              <Typography
+                variant="h6"
+                fontWeight="bold"
+                sx={{ display: 'block' }}
+                ml={{ xs: '0px', md: '92px' }}
+              >
                 Proudest Accomplishments
               </Typography>
-              <Typography variant="caption">
+              <Typography
+                variant="caption"
+                sx={{ display: 'block' }}
+                ml={{ xs: '0px', md: '92px' }}
+              >
                 Tell the world about your greatest accomplishments and get it
                 verified!
               </Typography>

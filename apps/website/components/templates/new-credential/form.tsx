@@ -45,7 +45,7 @@ export function Form({ onSubmit }: Props) {
         <InputLabel variant="outlined" htmlFor="category">
           Category
         </InputLabel>
-        <Select id="category" {...register('category')}>
+        <Select label = "Category" id="category" {...register('category')}>
           <MenuItem value="">
             <em>None</em>
           </MenuItem>
