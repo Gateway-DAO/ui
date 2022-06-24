@@ -7,6 +7,7 @@ import { ethers } from 'ethers';
 import { useAccount, chain, useSigner, useNetwork } from 'wagmi';
 
 import { CREDENTIAL_ABI } from '../constants/web3';
+import { usePinata } from './usePinata';
 
 let biconomy;
 let contract: ethers.Contract, contractInterface: ethers.ContractInterface;
@@ -132,7 +133,7 @@ export function useBiconomyMint(
   const { data: address } = useAccount();
 
   // State
-  const metaTxEnabled = false;
+  const metaTxEnabled = true;
   const [loading, setLoading] = useState<boolean>(false);
   const [minted, setMinted] = useState<boolean>(false);
 
@@ -200,7 +201,7 @@ export function useBiconomyMint(
             data: contractData,
             to: contractAddress,
             from: address.address,
-            gasLimit: gasLimit,
+            gasLimit: gasLimit * 3,
             signatureType: 'EIP712_SIGN',
           };
           let tx;

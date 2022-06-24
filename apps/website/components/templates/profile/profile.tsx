@@ -19,7 +19,8 @@ import {
 
 import { ROUTES } from '../../../constants/routes';
 import { useSnackbar } from '../../../hooks/use-snackbar';
-import { useMint } from '../../../hooks/useMint';
+import { useMint, useBiconomyMint } from '../../../hooks/useMint';
+import { usePinata } from '../../../hooks/usePinata';
 import { gqlMethods } from '../../../services/api';
 import { Credentials, Users } from '../../../services/graphql/types.generated';
 import CredentialCard from '../../molecules/credential-card';
@@ -72,26 +73,34 @@ export function ProfileTemplate({
     session.data?.user && gqlMethods(session.data.user).mint_credential
   );
 
-  const { mint, loading, minted } = useMint(
+  const { mint, loading, minted } = useBiconomyMint(
     process.env.NEXT_PUBLIC_WEB3_NFT_ADDRESS
   );
+
+  const { uploadMetadataToIPFS } = usePinata();
 
   /**
    * It mints a credential.
    * @param {Credentials} credential - the credential to be referenced
    */
   const mintNFT = async (credential: Credentials) => {
-    const isMinted = await mint(credential.id);
+    const ipfs = await uploadMetadataToIPFS({
+      name: credential.name,
+      image: credential.image,
+      description: credential.description,
+    });
 
-    isMinted &&
-      mintCredentialMutation.mutate(
-        { id: credential.id },
-        {
-          onSuccess: () => {
-            handleOpen(credential);
-          },
-        }
-      );
+    const isMinted = await mint(`ipfs://${ipfs}`);
+
+    isMinted && handleOpen(credential);
+    // mintCredentialMutation.mutate(
+    //   { id: credential.id },
+    //   {
+    //     onSuccess: () => {
+    //       handleOpen(credential);
+    //     },
+    //   }
+    // );
   };
 
   const updateMutation = useMutation(
@@ -152,6 +161,7 @@ export function ProfileTemplate({
         open={open}
         handleClose={handleClose}
         credential={credential}
+        subsidised
       />
       <Paper
         sx={{
