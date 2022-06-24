@@ -126,10 +126,15 @@ export default function PocModalCreated({
                 }}
               >
                 <legend>Share</legend>
-                http://gtwy.xyz/olpmt
+                {'poc.mygateway.xyz/credentials/claim/' + credentialGroupId}
                 <AiOutlineCopy
                   size={24}
                   style={{ marginLeft: '10px', cursor: 'pointer' }}
+                  onClick={() => {
+                    navigator.clipboard.writeText(
+                      'poc.mygateway.xyz/credentials/claim/' + credentialGroupId
+                    );
+                  }}
                 />
               </fieldset>
               <Button
