@@ -18,8 +18,7 @@ import {
 } from '@mui/material';
 
 import { ROUTES } from '../../../constants/routes';
-import { useSnackbar } from '../../../hooks/use-snackbar';
-import { useMint, useBiconomyMint } from '../../../hooks/useMint';
+import { useBiconomyMint } from '../../../hooks/useMint';
 import { usePinata } from '../../../hooks/usePinata';
 import { gqlMethods } from '../../../services/api';
 import { Credentials, Users } from '../../../services/graphql/types.generated';
@@ -92,15 +91,15 @@ export function ProfileTemplate({
 
     const isMinted = await mint(`ipfs://${ipfs}`);
 
-    isMinted && handleOpen(credential);
-    // mintCredentialMutation.mutate(
-    //   { id: credential.id },
-    //   {
-    //     onSuccess: () => {
-    //       handleOpen(credential);
-    //     },
-    //   }
-    // );
+    isMinted &&
+      mintCredentialMutation.mutate(
+        { id: credential.id },
+        {
+          onSuccess: () => {
+            handleOpen(credential);
+          },
+        }
+      );
   };
 
   const updateMutation = useMutation(
