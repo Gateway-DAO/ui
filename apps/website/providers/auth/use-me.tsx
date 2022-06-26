@@ -2,8 +2,8 @@ import { useMutation, useQueryClient } from 'react-query';
 import { PartialDeep } from 'type-fest';
 import { useAccount } from 'wagmi';
 
-import { gqlAnonMethods, gqlMethods } from '../services/api';
-import { SessionUser } from '../types/user';
+import { gqlAnonMethods, gqlMethods } from '../../services/api';
+import { SessionUser } from '../../types/user';
 
 type Props = {
   wallet: string;
@@ -44,20 +44,14 @@ export function useLogin() {
   return signIn;
 }
 
-export function useSignOut() {
+export function useMe() {
   const queryClient = useQueryClient();
+
   const onSignOut = () => {
     queryClient.setQueryData('me', undefined);
   };
-  return onSignOut;
-  return onSignOut;
-  return onSignOut;
-  return onSignOut;
-  return onSignOut;
-  return onSignOut;
-}
 
-export function useMe(): PartialDeep<SessionUser> {
-  const queryClient = useQueryClient();
-  return queryClient.getQueryData('me');
+  const me: PartialDeep<SessionUser> = queryClient.getQueryData('me');
+
+  return { me, onSignOut };
 }

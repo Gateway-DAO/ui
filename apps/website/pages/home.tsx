@@ -5,7 +5,6 @@ import useTranslation from 'next-translate/useTranslation';
 
 import { DashboardTemplate } from '../components/templates/dashboard';
 import { ExploreTemplate } from '../components/templates/explore';
-import { useMe } from '../hooks/use-me';
 import { gqlAdminMethods } from '../services/api';
 
 /** TODO: Prevent template remount when navigating between dashboard pages
@@ -27,9 +26,7 @@ export default function Explore({
   exploreProps,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
   const { t } = useTranslation('explore');
-  const me = useMe();
 
-  console.log(me);
   if (!exploreProps) return null;
 
   return (
