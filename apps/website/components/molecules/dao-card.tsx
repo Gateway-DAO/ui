@@ -91,8 +91,8 @@ export function DaoCard({
           color="text.secondary"
           sx={{
             display: '-webkit-box',
-            WebkitLineClamp: 2,
-            webkitBoxOrient: 'vertical',
+            WebkitLineClamp: 4,
+            WebkitBoxOrient: 'vertical',
             overflow: 'hidden',
             textOverflow: 'ellipsis',
           }}

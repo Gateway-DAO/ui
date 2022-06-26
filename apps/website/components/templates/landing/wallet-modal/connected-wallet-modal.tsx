@@ -1,7 +1,5 @@
 /* eslint-disable react/no-unescaped-entities */
 import { useSession } from 'next-auth/react';
-import NextLink from 'next/link';
-import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
 import { AnimatePresence } from 'framer-motion';
@@ -11,7 +9,6 @@ import { Check, Close } from '@mui/icons-material';
 import {
   Box,
   Button,
-  Link,
   CircularProgress,
   DialogActions,
   DialogContent,
@@ -19,7 +16,6 @@ import {
   DialogTitle,
 } from '@mui/material';
 
-import { ROUTES } from '../../../../constants/routes';
 import { AnimatedMessage } from './animated-message';
 import { useConnectWallet } from './state';
 
@@ -32,16 +28,14 @@ type Props = {
 
 export function ConnectedWallet({ onBack, onClose }: Props) {
   const { activeConnector } = useConnect();
-  const { data: session } = useSession();
-  const router = useRouter();
 
   const { step, error, isLoading } = useConnectWallet();
 
   useEffect(() => {
     if (step === 'FINISHED') {
-      router.push(!session?.user?.init ? ROUTES.NEW_USER : ROUTES.EXPLORE);
+      onClose();
     }
-  }, [router, session?.user?.init, step]);
+  }, [onClose, step]);
 
   return (
     <Box>
