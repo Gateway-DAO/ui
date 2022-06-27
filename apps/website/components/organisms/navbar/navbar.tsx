@@ -1,3 +1,5 @@
+import dynamic from 'next/dynamic';
+
 import { TOKENS } from '@gateway/theme';
 
 import SearchIcon from '@mui/icons-material/Search';
@@ -9,16 +11,18 @@ import InputAdornment from '@mui/material/InputAdornment';
 import TextField from '@mui/material/TextField';
 import Toolbar from '@mui/material/Toolbar';
 
-import { useAuth } from '../../../providers/auth';
-import { NavBarAvatar } from './navbar-avatar';
 import { NavbarMenu } from './navbar-menu';
-import { NavBarMobile } from './navbar-mobile';
-import { NavBarNotifications } from './navbar-notifications';
+
+const ClientNav = dynamic(
+  () => import('./client-nav').then((mod) => mod.ClientNav),
+  {
+    ssr: false,
+  }
+);
 
 export type NavbarProps = AppBarProps;
 
 export function Navbar(props: NavbarProps) {
-  const { me, onOpenLogin } = useAuth();
   return (
     <AppBar color="transparent" position="relative" {...props}>
       <Toolbar
@@ -93,16 +97,7 @@ export function Navbar(props: NavbarProps) {
             },
           }}
         >
-          {!me ? (
-            <Button variant="outlined" color="secondary" onClick={onOpenLogin}>
-              Connect Wallet
-            </Button>
-          ) : (
-            <>
-              <NavBarNotifications />
-              <NavBarAvatar />
-            </>
-          )}
+          <ClientNav />
         </Box>
       </Toolbar>
     </AppBar>
