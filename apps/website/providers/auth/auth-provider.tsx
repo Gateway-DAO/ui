@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
-import { PropsWithChildren, useCallback, useEffect, useState } from 'react';
+import { PropsWithChildren, useCallback, useEffect } from 'react';
 
-import { WalletModal } from 'apps/website/components/templates/landing/wallet-modal';
-import useToggleContainerClass from 'apps/website/hooks/useToggleContainerClass';
 import { useAccount, useDisconnect } from 'wagmi';
 
+import { WalletModal } from '../../components/templates/landing/wallet-modal';
+import useToggleContainerClass from '../../hooks/useToggleContainerClass';
 import { AuthContext } from './context';
 import { useMe } from './hooks';
-import { AuthStatus, useAuthStatus } from './state';
+import { useAuthStatus } from './state';
 
 type Props = {
   isAuthPage?: boolean;
@@ -29,6 +29,14 @@ export function AuthProvider({
     onSignOutMe();
   }, [disconnect, onSignOutMe]);
 
+  const isBlocked = isAuthPage && !me;
+
+  useEffect(() => {
+    if (isBlocked && status === 'UNAUTHENTICATED') {
+      onSigning();
+    }
+  }, [isBlocked, onSigning, status]);
+
   useEffect(() => {
     if (!isAuthPage) return;
     if (accountStatus === 'loading' || accountStatus === 'idle') return;
@@ -43,11 +51,11 @@ export function AuthProvider({
     <AuthContext.Provider
       value={{ onSignOut, status, onOpenLogin: onSigning, me }}
     >
-      {children}
+      {!isBlocked && children}
       {status !== 'AUTHENTICATED' && (
         <WalletModal
           isOpen={status === 'SIGNING'}
-          onClose={onUnauthenticated}
+          onClose={!isBlocked ? onUnauthenticated : undefined}
           onSuccess={onAuthenticated}
         />
       )}

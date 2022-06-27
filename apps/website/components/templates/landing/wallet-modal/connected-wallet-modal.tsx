@@ -1,5 +1,4 @@
 /* eslint-disable react/no-unescaped-entities */
-import { useSession } from 'next-auth/react';
 import { useEffect } from 'react';
 
 import { AnimatePresence } from 'framer-motion';

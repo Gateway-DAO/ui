@@ -1,13 +1,13 @@
-import { InferGetServerSidePropsType } from 'next';
+import { GetStaticPropsContext, InferGetStaticPropsType } from 'next';
 
 import { DaoProfileTemplate } from '../../components/templates/dao-profile';
 import { DashboardTemplate } from '../../components/templates/dashboard';
-import { withAuth } from '../../utils/withAuth';
+import { gqlAnonMethods } from '../../services/api';
 
-export const getServerSideProps = withAuth(async ({ gql, ctx: { params } }) => {
+export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
   const { id } = params;
 
-  const daoProps = await gql.dao_profile({
+  const daoProps = await gqlAnonMethods.dao_profile({
     id,
   });
 
@@ -16,11 +16,11 @@ export const getServerSideProps = withAuth(async ({ gql, ctx: { params } }) => {
       daoProps,
     },
   };
-});
+};
 
 export default function DaoProfilePage({
   daoProps,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+}: InferGetStaticPropsType<typeof getStaticProps>) {
   if (!daoProps) return null;
   const { daos_by_pk: dao } = daoProps;
   return (

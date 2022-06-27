@@ -21,7 +21,7 @@ export const icons = {
 
 type Props = {
   isOpen?: boolean;
-  onClose: () => void;
+  onClose?: () => void;
   onSuccess: () => void;
 };
 
