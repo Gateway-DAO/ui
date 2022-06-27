@@ -19,7 +19,7 @@ export function AuthProvider({
 }: PropsWithChildren<Props>) {
   const { disconnect } = useDisconnect();
   const { me, onSignOut: onSignOutMe } = useMe();
-  const { status, onAuthenticated, onSigning, onUnauthenticated } =
+  const { status, onAuthenticated, onConnecting, onUnauthenticated } =
     useAuthStatus(me);
 
   const { status: accountStatus, data: account } = useAccount();
@@ -33,9 +33,9 @@ export function AuthProvider({
 
   useEffect(() => {
     if (isBlocked && status === 'UNAUTHENTICATED') {
-      onSigning();
+      onConnecting();
     }
-  }, [isBlocked, onSigning, status]);
+  }, [isBlocked, onConnecting, status]);
 
   useEffect(() => {
     if (!isAuthPage) return;
@@ -45,18 +45,18 @@ export function AuthProvider({
     }
   }, [account, accountStatus, disconnect, isAuthPage, onSignOut]);
 
-  useToggleContainerClass('blur', status === 'SIGNING');
+  useToggleContainerClass('blur', status === 'CONNECTING');
 
   useInitUser(status, me);
 
   return (
     <AuthContext.Provider
-      value={{ onSignOut, status, onOpenLogin: onSigning, me }}
+      value={{ onSignOut, status, onOpenLogin: onConnecting, me }}
     >
       {!isBlocked && children}
       {status !== 'AUTHENTICATED' && (
         <WalletModal
-          isOpen={status === 'SIGNING'}
+          isOpen={status === 'CONNECTING'}
           onClose={!isBlocked ? onUnauthenticated : undefined}
           onSuccess={onAuthenticated}
         />
