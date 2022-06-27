@@ -3,7 +3,7 @@ import { PropsWithChildren, useCallback, useEffect } from 'react';
 
 import { useAccount, useDisconnect } from 'wagmi';
 
-import { WalletModal } from '../../components/templates/landing/wallet-modal';
+import { WalletModal } from '../../components/organisms/wallet-modal';
 import useToggleContainerClass from '../../hooks/useToggleContainerClass';
 import { AuthContext } from './context';
 import { useMe } from './hooks';
