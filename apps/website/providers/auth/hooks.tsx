@@ -8,6 +8,7 @@ import { ROUTES } from '../../constants/routes';
 import { gqlAnonMethods, gqlMethods } from '../../services/api';
 import { SessionUser } from '../../types/user';
 import { useAuth } from './context';
+import { AuthStatus } from './state';
 
 type Props = {
   wallet: string;
@@ -60,9 +61,8 @@ export function useMe() {
   return { me, onSignOut };
 }
 
-export function useInitUser() {
+export function useInitUser(status: AuthStatus, me: PartialDeep<SessionUser>) {
   const router = useRouter();
-  const { status, me } = useAuth();
 
   useEffect(() => {
     if (

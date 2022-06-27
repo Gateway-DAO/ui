@@ -47,7 +47,7 @@ export function AuthProvider({
 
   useToggleContainerClass('blur', status === 'SIGNING');
 
-  useInitUser();
+  useInitUser(status, me);
 
   return (
     <AuthContext.Provider
