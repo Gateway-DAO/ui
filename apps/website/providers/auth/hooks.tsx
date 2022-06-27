@@ -1,10 +1,10 @@
-import { useCallback, useEffect } from 'react';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 
 import { useMutation, useQueryClient } from 'react-query';
-import { useToggle } from 'react-use';
 import { PartialDeep } from 'type-fest';
-import { useAccount } from 'wagmi';
 
+import { ROUTES } from '../../constants/routes';
 import { gqlAnonMethods, gqlMethods } from '../../services/api';
 import { SessionUser } from '../../types/user';
 import { useAuth } from './context';
@@ -58,4 +58,20 @@ export function useMe() {
   const me: PartialDeep<SessionUser> = queryClient.getQueryData('me');
 
   return { me, onSignOut };
+}
+
+export function useInitUser() {
+  const router = useRouter();
+  const { status, me } = useAuth();
+
+  useEffect(() => {
+    if (
+      router.pathname !== ROUTES.LANDING &&
+      status === 'AUTHENTICATED' &&
+      me &&
+      !me.init
+    ) {
+      router.replace(ROUTES.NEW_USER);
+    }
+  }, [me, router, status]);
 }

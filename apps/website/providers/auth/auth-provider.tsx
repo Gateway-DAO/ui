@@ -6,7 +6,7 @@ import { useAccount, useDisconnect } from 'wagmi';
 import { WalletModal } from '../../components/organisms/wallet-modal';
 import useToggleContainerClass from '../../hooks/useToggleContainerClass';
 import { AuthContext } from './context';
-import { useMe } from './hooks';
+import { useInitUser, useMe } from './hooks';
 import { useAuthStatus } from './state';
 
 type Props = {
@@ -46,6 +46,8 @@ export function AuthProvider({
   }, [account, accountStatus, disconnect, isAuthPage, onSignOut]);
 
   useToggleContainerClass('blur', status === 'SIGNING');
+
+  useInitUser();
 
   return (
     <AuthContext.Provider
