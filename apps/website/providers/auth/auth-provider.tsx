@@ -44,11 +44,13 @@ export function AuthProvider({
       value={{ onSignOut, status, onOpenLogin: onSigning, me }}
     >
       {children}
-      <WalletModal
-        isOpen={status === 'SIGNING'}
-        onClose={onUnauthenticated}
-        onSuccess={onAuthenticated}
-      />
+      {status !== 'AUTHENTICATED' && (
+        <WalletModal
+          isOpen={status === 'SIGNING'}
+          onClose={onUnauthenticated}
+          onSuccess={onAuthenticated}
+        />
+      )}
     </AuthContext.Provider>
   );
 }
