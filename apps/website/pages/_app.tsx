@@ -1,4 +1,3 @@
-import { SessionProvider } from 'next-auth/react';
 import { AppProps as NextAppProps } from 'next/app';
 import Head from 'next/head';
 
@@ -22,10 +21,7 @@ type AppProps = NextAppProps & {
   Component: NextAppProps['Component'] & { auth?: boolean };
 };
 
-function CustomApp({
-  Component,
-  pageProps: { session, ...pageProps },
-}: AppProps) {
+function CustomApp({ Component, pageProps: { ...pageProps } }: AppProps) {
   usePersistLocale();
   return (
     <>
@@ -35,21 +31,19 @@ function CustomApp({
         <SEOFavicon />
         <SEOSocial />
       </Head>
-      <SessionProvider session={session}>
-        <WagmiConfig client={web3client}>
-          <ThemeProvider>
-            <QueryClientProvider client={queryClient}>
-              <Hydrate state={pageProps.dehydratedState}>
-                <AuthProvider isAuthPage={Component.auth} me={pageProps.me}>
-                  <NavStateProvider>
-                    <Component {...pageProps} />
-                  </NavStateProvider>
-                </AuthProvider>
-              </Hydrate>
-            </QueryClientProvider>
-          </ThemeProvider>
-        </WagmiConfig>
-      </SessionProvider>
+      <WagmiConfig client={web3client}>
+        <ThemeProvider>
+          <QueryClientProvider client={queryClient}>
+            <Hydrate state={pageProps.dehydratedState}>
+              <AuthProvider isAuthPage={Component.auth}>
+                <NavStateProvider>
+                  <Component {...pageProps} />
+                </NavStateProvider>
+              </AuthProvider>
+            </Hydrate>
+          </QueryClientProvider>
+        </ThemeProvider>
+      </WagmiConfig>
     </>
   );
 }

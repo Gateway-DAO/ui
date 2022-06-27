@@ -1,7 +1,9 @@
+import dynamic from 'next/dynamic';
+
 import { TOKENS } from '@gateway/theme';
 
 import SearchIcon from '@mui/icons-material/Search';
-import { Stack } from '@mui/material';
+import { Button, Stack } from '@mui/material';
 import AppBar, { AppBarProps } from '@mui/material/AppBar';
 import Autocomplete from '@mui/material/Autocomplete';
 import Box from '@mui/material/Box';
@@ -9,10 +11,14 @@ import InputAdornment from '@mui/material/InputAdornment';
 import TextField from '@mui/material/TextField';
 import Toolbar from '@mui/material/Toolbar';
 
-import { NavBarAvatar } from './navbar-avatar';
 import { NavbarMenu } from './navbar-menu';
-import { NavBarMobile } from './navbar-mobile';
-import { NavBarNotifications } from './navbar-notifications';
+
+const ClientNav = dynamic(
+  () => import('./client-nav').then((mod) => mod.ClientNav),
+  {
+    ssr: false,
+  }
+);
 
 export type NavbarProps = AppBarProps;
 
@@ -91,8 +97,7 @@ export function Navbar(props: NavbarProps) {
             },
           }}
         >
-          <NavBarNotifications />
-          <NavBarAvatar />
+          <ClientNav />
         </Box>
       </Toolbar>
     </AppBar>

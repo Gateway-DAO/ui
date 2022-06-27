@@ -86,7 +86,17 @@ export function DaoCard({
         subheaderTypographyProps={{ variant: 'body2' }}
       />
       <CardContent sx={{ py: 1 }}>
-        <Typography variant="body2" color="text.secondary">
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          sx={{
+            display: '-webkit-box',
+            WebkitLineClamp: 4,
+            WebkitBoxOrient: 'vertical',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+          }}
+        >
           {/* TODO: add line clamp */}
           {description}
         </Typography>

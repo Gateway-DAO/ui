@@ -4,14 +4,10 @@ import { TOKENS } from '@gateway/theme';
 
 import { DashboardTemplate } from '../components/templates/dashboard';
 import { NewUserTemplate } from '../components/templates/new-user';
-import { withAuth } from '../utils/withAuth';
+import { useAuth } from '../providers/auth';
 
-export const getServerSideProps = withAuth();
-
-export default function NewUser({
-  me,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  if (!me) return null;
+export default function NewUser() {
+  const { me } = useAuth();
   return (
     <DashboardTemplate
       showExplore={false}

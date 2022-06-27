@@ -1,7 +1,4 @@
 /* eslint-disable react/no-unescaped-entities */
-import { useSession } from 'next-auth/react';
-import NextLink from 'next/link';
-import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
 import { AnimatePresence } from 'framer-motion';
@@ -11,7 +8,6 @@ import { Check, Close } from '@mui/icons-material';
 import {
   Box,
   Button,
-  Link,
   CircularProgress,
   DialogActions,
   DialogContent,
@@ -19,28 +15,26 @@ import {
   DialogTitle,
 } from '@mui/material';
 
-import { ROUTES } from '../../../../constants/routes';
 import { AnimatedMessage } from './animated-message';
 import { useConnectWallet } from './state';
 
 type Props = {
   onBack: () => void;
+  onSuccess: () => void;
 };
 
 /* TODO: Move this out from here, move to page level */
 
-export function ConnectedWallet({ onBack }: Props) {
+export function ConnectedWallet({ onBack, onSuccess }: Props) {
   const { activeConnector } = useConnect();
-  const { data: session } = useSession();
-  const router = useRouter();
 
   const { step, error, isLoading } = useConnectWallet();
 
   useEffect(() => {
     if (step === 'FINISHED') {
-      router.push(!session?.user?.init ? ROUTES.NEW_USER : ROUTES.EXPLORE);
+      onSuccess();
     }
-  }, [router, session?.user?.init, step]);
+  }, [onSuccess, step]);
 
   return (
     <Box>
@@ -101,16 +95,8 @@ export function ConnectedWallet({ onBack }: Props) {
               sx={{ whiteSpace: 'pre-wrap', textAlign: 'center' }}
             >
               Success
-              <br />
-              now you're entering{' '}
-              <NextLink
-                passHref
-                href={!session?.user?.init ? ROUTES.NEW_USER : ROUTES.EXPLORE}
-              >
-                <Link color="primary">the Gateway</Link>
-              </NextLink>
-              <br />
             </DialogContentText>
+            <Button onClick={onSuccess}>Close</Button>
           </DialogContent>
         </>
       )}

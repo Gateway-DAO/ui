@@ -1,9 +1,10 @@
-query dao_profile($id: uuid!) {
-  me {
-    ...current_user
-    pfp
+query dao_pages {
+  daos(limit: 10) {
+    id
   }
+}
 
+query dao_profile($id: uuid!) {
   daos_by_pk(id: $id) {
     id
     name

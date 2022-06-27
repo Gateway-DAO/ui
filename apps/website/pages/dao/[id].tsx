@@ -1,26 +1,16 @@
-import { InferGetServerSidePropsType } from 'next';
+import {
+  GetStaticPaths,
+  GetStaticPropsContext,
+  InferGetStaticPropsType,
+} from 'next';
 
 import { DaoProfileTemplate } from '../../components/templates/dao-profile';
 import { DashboardTemplate } from '../../components/templates/dashboard';
-import { withAuth } from '../../utils/withAuth';
-
-export const getServerSideProps = withAuth(async ({ gql, ctx: { params } }) => {
-  const { id } = params;
-
-  const daoProps = await gql.dao_profile({
-    id,
-  });
-
-  return {
-    props: {
-      daoProps,
-    },
-  };
-});
+import { gqlAnonMethods } from '../../services/api';
 
 export default function DaoProfilePage({
   daoProps,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+}: InferGetStaticPropsType<typeof getStaticProps>) {
   if (!daoProps) return null;
   const { daos_by_pk: dao } = daoProps;
   return (
@@ -35,3 +25,26 @@ export default function DaoProfilePage({
     </DashboardTemplate>
   );
 }
+
+export const getStaticPaths: GetStaticPaths = async ({ locales }) => {
+  const { daos } = await gqlAnonMethods.dao_pages();
+
+  return {
+    paths: daos.map((dao) => ({ params: { id: dao.id } })),
+    fallback: 'blocking', //TODO: add loading state and change to fallback: true
+  };
+};
+
+export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
+  const { id } = params;
+
+  const daoProps = await gqlAnonMethods.dao_profile({
+    id,
+  });
+
+  return {
+    props: {
+      daoProps,
+    },
+  };
+};

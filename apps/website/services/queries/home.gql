@@ -1,5 +1,5 @@
-query get_explore($id: uuid!) {
-  gates {
+query get_home {
+  gates(limit: 4) {
     id
     gate_name
     description
@@ -11,7 +11,7 @@ query get_explore($id: uuid!) {
       name
     }
   }
-  daos {
+  daos(limit: 4) {
     id
     name
     logo_url
@@ -22,10 +22,10 @@ query get_explore($id: uuid!) {
     # gates {....}
     # user is following ?
   }
-  people: users(where: {id: {_neq: $id}, name: {_neq: "", _is_null: false }}) {
+  people: users(limit: 9) {
     id
     name
-    pfp
+    #pfp
     about
     username
   }
