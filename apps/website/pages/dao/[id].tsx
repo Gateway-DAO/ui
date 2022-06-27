@@ -1,8 +1,4 @@
-import {
-  GetStaticPaths,
-  GetStaticPropsContext,
-  InferGetStaticPropsType,
-} from 'next';
+import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from 'next';
 
 import { DaoProfileTemplate } from '../../components/templates/dao-profile';
 import { DashboardTemplate } from '../../components/templates/dashboard';
@@ -35,7 +31,7 @@ export const getStaticPaths: GetStaticPaths = async ({ locales }) => {
   };
 };
 
-export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
+export const getStaticProps: GetStaticProps = async ({ params }) => {
   const { id } = params;
 
   const daoProps = await gqlAnonMethods.dao_profile({
@@ -46,5 +42,6 @@ export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
     props: {
       daoProps,
     },
+    revalidate: 60,
   };
 };
