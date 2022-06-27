@@ -10,7 +10,6 @@ import TextField from '@mui/material/TextField';
 import Toolbar from '@mui/material/Toolbar';
 
 import { useAuth } from '../../../providers/auth';
-import { useModal } from '../../../providers/modal';
 import { NavBarAvatar } from './navbar-avatar';
 import { NavbarMenu } from './navbar-menu';
 import { NavBarMobile } from './navbar-mobile';
@@ -19,8 +18,7 @@ import { NavBarNotifications } from './navbar-notifications';
 export type NavbarProps = AppBarProps;
 
 export function Navbar(props: NavbarProps) {
-  const { me } = useAuth();
-  const modal = useModal();
+  const { me, onOpenLogin } = useAuth();
   return (
     <AppBar color="transparent" position="relative" {...props}>
       <Toolbar
@@ -96,7 +94,7 @@ export function Navbar(props: NavbarProps) {
           }}
         >
           {!me ? (
-            <Button variant="outlined" color="secondary" onClick={modal.open}>
+            <Button variant="outlined" color="secondary" onClick={onOpenLogin}>
               Connect Wallet
             </Button>
           ) : (

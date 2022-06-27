@@ -1,9 +1,13 @@
+import { useCallback, useEffect } from 'react';
+
 import { useMutation, useQueryClient } from 'react-query';
+import { useToggle } from 'react-use';
 import { PartialDeep } from 'type-fest';
 import { useAccount } from 'wagmi';
 
 import { gqlAnonMethods, gqlMethods } from '../../services/api';
 import { SessionUser } from '../../types/user';
+import { useAuth } from './context';
 
 type Props = {
   wallet: string;

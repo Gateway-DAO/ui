@@ -21,21 +21,21 @@ import { useConnectWallet } from './state';
 
 type Props = {
   onBack: () => void;
-  onClose: () => void;
+  onSuccess: () => void;
 };
 
 /* TODO: Move this out from here, move to page level */
 
-export function ConnectedWallet({ onBack, onClose }: Props) {
+export function ConnectedWallet({ onBack, onSuccess }: Props) {
   const { activeConnector } = useConnect();
 
   const { step, error, isLoading } = useConnectWallet();
 
   useEffect(() => {
     if (step === 'FINISHED') {
-      onClose();
+      onSuccess();
     }
-  }, [onClose, step]);
+  }, [onSuccess, step]);
 
   return (
     <Box>
@@ -97,7 +97,7 @@ export function ConnectedWallet({ onBack, onClose }: Props) {
             >
               Success
             </DialogContentText>
-            <Button onClick={onClose}>Close</Button>
+            <Button onClick={onSuccess}>Close</Button>
           </DialogContent>
         </>
       )}

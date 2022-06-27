@@ -15,7 +15,6 @@ import '../components/atoms/global-dependencies';
 
 import '../styles/next.css';
 import { AuthProvider } from '../providers/auth';
-import { ModalProvider } from '../providers/modal';
 import { queryClient } from '../services/query-client';
 import { web3client } from '../services/web3/client';
 
@@ -42,11 +41,9 @@ function CustomApp({
             <QueryClientProvider client={queryClient}>
               <Hydrate state={pageProps.dehydratedState}>
                 <AuthProvider isAuthPage={Component.auth}>
-                  <ModalProvider>
-                    <NavStateProvider>
-                      <Component {...pageProps} />
-                    </NavStateProvider>
-                  </ModalProvider>
+                  <NavStateProvider>
+                    <Component {...pageProps} />
+                  </NavStateProvider>
                 </AuthProvider>
               </Hydrate>
             </QueryClientProvider>

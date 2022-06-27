@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useMutation } from 'react-query';
 import { useAccount, useSignMessage } from 'wagmi';
 
-import { useLogin } from '../../../../hooks/use-me';
+import { useLogin } from '../../../../providers/auth/hooks';
 import { gqlAnonMethods } from '../../../../services/api';
 
 export type Step =

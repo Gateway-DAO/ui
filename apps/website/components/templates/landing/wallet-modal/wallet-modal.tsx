@@ -22,9 +22,10 @@ export const icons = {
 type Props = {
   isOpen?: boolean;
   onClose: () => void;
+  onSuccess: () => void;
 };
 
-export function WalletModal({ isOpen, onClose }: Props) {
+export function WalletModal({ isOpen, onSuccess, onClose }: Props) {
   const [canConnect, toggleCanConnect] = useToggle(false);
 
   return (
@@ -33,7 +34,7 @@ export function WalletModal({ isOpen, onClose }: Props) {
         <WalletSelect onSubmit={toggleCanConnect} />
       ) : (
         <ConnectedWallet
-          onClose={onClose}
+          onSuccess={onSuccess}
           onBack={() => toggleCanConnect(false)}
         />
       )}
