@@ -67,6 +67,7 @@ export function useInitUser(status: AuthStatus, me: PartialDeep<SessionUser>) {
   useEffect(() => {
     if (
       router.pathname !== ROUTES.LANDING &&
+      router.pathname !== ROUTES.NEW_USER &&
       status === 'AUTHENTICATED' &&
       me &&
       !me.init
