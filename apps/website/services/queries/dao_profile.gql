@@ -1,5 +1,5 @@
 query dao_pages {
-  daos {
+  daos(limit: 10) {
     id
   }
 }
