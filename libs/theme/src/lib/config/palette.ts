@@ -8,14 +8,14 @@ const palette: PaletteOptions = {
     ...brandColors.purple,
   },
   secondary: {
-    main: '#ffffff',
+    ...brandColors.white,
   },
   background: {
     default: brandColors.background.main,
     paper: brandColors.background.main,
   },
   text: {
-    primary: brandColors.grays.main,
+    primary: brandColors.white.main,
   },
 };
 
