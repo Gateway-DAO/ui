@@ -1,5 +1,5 @@
 import useTranslation from 'next-translate/useTranslation';
-import { ReactNode, useMemo, useState } from 'react';
+import { useMemo } from 'react';
 
 import { TOKENS } from '@gateway/theme';
 

@@ -68,7 +68,7 @@ export function GatesCard({
             /* TODO: make line-clamp reusable */
             display: '-webkit-box',
             WebkitLineClamp: 2,
-            webkitBoxOrient: 'vertical',
+            WebkitBoxOrient: 'vertical',
             overflow: 'hidden',
           }}
         >
