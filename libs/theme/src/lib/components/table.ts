@@ -7,7 +7,6 @@ export const MuiTableHead: Extract<
   styleOverrides: {
     root: ({ theme }) => ({
       ...theme.typography.button,
-      color: theme.palette.text.secondary,
     }),
   },
 };
@@ -19,6 +18,9 @@ export const MuiTableCell: Extract<
   styleOverrides: {
     root: ({ theme }) => ({
       borderBottomColor: theme.palette.divider,
+      '&.MuiTableCell-head': {
+        color: theme.palette.text.secondary,
+      },
     }),
   },
 };
