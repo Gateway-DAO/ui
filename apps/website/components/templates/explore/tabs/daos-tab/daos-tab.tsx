@@ -1,6 +1,6 @@
 import { TOKENS } from '@gateway/theme';
 
-import { AutoAwesomeMosaic, ViewList } from '@mui/icons-material';
+import { ViewModule, ViewList } from '@mui/icons-material';
 import { Box, IconButton, Stack } from '@mui/material';
 import Chip from '@mui/material/Chip';
 
@@ -50,7 +50,7 @@ export function DaosTab({ daos }: Props) {
           color="secondary"
           aria-label="Toggle View"
         >
-          {view === ViewMode.grid ? <ViewList /> : <AutoAwesomeMosaic />}
+          {view === ViewMode.grid ? <ViewList /> : <ViewModule />}
         </IconButton>
       </Stack>
       {view === ViewMode.grid && (
