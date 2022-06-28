@@ -15,7 +15,16 @@ type Props = {
 };
 export function TableView({ people }: Props) {
   return (
-    <TableContainer sx={{ px: TOKENS.CONTAINER_PX }}>
+    <TableContainer
+      sx={{
+        '& .MuiTableCell-root:first-of-type': {
+          pl: TOKENS.CONTAINER_PX,
+        },
+        '& .MuiTableCell-root:last-of-type': {
+          pr: TOKENS.CONTAINER_PX,
+        },
+      }}
+    >
       <Table stickyHeader aria-label="sticky table">
         <TableHead>
           <TableRow>
