@@ -8,3 +8,4 @@ export * from './paper';
 export * from './input-adornment';
 export * from './input-label';
 export * from './tab';
+export * from './table';
