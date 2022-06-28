@@ -1,4 +1,5 @@
 import useTranslation from 'next-translate/useTranslation';
+import { useEffect } from 'react';
 
 import { colord } from 'colord';
 import { useConnect } from 'wagmi';
@@ -24,6 +25,12 @@ export function WalletSelect({ onFaq, onSubmit, onCancel }: Props) {
   const { connect, connectors, activeConnector, isConnected } = useConnect();
 
   const { t } = useTranslation('auth');
+
+  useEffect(() => {
+    if (isConnected) {
+      onSubmit();
+    }
+  }, [isConnected, onSubmit]);
 
   return (
     <>
@@ -80,21 +87,9 @@ export function WalletSelect({ onFaq, onSubmit, onCancel }: Props) {
         </Stack>
       </DialogContent>
       <DialogActions>
-        {isConnected ? (
-          <Button onClick={onSubmit} variant="contained" size="small" fullWidth>
-            {t('common:actions.connect')}
-          </Button>
-        ) : (
-          <Button
-            disabled={isConnected}
-            onClick={onCancel}
-            variant="outlined"
-            size="small"
-            fullWidth
-          >
-            {t('common:actions.cancel')}
-          </Button>
-        )}
+        <Button onClick={onCancel} variant="outlined" size="small" fullWidth>
+          {t('common:actions.cancel')}
+        </Button>
       </DialogActions>
 
       {/* {error && <div>{error.message}</div>} */}
