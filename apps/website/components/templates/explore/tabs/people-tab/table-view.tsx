@@ -38,7 +38,7 @@ export function TableView({ people }: Props) {
               <TableRow hover role="checkbox" tabIndex={-1} key={user.id}>
                 <TableCell>
                   <Stack alignItems="center" direction="row" gap={1}>
-                    <Avatar variant="rounded" src={user.pfp}>
+                    <Avatar variant="circular" src={user.pfp}>
                       {user.name?.[0]}
                     </Avatar>
                     <Box>

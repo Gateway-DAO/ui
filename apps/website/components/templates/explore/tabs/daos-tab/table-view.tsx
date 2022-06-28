@@ -42,7 +42,7 @@ export function TableView({ daos }: Props) {
               <TableRow hover role="checkbox" tabIndex={-1} key={dao.id}>
                 <TableCell>
                   <Stack alignItems="center" direction="row" gap={1}>
-                    <Avatar variant="rounded" src={dao.logo_url}>
+                    <Avatar variant="circular" src={dao.logo_url}>
                       {dao.name?.[0]}
                     </Avatar>
                     <Box>
