@@ -54,7 +54,8 @@ export function GatesTab({ gates }: Props) {
           sx={{
             display: 'grid',
             gridTemplateColumns: {
-              md: 'repeat(4, 1fr)',
+              md: 'repeat(3, 1fr)',
+              lg: 'repeat(4, 1fr)',
             },
             gap: 2,
             px: TOKENS.CONTAINER_PX,

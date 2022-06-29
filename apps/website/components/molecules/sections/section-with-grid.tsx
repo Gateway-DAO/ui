@@ -59,7 +59,7 @@ export function SectionWithGrid({
           px: TOKENS.CONTAINER_PX,
           gap: 2,
           gridTemplateColumns: {
-            xs: `repeat(${gridSize.xs}, 1fr)`,
+            xs: `repeat(${gridSize.xs},1fr)`,
             md: `repeat(${gridSize.md},1fr)`,
             lg: `repeat(${gridSize.lg},1fr)`,
           },
