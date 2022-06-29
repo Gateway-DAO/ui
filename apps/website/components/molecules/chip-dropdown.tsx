@@ -62,28 +62,33 @@ export function ChipDropdown<T = string>({
         onDelete={() => {}}
         sx={{ '.MuiChip-deleteIcon': { pointerEvents: 'none' } }}
       />
-      <Menu id="basic-menu" anchorEl={element} open={isOpen} onClose={onClose}>
-        <MenuList dense>
-          {values.map(({ label, value }) => (
-            <MenuItem key={label} onClick={onSelect(value)}>
-              <ListItemIcon>
-                {selected.includes(value) ? (
-                  <CheckBox />
-                ) : (
-                  <CheckBoxOutlineBlank />
-                )}
-              </ListItemIcon>
-              <ListItemText>{label}</ListItemText>
-            </MenuItem>
-          ))}
-          <Divider />
-          <MenuItem onClick={onClear}>
+      <Menu
+        id="basic-menu"
+        anchorEl={element}
+        open={isOpen}
+        onClose={onClose}
+        sx={{ py: 0 }}
+        MenuListProps={{ dense: true }}
+      >
+        {values.map(({ label, value }) => (
+          <MenuItem key={label} onClick={onSelect(value)}>
             <ListItemIcon>
-              <Clear />
+              {selected.includes(value) ? (
+                <CheckBox />
+              ) : (
+                <CheckBoxOutlineBlank />
+              )}
             </ListItemIcon>
-            <ListItemText>Clear</ListItemText>
+            <ListItemText>{label}</ListItemText>
           </MenuItem>
-        </MenuList>
+        ))}
+        <Divider />
+        <MenuItem onClick={onClear}>
+          <ListItemIcon>
+            <Clear />
+          </ListItemIcon>
+          <ListItemText>Clear</ListItemText>
+        </MenuItem>
       </Menu>
     </>
   );
