@@ -33,7 +33,10 @@ export function usePropertyFilter<Item>(
             []
           )
         )
-      ),
+      ).map((filter) => ({
+        label: filter,
+        value: filter,
+      })),
     [array, propertyOfItem]
   );
   const [selectedFilters, setActiveFilters] = useState<string[]>([]);
@@ -54,5 +57,16 @@ export function usePropertyFilter<Item>(
       return propertyArray.some((value) => selectedFilters.includes(value));
     });
   }, [selectedFilters, array, propertyOfItem]);
-  return { filteredItems, availableFilters, selectedFilters, toggleFilter };
+
+  const onClear = useCallback(() => {
+    setActiveFilters([]);
+  }, []);
+
+  return {
+    filteredItems,
+    availableFilters,
+    selectedFilters,
+    toggleFilter,
+    onClear,
+  };
 }

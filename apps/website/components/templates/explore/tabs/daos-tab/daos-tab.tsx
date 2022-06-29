@@ -2,10 +2,10 @@ import { TOKENS } from '@gateway/theme';
 
 import { ViewModule, ViewList } from '@mui/icons-material';
 import { Box, IconButton, Stack } from '@mui/material';
-import Chip from '@mui/material/Chip';
 
 import { usePropertyFilter } from '../../../../../hooks/use-property-filter';
 import { useViewMode, ViewMode } from '../../../../../hooks/use-view-modes';
+import { ChipDropdown } from '../../../../molecules/chip-dropdown';
 import { DaoCard } from '../../../../molecules/dao-card';
 import { ExploreProps } from '../../types';
 import { TableView } from './table-view';
@@ -21,6 +21,7 @@ export function DaosTab({ daos }: Props) {
     filteredItems: filteredDaos,
     availableFilters,
     toggleFilter,
+    onClear,
   } = usePropertyFilter(daos, 'categories');
 
   return (
@@ -31,18 +32,13 @@ export function DaosTab({ daos }: Props) {
         sx={{ mb: 4, px: TOKENS.CONTAINER_PX }}
       >
         <Stack direction="row" gap={1.5}>
-          {availableFilters.map((filter) => {
-            const isActive = selectedFilters.includes(filter);
-            return (
-              <Chip
-                key={`daos-tab-filter-${filter}`}
-                label={filter}
-                {...(isActive
-                  ? { onDelete: () => toggleFilter(filter) }
-                  : { onClick: () => toggleFilter(filter) })}
-              />
-            );
-          })}
+          <ChipDropdown
+            label="Categories"
+            values={availableFilters}
+            selected={selectedFilters}
+            onToggle={toggleFilter}
+            onClear={onClear}
+          />
         </Stack>
         <IconButton
           type="button"
