@@ -1,8 +1,11 @@
+import Link from 'next/link';
+import { useMemo } from 'react';
+
 import { colord } from 'colord';
 import type { PartialDeep } from 'type-fest';
 
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
-import { Avatar, CardHeader, IconButton } from '@mui/material';
+import { Avatar, CardActionArea, CardHeader, IconButton } from '@mui/material';
 import MUICard from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
@@ -10,6 +13,7 @@ import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
+import { ROUTES } from '../../constants/routes';
 import { Gates } from '../../services/graphql/types.generated';
 /* TODO: Arias and Labels */
 
@@ -19,16 +23,25 @@ export function GatesCard({
   description,
   categories,
   dao,
+  id,
 }: PartialDeep<Gates>) {
   const hasDao = !!dao;
+  const url = useMemo(() => ROUTES.GATE_PROFILE.replace('[id]', id), [id]);
   return (
     <MUICard>
-      <CardMedia
-        component="img"
-        src={badge?.ipfsURL && `https://ipfs.infura.io/ipfs/${badge.ipfsURL}`}
-        alt={badge?.name}
-        sx={{ aspectRatio: '1/1' }}
-      />
+      <Link passHref href={url}>
+        <CardActionArea component="a">
+          <CardMedia
+            component="img"
+            src={
+              badge?.ipfsURL && `https://ipfs.infura.io/ipfs/${badge.ipfsURL}`
+            }
+            alt={badge?.name}
+            sx={{ aspectRatio: '1/1' }}
+          />
+        </CardActionArea>
+      </Link>
+
       <CardHeader
         sx={{ pt: 2, pb: 1, '.MuiCardHeader-action': { alignSelf: 'unset' } }}
         avatar={
