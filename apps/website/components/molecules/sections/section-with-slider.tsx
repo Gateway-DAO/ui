@@ -9,7 +9,7 @@ import { useBreakpointValue } from '@gateway/ui';
 import { Box, Stack, Typography, useTheme } from '@mui/material';
 import { SystemCssProperties } from '@mui/system';
 
-type Props = {
+export type SectionWithSliderProps = {
   title: string;
   caption: string;
   action: ReactNode;
@@ -25,7 +25,7 @@ export function SectionWithSlider({
   children,
   itemWidth,
   stretch = true,
-}: Props) {
+}: SectionWithSliderProps) {
   const theme = useTheme();
   const padding = useBreakpointValue(TOKENS.CONTAINER_PX);
   const offset = useMemo(
