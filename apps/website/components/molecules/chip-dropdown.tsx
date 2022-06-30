@@ -10,13 +10,13 @@ import {
   Clear,
 } from '@mui/icons-material';
 import {
+  Avatar,
   Chip,
   Divider,
   ListItemIcon,
   ListItemText,
   Menu,
   MenuItem,
-  MenuList,
 } from '@mui/material';
 
 import { Option } from '../../types/input';
@@ -57,6 +57,20 @@ export function ChipDropdown<T = string>({
     <>
       <Chip
         label={label}
+        icon={
+          selected?.length ? (
+            <Avatar
+              sx={{
+                width: 24,
+                height: 24,
+                fontSize: (theme) => theme.typography.pxToRem(12),
+              }}
+              sizes="sm"
+            >
+              {selected.length}
+            </Avatar>
+          ) : null
+        }
         deleteIcon={isOpen ? <ArrowDropUp /> : <ArrowDropDown />}
         onClick={toggleOpen}
         onDelete={() => {}}
