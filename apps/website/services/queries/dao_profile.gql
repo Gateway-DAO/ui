@@ -18,10 +18,10 @@ query dao_profile($id: uuid!) {
     }
     gates {
       id
-      gate_name
+      title
       description
       categories
-      badge
+      image
     }
   }
 }

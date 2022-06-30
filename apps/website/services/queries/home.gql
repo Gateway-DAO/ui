@@ -1,10 +1,10 @@
 query get_home {
   gates(limit: 4) {
     id
-    gate_name
+    title
     description
     categories
-    badge
+    image
     dao {
       id
       logo_url
