@@ -1,8 +1,8 @@
-import createPalette from '@mui/material/styles/createPalette';
+import { alpha } from '@mui/material';
 
 import brandColors from './colors';
 
-const palette = createPalette({
+const palette = {
   mode: 'dark',
   primary: {
     ...brandColors.purple,
@@ -16,7 +16,8 @@ const palette = createPalette({
   },
   text: {
     primary: brandColors.white.main,
+    secondary: alpha(brandColors.white.main, 0.7),
   },
-});
+};
 
 export default palette;
