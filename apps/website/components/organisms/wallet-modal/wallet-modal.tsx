@@ -26,34 +26,42 @@ type Props = {
   onSuccess: () => void;
 };
 
-type Steps = 'SELECT_WALLET' | 'FAQ' | 'CONNECTING';
+type Steps = 'SELECT_WALLET' | 'FAQ' | 'ERROR' | 'CONNECTING';
 
 export function WalletModal({ isOpen, onSuccess, onClose }: Props) {
   const [step, setStep] = useState<Steps>('SELECT_WALLET');
   const onBack = () => setStep('SELECT_WALLET');
   const onConnect = () => setStep('CONNECTING');
   const onFaq = () => setStep('FAQ');
+  const onError = () => setStep('ERROR');
 
   const onCloseModal = () => {
     switch (step) {
-      case 'FAQ':
-        return onBack();
+      case 'CONNECTING':
+        return null;
       case 'SELECT_WALLET':
         return onClose();
       default:
-        return null;
+        return onBack();
     }
   };
 
   return (
     <Dialog open={isOpen} onClose={onCloseModal} maxWidth="xs">
-      {step === 'SELECT_WALLET' && (
-        <WalletSelect onFaq={onFaq} onSubmit={onConnect} onCancel={onClose} />
-      )}
-      {step === 'FAQ' && <Faq onBack={onBack} />}
-      {step === 'CONNECTING' && (
-        <ConnectedWallet onSuccess={onSuccess} onBack={onBack} />
-      )}
+      <>
+        {step === 'SELECT_WALLET' && (
+          <WalletSelect onFaq={onFaq} onSubmit={onConnect} onCancel={onClose} />
+        )}
+        {step === 'FAQ' && <Faq onBack={onBack} />}
+        {(step === 'CONNECTING' || step === 'ERROR') && (
+          <ConnectedWallet
+            isError={step === 'ERROR'}
+            onError={onError}
+            onSuccess={onSuccess}
+            onBack={onBack}
+          />
+        )}
+      </>
     </Dialog>
   );
 }
