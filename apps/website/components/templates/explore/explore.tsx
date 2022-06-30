@@ -33,17 +33,17 @@ export function ExploreTemplate({ title, subtitle, data }: TemplateProps) {
       {
         key: 'gates',
         label: t('common:tabs.gates'),
-        section: <GatesTab gates={data.gates} />,
+        section: <GatesTab />,
       },
       {
         key: 'daos',
         label: t('common:tabs.daos'),
-        section: <DaosTab daos={data.daos} />,
+        section: <DaosTab />,
       },
       {
         key: 'people',
         label: t('common:tabs.people'),
-        section: <PeopleTab people={data.people} />,
+        section: <PeopleTab />,
       },
     ],
     []

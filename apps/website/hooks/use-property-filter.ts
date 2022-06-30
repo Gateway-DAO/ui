@@ -27,7 +27,7 @@ export function usePropertyFilter<Item>(
     () =>
       Array.from(
         new Set<string>(
-          array.reduce(
+          array?.reduce(
             (accumulator, item) =>
               accumulator.concat(item[propertyOfItem] || []),
             []
