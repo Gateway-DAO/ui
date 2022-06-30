@@ -18,7 +18,7 @@ import { Gates } from '../../services/graphql/types.generated';
 /* TODO: Arias and Labels */
 
 export function GatesCard({
-  gate_name,
+  title,
   badge,
   description,
   categories,
@@ -66,12 +66,12 @@ export function GatesCard({
             <BookmarkBorderIcon />
           </IconButton>
         }
-        title={hasDao ? dao.name : gate_name}
+        title={hasDao ? dao.name : title}
       />
       <CardContent sx={{ py: 1 }}>
         {hasDao && (
           <Typography gutterBottom variant="h5">
-            {gate_name}
+            {title}
           </Typography>
         )}
         <Typography
