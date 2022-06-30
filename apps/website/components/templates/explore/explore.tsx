@@ -60,6 +60,7 @@ export function ExploreTemplate({ title, subtitle, data }: TemplateProps) {
           variant="body1"
           whiteSpace="pre-line"
           px={TOKENS.CONTAINER_PX}
+          color="text.secondary"
         >
           {subtitle}
         </Typography>
