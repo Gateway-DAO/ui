@@ -1,7 +1,11 @@
-export const badgeProps = (badge) =>
-  badge
+import { PartialDeep } from 'type-fest';
+
+import { Gates } from '../services/graphql/types.generated';
+
+export const badgeProps = (gate: PartialDeep<Gates>) =>
+  gate?.image
     ? {
-        src: badge?.ipfsURL && `https://ipfs.infura.io/ipfs/${badge.ipfsURL}`,
-        alt: badge?.name,
+        src: gate.image,
+        alt: gate.title,
       }
     : undefined;
