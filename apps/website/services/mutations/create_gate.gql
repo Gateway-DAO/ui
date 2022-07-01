@@ -1,0 +1,31 @@
+mutation create_gate(
+  $title: String!
+  $categories: jsonb
+  $description: String!
+  # $admins: jsonb!
+  $knowledge: jsonb
+  $image: String!
+  $tasks: keys_arr_rel_insert_input
+) {
+  insert_gates_one(
+    object: {
+      title: $title
+      categories: $categories
+      description: $description
+      # admins: $admins
+      knowledge: $knowledge
+      image: $image
+      tasks: $tasks
+    }
+  ) {
+    title
+    categories
+    description
+    # admins
+    knowledge
+    image
+    tasks {
+      id
+    }
+  }
+}
