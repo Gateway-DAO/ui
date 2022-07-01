@@ -138,6 +138,7 @@ export function OverviewTab() {
                 flexDirection: 'column',
                 rowGap: '20px',
               }}
+              borderTop={{ xs: '1px solid rgba(255, 255, 255, 0.12)', md: '0px' }}
             >
               <Typography
                 style={{ color: '#fff', fontSize: '20px' }}
