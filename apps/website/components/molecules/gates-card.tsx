@@ -15,11 +15,12 @@ import Typography from '@mui/material/Typography';
 
 import { ROUTES } from '../../constants/routes';
 import { Gates } from '../../services/graphql/types.generated';
+import { badgeProps } from '../../utils/badge-props';
 /* TODO: Arias and Labels */
 
 export function GatesCard({
   title,
-  badge,
+  image,
   description,
   categories,
   dao,
@@ -33,10 +34,7 @@ export function GatesCard({
         <CardActionArea component="a">
           <CardMedia
             component="img"
-            src={
-              badge?.ipfsURL && `https://ipfs.infura.io/ipfs/${badge.ipfsURL}`
-            }
-            alt={badge?.name}
+            {...badgeProps({ image, title })}
             sx={{ aspectRatio: '1/1' }}
           />
         </CardActionArea>
