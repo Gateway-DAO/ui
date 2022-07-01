@@ -35,11 +35,11 @@ export function TableView({ gates }: Props) {
               <TableRow hover role="checkbox" tabIndex={-1} key={gate.id}>
                 <TableCell>
                   <Stack alignItems="center" direction="row" gap={1}>
-                    <Avatar variant="rounded" {...badgeProps(gate.badge)}>
-                      {gate.gate_name?.[0]}
+                    <Avatar variant="rounded" {...badgeProps(gate.image)}>
+                      {gate.title?.[0]}
                     </Avatar>
                     <Box>
-                      <Typography>{gate.gate_name}</Typography>
+                      <Typography>{gate.title}</Typography>
                       <Typography
                         variant="caption"
                         color="text.secondary"
