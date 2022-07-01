@@ -44,7 +44,7 @@ export function TableView({ gates }: Props) {
               <TableRow hover role="checkbox" tabIndex={-1} key={gate.id}>
                 <TableCell>
                   <Stack alignItems="center" direction="row" gap={1}>
-                    <Avatar variant="rounded" {...badgeProps(gate.badge)}>
+                    <Avatar variant="rounded" {...badgeProps(gate)}>
                       {gate.title?.[0]}
                     </Avatar>
                     <Box>
