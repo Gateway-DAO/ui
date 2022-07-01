@@ -2,5 +2,8 @@ query me {
     me {
     ...current_user
     pfp
+    following {
+      user_id
+    }
   }
 }

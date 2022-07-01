@@ -1,0 +1,11 @@
+mutation follow_user($id: uuid!) {
+  follow_user(args: {id: $id}) {
+    user_id
+  }
+}
+
+mutation unfollow_user($id: uuid!) {
+  unfollow_user(args: {id: $id}) {
+    user_id
+  }
+}
