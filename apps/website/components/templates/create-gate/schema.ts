@@ -5,8 +5,8 @@ export type CreateGateTypes = {
   categories: string[];
   description: string;
   image: string;
-  admin: string;
-  knowledge: string[];
+  created_by: string;
+  skills: string[];
 };
 
 export const createGateSchema: SchemaOf<CreateGateTypes> = object({
@@ -14,6 +14,6 @@ export const createGateSchema: SchemaOf<CreateGateTypes> = object({
   categories: array().of(string()).defined(),
   description: string().min(2).defined(),
   image: string().min(2).defined(),
-  admin: string().min(2).defined(),
-  knowledge: array().of(string()).defined(),
+  created_by: string().min(2).defined(),
+  skills: array().of(string()).defined(),
 });

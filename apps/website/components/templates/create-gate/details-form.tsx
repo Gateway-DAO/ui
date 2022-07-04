@@ -1,19 +1,23 @@
 import { useFormContext } from 'react-hook-form';
 
-import { Stack, TextField } from '@mui/material';
+import { Search } from '@mui/icons-material';
+import { Autocomplete, Stack, TextField } from '@mui/material';
 
 import { useAuth } from '../../../providers/auth';
-import TagsInput from '../../molecules/TagsInput';
 import { CreateGateTypes } from './schema';
 
 type Props = {
+  updateValue: (field: string, value: string) => void;
+  updateArray: (field: string, categories: string[]) => void;
   onSubmit: (data: CreateGateTypes) => void;
   isLoading: boolean;
 };
 
-export function GateDetailsForm({ onSubmit }: Props) {
+const categories = ['Onboarding', 'Beginner'];
+const skills = ['Skill A', 'Skill B', 'Skill C'];
+
+export function GateDetailsForm({ updateValue, updateArray, onSubmit }: Props) {
   const {
-    register,
     handleSubmit,
     formState: { errors },
   } = useFormContext<CreateGateTypes>();
@@ -31,18 +35,25 @@ export function GateDetailsForm({ onSubmit }: Props) {
         required
         label="Title"
         id="title"
-        {...register('title')}
+        onChange={(e) => updateValue('title', e.target.value)}
         error={!!errors.title}
         helperText={errors.title?.message}
       />
-      <TagsInput
-        required
-        fullWidth
-        label="Category"
+      <Autocomplete
+        multiple
         id="categories"
-        {...register('categories')}
-        error={!!errors.categories}
-        helperText={errors.categories && 'Please enter valid categories'}
+        options={categories}
+        popupIcon={<Search />}
+        onChange={(e, value) => updateArray('categories', value)}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            required
+            label="Categories"
+            error={!!errors.categories}
+            helperText={errors.categories && 'Please enter valid categories'}
+          />
+        )}
       />
       <TextField
         required
@@ -50,29 +61,43 @@ export function GateDetailsForm({ onSubmit }: Props) {
         minRows={4}
         label="Description"
         id="description"
-        {...register('description')}
+        onChange={(e) => updateValue('description', e.target.value)}
         error={!!errors.description}
         helperText={errors.description?.message}
       />
-      <TagsInput
-        required
-        fullWidth
-        label="Admin"
-        id="admin"
-        locked={true}
-        tags={[me?.name]}
-        {...register('admin')}
-        error={!!errors.admin}
-        helperText={errors.admin?.message}
+      <Autocomplete
+        multiple
+        id="skills"
+        options={skills}
+        popupIcon={<Search />}
+        onChange={(e, value) => updateArray('skills', value)}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            required
+            label="Skills"
+            error={!!errors.skills}
+            helperText={errors.skills && 'Please enter valid skills'}
+          />
+        )}
       />
-      <TagsInput
-        required
-        fullWidth
-        label="Knowledge"
-        id="knowledge"
-        {...register('knowledge')}
-        error={!!errors.knowledge}
-        helperText={errors.knowledge && 'Please enter valid knowledges'}
+      <Autocomplete
+        multiple
+        readOnly
+        id="created_by"
+        options={[me.name]}
+        defaultValue={[me.name]}
+        popupIcon={<Search />}
+        onChange={(e, value) => updateArray('created_by', value)}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            required
+            label="Created By"
+            error={!!errors.created_by}
+            helperText={errors.created_by?.message}
+          />
+        )}
       />
     </Stack>
   );

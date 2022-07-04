@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router';
+import { useState } from 'react';
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
@@ -26,6 +27,13 @@ export function CreateGateTemplate() {
   const router = useRouter();
   const { me } = useAuth();
 
+  const [title, setTitle] = useState('');
+  const [image, setImage] = useState('');
+  const [categories, setCategories] = useState([]);
+  const [description, setDescription] = useState('');
+  const [createdBy, setCreatedBy] = useState([{ name: me.name, id: me.id }]);
+  const [skills, setSkills] = useState([]);
+
   const updateMutation = useMutation(
     'createGate',
     !!me && gqlMethods(me).create_gate,
@@ -37,13 +45,48 @@ export function CreateGateTemplate() {
     }
   );
 
-  const onSubmit = (data: CreateGateTypes) => {
+  const createGate = () => {
+    const data = { title, image, categories, description, createdBy, skills };
+    console.log(data);
     //updateMutation.mutate({ ...data });
+  };
+
+  const updateValue = (field, value) => {
+    switch (field) {
+      case 'title':
+        console.log('here', value);
+        setTitle(value);
+        break;
+      case 'image':
+        setImage(value);
+        break;
+      case 'description':
+        setDescription(value);
+        break;
+      case 'created_by':
+        setCreatedBy(value);
+        break;
+      default:
+        break;
+    }
+  };
+
+  const updateArray = (field, value) => {
+    switch (field) {
+      case 'categories':
+        setCategories(value);
+        break;
+      case 'skills':
+        setSkills(value);
+        break;
+      default:
+        break;
+    }
   };
 
   return (
     <Stack padding={'0 90px'}>
-      <CreateNavbar />
+      <CreateNavbar publish={createGate} />
       <Typography component="h1" variant="h4" sx={{ margin: '40px 0 100px 0' }}>
         Create Gate
       </Typography>
@@ -75,7 +118,9 @@ export function CreateGateTemplate() {
           <Stack direction="column" gap={4}>
             <FormProvider {...methods}>
               <GateDetailsForm
-                onSubmit={onSubmit}
+                onSubmit={createGate}
+                updateValue={updateValue}
+                updateArray={updateArray}
                 isLoading={updateMutation.isLoading}
               />
             </FormProvider>
