@@ -4,9 +4,15 @@ type AddTaskButtonProps = {
   icon: JSX.Element;
   title: string;
   disabled?: boolean;
+  addTask: () => void;
 };
 
-const AddTaskButton = ({ icon, title, disabled }: AddTaskButtonProps) => {
+const AddTaskButton = ({
+  icon,
+  title,
+  disabled,
+  addTask,
+}: AddTaskButtonProps) => {
   return (
     <Stack
       sx={{
@@ -22,6 +28,7 @@ const AddTaskButton = ({ icon, title, disabled }: AddTaskButtonProps) => {
           filter: !disabled && 'brightness(150%)',
         },
       }}
+      onClick={() => addTask()}
     >
       <p>{icon}</p>
       {disabled ? title + ' (Soon)' : title}

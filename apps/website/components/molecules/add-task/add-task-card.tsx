@@ -8,8 +8,9 @@ import StarIcon from '@mui/icons-material/Star';
 import { Grid, Paper, Stack, Typography } from '@mui/material';
 
 import AddTaskButton from './add-task-button';
+import FileLinkTask from './file-link-task/file-link-task';
 
-const AddTaskCard = () => {
+const AddTaskCard = ({ addTask }) => {
   return (
     <Stack
       sx={{
@@ -35,7 +36,7 @@ const AddTaskCard = () => {
             <AddTaskButton
               icon={<InsertLinkIcon />}
               title={'Files & Links'}
-              disabled
+              addTask={() => addTask(FileLinkTask)}
             />
           </Paper>
         </Grid>
@@ -45,6 +46,9 @@ const AddTaskCard = () => {
               icon={<QuizIcon />}
               title={'Create Quizz'}
               disabled
+              addTask={() => {
+                return;
+              }}
             />
           </Paper>
         </Grid>
@@ -54,6 +58,9 @@ const AddTaskCard = () => {
               icon={<MonetizationOnIcon />}
               title={'Hold Token'}
               disabled
+              addTask={() => {
+                return;
+              }}
             />
           </Paper>
         </Grid>
@@ -63,6 +70,9 @@ const AddTaskCard = () => {
               icon={<ElectricBoltIcon />}
               title={'Snapshot Governance'}
               disabled
+              addTask={() => {
+                return;
+              }}
             />
           </Paper>
         </Grid>
@@ -72,12 +82,22 @@ const AddTaskCard = () => {
               icon={<NumbersIcon />}
               title={'Verification Code'}
               disabled
+              addTask={() => {
+                return;
+              }}
             />
           </Paper>
         </Grid>
         <Grid item xs={2} sm={4} md={4}>
           <Paper>
-            <AddTaskButton icon={<StarIcon />} title={'Bounty'} disabled />
+            <AddTaskButton
+              icon={<StarIcon />}
+              title={'Bounty'}
+              disabled
+              addTask={() => {
+                return;
+              }}
+            />
           </Paper>
         </Grid>
       </Grid>
