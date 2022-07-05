@@ -33,14 +33,19 @@ export function NewUserTemplate({ user }: Props) {
   const snackbar = useSnackbar();
 
   const router = useRouter();
-  const { me } = useAuth();
+  const { me, onUpdateMe } = useAuth();
 
   const updateMutation = useMutation(
     'updateProfile',
     !!me && gqlMethods(me).update_user_profile,
     {
-      onSuccess() {
+      onSuccess(data) {
         snackbar.handleClick({ message: 'Profile updated!' });
+        onUpdateMe((oldMe) => ({
+          ...oldMe,
+          ...data.update_users_by_pk,
+          init: true,
+        }));
         router.push(ROUTES.EXPLORE);
       },
     }
