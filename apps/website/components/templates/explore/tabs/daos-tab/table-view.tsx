@@ -1,3 +1,5 @@
+import useTranslation from 'next-translate/useTranslation';
+
 import { TOKENS } from '@gateway/theme';
 
 import { Avatar, Box, Button, Chip, Stack, Typography } from '@mui/material';
@@ -8,6 +10,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 
+import { useFollowDAO } from '../../../../../hooks/use-follow';
 import { ExploreProps } from '../../types';
 
 // TODO: make it generic
@@ -17,6 +20,8 @@ type Props = {
   daos: ExploreProps['daos'];
 };
 export function TableView({ daos }: Props) {
+  const { t } = useTranslation('common');
+  const { isFollowingDAO, isLoading, onToggleFollow } = useFollowDAO();
   return (
     <TableContainer
       sx={{
@@ -38,6 +43,7 @@ export function TableView({ daos }: Props) {
         </TableHead>
         <TableBody>
           {daos.map((dao) => {
+            const isFollowing = isFollowingDAO(dao.id);
             return (
               <TableRow hover role="checkbox" tabIndex={-1} key={dao.id}>
                 <TableCell>
@@ -80,8 +86,13 @@ export function TableView({ daos }: Props) {
                   </Stack>
                 </TableCell>
                 <TableCell align="right">
-                  <Button variant="outlined" color="secondary">
-                    Follow
+                  <Button
+                    variant="outlined"
+                    color="secondary"
+                    disabled={isLoading(dao.id)}
+                    onClick={() => onToggleFollow(dao.id, isFollowing)}
+                  >
+                    {isFollowing ? t('actions.unfollow') : t('actions.follow')}
                   </Button>
                 </TableCell>
               </TableRow>

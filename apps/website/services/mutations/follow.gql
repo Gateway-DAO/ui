@@ -9,3 +9,19 @@ mutation unfollow_user($id: uuid!) {
     user_id
   }
 }
+mutation follow_dao($id: uuid!) {
+  follow_dao (args: {id: $id}) {
+    dao_id
+    dao {
+      id
+      logo_url
+      name
+    }
+  }
+}
+
+mutation unfollow_dao($id: uuid!) {
+  unfollow_dao(args: {id: $id}) {
+    dao_id
+  }
+}

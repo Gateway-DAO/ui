@@ -5,5 +5,13 @@ query me {
     following {
       user_id
     }
+    following_dao {
+      dao_id
+      dao {
+        id
+        logo_url
+        name
+      }
+    }
   }
 }

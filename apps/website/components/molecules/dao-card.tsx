@@ -1,3 +1,4 @@
+import useTranslation from 'next-translate/useTranslation';
 import Link from 'next/link';
 import { useMemo } from 'react';
 
@@ -19,6 +20,7 @@ import Typography from '@mui/material/Typography';
 import { Box } from '@mui/system';
 
 import { ROUTES } from '../../constants/routes';
+import { useFollowDAO } from '../../hooks/use-follow';
 import { Daos } from '../../services/graphql/types.generated';
 
 /* TODO: Arias and Labels */
@@ -32,6 +34,9 @@ export function DaoCard({
   description,
 }: PartialDeep<Daos>) {
   const url = useMemo(() => ROUTES.DAO_PROFILE.replace('[id]', id), [id]);
+  const { t } = useTranslation('common');
+  const { isFollowingDAO, isLoading, onToggleFollow } = useFollowDAO();
+  const isFollowing = isFollowingDAO(id);
 
   return (
     <MUICard sx={{ position: 'relative' }}>
@@ -106,6 +111,8 @@ export function DaoCard({
         variant="outlined"
         size="small"
         color="secondary"
+        disabled={isLoading(id)}
+        onClick={() => onToggleFollow(id, isFollowing)}
         sx={{
           zIndex: 1,
           position: 'absolute',
@@ -113,7 +120,7 @@ export function DaoCard({
           right: (theme) => theme.spacing(2),
         }}
       >
-        Follow
+        {isFollowing ? t('actions.unfollow') : t('actions.follow')}
       </Button>
     </MUICard>
   );

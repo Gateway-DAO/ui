@@ -68,9 +68,9 @@ export function TableView({ people }: Props) {
 
                 <TableCell align="right">
                   <Button
-                    disabled={isLoading(user.id)}
                     variant="outlined"
                     color="secondary"
+                    disabled={isLoading(user.id)}
                     onClick={() => onToggleFollow(user.id, isFollowing)}
                   >
                     {isFollowing ? t('actions.unfollow') : t('actions.follow')}
