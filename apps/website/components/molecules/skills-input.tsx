@@ -16,25 +16,12 @@ export const SkillsInput = ({ set, ...props }) => {
             key={index}
             variant="filled"
             label={option}
-            color={
-              props.errors
-                ?.map((error) => error.message || null)
-                .includes(`${option} is not a valid skills`)
-                ? 'error'
-                : 'default'
-            }
             {...getTagProps({ index })}
           />
         ))
       }
       renderInput={(params) => (
-        <TextField
-          {...params}
-          label="Skills"
-          id="skills"
-          multiline
-          {...props}
-        />
+        <TextField {...params} label="Skills" id="skills" {...props} />
       )}
       onChange={(event, skills) => set(skills)}
     />

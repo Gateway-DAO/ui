@@ -38,7 +38,6 @@ export function GateDetailsForm({ onSubmit }: Props) {
       <CategoriesInput
         label="Categories"
         id="categories"
-        multiline
         name="categories"
         error={!!errors.categories}
         errors={errors.categories}
@@ -62,7 +61,6 @@ export function GateDetailsForm({ onSubmit }: Props) {
       <SkillsInput
         label="Skills"
         id="skills"
-        multiline
         name="skills"
         error={!!errors.skills}
         errors={errors.skills}
@@ -77,7 +75,6 @@ export function GateDetailsForm({ onSubmit }: Props) {
       <CreatedByInput
         label="Created By"
         id="created_by"
-        multiline
         name="created_by"
         error={!!errors.created_by}
         errors={errors.created_by}

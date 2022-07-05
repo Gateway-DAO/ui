@@ -44,7 +44,7 @@ export function CreateGateTemplate() {
 
   return (
     <Stack padding={'0 90px'}>
-      <CreateNavbar publish={createGate} />
+      <CreateNavbar />
       <Typography component="h1" variant="h4" sx={{ margin: '40px 0 100px 0' }}>
         Create Gate
       </Typography>

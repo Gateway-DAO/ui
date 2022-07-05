@@ -30,7 +30,6 @@ const categories = [
   'Community',
   'Project Management',
   'Product Management',
-  'Accounting',
   'Tokenomics',
   'Quality Assurance',
   'Branding',
@@ -80,13 +79,7 @@ export const CategoriesInput = ({ set, ...props }) => {
         ))
       }
       renderInput={(params) => (
-        <TextField
-          {...params}
-          label="Categories"
-          id="categories"
-          multiline
-          {...props}
-        />
+        <TextField {...params} label="Categories" id="categories" {...props} />
       )}
       onChange={(event, categories) => set(categories)}
     />

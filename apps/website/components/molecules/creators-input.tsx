@@ -24,13 +24,7 @@ export const CreatedByInput = ({ set, ...props }) => {
         ))
       }
       renderInput={(params) => (
-        <TextField
-          {...params}
-          label="Created By"
-          id="created_by"
-          multiline
-          {...props}
-        />
+        <TextField {...params} label="Created By" id="created_by" {...props} />
       )}
       onChange={(event, createdBy) => set(createdBy)}
     />
