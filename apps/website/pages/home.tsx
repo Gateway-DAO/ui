@@ -5,14 +5,14 @@ import useTranslation from 'next-translate/useTranslation';
 
 import { DashboardTemplate } from '../components/templates/dashboard';
 import { ExploreTemplate } from '../components/templates/explore';
-import { gqlAdminMethods } from '../services/api';
+import { gqlAnonMethods } from '../services/api';
 
 /** TODO: Prevent template remount when navigating between dashboard pages
  * https://nextjs.org/docs/basic-features/layouts
  * */
 
 export const getStaticProps = async () => {
-  const exploreProps = await gqlAdminMethods.get_home();
+  const exploreProps = await gqlAnonMethods.get_home();
 
   return {
     props: {
