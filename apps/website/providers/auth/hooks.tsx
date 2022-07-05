@@ -7,7 +7,6 @@ import { PartialDeep } from 'type-fest';
 import { ROUTES } from '../../constants/routes';
 import { gqlAnonMethods, gqlMethods } from '../../services/api';
 import { SessionUser } from '../../types/user';
-import { useAuth } from './context';
 import { AuthStatus } from './state';
 
 type Props = {
@@ -41,14 +40,17 @@ export function useLogin() {
 
 export function useMe() {
   const queryClient = useQueryClient();
+  const me = useQuery<PartialDeep<SessionUser>>('me').data;
+
+  const onUpdateMe = (
+    cb: (oldMe: PartialDeep<SessionUser>) => PartialDeep<SessionUser>
+  ) => queryClient.setQueryData('me', cb);
 
   const onSignOut = () => {
     queryClient.setQueryData('me', undefined);
   };
 
-  const me = useQuery('me').data;
-
-  return { me, onSignOut };
+  return { me, onSignOut, onUpdateMe };
 }
 
 export function useInitUser(status: AuthStatus, me: PartialDeep<SessionUser>) {

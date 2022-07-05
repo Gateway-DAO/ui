@@ -18,7 +18,7 @@ export function AuthProvider({
   children,
 }: PropsWithChildren<Props>) {
   const { disconnect } = useDisconnect();
-  const { me, onSignOut: onSignOutMe } = useMe();
+  const { me, onSignOut: onSignOutMe, onUpdateMe } = useMe();
   const { status, onAuthenticated, onConnecting, onUnauthenticated } =
     useAuthStatus(me);
 
@@ -51,7 +51,7 @@ export function AuthProvider({
 
   return (
     <AuthContext.Provider
-      value={{ onSignOut, status, onOpenLogin: onConnecting, me }}
+      value={{ onSignOut, status, onOpenLogin: onConnecting, me, onUpdateMe }}
     >
       {!isBlocked && children}
       {status !== 'AUTHENTICATED' && (

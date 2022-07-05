@@ -1,8 +1,8 @@
-import { alpha } from '@mui/material';
+import { alpha, PaletteOptions } from '@mui/material';
 
 import brandColors from './colors';
 
-const palette = {
+const palette: PaletteOptions = {
   mode: 'dark',
   primary: {
     ...brandColors.purple,
