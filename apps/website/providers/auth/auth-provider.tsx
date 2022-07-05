@@ -1,10 +1,11 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
-import { PropsWithChildren, useCallback, useEffect } from 'react';
+import { PropsWithChildren, useCallback, useEffect, useMemo } from 'react';
 
 import { useAccount, useDisconnect } from 'wagmi';
 
 import { WalletModal } from '../../components/organisms/wallet-modal';
 import useToggleContainerClass from '../../hooks/useToggleContainerClass';
+import { gqlMethods } from '../../services/api';
 import { AuthContext } from './context';
 import { useInitUser, useMe } from './hooks';
 import { useAuthStatus } from './state';
@@ -23,6 +24,11 @@ export function AuthProvider({
     useAuthStatus(me);
 
   const { status: accountStatus, data: account } = useAccount();
+
+  const gqlAuthMethods = useMemo(
+    () => gqlMethods({ token: me?.token }),
+    [me?.token]
+  );
 
   const onSignOut = useCallback(() => {
     disconnect();
@@ -51,7 +57,14 @@ export function AuthProvider({
 
   return (
     <AuthContext.Provider
-      value={{ onSignOut, status, onOpenLogin: onConnecting, me, onUpdateMe }}
+      value={{
+        onSignOut,
+        status,
+        onOpenLogin: onConnecting,
+        me,
+        onUpdateMe,
+        gqlAuthMethods,
+      }}
     >
       {!isBlocked && children}
       {status !== 'AUTHENTICATED' && (
