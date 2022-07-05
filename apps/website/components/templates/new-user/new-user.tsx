@@ -5,13 +5,11 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
 import { useMutation } from 'react-query';
 
-import { Box, Dialog, Snackbar, Stack, Typography } from '@mui/material';
+import { Box, Snackbar, Stack, Typography } from '@mui/material';
 
 import { ROUTES } from '../../../constants/routes';
 import { useSnackbar } from '../../../hooks/use-snackbar';
 import { useAuth } from '../../../providers/auth';
-import { gqlMethods } from '../../../services/api';
-import { Users } from '../../../services/graphql/types.generated';
 import { AvatarUploadCard } from './avatar-upload-card';
 import { Form } from './form';
 import { schema, NewUserSchema, defaultValues } from './schema';
@@ -20,34 +18,37 @@ import { schema, NewUserSchema, defaultValues } from './schema';
   TODO: Downsize the image to a max size
   TODO: Create an api endpoint for photo manipulation
 */
-type Props = {
-  user: Partial<Users>;
-};
-export function NewUserTemplate({ user }: Props) {
+
+export function NewUserTemplate() {
   const { t } = useTranslation('dashboard-new-user');
+  const { me, gqlAuthMethods, onUpdateMe } = useAuth();
   const methods = useForm<NewUserSchema>({
     resolver: yupResolver(schema),
-    defaultValues: defaultValues(user),
+    defaultValues: defaultValues(me),
   });
 
   const snackbar = useSnackbar();
 
   const router = useRouter();
-  const { me } = useAuth();
 
   const updateMutation = useMutation(
     'updateProfile',
-    !!me && gqlMethods(me).update_user_profile,
+    gqlAuthMethods.update_user_profile,
     {
-      onSuccess() {
+      onSuccess(data) {
         snackbar.handleClick({ message: 'Profile updated!' });
+        onUpdateMe((oldMe) => ({
+          ...oldMe,
+          ...data.update_users_by_pk,
+          init: true,
+        }));
         router.push(ROUTES.EXPLORE);
       },
     }
   );
 
   const onSubmit = (data: NewUserSchema) => {
-    updateMutation.mutate({ id: user.id, ...data });
+    updateMutation.mutate({ id: me.id, ...data });
   };
 
   return (

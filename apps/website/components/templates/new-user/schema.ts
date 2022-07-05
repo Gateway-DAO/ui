@@ -1,10 +1,9 @@
 import { object, string, SchemaOf } from 'yup';
 
-import { Users } from '../../../services/graphql/types.generated';
+import { SessionUser } from '../../../types/user';
 
-export type NewUserSchema = Pick<
-  Users,
-  'name' | 'username' | 'pfp' | 'email_address'
+export type NewUserSchema = Required<
+  Pick<SessionUser, 'name' | 'username' | 'pfp' | 'email_address'>
 >;
 
 export const schema: SchemaOf<NewUserSchema> = object({
@@ -19,4 +18,9 @@ export const defaultValues = ({
   username,
   pfp,
   email_address,
-}: Partial<Users>): NewUserSchema => ({ name, username, pfp, email_address });
+}: Partial<SessionUser>): NewUserSchema => ({
+  name,
+  username,
+  pfp,
+  email_address,
+});

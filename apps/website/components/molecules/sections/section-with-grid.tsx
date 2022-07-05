@@ -4,12 +4,31 @@ import { TOKENS } from '@gateway/theme';
 
 import { Box, Stack, Typography } from '@mui/material';
 
+export type SectionWithGridProp = {
+  title: string;
+  caption: string;
+  action: ReactNode;
+  gridSize?: {
+    xs?: number;
+    md?: number;
+    lg?: number;
+  };
+};
+
 export function SectionWithGrid({
   title,
   caption,
   action,
+  gridSize: propGridSize,
   children,
-}: PropsWithChildren<{ title: string; caption: string; action: ReactNode }>) {
+}: PropsWithChildren<SectionWithGridProp>) {
+  const gridSize = {
+    xs: 1,
+    md: 2,
+    lg: 3,
+    ...propGridSize,
+  };
+
   return (
     <Box component="section">
       <Stack
@@ -40,9 +59,9 @@ export function SectionWithGrid({
           px: TOKENS.CONTAINER_PX,
           gap: 2,
           gridTemplateColumns: {
-            xs: 'repeat(1, 1fr)',
-            md: 'repeat(2,1fr)',
-            lg: 'repeat(3,1fr)',
+            xs: `repeat(${gridSize.xs},1fr)`,
+            md: `repeat(${gridSize.md},1fr)`,
+            lg: `repeat(${gridSize.lg},1fr)`,
           },
         }}
       >

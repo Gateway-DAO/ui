@@ -30,5 +30,10 @@
     "title": "Featured people",
     "caption": "Follow the most prominent professionals on the Web3.",
     "see-more": "View more people"
+  },
+  "actions": {
+    "connect": "connect",
+    "cancel": "cancel",
+    "got-it": "got it"
   }
 }

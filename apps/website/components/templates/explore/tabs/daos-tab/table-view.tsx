@@ -18,7 +18,16 @@ type Props = {
 };
 export function TableView({ daos }: Props) {
   return (
-    <TableContainer sx={{ px: TOKENS.CONTAINER_PX }}>
+    <TableContainer
+      sx={{
+        '& .MuiTableCell-root:first-of-type': {
+          pl: TOKENS.CONTAINER_PX,
+        },
+        '& .MuiTableCell-root:last-of-type': {
+          pr: TOKENS.CONTAINER_PX,
+        },
+      }}
+    >
       <Table stickyHeader aria-label="sticky table">
         <TableHead>
           <TableRow>
@@ -33,7 +42,7 @@ export function TableView({ daos }: Props) {
               <TableRow hover role="checkbox" tabIndex={-1} key={dao.id}>
                 <TableCell>
                   <Stack alignItems="center" direction="row" gap={1}>
-                    <Avatar variant="rounded" src={dao.logo_url}>
+                    <Avatar variant="circular" src={dao.logo_url}>
                       {dao.name?.[0]}
                     </Avatar>
                     <Box>
@@ -41,13 +50,21 @@ export function TableView({ daos }: Props) {
                       <Typography
                         variant="caption"
                         color="text.secondary"
-                        sx={{
+                        sx={(theme) => ({
+                          display: 'block',
                           textOverflow: 'ellipsis',
                           overflow: 'hidden',
-                          whiteSpace: 'nowrap',
-                        }}
+                          maxWidth: '70ch',
+                          [`${theme.breakpoints.down('md')}`]: {
+                            display: '-webkit-box',
+                            WebkitLineClamp: 2,
+                            WebkitBoxOrient: 'vertical',
+                          },
+                        })}
                       >
-                        {dao.description}
+                        {dao.description.length > 140
+                          ? `${dao.description.slice(0, 139)}...`
+                          : dao.description}
                       </Typography>
                     </Box>
                   </Stack>
