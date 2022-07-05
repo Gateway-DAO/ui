@@ -15,25 +15,35 @@ type Props = {
 };
 
 export function useLogin() {
-  const signIn = useMutation('me', async (credentials: Props) => {
-    const res = await gqlAnonMethods.login({
-      signature: credentials.signature,
-      wallet: credentials.wallet,
-    });
+  const queryClient = useQueryClient();
 
-    const { error } = (res as any) ?? {};
+  const signIn = useMutation(
+    'signIn',
+    async (credentials: Props) => {
+      const res = await gqlAnonMethods.login({
+        signature: credentials.signature,
+        wallet: credentials.wallet,
+      });
 
-    if (error || !res.login) {
-      throw error;
+      const { error } = (res as any) ?? {};
+
+      if (error || !res.login) {
+        throw error;
+      }
+      /* get current user from hasura based on the token */
+      const { me } = await gqlMethods({ token: res.login.token }).me();
+
+      return {
+        ...res.login,
+        ...me,
+      };
+    },
+    {
+      onSuccess(data) {
+        queryClient.setQueryData('me', data);
+      },
     }
-    /* get current user from hasura based on the token */
-    const { me } = await gqlMethods({ token: res.login.token }).me();
-
-    return {
-      ...res.login,
-      ...me,
-    } as PartialDeep<SessionUser>;
-  });
+  );
 
   return signIn;
 }
