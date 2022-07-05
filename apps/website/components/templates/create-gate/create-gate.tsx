@@ -1,5 +1,4 @@
 import { useRouter } from 'next/router';
-import { useState } from 'react';
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
@@ -27,13 +26,6 @@ export function CreateGateTemplate() {
   const router = useRouter();
   const { me } = useAuth();
 
-  const [title, setTitle] = useState('');
-  const [image, setImage] = useState('');
-  const [categories, setCategories] = useState([]);
-  const [description, setDescription] = useState('');
-  const [createdBy, setCreatedBy] = useState([{ name: me.name, id: me.id }]);
-  const [skills, setSkills] = useState([]);
-
   const updateMutation = useMutation(
     'createGate',
     !!me && gqlMethods(me).create_gate,
@@ -45,43 +37,9 @@ export function CreateGateTemplate() {
     }
   );
 
-  const createGate = () => {
-    const data = { title, image, categories, description, createdBy, skills };
+  const createGate = (data: CreateGateTypes) => {
     console.log(data);
     //updateMutation.mutate({ ...data });
-  };
-
-  const updateValue = (field, value) => {
-    switch (field) {
-      case 'title':
-        console.log('here', value);
-        setTitle(value);
-        break;
-      case 'image':
-        setImage(value);
-        break;
-      case 'description':
-        setDescription(value);
-        break;
-      case 'created_by':
-        setCreatedBy(value);
-        break;
-      default:
-        break;
-    }
-  };
-
-  const updateArray = (field, value) => {
-    switch (field) {
-      case 'categories':
-        setCategories(value);
-        break;
-      case 'skills':
-        setSkills(value);
-        break;
-      default:
-        break;
-    }
   };
 
   return (
@@ -119,8 +77,6 @@ export function CreateGateTemplate() {
             <FormProvider {...methods}>
               <GateDetailsForm
                 onSubmit={createGate}
-                updateValue={updateValue}
-                updateArray={updateArray}
                 isLoading={updateMutation.isLoading}
               />
             </FormProvider>

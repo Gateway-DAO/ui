@@ -1,103 +1,93 @@
 import { useFormContext } from 'react-hook-form';
 
-import { Search } from '@mui/icons-material';
-import { Autocomplete, Stack, TextField } from '@mui/material';
+import { Stack, TextField } from '@mui/material';
 
-import { useAuth } from '../../../providers/auth';
+import CategoriesInput from '../../molecules/categories-input';
+import CreatedByInput from '../../molecules/creators-input';
+import SkillsInput from '../../molecules/skills-input';
 import { CreateGateTypes } from './schema';
 
 type Props = {
-  updateValue: (field: string, value: string) => void;
-  updateArray: (field: string, categories: string[]) => void;
   onSubmit: (data: CreateGateTypes) => void;
   isLoading: boolean;
 };
 
-const categories = ['Onboarding', 'Beginner'];
-const skills = ['Skill A', 'Skill B', 'Skill C'];
-
-export function GateDetailsForm({ updateValue, updateArray, onSubmit }: Props) {
+export function GateDetailsForm({ onSubmit }: Props) {
   const {
+    register,
     handleSubmit,
     formState: { errors },
+    setValue,
   } = useFormContext<CreateGateTypes>();
-
-  const { me } = useAuth();
 
   return (
     <Stack
       component="form"
+      id="gate-details-form"
       direction="column"
       gap={2}
       onSubmit={handleSubmit(onSubmit)}
     >
       <TextField
-        required
         label="Title"
         id="title"
-        onChange={(e) => updateValue('title', e.target.value)}
+        {...register('title')}
         error={!!errors.title}
         helperText={errors.title?.message}
       />
-      <Autocomplete
-        multiple
+      <CategoriesInput
+        label="Categories"
         id="categories"
-        options={categories}
-        popupIcon={<Search />}
-        onChange={(e, value) => updateArray('categories', value)}
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            required
-            label="Categories"
-            error={!!errors.categories}
-            helperText={errors.categories && 'Please enter valid categories'}
-          />
-        )}
+        multiline
+        name="categories"
+        error={!!errors.categories}
+        errors={errors.categories}
+        helperText={errors.categories && 'Invalid categories added'}
+        sx={{
+          width: '100%',
+        }}
+        set={(categories: string[]) => {
+          setValue('categories', categories);
+        }}
       />
       <TextField
-        required
         multiline
         minRows={4}
         label="Description"
         id="description"
-        onChange={(e) => updateValue('description', e.target.value)}
+        {...register('description')}
         error={!!errors.description}
         helperText={errors.description?.message}
       />
-      <Autocomplete
-        multiple
+      <SkillsInput
+        label="Skills"
         id="skills"
-        options={skills}
-        popupIcon={<Search />}
-        onChange={(e, value) => updateArray('skills', value)}
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            required
-            label="Skills"
-            error={!!errors.skills}
-            helperText={errors.skills && 'Please enter valid skills'}
-          />
-        )}
+        multiline
+        name="skills"
+        error={!!errors.skills}
+        errors={errors.skills}
+        helperText={errors.skills && 'Invalid skills added'}
+        sx={{
+          width: '100%',
+        }}
+        set={(skills: string[]) => {
+          setValue('skills', skills);
+        }}
       />
-      <Autocomplete
-        multiple
-        readOnly
+      <CreatedByInput
+        label="Created By"
         id="created_by"
-        options={[me.name]}
-        defaultValue={[me.name]}
-        popupIcon={<Search />}
-        onChange={(e, value) => updateArray('created_by', value)}
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            required
-            label="Created By"
-            error={!!errors.created_by}
-            helperText={errors.created_by?.message}
-          />
-        )}
+        multiline
+        name="created_by"
+        error={!!errors.created_by}
+        errors={errors.created_by}
+        helperText={errors.created_by && 'Invalid creator added'}
+        sx={{
+          width: '100%',
+        }}
+        set={(created_by: string[]) => {
+          setValue('created_by', created_by);
+        }}
       />
     </Stack>
   );

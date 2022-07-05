@@ -20,7 +20,7 @@ export type CreateGateTypes = {
   description: string;
   image: string;
   skills: string[];
-  created_by: string;
+  created_by: string[];
   tasks: FileTaskTypes[];
 };
 
@@ -30,7 +30,7 @@ export const createGateSchema: SchemaOf<CreateGateTypes> = object({
   description: string().min(2).defined(),
   image: string().min(2).defined(),
   skills: array().of(string()).defined(),
-  created_by: string().min(2).defined(),
+  created_by: array().of(string()).defined(),
   tasks: array()
     .of(
       object({

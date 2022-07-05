@@ -15,6 +15,8 @@ export const CreateNavbar = ({ publish }) => {
             variant="contained"
             size="large"
             sx={{ position: 'absolute', right: 0 }}
+            form="gate-details-form"
+            type="submit"
             onClick={() => publish()}
           >
             Publish Gate
