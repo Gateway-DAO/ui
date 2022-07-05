@@ -56,8 +56,6 @@ export function useMe() {
 export function useInitUser(status: AuthStatus, me: PartialDeep<SessionUser>) {
   const router = useRouter();
 
-  console.log({ me });
-
   useEffect(() => {
     if (
       router.pathname !== ROUTES.LANDING &&
