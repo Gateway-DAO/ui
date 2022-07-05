@@ -1,8 +1,6 @@
-import useTranslation from 'next-translate/useTranslation';
-
 import { TOKENS } from '@gateway/theme';
 
-import { Avatar, Box, Button, Stack, Typography } from '@mui/material';
+import { Avatar, Box, Stack, Typography } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -10,17 +8,13 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 
-import { useFollowUser } from '../../../../../hooks/use-follow';
+import { FollowButtonUser } from '../../../../atoms/follow-button-user';
 import { ExploreProps } from '../../types';
 
 type Props = {
   people: ExploreProps['people'];
 };
 export function TableView({ people }: Props) {
-  const { t } = useTranslation('common');
-
-  const { isFollowingUser, onToggleFollow, isLoading } = useFollowUser();
-
   return (
     <TableContainer
       sx={{
@@ -41,7 +35,6 @@ export function TableView({ people }: Props) {
         </TableHead>
         <TableBody>
           {people.map((user) => {
-            const isFollowing = isFollowingUser(user.id);
             return (
               <TableRow hover role="checkbox" tabIndex={-1} key={user.id}>
                 <TableCell>
@@ -67,14 +60,12 @@ export function TableView({ people }: Props) {
                 </TableCell>
 
                 <TableCell align="right">
-                  <Button
+                  <FollowButtonUser
+                    userId={user.id}
                     variant="outlined"
+                    size="small"
                     color="secondary"
-                    disabled={isLoading(user.id)}
-                    onClick={() => onToggleFollow(user.id, isFollowing)}
-                  >
-                    {isFollowing ? t('actions.unfollow') : t('actions.follow')}
-                  </Button>
+                  />
                 </TableCell>
               </TableRow>
             );

@@ -5,18 +5,10 @@ import { PartialDeep } from 'type-fest';
 
 import { TOKENS } from '@gateway/theme';
 
-import {
-  Avatar,
-  Chip,
-  Box,
-  Stack,
-  Typography,
-  Button,
-  Tabs,
-  Tab,
-} from '@mui/material';
+import { Avatar, Chip, Box, Stack, Typography, Tabs, Tab } from '@mui/material';
 
 import { Daos } from '../../../services/graphql/types.generated';
+import { FollowButtonDAO } from '../../atoms/follow-button-dao';
 import { a11yTabProps, TabPanel, useTab } from '../../atoms/tabs';
 import { Navbar } from '../../organisms/navbar/navbar';
 import { Socials } from './socials';
@@ -113,7 +105,7 @@ export function DaoProfileTemplate({ dao }: Props) {
             </Typography>
           </Stack>
           <Socials dao={dao}>
-            <Button variant="contained">{t('common:follow')}</Button>
+            <FollowButtonDAO daoId={dao.id} />
           </Socials>
         </Box>
       </Box>
