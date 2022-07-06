@@ -7,27 +7,15 @@ import CreatedByInput from '../../molecules/creators-input';
 import SkillsInput from '../../molecules/skills-input';
 import { CreateGateTypes } from './schema';
 
-type Props = {
-  onSubmit: (data: CreateGateTypes) => void;
-  isLoading: boolean;
-};
-
-export function GateDetailsForm({ onSubmit }: Props) {
+export function GateDetailsForm() {
   const {
     register,
-    handleSubmit,
     formState: { errors },
     setValue,
   } = useFormContext<CreateGateTypes>();
 
   return (
-    <Stack
-      component="form"
-      id="gate-details-form"
-      direction="column"
-      gap={2}
-      onSubmit={handleSubmit(onSubmit)}
-    >
+    <Stack direction="column" gap={2}>
       <TextField
         label="Title"
         id="title"
