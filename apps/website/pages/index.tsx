@@ -13,11 +13,12 @@ export default function Index() {
       <LandingTemplate
         connectButton={
           <Link passHref href="/home">
-            <Button variant="contained">Open App</Button>
+            <Button variant="contained">{t('openApp')}</Button>
           </Link>
         }
         title={t('title')}
         subtitle={t('subtitle')}
+        menuList={t('menuList')}
         titleDescription={t('titleDescription')}
         enterButton={
           <Link passHref href="/home">

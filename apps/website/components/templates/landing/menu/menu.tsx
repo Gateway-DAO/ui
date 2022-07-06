@@ -1,14 +1,24 @@
 import React from 'react';
 
+import { GatewayIcon } from '@gateway/assets';
+import { TOKENS } from '@gateway/theme';
+
 import { ListItem, MenuList, Stack } from '@mui/material';
 
 import { MenuListProps } from './types';
 
-export function Menu({ menuList }: MenuListProps): JSX.Element {
+export function Menu(props): JSX.Element {
+  console.log(props);
   return (
-    <Stack sx={{ flex: 1, width: '100%' }}>
+    <Stack
+      direction="row"
+      justifyContent="space-between"
+      alignItems="center"
+      px={TOKENS.CONTAINER_PX}
+      py={4}
+    >
       <MenuList>
-        {menuList.map((menuItem, index) => (
+        {/* {menuList.map((menuItem, index) => (
           <ListItem
             component="a"
             key={menuItem.text + index}
@@ -16,8 +26,10 @@ export function Menu({ menuList }: MenuListProps): JSX.Element {
           >
             {menuItem.text}
           </ListItem>
-        ))}
+        ))} */}
       </MenuList>
+      <GatewayIcon sx={{ width: 50, height: 50 }} />
+      {/* {connectButton} */}
     </Stack>
   );
 }

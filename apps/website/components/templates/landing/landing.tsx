@@ -1,33 +1,32 @@
 import { ReactNode } from 'react';
 
-import { GatewayIcon } from '@gateway/assets';
-import { TOKENS } from '@gateway/theme';
-
-import { Stack } from '@mui/material';
-
 import { Hero } from './hero';
+import { Menu } from './menu/menu';
+import { MenuListProps } from './menu/types';
 
 type Props = {
   title: string;
   subtitle: string;
   titleDescription: string;
   enterButton: ReactNode;
+  menuList: MenuListProps;
   connectButton: ReactNode;
 };
 
-export function LandingTemplate({ connectButton, ...heroProps }: Props) {
+export function LandingTemplate({
+  connectButton,
+  menuList,
+  title,
+  titleDescription,
+  subtitle,
+  enterButton,
+}: Props) {
+  const heroProps = { title, subtitle, enterButton, titleDescription };
+  const menuProps = { menuList, connectButton };
+
   return (
     <>
-      <Stack
-        direction="row"
-        justifyContent="space-between"
-        alignItems="center"
-        px={TOKENS.CONTAINER_PX}
-        py={4}
-      >
-        <GatewayIcon sx={{ width: 50, height: 50 }} />
-        {connectButton}
-      </Stack>
+      <Menu {...menuProps} />
       <Hero {...heroProps} />
     </>
   );
