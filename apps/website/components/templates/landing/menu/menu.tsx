@@ -4,11 +4,15 @@ import { GatewayIcon } from '@gateway/assets';
 import { TOKENS } from '@gateway/theme';
 import { MotionBox } from '@gateway/ui';
 
-import { Button, Link, ListItem, MenuList, Stack } from '@mui/material';
+import { Link, ListItem, MenuList, Stack } from '@mui/material';
 
 import { MenuProps } from './types';
 
-export function Menu({ connectButton, menuList }: MenuProps): JSX.Element {
+export function Menu({
+  connectButton,
+  signUpButton,
+  menuList,
+}: MenuProps): JSX.Element {
   return (
     <Stack
       direction="row"
@@ -69,6 +73,7 @@ export function Menu({ connectButton, menuList }: MenuProps): JSX.Element {
           ))}
         </MenuList>
         <MenuList sx={{ display: 'flex' }}>
+          <ListItem>{signUpButton}</ListItem>
           <ListItem>{connectButton}</ListItem>
         </MenuList>
       </MotionBox>

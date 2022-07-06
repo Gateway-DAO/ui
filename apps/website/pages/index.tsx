@@ -13,9 +13,22 @@ export default function Index() {
   return (
     <>
       <LandingTemplate
+        signUpButton={
+          <Link passHref href="/home">
+            <Button variant="contained" size="large">
+              {t('signUp')}
+            </Button>
+          </Link>
+        }
         connectButton={
           <Link passHref href="/home">
-            <Button variant="contained">{t('openApp')}</Button>
+            <Button
+              variant="outlined"
+              size="large"
+              sx={{ whiteSpace: 'nowrap' }}
+            >
+              {t('openApp')}
+            </Button>
           </Link>
         }
         title={t('title')}

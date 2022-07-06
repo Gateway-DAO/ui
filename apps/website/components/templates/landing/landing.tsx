@@ -11,10 +11,12 @@ type Props = {
   enterButton: ReactNode;
   menuList: MenuListItem[];
   connectButton: ReactNode;
+  signUpButton: ReactNode;
 };
 
 export function LandingTemplate({
   connectButton,
+  signUpButton,
   menuList,
   title,
   titleDescription,
@@ -22,7 +24,7 @@ export function LandingTemplate({
   enterButton,
 }: Props) {
   const heroProps = { title, subtitle, enterButton, titleDescription };
-  const menuProps = { menuList, connectButton };
+  const menuProps = { menuList, signUpButton, connectButton };
 
   return (
     <>

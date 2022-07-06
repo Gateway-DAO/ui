@@ -8,4 +8,5 @@ export type MenuListItem = {
 export type MenuProps = {
   menuList: MenuListItem[];
   connectButton: ReactNode;
+  signUpButton: ReactNode;
 };
