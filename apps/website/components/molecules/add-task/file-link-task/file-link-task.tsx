@@ -21,6 +21,7 @@ const FileLinkTask = ({ taskId, deleteTask }) => {
   const {
     register,
     setValue,
+    getValues,
     formState: { errors },
   } = useFormContext<CreateGateTypes>();
 
@@ -36,8 +37,9 @@ const FileLinkTask = ({ taskId, deleteTask }) => {
   ]);
 
   useEffect(() => {
-    setValue(`tasks.${taskId}.files`, files);
-  }, [files, taskId, setValue]);
+    const values = getValues();
+    setValue(`tasks.${taskId}.files`, values.tasks[taskId].files);
+  }, [files, taskId, getValues, setValue]);
 
   const deleteFile = (id: number) =>
     setFiles(files.filter((file) => file.id !== id));

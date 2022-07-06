@@ -9,15 +9,22 @@ const TaskArea = () => {
   const [tasksCount, setTasksCount] = useState(0);
   const [tasks, setTasks] = useState([]);
 
-  const { setValue } = useFormContext<CreateGateTypes>();
+  const { setValue, getValues } = useFormContext<CreateGateTypes>();
 
   useEffect(() => {
-    setValue('tasks', tasks);
-  }, [tasks, setValue]);
+    const values = getValues();
+    setValue('tasks', values.tasks);
+  }, [tasks, getValues, setValue]);
 
   const addTask = (taskType) => {
     setTasksCount(tasksCount + 1);
-    setTasks([...tasks, { id: tasksCount, type: taskType }]);
+    setTasks([
+      ...tasks,
+      {
+        id: tasksCount,
+        type: taskType,
+      },
+    ]);
   };
 
   const deleteTask = (id: number) => {
