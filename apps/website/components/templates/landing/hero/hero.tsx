@@ -93,7 +93,8 @@ export function Hero({
       >
         <HeroBackground
           src={BackgroundImage}
-          layout="fixed"
+          layout="raw"
+          sizes={'(max-width: 768px) 50%, 100%'}
           alt="Gateway's background with people joining the network"
         />
       </MotionBox>
