@@ -55,6 +55,7 @@ export function Menu({ connectButton, menuList }: MenuProps): JSX.Element {
               <Link
                 href={menuItem.href}
                 sx={(theme) => ({
+                  whiteSpace: 'nowrap',
                   color: theme.palette.text.secondary,
                   '&:hover': {
                     color: theme.palette.text.primary,
