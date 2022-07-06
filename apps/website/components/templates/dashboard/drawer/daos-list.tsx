@@ -9,8 +9,11 @@ export function DaosList({ children }: PropsWithChildren<unknown>) {
       sx={{
         gap: 0.25,
         px: 0,
+        pt: 3,
         display: 'flex',
         flexFlow: 'column',
+        position: 'sticky',
+        top: 0,
         '.MuiListItem-root, .MuiListItemButton-root': {
           px: 2,
           py: 0.5,

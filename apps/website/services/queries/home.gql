@@ -11,14 +11,13 @@ query get_home {
       name
     }
   }
-  daos(limit: 4) {
+  daos(limit: 3) {
     id
     name
     logo_url
     background_url
     description
     categories
-    created_at
     # gates {....}
     # user is following ?
   }
@@ -26,6 +25,41 @@ query get_home {
     id
     name
     #pfp
+    about
+    username
+  }
+}
+
+query gates_tab {
+  gates(order_by: {title: asc}) {
+    id
+    title
+    description
+    categories
+    image
+    dao {
+      id
+      logo_url
+      name
+    }
+  }
+}
+
+query daos_tab {
+  daos(order_by: {name: asc}) {
+    id
+    name
+    logo_url
+    background_url
+    description
+    categories
+  }
+}
+
+query people_tab {
+  people: users(order_by: {name: asc}) {
+    id
+    name
     about
     username
   }

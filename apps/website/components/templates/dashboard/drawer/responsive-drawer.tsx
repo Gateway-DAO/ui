@@ -34,12 +34,13 @@ export const ResponsiveDrawer = ({ children }: PropsWithChildren<unknown>) => {
       sx={(theme) => ({
         height: '100%',
         '& .MuiDrawer-paper': {
-          pt: 2,
+          pt: 0,
           background: 'transparent',
         },
         [theme.breakpoints.up('md')]: {
           '& .MuiDrawer-paper': {
-            position: 'relative',
+            position: 'static',
+            overflowY: 'visible',
           },
         },
         [theme.breakpoints.down('md')]: {

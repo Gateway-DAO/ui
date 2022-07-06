@@ -34,6 +34,10 @@ export const blue: PaletteColorOptions = {
   light: '#4FC3F7',
 };
 
+export const white: PaletteColorOptions = {
+  main: '#FFFFFF',
+};
+
 const brandColors = {
   purple,
   grays,
@@ -42,6 +46,7 @@ const brandColors = {
   green,
   orange,
   blue,
+  white,
 };
 
 export default brandColors;

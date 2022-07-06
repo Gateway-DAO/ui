@@ -6,7 +6,7 @@ import { DaoCard } from '../../../../molecules/dao-card';
 import { GatesCard } from '../../../../molecules/gates-card';
 import { PersonCard } from '../../../../molecules/person-card';
 import {
-  SectionWithSlider,
+  SectionWithSliderResponsive,
   SectionWithGrid,
 } from '../../../../molecules/sections';
 import { ExploreProps } from '../../types';
@@ -41,7 +41,7 @@ export function AllTab({ daos, gates, people, setActiveTab }: Props) {
           },
         }}
       >
-        <SectionWithSlider
+        <SectionWithSliderResponsive
           title={t('featured-gates.title')}
           caption={t('featured-gates.caption')}
           action={
@@ -50,12 +50,13 @@ export function AllTab({ daos, gates, people, setActiveTab }: Props) {
             </Button>
           }
           itemWidth={(theme) => theme.spacing(37.75)}
+          gridSize={{ lg: 4 }}
         >
           {gates.map((gate) => (
             <GatesCard key={gate.id} {...gate} />
           ))}
-        </SectionWithSlider>
-        <SectionWithSlider
+        </SectionWithSliderResponsive>
+        <SectionWithSliderResponsive
           title={t('featured-daos.title')}
           caption={t('featured-daos.caption')}
           action={
@@ -68,7 +69,7 @@ export function AllTab({ daos, gates, people, setActiveTab }: Props) {
           {daos.map((dao) => (
             <DaoCard key={dao.id} {...dao} />
           ))}
-        </SectionWithSlider>
+        </SectionWithSliderResponsive>
         <SectionWithGrid
           title={t('featured-people.title')}
           caption={t('featured-people.caption')}

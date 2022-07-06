@@ -4,7 +4,7 @@ import { PartialDeep } from 'type-fest';
 
 import { SessionUser } from '../../types/user';
 
-export type AuthStatus = 'UNAUTHENTICATED' | 'SIGNING' | 'AUTHENTICATED';
+export type AuthStatus = 'UNAUTHENTICATED' | 'CONNECTING' | 'AUTHENTICATED';
 
 export const useAuthStatus = (me: PartialDeep<SessionUser>) => {
   const [status, setStatus] = useState<AuthStatus>(() => {
@@ -18,8 +18,8 @@ export const useAuthStatus = (me: PartialDeep<SessionUser>) => {
     }
   }, [me, status]);
 
-  const onSigning = () => {
-    setStatus('SIGNING');
+  const onConnecting = () => {
+    setStatus('CONNECTING');
   };
 
   const onUnauthenticated = () => {
@@ -30,5 +30,5 @@ export const useAuthStatus = (me: PartialDeep<SessionUser>) => {
     setStatus('AUTHENTICATED');
   };
 
-  return { status, onSigning, onUnauthenticated, onAuthenticated };
+  return { status, onConnecting, onUnauthenticated, onAuthenticated };
 };

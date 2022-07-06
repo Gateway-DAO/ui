@@ -1,10 +1,11 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
-import { PropsWithChildren, useCallback, useEffect } from 'react';
+import { PropsWithChildren, useCallback, useEffect, useMemo } from 'react';
 
 import { useAccount, useDisconnect } from 'wagmi';
 
 import { WalletModal } from '../../components/organisms/wallet-modal';
 import useToggleContainerClass from '../../hooks/useToggleContainerClass';
+import { gqlMethods } from '../../services/api';
 import { AuthContext } from './context';
 import { useInitUser, useMe } from './hooks';
 import { useAuthStatus } from './state';
@@ -18,11 +19,16 @@ export function AuthProvider({
   children,
 }: PropsWithChildren<Props>) {
   const { disconnect } = useDisconnect();
-  const { me, onSignOut: onSignOutMe } = useMe();
-  const { status, onAuthenticated, onSigning, onUnauthenticated } =
+  const { me, onSignOut: onSignOutMe, onUpdateMe } = useMe();
+  const { status, onAuthenticated, onConnecting, onUnauthenticated } =
     useAuthStatus(me);
 
   const { status: accountStatus, data: account } = useAccount();
+
+  const gqlAuthMethods = useMemo(
+    () => gqlMethods({ token: me?.token }),
+    [me?.token]
+  );
 
   const onSignOut = useCallback(() => {
     disconnect();
@@ -33,9 +39,9 @@ export function AuthProvider({
 
   useEffect(() => {
     if (isBlocked && status === 'UNAUTHENTICATED') {
-      onSigning();
+      onConnecting();
     }
-  }, [isBlocked, onSigning, status]);
+  }, [isBlocked, onConnecting, status]);
 
   useEffect(() => {
     if (!isAuthPage) return;
@@ -45,18 +51,25 @@ export function AuthProvider({
     }
   }, [account, accountStatus, disconnect, isAuthPage, onSignOut]);
 
-  useToggleContainerClass('blur', status === 'SIGNING');
+  useToggleContainerClass('blur', status === 'CONNECTING');
 
   useInitUser(status, me);
 
   return (
     <AuthContext.Provider
-      value={{ onSignOut, status, onOpenLogin: onSigning, me }}
+      value={{
+        onSignOut,
+        status,
+        onOpenLogin: onConnecting,
+        me,
+        onUpdateMe,
+        gqlAuthMethods,
+      }}
     >
       {!isBlocked && children}
       {status !== 'AUTHENTICATED' && (
         <WalletModal
-          isOpen={status === 'SIGNING'}
+          isOpen={status === 'CONNECTING'}
           onClose={!isBlocked ? onUnauthenticated : undefined}
           onSuccess={onAuthenticated}
         />
