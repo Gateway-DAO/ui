@@ -21,8 +21,7 @@ export function Socials({ dao, children }: PropsWithChildren<Props>) {
     try {
       if (navigator?.share && navigator.canShare(data)) {
         navigator.share(data);
-        return;
-      }
+      } /*  else if(navigator?.clipboard && navigator.clipboard) */
     } catch (e) {
       console.error(e);
     }

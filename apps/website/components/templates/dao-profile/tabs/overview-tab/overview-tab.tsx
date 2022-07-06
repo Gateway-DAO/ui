@@ -4,8 +4,7 @@ import { PartialDeep } from 'type-fest';
 
 import { Button, Divider, Stack } from '@mui/material';
 
-import { Daos } from '../../../../../services/graphql/types.generated';
-import { DaoCard } from '../../../../molecules/dao-card';
+import { Daos, Users } from '../../../../../services/graphql/types.generated';
 import { GatesCard } from '../../../../molecules/gates-card';
 import { PersonCard } from '../../../../molecules/person-card';
 import {
@@ -15,10 +14,11 @@ import {
 
 type Props = {
   dao: PartialDeep<Daos>;
+  people: PartialDeep<Users>[];
   setTab: (tab: number) => void;
 };
 
-export function OverviewTab({ dao, setTab }: Props) {
+export function OverviewTab({ dao, people, setTab }: Props) {
   const { t } = useTranslation('explore');
 
   return (
@@ -58,7 +58,7 @@ export function OverviewTab({ dao, setTab }: Props) {
             <GatesCard key={gate.id} {...gate} />
           ))}
         </SectionWithSlider>
-        {/* <SectionWithGrid
+        <SectionWithGrid
           title={t('common:featured-people.title')}
           caption={t('common:featured-people.caption')}
           action={
@@ -70,7 +70,7 @@ export function OverviewTab({ dao, setTab }: Props) {
           {people.map((person) => (
             <PersonCard key={person.id} {...person} />
           ))}
-        </SectionWithGrid> */}
+        </SectionWithGrid>
       </Stack>
     </Stack>
   );
