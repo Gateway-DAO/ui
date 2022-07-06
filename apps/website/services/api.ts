@@ -3,14 +3,6 @@ import { GraphQLClient } from 'graphql-request';
 import { SessionUser } from '../types/user';
 import { getSdk } from './graphql/types.generated';
 
-export const glqAdminClient = new GraphQLClient(
-  process.env.NEXT_PUBLIC_HASURA_ENDPOINT,
-  {
-    headers: {
-      'x-hasura-admin-secret': process.env.NEXT_PUBLIC_HASURA_ADMIN_SECRET,
-    },
-  }
-);
 export const glqAnonClient = new GraphQLClient(
   process.env.NEXT_PUBLIC_HASURA_ENDPOINT,
   {}
@@ -25,8 +17,6 @@ const gqlClient = (user: Partial<SessionUser>) =>
       ...(user.id && { 'X-Hasura-User-Id': user.id }),
     },
   });
-
-export const gqlAdminMethods = getSdk(glqAdminClient);
 
 export const gqlAnonMethods = getSdk(glqAnonClient);
 

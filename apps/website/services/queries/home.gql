@@ -18,7 +18,6 @@ query get_home {
     background_url
     description
     categories
-    created_at
     # gates {....}
     # user is following ?
   }
