@@ -46,7 +46,7 @@ export function CreateGateTemplate() {
     <Stack
       component="form"
       id="gate-details-form"
-      onSubmit={methods.handleSubmit(createGate)}
+      onSubmit={methods.handleSubmit(createGate, (error) => console.log(error))}
       padding={'0 90px'}
     >
       <CreateNavbar />
@@ -115,7 +115,9 @@ export function CreateGateTemplate() {
         </Box>
         <Stack direction="column" sx={{ margin: 'auto' }}>
           <Stack direction="column" gap={2}>
-            <TaskArea />
+            <FormProvider {...methods}>
+              <TaskArea />
+            </FormProvider>
           </Stack>
         </Stack>
       </Stack>

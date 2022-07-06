@@ -1,13 +1,13 @@
 import { object, string, array, SchemaOf } from 'yup';
 
 // Files & Links
-type FileTaskTypes = {
+export type FileTaskTypes = {
   title: string;
   description: string;
   files: FileTypes[];
 };
 
-type FileTypes = {
+export type FileTypes = {
   title: string;
   description: string;
   link: string;
@@ -31,20 +31,21 @@ export const createGateSchema: SchemaOf<CreateGateTypes> = object({
   image: string().min(2).defined(),
   skills: array().of(string()).defined(),
   created_by: array().of(string()).defined(),
-  tasks: array().of(
-    object({
-      title: string().min(2).defined(),
-      description: string().min(2).defined(),
-      files: array()
-        .of(
-          object({
-            title: string().min(2).defined(),
-            description: string().min(2).defined(),
-            link: string().min(2).defined(),
-          })
-        )
-        .defined(),
-    })
-  ),
-  //.defined(),
+  tasks: array()
+    .of(
+      object({
+        title: string().min(2).defined(),
+        description: string().min(2).defined(),
+        files: array()
+          .of(
+            object({
+              title: string().min(2).defined(),
+              description: string().min(2).defined(),
+              link: string().min(2).defined(),
+            })
+          )
+          .defined(),
+      })
+    )
+    .defined(),
 });

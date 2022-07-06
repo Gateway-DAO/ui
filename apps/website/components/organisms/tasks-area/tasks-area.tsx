@@ -1,10 +1,19 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+
+import { useFormContext } from 'react-hook-form';
 
 import AddTaskCard from '../../molecules/add-task/add-task-card';
+import { CreateGateTypes } from '../../templates/create-gate/schema';
 
 const TaskArea = () => {
   const [tasksCount, setTasksCount] = useState(0);
   const [tasks, setTasks] = useState([]);
+
+  const { setValue } = useFormContext<CreateGateTypes>();
+
+  useEffect(() => {
+    setValue('tasks', tasks);
+  }, [tasks, setValue]);
 
   const addTask = (taskType) => {
     setTasksCount(tasksCount + 1);
