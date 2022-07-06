@@ -20,7 +20,11 @@ export function Hero({
   return (
     <Box
       component="section"
-      sx={{ height: '100%', width: '100%', overflow: 'hidden' }}
+      sx={{
+        height: '100%',
+        width: '100%',
+        overflow: 'hidden',
+      }}
     >
       <Stack
         direction="column"
@@ -33,7 +37,7 @@ export function Hero({
             flexDirection: 'column',
             alignItems: 'flex-start',
             zIndex: 2,
-            top: (theme) => theme.spacing(14),
+            top: (theme) => theme.spacing(26),
           }}
           initial={{ translateY: 20, opacity: 0 }}
           animate={{ translateY: 0, opacity: 1 }}
