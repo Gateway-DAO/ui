@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
 
+import { ForUsers } from './for-users';
 import { Hero } from './hero';
 import { Menu } from './menu/menu';
 import { MenuListItem } from './menu/types';
@@ -30,6 +31,7 @@ export function LandingTemplate({
     <>
       <Menu {...menuProps} />
       <Hero {...heroProps} />
+      <ForUsers />
     </>
   );
 }
