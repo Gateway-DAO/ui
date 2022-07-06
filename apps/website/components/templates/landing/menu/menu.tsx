@@ -5,10 +5,9 @@ import { TOKENS } from '@gateway/theme';
 
 import { ListItem, MenuList, Stack } from '@mui/material';
 
-import { MenuListProps } from './types';
+import { MenuProps } from './types';
 
-export function Menu(props): JSX.Element {
-  console.log(props);
+export function Menu({ connectButton, menuList }: MenuProps): JSX.Element {
   return (
     <Stack
       direction="row"
@@ -18,7 +17,7 @@ export function Menu(props): JSX.Element {
       py={4}
     >
       <MenuList>
-        {/* {menuList.map((menuItem, index) => (
+        {menuList.map((menuItem, index) => (
           <ListItem
             component="a"
             key={menuItem.text + index}
@@ -26,10 +25,10 @@ export function Menu(props): JSX.Element {
           >
             {menuItem.text}
           </ListItem>
-        ))} */}
+        ))}
       </MenuList>
       <GatewayIcon sx={{ width: 50, height: 50 }} />
-      {/* {connectButton} */}
+      {connectButton}
     </Stack>
   );
 }

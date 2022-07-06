@@ -2,14 +2,14 @@ import { ReactNode } from 'react';
 
 import { Hero } from './hero';
 import { Menu } from './menu/menu';
-import { MenuListProps } from './menu/types';
+import { MenuListItem } from './menu/types';
 
 type Props = {
   title: string;
   subtitle: string;
   titleDescription: string;
   enterButton: ReactNode;
-  menuList: MenuListProps;
+  menuList: MenuListItem[];
   connectButton: ReactNode;
 };
 

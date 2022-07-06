@@ -4,9 +4,11 @@ import Link from 'next/link';
 import { Button } from '@mui/material';
 
 import { LandingTemplate } from '../components/templates/landing';
+import { MenuListItem } from '../components/templates/landing/menu/types';
 
 export default function Index() {
   const { t } = useTranslation('index');
+  const menuList = t('menu', null, { returnObjects: true }) as MenuListItem[];
 
   return (
     <>
@@ -18,7 +20,7 @@ export default function Index() {
         }
         title={t('title')}
         subtitle={t('subtitle')}
-        menuList={t('menuList')}
+        menuList={menuList}
         titleDescription={t('titleDescription')}
         enterButton={
           <Link passHref href="/home">

@@ -1,11 +1,11 @@
 import { ReactNode } from 'react';
 
-type MenuListItem = {
+export type MenuListItem = {
   text: string;
   href: string;
 };
 
-export type MenuListProps = {
+export type MenuProps = {
   menuList: MenuListItem[];
   connectButton: ReactNode;
 };

@@ -1,10 +1,25 @@
 {
   "menu": [
-    { "text": "For users", "href": "#users" },
-    { "text": "For organizations", "href": "#organizations" },
-    { "text": "Model", "href": "#model" },
-    { "text": "Integration", "href": "#integration" },
-    { "text": "Investors", "href": "#investors" }
+    {
+      "text": "For users",
+      "href": "#users"
+    },
+    {
+      "text": "For organizations",
+      "href": "#organizations"
+    },
+    {
+      "text": "Model",
+      "href": "#model"
+    },
+    {
+      "text": "Integration",
+      "href": "#integration"
+    },
+    {
+      "text": "Investors",
+      "href": "#investors"
+    }
   ],
   "title": "Gateway",
   "openApp": "Open App",
