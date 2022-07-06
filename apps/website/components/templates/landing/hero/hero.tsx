@@ -18,7 +18,10 @@ export function Hero({
   titleDescription,
 }: HeroProps): JSX.Element {
   return (
-    <Box component="section" sx={{ height: '100%', width: '100%' }}>
+    <Box
+      component="section"
+      sx={{ height: '100%', width: '100%', overflow: 'hidden' }}
+    >
       <Stack
         direction="column"
         sx={{ flex: 1, width: '100%', px: TOKENS.CONTAINER_PX }}
@@ -69,9 +72,18 @@ export function Hero({
           {enterButton}
           <Button
             variant="outlined"
-            sx={{ borderRadius: '50%', padding: '20px' }}
+            sx={(theme) => ({
+              borderRadius: '50%',
+              padding: '20px',
+              marginTop: '70px',
+              borderColor: theme.palette.secondary.main,
+            })}
           >
-            <ArrowDownward />
+            <ArrowDownward
+              sx={(theme) => ({
+                color: theme.palette.secondary.main,
+              })}
+            />
           </Button>
         </MotionBox>
       </Stack>
@@ -94,7 +106,6 @@ export function Hero({
         <HeroBackground
           src={BackgroundImage}
           layout="raw"
-          sizes={'(max-width: 768px) 50%, 100%'}
           alt="Gateway's background with people joining the network"
         />
       </MotionBox>
