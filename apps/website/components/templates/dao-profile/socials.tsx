@@ -8,6 +8,7 @@ import { Avatar, Stack, IconButton, Snackbar } from '@mui/material';
 
 import { useSnackbar } from '../../../hooks/use-snackbar';
 import { Daos } from '../../../services/graphql/types.generated';
+import { SocialIcon } from '../../atoms/social-icon';
 
 type Props = {
   dao: PartialDeep<Daos>;
@@ -56,7 +57,9 @@ export function Socials({ dao, children }: PropsWithChildren<Props>) {
         </IconButton>
         {dao.socials?.map((social) => (
           <Link href={social.url} key={social.url} passHref>
-            <Avatar component="a">{social.network}</Avatar>
+            <Avatar component="a">
+              <SocialIcon icon={social.network} />
+            </Avatar>
           </Link>
         ))}
       </Stack>
