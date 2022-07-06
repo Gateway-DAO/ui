@@ -1,4 +1,4 @@
-import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from 'next';
+import { GetStaticPaths, InferGetStaticPropsType } from 'next';
 
 import { DaoProfileTemplate } from '../../components/templates/dao-profile';
 import { DashboardTemplate } from '../../components/templates/dashboard';
@@ -11,6 +11,7 @@ export default function DaoProfilePage({
   const { daos_by_pk: dao } = daoProps;
   return (
     <DashboardTemplate
+      currentDao={dao}
       containerProps={{
         sx: {
           overflow: 'hidden',
@@ -31,7 +32,7 @@ export const getStaticPaths: GetStaticPaths = async ({ locales }) => {
   };
 };
 
-export const getStaticProps: GetStaticProps = async ({ params }) => {
+export const getStaticProps = async ({ params }) => {
   const { id } = params;
 
   const daoProps = await gqlAnonMethods.dao_profile({

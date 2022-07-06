@@ -1,6 +1,6 @@
 import { TOKENS } from '@gateway/theme';
 
-import { Avatar, Box, Button, Chip, Stack, Typography } from '@mui/material';
+import { Avatar, Box, Stack, Typography } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -8,6 +8,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 
+import { FollowButtonUser } from '../../../../atoms/follow-button-user';
 import { ExploreProps } from '../../types';
 
 type Props = {
@@ -59,9 +60,12 @@ export function TableView({ people }: Props) {
                 </TableCell>
 
                 <TableCell align="right">
-                  <Button variant="outlined" color="secondary">
-                    Follow
-                  </Button>
+                  <FollowButtonUser
+                    userId={user.id}
+                    variant="outlined"
+                    size="small"
+                    color="secondary"
+                  />
                 </TableCell>
               </TableRow>
             );
