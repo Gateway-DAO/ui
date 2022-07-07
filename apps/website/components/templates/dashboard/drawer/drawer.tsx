@@ -27,7 +27,7 @@ export function Drawer({ currentDao, showExplore }: Props) {
 
   const { me } = useAuth();
 
-  const followingDaos = me?.following_dao.map(({ dao }) => dao) ?? [];
+  const followingDaos = me?.following_dao?.map(({ dao }) => dao) ?? [];
 
   /* Checks if currentDao isn't in followingDaos */
   const isCurrentDaoTemporary = useMemo(() => {
