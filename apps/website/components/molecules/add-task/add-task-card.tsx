@@ -36,7 +36,7 @@ const AddTaskCard = ({ addTask }) => {
             <AddTaskButton
               icon={<InsertLinkIcon />}
               title={'Files & Links'}
-              addTask={() => addTask(FileLinkTask)}
+              addTask={() => addTask(FileLinkTask, 'manual')}
             />
           </Paper>
         </Grid>

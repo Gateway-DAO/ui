@@ -1,31 +1,34 @@
 mutation create_gate(
+  $dao_id: uuid!
   $title: String!
   $categories: jsonb
   $description: String!
+  $skills: jsonb
   # $admins: jsonb!
-  $knowledge: jsonb
   $image: String!
-  $tasks: keys_arr_rel_insert_input
+  $tasks: tasks_arr_rel_insert_input
 ) {
+  upload_image(
+    base64: "<the base64>"
+    metadata: { name: "<the name of the image>" }
+  ) {
+    file
+  }
   insert_gates_one(
     object: {
+      dao_id: $dao_id
       title: $title
       categories: $categories
       description: $description
+      skills: $skills
       # admins: $admins
-      knowledge: $knowledge
       image: $image
       tasks: $tasks
     }
   ) {
+    id
     title
-    categories
-    description
-    # admins
-    knowledge
     image
-    tasks {
-      id
-    }
+    published
   }
 }

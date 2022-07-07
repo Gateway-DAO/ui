@@ -26,20 +26,76 @@ export function CreateGateTemplate() {
   const router = useRouter();
   const { me } = useAuth();
 
-  const updateMutation = useMutation(
-    'createGate',
-    !!me && gqlMethods(me).create_gate,
-    {
-      onSuccess() {
-        snackbar.handleClick({ message: 'Profile updated!' });
-        router.push(ROUTES.EXPLORE);
-      },
-    }
+  const { mutate: uploadImage } = useMutation(
+    'uploadImage',
+    !!me && gqlMethods(me).upload_image
   );
 
-  const createGate = (data: CreateGateTypes) => {
-    console.log(data);
-    //updateMutation.mutate({ ...data });
+  const { mutate: createGateMutation } = useMutation(
+    'createGate',
+    !!me && gqlMethods(me).create_gate
+  );
+
+  const createGate = (gateData: CreateGateTypes) => {
+    console.log(gateData);
+    // const tasks = {
+    //   data: [
+    //     {
+    //       task_type: "manual",
+    //       task_data: {
+    //         title: "Task 1",
+    //         description: "Task 1 description",
+    //         files: [...]
+    //       }
+    //     },
+    //     {
+    //       task_type: "manual",
+    //       task_data: {
+    //         title: "Task 2",
+    //         description: "Task 2 description",
+    //         files: [...]
+    //       }
+    //     }
+    //   ]
+    // };
+
+    // uploadImage(
+    //   {
+    //     base64: gateData.image,
+    //     metadata: {
+    //       name: gateData.title,
+    //     },
+    //   },
+    //   {
+    //     onSuccess(imageData) {
+    //       console.log(imageData);
+    //       const image_id = imageData['upload_image'].file.id;
+    //       const image_url =
+    //         'https://api.staging.mygateway.xyz/storage/file?id=' + image_id;
+
+    //       createGateMutation(
+    //         {
+    //           // TODO: This is Gateway's ID (temporary)
+    //           dao_id: 'b49fa6cc-e752-4e58-bb8d-9c12c5c17685',
+    //           ...gateData,
+    //           image: image_url,
+    //         },
+    //         {
+    //           onSuccess() {
+    //             snackbar.handleClick({ message: 'Gate created!' });
+    //             router.push(ROUTES.EXPLORE);
+    //           },
+    //           onError(error) {
+    //             console.log(error);
+    //           },
+    //         }
+    //       );
+    //     },
+    //     onError(error) {
+    //       console.log(error);
+    //     },
+    //   }
+    // );
   };
 
   return (

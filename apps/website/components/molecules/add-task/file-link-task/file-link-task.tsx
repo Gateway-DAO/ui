@@ -17,7 +17,7 @@ import {
 
 import { CreateGateTypes } from '../../../templates/create-gate/schema';
 
-const FileLinkTask = ({ taskId, deleteTask }) => {
+const FileLinkTask = ({   taskId, deleteTask }) => {
   const {
     register,
     setValue,
@@ -38,7 +38,11 @@ const FileLinkTask = ({ taskId, deleteTask }) => {
 
   useEffect(() => {
     const values = getValues();
-    setValue(`tasks.${taskId}.files`, values.tasks[taskId].files);
+    console.log(values.tasks.data[taskId].task_data);
+    setValue(
+      `tasks.data.${taskId}.task_data.files`,
+      values.tasks.data[taskId].task_data.files
+    );
   }, [files, taskId, getValues, setValue]);
 
   const deleteFile = (id: number) =>
@@ -65,7 +69,7 @@ const FileLinkTask = ({ taskId, deleteTask }) => {
             variant="standard"
             sx={{ minWidth: '600px' }}
             id="file-title"
-            {...register(`tasks.${taskId}.title`)}
+            {...register(`tasks.data.${taskId}.title`)}
             // error={!!errors.tasks[taskId].title}
             // helperText={errors.tasks[taskId].title?.message}
           />
@@ -83,7 +87,7 @@ const FileLinkTask = ({ taskId, deleteTask }) => {
           minRows={3}
           label="Task Description"
           id="file-description"
-          {...register(`tasks.${taskId}.description`)}
+          {...register(`tasks.data.${taskId}.description`)}
           // error={!!errors.tasks[taskId].description}
           // helperText={errors.tasks[taskId].description?.message}
           sx={{ marginBottom: '60px' }}
@@ -95,7 +99,9 @@ const FileLinkTask = ({ taskId, deleteTask }) => {
                 <TextField
                   required
                   label="File Title"
-                  {...register(`tasks.${taskId}.files.${file.id}.title`)}
+                  {...register(
+                    `tasks.data.${taskId}.task_data.files.${file.id}.title`
+                  )}
                   // error={!!errors.tasks[taskId].files[file.id].title}
                   // helperText={
                   //   errors.tasks[taskId].files[file.id].title?.message
@@ -113,7 +119,9 @@ const FileLinkTask = ({ taskId, deleteTask }) => {
                 multiline
                 minRows={3}
                 label="File Description"
-                {...register(`tasks.${taskId}.files.${file.id}.description`)}
+                {...register(
+                  `tasks.data.${taskId}.task_data.files.${file.id}.description`
+                )}
                 // error={!!errors.tasks[taskId].files[file.id].description}
                 // helperText={
                 //   errors.tasks[taskId].files[file.id].description?.message
@@ -122,7 +130,9 @@ const FileLinkTask = ({ taskId, deleteTask }) => {
               <TextField
                 required
                 label="Link"
-                {...register(`tasks.${taskId}.files.${file.id}.link`)}
+                {...register(
+                  `tasks.data.${taskId}.task_data.files.${file.id}.link`
+                )}
                 // error={!!errors.tasks[taskId].files[file.id].link}
                 // helperText={errors.tasks[taskId].files[file.id].link?.message}
               />

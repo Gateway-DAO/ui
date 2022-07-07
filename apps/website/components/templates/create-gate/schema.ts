@@ -1,17 +1,13 @@
-import { object, string, array, SchemaOf } from 'yup';
+import { object, string, array, mixed, SchemaOf } from 'yup';
 
-// Files & Links
-export type FileTaskTypes = {
-  title: string;
-  description: string;
-  files: FileTypes[];
-};
-
-export type FileTypes = {
-  title: string;
-  description: string;
-  link: string;
-};
+type TaskTypes =
+  | 'quizz'
+  | 'meeting_code'
+  | 'token_hold'
+  | 'contract_interaction'
+  | 'snapshot'
+  | 'manual'
+  | 'self_verify';
 
 // Create Gate
 export type CreateGateTypes = {
@@ -21,7 +17,34 @@ export type CreateGateTypes = {
   image: string;
   skills: string[];
   created_by: string[];
-  tasks: FileTaskTypes[];
+  tasks: TasksSchema;
+};
+
+// Tasks
+export type TasksSchema = {
+  data: Array<Task>;
+};
+
+// Task
+export type Task = {
+  title: string;
+  description: string;
+  task_type: TaskTypes;
+  task_data: Array<FileTaskTypes>;
+};
+
+// Files & Links
+export type FileTaskTypes = {
+  title: string;
+  description: string;
+  files: FileTypes[];
+};
+
+// Files
+export type FileTypes = {
+  title: string;
+  description: string;
+  link: string;
 };
 
 export const createGateSchema: SchemaOf<CreateGateTypes> = object({
@@ -31,21 +54,34 @@ export const createGateSchema: SchemaOf<CreateGateTypes> = object({
   image: string().min(2).defined(),
   skills: array().of(string()).defined(),
   created_by: array().of(string()).defined(),
-  tasks: array()
-    .of(
-      object({
-        title: string().min(2).defined(),
-        description: string().min(2).defined(),
-        files: array()
-          .of(
-            object({
-              title: string().min(2).defined(),
-              description: string().min(2).defined(),
-              link: string().min(2).defined(),
-            })
-          )
-          .defined(),
-      })
-    )
-    .defined(),
+  tasks: object({
+    data: array()
+      .of(
+        object({
+          title: string().min(2),
+          description: string().min(2),
+          task_type: mixed<TaskTypes>()
+            .oneOf([
+              'quizz',
+              'meeting_code',
+              'token_hold',
+              'contract_interaction',
+              'snapshot',
+              'manual',
+              'self_verify',
+            ])
+            .defined(),
+          task_data: object({
+            files: array().of(
+              object({
+                title: string().min(2).defined(),
+                description: string().min(2).defined(),
+                link: string().min(2).defined(),
+              })
+            ),
+          }).defined(),
+        }).defined()
+      )
+      .defined(),
+  }),
 });
