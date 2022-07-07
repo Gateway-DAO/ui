@@ -7,6 +7,7 @@ import Typography from '@mui/material/Typography';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import {
   Avatar,
+  Button,
   Chip,
   CircularProgress,
   ListItemAvatar,
@@ -148,7 +149,7 @@ const StartMintScreen = ({ setmintProcessStatus }) => {
 };
 
 function MintingScreen({ setmintProcessStatus }) {
-  const [status, setStatus] = useState('MINTING');
+  const [status, setStatus] = useState('FAILED');
   if (status === 'SUCCESSFUL') {
     setTimeout(() => {
       setmintProcessStatus(Subjects.minted);
@@ -179,7 +180,7 @@ function MintingScreen({ setmintProcessStatus }) {
           justifyContent: 'center',
         }}
       >
-        {status !== 'SUCCESSFUL' && status !=='FAILED' && (
+        {status !== 'SUCCESSFUL' && status !== 'FAILED' && (
           <CircularProgress
             color="secondary"
             sx={{
@@ -238,9 +239,26 @@ function MintingScreen({ setmintProcessStatus }) {
                 Credential successfully minted as NFT
               </AnimatedMessage>
             )}
+            {status === 'FAILED' && (
+              <AnimatedMessage key="failed">
+                Something went wrong on minting
+              </AnimatedMessage>
+            )}
           </AnimatePresence>
         </Box>
       </Box>
+      {status === 'FAILED' && (
+        <Box sx={{ m: 2 }}>
+          <Button
+            size="large"
+            variant="contained"
+            fullWidth
+            onClick={() => setmintProcessStatus(Subjects.start)}
+          >
+            RETRY MINT AS NFT
+          </Button>
+        </Box>
+      )}
     </>
   );
 }
