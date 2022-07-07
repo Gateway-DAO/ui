@@ -7,6 +7,7 @@ import Typography from '@mui/material/Typography';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import {
   Avatar,
+  Badge,
   Button,
   Chip,
   CircularProgress,
@@ -116,9 +117,20 @@ const StartMintScreen = ({ setmintProcessStatus }) => {
       <List component="nav" aria-label="mailbox folders">
         <ListItem button onClick={() => setmintProcessStatus(Subjects.minting)}>
           <ListItemAvatar>
-            <Avatar>
-              <ImageIcon />
-            </Avatar>
+            <Badge
+              color="success"
+              overlap="circular"
+              badgeContent=" "
+              variant="dot"
+              anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'right',
+              }}
+            >
+              <Avatar>
+                <ImageIcon />
+              </Avatar>
+            </Badge>
           </ListItemAvatar>
           <ListItemText primary="Polygon" secondary="Cost free" />
           <ChevronRightIcon style={{ color: 'grey' }} />
