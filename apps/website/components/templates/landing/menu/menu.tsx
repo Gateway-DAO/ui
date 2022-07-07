@@ -4,7 +4,7 @@ import { GatewayIcon } from '@gateway/assets';
 import { TOKENS } from '@gateway/theme';
 import { MotionBox } from '@gateway/ui';
 
-import { Link, ListItem, MenuItem, MenuList, Stack } from '@mui/material';
+import { Link, List, ListItem, Stack } from '@mui/material';
 
 import { MenuProps } from './types';
 
@@ -39,10 +39,11 @@ export function Menu({
           background: `linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.05) 100%), ${theme.palette.background.paper}`,
         })}
       >
-        <MenuList
+        <List
           sx={{
             display: 'flex',
           }}
+          role="menu"
         >
           <GatewayIcon
             sx={{
@@ -52,12 +53,13 @@ export function Menu({
             }}
           />
           {menuList.map((menuItem, index) => (
-            <MenuItem
+            <ListItem
+              role="menuitem"
               key={menuItem.text + index}
               sx={{
                 display: 'flex',
                 justifyContent: 'center',
-                '&:hover': { background: 'none', cursor: 'default' },
+                '&:hover, &:active': { background: 'none', cursor: 'default' },
               }}
             >
               <Link
@@ -73,21 +75,23 @@ export function Menu({
               >
                 {menuItem.text}
               </Link>
-            </MenuItem>
+            </ListItem>
           ))}
-        </MenuList>
-        <MenuList sx={{ display: 'flex' }}>
-          <MenuItem
+        </List>
+        <List role="menu" sx={{ display: 'flex' }}>
+          <ListItem
+            role="menuitem"
             sx={{ '&:hover': { background: 'none', cursor: 'default' } }}
           >
             {signUpButton}
-          </MenuItem>
-          <MenuItem
+          </ListItem>
+          <ListItem
+            role="menuitem"
             sx={{ '&:hover': { background: 'none', cursor: 'default' } }}
           >
             {connectButton}
-          </MenuItem>
-        </MenuList>
+          </ListItem>
+        </List>
       </MotionBox>
     </Stack>
   );

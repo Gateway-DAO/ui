@@ -90,6 +90,9 @@ export function Hero({
                 color: theme.palette.secondary.main,
               })}
             />
+            <Box component="i" sx={{ display: 'none' }}>
+              Users
+            </Box>
           </Button>
         </MotionBox>
       </Stack>
