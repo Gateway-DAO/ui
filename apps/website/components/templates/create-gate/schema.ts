@@ -26,18 +26,22 @@ export type TasksSchema = {
 };
 
 // Task
+/* export type Task = {
+  title: string;
+  description: string;
+  task_type: TaskTypes;
+  task_data: {
+    files: FileTypes[];
+  };
+}; */
+
 export type Task = {
   title: string;
   description: string;
   task_type: TaskTypes;
-  task_data: Array<FileTaskTypes>;
-};
-
-// Files & Links
-export type FileTaskTypes = {
-  title: string;
-  description: string;
-  files: FileTypes[];
+  task_data: {
+    files: FileTypes[];
+  };
 };
 
 // Files
@@ -45,6 +49,19 @@ export type FileTypes = {
   title: string;
   description: string;
   link: string;
+};
+
+const d: TasksSchema = {
+  data: [
+    {
+      title: '',
+      description: '',
+      task_type: 'quizz',
+      task_data: {
+        files: [{ description: '', link: '', title: '' }],
+      },
+    },
+  ],
 };
 
 export const createGateSchema: SchemaOf<CreateGateTypes> = object({
