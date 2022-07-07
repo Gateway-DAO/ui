@@ -4,10 +4,11 @@ import { Avatar, Button, CardHeader } from '@mui/material';
 import MUICard from '@mui/material/Card';
 
 import { Users } from '../../services/graphql/types.generated';
+import { FollowButtonUser } from '../atoms/follow-button-user';
 
 /* TODO: Arias and Labels */
 /* TODO: Clamp text */
-export function PersonCard({ name, username, pfp }: PartialDeep<Users>) {
+export function PersonCard({ id, name, username, pfp }: PartialDeep<Users>) {
   return (
     <MUICard>
       <CardHeader
@@ -28,9 +29,12 @@ export function PersonCard({ name, username, pfp }: PartialDeep<Users>) {
           </Avatar>
         }
         action={
-          <Button variant="outlined" size="small" color="secondary">
-            Connect
-          </Button>
+          <FollowButtonUser
+            userId={id}
+            variant="outlined"
+            size="small"
+            color="secondary"
+          />
         }
         title={name}
         subheader={`@${username}`}

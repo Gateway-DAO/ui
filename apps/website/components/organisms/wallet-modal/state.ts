@@ -78,7 +78,6 @@ export function useConnectWallet() {
           wallet: account.data.address!,
           signature,
         });
-        console.log(res);
         setStep('FINISHED');
       },
       onError(e: any) {

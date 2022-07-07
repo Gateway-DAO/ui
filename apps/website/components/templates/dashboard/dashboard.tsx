@@ -13,7 +13,6 @@ import { DashboardTemplateProps } from './types';
 /* TODO: buttons to next/link */
 
 export function DashboardTemplate({
-  followingDaos,
   currentDao,
   children,
   containerProps,
@@ -42,7 +41,7 @@ export function DashboardTemplate({
             }
       }
     >
-      <Drawer {...{ followingDaos, currentDao, showExplore }} />
+      <Drawer {...{ currentDao, showExplore }} />
       <Box
         component="main"
         {...containerProps}

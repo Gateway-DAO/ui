@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 
 import { usePresence } from 'framer-motion';
+import { PartialDeep } from 'type-fest';
 
 import { MotionAvatar } from '@gateway/ui';
 
@@ -9,7 +10,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 
 import { Daos } from '../../../../services/graphql/types.generated';
 
-export function TemporaryDao({ dao }: { dao: Daos }) {
+export function TemporaryDao({ dao }: { dao: PartialDeep<Daos> }) {
   const [isPresent, safeToRemove] = usePresence();
 
   useEffect(() => {
