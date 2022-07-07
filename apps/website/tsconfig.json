@@ -14,6 +14,6 @@
     "incremental": true,
     "types": ["jest", "node"]
   },
-  "include": ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx", "next-env.d.ts", "types/environment.d.ts"],
+  "include": ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx", "next-env.d.ts", "types/environment.d.ts", "components/molecules/mint-card/.mint-card.tsx"],
   "exclude": ["node_modules", "jest.config.ts", "**/**.stories.tsx"]
 }
