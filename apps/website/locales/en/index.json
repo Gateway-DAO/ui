@@ -33,19 +33,23 @@
     "features": [
       {
         "title": "Join DAOs",
-        "description": "Gateway's credentials are issued by DAOs to help contributors create a verified work-track."
+        "description": "Gateway's credentials are issued by DAOs to help contributors create a verified work-track.",
+        "image": "/images/join-dao-featured-image.png"
       },
       {
         "title": "Eearn Credentials",
-        "description": "Receive verified credentials that serve as attestations for your work and your abilities."
+        "description": "Receive verified credentials that serve as attestations for your work and your abilities.",
+        "image": "/images/earn-credentials-featured-image.png"
       },
       {
         "title": "Showcase Your Achievements",
-        "description": "Proudly display your accomplishments on Gateway's profile and across web3."
+        "description": "Proudly display your accomplishments on Gateway's profile and across web3.",
+        "image": "/images/showcase-featured-image.png"
       },
       {
         "title": "Own Your Network",
-        "description": "Gateway allows professional to take ownership and meet new builders in the space."
+        "description": "Gateway allows professional to take ownership and meet new builders in the space.",
+        "image": "/images/own-network-featured-image.png"
       }
     ]
   }

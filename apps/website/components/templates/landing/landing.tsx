@@ -35,6 +35,7 @@ export function LandingTemplate({
       <Menu {...menuProps} />
       <Hero {...heroProps} />
       <ForUsers {...forUsersContent} />
+      <Hero {...heroProps} />
     </>
   );
 }
