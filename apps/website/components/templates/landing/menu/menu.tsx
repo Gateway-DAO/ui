@@ -4,7 +4,7 @@ import { GatewayIcon } from '@gateway/assets';
 import { TOKENS } from '@gateway/theme';
 import { MotionBox } from '@gateway/ui';
 
-import { Link, ListItem, MenuList, Stack } from '@mui/material';
+import { Link, ListItem, MenuItem, MenuList, Stack } from '@mui/material';
 
 import { MenuProps } from './types';
 
@@ -52,9 +52,13 @@ export function Menu({
             }}
           />
           {menuList.map((menuItem, index) => (
-            <ListItem
+            <MenuItem
               key={menuItem.text + index}
-              sx={{ display: 'flex', justifyContent: 'center' }}
+              sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                '&:hover': { background: 'none', cursor: 'default' },
+              }}
             >
               <Link
                 href={menuItem.href}
@@ -69,12 +73,20 @@ export function Menu({
               >
                 {menuItem.text}
               </Link>
-            </ListItem>
+            </MenuItem>
           ))}
         </MenuList>
         <MenuList sx={{ display: 'flex' }}>
-          <ListItem>{signUpButton}</ListItem>
-          <ListItem>{connectButton}</ListItem>
+          <MenuItem
+            sx={{ '&:hover': { background: 'none', cursor: 'default' } }}
+          >
+            {signUpButton}
+          </MenuItem>
+          <MenuItem
+            sx={{ '&:hover': { background: 'none', cursor: 'default' } }}
+          >
+            {connectButton}
+          </MenuItem>
         </MenuList>
       </MotionBox>
     </Stack>

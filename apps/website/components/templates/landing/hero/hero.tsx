@@ -21,7 +21,7 @@ export function Hero({
     <Box
       component="section"
       sx={{
-        height: '100%',
+        height: '100vh',
         width: '100%',
         overflow: 'hidden',
       }}
@@ -76,6 +76,8 @@ export function Hero({
           {enterButton}
           <Button
             variant="outlined"
+            component="a"
+            href="#users"
             sx={(theme) => ({
               borderRadius: '50%',
               padding: '20px',

@@ -4,11 +4,15 @@ import Link from 'next/link';
 import { Button } from '@mui/material';
 
 import { LandingTemplate } from '../components/templates/landing';
+import { forUsersProps } from '../components/templates/landing/for-users/types';
 import { MenuListItem } from '../components/templates/landing/menu/types';
 
 export default function Index() {
   const { t } = useTranslation('index');
   const menuList = t('menu', null, { returnObjects: true }) as MenuListItem[];
+  const forUsersContent = t('forUsers', null, {
+    returnObjects: true,
+  }) as forUsersProps;
 
   return (
     <>
@@ -20,6 +24,7 @@ export default function Index() {
             </Button>
           </Link>
         }
+        forUsersContent={forUsersContent}
         connectButton={
           <Link passHref href="/home">
             <Button
