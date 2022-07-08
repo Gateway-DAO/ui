@@ -1,1 +1,1 @@
-export * from './new-dao';
+export * from './dao-new';

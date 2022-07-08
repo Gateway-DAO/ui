@@ -20,20 +20,18 @@ export function AboutForm() {
     watch,
   } = useFormContext<NewDAOSchema>();
 
-  const { t } = useTranslation();
+  const { t } = useTranslation("dao-new");
 
   const descriptionRemaining = 200 - (watch('description')?.length ?? 0);
-
-  console.log(watch('socials'));
 
   return (
     <Stack direction="column" gap={12}>
       <Stack direction="column" gap={2}>
-        <Typography>Avatar and Cover</Typography>
+        <Typography variant="subtitle1" color="secondary.main">{t("about.avatar-cover")}</Typography>
         <AvatarBackgroundFields />
       </Stack>
       <Stack direction="column" gap={2}>
-        <Typography>Details</Typography>
+        <Typography variant="subtitle1" color="secondary.main">{t("about.details")}</Typography>
         <TextField
           required
           label={t('common:fields.display-name')}
@@ -69,21 +67,8 @@ export function AboutForm() {
         />
       </Stack>
       <Stack direction="column" gap={2}>
-        <Typography>Details</Typography>
+        <Typography variant="subtitle1" color="secondary.main">{t("about.social-links")}</Typography>
         <SocialLinks control={control} name="socials" />
-      </Stack>
-      <Stack
-        direction="row-reverse"
-        justifyContent="end"
-        gap={1}
-        sx={{ mt: 2 }}
-      >
-        <Button variant="contained" type="submit">
-          Submit
-        </Button>
-        <Button variant="outlined" type="button">
-          Cancel
-        </Button>
       </Stack>
     </Stack>
   );

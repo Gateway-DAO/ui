@@ -11,7 +11,7 @@ import { AboutForm } from './form/form';
 import { schema, NewDAOSchema } from './schema';
 
 export function NewDAOTemplate() {
-  const { t } = useTranslation();
+  const { t } = useTranslation("dao-new");
   const methods = useForm<NewDAOSchema>({
     resolver: yupResolver(schema),
   });
@@ -26,8 +26,8 @@ export function NewDAOTemplate() {
       }}
     >
       <Box>
-        <Typography variant="h4">{t('dao-new:title')}</Typography>
-        <Typography variant="caption">{t('dao-new:subtitle')}</Typography>
+        <Typography variant="h4">{t('title')}</Typography>
+        <Typography variant="caption">{t('subtitle')}</Typography>
       </Box>
       <Stack
         direction="row"
@@ -36,7 +36,7 @@ export function NewDAOTemplate() {
         gap={6}
       >
         <Box sx={{ width: '25%' }}>
-          <Typography variant="h5">{t('dao-new:about.title')}</Typography>
+          <Typography variant="h5">{t('about.title')}</Typography>
         </Box>
         <FormProvider {...methods}>
           <Box sx={{ width: '75%' }}>
