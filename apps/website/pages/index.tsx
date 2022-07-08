@@ -38,7 +38,15 @@ export default function Index() {
             <Button
               variant="outlined"
               size="large"
-              sx={{ whiteSpace: 'nowrap', height: '56px' }}
+              sx={(theme) => ({
+                whiteSpace: 'nowrap',
+                height: '56px',
+                [theme.breakpoints.down('sm')]: {
+                  height: '30px',
+                  width: 'auto',
+                  maxWidth: '95px',
+                },
+              })}
             >
               {t('openApp')}
             </Button>
@@ -52,10 +60,7 @@ export default function Index() {
           <Link passHref href="/home">
             <Button
               variant="contained"
-              sx={(theme) => ({
-                height: '56px',
-                marginTop: '38px',
-              })}
+              sx={{ height: '56px', marginTop: '38px' }}
               size="large"
             >
               {t('enterButtonTitle')}

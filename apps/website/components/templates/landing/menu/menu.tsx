@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { GatewayIcon } from '@gateway/assets';
 import { TOKENS } from '@gateway/theme';
 import { MotionBox } from '@gateway/ui';
 
-import { Link, List, ListItem, Stack } from '@mui/material';
+import MenuIcon from '@mui/icons-material/Menu';
+import { Button, Link, List, ListItem, Stack } from '@mui/material';
 
 import { MenuProps } from './types';
 
@@ -13,6 +14,8 @@ export function Menu({
   signUpButton,
   menuList,
 }: MenuProps): JSX.Element {
+  const [open, setOpen] = useState(false);
+  console.log(open);
   return (
     <Stack
       direction="row"
@@ -38,30 +41,68 @@ export function Menu({
           justifyContent: 'space-between',
           border: '1px solid rgba(229, 229, 229, 0.12);',
           background: theme.palette.background.elevated,
+          [theme.breakpoints.down('sm')]: {
+            px: '16px',
+            height: '56px',
+            ...(open && {
+              borderRadius: '28px',
+              height: 'auto',
+              flexWrap: 'wrap',
+              py: '16px',
+            }),
+          },
         })}
       >
+        <GatewayIcon
+          sx={(theme) => ({
+            width: 50,
+            height: 50,
+            marginRight: '43px',
+            [theme.breakpoints.down('sm')]: {
+              height: '24px',
+              width: '24px',
+              marginRight: 'auto',
+            },
+          })}
+        />
         <List
-          sx={{
-            display: 'flex',
-          }}
           role="menu"
+          sx={(theme) => ({
+            display: 'flex',
+            [theme.breakpoints.down('sm')]: {
+              ...(open && {
+                flexDirection: 'column',
+                width: '100%',
+                order: 3,
+              }),
+            },
+          })}
         >
-          <GatewayIcon
-            sx={{
-              width: 50,
-              height: 50,
-              marginRight: '43px',
-            }}
-          />
           {menuList.map((menuItem, index) => (
             <ListItem
               role="menuitem"
               key={menuItem.text + index}
-              sx={{
+              sx={(theme) => ({
                 display: 'flex',
                 justifyContent: 'center',
                 '&:hover, &:active': { background: 'none', cursor: 'default' },
-              }}
+                [theme.breakpoints.down('md')]: {
+                  display: 'none',
+                  ...(open && {
+                    display: 'block',
+                    width: '100%',
+                    paddingBottom: '16px',
+                    paddingLeft: '0',
+                    borderBottom: '1px solid rgba(229, 229, 229, 0.12)',
+                    '&:last-child': {
+                      borderBottom: 'none',
+                    },
+                    '&:first-child': {
+                      paddingTop: '40px',
+                    },
+                  }),
+                },
+              })}
             >
               <Link
                 href={menuItem.href}
@@ -79,10 +120,15 @@ export function Menu({
             </ListItem>
           ))}
         </List>
-        <List role="menu" sx={{ display: 'flex' }}>
+        <List role="menu" sx={{ display: 'flex', ...(open && { order: 4 }) }}>
           <ListItem
             role="menuitem"
-            sx={{ '&:hover': { background: 'none', cursor: 'default' } }}
+            sx={(theme) => ({
+              '&:hover': { background: 'none', cursor: 'default' },
+              [theme.breakpoints.down('md')]: {
+                display: 'none',
+              },
+            })}
           >
             {signUpButton}
           </ListItem>
@@ -93,6 +139,21 @@ export function Menu({
             {connectButton}
           </ListItem>
         </List>
+
+        <MenuIcon
+          color="secondary"
+          fontSize="medium"
+          onClick={() => setOpen(!open)}
+          sx={(theme) => ({
+            [theme.breakpoints.up('md')]: {
+              display: 'none',
+              cursor: 'pointer',
+              ...(open && {
+                order: 4,
+              }),
+            },
+          })}
+        />
       </MotionBox>
     </Stack>
   );
