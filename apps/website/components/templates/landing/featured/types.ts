@@ -1,11 +1,11 @@
-export type forUsersFeature = {
+export type Features = {
   title: string;
   description: string;
   image: string;
 };
 
-export type forUsersProps = {
+export type FeaturedProps = {
   mainTitle: string;
   secondaryTitle: string;
-  features: forUsersFeature[];
+  features: Features[];
 };

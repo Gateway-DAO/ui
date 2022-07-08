@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { Button } from '@mui/material';
 
 import { LandingTemplate } from '../components/templates/landing';
-import { forUsersProps } from '../components/templates/landing/for-users/types';
+import { FeaturedProps } from '../components/templates/landing/featured/types';
 import { MenuListItem } from '../components/templates/landing/menu/types';
 
 export default function Index() {
@@ -12,7 +12,7 @@ export default function Index() {
   const menuList = t('menu', null, { returnObjects: true }) as MenuListItem[];
   const forUsersContent = t('forUsers', null, {
     returnObjects: true,
-  }) as forUsersProps;
+  }) as FeaturedProps;
 
   return (
     <>

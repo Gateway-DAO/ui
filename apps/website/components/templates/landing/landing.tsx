@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 
-import { ForUsers } from './for-users';
-import { forUsersProps } from './for-users/types';
+import { Featured } from './featured';
+import { FeaturedProps } from './featured/types';
 import { Hero } from './hero';
 import { Menu } from './menu/menu';
 import { MenuListItem } from './menu/types';
@@ -14,7 +14,7 @@ type Props = {
   menuList: MenuListItem[];
   connectButton: ReactNode;
   signUpButton: ReactNode;
-  forUsersContent: forUsersProps;
+  forUsersContent: FeaturedProps;
 };
 
 export function LandingTemplate({
@@ -34,7 +34,7 @@ export function LandingTemplate({
     <>
       <Menu {...menuProps} />
       <Hero {...heroProps} />
-      <ForUsers {...forUsersContent} />
+      <Featured {...forUsersContent} />
       <Hero {...heroProps} />
     </>
   );

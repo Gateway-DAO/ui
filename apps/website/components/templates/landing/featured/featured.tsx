@@ -1,62 +1,23 @@
 import Image from 'next/image';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef } from 'react';
 
 import { TOKENS } from '@gateway/theme';
 import { MotionBox } from '@gateway/ui';
 
 import { Box, Stack, Typography } from '@mui/material';
 
+import { useActiveScroll } from '../../../../hooks/use-active-scroll';
 import { LandingTitleLimiter } from '../styles';
 import Title from '../title';
-import { forUsersProps } from './types';
+import { FeaturedProps } from './types';
 
-export function ForUsers({
+export function Featured({
   mainTitle,
   secondaryTitle,
   features,
-}: forUsersProps): JSX.Element {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const myRefs = useRef([]);
-
-  const scrollDefinitions = (index) => {
-    const threshold = 250;
-
-    return {
-      max: myRefs.current[index].offsetTop - threshold,
-      min: myRefs.current[index].offsetTop - 2 * threshold,
-    };
-  };
-
-  const scrollTo = (index) => {
-    window.scrollTo({
-      top: scrollDefinitions(index).min + 50,
-      behavior: 'smooth',
-    });
-  };
-
-  useEffect(() => {
-    function handleScrollEvent() {
-      if (
-        window.scrollY >= scrollDefinitions(activeIndex).max &&
-        window.scrollY <
-          scrollDefinitions(myRefs.current.length - 1).max + 50 &&
-        activeIndex < myRefs.current.length - 1
-      ) {
-        setActiveIndex(activeIndex + 1);
-      } else if (
-        window.scrollY < scrollDefinitions(activeIndex).min &&
-        activeIndex > 0 &&
-        window.scrollY > scrollDefinitions(0).min - 1
-      ) {
-        setActiveIndex(activeIndex - 1);
-      }
-    }
-
-    window.addEventListener('scroll', handleScrollEvent);
-    return () => {
-      window.removeEventListener('scroll', handleScrollEvent);
-    };
-  }, [activeIndex]);
+}: FeaturedProps): JSX.Element {
+  const myRefs = useRef<HTMLDivElement[]>([]);
+  const { activeIndex, scrollTo } = useActiveScroll(myRefs);
 
   return (
     <Box
@@ -94,7 +55,7 @@ export function ForUsers({
               position: 'relative',
               borderBottom: '1px solid rgba(229, 229, 229, 0.12)',
             }}
-            ref={(el) => (myRefs.current[index] = el)}
+            ref={(el: HTMLDivElement) => (myRefs.current[index] = el)}
           >
             <Box sx={{ cursor: 'pointer', py: '64px' }}>
               <Typography
