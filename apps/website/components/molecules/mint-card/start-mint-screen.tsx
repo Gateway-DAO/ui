@@ -13,7 +13,11 @@ import Divider from '@mui/material/Divider';
 import ImageIcon from '@mui/icons-material/Image';
 import { Subjects } from './index';
 
-export const StartMintScreen = ({ setmintProcessStatus }) => {
+export const StartMintScreen = ({
+  mintProcessStatus,
+  setmintProcessStatus,
+  mint,
+}) => {
   return (
     <>
       <Box
@@ -38,12 +42,12 @@ export const StartMintScreen = ({ setmintProcessStatus }) => {
       <Typography
         variant="h6"
         color="text.secondary"
-        sx={{ mx: 2, fontSize: 18 }}
+        sx={{ mx: 2, fontSize: 18, mt: 8 }}
       >
         Choose the network
       </Typography>
       <List component="nav" aria-label="mailbox folders">
-        <ListItem button onClick={() => setmintProcessStatus(Subjects.minting)}>
+        <ListItem button onClick={() => mint()}>
           <ListItemAvatar>
             <Badge
               color="success"
@@ -55,32 +59,18 @@ export const StartMintScreen = ({ setmintProcessStatus }) => {
                 horizontal: 'right',
               }}
             >
-              <Avatar>
-                <ImageIcon />
-              </Avatar>
+              <Avatar src={'/images/polygon.png'} />
             </Badge>
           </ListItemAvatar>
           <ListItemText primary="Polygon" secondary="Cost free" />
           <ChevronRightIcon style={{ color: 'grey' }} />
         </ListItem>
         <Divider />
-        <ListItem button>
+        <ListItem button onClick={() => mint()}>
           <ListItemAvatar>
-            <Avatar>
-              <ImageIcon />
-            </Avatar>
+            <Avatar src={'/images/avalanche.png'} />
           </ListItemAvatar>
-          <ListItemText primary="Polygon" secondary="Cost free" />
-          <ChevronRightIcon style={{ color: 'grey' }} />
-        </ListItem>
-        <Divider light />
-        <ListItem button>
-          <ListItemAvatar>
-            <Avatar>
-              <ImageIcon />
-            </Avatar>
-          </ListItemAvatar>
-          <ListItemText primary="Polygon" secondary="Cost free" />
+          <ListItemText primary="Avalanche" secondary="Cost 0.058 AVAX" />
           <ChevronRightIcon style={{ color: 'grey' }} />
         </ListItem>
       </List>

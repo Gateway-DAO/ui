@@ -7,13 +7,7 @@ import { AnimatedMessage } from '../../organisms/wallet-modal/animated-message';
 import { Check, Close } from '@mui/icons-material';
 import { Subjects } from './index';
 
-export function MintingScreen({ setmintProcessStatus }) {
-  const [status, setStatus] = useState('FAILED');
-  if (status === 'SUCCESSFUL') {
-    setTimeout(() => {
-      setmintProcessStatus(Subjects.minted);
-    }, 1000);
-  }
+export function MintingScreen({ mintProcessStatus, setmintProcessStatus }) {
   return (
     <>
       <GatewayGrayIcon
@@ -39,7 +33,7 @@ export function MintingScreen({ setmintProcessStatus }) {
           justifyContent: 'center',
         }}
       >
-        {status !== 'SUCCESSFUL' && status !== 'FAILED' && (
+        {mintProcessStatus !== Subjects.minted && mintProcessStatus !== Subjects.failed && (
           <CircularProgress
             color="secondary"
             sx={{
@@ -53,7 +47,7 @@ export function MintingScreen({ setmintProcessStatus }) {
           />
         )}
 
-        {status == 'SUCCESSFUL' && (
+        {mintProcessStatus == Subjects.minted && (
           <Check
             sx={{
               height: 40,
@@ -67,7 +61,7 @@ export function MintingScreen({ setmintProcessStatus }) {
           />
         )}
 
-        {status == 'FAILED' && (
+        {mintProcessStatus == Subjects.failed && (
           <Close
             sx={{
               height: 40,
@@ -83,22 +77,22 @@ export function MintingScreen({ setmintProcessStatus }) {
 
         <Box sx={{ width: 200, position: 'relative' }}>
           <AnimatePresence>
-            {status === 'SIGN_IN' && (
+            {mintProcessStatus === Subjects.sign && (
               <AnimatedMessage key="signin">
                 Please sign the transaction
               </AnimatedMessage>
             )}
-            {status === 'MINTING' && (
+            {mintProcessStatus === Subjects.minting && (
               <AnimatedMessage key="account">
                 Minting credential
               </AnimatedMessage>
             )}
-            {status === 'SUCCESSFUL' && (
+            {mintProcessStatus === Subjects.minted && (
               <AnimatedMessage key="successful">
                 Credential successfully minted as NFT
               </AnimatedMessage>
             )}
-            {status === 'FAILED' && (
+            {mintProcessStatus === Subjects.failed && (
               <AnimatedMessage key="failed">
                 Something went wrong on minting
               </AnimatedMessage>
@@ -106,7 +100,7 @@ export function MintingScreen({ setmintProcessStatus }) {
           </AnimatePresence>
         </Box>
       </Box>
-      {status === 'FAILED' && (
+      {mintProcessStatus === Subjects.failed && (
         <Box sx={{ m: 2 }}>
           <Button
             size="large"

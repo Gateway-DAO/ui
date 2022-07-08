@@ -5,16 +5,29 @@ import { MintingScreen } from './minting-screen';
 
 export function processScreen(
   mintProcessStatus: Subjects,
-  setmintProcessStatus: React.Dispatch<React.SetStateAction<Subjects>>
+  setmintProcessStatus: React.Dispatch<React.SetStateAction<Subjects>>,
+  mint: (token_uri?: string) => void
 ) {
   switch (mintProcessStatus) {
     case Subjects.start:
-      return <StartMintScreen {...{ setmintProcessStatus }} />;
-    case Subjects.minting:
-      return <MintingScreen {...{ setmintProcessStatus }} />;
-    default:
       return (
-        <DefaultMintScreen {...{ mintProcessStatus, setmintProcessStatus }} />
+        <StartMintScreen
+          {...{ mintProcessStatus, setmintProcessStatus, mint }}
+        />
+      );
+    case Subjects.minting:
+    case Subjects.minted:
+    case Subjects.failed:
+    case Subjects.sign:
+      return (
+        <MintingScreen {...{ mintProcessStatus, setmintProcessStatus, mint }} />
+      );
+    case Subjects.default:
+    case Subjects.alreadyMinted:
+      return (
+        <DefaultMintScreen
+          {...{ mintProcessStatus, setmintProcessStatus, mint }}
+        />
       );
   }
 }
