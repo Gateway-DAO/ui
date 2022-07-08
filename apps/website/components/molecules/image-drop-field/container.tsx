@@ -6,6 +6,7 @@ import { Box } from '@mui/material';
 type Props = {
   hasImage?: boolean;
   isOver?: boolean;
+  label: string;
   dropBond: DropAreaBond;
 };
 
@@ -14,10 +15,12 @@ export function Container({
   children,
   hasImage,
   isOver,
+  label,
 }: PropsWithChildren<Props>) {
   return (
     <Box
       component="label"
+      aria-label={label}
       sx={[
         {
           display: 'flex',
