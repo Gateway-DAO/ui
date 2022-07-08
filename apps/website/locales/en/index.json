@@ -52,5 +52,31 @@
         "image": "/images/own-network-featured-image.png"
       }
     ]
+  },
+  "forOrganizations": {
+    "mainTitle": "Built for Organizations, DAOs and Web3 Companies",
+    "secondaryTitle": "A new way for communities to engage their members and recognize their talents.",
+    "features": [
+      {
+        "title": "Own Your Spaces",
+        "description": "Spaces created unique to communities and managed by admins and team leads.",
+        "image": "/images/own-spaces-featured-image.png"
+      },
+      {
+        "title": "Create Gates",
+        "description": "Modular quests that allow teams to actively challenge, reward, and build their community.",
+        "image": "/images/create-gates-featured-image.png"
+      },
+      {
+        "title": "Issue Crendentials",
+        "description": "Recognize core contributors for their excellence in a publicly verifiable manner.",
+        "image": "/images/issue-credentials-featured-image.png"
+      },
+      {
+        "title": "Find Talent",
+        "description": "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque.",
+        "image": "/images/find-talent-featured-image.png"
+      }
+    ]
   }
 }

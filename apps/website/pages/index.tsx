@@ -13,6 +13,9 @@ export default function Index() {
   const forUsersContent = t('forUsers', null, {
     returnObjects: true,
   }) as FeaturedProps;
+  const forOrganizationsContent = t('forOrganizations', null, {
+    returnObjects: true,
+  }) as FeaturedProps;
 
   return (
     <>
@@ -25,6 +28,7 @@ export default function Index() {
           </Link>
         }
         forUsersContent={forUsersContent}
+        forOrganizationsContent={forOrganizationsContent}
         connectButton={
           <Link passHref href="/home">
             <Button

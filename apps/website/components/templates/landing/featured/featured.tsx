@@ -14,6 +14,7 @@ import { FeaturedProps } from './types';
 export function Featured({
   mainTitle,
   secondaryTitle,
+  id,
   features,
 }: FeaturedProps): JSX.Element {
   const myRefs = useRef<HTMLDivElement[]>([]);
@@ -22,7 +23,7 @@ export function Featured({
   return (
     <Box
       component="section"
-      id="users"
+      id={id}
       sx={(theme) => ({
         paddingTop: theme.spacing(26),
         paddingBottom: theme.spacing(14),

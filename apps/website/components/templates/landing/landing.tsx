@@ -1,4 +1,8 @@
-import { ReactNode } from 'react';
+import { ReactNode, useEffect, useRef } from 'react';
+
+import { useIntersection } from 'react-use';
+
+import { theme } from '@gateway/theme';
 
 import { Featured } from './featured';
 import { FeaturedProps } from './featured/types';
@@ -15,6 +19,7 @@ type Props = {
   connectButton: ReactNode;
   signUpButton: ReactNode;
   forUsersContent: FeaturedProps;
+  forOrganizationsContent: FeaturedProps;
 };
 
 export function LandingTemplate({
@@ -26,16 +31,31 @@ export function LandingTemplate({
   subtitle,
   enterButton,
   forUsersContent,
+  forOrganizationsContent,
 }: Props) {
   const heroProps = { title, subtitle, enterButton, titleDescription };
   const menuProps = { menuList, signUpButton, connectButton };
+  const intersectionRef = useRef(null);
+  const intersection = useIntersection(intersectionRef, {
+    root: null,
+    rootMargin: '0px',
+    threshold: 0.3,
+  });
+
+  useEffect(() => {
+    intersection && intersection?.isIntersecting
+      ? (document.body.style.background = `linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.05) 100%), ${theme.palette.background.paper}`)
+      : (document.body.style.background = theme.palette.background.default);
+  }, [intersection]);
 
   return (
     <>
       <Menu {...menuProps} />
       <Hero {...heroProps} />
-      <Featured {...forUsersContent} />
-      <Hero {...heroProps} />
+      <Featured {...forUsersContent} id="users" />
+      <div ref={intersectionRef}>
+        <Featured {...forOrganizationsContent} id="organizations" />
+      </div>
     </>
   );
 }

@@ -6,6 +6,7 @@ export type Features = {
 
 export type FeaturedProps = {
   mainTitle: string;
+  id?: string;
   secondaryTitle: string;
   features: Features[];
 };
