@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useRef } from 'react';
+import { ReactNode, useEffect, useRef, useState } from 'react';
 
 import { useIntersection } from 'react-use';
 
@@ -35,27 +35,29 @@ export function LandingTemplate({
 }: Props) {
   const heroProps = { title, subtitle, enterButton, titleDescription };
   const menuProps = { menuList, signUpButton, connectButton };
-  const intersectionRef = useRef(null);
-  const intersection = useIntersection(intersectionRef, {
+  const organizationRef = useRef(null);
+  const organizationIntersection = useIntersection(organizationRef, {
     root: null,
     rootMargin: '0px',
     threshold: 0.3,
   });
 
   useEffect(() => {
-    intersection && intersection?.isIntersecting
+    organizationIntersection && organizationIntersection?.isIntersecting
       ? (document.body.style.background = theme.palette.background.light)
       : (document.body.style.background = theme.palette.background.default);
-  }, [intersection]);
+  }, [organizationIntersection]);
 
   return (
     <>
       <Menu {...menuProps} />
       <Hero {...heroProps} />
       <Featured {...forUsersContent} id="users" />
-      <div ref={intersectionRef}>
-        <Featured {...forOrganizationsContent} id="organizations" />
-      </div>
+      <Featured
+        {...forOrganizationsContent}
+        ref={organizationRef}
+        id="organizations"
+      />
       <Hero {...heroProps} />
     </>
   );

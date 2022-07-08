@@ -1,22 +1,24 @@
 import Image from 'next/image';
-import React, { useRef } from 'react';
+import React, { forwardRef, useRef } from 'react';
 
 import { TOKENS } from '@gateway/theme';
 import { MotionBox } from '@gateway/ui';
 
-import { Box, Stack, Typography } from '@mui/material';
+import { Box, BoxTypeMap, Stack, Typography } from '@mui/material';
+import { OverridableComponent } from '@mui/material/OverridableComponent';
 
 import { useActiveScroll } from '../../../../hooks/use-active-scroll';
 import { LandingTitleLimiter } from '../styles';
 import Title from '../title';
 import { FeaturedProps } from './types';
 
-export function Featured({
-  mainTitle,
-  secondaryTitle,
-  id,
-  features,
-}: FeaturedProps): JSX.Element {
+export const Featured = forwardRef<
+  OverridableComponent<BoxTypeMap<Record<string, unknown>, 'div'>>,
+  FeaturedProps
+>(function FeaturedComponent(
+  { mainTitle, secondaryTitle, id, features }: FeaturedProps,
+  ref
+): JSX.Element {
   const myRefs = useRef<HTMLDivElement[]>([]);
   const { activeIndex, scrollTo } = useActiveScroll(myRefs);
 
@@ -24,6 +26,7 @@ export function Featured({
     <Box
       component="section"
       id={id}
+      ref={ref}
       sx={(theme) => ({
         paddingTop: theme.spacing(26),
         paddingBottom: theme.spacing(14),
@@ -114,4 +117,4 @@ export function Featured({
       </Stack>
     </Box>
   );
-}
+});

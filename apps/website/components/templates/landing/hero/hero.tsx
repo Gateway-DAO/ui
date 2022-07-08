@@ -28,16 +28,22 @@ export function Hero({
     >
       <Stack
         direction="column"
-        sx={{ flex: 1, width: '100%', px: TOKENS.CONTAINER_PX }}
+        sx={{
+          flex: 1,
+          width: '100%',
+          height: '100%',
+          px: TOKENS.CONTAINER_PX,
+        }}
       >
         <MotionBox
           sx={{
             display: 'flex',
-            position: 'absolute',
+            flex: 1,
+            position: 'relative',
             flexDirection: 'column',
             alignItems: 'flex-start',
             zIndex: 2,
-            top: (theme) => theme.spacing(26),
+            paddingTop: (theme) => theme.spacing(26),
           }}
           initial={{ translateY: 20, opacity: 0 }}
           animate={{ translateY: 0, opacity: 1 }}
@@ -47,7 +53,22 @@ export function Hero({
             opacity: { duration: 0.5 },
           }}
         >
-          <Title>
+          <Typography
+            variant="h1"
+            component="h1"
+            sx={(theme) => ({
+              whiteSpace: 'pre-wrap',
+              fontSize: '4.875rem',
+              maxWidth: '760px',
+              [theme.breakpoints.down('md')]: {
+                ...theme.typography.h3,
+              },
+              [theme.breakpoints.down('sm')]: {
+                ...theme.typography.h4,
+                maxWidth: '80%',
+              },
+            })}
+          >
             <Typography
               component="span"
               sx={(theme) => ({
@@ -61,7 +82,7 @@ export function Hero({
               {title}
             </Typography>
             {subtitle}
-          </Title>
+          </Typography>
           <Typography
             component="h2"
             variant="subtitle1"
@@ -69,11 +90,15 @@ export function Hero({
               color: theme.palette.secondary.main,
               marginTop: '34px',
               maxWidth: '338px',
+              [theme.breakpoints.down('sm')]: {
+                maxWidth: '90%',
+              },
             })}
           >
             {titleDescription}
           </Typography>
           {enterButton}
+
           <Button
             variant="outlined"
             component="a"
@@ -83,6 +108,10 @@ export function Hero({
               padding: '20px',
               marginTop: '70px',
               borderColor: theme.palette.secondary.main,
+              [theme.breakpoints.down('sm')]: {
+                marginTop: 'auto',
+                marginBottom: '30px',
+              },
             })}
           >
             <ArrowDownward
@@ -118,6 +147,20 @@ export function Hero({
           alt="Gateway's background with people joining the network"
         />
       </MotionBox>
+      <Box
+        sx={(theme) => ({
+          [theme.breakpoints.down('sm')]: {
+            height: '30%',
+            width: '100%',
+            position: 'absolute',
+            zIndex: 0,
+            bottom: 0,
+            left: 0,
+            background:
+              'linear-gradient(0deg, rgba(0, 0, 0, 0.64) 0%, rgba(0, 0, 0, 0) 100%)',
+          },
+        })}
+      ></Box>
     </Box>
   );
 }
