@@ -36,7 +36,7 @@ export function Menu({
           py: '27px',
           justifyContent: 'space-between',
           border: '1px solid rgba(229, 229, 229, 0.12);',
-          background: `linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.05) 100%), ${theme.palette.background.paper}`,
+          background: theme.palette.background.elevated,
         })}
       >
         <List

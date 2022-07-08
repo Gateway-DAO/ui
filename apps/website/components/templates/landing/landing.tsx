@@ -44,7 +44,7 @@ export function LandingTemplate({
 
   useEffect(() => {
     intersection && intersection?.isIntersecting
-      ? (document.body.style.background = `linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.05) 100%), ${theme.palette.background.paper}`)
+      ? (document.body.style.background = theme.palette.background.light)
       : (document.body.style.background = theme.palette.background.default);
   }, [intersection]);
 
@@ -56,6 +56,7 @@ export function LandingTemplate({
       <div ref={intersectionRef}>
         <Featured {...forOrganizationsContent} id="organizations" />
       </div>
+      <Hero {...heroProps} />
     </>
   );
 }
