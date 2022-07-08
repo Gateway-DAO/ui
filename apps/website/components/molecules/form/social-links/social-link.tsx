@@ -18,7 +18,8 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-
+import { networks } from "../../../../constants/networks"
+import { capitalCase } from "change-case"
 
 type SocialLinkField<TFormSchema> = {
   name: string;
@@ -26,9 +27,9 @@ type SocialLinkField<TFormSchema> = {
   control: Control<TFormSchema>;
 };
 
-const networks = ['Twitter', 'Twitch', 'Website'].map((label) => ({
-  label,
-  value: label.toLowerCase(),
+const networksOptions = networks.map((value) => ({
+  label: capitalCase(value),
+  value,
 }));
 
 
@@ -63,13 +64,13 @@ export function SocialLink<TFormSchema extends FieldValues = FieldValues>({
         </InputLabel>
         <Select
           labelId={`${name}.network`}
-          label="Age"
+          label={t('common:fields.platform')}
           defaultValue=""
           {...networkField.field}
           value={networkField.field.value ?? ''}
           error={!!networkField.fieldState.error}
         >
-          {networks.map((network) => (
+          {networksOptions.map((network) => (
             <MenuItem key={network.value} value={network.value}>
               {network.label}
             </MenuItem>

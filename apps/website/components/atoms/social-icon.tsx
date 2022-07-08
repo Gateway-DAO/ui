@@ -3,12 +3,16 @@ import { useMemo } from 'react';
 import { AiOutlineTwitter } from 'react-icons/ai';
 import { FaTwitch, FaDiscord } from 'react-icons/fa';
 
-import { Language } from '@mui/icons-material';
+import { Language, Link } from '@mui/icons-material';
 import { SvgIcon, SvgIconProps } from '@mui/material';
 
+import { networks } from "../../constants/networks"
+
+
 type Props = {
-  icon: string;
+  icon: typeof networks[number];
 } & SvgIconProps;
+
 
 export function SocialIcon({ icon, ...other }: Props) {
   const iconComponent = useMemo(() => {
@@ -19,8 +23,10 @@ export function SocialIcon({ icon, ...other }: Props) {
         return FaTwitch;
       case 'discord':
         return FaDiscord;
-      default:
+      case 'website':
         return Language;
+      default:
+        return Link;
     }
   }, [icon]);
   const viewBox = useMemo(
