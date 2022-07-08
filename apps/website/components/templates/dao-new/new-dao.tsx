@@ -1,3 +1,5 @@
+import useTranslation from 'next-translate/useTranslation';
+
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
 
@@ -5,10 +7,11 @@ import { TOKENS } from '@gateway/theme';
 
 import { Box, Stack, Typography } from '@mui/material';
 
-import { Form } from './form';
+import { AboutForm } from './form/form';
 import { schema, NewDAOSchema } from './schema';
 
 export function NewDAOTemplate() {
+  const { t } = useTranslation();
   const methods = useForm<NewDAOSchema>({
     resolver: yupResolver(schema),
   });
@@ -22,7 +25,10 @@ export function NewDAOTemplate() {
         console.log(data);
       }}
     >
-      <Typography variant="h4">Create DAO</Typography>
+      <Box>
+        <Typography variant="h4">{t('dao-new:title')}</Typography>
+        <Typography variant="caption">{t('dao-new:subtitle')}</Typography>
+      </Box>
       <Stack
         direction="row"
         justifyContent="space-between"
@@ -30,11 +36,11 @@ export function NewDAOTemplate() {
         gap={6}
       >
         <Box sx={{ width: '25%' }}>
-          <Typography variant="h5">About</Typography>
+          <Typography variant="h5">{t('dao-new:about.title')}</Typography>
         </Box>
         <FormProvider {...methods}>
           <Box sx={{ width: '75%' }}>
-            <Form />
+            <AboutForm />
           </Box>
         </FormProvider>
       </Stack>

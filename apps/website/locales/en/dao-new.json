@@ -1,0 +1,10 @@
+{
+  "title": "Create DAO profile",
+  "subtitle": "Information provided will be displayed on your Gateway profile.",
+  "about": {
+    "title": "About",
+    "avatar-cover": "Avatar & Cover",
+    "details": "Details",
+    "social-links": "Social Links"
+  }
+}

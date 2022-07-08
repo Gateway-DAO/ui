@@ -10,6 +10,7 @@ const config = {
     [ROUTES.EXPLORE]: ['explore'],
     [ROUTES.NEW_USER]: ['dashboard-new-user'],
     [ROUTES.DAO_PROFILE]: ['dao-profile'],
+    [ROUTES.DAO_NEW]: ['dao-new'],
   },
   localeDetection: false,
 };
