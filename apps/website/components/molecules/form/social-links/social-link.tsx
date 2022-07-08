@@ -41,7 +41,7 @@ export function SocialLink<TFormSchema extends FieldValues = FieldValues>({
   });
 
   const linkField = useController({
-    name: `${name}.link` as any,
+    name: `${name}.url` as any,
     control,
   });
   const { t } = useTranslation();
