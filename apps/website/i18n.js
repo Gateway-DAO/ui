@@ -8,6 +8,7 @@ const config = {
     '*': ['common', 'auth'],
     [ROUTES.LANDING]: ['index'],
     [ROUTES.EXPLORE]: ['explore'],
+    [ROUTES.SEARCH]: ['search'],
     [ROUTES.NEW_USER]: ['dashboard-new-user'],
     [ROUTES.DAO_PROFILE]: ['dao-profile'],
   },

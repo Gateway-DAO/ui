@@ -1,9 +1,10 @@
 import dynamic from 'next/dynamic';
+import { useRouter } from 'next/router';
 
 import { TOKENS } from '@gateway/theme';
 
 import SearchIcon from '@mui/icons-material/Search';
-import { Button, Stack } from '@mui/material';
+import { Stack } from '@mui/material';
 import AppBar, { AppBarProps } from '@mui/material/AppBar';
 import Autocomplete from '@mui/material/Autocomplete';
 import Box from '@mui/material/Box';
@@ -23,6 +24,8 @@ const ClientNav = dynamic(
 export type NavbarProps = AppBarProps;
 
 export function Navbar(props: NavbarProps) {
+  const router = useRouter();
+
   return (
     <AppBar color="transparent" position="relative" {...props}>
       <Toolbar
@@ -84,6 +87,10 @@ export function Navbar(props: NavbarProps) {
                   sx: { borderRadius: 100 },
                   size: 'small',
                 }}
+                onKeyDown={(e: any) =>
+                  e.key == 'Enter' &&
+                  router.push(`/search/${(e.target as HTMLInputElement).value}`)
+                }
               />
             )}
           />
