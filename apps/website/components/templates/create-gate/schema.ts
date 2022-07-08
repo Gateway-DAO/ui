@@ -1,13 +1,19 @@
 import { object, string, array, mixed, SchemaOf } from 'yup';
 
 type TaskTypes =
-  | 'quizz'
+  | 'quiz'
   | 'meeting_code'
   | 'token_hold'
   | 'contract_interaction'
   | 'snapshot'
   | 'manual'
   | 'self_verify';
+
+// Creator
+export type Creator = {
+  id: string;
+  name: string;
+};
 
 // Create Gate
 export type CreateGateTypes = {
@@ -16,7 +22,7 @@ export type CreateGateTypes = {
   description: string;
   image: string;
   skills: string[];
-  created_by: string[];
+  created_by: Creator[];
   tasks: TasksSchema;
 };
 
@@ -24,16 +30,6 @@ export type CreateGateTypes = {
 export type TasksSchema = {
   data: Array<Task>;
 };
-
-// Task
-/* export type Task = {
-  title: string;
-  description: string;
-  task_type: TaskTypes;
-  task_data: {
-    files: FileTypes[];
-  };
-}; */
 
 export type Task = {
   title: string;
@@ -51,26 +47,13 @@ export type FileTypes = {
   link: string;
 };
 
-const d: TasksSchema = {
-  data: [
-    {
-      title: '',
-      description: '',
-      task_type: 'quizz',
-      task_data: {
-        files: [{ description: '', link: '', title: '' }],
-      },
-    },
-  ],
-};
-
 export const createGateSchema: SchemaOf<CreateGateTypes> = object({
   title: string().min(2).defined(),
   categories: array().of(string()).defined(),
   description: string().min(2).defined(),
   image: string().min(2).defined(),
   skills: array().of(string()).defined(),
-  created_by: array().of(string()).defined(),
+  created_by: array().of(mixed<Creator>()).defined(),
   tasks: object({
     data: array()
       .of(

@@ -5,7 +5,7 @@ import { Stack, TextField } from '@mui/material';
 import CategoriesInput from '../../molecules/categories-input';
 import CreatedByInput from '../../molecules/creators-input';
 import SkillsInput from '../../molecules/skills-input';
-import { CreateGateTypes } from './schema';
+import { CreateGateTypes, Creator } from './schema';
 
 export function GateDetailsForm() {
   const {
@@ -70,7 +70,7 @@ export function GateDetailsForm() {
         sx={{
           width: '100%',
         }}
-        set={(created_by: string[]) => {
+        set={(created_by: Creator[]) => {
           setValue('created_by', created_by);
         }}
       />

@@ -5,13 +5,13 @@ import { useAuth } from '../../providers/auth';
 
 export const CreatedByInput = ({ set, ...props }) => {
   const { me } = useAuth();
-  const creators = [me.name];
+  const creators = [{ id: me.id, name: me.name }];
 
   return (
     <Autocomplete
       multiple
       id="created_by-input"
-      options={creators}
+      options={creators.map((creator) => creator.name)}
       popupIcon={<Search />}
       renderTags={(value: string[], getTagProps) =>
         value.map((option: string, index: number) => (
@@ -26,7 +26,7 @@ export const CreatedByInput = ({ set, ...props }) => {
       renderInput={(params) => (
         <TextField {...params} label="Created By" id="created_by" {...props} />
       )}
-      onChange={(event, createdBy) => set(createdBy)}
+      onChange={(event) => set(creators)}
     />
   );
 };

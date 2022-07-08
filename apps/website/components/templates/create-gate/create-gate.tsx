@@ -37,65 +37,53 @@ export function CreateGateTemplate() {
   );
 
   const createGate = (gateData: CreateGateTypes) => {
-    console.log(gateData);
-    // const tasks = {
-    //   data: [
-    //     {
-    //       task_type: "manual",
-    //       task_data: {
-    //         title: "Task 1",
-    //         description: "Task 1 description",
-    //         files: [...]
-    //       }
-    //     },
-    //     {
-    //       task_type: "manual",
-    //       task_data: {
-    //         title: "Task 2",
-    //         description: "Task 2 description",
-    //         files: [...]
-    //       }
-    //     }
-    //   ]
-    // };
+    const permissionsData = {
+      data: gateData.created_by.map((creator) => {
+        return { user_id: creator.id, permission: 'gate_editor' };
+      }),
+    };
 
-    // uploadImage(
-    //   {
-    //     base64: gateData.image,
-    //     metadata: {
-    //       name: gateData.title,
-    //     },
-    //   },
-    //   {
-    //     onSuccess(imageData) {
-    //       console.log(imageData);
-    //       const image_id = imageData['upload_image'].file.id;
-    //       const image_url =
-    //         'https://api.staging.mygateway.xyz/storage/file?id=' + image_id;
+    uploadImage(
+      {
+        base64: gateData.image,
+        metadata: {
+          name: gateData.title,
+        },
+      },
+      {
+        onSuccess(imageData) {
+          const image_id = imageData['upload_image'].file.id;
+          const image_url =
+            'https://api.staging.mygateway.xyz/storage/file?id=' + image_id;
 
-    //       createGateMutation(
-    //         {
-    //           // TODO: This is Gateway's ID (temporary)
-    //           dao_id: 'b49fa6cc-e752-4e58-bb8d-9c12c5c17685',
-    //           ...gateData,
-    //           image: image_url,
-    //         },
-    //         {
-    //           onSuccess() {
-    //             snackbar.handleClick({ message: 'Gate created!' });
-    //             router.push(ROUTES.EXPLORE);
-    //           },
-    //           onError(error) {
-    //             console.log(error);
-    //           },
-    //         }
-    //       );
-    //     },
-    //     onError(error) {
-    //       console.log(error);
-    //     },
-    //   }
-    // );
+          createGateMutation(
+            {
+              // TODO: This is Gateway's ID (temporary)
+              dao_id: 'b49fa6cc-e752-4e58-bb8d-9c12c5c17685',
+              title: gateData.title,
+              categories: gateData.categories,
+              description: gateData.description,
+              skills: gateData.skills,
+              permissions: permissionsData,
+              image: image_url,
+              tasks: gateData.tasks,
+            },
+            {
+              onSuccess() {
+                snackbar.handleClick({ message: 'Gate created!' });
+                router.push(ROUTES.EXPLORE);
+              },
+              onError(error) {
+                console.log(error);
+              },
+            }
+          );
+        },
+        onError(error) {
+          console.log(error);
+        },
+      }
+    );
   };
 
   return (

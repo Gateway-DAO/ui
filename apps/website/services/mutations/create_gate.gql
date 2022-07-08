@@ -4,16 +4,10 @@ mutation create_gate(
   $categories: jsonb
   $description: String!
   $skills: jsonb
-  # $admins: jsonb!
+  $permissions: permissions_arr_rel_insert_input
   $image: String!
   $tasks: tasks_arr_rel_insert_input
 ) {
-  upload_image(
-    base64: "<the base64>"
-    metadata: { name: "<the name of the image>" }
-  ) {
-    file
-  }
   insert_gates_one(
     object: {
       dao_id: $dao_id
@@ -21,7 +15,7 @@ mutation create_gate(
       categories: $categories
       description: $description
       skills: $skills
-      # admins: $admins
+      permissions: $permissions
       image: $image
       tasks: $tasks
     }

@@ -38,6 +38,7 @@ const TaskArea = () => {
     setTasks({
       data: tasks.data.filter((task) => task.id !== id),
     });
+    setValue('tasks', tasks);
   };
 
   return (

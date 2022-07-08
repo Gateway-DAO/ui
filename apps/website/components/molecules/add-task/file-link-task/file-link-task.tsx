@@ -17,7 +17,7 @@ import {
 
 import { CreateGateTypes } from '../../../templates/create-gate/schema';
 
-const FileLinkTask = ({   taskId, deleteTask }) => {
+const FileLinkTask = ({ taskId, deleteTask }) => {
   const {
     register,
     setValue,
@@ -38,15 +38,21 @@ const FileLinkTask = ({   taskId, deleteTask }) => {
 
   useEffect(() => {
     const values = getValues();
-    console.log(values.tasks.data[taskId].task_data);
+    setValue(`tasks.data.${taskId}.task_type`, 'manual');
     setValue(
       `tasks.data.${taskId}.task_data.files`,
       values.tasks.data[taskId].task_data.files
     );
   }, [files, taskId, getValues, setValue]);
 
-  const deleteFile = (id: number) =>
+  const deleteFile = (id: number) => {
+    const values = getValues();
     setFiles(files.filter((file) => file.id !== id));
+    setValue(
+      `tasks.data.${taskId}.task_data.files`,
+      values.tasks.data[taskId].task_data.files
+    );
+  };
 
   return (
     <Stack
@@ -70,8 +76,8 @@ const FileLinkTask = ({   taskId, deleteTask }) => {
             sx={{ minWidth: '600px' }}
             id="file-title"
             {...register(`tasks.data.${taskId}.title`)}
-            // error={!!errors.tasks[taskId].title}
-            // helperText={errors.tasks[taskId].title?.message}
+            error={!!errors.tasks?.data[taskId].title}
+            helperText={errors.tasks?.data[taskId].title?.message}
           />
         </Stack>
         <DeleteIcon
@@ -88,8 +94,8 @@ const FileLinkTask = ({   taskId, deleteTask }) => {
           label="Task Description"
           id="file-description"
           {...register(`tasks.data.${taskId}.description`)}
-          // error={!!errors.tasks[taskId].description}
-          // helperText={errors.tasks[taskId].description?.message}
+          error={!!errors.tasks?.data[taskId].description}
+          helperText={errors.tasks?.data[taskId].description?.message}
           sx={{ marginBottom: '60px' }}
         />
         {files.map((file) => {
@@ -102,10 +108,13 @@ const FileLinkTask = ({   taskId, deleteTask }) => {
                   {...register(
                     `tasks.data.${taskId}.task_data.files.${file.id}.title`
                   )}
-                  // error={!!errors.tasks[taskId].files[file.id].title}
-                  // helperText={
-                  //   errors.tasks[taskId].files[file.id].title?.message
-                  // }
+                  error={
+                    !!errors.tasks?.data[taskId].task_data.files[file.id].title
+                  }
+                  helperText={
+                    errors.tasks?.data[taskId].task_data.files[file.id].title
+                      ?.message
+                  }
                   sx={{ maxWidth: '700px' }}
                 />
                 <Clear
@@ -122,10 +131,14 @@ const FileLinkTask = ({   taskId, deleteTask }) => {
                 {...register(
                   `tasks.data.${taskId}.task_data.files.${file.id}.description`
                 )}
-                // error={!!errors.tasks[taskId].files[file.id].description}
-                // helperText={
-                //   errors.tasks[taskId].files[file.id].description?.message
-                // }
+                error={
+                  !!errors.tasks?.data[taskId].task_data.files[file.id]
+                    .description
+                }
+                helperText={
+                  errors.tasks?.data[taskId].task_data.files[file.id]
+                    .description?.message
+                }
               />
               <TextField
                 required
@@ -133,8 +146,13 @@ const FileLinkTask = ({   taskId, deleteTask }) => {
                 {...register(
                   `tasks.data.${taskId}.task_data.files.${file.id}.link`
                 )}
-                // error={!!errors.tasks[taskId].files[file.id].link}
-                // helperText={errors.tasks[taskId].files[file.id].link?.message}
+                error={
+                  !!errors.tasks?.data[taskId].task_data.files[file.id].link
+                }
+                helperText={
+                  errors.tasks?.data[taskId].task_data.files[file.id].link
+                    ?.message
+                }
               />
               <Divider sx={{ margin: '40px 0' }} />
             </Stack>
