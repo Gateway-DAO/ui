@@ -1,3 +1,5 @@
+import { PartialDeep } from 'type-fest';
+
 import { TOKENS } from '@gateway/theme';
 
 import { Avatar, Box, Chip, Stack, Typography } from '@mui/material';
@@ -10,14 +12,11 @@ import TableRow from '@mui/material/TableRow';
 
 import { Gates } from '../../../../../services/graphql/types.generated';
 import { badgeProps } from '../../../../../utils/badge-props';
-import { ExploreProps } from '../../types';
-
-// TODO: make it generic
-// TODO: Fix Gate name column width
 
 type Props = {
-  gates: ExploreProps['gates'];
+  gates: PartialDeep<Gates>[];
 };
+
 export function TableView({ gates }: Props) {
   return (
     <TableContainer
