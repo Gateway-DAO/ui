@@ -9,6 +9,7 @@ import { Grid, Paper, Stack, Typography } from '@mui/material';
 
 import AddTaskButton from './add-task-button';
 import FileLinkTask from './file-link-task/file-link-task';
+import VerificationCodeTask from './verification-task/verification-task';
 
 const AddTaskCard = ({ addTask }) => {
   return (
@@ -81,10 +82,7 @@ const AddTaskCard = ({ addTask }) => {
             <AddTaskButton
               icon={<NumbersIcon />}
               title={'Verification Code'}
-              disabled
-              addTask={() => {
-                return;
-              }}
+              addTask={() => addTask(VerificationCodeTask, 'meeting_code')}
             />
           </Paper>
         </Grid>
