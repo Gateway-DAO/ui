@@ -36,15 +36,18 @@ export function Hero({
         }}
       >
         <MotionBox
-          sx={{
+          sx={(theme) => ({
             display: 'flex',
             flex: 1,
             position: 'relative',
             flexDirection: 'column',
             alignItems: 'flex-start',
             zIndex: 2,
-            paddingTop: (theme) => theme.spacing(26),
-          }}
+            paddingTop: theme.spacing(26),
+            [theme.breakpoints.down('sm')]: {
+              paddingTop: theme.spacing(17),
+            },
+          })}
           initial={{ translateY: 20, opacity: 0 }}
           animate={{ translateY: 0, opacity: 1 }}
           transition={{
