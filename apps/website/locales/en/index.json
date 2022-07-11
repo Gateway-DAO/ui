@@ -110,5 +110,24 @@
         }
       }
     ]
+  },
+  "theGatewayContent": {
+    "title": "The Gateway Credential Model",
+    "description": "We believe in data sovereignty for the user and public verification of information. By allowing users to control what credential they surface publicly, with NFTs, they can still control their own data tables.",
+    "image": {
+      "url": "/images/build-web3data.png",
+      "width": 447,
+      "height": 428
+    }
+  },
+  "buildAppsContent": {
+    "comingSoon": "Coming Soon",
+    "title": "Build apps with Web3 data",
+    "description": "Gateway's decentralized credential registry allows DAOs, web3 service providers, and tools to easily issue and curate verified credentials.",
+    "image": {
+      "url": "/images/build-web3data.png",
+      "width": 447,
+      "height": 428
+    }
   }
 }

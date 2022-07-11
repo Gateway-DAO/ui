@@ -9,6 +9,8 @@ import { FeaturedProps } from './featured/types';
 import { Hero } from './hero';
 import { Menu } from './menu/menu';
 import { MenuListItem } from './menu/types';
+import { ProductShow } from './product-show';
+import { ProductShowProps } from './product-show/types';
 
 type Props = {
   title: string;
@@ -20,6 +22,8 @@ type Props = {
   signUpButton: ReactNode;
   forUsersContent: FeaturedProps;
   forOrganizationsContent: FeaturedProps;
+  theGatewayContent: ProductShowProps;
+  buildAppsContent: ProductShowProps;
 };
 
 export function LandingTemplate({
@@ -32,6 +36,8 @@ export function LandingTemplate({
   enterButton,
   forUsersContent,
   forOrganizationsContent,
+  theGatewayContent,
+  buildAppsContent,
 }: Props) {
   const heroProps = { title, subtitle, enterButton, titleDescription };
   const menuProps = { menuList, signUpButton, connectButton };
@@ -58,7 +64,8 @@ export function LandingTemplate({
         ref={organizationRef}
         id="organizations"
       />
-      <Hero {...heroProps} />
+      <ProductShow {...theGatewayContent} />
+      <ProductShow {...buildAppsContent} />
     </>
   );
 }

@@ -1,7 +1,5 @@
 import React, { forwardRef, useRef } from 'react';
 
-import { useWindowSize } from 'react-use';
-
 import { TOKENS } from '@gateway/theme';
 import { MotionBox } from '@gateway/ui';
 

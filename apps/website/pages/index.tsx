@@ -6,6 +6,7 @@ import { Button } from '@mui/material';
 import { LandingTemplate } from '../components/templates/landing';
 import { FeaturedProps } from '../components/templates/landing/featured/types';
 import { MenuListItem } from '../components/templates/landing/menu/types';
+import { ProductShowProps } from '../components/templates/landing/product-show/types';
 
 export default function Index() {
   const { t } = useTranslation('index');
@@ -16,6 +17,12 @@ export default function Index() {
   const forOrganizationsContent = t('forOrganizations', null, {
     returnObjects: true,
   }) as FeaturedProps;
+  const theGatewayContent = t('theGatewayContent', null, {
+    returnObjects: true,
+  }) as ProductShowProps;
+  const buildAppsContent = t('buildAppsContent', null, {
+    returnObjects: true,
+  }) as ProductShowProps;
 
   return (
     <>
@@ -31,6 +38,8 @@ export default function Index() {
             </Button>
           </Link>
         }
+        theGatewayContent={theGatewayContent}
+        buildAppsContent={buildAppsContent}
         forUsersContent={forUsersContent}
         forOrganizationsContent={forOrganizationsContent}
         connectButton={
