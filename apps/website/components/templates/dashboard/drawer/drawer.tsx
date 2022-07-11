@@ -18,7 +18,7 @@ import { DashboardTemplateProps } from '../types';
 import { DaosList } from './daos-list';
 import { DrawerContainer } from './drawer-container';
 import { ResponsiveDrawer } from './responsive-drawer';
-import { TemporaryDao } from './temporary-dao';
+// import { TemporaryDao } from './temporary-dao';
 
 type Props = Pick<DashboardTemplateProps, 'currentDao' | 'showExplore'>;
 
@@ -33,7 +33,7 @@ export function Drawer({ currentDao, showExplore }: Props) {
   );
 
   /* Checks if currentDao isn't in followingDaos */
-  const isCurrentDaoTemporary = useMemo(() => {
+  /* const isCurrentDaoTemporary = useMemo(() => {
     if (!currentDao) {
       return false;
     }
@@ -41,7 +41,7 @@ export function Drawer({ currentDao, showExplore }: Props) {
       return !followingDaos.find((dao) => dao.id === currentDao.id);
     }
     return true;
-  }, [currentDao, followingDaos]);
+  }, [currentDao, followingDaos]); */
 
   return (
     <DrawerContainer>
@@ -59,8 +59,29 @@ export function Drawer({ currentDao, showExplore }: Props) {
             <GatewayIcon />
           </ListItemIcon>
           <AnimatePresence>
-            {!!currentDao && isCurrentDaoTemporary && (
+            {/* {!!currentDao && isCurrentDaoTemporary && (
               <TemporaryDao key={currentDao.id} dao={currentDao} />
+            )} */}
+            {showExplore && (
+              <Link passHref href={ROUTES.EXPLORE} prefetch={false}>
+                <MotionTooltip
+                  key="explore"
+                  layoutId="Explore"
+                  title="Explore"
+                  placement="right"
+                  className={clsx({
+                    active: router.pathname === ROUTES.EXPLORE,
+                  })}
+                >
+                  <ListItemButton component="a">
+                    <ListItemIcon>
+                      <Avatar>
+                        <ExploreIcon />
+                      </Avatar>
+                    </ListItemIcon>
+                  </ListItemButton>
+                </MotionTooltip>
+              </Link>
             )}
             {followingDaos?.map((dao) => {
               const url = ROUTES.DAO_PROFILE.replace('[id]', dao.id);
@@ -86,27 +107,6 @@ export function Drawer({ currentDao, showExplore }: Props) {
               );
             })}
           </AnimatePresence>
-          {showExplore && (
-            <Link passHref href={ROUTES.EXPLORE} prefetch={false}>
-              <MotionTooltip
-                key="explore"
-                layoutId="Explore"
-                title="Explore"
-                placement="right"
-                className={clsx({
-                  active: router.pathname === ROUTES.EXPLORE,
-                })}
-              >
-                <ListItemButton component="a">
-                  <ListItemIcon>
-                    <Avatar>
-                      <ExploreIcon />
-                    </Avatar>
-                  </ListItemIcon>
-                </ListItemButton>
-              </MotionTooltip>
-            </Link>
-          )}
         </DaosList>
       </ResponsiveDrawer>
     </DrawerContainer>
