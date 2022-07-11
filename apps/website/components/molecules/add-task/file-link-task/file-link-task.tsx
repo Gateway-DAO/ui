@@ -15,7 +15,11 @@ import {
   Typography,
 } from '@mui/material';
 
-import { CreateGateTypes } from '../../../templates/create-gate/schema';
+import {
+  CreateGateTypes,
+  FileTypes,
+  FileTaskData,
+} from '../../../templates/create-gate/schema';
 
 const FileLinkTask = ({ taskId, deleteTask }) => {
   const {
@@ -37,21 +41,19 @@ const FileLinkTask = ({ taskId, deleteTask }) => {
   ]);
 
   useEffect(() => {
-    const values = getValues();
-    setValue(`tasks.data.${taskId}.task_type`, 'manual');
-    setValue(
-      `tasks.data.${taskId}.task_data.files`,
-      values.tasks.data[taskId].task_data.files
-    );
+    const values: CreateGateTypes = getValues();
+    const task_data: FileTaskData = values.tasks.data[taskId].task_data;
+
+    setValue(`tasks.data.${taskId}.task_type`, 'self_verify');
+    setValue(`tasks.data.${taskId}.task_data.files`, task_data.files);
   }, [files, taskId, getValues, setValue]);
 
   const deleteFile = (id: number) => {
     const values = getValues();
+    const task_data: FileTaskData = values.tasks.data[taskId].task_data;
+
     setFiles(files.filter((file) => file.id !== id));
-    setValue(
-      `tasks.data.${taskId}.task_data.files`,
-      values.tasks.data[taskId].task_data.files
-    );
+    setValue(`tasks.data.${taskId}.task_data.files`, task_data.files);
   };
 
   return (
@@ -98,7 +100,7 @@ const FileLinkTask = ({ taskId, deleteTask }) => {
           helperText={errors.tasks?.data[taskId].description?.message}
           sx={{ marginBottom: '60px' }}
         />
-        {files.map((file) => {
+        {files.map((file: FileTypes) => {
           return (
             <Stack gap={2} key={file.id}>
               <Stack>
@@ -147,6 +149,7 @@ const FileLinkTask = ({ taskId, deleteTask }) => {
                   `tasks.data.${taskId}.task_data.files.${file.id}.link`
                 )}
                 error={
+                  'files' in errors.tasks?.data[taskId].task_data &&
                   !!errors.tasks?.data[taskId].task_data.files[file.id].link
                 }
                 helperText={

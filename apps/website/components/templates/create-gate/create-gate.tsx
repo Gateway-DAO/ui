@@ -64,7 +64,9 @@ export function CreateGateTemplate() {
               categories: gateData.categories,
               description: gateData.description,
               skills: gateData.skills,
+              /* tslint:disable-next-line */
               permissions: permissionsData,
+              /* tslint:disable-next-line */
               image: image_url,
               tasks: gateData.tasks,
             },
