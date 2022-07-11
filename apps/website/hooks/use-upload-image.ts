@@ -1,4 +1,4 @@
-import { pathCase } from 'change-case';
+import { paramCase } from 'change-case';
 import { useMutation } from 'react-query';
 
 import { useAuth } from '../providers/auth';
@@ -11,7 +11,7 @@ export function useUploadImage() {
     (variables: Upload_ImageMutationVariables) =>
       gqlAuthMethods.upload_image({
         ...variables,
-        name: pathCase(variables.name),
+        name: paramCase(variables.name),
       })
   );
 
