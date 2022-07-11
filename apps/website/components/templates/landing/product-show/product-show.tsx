@@ -5,8 +5,9 @@ import { TOKENS } from '@gateway/theme';
 
 import { Box, Stack, Typography } from '@mui/material';
 
-import { ResponsiveImage } from './styles';
+import { ResponsiveImage } from '../styles';
 import { ProductShowProps } from './types';
+
 export function ProductShow({
   comingSoon,
   title,

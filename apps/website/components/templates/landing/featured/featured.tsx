@@ -14,9 +14,8 @@ import {
 import { OverridableComponent } from '@mui/material/OverridableComponent';
 
 import { useActiveScroll } from '../../../../hooks/use-active-scroll';
-import { LandingTitleLimiter } from '../styles';
+import { LandingTitleLimiter, ResponsiveImage } from '../styles';
 import Title from '../title';
-import { ResponsiveImage } from './styles';
 import { FeaturedProps } from './types';
 
 export const Featured = forwardRef<
