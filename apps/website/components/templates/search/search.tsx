@@ -12,6 +12,7 @@ import {
   Typography,
   CircularProgress,
   Stack,
+  Chip,
 } from '@mui/material';
 
 import { gqlAnonMethods } from '../../../services/api';
@@ -48,16 +49,19 @@ export function SearchTemplate({ query }: TemplateProps) {
         key: 'gates',
         label: t('common:tabs.gates'),
         section: <GatesTab data={data?.gates.hits} />,
+        count: data?.gates.hits.length,
       },
       {
         key: 'daos',
         label: t('common:tabs.daos'),
         section: <DaosTab data={data?.daos.hits} />,
+        count: data?.daos.hits.length,
       },
       {
         key: 'people',
         label: t('common:tabs.people'),
         section: <PeopleTab data={data?.users.hits} />,
+        count: data?.users.hits.length,
       },
     ],
     [data]
@@ -93,8 +97,18 @@ export function SearchTemplate({ query }: TemplateProps) {
             aria-label="basic tabs example"
             sx={{ mb: '-1px' }}
           >
-            {tabs.map(({ key, label }, index) => (
-              <Tab key={key} label={label} {...a11yTabProps('search', index)} />
+            {tabs.map(({ key, label, count }, index) => (
+              <Tab
+                key={key}
+                label={label}
+                {...(count
+                  ? {
+                      icon: <Chip label={count} size="small" />,
+                      iconPosition: 'end',
+                    }
+                  : {})}
+                {...a11yTabProps('search', index)}
+              />
             ))}
           </Tabs>
         </Box>
