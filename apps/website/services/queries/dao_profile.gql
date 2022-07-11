@@ -16,6 +16,18 @@ query dao_profile($id: uuid!) {
       network
       url
     }
+    gates(limit: 4) {
+      id
+      title
+      description
+      categories
+      image
+    }
+  }
+}
+
+query dao_gates_tab($id: uuid!) {
+  daos_by_pk(id: $id) {
     gates {
       id
       title

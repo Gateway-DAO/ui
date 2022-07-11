@@ -45,7 +45,7 @@ export function DaoProfileTemplate({ dao }: Props) {
     {
       key: 'gates',
       label: t('common:tabs.gates'),
-      section: <GatesTab gates={dao?.gates ?? []} />,
+      section: <GatesTab daoId={dao.id!} />,
     },
     {
       key: 'people',

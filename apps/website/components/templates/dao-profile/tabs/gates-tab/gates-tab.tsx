@@ -1,4 +1,4 @@
-import { PartialDeep } from 'type-fest';
+import { useQuery } from 'react-query';
 
 import { TOKENS } from '@gateway/theme';
 
@@ -7,24 +7,29 @@ import { Box, IconButton, Stack } from '@mui/material';
 
 import { usePropertyFilter } from '../../../../../hooks/use-property-filter';
 import { useViewMode, ViewMode } from '../../../../../hooks/use-view-modes';
-import { Gates } from '../../../../../services/graphql/types.generated';
+import { gqlAnonMethods } from '../../../../../services/api';
 import { ChipDropdown } from '../../../../molecules/chip-dropdown';
 import { GatesCard } from '../../../../molecules/gates-card';
 import { TableView } from './table-view';
 
 type Props = {
-  gates: PartialDeep<Gates>[];
+  daoId: string;
 };
 
-export function GatesTab({ gates }: Props) {
+export function GatesTab({ daoId }: Props) {
   const { view, toggleView } = useViewMode();
+
+  const gates = useQuery(['dao-gates', daoId], () =>
+    gqlAnonMethods.dao_gates_tab({ id: daoId })
+  );
+
   const {
     selectedFilters,
     filteredItems: filteredGates,
     availableFilters,
     toggleFilter,
     onClear,
-  } = usePropertyFilter(gates, 'categories');
+  } = usePropertyFilter(gates.data?.daos_by_pk?.gates ?? [], 'categories');
 
   return (
     <Box sx={{ py: 4 }}>
