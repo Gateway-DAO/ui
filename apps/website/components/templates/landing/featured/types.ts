@@ -1,7 +1,13 @@
+export type Image = {
+  url: string;
+  width: number;
+  height: number;
+};
+
 export type Features = {
   title: string;
   description: string;
-  image: string;
+  image: Image;
 };
 
 export type FeaturedProps = {

@@ -1,15 +1,24 @@
-import Image from 'next/image';
 import React, { forwardRef, useRef } from 'react';
+
+import { useWindowSize } from 'react-use';
 
 import { TOKENS } from '@gateway/theme';
 import { MotionBox } from '@gateway/ui';
 
-import { Box, BoxTypeMap, Stack, Typography } from '@mui/material';
+import {
+  Box,
+  BoxTypeMap,
+  Stack,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
 import { OverridableComponent } from '@mui/material/OverridableComponent';
 
 import { useActiveScroll } from '../../../../hooks/use-active-scroll';
 import { LandingTitleLimiter } from '../styles';
 import Title from '../title';
+import { ResponsiveImage } from './styles';
 import { FeaturedProps } from './types';
 
 export const Featured = forwardRef<
@@ -20,6 +29,8 @@ export const Featured = forwardRef<
   ref
 ): JSX.Element {
   const myRefs = useRef<HTMLDivElement[]>([]);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const { activeIndex, scrollTo } = useActiveScroll(myRefs);
 
   return (
@@ -28,11 +39,15 @@ export const Featured = forwardRef<
       id={id}
       ref={ref}
       sx={(theme) => ({
-        paddingTop: theme.spacing(26),
-        paddingBottom: theme.spacing(14),
+        pt: theme.spacing(26),
+        pb: theme.spacing(14),
         flex: 1,
         width: '100%',
         px: TOKENS.CONTAINER_PX,
+        [theme.breakpoints.down('sm')]: {
+          pt: theme.spacing(20),
+          pb: theme.spacing(0),
+        },
       })}
     >
       <Title>
@@ -54,22 +69,35 @@ export const Featured = forwardRef<
           <Box
             key={feature.title}
             id={`item${index}`}
-            onClick={() => scrollTo(index)}
-            sx={{
+            onClick={!isMobile ? () => scrollTo(index) : null}
+            sx={(theme) => ({
               position: 'relative',
               borderBottom: '1px solid rgba(229, 229, 229, 0.12)',
-            }}
+              [theme.breakpoints.down('sm')]: {
+                pb: '50px',
+              },
+            })}
             ref={(el: HTMLDivElement) => (myRefs.current[index] = el)}
           >
-            <Box sx={{ cursor: 'pointer', py: '64px' }}>
+            <Box
+              sx={(theme) => ({
+                cursor: 'pointer',
+                py: '64px',
+                [theme.breakpoints.down('sm')]: {
+                  py: '40px',
+                  cursor: 'default',
+                },
+              })}
+            >
               <Typography
                 component="h3"
                 variant="h4"
                 sx={(theme) => ({
-                  color:
-                    activeIndex === index
+                  color: isMobile
+                    ? activeIndex === index
                       ? theme.palette.text.primary
-                      : theme.palette.text.secondary,
+                      : theme.palette.text.secondary
+                    : theme.palette.text.primary,
                 })}
               >
                 {feature.title}
@@ -88,27 +116,36 @@ export const Featured = forwardRef<
               </Typography>
             </Box>
             <MotionBox
-              animate={activeIndex === index ? 'active' : 'inactive'}
+              animate={
+                !isMobile ? (activeIndex === index ? 'active' : 'inactive') : ''
+              }
               variants={{
                 active: { opacity: 1, y: '-50%' },
                 inactive: { opacity: 0, y: '-30%' },
               }}
-              sx={{
+              sx={(theme) => ({
                 position: 'absolute',
                 top: '50%',
                 right: '0',
-              }}
+                maxWidth: '100%',
+                [theme.breakpoints.down('sm')]: {
+                  position: 'relative',
+                  top: 'unset',
+                  right: 'unset',
+                  width: '100%',
+                },
+              })}
               transition={{
                 ease: 'easeOut',
                 duration: 0.75,
                 opacity: { duration: 0.5 },
               }}
             >
-              <Image
+              <ResponsiveImage
                 layout="raw"
-                src={feature.image}
-                width={640}
-                height={500}
+                src={feature.image.url}
+                width={feature.image.width}
+                height={feature.image.height}
                 alt={feature.title}
               />
             </MotionBox>

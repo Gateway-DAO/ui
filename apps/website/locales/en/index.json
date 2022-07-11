@@ -34,22 +34,38 @@
       {
         "title": "Join DAOs",
         "description": "Gateway's credentials are issued by DAOs to help contributors create a verified work-track.",
-        "image": "/images/join-dao-featured-image.png"
+        "image": {
+          "url": "/images/join-dao-featured-image.png",
+          "width": 423,
+          "height": 403
+        }
       },
       {
         "title": "Eearn Credentials",
         "description": "Receive verified credentials that serve as attestations for your work and your abilities.",
-        "image": "/images/earn-credentials-featured-image.png"
+        "image": {
+          "url": "/images/earn-credentials-featured-image.png",
+          "width": 439,
+          "height": 352
+        }
       },
       {
         "title": "Showcase Your Achievements",
         "description": "Proudly display your accomplishments on Gateway's profile and across web3.",
-        "image": "/images/showcase-featured-image.png"
+        "image": {
+          "url": "/images/showcase-featured-image.png",
+          "width": 360,
+          "height": 400
+        }
       },
       {
         "title": "Own Your Network",
         "description": "Gateway allows professional to take ownership and meet new builders in the space.",
-        "image": "/images/own-network-featured-image.png"
+        "image": {
+          "url": "/images/own-network-featured-image.png",
+          "width": 353,
+          "height": 341
+        }
       }
     ]
   },
@@ -60,22 +76,38 @@
       {
         "title": "Own Your Spaces",
         "description": "Spaces created unique to communities and managed by admins and team leads.",
-        "image": "/images/own-spaces-featured-image.png"
+        "image": {
+          "url": "/images/own-spaces-featured-image.png",
+          "width": 466,
+          "height": 421
+        }
       },
       {
         "title": "Create Gates",
         "description": "Modular quests that allow teams to actively challenge, reward, and build their community.",
-        "image": "/images/create-gates-featured-image.png"
+        "image": {
+          "url": "/images/create-gates-featured-image.png",
+          "width": 577,
+          "height": 477
+        }
       },
       {
         "title": "Issue Crendentials",
         "description": "Recognize core contributors for their excellence in a publicly verifiable manner.",
-        "image": "/images/issue-credentials-featured-image.png"
+        "image": {
+          "url": "/images/issue-credentials-featured-image.png",
+          "width": 539,
+          "height": 426
+        }
       },
       {
         "title": "Find Talent",
         "description": "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque.",
-        "image": "/images/find-talent-featured-image.png"
+        "image": {
+          "url": "/images/find-talent-featured-image.png",
+          "width": 501,
+          "height": 501
+        }
       }
     ]
   }
