@@ -1,17 +1,19 @@
 import useTranslation from 'next-translate/useTranslation';
 
-import { SocialLinks } from 'apps/website/components/molecules/form/social-links';
-import { useFormContext } from 'react-hook-form';
+import { useFormContext, Controller } from 'react-hook-form';
 
-import { Box, Button, Stack, TextField, Typography } from '@mui/material';
+import { Stack, TextField, Typography } from '@mui/material';
 import Autocomplete from '@mui/material/Autocomplete';
 
+import { SocialLinks } from '../../../molecules/form/social-links';
 import { NewDAOSchema } from '../schema';
 import { AvatarBackgroundFields } from './avatar-background-fields';
 
-const categories = [{ label: 'Teste A' }, { label: 'Lorem B' }];
+const categories = [
+  { label: 'Teste A', value: 'testea' },
+  { label: 'Lorem B', value: 'loremb' },
+];
 
-/* FIXME: Select label background on focus */
 export function AboutForm() {
   const {
     register,
@@ -20,18 +22,22 @@ export function AboutForm() {
     watch,
   } = useFormContext<NewDAOSchema>();
 
-  const { t } = useTranslation("dao-new");
+  const { t } = useTranslation('dao-new');
 
   const descriptionRemaining = 200 - (watch('description')?.length ?? 0);
 
   return (
-    <Stack direction="column" gap={12}>
+    <Stack direction="column" sx={{ gap: { xs: 8, md: 12 } }}>
       <Stack direction="column" gap={2}>
-        <Typography variant="subtitle1" color="secondary.main">{t("about.avatar-cover")}</Typography>
+        <Typography variant="subtitle1" color="secondary.main">
+          {t('about.avatar-cover')}
+        </Typography>
         <AvatarBackgroundFields />
       </Stack>
       <Stack direction="column" gap={2}>
-        <Typography variant="subtitle1" color="secondary.main">{t("about.details")}</Typography>
+        <Typography variant="subtitle1" color="secondary.main">
+          {t('about.details')}
+        </Typography>
         <TextField
           required
           label={t('common:fields.display-name')}
@@ -56,18 +62,38 @@ export function AboutForm() {
             {descriptionRemaining}/200
           </Typography>
         </Stack>
-        <Autocomplete
-          multiple
-          filterSelectedOptions
-          options={categories}
-          {...register('categories')}
-          renderInput={(params) => (
-            <TextField {...params} label={t('common:fields.category')} />
+        <Controller
+          control={control}
+          name="categories"
+          render={({ field }) => (
+            <Autocomplete
+              {...field}
+              autoComplete
+              multiple
+              filterSelectedOptions
+              options={categories}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label={t('common:fields.category')}
+                  error={!!errors.categories}
+                  helperText={errors.categories?.message}
+                />
+              )}
+              onChange={(_, data: typeof categories) => {
+                field.onChange(data.map((option) => option.value));
+              }}
+              value={categories.filter((category) =>
+                field.value?.includes(category.value)
+              )}
+            />
           )}
         />
       </Stack>
       <Stack direction="column" gap={2}>
-        <Typography variant="subtitle1" color="secondary.main">{t("about.social-links")}</Typography>
+        <Typography variant="subtitle1" color="secondary.main">
+          {t('about.social-links')}
+        </Typography>
         <SocialLinks control={control} name="socials" />
       </Stack>
     </Stack>

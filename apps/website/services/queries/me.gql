@@ -5,7 +5,7 @@ query me {
     following {
       user_id
     }
-    following_dao {
+    following_dao(limit: 10) {
       dao_id
       dao {
         id

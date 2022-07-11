@@ -16,14 +16,13 @@ export const schema: SchemaOf<NewDAOSchema> = object({
   name: string().defined(),
   categories: array().of(string()).defined(),
   description: string().defined(),
-  wallets: string().defined(),
   background_url: string().defined(),
   logo_url: string().defined(),
   socials: array()
     .of(
       object({
         network: string().defined(),
-        url: string().defined(),
+        url: string().url().defined(),
       })
     )
     .defined(),

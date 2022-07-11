@@ -43,3 +43,11 @@ query dao_profile_people($id: uuid!) {
     }
   }
 }
+
+mutation create_dao($socials: dao_socials_arr_rel_insert_input = {data: {}}, $logo_url: String = "", $name: String = "", $description: String = "", $categories: jsonb = "", $background_url: String = "") {
+  insert_daos(objects: {socials: $socials, logo_url: $logo_url, name: $name, description: $description, categories: $categories, background_url: $background_url}) {
+    returning {
+      id
+    }
+  }
+}
