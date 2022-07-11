@@ -35,6 +35,7 @@ export function NewDAOTemplate() {
 
   /* TODO: FINISH IT */
   const createDAOMutation = useMutation(
+    '',
     () => /* gqlAuthMethods.create_dao */ ({})
   );
 
