@@ -8,7 +8,7 @@ import { Daos, Users } from '../../../../../services/graphql/types.generated';
 import { GatesCard } from '../../../../molecules/gates-card';
 import { PersonCard } from '../../../../molecules/person-card';
 import {
-  SectionWithSlider,
+  SectionWithSliderResponsive,
   SectionWithGrid,
 } from '../../../../molecules/sections';
 
@@ -44,7 +44,7 @@ export function OverviewTab({ dao, people, setTab }: Props) {
           },
         }}
       >
-        <SectionWithSlider
+        <SectionWithSliderResponsive
           title={t('common:featured-gates.title')}
           caption={t('common:featured-gates.caption')}
           action={
@@ -53,11 +53,12 @@ export function OverviewTab({ dao, people, setTab }: Props) {
             </Button>
           }
           itemWidth={(theme) => theme.spacing(37.75)}
+          gridSize={{ lg: 4 }}
         >
           {dao.gates?.map((gate) => (
             <GatesCard key={gate.id} {...gate} />
           ))}
-        </SectionWithSlider>
+        </SectionWithSliderResponsive>
         <SectionWithGrid
           title={t('common:featured-people.title')}
           caption={t('common:featured-people.caption')}
