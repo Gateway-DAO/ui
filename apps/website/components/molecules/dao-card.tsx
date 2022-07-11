@@ -31,7 +31,7 @@ export function DaoCard({
   return (
     <MUICard sx={{ position: 'relative' }}>
       <Link passHref href={url}>
-        <CardActionArea component="a">
+        <CardActionArea component="a" sx={{ height: '100%' }}>
           <CardMedia
             component="img"
             image={background_url}

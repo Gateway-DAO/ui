@@ -25,3 +25,21 @@ query dao_profile($id: uuid!) {
     }
   }
 }
+
+query dao_profile_people($id: uuid!) {
+  daos_by_pk(id: $id) {
+    followers_aggregate(where: {status: {_eq: "following"}}) {
+      aggregate {
+        count
+      }
+    }
+    followers(where: {status: {_eq: "following"}}) {
+      user {
+        id
+        name
+        username
+        pfp
+      }
+    }
+  }
+}

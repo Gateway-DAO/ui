@@ -2,15 +2,24 @@ import useTranslation from 'next-translate/useTranslation';
 
 import { Button, ButtonProps } from '@mui/material';
 
-import { useFollowDAO } from '../../hooks/use-follow';
+import { useFollowDAO, UseFollowProps } from '../../hooks/use-follow';
 
 type Props = {
   daoId: string;
-} & ButtonProps;
+} & UseFollowProps &
+  ButtonProps;
 
-export function FollowButtonDAO({ daoId, ...props }: Props) {
+export function FollowButtonDAO({
+  daoId,
+  onFollow,
+  onUnfollow,
+  ...props
+}: Props) {
   const { t } = useTranslation('common');
-  const { isFollowingDAO, isLoading, onToggleFollow } = useFollowDAO();
+  const { isFollowingDAO, isLoading, onToggleFollow } = useFollowDAO({
+    onFollow,
+    onUnfollow,
+  });
   const isFollowing = isFollowingDAO(daoId);
   return (
     <Button
