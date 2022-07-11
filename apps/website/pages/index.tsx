@@ -5,6 +5,7 @@ import { Button } from '@mui/material';
 
 import { LandingTemplate } from '../components/templates/landing';
 import { FeaturedProps } from '../components/templates/landing/featured/types';
+import { InvestorProps } from '../components/templates/landing/investors/types';
 import { MenuListItem } from '../components/templates/landing/menu/types';
 import { ProductShowProps } from '../components/templates/landing/product-show/types';
 
@@ -23,6 +24,9 @@ export default function Index() {
   const buildAppsContent = t('buildAppsContent', null, {
     returnObjects: true,
   }) as ProductShowProps;
+  const investorsContent = t('investorsContent', null, {
+    returnObjects: true,
+  }) as InvestorProps;
 
   return (
     <>
@@ -42,6 +46,7 @@ export default function Index() {
         buildAppsContent={buildAppsContent}
         forUsersContent={forUsersContent}
         forOrganizationsContent={forOrganizationsContent}
+        investorsContent={investorsContent}
         connectButton={
           <Link passHref href="/home">
             <Button

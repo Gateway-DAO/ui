@@ -129,5 +129,74 @@
       "width": 447,
       "height": 428
     }
+  },
+  "investorsContent": {
+    "title": "Guardians of the Gateway",
+    "investorsWithLogos": [
+      {
+        "name": "Reciprocal ventures",
+        "logo": {
+          "url": "/images/investors/reciprocal-ventures.png",
+          "width": 213,
+          "height": 20
+        }
+      },
+      {
+        "name": "Hanna Grey",
+        "logo": {
+          "url": "/images/investors/hanna-grey.png",
+          "width": 125,
+          "height": 51
+        }
+      },
+      {
+        "name": "Redbeard ventures",
+        "logo": {
+          "url": "/images/investors/redbeard-ventures.png",
+          "width": 110,
+          "height": 96
+        }
+      },
+      {
+        "name": "Spartan",
+        "logo": {
+          "url": "/images/investors/spartan.png",
+          "width": 186,
+          "height": 104
+        }
+      },
+      {
+        "name": "Figment",
+        "logo": {
+          "url": "/images/investors/figment.png",
+          "width": 111,
+          "height": 37
+        }
+      },
+      {
+        "name": "6th man ventures",
+        "logo": {
+          "url": "/images/investors/6th-man-ventures.png",
+          "width": 109,
+          "height": 53
+        }
+      },
+      {
+        "name": "Visary",
+        "logo": {
+          "url": "/images/investors/visary.png",
+          "width": 164,
+          "height": 96
+        }
+      }
+    ],
+    "investorsonlyNames": [
+      { "name": "Sandeep Nailwal" },
+      { "name": "David Gan" },
+      { "name": "David Sneider and Chris Wiggum" },
+      { "name": "Ryan Selkis" },
+      { "name": "Stepan Simkin" },
+      { "name": "Ryan Li" }
+    ]
   }
 }
