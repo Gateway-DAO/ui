@@ -27,6 +27,9 @@ export default function Index() {
   const investorsContent = t('investorsContent', null, {
     returnObjects: true,
   }) as InvestorProps;
+  const scheduleDemoContent = t('scheduleDemoContent', null, {
+    returnObjects: true,
+  }) as ScheduleDemoProps;
 
   return (
     <>
@@ -47,6 +50,7 @@ export default function Index() {
         forUsersContent={forUsersContent}
         forOrganizationsContent={forOrganizationsContent}
         investorsContent={investorsContent}
+        scheduleDemoContent={scheduleDemoContent}
         connectButton={
           <Link passHref href="/home">
             <Button

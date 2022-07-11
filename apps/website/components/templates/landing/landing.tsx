@@ -13,6 +13,8 @@ import { Menu } from './menu/menu';
 import { MenuListItem } from './menu/types';
 import { ProductShow } from './product-show';
 import { ProductShowProps } from './product-show/types';
+import { ScheduleDemo } from './schedule-demo';
+import { ScheduleDemoProps } from './schedule-demo/types';
 
 type Props = {
   title: string;
@@ -27,6 +29,7 @@ type Props = {
   theGatewayContent: ProductShowProps;
   buildAppsContent: ProductShowProps;
   investorsContent: InvestorProps;
+  scheduleDemoContent: ScheduleDemoProps;
 };
 
 export function LandingTemplate({
@@ -42,6 +45,7 @@ export function LandingTemplate({
   theGatewayContent,
   buildAppsContent,
   investorsContent,
+  scheduleDemoContent,
 }: Props) {
   const heroProps = { title, subtitle, enterButton, titleDescription };
   const menuProps = { menuList, signUpButton, connectButton };
@@ -71,6 +75,7 @@ export function LandingTemplate({
       <ProductShow {...theGatewayContent} />
       <ProductShow {...buildAppsContent} />
       <Investors {...investorsContent} />
+      <ScheduleDemo {...scheduleDemoContent} />
     </>
   );
 }

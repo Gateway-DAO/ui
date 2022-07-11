@@ -26,12 +26,9 @@ export function Investors({
       >
         <Typography
           component="h1"
-          variant="h3"
+          variant="h4"
           sx={(theme) => ({
             pb: '24px',
-            [theme.breakpoints.down('md')]: {
-              ...theme.typography.h3,
-            },
             [theme.breakpoints.down('sm')]: {
               ...theme.typography.h4,
             },

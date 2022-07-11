@@ -198,5 +198,10 @@
       { "name": "Stepan Simkin" },
       { "name": "Ryan Li" }
     ]
+  },
+  "scheduleDemoContent": {
+    "title": "See how Gateway can help your DAO",
+    "scheduleButton": "Schedule a Demo",
+    "joinDiscord": "Join our Discord"
   }
 }
