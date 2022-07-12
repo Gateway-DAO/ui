@@ -10385,6 +10385,11 @@ extsprintf@^1.2.0:
   resolved "https://registry.yarnpkg.com/extsprintf/-/extsprintf-1.4.1.tgz#8d172c064867f235c0c84a596806d279bf4bcc07"
   integrity sha512-Wrk35e8ydCKDj/ArClo1VrPVmN8zph5V4AtHwIuHhvMXsKf73UT3BOD+azBIW+3wOJ4FhEH7zyaJCFvChjYvMA==
 
+fast-blurhash@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/fast-blurhash/-/fast-blurhash-1.0.1.tgz#1f93c8e4b79010722089a7fb14f360424ce27da4"
+  integrity sha512-j+2urGVaM8wg5MBy+KBsi40hzxsUurJB0M89cMKkG/4rB3eG1o1uQPjOmVE+95et/ZmvGczejePFTUzMwdPH3w==
+
 fast-deep-equal@^3.1.1, fast-deep-equal@^3.1.3:
   version "3.1.3"
   resolved "https://registry.yarnpkg.com/fast-deep-equal/-/fast-deep-equal-3.1.3.tgz#3a7d56b559d6cbc3eb512325244e619a65c6c525"

@@ -31,6 +31,7 @@
     "colord": "^2.9.2",
     "core-js": "^3.6.5",
     "ethers": "^5.6.8",
+    "fast-blurhash": "^1.0.1",
     "framer-motion": "^6.3.3",
     "graphql": "^16.4.0",
     "graphql-request": "^4.2.0",
