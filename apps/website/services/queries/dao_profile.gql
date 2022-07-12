@@ -9,8 +9,15 @@ query dao_profile($id: uuid!) {
     id
     name
     description
-    background_url
-    logo_url
+    background {
+      id
+      blur
+      #url
+    }
+    logo {
+      id
+      blur
+    }
     categories
     socials {
       network
@@ -34,6 +41,7 @@ query dao_gates_tab($id: uuid!) {
       description
       categories
       image
+      published
     }
   }
 }
@@ -56,10 +64,16 @@ query dao_profile_people($id: uuid!) {
   }
 }
 
-mutation create_dao($socials: dao_socials_arr_rel_insert_input = {data: {}}, $logo_url: String = "", $name: String = "", $description: String = "", $categories: jsonb = "", $background_url: String = "") {
-  insert_daos(objects: {socials: $socials, logo_url: $logo_url, name: $name, description: $description, categories: $categories, background_url: $background_url}) {
-    returning {
-      id
-    }
+mutation create_dao($logo_id: uuid!, $name: String!, $description: String!, $categories: jsonb!, $background_id: uuid!, $socials: [dao_socials_insert_input!]!) {
+  insert_daos_one(
+    object: {
+      logo_id: $logo_id,
+      name: $name,
+      description: $description,
+      categories: $categories,
+      background_id: $background_id,
+      socials: {data: $socials}}
+      ) {
+    id
   }
 }
