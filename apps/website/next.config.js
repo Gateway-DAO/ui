@@ -27,7 +27,14 @@ const sentryWebpackPluginOptions = {
   // https://github.com/getsentry/sentry-webpack-plugin#options.
 };
 
-module.exports = withSentryConfig(
-  nextTranslate(withNx(nextConfig)),
-  sentryWebpackPluginOptions
+// eslint-disable-next-line import-helpers/order-imports
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true',
+});
+
+module.exports = withBundleAnalyzer(
+  withSentryConfig(
+    nextTranslate(withNx(nextConfig)),
+    sentryWebpackPluginOptions
+  )
 );
