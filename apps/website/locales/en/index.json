@@ -135,6 +135,7 @@
     "investorsWithLogos": [
       {
         "name": "Reciprocal ventures",
+        "url": "#",
         "logo": {
           "url": "/images/investors/reciprocal-ventures.png",
           "width": 213,
@@ -143,6 +144,7 @@
       },
       {
         "name": "Hanna Grey",
+        "url": "#",
         "logo": {
           "url": "/images/investors/hanna-grey.png",
           "width": 125,
@@ -151,6 +153,7 @@
       },
       {
         "name": "Redbeard ventures",
+        "url": "#",
         "logo": {
           "url": "/images/investors/redbeard-ventures.png",
           "width": 110,
@@ -159,6 +162,7 @@
       },
       {
         "name": "Spartan",
+        "url": "#",
         "logo": {
           "url": "/images/investors/spartan.png",
           "width": 186,
@@ -167,6 +171,7 @@
       },
       {
         "name": "Figment",
+        "url": "#",
         "logo": {
           "url": "/images/investors/figment.png",
           "width": 111,
@@ -175,6 +180,7 @@
       },
       {
         "name": "6th man ventures",
+        "url": "#",
         "logo": {
           "url": "/images/investors/6th-man-ventures.png",
           "width": 109,
@@ -183,6 +189,7 @@
       },
       {
         "name": "Visary",
+        "url": "#",
         "logo": {
           "url": "/images/investors/visary.png",
           "width": 164,
@@ -191,12 +198,12 @@
       }
     ],
     "investorsonlyNames": [
-      { "name": "Sandeep Nailwal" },
-      { "name": "David Gan" },
-      { "name": "David Sneider and Chris Wiggum" },
-      { "name": "Ryan Selkis" },
-      { "name": "Stepan Simkin" },
-      { "name": "Ryan Li" }
+      { "name": "Sandeep Nailwal", "url": "#" },
+      { "name": "David Gan", "url": "#" },
+      { "name": "David Sneider and Chris Wiggum", "url": "#" },
+      { "name": "Ryan Selkis", "url": "#" },
+      { "name": "Stepan Simkin", "url": "#" },
+      { "name": "Ryan Li", "url": "#" }
     ]
   },
   "scheduleDemoContent": {

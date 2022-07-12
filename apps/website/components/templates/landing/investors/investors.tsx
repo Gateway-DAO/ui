@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import React from 'react';
 
 import { TOKENS } from '@gateway/theme';
@@ -52,19 +53,26 @@ export function Investors({
                   width: 'auto',
                   display: 'flex',
                   py: '20px',
+                  opacity: 0.6,
+                  cursor: 'pointer',
+                  '&:hover': {
+                    opacity: 1,
+                  },
                   [theme.breakpoints.down('sm')]: {
                     width: '100%',
                     justifyContent: 'center',
                   },
                 })}
               >
-                <Image
-                  src={investor.logo.url}
-                  alt={investor.name}
-                  layout="raw"
-                  width={investor.logo.width}
-                  height={investor.logo.height}
-                />
+                <Link passHref href={investor.url}>
+                  <Image
+                    src={investor.logo.url}
+                    alt={investor.name}
+                    layout="raw"
+                    width={investor.logo.width}
+                    height={investor.logo.height}
+                  />
+                </Link>
               </ListItem>
             ))}
           </List>
@@ -80,9 +88,21 @@ export function Investors({
                 flexShrink: 0,
               })}
             >
-              <Typography component="span" variant="body1" sx={(theme) => ({})}>
-                {investor.name}
-              </Typography>
+              <Link passHref href={investor.url}>
+                <Typography
+                  component="span"
+                  variant="body1"
+                  sx={(theme) => ({
+                    opacity: 0.6,
+                    cursor: 'pointer',
+                    '&:hover': {
+                      opacity: 1,
+                    },
+                  })}
+                >
+                  {investor.name}
+                </Typography>
+              </Link>
             </ListItem>
           ))}
         </List>

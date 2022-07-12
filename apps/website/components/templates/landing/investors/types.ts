@@ -1,5 +1,6 @@
 export type Investor = {
   name: string;
+  url: string;
   logo?: {
     url: string;
     width: number;
