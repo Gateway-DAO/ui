@@ -6,18 +6,12 @@ import {
   PaletteOptions,
 } from '@mui/material/styles';
 
-interface ExtraPalette {}
-
-interface ExtraPaletteOptions {
-  elevated?: string;
-}
-
-interface ExtraTypeBackground {
-  light?: string;
-  elevated?: string;
-}
-
-interface ExtraTheme {}
+import {
+  ExtraPalette,
+  ExtraPaletteOptions,
+  ExtraTheme,
+  ExtraTypeBackground,
+} from '../types';
 
 /**
  * Adding on extra palette properties
