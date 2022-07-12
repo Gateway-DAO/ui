@@ -8,13 +8,11 @@ import { LinkedIn, Twitter } from '@mui/icons-material';
 import {
   Box,
   Button,
-  Input,
   List,
   ListItem,
   Stack,
   TextField,
   Typography,
-  useTheme,
 } from '@mui/material';
 
 import { FooterProps } from './types';
@@ -25,11 +23,10 @@ export function Footer({
   receiveNews,
   subscribeButton,
 }: FooterProps): JSX.Element {
-  const theme = useTheme();
   return (
     <Box
       component="footer"
-      sx={(theme) => ({
+      sx={() => ({
         mt: '20px',
         mb: '40px',
         px: TOKENS.CONTAINER_PX,
@@ -80,7 +77,7 @@ export function Footer({
                 Gateway
               </Typography>
               <List
-                sx={(theme) => ({
+                sx={() => ({
                   display: 'flex',
                   justifyContent: 'flex-start',
                   mb: '82px',
@@ -162,7 +159,7 @@ export function Footer({
             <Link passHref href={'#'}>
               <Button
                 variant="outlined"
-                sx={(theme) => ({
+                sx={() => ({
                   height: '42px',
                   display: 'flex',
                   width: '122px',

@@ -1,5 +1,3 @@
-import dynamic from 'next/dynamic';
-
 import { TOKENS } from '@gateway/theme';
 import { MotionBox } from '@gateway/ui';
 
@@ -9,7 +7,6 @@ import { Box, Button, Stack, Typography } from '@mui/material';
 import BackgroundImage from '../../../../public/images/hero-background.png';
 import { HeroBackground } from './styles';
 import { HeroProps } from './types';
-const Title = dynamic(() => import('../title'));
 
 export function Hero({
   enterButton,
