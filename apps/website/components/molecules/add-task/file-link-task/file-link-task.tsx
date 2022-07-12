@@ -1,6 +1,5 @@
-import { useEffect, useState } from 'react';
-
-import { useFormContext } from 'react-hook-form';
+import { useFieldArray, useFormContext } from 'react-hook-form';
+import { v4 as uuidv4 } from 'uuid';
 
 import Clear from '@mui/icons-material/Clear';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -18,44 +17,24 @@ import {
 import {
   CreateGateTypes,
   FileTypes,
-  FileTaskData,
   FileTaskDataError,
 } from '../../../templates/create-gate/schema';
 
 const FileLinkTask = ({ taskId, deleteTask }) => {
   const {
     register,
-    setValue,
-    getValues,
     formState: { errors },
+    control,
   } = useFormContext<CreateGateTypes>();
 
-  const [filesCount, setFilesCount] = useState(1);
-
-  const [files, setFiles] = useState([
-    {
-      id: 0,
-      title: '',
-      description: '',
-      link: '',
-    },
-  ]);
-
-  useEffect(() => {
-    const values: CreateGateTypes = getValues();
-    const task_data: FileTaskData = values.tasks.data[taskId].task_data;
-
-    setValue(`tasks.data.${taskId}.task_type`, 'self_verify');
-    setValue(`tasks.data.${taskId}.task_data.files`, task_data.files);
-  }, [files, taskId, getValues, setValue]);
-
-  const deleteFile = (id: number) => {
-    const values = getValues();
-    const task_data: FileTaskData = values.tasks.data[taskId].task_data;
-
-    setFiles(files.filter((file) => file.id !== id));
-    setValue(`tasks.data.${taskId}.task_data.files`, task_data.files);
-  };
+  const {
+    fields: files,
+    append,
+    remove,
+  } = useFieldArray({
+    name: `tasks.data.${taskId}.task_data.files`,
+    control,
+  });
 
   return (
     <Stack
@@ -101,7 +80,7 @@ const FileLinkTask = ({ taskId, deleteTask }) => {
           helperText={errors.tasks?.data[taskId].description?.message}
           sx={{ marginBottom: '60px' }}
         />
-        {files.map((file: FileTypes) => {
+        {files.map((file: FileTypes, idx: number) => {
           return (
             <Stack gap={2} key={file.id}>
               <Stack>
@@ -109,23 +88,23 @@ const FileLinkTask = ({ taskId, deleteTask }) => {
                   required
                   label="File Title"
                   {...register(
-                    `tasks.data.${taskId}.task_data.files.${file.id}.title`
+                    `tasks.data.${taskId}.task_data.files.${idx}.title`
                   )}
                   error={
                     !!(
                       errors.tasks?.data[taskId].task_data as FileTaskDataError
-                    ).files[file.id].title
+                    )?.files[idx].title
                   }
                   helperText={
                     (errors.tasks?.data[taskId].task_data as FileTaskDataError)
-                      .files[file.id].title?.message
+                      ?.files[idx].title?.message
                   }
                   sx={{ maxWidth: '700px' }}
                 />
                 <Clear
                   fontSize="large"
                   sx={{ position: 'absolute', right: '0', cursor: 'pointer' }}
-                  onClick={() => deleteFile(file.id)}
+                  onClick={() => remove(idx)}
                 />
               </Stack>
               <TextField
@@ -134,30 +113,30 @@ const FileLinkTask = ({ taskId, deleteTask }) => {
                 minRows={3}
                 label="File Description"
                 {...register(
-                  `tasks.data.${taskId}.task_data.files.${file.id}.description`
+                  `tasks.data.${taskId}.task_data.files.${idx}.description`
                 )}
                 error={
                   !!(errors.tasks?.data[taskId].task_data as FileTaskDataError)
-                    .files[file.id].description
+                    ?.files[idx].description
                 }
                 helperText={
                   (errors.tasks?.data[taskId].task_data as FileTaskDataError)
-                    .files[file.id].description?.message
+                    ?.files[idx].description?.message
                 }
               />
               <TextField
                 required
                 label="Link"
                 {...register(
-                  `tasks.data.${taskId}.task_data.files.${file.id}.link`
+                  `tasks.data.${taskId}.task_data.files.${idx}.link`
                 )}
                 error={
                   !!(errors.tasks?.data[taskId].task_data as FileTaskDataError)
-                    .files[file.id].link
+                    ?.files[idx].link
                 }
                 helperText={
                   (errors.tasks?.data[taskId].task_data as FileTaskDataError)
-                    .files[file.id].link?.message
+                    ?.files[idx].link?.message
                 }
               />
               <Divider sx={{ margin: '40px 0' }} />
@@ -168,11 +147,7 @@ const FileLinkTask = ({ taskId, deleteTask }) => {
           <Button
             sx={{ cursor: 'pointer' }}
             onClick={() => {
-              setFilesCount(filesCount + 1);
-              setFiles([
-                ...files,
-                { id: filesCount, title: '', description: '', link: '' },
-              ]);
+              append({ id: uuidv4(), title: '', description: '', link: '' });
             }}
           >
             Add File &#38; Link

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import { useFormContext } from 'react-hook-form';
+import { v4 as uuidv4 } from 'uuid';
 
 import AddTaskCard from '../../molecules/add-task/add-task-card';
 import { CreateGateTypes } from '../../templates/create-gate/schema';
@@ -16,7 +17,7 @@ const TaskArea = () => {
     setValue('tasks', values.tasks);
   }, [tasks, getValues, setValue]);
 
-  const addTask = (task_component, task_type) => {
+  const addTask = (task_component, task_type, object = {}) => {
     setTasksCount(tasksCount + 1);
     setTasks({
       data: [
@@ -28,6 +29,7 @@ const TaskArea = () => {
           task_type,
           task_data: {},
           task_component,
+          ...object,
         },
       ],
     });
@@ -43,14 +45,10 @@ const TaskArea = () => {
 
   return (
     <>
-      {tasks.data.map((task) => {
+      {tasks.data.map((task, idx: number) => {
         const TaskComponent = task.task_component;
         return (
-          <TaskComponent
-            key={task.id}
-            taskId={task.id}
-            deleteTask={deleteTask}
-          />
+          <TaskComponent key={uuidv4()} taskId={idx} deleteTask={deleteTask} />
         );
       })}
       <AddTaskCard addTask={addTask} />
