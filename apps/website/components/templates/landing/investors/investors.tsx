@@ -12,14 +12,16 @@ export function Investors({
   title,
   investorsWithLogos,
   investorsonlyNames,
+  ...rest
 }: InvestorProps) {
   return (
     <Box
       component="section"
-      sx={(theme) => ({ px: TOKENS.CONTAINER_PX, pt: '80px', pb: '40px' })}
+      {...rest}
+      sx={() => ({ px: TOKENS.CONTAINER_PX, pt: '80px', pb: '40px' })}
     >
       <Box
-        sx={(theme) => ({
+        sx={() => ({
           padding: '48px',
           border: '1px solid rgba(229, 229, 229, 0.12)',
           borderRadius: '24px',
@@ -39,7 +41,7 @@ export function Investors({
         </Typography>
         <Box>
           <List
-            sx={(theme) => ({
+            sx={() => ({
               display: 'flex',
               pb: '70px',
               flexWrap: 'wrap',
@@ -81,7 +83,7 @@ export function Investors({
           {investorsonlyNames.map((investor: Investor) => (
             <ListItem
               key={investor.name}
-              sx={(theme) => ({
+              sx={() => ({
                 display: 'flex',
                 py: '20px',
                 width: 'auto',
@@ -92,7 +94,7 @@ export function Investors({
                 <Typography
                   component="span"
                   variant="body1"
-                  sx={(theme) => ({
+                  sx={() => ({
                     opacity: 0.6,
                     cursor: 'pointer',
                     '&:hover': {

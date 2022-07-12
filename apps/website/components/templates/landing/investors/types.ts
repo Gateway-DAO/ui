@@ -10,6 +10,7 @@ export type Investor = {
 
 export type InvestorProps = {
   title: string;
+  id: string;
   investorsWithLogos: Investor[];
   investorsonlyNames: Investor[];
 };

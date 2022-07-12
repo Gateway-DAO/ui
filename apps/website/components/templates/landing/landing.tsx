@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useRef, useState } from 'react';
+import { ReactNode, useEffect, useRef } from 'react';
 
 import { useIntersection } from 'react-use';
 
@@ -76,9 +76,9 @@ export function LandingTemplate({
         ref={organizationRef}
         id="organizations"
       />
-      <ProductShow {...theGatewayContent} />
-      <ProductShow {...buildAppsContent} />
-      <Investors {...investorsContent} />
+      <ProductShow {...theGatewayContent} id="model" />
+      <ProductShow {...buildAppsContent} id="integration" />
+      <Investors {...investorsContent} id="investors" />
       <ScheduleDemo {...scheduleDemoContent} />
       <Footer {...footerContent} />
     </>

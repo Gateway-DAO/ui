@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import React from 'react';
 
 import { TOKENS } from '@gateway/theme';
@@ -13,11 +12,13 @@ export function ProductShow({
   title,
   description,
   image,
+  ...rest
 }: ProductShowProps): JSX.Element {
   return (
     <Box
       component="section"
-      sx={(theme) => ({
+      {...rest}
+      sx={() => ({
         display: 'flex',
         justifyContent: 'center',
         pt: '80px',
@@ -26,7 +27,7 @@ export function ProductShow({
     >
       <Stack
         direction="column"
-        sx={(theme) => ({
+        sx={() => ({
           alignItems: 'center',
           width: '100%',
           borderBottom: '1px solid rgba(229, 229, 229, 0.12)',
