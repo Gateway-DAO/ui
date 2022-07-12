@@ -6,13 +6,11 @@ import { FaTwitch, FaDiscord } from 'react-icons/fa';
 import { Language, Link } from '@mui/icons-material';
 import { SvgIcon, SvgIconProps } from '@mui/material';
 
-import { networks } from "../../constants/networks"
-
+import { Network } from '../../constants/networks';
 
 type Props = {
-  icon: typeof networks[number];
+  icon: Network;
 } & SvgIconProps;
-
 
 export function SocialIcon({ icon, ...other }: Props) {
   const iconComponent = useMemo(() => {
