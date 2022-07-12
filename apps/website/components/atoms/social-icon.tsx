@@ -27,10 +27,11 @@ export function SocialIcon({ icon, ...other }: Props) {
         return Link;
     }
   }, [icon]);
-  const viewBox = useMemo(
-    () => iconComponent({}).props.attr.viewBox,
-    [iconComponent]
-  );
 
-  return <SvgIcon component={iconComponent} viewBox={viewBox} {...other} />;
+  // const viewBox = useMemo(
+  //   () => iconComponent?.({}).props.attr.viewBox,
+  //   [iconComponent]
+  // );
+
+  return <SvgIcon component={iconComponent} {...other} />;
 }
