@@ -1,3 +1,5 @@
+import useTranslation from 'next-translate/useTranslation';
+
 import { TOKENS } from '@gateway/theme';
 
 import { Avatar, Box, Button, Chip, Stack, Typography } from '@mui/material';
@@ -8,6 +10,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 
+import { FollowButtonDAO } from '../../../../atoms/follow-button-dao';
 import { ExploreProps } from '../../types';
 
 // TODO: make it generic
@@ -80,9 +83,11 @@ export function TableView({ daos }: Props) {
                   </Stack>
                 </TableCell>
                 <TableCell align="right">
-                  <Button variant="outlined" color="secondary">
-                    Follow
-                  </Button>
+                  <FollowButtonDAO
+                    daoId={dao.id}
+                    variant="outlined"
+                    color="secondary"
+                  />
                 </TableCell>
               </TableRow>
             );

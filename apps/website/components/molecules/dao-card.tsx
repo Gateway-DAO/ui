@@ -3,13 +3,7 @@ import { useMemo } from 'react';
 
 import type { PartialDeep } from 'type-fest';
 
-import {
-  Avatar,
-  Button,
-  CardActionArea,
-  CardHeader,
-  lighten,
-} from '@mui/material';
+import { Avatar, CardActionArea, CardHeader, lighten } from '@mui/material';
 import MUICard from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
@@ -20,6 +14,7 @@ import { Box } from '@mui/system';
 
 import { ROUTES } from '../../constants/routes';
 import { Daos } from '../../services/graphql/types.generated';
+import { FollowButtonDAO } from '../atoms/follow-button-dao';
 
 /* TODO: Arias and Labels */
 
@@ -36,7 +31,7 @@ export function DaoCard({
   return (
     <MUICard sx={{ position: 'relative' }}>
       <Link passHref href={url}>
-        <CardActionArea component="a">
+        <CardActionArea component="a" sx={{ height: '100%' }}>
           <CardMedia
             component="img"
             image={background_url}
@@ -102,7 +97,9 @@ export function DaoCard({
           </Stack>
         </CardActionArea>
       </Link>
-      <Button
+
+      <FollowButtonDAO
+        daoId={id}
         variant="outlined"
         size="small"
         color="secondary"
@@ -112,9 +109,7 @@ export function DaoCard({
           top: (theme) => theme.spacing(21.5),
           right: (theme) => theme.spacing(2),
         }}
-      >
-        Follow
-      </Button>
+      />
     </MUICard>
   );
 }

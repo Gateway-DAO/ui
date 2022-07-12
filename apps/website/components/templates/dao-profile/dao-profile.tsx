@@ -1,26 +1,21 @@
 import useTranslation from 'next-translate/useTranslation';
 import { useMemo } from 'react';
 
+import { useQuery } from 'react-query';
 import { PartialDeep } from 'type-fest';
 
 import { TOKENS } from '@gateway/theme';
 
-import {
-  Avatar,
-  Chip,
-  Box,
-  Stack,
-  Typography,
-  Button,
-  Tabs,
-  Tab,
-} from '@mui/material';
+import { Avatar, Chip, Box, Stack, Typography, Tabs, Tab } from '@mui/material';
 
+import { gqlAnonMethods } from '../../../services/api';
 import { Daos } from '../../../services/graphql/types.generated';
+import { FollowButtonDAO } from '../../atoms/follow-button-dao';
 import { a11yTabProps, TabPanel, useTab } from '../../atoms/tabs';
 import { Navbar } from '../../organisms/navbar/navbar';
 import { Socials } from './socials';
 import { GatesTab, OverviewTab } from './tabs';
+import { PeopleTab } from './tabs/people-tab';
 
 type Props = {
   dao: PartialDeep<Daos>;
@@ -30,26 +25,34 @@ export function DaoProfileTemplate({ dao }: Props) {
   const { t } = useTranslation();
   const { activeTab, handleTabChange, setTab } = useTab();
 
-  const tabs = useMemo(
-    () => [
-      {
-        key: 'overview',
-        label: t('common:tabs.overview'),
-        section: <OverviewTab dao={dao} setTab={setTab} />,
-      },
-      {
-        key: 'gates',
-        label: t('common:tabs.gates'),
-        section: <GatesTab gates={dao?.gates ?? []} />,
-      },
-      /* {
-        key: 'people',
-        label: t('common:tabs.people'),
-        section: null,
-      }, */
-    ],
-    []
+  const peopleQuery = useQuery(['dao-people', dao.id], () =>
+    gqlAnonMethods.dao_profile_people({ id: dao.id })
   );
+
+  const onResetPeopleQuery = () => {
+    peopleQuery.refetch();
+  };
+
+  const followers =
+    peopleQuery.data?.daos_by_pk?.followers.map(({ user }) => user) ?? [];
+
+  const tabs = [
+    {
+      key: 'overview',
+      label: t('common:tabs.overview'),
+      section: <OverviewTab dao={dao} people={followers} setTab={setTab} />,
+    },
+    {
+      key: 'gates',
+      label: t('common:tabs.gates'),
+      section: <GatesTab gates={dao?.gates ?? []} />,
+    },
+    {
+      key: 'people',
+      label: t('common:tabs.people'),
+      section: <PeopleTab people={followers} />,
+    },
+  ];
 
   return (
     <>
@@ -104,16 +107,27 @@ export function DaoProfileTemplate({ dao }: Props) {
           </Typography>
           <Stack
             direction="row"
-            gap={2}
+            gap={1}
             divider={<span>·</span>}
             sx={{ mt: 12 / 8 }}
           >
             <Typography variant="body1">
-              {t('common:gate-count', { count: dao.gates?.length ?? 0 })}
+              {t('common:count.follower', {
+                count:
+                  peopleQuery.data?.daos_by_pk.followers_aggregate.aggregate
+                    .count ?? 0,
+              })}
+            </Typography>
+            <Typography variant="body1">
+              {t('common:count.gate', { count: dao.gates?.length ?? 0 })}
             </Typography>
           </Stack>
           <Socials dao={dao}>
-            <Button variant="contained">{t('common:follow')}</Button>
+            <FollowButtonDAO
+              daoId={dao.id}
+              onFollow={onResetPeopleQuery}
+              onUnfollow={onResetPeopleQuery}
+            />
           </Socials>
         </Box>
       </Box>

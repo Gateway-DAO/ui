@@ -4,11 +4,18 @@
   "daos": "DAOs",
   "people": "People",
   "follow": "follow",
-  "gate-count": {
-    "0": "No gates",
-    "one": "{{count}} gate",
-    "other": "{{count}} gates"
- },
+  "count": {
+    "gate": {
+      "0": "No gates",
+      "one": "{{count}} gate",
+      "other": "{{count}} gates"
+    },
+    "follower": {
+      "0": "No followers",
+      "one": "{{count}} follower",
+      "other": "{{count}} followers"
+    }
+  },
   "tabs": {
     "all": "All",
     "overview": "Overview",
@@ -34,6 +41,8 @@
   "actions": {
     "connect": "connect",
     "cancel": "cancel",
-    "got-it": "got it"
+    "got-it": "got it",
+    "follow": "Follow",
+    "unfollow": "Unfollow"
   }
 }

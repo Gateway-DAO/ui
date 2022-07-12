@@ -1,3 +1,5 @@
+import { PartialDeep } from 'type-fest';
+
 import { TOKENS } from '@gateway/theme';
 
 import { Avatar, Box, Stack, Typography } from '@mui/material';
@@ -8,11 +10,11 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 
+import { Users } from '../../../../../services/graphql/types.generated';
 import { FollowButtonUser } from '../../../../atoms/follow-button-user';
-import { ExploreProps } from '../../types';
 
 type Props = {
-  people: ExploreProps['people'];
+  people: PartialDeep<Users[]>;
 };
 export function TableView({ people }: Props) {
   return (
