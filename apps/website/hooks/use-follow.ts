@@ -3,7 +3,12 @@ import { useMutation } from 'react-query';
 import { useAuth } from '../providers/auth';
 import { useProtected } from './use-protected';
 
-export const useFollowUser = () => {
+export type UseFollowProps = {
+  onFollow?: (id?: string) => void;
+  onUnfollow?: (id?: string) => void;
+};
+
+export const useFollowUser = (cb?: UseFollowProps) => {
   const { me, gqlAuthMethods, onUpdateMe } = useAuth();
 
   const follow = useMutation(
@@ -16,6 +21,7 @@ export const useFollowUser = () => {
             ? [...oldMe.following, follow_user]
             : [follow_user],
         }));
+        cb?.onFollow(follow_user.user_id);
       },
     }
   );
@@ -30,6 +36,7 @@ export const useFollowUser = () => {
             ({ user_id }) => user_id !== unfollow_user.user_id
           ),
         }));
+        cb?.onUnfollow(unfollow_user.user_id);
       },
     }
   );
@@ -63,7 +70,7 @@ export const useFollowUser = () => {
   };
 };
 
-export const useFollowDAO = () => {
+export const useFollowDAO = (cb?: UseFollowProps) => {
   const { me, gqlAuthMethods, onUpdateMe } = useAuth();
 
   const follow = useMutation(
@@ -76,6 +83,7 @@ export const useFollowDAO = () => {
             ? [...oldMe.following_dao, follow_dao]
             : [follow_dao],
         }));
+        cb?.onFollow(follow_dao.dao_id);
       },
     }
   );
@@ -90,6 +98,7 @@ export const useFollowDAO = () => {
             ({ dao }) => dao.id !== unfollow_dao.dao_id
           ),
         }));
+        cb?.onUnfollow(unfollow_dao.dao_id);
       },
     }
   );
