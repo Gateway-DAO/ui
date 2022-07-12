@@ -36,6 +36,7 @@ export function Experiences() {
     e.stopPropagation();
     setVisible(!visible);
   };
+  
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <Stack
@@ -44,7 +45,7 @@ export function Experiences() {
         alignItems="flex-start"
         gap={6}
       >
-        {/* TimeZone */}
+        {/* TimeZone */} 
         <Grid
           container
           direction={{ xs: 'column', md: 'row' }}
@@ -56,11 +57,11 @@ export function Experiences() {
               fontWeight="bold"
               sx={{ color: '#fff' }}
               ml={{ xs: '0px', md: '40px' }}
-            >
+         >
               Experience
             </Typography>
           </Grid>
-          <Grid item xs={7.5}>
+          <Grid item xs={7.5} maxWidth="100%">
             <Stack gap={2}>
               <Accordion
                 sx={{
@@ -77,7 +78,317 @@ export function Experiences() {
                 <AccordionSummary
                   expandIcon={<ExpandMoreIcon></ExpandMoreIcon>}
                   sx={{
-                    padding: '0px 66px 0px 16px',
+                    padding: {
+                      xs: '0px 16px 0px 16px',
+                      md: '0px 66px 0px 16px',
+                    },
+                    [`& .MuiAccordionSummary-content`]: {
+                      justifyContent: 'space-between',
+                      zIndex: '123',
+                    },
+                  }}
+                >
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      columnGap: '16px',
+                    }}
+                  >
+                    <DragIndicatorIcon
+                      sx={{
+                        margin: '0 3px',
+                        color: 'rgba(255, 255, 255, 0.56)',
+                      }}
+                    ></DragIndicatorIcon>
+                    <Avatar></Avatar>
+                    <Typography
+                      sx={{
+                        fontWeight: '600',
+                        fontSize: '16px',
+                        color: '#fff',
+                      }}
+                    >
+                      City Dao
+                    </Typography>
+                  </Box>
+                  <IconButton
+                    sx={{
+                      color: 'rgba(255, 255, 255, 0.56)',
+                      marginRight: '23px',
+                      zIndex: '1000',
+                    }}
+                    onClick={visiblityHandler}
+                  >
+                    {visible ? (
+                      <Visibility></Visibility>
+                    ) : (
+                      <VisibilityOff></VisibilityOff>
+                    )}
+                  </IconButton>
+                  
+                </AccordionSummary>
+                <AccordionDetails>
+                  {/*/////////    Dropdown Form   /////////*/}
+                  <Stack
+                    component="form"
+                    padding={{ md: '0 48px', xs: '0 6px' }}
+                    gap={2}
+                  >
+                    <Box
+                      sx={{
+                        display: 'flex',
+                        columnGap: '16px',
+                        rowGap: '16px',
+                        flexDirection: { xs: 'column', md: 'row' },
+                      }}
+                    >
+                      <DatePicker
+                        disableFuture
+                        label="START DATE"
+                        inputFormat="dd-MM-yyyy"
+                        openTo="year"
+                        views={['year', 'month', 'day']}
+                        value={startDate}
+                        onChange={(date) => {
+                          setStartDate(date);
+                        }}
+                        renderInput={(params) => (
+                          <TextField
+                            sx={{ width: { xs: '100%', md: '25%' } }}
+                            {...params}
+                          />
+                        )}
+                      />
+                      <DatePicker
+                        disablePast
+                        label="END DATE"
+                        inputFormat="dd-MM-yyyy"
+                        openTo="year"
+                        views={['year', 'month', 'day']}
+                        value={endDate}
+                        onChange={(date) => {
+                          setEndDate(date);
+                        }}
+                        renderInput={(params) => (
+                          <TextField
+                            sx={{ width: { xs: '100%', md: '25%' } }}
+                            {...params}
+                          />
+                        )}
+                      />
+                      <FormControlLabel
+                        sx={{ width: { xs: '100%', md: '50%' } }}
+                        control={<Checkbox defaultChecked />}
+                        label="I’m currently contributing here"
+                      />
+                    </Box>
+                    <TextField
+                      multiline
+                      minRows={3}
+                      required
+                      label="DESCRIPTION"
+                      id="description"
+                    />
+                  </Stack>
+
+                  {/*/////////    Dropdown Experiences   /////////*/}
+
+                  <Stack
+                    gap={2}
+                    display="flex"
+                    direction="row"
+                    margin="40px 0px 20px 0px"
+                    alignItems="center"
+                    justifyContent="space-between"
+                  >
+                    <Box
+                      sx={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        columnGap: { xs: '12px', md: '19px' },
+                        alignItems: 'center',
+                      }}
+                    >
+                      <DragIndicatorIcon
+                        sx={{
+                          color: 'rgba(255, 255, 255, 0.56)',
+                        }}
+                      ></DragIndicatorIcon>
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          flexDirection: 'row',
+                          columnGap: '12px',
+                          alignItems: 'center',
+                        }}
+                      >
+                        <Avatar
+                          sx={{
+                            width: '56px',
+                            height: '56px',
+                            borderRadius: '8px',
+                          }}
+                        ></Avatar>
+                        <Box>
+                          <Typography
+                            sx={{
+                              fontWeight: '400',
+                              fontSize: '16px',
+                              color: '#fff',
+                            }}
+                          >
+                            Olympus Odyssey
+                          </Typography>
+                          <Typography
+                            sx={{
+                              fontWeight: '400',
+                              fontSize: '14px',
+                              color: 'rgba(255, 255, 255, 0.7)',
+                            }}
+                          >
+                            This is the beginning of your journey in
+                          </Typography>
+                        </Box>
+                      </Box>
+                    </Box>
+                    <Box
+                      sx={{
+                        flexDirection: 'row',
+                        columnGap: '12px',
+                        alignItems: 'center',
+                        display: { xs: 'none', md: 'flex' },
+                      }}
+                    >
+                      <Chip label="Onboarding" />
+                      <Chip label="Beginner" />
+                    </Box>
+                    <IconButton
+                      sx={{
+                        color: 'rgba(255, 255, 255, 0.56)',
+                        marginRight: { xs: '0px', md: '23px' },
+                        zIndex: '1000',
+                      }}
+                      onClick={visiblityHandler}
+                    >
+                      {visible ? (
+                        <Visibility></Visibility>
+                      ) : (
+                        <VisibilityOff></VisibilityOff>
+                      )}
+                    </IconButton>
+                  </Stack>
+
+                  <Stack
+                    gap={2}
+                    display="flex"
+                    direction="row"
+                    margin="40px 0px 20px 0px"
+                    alignItems="center"
+                    justifyContent="space-between"
+                  >
+                    <Box
+                      sx={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        columnGap: { xs: '12px', md: '19px' },
+                        alignItems: 'center',
+                      }}
+                    >
+                      <DragIndicatorIcon
+                        sx={{
+                          color: 'rgba(255, 255, 255, 0.56)',
+                        }}
+                      ></DragIndicatorIcon>
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          flexDirection: 'row',
+                          columnGap: '12px',
+                          alignItems: 'center',
+                        }}
+                      >
+                        <Avatar
+                          sx={{
+                            width: '56px',
+                            height: '56px',
+                            borderRadius: '8px',
+                          }}
+                        ></Avatar>
+                        <Box>
+                          <Typography
+                            sx={{
+                              fontWeight: '400',
+                              fontSize: '16px',
+                              color: '#fff',
+                            }}
+                          >
+                            Olympus Odyssey
+                          </Typography>
+                          <Typography
+                            sx={{
+                              fontWeight: '400',
+                              fontSize: '14px',
+                              color: 'rgba(255, 255, 255, 0.7)',
+                            }}
+                          >
+                            This is the beginning of your journey in
+                          </Typography>
+                        </Box>
+                      </Box>
+                    </Box>
+                    <Box
+                      sx={{
+                        flexDirection: 'row',
+                        columnGap: '12px',
+                        alignItems: 'center',
+                        display: { xs: 'none', md: 'flex' },
+                      }}
+                    >
+                      <Chip label="Onboarding" />
+                      <Chip label="Beginner" />
+                    </Box>
+                    <IconButton
+                      sx={{
+                        color: 'rgba(255, 255, 255, 0.56)',
+                        marginRight: { xs: '0px', md: '23px' },
+                        zIndex: '1000',
+                      }}
+                      onClick={visiblityHandler}
+                    >
+                      {visible ? (
+                        <Visibility></Visibility>
+                      ) : (
+                        <VisibilityOff></VisibilityOff>
+                      )}
+                    </IconButton>
+                  </Stack>
+
+                  <Divider light sx={{ width: '100%' }} />
+                </AccordionDetails>
+              </Accordion>
+
+              {/*Accordion 2*/}
+
+              <Accordion
+                sx={{
+                  background:
+                    'linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.05) 100%), #10041C',
+                  border: '1px solid rgba(229, 229, 229, 0.12)',
+                  borderRadius: '8px',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  padding: '48px 0px',
+                }}
+              >
+                <AccordionSummary
+                  expandIcon={<ExpandMoreIcon></ExpandMoreIcon>}
+                  sx={{
+                    padding: {
+                      xs: '0px 16px 0px 16px',
+                      md: '0px 66px 0px 16px',
+                    },
                     [`& .MuiAccordionSummary-content`]: {
                       justifyContent: 'space-between',
                       zIndex: '123',
@@ -125,15 +436,17 @@ export function Experiences() {
                 </AccordionSummary>
                 <AccordionDetails>
                   {/*/////////    Dropdown Form   /////////*/}
+
                   <Stack
                     component="form"
-                    padding={{ md: '0 48px', xs: '0 28px' }}
+                    padding={{ md: '0 48px', xs: '0 6px' }}
                     gap={2}
                   >
                     <Box
                       sx={{
                         display: 'flex',
                         columnGap: '16px',
+                        rowGap: '16px',
                         flexDirection: { xs: 'column', md: 'row' },
                       }}
                     >
@@ -185,7 +498,9 @@ export function Experiences() {
                       id="description"
                     />
                   </Stack>
+
                   {/*/////////    Dropdown Experiences   /////////*/}
+
                   <Stack
                     gap={2}
                     display="flex"
@@ -198,7 +513,7 @@ export function Experiences() {
                       sx={{
                         display: 'flex',
                         flexDirection: 'row',
-                        columnGap: '19px',
+                        columnGap: { xs: '12px', md: '19px' },
                         alignItems: 'center',
                       }}
                     >
@@ -246,10 +561,10 @@ export function Experiences() {
                     </Box>
                     <Box
                       sx={{
-                        display: 'flex',
                         flexDirection: 'row',
                         columnGap: '12px',
                         alignItems: 'center',
+                        display: { xs: 'none', md: 'flex' },
                       }}
                     >
                       <Chip label="Onboarding" />
@@ -258,7 +573,7 @@ export function Experiences() {
                     <IconButton
                       sx={{
                         color: 'rgba(255, 255, 255, 0.56)',
-                        marginRight: '23px',
+                        marginRight: { xs: '0px', md: '23px' },
                         zIndex: '1000',
                       }}
                       onClick={visiblityHandler}
@@ -271,305 +586,6 @@ export function Experiences() {
                     </IconButton>
                   </Stack>
 
-                  <Divider light sx={{ width: '100%' }} />
-
-                  <Stack
-                    gap={2}
-                    display="flex"
-                    direction="row"
-                    margin="20px 0px"
-                    alignItems="center"
-                    justifyContent="space-between"
-                  >
-                    <Box
-                      sx={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        columnGap: '19px',
-                        alignItems: 'center',
-                      }}
-                    >
-                      <DragIndicatorIcon
-                        sx={{
-                          color: 'rgba(255, 255, 255, 0.56)',
-                        }}
-                      ></DragIndicatorIcon>
-                      <Box
-                        sx={{
-                          display: 'flex',
-                          flexDirection: 'row',
-                          columnGap: '12px',
-                          alignItems: 'center',
-                        }}
-                      >
-                        <Avatar
-                          sx={{
-                            width: '56px',
-                            height: '56px',
-                            borderRadius: '8px',
-                          }}
-                        ></Avatar>
-                        <Box>
-                          <Typography
-                            sx={{
-                              fontWeight: '400',
-                              fontSize: '16px',
-                              color: '#fff',
-                            }}
-                          >
-                            Olympus Odyssey
-                          </Typography>
-                          <Typography
-                            sx={{
-                              fontWeight: '400',
-                              fontSize: '14px',
-                              color: 'rgba(255, 255, 255, 0.7)',
-                            }}
-                          >
-                            This is the beginning of your journey in
-                          </Typography>
-                        </Box>
-                      </Box>
-                    </Box>
-                    <Box
-                      sx={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        columnGap: '12px',
-                        alignItems: 'center',
-                      }}
-                    >
-                      <Chip label="Onboarding" />
-                      <Chip label="Beginner" />
-                    </Box>
-                    <IconButton
-                      sx={{
-                        color: 'rgba(255, 255, 255, 0.56)',
-                        marginRight: '23px',
-                        zIndex: '1000',
-                      }}
-                      onClick={visiblityHandler}
-                    >
-                      {visible ? (
-                        <Visibility></Visibility>
-                      ) : (
-                        <VisibilityOff></VisibilityOff>
-                      )}
-                    </IconButton>
-                  </Stack>
-
-                  <Divider light sx={{ width: '100%' }} />
-
-                  <Stack
-                    gap={2}
-                    display="flex"
-                    direction="row"
-                    margin="20px 0px"
-                    alignItems="center"
-                    justifyContent="space-between"
-                  >
-                    <Box
-                      sx={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        columnGap: '19px',
-                        alignItems: 'center',
-                      }}
-                    >
-                      <DragIndicatorIcon
-                        sx={{
-                          color: 'rgba(255, 255, 255, 0.56)',
-                        }}
-                      ></DragIndicatorIcon>
-                      <Box
-                        sx={{
-                          display: 'flex',
-                          flexDirection: 'row',
-                          columnGap: '12px',
-                          alignItems: 'center',
-                        }}
-                      >
-                        <Avatar
-                          sx={{
-                            width: '56px',
-                            height: '56px',
-                            borderRadius: '8px',
-                          }}
-                        ></Avatar>
-                        <Box>
-                          <Typography
-                            sx={{
-                              fontWeight: '400',
-                              fontSize: '16px',
-                              color: '#fff',
-                            }}
-                          >
-                            Olympus Odyssey
-                          </Typography>
-                          <Typography
-                            sx={{
-                              fontWeight: '400',
-                              fontSize: '14px',
-                              color: 'rgba(255, 255, 255, 0.7)',
-                            }}
-                          >
-                            This is the beginning of your journey in
-                          </Typography>
-                        </Box>
-                      </Box>
-                    </Box>
-                    <Box
-                      sx={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        columnGap: '12px',
-                        alignItems: 'center',
-                      }}
-                    >
-                      <Chip label="Onboarding" />
-                      <Chip label="Beginner" />
-                    </Box>
-                    <IconButton
-                      sx={{
-                        color: 'rgba(255, 255, 255, 0.56)',
-                        marginRight: '23px',
-                        zIndex: '1000',
-                      }}
-                      onClick={visiblityHandler}
-                    >
-                      {visible ? (
-                        <Visibility></Visibility>
-                      ) : (
-                        <VisibilityOff></VisibilityOff>
-                      )}
-                    </IconButton>
-                  </Stack>
-                </AccordionDetails>
-              </Accordion>
-              <Accordion
-                sx={{
-                  background:
-                    'linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.05) 100%), #10041C',
-                  border: '1px solid rgba(229, 229, 229, 0.12)',
-                  borderRadius: '8px',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'center',
-                  padding: '48px 0px',
-                }}
-              >
-                <AccordionSummary
-                  expandIcon={<ExpandMoreIcon></ExpandMoreIcon>}
-                  sx={{
-                    padding: '0px 66px 0px 16px',
-                    [`& .MuiAccordionSummary-content`]: {
-                      justifyContent: 'space-between',
-                      zIndex: '123',
-                    },
-                  }}
-                >
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      columnGap: '16px',
-                    }}
-                  >
-                    <DragIndicatorIcon
-                      sx={{
-                        margin: '0 3px',
-                        color: 'rgba(255, 255, 255, 0.56)',
-                      }}
-                    ></DragIndicatorIcon>
-                    <Avatar></Avatar>
-                    <Typography
-                      sx={{
-                        fontWeight: '600',
-                        fontSize: '16px',
-                        color: '#fff',
-                      }}
-                    >
-                      Yearn Finance
-                    </Typography>
-                  </Box>
-                  <IconButton
-                    sx={{
-                      color: 'rgba(255, 255, 255, 0.56)',
-                      marginRight: '23px',
-                      zIndex: '1000',
-                    }}
-                    onClick={visiblityHandler}
-                  >
-                    {visible ? (
-                      <Visibility></Visibility>
-                    ) : (
-                      <VisibilityOff></VisibilityOff>
-                    )}
-                  </IconButton>
-                </AccordionSummary>
-                <AccordionDetails>
-                  {/*/////////    Dropdown Form   /////////*/}
-                  <Stack
-                    component="form"
-                    padding={{ md: '0 48px', xs: '0 28px' }}
-                    gap={2}
-                  >
-                    <Box
-                      sx={{
-                        display: 'flex',
-                        columnGap: '16px',
-                        flexDirection: { xs: 'column', md: 'row' },
-                      }}
-                    >
-                      <DatePicker
-                        disableFuture
-                        label="START DATE"
-                        inputFormat="dd-MM-yyyy"
-                        openTo="year"
-                        views={['year', 'month', 'day']}
-                        value={startDate}
-                        onChange={(date) => {
-                          setStartDate(date);
-                        }}
-                        renderInput={(params) => (
-                          <TextField
-                            sx={{ width: { xs: '100%', md: '25%' } }}
-                            {...params}
-                          />
-                        )}
-                      />
-                      <DatePicker
-                        disablePast
-                        label="END DATE"
-                        inputFormat="dd-MM-yyyy"
-                        openTo="year"
-                        views={['year', 'month', 'day']}
-                        value={endDate}
-                        onChange={(date) => {
-                          setEndDate(date);
-                        }}
-                        renderInput={(params) => (
-                          <TextField
-                            sx={{ width: { xs: '100%', md: '25%' } }}
-                            {...params}
-                          />
-                        )}
-                      />
-                      <FormControlLabel
-                        sx={{ width: { xs: '100%', md: '50%' } }}
-                        control={<Checkbox defaultChecked />}
-                        label="I’m currently contributing here"
-                      />
-                    </Box>
-                    <TextField
-                      multiline
-                      minRows={3}
-                      required
-                      label="DESCRIPTION"
-                      id="description"
-                    />
-                  </Stack>
-                  {/*/////////    Dropdown Experiences   /////////*/}
                   <Stack
                     gap={2}
                     display="flex"
@@ -582,7 +598,7 @@ export function Experiences() {
                       sx={{
                         display: 'flex',
                         flexDirection: 'row',
-                        columnGap: '19px',
+                        columnGap: { xs: '12px', md: '19px' },
                         alignItems: 'center',
                       }}
                     >
@@ -630,10 +646,10 @@ export function Experiences() {
                     </Box>
                     <Box
                       sx={{
-                        display: 'flex',
                         flexDirection: 'row',
                         columnGap: '12px',
                         alignItems: 'center',
+                        display: { xs: 'none', md: 'flex' },
                       }}
                     >
                       <Chip label="Onboarding" />
@@ -642,7 +658,7 @@ export function Experiences() {
                     <IconButton
                       sx={{
                         color: 'rgba(255, 255, 255, 0.56)',
-                        marginRight: '23px',
+                        marginRight: { xs: '0px', md: '23px' },
                         zIndex: '1000',
                       }}
                       onClick={visiblityHandler}
@@ -656,178 +672,6 @@ export function Experiences() {
                   </Stack>
 
                   <Divider light sx={{ width: '100%' }} />
-
-                  <Stack
-                    gap={2}
-                    display="flex"
-                    direction="row"
-                    margin="20px 0px"
-                    alignItems="center"
-                    justifyContent="space-between"
-                  >
-                    <Box
-                      sx={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        columnGap: '19px',
-                        alignItems: 'center',
-                      }}
-                    >
-                      <DragIndicatorIcon
-                        sx={{
-                          color: 'rgba(255, 255, 255, 0.56)',
-                        }}
-                      ></DragIndicatorIcon>
-                      <Box
-                        sx={{
-                          display: 'flex',
-                          flexDirection: 'row',
-                          columnGap: '12px',
-                          alignItems: 'center',
-                        }}
-                      >
-                        <Avatar
-                          sx={{
-                            width: '56px',
-                            height: '56px',
-                            borderRadius: '8px',
-                          }}
-                        ></Avatar>
-                        <Box>
-                          <Typography
-                            sx={{
-                              fontWeight: '400',
-                              fontSize: '16px',
-                              color: '#fff',
-                            }}
-                          >
-                            Olympus Odyssey
-                          </Typography>
-                          <Typography
-                            sx={{
-                              fontWeight: '400',
-                              fontSize: '14px',
-                              color: 'rgba(255, 255, 255, 0.7)',
-                            }}
-                          >
-                            This is the beginning of your journey in
-                          </Typography>
-                        </Box>
-                      </Box>
-                    </Box>
-                    <Box
-                      sx={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        columnGap: '12px',
-                        alignItems: 'center',
-                      }}
-                    >
-                      <Chip label="Onboarding" />
-                      <Chip label="Beginner" />
-                    </Box>
-                    <IconButton
-                      sx={{
-                        color: 'rgba(255, 255, 255, 0.56)',
-                        marginRight: '23px',
-                        zIndex: '1000',
-                      }}
-                      onClick={visiblityHandler}
-                    >
-                      {visible ? (
-                        <Visibility></Visibility>
-                      ) : (
-                        <VisibilityOff></VisibilityOff>
-                      )}
-                    </IconButton>
-                  </Stack>
-
-                  <Divider light sx={{ width: '100%' }} />
-
-                  <Stack
-                    gap={2}
-                    display="flex"
-                    direction="row"
-                    margin="20px 0px"
-                    alignItems="center"
-                    justifyContent="space-between"
-                  >
-                    <Box
-                      sx={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        columnGap: '19px',
-                        alignItems: 'center',
-                      }}
-                    >
-                      <DragIndicatorIcon
-                        sx={{
-                          color: 'rgba(255, 255, 255, 0.56)',
-                        }}
-                      ></DragIndicatorIcon>
-                      <Box
-                        sx={{
-                          display: 'flex',
-                          flexDirection: 'row',
-                          columnGap: '12px',
-                          alignItems: 'center',
-                        }}
-                      >
-                        <Avatar
-                          sx={{
-                            width: '56px',
-                            height: '56px',
-                            borderRadius: '8px',
-                          }}
-                        ></Avatar>
-                        <Box>
-                          <Typography
-                            sx={{
-                              fontWeight: '400',
-                              fontSize: '16px',
-                              color: '#fff',
-                            }}
-                          >
-                            Olympus Odyssey
-                          </Typography>
-                          <Typography
-                            sx={{
-                              fontWeight: '400',
-                              fontSize: '14px',
-                              color: 'rgba(255, 255, 255, 0.7)',
-                            }}
-                          >
-                            This is the beginning of your journey in
-                          </Typography>
-                        </Box>
-                      </Box>
-                    </Box>
-                    <Box
-                      sx={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        columnGap: '12px',
-                        alignItems: 'center',
-                      }}
-                    >
-                      <Chip label="Onboarding" />
-                      <Chip label="Beginner" />
-                    </Box>
-                    <IconButton
-                      sx={{
-                        color: 'rgba(255, 255, 255, 0.56)',
-                        marginRight: '23px',
-                        zIndex: '1000',
-                      }}
-                      onClick={visiblityHandler}
-                    >
-                      {visible ? (
-                        <Visibility></Visibility>
-                      ) : (
-                        <VisibilityOff></VisibilityOff>
-                      )}
-                    </IconButton>
-                  </Stack>
                 </AccordionDetails>
               </Accordion>
             </Stack>
