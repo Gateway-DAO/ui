@@ -24,6 +24,7 @@ export function Hero({
         height: '100vh',
         width: '100%',
         overflow: 'hidden',
+        pl: TOKENS.CONTAINER_PX,
       }}
     >
       <Stack
@@ -32,7 +33,7 @@ export function Hero({
           flex: 1,
           width: '100%',
           height: '100%',
-          px: TOKENS.CONTAINER_PX,
+          borderBottom: '1px solid rgba(229, 229, 229, 0.12)',
         }}
       >
         <MotionBox
