@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useRef } from 'react';
+import { ReactNode, useCallback, useEffect, useRef } from 'react';
 
 import { useIntersection } from 'react-use';
 
@@ -54,23 +54,44 @@ export function LandingTemplate({
   const heroProps = { title, subtitle, enterButton, titleDescription };
   const menuProps = { menuList, signUpButton, connectButton };
   const organizationRef = useRef(null);
+  const refs = useRef([]);
   const organizationIntersection = useIntersection(organizationRef, {
     root: null,
     rootMargin: '0px',
     threshold: 0.3,
   });
 
+  // function scrollPositionCheck(event: Event) {
+  //   const windowScroll = window.scrollY;
+  //   const positions = {
+  //     forUsers: refs.current['users'].offsetTop,
+  //     forOrganizations: 933,
+  //   };
+  //   refs.current.map((item, index) => {
+  //     console.log(index);
+  //   });
+
+  // console.log(window.scrollY);
+  // }
+
   useEffect(() => {
     organizationIntersection && organizationIntersection?.isIntersecting
       ? (document.body.style.background = theme.palette.background.light)
       : (document.body.style.background = theme.palette.background.default);
+    // window.addEventListener('scroll', scrollPositionCheck);
+    // return () => {
+    //   window.removeEventListener('scroll', scrollPositionCheck);
+    // };
   }, [organizationIntersection]);
-
   return (
     <>
       <Menu {...menuProps} />
       <Hero {...heroProps} />
-      <Featured {...forUsersContent} id="users" />
+      <Featured
+        {...forUsersContent}
+        id="users"
+        ref={(el) => (refs.current['users'] = el)}
+      />
       <Featured
         {...forOrganizationsContent}
         ref={organizationRef}

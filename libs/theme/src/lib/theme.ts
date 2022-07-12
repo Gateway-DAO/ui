@@ -5,10 +5,13 @@ import palette from './config/palette';
 import typography from './config/typography';
 
 declare module '@mui/material/styles' {
-  interface TypeBackground {
+  type TypeBackground = {
     light: string;
     elevated: string;
-  }
+  };
+  type PaletteColorOptions = {
+    elevated: string;
+  };
 }
 
 export const theme = createTheme({
