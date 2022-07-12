@@ -3,10 +3,12 @@ import { object, string, SchemaOf, array } from 'yup';
 
 import { Daos, Dao_Socials } from '../../../services/graphql/types.generated';
 
-export type NewDAOSchema = PartialDeep<
-  Pick<
-    Daos,
-    'name' | 'description' | 'categories' | 'background_url' | 'logo_url'
+export type NewDAOSchema = Required<
+  PartialDeep<
+    Pick<
+      Daos,
+      'name' | 'description' | 'categories' | 'background_url' | 'logo_url'
+    >
   >
 > & {
   socials: Pick<Dao_Socials, 'network' | 'url'>[];
@@ -18,12 +20,10 @@ export const schema: SchemaOf<NewDAOSchema> = object({
   description: string().defined(),
   background_url: string().defined(),
   logo_url: string().defined(),
-  socials: array()
-    .of(
-      object({
-        network: string().defined(),
-        url: string().url().defined(),
-      })
-    )
-    .defined(),
+  socials: array().of(
+    object({
+      network: string().defined(),
+      url: string().url().defined(),
+    })
+  ),
 });

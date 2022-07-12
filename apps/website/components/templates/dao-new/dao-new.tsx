@@ -35,37 +35,45 @@ export function NewDAOTemplate() {
 
   /* TODO: FINISH IT */
   const createDAOMutation = useMutation(
-    '',
-    () => /* gqlAuthMethods.create_dao */ ({})
-  );
+    async (data: NewDAOSchema) => {
+      const { background_url, logo_url, socials, ...daoData } = data;
 
-  const onSubmit = async (data: NewDAOSchema) => {
-    try {
       const [logo, bg] = await Promise.all([
         uploadImage({
-          base64: data.logo_url,
+          base64: logo_url,
           name: `dao-logo-${data.name}-${me.id}`,
         }),
         uploadImage({
-          base64: data.background_url,
+          base64: background_url,
           name: `dao-bg-${data.name}-${me.id}`,
         }),
       ]);
 
-      /* TODO: FINISH IT */
-    } catch (e) {
-      console.log('upload image error', e);
+      return gqlAuthMethods.create_dao({
+        ...daoData,
+        logo_id: logo.upload_image.id,
+        background_id: bg.upload_image.id,
+        socials: socials as any,
+      });
+    },
+    {
+      onSuccess(data) {
+        router.replace(`/dao/${data.insert_daos_one.id}`);
+      },
     }
-  };
+  );
 
   return (
     <Stack
       component="form"
       direction="column"
       gap={6}
-      onSubmit={methods.handleSubmit(onSubmit, (error) => {
-        console.log('Error', error);
-      })}
+      onSubmit={methods.handleSubmit(
+        (data) => createDAOMutation.mutate(data),
+        (error) => {
+          console.log('Error', error);
+        }
+      )}
       sx={{
         px: TOKENS.CONTAINER_PX,
         pb: 10,
