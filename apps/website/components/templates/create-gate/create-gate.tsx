@@ -1,8 +1,9 @@
 import { useRouter } from 'next/router';
 
-import { yupResolver } from '@hookform/resolvers/yup';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm, FormProvider } from 'react-hook-form';
 import { useMutation } from 'react-query';
+import { z } from 'zod';
 
 import { Box, Divider, Snackbar, Stack, Typography } from '@mui/material';
 
@@ -17,8 +18,8 @@ import { GateImageCard } from './gate-image-card/gate-image-card';
 import { createGateSchema, CreateGateTypes } from './schema';
 
 export function CreateGateTemplate() {
-  const methods = useForm<CreateGateTypes>({
-    resolver: yupResolver(createGateSchema),
+  const methods = useForm<z.infer<typeof createGateSchema>>({
+    resolver: zodResolver(createGateSchema),
   });
 
   const snackbar = useSnackbar();

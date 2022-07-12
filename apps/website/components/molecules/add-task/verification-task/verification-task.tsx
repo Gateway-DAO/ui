@@ -6,7 +6,10 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import LooksOneIcon from '@mui/icons-material/LooksOne';
 import { FormControl, Stack, TextField, Typography } from '@mui/material';
 
-import { CreateGateTypes } from '../../../templates/create-gate/schema';
+import {
+  CreateGateTypes,
+  VerificationCodeDataError,
+} from '../../../templates/create-gate/schema';
 
 const VerificationCodeTask = ({ taskId, deleteTask }) => {
   const {
@@ -71,8 +74,15 @@ const VerificationCodeTask = ({ taskId, deleteTask }) => {
           required
           label="Verification Code"
           {...register(`tasks.data.${taskId}.task_data.code`)}
-          // error={!!errors.tasks?.data[taskId].task_data.code}
-          // helperText={errors.tasks?.data[taskId].task_data?.code.message}
+          error={
+            !!(
+              errors.tasks?.data[taskId].task_data as VerificationCodeDataError
+            )?.code
+          }
+          helperText={
+            (errors.tasks?.data[taskId].task_data as VerificationCodeDataError)
+              ?.code.message
+          }
         />
       </FormControl>
     </Stack>
