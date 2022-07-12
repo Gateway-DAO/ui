@@ -19,6 +19,7 @@ import {
   CreateGateTypes,
   FileTypes,
   FileTaskData,
+  FileTaskDataError,
 } from '../../../templates/create-gate/schema';
 
 const FileLinkTask = ({ taskId, deleteTask }) => {
@@ -111,11 +112,13 @@ const FileLinkTask = ({ taskId, deleteTask }) => {
                     `tasks.data.${taskId}.task_data.files.${file.id}.title`
                   )}
                   error={
-                    !!errors.tasks?.data[taskId].task_data.files[file.id].title
+                    !!(
+                      errors.tasks?.data[taskId].task_data as FileTaskDataError
+                    ).files[file.id].title
                   }
                   helperText={
-                    errors.tasks?.data[taskId].task_data.files[file.id].title
-                      ?.message
+                    (errors.tasks?.data[taskId].task_data as FileTaskDataError)
+                      .files[file.id].title?.message
                   }
                   sx={{ maxWidth: '700px' }}
                 />
@@ -134,12 +137,12 @@ const FileLinkTask = ({ taskId, deleteTask }) => {
                   `tasks.data.${taskId}.task_data.files.${file.id}.description`
                 )}
                 error={
-                  !!errors.tasks?.data[taskId].task_data.files[file.id]
-                    .description
+                  !!(errors.tasks?.data[taskId].task_data as FileTaskDataError)
+                    .files[file.id].description
                 }
                 helperText={
-                  errors.tasks?.data[taskId].task_data.files[file.id]
-                    .description?.message
+                  (errors.tasks?.data[taskId].task_data as FileTaskDataError)
+                    .files[file.id].description?.message
                 }
               />
               <TextField
@@ -149,12 +152,12 @@ const FileLinkTask = ({ taskId, deleteTask }) => {
                   `tasks.data.${taskId}.task_data.files.${file.id}.link`
                 )}
                 error={
-                  'files' in errors.tasks?.data[taskId].task_data &&
-                  !!errors.tasks?.data[taskId].task_data.files[file.id].link
+                  !!(errors.tasks?.data[taskId].task_data as FileTaskDataError)
+                    .files[file.id].link
                 }
                 helperText={
-                  errors.tasks?.data[taskId].task_data.files[file.id].link
-                    ?.message
+                  (errors.tasks?.data[taskId].task_data as FileTaskDataError)
+                    .files[file.id].link?.message
                 }
               />
               <Divider sx={{ margin: '40px 0' }} />

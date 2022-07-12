@@ -1,14 +1,5 @@
-import { object, string, array, mixed, lazy, number, SchemaOf } from 'yup';
-// import { z } from "zod";
-
-// type TaskTypes =
-//   | 'quiz'
-//   | 'meeting_code'
-//   | 'token_hold'
-//   | 'contract_interaction'
-//   | 'snapshot'
-//   | 'manual'
-//   | 'self_verify';
+import { FieldError } from 'react-hook-form';
+import { z } from 'zod';
 
 // Creator
 export type Creator = {
@@ -23,7 +14,7 @@ export type CreateGateTypes = {
   description: string;
   image: string;
   skills: string[];
-  // created_by: Creator[];
+  created_by: Creator[];
   tasks: TasksSchema;
 };
 
@@ -33,7 +24,6 @@ export type TasksSchema = {
 };
 
 // Task
-
 export type SelfVerifyTask = {
   task_type: 'self_verify';
   task_data: FileTaskData;
@@ -51,20 +41,31 @@ export type Task = {
   // task_data: FileTaskData | VerificationCodeData;
 } & (SelfVerifyTask | MeetingCodeTask);
 
-
-type TaskTypes = Task['task_type'];
-type TaskData = Task['task_data'];
-
 // Verification Code
 export type VerificationCodeData = {
   id: string;
   code?: string;
 };
 
+export type VerificationCodeDataError = {
+  id?: FieldError;
+  code?: FieldError;
+};
+
 // Files
 export type FileTaskData = {
   id: string;
   files?: Array<FileTypes>;
+};
+
+export type FileTaskDataError = {
+  id?: FieldError;
+  files?: {
+    id?: FieldError;
+    title?: FieldError;
+    description?: FieldError;
+    link?: FieldError;
+  }[];
 };
 
 // Files
@@ -75,72 +76,60 @@ export type FileTypes = {
   link: string;
 };
 
+const fileTaskDataSchema = z.object({
+  id: z.string().min(2),
+  files: z
+    .object({
+      id: z.number().min(2),
+      title: z.string().min(2),
+      description: z.string().min(2),
+      link: z.string().min(2),
+    })
+    .array(),
+});
 
-const fileTaskDataSchema: SchemaOf<FileTaskData> = object({
-  id: string().min(2),
-  files: array().of(
-    object({
-      id: number().min(2),
-      title: string().min(2),
-      description: string().min(2),
-      link: string().min(2),
+export type verificationCodeType = {
+  id: string;
+  code: string;
+};
+
+export const verificationCodeDataSchema = z.object({
+  id: z.string().min(2),
+  code: z.string().min(2),
+});
+
+export const taskMeetingCodeSchema = z.object({
+  title: z.string().min(2),
+  description: z.string().min(2),
+  task_type: z.literal('meeting_code'),
+  task_data: verificationCodeDataSchema,
+});
+
+export const taskSelfVerifySchema = z.object({
+  title: z.string().min(2),
+  description: z.string().min(2),
+  task_type: z.literal('self_verify'),
+  task_data: fileTaskDataSchema,
+});
+
+export const createGateSchema = z.object({
+  title: z.string().min(2),
+  categories: z.array(z.string()),
+  description: z.string().min(2),
+  image: z.string().min(2),
+  skills: z.array(z.string()),
+  created_by: z.array(
+    z.object({
+      id: z.string(),
+      name: z.string(),
     })
   ),
-});
-
-const verificationCodeDataSchema = object<VerificationCodeData>({
-  id: string().min(2),
-  code: string().min(2).optional(),
-});
-
-const taskMeetingCodeSchema = object({
-  task_type: string().equals(['meeting_code'])
-    .defined(),
-  task_data:
-  });
-
-const taskSelfVerifySchema: SchemaOf<SelfVerifyTask> = object({
-  task_type: string().equals(['self_verify'])
-    .defined(),
-  task_data: fileTaskDataSchema.defined()
-  });
-
-const taskBaseSchema: SchemaOf<Task> = object({
-  title: string().min(2),
-  description: string().min(2),
-  task_type: mixed<TaskTypes>().oneOf<TaskTypes>([
-    'meeting_code',
-    'self_verify'
-  ]),
-task_data: mixed<TaskData>().when('task_type', (type: TaskTypes) => {
-switch(type) {
-  case 'meeting_code': return verificationCodeDataSchema.defined();
-  default: return fileTaskDataSchema.defined();
-}
-})
-})
-
-
-/*  .concat(mixed().oneOf([
-  taskMeetingCodeSchema,
-taskSelfVerifySchema
-])); */
-
-
-export const createGateSchema: SchemaOf<CreateGateTypes> = object({
-  title: string().min(2).defined(),
-  categories: array().of(string()).defined(),
-  description: string().min(2).defined(),
-  image: string().min(2).defined(),
-  skills: array().of(string()).defined(),
-  // created_by: array().of(object<Creator>({
-  //   id:string(),
-  //   name: string(),
-  // })).defined(),
-  tasks: object({
-    data: array().of(
-      taskSchema
-      )
+  tasks: z.object({
+    data: z.array(
+      z.discriminatedUnion('task_type', [
+        taskSelfVerifySchema,
+        taskMeetingCodeSchema,
+      ])
     ),
   }),
 });
