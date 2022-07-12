@@ -6,7 +6,14 @@ import { MintingScreen } from './minting-screen';
 export function processScreen(
   mintProcessStatus: Subjects,
   setmintProcessStatus: React.Dispatch<React.SetStateAction<Subjects>>,
-  mint: (token_uri?: string) => void
+  mint: (token_uri?: string) => void,
+  details: {
+    title: string;
+    description: string;
+    image: string;
+    categories: string[];
+    nft_url?: string;
+  }
 ) {
   switch (mintProcessStatus) {
     case Subjects.start:
@@ -16,7 +23,7 @@ export function processScreen(
         />
       );
     case Subjects.minting:
-    case Subjects.minted:
+    case Subjects.successful:
     case Subjects.failed:
     case Subjects.sign:
       return (
@@ -26,7 +33,7 @@ export function processScreen(
     case Subjects.alreadyMinted:
       return (
         <DefaultMintScreen
-          {...{ mintProcessStatus, setmintProcessStatus, mint }}
+          {...{ mintProcessStatus, setmintProcessStatus, mint, details }}
         />
       );
   }

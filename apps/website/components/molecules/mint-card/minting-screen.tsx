@@ -33,7 +33,7 @@ export function MintingScreen({ mintProcessStatus, setmintProcessStatus }) {
           justifyContent: 'center',
         }}
       >
-        {mintProcessStatus !== Subjects.minted && mintProcessStatus !== Subjects.failed && (
+        {mintProcessStatus !== Subjects.successful && mintProcessStatus !== Subjects.failed && (
           <CircularProgress
             color="secondary"
             sx={{
@@ -47,7 +47,7 @@ export function MintingScreen({ mintProcessStatus, setmintProcessStatus }) {
           />
         )}
 
-        {mintProcessStatus == Subjects.minted && (
+        {mintProcessStatus == Subjects.successful && (
           <Check
             sx={{
               height: 40,
@@ -87,7 +87,7 @@ export function MintingScreen({ mintProcessStatus, setmintProcessStatus }) {
                 Minting credential
               </AnimatedMessage>
             )}
-            {mintProcessStatus === Subjects.minted && (
+            {mintProcessStatus === Subjects.successful && (
               <AnimatedMessage key="successful">
                 Credential successfully minted as NFT
               </AnimatedMessage>

@@ -11,13 +11,54 @@ import { Subjects } from './index';
 export const DefaultMintScreen = ({
   mintProcessStatus,
   setmintProcessStatus,
+  details,
 }) => {
+  const showCategories = () => {
+    if (details.categories.length > 0) {
+      if (mintProcessStatus === Subjects.default) {
+        return (
+          <>
+            {details.categories.slice(0, 1).map((category, index) => (
+              <Chip key={category} label={category} size="medium" />
+            ))}
+            {details.categories.length > 1 && (
+              <Chip
+                key={'more'}
+                label={'+' + (details.categories.length - 1)}
+                size="medium"
+              />
+            )}
+          </>
+        );
+      }
+
+      if (mintProcessStatus === Subjects.alreadyMinted) {
+        return (
+          <>
+            {details.categories.slice(0, 2).map((category, index) => (
+              <Chip key={category} label={category} size="medium" />
+            ))}
+            {details.categories.length > 2 && (
+              <Chip
+                key={'more'}
+                label={'+' + (details.categories.length - 2)}
+                size="medium"
+              />
+            )}
+          </>
+        );
+      }
+    }
+
+    return null;
+  };
+
   return (
     <>
       <CardMedia
         component="img"
         height="275"
-        image="https://f8n-production-collection-assets.imgix.net/0x5F4b303d4083E6dF6A516a338b2b2B40D2e65C3e/1/nft.jpg?q=80&auto=format%2Ccompress&cs=srgb&h=640"
+        image={details.image}
         alt="nft image"
       />
       <CardHeader
@@ -26,12 +67,14 @@ export const DefaultMintScreen = ({
             <MoreVertIcon />
           </IconButton>
         }
-        title="Olympus Odyssey"
+        title={details.title}
       />
+      {/* TODO: fix the description overflow */}
       <CardContent sx={{ mt: -2.0 }}>
         <Typography variant="body2" color="text.secondary">
-          This is the beginning of your journey in OlympusDAO. Learn about
-          what...
+          {details.description.length > 50
+            ? details.description.substring(0, 70) + '...'
+            : details.description}
         </Typography>
       </CardContent>
       <Stack direction="row" spacing={1} px={2} pt={1} pb={2}>
@@ -46,12 +89,13 @@ export const DefaultMintScreen = ({
           />
         ) : (
           <Avatar sx={{ height: 32, width: 32 }}>
-            <TokenFilled height={24} width={24} color="action" />
+            <IconButton onClick={() => details.nft_url && window.open(details.nft_url, "_blank")}>
+              <TokenFilled height={24} width={24} color="action" />
+            </IconButton>
           </Avatar>
         )}
         {/* we can show maximum 2 categories , when mintProcessStauts is minted*/}
-        <Chip key={'onboarding'} label={'Onbarding'} size="medium" />
-        <Chip key={'more'} label={'+1'} size="medium" />
+        {showCategories()}
       </Stack>
     </>
   );

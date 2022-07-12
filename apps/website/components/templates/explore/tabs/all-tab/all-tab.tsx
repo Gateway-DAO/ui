@@ -70,7 +70,14 @@ export function AllTab({ daos, gates, people, setActiveTab }: Props) {
           {daos.map((dao) => (
             <DaoCard key={dao.id} {...dao} />
           ))}
-          <MintCard />
+          <MintCard
+            image="https://f8n-production-collection-assets.imgix.net/0x5F4b303d4083E6dF6A516a338b2b2B40D2e65C3e/1/nft.jpg?q=80&auto=format%2Ccompress&cs=srgb&h=640"
+            title="Olympus Odissey"
+            description="TeTesting thisTesting thisTesting thisTesting thisTesting thisTesting thisTesting thisTesting thisTesting thisTesting thisTesting thisTesting thisTesting thisTesting thisTesting this"
+            categories={['Nuno', 'Manish', 'Farouk']}
+            minted={true}
+            nftURL="https://www.google.com"
+          />
         </SectionWithSliderResponsive>
         <SectionWithGrid
           title={t('featured-people.title')}
