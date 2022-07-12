@@ -37,31 +37,31 @@ export function GatesTab({ data: gates }: GatesTabProps) {
 
   return (
     <Box sx={{ py: 4, width: '100%' }}>
-      <Stack
-        direction="row"
-        justifyContent="space-between"
-        sx={{ mb: 4, px: TOKENS.CONTAINER_PX }}
-      >
-        <Stack direction="row" gap={1.5}>
-          <ChipDropdown
-            label="Categories"
-            values={availableFilters}
-            selected={selectedFilters}
-            onToggle={toggleFilter}
-            onClear={onClear}
-          />
-        </Stack>
-        <IconButton
-          type="button"
-          onClick={toggleView}
-          color="secondary"
-          aria-label="Toggle View"
-        >
-          {view === ViewMode.grid ? <ViewList /> : <ViewModule />}
-        </IconButton>
-      </Stack>
       {gates?.length ? (
         <>
+          <Stack
+            direction="row"
+            justifyContent="space-between"
+            sx={{ mb: 4, px: TOKENS.CONTAINER_PX }}
+          >
+            <Stack direction="row" gap={1.5}>
+              <ChipDropdown
+                label="Categories"
+                values={availableFilters}
+                selected={selectedFilters}
+                onToggle={toggleFilter}
+                onClear={onClear}
+              />
+            </Stack>
+            <IconButton
+              type="button"
+              onClick={toggleView}
+              color="secondary"
+              aria-label="Toggle View"
+            >
+              {view === ViewMode.grid ? <ViewList /> : <ViewModule />}
+            </IconButton>
+          </Stack>
           {view === ViewMode.grid && (
             <Box
               sx={{

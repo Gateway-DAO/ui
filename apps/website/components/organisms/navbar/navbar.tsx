@@ -49,20 +49,19 @@ export function Navbar(props: NavbarProps) {
             },
           }}
         >
-          <Autocomplete
-            options={[]}
+          <TextField
+            placeholder="Search on Gateway"
             fullWidth
-            renderInput={(params) => (
-              <TextField
-                label="Search on Gateway"
-                {...params}
-                InputLabelProps={{
-                  sx: {
-                    '&.MuiInputLabel-root:not(.MuiInputLabel-shrink)': {
-                      transform: 'translate(14px, 8px) scale(1)',
-                    },
-                  },
-                  /*
+            InputLabelProps={{
+              sx: {
+                '&.MuiInputLabel-root:not(.MuiInputLabel-shrink)': {
+                  transform: 'translate(14px, 8px) scale(1)',
+                },
+                '& .MuiFilledInput-root:hover': {
+                  backgroundColor: 'red',
+                },
+              },
+              /*
                   start adornment:
                   sx: {
                     '&.MuiInputLabel-root': {
@@ -76,23 +75,34 @@ export function Navbar(props: NavbarProps) {
                         maxWidth: 0,
                       },
                   }, */
-                }}
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <SearchIcon />
-                    </InputAdornment>
-                  ),
-                  fullWidth: true,
-                  sx: { borderRadius: 100 },
-                  size: 'small',
-                }}
-                onKeyDown={(e: any) =>
-                  e.key == 'Enter' &&
-                  router.push(`/search/${(e.target as HTMLInputElement).value}`)
-                }
-              />
-            )}
+            }}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment
+                  position="end"
+                  sx={{
+                    paddingRight: 1,
+                  }}
+                >
+                  <SearchIcon
+                    sx={{
+                      color: 'rgba(255, 255, 255, 0.56)',
+                    }}
+                  />
+                </InputAdornment>
+              ),
+              fullWidth: true,
+              sx: {
+                borderRadius: 100,
+                paddingX: 1,
+                paddingY: 0.5,
+              },
+              size: 'small',
+            }}
+            onKeyDown={(e: any) =>
+              e.key == 'Enter' &&
+              router.push(`/search/${(e.target as HTMLInputElement).value}`)
+            }
           />
         </Stack>
         <Box
