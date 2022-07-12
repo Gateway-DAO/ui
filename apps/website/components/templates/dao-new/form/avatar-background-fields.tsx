@@ -1,6 +1,6 @@
-import useTranslation from 'next-translate/useTranslation';
-
 import { useFormContext } from 'react-hook-form';
+
+import { TOKENS } from '@gateway/theme';
 
 import { Box } from '@mui/material';
 
@@ -9,9 +9,20 @@ import { NewDAOSchema } from '../schema';
 
 export function AvatarBackgroundFields() {
   const { control } = useFormContext<NewDAOSchema>();
-  const { t } = useTranslation();
   return (
-    <>
+    <Box
+      sx={{
+        '.MuiEditButton-root': {
+          '.MuiAvatar-root': {
+            width: 28,
+            height: 28,
+            '.MuiSvgIcon-root': {
+              fontSize: '1rem',
+            },
+          },
+        },
+      }}
+    >
       <Box
         sx={{
           height: 260,
@@ -25,11 +36,6 @@ export function AvatarBackgroundFields() {
             left: 'unset',
             right: 2,
             bottom: 2,
-            '.MuiAvatar-root': {
-              width: 28,
-              height: 28,
-              fontSize: 1,
-            },
           },
         }}
       >
@@ -49,7 +55,10 @@ export function AvatarBackgroundFields() {
           borderColor: 'background.default',
           backgroundColor: 'background.default',
           boxSizing: 'content-box',
-          marginLeft: 8,
+          marginLeft: {
+            ...TOKENS.CONTAINER_PX,
+            lg: 8,
+          },
           marginTop: '-44px',
           position: 'relative',
           zIndex: 1,
@@ -63,10 +72,6 @@ export function AvatarBackgroundFields() {
             left: 'unset',
             right: -14,
             bottom: -14,
-            '.MuiAvatar-root': {
-              width: 28,
-              height: 28,
-            },
           },
         }}
       >
@@ -77,6 +82,6 @@ export function AvatarBackgroundFields() {
           hideLabel
         />
       </Box>
-    </>
+    </Box>
   );
 }
