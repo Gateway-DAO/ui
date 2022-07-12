@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import React from 'react';
 
+import { DiscordIcon } from '@gateway/assets';
 import { TOKENS } from '@gateway/theme';
 
 import { Box, Button, Stack, Typography } from '@mui/material';
@@ -44,13 +45,18 @@ export function ScheduleDemo({
               maxWidth: '316px',
               mb: '40px',
               [theme.breakpoints.down('sm')]: {
-                ...theme.typography.h4,
+                ...theme.typography.h5,
               },
             })}
           >
             {title}
           </Typography>
-          <Stack direction="row" sx={(theme) => ({})}>
+          <Stack
+            direction="row"
+            sx={(theme) => ({
+              [theme.breakpoints.down('sm')]: { flexDirection: 'column' },
+            })}
+          >
             <Link passHref href={'#'}>
               <Button
                 variant="contained"
@@ -60,6 +66,11 @@ export function ScheduleDemo({
                   backgroundColor: theme.palette.secondary.main,
                   color: theme.palette.secondary.contrastText,
                   mr: '10px',
+                  [theme.breakpoints.down('sm')]: {
+                    width: '100%',
+                    mr: 0,
+                    mb: '8px',
+                  },
                 })}
               >
                 {scheduleButton}
@@ -69,8 +80,17 @@ export function ScheduleDemo({
               <Button
                 variant="outlined"
                 size="large"
+                startIcon={<DiscordIcon />}
                 sx={(theme) => ({
                   height: '42px',
+                  borderColor: theme.palette.secondary.main,
+                  color: theme.palette.secondary.main,
+                  '&:visited': {
+                    borderColor: theme.palette.secondary.main,
+                  },
+                  [theme.breakpoints.down('sm')]: {
+                    width: '100%',
+                  },
                 })}
               >
                 {joinDiscord}

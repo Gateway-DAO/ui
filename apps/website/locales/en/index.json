@@ -210,5 +210,11 @@
     "title": "See how Gateway can help your DAO",
     "scheduleButton": "Schedule a Demo",
     "joinDiscord": "Join our Discord"
+  },
+  "footerContent": {
+    "copyright": "Copyright © 2022 Gateway. All rights reserved.",
+    "subscribe": "Subscribe to our newsletter",
+    "receiveNews": "Receive news about developments and updates.",
+    "subscribeButton": "Subscribe"
   }
 }

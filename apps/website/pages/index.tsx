@@ -5,9 +5,11 @@ import { Button } from '@mui/material';
 
 import { LandingTemplate } from '../components/templates/landing';
 import { FeaturedProps } from '../components/templates/landing/featured/types';
+import { FooterProps } from '../components/templates/landing/footer/types';
 import { InvestorProps } from '../components/templates/landing/investors/types';
 import { MenuListItem } from '../components/templates/landing/menu/types';
 import { ProductShowProps } from '../components/templates/landing/product-show/types';
+import { ScheduleDemoProps } from '../components/templates/landing/schedule-demo/types';
 
 export default function Index() {
   const { t } = useTranslation('index');
@@ -30,6 +32,9 @@ export default function Index() {
   const scheduleDemoContent = t('scheduleDemoContent', null, {
     returnObjects: true,
   }) as ScheduleDemoProps;
+  const footerContent = t('footerContent', null, {
+    returnObjects: true,
+  }) as FooterProps;
 
   return (
     <>
@@ -51,6 +56,7 @@ export default function Index() {
         forOrganizationsContent={forOrganizationsContent}
         investorsContent={investorsContent}
         scheduleDemoContent={scheduleDemoContent}
+        footerContent={footerContent}
         connectButton={
           <Link passHref href="/home">
             <Button

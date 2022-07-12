@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import React from 'react';
 
-import { GatewayIcon } from '@gateway/assets';
+import { GatewayIcon, DiscordIcon } from '@gateway/assets';
 import { TOKENS } from '@gateway/theme';
 
 import { LinkedIn, Twitter } from '@mui/icons-material';
@@ -12,15 +12,26 @@ import {
   List,
   ListItem,
   Stack,
+  TextField,
   Typography,
+  useTheme,
 } from '@mui/material';
 
-export function Footer(): JSX.Element {
+import { FooterProps } from './types';
+
+export function Footer({
+  copyright,
+  subscribe,
+  receiveNews,
+  subscribeButton,
+}: FooterProps): JSX.Element {
+  const theme = useTheme();
   return (
     <Box
       component="footer"
       sx={(theme) => ({
-        my: '20px',
+        mt: '20px',
+        mb: '40px',
         px: TOKENS.CONTAINER_PX,
       })}
     >
@@ -30,84 +41,152 @@ export function Footer(): JSX.Element {
           p: '48px',
           borderRadius: '24px',
           position: 'relative',
-          display: 'flex',
-          justifyContent: 'space-between',
           background: theme.palette.background.elevated,
+          [theme.breakpoints.down('sm')]: {
+            justifyContent: 'center',
+            flexWrap: 'wrap',
+            p: '24px',
+          },
         })}
       >
-        <Stack direction="column">
-          <Box>
-            <Typography component="h1" variant="h4">
-              <GatewayIcon
+        <Box
+          sx={(theme) => ({
+            display: 'flex',
+            justifyContent: 'space-between',
+            [theme.breakpoints.down('sm')]: {
+              flexWrap: 'wrap',
+            },
+          })}
+        >
+          <Stack direction="column">
+            <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+              <Typography
+                component="h1"
+                variant="body1"
+                sx={{ display: 'flex' }}
+              >
+                <GatewayIcon
+                  sx={(theme) => ({
+                    width: 24,
+                    height: 24,
+                    marginRight: '12px',
+                    mb: '32px',
+                    [theme.breakpoints.down('sm')]: {
+                      height: '24px',
+                      width: '24px',
+                    },
+                  })}
+                />
+                Gateway
+              </Typography>
+              <List
                 sx={(theme) => ({
-                  width: 50,
-                  height: 50,
-                  marginRight: '43px',
-                  [theme.breakpoints.down('sm')]: {
-                    height: '24px',
-                    width: '24px',
-                  },
+                  display: 'flex',
+                  justifyContent: 'flex-start',
+                  mb: '82px',
                 })}
-              />
-              <GatewayIcon
-                sx={(theme) => ({
-                  width: 50,
-                  height: 50,
-                  marginRight: '43px',
-                  [theme.breakpoints.down('sm')]: {
-                    height: '24px',
-                    width: '24px',
-                  },
-                })}
-              />
-              Gateway
-            </Typography>
-            <List>
-              <ListItem>
-                <Link passHref href="#">
-                  <Button>
-                    <Twitter />
-                  </Button>
-                </Link>
-              </ListItem>
-              <ListItem>
-                <Link passHref href="#">
-                  <Button>
-                    <Twitter />
-                  </Button>
-                </Link>
-              </ListItem>
-              <ListItem>
-                <Link passHref href="#">
-                  <Button>
-                    <LinkedIn />
-                  </Button>
-                </Link>
-              </ListItem>
-            </List>
-            <Typography>
-              Copyright © 2022 Gateway. All rights reserved.
-            </Typography>
-          </Box>
-          <Box>
-            <Typography>Subscribe to our newsletter</Typography>
-            <Typography>
-              Receive news about developments and updates.
-            </Typography>
-            <Input type="email" placeholder="E-mail" />
+              >
+                <ListItem sx={{ display: 'flex', width: 'auto', p: 0 }}>
+                  <Link passHref href="#">
+                    <Box
+                      component="a"
+                      sx={{
+                        width: '40px',
+                        height: '40px',
+                        borderRadius: '50%',
+                        display: 'flex',
+                        cursor: 'pointer',
+                        alignItems: 'center',
+                        background: 'rgba(229, 229, 229, 0.16)',
+                        justifyContent: 'center',
+                      }}
+                    >
+                      <Twitter color="secondary" />
+                    </Box>
+                  </Link>
+                </ListItem>
+                <ListItem
+                  sx={{ display: 'flex', width: 'auto', p: 0, ml: '8px' }}
+                >
+                  <Link passHref href="#">
+                    <Box
+                      component="a"
+                      sx={{
+                        width: '40px',
+                        height: '40px',
+                        borderRadius: '50%',
+                        display: 'flex',
+                        cursor: 'pointer',
+                        alignItems: 'center',
+                        background: 'rgba(229, 229, 229, 0.16)',
+                        justifyContent: 'center',
+                      }}
+                    >
+                      <DiscordIcon />
+                    </Box>
+                  </Link>
+                </ListItem>
+                <ListItem
+                  sx={{ display: 'flex', width: 'auto', p: 0, ml: '8px' }}
+                >
+                  <Link passHref href="#">
+                    <Box
+                      component="a"
+                      sx={{
+                        width: '40px',
+                        height: '40px',
+                        borderRadius: '50%',
+                        display: 'flex',
+                        cursor: 'pointer',
+                        alignItems: 'center',
+                        background: 'rgba(229, 229, 229, 0.16)',
+                        justifyContent: 'center',
+                      }}
+                    >
+                      <LinkedIn color="secondary" />
+                    </Box>
+                  </Link>
+                </ListItem>
+              </List>
+            </Box>
+          </Stack>
+          <Stack direction={'column'} sx={{ maxWidth: '294px' }}>
+            <Typography sx={{ mb: '16px' }}>{subscribe}</Typography>
+            <Typography sx={{ mb: '16px' }}>{receiveNews}</Typography>
+            <TextField
+              sx={{ mb: '16px' }}
+              variant="outlined"
+              type="email"
+              placeholder="E-mail"
+            />
             <Link passHref href={'#'}>
               <Button
                 variant="outlined"
-                size="large"
                 sx={(theme) => ({
                   height: '42px',
+                  display: 'flex',
+                  width: '122px',
+                  borderRadius: '20px',
                 })}
               >
-                Subscribe
+                {subscribeButton}
               </Button>
             </Link>
-          </Box>
-        </Stack>
+          </Stack>
+        </Box>
+
+        <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+          <Typography
+            sx={(theme) => ({
+              mt: '-25px',
+              [theme.breakpoints.down('sm')]: {
+                mt: '64px',
+              },
+            })}
+          >
+            {copyright}
+          </Typography>
+        </Box>
       </Box>
     </Box>
   );

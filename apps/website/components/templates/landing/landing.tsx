@@ -6,6 +6,8 @@ import { theme } from '@gateway/theme';
 
 import { Featured } from './featured';
 import { FeaturedProps } from './featured/types';
+import { Footer } from './footer';
+import { FooterProps } from './footer/types';
 import { Hero } from './hero';
 import { Investors } from './investors/investors';
 import { InvestorProps } from './investors/types';
@@ -30,6 +32,7 @@ type Props = {
   buildAppsContent: ProductShowProps;
   investorsContent: InvestorProps;
   scheduleDemoContent: ScheduleDemoProps;
+  footerContent: FooterProps;
 };
 
 export function LandingTemplate({
@@ -46,6 +49,7 @@ export function LandingTemplate({
   buildAppsContent,
   investorsContent,
   scheduleDemoContent,
+  footerContent,
 }: Props) {
   const heroProps = { title, subtitle, enterButton, titleDescription };
   const menuProps = { menuList, signUpButton, connectButton };
@@ -76,6 +80,7 @@ export function LandingTemplate({
       <ProductShow {...buildAppsContent} />
       <Investors {...investorsContent} />
       <ScheduleDemo {...scheduleDemoContent} />
+      <Footer {...footerContent} />
     </>
   );
 }
