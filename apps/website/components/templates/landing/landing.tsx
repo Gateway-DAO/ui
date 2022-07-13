@@ -4,6 +4,8 @@ import { useIntersection } from 'react-use';
 
 import { theme } from '@gateway/theme';
 
+import { Box } from '@mui/material';
+
 import { Featured } from './featured';
 import { FeaturedProps } from './featured/types';
 import { Footer } from './footer';
@@ -17,6 +19,7 @@ import { ProductShow } from './product-show';
 import { ProductShowProps } from './product-show/types';
 import { ScheduleDemo } from './schedule-demo';
 import { ScheduleDemoProps } from './schedule-demo/types';
+import { DEFAULT_MAX_WIDTH, DEFAULT_PADDINGX } from './styles';
 
 type Props = {
   title: string;
@@ -57,10 +60,9 @@ export function LandingTemplate({
 
   const refs = {
     hero: useRef(null),
-    users: useRef(null),
+    professionals: useRef(null),
     organizations: useRef(null),
-    model: useRef(null),
-    integration: useRef(null),
+    build: useRef(null),
     investors: useRef(null),
   };
 
@@ -95,23 +97,36 @@ export function LandingTemplate({
   return (
     <>
       <Menu {...menuProps} activeMenu={activeArea} />
-      <main role="main">
+      <Box
+        component="main"
+        role="main"
+        sx={(theme) => ({
+          maxWidth: DEFAULT_MAX_WIDTH,
+          px: DEFAULT_PADDINGX,
+          position: 'relative',
+          left: '50%',
+          transform: 'translate(-50%, 0)',
+          [theme.breakpoints.down('sm')]: {
+            px: '20px',
+          },
+        })}
+      >
         <Hero {...heroProps} ref={refs.hero} />
-        <Featured {...forUsersContent} id="users" ref={refs.users} />
+        <Featured
+          {...forUsersContent}
+          id="professionals"
+          ref={refs.professionals}
+        />
         <Featured
           {...forOrganizationsContent}
           ref={refs.organizations}
           id="organizations"
         />
-        <ProductShow {...theGatewayContent} id="model" ref={refs.model} />
-        <ProductShow
-          {...buildAppsContent}
-          id="integration"
-          ref={refs.integration}
-        />
+        <ProductShow {...theGatewayContent} id="build" ref={refs.build} />
+        <ProductShow {...buildAppsContent} />
         <Investors {...investorsContent} id="investors" ref={refs.investors} />
         <ScheduleDemo {...scheduleDemoContent} />
-      </main>
+      </Box>
       <Footer {...footerContent} />
     </>
   );

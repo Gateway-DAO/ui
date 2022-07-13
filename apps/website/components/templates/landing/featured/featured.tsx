@@ -14,7 +14,12 @@ import {
 import { OverridableComponent } from '@mui/material/OverridableComponent';
 
 import { useActiveScroll } from '../../../../hooks/use-active-scroll';
-import { LandingTitleLimiter, ResponsiveImage } from '../styles';
+import {
+  DEFAULT_MAX_WIDTH,
+  DEFAULT_PADDINGX,
+  LandingTitleLimiter,
+  ResponsiveImage,
+} from '../styles';
 import Title from '../title';
 import { FeaturedProps } from './types';
 
@@ -41,10 +46,9 @@ export const Featured = forwardRef<
         flex: 1,
         width: '100%',
         py: '144px',
-        px: TOKENS.CONTAINER_PX,
+        borderBottom: '1px solid rgba(229, 229, 229, 0.12)',
         [theme.breakpoints.down('sm')]: {
-          pt: theme.spacing(20),
-          pb: theme.spacing(0),
+          py: '124px',
         },
       })}
     >
@@ -71,6 +75,9 @@ export const Featured = forwardRef<
             sx={(theme) => ({
               position: 'relative',
               borderBottom: '1px solid rgba(229, 229, 229, 0.12)',
+              '&:last-child': {
+                borderBottom: 'none',
+              },
               [theme.breakpoints.down('sm')]: {
                 pb: '50px',
               },

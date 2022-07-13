@@ -8,6 +8,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import MenuIcon from '@mui/icons-material/Menu';
 import { Box, Link, List, ListItem, Stack } from '@mui/material';
 
+import { DEFAULT_MAX_WIDTH, DEFAULT_PADDINGX } from '../styles';
 import { MenuProps } from './types';
 
 export function Menu({
@@ -26,12 +27,18 @@ export function Menu({
       alignItems="center"
       px={TOKENS.CONTAINER_PX}
       py={4}
-      sx={{
+      sx={(theme) => ({
         width: '100%',
         position: 'fixed',
+        maxWidth: DEFAULT_MAX_WIDTH,
+        left: '50%',
+        transform: 'translate(-50%, 0)',
         zIndex: 10,
-        px: TOKENS.CONTAINER_PX,
-      }}
+        px: DEFAULT_PADDINGX,
+        [theme.breakpoints.down('sm')]: {
+          px: '20px',
+        },
+      })}
     >
       <MotionBox
         sx={(theme) => ({
@@ -69,21 +76,39 @@ export function Menu({
               marginRight: 'auto',
               ...(open && {
                 flexDirection: 'column',
+                width: '100%',
+                marginRight: 0,
+                position: 'relative',
               }),
             },
           })}
         >
-          <GatewayIcon
-            sx={(theme) => ({
-              width: 50,
-              height: 50,
-              marginRight: '43px',
-              [theme.breakpoints.down('sm')]: {
-                height: '24px',
-                width: '24px',
-              },
-            })}
-          />
+          <Link href="#">
+            <GatewayIcon
+              sx={(theme) => ({
+                width: 50,
+                height: 50,
+                marginRight: '43px',
+                [theme.breakpoints.down('sm')]: {
+                  height: '24px',
+                  width: '24px',
+                },
+              })}
+            />
+          </Link>
+          {open && (
+            <CloseIcon
+              color="secondary"
+              fontSize="medium"
+              onClick={() => setOpen(false)}
+              sx={(theme) => ({
+                cursor: 'pointer',
+                position: 'absolute',
+                top: 0,
+                right: 0,
+              })}
+            />
+          )}
           <List
             role="menu"
             sx={(theme) => ({
@@ -204,23 +229,6 @@ export function Menu({
             color="secondary"
             fontSize="medium"
             onClick={() => setOpen(!open)}
-            sx={(theme) => ({
-              [theme.breakpoints.up('md')]: {
-                display: 'none',
-                cursor: 'pointer',
-                ...(open && {
-                  order: 4,
-                }),
-              },
-            })}
-          />
-        )}
-
-        {open && (
-          <CloseIcon
-            color="secondary"
-            fontSize="medium"
-            onClick={() => setOpen(false)}
             sx={(theme) => ({
               [theme.breakpoints.up('md')]: {
                 display: 'none',

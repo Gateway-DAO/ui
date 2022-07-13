@@ -21,7 +21,14 @@ export const Investors = forwardRef<
       ref={ref}
       component="section"
       {...rest}
-      sx={() => ({ px: TOKENS.CONTAINER_PX, pt: '80px', pb: '20px' })}
+      sx={(theme) => ({
+        pt: '124px',
+        pb: '20px',
+        width: '100%',
+        [theme.breakpoints.down('sm')]: {
+          pt: '62px',
+        },
+      })}
     >
       <Box
         sx={() => ({
@@ -44,11 +51,18 @@ export const Investors = forwardRef<
         </Typography>
         <Box>
           <List
-            sx={() => ({
-              display: 'flex',
-              pb: '70px',
-              flexWrap: 'wrap',
+            sx={(theme) => ({
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr));',
+              width: '100%',
+              py: '70px',
+              rowGap: '40px',
+              columnGap: '48px',
               borderBottom: '1px solid rgba(229, 229, 229, 0.12)',
+              [theme.breakpoints.down('sm')]: {
+                display: 'flex',
+                flexDirection: 'column',
+              },
             })}
           >
             {investorsWithLogos.map((investor: Investor) => (
@@ -57,9 +71,7 @@ export const Investors = forwardRef<
                 sx={(theme) => ({
                   width: 'auto',
                   display: 'flex',
-                  py: '20px',
                   opacity: 0.6,
-                  cursor: 'pointer',
                   '&:hover': {
                     opacity: 1,
                   },
@@ -69,20 +81,31 @@ export const Investors = forwardRef<
                   },
                 })}
               >
-                <Link passHref href={investor.url}>
-                  <Image
-                    src={investor.logo.url}
-                    alt={investor.name}
-                    layout="raw"
-                    width={investor.logo.width}
-                    height={investor.logo.height}
-                  />
-                </Link>
+                <Image
+                  src={investor.logo.url}
+                  alt={investor.name}
+                  layout="raw"
+                  width={investor.logo.width}
+                  height={investor.logo.height}
+                />
               </ListItem>
             ))}
           </List>
         </Box>
-        <List sx={{ display: 'flex', flexWrap: 'wrap', pt: '40px' }}>
+        <List
+          sx={(theme) => ({
+            display: 'grid',
+            gridTemplateColumns: 'auto auto auto auto',
+            rowGap: '40px',
+            pt: '60px',
+            pb: '30px',
+            columnGap: '58px',
+            [theme.breakpoints.down('sm')]: {
+              display: 'flex',
+              flexDirection: 'column',
+            },
+          })}
+        >
           {investorsonlyNames.map((investor: Investor) => (
             <ListItem
               key={investor.name}
@@ -99,7 +122,6 @@ export const Investors = forwardRef<
                   variant="body1"
                   sx={() => ({
                     opacity: 0.6,
-                    cursor: 'pointer',
                     '&:hover': {
                       opacity: 1,
                     },

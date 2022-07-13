@@ -1,20 +1,16 @@
 {
   "menu": [
     {
-      "text": "For users",
-      "href": "#users"
+      "text": "Professionals",
+      "href": "#professionals"
     },
     {
-      "text": "For organizations",
+      "text": "Organizations",
       "href": "#organizations"
     },
     {
-      "text": "Model",
-      "href": "#model"
-    },
-    {
-      "text": "Integration",
-      "href": "#integration"
+      "text": "Build",
+      "href": "#build"
     },
     {
       "text": "Investors",

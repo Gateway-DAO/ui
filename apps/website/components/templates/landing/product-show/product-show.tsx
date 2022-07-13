@@ -5,7 +5,11 @@ import { TOKENS } from '@gateway/theme';
 import { Box, BoxTypeMap, Stack, Typography } from '@mui/material';
 import { OverridableComponent } from '@mui/material/OverridableComponent';
 
-import { ResponsiveImage } from '../styles';
+import {
+  DEFAULT_MAX_WIDTH,
+  DEFAULT_PADDINGX,
+  ResponsiveImage,
+} from '../styles';
 import { ProductShowProps } from './types';
 
 export const ProductShow = forwardRef<
@@ -20,11 +24,15 @@ export const ProductShow = forwardRef<
       component="section"
       ref={ref}
       {...rest}
-      sx={() => ({
+      sx={(theme) => ({
         display: 'flex',
+        width: '100%',
         justifyContent: 'center',
         py: '144px',
-        px: TOKENS.CONTAINER_PX,
+        borderBottom: '1px solid rgba(229, 229, 229, 0.12)',
+        [theme.breakpoints.down('sm')]: {
+          py: '124px',
+        },
       })}
     >
       <Stack
@@ -32,7 +40,6 @@ export const ProductShow = forwardRef<
         sx={() => ({
           alignItems: 'center',
           width: '100%',
-          borderBottom: '1px solid rgba(229, 229, 229, 0.12)',
         })}
       >
         {comingSoon && (

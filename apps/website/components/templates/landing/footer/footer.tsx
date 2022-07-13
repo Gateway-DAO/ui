@@ -1,10 +1,12 @@
 import Link from 'next/link';
 import React from 'react';
 
+import { FaMedium } from 'react-icons/fa';
+
 import { GatewayIcon, DiscordIcon } from '@gateway/assets';
 import { TOKENS } from '@gateway/theme';
 
-import { LinkedIn, Twitter } from '@mui/icons-material';
+import { GitHub, LinkedIn, Twitter } from '@mui/icons-material';
 import {
   Box,
   Button,
@@ -15,6 +17,8 @@ import {
   Typography,
 } from '@mui/material';
 
+import { DEFAULT_MAX_WIDTH, DEFAULT_PADDINGX } from '../styles';
+import { IconContainer } from './styles';
 import { FooterProps } from './types';
 
 export function Footer({
@@ -29,7 +33,10 @@ export function Footer({
       sx={() => ({
         mt: '20px',
         mb: '40px',
-        px: TOKENS.CONTAINER_PX,
+        mx: 'auto',
+        width: '100%',
+        maxWidth: DEFAULT_MAX_WIDTH,
+        px: DEFAULT_PADDINGX,
       })}
     >
       <Box
@@ -84,64 +91,58 @@ export function Footer({
                 })}
               >
                 <ListItem sx={{ display: 'flex', width: 'auto', p: 0 }}>
-                  <Link passHref href="#">
-                    <Box
-                      component="a"
-                      sx={{
-                        width: '40px',
-                        height: '40px',
-                        borderRadius: '50%',
-                        display: 'flex',
-                        cursor: 'pointer',
-                        alignItems: 'center',
-                        background: 'rgba(229, 229, 229, 0.16)',
-                        justifyContent: 'center',
-                      }}
-                    >
+                  <Link passHref href="twitter.com/gateway_xyz" target="_blank">
+                    <IconContainer component="a">
                       <Twitter color="secondary" />
-                    </Box>
+                    </IconContainer>
                   </Link>
                 </ListItem>
                 <ListItem
                   sx={{ display: 'flex', width: 'auto', p: 0, ml: '8px' }}
                 >
-                  <Link passHref href="#">
-                    <Box
-                      component="a"
-                      sx={{
-                        width: '40px',
-                        height: '40px',
-                        borderRadius: '50%',
-                        display: 'flex',
-                        cursor: 'pointer',
-                        alignItems: 'center',
-                        background: 'rgba(229, 229, 229, 0.16)',
-                        justifyContent: 'center',
-                      }}
-                    >
+                  <Link
+                    passHref
+                    href="https://discord.com/invite/bxTaYsJ6WD"
+                    target="_blank"
+                  >
+                    <IconContainer component="a">
                       <DiscordIcon />
-                    </Box>
+                    </IconContainer>
                   </Link>
                 </ListItem>
                 <ListItem
                   sx={{ display: 'flex', width: 'auto', p: 0, ml: '8px' }}
                 >
-                  <Link passHref href="#">
-                    <Box
-                      component="a"
-                      sx={{
-                        width: '40px',
-                        height: '40px',
-                        borderRadius: '50%',
-                        display: 'flex',
-                        cursor: 'pointer',
-                        alignItems: 'center',
-                        background: 'rgba(229, 229, 229, 0.16)',
-                        justifyContent: 'center',
-                      }}
-                    >
+                  <Link
+                    passHref
+                    href="https://www.linkedin.com/company/mygateway"
+                    target="_blank"
+                  >
+                    <IconContainer component="a">
                       <LinkedIn color="secondary" />
-                    </Box>
+                    </IconContainer>
+                  </Link>
+                </ListItem>
+                <ListItem
+                  sx={{ display: 'flex', width: 'auto', p: 0, ml: '8px' }}
+                >
+                  <Link passHref href="#" target="_blank">
+                    <IconContainer component="a">
+                      <FaMedium color="white" size={18} />
+                    </IconContainer>
+                  </Link>
+                </ListItem>
+                <ListItem
+                  sx={{ display: 'flex', width: 'auto', p: 0, ml: '8px' }}
+                >
+                  <Link
+                    passHref
+                    href="https://github.com/Gateway-DAO"
+                    target="_blank"
+                  >
+                    <IconContainer component="a">
+                      <GitHub color="secondary" />
+                    </IconContainer>
                   </Link>
                 </ListItem>
               </List>

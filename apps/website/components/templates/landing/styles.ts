@@ -11,3 +11,6 @@ export const ResponsiveImage = styled(Image)`
   max-width: 100%;
   height: auto;
 `;
+
+export const DEFAULT_MAX_WIDTH = '1440px';
+export const DEFAULT_PADDINGX = '9.7%';

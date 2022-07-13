@@ -19,7 +19,7 @@ export function ScheduleDemo({
       component="section"
       sx={() => ({
         my: '20px',
-        px: TOKENS.CONTAINER_PX,
+        width: '100%',
       })}
     >
       <Box

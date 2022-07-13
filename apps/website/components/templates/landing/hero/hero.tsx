@@ -8,6 +8,7 @@ import { Box, BoxTypeMap, Button, Stack, Typography } from '@mui/material';
 import { OverridableComponent } from '@mui/material/OverridableComponent';
 
 import BackgroundImage from '../../../../public/images/hero-background.png';
+import { DEFAULT_MAX_WIDTH, DEFAULT_PADDINGX } from '../styles';
 import { HeroBackground } from './styles';
 import { HeroProps } from './types';
 
@@ -25,9 +26,10 @@ export const Hero = forwardRef<
       sx={{
         height: '100vh',
         width: '100%',
+        position: 'relative',
         mb: '144px',
         overflow: 'hidden',
-        pl: TOKENS.CONTAINER_PX,
+        borderBottom: '1px solid rgba(229, 229, 229, 0.12)',
       }}
     >
       <Stack
@@ -36,7 +38,6 @@ export const Hero = forwardRef<
           flex: 1,
           width: '100%',
           height: '100%',
-          borderBottom: '1px solid rgba(229, 229, 229, 0.12)',
         }}
       >
         <MotionBox
@@ -131,29 +132,30 @@ export const Hero = forwardRef<
             </Box>
           </Button>
         </MotionBox>
+        <MotionBox
+          initial={{ scale: 1.2, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{
+            ease: 'easeOut',
+            duration: 1,
+            opacity: { duration: 0.5 },
+          }}
+          sx={{
+            width: '61%',
+            height: '86%',
+            position: 'absolute',
+            bottom: '0',
+            right: '0',
+          }}
+        >
+          <HeroBackground
+            src={BackgroundImage}
+            layout="raw"
+            alt="Gateway's background with people joining the network"
+          />
+        </MotionBox>
       </Stack>
-      <MotionBox
-        initial={{ scale: 1.2, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{
-          ease: 'easeOut',
-          duration: 1,
-          opacity: { duration: 0.5 },
-        }}
-        sx={{
-          width: '61%',
-          height: '86%',
-          position: 'absolute',
-          bottom: '0',
-          right: '0',
-        }}
-      >
-        <HeroBackground
-          src={BackgroundImage}
-          layout="raw"
-          alt="Gateway's background with people joining the network"
-        />
-      </MotionBox>
+
       <Box
         sx={(theme) => ({
           [theme.breakpoints.down('sm')]: {
