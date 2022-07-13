@@ -21,7 +21,7 @@ import {
 export function EditProfile() {
   return (
     <Stack gap={7} p={TOKENS.CONTAINER_PX}>
-      <Box sx={{ paddingLeft: '40px' }}>
+      <Box sx={{ paddingLeft: {xs:"0px",md:'40px'} }}>
         <IconButton
           sx={{
             p: 0,
@@ -37,8 +37,8 @@ export function EditProfile() {
         sx={{
           display: 'flex',
           position: 'absolute',
-          top: '40px',
-          right: '92px',
+          top: {xs:'10px',md:'40px'},
+          right: {xs:'20px',md:'92px'},
           cursor: 'pointer',
         }}
       >
