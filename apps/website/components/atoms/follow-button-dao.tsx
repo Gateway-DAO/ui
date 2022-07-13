@@ -1,8 +1,9 @@
 import useTranslation from 'next-translate/useTranslation';
 
-import { Button, ButtonProps } from '@mui/material';
+import { ButtonProps } from '@mui/material';
 
 import { useFollowDAO, UseFollowProps } from '../../hooks/use-follow';
+import { LoadingButton } from './loading-button';
 
 type Props = {
   daoId: string;
@@ -22,13 +23,13 @@ export function FollowButtonDAO({
   });
   const isFollowing = isFollowingDAO(daoId);
   return (
-    <Button
+    <LoadingButton
       variant="contained"
-      disabled={isLoading(daoId)}
+      isLoading={isLoading(daoId)}
       onClick={() => onToggleFollow(daoId, isFollowing)}
       {...props}
     >
       {isFollowing ? t('actions.unfollow') : t('actions.follow')}
-    </Button>
+    </LoadingButton>
   );
 }
