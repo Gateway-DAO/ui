@@ -10,17 +10,18 @@ import { useViewMode, ViewMode } from '../../../../../hooks/use-view-modes';
 import { gqlAnonMethods } from '../../../../../services/api';
 import { ChipDropdown } from '../../../../molecules/chip-dropdown';
 import { GatesCard } from '../../../../molecules/gates-card';
+import { useDao } from '../../context';
 import { TableView } from './table-view';
 
-type Props = {
-  daoId: string;
-};
-
-export function GatesTab({ daoId }: Props) {
+export function GatesTab() {
   const { view, toggleView } = useViewMode();
 
-  const gates = useQuery(['dao-gates', daoId], () =>
-    gqlAnonMethods.dao_gates_tab({ id: daoId })
+  const dao = useDao();
+
+  const gates = useQuery(
+    ['dao-gates', dao?.id],
+    () => gqlAnonMethods.dao_gates_tab({ id: dao?.id }),
+    { enabled: !!dao?.id }
   );
 
   const {

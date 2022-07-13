@@ -11,15 +11,16 @@ import {
   SectionWithSliderResponsive,
   SectionWithGrid,
 } from '../../../../molecules/sections';
+import { useDao } from '../../context';
 
 type Props = {
-  dao: PartialDeep<Daos>;
   people: PartialDeep<Users>[];
   setTab: (tab: number) => void;
 };
 
-export function OverviewTab({ dao, people, setTab }: Props) {
+export function OverviewTab({ people, setTab }: Props) {
   const { t } = useTranslation('explore');
+  const dao = useDao();
 
   return (
     <Stack
@@ -30,11 +31,6 @@ export function OverviewTab({ dao, people, setTab }: Props) {
         },
       }}
     >
-      {/* <NewsSection>
-        <NewsItem isBig />
-        <NewsItem />
-        <NewsItem />
-      </NewsSection> */}
       <Stack
         direction="column"
         divider={<Divider />}
@@ -55,7 +51,7 @@ export function OverviewTab({ dao, people, setTab }: Props) {
           itemWidth={(theme) => theme.spacing(37.75)}
           gridSize={{ lg: 4 }}
         >
-          {dao.gates?.map((gate) => (
+          {dao?.gates?.map((gate) => (
             <GatesCard key={gate.id} {...gate} />
           ))}
         </SectionWithSliderResponsive>

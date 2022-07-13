@@ -7,7 +7,7 @@ import { gqlAnonMethods } from '../../services/api';
 export default function DaoProfilePage({
   daoProps,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
-  if (!daoProps) return null;
+  if (!daoProps?.daos_by_pk) return null;
   const { daos_by_pk: dao } = daoProps;
   return (
     <DashboardTemplate
