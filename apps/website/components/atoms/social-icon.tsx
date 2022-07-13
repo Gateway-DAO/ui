@@ -12,7 +12,7 @@ import {
 import { Language, Link } from '@mui/icons-material';
 import { SvgIcon, SvgIconProps } from '@mui/material';
 
-import { Network } from '../../constants/networks';
+import { Network } from '../../constants/dao';
 
 type Props = {
   icon: Network;

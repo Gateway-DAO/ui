@@ -1,10 +1,7 @@
 import useTranslation from 'next-translate/useTranslation';
 
-import {
-  Control,
-  FieldValues,
-  useController,
-} from 'react-hook-form';
+import { capitalCase } from 'change-case';
+import { Control, FieldValues, useController } from 'react-hook-form';
 
 import { Delete } from '@mui/icons-material';
 import {
@@ -18,8 +15,8 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { networks } from "../../../../constants/networks"
-import { capitalCase } from "change-case"
+
+import { networks } from '../../../../constants/dao';
 
 type SocialLinkField<TFormSchema> = {
   name: string;
@@ -31,7 +28,6 @@ const networksOptions = networks.map((value) => ({
   label: capitalCase(value),
   value,
 }));
-
 
 export function SocialLink<TFormSchema extends FieldValues = FieldValues>({
   name,
@@ -51,62 +47,82 @@ export function SocialLink<TFormSchema extends FieldValues = FieldValues>({
 
   return (
     <Card sx={{ display: 'flex', flexFlow: 'column', gap: 2, p: 2 }}>
-      <Stack sx={{flexFlow: "row", gap: 2, flexWrap: {
-        xs: "wrap",
-        md: "nowrap"
-      } }}>
-      <FormControl sx={{ flex: {
-        xs: 1,
-        md: 0.5
-      }}}>
-        <InputLabel id={`${name}.network`}>
-          {t('common:fields.platform')}
-        </InputLabel>
-        <Select
-          labelId={`${name}.network`}
-          label={t('common:fields.platform')}
-          defaultValue=""
-          {...networkField.field}
-          value={networkField.field.value ?? ''}
-          error={!!networkField.fieldState.error}
-        >
-          {networksOptions.map((network) => (
-            <MenuItem key={network.value} value={network.value}>
-              {network.label}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-      <TextField
-        label={t('common:fields.link')}
-        {...linkField.field}
-        sx={{ flex: 1, flexBasis: {
-          xs: "100%",
-          md: "unset"
-        }, order: {
-          xs: 2,
-          md: 1
-        } }}
-        error={!!linkField.fieldState.error}
-      />
-      <IconButton
-        aria-label="Delete this line"
-        onClick={onDelete}
-        sx={{ alignSelf: 'center', order: {
-          xs: 1,
-          md: 2,
-        } }}
+      <Stack
+        sx={{
+          flexFlow: 'row',
+          gap: 2,
+          flexWrap: {
+            xs: 'wrap',
+            md: 'nowrap',
+          },
+        }}
       >
-        <Delete />
-      </IconButton>
+        <FormControl
+          sx={{
+            flex: {
+              xs: 1,
+              md: 0.5,
+            },
+          }}
+        >
+          <InputLabel id={`${name}.network`}>
+            {t('common:fields.platform')}
+          </InputLabel>
+          <Select
+            labelId={`${name}.network`}
+            label={t('common:fields.platform')}
+            defaultValue=""
+            {...networkField.field}
+            value={networkField.field.value ?? ''}
+            error={!!networkField.fieldState.error}
+          >
+            {networksOptions.map((network) => (
+              <MenuItem key={network.value} value={network.value}>
+                {network.label}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+        <TextField
+          label={t('common:fields.link')}
+          {...linkField.field}
+          sx={{
+            flex: 1,
+            flexBasis: {
+              xs: '100%',
+              md: 'unset',
+            },
+            order: {
+              xs: 2,
+              md: 1,
+            },
+          }}
+          error={!!linkField.fieldState.error}
+        />
+        <IconButton
+          aria-label="Delete this line"
+          onClick={onDelete}
+          sx={{
+            alignSelf: 'center',
+            order: {
+              xs: 1,
+              md: 2,
+            },
+          }}
+        >
+          <Delete />
+        </IconButton>
       </Stack>
-      {(!!networkField.fieldState.error) && <Typography color="error">
-        {networkField.fieldState.error.message}
-        </Typography>}
-        {(!!linkField.fieldState.error) && <Typography color="error">
-      {linkField.fieldState.error.message}
-        </Typography>}
-
+      {!!networkField.fieldState.error && (
+        <Typography color="error">
+          {networkField.fieldState.error.message}
+        </Typography>
+      )}
+      {!!linkField.fieldState.error && (
+        <Typography color="error">
+          {linkField.fieldState.error.message}
+        </Typography>
+      )}
     </Card>
   );
 }

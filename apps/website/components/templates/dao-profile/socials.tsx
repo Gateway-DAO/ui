@@ -6,7 +6,7 @@ import { PartialDeep } from 'type-fest';
 import ShareIcon from '@mui/icons-material/IosShare';
 import { Avatar, Stack, IconButton, Snackbar } from '@mui/material';
 
-import { Network } from '../../../constants/networks';
+import { Network } from '../../../constants/dao';
 import { useSnackbar } from '../../../hooks/use-snackbar';
 import { Daos } from '../../../services/graphql/types.generated';
 import { SocialIcon } from '../../atoms/social-icon';

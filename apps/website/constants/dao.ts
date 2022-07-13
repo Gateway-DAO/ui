@@ -24,3 +24,17 @@ export const categoriesDropdown = categories.map((category) => ({
   label: category,
   value: paramCase(category),
 }));
+
+export const networks = [
+  'discord',
+  'email',
+  'github',
+  'medium',
+  'other',
+  'telegram',
+  'twitter',
+  'twitch',
+  'website',
+] as const;
+
+export type Network = typeof networks[number];
