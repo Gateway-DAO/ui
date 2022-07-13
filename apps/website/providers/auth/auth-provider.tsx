@@ -5,7 +5,7 @@ import { useAccount, useDisconnect } from 'wagmi';
 
 import { WalletModal } from '../../components/organisms/wallet-modal';
 import useToggleContainerClass from '../../hooks/useToggleContainerClass';
-import { gqlMethods } from '../../services/api';
+import { gqlMethodsWithRefresh } from '../../services/api';
 import { AuthContext } from './context';
 import { useInitUser, useMe } from './hooks';
 import { useAuthStatus } from './state';
@@ -19,15 +19,15 @@ export function AuthProvider({
   children,
 }: PropsWithChildren<Props>) {
   const { disconnect } = useDisconnect();
-  const { me, onSignOut: onSignOutMe, onUpdateMe } = useMe();
+  const { me, onSignOut: onSignOutMe, onUpdateMe, onUpdateToken } = useMe();
   const { status, onAuthenticated, onConnecting, onUnauthenticated } =
     useAuthStatus(me);
 
   const { status: accountStatus, data: account } = useAccount();
 
   const gqlAuthMethods = useMemo(
-    () => gqlMethods({ token: me?.token }),
-    [me?.token]
+    () => gqlMethodsWithRefresh({ token: me?.token }, onUpdateToken),
+    [me?.token, onUpdateToken]
   );
 
   const onSignOut = useCallback(() => {

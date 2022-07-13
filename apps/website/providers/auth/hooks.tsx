@@ -6,6 +6,7 @@ import { PartialDeep } from 'type-fest';
 
 import { ROUTES } from '../../constants/routes';
 import { gqlAnonMethods, gqlMethods } from '../../services/api';
+import { RefreshMutation } from '../../services/graphql/types.generated';
 import { SessionUser } from '../../types/user';
 import { AuthStatus } from './state';
 
@@ -60,7 +61,14 @@ export function useMe() {
     queryClient.setQueryData('me', undefined);
   };
 
-  return { me, onSignOut, onUpdateMe };
+  const onUpdateToken = (newToken: RefreshMutation['refresh']) =>
+    onUpdateMe((oldMe: PartialDeep<SessionUser>) => ({
+      ...oldMe,
+      token: newToken.token,
+      refresh_token: newToken.refresh_token,
+    }));
+
+  return { me, onSignOut, onUpdateMe, onUpdateToken };
 }
 
 export function useInitUser(status: AuthStatus, me: PartialDeep<SessionUser>) {
