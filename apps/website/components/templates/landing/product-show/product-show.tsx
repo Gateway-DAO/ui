@@ -23,7 +23,7 @@ export const ProductShow = forwardRef<
       sx={() => ({
         display: 'flex',
         justifyContent: 'center',
-        pt: '80px',
+        py: '144px',
         px: TOKENS.CONTAINER_PX,
       })}
     >

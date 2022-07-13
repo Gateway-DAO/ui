@@ -25,6 +25,7 @@ export const Hero = forwardRef<
       sx={{
         height: '100vh',
         width: '100%',
+        mb: '144px',
         overflow: 'hidden',
         pl: TOKENS.CONTAINER_PX,
       }}

@@ -40,6 +40,7 @@ export const Featured = forwardRef<
         pb: theme.spacing(14),
         flex: 1,
         width: '100%',
+        py: '144px',
         px: TOKENS.CONTAINER_PX,
         [theme.breakpoints.down('sm')]: {
           pt: theme.spacing(20),
@@ -90,7 +91,7 @@ export const Featured = forwardRef<
                 component="h3"
                 variant="h4"
                 sx={(theme) => ({
-                  color: isMobile
+                  color: !isMobile
                     ? activeIndex === index
                       ? theme.palette.text.primary
                       : theme.palette.text.secondary
@@ -103,6 +104,7 @@ export const Featured = forwardRef<
                 component="p"
                 sx={(theme) => ({
                   marginTop: '16px',
+                  maxWidth: '466px',
                   color:
                     activeIndex === index
                       ? theme.palette.text.primary

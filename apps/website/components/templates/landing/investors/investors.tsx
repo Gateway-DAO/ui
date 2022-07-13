@@ -21,7 +21,7 @@ export const Investors = forwardRef<
       ref={ref}
       component="section"
       {...rest}
-      sx={() => ({ px: TOKENS.CONTAINER_PX, pt: '80px', pb: '40px' })}
+      sx={() => ({ px: TOKENS.CONTAINER_PX, pt: '80px', pb: '20px' })}
     >
       <Box
         sx={() => ({
