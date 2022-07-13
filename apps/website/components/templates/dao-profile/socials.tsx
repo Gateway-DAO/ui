@@ -58,7 +58,7 @@ export function Socials({ dao, children }: PropsWithChildren<Props>) {
         </IconButton>
         {dao.socials?.map((social) => (
           <Link href={social.url} key={social.url} passHref>
-            <Avatar component="a">
+            <Avatar component="a" title={social.network}>
               <SocialIcon icon={social.network as Network} />
             </Avatar>
           </Link>

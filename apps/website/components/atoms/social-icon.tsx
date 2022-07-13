@@ -1,7 +1,13 @@
 import { useMemo } from 'react';
 
 import { AiOutlineTwitter } from 'react-icons/ai';
-import { FaTwitch, FaDiscord } from 'react-icons/fa';
+import {
+  FaTwitch,
+  FaDiscord,
+  FaGithub,
+  FaMedium,
+  FaTelegram,
+} from 'react-icons/fa';
 
 import { Language, Link } from '@mui/icons-material';
 import { SvgIcon, SvgIconProps } from '@mui/material';
@@ -21,17 +27,24 @@ export function SocialIcon({ icon, ...other }: Props) {
         return FaTwitch;
       case 'discord':
         return FaDiscord;
+      case 'github':
+        return FaGithub;
+      case 'medium':
+        return FaMedium;
+      case 'telegram':
+        return FaTelegram;
       case 'website':
         return Language;
       default:
         return Link;
     }
   }, [icon]);
+  const viewBox = useMemo(() => {
+    if (typeof iconComponent === 'function') {
+      return iconComponent({}).props.attr.viewBox;
+    }
+    return undefined;
+  }, [iconComponent]);
 
-  // const viewBox = useMemo(
-  //   () => iconComponent?.({}).props.attr.viewBox,
-  //   [iconComponent]
-  // );
-
-  return <SvgIcon component={iconComponent} {...other} />;
+  return <SvgIcon component={iconComponent} viewBox={viewBox} {...other} />;
 }
