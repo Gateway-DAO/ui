@@ -1,21 +1,26 @@
+import React, { forwardRef } from 'react';
+
 import { TOKENS } from '@gateway/theme';
 import { MotionBox } from '@gateway/ui';
 
 import { ArrowDownward } from '@mui/icons-material';
-import { Box, Button, Stack, Typography } from '@mui/material';
+import { Box, BoxTypeMap, Button, Stack, Typography } from '@mui/material';
+import { OverridableComponent } from '@mui/material/OverridableComponent';
 
 import BackgroundImage from '../../../../public/images/hero-background.png';
 import { HeroBackground } from './styles';
 import { HeroProps } from './types';
 
-export function Hero({
-  enterButton,
-  title,
-  subtitle,
-  titleDescription,
-}: HeroProps): JSX.Element {
+export const Hero = forwardRef<
+  OverridableComponent<BoxTypeMap<Record<string, unknown>, 'div'>>,
+  HeroProps
+>(function HeroComponent(
+  { enterButton, title, subtitle, titleDescription }: HeroProps,
+  ref
+): JSX.Element {
   return (
     <Box
+      ref={ref}
       component="section"
       sx={{
         height: '100vh',
@@ -164,4 +169,4 @@ export function Hero({
       ></Box>
     </Box>
   );
-}
+});

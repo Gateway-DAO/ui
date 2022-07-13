@@ -14,12 +14,14 @@ export function Menu({
   connectButton,
   signUpButton,
   menuList,
+  activeMenu,
 }: MenuProps): JSX.Element {
   const [open, setOpen] = useState(false);
 
   return (
     <Stack
       direction="row"
+      component="header"
       justifyContent="space-between"
       alignItems="center"
       px={TOKENS.CONTAINER_PX}
@@ -132,6 +134,9 @@ export function Menu({
                     '&:hover': {
                       color: theme.palette.text.primary,
                     },
+                    ...(activeMenu === menuItem.href.replace('#', '') && {
+                      color: theme.palette.text.primary,
+                    }),
                   })}
                   underline="none"
                 >

@@ -1,4 +1,4 @@
-import { ReactNode, useCallback, useEffect, useRef } from 'react';
+import { ReactNode, useEffect, useRef, useState } from 'react';
 
 import { useIntersection } from 'react-use';
 
@@ -53,54 +53,65 @@ export function LandingTemplate({
 }: Props) {
   const heroProps = { title, subtitle, enterButton, titleDescription };
   const menuProps = { menuList, signUpButton, connectButton };
-  const organizationRef = useRef(null);
-  const refs = useRef([]);
-  const organizationIntersection = useIntersection(organizationRef, {
+  const [activeArea, setActiveArea] = useState('');
+
+  const refs = {
+    hero: useRef(null),
+    users: useRef(null),
+    organizations: useRef(null),
+    model: useRef(null),
+    integration: useRef(null),
+    investors: useRef(null),
+  };
+
+  const organizationIntersection = useIntersection(refs.organizations, {
     root: null,
     rootMargin: '0px',
     threshold: 0.3,
   });
-
-  // function scrollPositionCheck(event: Event) {
-  //   const windowScroll = window.scrollY;
-  //   const positions = {
-  //     forUsers: refs.current['users'].offsetTop,
-  //     forOrganizations: 933,
-  //   };
-  //   refs.current.map((item, index) => {
-  //     console.log(index);
-  //   });
-
-  // console.log(window.scrollY);
-  // }
-
   useEffect(() => {
+    function scrollPositionCheck() {
+      const windowScroll = window.scrollY;
+
+      Object.keys(refs).map((key) => {
+        if (
+          windowScroll >= refs[key].current.offsetTop - 100 &&
+          windowScroll <
+            refs[key].current.offsetTop + refs[key].current.clientHeight
+        ) {
+          setActiveArea(key);
+        }
+      });
+    }
+
     organizationIntersection && organizationIntersection?.isIntersecting
       ? (document.body.style.background = theme.palette.background.light)
       : (document.body.style.background = theme.palette.background.default);
-    // window.addEventListener('scroll', scrollPositionCheck);
-    // return () => {
-    //   window.removeEventListener('scroll', scrollPositionCheck);
-    // };
+    window.addEventListener('scroll', scrollPositionCheck);
+    return () => {
+      window.removeEventListener('scroll', scrollPositionCheck);
+    };
   }, [organizationIntersection]);
   return (
     <>
-      <Menu {...menuProps} />
-      <Hero {...heroProps} />
-      <Featured
-        {...forUsersContent}
-        id="users"
-        ref={(el) => (refs.current['users'] = el)}
-      />
-      <Featured
-        {...forOrganizationsContent}
-        ref={organizationRef}
-        id="organizations"
-      />
-      <ProductShow {...theGatewayContent} id="model" />
-      <ProductShow {...buildAppsContent} id="integration" />
-      <Investors {...investorsContent} id="investors" />
-      <ScheduleDemo {...scheduleDemoContent} />
+      <Menu {...menuProps} activeMenu={activeArea} />
+      <main role="main">
+        <Hero {...heroProps} ref={refs.hero} />
+        <Featured {...forUsersContent} id="users" ref={refs.users} />
+        <Featured
+          {...forOrganizationsContent}
+          ref={refs.organizations}
+          id="organizations"
+        />
+        <ProductShow {...theGatewayContent} id="model" ref={refs.model} />
+        <ProductShow
+          {...buildAppsContent}
+          id="integration"
+          ref={refs.integration}
+        />
+        <Investors {...investorsContent} id="investors" ref={refs.investors} />
+        <ScheduleDemo {...scheduleDemoContent} />
+      </main>
       <Footer {...footerContent} />
     </>
   );

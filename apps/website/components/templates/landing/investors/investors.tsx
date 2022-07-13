@@ -1,21 +1,24 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import React from 'react';
+import React, { forwardRef } from 'react';
 
 import { TOKENS } from '@gateway/theme';
 
-import { Box, List, ListItem, Typography } from '@mui/material';
+import { Box, BoxTypeMap, List, ListItem, Typography } from '@mui/material';
+import { OverridableComponent } from '@mui/material/OverridableComponent';
 
 import { Investor, InvestorProps } from './types';
 
-export function Investors({
-  title,
-  investorsWithLogos,
-  investorsonlyNames,
-  ...rest
-}: InvestorProps) {
+export const Investors = forwardRef<
+  OverridableComponent<BoxTypeMap<Record<string, unknown>, 'div'>>,
+  InvestorProps
+>(function InvestorsComponent(
+  { title, investorsWithLogos, investorsonlyNames, ...rest }: InvestorProps,
+  ref
+) {
   return (
     <Box
+      ref={ref}
       component="section"
       {...rest}
       sx={() => ({ px: TOKENS.CONTAINER_PX, pt: '80px', pb: '40px' })}
@@ -111,4 +114,4 @@ export function Investors({
       </Box>
     </Box>
   );
-}
+});

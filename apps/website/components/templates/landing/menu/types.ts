@@ -6,6 +6,7 @@ export type MenuListItem = {
 };
 
 export type MenuProps = {
+  activeMenu: string;
   menuList: MenuListItem[];
   connectButton: ReactNode;
   signUpButton: ReactNode;

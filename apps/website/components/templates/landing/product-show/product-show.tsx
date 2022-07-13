@@ -1,22 +1,24 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 
 import { TOKENS } from '@gateway/theme';
 
-import { Box, Stack, Typography } from '@mui/material';
+import { Box, BoxTypeMap, Stack, Typography } from '@mui/material';
+import { OverridableComponent } from '@mui/material/OverridableComponent';
 
 import { ResponsiveImage } from '../styles';
 import { ProductShowProps } from './types';
 
-export function ProductShow({
-  comingSoon,
-  title,
-  description,
-  image,
-  ...rest
-}: ProductShowProps): JSX.Element {
+export const ProductShow = forwardRef<
+  OverridableComponent<BoxTypeMap<Record<string, unknown>, 'div'>>,
+  ProductShowProps
+>(function ProductShowComponent(
+  { comingSoon, title, description, image, ...rest }: ProductShowProps,
+  ref
+): JSX.Element {
   return (
     <Box
       component="section"
+      ref={ref}
       {...rest}
       sx={() => ({
         display: 'flex',
@@ -84,4 +86,4 @@ export function ProductShow({
       </Stack>
     </Box>
   );
-}
+});
