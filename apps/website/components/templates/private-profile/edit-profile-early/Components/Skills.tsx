@@ -44,12 +44,13 @@ export function Skills() {
             fontWeight="bold"
             sx={{ color: '#fff' }}
             ml={{ xs: '0px', md: '40px' }}
+            mb={{xs: '27px', md: '0px'}}
           >
             Skills
           </Typography>
         </Grid>
-        <Grid item xs={6}>
-          <Stack width={{ sx: '100%', md: '65%' }}>
+        <Grid item xs={7.5}>
+          <Stack >
             <Autocomplete
               multiple
               id="tags-standard"
@@ -64,6 +65,7 @@ export function Skills() {
               )}
               popupIcon={<SearchIcon />}
               sx={{
+                width: { xs: '94vw', md: '65%' },
                 [`& .${autocompleteClasses.popupIndicator}`]: {
                   transform: "none",
                   color:"rgba(255, 255, 255, 0.56)"

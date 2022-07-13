@@ -12,6 +12,8 @@ import {
   TextField,
 } from '@mui/material';
 
+import { SocialLinks } from 'apps/website/components/molecules/social-links';
+
 export function About() {
   const [bioChar, setBioChar] = useState(0);
   return (
@@ -157,6 +159,9 @@ export function About() {
               >
                 Social links
               </Typography>
+              <Stack>
+                
+              </Stack>
             </Stack>
           </Stack>
         </Grid>

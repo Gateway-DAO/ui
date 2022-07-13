@@ -31,11 +31,12 @@ export function TimeZone() {
             fontWeight="bold"
             sx={{ color: '#fff' }}
             ml={{ xs: '0px', md: '40px' }}
+            mb={{xs: '20px', md: '0px'}}
           >
             Time Zone
           </Typography>
         </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={7.5}>
           <Stack width={{ sx: '100%', md: '65%' }}>
             <FormControl fullWidth>
               <InputLabel id="demo-simple-select-label">SELECT YOUR TIME ZONE</InputLabel>
