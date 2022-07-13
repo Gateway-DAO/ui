@@ -1,5 +1,5 @@
 mutation upload_image($base64: String!, $metadata: MetadataInput!) {
   upload_image(base64: $base64, metadata: $metadata) {
-    file
+    id
   }
 }

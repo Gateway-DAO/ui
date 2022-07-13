@@ -53,7 +53,7 @@ export function CreateGateTemplate() {
       },
       {
         onSuccess(imageData) {
-          const image_id = imageData['upload_image'].file.id;
+          const image_id = imageData['upload_image'].id;
           const image_url =
             'https://api.staging.mygateway.xyz/storage/file?id=' + image_id;
 
