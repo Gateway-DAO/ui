@@ -19,6 +19,7 @@ import {
 
 import { useUploadImage } from '../../../hooks/use-upload-image';
 import { useAuth } from '../../../providers/auth';
+import { LoadingButton } from '../../atoms/loading-button';
 import { AboutForm } from './form/form';
 import { schema, NewDAOSchema } from './schema';
 
@@ -94,9 +95,13 @@ export function NewDAOTemplate() {
             <ArrowBack />
           </Avatar>
         </IconButton>
-        <Button variant="contained" type="submit">
+        <LoadingButton
+          variant="contained"
+          type="submit"
+          isLoading={createDAOMutation.isLoading}
+        >
           Create
-        </Button>
+        </LoadingButton>
       </Stack>
       <Box>
         <Typography variant="h4">{t('title')}</Typography>
