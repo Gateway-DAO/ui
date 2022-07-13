@@ -55,13 +55,13 @@ export function Socials({ dao, children }: PropsWithChildren<Props>) {
             />
           </Avatar>
         </IconButton>
-        {dao.socials?.map((social) => (
+        {/* dao.socials?.map((social) => (
           <Link href={social.url} key={social.url} passHref>
             <Avatar component="a">
               <SocialIcon icon={social.network} />
             </Avatar>
           </Link>
-        ))}
+        )) */}
       </Stack>
       <Snackbar
         anchorOrigin={{
