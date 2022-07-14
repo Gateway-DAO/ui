@@ -45,7 +45,8 @@ export function ScheduleDemo({
               maxWidth: '316px',
               mb: '40px',
               [theme.breakpoints.down('sm')]: {
-                ...theme.typography.h5,
+                ...theme.typography.h6,
+                maxWidth: '199px',
               },
             })}
           >

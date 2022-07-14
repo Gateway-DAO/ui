@@ -43,7 +43,8 @@ export const Investors = forwardRef<
           sx={(theme) => ({
             pb: '24px',
             [theme.breakpoints.down('sm')]: {
-              ...theme.typography.h4,
+              ...theme.typography.h6,
+              maxWidth: '186px',
             },
           })}
         >

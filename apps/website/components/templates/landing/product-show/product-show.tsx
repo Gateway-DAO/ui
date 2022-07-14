@@ -51,7 +51,7 @@ export const ProductShow = forwardRef<
         },
       })}
     >
-      <Stack direction="column" sx={(theme) => ({ width: '100%' })}>
+      <Stack direction="column" sx={() => ({ width: '100%' })}>
         {comingSoon && (
           <Typography
             component="p"
@@ -132,7 +132,12 @@ export const ProductShow = forwardRef<
                 <Typography
                   component="h2"
                   variant="h4"
-                  sx={(theme) => ({ mb: '16px' })}
+                  sx={(theme) => ({
+                    mb: '16px',
+                    [theme.breakpoints.down('sm')]: {
+                      ...theme.typography.h6,
+                    },
+                  })}
                 >
                   {feature.title}
                 </Typography>

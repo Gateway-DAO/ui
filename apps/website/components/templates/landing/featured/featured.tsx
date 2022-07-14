@@ -14,12 +14,7 @@ import {
 import { OverridableComponent } from '@mui/material/OverridableComponent';
 
 import { useActiveScroll } from '../../../../hooks/use-active-scroll';
-import {
-  DEFAULT_MAX_WIDTH,
-  DEFAULT_PADDINGX,
-  LandingTitleLimiter,
-  ResponsiveImage,
-} from '../styles';
+import { LandingTitleLimiter, ResponsiveImage } from '../styles';
 import Title from '../title';
 import { FeaturedProps } from './types';
 
@@ -104,6 +99,12 @@ export const Featured = forwardRef<
                       ? theme.palette.text.primary
                       : theme.palette.text.secondary
                     : theme.palette.text.primary,
+                  [theme.breakpoints.down('md')]: {
+                    ...theme.typography.h4,
+                  },
+                  [theme.breakpoints.down('sm')]: {
+                    ...theme.typography.h6,
+                  },
                 })}
               >
                 {feature.title}
