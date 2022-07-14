@@ -78,7 +78,6 @@ export const Investors = forwardRef<
                   },
                   [theme.breakpoints.down('sm')]: {
                     width: '100%',
-                    justifyContent: 'center',
                   },
                 })}
               >

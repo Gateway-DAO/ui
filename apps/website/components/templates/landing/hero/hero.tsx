@@ -158,9 +158,9 @@ export const Hero = forwardRef<
             right: `-${DEFAULT_PADDINGX}`,
             overflow: 'hidden',
             [theme.breakpoints.down('sm')]: {
-              left: '0px',
+              left: '-20px',
               right: '-20px',
-              width: 'calc(100vw - 20px)',
+              width: '100vw',
             },
           })}
         >
@@ -184,9 +184,8 @@ export const Hero = forwardRef<
             background:
               'linear-gradient(0deg, rgba(0, 0, 0, 0.64) 0%, rgba(0, 0, 0, 0) 100%)',
             [theme.breakpoints.down('sm')]: {
-              left: 0,
-              right: '-20px',
-              width: 'calc(100vw - 20px)',
+              left: '-20px',
+              width: '100vw',
               overflow: 'hidden',
             },
           },
