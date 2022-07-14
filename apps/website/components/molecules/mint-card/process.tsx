@@ -5,7 +5,7 @@ import { MintingScreen } from './minting-screen';
 
 export function processScreen(
   mintProcessStatus: Subjects,
-  setmintProcessStatus: React.Dispatch<React.SetStateAction<Subjects>>,
+  setMintProcessStatus: React.Dispatch<React.SetStateAction<Subjects>>,
   mint: (token_uri?: string) => void,
   details: {
     title: string;
@@ -19,7 +19,7 @@ export function processScreen(
     case Subjects.start:
       return (
         <StartMintScreen
-          {...{ mintProcessStatus, setmintProcessStatus, mint }}
+          {...{ mintProcessStatus, setMintProcessStatus, mint }}
         />
       );
     case Subjects.minting:
@@ -27,13 +27,13 @@ export function processScreen(
     case Subjects.failed:
     case Subjects.sign:
       return (
-        <MintingScreen {...{ mintProcessStatus, setmintProcessStatus, mint }} />
+        <MintingScreen {...{ mintProcessStatus, setMintProcessStatus, mint }} />
       );
     case Subjects.default:
     case Subjects.alreadyMinted:
       return (
         <DefaultMintScreen
-          {...{ mintProcessStatus, setmintProcessStatus, mint, details }}
+          {...{ mintProcessStatus, setMintProcessStatus, mint, details }}
         />
       );
   }

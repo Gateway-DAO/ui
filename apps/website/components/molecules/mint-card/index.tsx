@@ -2,6 +2,7 @@ import Card from '@mui/material/Card';
 import { useBiconomyMint } from '../../../hooks/use-mint';
 import { useState, useEffect } from 'react';
 import { processScreen } from './process';
+import { Box, Button } from '@mui/material';
 
 export enum Subjects {
   default = 'mint:default',
@@ -22,7 +23,7 @@ type MintCardProps = {
   image: string;
   categories: string[];
   onMint?: () => void;
-}
+};
 
 export const MintCard = (props: MintCardProps) => {
   const [mintProcessStatus, setMintProcessStatus] = useState<Subjects>(
@@ -52,8 +53,7 @@ export const MintCard = (props: MintCardProps) => {
   useEffect(() => {
     if (props.minted) {
       setMintProcessStatus(Subjects.alreadyMinted);
-    }
-    else {
+    } else {
       setMintProcessStatus(Subjects.default);
     }
   }, [props.minted]);
@@ -71,8 +71,22 @@ export const MintCard = (props: MintCardProps) => {
         categories: props.categories,
         nft_url: props.nftURL,
       })}
+      {mintProcessStatus !== Subjects.default &&
+        Subjects.successful &&
+        Subjects.alreadyMinted && (
+          <Box sx={{ mx: 2, my: 1 }}>
+            <Button
+              size="large"
+              variant="outlined"
+              fullWidth
+              onClick={() => setMintProcessStatus(Subjects.default)}
+            >
+              cancel
+            </Button>
+          </Box>
+        )}
     </Card>
   );
-}
+};
 
 export default MintCard;

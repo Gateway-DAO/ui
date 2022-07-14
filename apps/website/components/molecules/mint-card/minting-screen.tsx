@@ -7,7 +7,7 @@ import { AnimatedMessage } from '../../organisms/wallet-modal/animated-message';
 import { Check, Close } from '@mui/icons-material';
 import { Subjects } from './index';
 
-export function MintingScreen({ mintProcessStatus, setmintProcessStatus }) {
+export function MintingScreen({ mintProcessStatus, setMintProcessStatus }) {
   return (
     <>
       <GatewayGrayIcon
@@ -20,7 +20,7 @@ export function MintingScreen({ mintProcessStatus, setmintProcessStatus }) {
       <Box
         sx={{
           width: 300,
-          height: 300,
+          height: 260,
           backgroundColor: 'primary',
           '&:hover': {
             backgroundColor: 'primary',
@@ -33,19 +33,20 @@ export function MintingScreen({ mintProcessStatus, setmintProcessStatus }) {
           justifyContent: 'center',
         }}
       >
-        {mintProcessStatus !== Subjects.successful && mintProcessStatus !== Subjects.failed && (
-          <CircularProgress
-            color="secondary"
-            sx={{
-              height: 60,
-              width: 60,
-              mb: 2,
-              p: 1,
-              bgcolor: 'primary.light',
-              borderRadius: '50%',
-            }}
-          />
-        )}
+        {mintProcessStatus !== Subjects.successful &&
+          mintProcessStatus !== Subjects.failed && (
+            <CircularProgress
+              color="secondary"
+              sx={{
+                height: 60,
+                width: 60,
+                mb: 2,
+                p: 1,
+                bgcolor: 'primary.light',
+                borderRadius: '50%',
+              }}
+            />
+          )}
 
         {mintProcessStatus == Subjects.successful && (
           <Check
@@ -106,7 +107,7 @@ export function MintingScreen({ mintProcessStatus, setmintProcessStatus }) {
             size="large"
             variant="contained"
             fullWidth
-            onClick={() => setmintProcessStatus(Subjects.start)}
+            onClick={() => setMintProcessStatus(Subjects.start)}
           >
             RETRY MINT AS NFT
           </Button>

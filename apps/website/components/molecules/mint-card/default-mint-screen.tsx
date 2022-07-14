@@ -4,15 +4,35 @@ import CardContent from '@mui/material/CardContent';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { Avatar, Chip, Stack } from '@mui/material';
+import {
+  Avatar,
+  Chip,
+  ListItemIcon,
+  Menu,
+  MenuItem,
+  MenuList,
+  Stack,
+} from '@mui/material';
 import { TokenFilled } from '@gateway/assets';
 import { Subjects } from './index';
+import { useState } from 'react';
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 
 export const DefaultMintScreen = ({
   mintProcessStatus,
-  setmintProcessStatus,
+  setMintProcessStatus,
   details,
 }) => {
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
   const showCategories = () => {
     if (details.categories.length > 0) {
       if (mintProcessStatus === Subjects.default) {
@@ -63,16 +83,24 @@ export const DefaultMintScreen = ({
       />
       <CardHeader
         action={
-          <IconButton aria-label="settings">
+          <IconButton
+            aria-label="settings"
+            onClick={handleClick}
+            size="small"
+            aria-controls={open ? 'more' : undefined}
+            aria-haspopup="true"
+            aria-expanded={open ? 'true' : undefined}
+          >
             <MoreVertIcon />
           </IconButton>
         }
         title={details.title}
       />
       {/* TODO: fix the description overflow */}
+
       <CardContent sx={{ mt: -2.0 }}>
         <Typography variant="body2" color="text.secondary">
-          {details.description.length > 50
+          {details.description.length > 70
             ? details.description.substring(0, 70) + '...'
             : details.description}
         </Typography>
@@ -85,11 +113,15 @@ export const DefaultMintScreen = ({
             size="medium"
             color="primary"
             icon={<TokenFilled height={20} width={20} color="action" />}
-            onClick={() => setmintProcessStatus(Subjects.start)}
+            onClick={() => setMintProcessStatus(Subjects.start)}
           />
         ) : (
           <Avatar sx={{ height: 32, width: 32 }}>
-            <IconButton onClick={() => details.nft_url && window.open(details.nft_url, "_blank")}>
+            <IconButton
+              onClick={() =>
+                details.nft_url && window.open(details.nft_url, '_blank')
+              }
+            >
               <TokenFilled height={24} width={24} color="action" />
             </IconButton>
           </Avatar>
@@ -97,6 +129,35 @@ export const DefaultMintScreen = ({
         {/* we can show maximum 2 categories , when mintProcessStauts is minted*/}
         {showCategories()}
       </Stack>
+      <Menu
+        anchorEl={anchorEl}
+        id="more"
+        open={open}
+        onClose={handleClose}
+        onClick={handleClose}
+        transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+        PaperProps={{
+          sx: {
+            mt: 1.5,
+          },
+        }}
+      >
+        <MenuList>
+          <MenuItem>
+            <ListItemIcon>
+              <OpenInNewIcon fontSize="medium" color="disabled" />
+            </ListItemIcon>
+            Open on Ceramic
+          </MenuItem>
+          <MenuItem>
+            <ListItemIcon>
+              <ContentCopyIcon fontSize="medium" color="disabled" />
+            </ListItemIcon>
+            Copy url address
+          </MenuItem>
+        </MenuList>
+      </Menu>
     </>
   );
 };

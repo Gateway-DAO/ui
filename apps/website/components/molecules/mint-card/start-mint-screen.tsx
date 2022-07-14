@@ -10,12 +10,10 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
-import ImageIcon from '@mui/icons-material/Image';
-import { Subjects } from './index';
 
 export const StartMintScreen = ({
   mintProcessStatus,
-  setmintProcessStatus,
+  setMintProcessStatus,
   mint,
 }) => {
   return (
@@ -23,7 +21,7 @@ export const StartMintScreen = ({
       <Box
         sx={{
           width: 300,
-          height: 200,
+          height: 130,
           backgroundColor: 'primary',
           '&:hover': {
             backgroundColor: 'primary',
