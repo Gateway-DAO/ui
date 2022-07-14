@@ -37,10 +37,11 @@ const TaskArea = () => {
   };
 
   const deleteTask = (id: number) => {
-    setTasks({
-      data: tasks.data.filter((task) => task.id !== id),
-    });
-    setValue('tasks', tasks);
+    const tasksCopy = { ...tasks };
+    tasksCopy.data.splice(id, 1);
+
+    setTasks(tasksCopy);
+    setValue('tasks', tasksCopy);
   };
 
   return (
