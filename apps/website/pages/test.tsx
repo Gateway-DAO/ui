@@ -21,6 +21,7 @@ export default function Test() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
+      <textarea value={me?.token} />
       <textarea {...register('token')} />
       <button type="submit">Submit</button>
       <br />
