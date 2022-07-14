@@ -1,3 +1,4 @@
+import { TOKENS } from '@gateway/theme';
 import { useState } from 'react';
 import EditIcon from '@mui/icons-material/Edit';
 import {
@@ -18,6 +19,7 @@ export function About() {
   const [bioChar, setBioChar] = useState(0);
   return (
     <Stack
+      p={TOKENS.CONTAINER_PX}
       direction="column"
       justifyContent="space-between"
       alignItems="flex-start"
@@ -57,10 +59,13 @@ export function About() {
                   backgroundSize: 'cover',
                   background:
                     'linear-gradient(180deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0) 44.13%), linear-gradient(82.31deg, #FCB5DB 17.7%, #8965D2 57.63%);',
+                  backdropFilter: "blur(40px)",
+                  border:"1px solid #594979",
                   pt: 2,
                   display: 'flex',
                   alignItems: 'flex-end',
                   justifyContent: 'flex-end',
+                  borderRadius:"8px"
                 }}
               >
                 <IconButton sx={{ zIndex: '13' }}>
@@ -126,13 +131,39 @@ export function About() {
                 gap={2}
                 width={{ sx: '100%', md: '65%' }}
               >
-                <TextField required label="DISPLAY NAME" id="name" />
-                <TextField required label="USERNAME" id="username" />
                 <TextField
+                  required
+                  sx={{
+                    '& div fieldset legend span': {
+                      marginRight: '-6px',
+                      paddingRight: '0px',
+                    },
+                  }}
+                  label="Display Name"
+                  id="name"
+                />
+                <TextField
+                  sx={{
+                    '& div fieldset legend span': {
+                      marginRight: '-6px',
+                      paddingRight: '0px',
+                    },
+                  }}
+                  required
+                  label="Username"
+                  id="username"
+                />
+                <TextField
+                  sx={{
+                    '& div fieldset legend span': {
+                      marginRight: '-6px',
+                      paddingRight: '0px',
+                    },
+                  }}
                   multiline
                   minRows={4}
                   required
-                  label="YOUR BIO"
+                  label="Your Bio"
                   id="your_bio"
                   inputProps={{ maxLength: 200 }}
                   onChange={(e) => setBioChar(e.target.value.length)}
@@ -159,14 +190,11 @@ export function About() {
               >
                 Social links
               </Typography>
-              <Stack>
-                
-              </Stack>
+              <Stack></Stack>
             </Stack>
           </Stack>
         </Grid>
       </Grid>
-      <Divider light sx={{ width: '100%' }} />
     </Stack>
   );
 }

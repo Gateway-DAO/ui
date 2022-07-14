@@ -1,3 +1,4 @@
+import { TOKENS } from '@gateway/theme';
 import { useState } from 'react';
 import {
   Grid,
@@ -31,6 +32,7 @@ export function Skills() {
       justifyContent="space-between"
       alignItems="flex-start"
       gap={6}
+      p={TOKENS.CONTAINER_PX}
     >
       {/* TimeZone */}
       <Grid

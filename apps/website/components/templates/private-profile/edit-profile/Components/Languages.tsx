@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { TOKENS } from '@gateway/theme';
 import {
   Grid,
   Stack,
@@ -23,6 +24,7 @@ export function Languages() {
       justifyContent="space-between"
       alignItems="flex-start"
       gap={6}
+      p={TOKENS.CONTAINER_PX}
     >
       {/* TimeZone */}
       <Grid
