@@ -13,6 +13,9 @@ const nextConfig = {
     // See: https://github.com/gregberge/svgr
     svgr: false,
   },
+  images: {
+    domains: ['api.staging.mygateway.xyz'],
+  },
 };
 
 const sentryWebpackPluginOptions = {

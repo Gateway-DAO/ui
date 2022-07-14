@@ -1,4 +1,5 @@
 import useTranslation from 'next-translate/useTranslation';
+import Image from 'next/image';
 
 import { useQuery } from 'react-query';
 import { PartialDeep } from 'type-fest';
@@ -7,6 +8,7 @@ import { TOKENS } from '@gateway/theme';
 
 import { Chip, Box, Stack, Typography, Tabs, Tab } from '@mui/material';
 
+import { useFile } from '../../../hooks/use-file';
 import { gqlAnonMethods } from '../../../services/api';
 import { Daos } from '../../../services/graphql/types.generated';
 import { AvatarFile } from '../../atoms/avatar-file';
@@ -56,18 +58,27 @@ export function DaoProfileTemplate({ dao }: Props) {
     },
   ];
 
+  const cover = useFile(dao.background);
+
   return (
     <>
       <Box
         sx={{
           height: (theme) => theme.spacing(35),
-          background: `url(${dao.background_url})`,
-          backgroundPosition: 'center',
-          backgroundSize: 'cover',
           pt: 2,
+          position: 'relative',
         }}
       >
-        <Navbar />
+        <Navbar sx={{ zIndex: 1 }} />
+        {cover?.url && cover?.blur ? (
+          <Image
+            src={cover.url}
+            blurDataURL={cover.blur}
+            placeholder="blur"
+            layout="fill"
+            objectFit="cover"
+          />
+        ) : null}
       </Box>
       <Box
         sx={{
