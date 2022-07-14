@@ -5,10 +5,11 @@ import { PartialDeep } from 'type-fest';
 
 import { TOKENS } from '@gateway/theme';
 
-import { Avatar, Chip, Box, Stack, Typography, Tabs, Tab } from '@mui/material';
+import { Chip, Box, Stack, Typography, Tabs, Tab } from '@mui/material';
 
 import { gqlAnonMethods } from '../../../services/api';
 import { Daos } from '../../../services/graphql/types.generated';
+import { AvatarFile } from '../../atoms/avatar-file';
 import { FollowButtonDAO } from '../../atoms/follow-button-dao';
 import { a11yTabProps, TabPanel, useTab } from '../../atoms/tabs';
 import { Navbar } from '../../organisms/navbar/navbar';
@@ -42,128 +43,138 @@ export function DaoProfileTemplate({ dao }: Props) {
     {
       key: 'overview',
       label: t('common:tabs.overview'),
-      section: <OverviewTab people={followers} setTab={setTab} />,
+      section: (
+        <DaoProvider dao={dao}>
+          <OverviewTab people={followers} setTab={setTab} />
+        </DaoProvider>
+      ),
     },
     {
       key: 'gates',
       label: t('common:tabs.gates'),
-      section: <GatesTab />,
+      section: (
+        <DaoProvider dao={dao}>
+          <GatesTab />
+        </DaoProvider>
+      ),
     },
     {
       key: 'people',
       label: t('common:tabs.people'),
-      section: <PeopleTab people={followers} />,
+      section: (
+        <DaoProvider dao={dao}>
+          <PeopleTab people={followers} />
+        </DaoProvider>
+      ),
     },
   ];
 
   return (
-    <DaoProvider dao={dao}>
-      <>
-        <Box
+    <>
+      <Box
+        sx={{
+          height: (theme) => theme.spacing(35),
+          background: `url(${dao.background_url})`,
+          backgroundPosition: 'center',
+          backgroundSize: 'cover',
+          pt: 2,
+        }}
+      >
+        <Navbar />
+      </Box>
+      <Box
+        sx={{
+          px: TOKENS.CONTAINER_PX,
+          marginTop: -13,
+        }}
+      >
+        <AvatarFile
           sx={{
-            height: (theme) => theme.spacing(35),
-            background: `url(${dao.background_url})`,
-            backgroundPosition: 'center',
-            backgroundSize: 'cover',
-            pt: 2,
+            height: (theme) => theme.spacing(16.25),
+            width: (theme) => theme.spacing(16.25),
+            border: (theme) => `${theme.spacing(0.5)} solid`,
+            borderColor: 'background.default',
           }}
-        >
-          <Navbar />
-        </Box>
-        <Box
-          sx={{
-            px: TOKENS.CONTAINER_PX,
-            marginTop: -13,
-          }}
-        >
-          <Avatar
-            sx={{
-              height: (theme) => theme.spacing(16.25),
-              width: (theme) => theme.spacing(16.25),
-              border: (theme) => `${theme.spacing(0.5)} solid`,
-              borderColor: 'background.default',
-            }}
-            src={dao?.logo_url}
-          ></Avatar>
-          <Box>
-            <Typography component="h1" variant="h4">
-              {dao.name}
-            </Typography>
-            {dao.categories && (
-              <Stack direction="row" gap={2} sx={{ mt: 12 / 8 }}>
-                {dao.categories.map((category) => (
-                  <Chip key={category} label={category} size="small" />
-                ))}
-              </Stack>
-            )}
-            <Typography
-              variant="body1"
-              sx={{
-                mt: 2,
-                maxWidth: {
-                  md: 1 / 2,
-                },
-              }}
-              color="text.secondary"
-            >
-              {dao.description}
-            </Typography>
-            <Stack
-              direction="row"
-              gap={1}
-              divider={<span>·</span>}
-              sx={{ mt: 12 / 8 }}
-            >
-              <Typography variant="body1">
-                {t('common:count.follower', {
-                  count:
-                    peopleQuery.data?.daos_by_pk.followers_aggregate.aggregate
-                      .count ?? 0,
-                })}
-              </Typography>
-              <Typography variant="body1">
-                {t('common:count.gate', { count: dao.gates?.length ?? 0 })}
-              </Typography>
+          file={dao.logo}
+        />
+        <Box>
+          <Typography component="h1" variant="h4">
+            {dao.name}
+          </Typography>
+          {dao.categories && (
+            <Stack direction="row" gap={2} sx={{ mt: 12 / 8 }}>
+              {dao.categories.map((category) => (
+                <Chip key={category} label={category} size="small" />
+              ))}
             </Stack>
-            <Socials dao={dao}>
-              <FollowButtonDAO
-                daoId={dao.id}
-                onFollow={onResetPeopleQuery}
-                onUnfollow={onResetPeopleQuery}
-              />
-            </Socials>
-          </Box>
+          )}
+          <Typography
+            variant="body1"
+            sx={{
+              mt: 2,
+              maxWidth: {
+                md: 1 / 2,
+              },
+            }}
+            color="text.secondary"
+          >
+            {dao.description}
+          </Typography>
+          <Stack
+            direction="row"
+            gap={1}
+            divider={<span>·</span>}
+            sx={{ mt: 12 / 8 }}
+          >
+            <Typography variant="body1">
+              {t('common:count.follower', {
+                count:
+                  peopleQuery.data?.daos_by_pk.followers_aggregate.aggregate
+                    .count ?? 0,
+              })}
+            </Typography>
+            <Typography variant="body1">
+              {t('common:count.gate', { count: dao.gates?.length ?? 0 })}
+            </Typography>
+          </Stack>
+          <Socials dao={dao}>
+            <FollowButtonDAO
+              daoId={dao.id}
+              onFollow={onResetPeopleQuery}
+              onUnfollow={onResetPeopleQuery}
+            />
+          </Socials>
         </Box>
-        <Box
-          sx={{
-            borderBottom: 1,
-            borderColor: 'divider',
-            px: TOKENS.CONTAINER_PX,
-            mt: 4,
-          }}
+      </Box>
+      <Box
+        sx={{
+          borderBottom: 1,
+          borderColor: 'divider',
+          px: TOKENS.CONTAINER_PX,
+          mt: 4,
+        }}
+      >
+        <Tabs
+          value={activeTab}
+          onChange={handleTabChange}
+          aria-label="basic tabs example"
+          sx={{ mb: '-1px' }}
         >
-          <Tabs
-            value={activeTab}
-            onChange={handleTabChange}
-            aria-label="basic tabs example"
-            sx={{ mb: '-1px' }}
-          >
-            {tabs.map(({ key, label }, index) => (
-              <Tab key={key} label={label} {...a11yTabProps('dao', index)} />
-            ))}
-          </Tabs>
-        </Box>
-        {tabs.map(({ key, section }, index) => (
-          <TabPanel
-            key={key}
-            tabsId="dao"
-            index={index}
-            active={index === activeTab}
-          >
-            {section}
-          </TabPanel>
-        ))}
-      </>
-    </DaoProvider>
+          {tabs.map(({ key, label }, index) => (
+            <Tab key={key} label={label} {...a11yTabProps('dao', index)} />
+          ))}
+        </Tabs>
+      </Box>
+      {tabs.map(({ key, section }, index) => (
+        <TabPanel
+          key={key}
+          tabsId="dao"
+          index={index}
+          active={index === activeTab}
+        >
+          {section}
+        </TabPanel>
+      ))}
+    </>
   );
 }
