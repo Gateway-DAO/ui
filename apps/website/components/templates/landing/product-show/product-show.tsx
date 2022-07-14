@@ -43,7 +43,9 @@ export const ProductShow = forwardRef<
         display: 'flex',
         width: '100%',
         py: '144px',
-        borderBottom: '1px solid rgba(229, 229, 229, 0.12)',
+        ...(revert
+          ? { borderBottom: 'none' }
+          : { borderBottom: '1px solid rgba(229, 229, 229, 0.12)' }),
         [theme.breakpoints.down('sm')]: {
           py: '124px',
         },
@@ -83,7 +85,7 @@ export const ProductShow = forwardRef<
             component="h2"
             variant="subtitle1"
             sx={(theme) => ({
-              color: theme.palette.secondary.dark,
+              color: theme.palette.text.secondary,
               maxWidth: '550px',
               pb: '24px',
             })}
@@ -127,7 +129,11 @@ export const ProductShow = forwardRef<
                   },
                 })}
               >
-                <Typography component="h2" variant="h4">
+                <Typography
+                  component="h2"
+                  variant="h4"
+                  sx={(theme) => ({ mb: '16px' })}
+                >
                   {feature.title}
                 </Typography>
                 <Typography variant="body1">{feature.description}</Typography>

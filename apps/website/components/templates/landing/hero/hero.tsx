@@ -30,13 +30,15 @@ export const Hero = forwardRef<
     <Box
       ref={ref}
       component="section"
-      sx={{
-        height: '100vh',
+      sx={(theme) => ({
         width: '100%',
         position: 'relative',
         mb: '144px',
         borderBottom: '1px solid rgba(229, 229, 229, 0.12)',
-      }}
+        [theme.breakpoints.down('sm')]: {
+          height: '100vh',
+        },
+      })}
     >
       <Stack
         direction="column"
@@ -116,14 +118,16 @@ export const Hero = forwardRef<
           <Button
             variant="outlined"
             component="a"
-            href="#users"
+            href="#professionals"
             sx={(theme) => ({
               borderRadius: '50%',
               padding: '20px',
               marginTop: '70px',
+              mb: '64px',
               borderColor: theme.palette.secondary.main,
               [theme.breakpoints.down('sm')]: {
                 marginTop: 'auto',
+                mb: '0',
                 marginBottom: '30px',
               },
             })}

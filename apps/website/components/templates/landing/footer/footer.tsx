@@ -147,7 +147,14 @@ export function Footer({
           </Stack>
           <Stack direction={'column'} sx={{ maxWidth: '294px' }}>
             <Typography sx={{ mb: '16px' }}>{subscribe}</Typography>
-            <Typography sx={{ mb: '16px' }}>{receiveNews}</Typography>
+            <Typography
+              sx={(theme) => ({
+                mb: '16px',
+                color: theme.palette.text.secondary,
+              })}
+            >
+              {receiveNews}
+            </Typography>
             <TextField
               sx={{ mb: '16px' }}
               variant="outlined"
@@ -172,8 +179,11 @@ export function Footer({
 
         <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
           <Typography
+            variant="body2"
             sx={(theme) => ({
+              color: theme.palette.text.secondary,
               mt: '-25px',
+              maxWidth: '196px',
               [theme.breakpoints.down('sm')]: {
                 mt: '64px',
               },

@@ -26,6 +26,7 @@ export function Menu({
         position: 'fixed',
         px: DEFAULT_PADDINGX,
         zIndex: 10,
+        background: `linear-gradient(180deg, ${theme.palette.background.default} 0%, rgba(16, 4, 28, 0) 100%)`,
         [theme.breakpoints.down('sm')]: {
           px: '20px',
         },
@@ -75,6 +76,8 @@ export function Menu({
           <Box
             sx={(theme) => ({
               display: 'flex',
+              alignItems: 'center',
+              py: 0,
               [theme.breakpoints.down('md')]: {
                 marginRight: 'auto',
                 ...(open && {
@@ -86,11 +89,12 @@ export function Menu({
               },
             })}
           >
-            <Link href="#">
+            <Link href="#" sx={{ height: '34px' }}>
               <GatewayIcon
                 sx={(theme) => ({
-                  width: 50,
-                  height: 50,
+                  width: 34,
+                  height: 34,
+                  py: 0,
                   marginRight: '43px',
                   [theme.breakpoints.down('md')]: {
                     height: '24px',
@@ -104,7 +108,7 @@ export function Menu({
                 color="secondary"
                 fontSize="medium"
                 onClick={() => setOpen(false)}
-                sx={(theme) => ({
+                sx={() => ({
                   cursor: 'pointer',
                   position: 'absolute',
                   top: 0,
@@ -116,6 +120,7 @@ export function Menu({
               role="menu"
               sx={(theme) => ({
                 display: 'flex',
+                py: 0,
                 [theme.breakpoints.down('md')]: {
                   ...(open && {
                     flexDirection: 'column',
@@ -186,6 +191,7 @@ export function Menu({
               sx={(theme) => ({
                 visibility: 'hidden',
                 opacity: 0,
+                px: 0,
                 transition:
                   'visibility 250ms ease-in-out, opacity 250ms ease-in-out',
                 '&:hover': { background: 'none', cursor: 'default' },
@@ -214,13 +220,14 @@ export function Menu({
             <ListItem
               role="menuitem"
               sx={(theme) => ({
+                px: 0,
+                py: 0,
+                pl: '8px',
                 '&:hover': { background: 'none', cursor: 'default' },
                 [theme.breakpoints.down('md')]: {
                   marginTop: '-23px',
                   ...(open && {
                     width: '100%',
-                    px: 0,
-                    py: 0,
                     flex: 1,
                     marginTop: '0px',
                   }),

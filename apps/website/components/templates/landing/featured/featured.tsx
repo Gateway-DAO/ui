@@ -59,9 +59,10 @@ export const Featured = forwardRef<
         component="h2"
         variant="subtitle1"
         sx={(theme) => ({
-          color: theme.palette.secondary.main,
+          color: theme.palette.text.secondary,
           marginTop: '32px',
           maxWidth: '368px',
+          mb: '64px',
         })}
       >
         {secondaryTitle}
@@ -154,7 +155,7 @@ export const Featured = forwardRef<
                   srcSet={`${feature.image.url} 1x, ${feature.image.url.replace(
                     '.png',
                     '@2x.png'
-                  )}`}
+                  )} 2x`}
                 />
               </picture>
             </MotionBox>
