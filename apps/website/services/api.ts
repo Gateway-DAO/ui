@@ -25,33 +25,50 @@ export type GqlMethods = ReturnType<typeof getSdk>;
 export const gqlMethods = (user: Partial<SessionUser>) =>
   getSdk(gqlClient(user));
 
+/* All the Graphql requests with a request guard for invalid tokens */
 export const gqlMethodsWithRefresh = (
   user: Partial<SessionUser>,
   saveToken: (newTokens: RefreshMutation['refresh']) => void
 ) => {
-  const methods = getSdk(gqlClient(user));
+  /* Caches Graphql Requests with current token */
+  let methods = getSdk(gqlClient(user));
 
   const names = Object.keys(methods) as (keyof typeof methods)[];
 
-  const refreshTokenRetryWrapper = (name: keyof typeof methods) => {
+  const maxRetries = 3;
+
+  /* Request guard for calls with expired token */
+  const refreshTokenRetryWrapper = (
+    name: keyof typeof methods,
+    retries = 0
+  ) => {
     const method = methods[name];
-    return async (variables) => {
+    const methodCall = async (variables) => {
       try {
-        return method(variables);
+        const res = await method(variables);
+        return res;
       } catch (e) {
-        console.log("Error on '" + name + "'", e);
-        if (e.response && e.response.status === 401) {
+        console.log(user);
+        const isExpiredToken =
+          e?.response?.errors?.[0].extensions.code === 'invalid-jwt';
+        if (isExpiredToken && retries < maxRetries) {
+          /* Retrieves the new token */
           const newTokens = await gqlAnonMethods.refresh({
             refresh_token: user.refresh_token,
           });
+          /* Saves the token on stored user */
           saveToken(newTokens.refresh);
-          return method(variables);
+          /* Re-Caches the graphql requests with new token */
+          methods = getSdk(gqlClient(newTokens.refresh));
+          return refreshTokenRetryWrapper[name](variables, retries + 1);
         }
         throw e;
       }
     };
+    return methodCall;
   };
 
+  /* Guards all graphql requests */
   return names.reduce(
     (acc, methodName) => ({
       ...acc,
