@@ -97,19 +97,21 @@ export function SearchTemplate({ query }: TemplateProps) {
             aria-label="basic tabs example"
             sx={{ mb: '-1px' }}
           >
-            {tabs.map(({ key, label, count }, index) => (
-              <Tab
-                key={key}
-                label={label}
-                {...(count
-                  ? {
-                      icon: <Chip label={count} size="small" />,
-                      iconPosition: 'end',
-                    }
-                  : {})}
-                {...a11yTabProps('search', index)}
-              />
-            ))}
+            {tabs
+              .sort((obj1, obj2) => obj2.count - obj1.count)
+              .map(({ key, label, count }, index) => (
+                <Tab
+                  key={key}
+                  label={label}
+                  {...(count
+                    ? {
+                        icon: <Chip label={count} size="small" />,
+                        iconPosition: 'end',
+                      }
+                    : {})}
+                  {...a11yTabProps('search', index)}
+                />
+              ))}
           </Tabs>
         </Box>
         {tabs.map(({ key, section }, index) => (
