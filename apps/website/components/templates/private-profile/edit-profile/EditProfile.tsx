@@ -20,8 +20,8 @@ import {
 
 export function EditProfile() {
   return (
-    <Stack gap={7} p={TOKENS.CONTAINER_PX}>
-      <Box sx={{ paddingLeft: {xs:"0px",md:'40px'} }}>
+    <Stack gap={7}>
+      <Box sx={{ paddingLeft: { xs: '16px', md: '40px' }, paddingTop:{ xs: '24px', md: '40px' } }}>
         <IconButton
           sx={{
             p: 0,
@@ -37,8 +37,8 @@ export function EditProfile() {
         sx={{
           display: 'flex',
           position: 'absolute',
-          top: {xs:'10px',md:'40px'},
-          right: {xs:'20px',md:'92px'},
+          top: { xs: '24px', md: '40px' },
+          right: { xs: '16px', md: '92px' },
           cursor: 'pointer',
         }}
       >
@@ -49,7 +49,7 @@ export function EditProfile() {
           Save
         </Button>
       </Box>
-      <Box>
+      <Box p={TOKENS.CONTAINER_PX}>
         <Typography
           variant="h4"
           sx={{ marginBottom: '4px', color: '#fff' }}
@@ -69,7 +69,9 @@ export function EditProfile() {
       {/*Components*/}
 
       <About />
+      <Divider light sx={{ width: '100%' }} />
       <Experiences />
+      <Divider light sx={{ width: '100%' }} />
       <Skills />
       <Languages />
       <TimeZone />
