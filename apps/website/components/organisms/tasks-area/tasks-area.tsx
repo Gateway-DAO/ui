@@ -12,10 +12,7 @@ const TaskArea = () => {
 
   const { setValue, getValues } = useFormContext<CreateGateTypes>();
 
-  useEffect(() => {
-    const values = getValues();
-    setValue('tasks', values.tasks);
-  }, [tasks, getValues, setValue]);
+  useEffect(() => {}, [tasks, getValues, setValue]);
 
   const addTask = (task_component, task_type, object = {}) => {
     const taskData = {
@@ -35,12 +32,11 @@ const TaskArea = () => {
 
     setTasksCount(tasksCount + 1);
     setTasks(taskData);
-    setValue('tasks', taskData);
   };
 
-  const deleteTask = (id: number) => {
+  const deleteTask = (index: number) => {
     const tasksCopy = { ...tasks };
-    tasksCopy.data.splice(id, 1);
+    tasksCopy.data.splice(index, 1);
 
     setTasks(tasksCopy);
     setValue('tasks', tasksCopy);
@@ -48,10 +44,14 @@ const TaskArea = () => {
 
   return (
     <>
-      {tasks.data.map((task, idx: number) => {
+      {tasks.data.map((task, index: number) => {
         const TaskComponent = task.task_component;
         return (
-          <TaskComponent key={uuidv4()} taskId={idx} deleteTask={deleteTask} />
+          <TaskComponent
+            key={uuidv4()}
+            taskId={index}
+            deleteTask={deleteTask}
+          />
         );
       })}
       <AddTaskCard addTask={addTask} />

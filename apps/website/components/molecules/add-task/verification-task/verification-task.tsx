@@ -48,8 +48,8 @@ const VerificationCodeTask = ({ taskId, deleteTask }) => {
             sx={{ minWidth: '600px' }}
             id="file-title"
             {...register(`tasks.data.${taskId}.title`)}
-            error={!!errors.tasks?.data[taskId].title}
-            helperText={errors.tasks?.data[taskId].title?.message}
+            error={!!errors.tasks?.data[taskId]?.title}
+            helperText={errors.tasks?.data[taskId]?.title?.message}
           />
         </Stack>
         <DeleteIcon
@@ -66,8 +66,8 @@ const VerificationCodeTask = ({ taskId, deleteTask }) => {
           label="Task Description"
           id="file-description"
           {...register(`tasks.data.${taskId}.description`)}
-          error={!!errors.tasks?.data[taskId].description}
-          helperText={errors.tasks?.data[taskId].description?.message}
+          error={!!errors.tasks?.data[taskId]?.description}
+          helperText={errors.tasks?.data[taskId]?.description?.message}
           sx={{ marginBottom: '60px' }}
         />
         <TextField
@@ -76,11 +76,11 @@ const VerificationCodeTask = ({ taskId, deleteTask }) => {
           {...register(`tasks.data.${taskId}.task_data.code`)}
           error={
             !!(
-              errors.tasks?.data[taskId].task_data as VerificationCodeDataError
+              errors.tasks?.data[taskId]?.task_data as VerificationCodeDataError
             )?.code
           }
           helperText={
-            (errors.tasks?.data[taskId].task_data as VerificationCodeDataError)
+            (errors.tasks?.data[taskId]?.task_data as VerificationCodeDataError)
               ?.code?.message
           }
         />

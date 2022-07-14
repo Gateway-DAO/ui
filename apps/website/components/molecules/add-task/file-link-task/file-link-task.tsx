@@ -1,5 +1,6 @@
+import { useEffect } from 'react';
+
 import { useFieldArray, useFormContext } from 'react-hook-form';
-import { v4 as uuidv4 } from 'uuid';
 
 import Clear from '@mui/icons-material/Clear';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -23,6 +24,7 @@ import {
 const FileLinkTask = ({ taskId, deleteTask }) => {
   const {
     register,
+    setValue,
     formState: { errors },
     control,
   } = useFormContext<CreateGateTypes>();
@@ -35,6 +37,10 @@ const FileLinkTask = ({ taskId, deleteTask }) => {
     name: `tasks.data.${taskId}.task_data.files`,
     control,
   });
+
+  useEffect(() => {
+    setValue(`tasks.data.${taskId}.task_type`, 'self_verify');
+  }, [taskId, setValue]);
 
   return (
     <Stack
@@ -58,8 +64,8 @@ const FileLinkTask = ({ taskId, deleteTask }) => {
             sx={{ minWidth: '600px' }}
             id="file-title"
             {...register(`tasks.data.${taskId}.title`)}
-            error={!!errors.tasks?.data[taskId].title}
-            helperText={errors.tasks?.data[taskId].title?.message}
+            error={!!errors.tasks?.data[taskId]?.title}
+            helperText={errors.tasks?.data[taskId]?.title?.message}
           />
         </Stack>
         <DeleteIcon
@@ -76,8 +82,8 @@ const FileLinkTask = ({ taskId, deleteTask }) => {
           label="Task Description"
           id="file-description"
           {...register(`tasks.data.${taskId}.description`)}
-          error={!!errors.tasks?.data[taskId].description}
-          helperText={errors.tasks?.data[taskId].description?.message}
+          error={!!errors.tasks?.data[taskId]?.description}
+          helperText={errors.tasks?.data[taskId]?.description?.message}
           sx={{ marginBottom: '60px' }}
         />
         {files.map((file: FileTypes, idx: number) => {
