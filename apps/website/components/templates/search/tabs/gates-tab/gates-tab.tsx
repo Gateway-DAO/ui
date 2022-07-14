@@ -8,7 +8,7 @@ import { TOKENS } from '@gateway/theme';
 import { ViewModule, ViewList } from '@mui/icons-material';
 import { Box, Chip, IconButton, Stack, Typography } from '@mui/material';
 
-import { CATEGORIES } from '../../../../../constants/categories';
+import { CATEGORIES } from '../../../../../constants/gate';
 import { usePropertyFilter } from '../../../../../hooks/use-property-filter';
 import { useViewMode, ViewMode } from '../../../../../hooks/use-view-modes';
 import { Gates } from '../../../../../services/graphql/types.generated';
@@ -100,7 +100,7 @@ export function GatesTab({ data: gates }: GatesTabProps) {
             </Typography>
           </Box>
           <Stack direction="row" flexWrap="wrap">
-            {CATEGORIES.GATES.map((dao, idx) => (
+            {CATEGORIES.map((dao, idx) => (
               <Chip
                 variant="filled"
                 key={'cat-dao-' + idx}
