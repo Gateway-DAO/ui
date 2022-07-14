@@ -11,6 +11,10 @@ query me {
         id
         logo_url
         name
+        logo {
+          blur
+          id
+        }
       }
     }
     # TODO: ADMIN DAOS

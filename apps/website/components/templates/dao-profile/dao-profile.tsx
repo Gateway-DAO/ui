@@ -77,6 +77,7 @@ export function DaoProfileTemplate({ dao }: Props) {
             placeholder="blur"
             layout="fill"
             objectFit="cover"
+            alt={dao.name}
           />
         ) : null}
       </Box>
@@ -94,6 +95,7 @@ export function DaoProfileTemplate({ dao }: Props) {
             borderColor: 'background.default',
           }}
           file={dao.logo}
+          fallback={dao.logo_url}
         />
         <Box>
           <Typography component="h1" variant="h4">
@@ -124,13 +126,15 @@ export function DaoProfileTemplate({ dao }: Props) {
             divider={<span>·</span>}
             sx={{ mt: 12 / 8 }}
           >
-            <Typography variant="body1">
-              {t('common:count.follower', {
-                count:
-                  peopleQuery.data?.daos_by_pk.followers_aggregate.aggregate
-                    .count ?? 0,
-              })}
-            </Typography>
+            {peopleQuery.isSuccess && (
+              <Typography variant="body1">
+                {t('common:count.follower', {
+                  count:
+                    peopleQuery.data?.daos_by_pk?.followers_aggregate?.aggregate
+                      ?.count ?? 0,
+                })}
+              </Typography>
+            )}
             <Typography variant="body1">
               {t('common:count.gate', { count: dao.gates?.length ?? 0 })}
             </Typography>

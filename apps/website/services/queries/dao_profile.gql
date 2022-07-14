@@ -18,6 +18,8 @@ query dao_profile($id: uuid!) {
       id
       blur
     }
+    logo_url
+    background_url
     categories
     socials {
       network

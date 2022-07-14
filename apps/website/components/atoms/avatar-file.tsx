@@ -7,11 +7,14 @@ import { Files } from '../../services/graphql/types.generated';
 
 type Props = {
   file: PartialDeep<Files>;
+  fallback?: string;
 } & AvatarProps;
 
 /* Avatar with File image */
-export function AvatarFile({ file, ...props }: Props) {
+export function AvatarFile({ file, fallback, ...props }: Props) {
   const image = useFile(file);
+
+  const src = image?.url ?? fallback;
 
   return (
     <Avatar
@@ -20,7 +23,7 @@ export function AvatarFile({ file, ...props }: Props) {
         ...props?.sx,
         ...image?.background,
       }}
-      src={image?.url}
+      src={src}
     />
   );
 }

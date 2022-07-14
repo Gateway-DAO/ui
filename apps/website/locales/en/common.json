@@ -12,7 +12,7 @@
     },
     "follower": {
       "0": "No followers",
-      "ones": "{{count}} follower",
+      "one": "{{count}} follower",
       "other": "{{count}} followers"
     }
   },

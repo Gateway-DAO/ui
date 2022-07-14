@@ -14,6 +14,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 
 import { ROUTES } from '../../../../constants/routes';
 import { useAuth } from '../../../../providers/auth';
+import { AvatarFile } from '../../../atoms/avatar-file';
 import { DashboardTemplateProps } from '../types';
 import { DaosList } from './daos-list';
 import { DrawerContainer } from './drawer-container';
@@ -99,7 +100,9 @@ export function Drawer({ currentDao, showExplore }: Props) {
                       className={clsx({ active: dao.id === currentDao?.id })}
                     >
                       <ListItemIcon>
-                        <Avatar src={dao?.logo_url}>{dao.name?.[0]}</Avatar>
+                        <AvatarFile file={dao?.logo} fallback={dao?.logo_url}>
+                          {dao.name?.[0]}
+                        </AvatarFile>
                       </ListItemIcon>
                     </ListItemButton>
                   </MotionTooltip>
