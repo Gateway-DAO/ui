@@ -10,5 +10,7 @@ export const HeroBackground = styled(Image)`
   @media screen and (max-width: 768px) {
     height: 70%;
     width: auto;
+    left: 50%;
+    transform: translate(-50%, 0);
   }
 `;

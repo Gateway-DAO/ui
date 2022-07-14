@@ -4,7 +4,14 @@ import { TOKENS } from '@gateway/theme';
 import { MotionBox } from '@gateway/ui';
 
 import { ArrowDownward } from '@mui/icons-material';
-import { Box, BoxTypeMap, Button, Stack, Typography } from '@mui/material';
+import {
+  Box,
+  BoxTypeMap,
+  Button,
+  Hidden,
+  Stack,
+  Typography,
+} from '@mui/material';
 import { OverridableComponent } from '@mui/material/OverridableComponent';
 
 import BackgroundImage from '../../../../public/images/hero-background.png';
@@ -28,7 +35,6 @@ export const Hero = forwardRef<
         width: '100%',
         position: 'relative',
         mb: '144px',
-        overflow: 'hidden',
         borderBottom: '1px solid rgba(229, 229, 229, 0.12)',
       }}
     >
@@ -140,13 +146,19 @@ export const Hero = forwardRef<
             duration: 1,
             opacity: { duration: 0.5 },
           }}
-          sx={{
-            width: '61%',
-            height: '86%',
+          sx={(theme) => ({
+            width: '100%',
+            height: '100%',
             position: 'absolute',
             bottom: '0',
-            right: '0',
-          }}
+            right: `-${DEFAULT_PADDINGX}`,
+            overflow: 'hidden',
+            [theme.breakpoints.down('sm')]: {
+              left: '0px',
+              right: '-20px',
+              width: 'calc(100vw - 20px)',
+            },
+          })}
         >
           <HeroBackground
             src={BackgroundImage}
@@ -167,6 +179,12 @@ export const Hero = forwardRef<
             left: 0,
             background:
               'linear-gradient(0deg, rgba(0, 0, 0, 0.64) 0%, rgba(0, 0, 0, 0) 100%)',
+            [theme.breakpoints.down('sm')]: {
+              left: 0,
+              right: '-20px',
+              width: 'calc(100vw - 20px)',
+              overflow: 'hidden',
+            },
           },
         })}
       ></Box>
