@@ -26,7 +26,7 @@ export function AuthProvider({
   const { status: accountStatus, data: account } = useAccount();
 
   const gqlAuthMethods = useMemo(
-    () => gqlMethodsWithRefresh({ token: me?.token }, onUpdateToken),
+    () => gqlMethodsWithRefresh(me, onUpdateToken),
     [me?.token, onUpdateToken]
   );
 
