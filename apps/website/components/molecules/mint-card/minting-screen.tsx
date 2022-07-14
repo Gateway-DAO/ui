@@ -7,7 +7,7 @@ import { AnimatedMessage } from '../../organisms/wallet-modal/animated-message';
 import { Check, Close } from '@mui/icons-material';
 import { Subjects } from './index';
 
-export function MintingScreen({ mintProcessStatus, setMintProcessStatus }) {
+export function MintingScreen({ mintProcessStatus, setMintProcessStatus, details }) {
   return (
     <>
       <GatewayGrayIcon
@@ -20,7 +20,7 @@ export function MintingScreen({ mintProcessStatus, setMintProcessStatus }) {
       <Box
         sx={{
           width: 300,
-          height: 260,
+          height: 270,
           backgroundColor: 'primary',
           '&:hover': {
             backgroundColor: 'primary',
@@ -95,14 +95,14 @@ export function MintingScreen({ mintProcessStatus, setMintProcessStatus }) {
             )}
             {mintProcessStatus === Subjects.failed && (
               <AnimatedMessage key="failed">
-                Something went wrong on minting
+                Something went wrong on minting {details.error?.reason && `: ${details.error.reason}`}
               </AnimatedMessage>
             )}
           </AnimatePresence>
         </Box>
       </Box>
       {mintProcessStatus === Subjects.failed && (
-        <Box sx={{ m: 2 }}>
+        <Box sx={{ m: 2, mb: 1.5 }}>
           <Button
             size="large"
             variant="contained"

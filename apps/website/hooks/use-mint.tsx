@@ -190,8 +190,9 @@ export function useBiconomyMint(
         throw new Error('Metamask not installed!');
       }
     }
+
     init();
-  }, []);
+  }, [address]);
 
   /**
    * It mints a new NFT token.

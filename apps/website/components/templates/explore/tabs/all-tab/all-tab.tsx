@@ -76,7 +76,8 @@ export function AllTab({ daos, gates, people, setActiveTab }: Props) {
             description="This is the beginning of your journey in OlympusDAO. Learn about what hekkk dsjhfkjds ksfhdslkafj dsfklhdsalkfh dskjfhksadhf  fdskahflkash ffsdkjahfksahdfk dssjkfhkjdshf "
             categories={['Nuno', 'Manish', 'Farouk']}
             minted={false}
-            nftURL="https://www.google.com"
+            nftURL="https://polygonscan.com/"
+            tokenURI="yhyffujghujhgijffdgghgfhgb"
           />
         </SectionWithSliderResponsive>
         <SectionWithGrid

@@ -13,6 +13,7 @@ export function processScreen(
     image: string;
     categories: string[];
     nft_url?: string;
+    error?: any;
   }
 ) {
   switch (mintProcessStatus) {
@@ -27,7 +28,7 @@ export function processScreen(
     case Subjects.failed:
     case Subjects.sign:
       return (
-        <MintingScreen {...{ mintProcessStatus, setMintProcessStatus, mint }} />
+        <MintingScreen {...{ mintProcessStatus, setMintProcessStatus, mint, details }} />
       );
     case Subjects.default:
     case Subjects.alreadyMinted:

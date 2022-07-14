@@ -29,6 +29,7 @@ export const MintCard = (props: MintCardProps) => {
   const [mintProcessStatus, setMintProcessStatus] = useState<Subjects>(
     Subjects.default
   );
+  const [error, setError] = useState<any | null>(null);
 
   const { mint: triggerMint, asksSignature } = useBiconomyMint();
 
@@ -42,9 +43,10 @@ export const MintCard = (props: MintCardProps) => {
         setMintProcessStatus(Subjects.successful);
         setTimeout(() => {
           setMintProcessStatus(Subjects.alreadyMinted);
-          props.onMint();
+          props.onMint && props.onMint();
         }, 2500);
       } else {
+        setError(value.error);
         setMintProcessStatus(Subjects.failed);
       }
     });
@@ -70,21 +72,21 @@ export const MintCard = (props: MintCardProps) => {
         image: props.image,
         categories: props.categories,
         nft_url: props.nftURL,
+        error,
       })}
-      {mintProcessStatus !== Subjects.default &&
-        Subjects.successful &&
-        Subjects.alreadyMinted && (
-          <Box sx={{ mx: 2, my: 1 }}>
-            <Button
-              size="large"
-              variant="outlined"
-              fullWidth
-              onClick={() => setMintProcessStatus(Subjects.default)}
-            >
-              cancel
-            </Button>
-          </Box>
-        )}
+      {(mintProcessStatus === Subjects.start ||
+        (mintProcessStatus === Subjects.failed && Subjects.failed)) && (
+        <Box sx={{ mx: 2, my: 1 }}>
+          <Button
+            size="large"
+            variant="outlined"
+            fullWidth
+            onClick={() => setMintProcessStatus(Subjects.default)}
+          >
+            cancel
+          </Button>
+        </Box>
+      )}
     </Card>
   );
 };

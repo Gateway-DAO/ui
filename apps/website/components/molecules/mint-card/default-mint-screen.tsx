@@ -148,7 +148,7 @@ export const DefaultMintScreen = ({
             <ListItemIcon>
               <OpenInNewIcon fontSize="medium" color="disabled" />
             </ListItemIcon>
-            Open on Ceramic
+            Open on Polygonscan
           </MenuItem>
           <MenuItem>
             <ListItemIcon>
