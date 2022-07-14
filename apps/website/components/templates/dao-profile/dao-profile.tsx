@@ -67,6 +67,13 @@ export function DaoProfileTemplate({ dao }: Props) {
           height: (theme) => theme.spacing(35),
           pt: 2,
           position: 'relative',
+          ...(!cover
+            ? {
+                background: `url(${dao.background_url})`,
+                backgroundPosition: 'center',
+                backgroundSize: 'cover',
+              }
+            : {}),
         }}
       >
         <Navbar sx={{ zIndex: 1 }} />
