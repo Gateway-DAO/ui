@@ -33,10 +33,7 @@ export function Footer({
       sx={() => ({
         mt: '20px',
         mb: '40px',
-        mx: 'auto',
         width: '100%',
-        maxWidth: DEFAULT_MAX_WIDTH,
-        px: DEFAULT_PADDINGX,
       })}
     >
       <Box

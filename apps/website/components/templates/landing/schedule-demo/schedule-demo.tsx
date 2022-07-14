@@ -66,6 +66,9 @@ export function ScheduleDemo({
                   backgroundColor: theme.palette.secondary.main,
                   color: theme.palette.secondary.contrastText,
                   mr: '10px',
+                  '&:hover': {
+                    backgroundColor: theme.palette.secondary.dark,
+                  },
                   [theme.breakpoints.down('sm')]: {
                     width: '100%',
                     mr: 0,
@@ -85,8 +88,9 @@ export function ScheduleDemo({
                   height: '42px',
                   borderColor: theme.palette.secondary.main,
                   color: theme.palette.secondary.main,
-                  '&:visited': {
+                  '&:visited, &:hover': {
                     borderColor: theme.palette.secondary.main,
+                    backgroundColor: theme.palette.secondary,
                   },
                   [theme.breakpoints.down('sm')]: {
                     width: '100%',

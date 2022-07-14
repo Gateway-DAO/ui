@@ -71,6 +71,7 @@ export function LandingTemplate({
     rootMargin: '0px',
     threshold: 0.3,
   });
+
   useEffect(() => {
     function scrollPositionCheck() {
       const windowScroll = window.scrollY;
@@ -101,33 +102,48 @@ export function LandingTemplate({
         component="main"
         role="main"
         sx={(theme) => ({
-          maxWidth: DEFAULT_MAX_WIDTH,
           px: DEFAULT_PADDINGX,
+          width: '100%',
           position: 'relative',
-          left: '50%',
-          transform: 'translate(-50%, 0)',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
           [theme.breakpoints.down('sm')]: {
             px: '20px',
           },
         })}
       >
-        <Hero {...heroProps} ref={refs.hero} />
-        <Featured
-          {...forUsersContent}
-          id="professionals"
-          ref={refs.professionals}
-        />
-        <Featured
-          {...forOrganizationsContent}
-          ref={refs.organizations}
-          id="organizations"
-        />
-        <ProductShow {...theGatewayContent} id="build" ref={refs.build} />
-        <ProductShow {...buildAppsContent} />
-        <Investors {...investorsContent} id="investors" ref={refs.investors} />
-        <ScheduleDemo {...scheduleDemoContent} />
+        <Box
+          sx={{
+            width: '100%',
+            maxWidth: DEFAULT_MAX_WIDTH,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
+          <Hero {...heroProps} ref={refs.hero} />
+          <Featured
+            {...forUsersContent}
+            id="professionals"
+            ref={refs.professionals}
+          />
+          <Featured
+            {...forOrganizationsContent}
+            ref={refs.organizations}
+            id="organizations"
+          />
+          <ProductShow {...theGatewayContent} id="build" ref={refs.build} />
+          <ProductShow {...buildAppsContent} />
+          <Investors
+            {...investorsContent}
+            id="investors"
+            ref={refs.investors}
+          />
+          <ScheduleDemo {...scheduleDemoContent} />
+          <Footer {...footerContent} />
+        </Box>
       </Box>
-      <Footer {...footerContent} />
     </>
   );
 }

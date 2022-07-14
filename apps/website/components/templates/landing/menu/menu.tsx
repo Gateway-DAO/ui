@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 
 import { GatewayIcon } from '@gateway/assets';
-import { TOKENS } from '@gateway/theme';
 import { MotionBox } from '@gateway/ui';
 
 import CloseIcon from '@mui/icons-material/Close';
@@ -20,227 +19,241 @@ export function Menu({
   const [open, setOpen] = useState(false);
 
   return (
-    <Stack
-      direction="row"
+    <Box
       component="header"
-      justifyContent="space-between"
-      alignItems="center"
-      px={TOKENS.CONTAINER_PX}
-      py={4}
       sx={(theme) => ({
         width: '100%',
         position: 'fixed',
-        maxWidth: DEFAULT_MAX_WIDTH,
-        left: '50%',
-        transform: 'translate(-50%, 0)',
-        zIndex: 10,
         px: DEFAULT_PADDINGX,
+        zIndex: 10,
         [theme.breakpoints.down('sm')]: {
           px: '20px',
         },
       })}
     >
-      <MotionBox
+      <Stack
+        direction="row"
+        justifyContent="space-between"
+        alignItems="center"
+        py={4}
         sx={(theme) => ({
-          width: '100%',
-          display: 'flex',
-          borderRadius: '88px',
-          height: '88px',
-          px: '24px',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          border: '1px solid rgba(229, 229, 229, 0.12)',
-          maxHeight: '88px',
-          overflow: 'hidden',
-          transition: 'max-height 0.3s ease-in-out, height 0.3s ease-in-out',
-          background: theme.palette.background.elevated,
-          [theme.breakpoints.down('sm')]: {
-            px: '16px',
-            height: '56px',
-            maxHeight: '56px',
-            borderRadius: '28px',
-            py: '16px',
-            alignItems: 'flex-start',
-            ...(open && {
-              height: '570px',
-              flexWrap: 'wrap',
-              maxHeight: '570px',
-            }),
-          },
+          position: 'relative',
+          maxWidth: DEFAULT_MAX_WIDTH,
+          left: '50%',
+          transform: 'translate(-50%, 0)',
         })}
       >
-        <Box
+        <MotionBox
           sx={(theme) => ({
+            width: '100%',
             display: 'flex',
-            [theme.breakpoints.down('sm')]: {
-              marginRight: 'auto',
+            borderRadius: '88px',
+            height: '88px',
+            px: '24px',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            border: '1px solid rgba(229, 229, 229, 0.12)',
+            maxHeight: '88px',
+            overflow: 'hidden',
+            transition: 'max-height 0.3s ease-in-out, height 0.3s ease-in-out',
+            background: theme.palette.background.elevated,
+            [theme.breakpoints.down('md')]: {
+              px: '16px',
+              height: '56px',
+              maxHeight: '56px',
+              borderRadius: '28px',
+              py: '16px',
+              alignItems: 'flex-start',
               ...(open && {
-                flexDirection: 'column',
-                width: '100%',
-                marginRight: 0,
-                position: 'relative',
+                height: '570px',
+                flexWrap: 'wrap',
+                maxHeight: '570px',
               }),
             },
           })}
         >
-          <Link href="#">
-            <GatewayIcon
-              sx={(theme) => ({
-                width: 50,
-                height: 50,
-                marginRight: '43px',
-                [theme.breakpoints.down('sm')]: {
-                  height: '24px',
-                  width: '24px',
-                },
-              })}
-            />
-          </Link>
-          {open && (
-            <CloseIcon
-              color="secondary"
-              fontSize="medium"
-              onClick={() => setOpen(false)}
-              sx={(theme) => ({
-                cursor: 'pointer',
-                position: 'absolute',
-                top: 0,
-                right: 0,
-              })}
-            />
-          )}
-          <List
-            role="menu"
+          <Box
             sx={(theme) => ({
               display: 'flex',
-              [theme.breakpoints.down('sm')]: {
+              [theme.breakpoints.down('md')]: {
+                marginRight: 'auto',
                 ...(open && {
                   flexDirection: 'column',
                   width: '100%',
-                  order: 3,
+                  marginRight: 0,
+                  position: 'relative',
                 }),
               },
             })}
           >
-            {menuList.map((menuItem, index) => (
-              <ListItem
-                role="menuitem"
-                key={menuItem.text + index}
+            <Link href="#">
+              <GatewayIcon
                 sx={(theme) => ({
-                  display: 'flex',
-                  justifyContent: 'center',
-                  '&:hover, &:active': {
-                    background: 'none',
-                    cursor: 'default',
-                  },
+                  width: 50,
+                  height: 50,
+                  marginRight: '43px',
                   [theme.breakpoints.down('md')]: {
-                    display: 'none',
-                    ...(open && {
-                      display: 'block',
-                      width: '100%',
-                      paddingBottom: '16px',
-                      paddingLeft: '0',
-                      borderBottom: '1px solid rgba(229, 229, 229, 0.12)',
-                      '&:last-child': {
-                        borderBottom: 'none',
-                      },
-                      '&:first-child': {
-                        paddingTop: '40px',
-                      },
-                    }),
+                    height: '24px',
+                    width: '24px',
                   },
                 })}
-              >
-                <Link
-                  href={menuItem.href}
+              />
+            </Link>
+            {open && (
+              <CloseIcon
+                color="secondary"
+                fontSize="medium"
+                onClick={() => setOpen(false)}
+                sx={(theme) => ({
+                  cursor: 'pointer',
+                  position: 'absolute',
+                  top: 0,
+                  right: 0,
+                })}
+              />
+            )}
+            <List
+              role="menu"
+              sx={(theme) => ({
+                display: 'flex',
+                [theme.breakpoints.down('md')]: {
+                  ...(open && {
+                    flexDirection: 'column',
+                    width: '100%',
+                    order: 3,
+                  }),
+                },
+              })}
+            >
+              {menuList.map((menuItem, index) => (
+                <ListItem
+                  role="menuitem"
+                  key={menuItem.text + index}
                   sx={(theme) => ({
-                    whiteSpace: 'nowrap',
-                    color: theme.palette.text.secondary,
-                    '&:hover': {
-                      color: theme.palette.text.primary,
+                    display: 'flex',
+                    justifyContent: 'center',
+                    '&:hover, &:active': {
+                      background: 'none',
+                      cursor: 'default',
                     },
-                    ...(activeMenu === menuItem.href.replace('#', '') && {
-                      color: theme.palette.text.primary,
-                    }),
+                    [theme.breakpoints.down('md')]: {
+                      display: 'none',
+                      ...(open && {
+                        display: 'block',
+                        width: '100%',
+                        paddingBottom: '16px',
+                        paddingLeft: '0',
+                        borderBottom: '1px solid rgba(229, 229, 229, 0.12)',
+                        '&:last-child': {
+                          borderBottom: 'none',
+                        },
+                        '&:first-child': {
+                          paddingTop: '40px',
+                        },
+                      }),
+                    },
                   })}
-                  underline="none"
                 >
-                  {menuItem.text}
-                </Link>
-              </ListItem>
-            ))}
-          </List>
-        </Box>
-        <List
-          role="menu"
-          sx={{
-            display: 'flex',
-            ...(open && { order: 4, flexDirection: 'column', width: '100%' }),
-          }}
-        >
-          <ListItem
-            role="menuitem"
-            sx={(theme) => ({
-              '&:hover': { background: 'none', cursor: 'default' },
-              [theme.breakpoints.down('md')]: {
-                display: 'none',
-                ...(open && {
-                  display: 'block',
-                  width: '100%',
-                  px: 0,
+                  <Link
+                    href={menuItem.href}
+                    sx={(theme) => ({
+                      whiteSpace: 'nowrap',
+                      color: theme.palette.text.secondary,
+                      '&:hover': {
+                        color: theme.palette.text.primary,
+                      },
+                      ...(activeMenu === menuItem.href.replace('#', '') && {
+                        color: theme.palette.text.primary,
+                      }),
+                    })}
+                    underline="none"
+                  >
+                    {menuItem.text}
+                  </Link>
+                </ListItem>
+              ))}
+            </List>
+          </Box>
+          <List
+            role="menu"
+            sx={{
+              display: 'flex',
+              ...(open && { order: 4, flexDirection: 'column', width: '100%' }),
+            }}
+          >
+            <ListItem
+              role="menuitem"
+              sx={(theme) => ({
+                visibility: 'hidden',
+                opacity: 0,
+                transition:
+                  'visibility 250ms ease-in-out, opacity 250ms ease-in-out',
+                '&:hover': { background: 'none', cursor: 'default' },
+                ...(activeMenu !== 'hero' &&
+                  activeMenu !== '' && {
+                    visibility: 'visible',
+                    opacity: 1,
+                  }),
+                [theme.breakpoints.down('md')]: {
+                  display: 'none',
+                  ...(open && {
+                    display: 'block',
+                    width: '100%',
+                    px: 0,
+                    a: {
+                      width: '100%',
+                      height: '36px',
+                      marginTop: '100px',
+                    },
+                  }),
+                },
+              })}
+            >
+              {signUpButton}
+            </ListItem>
+            <ListItem
+              role="menuitem"
+              sx={(theme) => ({
+                '&:hover': { background: 'none', cursor: 'default' },
+                [theme.breakpoints.down('md')]: {
+                  marginTop: '-23px',
+                  ...(open && {
+                    width: '100%',
+                    px: 0,
+                    py: 0,
+                    flex: 1,
+                    marginTop: '0px',
+                  }),
                   a: {
                     width: '100%',
+                    maxWidth: '100%',
                     height: '36px',
-                    marginTop: '100px',
                   },
-                }),
-              },
-            })}
-          >
-            {signUpButton}
-          </ListItem>
-          <ListItem
-            role="menuitem"
-            sx={(theme) => ({
-              '&:hover': { background: 'none', cursor: 'default' },
-              [theme.breakpoints.down('sm')]: {
-                marginTop: '-23px',
-                ...(open && {
-                  width: '100%',
-                  px: 0,
-                  py: 0,
-                  flex: 1,
-                  marginTop: '0px',
-                }),
-                a: {
-                  width: '100%',
-                  maxWidth: '100%',
-                  height: '36px',
                 },
-              },
-            })}
-          >
-            {connectButton}
-          </ListItem>
-        </List>
+              })}
+            >
+              {connectButton}
+            </ListItem>
+          </List>
 
-        {!open && (
-          <MenuIcon
-            color="secondary"
-            fontSize="medium"
-            onClick={() => setOpen(!open)}
-            sx={(theme) => ({
-              [theme.breakpoints.up('md')]: {
-                display: 'none',
-                cursor: 'pointer',
-                ...(open && {
-                  order: 4,
-                }),
-              },
-            })}
-          />
-        )}
-      </MotionBox>
-    </Stack>
+          {!open && (
+            <MenuIcon
+              color="secondary"
+              fontSize="medium"
+              onClick={() => setOpen(!open)}
+              sx={(theme) => ({
+                [theme.breakpoints.up('md')]: {
+                  display: 'none',
+                  cursor: 'pointer',
+                  ...(open && {
+                    order: 4,
+                  }),
+                },
+              })}
+            />
+          )}
+        </MotionBox>
+      </Stack>
+    </Box>
   );
 }

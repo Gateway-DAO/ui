@@ -147,13 +147,16 @@ export const Featured = forwardRef<
                 opacity: { duration: 0.5 },
               }}
             >
-              <ResponsiveImage
-                layout="raw"
-                src={feature.image.url}
-                width={feature.image.width}
-                height={feature.image.height}
-                alt={feature.title}
-              />
+              <picture>
+                <img
+                  src={feature.image.url}
+                  alt={feature.title}
+                  srcSet={`${feature.image.url} 1x, ${feature.image.url.replace(
+                    '.png',
+                    ''
+                  )}@2x.png 2x`}
+                />
+              </picture>
             </MotionBox>
           </Box>
         ))}
