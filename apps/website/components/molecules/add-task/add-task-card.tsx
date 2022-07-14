@@ -9,6 +9,7 @@ import { Grid, Paper, Stack, Typography } from '@mui/material';
 
 import AddTaskButton from './add-task-button';
 import FileLinkTask from './file-link-task/file-link-task';
+import { QuizTask } from './quiz-task';
 import VerificationCodeTask from './verification-task/verification-task';
 
 const AddTaskCard = ({ addTask }) => {
@@ -46,9 +47,8 @@ const AddTaskCard = ({ addTask }) => {
             <AddTaskButton
               icon={<QuizIcon />}
               title={'Create Quizz'}
-              disabled
               addTask={() => {
-                return;
+                addTask(QuizTask, 'self_verify');
               }}
             />
           </Paper>
