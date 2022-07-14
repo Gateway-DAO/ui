@@ -81,7 +81,7 @@ const VerificationCodeTask = ({ taskId, deleteTask }) => {
           }
           helperText={
             (errors.tasks?.data[taskId].task_data as VerificationCodeDataError)
-              ?.code.message
+              ?.code?.message
           }
         />
       </FormControl>

@@ -82,7 +82,7 @@ const FileLinkTask = ({ taskId, deleteTask }) => {
         />
         {files.map((file: FileTypes, idx: number) => {
           return (
-            <Stack gap={2} key={file.id}>
+            <Stack gap={2} key={idx}>
               <Stack>
                 <TextField
                   required
@@ -147,7 +147,7 @@ const FileLinkTask = ({ taskId, deleteTask }) => {
           <Button
             sx={{ cursor: 'pointer' }}
             onClick={() => {
-              append({ id: uuidv4(), title: '', description: '', link: '' });
+              append({ title: '', description: '', link: '' });
             }}
           >
             Add File &#38; Link

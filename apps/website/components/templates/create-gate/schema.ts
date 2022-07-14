@@ -37,13 +37,10 @@ export type MeetingCodeTask = {
 export type Task = {
   title: string;
   description: string;
-  // task_type: TaskTypes;
-  // task_data: FileTaskData | VerificationCodeData;
 } & (SelfVerifyTask | MeetingCodeTask);
 
 // Verification Code
 export type VerificationCodeData = {
-  id: string;
   code?: string;
 };
 
@@ -54,7 +51,6 @@ export type VerificationCodeDataError = {
 
 // Files
 export type FileTaskData = {
-  id: string;
   files?: Array<FileTypes>;
 };
 
@@ -70,17 +66,14 @@ export type FileTaskDataError = {
 
 // Files
 export type FileTypes = {
-  id: number;
   title: string;
   description: string;
   link: string;
 };
 
 const fileTaskDataSchema = z.object({
-  id: z.string().min(2),
   files: z
     .object({
-      id: z.number().min(2),
       title: z.string().min(2),
       description: z.string().min(2),
       link: z.string().min(2),
@@ -94,7 +87,6 @@ export type verificationCodeType = {
 };
 
 export const verificationCodeDataSchema = z.object({
-  id: z.string().min(2),
   code: z.string().min(2),
 });
 

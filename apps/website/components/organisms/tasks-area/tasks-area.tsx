@@ -18,8 +18,7 @@ const TaskArea = () => {
   }, [tasks, getValues, setValue]);
 
   const addTask = (task_component, task_type, object = {}) => {
-    setTasksCount(tasksCount + 1);
-    setTasks({
+    const taskData = {
       data: [
         ...tasks.data,
         {
@@ -32,8 +31,11 @@ const TaskArea = () => {
           ...object,
         },
       ],
-    });
-    setValue('tasks', tasks);
+    };
+
+    setTasksCount(tasksCount + 1);
+    setTasks(taskData);
+    setValue('tasks', taskData);
   };
 
   const deleteTask = (id: number) => {
