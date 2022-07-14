@@ -84,6 +84,7 @@ export function Menu({
                   flexDirection: 'column',
                   width: '100%',
                   marginRight: 0,
+                  alignItems: 'stretch',
                   position: 'relative',
                 }),
               },
@@ -225,8 +226,11 @@ export function Menu({
                 pl: '8px',
                 '&:hover': { background: 'none', cursor: 'default' },
                 [theme.breakpoints.down('md')]: {
+                  py: '8px',
+                  px: '8px',
                   marginTop: '-23px',
                   ...(open && {
+                    px: 0,
                     width: '100%',
                     flex: 1,
                     marginTop: '0px',
