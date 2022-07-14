@@ -1,9 +1,7 @@
-import { useQuery } from 'react-query';
 import { PartialDeep } from 'type-fest';
 
-import { Box, CircularProgress } from '@mui/material';
+import { Box } from '@mui/material';
 
-import { gqlAnonMethods } from '../../../../../services/api';
 import { Users } from '../../../../../services/graphql/types.generated';
 import { TableView } from './table-view';
 

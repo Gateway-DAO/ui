@@ -13,7 +13,6 @@ import { AvatarFile } from '../../atoms/avatar-file';
 import { FollowButtonDAO } from '../../atoms/follow-button-dao';
 import { a11yTabProps, TabPanel, useTab } from '../../atoms/tabs';
 import { Navbar } from '../../organisms/navbar/navbar';
-import { DaoProvider } from './context';
 import { Socials } from './socials';
 import { GatesTab, OverviewTab } from './tabs';
 import { PeopleTab } from './tabs/people-tab';
@@ -43,29 +42,17 @@ export function DaoProfileTemplate({ dao }: Props) {
     {
       key: 'overview',
       label: t('common:tabs.overview'),
-      section: (
-        <DaoProvider dao={dao}>
-          <OverviewTab people={followers} setTab={setTab} />
-        </DaoProvider>
-      ),
+      section: <OverviewTab dao={dao} people={followers} setTab={setTab} />,
     },
     {
       key: 'gates',
       label: t('common:tabs.gates'),
-      section: (
-        <DaoProvider dao={dao}>
-          <GatesTab />
-        </DaoProvider>
-      ),
+      section: <GatesTab dao={dao} />,
     },
     {
       key: 'people',
       label: t('common:tabs.people'),
-      section: (
-        <DaoProvider dao={dao}>
-          <PeopleTab people={followers} />
-        </DaoProvider>
-      ),
+      section: <PeopleTab people={followers} />,
     },
   ];
 

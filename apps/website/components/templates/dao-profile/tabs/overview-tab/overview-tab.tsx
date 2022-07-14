@@ -11,16 +11,15 @@ import {
   SectionWithSliderResponsive,
   SectionWithGrid,
 } from '../../../../molecules/sections';
-import { useDao } from '../../context';
 
 type Props = {
+  dao: PartialDeep<Daos>;
   people: PartialDeep<Users>[];
   setTab: (tab: number) => void;
 };
 
-export function OverviewTab({ people, setTab }: Props) {
+export function OverviewTab({ dao, people, setTab }: Props) {
   const { t } = useTranslation('explore');
-  const dao = useDao();
 
   return (
     <Stack
