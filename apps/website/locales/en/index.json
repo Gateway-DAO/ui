@@ -109,21 +109,48 @@
   },
   "theGatewayContent": {
     "title": "The Gateway Credential Model",
-    "description": "We believe in data sovereignty for the user and public verification of information. By allowing users to control what credential they surface publicly, with NFTs, they can still control their own data tables.",
+    "features": [
+      {
+        "title": "User Sovereignty",
+        "description": "Credentials issued on Gateway are fully controlled by users, including visibility and retention."
+      },
+      {
+        "title": "Secure",
+        "description": "Verified Credentials require cryptographic signatures, are easily traceable, and revocable by issuer."
+      },
+      {
+        "title": "Composable",
+        "description": "Minting as NFTs possible across any chain. Work is not limited to a blockchain."
+      }
+    ],
     "image": {
-      "url": "/images/build-web3data.png",
-      "width": 447,
-      "height": 428
+      "url": "/images/credential-model.png",
+      "width": 596,
+      "height": 759
     }
   },
   "buildAppsContent": {
     "comingSoon": "Coming Soon",
     "title": "Build apps with Web3 data",
     "description": "Gateway's decentralized credential registry allows DAOs, web3 service providers, and tools to easily issue and curate verified credentials.",
+    "features": [
+      {
+        "title": "Consumer",
+        "description": "Gateway's credentials can be used by talent, organizations, and even Dapps for custom use-cases like access."
+      },
+      {
+        "title": "Credential SDK",
+        "description": "Gateway's SDK is the powerhouse for web3 credentials. Allowing you to issue, index, curate, and handle data for the future of professional identity."
+      },
+      {
+        "title": "Data-Partners",
+        "description": "Every engine needs it's fuel. Gateway's data partners support  an open-source and composable network of models."
+      }
+    ],
     "image": {
-      "url": "/images/build-web3data.png",
-      "width": 447,
-      "height": 428
+      "url": "/images/build-apps-data.png",
+      "width": 685,
+      "height": 1127
     }
   },
   "investorsContent": {

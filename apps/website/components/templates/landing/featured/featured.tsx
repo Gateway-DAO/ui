@@ -148,13 +148,13 @@ export const Featured = forwardRef<
               }}
             >
               <picture>
-                <img
+                <ResponsiveImage
                   src={feature.image.url}
                   alt={feature.title}
                   srcSet={`${feature.image.url} 1x, ${feature.image.url.replace(
                     '.png',
-                    ''
-                  )}@2x.png 2x`}
+                    '@2x.png'
+                  )}`}
                 />
               </picture>
             </MotionBox>

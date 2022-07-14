@@ -134,7 +134,7 @@ export function LandingTemplate({
             id="organizations"
           />
           <ProductShow {...theGatewayContent} id="build" ref={refs.build} />
-          <ProductShow {...buildAppsContent} />
+          <ProductShow revert={true} {...buildAppsContent} />
           <Investors
             {...investorsContent}
             id="investors"
