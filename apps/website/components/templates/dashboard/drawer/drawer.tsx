@@ -19,7 +19,6 @@ import { DashboardTemplateProps } from '../types';
 import { DaosList } from './daos-list';
 import { DrawerContainer } from './drawer-container';
 import { ResponsiveDrawer } from './responsive-drawer';
-// import { TemporaryDao } from './temporary-dao';
 
 type Props = Pick<DashboardTemplateProps, 'currentDao' | 'showExplore'>;
 
@@ -32,17 +31,6 @@ export function Drawer({ currentDao, showExplore }: Props) {
     () => me?.following_dao?.map(({ dao }) => dao) ?? [],
     [me?.following_dao]
   );
-
-  /* Checks if currentDao isn't in followingDaos */
-  /* const isCurrentDaoTemporary = useMemo(() => {
-    if (!currentDao) {
-      return false;
-    }
-    if (followingDaos) {
-      return !followingDaos.find((dao) => dao.id === currentDao.id);
-    }
-    return true;
-  }, [currentDao, followingDaos]); */
 
   return (
     <DrawerContainer>
@@ -60,9 +48,6 @@ export function Drawer({ currentDao, showExplore }: Props) {
             <GatewayIcon />
           </ListItemIcon>
           <AnimatePresence>
-            {/* {!!currentDao && isCurrentDaoTemporary && (
-              <TemporaryDao key={currentDao.id} dao={currentDao} />
-            )} */}
             {showExplore && (
               <Link passHref href={ROUTES.EXPLORE} prefetch={false}>
                 <MotionTooltip
