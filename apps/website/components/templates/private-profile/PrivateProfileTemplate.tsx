@@ -24,6 +24,9 @@ import { OverviewTab } from './tabs/OverviewTab';
 import { ActivityTab } from './tabs/ActivityTab';
 import { DashboardTemplate } from '../../../components/templates/dashboard';
 
+import { useRouter } from 'next/router';
+import { ROUTES } from '../../../constants/routes';
+
 export const getStaticProps = async () => {
   const exploreProps = await gqlAdminMethods.get_home();
 
@@ -38,6 +41,7 @@ export const getStaticProps = async () => {
 export default function PrivateProfileTemplate() {
   const { t } = useTranslation();
   const { activeTab, handleTabChange, setTab } = useTab();
+  const router = useRouter();
 
   const tabs = useMemo(
     () => [
@@ -97,7 +101,14 @@ export default function PrivateProfileTemplate() {
           <Box>
             <Typography sx={{ color: '#fff' }} component="h1" variant="h4">
               Test User
-              <EditIcon sx={{marginLeft:"15px",color: "rgba(255, 255, 255, 0.56)"}}></EditIcon>
+              <EditIcon
+                onClick={() => router.push(ROUTES.EDIT_PROFILE)}
+                sx={{
+                  marginLeft: '15px',
+                  color: 'rgba(255, 255, 255, 0.56)',
+                  cursor: 'pointer',
+                }}
+              ></EditIcon>
             </Typography>
             <Typography
               component="h5"
@@ -118,7 +129,7 @@ export default function PrivateProfileTemplate() {
                 mt: 2,
               }}
             >
-              <Link sx={{textDecoration:"none"}}>Write bio</Link>
+              <Link sx={{ textDecoration: 'none' }}>Write bio</Link>
               <Typography
                 sx={{
                   fontSize: '16px',
@@ -140,8 +151,8 @@ export default function PrivateProfileTemplate() {
                 mt: 2,
               }}
             >
-              <Typography>0 connections</Typography>.
-              <Typography>0 credentials</Typography>
+              <Typography>O connections</Typography>.
+              <Typography>O credentials</Typography>
             </Box>
             <Stack
               direction="row"
@@ -182,7 +193,7 @@ export default function PrivateProfileTemplate() {
             sx={{ mb: '-1px' }}
           >
             {tabs.map(({ key, label }, index) => (
-              <Tab sx ={{fontSize:'12px'}} key={key} label={label} {...a11yTabProps('dao', index)} />
+              <Tab key={key} label={label} {...a11yTabProps('dao', index)} />
             ))}
           </Tabs>
         </Box>
