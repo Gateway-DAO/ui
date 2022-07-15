@@ -77,5 +77,11 @@ mutation create_dao($logo_id: uuid!, $name: String!, $description: String!, $cat
       socials: {data: $socials}}
     ) {
     id
+    logo_url
+    name
+    is_admin
+    logo {
+      ...file
+    }
   }
 }

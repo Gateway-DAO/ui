@@ -11,9 +11,9 @@ query me {
         id
         logo_url
         name
+        is_admin
         logo {
-          blur
-          id
+          ...file
         }
       }
     }
