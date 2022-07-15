@@ -1,6 +1,7 @@
 import { InferGetStaticPropsType } from 'next';
-import { gqlAdminMethods } from '../../services/api';
+
 import PrivateProfileTemplate from '../../components/templates/private-profile/PrivateProfileTemplate';
+import { gqlAdminMethods } from '../../services/api';
 
 export const getStaticProps = async () => {
   const exploreProps = await gqlAdminMethods.get_home();

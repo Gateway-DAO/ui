@@ -1,16 +1,28 @@
 import { InferGetStaticPropsType } from 'next';
-import { useMemo } from 'react';
 import useTranslation from 'next-translate/useTranslation';
-import { Avatar, Chip, Box, Stack, Typography, Tabs, Tab, IconButton, Button } from '@mui/material';
-import ShareIcon from '@mui/icons-material/IosShare';
-import { Navbar } from '../../../components/organisms/navbar/navbar';
+import { useMemo } from 'react';
+
 import { TOKENS } from '@gateway/theme';
-import { gqlAdminMethods } from '../../../services/api';
+
+import ShareIcon from '@mui/icons-material/IosShare';
+import {
+  Avatar,
+  Chip,
+  Box,
+  Stack,
+  Typography,
+  Tabs,
+  Tab,
+  IconButton,
+  Button,
+} from '@mui/material';
 
 import { a11yTabProps, TabPanel, useTab } from '../../../components/atoms/tabs';
-import { OverviewTab } from './tabs/OverviewTab';
-import { ActivityTab } from './tabs/ActivityTab';
+import { Navbar } from '../../../components/organisms/navbar/navbar';
 import { DashboardTemplate } from '../../../components/templates/dashboard';
+import { gqlAdminMethods } from '../../../services/api';
+import { ActivityTab } from './tabs/ActivityTab';
+import { OverviewTab } from './tabs/OverviewTab';
 
 export const getStaticProps = async () => {
   const exploreProps = await gqlAdminMethods.get_home();
@@ -66,7 +78,6 @@ export default function ProfileTemplate() {
         <Box
           sx={{
             marginTop: -13,
-            
           }}
           marginLeft={{ xs: '20px', md: '50px' }}
         >
@@ -111,7 +122,12 @@ export default function ProfileTemplate() {
                 mt: 4,
               }}
             >
-              <Button sx = {{width: '95px',height: '36px'}} variant="contained">Connect</Button>
+              <Button
+                sx={{ width: '95px', height: '36px' }}
+                variant="contained"
+              >
+                Connect
+              </Button>
               <IconButton
                 sx={{
                   p: 0,
@@ -144,7 +160,12 @@ export default function ProfileTemplate() {
             sx={{ mb: '-1px' }}
           >
             {tabs.map(({ key, label }, index) => (
-              <Tab sx ={{fontSize:'12px'}} key={key} label={label} {...a11yTabProps('dao', index)} />
+              <Tab
+                sx={{ fontSize: '12px' }}
+                key={key}
+                label={label}
+                {...a11yTabProps('dao', index)}
+              />
             ))}
           </Tabs>
         </Box>

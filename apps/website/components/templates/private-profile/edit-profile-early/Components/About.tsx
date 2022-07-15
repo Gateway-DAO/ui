@@ -1,4 +1,5 @@
 import { useState } from 'react';
+
 import EditIcon from '@mui/icons-material/Edit';
 import {
   Avatar,
@@ -11,8 +12,6 @@ import {
   IconButton,
   TextField,
 } from '@mui/material';
-
-import { SocialLinks } from 'apps/website/components/molecules/social-links';
 
 export function About() {
   const [bioChar, setBioChar] = useState(0);
@@ -159,9 +158,7 @@ export function About() {
               >
                 Social links
               </Typography>
-              <Stack>
-                
-              </Stack>
+              <Stack></Stack>
             </Stack>
           </Stack>
         </Grid>

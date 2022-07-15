@@ -1,5 +1,7 @@
-import { TOKENS } from '@gateway/theme';
 import { useState } from 'react';
+
+import { TOKENS } from '@gateway/theme';
+
 import EditIcon from '@mui/icons-material/Edit';
 import {
   Avatar,
@@ -13,8 +15,7 @@ import {
   TextField,
 } from '@mui/material';
 
-import { SocialLinks } from 'apps/website/components/molecules/social-links';
-import {Form} from "./AboutComponents/Form"
+import { Form } from './AboutComponents/Form';
 
 export function About() {
   return (

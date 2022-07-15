@@ -1,8 +1,10 @@
-import { PartialDeep } from 'type-fest';
-import { useMemo } from 'react';
 import useTranslation from 'next-translate/useTranslation';
+import { useMemo } from 'react';
+
+import { PartialDeep } from 'type-fest';
 
 import { TOKENS } from '@gateway/theme';
+
 import { Box, Typography, Tabs, Tab } from '@mui/material';
 
 import { useViewMode, ViewMode } from '../../../../hooks/use-view-modes';
@@ -108,7 +110,8 @@ export function OverviewTab() {
                 sx={{ mb: '-1px' }}
               >
                 {tabs.map(({ key, label }, index) => (
-                  <Tab sx ={{fontSize:'12px'}}
+                  <Tab
+                    sx={{ fontSize: '12px' }}
                     key={key}
                     label={label}
                     {...a11yTabProps('dao', index)}
@@ -138,7 +141,10 @@ export function OverviewTab() {
                 flexDirection: 'column',
                 rowGap: '20px',
               }}
-              borderTop={{ xs: '1px solid rgba(255, 255, 255, 0.12)', md: '0px' }}
+              borderTop={{
+                xs: '1px solid rgba(255, 255, 255, 0.12)',
+                md: '0px',
+              }}
             >
               <Typography
                 style={{ color: '#fff', fontSize: '20px' }}

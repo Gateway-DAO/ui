@@ -1,24 +1,25 @@
-import { PartialDeep } from 'type-fest';
-import { useMemo } from 'react';
 import useTranslation from 'next-translate/useTranslation';
+import { useRouter } from 'next/router';
+import { useMemo } from 'react';
+
+import { PartialDeep } from 'type-fest';
 
 import { TOKENS } from '@gateway/theme';
-import { Box, Typography, Tabs, Tab, Button, Card } from '@mui/material';
+
 import EditIcon from '@mui/icons-material/Edit';
 import ExploreIcon from '@mui/icons-material/Explore';
+import { Box, Typography, Tabs, Tab, Button, Card } from '@mui/material';
 
+import { ROUTES } from '../../../../constants/routes';
 import { useViewMode, ViewMode } from '../../../../hooks/use-view-modes';
 import { a11yTabProps, TabPanel, useTab } from '../../../atoms/tabs';
 import { ReceivedTab } from './recommendations/ReceivedTab';
-
-import { useRouter } from 'next/router';
-import { ROUTES } from '../../../../constants/routes';
 
 export function OverviewTab() {
   const { view, toggleView } = useViewMode();
   const { t } = useTranslation();
   const { activeTab, handleTabChange, setTab } = useTab();
-  const router = useRouter()
+  const router = useRouter();
   const tabs = useMemo(
     () => [
       {
@@ -79,9 +80,11 @@ export function OverviewTab() {
                   sx={{
                     marginLeft: '15px',
                     color: 'rgba(255, 255, 255, 0.56)',
-                    cursor:"pointer"
+                    cursor: 'pointer',
                   }}
-                  onClick={() => router.push(ROUTES.EDIT_PROFILE + "#experiences")}
+                  onClick={() =>
+                    router.push(ROUTES.EDIT_PROFILE + '#experiences')
+                  }
                 ></EditIcon>
               </Box>
               <Card
@@ -104,7 +107,7 @@ export function OverviewTab() {
                     height: '55px',
                     background: 'rgba(229, 229, 229, 0.16)',
                     borderRadius: '64px',
-                    padding:"10px"
+                    padding: '10px',
                   }}
                 ></ExploreIcon>
                 <Typography sx={{ color: '#fff' }} component="h3" variant="h6">
@@ -207,9 +210,9 @@ export function OverviewTab() {
                   sx={{
                     marginLeft: '15px',
                     color: 'rgba(255, 255, 255, 0.56)',
-                    cursor:"pointer"
+                    cursor: 'pointer',
                   }}
-                  onClick={() => router.push(ROUTES.EDIT_PROFILE + "#skills")}
+                  onClick={() => router.push(ROUTES.EDIT_PROFILE + '#skills')}
                 ></EditIcon>
               </Box>
               <Button
@@ -252,9 +255,11 @@ export function OverviewTab() {
                   sx={{
                     marginLeft: '15px',
                     color: 'rgba(255, 255, 255, 0.56)',
-                    cursor:"pointer"
+                    cursor: 'pointer',
                   }}
-                  onClick={() => router.push(ROUTES.EDIT_PROFILE + "#languages")}
+                  onClick={() =>
+                    router.push(ROUTES.EDIT_PROFILE + '#languages')
+                  }
                 ></EditIcon>
               </Box>
 
@@ -296,9 +301,11 @@ export function OverviewTab() {
                   sx={{
                     marginLeft: '15px',
                     color: 'rgba(255, 255, 255, 0.56)',
-                    cursor:"pointer"
+                    cursor: 'pointer',
                   }}
-                  onClick={() => router.push(ROUTES.EDIT_PROFILE + "#timezones")}
+                  onClick={() =>
+                    router.push(ROUTES.EDIT_PROFILE + '#timezones')
+                  }
                 ></EditIcon>
               </Box>
               <Typography

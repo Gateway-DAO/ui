@@ -1,9 +1,6 @@
+import { useRouter } from 'next/router';
+
 import { TOKENS } from '@gateway/theme';
-import { About } from './Components/About';
-import { TimeZone } from './Components/TimeZone';
-import { Skills } from './Components/Skills';
-import { Languages } from './Components/Languages';
-import { Experiences } from './Components/Experiences';
 
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import {
@@ -18,8 +15,12 @@ import {
   IconButton,
 } from '@mui/material';
 
-import { useRouter } from 'next/router';
 import { ROUTES } from '../../../../constants/routes';
+import { About } from './Components/About';
+import { Experiences } from './Components/Experiences';
+import { Languages } from './Components/Languages';
+import { Skills } from './Components/Skills';
+import { TimeZone } from './Components/TimeZone';
 
 export function EditProfile() {
   const router = useRouter();

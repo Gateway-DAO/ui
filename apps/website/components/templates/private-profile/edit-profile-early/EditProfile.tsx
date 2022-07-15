@@ -1,9 +1,4 @@
 import { TOKENS } from '@gateway/theme';
-import { About } from './Components/About';
-import { TimeZone } from './Components/TimeZone';
-import { Skills } from './Components/Skills';
-import { Languages } from './Components/Languages';
-import { Experiences } from './Components/Experiences';
 
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import {
@@ -18,10 +13,16 @@ import {
   IconButton,
 } from '@mui/material';
 
+import { About } from './Components/About';
+import { Experiences } from './Components/Experiences';
+import { Languages } from './Components/Languages';
+import { Skills } from './Components/Skills';
+import { TimeZone } from './Components/TimeZone';
+
 export function EditProfile() {
   return (
     <Stack gap={7} p={TOKENS.CONTAINER_PX}>
-      <Box sx={{ paddingLeft: {xs:"0px",md:'40px'} }}>
+      <Box sx={{ paddingLeft: { xs: '0px', md: '40px' } }}>
         <IconButton
           sx={{
             p: 0,
@@ -37,8 +38,8 @@ export function EditProfile() {
         sx={{
           display: 'flex',
           position: 'absolute',
-          top: {xs:'10px',md:'40px'},
-          right: {xs:'20px',md:'92px'},
+          top: { xs: '10px', md: '40px' },
+          right: { xs: '20px', md: '92px' },
           cursor: 'pointer',
         }}
       >

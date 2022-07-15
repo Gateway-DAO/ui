@@ -1,5 +1,8 @@
 import { useState } from 'react';
+
 import { TOKENS } from '@gateway/theme';
+
+import SearchIcon from '@mui/icons-material/Search';
 import {
   Grid,
   Stack,
@@ -8,9 +11,7 @@ import {
   Chip,
   TextField,
 } from '@mui/material';
-
 import Autocomplete, { autocompleteClasses } from '@mui/material/Autocomplete';
-import SearchIcon from '@mui/icons-material/Search';
 
 export function Languages() {
   const skills = [
@@ -38,7 +39,7 @@ export function Languages() {
             fontWeight="bold"
             sx={{ color: '#fff' }}
             ml={{ xs: '0px', md: '40px' }}
-            mb={{xs: '27px', md: '0px'}}
+            mb={{ xs: '27px', md: '0px' }}
           >
             Languages
           </Typography>

@@ -1,5 +1,7 @@
 import { useState } from 'react';
+
 import { TOKENS } from '@gateway/theme';
+
 import {
   Grid,
   Stack,
@@ -33,7 +35,7 @@ export function TimeZone() {
             fontWeight="bold"
             sx={{ color: '#fff' }}
             ml={{ xs: '0px', md: '40px' }}
-            mb={{xs: '20px', md: '0px'}}
+            mb={{ xs: '20px', md: '0px' }}
           >
             Time Zone
           </Typography>
@@ -41,7 +43,9 @@ export function TimeZone() {
         <Grid item xs={7.5}>
           <Stack width={{ sx: '100%', md: '65%' }}>
             <FormControl fullWidth>
-              <InputLabel id="demo-simple-select-label">SELECT YOUR TIME ZONE</InputLabel>
+              <InputLabel id="demo-simple-select-label">
+                SELECT YOUR TIME ZONE
+              </InputLabel>
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
@@ -49,7 +53,9 @@ export function TimeZone() {
                 label="SELECT YOUR TIME ZONE"
                 onChange={(e) => setTimeZone(e.target.value)}
               >
-                <MenuItem value={"EST"} >Eastern Standard Time (EST), UTC -5</MenuItem>
+                <MenuItem value={'EST'}>
+                  Eastern Standard Time (EST), UTC -5
+                </MenuItem>
               </Select>
             </FormControl>
           </Stack>

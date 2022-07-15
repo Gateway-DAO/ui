@@ -1,4 +1,4 @@
-import { EditProfile } from "../../../components/templates/private-profile/edit-profile/EditProfile";
+import { EditProfile } from '../../../components/templates/private-profile/edit-profile/EditProfile';
 export default function edit() {
   return (
     <>

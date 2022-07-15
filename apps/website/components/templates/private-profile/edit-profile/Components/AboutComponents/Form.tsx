@@ -1,11 +1,9 @@
 import { useState } from 'react';
-import {
-  Stack,
-  Typography,
-  TextField
-} from '@mui/material';
 
 import { useFormContext } from 'react-hook-form';
+
+import { Stack, Typography, TextField } from '@mui/material';
+
 export function Form() {
   const [bioChar, setBioChar] = useState(0);
 
@@ -31,9 +29,9 @@ export function Form() {
               marginRight: '2px',
               paddingRight: '0px',
             },
-            '& label.Mui-focused':{
-              textTransform:"uppercase"
-            }
+            '& label.Mui-focused': {
+              textTransform: 'uppercase',
+            },
           }}
           label="Display Name"
           id="name"
@@ -44,9 +42,9 @@ export function Form() {
               marginRight: '2px',
               paddingRight: '0px',
             },
-            '& label.Mui-focused':{
-              textTransform:"uppercase"
-            }
+            '& label.Mui-focused': {
+              textTransform: 'uppercase',
+            },
           }}
           required
           label="Username"
@@ -58,9 +56,9 @@ export function Form() {
               marginRight: '4px',
               paddingRight: '4px',
             },
-            '& label.Mui-focused':{
-              textTransform:"uppercase"
-            }
+            '& label.Mui-focused': {
+              textTransform: 'uppercase',
+            },
           }}
           multiline
           minRows={4}

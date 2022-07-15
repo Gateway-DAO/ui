@@ -1,4 +1,6 @@
 import { useState } from 'react';
+
+import SearchIcon from '@mui/icons-material/Search';
 import {
   Grid,
   Stack,
@@ -7,11 +9,7 @@ import {
   Chip,
   TextField,
 } from '@mui/material';
-
-import Autocomplete, { autocompleteClasses } from "@mui/material/Autocomplete";
-
-
-import SearchIcon from '@mui/icons-material/Search';
+import Autocomplete, { autocompleteClasses } from '@mui/material/Autocomplete';
 
 export function Skills() {
   const skills = [
@@ -21,7 +19,7 @@ export function Skills() {
     { title: 'Product Design' },
     { title: 'Web3' },
     { title: 'UI Design' },
-    {title: 'Business Development'},
+    { title: 'Business Development' },
     { title: 'Blockchain' },
     { title: 'Cryptocurrency' },
   ];
@@ -36,7 +34,7 @@ export function Skills() {
       <Grid
         container
         direction={{ xs: 'column', md: 'row' }}
-        sx={{ rowGap: '15px',marginTop:"24px", alignItems:"flex-start"}}
+        sx={{ rowGap: '15px', marginTop: '24px', alignItems: 'flex-start' }}
       >
         <Grid item xs={4}>
           <Typography
@@ -44,13 +42,13 @@ export function Skills() {
             fontWeight="bold"
             sx={{ color: '#fff' }}
             ml={{ xs: '0px', md: '40px' }}
-            mb={{xs: '27px', md: '0px'}}
+            mb={{ xs: '27px', md: '0px' }}
           >
             Skills
           </Typography>
         </Grid>
         <Grid item xs={7.5}>
-          <Stack >
+          <Stack>
             <Autocomplete
               multiple
               id="tags-standard"
@@ -58,18 +56,15 @@ export function Skills() {
               disableClearable
               getOptionLabel={(option) => option.title}
               renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label="SELECT YOUR SKILLS"
-                />
+                <TextField {...params} label="SELECT YOUR SKILLS" />
               )}
               popupIcon={<SearchIcon />}
               sx={{
                 width: { xs: '94vw', md: '65%' },
                 [`& .${autocompleteClasses.popupIndicator}`]: {
-                  transform: "none",
-                  color:"rgba(255, 255, 255, 0.56)"
-                }
+                  transform: 'none',
+                  color: 'rgba(255, 255, 255, 0.56)',
+                },
               }}
             />
           </Stack>
