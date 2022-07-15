@@ -1,4 +1,4 @@
-import { Chip, Menu, MenuItem } from '@mui/material';
+import { Chip } from '@mui/material';
 import { Subjects } from '../index';
 import { useState } from 'react';
 import { MoreList } from './drop-down-list';
@@ -18,13 +18,13 @@ export const showCategories = (mintProcessStatus, categories) => {
       return (
         <>
           {categories.slice(0, 1).map((category, index) => (
-            <Chip key={category} label={category} size="medium" />
+            <Chip key={category} label={category} size="small" />
           ))}
           {categories.length > 1 && (
             <Chip
               key={'more'}
               label={'+' + (categories.length - 1)}
-              size="medium"
+              size="small"
               aria-label="more"
               id="long-button"
               aria-controls={open ? 'long-menu' : undefined}
@@ -42,13 +42,19 @@ export const showCategories = (mintProcessStatus, categories) => {
       return (
         <>
           {categories.slice(0, 2).map((category, index) => (
-            <Chip key={category} label={category} size="medium" />
+            <Chip key={category} label={category} size="small" />
           ))}
           {categories.length > 2 && (
             <Chip
               key={'more'}
               label={'+' + (categories.length - 2)}
-              size="medium"
+              size="small"
+              aria-label="more"
+              id="long-button"
+              aria-controls={open ? 'long-menu' : undefined}
+              aria-expanded={open ? 'true' : undefined}
+              aria-haspopup="true"
+              onClick={handleClick}
             />
           )}
           {MoreList({ anchorEl, open, handleClose, categories, skip: 2 })}

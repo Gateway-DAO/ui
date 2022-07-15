@@ -22,8 +22,8 @@ export function MintingScreen({
       />
       <Box
         sx={{
-          width: 300,
-          height: 270,
+          width: 275,
+          height: 247,
           backgroundColor: 'primary',
           '&:hover': {
             backgroundColor: 'primary',
@@ -56,10 +56,10 @@ export function MintingScreen({
             sx={{
               height: 40,
               width: 40,
-              mb: 2,
+              m: 2,
               p: 1,
               color: 'primary.dark',
-              bgcolor: 'success.main',
+              bgcolor: 'success.light',
               borderRadius: '50%',
             }}
           />
@@ -70,7 +70,7 @@ export function MintingScreen({
             sx={{
               height: 40,
               width: 40,
-              mb: 2,
+              m: 2,
               p: 1,
               color: 'primary',
               bgcolor: 'error.main',
@@ -98,15 +98,14 @@ export function MintingScreen({
             )}
             {mintProcessStatus === Subjects.failed && (
               <AnimatedMessage key="failed">
-                Something went wrong on minting{' '}
-                {details.error?.reason && `: ${details.error.reason}`}
+                Something went wrong on minting
               </AnimatedMessage>
             )}
           </AnimatePresence>
         </Box>
       </Box>
       {mintProcessStatus === Subjects.failed && (
-        <Box sx={{ m: 2, mb: 1.5 }}>
+        <Box sx={{ m: 2 }}>
           <Button
             size="large"
             variant="contained"

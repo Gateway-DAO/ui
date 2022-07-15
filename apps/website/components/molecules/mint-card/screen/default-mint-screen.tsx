@@ -52,6 +52,7 @@ export const DefaultMintScreen = ({
             aria-controls={open ? 'more' : undefined}
             aria-haspopup="true"
             aria-expanded={open ? 'true' : undefined}
+            
           >
             <MoreVertIcon />
           </IconButton>
@@ -63,7 +64,7 @@ export const DefaultMintScreen = ({
       <CardContent sx={{ mt: -2.0 }}>
         <Typography variant="body2" color="text.secondary">
           {details.description.length > 70
-            ? details.description.substring(0, 70) + '...'
+            ? details.description.substring(0, 67) + '...'
             : details.description}
         </Typography>
       </CardContent>
@@ -72,20 +73,20 @@ export const DefaultMintScreen = ({
           <Chip
             key={'mint button'}
             label={'MINT AS NFT'}
-            size="medium"
+            size="small"
             color="primary"
             icon={<TokenFilled height={20} width={20} color="action" />}
             onClick={() => setMintProcessStatus(Subjects.start)}
           />
         ) : (
           <Tooltip title="Verify NFT mint transaction">
-            <Avatar sx={{ height: 32, width: 32 }}>
+            <Avatar sx={{ height: 24, width: 24 }}>
               <IconButton
                 onClick={() =>
                   details.nft_url && window.open(details.nft_url, '_blank')
                 }
               >
-                <TokenFilled height={24} width={24} color="action" />
+                <TokenFilled sx={{ height: 18, width: 18 }} />
               </IconButton>
             </Avatar>
           </Tooltip>

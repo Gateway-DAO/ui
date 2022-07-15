@@ -90,7 +90,7 @@ export function AllTab({ daos, gates, people, setActiveTab }: Props) {
             ]}
             minted={false}
             nftURL="https://polygonscan.com/"
-            tokenURI="dfsvcxvsgdsfsafdsfdsfdsfd"
+            tokenURI="dfsvcdsfdsdsfdsfsdfdsfdsffdsfdsfdsfd"
           />
         </SectionWithSliderResponsive>
         <SectionWithGrid

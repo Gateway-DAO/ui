@@ -65,7 +65,7 @@ export const MintCard = (props: MintCardProps) => {
   }, [asksSignature]);
 
   return (
-    <Card sx={{ width: '300px', height: '450px' }}>
+    <Card sx={{ width: '275px', height: '443px' }}>
       {processScreen(mintProcessStatus, setMintProcessStatus, mint, {
         title: props.title,
         description: props.description,
