@@ -17,6 +17,7 @@ import {
   Typography,
 } from '@mui/material';
 
+import { ROUTES } from '../../../constants/routes';
 import { useUploadImage } from '../../../hooks/use-upload-image';
 import { useAuth } from '../../../providers/auth';
 import { LoadingButton } from '../../atoms/loading-button';
@@ -34,7 +35,6 @@ export function NewDAOTemplate() {
 
   const uploadImage = useUploadImage();
 
-  /* TODO: FINISH IT */
   const createDAOMutation = useMutation(
     async (data: NewDAOSchema) => {
       const { background_url, logo_url, socials, ...daoData } = data;
@@ -61,13 +61,16 @@ export function NewDAOTemplate() {
       onSuccess(data) {
         const dao = data.insert_daos_one;
         const followingDaoObject = { dao_id: dao.id, dao };
+        console.log({ data, dao, followingDaoObject });
         onUpdateMe((oldMe) => ({
           ...oldMe,
           following_dao: oldMe.following_dao
             ? [...oldMe.following_dao, followingDaoObject]
             : [followingDaoObject],
         }));
-        router.replace(`/dao/${data.insert_daos_one.id}`);
+        router.replace(
+          ROUTES.DAO_PROFILE.replace('[id]', data.insert_daos_one.id)
+        );
       },
     }
   );
