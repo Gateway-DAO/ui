@@ -1,6 +1,5 @@
 import useTranslation from 'next-translate/useTranslation';
 import Image from 'next/image';
-import { useMemo } from 'react';
 
 import { useQuery } from 'react-query';
 import { PartialDeep } from 'type-fest';
@@ -10,7 +9,6 @@ import { TOKENS } from '@gateway/theme';
 import { Chip, Box, Stack, Typography, Tabs, Tab } from '@mui/material';
 
 import { useFile } from '../../../hooks/use-file';
-import { useAuth } from '../../../providers/auth';
 import { gqlAnonMethods } from '../../../services/api';
 import { Daos } from '../../../services/graphql/types.generated';
 import { AvatarFile } from '../../atoms/avatar-file';
@@ -23,18 +21,12 @@ import { PeopleTab } from './tabs/people-tab';
 
 type Props = {
   dao: PartialDeep<Daos>;
+  isAdmin: boolean;
 };
 
-export function DaoProfileTemplate({ dao }: Props) {
+export function DaoProfileTemplate({ dao, isAdmin }: Props) {
   const { t } = useTranslation();
   const { activeTab, handleTabChange, setTab } = useTab();
-  const { me } = useAuth();
-
-  const isAdmin = useMemo(
-    () =>
-      me?.following_dao?.find((fdao) => fdao.dao_id === dao.id)?.dao?.is_admin,
-    [me?.following_dao]
-  );
 
   const peopleQuery = useQuery(
     ['dao-people', dao.id],
@@ -156,13 +148,12 @@ export function DaoProfileTemplate({ dao }: Props) {
             </Typography>
           </Stack>
           <Socials dao={dao}>
-            {!isAdmin && (
-              <FollowButtonDAO
-                daoId={dao.id}
-                onFollow={onResetPeopleQuery}
-                onUnfollow={onResetPeopleQuery}
-              />
-            )}
+            <FollowButtonDAO
+              daoId={dao.id}
+              onFollow={onResetPeopleQuery}
+              onUnfollow={onResetPeopleQuery}
+              disabled={isAdmin}
+            />
           </Socials>
         </Box>
       </Box>
