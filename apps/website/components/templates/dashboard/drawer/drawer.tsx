@@ -16,6 +16,7 @@ import { ROUTES } from '../../../../constants/routes';
 import { useAuth } from '../../../../providers/auth';
 import { AvatarFile } from '../../../atoms/avatar-file';
 import { DashboardTemplateProps } from '../types';
+import { AdminBadge } from './admin-badge';
 import { DaosList } from './daos-list';
 import { DrawerContainer } from './drawer-container';
 import { ResponsiveDrawer } from './responsive-drawer';
@@ -71,6 +72,11 @@ export function Drawer({ currentDao, showExplore }: Props) {
             )}
             {followingDaos?.map((dao) => {
               const url = ROUTES.DAO_PROFILE.replace('[id]', dao.id);
+              const avatar = (
+                <AvatarFile file={dao?.logo} fallback={dao?.logo_url}>
+                  {dao.name?.[0]}
+                </AvatarFile>
+              );
 
               return (
                 <Link key={dao.id} passHref href={url} prefetch={false}>
@@ -85,9 +91,11 @@ export function Drawer({ currentDao, showExplore }: Props) {
                       className={clsx({ active: dao.id === currentDao?.id })}
                     >
                       <ListItemIcon>
-                        <AvatarFile file={dao?.logo} fallback={dao?.logo_url}>
-                          {dao.name?.[0]}
-                        </AvatarFile>
+                        {dao.is_admin ? (
+                          <AdminBadge>{avatar}</AdminBadge>
+                        ) : (
+                          avatar
+                        )}
                       </ListItemIcon>
                     </ListItemButton>
                   </MotionTooltip>
