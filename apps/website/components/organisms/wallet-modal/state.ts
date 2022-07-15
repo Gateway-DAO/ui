@@ -22,14 +22,18 @@ export function useConnectWallet() {
     message: any;
     label: string;
     // eslint-disable-next-line @typescript-eslint/ban-types
-    onClick?: () => any;
   }>();
 
   const signIn = useLogin();
 
   const sign = useSignMessage();
   const account = useAccount({
-    onSuccess({ address }) {
+    onSuccess(data) {
+      if (!data) {
+        throw new Error('Reconnect to Wallet');
+      }
+      const { address } = data ?? {};
+
       setStep('GET_NONCE');
       nonce.mutate(address);
     },
@@ -74,7 +78,6 @@ export function useConnectWallet() {
           wallet: account.data.address!,
           signature,
         });
-        console.log(res);
         setStep('FINISHED');
       },
       onError(e: any) {

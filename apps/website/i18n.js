@@ -5,7 +5,7 @@ const config = {
   locales: ['en'],
   defaultLocale: 'en',
   pages: {
-    '*': ['common'],
+    '*': ['common', 'auth'],
     [ROUTES.LANDING]: ['index'],
     [ROUTES.EXPLORE]: ['explore'],
     [ROUTES.NEW_USER]: ['dashboard-new-user'],

@@ -1,6 +1,6 @@
 import { TOKENS } from '@gateway/theme';
 
-import { Avatar, Box, Button, Chip, Stack, Typography } from '@mui/material';
+import { Avatar, Box, Stack, Typography } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -8,6 +8,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 
+import { FollowButtonUser } from '../../../../atoms/follow-button-user';
 import { ExploreProps } from '../../types';
 
 type Props = {
@@ -15,7 +16,16 @@ type Props = {
 };
 export function TableView({ people }: Props) {
   return (
-    <TableContainer sx={{ px: TOKENS.CONTAINER_PX }}>
+    <TableContainer
+      sx={{
+        '& .MuiTableCell-root:first-of-type': {
+          pl: TOKENS.CONTAINER_PX,
+        },
+        '& .MuiTableCell-root:last-of-type': {
+          pr: TOKENS.CONTAINER_PX,
+        },
+      }}
+    >
       <Table stickyHeader aria-label="sticky table">
         <TableHead>
           <TableRow>
@@ -29,7 +39,7 @@ export function TableView({ people }: Props) {
               <TableRow hover role="checkbox" tabIndex={-1} key={user.id}>
                 <TableCell>
                   <Stack alignItems="center" direction="row" gap={1}>
-                    <Avatar variant="rounded" src={user.pfp}>
+                    <Avatar variant="circular" src={user.pfp}>
                       {user.name?.[0]}
                     </Avatar>
                     <Box>
@@ -50,9 +60,12 @@ export function TableView({ people }: Props) {
                 </TableCell>
 
                 <TableCell align="right">
-                  <Button variant="outlined" color="secondary">
-                    Follow
-                  </Button>
+                  <FollowButtonUser
+                    userId={user.id}
+                    variant="outlined"
+                    size="small"
+                    color="secondary"
+                  />
                 </TableCell>
               </TableRow>
             );

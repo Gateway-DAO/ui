@@ -22,12 +22,12 @@ import { a11yTabProps, TabPanel, useTab } from '../../../components/atoms/tabs';
 import { Navbar } from '../../../components/organisms/navbar/navbar';
 import { DashboardTemplate } from '../../../components/templates/dashboard';
 import { ROUTES } from '../../../constants/routes';
-import { gqlAdminMethods } from '../../../services/api';
+import { gqlAnonMethods } from '../../../services/api';
 import { ActivityTab } from './tabs/ActivityTab';
 import { OverviewTab } from './tabs/OverviewTab';
 
 export const getStaticProps = async () => {
-  const exploreProps = await gqlAdminMethods.get_home();
+  const exploreProps = await gqlAnonMethods.get_home();
 
   return {
     props: {

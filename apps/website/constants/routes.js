@@ -7,6 +7,7 @@ const ROUTES = {
   DAO_PROFILE: '/dao/[id]',
   PRIVATE_PROFILE: '/private_profile',
   EDIT_PROFILE: '/private_profile/edit',
+  GATE_PROFILE: '/gate/[id]',
 };
 
 module.exports = {

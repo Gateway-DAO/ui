@@ -20,7 +20,16 @@ type Props = {
 };
 export function TableView({ gates }: Props) {
   return (
-    <TableContainer sx={{ px: TOKENS.CONTAINER_PX }}>
+    <TableContainer
+      sx={{
+        '& .MuiTableCell-root:first-of-type': {
+          pl: TOKENS.CONTAINER_PX,
+        },
+        '& .MuiTableCell-root:last-of-type': {
+          pr: TOKENS.CONTAINER_PX,
+        },
+      }}
+    >
       <Table stickyHeader aria-label="sticky table">
         <TableHead>
           <TableRow>
@@ -35,7 +44,7 @@ export function TableView({ gates }: Props) {
               <TableRow hover role="checkbox" tabIndex={-1} key={gate.id}>
                 <TableCell>
                   <Stack alignItems="center" direction="row" gap={1}>
-                    <Avatar variant="rounded" {...badgeProps(gate.image)}>
+                    <Avatar variant="rounded" {...badgeProps(gate)}>
                       {gate.title?.[0]}
                     </Avatar>
                     <Box>
