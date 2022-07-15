@@ -16,6 +16,9 @@ const nextConfig = {
   images: {
     domains: ['api.staging.mygateway.xyz'],
   },
+  compiler: {
+    emotion: true,
+  },
 };
 
 const sentryWebpackPluginOptions = {
