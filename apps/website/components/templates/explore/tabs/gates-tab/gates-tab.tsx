@@ -30,6 +30,7 @@ export function GatesTab() {
     <Box sx={{ py: 4 }}>
       {isLoading ? (
         <Box
+          key="loading"
           sx={{
             display: 'flex',
             alignItems: 'center',
@@ -44,6 +45,7 @@ export function GatesTab() {
             direction="row"
             justifyContent="space-between"
             sx={{ mb: 4, px: TOKENS.CONTAINER_PX }}
+            key="gates-tab-filters"
           >
             <Stack direction="row" gap={1.5}>
               <ChipDropdown
