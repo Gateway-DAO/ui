@@ -24,7 +24,7 @@ import { AboutForm } from './form/form';
 import { schema, NewDAOSchema } from './schema';
 
 export function NewDAOTemplate() {
-  const { me, gqlAuthMethods } = useAuth();
+  const { me, gqlAuthMethods, onUpdateMe } = useAuth();
   const { t } = useTranslation('dao-new');
   const methods = useForm<NewDAOSchema>({
     resolver: yupResolver(schema),
@@ -59,6 +59,14 @@ export function NewDAOTemplate() {
     },
     {
       onSuccess(data) {
+        const dao = data.insert_daos_one;
+        const followingDaoObject = { dao_id: dao.id, dao };
+        onUpdateMe((oldMe) => ({
+          ...oldMe,
+          following_dao: oldMe.following_dao
+            ? [...oldMe.following_dao, followingDaoObject]
+            : [followingDaoObject],
+        }));
         router.replace(`/dao/${data.insert_daos_one.id}`);
       },
     }
