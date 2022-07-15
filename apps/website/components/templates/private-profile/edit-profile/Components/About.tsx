@@ -14,9 +14,9 @@ import {
 } from '@mui/material';
 
 import { SocialLinks } from 'apps/website/components/molecules/social-links';
+import {Form} from "./AboutComponents/Form"
 
 export function About() {
-  const [bioChar, setBioChar] = useState(0);
   return (
     <Stack
       p={TOKENS.CONTAINER_PX}
@@ -59,13 +59,13 @@ export function About() {
                   backgroundSize: 'cover',
                   background:
                     'linear-gradient(180deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0) 44.13%), linear-gradient(82.31deg, #FCB5DB 17.7%, #8965D2 57.63%);',
-                  backdropFilter: "blur(40px)",
-                  border:"1px solid #594979",
+                  backdropFilter: 'blur(40px)',
+                  border: '1px solid #594979',
                   pt: 2,
                   display: 'flex',
                   alignItems: 'flex-end',
                   justifyContent: 'flex-end',
-                  borderRadius:"8px"
+                  borderRadius: '8px',
                 }}
               >
                 <IconButton sx={{ zIndex: '13' }}>
@@ -116,70 +116,7 @@ export function About() {
             </Stack>
 
             {/* DETAILS FORM */}
-
-            <Stack gap={4}>
-              <Typography
-                variant="h6"
-                fontWeight="bold"
-                sx={{ color: '#fff', fontSize: '16px' }}
-              >
-                Details
-              </Typography>
-              <Stack
-                component="form"
-                direction="column"
-                gap={2}
-                width={{ sx: '100%', md: '65%' }}
-              >
-                <TextField
-                  required
-                  sx={{
-                    '& div fieldset legend span': {
-                      marginRight: '-6px',
-                      paddingRight: '0px',
-                    },
-                  }}
-                  label="Display Name"
-                  id="name"
-                />
-                <TextField
-                  sx={{
-                    '& div fieldset legend span': {
-                      marginRight: '-6px',
-                      paddingRight: '0px',
-                    },
-                  }}
-                  required
-                  label="Username"
-                  id="username"
-                />
-                <TextField
-                  sx={{
-                    '& div fieldset legend span': {
-                      marginRight: '-6px',
-                      paddingRight: '0px',
-                    },
-                  }}
-                  multiline
-                  minRows={4}
-                  required
-                  label="Your Bio"
-                  id="your_bio"
-                  inputProps={{ maxLength: 200 }}
-                  onChange={(e) => setBioChar(e.target.value.length)}
-                />
-                <Typography
-                  sx={{
-                    fontSize: '12px',
-                    color: 'rgba(255, 255, 255, 0.7)',
-                    margin: '-10px 10px',
-                  }}
-                >
-                  {bioChar} / 200
-                </Typography>
-              </Stack>
-            </Stack>
-
+            <Form />
             {/* Social Links */}
 
             <Stack gap={4}>

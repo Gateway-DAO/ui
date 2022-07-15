@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable import-helpers/order-imports */
+/* eslint-disable prettier/prettier */
 import { useState } from 'react';
 import {
   Grid,
@@ -31,6 +34,7 @@ export default function ExperienceAccordion(props) {
   const [visible, setVisible] = useState(true);
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
+  const [contributing, setContributing] = useState(false);
 
   const visiblityHandler = (e) => {
     e.stopPropagation();
@@ -94,7 +98,7 @@ export default function ExperienceAccordion(props) {
             onClick={visiblityHandler}
           >
             {visible ? (
-              <Visibility></Visibility>
+              <Visibility ></Visibility>
             ) : (
               <VisibilityOff></VisibilityOff>
             )}
@@ -119,7 +123,7 @@ export default function ExperienceAccordion(props) {
             >
               <DatePicker
                 disableFuture
-                label="START DATE"
+                label="Start Date"
                 inputFormat="MMM-yyyy"
                 openTo="year"
                 views={['year', 'month']}
@@ -129,14 +133,24 @@ export default function ExperienceAccordion(props) {
                 }}
                 renderInput={(params) => (
                   <TextField
-                    sx={{ width: { xs: '100%', md: '25%' } }}
+                    sx={{
+                      width: { xs: '100%', md: '25%' },
+                      '& label.Mui-focused': {
+                        textTransform: 'uppercase',
+                      },
+                      '& div fieldset legend span': {
+                        marginRight: '6px',
+                        paddingRight: '6px',
+                      },
+                    }}
                     {...params}
                   />
                 )}
               />
               <DatePicker
+                disabled={contributing ? true : false}
                 disablePast
-                label="END DATE"
+                label="End Date"
                 inputFormat="MMM-yyyy"
                 openTo="year"
                 views={['year', 'month']}
@@ -146,23 +160,47 @@ export default function ExperienceAccordion(props) {
                 }}
                 renderInput={(params) => (
                   <TextField
-                    sx={{ width: { xs: '100%', md: '25%' } }}
+                    sx={{
+                      width: { xs: '100%', md: '25%' },
+                      '& label.Mui-focused': {
+                        textTransform: 'uppercase',
+                      },
+                      '& div fieldset legend span': {
+                        marginRight: '4px',
+                        paddingRight: '4px',
+                      },
+                    }}
                     {...params}
                   />
                 )}
               />
               <FormControlLabel
                 sx={{ width: { xs: '100%', md: '50%' } }}
-                control={<Checkbox defaultChecked />}
+                control={
+                  <Checkbox
+                    defaultChecked
+                    onChange={(e) => setContributing(e.target.checked)}
+                  />
+                }
                 label="I’m currently contributing here"
+                on
               />
             </Box>
             <TextField
               multiline
               minRows={3}
               required
-              label="DESCRIPTION"
+              label="Description"
               id="description"
+              sx={{
+                '& label.Mui-focused': {
+                  textTransform: 'uppercase',
+                },
+                '& div fieldset legend span': {
+                  marginRight: '4px',
+                  paddingRight: '4px',
+                },
+              }}
             />
           </Stack>
 

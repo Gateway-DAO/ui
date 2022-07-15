@@ -21,7 +21,6 @@ export function Skills() {
     { title: 'Product Strategy' },
     { title: 'Product Design' },
     { title: 'Web3' },
-    { title: 'UI Design' },
     {title: 'Business Development'},
     { title: 'Blockchain' },
     { title: 'Cryptocurrency' },

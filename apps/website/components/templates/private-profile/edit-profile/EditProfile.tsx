@@ -18,15 +18,24 @@ import {
   IconButton,
 } from '@mui/material';
 
+import { useRouter } from 'next/router';
+import { ROUTES } from '../../../../constants/routes';
+
 export function EditProfile() {
+  const router = useRouter();
   return (
     <Stack gap={7}>
-      <Box sx={{ paddingLeft: { xs: '16px', md: '40px' }, paddingTop:{ xs: '24px', md: '40px' } }}>
+      <Box
+        sx={{
+          paddingLeft: { xs: '16px', md: '40px' },
+          paddingTop: { xs: '24px', md: '40px' },
+        }}
+      >
         <IconButton
           sx={{
             p: 0,
           }}
-          //onClick={onShare}
+          onClick={() => router.push(ROUTES.PRIVATE_PROFILE)}
         >
           <Avatar>
             <ArrowBackIcon></ArrowBackIcon>
@@ -68,13 +77,23 @@ export function EditProfile() {
 
       {/*Components*/}
 
-      <About />
+      <div id="about">
+        <About />
+      </div>
       <Divider light sx={{ width: '100%' }} />
-      <Experiences />
+      <div id="experiences">
+        <Experiences />
+      </div>
       <Divider light sx={{ width: '100%' }} />
-      <Skills />
-      <Languages />
-      <TimeZone />
+      <div id="skills">
+        <Skills />
+      </div>
+      <div id="languages">
+        <Languages />
+      </div>
+      <div id="timezones">
+        <TimeZone />
+      </div>
     </Stack>
   );
 }

@@ -11,11 +11,14 @@ import { useViewMode, ViewMode } from '../../../../hooks/use-view-modes';
 import { a11yTabProps, TabPanel, useTab } from '../../../atoms/tabs';
 import { ReceivedTab } from './recommendations/ReceivedTab';
 
+import { useRouter } from 'next/router';
+import { ROUTES } from '../../../../constants/routes';
+
 export function OverviewTab() {
   const { view, toggleView } = useViewMode();
   const { t } = useTranslation();
   const { activeTab, handleTabChange, setTab } = useTab();
-
+  const router = useRouter()
   const tabs = useMemo(
     () => [
       {
@@ -76,7 +79,9 @@ export function OverviewTab() {
                   sx={{
                     marginLeft: '15px',
                     color: 'rgba(255, 255, 255, 0.56)',
+                    cursor:"pointer"
                   }}
+                  onClick={() => router.push(ROUTES.EDIT_PROFILE + "#experiences")}
                 ></EditIcon>
               </Box>
               <Card
@@ -153,7 +158,7 @@ export function OverviewTab() {
                 sx={{ mb: '-1px' }}
               >
                 {tabs.map(({ key, label }, index) => (
-                  <Tab sx ={{fontSize:'12px'}}
+                  <Tab
                     key={key}
                     label={label}
                     {...a11yTabProps('dao', index)}
@@ -202,7 +207,9 @@ export function OverviewTab() {
                   sx={{
                     marginLeft: '15px',
                     color: 'rgba(255, 255, 255, 0.56)',
+                    cursor:"pointer"
                   }}
+                  onClick={() => router.push(ROUTES.EDIT_PROFILE + "#skills")}
                 ></EditIcon>
               </Box>
               <Button
@@ -239,13 +246,15 @@ export function OverviewTab() {
                   style={{ color: '#fff', fontSize: '20px' }}
                   variant="h2"
                 >
-                  Timezones
+                  Languages
                 </Typography>
                 <EditIcon
                   sx={{
                     marginLeft: '15px',
                     color: 'rgba(255, 255, 255, 0.56)',
+                    cursor:"pointer"
                   }}
+                  onClick={() => router.push(ROUTES.EDIT_PROFILE + "#languages")}
                 ></EditIcon>
               </Box>
 
@@ -287,7 +296,9 @@ export function OverviewTab() {
                   sx={{
                     marginLeft: '15px',
                     color: 'rgba(255, 255, 255, 0.56)',
+                    cursor:"pointer"
                   }}
+                  onClick={() => router.push(ROUTES.EDIT_PROFILE + "#timezones")}
                 ></EditIcon>
               </Box>
               <Typography
