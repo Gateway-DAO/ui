@@ -12,12 +12,14 @@ import {
   MenuItem,
   MenuList,
   Stack,
+  Tooltip,
 } from '@mui/material';
 import { TokenFilled } from '@gateway/assets';
-import { Subjects } from './index';
+import { Subjects } from '../index';
 import { useState } from 'react';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import { showCategories } from '../utlis/categories';
 
 export const DefaultMintScreen = ({
   mintProcessStatus,
@@ -31,46 +33,6 @@ export const DefaultMintScreen = ({
   };
   const handleClose = () => {
     setAnchorEl(null);
-  };
-
-  const showCategories = () => {
-    if (details.categories.length > 0) {
-      if (mintProcessStatus === Subjects.default) {
-        return (
-          <>
-            {details.categories.slice(0, 1).map((category, index) => (
-              <Chip key={category} label={category} size="medium" />
-            ))}
-            {details.categories.length > 1 && (
-              <Chip
-                key={'more'}
-                label={'+' + (details.categories.length - 1)}
-                size="medium"
-              />
-            )}
-          </>
-        );
-      }
-
-      if (mintProcessStatus === Subjects.alreadyMinted) {
-        return (
-          <>
-            {details.categories.slice(0, 2).map((category, index) => (
-              <Chip key={category} label={category} size="medium" />
-            ))}
-            {details.categories.length > 2 && (
-              <Chip
-                key={'more'}
-                label={'+' + (details.categories.length - 2)}
-                size="medium"
-              />
-            )}
-          </>
-        );
-      }
-    }
-
-    return null;
   };
 
   return (
@@ -116,18 +78,20 @@ export const DefaultMintScreen = ({
             onClick={() => setMintProcessStatus(Subjects.start)}
           />
         ) : (
-          <Avatar sx={{ height: 32, width: 32 }}>
-            <IconButton
-              onClick={() =>
-                details.nft_url && window.open(details.nft_url, '_blank')
-              }
-            >
-              <TokenFilled height={24} width={24} color="action" />
-            </IconButton>
-          </Avatar>
+          <Tooltip title="Verify NFT mint transaction">
+            <Avatar sx={{ height: 32, width: 32 }}>
+              <IconButton
+                onClick={() =>
+                  details.nft_url && window.open(details.nft_url, '_blank')
+                }
+              >
+                <TokenFilled height={24} width={24} color="action" />
+              </IconButton>
+            </Avatar>
+          </Tooltip>
         )}
         {/* we can show maximum 2 categories , when mintProcessStauts is minted*/}
-        {showCategories()}
+        {showCategories(mintProcessStatus, details.categories)}
       </Stack>
       <Menu
         anchorEl={anchorEl}

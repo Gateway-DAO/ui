@@ -3,11 +3,15 @@ import { GatewayGrayIcon } from '@gateway/assets';
 import { useState } from 'react';
 import Box from '@mui/material/Box';
 import { AnimatePresence } from 'framer-motion';
-import { AnimatedMessage } from '../../organisms/wallet-modal/animated-message';
+import { AnimatedMessage } from '../utlis/animate-message';
 import { Check, Close } from '@mui/icons-material';
-import { Subjects } from './index';
+import { Subjects } from '../index';
 
-export function MintingScreen({ mintProcessStatus, setMintProcessStatus, details }) {
+export function MintingScreen({
+  mintProcessStatus,
+  setMintProcessStatus,
+  details,
+}) {
   return (
     <>
       <GatewayGrayIcon
@@ -95,7 +99,8 @@ export function MintingScreen({ mintProcessStatus, setMintProcessStatus, details
             )}
             {mintProcessStatus === Subjects.failed && (
               <AnimatedMessage key="failed">
-                Something went wrong on minting {details.error?.reason && `: ${details.error.reason}`}
+                Something went wrong on minting{' '}
+                {details.error?.reason && `: ${details.error.reason}`}
               </AnimatedMessage>
             )}
           </AnimatePresence>

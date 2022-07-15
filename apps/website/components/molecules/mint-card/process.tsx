@@ -1,7 +1,7 @@
 import { Subjects } from './index';
-import { DefaultMintScreen } from './default-mint-screen';
-import { StartMintScreen } from './start-mint-screen';
-import { MintingScreen } from './minting-screen';
+import { DefaultMintScreen } from './screen/default-mint-screen';
+import { StartMintScreen } from './screen/start-mint-screen';
+import { MintingScreen } from './screen/minting-screen';
 
 export function processScreen(
   mintProcessStatus: Subjects,
@@ -28,7 +28,9 @@ export function processScreen(
     case Subjects.failed:
     case Subjects.sign:
       return (
-        <MintingScreen {...{ mintProcessStatus, setMintProcessStatus, mint, details }} />
+        <MintingScreen
+          {...{ mintProcessStatus, setMintProcessStatus, mint, details }}
+        />
       );
     case Subjects.default:
     case Subjects.alreadyMinted:
