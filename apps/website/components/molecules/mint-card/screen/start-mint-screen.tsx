@@ -2,7 +2,7 @@ import Typography from '@mui/material/Typography';
 
 import { Avatar, Badge, ListItemAvatar } from '@mui/material';
 
-import { GatewayGrayIcon } from '@gateway/assets';
+import { GatewayGrayIcon } from '../assets/gateway-gray';
 
 import Box from '@mui/material/Box';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';

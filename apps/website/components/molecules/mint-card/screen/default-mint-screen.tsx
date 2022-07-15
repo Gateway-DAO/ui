@@ -14,7 +14,7 @@ import {
   Stack,
   Tooltip,
 } from '@mui/material';
-import { TokenFilled } from '@gateway/assets';
+import { TokenFilled } from '../assets/token-filled';
 import { Subjects } from '../index';
 import { useState } from 'react';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';

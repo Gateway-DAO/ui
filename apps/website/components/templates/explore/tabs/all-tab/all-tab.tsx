@@ -74,7 +74,14 @@ export function AllTab({ daos, gates, people, setActiveTab }: Props) {
             image="https://f8n-production-collection-assets.imgix.net/0x5F4b303d4083E6dF6A516a338b2b2B40D2e65C3e/1/nft.jpg?q=80&auto=format%2Ccompress&cs=srgb&h=640"
             title="Olympus Odissey"
             description="This is the beginning of your journey in OlympusDAO. Learn about what hekkk dsjhfkjds ksfhdslkafj dsfklhdsalkfh dskjfhksadhf  fdskahflkash ffsdkjahfksahdfk dssjkfhkjdshf "
-            categories={['Nuno', 'Manish', 'Farouk']}
+            categories={[
+              'Nuno',
+              'Manish',
+              'Farouk',
+              'lucas',
+              'ashish',
+              'sanket',
+            ]}
             minted={false}
             nftURL="https://polygonscan.com/"
             tokenURI="dfsvcxvsgdsfsafdsfdsfdsfd"

@@ -1,6 +1,5 @@
 import { Button, CircularProgress } from '@mui/material';
-import { GatewayGrayIcon } from '@gateway/assets';
-import { useState } from 'react';
+import { GatewayGrayIcon } from '../assets/gateway-gray';
 import Box from '@mui/material/Box';
 import { AnimatePresence } from 'framer-motion';
 import { AnimatedMessage } from '../utlis/animate-message';
