@@ -23,13 +23,16 @@ export function ScheduleDemo({
       })}
     >
       <Box
-        sx={{
+        sx={(theme) => ({
           border: '1px solid rgba(229, 229, 229, 0.12)',
           p: '48px',
           borderRadius: '24px',
           position: 'relative',
           overflow: 'hidden',
-        }}
+          [theme.breakpoints.down('sm')]: {
+            p: '24px',
+          },
+        })}
       >
         <ScheduleDemoImage
           src="/images/schedule-demo-background.png"

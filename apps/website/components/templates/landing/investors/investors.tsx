@@ -31,10 +31,13 @@ export const Investors = forwardRef<
       })}
     >
       <Box
-        sx={() => ({
+        sx={(theme) => ({
           padding: '48px',
           border: '1px solid rgba(229, 229, 229, 0.12)',
           borderRadius: '24px',
+          [theme.breakpoints.down('sm')]: {
+            padding: '24px',
+          },
         })}
       >
         <Typography
@@ -63,6 +66,7 @@ export const Investors = forwardRef<
               [theme.breakpoints.down('sm')]: {
                 display: 'flex',
                 flexDirection: 'column',
+                py: '32px',
               },
             })}
           >
@@ -78,6 +82,7 @@ export const Investors = forwardRef<
                   },
                   [theme.breakpoints.down('sm')]: {
                     width: '100%',
+                    px: 0,
                   },
                 })}
               >
@@ -103,17 +108,21 @@ export const Investors = forwardRef<
             [theme.breakpoints.down('sm')]: {
               display: 'flex',
               flexDirection: 'column',
+              pb: '10px',
             },
           })}
         >
           {investorsonlyNames.map((investor: Investor) => (
             <ListItem
               key={investor.name}
-              sx={() => ({
+              sx={(theme) => ({
                 display: 'flex',
                 py: '20px',
                 width: 'auto',
                 flexShrink: 0,
+                [theme.breakpoints.down('sm')]: {
+                  px: 0,
+                },
               })}
             >
               <Link passHref href={investor.url}>
