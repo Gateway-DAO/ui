@@ -81,6 +81,12 @@ export function AllTab({ daos, gates, people, setActiveTab }: Props) {
               'lucas',
               'ashish',
               'sanket',
+              'Nuno',
+              'Manish',
+              'Farouk',
+              'lucas',
+              'ashish',
+              'sanket',
             ]}
             minted={false}
             nftURL="https://polygonscan.com/"

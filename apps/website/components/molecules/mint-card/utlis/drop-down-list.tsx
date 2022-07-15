@@ -11,6 +11,25 @@ export const MoreList = ({ anchorEl, open, handleClose, categories, skip }) => {
       anchorEl={anchorEl}
       open={open}
       onClose={handleClose}
+      PaperProps={{
+        style: {
+          maxHeight: 200,
+        },
+        sx: {
+          '&::-webkit-scrollbar': {
+            width: '0.1em',
+          },
+          '&::-webkit-scrollbar-track': {
+            '-webkit-border-radius': 10,
+            borderRadius: 10,
+          },
+          '&::-webkit-scrollbar-thumb': {
+            '-webkit-border-radius': 10,
+            backgroundColor: 'rgba(255, 255, 255, 0.3);',
+            borderRadius: 5,
+          },
+        },
+      }}
     >
       {categories.slice(skip).map((category) => (
         <MenuItem key={category} onClick={handleClose}>
