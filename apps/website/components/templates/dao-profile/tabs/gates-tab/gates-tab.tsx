@@ -1,5 +1,4 @@
 import { useQuery } from 'react-query';
-import { PartialDeep } from 'type-fest';
 
 import { TOKENS } from '@gateway/theme';
 
@@ -9,16 +8,13 @@ import { Box, IconButton, Stack } from '@mui/material';
 import { usePropertyFilter } from '../../../../../hooks/use-property-filter';
 import { useViewMode, ViewMode } from '../../../../../hooks/use-view-modes';
 import { gqlAnonMethods } from '../../../../../services/api';
-import { Daos } from '../../../../../services/graphql/types.generated';
 import { ChipDropdown } from '../../../../molecules/chip-dropdown';
 import { GatesCard } from '../../../../molecules/gates-card';
+import { useDaoProfile } from '../../context';
 import { TableView } from './table-view';
 
-type Props = {
-  dao: PartialDeep<Daos>;
-};
-
-export function GatesTab({ dao }: Props) {
+export function GatesTab() {
+  const { dao } = useDaoProfile();
   const { view, toggleView } = useViewMode();
 
   const gates = useQuery(

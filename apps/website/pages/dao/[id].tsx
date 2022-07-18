@@ -1,7 +1,10 @@
 import { GetStaticPaths, InferGetStaticPropsType } from 'next';
 import { useMemo } from 'react';
 
-import { DaoProfileTemplate } from '../../components/templates/dao-profile';
+import {
+  DaoProfileTemplate,
+  DaoProfileProvider,
+} from '../../components/templates/dao-profile';
 import { DashboardTemplate } from '../../components/templates/dashboard';
 import { useAuth } from '../../providers/auth';
 import { gqlAnonMethods } from '../../services/api';
@@ -27,7 +30,9 @@ export default function DaoProfilePage({
         },
       }}
     >
-      <DaoProfileTemplate dao={dao} isAdmin={isAdmin} />
+      <DaoProfileProvider dao={dao} isAdmin={isAdmin}>
+        <DaoProfileTemplate />
+      </DaoProfileProvider>
     </DashboardTemplate>
   );
 }

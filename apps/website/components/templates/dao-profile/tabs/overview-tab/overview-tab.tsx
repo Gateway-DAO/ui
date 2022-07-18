@@ -4,22 +4,23 @@ import { PartialDeep } from 'type-fest';
 
 import { Button, Divider, Stack } from '@mui/material';
 
-import { Daos, Users } from '../../../../../services/graphql/types.generated';
+import { Users } from '../../../../../services/graphql/types.generated';
 import { GatesCard } from '../../../../molecules/gates-card';
 import { PersonCard } from '../../../../molecules/person-card';
 import {
   SectionWithSliderResponsive,
   SectionWithGrid,
 } from '../../../../molecules/sections';
+import { useDaoProfile } from '../../context';
 
 type Props = {
-  dao: PartialDeep<Daos>;
   people: PartialDeep<Users>[];
   setTab: (tab: number) => void;
 };
 
-export function OverviewTab({ dao, people, setTab }: Props) {
+export function OverviewTab({ people, setTab }: Props) {
   const { t } = useTranslation('explore');
+  const { dao } = useDaoProfile();
 
   return (
     <Stack
