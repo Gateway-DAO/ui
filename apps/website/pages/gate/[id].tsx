@@ -14,6 +14,7 @@ export default function DaoProfilePage({
       containerProps={{
         sx: {
           overflow: 'hidden',
+          pt: 2,
         },
       }}
     >

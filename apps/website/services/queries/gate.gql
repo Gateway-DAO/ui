@@ -26,5 +26,13 @@ query gate($id: uuid!) {
       name
       logo_url
     }
+    tasks {
+      description
+      gate_id
+      id
+      task_data
+      task_type
+      title
+    }
   }
 }
