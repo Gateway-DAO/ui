@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import { useFormContext } from 'react-hook-form';
 import { v4 as uuidv4 } from 'uuid';
@@ -10,9 +10,7 @@ const TaskArea = () => {
   const [tasksCount, setTasksCount] = useState(0);
   const [tasks, setTasks] = useState({ data: [] });
 
-  const { setValue, getValues } = useFormContext<CreateGateTypes>();
-
-  useEffect(() => {}, [tasks, getValues, setValue]);
+  const { setValue } = useFormContext<CreateGateTypes>();
 
   const addTask = (task_component, task_type, object = {}) => {
     const taskData = {

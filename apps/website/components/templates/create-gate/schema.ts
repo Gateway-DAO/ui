@@ -34,10 +34,15 @@ export type MeetingCodeTask = {
   task_data: VerificationCodeData;
 };
 
+export type SnapshotTask = {
+  task_type: 'snapshot';
+  task_data: SnapshotData;
+};
+
 export type Task = {
   title: string;
   description: string;
-} & (SelfVerifyTask | MeetingCodeTask);
+} & (SelfVerifyTask | MeetingCodeTask | SnapshotTask);
 
 // Verification Code
 export type VerificationCodeData = {
@@ -47,6 +52,18 @@ export type VerificationCodeData = {
 export type VerificationCodeDataError = {
   id?: FieldError;
   code?: FieldError;
+};
+
+// Snapshot
+export type SnapshotData = {
+  proposal_number?: string;
+  space_id?: string;
+};
+
+export type SnapshotDataError = {
+  id?: FieldError;
+  proposal_number?: FieldError;
+  space_id?: FieldError;
 };
 
 // Files
@@ -81,6 +98,11 @@ const fileTaskDataSchema = z.object({
     .array(),
 });
 
+const snapshotTaskDataSchema = z.object({
+  proposal_number: z.string().min(2),
+  space_id: z.string().min(2),
+});
+
 export type verificationCodeType = {
   id: string;
   code: string;
@@ -104,6 +126,13 @@ export const taskSelfVerifySchema = z.object({
   task_data: fileTaskDataSchema,
 });
 
+export const taskSnapshotSchema = z.object({
+  title: z.string().min(2),
+  description: z.string().min(2),
+  task_type: z.literal('snapshot'),
+  task_data: snapshotTaskDataSchema,
+});
+
 export const createGateSchema = z.object({
   title: z.string().min(2),
   categories: z.array(z.string()),
@@ -121,6 +150,7 @@ export const createGateSchema = z.object({
       z.discriminatedUnion('task_type', [
         taskSelfVerifySchema,
         taskMeetingCodeSchema,
+        taskSnapshotSchema,
       ])
     ),
   }),
