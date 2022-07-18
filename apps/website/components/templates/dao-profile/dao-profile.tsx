@@ -8,6 +8,7 @@ import { TOKENS } from '@gateway/theme';
 
 import { Chip, Box, Stack, Typography, Tabs, Tab } from '@mui/material';
 
+import { categoriesMap } from '../../../constants/dao';
 import { useFile } from '../../../hooks/use-file';
 import { gqlAnonMethods } from '../../../services/api';
 import { Daos } from '../../../services/graphql/types.generated';
@@ -111,9 +112,10 @@ export function DaoProfileTemplate({ dao, isAdmin }: Props) {
           </Typography>
           {dao.categories && (
             <Stack direction="row" gap={2} sx={{ mt: 12 / 8 }}>
-              {dao.categories.map((category) => (
-                <Chip key={category} label={category} size="small" />
-              ))}
+              {dao.categories.map((category) => {
+                const label = categoriesMap.get(category) ?? category;
+                return <Chip key={category} label={label} size="small" />;
+              })}
             </Stack>
           )}
           <Typography

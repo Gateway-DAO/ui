@@ -12,6 +12,7 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { Box } from '@mui/system';
 
+import { categoriesMap } from '../../constants/dao';
 import { ROUTES } from '../../constants/routes';
 import { useFile } from '../../hooks/use-file';
 import { Daos } from '../../services/graphql/types.generated';
@@ -98,9 +99,10 @@ export function DaoCard({
             </Typography>
           </CardContent>
           <Stack direction="row" spacing={1} px={2} pt={1} pb={2}>
-            {categories.map((category) => (
-              <Chip key={category} label={category} size="small" />
-            ))}
+            {categories.map((category) => {
+              const label = categoriesMap.get(category) ?? category;
+              return <Chip key={category} label={label} size="small" />;
+            })}
           </Stack>
         </CardActionArea>
       </Link>

@@ -10,6 +10,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 
+import { categoriesMap } from '../../../../../constants/dao';
 import { AvatarFile } from '../../../../atoms/avatar-file';
 import { FollowButtonDAO } from '../../../../atoms/follow-button-dao';
 import { ExploreProps } from '../../types';
@@ -75,12 +76,15 @@ export function TableView({ daos }: Props) {
                 </TableCell>
                 <TableCell>
                   <Stack direction="row" gap={1}>
-                    {dao.categories?.map((category) => (
-                      <Chip
-                        key={`dao-${dao.id}-category-${category}`}
-                        label={category}
-                      />
-                    ))}
+                    {dao.categories?.map((category) => {
+                      const label = categoriesMap.get(category) ?? category;
+                      return (
+                        <Chip
+                          key={`dao-${dao.id}-category-${category}`}
+                          label={label}
+                        />
+                      );
+                    })}
                   </Stack>
                 </TableCell>
                 <TableCell align="right">

@@ -25,6 +25,11 @@ export const categoriesDropdown = categories.map((category) => ({
   value: paramCase(category),
 }));
 
+export const categoriesMap = categories.reduce(
+  (acc, category) => acc.set(paramCase(category), category),
+  new Map<string, string>()
+);
+
 export const networks = [
   'discord',
   'email',
