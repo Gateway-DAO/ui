@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable import-helpers/order-imports */
-/* eslint-disable prettier/prettier */
 import { useState } from 'react';
 import {
   Grid,
@@ -34,7 +31,7 @@ export default function ExperienceAccordion(props) {
   const [visible, setVisible] = useState(true);
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
-  const [contributing, setContributing] = useState(false);
+  const [contributing, setContributing] = useState(true);
 
   const visiblityHandler = (e) => {
     e.stopPropagation();
@@ -56,6 +53,7 @@ export default function ExperienceAccordion(props) {
           '&.MuiAccordion-root:before': {
             backgroundColor: 'transparent',
           },
+          opacity: visible ? '1' : ' 0.4',
         }}
       >
         <AccordionSummary
@@ -98,13 +96,15 @@ export default function ExperienceAccordion(props) {
             onClick={visiblityHandler}
           >
             {visible ? (
-              <Visibility ></Visibility>
+              <Visibility></Visibility>
             ) : (
               <VisibilityOff></VisibilityOff>
             )}
           </IconButton>
         </AccordionSummary>
-        <AccordionDetails>
+        <AccordionDetails sx={{
+          padding:"0!important"
+        }}>
           {/*/////////    Dropdown Form   /////////*/}
 
           <Stack
@@ -138,6 +138,9 @@ export default function ExperienceAccordion(props) {
                       '& label.Mui-focused': {
                         textTransform: 'uppercase',
                       },
+                      '& label.MuiFormLabel-filled': {
+                        textTransform: 'uppercase',
+                      },
                       '& div fieldset legend span': {
                         marginRight: '6px',
                         paddingRight: '6px',
@@ -163,6 +166,9 @@ export default function ExperienceAccordion(props) {
                     sx={{
                       width: { xs: '100%', md: '25%' },
                       '& label.Mui-focused': {
+                        textTransform: 'uppercase',
+                      },
+                      '& label.MuiFormLabel-filled': {
                         textTransform: 'uppercase',
                       },
                       '& div fieldset legend span': {
