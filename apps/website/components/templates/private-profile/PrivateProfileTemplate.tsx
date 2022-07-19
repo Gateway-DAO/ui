@@ -1,10 +1,12 @@
-/* eslint-disable prettier/prettier */
-/* eslint-disable import-helpers/order-imports */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { InferGetStaticPropsType } from 'next';
-import { useMemo } from 'react';
 import useTranslation from 'next-translate/useTranslation';
+import { useRouter } from 'next/router';
+import { useMemo } from 'react';
 
+import { TOKENS } from '@gateway/theme';
+
+import EditIcon from '@mui/icons-material/Edit';
+import ShareIcon from '@mui/icons-material/IosShare';
 import {
   Avatar,
   Link,
@@ -15,20 +17,14 @@ import {
   Tab,
   IconButton,
 } from '@mui/material';
-import ShareIcon from '@mui/icons-material/IosShare';
-import EditIcon from '@mui/icons-material/Edit';
-
-import { Navbar } from '../../../components/organisms/navbar/navbar';
-import { TOKENS } from '@gateway/theme';
-import { gqlAdminMethods } from '../../../services/api';
 
 import { a11yTabProps, TabPanel, useTab } from '../../../components/atoms/tabs';
-import { OverviewTab } from './tabs/OverviewTab';
-import { ActivityTab } from './tabs/ActivityTab';
+import { Navbar } from '../../../components/organisms/navbar/navbar';
 import { DashboardTemplate } from '../../../components/templates/dashboard';
-
-import { useRouter } from 'next/router';
 import { ROUTES } from '../../../constants/routes';
+import { gqlAdminMethods } from '../../../services/api';
+import { ActivityTab } from './tabs/ActivityTab';
+import { OverviewTab } from './tabs/OverviewTab';
 
 export const getStaticProps = async () => {
   const exploreProps = await gqlAdminMethods.get_home();
@@ -137,7 +133,7 @@ export default function PrivateProfileTemplate() {
               }}
             >
               <Link
-                sx={{ textDecoration: 'none', cursor:"pointer" }}
+                sx={{ textDecoration: 'none', cursor: 'pointer' }}
                 onClick={() => router.push(ROUTES.EDIT_PROFILE + '#about')}
               >
                 Write bio
