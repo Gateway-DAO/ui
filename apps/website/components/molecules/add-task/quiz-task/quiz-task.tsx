@@ -20,7 +20,13 @@ import {
   Question,
 } from '../../../templates/create-gate/schema';
 
-export function QuizTask({ taskId, deleteTask }): JSX.Element {
+export function QuizTask({
+  taskId,
+  deleteTask,
+}: {
+  taskId: number;
+  deleteTask: (taskId) => void;
+}): JSX.Element {
   const {
     register,
     setValue,
@@ -88,8 +94,8 @@ export function QuizTask({ taskId, deleteTask }): JSX.Element {
           <TextField
             variant="standard"
             label="Quiz"
-            required
             id="quiz-title"
+            required
             fullWidth
             {...register(`tasks.data.${taskId}.title`)}
             error={!!errors.tasks?.data[taskId]?.title}

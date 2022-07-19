@@ -46,10 +46,8 @@ const AddTaskCard = ({ addTask }) => {
           <Paper>
             <AddTaskButton
               icon={<QuizIcon />}
-              title={'Create Quizz'}
-              addTask={() => {
-                addTask(QuizTask, 'quiz');
-              }}
+              title={'Create Quiz'}
+              addTask={() => addTask(QuizTask, 'quiz')}
             />
           </Paper>
         </Grid>

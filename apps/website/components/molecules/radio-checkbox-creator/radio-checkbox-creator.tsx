@@ -28,7 +28,6 @@ export function RadioCheckBoxCreator({
       {options.map((option, index) => (
         <OptionField
           key={index}
-          option={option}
           taskId={taskId}
           questionIndex={questionIndex}
           optionIndex={index}

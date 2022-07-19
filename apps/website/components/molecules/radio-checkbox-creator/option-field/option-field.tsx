@@ -17,6 +17,10 @@ export function OptionField({
   questionIndex,
   optionIndex,
   ...rest
+}: {
+  taskId: number;
+  questionIndex: number;
+  optionIndex: number;
 }): JSX.Element {
   const {
     register,
@@ -54,20 +58,18 @@ export function OptionField({
           fullWidth
           placeholder={'Write your answer'}
           InputProps={{ disableUnderline: true }}
-          required
+          // required
           variant={'standard'}
           {...register(
             `tasks.data.${taskId}.task_data.questions.${questionIndex}.options.${optionIndex}.value`
           )}
           error={
-            !!(errors.tasks?.data[taskId] as QuizTaskDataError)?.questions[
-              questionIndex
-            ]?.options[optionIndex]?.value
+            !!(errors.tasks?.data[taskId].task_data as QuizTaskDataError)
+              ?.questions[questionIndex]?.options[optionIndex]?.value
           }
           helperText={
-            (errors.tasks?.data[taskId] as QuizTaskDataError)?.questions[
-              questionIndex
-            ]?.options[optionIndex]?.value?.message
+            (errors.tasks?.data[taskId].task_data as QuizTaskDataError)
+              ?.questions[questionIndex]?.options[optionIndex]?.value?.message
           }
         />
       </Stack>
@@ -75,7 +77,7 @@ export function OptionField({
         <Controller
           control={control}
           name={`tasks.data.${taskId}.task_data.questions.${questionIndex}.options.${optionIndex}.correct`}
-          defaultValue={false as never}
+          defaultValue={false}
           render={({ field: { value } }) => (
             <CheckCircleIcon
               sx={(theme) => ({
@@ -88,7 +90,7 @@ export function OptionField({
               onClick={() => {
                 setValue(
                   `tasks.data.${taskId}.task_data.questions.${questionIndex}.options.${optionIndex}.correct`,
-                  !value as never
+                  !value
                 );
 
                 if (
@@ -98,7 +100,7 @@ export function OptionField({
                 ) {
                   setValue(
                     `tasks.data.${taskId}.task_data.questions.${questionIndex}.type`,
-                    'multiple' as never
+                    'multiple'
                   );
                 }
               }}

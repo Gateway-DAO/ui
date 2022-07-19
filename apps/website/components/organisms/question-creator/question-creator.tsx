@@ -43,11 +43,7 @@ export function QuestionCreator({ taskId, ...rest }): JSX.Element {
               },
             })}
           >
-            <QuestionField
-              question={question}
-              questionIndex={index}
-              taskId={taskId}
-            />
+            <QuestionField questionIndex={index} taskId={taskId} />
 
             {questions.length > 1 && (
               <CloseIcon

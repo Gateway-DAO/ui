@@ -62,7 +62,6 @@ export type QuizTaskData = {
 
 export type QuizTaskDataError = {
   id?: FieldError;
-  code?: FieldError;
   pass_score?: FieldError;
   questions?: {
     id?: FieldError;
@@ -81,7 +80,7 @@ export type Question = {
   order: number;
   question: string;
   type: string;
-  options: Option[];
+  options?: Option[];
 };
 
 export type Option = {
@@ -142,12 +141,10 @@ export const quizDataSchema = z.object({
   pass_score: z.number().min(1).max(100),
   questions: z.array(
     z.object({
-      id: z.string().min(2),
       question: z.string().min(2),
-      type: z.literal('multiple_choice'),
+      type: z.enum(['single', 'multiple']),
       options: z.array(
         z.object({
-          id: z.string().min(2),
           value: z.string().min(2),
           correct: z.boolean(),
         })
@@ -156,7 +153,7 @@ export const quizDataSchema = z.object({
   ),
 });
 
-export const taskQuizDataSchema = z.object({
+export const taskQuizSchema = z.object({
   title: z.string().min(2),
   description: z.string().min(2),
   task_type: z.literal('quiz'),
@@ -187,7 +184,7 @@ export const createGateSchema = z.object({
       z.discriminatedUnion('task_type', [
         taskSelfVerifySchema,
         taskMeetingCodeSchema,
-        taskQuizDataSchema,
+        taskQuizSchema,
       ])
     ),
   }),

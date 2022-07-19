@@ -14,7 +14,13 @@ import {
   QuizTaskDataError,
 } from '../../../../templates/create-gate/schema';
 
-export function QuestionField({ question, questionIndex, taskId }) {
+export function QuestionField({
+  questionIndex,
+  taskId,
+}: {
+  questionIndex: number;
+  taskId: number;
+}): JSX.Element {
   const {
     register,
     setValue,
@@ -37,7 +43,7 @@ export function QuestionField({ question, questionIndex, taskId }) {
   return (
     <Stack
       direction={'row'}
-      alignItems={'center'}
+      // alignItems={'center'}
       sx={(theme) => ({
         width: '100%',
         justifyContent: 'space-between',
@@ -58,23 +64,21 @@ export function QuestionField({ question, questionIndex, taskId }) {
         required
         name={`tasks.data.${taskId}.task_data.questions.${questionIndex}.question`}
         {...register(
-          `tasks.data.${taskId}.task_data.questions.${questionIndex}.question`,
-          { value: question.question as never }
+          `tasks.data.${taskId}.task_data.questions.${questionIndex}.question`
         )}
         error={
           !!(errors.tasks?.data[taskId]?.task_data as QuizTaskDataError)
             ?.questions[questionIndex]?.question
         }
         helperText={
-          (errors.tasks?.data[taskId] as QuizTaskDataError)?.questions[
-            questionIndex
-          ]?.question?.message
+          (errors.tasks?.data[taskId]?.task_data as QuizTaskDataError)
+            ?.questions[questionIndex]?.question?.message
         }
       />
       <Controller
         control={control}
+        defaultValue="single"
         name={`tasks.data.${taskId}.task_data.questions.${questionIndex}.type`}
-        defaultValue={'single' as never}
         rules={{ required: true }}
         render={({ field: { onChange, value } }) => (
           <FormControl
@@ -110,7 +114,7 @@ export function QuestionField({ question, questionIndex, taskId }) {
                     .map((_option, index) =>
                       setValue(
                         `tasks.data.${taskId}.task_data.questions.${questionIndex}.options.${index}.correct`,
-                        false as never
+                        false
                       )
                     );
                 }
