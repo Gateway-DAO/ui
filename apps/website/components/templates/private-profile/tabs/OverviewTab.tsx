@@ -1,3 +1,6 @@
+/* eslint-disable prettier/prettier */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable import-helpers/order-imports */
 import { PartialDeep } from 'type-fest';
 import { useMemo } from 'react';
 import useTranslation from 'next-translate/useTranslation';
