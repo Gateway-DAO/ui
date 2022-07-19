@@ -1,7 +1,4 @@
 import { useState } from 'react';
-
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import {
   Stack,
   Typography,
@@ -10,6 +7,8 @@ import {
   Avatar,
   Chip,
 } from '@mui/material';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 //date picker components
 export default function ExperienceCredential(props) {
@@ -100,11 +99,9 @@ export default function ExperienceCredential(props) {
           onClick={visiblityHandler}
         >
           {visible ? (
-            <Visibility sx={{ width: '30px', height: '20px' }}></Visibility>
+            <Visibility></Visibility>
           ) : (
-            <VisibilityOff
-              sx={{ width: '30px', height: '20px' }}
-            ></VisibilityOff>
+            <VisibilityOff></VisibilityOff>
           )}
         </IconButton>
       </Stack>
