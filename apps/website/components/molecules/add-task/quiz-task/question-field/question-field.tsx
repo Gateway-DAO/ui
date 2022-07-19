@@ -43,7 +43,6 @@ export function QuestionField({
   return (
     <Stack
       direction={'row'}
-      // alignItems={'center'}
       sx={(theme) => ({
         width: '100%',
         justifyContent: 'space-between',
