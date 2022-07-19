@@ -1,8 +1,5 @@
 import { useState } from 'react';
-
 import { TOKENS } from '@gateway/theme';
-
-import SearchIcon from '@mui/icons-material/Search';
 import {
   Grid,
   Stack,
@@ -11,7 +8,9 @@ import {
   Chip,
   TextField,
 } from '@mui/material';
+
 import Autocomplete, { autocompleteClasses } from '@mui/material/Autocomplete';
+import SearchIcon from '@mui/icons-material/Search';
 
 export function Languages() {
   const skills = [
@@ -57,7 +56,19 @@ export function Languages() {
                 <TextField
                   fullWidth
                   {...params}
-                  label="SELECT YOUR LANGUAGES"
+                  label="Select your languages"
+                  sx={{
+                    '& label.Mui-focused': {
+                      textTransform: 'uppercase',
+                    },
+                    '& label.MuiInputLabel-shrink ': {
+                      textTransform: 'uppercase',
+                    },
+                    '& div fieldset legend span': {
+                      marginRight: '30px',
+                      paddingRight: '4px',
+                    },
+                  }}
                 />
               )}
               popupIcon={<SearchIcon />}
@@ -72,7 +83,6 @@ export function Languages() {
           </Stack>
         </Grid>
       </Grid>
-      <Divider light sx={{ width: '100%' }} />
     </Stack>
   );
 }
