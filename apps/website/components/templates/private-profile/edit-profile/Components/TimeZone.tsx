@@ -1,7 +1,5 @@
 import { useState } from 'react';
-
 import { TOKENS } from '@gateway/theme';
-
 import {
   Grid,
   Stack,
@@ -43,14 +41,29 @@ export function TimeZone() {
         <Grid item xs={7.5}>
           <Stack width={{ sx: '100%', md: '65%' }}>
             <FormControl fullWidth>
-              <InputLabel id="demo-simple-select-label">
-                SELECT YOUR TIME ZONE
+              <InputLabel
+                sx={{
+                  '&.MuiInputLabel-outlined': {
+                    textTransform: 'uppercase',
+                  },
+                  '&.MuiInputLabel-shrink ': {
+                    textTransform: 'uppercase',
+                  },
+                }}
+                id="demo-simple-select-label"
+              >
+                Select your time zone
               </InputLabel>
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 value={timeZone}
-                label="SELECT YOUR TIME ZONE"
+                label="Select your time zone"
+                sx={{
+                  '& fieldset legend span': {
+                    marginRight: '22px',
+                  },
+                }}
                 onChange={(e) => setTimeZone(e.target.value)}
               >
                 <MenuItem value={'EST'}>
