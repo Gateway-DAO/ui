@@ -1,5 +1,3 @@
-import { useEffect, useState } from 'react';
-
 import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
 
 import { CircleOutlined, SquareOutlined } from '@mui/icons-material';
@@ -11,6 +9,7 @@ import {
   CreateGateTypes,
   Option,
   QuestionTask,
+  QuizTaskDataError,
 } from '../../../templates/create-gate/schema';
 
 export function OptionField({
@@ -60,6 +59,16 @@ export function OptionField({
           {...register(
             `tasks.data.${taskId}.task_data.questions.${questionIndex}.options.${optionIndex}.value`
           )}
+          error={
+            !!(errors.tasks?.data[taskId] as QuizTaskDataError)?.questions[
+              questionIndex
+            ]?.options[optionIndex]?.value
+          }
+          helperText={
+            (errors.tasks?.data[taskId] as QuizTaskDataError)?.questions[
+              questionIndex
+            ]?.options[optionIndex]?.value?.message
+          }
         />
       </Stack>
       <Stack direction={'row'} alignItems={'center'}>
@@ -67,11 +76,7 @@ export function OptionField({
           control={control}
           name={`tasks.data.${taskId}.task_data.questions.${questionIndex}.options.${optionIndex}.correct`}
           defaultValue={false as never}
-          render={({
-            field: { onChange, onBlur, value, name, ref },
-            fieldState: { invalid, isTouched, isDirty, error },
-            formState,
-          }) => (
+          render={({ field: { value } }) => (
             <CheckCircleIcon
               sx={(theme) => ({
                 cursor: 'pointer',

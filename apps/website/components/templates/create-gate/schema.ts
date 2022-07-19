@@ -137,6 +137,31 @@ export const taskMeetingCodeSchema = z.object({
   task_data: verificationCodeDataSchema,
 });
 
+export const quizDataSchema = z.object({
+  pass_score: z.number().min(1).max(100),
+  questions: z.array(
+    z.object({
+      id: z.string().min(2),
+      question: z.string().min(2),
+      type: z.literal('multiple_choice'),
+      options: z.array(
+        z.object({
+          id: z.string().min(2),
+          value: z.string().min(2),
+          correct: z.boolean(),
+        })
+      ),
+    })
+  ),
+});
+
+export const taskQuizDataSchema = z.object({
+  title: z.string().min(2),
+  description: z.string().min(2),
+  task_type: z.literal('quiz'),
+  task_data: quizDataSchema,
+});
+
 export const taskSelfVerifySchema = z.object({
   title: z.string().min(2),
   description: z.string().min(2),
@@ -161,6 +186,7 @@ export const createGateSchema = z.object({
       z.discriminatedUnion('task_type', [
         taskSelfVerifySchema,
         taskMeetingCodeSchema,
+        taskQuizDataSchema,
       ])
     ),
   }),

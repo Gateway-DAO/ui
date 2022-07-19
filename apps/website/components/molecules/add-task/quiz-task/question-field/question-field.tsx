@@ -1,5 +1,3 @@
-import { useEffect } from 'react';
-
 import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
 
 import {
@@ -20,23 +18,17 @@ export function QuestionField({ question, questionIndex, taskId }) {
   const {
     register,
     setValue,
-    getValues,
-    reset,
     formState: { errors },
     control,
     watch,
   } = useFormContext<CreateGateTypes>();
 
-  const {
-    fields: questions,
-    remove,
-    update,
-  } = useFieldArray({
+  const { fields: questions } = useFieldArray({
     name: `tasks.data.${taskId}.task_data.questions`,
     control,
   });
 
-  questions[questionIndex].options.map((option, index) =>
+  questions[questionIndex].options.map((_option, index) =>
     watch(
       `tasks.data.${taskId}.task_data.questions.${questionIndex}.options.${index}.correct`
     )
@@ -63,17 +55,22 @@ export function QuestionField({ question, questionIndex, taskId }) {
           `tasks.data.${taskId}.task_data.questions.${questionIndex}.question`,
           { value: question.question as never }
         )}
+        error={
+          !!(errors.tasks?.data[taskId]?.task_data as QuizTaskDataError)
+            ?.questions[questionIndex]?.question
+        }
+        helperText={
+          (errors.tasks?.data[taskId] as QuizTaskDataError)?.questions[
+            questionIndex
+          ]?.question?.message
+        }
       />
       <Controller
         control={control}
         name={`tasks.data.${taskId}.task_data.questions.${questionIndex}.type`}
         defaultValue={'single' as never}
         rules={{ required: true }}
-        render={({
-          field: { onChange, onBlur, value, name, ref },
-          fieldState: { invalid, isTouched, isDirty, error },
-          formState,
-        }) => (
+        render={({ field: { onChange, value } }) => (
           <FormControl sx={{ minWidth: '272px', marginLeft: '16px' }}>
             <InputLabel id={`question-label${questionIndex}`}>Type</InputLabel>
             <Select
@@ -83,7 +80,7 @@ export function QuestionField({ question, questionIndex, taskId }) {
               value={value}
               error={
                 !!(errors.tasks?.data[taskId]?.task_data as QuizTaskDataError)
-                  ?.questions[questionIndex].type
+                  ?.questions[questionIndex]?.type
               }
               onChange={(event) => {
                 if (

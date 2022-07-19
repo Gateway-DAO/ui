@@ -18,7 +18,6 @@ import { QuestionCreator } from '../../../organisms/question-creator/question-cr
 import {
   CreateGateTypes,
   Question,
-  QuizTaskDataError,
 } from '../../../templates/create-gate/schema';
 
 export function QuizTask({ taskId, deleteTask }): JSX.Element {
@@ -27,6 +26,7 @@ export function QuizTask({ taskId, deleteTask }): JSX.Element {
     type: 'single',
     options: [{ value: '', correct: false }],
   };
+
   const {
     register,
     setValue,
@@ -49,7 +49,6 @@ export function QuizTask({ taskId, deleteTask }): JSX.Element {
       setValue(`tasks.data.${taskId}.task_data.questions`, [DEFAULT_QUESTION]);
     }
   }, [taskId, questions]);
-  console.log(getValues());
 
   return (
     <Stack
@@ -166,17 +165,13 @@ export function QuizTask({ taskId, deleteTask }): JSX.Element {
           name={`tasks.data.${taskId}.task_data.pass_score`}
           defaultValue={1}
           rules={{ required: true, min: 1, max: questions.length }}
-          render={({
-            field: { onChange, onBlur, value, name, ref },
-            fieldState: { invalid, isTouched, isDirty, error },
-            formState,
-          }) => (
+          render={({ field: { onChange, value }, fieldState: { error } }) => (
             <Slider
               size="medium"
               min={1}
               max={questions.length}
               onChange={onChange}
-              onError={() => error.message}
+              onError={() => error?.message}
               value={value}
               aria-label="Medium"
               valueLabelDisplay="on"
