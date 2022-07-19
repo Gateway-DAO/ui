@@ -1,12 +1,7 @@
 import { InferGetStaticPropsType } from 'next';
-import useTranslation from 'next-translate/useTranslation';
-import { useRouter } from 'next/router';
 import { useMemo } from 'react';
+import useTranslation from 'next-translate/useTranslation';
 
-import { TOKENS } from '@gateway/theme';
-
-import EditIcon from '@mui/icons-material/Edit';
-import ShareIcon from '@mui/icons-material/IosShare';
 import {
   Avatar,
   Link,
@@ -17,17 +12,23 @@ import {
   Tab,
   IconButton,
 } from '@mui/material';
+import ShareIcon from '@mui/icons-material/IosShare';
+import EditIcon from '@mui/icons-material/Edit';
+
+import { Navbar } from '../../../components/organisms/navbar/navbar';
+import { TOKENS } from '@gateway/theme';
+import { gqlAdminMethods } from '../../../services/api';
 
 import { a11yTabProps, TabPanel, useTab } from '../../../components/atoms/tabs';
-import { Navbar } from '../../../components/organisms/navbar/navbar';
-import { DashboardTemplate } from '../../../components/templates/dashboard';
-import { ROUTES } from '../../../constants/routes';
-import { gqlAnonMethods } from '../../../services/api';
-import { ActivityTab } from './tabs/ActivityTab';
 import { OverviewTab } from './tabs/OverviewTab';
+import { ActivityTab } from './tabs/ActivityTab';
+import { DashboardTemplate } from '../../../components/templates/dashboard';
+
+import { useRouter } from 'next/router';
+import { ROUTES } from '../../../constants/routes';
 
 export const getStaticProps = async () => {
-  const exploreProps = await gqlAnonMethods.get_home();
+  const exploreProps = await gqlAdminMethods.get_home();
 
   return {
     props: {
@@ -98,7 +99,11 @@ export default function PrivateProfileTemplate() {
             }}
           ></Avatar>
           <Box>
-            <Typography sx={{ color: '#fff' }} component="h1" variant="h4">
+            <Typography
+              sx={{ color: '#fff', marginTop: { xs: '16px', md: '24px' } }}
+              component="h1"
+              variant="h4"
+            >
               Test User
               <EditIcon
                 onClick={() => router.push(ROUTES.EDIT_PROFILE)}
@@ -128,7 +133,12 @@ export default function PrivateProfileTemplate() {
                 mt: 2,
               }}
             >
-              <Link sx={{ textDecoration: 'none' }}>Write bio</Link>
+              <Link
+                sx={{ textDecoration: 'none', cursor:"pointer" }}
+                onClick={() => router.push(ROUTES.EDIT_PROFILE + '#about')}
+              >
+                Write bio
+              </Link>
               <Typography
                 sx={{
                   fontSize: '16px',
@@ -150,8 +160,8 @@ export default function PrivateProfileTemplate() {
                 mt: 2,
               }}
             >
-              <Typography>O connections</Typography>.
-              <Typography>O credentials</Typography>
+              <Typography>0 connections</Typography>·
+              <Typography>0 credentials</Typography>
             </Box>
             <Stack
               direction="row"
