@@ -1,3 +1,6 @@
+/* eslint-disable prettier/prettier */
+/* eslint-disable import-helpers/order-imports */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { InferGetStaticPropsType } from 'next';
 import { useMemo } from 'react';
 import useTranslation from 'next-translate/useTranslation';
