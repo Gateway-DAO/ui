@@ -26,7 +26,9 @@ export function FollowButtonDAO({
     <LoadingButton
       variant="contained"
       isLoading={isLoading(daoId)}
-      onClick={() => onToggleFollow(daoId, isFollowing)}
+      onClick={
+        !props.disabled ? () => onToggleFollow(daoId, isFollowing) : undefined
+      }
       {...props}
     >
       {isFollowing ? t('actions.unfollow') : t('actions.follow')}
