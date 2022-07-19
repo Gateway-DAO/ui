@@ -1,6 +1,9 @@
-import { useRouter } from 'next/router';
-
 import { TOKENS } from '@gateway/theme';
+import { About } from './Components/About';
+import { TimeZone } from './Components/TimeZone';
+import { Skills } from './Components/Skills';
+import { Languages } from './Components/Languages';
+import { Experiences } from './Components/Experiences';
 
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import {
@@ -15,21 +18,23 @@ import {
   IconButton,
 } from '@mui/material';
 
+import { useRouter } from 'next/router';
 import { ROUTES } from '../../../../constants/routes';
-import { About } from './Components/About';
-import { Experiences } from './Components/Experiences';
-import { Languages } from './Components/Languages';
-import { Skills } from './Components/Skills';
-import { TimeZone } from './Components/TimeZone';
 
 export function EditProfile() {
   const router = useRouter();
   return (
-    <Stack gap={7}>
+    <Stack>
       <Box
         sx={{
-          paddingLeft: { xs: '16px', md: '40px' },
+          paddingLeft: { xs: '14px', md: '85px' },
           paddingTop: { xs: '24px', md: '40px' },
+          background:
+            ' linear-gradient(180deg, #10041C 0%, rgba(16, 4, 28,0) 100%)',
+          position:"fixed",
+          width:"100%",
+          height:"105px",
+          zIndex:"10000"
         }}
       >
         <IconButton
@@ -42,23 +47,24 @@ export function EditProfile() {
             <ArrowBackIcon></ArrowBackIcon>
           </Avatar>
         </IconButton>
-      </Box>
-      <Box
-        sx={{
-          display: 'flex',
-          position: 'absolute',
-          top: { xs: '24px', md: '40px' },
-          right: { xs: '16px', md: '92px' },
-          cursor: 'pointer',
-        }}
-      >
-        <Button
-          sx={{ width: '80px', height: '40px', fontSize: '13px' }}
-          variant="contained"
+        <Box
+          sx={{
+            display: 'flex',
+            position: 'absolute',
+            top: { xs: '24px', md: '40px' },
+            right: { xs: '18px', md: '96px' },
+            cursor: 'pointer',
+          }}
         >
-          Save
-        </Button>
+          <Button
+            sx={{ width: '80px', height: '40px', fontSize: '13px' }}
+            variant="contained"
+          >
+            Save
+          </Button>
+        </Box>
       </Box>
+      <Box sx={{height:"80px"}}></Box>
       <Box p={TOKENS.CONTAINER_PX}>
         <Typography
           variant="h4"
@@ -89,9 +95,11 @@ export function EditProfile() {
       <div id="skills">
         <Skills />
       </div>
+      <Divider light sx={{ width: '100%' }} />
       <div id="languages">
         <Languages />
       </div>
+      <Divider light sx={{ width: '100%' }} />
       <div id="timezones">
         <TimeZone />
       </div>
