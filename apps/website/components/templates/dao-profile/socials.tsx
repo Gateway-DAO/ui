@@ -47,6 +47,7 @@ export function Socials({ dao, children }: PropsWithChildren<Props>) {
             p: 0,
           }}
           onClick={onShare}
+          key="share"
         >
           <Avatar>
             <ShareIcon
