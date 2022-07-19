@@ -1,5 +1,8 @@
-import { useState } from 'react';
+import { useEffect } from 'react';
 
+import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
+
+import CloseIcon from '@mui/icons-material/Close';
 import {
   FormControl,
   InputLabel,
@@ -9,45 +12,66 @@ import {
   TextField,
 } from '@mui/material';
 
-export function QuestionCreator({
-  questions,
-  onSelectChange,
-  onQuestionFieldChange,
-}): JSX.Element {
+import { QuestionField } from '../../molecules/add-task/quiz-task/question-field/question-field';
+import { RadioCheckBoxCreator } from '../../molecules/radio-checkbox-creator/radio-checkbox-creator';
+import { CreateGateTypes, Question } from '../../templates/create-gate/schema';
+
+export function QuestionCreator({ taskId, ...rest }): JSX.Element {
+  const {
+    register,
+    setValue,
+    getValues,
+    reset,
+    formState: { errors },
+    control,
+    watch,
+  } = useFormContext<CreateGateTypes>();
+
+  const {
+    fields: questions,
+    remove,
+    update,
+  } = useFieldArray({
+    name: `tasks.data.${taskId}.task_data.questions`,
+    control,
+  });
+
   return (
-    <Stack alignItems={'flex-start'} sx={{ width: '100%' }}>
-      {questions.map((question, index) => (
+    <Stack
+      alignItems={'flex-start'}
+      sx={{
+        width: '100%',
+      }}
+      {...rest}
+    >
+      {questions.map((question: Question, index: number) => (
         <Stack
-          key={index}
-          direction="row"
-          alignItems={'center'}
-          sx={{ width: '100%' }}
+          key={question.id}
+          sx={{
+            width: '100%',
+            py: '48px',
+            borderBottom: '1px solid rgba(229, 229, 229, 0.12)',
+          }}
         >
-          <TextField
-            variant="outlined"
-            label="Question"
-            id={`question-textfield${index}`}
-            value={question.question}
-            onChange={(event) =>
-              onQuestionFieldChange(index, 'question', event.target.value)
-            }
-          />
-          <FormControl>
-            <InputLabel id={`question-label${index}`}>Type</InputLabel>
-            <Select
-              variant="outlined"
-              label="Type"
-              labelId={`question-select-label${index}`}
-              id={`question-select${index}`}
-              value={question.type}
-              onChange={(event) =>
-                onSelectChange(index, 'type', event.target.value)
-              }
-            >
-              <MenuItem value={'single'}>Single answer</MenuItem>
-              <MenuItem value={'multiple'}>Multiple answers</MenuItem>
-            </Select>
-          </FormControl>
+          <Stack
+            direction="row"
+            alignItems={'center'}
+            sx={{ width: '100%', mb: '24px' }}
+          >
+            <QuestionField
+              question={question}
+              questionIndex={index}
+              taskId={taskId}
+            />
+
+            {questions.length > 1 && (
+              <CloseIcon
+                sx={{ marginLeft: '24px', cursor: 'pointer' }}
+                onClick={() => remove(index)}
+              />
+            )}
+          </Stack>
+          <RadioCheckBoxCreator questionIndex={index} taskId={taskId} />
         </Stack>
       ))}
     </Stack>

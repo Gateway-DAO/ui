@@ -48,7 +48,7 @@ const AddTaskCard = ({ addTask }) => {
               icon={<QuizIcon />}
               title={'Create Quizz'}
               addTask={() => {
-                addTask(QuizTask, 'self_verify');
+                addTask(QuizTask, 'quiz');
               }}
             />
           </Paper>

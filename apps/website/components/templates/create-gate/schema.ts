@@ -34,10 +34,15 @@ export type MeetingCodeTask = {
   task_data: VerificationCodeData;
 };
 
+export type QuestionTask = {
+  task_type: 'quiz';
+  task_data: QuizTaskData;
+};
+
 export type Task = {
   title: string;
   description: string;
-} & (SelfVerifyTask | MeetingCodeTask);
+} & (SelfVerifyTask | MeetingCodeTask | QuestionTask);
 
 // Verification Code
 export type VerificationCodeData = {
@@ -47,6 +52,41 @@ export type VerificationCodeData = {
 export type VerificationCodeDataError = {
   id?: FieldError;
   code?: FieldError;
+};
+
+// Quiz
+export type QuizTaskData = {
+  questions?: Question[];
+  pass_score?: number;
+};
+
+export type QuizTaskDataError = {
+  id?: FieldError;
+  code?: FieldError;
+  pass_score?: FieldError;
+  questions?: {
+    id?: FieldError;
+    question?: FieldError;
+    type?: FieldError;
+    options?: {
+      id?: FieldError;
+      value?: FieldError;
+      correct?: FieldError;
+    }[];
+  }[];
+};
+
+export type Question = {
+  id?: string;
+  question: string;
+  type: string;
+  options: Option[];
+};
+
+export type Option = {
+  id?: string;
+  value: string;
+  correct: boolean;
 };
 
 // Files

@@ -1,9 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-import { QuestionCreator } from 'apps/website/components/organisms/question-creator/question-creator';
-import { useFormContext } from 'react-hook-form';
-
-import { MotionBox } from '@gateway/ui';
+import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
 
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -17,10 +14,19 @@ import {
   Typography,
 } from '@mui/material';
 
-import { CreateGateTypes } from '../../../templates/create-gate/schema';
-import { RadioCheckBoxCreator } from '../../radio-checkbox-creator/radio-checkbox-creator';
+import { QuestionCreator } from '../../../organisms/question-creator/question-creator';
+import {
+  CreateGateTypes,
+  Question,
+  QuizTaskDataError,
+} from '../../../templates/create-gate/schema';
 
 export function QuizTask({ taskId, deleteTask }): JSX.Element {
+  const DEFAULT_QUESTION: Question = {
+    question: '',
+    type: 'single',
+    options: [{ value: '', correct: false }],
+  };
   const {
     register,
     setValue,
@@ -28,16 +34,23 @@ export function QuizTask({ taskId, deleteTask }): JSX.Element {
     formState: { errors },
     control,
   } = useFormContext<CreateGateTypes>();
-  const [taskVisible, setTaskVisible] = useState(false);
-  const [questions, setQuestions] = useState<any[]>([
-    { question: '', type: 'single' },
-  ]);
 
-  const questionChange = (index, key, value) => {
-    const arr = [...questions];
-    arr[index][key] = value;
-    setQuestions(arr);
-  };
+  const [taskVisible, setTaskVisible] = useState(false);
+
+  const { fields: questions, append } = useFieldArray({
+    name: `tasks.data.${taskId}.task_data.questions`,
+    control,
+  });
+
+  useEffect(() => {
+    const taskData = getValues().tasks.data[taskId].task_data;
+    if ('questions' in taskData && taskData.questions.length === 0) {
+      setValue(`tasks.data.${taskId}.task_type`, 'quiz');
+      setValue(`tasks.data.${taskId}.task_data.questions`, [DEFAULT_QUESTION]);
+    }
+  }, [taskId, questions]);
+  console.log(getValues());
+
   return (
     <Stack
       sx={(theme) => ({
@@ -63,6 +76,7 @@ export function QuizTask({ taskId, deleteTask }): JSX.Element {
             variant="standard"
             sx={{ minWidth: '600px' }}
             label="Quiz"
+            required
             id="quiz-title"
             {...register(`tasks.data.${taskId}.title`)}
             error={!!errors.tasks?.data[taskId]?.title}
@@ -111,58 +125,63 @@ export function QuizTask({ taskId, deleteTask }): JSX.Element {
           )}
         </Box>
       </Stack>
-      <MotionBox
+      <Box
         sx={{
-          overflow: 'hidden',
           display: 'flex',
           flexDirection: 'column',
           borderBottom: '1px solid rgba(229, 229, 229, 0.12)',
-          pb: '48px',
         }}
-        animate={taskVisible ? 'open' : 'close'}
-        variants={{
-          open: { maxHeight: '500px', transitionDuration: '250ms' },
-          close: { maxHeight: '0', transitionDuration: '250ms' },
-        }}
+        style={!taskVisible ? {} : { display: 'none' }}
       >
         <TextField
           multiline
           maxRows={4}
           minRows={3}
+          fullWidth
+          required
           label="Task description"
           id="quiz-description"
           {...register(`tasks.data.${taskId}.description`)}
           error={!!errors.tasks?.data[taskId]?.description}
           helperText={errors.tasks?.data[taskId]?.description?.message}
         />
-        <QuestionCreator
-          questions={questions}
-          onQuestionFieldChange={questionChange}
-          onSelectChange={questionChange}
-        />
-      </MotionBox>
+        <QuestionCreator questions={questions} taskId={taskId} />
+      </Box>
       <Stack alignItems={'flex-start'} sx={{ paddingTop: '30px' }}>
         <Button
           variant="text"
-          onClick={() =>
-            setQuestions([...questions, { value: '', type: 'single' }])
-          }
+          sx={{ px: 0 }}
+          onClick={() => append(DEFAULT_QUESTION)}
         >
           Add question
         </Button>
-        <Stack>
+        <Stack sx={{ mt: '24px', mb: '48px' }}>
           <Typography>
             How many questions necessary to pass the quiz?
           </Typography>
           <Typography>The quantity that user must answer correctly</Typography>
         </Stack>
-        <Slider
-          size="medium"
+        <Controller
+          control={control}
+          name={`tasks.data.${taskId}.task_data.pass_score`}
           defaultValue={1}
-          min={0}
-          max={1}
-          aria-label="Medium"
-          valueLabelDisplay="on"
+          rules={{ required: true, min: 1, max: questions.length }}
+          render={({
+            field: { onChange, onBlur, value, name, ref },
+            fieldState: { invalid, isTouched, isDirty, error },
+            formState,
+          }) => (
+            <Slider
+              size="medium"
+              min={1}
+              max={questions.length}
+              onChange={onChange}
+              onError={() => error.message}
+              value={value}
+              aria-label="Medium"
+              valueLabelDisplay="on"
+            />
+          )}
         />
       </Stack>
     </Stack>

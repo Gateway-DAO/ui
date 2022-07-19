@@ -1,42 +1,43 @@
-import { useState } from 'react';
+import { useFieldArray, useFormContext } from 'react-hook-form';
 
 import { Button, Stack } from '@mui/material';
 
+import { CreateGateTypes, Option } from '../../templates/create-gate/schema';
 import { OptionField } from './option-field/option-field';
 
-export function RadioCheckBoxCreator(): JSX.Element {
-  const [options, setOptions] = useState<any[]>([]);
+export function RadioCheckBoxCreator({
+  questionIndex,
+  taskId,
+}: {
+  questionIndex: number;
+  taskId: number;
+}): JSX.Element {
+  const { control } = useFormContext<CreateGateTypes>();
 
-  const handleChange = (index, key, value) => {
-    const arr = [...options];
-    arr[index][key] = value;
-    setOptions(arr);
+  const DEFAULT_OPTION: Option = {
+    value: '',
+    correct: false,
   };
+  const { fields: options, append } = useFieldArray({
+    control,
+    name: `tasks.data.${taskId}.task_data.questions.${questionIndex}.options`,
+  });
 
   return (
     <Stack alignItems={'flex-start'} sx={{ width: '100%' }}>
       {options.map((option, index) => (
         <OptionField
           key={index}
-          type={'single'}
-          onCheck={() =>
-            handleChange(index, 'rightAnswer', !option.rightAnswer)
-          }
           option={option}
-          onChange={(event) => handleChange(index, 'value', event.target.value)}
-          onRemove={() => {
-            const arr = [...options];
-            arr.splice(index, 1);
-            setOptions([...arr]);
-          }}
+          taskId={taskId}
+          questionIndex={questionIndex}
+          optionIndex={index}
         />
       ))}
       <Button
         variant="text"
-        sx={{ display: 'inline-block' }}
-        onClick={() =>
-          setOptions([...options, { value: '', rightAnswer: false }])
-        }
+        sx={{ display: 'inline-block', px: 0 }}
+        onClick={() => append(DEFAULT_OPTION)}
       >
         Add option
       </Button>
