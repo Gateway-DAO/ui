@@ -34,7 +34,7 @@ export type MeetingCodeTask = {
   task_data: VerificationCodeData;
 };
 
-export type QuestionTask = {
+export type QuizTask = {
   task_type: 'quiz';
   task_data: QuizTaskData;
 };
@@ -42,7 +42,7 @@ export type QuestionTask = {
 export type Task = {
   title: string;
   description: string;
-} & (SelfVerifyTask | MeetingCodeTask | QuestionTask);
+} & (SelfVerifyTask | MeetingCodeTask | QuizTask);
 
 // Verification Code
 export type VerificationCodeData = {
@@ -78,6 +78,7 @@ export type QuizTaskDataError = {
 
 export type Question = {
   id?: string;
+  order: number;
   question: string;
   type: string;
   options: Option[];

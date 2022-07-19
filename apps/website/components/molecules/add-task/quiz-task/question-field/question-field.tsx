@@ -38,10 +38,11 @@ export function QuestionField({ question, questionIndex, taskId }) {
     <Stack
       direction={'row'}
       alignItems={'center'}
-      sx={{
+      sx={(theme) => ({
         width: '100%',
         justifyContent: 'space-between',
-      }}
+        [theme.breakpoints.down('sm')]: { flexDirection: 'column' },
+      })}
     >
       <TextField
         variant="outlined"
@@ -91,7 +92,7 @@ export function QuestionField({ question, questionIndex, taskId }) {
                 ) {
                   questions[questionIndex].options
                     .filter((option) => option.correct)
-                    .map((option, index) =>
+                    .map((_option, index) =>
                       setValue(
                         `tasks.data.${taskId}.task_data.questions.${questionIndex}.options.${index}.correct`,
                         false as never

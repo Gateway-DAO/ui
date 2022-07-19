@@ -21,12 +21,6 @@ import {
 } from '../../../templates/create-gate/schema';
 
 export function QuizTask({ taskId, deleteTask }): JSX.Element {
-  const DEFAULT_QUESTION: Question = {
-    question: '',
-    type: 'single',
-    options: [{ value: '', correct: false }],
-  };
-
   const {
     register,
     setValue,
@@ -41,6 +35,13 @@ export function QuizTask({ taskId, deleteTask }): JSX.Element {
     name: `tasks.data.${taskId}.task_data.questions`,
     control,
   });
+
+  const DEFAULT_QUESTION: Question = {
+    order: questions.length,
+    question: '',
+    type: 'single',
+    options: [{ value: '', correct: false }],
+  };
 
   useEffect(() => {
     const taskData = getValues().tasks.data[taskId].task_data;
@@ -73,7 +74,6 @@ export function QuizTask({ taskId, deleteTask }): JSX.Element {
           <LooksOneIcon fontSize="large" style={{ marginRight: '35px' }} />
           <TextField
             variant="standard"
-            sx={{ minWidth: '600px' }}
             label="Quiz"
             required
             id="quiz-title"

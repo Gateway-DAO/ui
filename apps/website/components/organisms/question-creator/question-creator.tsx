@@ -35,7 +35,11 @@ export function QuestionCreator({ taskId, ...rest }): JSX.Element {
           <Stack
             direction="row"
             alignItems={'center'}
-            sx={{ width: '100%', mb: '24px' }}
+            sx={(theme) => ({
+              width: '100%',
+              mb: '24px',
+              [theme.breakpoints.down('sm')]: { flexDirection: 'column' },
+            })}
           >
             <QuestionField
               question={question}
