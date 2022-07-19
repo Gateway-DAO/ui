@@ -1,19 +1,18 @@
-import useTranslation from 'next-translate/useTranslation';
-import { useRouter } from 'next/router';
-import { useMemo } from 'react';
-
 import { PartialDeep } from 'type-fest';
+import { useMemo } from 'react';
+import useTranslation from 'next-translate/useTranslation';
 
 import { TOKENS } from '@gateway/theme';
-
+import { Box, Typography, Tabs, Tab, Button, Card, Link } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import ExploreIcon from '@mui/icons-material/Explore';
-import { Box, Typography, Tabs, Tab, Button, Card } from '@mui/material';
 
-import { ROUTES } from '../../../../constants/routes';
 import { useViewMode, ViewMode } from '../../../../hooks/use-view-modes';
 import { a11yTabProps, TabPanel, useTab } from '../../../atoms/tabs';
 import { ReceivedTab } from './recommendations/ReceivedTab';
+
+import { useRouter } from 'next/router';
+import { ROUTES } from '../../../../constants/routes';
 
 export function OverviewTab() {
   const { view, toggleView } = useViewMode();
@@ -99,7 +98,9 @@ export function OverviewTab() {
                   border: '1px dashed #9A53FF',
                   bordeRadius: '8px',
                   rowGap: '10px',
+                  cursor: 'pointer',
                 }}
+                onClick={() => router.push(ROUTES.EXPLORE)}
               >
                 <ExploreIcon
                   sx={{
@@ -175,6 +176,9 @@ export function OverviewTab() {
                 tabsId="explore"
                 index={index}
                 active={index === activeTab}
+                sx={{
+                  marginBottom: '200px',
+                }}
               >
                 {section}
               </TabPanel>
@@ -183,7 +187,7 @@ export function OverviewTab() {
           <Box sx={{ display: 'flex', flexDirection: 'column' }}>
             <Box
               sx={{
-                py: '64px',
+                py: '56px',
                 px: TOKENS.CONTAINER_PX,
                 borderBottom: 1,
                 borderColor: 'divider',
@@ -222,6 +226,7 @@ export function OverviewTab() {
                   border: '1px dashed #9A53FF',
                 }}
                 variant="outlined"
+                onClick={() => router.push(ROUTES.EDIT_PROFILE + '#skills')}
               >
                 Add your skills
               </Button>
@@ -270,6 +275,7 @@ export function OverviewTab() {
                   border: '1px dashed #9A53FF',
                 }}
                 variant="outlined"
+                onClick={() => router.push(ROUTES.EDIT_PROFILE + '#languages')}
               >
                 Add your languages
               </Button>
@@ -282,7 +288,7 @@ export function OverviewTab() {
                 borderColor: 'divider',
                 display: 'flex',
                 flexDirection: 'column',
-                rowGap: '20px',
+                rowGap: '28px',
               }}
             >
               <Box
@@ -308,16 +314,37 @@ export function OverviewTab() {
                   }
                 ></EditIcon>
               </Box>
-              <Typography
-                style={{
-                  fontSize: '16px',
-                  fontWeight: '400',
-                  color: 'rgba(255, 255, 255, 0.7)',
-                }}
-                variant="h6"
-              >
-                No timezone yet
-              </Typography>
+              <Box>
+                <Typography
+                  sx={{
+                    fontSize: '34px',
+                    fontWeight: '400',
+                    color: 'rgba(255, 255, 255, 0.5)',
+                    letterSpacing: '0.25px',
+                    marginBottom:"5px"
+                  }}
+                  variant="h6"
+                >
+                  0:00
+                  <Typography
+                    sx={{
+                      fontSize: '12px',
+                      fontWeight: '400',
+                      color: 'rgba(255, 255, 255, 0.5)',
+                      letterSpacing: '0.4px',
+                    }}
+                    component="span"
+                  >
+                    am
+                  </Typography>
+                </Typography>
+                <Link
+                  sx={{ textDecoration: 'none', cursor: 'pointer'}}
+                  onClick={() => router.push(ROUTES.EDIT_PROFILE + '#timezones')}
+                >
+                  Select your time zone
+                </Link>
+              </Box>
             </Box>
           </Box>
         </Box>
