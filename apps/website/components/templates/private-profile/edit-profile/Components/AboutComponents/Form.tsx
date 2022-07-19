@@ -1,9 +1,13 @@
+/* eslint-disable import-helpers/order-imports */
+/* eslint-disable prettier/prettier */
 import { useState } from 'react';
+import {
+  Stack,
+  Typography,
+  TextField
+} from '@mui/material';
 
 import { useFormContext } from 'react-hook-form';
-
-import { Stack, Typography, TextField } from '@mui/material';
-
 export function Form() {
   const [bioChar, setBioChar] = useState(0);
 
@@ -32,6 +36,9 @@ export function Form() {
             '& label.Mui-focused': {
               textTransform: 'uppercase',
             },
+            '& label.MuiFormLabel-filled': {
+              textTransform: 'uppercase',
+            },
           }}
           label="Display Name"
           id="name"
@@ -43,6 +50,9 @@ export function Form() {
               paddingRight: '0px',
             },
             '& label.Mui-focused': {
+              textTransform: 'uppercase',
+            },
+            '& label.MuiFormLabel-filled': {
               textTransform: 'uppercase',
             },
           }}
@@ -57,6 +67,9 @@ export function Form() {
               paddingRight: '4px',
             },
             '& label.Mui-focused': {
+              textTransform: 'uppercase',
+            },
+            '& label.MuiFormLabel-filled': {
               textTransform: 'uppercase',
             },
           }}

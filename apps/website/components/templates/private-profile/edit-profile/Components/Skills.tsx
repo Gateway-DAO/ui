@@ -1,8 +1,5 @@
-import { useState } from 'react';
-
 import { TOKENS } from '@gateway/theme';
-
-import SearchIcon from '@mui/icons-material/Search';
+import { useState } from 'react';
 import {
   Grid,
   Stack,
@@ -11,7 +8,11 @@ import {
   Chip,
   TextField,
 } from '@mui/material';
-import Autocomplete, { autocompleteClasses } from '@mui/material/Autocomplete';
+
+import Autocomplete, { autocompleteClasses } from "@mui/material/Autocomplete";
+
+
+import SearchIcon from '@mui/icons-material/Search';
 
 export function Skills() {
   const skills = [
@@ -20,7 +21,7 @@ export function Skills() {
     { title: 'Product Strategy' },
     { title: 'Product Design' },
     { title: 'Web3' },
-    { title: 'Business Development' },
+    {title: 'Business Development'},
     { title: 'Blockchain' },
     { title: 'Cryptocurrency' },
   ];
@@ -36,7 +37,7 @@ export function Skills() {
       <Grid
         container
         direction={{ xs: 'column', md: 'row' }}
-        sx={{ rowGap: '15px', marginTop: '24px', alignItems: 'flex-start' }}
+        sx={{ rowGap: '15px',marginTop:"24px", alignItems:"flex-start"}}
       >
         <Grid item xs={4}>
           <Typography
@@ -44,13 +45,13 @@ export function Skills() {
             fontWeight="bold"
             sx={{ color: '#fff' }}
             ml={{ xs: '0px', md: '40px' }}
-            mb={{ xs: '27px', md: '0px' }}
+            mb={{xs: '27px', md: '0px'}}
           >
             Skills
           </Typography>
         </Grid>
         <Grid item xs={7.5}>
-          <Stack>
+          <Stack >
             <Autocomplete
               multiple
               id="tags-standard"
@@ -58,21 +59,35 @@ export function Skills() {
               disableClearable
               getOptionLabel={(option) => option.title}
               renderInput={(params) => (
-                <TextField {...params} label="SELECT YOUR SKILLS" />
+                <TextField
+                  {...params}
+                  label="Select your skills"
+                  sx={{
+                    '& label.Mui-focused': {
+                      textTransform: 'uppercase',
+                    },
+                    '& label.MuiInputLabel-shrink ': {
+                      textTransform: 'uppercase',
+                    },
+                    '& div fieldset legend span': {
+                      marginRight: '30px',
+                      paddingRight: '4px',
+                    },
+                  }}
+                />
               )}
               popupIcon={<SearchIcon />}
               sx={{
                 width: { xs: '94vw', md: '65%' },
                 [`& .${autocompleteClasses.popupIndicator}`]: {
-                  transform: 'none',
-                  color: 'rgba(255, 255, 255, 0.56)',
-                },
+                  transform: "none",
+                  color:"rgba(255, 255, 255, 0.56)"
+                }
               }}
             />
           </Stack>
         </Grid>
       </Grid>
-      <Divider light sx={{ width: '100%' }} />
     </Stack>
   );
 }
