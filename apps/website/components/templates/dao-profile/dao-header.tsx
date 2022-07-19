@@ -38,7 +38,7 @@ export function DaoHeader({
 }: Props) {
   const { dao, isAdmin } = useDaoProfile();
   const cover = useFile(dao.background);
-  const { t } = useTranslation();
+  const { t } = useTranslation('dao-profile');
 
   return (
     <>
@@ -91,13 +91,13 @@ export function DaoHeader({
             </Typography>
 
             {isAdmin && (
-              <Tooltip title={t('edit')}>
-                <Link passHref href={ROUTES.DAO_EDIT.replace('[id]', dao.id)}>
+              <Link passHref href={ROUTES.DAO_EDIT.replace('[id]', dao.id)}>
+                <Tooltip title={t('edit')}>
                   <IconButton>
                     <Edit />
                   </IconButton>
-                </Link>
-              </Tooltip>
+                </Tooltip>
+              </Link>
             )}
           </Stack>
           {dao.categories && (
