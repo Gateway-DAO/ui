@@ -58,6 +58,9 @@ export function QuizTask({ taskId, deleteTask }): JSX.Element {
         border: '2px solid rgba(229, 229, 229, 0.08)',
         background: `linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.05) 100%), ${theme.palette.background.paper}`,
         borderRadius: '10px',
+        [theme.breakpoints.down('sm')]: {
+          padding: '20px',
+        },
       })}
     >
       <Stack
@@ -70,13 +73,24 @@ export function QuizTask({ taskId, deleteTask }): JSX.Element {
           alignItems: 'center',
         }}
       >
-        <Stack direction={'row'} alignItems={'center'}>
-          <LooksOneIcon fontSize="large" style={{ marginRight: '35px' }} />
+        <Stack
+          direction={'row'}
+          alignItems={'center'}
+          sx={{ width: '100%', mr: '20px' }}
+        >
+          <LooksOneIcon
+            fontSize="large"
+            sx={(theme) => ({
+              marginRight: '35px',
+              [theme.breakpoints.down('sm')]: { mr: '20px' },
+            })}
+          />
           <TextField
             variant="standard"
             label="Quiz"
             required
             id="quiz-title"
+            fullWidth
             {...register(`tasks.data.${taskId}.title`)}
             error={!!errors.tasks?.data[taskId]?.title}
             helperText={errors.tasks?.data[taskId]?.title?.message}
@@ -115,7 +129,6 @@ export function QuizTask({ taskId, deleteTask }): JSX.Element {
               sx={(theme) => ({
                 color: theme.palette.text.secondary,
                 cursor: 'pointer',
-                marginRight: '20px',
                 '&:hover': {
                   color: theme.palette.text.primary,
                 },
@@ -154,11 +167,18 @@ export function QuizTask({ taskId, deleteTask }): JSX.Element {
         >
           Add question
         </Button>
-        <Stack sx={{ mt: '24px', mb: '48px' }}>
+        <Stack
+          sx={(theme) => ({
+            mt: '24px',
+            mb: '48px',
+          })}
+        >
           <Typography>
             How many questions necessary to pass the quiz?
           </Typography>
-          <Typography>The quantity that user must answer correctly</Typography>
+          <Typography sx={(theme) => ({ color: theme.palette.text.secondary })}>
+            The quantity that user must answer correctly
+          </Typography>
         </Stack>
         <Controller
           control={control}
@@ -169,6 +189,7 @@ export function QuizTask({ taskId, deleteTask }): JSX.Element {
             <Slider
               size="medium"
               min={1}
+              sx={{ mx: '10px', width: 'calc(100% - 10px)' }}
               max={questions.length}
               onChange={onChange}
               onError={() => error?.message}

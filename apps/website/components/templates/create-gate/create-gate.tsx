@@ -93,6 +93,10 @@ export function CreateGateTemplate() {
       id="gate-details-form"
       onSubmit={methods.handleSubmit(createGate, (error) => console.log(error))}
       padding={'0 90px'}
+      sx={(theme) => ({
+        p: '0 90px',
+        [theme.breakpoints.down('sm')]: { p: '0 20px' },
+      })}
     >
       <CreateNavbar />
       <Typography component="h1" variant="h4" sx={{ margin: '40px 0 100px 0' }}>

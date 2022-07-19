@@ -41,15 +41,20 @@ export function QuestionField({ question, questionIndex, taskId }) {
       sx={(theme) => ({
         width: '100%',
         justifyContent: 'space-between',
-        [theme.breakpoints.down('sm')]: { flexDirection: 'column' },
+        [theme.breakpoints.down('sm')]: {
+          flexDirection: 'column',
+          alignItems: 'flex-start',
+        },
       })}
     >
       <TextField
         variant="outlined"
         label="Question"
         id={`question-textfield${questionIndex}`}
-        sx={{ flex: 1 }}
-        defaultValue={''}
+        sx={(theme) => ({
+          flex: 1,
+          [theme.breakpoints.down('sm')]: { width: '100%' },
+        })}
         required
         name={`tasks.data.${taskId}.task_data.questions.${questionIndex}.question`}
         {...register(
@@ -72,7 +77,17 @@ export function QuestionField({ question, questionIndex, taskId }) {
         defaultValue={'single' as never}
         rules={{ required: true }}
         render={({ field: { onChange, value } }) => (
-          <FormControl sx={{ minWidth: '272px', marginLeft: '16px' }}>
+          <FormControl
+            sx={(theme) => ({
+              minWidth: '272px',
+              marginLeft: '16px',
+              [theme.breakpoints.down('sm')]: {
+                marginLeft: 0,
+                marginTop: '16px',
+                width: '100%',
+              },
+            })}
+          >
             <InputLabel id={`question-label${questionIndex}`}>Type</InputLabel>
             <Select
               variant="outlined"

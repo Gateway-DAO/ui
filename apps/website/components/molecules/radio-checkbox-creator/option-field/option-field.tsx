@@ -8,7 +8,7 @@ import { Stack, TextField } from '@mui/material';
 import {
   CreateGateTypes,
   Option,
-  QuestionTask,
+  QuizTask,
   QuizTaskDataError,
 } from '../../../templates/create-gate/schema';
 
@@ -33,7 +33,7 @@ export function OptionField({
 
   watch(`tasks.data.${taskId}.task_data.questions.${questionIndex}.type`);
 
-  const questionType: string = (getValues().tasks.data[taskId] as QuestionTask)
+  const questionType: string = (getValues().tasks.data[taskId] as QuizTask)
     .task_data.questions[questionIndex].type;
 
   return (
@@ -80,6 +80,7 @@ export function OptionField({
             <CheckCircleIcon
               sx={(theme) => ({
                 cursor: 'pointer',
+                ml: '24px',
                 color: value
                   ? theme.palette.success.light
                   : theme.palette.text.primary,
