@@ -1,12 +1,21 @@
 import useTranslation from 'next-translate/useTranslation';
 import Image from 'next/image';
+import Link from 'next/link';
 
 import { TOKENS } from '@gateway/theme';
 
 import { Edit } from '@mui/icons-material';
-import { Chip, Box, Stack, Typography, IconButton } from '@mui/material';
+import {
+  Chip,
+  Box,
+  Stack,
+  Typography,
+  IconButton,
+  Tooltip,
+} from '@mui/material';
 
 import { categoriesMap } from '../../../constants/dao';
+import { ROUTES } from '../../../constants/routes';
 import { useFile } from '../../../hooks/use-file';
 import { AvatarFile } from '../../atoms/avatar-file';
 import { FollowButtonDAO } from '../../atoms/follow-button-dao';
@@ -82,9 +91,13 @@ export function DaoHeader({
             </Typography>
 
             {isAdmin && (
-              <IconButton>
-                <Edit />
-              </IconButton>
+              <Tooltip title={t('edit')}>
+                <Link passHref href={ROUTES.DAO_EDIT.replace('[id]', dao.id)}>
+                  <IconButton>
+                    <Edit />
+                  </IconButton>
+                </Link>
+              </Tooltip>
             )}
           </Stack>
           {dao.categories && (

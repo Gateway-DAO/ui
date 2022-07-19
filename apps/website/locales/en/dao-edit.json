@@ -1,5 +1,5 @@
 {
-  "title": "Create DAO profile",
+  "title": "Edit DAO profile",
   "subtitle": "Information provided will be displayed on your Gateway profile.",
   "about": {
     "title": "About",
@@ -7,5 +7,5 @@
     "details": "Details",
     "social-links": "Social Links"
   },
-  "submit": "create"
+  "submit": "edit"
 }

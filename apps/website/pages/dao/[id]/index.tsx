@@ -4,10 +4,10 @@ import { useMemo } from 'react';
 import {
   DaoProfileTemplate,
   DaoProfileProvider,
-} from '../../components/templates/dao-profile';
-import { DashboardTemplate } from '../../components/templates/dashboard';
-import { useAuth } from '../../providers/auth';
-import { gqlAnonMethods } from '../../services/api';
+} from '../../../components/templates/dao-profile';
+import { DashboardTemplate } from '../../../components/templates/dashboard';
+import { useAuth } from '../../../providers/auth';
+import { gqlAnonMethods } from '../../../services/api';
 
 export default function DaoProfilePage({
   daoProps,

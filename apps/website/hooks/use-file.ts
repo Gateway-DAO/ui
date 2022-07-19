@@ -3,13 +3,16 @@ import { PartialDeep } from 'type-fest';
 
 import { Files } from '../services/graphql/types.generated';
 
+export const generateImageUrl = (id?: string) =>
+  id ? `https://api.staging.mygateway.xyz/storage/file?id=${id}` : undefined;
+
 /** Generates the url and blurred version from a File object  */
 export const useFile = (file?: PartialDeep<Files>) => {
   if (!file) {
     return undefined;
   }
 
-  const url = `https://api.staging.mygateway.xyz/storage/file?id=${file.id}`;
+  const url = generateImageUrl(file.id);
   const blur = createImage(decodeBlurHash(file.blur, 32, 32));
 
   return {

@@ -42,7 +42,7 @@ export function AvatarBackgroundFields() {
         <ImageDropField
           withCrop={false}
           control={control}
-          name="background_url"
+          name="background"
           label="Drop to upload your background"
         />
       </Box>
@@ -77,7 +77,7 @@ export function AvatarBackgroundFields() {
       >
         <ImageDropField
           control={control}
-          name="logo_url"
+          name="logo"
           label="Drop to upload your avatar"
           hideLabel
         />

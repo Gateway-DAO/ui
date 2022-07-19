@@ -10,7 +10,11 @@ import { SocialLinks } from '../../../molecules/form/social-links';
 import { NewDAOSchema } from '../schema';
 import { AvatarBackgroundFields } from './avatar-background-fields';
 
-export function AboutForm() {
+type Props = {
+  isEdit: boolean;
+};
+
+export function AboutForm({ isEdit }: Props) {
   const {
     register,
     control,
@@ -18,7 +22,7 @@ export function AboutForm() {
     watch,
   } = useFormContext<NewDAOSchema>();
 
-  const { t } = useTranslation('dao-new');
+  const { t } = useTranslation(isEdit ? 'dao-edit' : 'dao-new');
 
   const descriptionRemaining = 200 - (watch('description')?.length ?? 0);
 

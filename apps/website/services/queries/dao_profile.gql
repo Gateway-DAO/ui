@@ -85,3 +85,21 @@ mutation create_dao($logo_id: uuid!, $name: String!, $description: String!, $cat
     }
   }
 }
+
+mutation edit_dao($id: uuid!, $logo_id: uuid!, $name: String!, $description: String!, $categories: jsonb!, $background_id: uuid!, $socials: [dao_socials_insert_input!]!) {
+  update_daos_by_pk(_set: {logo_id: $logo_id, name: $name, description: $description, categories: $categories, background_id: $background_id}, pk_columns: {id: $id}) {
+    id
+    logo_url
+    name
+    is_admin
+    logo {
+      ...file
+    }
+  }
+  delete_dao_socials(where: {dao_id: {_eq: $id}}) {
+    affected_rows
+  }
+  insert_dao_socials(objects: $socials) {
+    affected_rows
+  }
+}
