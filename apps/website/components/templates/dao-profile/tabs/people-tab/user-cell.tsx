@@ -9,6 +9,7 @@ import TableRow from '@mui/material/TableRow';
 import { useAuth } from '../../../../../providers/auth';
 import { Users } from '../../../../../services/graphql/types.generated';
 import { FollowButtonUser } from '../../../../atoms/follow-button-user';
+import { useDaoProfile } from '../../context';
 import { AdminMenu } from './admin-menu';
 
 type Props = {
@@ -16,6 +17,7 @@ type Props = {
 };
 export function UserCell({ user }: Props) {
   const { me } = useAuth();
+  const { isAdmin } = useDaoProfile();
   return (
     <TableRow hover role="checkbox" tabIndex={-1}>
       <TableCell>
@@ -40,24 +42,25 @@ export function UserCell({ user }: Props) {
         </Stack>
       </TableCell>
 
-      <TableCell align="right">
-        <Stack
-          display="inline-flex"
-          alignItems="center"
-          direction="row"
-          gap={1}
-        >
-          {me?.id !== user.id && (
+      {me?.id !== user.id ? (
+        <>
+          <TableCell align="right">
             <FollowButtonUser
               userId={user.id}
               variant="outlined"
               size="small"
               color="secondary"
             />
-          )}
-          <AdminMenu user={user} />
-        </Stack>
-      </TableCell>
+          </TableCell>
+          <TableCell align="right">
+            {isAdmin && <AdminMenu user={user} />}
+          </TableCell>
+        </>
+      ) : (
+        <>
+          <TableCell /> <TableCell />
+        </>
+      )}
     </TableRow>
   );
 }

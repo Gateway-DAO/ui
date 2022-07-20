@@ -106,3 +106,15 @@ mutation edit_dao($id: uuid!, $logo_id: uuid!, $name: String!, $description: Str
     affected_rows
   }
 }
+
+mutation dao_set_user_admin($dao_id: uuid!, $user_id: uuid!, $permission: permission_types = "dao_admin") {
+  insert_permissions(objects: {dao_id: $dao_id, user_id: $user_id, permission: $permission}, on_conflict: {constraint: permissions_user_id_dao_id_gate_id_key, update_columns: [permission]}) {
+    affected_rows
+  }
+}
+
+mutation dao_set_user_member($dao_id: uuid!, $user_id: uuid!, $permission: permission_types = "member") {
+  insert_permissions(objects: {dao_id: $dao_id, user_id: $user_id, permission: $permission}, on_conflict: {constraint: permissions_user_id_dao_id_gate_id_key, update_columns: [permission]}) {
+    affected_rows
+  }
+}

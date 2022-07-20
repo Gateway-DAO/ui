@@ -10,6 +10,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 
 import { Users } from '../../../../../services/graphql/types.generated';
+import { useDaoProfile } from '../../context';
 import { UserCell } from './user-cell';
 
 type Props = {
@@ -17,6 +18,7 @@ type Props = {
 };
 
 export function TableView({ people }: Props) {
+  const { isAdmin } = useDaoProfile();
   return (
     <TableContainer
       sx={{
@@ -31,8 +33,9 @@ export function TableView({ people }: Props) {
       <Table stickyHeader aria-label="sticky table">
         <TableHead>
           <TableRow>
-            <TableCell>User</TableCell>
+            <TableCell sx={{ width: '100%' }}>User</TableCell>
             <TableCell></TableCell>
+            {isAdmin && <TableCell></TableCell>}
           </TableRow>
         </TableHead>
         <TableBody>

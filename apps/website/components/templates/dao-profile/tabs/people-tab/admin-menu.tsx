@@ -1,3 +1,4 @@
+import { useMutation } from 'react-query';
 import { PartialDeep } from 'type-fest';
 
 import { useMenu } from '@gateway/ui';
@@ -13,6 +14,7 @@ import {
   Typography,
 } from '@mui/material';
 
+import { useAuth } from '../../../../../providers/auth';
 import { Users } from '../../../../../services/graphql/types.generated';
 import { useDaoProfile } from '../../context';
 
@@ -20,11 +22,15 @@ type Props = {
   user: PartialDeep<Users>;
 };
 export function AdminMenu({ user }: Props) {
+  const {} = useAuth();
   const { element, isOpen, onClose, onOpen, withOnClose } = useMenu();
-  console.log(user);
+
   const userIsAdmin = user.permissions?.some(
     ({ permission }) => permission === 'admin'
   );
+
+  const permissionsMutation = useMutation(() => {});
+
   return (
     <>
       <IconButton onClick={onOpen}>
@@ -44,12 +50,6 @@ export function AdminMenu({ user }: Props) {
         open={isOpen}
         onClose={onClose}
       >
-        {/* <NestedMenuItem label="Languages" parentMenuOpen={isOpen}>
-          <MenuItem onClick={onChangeLanguage('en')}>English</MenuItem>
-          <MenuItem onClick={onChangeLanguage('pt-BR')}>
-            Portuguese (Brazil)
-          </MenuItem>
-        </NestedMenuItem> */}
         {userIsAdmin ? (
           <MenuItem onClick={withOnClose(() => {})}>
             <Typography textAlign="center">Remove admin</Typography>
