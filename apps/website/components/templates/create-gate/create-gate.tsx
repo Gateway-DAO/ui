@@ -91,7 +91,10 @@ export function CreateGateTemplate() {
     <Stack
       component="form"
       id="gate-details-form"
-      onSubmit={methods.handleSubmit(createGate, (error) => console.log(error))}
+      // TODO: remove the any when the bug is fixed
+      onSubmit={methods.handleSubmit(createGate as any, (error) =>
+        console.log(error)
+      )}
       padding={'0 90px'}
       sx={(theme) => ({
         p: '0 90px',
