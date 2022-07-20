@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 mutation upload_image($base64: String!, $metadata: MetadataInput!) {
   upload_image(base64: $base64, metadata: $metadata) {
+=======
+mutation upload_image($base64: String!, $name: String!) {
+  upload_image(base64: $base64, metadata: {name: $name}) {
+>>>>>>> b9850c9019c21a85c9f708cf339da9a53a521154
     id
   }
 }

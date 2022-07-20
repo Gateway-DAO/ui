@@ -41,6 +41,7 @@ export default function EditDropdownMenu({
         color="secondary"
         sx={{ position: 'absolute', bottom: 6, left: 6, zIndex: 10 }}
         onClick={onOpen}
+        className="MuiEditButton-root"
       >
         <Avatar
           sx={[

@@ -9,10 +9,10 @@ import {
   FaTelegram,
 } from 'react-icons/fa';
 
-import { Language } from '@mui/icons-material';
+import { Language, Link } from '@mui/icons-material';
 import { SvgIcon, SvgIconProps } from '@mui/material';
 
-import { Network } from '../../constants/networks';
+import { Network } from '../../constants/dao';
 
 type Props = {
   icon: Network;
@@ -33,8 +33,10 @@ export function SocialIcon({ icon, ...other }: Props) {
         return FaMedium;
       case 'telegram':
         return FaTelegram;
-      default:
+      case 'website':
         return Language;
+      default:
+        return Link;
     }
   }, [icon]);
   const viewBox = useMemo(() => {

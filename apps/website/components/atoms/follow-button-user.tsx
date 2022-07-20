@@ -1,8 +1,9 @@
 import useTranslation from 'next-translate/useTranslation';
 
-import { Button, ButtonProps } from '@mui/material';
+import { ButtonProps } from '@mui/material';
 
 import { useFollowUser } from '../../hooks/use-follow';
+import { LoadingButton } from './loading-button';
 
 type Props = {
   userId: string;
@@ -13,13 +14,13 @@ export function FollowButtonUser({ userId, ...props }: Props) {
   const { isFollowingUser, isLoading, onToggleFollow } = useFollowUser();
   const isFollowing = isFollowingUser(userId);
   return (
-    <Button
+    <LoadingButton
       variant="contained"
-      disabled={isLoading(userId)}
+      isLoading={isLoading(userId)}
       onClick={() => onToggleFollow(userId, isFollowing)}
       {...props}
     >
       {isFollowing ? t('actions.unfollow') : t('actions.follow')}
-    </Button>
+    </LoadingButton>
   );
 }

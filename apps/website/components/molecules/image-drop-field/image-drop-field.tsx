@@ -15,9 +15,11 @@ import { HiddenInput } from './styles';
 
 export type Props<TFormSchema> = {
   label: ReactNode;
+  hideLabel?: boolean;
   name: Path<TFormSchema>;
   control: Control<TFormSchema>;
   withCrop?: boolean;
+  cropRatio?: number;
 };
 
 /* TODO: improve state handling with xState */
@@ -26,6 +28,8 @@ export function ImageDropField<TFormSchema extends FieldValues = FieldValues>({
   name,
   control,
   withCrop = true,
+  cropRatio,
+  hideLabel,
 }: Props<TFormSchema>) {
   const {
     field: { ref, value, onChange, ...register },
@@ -87,8 +91,15 @@ export function ImageDropField<TFormSchema extends FieldValues = FieldValues>({
 
   return (
     <>
-      <Container {...{ dropBond, hasImage: !!value, isOver }}>
-        {!value && <Placeholder label={label} />}
+      <Container
+        {...{
+          dropBond,
+          hasImage: !!value,
+          isOver,
+          label: typeof label === 'string' ? label : undefined,
+        }}
+      >
+        {!hideLabel && !value && <Placeholder label={label} />}
         <HiddenInput
           type="file"
           ref={(el) => {
@@ -116,6 +127,7 @@ export function ImageDropField<TFormSchema extends FieldValues = FieldValues>({
           image={imageCropDialog.image}
           onSubmit={onCrop}
           onClose={imageCropDialog.onClose}
+          cropRatio={cropRatio}
         />
       )}
       <Snackbar

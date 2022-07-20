@@ -1,14 +1,26 @@
 import { GetStaticPaths, InferGetStaticPropsType } from 'next';
+import { useMemo } from 'react';
 
-import { DaoProfileTemplate } from '../../components/templates/dao-profile';
-import { DashboardTemplate } from '../../components/templates/dashboard';
-import { gqlAnonMethods } from '../../services/api';
+import {
+  DaoProfileTemplate,
+  DaoProfileProvider,
+} from '../../../components/templates/dao-profile';
+import { DashboardTemplate } from '../../../components/templates/dashboard';
+import { useAuth } from '../../../providers/auth';
+import { gqlAnonMethods } from '../../../services/api';
 
 export default function DaoProfilePage({
   daoProps,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
-  if (!daoProps) return null;
-  const { daos_by_pk: dao } = daoProps;
+  const { daos_by_pk: dao } = daoProps ?? {};
+
+  const { me } = useAuth();
+
+  const isAdmin =
+    me?.following_dao?.find((fdao) => fdao.dao_id === dao?.id)?.dao?.is_admin ??
+    false;
+
+  if (!dao) return null;
   return (
     <DashboardTemplate
       currentDao={dao}
@@ -18,7 +30,9 @@ export default function DaoProfilePage({
         },
       }}
     >
-      <DaoProfileTemplate dao={dao} />
+      <DaoProfileProvider dao={dao} isAdmin={isAdmin}>
+        <DaoProfileTemplate />
+      </DaoProfileProvider>
     </DashboardTemplate>
   );
 }

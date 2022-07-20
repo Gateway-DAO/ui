@@ -46,9 +46,7 @@ export function CreateGateTemplate() {
     uploadImage(
       {
         base64: gateData.image,
-        metadata: {
-          name: gateData.title,
-        },
+        name: gateData.title,
       },
       {
         onSuccess(imageData) {
