@@ -4,7 +4,7 @@ import { DashboardTemplate } from '../../components/templates/dashboard';
 import { GateViewTemplate } from '../../components/templates/gate-view';
 import { gqlAnonMethods } from '../../services/api';
 
-export default function DaoProfilePage({
+export default function GateProfilePage({
   gateProps,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
   if (!gateProps) return null;
