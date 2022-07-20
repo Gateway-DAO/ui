@@ -15,10 +15,11 @@ import {
 } from '@mui/material';
 
 import { Tasks } from '../../../../services/graphql/types.generated';
-import MeetingCodeContent from './content/meeting_code';
-import SelfVerifyContent from './content/self-verify';
-import SnapshotContent from './content/snapshot';
-import TokenHoldContent from './content/token_hold';
+import MeetingCodeContent from '../../../organisms/gates/view/tasks/content/meeting_code';
+import QuizContent from '../../../organisms/gates/view/tasks/content/quiz';
+import SelfVerifyContent from '../../../organisms/gates/view/tasks/content/self-verify';
+import SnapshotContent from '../../../organisms/gates/view/tasks/content/snapshot';
+import TokenHoldContent from '../../../organisms/gates/view/tasks/content/token_hold';
 
 type Props = {
   idx?: number;
@@ -33,28 +34,38 @@ export function Task({ task, idx }: Props) {
       case 'self_verify':
         return {
           title: 'Files & Links',
-          body: <SelfVerifyContent data={task.task_data} />,
+          body: SelfVerifyContent,
+          action: 'Submit',
         };
       case 'meeting_code':
         return {
           title: 'Verification Code',
-          body: <MeetingCodeContent />,
+          body: MeetingCodeContent,
+          action: 'Submit',
         };
       case 'token_hold':
         return {
           title: 'Hold Token',
-          body: <TokenHoldContent />,
+          body: TokenHoldContent,
+          action: 'Check Token',
         };
       case 'snapshot':
         return {
           title: 'Snapshot',
-          body: <SnapshotContent />,
+          body: SnapshotContent,
+          action: 'Check Snapshot',
         };
-      // TODO: Quiz
+      case 'quiz':
+        return {
+          title: 'Quiz',
+          body: QuizContent,
+          action: 'Submit',
+        };
     }
   };
 
   const taskContent = getTaskContent(task.task_type);
+  const TaskComponent = taskContent.body;
 
   return (
     <Card
@@ -97,14 +108,12 @@ export function Task({ task, idx }: Props) {
         }}
       >
         <CardContent sx={{ marginLeft: '55px' }}>
-          <Typography variant="subtitle2">
-            This is the description: {task.description}
-          </Typography>
-          {taskContent.body}
+          <Typography variant="subtitle2">{task.description}</Typography>
+          <TaskComponent data={task.task_data} />
         </CardContent>
         <CardActions>
           <Button variant="contained" sx={{ marginLeft: '55px' }}>
-            Start
+            {taskContent.action}
           </Button>
         </CardActions>
       </Collapse>

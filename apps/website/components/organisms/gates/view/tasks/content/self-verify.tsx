@@ -4,7 +4,6 @@ import DescriptionIcon from '@mui/icons-material/Description';
 import { List, ListItem, ListItemIcon, ListItemText } from '@mui/material';
 
 const SelfVerifyContent = ({ data }) => {
-  console.log(data.files);
   const files = data.files.map((file, index) => {
     return (
       <ListItem
