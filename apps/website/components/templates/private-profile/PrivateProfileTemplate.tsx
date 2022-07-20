@@ -1,7 +1,12 @@
+/* eslint-disable prettier/prettier */
+/* eslint-disable import-helpers/order-imports */
+/* eslint-disable prettier/prettier */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable prettier/prettier */
 import { InferGetStaticPropsType } from 'next';
 import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 
 import { TOKENS } from '@gateway/theme';
 
@@ -25,6 +30,7 @@ import { ROUTES } from '../../../constants/routes';
 import { gqlAdminMethods } from '../../../services/api';
 import { ActivityTab } from './tabs/ActivityTab';
 import { OverviewTab } from './tabs/OverviewTab';
+import GuideCard from './edit-profile/Components/guide-card';
 
 export const getStaticProps = async () => {
   const exploreProps = await gqlAdminMethods.get_home();
@@ -41,6 +47,7 @@ export default function PrivateProfileTemplate() {
   const { t } = useTranslation();
   const { activeTab, handleTabChange, setTab } = useTab();
   const router = useRouter();
+  const [showCard, setShowCard] = useState(true);
 
   const tabs = useMemo(
     () => [
@@ -97,6 +104,12 @@ export default function PrivateProfileTemplate() {
               borderColor: 'background.default',
             }}
           ></Avatar>
+          <Box
+             sx={{
+               justifyContent: 'space-between',
+             }}
+             display={{ xs: 'block', md: 'flex' }}
+           >
           <Box>
             <Typography
               sx={{ color: '#fff', marginTop: { xs: '16px', md: '24px' } }}
@@ -185,6 +198,10 @@ export default function PrivateProfileTemplate() {
               </IconButton>
             </Stack>
           </Box>
+          <Box marginRight={{ xs: 5, md: 8 }} marginTop={{ xs: 5, md: 0 }}>
+               {showCard && <GuideCard {...{ setShowCard }} />}
+             </Box>
+        </Box>
         </Box>
         <Box
           sx={{
