@@ -27,6 +27,8 @@ export function OverviewTab({ people, setTab }: Props) {
 
   const gates = dao?.gates ?? [];
 
+  const newGateUrl = `${ROUTES.GATES_NEW}?dao=${dao?.id}`;
+
   return (
     <Stack
       direction="column"
@@ -71,7 +73,7 @@ export function OverviewTab({ people, setTab }: Props) {
                   />
                 ),
                 isAdmin && (
-                  <Link key="create-gate" passHref href={ROUTES.GATE_NEW}>
+                  <Link key="create-gate" passHref href={newGateUrl}>
                     <EmptyCard
                       title="Create Gate"
                       subtitle="Create your first Gate and help talents find you"

@@ -25,14 +25,14 @@ import { Socials } from './socials';
 
 type Props = {
   followCount?: number;
-  followIsLoading: boolean;
+  followIsLoaded: boolean;
   onFollow: () => void;
   onUnfollow: () => void;
 };
 
 export function DaoHeader({
   followCount,
-  followIsLoading,
+  followIsLoaded,
   onFollow,
   onUnfollow,
 }: Props) {
@@ -126,7 +126,7 @@ export function DaoHeader({
             divider={<span>·</span>}
             sx={{ mt: 12 / 8 }}
           >
-            {followIsLoading && (
+            {followIsLoaded && (
               <Typography variant="body1">
                 {t('common:count.follower', {
                   count: followCount ?? 0,
@@ -139,6 +139,7 @@ export function DaoHeader({
           </Stack>
           <Socials dao={dao}>
             <FollowButtonDAO
+              key={isAdmin ? 'isAdmin' : 'notAdmin'}
               daoId={dao.id}
               onFollow={onFollow}
               onUnfollow={onUnfollow}

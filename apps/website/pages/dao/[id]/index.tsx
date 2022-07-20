@@ -1,5 +1,6 @@
 import { GetStaticPaths, InferGetStaticPropsType } from 'next';
-import { useMemo } from 'react';
+
+import { useQuery } from 'react-query';
 
 import {
   DaoProfileTemplate,
@@ -20,6 +21,16 @@ export default function DaoProfilePage({
     me?.following_dao?.find((fdao) => fdao.dao_id === dao?.id)?.dao?.is_admin ??
     false;
 
+  const peopleQuery = useQuery(
+    ['dao-people', dao.id],
+    () => gqlAnonMethods.dao_profile_people({ id: dao.id }),
+    { enabled: !!dao?.id }
+  );
+
+  const onResetPeopleQuery = () => {
+    peopleQuery.refetch();
+  };
+
   if (!dao) return null;
   return (
     <DashboardTemplate
@@ -30,7 +41,13 @@ export default function DaoProfilePage({
         },
       }}
     >
-      <DaoProfileProvider dao={dao} isAdmin={isAdmin}>
+      <DaoProfileProvider
+        dao={dao}
+        isAdmin={isAdmin}
+        followers={peopleQuery.data}
+        followersIsLoaded={peopleQuery.isSuccess}
+        onRefetchFollowers={onResetPeopleQuery}
+      >
         <DaoProfileTemplate />
       </DaoProfileProvider>
     </DashboardTemplate>

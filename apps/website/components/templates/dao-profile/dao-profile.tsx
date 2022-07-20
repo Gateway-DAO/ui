@@ -14,28 +14,18 @@ import { GatesTab, OverviewTab } from './tabs';
 import { PeopleTab } from './tabs/people-tab';
 
 export function DaoProfileTemplate() {
-  const { dao } = useDaoProfile();
+  const { dao, followers, onRefetchFollowers, followersIsLoaded } =
+    useDaoProfile();
   const { t } = useTranslation();
   const { activeTab, handleTabChange, setTab } = useTab();
 
-  const peopleQuery = useQuery(
-    ['dao-people', dao.id],
-    () => gqlAnonMethods.dao_profile_people({ id: dao.id }),
-    { enabled: !!dao?.id }
-  );
-
-  const onResetPeopleQuery = () => {
-    peopleQuery.refetch();
-  };
-
-  const followers =
-    peopleQuery.data?.daos_by_pk?.followers.map(({ user }) => user) ?? [];
+  const people = followers?.daos_by_pk?.followers.map(({ user }) => user) ?? [];
 
   const tabs = [
     {
       key: 'overview',
       label: t('common:tabs.overview'),
-      section: <OverviewTab people={followers} setTab={setTab} />,
+      section: <OverviewTab people={people} setTab={setTab} />,
     },
     {
       key: 'gates',
@@ -45,19 +35,19 @@ export function DaoProfileTemplate() {
     {
       key: 'people',
       label: t('common:tabs.people'),
-      section: <PeopleTab people={followers} />,
+      section: <PeopleTab people={people} />,
     },
   ];
 
   return (
     <>
       <DaoHeader
-        followIsLoading={peopleQuery.isSuccess}
+        followIsLoaded={followersIsLoaded}
         followCount={
-          peopleQuery.data?.daos_by_pk?.followers_aggregate?.aggregate?.count
+          followers?.daos_by_pk?.followers_aggregate?.aggregate?.count
         }
-        onFollow={onResetPeopleQuery}
-        onUnfollow={onResetPeopleQuery}
+        onFollow={onRefetchFollowers}
+        onUnfollow={onRefetchFollowers}
       />
       <Box
         sx={{
