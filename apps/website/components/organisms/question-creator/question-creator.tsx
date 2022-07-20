@@ -26,7 +26,7 @@ export function QuestionCreator({ taskId, ...rest }): JSX.Element {
       {questions.map((question: Question, index: number) => (
         <Stack
           key={question.id}
-          sx={(theme) => ({
+          sx={() => ({
             width: '100%',
             py: '48px',
             borderBottom: '1px solid rgba(229, 229, 229, 0.12)',

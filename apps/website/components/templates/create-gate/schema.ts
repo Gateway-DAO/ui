@@ -71,7 +71,8 @@ export type QuizTaskDataError = {
       id?: FieldError;
       value?: FieldError;
       correct?: FieldError;
-    }[];
+    }[] &
+      FieldError;
   }[];
 };
 
@@ -143,12 +144,18 @@ export const quizDataSchema = z.object({
     z.object({
       question: z.string().min(2),
       type: z.enum(['single', 'multiple']),
-      options: z.array(
-        z.object({
-          value: z.string().min(2),
-          correct: z.boolean(),
-        })
-      ),
+      options: z
+        .array(
+          z.object({
+            value: z.string().min(2),
+            correct: z.boolean(),
+          })
+        )
+        .max(5)
+        .refine(
+          (options) => options.some((option) => option.correct),
+          'At least one option must be correct'
+        ),
     })
   ),
 });

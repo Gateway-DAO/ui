@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
 
@@ -15,10 +15,7 @@ import {
 } from '@mui/material';
 
 import { QuestionCreator } from '../../../organisms/question-creator/question-creator';
-import {
-  CreateGateTypes,
-  Question,
-} from '../../../templates/create-gate/schema';
+import { CreateGateTypes } from '../../../templates/create-gate/schema';
 
 export function QuizTask({
   taskId,
@@ -42,20 +39,25 @@ export function QuizTask({
     control,
   });
 
-  const DEFAULT_QUESTION: Question = {
-    order: questions.length,
-    question: '',
-    type: 'single',
-    options: [{ value: '', correct: false }],
-  };
+  const DEFAULT_QUESTION = useCallback(
+    () => ({
+      order: questions.length,
+      question: '',
+      type: 'single',
+      options: [{ value: '', correct: false }],
+    }),
+    [questions.length]
+  );
 
   useEffect(() => {
     const taskData = getValues().tasks.data[taskId].task_data;
+    setValue(`tasks.data.${taskId}.task_type`, 'quiz');
     if ('questions' in taskData && taskData.questions.length === 0) {
-      setValue(`tasks.data.${taskId}.task_type`, 'quiz');
-      setValue(`tasks.data.${taskId}.task_data.questions`, [DEFAULT_QUESTION]);
+      setValue(`tasks.data.${taskId}.task_data.questions`, [
+        DEFAULT_QUESTION(),
+      ]);
     }
-  }, [taskId, questions]);
+  }, [DEFAULT_QUESTION, setValue, getValues, taskId, questions]);
 
   return (
     <Stack
@@ -169,12 +171,12 @@ export function QuizTask({
         <Button
           variant="text"
           sx={{ px: 0 }}
-          onClick={() => append(DEFAULT_QUESTION)}
+          onClick={() => append(DEFAULT_QUESTION())}
         >
           Add question
         </Button>
         <Stack
-          sx={(theme) => ({
+          sx={() => ({
             mt: '24px',
             mb: '48px',
           })}
