@@ -16,6 +16,7 @@ mutation follow_dao($id: uuid!) {
       id
       logo_url
       name
+      is_admin
     }
   }
 }

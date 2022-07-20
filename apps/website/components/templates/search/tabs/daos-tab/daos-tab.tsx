@@ -8,7 +8,7 @@ import { TOKENS } from '@gateway/theme';
 import { ViewModule, ViewList } from '@mui/icons-material';
 import { Box, IconButton, Stack, Typography, Chip } from '@mui/material';
 
-import { CATEGORIES } from '../../../../../constants/dao';
+import { categories } from '../../../../../constants/dao';
 import { usePropertyFilter } from '../../../../../hooks/use-property-filter';
 import { useViewMode, ViewMode } from '../../../../../hooks/use-view-modes';
 import { Daos } from '../../../../../services/graphql/types.generated';
@@ -99,7 +99,7 @@ export function DaosTab({ data: daos }: DAOsTabProps) {
             </Typography>
           </Box>
           <Stack direction="row" flexWrap="wrap">
-            {CATEGORIES.map((dao, idx) => (
+            {categories.map((dao, idx) => (
               <Chip
                 variant="filled"
                 key={'cat-dao-' + idx}

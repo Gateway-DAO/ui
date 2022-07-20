@@ -11,6 +11,8 @@ const config = {
     [ROUTES.SEARCH]: ['search'],
     [ROUTES.NEW_USER]: ['dashboard-new-user'],
     [ROUTES.DAO_PROFILE]: ['dao-profile'],
+    [ROUTES.DAO_NEW]: ['dao-new'],
+    [ROUTES.DAO_EDIT]: ['dao-edit'],
   },
   localeDetection: false,
 };
