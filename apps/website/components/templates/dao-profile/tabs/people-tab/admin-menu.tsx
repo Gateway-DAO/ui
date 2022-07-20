@@ -5,13 +5,12 @@ import { useMenu } from '@gateway/ui';
 
 import { MoreVert } from '@mui/icons-material';
 import {
-  Avatar,
-  Box,
+  CircularProgress,
   IconButton,
+  ListItemIcon,
+  ListItemText,
   Menu,
   MenuItem,
-  Stack,
-  Typography,
 } from '@mui/material';
 
 import { useAuth } from '../../../../../providers/auth';
@@ -22,20 +21,40 @@ type Props = {
   user: PartialDeep<Users>;
 };
 export function AdminMenu({ user }: Props) {
-  const {} = useAuth();
+  const { gqlAuthMethods } = useAuth();
   const { element, isOpen, onClose, onOpen, withOnClose } = useMenu();
-
+  const { dao, onRefetchFollowers } = useDaoProfile();
   const userIsAdmin = user.permissions?.some(
-    ({ permission }) => permission === 'admin'
+    ({ permission }) => permission === 'dao_admin'
   );
 
-  const permissionsMutation = useMutation(() => {});
+  const permissionsMutation = useMutation(
+    ['dao-permission', user.id, userIsAdmin],
+    () => {
+      if (userIsAdmin)
+        return gqlAuthMethods.dao_set_user_member({
+          dao_id: dao.id,
+          user_id: user.id,
+        });
+      return gqlAuthMethods.dao_set_user_admin({
+        dao_id: dao.id,
+        user_id: user.id,
+      });
+    },
+    {
+      onSuccess() {
+        onRefetchFollowers();
+        onClose();
+      },
+    }
+  );
 
   return (
     <>
       <IconButton onClick={onOpen}>
         <MoreVert />
       </IconButton>
+
       <Menu
         anchorEl={element}
         anchorOrigin={{
@@ -50,15 +69,21 @@ export function AdminMenu({ user }: Props) {
         open={isOpen}
         onClose={onClose}
       >
-        {userIsAdmin ? (
-          <MenuItem onClick={withOnClose(() => {})}>
-            <Typography textAlign="center">Remove admin</Typography>
-          </MenuItem>
-        ) : (
-          <MenuItem onClick={withOnClose(() => {})}>
-            <Typography textAlign="center">Turn to admin</Typography>
-          </MenuItem>
-        )}
+        <MenuItem
+          disabled={permissionsMutation.isLoading}
+          onClick={() => permissionsMutation.mutate()}
+        >
+          {permissionsMutation.isLoading && (
+            <ListItemIcon>
+              <CircularProgress size={16} />
+            </ListItemIcon>
+          )}
+          {userIsAdmin ? (
+            <ListItemText>Remove admin</ListItemText>
+          ) : (
+            <ListItemText>Turn to admin</ListItemText>
+          )}
+        </MenuItem>
       </Menu>
     </>
   );

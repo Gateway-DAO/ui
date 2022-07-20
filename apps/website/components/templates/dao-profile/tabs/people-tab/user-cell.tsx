@@ -18,6 +18,7 @@ type Props = {
 export function UserCell({ user }: Props) {
   const { me } = useAuth();
   const { isAdmin } = useDaoProfile();
+
   return (
     <TableRow hover role="checkbox" tabIndex={-1}>
       <TableCell>

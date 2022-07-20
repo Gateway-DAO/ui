@@ -139,6 +139,7 @@ export function DaoHeader({
           </Stack>
           <Socials dao={dao}>
             <FollowButtonDAO
+              key={isAdmin ? 'isAdmin' : 'notAdmin'}
               daoId={dao.id}
               onFollow={onFollow}
               onUnfollow={onUnfollow}

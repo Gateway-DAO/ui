@@ -1,5 +1,4 @@
 import { GetStaticPaths, InferGetStaticPropsType } from 'next';
-import { useMemo } from 'react';
 
 import { useQuery } from 'react-query';
 
@@ -31,8 +30,6 @@ export default function DaoProfilePage({
   const onResetPeopleQuery = () => {
     peopleQuery.refetch();
   };
-
-  console.log(peopleQuery);
 
   if (!dao) return null;
   return (
