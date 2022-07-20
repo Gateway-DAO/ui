@@ -27,7 +27,7 @@ export function OverviewTab({ people, setTab }: Props) {
 
   const gates = dao?.gates ?? [];
 
-  const newGateUrl = `${ROUTES.DAO.GATES.NEW}?dao=${dao?.id}`;
+  const newGateUrl = `${ROUTES.GATES_NEW}?dao=${dao?.id}`;
 
   return (
     <Stack

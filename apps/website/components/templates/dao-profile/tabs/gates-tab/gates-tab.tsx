@@ -34,7 +34,7 @@ export function GatesTab() {
     toggleFilter,
     onClear,
   } = usePropertyFilter(gates.data?.daos_by_pk?.gates ?? [], 'categories');
-  const newGateUrl = `${ROUTES.DAO.GATES.NEW}?dao=${dao?.id}`;
+  const newGateUrl = `${ROUTES.GATES_NEW}?dao=${dao?.id}`;
 
   return (
     <Box sx={{ py: 4 }}>
