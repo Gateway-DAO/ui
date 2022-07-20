@@ -1,10 +1,13 @@
 import useTranslation from 'next-translate/useTranslation';
+import Link from 'next/link';
 
 import { PartialDeep } from 'type-fest';
 
 import { Button, Divider, Stack } from '@mui/material';
 
+import { ROUTES } from '../../../../../constants/routes';
 import { Users } from '../../../../../services/graphql/types.generated';
+import { EmptyCard } from '../../../../atoms/empty-card';
 import { GatesCard } from '../../../../molecules/gates-card';
 import { PersonCard } from '../../../../molecules/person-card';
 import {
@@ -20,7 +23,9 @@ type Props = {
 
 export function OverviewTab({ people, setTab }: Props) {
   const { t } = useTranslation('explore');
-  const { dao } = useDaoProfile();
+  const { dao, isAdmin } = useDaoProfile();
+
+  const gates = dao?.gates ?? [];
 
   return (
     <Stack
@@ -44,16 +49,38 @@ export function OverviewTab({ people, setTab }: Props) {
           title={t('common:featured-gates.title')}
           caption={t('common:featured-gates.caption')}
           action={
-            <Button onClick={() => setTab(1)}>
-              {t('common:featured-gates.see-more')}
-            </Button>
+            gates.length > 0 && (
+              <Button onClick={() => setTab(1)}>
+                {t('common:featured-gates.see-more')}
+              </Button>
+            )
           }
           itemWidth={(theme) => theme.spacing(37.75)}
           gridSize={{ lg: 4 }}
         >
-          {dao?.gates?.map((gate) => (
-            <GatesCard key={gate.id} {...gate} />
-          ))}
+          {gates.length > 0
+            ? gates.map((gate) => <GatesCard key={gate.id} {...gate} />)
+            : [
+                !isAdmin && (
+                  <EmptyCard
+                    key="empty"
+                    title="No Gates yet"
+                    subtitle="Follow us and get notificatons when a new Gate is created"
+                    disabled
+                    sx={{ height: 440 }}
+                  />
+                ),
+                isAdmin && (
+                  <Link key="create-gate" passHref href={ROUTES.GATE_NEW}>
+                    <EmptyCard
+                      title="Create Gate"
+                      subtitle="Create your first Gate and help talents find you"
+                      component="a"
+                      sx={{ height: 440 }}
+                    />
+                  </Link>
+                ),
+              ]}
         </SectionWithSliderResponsive>
         <SectionWithGrid
           title={t('common:featured-people.title')}
