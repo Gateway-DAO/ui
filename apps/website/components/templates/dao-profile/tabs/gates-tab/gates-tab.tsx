@@ -34,6 +34,7 @@ export function GatesTab() {
     toggleFilter,
     onClear,
   } = usePropertyFilter(gates.data?.daos_by_pk?.gates ?? [], 'categories');
+  const newGateUrl = `${ROUTES.DAO.GATES.NEW}?dao=${dao?.id}`;
 
   return (
     <Box sx={{ py: 4 }}>
@@ -99,7 +100,7 @@ export function GatesTab() {
               />
             ),
             isAdmin && (
-              <Link key="create-gate" passHref href={ROUTES.GATE_NEW}>
+              <Link key="create-gate" passHref href={newGateUrl}>
                 <EmptyCard
                   title="Create Gate"
                   subtitle="Create your first Gate and help talents find you"
