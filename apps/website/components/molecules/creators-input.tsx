@@ -5,7 +5,7 @@ import { useAuth } from '../../providers/auth';
 
 export const CreatedByInput = ({ set, ...props }) => {
   const { me } = useAuth();
-  const creators = [{ id: me.id, name: me.name }];
+  const creators = [{ id: me?.id, name: me?.name }];
 
   return (
     <Autocomplete

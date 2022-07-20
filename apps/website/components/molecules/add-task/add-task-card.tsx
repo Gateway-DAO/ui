@@ -9,6 +9,8 @@ import { Grid, Paper, Stack, Typography } from '@mui/material';
 
 import AddTaskButton from './add-task-button';
 import FileLinkTask from './file-link-task/file-link-task';
+import HoldTokenTask from './hold-token-task/hold-token-task';
+import SnapshotTask from './snapshot-task/snapshot-task';
 import VerificationCodeTask from './verification-task/verification-task';
 
 const AddTaskCard = ({ addTask }) => {
@@ -58,10 +60,7 @@ const AddTaskCard = ({ addTask }) => {
             <AddTaskButton
               icon={<MonetizationOnIcon />}
               title={'Hold Token'}
-              disabled
-              addTask={() => {
-                return;
-              }}
+              addTask={() => addTask(HoldTokenTask, 'token_hold')}
             />
           </Paper>
         </Grid>
@@ -70,10 +69,7 @@ const AddTaskCard = ({ addTask }) => {
             <AddTaskButton
               icon={<ElectricBoltIcon />}
               title={'Snapshot Governance'}
-              disabled
-              addTask={() => {
-                return;
-              }}
+              addTask={() => addTask(SnapshotTask, 'snapshot')}
             />
           </Paper>
         </Grid>
