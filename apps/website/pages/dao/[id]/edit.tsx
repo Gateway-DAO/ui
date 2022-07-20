@@ -67,7 +67,7 @@ export default function DaoProfilePage({
         ...daoData,
         logo_id: logo,
         background_id: bg,
-        socials: socials as any,
+        socials: socials.map((social) => ({ dao_id: dao.id, ...social })),
       });
     },
     {
