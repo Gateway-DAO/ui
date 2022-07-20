@@ -34,6 +34,11 @@ export type MeetingCodeTask = {
   task_data: VerificationCodeData;
 };
 
+export type QuizTask = {
+  task_type: 'quiz';
+  task_data: QuizTaskData;
+};
+
 export type SnapshotTask = {
   task_type: 'snapshot';
   task_data: SnapshotData;
@@ -47,7 +52,13 @@ export type HoldTokenTask = {
 export type Task = {
   title: string;
   description: string;
-} & (SelfVerifyTask | MeetingCodeTask | SnapshotTask | HoldTokenTask);
+} & (
+  | SelfVerifyTask
+  | MeetingCodeTask
+  | QuizTask
+  | SnapshotTask
+  | HoldTokenTask
+);
 
 // Verification Code
 export type VerificationCodeData = {
@@ -57,6 +68,42 @@ export type VerificationCodeData = {
 export type VerificationCodeDataError = {
   id?: FieldError;
   code?: FieldError;
+};
+
+// Quiz
+export type QuizTaskData = {
+  questions?: Question[];
+  pass_score?: number;
+};
+
+export type QuizTaskDataError = {
+  id?: FieldError;
+  pass_score?: FieldError;
+  questions?: {
+    id?: FieldError;
+    question?: FieldError;
+    type?: FieldError;
+    options?: {
+      id?: FieldError;
+      value?: FieldError;
+      correct?: FieldError;
+    }[] &
+      FieldError;
+  }[];
+};
+
+export type Question = {
+  id?: string;
+  order: number;
+  question: string;
+  type: string;
+  options?: Option[];
+};
+
+export type Option = {
+  id?: string;
+  value: string;
+  correct: boolean;
 };
 
 // Snapshot
@@ -144,6 +191,35 @@ export const taskMeetingCodeSchema = z.object({
   task_data: verificationCodeDataSchema,
 });
 
+export const quizDataSchema = z.object({
+  pass_score: z.number().min(1).max(100),
+  questions: z.array(
+    z.object({
+      question: z.string().min(2),
+      type: z.enum(['single', 'multiple']),
+      options: z
+        .array(
+          z.object({
+            value: z.string().min(2),
+            correct: z.boolean(),
+          })
+        )
+        .max(5)
+        .refine(
+          (options) => options.some((option) => option.correct),
+          'At least one option must be correct'
+        ),
+    })
+  ),
+});
+
+export const taskQuizSchema = z.object({
+  title: z.string().min(2),
+  description: z.string().min(2),
+  task_type: z.literal('quiz'),
+  task_data: quizDataSchema,
+});
+
 export const taskHoldTokenSchema = z.object({
   title: z.string().min(2),
   description: z.string().min(2),
@@ -182,6 +258,7 @@ export const createGateSchema = z.object({
       z.discriminatedUnion('task_type', [
         taskSelfVerifySchema,
         taskMeetingCodeSchema,
+        taskQuizSchema,
         taskSnapshotSchema,
         taskHoldTokenSchema,
       ])

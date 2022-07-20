@@ -3,7 +3,6 @@ import { useRouter } from 'next/router';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm, FormProvider } from 'react-hook-form';
 import { useMutation } from 'react-query';
-import { z } from 'zod';
 
 import { Box, Divider, Snackbar, Stack, Typography } from '@mui/material';
 
@@ -18,7 +17,7 @@ import { GateImageCard } from './gate-image-card/gate-image-card';
 import { createGateSchema, CreateGateTypes } from './schema';
 
 export function CreateGateTemplate() {
-  const methods = useForm<z.infer<typeof createGateSchema>>({
+  const methods = useForm({
     resolver: zodResolver(createGateSchema),
   });
 
@@ -91,6 +90,10 @@ export function CreateGateTemplate() {
       id="gate-details-form"
       onSubmit={methods.handleSubmit(createGate, (error) => console.log(error))}
       padding={'0 90px'}
+      sx={(theme) => ({
+        p: '0 90px',
+        [theme.breakpoints.down('sm')]: { p: '0 20px' },
+      })}
     >
       <CreateNavbar />
       <Typography component="h1" variant="h4" sx={{ margin: '40px 0 100px 0' }}>
