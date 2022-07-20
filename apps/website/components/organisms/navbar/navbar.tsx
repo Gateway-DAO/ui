@@ -1,9 +1,10 @@
 import dynamic from 'next/dynamic';
+import { useRouter } from 'next/router';
 
 import { TOKENS } from '@gateway/theme';
 
 import SearchIcon from '@mui/icons-material/Search';
-import { Button, Stack } from '@mui/material';
+import { Stack } from '@mui/material';
 import AppBar, { AppBarProps } from '@mui/material/AppBar';
 import Autocomplete from '@mui/material/Autocomplete';
 import Box from '@mui/material/Box';
@@ -23,6 +24,8 @@ const ClientNav = dynamic(
 export type NavbarProps = AppBarProps;
 
 export function Navbar(props: NavbarProps) {
+  const router = useRouter();
+
   return (
     <AppBar color="transparent" position="relative" {...props}>
       <Toolbar
@@ -46,20 +49,19 @@ export function Navbar(props: NavbarProps) {
             },
           }}
         >
-          <Autocomplete
-            options={[]}
+          <TextField
+            placeholder="Search on Gateway"
             fullWidth
-            renderInput={(params) => (
-              <TextField
-                label="Search on Gateway"
-                {...params}
-                InputLabelProps={{
-                  sx: {
-                    '&.MuiInputLabel-root:not(.MuiInputLabel-shrink)': {
-                      transform: 'translate(14px, 8px) scale(1)',
-                    },
-                  },
-                  /*
+            InputLabelProps={{
+              sx: {
+                '&.MuiInputLabel-root:not(.MuiInputLabel-shrink)': {
+                  transform: 'translate(14px, 8px) scale(1)',
+                },
+                '& .MuiFilledInput-root:hover': {
+                  backgroundColor: 'red',
+                },
+              },
+              /*
                   start adornment:
                   sx: {
                     '&.MuiInputLabel-root': {
@@ -73,19 +75,34 @@ export function Navbar(props: NavbarProps) {
                         maxWidth: 0,
                       },
                   }, */
-                }}
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <SearchIcon />
-                    </InputAdornment>
-                  ),
-                  fullWidth: true,
-                  sx: { borderRadius: 100 },
-                  size: 'small',
-                }}
-              />
-            )}
+            }}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment
+                  position="end"
+                  sx={{
+                    paddingRight: 1,
+                  }}
+                >
+                  <SearchIcon
+                    sx={{
+                      color: 'rgba(255, 255, 255, 0.56)',
+                    }}
+                  />
+                </InputAdornment>
+              ),
+              fullWidth: true,
+              sx: {
+                borderRadius: 100,
+                paddingX: 1,
+                paddingY: 0.5,
+              },
+              size: 'small',
+            }}
+            onKeyDown={(e: any) =>
+              e.key == 'Enter' &&
+              router.push(`/search/${(e.target as HTMLInputElement).value}`)
+            }
           />
         </Stack>
         <Box

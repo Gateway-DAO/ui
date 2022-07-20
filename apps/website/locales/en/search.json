@@ -1,0 +1,19 @@
+{
+  "results": "result(s) found",
+  "gates-found": {
+    "title": "Gate(s) Found"
+  },
+  "daos-found": {
+    "title": "DAO(s) Found"
+  },
+  "people-found": {
+    "title": "People found"
+  },
+  "not-found": {
+    "text1": "Sorry, no matches were found.",
+    "text2": {
+      "all": "Try a new search or explore the categories.",
+      "people": "Try a new search"
+    }
+  }
+}

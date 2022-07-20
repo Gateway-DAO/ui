@@ -1,0 +1,14 @@
+query search($query: String!) {
+  gates: search_gates(query: $query) {
+    hits
+  }
+  credentials: search_credentials(query: $query) {
+    hits
+  }
+  daos: search_daos(query: $query) {
+    hits
+  }
+  users: search_users(query: $query) {
+    hits
+  }
+}
