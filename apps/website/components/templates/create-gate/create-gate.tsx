@@ -18,7 +18,7 @@ import { GateImageCard } from './gate-image-card/gate-image-card';
 import { createGateSchema, CreateGateTypes } from './schema';
 
 export function CreateGateTemplate() {
-  const methods = useForm<z.infer<typeof createGateSchema>>({
+  const methods = useForm({
     resolver: zodResolver(createGateSchema),
   });
 
@@ -91,10 +91,7 @@ export function CreateGateTemplate() {
     <Stack
       component="form"
       id="gate-details-form"
-      // TODO: remove the any when the bug is fixed
-      onSubmit={methods.handleSubmit(createGate as any, (error) =>
-        console.log(error)
-      )}
+      onSubmit={methods.handleSubmit(createGate, (error) => console.log(error))}
       padding={'0 90px'}
       sx={(theme) => ({
         p: '0 90px',
