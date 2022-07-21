@@ -5,9 +5,10 @@ const ROUTES = {
   CREDENTIALS: '/credentials',
   CREDENTIALS_NEW: '/credentials/new',
   DAO_PROFILE: '/dao/[id]',
+  PRIVATEPROFILE: '/privateprofile',
   PRIVATE_PROFILE: '/private_profile',
+  EDITPROFILE: '/privateprofile/edit',
   EDIT_PROFILE: '/private_profile/edit',
-  GATE_PROFILE: '/gate/[id]',
 };
 
 module.exports = {
