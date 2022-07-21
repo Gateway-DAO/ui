@@ -16,15 +16,8 @@ import { useAuth } from '../../../providers/auth';
 /* TODO: Refactor */
 
 export function NavBarAvatar() {
-  const { element, isOpen, onClose, onOpen } = useMenu();
+  const { element, isOpen, onClose, onOpen, withOnClose } = useMenu();
 
-  const withOnClose = useCallback(
-    (cb: () => void) => () => {
-      cb();
-      onClose();
-    },
-    [onClose]
-  );
   const { onSignOut, me } = useAuth();
 
   return (

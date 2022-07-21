@@ -8,13 +8,22 @@ query get_home {
     dao {
       id
       logo_url
+      logo {
+        ...file
+      }
       name
     }
   }
   daos(limit: 3) {
     id
     name
+    logo {
+      ...file
+    }
     logo_url
+    background {
+      ...file
+    }
     background_url
     description
     categories
@@ -40,6 +49,9 @@ query gates_tab {
     dao {
       id
       logo_url
+      logo {
+        ...file
+      }
       name
     }
   }
@@ -49,7 +61,13 @@ query daos_tab {
   daos(order_by: {name: asc}) {
     id
     name
+    logo {
+      ...file
+    }
     logo_url
+    background {
+      ...file
+    }
     background_url
     description
     categories

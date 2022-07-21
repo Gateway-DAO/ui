@@ -1,9 +1,11 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
+import { useRouter } from 'next/router';
 import { PropsWithChildren, useCallback, useEffect, useMemo } from 'react';
 
 import { useAccount, useDisconnect } from 'wagmi';
 
 import { WalletModal } from '../../components/organisms/wallet-modal';
+import { ROUTES } from '../../constants/routes';
 import useToggleContainerClass from '../../hooks/useToggleContainerClass';
 import { gqlMethodsWithRefresh } from '../../services/api';
 import { AuthContext } from './context';
@@ -25,6 +27,8 @@ export function AuthProvider({
 
   const { status: accountStatus, data: account } = useAccount();
 
+  const router = useRouter();
+
   const gqlAuthMethods = useMemo(
     () => gqlMethodsWithRefresh(me, onUpdateToken),
     [me?.token, onUpdateToken]
@@ -37,6 +41,11 @@ export function AuthProvider({
 
   const isBlocked = isAuthPage && !me;
 
+  const onCloseModalWhenBlocked = async () => {
+    await router.replace(ROUTES.LANDING);
+    onUnauthenticated();
+  };
+
   useEffect(() => {
     if (isBlocked && status === 'UNAUTHENTICATED') {
       onConnecting();
@@ -46,10 +55,10 @@ export function AuthProvider({
   useEffect(() => {
     if (!isAuthPage) return;
     if (accountStatus === 'loading' || accountStatus === 'idle') return;
-    if (!account) {
+    if (!account && me) {
       onSignOut();
     }
-  }, [account, accountStatus, disconnect, isAuthPage, onSignOut]);
+  }, [account, accountStatus, disconnect, isAuthPage, onSignOut, me]);
 
   useToggleContainerClass('blur', status === 'CONNECTING');
 
@@ -70,7 +79,7 @@ export function AuthProvider({
       {status !== 'AUTHENTICATED' && (
         <WalletModal
           isOpen={status === 'CONNECTING'}
-          onClose={!isBlocked ? onUnauthenticated : undefined}
+          onClose={!isBlocked ? onUnauthenticated : onCloseModalWhenBlocked}
           onSuccess={onAuthenticated}
         />
       )}

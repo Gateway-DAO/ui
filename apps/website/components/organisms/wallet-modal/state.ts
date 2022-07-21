@@ -30,7 +30,8 @@ export function useConnectWallet() {
   const account = useAccount({
     onSuccess(data) {
       if (!data) {
-        throw new Error('Reconnect to Wallet');
+        return;
+        // throw new Error('Reconnect to Wallet');
       }
       const { address } = data ?? {};
 

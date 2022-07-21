@@ -31,6 +31,7 @@ export function DaosTab() {
     <Box sx={{ py: 4 }}>
       {isLoading ? (
         <Box
+          key="loading"
           sx={{
             display: 'flex',
             alignItems: 'center',
@@ -45,16 +46,15 @@ export function DaosTab() {
             direction="row"
             justifyContent="space-between"
             sx={{ mb: 4, px: TOKENS.CONTAINER_PX }}
+            key="daos-tab-filters"
           >
-            <Stack direction="row" gap={1.5}>
-              <ChipDropdown
-                label="Categories"
-                values={availableFilters}
-                selected={selectedFilters}
-                onToggle={toggleFilter}
-                onClear={onClear}
-              />
-            </Stack>
+            <ChipDropdown
+              label="Categories"
+              values={availableFilters}
+              selected={selectedFilters}
+              onToggle={toggleFilter}
+              onClear={onClear}
+            />
             <IconButton
               type="button"
               onClick={toggleView}

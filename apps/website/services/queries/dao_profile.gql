@@ -9,19 +9,41 @@ query dao_profile($id: uuid!) {
     id
     name
     description
-    background_url
+    background {
+      id
+      blur
+      #url
+    }
+    logo {
+      id
+      blur
+    }
     logo_url
+    background_url
     categories
     socials {
       network
       url
     }
+    gates(limit: 4) {
+      id
+      title
+      description
+      categories
+      image
+    }
+  }
+}
+
+query dao_gates_tab($id: uuid!) {
+  daos_by_pk(id: $id) {
     gates {
       id
       title
       description
       categories
       image
+      published
     }
   }
 }
@@ -39,7 +61,60 @@ query dao_profile_people($id: uuid!) {
         name
         username
         pfp
+        permissions(where: {dao_id: {_eq: $id}}) {
+          permission
+        }
       }
     }
+  }
+}
+
+mutation create_dao($logo_id: uuid!, $name: String!, $description: String!, $categories: jsonb!, $background_id: uuid!, $socials: [dao_socials_insert_input!]!) {
+  insert_daos_one(
+    object: {
+      logo_id: $logo_id,
+      name: $name,
+      description: $description,
+      categories: $categories,
+      background_id: $background_id,
+      socials: {data: $socials}}
+    ) {
+    id
+    logo_url
+    name
+    is_admin
+    logo {
+      ...file
+    }
+  }
+}
+
+mutation edit_dao($id: uuid!, $logo_id: uuid!, $name: String!, $description: String!, $categories: jsonb!, $background_id: uuid!, $socials: [dao_socials_insert_input!]!) {
+  update_daos_by_pk(_set: {logo_id: $logo_id, name: $name, description: $description, categories: $categories, background_id: $background_id}, pk_columns: {id: $id}) {
+    id
+    logo_url
+    name
+    is_admin
+    logo {
+      ...file
+    }
+  }
+  delete_dao_socials(where: {dao_id: {_eq: $id}}) {
+    affected_rows
+  }
+  insert_dao_socials(objects: $socials) {
+    affected_rows
+  }
+}
+
+mutation dao_set_user_admin($dao_id: uuid!, $user_id: uuid!, $permission: permission_types = "dao_admin") {
+  insert_permissions(objects: {dao_id: $dao_id, user_id: $user_id, permission: $permission}, on_conflict: {constraint: permissions_user_id_dao_id_gate_id_key, update_columns: [permission]}) {
+    affected_rows
+  }
+}
+
+mutation dao_set_user_member($dao_id: uuid!, $user_id: uuid!, $permission: permission_types = "member") {
+  insert_permissions(objects: {dao_id: $dao_id, user_id: $user_id, permission: $permission}, on_conflict: {constraint: permissions_user_id_dao_id_gate_id_key, update_columns: [permission]}) {
+    affected_rows
   }
 }

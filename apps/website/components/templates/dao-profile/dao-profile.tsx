@@ -1,136 +1,54 @@
 import useTranslation from 'next-translate/useTranslation';
-import { useMemo } from 'react';
 
 import { useQuery } from 'react-query';
-import { PartialDeep } from 'type-fest';
 
 import { TOKENS } from '@gateway/theme';
 
-import { Avatar, Chip, Box, Stack, Typography, Tabs, Tab } from '@mui/material';
+import { Box, Tabs, Tab } from '@mui/material';
 
 import { gqlAnonMethods } from '../../../services/api';
-import { Daos } from '../../../services/graphql/types.generated';
-import { FollowButtonDAO } from '../../atoms/follow-button-dao';
 import { a11yTabProps, TabPanel, useTab } from '../../atoms/tabs';
-import { Navbar } from '../../organisms/navbar/navbar';
-import { Socials } from './socials';
+import { useDaoProfile } from './context';
+import { DaoHeader } from './dao-header';
 import { GatesTab, OverviewTab } from './tabs';
 import { PeopleTab } from './tabs/people-tab';
 
-type Props = {
-  dao: PartialDeep<Daos>;
-};
-
-export function DaoProfileTemplate({ dao }: Props) {
+export function DaoProfileTemplate() {
+  const { dao, followers, onRefetchFollowers, followersIsLoaded } =
+    useDaoProfile();
   const { t } = useTranslation();
   const { activeTab, handleTabChange, setTab } = useTab();
 
-  const peopleQuery = useQuery(['dao-people', dao.id], () =>
-    gqlAnonMethods.dao_profile_people({ id: dao.id })
-  );
-
-  const onResetPeopleQuery = () => {
-    peopleQuery.refetch();
-  };
-
-  const followers =
-    peopleQuery.data?.daos_by_pk?.followers.map(({ user }) => user) ?? [];
+  const people = followers?.daos_by_pk?.followers.map(({ user }) => user) ?? [];
 
   const tabs = [
     {
       key: 'overview',
       label: t('common:tabs.overview'),
-      section: <OverviewTab dao={dao} people={followers} setTab={setTab} />,
+      section: <OverviewTab people={people} setTab={setTab} />,
     },
     {
       key: 'gates',
       label: t('common:tabs.gates'),
-      section: <GatesTab gates={dao?.gates ?? []} />,
+      section: <GatesTab />,
     },
     {
       key: 'people',
       label: t('common:tabs.people'),
-      section: <PeopleTab people={followers} />,
+      section: <PeopleTab people={people} />,
     },
   ];
 
   return (
     <>
-      <Box
-        sx={{
-          height: (theme) => theme.spacing(35),
-          background: `url(${dao.background_url})`,
-          backgroundPosition: 'center',
-          backgroundSize: 'cover',
-          pt: 2,
-        }}
-      >
-        <Navbar />
-      </Box>
-      <Box
-        sx={{
-          px: TOKENS.CONTAINER_PX,
-          marginTop: -13,
-        }}
-      >
-        <Avatar
-          sx={{
-            height: (theme) => theme.spacing(16.25),
-            width: (theme) => theme.spacing(16.25),
-            border: (theme) => `${theme.spacing(0.5)} solid`,
-            borderColor: 'background.default',
-          }}
-          src={dao?.logo_url}
-        ></Avatar>
-        <Box>
-          <Typography component="h1" variant="h4">
-            {dao.name}
-          </Typography>
-          {dao.categories && (
-            <Stack direction="row" gap={2} sx={{ mt: 12 / 8 }}>
-              {dao.categories.map((category) => (
-                <Chip key={category} label={category} size="small" />
-              ))}
-            </Stack>
-          )}
-          <Typography
-            variant="body1"
-            sx={{
-              mt: 2,
-              maxWidth: {
-                md: 1 / 2,
-              },
-            }}
-            color="text.secondary"
-          >
-            {dao.description}
-          </Typography>
-          <Stack
-            direction="row"
-            gap={1}
-            divider={<span>·</span>}
-            sx={{ mt: 12 / 8 }}
-          >
-            <Typography variant="body1">
-              {t('common:count.follower', {
-                count:
-                  peopleQuery.data?.daos_by_pk.followers_aggregate.aggregate
-                    .count ?? 0,
-              })}
-            </Typography>
-            <Typography variant="body1">
-              {t('common:count.gate', { count: dao.gates?.length ?? 0 })}
-            </Typography>
-          </Stack>
-          <Socials dao={dao}>
-            <FollowButtonDAO
-              daoId={dao.id}
-              onFollow={onResetPeopleQuery}
-              onUnfollow={onResetPeopleQuery}
-            />
-          </Socials>
-        </Box>
-      </Box>
+      <DaoHeader
+        followIsLoaded={followersIsLoaded}
+        followCount={
+          followers?.daos_by_pk?.followers_aggregate?.aggregate?.count
+        }
+        onFollow={onRefetchFollowers}
+        onUnfollow={onRefetchFollowers}
+      />
       <Box
         sx={{
           borderBottom: 1,

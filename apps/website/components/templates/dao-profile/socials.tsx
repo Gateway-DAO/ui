@@ -6,7 +6,7 @@ import { PartialDeep } from 'type-fest';
 import ShareIcon from '@mui/icons-material/IosShare';
 import { Avatar, Stack, IconButton, Snackbar } from '@mui/material';
 
-import { Network } from '../../../constants/networks';
+import { Network } from '../../../constants/dao';
 import { useSnackbar } from '../../../hooks/use-snackbar';
 import { Daos } from '../../../services/graphql/types.generated';
 import { SocialIcon } from '../../atoms/social-icon';
@@ -47,6 +47,7 @@ export function Socials({ dao, children }: PropsWithChildren<Props>) {
             p: 0,
           }}
           onClick={onShare}
+          key="share"
         >
           <Avatar>
             <ShareIcon
@@ -57,11 +58,16 @@ export function Socials({ dao, children }: PropsWithChildren<Props>) {
           </Avatar>
         </IconButton>
         {dao.socials?.map((social) => (
-          <Link href={social.url} key={social.url} passHref>
-            <Avatar component="a" title={social.network}>
-              <SocialIcon icon={social.network as Network} />
-            </Avatar>
-          </Link>
+          <Avatar
+            component="a"
+            title={social.network}
+            href={social.url}
+            key={social.url + social.network}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <SocialIcon icon={social.network as Network} />
+          </Avatar>
         ))}
       </Stack>
       <Snackbar
