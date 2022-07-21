@@ -34,6 +34,7 @@ export function MintingScreen({
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
+          alignSelf: 'center',
         }}
       >
         {mintProcessStatus !== Subjects.successful &&

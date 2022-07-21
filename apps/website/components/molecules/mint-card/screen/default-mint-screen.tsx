@@ -20,6 +20,7 @@ import { useState } from 'react';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { showCategories } from '../utlis/categories';
+import copy from 'copy-to-clipboard';
 
 export const DefaultMintScreen = ({
   mintProcessStatus,
@@ -52,12 +53,15 @@ export const DefaultMintScreen = ({
             aria-controls={open ? 'more' : undefined}
             aria-haspopup="true"
             aria-expanded={open ? 'true' : undefined}
-            
           >
             <MoreVertIcon />
           </IconButton>
         }
-        title={details.title}
+        title={
+          details.title.length > 15
+            ? details.title.slice(0, 13) + '...'
+            : details.title
+        }
       />
       {/* TODO: fix the description overflow */}
 
@@ -102,6 +106,7 @@ export const DefaultMintScreen = ({
         onClick={handleClose}
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+        variant={'menu'}
         PaperProps={{
           sx: {
             mt: 1.5,
@@ -109,13 +114,18 @@ export const DefaultMintScreen = ({
         }}
       >
         <MenuList>
-          <MenuItem>
+          {/* for later use */}
+          {/* <MenuItem>
             <ListItemIcon>
               <OpenInNewIcon fontSize="medium" color="disabled" />
             </ListItemIcon>
-            Open on Polygonscan
-          </MenuItem>
-          <MenuItem>
+            Open on Ceramic
+          </MenuItem> */}
+          <MenuItem
+            onClick={() => {
+              copy(details.nft_url);
+            }}
+          >
             <ListItemIcon>
               <ContentCopyIcon fontSize="medium" color="disabled" />
             </ListItemIcon>

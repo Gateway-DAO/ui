@@ -10,12 +10,27 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
+import { useNetwork } from 'wagmi';
+
+const NetworksDetails = [
+  {
+    name: 'Polygon',
+    costInfo: 'Cost free',
+    imgSrc: '/images/polygon.png',
+  },
+  {
+    name: 'Avalanche',
+    costInfo: 'Cost 0.058 AVAX',
+    imgSrc: '/images/avalanche.png',
+  },
+];
 
 export const StartMintScreen = ({
   mintProcessStatus,
   setMintProcessStatus,
   mint,
 }) => {
+  const { activeChain } = useNetwork();
   return (
     <>
       <Box
@@ -45,32 +60,34 @@ export const StartMintScreen = ({
         Choose the network
       </Typography>
       <List component="nav" aria-label="mailbox folders">
-        <ListItem button onClick={() => mint()}>
-          <ListItemAvatar>
-            <Badge
-              color="success"
-              overlap="circular"
-              badgeContent=" "
-              variant="dot"
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'right',
-              }}
-            >
-              <Avatar src={'/images/polygon.png'} />
-            </Badge>
-          </ListItemAvatar>
-          <ListItemText primary="Polygon" secondary="Cost free" />
-          <ChevronRightIcon style={{ color: 'grey' }} />
-        </ListItem>
-        <Divider />
-        <ListItem button onClick={() => mint()}>
-          <ListItemAvatar>
-            <Avatar src={'/images/avalanche.png'} />
-          </ListItemAvatar>
-          <ListItemText primary="Avalanche" secondary="Cost 0.058 AVAX" />
-          <ChevronRightIcon style={{ color: 'grey' }} />
-        </ListItem>
+        {NetworksDetails.map((network, index) => {
+          return (
+            <>
+              {index !== 0 && <Divider light={true} sx={{ mx: 2 }} />}
+              <ListItem button onClick={() => mint()}>
+                <ListItemAvatar>
+                  <Badge
+                    color={activeChain.name == network.name ? 'success' : "warning"}
+                    overlap="circular"
+                    badgeContent=" "
+                    variant="dot"
+                    anchorOrigin={{
+                      vertical: 'bottom',
+                      horizontal: 'right',
+                    }}
+                  >
+                    <Avatar src={network.imgSrc} />
+                  </Badge>
+                </ListItemAvatar>
+                <ListItemText
+                  primary={network.name}
+                  secondary={network.costInfo}
+                />
+                <ChevronRightIcon style={{ color: 'grey' }} />
+              </ListItem>
+            </>
+          );
+        })}
       </List>
     </>
   );

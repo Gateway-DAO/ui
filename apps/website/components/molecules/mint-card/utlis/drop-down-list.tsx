@@ -13,7 +13,8 @@ export const MoreList = ({ anchorEl, open, handleClose, categories, skip }) => {
       onClose={handleClose}
       PaperProps={{
         style: {
-          maxHeight: 200,
+          maxHeight: '112px',
+          width: '199px',
         },
         sx: {
           '&::-webkit-scrollbar': {
@@ -28,8 +29,11 @@ export const MoreList = ({ anchorEl, open, handleClose, categories, skip }) => {
             backgroundColor: 'rgba(255, 255, 255, 0.3);',
             borderRadius: 5,
           },
+          marginTop: -1,
         },
       }}
+      transformOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+      anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
     >
       {categories.slice(skip).map((category) => (
         <MenuItem key={category} onClick={handleClose}>

@@ -17,8 +17,14 @@ export const showCategories = (mintProcessStatus, categories) => {
     if (mintProcessStatus === Subjects.default) {
       return (
         <>
-          {categories.slice(0, 1).map((category, index) => (
-            <Chip key={category} label={category} size="small" />
+          {categories.slice(0, 1).map((category: string) => (
+            <Chip
+              key={category}
+              label={
+                category.length > 7 ? category.slice(0, 7) + '...' : category
+              }
+              size="small"
+            />
           ))}
           {categories.length > 1 && (
             <Chip
@@ -41,8 +47,14 @@ export const showCategories = (mintProcessStatus, categories) => {
     if (mintProcessStatus === Subjects.alreadyMinted) {
       return (
         <>
-          {categories.slice(0, 2).map((category, index) => (
-            <Chip key={category} label={category} size="small" />
+          {categories.slice(0, 2).map((category: string) => (
+            <Chip
+              key={category}
+              label={
+                category.length > 7 ? category.slice(0, 7) + '...' : category
+              }
+              size="small"
+            />
           ))}
           {categories.length > 2 && (
             <Chip
