@@ -27,13 +27,7 @@ export function GateData() {
         )}`}
       />
       {categories?.length > 0 && (
-        <Stack
-          direction="row"
-          spacing={1}
-          px={2}
-          pb={3}
-          sx={{ flexWrap: 'wrap' }}
-        >
+        <Stack direction="row" p={2} sx={{ flexWrap: 'wrap' }}>
           {categories.map((category) => (
             <Chip
               sx={{ mb: 2, ml: `0 !important`, mr: 1 }}
