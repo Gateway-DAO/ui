@@ -8,7 +8,7 @@ export default function Test() {
 
   const { register, handleSubmit } = useForm();
 
-  const mutation = useMutation(gqlAuthMethods.gates_tab, {
+  const mutation = useMutation(gqlAuthMethods.me, {
     onSuccess(data) {
       console.log('Data succ', data);
     },
