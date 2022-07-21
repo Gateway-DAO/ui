@@ -3,7 +3,7 @@ import { useMemo } from 'react';
 
 import type { PartialDeep } from 'type-fest';
 
-import { Avatar, CardActionArea, CardHeader, lighten } from '@mui/material';
+import { CardActionArea, CardHeader, lighten } from '@mui/material';
 import MUICard from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
@@ -12,31 +12,38 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { Box } from '@mui/system';
 
+import { categoriesMap } from '../../constants/dao';
 import { ROUTES } from '../../constants/routes';
+import { useFile } from '../../hooks/use-file';
 import { Daos } from '../../services/graphql/types.generated';
+import { AvatarFile } from '../atoms/avatar-file';
 import { FollowButtonDAO } from '../atoms/follow-button-dao';
 
 /* TODO: Arias and Labels */
 
 export function DaoCard({
   id,
+  background,
   background_url,
   logo_url,
   name,
   categories,
   description,
+  logo,
 }: PartialDeep<Daos>) {
   const url = useMemo(() => ROUTES.DAO_PROFILE.replace('[id]', id), [id]);
 
+  const cover = useFile(background);
   return (
     <MUICard sx={{ position: 'relative' }}>
       <Link passHref href={url}>
         <CardActionArea component="a" sx={{ height: '100%' }}>
           <CardMedia
             component="img"
-            image={background_url}
+            image={cover?.url ?? background_url}
             alt={`${name} cover`}
             height={128}
+            sx={{ ...cover?.background }}
           />
           <Box sx={{ position: 'relative', ml: 2 }}>
             <Box
@@ -49,8 +56,9 @@ export function DaoCard({
                 minWidth: 'unset',
               }}
             >
-              <Avatar
-                src={logo_url}
+              <AvatarFile
+                file={logo}
+                fallback={logo_url}
                 sx={{
                   width: 40,
                   height: 40,
@@ -60,7 +68,7 @@ export function DaoCard({
                 }}
               >
                 {name?.[0]}
-              </Avatar>
+              </AvatarFile>
             </Box>
           </Box>
           <CardHeader
@@ -91,9 +99,10 @@ export function DaoCard({
             </Typography>
           </CardContent>
           <Stack direction="row" spacing={1} px={2} pt={1} pb={2}>
-            {categories.map((category) => (
-              <Chip key={category} label={category} size="small" />
-            ))}
+            {categories.map((category) => {
+              const label = categoriesMap.get(category) ?? category;
+              return <Chip key={category} label={label} size="small" />;
+            })}
           </Stack>
         </CardActionArea>
       </Link>

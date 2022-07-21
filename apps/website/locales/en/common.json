@@ -16,6 +16,14 @@
       "other": "{{count}} followers"
     }
   },
+  "fields": {
+    "display-name": "Display Name",
+    "description": "Description",
+    "category": "Category",
+    "platform": "Platform",
+    "link": "Link",
+    "add-link": "Add Link"
+  },
   "tabs": {
     "all": "All",
     "overview": "Overview",

@@ -35,25 +35,26 @@ const typography: TypographyOptions = {
     fontWeight: 'bold',
   },
   caption: {
-    color: pallete.text.secondary,
+    color: pallete.text!.secondary,
   },
   body1: {
-    // color: pallete.text.secondary,
+    // color: pallete.text!.secondary,
   },
   body2: {
-    // color: pallete.text.secondary,
+    // color: pallete.text!.secondary,
   },
   button: {
-    color: pallete.text.secondary,
+    color: pallete.text!.secondary,
   },
   overline: {
-    color: pallete.text.secondary,
+    color: pallete.text!.secondary,
   },
   subtitle1: {
-    color: pallete.text.secondary,
+    color: pallete.text!.secondary,
+    fontWeight: 600,
   },
   subtitle2: {
-    color: pallete.text.secondary,
+    color: pallete.text!.secondary,
   },
 };
 

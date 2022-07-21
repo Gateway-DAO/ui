@@ -1,0 +1,5 @@
+mutation upload_image($base64: String!, $name: String!) {
+  upload_image(base64: $base64, metadata: { name: $name }) {
+    id
+  }
+}
