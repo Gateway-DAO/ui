@@ -1,3 +1,4 @@
+import NextProgress from 'next-progress';
 import { AppProps as NextAppProps } from 'next/app';
 import Head from 'next/head';
 
@@ -5,6 +6,8 @@ import { Hydrate, QueryClientProvider } from 'react-query';
 import { WagmiConfig } from 'wagmi';
 
 import { ThemeProvider } from '@gateway/theme';
+
+import { useTheme } from '@mui/material';
 
 import { SEOSocial, SEOFavicon } from '../components/atoms/seo';
 import { NavStateProvider } from '../hooks/use-nav';
@@ -23,6 +26,7 @@ type AppProps = NextAppProps & {
 
 function CustomApp({ Component, pageProps: { ...pageProps } }: AppProps) {
   usePersistLocale();
+  const theme = useTheme();
   return (
     <>
       <Head>
@@ -31,6 +35,7 @@ function CustomApp({ Component, pageProps: { ...pageProps } }: AppProps) {
         <SEOFavicon />
         <SEOSocial />
       </Head>
+      <NextProgress color={theme.palette.primary.main} />
       <WagmiConfig client={web3client}>
         <ThemeProvider>
           <QueryClientProvider client={queryClient}>

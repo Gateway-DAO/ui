@@ -67,6 +67,7 @@ export function useInitUser(status: AuthStatus, me: PartialDeep<SessionUser>) {
   const router = useRouter();
 
   useEffect(() => {
+    /* Redirects to New User if authenticated */
     if (
       router.pathname !== ROUTES.LANDING &&
       router.pathname !== ROUTES.NEW_USER &&
