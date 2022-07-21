@@ -4,6 +4,7 @@ import { showIfNotEmpty } from '@gateway/helpers';
 
 import { CardHeader } from '@mui/material';
 
+import { limitChars } from '../../../../utils/limit-chars';
 import { CreateGateTypes } from '../schema';
 
 export function GateData() {
@@ -13,8 +14,11 @@ export function GateData() {
 
   return (
     <CardHeader
-      title={showIfNotEmpty(title, 'Gate Title')}
-      subheader={`${showIfNotEmpty(description, 'Gate Description')}`}
+      title={limitChars(showIfNotEmpty(title, 'Gate Title'), 20)}
+      subheader={`${limitChars(
+        showIfNotEmpty(description, 'Gate Description'),
+        70
+      )}`}
     />
   );
 }
