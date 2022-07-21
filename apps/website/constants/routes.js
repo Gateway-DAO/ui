@@ -5,8 +5,8 @@ const ROUTES = {
   CREDENTIALS: '/credentials',
   CREDENTIALS_NEW: '/credentials/new',
   DAO_PROFILE: '/dao/[id]',
-  PRIVATE_PROFILE: '/private_profile',
-  EDIT_PROFILE: '/private_profile/edit',
+  PROFILE: '/profile/[username]',
+  EDIT_PROFILE: '/profile/edit',
   GATE_PROFILE: '/gate/[id]',
 };
 

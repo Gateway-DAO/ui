@@ -5,6 +5,11 @@ fragment current_user on users {
   username
   email_address
   init
+  about # Soon to be deprecated
+  bio
+  picture {
+    id
+  }
 
   # credentials {
   #   dao {
@@ -17,4 +22,18 @@ fragment current_user on users {
   #   }
   #   status
   # }
+}
+
+fragment public_user on users {
+  id
+  name
+  #pfp
+  username
+  #init
+  about # Soon to be deprecated
+  bio
+  pic_id
+  picture {
+    id
+  }
 }

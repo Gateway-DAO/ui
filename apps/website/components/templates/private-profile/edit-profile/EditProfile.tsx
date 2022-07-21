@@ -1,9 +1,6 @@
+import { useRouter } from 'next/router';
+
 import { TOKENS } from '@gateway/theme';
-import { About } from './Components/About';
-import { TimeZone } from './Components/TimeZone';
-import { Skills } from './Components/Skills';
-import { Languages } from './Components/Languages';
-import { Experiences } from './Components/Experiences';
 
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import {
@@ -18,11 +15,16 @@ import {
   IconButton,
 } from '@mui/material';
 
-import { useRouter } from 'next/router';
 import { ROUTES } from '../../../../constants/routes';
+import { About } from './Components/About';
+import { Experiences } from './Components/Experiences';
+import { Languages } from './Components/Languages';
+import { Skills } from './Components/Skills';
+import { TimeZone } from './Components/TimeZone';
 
-export function EditProfile() {
+export function EditProfileTemplate() {
   const router = useRouter();
+
   return (
     <Stack>
       <Box
@@ -31,10 +33,10 @@ export function EditProfile() {
           paddingTop: { xs: '24px', md: '40px' },
           background:
             ' linear-gradient(180deg, #10041C 0%, rgba(16, 4, 28,0) 100%)',
-          position:"fixed",
-          width:"100%",
-          height:"105px",
-          zIndex:"10000"
+          position: 'fixed',
+          width: '100%',
+          height: '105px',
+          zIndex: '10000',
         }}
       >
         <IconButton
@@ -64,7 +66,7 @@ export function EditProfile() {
           </Button>
         </Box>
       </Box>
-      <Box sx={{height:"80px"}}></Box>
+      <Box sx={{ height: '80px' }}></Box>
       <Box p={TOKENS.CONTAINER_PX}>
         <Typography
           variant="h4"

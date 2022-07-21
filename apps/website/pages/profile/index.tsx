@@ -1,25 +1,22 @@
-import { InferGetStaticPropsType } from 'next';
+import { DashboardTemplate } from '../../components/templates/dashboard';
+import PrivateProfileTemplate from '../../components/templates/private-profile/PrivateProfileTemplate';
+import { useAuth } from '../../providers/auth';
 
-import ProfileTemplate from '../../components/templates/profile/ProfileTemplate';
-import { gqlAnonMethods } from '../../services/api';
+// TODO: make the behavior of this page better
+export default function Profile() {
+  const { me } = useAuth();
 
-export const getStaticProps = async () => {
-  const exploreProps = await gqlAnonMethods.get_home();
-
-  return {
-    props: {
-      exploreProps,
-    },
-    revalidate: 10,
-  };
-};
-
-export default function Profile({}: InferGetStaticPropsType<
-  typeof getStaticProps
->) {
-  return (
-    <>
-      <ProfileTemplate />
-    </>
-  );
+  return me?.id ? (
+    <DashboardTemplate
+      containerProps={{
+        sx: {
+          overflow: 'hidden',
+        },
+      }}
+    >
+      <PrivateProfileTemplate />
+    </DashboardTemplate>
+  ) : null;
 }
+
+// Profile.auth = true;
