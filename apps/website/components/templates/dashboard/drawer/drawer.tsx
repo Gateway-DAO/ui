@@ -14,11 +14,12 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 
 import { ROUTES } from '../../../../constants/routes';
 import { useAuth } from '../../../../providers/auth';
+import { AvatarFile } from '../../../atoms/avatar-file';
 import { DashboardTemplateProps } from '../types';
+import { AdminBadge } from './admin-badge';
 import { DaosList } from './daos-list';
 import { DrawerContainer } from './drawer-container';
 import { ResponsiveDrawer } from './responsive-drawer';
-import { TemporaryDao } from './temporary-dao';
 
 type Props = Pick<DashboardTemplateProps, 'currentDao' | 'showExplore'>;
 
@@ -31,17 +32,6 @@ export function Drawer({ currentDao, showExplore }: Props) {
     () => me?.following_dao?.map(({ dao }) => dao) ?? [],
     [me?.following_dao]
   );
-
-  /* Checks if currentDao isn't in followingDaos */
-  const isCurrentDaoTemporary = useMemo(() => {
-    if (!currentDao) {
-      return false;
-    }
-    if (followingDaos) {
-      return !followingDaos.find((dao) => dao.id === currentDao.id);
-    }
-    return true;
-  }, [currentDao, followingDaos]);
 
   return (
     <DrawerContainer>
@@ -59,11 +49,34 @@ export function Drawer({ currentDao, showExplore }: Props) {
             <GatewayIcon />
           </ListItemIcon>
           <AnimatePresence>
-            {!!currentDao && isCurrentDaoTemporary && (
-              <TemporaryDao key={currentDao.id} dao={currentDao} />
+            {showExplore && (
+              <Link passHref href={ROUTES.EXPLORE} prefetch={false}>
+                <MotionTooltip
+                  key="explore"
+                  layoutId="Explore"
+                  title="Explore"
+                  placement="right"
+                  className={clsx({
+                    active: router.pathname === ROUTES.EXPLORE,
+                  })}
+                >
+                  <ListItemButton component="a">
+                    <ListItemIcon>
+                      <Avatar>
+                        <ExploreIcon />
+                      </Avatar>
+                    </ListItemIcon>
+                  </ListItemButton>
+                </MotionTooltip>
+              </Link>
             )}
             {followingDaos?.map((dao) => {
               const url = ROUTES.DAO_PROFILE.replace('[id]', dao.id);
+              const avatar = (
+                <AvatarFile file={dao?.logo} fallback={dao?.logo_url}>
+                  {dao.name?.[0]}
+                </AvatarFile>
+              );
 
               return (
                 <Link key={dao.id} passHref href={url} prefetch={false}>
@@ -78,7 +91,11 @@ export function Drawer({ currentDao, showExplore }: Props) {
                       className={clsx({ active: dao.id === currentDao?.id })}
                     >
                       <ListItemIcon>
-                        <Avatar src={dao?.logo_url}>{dao.name?.[0]}</Avatar>
+                        {dao.is_admin ? (
+                          <AdminBadge>{avatar}</AdminBadge>
+                        ) : (
+                          avatar
+                        )}
                       </ListItemIcon>
                     </ListItemButton>
                   </MotionTooltip>
@@ -86,27 +103,6 @@ export function Drawer({ currentDao, showExplore }: Props) {
               );
             })}
           </AnimatePresence>
-          {showExplore && (
-            <Link passHref href={ROUTES.EXPLORE} prefetch={false}>
-              <MotionTooltip
-                key="explore"
-                layoutId="Explore"
-                title="Explore"
-                placement="right"
-                className={clsx({
-                  active: router.pathname === ROUTES.EXPLORE,
-                })}
-              >
-                <ListItemButton component="a">
-                  <ListItemIcon>
-                    <Avatar>
-                      <ExploreIcon />
-                    </Avatar>
-                  </ListItemIcon>
-                </ListItemButton>
-              </MotionTooltip>
-            </Link>
-          )}
         </DaosList>
       </ResponsiveDrawer>
     </DrawerContainer>

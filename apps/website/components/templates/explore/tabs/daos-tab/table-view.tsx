@@ -10,6 +10,8 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 
+import { categoriesMap } from '../../../../../constants/dao';
+import { AvatarFile } from '../../../../atoms/avatar-file';
 import { FollowButtonDAO } from '../../../../atoms/follow-button-dao';
 import { ExploreProps } from '../../types';
 
@@ -45,9 +47,9 @@ export function TableView({ daos }: Props) {
               <TableRow hover role="checkbox" tabIndex={-1} key={dao.id}>
                 <TableCell>
                   <Stack alignItems="center" direction="row" gap={1}>
-                    <Avatar variant="circular" src={dao.logo_url}>
+                    <AvatarFile file={dao.logo} fallback={dao.logo_url}>
                       {dao.name?.[0]}
-                    </Avatar>
+                    </AvatarFile>
                     <Box>
                       <Typography>{dao.name}</Typography>
                       <Typography
@@ -74,12 +76,15 @@ export function TableView({ daos }: Props) {
                 </TableCell>
                 <TableCell>
                   <Stack direction="row" gap={1}>
-                    {dao.categories?.map((category) => (
-                      <Chip
-                        key={`dao-${dao.id}-category-${category}`}
-                        label={category}
-                      />
-                    ))}
+                    {dao.categories?.map((category) => {
+                      const label = categoriesMap.get(category) ?? category;
+                      return (
+                        <Chip
+                          key={`dao-${dao.id}-category-${category}`}
+                          label={label}
+                        />
+                      );
+                    })}
                   </Stack>
                 </TableCell>
                 <TableCell align="right">

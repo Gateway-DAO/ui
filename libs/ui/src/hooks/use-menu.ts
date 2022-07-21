@@ -14,11 +14,18 @@ export function useMenu() {
   const onClose = useCallback(() => {
     setElement(null);
   }, []);
-
+  const withOnClose = useCallback(
+    (cb: () => void) => () => {
+      cb();
+      onClose();
+    },
+    [onClose]
+  );
   return {
     element,
     isOpen,
     onOpen,
     onClose,
+    withOnClose,
   };
 }

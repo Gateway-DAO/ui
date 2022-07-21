@@ -26,14 +26,7 @@ export default function EditDropdownMenu({
   onClickUploadPhoto,
   onReset,
 }: Props) {
-  const { element, isOpen, onClose, onOpen } = useMenu();
-  const withClose = useCallback(
-    (cb: () => void) => () => {
-      cb();
-      onClose();
-    },
-    [onClose]
-  );
+  const { element, isOpen, onClose, onOpen, withOnClose } = useMenu();
 
   return (
     <>
@@ -41,6 +34,7 @@ export default function EditDropdownMenu({
         color="secondary"
         sx={{ position: 'absolute', bottom: 6, left: 6, zIndex: 10 }}
         onClick={onOpen}
+        className="MuiEditButton-root"
       >
         <Avatar
           sx={[
@@ -58,14 +52,14 @@ export default function EditDropdownMenu({
         open={isOpen}
         onClose={onClose}
       >
-        <MenuItem onClick={withClose(onClickUploadPhoto)}>
+        <MenuItem onClick={withOnClose(onClickUploadPhoto)}>
           <ListItemIcon>
             <Photo fontSize="small" color="secondary" />
           </ListItemIcon>
           <ListItemText>Upload photo</ListItemText>
         </MenuItem>
         {hasImage && (
-          <MenuItem onClick={withClose(onReset)}>
+          <MenuItem onClick={withOnClose(onReset)}>
             <ListItemIcon>
               <RemoveCircle fontSize="small" color="secondary" />
             </ListItemIcon>

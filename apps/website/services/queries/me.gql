@@ -11,7 +11,12 @@ query me {
         id
         logo_url
         name
+        is_admin
+        logo {
+          ...file
+        }
       }
     }
+    # TODO: ADMIN DAOS
   }
 }

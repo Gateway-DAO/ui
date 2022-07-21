@@ -8,6 +8,7 @@ type Props = {
 export function BackgroundImage({ value, isOver }: Props) {
   return (
     <Box
+      className="field-image"
       sx={{
         backgroundImage: `url(${value})`,
         backgroundPosition: 'center',
