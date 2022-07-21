@@ -65,7 +65,7 @@ export function Task({ task, idx }: Props) {
   };
 
   const taskContent = getTaskContent(task.task_type);
-  const TaskComponent = taskContent.body;
+  const TaskComponent = taskContent?.body;
 
   return (
     <Card
@@ -91,7 +91,7 @@ export function Task({ task, idx }: Props) {
             {idx || task.title[0]}
           </Avatar>
         }
-        title={<Typography variant="caption">{taskContent.title}</Typography>}
+        title={<Typography variant="caption">{taskContent?.title}</Typography>}
         subheader={<Typography variant="h6">{task.title}</Typography>}
         action={
           <IconButton onClick={toggleExpanded}>
@@ -113,7 +113,7 @@ export function Task({ task, idx }: Props) {
         </CardContent>
         <CardActions>
           <Button variant="contained" sx={{ marginLeft: '55px' }}>
-            {taskContent.action}
+            {taskContent?.action}
           </Button>
         </CardActions>
       </Collapse>
