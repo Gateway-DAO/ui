@@ -1,10 +1,9 @@
 import { useFormContext } from 'react-hook-form';
 
-import { showIfNotEmpty } from '@gateway/helpers';
+import { limitChars, showIfNotEmpty } from '@gateway/helpers';
 
 import { CardHeader } from '@mui/material';
 
-import { limitChars } from '../../../../utils/limit-chars';
 import { CreateGateTypes } from '../schema';
 
 export function GateData() {
