@@ -13,6 +13,11 @@ export const CreatedByInput = ({ set, ...props }) => {
       id="created_by-input"
       options={creators.map((creator) => creator.name)}
       popupIcon={<Search />}
+      sx={{
+        '&.Mui-focused .MuiButtonBase-root': {
+          transform: 'none',
+        },
+      }}
       renderTags={(value: string[], getTagProps) =>
         value.map((option: string, index: number) => (
           <Chip
