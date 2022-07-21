@@ -1,6 +1,9 @@
 import type { TypographyOptions } from '@mui/material/styles/createTypography';
 
 import '@fontsource/plus-jakarta-sans';
+import '@fontsource/plus-jakarta-sans/700.css';
+import '@fontsource/plus-jakarta-sans/800.css';
+
 import pallete from './palette';
 export const fonts = {
   PLUS_JAKARTA_SANS: 'Plus Jakarta Sans',
