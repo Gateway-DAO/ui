@@ -1,16 +1,15 @@
-import Typography from '@mui/material/Typography';
+import { useNetwork } from 'wagmi';
 
-import { Avatar, Badge, ListItemAvatar } from '@mui/material';
-
-import { GatewayGrayIcon } from '../assets/gateway-gray';
-
-import Box from '@mui/material/Box';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import { Avatar, Badge, ListItemAvatar } from '@mui/material';
+import Box from '@mui/material/Box';
+import Divider from '@mui/material/Divider';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
-import Divider from '@mui/material/Divider';
-import { useNetwork } from 'wagmi';
+import Typography from '@mui/material/Typography';
+
+import { GatewayGrayIcon } from '../assets/gateway-gray';
 
 const NetworksDetails = [
   {
@@ -67,7 +66,9 @@ export const StartMintScreen = ({
               <ListItem button onClick={() => mint()}>
                 <ListItemAvatar>
                   <Badge
-                    color={activeChain.name == network.name ? 'success' : "warning"}
+                    color={
+                      activeChain.name == network.name ? 'success' : 'warning'
+                    }
                     overlap="circular"
                     badgeContent=" "
                     variant="dot"

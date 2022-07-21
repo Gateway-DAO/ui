@@ -5,6 +5,7 @@ import { Button, Divider, Stack } from '@mui/material';
 import { DaoCard } from '../../../../molecules/dao-card';
 import { GatesCard } from '../../../../molecules/gates-card';
 import { PersonCard } from '../../../../molecules/person-card';
+// import { MintCard } from '../../../../molecules/mint-card';
 import {
   SectionWithSliderResponsive,
   SectionWithGrid,
@@ -69,6 +70,16 @@ export function AllTab({ daos, gates, people, setActiveTab }: Props) {
           {daos.map((dao) => (
             <DaoCard key={dao.id} {...dao} />
           ))}
+          {/* this is how we are going to use mint card component */}
+          {/* <MintCard
+            image="https://f8n-production-collection-assets.imgix.net/0x5F4b303d4083E6dF6A516a338b2b2B40D2e65C3e/1/nft.jpg?q=80&auto=format%2Ccompress&cs=srgb&h=640"
+            title="Olympus Odissey"
+            description="This is the beginning of your journey in OlympusDAO. Learn about what hekkk dsjhfkjds k "
+            categories={['Onboardinghh', 'Manish', 'Farouk', 'lucas', 'ashish']}
+            minted={false}
+            nftURL="https://polygonscan.com/"
+            tokenURI="dfsfdfdd"
+          /> */}
         </SectionWithSliderResponsive>
         <SectionWithGrid
           title={t('featured-people.title')}

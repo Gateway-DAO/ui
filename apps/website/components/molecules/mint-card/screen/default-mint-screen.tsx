@@ -1,9 +1,10 @@
-import CardHeader from '@mui/material/CardHeader';
-import CardMedia from '@mui/material/CardMedia';
-import CardContent from '@mui/material/CardContent';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
+import { useState } from 'react';
+
+import copy from 'copy-to-clipboard';
+
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import {
   Avatar,
   Chip,
@@ -14,13 +15,15 @@ import {
   Stack,
   Tooltip,
 } from '@mui/material';
+import CardContent from '@mui/material/CardContent';
+import CardHeader from '@mui/material/CardHeader';
+import CardMedia from '@mui/material/CardMedia';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+
 import { TokenFilled } from '../assets/token-filled';
 import { Subjects } from '../index';
-import { useState } from 'react';
-import OpenInNewIcon from '@mui/icons-material/OpenInNew';
-import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { showCategories } from '../utlis/categories';
-import copy from 'copy-to-clipboard';
 
 export const DefaultMintScreen = ({
   mintProcessStatus,

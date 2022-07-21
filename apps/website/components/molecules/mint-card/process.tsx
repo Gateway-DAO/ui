@@ -1,7 +1,8 @@
-import { Subjects } from './index';
 import { DefaultMintScreen } from './screen/default-mint-screen';
-import { StartMintScreen } from './screen/start-mint-screen';
 import { MintingScreen } from './screen/minting-screen';
+import { StartMintScreen } from './screen/start-mint-screen';
+
+import { Subjects } from './index';
 
 export function processScreen(
   mintProcessStatus: Subjects,

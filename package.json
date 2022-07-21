@@ -14,7 +14,7 @@
   },
   "private": true,
   "dependencies": {
-    "@biconomy/mexa": "^3.0.1",
+    "@biconomy/mexa": "^2.0.33",
     "@emotion/react": "11.8.2",
     "@emotion/server": "11.4.0",
     "@emotion/styled": "11.8.1",
@@ -44,6 +44,7 @@
     "next-translate": "^1.4.0",
     "react": "18.0.0",
     "react-beautiful-dnd": "^13.1.0",
+    "react-copy-to-clipboard": "^5.1.0",
     "react-dom": "18.0.0",
     "react-easy-crop": "^4.2.0",
     "react-hook-form": "^7.31.1",

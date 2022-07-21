@@ -1,6 +1,8 @@
-import { Chip } from '@mui/material';
-import { Subjects } from '../index';
 import { useState } from 'react';
+
+import { Chip } from '@mui/material';
+
+import { Subjects } from '../index';
 import { MoreList } from './drop-down-list';
 
 export const showCategories = (mintProcessStatus, categories) => {

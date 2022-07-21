@@ -1,10 +1,12 @@
-import { Button, CircularProgress } from '@mui/material';
-import { GatewayGrayIcon } from '../assets/gateway-gray';
-import Box from '@mui/material/Box';
 import { AnimatePresence } from 'framer-motion';
-import { AnimatedMessage } from '../utlis/animate-message';
+
 import { Check, Close } from '@mui/icons-material';
+import { Button, CircularProgress } from '@mui/material';
+import Box from '@mui/material/Box';
+
+import { GatewayGrayIcon } from '../assets/gateway-gray';
 import { Subjects } from '../index';
+import { AnimatedMessage } from '../utlis/animate-message';
 
 export function MintingScreen({
   mintProcessStatus,

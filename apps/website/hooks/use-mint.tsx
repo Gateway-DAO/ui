@@ -128,7 +128,7 @@ export function useMint(
     mint,
     loading,
     minted,
-    asksSignature
+    asksSignature,
   };
 }
 
@@ -235,7 +235,7 @@ export function useBiconomyMint(
             setAsksSignature(false);
             tx = await promise;
           } catch (err) {
-            throw new Error("Minting failed! Try again later.");
+            throw new Error('Minting failed! Try again later.');
           }
 
           console.log('Transaction hash : https://polygonscan.com/tx/' + tx);
@@ -266,18 +266,20 @@ export function useBiconomyMint(
         }
       } catch (error) {
         snackbar.onOpen({ message: error.message || error, type: 'error' });
-        console.log("[useMint] Error:", error);
+        console.log('[useMint] Error:', error);
 
         setMinted(false);
-        
+
         return {
-            isMinted: false,
-            error
-        }
+          isMinted: false,
+          error,
+        };
       }
-    }
-    else {
-      snackbar.onOpen({ message: "Biconomy is still loading. Try again in a few minutes!", type: 'warning' });
+    } else {
+      snackbar.onOpen({
+        message: 'Biconomy is still loading. Try again in a few minutes!',
+        type: 'warning',
+      });
     }
 
     setMinted(false);
@@ -292,7 +294,7 @@ export function useBiconomyMint(
     loading,
     minted,
     snackbar,
-    asksSignature
+    asksSignature,
   };
 }
 
