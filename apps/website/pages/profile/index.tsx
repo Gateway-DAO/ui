@@ -1,5 +1,5 @@
 import { DashboardTemplate } from '../../components/templates/dashboard';
-import PrivateProfileTemplate from '../../components/templates/private-profile/PrivateProfileTemplate';
+import { PrivateProfileTemplate } from '../../components/templates/profile';
 import { useAuth } from '../../providers/auth';
 
 // TODO: make the behavior of this page better
@@ -19,4 +19,4 @@ export default function Profile() {
   ) : null;
 }
 
-// Profile.auth = true;
+Profile.auth = true;

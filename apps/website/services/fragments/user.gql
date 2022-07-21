@@ -1,15 +1,23 @@
-fragment current_user on users {
+fragment public_user on users {
   id
   name
   #pfp
   username
-  email_address
-  init
+  #init
   about # Soon to be deprecated
   bio
+  pic_id
+  skills
+  languages
   picture {
     id
   }
+}
+
+fragment current_user on users {
+  ...public_user
+  email_address
+  init
 
   # credentials {
   #   dao {
@@ -22,18 +30,4 @@ fragment current_user on users {
   #   }
   #   status
   # }
-}
-
-fragment public_user on users {
-  id
-  name
-  #pfp
-  username
-  #init
-  about # Soon to be deprecated
-  bio
-  pic_id
-  picture {
-    id
-  }
 }

@@ -16,6 +16,7 @@ import {
 } from '@mui/material';
 
 import { ROUTES } from '../../../../constants/routes';
+import { useAuth } from '../../../../providers/auth';
 import { About } from './Components/About';
 import { Experiences } from './Components/Experiences';
 import { Languages } from './Components/Languages';
@@ -24,6 +25,7 @@ import { TimeZone } from './Components/TimeZone';
 
 export function EditProfileTemplate() {
   const router = useRouter();
+  const { me } = useAuth();
 
   return (
     <Stack>
@@ -43,7 +45,7 @@ export function EditProfileTemplate() {
           sx={{
             p: 0,
           }}
-          onClick={() => router.push(ROUTES.PRIVATE_PROFILE)}
+          onClick={() => router.back()}
         >
           <Avatar>
             <ArrowBackIcon></ArrowBackIcon>
@@ -89,10 +91,10 @@ export function EditProfileTemplate() {
       <div id="about">
         <About />
       </div>
-      <Divider light sx={{ width: '100%' }} />
+      {/*<Divider light sx={{ width: '100%' }} />
       <div id="experiences">
         <Experiences />
-      </div>
+        </div>*/}
       <Divider light sx={{ width: '100%' }} />
       <div id="skills">
         <Skills />

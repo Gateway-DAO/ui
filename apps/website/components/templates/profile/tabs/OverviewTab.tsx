@@ -11,7 +11,7 @@ import { useViewMode, ViewMode } from '../../../../hooks/use-view-modes';
 import { a11yTabProps, TabPanel, useTab } from '../../../atoms/tabs';
 import { ReceivedTab } from './recommendations/ReceivedTab';
 
-export function OverviewTab() {
+export default function OverviewTab() {
   const { view, toggleView } = useViewMode();
   const { t } = useTranslation();
   const { activeTab, handleTabChange, setTab } = useTab();

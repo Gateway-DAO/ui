@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import {
   Box,
@@ -15,6 +15,7 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { useRouter } from 'next/router';
 
 import { ROUTES } from '../../../../../../constants/routes';
+import { useAuth } from '../../../../../../providers/auth';
 
 const guideDetails = [
   {
@@ -40,6 +41,7 @@ const guideDetails = [
 ];
 
 export function GuideCard({ setShowCard }) {
+  const { me } = useAuth();
   const router = useRouter();
   const [progress, setProgress] = useState(0);
 
@@ -67,6 +69,16 @@ export function GuideCard({ setShowCard }) {
     }
     router.push(ROUTES.EDIT_PROFILE + guideDetails[progress].link);
   };
+
+  useEffect(() => {
+    if (!me.bio) {
+      setProgress(0);
+    } else if (!me?.skills?.length) {
+      setProgress(1);
+    } else if (!me?.languages?.length) {
+      setProgress(2);
+    }
+  }, []);
 
   return (
     <Box
@@ -125,7 +137,7 @@ export function GuideCard({ setShowCard }) {
             color="secondary"
             onClick={() => redirectLink(guideDetails[progress].link)}
           >
-            LET'S DO IT
+            LET&apos;S DO IT
           </Button>
           <Button
             variant="outlined"

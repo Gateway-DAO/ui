@@ -21,11 +21,9 @@ import {
 
 import { a11yTabProps, TabPanel, useTab } from '../../../components/atoms/tabs';
 import { Navbar } from '../../../components/organisms/navbar/navbar';
-import { gqlAnonMethods } from '../../../services/api';
 import { Users } from '../../../services/graphql/types.generated';
 import { SessionUser } from '../../../types/user';
-import { ActivityTab } from './tabs/ActivityTab';
-import { OverviewTab } from './tabs/OverviewTab';
+import { ActivityTab, OverviewTab } from './tabs';
 
 type Props = {
   user: SessionUser | PartialDeep<Users>;
@@ -94,6 +92,26 @@ export default function ProfileTemplate({ user }: Props) {
           >
             @{user.username}
           </Typography>
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              columnGap: '10px',
+              mt: 2,
+            }}
+          >
+            {user.bio && (
+              <Typography
+                sx={{
+                  fontSize: '16px',
+                  fontWeight: '400',
+                  color: 'rgba(255, 255, 255, 0.7)',
+                }}
+              >
+                {user.bio}
+              </Typography>
+            )}
+          </Box>
           <Box
             sx={{
               display: 'flex',

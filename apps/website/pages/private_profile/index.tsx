@@ -1,6 +1,6 @@
 import { InferGetStaticPropsType } from 'next';
 
-import PrivateProfileTemplate from '../../components/templates/private-profile/PrivateProfileTemplate';
+import { PrivateProfileTemplate } from '../../components/templates/profile';
 import { gqlAnonMethods } from '../../services/api';
 
 export const getStaticProps = async () => {
@@ -14,12 +14,6 @@ export const getStaticProps = async () => {
   };
 };
 
-export default function Profile({}: InferGetStaticPropsType<
-  typeof getStaticProps
->) {
-  return (
-    <>
-      <PrivateProfileTemplate />
-    </>
-  );
+export default function Profile() {
+  return <PrivateProfileTemplate />;
 }

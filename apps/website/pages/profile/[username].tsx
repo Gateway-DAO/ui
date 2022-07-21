@@ -4,8 +4,10 @@ import { useEffect } from 'react';
 import { PartialDeep } from 'type-fest';
 
 import { DashboardTemplate } from '../../components/templates/dashboard';
-import PrivateProfileTemplate from '../../components/templates/private-profile/PrivateProfileTemplate';
-import ProfileTemplate from '../../components/templates/profile/ProfileTemplate';
+import {
+  ProfileTemplate,
+  PrivateProfileTemplate,
+} from '../../components/templates/profile';
 import { useAuth } from '../../providers/auth';
 import { gqlAnonMethods } from '../../services/api';
 import { SessionUser } from '../../types/user';

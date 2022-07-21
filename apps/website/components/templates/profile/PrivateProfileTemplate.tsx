@@ -27,9 +27,8 @@ import { a11yTabProps, TabPanel, useTab } from '../../../components/atoms/tabs';
 import { Navbar } from '../../../components/organisms/navbar/navbar';
 import { DashboardTemplate } from '../../../components/templates/dashboard';
 import { ROUTES } from '../../../constants/routes';
-import { ActivityTab } from './tabs/ActivityTab';
-import { OverviewTab } from './tabs/OverviewTab';
-import GuideCard from './edit-profile/Components/guide-card';
+import { ActivityTab, OverviewTab } from './tabs';
+import GuideCard from './edit/Components/guide-card';
 import { useAuth } from '../../../providers/auth';
 
 export default function PrivateProfileTemplate() {
@@ -103,7 +102,7 @@ export default function PrivateProfileTemplate() {
             >
               {me.name}
               <EditIcon
-                onClick={() => router.push(ROUTES.EDIT_PROFILE)}
+                onClick={() => router.push(ROUTES.PROFILE_EDIT)}
                 sx={{
                   marginLeft: '15px',
                   color: 'rgba(255, 255, 255, 0.56)',
@@ -144,7 +143,7 @@ export default function PrivateProfileTemplate() {
                 <>
                   <Link
                     sx={{ textDecoration: 'none', cursor: 'pointer' }}
-                    onClick={() => router.push(ROUTES.EDIT_PROFILE + '#about')}
+                    onClick={() => router.push(ROUTES.PROFILE_EDIT + '#about')}
                   >
                     Write bio
                   </Link>
