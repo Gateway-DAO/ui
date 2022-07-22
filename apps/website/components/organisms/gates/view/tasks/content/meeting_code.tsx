@@ -1,8 +1,8 @@
 import { useState } from 'react';
 
-import { Button, Stack, TextField } from '@mui/material';
+import { Button, Stack, TextField, Typography } from '@mui/material';
 
-const MeetingCodeContent = ({ completeTask }) => {
+const MeetingCodeContent = ({ completed, updatedAt, completeTask }) => {
   const [meetingCode, setMeetingCode] = useState('');
 
   return (
@@ -11,16 +11,23 @@ const MeetingCodeContent = ({ completeTask }) => {
         fullWidth
         placeholder="Meeting Code"
         value={meetingCode}
+        disabled={completed}
         onChange={(e) => setMeetingCode(e.target.value)}
-        sx={{ marginTop: '20px' }}
+        sx={{ margin: '20px 0' }}
       />
-      <Button
-        variant="contained"
-        sx={{ marginTop: '15px' }}
-        onClick={() => completeTask({ meeting_code: meetingCode })}
-      >
-        Submit
-      </Button>
+      {completed ? (
+        <Typography color="#c5ffe3" variant="subtitle2">
+          Task completed at {updatedAt}
+        </Typography>
+      ) : (
+        <Button
+          variant="contained"
+          sx={{ marginTop: '15px' }}
+          onClick={() => completeTask({})}
+        >
+          Submit
+        </Button>
+      )}
     </Stack>
   );
 };
