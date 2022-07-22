@@ -1,17 +1,16 @@
-/* eslint-disable prettier/prettier */
-/* eslint-disable import-helpers/order-imports */
-/* eslint-disable prettier/prettier */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable prettier/prettier */
 import { InferGetStaticPropsType } from 'next';
 import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
+
+import { FaDiscord } from 'react-icons/fa';
 
 import { TOKENS } from '@gateway/theme';
 
 import EditIcon from '@mui/icons-material/Edit';
 import ShareIcon from '@mui/icons-material/IosShare';
+import LanguageIcon from '@mui/icons-material/Language';
+import TwitterIcon from '@mui/icons-material/Twitter';
 import {
   Avatar,
   Link,
@@ -27,16 +26,13 @@ import { a11yTabProps, TabPanel, useTab } from '../../../components/atoms/tabs';
 import { Navbar } from '../../../components/organisms/navbar/navbar';
 import { DashboardTemplate } from '../../../components/templates/dashboard';
 import { ROUTES } from '../../../constants/routes';
-import { ActivityTab, OverviewTab } from './tabs';
-import GuideCard from './edit/Components/guide-card';
 import { useAuth } from '../../../providers/auth';
+import { ActivityTab, OverviewTab } from './tabs';
 
 export default function PrivateProfileTemplate() {
   const { t } = useTranslation();
   const { activeTab, handleTabChange, setTab } = useTab();
   const router = useRouter();
-  const [showCard, setShowCard] = useState(true);
-
   const { me } = useAuth();
 
   const tabs = useMemo(
@@ -44,7 +40,7 @@ export default function PrivateProfileTemplate() {
       {
         key: 'overview',
         label: t('common:tabs.overview'),
-        section: <OverviewTab />,
+        section: <OverviewTab user={me} />,
       },
       {
         key: 'activity',
@@ -88,116 +84,136 @@ export default function PrivateProfileTemplate() {
           }}
           src={me.pfp}
         ></Avatar>
-        <Box
-          sx={{
-            justifyContent: 'space-between',
-          }}
-          display={{ xs: 'block', md: 'flex' }}
-        >
-          <Box>
+        <Box>
+          <Typography
+            sx={{ color: '#fff', marginTop: { xs: '16px', md: '24px' } }}
+            component="h1"
+            variant="h4"
+          >
+            {me.name}
+            <EditIcon
+              onClick={() => router.push(ROUTES.PROFILE_EDIT)}
+              sx={{
+                marginLeft: '15px',
+                color: 'rgba(255, 255, 255, 0.56)',
+                cursor: 'pointer',
+              }}
+            ></EditIcon>
+          </Typography>
+          <Typography
+            component="h5"
+            sx={{
+              fontSize: '16px',
+              fontWeight: '400',
+              color: 'rgba(255, 255, 255, 0.7)',
+            }}
+            variant="h6"
+          >
+            @{me.username}
+          </Typography>
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              columnGap: '10px',
+              mt: 2,
+            }}
+          >
             <Typography
-              sx={{ color: '#fff', marginTop: { xs: '16px', md: '24px' } }}
-              component="h1"
-              variant="h4"
-            >
-              {me.name}
-              <EditIcon
-                onClick={() => router.push(ROUTES.PROFILE_EDIT)}
-                sx={{
-                  marginLeft: '15px',
-                  color: 'rgba(255, 255, 255, 0.56)',
-                  cursor: 'pointer',
-                }}
-              ></EditIcon>
-            </Typography>
-            <Typography
-              component="h5"
               sx={{
                 fontSize: '16px',
                 fontWeight: '400',
                 color: 'rgba(255, 255, 255, 0.7)',
               }}
-              variant="h6"
+              width={{ xs: '100%', md: '50%' }}
             >
-              @{me.username}
+              {me.bio ||
+                'Write about your years of experience, industry, or skills. People also talk about their achievements or previous job experiences.'}
             </Typography>
-            <Box
+          </Box>
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'row',
+              columnGap: '10px',
+              mt: 2,
+            }}
+          >
+            <Typography>0 connections</Typography>·
+            <Typography>0 credentials</Typography>
+          </Box>
+          <Stack
+            direction="row"
+            gap={1}
+            sx={{
+              mt: 4,
+            }}
+          >
+            <IconButton
               sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                columnGap: '10px',
-                mt: 2,
+                p: 0,
               }}
-            >
-              {me.bio ? (
-                <Typography
-                  sx={{
-                    fontSize: '16px',
-                    fontWeight: '400',
-                    color: 'rgba(255, 255, 255, 0.7)',
-                  }}
-                >
-                  {me.bio}
-                </Typography>
-              ) : (
-                <>
-                  <Link
-                    sx={{ textDecoration: 'none', cursor: 'pointer' }}
-                    onClick={() => router.push(ROUTES.PROFILE_EDIT + '#about')}
-                  >
-                    Write bio
-                  </Link>
-                  <Typography
-                    sx={{
-                      fontSize: '16px',
-                      fontWeight: '400',
-                      color: 'rgba(255, 255, 255, 0.7)',
-                    }}
-                    width={{ xs: '100%', md: '50%' }}
-                  >
-                    Write about your years of experience, industry, or skills.
-                    People also talk about their achievements or previous job
-                    experiences.
-                  </Typography></>
-              )}
-            </Box>
-            <Box
-              sx={{
-                display: 'flex',
-                flexDirection: 'row',
-                columnGap: '10px',
-                mt: 2,
-              }}
-            >
-              <Typography>0 connections</Typography>·
-              <Typography>0 credentials</Typography>
-            </Box>
-            <Stack
-              direction="row"
-              gap={1}
-              sx={{
-                mt: 4,
-              }}
-            >
-              <IconButton
-                sx={{
-                  p: 0,
-                }}
               //onClick={onShare}
-              >
-                <Avatar>
-                  <ShareIcon
-                    sx={{
-                      mt: -0.25,
-                    }}
-                  />
-                </Avatar>
-              </IconButton>
-            </Stack>
-          </Box>
-          <Box marginRight={{ xs: 5, md: 8 }} marginTop={{ xs: 5, md: 0 }}>
-            {showCard && <GuideCard {...{ setShowCard }} />}
-          </Box>
+            >
+              <Avatar>
+                <ShareIcon
+                  sx={{
+                    fontSize: '18px',
+                    marginTop: '0px',
+                    color: '#E5E5E5',
+                  }}
+                />
+              </Avatar>
+            </IconButton>
+            <IconButton
+              sx={{
+                p: 0,
+              }}
+              //onClick={onShare}
+            >
+              <Avatar>
+                <TwitterIcon
+                  sx={{
+                    fontSize: '18px',
+                    marginTop: '0px',
+                    color: '#E5E5E5',
+                  }}
+                />
+              </Avatar>
+            </IconButton>
+            <IconButton
+              sx={{
+                p: 0,
+              }}
+              //onClick={onShare}
+            >
+              <Avatar>
+                <FaDiscord
+                  style={{
+                    fontSize: '18px',
+                    marginTop: '0px',
+                    color: '#E5E5E5',
+                  }}
+                ></FaDiscord>
+              </Avatar>
+            </IconButton>
+            <IconButton
+              sx={{
+                p: 0,
+              }}
+              //onClick={onShare}
+            >
+              <Avatar>
+                <LanguageIcon
+                  sx={{
+                    fontSize: '18px',
+                    marginTop: '0px',
+                    color: '#E5E5E5',
+                  }}
+                />
+              </Avatar>
+            </IconButton>
+          </Stack>
         </Box>
       </Box>
       <Box
@@ -232,5 +248,3 @@ export default function PrivateProfileTemplate() {
     </>
   );
 }
-
-PrivateProfileTemplate.auth = true;

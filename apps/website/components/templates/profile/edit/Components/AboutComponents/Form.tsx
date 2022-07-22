@@ -1,5 +1,3 @@
-/* eslint-disable import-helpers/order-imports */
-/* eslint-disable prettier/prettier */
 import { useState } from 'react';
 import {
   Stack,

@@ -17,6 +17,7 @@ import { LANGUAGES } from '../../../../../constants/user';
 
 export function Languages() {
   const languages = Object.keys(LANGUAGES).map((key) => ({
+    value: key,
     title: LANGUAGES[key].name,
   }));
 

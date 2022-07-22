@@ -16,17 +16,14 @@ import {
 } from '@mui/material';
 
 import { ROUTES } from '../../../../constants/routes';
-import { useAuth } from '../../../../providers/auth';
-import { About } from './Components/About';
-import { Experiences } from './Components/Experiences';
-import { Languages } from './Components/Languages';
-import { Skills } from './Components/Skills';
-import { TimeZone } from './Components/TimeZone';
+import { About } from '../../profile/edit/Components/About';
+import { Experiences } from '../../profile/edit/Components/Experiences';
+import { Languages } from '../../profile/edit/Components/Languages';
+import { Skills } from '../../profile/edit/Components/Skills';
+import { TimeZone } from '../../profile/edit/Components/TimeZone';
 
 export function EditProfileTemplate() {
   const router = useRouter();
-  const { me } = useAuth();
-
   return (
     <Stack>
       <Box
@@ -91,10 +88,10 @@ export function EditProfileTemplate() {
       <div id="about">
         <About />
       </div>
-      {/*<Divider light sx={{ width: '100%' }} />
+      <Divider light sx={{ width: '100%' }} />
       <div id="experiences">
         <Experiences />
-        </div>*/}
+      </div>
       <Divider light sx={{ width: '100%' }} />
       <div id="skills">
         <Skills />

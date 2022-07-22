@@ -13,7 +13,7 @@ type Props = {
   gates: PartialDeep<Gates>[];
 };
 
-export default function ActivityTab() {
+export function ActivityTab() {
   const { view, toggleView } = useViewMode();
 
   return (

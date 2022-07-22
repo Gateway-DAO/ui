@@ -1,5 +1,7 @@
 import { useState } from 'react';
+
 import { TOKENS } from '@gateway/theme';
+
 import {
   Grid,
   Stack,
@@ -10,8 +12,11 @@ import {
   InputLabel,
 } from '@mui/material';
 
+import { TZ } from '../../../../../constants/user';
+
 export function TimeZone() {
   const [timeZone, setTimeZone] = useState('');
+
   return (
     <Stack
       direction="column"
@@ -43,9 +48,6 @@ export function TimeZone() {
             <FormControl fullWidth>
               <InputLabel
                 sx={{
-                  '&.MuiInputLabel-outlined': {
-                    textTransform: 'uppercase',
-                  },
                   '&.MuiInputLabel-shrink ': {
                     textTransform: 'uppercase',
                   },
@@ -66,9 +68,11 @@ export function TimeZone() {
                 }}
                 onChange={(e) => setTimeZone(e.target.value)}
               >
-                <MenuItem value={'EST'}>
-                  Eastern Standard Time (EST), UTC -5
-                </MenuItem>
+                {TZ.map((timezone) => (
+                  <MenuItem key={timezone.abbr} value={timezone.abbr}>
+                    {timezone.text}
+                  </MenuItem>
+                ))}
               </Select>
             </FormControl>
           </Stack>

@@ -38,7 +38,7 @@ export default function ProfileTemplate({ user }: Props) {
       {
         key: 'overview',
         label: t('common:tabs.overview'),
-        section: <OverviewTab />,
+        section: <OverviewTab user={user} />,
       },
       {
         key: 'activity',
