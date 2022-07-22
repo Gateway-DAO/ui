@@ -61,7 +61,7 @@ export function About() {
               </Typography>
               {/*cover and edit cover*/}
 
-              <AvatarBackgroundFields
+              <AvatarBackgroundFields<EditUserSchema>
                 control={control}
                 avatar_name="picture"
                 bg_name="cover"

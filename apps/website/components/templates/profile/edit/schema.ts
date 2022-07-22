@@ -18,7 +18,7 @@ export type EditUserSchema = Required<
   >
 > & {
   socials: Pick<User_Socials, 'network' | 'url'>[];
-  experiences: PartialDeep<Experiences>[];
+  // experiences: PartialDeep<Experiences>[];
   cover: string;
   picture: string;
 };
@@ -36,7 +36,7 @@ export const defaultValues = (
     languages,
     timezone,
     socials,
-    experiences,
+    // experiences,
     cover,
     picture,
   } = user;
@@ -49,7 +49,7 @@ export const defaultValues = (
     languages: languages || [],
     timezone,
     socials: socials?.map(({ network, url }) => ({ network, url })) || [],
-    experiences: experiences || [],
+    // experiences: experiences || [],
     cover: generateImageUrl(cover?.id),
     picture: generateImageUrl(picture?.id),
   };
@@ -70,5 +70,5 @@ export const schema: SchemaOf<EditUserSchema> = object({
       url: string().url().defined(),
     })
   ),
-  experiences: array().of(mixed<PartialDeep<Experiences>>()).defined(),
+  // experiences: array().of(mixed<PartialDeep<Experiences>>()).defined(),
 });

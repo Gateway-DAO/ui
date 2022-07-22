@@ -1,4 +1,4 @@
-import { Control, useFormContext } from 'react-hook-form';
+import { Control, FieldValues, Path, useFormContext } from 'react-hook-form';
 
 import { TOKENS } from '@gateway/theme';
 
@@ -12,9 +12,11 @@ type Props<TFormSchema> = {
   avatar_name?: string;
 };
 
-export function AvatarBackgroundFields<
-  TFormSchema extends FieldValues = FieldValues
->({ control, bg_name = 'background', avatar_name = 'avatar' }: Props) {
+export function AvatarBackgroundFields<TFormSchema>({
+  control,
+  bg_name = 'background',
+  avatar_name = 'avatar',
+}: Props<TFormSchema>) {
   return (
     <Box
       sx={{
@@ -48,7 +50,7 @@ export function AvatarBackgroundFields<
         <ImageDropField
           withCrop={false}
           control={control}
-          name={bg_name}
+          name={bg_name as Path<TFormSchema>}
           label="Drop to upload your background"
         />
       </Box>
@@ -83,7 +85,7 @@ export function AvatarBackgroundFields<
       >
         <ImageDropField
           control={control}
-          name={avatar_name}
+          name={avatar_name as Path<TFormSchema>}
           label="Drop to upload your avatar"
           hideLabel
         />

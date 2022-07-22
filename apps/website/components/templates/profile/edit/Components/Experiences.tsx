@@ -12,10 +12,10 @@ import { ExperienceAccordion } from './experience';
 export function Experiences() {
   const { control, watch } = useFormContext<EditUserSchema>();
 
-  const { fields: experiences } = useFieldArray({
-    control,
-    name: 'experiences',
-  });
+  // const { fields: experiences } = useFieldArray({
+  //   control,
+  //   name: 'experiences',
+  // });
 
   return (
     <Stack
@@ -43,7 +43,7 @@ export function Experiences() {
         </Grid>
         <Grid item xs={7.5} maxWidth="100%">
           <Stack gap={2}>
-            {experiences.length > 0 ? (
+            {/* experiences.length > 0 ? (
               experiences.map((experience, index) => (
                 <ExperienceAccordion
                   key={index}
@@ -75,7 +75,7 @@ export function Experiences() {
                   </Typography>
                 </Stack>
               </Stack>
-            )}
+                ) */}
           </Stack>
         </Grid>
       </Grid>

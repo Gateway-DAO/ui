@@ -151,14 +151,23 @@ export default function ProfileTemplate({ user }: Props) {
               mt: 4,
             }}
           >
-            {me && (
-              <Button
-                sx={{ width: '95px', height: '36px' }}
-                variant="contained"
-              >
-                Connect
-              </Button>
-            )}
+            {me &&
+              (me.following.some((f) => f.user_id === user.id) ? (
+                <Button
+                  sx={{ width: '95px', height: '36px' }}
+                  variant="contained"
+                  disabled
+                >
+                  Connected
+                </Button>
+              ) : (
+                <Button
+                  sx={{ width: '95px', height: '36px' }}
+                  variant="contained"
+                >
+                  Connect
+                </Button>
+              ))}
             <SocialButtons socials={user.socials} />
           </Stack>
         </Box>

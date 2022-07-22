@@ -122,12 +122,7 @@ export function OverviewTab({ user }: Props) {
               </Box>
               {user.experiences?.length > 0 ? (
                 <Stack>
-                  <ExperienceAccordion
-                    title="Olympus Dao"
-                    date="Jun 2021 — Present"
-                    credential="5 credentials"
-                    experience={user.experiences[0]}
-                  />
+                  <ExperienceAccordion experience={user.experiences[0]} />
                   {/*<Divider></Divider>
                 <ExperienceAccordion
                   title="Yearn Finance"

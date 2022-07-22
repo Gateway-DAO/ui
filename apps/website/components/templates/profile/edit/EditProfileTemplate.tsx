@@ -38,8 +38,6 @@ export function EditProfileTemplate({ onSubmit, isLoading }: Props) {
     defaultValues: defaultValues(me),
   });
 
-  console.log(defaultValues(me));
-
   return (
     <Stack
       component="form"
@@ -112,10 +110,10 @@ export function EditProfileTemplate({ onSubmit, isLoading }: Props) {
           <About />
         </div>
         <Divider light sx={{ width: '100%' }} />
-        <div id="experiences">
+        {/*<div id="experiences">
           <Experiences />
         </div>
-        <Divider light sx={{ width: '100%' }} />
+        <Divider light sx={{ width: '100%' }} />*/}
         <div id="skills">
           <Skills />
         </div>
