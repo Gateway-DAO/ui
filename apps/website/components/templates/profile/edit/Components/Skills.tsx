@@ -1,5 +1,7 @@
 import { useState } from 'react';
 
+import { useFormContext, useFieldArray } from 'react-hook-form';
+
 import { TOKENS } from '@gateway/theme';
 
 import SearchIcon from '@mui/icons-material/Search';
@@ -17,6 +19,8 @@ import { SKILLS } from '../../../../../constants/skills';
 
 export function Skills() {
   const skills = SKILLS.HARD.concat(SKILLS.SOFT);
+
+  const { control, watch, setValue } = useFormContext();
 
   return (
     <Stack
@@ -49,6 +53,7 @@ export function Skills() {
               multiple
               id="tags-standard"
               options={skills}
+              defaultValue={watch('skills')}
               disableClearable
               getOptionLabel={(option) => option}
               renderInput={(params) => (
@@ -77,6 +82,7 @@ export function Skills() {
                   color: 'rgba(255, 255, 255, 0.56)',
                 },
               }}
+              onChange={(event, value) => setValue('skills', value)}
             />
           </Stack>
         </Grid>

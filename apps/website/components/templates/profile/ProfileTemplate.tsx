@@ -1,5 +1,5 @@
-import { InferGetStaticPropsType } from 'next';
 import useTranslation from 'next-translate/useTranslation';
+import Image from 'next/image';
 import { useMemo } from 'react';
 
 import { PartialDeep } from 'type-fest';
@@ -21,8 +21,11 @@ import {
 
 import { a11yTabProps, TabPanel, useTab } from '../../../components/atoms/tabs';
 import { Navbar } from '../../../components/organisms/navbar/navbar';
+import { generateImageUrl } from '../../../hooks/use-file';
 import { Users } from '../../../services/graphql/types.generated';
 import { SessionUser } from '../../../types/user';
+import { AvatarFile } from '../../atoms/avatar-file';
+import { SocialButtons } from '../../organisms/social-buttons';
 import { ActivityTab, OverviewTab } from './tabs';
 
 type Props = {
@@ -53,14 +56,29 @@ export default function ProfileTemplate({ user }: Props) {
       <Box
         sx={{
           height: (theme) => theme.spacing(35),
-          backgroundPosition: 'center',
-          backgroundSize: 'cover',
-          background:
-            'linear-gradient(265.82deg, #432F70 0.24%, #23182E 84.35%);',
           pt: 2,
+          position: 'relative',
+          ...(!user.cover
+            ? {
+                background:
+                  'linear-gradient(265.82deg, #432F70 0.24%, #23182E 84.35%);',
+                backgroundPosition: 'center',
+                backgroundSize: 'cover',
+              }
+            : {}),
         }}
       >
-        <Navbar />
+        <Navbar sx={{ zIndex: 1 }} />
+        {user.cover?.id && user.cover?.blur ? (
+          <Image
+            src={generateImageUrl(user.cover.id)}
+            blurDataURL={user.cover.blur}
+            placeholder="blur"
+            layout="fill"
+            objectFit="cover"
+            alt={user.name}
+          />
+        ) : null}
       </Box>
       <Box
         sx={{
@@ -68,15 +86,16 @@ export default function ProfileTemplate({ user }: Props) {
         }}
         marginLeft={{ xs: '20px', md: '50px' }}
       >
-        <Avatar
+        <AvatarFile
           sx={{
             height: (theme) => theme.spacing(16.25),
             width: (theme) => theme.spacing(16.25),
             border: (theme) => `${theme.spacing(0.5)} solid`,
             borderColor: 'background.default',
           }}
-          src={user.pfp}
-        ></Avatar>
+          file={user.picture}
+          fallback={user.pfp}
+        ></AvatarFile>
         <Box>
           <Typography style={{ color: '#fff' }} component="h1" variant="h4">
             {user.name}
@@ -133,20 +152,7 @@ export default function ProfileTemplate({ user }: Props) {
             <Button sx={{ width: '95px', height: '36px' }} variant="contained">
               Connect
             </Button>
-            <IconButton
-              sx={{
-                p: 0,
-              }}
-              //onClick={onShare}
-            >
-              <Avatar>
-                <ShareIcon
-                  sx={{
-                    mt: -0.25,
-                  }}
-                />
-              </Avatar>
-            </IconButton>
+            <SocialButtons socials={user.socials} />
           </Stack>
         </Box>
       </Box>

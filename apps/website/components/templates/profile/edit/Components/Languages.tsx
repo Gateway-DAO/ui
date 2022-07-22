@@ -1,5 +1,7 @@
 import { useState } from 'react';
 
+import { useFormContext } from 'react-hook-form';
+
 import { TOKENS } from '@gateway/theme';
 
 import SearchIcon from '@mui/icons-material/Search';
@@ -16,10 +18,9 @@ import Autocomplete, { autocompleteClasses } from '@mui/material/Autocomplete';
 import { LANGUAGES } from '../../../../../constants/user';
 
 export function Languages() {
-  const languages = Object.keys(LANGUAGES).map((key) => ({
-    value: key,
-    title: LANGUAGES[key].name,
-  }));
+  const languages = Object.keys(LANGUAGES).map((key) => LANGUAGES[key].name);
+
+  const { control, setValue, watch } = useFormContext();
 
   return (
     <Stack
@@ -53,8 +54,9 @@ export function Languages() {
               multiple
               id="tags-standard"
               options={languages}
+              defaultValue={watch('languages')}
               disableClearable
-              getOptionLabel={(option) => option.title}
+              getOptionLabel={(option) => option}
               renderInput={(params) => (
                 <TextField
                   fullWidth
@@ -82,6 +84,7 @@ export function Languages() {
                   color: 'rgba(255, 255, 255, 0.56)',
                 },
               }}
+              onChange={(event, value) => setValue('languages', value)}
             />
           </Stack>
         </Grid>

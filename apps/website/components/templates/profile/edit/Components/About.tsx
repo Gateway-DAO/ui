@@ -1,5 +1,9 @@
-import { TOKENS } from '@gateway/theme';
 import { useState } from 'react';
+
+import { useFormContext } from 'react-hook-form';
+
+import { TOKENS } from '@gateway/theme';
+
 import EditIcon from '@mui/icons-material/Edit';
 import {
   Avatar,
@@ -13,10 +17,14 @@ import {
   TextField,
 } from '@mui/material';
 
-import { SocialLinks } from 'apps/website/components/molecules/social-links';
-import {Form} from "./AboutComponents/Form"
+import { AvatarBackgroundFields } from '../../../../../components/molecules/form/avatar-background-fields';
+import { SocialLinks } from '../../../../../components/molecules/form/social-links';
+import { EditUserSchema } from '../schema';
+import { Form } from './AboutComponents/Form';
 
 export function About() {
+  const { control, watch } = useFormContext<EditUserSchema>();
+
   return (
     <Stack
       p={TOKENS.CONTAINER_PX}
@@ -52,67 +60,12 @@ export function About() {
                 Avatar and cover
               </Typography>
               {/*cover and edit cover*/}
-              <Box
-                sx={{
-                  height: (theme) => theme.spacing(35),
-                  backgroundPosition: 'center',
-                  backgroundSize: 'cover',
-                  background:
-                    'linear-gradient(180deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0) 44.13%), linear-gradient(82.31deg, #FCB5DB 17.7%, #8965D2 57.63%);',
-                  backdropFilter: 'blur(40px)',
-                  border: '1px solid #594979',
-                  pt: 2,
-                  display: 'flex',
-                  alignItems: 'flex-end',
-                  justifyContent: 'flex-end',
-                  borderRadius: '8px',
-                }}
-              >
-                <IconButton sx={{ zIndex: '13' }}>
-                  <Avatar
-                    sx={{
-                      backgroundColor: '#fff',
-                      color: 'rgba(0, 0, 0, 0.54)',
-                      width: '34.5px',
-                      height: '34.5px',
-                    }}
-                  >
-                    <EditIcon></EditIcon>
-                  </Avatar>
-                </IconButton>
-              </Box>
-              <Box
-                sx={{
-                  marginTop: -10,
-                  marginLeft: 4,
-                  position: 'relative',
-                  zIndex: '12',
-                }}
-              >
-                {/*avatar and edit avatar*/}
-                <Avatar
-                  sx={{
-                    width: { xs: '72px', md: '88px' },
-                    height: { xs: '72px', md: '88px' },
-                    border: (theme) => `${theme.spacing(0.5)} solid`,
-                    borderColor: 'background.default',
-                  }}
-                ></Avatar>
-                <IconButton
-                  sx={{ position: 'absolute', bottom: '-10px', left: '8%' }}
-                >
-                  <Avatar
-                    sx={{
-                      backgroundColor: '#fff',
-                      color: 'rgba(0, 0, 0, 0.54)',
-                      width: '34.5px',
-                      height: '34.5px',
-                    }}
-                  >
-                    <EditIcon></EditIcon>
-                  </Avatar>
-                </IconButton>
-              </Box>
+
+              <AvatarBackgroundFields
+                control={control}
+                avatar_name="picture"
+                bg_name="cover"
+              />
             </Stack>
 
             {/* DETAILS FORM */}
@@ -127,7 +80,7 @@ export function About() {
               >
                 Social links
               </Typography>
-              <Stack></Stack>
+              <SocialLinks control={control} name="socials" />
             </Stack>
           </Stack>
         </Grid>

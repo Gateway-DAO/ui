@@ -2,6 +2,7 @@ import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
 import { useMemo } from 'react';
 
+import { DateTime } from 'luxon';
 import { PartialDeep } from 'type-fest';
 
 import { TOKENS } from '@gateway/theme';
@@ -18,6 +19,7 @@ import {
 } from '@mui/material';
 
 import { ROUTES } from '../../../../constants/routes';
+import { TZ } from '../../../../constants/user';
 import { useViewMode, ViewMode } from '../../../../hooks/use-view-modes';
 import { useAuth } from '../../../../providers/auth';
 import { Users } from '../../../../services/graphql/types.generated';
@@ -57,16 +59,12 @@ export function OverviewTab({ user }: Props) {
     ],
     []
   );
-  const skills = [
-    { title: 'UX Design' },
-    { title: 'UI Design' },
-    { title: 'Product Strategy' },
-    { title: 'Product Design' },
-    { title: 'Web3' },
-    { title: 'Business Development' },
-    { title: 'Blockchain' },
-    { title: 'Cryptocurrency' },
-  ];
+
+  const offset = TZ.find((tz) => tz.abbr === user.timezone)?.offset;
+  const hourToTimezone = DateTime.local()
+    .setLocale('en-US')
+    .setZone('UTC' + (offset > 0 ? '+' : '') + offset);
+
   return (
     <Box>
       {view === ViewMode.grid && (
@@ -362,36 +360,55 @@ export function OverviewTab({ user }: Props) {
                 )}
               </Box>
               <Box>
-                <Typography
-                  sx={{
-                    fontSize: '34px',
-                    fontWeight: '400',
-                    color: 'rgba(255, 255, 255, 1)',
-                    letterSpacing: '0.25px',
-                    marginBottom: '5px',
-                  }}
-                  variant="h6"
-                >
-                  4:00
+                {user.timezone ? (
+                  <>
+                    <Typography
+                      sx={{
+                        fontSize: '34px',
+                        fontWeight: '400',
+                        color: 'rgba(255, 255, 255, 1)',
+                        letterSpacing: '0.25px',
+                        marginBottom: '5px',
+                      }}
+                      variant="h6"
+                    >
+                      {
+                        hourToTimezone
+                          .toLocaleString(DateTime.TIME_SIMPLE)
+                          .split(' ')[0]
+                      }
+                      <Typography
+                        sx={{
+                          fontSize: '12px',
+                          fontWeight: '400',
+                          color: 'rgba(255, 255, 255, 1)',
+                          letterSpacing: '0.4px',
+                        }}
+                        component="span"
+                      >
+                        {
+                          hourToTimezone
+                            .toLocaleString(DateTime.TIME_SIMPLE)
+                            .split(' ')[1]
+                        }
+                      </Typography>
+                    </Typography>
+                    <Typography
+                      sx={{
+                        color: 'rgba(255, 255, 255, 0.7)',
+                      }}
+                    >
+                      {TZ.find((tz) => tz.abbr === user.timezone)?.text}
+                    </Typography>
+                  </>
+                ) : (
                   <Typography
-                    sx={{
-                      fontSize: '12px',
-                      fontWeight: '400',
-                      color: 'rgba(255, 255, 255, 1)',
-                      letterSpacing: '0.4px',
-                    }}
-                    component="span"
+                    variant="body1"
+                    color={(theme) => theme.palette.text.secondary}
                   >
-                    pm
+                    No results
                   </Typography>
-                </Typography>
-                <Typography
-                  sx={{
-                    color: 'rgba(255, 255, 255, 0.7)',
-                  }}
-                >
-                  Eastern Standard Time (EST), UTC -5
-                </Typography>
+                )}
               </Box>
             </Box>
           </Box>

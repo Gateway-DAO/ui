@@ -1,13 +1,16 @@
 import { useState } from 'react';
-import {
-  Stack,
-  Typography,
-  TextField
-} from '@mui/material';
 
 import { useFormContext } from 'react-hook-form';
+
+import { Stack, Typography, TextField } from '@mui/material';
+
 export function Form() {
-  const [bioChar, setBioChar] = useState(0);
+  const {
+    register,
+    watch,
+    formState: { errors },
+  } = useFormContext();
+  const bioChar = 200 - (watch('bio')?.length ?? 0);
 
   return (
     <Stack gap={4}>
@@ -40,6 +43,9 @@ export function Form() {
           }}
           label="Display Name"
           id="name"
+          {...register('name', { required: true })}
+          error={!!errors.name}
+          helperText={errors.name?.message}
         />
         <TextField
           sx={{
@@ -57,6 +63,9 @@ export function Form() {
           required
           label="Username"
           id="username"
+          {...register('username', { required: true })}
+          error={!!errors.username}
+          helperText={errors.username?.message}
         />
         <TextField
           sx={{
@@ -75,9 +84,11 @@ export function Form() {
           minRows={4}
           required
           label="Your Bio"
-          id="your_bio"
+          id="bio"
           inputProps={{ maxLength: 200 }}
-          onChange={(e) => setBioChar(e.target.value.length)}
+          {...register('bio', { required: true })}
+          error={!!errors.bio}
+          helperText={errors.bio?.message}
         />
         <Typography
           sx={{

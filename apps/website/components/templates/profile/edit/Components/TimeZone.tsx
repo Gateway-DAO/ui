@@ -1,5 +1,7 @@
 import { useState } from 'react';
 
+import { useFormContext } from 'react-hook-form';
+
 import { TOKENS } from '@gateway/theme';
 
 import {
@@ -15,7 +17,7 @@ import {
 import { TZ } from '../../../../../constants/user';
 
 export function TimeZone() {
-  const [timeZone, setTimeZone] = useState('');
+  const { setValue, watch } = useFormContext();
 
   return (
     <Stack
@@ -59,14 +61,14 @@ export function TimeZone() {
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
-                value={timeZone}
+                value={watch('timezone')}
                 label="Select your time zone"
                 sx={{
                   '& fieldset legend span': {
                     marginRight: '22px',
                   },
                 }}
-                onChange={(e) => setTimeZone(e.target.value)}
+                onChange={(e) => setValue('timezone', e.target.value)}
               >
                 {TZ.map((timezone) => (
                   <MenuItem key={timezone.abbr} value={timezone.abbr}>

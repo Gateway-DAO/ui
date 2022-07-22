@@ -14,6 +14,7 @@ import Typography from '@mui/material/Typography';
 
 import { ROUTES } from '../../../constants/routes';
 import { useAuth } from '../../../providers/auth';
+import { AvatarFile } from '../../atoms/avatar-file';
 
 /* TODO: Refactor */
 
@@ -52,9 +53,13 @@ export function NavBarAvatar() {
               },
             }}
           >
-            <Avatar aria-label={me?.name} src={me?.pfp}>
+            <AvatarFile
+              aria-label={me?.name}
+              file={me.picture}
+              fallback={me.pfp}
+            >
               {me?.name?.[0]}
-            </Avatar>
+            </AvatarFile>
           </Badge>
         </IconButton>
       </Tooltip>

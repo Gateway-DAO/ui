@@ -1,13 +1,14 @@
 import { useRouter } from 'next/router';
 
+import { yupResolver } from '@hookform/resolvers/yup';
+import { FormProvider, useForm } from 'react-hook-form';
+
 import { TOKENS } from '@gateway/theme';
 
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import {
   Avatar,
   Box,
-  Chip,
-  Grid,
   Stack,
   Typography,
   Divider,
@@ -15,17 +16,35 @@ import {
   IconButton,
 } from '@mui/material';
 
-import { ROUTES } from '../../../../constants/routes';
+import { useAuth } from '../../../../providers/auth';
+import { LoadingButton } from '../../../atoms/loading-button';
 import { About } from '../../profile/edit/Components/About';
 import { Experiences } from '../../profile/edit/Components/Experiences';
 import { Languages } from '../../profile/edit/Components/Languages';
 import { Skills } from '../../profile/edit/Components/Skills';
 import { TimeZone } from '../../profile/edit/Components/TimeZone';
+import { schema, defaultValues, EditUserSchema } from './schema';
 
-export function EditProfileTemplate() {
+type Props = {
+  onSubmit: (data: EditUserSchema) => Promise<unknown>;
+  isLoading: boolean;
+};
+
+export function EditProfileTemplate({ onSubmit, isLoading }: Props) {
   const router = useRouter();
+  const { me } = useAuth();
+  const methods = useForm({
+    resolver: yupResolver(schema),
+    defaultValues: defaultValues(me),
+  });
+
   return (
-    <Stack>
+    <Stack
+      component="form"
+      onSubmit={methods.handleSubmit(onSubmit, (error) => {
+        console.log('Error', error);
+      })}
+    >
       <Box
         sx={{
           paddingLeft: { xs: '14px', md: '85px' },
@@ -57,12 +76,13 @@ export function EditProfileTemplate() {
             cursor: 'pointer',
           }}
         >
-          <Button
-            sx={{ width: '80px', height: '40px', fontSize: '13px' }}
+          <LoadingButton
             variant="contained"
+            type="submit"
+            isLoading={isLoading}
           >
-            Save
-          </Button>
+            Submit
+          </LoadingButton>
         </Box>
       </Box>
       <Box sx={{ height: '80px' }}></Box>
@@ -85,25 +105,27 @@ export function EditProfileTemplate() {
 
       {/*Components*/}
 
-      <div id="about">
-        <About />
-      </div>
-      <Divider light sx={{ width: '100%' }} />
-      <div id="experiences">
-        <Experiences />
-      </div>
-      <Divider light sx={{ width: '100%' }} />
-      <div id="skills">
-        <Skills />
-      </div>
-      <Divider light sx={{ width: '100%' }} />
-      <div id="languages">
-        <Languages />
-      </div>
-      <Divider light sx={{ width: '100%' }} />
-      <div id="timezones">
-        <TimeZone />
-      </div>
+      <FormProvider {...methods}>
+        <div id="about">
+          <About />
+        </div>
+        <Divider light sx={{ width: '100%' }} />
+        <div id="experiences">
+          <Experiences />
+        </div>
+        <Divider light sx={{ width: '100%' }} />
+        <div id="skills">
+          <Skills />
+        </div>
+        <Divider light sx={{ width: '100%' }} />
+        <div id="languages">
+          <Languages />
+        </div>
+        <Divider light sx={{ width: '100%' }} />
+        <div id="timezones">
+          <TimeZone />
+        </div>
+      </FormProvider>
     </Stack>
   );
 }

@@ -1,5 +1,6 @@
 import { InferGetStaticPropsType } from 'next';
 import useTranslation from 'next-translate/useTranslation';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useMemo } from 'react';
 
@@ -26,7 +27,10 @@ import { a11yTabProps, TabPanel, useTab } from '../../../components/atoms/tabs';
 import { Navbar } from '../../../components/organisms/navbar/navbar';
 import { DashboardTemplate } from '../../../components/templates/dashboard';
 import { ROUTES } from '../../../constants/routes';
+import { generateImageUrl } from '../../../hooks/use-file';
 import { useAuth } from '../../../providers/auth';
+import { AvatarFile } from '../../atoms/avatar-file';
+import { SocialButtons } from '../../organisms/social-buttons';
 import { ActivityTab, OverviewTab } from './tabs';
 
 export default function PrivateProfileTemplate() {
@@ -60,14 +64,29 @@ export default function PrivateProfileTemplate() {
       <Box
         sx={{
           height: (theme) => theme.spacing(35),
-          backgroundPosition: 'center',
-          backgroundSize: 'cover',
-          background:
-            'linear-gradient(265.82deg, #432F70 0.24%, #23182E 84.35%);',
           pt: 2,
+          position: 'relative',
+          ...(!me.cover
+            ? {
+                background:
+                  'linear-gradient(265.82deg, #432F70 0.24%, #23182E 84.35%);',
+                backgroundPosition: 'center',
+                backgroundSize: 'cover',
+              }
+            : {}),
         }}
       >
-        <Navbar />
+        <Navbar sx={{ zIndex: 1 }} />
+        {me.cover?.id && me.cover?.blur ? (
+          <Image
+            src={generateImageUrl(me.cover.id)}
+            blurDataURL={me.cover.blur}
+            placeholder="blur"
+            layout="fill"
+            objectFit="cover"
+            alt={me.name}
+          />
+        ) : null}
       </Box>
       <Box
         sx={{
@@ -75,15 +94,16 @@ export default function PrivateProfileTemplate() {
         }}
         marginLeft={{ xs: '20px', md: '50px' }}
       >
-        <Avatar
+        <AvatarFile
           sx={{
             height: (theme) => theme.spacing(16.25),
             width: (theme) => theme.spacing(16.25),
             border: (theme) => `${theme.spacing(0.5)} solid`,
             borderColor: 'background.default',
           }}
-          src={me.pfp}
-        ></Avatar>
+          file={me.picture}
+          fallback={me.pfp}
+        ></AvatarFile>
         <Box>
           <Typography
             sx={{ color: '#fff', marginTop: { xs: '16px', md: '24px' } }}
@@ -139,7 +159,7 @@ export default function PrivateProfileTemplate() {
               mt: 2,
             }}
           >
-            <Typography>0 connections</Typography>·
+            <Typography>{me.following.length} connection(s)</Typography>·
             <Typography>0 credentials</Typography>
           </Box>
           <Stack
@@ -149,70 +169,7 @@ export default function PrivateProfileTemplate() {
               mt: 4,
             }}
           >
-            <IconButton
-              sx={{
-                p: 0,
-              }}
-              //onClick={onShare}
-            >
-              <Avatar>
-                <ShareIcon
-                  sx={{
-                    fontSize: '18px',
-                    marginTop: '0px',
-                    color: '#E5E5E5',
-                  }}
-                />
-              </Avatar>
-            </IconButton>
-            <IconButton
-              sx={{
-                p: 0,
-              }}
-              //onClick={onShare}
-            >
-              <Avatar>
-                <TwitterIcon
-                  sx={{
-                    fontSize: '18px',
-                    marginTop: '0px',
-                    color: '#E5E5E5',
-                  }}
-                />
-              </Avatar>
-            </IconButton>
-            <IconButton
-              sx={{
-                p: 0,
-              }}
-              //onClick={onShare}
-            >
-              <Avatar>
-                <FaDiscord
-                  style={{
-                    fontSize: '18px',
-                    marginTop: '0px',
-                    color: '#E5E5E5',
-                  }}
-                ></FaDiscord>
-              </Avatar>
-            </IconButton>
-            <IconButton
-              sx={{
-                p: 0,
-              }}
-              //onClick={onShare}
-            >
-              <Avatar>
-                <LanguageIcon
-                  sx={{
-                    fontSize: '18px',
-                    marginTop: '0px',
-                    color: '#E5E5E5',
-                  }}
-                />
-              </Avatar>
-            </IconButton>
+            <SocialButtons socials={me.socials} />
           </Stack>
         </Box>
       </Box>

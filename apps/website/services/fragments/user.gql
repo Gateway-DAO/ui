@@ -9,8 +9,16 @@ fragment public_user on users {
   pic_id
   skills
   languages
+  timezone
   picture {
-    id
+    ...file
+  }
+  cover {
+    ...file
+  }
+  socials {
+    network
+    url
   }
 }
 
