@@ -13,6 +13,8 @@ const palette: PaletteOptions = {
   background: {
     default: brandColors.background.main,
     paper: brandColors.background.main,
+    light: brandColors.background.light,
+    elevated: brandColors.background.elevated,
   },
   text: {
     primary: brandColors.white.main,
