@@ -1,3 +1,5 @@
+import { useEffect, useState } from 'react';
+
 import { useMutation } from 'react-query';
 import { useToggle } from 'react-use';
 import { PartialObjectDeep } from 'type-fest/source/partial-deep';
@@ -15,6 +17,8 @@ import {
 
 import { useAuth } from '../../../../../website/providers/auth';
 import { gqlMethods } from '../../../../../website/services/api';
+import { queryClient } from '../../../../../website/services/query-client';
+import { SessionUser } from '../../../../../website/types/user';
 import { Tasks } from '../../../../services/graphql/types.generated';
 import MeetingCodeContent from '../../../organisms/gates/view/tasks/content/meeting_code';
 import QuizContent from '../../../organisms/gates/view/tasks/content/quiz';
@@ -29,7 +33,22 @@ type Props = {
 
 export function Task({ task, idx }: Props) {
   const { me } = useAuth();
+
   const [expanded, toggleExpanded] = useToggle(false);
+  const [completed, setCompleted] = useState(false);
+  const [updatedAt, setUpdatedAt] = useState('');
+
+  useEffect(() => {
+    console.log(me?.task_progresses);
+    const progressTaskIndex = me?.task_progresses.findIndex(
+      (task_progress) => task_progress.task_id === task.id
+    );
+
+    if (progressTaskIndex !== -1) {
+      setCompleted(true);
+      setUpdatedAt(me?.task_progresses[progressTaskIndex].updated_at);
+    }
+  }, [task.id, me?.task_progresses]);
 
   const getTaskContent = (task_type: string) => {
     switch (task_type) {
@@ -63,26 +82,45 @@ export function Task({ task, idx }: Props) {
 
   const { mutate: completeTaskMutation } = useMutation(
     'completeTask',
-    me && gqlMethods(me).complete_task
+    me && gqlMethods(me).complete_task,
+    {
+      onSuccess: async (data) => {
+        await queryClient.cancelQueries('me');
+
+        queryClient.setQueryData<SessionUser>('me', (old) => {
+          const oldTaskProgresses = old.task_progresses.filter(
+            (task_progress) => task_progress.task_id !== task.id
+          );
+          const newTaskProgress = [
+            ...oldTaskProgresses,
+            data.verify_key.task_info,
+          ];
+
+          return {
+            ...old,
+            task_progresses: newTaskProgress,
+          };
+        });
+
+        //handleOpen();
+      },
+    }
   );
 
   const completeTask = (info) => {
     const data = {
-      user_id: me.id,
-      key_id: task.id,
+      task_id: task.id,
       info,
     };
 
-    console.log(data);
-
-    // completeTaskMutation(data, {
-    //   onSuccess: (data) => {
-    //     console.log('Completed!', data);
-    //   },
-    //   onError: (error) => {
-    //     console.log('Error!', error);
-    //   },
-    // });
+    completeTaskMutation(data, {
+      onSuccess: (response) => {
+        console.log('Completed!', response);
+      },
+      onError: (error) => {
+        console.log('Error!', error);
+      },
+    });
   };
 
   const taskContent = getTaskContent(task.task_type);
@@ -130,7 +168,12 @@ export function Task({ task, idx }: Props) {
       >
         <CardContent sx={{ marginLeft: '55px' }}>
           <Typography variant="subtitle2">{task.description}</Typography>
-          <TaskComponent data={task.task_data} completeTask={completeTask} />
+          <TaskComponent
+            data={task.task_data}
+            completed={completed}
+            updatedAt={updatedAt}
+            completeTask={completeTask}
+          />
         </CardContent>
       </Collapse>
     </Card>

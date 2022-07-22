@@ -7,9 +7,10 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
+  Typography,
 } from '@mui/material';
 
-const SelfVerifyContent = ({ data, completeTask }) => {
+const SelfVerifyContent = ({ data, completed, updatedAt, completeTask }) => {
   const files = data.files.map((file, index) => {
     return (
       <ListItem
@@ -35,13 +36,19 @@ const SelfVerifyContent = ({ data, completeTask }) => {
   return (
     <List>
       {files}
-      <Button
-        variant="contained"
-        sx={{ marginTop: '15px' }}
-        onClick={() => completeTask({})}
-      >
-        Submit
-      </Button>
+      {completed ? (
+        <Typography color="#c5ffe3" variant="subtitle2">
+          Task completed at {updatedAt}
+        </Typography>
+      ) : (
+        <Button
+          variant="contained"
+          sx={{ marginTop: '15px' }}
+          onClick={() => completeTask({})}
+        >
+          Submit
+        </Button>
+      )}
     </List>
   );
 };
