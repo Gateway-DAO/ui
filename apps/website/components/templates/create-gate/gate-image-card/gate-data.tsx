@@ -16,11 +16,15 @@ export function GateData() {
     <>
       <CardHeader
         title={limitChars(showIfNotEmpty(title, 'Gate Title'), 20)}
-        sx={{
+        sx={(theme) => ({
           '& .MuiCardHeader-title': {
             pb: 1,
+            fontSize: theme.typography.h6,
           },
-        }}
+          '& .MuiCardHeader-subheader': {
+            fontSize: theme.typography.body2,
+          },
+        })}
         subheader={`${limitChars(
           showIfNotEmpty(description, 'Gate Description'),
           70

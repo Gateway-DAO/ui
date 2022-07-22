@@ -109,7 +109,7 @@ export function CreateGateTemplate() {
         gap={2}
         sx={{
           width: '100%',
-          display: { xs: 'block', md: 'flex' },
+          flexDirection: { xs: 'column', md: 'row' },
         }}
       >
         <Box>
@@ -121,9 +121,11 @@ export function CreateGateTemplate() {
           </Typography>
         </Box>
         <Stack
-          direction="column"
           gap={7.5}
-          sx={{ maxWidth: { xs: '100%', md: '50%', lg: '40%' }, width: '100%' }}
+          sx={{
+            maxWidth: { xs: '100%', md: '50%', lg: '40%' },
+            width: '100%',
+          }}
         >
           <Stack direction="column" gap={4}>
             <FormProvider {...methods}>
@@ -135,7 +137,6 @@ export function CreateGateTemplate() {
         <FormProvider {...methods}>
           <GateImageCard
             sx={{
-              display: { xs: 'none', md: 'flex' },
               width: 400,
             }}
           />

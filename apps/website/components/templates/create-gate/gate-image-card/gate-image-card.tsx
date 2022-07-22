@@ -18,7 +18,20 @@ export function GateImageCard({ showGateData = true, sx }: Props) {
 
   const ConnectedAvatarField = () => (
     <Box sx={{ aspectRatio: 1, paddingTop: '100%', position: 'relative' }}>
-      <Box sx={{ position: 'absolute', inset: 0 }}>
+      <Box
+        sx={{
+          position: 'absolute',
+          inset: 0,
+          maxHeight: {
+            md: '302px',
+            xs: '100%',
+          },
+          maxWidth: {
+            md: '302px',
+            xs: '100%',
+          },
+        }}
+      >
         <ImageDropField
           withCrop
           control={control}
@@ -39,8 +52,8 @@ export function GateImageCard({ showGateData = true, sx }: Props) {
         border: 1,
         borderColor: 'rgba(255,255,255,.12)',
         maxWidth: {
-          xs: '75%',
-          md: '100%',
+          md: '302px',
+          xs: '100%',
         },
         ...sx,
       }}

@@ -60,7 +60,6 @@ export function RadioCheckBoxCreator({
         open={maxAlert}
         autoHideDuration={3000}
         onClose={() => setMaxAlert(false)}
-        style={{ left: '50%', transform: 'translate(-50%, 0)' }}
       >
         <Alert severity="warning" sx={{ width: '100%' }}>
           You can only add up to 5 options
