@@ -1,19 +1,20 @@
+import { useMutation } from 'react-query';
 import { useToggle } from 'react-use';
 import { PartialObjectDeep } from 'type-fest/source/partial-deep';
 
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import {
   Card,
-  CardActions,
   CardContent,
   CardHeader,
   Typography,
-  Button,
   Avatar,
   IconButton,
   Collapse,
 } from '@mui/material';
 
+import { useAuth } from '../../../../../website/providers/auth';
+import { gqlMethods } from '../../../../../website/services/api';
 import { Tasks } from '../../../../services/graphql/types.generated';
 import MeetingCodeContent from '../../../organisms/gates/view/tasks/content/meeting_code';
 import QuizContent from '../../../organisms/gates/view/tasks/content/quiz';
@@ -27,6 +28,7 @@ type Props = {
 };
 
 export function Task({ task, idx }: Props) {
+  const { me } = useAuth();
   const [expanded, toggleExpanded] = useToggle(false);
 
   const getTaskContent = (task_type: string) => {
@@ -35,33 +37,52 @@ export function Task({ task, idx }: Props) {
         return {
           title: 'Files & Links',
           body: SelfVerifyContent,
-          action: 'Submit',
         };
       case 'meeting_code':
         return {
           title: 'Verification Code',
           body: MeetingCodeContent,
-          action: 'Submit',
         };
       case 'token_hold':
         return {
           title: 'Hold Token',
           body: TokenHoldContent,
-          action: 'Check Token',
         };
       case 'snapshot':
         return {
           title: 'Snapshot',
           body: SnapshotContent,
-          action: 'Check Snapshot',
         };
       case 'quiz':
         return {
           title: 'Quiz',
           body: QuizContent,
-          action: 'Submit',
         };
     }
+  };
+
+  const { mutate: completeTaskMutation } = useMutation(
+    'completeTask',
+    me && gqlMethods(me).complete_task
+  );
+
+  const completeTask = (info) => {
+    const data = {
+      user_id: me.id,
+      key_id: task.id,
+      info,
+    };
+
+    console.log(data);
+
+    // completeTaskMutation(data, {
+    //   onSuccess: (data) => {
+    //     console.log('Completed!', data);
+    //   },
+    //   onError: (error) => {
+    //     console.log('Error!', error);
+    //   },
+    // });
   };
 
   const taskContent = getTaskContent(task.task_type);
@@ -109,13 +130,8 @@ export function Task({ task, idx }: Props) {
       >
         <CardContent sx={{ marginLeft: '55px' }}>
           <Typography variant="subtitle2">{task.description}</Typography>
-          <TaskComponent data={task.task_data} />
+          <TaskComponent data={task.task_data} completeTask={completeTask} />
         </CardContent>
-        <CardActions>
-          <Button variant="contained" sx={{ marginLeft: '55px' }}>
-            {taskContent?.action}
-          </Button>
-        </CardActions>
       </Collapse>
     </Card>
   );

@@ -1,0 +1,6 @@
+mutation complete_task($user_id: uuid!, $key_id: uuid!, $info: json) {
+  verify_key(input: { key_id: $key_id, user_id: $user_id, info: $info }) {
+    completed_gate
+    task_info
+  }
+}

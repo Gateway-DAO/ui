@@ -1,10 +1,10 @@
-import { Stack, Typography } from '@mui/material';
+import { Button, Stack, Typography } from '@mui/material';
 
-const SnapshotContent = ({ data }) => {
+const SnapshotContent = ({ data, completeTask }) => {
   const { proposal_number, space_id } = data;
 
   return (
-    <Stack marginTop={5}>
+    <Stack marginTop={5} alignItems="start">
       <Typography variant="subtitle1" fontWeight={'bold'}>
         {proposal_number}
       </Typography>
@@ -13,6 +13,13 @@ const SnapshotContent = ({ data }) => {
         {space_id}
       </Typography>
       <Typography variant="caption">Space ID</Typography>
+      <Button
+        variant="contained"
+        sx={{ marginTop: '15px' }}
+        onClick={() => completeTask({})}
+      >
+        Check Snapshot
+      </Button>
     </Stack>
   );
 };

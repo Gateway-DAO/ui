@@ -1,9 +1,15 @@
 import normalizeUrl from 'normalize-url';
 
 import DescriptionIcon from '@mui/icons-material/Description';
-import { List, ListItem, ListItemIcon, ListItemText } from '@mui/material';
+import {
+  Button,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+} from '@mui/material';
 
-const SelfVerifyContent = ({ data }) => {
+const SelfVerifyContent = ({ data, completeTask }) => {
   const files = data.files.map((file, index) => {
     return (
       <ListItem
@@ -26,7 +32,18 @@ const SelfVerifyContent = ({ data }) => {
     );
   });
 
-  return <List>{files}</List>;
+  return (
+    <List>
+      {files}
+      <Button
+        variant="contained"
+        sx={{ marginTop: '15px' }}
+        onClick={() => completeTask({})}
+      >
+        Submit
+      </Button>
+    </List>
+  );
 };
 
 export default SelfVerifyContent;
