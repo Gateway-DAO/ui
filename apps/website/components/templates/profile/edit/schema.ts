@@ -1,8 +1,9 @@
 import { PartialDeep } from 'type-fest';
-import { object, string, SchemaOf, array } from 'yup';
+import { object, string, SchemaOf, array, mixed, bool } from 'yup';
 
 import { generateImageUrl } from '../../../../hooks/use-file';
 import {
+  Experiences,
   Users,
   User_Socials,
 } from '../../../../services/graphql/types.generated';
@@ -17,6 +18,7 @@ export type EditUserSchema = Required<
   >
 > & {
   socials: Pick<User_Socials, 'network' | 'url'>[];
+  experiences: PartialDeep<Experiences>[];
   cover: string;
   picture: string;
 };
@@ -34,6 +36,7 @@ export const defaultValues = (
     languages,
     timezone,
     socials,
+    experiences,
     cover,
     picture,
   } = user;
@@ -46,6 +49,7 @@ export const defaultValues = (
     languages: languages || [],
     timezone,
     socials: socials?.map(({ network, url }) => ({ network, url })) || [],
+    experiences: experiences || [],
     cover: generateImageUrl(cover?.id),
     picture: generateImageUrl(picture?.id),
   };
@@ -66,4 +70,5 @@ export const schema: SchemaOf<EditUserSchema> = object({
       url: string().url().defined(),
     })
   ),
+  experiences: array().of(mixed<PartialDeep<Experiences>>()).defined(),
 });

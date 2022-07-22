@@ -22,6 +22,7 @@ import {
 import { a11yTabProps, TabPanel, useTab } from '../../../components/atoms/tabs';
 import { Navbar } from '../../../components/organisms/navbar/navbar';
 import { generateImageUrl } from '../../../hooks/use-file';
+import { useAuth } from '../../../providers/auth';
 import { Users } from '../../../services/graphql/types.generated';
 import { SessionUser } from '../../../types/user';
 import { AvatarFile } from '../../atoms/avatar-file';
@@ -35,6 +36,7 @@ type Props = {
 export default function ProfileTemplate({ user }: Props) {
   const { t } = useTranslation();
   const { activeTab, handleTabChange, setTab } = useTab();
+  const { me } = useAuth();
 
   const tabs = useMemo(
     () => [
@@ -140,7 +142,7 @@ export default function ProfileTemplate({ user }: Props) {
             }}
           >
             <Typography>0 connections</Typography>.
-            <Typography>0 credentials</Typography>
+            <Typography>{user.credentials.length} credential(s)</Typography>
           </Box>
           <Stack
             direction="row"
@@ -149,9 +151,14 @@ export default function ProfileTemplate({ user }: Props) {
               mt: 4,
             }}
           >
-            <Button sx={{ width: '95px', height: '36px' }} variant="contained">
-              Connect
-            </Button>
+            {me && (
+              <Button
+                sx={{ width: '95px', height: '36px' }}
+                variant="contained"
+              >
+                Connect
+              </Button>
+            )}
             <SocialButtons socials={user.socials} />
           </Stack>
         </Box>

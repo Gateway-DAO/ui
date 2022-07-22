@@ -14,6 +14,7 @@ export function processScreen(
     image: string;
     categories: string[];
     nft_url?: string;
+    target_id: string;
     error?: any;
   }
 ) {

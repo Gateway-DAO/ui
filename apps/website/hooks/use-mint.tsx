@@ -157,7 +157,8 @@ export function useBiconomyMint(
       if (
         // TODO: check if we can use Wagmi's provider instead
         typeof window.ethereum !== 'undefined' &&
-        window.ethereum.isMetaMask
+        window.ethereum.isMetaMask &&
+        address.address
       ) {
         // We're creating biconomy provider linked to your network of choice where your contract is deployed
         const jsonRpcProvider = new ethers.providers.JsonRpcProvider(

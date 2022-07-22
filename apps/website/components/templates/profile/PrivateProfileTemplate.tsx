@@ -160,7 +160,7 @@ export default function PrivateProfileTemplate() {
             }}
           >
             <Typography>{me.following.length} connection(s)</Typography>·
-            <Typography>0 credentials</Typography>
+            <Typography>{me.credentials.length} credential(s)</Typography>
           </Box>
           <Stack
             direction="row"

@@ -19,9 +19,12 @@ export default function EditProfilePage() {
       const { cover: cover64, picture: picture64, socials, ...userData } = data;
 
       const uploadPicture = async () => {
-        const oldLogo = generateImageUrl(me.picture.id);
+        if (me.picture?.id) {
+          const oldLogo = generateImageUrl(me.picture.id);
 
-        if (picture64 === oldLogo) return me.picture.id;
+          if (picture64 === oldLogo) return me.picture.id;
+        }
+
         return (
           await uploadImage({
             base64: picture64,
@@ -31,9 +34,11 @@ export default function EditProfilePage() {
       };
 
       const uploadCover = async () => {
-        const oldBackground = generateImageUrl(me.cover.id);
+        if (me.cover?.id) {
+          const oldBackground = generateImageUrl(me.cover.id);
+          if (cover64 === oldBackground) return me.cover.id;
+        }
 
-        if (cover64 === oldBackground) return me.cover.id;
         return (
           await uploadImage({
             base64: cover64,
@@ -48,7 +53,12 @@ export default function EditProfilePage() {
       ]);
 
       return gqlAuthMethods.edit_user({
-        ...userData,
+        name: userData.name || me.name,
+        bio: userData.bio || me.bio,
+        username: userData.username || me.username,
+        skills: userData.skills || me.skills,
+        languages: userData.languages || me.languages,
+        timezone: userData.timezone || me.timezone,
         pic_id: picture,
         cover_id: cover,
         socials: socials as any,

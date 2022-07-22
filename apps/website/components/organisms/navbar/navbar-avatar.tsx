@@ -55,8 +55,8 @@ export function NavBarAvatar() {
           >
             <AvatarFile
               aria-label={me?.name}
-              file={me.picture}
-              fallback={me.pfp}
+              file={me?.picture}
+              fallback={me?.pfp}
             >
               {me?.name?.[0]}
             </AvatarFile>

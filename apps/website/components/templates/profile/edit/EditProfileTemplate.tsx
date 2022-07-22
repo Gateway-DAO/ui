@@ -38,6 +38,8 @@ export function EditProfileTemplate({ onSubmit, isLoading }: Props) {
     defaultValues: defaultValues(me),
   });
 
+  console.log(defaultValues(me));
+
   return (
     <Stack
       component="form"

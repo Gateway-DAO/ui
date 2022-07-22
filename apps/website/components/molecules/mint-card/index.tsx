@@ -1,8 +1,13 @@
-import Card from '@mui/material/Card';
-import { useBiconomyMint } from '../../../hooks/use-mint';
 import { useState, useEffect } from 'react';
+
+import { PartialDeep } from 'type-fest';
+
+import { Box, Button, SxProps } from '@mui/material';
+import Card from '@mui/material/Card';
+
+import { useBiconomyMint } from '../../../hooks/use-mint';
+import { Credentials } from '../../../services/graphql/types.generated';
 import { processScreen } from './process';
-import { Box, Button } from '@mui/material';
 
 export enum Subjects {
   default = 'mint:default',
@@ -15,17 +20,14 @@ export enum Subjects {
 }
 
 type MintCardProps = {
-  minted: boolean;
   tokenURI?: string;
   nftURL?: string;
-  title: string;
-  description: string;
-  image: string;
-  categories: string[];
   onMint?: () => void;
+  credential: PartialDeep<Credentials>;
+  sx?: SxProps;
 };
 
-export const MintCard = (props: MintCardProps) => {
+export const MintCard = ({ credential, sx, ...props }: MintCardProps) => {
   const [mintProcessStatus, setMintProcessStatus] = useState<Subjects>(
     Subjects.default
   );
@@ -53,12 +55,12 @@ export const MintCard = (props: MintCardProps) => {
   };
 
   useEffect(() => {
-    if (props.minted) {
+    if (credential.status == 'minted') {
       setMintProcessStatus(Subjects.alreadyMinted);
     } else {
       setMintProcessStatus(Subjects.default);
     }
-  }, [props.minted]);
+  }, [credential.status]);
 
   useEffect(() => {
     asksSignature && setMintProcessStatus(Subjects.sign);
@@ -71,14 +73,16 @@ export const MintCard = (props: MintCardProps) => {
         height: '443px',
         display: 'flex',
         flexDirection: 'column',
+        ...sx,
       }}
     >
       {processScreen(mintProcessStatus, setMintProcessStatus, mint, {
-        title: props.title,
-        description: props.description,
-        image: props.image,
-        categories: props.categories,
+        title: credential.name,
+        description: credential.description,
+        image: credential.image,
+        categories: credential.categories,
         nft_url: props.nftURL,
+        target_id: credential.target_id,
         error,
       })}
       {(mintProcessStatus === Subjects.start ||

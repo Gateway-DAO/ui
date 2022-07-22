@@ -25,7 +25,7 @@ import { useAuth } from '../../../../providers/auth';
 import { Users } from '../../../../services/graphql/types.generated';
 import { SessionUser } from '../../../../types/user';
 import { a11yTabProps, TabPanel, useTab } from '../../../atoms/tabs';
-import ExperienceAccordion from './ExperienceComponents/ExperienceAccordion';
+import { ExperienceAccordion } from './experience';
 import { ReceivedTab } from './recommendations/ReceivedTab';
 
 type Props = {
@@ -120,13 +120,15 @@ export function OverviewTab({ user }: Props) {
                   ></EditIcon>
                 )}
               </Box>
-              <Stack>
-                <ExperienceAccordion
-                  title="Olympus Dao"
-                  date="Jun 2021 — Present"
-                  credential="5 credentials"
-                />
-                <Divider></Divider>
+              {user.experiences?.length > 0 ? (
+                <Stack>
+                  <ExperienceAccordion
+                    title="Olympus Dao"
+                    date="Jun 2021 — Present"
+                    credential="5 credentials"
+                    experience={user.experiences[0]}
+                  />
+                  {/*<Divider></Divider>
                 <ExperienceAccordion
                   title="Yearn Finance"
                   date="Nov 2021 — Present"
@@ -137,8 +139,26 @@ export function OverviewTab({ user }: Props) {
                   title="City Dao"
                   date="Nov 2021 — Present"
                   credential="5 credentials"
-                />
-              </Stack>
+                  />*/}
+                </Stack>
+              ) : (
+                <Box
+                  sx={{
+                    px: TOKENS.CONTAINER_PX,
+                  }}
+                >
+                  <Typography
+                    style={{
+                      fontSize: '16px',
+                      fontWeight: '400',
+                      color: 'rgba(255, 255, 255, 0.7)',
+                    }}
+                    variant="h6"
+                  >
+                    No experiences
+                  </Typography>
+                </Box>
+              )}
             </Box>
             <Box
               sx={{

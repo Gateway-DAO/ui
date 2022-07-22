@@ -1,3 +1,26 @@
+fragment experience on experiences {
+  dao {
+    name
+    logo {
+      ...file
+    }
+    logo_url
+  }
+  credentials {
+    id
+    name
+    image
+    description
+    categories
+    status
+  }
+  start_date
+  end_date
+  working
+  description
+  visible
+}
+
 fragment public_user on users {
   id
   name
@@ -10,6 +33,9 @@ fragment public_user on users {
   skills
   languages
   timezone
+  credentials {
+    id
+  }
   picture {
     ...file
   }
@@ -20,12 +46,29 @@ fragment public_user on users {
     network
     url
   }
+
+  experiences {
+    ...experience
+  }
 }
 
 fragment current_user on users {
   ...public_user
   email_address
   init
+
+  experiences {
+    ...experience
+    hidden_credentials {
+      credential {
+        id
+        name
+        image
+        description
+        categories
+      }
+    }
+  }
 
   # credentials {
   #   dao {

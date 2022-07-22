@@ -21,6 +21,7 @@ import CardMedia from '@mui/material/CardMedia';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 
+import { useAuth } from '../../../../providers/auth';
 import { TokenFilled } from '../assets/token-filled';
 import { Subjects } from '../index';
 import { showCategories } from '../utlis/categories';
@@ -32,6 +33,7 @@ export const DefaultMintScreen = ({
 }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
+  const { me } = useAuth();
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -76,28 +78,30 @@ export const DefaultMintScreen = ({
         </Typography>
       </CardContent>
       <Stack direction="row" spacing={1} px={2} pt={1} pb={2}>
-        {mintProcessStatus === Subjects.default ? (
-          <Chip
-            key={'mint button'}
-            label={'MINT AS NFT'}
-            size="small"
-            color="primary"
-            icon={<TokenFilled height={20} width={20} color="action" />}
-            onClick={() => setMintProcessStatus(Subjects.start)}
-          />
-        ) : (
-          <Tooltip title="Verify NFT mint transaction">
-            <Avatar sx={{ height: 24, width: 24 }}>
-              <IconButton
-                onClick={() =>
-                  details.nft_url && window.open(details.nft_url, '_blank')
-                }
-              >
-                <TokenFilled sx={{ height: 18, width: 18 }} />
-              </IconButton>
-            </Avatar>
-          </Tooltip>
-        )}
+        {me &&
+          details.target_id == me?.id &&
+          (mintProcessStatus === Subjects.default ? (
+            <Chip
+              key={'mint button'}
+              label={'MINT AS NFT'}
+              size="small"
+              color="primary"
+              icon={<TokenFilled height={20} width={20} color="action" />}
+              onClick={() => setMintProcessStatus(Subjects.start)}
+            />
+          ) : (
+            <Tooltip title="Verify NFT mint transaction">
+              <Avatar sx={{ height: 24, width: 24 }}>
+                <IconButton
+                  onClick={() =>
+                    details.nft_url && window.open(details.nft_url, '_blank')
+                  }
+                >
+                  <TokenFilled sx={{ height: 18, width: 18 }} />
+                </IconButton>
+              </Avatar>
+            </Tooltip>
+          ))}
         {/* we can show maximum 2 categories , when mintProcessStauts is minted*/}
         {showCategories(mintProcessStatus, details.categories)}
       </Stack>
