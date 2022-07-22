@@ -1,6 +1,6 @@
 import { useFormContext } from 'react-hook-form';
 
-import { Alert, Snackbar, Stack, TextField } from '@mui/material';
+import { Stack, TextField } from '@mui/material';
 
 import CategoriesInput from '../../molecules/categories-input';
 import CreatedByInput from '../../molecules/creators-input';
@@ -70,6 +70,7 @@ export function GateDetailsForm() {
         sx={{
           width: '100%',
         }}
+        defaultValue={{}}
         set={(created_by: Creator[]) => {
           setValue('created_by', created_by);
         }}

@@ -17,7 +17,7 @@ export const MuiSnackbar: Extract<Theme['components'], object>['MuiSnackbar'] =
         '& .MuiAlert-standardError': {
           background: '#FF002E',
         },
-        '& .MuiAlert-icon': {
+        '& .MuiAlert-icon .MuiSvgIcon-root': {
           color: 'white',
         },
         '& .MuiAlert-message': {
