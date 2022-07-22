@@ -1,8 +1,25 @@
 query Users {
   users {
-    id
-    name
+    ...public_user
     pfp
-    username
+  }
+}
+
+query get_user_by_username($username: String!) {
+  users(where: { username: { _eq: $username } }) {
+    ...public_user
+    pfp
+  }
+}
+
+mutation edit_user($id: uuid!, $bio: String, $name: String, $pic_id: uuid, $skills: jsonb, $username: String, $timezone: String, $cover_id: uuid, $languages: jsonb, $socials: [user_socials_insert_input!]!) {
+  update_users_by_pk(pk_columns: {id: $id}, _set: {bio: $bio, cover_id: $cover_id, languages: $languages, name: $name, pic_id: $pic_id, skills: $skills, timezone: $timezone, username: $username}) {
+    ...current_user
+  }
+  delete_user_socials(where: {user_id: {_eq: $id}}) {
+    affected_rows
+  }
+  insert_user_socials(objects: $socials) {
+    affected_rows
   }
 }
