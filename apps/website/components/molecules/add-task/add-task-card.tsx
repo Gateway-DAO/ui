@@ -1,12 +1,12 @@
 import ElectricBoltIcon from '@mui/icons-material/ElectricBolt';
 import InsertLinkIcon from '@mui/icons-material/InsertLink';
-import LooksOneIcon from '@mui/icons-material/LooksOne';
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 import NumbersIcon from '@mui/icons-material/Numbers';
 import QuizIcon from '@mui/icons-material/Quiz';
 import StarIcon from '@mui/icons-material/Star';
 import { Grid, Paper, Stack, Typography } from '@mui/material';
 
+import { CircleWithNumber } from '../../atoms/circle-with-number';
 import AddTaskButton from './add-task-button';
 import FileLinkTask from './file-link-task/file-link-task';
 import HoldTokenTask from './hold-token-task/hold-token-task';
@@ -24,7 +24,13 @@ const AddTaskCard = ({ addTask }) => {
       }}
     >
       <Stack direction={'row'} alignItems={'center'} marginBottom="40px">
-        <LooksOneIcon fontSize="large" style={{ marginRight: '30px' }} />
+        <CircleWithNumber
+          number={1}
+          sx={(theme) => ({
+            mr: theme.spacing(3.75),
+            [theme.breakpoints.down('sm')]: { mr: theme.spacing(2.5) },
+          })}
+        />
         <Stack>
           <Typography variant="h6">Add a task</Typography>
           <Typography variant="subtitle2">Select your next task</Typography>

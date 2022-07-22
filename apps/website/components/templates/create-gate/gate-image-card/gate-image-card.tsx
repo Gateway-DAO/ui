@@ -2,7 +2,7 @@ import { useFormContext } from 'react-hook-form';
 
 import { GatewaySxProps } from '@gateway/theme';
 
-import { Box, Card, CardMedia } from '@mui/material';
+import { Box, Card, CardMedia, useTheme } from '@mui/material';
 
 import { ImageDropField } from '../../../molecules/image-drop-field';
 import { CreateGateTypes } from '../schema';
@@ -14,6 +14,7 @@ type Props = {
 };
 
 export function GateImageCard({ showGateData = true, sx }: Props) {
+  const theme = useTheme();
   const { control } = useFormContext<CreateGateTypes>();
 
   const ConnectedAvatarField = () => (
@@ -30,6 +31,17 @@ export function GateImageCard({ showGateData = true, sx }: Props) {
             md: '302px',
             xs: '100%',
           },
+        }}
+        onDragOver={(event) => {
+          event.stopPropagation();
+          event.preventDefault();
+          (event.target as HTMLElement).style.backgroundColor =
+            theme.palette.primary.dark;
+        }}
+        onDragLeave={(event) => {
+          event.stopPropagation();
+          event.preventDefault();
+          (event.target as HTMLElement).style.backgroundColor = 'unset';
         }}
       >
         <ImageDropField

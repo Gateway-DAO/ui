@@ -4,7 +4,6 @@ import { useFieldArray, useFormContext } from 'react-hook-form';
 
 import Clear from '@mui/icons-material/Clear';
 import DeleteIcon from '@mui/icons-material/Delete';
-import LooksOneIcon from '@mui/icons-material/LooksOne';
 import {
   Box,
   Button,
@@ -15,6 +14,7 @@ import {
   Typography,
 } from '@mui/material';
 
+import { CircleWithNumber } from '../../../atoms/circle-with-number';
 import {
   CreateGateTypes,
   FileTypes,
@@ -64,7 +64,13 @@ const FileLinkTask = ({ taskId, deleteTask }) => {
         marginBottom="40px"
         sx={{ position: 'relative' }}
       >
-        <LooksOneIcon fontSize="large" style={{ marginRight: '30px' }} />
+        <CircleWithNumber
+          number={1}
+          sx={(theme) => ({
+            mr: theme.spacing(3.75),
+            [theme.breakpoints.down('sm')]: { mr: theme.spacing(2.5) },
+          })}
+        />
         <Stack>
           <Typography variant="subtitle2">File &#38; Text</Typography>
           <TextField

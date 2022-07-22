@@ -3,9 +3,9 @@ import { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import DeleteIcon from '@mui/icons-material/Delete';
-import LooksOneIcon from '@mui/icons-material/LooksOne';
 import { FormControl, Stack, TextField, Typography } from '@mui/material';
 
+import { CircleWithNumber } from '../../../atoms/circle-with-number';
 import {
   CreateGateTypes,
   SnapshotDataError,
@@ -36,7 +36,13 @@ const SnapshotTask = ({ taskId, deleteTask }) => {
         marginBottom="40px"
         sx={{ position: 'relative' }}
       >
-        <LooksOneIcon fontSize="large" style={{ marginRight: '30px' }} />
+        <CircleWithNumber
+          number={1}
+          sx={(theme) => ({
+            mr: theme.spacing(3.75),
+            [theme.breakpoints.down('sm')]: { mr: theme.spacing(2.5) },
+          })}
+        />
         <Stack>
           <Typography variant="subtitle2">Snapshot Governance</Typography>
           <TextField

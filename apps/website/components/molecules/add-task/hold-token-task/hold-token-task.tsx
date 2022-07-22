@@ -3,7 +3,6 @@ import { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import DeleteIcon from '@mui/icons-material/Delete';
-import LooksOneIcon from '@mui/icons-material/LooksOne';
 import {
   FormControl,
   InputLabel,
@@ -14,6 +13,7 @@ import {
   Typography,
 } from '@mui/material';
 
+import { CircleWithNumber } from '../../../atoms/circle-with-number';
 import {
   CreateGateTypes,
   HoldTokenDataError,
@@ -45,7 +45,13 @@ const HoldTokenTask = ({ taskId, deleteTask }) => {
         marginBottom="40px"
         sx={{ position: 'relative' }}
       >
-        <LooksOneIcon fontSize="large" style={{ marginRight: '30px' }} />
+        <CircleWithNumber
+          number={1}
+          sx={(theme) => ({
+            mr: theme.spacing(3.75),
+            [theme.breakpoints.down('sm')]: { mr: theme.spacing(2.5) },
+          })}
+        />
         <Stack>
           <Typography variant="subtitle2">Hold Token</Typography>
           <TextField

@@ -4,7 +4,6 @@ import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
 
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import DeleteIcon from '@mui/icons-material/Delete';
-import LooksOneIcon from '@mui/icons-material/LooksOne';
 import {
   Box,
   Button,
@@ -14,6 +13,7 @@ import {
   Typography,
 } from '@mui/material';
 
+import { CircleWithNumber } from '../../../atoms/circle-with-number';
 import { QuestionCreator } from '../../../organisms/question-creator/question-creator';
 import { CreateGateTypes } from '../../../templates/create-gate/schema';
 
@@ -86,11 +86,11 @@ export function QuizTask({
           alignItems={'center'}
           sx={{ width: '100%', mr: '20px' }}
         >
-          <LooksOneIcon
-            fontSize="large"
+          <CircleWithNumber
+            number={1}
             sx={(theme) => ({
-              marginRight: '35px',
-              [theme.breakpoints.down('sm')]: { mr: '20px' },
+              mr: theme.spacing(3.75),
+              [theme.breakpoints.down('sm')]: { mr: theme.spacing(2.5) },
             })}
           />
           <TextField
