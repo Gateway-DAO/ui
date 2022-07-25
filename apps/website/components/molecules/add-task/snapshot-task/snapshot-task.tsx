@@ -37,7 +37,7 @@ const SnapshotTask = ({ taskId, deleteTask }) => {
         sx={{ position: 'relative' }}
       >
         <CircleWithNumber
-          number={1}
+          number={taskId + 1}
           sx={(theme) => ({
             mr: theme.spacing(3.75),
             [theme.breakpoints.down('sm')]: { mr: theme.spacing(2.5) },

@@ -14,7 +14,7 @@ import { QuizTask } from './quiz-task';
 import SnapshotTask from './snapshot-task/snapshot-task';
 import VerificationCodeTask from './verification-task/verification-task';
 
-const AddTaskCard = ({ addTask }) => {
+const AddTaskCard = ({ numberOfTasks, addTask }) => {
   return (
     <Stack
       sx={{
@@ -25,7 +25,7 @@ const AddTaskCard = ({ addTask }) => {
     >
       <Stack direction={'row'} alignItems={'center'} marginBottom="40px">
         <CircleWithNumber
-          number={1}
+          number={numberOfTasks + 1}
           sx={(theme) => ({
             mr: theme.spacing(3.75),
             [theme.breakpoints.down('sm')]: { mr: theme.spacing(2.5) },
