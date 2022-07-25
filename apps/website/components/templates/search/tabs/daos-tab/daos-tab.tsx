@@ -8,7 +8,7 @@ import { TOKENS } from '@gateway/theme';
 import { ViewModule, ViewList } from '@mui/icons-material';
 import { Box, IconButton, Stack, Typography, Chip } from '@mui/material';
 
-import { categories } from '../../../../../constants/dao';
+import { categories, categoriesMap } from '../../../../../constants/dao';
 import { usePropertyFilter } from '../../../../../hooks/use-property-filter';
 import { useViewMode, ViewMode } from '../../../../../hooks/use-view-modes';
 import { Daos } from '../../../../../services/graphql/types.generated';
@@ -29,7 +29,7 @@ export function DaosTab({ data: daos }: DAOsTabProps) {
     availableFilters,
     toggleFilter,
     onClear,
-  } = usePropertyFilter(daos ?? [], 'categories');
+  } = usePropertyFilter(daos ?? [], 'categories', categoriesMap);
 
   const { t } = useTranslation('search');
 
