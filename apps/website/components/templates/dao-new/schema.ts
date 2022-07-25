@@ -31,7 +31,7 @@ export const defaultValues = (
 
 export const schema: SchemaOf<NewDAOSchema> = object({
   name: string().defined(),
-  categories: array().of(string()).defined(),
+  categories: array().of(string()).min(1).defined(),
   description: string().defined(),
   background: string().defined(),
   logo: string().defined(),
