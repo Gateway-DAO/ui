@@ -36,7 +36,7 @@ export function OverviewTab({ people, setTab }: Props) {
         title="Create Gate"
         subtitle="Create your first Gate and help talents find you"
         component="a"
-        sx={{ height: 440 }}
+        sx={{ minHeight: 440 }}
       />
     </Link>
   );
@@ -51,7 +51,7 @@ export function OverviewTab({ people, setTab }: Props) {
               title="No Gates yet"
               subtitle="Follow us and get notificatons when a new Gate is created"
               disabled
-              sx={{ height: 440 }}
+              sx={{ minHeight: 440 }}
             />,
           ];
     }

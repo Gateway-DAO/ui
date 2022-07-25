@@ -42,7 +42,7 @@ export function GatesTab() {
         title="Create Gate"
         subtitle="Create your first Gate and help talents find you"
         component="a"
-        sx={{ height: 440, maxWidth: { md: '25%' } }}
+        sx={{ minHeight: 440, maxWidth: { md: '25%' } }}
       />
     </Link>
   );
