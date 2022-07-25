@@ -2,6 +2,7 @@ import { Button, Stack, Typography } from '@mui/material';
 
 const SnapshotContent = ({ data, completed, updatedAt, completeTask }) => {
   const { proposal_number, space_id } = data;
+  const formattedDate = new Date(updatedAt.toLocaleString()).toLocaleString();
 
   return (
     <Stack marginTop={5} alignItems="start">
@@ -15,7 +16,7 @@ const SnapshotContent = ({ data, completed, updatedAt, completeTask }) => {
       <Typography variant="caption">Space ID</Typography>
       {completed ? (
         <Typography color="#c5ffe3" variant="subtitle2">
-          Task completed at {updatedAt}
+          Task completed at {formattedDate}
         </Typography>
       ) : (
         <Button

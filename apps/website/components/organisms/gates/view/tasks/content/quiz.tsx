@@ -15,6 +15,7 @@ import {
 
 const QuizContent = ({ data, completed, updatedAt, completeTask }) => {
   const { questions } = data;
+  const formattedDate = new Date(updatedAt.toLocaleString()).toLocaleString();
   const initialAnswers = questions.map((question, index) => {
     return { questionIdx: index, answers: [] };
   });
@@ -88,7 +89,7 @@ const QuizContent = ({ data, completed, updatedAt, completeTask }) => {
       })}
       {completed ? (
         <Typography color="#c5ffe3" variant="subtitle2">
-          Task completed at {updatedAt}
+          Task completed at {formattedDate}
         </Typography>
       ) : (
         <Button

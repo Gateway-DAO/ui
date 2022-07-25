@@ -3,6 +3,7 @@ import { Button, Stack, Typography } from '@mui/material';
 const TokenHoldContent = ({ data, completed, updatedAt, completeTask }) => {
   const { chain, token_address, quantity } = data;
   const uppercaseChain = chain.charAt(0).toUpperCase() + chain.slice(1);
+  const formattedDate = new Date(updatedAt.toLocaleString()).toLocaleString();
 
   return (
     <Stack marginTop={5} alignItems="start">
@@ -20,7 +21,7 @@ const TokenHoldContent = ({ data, completed, updatedAt, completeTask }) => {
       <Typography variant="caption">Quantity</Typography>
       {completed ? (
         <Typography color="#c5ffe3" variant="subtitle2">
-          Task completed at {updatedAt}
+          Task completed at {formattedDate}
         </Typography>
       ) : (
         <Button
