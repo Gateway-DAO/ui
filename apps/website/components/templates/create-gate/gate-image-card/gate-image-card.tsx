@@ -32,6 +32,11 @@ export function GateImageCard({ showGateData = true, sx }: Props) {
             xs: '100%',
           },
         }}
+        onMouseEnter={(event) => {
+          event.stopPropagation();
+          event.preventDefault();
+          (event.target as HTMLElement).style.cursor = 'pointer';
+        }}
         onDragOver={(event) => {
           event.stopPropagation();
           event.preventDefault();

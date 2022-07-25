@@ -31,6 +31,7 @@ export const CreatedByInput = ({ set, ...props }) => {
       renderInput={(params) => (
         <TextField {...params} label="Created By" id="created_by" {...props} />
       )}
+      defaultValue={[creators[0].name]}
       onChange={(event) => set(creators)}
     />
   );
