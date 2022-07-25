@@ -28,7 +28,7 @@ export function OverviewTab({ people, setTab }: Props) {
 
   const gates = dao?.gates ?? [];
 
-  const newGateUrl = `${ROUTES.GATES_NEW}?dao=${dao?.id}`;
+  const newGateUrl = `${ROUTES.GATE_NEW}?dao=${dao?.id}`;
 
   const newGateLink = (
     <Link key="create-gate" passHref href={newGateUrl}>

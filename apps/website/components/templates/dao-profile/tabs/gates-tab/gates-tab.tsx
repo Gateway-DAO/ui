@@ -34,7 +34,7 @@ export function GatesTab() {
     toggleFilter,
     onClear,
   } = usePropertyFilter(gates.data?.daos_by_pk?.gates ?? [], 'categories');
-  const newGateUrl = `${ROUTES.GATES_NEW}?dao=${dao?.id}`;
+  const newGateUrl = `${ROUTES.GATE_NEW}?dao=${dao?.id}`;
 
   const newGateCard = (
     <Link key="create-gate" passHref href={newGateUrl}>
