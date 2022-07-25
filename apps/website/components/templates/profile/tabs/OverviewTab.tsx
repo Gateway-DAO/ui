@@ -155,7 +155,7 @@ export function OverviewTab({ user }: Props) {
                 </Box>
               )}
             </Box>
-            <Box
+            {/*          <Box
               sx={{
                 pt: '50px',
                 px: TOKENS.CONTAINER_PX,
@@ -195,8 +195,8 @@ export function OverviewTab({ user }: Props) {
                   />
                 ))}
               </Tabs>
-            </Box>
-            {tabs.map(({ key, section }, index) => (
+            </Box> */}
+            {/*tabs.map(({ key, section }, index) => (
               <TabPanel
                 key={key}
                 tabsId="explore"
@@ -208,7 +208,7 @@ export function OverviewTab({ user }: Props) {
               >
                 {section}
               </TabPanel>
-            ))}
+              ))*/}
           </Box>
           <Box sx={{ display: 'flex', flexDirection: 'column' }}>
             <Box

@@ -45,11 +45,11 @@ export default function ProfileTemplate({ user }: Props) {
         label: t('common:tabs.overview'),
         section: <OverviewTab user={user} />,
       },
-      {
-        key: 'activity',
-        label: t('activity'),
-        section: <ActivityTab />,
-      },
+      // {
+      //   key: 'activity',
+      //   label: t('activity'),
+      //   section: <ActivityTab />,
+      // },
     ],
     []
   );

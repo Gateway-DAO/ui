@@ -46,16 +46,16 @@ export default function PrivateProfileTemplate() {
         label: t('common:tabs.overview'),
         section: <OverviewTab user={me} />,
       },
-      {
-        key: 'activity',
-        label: t('activity'),
-        section: <ActivityTab />,
-      },
-      {
-        key: 'bookmarked',
-        label: t('Bookmarked'),
-        //section: <ActivityTab />,
-      },
+      // {
+      //   key: 'activity',
+      //   label: t('activity'),
+      //   section: <ActivityTab />,
+      // },
+      // {
+      //   key: 'bookmarked',
+      //   label: t('Bookmarked'),
+      //   section: <ActivityTab />,
+      // },
     ],
     []
   );
