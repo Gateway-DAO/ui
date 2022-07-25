@@ -1,10 +1,8 @@
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 
-import CloseIcon from '@mui/icons-material/Close';
 import { Button, SxProps } from '@mui/material';
 import Box from '@mui/material/Box';
-import IconButton from '@mui/material/IconButton';
 import Modal from '@mui/material/Modal';
 import Typography from '@mui/material/Typography';
 
@@ -40,23 +38,6 @@ export default function GateCompletedModal({ gate, open, handleClose }) {
               height={40}
               width={40}
             />
-            <IconButton
-              aria-label="close"
-              onClick={() => {
-                handleClose();
-                router.push('/profile');
-              }}
-              sx={{
-                position: 'absolute',
-                right: 20,
-                top: 25,
-                color: '#fff',
-                background: 'rgba(255, 255, 255, 0.15)',
-                borderRadius: '64px',
-              }}
-            >
-              <CloseIcon />
-            </IconButton>
           </Box>
           <Box
             sx={{

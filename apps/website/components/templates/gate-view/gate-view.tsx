@@ -1,5 +1,5 @@
 import useTranslation from 'next-translate/useTranslation';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import { PartialDeep } from 'type-fest';
 
@@ -16,6 +16,7 @@ import {
   Button,
 } from '@mui/material';
 
+import { useAuth } from '../../../../website/providers/auth';
 import { useMint } from '../../../hooks/use-mint';
 import { Gates } from '../../../services/graphql/types.generated';
 import CircularProgressWithLabel from '../../atoms/circular-progress-label';
@@ -28,13 +29,29 @@ type Props = {
 
 export function GateViewTemplate({ gate }: Props) {
   const { t } = useTranslation();
+  const taskIds = gate.tasks.map((task) => task.id);
 
+  const { me } = useAuth();
   const { mint } = useMint();
 
   const [open, setOpen] = useState(false);
+  const [gateCompleted, setGateCompleted] = useState(false);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  useEffect(() => {
+    const completedTaskIds = me?.task_progresses.map((task) => task.task_id);
+
+    const allCompleted = taskIds.every((taskId) => {
+      return completedTaskIds.includes(taskId);
+    });
+
+    if (allCompleted) {
+      setGateCompleted(true);
+      handleOpen();
+    }
+  }, [taskIds, me?.task_progresses]);
 
   return (
     <Grid container height="100%">
@@ -82,16 +99,17 @@ export function GateViewTemplate({ gate }: Props) {
         <Typography variant="body1" marginBottom={(theme) => theme.spacing(4)}>
           {gate.description}
         </Typography>
-        <Button
-          fullWidth
-          variant="contained"
-          sx={{ marginBottom: 4 }}
-          startIcon={<ViewInArIcon />}
-          onClick={() => mint()}
-        >
-          Mint as NFT
-        </Button>
-
+        {gateCompleted && (
+          <Button
+            fullWidth
+            variant="contained"
+            sx={{ marginBottom: 4 }}
+            startIcon={<ViewInArIcon />}
+            onClick={() => mint()}
+          >
+            Mint as NFT
+          </Button>
+        )}
         <Box
           component="img"
           src={gate.image}
