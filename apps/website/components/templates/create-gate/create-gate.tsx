@@ -57,7 +57,7 @@ export function CreateGateTemplate() {
           createGateMutation(
             {
               // TODO: This is Gateway's ID (temporary)
-              dao_id: 'b49fa6cc-e752-4e58-bb8d-9c12c5c17685',
+              dao_id: router.query.dao,
               title: gateData.title,
               categories: gateData.categories,
               description: gateData.description,
