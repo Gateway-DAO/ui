@@ -1,4 +1,5 @@
 import { GetStaticPaths, InferGetStaticPropsType } from 'next';
+import { useRouter } from 'next/router';
 
 import { useQuery } from 'react-query';
 
@@ -13,7 +14,20 @@ import { gqlAnonMethods } from '../../../services/api';
 export default function DaoProfilePage({
   daoProps,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
-  const { daos_by_pk: dao } = daoProps ?? {};
+  const router = useRouter();
+
+  const { data } = useQuery(
+    'dao',
+    () =>
+      gqlAnonMethods.dao_profile({
+        id: router.query.id as string,
+      }),
+    {
+      initialData: daoProps,
+    }
+  );
+
+  const { daos_by_pk: dao } = data ?? {};
 
   const { me } = useAuth();
 
@@ -59,7 +73,7 @@ export const getStaticPaths: GetStaticPaths = async ({ locales }) => {
 
   return {
     paths: daos.map((dao) => ({ params: { id: dao.id } })),
-    fallback: 'blocking', //TODO: add loading state and change to fallback: true
+    fallback: true,
   };
 };
 
