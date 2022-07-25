@@ -1,4 +1,5 @@
 import useTranslation from 'next-translate/useTranslation';
+import { useState } from 'react';
 
 import { PartialDeep } from 'type-fest';
 
@@ -15,6 +16,7 @@ import {
 
 import { Gates } from '../../../services/graphql/types.generated';
 import CircularProgressWithLabel from '../../atoms/circular-progress-label';
+import GateCompletedModal from '../../organisms/gates/view/modals/gate-completed';
 import { Task, TaskGroup } from './tasks';
 
 type Props = {
@@ -24,8 +26,14 @@ type Props = {
 export function GateViewTemplate({ gate }: Props) {
   const { t } = useTranslation();
 
+  const [open, setOpen] = useState(false);
+
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
   return (
     <Grid container height="100%">
+      <GateCompletedModal open={open} handleClose={handleClose} gate={gate} />
       <Grid item xs={12} md={5} p={(theme) => theme.spacing(7)}>
         {/* DAO info */}
         <Stack
