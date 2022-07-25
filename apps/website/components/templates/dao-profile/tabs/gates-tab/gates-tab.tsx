@@ -4,8 +4,8 @@ import { useQuery } from 'react-query';
 
 import { TOKENS } from '@gateway/theme';
 
-import { ViewModule, ViewList } from '@mui/icons-material';
-import { Box, IconButton, Stack } from '@mui/material';
+import { ViewModule, ViewList, Add } from '@mui/icons-material';
+import { Box, Button, IconButton, Stack } from '@mui/material';
 
 import { ROUTES } from '../../../../../constants/routes';
 import { usePropertyFilter } from '../../../../../hooks/use-property-filter';
@@ -56,7 +56,14 @@ export function GatesTab() {
             justifyContent="space-between"
             sx={{ mb: 4, px: TOKENS.CONTAINER_PX }}
           >
-            <Stack direction="row" gap={1.5}>
+            <Stack alignItems="flex-start" direction="row" gap={1.5}>
+              {isAdmin && (
+                <Link passHref href={newGateUrl}>
+                  <Button variant="contained" startIcon={<Add />} size="small">
+                    Create a Gate
+                  </Button>
+                </Link>
+              )}
               <ChipDropdown
                 label="Categories"
                 values={availableFilters}

@@ -30,21 +30,19 @@ export function OverviewTab({ people, setTab }: Props) {
 
   const newGateUrl = `${ROUTES.GATE_NEW}?dao=${dao?.id}`;
 
-  const newGateLink = (
-    <Link key="create-gate" passHref href={newGateUrl}>
-      <EmptyCard
-        title="Create Gate"
-        subtitle="Create your first Gate and help talents find you"
-        component="a"
-        sx={{ minHeight: 440 }}
-      />
-    </Link>
-  );
-
   const gateList = useMemo(() => {
     if (!gates.length) {
       return isAdmin
-        ? [newGateLink]
+        ? [
+            <Link key="create-gate" passHref href={newGateUrl}>
+              <EmptyCard
+                title="Create Gate"
+                subtitle="Create your first Gate and help talents find you"
+                component="a"
+                sx={{ minHeight: 440 }}
+              />
+            </Link>,
+          ]
         : [
             <EmptyCard
               key="empty"
@@ -56,10 +54,8 @@ export function OverviewTab({ people, setTab }: Props) {
           ];
     }
 
-    const cards = gates.map((gate) => <GatesCard key={gate.id} {...gate} />);
-
-    return isAdmin ? [newGateLink, ...cards.slice(0, 2)] : cards;
-  }, [gates]);
+    return gates.map((gate) => <GatesCard key={gate.id} {...gate} />);
+  }, [gates, isAdmin, newGateUrl]);
 
   return (
     <Stack
