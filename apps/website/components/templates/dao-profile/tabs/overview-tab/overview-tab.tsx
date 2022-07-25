@@ -1,5 +1,6 @@
 import useTranslation from 'next-translate/useTranslation';
 import Link from 'next/link';
+import { useMemo } from 'react';
 
 import { PartialDeep } from 'type-fest';
 
@@ -28,6 +29,37 @@ export function OverviewTab({ people, setTab }: Props) {
   const gates = dao?.gates ?? [];
 
   const newGateUrl = `${ROUTES.GATES_NEW}?dao=${dao?.id}`;
+
+  const newGateLink = (
+    <Link key="create-gate" passHref href={newGateUrl}>
+      <EmptyCard
+        title="Create Gate"
+        subtitle="Create your first Gate and help talents find you"
+        component="a"
+        sx={{ height: 440 }}
+      />
+    </Link>
+  );
+
+  const gateList = useMemo(() => {
+    if (!gates.length) {
+      return isAdmin
+        ? [newGateLink]
+        : [
+            <EmptyCard
+              key="empty"
+              title="No Gates yet"
+              subtitle="Follow us and get notificatons when a new Gate is created"
+              disabled
+              sx={{ height: 440 }}
+            />,
+          ];
+    }
+
+    const cards = gates.map((gate) => <GatesCard key={gate.id} {...gate} />);
+
+    return isAdmin ? [newGateLink, ...cards.slice(0, 2)] : cards;
+  }, [gates]);
 
   return (
     <Stack
@@ -60,29 +92,7 @@ export function OverviewTab({ people, setTab }: Props) {
           itemWidth={(theme) => theme.spacing(37.75)}
           gridSize={{ lg: 4 }}
         >
-          {gates.length > 0
-            ? gates.map((gate) => <GatesCard key={gate.id} {...gate} />)
-            : [
-                !isAdmin && (
-                  <EmptyCard
-                    key="empty"
-                    title="No Gates yet"
-                    subtitle="Follow us and get notificatons when a new Gate is created"
-                    disabled
-                    sx={{ height: 440 }}
-                  />
-                ),
-                isAdmin && (
-                  <Link key="create-gate" passHref href={newGateUrl}>
-                    <EmptyCard
-                      title="Create Gate"
-                      subtitle="Create your first Gate and help talents find you"
-                      component="a"
-                      sx={{ height: 440 }}
-                    />
-                  </Link>
-                ),
-              ]}
+          {gateList}
         </SectionWithSliderResponsive>
         <SectionWithGrid
           title={t('common:featured-people.title')}

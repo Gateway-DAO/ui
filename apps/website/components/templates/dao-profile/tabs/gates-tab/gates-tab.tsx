@@ -36,6 +36,17 @@ export function GatesTab() {
   } = usePropertyFilter(gates.data?.daos_by_pk?.gates ?? [], 'categories');
   const newGateUrl = `${ROUTES.GATES_NEW}?dao=${dao?.id}`;
 
+  const newGateCard = (
+    <Link key="create-gate" passHref href={newGateUrl}>
+      <EmptyCard
+        title="Create Gate"
+        subtitle="Create your first Gate and help talents find you"
+        component="a"
+        sx={{ height: 440, maxWidth: { md: '25%' } }}
+      />
+    </Link>
+  );
+
   return (
     <Box sx={{ py: 4 }}>
       {gates.isSuccess && gates.data.daos_by_pk.gates.length > 0 && (
@@ -99,16 +110,7 @@ export function GatesTab() {
                 sx={{ height: 440, maxWidth: { md: '25%' } }}
               />
             ),
-            isAdmin && (
-              <Link key="create-gate" passHref href={newGateUrl}>
-                <EmptyCard
-                  title="Create Gate"
-                  subtitle="Create your first Gate and help talents find you"
-                  component="a"
-                  sx={{ height: 440, maxWidth: { md: '25%' } }}
-                />
-              </Link>
-            ),
+            isAdmin && newGateCard,
           ]}
         </Stack>
       )}
