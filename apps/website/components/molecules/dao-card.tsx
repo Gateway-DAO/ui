@@ -87,8 +87,6 @@ export function DaoCard({
             }}
             title={name}
             titleTypographyProps={{ variant: 'h6' }}
-            subheader="September 14, 2016"
-            subheaderTypographyProps={{ variant: 'body2' }}
           />
           <CardContent sx={{ py: 1 }}>
             <Typography
@@ -124,7 +122,7 @@ export function DaoCard({
           sx={{
             zIndex: 1,
             position: 'absolute',
-            top: (theme) => theme.spacing(21.5),
+            top: (theme) => theme.spacing(20.5),
             right: (theme) => theme.spacing(2),
           }}
         />
