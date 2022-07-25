@@ -52,7 +52,7 @@ const TaskArea = () => {
           />
         );
       })}
-      <AddTaskCard addTask={addTask} />
+      <AddTaskCard numberOfTasks={tasks.data.length} addTask={addTask} />
     </>
   );
 };

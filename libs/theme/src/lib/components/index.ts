@@ -6,6 +6,8 @@ export * from './dialog';
 export * from './app-bar';
 export * from './paper';
 export * from './input-adornment';
+export * from './input-base';
 export * from './input-label';
 export * from './tab';
 export * from './table';
+export * from './snackbar';

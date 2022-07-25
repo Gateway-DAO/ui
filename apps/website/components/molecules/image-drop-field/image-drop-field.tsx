@@ -1,11 +1,10 @@
-import { ChangeEvent, ReactNode, useEffect, useRef } from 'react';
+import { ChangeEvent, ReactNode, useRef } from 'react';
 
 import { Control, FieldValues, Path, useController } from 'react-hook-form';
 import { useDropArea } from 'react-use';
 
-import { Snackbar } from '@mui/material';
+import { Alert, Snackbar } from '@mui/material';
 
-import { useSnackbar } from '../../../hooks/use-snackbar';
 import { BackgroundImage } from './background-image';
 import { Container } from './container';
 import EditDropdownMenu from './edit-dropdown-menu';
@@ -38,13 +37,6 @@ export function ImageDropField<TFormSchema extends FieldValues = FieldValues>({
 
   const inputRef = useRef<HTMLInputElement>(null);
   const imageCropDialog = useImageCropState();
-  const snackbar = useSnackbar();
-
-  useEffect(() => {
-    if (error?.message) {
-      snackbar.onOpen({ message: error.message });
-    }
-  }, [error, snackbar.open]);
 
   const readFiles = (files: FileList | File[]) => {
     /* TODO: Mimetype validation */
@@ -130,16 +122,11 @@ export function ImageDropField<TFormSchema extends FieldValues = FieldValues>({
           cropRatio={cropRatio}
         />
       )}
-      <Snackbar
-        anchorOrigin={{
-          vertical: snackbar.vertical,
-          horizontal: snackbar.horizontal,
-        }}
-        open={snackbar.open}
-        onClose={snackbar.handleClose}
-        message={snackbar.message}
-        key={name + 'snackbar'}
-      />
+      <Snackbar open={!!error} autoHideDuration={2000}>
+        <Alert severity="error" sx={{ width: '100%' }}>
+          {error?.message}
+        </Alert>
+      </Snackbar>
     </>
   );
 }

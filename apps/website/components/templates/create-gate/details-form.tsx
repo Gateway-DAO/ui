@@ -70,9 +70,8 @@ export function GateDetailsForm() {
         sx={{
           width: '100%',
         }}
-        set={(created_by: Creator[]) => {
-          setValue('created_by', created_by);
-        }}
+        defaultValue={{}}
+        set={(created_by: Creator[]) => setValue('created_by', created_by)}
       />
     </Stack>
   );
