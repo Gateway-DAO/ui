@@ -19,8 +19,9 @@ export function SocialButtons({ socials }: Props) {
           key={network}
           sx={{
             p: 0,
+            mr: 1,
           }}
-          //onClick={onShare}
+          onClick={() => window.open(url, '_blank')}
         >
           <Avatar>
             <SocialIcon
@@ -30,7 +31,6 @@ export function SocialButtons({ socials }: Props) {
                 marginTop: '0px',
                 color: '#E5E5E5',
               }}
-              onClick={() => window.open(url, '_blank')}
             />
           </Avatar>
         </IconButton>
