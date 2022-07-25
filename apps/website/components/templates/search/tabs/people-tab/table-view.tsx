@@ -1,3 +1,5 @@
+import { useRouter } from 'next/router';
+
 import { PartialDeep } from 'type-fest';
 
 import { TOKENS } from '@gateway/theme';
@@ -10,6 +12,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 
+import { ROUTES } from '../../../../../constants/routes';
 import { Users } from '../../../../../services/graphql/types.generated';
 import { FollowButtonUser } from '../../../../atoms/follow-button-user';
 
@@ -17,7 +20,10 @@ type Props = {
   people: PartialDeep<Users>[];
 };
 
+// TODO: improve TableCell click behavior and UX
 export function TableView({ people }: Props) {
+  const router = useRouter();
+
   return (
     <TableContainer
       sx={{
@@ -40,7 +46,19 @@ export function TableView({ people }: Props) {
           {people.map((user) => {
             return (
               <TableRow hover role="checkbox" tabIndex={-1} key={user.id}>
-                <TableCell>
+                <TableCell
+                  onClick={() =>
+                    router.push({
+                      pathname: ROUTES.PROFILE,
+                      query: {
+                        username: user.username,
+                      },
+                    })
+                  }
+                  sx={{
+                    cursor: 'pointer',
+                  }}
+                >
                   <Stack alignItems="center" direction="row" gap={1}>
                     <Avatar variant="circular" src={user.pfp}>
                       {user.name?.[0]}

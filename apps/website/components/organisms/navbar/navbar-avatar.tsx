@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import { useCallback } from 'react';
 
 import { useMenu } from '@gateway/ui';
@@ -11,12 +12,15 @@ import MenuItem from '@mui/material/MenuItem';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 
+import { ROUTES } from '../../../constants/routes';
 import { useAuth } from '../../../providers/auth';
+import { AvatarFile } from '../../atoms/avatar-file';
 
 /* TODO: Refactor */
 
 export function NavBarAvatar() {
   const { element, isOpen, onClose, onOpen, withOnClose } = useMenu();
+  const router = useRouter();
 
   const { onSignOut, me } = useAuth();
 
@@ -49,9 +53,13 @@ export function NavBarAvatar() {
               },
             }}
           >
-            <Avatar aria-label={me?.name} src={me?.pfp}>
+            <AvatarFile
+              aria-label={me?.name}
+              file={me?.picture}
+              fallback={me?.pfp}
+            >
               {me?.name?.[0]}
-            </Avatar>
+            </AvatarFile>
           </Badge>
         </IconButton>
       </Tooltip>
@@ -77,6 +85,12 @@ export function NavBarAvatar() {
             Portuguese (Brazil)
           </MenuItem>
         </NestedMenuItem> */}
+        <MenuItem
+          key="view-profile"
+          onClick={() => router.push(ROUTES.MY_PROFILE)}
+        >
+          <Typography textAlign="center">Profile</Typography>
+        </MenuItem>
         <MenuItem key="disconnect" onClick={withOnClose(onSignOut)}>
           <Typography textAlign="center">Disconnect</Typography>
         </MenuItem>
