@@ -3,6 +3,7 @@ import { useState } from 'react';
 
 import { PartialDeep } from 'type-fest';
 
+import ViewInArIcon from '@mui/icons-material/ViewInAr';
 import {
   Avatar,
   AvatarGroup,
@@ -12,8 +13,10 @@ import {
   Typography,
   Box,
   Divider,
+  Button,
 } from '@mui/material';
 
+import { useMint } from '../../../hooks/use-mint';
 import { Gates } from '../../../services/graphql/types.generated';
 import CircularProgressWithLabel from '../../atoms/circular-progress-label';
 import GateCompletedModal from '../../organisms/gates/view/modals/gate-completed';
@@ -25,6 +28,8 @@ type Props = {
 
 export function GateViewTemplate({ gate }: Props) {
   const { t } = useTranslation();
+
+  const { mint } = useMint();
 
   const [open, setOpen] = useState(false);
 
@@ -77,6 +82,15 @@ export function GateViewTemplate({ gate }: Props) {
         <Typography variant="body1" marginBottom={(theme) => theme.spacing(4)}>
           {gate.description}
         </Typography>
+        <Button
+          fullWidth
+          variant="contained"
+          sx={{ marginBottom: 4 }}
+          startIcon={<ViewInArIcon />}
+          onClick={() => mint()}
+        >
+          Mint as NFT
+        </Button>
 
         <Box
           component="img"
