@@ -1,6 +1,6 @@
 import { Button, Stack, Typography } from '@mui/material';
 
-const SnapshotContent = ({ data, completeTask }) => {
+const SnapshotContent = ({ data, completed, updatedAt, completeTask }) => {
   const { proposal_number, space_id } = data;
 
   return (
@@ -13,13 +13,19 @@ const SnapshotContent = ({ data, completeTask }) => {
         {space_id}
       </Typography>
       <Typography variant="caption">Space ID</Typography>
-      <Button
-        variant="contained"
-        sx={{ marginTop: '15px' }}
-        onClick={() => completeTask({})}
-      >
-        Check Snapshot
-      </Button>
+      {completed ? (
+        <Typography color="#c5ffe3" variant="subtitle2">
+          Task completed at {updatedAt}
+        </Typography>
+      ) : (
+        <Button
+          variant="contained"
+          sx={{ marginTop: '15px' }}
+          onClick={() => completeTask({})}
+        >
+          Check Snapshot
+        </Button>
+      )}
     </Stack>
   );
 };

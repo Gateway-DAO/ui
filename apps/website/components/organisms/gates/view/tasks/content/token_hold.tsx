@@ -1,6 +1,6 @@
 import { Button, Stack, Typography } from '@mui/material';
 
-const TokenHoldContent = ({ data, completeTask }) => {
+const TokenHoldContent = ({ data, completed, updatedAt, completeTask }) => {
   const { chain, token_address, quantity } = data;
   const uppercaseChain = chain.charAt(0).toUpperCase() + chain.slice(1);
 
@@ -18,13 +18,19 @@ const TokenHoldContent = ({ data, completeTask }) => {
         {quantity}
       </Typography>
       <Typography variant="caption">Quantity</Typography>
-      <Button
-        variant="contained"
-        sx={{ marginTop: '15px' }}
-        onClick={() => completeTask({})}
-      >
-        Check Token
-      </Button>
+      {completed ? (
+        <Typography color="#c5ffe3" variant="subtitle2">
+          Task completed at {updatedAt}
+        </Typography>
+      ) : (
+        <Button
+          variant="contained"
+          sx={{ marginTop: '15px' }}
+          onClick={() => completeTask({})}
+        >
+          Check Token
+        </Button>
+      )}
     </Stack>
   );
 };
