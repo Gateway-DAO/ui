@@ -9,27 +9,37 @@ import { CreateGateTypes } from '../../templates/create-gate/schema';
 const TaskArea = () => {
   const [tasksCount, setTasksCount] = useState(0);
   const [tasks, setTasks] = useState({ data: [] });
-
-  const { setValue } = useFormContext<CreateGateTypes>();
+  const {
+    register,
+    setValue,
+    getValues,
+    trigger,
+    formState: { errors },
+    control,
+  } = useFormContext<CreateGateTypes>();
 
   const addTask = (task_component, task_type, object = {}) => {
-    const taskData = {
-      data: [
-        ...tasks.data,
-        {
-          id: tasksCount,
-          title: '',
-          description: '',
-          task_type,
-          task_data: {},
-          task_component,
-          ...object,
-        },
-      ],
-    };
+    trigger(`tasks.data.${tasksCount}.task_data`);
+    console.log(errors);
+    if (Object.keys(errors).length === 0) {
+      const taskData = {
+        data: [
+          ...tasks.data,
+          {
+            id: tasksCount,
+            title: '',
+            description: '',
+            task_type,
+            task_data: {},
+            task_component,
+            ...object,
+          },
+        ],
+      };
 
-    setTasksCount(tasksCount + 1);
-    setTasks(taskData);
+      setTasksCount(tasksCount + 1);
+      setTasks(taskData);
+    }
   };
 
   const deleteTask = (index: number) => {

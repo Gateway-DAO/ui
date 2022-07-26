@@ -174,7 +174,7 @@ export function QuizTask({
           sx={{ px: 0 }}
           onClick={() => {
             trigger(`tasks.data.${taskId}.task_data.questions`);
-            if (!errors) {
+            if (Object.keys(errors).length === 0) {
               return append(DEFAULT_QUESTION());
             }
           }}
