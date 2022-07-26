@@ -1,9 +1,9 @@
 import { PartialDeep } from 'type-fest';
 
-import { MeQuery, LoginMutation } from '../services/graphql/types.generated';
+import { MeQuery } from '../services/graphql/types.generated';
 
 export type SessionUser = PartialDeep<
-  Omit<MeQuery['me'] & LoginMutation['login'], '__typename'> & {
+  Omit<MeQuery['me'], '__typename'> & {
     __typename?: any;
   }
 >;

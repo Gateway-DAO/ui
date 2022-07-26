@@ -9,7 +9,6 @@ import { Box, Divider, Snackbar, Stack, Typography } from '@mui/material';
 import { ROUTES } from '../../../constants/routes';
 import { useSnackbar } from '../../../hooks/use-snackbar';
 import { useAuth } from '../../../providers/auth';
-import { gqlMethods } from '../../../services/api';
 import { CreateNavbar } from '../../organisms/create-navbar/create-navbar';
 import TaskArea from '../../organisms/tasks-area/tasks-area';
 import { GateDetailsForm } from './details-form';
@@ -24,16 +23,16 @@ export function CreateGateTemplate() {
   const snackbar = useSnackbar();
 
   const router = useRouter();
-  const { me } = useAuth();
+  const { gqlAuthMethods } = useAuth();
 
   const { mutate: uploadImage } = useMutation(
     'uploadImage',
-    !!me && gqlMethods(me).upload_image
+    gqlAuthMethods.upload_image
   );
 
   const { mutate: createGateMutation } = useMutation(
     'createGate',
-    !!me && gqlMethods(me).create_gate
+    gqlAuthMethods.create_gate
   );
 
   const createGate = (gateData: CreateGateTypes) => {

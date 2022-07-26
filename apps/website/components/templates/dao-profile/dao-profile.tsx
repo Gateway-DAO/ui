@@ -1,12 +1,9 @@
 import useTranslation from 'next-translate/useTranslation';
 
-import { useQuery } from 'react-query';
-
 import { TOKENS } from '@gateway/theme';
 
 import { Box, Tabs, Tab } from '@mui/material';
 
-import { gqlAnonMethods } from '../../../services/api';
 import { a11yTabProps, TabPanel, useTab } from '../../atoms/tabs';
 import { useDaoProfile } from './context';
 import { DaoHeader } from './dao-header';
