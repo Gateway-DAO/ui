@@ -85,6 +85,11 @@ export function Task({ task, idx }: Props) {
           title: 'Quiz',
           body: QuizContent,
         };
+      default:
+        return {
+          title: '',
+          body: null,
+        };
     }
   };
 
