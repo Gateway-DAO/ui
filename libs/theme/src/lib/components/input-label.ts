@@ -10,5 +10,10 @@ export const MuiInputLabel: Extract<
 >['MuiInputLabel'] = {
   defaultProps: {
     required: false,
+    sx: {
+      '&.Mui-focused, &.MuiFormLabel-filled, &.MuiInputLabel-shrink': {
+        textTransform: 'uppercase',
+      },
+    },
   },
 };

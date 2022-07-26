@@ -10,6 +10,11 @@ export const SkillsInput = ({ set, ...props }) => {
       id="skills-input"
       options={skills}
       popupIcon={<Search />}
+      sx={{
+        '&.Mui-focused .MuiButtonBase-root': {
+          transform: 'none',
+        },
+      }}
       renderTags={(value: string[], getTagProps) =>
         value.map((option: string, index: number) => (
           <Chip

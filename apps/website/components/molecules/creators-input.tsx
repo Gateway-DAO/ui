@@ -13,6 +13,11 @@ export const CreatedByInput = ({ set, ...props }) => {
       id="created_by-input"
       options={creators.map((creator) => creator.name)}
       popupIcon={<Search />}
+      sx={{
+        '&.Mui-focused .MuiButtonBase-root': {
+          transform: 'none',
+        },
+      }}
       renderTags={(value: string[], getTagProps) =>
         value.map((option: string, index: number) => (
           <Chip
@@ -26,6 +31,7 @@ export const CreatedByInput = ({ set, ...props }) => {
       renderInput={(params) => (
         <TextField {...params} label="Created By" id="created_by" {...props} />
       )}
+      defaultValue={[creators[0].name]}
       onChange={(event) => set(creators)}
     />
   );

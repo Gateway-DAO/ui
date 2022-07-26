@@ -10,6 +10,11 @@ export const CategoriesInput = ({ set, ...props }) => {
       id="categories-input"
       options={categories}
       popupIcon={<Search />}
+      sx={{
+        '&.Mui-focused .MuiButtonBase-root': {
+          transform: 'none',
+        },
+      }}
       renderTags={(value: string[], getTagProps) =>
         value.map((option: string, index: number) => (
           <Chip

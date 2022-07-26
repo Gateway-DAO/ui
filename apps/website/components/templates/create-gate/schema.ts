@@ -245,7 +245,7 @@ export const createGateSchema = z.object({
   title: z.string().min(2),
   categories: z.array(z.string()),
   description: z.string().min(2),
-  image: z.string().min(2),
+  image: z.string({ required_error: 'Image is required' }).min(2),
   skills: z.array(z.string()),
   created_by: z.array(
     z.object({
