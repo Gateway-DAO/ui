@@ -177,17 +177,21 @@ export function GateViewTemplate({ gate }: Props) {
               />
             ))}
           </Grid>
-          {/* <Grid item xs={4}>
-            <Typography
-              variant="body2"
-              color={(theme) => theme.palette.text.secondary}
-            >
-              Created By
-            </Typography>
-          </Grid>
-          <Grid item xs={8}>
-            <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
-          </Grid> */}
+          {gate.creator && (
+            <>
+              <Grid item xs={4}>
+                <Typography
+                  variant="body2"
+                  color={(theme) => theme.palette.text.secondary}
+                >
+                  Created By
+                </Typography>
+              </Grid>
+              <Grid item xs={8}>
+                <Avatar alt={gate.creator?.username} src={gate.creator?.pfp} />
+              </Grid>
+            </>
+          )}
         </Grid>
       </Grid>
       <Divider orientation="vertical" flexItem />
