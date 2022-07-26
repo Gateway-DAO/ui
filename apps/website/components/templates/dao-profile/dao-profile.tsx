@@ -14,8 +14,7 @@ import { GatesTab, OverviewTab } from './tabs';
 import { PeopleTab } from './tabs/people-tab';
 
 export function DaoProfileTemplate() {
-  const { dao, followers, onRefetchFollowers, followersIsLoaded } =
-    useDaoProfile();
+  const { followers, onRefetchFollowers, followersIsLoaded } = useDaoProfile();
   const { t } = useTranslation();
   const { activeTab, handleTabChange, setTab } = useTab();
 
