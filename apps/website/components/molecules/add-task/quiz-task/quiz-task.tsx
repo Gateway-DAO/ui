@@ -28,6 +28,7 @@ export function QuizTask({
     register,
     setValue,
     getValues,
+    trigger,
     formState: { errors },
     control,
   } = useFormContext<CreateGateTypes>();
@@ -171,7 +172,12 @@ export function QuizTask({
         <Button
           variant="text"
           sx={{ px: 0 }}
-          onClick={() => append(DEFAULT_QUESTION())}
+          onClick={() => {
+            trigger(`tasks.data.${taskId}.task_data.questions`);
+            if (!errors) {
+              return append(DEFAULT_QUESTION());
+            }
+          }}
         >
           Add question
         </Button>
