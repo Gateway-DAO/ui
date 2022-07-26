@@ -106,7 +106,7 @@ export default function PrivateProfileTemplate() {
         ></AvatarFile>
         <Box>
           <Typography
-            sx={{ color: '#fff', marginTop: { xs: '16px', md: '24px' } , paddingTop : '24px' }}
+            sx={{ color: '#fff', paddingTop: { xs: '16px', md: '24px' } }}
             component="h1"
             variant="h4"
           >
