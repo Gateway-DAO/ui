@@ -122,25 +122,36 @@ export function GateViewTemplate({ gate }: Props) {
         />
 
         <Grid container rowGap={(theme) => theme.spacing(3)}>
-          <Grid item xs={4}>
-            <Typography
-              variant="body2"
-              color={(theme) => theme.palette.text.secondary}
-            >
-              Holders
-            </Typography>
-          </Grid>
-          <Grid item xs={8}>
-            <AvatarGroup
-              total={5}
-              sx={{
-                justifyContent: 'flex-end',
-              }}
-            >
-              <Avatar alt={gate.dao.name} src={gate.image} />
-              <Avatar alt={gate.dao.name} src={gate.image} />
-            </AvatarGroup>
-          </Grid>
+          {gate.holders.length > 0 && (
+            <>
+              <Grid item xs={4}>
+                <Typography
+                  variant="body2"
+                  color={(theme) => theme.palette.text.secondary}
+                >
+                  Holders
+                </Typography>
+              </Grid>
+              <Grid item xs={8}>
+                <AvatarGroup
+                  total={5}
+                  sx={{
+                    justifyContent: 'flex-end',
+                  }}
+                >
+                  {gate.holders.map((holder) => {
+                    return (
+                      <Avatar
+                        key={holder.id}
+                        alt={holder.username}
+                        src={holder.pfp}
+                      />
+                    );
+                  })}
+                </AvatarGroup>
+              </Grid>
+            </>
+          )}
           <Grid item xs={4}>
             <Typography
               variant="body2"

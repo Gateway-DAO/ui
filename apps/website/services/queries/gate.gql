@@ -21,6 +21,11 @@ query gate($id: uuid!) {
     published
     links
     image
+    holders {
+      id
+      username
+      pfp
+    }
     dao {
       id
       name
