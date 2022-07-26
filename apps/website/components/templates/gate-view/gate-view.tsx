@@ -36,22 +36,28 @@ export function GateViewTemplate({ gate }: Props) {
 
   const [open, setOpen] = useState(false);
   const [gateCompleted, setGateCompleted] = useState(false);
+  const [completedTasksCount, setCompletedTasksCount] = useState(0);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  const countSimiliarIds = (arr1: string[], arr2: string[]) => {
+    return arr1.filter((id) => arr2.includes(id)).length;
+  };
+
   useEffect(() => {
     const completedTaskIds = me?.task_progresses.map((task) => task.task_id);
-
     const allCompleted = taskIds.every((taskId) => {
       return completedTaskIds.includes(taskId);
     });
+
+    setCompletedTasksCount(countSimiliarIds(completedTaskIds, taskIds));
 
     if (allCompleted) {
       setGateCompleted(true);
       handleOpen();
     }
-  }, [taskIds, me?.task_progresses]);
+  }, [taskIds, me?.task_progresses, completedTasksCount]);
 
   return (
     <Grid container height="100%">
@@ -171,6 +177,17 @@ export function GateViewTemplate({ gate }: Props) {
               />
             ))}
           </Grid>
+          {/* <Grid item xs={4}>
+            <Typography
+              variant="body2"
+              color={(theme) => theme.palette.text.secondary}
+            >
+              Created By
+            </Typography>
+          </Grid>
+          <Grid item xs={8}>
+            <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
+          </Grid> */}
         </Grid>
       </Grid>
       <Divider orientation="vertical" flexItem />
@@ -184,8 +201,8 @@ export function GateViewTemplate({ gate }: Props) {
         >
           <CircularProgressWithLabel
             variant="determinate"
-            value={(3 / gate.tasks.length) * 100}
-            label={`3/${gate.tasks.length}`}
+            value={(completedTasksCount / gate.tasks.length) * 100}
+            label={`${completedTasksCount}/${gate.tasks.length}`}
           />
           <Stack
             sx={{
