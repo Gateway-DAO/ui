@@ -6,8 +6,8 @@ export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       refetchOnMount: true,
-      refetchOnReconnect: false,
-      refetchOnWindowFocus: false,
+      refetchOnReconnect: true,
+      refetchOnWindowFocus: true,
     },
   },
 });
