@@ -15,10 +15,13 @@ export default function DaoProfilePage({
   daoProps,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
   const router = useRouter();
+
+  const id = router.query.id as string;
+
   const { me } = useAuth();
 
   const { data } = useQuery(
-    ['dao', router.query.id],
+    ['dao', id],
     () =>
       gqlAnonMethods.dao_profile({
         id: router.query.id as string,
@@ -30,14 +33,12 @@ export default function DaoProfilePage({
 
   const { daos_by_pk: dao } = data ?? {};
 
-  const id = dao?.id ?? daoProps?.daos_by_pk?.id;
-
   const isAdmin =
-    me?.following_dao?.find((fdao) => fdao.dao_id === dao?.id)?.dao?.is_admin ??
+    me?.following_dao?.find((fdao) => fdao.dao_id === id)?.dao?.is_admin ??
     false;
 
   const peopleQuery = useQuery(
-    ['dao-people', dao.id],
+    ['dao-people', id],
     () => gqlAnonMethods.dao_profile_people({ id }),
     { enabled: !!id }
   );
