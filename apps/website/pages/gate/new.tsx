@@ -7,13 +7,18 @@ import { ROUTES } from '../../constants/routes';
 export default function CreateGate() {
   const router = useRouter();
 
+  const {
+    isReady,
+    query: { dao },
+  } = router;
+
   useEffect(() => {
-    if (!router.query.dao) {
+    if (isReady && !dao) {
       router.replace(ROUTES.EXPLORE);
     }
-  }, []);
+  }, [dao, isReady]);
 
-  if (!router.query.dao) {
+  if (!dao) {
     return null;
   }
 
