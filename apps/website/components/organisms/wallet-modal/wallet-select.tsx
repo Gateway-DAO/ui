@@ -90,7 +90,7 @@ export function WalletSelect({ onFaq, onSubmit, onCancel }: Props) {
           })}
         </Stack>
       </DialogContent>
-      <DialogActions>
+      <DialogActions sx={{ paddingBottom: '24px' }}>
         <Button onClick={onCancel} variant="outlined" size="small" fullWidth>
           {t('common:actions.cancel')}
         </Button>
