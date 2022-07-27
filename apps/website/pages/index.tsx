@@ -43,15 +43,14 @@ export default function Index() {
     <>
       <LandingTemplate
         signUpButton={
-          <Link passHref href="/home">
-            <Button
-              variant="contained"
-              size="large"
-              sx={{ whiteSpace: 'nowrap', height: '56px' }}
-            >
-              {t('signUp')}
-            </Button>
-          </Link>
+          <Button
+            variant="contained"
+            size="large"
+            sx={{ whiteSpace: 'nowrap', height: '56px' }}
+            onClick={onOpenLogin}
+          >
+            {t('signUp')}
+          </Button>
         }
         theGatewayContent={theGatewayContent}
         buildAppsContent={buildAppsContent}
