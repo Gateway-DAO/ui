@@ -1,8 +1,11 @@
 import { PropsWithChildren } from 'react';
 
+import { useFormContext } from 'react-hook-form';
 import { DropAreaBond } from 'react-use/lib/useDrop';
 
 import { Box } from '@mui/material';
+
+import { CreateGateTypes } from '../../templates/create-gate/schema';
 type Props = {
   hasImage?: boolean;
   isOver?: boolean;
@@ -17,6 +20,9 @@ export function Container({
   isOver,
   label,
 }: PropsWithChildren<Props>) {
+  const {
+    formState: { errors },
+  } = useFormContext<CreateGateTypes>();
   return (
     <Box
       component="label"
@@ -32,8 +38,9 @@ export function Container({
           transition: 'background-color 0.2s ease-in-out',
         },
         !hasImage && {
-          border: '1px dashed',
-          borderColor: (theme) => theme.palette.primary.main,
+          border: errors.image ? '1px solid' : '1px dashed',
+          borderColor: (theme) =>
+            errors.image ? 'red' : theme.palette.primary.main,
         },
         isOver && {
           backgroundColor: 'rgba(0, 0, 0, 0.2)',

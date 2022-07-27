@@ -19,6 +19,7 @@ export function CreateGateTemplate() {
   const methods = useForm({
     resolver: zodResolver(createGateSchema),
   });
+  const values = methods.getValues();
 
   const snackbar = useSnackbar();
 
@@ -107,7 +108,7 @@ export function CreateGateTemplate() {
         gap={2}
         sx={{
           width: '100%',
-          display: { xs: 'block', md: 'flex' },
+          flexDirection: { xs: 'column', md: 'row' },
         }}
       >
         <Box>
@@ -119,9 +120,11 @@ export function CreateGateTemplate() {
           </Typography>
         </Box>
         <Stack
-          direction="column"
           gap={7.5}
-          sx={{ maxWidth: { xs: '100%', md: '50%', lg: '40%' }, width: '100%' }}
+          sx={{
+            maxWidth: { xs: '100%', md: '50%', lg: '40%' },
+            width: '100%',
+          }}
         >
           <Stack direction="column" gap={4}>
             <FormProvider {...methods}>
@@ -133,39 +136,43 @@ export function CreateGateTemplate() {
         <FormProvider {...methods}>
           <GateImageCard
             sx={{
-              display: { xs: 'none', md: 'flex' },
               width: 400,
             }}
           />
         </FormProvider>
       </Stack>
-      <Divider sx={{ margin: '60px 0' }} />
 
       {/* Tasks */}
-      <Stack
-        direction="row"
-        gap={2}
-        sx={{
-          width: '100%',
-          display: { xs: 'block', md: 'flex' },
-        }}
-      >
-        <Box>
-          <Typography component="h2" variant="h5">
-            Tasks
-          </Typography>
-          <Typography component="p" variant="caption">
-            Lorem ipsum dolor sit amet
-          </Typography>
-        </Box>
-        <Stack direction="column" sx={{ margin: 'auto' }}>
-          <Stack direction="column" gap={2}>
-            <FormProvider {...methods}>
-              <TaskArea />
-            </FormProvider>
+      {values.title && values.description && (
+        <>
+          <Divider sx={{ margin: '60px 0' }} />
+          <Stack
+            direction="row"
+            gap={2}
+            sx={{
+              width: '100%',
+              display: { xs: 'block', md: 'flex' },
+            }}
+          >
+            <Box>
+              <Typography component="h2" variant="h5">
+                Tasks
+              </Typography>
+              <Typography component="p" variant="caption">
+                Lorem ipsum dolor sit amet
+              </Typography>
+            </Box>
+            <Stack direction="column" sx={{ margin: 'auto' }}>
+              <Stack direction="column" gap={2}>
+                <FormProvider {...methods}>
+                  <TaskArea />
+                </FormProvider>
+              </Stack>
+            </Stack>
           </Stack>
-        </Stack>
-      </Stack>
+        </>
+      )}
+
       <Snackbar
         anchorOrigin={{
           vertical: snackbar.vertical,

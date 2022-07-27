@@ -50,18 +50,18 @@ query dao_gates_tab($id: uuid!) {
 
 query dao_profile_people($id: uuid!) {
   daos_by_pk(id: $id) {
-    followers_aggregate(where: {status: {_eq: "following"}}) {
+    followers_aggregate(where: { status: { _eq: "following" } }) {
       aggregate {
         count
       }
     }
-    followers(where: {status: {_eq: "following"}}) {
+    followers(where: { status: { _eq: "following" } }) {
       user {
         id
         name
         username
         pfp
-        permissions(where: {dao_id: {_eq: $id}}) {
+        permissions(where: { dao_id: { _eq: $id } }) {
           permission
         }
       }
@@ -69,16 +69,24 @@ query dao_profile_people($id: uuid!) {
   }
 }
 
-mutation create_dao($logo_id: uuid!, $name: String!, $description: String!, $categories: jsonb!, $background_id: uuid!, $socials: [dao_socials_insert_input!]!) {
+mutation create_dao(
+  $logo_id: uuid!
+  $name: String!
+  $description: String!
+  $categories: jsonb!
+  $background_id: uuid!
+  $socials: [dao_socials_insert_input!]!
+) {
   insert_daos_one(
     object: {
-      logo_id: $logo_id,
-      name: $name,
-      description: $description,
-      categories: $categories,
-      background_id: $background_id,
-      socials: {data: $socials}}
-    ) {
+      logo_id: $logo_id
+      name: $name
+      description: $description
+      categories: $categories
+      background_id: $background_id
+      socials: { data: $socials }
+    }
+  ) {
     id
     logo_url
     name
@@ -89,8 +97,25 @@ mutation create_dao($logo_id: uuid!, $name: String!, $description: String!, $cat
   }
 }
 
-mutation edit_dao($id: uuid!, $logo_id: uuid!, $name: String!, $description: String!, $categories: jsonb!, $background_id: uuid!, $socials: [dao_socials_insert_input!]!) {
-  update_daos_by_pk(_set: {logo_id: $logo_id, name: $name, description: $description, categories: $categories, background_id: $background_id}, pk_columns: {id: $id}) {
+mutation edit_dao(
+  $id: uuid!
+  $logo_id: uuid!
+  $name: String!
+  $description: String!
+  $categories: jsonb!
+  $background_id: uuid!
+  $socials: [dao_socials_insert_input!]!
+) {
+  update_daos_by_pk(
+    _set: {
+      logo_id: $logo_id
+      name: $name
+      description: $description
+      categories: $categories
+      background_id: $background_id
+    }
+    pk_columns: { id: $id }
+  ) {
     id
     logo_url
     name
@@ -99,7 +124,7 @@ mutation edit_dao($id: uuid!, $logo_id: uuid!, $name: String!, $description: Str
       ...file
     }
   }
-  delete_dao_socials(where: {dao_id: {_eq: $id}}) {
+  delete_dao_socials(where: { dao_id: { _eq: $id } }) {
     affected_rows
   }
   insert_dao_socials(objects: $socials) {
@@ -107,14 +132,34 @@ mutation edit_dao($id: uuid!, $logo_id: uuid!, $name: String!, $description: Str
   }
 }
 
-mutation dao_set_user_admin($dao_id: uuid!, $user_id: uuid!, $permission: permission_types = "dao_admin") {
-  insert_permissions(objects: {dao_id: $dao_id, user_id: $user_id, permission: $permission}, on_conflict: {constraint: permissions_dao_id_user_id_credential_id_key, update_columns: [permission]}) {
+mutation dao_set_user_admin(
+  $dao_id: uuid!
+  $user_id: uuid!
+  $permission: permission_types = "dao_admin"
+) {
+  insert_permissions(
+    objects: { dao_id: $dao_id, user_id: $user_id, permission: $permission }
+    on_conflict: {
+      constraint: permissions_dao_id_user_id_credential_id_key
+      update_columns: [permission]
+    }
+  ) {
     affected_rows
   }
 }
 
-mutation dao_set_user_member($dao_id: uuid!, $user_id: uuid!, $permission: permission_types = "member") {
-  insert_permissions(objects: {dao_id: $dao_id, user_id: $user_id, permission: $permission}, on_conflict: {constraint: permissions_dao_id_user_id_credential_id_key, update_columns: [permission]}) {
+mutation dao_set_user_member(
+  $dao_id: uuid!
+  $user_id: uuid!
+  $permission: permission_types = "member"
+) {
+  insert_permissions(
+    objects: { dao_id: $dao_id, user_id: $user_id, permission: $permission }
+    on_conflict: {
+      constraint: permissions_dao_id_user_id_credential_id_key
+      update_columns: [permission]
+    }
+  ) {
     affected_rows
   }
 }
