@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 import { TOKENS } from '@gateway/theme';
 
 import { Avatar, Box, Stack, Typography } from '@mui/material';
@@ -8,6 +10,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 
+import { ROUTES } from '../../../../../constants/routes';
 import { FollowButtonUser } from '../../../../atoms/follow-button-user';
 import { ExploreProps } from '../../types';
 
@@ -37,27 +40,32 @@ export function TableView({ people }: Props) {
           {people.map((user) => {
             return (
               <TableRow hover role="checkbox" tabIndex={-1} key={user.id}>
-                <TableCell>
-                  <Stack alignItems="center" direction="row" gap={1}>
-                    <Avatar variant="circular" src={user.pfp}>
-                      {user.name?.[0]}
-                    </Avatar>
-                    <Box>
-                      <Typography>{user.name}</Typography>
-                      <Typography
-                        variant="caption"
-                        color="text.secondary"
-                        sx={{
-                          textOverflow: 'ellipsis',
-                          overflow: 'hidden',
-                          whiteSpace: 'nowrap',
-                        }}
-                      >
-                        @{user.username}
-                      </Typography>
-                    </Box>
-                  </Stack>
-                </TableCell>
+                <Link
+                  passHref
+                  href={ROUTES.PROFILE.replace('[username]', user.username)}
+                >
+                  <TableCell sx={{ cursor: 'pointer' }}>
+                    <Stack alignItems="center" direction="row" gap={1}>
+                      <Avatar variant="circular" src={user.pfp}>
+                        {user.name?.[0]}
+                      </Avatar>
+                      <Box>
+                        <Typography>{user.name}</Typography>
+                        <Typography
+                          variant="caption"
+                          color="text.secondary"
+                          sx={{
+                            textOverflow: 'ellipsis',
+                            overflow: 'hidden',
+                            whiteSpace: 'nowrap',
+                          }}
+                        >
+                          @{user.username}
+                        </Typography>
+                      </Box>
+                    </Stack>
+                  </TableCell>
+                </Link>
 
                 <TableCell align="right">
                   <FollowButtonUser
