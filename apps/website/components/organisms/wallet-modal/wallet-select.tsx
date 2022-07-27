@@ -80,8 +80,8 @@ export function WalletSelect({ onFaq, onSubmit, onCancel }: Props) {
                 {icons[x.id]}
                 <Typography
                   component="span"
-                  variant="button"
-                  color="text.primary"
+                  variant="inherit"
+                  color="text.secondary"
                 >
                   {x.name}
                 </Typography>
