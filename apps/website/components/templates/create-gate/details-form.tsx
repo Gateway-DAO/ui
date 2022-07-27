@@ -29,6 +29,7 @@ export function GateDetailsForm() {
         name="categories"
         error={!!errors.categories}
         errors={errors.categories}
+        {...register('categories')}
         helperText={errors.categories && 'Invalid categories added'}
         sx={{
           width: '100%',
@@ -52,6 +53,7 @@ export function GateDetailsForm() {
         name="skills"
         error={!!errors.skills}
         errors={errors.skills}
+        {...register('skills')}
         helperText={errors.skills && 'Invalid skills added'}
         sx={{
           width: '100%',
@@ -64,6 +66,7 @@ export function GateDetailsForm() {
         label="Created By"
         id="created_by"
         name="created_by"
+        {...register('created_by')}
         error={!!errors.created_by}
         errors={errors.created_by}
         helperText={errors.created_by && 'Invalid creator added'}
