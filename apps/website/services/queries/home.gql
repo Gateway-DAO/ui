@@ -27,8 +27,10 @@ query get_home {
     background_url
     description
     categories
-    # gates {....}
-    # user is following ?
+    permissions {
+      user_id
+      permission
+    }
   }
   people: users(limit: 9) {
     id
@@ -71,6 +73,10 @@ query daos_tab {
     background_url
     description
     categories
+    permissions {
+      user_id
+      permission
+    }
   }
 }
 

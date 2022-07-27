@@ -12,6 +12,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 
 import { categoriesMap } from '../../../../../constants/dao';
+import { useAuth } from '../../../../../providers/auth';
 import { ROUTES } from '../../../../../constants/routes';
 import { AvatarFile } from '../../../../atoms/avatar-file';
 import { FollowButtonDAO } from '../../../../atoms/follow-button-dao';
@@ -24,6 +25,7 @@ type Props = {
   daos: ExploreProps['daos'];
 };
 export function TableView({ daos }: Props) {
+  const { me } = useAuth();
   return (
     <TableContainer
       sx={{
@@ -45,6 +47,11 @@ export function TableView({ daos }: Props) {
         </TableHead>
         <TableBody>
           {daos.map((dao) => {
+            const isAdmin = dao.permissions.some(
+              ({ user_id, permission }) =>
+                user_id === me?.id && permission === 'dao_admin'
+            );
+
             return (
               <TableRow hover role="checkbox" tabIndex={-1} key={dao.id}>
                 <Link
@@ -95,11 +102,13 @@ export function TableView({ daos }: Props) {
                   </Stack>
                 </TableCell>
                 <TableCell align="right">
-                  <FollowButtonDAO
-                    daoId={dao.id}
-                    variant="outlined"
-                    color="secondary"
-                  />
+                  {!isAdmin && (
+                    <FollowButtonDAO
+                      daoId={dao.id}
+                      variant="outlined"
+                      color="secondary"
+                    />
+                  )}
                 </TableCell>
               </TableRow>
             );

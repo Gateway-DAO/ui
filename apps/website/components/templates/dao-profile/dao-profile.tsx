@@ -1,12 +1,9 @@
 import useTranslation from 'next-translate/useTranslation';
 
-import { useQuery } from 'react-query';
-
 import { TOKENS } from '@gateway/theme';
 
 import { Box, Tabs, Tab } from '@mui/material';
 
-import { gqlAnonMethods } from '../../../services/api';
 import { a11yTabProps, TabPanel, useTab } from '../../atoms/tabs';
 import { useDaoProfile } from './context';
 import { DaoHeader } from './dao-header';
@@ -14,8 +11,7 @@ import { GatesTab, OverviewTab } from './tabs';
 import { PeopleTab } from './tabs/people-tab';
 
 export function DaoProfileTemplate() {
-  const { dao, followers, onRefetchFollowers, followersIsLoaded } =
-    useDaoProfile();
+  const { followers, onRefetchFollowers, followersIsLoaded } = useDaoProfile();
   const { t } = useTranslation();
   const { activeTab, handleTabChange, setTab } = useTab();
 

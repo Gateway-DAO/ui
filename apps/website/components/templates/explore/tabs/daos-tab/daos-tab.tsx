@@ -5,6 +5,7 @@ import { TOKENS } from '@gateway/theme';
 import { ViewModule, ViewList } from '@mui/icons-material';
 import { Box, CircularProgress, IconButton, Stack } from '@mui/material';
 
+import { categoriesMap } from '../../../../../constants/dao';
 import { usePropertyFilter } from '../../../../../hooks/use-property-filter';
 import { useViewMode, ViewMode } from '../../../../../hooks/use-view-modes';
 import { gqlAnonMethods } from '../../../../../services/api';
@@ -25,7 +26,7 @@ export function DaosTab() {
     availableFilters,
     toggleFilter,
     onClear,
-  } = usePropertyFilter(daos ?? [], 'categories');
+  } = usePropertyFilter(daos ?? [], 'categories', categoriesMap);
 
   return (
     <Box sx={{ py: 4 }}>

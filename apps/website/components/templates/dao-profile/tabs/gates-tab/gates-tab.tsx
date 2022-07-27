@@ -4,8 +4,8 @@ import { useQuery } from 'react-query';
 
 import { TOKENS } from '@gateway/theme';
 
-import { ViewModule, ViewList } from '@mui/icons-material';
-import { Box, IconButton, Stack } from '@mui/material';
+import { ViewModule, ViewList, Add } from '@mui/icons-material';
+import { Box, Button, IconButton, Stack } from '@mui/material';
 
 import { ROUTES } from '../../../../../constants/routes';
 import { usePropertyFilter } from '../../../../../hooks/use-property-filter';
@@ -34,7 +34,18 @@ export function GatesTab() {
     toggleFilter,
     onClear,
   } = usePropertyFilter(gates.data?.daos_by_pk?.gates ?? [], 'categories');
-  const newGateUrl = `${ROUTES.GATES_NEW}?dao=${dao?.id}`;
+  const newGateUrl = `${ROUTES.GATE_NEW}?dao=${dao?.id}`;
+
+  const newGateCard = (
+    <Link key="create-gate" passHref href={newGateUrl}>
+      <EmptyCard
+        title="Create Gate"
+        subtitle="Create your first Gate and help talents find you"
+        component="a"
+        sx={{ minHeight: 440, maxWidth: { md: '25%' } }}
+      />
+    </Link>
+  );
 
   return (
     <Box sx={{ py: 4 }}>
@@ -45,7 +56,14 @@ export function GatesTab() {
             justifyContent="space-between"
             sx={{ mb: 4, px: TOKENS.CONTAINER_PX }}
           >
-            <Stack direction="row" gap={1.5}>
+            <Stack alignItems="flex-start" direction="row" gap={1.5}>
+              {isAdmin && (
+                <Link passHref href={newGateUrl}>
+                  <Button variant="contained" startIcon={<Add />} size="small">
+                    Create a Gate
+                  </Button>
+                </Link>
+              )}
               <ChipDropdown
                 label="Categories"
                 values={availableFilters}
@@ -99,16 +117,7 @@ export function GatesTab() {
                 sx={{ height: 440, maxWidth: { md: '25%' } }}
               />
             ),
-            isAdmin && (
-              <Link key="create-gate" passHref href={newGateUrl}>
-                <EmptyCard
-                  title="Create Gate"
-                  subtitle="Create your first Gate and help talents find you"
-                  component="a"
-                  sx={{ height: 440, maxWidth: { md: '25%' } }}
-                />
-              </Link>
-            ),
+            isAdmin && newGateCard,
           ]}
         </Stack>
       )}
