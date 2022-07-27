@@ -11,7 +11,7 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 
 import { AvatarFile } from '../../../../../components/atoms/avatar-file';
 import { Experiences } from '../../../../../services/graphql/types.generated';
-import MintCard from '../../../../molecules/mint-card';
+import { MintCard } from '../../../../molecules/mint-card';
 
 type Props = {
   experience: PartialDeep<Experiences>;
