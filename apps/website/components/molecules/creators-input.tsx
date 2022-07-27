@@ -1,12 +1,7 @@
 import { Search } from '@mui/icons-material';
 import { Chip, TextField, Autocomplete } from '@mui/material';
 
-import { useAuth } from '../../providers/auth';
-
-export const CreatedByInput = ({ set, ...props }) => {
-  const { me } = useAuth();
-  const creators = [{ id: me?.id, name: me?.name }];
-
+export const CreatedByInput = ({ set, creators, ...props }) => {
   return (
     <Autocomplete
       multiple
@@ -18,6 +13,7 @@ export const CreatedByInput = ({ set, ...props }) => {
           transform: 'none',
         },
       }}
+      defaultValue={[creators[0].name]}
       renderTags={(value: string[], getTagProps) =>
         value.map((option: string, index: number) => (
           <Chip
@@ -31,8 +27,7 @@ export const CreatedByInput = ({ set, ...props }) => {
       renderInput={(params) => (
         <TextField {...params} label="Created By" id="created_by" {...props} />
       )}
-      defaultValue={[creators[0].name]}
-      onChange={(event) => set(creators)}
+      onChange={() => set(creators)}
     />
   );
 };
