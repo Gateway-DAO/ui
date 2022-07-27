@@ -61,7 +61,12 @@ export function ScheduleDemo({
               [theme.breakpoints.down('sm')]: { flexDirection: 'column' },
             })}
           >
-            <Link passHref href={'#'}>
+            <a
+              href="https://blb4ytkp5bp.typeform.com/to/LdwGpBLK"
+              target="_blank"
+              rel="noreferrer"
+              style={{ textDecoration: 'none' }}
+            >
               <Button
                 variant="contained"
                 size="large"
@@ -82,8 +87,13 @@ export function ScheduleDemo({
               >
                 {scheduleButton}
               </Button>
-            </Link>
-            <Link passHref href={'#'}>
+            </a>
+            <a
+              href="https://discord.gg/3fFFFk5dBN"
+              target="_blank"
+              rel="noreferrer"
+              style={{ textDecoration: 'none' }}
+            >
               <Button
                 variant="outlined"
                 size="large"
@@ -103,7 +113,7 @@ export function ScheduleDemo({
               >
                 {joinDiscord}
               </Button>
-            </Link>
+            </a>
           </Stack>
         </Box>
       </Box>
