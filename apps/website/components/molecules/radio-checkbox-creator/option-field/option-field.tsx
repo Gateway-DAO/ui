@@ -1,9 +1,11 @@
+import { useState } from 'react';
+
 import { Controller, useFormContext } from 'react-hook-form';
 
 import { CircleOutlined, SquareOutlined } from '@mui/icons-material';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CloseIcon from '@mui/icons-material/Close';
-import { Stack, TextField } from '@mui/material';
+import { Alert, Snackbar, Stack, TextField } from '@mui/material';
 
 import {
   CreateGateTypes,
@@ -31,9 +33,14 @@ export function OptionField({
     formState: { errors },
     control,
   } = useFormContext<CreateGateTypes>();
+  const [isOpen, setIsOpen] = useState(false);
 
   const questionType = watch(
     `tasks.data.${taskId}.task_data.questions.${questionIndex}.type`
+  );
+
+  const options = watch(
+    `tasks.data.${taskId}.task_data.questions.${questionIndex}.options`
   );
 
   return (
@@ -84,10 +91,18 @@ export function OptionField({
                   : theme.palette.text.primary,
               })}
               onClick={() => {
-                setValue(
-                  `tasks.data.${taskId}.task_data.questions.${questionIndex}.options.${optionIndex}.correct`,
-                  !value
-                );
+                if (
+                  questionType === 'multiple' ||
+                  value === true ||
+                  (questionType === 'single' &&
+                    options.filter((option) => option.correct).length === 0)
+                ) {
+                  return setValue(
+                    `tasks.data.${taskId}.task_data.questions.${questionIndex}.options.${optionIndex}.correct`,
+                    !value
+                  );
+                }
+                setIsOpen(true);
               }}
             />
           )}
@@ -100,6 +115,15 @@ export function OptionField({
           />
         )}
       </Stack>
+      <Snackbar
+        open={isOpen}
+        autoHideDuration={3000}
+        onClose={() => setIsOpen(false)}
+      >
+        <Alert severity="error" sx={{ width: '100%' }}>
+          Question type needs to be multiple.
+        </Alert>
+      </Snackbar>
     </Stack>
   );
 }

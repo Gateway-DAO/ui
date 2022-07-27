@@ -26,19 +26,12 @@ export function QuestionField({
     setValue,
     formState: { errors },
     control,
-    watch,
   } = useFormContext<CreateGateTypes>();
 
   const { fields: questions } = useFieldArray({
     name: `tasks.data.${taskId}.task_data.questions`,
     control,
   });
-
-  questions[questionIndex].options.map((_option, index) =>
-    watch(
-      `tasks.data.${taskId}.task_data.questions.${questionIndex}.options.${index}.correct`
-    )
-  );
 
   return (
     <Stack

@@ -5,9 +5,11 @@ import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import {
+  Alert,
   Box,
   Button,
   Slider,
+  Snackbar,
   Stack,
   TextField,
   Typography,
@@ -15,7 +17,10 @@ import {
 
 import { CircleWithNumber } from '../../../atoms/circle-with-number';
 import { QuestionCreator } from '../../../organisms/question-creator/question-creator';
-import { CreateGateTypes } from '../../../templates/create-gate/schema';
+import {
+  CreateGateTypes,
+  QuizTaskDataError,
+} from '../../../templates/create-gate/schema';
 
 export const createQuestion = (order = 0) => ({
   order,
@@ -31,6 +36,7 @@ export function QuizTask({
   taskId: number;
   deleteTask: (taskId) => void;
 }): JSX.Element {
+  const [isOpen, setIsOpen] = useState(false);
   const {
     register,
     trigger,
@@ -172,8 +178,10 @@ export function QuizTask({
               `tasks.data.${taskId}.task_data.questions`
             );
             if (isValid) {
+              setIsOpen(false);
               return append(createQuestion(questions.length));
             }
+            setIsOpen(true);
           }}
         >
           Add question
@@ -228,6 +236,18 @@ export function QuizTask({
           </>
         )}
       </Stack>
+      <Snackbar
+        open={isOpen}
+        autoHideDuration={3000}
+        onClose={() => setIsOpen(false)}
+      >
+        <Alert severity="error" sx={{ width: '100%' }}>
+          {
+            (errors.tasks?.data?.[taskId]?.task_data as QuizTaskDataError)
+              ?.questions?.[questions.length - 1]?.options?.message
+          }
+        </Alert>
+      </Snackbar>
     </Stack>
   );
 }

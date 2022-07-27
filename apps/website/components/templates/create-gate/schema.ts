@@ -204,9 +204,8 @@ export const quizDataSchema = z.object({
             correct: z.boolean(),
           })
         )
-        .max(5)
         .refine(
-          (options) => options.filter((option) => option.correct).length === 0,
+          (options) => options.filter((option) => option.correct).length > 0,
           'At least one option must be correct'
         ),
     })
