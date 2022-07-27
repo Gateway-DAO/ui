@@ -39,10 +39,11 @@ export function RadioCheckBoxCreator({
   });
 
   const onRemoveOption = (index: number) => remove(index);
+  console.log(errors);
 
   return (
     <Stack alignItems={'flex-start'} sx={{ width: '100%' }}>
-      {options.map((option, index) => (
+      {options.map((_option, index) => (
         <OptionField
           key={index}
           taskId={taskId}

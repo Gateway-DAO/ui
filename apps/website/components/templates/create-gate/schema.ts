@@ -206,7 +206,7 @@ export const quizDataSchema = z.object({
         )
         .max(5)
         .refine(
-          (options) => options.some((option) => option.correct),
+          (options) => options.filter((option) => option.correct).length === 0,
           'At least one option must be correct'
         ),
     })

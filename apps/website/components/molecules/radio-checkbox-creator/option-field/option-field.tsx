@@ -1,4 +1,4 @@
-import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
+import { Controller, useFormContext } from 'react-hook-form';
 
 import { CircleOutlined, SquareOutlined } from '@mui/icons-material';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
@@ -7,8 +7,6 @@ import { Stack, TextField } from '@mui/material';
 
 import {
   CreateGateTypes,
-  Option,
-  QuizTask,
   QuizTaskDataError,
 } from '../../../templates/create-gate/schema';
 
@@ -56,7 +54,6 @@ export function OptionField({
           fullWidth
           placeholder={'Write your answer'}
           InputProps={{ disableUnderline: true }}
-          // required
           variant={'standard'}
           {...register(
             `tasks.data.${taskId}.task_data.questions.${questionIndex}.options.${optionIndex}.value`
