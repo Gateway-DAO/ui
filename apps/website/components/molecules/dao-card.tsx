@@ -31,14 +31,12 @@ export function DaoCard({
   categories,
   description,
   logo,
-  permissions,
 }: PartialDeep<Daos>) {
   const { me } = useAuth();
 
-  const isAdmin = !!permissions?.some(
-    ({ user_id, permission }) =>
-      user_id === me?.id && permission === 'dao_admin'
-  );
+  const isAdmin = !!me?.following_dao.find((dao) => dao.dao_id === id)?.dao
+    ?.is_admin;
+
   const url = useMemo(() => ROUTES.DAO_PROFILE.replace('[id]', id), [id]);
 
   const cover = useFile(background);
