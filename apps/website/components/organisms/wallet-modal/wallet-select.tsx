@@ -9,6 +9,7 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  Link,
   Stack,
   Typography,
 } from '@mui/material';
@@ -37,13 +38,16 @@ export function WalletSelect({ onFaq, onSubmit, onCancel }: Props) {
       <DialogTitle sx={{ pb: 0.5 }}>{t('select-wallet.title')}</DialogTitle>
       <DialogContent>
         <Typography color="secondary.dark" sx={{ pb: 2 }}>
-          {t('select-wallet.description')}
-          <Button
-            sx={{ textTransform: 'none', fontWeight: 500, fontSize: 16, py: 0 }}
+          {t('select-wallet.description') + ' '}
+          <Link
+            sx={{
+              cursor: 'pointer',
+            }}
+            underline="hover"
             onClick={onFaq}
           >
             {t('select-wallet.help')}
-          </Button>
+          </Link>
         </Typography>
         <Typography variant="subtitle1" sx={{ pb: 1 }}>
           {t('select-wallet.choose-wallet')}
