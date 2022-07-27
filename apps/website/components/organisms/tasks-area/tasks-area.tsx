@@ -8,37 +8,36 @@ import { CreateGateTypes } from '../../templates/create-gate/schema';
 
 const TaskArea = () => {
   const [tasksCount, setTasksCount] = useState(0);
-  const [tasks, setTasks] = useState({ data: [] });
+  const [tasksComponents, setTasksComponents] = useState([]);
   const {
-    register,
     setValue,
     getValues,
     trigger,
     formState: { errors },
-    control,
   } = useFormContext<CreateGateTypes>();
+  const tasks = getValues().tasks || { data: [] };
 
-  const addTask = (task_component, task_type, object = {}) => {
-    trigger(`tasks.data.${tasksCount}.task_data`);
-    console.log(errors);
-    if (Object.keys(errors).length === 0) {
-      const taskData = {
-        data: [
-          ...tasks.data,
-          {
-            id: tasksCount,
-            title: '',
-            description: '',
-            task_type,
-            task_data: {},
-            task_component,
-            ...object,
-          },
-        ],
-      };
+  const addTask = async (taskComponent, task_type, object = {}) => {
+    const taskData = {
+      data: [
+        ...tasks.data,
+        {
+          id: tasksCount,
+          title: '',
+          description: '',
+          task_type,
+          task_data: {},
+          ...object,
+        },
+      ],
+    };
 
+    const valid = await trigger(`tasks.data.${tasks.data.length - 1}`);
+
+    if (valid) {
+      setTasksComponents([...tasksComponents, taskComponent]);
+      setValue('tasks', taskData);
       setTasksCount(tasksCount + 1);
-      setTasks(taskData);
     }
   };
 
@@ -46,14 +45,16 @@ const TaskArea = () => {
     const tasksCopy = { ...tasks };
     tasksCopy.data.splice(index, 1);
 
-    setTasks(tasksCopy);
     setValue('tasks', tasksCopy);
+    setTasksComponents(tasksComponents.filter((_, i) => i !== index));
+    setTasksCount(tasksCount - 1);
   };
+
+  console.log(errors);
 
   return (
     <>
-      {tasks.data.map((task, index: number) => {
-        const TaskComponent = task.task_component;
+      {tasksComponents.map((TaskComponent, index: number) => {
         return (
           <TaskComponent
             key={uuidv4()}
@@ -62,7 +63,7 @@ const TaskArea = () => {
           />
         );
       })}
-      <AddTaskCard numberOfTasks={tasks.data.length} addTask={addTask} />
+      <AddTaskCard numberOfTasks={tasksCount} addTask={addTask} />
     </>
   );
 };

@@ -68,14 +68,14 @@ export function RadioCheckBoxCreator({
       <Snackbar
         open={
           !!(errors.tasks?.data[taskId]?.task_data as QuizTaskDataError)
-            ?.questions[questionIndex]?.options
+            ?.questions?.[questionIndex]?.options
         }
         autoHideDuration={2000}
       >
         <Alert severity="error" sx={{ width: '100%' }}>
           {
             (errors.tasks?.data[taskId]?.task_data as QuizTaskDataError)
-              ?.questions[questionIndex]?.options?.message
+              ?.questions?.[questionIndex]?.options?.message
           }
         </Alert>
       </Snackbar>

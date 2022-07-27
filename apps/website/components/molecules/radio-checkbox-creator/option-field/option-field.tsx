@@ -64,12 +64,12 @@ export function OptionField({
             `tasks.data.${taskId}.task_data.questions.${questionIndex}.options.${optionIndex}.value`
           )}
           error={
-            !!(errors.tasks?.data[taskId].task_data as QuizTaskDataError)
-              ?.questions[questionIndex]?.options[optionIndex]?.value
+            !!(errors.tasks?.data[taskId]?.task_data as QuizTaskDataError)
+              ?.questions?.[questionIndex]?.options[optionIndex]?.value
           }
           helperText={
-            (errors.tasks?.data[taskId].task_data as QuizTaskDataError)
-              ?.questions[questionIndex]?.options[optionIndex]?.value?.message
+            (errors.tasks?.data[taskId]?.task_data as QuizTaskDataError)
+              ?.questions?.[questionIndex]?.options[optionIndex]?.value?.message
           }
         />
       </Stack>

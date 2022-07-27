@@ -194,24 +194,33 @@ export function QuizTask({
             The quantity that user must answer correctly
           </Typography>
         </Stack>
+
         <Controller
           control={control}
           name={`tasks.data.${taskId}.task_data.pass_score`}
           defaultValue={1}
           rules={{ required: true, min: 1, max: questions.length }}
-          render={({ field: { onChange, value }, fieldState: { error } }) => (
-            <Slider
-              size="medium"
-              min={1}
-              sx={{ mx: '10px', width: 'calc(100% - 10px)' }}
-              max={questions.length}
-              onChange={onChange}
-              onError={() => error?.message}
-              value={value}
-              aria-label="Medium"
-              valueLabelDisplay="on"
-            />
-          )}
+          render={({
+            field: { onChange, value, ...props },
+            fieldState: { error },
+          }) => {
+            return (
+              <Slider
+                key={`slider-${props.name}`}
+                {...props}
+                size="medium"
+                min={1}
+                value={value}
+                sx={{ mx: '10px', width: 'calc(100% - 10px)' }}
+                max={questions.length > 0 ? questions.length : 1}
+                onChange={onChange}
+                marks
+                onError={() => error?.message}
+                aria-label="Medium"
+                valueLabelDisplay="on"
+              />
+            );
+          }}
         />
       </Stack>
     </Stack>

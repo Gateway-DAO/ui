@@ -66,12 +66,13 @@ export function QuestionField({
           `tasks.data.${taskId}.task_data.questions.${questionIndex}.question`
         )}
         error={
+          errors?.tasks?.data.length > 0 &&
           !!(errors.tasks?.data[taskId]?.task_data as QuizTaskDataError)
-            ?.questions[questionIndex]?.question
+            ?.questions?.[questionIndex]?.question
         }
         helperText={
           (errors.tasks?.data[taskId]?.task_data as QuizTaskDataError)
-            ?.questions[questionIndex]?.question?.message
+            ?.questions?.[questionIndex]?.question?.message
         }
       />
       <Controller
@@ -99,7 +100,7 @@ export function QuestionField({
               value={value}
               error={
                 !!(errors.tasks?.data[taskId]?.task_data as QuizTaskDataError)
-                  ?.questions[questionIndex]?.type
+                  ?.questions?.[questionIndex]?.type
               }
               onChange={(event) => {
                 if (
