@@ -18,7 +18,11 @@ import { AvatarFile } from '../../atoms/avatar-file';
 
 /* TODO: Refactor */
 
-export function NavBarAvatar() {
+type Props = {
+  hideProfile?: boolean;
+};
+
+export function NavBarAvatar({ hideProfile }: Props) {
   const { element, isOpen, onClose, onOpen, withOnClose } = useMenu();
   const router = useRouter();
 
@@ -85,12 +89,14 @@ export function NavBarAvatar() {
             Portuguese (Brazil)
           </MenuItem>
         </NestedMenuItem> */}
-        <MenuItem
-          key="view-profile"
-          onClick={() => router.push(ROUTES.MY_PROFILE)}
-        >
-          <Typography textAlign="center">Profile</Typography>
-        </MenuItem>
+        {!hideProfile && (
+          <MenuItem
+            key="view-profile"
+            onClick={() => router.push(ROUTES.MY_PROFILE)}
+          >
+            <Typography textAlign="center">Profile</Typography>
+          </MenuItem>
+        )}
         <MenuItem key="disconnect" onClick={withOnClose(onSignOut)}>
           <Typography textAlign="center">Disconnect</Typography>
         </MenuItem>

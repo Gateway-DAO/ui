@@ -85,5 +85,14 @@ export function useInitUser(status: AuthStatus, me: PartialDeep<SessionUser>) {
     ) {
       router.replace(ROUTES.NEW_USER);
     }
+
+    // Redirects to Explore if authenticated and user already initialized
+    if (router.pathname === ROUTES.LANDING && status === 'AUTHENTICATED') {
+      if (!me.init) {
+        router.replace(ROUTES.NEW_USER);
+      } else {
+        router.replace(ROUTES.EXPLORE);
+      }
+    }
   }, [me, router, status]);
 }
