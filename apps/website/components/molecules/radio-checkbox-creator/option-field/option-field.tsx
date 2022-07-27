@@ -12,33 +12,31 @@ import {
   QuizTaskDataError,
 } from '../../../templates/create-gate/schema';
 
+type Props = {
+  taskId: number;
+  questionIndex: number;
+  optionIndex: number;
+  onRemove: (index: number) => void;
+};
+
 export function OptionField({
   taskId,
   questionIndex,
   optionIndex,
+  onRemove,
   ...rest
-}: {
-  taskId: number;
-  questionIndex: number;
-  optionIndex: number;
-}): JSX.Element {
+}: Props): JSX.Element {
   const {
     register,
     setValue,
     watch,
-    getValues,
     formState: { errors },
     control,
   } = useFormContext<CreateGateTypes>();
-  const { fields: options, remove } = useFieldArray({
-    control,
-    name: `tasks.data.${taskId}.task_data.questions.${questionIndex}.options`,
-  });
 
-  watch(`tasks.data.${taskId}.task_data.questions.${questionIndex}.type`);
-
-  const questionType: string = (getValues().tasks.data[taskId] as QuizTask)
-    .task_data.questions[questionIndex].type;
+  const questionType = watch(
+    `tasks.data.${taskId}.task_data.questions.${questionIndex}.type`
+  );
 
   return (
     <Stack
@@ -65,11 +63,12 @@ export function OptionField({
           )}
           error={
             !!(errors.tasks?.data[taskId]?.task_data as QuizTaskDataError)
-              ?.questions?.[questionIndex]?.options[optionIndex]?.value
+              ?.questions?.[questionIndex]?.options?.[optionIndex]?.value
           }
           helperText={
             (errors.tasks?.data[taskId]?.task_data as QuizTaskDataError)
-              ?.questions?.[questionIndex]?.options[optionIndex]?.value?.message
+              ?.questions?.[questionIndex]?.options?.[optionIndex]?.value
+              ?.message
           }
         />
       </Stack>
@@ -92,26 +91,15 @@ export function OptionField({
                   `tasks.data.${taskId}.task_data.questions.${questionIndex}.options.${optionIndex}.correct`,
                   !value
                 );
-
-                if (
-                  questionType === 'single' &&
-                  (options as Option[]).filter((option) => option.correct)
-                    .length > 0
-                ) {
-                  setValue(
-                    `tasks.data.${taskId}.task_data.questions.${questionIndex}.type`,
-                    'multiple'
-                  );
-                }
               }}
             />
           )}
         />
 
-        {options.length > 1 && (
+        {optionIndex > 0 && (
           <CloseIcon
             sx={{ marginLeft: '24px', cursor: 'pointer' }}
-            onClick={() => remove(optionIndex)}
+            onClick={() => onRemove(optionIndex)}
           />
         )}
       </Stack>

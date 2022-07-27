@@ -67,11 +67,11 @@ export function QuestionField({
         )}
         error={
           errors?.tasks?.data.length > 0 &&
-          !!(errors.tasks?.data[taskId]?.task_data as QuizTaskDataError)
+          !!(errors.tasks?.data?.[taskId]?.task_data as QuizTaskDataError)
             ?.questions?.[questionIndex]?.question
         }
         helperText={
-          (errors.tasks?.data[taskId]?.task_data as QuizTaskDataError)
+          (errors.tasks?.data?.[taskId]?.task_data as QuizTaskDataError)
             ?.questions?.[questionIndex]?.question?.message
         }
       />
@@ -99,7 +99,7 @@ export function QuestionField({
               labelId={`question-select-label${questionIndex}`}
               value={value}
               error={
-                !!(errors.tasks?.data[taskId]?.task_data as QuizTaskDataError)
+                !!(errors.tasks?.data?.[taskId]?.task_data as QuizTaskDataError)
                   ?.questions?.[questionIndex]?.type
               }
               onChange={(event) => {

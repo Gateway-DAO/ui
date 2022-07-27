@@ -29,19 +29,26 @@ export function RadioCheckBoxCreator({
     correct: false,
   };
 
-  const { fields: options, append } = useFieldArray({
+  const {
+    fields: options,
+    append,
+    remove,
+  } = useFieldArray({
     control,
     name: `tasks.data.${taskId}.task_data.questions.${questionIndex}.options`,
   });
 
+  const onRemoveOption = (index: number) => remove(index);
+
   return (
     <Stack alignItems={'flex-start'} sx={{ width: '100%' }}>
-      {options.map((_option, index) => (
+      {options.map((option, index) => (
         <OptionField
           key={index}
           taskId={taskId}
           questionIndex={questionIndex}
           optionIndex={index}
+          onRemove={onRemoveOption}
         />
       ))}
       <Button
@@ -67,14 +74,14 @@ export function RadioCheckBoxCreator({
       </Snackbar>
       <Snackbar
         open={
-          !!(errors.tasks?.data[taskId]?.task_data as QuizTaskDataError)
+          !!(errors.tasks?.data?.[taskId]?.task_data as QuizTaskDataError)
             ?.questions?.[questionIndex]?.options
         }
         autoHideDuration={2000}
       >
         <Alert severity="error" sx={{ width: '100%' }}>
           {
-            (errors.tasks?.data[taskId]?.task_data as QuizTaskDataError)
+            (errors.tasks?.data?.[taskId]?.task_data as QuizTaskDataError)
               ?.questions?.[questionIndex]?.options?.message
           }
         </Alert>

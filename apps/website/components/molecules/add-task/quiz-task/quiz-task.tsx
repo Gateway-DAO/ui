@@ -17,6 +17,13 @@ import { CircleWithNumber } from '../../../atoms/circle-with-number';
 import { QuestionCreator } from '../../../organisms/question-creator/question-creator';
 import { CreateGateTypes } from '../../../templates/create-gate/schema';
 
+export const createQuestion = (order = 0) => ({
+  order,
+  question: '',
+  type: 'single',
+  options: [{ value: '', correct: false }],
+});
+
 export function QuizTask({
   taskId,
   deleteTask,
@@ -26,8 +33,6 @@ export function QuizTask({
 }): JSX.Element {
   const {
     register,
-    setValue,
-    getValues,
     trigger,
     formState: { errors },
     control,
@@ -35,30 +40,16 @@ export function QuizTask({
 
   const [taskVisible, setTaskVisible] = useState(false);
 
-  const { fields: questions, append } = useFieldArray({
+  const {
+    fields: questions,
+    append,
+    remove,
+  } = useFieldArray({
     name: `tasks.data.${taskId}.task_data.questions`,
     control,
   });
 
-  const DEFAULT_QUESTION = useCallback(
-    () => ({
-      order: questions.length,
-      question: '',
-      type: 'single',
-      options: [{ value: '', correct: false }],
-    }),
-    [questions.length]
-  );
-
-  useEffect(() => {
-    const taskData = getValues().tasks.data[taskId].task_data;
-    setValue(`tasks.data.${taskId}.task_type`, 'quiz');
-    if ('questions' in taskData && taskData.questions.length === 0) {
-      setValue(`tasks.data.${taskId}.task_data.questions`, [
-        DEFAULT_QUESTION(),
-      ]);
-    }
-  }, [DEFAULT_QUESTION, setValue, getValues, taskId, questions]);
+  const onRemoveQuestion = (index: number) => remove(index);
 
   return (
     <Stack
@@ -101,8 +92,8 @@ export function QuizTask({
             required
             fullWidth
             {...register(`tasks.data.${taskId}.title`)}
-            error={!!errors.tasks?.data[taskId]?.title}
-            helperText={errors.tasks?.data[taskId]?.title?.message}
+            error={!!errors.tasks?.data?.[taskId]?.title}
+            helperText={errors.tasks?.data?.[taskId]?.title?.message}
           />
         </Stack>
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -163,19 +154,25 @@ export function QuizTask({
           label="Task description"
           id="quiz-description"
           {...register(`tasks.data.${taskId}.description`)}
-          error={!!errors.tasks?.data[taskId]?.description}
-          helperText={errors.tasks?.data[taskId]?.description?.message}
+          error={!!errors.tasks?.data?.[taskId]?.description}
+          helperText={errors.tasks?.data?.[taskId]?.description?.message}
         />
-        <QuestionCreator questions={questions} taskId={taskId} />
+        <QuestionCreator
+          questions={questions}
+          onRemove={onRemoveQuestion}
+          taskId={taskId}
+        />
       </Box>
       <Stack alignItems={'flex-start'} sx={{ paddingTop: '30px' }}>
         <Button
           variant="text"
           sx={{ px: 0 }}
-          onClick={() => {
-            trigger(`tasks.data.${taskId}.task_data.questions`);
-            if (Object.keys(errors).length === 0) {
-              return append(DEFAULT_QUESTION());
+          onClick={async () => {
+            const isValid = await trigger(
+              `tasks.data.${taskId}.task_data.questions`
+            );
+            if (isValid) {
+              return append(createQuestion(questions.length));
             }
           }}
         >

@@ -3,7 +3,10 @@ import { useFieldArray, useFormContext } from 'react-hook-form';
 import AddTaskCard from '../../molecules/add-task/add-task-card';
 import FileLinkTask from '../../molecules/add-task/file-link-task/file-link-task';
 import HoldTokenTask from '../../molecules/add-task/hold-token-task/hold-token-task';
-import { QuizTask } from '../../molecules/add-task/quiz-task/quiz-task';
+import {
+  QuizTask,
+  createQuestion,
+} from '../../molecules/add-task/quiz-task/quiz-task';
 import SnapshotTask from '../../molecules/add-task/snapshot-task/snapshot-task';
 import VerificationCodeTask from '../../molecules/add-task/verification-task/verification-task';
 import { CreateGateTypes, Task } from '../../templates/create-gate/schema';
@@ -28,6 +31,13 @@ const defaultTaskData = (
         ...defaultValues,
         task_data: {
           files: [{ title: '', description: '', link: '' }],
+        },
+      };
+    case 'quiz':
+      return {
+        ...defaultValues,
+        task_data: {
+          questions: [createQuestion()],
         },
       };
     default:
