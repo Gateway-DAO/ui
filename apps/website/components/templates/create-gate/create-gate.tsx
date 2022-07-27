@@ -19,8 +19,8 @@ import { createGateSchema, CreateGateTypes } from './schema';
 export function CreateGateTemplate() {
   const methods = useForm({
     resolver: zodResolver(createGateSchema),
+    mode: 'onBlur',
   });
-  const values = methods.getValues();
 
   const snackbar = useSnackbar();
 
@@ -85,6 +85,10 @@ export function CreateGateTemplate() {
     );
   };
 
+  const hasTitleAndDescription = methods
+    .watch(['title', 'description'])
+    .every((value) => !!value);
+
   return (
     <Stack
       component="form"
@@ -144,7 +148,7 @@ export function CreateGateTemplate() {
       </Stack>
 
       {/* Tasks */}
-      {values.title && values.description && (
+      {hasTitleAndDescription && (
         <>
           <Divider sx={{ margin: '60px 0' }} />
           <Stack

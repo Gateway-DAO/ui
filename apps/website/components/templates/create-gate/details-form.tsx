@@ -1,3 +1,6 @@
+import { useEffect } from 'react';
+
+import { useAuth } from 'apps/website/providers/auth';
 import { useFormContext } from 'react-hook-form';
 
 import { Stack, TextField } from '@mui/material';
@@ -13,6 +16,12 @@ export function GateDetailsForm() {
     formState: { errors },
     setValue,
   } = useFormContext<CreateGateTypes>();
+  const { me } = useAuth();
+  const creators = [{ id: me?.id, name: me?.name }];
+
+  useEffect(() => {
+    setValue('created_by', creators);
+  }, []);
 
   return (
     <Stack direction="column" gap={2}>
@@ -29,6 +38,7 @@ export function GateDetailsForm() {
         name="categories"
         error={!!errors.categories}
         errors={errors.categories}
+        {...register('categories')}
         helperText={errors.categories && 'Invalid categories added'}
         sx={{
           width: '100%',
@@ -52,6 +62,7 @@ export function GateDetailsForm() {
         name="skills"
         error={!!errors.skills}
         errors={errors.skills}
+        {...register('skills')}
         helperText={errors.skills && 'Invalid skills added'}
         sx={{
           width: '100%',
@@ -64,13 +75,15 @@ export function GateDetailsForm() {
         label="Created By"
         id="created_by"
         name="created_by"
+        {...register('created_by')}
+        creators={creators}
+        defaultValue={creators}
         error={!!errors.created_by}
         errors={errors.created_by}
         helperText={errors.created_by && 'Invalid creator added'}
         sx={{
           width: '100%',
         }}
-        defaultValue={{}}
         set={(created_by: Creator[]) => setValue('created_by', created_by)}
       />
     </Stack>

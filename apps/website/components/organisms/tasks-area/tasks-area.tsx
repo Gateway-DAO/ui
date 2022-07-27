@@ -1,58 +1,91 @@
-import { useState } from 'react';
-
-import { useFormContext } from 'react-hook-form';
-import { v4 as uuidv4 } from 'uuid';
+import { useFieldArray, useFormContext } from 'react-hook-form';
 
 import AddTaskCard from '../../molecules/add-task/add-task-card';
-import { CreateGateTypes } from '../../templates/create-gate/schema';
+import FileLinkTask from '../../molecules/add-task/file-link-task/file-link-task';
+import HoldTokenTask from '../../molecules/add-task/hold-token-task/hold-token-task';
+import {
+  QuizTask,
+  createQuestion,
+} from '../../molecules/add-task/quiz-task/quiz-task';
+import SnapshotTask from '../../molecules/add-task/snapshot-task/snapshot-task';
+import VerificationCodeTask from '../../molecules/add-task/verification-task/verification-task';
+import { CreateGateTypes, Task } from '../../templates/create-gate/schema';
+
+const TaskComponents = {
+  meeting_code: VerificationCodeTask,
+  self_verify: FileLinkTask,
+  snapshot: SnapshotTask,
+  token_hold: HoldTokenTask,
+  quiz: QuizTask,
+};
+
+const defaultTaskData = (
+  taskType: CreateGateTypes['tasks']['data'][0]['task_type']
+): Omit<Task, 'title' | 'description'> => {
+  const defaultValues = {
+    task_type: taskType,
+  };
+  switch (taskType) {
+    case 'self_verify':
+      return {
+        ...defaultValues,
+        task_data: {
+          files: [{ title: '', description: '', link: '' }],
+        },
+      };
+    case 'quiz':
+      return {
+        ...defaultValues,
+        task_data: {
+          pass_score: 1,
+          questions: [createQuestion()],
+        },
+      };
+    default:
+      return {
+        ...defaultValues,
+        task_data: {},
+      };
+  }
+};
 
 const TaskArea = () => {
-  const [tasksCount, setTasksCount] = useState(0);
-  const [tasks, setTasks] = useState({ data: [] });
+  const { control, trigger } = useFormContext<CreateGateTypes>();
 
-  const { setValue } = useFormContext<CreateGateTypes>();
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: 'tasks.data',
+  });
 
-  const addTask = (task_component, task_type, object = {}) => {
-    const taskData = {
-      data: [
-        ...tasks.data,
-        {
-          id: tasksCount,
-          title: '',
-          description: '',
-          task_type,
-          task_data: {},
-          task_component,
-          ...object,
-        },
-      ],
-    };
-
-    setTasksCount(tasksCount + 1);
-    setTasks(taskData);
-  };
-
-  const deleteTask = (index: number) => {
-    const tasksCopy = { ...tasks };
-    tasksCopy.data.splice(index, 1);
-
-    setTasks(tasksCopy);
-    setValue('tasks', tasksCopy);
+  const addTask = async (
+    taskType: CreateGateTypes['tasks']['data'][0]['task_type']
+  ) => {
+    const valid =
+      fields.length > 0
+        ? await trigger(`tasks.data.${fields.length - 1}`)
+        : true;
+    if (valid) {
+      append({
+        title: '',
+        description: '',
+        ...(defaultTaskData(taskType) as any),
+      });
+    }
   };
 
   return (
     <>
-      {tasks.data.map((task, index: number) => {
-        const TaskComponent = task.task_component;
+      {fields.map((task, index) => {
+        const TaskComponent = TaskComponents[task.task_type];
         return (
           <TaskComponent
-            key={uuidv4()}
+            key={task.id}
             taskId={index}
-            deleteTask={deleteTask}
+            deleteTask={() => remove(index)}
           />
         );
       })}
-      <AddTaskCard numberOfTasks={tasks.data.length} addTask={addTask} />
+      <AddTaskCard numberOfTasks={fields.length} addTask={addTask} />
     </>
   );
 };

@@ -1,13 +1,15 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
 
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import {
+  Alert,
   Box,
   Button,
   Slider,
+  Snackbar,
   Stack,
   TextField,
   Typography,
@@ -15,7 +17,17 @@ import {
 
 import { CircleWithNumber } from '../../../atoms/circle-with-number';
 import { QuestionCreator } from '../../../organisms/question-creator/question-creator';
-import { CreateGateTypes } from '../../../templates/create-gate/schema';
+import {
+  CreateGateTypes,
+  QuizTaskDataError,
+} from '../../../templates/create-gate/schema';
+
+export const createQuestion = (order = 0) => ({
+  order,
+  question: '',
+  type: 'single',
+  options: [{ value: '', correct: false }],
+});
 
 export function QuizTask({
   taskId,
@@ -24,40 +36,26 @@ export function QuizTask({
   taskId: number;
   deleteTask: (taskId) => void;
 }): JSX.Element {
+  const [isOpen, setIsOpen] = useState(false);
   const {
     register,
-    setValue,
-    getValues,
+    trigger,
     formState: { errors },
     control,
   } = useFormContext<CreateGateTypes>();
 
   const [taskVisible, setTaskVisible] = useState(false);
 
-  const { fields: questions, append } = useFieldArray({
+  const {
+    fields: questions,
+    append,
+    remove,
+  } = useFieldArray({
     name: `tasks.data.${taskId}.task_data.questions`,
     control,
   });
 
-  const DEFAULT_QUESTION = useCallback(
-    () => ({
-      order: questions.length,
-      question: '',
-      type: 'single',
-      options: [{ value: '', correct: false }],
-    }),
-    [questions.length]
-  );
-
-  useEffect(() => {
-    const taskData = getValues().tasks.data[taskId].task_data;
-    setValue(`tasks.data.${taskId}.task_type`, 'quiz');
-    if ('questions' in taskData && taskData.questions.length === 0) {
-      setValue(`tasks.data.${taskId}.task_data.questions`, [
-        DEFAULT_QUESTION(),
-      ]);
-    }
-  }, [DEFAULT_QUESTION, setValue, getValues, taskId, questions]);
+  const onRemoveQuestion = (index: number) => remove(index);
 
   return (
     <Stack
@@ -100,8 +98,8 @@ export function QuizTask({
             required
             fullWidth
             {...register(`tasks.data.${taskId}.title`)}
-            error={!!errors.tasks?.data[taskId]?.title}
-            helperText={errors.tasks?.data[taskId]?.title?.message}
+            error={!!errors.tasks?.data?.[taskId]?.title}
+            helperText={errors.tasks?.data?.[taskId]?.title?.message}
           />
         </Stack>
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -162,52 +160,94 @@ export function QuizTask({
           label="Task description"
           id="quiz-description"
           {...register(`tasks.data.${taskId}.description`)}
-          error={!!errors.tasks?.data[taskId]?.description}
-          helperText={errors.tasks?.data[taskId]?.description?.message}
+          error={!!errors.tasks?.data?.[taskId]?.description}
+          helperText={errors.tasks?.data?.[taskId]?.description?.message}
         />
-        <QuestionCreator questions={questions} taskId={taskId} />
+        <QuestionCreator
+          questions={questions}
+          onRemove={onRemoveQuestion}
+          taskId={taskId}
+        />
       </Box>
       <Stack alignItems={'flex-start'} sx={{ paddingTop: '30px' }}>
         <Button
           variant="text"
           sx={{ px: 0 }}
-          onClick={() => append(DEFAULT_QUESTION())}
+          onClick={async () => {
+            const isValid = await trigger(
+              `tasks.data.${taskId}.task_data.questions`
+            );
+            if (isValid) {
+              setIsOpen(false);
+              return append(createQuestion(questions.length));
+            }
+            setIsOpen(true);
+          }}
         >
           Add question
         </Button>
-        <Stack
-          sx={() => ({
-            mt: '24px',
-            mb: '48px',
-          })}
-        >
-          <Typography>
-            How many questions necessary to pass the quiz?
-          </Typography>
-          <Typography sx={(theme) => ({ color: theme.palette.text.secondary })}>
-            The quantity that user must answer correctly
-          </Typography>
-        </Stack>
-        <Controller
-          control={control}
-          name={`tasks.data.${taskId}.task_data.pass_score`}
-          defaultValue={1}
-          rules={{ required: true, min: 1, max: questions.length }}
-          render={({ field: { onChange, value }, fieldState: { error } }) => (
-            <Slider
-              size="medium"
-              min={1}
-              sx={{ mx: '10px', width: 'calc(100% - 10px)' }}
-              max={questions.length}
-              onChange={onChange}
-              onError={() => error?.message}
-              value={value}
-              aria-label="Medium"
-              valueLabelDisplay="on"
+        {questions.length > 1 && (
+          <>
+            <Stack
+              sx={[
+                {
+                  mt: '24px',
+                  mb: '48px',
+                },
+              ]}
+            >
+              <Typography>
+                How many questions necessary to pass the quiz?
+              </Typography>
+              <Typography
+                sx={(theme) => ({ color: theme.palette.text.secondary })}
+              >
+                The quantity that user must answer correctly
+              </Typography>
+            </Stack>
+
+            <Controller
+              control={control}
+              name={`tasks.data.${taskId}.task_data.pass_score`}
+              defaultValue={1}
+              rules={{ required: true, min: 1, max: questions.length }}
+              render={({
+                field: { onChange, value, ...props },
+                fieldState: { error },
+              }) => {
+                return (
+                  <Slider
+                    key={`slider-${props.name}`}
+                    {...props}
+                    size="medium"
+                    min={1}
+                    value={value}
+                    sx={{ mx: '10px', width: 'calc(100% - 10px)' }}
+                    max={questions.length > 0 ? questions.length : 1}
+                    onChange={onChange}
+                    marks
+                    onError={() => error?.message}
+                    aria-label="Medium"
+                    valueLabelDisplay="on"
+                  />
+                );
+              }}
             />
-          )}
-        />
+          </>
+        )}
       </Stack>
+      <Snackbar
+        open={isOpen}
+        autoHideDuration={3000}
+        onClose={() => setIsOpen(false)}
+      >
+        <Alert severity="error" sx={{ width: '100%' }}>
+          {
+            (errors.tasks?.data?.[taskId]?.task_data as QuizTaskDataError)
+              ?.questions?.[questions.length - 1]?.options?.message
+          }
+        </Alert>
+      </Snackbar>
     </Stack>
   );
 }

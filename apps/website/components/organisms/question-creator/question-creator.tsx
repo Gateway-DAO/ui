@@ -1,20 +1,16 @@
-import { useFieldArray, useFormContext } from 'react-hook-form';
-
 import CloseIcon from '@mui/icons-material/Close';
 import { Stack } from '@mui/material';
 
 import { QuestionField } from '../../molecules/add-task/quiz-task/question-field/question-field';
 import { RadioCheckBoxCreator } from '../../molecules/radio-checkbox-creator/radio-checkbox-creator';
-import { CreateGateTypes, Question } from '../../templates/create-gate/schema';
+import { Question } from '../../templates/create-gate/schema';
 
-export function QuestionCreator({ taskId, ...rest }): JSX.Element {
-  const { control } = useFormContext<CreateGateTypes>();
-
-  const { fields: questions, remove } = useFieldArray({
-    name: `tasks.data.${taskId}.task_data.questions`,
-    control,
-  });
-
+export function QuestionCreator({
+  taskId,
+  questions,
+  onRemove,
+  ...rest
+}): JSX.Element {
   return (
     <Stack
       alignItems={'flex-start'}
@@ -48,7 +44,7 @@ export function QuestionCreator({ taskId, ...rest }): JSX.Element {
             {questions.length > 1 && (
               <CloseIcon
                 sx={{ marginLeft: '24px', cursor: 'pointer' }}
-                onClick={() => remove(index)}
+                onClick={() => onRemove(index)}
               />
             )}
           </Stack>
