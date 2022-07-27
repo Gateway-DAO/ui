@@ -10,8 +10,11 @@ import { InvestorProps } from '../components/templates/landing/investors/types';
 import { MenuListItem } from '../components/templates/landing/menu/types';
 import { ProductShowProps } from '../components/templates/landing/product-show/types';
 import { ScheduleDemoProps } from '../components/templates/landing/schedule-demo/types';
+import { useAuth } from '../providers/auth';
 
 export default function Index() {
+  const { onOpenLogin } = useAuth();
+
   const { t } = useTranslation('index');
   const menuList = t('menu', null, { returnObjects: true }) as MenuListItem[];
   const forUsersContent = t('forUsers', null, {
@@ -81,15 +84,14 @@ export default function Index() {
         menuList={menuList}
         titleDescription={t('titleDescription')}
         enterButton={
-          <Link passHref href="/new-user">
-            <Button
-              variant="contained"
-              sx={{ height: '56px', marginTop: '38px' }}
-              size="large"
-            >
-              {t('enterButtonTitle')}
-            </Button>
-          </Link>
+          <Button
+            variant="contained"
+            sx={{ height: '56px', marginTop: '38px' }}
+            size="large"
+            onClick={onOpenLogin}
+          >
+            {t('enterButtonTitle')}
+          </Button>
         }
       />
     </>
