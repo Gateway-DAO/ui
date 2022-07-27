@@ -10,6 +10,7 @@ import { Box, Snackbar, Stack, Typography } from '@mui/material';
 import { ROUTES } from '../../../constants/routes';
 import { useSnackbar } from '../../../hooks/use-snackbar';
 import { useAuth } from '../../../providers/auth';
+import { NavBarAvatar } from '../../organisms/navbar/navbar-avatar';
 import { AvatarUploadCard } from './avatar-upload-card';
 import { Form } from './form';
 import { schema, NewUserSchema, defaultValues } from './schema';
@@ -53,6 +54,9 @@ export function NewUserTemplate() {
 
   return (
     <>
+      <Stack style={{ position: 'absolute', top: '50px', right: '50px' }}>
+        <NavBarAvatar hideProfile />
+      </Stack>
       <Stack
         direction="row"
         justifyContent="space-between"
