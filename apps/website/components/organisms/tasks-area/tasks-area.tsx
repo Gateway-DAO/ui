@@ -37,6 +37,7 @@ const defaultTaskData = (
       return {
         ...defaultValues,
         task_data: {
+          pass_score: 1,
           questions: [createQuestion()],
         },
       };
@@ -49,23 +50,16 @@ const defaultTaskData = (
 };
 
 const TaskArea = () => {
-  const {
-    control,
-    formState: { errors },
-    trigger,
-  } = useFormContext<CreateGateTypes>();
+  const { control, trigger } = useFormContext<CreateGateTypes>();
 
-  const { fields, append, prepend, remove, swap, move, insert } = useFieldArray(
-    {
-      control,
-      name: 'tasks.data',
-    }
-  );
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: 'tasks.data',
+  });
 
   const addTask = async (
     taskType: CreateGateTypes['tasks']['data'][0]['task_type']
   ) => {
-    console.log('addTask');
     const valid =
       fields.length > 0
         ? await trigger(`tasks.data.${fields.length - 1}`)

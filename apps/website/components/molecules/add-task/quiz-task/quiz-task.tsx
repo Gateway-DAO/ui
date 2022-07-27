@@ -178,47 +178,55 @@ export function QuizTask({
         >
           Add question
         </Button>
-        <Stack
-          sx={() => ({
-            mt: '24px',
-            mb: '48px',
-          })}
-        >
-          <Typography>
-            How many questions necessary to pass the quiz?
-          </Typography>
-          <Typography sx={(theme) => ({ color: theme.palette.text.secondary })}>
-            The quantity that user must answer correctly
-          </Typography>
-        </Stack>
+        {questions.length > 1 && (
+          <>
+            <Stack
+              sx={[
+                {
+                  mt: '24px',
+                  mb: '48px',
+                },
+              ]}
+            >
+              <Typography>
+                How many questions necessary to pass the quiz?
+              </Typography>
+              <Typography
+                sx={(theme) => ({ color: theme.palette.text.secondary })}
+              >
+                The quantity that user must answer correctly
+              </Typography>
+            </Stack>
 
-        <Controller
-          control={control}
-          name={`tasks.data.${taskId}.task_data.pass_score`}
-          defaultValue={1}
-          rules={{ required: true, min: 1, max: questions.length }}
-          render={({
-            field: { onChange, value, ...props },
-            fieldState: { error },
-          }) => {
-            return (
-              <Slider
-                key={`slider-${props.name}`}
-                {...props}
-                size="medium"
-                min={1}
-                value={value}
-                sx={{ mx: '10px', width: 'calc(100% - 10px)' }}
-                max={questions.length > 0 ? questions.length : 1}
-                onChange={onChange}
-                marks
-                onError={() => error?.message}
-                aria-label="Medium"
-                valueLabelDisplay="on"
-              />
-            );
-          }}
-        />
+            <Controller
+              control={control}
+              name={`tasks.data.${taskId}.task_data.pass_score`}
+              defaultValue={1}
+              rules={{ required: true, min: 1, max: questions.length }}
+              render={({
+                field: { onChange, value, ...props },
+                fieldState: { error },
+              }) => {
+                return (
+                  <Slider
+                    key={`slider-${props.name}`}
+                    {...props}
+                    size="medium"
+                    min={1}
+                    value={value}
+                    sx={{ mx: '10px', width: 'calc(100% - 10px)' }}
+                    max={questions.length > 0 ? questions.length : 1}
+                    onChange={onChange}
+                    marks
+                    onError={() => error?.message}
+                    aria-label="Medium"
+                    valueLabelDisplay="on"
+                  />
+                );
+              }}
+            />
+          </>
+        )}
       </Stack>
     </Stack>
   );
