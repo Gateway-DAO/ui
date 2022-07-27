@@ -81,7 +81,7 @@ export default function Index() {
         menuList={menuList}
         titleDescription={t('titleDescription')}
         enterButton={
-          <Link passHref href="/home">
+          <Link passHref href="/new-user">
             <Button
               variant="contained"
               sx={{ height: '56px', marginTop: '38px' }}
