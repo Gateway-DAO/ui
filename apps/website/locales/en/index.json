@@ -1,3 +1,243 @@
 {
-  "title": "Your Decentralized\nProfessional Network"
+  "menu": [
+    {
+      "text": "Professionals",
+      "href": "#professionals"
+    },
+    {
+      "text": "Organizations",
+      "href": "#organizations"
+    },
+    {
+      "text": "Build",
+      "href": "#build"
+    },
+    {
+      "text": "Investors",
+      "href": "#investors"
+    }
+  ],
+  "title": "Gateway",
+  "openApp": "Open App",
+  "signUp": "Sign Up",
+  "subtitle": "The Web3 Professional Network",
+  "titleDescription": "Where talent take ownership of their work and professional growth.",
+  "enterButtonTitle": "Enter the gateway",
+  "forUsers": {
+    "mainTitle": "Build your web3 native resume",
+    "secondaryTitle": "Do work, receive recognition from the community, and strengthen your professional identity.",
+    "features": [
+      {
+        "title": "Join DAOs",
+        "description": "Discover and build with the best communities across web3.",
+        "image": {
+          "url": "/images/join-dao-featured-image.png",
+          "width": 423,
+          "height": 403
+        }
+      },
+      {
+        "title": "Earn Credentials",
+        "description": "Receive verified credentials that serve as attestations for your work and your abilities.",
+        "image": {
+          "url": "/images/earn-credentials-featured-image.png",
+          "width": 439,
+          "height": 352
+        }
+      },
+      {
+        "title": "Showcase Your Achievements",
+        "description": "Proudly display your accomplishments across web3 on your Gateway profile.",
+        "image": {
+          "url": "/images/showcase-featured-image.png",
+          "width": 360,
+          "height": 400
+        }
+      },
+      {
+        "title": "Own Your Network",
+        "description": "Gateway allows professionals to take ownership and meet new builders in the space.",
+        "image": {
+          "url": "/images/own-network-featured-image.png",
+          "width": 353,
+          "height": 341
+        }
+      }
+    ]
+  },
+  "forOrganizations": {
+    "mainTitle": "Built for Organizations, DAOs and Web3 Companies",
+    "secondaryTitle": "A new way for communities to engage their members and recognize their talents.",
+    "features": [
+      {
+        "title": "Own Your Spaces",
+        "description": "Spaces created are unique to communities and managed by admins and team leads.",
+        "image": {
+          "url": "/images/own-spaces-featured-image.png",
+          "width": 466,
+          "height": 421
+        }
+      },
+      {
+        "title": "Create Gates",
+        "description": "Modular quests that allow teams to actively challenge, reward, and build their community.",
+        "image": {
+          "url": "/images/create-gates-featured-image.png",
+          "width": 577,
+          "height": 477
+        }
+      },
+      {
+        "title": "Issue Crendentials",
+        "description": "Recognize core contributors for their excellence in a publicly verifiable manner.",
+        "image": {
+          "url": "/images/issue-credentials-featured-image.png",
+          "width": 539,
+          "height": 426
+        }
+      },
+      {
+        "title": "Find Talent",
+        "description": "Gateway’s social graph highlights the best talent for your hiring needs.",
+        "image": {
+          "url": "/images/find-talent-featured-image.png",
+          "width": 501,
+          "height": 501
+        }
+      }
+    ]
+  },
+  "theGatewayContent": {
+    "title": "The Gateway Credential Model",
+    "features": [
+      {
+        "title": "User Sovereignty",
+        "description": "Credentials issued on Gateway are fully controlled by users, including visibility and retention."
+      },
+      {
+        "title": "Secure",
+        "description": "Verified Credentials require cryptographic signatures, are easily traceable, and revocable by issuer."
+      },
+      {
+        "title": "Composable",
+        "description": "Minting on Gateway is blockchain agnostic, just like your work!"
+      }
+    ],
+    "image": {
+      "url": "/images/credential-model.png",
+      "width": 596,
+      "height": 759
+    }
+  },
+  "buildAppsContent": {
+    "comingSoon": "Coming Soon",
+    "title": "Build apps with Web3 data",
+    "description": "Gateway's decentralized credential registry allows DAOs, web3 service providers, and tools to easily issue and curate verified credentials.",
+    "features": [
+      {
+        "title": "Consumer",
+        "description": "Gateway's credentials can be used by talent, organizations, and even Dapps for custom use-cases."
+      },
+      {
+        "title": "Credential SDK",
+        "description": "Gateway's SDK is the powerhouse for web3 credentials. Allowing you to issue, index, curate, and handle data for the future of professional identity."
+      },
+      {
+        "title": "Data-Partners",
+        "description": "Every engine needs it's fuel. Gateway's data partners support  an open-source and composable network of models."
+      }
+    ],
+    "image": {
+      "url": "/images/build-apps-data.png",
+      "width": 685,
+      "height": 1127
+    }
+  },
+  "investorsContent": {
+    "title": "Guardians of the Gateway",
+    "investorsWithLogos": [
+      {
+        "name": "Reciprocal ventures",
+        "url": "#",
+        "logo": {
+          "url": "/images/investors/reciprocal-ventures.png",
+          "width": 213,
+          "height": 20
+        }
+      },
+      {
+        "name": "Hanna Grey",
+        "url": "#",
+        "logo": {
+          "url": "/images/investors/hanna-grey.png",
+          "width": 125,
+          "height": 51
+        }
+      },
+      {
+        "name": "Redbeard ventures",
+        "url": "#",
+        "logo": {
+          "url": "/images/investors/redbeard-ventures.png",
+          "width": 110,
+          "height": 96
+        }
+      },
+      {
+        "name": "Spartan",
+        "url": "#",
+        "logo": {
+          "url": "/images/investors/spartan.png",
+          "width": 186,
+          "height": 104
+        }
+      },
+      {
+        "name": "Figment",
+        "url": "#",
+        "logo": {
+          "url": "/images/investors/figment.png",
+          "width": 111,
+          "height": 37
+        }
+      },
+      {
+        "name": "6th man ventures",
+        "url": "#",
+        "logo": {
+          "url": "/images/investors/6th-man-ventures.png",
+          "width": 109,
+          "height": 53
+        }
+      },
+      {
+        "name": "Visary",
+        "url": "#",
+        "logo": {
+          "url": "/images/investors/visary.png",
+          "width": 164,
+          "height": 96
+        }
+      }
+    ],
+    "investorsonlyNames": [
+      { "name": "Sandeep Nailwal", "url": "#" },
+      { "name": "David Gan", "url": "#" },
+      { "name": "David Sneider and Chris Wiggum", "url": "#" },
+      { "name": "Ryan Selkis", "url": "#" },
+      { "name": "Stepan Simkin", "url": "#" },
+      { "name": "Ryan Li", "url": "#" }
+    ]
+  },
+  "scheduleDemoContent": {
+    "title": "See how Gateway can help your DAO",
+    "scheduleButton": "Schedule a Demo",
+    "joinDiscord": "Join our Discord"
+  },
+  "footerContent": {
+    "copyright": "Copyright © 2022 Gateway. All rights reserved.",
+    "subscribe": "Subscribe to our newsletter",
+    "receiveNews": "Receive news about developments and updates.",
+    "subscribeButton": "Subscribe"
+  }
 }

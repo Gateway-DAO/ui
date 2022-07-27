@@ -21,6 +21,7 @@ export function CreateGateTemplate() {
     resolver: zodResolver(createGateSchema),
     mode: 'onBlur',
   });
+  const values = methods.getValues();
 
   const snackbar = useSnackbar();
 

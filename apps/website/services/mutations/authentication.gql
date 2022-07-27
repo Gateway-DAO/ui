@@ -13,3 +13,12 @@ mutation login(
     token
   }
 }
+
+mutation refresh(
+  $refresh_token: String!
+) {
+  refresh(token: $refresh_token) {
+    refresh_token
+    token
+  }
+}

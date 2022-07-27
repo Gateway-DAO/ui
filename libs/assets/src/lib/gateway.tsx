@@ -16,3 +16,5 @@ export function GatewayIcon(props: SvgIconProps) {
     </SvgIcon>
   );
 }
+
+

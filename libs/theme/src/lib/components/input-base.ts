@@ -14,7 +14,6 @@ export const MuiInputBase: Extract<
         minHeight: '176px',
       },
       '&.MuiInputBase-multiline .MuiInputBase-inputMultiline': {
-        minheight: '176px',
         height: '143px !important',
       },
     },

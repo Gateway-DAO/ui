@@ -34,7 +34,9 @@ export function GatesTab() {
           sx={{
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'center',
+            justifyContent: 'space-between',
+            mb: 4,
+            px: TOKENS.CONTAINER_PX,
           }}
         >
           <CircularProgress />
