@@ -31,10 +31,6 @@ export function NewUserTemplate() {
 
   const router = useRouter();
 
-  if (me.init) {
-    router.push(ROUTES.EXPLORE);
-  }
-
   const updateMutation = useMutation(
     'updateProfile',
     gqlAuthMethods.update_user_profile,
