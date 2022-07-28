@@ -39,6 +39,7 @@ export function RadioCheckBoxCreator({
         <OptionField
           key={index}
           taskId={taskId}
+          disabledRemove={options.length > 1}
           questionIndex={questionIndex}
           optionIndex={index}
           onRemove={onRemoveOption}
