@@ -23,7 +23,7 @@ const MeetingCodeContent = ({ completed, updatedAt, completeTask }) => {
         <Button
           variant="contained"
           sx={{ marginTop: '15px' }}
-          onClick={() => completeTask({})}
+          onClick={() => completeTask({ meeting_code: meetingCode })}
         >
           Submit
         </Button>
