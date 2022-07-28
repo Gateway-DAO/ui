@@ -75,8 +75,8 @@ export function useMe() {
   ) => queryClient.setQueryData('me', cb);
 
   const onSignOut = () => {
-    queryClient.setQueryData('token', undefined);
-    queryClient.setQueryData('me', undefined);
+    queryClient.setQueryData('token', null);
+    queryClient.setQueryData('me', null);
   };
 
   const onUpdateToken = (newToken: RefreshMutation['refresh']) =>
@@ -104,6 +104,7 @@ export function useInitUser(status: AuthStatus, me: PartialDeep<SessionUser>) {
     if (router.pathname !== ROUTES.NEW_USER && me && !me.init) {
       router.replace(ROUTES.NEW_USER);
     }
+
     // Redirects to Explore if authenticated and user already initialized
     if (router.pathname === ROUTES.LANDING && me && me.init) {
       router.replace(ROUTES.EXPLORE);

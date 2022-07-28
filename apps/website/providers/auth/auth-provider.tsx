@@ -47,8 +47,8 @@ export function AuthProvider({
   );
 
   const onSignOut = useCallback(async () => {
-    await disconnectAsync();
     onSignOutMe();
+    await disconnectAsync();
   }, [disconnectAsync, onSignOutMe]);
 
   const isBlocked = isAuthPage && (!me || !tokens);
