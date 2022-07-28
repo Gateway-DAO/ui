@@ -16,6 +16,7 @@ type Props = {
   taskId: number;
   questionIndex: number;
   optionIndex: number;
+  disabledRemove: boolean;
   onRemove: (index: number) => void;
 };
 
@@ -23,6 +24,7 @@ export function OptionField({
   taskId,
   questionIndex,
   optionIndex,
+  disabledRemove,
   onRemove,
   ...rest
 }: Props): JSX.Element {
@@ -108,7 +110,7 @@ export function OptionField({
           )}
         />
 
-        {optionIndex > 0 && (
+        {disabledRemove && (
           <CloseIcon
             sx={{ marginLeft: '24px', cursor: 'pointer' }}
             onClick={() => onRemove(optionIndex)}

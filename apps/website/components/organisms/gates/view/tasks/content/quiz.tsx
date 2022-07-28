@@ -10,10 +10,12 @@ import {
   Radio,
   RadioGroup,
   Stack,
+  Typography,
 } from '@mui/material';
 
-const QuizContent = ({ data, completeTask }) => {
+const QuizContent = ({ data, completed, updatedAt, completeTask }) => {
   const { questions } = data;
+  const formattedDate = new Date(updatedAt.toLocaleString()).toLocaleString();
   const initialAnswers = questions.map((question, index) => {
     return { questionIdx: index, answers: [] };
   });
@@ -85,13 +87,19 @@ const QuizContent = ({ data, completeTask }) => {
           </FormControl>
         );
       })}
-      <Button
-        variant="contained"
-        sx={{ marginTop: '15px' }}
-        onClick={() => completeTask({ questions: answers })}
-      >
-        Submit
-      </Button>
+      {completed ? (
+        <Typography color="#c5ffe3" variant="subtitle2">
+          Task completed at {formattedDate}
+        </Typography>
+      ) : (
+        <Button
+          variant="contained"
+          sx={{ marginTop: '15px' }}
+          onClick={() => completeTask({ questions: answers })}
+        >
+          Submit
+        </Button>
+      )}
     </Stack>
   );
 };

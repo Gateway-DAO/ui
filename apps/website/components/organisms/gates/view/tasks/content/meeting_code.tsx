@@ -4,12 +4,13 @@ import { Button, Stack, TextField, Typography } from '@mui/material';
 
 const MeetingCodeContent = ({ completed, updatedAt, completeTask }) => {
   const [meetingCode, setMeetingCode] = useState('');
+  const formattedDate = new Date(updatedAt.toLocaleString()).toLocaleString();
 
   return (
     <Stack alignItems="start">
       <TextField
         fullWidth
-        placeholder="Meeting Code"
+        placeholder="Code"
         value={meetingCode}
         disabled={completed}
         onChange={(e) => setMeetingCode(e.target.value)}
@@ -17,13 +18,13 @@ const MeetingCodeContent = ({ completed, updatedAt, completeTask }) => {
       />
       {completed ? (
         <Typography color="#c5ffe3" variant="subtitle2">
-          Task completed at {updatedAt}
+          Task completed at {formattedDate}
         </Typography>
       ) : (
         <Button
           variant="contained"
           sx={{ marginTop: '15px' }}
-          onClick={() => completeTask({})}
+          onClick={() => completeTask({ meeting_code: meetingCode })}
         >
           Submit
         </Button>

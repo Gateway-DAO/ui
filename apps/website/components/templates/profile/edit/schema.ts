@@ -67,10 +67,13 @@ export const schema: SchemaOf<EditUserSchema> = object({
   socials: array()
     .of(
       object({
-        network: string().required('Network is required'),
+        network: string().defined(),
         url: string()
-          .url('The URL should be valid')
-          .required('URL is required'),
+          .matches(
+            /((https|http):\/\/)(www.)?[a-z0-9]+(\.[a-z]{2,}){1,3}(#?\/?[a-zA-Z0-9#]+)*\/?(\?[a-zA-Z0-9-_]+=[a-zA-Z0-9-%]+&?)?$/,
+            'The URL should be valid'
+          )
+          .defined(),
       })
     )
     .optional(),
