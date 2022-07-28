@@ -102,7 +102,7 @@ export default function PrivateProfileTemplate() {
             borderColor: 'background.default',
           }}
           file={me.picture}
-          fallback={me.pfp}
+          fallback={'/logo.png'}
         ></AvatarFile>
         <Box>
           <Typography

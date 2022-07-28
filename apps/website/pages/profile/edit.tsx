@@ -48,8 +48,8 @@ export default function EditProfilePage() {
       };
 
       const [picture, cover] = await Promise.all([
-        uploadPicture(),
-        uploadCover(),
+        picture64 ? uploadPicture() : null,
+        cover64 ? uploadCover() : null,
       ]);
 
       return gqlAuthMethods.edit_user({

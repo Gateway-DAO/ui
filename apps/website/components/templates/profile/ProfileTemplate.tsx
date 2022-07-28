@@ -96,7 +96,7 @@ export default function ProfileTemplate({ user }: Props) {
             borderColor: 'background.default',
           }}
           file={user.picture}
-          fallback={user.pfp}
+          fallback={'/logo.png'}
         ></AvatarFile>
         <Box>
           <Typography style={{ color: '#fff' }} component="h1" variant="h4">

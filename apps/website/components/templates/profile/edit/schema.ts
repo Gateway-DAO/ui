@@ -56,19 +56,23 @@ export const defaultValues = (
 };
 
 export const schema: SchemaOf<EditUserSchema> = object({
-  name: string().defined(),
-  bio: string().defined(),
-  username: string().defined(),
-  cover: string(),
-  skills: array().of(string()).defined(),
-  languages: array().of(string()).defined(),
-  timezone: string().defined(),
-  picture: string(),
-  socials: array().of(
-    object({
-      network: string().defined(),
-      url: string().url().defined(),
-    })
-  ),
+  name: string().required('Name is required'),
+  bio: string().optional(),
+  username: string().required('Username is required'),
+  cover: string().optional(),
+  skills: array().of(string()).optional(),
+  languages: array().of(string()).optional(),
+  timezone: string().optional(),
+  picture: string().optional(),
+  socials: array()
+    .of(
+      object({
+        network: string().required('Network is required'),
+        url: string()
+          .url('The URL should be valid')
+          .required('URL is required'),
+      })
+    )
+    .optional(),
   // experiences: array().of(mixed<PartialDeep<Experiences>>()).defined(),
 });
