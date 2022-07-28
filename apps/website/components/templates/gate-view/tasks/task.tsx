@@ -38,7 +38,6 @@ export function Task({ task, idx }: Props) {
   const [updatedAt, setUpdatedAt] = useState('');
 
   useEffect(() => {
-    console.log(me?.task_progresses);
     const progressTaskIndex = me?.task_progresses.findIndex(
       (task_progress) => task_progress.task_id === task.id
     );
