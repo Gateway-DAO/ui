@@ -30,12 +30,21 @@ type Props = {
   task?: PartialObjectDeep<Tasks>;
 };
 
+interface Error {
+  response?: {
+    errors?: {
+      message?: string;
+    }[];
+  };
+}
+
 export function Task({ task, idx }: Props) {
   const { me, gqlAuthMethods } = useAuth();
 
   const [expanded, toggleExpanded] = useToggle(false);
   const [completed, setCompleted] = useState(false);
   const [updatedAt, setUpdatedAt] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
     const progressTaskIndex = me?.task_progresses.findIndex(
@@ -75,6 +84,11 @@ export function Task({ task, idx }: Props) {
           title: 'Quiz',
           body: QuizContent,
         };
+      default:
+        return {
+          title: '',
+          body: null,
+        };
     }
   };
 
@@ -99,8 +113,6 @@ export function Task({ task, idx }: Props) {
             task_progresses: newTaskProgress,
           };
         });
-
-        //handleOpen();
       },
     }
   );
@@ -113,10 +125,12 @@ export function Task({ task, idx }: Props) {
 
     completeTaskMutation(data, {
       onSuccess: (response) => {
+        setErrorMessage('');
         console.log('Completed!', response);
       },
-      onError: (error) => {
-        console.log('Error!', error);
+      onError: (error: Error) => {
+        setErrorMessage(error.response.errors[0].message);
+        console.log(error.response.errors[0].message);
       },
     });
   };
@@ -172,6 +186,11 @@ export function Task({ task, idx }: Props) {
             updatedAt={updatedAt}
             completeTask={completeTask}
           />
+          {errorMessage && (
+            <Typography variant="subtitle2" color="red" marginTop={2}>
+              {errorMessage}
+            </Typography>
+          )}
         </CardContent>
       </Collapse>
     </Card>

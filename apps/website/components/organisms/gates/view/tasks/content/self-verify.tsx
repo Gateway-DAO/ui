@@ -11,6 +11,8 @@ import {
 } from '@mui/material';
 
 const SelfVerifyContent = ({ data, completed, updatedAt, completeTask }) => {
+  const formattedDate = new Date(updatedAt.toLocaleString()).toLocaleString();
+
   const files = data.files.map((file, index) => {
     return (
       <ListItem
@@ -38,7 +40,7 @@ const SelfVerifyContent = ({ data, completed, updatedAt, completeTask }) => {
       {files}
       {completed ? (
         <Typography color="#c5ffe3" variant="subtitle2">
-          Task completed at {updatedAt}
+          Task completed at {formattedDate}
         </Typography>
       ) : (
         <Button
