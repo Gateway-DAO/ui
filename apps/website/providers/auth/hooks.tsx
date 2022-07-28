@@ -99,24 +99,14 @@ export function useInitUser(status: AuthStatus, me: PartialDeep<SessionUser>) {
   const router = useRouter();
 
   useEffect(() => {
-    /* Redirects to New User if authenticated */
-    if (
-      router.pathname !== ROUTES.LANDING &&
-      router.pathname !== ROUTES.NEW_USER &&
-      status === 'AUTHENTICATED' &&
-      me &&
-      !me.init
-    ) {
+    if (status !== 'AUTHENTICATED') return;
+    // Redirects to New User if authenticated but not registered
+    if (router.pathname !== ROUTES.NEW_USER && me && !me.init) {
       router.replace(ROUTES.NEW_USER);
     }
-
     // Redirects to Explore if authenticated and user already initialized
-    if (router.pathname === ROUTES.LANDING && status === 'AUTHENTICATED') {
-      if (!me.init) {
-        router.replace(ROUTES.NEW_USER);
-      } else {
-        router.replace(ROUTES.EXPLORE);
-      }
+    if (router.pathname === ROUTES.LANDING && me && me.init) {
+      router.replace(ROUTES.EXPLORE);
     }
   }, [me, router, status]);
 }
