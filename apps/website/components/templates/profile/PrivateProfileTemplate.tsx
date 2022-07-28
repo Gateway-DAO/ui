@@ -46,16 +46,6 @@ export default function PrivateProfileTemplate() {
         label: t('common:tabs.overview'),
         section: <OverviewTab user={me} />,
       },
-      {
-        key: 'activity',
-        label: t('activity'),
-        section: <ActivityTab />,
-      },
-      {
-        key: 'bookmarked',
-        label: t('Bookmarked'),
-        //section: <ActivityTab />,
-      },
     ],
     []
   );
@@ -102,7 +92,7 @@ export default function PrivateProfileTemplate() {
             borderColor: 'background.default',
           }}
           file={me.picture}
-          fallback={me.pfp}
+          fallback={'/logo.png'}
         ></AvatarFile>
         <Box>
           <Typography
@@ -159,8 +149,8 @@ export default function PrivateProfileTemplate() {
               mt: 2,
             }}
           >
-            <Typography>{me.following.length} connection(s)</Typography>·
-            <Typography>{me.credentials.length} credential(s)</Typography>
+            <Typography>{me.following?.length} connection(s)</Typography>·
+            <Typography>{me.credentials?.length} credential(s)</Typography>
           </Box>
           <Stack
             direction="row"
@@ -169,7 +159,7 @@ export default function PrivateProfileTemplate() {
               mt: 4,
             }}
           >
-            <SocialButtons socials={me.socials} />
+            <SocialButtons socials={me.socials || []} />
           </Stack>
         </Box>
       </Box>

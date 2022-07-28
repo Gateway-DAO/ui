@@ -84,6 +84,7 @@ query people_tab {
   people: users(order_by: {name: asc}) {
     id
     name
+    pfp
     about
     username
   }

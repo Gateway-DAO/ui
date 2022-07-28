@@ -60,7 +60,7 @@ export function NavBarAvatar({ hideProfile }: Props) {
             <AvatarFile
               aria-label={me?.name}
               file={me?.picture}
-              fallback={me?.pfp}
+              fallback={'/logo.png'}
             >
               {me?.name?.[0]}
             </AvatarFile>
