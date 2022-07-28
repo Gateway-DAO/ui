@@ -257,7 +257,7 @@ export function OverviewTab({ user }: Props) {
                   height: 'auto',
                 }}
               >
-                {user.skills ? (
+                {user.skills?.length > 0 ? (
                   user.skills.map((skill, idx) => (
                     <Chip
                       key={'skill-' + (idx + 1)}
@@ -320,7 +320,7 @@ export function OverviewTab({ user }: Props) {
                   columnGap: '8px',
                 }}
               >
-                {user.languages ? (
+                {user.languages?.length > 0 ? (
                   user.languages.map((language, idx) => (
                     <Chip
                       key={'language-' + (idx + 1)}

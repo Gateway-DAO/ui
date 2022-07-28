@@ -57,13 +57,13 @@ export const defaultValues = (
 
 export const schema: SchemaOf<EditUserSchema> = object({
   name: string().required('Name is required'),
-  bio: string().optional(),
+  bio: string().nullable(),
   username: string().required('Username is required'),
-  cover: string().optional(),
-  skills: array().of(string()).optional(),
-  languages: array().of(string()).optional(),
-  timezone: string().optional(),
-  picture: string().optional(),
+  cover: string().nullable(),
+  skills: array().of(string()).default([]).optional(),
+  languages: array().of(string()).default([]).optional(),
+  timezone: string().nullable(),
+  picture: string().nullable(),
   socials: array()
     .of(
       object({
@@ -76,6 +76,6 @@ export const schema: SchemaOf<EditUserSchema> = object({
           .defined(),
       })
     )
-    .optional(),
+    .nullable(),
   // experiences: array().of(mixed<PartialDeep<Experiences>>()).defined(),
 });
