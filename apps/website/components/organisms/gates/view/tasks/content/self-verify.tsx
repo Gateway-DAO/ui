@@ -10,7 +10,15 @@ import {
   Typography,
 } from '@mui/material';
 
-const SelfVerifyContent = ({ data, completed, updatedAt, completeTask }) => {
+import { LoadingButton } from '../../../../../../components/atoms/loading-button';
+
+const SelfVerifyContent = ({
+  data,
+  completed,
+  updatedAt,
+  completeTask,
+  isLoading,
+}) => {
   const formattedDate = new Date(updatedAt.toLocaleString()).toLocaleString();
 
   const files = data.files.map((file, index) => {
@@ -43,13 +51,14 @@ const SelfVerifyContent = ({ data, completed, updatedAt, completeTask }) => {
           Task completed at {formattedDate}
         </Typography>
       ) : (
-        <Button
+        <LoadingButton
           variant="contained"
           sx={{ marginTop: '15px' }}
           onClick={() => completeTask({})}
+          isLoading={isLoading}
         >
           Submit
-        </Button>
+        </LoadingButton>
       )}
     </List>
   );

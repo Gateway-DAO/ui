@@ -13,7 +13,15 @@ import {
   Typography,
 } from '@mui/material';
 
-const QuizContent = ({ data, completed, updatedAt, completeTask }) => {
+import { LoadingButton } from '../../../../../../components/atoms/loading-button';
+
+const QuizContent = ({
+  data,
+  completed,
+  updatedAt,
+  completeTask,
+  isLoading,
+}) => {
   const { questions } = data;
   const formattedDate = new Date(updatedAt?.toLocaleString()).toLocaleString();
   const initialAnswers = questions.map((question, index) => {
@@ -92,13 +100,14 @@ const QuizContent = ({ data, completed, updatedAt, completeTask }) => {
           Task completed at {formattedDate}
         </Typography>
       ) : (
-        <Button
+        <LoadingButton
           variant="contained"
           sx={{ marginTop: '15px' }}
           onClick={() => completeTask({ questions: answers })}
+          isLoading={isLoading}
         >
           Submit
-        </Button>
+        </LoadingButton>
       )}
     </Stack>
   );

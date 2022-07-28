@@ -2,7 +2,14 @@ import { useState } from 'react';
 
 import { Button, Stack, TextField, Typography } from '@mui/material';
 
-const MeetingCodeContent = ({ completed, updatedAt, completeTask }) => {
+import { LoadingButton } from '../../../../../../components/atoms/loading-button';
+
+const MeetingCodeContent = ({
+  completed,
+  updatedAt,
+  completeTask,
+  isLoading,
+}) => {
   const [meetingCode, setMeetingCode] = useState('');
   const formattedDate = new Date(updatedAt.toLocaleString()).toLocaleString();
 
@@ -21,13 +28,14 @@ const MeetingCodeContent = ({ completed, updatedAt, completeTask }) => {
           Task completed at {formattedDate}
         </Typography>
       ) : (
-        <Button
+        <LoadingButton
           variant="contained"
           sx={{ marginTop: '15px' }}
           onClick={() => completeTask({ meeting_code: meetingCode })}
+          isLoading={isLoading}
         >
           Submit
-        </Button>
+        </LoadingButton>
       )}
     </Stack>
   );

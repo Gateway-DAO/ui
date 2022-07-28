@@ -92,7 +92,7 @@ export function Task({ task, idx }: Props) {
     }
   };
 
-  const { mutate: completeTaskMutation } = useMutation(
+  const { mutate: completeTaskMutation, isLoading } = useMutation(
     'completeTask',
     gqlAuthMethods.complete_task,
     {
@@ -189,6 +189,7 @@ export function Task({ task, idx }: Props) {
             completed={completed}
             updatedAt={updatedAt}
             completeTask={completeTask}
+            isLoading={isLoading}
           />
           {errorMessage && (
             <Typography variant="subtitle2" color="red" marginTop={2}>
