@@ -34,18 +34,13 @@ export const gqlMethodsWithRefresh = (
   userId: string | undefined,
   saveToken: (newTokens: RefreshMutation['refresh']) => void
 ) => {
-  const wrapper: SdkFunctionWrapper = async (action, name) => {
-    console.log(name);
+  const wrapper: SdkFunctionWrapper = async (action) => {
     try {
       const res = await action();
-      console.log('success', res);
       return res;
     } catch (e) {
-      console.log('error', e);
-
       const isExpiredToken =
         e?.response?.errors?.[0].extensions.code === 'invalid-jwt';
-      console.log(isExpiredToken);
       if (isExpiredToken) {
         /* Retrieves the new token */
         const newTokens = (
