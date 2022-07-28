@@ -36,7 +36,18 @@ export function NewUserTemplate() {
 
   const updateMutation = useMutation(
     'updateProfile',
-    gqlAuthMethods.update_user_profile,
+    async ({ pfp, ...data }: NewUserSchema) => {
+      const uploadedPicture = await uploadImage({
+        base64: pfp,
+        name: `${me.id}-pfp`,
+      });
+
+      return gqlAuthMethods.update_user_profile({
+        ...data,
+        id: me.id,
+        pic_id: uploadedPicture.upload_image.id,
+      });
+    },
     {
       onSuccess(data) {
         snackbar.onOpen({ message: 'Profile created!' });
@@ -78,22 +89,7 @@ export function NewUserTemplate() {
 
   const uploadImage = useUploadImage();
 
-  const onSubmit = async ({ pfp, ...data }: NewUserSchema) => {
-    try {
-      const uploadedPicture = await uploadImage({
-        base64: pfp,
-        name: `${me.id}-pfp`,
-      });
-
-      updateMutation.mutate({
-        ...data,
-        id: me.id,
-        pic_id: uploadedPicture.upload_image.id,
-      });
-    } catch (error) {
-      snackbar.onOpen({ message: error.message, type: 'error' });
-    }
-  };
+  const onSubmit = (data: NewUserSchema) => updateMutation.mutate(data);
 
   return (
     <>
