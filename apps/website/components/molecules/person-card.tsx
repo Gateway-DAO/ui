@@ -5,11 +5,17 @@ import MUICard from '@mui/material/Card';
 
 import { useAuth } from '../../providers/auth';
 import { Users } from '../../services/graphql/types.generated';
+import { AvatarFile } from '../atoms/avatar-file';
 import { FollowButtonUser } from '../atoms/follow-button-user';
 
 /* TODO: Arias and Labels */
 /* TODO: Clamp text */
-export function PersonCard({ id, name, username, pfp }: PartialDeep<Users>) {
+export function PersonCard({
+  id,
+  name,
+  username,
+  picture,
+}: PartialDeep<Users>) {
   const { me } = useAuth();
   return (
     <MUICard>
@@ -19,16 +25,17 @@ export function PersonCard({ id, name, username, pfp }: PartialDeep<Users>) {
           '.MuiCardHeader-content': { minWidth: 0 },
         }}
         avatar={
-          <Avatar
+          <AvatarFile
             sx={{
               width: 40,
               height: 40,
             }}
             aria-label={name}
-            src={pfp}
+            file={picture}
+            fallback="/logo.png"
           >
             {name?.[0]}
-          </Avatar>
+          </AvatarFile>
         }
         action={
           id !== me?.id ? (

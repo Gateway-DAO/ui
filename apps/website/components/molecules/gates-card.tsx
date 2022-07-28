@@ -16,6 +16,8 @@ import Typography from '@mui/material/Typography';
 import { ROUTES } from '../../constants/routes';
 import { Gates } from '../../services/graphql/types.generated';
 import { badgeProps } from '../../utils/badge-props';
+import { AvatarFile } from '../atoms/avatar-file';
+
 /* TODO: Arias and Labels */
 
 export function GatesCard({
@@ -46,13 +48,14 @@ export function GatesCard({
             }}
             avatar={
               hasDao && (
-                <Avatar
-                  src={dao?.logo_url}
+                <AvatarFile
+                  file={dao?.logo}
+                  fallback={dao?.logo_url}
                   sx={{ width: 32, height: 32 }}
                   aria-label={`${dao.name}'s DAO image`}
                 >
                   {dao.name?.[0]}
-                </Avatar>
+                </AvatarFile>
               )
             }
             title={hasDao ? dao.name : title}
