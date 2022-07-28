@@ -159,8 +159,8 @@ export default function PrivateProfileTemplate() {
               mt: 2,
             }}
           >
-            <Typography>{me.following.length} connection(s)</Typography>·
-            <Typography>{me.credentials.length} credential(s)</Typography>
+            <Typography>{me.following?.length} connection(s)</Typography>·
+            <Typography>{me.credentials?.length} credential(s)</Typography>
           </Box>
           <Stack
             direction="row"
@@ -169,7 +169,7 @@ export default function PrivateProfileTemplate() {
               mt: 4,
             }}
           >
-            <SocialButtons socials={me.socials} />
+            <SocialButtons socials={me.socials || []} />
           </Stack>
         </Box>
       </Box>
