@@ -15,7 +15,7 @@ import {
 
 const QuizContent = ({ data, completed, updatedAt, completeTask }) => {
   const { questions } = data;
-  const formattedDate = new Date(updatedAt.toLocaleString()).toLocaleString();
+  const formattedDate = new Date(updatedAt?.toLocaleString()).toLocaleString();
   const initialAnswers = questions.map((question, index) => {
     return { questionIdx: index, answers: [] };
   });

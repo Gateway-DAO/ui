@@ -39,7 +39,7 @@ interface Error {
 }
 
 export function Task({ task, idx }: Props) {
-  const { me, gqlAuthMethods } = useAuth();
+  const { me, gqlAuthMethods, onOpenLogin } = useAuth();
 
   const [expanded, toggleExpanded] = useToggle(false);
   const [completed, setCompleted] = useState(false);
@@ -51,7 +51,7 @@ export function Task({ task, idx }: Props) {
       (task_progress) => task_progress.task_id === task.id
     );
 
-    if (progressTaskIndex !== -1) {
+    if (progressTaskIndex && progressTaskIndex !== -1) {
       setCompleted(true);
       setUpdatedAt(me?.task_progresses[progressTaskIndex].updated_at);
     }
@@ -118,6 +118,10 @@ export function Task({ task, idx }: Props) {
   );
 
   const completeTask = (info) => {
+    if (!me) {
+      return onOpenLogin();
+    }
+
     const data = {
       task_id: task.id,
       info,
