@@ -3,7 +3,13 @@ import { useRouter } from 'next/router';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { AppBar, Toolbar, Button, Avatar, IconButton } from '@mui/material';
 
-export const CreateNavbar = () => {
+import { LoadingButton } from '../../atoms/loading-button';
+
+type Props = {
+  isLoading: boolean;
+};
+
+export const CreateNavbar = ({ isLoading }: Props) => {
   const router = useRouter();
   return (
     <>
@@ -17,15 +23,16 @@ export const CreateNavbar = () => {
               <ArrowBackIcon />
             </Avatar>
           </IconButton>
-          <Button
+          <LoadingButton
             type="submit"
             form="gate-details-form"
             variant="contained"
             size="large"
             sx={{ position: 'absolute', right: 0 }}
+            isLoading={isLoading}
           >
             Publish Gate
-          </Button>
+          </LoadingButton>
         </Toolbar>
       </AppBar>
       <Toolbar />
