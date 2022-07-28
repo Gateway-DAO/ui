@@ -20,7 +20,7 @@ export function FollowButtonUser({ userId, ...props }: Props) {
       onClick={() => onToggleFollow(userId, isFollowing)}
       {...props}
     >
-      {isFollowing ? t('actions.unfollow') : t('actions.follow')}
+      {isFollowing ? t('actions.disconnect') : t('actions.connect')}
     </LoadingButton>
   );
 }

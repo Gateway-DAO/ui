@@ -29,7 +29,7 @@ export function GatesCard({
   const hasDao = !!dao;
   const url = useMemo(() => ROUTES.GATE_PROFILE.replace('[id]', id), [id]);
   return (
-    <MUICard>
+    <MUICard sx={{ position: 'relative' }}>
       <Link passHref href={url}>
         <CardActionArea component="a">
           <CardMedia
@@ -37,60 +37,67 @@ export function GatesCard({
             {...badgeProps({ image, title })}
             sx={{ aspectRatio: '1/1' }}
           />
+
+          <CardHeader
+            sx={{
+              pt: 2,
+              pb: 1,
+              '.MuiCardHeader-action': { alignSelf: 'unset' },
+            }}
+            avatar={
+              hasDao && (
+                <Avatar
+                  src={dao?.logo_url}
+                  sx={{ width: 32, height: 32 }}
+                  aria-label={`${dao.name}'s DAO image`}
+                >
+                  {dao.name?.[0]}
+                </Avatar>
+              )
+            }
+            title={hasDao ? dao.name : title}
+          />
+          <CardContent sx={{ py: 1 }}>
+            {hasDao && (
+              <Typography gutterBottom variant="h5">
+                {title}
+              </Typography>
+            )}
+            <Typography
+              variant="body2"
+              color="text.secondary"
+              sx={{
+                /* TODO: make line-clamp reusable */
+                display: '-webkit-box',
+                WebkitLineClamp: 2,
+                WebkitBoxOrient: 'vertical',
+                overflow: 'hidden',
+              }}
+            >
+              {description}
+            </Typography>
+          </CardContent>
+          <Stack direction="row" spacing={1} px={2} pt={1} pb={2}>
+            {categories.map((category) => (
+              <Chip key={category} label={category} size="small" />
+            ))}
+          </Stack>
         </CardActionArea>
       </Link>
 
-      <CardHeader
-        sx={{ pt: 2, pb: 1, '.MuiCardHeader-action': { alignSelf: 'unset' } }}
-        avatar={
-          hasDao && (
-            <Avatar
-              src={dao?.logo_url}
-              sx={{ width: 32, height: 32 }}
-              aria-label={`${dao.name}'s DAO image`}
-            >
-              {dao.name?.[0]}
-            </Avatar>
-          )
-        }
-        action={
-          <IconButton
-            aria-label="settings"
-            sx={{
-              color: (theme) =>
-                colord(theme.palette.action.active).alpha(0.56).toRgbString(),
-            }}
-          >
-            <BookmarkBorderIcon />
-          </IconButton>
-        }
-        title={hasDao ? dao.name : title}
-      />
-      <CardContent sx={{ py: 1 }}>
-        {hasDao && (
-          <Typography gutterBottom variant="h5">
-            {title}
-          </Typography>
-        )}
-        <Typography
-          variant="body2"
-          color="text.secondary"
-          sx={{
-            /* TODO: make line-clamp reusable */
-            display: '-webkit-box',
-            WebkitLineClamp: 2,
-            WebkitBoxOrient: 'vertical',
-            overflow: 'hidden',
-          }}
-        >
-          {description}
-        </Typography>
-      </CardContent>
-      <Stack direction="row" spacing={1} px={2} pt={1} pb={2}>
-        {categories.map((category) => (
-          <Chip key={category} label={category} size="small" />
-        ))}
-      </Stack>
+      <IconButton
+        aria-label="settings"
+        sx={{
+          color: (theme) =>
+            colord(theme.palette.action.active).alpha(0.56).toRgbString(),
+          zIndex: 1,
+          position: 'absolute',
+          top: (theme) => theme.spacing(54),
+          right: (theme) => theme.spacing(1),
+        }}
+      >
+        <BookmarkBorderIcon />
+      </IconButton>
     </MUICard>
   );
 }

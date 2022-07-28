@@ -24,12 +24,12 @@
   "titleDescription": "Where talent take ownership of their work and professional growth.",
   "enterButtonTitle": "Enter the gateway",
   "forUsers": {
-    "mainTitle": "Your Web3 native resume",
-    "secondaryTitle": "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque.",
+    "mainTitle": "Build your web3 native resume",
+    "secondaryTitle": "Do work, receive recognition from the community, and strengthen your professional identity.",
     "features": [
       {
         "title": "Join DAOs",
-        "description": "Gateway's credentials are issued by DAOs to help contributors create a verified work-track.",
+        "description": "Discover and build with the best communities across web3.",
         "image": {
           "url": "/images/join-dao-featured-image.png",
           "width": 423,
@@ -37,7 +37,7 @@
         }
       },
       {
-        "title": "Eearn Credentials",
+        "title": "Earn Credentials",
         "description": "Receive verified credentials that serve as attestations for your work and your abilities.",
         "image": {
           "url": "/images/earn-credentials-featured-image.png",
@@ -47,7 +47,7 @@
       },
       {
         "title": "Showcase Your Achievements",
-        "description": "Proudly display your accomplishments on Gateway's profile and across web3.",
+        "description": "Proudly display your accomplishments across web3 on your Gateway profile.",
         "image": {
           "url": "/images/showcase-featured-image.png",
           "width": 360,
@@ -56,7 +56,7 @@
       },
       {
         "title": "Own Your Network",
-        "description": "Gateway allows professional to take ownership and meet new builders in the space.",
+        "description": "Gateway allows professionals to take ownership and meet new builders in the space.",
         "image": {
           "url": "/images/own-network-featured-image.png",
           "width": 353,
@@ -71,7 +71,7 @@
     "features": [
       {
         "title": "Own Your Spaces",
-        "description": "Spaces created unique to communities and managed by admins and team leads.",
+        "description": "Spaces created are unique to communities and managed by admins and team leads.",
         "image": {
           "url": "/images/own-spaces-featured-image.png",
           "width": 466,
@@ -98,7 +98,7 @@
       },
       {
         "title": "Find Talent",
-        "description": "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque.",
+        "description": "Gateway’s social graph highlights the best talent for your hiring needs.",
         "image": {
           "url": "/images/find-talent-featured-image.png",
           "width": 501,
@@ -120,7 +120,7 @@
       },
       {
         "title": "Composable",
-        "description": "Minting as NFTs possible across any chain. Work is not limited to a blockchain."
+        "description": "Minting on Gateway is blockchain agnostic, just like your work!"
       }
     ],
     "image": {
@@ -136,7 +136,7 @@
     "features": [
       {
         "title": "Consumer",
-        "description": "Gateway's credentials can be used by talent, organizations, and even Dapps for custom use-cases like access."
+        "description": "Gateway's credentials can be used by talent, organizations, and even Dapps for custom use-cases."
       },
       {
         "title": "Credential SDK",

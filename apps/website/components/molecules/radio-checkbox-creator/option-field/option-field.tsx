@@ -1,44 +1,47 @@
-import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
+import { useState } from 'react';
+
+import { Controller, useFormContext } from 'react-hook-form';
 
 import { CircleOutlined, SquareOutlined } from '@mui/icons-material';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CloseIcon from '@mui/icons-material/Close';
-import { Stack, TextField } from '@mui/material';
+import { Alert, Snackbar, Stack, TextField } from '@mui/material';
 
 import {
   CreateGateTypes,
-  Option,
-  QuizTask,
   QuizTaskDataError,
 } from '../../../templates/create-gate/schema';
+
+type Props = {
+  taskId: number;
+  questionIndex: number;
+  optionIndex: number;
+  onRemove: (index: number) => void;
+};
 
 export function OptionField({
   taskId,
   questionIndex,
   optionIndex,
+  onRemove,
   ...rest
-}: {
-  taskId: number;
-  questionIndex: number;
-  optionIndex: number;
-}): JSX.Element {
+}: Props): JSX.Element {
   const {
     register,
     setValue,
     watch,
-    getValues,
     formState: { errors },
     control,
   } = useFormContext<CreateGateTypes>();
-  const { fields: options, remove } = useFieldArray({
-    control,
-    name: `tasks.data.${taskId}.task_data.questions.${questionIndex}.options`,
-  });
+  const [isOpen, setIsOpen] = useState(false);
 
-  watch(`tasks.data.${taskId}.task_data.questions.${questionIndex}.type`);
+  const questionType = watch(
+    `tasks.data.${taskId}.task_data.questions.${questionIndex}.type`
+  );
 
-  const questionType: string = (getValues().tasks.data[taskId] as QuizTask)
-    .task_data.questions[questionIndex].type;
+  const options = watch(
+    `tasks.data.${taskId}.task_data.questions.${questionIndex}.options`
+  );
 
   return (
     <Stack
@@ -58,18 +61,18 @@ export function OptionField({
           fullWidth
           placeholder={'Write your answer'}
           InputProps={{ disableUnderline: true }}
-          // required
           variant={'standard'}
           {...register(
             `tasks.data.${taskId}.task_data.questions.${questionIndex}.options.${optionIndex}.value`
           )}
           error={
-            !!(errors.tasks?.data[taskId].task_data as QuizTaskDataError)
-              ?.questions[questionIndex]?.options[optionIndex]?.value
+            !!(errors.tasks?.data[taskId]?.task_data as QuizTaskDataError)
+              ?.questions?.[questionIndex]?.options?.[optionIndex]?.value
           }
           helperText={
-            (errors.tasks?.data[taskId].task_data as QuizTaskDataError)
-              ?.questions[questionIndex]?.options[optionIndex]?.value?.message
+            (errors.tasks?.data[taskId]?.task_data as QuizTaskDataError)
+              ?.questions?.[questionIndex]?.options?.[optionIndex]?.value
+              ?.message
           }
         />
       </Stack>
@@ -88,33 +91,39 @@ export function OptionField({
                   : theme.palette.text.primary,
               })}
               onClick={() => {
-                setValue(
-                  `tasks.data.${taskId}.task_data.questions.${questionIndex}.options.${optionIndex}.correct`,
-                  !value
-                );
-
                 if (
-                  questionType === 'single' &&
-                  (options as Option[]).filter((option) => option.correct)
-                    .length > 0
+                  questionType === 'multiple' ||
+                  value === true ||
+                  (questionType === 'single' &&
+                    options.filter((option) => option.correct).length === 0)
                 ) {
-                  setValue(
-                    `tasks.data.${taskId}.task_data.questions.${questionIndex}.type`,
-                    'multiple'
+                  return setValue(
+                    `tasks.data.${taskId}.task_data.questions.${questionIndex}.options.${optionIndex}.correct`,
+                    !value
                   );
                 }
+                setIsOpen(true);
               }}
             />
           )}
         />
 
-        {options.length > 1 && (
+        {optionIndex > 0 && (
           <CloseIcon
             sx={{ marginLeft: '24px', cursor: 'pointer' }}
-            onClick={() => remove(optionIndex)}
+            onClick={() => onRemove(optionIndex)}
           />
         )}
       </Stack>
+      <Snackbar
+        open={isOpen}
+        autoHideDuration={3000}
+        onClose={() => setIsOpen(false)}
+      >
+        <Alert severity="error" sx={{ width: '100%' }}>
+          Question type needs to be multiple.
+        </Alert>
+      </Snackbar>
     </Stack>
   );
 }

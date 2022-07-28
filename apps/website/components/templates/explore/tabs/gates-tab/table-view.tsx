@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 import { TOKENS } from '@gateway/theme';
 
 import { Avatar, Box, Chip, Stack, Typography } from '@mui/material';
@@ -8,7 +10,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 
-import { Gates } from '../../../../../services/graphql/types.generated';
+import { ROUTES } from '../../../../../constants/routes';
 import { badgeProps } from '../../../../../utils/badge-props';
 import { ExploreProps } from '../../types';
 
@@ -42,27 +44,32 @@ export function TableView({ gates }: Props) {
           {gates.map((gate) => {
             return (
               <TableRow hover role="checkbox" tabIndex={-1} key={gate.id}>
-                <TableCell>
-                  <Stack alignItems="center" direction="row" gap={1}>
-                    <Avatar variant="rounded" {...badgeProps(gate)}>
-                      {gate.title?.[0]}
-                    </Avatar>
-                    <Box>
-                      <Typography>{gate.title}</Typography>
-                      <Typography
-                        variant="caption"
-                        color="text.secondary"
-                        sx={{
-                          textOverflow: 'ellipsis',
-                          overflow: 'hidden',
-                          whiteSpace: 'nowrap',
-                        }}
-                      >
-                        {gate.description}
-                      </Typography>
-                    </Box>
-                  </Stack>
-                </TableCell>
+                <Link
+                  passHref
+                  href={ROUTES.GATE_PROFILE.replace('[id]', gate.id)}
+                >
+                  <TableCell sx={{ cursor: 'pointer' }}>
+                    <Stack alignItems="center" direction="row" gap={1}>
+                      <Avatar variant="rounded" {...badgeProps(gate)}>
+                        {gate.title?.[0]}
+                      </Avatar>
+                      <Box>
+                        <Typography>{gate.title}</Typography>
+                        <Typography
+                          variant="caption"
+                          color="text.secondary"
+                          sx={{
+                            textOverflow: 'ellipsis',
+                            overflow: 'hidden',
+                            whiteSpace: 'nowrap',
+                          }}
+                        >
+                          {gate.description}
+                        </Typography>
+                      </Box>
+                    </Stack>
+                  </TableCell>
+                </Link>
                 <TableCell>
                   <Stack direction="row" gap={1}>
                     {gate.categories?.map((category) => (

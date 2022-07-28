@@ -6,7 +6,10 @@ import { PartialDeep } from 'type-fest';
 
 import { ROUTES } from '../../constants/routes';
 import { gqlAnonMethods, gqlMethods } from '../../services/api';
-import { RefreshMutation } from '../../services/graphql/types.generated';
+import {
+  LoginMutation,
+  RefreshMutation,
+} from '../../services/graphql/types.generated';
 import { SessionUser } from '../../types/user';
 import { AuthStatus } from './state';
 
@@ -32,16 +35,17 @@ export function useLogin() {
         throw error;
       }
       /* get current user from hasura based on the token */
-      const { me } = await gqlMethods({ token: res.login.token }).me();
+      const { me } = await gqlMethods(res.login.token).me();
 
       return {
-        ...res.login,
-        ...me,
+        login: res.login,
+        me: me,
       };
     },
     {
-      onSuccess(data) {
-        queryClient.setQueryData('me', data);
+      onSuccess({ login, me }) {
+        queryClient.setQueryData('token', login);
+        queryClient.setQueryData('me', me);
       },
     }
   );
@@ -51,24 +55,44 @@ export function useLogin() {
 
 export function useMe() {
   const queryClient = useQueryClient();
-  const me = useQuery<PartialDeep<SessionUser>>('me').data;
+
+  const token = useQuery('token', () =>
+    queryClient.getQueryData<LoginMutation['login']>('token')
+  );
+
+  const me = useQuery(
+    'me',
+    async () => (await gqlMethods(token.data.token).me()).me,
+    {
+      enabled: !!token.data,
+      refetchOnReconnect: true,
+      refetchOnWindowFocus: true,
+    }
+  );
 
   const onUpdateMe = (
     cb: (oldMe: PartialDeep<SessionUser>) => PartialDeep<SessionUser>
   ) => queryClient.setQueryData('me', cb);
 
   const onSignOut = () => {
+    queryClient.setQueryData('token', undefined);
     queryClient.setQueryData('me', undefined);
   };
 
   const onUpdateToken = (newToken: RefreshMutation['refresh']) =>
-    onUpdateMe((oldMe: PartialDeep<SessionUser>) => ({
-      ...oldMe,
+    queryClient.setQueryData('token', (oldToken: LoginMutation['login']) => ({
+      ...oldToken,
       token: newToken.token,
       refresh_token: newToken.refresh_token,
     }));
 
-  return { me, onSignOut, onUpdateMe, onUpdateToken };
+  return {
+    me: me.data,
+    tokens: token.data,
+    onSignOut,
+    onUpdateMe,
+    onUpdateToken,
+  };
 }
 
 export function useInitUser(status: AuthStatus, me: PartialDeep<SessionUser>) {
@@ -84,6 +108,15 @@ export function useInitUser(status: AuthStatus, me: PartialDeep<SessionUser>) {
       !me.init
     ) {
       router.replace(ROUTES.NEW_USER);
+    }
+
+    // Redirects to Explore if authenticated and user already initialized
+    if (router.pathname === ROUTES.LANDING && status === 'AUTHENTICATED') {
+      if (!me.init) {
+        router.replace(ROUTES.NEW_USER);
+      } else {
+        router.replace(ROUTES.EXPLORE);
+      }
     }
   }, [me, router, status]);
 }

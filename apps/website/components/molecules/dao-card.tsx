@@ -15,6 +15,7 @@ import { Box } from '@mui/system';
 import { categoriesMap } from '../../constants/dao';
 import { ROUTES } from '../../constants/routes';
 import { useFile } from '../../hooks/use-file';
+import { useAuth } from '../../providers/auth';
 import { Daos } from '../../services/graphql/types.generated';
 import { AvatarFile } from '../atoms/avatar-file';
 import { FollowButtonDAO } from '../atoms/follow-button-dao';
@@ -31,6 +32,11 @@ export function DaoCard({
   description,
   logo,
 }: PartialDeep<Daos>) {
+  const { me } = useAuth();
+
+  const isAdmin = !!me?.following_dao.find((dao) => dao.dao_id === id)?.dao
+    ?.is_admin;
+
   const url = useMemo(() => ROUTES.DAO_PROFILE.replace('[id]', id), [id]);
 
   const cover = useFile(background);
@@ -79,8 +85,6 @@ export function DaoCard({
             }}
             title={name}
             titleTypographyProps={{ variant: 'h6' }}
-            subheader="September 14, 2016"
-            subheaderTypographyProps={{ variant: 'body2' }}
           />
           <CardContent sx={{ py: 1 }}>
             <Typography
@@ -107,18 +111,20 @@ export function DaoCard({
         </CardActionArea>
       </Link>
 
-      <FollowButtonDAO
-        daoId={id}
-        variant="outlined"
-        size="small"
-        color="secondary"
-        sx={{
-          zIndex: 1,
-          position: 'absolute',
-          top: (theme) => theme.spacing(21.5),
-          right: (theme) => theme.spacing(2),
-        }}
-      />
+      {!isAdmin && (
+        <FollowButtonDAO
+          daoId={id}
+          variant="outlined"
+          size="small"
+          color="secondary"
+          sx={{
+            zIndex: 1,
+            position: 'absolute',
+            top: (theme) => theme.spacing(20.5),
+            right: (theme) => theme.spacing(2),
+          }}
+        />
+      )}
     </MUICard>
   );
 }

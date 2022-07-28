@@ -125,20 +125,19 @@ export const Investors = forwardRef<
                 },
               })}
             >
-              <Link passHref href={investor.url}>
-                <Typography
-                  component="span"
-                  variant="body1"
-                  sx={() => ({
-                    opacity: 0.6,
-                    '&:hover': {
-                      opacity: 1,
-                    },
-                  })}
-                >
-                  {investor.name}
-                </Typography>
-              </Link>
+              <Typography
+                component="span"
+                variant="body1"
+                sx={() => ({
+                  cursor: 'default',
+                  opacity: 0.6,
+                  '&:hover': {
+                    opacity: 1,
+                  },
+                })}
+              >
+                {investor.name}
+              </Typography>
             </ListItem>
           ))}
         </List>

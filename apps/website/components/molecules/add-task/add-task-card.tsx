@@ -8,11 +8,6 @@ import { Grid, Paper, Stack, Typography } from '@mui/material';
 
 import { CircleWithNumber } from '../../atoms/circle-with-number';
 import AddTaskButton from './add-task-button';
-import FileLinkTask from './file-link-task/file-link-task';
-import HoldTokenTask from './hold-token-task/hold-token-task';
-import { QuizTask } from './quiz-task';
-import SnapshotTask from './snapshot-task/snapshot-task';
-import VerificationCodeTask from './verification-task/verification-task';
 
 const AddTaskCard = ({ numberOfTasks, addTask }) => {
   return (
@@ -46,7 +41,7 @@ const AddTaskCard = ({ numberOfTasks, addTask }) => {
             <AddTaskButton
               icon={<InsertLinkIcon />}
               title={'Files & Links'}
-              addTask={() => addTask(FileLinkTask, 'self_verify')}
+              addTask={() => addTask('self_verify')}
             />
           </Paper>
         </Grid>
@@ -55,7 +50,7 @@ const AddTaskCard = ({ numberOfTasks, addTask }) => {
             <AddTaskButton
               icon={<QuizIcon />}
               title={'Create Quiz'}
-              addTask={() => addTask(QuizTask, 'quiz')}
+              addTask={() => addTask('quiz')}
             />
           </Paper>
         </Grid>
@@ -64,7 +59,7 @@ const AddTaskCard = ({ numberOfTasks, addTask }) => {
             <AddTaskButton
               icon={<MonetizationOnIcon />}
               title={'Hold Token'}
-              addTask={() => addTask(HoldTokenTask, 'token_hold')}
+              addTask={() => addTask('token_hold')}
             />
           </Paper>
         </Grid>
@@ -73,7 +68,7 @@ const AddTaskCard = ({ numberOfTasks, addTask }) => {
             <AddTaskButton
               icon={<ElectricBoltIcon />}
               title={'Snapshot Governance'}
-              addTask={() => addTask(SnapshotTask, 'snapshot')}
+              addTask={() => addTask('snapshot')}
             />
           </Paper>
         </Grid>
@@ -82,7 +77,7 @@ const AddTaskCard = ({ numberOfTasks, addTask }) => {
             <AddTaskButton
               icon={<NumbersIcon />}
               title={'Verification Code'}
-              addTask={() => addTask(VerificationCodeTask, 'meeting_code')}
+              addTask={() => addTask('meeting_code')}
             />
           </Paper>
         </Grid>

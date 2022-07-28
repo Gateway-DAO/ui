@@ -1,4 +1,5 @@
 import { GetStaticPaths, InferGetStaticPropsType } from 'next';
+import { useRouter } from 'next/router';
 
 import { useQuery } from 'react-query';
 
@@ -13,18 +14,33 @@ import { gqlAnonMethods } from '../../../services/api';
 export default function DaoProfilePage({
   daoProps,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
-  const { daos_by_pk: dao } = daoProps ?? {};
+  const router = useRouter();
+
+  const id = router.query.id as string;
 
   const { me } = useAuth();
 
+  const { data } = useQuery(
+    ['dao', id],
+    () =>
+      gqlAnonMethods.dao_profile({
+        id: router.query.id as string,
+      }),
+    {
+      initialData: daoProps,
+    }
+  );
+
+  const { daos_by_pk: dao } = data ?? {};
+
   const isAdmin =
-    me?.following_dao?.find((fdao) => fdao.dao_id === dao?.id)?.dao?.is_admin ??
+    me?.following_dao?.find((fdao) => fdao.dao_id === id)?.dao?.is_admin ??
     false;
 
   const peopleQuery = useQuery(
-    ['dao-people', dao.id],
-    () => gqlAnonMethods.dao_profile_people({ id: dao.id }),
-    { enabled: !!dao?.id }
+    ['dao-people', id],
+    () => gqlAnonMethods.dao_profile_people({ id }),
+    { enabled: !!id }
   );
 
   const onResetPeopleQuery = () => {
@@ -59,7 +75,7 @@ export const getStaticPaths: GetStaticPaths = async ({ locales }) => {
 
   return {
     paths: daos.map((dao) => ({ params: { id: dao.id } })),
-    fallback: 'blocking', //TODO: add loading state and change to fallback: true
+    fallback: true,
   };
 };
 

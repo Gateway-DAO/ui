@@ -9,7 +9,6 @@ import { Box, Divider, Snackbar, Stack, Typography } from '@mui/material';
 import { ROUTES } from '../../../constants/routes';
 import { useSnackbar } from '../../../hooks/use-snackbar';
 import { useAuth } from '../../../providers/auth';
-import { gqlMethods } from '../../../services/api';
 import { CreateNavbar } from '../../organisms/create-navbar/create-navbar';
 import TaskArea from '../../organisms/tasks-area/tasks-area';
 import { GateDetailsForm } from './details-form';
@@ -19,22 +18,22 @@ import { createGateSchema, CreateGateTypes } from './schema';
 export function CreateGateTemplate() {
   const methods = useForm({
     resolver: zodResolver(createGateSchema),
+    mode: 'onBlur',
   });
-  const values = methods.getValues();
 
   const snackbar = useSnackbar();
 
   const router = useRouter();
-  const { me } = useAuth();
+  const { gqlAuthMethods } = useAuth();
 
   const { mutate: uploadImage } = useMutation(
     'uploadImage',
-    !!me && gqlMethods(me).upload_image
+    gqlAuthMethods.upload_image
   );
 
   const { mutate: createGateMutation } = useMutation(
     'createGate',
-    !!me && gqlMethods(me).create_gate
+    gqlAuthMethods.create_gate
   );
 
   const createGate = (gateData: CreateGateTypes) => {
@@ -58,7 +57,7 @@ export function CreateGateTemplate() {
           createGateMutation(
             {
               // TODO: This is Gateway's ID (temporary)
-              dao_id: 'b49fa6cc-e752-4e58-bb8d-9c12c5c17685',
+              dao_id: router.query.dao,
               title: gateData.title,
               categories: gateData.categories,
               description: gateData.description,
@@ -84,6 +83,10 @@ export function CreateGateTemplate() {
       }
     );
   };
+
+  const hasTitleAndDescription = methods
+    .watch(['title', 'description'])
+    .every((value) => !!value);
 
   return (
     <Stack
@@ -144,7 +147,7 @@ export function CreateGateTemplate() {
       </Stack>
 
       {/* Tasks */}
-      {values.title && values.description && (
+      {hasTitleAndDescription && (
         <>
           <Divider sx={{ margin: '60px 0' }} />
           <Stack
