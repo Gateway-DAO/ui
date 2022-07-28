@@ -1,23 +1,34 @@
 import { paramCase } from 'change-case';
 
 export const categories = [
-  'Community/Social',
+  'Onboarding',
+  'Marketing',
+  'DeFi',
+  'Gaming',
+  'Music',
+  'DAO Tool',
+  'Analytics',
+  'Art',
+  'Community',
+  'Social',
   'Data',
-  'Financial ',
+  'Financial',
   'Governance',
+  'Education',
   'HR',
   'Infrastructure',
   'Operating System',
   'Collaboration',
-  'Services ',
+  'Services',
   'Grants',
   'Treasury',
   'Investment',
   'Media',
-  'Product ',
+  'Product',
   'Protocol',
   'Research',
   'Bio',
+  'Impact',
 ];
 
 export const categoriesDropdown = categories.map((category) => ({

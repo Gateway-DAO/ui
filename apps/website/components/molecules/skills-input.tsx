@@ -1,14 +1,17 @@
 import { Search } from '@mui/icons-material';
 import { Chip, TextField, Autocomplete } from '@mui/material';
 
-const skills = ['Skill A', 'Skill B', 'Skill C'];
+import { SKILLS } from '../../constants/skills';
 
 export const SkillsInput = ({ set, ...props }) => {
   return (
     <Autocomplete
       multiple
       id="skills-input"
-      options={skills}
+      options={[...SKILLS.HARD, ...SKILLS.SOFT]}
+      groupBy={(option) =>
+        SKILLS.HARD.includes(option) ? 'Hard Skills' : 'Soft Skills'
+      }
       popupIcon={<Search />}
       sx={{
         '&.Mui-focused .MuiButtonBase-root': {
