@@ -48,6 +48,7 @@
   },
   "actions": {
     "connect": "connect",
+    "disconnect": "disconnect",
     "cancel": "cancel",
     "got-it": "got it",
     "follow": "Follow",

@@ -28,11 +28,6 @@ export function AllTab({ daos, gates, people, setActiveTab }: Props) {
         },
       }}
     >
-      {/* <NewsSection>
-        <NewsItem isBig />
-        <NewsItem />
-        <NewsItem />
-      </NewsSection> */}
       <Stack
         direction="column"
         divider={<Divider />}

@@ -21,8 +21,23 @@ import { useCallback, useMemo, useState } from 'react';
  */
 export function usePropertyFilter<Item>(
   array: Item[],
-  propertyOfItem: keyof Item
+  propertyOfItem: keyof Item,
+  mappedValues?: { [key: string]: string } | Map<string, string>
 ) {
+  const valueToLabel = useCallback(
+    (label: string) => {
+      if (mappedValues) {
+        return (
+          mappedValues[label] ??
+          (mappedValues as Map<string, string>).get?.(label) ??
+          label
+        );
+      }
+      return label;
+    },
+    [mappedValues]
+  );
+
   const availableFilters = useMemo(
     () =>
       Array.from(
@@ -34,10 +49,10 @@ export function usePropertyFilter<Item>(
           )
         )
       ).map((filter) => ({
-        label: filter,
+        label: valueToLabel(filter),
         value: filter,
       })),
-    [array, propertyOfItem]
+    [array, propertyOfItem, valueToLabel]
   );
   const [selectedFilters, setActiveFilters] = useState<string[]>([]);
   const toggleFilter = useCallback(

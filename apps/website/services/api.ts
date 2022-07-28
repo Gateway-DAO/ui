@@ -1,6 +1,5 @@
 import { GraphQLClient } from 'graphql-request';
 
-import { SessionUser } from '../types/user';
 import {
   getSdk,
   RefreshMutation,
@@ -15,22 +14,24 @@ const glqAnonClient = new GraphQLClient(
 
 export const gqlAnonMethods = getSdk(glqAnonClient);
 
-const gqlUserHeader = (user: Partial<SessionUser>) => ({
+const gqlUserHeader = (token: string, userId?: string) => ({
   'X-Hasura-Role': 'user',
-  Authorization: `Bearer ${user?.token}`,
-  ...(user.id && { 'X-Hasura-User-Id': user.id as string }),
+  Authorization: `Bearer ${token}`,
+  ...(userId && { 'X-Hasura-User-Id': userId }),
 });
 
-const gqlClient = (user: Partial<SessionUser>) =>
+const gqlClient = (token?: string, userId?: string) =>
   new GraphQLClient(process.env.NEXT_PUBLIC_HASURA_ENDPOINT, {
-    headers: user ? gqlUserHeader(user) : undefined,
+    headers: token ? gqlUserHeader(token, userId) : undefined,
   });
 
-export const gqlMethods = (user: Partial<SessionUser>) =>
-  getSdk(gqlClient(user));
+export const gqlMethods = (token: string, userId?: string) =>
+  getSdk(gqlClient(token, userId));
 
 export const gqlMethodsWithRefresh = (
-  user: Partial<SessionUser>,
+  token: string,
+  refreshToken: string,
+  userId: string | undefined,
   saveToken: (newTokens: RefreshMutation['refresh']) => void
 ) => {
   const wrapper: SdkFunctionWrapper = async (action, name) => {
@@ -49,18 +50,18 @@ export const gqlMethodsWithRefresh = (
         /* Retrieves the new token */
         const newTokens = (
           await gqlAnonMethods.refresh({
-            refresh_token: user.refresh_token,
+            refresh_token: refreshToken,
           })
         )?.refresh;
 
         /* Saves the token on stored user */
-        const res = await action(gqlUserHeader({ ...user, ...newTokens }));
+        const res = await action(gqlUserHeader(userId, newTokens.token));
         saveToken(newTokens);
         return res;
       }
       throw e;
     }
   };
-  const methods = getSdk(gqlClient(user), wrapper);
+  const methods = getSdk(gqlClient(token, userId), wrapper);
   return methods;
 };

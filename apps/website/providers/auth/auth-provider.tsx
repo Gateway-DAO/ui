@@ -21,7 +21,13 @@ export function AuthProvider({
   children,
 }: PropsWithChildren<Props>) {
   const { disconnect } = useDisconnect();
-  const { me, onSignOut: onSignOutMe, onUpdateMe, onUpdateToken } = useMe();
+  const {
+    me,
+    tokens,
+    onSignOut: onSignOutMe,
+    onUpdateMe,
+    onUpdateToken,
+  } = useMe();
   const { status, onAuthenticated, onConnecting, onUnauthenticated } =
     useAuthStatus(me);
 
@@ -30,8 +36,14 @@ export function AuthProvider({
   const router = useRouter();
 
   const gqlAuthMethods = useMemo(
-    () => gqlMethodsWithRefresh(me, onUpdateToken),
-    [me?.token, onUpdateToken]
+    () =>
+      gqlMethodsWithRefresh(
+        tokens?.token,
+        tokens?.refresh_token,
+        me?.id,
+        onUpdateToken
+      ),
+    [tokens?.token, tokens?.refresh_token, me?.id, onUpdateToken]
   );
 
   const onSignOut = useCallback(() => {
