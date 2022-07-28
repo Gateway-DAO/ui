@@ -10,7 +10,7 @@ export function ClientNav() {
     <>
       {status === 'AUTHENTICATED' && typeof window !== 'undefined' ? (
         <>
-          <NavBarNotifications />
+          {/* <NavBarNotifications /> */}
           <NavBarAvatar />
         </>
       ) : (

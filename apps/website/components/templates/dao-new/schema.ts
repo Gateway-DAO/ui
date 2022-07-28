@@ -38,7 +38,12 @@ export const schema: SchemaOf<NewDAOSchema> = object({
   socials: array().of(
     object({
       network: string().defined(),
-      url: string().url().defined(),
+      url: string()
+        .matches(
+          /((https|http):\/\/)(www.)?[a-z0-9]+(\.[a-z]{2,}){1,3}(#?\/?[a-zA-Z0-9#]+)*\/?(\?[a-zA-Z0-9-_]+=[a-zA-Z0-9-%]+&?)?$/,
+          `Url is not valid, check if you added "https://"`
+        )
+        .defined(),
     })
   ),
 });

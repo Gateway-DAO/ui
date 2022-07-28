@@ -69,7 +69,7 @@ export function ImageDropField<TFormSchema extends FieldValues = FieldValues>({
   };
 
   const onReset = () => {
-    onChange(undefined);
+    onChange('');
   };
 
   const [dropBond, { over: isOver }] = useDropArea({
