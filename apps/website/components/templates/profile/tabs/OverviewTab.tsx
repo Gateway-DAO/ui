@@ -87,8 +87,10 @@ export function OverviewTab({ user }: Props) {
             <Box
               sx={{
                 py: '50px',
-                borderBottom: 1,
-                borderColor: 'divider',
+                ...(user.experiences?.length == 0 && {
+                  borderBottom: 1,
+                  borderColor: 'divider',
+                }),
                 display: 'flex',
                 flexDirection: 'column',
                 rowGap: '32px',
