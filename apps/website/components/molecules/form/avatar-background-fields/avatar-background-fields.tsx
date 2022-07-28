@@ -36,6 +36,7 @@ export function AvatarBackgroundFields<TFormSchema>({
           height: 260,
           ' > .MuiBox-root': {
             borderRadius: 2,
+            cursor: 'pointer',
           },
           '.field-image': {
             borderRadius: 2,
@@ -72,6 +73,7 @@ export function AvatarBackgroundFields<TFormSchema>({
           zIndex: 1,
           ' > .MuiBox-root': {
             borderRadius: '100%',
+            cursor: 'pointer',
           },
           '.field-image': {
             borderRadius: '100%',

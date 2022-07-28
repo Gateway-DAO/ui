@@ -1,4 +1,5 @@
 import useTranslation from 'next-translate/useTranslation';
+import Link from 'next/link';
 
 import { TOKENS } from '@gateway/theme';
 
@@ -11,6 +12,8 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 
 import { categoriesMap } from '../../../../../constants/dao';
+import { useAuth } from '../../../../../providers/auth';
+import { ROUTES } from '../../../../../constants/routes';
 import { AvatarFile } from '../../../../atoms/avatar-file';
 import { FollowButtonDAO } from '../../../../atoms/follow-button-dao';
 import { ExploreProps } from '../../types';
@@ -22,6 +25,7 @@ type Props = {
   daos: ExploreProps['daos'];
 };
 export function TableView({ daos }: Props) {
+  const { me } = useAuth();
   return (
     <TableContainer
       sx={{
@@ -43,37 +47,47 @@ export function TableView({ daos }: Props) {
         </TableHead>
         <TableBody>
           {daos.map((dao) => {
+            const isAdmin = dao.permissions.some(
+              ({ user_id, permission }) =>
+                user_id === me?.id && permission === 'dao_admin'
+            );
+
             return (
               <TableRow hover role="checkbox" tabIndex={-1} key={dao.id}>
-                <TableCell>
-                  <Stack alignItems="center" direction="row" gap={1}>
-                    <AvatarFile file={dao.logo} fallback={dao.logo_url}>
-                      {dao.name?.[0]}
-                    </AvatarFile>
-                    <Box>
-                      <Typography>{dao.name}</Typography>
-                      <Typography
-                        variant="caption"
-                        color="text.secondary"
-                        sx={(theme) => ({
-                          display: 'block',
-                          textOverflow: 'ellipsis',
-                          overflow: 'hidden',
-                          maxWidth: '70ch',
-                          [`${theme.breakpoints.down('md')}`]: {
-                            display: '-webkit-box',
-                            WebkitLineClamp: 2,
-                            WebkitBoxOrient: 'vertical',
-                          },
-                        })}
-                      >
-                        {dao.description.length > 140
-                          ? `${dao.description.slice(0, 139)}...`
-                          : dao.description}
-                      </Typography>
-                    </Box>
-                  </Stack>
-                </TableCell>
+                <Link
+                  passHref
+                  href={ROUTES.DAO_PROFILE.replace('[id]', dao.id)}
+                >
+                  <TableCell sx={{ cursor: 'pointer' }}>
+                    <Stack alignItems="center" direction="row" gap={1}>
+                      <AvatarFile file={dao.logo} fallback={dao.logo_url}>
+                        {dao.name?.[0]}
+                      </AvatarFile>
+                      <Box>
+                        <Typography>{dao.name}</Typography>
+                        <Typography
+                          variant="caption"
+                          color="text.secondary"
+                          sx={(theme) => ({
+                            display: 'block',
+                            textOverflow: 'ellipsis',
+                            overflow: 'hidden',
+                            maxWidth: '70ch',
+                            [`${theme.breakpoints.down('md')}`]: {
+                              display: '-webkit-box',
+                              WebkitLineClamp: 2,
+                              WebkitBoxOrient: 'vertical',
+                            },
+                          })}
+                        >
+                          {dao.description.length > 140
+                            ? `${dao.description.slice(0, 139)}...`
+                            : dao.description}
+                        </Typography>
+                      </Box>
+                    </Stack>
+                  </TableCell>
+                </Link>
                 <TableCell>
                   <Stack direction="row" gap={1}>
                     {dao.categories?.map((category) => {
@@ -88,11 +102,13 @@ export function TableView({ daos }: Props) {
                   </Stack>
                 </TableCell>
                 <TableCell align="right">
-                  <FollowButtonDAO
-                    daoId={dao.id}
-                    variant="outlined"
-                    color="secondary"
-                  />
+                  {!isAdmin && (
+                    <FollowButtonDAO
+                      daoId={dao.id}
+                      variant="outlined"
+                      color="secondary"
+                    />
+                  )}
                 </TableCell>
               </TableRow>
             );

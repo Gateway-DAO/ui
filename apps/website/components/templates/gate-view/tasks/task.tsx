@@ -16,7 +16,6 @@ import {
 } from '@mui/material';
 
 import { useAuth } from '../../../../../website/providers/auth';
-import { gqlMethods } from '../../../../../website/services/api';
 import { queryClient } from '../../../../../website/services/query-client';
 import { SessionUser } from '../../../../../website/types/user';
 import { Tasks } from '../../../../services/graphql/types.generated';
@@ -40,7 +39,7 @@ interface Error {
 }
 
 export function Task({ task, idx }: Props) {
-  const { me } = useAuth();
+  const { me, gqlAuthMethods } = useAuth();
 
   const [expanded, toggleExpanded] = useToggle(false);
   const [completed, setCompleted] = useState(false);
@@ -95,7 +94,7 @@ export function Task({ task, idx }: Props) {
 
   const { mutate: completeTaskMutation } = useMutation(
     'completeTask',
-    me && gqlMethods(me).complete_task,
+    gqlAuthMethods.complete_task,
     {
       onSuccess: async (data) => {
         await queryClient.cancelQueries('me');

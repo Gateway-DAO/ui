@@ -13,8 +13,8 @@ export const MuiInputBase: Extract<
       '&.MuiInputBase-multiline': {
         minHeight: '176px',
       },
-      '&.MuiInputBase-multiline textarea': {
-        height: '100% !important',
+      '&.MuiInputBase-multiline .MuiInputBase-inputMultiline': {
+        height: '143px !important',
       },
     },
   },
