@@ -20,7 +20,7 @@ export function AuthProvider({
   isAuthPage,
   children,
 }: PropsWithChildren<Props>) {
-  const { disconnect } = useDisconnect();
+  const { disconnectAsync } = useDisconnect();
   const {
     me,
     tokens,
@@ -29,7 +29,7 @@ export function AuthProvider({
     onUpdateToken,
   } = useMe();
   const { status, onAuthenticated, onConnecting, onUnauthenticated } =
-    useAuthStatus(me);
+    useAuthStatus(tokens);
 
   const { status: accountStatus, data: account } = useAccount();
 
@@ -46,12 +46,12 @@ export function AuthProvider({
     [tokens?.token, tokens?.refresh_token, me?.id, onUpdateToken]
   );
 
-  const onSignOut = useCallback(() => {
-    disconnect();
+  const onSignOut = useCallback(async () => {
     onSignOutMe();
-  }, [disconnect, onSignOutMe]);
+    await disconnectAsync();
+  }, [disconnectAsync, onSignOutMe]);
 
-  const isBlocked = isAuthPage && !me;
+  const isBlocked = isAuthPage && (!me || !tokens);
 
   const onCloseModalWhenBlocked = async () => {
     await router.replace(ROUTES.LANDING);
@@ -70,7 +70,7 @@ export function AuthProvider({
     if (!account && me) {
       onSignOut();
     }
-  }, [account, accountStatus, disconnect, isAuthPage, onSignOut, me]);
+  }, [account, accountStatus, isAuthPage, onSignOut, me]);
 
   useToggleContainerClass('blur', status === 'CONNECTING');
 

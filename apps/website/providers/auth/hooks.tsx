@@ -75,8 +75,8 @@ export function useMe() {
   ) => queryClient.setQueryData('me', cb);
 
   const onSignOut = () => {
-    queryClient.setQueryData('token', undefined);
-    queryClient.setQueryData('me', undefined);
+    queryClient.setQueryData('token', null);
+    queryClient.setQueryData('me', null);
   };
 
   const onUpdateToken = (newToken: RefreshMutation['refresh']) =>
@@ -99,24 +99,20 @@ export function useInitUser(status: AuthStatus, me: PartialDeep<SessionUser>) {
   const router = useRouter();
 
   useEffect(() => {
-    /* Redirects to New User if authenticated */
-    if (
-      router.pathname !== ROUTES.LANDING &&
-      router.pathname !== ROUTES.NEW_USER &&
-      status === 'AUTHENTICATED' &&
-      me &&
-      !me.init
-    ) {
+    if (status !== 'AUTHENTICATED') return;
+    // Redirects to New User if authenticated but not registered
+    if (router.pathname !== ROUTES.NEW_USER && me && !me.init) {
       router.replace(ROUTES.NEW_USER);
     }
 
+    // Redirect to Explore if authenticated and registered
+    if (router.pathname === ROUTES.NEW_USER && me && me.init) {
+      router.replace(ROUTES.EXPLORE);
+    }
+
     // Redirects to Explore if authenticated and user already initialized
-    if (router.pathname === ROUTES.LANDING && status === 'AUTHENTICATED') {
-      if (!me.init) {
-        router.replace(ROUTES.NEW_USER);
-      } else {
-        router.replace(ROUTES.EXPLORE);
-      }
+    if (router.pathname === ROUTES.LANDING && me && me.init) {
+      router.replace(ROUTES.EXPLORE);
     }
   }, [me, router, status]);
 }

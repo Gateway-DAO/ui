@@ -1,7 +1,8 @@
 import { useFormContext } from 'react-hook-form';
 
-import { Button, CircularProgress, Stack, TextField } from '@mui/material';
+import { Stack, TextField } from '@mui/material';
 
+import { LoadingButton } from '../../atoms/loading-button';
 import { NewUserSchema } from './schema';
 
 type Props = {
@@ -54,18 +55,14 @@ export function Form({ onSubmit, isLoading }: Props) {
         error={!!errors.email_address}
         helperText={errors.email_address?.message}
       />
-      <Button
+      <LoadingButton
         variant="contained"
         type="submit"
         sx={{ mt: 2 }}
-        disabled={isLoading}
+        isLoading={isLoading}
       >
-        {isLoading ? (
-          <CircularProgress color="inherit" size={24} />
-        ) : (
-          'Enter the Gateway'
-        )}
-      </Button>
+        Enter the Gateway
+      </LoadingButton>
     </Stack>
   );
 }

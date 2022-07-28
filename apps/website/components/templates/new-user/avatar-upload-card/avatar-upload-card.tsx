@@ -2,7 +2,7 @@ import { useFormContext } from 'react-hook-form';
 
 import { GatewaySxProps } from '@gateway/theme';
 
-import { Box, Card, CardMedia } from '@mui/material';
+import { Box, Card } from '@mui/material';
 
 import { ImageDropField } from '../../../molecules/image-drop-field';
 import { NewUserSchema } from '../schema';
@@ -15,19 +15,6 @@ type Props = {
 
 export function AvatarUploadCard({ showUserData = true, sx }: Props) {
   const { control } = useFormContext<NewUserSchema>();
-
-  const ConnectedAvatarField = () => (
-    <Box sx={{ aspectRatio: 1, paddingTop: '100%', position: 'relative' }}>
-      <Box sx={{ position: 'absolute', inset: 0 }}>
-        <ImageDropField
-          withCrop
-          control={control}
-          name="pfp"
-          label="Drop to upload your avatar"
-        />
-      </Box>
-    </Box>
-  );
 
   return (
     <Card
@@ -45,7 +32,16 @@ export function AvatarUploadCard({ showUserData = true, sx }: Props) {
         ...sx,
       }}
     >
-      <CardMedia component={ConnectedAvatarField} />
+      <Box sx={{ aspectRatio: 1, paddingTop: '100%', position: 'relative' }}>
+        <Box sx={{ position: 'absolute', inset: 0 }}>
+          <ImageDropField
+            withCrop
+            control={control}
+            name="pfp"
+            label="Drop to upload your avatar"
+          />
+        </Box>
+      </Box>
       {showUserData && <UserData />}
     </Card>
   );
