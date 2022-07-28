@@ -85,7 +85,7 @@ export function DaoHeader({
           fallback={dao.logo_url}
         />
         <Box>
-          <Stack direction="row" alignItems="center" gap={2}>
+          <Stack direction="row" alignItems="baseline" gap={2}>
             <Typography component="h1" variant="h4" sx={{ paddingTop: '24px' }}>
               {dao.name}
             </Typography>
