@@ -9,7 +9,7 @@ const MeetingCodeContent = ({ completed, updatedAt, completeTask }) => {
     <Stack alignItems="start">
       <TextField
         fullWidth
-        placeholder="Meeting Code"
+        placeholder="Code"
         value={meetingCode}
         disabled={completed}
         onChange={(e) => setMeetingCode(e.target.value)}
