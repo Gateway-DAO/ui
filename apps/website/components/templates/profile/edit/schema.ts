@@ -56,24 +56,26 @@ export const defaultValues = (
 };
 
 export const schema: SchemaOf<EditUserSchema> = object({
-  name: string().defined(),
-  bio: string().defined(),
-  username: string().defined(),
-  cover: string(),
-  skills: array().of(string()).defined(),
-  languages: array().of(string()).defined(),
-  timezone: string().defined(),
-  picture: string(),
-  socials: array().of(
-    object({
-      network: string().defined(),
-      url: string()
-        .matches(
-          /((https|http):\/\/)(www.)?[a-z0-9]+(\.[a-z]{2,}){1,3}(#?\/?[a-zA-Z0-9#]+)*\/?(\?[a-zA-Z0-9-_]+=[a-zA-Z0-9-%]+&?)?$/,
-          `Url is not valid, check if you added "https://"`
-        )
-        .defined(),
-    })
-  ),
+  name: string().required('Name is required'),
+  bio: string().nullable(),
+  username: string().required('Username is required'),
+  cover: string().nullable(),
+  skills: array().of(string()).default([]).optional(),
+  languages: array().of(string()).default([]).optional(),
+  timezone: string().nullable(),
+  picture: string().nullable(),
+  socials: array()
+    .of(
+      object({
+        network: string().defined(),
+        url: string()
+          .matches(
+            /((https|http):\/\/)(www.)?[a-z0-9]+(\.[a-z]{2,}){1,3}(#?\/?[a-zA-Z0-9#]+)*\/?(\?[a-zA-Z0-9-_]+=[a-zA-Z0-9-%]+&?)?$/,
+            'The URL should be valid'
+          )
+          .defined(),
+      })
+    )
+    .nullable(),
   // experiences: array().of(mixed<PartialDeep<Experiences>>()).defined(),
 });

@@ -36,6 +36,7 @@ export function EditProfileTemplate({ onSubmit, isLoading }: Props) {
   const methods = useForm({
     resolver: yupResolver(schema),
     defaultValues: defaultValues(me),
+    mode: 'onBlur',
   });
 
   return (

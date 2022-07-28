@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 import { PartialDeep } from 'type-fest';
 
 import { Box, SxProps, IconButton, Avatar } from '@mui/material';
@@ -15,25 +17,27 @@ export function SocialButtons({ socials }: Props) {
   return (
     <Box>
       {socials.map(({ network, url }) => (
-        <IconButton
-          key={network}
-          sx={{
-            p: 0,
-          }}
-          //onClick={onShare}
-        >
-          <Avatar>
-            <SocialIcon
-              icon={network as Network}
-              sx={{
-                fontSize: '18px',
-                marginTop: '0px',
-                color: '#E5E5E5',
-              }}
-              onClick={() => window.open(url, '_blank')}
-            />
-          </Avatar>
-        </IconButton>
+        <Link href={url} key={network} passHref>
+          <IconButton
+            sx={{
+              p: 0,
+              mr: 1,
+            }}
+            component="a"
+            target="_blank"
+          >
+            <Avatar>
+              <SocialIcon
+                icon={network as Network}
+                sx={{
+                  fontSize: '18px',
+                  marginTop: '0px',
+                  color: '#E5E5E5',
+                }}
+              />
+            </Avatar>
+          </IconButton>
+        </Link>
       ))}
     </Box>
   );
