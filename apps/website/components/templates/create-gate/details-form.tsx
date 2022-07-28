@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
 
-import { useAuth } from 'apps/website/providers/auth';
 import { useFormContext } from 'react-hook-form';
 
 import { Stack, TextField } from '@mui/material';
 
+import { useAuth } from '../../../providers/auth';
 import CategoriesInput from '../../molecules/categories-input';
 import CreatedByInput from '../../molecules/creators-input';
 import SkillsInput from '../../molecules/skills-input';

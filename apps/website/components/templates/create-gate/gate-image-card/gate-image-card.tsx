@@ -2,7 +2,7 @@ import { useFormContext } from 'react-hook-form';
 
 import { GatewaySxProps } from '@gateway/theme';
 
-import { Box, Card, CardMedia, useTheme } from '@mui/material';
+import { Box, Card, useTheme } from '@mui/material';
 
 import { ImageDropField } from '../../../molecules/image-drop-field';
 import { CreateGateTypes } from '../schema';
@@ -16,48 +16,6 @@ type Props = {
 export function GateImageCard({ showGateData = true, sx }: Props) {
   const theme = useTheme();
   const { control } = useFormContext<CreateGateTypes>();
-
-  const ConnectedAvatarField = () => (
-    <Box sx={{ aspectRatio: 1, paddingTop: '100%', position: 'relative' }}>
-      <Box
-        sx={{
-          position: 'absolute',
-          inset: 0,
-          maxHeight: {
-            md: '302px',
-            xs: '100%',
-          },
-          maxWidth: {
-            md: '302px',
-            xs: '100%',
-          },
-        }}
-        onMouseEnter={(event) => {
-          event.stopPropagation();
-          event.preventDefault();
-          (event.target as HTMLElement).style.cursor = 'pointer';
-        }}
-        onDragOver={(event) => {
-          event.stopPropagation();
-          event.preventDefault();
-          (event.target as HTMLElement).style.backgroundColor =
-            theme.palette.primary.dark;
-        }}
-        onDragLeave={(event) => {
-          event.stopPropagation();
-          event.preventDefault();
-          (event.target as HTMLElement).style.backgroundColor = 'unset';
-        }}
-      >
-        <ImageDropField
-          withCrop
-          control={control}
-          name="image"
-          label="Drop to upload your avatar"
-        />
-      </Box>
-    </Box>
-  );
 
   return (
     <Card
@@ -75,7 +33,45 @@ export function GateImageCard({ showGateData = true, sx }: Props) {
         ...sx,
       }}
     >
-      <CardMedia component={ConnectedAvatarField} />
+      <Box sx={{ aspectRatio: 1, paddingTop: '100%', position: 'relative' }}>
+        <Box
+          sx={{
+            position: 'absolute',
+            inset: 0,
+            maxHeight: {
+              md: '302px',
+              xs: '100%',
+            },
+            maxWidth: {
+              md: '302px',
+              xs: '100%',
+            },
+          }}
+          onMouseEnter={(event) => {
+            event.stopPropagation();
+            event.preventDefault();
+            (event.target as HTMLElement).style.cursor = 'pointer';
+          }}
+          onDragOver={(event) => {
+            event.stopPropagation();
+            event.preventDefault();
+            (event.target as HTMLElement).style.backgroundColor =
+              theme.palette.primary.dark;
+          }}
+          onDragLeave={(event) => {
+            event.stopPropagation();
+            event.preventDefault();
+            (event.target as HTMLElement).style.backgroundColor = 'unset';
+          }}
+        >
+          <ImageDropField
+            withCrop
+            control={control}
+            name="image"
+            label="Drop to upload your avatar"
+          />
+        </Box>
+      </Box>
       {showGateData && <GateData />}
     </Card>
   );
