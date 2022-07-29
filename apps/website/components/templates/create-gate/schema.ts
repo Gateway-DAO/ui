@@ -109,13 +109,13 @@ export type Option = {
 // Snapshot
 export type SnapshotData = {
   proposal_number?: string;
-  space_id?: string;
+  type?: string;
 };
 
 export type SnapshotDataError = {
   id?: FieldError;
   proposal_number?: FieldError;
-  space_id?: FieldError;
+  type?: FieldError;
 };
 
 // Hold Token
@@ -171,7 +171,7 @@ const fileTaskDataSchema = z.object({
 
 const snapshotTaskDataSchema = z.object({
   proposal_number: z.string().min(2),
-  space_id: z.string().min(2),
+  type: z.enum(['proposal', 'vote']),
 });
 
 const holdTokenTaskDataSchema = z.object({

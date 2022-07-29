@@ -1,9 +1,17 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
-import { useFormContext } from 'react-hook-form';
+import { Controller, useFormContext } from 'react-hook-form';
 
 import DeleteIcon from '@mui/icons-material/Delete';
-import { FormControl, Stack, TextField, Typography } from '@mui/material';
+import {
+  FormControl,
+  Stack,
+  TextField,
+  Typography,
+  Switch,
+  FormControlLabel,
+  FormLabel,
+} from '@mui/material';
 
 import { CircleWithNumber } from '../../../atoms/circle-with-number';
 import {
@@ -16,11 +24,15 @@ const SnapshotTask = ({ taskId, deleteTask }) => {
     register,
     setValue,
     formState: { errors },
+    watch,
+    control,
   } = useFormContext<CreateGateTypes>();
 
   useEffect(() => {
     setValue(`tasks.data.${taskId}.task_type`, 'snapshot');
   }, [taskId, setValue]);
+
+  console.log(watch(`tasks.data.${taskId}.task_data`));
 
   return (
     <Stack
@@ -72,34 +84,41 @@ const SnapshotTask = ({ taskId, deleteTask }) => {
           helperText={errors.tasks?.data[taskId]?.description?.message}
           sx={{ marginBottom: '60px' }}
         />
-        <TextField
-          required
-          label="Specific proposal number"
-          sx={{ maxWidth: '50%' }}
-          {...register(`tasks.data.${taskId}.task_data.proposal_number`)}
-          error={
-            !!(errors.tasks?.data[taskId]?.task_data as SnapshotDataError)
-              ?.proposal_number
-          }
-          helperText={
-            (errors.tasks?.data[taskId]?.task_data as SnapshotDataError)
-              ?.proposal_number?.message
-          }
-        />
-        <TextField
-          required
-          label="Space ID"
-          sx={{ marginTop: '15px', maxWidth: '50%' }}
-          {...register(`tasks.data.${taskId}.task_data.space_id`)}
-          error={
-            !!(errors.tasks?.data[taskId]?.task_data as SnapshotDataError)
-              ?.space_id
-          }
-          helperText={
-            (errors.tasks?.data[taskId]?.task_data as SnapshotDataError)
-              ?.space_id?.message
-          }
-        />
+        <Stack direction="row" justifyContent="space-between">
+          <TextField
+            required
+            label="Specific proposal number"
+            sx={{ maxWidth: '50%' }}
+            {...register(`tasks.data.${taskId}.task_data.proposal_number`)}
+            error={
+              !!(errors.tasks?.data[taskId]?.task_data as SnapshotDataError)
+                ?.proposal_number
+            }
+            helperText={
+              (errors.tasks?.data[taskId]?.task_data as SnapshotDataError)
+                ?.proposal_number?.message
+            }
+          />
+          <Stack direction="row" alignItems="center">
+            <Typography variant="body2">Created Proposal</Typography>
+            <Controller
+              control={control}
+              defaultValue="proposal"
+              name={`tasks.data.${taskId}.task_data.type`}
+              rules={{ required: true }}
+              render={({ field: { onChange, value } }) => (
+                <Switch
+                  value={value == 'vote'}
+                  onChange={(e) => {
+                    const type = e.target.checked ? 'vote' : 'proposal';
+                    setValue(`tasks.data.${taskId}.task_data.type`, type);
+                  }}
+                />
+              )}
+            />
+            <Typography variant="body2">Voted for Proposal</Typography>
+          </Stack>
+        </Stack>
       </FormControl>
     </Stack>
   );
