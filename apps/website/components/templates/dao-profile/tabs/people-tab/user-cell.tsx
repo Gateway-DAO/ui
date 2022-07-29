@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 import { PartialDeep } from 'type-fest';
 
 import { Box, Stack, Typography } from '@mui/material';
@@ -26,27 +28,38 @@ export function UserCell({ user }: Props) {
   return (
     <TableRow hover role="checkbox" tabIndex={-1}>
       <TableCell>
-        <Stack alignItems="center" direction="row" gap={1}>
-          <AdminBadge isAdmin={isUserAdminOfDao}>
-            <AvatarFile file={user.picture} fallback="/logo.png">
-              {user.name?.[0]}
-            </AvatarFile>
-          </AdminBadge>
-          <Box>
-            <Typography>{user.name}</Typography>
-            <Typography
-              variant="caption"
-              color="text.secondary"
-              sx={{
-                textOverflow: 'ellipsis',
-                overflow: 'hidden',
-                whiteSpace: 'nowrap',
-              }}
-            >
-              @{user.username}
-            </Typography>
-          </Box>
-        </Stack>
+        <Link href={'/profile/' + user.username} passHref>
+          <Stack
+            alignItems="center"
+            direction="row"
+            gap={1}
+            component="a"
+            sx={{
+              textDecoration: 'none',
+              color: 'text.primary',
+            }}
+          >
+            <AdminBadge isAdmin={isUserAdminOfDao}>
+              <AvatarFile file={user.picture} fallback="/logo.png">
+                {user.name?.[0]}
+              </AvatarFile>
+            </AdminBadge>
+            <Box>
+              <Typography>{user.name}</Typography>
+              <Typography
+                variant="caption"
+                color="text.secondary"
+                sx={{
+                  textOverflow: 'ellipsis',
+                  overflow: 'hidden',
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                @{user.username}
+              </Typography>
+            </Box>
+          </Stack>
+        </Link>
       </TableCell>
 
       {me?.id !== user.id ? (

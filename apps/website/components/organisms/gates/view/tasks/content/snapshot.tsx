@@ -1,6 +1,14 @@
 import { Button, Stack, Typography } from '@mui/material';
 
-const SnapshotContent = ({ data, completed, updatedAt, completeTask }) => {
+import { LoadingButton } from '../../../../../../components/atoms/loading-button';
+
+const SnapshotContent = ({
+  data,
+  completed,
+  updatedAt,
+  completeTask,
+  isLoading,
+}) => {
   const { proposal_number, space_id } = data;
   const formattedDate = new Date(updatedAt.toLocaleString()).toLocaleString();
 
@@ -19,13 +27,14 @@ const SnapshotContent = ({ data, completed, updatedAt, completeTask }) => {
           Task completed at {formattedDate}
         </Typography>
       ) : (
-        <Button
+        <LoadingButton
           variant="contained"
           sx={{ marginTop: '15px' }}
           onClick={() => completeTask({})}
+          isLoading={isLoading}
         >
           Check Snapshot
-        </Button>
+        </LoadingButton>
       )}
     </Stack>
   );

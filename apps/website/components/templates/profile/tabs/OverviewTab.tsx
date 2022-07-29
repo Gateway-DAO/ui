@@ -87,8 +87,10 @@ export function OverviewTab({ user }: Props) {
             <Box
               sx={{
                 py: '50px',
-                borderBottom: 1,
-                borderColor: 'divider',
+                ...(user.experiences?.length == 0 && {
+                  borderBottom: 1,
+                  borderColor: 'divider',
+                }),
                 display: 'flex',
                 flexDirection: 'column',
                 rowGap: '32px',
@@ -122,19 +124,20 @@ export function OverviewTab({ user }: Props) {
               </Box>
               {user.experiences?.length > 0 ? (
                 <Stack>
-                  <ExperienceAccordion experience={user.experiences[0]} />
-                  {/*<Divider></Divider>
-                <ExperienceAccordion
-                  title="Yearn Finance"
-                  date="Nov 2021 — Present"
-                  credential="5 credentials"
-                />
-                <Divider></Divider>
-                <ExperienceAccordion
-                  title="City Dao"
-                  date="Nov 2021 — Present"
-                  credential="5 credentials"
-                  />*/}
+                  {user.experiences.map((experience) => (
+                    <Box
+                      key={experience.id}
+                      sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        py: '16px',
+                        borderBottom: 1,
+                        borderColor: 'divider',
+                      }}
+                    >
+                      <ExperienceAccordion experience={experience} />
+                    </Box>
+                  ))}
                 </Stack>
               ) : (
                 <Box

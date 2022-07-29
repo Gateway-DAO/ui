@@ -1,7 +1,12 @@
 import { Search } from '@mui/icons-material';
 import { Chip, TextField, Autocomplete } from '@mui/material';
 
-export const CreatedByInput = ({ set, creators, ...props }) => {
+export const CreatedByInput = ({
+  set,
+  creators,
+  disabled = false,
+  ...props
+}) => {
   return (
     <Autocomplete
       multiple
@@ -13,6 +18,7 @@ export const CreatedByInput = ({ set, creators, ...props }) => {
           transform: 'none',
         },
       }}
+      disabled={disabled}
       defaultValue={[creators[0].name]}
       renderTags={(value: string[], getTagProps) =>
         value.map((option: string, index: number) => (
