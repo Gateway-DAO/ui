@@ -19,6 +19,7 @@ import {
 import { useAuth } from '../../../../website/providers/auth';
 import { useMint } from '../../../hooks/use-mint';
 import { Gates } from '../../../services/graphql/types.generated';
+import { AvatarFile } from '../../atoms/avatar-file';
 import CircularProgressWithLabel from '../../atoms/circular-progress-label';
 import GateCompletedModal from '../../organisms/gates/view/modals/gate-completed';
 import { Task, TaskGroup } from './tasks';
@@ -76,9 +77,10 @@ export function GateViewTemplate({ gate }: Props) {
             },
           })}
         >
-          <Avatar
+          <AvatarFile
             alt={gate.dao.name}
-            src={gate.dao.logo_url}
+            file={gate.dao.logo}
+            fallback={gate.dao.logo_url}
             sx={{
               height: (theme) => theme.spacing(3),
               width: (theme) => theme.spacing(3),
@@ -201,7 +203,11 @@ export function GateViewTemplate({ gate }: Props) {
                 </Typography>
               </Grid>
               <Grid item xs={8}>
-                <Avatar alt={gate.creator?.username} src={gate.creator?.pfp} />
+                <AvatarFile
+                  alt={gate.creator.username}
+                  file={gate.creator.picture}
+                  fallback={'/logo.png'}
+                />
               </Grid>
             </>
           )}
