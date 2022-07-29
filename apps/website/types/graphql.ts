@@ -15,7 +15,7 @@ export interface ErrorResponse<T = any> {
 export interface ErrorsEntity {
   extensions: {
     path: string;
-    code: string;
+    code: string | number;
   };
   message: string;
 }
