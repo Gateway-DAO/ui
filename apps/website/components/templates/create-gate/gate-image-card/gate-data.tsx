@@ -19,9 +19,11 @@ export function GateData() {
         sx={(theme) => ({
           '& .MuiCardHeader-title': {
             pb: 1,
+            wordBreak: 'break-all',
             fontSize: theme.typography.h6,
           },
           '& .MuiCardHeader-subheader': {
+            wordBreak: 'break-all',
             fontSize: theme.typography.body2,
           },
         })}
