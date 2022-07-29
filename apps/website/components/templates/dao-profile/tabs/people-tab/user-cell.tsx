@@ -29,7 +29,16 @@ export function UserCell({ user }: Props) {
     <TableRow hover role="checkbox" tabIndex={-1}>
       <TableCell>
         <Link href={'/profile/' + user.username} passHref>
-          <Stack alignItems="center" direction="row" gap={1}>
+          <Stack
+            alignItems="center"
+            direction="row"
+            gap={1}
+            component="a"
+            sx={{
+              textDecoration: 'none',
+              color: 'text.primary',
+            }}
+          >
             <AdminBadge isAdmin={isUserAdminOfDao}>
               <AvatarFile file={user.picture} fallback="/logo.png">
                 {user.name?.[0]}
