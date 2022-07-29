@@ -33,6 +33,7 @@ export function NewUserTemplate() {
   const snackbar = useSnackbar();
 
   const router = useRouter();
+  const uploadImage = useUploadImage();
 
   const updateMutation = useMutation(
     'updateProfile',
@@ -86,8 +87,6 @@ export function NewUserTemplate() {
       },
     }
   );
-
-  const uploadImage = useUploadImage();
 
   const onSubmit = (data: NewUserSchema) => updateMutation.mutate(data);
 
