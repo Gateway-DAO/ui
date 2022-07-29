@@ -1,9 +1,5 @@
-import useTranslation from 'next-translate/useTranslation';
-import { useState, useEffect } from 'react';
-
 import { PartialDeep } from 'type-fest';
 
-import ViewInArIcon from '@mui/icons-material/ViewInAr';
 import {
   Avatar,
   AvatarGroup,
@@ -13,55 +9,18 @@ import {
   Typography,
   Box,
   Divider,
-  Button,
 } from '@mui/material';
 
-import { useAuth } from '../../../../website/providers/auth';
-import { useMint } from '../../../hooks/use-mint';
-import { Gates } from '../../../services/graphql/types.generated';
-import CircularProgressWithLabel from '../../atoms/circular-progress-label';
-import GateCompletedModal from '../../organisms/gates/view/modals/gate-completed';
+import { Credentials } from '../../../services/graphql/types.generated';
 import { Task, TaskGroup } from '../../organisms/tasks';
 
 type Props = {
-  gate: PartialDeep<Gates>;
+  credential: PartialDeep<Credentials>;
 };
 
-export function GateViewTemplate({ gate }: Props) {
-  const { t } = useTranslation();
-  const taskIds = gate.tasks.map((task) => task.id);
-
-  const { me } = useAuth();
-  const { mint } = useMint();
-
-  const [open, setOpen] = useState(false);
-  const [gateCompleted, setGateCompleted] = useState(false);
-  const [completedTasksCount, setCompletedTasksCount] = useState(0);
-
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-
-  const countSimiliarIds = (arr1: string[], arr2: string[]) => {
-    return arr1.filter((id) => arr2.includes(id)).length;
-  };
-
-  useEffect(() => {
-    const completedTaskIds = me?.task_progresses.map((task) => task.task_id);
-    const allCompleted = taskIds.every((taskId) => {
-      return completedTaskIds.includes(taskId);
-    });
-
-    setCompletedTasksCount(countSimiliarIds(completedTaskIds, taskIds));
-
-    if (allCompleted) {
-      setGateCompleted(true);
-      handleOpen();
-    }
-  }, [taskIds, me?.task_progresses, completedTasksCount]);
-
+export function CredentialTemplate({ credential }: Props) {
   return (
     <Grid container height="100%">
-      <GateCompletedModal open={open} handleClose={handleClose} gate={gate} />
       <Grid item xs={12} md={5} p={(theme) => theme.spacing(7)}>
         {/* DAO info */}
         <Stack
@@ -70,8 +29,8 @@ export function GateViewTemplate({ gate }: Props) {
           marginBottom={(theme) => theme.spacing(2)}
         >
           <Avatar
-            alt={gate.dao.name}
-            src={gate.dao.logo_url}
+            alt={credential.dao.name}
+            src={`https://api.staging.mygateway.xyz/storage/file?id=${credential.dao.logo.id}`}
             sx={{
               height: (theme) => theme.spacing(3),
               width: (theme) => theme.spacing(3),
@@ -82,16 +41,16 @@ export function GateViewTemplate({ gate }: Props) {
             variant="body2"
             color={(theme) => theme.palette.text.secondary}
           >
-            {gate.dao.name}
+            {credential.dao.name}
           </Typography>
         </Stack>
 
         <Typography variant="h4" marginBottom={(theme) => theme.spacing(2)}>
-          {gate.title}
+          {credential.name}
         </Typography>
 
         <Box marginBottom={(theme) => theme.spacing(4)}>
-          {gate.categories.map((category, idx) => (
+          {credential.categories.map((category, idx) => (
             <Chip
               key={'category-' + (idx + 1)}
               label={category}
@@ -103,23 +62,12 @@ export function GateViewTemplate({ gate }: Props) {
         </Box>
 
         <Typography variant="body1" marginBottom={(theme) => theme.spacing(4)}>
-          {gate.description}
+          {credential.description}
         </Typography>
-        {gateCompleted && (
-          <Button
-            fullWidth
-            variant="contained"
-            sx={{ marginBottom: 4 }}
-            startIcon={<ViewInArIcon />}
-            onClick={() => mint()}
-          >
-            Mint as NFT
-          </Button>
-        )}
         <Box
           component="img"
-          src={gate.image}
-          alt={gate.title + ' image'}
+          src={credential.image}
+          alt={credential.name + ' image'}
           marginBottom={(theme) => theme.spacing(4)}
           sx={{
             width: '100%',
@@ -128,7 +76,7 @@ export function GateViewTemplate({ gate }: Props) {
         />
 
         <Grid container rowGap={(theme) => theme.spacing(3)}>
-          {gate.holders.length > 0 && (
+          {/* {credential.holders.length > 0 && (
             <>
               <Grid item xs={4}>
                 <Typography
@@ -145,7 +93,7 @@ export function GateViewTemplate({ gate }: Props) {
                     justifyContent: 'flex-end',
                   }}
                 >
-                  {gate.holders.map((holder) => {
+                  {credential.holders.map((holder) => {
                     return (
                       <Avatar
                         key={holder.id}
@@ -157,7 +105,7 @@ export function GateViewTemplate({ gate }: Props) {
                 </AvatarGroup>
               </Grid>
             </>
-          )}
+          )} */}
           <Grid item xs={4}>
             <Typography
               variant="body2"
@@ -167,7 +115,7 @@ export function GateViewTemplate({ gate }: Props) {
             </Typography>
           </Grid>
           <Grid item xs={8}>
-            {gate.skills.map((skill, idx) => (
+            {credential.skills.map((skill, idx) => (
               <Chip
                 key={'skill-' + (idx + 1)}
                 label={skill}
@@ -177,7 +125,7 @@ export function GateViewTemplate({ gate }: Props) {
               />
             ))}
           </Grid>
-          {gate.creator && (
+          {/* {credential.creator && (
             <>
               <Grid item xs={4}>
                 <Typography
@@ -188,10 +136,13 @@ export function GateViewTemplate({ gate }: Props) {
                 </Typography>
               </Grid>
               <Grid item xs={8}>
-                <Avatar alt={gate.creator?.username} src={gate.creator?.pfp} />
+                <Avatar
+                  alt={credential.creator?.username}
+                  src={credential.creator?.pfp}
+                />
               </Grid>
             </>
-          )}
+          )} */}
         </Grid>
       </Grid>
       <Divider orientation="vertical" flexItem />
@@ -203,11 +154,6 @@ export function GateViewTemplate({ gate }: Props) {
           m={(theme) => theme.spacing(7)}
           marginBottom={(theme) => theme.spacing(10)}
         >
-          <CircularProgressWithLabel
-            variant="determinate"
-            value={(completedTasksCount / gate.tasks.length) * 100}
-            label={`${completedTasksCount}/${gate.tasks.length}`}
-          />
           <Stack
             sx={{
               marginLeft: (theme) => theme.spacing(4),
@@ -221,7 +167,7 @@ export function GateViewTemplate({ gate }: Props) {
         </Stack>
 
         <TaskGroup>
-          {gate.tasks.map((task, idx) => (
+          {credential.pow.map((task, idx) => (
             <Task key={'task-' + (idx + 1)} task={task} />
           ))}
         </TaskGroup>
