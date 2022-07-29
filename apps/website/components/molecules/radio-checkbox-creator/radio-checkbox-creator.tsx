@@ -32,7 +32,6 @@ export function RadioCheckBoxCreator({
   });
 
   const onRemoveOption = (index: number) => {
-    console.log(index);
     remove(index);
   };
 
