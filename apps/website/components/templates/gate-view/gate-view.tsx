@@ -1,8 +1,10 @@
 import useTranslation from 'next-translate/useTranslation';
 import { useState, useEffect } from 'react';
 
+import { useSnackbar } from 'apps/website/hooks/use-snackbar';
 import { PartialDeep } from 'type-fest';
 
+import ShareIcon from '@mui/icons-material/IosShare';
 import ViewInArIcon from '@mui/icons-material/ViewInAr';
 import {
   Avatar,
@@ -14,6 +16,8 @@ import {
   Box,
   Divider,
   Button,
+  Snackbar,
+  IconButton,
 } from '@mui/material';
 
 import { useAuth } from '../../../../website/providers/auth';
@@ -30,7 +34,7 @@ type Props = {
 export function GateViewTemplate({ gate }: Props) {
   const { t } = useTranslation();
   const taskIds = gate.tasks.map((task) => task.id);
-
+  const snackbar = useSnackbar();
   const { me } = useAuth();
   const { mint } = useMint();
 
@@ -59,6 +63,22 @@ export function GateViewTemplate({ gate }: Props) {
       handleOpen();
     }
   }, [taskIds, me?.task_progresses, completedTasksCount]);
+
+  const onShare = () => {
+    const data = {
+      title: `${gate.title} @ Gateway`,
+      url: window.location.href,
+    };
+    try {
+      if (navigator?.share && navigator.canShare(data)) {
+        navigator.share(data);
+      } else if (navigator?.clipboard && navigator.clipboard) {
+        snackbar.onOpen({ message: 'Copied link!' });
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
 
   return (
     <Grid container height="100%" sx={{ flexWrap: 'nowrap' }}>
@@ -98,16 +118,36 @@ export function GateViewTemplate({ gate }: Props) {
         </Typography>
 
         <Box marginBottom={(theme) => theme.spacing(4)}>
-          {gate.categories.map((category, idx) => (
-            <Chip
-              key={'category-' + (idx + 1)}
-              label={category}
-              sx={{
-                marginRight: (theme) => theme.spacing(1),
-                marginBottom: (theme) => theme.spacing(1),
-              }}
-            />
-          ))}
+          <Stack
+            direction={'row'}
+            sx={{ alignItems: 'center', justifyContent: 'space-between' }}
+          >
+            <Box>
+              {gate.categories.map((category, idx) => (
+                <Chip
+                  key={'category-' + (idx + 1)}
+                  label={category}
+                  sx={{
+                    marginRight: (theme) => theme.spacing(1),
+                    marginBottom: (theme) => theme.spacing(1),
+                  }}
+                />
+              ))}
+            </Box>
+            <Stack>
+              <IconButton
+                sx={{
+                  p: 0,
+                }}
+                onClick={onShare}
+                key="share"
+              >
+                <Avatar>
+                  <ShareIcon sx={{ mt: -0.25 }} />
+                </Avatar>
+              </IconButton>
+            </Stack>
+          </Stack>
         </Box>
 
         <Typography
@@ -239,6 +279,15 @@ export function GateViewTemplate({ gate }: Props) {
           ))}
         </TaskGroup>
       </Grid>
+      <Snackbar
+        anchorOrigin={{
+          vertical: snackbar.vertical,
+          horizontal: snackbar.horizontal,
+        }}
+        open={snackbar.open}
+        onClose={snackbar.handleClose}
+        message={snackbar.message}
+      />
     </Grid>
   );
 }

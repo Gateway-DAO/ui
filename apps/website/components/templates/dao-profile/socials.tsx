@@ -32,6 +32,7 @@ export function Socials({ dao, children }: PropsWithChildren<Props>) {
       console.error(e);
     }
   };
+
   return (
     <>
       <Stack
