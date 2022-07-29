@@ -24,6 +24,16 @@ query get_home {
     background {
       ...file
     }
+    followers_aggregate {
+      aggregate {
+        count
+      }
+    }
+    gates_aggregate {
+      aggregate {
+        count
+      }
+    }
     background_url
     description
     categories
@@ -44,7 +54,7 @@ query get_home {
 }
 
 query gates_tab {
-  gates(order_by: {title: asc}) {
+  gates(order_by: { title: asc }) {
     id
     title
     description
@@ -62,7 +72,7 @@ query gates_tab {
 }
 
 query daos_tab {
-  daos(order_by: {name: asc}) {
+  daos(order_by: { name: asc }) {
     id
     name
     logo {
@@ -71,6 +81,16 @@ query daos_tab {
     logo_url
     background {
       ...file
+    }
+    followers_aggregate {
+      aggregate {
+        count
+      }
+    }
+    gates_aggregate {
+      aggregate {
+        count
+      }
     }
     background_url
     description
@@ -83,7 +103,7 @@ query daos_tab {
 }
 
 query people_tab {
-  people: users(order_by: {name: asc}) {
+  people: users(order_by: { name: asc }) {
     id
     name
     picture {
