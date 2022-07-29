@@ -76,7 +76,7 @@ export function CredentialTemplate({ credential }: Props) {
         />
 
         <Grid container rowGap={(theme) => theme.spacing(3)}>
-          {/* {credential.holders.length > 0 && (
+          {credential.gate?.holders.length > 0 && (
             <>
               <Grid item xs={4}>
                 <Typography
@@ -93,7 +93,7 @@ export function CredentialTemplate({ credential }: Props) {
                     justifyContent: 'flex-end',
                   }}
                 >
-                  {credential.holders.map((holder) => {
+                  {credential.gate?.holders.map((holder) => {
                     return (
                       <Avatar
                         key={holder.id}
@@ -105,7 +105,7 @@ export function CredentialTemplate({ credential }: Props) {
                 </AvatarGroup>
               </Grid>
             </>
-          )} */}
+          )}
           <Grid item xs={4}>
             <Typography
               variant="body2"
@@ -125,7 +125,7 @@ export function CredentialTemplate({ credential }: Props) {
               />
             ))}
           </Grid>
-          {/* {credential.creator && (
+          {credential.gate?.creator && (
             <>
               <Grid item xs={4}>
                 <Typography
@@ -137,12 +137,12 @@ export function CredentialTemplate({ credential }: Props) {
               </Grid>
               <Grid item xs={8}>
                 <Avatar
-                  alt={credential.creator?.username}
-                  src={credential.creator?.pfp}
+                  alt={credential.gate?.creator?.username}
+                  src={credential.gate?.creator?.pfp}
                 />
               </Grid>
             </>
-          )} */}
+          )}
         </Grid>
       </Grid>
       <Divider orientation="vertical" flexItem />
