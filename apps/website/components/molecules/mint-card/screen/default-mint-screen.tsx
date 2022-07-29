@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 import copy from 'copy-to-clipboard';
@@ -33,7 +34,10 @@ export const DefaultMintScreen = ({
 }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
+
   const { me } = useAuth();
+  const router = useRouter();
+
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -48,6 +52,8 @@ export const DefaultMintScreen = ({
         height="275"
         image={details.image}
         alt="nft image"
+        sx={{ cursor: 'pointer' }}
+        onClick={() => router.push(`/credential/${details.id}`)}
       />
       <CardHeader
         action={

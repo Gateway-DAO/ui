@@ -77,6 +77,7 @@ export const MintCard = ({ credential, sx, ...props }: MintCardProps) => {
       }}
     >
       {processScreen(mintProcessStatus, setMintProcessStatus, mint, {
+        id: credential.id,
         title: credential.name,
         description: credential.description,
         image: credential.image,
