@@ -13,7 +13,13 @@ export const CreateNavbar = ({ isLoading }: Props) => {
   const router = useRouter();
   return (
     <>
-      <AppBar position="fixed" sx={{ background: 'none', padding: '0 90px' }}>
+      <AppBar
+        position="fixed"
+        sx={{
+          background: 'none',
+          padding: { xs: '0 20px 0 10px', md: '0 90px' },
+        }}
+      >
         <Toolbar>
           <IconButton
             sx={{ position: 'absolute', left: 0 }}
