@@ -30,7 +30,15 @@ const SelfVerifyContent = ({ data, completed, updatedAt, completeTask }) => {
         <ListItemIcon>
           <DescriptionIcon />
         </ListItemIcon>
-        <ListItemText primary={file.title} secondary={file.description} />
+        <ListItemText
+          sx={{
+            wordWrap: 'break-word',
+            wordBreak: 'break-all',
+            overflowWrap: 'break-word',
+          }}
+          primary={file.title}
+          secondary={file.description}
+        />
       </ListItem>
     );
   });
