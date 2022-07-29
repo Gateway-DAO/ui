@@ -47,7 +47,7 @@ export function DaoCard({
     const followers = followers_aggregate?.aggregate?.count ?? null;
     const gates = gates_aggregate?.aggregate?.count ?? null;
     return `${followers > 0 ? `${followers} contributors` : ''} ${
-      followers && gates ? '•' : ''
+      followers && gates ? '·' : ''
     } ${gates > 0 ? `${gates} gates` : ''}`;
   };
 
