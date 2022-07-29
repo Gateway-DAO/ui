@@ -1,5 +1,7 @@
 import { GetStaticPaths, InferGetStaticPropsType } from 'next';
 
+import { CreateNavbar } from 'apps/website/components/organisms/create-navbar/create-navbar';
+
 import { DashboardTemplate } from '../../components/templates/dashboard';
 import { GateViewTemplate } from '../../components/templates/gate-view';
 import { gqlAnonMethods } from '../../services/api';
@@ -13,11 +15,12 @@ export default function GateProfilePage({
     <DashboardTemplate
       containerProps={{
         sx: {
-          overflow: 'hidden',
+          overflow: '',
           pt: 2,
         },
       }}
     >
+      <CreateNavbar />
       <GateViewTemplate gate={gate} />
     </DashboardTemplate>
   );
