@@ -24,7 +24,16 @@ export function UserCell({ user }: Props) {
     <TableRow hover role="checkbox" tabIndex={-1}>
       <TableCell>
         <Link href={'/profile/' + user.username} passHref>
-          <Stack alignItems="center" direction="row" gap={1} component="a">
+          <Stack
+            alignItems="center"
+            direction="row"
+            gap={1}
+            component="a"
+            sx={{
+              textDecoration: 'none',
+              color: 'text.primary',
+            }}
+          >
             <AvatarFile
               variant="circular"
               file={user.picture}
