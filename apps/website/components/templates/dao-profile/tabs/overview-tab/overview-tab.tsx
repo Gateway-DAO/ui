@@ -100,7 +100,13 @@ export function OverviewTab({ people, setTab }: Props) {
           }
         >
           {people.map((person) => (
-            <PersonCard key={person.id} {...person} />
+            <PersonCard
+              key={person.id}
+              user={person}
+              isAdmin={person.permissions.some(
+                ({ permission }) => permission === 'dao_admin'
+              )}
+            />
           ))}
         </SectionWithGrid>
       </Stack>

@@ -61,6 +61,9 @@ query dao_profile_people($id: uuid!) {
         name
         username
         pfp
+        picture {
+          ...file
+        }
         permissions(where: { dao_id: { _eq: $id } }) {
           permission
         }

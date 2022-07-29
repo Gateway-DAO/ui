@@ -1,13 +1,15 @@
+import Link from 'next/link';
+
 import { PartialDeep } from 'type-fest';
 
-import { useMenu } from '@gateway/ui';
-
-import { Avatar, Box, IconButton, Stack, Typography } from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material';
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
 
 import { useAuth } from '../../../../../providers/auth';
 import { Users } from '../../../../../services/graphql/types.generated';
+import { AdminBadge } from '../../../../atoms/admin-badge';
+import { AvatarFile } from '../../../../atoms/avatar-file';
 import { FollowButtonUser } from '../../../../atoms/follow-button-user';
 import { useDaoProfile } from '../../context';
 import { AdminMenu } from './admin-menu';
@@ -19,28 +21,45 @@ export function UserCell({ user }: Props) {
   const { me } = useAuth();
   const { isAdmin } = useDaoProfile();
 
+  const isUserAdminOfDao =
+    user.permissions?.some(({ permission }) => permission === 'dao_admin') ??
+    false;
+
   return (
     <TableRow hover role="checkbox" tabIndex={-1}>
       <TableCell>
-        <Stack alignItems="center" direction="row" gap={1}>
-          <Avatar variant="circular" src={user.pfp}>
-            {user.name?.[0]}
-          </Avatar>
-          <Box>
-            <Typography>{user.name}</Typography>
-            <Typography
-              variant="caption"
-              color="text.secondary"
-              sx={{
-                textOverflow: 'ellipsis',
-                overflow: 'hidden',
-                whiteSpace: 'nowrap',
-              }}
-            >
-              @{user.username}
-            </Typography>
-          </Box>
-        </Stack>
+        <Link href={'/profile/' + user.username} passHref>
+          <Stack
+            alignItems="center"
+            direction="row"
+            gap={1}
+            component="a"
+            sx={{
+              textDecoration: 'none',
+              color: 'text.primary',
+            }}
+          >
+            <AdminBadge isAdmin={isUserAdminOfDao}>
+              <AvatarFile file={user.picture} fallback="/logo.png">
+                {user.name?.[0]}
+              </AvatarFile>
+            </AdminBadge>
+            <Box>
+              <Typography>{user.name}</Typography>
+              <Typography
+                variant="caption"
+                color="text.secondary"
+                sx={{
+                  textOverflow: 'ellipsis',
+                  overflow: 'hidden',
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                @{user.username}
+              </Typography>
+            </Box>
+          </Stack>
+        </Link>
       </TableCell>
 
       {me?.id !== user.id ? (

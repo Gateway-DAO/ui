@@ -5,7 +5,6 @@ import { Button, Divider, Stack } from '@mui/material';
 import { DaoCard } from '../../../../molecules/dao-card';
 import { GatesCard } from '../../../../molecules/gates-card';
 import { PersonCard } from '../../../../molecules/person-card';
-
 import {
   SectionWithSliderResponsive,
   SectionWithGrid,
@@ -76,7 +75,7 @@ export function AllTab({ daos, gates, people, setActiveTab }: Props) {
           }
         >
           {people.map((person) => (
-            <PersonCard key={person.id} {...person} />
+            <PersonCard key={person.id} user={person} />
           ))}
         </SectionWithGrid>
       </Stack>

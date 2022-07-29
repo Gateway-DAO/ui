@@ -35,7 +35,7 @@ export function EmptyCard({
         {
           display: 'flex',
           justifyContent: 'center',
-          borderRadius: 4,
+          borderRadius: 1,
           border: 1,
           px: 11 / 2,
         },

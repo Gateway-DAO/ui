@@ -1,9 +1,10 @@
+import { PartialDeep } from 'type-fest';
 import { object, string, SchemaOf } from 'yup';
 
-import { SessionUser } from '../../../types/user';
+import { Users } from '../../../services/graphql/types.generated';
 
 export type NewUserSchema = Required<
-  Pick<SessionUser, 'name' | 'username' | 'pfp' | 'email_address'>
+  Pick<Users, 'name' | 'username' | 'pfp' | 'email_address'>
 >;
 
 export const schema: SchemaOf<NewUserSchema> = object({
@@ -18,7 +19,7 @@ export const defaultValues = ({
   username,
   pfp,
   email_address,
-}: Partial<SessionUser>): NewUserSchema => ({
+}: PartialDeep<Users>): NewUserSchema => ({
   name,
   username,
   pfp,

@@ -26,12 +26,12 @@ export function CreateGateTemplate() {
   const router = useRouter();
   const { gqlAuthMethods } = useAuth();
 
-  const { mutate: uploadImage } = useMutation(
+  const { mutate: uploadImage, isLoading: isUploading } = useMutation(
     'uploadImage',
     gqlAuthMethods.upload_image
   );
 
-  const { mutate: createGateMutation } = useMutation(
+  const { mutate: createGateMutation, isLoading: isCreating } = useMutation(
     'createGate',
     gqlAuthMethods.create_gate
   );
@@ -56,7 +56,6 @@ export function CreateGateTemplate() {
 
           createGateMutation(
             {
-              // TODO: This is Gateway's ID (temporary)
               dao_id: router.query.dao,
               title: gateData.title,
               categories: gateData.categories,
@@ -99,7 +98,7 @@ export function CreateGateTemplate() {
         [theme.breakpoints.down('sm')]: { p: '0 20px' },
       })}
     >
-      <CreateNavbar />
+      <CreateNavbar isLoading={isCreating || isUploading} />
       <Typography component="h1" variant="h4" sx={{ margin: '40px 0 100px 0' }}>
         Create Gate
       </Typography>

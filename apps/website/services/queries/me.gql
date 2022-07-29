@@ -1,7 +1,6 @@
 query me {
   me {
     ...current_user
-    pfp
     picture {
       ...file
     }

@@ -4,7 +4,12 @@ import { CrownIcon } from '@gateway/assets';
 
 import { Badge } from '@mui/material';
 
-export function AdminBadge({ children }: PropsWithChildren<unknown>) {
+type Props = {
+  isAdmin?: boolean;
+};
+
+export function AdminBadge({ children, isAdmin }: PropsWithChildren<Props>) {
+  if (!isAdmin) return <>{children}</>;
   return (
     <Badge
       color="primary"
