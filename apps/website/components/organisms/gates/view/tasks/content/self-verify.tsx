@@ -2,7 +2,6 @@ import normalizeUrl from 'normalize-url';
 
 import DescriptionIcon from '@mui/icons-material/Description';
 import {
-  Button,
   List,
   ListItem,
   ListItemIcon,
@@ -10,12 +9,15 @@ import {
   Typography,
 } from '@mui/material';
 
+import { LoadingButton } from '../../../../../../components/atoms/loading-button';
+
 const SelfVerifyContent = ({
   data,
   completed,
   updatedAt,
   completeTask,
   readOnly,
+  isLoading,
 }) => {
   const formattedDate = new Date(updatedAt.toLocaleString()).toLocaleString();
 
@@ -45,13 +47,14 @@ const SelfVerifyContent = ({
     <List>
       {files}
       {!readOnly && (
-        <Button
+        <LoadingButton
           variant="contained"
           sx={{ marginTop: '15px' }}
           onClick={() => completeTask({})}
+          isLoading={isLoading}
         >
           Submit
-        </Button>
+        </LoadingButton>
       )}
       {completed && (
         <Typography color="#c5ffe3" variant="subtitle2">

@@ -40,7 +40,7 @@ interface Error {
 }
 
 export function Task({ task, idx, readOnly }: Props) {
-  const { me, gqlAuthMethods } = useAuth();
+  const { me, gqlAuthMethods, onOpenLogin } = useAuth();
 
   const [expanded, toggleExpanded] = useToggle(false);
   const [completed, setCompleted] = useState(false);
@@ -52,7 +52,7 @@ export function Task({ task, idx, readOnly }: Props) {
       (task_progress) => task_progress.task_id === task.id
     );
 
-    if (progressTaskIndex !== -1) {
+    if (progressTaskIndex && progressTaskIndex !== -1) {
       setCompleted(true);
       setUpdatedAt(me?.task_progresses[progressTaskIndex].updated_at);
     }
@@ -93,7 +93,7 @@ export function Task({ task, idx, readOnly }: Props) {
     }
   };
 
-  const { mutate: completeTaskMutation } = useMutation(
+  const { mutate: completeTaskMutation, isLoading } = useMutation(
     'completeTask',
     gqlAuthMethods.complete_task,
     {
@@ -119,6 +119,10 @@ export function Task({ task, idx, readOnly }: Props) {
   );
 
   const completeTask = (info) => {
+    if (!me) {
+      return onOpenLogin();
+    }
+
     const data = {
       task_id: task.id,
       info,
@@ -187,6 +191,7 @@ export function Task({ task, idx, readOnly }: Props) {
             updatedAt={updatedAt}
             completeTask={completeTask}
             readOnly={readOnly}
+            isLoading={isLoading}
           />
           {errorMessage && (
             <Typography variant="subtitle2" color="red" marginTop={2}>

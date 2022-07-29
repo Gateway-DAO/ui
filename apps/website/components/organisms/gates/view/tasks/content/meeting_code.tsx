@@ -1,12 +1,15 @@
 import { useState } from 'react';
 
-import { Button, Stack, TextField, Typography } from '@mui/material';
+import { Stack, TextField, Typography } from '@mui/material';
+
+import { LoadingButton } from '../../../../../../components/atoms/loading-button';
 
 const MeetingCodeContent = ({
   completed,
   updatedAt,
   completeTask,
   readOnly,
+  isLoading,
 }) => {
   const [meetingCode, setMeetingCode] = useState('');
   const formattedDate = new Date(updatedAt.toLocaleString()).toLocaleString();
@@ -22,13 +25,14 @@ const MeetingCodeContent = ({
         sx={{ margin: '20px 0' }}
       />
       {!readOnly && (
-        <Button
+        <LoadingButton
           variant="contained"
           sx={{ marginTop: '15px' }}
           onClick={() => completeTask({ meeting_code: meetingCode })}
+          isLoading={isLoading}
         >
           Submit
-        </Button>
+        </LoadingButton>
       )}
       {completed && (
         <Typography color="#c5ffe3" variant="subtitle2">

@@ -1,4 +1,6 @@
-import { Button, Stack, Typography } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
+
+import { LoadingButton } from '../../../../../../components/atoms/loading-button';
 
 const chains = {
   1: 'Ethereum',
@@ -22,6 +24,7 @@ const TokenHoldContent = ({
   updatedAt,
   completeTask,
   readOnly,
+  isLoading,
 }) => {
   const { chain, token_address, quantity } = data;
   const formattedDate = new Date(updatedAt.toLocaleString()).toLocaleString();
@@ -41,13 +44,14 @@ const TokenHoldContent = ({
       </Typography>
       <Typography variant="caption">Quantity</Typography>
       {!readOnly && (
-        <Button
+        <LoadingButton
           variant="contained"
           sx={{ marginTop: '15px' }}
           onClick={() => completeTask({})}
+          isLoading={isLoading}
         >
           Check Token
-        </Button>
+        </LoadingButton>
       )}
       {completed && (
         <Typography color="#c5ffe3" variant="subtitle2">

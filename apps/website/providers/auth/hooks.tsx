@@ -3,13 +3,19 @@ import { useEffect } from 'react';
 
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { PartialDeep } from 'type-fest';
+import { useDisconnect } from 'wagmi';
 
 import { ROUTES } from '../../constants/routes';
-import { gqlAnonMethods, gqlMethods } from '../../services/api';
+import {
+  gqlAnonMethods,
+  gqlMethods,
+  gqlMethodsWithRefresh,
+} from '../../services/api';
 import {
   LoginMutation,
   RefreshMutation,
 } from '../../services/graphql/types.generated';
+import { ErrorResponse } from '../../types/graphql';
 import { SessionUser } from '../../types/user';
 import { AuthStatus } from './state';
 
@@ -55,29 +61,11 @@ export function useLogin() {
 
 export function useMe() {
   const queryClient = useQueryClient();
+  const { disconnectAsync } = useDisconnect();
 
   const token = useQuery('token', () =>
     queryClient.getQueryData<LoginMutation['login']>('token')
   );
-
-  const me = useQuery(
-    'me',
-    async () => (await gqlMethods(token.data.token).me()).me,
-    {
-      enabled: !!token.data,
-      refetchOnReconnect: true,
-      refetchOnWindowFocus: true,
-    }
-  );
-
-  const onUpdateMe = (
-    cb: (oldMe: PartialDeep<SessionUser>) => PartialDeep<SessionUser>
-  ) => queryClient.setQueryData('me', cb);
-
-  const onSignOut = () => {
-    queryClient.setQueryData('token', null);
-    queryClient.setQueryData('me', null);
-  };
 
   const onUpdateToken = (newToken: RefreshMutation['refresh']) =>
     queryClient.setQueryData('token', (oldToken: LoginMutation['login']) => ({
@@ -85,6 +73,48 @@ export function useMe() {
       token: newToken.token,
       refresh_token: newToken.refresh_token,
     }));
+
+  const onSignOut = async () => {
+    try {
+      await disconnectAsync();
+    } catch (_e) {
+      //
+    } finally {
+      queryClient.setQueryData('token', null);
+      queryClient.setQueryData('me', null);
+    }
+  };
+
+  const me = useQuery(
+    'me',
+    async () =>
+      (
+        await gqlMethodsWithRefresh(
+          token.data?.token,
+          token.data?.refresh_token,
+          undefined,
+          onUpdateToken
+        ).me()
+      ).me,
+    {
+      enabled: !!token.data,
+      refetchOnMount: true,
+      refetchOnReconnect: true,
+      refetchOnWindowFocus: true,
+      refetchInterval: 1000 * 60 * 10,
+      onError(error: ErrorResponse) {
+        error.response.errors.forEach((err) => {
+          if (err.extensions.code === 500 && err.message.includes('token')) {
+            onSignOut();
+          }
+        });
+      },
+    }
+  );
+
+  const onUpdateMe = (
+    cb: (oldMe: PartialDeep<SessionUser>) => PartialDeep<SessionUser>
+  ) => queryClient.setQueryData('me', cb);
 
   return {
     me: me.data,

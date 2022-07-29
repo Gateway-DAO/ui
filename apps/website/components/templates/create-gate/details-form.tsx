@@ -75,6 +75,7 @@ export function GateDetailsForm() {
         label="Created By"
         id="created_by"
         name="created_by"
+        disabled
         {...register('created_by')}
         creators={creators}
         defaultValue={creators}

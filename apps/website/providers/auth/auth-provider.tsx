@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import { useRouter } from 'next/router';
-import { PropsWithChildren, useCallback, useEffect, useMemo } from 'react';
+import { PropsWithChildren, useEffect, useMemo } from 'react';
 
-import { useAccount, useDisconnect } from 'wagmi';
+import { useAccount } from 'wagmi';
 
 import { WalletModal } from '../../components/organisms/wallet-modal';
 import { ROUTES } from '../../constants/routes';
@@ -20,14 +20,7 @@ export function AuthProvider({
   isAuthPage,
   children,
 }: PropsWithChildren<Props>) {
-  const { disconnectAsync } = useDisconnect();
-  const {
-    me,
-    tokens,
-    onSignOut: onSignOutMe,
-    onUpdateMe,
-    onUpdateToken,
-  } = useMe();
+  const { me, tokens, onSignOut, onUpdateMe, onUpdateToken } = useMe();
   const { status, onAuthenticated, onConnecting, onUnauthenticated } =
     useAuthStatus(tokens);
 
@@ -45,11 +38,6 @@ export function AuthProvider({
       ),
     [tokens?.token, tokens?.refresh_token, me?.id, onUpdateToken]
   );
-
-  const onSignOut = useCallback(async () => {
-    onSignOutMe();
-    await disconnectAsync();
-  }, [disconnectAsync, onSignOutMe]);
 
   const isBlocked = isAuthPage && (!me || !tokens);
 

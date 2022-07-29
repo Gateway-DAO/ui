@@ -14,9 +14,9 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 
 import { ROUTES } from '../../../../constants/routes';
 import { useAuth } from '../../../../providers/auth';
+import { AdminBadge } from '../../../atoms/admin-badge';
 import { AvatarFile } from '../../../atoms/avatar-file';
 import { DashboardTemplateProps } from '../types';
-import { AdminBadge } from './admin-badge';
 import { DaosList } from './daos-list';
 import { DrawerContainer } from './drawer-container';
 import { ResponsiveDrawer } from './responsive-drawer';
@@ -72,11 +72,6 @@ export function Drawer({ currentDao, showExplore }: Props) {
             )}
             {followingDaos?.map((dao) => {
               const url = ROUTES.DAO_PROFILE.replace('[id]', dao.id);
-              const avatar = (
-                <AvatarFile file={dao?.logo} fallback={dao?.logo_url}>
-                  {dao.name?.[0]}
-                </AvatarFile>
-              );
 
               return (
                 <Link key={dao.id} passHref href={url} prefetch={false}>
@@ -91,11 +86,11 @@ export function Drawer({ currentDao, showExplore }: Props) {
                       className={clsx({ active: dao.id === currentDao?.id })}
                     >
                       <ListItemIcon>
-                        {dao.is_admin ? (
-                          <AdminBadge>{avatar}</AdminBadge>
-                        ) : (
-                          avatar
-                        )}
+                        <AdminBadge isAdmin={dao.is_admin}>
+                          <AvatarFile file={dao?.logo} fallback={dao?.logo_url}>
+                            {dao.name?.[0]}
+                          </AvatarFile>
+                        </AdminBadge>
                       </ListItemIcon>
                     </ListItemButton>
                   </MotionTooltip>

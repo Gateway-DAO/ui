@@ -8,7 +8,10 @@ export const SkillsInput = ({ set, ...props }) => {
     <Autocomplete
       multiple
       id="skills-input"
-      options={[...SKILLS.SOFT, ...SKILLS.HARD]}
+      options={[...SKILLS.HARD, ...SKILLS.SOFT]}
+      groupBy={(option) =>
+        SKILLS.HARD.includes(option) ? 'Hard Skills' : 'Soft Skills'
+      }
       popupIcon={<Search />}
       sx={{
         '&.Mui-focused .MuiButtonBase-root': {

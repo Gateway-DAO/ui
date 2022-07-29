@@ -1,7 +1,6 @@
 import { useState } from 'react';
 
 import {
-  Button,
   Checkbox,
   FormControl,
   FormControlLabel,
@@ -13,15 +12,18 @@ import {
   Typography,
 } from '@mui/material';
 
+import { LoadingButton } from '../../../../../../components/atoms/loading-button';
+
 const QuizContent = ({
   data,
   completed,
   updatedAt,
   completeTask,
   readOnly,
+  isLoading,
 }) => {
   const { questions } = data;
-  const formattedDate = new Date(updatedAt.toLocaleString()).toLocaleString();
+  const formattedDate = new Date(updatedAt?.toLocaleString()).toLocaleString();
   const initialAnswers = questions.map((question, index) => {
     return { questionIdx: index, answers: [] };
   });
@@ -96,13 +98,14 @@ const QuizContent = ({
         );
       })}
       {!readOnly && (
-        <Button
+        <LoadingButton
           variant="contained"
           sx={{ marginTop: '15px' }}
           onClick={() => completeTask({ questions: answers })}
+          isLoading={isLoading}
         >
           Submit
-        </Button>
+        </LoadingButton>
       )}
       {completed && (
         <Typography color="#c5ffe3" variant="subtitle2">

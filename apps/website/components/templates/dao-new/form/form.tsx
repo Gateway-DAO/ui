@@ -24,7 +24,7 @@ export function AboutForm({ isEdit }: Props) {
 
   const { t } = useTranslation(isEdit ? 'dao-edit' : 'dao-new');
 
-  const descriptionRemaining = 200 - (watch('description')?.length ?? 0);
+  const descriptionRemaining = watch('description')?.length ?? 0;
 
   return (
     <Stack direction="column" sx={{ gap: { xs: 8, md: 12 } }}>
