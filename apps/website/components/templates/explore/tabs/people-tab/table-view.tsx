@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 import { TOKENS } from '@gateway/theme';
 
-import { Avatar, Box, Stack, Typography } from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -11,6 +11,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 
 import { ROUTES } from '../../../../../constants/routes';
+import { AvatarFile } from '../../../../atoms/avatar-file';
 import { FollowButtonUser } from '../../../../atoms/follow-button-user';
 import { ExploreProps } from '../../types';
 
@@ -46,9 +47,9 @@ export function TableView({ people }: Props) {
                 >
                   <TableCell sx={{ cursor: 'pointer' }}>
                     <Stack alignItems="center" direction="row" gap={1}>
-                      <Avatar variant="circular" src={user.pfp}>
+                      <AvatarFile file={user.picture} fallback="/logo.png">
                         {user.name?.[0]}
-                      </Avatar>
+                      </AvatarFile>
                       <Box>
                         <Typography>{user.name}</Typography>
                         <Typography

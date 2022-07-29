@@ -35,9 +35,11 @@ query get_home {
   people: users(limit: 9) {
     id
     name
-    #pfp
     about
     username
+    picture {
+      ...file
+    }
   }
 }
 
@@ -84,7 +86,9 @@ query people_tab {
   people: users(order_by: {name: asc}) {
     id
     name
-    pfp
+    picture {
+      ...file
+    }
     about
     username
   }

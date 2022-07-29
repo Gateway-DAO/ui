@@ -1,15 +1,25 @@
 import type { PartialDeep } from 'type-fest';
 
-import { Avatar, Button, CardHeader } from '@mui/material';
+import { CardHeader } from '@mui/material';
 import MUICard from '@mui/material/Card';
 
 import { useAuth } from '../../providers/auth';
 import { Users } from '../../services/graphql/types.generated';
+import { AdminBadge } from '../atoms/admin-badge';
+import { AvatarFile } from '../atoms/avatar-file';
 import { FollowButtonUser } from '../atoms/follow-button-user';
+
+type Props = {
+  user: PartialDeep<Users>;
+  isAdmin?: boolean;
+};
 
 /* TODO: Arias and Labels */
 /* TODO: Clamp text */
-export function PersonCard({ id, name, username, pfp }: PartialDeep<Users>) {
+export function PersonCard({
+  user: { id, name, username, picture },
+  isAdmin,
+}: Props) {
   const { me } = useAuth();
   return (
     <MUICard>
@@ -19,16 +29,11 @@ export function PersonCard({ id, name, username, pfp }: PartialDeep<Users>) {
           '.MuiCardHeader-content': { minWidth: 0 },
         }}
         avatar={
-          <Avatar
-            sx={{
-              width: 40,
-              height: 40,
-            }}
-            aria-label={name}
-            src={pfp}
-          >
-            {name?.[0]}
-          </Avatar>
+          <AdminBadge isAdmin={isAdmin}>
+            <AvatarFile file={picture} fallback="/logo.png">
+              {name?.[0]}
+            </AvatarFile>
+          </AdminBadge>
         }
         action={
           id !== me?.id ? (
