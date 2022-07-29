@@ -1,7 +1,6 @@
 import { GetStaticPaths, InferGetStaticPropsType } from 'next';
 
-import { CreateNavbar } from 'apps/website/components/organisms/create-navbar/create-navbar';
-
+import { Navbar } from '../../components/organisms/navbar';
 import { DashboardTemplate } from '../../components/templates/dashboard';
 import { GateViewTemplate } from '../../components/templates/gate-view';
 import { gqlAnonMethods } from '../../services/api';
@@ -20,7 +19,7 @@ export default function GateProfilePage({
         },
       }}
     >
-      <CreateNavbar />
+      <Navbar isInternalPage={true} />
       <GateViewTemplate gate={gate} />
     </DashboardTemplate>
   );
