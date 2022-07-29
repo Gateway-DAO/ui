@@ -1,22 +1,20 @@
 import { useEffect, useState } from 'react';
 
-import { PartialDeep } from 'type-fest';
-
-import { SessionUser } from '../../types/user';
+import { SessionToken } from '../../types/user';
 
 export type AuthStatus = 'UNAUTHENTICATED' | 'CONNECTING' | 'AUTHENTICATED';
 
-export const useAuthStatus = (me: PartialDeep<SessionUser>) => {
+export const useAuthStatus = (token?: SessionToken) => {
   const [status, setStatus] = useState<AuthStatus>(() => {
-    if (me) return 'AUTHENTICATED';
+    if (token) return 'AUTHENTICATED';
     return 'UNAUTHENTICATED';
   });
 
   useEffect(() => {
-    if (!me && status === 'AUTHENTICATED') {
+    if (!token && status === 'AUTHENTICATED') {
       setStatus('UNAUTHENTICATED');
     }
-  }, [me, status]);
+  }, [token, status]);
 
   const onConnecting = () => {
     setStatus('CONNECTING');

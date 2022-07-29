@@ -6,9 +6,10 @@ import { Box, Stack, Typography } from '@mui/material';
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
 
-import { AvatarFile } from '../../../../../components/atoms/avatar-file';
 import { useAuth } from '../../../../../providers/auth';
 import { Users } from '../../../../../services/graphql/types.generated';
+import { AdminBadge } from '../../../../atoms/admin-badge';
+import { AvatarFile } from '../../../../atoms/avatar-file';
 import { FollowButtonUser } from '../../../../atoms/follow-button-user';
 import { useDaoProfile } from '../../context';
 import { AdminMenu } from './admin-menu';
@@ -20,27 +21,20 @@ export function UserCell({ user }: Props) {
   const { me } = useAuth();
   const { isAdmin } = useDaoProfile();
 
+  const isUserAdminOfDao =
+    user.permissions?.some(({ permission }) => permission === 'dao_admin') ??
+    false;
+
   return (
     <TableRow hover role="checkbox" tabIndex={-1}>
       <TableCell>
         <Link href={'/profile/' + user.username} passHref>
-          <Stack
-            alignItems="center"
-            direction="row"
-            gap={1}
-            component="a"
-            sx={{
-              textDecoration: 'none',
-              color: 'text.primary',
-            }}
-          >
-            <AvatarFile
-              variant="circular"
-              file={user.picture}
-              fallback="/logo.png"
-            >
-              {user.name?.[0]}
-            </AvatarFile>
+          <Stack alignItems="center" direction="row" gap={1}>
+            <AdminBadge isAdmin={isUserAdminOfDao}>
+              <AvatarFile file={user.picture} fallback="/logo.png">
+                {user.name?.[0]}
+              </AvatarFile>
+            </AdminBadge>
             <Box>
               <Typography>{user.name}</Typography>
               <Typography

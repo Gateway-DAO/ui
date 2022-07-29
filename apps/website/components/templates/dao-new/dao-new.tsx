@@ -45,20 +45,24 @@ export function NewDAOTemplate({ dao, onSubmit, isLoading }: Props) {
       onSubmit={methods.handleSubmit(onSubmit, (error) => {
         console.log('Error', error);
       })}
-      sx={{
-        px: TOKENS.CONTAINER_PX,
-        pb: 10,
-        gap: {
-          xs: 4,
-          md: 6,
-        },
-      }}
     >
       <Stack
         direction="row"
         justifyContent="space-between"
         alignItems="center"
-        sx={{ mx: -0.5, pt: { xs: 1.5, md: 5 }, pb: { xs: 1.5, md: 0 } }}
+        sx={{
+          px: TOKENS.CONTAINER_PX,
+          gap: {
+            xs: 4,
+            md: 6,
+          },
+          paddingTop: { xs: '24px', md: '40px' },
+          background:
+            ' linear-gradient(180deg, #10041C 0%, rgba(16, 4, 28,0) 100%)',
+          position: 'fixed',
+          width: '100%',
+          zIndex: '10000',
+        }}
       >
         <IconButton onClick={() => router.back()}>
           <Avatar>
@@ -69,30 +73,42 @@ export function NewDAOTemplate({ dao, onSubmit, isLoading }: Props) {
           {t('submit')}
         </LoadingButton>
       </Stack>
-      <Box>
-        <Typography variant="h4">{t('title')}</Typography>
-        <Typography variant="caption">{t('subtitle')}</Typography>
-      </Box>
       <Stack
-        direction="row"
-        justifyContent="space-between"
-        alignItems="flex-start"
-        gap={4}
         sx={{
-          flexFlow: {
-            xs: 'column',
-            md: 'row',
+          mt: 18,
+          mx: TOKENS.CONTAINER_PX,
+          pb: 10,
+          gap: {
+            xs: 4,
+            md: 6,
           },
         }}
       >
-        <Box sx={{ width: { xs: '100%', md: '25%' } }}>
-          <Typography variant="h5">{t('about.title')}</Typography>
+        <Box>
+          <Typography variant="h4">{t('title')}</Typography>
+          <Typography variant="caption">{t('subtitle')}</Typography>
         </Box>
-        <FormProvider {...methods}>
-          <Box sx={{ width: { xs: '100%', md: '75%' } }}>
-            <AboutForm isEdit={!!dao} />
+        <Stack
+          direction="row"
+          justifyContent="space-between"
+          alignItems="flex-start"
+          gap={4}
+          sx={{
+            flexFlow: {
+              xs: 'column',
+              md: 'row',
+            },
+          }}
+        >
+          <Box sx={{ width: { xs: '100%', md: '25%' } }}>
+            <Typography variant="h5">{t('about.title')}</Typography>
           </Box>
-        </FormProvider>
+          <FormProvider {...methods}>
+            <Box sx={{ width: { xs: '100%', md: '75%' } }}>
+              <AboutForm isEdit={!!dao} />
+            </Box>
+          </FormProvider>
+        </Stack>
       </Stack>
     </Stack>
   );

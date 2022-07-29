@@ -9,7 +9,9 @@ import { Box, Snackbar, Stack, Typography } from '@mui/material';
 
 import { ROUTES } from '../../../constants/routes';
 import { useSnackbar } from '../../../hooks/use-snackbar';
+import { useUploadImage } from '../../../hooks/use-upload-image';
 import { useAuth } from '../../../providers/auth';
+import { ErrorResponse } from '../../../types/graphql';
 import { NavBarAvatar } from '../../organisms/navbar/navbar-avatar';
 import { AvatarUploadCard } from './avatar-upload-card';
 import { Form } from './form';
@@ -31,26 +33,62 @@ export function NewUserTemplate() {
   const snackbar = useSnackbar();
 
   const router = useRouter();
+  const uploadImage = useUploadImage();
 
   const updateMutation = useMutation(
     'updateProfile',
-    gqlAuthMethods.update_user_profile,
+    async ({ pfp, ...data }: NewUserSchema) => {
+      const uploadedPicture = await uploadImage({
+        base64: pfp,
+        name: `${me.id}-pfp`,
+      });
+
+      return gqlAuthMethods.update_user_profile({
+        ...data,
+        id: me.id,
+        pic_id: uploadedPicture.upload_image.id,
+      });
+    },
     {
       onSuccess(data) {
-        snackbar.handleClick({ message: 'Profile updated!' });
+        snackbar.onOpen({ message: 'Profile created!' });
         onUpdateMe((oldMe) => ({
           ...oldMe,
           ...data.update_users_by_pk,
           init: true,
         }));
-        router.push(ROUTES.EXPLORE);
+        router.replace(ROUTES.EXPLORE);
+      },
+      onError(error: ErrorResponse) {
+        let totalUnmappedErrors = 0;
+        error.response.errors?.forEach(({ message, extensions }) => {
+          if (
+            extensions.code === 'constraint-violation' &&
+            message.includes('users_email_address_uindex')
+          ) {
+            return methods.setError('email_address', {
+              message: 'Email already in use',
+            });
+          }
+          if (
+            extensions.code === 'constraint-violation' &&
+            message.includes('user_username_uindex')
+          ) {
+            return methods.setError('username', {
+              message: 'Username already in use',
+            });
+          }
+          totalUnmappedErrors++;
+        });
+
+        if (totalUnmappedErrors) {
+          snackbar.onOpen({ message: 'Unknown server error', type: 'error' });
+        }
       },
     }
   );
 
-  const onSubmit = (data: NewUserSchema) => {
-    updateMutation.mutate({ id: me.id, ...data });
-  };
+  const onSubmit = (data: NewUserSchema) => updateMutation.mutate(data);
 
   return (
     <>

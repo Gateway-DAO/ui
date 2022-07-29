@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import { useRouter } from 'next/router';
-import { PropsWithChildren, useCallback, useEffect, useMemo } from 'react';
+import { PropsWithChildren, useEffect, useMemo } from 'react';
 
-import { useAccount, useDisconnect } from 'wagmi';
+import { useAccount } from 'wagmi';
 
 import { WalletModal } from '../../components/organisms/wallet-modal';
 import { ROUTES } from '../../constants/routes';
@@ -20,16 +20,9 @@ export function AuthProvider({
   isAuthPage,
   children,
 }: PropsWithChildren<Props>) {
-  const { disconnect } = useDisconnect();
-  const {
-    me,
-    tokens,
-    onSignOut: onSignOutMe,
-    onUpdateMe,
-    onUpdateToken,
-  } = useMe();
+  const { me, tokens, onSignOut, onUpdateMe, onUpdateToken } = useMe();
   const { status, onAuthenticated, onConnecting, onUnauthenticated } =
-    useAuthStatus(me);
+    useAuthStatus(tokens);
 
   const { status: accountStatus, data: account } = useAccount();
 
@@ -46,12 +39,7 @@ export function AuthProvider({
     [tokens?.token, tokens?.refresh_token, me?.id, onUpdateToken]
   );
 
-  const onSignOut = useCallback(() => {
-    disconnect();
-    onSignOutMe();
-  }, [disconnect, onSignOutMe]);
-
-  const isBlocked = isAuthPage && !me;
+  const isBlocked = isAuthPage && (!me || !tokens);
 
   const onCloseModalWhenBlocked = async () => {
     await router.replace(ROUTES.LANDING);
@@ -70,7 +58,7 @@ export function AuthProvider({
     if (!account && me) {
       onSignOut();
     }
-  }, [account, accountStatus, disconnect, isAuthPage, onSignOut, me]);
+  }, [account, accountStatus, isAuthPage, onSignOut, me]);
 
   useToggleContainerClass('blur', status === 'CONNECTING');
 
