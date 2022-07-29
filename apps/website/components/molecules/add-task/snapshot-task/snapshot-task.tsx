@@ -1,6 +1,8 @@
 import { useEffect, useRef } from 'react';
 
+import normalizeUrl from 'normalize-url';
 import { Controller, useFormContext } from 'react-hook-form';
+import { setErrorMap } from 'zod';
 
 import DeleteIcon from '@mui/icons-material/Delete';
 import {
@@ -26,6 +28,8 @@ const SnapshotTask = ({ taskId, deleteTask }) => {
     formState: { errors },
     watch,
     control,
+    setError,
+    clearErrors,
   } = useFormContext<CreateGateTypes>();
 
   useEffect(() => {
@@ -85,20 +89,32 @@ const SnapshotTask = ({ taskId, deleteTask }) => {
           sx={{ marginBottom: '60px' }}
         />
         <Stack direction="row" justifyContent="space-between">
-          <TextField
-            required
-            label="Specific proposal number"
-            sx={{ maxWidth: '50%' }}
-            {...register(`tasks.data.${taskId}.task_data.proposal_number`)}
-            error={
-              !!(errors.tasks?.data[taskId]?.task_data as SnapshotDataError)
-                ?.proposal_number
-            }
-            helperText={
-              (errors.tasks?.data[taskId]?.task_data as SnapshotDataError)
-                ?.proposal_number?.message
-            }
-          />
+          <Stack direction="column">
+            <TextField
+              required
+              label="Specific Proposal Number"
+              sx={{ minWidth: '50%' }}
+              {...register(`tasks.data.${taskId}.task_data.proposal_number`)}
+              error={
+                !!(errors.tasks?.data[taskId]?.task_data as SnapshotDataError)
+                  ?.proposal_number
+              }
+              helperText={
+                (errors.tasks?.data[taskId]?.task_data as SnapshotDataError)
+                  ?.proposal_number?.message
+              }
+            />
+            {!(errors.tasks?.data[taskId]?.task_data as SnapshotDataError)
+              ?.proposal_number && (
+              <Typography
+                variant="caption"
+                marginTop={(theme) => theme.spacing(1)}
+              >
+                Pro tip: paste a Snapshot URL directly into the box to extract
+                the proposal number
+              </Typography>
+            )}
+          </Stack>
           <Stack direction="row" alignItems="center">
             <Typography variant="body2">Created Proposal</Typography>
             <Controller
