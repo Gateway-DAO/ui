@@ -175,7 +175,7 @@ const snapshotTaskDataSchema = z.object({
 });
 
 const holdTokenTaskDataSchema = z.object({
-  chain: z.string().min(2),
+  chain: z.number(),
   token_address: z.string().min(2),
   quantity: z.string().min(1),
 });
