@@ -34,7 +34,6 @@ export function DaosTab({ data: daos }: DAOsTabProps) {
   const { t } = useTranslation('search');
 
   const router = useRouter();
-
   return (
     <Box sx={{ py: 4, width: '100%' }}>
       {daos?.length ? (

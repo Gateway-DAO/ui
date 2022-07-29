@@ -27,6 +27,8 @@ export function DaoCard({
   background,
   background_url,
   logo_url,
+  followers_aggregate,
+  gates_aggregate,
   name,
   categories,
   description,
@@ -40,6 +42,15 @@ export function DaoCard({
   const url = useMemo(() => ROUTES.DAO_PROFILE.replace('[id]', id), [id]);
 
   const cover = useFile(background);
+
+  const getFollowersAndGatesNumber = () => {
+    const followers = followers_aggregate?.aggregate?.count ?? null;
+    const gates = gates_aggregate?.aggregate?.count ?? null;
+    return `${followers > 0 ? `${followers} contributors` : ''} ${
+      followers && gates ? '•' : ''
+    } ${gates > 0 ? `${gates} gates` : ''}`;
+  };
+
   return (
     <MUICard sx={{ position: 'relative' }}>
       <Link passHref href={url}>
@@ -84,6 +95,7 @@ export function DaoCard({
               '.MuiCardHeader-action': { alignSelf: 'unset' },
             }}
             title={name}
+            subheader={getFollowersAndGatesNumber()}
             titleTypographyProps={{ variant: 'h6' }}
           />
           <CardContent sx={{ py: 1 }}>

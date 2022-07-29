@@ -28,7 +28,7 @@ type TemplateProps = {
 
 export function SearchTemplate({ query }: TemplateProps) {
   const { t } = useTranslation('search');
-  const { activeTab, handleTabChange, setTab } = useTab();
+  const { activeTab, handleTabChange } = useTab();
 
   const { data, isLoading } = useQuery(
     `search-${query}`,
