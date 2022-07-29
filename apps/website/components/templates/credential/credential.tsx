@@ -29,8 +29,8 @@ export function CredentialTemplate({ credential }: Props) {
           marginBottom={(theme) => theme.spacing(2)}
         >
           <Avatar
-            alt={credential.dao.name}
-            src={`https://api.staging.mygateway.xyz/storage/file?id=${credential.dao.logo.id}`}
+            alt={credential.dao?.name}
+            src={`https://api.staging.mygateway.xyz/storage/file?id=${credential.dao?.logo.id}`}
             sx={{
               height: (theme) => theme.spacing(3),
               width: (theme) => theme.spacing(3),
@@ -41,7 +41,7 @@ export function CredentialTemplate({ credential }: Props) {
             variant="body2"
             color={(theme) => theme.palette.text.secondary}
           >
-            {credential.dao.name}
+            {credential.dao?.name}
           </Typography>
         </Stack>
 
