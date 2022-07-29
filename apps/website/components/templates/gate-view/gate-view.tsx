@@ -109,7 +109,11 @@ export function GateViewTemplate({ gate }: Props) {
           ))}
         </Box>
 
-        <Typography variant="body1" marginBottom={(theme) => theme.spacing(4)}>
+        <Typography
+          variant="body1"
+          marginBottom={(theme) => theme.spacing(4)}
+          sx={{ wordBreak: 'break-word' }}
+        >
           {gate.description}
         </Typography>
         {gateCompleted && (
