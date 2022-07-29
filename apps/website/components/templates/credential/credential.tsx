@@ -168,7 +168,7 @@ export function CredentialTemplate({ credential }: Props) {
 
         <TaskGroup>
           {credential.pow.map((task, idx) => (
-            <Task key={'task-' + (idx + 1)} task={task} />
+            <Task key={'task-' + (idx + 1)} task={task} readOnly />
           ))}
         </TaskGroup>
       </Grid>

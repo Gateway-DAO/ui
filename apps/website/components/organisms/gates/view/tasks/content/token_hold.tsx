@@ -16,7 +16,13 @@ const chains = {
   421611: 'Arbitrum Rinkeby',
 };
 
-const TokenHoldContent = ({ data, completed, updatedAt, completeTask }) => {
+const TokenHoldContent = ({
+  data,
+  completed,
+  updatedAt,
+  completeTask,
+  readOnly,
+}) => {
   const { chain, token_address, quantity } = data;
   const formattedDate = new Date(updatedAt.toLocaleString()).toLocaleString();
 
@@ -34,11 +40,7 @@ const TokenHoldContent = ({ data, completed, updatedAt, completeTask }) => {
         {quantity}
       </Typography>
       <Typography variant="caption">Quantity</Typography>
-      {completed ? (
-        <Typography color="#c5ffe3" variant="subtitle2">
-          Task completed at {formattedDate}
-        </Typography>
-      ) : (
+      {!readOnly && (
         <Button
           variant="contained"
           sx={{ marginTop: '15px' }}
@@ -46,6 +48,11 @@ const TokenHoldContent = ({ data, completed, updatedAt, completeTask }) => {
         >
           Check Token
         </Button>
+      )}
+      {completed && (
+        <Typography color="#c5ffe3" variant="subtitle2">
+          Task completed at {formattedDate}
+        </Typography>
       )}
     </Stack>
   );

@@ -10,7 +10,13 @@ import {
   Typography,
 } from '@mui/material';
 
-const SelfVerifyContent = ({ data, completed, updatedAt, completeTask }) => {
+const SelfVerifyContent = ({
+  data,
+  completed,
+  updatedAt,
+  completeTask,
+  readOnly,
+}) => {
   const formattedDate = new Date(updatedAt.toLocaleString()).toLocaleString();
 
   const files = data.files.map((file, index) => {
@@ -38,11 +44,7 @@ const SelfVerifyContent = ({ data, completed, updatedAt, completeTask }) => {
   return (
     <List>
       {files}
-      {completed ? (
-        <Typography color="#c5ffe3" variant="subtitle2">
-          Task completed at {formattedDate}
-        </Typography>
-      ) : (
+      {!readOnly && (
         <Button
           variant="contained"
           sx={{ marginTop: '15px' }}
@@ -50,6 +52,11 @@ const SelfVerifyContent = ({ data, completed, updatedAt, completeTask }) => {
         >
           Submit
         </Button>
+      )}
+      {completed && (
+        <Typography color="#c5ffe3" variant="subtitle2">
+          Task completed at {formattedDate}
+        </Typography>
       )}
     </List>
   );

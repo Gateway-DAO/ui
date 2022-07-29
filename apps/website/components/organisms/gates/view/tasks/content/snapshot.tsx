@@ -1,6 +1,12 @@
 import { Button, Stack, Typography } from '@mui/material';
 
-const SnapshotContent = ({ data, completed, updatedAt, completeTask }) => {
+const SnapshotContent = ({
+  data,
+  completed,
+  updatedAt,
+  completeTask,
+  readOnly,
+}) => {
   const { proposal_number, space_id } = data;
   const formattedDate = new Date(updatedAt.toLocaleString()).toLocaleString();
 
@@ -14,11 +20,7 @@ const SnapshotContent = ({ data, completed, updatedAt, completeTask }) => {
         {space_id}
       </Typography>
       <Typography variant="caption">Space ID</Typography>
-      {completed ? (
-        <Typography color="#c5ffe3" variant="subtitle2">
-          Task completed at {formattedDate}
-        </Typography>
-      ) : (
+      {!readOnly && (
         <Button
           variant="contained"
           sx={{ marginTop: '15px' }}
@@ -26,6 +28,11 @@ const SnapshotContent = ({ data, completed, updatedAt, completeTask }) => {
         >
           Check Snapshot
         </Button>
+      )}
+      {completed && (
+        <Typography color="#c5ffe3" variant="subtitle2">
+          Task completed at {formattedDate}
+        </Typography>
       )}
     </Stack>
   );

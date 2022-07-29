@@ -16,9 +16,9 @@ import {
 } from '@mui/material';
 
 import { useAuth } from '../../../providers/auth';
+import { Tasks } from '../../../services/graphql/types.generated';
 import { queryClient } from '../../../services/query-client';
 import { SessionUser } from '../../../types/user';
-import { Tasks } from '../../../services/graphql/types.generated';
 import MeetingCodeContent from '../gates/view/tasks/content/meeting_code';
 import QuizContent from '../gates/view/tasks/content/quiz';
 import SelfVerifyContent from '../gates/view/tasks/content/self-verify';
@@ -28,6 +28,7 @@ import TokenHoldContent from '../gates/view/tasks/content/token_hold';
 type Props = {
   idx?: number;
   task?: PartialObjectDeep<Tasks>;
+  readOnly?: boolean;
 };
 
 interface Error {
@@ -38,7 +39,7 @@ interface Error {
   };
 }
 
-export function Task({ task, idx }: Props) {
+export function Task({ task, idx, readOnly }: Props) {
   const { me, gqlAuthMethods } = useAuth();
 
   const [expanded, toggleExpanded] = useToggle(false);
@@ -185,6 +186,7 @@ export function Task({ task, idx }: Props) {
             completed={completed}
             updatedAt={updatedAt}
             completeTask={completeTask}
+            readOnly={readOnly}
           />
           {errorMessage && (
             <Typography variant="subtitle2" color="red" marginTop={2}>

@@ -13,7 +13,13 @@ import {
   Typography,
 } from '@mui/material';
 
-const QuizContent = ({ data, completed, updatedAt, completeTask }) => {
+const QuizContent = ({
+  data,
+  completed,
+  updatedAt,
+  completeTask,
+  readOnly,
+}) => {
   const { questions } = data;
   const formattedDate = new Date(updatedAt.toLocaleString()).toLocaleString();
   const initialAnswers = questions.map((question, index) => {
@@ -66,6 +72,7 @@ const QuizContent = ({ data, completed, updatedAt, completeTask }) => {
                       value={answer.value}
                       control={<Radio />}
                       label={answer.value}
+                      disabled={readOnly}
                     />
                   );
                 })}
@@ -79,6 +86,7 @@ const QuizContent = ({ data, completed, updatedAt, completeTask }) => {
                       value={answer.value}
                       control={<Checkbox />}
                       label={answer.value}
+                      disabled={readOnly}
                     />
                   );
                 })}
@@ -87,11 +95,7 @@ const QuizContent = ({ data, completed, updatedAt, completeTask }) => {
           </FormControl>
         );
       })}
-      {completed ? (
-        <Typography color="#c5ffe3" variant="subtitle2">
-          Task completed at {formattedDate}
-        </Typography>
-      ) : (
+      {!readOnly && (
         <Button
           variant="contained"
           sx={{ marginTop: '15px' }}
@@ -99,6 +103,11 @@ const QuizContent = ({ data, completed, updatedAt, completeTask }) => {
         >
           Submit
         </Button>
+      )}
+      {completed && (
+        <Typography color="#c5ffe3" variant="subtitle2">
+          Task completed at {formattedDate}
+        </Typography>
       )}
     </Stack>
   );
