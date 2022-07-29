@@ -36,7 +36,6 @@ export function QuizTask({
   taskId: number;
   deleteTask: (taskId) => void;
 }): JSX.Element {
-  const [isOpen, setIsOpen] = useState(false);
   const {
     register,
     trigger,
@@ -178,10 +177,8 @@ export function QuizTask({
               `tasks.data.${taskId}.task_data.questions`
             );
             if (isValid) {
-              setIsOpen(false);
               return append(createQuestion(questions.length));
             }
-            setIsOpen(true);
           }}
         >
           Add question
@@ -237,9 +234,11 @@ export function QuizTask({
         )}
       </Stack>
       <Snackbar
-        open={isOpen}
+        open={
+          !!(errors?.tasks?.data?.[taskId]?.task_data as QuizTaskDataError)
+            ?.questions
+        }
         autoHideDuration={3000}
-        onClose={() => setIsOpen(false)}
       >
         <Alert severity="error" sx={{ width: '100%' }}>
           {
