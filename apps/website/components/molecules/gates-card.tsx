@@ -87,20 +87,6 @@ export function GatesCard({
           </Stack>
         </CardActionArea>
       </Link>
-
-      <IconButton
-        aria-label="settings"
-        sx={{
-          color: (theme) =>
-            colord(theme.palette.action.active).alpha(0.56).toRgbString(),
-          zIndex: 1,
-          position: 'absolute',
-          top: (theme) => theme.spacing(54),
-          right: (theme) => theme.spacing(1),
-        }}
-      >
-        <BookmarkBorderIcon />
-      </IconButton>
     </MUICard>
   );
 }
