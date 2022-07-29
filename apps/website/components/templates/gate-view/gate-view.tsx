@@ -47,7 +47,7 @@ export function GateViewTemplate({ gate }: Props) {
 
   useEffect(() => {
     const completedTaskIds =
-      me?.task_progresses?.map((task) => task.task_id) || [];
+      me?.task_progresses.map((task) => task.task_id) || [];
     const allCompleted = taskIds.every((taskId) => {
       return completedTaskIds.includes(taskId);
     });
