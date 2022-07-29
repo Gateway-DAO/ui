@@ -98,8 +98,10 @@ export function useMe() {
       ).me,
     {
       enabled: !!token.data,
+      refetchOnMount: true,
       refetchOnReconnect: true,
       refetchOnWindowFocus: true,
+      refetchInterval: 1000 * 60 * 10,
       onError(error: ErrorResponse) {
         error.response.errors.forEach((err) => {
           if (err.extensions.code === 500 && err.message.includes('token')) {
