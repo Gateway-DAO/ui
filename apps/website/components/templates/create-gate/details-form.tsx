@@ -31,6 +31,11 @@ export function GateDetailsForm() {
         {...register('title')}
         error={!!errors.title}
         helperText={errors.title?.message}
+        sx={{
+          '& div fieldset legend span': {
+            marginRight: '4px',
+          },
+        }}
       />
       <CategoriesInput
         label="Categories"
@@ -42,6 +47,9 @@ export function GateDetailsForm() {
         helperText={errors.categories && 'Invalid categories added'}
         sx={{
           width: '100%',
+          '& div fieldset legend span': {
+            marginRight: '10px',
+          },
         }}
         set={(categories: string[]) => {
           setValue('categories', categories);
@@ -55,6 +63,11 @@ export function GateDetailsForm() {
         {...register('description')}
         error={!!errors.description}
         helperText={errors.description?.message}
+        sx={{
+          '& div fieldset legend span': {
+            marginRight: '12px',
+          },
+        }}
       />
       <SkillsInput
         label="Skills"
@@ -66,6 +79,9 @@ export function GateDetailsForm() {
         helperText={errors.skills && 'Invalid skills added'}
         sx={{
           width: '100%',
+          '& div fieldset legend span': {
+            marginRight: '10px',
+          },
         }}
         set={(skills: string[]) => {
           setValue('skills', skills);
@@ -84,6 +100,9 @@ export function GateDetailsForm() {
         helperText={errors.created_by && 'Invalid creator added'}
         sx={{
           width: '100%',
+          '& div fieldset legend span': {
+            marginRight: '6px',
+          },
         }}
         set={(created_by: Creator[]) => setValue('created_by', created_by)}
       />
