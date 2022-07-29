@@ -75,6 +75,11 @@ export function SocialLink<TFormSchema extends FieldValues = FieldValues>({
             {...networkField.field}
             value={networkField.field.value ?? ''}
             error={!!networkField.fieldState.error}
+            sx={{
+              '& fieldset legend span': {
+                marginRight: '12px',
+              },
+            }}
           >
             {networksOptions.map((network) => (
               <MenuItem key={network.value} value={network.value}>
