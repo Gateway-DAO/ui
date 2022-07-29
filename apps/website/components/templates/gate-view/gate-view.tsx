@@ -61,7 +61,7 @@ export function GateViewTemplate({ gate }: Props) {
   }, [taskIds, me?.task_progresses, completedTasksCount]);
 
   return (
-    <Grid container height="100%">
+    <Grid container height="100%" sx={{ flexWrap: 'nowrap' }}>
       <GateCompletedModal open={open} handleClose={handleClose} gate={gate} />
       <Grid item xs={12} md={5} p={(theme) => theme.spacing(7)}>
         {/* DAO info */}
@@ -69,6 +69,12 @@ export function GateViewTemplate({ gate }: Props) {
           direction="row"
           alignItems="center"
           marginBottom={(theme) => theme.spacing(2)}
+          sx={(theme) => ({
+            minWidth: '408px',
+            [theme.breakpoints.down('sm')]: {
+              width: '100%',
+            },
+          })}
         >
           <Avatar
             alt={gate.dao.name}
@@ -98,12 +104,17 @@ export function GateViewTemplate({ gate }: Props) {
               label={category}
               sx={{
                 marginRight: (theme) => theme.spacing(1),
+                marginBottom: (theme) => theme.spacing(1),
               }}
             />
           ))}
         </Box>
 
-        <Typography variant="body1" marginBottom={(theme) => theme.spacing(4)}>
+        <Typography
+          variant="body1"
+          marginBottom={(theme) => theme.spacing(4)}
+          sx={{ wordBreak: 'break-word' }}
+        >
           {gate.description}
         </Typography>
         {gateCompleted && (
@@ -174,6 +185,7 @@ export function GateViewTemplate({ gate }: Props) {
                 label={skill}
                 sx={{
                   marginRight: (theme) => theme.spacing(1),
+                  marginBottom: (theme) => theme.spacing(1),
                 }}
               />
             ))}
