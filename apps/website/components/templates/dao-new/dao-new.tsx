@@ -69,7 +69,16 @@ export function NewDAOTemplate({ dao, onSubmit, isLoading }: Props) {
             <ArrowBack />
           </Avatar>
         </IconButton>
-        <LoadingButton variant="contained" type="submit" isLoading={isLoading}>
+        <LoadingButton
+          variant="contained"
+          type="submit"
+          isLoading={isLoading}
+          sx={{
+            position: 'absolute',
+            top: { xs: '26px', md: '52px' },
+            right: { xs: '26px', md: '92px' },
+          }}
+        >
           {t('submit')}
         </LoadingButton>
       </Stack>
