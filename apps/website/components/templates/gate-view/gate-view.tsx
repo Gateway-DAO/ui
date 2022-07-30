@@ -1,7 +1,7 @@
 import useTranslation from 'next-translate/useTranslation';
+import Link from 'next/link';
 import { useState, useEffect } from 'react';
 
-import { useSnackbar } from 'apps/website/hooks/use-snackbar';
 import { PartialDeep } from 'type-fest';
 
 import ShareIcon from '@mui/icons-material/IosShare';
@@ -22,6 +22,7 @@ import {
 
 import { useAuth } from '../../../../website/providers/auth';
 import { useMint } from '../../../hooks/use-mint';
+import { useSnackbar } from '../../../hooks/use-snackbar';
 import { Gates } from '../../../services/graphql/types.generated';
 import CircularProgressWithLabel from '../../atoms/circular-progress-label';
 import GateCompletedModal from '../../organisms/gates/view/modals/gate-completed';
@@ -85,33 +86,36 @@ export function GateViewTemplate({ gate }: Props) {
       <GateCompletedModal open={open} handleClose={handleClose} gate={gate} />
       <Grid item xs={12} md={5} p={(theme) => theme.spacing(7)}>
         {/* DAO info */}
-        <Stack
-          direction="row"
-          alignItems="center"
-          marginBottom={(theme) => theme.spacing(2)}
-          sx={(theme) => ({
-            minWidth: '408px',
-            [theme.breakpoints.down('sm')]: {
-              width: '100%',
-            },
-          })}
-        >
-          <Avatar
-            alt={gate.dao.name}
-            src={gate.dao.logo_url}
-            sx={{
-              height: (theme) => theme.spacing(3),
-              width: (theme) => theme.spacing(3),
-              marginRight: (theme) => theme.spacing(1),
-            }}
-          />
-          <Typography
-            variant="body2"
-            color={(theme) => theme.palette.text.secondary}
+        <Link passHref href={`/dao/${gate.dao.id}`}>
+          <Stack
+            component="a"
+            direction="row"
+            alignItems="center"
+            marginBottom={(theme) => theme.spacing(2)}
+            sx={(theme) => ({
+              display: 'inline-flex',
+              [theme.breakpoints.down('sm')]: {
+                width: '100%',
+              },
+            })}
           >
-            {gate.dao.name}
-          </Typography>
-        </Stack>
+            <Avatar
+              alt={gate.dao.name}
+              src={gate.dao.logo_url}
+              sx={{
+                height: (theme) => theme.spacing(3),
+                width: (theme) => theme.spacing(3),
+                marginRight: (theme) => theme.spacing(1),
+              }}
+            />
+            <Typography
+              variant="body2"
+              color={(theme) => theme.palette.text.secondary}
+            >
+              {gate.dao.name}
+            </Typography>
+          </Stack>
+        </Link>
 
         <Typography variant="h4" marginBottom={(theme) => theme.spacing(2)}>
           {gate.title}
@@ -199,11 +203,17 @@ export function GateViewTemplate({ gate }: Props) {
                 >
                   {gate.holders.map((holder) => {
                     return (
-                      <Avatar
+                      <Link
                         key={holder.id}
-                        alt={holder.username}
-                        src={holder.pfp}
-                      />
+                        passHref
+                        href={`/profile/${holder.id}`}
+                      >
+                        <Avatar
+                          component="a"
+                          alt={holder.username}
+                          src={holder.pfp}
+                        />
+                      </Link>
                     );
                   })}
                 </AvatarGroup>
@@ -241,7 +251,14 @@ export function GateViewTemplate({ gate }: Props) {
                 </Typography>
               </Grid>
               <Grid item xs={8}>
-                <Avatar alt={gate.creator?.username} src={gate.creator?.pfp} />
+                <Link passHref href={`/profile/${gate.creator.username}`}>
+                  <Box component="a" sx={{ display: 'inline-block' }}>
+                    <Avatar
+                      alt={gate.creator?.username}
+                      src={gate.creator?.pfp}
+                    />
+                  </Box>
+                </Link>
               </Grid>
             </>
           )}
