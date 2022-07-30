@@ -1,22 +1,19 @@
 import Link from 'next/link';
 import { useMemo } from 'react';
 
-import { colord } from 'colord';
 import type { PartialDeep } from 'type-fest';
 
-import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
-import { Avatar, CardActionArea, CardHeader, IconButton } from '@mui/material';
+import { CardActionArea, CardHeader } from '@mui/material';
 import MUICard from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
-import Chip from '@mui/material/Chip';
-import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
 import { ROUTES } from '../../constants/routes';
 import { Gates } from '../../services/graphql/types.generated';
 import { badgeProps } from '../../utils/badge-props';
 import { AvatarFile } from '../atoms/avatar-file';
+import { CategoriesList } from './ categories-list';
 
 /* TODO: Arias and Labels */
 
@@ -80,11 +77,7 @@ export function GatesCard({
               {description}
             </Typography>
           </CardContent>
-          <Stack direction="row" spacing={1} px={2} pt={1} pb={2}>
-            {categories.map((category) => (
-              <Chip key={category} label={category} size="small" />
-            ))}
-          </Stack>
+          <CategoriesList categories={categories} />
         </CardActionArea>
       </Link>
     </MUICard>
