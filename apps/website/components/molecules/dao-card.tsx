@@ -19,6 +19,7 @@ import { useAuth } from '../../providers/auth';
 import { Daos } from '../../services/graphql/types.generated';
 import { AvatarFile } from '../atoms/avatar-file';
 import { FollowButtonDAO } from '../atoms/follow-button-dao';
+import { CategoriesList } from './ categories-list';
 
 /* TODO: Arias and Labels */
 
@@ -114,12 +115,7 @@ export function DaoCard({
               {description}
             </Typography>
           </CardContent>
-          <Stack direction="row" spacing={1} px={2} pt={1} pb={2}>
-            {categories.map((category) => {
-              const label = categoriesMap.get(category) ?? category;
-              return <Chip key={category} label={label} size="small" />;
-            })}
-          </Stack>
+          <CategoriesList categories={categories} />
         </CardActionArea>
       </Link>
 
