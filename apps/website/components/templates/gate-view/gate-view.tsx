@@ -207,7 +207,7 @@ export function GateViewTemplate({ gate }: Props) {
                       <Link
                         key={holder.id}
                         passHref
-                        href={`/profile/${holder.id}`}
+                        href={`/profile/${holder.username}`}
                       >
                         <Avatar
                           component="a"
