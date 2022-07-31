@@ -18,7 +18,7 @@ const VerificationCodeTask = ({ taskId, deleteTask }) => {
   return (
     <Stack
       sx={{
-        padding: '50px',
+        padding: { md: '50px', xs: '16px' },
         border: '2px solid rgba(229, 229, 229, 0.08)',
         borderRadius: '10px',
       }}
@@ -40,7 +40,10 @@ const VerificationCodeTask = ({ taskId, deleteTask }) => {
           <Typography variant="subtitle2">Verification Code</Typography>
           <TextField
             variant="standard"
-            sx={{ minWidth: '600px' }}
+            sx={{
+              minWidth: { md: '600px', xs: '100%' },
+              maxWidth: { md: '100%', xs: '100%' },
+            }}
             id="file-title"
             {...register(`tasks.data.${taskId}.title`)}
             error={!!errors.tasks?.data?.[taskId]?.title}
