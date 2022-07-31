@@ -24,6 +24,7 @@ import { useAuth } from '../../../../website/providers/auth';
 import { useMint } from '../../../hooks/use-mint';
 import { useSnackbar } from '../../../hooks/use-snackbar';
 import { Gates } from '../../../services/graphql/types.generated';
+import { AvatarFile } from '../../atoms/avatar-file';
 import CircularProgressWithLabel from '../../atoms/circular-progress-label';
 import GateCompletedModal from '../../organisms/gates/view/modals/gate-completed';
 import { Task, TaskGroup } from './tasks';
@@ -52,7 +53,7 @@ export function GateViewTemplate({ gate }: Props) {
 
   useEffect(() => {
     const completedTaskIds =
-      me?.task_progresses?.map((task) => task.task_id) || [];
+      me?.task_progresses.map((task) => task.task_id) || [];
     const allCompleted = taskIds.every((taskId) => {
       return completedTaskIds.includes(taskId);
     });
@@ -88,20 +89,20 @@ export function GateViewTemplate({ gate }: Props) {
         {/* DAO info */}
         <Link passHref href={`/dao/${gate.dao.id}`}>
           <Stack
-            component="a"
             direction="row"
             alignItems="center"
             marginBottom={(theme) => theme.spacing(2)}
             sx={(theme) => ({
-              display: 'inline-flex',
+              minWidth: '408px',
               [theme.breakpoints.down('sm')]: {
                 width: '100%',
               },
             })}
           >
-            <Avatar
+            <AvatarFile
               alt={gate.dao.name}
-              src={gate.dao.logo_url}
+              file={gate.dao.logo}
+              fallback={gate.dao.logo_url}
               sx={{
                 height: (theme) => theme.spacing(3),
                 width: (theme) => theme.spacing(3),
@@ -253,9 +254,10 @@ export function GateViewTemplate({ gate }: Props) {
               <Grid item xs={8}>
                 <Link passHref href={`/profile/${gate.creator.username}`}>
                   <Box component="a" sx={{ display: 'inline-block' }}>
-                    <Avatar
-                      alt={gate.creator?.username}
-                      src={gate.creator?.pfp}
+                    <AvatarFile
+                      alt={gate.creator.username}
+                      file={gate.creator.picture}
+                      fallback={'/logo.png'}
                     />
                   </Box>
                 </Link>
