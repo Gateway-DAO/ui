@@ -20,8 +20,12 @@ const AddTaskButton = ({
         backgroundColor: disabled
           ? 'rgba(255, 255, 255, 0.02)'
           : 'rgba(229, 229, 229, 0.08)',
+        color: 'rgba(255, 255, 255, 0.56)',
         borderRadius: '10px',
         alignItems: 'center',
+        justifyContent: 'center',
+        flexDirection: { xs: 'row', md: 'column' },
+        columnGap: '10px',
         padding: '20px 0',
         cursor: !disabled && 'pointer',
         '&:hover': {
@@ -30,8 +34,10 @@ const AddTaskButton = ({
       }}
       onClick={() => addTask()}
     >
-      <p>{icon}</p>
-      {disabled ? title + ' (Soon)' : title}
+      <span>{icon}</span>
+      <span style={{ margin: '0px 0px 5px 0px' }}>
+        {disabled ? title + ' (Soon)' : title}
+      </span>
     </Stack>
   );
 };

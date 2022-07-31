@@ -321,6 +321,8 @@ export function OverviewTab({ user }: Props) {
                   display: 'flex',
                   flexDirection: 'row',
                   columnGap: '8px',
+                  rowGap: '8px',
+                  flexWrap: 'wrap',
                 }}
               >
                 {user.languages?.length > 0 ? (

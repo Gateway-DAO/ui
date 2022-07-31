@@ -1,9 +1,17 @@
 import Link from 'next/link';
 import { useMemo } from 'react';
 
+import { colord } from 'colord';
 import type { PartialDeep } from 'type-fest';
 
-import { CardActionArea, CardHeader } from '@mui/material';
+import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
+import {
+  Avatar,
+  CardActionArea,
+  CardHeader,
+  IconButton,
+  Box,
+} from '@mui/material';
 import MUICard from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
@@ -36,27 +44,50 @@ export function GatesCard({
             {...badgeProps({ image, title })}
             sx={{ aspectRatio: '1/1' }}
           />
-
-          <CardHeader
+          <Box
             sx={{
-              pt: 2,
-              pb: 1,
-              '.MuiCardHeader-action': { alignSelf: 'unset' },
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              paddingRight: '25px',
+              paddingLeft: '16px',
             }}
-            avatar={
-              hasDao && (
-                <AvatarFile
-                  file={dao?.logo}
-                  fallback={dao?.logo_url}
-                  sx={{ width: 32, height: 32 }}
-                  aria-label={`${dao.name}'s DAO image`}
-                >
-                  {dao.name?.[0]}
-                </AvatarFile>
-              )
-            }
-            title={hasDao ? dao.name : title}
-          />
+          >
+            <CardHeader
+              sx={{
+                pt: 2,
+                pb: 1,
+                '.MuiCardHeader-action': { alignSelf: 'unset' },
+                px: 0,
+              }}
+              avatar={
+                hasDao && (
+                  <AvatarFile
+                    file={dao.logo}
+                    fallback={dao?.logo_url || '/logo.png'}
+                    sx={{ width: 32, height: 32 }}
+                    aria-label={`${dao.name}'s DAO image`}
+                  >
+                    {dao.name?.[0]}
+                  </AvatarFile>
+                )
+              }
+              title={hasDao ? dao.name : title}
+            />
+            <IconButton
+              aria-label="settings"
+              sx={{
+                color: (theme) =>
+                  colord(theme.palette.action.active).alpha(0.56).toRgbString(),
+                width: '14px',
+                height: '18px',
+                zIndex: 1,
+                paddingTop: '16px',
+              }}
+            >
+              <BookmarkBorderIcon sx={{ fontSize: '20px' }} />
+            </IconButton>
+          </Box>
           <CardContent sx={{ py: 1 }}>
             {hasDao && (
               <Typography gutterBottom variant="h5">
