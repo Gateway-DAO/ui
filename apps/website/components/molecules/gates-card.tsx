@@ -21,7 +21,7 @@ import { ROUTES } from '../../constants/routes';
 import { Gates } from '../../services/graphql/types.generated';
 import { badgeProps } from '../../utils/badge-props';
 import { AvatarFile } from '../atoms/avatar-file';
-import { CategoriesList } from './ categories-list';
+import { CategoriesList } from './categories-list';
 
 /* TODO: Arias and Labels */
 
