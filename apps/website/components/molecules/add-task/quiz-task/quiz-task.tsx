@@ -161,6 +161,11 @@ export function QuizTask({
           {...register(`tasks.data.${taskId}.description`)}
           error={!!errors.tasks?.data?.[taskId]?.description}
           helperText={errors.tasks?.data?.[taskId]?.description?.message}
+          sx={{
+            '& fieldset legend span': {
+              marginRight: '10px',
+            },
+          }}
         />
         <QuestionCreator
           questions={questions}
