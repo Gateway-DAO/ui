@@ -12,3 +12,34 @@ query search($query: String!) {
     hits
   }
 }
+
+query search_daos($ids: [uuid!]) {
+  daos(where: {id: {_in: $ids}}) {
+    id
+    name
+    logo {
+      ...file
+    }
+    logo_url
+    background {
+      ...file
+    }
+    followers_aggregate {
+      aggregate {
+        count
+      }
+    }
+    gates_aggregate {
+      aggregate {
+        count
+      }
+    }
+    background_url
+    description
+    categories
+    permissions {
+      user_id
+      permission
+    }
+  }
+}
