@@ -13,12 +13,16 @@ const AddTaskCard = ({ numberOfTasks, addTask }) => {
   return (
     <Stack
       sx={{
-        padding: '50px',
+        padding: { md: '50px', xs: '20px' },
         border: '2px solid rgba(229, 229, 229, 0.08)',
         borderRadius: '10px',
       }}
     >
-      <Stack direction={'row'} alignItems={'center'} marginBottom="40px">
+      <Stack
+        direction={'row'}
+        alignItems={'center'}
+        marginBottom={{ xs: '24px', md: '40px' }}
+      >
         <CircleWithNumber
           number={numberOfTasks + 1}
           sx={(theme) => ({
@@ -33,7 +37,8 @@ const AddTaskCard = ({ numberOfTasks, addTask }) => {
       </Stack>
       <Grid
         container
-        spacing={{ xs: 0.5, md: 1 }}
+        spacing={{ xs: 1, md: 1 }}
+        direction={{ xs: 'column', md: 'row' }}
         columns={{ xs: 4, sm: 8, md: 12 }}
       >
         <Grid item xs={2} sm={4} md={4}>
