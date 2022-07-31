@@ -26,12 +26,12 @@ export function CreateGateTemplate() {
   const router = useRouter();
   const { gqlAuthMethods } = useAuth();
 
-  const { mutate: uploadImage, isLoading: isUploading } = useMutation(
+  const { mutate: uploadImage } = useMutation(
     'uploadImage',
     gqlAuthMethods.upload_image
   );
 
-  const { mutate: createGateMutation, isLoading: isCreating } = useMutation(
+  const { mutate: createGateMutation } = useMutation(
     'createGate',
     gqlAuthMethods.create_gate
   );
@@ -56,6 +56,7 @@ export function CreateGateTemplate() {
 
           createGateMutation(
             {
+              // TODO: This is Gateway's ID (temporary)
               dao_id: router.query.dao,
               title: gateData.title,
               categories: gateData.categories,
@@ -98,8 +99,12 @@ export function CreateGateTemplate() {
         [theme.breakpoints.down('sm')]: { p: '0 20px' },
       })}
     >
-      <CreateNavbar isLoading={isCreating || isUploading} />
-      <Typography component="h1" variant="h4" sx={{ margin: '40px 0 100px 0' }}>
+      <CreateNavbar isLoading={false} />
+      <Typography
+        component="h1"
+        variant="h4"
+        sx={{ margin: '40px 0 40px 0', marginBottom: { md: '100px' } }}
+      >
         Create Gate
       </Typography>
 
@@ -124,6 +129,7 @@ export function CreateGateTemplate() {
         </Box>
         <Stack
           gap={7.5}
+          mt={2}
           sx={{
             maxWidth: { xs: '100%', md: '50%', lg: '40%' },
             width: '100%',
@@ -151,13 +157,13 @@ export function CreateGateTemplate() {
           <Divider sx={{ margin: '60px 0' }} />
           <Stack
             direction="row"
-            gap={2}
+            gap={{ lg: 5, xs: 2, md: 2 }}
             sx={{
               width: '100%',
               display: { xs: 'block', md: 'flex' },
             }}
           >
-            <Box>
+            <Box sx={{ minWidth: { lg: '20%' }, marginBottom: { xs: '40px' } }}>
               <Typography component="h2" variant="h5">
                 Tasks
               </Typography>
@@ -165,7 +171,13 @@ export function CreateGateTemplate() {
                 Lorem ipsum dolor sit amet
               </Typography>
             </Box>
-            <Stack direction="column" sx={{ margin: 'auto' }}>
+            <Stack
+              direction="column"
+              sx={{
+                margin: 'auto',
+                maxWidth: { xs: '100%', md: '100%', lg: '80%' },
+              }}
+            >
               <Stack direction="column" gap={2}>
                 <FormProvider {...methods}>
                   <TaskArea />
