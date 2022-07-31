@@ -15,13 +15,14 @@ import {
 import MUICard from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
-import Chip from '@mui/material/Chip';
-import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
 import { ROUTES } from '../../constants/routes';
 import { Gates } from '../../services/graphql/types.generated';
 import { badgeProps } from '../../utils/badge-props';
+import { AvatarFile } from '../atoms/avatar-file';
+import { CategoriesList } from './ categories-list';
+
 /* TODO: Arias and Labels */
 
 export function GatesCard({
@@ -61,13 +62,14 @@ export function GatesCard({
               }}
               avatar={
                 hasDao && (
-                  <Avatar
-                    src={dao?.logo_url}
+                  <AvatarFile
+                    file={dao.logo}
+                    fallback={dao?.logo_url || '/logo.png'}
                     sx={{ width: 32, height: 32 }}
                     aria-label={`${dao.name}'s DAO image`}
                   >
                     {dao.name?.[0]}
-                  </Avatar>
+                  </AvatarFile>
                 )
               }
               title={hasDao ? dao.name : title}
@@ -106,21 +108,7 @@ export function GatesCard({
               {description}
             </Typography>
           </CardContent>
-          <Stack
-            direction="row"
-            sx={{
-              flexWrap: 'wrap',
-              rowGap: '8px',
-              columnGap: '8px',
-            }}
-            px={2}
-            pt={1}
-            pb={2}
-          >
-            {categories.map((category) => (
-              <Chip key={category} label={category} size="small" />
-            ))}
-          </Stack>
+          <CategoriesList categories={categories} />
         </CardActionArea>
       </Link>
     </MUICard>

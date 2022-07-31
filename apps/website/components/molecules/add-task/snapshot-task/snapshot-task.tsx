@@ -1,9 +1,19 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
-import { useFormContext } from 'react-hook-form';
+import normalizeUrl from 'normalize-url';
+import { Controller, useFormContext } from 'react-hook-form';
+import { setErrorMap } from 'zod';
 
 import DeleteIcon from '@mui/icons-material/Delete';
-import { FormControl, Stack, TextField, Typography } from '@mui/material';
+import {
+  FormControl,
+  Stack,
+  TextField,
+  Typography,
+  Switch,
+  FormControlLabel,
+  FormLabel,
+} from '@mui/material';
 
 import { CircleWithNumber } from '../../../atoms/circle-with-number';
 import {
@@ -16,6 +26,10 @@ const SnapshotTask = ({ taskId, deleteTask }) => {
     register,
     setValue,
     formState: { errors },
+    watch,
+    control,
+    setError,
+    clearErrors,
   } = useFormContext<CreateGateTypes>();
 
   useEffect(() => {
@@ -81,34 +95,62 @@ const SnapshotTask = ({ taskId, deleteTask }) => {
           helperText={errors.tasks?.data[taskId]?.description?.message}
           sx={{ marginBottom: '60px' }}
         />
-        <TextField
-          required
-          label="Specific proposal number"
-          sx={{ maxWidth: { md: '50%', xs: '100%' } }}
-          {...register(`tasks.data.${taskId}.task_data.proposal_number`)}
-          error={
-            !!(errors.tasks?.data[taskId]?.task_data as SnapshotDataError)
-              ?.proposal_number
-          }
-          helperText={
-            (errors.tasks?.data[taskId]?.task_data as SnapshotDataError)
-              ?.proposal_number?.message
-          }
-        />
-        <TextField
-          required
-          label="Space ID"
-          sx={{ marginTop: '15px', maxWidth: { md: '50%', xs: '100%' } }}
-          {...register(`tasks.data.${taskId}.task_data.space_id`)}
-          error={
-            !!(errors.tasks?.data[taskId]?.task_data as SnapshotDataError)
-              ?.space_id
-          }
-          helperText={
-            (errors.tasks?.data[taskId]?.task_data as SnapshotDataError)
-              ?.space_id?.message
-          }
-        />
+        <Stack
+          direction={{ xs: 'column', md: 'row' }}
+          justifyContent="space-between"
+        >
+          <Stack direction="column" order={{ xs: 1, md: 0 }}>
+            <TextField
+              required
+              label="Specific Proposal Number"
+              sx={{ maxWidth: { md: '50%', xs: '100%' } }}
+              {...register(`tasks.data.${taskId}.task_data.proposal_number`)}
+              error={
+                !!(errors.tasks?.data[taskId]?.task_data as SnapshotDataError)
+                  ?.proposal_number
+              }
+              helperText={
+                (errors.tasks?.data[taskId]?.task_data as SnapshotDataError)
+                  ?.proposal_number?.message
+              }
+            />
+            {!(errors.tasks?.data[taskId]?.task_data as SnapshotDataError)
+              ?.proposal_number && (
+              <Typography
+                variant="caption"
+                marginTop={(theme) => theme.spacing(1)}
+              >
+                Pro tip: paste a Snapshot URL directly into the box to extract
+                the proposal number
+              </Typography>
+            )}
+          </Stack>
+          <Stack
+            direction="row"
+            alignItems="center"
+            sx={{
+              marginBottom: { xs: 2, md: 0 },
+            }}
+          >
+            <Typography variant="body2">Created Proposal</Typography>
+            <Controller
+              control={control}
+              defaultValue="proposal"
+              name={`tasks.data.${taskId}.task_data.type`}
+              rules={{ required: true }}
+              render={({ field: { onChange, value } }) => (
+                <Switch
+                  value={value == 'vote'}
+                  onChange={(e) => {
+                    const type = e.target.checked ? 'vote' : 'proposal';
+                    setValue(`tasks.data.${taskId}.task_data.type`, type);
+                  }}
+                />
+              )}
+            />
+            <Typography variant="body2">Voted for Proposal</Typography>
+          </Stack>
+        </Stack>
       </FormControl>
     </Stack>
   );
