@@ -25,7 +25,7 @@ const SnapshotTask = ({ taskId, deleteTask }) => {
   return (
     <Stack
       sx={{
-        padding: '50px',
+        padding: { md: '50px', xs: '16px' },
         border: '2px solid rgba(229, 229, 229, 0.08)',
         borderRadius: '10px',
       }}
@@ -47,7 +47,10 @@ const SnapshotTask = ({ taskId, deleteTask }) => {
           <Typography variant="subtitle2">Snapshot Governance</Typography>
           <TextField
             variant="standard"
-            sx={{ minWidth: '600px' }}
+            sx={{
+              minWidth: { md: '600px', xs: '100%' },
+              maxWidth: { md: '100%', xs: '100%' },
+            }}
             id="task-title"
             {...register(`tasks.data.${taskId}.title`)}
             error={!!errors.tasks?.data[taskId]?.title}
@@ -56,7 +59,13 @@ const SnapshotTask = ({ taskId, deleteTask }) => {
         </Stack>
         <DeleteIcon
           fontSize="large"
-          sx={{ position: 'absolute', right: '0', cursor: 'pointer' }}
+          sx={{
+            position: 'absolute',
+            right: '0',
+            cursor: 'pointer',
+            color: 'rgba(255, 255, 255, 0.56)',
+            fontSize: { xs: '26px' },
+          }}
           onClick={() => deleteTask(taskId)}
         />
       </Stack>
@@ -75,7 +84,7 @@ const SnapshotTask = ({ taskId, deleteTask }) => {
         <TextField
           required
           label="Specific proposal number"
-          sx={{ maxWidth: '50%' }}
+          sx={{ maxWidth: { md: '50%', xs: '100%' } }}
           {...register(`tasks.data.${taskId}.task_data.proposal_number`)}
           error={
             !!(errors.tasks?.data[taskId]?.task_data as SnapshotDataError)
@@ -89,7 +98,7 @@ const SnapshotTask = ({ taskId, deleteTask }) => {
         <TextField
           required
           label="Space ID"
-          sx={{ marginTop: '15px', maxWidth: '50%' }}
+          sx={{ marginTop: '15px', maxWidth: { md: '50%', xs: '100%' } }}
           {...register(`tasks.data.${taskId}.task_data.space_id`)}
           error={
             !!(errors.tasks?.data[taskId]?.task_data as SnapshotDataError)
