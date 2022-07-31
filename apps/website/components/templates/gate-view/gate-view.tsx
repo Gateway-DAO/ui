@@ -1,8 +1,10 @@
 import useTranslation from 'next-translate/useTranslation';
+import Link from 'next/link';
 import { useState, useEffect } from 'react';
 
 import { PartialDeep } from 'type-fest';
 
+import ShareIcon from '@mui/icons-material/IosShare';
 import ViewInArIcon from '@mui/icons-material/ViewInAr';
 import {
   Avatar,
@@ -14,10 +16,13 @@ import {
   Box,
   Divider,
   Button,
+  Snackbar,
+  IconButton,
 } from '@mui/material';
 
 import { useAuth } from '../../../../website/providers/auth';
 import { useMint } from '../../../hooks/use-mint';
+import { useSnackbar } from '../../../hooks/use-snackbar';
 import { Gates } from '../../../services/graphql/types.generated';
 import { AvatarFile } from '../../atoms/avatar-file';
 import CircularProgressWithLabel from '../../atoms/circular-progress-label';
@@ -31,7 +36,7 @@ type Props = {
 export function GateViewTemplate({ gate }: Props) {
   const { t } = useTranslation();
   const taskIds = gate.tasks.map((task) => task.id);
-
+  const snackbar = useSnackbar();
   const { me } = useAuth();
   const { mint } = useMint();
 
@@ -61,55 +66,93 @@ export function GateViewTemplate({ gate }: Props) {
     }
   }, [taskIds, me?.task_progresses, completedTasksCount]);
 
+  const onShare = () => {
+    const data = {
+      title: `${gate.title} @ Gateway`,
+      url: window.location.href,
+    };
+    try {
+      if (navigator?.share && navigator.canShare(data)) {
+        navigator.share(data);
+      } else if (navigator?.clipboard && navigator.clipboard) {
+        snackbar.onOpen({ message: 'Copied link!' });
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
   return (
     <Grid container height="100%" sx={{ flexWrap: 'nowrap' }}>
       <GateCompletedModal open={open} handleClose={handleClose} gate={gate} />
       <Grid item xs={12} md={5} p={(theme) => theme.spacing(7)}>
         {/* DAO info */}
-        <Stack
-          direction="row"
-          alignItems="center"
-          marginBottom={(theme) => theme.spacing(2)}
-          sx={(theme) => ({
-            minWidth: '408px',
-            [theme.breakpoints.down('sm')]: {
-              width: '100%',
-            },
-          })}
-        >
-          <AvatarFile
-            alt={gate.dao.name}
-            file={gate.dao.logo}
-            fallback={gate.dao.logo_url}
-            sx={{
-              height: (theme) => theme.spacing(3),
-              width: (theme) => theme.spacing(3),
-              marginRight: (theme) => theme.spacing(1),
-            }}
-          />
-          <Typography
-            variant="body2"
-            color={(theme) => theme.palette.text.secondary}
+        <Link passHref href={`/dao/${gate.dao.id}`}>
+          <Stack
+            direction="row"
+            alignItems="center"
+            marginBottom={(theme) => theme.spacing(2)}
+            sx={(theme) => ({
+              minWidth: '408px',
+              [theme.breakpoints.down('sm')]: {
+                width: '100%',
+              },
+            })}
           >
-            {gate.dao.name}
-          </Typography>
-        </Stack>
+            <AvatarFile
+              alt={gate.dao.name}
+              file={gate.dao.logo}
+              fallback={gate.dao.logo_url}
+              sx={{
+                height: (theme) => theme.spacing(3),
+                width: (theme) => theme.spacing(3),
+                marginRight: (theme) => theme.spacing(1),
+              }}
+            />
+            <Typography
+              variant="body2"
+              color={(theme) => theme.palette.text.secondary}
+            >
+              {gate.dao.name}
+            </Typography>
+          </Stack>
+        </Link>
 
         <Typography variant="h4" marginBottom={(theme) => theme.spacing(2)}>
           {gate.title}
         </Typography>
 
         <Box marginBottom={(theme) => theme.spacing(4)}>
-          {gate.categories.map((category, idx) => (
-            <Chip
-              key={'category-' + (idx + 1)}
-              label={category}
-              sx={{
-                marginRight: (theme) => theme.spacing(1),
-                marginBottom: (theme) => theme.spacing(1),
-              }}
-            />
-          ))}
+          <Stack
+            direction={'row'}
+            sx={{ alignItems: 'center', justifyContent: 'space-between' }}
+          >
+            <Box>
+              {gate.categories.map((category, idx) => (
+                <Chip
+                  key={'category-' + (idx + 1)}
+                  label={category}
+                  sx={{
+                    marginRight: (theme) => theme.spacing(1),
+                    marginBottom: (theme) => theme.spacing(1),
+                  }}
+                />
+              ))}
+            </Box>
+            <Stack>
+              <IconButton
+                sx={{
+                  p: 0,
+                }}
+                onClick={onShare}
+                key="share"
+              >
+                <Avatar>
+                  <ShareIcon sx={{ mt: -0.25 }} />
+                </Avatar>
+              </IconButton>
+            </Stack>
+          </Stack>
         </Box>
 
         <Typography
@@ -161,11 +204,17 @@ export function GateViewTemplate({ gate }: Props) {
                 >
                   {gate.holders.map((holder) => {
                     return (
-                      <Avatar
+                      <Link
                         key={holder.id}
-                        alt={holder.username}
-                        src={holder.pfp}
-                      />
+                        passHref
+                        href={`/profile/${holder.id}`}
+                      >
+                        <Avatar
+                          component="a"
+                          alt={holder.username}
+                          src={holder.pfp}
+                        />
+                      </Link>
                     );
                   })}
                 </AvatarGroup>
@@ -203,11 +252,15 @@ export function GateViewTemplate({ gate }: Props) {
                 </Typography>
               </Grid>
               <Grid item xs={8}>
-                <AvatarFile
-                  alt={gate.creator.username}
-                  file={gate.creator.picture}
-                  fallback={'/logo.png'}
-                />
+                <Link passHref href={`/profile/${gate.creator.username}`}>
+                  <Box component="a" sx={{ display: 'inline-block' }}>
+                    <AvatarFile
+                      alt={gate.creator.username}
+                      file={gate.creator.picture}
+                      fallback={'/logo.png'}
+                    />
+                  </Box>
+                </Link>
               </Grid>
             </>
           )}
@@ -245,6 +298,15 @@ export function GateViewTemplate({ gate }: Props) {
           ))}
         </TaskGroup>
       </Grid>
+      <Snackbar
+        anchorOrigin={{
+          vertical: snackbar.vertical,
+          horizontal: snackbar.horizontal,
+        }}
+        open={snackbar.open}
+        onClose={snackbar.handleClose}
+        message={snackbar.message}
+      />
     </Grid>
   );
 }

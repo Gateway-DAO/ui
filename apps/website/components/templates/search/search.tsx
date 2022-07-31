@@ -16,6 +16,7 @@ import {
 } from '@mui/material';
 
 import { gqlAnonMethods } from '../../../services/api';
+import { SearchQuery } from '../../../services/graphql/types.generated';
 import { a11yTabProps, TabPanel, useTab } from '../../atoms/tabs';
 import { Navbar } from '../../organisms/navbar';
 import { DaosTab } from './tabs/daos-tab';
@@ -30,12 +31,22 @@ export function SearchTemplate({ query }: TemplateProps) {
   const { t } = useTranslation('search');
   const { activeTab, handleTabChange } = useTab();
 
-  const { data, isLoading } = useQuery(
+  const { data, isLoading } = useQuery<SearchQuery>(
     `search-${query}`,
-    async () =>
-      await gqlAnonMethods.search({
+    async () => {
+      const { daos: daos_search, ...result } = await gqlAnonMethods.search({
         query,
-      })
+      });
+      const { daos } = await gqlAnonMethods.search_daos({
+        ids: daos_search.hits.map((dao) => dao.id),
+      });
+      return {
+        ...result,
+        daos: {
+          hits: daos,
+        },
+      };
+    }
   );
 
   const count: number = data
