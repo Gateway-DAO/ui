@@ -1,6 +1,8 @@
+import normalizeUrl from 'normalize-url';
 import { PartialDeep } from 'type-fest';
 import { object, string, SchemaOf, array } from 'yup';
 
+import { URL } from '../../../constants/forms';
 import { generateImageUrl } from '../../../hooks/use-file';
 import { Daos, Dao_Socials } from '../../../services/graphql/types.generated';
 
@@ -39,11 +41,9 @@ export const schema: SchemaOf<NewDAOSchema> = object({
     object({
       network: string().defined(),
       url: string()
-        .matches(
-          /((https|http):\/\/)(www.)?[a-z0-9]+(\.[a-z]{2,}){1,3}(#?\/?[a-zA-Z0-9#]+)*\/?(\?[a-zA-Z0-9-_]+=[a-zA-Z0-9-%]+&?)?$/,
-          `Url is not valid, check if you added "https://"`
-        )
-        .defined(),
+        .matches(URL, 'The URL should be valid')
+        .defined()
+        .transform((val) => normalizeUrl(val, { forceHttps: true })),
     })
   ),
 });
