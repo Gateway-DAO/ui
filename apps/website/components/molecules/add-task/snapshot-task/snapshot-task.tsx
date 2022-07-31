@@ -36,8 +36,6 @@ const SnapshotTask = ({ taskId, deleteTask }) => {
     setValue(`tasks.data.${taskId}.task_type`, 'snapshot');
   }, [taskId, setValue]);
 
-  console.log(watch(`tasks.data.${taskId}.task_data`));
-
   return (
     <Stack
       sx={{
