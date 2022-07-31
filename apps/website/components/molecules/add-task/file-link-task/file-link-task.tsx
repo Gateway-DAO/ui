@@ -37,7 +37,7 @@ const FileLinkTask = ({ taskId, deleteTask }) => {
   return (
     <Stack
       sx={{
-        padding: '50px',
+        padding: { md: '50px', xs: '16px' },
         border: '2px solid rgba(229, 229, 229, 0.08)',
         borderRadius: '10px',
       }}
@@ -59,7 +59,10 @@ const FileLinkTask = ({ taskId, deleteTask }) => {
           <Typography variant="subtitle2">File &#38; Text</Typography>
           <TextField
             variant="standard"
-            sx={{ minWidth: '600px' }}
+            sx={{
+              minWidth: { md: '600px', xs: '110%' },
+              maxWidth: { xs: '100%', md: '110%' },
+            }}
             id="file-title"
             {...register(`tasks.data.${taskId}.title`)}
             error={!!errors.tasks?.data?.[taskId]?.title}
@@ -68,7 +71,13 @@ const FileLinkTask = ({ taskId, deleteTask }) => {
         </Stack>
         <DeleteIcon
           fontSize="large"
-          sx={{ position: 'absolute', right: '0', cursor: 'pointer' }}
+          sx={{
+            position: 'absolute',
+            right: '0',
+            cursor: 'pointer',
+            color: 'rgba(255, 255, 255, 0.56)',
+            fontSize: { xs: '26px' },
+          }}
           onClick={() => deleteTask(taskId)}
         />
       </Stack>
@@ -82,12 +91,23 @@ const FileLinkTask = ({ taskId, deleteTask }) => {
           {...register(`tasks.data.${taskId}.description`)}
           error={!!errors.tasks?.data?.[taskId]?.description}
           helperText={errors.tasks?.data?.[taskId]?.description?.message}
-          sx={{ marginBottom: '60px' }}
+          sx={{
+            marginBottom: '60px',
+            '& fieldset legend span': {
+              marginRight: '10px',
+            },
+          }}
         />
         {files.map((file, idx: number) => {
           return (
             <Stack gap={2} key={file.id}>
-              <Stack>
+              <Stack
+                sx={{
+                  justifyContent: 'space-between',
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                }}
+              >
                 <TextField
                   required
                   label="File Title"
@@ -106,11 +126,16 @@ const FileLinkTask = ({ taskId, deleteTask }) => {
                         ?.task_data as FileTaskDataError
                     )?.files?.[idx]?.title?.message
                   }
-                  sx={{ maxWidth: '700px' }}
+                  sx={{ minWidth: { md: '60%', xs: '80%' } }}
                 />
                 <Clear
                   fontSize="large"
-                  sx={{ position: 'absolute', right: '0', cursor: 'pointer' }}
+                  sx={{
+                    cursor: 'pointer',
+                    color: 'rgba(255, 255, 255, 0.3)',
+                    fontSize: '26px',
+                    margin: '0px 10px',
+                  }}
                   onClick={() => remove(idx)}
                 />
               </Stack>
@@ -131,6 +156,11 @@ const FileLinkTask = ({ taskId, deleteTask }) => {
                   (errors.tasks?.data?.[taskId]?.task_data as FileTaskDataError)
                     ?.files?.[idx]?.description?.message
                 }
+                sx={{
+                  '& fieldset legend span': {
+                    marginRight: '10px',
+                  },
+                }}
               />
               <TextField
                 required
