@@ -19,7 +19,7 @@ import { useAuth } from '../../providers/auth';
 import { Daos } from '../../services/graphql/types.generated';
 import { AvatarFile } from '../atoms/avatar-file';
 import { FollowButtonDAO } from '../atoms/follow-button-dao';
-import { CategoriesList } from './ categories-list';
+import { CategoriesList } from './categories-list';
 
 /* TODO: Arias and Labels */
 
