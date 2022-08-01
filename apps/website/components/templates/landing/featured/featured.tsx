@@ -134,7 +134,7 @@ export const Featured = forwardRef<
               sx={(theme) => ({
                 position: 'absolute',
                 top: '50%',
-                right: '0',
+                right: { xs: 0, lg: '-150px' },
                 maxWidth: '100%',
                 [theme.breakpoints.down('sm')]: {
                   position: 'relative',
