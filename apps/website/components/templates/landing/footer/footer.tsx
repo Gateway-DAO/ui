@@ -1,10 +1,12 @@
 import Link from 'next/link';
 import React from 'react';
 
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
 import { FaMedium } from 'react-icons/fa';
+import { useMutation } from 'react-query';
 
 import { GatewayIcon, DiscordIcon } from '@gateway/assets';
-import { TOKENS } from '@gateway/theme';
 
 import { GitHub, LinkedIn, Twitter } from '@mui/icons-material';
 import {
@@ -17,16 +19,44 @@ import {
   Typography,
 } from '@mui/material';
 
-import { DEFAULT_MAX_WIDTH, DEFAULT_PADDINGX } from '../styles';
+import { gqlAnonMethods } from '../../../../services/api';
 import { IconContainer } from './styles';
-import { FooterProps } from './types';
+import { FooterProps, subscribeToNewsletterSchema } from './types';
 
 export function Footer({
   copyright,
   subscribe,
   receiveNews,
   subscribeButton,
+  successMessage,
 }: FooterProps): JSX.Element {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitSuccessful },
+  } = useForm({
+    resolver: zodResolver(subscribeToNewsletterSchema),
+    defaultValues: {
+      email: '',
+    },
+  });
+  const { mutate: subscribeToNewsletter } = useMutation(
+    'subscribeToNewsletter',
+    gqlAnonMethods.subscribe_to_newsletter
+  );
+
+  const onSubmit = async ({ email }, e) => {
+    try {
+      const response = await subscribeToNewsletter({ email });
+      console.log(response);
+      return true;
+    } catch (error) {
+      console.log(error);
+      return error;
+    }
+  };
+  const onError = (errors, e) => console.log(errors, e);
+
   return (
     <Box
       component="footer"
@@ -145,7 +175,12 @@ export function Footer({
               </List>
             </Box>
           </Stack>
-          <Stack direction={'column'} sx={{ maxWidth: '294px' }}>
+          <Stack
+            direction={'column'}
+            sx={{ maxWidth: '294px' }}
+            component="form"
+            onSubmit={handleSubmit(onSubmit, onError)}
+          >
             <Typography sx={{ mb: '16px' }}>{subscribe}</Typography>
             <Typography
               sx={(theme) => ({
@@ -155,25 +190,42 @@ export function Footer({
             >
               {receiveNews}
             </Typography>
-            <TextField
-              sx={{ mb: '16px' }}
-              variant="outlined"
-              type="email"
-              placeholder="E-mail"
-            />
-            <Link passHref href={'#'}>
-              <Button
-                variant="outlined"
-                sx={() => ({
-                  height: '42px',
-                  display: 'flex',
-                  width: '122px',
-                  borderRadius: '20px',
+            {!isSubmitSuccessful && (
+              <>
+                <TextField
+                  sx={{ mb: '16px' }}
+                  variant="outlined"
+                  type="email"
+                  name="email"
+                  error={!!errors?.email}
+                  helperText={errors?.email?.message}
+                  {...register('email', { required: true })}
+                  placeholder="E-mail"
+                />
+                <Button
+                  variant="outlined"
+                  type="submit"
+                  sx={() => ({
+                    height: '42px',
+                    display: 'flex',
+                    width: '122px',
+                    borderRadius: '20px',
+                  })}
+                >
+                  {subscribeButton}
+                </Button>
+              </>
+            )}
+            {isSubmitSuccessful && (
+              <Typography
+                sx={(theme) => ({
+                  mb: '16px',
+                  color: theme.palette.text.primary,
                 })}
               >
-                {subscribeButton}
-              </Button>
-            </Link>
+                {successMessage}
+              </Typography>
+            )}
           </Stack>
         </Box>
 
