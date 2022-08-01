@@ -1,6 +1,8 @@
+import normalizeUrl from 'normalize-url';
 import { PartialDeep } from 'type-fest';
 import { object, string, SchemaOf, array, mixed, bool } from 'yup';
 
+import { URL } from '../../../../constants/forms';
 import { generateImageUrl } from '../../../../hooks/use-file';
 import {
   Experiences,
@@ -69,11 +71,9 @@ export const schema: SchemaOf<EditUserSchema> = object({
       object({
         network: string().defined(),
         url: string()
-          .matches(
-            /((https|http):\/\/)(www.)?[a-z0-9]+(\.[a-z]{2,}){1,3}(#?\/?[a-zA-Z0-9#]+)*\/?(\?[a-zA-Z0-9-_]+=[a-zA-Z0-9-%]+&?)?$/,
-            'The URL should be valid'
-          )
-          .defined(),
+          .matches(URL, 'The URL should be valid')
+          .defined()
+          .transform((val) => normalizeUrl(val, { forceHttps: true })),
       })
     )
     .nullable(),
