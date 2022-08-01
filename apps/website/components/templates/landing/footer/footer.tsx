@@ -11,7 +11,6 @@ import { GatewayIcon, DiscordIcon } from '@gateway/assets';
 import { GitHub, LinkedIn, Twitter } from '@mui/icons-material';
 import {
   Box,
-  Button,
   List,
   ListItem,
   Stack,
@@ -20,6 +19,7 @@ import {
 } from '@mui/material';
 
 import { gqlAnonMethods } from '../../../../services/api';
+import { LoadingButton } from '../../../atoms/loading-button';
 import { IconContainer } from './styles';
 import { FooterProps, subscribeToNewsletterSchema } from './types';
 
@@ -40,22 +40,29 @@ export function Footer({
       email: '',
     },
   });
-  const { mutate: subscribeToNewsletter } = useMutation(
+  const {
+    mutateAsync: subscribeToNewsletter,
+    isSuccess,
+    isLoading,
+  } = useMutation(
     'subscribeToNewsletter',
     gqlAnonMethods.subscribe_to_newsletter
   );
 
-  const onSubmit = async ({ email }, e) => {
+  const onSubmit = async ({ email }, event) => {
+    event.preventDefault();
     try {
-      const response = await subscribeToNewsletter({ email });
-      console.log(response);
-      return true;
+      const response = await subscribeToNewsletter({ email_address: email });
+      if (response.subscribe_to_newsletter.email) {
+        return true;
+      }
+      return false;
     } catch (error) {
       console.log(error);
       return error;
     }
   };
-  const onError = (errors, e) => console.log(errors, e);
+  const onError = (errors, event) => console.error(errors, event);
 
   return (
     <Box
@@ -202,8 +209,9 @@ export function Footer({
                   {...register('email', { required: true })}
                   placeholder="E-mail"
                 />
-                <Button
+                <LoadingButton
                   variant="outlined"
+                  isLoading={isLoading}
                   type="submit"
                   sx={() => ({
                     height: '42px',
@@ -213,10 +221,10 @@ export function Footer({
                   })}
                 >
                   {subscribeButton}
-                </Button>
+                </LoadingButton>
               </>
             )}
-            {isSubmitSuccessful && (
+            {isSubmitSuccessful && isSuccess && (
               <Typography
                 sx={(theme) => ({
                   mb: '16px',

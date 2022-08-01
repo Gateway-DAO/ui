@@ -1,9 +1,5 @@
-mutation subscribe_to_newsletter($email: email) {
-  subscribe_to_newsletter(args: { email: $email }) {
-    created_at
+mutation subscribe_to_newsletter($email_address: email) {
+  subscribe_to_newsletter(args: { email_address: $email_address }) {
     email
-    id
-    subscribed
-    updated_at
   }
 }
