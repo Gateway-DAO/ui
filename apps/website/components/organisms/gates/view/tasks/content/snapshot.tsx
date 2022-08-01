@@ -10,7 +10,7 @@ const SnapshotContent = ({
   readOnly,
   isLoading,
 }) => {
-  const { proposal_number, space_id } = data;
+  const { proposal_number } = data;
   const formattedDate = new Date(updatedAt.toLocaleString()).toLocaleString();
 
   return (
@@ -19,10 +19,6 @@ const SnapshotContent = ({
         {proposal_number}
       </Typography>
       <Typography variant="caption">Specific Proposal Number</Typography>
-      <Typography variant="subtitle1" fontWeight={'bold'} marginTop={2}>
-        {space_id}
-      </Typography>
-      <Typography variant="caption">Space ID</Typography>
       {!readOnly && (
         <LoadingButton
           variant="contained"

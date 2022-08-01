@@ -1,14 +1,12 @@
-import Link from 'next/link';
 import { PropsWithChildren } from 'react';
 
 import { PartialDeep } from 'type-fest';
 
-import ShareIcon from '@mui/icons-material/IosShare';
-import { Avatar, Stack, IconButton, Snackbar } from '@mui/material';
+import { Avatar, Stack } from '@mui/material';
 
 import { Network } from '../../../constants/dao';
-import { useSnackbar } from '../../../hooks/use-snackbar';
 import { Daos } from '../../../services/graphql/types.generated';
+import { ShareButton } from '../../atoms/share-button';
 import { SocialIcon } from '../../atoms/social-icon';
 
 type Props = {
@@ -16,22 +14,6 @@ type Props = {
 };
 
 export function Socials({ dao, children }: PropsWithChildren<Props>) {
-  const snackbar = useSnackbar();
-  const onShare = () => {
-    const data = {
-      title: `${dao.name} @ Gateway`,
-      url: window.location.href,
-    };
-    try {
-      if (navigator?.share && navigator.canShare(data)) {
-        navigator.share(data);
-      } else if (navigator?.clipboard && navigator.clipboard) {
-        snackbar.onOpen({ message: 'Copied link!' });
-      }
-    } catch (e) {
-      console.error(e);
-    }
-  };
   return (
     <>
       <Stack
@@ -42,21 +24,7 @@ export function Socials({ dao, children }: PropsWithChildren<Props>) {
         }}
       >
         {children}
-        <IconButton
-          sx={{
-            p: 0,
-          }}
-          onClick={onShare}
-          key="share"
-        >
-          <Avatar>
-            <ShareIcon
-              sx={{
-                mt: -0.25,
-              }}
-            />
-          </Avatar>
-        </IconButton>
+        <ShareButton title={`${dao.name} @ Gateway`} />
         {dao.socials?.map((social) => (
           <Avatar
             component="a"
@@ -70,15 +38,6 @@ export function Socials({ dao, children }: PropsWithChildren<Props>) {
           </Avatar>
         ))}
       </Stack>
-      <Snackbar
-        anchorOrigin={{
-          vertical: snackbar.vertical,
-          horizontal: snackbar.horizontal,
-        }}
-        open={snackbar.open}
-        onClose={snackbar.handleClose}
-        message={snackbar.message}
-      />
     </>
   );
 }

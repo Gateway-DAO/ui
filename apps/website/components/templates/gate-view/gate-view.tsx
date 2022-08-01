@@ -1,4 +1,5 @@
 import useTranslation from 'next-translate/useTranslation';
+import Link from 'next/link';
 import { useState, useEffect } from 'react';
 
 import { PartialDeep } from 'type-fest';
@@ -19,7 +20,9 @@ import {
 import { useAuth } from '../../../../website/providers/auth';
 import { useMint } from '../../../hooks/use-mint';
 import { Gates } from '../../../services/graphql/types.generated';
+import { AvatarFile } from '../../atoms/avatar-file';
 import CircularProgressWithLabel from '../../atoms/circular-progress-label';
+import { ShareButton } from '../../atoms/share-button';
 import GateCompletedModal from '../../organisms/gates/view/modals/gate-completed';
 import { Task, TaskGroup } from '../../organisms/tasks';
 
@@ -30,7 +33,6 @@ type Props = {
 export function GateViewTemplate({ gate }: Props) {
   const { t } = useTranslation();
   const taskIds = gate.tasks.map((task) => task.id);
-
   const { me } = useAuth();
   const { mint } = useMint();
 
@@ -47,7 +49,7 @@ export function GateViewTemplate({ gate }: Props) {
 
   useEffect(() => {
     const completedTaskIds =
-      me?.task_progresses?.map((task) => task.task_id) || [];
+      me?.task_progresses.map((task) => task.task_id) || [];
     const allCompleted = taskIds.every((taskId) => {
       return completedTaskIds.includes(taskId);
     });
@@ -61,49 +63,73 @@ export function GateViewTemplate({ gate }: Props) {
   }, [taskIds, me?.task_progresses, completedTasksCount]);
 
   return (
-    <Grid container height="100%">
+    <Grid container height="100%" sx={{ flexWrap: 'nowrap' }}>
       <GateCompletedModal open={open} handleClose={handleClose} gate={gate} />
       <Grid item xs={12} md={5} p={(theme) => theme.spacing(7)}>
         {/* DAO info */}
-        <Stack
-          direction="row"
-          alignItems="center"
-          marginBottom={(theme) => theme.spacing(2)}
-        >
-          <Avatar
-            alt={gate.dao.name}
-            src={gate.dao.logo_url}
-            sx={{
-              height: (theme) => theme.spacing(3),
-              width: (theme) => theme.spacing(3),
-              marginRight: (theme) => theme.spacing(1),
-            }}
-          />
-          <Typography
-            variant="body2"
-            color={(theme) => theme.palette.text.secondary}
+        <Link passHref href={`/dao/${gate.dao.id}`}>
+          <Stack
+            direction="row"
+            alignItems="center"
+            marginBottom={(theme) => theme.spacing(2)}
+            sx={(theme) => ({
+              minWidth: '408px',
+              [theme.breakpoints.down('sm')]: {
+                width: '100%',
+              },
+            })}
           >
-            {gate.dao.name}
-          </Typography>
-        </Stack>
+            <AvatarFile
+              alt={gate.dao.name}
+              file={gate.dao.logo}
+              fallback={gate.dao.logo_url}
+              sx={{
+                height: (theme) => theme.spacing(3),
+                width: (theme) => theme.spacing(3),
+                marginRight: (theme) => theme.spacing(1),
+              }}
+            />
+            <Typography
+              variant="body2"
+              color={(theme) => theme.palette.text.secondary}
+            >
+              {gate.dao.name}
+            </Typography>
+          </Stack>
+        </Link>
 
         <Typography variant="h4" marginBottom={(theme) => theme.spacing(2)}>
           {gate.title}
         </Typography>
 
         <Box marginBottom={(theme) => theme.spacing(4)}>
-          {gate.categories.map((category, idx) => (
-            <Chip
-              key={'category-' + (idx + 1)}
-              label={category}
-              sx={{
-                marginRight: (theme) => theme.spacing(1),
-              }}
-            />
-          ))}
+          <Stack
+            direction={'row'}
+            sx={{ alignItems: 'center', justifyContent: 'space-between' }}
+          >
+            <Box>
+              {gate.categories.map((category, idx) => (
+                <Chip
+                  key={'category-' + (idx + 1)}
+                  label={category}
+                  sx={{
+                    marginRight: (theme) => theme.spacing(1),
+                    marginBottom: (theme) => theme.spacing(1),
+                  }}
+                />
+              ))}
+            </Box>
+            <Stack>
+              <ShareButton title={`${gate.title} @ Gateway`} />
+            </Stack>
+          </Stack>
         </Box>
 
-        <Typography variant="body1" marginBottom={(theme) => theme.spacing(4)}>
+        <Typography
+          variant="body1"
+          marginBottom={(theme) => theme.spacing(4)}
+          sx={{ wordBreak: 'break-word' }}
+        >
           {gate.description}
         </Typography>
         {gateCompleted && (
@@ -148,11 +174,17 @@ export function GateViewTemplate({ gate }: Props) {
                 >
                   {gate.holders.map((holder) => {
                     return (
-                      <Avatar
+                      <Link
                         key={holder.id}
-                        alt={holder.username}
-                        src={holder.pfp}
-                      />
+                        passHref
+                        href={`/profile/${holder.username}`}
+                      >
+                        <Avatar
+                          component="a"
+                          alt={holder.username}
+                          src={holder.pfp}
+                        />
+                      </Link>
                     );
                   })}
                 </AvatarGroup>
@@ -174,6 +206,7 @@ export function GateViewTemplate({ gate }: Props) {
                 label={skill}
                 sx={{
                   marginRight: (theme) => theme.spacing(1),
+                  marginBottom: (theme) => theme.spacing(1),
                 }}
               />
             ))}
@@ -189,7 +222,15 @@ export function GateViewTemplate({ gate }: Props) {
                 </Typography>
               </Grid>
               <Grid item xs={8}>
-                <Avatar alt={gate.creator?.username} src={gate.creator?.pfp} />
+                <Link passHref href={`/profile/${gate.creator.username}`}>
+                  <Box component="a" sx={{ display: 'inline-block' }}>
+                    <AvatarFile
+                      alt={gate.creator.username}
+                      file={gate.creator.picture}
+                      fallback={'/logo.png'}
+                    />
+                  </Box>
+                </Link>
               </Grid>
             </>
           )}

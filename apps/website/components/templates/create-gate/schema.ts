@@ -109,13 +109,13 @@ export type Option = {
 // Snapshot
 export type SnapshotData = {
   proposal_number?: string;
-  space_id?: string;
+  type?: string;
 };
 
 export type SnapshotDataError = {
   id?: FieldError;
   proposal_number?: FieldError;
-  space_id?: FieldError;
+  type?: FieldError;
 };
 
 // Hold Token
@@ -170,12 +170,32 @@ const fileTaskDataSchema = z.object({
 });
 
 const snapshotTaskDataSchema = z.object({
-  proposal_number: z.string().min(2),
-  space_id: z.string().min(2),
+  proposal_number: z
+    .string()
+    .url('Invalid Snapshot URL or proposal number')
+    .refine((val) => val.includes('snapshot.org'), {
+      message: 'This is not a Snapshot URL',
+    })
+    .transform((val) => val.split('/').pop())
+    .or(
+      z
+        .string()
+        .min(2)
+        .refine(
+          (val) =>
+            val.startsWith('Qm') ||
+            val.startsWith('0x') ||
+            val.startsWith('baf'),
+          {
+            message: 'This is not a valid Snapshot proposal',
+          }
+        )
+    ),
+  type: z.enum(['proposal', 'vote']),
 });
 
 const holdTokenTaskDataSchema = z.object({
-  chain: z.string().min(2),
+  chain: z.number(),
   token_address: z.string().min(2),
   quantity: z.string().min(1),
 });

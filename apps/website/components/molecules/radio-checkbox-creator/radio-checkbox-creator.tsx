@@ -31,7 +31,9 @@ export function RadioCheckBoxCreator({
     name: `tasks.data.${taskId}.task_data.questions.${questionIndex}.options`,
   });
 
-  const onRemoveOption = (index: number) => remove(index);
+  const onRemoveOption = (index: number) => {
+    remove(index);
+  };
 
   return (
     <Stack alignItems={'flex-start'} sx={{ width: '100%' }}>

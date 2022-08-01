@@ -3,10 +3,10 @@ import { useRouter } from 'next/router';
 
 import { TOKENS } from '@gateway/theme';
 
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import SearchIcon from '@mui/icons-material/Search';
-import { Stack } from '@mui/material';
+import { Avatar, IconButton, Stack } from '@mui/material';
 import AppBar, { AppBarProps } from '@mui/material/AppBar';
-import Autocomplete from '@mui/material/Autocomplete';
 import Box from '@mui/material/Box';
 import InputAdornment from '@mui/material/InputAdornment';
 import TextField from '@mui/material/TextField';
@@ -21,9 +21,11 @@ const ClientNav = dynamic(
   }
 );
 
-export type NavbarProps = AppBarProps;
+export interface NavbarProps extends AppBarProps {
+  isInternalPage?: boolean;
+}
 
-export function Navbar(props: NavbarProps) {
+export function Navbar({ isInternalPage, ...props }: NavbarProps) {
   const router = useRouter();
 
   return (
@@ -49,19 +51,27 @@ export function Navbar(props: NavbarProps) {
             },
           }}
         >
-          <TextField
-            placeholder="Search on Gateway"
-            fullWidth
-            InputLabelProps={{
-              sx: {
-                '&.MuiInputLabel-root:not(.MuiInputLabel-shrink)': {
-                  transform: 'translate(14px, 8px) scale(1)',
+          {isInternalPage && (
+            <IconButton onClick={() => router.back()}>
+              <Avatar>
+                <ArrowBackIcon />
+              </Avatar>
+            </IconButton>
+          )}
+          {!isInternalPage && (
+            <TextField
+              placeholder="Search on Gateway"
+              fullWidth
+              InputLabelProps={{
+                sx: {
+                  '&.MuiInputLabel-root:not(.MuiInputLabel-shrink)': {
+                    transform: 'translate(14px, 8px) scale(1)',
+                  },
+                  '& .MuiFilledInput-root:hover': {
+                    backgroundColor: 'red',
+                  },
                 },
-                '& .MuiFilledInput-root:hover': {
-                  backgroundColor: 'red',
-                },
-              },
-              /*
+                /*
                   start adornment:
                   sx: {
                     '&.MuiInputLabel-root': {
@@ -75,35 +85,36 @@ export function Navbar(props: NavbarProps) {
                         maxWidth: 0,
                       },
                   }, */
-            }}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment
-                  position="end"
-                  sx={{
-                    paddingRight: 1,
-                  }}
-                >
-                  <SearchIcon
+              }}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment
+                    position="end"
                     sx={{
-                      color: 'rgba(255, 255, 255, 0.56)',
+                      paddingRight: 1,
                     }}
-                  />
-                </InputAdornment>
-              ),
-              fullWidth: true,
-              sx: {
-                borderRadius: 100,
-                paddingX: 1,
-                paddingY: 0.5,
-              },
-              size: 'small',
-            }}
-            onKeyDown={(e: any) =>
-              e.key == 'Enter' &&
-              router.push(`/search/${(e.target as HTMLInputElement).value}`)
-            }
-          />
+                  >
+                    <SearchIcon
+                      sx={{
+                        color: 'rgba(255, 255, 255, 0.56)',
+                      }}
+                    />
+                  </InputAdornment>
+                ),
+                fullWidth: true,
+                sx: {
+                  borderRadius: 100,
+                  paddingX: 1,
+                  paddingY: 0.5,
+                },
+                size: 'small',
+              }}
+              onKeyDown={(e: any) =>
+                e.key == 'Enter' &&
+                router.push(`/search/${(e.target as HTMLInputElement).value}`)
+              }
+            />
+          )}
         </Stack>
         <Box
           display="flex"

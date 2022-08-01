@@ -57,6 +57,11 @@ export function AboutForm({ isEdit }: Props) {
             error={!!errors.description}
             helperText={errors.description?.message}
             inputProps={{ maxLength: 200 }}
+            sx={{
+              '& div fieldset legend span': {
+                marginRight: '5px',
+              },
+            }}
           />
           <Typography sx={{ pl: 2, pb: 1 }} variant="caption">
             {descriptionRemaining}/200
@@ -78,6 +83,11 @@ export function AboutForm({ isEdit }: Props) {
                   label={t('common:fields.category')}
                   error={!!errors.categories}
                   helperText={errors.categories?.message}
+                  sx={{
+                    '& div fieldset legend span': {
+                      marginRight: '10px',
+                    },
+                  }}
                 />
               )}
               onChange={(_, data: typeof categoriesDropdown) => {

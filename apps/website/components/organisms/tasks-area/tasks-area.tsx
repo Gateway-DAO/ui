@@ -62,7 +62,7 @@ const TaskArea = () => {
   ) => {
     const valid =
       fields.length > 0
-        ? await trigger(`tasks.data.${fields.length - 1}`)
+        ? await trigger(`tasks.data.${fields.length - 1}.task_data`)
         : true;
     if (valid) {
       append({

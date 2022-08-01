@@ -52,7 +52,7 @@ export function Task({ task, idx, readOnly }: Props) {
       (task_progress) => task_progress.task_id === task.id
     );
 
-    if (progressTaskIndex && progressTaskIndex !== -1) {
+    if (progressTaskIndex !== undefined && progressTaskIndex !== -1) {
       setCompleted(true);
       setUpdatedAt(me?.task_progresses[progressTaskIndex].updated_at);
     }

@@ -19,6 +19,7 @@ import { useAuth } from '../../providers/auth';
 import { Daos } from '../../services/graphql/types.generated';
 import { AvatarFile } from '../atoms/avatar-file';
 import { FollowButtonDAO } from '../atoms/follow-button-dao';
+import { CategoriesList } from './categories-list';
 
 /* TODO: Arias and Labels */
 
@@ -27,6 +28,8 @@ export function DaoCard({
   background,
   background_url,
   logo_url,
+  followers_aggregate,
+  gates_aggregate,
   name,
   categories,
   description,
@@ -40,6 +43,15 @@ export function DaoCard({
   const url = useMemo(() => ROUTES.DAO_PROFILE.replace('[id]', id), [id]);
 
   const cover = useFile(background);
+
+  const getFollowersAndGatesNumber = () => {
+    const followers = followers_aggregate?.aggregate?.count ?? null;
+    const gates = gates_aggregate?.aggregate?.count ?? null;
+    return `${followers > 0 ? `${followers} contributors` : ''} ${
+      followers && gates ? '·' : ''
+    } ${gates > 0 ? `${gates} gates` : ''}`;
+  };
+
   return (
     <MUICard sx={{ position: 'relative' }}>
       <Link passHref href={url}>
@@ -84,6 +96,7 @@ export function DaoCard({
               '.MuiCardHeader-action': { alignSelf: 'unset' },
             }}
             title={name}
+            subheader={getFollowersAndGatesNumber()}
             titleTypographyProps={{ variant: 'h6' }}
           />
           <CardContent sx={{ py: 1 }}>
@@ -102,12 +115,7 @@ export function DaoCard({
               {description}
             </Typography>
           </CardContent>
-          <Stack direction="row" spacing={1} px={2} pt={1} pb={2}>
-            {categories.map((category) => {
-              const label = categoriesMap.get(category) ?? category;
-              return <Chip key={category} label={label} size="small" />;
-            })}
-          </Stack>
+          <CategoriesList categories={categories} />
         </CardActionArea>
       </Link>
 

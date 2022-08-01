@@ -83,30 +83,32 @@ export function OptionField({
           control={control}
           name={`tasks.data.${taskId}.task_data.questions.${questionIndex}.options.${optionIndex}.correct`}
           defaultValue={false}
-          render={({ field: { value } }) => (
-            <CheckCircleIcon
-              sx={(theme) => ({
-                cursor: 'pointer',
-                ml: '24px',
-                color: value
-                  ? theme.palette.success.light
-                  : theme.palette.text.primary,
-              })}
-              onClick={() => {
-                if (
-                  questionType === 'multiple' ||
-                  value === true ||
-                  (questionType === 'single' &&
-                    options.filter((option) => option.correct).length === 0)
-                ) {
-                  return setValue(
-                    `tasks.data.${taskId}.task_data.questions.${questionIndex}.options.${optionIndex}.correct`,
-                    !value
-                  );
-                }
-                setIsOpen(true);
-              }}
-            />
+          render={() => (
+            <>
+              <CheckCircleIcon
+                sx={(theme) => ({
+                  cursor: 'pointer',
+                  ml: '24px',
+                  color: options[optionIndex].correct
+                    ? theme.palette.success.light
+                    : theme.palette.text.primary,
+                })}
+                onClick={() => {
+                  if (
+                    questionType === 'multiple' ||
+                    options[optionIndex].correct === true ||
+                    (questionType === 'single' &&
+                      options.filter((option) => option.correct).length === 0)
+                  ) {
+                    return setValue(
+                      `tasks.data.${taskId}.task_data.questions.${questionIndex}.options.${optionIndex}.correct`,
+                      !options[optionIndex].correct
+                    );
+                  }
+                  setIsOpen(true);
+                }}
+              />
+            </>
           )}
         />
 
