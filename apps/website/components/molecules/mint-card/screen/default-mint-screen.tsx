@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
@@ -8,6 +9,7 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import {
   Avatar,
+  CardActionArea,
   Chip,
   ListItemIcon,
   Menu,
@@ -47,14 +49,17 @@ export const DefaultMintScreen = ({
 
   return (
     <>
-      <CardMedia
-        component="img"
-        height="275"
-        image={details.image}
-        alt="nft image"
-        sx={{ cursor: 'pointer' }}
-        onClick={() => router.push(`/credential/${details.id}`)}
-      />
+      <Link href={`/credential/${details.id}`} passHref>
+        <CardActionArea>
+          <CardMedia
+            component="img"
+            height="275"
+            image={details.image}
+            alt="nft image"
+            sx={{ cursor: 'pointer' }}
+          />
+        </CardActionArea>
+      </Link>
       <CardHeader
         action={
           <IconButton
