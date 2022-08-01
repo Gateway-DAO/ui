@@ -1,39 +1,72 @@
-import { useEffect } from 'react';
+import { useState } from 'react';
 
-import { useCopyToClipboard } from 'react-use';
+import {
+  AiFillRedditCircle,
+  AiOutlineCopy,
+  AiOutlineTwitter,
+} from 'react-icons/ai';
+import { MdEmail } from 'react-icons/md';
 
 import ShareIcon from '@mui/icons-material/IosShare';
-import { Avatar, IconButton, Snackbar } from '@mui/material';
+import {
+  Avatar,
+  IconButton,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Popover,
+} from '@mui/material';
 
-import { useSnackbar } from '../../hooks/use-snackbar';
+export function ShareButton({ title }) {
+  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
-type Props = {
-  title?: string;
-  url?: string;
-};
+  const onShare = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
 
-export function ShareButton({ title, url }: Props) {
-  const snackbar = useSnackbar();
-  const [state, copyToClipboard] = useCopyToClipboard();
-  const onShare = () => {
-    const data = {
-      title: title ?? `Gateway`,
-      url: url ?? window.location.href,
-    };
-    try {
-      if (navigator?.share && navigator.canShare(data)) {
-        navigator.share(data);
-      } else {
-        copyToClipboard(data.url);
-      }
-    } catch (e) {
-      console.error(e);
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleShare = (e) => {
+    e.preventDefault();
+
+    const url = window.location.href;
+    const encodedAhref = encodeURIComponent(url);
+    let link;
+
+    switch (e.currentTarget.id) {
+      case 'email':
+        link = `mailto:?subject=${title}&amp;body=${encodedAhref}`;
+        openLink(link);
+        break;
+
+      case 'reddit':
+        link = `https://www.reddit.com/submit?url=${encodedAhref}`;
+        openLink(link);
+        break;
+
+      case 'twitter':
+        link = `https://twitter.com/intent/tweet?url=${encodedAhref}`;
+        openLink(link);
+        break;
+
+      case 'copy':
+        navigator.clipboard.writeText(url);
+        break;
+
+      default:
+        break;
     }
   };
 
-  useEffect(() => {
-    if (state?.value) snackbar.onOpen({ message: 'Copied link!' });
-  }, [state]);
+  const openLink = (socialLink) => {
+    window.open(socialLink, '_blank');
+  };
+
+  const open = Boolean(anchorEl);
+  const id = open ? 'share-popover' : undefined;
 
   return (
     <>
@@ -52,15 +85,63 @@ export function ShareButton({ title, url }: Props) {
           />
         </Avatar>
       </IconButton>
-      <Snackbar
+      <Popover
+        id={id}
+        open={open}
+        anchorEl={anchorEl}
+        onClose={handleClose}
         anchorOrigin={{
-          vertical: snackbar.vertical,
-          horizontal: snackbar.horizontal,
+          vertical: 'bottom',
+          horizontal: 'left',
         }}
-        open={snackbar.open}
-        onClose={snackbar.handleClose}
-        message={snackbar.message}
-      />
+      >
+        <List sx={{ minWidth: '200px' }}>
+          <ListItem
+            button
+            style={{ paddingTop: '.75em' }}
+            id="email"
+            onClick={handleShare}
+          >
+            <ListItemIcon>
+              <MdEmail />
+            </ListItemIcon>
+            <ListItemText primary="Email" />
+          </ListItem>
+          <ListItem
+            button
+            style={{ paddingTop: '.75em' }}
+            id="reddit"
+            onClick={handleShare}
+          >
+            <ListItemIcon>
+              <AiFillRedditCircle />
+            </ListItemIcon>
+            <ListItemText primary="Reddit" />
+          </ListItem>
+          <ListItem
+            button
+            style={{ paddingTop: '.75em' }}
+            id="twitter"
+            onClick={handleShare}
+          >
+            <ListItemIcon>
+              <AiOutlineTwitter />
+            </ListItemIcon>
+            <ListItemText primary="Twitter" />
+          </ListItem>
+          <ListItem
+            button
+            style={{ paddingTop: '.75em' }}
+            id="copy"
+            onClick={handleShare}
+          >
+            <ListItemIcon>
+              <AiOutlineCopy />
+            </ListItemIcon>
+            <ListItemText primary="Copy link" />
+          </ListItem>
+        </List>
+      </Popover>
     </>
   );
 }
