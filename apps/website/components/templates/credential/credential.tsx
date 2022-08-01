@@ -12,6 +12,7 @@ import {
 } from '@mui/material';
 
 import { Credentials } from '../../../services/graphql/types.generated';
+import { AvatarFile } from '../../atoms/avatar-file';
 import { Task, TaskGroup } from '../../organisms/tasks';
 
 type Props = {
@@ -28,15 +29,14 @@ export function CredentialTemplate({ credential }: Props) {
           alignItems="center"
           marginBottom={(theme) => theme.spacing(2)}
         >
-          <Avatar
-            alt={credential.dao?.name}
-            src={`https://api.staging.mygateway.xyz/storage/file?id=${credential.dao?.logo.id}`}
-            sx={{
-              height: (theme) => theme.spacing(3),
-              width: (theme) => theme.spacing(3),
-              marginRight: (theme) => theme.spacing(1),
-            }}
-          />
+          <AvatarFile
+            file={credential.dao?.logo}
+            fallback={credential.dao?.logo_url || '/logo.png'}
+            sx={{ width: 32, height: 32 }}
+            aria-label={`${credential.dao?.name}'s DAO image`}
+          >
+            {credential.dao?.name?.[0]}
+          </AvatarFile>
           <Typography
             variant="body2"
             color={(theme) => theme.palette.text.secondary}
