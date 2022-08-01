@@ -1,7 +1,6 @@
 import { useState } from 'react';
 
 import {
-  Button,
   Checkbox,
   FormControl,
   FormControlLabel,
@@ -20,6 +19,7 @@ const QuizContent = ({
   completed,
   updatedAt,
   completeTask,
+  readOnly,
   isLoading,
 }) => {
   const { questions } = data;
@@ -74,6 +74,7 @@ const QuizContent = ({
                       value={answer.value}
                       control={<Radio />}
                       label={answer.value}
+                      disabled={readOnly}
                     />
                   );
                 })}
@@ -87,6 +88,7 @@ const QuizContent = ({
                       value={answer.value}
                       control={<Checkbox />}
                       label={answer.value}
+                      disabled={readOnly}
                     />
                   );
                 })}
@@ -95,11 +97,7 @@ const QuizContent = ({
           </FormControl>
         );
       })}
-      {completed ? (
-        <Typography color="#c5ffe3" variant="subtitle2">
-          Task completed at {formattedDate}
-        </Typography>
-      ) : (
+      {!readOnly && (
         <LoadingButton
           variant="contained"
           sx={{ marginTop: '15px' }}
@@ -108,6 +106,11 @@ const QuizContent = ({
         >
           Submit
         </LoadingButton>
+      )}
+      {completed && (
+        <Typography color="#c5ffe3" variant="subtitle2">
+          Task completed at {formattedDate}
+        </Typography>
       )}
     </Stack>
   );

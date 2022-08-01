@@ -1,3 +1,5 @@
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 import copy from 'copy-to-clipboard';
@@ -7,6 +9,7 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import {
   Avatar,
+  CardActionArea,
   Chip,
   ListItemIcon,
   Menu,
@@ -33,7 +36,10 @@ export const DefaultMintScreen = ({
 }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
+
   const { me } = useAuth();
+  const router = useRouter();
+
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -43,12 +49,17 @@ export const DefaultMintScreen = ({
 
   return (
     <>
-      <CardMedia
-        component="img"
-        height="275"
-        image={details.image}
-        alt="nft image"
-      />
+      <Link href={`/credential/${details.id}`} passHref>
+        <CardActionArea>
+          <CardMedia
+            component="img"
+            height="275"
+            image={details.image}
+            alt="nft image"
+            sx={{ cursor: 'pointer' }}
+          />
+        </CardActionArea>
+      </Link>
       <CardHeader
         action={
           <IconButton

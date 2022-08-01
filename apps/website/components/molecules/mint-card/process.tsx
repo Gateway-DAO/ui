@@ -9,6 +9,7 @@ export function processScreen(
   setMintProcessStatus: React.Dispatch<React.SetStateAction<Subjects>>,
   mint: (token_uri?: string) => void,
   details: {
+    id: string;
     title: string;
     description: string;
     image: string;

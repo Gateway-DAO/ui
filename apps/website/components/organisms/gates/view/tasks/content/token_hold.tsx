@@ -1,4 +1,4 @@
-import { Button, Stack, Typography } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 
 import { LoadingButton } from '../../../../../../components/atoms/loading-button';
 
@@ -23,6 +23,7 @@ const TokenHoldContent = ({
   completed,
   updatedAt,
   completeTask,
+  readOnly,
   isLoading,
 }) => {
   const { chain, token_address, quantity } = data;
@@ -42,11 +43,7 @@ const TokenHoldContent = ({
         {quantity}
       </Typography>
       <Typography variant="caption">Quantity</Typography>
-      {completed ? (
-        <Typography color="#c5ffe3" variant="subtitle2">
-          Task completed at {formattedDate}
-        </Typography>
-      ) : (
+      {!readOnly && (
         <LoadingButton
           variant="contained"
           sx={{ marginTop: '15px' }}
@@ -55,6 +52,11 @@ const TokenHoldContent = ({
         >
           Check Token
         </LoadingButton>
+      )}
+      {completed && (
+        <Typography color="#c5ffe3" variant="subtitle2">
+          Task completed at {formattedDate}
+        </Typography>
       )}
     </Stack>
   );

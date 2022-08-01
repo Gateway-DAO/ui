@@ -24,7 +24,7 @@ import { AvatarFile } from '../../atoms/avatar-file';
 import CircularProgressWithLabel from '../../atoms/circular-progress-label';
 import { ShareButton } from '../../atoms/share-button';
 import GateCompletedModal from '../../organisms/gates/view/modals/gate-completed';
-import { Task, TaskGroup } from './tasks';
+import { Task, TaskGroup } from '../../organisms/tasks';
 
 type Props = {
   gate: PartialDeep<Gates>;

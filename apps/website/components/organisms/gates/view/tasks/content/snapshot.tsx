@@ -7,6 +7,7 @@ const SnapshotContent = ({
   completed,
   updatedAt,
   completeTask,
+  readOnly,
   isLoading,
 }) => {
   const { proposal_number } = data;
@@ -18,11 +19,7 @@ const SnapshotContent = ({
         {proposal_number}
       </Typography>
       <Typography variant="caption">Specific Proposal Number</Typography>
-      {completed ? (
-        <Typography color="#c5ffe3" variant="subtitle2">
-          Task completed at {formattedDate}
-        </Typography>
-      ) : (
+      {!readOnly && (
         <LoadingButton
           variant="contained"
           sx={{ marginTop: '15px' }}
@@ -31,6 +28,11 @@ const SnapshotContent = ({
         >
           Check Snapshot
         </LoadingButton>
+      )}
+      {completed && (
+        <Typography color="#c5ffe3" variant="subtitle2">
+          Task completed at {formattedDate}
+        </Typography>
       )}
     </Stack>
   );
