@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+
 import { useFieldArray, useFormContext } from 'react-hook-form';
 
 import Clear from '@mui/icons-material/Clear';
@@ -7,6 +9,7 @@ import {
   Button,
   Divider,
   FormControl,
+  IconButton,
   Stack,
   TextField,
   Typography,
@@ -21,6 +24,7 @@ import {
 const FileLinkTask = ({ taskId, deleteTask }) => {
   const {
     register,
+    setValue,
     formState: { errors },
     control,
   } = useFormContext<CreateGateTypes>();
@@ -34,9 +38,14 @@ const FileLinkTask = ({ taskId, deleteTask }) => {
     control,
   });
 
+  useEffect(() => {
+    setValue(`tasks.data.${taskId}.title`, 'Untitled Task');
+  }, [setValue, taskId]);
+
   return (
     <Stack
       sx={{
+        backgroundColor: 'rgb(33,22,44)',
         padding: { md: '50px', xs: '16px' },
         border: '2px solid rgba(229, 229, 229, 0.08)',
         borderRadius: '10px',
@@ -69,8 +78,7 @@ const FileLinkTask = ({ taskId, deleteTask }) => {
             helperText={errors.tasks?.data?.[taskId]?.title?.message}
           />
         </Stack>
-        <DeleteIcon
-          fontSize="large"
+        <IconButton
           sx={{
             position: 'absolute',
             right: '0',
@@ -78,8 +86,9 @@ const FileLinkTask = ({ taskId, deleteTask }) => {
             color: 'rgba(255, 255, 255, 0.56)',
             fontSize: { xs: '26px' },
           }}
-          onClick={() => deleteTask(taskId)}
-        />
+        >
+          <DeleteIcon fontSize="large" onClick={() => deleteTask(taskId)} />
+        </IconButton>
       </Stack>
       <FormControl>
         <TextField
@@ -128,16 +137,18 @@ const FileLinkTask = ({ taskId, deleteTask }) => {
                   }
                   sx={{ minWidth: { md: '60%', xs: '80%' } }}
                 />
-                <Clear
-                  fontSize="large"
-                  sx={{
-                    cursor: 'pointer',
-                    color: 'rgba(255, 255, 255, 0.3)',
-                    fontSize: '26px',
-                    margin: '0px 10px',
-                  }}
-                  onClick={() => remove(idx)}
-                />
+                {files.length > 1 && (
+                  <Clear
+                    fontSize="large"
+                    sx={{
+                      cursor: 'pointer',
+                      color: 'rgba(255, 255, 255, 0.3)',
+                      fontSize: '26px',
+                      margin: '0px 10px',
+                    }}
+                    onClick={() => remove(idx)}
+                  />
+                )}
               </Stack>
               <TextField
                 required
@@ -178,7 +189,7 @@ const FileLinkTask = ({ taskId, deleteTask }) => {
                     ?.files?.[idx]?.link?.message
                 }
               />
-              <Divider sx={{ margin: '40px 0' }} />
+              <Divider sx={{ margin: '40px -50px' }} />
             </Stack>
           );
         })}
