@@ -13,6 +13,7 @@ const nextConfig = {
     // See: https://github.com/gregberge/svgr
     svgr: false,
   },
+  distDir: '../../dist',
   experimental: { images: { layoutRaw: true } },
   images: {
     domains: ['api.staging.mygateway.xyz'],
