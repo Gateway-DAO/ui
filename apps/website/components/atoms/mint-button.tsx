@@ -29,7 +29,7 @@ const MintedButton = (props) => (
   <Button
     variant="outlined"
     component="a"
-    href={props.token_uri}
+    href={props.transaction_url}
     target="_blank"
     {...props}
     startIcon={<TokenFilled height={20} width={20} color="action" />}
@@ -39,7 +39,7 @@ const MintedButton = (props) => (
 );
 
 export const MintCredentialButton = ({ credential }: Props) => {
-  const { mintCredential, mint } = useBiconomyMint();
+  const { mintCredential } = useBiconomyMint();
   const [loading, setLoading] = useState<boolean>(false);
   const { t } = useTranslation('common');
 
@@ -52,7 +52,7 @@ export const MintCredentialButton = ({ credential }: Props) => {
     >
       {credential.status === 'minted' ? (
         <MintedButton
-          token_uri={credential.uri}
+          transaction_url={credential.transaction_url}
           sx={{
             borderColor: '#E5E5E580',
             color: 'white',

@@ -4,11 +4,13 @@ import React, { useEffect, useState } from 'react';
 // Web3
 import { Biconomy } from '@biconomy/mexa';
 import { ethers } from 'ethers';
+import { useMutation } from 'react-query';
 import { PartialDeep } from 'type-fest';
 import { useAccount, chain, useSigner, useNetwork } from 'wagmi';
 
 import { CREDENTIAL_ABI } from '../constants/web3';
-import { useMe } from '../providers/auth/hooks';
+import { useAuth } from '../providers/auth';
+import { gqlMethods } from '../services/api';
 import { Credentials } from '../services/graphql/types.generated';
 import { useSnackbar } from './use-snackbar';
 
@@ -156,7 +158,18 @@ export function useBiconomyMint(
   const snackbar = useSnackbar();
 
   // User info
-  const { me } = useMe();
+  const { me, gqlAuthMethods } = useAuth();
+
+  // Credential update
+  const { mutateAsync: updateCredential } = useMutation(
+    async (data: { id: string; tx_url: string }) => {
+      return await gqlAuthMethods.update_credential_status({
+        id: data.id,
+        status: 'minted',
+        transaction_url: data.tx_url,
+      });
+    }
+  );
 
   useEffect(() => {
     async function init() {
@@ -312,7 +325,20 @@ export function useBiconomyMint(
         throw new Error('You are not the owner of this credential!');
       }
 
-      return await mint(credential.uri);
+      // 2. mint the NFT
+      const res = await mint(credential?.uri || '');
+
+      if (res.error) {
+        throw res.error;
+      }
+
+      // 3. change the status of the credential
+      await updateCredential({
+        id: credential.id,
+        tx_url: res.polygonURL,
+      });
+
+      return res;
     } catch (error) {
       console.log('[useMint] Error:', error);
 
