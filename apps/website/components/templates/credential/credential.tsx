@@ -11,8 +11,10 @@ import {
   Divider,
 } from '@mui/material';
 
+import { useMe } from '../../../providers/auth/hooks';
 import { Credentials } from '../../../services/graphql/types.generated';
 import { AvatarFile } from '../../atoms/avatar-file';
+import { MintCredentialButton } from '../../atoms/mint-button';
 import { Task, TaskGroup } from '../../organisms/tasks';
 
 type Props = {
@@ -20,6 +22,8 @@ type Props = {
 };
 
 export function CredentialTemplate({ credential }: Props) {
+  const { me } = useMe();
+
   return (
     <Grid container height="100%">
       <Grid item xs={12} md={5} p={(theme) => theme.spacing(7)}>
@@ -64,6 +68,11 @@ export function CredentialTemplate({ credential }: Props) {
         <Typography variant="body1" marginBottom={(theme) => theme.spacing(4)}>
           {credential.description}
         </Typography>
+
+        {credential?.target_id == me?.id && (
+          <MintCredentialButton credential={credential} />
+        )}
+
         <Box
           component="img"
           src={credential.image}
@@ -136,9 +145,10 @@ export function CredentialTemplate({ credential }: Props) {
                 </Typography>
               </Grid>
               <Grid item xs={8}>
-                <Avatar
+                <AvatarFile
                   alt={credential.gate?.creator?.username}
-                  src={credential.gate?.creator?.pfp}
+                  file={credential.gate?.creator?.picture}
+                  fallback="/logo.png"
                 />
               </Grid>
             </>

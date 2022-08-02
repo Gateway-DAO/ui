@@ -4,9 +4,12 @@ import React, { useEffect, useState } from 'react';
 // Web3
 import { Biconomy } from '@biconomy/mexa';
 import { ethers } from 'ethers';
+import { PartialDeep } from 'type-fest';
 import { useAccount, chain, useSigner, useNetwork } from 'wagmi';
 
 import { CREDENTIAL_ABI } from '../constants/web3';
+import { useMe } from '../providers/auth/hooks';
+import { Credentials } from '../services/graphql/types.generated';
 import { useSnackbar } from './use-snackbar';
 
 let biconomy;
@@ -152,6 +155,9 @@ export function useBiconomyMint(
   // Snackbar
   const snackbar = useSnackbar();
 
+  // User info
+  const { me } = useMe();
+
   useEffect(() => {
     async function init() {
       if (
@@ -210,6 +216,7 @@ export function useBiconomyMint(
     if (contract) {
       try {
         if (metaTxEnabled) {
+          setLoading(true);
           let tx;
 
           const { data: contractData } =
@@ -259,6 +266,7 @@ export function useBiconomyMint(
           await tx.wait();
 
           setMinted(true);
+          setLoading(false);
 
           return {
             isMinted: true,
@@ -270,6 +278,7 @@ export function useBiconomyMint(
         console.log('[useMint] Error:', error);
 
         setMinted(false);
+        setLoading(false);
 
         return {
           isMinted: false,
@@ -290,8 +299,35 @@ export function useBiconomyMint(
     };
   };
 
+  const mintCredential = async (
+    credential: PartialDeep<Credentials>
+  ): Promise<{
+    isMinted: boolean;
+    polygonURL?: string;
+    error?: any;
+  }> => {
+    try {
+      // 1. verify is the user owns the credential
+      if (credential.target_id !== me.id) {
+        throw new Error('You are not the owner of this credential!');
+      }
+
+      return await mint(credential.uri);
+    } catch (error) {
+      console.log('[useMint] Error:', error);
+
+      setMinted(false);
+
+      return {
+        isMinted: false,
+        error,
+      };
+    }
+  };
+
   return {
     mint,
+    mintCredential,
     loading,
     minted,
     snackbar,

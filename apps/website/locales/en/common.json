@@ -52,6 +52,8 @@
     "cancel": "cancel",
     "got-it": "got it",
     "follow": "Follow",
-    "unfollow": "Unfollow"
+    "unfollow": "Unfollow",
+    "mint": "Mint as NFT",
+    "check-transaction": "Verify Mint Transaction"
   }
 }
