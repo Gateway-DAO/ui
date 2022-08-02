@@ -238,6 +238,7 @@
     "copyright": "Copyright © 2022 Gateway. All rights reserved.",
     "subscribe": "Subscribe to our newsletter",
     "receiveNews": "Receive news about developments and updates.",
-    "subscribeButton": "Subscribe"
+    "subscribeButton": "Subscribe",
+    "successMessage": "Thank you for subscribing!"
   }
 }
