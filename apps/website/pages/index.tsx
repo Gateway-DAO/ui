@@ -1,45 +1,98 @@
 import useTranslation from 'next-translate/useTranslation';
 import Link from 'next/link';
 
-import { useToggle } from 'react-use';
-
-import { Button, Box, Paper, alpha } from '@mui/material';
-import Modal from '@mui/material/Modal';
+import { Button } from '@mui/material';
 
 import { LandingTemplate } from '../components/templates/landing';
-import useToggleContainerClass from '../hooks/useToggleContainerClass';
+import { FeaturedProps } from '../components/templates/landing/featured/types';
+import { FooterProps } from '../components/templates/landing/footer/types';
+import { InvestorProps } from '../components/templates/landing/investors/types';
+import { MenuListItem } from '../components/templates/landing/menu/types';
+import { ProductShowProps } from '../components/templates/landing/product-show/types';
+import { ScheduleDemoProps } from '../components/templates/landing/schedule-demo/types';
+import { useAuth } from '../providers/auth';
 
 export default function Index() {
+  const { onOpenLogin } = useAuth();
+
   const { t } = useTranslation('index');
-  const [isOpen, toggleOpen] = useToggle(false);
-  useToggleContainerClass('blur', isOpen);
+  const menuList = t('menu', null, { returnObjects: true }) as MenuListItem[];
+  const forUsersContent = t('forUsers', null, {
+    returnObjects: true,
+  }) as FeaturedProps;
+  const forOrganizationsContent = t('forOrganizations', null, {
+    returnObjects: true,
+  }) as FeaturedProps;
+  const theGatewayContent = t('theGatewayContent', null, {
+    returnObjects: true,
+  }) as ProductShowProps;
+  const buildAppsContent = t('buildAppsContent', null, {
+    returnObjects: true,
+  }) as ProductShowProps;
+  const investorsContent = t('investorsContent', null, {
+    returnObjects: true,
+  }) as InvestorProps;
+  const scheduleDemoContent = t('scheduleDemoContent', null, {
+    returnObjects: true,
+  }) as ScheduleDemoProps;
+  const footerContent = t('footerContent', null, {
+    returnObjects: true,
+  }) as FooterProps;
+
   return (
     <>
       <LandingTemplate
-        title={t('title')}
+        signUpButton={
+          <Button
+            variant="contained"
+            size="large"
+            sx={{ whiteSpace: 'nowrap', height: '56px' }}
+            onClick={onOpenLogin}
+          >
+            {t('signUp')}
+          </Button>
+        }
+        theGatewayContent={theGatewayContent}
+        buildAppsContent={buildAppsContent}
+        forUsersContent={forUsersContent}
+        forOrganizationsContent={forOrganizationsContent}
+        investorsContent={investorsContent}
+        scheduleDemoContent={scheduleDemoContent}
+        footerContent={footerContent}
         connectButton={
-          <Button variant="contained" onClick={toggleOpen}>
-            Connect Wallet
+          <Link passHref href="/home">
+            <Button
+              variant="outlined"
+              size="large"
+              sx={(theme) => ({
+                whiteSpace: 'nowrap',
+                height: '56px',
+                [theme.breakpoints.down('sm')]: {
+                  height: '30px',
+                  width: 'auto',
+                  maxWidth: '95px',
+                },
+              })}
+            >
+              {t('openApp')}
+            </Button>
+          </Link>
+        }
+        title={t('title')}
+        subtitle={t('subtitle')}
+        menuList={menuList}
+        titleDescription={t('titleDescription')}
+        enterButton={
+          <Button
+            variant="contained"
+            sx={{ height: '56px', marginTop: '38px' }}
+            size="large"
+            onClick={onOpenLogin}
+          >
+            {t('enterButtonTitle')}
           </Button>
         }
       />
-      <Modal
-        open={isOpen}
-        onClose={toggleOpen}
-        sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-      >
-        <Paper
-          sx={{
-            width: {
-              xs: `calc(100% - 2rem)`,
-              sm: 100,
-            },
-            height: 500,
-          }}
-        >
-          {/* Wallet connection stuff */}
-        </Paper>
-      </Modal>
     </>
   );
 }

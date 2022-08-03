@@ -1,0 +1,28 @@
+mutation create_gate(
+  $dao_id: uuid!
+  $title: String!
+  $categories: jsonb
+  $description: String!
+  $skills: jsonb
+  $permissions: permissions_arr_rel_insert_input
+  $image: String!
+  $tasks: tasks_arr_rel_insert_input
+) {
+  insert_gates_one(
+    object: {
+      dao_id: $dao_id
+      title: $title
+      categories: $categories
+      description: $description
+      skills: $skills
+      permissions: $permissions
+      image: $image
+      tasks: $tasks
+    }
+  ) {
+    id
+    title
+    image
+    published
+  }
+}

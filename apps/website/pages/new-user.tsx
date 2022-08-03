@@ -1,8 +1,4 @@
-/* TODO: Gap using values */
-
 import { TOKENS } from '@gateway/theme';
-
-import { Box } from '@mui/system';
 
 import { DashboardTemplate } from '../components/templates/dashboard';
 import { NewUserTemplate } from '../components/templates/new-user';
@@ -24,3 +20,5 @@ export default function NewUser() {
     </DashboardTemplate>
   );
 }
+
+NewUser.auth = true;

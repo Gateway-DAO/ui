@@ -1,6 +1,7 @@
 General:
-  ☐ react-use vs ahooks
+  ☐ !important! Home is now the Explore page
   ☐ !important! re-structure all `pages/` files after finishing the Gates and Keys routes, to make them more readable and maintainable
+  ✔ !important! add `NEXTAUTH_SECRET` to env on vercel dashboard @done(22-05-31 19:18)
 
 SSR:
   x Add `_middlewares.ts` to parse user-agent
@@ -12,6 +13,9 @@ SEO:
   ☐ Generate all manifest.json (theme, description) based on a @gateway/assets folder
   ☐ Add everything related to SEO (images, theme, description) inside @gateway/assets @started(22-05-11 11:42)
   ☐ Redo `apps/website/components/atoms/seo/seo-social.tsx`
+
+Setup:
+  ☐ Remove `experimental: { images: { layoutRaw: true } }` from next.config.js when upgrade to new version of next@
 
 Analytics:
   ☐ Migrate / install / document evevery analytics tools

@@ -1,4 +1,4 @@
-import type { PaletteOptions } from '@mui/material/styles/createPalette';
+import { alpha, PaletteOptions } from '@mui/material';
 
 import brandColors from './colors';
 
@@ -8,18 +8,17 @@ const palette: PaletteOptions = {
     ...brandColors.purple,
   },
   secondary: {
-    main: '#ffffff',
+    ...brandColors.white,
   },
   background: {
     default: brandColors.background.main,
     paper: brandColors.background.main,
+    light: brandColors.background.light,
+    elevated: brandColors.background.elevated,
   },
   text: {
-    primary: brandColors.grays.main,
-  },
-  action: {
-    hover: brandColors.purple.main,
-    active: brandColors.purple.main,
+    primary: brandColors.white.main,
+    secondary: alpha(brandColors.white.main, 0.7),
   },
 };
 

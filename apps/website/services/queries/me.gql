@@ -1,0 +1,30 @@
+query me {
+  me {
+    ...current_user
+    picture {
+      ...file
+    }
+    following {
+      user_id
+    }
+    task_progresses {
+      task_id
+      gate_id
+      completed
+      updated_at
+    }
+    following_dao {
+      dao_id
+      dao {
+        id
+        logo_url
+        name
+        is_admin
+        logo {
+          ...file
+        }
+      }
+    }
+    # TODO: ADMIN DAOS
+  }
+}

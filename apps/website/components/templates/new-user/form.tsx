@@ -1,16 +1,22 @@
 import { useFormContext } from 'react-hook-form';
 
-import { Button, Stack, TextField } from '@mui/material';
+import { Stack, TextField } from '@mui/material';
 
+import { LoadingButton } from '../../atoms/loading-button';
 import { NewUserSchema } from './schema';
 
 type Props = {
   onSubmit: (data: NewUserSchema) => void;
+  isLoading: boolean;
 };
 
-/* TODO: Change hardcoded text to translate */
+/*
+  TODO: Change hardcoded text to translate
+  TODO: Loading submit button
+  TODO: Disable submit button on form error
+  */
 
-export function Form({ onSubmit }: Props) {
+export function Form({ onSubmit, isLoading }: Props) {
   const {
     register,
     handleSubmit,
@@ -44,14 +50,19 @@ export function Form({ onSubmit }: Props) {
         required
         label="E-mail"
         type="email"
-        id="email"
-        {...register('email')}
-        error={!!errors.email}
-        helperText={errors.email?.message}
+        id="email_address"
+        {...register('email_address')}
+        error={!!errors.email_address}
+        helperText={errors.email_address?.message}
       />
-      <Button variant="contained" type="submit" sx={{ mt: 2 }}>
+      <LoadingButton
+        variant="contained"
+        type="submit"
+        sx={{ mt: 2 }}
+        isLoading={isLoading}
+      >
         Enter the Gateway
-      </Button>
+      </LoadingButton>
     </Stack>
   );
 }

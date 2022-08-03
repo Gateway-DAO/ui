@@ -1,0 +1,17 @@
+mutation update_user_profile(
+  $id: uuid!,
+  $name: String!,
+  $username: String!,
+  $pic_id: uuid!,
+  $email_address: citext!)
+  {
+  update_users_by_pk(pk_columns: {id: $id}, _set: {name: $name, username: $username, pic_id: $pic_id, email_address: $email_address, init: true}) {
+      id
+      name
+      username
+      picture {
+        ...file
+      }
+      email_address
+    }
+}

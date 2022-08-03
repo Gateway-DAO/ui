@@ -11,3 +11,13 @@ export function showIfNotEmpty(
   }
   return content;
 }
+
+/**
+ * Limit String by length, adding "..." if necessary.
+ */
+export const limitChars = (str: string, limit: number) => {
+  if (str.length > limit) {
+    return str.substring(0, limit) + '...';
+  }
+  return str;
+};

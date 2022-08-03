@@ -1,0 +1,52 @@
+query all_gates {
+  gates {
+    id
+    title
+    description
+    categories
+    skills
+    published
+    links
+    image
+  }
+}
+
+query gate($id: uuid!) {
+  gates_by_pk(id: $id) {
+    id
+    title
+    description
+    categories
+    skills
+    published
+    links
+    image
+    creator {
+      id
+      username
+      pfp
+    }
+    holders {
+      id
+      username
+      pfp
+    }
+    dao {
+      id
+      name
+      logo_url
+      logo {
+        id
+        blur
+      }
+    }
+    tasks {
+      description
+      gate_id
+      id
+      task_data
+      task_type
+      title
+    }
+  }
+}
