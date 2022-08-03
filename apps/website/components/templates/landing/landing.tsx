@@ -116,7 +116,7 @@ export function LandingTemplate({
         <Box
           sx={{
             width: '100%',
-            maxWidth: DEFAULT_MAX_WIDTH,
+            maxWidth: '1400px',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
