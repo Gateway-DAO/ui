@@ -11,6 +11,9 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import LogoutIcon from '@mui/icons-material/Logout';
+import { Divider } from '@mui/material';
 
 import { ROUTES } from '../../../constants/routes';
 import { useAuth } from '../../../providers/auth';
@@ -94,12 +97,15 @@ export function NavBarAvatar({ hideProfile }: Props) {
             key="view-profile"
             onClick={() => router.push(ROUTES.MY_PROFILE)}
           >
-            <Typography textAlign="center">Profile</Typography>
+            <AccountCircleIcon color="disabled" sx={{ mr: 2.5 }} />
+            <Typography textAlign="center">View my profile</Typography>
           </MenuItem>
         )}
         <MenuItem key="disconnect" onClick={withOnClose(onSignOut)}>
+          <LogoutIcon color="disabled" sx={{ mr: 2.5 }} />
           <Typography textAlign="center">Disconnect</Typography>
         </MenuItem>
+        <Divider />
       </Menu>
     </>
   );
