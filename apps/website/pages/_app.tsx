@@ -1,14 +1,16 @@
-import { SessionProvider } from 'next-auth/react';
+import NextProgress from 'next-progress';
 import { AppProps as NextAppProps } from 'next/app';
 import Head from 'next/head';
 
 import { Hydrate, QueryClientProvider } from 'react-query';
-import { ReactQueryDevtools } from 'react-query/devtools';
-import { useAccount, WagmiConfig } from 'wagmi';
+import { WagmiConfig } from 'wagmi';
 
 import { ThemeProvider } from '@gateway/theme';
 
+import { useTheme } from '@mui/material';
+
 import { SEOSocial, SEOFavicon } from '../components/atoms/seo';
+import { NavStateProvider } from '../hooks/use-nav';
 import { usePersistLocale } from '../hooks/usePersistLocale';
 
 import '../components/atoms/global-dependencies';
@@ -22,12 +24,9 @@ type AppProps = NextAppProps & {
   Component: NextAppProps['Component'] & { auth?: boolean };
 };
 
-function CustomApp({
-  Component,
-  pageProps: { session, ...pageProps },
-}: AppProps) {
+function CustomApp({ Component, pageProps: { ...pageProps } }: AppProps) {
   usePersistLocale();
-
+  const theme = useTheme();
   return (
     <>
       <Head>
@@ -36,19 +35,20 @@ function CustomApp({
         <SEOFavicon />
         <SEOSocial />
       </Head>
-      <SessionProvider session={session}>
-        <WagmiConfig client={web3client}>
-          <ThemeProvider>
-            <QueryClientProvider client={queryClient}>
-              <Hydrate state={pageProps.dehydratedState}>
-                <AuthProvider isAuthPage={Component.auth}>
+      <NextProgress color={theme.palette.primary.main} />
+      <WagmiConfig client={web3client}>
+        <ThemeProvider>
+          <QueryClientProvider client={queryClient}>
+            <Hydrate state={pageProps.dehydratedState}>
+              <AuthProvider isAuthPage={Component.auth}>
+                <NavStateProvider>
                   <Component {...pageProps} />
-                </AuthProvider>
-              </Hydrate>
-            </QueryClientProvider>
-          </ThemeProvider>
-        </WagmiConfig>
-      </SessionProvider>
+                </NavStateProvider>
+              </AuthProvider>
+            </Hydrate>
+          </QueryClientProvider>
+        </ThemeProvider>
+      </WagmiConfig>
     </>
   );
 }

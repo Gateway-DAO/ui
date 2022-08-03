@@ -1,49 +1,90 @@
-import { useMemo } from 'react';
+import { useQuery } from 'react-query';
 
 import { TOKENS } from '@gateway/theme';
 
-import { Box, Stack } from '@mui/material';
-import Chip from '@mui/material/Chip';
+import { ViewModule, ViewList } from '@mui/icons-material';
+import { Box, CircularProgress, IconButton, Stack } from '@mui/material';
 
-import { Gates } from '../../../../../services/graphql/types.generated';
+import { usePropertyFilter } from '../../../../../hooks/use-property-filter';
+import { useViewMode, ViewMode } from '../../../../../hooks/use-view-modes';
+import { gqlAnonMethods } from '../../../../../services/api';
+import { ChipDropdown } from '../../../../molecules/chip-dropdown';
 import { GatesCard } from '../../../../molecules/gates-card';
+import { TableView } from './table-view';
 
-type Props = {
-  gates: Gates[];
-};
+export function GatesTab() {
+  const { view, toggleView } = useViewMode();
+  const { data: gates, isLoading } = useQuery('gates-tab', async () => {
+    return (await gqlAnonMethods.gates_tab()).gates;
+  });
 
-export default function GatesTab({ gates }: Props) {
-  const filters = useMemo(
-    () =>
-      gates.reduce(
-        (set, gate) => (gate.categories ? set.add(gate.categories) : set),
-        new Set<string>()
-      ),
-    [gates]
-  );
+  const {
+    selectedFilters,
+    filteredItems: filteredGates,
+    availableFilters,
+    toggleFilter,
+    onClear,
+  } = usePropertyFilter(gates ?? [], 'categories');
 
   return (
-    <Box sx={{ px: TOKENS.CONTAINER_PX, py: 4 }}>
-      <Stack direction="row" justifyContent="space-between">
-        <Stack direction="row" gap={1.5}>
-          {Array.from(filters).map((filter) => (
-            <Chip key={filter} label={filter} />
-          ))}
-        </Stack>
-      </Stack>
-      <Box
-        sx={{
-          display: 'grid',
-          gridTemplateColumns: {
-            md: 'repeat(4, 1fr)',
-          },
-          gap: 2,
-        }}
-      >
-        {gates.map((gate) => (
-          <GatesCard key={gate.id} {...gate} />
-        ))}
-      </Box>
+    <Box sx={{ py: 4 }}>
+      {isLoading ? (
+        <Box
+          key="loading"
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <CircularProgress />
+        </Box>
+      ) : (
+        <>
+          <Stack
+            direction="row"
+            justifyContent="space-between"
+            sx={{ mb: 4, px: TOKENS.CONTAINER_PX }}
+            key="gates-tab-filters"
+          >
+            <Stack direction="row" gap={1.5}>
+              <ChipDropdown
+                label="Categories"
+                values={availableFilters}
+                selected={selectedFilters}
+                onToggle={toggleFilter}
+                onClear={onClear}
+              />
+            </Stack>
+            <IconButton
+              type="button"
+              onClick={toggleView}
+              color="secondary"
+              aria-label="Toggle View"
+            >
+              {view === ViewMode.grid ? <ViewList /> : <ViewModule />}
+            </IconButton>
+          </Stack>
+          {view === ViewMode.grid && (
+            <Box
+              sx={{
+                display: 'grid',
+                gridTemplateColumns: {
+                  md: 'repeat(3, 1fr)',
+                  lg: 'repeat(4, 1fr)',
+                },
+                gap: 2,
+                px: TOKENS.CONTAINER_PX,
+              }}
+            >
+              {filteredGates.map((gate) => (
+                <GatesCard key={`gate-${gate.id}`} {...gate} />
+              ))}
+            </Box>
+          )}
+          {view === ViewMode.table && <TableView gates={filteredGates} />}
+        </>
+      )}
     </Box>
   );
 }

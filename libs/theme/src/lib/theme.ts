@@ -7,6 +7,9 @@ import typography from './config/typography';
 export const theme = createTheme({
   palette,
   typography,
+  shape: {
+    borderRadius: 8,
+  },
   components: {
     ...components,
   },

@@ -1,8 +1,5 @@
-import setLanguage from 'next-translate/setLanguage';
+import { useRouter } from 'next/router';
 import { useCallback } from 'react';
-
-import { NestedMenuItem } from 'mui-nested-menu';
-import { useDisconnect, useAccount } from 'wagmi';
 
 import { useMenu } from '@gateway/ui';
 
@@ -15,27 +12,21 @@ import MenuItem from '@mui/material/MenuItem';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 
+import { ROUTES } from '../../../constants/routes';
 import { useAuth } from '../../../providers/auth';
+import { AvatarFile } from '../../atoms/avatar-file';
 
 /* TODO: Refactor */
 
-export function NavBarAvatar() {
-  const { element, isOpen, onClose, onOpen } = useMenu();
-  /*   const onChangeLanguage = useCallback(
-    (lang: string) => async () => {
-      await setLanguage(lang);
-      onClose();
-    },
-    [onClose]
-  ); */
-  const withOnClose = useCallback(
-    (cb: () => void) => () => {
-      cb();
-      onClose();
-    },
-    [onClose]
-  );
-  const { onSignOut } = useAuth();
+type Props = {
+  hideProfile?: boolean;
+};
+
+export function NavBarAvatar({ hideProfile }: Props) {
+  const { element, isOpen, onClose, onOpen, withOnClose } = useMenu();
+  const router = useRouter();
+
+  const { onSignOut, me } = useAuth();
 
   return (
     <>
@@ -66,7 +57,13 @@ export function NavBarAvatar() {
               },
             }}
           >
-            <Avatar>R</Avatar>
+            <AvatarFile
+              aria-label={me?.name}
+              file={me?.picture}
+              fallback={'/logo.png'}
+            >
+              {me?.name?.[0]}
+            </AvatarFile>
           </Badge>
         </IconButton>
       </Tooltip>
@@ -92,6 +89,14 @@ export function NavBarAvatar() {
             Portuguese (Brazil)
           </MenuItem>
         </NestedMenuItem> */}
+        {!hideProfile && (
+          <MenuItem
+            key="view-profile"
+            onClick={() => router.push(ROUTES.MY_PROFILE)}
+          >
+            <Typography textAlign="center">Profile</Typography>
+          </MenuItem>
+        )}
         <MenuItem key="disconnect" onClick={withOnClose(onSignOut)}>
           <Typography textAlign="center">Disconnect</Typography>
         </MenuItem>

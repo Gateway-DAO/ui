@@ -1,24 +1,53 @@
-import { ReactNode, useState } from 'react';
+import useTranslation from 'next-translate/useTranslation';
+import { useMemo } from 'react';
 
 import { TOKENS } from '@gateway/theme';
 
 import { Box, Tabs, Tab, Typography } from '@mui/material';
 
-import { a11yTabProps, TabPanel } from '../../atoms/tab-panel';
-import { Navbar } from '../../organisms/navbar/navbar';
+import { a11yTabProps, TabPanel, useTab } from '../../atoms/tabs';
+import { Navbar } from '../../organisms/navbar';
+import { AllTab } from './tabs/all-tab';
+import { DaosTab } from './tabs/daos-tab';
+import { GatesTab } from './tabs/gates-tab';
+import { PeopleTab } from './tabs/people-tab';
+import { ExploreProps } from './types';
 
 type TemplateProps = {
   title: string;
   subtitle: string;
-  tabs: Array<{ key: string; label: string; section: ReactNode }>;
+  data: ExploreProps;
 };
 
-export function ExploreTemplate({ title, subtitle, tabs }: TemplateProps) {
-  const [activeTab, setActiveTab] = useState<number>(0);
+export function ExploreTemplate({ title, subtitle, data }: TemplateProps) {
+  const { t } = useTranslation('explore');
+  const { activeTab, handleTabChange, setTab } = useTab();
 
-  const handleTabChange = (event: React.SyntheticEvent, newTab: number) => {
-    setActiveTab(newTab);
-  };
+  const tabs = useMemo(
+    () => [
+      {
+        key: 'all',
+        label: t('common:tabs.all'),
+        section: <AllTab {...data} setActiveTab={setTab} />,
+      },
+      {
+        key: 'gates',
+        label: t('common:tabs.gates'),
+        section: <GatesTab />,
+      },
+      {
+        key: 'daos',
+        label: t('common:tabs.daos'),
+        section: <DaosTab />,
+      },
+      {
+        key: 'people',
+        label: t('common:tabs.people'),
+        section: <PeopleTab />,
+      },
+    ],
+    []
+  );
 
   return (
     <>
@@ -31,11 +60,12 @@ export function ExploreTemplate({ title, subtitle, tabs }: TemplateProps) {
           variant="body1"
           whiteSpace="pre-line"
           px={TOKENS.CONTAINER_PX}
+          color="text.secondary"
         >
           {subtitle}
         </Typography>
       </Box>
-      <Box>
+      <Box sx={{ mt: 5 }}>
         <Box
           sx={{
             borderBottom: 1,

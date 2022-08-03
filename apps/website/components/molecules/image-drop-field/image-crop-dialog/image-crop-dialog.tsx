@@ -19,11 +19,17 @@ import getCroppedImg from './utils';
 
 export type Props = {
   image: string;
+  cropRatio?: number;
   onSubmit: (image?: string) => void;
   onClose: () => void;
 };
 
-export function ImageCropDialog({ image, onSubmit, onClose }: Props) {
+export function ImageCropDialog({
+  image,
+  onSubmit,
+  cropRatio = 1,
+  onClose,
+}: Props) {
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area>();
@@ -57,7 +63,7 @@ export function ImageCropDialog({ image, onSubmit, onClose }: Props) {
           image={image}
           crop={crop}
           zoom={zoom}
-          aspect={1}
+          aspect={cropRatio}
           onCropChange={setCrop}
           onCropComplete={onChangeCrop}
           onZoomChange={setZoom}

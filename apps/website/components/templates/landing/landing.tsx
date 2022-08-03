@@ -1,87 +1,149 @@
-import dynamic from 'next/dynamic';
-import Image from 'next/image';
-import { ReactNode, Suspense } from 'react';
+import { ReactNode, useEffect, useRef, useState } from 'react';
 
-import { GatewayIcon } from '@gateway/assets';
-import { TOKENS } from '@gateway/theme';
-import { MotionBox } from '@gateway/ui';
+import { useIntersection } from 'react-use';
 
-import { Stack, Box, alpha } from '@mui/material';
-const Title = dynamic(() => import('./title'));
+import { theme } from '@gateway/theme';
+
+import { Box } from '@mui/material';
+
+import { Featured } from './featured';
+import { FeaturedProps } from './featured/types';
+import { Footer } from './footer';
+import { FooterProps } from './footer/types';
+import { Hero } from './hero';
+import { Investors } from './investors/investors';
+import { InvestorProps } from './investors/types';
+import { Menu } from './menu/menu';
+import { MenuListItem } from './menu/types';
+import { ProductShow } from './product-show';
+import { ProductShowProps } from './product-show/types';
+import { ScheduleDemo } from './schedule-demo';
+import { ScheduleDemoProps } from './schedule-demo/types';
+import { DEFAULT_MAX_WIDTH, DEFAULT_PADDINGX } from './styles';
 
 type Props = {
   title: string;
+  subtitle: string;
+  titleDescription: string;
+  enterButton: ReactNode;
+  menuList: MenuListItem[];
   connectButton: ReactNode;
+  signUpButton: ReactNode;
+  forUsersContent: FeaturedProps;
+  forOrganizationsContent: FeaturedProps;
+  theGatewayContent: ProductShowProps;
+  buildAppsContent: ProductShowProps;
+  investorsContent: InvestorProps;
+  scheduleDemoContent: ScheduleDemoProps;
+  footerContent: FooterProps;
 };
 
-export function LandingTemplate({ title, connectButton }: Props) {
+export function LandingTemplate({
+  connectButton,
+  signUpButton,
+  menuList,
+  title,
+  titleDescription,
+  subtitle,
+  enterButton,
+  forUsersContent,
+  forOrganizationsContent,
+  theGatewayContent,
+  buildAppsContent,
+  investorsContent,
+  scheduleDemoContent,
+  footerContent,
+}: Props) {
+  const heroProps = { title, subtitle, enterButton, titleDescription };
+  const menuProps = { menuList, signUpButton, connectButton };
+  const [activeArea, setActiveArea] = useState('');
+
+  const refs = {
+    hero: useRef(null),
+    professionals: useRef(null),
+    organizations: useRef(null),
+    build: useRef(null),
+    investors: useRef(null),
+  };
+
+  const organizationIntersection = useIntersection(refs.organizations, {
+    root: null,
+    rootMargin: '0px',
+    threshold: 0.3,
+  });
+
+  useEffect(() => {
+    function scrollPositionCheck() {
+      const windowScroll = window.scrollY;
+
+      Object.keys(refs).map((key) => {
+        if (
+          windowScroll >= refs[key].current.offsetTop - 100 &&
+          windowScroll <
+            refs[key].current.offsetTop + refs[key].current.clientHeight
+        ) {
+          setActiveArea(key);
+        }
+      });
+    }
+
+    organizationIntersection && organizationIntersection?.isIntersecting
+      ? (document.body.style.background = theme.palette.background.light)
+      : (document.body.style.background = theme.palette.background.default);
+    window.addEventListener('scroll', scrollPositionCheck);
+    return () => {
+      window.removeEventListener('scroll', scrollPositionCheck);
+    };
+  }, [organizationIntersection]);
   return (
-    <Stack direction="column" sx={{ flex: 1, width: '100%' }}>
-      <Stack
-        direction="row"
-        justifyContent="space-between"
-        alignItems="center"
-        px={TOKENS.CONTAINER_PX}
-        py={4}
-      >
-        <GatewayIcon sx={{ width: 50, height: 50 }} />
-        {connectButton}
-      </Stack>
-      <MotionBox
-        sx={{
-          display: 'flex',
-          position: 'absolute',
-          zIndex: 2,
-          top: (theme) => theme.spacing(14),
-          left: 0,
-          right: 0,
-          justifyContent: 'center',
-        }}
-        initial={{ translateY: 20, opacity: 0 }}
-        animate={{ translateY: 0, opacity: 1 }}
-        transition={{
-          ease: 'easeOut',
-          duration: 0.75,
-          opacity: { duration: 0.5 },
-        }}
-      >
-        <Title>{title}</Title>
-      </MotionBox>
+    <>
+      <Menu {...menuProps} activeMenu={activeArea} />
       <Box
-        sx={{
-          flex: 1,
+        component="main"
+        role="main"
+        sx={(theme) => ({
+          px: DEFAULT_PADDINGX,
+          width: '100%',
           position: 'relative',
-          overflow: 'hidden',
-          ':before': {
-            background: (theme) =>
-              `linear-gradient(to bottom, ${
-                theme.palette.background.default
-              } 0%, ${alpha(theme.palette.background.default, 0)} 35%)`,
-            content: '""',
-            position: 'absolute',
-            inset: 0,
-            zIndex: 1,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          [theme.breakpoints.down('sm')]: {
+            px: '20px',
           },
-        }}
+        })}
       >
-        <MotionBox
-          initial={{ scale: 1.2, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{
-            ease: 'easeOut',
-            duration: 1,
-            opacity: { duration: 0.5 },
+        <Box
+          sx={{
+            width: '100%',
+            maxWidth: DEFAULT_MAX_WIDTH,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
           }}
-          sx={{ width: '100%', height: '100%' }}
         >
-          <Image
-            src="/images/home.jpg"
-            layout="fill"
-            objectFit="cover"
-            alt="Gateway's background image"
+          <Hero {...heroProps} ref={refs.hero} />
+          <Featured
+            {...forUsersContent}
+            id="professionals"
+            ref={refs.professionals}
           />
-        </MotionBox>
+          <Featured
+            {...forOrganizationsContent}
+            ref={refs.organizations}
+            id="organizations"
+          />
+          <ProductShow {...theGatewayContent} id="build" ref={refs.build} />
+          <ProductShow revert={true} {...buildAppsContent} />
+          <Investors
+            {...investorsContent}
+            id="investors"
+            ref={refs.investors}
+          />
+          <ScheduleDemo {...scheduleDemoContent} />
+          <Footer {...footerContent} />
+        </Box>
       </Box>
-    </Stack>
+    </>
   );
 }

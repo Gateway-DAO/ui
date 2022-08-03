@@ -11,6 +11,8 @@ export const MuiButton: Extract<Theme['components'], object>['MuiButton'] = {
   styleOverrides: {
     root: {
       borderRadius: 100,
+      fontWeight: 700,
+      fontSize: 12,
     },
   },
 };

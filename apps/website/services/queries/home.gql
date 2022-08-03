@@ -1,0 +1,115 @@
+query get_home {
+  gates(limit: 4) {
+    id
+    title
+    description
+    categories
+    image
+    dao {
+      id
+      logo_url
+      logo {
+        ...file
+      }
+      name
+    }
+  }
+  daos(limit: 3) {
+    id
+    name
+    logo {
+      ...file
+    }
+    logo_url
+    background {
+      ...file
+    }
+    followers_aggregate {
+      aggregate {
+        count
+      }
+    }
+    gates_aggregate {
+      aggregate {
+        count
+      }
+    }
+    background_url
+    description
+    categories
+    permissions {
+      user_id
+      permission
+    }
+  }
+  people: users(limit: 9) {
+    id
+    name
+    about
+    username
+    picture {
+      ...file
+    }
+  }
+}
+
+query gates_tab {
+  gates(order_by: { title: asc }) {
+    id
+    title
+    description
+    categories
+    image
+    dao {
+      id
+      logo_url
+      logo {
+        ...file
+      }
+      name
+    }
+  }
+}
+
+query daos_tab {
+  daos(order_by: { name: asc }) {
+    id
+    name
+    logo {
+      ...file
+    }
+    logo_url
+    background {
+      ...file
+    }
+    followers_aggregate {
+      aggregate {
+        count
+      }
+    }
+    gates_aggregate {
+      aggregate {
+        count
+      }
+    }
+    background_url
+    description
+    categories
+    permissions {
+      user_id
+      permission
+    }
+  }
+}
+
+query people_tab {
+  people: users(order_by: { name: asc }) {
+    id
+    name
+    picture {
+      ...file
+    }
+    about
+    username
+  }
+}

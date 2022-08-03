@@ -1,6 +1,10 @@
 import type { TypographyOptions } from '@mui/material/styles/createTypography';
-import '@fontsource/plus-jakarta-sans';
 
+import '@fontsource/plus-jakarta-sans';
+import '@fontsource/plus-jakarta-sans/700.css';
+import '@fontsource/plus-jakarta-sans/800.css';
+
+import pallete from './palette';
 export const fonts = {
   PLUS_JAKARTA_SANS: 'Plus Jakarta Sans',
   get primary() {
@@ -29,6 +33,28 @@ const typography: TypographyOptions = {
   },
   h6: {
     fontWeight: 'bold',
+  },
+  caption: {
+    color: pallete.text!.secondary,
+  },
+  body1: {
+    // color: pallete.text!.secondary,
+  },
+  body2: {
+    // color: pallete.text!.secondary,
+  },
+  button: {
+    color: pallete.text!.secondary,
+  },
+  overline: {
+    color: pallete.text!.secondary,
+  },
+  subtitle1: {
+    color: pallete.text!.secondary,
+    fontWeight: 600,
+  },
+  subtitle2: {
+    color: pallete.text!.secondary,
   },
 };
 
