@@ -52,7 +52,9 @@ export function CreateGateTemplate() {
         onSuccess(imageData) {
           const image_id = imageData['upload_image'].id;
           const image_url =
-            process.env.NODE_ENDPOINT + '/storage/file?id=' + image_id;
+            process.env.NEXT_PUBLIC_NODE_ENDPOINT +
+            '/storage/file?id=' +
+            image_id;
 
           createGateMutation(
             {
