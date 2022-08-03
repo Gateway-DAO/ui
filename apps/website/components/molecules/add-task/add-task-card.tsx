@@ -14,6 +14,7 @@ const AddTaskCard = ({ numberOfTasks, addTask }) => {
     <Stack
       sx={{
         padding: { md: '50px', xs: '20px' },
+        marginBottom: '80px',
         border: '2px solid rgba(229, 229, 229, 0.08)',
         borderRadius: '10px',
       }}
@@ -44,7 +45,7 @@ const AddTaskCard = ({ numberOfTasks, addTask }) => {
         <Grid item xs={2} sm={4} md={4}>
           <Paper>
             <AddTaskButton
-              icon={<InsertLinkIcon />}
+              icon={<InsertLinkIcon fontSize="large" />}
               title={'Files & Links'}
               addTask={() => addTask('self_verify')}
             />
@@ -53,7 +54,7 @@ const AddTaskCard = ({ numberOfTasks, addTask }) => {
         <Grid item xs={2} sm={4} md={4}>
           <Paper>
             <AddTaskButton
-              icon={<QuizIcon />}
+              icon={<QuizIcon fontSize="large" />}
               title={'Create Quiz'}
               addTask={() => addTask('quiz')}
             />
@@ -62,7 +63,7 @@ const AddTaskCard = ({ numberOfTasks, addTask }) => {
         <Grid item xs={2} sm={4} md={4}>
           <Paper>
             <AddTaskButton
-              icon={<MonetizationOnIcon />}
+              icon={<MonetizationOnIcon fontSize="large" />}
               title={'Hold Token'}
               addTask={() => addTask('token_hold')}
             />
@@ -71,7 +72,7 @@ const AddTaskCard = ({ numberOfTasks, addTask }) => {
         <Grid item xs={2} sm={4} md={4}>
           <Paper>
             <AddTaskButton
-              icon={<ElectricBoltIcon />}
+              icon={<ElectricBoltIcon fontSize="large" />}
               title={'Snapshot Governance'}
               addTask={() => addTask('snapshot')}
             />
@@ -80,7 +81,7 @@ const AddTaskCard = ({ numberOfTasks, addTask }) => {
         <Grid item xs={2} sm={4} md={4}>
           <Paper>
             <AddTaskButton
-              icon={<NumbersIcon />}
+              icon={<NumbersIcon fontSize="large" />}
               title={'Verification Code'}
               addTask={() => addTask('meeting_code')}
             />
@@ -89,7 +90,7 @@ const AddTaskCard = ({ numberOfTasks, addTask }) => {
         <Grid item xs={2} sm={4} md={4}>
           <Paper>
             <AddTaskButton
-              icon={<StarIcon />}
+              icon={<StarIcon fontSize="large" />}
               title={'Bounty'}
               disabled
               addTask={() => {

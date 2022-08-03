@@ -1,7 +1,15 @@
+import { useEffect } from 'react';
+
 import { useFormContext } from 'react-hook-form';
 
 import DeleteIcon from '@mui/icons-material/Delete';
-import { FormControl, Stack, TextField, Typography } from '@mui/material';
+import {
+  FormControl,
+  IconButton,
+  Stack,
+  TextField,
+  Typography,
+} from '@mui/material';
 
 import { CircleWithNumber } from '../../../atoms/circle-with-number';
 import {
@@ -12,8 +20,13 @@ import {
 const VerificationCodeTask = ({ taskId, deleteTask }) => {
   const {
     register,
+    setValue,
     formState: { errors },
   } = useFormContext<CreateGateTypes>();
+
+  useEffect(() => {
+    setValue(`tasks.data.${taskId}.title`, 'Untitled Task');
+  }, [setValue, taskId]);
 
   return (
     <Stack
@@ -50,11 +63,11 @@ const VerificationCodeTask = ({ taskId, deleteTask }) => {
             helperText={errors.tasks?.data?.[taskId]?.title?.message}
           />
         </Stack>
-        <DeleteIcon
-          fontSize="large"
+        <IconButton
           sx={{ position: 'absolute', right: '0', cursor: 'pointer' }}
-          onClick={() => deleteTask(taskId)}
-        />
+        >
+          <DeleteIcon fontSize="large" onClick={() => deleteTask(taskId)} />
+        </IconButton>
       </Stack>
       <FormControl>
         <TextField

@@ -1,5 +1,5 @@
 import CloseIcon from '@mui/icons-material/Close';
-import { Stack } from '@mui/material';
+import { Divider, Stack } from '@mui/material';
 
 import { QuestionField } from '../../molecules/add-task/quiz-task/question-field/question-field';
 import { RadioCheckBoxCreator } from '../../molecules/radio-checkbox-creator/radio-checkbox-creator';
@@ -25,9 +25,9 @@ export function QuestionCreator({
           sx={() => ({
             width: '100%',
             py: '48px',
-            borderBottom: '1px solid rgba(229, 229, 229, 0.12)',
           })}
         >
+          {index !== 0 && <Divider sx={{ margin: '-40px -50px 60px -50px' }} />}
           <Stack
             direction="row"
             alignItems={'center'}
