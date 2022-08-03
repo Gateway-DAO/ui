@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
 
@@ -8,6 +8,8 @@ import {
   Alert,
   Box,
   Button,
+  Divider,
+  IconButton,
   Slider,
   Snackbar,
   Stack,
@@ -38,6 +40,7 @@ export function QuizTask({
 }): JSX.Element {
   const {
     register,
+    setValue,
     trigger,
     formState: { errors },
     control,
@@ -53,6 +56,10 @@ export function QuizTask({
     name: `tasks.data.${taskId}.task_data.questions`,
     control,
   });
+
+  useEffect(() => {
+    setValue(`tasks.data.${taskId}.title`, 'Untitled Task');
+  }, [setValue, taskId]);
 
   const onRemoveQuestion = (index: number) => remove(index);
 
@@ -102,8 +109,7 @@ export function QuizTask({
           />
         </Stack>
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <DeleteIcon
-            fontSize="medium"
+          <IconButton
             sx={(theme) => ({
               color: theme.palette.text.secondary,
               cursor: 'pointer',
@@ -112,12 +118,11 @@ export function QuizTask({
                 color: theme.palette.text.primary,
               },
             })}
-            onClick={() => deleteTask(taskId)}
-          />
+          >
+            <DeleteIcon fontSize="medium" onClick={() => deleteTask(taskId)} />
+          </IconButton>
           {taskVisible ? (
-            <ExpandLess
-              fontSize="large"
-              onClick={() => setTaskVisible(false)}
+            <IconButton
               sx={(theme) => ({
                 color: theme.palette.text.secondary,
                 cursor: 'pointer',
@@ -126,11 +131,14 @@ export function QuizTask({
                   color: theme.palette.text.primary,
                 },
               })}
-            />
+            >
+              <ExpandLess
+                fontSize="large"
+                onClick={() => setTaskVisible(false)}
+              />
+            </IconButton>
           ) : (
-            <ExpandMore
-              fontSize="large"
-              onClick={() => setTaskVisible(true)}
+            <IconButton
               sx={(theme) => ({
                 color: theme.palette.text.secondary,
                 cursor: 'pointer',
@@ -138,7 +146,12 @@ export function QuizTask({
                   color: theme.palette.text.primary,
                 },
               })}
-            />
+            >
+              <ExpandMore
+                fontSize="large"
+                onClick={() => setTaskVisible(true)}
+              />
+            </IconButton>
           )}
         </Box>
       </Stack>
@@ -146,7 +159,6 @@ export function QuizTask({
         sx={{
           display: 'flex',
           flexDirection: 'column',
-          borderBottom: '1px solid rgba(229, 229, 229, 0.12)',
         }}
         style={!taskVisible ? {} : { display: 'none' }}
       >
@@ -172,6 +184,7 @@ export function QuizTask({
           onRemove={onRemoveQuestion}
           taskId={taskId}
         />
+        <Divider sx={{ margin: '0 -50px' }} />
       </Box>
       <Stack alignItems={'flex-start'} sx={{ paddingTop: '30px' }}>
         <Button
@@ -188,7 +201,7 @@ export function QuizTask({
         >
           Add question
         </Button>
-        {questions.length > 1 && (
+        {questions.length > 1 && !taskVisible && (
           <>
             <Stack
               sx={[
