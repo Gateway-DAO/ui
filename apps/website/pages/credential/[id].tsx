@@ -1,5 +1,8 @@
 import { GetStaticPaths, InferGetStaticPropsType } from 'next';
 
+import { useToggle } from 'react-use';
+
+import { MintModal } from '../../components/organisms/mint-modal';
 import { CredentialTemplate } from '../../components/templates/credential';
 import { DashboardTemplate } from '../../components/templates/dashboard';
 import { gqlAnonMethods } from '../../services/api';
@@ -7,6 +10,8 @@ import { gqlAnonMethods } from '../../services/api';
 export default function CredentialPage({
   credentialProps,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
+  const [isOpen, open] = useToggle(false);
+
   if (!credentialProps) return null;
   const { credentials_by_pk: credential } = credentialProps;
   return (
@@ -18,7 +23,12 @@ export default function CredentialPage({
         },
       }}
     >
-      <CredentialTemplate credential={credential} />
+      <CredentialTemplate credential={credential} openModal={open} />
+      <MintModal
+        isOpen={isOpen}
+        onClose={open}
+        onSuccess={() => console.log('Yey')}
+      />
     </DashboardTemplate>
   );
 }

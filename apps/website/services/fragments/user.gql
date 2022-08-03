@@ -8,6 +8,9 @@ fragment experience on experiences {
   }
   credentials {
     id
+    target_id
+    uri
+    transaction_url
     name
     image
     description

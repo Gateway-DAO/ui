@@ -9,6 +9,7 @@ import {
   Typography,
   Box,
   Divider,
+  Button,
 } from '@mui/material';
 
 import { useMe } from '../../../providers/auth/hooks';
@@ -19,9 +20,10 @@ import { Task, TaskGroup } from '../../organisms/tasks';
 
 type Props = {
   credential: PartialDeep<Credentials>;
+  openModal: () => void;
 };
 
-export function CredentialTemplate({ credential }: Props) {
+export function CredentialTemplate({ credential, openModal }: Props) {
   const { me } = useMe();
 
   return (
@@ -72,6 +74,10 @@ export function CredentialTemplate({ credential }: Props) {
         {credential?.target_id == me?.id && (
           <MintCredentialButton credential={credential} />
         )}
+
+        <Button variant="contained" color="primary" onClick={openModal}>
+          Abrir
+        </Button>
 
         <Box
           component="img"

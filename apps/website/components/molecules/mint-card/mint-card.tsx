@@ -33,10 +33,10 @@ export const MintCard = ({ credential, sx, ...props }: MintCardProps) => {
   );
   const [error, setError] = useState<any | null>(null);
 
-  const { mint: triggerMint, asksSignature } = useBiconomyMint();
+  const { mintCredential: triggerMint, asksSignature } = useBiconomyMint();
 
   const mint = () => {
-    const trigger = triggerMint(props.tokenURI || null);
+    const trigger = triggerMint(credential);
 
     setMintProcessStatus(Subjects.minting);
 
@@ -77,14 +77,8 @@ export const MintCard = ({ credential, sx, ...props }: MintCardProps) => {
       }}
     >
       {processScreen(mintProcessStatus, setMintProcessStatus, mint, {
-        id: credential.id,
-        title: credential.name,
-        description: credential.description,
-        image: credential.image,
-        categories: credential.categories,
-        nft_url: props.nftURL,
-        target_id: credential.target_id,
         error,
+        credential,
       })}
       {(mintProcessStatus === Subjects.start ||
         (mintProcessStatus === Subjects.failed && Subjects.failed)) && (
