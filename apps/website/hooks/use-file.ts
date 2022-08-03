@@ -4,7 +4,7 @@ import { PartialDeep } from 'type-fest';
 import { Files } from '../services/graphql/types.generated';
 
 export const generateImageUrl = (id?: string) =>
-  id ? `https://api.staging.mygateway.xyz/storage/file?id=${id}` : undefined;
+  id ? `${process.env.NODE_ENDPOINT}/storage/file?id=${id}` : undefined;
 
 /** Generates the url and blurred version from a File object  */
 export const useFile = (file?: PartialDeep<Files>) => {

@@ -52,7 +52,7 @@ export function CreateGateTemplate() {
         onSuccess(imageData) {
           const image_id = imageData['upload_image'].id;
           const image_url =
-            'https://api.staging.mygateway.xyz/storage/file?id=' + image_id;
+            process.env.NODE_ENDPOINT + '/storage/file?id=' + image_id;
 
           createGateMutation(
             {
@@ -175,7 +175,7 @@ export function CreateGateTemplate() {
               direction="column"
               sx={{
                 margin: 'auto',
-                marginLeft : 8,
+                marginLeft: 8,
                 maxWidth: { xs: '100%', md: '100%', lg: '80%' },
               }}
             >
