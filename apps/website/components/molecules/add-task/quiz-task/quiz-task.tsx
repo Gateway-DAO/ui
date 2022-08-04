@@ -78,7 +78,7 @@ export function QuizTask({
       <Stack
         direction={'row'}
         alignItems={'center'}
-        marginBottom="40px"
+        marginBottom={!taskVisible ? '40px' : 0}
         sx={{
           display: 'flex',
           justifyContent: 'space-between',
@@ -202,21 +202,26 @@ export function QuizTask({
         />
         <Divider sx={{ margin: '0 -50px' }} />
       </Box>
-      <Stack alignItems={'flex-start'} sx={{ paddingTop: '30px' }}>
-        <Button
-          variant="text"
-          sx={{ px: 0 }}
-          onClick={async () => {
-            const isValid = await trigger(
-              `tasks.data.${taskId}.task_data.questions`
-            );
-            if (isValid) {
-              return append(createQuestion(questions.length));
-            }
-          }}
-        >
-          Add question
-        </Button>
+      <Stack
+        alignItems={'flex-start'}
+        sx={{ paddingTop: !taskVisible ? '30px' : 0 }}
+      >
+        {!taskVisible && (
+          <Button
+            variant="text"
+            sx={{ px: 0 }}
+            onClick={async () => {
+              const isValid = await trigger(
+                `tasks.data.${taskId}.task_data.questions`
+              );
+              if (isValid) {
+                return append(createQuestion(questions.length));
+              }
+            }}
+          >
+            Add question
+          </Button>
+        )}
         {questions.length > 1 && !taskVisible && (
           <>
             <Stack
