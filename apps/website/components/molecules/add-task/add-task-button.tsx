@@ -43,7 +43,7 @@ const AddTaskButton = ({
       onClick={() => addTask()}
     >
       <span>{icon}</span>
-      <span style={{ margin: '10px 0px 5px 0px' }}>
+      <span style={{ margin: '5px 0px 5px 0px', fontSize: '11px' }}>
         {disabled ? title + ' (Soon)' : title}
       </span>
     </Stack>

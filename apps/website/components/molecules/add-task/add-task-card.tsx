@@ -45,7 +45,7 @@ const AddTaskCard = ({ numberOfTasks, addTask }) => {
         <Grid item xs={2} sm={4} md={4}>
           <Paper>
             <AddTaskButton
-              icon={<InsertLinkIcon fontSize="large" />}
+              icon={<InsertLinkIcon />}
               title={'Files & Links'}
               addTask={() => addTask('self_verify')}
             />
@@ -54,7 +54,7 @@ const AddTaskCard = ({ numberOfTasks, addTask }) => {
         <Grid item xs={2} sm={4} md={4}>
           <Paper>
             <AddTaskButton
-              icon={<QuizIcon fontSize="large" />}
+              icon={<QuizIcon />}
               title={'Create Quiz'}
               addTask={() => addTask('quiz')}
             />
@@ -63,7 +63,7 @@ const AddTaskCard = ({ numberOfTasks, addTask }) => {
         <Grid item xs={2} sm={4} md={4}>
           <Paper>
             <AddTaskButton
-              icon={<MonetizationOnIcon fontSize="large" />}
+              icon={<MonetizationOnIcon />}
               title={'Hold Token'}
               addTask={() => addTask('token_hold')}
             />
@@ -72,7 +72,7 @@ const AddTaskCard = ({ numberOfTasks, addTask }) => {
         <Grid item xs={2} sm={4} md={4}>
           <Paper>
             <AddTaskButton
-              icon={<ElectricBoltIcon fontSize="large" />}
+              icon={<ElectricBoltIcon />}
               title={'Snapshot Governance'}
               addTask={() => addTask('snapshot')}
             />
@@ -81,7 +81,7 @@ const AddTaskCard = ({ numberOfTasks, addTask }) => {
         <Grid item xs={2} sm={4} md={4}>
           <Paper>
             <AddTaskButton
-              icon={<NumbersIcon fontSize="large" />}
+              icon={<NumbersIcon />}
               title={'Verification Code'}
               addTask={() => addTask('meeting_code')}
             />
@@ -90,7 +90,7 @@ const AddTaskCard = ({ numberOfTasks, addTask }) => {
         <Grid item xs={2} sm={4} md={4}>
           <Paper>
             <AddTaskButton
-              icon={<StarIcon fontSize="large" />}
+              icon={<StarIcon />}
               title={'Bounty'}
               disabled
               addTask={() => {
