@@ -141,8 +141,10 @@ export default function ProfileTemplate({ user }: Props) {
               mt: 2,
             }}
           >
-            <Typography>0 connections</Typography>.
-            <Typography>{user.credentials.length} credential(s)</Typography>
+            <Typography>
+              {user.following_aggregate.aggregate.count} connections
+            </Typography>
+            .<Typography>{user.credentials.length} credential(s)</Typography>
           </Box>
           <Stack
             direction="row"
