@@ -15,7 +15,7 @@ export const useFile = (file?: PartialDeep<Files>) => {
   }
 
   const url = generateImageUrl(file.id);
-  const blur = createImage(decodeBlurHash(file.blur, 32, 32));
+  const blur = file?.blur ? createImage(decodeBlurHash(file.blur, 32, 32)) : '';
 
   return {
     url,
