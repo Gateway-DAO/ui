@@ -1,5 +1,4 @@
 import { useRouter } from 'next/router';
-import { useCallback } from 'react';
 
 import { useMenu } from '@gateway/ui';
 
@@ -13,11 +12,21 @@ import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import LogoutIcon from '@mui/icons-material/Logout';
-import { Divider } from '@mui/material';
+import { ListItemText } from '@mui/material';
 
 import { ROUTES } from '../../../constants/routes';
 import { useAuth } from '../../../providers/auth';
 import { AvatarFile } from '../../atoms/avatar-file';
+import { useAccount } from 'wagmi';
+import ListItem from '@mui/material/ListItem';
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
+import { useNetwork } from 'wagmi';
+import { useSnackbar } from '../../../hooks/use-snackbar';
+import Snackbar from '@mui/material/Snackbar';
+import { useEffect } from 'react';
+import { useCopyToClipboard } from 'react-use';
+import { icons } from './wallet-icons';
 
 /* TODO: Refactor */
 
@@ -28,8 +37,19 @@ type Props = {
 export function NavBarAvatar({ hideProfile }: Props) {
   const { element, isOpen, onClose, onOpen, withOnClose } = useMenu();
   const router = useRouter();
-
+  const { data: accountDetail } = useAccount();
+  const { activeChain } = useNetwork();
   const { onSignOut, me } = useAuth();
+  const snackbar = useSnackbar();
+  const [state, copyToClipboard] = useCopyToClipboard();
+
+  useEffect(() => {
+    if (state?.value) snackbar.onOpen({ message: 'Copied Wallet Address!' });
+  }, [state]);
+
+  const copyText = () => {
+    copyToClipboard(accountDetail?.address);
+  };
 
   return (
     <>
@@ -97,16 +117,54 @@ export function NavBarAvatar({ hideProfile }: Props) {
             key="view-profile"
             onClick={() => router.push(ROUTES.MY_PROFILE)}
           >
-            <AccountCircleIcon color="disabled" sx={{ mr: 2.5 }} />
+            <AccountCircleIcon color="disabled" sx={{ mr: 3.5 }} />
             <Typography textAlign="center">View my profile</Typography>
           </MenuItem>
         )}
-        <MenuItem key="disconnect" onClick={withOnClose(onSignOut)}>
-          <LogoutIcon color="disabled" sx={{ mr: 2.5 }} />
+        <MenuItem
+          key="disconnect"
+          onClick={withOnClose(onSignOut)}
+          divider={true}
+        >
+          <LogoutIcon color="disabled" sx={{ mr: 3.5 }} />
           <Typography textAlign="center">Disconnect</Typography>
         </MenuItem>
-        <Divider />
+        <ListItem disablePadding>
+          <IconButton sx={{ mr: 3.5, ml: 1.5 }}>
+            {!!accountDetail.connector?.id &&
+              icons[accountDetail.connector?.id]}
+          </IconButton>
+
+          <ListItemText
+            primary={
+              accountDetail?.address.slice(0, 5) +
+              '...' +
+              accountDetail?.address.slice(-4)
+            }
+            secondary={activeChain?.name}
+          />
+
+          <IconButton sx={{ ml: 3 }} onClick={withOnClose(copyText)}>
+            <ContentCopyIcon color="disabled" sx={{ height: 20, width: 20 }} />
+          </IconButton>
+
+          <IconButton
+            sx={{ mr: 1.5 }}
+            href={`https://etherscan.io/address/${accountDetail?.address}`}
+          >
+            <OpenInNewIcon color="disabled" sx={{ height: 20, width: 20 }} />
+          </IconButton>
+        </ListItem>
       </Menu>
+      <Snackbar
+        anchorOrigin={{
+          vertical: snackbar.vertical,
+          horizontal: snackbar.horizontal,
+        }}
+        open={snackbar.open}
+        onClose={snackbar.handleClose}
+        message={snackbar.message}
+      />
     </>
   );
 }
