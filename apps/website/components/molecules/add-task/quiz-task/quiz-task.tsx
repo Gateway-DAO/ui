@@ -126,6 +126,7 @@ export function QuizTask({
         </Stack>
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           <IconButton
+            onClick={() => deleteTask(taskId)}
             sx={(theme) => ({
               color: theme.palette.text.secondary,
               cursor: 'pointer',
@@ -135,10 +136,11 @@ export function QuizTask({
               },
             })}
           >
-            <DeleteIcon fontSize="medium" onClick={() => deleteTask(taskId)} />
+            <DeleteIcon fontSize="medium" />
           </IconButton>
           {taskVisible ? (
             <IconButton
+              onClick={() => setTaskVisible(false)}
               sx={(theme) => ({
                 color: theme.palette.text.secondary,
                 cursor: 'pointer',
@@ -148,13 +150,11 @@ export function QuizTask({
                 },
               })}
             >
-              <ExpandLess
-                fontSize="large"
-                onClick={() => setTaskVisible(false)}
-              />
+              <ExpandLess fontSize="large" />
             </IconButton>
           ) : (
             <IconButton
+              onClick={() => setTaskVisible(true)}
               sx={(theme) => ({
                 color: theme.palette.text.secondary,
                 cursor: 'pointer',
@@ -163,10 +163,7 @@ export function QuizTask({
                 },
               })}
             >
-              <ExpandMore
-                fontSize="large"
-                onClick={() => setTaskVisible(true)}
-              />
+              <ExpandMore fontSize="large" />
             </IconButton>
           )}
         </Box>
