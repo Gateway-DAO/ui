@@ -72,7 +72,7 @@ export function TableView({ people }: Props) {
                 </Link>
 
                 <TableCell align="right">
-                  {user.id !== me.id && (
+                  {user.id !== me?.id && (
                     <FollowButtonUser
                       userId={user.id}
                       variant="outlined"
