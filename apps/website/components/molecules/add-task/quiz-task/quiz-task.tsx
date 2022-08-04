@@ -144,13 +144,12 @@ export function QuizTask({
               sx={(theme) => ({
                 color: theme.palette.text.secondary,
                 cursor: 'pointer',
-                marginRight: '20px',
                 '&:hover': {
                   color: theme.palette.text.primary,
                 },
               })}
             >
-              <ExpandLess fontSize="large" />
+              <ExpandMore fontSize="large" />
             </IconButton>
           ) : (
             <IconButton
@@ -163,7 +162,7 @@ export function QuizTask({
                 },
               })}
             >
-              <ExpandMore fontSize="large" />
+              <ExpandLess fontSize="large" />
             </IconButton>
           )}
         </Box>
