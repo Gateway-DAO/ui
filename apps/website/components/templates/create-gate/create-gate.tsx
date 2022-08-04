@@ -52,7 +52,9 @@ export function CreateGateTemplate() {
         onSuccess(imageData) {
           const image_id = imageData['upload_image'].id;
           const image_url =
-            'https://api.staging.mygateway.xyz/storage/file?id=' + image_id;
+            process.env.NEXT_PUBLIC_NODE_ENDPOINT +
+            '/storage/file?id=' +
+            image_id;
 
           createGateMutation(
             {
@@ -123,9 +125,6 @@ export function CreateGateTemplate() {
           <Typography component="h2" variant="h5">
             Details
           </Typography>
-          <Typography component="p" variant="caption">
-            Lorem ipsum dolor sit amet
-          </Typography>
         </Box>
         <Stack
           gap={7.5}
@@ -168,9 +167,6 @@ export function CreateGateTemplate() {
             <Box sx={{ minWidth: { lg: '20%' }, marginBottom: { xs: '40px' } }}>
               <Typography component="h2" variant="h5">
                 Tasks
-              </Typography>
-              <Typography component="p" variant="caption">
-                Lorem ipsum dolor sit amet
               </Typography>
             </Box>
             <Stack
