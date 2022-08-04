@@ -102,7 +102,23 @@ export function QuizTask({
             label="Quiz"
             id="quiz-title"
             required
-            fullWidth
+            autoFocus
+            sx={{
+              minWidth: { md: '600px', xs: '110%' },
+              maxWidth: { xs: '100%', md: '110%' },
+            }}
+            InputProps={{
+              style: {
+                fontSize: '20px',
+                fontWeight: 'bolder',
+              },
+              disableUnderline: true,
+              sx: {
+                '&.Mui-focused': {
+                  borderBottom: '2px solid #9A53FF',
+                },
+              },
+            }}
             {...register(`tasks.data.${taskId}.title`)}
             error={!!errors.tasks?.data?.[taskId]?.title}
             helperText={errors.tasks?.data?.[taskId]?.title?.message}

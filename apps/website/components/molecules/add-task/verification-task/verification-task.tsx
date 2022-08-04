@@ -53,9 +53,22 @@ const VerificationCodeTask = ({ taskId, deleteTask }) => {
           <Typography variant="subtitle2">Verification Code</Typography>
           <TextField
             variant="standard"
+            autoFocus
             sx={{
-              minWidth: { md: '600px', xs: '100%' },
-              maxWidth: { md: '100%', xs: '100%' },
+              minWidth: { md: '600px', xs: '110%' },
+              maxWidth: { xs: '100%', md: '110%' },
+            }}
+            InputProps={{
+              style: {
+                fontSize: '20px',
+                fontWeight: 'bolder',
+              },
+              disableUnderline: true,
+              sx: {
+                '&.Mui-focused': {
+                  borderBottom: '2px solid #9A53FF',
+                },
+              },
             }}
             id="file-title"
             {...register(`tasks.data.${taskId}.title`)}
