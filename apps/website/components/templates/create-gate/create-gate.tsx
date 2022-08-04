@@ -125,9 +125,6 @@ export function CreateGateTemplate() {
           <Typography component="h2" variant="h5">
             Details
           </Typography>
-          <Typography component="p" variant="caption">
-            Lorem ipsum dolor sit amet
-          </Typography>
         </Box>
         <Stack
           gap={7.5}
@@ -168,9 +165,6 @@ export function CreateGateTemplate() {
             <Box sx={{ minWidth: { lg: '20%' }, marginBottom: { xs: '40px' } }}>
               <Typography component="h2" variant="h5">
                 Tasks
-              </Typography>
-              <Typography component="p" variant="caption">
-                Lorem ipsum dolor sit amet
               </Typography>
             </Box>
             <Stack
