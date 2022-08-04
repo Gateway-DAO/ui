@@ -1,7 +1,8 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import { useFieldArray, useFormContext } from 'react-hook-form';
 
+import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import Clear from '@mui/icons-material/Clear';
 import DeleteIcon from '@mui/icons-material/Delete';
 import {
@@ -42,68 +43,114 @@ const FileLinkTask = ({ taskId, deleteTask }) => {
     setValue(`tasks.data.${taskId}.title`, 'Untitled Task');
   }, [setValue, taskId]);
 
+  const [taskVisible, setTaskVisible] = useState(false);
+
   return (
     <Stack
-      sx={{
-        backgroundColor: 'rgb(33,22,44)',
-        padding: { md: '50px', xs: '16px' },
+      sx={(theme) => ({
+        padding: '50px',
         border: '2px solid rgba(229, 229, 229, 0.08)',
+        background: `linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.05) 100%), ${theme.palette.background.paper}`,
         borderRadius: '10px',
-      }}
+        [theme.breakpoints.down('sm')]: {
+          padding: '20px',
+        },
+      })}
     >
       <Stack
         direction={'row'}
         alignItems={'center'}
-        marginBottom="40px"
-        sx={{ position: 'relative' }}
+        marginBottom={!taskVisible ? '40px' : 0}
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}
       >
-        <CircleWithNumber
-          number={taskId + 1}
-          sx={(theme) => ({
-            mr: theme.spacing(3.75),
-            [theme.breakpoints.down('sm')]: { mr: theme.spacing(2.5) },
-          })}
-        />
-        <Stack>
-          <Typography variant="subtitle2">File &#38; Text</Typography>
-          <TextField
-            variant="standard"
-            autoFocus
-            sx={{
-              minWidth: { md: '600px', xs: '110%' },
-              maxWidth: { xs: '100%', md: '110%' },
-            }}
-            InputProps={{
-              style: {
-                fontSize: '20px',
-                fontWeight: 'bolder',
-              },
-              disableUnderline: true,
-              sx: {
-                '&.Mui-focused': {
-                  borderBottom: '2px solid #9A53FF',
-                },
-              },
-            }}
-            id="file-title"
-            {...register(`tasks.data.${taskId}.title`)}
-            error={!!errors.tasks?.data?.[taskId]?.title}
-            helperText={errors.tasks?.data?.[taskId]?.title?.message}
-          />
-        </Stack>
-        <IconButton
-          sx={{
-            position: 'absolute',
-            right: '0',
-            cursor: 'pointer',
-            color: 'rgba(255, 255, 255, 0.56)',
-            fontSize: { xs: '26px' },
-          }}
+        <Stack
+          direction={'row'}
+          alignItems={'center'}
+          sx={{ width: '100%', mr: '20px' }}
         >
-          <DeleteIcon fontSize="large" onClick={() => deleteTask(taskId)} />
-        </IconButton>
+          <CircleWithNumber
+            number={taskId + 1}
+            sx={(theme) => ({
+              mr: theme.spacing(3.75),
+              [theme.breakpoints.down('sm')]: { mr: theme.spacing(2.5) },
+            })}
+          />
+          <Stack>
+            <Typography variant="subtitle2">File &#38; Text</Typography>
+            <TextField
+              variant="standard"
+              autoFocus
+              sx={{
+                minWidth: { md: '600px', xs: '110%' },
+                maxWidth: { xs: '100%', md: '110%' },
+              }}
+              InputProps={{
+                style: {
+                  fontSize: '20px',
+                  fontWeight: 'bolder',
+                },
+                disableUnderline: true,
+                sx: {
+                  '&.Mui-focused': {
+                    borderBottom: '2px solid #9A53FF',
+                  },
+                },
+              }}
+              id="file-title"
+              {...register(`tasks.data.${taskId}.title`)}
+              error={!!errors.tasks?.data?.[taskId]?.title}
+              helperText={errors.tasks?.data?.[taskId]?.title?.message}
+            />
+          </Stack>
+        </Stack>
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <IconButton
+            onClick={() => deleteTask(taskId)}
+            sx={(theme) => ({
+              color: theme.palette.text.secondary,
+              cursor: 'pointer',
+              marginRight: '20px',
+              '&:hover': {
+                color: theme.palette.text.primary,
+              },
+            })}
+          >
+            <DeleteIcon fontSize="medium" />
+          </IconButton>
+          {taskVisible ? (
+            <IconButton
+              onClick={() => setTaskVisible(false)}
+              sx={(theme) => ({
+                color: theme.palette.text.secondary,
+                cursor: 'pointer',
+                '&:hover': {
+                  color: theme.palette.text.primary,
+                },
+              })}
+            >
+              <ExpandMore fontSize="large" />
+            </IconButton>
+          ) : (
+            <IconButton
+              onClick={() => setTaskVisible(true)}
+              sx={(theme) => ({
+                color: theme.palette.text.secondary,
+                cursor: 'pointer',
+                '&:hover': {
+                  color: theme.palette.text.primary,
+                },
+              })}
+            >
+              <ExpandLess fontSize="large" />
+            </IconButton>
+          )}
+        </Box>
       </Stack>
-      <FormControl>
+      <FormControl style={!taskVisible ? {} : { display: 'none' }}>
         <TextField
           required
           multiline
