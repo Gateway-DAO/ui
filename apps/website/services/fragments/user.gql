@@ -33,6 +33,11 @@ fragment public_user on users {
   skills
   languages
   timezone
+  following_aggregate {
+    aggregate {
+      count
+    }
+  }
   credentials {
     id
   }

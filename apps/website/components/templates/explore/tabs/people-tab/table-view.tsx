@@ -11,6 +11,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 
 import { ROUTES } from '../../../../../constants/routes';
+import { useAuth } from '../../../../../providers/auth';
 import { AvatarFile } from '../../../../atoms/avatar-file';
 import { FollowButtonUser } from '../../../../atoms/follow-button-user';
 import { ExploreProps } from '../../types';
@@ -19,6 +20,8 @@ type Props = {
   people: ExploreProps['people'];
 };
 export function TableView({ people }: Props) {
+  const { me } = useAuth();
+
   return (
     <TableContainer
       sx={{
@@ -69,12 +72,14 @@ export function TableView({ people }: Props) {
                 </Link>
 
                 <TableCell align="right">
-                  <FollowButtonUser
-                    userId={user.id}
-                    variant="outlined"
-                    size="small"
-                    color="secondary"
-                  />
+                  {user.id !== me.id && (
+                    <FollowButtonUser
+                      userId={user.id}
+                      variant="outlined"
+                      size="small"
+                      color="secondary"
+                    />
+                  )}
                 </TableCell>
               </TableRow>
             );
