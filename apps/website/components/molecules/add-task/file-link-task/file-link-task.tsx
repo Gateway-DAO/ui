@@ -1,5 +1,8 @@
+import { useEffect, useState } from 'react';
+
 import { useFieldArray, useFormContext } from 'react-hook-form';
 
+import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import Clear from '@mui/icons-material/Clear';
 import DeleteIcon from '@mui/icons-material/Delete';
 import {
@@ -7,6 +10,7 @@ import {
   Button,
   Divider,
   FormControl,
+  IconButton,
   Stack,
   TextField,
   Typography,
@@ -21,6 +25,7 @@ import {
 const FileLinkTask = ({ taskId, deleteTask }) => {
   const {
     register,
+    setValue,
     formState: { errors },
     control,
   } = useFormContext<CreateGateTypes>();
@@ -34,54 +39,118 @@ const FileLinkTask = ({ taskId, deleteTask }) => {
     control,
   });
 
+  useEffect(() => {
+    setValue(`tasks.data.${taskId}.title`, 'Untitled Task');
+  }, [setValue, taskId]);
+
+  const [taskVisible, setTaskVisible] = useState(false);
+
   return (
     <Stack
-      sx={{
-        padding: { md: '50px', xs: '16px' },
+      sx={(theme) => ({
+        padding: '50px',
         border: '2px solid rgba(229, 229, 229, 0.08)',
+        background: `linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.05) 100%), ${theme.palette.background.paper}`,
         borderRadius: '10px',
-      }}
+        [theme.breakpoints.down('sm')]: {
+          padding: '20px',
+        },
+      })}
     >
       <Stack
         direction={'row'}
         alignItems={'center'}
-        marginBottom="40px"
-        sx={{ position: 'relative' }}
+        marginBottom={!taskVisible ? '40px' : 0}
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}
       >
-        <CircleWithNumber
-          number={taskId + 1}
-          sx={(theme) => ({
-            mr: theme.spacing(3.75),
-            [theme.breakpoints.down('sm')]: { mr: theme.spacing(2.5) },
-          })}
-        />
-        <Stack>
-          <Typography variant="subtitle2">File &#38; Text</Typography>
-          <TextField
-            variant="standard"
-            sx={{
-              minWidth: { md: '600px', xs: '110%' },
-              maxWidth: { xs: '100%', md: '110%' },
-            }}
-            id="file-title"
-            {...register(`tasks.data.${taskId}.title`)}
-            error={!!errors.tasks?.data?.[taskId]?.title}
-            helperText={errors.tasks?.data?.[taskId]?.title?.message}
+        <Stack
+          direction={'row'}
+          alignItems={'center'}
+          sx={{ width: '100%', mr: '20px' }}
+        >
+          <CircleWithNumber
+            number={taskId + 1}
+            sx={(theme) => ({
+              mr: theme.spacing(3.75),
+              [theme.breakpoints.down('sm')]: { mr: theme.spacing(2.5) },
+            })}
           />
+          <Stack>
+            <Typography variant="subtitle2">File &#38; Text</Typography>
+            <TextField
+              variant="standard"
+              autoFocus
+              sx={{
+                minWidth: { md: '600px', xs: '110%' },
+                maxWidth: { xs: '100%', md: '110%' },
+              }}
+              InputProps={{
+                style: {
+                  fontSize: '20px',
+                  fontWeight: 'bolder',
+                },
+                disableUnderline: true,
+                sx: {
+                  '&.Mui-focused': {
+                    borderBottom: '2px solid #9A53FF',
+                  },
+                },
+              }}
+              id="file-title"
+              {...register(`tasks.data.${taskId}.title`)}
+              error={!!errors.tasks?.data?.[taskId]?.title}
+              helperText={errors.tasks?.data?.[taskId]?.title?.message}
+            />
+          </Stack>
         </Stack>
-        <DeleteIcon
-          fontSize="large"
-          sx={{
-            position: 'absolute',
-            right: '0',
-            cursor: 'pointer',
-            color: 'rgba(255, 255, 255, 0.56)',
-            fontSize: { xs: '26px' },
-          }}
-          onClick={() => deleteTask(taskId)}
-        />
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <IconButton
+            onClick={() => deleteTask(taskId)}
+            sx={(theme) => ({
+              color: theme.palette.text.secondary,
+              cursor: 'pointer',
+              marginRight: '20px',
+              '&:hover': {
+                color: theme.palette.text.primary,
+              },
+            })}
+          >
+            <DeleteIcon fontSize="medium" />
+          </IconButton>
+          {taskVisible ? (
+            <IconButton
+              onClick={() => setTaskVisible(false)}
+              sx={(theme) => ({
+                color: theme.palette.text.secondary,
+                cursor: 'pointer',
+                '&:hover': {
+                  color: theme.palette.text.primary,
+                },
+              })}
+            >
+              <ExpandMore fontSize="medium" />
+            </IconButton>
+          ) : (
+            <IconButton
+              onClick={() => setTaskVisible(true)}
+              sx={(theme) => ({
+                color: theme.palette.text.secondary,
+                cursor: 'pointer',
+                '&:hover': {
+                  color: theme.palette.text.primary,
+                },
+              })}
+            >
+              <ExpandLess fontSize="medium" />
+            </IconButton>
+          )}
+        </Box>
       </Stack>
-      <FormControl>
+      <FormControl style={!taskVisible ? {} : { display: 'none' }}>
         <TextField
           required
           multiline
@@ -128,16 +197,19 @@ const FileLinkTask = ({ taskId, deleteTask }) => {
                   }
                   sx={{ minWidth: { md: '60%', xs: '80%' } }}
                 />
-                <Clear
-                  fontSize="large"
-                  sx={{
-                    cursor: 'pointer',
-                    color: 'rgba(255, 255, 255, 0.3)',
-                    fontSize: '26px',
-                    margin: '0px 10px',
-                  }}
-                  onClick={() => remove(idx)}
-                />
+                {files.length > 1 && (
+                  <IconButton
+                    sx={{
+                      cursor: 'pointer',
+                      color: 'rgba(255, 255, 255, 0.3)',
+                      fontSize: '26px',
+                      margin: '0px 10px',
+                    }}
+                    onClick={() => setTaskVisible(false)}
+                  >
+                    <Clear fontSize="medium" onClick={() => remove(idx)} />
+                  </IconButton>
+                )}
               </Stack>
               <TextField
                 required
@@ -178,7 +250,7 @@ const FileLinkTask = ({ taskId, deleteTask }) => {
                     ?.files?.[idx]?.link?.message
                 }
               />
-              <Divider sx={{ margin: '40px 0' }} />
+              <Divider sx={{ margin: '40px -50px' }} />
             </Stack>
           );
         })}

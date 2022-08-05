@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
 
@@ -8,6 +8,8 @@ import {
   Alert,
   Box,
   Button,
+  Divider,
+  IconButton,
   Slider,
   Snackbar,
   Stack,
@@ -38,6 +40,7 @@ export function QuizTask({
 }): JSX.Element {
   const {
     register,
+    setValue,
     trigger,
     formState: { errors },
     control,
@@ -53,6 +56,10 @@ export function QuizTask({
     name: `tasks.data.${taskId}.task_data.questions`,
     control,
   });
+
+  useEffect(() => {
+    setValue(`tasks.data.${taskId}.title`, 'Untitled Task');
+  }, [setValue, taskId]);
 
   const onRemoveQuestion = (index: number) => remove(index);
 
@@ -71,7 +78,7 @@ export function QuizTask({
       <Stack
         direction={'row'}
         alignItems={'center'}
-        marginBottom="40px"
+        marginBottom={!taskVisible ? '40px' : 0}
         sx={{
           display: 'flex',
           justifyContent: 'space-between',
@@ -95,15 +102,31 @@ export function QuizTask({
             label="Quiz"
             id="quiz-title"
             required
-            fullWidth
+            autoFocus
+            sx={{
+              minWidth: { md: '600px', xs: '110%' },
+              maxWidth: { xs: '100%', md: '110%' },
+            }}
+            InputProps={{
+              style: {
+                fontSize: '20px',
+                fontWeight: 'bolder',
+              },
+              disableUnderline: true,
+              sx: {
+                '&.Mui-focused': {
+                  borderBottom: '2px solid #9A53FF',
+                },
+              },
+            }}
             {...register(`tasks.data.${taskId}.title`)}
             error={!!errors.tasks?.data?.[taskId]?.title}
             helperText={errors.tasks?.data?.[taskId]?.title?.message}
           />
         </Stack>
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <DeleteIcon
-            fontSize="medium"
+          <IconButton
+            onClick={() => deleteTask(taskId)}
             sx={(theme) => ({
               color: theme.palette.text.secondary,
               cursor: 'pointer',
@@ -112,24 +135,24 @@ export function QuizTask({
                 color: theme.palette.text.primary,
               },
             })}
-            onClick={() => deleteTask(taskId)}
-          />
+          >
+            <DeleteIcon fontSize="medium" />
+          </IconButton>
           {taskVisible ? (
-            <ExpandLess
-              fontSize="large"
+            <IconButton
               onClick={() => setTaskVisible(false)}
               sx={(theme) => ({
                 color: theme.palette.text.secondary,
                 cursor: 'pointer',
-                marginRight: '20px',
                 '&:hover': {
                   color: theme.palette.text.primary,
                 },
               })}
-            />
+            >
+              <ExpandMore fontSize="medium" />
+            </IconButton>
           ) : (
-            <ExpandMore
-              fontSize="large"
+            <IconButton
               onClick={() => setTaskVisible(true)}
               sx={(theme) => ({
                 color: theme.palette.text.secondary,
@@ -138,7 +161,9 @@ export function QuizTask({
                   color: theme.palette.text.primary,
                 },
               })}
-            />
+            >
+              <ExpandLess fontSize="medium" />
+            </IconButton>
           )}
         </Box>
       </Stack>
@@ -146,7 +171,6 @@ export function QuizTask({
         sx={{
           display: 'flex',
           flexDirection: 'column',
-          borderBottom: '1px solid rgba(229, 229, 229, 0.12)',
         }}
         style={!taskVisible ? {} : { display: 'none' }}
       >
@@ -172,23 +196,29 @@ export function QuizTask({
           onRemove={onRemoveQuestion}
           taskId={taskId}
         />
+        <Divider sx={{ margin: '0 -50px' }} />
       </Box>
-      <Stack alignItems={'flex-start'} sx={{ paddingTop: '30px' }}>
-        <Button
-          variant="text"
-          sx={{ px: 0 }}
-          onClick={async () => {
-            const isValid = await trigger(
-              `tasks.data.${taskId}.task_data.questions`
-            );
-            if (isValid) {
-              return append(createQuestion(questions.length));
-            }
-          }}
-        >
-          Add question
-        </Button>
-        {questions.length > 1 && (
+      <Stack
+        alignItems={'flex-start'}
+        sx={{ paddingTop: !taskVisible ? '30px' : 0 }}
+      >
+        {!taskVisible && (
+          <Button
+            variant="text"
+            sx={{ px: 0 }}
+            onClick={async () => {
+              const isValid = await trigger(
+                `tasks.data.${taskId}.task_data.questions`
+              );
+              if (isValid) {
+                return append(createQuestion(questions.length));
+              }
+            }}
+          >
+            Add question
+          </Button>
+        )}
+        {questions.length > 1 && !taskVisible && (
           <>
             <Stack
               sx={[

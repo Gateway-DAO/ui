@@ -21,6 +21,9 @@ const AddTaskButton = ({
           ? 'rgba(255, 255, 255, 0.02)'
           : 'rgba(229, 229, 229, 0.08)',
         color: 'rgba(255, 255, 255, 0.56)',
+        border: 'solid',
+        borderWidth: '1px',
+        borderColor: 'rgba(255, 255, 255, 0.1)',
         borderRadius: '10px',
         alignItems: 'center',
         justifyContent: 'center',
@@ -31,11 +34,16 @@ const AddTaskButton = ({
         '&:hover': {
           filter: !disabled && 'brightness(150%)',
         },
+        fontWeight: '700',
+        fontSize: '15px',
+        lineHeight: '22px',
+        letterSpacing: '0.46px',
+        textTransform: 'uppercase',
       }}
       onClick={() => addTask()}
     >
       <span>{icon}</span>
-      <span style={{ margin: '0px 0px 5px 0px' }}>
+      <span style={{ margin: '5px 0px 5px 0px', fontSize: '11px' }}>
         {disabled ? title + ' (Soon)' : title}
       </span>
     </Stack>
