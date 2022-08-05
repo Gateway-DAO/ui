@@ -1,5 +1,5 @@
 import CloseIcon from '@mui/icons-material/Close';
-import { Divider, Stack } from '@mui/material';
+import { Divider, IconButton, Stack } from '@mui/material';
 
 import { QuestionField } from '../../molecules/add-task/quiz-task/question-field/question-field';
 import { RadioCheckBoxCreator } from '../../molecules/radio-checkbox-creator/radio-checkbox-creator';
@@ -42,10 +42,12 @@ export function QuestionCreator({
             <QuestionField questionIndex={index} taskId={taskId} />
 
             {questions.length > 1 && (
-              <CloseIcon
+              <IconButton
                 sx={{ marginLeft: '24px', cursor: 'pointer' }}
                 onClick={() => onRemove(index)}
-              />
+              >
+                <CloseIcon />
+              </IconButton>
             )}
           </Stack>
           <RadioCheckBoxCreator questionIndex={index} taskId={taskId} />

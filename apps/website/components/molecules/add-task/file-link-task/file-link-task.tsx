@@ -198,16 +198,17 @@ const FileLinkTask = ({ taskId, deleteTask }) => {
                   sx={{ minWidth: { md: '60%', xs: '80%' } }}
                 />
                 {files.length > 1 && (
-                  <Clear
-                    fontSize="large"
+                  <IconButton
                     sx={{
                       cursor: 'pointer',
                       color: 'rgba(255, 255, 255, 0.3)',
                       fontSize: '26px',
                       margin: '0px 10px',
                     }}
-                    onClick={() => remove(idx)}
-                  />
+                    onClick={() => setTaskVisible(false)}
+                  >
+                    <Clear fontSize="medium" onClick={() => remove(idx)} />
+                  </IconButton>
                 )}
               </Stack>
               <TextField
