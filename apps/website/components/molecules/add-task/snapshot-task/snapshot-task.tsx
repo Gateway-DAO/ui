@@ -129,7 +129,7 @@ const SnapshotTask = ({ taskId, deleteTask }) => {
                 },
               })}
             >
-              <ExpandMore fontSize="large" />
+              <ExpandMore fontSize="medium" />
             </IconButton>
           ) : (
             <IconButton
@@ -142,7 +142,7 @@ const SnapshotTask = ({ taskId, deleteTask }) => {
                 },
               })}
             >
-              <ExpandLess fontSize="large" />
+              <ExpandLess fontSize="medium" />
             </IconButton>
           )}
         </Box>

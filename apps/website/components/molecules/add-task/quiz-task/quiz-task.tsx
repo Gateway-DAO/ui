@@ -149,7 +149,7 @@ export function QuizTask({
                 },
               })}
             >
-              <ExpandMore fontSize="large" />
+              <ExpandMore fontSize="medium" />
             </IconButton>
           ) : (
             <IconButton
@@ -162,7 +162,7 @@ export function QuizTask({
                 },
               })}
             >
-              <ExpandLess fontSize="large" />
+              <ExpandLess fontSize="medium" />
             </IconButton>
           )}
         </Box>
