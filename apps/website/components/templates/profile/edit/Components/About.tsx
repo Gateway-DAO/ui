@@ -1,3 +1,4 @@
+import useTranslation from 'next-translate/useTranslation';
 import { useState } from 'react';
 
 import { useFormContext } from 'react-hook-form';
@@ -24,6 +25,7 @@ import { Form } from './AboutComponents/Form';
 
 export function About() {
   const { control, watch } = useFormContext<EditUserSchema>();
+  const { t } = useTranslation('profile-edit');
 
   return (
     <Stack
@@ -80,7 +82,14 @@ export function About() {
               >
                 Social links
               </Typography>
-              <SocialLinks control={control} name="socials" />
+              <SocialLinks
+                control={control}
+                name="socials"
+                linkFieldType={{ discord: 'text' }}
+                linkFieldLabel={{
+                  discord: t('about-form.social-links-labels.discord'),
+                }}
+              />
             </Stack>
           </Stack>
         </Grid>
