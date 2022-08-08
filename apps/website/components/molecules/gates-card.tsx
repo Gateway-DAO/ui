@@ -74,7 +74,7 @@ export function GatesCard({
               }
               title={hasDao ? dao.name : title}
             />
-            <IconButton
+            {/* <IconButton
               aria-label="settings"
               sx={{
                 color: (theme) =>
@@ -86,7 +86,7 @@ export function GatesCard({
               }}
             >
               <BookmarkBorderIcon sx={{ fontSize: '20px' }} />
-            </IconButton>
+            </IconButton> */}
           </Box>
           <CardContent sx={{ py: 1 }}>
             {hasDao && (
