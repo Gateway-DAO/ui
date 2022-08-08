@@ -1,7 +1,8 @@
 import normalizeUrl from 'normalize-url';
 import { PartialDeep } from 'type-fest';
-import { object, string, SchemaOf, array } from 'yup';
+import { object, string, SchemaOf, array, StringSchema } from 'yup';
 
+import { Network } from '../../../constants/dao';
 import { URL } from '../../../constants/forms';
 import { generateImageUrl } from '../../../hooks/use-file';
 import { Daos, Dao_Socials } from '../../../services/graphql/types.generated';
@@ -41,9 +42,17 @@ export const schema: SchemaOf<NewDAOSchema> = object({
     object({
       network: string().defined(),
       url: string()
-        .matches(URL, 'The URL should be valid')
-        .defined()
-        .transform((val) => normalizeUrl(val, { forceHttps: true })),
+        .when('network', (network: Network, schema: StringSchema) => {
+          switch (network) {
+            case 'email':
+              return schema.email('Invalid email');
+            default:
+              return schema
+                .matches(URL, 'The URL should be valid')
+                .transform((val) => normalizeUrl(val, { forceHttps: true }));
+          }
+        })
+        .defined(),
     })
   ),
 });
