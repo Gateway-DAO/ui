@@ -1,7 +1,6 @@
 import useTranslation from 'next-translate/useTranslation';
-import { useMemo, HTMLProps, HTMLInputTypeAttribute } from 'react';
+import { useMemo, HTMLInputTypeAttribute } from 'react';
 
-import { capitalCase } from 'change-case';
 import { Control, FieldValues, useController } from 'react-hook-form';
 
 import { Delete } from '@mui/icons-material';
@@ -17,7 +16,7 @@ import {
   Typography,
 } from '@mui/material';
 
-import { networks, Network } from '../../../../constants/dao';
+import { networks, networksLabels, Network } from '../../../../constants/dao';
 
 export type SocialLinkField<TFieldValues extends FieldValues = FieldValues> = {
   name: string;
@@ -27,8 +26,8 @@ export type SocialLinkField<TFieldValues extends FieldValues = FieldValues> = {
   linkFieldLabel?: Partial<Record<Network, string>>;
 };
 
-const networksOptions = networks.map((value) => ({
-  label: capitalCase(value),
+const networksOptions = networks.map((value, index) => ({
+  label: networksLabels[index],
   value,
 }));
 
