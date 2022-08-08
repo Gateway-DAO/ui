@@ -26,9 +26,7 @@ import { AvatarFile } from '../../atoms/avatar-file';
 
 import { useSnackbar } from '../../../hooks/use-snackbar';
 import { useCopyToClipboard } from 'react-use';
-
-import { useAccount } from 'wagmi';
-import { useNetwork } from 'wagmi';
+import { useAccount, useNetwork } from 'wagmi';
 
 /* TODO: Refactor */
 
