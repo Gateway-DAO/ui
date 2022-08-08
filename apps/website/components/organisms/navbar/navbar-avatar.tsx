@@ -1,32 +1,34 @@
 import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 
 import { useMenu } from '@gateway/ui';
-
-import { ArrowDropDown } from '@mui/icons-material';
-import Avatar from '@mui/material/Avatar';
-import Badge, { badgeClasses } from '@mui/material/Badge';
-import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import Tooltip from '@mui/material/Tooltip';
-import Typography from '@mui/material/Typography';
+import Snackbar from '@mui/material/Snackbar';
+
+import { ArrowDropDown } from '@mui/icons-material';
+import Badge, { badgeClasses } from '@mui/material/Badge';
+import IconButton from '@mui/material/IconButton';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import LogoutIcon from '@mui/icons-material/Logout';
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
+import { icons } from './wallet-icons';
+
+import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
 import { ListItemText } from '@mui/material';
+import ListItem from '@mui/material/ListItem';
 
 import { ROUTES } from '../../../constants/routes';
 import { useAuth } from '../../../providers/auth';
 import { AvatarFile } from '../../atoms/avatar-file';
-import { useAccount } from 'wagmi';
-import ListItem from '@mui/material/ListItem';
-import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import OpenInNewIcon from '@mui/icons-material/OpenInNew';
-import { useNetwork } from 'wagmi';
+
 import { useSnackbar } from '../../../hooks/use-snackbar';
-import Snackbar from '@mui/material/Snackbar';
-import { useEffect } from 'react';
 import { useCopyToClipboard } from 'react-use';
-import { icons } from './wallet-icons';
+
+import { useAccount } from 'wagmi';
+import { useNetwork } from 'wagmi';
 
 /* TODO: Refactor */
 
@@ -130,7 +132,7 @@ export function NavBarAvatar({ hideProfile }: Props) {
           <Typography textAlign="center">Disconnect</Typography>
         </MenuItem>
         <ListItem disablePadding>
-          <IconButton sx={{ mr: 3.5, ml: 1.5 }}>
+          <IconButton disabled sx={{ mr: 3.5, ml: 1.5 }}>
             {!!accountDetail.connector?.id &&
               icons[accountDetail.connector?.id]}
           </IconButton>
@@ -151,6 +153,7 @@ export function NavBarAvatar({ hideProfile }: Props) {
           <IconButton
             sx={{ mr: 1.5 }}
             href={`https://etherscan.io/address/${accountDetail?.address}`}
+            target="_blank"
           >
             <OpenInNewIcon color="disabled" sx={{ height: 20, width: 20 }} />
           </IconButton>
