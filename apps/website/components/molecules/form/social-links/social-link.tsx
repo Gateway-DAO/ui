@@ -1,4 +1,5 @@
 import useTranslation from 'next-translate/useTranslation';
+import { useMemo, HTMLProps, HTMLInputTypeAttribute } from 'react';
 
 import { capitalCase } from 'change-case';
 import { Control, FieldValues, useController } from 'react-hook-form';
@@ -16,12 +17,14 @@ import {
   Typography,
 } from '@mui/material';
 
-import { networks } from '../../../../constants/dao';
+import { networks, Network } from '../../../../constants/dao';
 
-type SocialLinkField<TFormSchema> = {
+export type SocialLinkField<TFieldValues extends FieldValues = FieldValues> = {
   name: string;
   onDelete: () => void;
-  control: Control<TFormSchema>;
+  control: Control<TFieldValues>;
+  linkFieldType?: Partial<Record<Network, HTMLInputTypeAttribute>>;
+  linkFieldLabel?: Partial<Record<Network, string>>;
 };
 
 const networksOptions = networks.map((value) => ({
@@ -33,6 +36,8 @@ export function SocialLink<TFormSchema extends FieldValues = FieldValues>({
   name,
   control,
   onDelete,
+  linkFieldType: linkFieldTypeProp,
+  linkFieldLabel: linkFieldLabelProp,
 }: SocialLinkField<TFormSchema>) {
   const networkField = useController({
     name: `${name}.network` as any,
@@ -43,7 +48,24 @@ export function SocialLink<TFormSchema extends FieldValues = FieldValues>({
     name: `${name}.url` as any,
     control,
   });
+
   const { t } = useTranslation();
+
+  const linkFieldType: HTMLInputTypeAttribute = useMemo(() => {
+    const types: Partial<Record<Network, HTMLInputTypeAttribute>> = {
+      email: 'email',
+      ...linkFieldTypeProp,
+    };
+    return types[networkField.field.value] ?? 'url';
+  }, [networkField.field.value, linkFieldTypeProp]);
+
+  const linkFieldLabel: HTMLInputTypeAttribute = useMemo(() => {
+    const labels: Partial<Record<Network, string>> = {
+      email: t('common:fields.email'),
+      ...linkFieldLabelProp,
+    };
+    return labels[networkField.field.value] ?? t('common:fields.link');
+  }, [t, linkFieldLabelProp, networkField.field.value]);
 
   return (
     <Card sx={{ display: 'flex', flexFlow: 'column', gap: 2, p: 2 }}>
@@ -89,8 +111,9 @@ export function SocialLink<TFormSchema extends FieldValues = FieldValues>({
           </Select>
         </FormControl>
         <TextField
-          label={t('common:fields.link')}
+          label={linkFieldLabel}
           {...linkField.field}
+          type={linkFieldType}
           sx={{
             flex: 1,
             flexBasis: {
