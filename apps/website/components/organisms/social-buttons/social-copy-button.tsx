@@ -21,8 +21,7 @@ export function SocialCopyButton({ network, url }: Props) {
   const onClick = () => copyToClipboard(url);
 
   useEffect(() => {
-    if (state?.value)
-      snackbar.onOpen({ message: `Copied ${networkValueLabelMap[network]}!` });
+    if (state?.value) snackbar.onOpen({ message: `Copied to clipboard!` });
   }, [state, network]);
 
   return (
