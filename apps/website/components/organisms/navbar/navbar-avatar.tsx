@@ -1,20 +1,32 @@
 import { useRouter } from 'next/router';
-import { useCallback } from 'react';
+import { useEffect } from 'react';
 
 import { useMenu } from '@gateway/ui';
-
-import { ArrowDropDown } from '@mui/icons-material';
-import Avatar from '@mui/material/Avatar';
-import Badge, { badgeClasses } from '@mui/material/Badge';
-import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+import Snackbar from '@mui/material/Snackbar';
+
+import { ArrowDropDown } from '@mui/icons-material';
+import Badge, { badgeClasses } from '@mui/material/Badge';
+import IconButton from '@mui/material/IconButton';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import LogoutIcon from '@mui/icons-material/Logout';
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
+import { icons } from './wallet-icons';
+
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
+import { ListItemText } from '@mui/material';
+import ListItem from '@mui/material/ListItem';
 
 import { ROUTES } from '../../../constants/routes';
 import { useAuth } from '../../../providers/auth';
 import { AvatarFile } from '../../atoms/avatar-file';
+
+import { useSnackbar } from '../../../hooks/use-snackbar';
+import { useCopyToClipboard } from 'react-use';
+import { useAccount, useNetwork } from 'wagmi';
 
 /* TODO: Refactor */
 
@@ -25,8 +37,19 @@ type Props = {
 export function NavBarAvatar({ hideProfile }: Props) {
   const { element, isOpen, onClose, onOpen, withOnClose } = useMenu();
   const router = useRouter();
-
+  const { data: accountDetail } = useAccount();
+  const { activeChain } = useNetwork();
   const { onSignOut, me } = useAuth();
+  const snackbar = useSnackbar();
+  const [state, copyToClipboard] = useCopyToClipboard();
+
+  useEffect(() => {
+    if (state?.value) snackbar.onOpen({ message: 'Copied Wallet Address!' });
+  }, [state]);
+
+  const copyText = () => {
+    copyToClipboard(accountDetail?.address);
+  };
 
   return (
     <>
@@ -94,13 +117,55 @@ export function NavBarAvatar({ hideProfile }: Props) {
             key="view-profile"
             onClick={() => router.push(ROUTES.MY_PROFILE)}
           >
-            <Typography textAlign="center">Profile</Typography>
+            <AccountCircleIcon color="disabled" sx={{ mr: 3.5 }} />
+            <Typography textAlign="center">View my profile</Typography>
           </MenuItem>
         )}
-        <MenuItem key="disconnect" onClick={withOnClose(onSignOut)}>
+        <MenuItem
+          key="disconnect"
+          onClick={withOnClose(onSignOut)}
+          divider={true}
+        >
+          <LogoutIcon color="disabled" sx={{ mr: 3.5 }} />
           <Typography textAlign="center">Disconnect</Typography>
         </MenuItem>
+        <ListItem disablePadding>
+          <IconButton disabled sx={{ mr: 3.5, ml: 1.5 }}>
+            {!!accountDetail.connector?.id &&
+              icons[accountDetail.connector?.id]}
+          </IconButton>
+
+          <ListItemText
+            primary={
+              accountDetail?.address.slice(0, 5) +
+              '...' +
+              accountDetail?.address.slice(-4)
+            }
+            secondary={activeChain?.name}
+          />
+
+          <IconButton sx={{ ml: 3 }} onClick={withOnClose(copyText)}>
+            <ContentCopyIcon color="disabled" sx={{ height: 20, width: 20 }} />
+          </IconButton>
+
+          <IconButton
+            sx={{ mr: 1.5 }}
+            href={`https://etherscan.io/address/${accountDetail?.address}`}
+            target="_blank"
+          >
+            <OpenInNewIcon color="disabled" sx={{ height: 20, width: 20 }} />
+          </IconButton>
+        </ListItem>
       </Menu>
+      <Snackbar
+        anchorOrigin={{
+          vertical: snackbar.vertical,
+          horizontal: snackbar.horizontal,
+        }}
+        open={snackbar.open}
+        onClose={snackbar.handleClose}
+        message={snackbar.message}
+      />
     </>
   );
 }
