@@ -168,7 +168,7 @@ export default function ProfileTemplate({ user }: Props) {
                   Connect
                 </Button>
               ))}
-            <SocialButtons socials={user.socials} />
+            <SocialButtons socials={user.socials} copyNetworks={['discord']} />
           </Stack>
         </Box>
       </Box>

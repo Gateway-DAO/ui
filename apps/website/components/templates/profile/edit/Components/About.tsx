@@ -82,14 +82,16 @@ export function About() {
               >
                 Social links
               </Typography>
-              <SocialLinks
-                control={control}
-                name="socials"
-                linkFieldType={{ discord: 'text' }}
-                linkFieldLabel={{
-                  discord: t('about-form.social-links-labels.discord'),
-                }}
-              />
+              <Box>
+                <SocialLinks
+                  control={control}
+                  name="socials"
+                  linkFieldType={{ discord: 'text' }}
+                  linkFieldLabel={{
+                    discord: t('about-form.social-links-labels.discord'),
+                  }}
+                />
+              </Box>
             </Stack>
           </Stack>
         </Grid>
