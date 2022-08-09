@@ -55,7 +55,7 @@ export function SocialLink<TFormSchema extends FieldValues = FieldValues>({
       email: 'email',
       ...linkFieldTypeProp,
     };
-    return types[networkField.field.value] ?? 'url';
+    return types[networkField.field.value] ?? 'text';
   }, [networkField.field.value, linkFieldTypeProp]);
 
   const linkFieldLabel: HTMLInputTypeAttribute = useMemo(() => {
