@@ -3,7 +3,7 @@ import { PartialDeep } from 'type-fest';
 import { object, string, SchemaOf, array, StringSchema, bool } from 'yup';
 
 import { Network } from '../../../../constants/dao';
-import { URL, DISCORD_USER } from '../../../../constants/forms';
+import { URL, DISCORD_USER, URL_PROTOCOL } from '../../../../constants/forms';
 import { generateImageUrl } from '../../../../hooks/use-file';
 import {
   Experiences,
@@ -81,7 +81,9 @@ export const schema: SchemaOf<EditUserSchema> = object({
               default:
                 return schema
                   .matches(URL, 'The URL should be valid')
-                  .transform((val) => normalizeUrl(val, { forceHttps: true }));
+                  .transform((val: string) =>
+                    normalizeUrl(val, { forceHttps: !URL_PROTOCOL.test(val) })
+                  );
             }
           })
           .defined(),

@@ -3,7 +3,7 @@ import { PartialDeep } from 'type-fest';
 import { object, string, SchemaOf, array, StringSchema } from 'yup';
 
 import { Network } from '../../../constants/dao';
-import { URL } from '../../../constants/forms';
+import { URL, URL_PROTOCOL } from '../../../constants/forms';
 import { generateImageUrl } from '../../../hooks/use-file';
 import { Daos, Dao_Socials } from '../../../services/graphql/types.generated';
 
@@ -49,7 +49,9 @@ export const schema: SchemaOf<NewDAOSchema> = object({
             default:
               return schema
                 .matches(URL, 'The URL should be valid')
-                .transform((val) => normalizeUrl(val, { forceHttps: true }));
+                .transform((val: string) =>
+                  normalizeUrl(val, { forceHttps: !URL_PROTOCOL.test(val) })
+                );
           }
         })
         .defined(),
