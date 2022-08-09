@@ -116,6 +116,9 @@ export function NavBarAvatar({ hideProfile }: Props) {
           <MenuItem
             key="view-profile"
             onClick={() => router.push(ROUTES.MY_PROFILE)}
+            sx={{
+              py: '12px',
+            }}
           >
             <AccountCircleIcon color="disabled" sx={{ mr: 3.5 }} />
             <Typography textAlign="center">View my profile</Typography>
@@ -125,13 +128,21 @@ export function NavBarAvatar({ hideProfile }: Props) {
           key="disconnect"
           onClick={withOnClose(onSignOut)}
           divider={true}
+          sx={{
+            py: '12px',
+          }}
         >
           <LogoutIcon color="disabled" sx={{ mr: 3.5 }} />
           <Typography textAlign="center">Disconnect</Typography>
         </MenuItem>
-        <ListItem disablePadding>
-          <IconButton disabled sx={{ mr: 3.5, ml: 1.5 }}>
-            {!!accountDetail.connector?.id &&
+        <ListItem
+          disablePadding
+          sx={{
+            py: '12px',
+          }}
+        >
+          <IconButton disabled sx={{ mr: 2.5, ml: 1 }}>
+            {!!accountDetail?.connector?.id &&
               icons[accountDetail.connector?.id]}
           </IconButton>
 
