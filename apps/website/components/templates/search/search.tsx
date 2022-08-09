@@ -129,6 +129,9 @@ export function SearchTemplate({ query }: TemplateProps) {
                 <Tab
                   key={key}
                   label={label}
+                  sx={{
+                    fontWeight: 700,
+                  }}
                   {...(count
                     ? {
                         icon: <Chip label={count} size="small" />,

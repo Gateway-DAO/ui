@@ -98,6 +98,9 @@ export function ExploreTemplate({ title, subtitle, data }: TemplateProps) {
               <Tab
                 key={key}
                 label={label}
+                sx={{
+                  fontWeight: 700,
+                }}
                 {...a11yTabProps('explore', index)}
               />
             ))}

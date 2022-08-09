@@ -190,7 +190,7 @@ export default function ProfileTemplate({ user }: Props) {
         >
           {tabs.map(({ key, label }, index) => (
             <Tab
-              sx={{ fontSize: '12px' }}
+              sx={{ fontSize: '12px' , fontWeight : 700 }}
               key={key}
               label={label}
               {...a11yTabProps('dao', index)}

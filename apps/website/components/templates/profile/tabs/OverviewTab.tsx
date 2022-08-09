@@ -210,6 +210,9 @@ export function OverviewTab({ user }: Props) {
                     key={key}
                     label={label}
                     {...a11yTabProps('dao', index)}
+                     sx={{
+                    fontWeight: 700,
+                  }}
                   />
                 ))}
               </Tabs>

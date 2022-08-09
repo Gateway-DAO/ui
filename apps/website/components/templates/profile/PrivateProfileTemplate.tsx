@@ -193,7 +193,14 @@ export default function PrivateProfileTemplate() {
           }}
         >
           {tabs.map(({ key, label }, index) => (
-            <Tab key={key} label={label} {...a11yTabProps('dao', index)} />
+            <Tab
+              key={key}
+              label={label}
+              sx={{
+                fontWeight: 700,
+              }}
+              {...a11yTabProps('dao', index)}
+            />
           ))}
         </Tabs>
       </Box>
