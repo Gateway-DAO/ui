@@ -22,7 +22,6 @@ export function SocialButtons({
   children,
   copyNetworks = [],
 }: PropsWithChildren<Props>) {
-  console.log(copyNetworks);
   return (
     <Stack direction="row" gap={1} sx={sx}>
       {children}
