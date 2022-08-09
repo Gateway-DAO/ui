@@ -60,19 +60,6 @@ const TaskArea = () => {
   const addTask = async (
     taskType: CreateGateTypes['tasks']['data'][0]['task_type']
   ) => {
-    // Disabled validation when adding a new task
-    // const valid =
-    //   fields.length > 0
-    //     ? await trigger(`tasks.data.${fields.length - 1}.task_data`)
-    //     : true;
-    // if (valid) {
-    //   append({
-    //     title: '',
-    //     description: '',
-    //     ...(defaultTaskData(taskType) as any),
-    //   });
-    // }
-
     append({
       title: '',
       description: '',
