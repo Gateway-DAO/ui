@@ -36,6 +36,54 @@ export function CreateGateTemplate() {
     gqlAuthMethods.create_gate
   );
 
+  const saveDraft = (draftData: CreateGateTypes) => {
+    const permissionsData = {
+      data: draftData.created_by.map((creator) => {
+        return { user_id: creator.id, permission: 'gate_editor' };
+      }),
+    };
+    uploadImage(
+      {
+        base64: draftData.image,
+        name: draftData.title,
+      },
+      {
+        onSuccess(imageData) {
+          const image_id = imageData['upload_image'].id;
+          const image_url =
+            process.env.NEXT_PUBLIC_NODE_ENDPOINT +
+            '/storage/file?id=' +
+            image_id;
+          createGateMutation(
+            {
+              dao_id: router.query.dao,
+              title: draftData.title,
+              categories: draftData.categories,
+              description: draftData.description,
+              skills: draftData.skills,
+              permissions: permissionsData,
+              image: image_url,
+              tasks: draftData.tasks,
+              published: 'not_published',
+            },
+            {
+              onSuccess() {
+                snackbar.handleClick({ message: 'Saved as draft.' });
+                router.push(ROUTES.EXPLORE);
+              },
+              onError(error) {
+                console.log(error);
+              },
+            }
+          );
+        },
+        onError(error) {
+          console.log(error);
+        },
+      }
+    );
+  };
+
   const createGate = (gateData: CreateGateTypes) => {
     const permissionsData = {
       data: gateData.created_by.map((creator) => {
@@ -66,6 +114,7 @@ export function CreateGateTemplate() {
               permissions: permissionsData,
               image: image_url,
               tasks: gateData.tasks,
+              published: 'published',
             },
             {
               onSuccess() {
@@ -100,7 +149,9 @@ export function CreateGateTemplate() {
         [theme.breakpoints.down('sm')]: { p: '0 20px' },
       })}
     >
-      <PublishNavbar isLoading={false} />
+      <FormProvider {...methods}>
+        <PublishNavbar isLoading={false} saveDraft={saveDraft} />
+      </FormProvider>
       <Typography
         component="h1"
         variant="h4"

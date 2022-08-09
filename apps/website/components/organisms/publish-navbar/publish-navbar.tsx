@@ -1,16 +1,22 @@
 import { useRouter } from 'next/router';
 
+import { useFormContext } from 'react-hook-form';
+
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { AppBar, Toolbar, Avatar, IconButton, Box } from '@mui/material';
 
 import { LoadingButton } from '../../atoms/loading-button';
+import { CreateGateTypes } from '../../templates/create-gate/schema';
 
 type Props = {
   isLoading: boolean;
+  saveDraft: (data: CreateGateTypes) => void;
 };
 
-export const PublishNavbar = ({ isLoading }: Props) => {
+export const PublishNavbar = ({ isLoading, saveDraft }: Props) => {
   const router = useRouter();
+  const { getValues } = useFormContext<CreateGateTypes>();
+
   return (
     <>
       <AppBar
@@ -31,8 +37,10 @@ export const PublishNavbar = ({ isLoading }: Props) => {
           </IconButton>
           <Box sx={{ position: 'absolute', right: 0 }}>
             <LoadingButton
-              type="submit"
-              form="gate-details-form"
+              onClick={(e) => {
+                const values = getValues();
+                saveDraft(values);
+              }}
               variant="outlined"
               size="large"
               isLoading={isLoading}

@@ -7,6 +7,7 @@ mutation create_gate(
   $permissions: permissions_arr_rel_insert_input
   $image: String!
   $tasks: tasks_arr_rel_insert_input
+  $published: gate_state!
 ) {
   insert_gates_one(
     object: {
@@ -18,6 +19,7 @@ mutation create_gate(
       permissions: $permissions
       image: $image
       tasks: $tasks
+      published: $published
     }
   ) {
     id
