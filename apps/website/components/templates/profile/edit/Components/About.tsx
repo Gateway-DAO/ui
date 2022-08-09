@@ -82,7 +82,7 @@ export function About() {
               >
                 Social links
               </Typography>
-              <Box>
+              <Stack gap={2}>
                 <SocialLinks
                   control={control}
                   name="socials"
@@ -91,7 +91,7 @@ export function About() {
                     discord: t('about-form.social-links-labels.discord'),
                   }}
                 />
-              </Box>
+              </Stack>
             </Stack>
           </Stack>
         </Grid>
