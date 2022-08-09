@@ -102,10 +102,14 @@ export function DaoHeader({
             )}
           </Stack>
           {dao.categories && (
-            <Stack direction="row" gap={2} sx={{ mt: 12 / 8 }}>
+            <Stack direction="row" gap={1} sx={{ mt: 12 / 8 }}>
               {dao.categories.map((category) => {
                 const label = categoriesMap.get(category) ?? category;
-                return <Chip key={category} label={label} size="small" />;
+                const formattedLabel =
+                  label.charAt(0).toUpperCase() + label.slice(1);
+                return (
+                  <Chip key={category} label={formattedLabel} size="small" />
+                );
               })}
             </Stack>
           )}

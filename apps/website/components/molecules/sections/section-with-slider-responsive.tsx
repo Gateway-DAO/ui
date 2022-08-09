@@ -13,11 +13,11 @@ export function SectionWithSliderResponsive(
   props: SectionWithSliderResponsiveProps
 ) {
   const theme = useTheme();
-  const isDesktop = useMediaQuery(theme.breakpoints.up('md'), { noSsr: true });
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
 
-  return isDesktop ? (
-    <SectionWithGrid {...props} />
-  ) : (
+  return isMobile ? (
     <SectionWithSlider {...props} />
+  ) : (
+    <SectionWithGrid {...props} />
   );
 }

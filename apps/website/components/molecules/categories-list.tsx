@@ -43,15 +43,19 @@ export function CategoriesList({ categories, ...props }): JSX.Element {
       ref={parentRef}
     >
       <Stack direction="row" spacing={1} px={2} pt={1} pb={2} {...props}>
-        {categories.map((category, index) => (
-          <Chip
-            aria-hidden={false}
-            ref={(element) => (refs.current[index] = element)}
-            key={category}
-            label={category}
-            size="small"
-          />
-        ))}
+        {categories.map((category, index) => {
+          const formattedLabel =
+            category.charAt(0).toUpperCase() + category.slice(1);
+          return (
+            <Chip
+              aria-hidden={false}
+              ref={(element) => (refs.current[index] = element)}
+              key={category}
+              label={formattedLabel}
+              size="small"
+            />
+          );
+        })}
       </Stack>
 
       {itemsPopover.length > 0 && (

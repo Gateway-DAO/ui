@@ -26,6 +26,7 @@ import { useAuth } from '../../../providers/auth';
 import { Users } from '../../../services/graphql/types.generated';
 import { SessionUser } from '../../../types/user';
 import { AvatarFile } from '../../atoms/avatar-file';
+import { FollowButtonUser } from '../../atoms/follow-button-user';
 import { SocialButtons } from '../../organisms/social-buttons';
 import { ActivityTab, OverviewTab } from './tabs';
 
@@ -141,8 +142,10 @@ export default function ProfileTemplate({ user }: Props) {
               mt: 2,
             }}
           >
-            <Typography>0 connections</Typography>.
-            <Typography>{user.credentials.length} credential(s)</Typography>
+            <Typography>
+              {user?.following_aggregate?.aggregate?.count ?? 0} connections
+            </Typography>
+            .<Typography>{user.credentials.length} credential(s)</Typography>
           </Box>
           <Stack
             direction="row"
@@ -151,23 +154,7 @@ export default function ProfileTemplate({ user }: Props) {
               mt: 4,
             }}
           >
-            {me &&
-              (me.following.some((f) => f.user_id === user.id) ? (
-                <Button
-                  sx={{ width: '95px', height: '36px' }}
-                  variant="contained"
-                  disabled
-                >
-                  Connected
-                </Button>
-              ) : (
-                <Button
-                  sx={{ width: '95px', height: '36px' }}
-                  variant="contained"
-                >
-                  Connect
-                </Button>
-              ))}
+            <FollowButtonUser userId={user.id} />
             <SocialButtons socials={user.socials} copyNetworks={['discord']} />
           </Stack>
         </Box>

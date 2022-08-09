@@ -23,13 +23,21 @@ query gate($id: uuid!) {
     image
     creator {
       id
+      name
       username
       pfp
+      picture {
+        ...file
+      }
     }
     holders {
       id
+      name
       username
       pfp
+      picture {
+        ...file
+      }
     }
     dao {
       id

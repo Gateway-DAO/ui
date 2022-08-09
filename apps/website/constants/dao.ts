@@ -15,7 +15,7 @@ export const categories = [
   'Financial',
   'Governance',
   'Education',
-  'HR',
+  'Human Ressources',
   'Infrastructure',
   'Operating System',
   'Collaboration',

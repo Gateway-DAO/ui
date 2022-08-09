@@ -37,7 +37,7 @@ export default function DaoProfilePage({
       } = data;
 
       const uploadLogo = async () => {
-        const oldLogo = generateImageUrl(dao.logo.id);
+        const oldLogo = generateImageUrl(dao.logo?.id);
 
         if (logo64 === oldLogo) return dao.logo.id;
         return (
@@ -49,7 +49,7 @@ export default function DaoProfilePage({
       };
 
       const uploadBackground = async () => {
-        const oldBackground = generateImageUrl(dao.background.id);
+        const oldBackground = generateImageUrl(dao.background?.id);
 
         if (background64 === oldBackground) return dao.background.id;
         return (
