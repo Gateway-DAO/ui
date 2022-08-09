@@ -159,7 +159,10 @@ export default function PrivateProfileTemplate() {
               mt: 4,
             }}
           >
-            <SocialButtons socials={me.socials || []} />
+            <SocialButtons
+              socials={me.socials || []}
+              copyNetworks={['discord']}
+            />
           </Stack>
         </Box>
       </Box>
