@@ -9,7 +9,7 @@ import { Box, Divider, Snackbar, Stack, Typography } from '@mui/material';
 import { ROUTES } from '../../../constants/routes';
 import { useSnackbar } from '../../../hooks/use-snackbar';
 import { useAuth } from '../../../providers/auth';
-import { CreateNavbar } from '../../organisms/create-navbar/create-navbar';
+import { PublishNavbar } from '../../organisms/publish-navbar/publish-navbar';
 import TaskArea from '../../organisms/tasks-area/tasks-area';
 import { GateDetailsForm } from './details-form';
 import { GateImageCard } from './gate-image-card/gate-image-card';
@@ -18,7 +18,7 @@ import { createGateSchema, CreateGateTypes } from './schema';
 export function CreateGateTemplate() {
   const methods = useForm({
     resolver: zodResolver(createGateSchema),
-    mode: 'onBlur',
+    mode: 'onSubmit',
   });
 
   const snackbar = useSnackbar();
@@ -58,7 +58,6 @@ export function CreateGateTemplate() {
 
           createGateMutation(
             {
-              // TODO: This is Gateway's ID (temporary)
               dao_id: router.query.dao,
               title: gateData.title,
               categories: gateData.categories,
@@ -101,7 +100,7 @@ export function CreateGateTemplate() {
         [theme.breakpoints.down('sm')]: { p: '0 20px' },
       })}
     >
-      <CreateNavbar isLoading={false} />
+      <PublishNavbar isLoading={false} />
       <Typography
         component="h1"
         variant="h4"

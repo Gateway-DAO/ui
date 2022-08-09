@@ -1,32 +1,31 @@
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
+import { useCopyToClipboard } from 'react-use';
+import { useAccount, useNetwork } from 'wagmi';
+
 import { useMenu } from '@gateway/ui';
+
+import { ArrowDropDown } from '@mui/icons-material';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import LogoutIcon from '@mui/icons-material/Logout';
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
+import { ListItemText } from '@mui/material';
+import Badge, { badgeClasses } from '@mui/material/Badge';
+import IconButton from '@mui/material/IconButton';
+import ListItem from '@mui/material/ListItem';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Snackbar from '@mui/material/Snackbar';
-
-import { ArrowDropDown } from '@mui/icons-material';
-import Badge, { badgeClasses } from '@mui/material/Badge';
-import IconButton from '@mui/material/IconButton';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import LogoutIcon from '@mui/icons-material/Logout';
-import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import OpenInNewIcon from '@mui/icons-material/OpenInNew';
-import { icons } from './wallet-icons';
-
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
-import { ListItemText } from '@mui/material';
-import ListItem from '@mui/material/ListItem';
 
 import { ROUTES } from '../../../constants/routes';
+import { useSnackbar } from '../../../hooks/use-snackbar';
 import { useAuth } from '../../../providers/auth';
 import { AvatarFile } from '../../atoms/avatar-file';
-
-import { useSnackbar } from '../../../hooks/use-snackbar';
-import { useCopyToClipboard } from 'react-use';
-import { useAccount, useNetwork } from 'wagmi';
+import { icons } from './wallet-icons';
 
 /* TODO: Refactor */
 
@@ -131,7 +130,7 @@ export function NavBarAvatar({ hideProfile }: Props) {
         </MenuItem>
         <ListItem disablePadding>
           <IconButton disabled sx={{ mr: 3.5, ml: 1.5 }}>
-            {!!accountDetail.connector?.id &&
+            {!!accountDetail?.connector?.id &&
               icons[accountDetail.connector?.id]}
           </IconButton>
 
