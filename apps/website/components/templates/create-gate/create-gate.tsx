@@ -37,51 +37,62 @@ export function CreateGateTemplate() {
   );
 
   const saveDraft = (draftData: CreateGateTypes) => {
-    const permissionsData = {
-      data: draftData.created_by.map((creator) => {
-        return { user_id: creator.id, permission: 'gate_editor' };
-      }),
-    };
-    uploadImage(
-      {
-        base64: draftData.image,
-        name: draftData.title,
-      },
-      {
-        onSuccess(imageData) {
-          const image_id = imageData['upload_image'].id;
-          const image_url =
-            process.env.NEXT_PUBLIC_NODE_ENDPOINT +
-            '/storage/file?id=' +
-            image_id;
-          createGateMutation(
-            {
-              dao_id: router.query.dao,
-              title: draftData.title,
-              categories: draftData.categories,
-              description: draftData.description,
-              skills: draftData.skills,
-              permissions: permissionsData,
-              image: image_url,
-              tasks: draftData.tasks,
-              published: 'not_published',
-            },
-            {
-              onSuccess() {
-                snackbar.handleClick({ message: 'Saved as draft.' });
-                router.push(ROUTES.EXPLORE);
-              },
-              onError(error) {
-                console.log(error);
-              },
-            }
-          );
+    let permissionsData = null;
+    let image_url = null;
+
+    if (draftData.created_by.length > 0) {
+      permissionsData = {
+        data: draftData.created_by.map((creator) => {
+          return { user_id: creator.id, permission: 'gate_editor' };
+        }),
+      };
+    }
+
+    if (draftData.image) {
+      uploadImage(
+        {
+          base64: draftData.image,
+          name: draftData.title,
         },
-        onError(error) {
-          console.log(error);
+        {
+          onSuccess(imageData) {
+            const image_id = imageData['upload_image'].id;
+            image_url =
+              process.env.NEXT_PUBLIC_NODE_ENDPOINT +
+              '/storage/file?id=' +
+              image_id;
+          },
+          onError(error) {
+            console.log(error);
+          },
+        }
+      );
+    }
+
+    if (draftData.title) {
+      createGateMutation(
+        {
+          dao_id: router.query.dao,
+          title: draftData.title,
+          categories: draftData.categories || [],
+          description: draftData.description,
+          skills: draftData.skills || [],
+          permissions: permissionsData,
+          image: image_url,
+          tasks: draftData.tasks,
+          published: 'published',
         },
-      }
-    );
+        {
+          onSuccess() {
+            snackbar.handleClick({ message: 'Gate created!' });
+            router.push(ROUTES.EXPLORE);
+          },
+          onError(error) {
+            console.log(error);
+          },
+        }
+      );
+    }
   };
 
   const createGate = (gateData: CreateGateTypes) => {
@@ -90,7 +101,6 @@ export function CreateGateTemplate() {
         return { user_id: creator.id, permission: 'gate_editor' };
       }),
     };
-
     uploadImage(
       {
         base64: gateData.image,
@@ -103,7 +113,6 @@ export function CreateGateTemplate() {
             process.env.NEXT_PUBLIC_NODE_ENDPOINT +
             '/storage/file?id=' +
             image_id;
-
           createGateMutation(
             {
               dao_id: router.query.dao,
@@ -118,7 +127,7 @@ export function CreateGateTemplate() {
             },
             {
               onSuccess() {
-                snackbar.handleClick({ message: 'Gate created!' });
+                snackbar.handleClick({ message: 'Saved as draft.' });
                 router.push(ROUTES.EXPLORE);
               },
               onError(error) {
