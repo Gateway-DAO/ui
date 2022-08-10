@@ -1,8 +1,9 @@
 import normalizeUrl from 'normalize-url';
 import { PartialDeep } from 'type-fest';
-import { object, string, SchemaOf, array, mixed, bool } from 'yup';
+import { object, string, SchemaOf, array, StringSchema, bool } from 'yup';
 
-import { URL } from '../../../../constants/forms';
+import { Network } from '../../../../constants/dao';
+import { URL, DISCORD_USER, URL_PROTOCOL } from '../../../../constants/forms';
 import { generateImageUrl } from '../../../../hooks/use-file';
 import {
   Experiences,
@@ -71,9 +72,21 @@ export const schema: SchemaOf<EditUserSchema> = object({
       object({
         network: string().defined(),
         url: string()
-          .matches(URL, 'The URL should be valid')
-          .defined()
-          .transform((val) => normalizeUrl(val, { forceHttps: true })),
+          .when('network', (network: Network, schema: StringSchema) => {
+            switch (network) {
+              case 'email':
+                return schema.email('Invalid email');
+              case 'discord':
+                return schema.matches(DISCORD_USER, 'Invalid Discord username');
+              default:
+                return schema
+                  .matches(URL, 'The URL should be valid')
+                  .transform((val: string) =>
+                    normalizeUrl(val, { forceHttps: !URL_PROTOCOL.test(val) })
+                  );
+            }
+          })
+          .defined(),
       })
     )
     .nullable(),

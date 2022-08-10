@@ -143,7 +143,7 @@ export default function ProfileTemplate({ user }: Props) {
             }}
           >
             <Typography>
-              {user.following_aggregate.aggregate.count} connections
+              {user?.following_aggregate?.aggregate?.count ?? 0} connections
             </Typography>
             .<Typography>{user.credentials.length} credential(s)</Typography>
           </Box>
@@ -155,7 +155,7 @@ export default function ProfileTemplate({ user }: Props) {
             }}
           >
             <FollowButtonUser userId={user.id} />
-            <SocialButtons socials={user.socials} />
+            <SocialButtons socials={user.socials} copyNetworks={['discord']} />
           </Stack>
         </Box>
       </Box>

@@ -9,16 +9,18 @@ import {
 
 import { Add } from '@mui/icons-material';
 import { Button } from '@mui/material';
-import { SocialLink } from './social-link';
 
-export type SocialLinkGroup<TFormSchema> = {
+import { SocialLink, SocialLinkField } from './social-link';
+
+export type SocialLinkGroup<TFormSchema extends FieldValues = FieldValues> = {
   name: ArrayPath<TFormSchema>;
   control: Control<TFormSchema>;
-};
+} & Omit<SocialLinkField, 'name' | 'onDelete' | 'control'>;
 
 export function SocialLinks<TFormSchema extends FieldValues = FieldValues>({
-  control,
   name,
+  control,
+  ...fieldProps
 }: SocialLinkGroup<TFormSchema>) {
   const { fields, append, remove } = useFieldArray({
     control,
@@ -35,6 +37,7 @@ export function SocialLinks<TFormSchema extends FieldValues = FieldValues>({
           name={`${name}.${index}`}
           onDelete={() => remove(index)}
           control={control}
+          {...fieldProps}
         />
       ))}
       <Button
