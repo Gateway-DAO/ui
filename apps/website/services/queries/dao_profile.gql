@@ -31,6 +31,7 @@ query dao_profile($id: uuid!) {
       description
       categories
       image
+      published
     }
   }
 }

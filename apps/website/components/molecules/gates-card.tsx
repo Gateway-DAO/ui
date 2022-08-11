@@ -35,27 +35,21 @@ export function GatesCard({
   published,
 }: PartialDeep<Gates>) {
   const hasDao = !!dao;
-  let onClickRoute;
+  const gateProfileRoute = ROUTES.GATE_PROFILE.replace('[id]', id);
 
-  switch (published) {
-    case 'published':
-      onClickRoute = ROUTES.GATE_PROFILE;
-      break;
-    case 'not_published':
-      onClickRoute = ROUTES.GATE_NEW;
-      break;
-    case 'paused':
-      onClickRoute = ROUTES.GATE_PROFILE;
-      break;
-    default:
-      onClickRoute = ROUTES.GATE_PROFILE;
-      break;
-  }
+  const url = useMemo(() => {
+    switch (published) {
+      case 'published':
+        return gateProfileRoute;
+      case 'not_published':
+        return `${ROUTES.GATE_NEW}?dao=${dao?.id}&gate=${id}`;
+      case 'paused':
+        return gateProfileRoute;
+      default:
+        return gateProfileRoute;
+    }
+  }, [id, dao?.id, published, gateProfileRoute]);
 
-  const url = useMemo(
-    () => onClickRoute.replace('[id]', id),
-    [id, onClickRoute]
-  );
   return (
     <MUICard sx={{ position: 'relative' }}>
       <Link passHref href={url}>

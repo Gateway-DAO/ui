@@ -54,8 +54,10 @@ export function OverviewTab({ people, setTab }: Props) {
           ];
     }
 
-    return gates.map((gate) => <GatesCard key={gate.id} {...gate} />);
-  }, [gates, isAdmin, newGateUrl]);
+    return gates.map((gate) => {
+      return <GatesCard key={gate.id} {...gate} dao={dao} />;
+    });
+  }, [gates, isAdmin, newGateUrl, dao]);
 
   return (
     <Stack
