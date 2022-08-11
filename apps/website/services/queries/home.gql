@@ -5,6 +5,7 @@ query get_home {
     description
     categories
     image
+    published
     dao {
       id
       logo_url
@@ -60,6 +61,7 @@ query gates_tab {
     description
     categories
     image
+    published
     dao {
       id
       logo_url

@@ -123,7 +123,11 @@ export function GatesCard({
               {description}
             </Typography>
           </CardContent>
-          <CategoriesList published={published} categories={categories} />
+          <CategoriesList
+            isGate
+            published={published}
+            categories={categories}
+          />
         </CardActionArea>
       </Link>
     </MUICard>

@@ -4,11 +4,18 @@ import { useIntersection } from 'react-use';
 
 import { Chip, List, ListItem, Popover, Stack } from '@mui/material';
 
+type CategoriesListProps = {
+  categories: string[];
+  isGate?: boolean;
+  published?: string;
+};
+
 export function CategoriesList({
-  published,
   categories,
+  isGate,
+  published,
   ...props
-}): JSX.Element {
+}: CategoriesListProps): JSX.Element {
   const refs = useRef<HTMLDivElement[]>([]);
   const parentRef = useRef<HTMLDivElement>(null);
   const [itemsPopover, setItemsPopover] = useState<string[]>([]);
@@ -64,7 +71,7 @@ export function CategoriesList({
       ref={parentRef}
     >
       <Stack direction="row" spacing={1} px={2} pt={1} pb={2} {...props}>
-        {publicationStateChip}
+        {isGate && publicationStateChip}
         {categories.map((category, index) => {
           const formattedLabel =
             category.charAt(0).toUpperCase() + category.slice(1);
