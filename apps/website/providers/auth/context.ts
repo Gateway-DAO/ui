@@ -1,12 +1,15 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import { createContext, useContext } from 'react';
 
+import type CyberConnect from '@cyberlab/cyberconnect';
+
 import { GqlMethods, gqlAnonMethods } from '../../services/api';
 import { SessionUser } from '../../types/user';
 import { AuthStatus } from './state';
 
 type Context = {
   me?: SessionUser;
+  cyberConnect?: CyberConnect;
   status: AuthStatus;
   gqlAuthMethods: GqlMethods;
   onSignOut: () => void;

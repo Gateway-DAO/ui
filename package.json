@@ -15,6 +15,7 @@
   "private": true,
   "dependencies": {
     "@biconomy/mexa": "^2.0.33",
+    "@cyberlab/cyberconnect": "^4.5.0",
     "@emotion/react": "11.8.2",
     "@emotion/server": "11.4.0",
     "@emotion/styled": "11.8.1",

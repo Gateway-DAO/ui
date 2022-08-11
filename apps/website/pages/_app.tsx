@@ -17,6 +17,7 @@ import { SEOSocial, SEOFavicon } from '../components/atoms/seo';
 import { NavStateProvider } from '../hooks/use-nav';
 import { usePersistLocale } from '../hooks/usePersistLocale';
 import { AuthProvider } from '../providers/auth';
+import { CyberConnectProvider } from '../providers/cyberconnect';
 import { queryClient } from '../services/query-client';
 import { web3client } from '../services/web3/client';
 
@@ -71,9 +72,11 @@ function CustomApp({ Component, pageProps: { ...pageProps } }: AppProps) {
           <QueryClientProvider client={queryClient}>
             <Hydrate state={pageProps.dehydratedState}>
               <AuthProvider isAuthPage={Component.auth}>
-                <NavStateProvider>
-                  <Component {...pageProps} />
-                </NavStateProvider>
+                <CyberConnectProvider>
+                  <NavStateProvider>
+                    <Component {...pageProps} />
+                  </NavStateProvider>
+                </CyberConnectProvider>
               </AuthProvider>
             </Hydrate>
           </QueryClientProvider>
