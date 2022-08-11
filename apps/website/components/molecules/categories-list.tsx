@@ -4,7 +4,11 @@ import { useIntersection } from 'react-use';
 
 import { Chip, List, ListItem, Popover, Stack } from '@mui/material';
 
-export function CategoriesList({ categories, ...props }): JSX.Element {
+export function CategoriesList({
+  published,
+  categories,
+  ...props
+}): JSX.Element {
   const refs = useRef<HTMLDivElement[]>([]);
   const parentRef = useRef<HTMLDivElement>(null);
   const [itemsPopover, setItemsPopover] = useState<string[]>([]);
@@ -15,6 +19,23 @@ export function CategoriesList({ categories, ...props }): JSX.Element {
     threshold: 1,
   });
   const open = Boolean(anchorEl);
+
+  const chipColor = published === ('published' || 'paused') ? 'green' : 'red';
+  const chipLabel =
+    published === ('published' || 'paused') ? 'Published' : 'Unpublished';
+  const publicationStateChip = (
+    <Chip
+      aria-hidden={false}
+      key={published}
+      size="small"
+      variant="outlined"
+      label={chipLabel}
+      sx={{
+        color: chipColor,
+        borderColor: chipColor,
+      }}
+    />
+  );
 
   useEffect(() => {
     if (intersection?.intersectionRatio > 0) {
@@ -43,6 +64,7 @@ export function CategoriesList({ categories, ...props }): JSX.Element {
       ref={parentRef}
     >
       <Stack direction="row" spacing={1} px={2} pt={1} pb={2} {...props}>
+        {publicationStateChip}
         {categories.map((category, index) => {
           const formattedLabel =
             category.charAt(0).toUpperCase() + category.slice(1);
