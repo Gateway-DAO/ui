@@ -142,12 +142,14 @@ export function SocialLink<TFormSchema extends FieldValues = FieldValues>({
       </Stack>
       {!!networkField.fieldState.error && (
         <Typography color="error">
-          {networkField.fieldState.error.message}
+          {/* {networkField.fieldState.error.message} */}
+          Please select the Platform
         </Typography>
       )}
       {!!linkField.fieldState.error && (
         <Typography color="error">
-          {linkField.fieldState.error.message}
+          {/* {linkField.fieldState.error.message} */}
+          Please select the correct URL
         </Typography>
       )}
     </Card>
