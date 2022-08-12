@@ -97,7 +97,7 @@ export function GatesTab() {
                   key={`gate-${gate.id}`}
                   {...gate}
                   dao={dao}
-                  showStatus={true}
+                  showStatus={isAdmin}
                 />
               ))}
             </Box>
