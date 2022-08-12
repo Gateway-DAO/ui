@@ -22,7 +22,8 @@
     "category": "Category",
     "platform": "Platform",
     "link": "Link",
-    "add-link": "Add Link"
+    "add-link": "Add Link",
+    "email": "Email"
   },
   "tabs": {
     "all": "All",
