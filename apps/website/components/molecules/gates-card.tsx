@@ -38,7 +38,7 @@ export function GatesCard({
   id,
   published,
   showStatus,
-}): GatesCardProps {
+}: GatesCardProps): JSX.Element {
   const hasDao = !!dao;
   const gateProfileRoute = ROUTES.GATE_PROFILE.replace('[id]', id);
 
