@@ -120,7 +120,7 @@ export function SearchTemplate({ query }: TemplateProps) {
                     fontSize: '12px',
                     fontWeight: 700,
                     px: 0,
-                    mx: theme.spacing(3),
+                    mr: theme.spacing(3),
                   })}
                   {...(count
                     ? {

@@ -176,7 +176,7 @@ export default function ProfileTemplate({ user }: Props) {
                 fontSize: '12px',
                 fontWeight: 700,
                 px: 0,
-                mx: theme.spacing(3),
+                mr: theme.spacing(3),
               })}
               key={key}
               label={label}
