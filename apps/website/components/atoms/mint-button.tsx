@@ -56,6 +56,7 @@ export const MintCredentialButton = ({ credential }: Props) => {
           sx={{
             borderColor: '#E5E5E580',
             color: 'white',
+            width: '100%',
           }}
         >
           {t('actions.check-transaction')}
@@ -67,6 +68,9 @@ export const MintCredentialButton = ({ credential }: Props) => {
             mintCredential(credential).finally(() => setLoading(false));
           }}
           isLoading={loading}
+          sx={{
+            width: '100%',
+          }}
         >
           {t('actions.mint')}
         </ToMintButton>

@@ -80,19 +80,6 @@ export const MintCard = ({ credential, sx, ...props }: MintCardProps) => {
         error,
         credential,
       })}
-      {(mintProcessStatus === Subjects.start ||
-        (mintProcessStatus === Subjects.failed && Subjects.failed)) && (
-        <Box sx={{ mx: 2, my: 1 }}>
-          <Button
-            size="large"
-            variant="outlined"
-            fullWidth
-            onClick={() => setMintProcessStatus(Subjects.default)}
-          >
-            cancel
-          </Button>
-        </Box>
-      )}
     </Card>
   );
 };

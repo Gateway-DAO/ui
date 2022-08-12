@@ -1,7 +1,11 @@
 import Link from 'next/link';
+import { useState } from 'react';
 
 import { PartialDeep } from 'type-fest';
 
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import {
   Avatar,
   AvatarGroup,
@@ -13,6 +17,11 @@ import {
   Tooltip,
   Button,
   Box,
+  Menu,
+  MenuItem,
+  MenuList,
+  ListItemIcon,
+  IconButton,
 } from '@mui/material';
 
 import { useMe } from '../../../providers/auth/hooks';
@@ -27,7 +36,17 @@ type Props = {
 };
 
 export function CredentialTemplate({ credential, openModal }: Props) {
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+
   const { me } = useMe();
+
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   return (
     <Grid container height="100%">
@@ -58,17 +77,85 @@ export function CredentialTemplate({ credential, openModal }: Props) {
           {credential.name}
         </Typography>
 
-        <Box marginBottom={(theme) => theme.spacing(4)}>
-          {credential.categories.map((category, idx) => (
-            <Chip
-              key={'category-' + (idx + 1)}
-              label={category}
-              sx={{
-                marginRight: (theme) => theme.spacing(1),
-              }}
-            />
-          ))}
-        </Box>
+        <Stack
+          direction="row"
+          alignItems="flex-start"
+          justifyContent="space-between"
+          marginBottom={(theme) => theme.spacing(4)}
+        >
+          <Box>
+            {credential.categories.map((category, idx) => (
+              <Chip
+                key={'category-' + (idx + 1)}
+                label={category}
+                sx={{
+                  marginRight: (theme) => theme.spacing(1),
+                  marginBottom: (theme) => theme.spacing(1),
+                }}
+              />
+            ))}
+          </Box>
+
+          <IconButton
+            aria-label="settings"
+            onClick={handleClick}
+            size="small"
+            aria-controls={open ? 'more' : undefined}
+            aria-haspopup="true"
+            aria-expanded={open ? 'true' : undefined}
+          >
+            <MoreVertIcon />
+          </IconButton>
+
+          <Menu
+            anchorEl={anchorEl}
+            id="more"
+            open={open}
+            onClose={handleClose}
+            onClick={handleClose}
+            transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+            anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+            variant={'menu'}
+            PaperProps={{
+              sx: {
+                mt: 1.5,
+              },
+            }}
+          >
+            <MenuList>
+              {credential.status == 'minted' && (
+                <MenuItem>
+                  <a
+                    href={credential.transaction_url}
+                    target="_blank"
+                    rel="noreferrer"
+                    style={{
+                      textDecoration: 'none',
+                      color: 'white',
+                    }}
+                  >
+                    <Stack direction="row" alignItems="center">
+                      <ListItemIcon>
+                        <OpenInNewIcon fontSize="medium" color="disabled" />
+                      </ListItemIcon>
+                      Open on Explorer
+                    </Stack>
+                  </a>
+                </MenuItem>
+              )}
+              <MenuItem
+                onClick={() => {
+                  navigator.clipboard.writeText(window.location.href);
+                }}
+              >
+                <ListItemIcon>
+                  <ContentCopyIcon fontSize="medium" color="disabled" />
+                </ListItemIcon>
+                Copy URL address
+              </MenuItem>
+            </MenuList>
+          </Menu>
+        </Stack>
 
         <Typography variant="body1" marginBottom={(theme) => theme.spacing(4)}>
           {credential.description}
@@ -77,10 +164,6 @@ export function CredentialTemplate({ credential, openModal }: Props) {
         {credential?.target_id == me?.id && (
           <MintCredentialButton credential={credential} />
         )}
-
-        <Button variant="contained" color="primary" onClick={openModal}>
-          Abrir
-        </Button>
 
         <Box
           component="img"

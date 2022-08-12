@@ -30,7 +30,7 @@ import { Credentials } from '../../../../services/graphql/types.generated';
 import { CategoriesList } from '../../categories-list';
 import { TokenFilled } from '../assets/token-filled';
 import { Subjects } from '../index';
-import { showCategories } from '../utlis/categories';
+import { Categories } from '../utlis/categories';
 
 export const DefaultMintScreen = ({
   mintProcessStatus,
@@ -123,7 +123,10 @@ export const DefaultMintScreen = ({
             </Tooltip>
           ))}
         {/* we can show maximum 2 categories , when mintProcessStauts is minted*/}
-        {showCategories(mintProcessStatus, details.credential.categories)}
+        <Categories
+          mintProcessStatus={mintProcessStatus}
+          categories={details.credential.categories}
+        />
       </Stack>
       <Menu
         anchorEl={anchorEl}
@@ -141,16 +144,36 @@ export const DefaultMintScreen = ({
         }}
       >
         <MenuList>
-          {/* for later use */}
-          {/* <MenuItem>
-            <ListItemIcon>
-              <OpenInNewIcon fontSize="medium" color="disabled" />
-            </ListItemIcon>
-            Open on Ceramic
-          </MenuItem> */}
+          {details.credential.status == 'minted' && (
+            <MenuItem>
+              <a
+                href={details.credential.transaction_url}
+                target="_blank"
+                rel="noreferrer"
+                style={{
+                  textDecoration: 'none',
+                  color: 'white',
+                }}
+              >
+                <Stack direction="row" alignItems="center">
+                  <ListItemIcon>
+                    <OpenInNewIcon fontSize="medium" color="disabled" />
+                  </ListItemIcon>
+                  Open on Explorer
+                </Stack>
+              </a>
+            </MenuItem>
+          )}
           <MenuItem
             onClick={() => {
-              copy(details.credential.transaction_url);
+              navigator.clipboard.writeText(
+                window.location.protocol +
+                  '//' +
+                  window.location.hostname +
+                  (window.location.port && ':' + window.location.port) +
+                  '/credential/' +
+                  details.credential.id
+              );
             }}
           >
             <ListItemIcon>

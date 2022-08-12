@@ -5,7 +5,7 @@ import { Chip } from '@mui/material';
 import { Subjects } from '../index';
 import { MoreList } from './drop-down-list';
 
-export const showCategories = (mintProcessStatus, categories) => {
+export const Categories = ({ mintProcessStatus, categories }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -20,13 +20,7 @@ export const showCategories = (mintProcessStatus, categories) => {
       return (
         <>
           {categories.slice(0, 1).map((category: string) => (
-            <Chip
-              key={category}
-              label={
-                category.length > 7 ? category.slice(0, 7) + '...' : category
-              }
-              size="small"
-            />
+            <Chip key={category} label={category} size="small" />
           ))}
           {categories.length > 1 && (
             <Chip
@@ -50,13 +44,7 @@ export const showCategories = (mintProcessStatus, categories) => {
       return (
         <>
           {categories.slice(0, 2).map((category: string) => (
-            <Chip
-              key={category}
-              label={
-                category.length > 7 ? category.slice(0, 7) + '...' : category
-              }
-              size="small"
-            />
+            <Chip key={category} label={category} size="small" />
           ))}
           {categories.length > 2 && (
             <Chip

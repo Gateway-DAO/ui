@@ -143,7 +143,8 @@ export function useMint(
  * with.
  */
 export function useBiconomyMint(
-  contractAddress: string | null = process.env.NEXT_PUBLIC_WEB3_NFT_ADDRESS
+  contractAddress: string | null = process.env.NEXT_PUBLIC_WEB3_NFT_ADDRESS,
+  isMainnet: boolean = process.env.NODE_ENV === 'production'
 ) {
   // From Wagmi
   const { data: address } = useAccount();
@@ -181,13 +182,15 @@ export function useBiconomyMint(
       ) {
         // We're creating biconomy provider linked to your network of choice where your contract is deployed
         const jsonRpcProvider = new ethers.providers.JsonRpcProvider(
-          process.env.NEXT_PUBLIC_WEB3_POLYGON_RPC
+          isMainnet
+            ? process.env.NEXT_PUBLIC_WEB3_POLYGON_RPC
+            : process.env.NEXT_PUBLIC_WEB3_RINKEBY_RPC
         );
 
         biconomy = new Biconomy(jsonRpcProvider, {
           walletProvider: window.ethereum,
           apiKey: process.env.NEXT_PUBLIC_WEB3_BICONOMY_API_KEY,
-          debug: false,
+          debug: process.env.NODE_ENV === 'development',
         });
 
         biconomy
@@ -259,13 +262,25 @@ export function useBiconomyMint(
             throw new Error('Minting failed! Try again later.');
           }
 
-          console.log('Transaction hash : https://polygonscan.com/tx/' + tx);
+          console.log(
+            'Transaction hash : ' +
+              (isMainnet
+                ? 'https://polygonscan.com'
+                : 'https://rinkeby.etherscan.io') +
+              '/tx/' +
+              tx
+          );
 
           setMinted(true);
 
           return {
             isMinted: true,
-            polygonURL: 'https://polygonscan.com/tx/' + tx,
+            polygonURL:
+              (isMainnet
+                ? 'https://polygonscan.com'
+                : 'https://rinkeby.etherscan.io') +
+              '/tx/' +
+              tx,
           };
         } else {
           console.log('Sending normal transaction');
@@ -273,7 +288,12 @@ export function useBiconomyMint(
           const tx = await contract.mint(address.address, token_uri);
 
           console.log(
-            'Transaction hash : https://polygonscan.com/tx/' + tx.hash
+            'Transaction hash : ' +
+              (isMainnet
+                ? 'https://polygonscan.com'
+                : 'https://rinkeby.etherscan.io') +
+              '/tx/' +
+              tx.hash
           );
 
           await tx.wait();
@@ -283,7 +303,12 @@ export function useBiconomyMint(
 
           return {
             isMinted: true,
-            polygonURL: 'https://polygonscan.com/tx/' + tx.hash,
+            polygonURL:
+              (isMainnet
+                ? 'https://polygonscan.com'
+                : 'https://rinkeby.etherscan.io') +
+              '/tx/' +
+              tx.hash,
           };
         }
       } catch (error) {
