@@ -25,6 +25,10 @@ import { CategoriesList } from './categories-list';
 
 /* TODO: Arias and Labels */
 
+type GatesCardProps = PartialDeep<Gates> & {
+  showStatus?: boolean;
+};
+
 export function GatesCard({
   title,
   image,
@@ -33,7 +37,8 @@ export function GatesCard({
   dao,
   id,
   published,
-}: PartialDeep<Gates>) {
+  showStatus,
+}): GatesCardProps {
   const hasDao = !!dao;
   const gateProfileRoute = ROUTES.GATE_PROFILE.replace('[id]', id);
 
@@ -125,6 +130,7 @@ export function GatesCard({
           </CardContent>
           <CategoriesList
             isGate
+            showStatus={showStatus}
             published={published}
             categories={categories}
           />

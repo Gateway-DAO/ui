@@ -93,7 +93,12 @@ export function GatesTab() {
               }}
             >
               {filteredGates.map((gate) => (
-                <GatesCard key={`gate-${gate.id}`} {...gate} dao={dao} />
+                <GatesCard
+                  key={`gate-${gate.id}`}
+                  {...gate}
+                  dao={dao}
+                  showStatus={true}
+                />
               ))}
             </Box>
           )}
