@@ -171,11 +171,26 @@ export default function ProfileTemplate({ user }: Props) {
           value={activeTab}
           onChange={handleTabChange}
           aria-label="basic tabs example"
-          sx={{ mb: '-1px' }}
+          sx={(theme) => ({
+            mb: '-1px',
+            '& .MuiTabs-indicator': {
+              display: 'flex',
+              justifyContent: 'center',
+              backgroundColor: 'transparent',
+            },
+            '& .MuiTabs-indicatorSpan': {
+              maxWidth: '70%',
+              width: '100%',
+              backgroundColor: theme.palette.primary.main,
+            },
+          })}
+          TabIndicatorProps={{
+            children: <span className="MuiTabs-indicatorSpan" />,
+          }}
         >
           {tabs.map(({ key, label }, index) => (
             <Tab
-              sx={{ fontSize: '12px' }}
+              sx={{ fontSize: '12px' , fontWeight : 700 }}
               key={key}
               label={label}
               {...a11yTabProps('dao', index)}

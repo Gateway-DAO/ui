@@ -77,12 +77,30 @@ export function ExploreTemplate({ title, subtitle, data }: TemplateProps) {
             value={activeTab}
             onChange={handleTabChange}
             aria-label="basic tabs example"
-            sx={{ mb: '-1px' }}
+            sx={(theme) => ({
+              mb: '-1px',
+              '& .MuiTabs-indicator': {
+                display: 'flex',
+                justifyContent: 'center',
+                backgroundColor: 'transparent',
+              },
+              '& .MuiTabs-indicatorSpan': {
+                maxWidth: '70%',
+                width: '100%',
+                backgroundColor: theme.palette.primary.main,
+              },
+            })}
+            TabIndicatorProps={{
+              children: <span className="MuiTabs-indicatorSpan" />,
+            }}
           >
             {tabs.map(({ key, label }, index) => (
               <Tab
                 key={key}
                 label={label}
+                sx={{
+                  fontWeight: 700,
+                }}
                 {...a11yTabProps('explore', index)}
               />
             ))}
