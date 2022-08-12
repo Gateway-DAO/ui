@@ -15,7 +15,7 @@ export const categories = [
   'Financial',
   'Governance',
   'Education',
-  'HR',
+  'Human Ressources',
   'Infrastructure',
   'Operating System',
   'Collaboration',
@@ -41,16 +41,29 @@ export const categoriesMap = categories.reduce(
   new Map<string, string>()
 );
 
-export const networks = [
-  'discord',
-  'email',
-  'github',
-  'medium',
-  'other',
-  'telegram',
-  'twitter',
-  'twitch',
-  'website',
+export const networksLabels = [
+  'Discord',
+  'Email',
+  'GitHub',
+  'Medium',
+  'Telegram',
+  'Twitter',
+  'Twitch',
+  'Website',
+  'Other',
 ] as const;
 
+export const networks = networksLabels.map((network) =>
+  network.toLowerCase()
+) as Lowercase<typeof networksLabels[number]>[];
+
 export type Network = typeof networks[number];
+
+/* Record of network values to labels */
+export const networkValueLabelMap = networksLabels.reduce(
+  (acc, network, index) => ({
+    ...acc,
+    [networks[index]]: network,
+  }),
+  {} as Record<Network, typeof networksLabels[number]>
+);

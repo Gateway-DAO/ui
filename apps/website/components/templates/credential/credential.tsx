@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 import { PartialDeep } from 'type-fest';
 
 import {
@@ -7,9 +9,10 @@ import {
   Grid,
   Stack,
   Typography,
-  Box,
   Divider,
+  Tooltip,
   Button,
+  Box,
 } from '@mui/material';
 
 import { useMe } from '../../../providers/auth/hooks';
@@ -103,18 +106,32 @@ export function CredentialTemplate({ credential, openModal }: Props) {
               </Grid>
               <Grid item xs={8}>
                 <AvatarGroup
-                  total={5}
+                  total={
+                    credential.gate?.holders.length >= 5
+                      ? 5
+                      : credential.gate?.holders.length
+                  }
                   sx={{
                     justifyContent: 'flex-end',
                   }}
                 >
                   {credential.gate?.holders.map((holder) => {
                     return (
-                      <Avatar
+                      <Link
                         key={holder.id}
-                        alt={holder.username}
-                        src={holder.pfp}
-                      />
+                        passHref
+                        href={`/profile/${holder.username}`}
+                      >
+                        <Tooltip title={holder.name}>
+                          <Box component="a" sx={{ display: 'inline-block' }}>
+                            <AvatarFile
+                              alt={holder.username}
+                              file={holder.picture}
+                              fallback={holder.pfp || '/logo.png'}
+                            />
+                          </Box>
+                        </Tooltip>
+                      </Link>
                     );
                   })}
                 </AvatarGroup>
@@ -136,6 +153,7 @@ export function CredentialTemplate({ credential, openModal }: Props) {
                 label={skill}
                 sx={{
                   marginRight: (theme) => theme.spacing(1),
+                  marginBottom: (theme) => theme.spacing(1),
                 }}
               />
             ))}
@@ -151,11 +169,20 @@ export function CredentialTemplate({ credential, openModal }: Props) {
                 </Typography>
               </Grid>
               <Grid item xs={8}>
-                <AvatarFile
-                  alt={credential.gate?.creator?.username}
-                  file={credential.gate?.creator?.picture}
-                  fallback="/logo.png"
-                />
+                <Link
+                  passHref
+                  href={`/profile/${credential.gate?.creator.username}`}
+                >
+                  <Tooltip title={credential.gate?.creator.name}>
+                    <Box component="a" sx={{ display: 'inline-block' }}>
+                      <AvatarFile
+                        alt={credential.gate?.creator.username}
+                        file={credential.gate?.creator.picture}
+                        fallback={'/logo.png'}
+                      />
+                    </Box>
+                  </Tooltip>
+                </Link>
               </Grid>
             </>
           )}

@@ -15,6 +15,7 @@ import {
   Box,
   Divider,
   Button,
+  Tooltip,
 } from '@mui/material';
 
 import { useAuth } from '../../../../website/providers/auth';
@@ -167,7 +168,7 @@ export function GateViewTemplate({ gate }: Props) {
               </Grid>
               <Grid item xs={8}>
                 <AvatarGroup
-                  total={5}
+                  total={gate.holders.length >= 5 ? 5 : gate.holders.length}
                   sx={{
                     justifyContent: 'flex-end',
                   }}
@@ -179,11 +180,15 @@ export function GateViewTemplate({ gate }: Props) {
                         passHref
                         href={`/profile/${holder.username}`}
                       >
-                        <Avatar
-                          component="a"
-                          alt={holder.username}
-                          src={holder.pfp}
-                        />
+                        <Tooltip title={holder.name}>
+                          <Box component="a" sx={{ display: 'inline-block' }}>
+                            <AvatarFile
+                              alt={holder.username}
+                              file={holder.picture}
+                              fallback={holder.pfp || '/logo.png'}
+                            />
+                          </Box>
+                        </Tooltip>
                       </Link>
                     );
                   })}
@@ -223,13 +228,15 @@ export function GateViewTemplate({ gate }: Props) {
               </Grid>
               <Grid item xs={8}>
                 <Link passHref href={`/profile/${gate.creator.username}`}>
-                  <Box component="a" sx={{ display: 'inline-block' }}>
-                    <AvatarFile
-                      alt={gate.creator.username}
-                      file={gate.creator.picture}
-                      fallback={'/logo.png'}
-                    />
-                  </Box>
+                  <Tooltip title={gate.creator.name}>
+                    <Box component="a" sx={{ display: 'inline-block' }}>
+                      <AvatarFile
+                        alt={gate.creator.username}
+                        file={gate.creator.picture}
+                        fallback={gate.creator.pfp || '/logo.png'}
+                      />
+                    </Box>
+                  </Tooltip>
                 </Link>
               </Grid>
             </>

@@ -19,9 +19,10 @@ import { ROUTES } from '../../../constants/routes';
 import { useFile } from '../../../hooks/use-file';
 import { AvatarFile } from '../../atoms/avatar-file';
 import { FollowButtonDAO } from '../../atoms/follow-button-dao';
+import { ShareButton } from '../../atoms/share-button';
 import { Navbar } from '../../organisms/navbar/navbar';
+import { SocialButtons } from '../../organisms/social-buttons';
 import { useDaoProfile } from './context';
-import { Socials } from './socials';
 
 type Props = {
   followCount?: number;
@@ -101,10 +102,14 @@ export function DaoHeader({
             )}
           </Stack>
           {dao.categories && (
-            <Stack direction="row" gap={2} sx={{ mt: 12 / 8 }}>
+            <Stack direction="row" gap={1} sx={{ mt: 12 / 8 }}>
               {dao.categories.map((category) => {
                 const label = categoriesMap.get(category) ?? category;
-                return <Chip key={category} label={label} size="small" />;
+                const formattedLabel =
+                  label.charAt(0).toUpperCase() + label.slice(1);
+                return (
+                  <Chip key={category} label={formattedLabel} size="small" />
+                );
               })}
             </Stack>
           )}
@@ -137,7 +142,7 @@ export function DaoHeader({
               {t('common:count.gate', { count: dao.gates?.length ?? 0 })}
             </Typography>
           </Stack>
-          <Socials dao={dao}>
+          <SocialButtons socials={dao.socials} sx={{ mt: 4 }}>
             <FollowButtonDAO
               key={isAdmin ? 'isAdmin' : 'notAdmin'}
               daoId={dao.id}
@@ -145,7 +150,8 @@ export function DaoHeader({
               onUnfollow={onUnfollow}
               disabled={isAdmin}
             />
-          </Socials>
+            <ShareButton title={`${dao.name} @ Gateway`} />
+          </SocialButtons>
         </Box>
       </Box>
     </>

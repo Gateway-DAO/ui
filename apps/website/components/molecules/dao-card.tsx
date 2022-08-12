@@ -47,9 +47,9 @@ export function DaoCard({
   const getFollowersAndGatesNumber = () => {
     const followers = followers_aggregate?.aggregate?.count ?? null;
     const gates = gates_aggregate?.aggregate?.count ?? null;
-    return `${followers > 0 ? `${followers} contributors` : ''} ${
+    return `${followers > 0 ? `${followers} Follower(s)` : ''} ${
       followers && gates ? '·' : ''
-    } ${gates > 0 ? `${gates} gates` : ''}`;
+    } ${gates > 0 ? `${gates} gate(s)` : ''}`;
   };
 
   return (
