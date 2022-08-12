@@ -106,7 +106,22 @@ export function SearchTemplate({ query }: TemplateProps) {
             value={activeTab}
             onChange={handleTabChange}
             aria-label="basic tabs example"
-            sx={{ mb: '-1px' }}
+            sx={(theme) => ({
+              mb: '-1px',
+              '& .MuiTabs-indicator': {
+                display: 'flex',
+                justifyContent: 'center',
+                backgroundColor: 'transparent',
+              },
+              '& .MuiTabs-indicatorSpan': {
+                maxWidth: '75%',
+                width: '100%',
+                backgroundColor: theme.palette.primary.main,
+              },
+            })}
+            TabIndicatorProps={{
+              children: <span className="MuiTabs-indicatorSpan" />,
+            }}
           >
             {tabs
               .sort((obj1, obj2) => obj2.count - obj1.count)
@@ -114,6 +129,9 @@ export function SearchTemplate({ query }: TemplateProps) {
                 <Tab
                   key={key}
                   label={label}
+                  sx={{
+                    fontWeight: 700,
+                  }}
                   {...(count
                     ? {
                         icon: <Chip label={count} size="small" />,
