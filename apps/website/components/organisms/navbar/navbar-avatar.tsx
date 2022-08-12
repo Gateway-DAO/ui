@@ -155,16 +155,22 @@ export function NavBarAvatar({ hideProfile }: Props) {
             secondary={activeChain?.name}
           />
 
-          <IconButton sx={{ ml: 3 }} onClick={withOnClose(copyText)}>
-            <ContentCopyIcon color="disabled" sx={{ height: 20, width: 20 }} />
+          <IconButton
+            sx={{ ml: 3, mr: 0.5, background: '#E5E5E529' }}
+            onClick={withOnClose(copyText)}
+          >
+            <ContentCopyIcon
+              color="disabled"
+              sx={{ height: 20, width: 20, color: '#FFFFFF8F' }}
+            />
           </IconButton>
 
           <IconButton
-            sx={{ mr: 1.5 }}
+            sx={{ mr: 1.5, background: '#E5E5E529' }}
             href={`https://etherscan.io/address/${accountDetail?.address}`}
             target="_blank"
           >
-            <OpenInNewIcon color="disabled" sx={{ height: 20, width: 20 }} />
+            <OpenInNewIcon sx={{ height: 20, width: 20, color: '#FFFFFF8F' }} />
           </IconButton>
         </ListItem>
       </Menu>
