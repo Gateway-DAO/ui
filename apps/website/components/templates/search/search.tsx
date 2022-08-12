@@ -106,21 +106,8 @@ export function SearchTemplate({ query }: TemplateProps) {
             value={activeTab}
             onChange={handleTabChange}
             aria-label="basic tabs example"
-            sx={(theme) => ({
+            sx={{
               mb: '-1px',
-              '& .MuiTabs-indicator': {
-                display: 'flex',
-                justifyContent: 'center',
-                backgroundColor: 'transparent',
-              },
-              '& .MuiTabs-indicatorSpan': {
-                maxWidth: '75%',
-                width: '100%',
-                backgroundColor: theme.palette.primary.main,
-              },
-            })}
-            TabIndicatorProps={{
-              children: <span className="MuiTabs-indicatorSpan" />,
             }}
           >
             {tabs
@@ -129,9 +116,12 @@ export function SearchTemplate({ query }: TemplateProps) {
                 <Tab
                   key={key}
                   label={label}
-                  sx={{
+                  sx={(theme) => ({
+                    fontSize: '12px',
                     fontWeight: 700,
-                  }}
+                    px: 0,
+                    mx: theme.spacing(3),
+                  })}
                   {...(count
                     ? {
                         icon: <Chip label={count} size="small" />,
