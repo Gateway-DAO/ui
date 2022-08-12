@@ -109,7 +109,8 @@ export function OverviewTab({ user }: Props) {
                 >
                   Experiences
                 </Typography>
-                {canEdit && (
+                {/* comment out the Edit experiennce */}
+                {/* {canEdit && (
                   <EditIcon
                     sx={{
                       marginLeft: '15px',
@@ -120,7 +121,7 @@ export function OverviewTab({ user }: Props) {
                       router.push(ROUTES.PROFILE_EDIT + '#experiences')
                     }
                   ></EditIcon>
-                )}
+                )} */}
               </Box>
               {user.experiences?.length > 0 ? (
                 <Stack>

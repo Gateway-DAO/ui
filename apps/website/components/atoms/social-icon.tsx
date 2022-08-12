@@ -9,7 +9,7 @@ import {
   FaTelegram,
 } from 'react-icons/fa';
 
-import { Language, Link } from '@mui/icons-material';
+import { Language, Link, Mail } from '@mui/icons-material';
 import { SvgIcon, SvgIconProps } from '@mui/material';
 
 import { Network } from '../../constants/dao';
@@ -27,6 +27,8 @@ export function SocialIcon({ icon, ...other }: Props) {
         return FaTwitch;
       case 'discord':
         return FaDiscord;
+      case 'email':
+        return Mail;
       case 'github':
         return FaGithub;
       case 'medium':

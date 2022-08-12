@@ -1,44 +1,45 @@
 import Link from 'next/link';
+import { PropsWithChildren } from 'react';
 
-import { PartialDeep } from 'type-fest';
-
-import { Box, SxProps, IconButton, Avatar } from '@mui/material';
+import { Stack, SxProps, IconButton, Avatar } from '@mui/material';
 
 import { Network } from '../../../constants/dao';
 import { User_Socials } from '../../../services/graphql/types.generated';
 import { SocialIcon } from '../../atoms/social-icon';
+import { SocialButton } from './social-button';
+import { SocialCopyButton } from './social-copy-button';
 
 type Props = {
-  socials: PartialDeep<User_Socials>[];
+  socials: Partial<Pick<User_Socials, 'network' | 'url'>>[];
+  /* networks that will render as click to copy instead of a link */
+  copyNetworks?: Network[];
   sx?: SxProps;
 };
 
-export function SocialButtons({ socials }: Props) {
+export function SocialButtons({
+  socials,
+  sx,
+  children,
+  copyNetworks = [],
+}: PropsWithChildren<Props>) {
   return (
-    <Box>
-      {socials.map(({ network, url }) => (
-        <Link href={url} key={network} passHref>
-          <IconButton
-            sx={{
-              p: 0,
-              mr: 1,
-            }}
-            component="a"
-            target="_blank"
-          >
-            <Avatar>
-              <SocialIcon
-                icon={network as Network}
-                sx={{
-                  fontSize: '18px',
-                  marginTop: '0px',
-                  color: '#E5E5E5',
-                }}
-              />
-            </Avatar>
-          </IconButton>
-        </Link>
-      ))}
-    </Box>
+    <Stack direction="row" gap={1} sx={sx}>
+      {children}
+      {socials.map(({ network, url }) =>
+        copyNetworks.includes(network as Network) ? (
+          <SocialCopyButton
+            key={url + network}
+            network={network as Network}
+            url={url}
+          />
+        ) : (
+          <SocialButton
+            key={url + network}
+            network={network as Network}
+            url={url}
+          />
+        )
+      )}
+    </Stack>
   );
 }
