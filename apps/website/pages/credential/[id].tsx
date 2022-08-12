@@ -1,5 +1,6 @@
 import { GetStaticPaths, InferGetStaticPropsType } from 'next';
 
+import { useQuery } from 'react-query';
 import { useToggle } from 'react-use';
 
 import { MintModal } from '../../components/organisms/mint-modal';
@@ -12,8 +13,21 @@ export default function CredentialPage({
 }: InferGetStaticPropsType<typeof getStaticProps>) {
   const [isOpen, open] = useToggle(false);
 
-  if (!credentialProps) return null;
   const { credentials_by_pk: credential } = credentialProps;
+
+  const { data } = useQuery(
+    ['credential', credential.id],
+    () =>
+      gqlAnonMethods.credential({
+        id: credential.id,
+      }),
+    {
+      initialData: credentialProps,
+    }
+  );
+
+  if (!data) return null;
+
   return (
     <DashboardTemplate
       containerProps={{
@@ -23,7 +37,10 @@ export default function CredentialPage({
         },
       }}
     >
-      <CredentialTemplate credential={credential} openModal={open} />
+      <CredentialTemplate
+        credential={data.credentials_by_pk}
+        openModal={open}
+      />
       <MintModal
         isOpen={isOpen}
         onClose={open}

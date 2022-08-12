@@ -7,7 +7,6 @@ import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import {
-  Avatar,
   AvatarGroup,
   Chip,
   Grid,
@@ -15,7 +14,6 @@ import {
   Typography,
   Divider,
   Tooltip,
-  Button,
   Box,
   Menu,
   MenuItem,
@@ -24,7 +22,7 @@ import {
   IconButton,
 } from '@mui/material';
 
-import { useMe } from '../../../providers/auth/hooks';
+import { useAuth } from '../../../providers/auth';
 import { Credentials } from '../../../services/graphql/types.generated';
 import { AvatarFile } from '../../atoms/avatar-file';
 import { MintCredentialButton } from '../../atoms/mint-button';
@@ -39,7 +37,7 @@ export function CredentialTemplate({ credential, openModal }: Props) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
-  const { me } = useMe();
+  const { me, gqlAuthMethods } = useAuth();
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);

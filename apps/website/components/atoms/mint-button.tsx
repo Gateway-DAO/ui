@@ -39,6 +39,10 @@ const MintedButton = (props) => (
 );
 
 export const MintCredentialButton = ({ credential }: Props) => {
+  const [status, setStatus] = useState<'to_mint' | 'minted'>(credential.status);
+  const [transactionUrl, setTransactionUrl] = useState<string | null>(
+    credential.transaction_url
+  );
   const { mintCredential } = useBiconomyMint();
   const [loading, setLoading] = useState<boolean>(false);
   const { t } = useTranslation('common');
@@ -50,9 +54,9 @@ export const MintCredentialButton = ({ credential }: Props) => {
         marginBottom: (theme) => theme.spacing(4),
       }}
     >
-      {credential.status === 'minted' ? (
+      {status === 'minted' ? (
         <MintedButton
-          transaction_url={credential.transaction_url}
+          transaction_url={transactionUrl}
           sx={{
             borderColor: '#E5E5E580',
             color: 'white',
@@ -65,7 +69,12 @@ export const MintCredentialButton = ({ credential }: Props) => {
         <ToMintButton
           onClick={() => {
             setLoading(true);
-            mintCredential(credential).finally(() => setLoading(false));
+            mintCredential(credential)
+              .then(({ isMinted, polygonURL }) => {
+                setStatus(isMinted ? 'minted' : 'to_mint');
+                setTransactionUrl(isMinted && polygonURL);
+              })
+              .finally(() => setLoading(false));
           }}
           isLoading={loading}
           sx={{
