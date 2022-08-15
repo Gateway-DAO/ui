@@ -159,60 +159,6 @@ export function OverviewTab({ user }: Props) {
                 </Box>
               )}
             </Box>
-            {/*          <Box
-              sx={{
-                pt: '50px',
-                px: TOKENS.CONTAINER_PX,
-                display: 'flex',
-                flexDirection: 'column',
-              }}
-            >
-              <Typography
-                style={{ color: '#fff', fontSize: '20px' }}
-                variant="h2"
-              >
-                Recommendations
-              </Typography>
-            </Box>
-            <Box
-              sx={{
-                pt: '20px',
-                px: TOKENS.CONTAINER_PX,
-                borderBottom: 1,
-                borderColor: 'divider',
-                display: 'flex',
-                flexDirection: 'column',
-                rowGap: '20px',
-              }}
-            >
-              <Tabs
-                value={activeTab}
-                onChange={handleTabChange}
-                aria-label="basic tabs example"
-                sx={{ mb: '-1px' }}
-              >
-                {tabs.map(({ key, label }, index) => (
-                  <Tab
-                    key={key}
-                    label={label}
-                    {...a11yTabProps('dao', index)}
-                  />
-                ))}
-              </Tabs>
-            </Box> */}
-            {/*tabs.map(({ key, section }, index) => (
-              <TabPanel
-                key={key}
-                tabsId="explore"
-                index={index}
-                active={index === activeTab}
-                sx={{
-                  marginBottom: '200px',
-                }}
-              >
-                {section}
-              </TabPanel>
-              ))*/}
           </Box>
           <Box sx={{ display: 'flex', flexDirection: 'column' }}>
             <Box
