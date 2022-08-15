@@ -153,7 +153,9 @@ export function CreateGateTemplate() {
       {/* Tasks */}
       {hasTitleAndDescription && (
         <>
-          <Divider sx={{ margin: '60px 0' }} />
+          <Divider
+            sx={{ margin: '60px 0', width: '200%', marginLeft: '-50%' }}
+          />
           <Stack
             direction="row"
             gap={{ lg: 5, xs: 2, md: 2 }}

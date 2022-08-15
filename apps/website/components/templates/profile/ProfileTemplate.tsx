@@ -46,11 +46,6 @@ export default function ProfileTemplate({ user }: Props) {
         label: t('common:tabs.overview'),
         section: <OverviewTab user={user} />,
       },
-      // {
-      //   key: 'activity',
-      //   label: t('activity'),
-      //   section: <ActivityTab />,
-      // },
     ],
     []
   );
@@ -143,7 +138,7 @@ export default function ProfileTemplate({ user }: Props) {
             }}
           >
             <Typography>
-              {user.following_aggregate.aggregate.count} connections
+              {user?.following_aggregate?.aggregate?.count ?? 0} connections
             </Typography>
             .<Typography>{user.credentials.length} credential(s)</Typography>
           </Box>
@@ -155,7 +150,7 @@ export default function ProfileTemplate({ user }: Props) {
             }}
           >
             <FollowButtonUser userId={user.id} />
-            <SocialButtons socials={user.socials} />
+            <SocialButtons socials={user.socials} copyNetworks={['discord']} />
           </Stack>
         </Box>
       </Box>
@@ -171,11 +166,18 @@ export default function ProfileTemplate({ user }: Props) {
           value={activeTab}
           onChange={handleTabChange}
           aria-label="basic tabs example"
-          sx={{ mb: '-1px' }}
+          sx={{
+            mb: '-1px',
+          }}
         >
           {tabs.map(({ key, label }, index) => (
             <Tab
-              sx={{ fontSize: '12px' }}
+              sx={(theme) => ({
+                fontSize: '12px',
+                fontWeight: 700,
+                px: 0,
+                mr: theme.spacing(3),
+              })}
               key={key}
               label={label}
               {...a11yTabProps('dao', index)}
