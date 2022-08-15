@@ -46,11 +46,6 @@ export default function ProfileTemplate({ user }: Props) {
         label: t('common:tabs.overview'),
         section: <OverviewTab user={user} />,
       },
-      // {
-      //   key: 'activity',
-      //   label: t('activity'),
-      //   section: <ActivityTab />,
-      // },
     ],
     []
   );
@@ -171,26 +166,18 @@ export default function ProfileTemplate({ user }: Props) {
           value={activeTab}
           onChange={handleTabChange}
           aria-label="basic tabs example"
-          sx={(theme) => ({
+          sx={{
             mb: '-1px',
-            '& .MuiTabs-indicator': {
-              display: 'flex',
-              justifyContent: 'center',
-              backgroundColor: 'transparent',
-            },
-            '& .MuiTabs-indicatorSpan': {
-              maxWidth: '70%',
-              width: '100%',
-              backgroundColor: theme.palette.primary.main,
-            },
-          })}
-          TabIndicatorProps={{
-            children: <span className="MuiTabs-indicatorSpan" />,
           }}
         >
           {tabs.map(({ key, label }, index) => (
             <Tab
-              sx={{ fontSize: '12px' , fontWeight : 700 }}
+              sx={(theme) => ({
+                fontSize: '12px',
+                fontWeight: 700,
+                px: 0,
+                mr: theme.spacing(3),
+              })}
               key={key}
               label={label}
               {...a11yTabProps('dao', index)}
