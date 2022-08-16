@@ -64,8 +64,6 @@ export function useMint(
 
     if (contract) {
       try {
-        console.log('Sending normal transaction');
-
         const promise = contract.mint(address.address, token_uri);
 
         setAsksSignature(true);
@@ -74,10 +72,7 @@ export function useMint(
 
         setAsksSignature(false);
 
-        console.log('Transaction hash : https://polygonscan.com/tx/' + tx.hash);
-
         const confirmation = await tx.wait();
-        console.log(confirmation);
 
         setLoading(false);
         setMinted(true);
@@ -262,15 +257,6 @@ export function useBiconomyMint(
             throw new Error('Minting failed! Try again later.');
           }
 
-          console.log(
-            'Transaction hash : ' +
-              (isMainnet
-                ? 'https://polygonscan.com'
-                : 'https://rinkeby.etherscan.io') +
-              '/tx/' +
-              tx
-          );
-
           setMinted(true);
 
           return {
@@ -283,18 +269,7 @@ export function useBiconomyMint(
               tx,
           };
         } else {
-          console.log('Sending normal transaction');
-
           const tx = await contract.mint(address.address, token_uri);
-
-          console.log(
-            'Transaction hash : ' +
-              (isMainnet
-                ? 'https://polygonscan.com'
-                : 'https://rinkeby.etherscan.io') +
-              '/tx/' +
-              tx.hash
-          );
 
           await tx.wait();
 
