@@ -25,7 +25,14 @@ type Props = {
 export function CredentialTemplate({ credential }: Props) {
   return (
     <Grid container height="100%">
-      <Grid item xs={12} md={5} p={(theme) => theme.spacing(7)}>
+      <Grid
+        item
+        xs={12}
+        md={5}
+        sx={(theme) => ({
+          p: { xs: theme.spacing(3), md: theme.spacing(7) },
+        })}
+      >
         {/* DAO info */}
         <Stack
           direction="row"
