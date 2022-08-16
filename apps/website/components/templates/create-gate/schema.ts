@@ -271,9 +271,11 @@ export const taskSnapshotSchema = z.object({
 });
 
 export const createGateSchema = z.object({
-  title: z.string().min(2),
+  title: z.string().min(2, 'The title must contain at least 2 character(s)'),
   categories: z.array(z.string()),
-  description: z.string().min(2),
+  description: z
+    .string()
+    .min(2, 'The description must contain at least 2 character(s)'),
   image: z.string({ required_error: 'Image is required' }).min(2),
   skills: z.array(z.string()),
   created_by: z.array(
