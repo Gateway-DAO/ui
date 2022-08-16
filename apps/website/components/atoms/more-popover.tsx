@@ -1,0 +1,69 @@
+import React from 'react';
+
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { Avatar, IconButton, Popover, Typography } from '@mui/material';
+
+const MorePopover = ({ options }) => {
+  const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
+    null
+  );
+
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
+  const id = open ? 'simple-popover' : undefined;
+
+  return (
+    <>
+      <IconButton
+        sx={{
+          p: 0,
+        }}
+        onClick={handleClick}
+        key="gate-options"
+      >
+        <Avatar>
+          <MoreVertIcon
+            sx={{
+              mt: -0.25,
+            }}
+          />
+        </Avatar>
+      </IconButton>
+      <Popover
+        id={id}
+        open={open}
+        anchorEl={anchorEl}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'right',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
+        }}
+      >
+        {options.map((option, index) => {
+          return (
+            <Typography
+              key={`${option.text}-${index}`}
+              sx={{ p: 2, cursor: 'pointer', minWidth: '200px' }}
+              onClick={option.action}
+            >
+              {option.text}
+            </Typography>
+          );
+        })}
+      </Popover>
+    </>
+  );
+};
+
+export default MorePopover;

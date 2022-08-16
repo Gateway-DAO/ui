@@ -1,6 +1,11 @@
 query me {
   me {
     ...current_user
+    permissions {
+      gate_id
+      dao_id
+      permission
+    }
     picture {
       ...file
     }

@@ -3,19 +3,34 @@ import { useRouter } from 'next/router';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm, FormProvider } from 'react-hook-form';
 import { useMutation } from 'react-query';
+import { v4 as uuidv4 } from 'uuid';
 
 import { Box, Divider, Snackbar, Stack, Typography } from '@mui/material';
 
 import { ROUTES } from '../../../constants/routes';
 import { useSnackbar } from '../../../hooks/use-snackbar';
 import { useAuth } from '../../../providers/auth';
+import {
+  Tasks_Constraint,
+  Tasks_Update_Column,
+  Permissions_Constraint,
+  Permissions_Update_Column,
+} from '../../../services/graphql/types.generated';
 import { PublishNavbar } from '../../organisms/publish-navbar/publish-navbar';
 import TaskArea from '../../organisms/tasks-area/tasks-area';
 import { GateDetailsForm } from './details-form';
 import { GateImageCard } from './gate-image-card/gate-image-card';
 import { createGateSchema, CreateGateTypes } from './schema';
 
-export function CreateGateTemplate() {
+export function CreateGateTemplate({ oldData }) {
+  const gateDetails = (({
+    title,
+    categories,
+    description,
+    skills,
+    created_by,
+  }) => ({ title, categories, description, skills, created_by }))(oldData);
+
   const methods = useForm({
     resolver: zodResolver(createGateSchema),
     mode: 'onSubmit',
@@ -72,15 +87,34 @@ export function CreateGateTemplate() {
     if (draftData.title) {
       createGateMutation(
         {
+          id: oldData.id || uuidv4(),
           dao_id: router.query.dao,
           title: draftData.title,
           categories: draftData.categories || [],
           description: draftData.description,
           skills: draftData.skills || [],
-          permissions: permissionsData,
+          permissions: {
+            ...permissionsData,
+            on_conflict: {
+              constraint:
+                Permissions_Constraint.PermissionsDaoIdUserIdCredentialIdKey,
+              update_columns: [Permissions_Update_Column.Permission],
+            },
+          },
           image: image_url,
-          tasks: draftData.tasks,
-          published: 'published',
+          tasks: {
+            ...draftData.tasks,
+            on_conflict: {
+              constraint: Tasks_Constraint.KeysPk,
+              update_columns: [
+                Tasks_Update_Column.Title,
+                Tasks_Update_Column.Description,
+                Tasks_Update_Column.TaskData,
+                Tasks_Update_Column.TaskType,
+              ],
+            },
+          },
+          published: 'not_published',
         },
         {
           onSuccess() {
@@ -115,14 +149,33 @@ export function CreateGateTemplate() {
             image_id;
           createGateMutation(
             {
+              id: oldData.id || uuidv4(),
               dao_id: router.query.dao,
               title: gateData.title,
               categories: gateData.categories,
               description: gateData.description,
               skills: gateData.skills,
-              permissions: permissionsData,
+              permissions: {
+                ...permissionsData,
+                on_conflict: {
+                  constraint:
+                    Permissions_Constraint.PermissionsDaoIdUserIdCredentialIdKey,
+                  update_columns: [Permissions_Update_Column.Permission],
+                },
+              },
               image: image_url,
-              tasks: gateData.tasks,
+              tasks: {
+                ...gateData.tasks,
+                on_conflict: {
+                  constraint: Tasks_Constraint.KeysPk,
+                  update_columns: [
+                    Tasks_Update_Column.Title,
+                    Tasks_Update_Column.Description,
+                    Tasks_Update_Column.TaskData,
+                    Tasks_Update_Column.TaskType,
+                  ],
+                },
+              },
               published: 'published',
             },
             {
@@ -195,7 +248,7 @@ export function CreateGateTemplate() {
         >
           <Stack direction="column" gap={4}>
             <FormProvider {...methods}>
-              <GateDetailsForm />
+              <GateDetailsForm gateData={gateDetails} />
             </FormProvider>
           </Stack>
         </Stack>
@@ -238,7 +291,7 @@ export function CreateGateTemplate() {
             >
               <Stack direction="column" gap={2}>
                 <FormProvider {...methods}>
-                  <TaskArea />
+                  <TaskArea tasks={oldData.tasks} />
                 </FormProvider>
               </Stack>
             </Stack>

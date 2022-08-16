@@ -1,4 +1,5 @@
 mutation create_gate(
+  $id: uuid
   $dao_id: uuid!
   $title: String!
   $categories: jsonb
@@ -11,6 +12,7 @@ mutation create_gate(
 ) {
   insert_gates_one(
     object: {
+      id: $id
       dao_id: $dao_id
       title: $title
       categories: $categories
@@ -20,6 +22,10 @@ mutation create_gate(
       image: $image
       tasks: $tasks
       published: $published
+    }
+    on_conflict: {
+      constraint: gates_pk
+      update_columns: [title, categories, description, skills, image, published]
     }
   ) {
     id

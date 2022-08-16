@@ -9,6 +9,7 @@ export type Creator = {
 
 // Create Gate
 export type CreateGateTypes = {
+  id?: string;
   title: string;
   categories: string[];
   description: string;

@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 
 import { useFormContext } from 'react-hook-form';
 
@@ -10,18 +10,23 @@ import CreatedByInput from '../../molecules/creators-input';
 import SkillsInput from '../../molecules/skills-input';
 import { CreateGateTypes, Creator } from './schema';
 
-export function GateDetailsForm() {
+export function GateDetailsForm({ gateData }) {
   const {
     register,
     formState: { errors },
     setValue,
   } = useFormContext<CreateGateTypes>();
   const { me } = useAuth();
-  const creators = [{ id: me?.id, name: me?.name }];
+  const { title, categories, description, skills } = gateData;
+  const creators = useMemo(() => [{ id: me?.id, name: me?.name }], [me]);
 
   useEffect(() => {
+    setValue('title', title);
+    setValue('categories', categories);
+    setValue('description', description);
+    setValue('skills', skills);
     setValue('created_by', creators);
-  }, []);
+  }, [title, categories, description, skills, creators, setValue]);
 
   return (
     <Stack direction="column" gap={2}>

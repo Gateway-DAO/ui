@@ -23,7 +23,7 @@ export default function CreateGate({ gateProps }) {
     return null;
   }
 
-  return <CreateGateTemplate gateData={gateProps} />;
+  return <CreateGateTemplate oldData={gateProps} />;
 }
 
 export async function getServerSideProps({ query }) {

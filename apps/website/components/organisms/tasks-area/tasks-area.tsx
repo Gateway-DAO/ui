@@ -49,7 +49,7 @@ const defaultTaskData = (
   }
 };
 
-const TaskArea = () => {
+const TaskArea = ({ tasks }) => {
   const { control, trigger } = useFormContext<CreateGateTypes>();
 
   const { fields, append, remove } = useFieldArray({
