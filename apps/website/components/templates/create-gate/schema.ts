@@ -205,8 +205,10 @@ export const verificationCodeDataSchema = z.object({
 });
 
 export const taskMeetingCodeSchema = z.object({
-  title: z.string().min(2),
-  description: z.string().min(2),
+  title: z.string().min(2, 'The title must contain at least 2 character(s)'),
+  description: z
+    .string()
+    .min(2, 'The description must contain at least 2 character(s)'),
   task_type: z.literal('meeting_code'),
   task_data: verificationCodeDataSchema,
 });
@@ -233,29 +235,37 @@ export const quizDataSchema = z.object({
 });
 
 export const taskQuizSchema = z.object({
-  title: z.string().min(2),
-  description: z.string().min(2),
+  title: z.string().min(2, 'The title must contain at least 2 character(s)'),
+  description: z
+    .string()
+    .min(2, 'The description must contain at least 2 character(s)'),
   task_type: z.literal('quiz'),
   task_data: quizDataSchema,
 });
 
 export const taskHoldTokenSchema = z.object({
-  title: z.string().min(2),
-  description: z.string().min(2),
+  title: z.string().min(2, 'The title must contain at least 2 character(s)'),
+  description: z
+    .string()
+    .min(2, 'The description must contain at least 2 character(s)'),
   task_type: z.literal('token_hold'),
   task_data: holdTokenTaskDataSchema,
 });
 
 export const taskSelfVerifySchema = z.object({
-  title: z.string().min(2),
-  description: z.string().min(2),
+  title: z.string().min(2, 'The title must contain at least 2 character(s)'),
+  description: z
+    .string()
+    .min(2, 'The description must contain at least 2 character(s)'),
   task_type: z.literal('self_verify'),
   task_data: fileTaskDataSchema,
 });
 
 export const taskSnapshotSchema = z.object({
-  title: z.string().min(2),
-  description: z.string().min(2),
+  title: z.string().min(2, 'The title must contain at least 2 character(s)'),
+  description: z
+    .string()
+    .min(2, 'The description must contain at least 2 character(s)'),
   task_type: z.literal('snapshot'),
   task_data: snapshotTaskDataSchema,
 });
