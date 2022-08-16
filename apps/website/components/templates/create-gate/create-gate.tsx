@@ -173,7 +173,6 @@ export function CreateGateTemplate() {
               direction="column"
               sx={{
                 margin: 'auto',
-                marginLeft: 8,
                 maxWidth: { xs: '100%', md: '100%', lg: '80%' },
               }}
             >
