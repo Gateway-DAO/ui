@@ -167,7 +167,7 @@ const SnapshotTask = ({ taskId, deleteTask }) => {
             <TextField
               required
               label="Specific Proposal Number"
-              sx={{ maxWidth: { md: '50%', xs: '100%' } }}
+              sx={{ minWidth: { md: '50%', xs: '100%' } }}
               {...register(`tasks.data.${taskId}.task_data.proposal_number`)}
               error={
                 !!(errors.tasks?.data[taskId]?.task_data as SnapshotDataError)
