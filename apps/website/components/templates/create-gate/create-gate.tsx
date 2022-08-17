@@ -154,7 +154,7 @@ export function CreateGateTemplate() {
       {hasTitleAndDescription && (
         <>
           <Divider
-            sx={{ margin: '60px 0', width: '200%', marginLeft: '-50%' }}
+            sx={{ margin: '60px 0', width: '120%', marginLeft: '-8%' }}
           />
           <Stack
             direction="row"
@@ -173,7 +173,7 @@ export function CreateGateTemplate() {
               direction="column"
               sx={{
                 margin: 'auto',
-                marginLeft: 8,
+                marginLeft: 4,
                 maxWidth: { xs: '100%', md: '100%', lg: '80%' },
               }}
             >
