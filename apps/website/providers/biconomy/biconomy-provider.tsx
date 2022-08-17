@@ -6,7 +6,10 @@ import { useMutation } from 'react-query';
 import { PartialDeep } from 'type-fest';
 import { useAccount } from 'wagmi';
 
+import { Snackbar } from '@mui/material';
+
 import { CREDENTIAL_ABI } from '../../constants/web3';
+import { useSnackbar } from '../../hooks/use-snackbar';
 import { Credentials } from '../../services/graphql/types.generated';
 import { useAuth } from '../auth';
 import { BiconomyContext, MintResponse } from './context';
@@ -24,6 +27,7 @@ export type MintStatus = {
   [key: string]: {
     askingSignature: boolean;
     isMinted: boolean;
+    error: any;
   };
 };
 
@@ -49,6 +53,8 @@ export function BiconomyProvider({
 
   // From auth
   const { me, gqlAuthMethods } = useAuth();
+
+  const snackbar = useSnackbar();
 
   // Credential update
   const { mutateAsync: updateCredential } = useMutation(
@@ -108,7 +114,7 @@ export function BiconomyProvider({
    */
   const mint = async (token_uri = ''): Promise<MintResponse> => {
     if (contract) {
-      let tx;
+      let tx: string;
 
       const { data: contractData } = await contract.populateTransaction.mint(
         address.address,
@@ -137,19 +143,21 @@ export function BiconomyProvider({
           [token_uri]: {
             askingSignature: true,
             isMinted: false,
+            error: null,
           },
         }));
-        const promise = provider
-          .send('eth_sendTransaction', [txParams])
-          .then(() =>
-            setMintStatus((prev) => ({
-              ...prev,
-              [token_uri]: {
-                askingSignature: false,
-                isMinted: false,
-              },
-            }))
-          );
+
+        const promise = provider.send('eth_sendTransaction', [txParams]);
+
+        setMintStatus((prev) => ({
+          ...prev,
+          [token_uri]: {
+            askingSignature: false,
+            isMinted: false,
+            error: null,
+          },
+        }));
+
         tx = await promise;
 
         setMintStatus((prev) => ({
@@ -157,10 +165,14 @@ export function BiconomyProvider({
           [token_uri]: {
             askingSignature: false,
             isMinted: true,
+            error: null,
           },
         }));
       } catch (err) {
-        throw new Error('Minting failed! Try again later.');
+        snackbar.onOpen({
+          message: 'Minting failed, please try again',
+          type: 'error',
+        });
       }
 
       return {
@@ -173,11 +185,10 @@ export function BiconomyProvider({
           tx,
       };
     } else {
-      // snackbar.onOpen({
-      //   message: 'Biconomy is still loading. Try again in a few minutes!',
-      //   type: 'warning',
-      // });
-      console.log('Biconomy is still loading. Try again in a few minutes!');
+      snackbar.onOpen({
+        message: 'Biconomy is still loading. Try again in a few minutes!',
+        type: 'warning',
+      });
     }
   };
 
@@ -223,6 +234,13 @@ export function BiconomyProvider({
       }}
     >
       {children}
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={6000}
+        onClose={snackbar.handleClose}
+        message={snackbar.message}
+        color={snackbar.type}
+      />
     </BiconomyContext.Provider>
   );
 }
