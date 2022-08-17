@@ -53,6 +53,7 @@
     "cancel": "cancel",
     "got-it": "got it",
     "follow": "Follow",
-    "unfollow": "Unfollow"
+    "unfollow": "Unfollow",
+    "pending": "Pending"
   }
 }

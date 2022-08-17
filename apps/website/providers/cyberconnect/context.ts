@@ -2,12 +2,10 @@ import { createContext, useContext } from 'react';
 
 import type CyberConnect from '@cyberlab/cyberconnect';
 
-import { cyberConnect } from './client';
-
 type Context = {
-  cyberConnect: CyberConnect;
+  cyberConnect?: CyberConnect;
 };
 
-export const CyberConnectContext = createContext<Context>({ cyberConnect });
+export const CyberConnectContext = createContext<Context>({});
 
 export const useCyberConnect = () => useContext(CyberConnectContext);

@@ -74,7 +74,7 @@ export function TableView({ people }: Props) {
                 <TableCell align="right">
                   {user.id !== me?.id && (
                     <FollowButtonUser
-                      userId={user.id}
+                      wallet={user.wallet}
                       variant="outlined"
                       size="small"
                       color="secondary"

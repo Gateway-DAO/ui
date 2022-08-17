@@ -66,7 +66,7 @@ export function UserCell({ user }: Props) {
         <>
           <TableCell align="right">
             <FollowButtonUser
-              userId={user.id}
+              wallet={user.wallet}
               variant="outlined"
               size="small"
               color="secondary"

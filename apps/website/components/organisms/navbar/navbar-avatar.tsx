@@ -129,7 +129,7 @@ export function NavBarAvatar({ hideProfile }: Props) {
         </MenuItem>
         <ListItem disablePadding>
           <IconButton disabled sx={{ mr: 3.5, ml: 1.5 }}>
-            {!!accountDetail.connector?.id &&
+            {!!accountDetail?.connector?.id &&
               icons[accountDetail.connector?.id]}
           </IconButton>
 

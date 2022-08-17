@@ -154,7 +154,9 @@ export default function ProfileTemplate({ user }: Props) {
               mt: 4,
             }}
           >
-            <FollowButtonUser userId={user.id} />
+            {(user as Users)?.wallet && (
+              <FollowButtonUser wallet={(user as Users).wallet} />
+            )}
             <SocialButtons socials={user.socials} copyNetworks={['discord']} />
           </Stack>
         </Box>

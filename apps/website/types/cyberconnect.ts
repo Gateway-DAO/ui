@@ -6,7 +6,7 @@
 
 import type { Blockchain } from '@cyberlab/cyberconnect';
 
-enum NotificationType {
+export enum NotificationType {
   NEW_CONNECTION = 'NEW_CONNECTION',
   BICONNECT_RECEIVED = 'BICONNECT_RECEIVED',
   BICONNECT_ACCEPTED = 'BICONNECT_ACCEPTED',
@@ -20,4 +20,11 @@ export interface Notification {
   hasRead: boolean;
   type: NotificationType;
   timestamp: string;
+}
+
+export enum BidirectionalConnectionStatus {
+  EMPTY = 'EMPTY',
+  PENDING = 'PENDING',
+  CONNECTD = 'CONNECTD',
+  BLACKLIST = 'BLACKLIST',
 }

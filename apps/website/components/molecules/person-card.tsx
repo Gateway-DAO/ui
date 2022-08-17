@@ -20,7 +20,7 @@ type Props = {
 /* TODO: Arias and Labels */
 /* TODO: Clamp text */
 export function PersonCard({
-  user: { id, name, username, picture },
+  user: { id, name, username, picture, wallet },
   isAdmin,
 }: Props) {
   const url = ROUTES.PROFILE.replace('[username]', username);
@@ -65,7 +65,7 @@ export function PersonCard({
           }}
         >
           <FollowButtonUser
-            userId={id}
+            wallet={wallet}
             variant="outlined"
             size="small"
             color="secondary"

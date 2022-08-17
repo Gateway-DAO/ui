@@ -9,15 +9,20 @@ const config: IGraphQLProjects = {
         {
           [`${process.env.HASURA_ENDPOINT}`]: {
             headers: {
-              'x-hasura-admin-secret': process.env.HASURA_ADMIN_SECRET,
+              'x-hasura-admin-secret': process.env.HASURA_ADMIN_SECRET as string,
             },
           },
         },
+        {
+          [`${process.env.NEXT_PUBLIC_CYBERCONNECT_ENDPOINT}`]: {
+            headers: {}
+          },
+        }
       ],
       documents: [
-        // "./apps/website/**/*.{graphql,gql,js,ts,jsx,tsx}",
-        './apps/website/**/*.{graphql,gql}',
+        "./apps/website/**/*.{graphql,gql}",
         '!**/*.generated.{graphql,gql}',
+        '!**/*.{ts,tsx}',
       ],
       extensions: {
         codegen: {
