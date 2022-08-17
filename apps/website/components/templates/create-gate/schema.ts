@@ -217,12 +217,16 @@ export const quizDataSchema = z.object({
   pass_score: z.number().min(1).max(100),
   questions: z.array(
     z.object({
-      question: z.string().min(2),
+      question: z
+        .string()
+        .min(2, 'Question must contain at least 2 character(s)'),
       type: z.enum(['single', 'multiple']),
       options: z
         .array(
           z.object({
-            value: z.string().min(2),
+            value: z
+              .string()
+              .min(1, 'Answer must contain at least 1 character'),
             correct: z.boolean(),
           })
         )
@@ -235,10 +239,10 @@ export const quizDataSchema = z.object({
 });
 
 export const taskQuizSchema = z.object({
-  title: z.string().min(2, 'The title must contain at least 2 character(s)'),
+  title: z.string().min(2, 'Quiz title must contain at least 2 character(s)'),
   description: z
     .string()
-    .min(2, 'The description must contain at least 2 character(s)'),
+    .min(2, 'Quiz description must contain at least 2 character(s)'),
   task_type: z.literal('quiz'),
   task_data: quizDataSchema,
 });
