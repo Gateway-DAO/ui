@@ -255,6 +255,7 @@ export function CreateGateTemplate({ oldData }) {
 
         <FormProvider {...methods}>
           <GateImageCard
+            draftImage={oldData.image}
             sx={{
               width: 400,
             }}
