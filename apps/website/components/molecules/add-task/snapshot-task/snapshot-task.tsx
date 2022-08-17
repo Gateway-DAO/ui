@@ -28,6 +28,7 @@ const SnapshotTask = ({ taskId, deleteTask }) => {
   const {
     register,
     setValue,
+    getValues,
     formState: { errors },
     watch,
     control,
@@ -35,10 +36,14 @@ const SnapshotTask = ({ taskId, deleteTask }) => {
     clearErrors,
   } = useFormContext<CreateGateTypes>();
 
+  const formValues = getValues();
+
   useEffect(() => {
-    setValue(`tasks.data.${taskId}.title`, 'Untitled Task');
+    if (formValues.tasks.data[taskId].title === '') {
+      setValue(`tasks.data.${taskId}.title`, 'Untitled Task');
+    }
     setValue(`tasks.data.${taskId}.task_type`, 'snapshot');
-  }, [taskId, setValue]);
+  }, [taskId, setValue, formValues.tasks.data]);
 
   const [taskVisible, setTaskVisible] = useState(false);
 

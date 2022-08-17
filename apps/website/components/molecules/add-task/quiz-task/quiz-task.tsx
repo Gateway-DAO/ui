@@ -41,10 +41,13 @@ export function QuizTask({
   const {
     register,
     setValue,
+    getValues,
     trigger,
     formState: { errors },
     control,
   } = useFormContext<CreateGateTypes>();
+
+  const formValues = getValues();
 
   const [taskVisible, setTaskVisible] = useState(false);
 
@@ -58,8 +61,10 @@ export function QuizTask({
   });
 
   useEffect(() => {
-    setValue(`tasks.data.${taskId}.title`, 'Untitled Task');
-  }, [setValue, taskId]);
+    if (formValues.tasks.data[taskId].title === '') {
+      setValue(`tasks.data.${taskId}.title`, 'Untitled Task');
+    }
+  }, [setValue, taskId, formValues.tasks.data]);
 
   const onRemoveQuestion = (index: number) => remove(index);
 
