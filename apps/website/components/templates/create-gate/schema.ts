@@ -203,7 +203,9 @@ const holdTokenTaskDataSchema = z.object({
 });
 
 export const verificationCodeDataSchema = z.object({
-  code: z.string().min(2),
+  code: z
+    .string()
+    .min(2, 'Verification code must contain at least 2 character(s)'),
 });
 
 export const taskMeetingCodeSchema = z.object({
