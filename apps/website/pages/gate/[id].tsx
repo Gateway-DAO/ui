@@ -20,7 +20,7 @@ export default function GateProfilePage({
       }}
     >
       <Navbar isInternalPage={true} />
-      <GateViewTemplate gate={gate} />
+      <GateViewTemplate gateProps={gate} />
     </DashboardTemplate>
   );
 }
