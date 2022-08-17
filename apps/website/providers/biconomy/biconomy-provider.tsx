@@ -32,7 +32,14 @@ export function BiconomyProvider({
   contractAddress,
   children,
 }: PropsWithChildren<Props>) {
-  const isMainnet: boolean = process.env.NODE_ENV === 'production';
+  const RPC = {
+    polygon: new ethers.providers.JsonRpcProvider(
+      process.env.NEXT_PUBLIC_WEB3_POLYGON_RPC
+    ),
+    rinkeby: new ethers.providers.JsonRpcProvider(
+      process.env.NEXT_PUBLIC_WEB3_RINKEBY_RPC
+    ),
+  };
 
   // State
   const [mintStatus, setMintStatus] = useState<MintStatus>(() => ({}));
@@ -62,11 +69,7 @@ export function BiconomyProvider({
         address.address
       ) {
         // We're creating biconomy provider linked to your network of choice where your contract is deployed
-        const jsonRpcProvider = new ethers.providers.JsonRpcProvider(
-          isMainnet
-            ? process.env.NEXT_PUBLIC_WEB3_POLYGON_RPC
-            : process.env.NEXT_PUBLIC_WEB3_RINKEBY_RPC
-        );
+        const jsonRpcProvider = RPC[process.env.NEXT_PUBLIC_MINT_CHAIN];
 
         biconomy = new Biconomy(jsonRpcProvider, {
           walletProvider: window.ethereum,
@@ -163,7 +166,7 @@ export function BiconomyProvider({
       return {
         isMinted: true,
         transactionUrl:
-          (isMainnet
+          (process.env.NEXT_PUBLIC_MINT_CHAIN === 'polygon'
             ? 'https://polygonscan.com'
             : 'https://rinkeby.etherscan.io') +
           '/tx/' +
