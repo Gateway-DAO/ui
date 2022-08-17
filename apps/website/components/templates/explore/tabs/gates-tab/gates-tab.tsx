@@ -77,13 +77,15 @@ export function GatesTab() {
                 px: TOKENS.CONTAINER_PX,
               }}
             >
-              {filteredGates.map((gate) => (
-                <GatesCard
-                  key={`gate-${gate.id}`}
-                  {...gate}
-                  showStatus={false}
-                />
-              ))}
+              {filteredGates
+                .filter((gate) => gate.published === 'published')
+                .map((gate) => (
+                  <GatesCard
+                    key={`gate-${gate.id}`}
+                    {...gate}
+                    showStatus={false}
+                  />
+                ))}
             </Box>
           )}
           {view === ViewMode.table && <TableView gates={filteredGates} />}
