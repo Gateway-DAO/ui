@@ -271,7 +271,7 @@ export const taskSnapshotSchema = z.object({
 });
 
 export const createGateSchema = z.object({
-  title: z.string().min(4, 'The title must contain at least 2 character(s)'),
+  title: z.string().min(2, 'The title must contain at least 2 character(s)'),
   categories: z.array(z.string().min(1, 'Please select atleast 1 category')),
   description: z
     .string()
