@@ -162,9 +162,13 @@ export type verificationCodeType = {
 const fileTaskDataSchema = z.object({
   files: z
     .object({
-      title: z.string().min(2),
-      description: z.string().min(2),
-      link: z.string().min(2),
+      title: z
+        .string()
+        .min(2, 'The file title must contain at least 2 character(s)'),
+      description: z
+        .string()
+        .min(2, 'The file description must contain at least 2 character(s)'),
+      link: z.string().url('Invalid URL'),
     })
     .array(),
 });
