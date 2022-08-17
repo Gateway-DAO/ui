@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
 
 import { useMutation } from 'react-query';
@@ -18,6 +19,7 @@ import {
 } from '@mui/material';
 
 import { useAuth } from '../../../../website/providers/auth';
+import { ROUTES } from '../../../constants/routes';
 import { useMint } from '../../../hooks/use-mint';
 import { Gates } from '../../../services/graphql/types.generated';
 import { AvatarFile } from '../../atoms/avatar-file';
@@ -39,6 +41,7 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
 
   const { me, gqlAuthMethods } = useAuth();
   const { mint } = useMint();
+  const router = useRouter();
 
   const taskIds = gateProps?.tasks.map((task) => task.id);
 
@@ -85,14 +88,40 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
     {
       text: gateProps.published === 'paused' ? 'Publish' : 'Unpublish',
       action: () =>
-        toggleGateState({
-          gate_id: gateProps.id,
-          state: gateProps.published === 'published' ? 'paused' : 'published',
-        }),
+        toggleGateState(
+          {
+            gate_id: gateProps.id,
+            state: gateProps.published === 'published' ? 'paused' : 'published',
+          },
+          {
+            onSuccess() {
+              console.log(
+                `Gate ${gateProps.published ? 'unpublished!' : 'published!'}`
+              );
+              router.push(ROUTES.DAO_PROFILE.replace('[id]', gateProps.dao.id));
+            },
+            onError(error) {
+              console.log(error);
+            },
+          }
+        ),
     },
     {
       text: 'Delete',
-      action: () => deleteGate({ gate_id: gateProps.id }),
+      action: () => {
+        deleteGate(
+          { gate_id: gateProps.id },
+          {
+            onSuccess() {
+              console.log('Gate deleted!');
+              router.push(ROUTES.DAO_PROFILE.replace('[id]', gateProps.dao.id));
+            },
+            onError(error) {
+              console.log(error);
+            },
+          }
+        );
+      },
     },
   ];
 

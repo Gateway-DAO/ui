@@ -54,7 +54,12 @@ const MorePopover = ({ options }) => {
           return (
             <Typography
               key={`${option.text}-${index}`}
-              sx={{ p: 2, cursor: 'pointer', minWidth: '200px' }}
+              sx={{
+                p: 2,
+                cursor: 'pointer',
+                minWidth: '200px',
+                '&:hover': { backgroundColor: 'rgba(0, 0, 0, 0.08)' },
+              }}
               onClick={option.action}
             >
               {option.text}

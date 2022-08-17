@@ -48,6 +48,7 @@ export function GateDetailsForm({ gateData }) {
         name="categories"
         error={!!errors.categories}
         errors={errors.categories}
+        defaultValue={categories}
         {...register('categories')}
         helperText={errors.categories && 'Invalid categories added'}
         sx={{
@@ -80,6 +81,7 @@ export function GateDetailsForm({ gateData }) {
         name="skills"
         error={!!errors.skills}
         errors={errors.skills}
+        defaultValue={skills}
         {...register('skills')}
         helperText={errors.skills && 'Invalid skills added'}
         sx={{

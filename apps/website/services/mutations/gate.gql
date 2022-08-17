@@ -1,5 +1,8 @@
 mutation toggle_gate_state($gate_id: uuid!, $state: gate_state!) {
-  update_gates_by_pk(pk_columns: { id: $gate_id }, _set: { published: $state }) {
+  update_gates_by_pk(
+    pk_columns: { id: $gate_id }
+    _set: { published: $state }
+  ) {
     dao {
       gates {
         id
@@ -11,11 +14,8 @@ mutation toggle_gate_state($gate_id: uuid!, $state: gate_state!) {
 
 mutation deleteGate($gate_id: uuid!) {
   delete_gates_by_pk(id: $gate_id) {
-    dao {
-      gates {
-        id
-        title
-      }
-    }
+    id
+    title
+    dao_id
   }
 }

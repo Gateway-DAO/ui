@@ -3,12 +3,13 @@ import { Chip, TextField, Autocomplete } from '@mui/material';
 
 import { SKILLS } from '../../constants/skills';
 
-export const SkillsInput = ({ set, ...props }) => {
+export const SkillsInput = ({ set, defaultValue, ...props }) => {
   return (
     <Autocomplete
       multiple
       id="skills-input"
       options={[...SKILLS.HARD, ...SKILLS.SOFT]}
+      defaultValue={defaultValue}
       groupBy={(option) =>
         SKILLS.HARD.includes(option) ? 'Hard Skills' : 'Soft Skills'
       }

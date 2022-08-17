@@ -3,12 +3,13 @@ import { Chip, TextField, Autocomplete } from '@mui/material';
 
 import { CATEGORIES } from '../../constants/gate';
 
-export const CategoriesInput = ({ set, ...props }) => {
+export const CategoriesInput = ({ set, defaultValue, ...props }) => {
   return (
     <Autocomplete
       multiple
       id="categories-input"
       options={CATEGORIES}
+      defaultValue={defaultValue}
       popupIcon={<Search />}
       sx={{
         '&.Mui-focused .MuiButtonBase-root': {
