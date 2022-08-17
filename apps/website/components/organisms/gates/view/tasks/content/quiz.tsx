@@ -97,7 +97,7 @@ const QuizContent = ({
           </FormControl>
         );
       })}
-      {!readOnly && (
+      {!readOnly && !completed && (
         <LoadingButton
           variant="contained"
           sx={{ marginTop: '15px' }}
