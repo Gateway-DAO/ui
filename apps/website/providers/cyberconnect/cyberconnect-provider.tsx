@@ -14,7 +14,7 @@ export function CyberConnectProvider({ children }: PropsWithChildren<unknown>) {
   const cyberConnect =
     typeof window !== 'undefined' ? createCyberConnectClient() : null;
 
-  const CyberconnectProfile = useQuery(
+  const profile = useQuery(
     ['cyberconnect-profile', data?.address],
     () =>
       gqlCyberConnectClient.request(
@@ -74,6 +74,9 @@ export function CyberConnectProvider({ children }: PropsWithChildren<unknown>) {
                   verifiable
                 }
               }
+              #### VVVVV
+              #friendsRequestInbox() {
+              #}
               friends(namespace: "GatewayDAO", first: 2, after: "-1") {
                 pageInfo {
                   startCursor
@@ -127,7 +130,7 @@ export function CyberConnectProvider({ children }: PropsWithChildren<unknown>) {
     { enabled: !!data?.address }
   );
 
-  console.log(CyberconnectProfile.data);
+  console.log('cyberconnect-profile', profile.data);
 
   return (
     <CyberConnectContext.Provider value={{ cyberConnect }}>

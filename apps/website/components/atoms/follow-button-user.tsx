@@ -18,6 +18,8 @@ type Props = {
   wallet: string;
 } & ButtonProps;
 
+const debugWallets = [];
+
 export function FollowButtonUser({ wallet, ...props }: Props) {
   const { me, onOpenLogin } = useAuth();
   const { t } = useTranslation('common');
@@ -33,7 +35,7 @@ export function FollowButtonUser({ wallet, ...props }: Props) {
     return onResetRequest();
   };
 
-  /*   const label = useMemo(() => {
+  const label = useMemo(() => {
     if (!me) {
       return t('follow');
     }
@@ -45,7 +47,7 @@ export function FollowButtonUser({ wallet, ...props }: Props) {
       default:
         return t('follow');
     }
-  }, [me, status.data]); */
+  }, [me, status.data]);
 
   if (!me)
     return (
@@ -61,7 +63,7 @@ export function FollowButtonUser({ wallet, ...props }: Props) {
       onClick={onClick}
       {...props}
     >
-      {status.data}
+      {label}
     </LoadingButton>
   );
 }
@@ -137,12 +139,9 @@ const useStatus = (wallet: string) => {
             toAddress: wallet,
           }
         )
-        .then((res, ...other) => {
-          if (
-            wallet === '0xD3F8E47536e8d69D1d1BC369eDb70eeb4adF7108' ||
-            wallet === '0x3e54d8f06CE568B62F7322197179b70de5dC173d'
-          ) {
-            console.log(res, other);
+        .then((res) => {
+          if (debugWallets.includes(wallet)) {
+            console.log('bidirectional-status', res);
           }
           return res;
         }),

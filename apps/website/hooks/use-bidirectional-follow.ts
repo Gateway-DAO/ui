@@ -7,6 +7,8 @@ export const useBidirectionFollow = () => {
 
   const onFollow = (wallet: string) =>
     cyberConnect?.bidirectionalConnect(wallet, BiConnectionType.INIT);
+  const onAccept = (wallet: string) =>
+    cyberConnect?.bidirectionalConnect(wallet, BiConnectionType.ACCEPT);
   const onUnfollow = (wallet: string) =>
     cyberConnect?.bidirectionalConnect(wallet, BiConnectionType.TERMINATE);
 
