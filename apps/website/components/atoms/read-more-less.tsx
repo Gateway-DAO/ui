@@ -23,6 +23,7 @@ export const ReadMore = ({ children }) => {
         fontSize={16}
         sx={(theme) => ({
           color: theme.palette.primary.main,
+          cursor: 'pointer',
         })}
       >
         {isReadMore ? ' See more ' : ' See less '}
