@@ -196,8 +196,10 @@ const snapshotTaskDataSchema = z.object({
 
 const holdTokenTaskDataSchema = z.object({
   chain: z.number(),
-  token_address: z.string().min(2),
-  quantity: z.string().min(1),
+  token_address: z
+    .string()
+    .min(2, 'Token address must contain at least 2 character(s)'),
+  quantity: z.string().min(1, 'Quantity must contain at least 2 character(s)'),
 });
 
 export const verificationCodeDataSchema = z.object({
@@ -248,7 +250,9 @@ export const taskQuizSchema = z.object({
 });
 
 export const taskHoldTokenSchema = z.object({
-  title: z.string().min(2, 'The title must contain at least 2 character(s)'),
+  title: z
+    .string()
+    .min(2, 'Hold Token title must contain at least 2 character(s)'),
   description: z
     .string()
     .min(2, 'The description must contain at least 2 character(s)'),
