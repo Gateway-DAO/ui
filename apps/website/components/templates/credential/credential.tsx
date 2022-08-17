@@ -186,13 +186,18 @@ export function CredentialTemplate({ credential }: Props) {
         <Stack
           direction="row"
           alignItems="center"
-          m={(theme) => theme.spacing(7)}
-          marginBottom={(theme) => theme.spacing(10)}
+          sx={(theme) => ({
+            m: {
+              xs: theme.spacing(2),
+              md: theme.spacing(7),
+            },
+            mb: { xs: 3, md: 10 },
+          })}
         >
           <Stack
-            sx={{
-              marginLeft: (theme) => theme.spacing(4),
-            }}
+            sx={(theme) => ({
+              ml: { xs: theme.spacing(1), md: theme.spacing(4) },
+            })}
           >
             <Typography variant="h6">Tasks</Typography>
             <Typography variant="caption">
