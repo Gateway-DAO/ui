@@ -58,7 +58,7 @@ export function GatesCard({
   return (
     <MUICard sx={{ position: 'relative' }}>
       <Link passHref href={url}>
-        <CardActionArea component="a">
+        <CardActionArea component="a" sx={{ height: '100%' }}>
           <CardMedia
             component="img"
             {...badgeProps({ image, title })}
