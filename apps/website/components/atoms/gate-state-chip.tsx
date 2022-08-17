@@ -1,6 +1,11 @@
 import { Chip } from '@mui/material';
 
-const GateStateChip = ({ published }) => {
+type GateStateChipProps = {
+  published: string;
+  small?: boolean;
+};
+
+const GateStateChip = ({ published, small }: GateStateChipProps) => {
   const chipColor = published === ('published' || 'paused') ? 'green' : 'red';
   const chipLabel =
     published === ('published' || 'paused') ? 'Published' : 'Unpublished';
@@ -10,6 +15,7 @@ const GateStateChip = ({ published }) => {
       key={published}
       variant="outlined"
       label={chipLabel}
+      size={small ? 'small' : 'medium'}
       sx={{
         color: chipColor,
         borderColor: chipColor,

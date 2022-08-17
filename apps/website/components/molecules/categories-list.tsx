@@ -58,7 +58,7 @@ export function CategoriesList({
       ref={parentRef}
     >
       <Stack direction="row" spacing={1} px={2} pt={1} pb={2} {...props}>
-        {isGate && showStatus && <GateStateChip published={published} />}
+        {isGate && showStatus && <GateStateChip published={published} small />}
         {categories.map((category, index) => {
           const formattedLabel =
             category.charAt(0).toUpperCase() + category.slice(1);
