@@ -189,7 +189,7 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
             </Box>
             <Stack flexDirection="row" gap={1}>
               <ShareButton title={`${gateProps.title} @ Gateway`} />
-              <MorePopover options={gateOptions} />
+              {isAdmin && <MorePopover options={gateOptions} />}
             </Stack>
           </Stack>
         </Box>
