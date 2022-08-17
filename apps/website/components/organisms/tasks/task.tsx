@@ -104,6 +104,7 @@ export function Task({ task, idx, readOnly }: Props) {
           const oldTaskProgresses = old.task_progresses.filter(
             (task_progress) => task_progress.task_id !== task.id
           );
+
           const newTaskProgress = [
             ...oldTaskProgresses,
             data.verify_key.task_info,
@@ -114,6 +115,8 @@ export function Task({ task, idx, readOnly }: Props) {
             task_progresses: newTaskProgress,
           };
         });
+
+        data.verify_key.completed_gate && queryClient.invalidateQueries('me');
       },
     }
   );

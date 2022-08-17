@@ -2,15 +2,15 @@ import { PropsWithChildren, useEffect, useState } from 'react';
 
 import { Biconomy } from '@biconomy/mexa';
 import { ethers } from 'ethers';
-import { useMutation } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
 import { PartialDeep } from 'type-fest';
 import { useAccount } from 'wagmi';
 
-import { Snackbar } from '@mui/material';
+import { Alert, Snackbar } from '@mui/material';
 
 import { CREDENTIAL_ABI } from '../../constants/web3';
 import { useSnackbar } from '../../hooks/use-snackbar';
-import { Credentials } from '../../services/graphql/types.generated';
+import { Credentials, Users } from '../../services/graphql/types.generated';
 import { useAuth } from '../auth';
 import { BiconomyContext, MintResponse } from './context';
 
@@ -57,6 +57,8 @@ export function BiconomyProvider({
   const snackbar = useSnackbar();
 
   // Credential update
+  const queryClient = useQueryClient();
+
   const { mutateAsync: updateCredential } = useMutation(
     async (data: { id: string; tx_url: string }) => {
       return await gqlAuthMethods.update_credential_status({
@@ -64,6 +66,34 @@ export function BiconomyProvider({
         status: 'minted',
         transaction_url: data.tx_url,
       });
+    },
+    {
+      onSuccess: (data) => {
+        queryClient.invalidateQueries('credentials');
+        queryClient.invalidateQueries(
+          'credential',
+          data.update_credentials_by_pk.id
+        );
+
+        queryClient.setQueryData('me', (old: PartialDeep<Users>) => {
+          const experiences = old.experiences.map((experience) => ({
+            ...experience,
+            credentials: experience.credentials.map((credential) =>
+              credential.id === data.update_credentials_by_pk.id
+                ? {
+                    ...credential,
+                    ...data.update_credentials_by_pk,
+                  }
+                : credential
+            ),
+          }));
+
+          return {
+            ...old,
+            experiences,
+          };
+        });
+      },
     }
   );
 
@@ -173,6 +203,20 @@ export function BiconomyProvider({
           message: 'Minting failed, please try again',
           type: 'error',
         });
+
+        setMintStatus((prev) => ({
+          ...prev,
+          [token_uri]: {
+            askingSignature: false,
+            isMinted: true,
+            error: err,
+          },
+        }));
+
+        return {
+          isMinted: false,
+          error: err,
+        };
       }
 
       return {
@@ -238,9 +282,9 @@ export function BiconomyProvider({
         open={snackbar.open}
         autoHideDuration={6000}
         onClose={snackbar.handleClose}
-        message={snackbar.message}
-        color={snackbar.type}
-      />
+      >
+        <Alert severity={snackbar.type}>{snackbar.message}</Alert>
+      </Snackbar>
     </BiconomyContext.Provider>
   );
 }

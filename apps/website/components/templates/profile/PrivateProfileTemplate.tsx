@@ -39,16 +39,14 @@ export default function PrivateProfileTemplate() {
   const router = useRouter();
   const { me } = useAuth();
 
-  const tabs = useMemo(
-    () => [
-      {
-        key: 'overview',
-        label: t('common:tabs.overview'),
-        section: <OverviewTab user={me} />,
-      },
-    ],
-    []
-  );
+  const tabs = [
+    {
+      key: 'overview',
+      label: t('common:tabs.overview'),
+      section: <OverviewTab user={me} />,
+    },
+  ];
+
   return (
     <>
       <Box

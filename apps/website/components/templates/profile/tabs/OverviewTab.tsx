@@ -40,25 +40,22 @@ export function OverviewTab({ user }: Props) {
   const { me } = useAuth();
   const canEdit = user === me;
 
-  const tabs = useMemo(
-    () => [
-      {
-        key: 'overview',
-        label: t('Received'),
-        section: <ReceivedTab />,
-      },
-      {
-        key: 'activity',
-        label: t('Given'),
-      },
-      {
-        key: 'bookmarked',
-        label: t('Bookmarked'),
-        //section: <ActivityTab />,
-      },
-    ],
-    []
-  );
+  const tabs = [
+    {
+      key: 'overview',
+      label: t('Received'),
+      section: <ReceivedTab />,
+    },
+    {
+      key: 'activity',
+      label: t('Given'),
+    },
+    {
+      key: 'bookmarked',
+      label: t('Bookmarked'),
+      //section: <ActivityTab />,
+    },
+  ];
 
   const offset = TZ.find((tz) => tz.abbr === user.timezone)?.offset;
   const hourToTimezone = DateTime.local()
