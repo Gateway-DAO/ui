@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+
 import { useFieldArray, useFormContext } from 'react-hook-form';
 
 import AddTaskCard from '../../molecules/add-task/add-task-card';
@@ -50,12 +52,17 @@ const defaultTaskData = (
 };
 
 const TaskArea = ({ tasks }) => {
-  const { control, trigger } = useFormContext<CreateGateTypes>();
+  console.log(tasks);
+  const { control, trigger, setValue } = useFormContext<CreateGateTypes>();
 
   const { fields, append, remove } = useFieldArray({
     control,
     name: 'tasks.data',
   });
+
+  useEffect(() => {
+    setValue('tasks.data', tasks);
+  }, [tasks, setValue]);
 
   const addTask = async (
     taskType: CreateGateTypes['tasks']['data'][0]['task_type']
