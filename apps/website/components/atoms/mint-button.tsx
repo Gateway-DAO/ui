@@ -6,7 +6,7 @@ import { PartialDeep } from 'type-fest';
 import { Button, Stack } from '@mui/material';
 
 import { TokenFilled } from '../../components/molecules/mint-card/assets/token-filled';
-import { useBiconomyMint } from '../../hooks/use-mint';
+import { useBiconomy } from '../../providers/biconomy';
 import { Credentials } from '../../services/graphql/types.generated';
 import { LoadingButton } from './loading-button';
 
@@ -43,7 +43,7 @@ export const MintCredentialButton = ({ credential }: Props) => {
   const [transactionUrl, setTransactionUrl] = useState<string | null>(
     credential.transaction_url
   );
-  const { mintCredential } = useBiconomyMint();
+  const { mintCredential } = useBiconomy();
   const [loading, setLoading] = useState<boolean>(false);
   const { t } = useTranslation('common');
 
@@ -70,9 +70,9 @@ export const MintCredentialButton = ({ credential }: Props) => {
           onClick={() => {
             setLoading(true);
             mintCredential(credential)
-              .then(({ isMinted, polygonURL }) => {
+              .then(({ isMinted, transactionUrl }) => {
                 setStatus(isMinted ? 'minted' : 'to_mint');
-                setTransactionUrl(isMinted && polygonURL);
+                setTransactionUrl(isMinted && transactionUrl);
               })
               .finally(() => setLoading(false));
           }}

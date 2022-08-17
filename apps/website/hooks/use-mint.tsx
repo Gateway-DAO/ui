@@ -136,6 +136,8 @@ export function useMint(
  * It creates a biconomy provider, signs the transaction and sends it to the contract
  * @param {string | null} contractAddress - The address of the contract you want to interact
  * with.
+ *
+ * @deprecated This function is deprecated. Use useBiconomy (from providers/biconomy) instead.
  */
 export function useBiconomyMint(
   contractAddress: string | null = process.env.NEXT_PUBLIC_WEB3_NFT_ADDRESS,

@@ -5,7 +5,7 @@ import { PartialDeep } from 'type-fest';
 import { Box, Button, SxProps } from '@mui/material';
 import Card from '@mui/material/Card';
 
-import { useBiconomyMint } from '../../../hooks/use-mint';
+import { useBiconomy } from '../../../providers/biconomy';
 import { Credentials } from '../../../services/graphql/types.generated';
 import { processScreen } from './process';
 
@@ -33,7 +33,7 @@ export const MintCard = ({ credential, sx, ...props }: MintCardProps) => {
   );
   const [error, setError] = useState<any | null>(null);
 
-  const { mintCredential: triggerMint, asksSignature } = useBiconomyMint();
+  const { mintCredential: triggerMint, mintStatus } = useBiconomy();
 
   const mint = () => {
     const trigger = triggerMint(credential);
@@ -63,8 +63,9 @@ export const MintCard = ({ credential, sx, ...props }: MintCardProps) => {
   }, [credential.status]);
 
   useEffect(() => {
-    asksSignature && setMintProcessStatus(Subjects.sign);
-  }, [asksSignature]);
+    mintStatus[credential.uri]?.askingSignature &&
+      setMintProcessStatus(Subjects.sign);
+  }, [mintStatus[credential.uri]]);
 
   return (
     <Card
