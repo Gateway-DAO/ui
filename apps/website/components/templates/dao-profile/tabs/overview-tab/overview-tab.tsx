@@ -64,11 +64,11 @@ export function OverviewTab({ people, setTab }: Props) {
             )}
 
             {gates.map((gate) => (
-              <GatesCard key={gate.id} {...gate} />
+              <GatesCard key={gate.id} {...gate} dao={dao} />
             ))}
           </>,
         ];
-  }, [gates, isAdmin, newGateUrl]);
+  }, [gates, isAdmin, newGateUrl, dao]);
 
   return (
     <Stack
