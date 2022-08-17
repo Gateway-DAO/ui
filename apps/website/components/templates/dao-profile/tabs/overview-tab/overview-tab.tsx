@@ -46,9 +46,11 @@ export function OverviewTab({ people, setTab }: Props) {
                 sx={{ minHeight: 440 }}
               />
             </Link>
-            {gates.map((gate) => (
-              <GatesCard key={gate.id} {...gate} />
-            ))}
+            {gates
+              .filter((gate) => gate.published === 'published')
+              .map((gate) => (
+                <GatesCard key={gate.id} {...gate} />
+              ))}
           </>,
         ]
       : [
