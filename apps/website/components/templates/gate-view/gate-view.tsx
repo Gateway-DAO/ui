@@ -16,11 +16,13 @@ import {
   Divider,
   Button,
   Tooltip,
+  Snackbar,
 } from '@mui/material';
 
 import { useAuth } from '../../../../website/providers/auth';
 import { ROUTES } from '../../../constants/routes';
 import { useMint } from '../../../hooks/use-mint';
+import { useSnackbar } from '../../../hooks/use-snackbar';
 import { Gates } from '../../../services/graphql/types.generated';
 import { AvatarFile } from '../../atoms/avatar-file';
 import CircularProgressWithLabel from '../../atoms/circular-progress-label';
@@ -42,6 +44,7 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
   const { me, gqlAuthMethods } = useAuth();
   const { mint } = useMint();
   const router = useRouter();
+  const snackbar = useSnackbar();
 
   const taskIds = gateProps?.tasks.map((task) => task.id);
 
@@ -95,9 +98,11 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
           },
           {
             onSuccess() {
-              console.log(
-                `Gate ${gateProps.published ? 'unpublished!' : 'published!'}`
-              );
+              snackbar.onOpen({
+                message: `Gate ${
+                  gateProps.published ? 'unpublished!' : 'published!'
+                }`,
+              });
               router.push(ROUTES.DAO_PROFILE.replace('[id]', gateProps.dao.id));
             },
             onError(error) {
@@ -113,7 +118,9 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
           { gate_id: gateProps.id },
           {
             onSuccess() {
-              console.log('Gate deleted!');
+              snackbar.onOpen({
+                message: 'Gate deleted!',
+              });
               router.push(ROUTES.DAO_PROFILE.replace('[id]', gateProps.dao.id));
             },
             onError(error) {
@@ -345,6 +352,15 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
           ))}
         </TaskGroup>
       </Grid>
+      <Snackbar
+        anchorOrigin={{
+          vertical: snackbar.vertical,
+          horizontal: snackbar.horizontal,
+        }}
+        open={snackbar.open}
+        onClose={snackbar.handleClose}
+        message={snackbar.message}
+      />
     </Grid>
   );
 }

@@ -52,7 +52,6 @@ const defaultTaskData = (
 };
 
 const TaskArea = ({ tasks }) => {
-  console.log(tasks);
   const { control, trigger, setValue } = useFormContext<CreateGateTypes>();
 
   const { fields, append, remove } = useFieldArray({
@@ -61,7 +60,12 @@ const TaskArea = ({ tasks }) => {
   });
 
   useEffect(() => {
-    setValue('tasks.data', tasks);
+    const gateTasks = tasks.map((task) => {
+      const { _gate_id, ...newTask } = task;
+      return newTask;
+    });
+
+    setValue('tasks.data', gateTasks);
   }, [tasks, setValue]);
 
   const addTask = async (

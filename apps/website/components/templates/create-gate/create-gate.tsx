@@ -53,8 +53,7 @@ export function CreateGateTemplate({ oldData }) {
 
   const saveDraft = (draftData: CreateGateTypes) => {
     let permissionsData = null;
-    let image_url = null;
-
+    let image_url = oldData.image || null;
     if (draftData.created_by.length > 0) {
       permissionsData = {
         data: draftData.created_by.map((creator) => {
@@ -62,8 +61,7 @@ export function CreateGateTemplate({ oldData }) {
         }),
       };
     }
-
-    if (draftData.image) {
+    if (!image_url && draftData.image) {
       uploadImage(
         {
           base64: draftData.image,
@@ -83,7 +81,6 @@ export function CreateGateTemplate({ oldData }) {
         }
       );
     }
-
     if (draftData.title) {
       createGateMutation(
         {
@@ -118,7 +115,7 @@ export function CreateGateTemplate({ oldData }) {
         },
         {
           onSuccess() {
-            snackbar.handleClick({ message: 'Gate created!' });
+            snackbar.handleClick({ message: 'Gate saved as draft!' });
             router.push(ROUTES.EXPLORE);
           },
           onError(error) {
@@ -130,70 +127,78 @@ export function CreateGateTemplate({ oldData }) {
   };
 
   const createGate = (gateData: CreateGateTypes) => {
-    const permissionsData = {
-      data: gateData.created_by.map((creator) => {
-        return { user_id: creator.id, permission: 'gate_editor' };
-      }),
-    };
-    uploadImage(
-      {
-        base64: gateData.image,
-        name: gateData.title,
-      },
-      {
-        onSuccess(imageData) {
-          const image_id = imageData['upload_image'].id;
-          const image_url =
-            process.env.NEXT_PUBLIC_NODE_ENDPOINT +
-            '/storage/file?id=' +
-            image_id;
-          createGateMutation(
-            {
-              id: oldData.id || uuidv4(),
-              dao_id: router.query.dao,
-              title: gateData.title,
-              categories: gateData.categories,
-              description: gateData.description,
-              skills: gateData.skills,
-              permissions: {
-                ...permissionsData,
-                on_conflict: {
-                  constraint:
-                    Permissions_Constraint.PermissionsDaoIdUserIdCredentialIdKey,
-                  update_columns: [Permissions_Update_Column.Permission],
-                },
-              },
-              image: image_url,
-              tasks: {
-                ...gateData.tasks,
-                on_conflict: {
-                  constraint: Tasks_Constraint.KeysPk,
-                  update_columns: [
-                    Tasks_Update_Column.Title,
-                    Tasks_Update_Column.Description,
-                    Tasks_Update_Column.TaskData,
-                    Tasks_Update_Column.TaskType,
-                  ],
-                },
-              },
-              published: 'published',
+    let permissionsData = null;
+    let image_url = oldData.image || null;
+    if (gateData.created_by.length > 0) {
+      permissionsData = {
+        data: gateData.created_by.map((creator) => {
+          return { user_id: creator.id, permission: 'gate_editor' };
+        }),
+      };
+    }
+    if (!image_url && gateData.image) {
+      uploadImage(
+        {
+          base64: gateData.image,
+          name: gateData.title,
+        },
+        {
+          onSuccess(imageData) {
+            const image_id = imageData['upload_image'].id;
+            image_url =
+              process.env.NEXT_PUBLIC_NODE_ENDPOINT +
+              '/storage/file?id=' +
+              image_id;
+          },
+          onError(error) {
+            console.log(error);
+          },
+        }
+      );
+    }
+    if (gateData.title) {
+      createGateMutation(
+        {
+          id: oldData.id || uuidv4(),
+          dao_id: router.query.dao,
+          title: gateData.title,
+          categories: gateData.categories || [],
+          description: gateData.description,
+          skills: gateData.skills || [],
+          permissions: {
+            ...permissionsData,
+            on_conflict: {
+              constraint:
+                Permissions_Constraint.PermissionsDaoIdUserIdCredentialIdKey,
+              update_columns: [Permissions_Update_Column.Permission],
             },
-            {
-              onSuccess() {
-                snackbar.handleClick({ message: 'Saved as draft.' });
-                router.push(ROUTES.EXPLORE);
-              },
-              onError(error) {
-                console.log(error);
-              },
-            }
-          );
+          },
+          image: image_url,
+          tasks: {
+            ...gateData.tasks,
+            on_conflict: {
+              constraint: Tasks_Constraint.KeysPk,
+              update_columns: [
+                Tasks_Update_Column.Title,
+                Tasks_Update_Column.Description,
+                Tasks_Update_Column.TaskData,
+                Tasks_Update_Column.TaskType,
+              ],
+            },
+          },
+          published: 'published',
         },
-        onError(error) {
-          console.log(error);
-        },
-      }
-    );
+        {
+          onSuccess() {
+            snackbar.handleClick({ message: 'Gate created!' });
+            router.push(ROUTES.EXPLORE);
+          },
+          onError(error) {
+            console.log(error);
+          },
+        }
+      );
+    }
   };
 
   const hasTitleAndDescription = methods
