@@ -124,11 +124,13 @@ export function CreateGateTemplate({ oldData }) {
           published: isDraft ? 'not_published' : 'published',
         },
         {
-          onSuccess() {
+          onSuccess(result) {
             snackbar.handleClick({
               message: isDraft ? 'Draft saved' : 'Gate created',
             });
-            router.push(ROUTES.EXPLORE);
+            router.push(
+              ROUTES.GATE_PROFILE.replace('[id]', result.insert_gates_one.id)
+            );
           },
           onError(error) {
             console.log(error);
