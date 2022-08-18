@@ -99,6 +99,8 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
               gateProps.published ? 'unpublished!' : 'published!'
             }`,
           });
+          //TODO: Refresh Chip component only
+          router.reload();
         },
         onError(error) {
           console.log(error);
