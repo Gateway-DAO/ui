@@ -51,21 +51,23 @@ export function CreateGateTemplate({ oldData }) {
     gqlAuthMethods.create_gate
   );
 
-  const saveDraft = (draftData: CreateGateTypes) => {
+  const handleMutation = (data: CreateGateTypes, isDraft: boolean) => {
     let permissionsData = null;
     let image_url = oldData.image || null;
-    if (draftData.created_by.length > 0) {
+
+    if (data.created_by.length > 0) {
       permissionsData = {
-        data: draftData.created_by.map((creator) => {
+        data: data.created_by.map((creator) => {
           return { user_id: creator.id, permission: 'gate_editor' };
         }),
       };
     }
-    if (!image_url && draftData.image) {
+
+    if (!image_url && data.image) {
       uploadImage(
         {
-          base64: draftData.image,
-          name: draftData.title,
+          base64: data.image,
+          name: data.title,
         },
         {
           onSuccess(imageData) {
@@ -81,15 +83,16 @@ export function CreateGateTemplate({ oldData }) {
         }
       );
     }
-    if (draftData.title) {
+
+    if (data.title) {
       createGateMutation(
         {
           id: oldData.id || uuidv4(),
           dao_id: router.query.dao,
-          title: draftData.title,
-          categories: draftData.categories || [],
-          description: draftData.description,
-          skills: draftData.skills || [],
+          title: data.title,
+          categories: data.categories || [],
+          description: data.description,
+          skills: data.skills || [],
           permissions: {
             ...permissionsData,
             on_conflict: {
@@ -100,7 +103,7 @@ export function CreateGateTemplate({ oldData }) {
           },
           image: image_url,
           tasks: {
-            ...draftData.tasks,
+            ...data.tasks,
             on_conflict: {
               constraint: Tasks_Constraint.KeysPk,
               update_columns: [
@@ -111,11 +114,13 @@ export function CreateGateTemplate({ oldData }) {
               ],
             },
           },
-          published: 'not_published',
+          published: isDraft ? 'not_published' : 'published',
         },
         {
           onSuccess() {
-            snackbar.handleClick({ message: 'Gate saved as draft!' });
+            snackbar.handleClick({
+              message: isDraft ? 'Draft saved' : 'Gate created',
+            });
             router.push(ROUTES.EXPLORE);
           },
           onError(error) {
@@ -126,80 +131,11 @@ export function CreateGateTemplate({ oldData }) {
     }
   };
 
-  const createGate = (gateData: CreateGateTypes) => {
-    let permissionsData = null;
-    let image_url = oldData.image || null;
-    if (gateData.created_by.length > 0) {
-      permissionsData = {
-        data: gateData.created_by.map((creator) => {
-          return { user_id: creator.id, permission: 'gate_editor' };
-        }),
-      };
-    }
-    if (!image_url && gateData.image) {
-      uploadImage(
-        {
-          base64: gateData.image,
-          name: gateData.title,
-        },
-        {
-          onSuccess(imageData) {
-            const image_id = imageData['upload_image'].id;
-            image_url =
-              process.env.NEXT_PUBLIC_NODE_ENDPOINT +
-              '/storage/file?id=' +
-              image_id;
-          },
-          onError(error) {
-            console.log(error);
-          },
-        }
-      );
-    }
-    if (gateData.title) {
-      createGateMutation(
-        {
-          id: oldData.id || uuidv4(),
-          dao_id: router.query.dao,
-          title: gateData.title,
-          categories: gateData.categories || [],
-          description: gateData.description,
-          skills: gateData.skills || [],
-          permissions: {
-            ...permissionsData,
-            on_conflict: {
-              constraint:
-                Permissions_Constraint.PermissionsDaoIdUserIdCredentialIdKey,
-              update_columns: [Permissions_Update_Column.Permission],
-            },
-          },
-          image: image_url,
-          tasks: {
-            ...gateData.tasks,
-            on_conflict: {
-              constraint: Tasks_Constraint.KeysPk,
-              update_columns: [
-                Tasks_Update_Column.Title,
-                Tasks_Update_Column.Description,
-                Tasks_Update_Column.TaskData,
-                Tasks_Update_Column.TaskType,
-              ],
-            },
-          },
-          published: 'published',
-        },
-        {
-          onSuccess() {
-            snackbar.handleClick({ message: 'Gate created!' });
-            router.push(ROUTES.EXPLORE);
-          },
-          onError(error) {
-            console.log(error);
-          },
-        }
-      );
-    }
-  };
+  const saveDraft = (draftData: CreateGateTypes) =>
+    handleMutation(draftData, true);
+
+  const createGate = (gateData: CreateGateTypes) =>
+    handleMutation(gateData, false);
 
   const hasTitleAndDescription = methods
     .watch(['title', 'description'])
