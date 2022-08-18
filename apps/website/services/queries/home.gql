@@ -1,5 +1,5 @@
 query get_home {
-  gates(limit: 4) {
+  gates(where: { published: { _eq: "published" } }, limit: 4) {
     id
     title
     description
