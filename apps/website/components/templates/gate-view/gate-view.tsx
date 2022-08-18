@@ -28,6 +28,7 @@ import { AvatarFile } from '../../atoms/avatar-file';
 import CircularProgressWithLabel from '../../atoms/circular-progress-label';
 import GateStateChip from '../../atoms/gate-state-chip';
 import MorePopover from '../../atoms/more-popover';
+import { ReadMore } from '../../atoms/read-more-less';
 import { ShareButton } from '../../atoms/share-button';
 import GateCompletedModal from '../../organisms/gates/view/modals/gate-completed';
 import { Task, TaskGroup } from '../../organisms/tasks';
@@ -201,13 +202,7 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
           </Stack>
         </Box>
 
-        <Typography
-          variant="body1"
-          marginBottom={(theme) => theme.spacing(4)}
-          sx={{ wordBreak: 'break-word' }}
-        >
-          {gateProps.description}
-        </Typography>
+        <ReadMore>{gateProps.description}</ReadMore>
         {gateCompleted && (
           <Button
             fullWidth

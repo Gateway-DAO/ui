@@ -61,7 +61,7 @@ export function AllTab({ daos, gates, people, setActiveTab }: Props) {
               {t('featured-daos.see-more')}
             </Button>
           }
-          itemWidth={(theme) => theme.spacing(51)}
+          itemWidth={(theme) => theme.spacing(41)}
         >
           {daos.map((dao) => (
             <DaoCard key={dao.id} {...dao} />

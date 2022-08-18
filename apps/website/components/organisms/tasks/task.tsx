@@ -145,14 +145,14 @@ export function Task({ task, idx, readOnly }: Props) {
 
   return (
     <Card
-      sx={{
+      sx={(theme) => ({
         borderRadius: 0,
         borderLeft: 'none',
         backgroundColor: 'transparent !important',
         backgroundImage: 'none !important',
-        px: (theme) => theme.spacing(7),
-        py: (theme) => theme.spacing(5),
-      }}
+        px: { xs: theme.spacing(1), md: theme.spacing(7) },
+        py: { xs: theme.spacing(1), md: theme.spacing(5) },
+      })}
     >
       <CardHeader
         avatar={
