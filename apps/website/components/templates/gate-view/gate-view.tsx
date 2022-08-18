@@ -212,8 +212,18 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
             </Stack>
           </Stack>
         </Box>
-
-        <ReadMore>{gateProps.description}</ReadMore>
+        {gateProps.description.length > 250 ? (
+          <ReadMore>{gateProps.description}</ReadMore>
+        ) : (
+          <Typography
+            variant="body1"
+            marginBottom={(theme) => theme.spacing(4)}
+            sx={{ wordBreak: 'break-word' }}
+            paragraph={true}
+          >
+            {gateProps.description}
+          </Typography>
+        )}
         {gateCompleted && (
           <Button
             fullWidth
