@@ -81,15 +81,51 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
     return arr1.filter((id) => arr2.includes(id)).length;
   };
 
-  const { mutate: toggleGateState } = useMutation(
+  const { mutate: toggleGateStateMutation } = useMutation(
     'toggleGateState',
     gqlAuthMethods.toggle_gate_state
   );
 
-  const { mutate: deleteGate } = useMutation(
+  const toggleGateState = () =>
+    toggleGateStateMutation(
+      {
+        gate_id: gateProps.id,
+        state: gateProps.published === 'published' ? 'paused' : 'published',
+      },
+      {
+        onSuccess() {
+          snackbar.onOpen({
+            message: `Gate ${
+              gateProps.published ? 'unpublished!' : 'published!'
+            }`,
+          });
+        },
+        onError(error) {
+          console.log(error);
+        },
+      }
+    );
+
+  const { mutate: deleteGateMutation } = useMutation(
     'deleteGate',
     gqlAuthMethods.deleteGate
   );
+
+  const deleteGate = () =>
+    deleteGateMutation(
+      { gate_id: gateProps.id },
+      {
+        onSuccess() {
+          snackbar.onOpen({
+            message: 'Gate deleted!',
+          });
+          router.push(ROUTES.DAO_PROFILE.replace('[id]', gateProps.dao.id));
+        },
+        onError(error) {
+          console.log(error);
+        },
+      }
+    );
 
   const gateOptions = [
     {
@@ -352,24 +388,7 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
         positiveAnswer="Delete"
         negativeAnswer="Cancel"
         setOpen={setConfirmDelete}
-        onConfirm={() => {
-          deleteGate(
-            { gate_id: gateProps.id },
-            {
-              onSuccess() {
-                snackbar.onOpen({
-                  message: 'Gate deleted!',
-                });
-                router.push(
-                  ROUTES.DAO_PROFILE.replace('[id]', gateProps.dao.id)
-                );
-              },
-              onError(error) {
-                console.log(error);
-              },
-            }
-          );
-        }}
+        onConfirm={deleteGate}
       >
         If you delete this gate, you will not be able to access it and this
         action cannot be undone.
@@ -386,30 +405,7 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
         }`}
         negativeAnswer="Cancel"
         setOpen={setConfirmToggleState}
-        onConfirm={() => {
-          toggleGateState(
-            {
-              gate_id: gateProps.id,
-              state:
-                gateProps.published === 'published' ? 'paused' : 'published',
-            },
-            {
-              onSuccess() {
-                snackbar.onOpen({
-                  message: `Gate ${
-                    gateProps.published ? 'unpublished!' : 'published!'
-                  }`,
-                });
-                router.push(
-                  ROUTES.DAO_PROFILE.replace('[id]', gateProps.dao.id)
-                );
-              },
-              onError(error) {
-                console.log(error);
-              },
-            }
-          );
-        }}
+        onConfirm={toggleGateState}
       >
         {gateProps.published === 'published'
           ? 'If you unpublish this gate, users will not be able to see it anymore.'
