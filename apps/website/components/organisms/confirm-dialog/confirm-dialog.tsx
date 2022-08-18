@@ -21,14 +21,23 @@ const ConfirmDialog = (props) => {
       open={open}
       onClose={() => setOpen(false)}
       aria-labelledby="confirm-dialog"
+      maxWidth="xs"
     >
       <DialogTitle id="confirm-dialog">{title}</DialogTitle>
       <DialogContent>{children}</DialogContent>
-      <DialogActions>
+      <DialogActions
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+        }}
+      >
         <Button
-          variant="contained"
+          variant="outlined"
           onClick={() => setOpen(false)}
-          color="secondary"
+          color="primary"
+          sx={{
+            flexGrow: 1,
+          }}
         >
           {negativeAnswer}
         </Button>
@@ -39,6 +48,9 @@ const ConfirmDialog = (props) => {
             onConfirm();
           }}
           color="primary"
+          sx={{
+            flexGrow: 1,
+          }}
         >
           {positiveAnswer}
         </Button>
