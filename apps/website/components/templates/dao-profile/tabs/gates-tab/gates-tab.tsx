@@ -116,7 +116,9 @@ export function GatesTab() {
               ))}
             </Box>
           )}
-          {view === ViewMode.table && <TableView gates={filteredGates} />}
+          {view === ViewMode.table && (
+            <TableView gates={filteredGates} isGate showStatus />
+          )}
         </>
       )}
 
