@@ -51,6 +51,7 @@ export type HoldTokenTask = {
 };
 
 export type Task = {
+  gate_id?: string;
   title: string;
   description: string;
 } & (

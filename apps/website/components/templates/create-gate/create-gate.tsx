@@ -55,6 +55,13 @@ export function CreateGateTemplate({ oldData }) {
     let permissionsData = null;
     let image_url = oldData.image || null;
 
+    // Remove gate_id from tasks
+    const formattedTasks = data.tasks.data.map((task) => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { gate_id, ...newTask } = task;
+      return newTask;
+    });
+
     if (data.created_by.length > 0) {
       permissionsData = {
         data: data.created_by.map((creator) => {
@@ -103,7 +110,7 @@ export function CreateGateTemplate({ oldData }) {
           },
           image: image_url,
           tasks: {
-            ...data.tasks,
+            data: formattedTasks,
             on_conflict: {
               constraint: Tasks_Constraint.KeysPk,
               update_columns: [
