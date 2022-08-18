@@ -60,12 +60,7 @@ const TaskArea = ({ tasks }) => {
   });
 
   useEffect(() => {
-    const gateTasks = tasks.map((task) => {
-      const { _gate_id, ...newTask } = task;
-      return newTask;
-    });
-
-    setValue('tasks.data', gateTasks);
+    setValue('tasks.data', tasks);
   }, [tasks, setValue]);
 
   const addTask = async (

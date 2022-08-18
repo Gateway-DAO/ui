@@ -51,6 +51,7 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
   const snackbar = useSnackbar();
 
   const taskIds = gateProps?.tasks.map((task) => task.id);
+  const tasksCount = gateProps.tasks.length;
 
   useEffect(() => {
     const completedTaskIds =
@@ -61,11 +62,11 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
 
     setCompletedTasksCount(countSimiliarIds(completedTaskIds, taskIds));
 
-    if (allCompleted) {
+    if (tasksCount > 0 && allCompleted) {
       setGateCompleted(true);
       handleOpen();
     }
-  }, [taskIds, me?.task_progresses, completedTasksCount]);
+  }, [taskIds, me?.task_progresses, completedTasksCount, tasksCount]);
 
   const isAdmin =
     me?.permissions?.filter(
