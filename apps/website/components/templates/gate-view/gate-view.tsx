@@ -156,12 +156,13 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
           <Stack
             direction="row"
             alignItems="center"
+            width="fit-content"
             marginBottom={(theme) => theme.spacing(2)}
             sx={(theme) => ({
-              minWidth: '408px',
               [theme.breakpoints.down('sm')]: {
                 width: '100%',
               },
+              cursor: 'pointer',
             })}
           >
             <AvatarFile
