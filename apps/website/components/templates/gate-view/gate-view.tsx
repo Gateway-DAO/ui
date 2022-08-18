@@ -119,7 +119,7 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
         router.push(
           `${ROUTES.GATE_NEW}?dao=${gateProps.dao.id}&gate=${gateProps.id}`
         ),
-      hidden: gateProps.published !== 'paused',
+      hidden: gateProps.published === 'published',
     },
     {
       text: 'Delete',
