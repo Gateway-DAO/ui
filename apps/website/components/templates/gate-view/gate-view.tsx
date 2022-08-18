@@ -111,6 +111,15 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
             },
           }
         ),
+      hidden: false,
+    },
+    {
+      text: 'Edit',
+      action: () =>
+        router.push(
+          `${ROUTES.GATE_NEW}?dao=${gateProps.dao.id}&gate=${gateProps.id}`
+        ),
+      hidden: gateProps.published !== 'paused',
     },
     {
       text: 'Delete',
@@ -130,6 +139,7 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
           }
         );
       },
+      hidden: false,
     },
   ];
 
