@@ -30,6 +30,7 @@ import GateStateChip from '../../atoms/gate-state-chip';
 import MorePopover from '../../atoms/more-popover';
 import { ReadMore } from '../../atoms/read-more-less';
 import { ShareButton } from '../../atoms/share-button';
+import ConfirmDialog from '../../organisms/confirm-dialog/confirm-dialog';
 import GateCompletedModal from '../../organisms/gates/view/modals/gate-completed';
 import { Task, TaskGroup } from '../../organisms/tasks';
 
@@ -40,6 +41,8 @@ type GateViewProps = {
 export function GateViewTemplate({ gateProps }: GateViewProps) {
   const [open, setOpen] = useState(false);
   const [gateCompleted, setGateCompleted] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  const [confirmToggleState, setConfirmToggleState] = useState(false);
   const [completedTasksCount, setCompletedTasksCount] = useState(0);
 
   const { me, gqlAuthMethods } = useAuth();
@@ -91,26 +94,7 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
   const gateOptions = [
     {
       text: gateProps.published === 'paused' ? 'Publish' : 'Unpublish',
-      action: () =>
-        toggleGateState(
-          {
-            gate_id: gateProps.id,
-            state: gateProps.published === 'published' ? 'paused' : 'published',
-          },
-          {
-            onSuccess() {
-              snackbar.onOpen({
-                message: `Gate ${
-                  gateProps.published ? 'unpublished!' : 'published!'
-                }`,
-              });
-              router.push(ROUTES.DAO_PROFILE.replace('[id]', gateProps.dao.id));
-            },
-            onError(error) {
-              console.log(error);
-            },
-          }
-        ),
+      action: () => setConfirmToggleState(true),
       hidden: false,
     },
     {
@@ -123,22 +107,7 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
     },
     {
       text: 'Delete',
-      action: () => {
-        deleteGate(
-          { gate_id: gateProps.id },
-          {
-            onSuccess() {
-              snackbar.onOpen({
-                message: 'Gate deleted!',
-              });
-              router.push(ROUTES.DAO_PROFILE.replace('[id]', gateProps.dao.id));
-            },
-            onError(error) {
-              console.log(error);
-            },
-          }
-        );
-      },
+      action: () => setConfirmDelete(true),
       hidden: false,
     },
   ];
@@ -377,6 +346,75 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
         onClose={snackbar.handleClose}
         message={snackbar.message}
       />
+      <ConfirmDialog
+        title="Are you sure you want to delete this gate?"
+        open={confirmDelete}
+        positiveAnswer="Delete"
+        negativeAnswer="Cancel"
+        setOpen={setConfirmDelete}
+        onConfirm={() => {
+          deleteGate(
+            { gate_id: gateProps.id },
+            {
+              onSuccess() {
+                snackbar.onOpen({
+                  message: 'Gate deleted!',
+                });
+                router.push(
+                  ROUTES.DAO_PROFILE.replace('[id]', gateProps.dao.id)
+                );
+              },
+              onError(error) {
+                console.log(error);
+              },
+            }
+          );
+        }}
+      >
+        If you delete this gate, you will not be able to access it and this
+        action cannot be undone.
+      </ConfirmDialog>
+      <ConfirmDialog
+        title={
+          gateProps.published === 'published'
+            ? 'Are you sure to unpublish this gate?'
+            : 'Are you sure you want to publish this gate?'
+        }
+        open={confirmToggleState}
+        positiveAnswer={`${
+          gateProps.published === 'published' ? 'Unpublish' : 'Publish'
+        }`}
+        negativeAnswer="Cancel"
+        setOpen={setConfirmToggleState}
+        onConfirm={() => {
+          toggleGateState(
+            {
+              gate_id: gateProps.id,
+              state:
+                gateProps.published === 'published' ? 'paused' : 'published',
+            },
+            {
+              onSuccess() {
+                snackbar.onOpen({
+                  message: `Gate ${
+                    gateProps.published ? 'unpublished!' : 'published!'
+                  }`,
+                });
+                router.push(
+                  ROUTES.DAO_PROFILE.replace('[id]', gateProps.dao.id)
+                );
+              },
+              onError(error) {
+                console.log(error);
+              },
+            }
+          );
+        }}
+      >
+        {gateProps.published === 'published'
+          ? 'If you unpublish this gate, users will not be able to see it anymore.'
+          : 'Publishing this gate will make it accessible by all users.'}
+      </ConfirmDialog>
     </Grid>
   );
 }
