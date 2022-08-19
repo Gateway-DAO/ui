@@ -220,7 +220,7 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
             </Stack>
           </Stack>
         </Box>
-        {gateProps.description.length > 250 ? (
+        {gateProps.description?.length > 250 ? (
           <ReadMore>{gateProps.description}</ReadMore>
         ) : (
           <Typography
