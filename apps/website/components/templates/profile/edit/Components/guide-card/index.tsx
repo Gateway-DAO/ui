@@ -62,17 +62,17 @@ export function GuideCard({ setShowCard }) {
     if (link == 'contribute') {
       return router.push(ROUTES.EXPLORE);
     }
-    router.push(ROUTES.EDIT_PROFILE + guideDetails[progress].link);
+    router.push(ROUTES.PROFILE_EDIT + guideDetails[progress].link);
   };
 
   return (
     <Box
-      sx={{
-        width: '346px',
-        height: '206px',
-        background: '#9A53FF',
-        borderRadius: '8px',
-      }}
+      sx={(theme) => ({
+        width: theme.spacing(43),
+        height: theme.spacing(26),
+        background: theme.palette.primary.main,
+        borderRadius: theme.spacing(1),
+      })}
     >
       <Box sx={{ position: 'relative', display: 'inline-flex' }}>
         <CircularProgress
