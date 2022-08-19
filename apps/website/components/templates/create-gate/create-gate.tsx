@@ -67,7 +67,7 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
       };
     }
 
-    if (image_url !== data.image && data.image !== null) {
+    if (image_url !== data.image && data.image !== undefined) {
       await uploadImage(
         {
           base64: data.image,
