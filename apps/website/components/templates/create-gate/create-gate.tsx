@@ -37,7 +37,7 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
 
   const methods = useForm({
     resolver: zodResolver(createGateSchema),
-    mode: 'onSubmit',
+    mode: 'onBlur',
   });
 
   const snackbar = useSnackbar();
@@ -56,6 +56,12 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
   );
 
   const handleMutation = async (data: CreateGateTypes, isDraft: boolean) => {
+    const dataIsValid = await methods.trigger();
+
+    if (!dataIsValid) {
+      return;
+    }
+
     let permissionsData = null;
     let image_url = oldData.image || null;
 
