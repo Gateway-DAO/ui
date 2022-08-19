@@ -1,58 +1,54 @@
-import { IGraphQLProjects } from 'graphql-config';
+import { IGraphQLProjects, IGraphQLConfig } from 'graphql-config';
 
 require('dotenv').config();
 
-const config: IGraphQLProjects = {
-  projects: {
-    website: {
-      schema: [
-        {
-          [`${process.env.HASURA_ENDPOINT}`]: {
-            headers: {
-              'x-hasura-admin-secret': process.env.HASURA_ADMIN_SECRET as string,
-            },
-          },
+const generateConfig = {
+  plugins: [
+    'typescript',
+    'typescript-operations',
+    'typescript-graphql-request',
+    'typescript-resolvers',
+  ],
+  config: {
+    scalars: {
+      _text: 'string',
+    },
+    defaultMapper: 'Partial<{T}>',
+    avoidOptionals: {
+      field: true,
+      inputValue: false,
+      object: true,
+      defaultValue: true,
+    },
+    fetcher: 'graphql-request',
+  },
+};
+
+const config: IGraphQLConfig = {
+  schema: '',
+  extensions: {
+    codegen: {
+      generates: {
+        './apps/website/services-cyberconnect/types.generated.ts': {
+          ...generateConfig,
+          schema: process.env.NEXT_PUBLIC_CYBERCONNECT_ENDPOINT as string,
+          documents: ['apps/website/services-cyberconnect/**/*.{graphql,gql}'],
         },
-        {
-          [`${process.env.NEXT_PUBLIC_CYBERCONNECT_ENDPOINT}`]: {
-            headers: {}
-          },
-        }
-      ],
-      documents: [
-        "./apps/website/**/*.{graphql,gql}",
-        '!**/*.generated.{graphql,gql}',
-        '!**/*.{ts,tsx}',
-      ],
-      extensions: {
-        codegen: {
-          generates: {
-            './apps/website/services/graphql/types.generated.ts': {
-              plugins: [
-                'typescript',
-                'typescript-operations',
-                'typescript-graphql-request',
-                'typescript-resolvers',
-              ],
-              config: {
-                scalars: {
-                  _text: 'string',
-                },
-                defaultMapper: 'Partial<{T}>',
-                avoidOptionals: {
-                  field: true,
-                  inputValue: false,
-                  object: true,
-                  defaultValue: true,
-                },
-                fetcher: 'graphql-request',
+        './apps/website/services/graphql/types.generated.ts': {
+          ...generateConfig,
+          schema: {
+            [`${process.env.HASURA_ENDPOINT}`]: {
+              headers: {
+                'x-hasura-admin-secret': process.env.HASURA_ADMIN_SECRET as string,
               },
             },
           },
-        },
+          documents: ['apps/website/services/**/*.{graphql,gql}'],
+        }
       },
     },
   },
-};
+}
+
 
 export default config;
