@@ -12,7 +12,6 @@ import IconButton from '@mui/material/IconButton';
 import Popover from '@mui/material/Popover';
 import Tooltip from '@mui/material/Tooltip';
 
-import { gqlCyberConnectClient } from '../../../../services/cyberconnect-api';
 import { EmptyNotifications } from './empty';
 import { Notification } from './notification';
 
@@ -20,56 +19,9 @@ export function NavBarNotifications() {
   const { data } = useAccount();
   const userMenu = useMenu();
 
-  const { data: notificationsRes } = useQuery(
-    ['notifications'],
-    () =>
-      gqlCyberConnectClient.request<{
-        identity: { unreadNotificationCount: number };
-      }>(
-        gql`
-          query user_notifications($address: String!) {
-            identity(address: $address, network: ETH) {
-              unreadNotificationCount
-              notifications {
-                pageInfo {
-                  hasNextPage
-                  hasPreviousPage
-                  endCursor
-                  startCursor
-                }
-                list {
-                  id
-                  toAddress
-                  network
-                  namespace
-                  hasRead
-                  type
-                  timestamp
-                  ... on NewConnectionNotification {
-                    fromAddress
-                    connectionType
-                  }
-                  ... on BiConnectReceivedNotification {
-                    fromAddress
-                  }
-                  ... on BiConnectAcceptedNotification {
-                    fromAddress
-                  }
-                }
-              }
-            }
-          }
-        `,
-        { address: data?.address }
-      ),
-    {
-      enabled: !!data?.address,
-      refetchOnWindowFocus: true,
-      select(data) {
-        return data.identity;
-      },
-    }
-  );
+  const notificationsRes = {
+    unreadNotificationCount: 0,
+  };
 
   const icon = (
     <Avatar>

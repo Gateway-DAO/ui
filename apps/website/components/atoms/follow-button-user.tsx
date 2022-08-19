@@ -1,53 +1,54 @@
 import useTranslation from 'next-translate/useTranslation';
 import { useMemo } from 'react';
 
-import { gql } from 'graphql-request';
-import { useQuery, useQueryClient } from 'react-query';
+import { useMutation } from 'react-query';
 import { useAccount } from 'wagmi';
 
 import { Button, ButtonProps } from '@mui/material';
 
 import { useBidirectionFollow } from '../../hooks/use-bidirectional-follow';
-import { useFollowUser } from '../../hooks/use-follow';
 import { useAuth } from '../../providers/auth';
-import { gqlCyberConnectClient } from '../../services/cyberconnect-api';
-import { BidirectionalConnectionStatus } from '../../types/cyberconnect';
+import { useCyberConnect } from '../../providers/cyberconnect';
+import { BiConnState } from '../../services-cyberconnect/types.generated';
 import { LoadingButton } from './loading-button';
 
 type Props = {
   wallet: string;
 } & ButtonProps;
 
-const debugWallets = [];
-
 export function FollowButtonUser({ wallet, ...props }: Props) {
-  const { me, onOpenLogin } = useAuth();
   const { t } = useTranslation('common');
-  const { request: status, onResetRequest } = useStatus(wallet);
+  const { me, onOpenLogin } = useAuth();
+  const { data: account } = useAccount();
+  const { friendRequestsSent, onResetCyberConnectProfile } = useCyberConnect();
 
   const { onToggleFollow } = useBidirectionFollow();
 
-  const onClick = async () => {
-    await onToggleFollow(
-      wallet,
-      status.data === BidirectionalConnectionStatus.CONNECTD
-    );
-    return onResetRequest();
-  };
+  const status =
+    me && account?.address
+      ? friendRequestsSent.find(
+          (request) => request.from === account.address && request.to === wallet
+        )?.state
+      : BiConnState.Empty;
+
+  const onFollow = useMutation(async () => {
+    await onToggleFollow(wallet, status === BiConnState.Connected);
+    return onResetCyberConnectProfile();
+  });
 
   const label = useMemo(() => {
     if (!me) {
       return t('follow');
     }
-    switch (status.data) {
-      case BidirectionalConnectionStatus.CONNECTD:
+    switch (status) {
+      case BiConnState.Connected:
         return t('unfollow');
-      case BidirectionalConnectionStatus.PENDING:
+      case BiConnState.Pending:
         return t('pending');
       default:
         return t('follow');
     }
-  }, [me, status.data]);
+  }, [me, status]);
 
   if (!me)
     return (
@@ -59,102 +60,11 @@ export function FollowButtonUser({ wallet, ...props }: Props) {
   return (
     <LoadingButton
       variant="contained"
-      isLoading={status.isLoading}
-      onClick={onClick}
+      isLoading={onFollow.isLoading}
+      onClick={() => onFollow.mutate()}
       {...props}
     >
       {label}
     </LoadingButton>
   );
 }
-
-const useStatus = (wallet: string) => {
-  const { me } = useAuth();
-  const { data } = useAccount();
-  const client = useQueryClient();
-  const myWallet = data?.address;
-  const request = useQuery(
-    ['follow', myWallet, wallet],
-    () =>
-      gqlCyberConnectClient
-        .request<{
-          bidirectionalConnections: { state: BidirectionalConnectionStatus }[];
-        }>(
-          gql`
-            query connection_state($fromAddress: String!, $toAddress: String!) {
-              bidirectionalConnections(
-                fromAddr: $fromAddress
-                toAddrList: [$toAddress]
-                network: ETH
-              ) {
-                state
-                direction
-                namespace
-                latestEvent {
-                  ...event
-                }
-                latestAnchorEvent {
-                  ...event
-                }
-              }
-              connections(
-                fromAddr: $fromAddress
-                toAddrList: [$toAddress]
-                network: ETH
-              ) {
-                fromAddr
-                toAddr
-                followStatus {
-                  isFollowed
-                  isFollowing
-                }
-              }
-            }
-            fragment event on BiConnEvent {
-              hash
-              parentHash
-              fromAddr
-              toAddr
-              network
-              namespace
-              createdAt
-              isAnchor
-              proof {
-                content
-                digest
-                signature
-                signingKey
-                signingKeyAuth {
-                  message
-                  signature
-                  address
-                }
-                arweaveTxHash
-              }
-              instruction
-            }
-          `,
-          {
-            fromAddress: myWallet,
-            toAddress: wallet,
-          }
-        )
-        .then((res) => {
-          if (debugWallets.includes(wallet)) {
-            console.log('bidirectional-status', res);
-          }
-          return res;
-        }),
-    {
-      enabled: !!me && !!myWallet,
-      select: (res) => res.bidirectionalConnections[0].state,
-    }
-  );
-
-  const onResetRequest = async () => {
-    await client.invalidateQueries(['follow', myWallet, wallet]);
-    await client.refetchQueries(['follow', myWallet, wallet]);
-  };
-
-  return { request, onResetRequest };
-};

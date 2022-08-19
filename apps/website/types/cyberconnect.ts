@@ -21,10 +21,3 @@ export interface Notification {
   type: NotificationType;
   timestamp: string;
 }
-
-export enum BidirectionalConnectionStatus {
-  EMPTY = 'EMPTY',
-  PENDING = 'PENDING',
-  CONNECTD = 'CONNECTD',
-  BLACKLIST = 'BLACKLIST',
-}
