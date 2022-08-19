@@ -32,6 +32,7 @@ import { useAuth } from '../../../providers/auth';
 import { AvatarFile } from '../../atoms/avatar-file';
 import { SocialButtons } from '../../organisms/social-buttons';
 import { ActivityTab, OverviewTab } from './tabs';
+import { GuideCard } from './edit/Components/guide-card';
 
 export default function PrivateProfileTemplate() {
   const { t } = useTranslation();
@@ -94,76 +95,94 @@ export default function PrivateProfileTemplate() {
           file={me.picture}
           fallback={'/logo.png'}
         ></AvatarFile>
-        <Box>
-          <Typography
-            sx={{ color: '#fff', paddingTop: { xs: '16px', md: '24px' } }}
-            component="h1"
-            variant="h4"
-          >
-            {me.name}
-            <EditIcon
-              onClick={() => router.push(ROUTES.PROFILE_EDIT)}
-              sx={{
-                marginLeft: '15px',
-                color: 'rgba(255, 255, 255, 0.56)',
-                cursor: 'pointer',
-              }}
-            ></EditIcon>
-          </Typography>
-          <Typography
-            component="h5"
-            sx={{
-              fontSize: '16px',
-              fontWeight: '400',
-              color: 'rgba(255, 255, 255, 0.7)',
-            }}
-            variant="h6"
-          >
-            @{me.username}
-          </Typography>
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              columnGap: '10px',
-              mt: 2,
-            }}
-          >
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: { xs: 'column', md: 'row' },
+            justifyContent: 'space-between',
+          }}
+        >
+          <Box>
             <Typography
+              sx={{ color: '#fff', paddingTop: { xs: '16px', md: '24px' } }}
+              component="h1"
+              variant="h4"
+            >
+              {me.name}
+              <EditIcon
+                onClick={() => router.push(ROUTES.PROFILE_EDIT)}
+                sx={{
+                  marginLeft: '15px',
+                  color: 'rgba(255, 255, 255, 0.56)',
+                  cursor: 'pointer',
+                }}
+              ></EditIcon>
+            </Typography>
+            <Typography
+              component="h5"
               sx={{
                 fontSize: '16px',
                 fontWeight: '400',
                 color: 'rgba(255, 255, 255, 0.7)',
               }}
-              width={{ xs: '100%', md: '50%' }}
+              variant="h6"
             >
-              {me.bio ||
-                'Write about your years of experience, industry, or skills. People also talk about their achievements or previous job experiences.'}
+              @{me.username}
             </Typography>
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                columnGap: '10px',
+                mt: 2,
+              }}
+            >
+              <Typography
+                sx={{
+                  fontSize: '16px',
+                  fontWeight: '400',
+                  color: 'rgba(255, 255, 255, 0.7)',
+                }}
+                width={{ xs: '100%', md: '50%' }}
+              >
+                {me.bio ||
+                  'Write about your years of experience, industry, or skills. People also talk about their achievements or previous job experiences.'}
+              </Typography>
+            </Box>
+            <Box>
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  columnGap: '10px',
+                  mt: 2,
+                }}
+              >
+                <Typography>{me.following?.length} connection(s)</Typography>·
+                <Typography>{me.credentials?.length} credential(s)</Typography>
+              </Box>
+            </Box>
+
+            <Stack
+              direction="row"
+              gap={1}
+              sx={{
+                mt: 4,
+              }}
+            >
+              <SocialButtons
+                socials={me.socials || []}
+                copyNetworks={['discord']}
+              />
+            </Stack>
           </Box>
           <Box
             sx={{
-              display: 'flex',
-              flexDirection: 'row',
-              columnGap: '10px',
-              mt: 2,
+              mr: TOKENS.CONTAINER_PX,
             }}
           >
-            <Typography>{me.following?.length} connection(s)</Typography>·
-            <Typography>{me.credentials?.length} credential(s)</Typography>
+            <GuideCard />
           </Box>
-          <Stack
-            direction="row"
-            gap={1}
-            sx={{
-              mt: 4,
-            }}
-          >
-            <SocialButtons
-              socials={me.socials || []}
-              copyNetworks={['discord']}
-            />
-          </Stack>
         </Box>
       </Box>
       <Box
