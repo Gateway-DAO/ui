@@ -3,7 +3,7 @@ mutation create_gate(
   $dao_id: uuid!
   $title: String!
   $categories: jsonb
-  $description: String!
+  $description: String
   $skills: jsonb
   $permissions: permissions_arr_rel_insert_input
   $image: String!
