@@ -45,17 +45,17 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
   const router = useRouter();
   const { gqlAuthMethods } = useAuth();
 
-  const { mutate: uploadImage } = useMutation(
+  const { mutateAsync: uploadImage } = useMutation(
     'uploadImage',
     gqlAuthMethods.upload_image
   );
 
-  const { mutate: createGateMutation } = useMutation(
+  const { mutateAsync: createGateMutation } = useMutation(
     'createGate',
     gqlAuthMethods.create_gate
   );
 
-  const handleMutation = (data: CreateGateTypes, isDraft: boolean) => {
+  const handleMutation = async (data: CreateGateTypes, isDraft: boolean) => {
     let permissionsData = null;
     let image_url = oldData.image || null;
 
@@ -67,8 +67,8 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
       };
     }
 
-    if (!image_url && data.image) {
-      uploadImage(
+    if (image_url !== data.image && data.image !== null) {
+      await uploadImage(
         {
           base64: data.image,
           name: data.title,
@@ -89,7 +89,7 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
     }
 
     if (data.title) {
-      createGateMutation(
+      await createGateMutation(
         {
           id: oldData.id || uuidv4(),
           dao_id: router.query.dao,
