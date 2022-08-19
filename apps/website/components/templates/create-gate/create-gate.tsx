@@ -20,9 +20,13 @@ import { PublishNavbar } from '../../organisms/publish-navbar/publish-navbar';
 import TaskArea from '../../organisms/tasks-area/tasks-area';
 import { GateDetailsForm } from './details-form';
 import { GateImageCard } from './gate-image-card/gate-image-card';
-import { createGateSchema, CreateGateTypes } from './schema';
+import { createGateSchema, CreateGateTypes, DraftGateTypes } from './schema';
 
-export function CreateGateTemplate({ oldData }) {
+type CreateGateProps = {
+  oldData: DraftGateTypes;
+};
+
+export function CreateGateTemplate({ oldData }: CreateGateProps) {
   const gateDetails = (({
     title,
     categories,
@@ -54,13 +58,6 @@ export function CreateGateTemplate({ oldData }) {
   const handleMutation = (data: CreateGateTypes, isDraft: boolean) => {
     let permissionsData = null;
     let image_url = oldData.image || null;
-
-    // Remove gate_id from tasks
-    const formattedTasks = data.tasks.data.map((task) => {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { gate_id, ...newTask } = task;
-      return newTask;
-    });
 
     if (data.created_by.length > 0) {
       permissionsData = {
@@ -110,7 +107,7 @@ export function CreateGateTemplate({ oldData }) {
           },
           image: image_url,
           tasks: {
-            data: formattedTasks,
+            ...data.tasks,
             on_conflict: {
               constraint: Tasks_Constraint.KeysPk,
               update_columns: [
@@ -241,7 +238,7 @@ export function CreateGateTemplate({ oldData }) {
             >
               <Stack direction="column" gap={2}>
                 <FormProvider {...methods}>
-                  <TaskArea tasks={oldData.tasks} />
+                  <TaskArea tasks={oldData.tasks || []} />
                 </FormProvider>
               </Stack>
             </Stack>

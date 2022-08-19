@@ -52,7 +52,7 @@ const defaultTaskData = (
 };
 
 const TaskArea = ({ tasks }) => {
-  const { control, trigger, setValue } = useFormContext<CreateGateTypes>();
+  const { control, setValue } = useFormContext<CreateGateTypes>();
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -60,7 +60,18 @@ const TaskArea = ({ tasks }) => {
   });
 
   useEffect(() => {
-    setValue('tasks.data', tasks);
+    let formattedTasks = tasks;
+
+    if (tasks.length > 0) {
+      // Remove gate_ids from the tasks
+      formattedTasks = tasks.map((task) => {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { gate_id, ...newTask } = task;
+        return newTask;
+      });
+    }
+
+    setValue('tasks.data', formattedTasks);
   }, [tasks, setValue]);
 
   const addTask = async (

@@ -7,6 +7,18 @@ export type Creator = {
   name: string;
 };
 
+// Draft Gate
+export type DraftGateTypes = {
+  id?: string;
+  title: string;
+  categories: string[];
+  description: string;
+  image: string;
+  skills: string[];
+  created_by: Creator[];
+  tasks: DraftTasksSchema;
+};
+
 // Create Gate
 export type CreateGateTypes = {
   id?: string;
@@ -23,6 +35,9 @@ export type CreateGateTypes = {
 export type TasksSchema = {
   data: Array<Task>;
 };
+
+// Tasks when we get them back from a previous draft
+export type DraftTasksSchema = Array<Task>;
 
 // Task
 export type SelfVerifyTask = {
