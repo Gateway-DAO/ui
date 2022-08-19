@@ -56,6 +56,8 @@ const QuizContent = ({
     }
   };
 
+  console.log(data);
+
   return (
     <Stack alignItems="start" marginTop={3} gap={2}>
       {questions.map((question, index) => {
@@ -72,9 +74,10 @@ const QuizContent = ({
                     <FormControlLabel
                       key={index}
                       value={answer.value}
+                      checked={answer.correct}
                       control={<Radio />}
                       label={answer.value}
-                      disabled={readOnly}
+                      disabled={readOnly || completed}
                     />
                   );
                 })}
@@ -88,7 +91,7 @@ const QuizContent = ({
                       value={answer.value}
                       control={<Checkbox />}
                       label={answer.value}
-                      disabled={readOnly}
+                      disabled={readOnly || completed}
                     />
                   );
                 })}
