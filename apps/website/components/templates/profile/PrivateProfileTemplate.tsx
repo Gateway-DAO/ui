@@ -2,7 +2,7 @@ import { InferGetStaticPropsType } from 'next';
 import useTranslation from 'next-translate/useTranslation';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 
 import { FaDiscord } from 'react-icons/fa';
 
@@ -35,6 +35,7 @@ import { ActivityTab, OverviewTab } from './tabs';
 import { GuideCard } from './edit/Components/guide-card';
 
 export default function PrivateProfileTemplate() {
+  const [showCard, setShowCard] = useState(true);
   const { t } = useTranslation();
   const { activeTab, handleTabChange, setTab } = useTab();
   const router = useRouter();
@@ -181,7 +182,7 @@ export default function PrivateProfileTemplate() {
               mr: TOKENS.CONTAINER_PX,
             }}
           >
-            <GuideCard />
+            {showCard && <GuideCard {...{ setShowCard }} />}
           </Box>
         </Box>
       </Box>
