@@ -26,6 +26,7 @@ export function GateDetailsForm({ gateData }) {
     setValue('description', description);
     setValue('skills', skills);
     setValue('created_by', creators);
+    setValue('tasks', { data: [] });
   }, [title, categories, description, skills, creators, setValue]);
 
   return (
