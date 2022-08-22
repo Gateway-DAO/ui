@@ -1,8 +1,16 @@
+import useTranslation from 'next-translate/useTranslation';
+
+import { Button, ButtonProps } from '@mui/material';
+
 import { useBidirectionFollow } from '../../../hooks/use-bidirectional-follow';
 import { useAuth } from '../../../providers/auth';
 import { useCyberConnect } from '../../../providers/cyberconnect';
 import { BiConnState } from '../../../services-cyberconnect/types.generated';
 import { LoadingButton } from '../../atoms/loading-button';
+
+type Props = {
+  wallet: string;
+} & ButtonProps;
 
 /*
 Component that manages the follow button for a user:
@@ -18,6 +26,45 @@ Component that manages the follow button for a user:
 - If the user has a received pending request, it shows as 'Pending', and if the user clicks, it shows a dropdown with the option to accept or reject the request
 */
 
-export function FollowCyberconnect() {
+function CyberConnectButton({ wallet }: Props) {
+  const { t } = useTranslation('common');
+  const { me } = useAuth();
+
+  const { friends, friendRequestsSent, friendsRequestsInbox } =
+    useCyberConnect();
+
+  const isFollowing =
+    friends.find((friend) => friend.address === wallet).state ===
+    BiConnState.Connected;
+
+  const isPendingSent =
+    friendRequestsSent.find(
+      (request) => request.from === me?.wallet && request.to === wallet
+    )?.state === BiConnState.Pending;
+
+  const isPendingReceived =
+    friendsRequestsInbox.find(
+      (request) => request.from === wallet && request.to === me?.wallet
+    )?.state === BiConnState.Pending;
+
   return <></>;
+}
+
+function FollowButton({ wallet }: Props) {
+  const { t } = useTranslation('common');
+}
+
+export function FollowCyberConnect(props: Props) {
+  const { me, onOpenLogin } = useAuth();
+  const { t } = useTranslation('common');
+
+  if (!me) {
+    return (
+      <Button variant="contained" onClick={onOpenLogin} {...props}>
+        {t('follow')}
+      </Button>
+    );
+  }
+
+  return <CyberConnectButton {...props} />;
 }

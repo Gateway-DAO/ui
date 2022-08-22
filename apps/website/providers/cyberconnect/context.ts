@@ -2,13 +2,13 @@ import { createContext, useContext } from 'react';
 
 import type CyberConnect from '@cyberlab/cyberconnect';
 
-import { Notification, BiconnectionRequest } from './types';
+import { Notification, BiconnectionRequest, CyberConnectFriend } from './types';
 
 type Context = {
   cyberConnect?: CyberConnect;
   isLoading: boolean;
   notifications: Notification[];
-  friends: BiconnectionRequest[];
+  friends: CyberConnectFriend[];
   friendsRequestsInbox: BiconnectionRequest[];
   friendRequestsSent: BiconnectionRequest[];
   onResetCyberConnectProfile: () => Promise<any>;

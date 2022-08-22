@@ -4,12 +4,12 @@ import {
   BiConnectReceivedNotification,
   Notification as ResponseNotification,
 } from '../../services-cyberconnect/types.generated';
-import { Notification, BiconnectionRequest } from './types';
+import { Notification, BiconnectionRequest, CyberConnectFriend } from './types';
 
 /** user addressess comes as lowercased from api
  * we need to use ethers' getAddress to get the checksummed address
  **/
-export const normalizeFriendConnection = ({
+export const normalizeRequestConnection = ({
   to,
   from,
   state,
@@ -34,4 +34,15 @@ export const normalizeNotification = (
         ),
       }
     : {}),
+});
+
+/**
+ * parses friend connection
+ */
+export const normalizeFriend = (
+  request: BiconnectionRequest,
+  myWallet: string
+): CyberConnectFriend => ({
+  address: request.from === myWallet ? request.to : request.from,
+  state: request.state,
 });

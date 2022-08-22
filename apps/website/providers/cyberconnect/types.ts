@@ -12,3 +12,8 @@ export type BiconnectionRequest = Pick<
   BidirectionalConnection,
   'to' | 'from' | 'state'
 >;
+
+export type CyberConnectFriend = {
+  address: string;
+  state: BidirectionalConnection['state'];
+};

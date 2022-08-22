@@ -6,19 +6,24 @@ import { useAccount } from 'wagmi';
 import { gqlCyberConnectMethods } from '../../services-cyberconnect/api';
 import { createCyberConnectClient } from './client';
 import { CyberConnectContext } from './context';
-import { normalizeFriendConnection, normalizeNotification } from './utils';
+import {
+  normalizeRequestConnection,
+  normalizeNotification,
+  normalizeFriend,
+} from './utils';
 
 export function CyberConnectProvider({ children }: PropsWithChildren<unknown>) {
-  const { data: account } = useAccount();
+  const {
+    data: { address },
+  } = useAccount();
 
   const cyberConnect =
     typeof window !== 'undefined' ? createCyberConnectClient() : null;
 
   const { isLoading, isRefetching, data, refetch } = useQuery(
-    ['cyberconnect-profile', account?.address],
-    () =>
-      gqlCyberConnectMethods.user_notifications({ address: account!.address }),
-    { enabled: !!account?.address }
+    ['cyberconnect-profile', address],
+    () => gqlCyberConnectMethods.user_notifications({ address }),
+    { enabled: !!address }
   );
 
   /* Normalize data */
@@ -29,7 +34,7 @@ export function CyberConnectProvider({ children }: PropsWithChildren<unknown>) {
           bidirectionalConnection.namespace === 'GatewayDAO'
       ) */
       .map(({ bidirectionalConnection }) =>
-        normalizeFriendConnection(bidirectionalConnection)
+        normalizeRequestConnection(bidirectionalConnection)
       ) ?? [];
   const friendRequestsSent =
     data?.identity?.friendRequestsSent?.list
@@ -38,7 +43,7 @@ export function CyberConnectProvider({ children }: PropsWithChildren<unknown>) {
           bidirectionalConnection.namespace === 'GatewayDAO'
       ) */
       .map(({ bidirectionalConnection }) =>
-        normalizeFriendConnection(bidirectionalConnection)
+        normalizeRequestConnection(bidirectionalConnection)
       ) ?? [];
 
   const notifications =
@@ -53,7 +58,7 @@ export function CyberConnectProvider({ children }: PropsWithChildren<unknown>) {
           bidirectionalConnection.namespace === 'GatewayDAO'
       ) */
       .map(({ bidirectionalConnection }) =>
-        normalizeFriendConnection(bidirectionalConnection)
+        normalizeFriend(bidirectionalConnection, address)
       ) ?? [];
 
   return (
