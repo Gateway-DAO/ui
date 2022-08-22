@@ -10,8 +10,8 @@ import { useState } from 'react';
 import '@fontsource/plus-jakarta-sans/700.css';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import { useRouter } from 'next/router';
 import { ROUTES } from '../../../../../../constants/routes';
+import Link from 'next/link';
 
 const guideDetails = [
   {
@@ -37,32 +37,23 @@ const guideDetails = [
 ];
 
 export function GuideCard({ setShowCard }) {
-  const router = useRouter();
   const [progress, setProgress] = useState(0);
 
-  const handleNextCard = (move: string) => {
-    if (move == 'next') {
-      if (progress == 4) {
-        setProgress(0);
-      } else {
-        setProgress(progress + 1);
-      }
+  const handleCardProgress = (move: string) => {
+    if (move === 'next') {
+      return progress === 4 ? setProgress(0) : setProgress(progress + 1);
     }
 
-    if (move == 'previous') {
-      if (progress == 0) {
-        setProgress(4);
-      } else {
-        setProgress(progress - 1);
-      }
+    if (move === 'previous') {
+      return progress === 0 ? setProgress(4) : setProgress(progress - 1);
     }
   };
 
-  const redirectLink = (link) => {
+  const redirectLink = (link: string): string => {
     if (link == 'contribute') {
-      return router.push(ROUTES.EXPLORE);
+      return `${ROUTES.EXPLORE}`;
     }
-    router.push(ROUTES.PROFILE_EDIT + guideDetails[progress].link);
+    return `${ROUTES.PROFILE_EDIT + guideDetails[progress].link}`;
   };
 
   return (
@@ -116,14 +107,16 @@ export function GuideCard({ setShowCard }) {
       </Box>
       <Box sx={{ display: 'flex', mx: 2, justifyContent: 'space-between' }}>
         <Stack direction="row" spacing={1}>
-          <Button
-            variant="contained"
-            size="small"
-            color="secondary"
-            onClick={() => redirectLink(guideDetails[progress].link)}
-          >
-            LET'S DO IT
-          </Button>
+          <Link href={redirectLink(guideDetails[progress].link)} passHref>
+            <Button
+              variant="contained"
+              size="small"
+              color="secondary"
+              component="a"
+            >
+              LET'S DO IT
+            </Button>
+          </Link>
           <Button
             variant="outlined"
             sx={{
@@ -137,10 +130,10 @@ export function GuideCard({ setShowCard }) {
           </Button>
         </Stack>
         <Box>
-          <IconButton onClick={() => handleNextCard('previous')}>
+          <IconButton onClick={() => handleCardProgress('previous')}>
             <ChevronLeftIcon htmlColor="rgba(255, 255, 255, 0.56)" />
           </IconButton>
-          <IconButton onClick={() => handleNextCard('next')}>
+          <IconButton onClick={() => handleCardProgress('next')}>
             <ChevronRightIcon htmlColor="rgba(255, 255, 255, 0.56)" />
           </IconButton>
         </Box>
