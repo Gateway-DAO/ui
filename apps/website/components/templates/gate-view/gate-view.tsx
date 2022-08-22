@@ -103,8 +103,10 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
           //TODO: Refresh Chip component only
           router.reload();
         },
-        onError(error) {
-          console.log(error);
+        onError() {
+          snackbar.handleClick({
+            message: "An error occured, couldn't toggle gate state.",
+          });
         },
       }
     );

@@ -65,8 +65,7 @@ const TaskArea = ({ tasks }) => {
     if (tasks.length > 0) {
       // Remove gate_ids from the tasks
       formattedTasks = tasks.map((task) => {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const { gate_id, ...newTask } = task;
+        const { gate_id: _gate_id, ...newTask } = task;
         return newTask;
       });
     }

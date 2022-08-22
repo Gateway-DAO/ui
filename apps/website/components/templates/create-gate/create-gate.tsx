@@ -87,8 +87,10 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
               '/storage/file?id=' +
               image_id;
           },
-          onError(error) {
-            console.log(error);
+          onError() {
+            snackbar.handleClick({
+              message: "An error occured, couldn't upload the image.",
+            });
           },
         }
       );
@@ -135,8 +137,12 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
               ROUTES.GATE_PROFILE.replace('[id]', result.insert_gates_one.id)
             );
           },
-          onError(error) {
-            console.log(error);
+          onError() {
+            snackbar.handleClick({
+              message: isDraft
+                ? "An error occured, couldn't save the draft."
+                : "An error occured, couldn't create the gate.",
+            });
           },
         }
       );
