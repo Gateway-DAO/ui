@@ -250,7 +250,7 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
             >
               <Stack direction="column" gap={2}>
                 <FormProvider {...methods}>
-                  <TaskArea tasks={oldData.tasks || []} />
+                  <TaskArea draftTasks={oldData.tasks || []} />
                 </FormProvider>
               </Stack>
             </Stack>

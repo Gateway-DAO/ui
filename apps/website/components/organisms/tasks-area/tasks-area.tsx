@@ -51,7 +51,7 @@ const defaultTaskData = (
   }
 };
 
-const TaskArea = ({ tasks }) => {
+const TaskArea = ({ draftTasks }) => {
   const { control, setValue } = useFormContext<CreateGateTypes>();
 
   const { fields, append, remove } = useFieldArray({
@@ -60,18 +60,16 @@ const TaskArea = ({ tasks }) => {
   });
 
   useEffect(() => {
-    let formattedTasks = tasks;
-
-    if (tasks.length > 0) {
+    if (draftTasks.length > 0) {
       // Remove gate_ids from the tasks
-      formattedTasks = tasks.map((task) => {
+      const formattedTasks = draftTasks.map((task) => {
         const { gate_id: _gate_id, ...newTask } = task;
         return newTask;
       });
-    }
 
-    setValue('tasks.data', formattedTasks);
-  }, [tasks, setValue]);
+      setValue('tasks.data', formattedTasks);
+    }
+  }, [draftTasks, setValue]);
 
   const addTask = async (
     taskType: CreateGateTypes['tasks']['data'][0]['task_type']
