@@ -122,7 +122,7 @@ export type SnapshotDataError = {
 export type HoldTokenData = {
   chain?: string;
   token_address?: string;
-  quantity?: string;
+  quantity?: number;
 };
 
 export type HoldTokenDataError = {
@@ -202,8 +202,15 @@ const holdTokenTaskDataSchema = z.object({
   chain: z.number(),
   token_address: z
     .string()
-    .min(2, 'Token address must contain at least 2 character(s)'),
-  quantity: z.string().min(1, 'Quantity must contain at least 2 character(s)'),
+    .min(2, 'The token address must contain at least 2 character(s)')
+    .length(42, 'The token address must contain exactly 42 character(s)')
+    .refine((val) => val.startsWith('0x'), {
+      message: 'This is not a valid token address',
+    }),
+  quantity: z.number({
+    invalid_type_error: 'Quantity must be a number',
+    required_error: "Quantity can't be empty",
+  }),
 });
 
 export const verificationCodeDataSchema = z.object({
