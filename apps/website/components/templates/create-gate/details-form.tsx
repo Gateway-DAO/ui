@@ -44,7 +44,7 @@ export function GateDetailsForm() {
         error={!!errors.categories}
         errors={errors.categories}
         {...register('categories')}
-        helperText={errors.categories && 'Invalid categories added'}
+        helperText={errors.categories?.message}
         sx={{
           width: '100%',
           '& div fieldset legend span': {
@@ -76,7 +76,7 @@ export function GateDetailsForm() {
         error={!!errors.skills}
         errors={errors.skills}
         {...register('skills')}
-        helperText={errors.skills && 'Invalid skills added'}
+        helperText={errors.skills?.message}
         sx={{
           width: '100%',
           '& div fieldset legend span': {

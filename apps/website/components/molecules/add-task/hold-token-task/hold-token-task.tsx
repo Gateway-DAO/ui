@@ -189,7 +189,11 @@ const HoldTokenTask = ({ taskId, deleteTask }) => {
           required
           label="Quantity"
           sx={{ marginTop: '15px', maxWidth: { md: '50%', xs: '100%' } }}
-          {...register(`tasks.data.${taskId}.task_data.quantity`)}
+          {...register(`tasks.data.${taskId}.task_data.quantity`, {
+            min: 0,
+            valueAsNumber: true,
+          })}
+          type="number"
           error={
             !!(errors.tasks?.data[taskId]?.task_data as HoldTokenDataError)
               ?.quantity
