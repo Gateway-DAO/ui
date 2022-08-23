@@ -51,7 +51,7 @@ export function GuideCard({ setShowCard }) {
   const { me } = useAuth();
 
   const details = guideDetails(me).filter((item) => !item.done && item);
-  console.log(details);
+
   const [progress, setProgress] = useState<number>(0);
 
   const handleCardProgress = (move: string) => {
