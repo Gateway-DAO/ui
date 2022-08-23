@@ -33,7 +33,6 @@ type Props = {
 };
 
 export function GateViewTemplate({ gate }: Props) {
-  const { t } = useTranslation();
   const taskIds = gate.tasks.map((task) => task.id);
   const { me } = useAuth();
   const { mint } = useMint();
