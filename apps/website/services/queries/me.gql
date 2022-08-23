@@ -4,6 +4,9 @@ query me {
     permissions {
       gate_id
       dao_id
+      dao {
+        is_admin
+      }
       permission
     }
     picture {
