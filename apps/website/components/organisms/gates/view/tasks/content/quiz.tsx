@@ -56,8 +56,6 @@ const QuizContent = ({
     }
   };
 
-  console.log(data);
-
   return (
     <Stack alignItems="start" marginTop={3} gap={2}>
       {questions.map((question, index) => {
