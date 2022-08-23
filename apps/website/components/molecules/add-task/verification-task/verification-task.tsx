@@ -147,7 +147,12 @@ const VerificationCodeTask = ({ taskId, deleteTask }) => {
           {...register(`tasks.data.${taskId}.description`)}
           error={!!errors.tasks?.data?.[taskId]?.description}
           helperText={errors.tasks?.data?.[taskId]?.description?.message}
-          sx={{ marginBottom: '60px' }}
+          sx={{
+            marginBottom: '60px',
+            '& fieldset legend span': {
+              marginRight: '10px',
+            },
+          }}
         />
         <TextField
           required
@@ -165,6 +170,12 @@ const VerificationCodeTask = ({ taskId, deleteTask }) => {
                 ?.task_data as VerificationCodeDataError
             )?.code?.message
           }
+          sx={{
+            marginBottom: '60px',
+            '& fieldset legend span': {
+              marginRight: '10px',
+            },
+          }}
         />
       </FormControl>
     </Stack>
