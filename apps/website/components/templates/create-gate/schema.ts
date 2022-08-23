@@ -1,4 +1,4 @@
-import { FieldError } from 'react-hook-form';
+import { FieldError, NestedValue } from 'react-hook-form';
 import { z } from 'zod';
 
 // Creator
@@ -10,10 +10,10 @@ export type Creator = {
 // Create Gate
 export type CreateGateTypes = {
   title: string;
-  categories: string[];
+  categories: NestedValue<string[]>;
   description: string;
   image: string;
-  skills: string[];
+  skills: NestedValue<string[]>;
   created_by: Creator[];
   tasks: TasksSchema;
 };
@@ -286,12 +286,12 @@ export const taskSnapshotSchema = z.object({
 
 export const createGateSchema = z.object({
   title: z.string().min(2, 'The title must contain at least 2 character(s)'),
-  categories: z.array(z.string().min(1, 'Please select at least 1 category')),
+  categories: z.array(z.string()).min(1, 'Please select at least 1 category'),
   description: z
     .string()
     .min(2, 'The description must contain at least 2 character(s)'),
   image: z.string({ required_error: 'Image is required' }).min(2),
-  skills: z.array(z.string().min(1, 'Please select at least 1 skill')),
+  skills: z.array(z.string()).min(1, 'Please select at least 1 skill'),
   created_by: z.array(
     z.object({
       id: z.string(),
