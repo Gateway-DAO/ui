@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import {
   Box,
   Button,
@@ -6,38 +8,51 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import { useState } from 'react';
 import '@fontsource/plus-jakarta-sans/700.css';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+
 import { ROUTES } from '../../../../../../constants/routes';
+
 import Link from 'next/link';
 
-const guideDetails = [
+import { useAuth } from '../../../../../../providers/auth';
+import { SessionUser } from '../../../../../../types/user';
+
+const guideDetails = (user: SessionUser) => [
   {
+    done: !!user?.bio?.length,
     title: 'Write about you',
     link: '#about',
   },
   {
+    done: !!user?.skills?.length,
     title: 'Select your skills',
     link: '#skills',
   },
   {
+    done: !!user?.languages?.length,
     title: 'Select your languages',
     link: '#languages',
   },
   {
+    done: user?.timezone !== null,
     title: 'Select your time zone',
     link: '#timezones',
   },
   {
+    done: false,
     title: 'Start to contribute',
     link: 'contribute',
   },
 ];
 
 export function GuideCard({ setShowCard }) {
-  const [progress, setProgress] = useState(0);
+  const { me } = useAuth();
+
+  const details = guideDetails(me).filter((item) => !item.done && item);
+  console.log(details);
+  const [progress, setProgress] = useState<number>(0);
 
   const handleCardProgress = (move: string) => {
     if (move === 'next') {
@@ -53,7 +68,7 @@ export function GuideCard({ setShowCard }) {
     if (link == 'contribute') {
       return `${ROUTES.EXPLORE}`;
     }
-    return `${ROUTES.PROFILE_EDIT + guideDetails[progress].link}`;
+    return `${ROUTES.PROFILE_EDIT + details[progress].link}`;
   };
 
   return (
@@ -91,7 +106,7 @@ export function GuideCard({ setShowCard }) {
           }}
         >
           <Typography variant="caption" component="div" color="text.secondary">
-            {progress} / {guideDetails.length}
+            {progress} / {details.length}
           </Typography>
         </Box>
       </Box>
@@ -103,11 +118,11 @@ export function GuideCard({ setShowCard }) {
         }}
       >
         <Typography variant="subtitle2">Complete your profile</Typography>
-        <Typography variant="h6"> {guideDetails[progress].title}</Typography>
+        <Typography variant="h6"> {details[progress].title}</Typography>
       </Box>
       <Box sx={{ display: 'flex', mx: 2, justifyContent: 'space-between' }}>
         <Stack direction="row" spacing={1}>
-          <Link href={redirectLink(guideDetails[progress].link)} passHref>
+          <Link href={redirectLink(details[progress].link)} passHref>
             <Button
               variant="contained"
               size="small"
@@ -130,12 +145,16 @@ export function GuideCard({ setShowCard }) {
           </Button>
         </Stack>
         <Box>
-          <IconButton onClick={() => handleCardProgress('previous')}>
-            <ChevronLeftIcon htmlColor="rgba(255, 255, 255, 0.56)" />
-          </IconButton>
-          <IconButton onClick={() => handleCardProgress('next')}>
-            <ChevronRightIcon htmlColor="rgba(255, 255, 255, 0.56)" />
-          </IconButton>
+          {details.length > 1 && (
+            <>
+              <IconButton onClick={() => handleCardProgress('previous')}>
+                <ChevronLeftIcon htmlColor="rgba(255, 255, 255, 0.56)" />
+              </IconButton>
+              <IconButton onClick={() => handleCardProgress('next')}>
+                <ChevronRightIcon htmlColor="rgba(255, 255, 255, 0.56)" />
+              </IconButton>
+            </>
+          )}
         </Box>
       </Box>
     </Box>
