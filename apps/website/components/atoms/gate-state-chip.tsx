@@ -1,5 +1,3 @@
-import { useEffect, useState } from 'react';
-
 import { Chip } from '@mui/material';
 
 type GateStateChipProps = {
@@ -8,15 +6,8 @@ type GateStateChipProps = {
 };
 
 const GateStateChip = ({ published, small }: GateStateChipProps) => {
-  const [chipColor, setChipColor] = useState('');
-  const [chipLabel, setChipLabel] = useState('');
-
-  useEffect(() => {
-    setChipColor(published === ('published' || 'paused') ? 'green' : 'red');
-    setChipLabel(
-      published === ('published' || 'paused') ? 'Published' : 'Unpublished'
-    );
-  }, [published]);
+  const chipColor = published === 'published' ? 'green' : 'red';
+  const chipLabel = published === 'published' ? 'Published' : 'Unpublished';
 
   return (
     <Chip
