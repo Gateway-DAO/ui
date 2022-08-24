@@ -39,7 +39,13 @@ export const PublishNavbar = ({ isLoading, saveDraft }: Props) => {
             <LoadingButton
               onClick={(e) => {
                 const values = getValues();
-                saveDraft(values);
+                const nestedCategories = getValues('categories');
+                const nestedSkills = getValues('skills');
+                saveDraft({
+                  ...values,
+                  categories: nestedCategories,
+                  skills: nestedSkills,
+                });
               }}
               variant="outlined"
               size="large"
