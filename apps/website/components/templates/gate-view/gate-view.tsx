@@ -94,7 +94,10 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
         onSuccess() {
           snackbar.onOpen({
             message: `Gate ${
-              gateProps.published ? 'unpublished!' : 'published!'
+              gateProps.published === 'not_published' ||
+              gateProps.published === 'paused'
+                ? 'published!'
+                : 'unpublished!'
             }`,
           });
           //TODO: Refresh Chip component only
@@ -131,7 +134,11 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
 
   const gateOptions = [
     {
-      text: gateProps.published === 'paused' ? 'Publish' : 'Unpublish',
+      text:
+        gateProps.published === 'not_published' ||
+        gateProps.published === 'paused'
+          ? 'Publish'
+          : 'Unpublish',
       action: () => setConfirmToggleState(true),
       hidden: false,
     },
