@@ -378,7 +378,11 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
 
         <TaskGroup>
           {gateProps.tasks.map((task, idx) => (
-            <Task key={'task-' + (idx + 1)} task={task} />
+            <Task
+              key={'task-' + (idx + 1)}
+              task={task}
+              readOnly={gateProps.published !== 'published'}
+            />
           ))}
         </TaskGroup>
       </Grid>
