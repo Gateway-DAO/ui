@@ -19,7 +19,7 @@ const SnapshotContent = ({
         {proposal_number}
       </Typography>
       <Typography variant="caption">Specific Proposal Number</Typography>
-      {!readOnly && (
+      {!readOnly && !completed && (
         <LoadingButton
           variant="contained"
           sx={{ marginTop: '15px' }}

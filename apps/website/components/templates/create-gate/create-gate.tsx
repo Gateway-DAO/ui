@@ -160,114 +160,120 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
     .every((value) => !!value);
 
   return (
-    <Stack
-      component="form"
-      id="gate-details-form"
-      onSubmit={methods.handleSubmit(createGate, (error) => console.log(error))}
-      padding={'0 90px'}
-      sx={(theme) => ({
-        p: '0 90px',
-        [theme.breakpoints.down('sm')]: { p: '0 20px' },
-      })}
-    >
-      <FormProvider {...methods}>
-        <PublishNavbar isLoading={false} saveDraft={saveDraft} />
-      </FormProvider>
-      <Typography
-        component="h1"
-        variant="h4"
-        sx={{ margin: '40px 0 40px 0', marginBottom: { md: '100px' } }}
-      >
-        Create Gate
-      </Typography>
-
-      {/* Details */}
+    <>
       <Stack
-        direction="row"
-        justifyContent="space-between"
-        alignItems="stretch"
-        gap={2}
-        sx={{
-          width: '100%',
-          flexDirection: { xs: 'column', md: 'row' },
-        }}
+        component="form"
+        id="gate-details-form"
+        onSubmit={methods.handleSubmit(createGate, (error) =>
+          console.log(error)
+        )}
+        padding={'0 90px'}
+        sx={(theme) => ({
+          p: '0 90px',
+          [theme.breakpoints.down('sm')]: { p: '0 20px' },
+        })}
       >
-        <Box>
-          <Typography component="h2" variant="h5">
-            Details
-          </Typography>
-        </Box>
+        <FormProvider {...methods}>
+          <PublishNavbar isLoading={false} saveDraft={saveDraft} />
+        </FormProvider>
+        <Typography
+          component="h1"
+          variant="h4"
+          sx={{ margin: '40px 0 40px 0', marginBottom: { md: '100px' } }}
+        >
+          Create Gate
+        </Typography>
+
+        {/* Details */}
         <Stack
-          gap={7.5}
-          mt={2}
+          direction="row"
+          justifyContent="space-between"
+          alignItems="stretch"
+          gap={2}
           sx={{
-            maxWidth: { xs: '100%', md: '50%', lg: '40%' },
             width: '100%',
+            flexDirection: { xs: 'column', md: 'row' },
           }}
         >
-          <Stack direction="column" gap={4}>
-            <FormProvider {...methods}>
-              <GateDetailsForm gateData={gateDetails} />
-            </FormProvider>
-          </Stack>
-        </Stack>
-
-        <FormProvider {...methods}>
-          <GateImageCard
-            draftImage={oldData.image}
-            sx={{
-              width: 400,
-            }}
-          />
-        </FormProvider>
-      </Stack>
-
-      {/* Tasks */}
-      {hasTitleAndDescription && (
-        <>
-          <Divider
-            sx={{ margin: '60px 0', width: '200%', marginLeft: '-50%' }}
-          />
+          <Box>
+            <Typography component="h2" variant="h5">
+              Details
+            </Typography>
+          </Box>
           <Stack
-            direction="row"
-            gap={{ lg: 5, xs: 2, md: 2 }}
+            gap={7.5}
+            mt={2}
             sx={{
+              maxWidth: { xs: '100%', md: '50%', lg: '40%' },
               width: '100%',
-              display: { xs: 'block', md: 'flex' },
             }}
           >
-            <Box sx={{ minWidth: { lg: '20%' }, marginBottom: { xs: '40px' } }}>
-              <Typography component="h2" variant="h5">
-                Tasks
-              </Typography>
-            </Box>
-            <Stack
-              direction="column"
-              sx={{
-                margin: 'auto',
-                maxWidth: { xs: '100%', md: '100%', lg: '80%' },
-              }}
-            >
-              <Stack direction="column" gap={2}>
-                <FormProvider {...methods}>
-                  <TaskArea draftTasks={oldData.tasks || []} />
-                </FormProvider>
-              </Stack>
+            <Stack direction="column" gap={4}>
+              <FormProvider {...methods}>
+                <GateDetailsForm gateData={gateDetails} />
+              </FormProvider>
             </Stack>
           </Stack>
-        </>
-      )}
 
-      <Snackbar
-        anchorOrigin={{
-          vertical: snackbar.vertical,
-          horizontal: snackbar.horizontal,
-        }}
-        open={snackbar.open}
-        onClose={snackbar.handleClose}
-        message={snackbar.message}
-        key={snackbar.vertical + snackbar.horizontal}
-      />
-    </Stack>
+          <FormProvider {...methods}>
+            <GateImageCard
+              draftImage={oldData.image}
+              sx={{
+                width: 400,
+              }}
+            />
+          </FormProvider>
+        </Stack>
+
+        {/* Tasks */}
+        {hasTitleAndDescription && (
+          <>
+            <Divider sx={{ margin: '60px 0', width: '100%' }} />
+            <Stack
+              direction="row"
+              gap={{ lg: 5, xs: 2, md: 2 }}
+              sx={(theme) => ({
+                width: '100%',
+                display: { xs: 'block', md: 'flex' },
+                p: '0 90px',
+                [theme.breakpoints.down('sm')]: { p: '0 20px' },
+              })}
+            >
+              <Box
+                sx={{ minWidth: { lg: '20%' }, marginBottom: { xs: '40px' } }}
+              >
+                <Typography component="h2" variant="h5">
+                  Tasks
+                </Typography>
+              </Box>
+              <Stack
+                direction="column"
+                sx={{
+                  margin: 'auto',
+                  maxWidth: { xs: '100%', md: '100%', lg: '80%' },
+                }}
+              >
+                <Stack direction="column" gap={2}>
+                  <FormProvider {...methods}>
+                    <TaskArea draftTasks={oldData.tasks || []} />
+                  </FormProvider>
+                </Stack>
+              </Stack>
+            </Stack>
+          </>
+        )}
+
+        <Snackbar
+          anchorOrigin={{
+            vertical: snackbar.vertical,
+            horizontal: snackbar.horizontal,
+          }}
+          open={snackbar.open}
+          onClose={snackbar.handleClose}
+          message={snackbar.message}
+          key={snackbar.vertical + snackbar.horizontal}
+        />
+      </Stack>
+    </>
   );
 }

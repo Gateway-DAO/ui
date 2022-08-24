@@ -43,7 +43,7 @@ const TokenHoldContent = ({
         {quantity}
       </Typography>
       <Typography variant="caption">Quantity</Typography>
-      {!readOnly && (
+      {!readOnly && !completed && (
         <LoadingButton
           variant="contained"
           sx={{ marginTop: '15px' }}

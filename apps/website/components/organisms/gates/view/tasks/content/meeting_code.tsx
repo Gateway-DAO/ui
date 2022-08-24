@@ -24,7 +24,7 @@ const MeetingCodeContent = ({
         onChange={(e) => setMeetingCode(e.target.value)}
         sx={{ margin: '20px 0' }}
       />
-      {!readOnly && (
+      {!readOnly && !completed && (
         <LoadingButton
           variant="contained"
           sx={{ marginTop: '15px' }}
