@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 
 import { PartialDeep } from 'type-fest';
 
+import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import ViewInArIcon from '@mui/icons-material/ViewInAr';
 import {
   Avatar,
@@ -16,6 +17,7 @@ import {
   Divider,
   Button,
   Tooltip,
+  IconButton,
 } from '@mui/material';
 
 import { useAuth } from '../../../../website/providers/auth';
@@ -23,16 +25,17 @@ import { useMint } from '../../../hooks/use-mint';
 import { Gates } from '../../../services/graphql/types.generated';
 import { AvatarFile } from '../../atoms/avatar-file';
 import CircularProgressWithLabel from '../../atoms/circular-progress-label';
+import { ReadMore } from '../../atoms/read-more-less';
 import { ShareButton } from '../../atoms/share-button';
 import GateCompletedModal from '../../organisms/gates/view/modals/gate-completed';
 import { Task, TaskGroup } from '../../organisms/tasks';
-import { ReadMore } from '../../atoms/read-more-less';
 
 type Props = {
   gate: PartialDeep<Gates>;
 };
 
 export function GateViewTemplate({ gate }: Props) {
+  const { t } = useTranslation();
   const taskIds = gate.tasks.map((task) => task.id);
   const { me } = useAuth();
   const { mint } = useMint();
@@ -64,9 +67,23 @@ export function GateViewTemplate({ gate }: Props) {
   }, [taskIds, me?.task_progresses, completedTasksCount]);
 
   return (
-    <Grid container height="100%" sx={{ flexWrap: 'nowrap' }}>
+    <Grid
+      container
+      height="100%"
+      sx={{ flexWrap: 'nowrap', flexDirection: { xs: 'column', md: 'row' } }}
+    >
       <GateCompletedModal open={open} handleClose={handleClose} gate={gate} />
-      <Grid item xs={12} md={5} p={(theme) => theme.spacing(7)}>
+      <Grid
+        item
+        xs={12}
+        md={5}
+        sx={{
+          padding: {
+            md: '40px 56px',
+            xs: '40px 16px',
+          },
+        }}
+      >
         {/* DAO info */}
         <Link passHref href={`/dao/${gate.dao.id}`}>
           <Stack
@@ -103,10 +120,10 @@ export function GateViewTemplate({ gate }: Props) {
           {gate.title}
         </Typography>
 
-        <Box marginBottom={(theme) => theme.spacing(4)}>
+        <Box marginBottom={(theme) => theme.spacing(2)}>
           <Stack
             direction={'row'}
-            sx={{ alignItems: 'center', justifyContent: 'space-between' }}
+            sx={{ alignItems: 'flex-start', justifyContent: 'space-between' }}
           >
             <Box>
               {gate.categories.map((category, idx) => (
@@ -120,8 +137,24 @@ export function GateViewTemplate({ gate }: Props) {
                 />
               ))}
             </Box>
-            <Stack>
+            <Stack sx={{ flexDirection: 'row', columnGap: '4px' }}>
               <ShareButton title={`${gate.title} @ Gateway`} />
+              <IconButton
+                sx={{
+                  p: 0,
+                }}
+                key="share"
+              >
+                <Avatar sx={{ width: '32px', height: '32px' }}>
+                  <BookmarkBorderIcon
+                    sx={{
+                      mt: -0.25,
+                      fontSize: '18px',
+                      color: '#E5E5E5',
+                    }}
+                  />
+                </Avatar>
+              </IconButton>
             </Stack>
           </Stack>
         </Box>
@@ -152,7 +185,7 @@ export function GateViewTemplate({ gate }: Props) {
         <Grid container rowGap={(theme) => theme.spacing(3)}>
           {gate.holders.length > 0 && (
             <>
-              <Grid item xs={4}>
+              <Grid item xs={4} sx={{ display: 'flex', alignItems: 'center' }}>
                 <Typography
                   variant="body2"
                   color={(theme) => theme.palette.text.secondary}
@@ -190,7 +223,7 @@ export function GateViewTemplate({ gate }: Props) {
               </Grid>
             </>
           )}
-          <Grid item xs={4}>
+          <Grid item xs={4} sx={{ display: 'flex', alignItems: 'center' }}>
             <Typography
               variant="body2"
               color={(theme) => theme.palette.text.secondary}
@@ -212,7 +245,7 @@ export function GateViewTemplate({ gate }: Props) {
           </Grid>
           {gate.creator && (
             <>
-              <Grid item xs={4}>
+              <Grid item xs={4} sx={{ display: 'flex', alignItems: 'center' }}>
                 <Typography
                   variant="body2"
                   color={(theme) => theme.palette.text.secondary}
@@ -243,13 +276,19 @@ export function GateViewTemplate({ gate }: Props) {
         <Stack
           direction="row"
           alignItems="center"
-          m={(theme) => theme.spacing(7)}
-          marginBottom={(theme) => theme.spacing(10)}
+          sx={{
+            margin: { xs: '16px 16px 40px 16px', md: '60px' },
+          }}
         >
           <CircularProgressWithLabel
             variant="determinate"
             value={(completedTasksCount / gate.tasks.length) * 100}
+            size={50}
             label={`${completedTasksCount}/${gate.tasks.length}`}
+            thickness={4}
+            sx={{
+              color: '#6DFFB9',
+            }}
           />
           <Stack
             sx={{
