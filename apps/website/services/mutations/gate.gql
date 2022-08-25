@@ -9,6 +9,7 @@ mutation toggle_gate_state($gate_id: uuid!, $state: gate_state!) {
         title
       }
     }
+    published
   }
 }
 

@@ -49,6 +49,7 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [confirmToggleState, setConfirmToggleState] = useState(false);
   const [completedTasksCount, setCompletedTasksCount] = useState(0);
+  const [published, setPublished] = useState(gateProps.published);
 
   const { me, gqlAuthMethods } = useAuth();
   const { mint } = useMint();
@@ -97,20 +98,22 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
     toggleGateStateMutation(
       {
         gate_id: gateProps.id,
-        state: gateProps.published === 'published' ? 'paused' : 'published',
+        state: published === 'published' ? 'paused' : 'published',
       },
       {
-        onSuccess() {
+        onSuccess: (data) => {
           snackbar.onOpen({
             message: `Gate ${
-              gateProps.published === 'not_published' ||
-              gateProps.published === 'paused'
+              published === 'not_published' || published === 'paused'
                 ? 'published!'
                 : 'unpublished!'
             }`,
           });
+
           //TODO: Refresh Chip component only
-          router.reload();
+          // router.reload();
+
+          setPublished(data.update_gates_by_pk.published);
         },
         onError() {
           snackbar.handleClick({
@@ -144,8 +147,7 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
   const gateOptions = [
     {
       text:
-        gateProps.published === 'not_published' ||
-        gateProps.published === 'paused'
+        published === 'not_published' || published === 'paused'
           ? 'Publish'
           : 'Unpublish',
       action: () => setConfirmToggleState(true),
@@ -157,7 +159,7 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
         router.push(
           `${ROUTES.GATE_NEW}?dao=${gateProps.dao.id}&gate=${gateProps.id}`
         ),
-      hidden: gateProps.published === 'published',
+      hidden: published === 'published',
     },
     {
       text: 'Delete',
@@ -217,7 +219,7 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
             sx={{ alignItems: 'center', justifyContent: 'space-between' }}
           >
             <Box>
-              {isAdmin && <GateStateChip published={gateProps.published} />}
+              {isAdmin && <GateStateChip published={published} />}
               {gateProps.categories.map((category, idx) => (
                 <Chip
                   key={'category-' + (idx + 1)}
@@ -390,7 +392,7 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
             <Task
               key={'task-' + (idx + 1)}
               task={task}
-              readOnly={gateProps.published !== 'published'}
+              readOnly={published !== 'published'}
             />
           ))}
         </TaskGroup>
@@ -417,19 +419,19 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
       </ConfirmDialog>
       <ConfirmDialog
         title={
-          gateProps.published === 'published'
+          published === 'published'
             ? 'Are you sure to unpublish this gate?'
             : 'Are you sure you want to publish this gate?'
         }
         open={confirmToggleState}
         positiveAnswer={`${
-          gateProps.published === 'published' ? 'Unpublish' : 'Publish'
+          published === 'published' ? 'Unpublish' : 'Publish'
         }`}
         negativeAnswer="Cancel"
         setOpen={setConfirmToggleState}
         onConfirm={toggleGateState}
       >
-        {gateProps.published === 'published'
+        {published === 'published'
           ? 'If you unpublish this gate, users will not be able to see it anymore.'
           : 'Publishing this gate will make it accessible by all users.'}
       </ConfirmDialog>
