@@ -14,6 +14,7 @@ import {
   IconButton,
   Collapse,
 } from '@mui/material';
+import CheckIcon from '@mui/icons-material/Check';
 
 import { useAuth } from '../../../providers/auth';
 import { Tasks } from '../../../services/graphql/types.generated';
@@ -168,13 +169,17 @@ export function Task({ task, idx, readOnly }: Props) {
         avatar={
           <Avatar
             sx={{
-              backgroundColor: expanded ? 'white' : 'transparent',
+              backgroundColor: completed
+                ? '#6DFFB9'
+                : expanded
+                ? 'white'
+                : 'transparent',
               color: (theme) =>
                 expanded ? theme.palette.background.default : 'white',
               border: expanded ? 'none' : '1px solid #FFFFFF4D',
             }}
           >
-            {idx || task.title[0]}
+            {completed ? <CheckIcon htmlColor='#10041C'/> : idx || task.title[0]}
           </Avatar>
         }
         title={<Typography variant="caption">{taskContent?.title}</Typography>}

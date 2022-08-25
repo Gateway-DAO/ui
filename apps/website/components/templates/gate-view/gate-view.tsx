@@ -65,7 +65,7 @@ export function GateViewTemplate({ gate }: Props) {
 
   return (
     <Grid container height="100%" sx={{ flexWrap: 'nowrap' }}>
-      <GateCompletedModal open={open} handleClose={handleClose} gate={gate} />
+      {/* <GateCompletedModal open={open} handleClose={handleClose} gate={gate} /> */}
       <Grid item xs={12} md={5} p={(theme) => theme.spacing(7)}>
         {/* DAO info */}
         <Link passHref href={`/dao/${gate.dao.id}`}>
@@ -250,6 +250,9 @@ export function GateViewTemplate({ gate }: Props) {
             variant="determinate"
             value={(completedTasksCount / gate.tasks.length) * 100}
             label={`${completedTasksCount}/${gate.tasks.length}`}
+            sx={{
+              color: '#6DFFB9',
+            }}
           />
           <Stack
             sx={{
