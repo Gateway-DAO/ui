@@ -27,6 +27,7 @@ import { ShareButton } from '../../atoms/share-button';
 import GateCompletedModal from '../../organisms/gates/view/modals/gate-completed';
 import { Task, TaskGroup } from '../../organisms/tasks';
 import { ReadMore } from '../../atoms/read-more-less';
+import { useQuery } from 'react-query';
 
 type Props = {
   gate: PartialDeep<Gates>;
@@ -48,24 +49,9 @@ export function GateViewTemplate({ gate }: Props) {
     return arr1.filter((id) => arr2.includes(id)).length;
   };
 
-  useEffect(() => {
-    const completedTaskIds =
-      me?.task_progresses.map((task) => task.task_id) || [];
-    const allCompleted = taskIds.every((taskId) => {
-      return completedTaskIds.includes(taskId);
-    });
-
-    setCompletedTasksCount(countSimiliarIds(completedTaskIds, taskIds));
-
-    if (allCompleted) {
-      setGateCompleted(true);
-      handleOpen();
-    }
-  }, [taskIds, me?.task_progresses, completedTasksCount]);
-
   return (
     <Grid container height="100%" sx={{ flexWrap: 'nowrap' }}>
-      {/* <GateCompletedModal open={open} handleClose={handleClose} gate={gate} /> */}
+      <GateCompletedModal open={open} handleClose={handleClose} gate={gate} />
       <Grid item xs={12} md={5} p={(theme) => theme.spacing(7)}>
         {/* DAO info */}
         <Link passHref href={`/dao/${gate.dao.id}`}>
@@ -127,7 +113,7 @@ export function GateViewTemplate({ gate }: Props) {
         </Box>
 
         <ReadMore>{gate.description}</ReadMore>
-        {gateCompleted && (
+        {/* {gateCompleted && (
           <Button
             fullWidth
             variant="contained"
@@ -137,7 +123,7 @@ export function GateViewTemplate({ gate }: Props) {
           >
             Mint as NFT
           </Button>
-        )}
+        )} */}
         <Box
           component="img"
           src={gate.image}
@@ -268,7 +254,7 @@ export function GateViewTemplate({ gate }: Props) {
 
         <TaskGroup>
           {gate.tasks.map((task, idx) => (
-            <Task key={'task-' + (idx + 1)} task={task} />
+            <Task key={'task-' + (idx + 1)} task={task} setCompletedGate={setOpen} />
           ))}
         </TaskGroup>
       </Grid>

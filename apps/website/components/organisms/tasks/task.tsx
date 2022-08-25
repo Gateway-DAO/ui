@@ -32,6 +32,7 @@ type Props = {
   idx?: number;
   task?: PartialObjectDeep<Tasks>;
   readOnly?: boolean;
+  setCompletedGate?: (completed: boolean) => void;
 };
 
 interface Error {
@@ -46,7 +47,7 @@ interface Error {
   };
 }
 
-export function Task({ task, idx, readOnly }: Props) {
+export function Task({ task, idx, readOnly, setCompletedGate }: Props) {
   const { me, gqlAuthMethods, onOpenLogin } = useAuth();
 
   const [expanded, toggleExpanded] = useToggle(false);
@@ -101,7 +102,7 @@ export function Task({ task, idx, readOnly }: Props) {
   };
 
   const { mutate: completeTaskMutation, isLoading } = useMutation(
-    'completeTask',
+    ['completeTask', { gateId: task.gate_id, taskId: task.id }],
     gqlAuthMethods.complete_task,
     {
       onSuccess: async (data) => {
@@ -115,6 +116,8 @@ export function Task({ task, idx, readOnly }: Props) {
             ...oldTaskProgresses,
             data.verify_key.task_info,
           ];
+
+          data.verify_key.completed_gate && setCompletedGate(true);
 
           return {
             ...old,
