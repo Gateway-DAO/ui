@@ -19,13 +19,11 @@ import { useAuth } from '../../../providers/auth';
 import { Tasks } from '../../../services/graphql/types.generated';
 import { queryClient } from '../../../services/query-client';
 import { SessionUser } from '../../../types/user';
-import { getMapValueFromObject } from '../../../utils/map-object';
 import MeetingCodeContent from '../gates/view/tasks/content/meeting_code';
 import QuizContent from '../gates/view/tasks/content/quiz';
 import SelfVerifyContent from '../gates/view/tasks/content/self-verify';
 import SnapshotContent from '../gates/view/tasks/content/snapshot';
 import TokenHoldContent from '../gates/view/tasks/content/token_hold';
-import { taskErrorMessages } from './task-error-messages';
 
 type Props = {
   idx?: number;
@@ -36,10 +34,6 @@ type Props = {
 interface Error {
   response?: {
     errors?: {
-      extensions?: {
-        code: number;
-        error: string;
-      };
       message?: string;
     }[];
   };
@@ -135,17 +129,13 @@ export function Task({ task, idx, readOnly }: Props) {
     };
 
     completeTaskMutation(data, {
-      onSuccess: () => {
+      onSuccess: (response) => {
         setErrorMessage('');
+        console.log('Completed!', response);
       },
       onError: (error: Error) => {
-        setErrorMessage(
-          getMapValueFromObject(
-            taskErrorMessages,
-            error.response.errors[0].extensions.error,
-            `There was an unexpected error, please, contact Gateway or try again`
-          )
-        );
+        setErrorMessage(error.response.errors[0].message);
+        console.log(error.response.errors[0].message);
       },
     });
   };
@@ -172,6 +162,7 @@ export function Task({ task, idx, readOnly }: Props) {
               color: (theme) =>
                 expanded ? theme.palette.background.default : 'white',
               border: expanded ? 'none' : '1px solid #FFFFFF4D',
+              marginRight: { xs: '0px', md: '20px' },
             }}
           >
             {idx || task.title[0]}
@@ -181,19 +172,28 @@ export function Task({ task, idx, readOnly }: Props) {
         subheader={<Typography variant="h6">{task.title}</Typography>}
         action={
           <IconButton onClick={toggleExpanded}>
-            {expanded ? <ExpandLess /> : <ExpandMore />}
+            {expanded ? (
+              <ExpandLess
+                sx={{
+                  color: 'rgba(255, 255, 255, 0.56)',
+                  fontSize: '28px',
+                  marginBottom: '-35px',
+                }}
+              ></ExpandLess>
+            ) : (
+              <ExpandMore
+                sx={{
+                  color: 'rgba(255, 255, 255, 0.56)',
+                  fontSize: '28px',
+                  marginBottom: '-35px',
+                }}
+              ></ExpandMore>
+            )}
           </IconButton>
         }
       />
-      <Collapse
-        in={expanded}
-        timeout="auto"
-        unmountOnExit
-        sx={{
-          paddingLeft: (theme) => theme.spacing(2) + 40,
-        }}
-      >
-        <CardContent sx={{ marginLeft: '55px' }}>
+      <Collapse in={expanded} timeout="auto" unmountOnExit>
+        <CardContent sx={{ marginLeft: { xs: '0px', md: '55px' } }}>
           <Typography variant="subtitle2">{task.description}</Typography>
           <TaskComponent
             data={task.task_data}
