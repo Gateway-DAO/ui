@@ -72,8 +72,10 @@ const QuizContent = ({
                     <FormControlLabel
                       key={index}
                       value={answer.value}
-                      checked={answer.correct}
                       control={<Radio />}
+                      {...((readOnly || completed) && {
+                        checked: answer.correct,
+                      })}
                       label={answer.value}
                       disabled={readOnly || completed}
                     />
