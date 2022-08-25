@@ -69,8 +69,10 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
   }, [taskIds, me?.task_progresses, completedTasksCount, tasksCount]);
 
   const isAdmin =
-    me?.permissions?.filter((permission) => permission.dao?.is_admin).length >
-    0;
+    me?.permissions?.filter(
+      (permission) =>
+        permission.dao_id === gateProps.dao?.id && permission.dao?.is_admin
+    ).length > 0;
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
