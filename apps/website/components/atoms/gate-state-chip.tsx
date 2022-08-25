@@ -1,6 +1,6 @@
-import { Chip } from '@mui/material';
+import { Chip, ChipProps } from '@mui/material';
 
-type GateStateChipProps = {
+type GateStateChipProps = ChipProps & {
   published: string;
   small?: boolean;
 };
@@ -9,7 +9,6 @@ const GateStateChip = ({ published, small }: GateStateChipProps) => {
   return (
     <Chip
       aria-hidden={false}
-      key={published}
       variant="outlined"
       label={published === 'published' ? 'Published' : 'Unpublished'}
       color={published === 'published' ? 'success' : 'error'}

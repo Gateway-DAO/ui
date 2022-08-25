@@ -1,9 +1,11 @@
+import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
 
 import { useMutation } from 'react-query';
 import { PartialDeep } from 'type-fest';
+import { v4 as uuidv4 } from 'uuid';
 
 import ViewInArIcon from '@mui/icons-material/ViewInAr';
 import {
@@ -26,13 +28,16 @@ import { useSnackbar } from '../../../hooks/use-snackbar';
 import { Gates } from '../../../services/graphql/types.generated';
 import { AvatarFile } from '../../atoms/avatar-file';
 import CircularProgressWithLabel from '../../atoms/circular-progress-label';
-import GateStateChip from '../../atoms/gate-state-chip';
 import MorePopover from '../../atoms/more-popover';
 import { ReadMore } from '../../atoms/read-more-less';
 import { ShareButton } from '../../atoms/share-button';
 import ConfirmDialog from '../../organisms/confirm-dialog/confirm-dialog';
 import GateCompletedModal from '../../organisms/gates/view/modals/gate-completed';
 import { Task, TaskGroup } from '../../organisms/tasks';
+
+const GateStateChip = dynamic(() => import('../../atoms/gate-state-chip'), {
+  ssr: false,
+});
 
 type GateViewProps = {
   gateProps: PartialDeep<Gates>;
@@ -73,6 +78,8 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
       (permission) =>
         permission.dao_id === gateProps.dao?.id && permission.dao?.is_admin
     ).length > 0;
+
+  console.log(isAdmin);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -224,7 +231,7 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
             </Box>
             <Stack flexDirection="row" gap={1}>
               <ShareButton title={`${gateProps.title} @ Gateway`} />
-              {isAdmin && <MorePopover options={gateOptions} />}
+              {isAdmin && <MorePopover options={gateOptions} key={uuidv4()} />}
             </Stack>
           </Stack>
         </Box>
