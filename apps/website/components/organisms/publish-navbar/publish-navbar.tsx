@@ -9,11 +9,16 @@ import { LoadingButton } from '../../atoms/loading-button';
 import { CreateGateTypes } from '../../templates/create-gate/schema';
 
 type Props = {
-  isLoading: boolean;
+  draftIsLoading: boolean;
+  createIsLoading: boolean;
   saveDraft: (data: CreateGateTypes) => void;
 };
 
-export const PublishNavbar = ({ isLoading, saveDraft }: Props) => {
+export const PublishNavbar = ({
+  draftIsLoading,
+  createIsLoading,
+  saveDraft,
+}: Props) => {
   const router = useRouter();
   const { getValues } = useFormContext<CreateGateTypes>();
 
@@ -49,7 +54,7 @@ export const PublishNavbar = ({ isLoading, saveDraft }: Props) => {
               }}
               variant="outlined"
               size="large"
-              isLoading={isLoading}
+              isLoading={draftIsLoading}
             >
               Save as Draft
             </LoadingButton>
@@ -59,7 +64,7 @@ export const PublishNavbar = ({ isLoading, saveDraft }: Props) => {
               variant="contained"
               size="large"
               sx={{ marginLeft: 2 }}
-              isLoading={isLoading}
+              isLoading={createIsLoading}
             >
               Publish Gate
             </LoadingButton>

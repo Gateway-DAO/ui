@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router';
+import { useState } from 'react';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm, FormProvider } from 'react-hook-form';
@@ -45,6 +46,9 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
   const router = useRouter();
   const { gqlAuthMethods } = useAuth();
 
+  const [draftIsLoading, setDraftIsLoading] = useState(false);
+  const [createIsLoading, setCreateIsLoading] = useState(false);
+
   const { mutateAsync: uploadImage } = useMutation(
     'uploadImage',
     gqlAuthMethods.upload_image
@@ -56,6 +60,7 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
   );
 
   const handleMutation = async (data: CreateGateTypes, isDraft: boolean) => {
+    isDraft ? setDraftIsLoading(true) : setCreateIsLoading(true);
     const dataIsValid = await methods.trigger();
 
     if (!dataIsValid) {
@@ -130,6 +135,7 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
         },
         {
           onSuccess(result) {
+            isDraft ? setDraftIsLoading(false) : setCreateIsLoading(false);
             snackbar.handleClick({
               message: isDraft ? 'Draft saved' : 'Gate created',
             });
@@ -138,6 +144,7 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
             );
           },
           onError() {
+            isDraft ? setDraftIsLoading(false) : setCreateIsLoading(false);
             snackbar.handleClick({
               message: isDraft
                 ? "An error occured, couldn't save the draft."
@@ -174,7 +181,11 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
         })}
       >
         <FormProvider {...methods}>
-          <PublishNavbar isLoading={false} saveDraft={saveDraft} />
+          <PublishNavbar
+            draftIsLoading={draftIsLoading}
+            createIsLoading={createIsLoading}
+            saveDraft={saveDraft}
+          />
         </FormProvider>
         <Typography
           component="h1"
