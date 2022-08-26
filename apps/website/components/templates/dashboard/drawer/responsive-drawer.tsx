@@ -35,14 +35,16 @@ export const ResponsiveDrawer = ({ children }: PropsWithChildren<unknown>) => {
         '*::-webkit-scrollbar': {
           width: '0.2em',
         },
-
-        '*::-webkit-scrollbar-thumb': {
-          backgroundColor: '#dfdee0',
+        '&:hover': {
+          '*::-webkit-scrollbar-thumb': {
+            backgroundColor: 'rgba(255, 255, 255, 0.3)',
+            borderRadius: 10,
+          },
         },
 
         height: '100vh',
         overflow: 'hidden',
-        marginLeft: '4.5em',
+        marginLeft: '4.8em',
         '& .MuiDrawer-paper': {
           pt: 0,
           background: 'transparent',
