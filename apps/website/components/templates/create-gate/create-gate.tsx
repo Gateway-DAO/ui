@@ -91,78 +91,79 @@ export function CreateGateTemplate() {
     .every((value) => !!value);
 
   return (
-    <Stack
-      component="form"
-      id="gate-details-form"
-      onSubmit={methods.handleSubmit(createGate, (error) => console.log(error))}
-      padding={'0 90px'}
-      sx={(theme) => ({
-        p: '0 90px',
-        [theme.breakpoints.down('sm')]: { p: '0 20px' },
-      })}
-    >
-      <CreateNavbar isLoading={false} />
-      <Typography
-        component="h1"
-        variant="h4"
-        sx={{ margin: '40px 0 40px 0', marginBottom: { md: '100px' } }}
-      >
-        Create Gate
-      </Typography>
-
-      {/* Details */}
+    <>
       <Stack
-        direction="row"
-        justifyContent="space-between"
-        alignItems="stretch"
-        gap={2}
-        sx={{
-          width: '100%',
-          flexDirection: { xs: 'column', md: 'row' },
-        }}
+        component="form"
+        id="gate-details-form"
+        onSubmit={methods.handleSubmit(createGate, (error) =>
+          console.log(error)
+        )}
+        sx={(theme) => ({
+          p: '0 90px',
+          [theme.breakpoints.down('sm')]: { p: '0 20px' },
+        })}
       >
-        <Box>
-          <Typography component="h2" variant="h5">
-            Details
-          </Typography>
-        </Box>
+        <CreateNavbar isLoading={false} />
+        <Typography
+          component="h1"
+          variant="h4"
+          sx={{ margin: '40px 0 40px 0', marginBottom: { md: '100px' } }}
+        >
+          Create Gate
+        </Typography>
+
+        {/* Details */}
         <Stack
-          gap={7.5}
-          mt={2}
+          direction="row"
+          justifyContent="space-between"
+          alignItems="stretch"
+          gap={2}
           sx={{
-            maxWidth: { xs: '100%', md: '50%', lg: '40%' },
             width: '100%',
+            flexDirection: { xs: 'column', md: 'row' },
           }}
         >
-          <Stack direction="column" gap={4}>
-            <FormProvider {...methods}>
-              <GateDetailsForm />
-            </FormProvider>
-          </Stack>
-        </Stack>
-
-        <FormProvider {...methods}>
-          <GateImageCard
+          <Box>
+            <Typography component="h2" variant="h5">
+              Details
+            </Typography>
+          </Box>
+          <Stack
+            gap={7.5}
+            mt={2}
             sx={{
-              width: 400,
+              maxWidth: { xs: '100%', md: '50%', lg: '40%' },
+              width: '100%',
             }}
-          />
-        </FormProvider>
-      </Stack>
+          >
+            <Stack direction="column" gap={4}>
+              <FormProvider {...methods}>
+                <GateDetailsForm />
+              </FormProvider>
+            </Stack>
+          </Stack>
 
-      {/* Tasks */}
+          <FormProvider {...methods}>
+            <GateImageCard
+              sx={{
+                width: 400,
+              }}
+            />
+          </FormProvider>
+        </Stack>
+      </Stack>
       {hasTitleAndDescription && (
         <>
-          <Divider
-            sx={{ margin: '60px 0', width: '200%', marginLeft: '-50%' }}
-          />
+          <Divider sx={{ margin: '60px 0', width: '100%' }} />
           <Stack
             direction="row"
             gap={{ lg: 5, xs: 2, md: 2 }}
-            sx={{
+            sx={(theme) => ({
               width: '100%',
               display: { xs: 'block', md: 'flex' },
-            }}
+              p: '0 90px',
+              [theme.breakpoints.down('sm')]: { p: '0 20px' },
+            })}
           >
             <Box sx={{ minWidth: { lg: '20%' }, marginBottom: { xs: '40px' } }}>
               <Typography component="h2" variant="h5">
@@ -173,7 +174,6 @@ export function CreateGateTemplate() {
               direction="column"
               sx={{
                 margin: 'auto',
-                marginLeft: 8,
                 maxWidth: { xs: '100%', md: '100%', lg: '80%' },
               }}
             >
@@ -197,6 +197,6 @@ export function CreateGateTemplate() {
         message={snackbar.message}
         key={snackbar.vertical + snackbar.horizontal}
       />
-    </Stack>
+    </>
   );
 }

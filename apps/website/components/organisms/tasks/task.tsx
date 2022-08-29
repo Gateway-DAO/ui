@@ -19,11 +19,13 @@ import { useAuth } from '../../../providers/auth';
 import { Tasks } from '../../../services/graphql/types.generated';
 import { queryClient } from '../../../services/query-client';
 import { SessionUser } from '../../../types/user';
+import { getMapValueFromObject } from '../../../utils/map-object';
 import MeetingCodeContent from '../gates/view/tasks/content/meeting_code';
 import QuizContent from '../gates/view/tasks/content/quiz';
 import SelfVerifyContent from '../gates/view/tasks/content/self-verify';
 import SnapshotContent from '../gates/view/tasks/content/snapshot';
 import TokenHoldContent from '../gates/view/tasks/content/token_hold';
+import { taskErrorMessages } from './task-error-messages';
 
 type Props = {
   idx?: number;
@@ -34,6 +36,10 @@ type Props = {
 interface Error {
   response?: {
     errors?: {
+      extensions?: {
+        code: number;
+        error: string;
+      };
       message?: string;
     }[];
   };
@@ -129,13 +135,17 @@ export function Task({ task, idx, readOnly }: Props) {
     };
 
     completeTaskMutation(data, {
-      onSuccess: (response) => {
+      onSuccess: () => {
         setErrorMessage('');
-        console.log('Completed!', response);
       },
       onError: (error: Error) => {
-        setErrorMessage(error.response.errors[0].message);
-        console.log(error.response.errors[0].message);
+        setErrorMessage(
+          getMapValueFromObject(
+            taskErrorMessages,
+            error.response.errors[0].extensions.error,
+            `There was an unexpected error, please, contact Gateway or try again`
+          )
+        );
       },
     });
   };
@@ -145,14 +155,14 @@ export function Task({ task, idx, readOnly }: Props) {
 
   return (
     <Card
-      sx={{
+      sx={(theme) => ({
         borderRadius: 0,
         borderLeft: 'none',
         backgroundColor: 'transparent !important',
         backgroundImage: 'none !important',
-        px: (theme) => theme.spacing(7),
-        py: (theme) => theme.spacing(5),
-      }}
+        px: { xs: theme.spacing(1), md: theme.spacing(7) },
+        py: { xs: theme.spacing(1), md: theme.spacing(5) },
+      })}
     >
       <CardHeader
         avatar={

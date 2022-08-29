@@ -12,12 +12,7 @@ import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import LogoutIcon from '@mui/icons-material/Logout';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import { ListItemText } from '@mui/material';
-import Badge, { badgeClasses } from '@mui/material/Badge';
-import IconButton from '@mui/material/IconButton';
 import ListItem from '@mui/material/ListItem';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import Snackbar from '@mui/material/Snackbar';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 
@@ -114,6 +109,9 @@ export function NavBarAvatar({ hideProfile }: Props) {
           <MenuItem
             key="view-profile"
             onClick={() => router.push(ROUTES.MY_PROFILE)}
+            sx={{
+              py: '12px',
+            }}
           >
             <AccountCircleIcon color="disabled" sx={{ mr: 3.5 }} />
             <Typography textAlign="center">View my profile</Typography>
@@ -123,12 +121,20 @@ export function NavBarAvatar({ hideProfile }: Props) {
           key="disconnect"
           onClick={withOnClose(onSignOut)}
           divider={true}
+          sx={{
+            py: '12px',
+          }}
         >
           <LogoutIcon color="disabled" sx={{ mr: 3.5 }} />
           <Typography textAlign="center">Disconnect</Typography>
         </MenuItem>
-        <ListItem disablePadding>
-          <IconButton disabled sx={{ mr: 3.5, ml: 1.5 }}>
+        <ListItem
+          disablePadding
+          sx={{
+            py: '12px',
+          }}
+        >
+          <IconButton disabled sx={{ mr: 2.5, ml: 1 }}>
             {!!accountDetail?.connector?.id &&
               icons[accountDetail.connector?.id]}
           </IconButton>
@@ -142,16 +148,22 @@ export function NavBarAvatar({ hideProfile }: Props) {
             secondary={activeChain?.name}
           />
 
-          <IconButton sx={{ ml: 3 }} onClick={withOnClose(copyText)}>
-            <ContentCopyIcon color="disabled" sx={{ height: 20, width: 20 }} />
+          <IconButton
+            sx={{ ml: 3, mr: 0.5, background: '#E5E5E529' }}
+            onClick={withOnClose(copyText)}
+          >
+            <ContentCopyIcon
+              color="disabled"
+              sx={{ height: 20, width: 20, color: '#FFFFFF8F' }}
+            />
           </IconButton>
 
           <IconButton
-            sx={{ mr: 1.5 }}
+            sx={{ mr: 1.5, background: '#E5E5E529' }}
             href={`https://etherscan.io/address/${accountDetail?.address}`}
             target="_blank"
           >
-            <OpenInNewIcon color="disabled" sx={{ height: 20, width: 20 }} />
+            <OpenInNewIcon sx={{ height: 20, width: 20, color: '#FFFFFF8F' }} />
           </IconButton>
         </ListItem>
       </Menu>

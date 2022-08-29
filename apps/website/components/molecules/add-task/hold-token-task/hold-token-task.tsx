@@ -152,7 +152,12 @@ const HoldTokenTask = ({ taskId, deleteTask }) => {
           {...register(`tasks.data.${taskId}.description`)}
           error={!!errors.tasks?.data[taskId]?.description}
           helperText={errors.tasks?.data[taskId]?.description?.message}
-          sx={{ marginBottom: '60px' }}
+          sx={{
+            marginBottom: '60px',
+            '& fieldset legend span': {
+              marginRight: '10px',
+            },
+          }}
         />
         <FormControl>
           <InputLabel htmlFor="chains">Chain</InputLabel>
@@ -189,7 +194,11 @@ const HoldTokenTask = ({ taskId, deleteTask }) => {
           required
           label="Quantity"
           sx={{ marginTop: '15px', maxWidth: { md: '50%', xs: '100%' } }}
-          {...register(`tasks.data.${taskId}.task_data.quantity`)}
+          {...register(`tasks.data.${taskId}.task_data.quantity`, {
+            min: 0,
+            valueAsNumber: true,
+          })}
+          type="number"
           error={
             !!(errors.tasks?.data[taskId]?.task_data as HoldTokenDataError)
               ?.quantity

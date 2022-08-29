@@ -6,6 +6,7 @@ import { TOKENS } from '@gateway/theme';
 
 import { ViewModule, ViewList, Add } from '@mui/icons-material';
 import { Box, Button, IconButton, Stack } from '@mui/material';
+import MUICard from '@mui/material/Card';
 
 import { ROUTES } from '../../../../../constants/routes';
 import { usePropertyFilter } from '../../../../../hooks/use-property-filter';
@@ -92,6 +93,19 @@ export function GatesTab() {
                 px: TOKENS.CONTAINER_PX,
               }}
             >
+              {isAdmin && (
+                <MUICard sx={{ position: 'relative' }}>
+                  <Link key="create-gate" passHref href={newGateUrl}>
+                    <EmptyCard
+                      title="Create Gate"
+                      subtitle="Keep engaging your team"
+                      component="a"
+                      sx={{ height: '100%', width: '100%' }}
+                    />
+                  </Link>
+                </MUICard>
+              )}
+
               {filteredGates.map((gate) => (
                 <GatesCard key={`gate-${gate.id}`} {...gate} />
               ))}

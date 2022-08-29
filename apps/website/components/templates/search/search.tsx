@@ -106,7 +106,9 @@ export function SearchTemplate({ query }: TemplateProps) {
             value={activeTab}
             onChange={handleTabChange}
             aria-label="basic tabs example"
-            sx={{ mb: '-1px' }}
+            sx={{
+              mb: '-1px',
+            }}
           >
             {tabs
               .sort((obj1, obj2) => obj2.count - obj1.count)
@@ -114,6 +116,12 @@ export function SearchTemplate({ query }: TemplateProps) {
                 <Tab
                   key={key}
                   label={label}
+                  sx={(theme) => ({
+                    fontSize: '12px',
+                    fontWeight: 700,
+                    px: 0,
+                    mr: theme.spacing(3),
+                  })}
                   {...(count
                     ? {
                         icon: <Chip label={count} size="small" />,

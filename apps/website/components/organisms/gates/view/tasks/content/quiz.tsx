@@ -73,8 +73,11 @@ const QuizContent = ({
                       key={index}
                       value={answer.value}
                       control={<Radio />}
+                      {...((readOnly || completed) && {
+                        checked: answer.correct,
+                      })}
                       label={answer.value}
-                      disabled={readOnly}
+                      disabled={readOnly || completed}
                     />
                   );
                 })}
@@ -88,7 +91,7 @@ const QuizContent = ({
                       value={answer.value}
                       control={<Checkbox />}
                       label={answer.value}
-                      disabled={readOnly}
+                      disabled={readOnly || completed}
                     />
                   );
                 })}
@@ -97,7 +100,7 @@ const QuizContent = ({
           </FormControl>
         );
       })}
-      {!readOnly && (
+      {!readOnly && !completed && (
         <LoadingButton
           variant="contained"
           sx={{ marginTop: '15px' }}

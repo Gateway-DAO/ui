@@ -77,12 +77,19 @@ export function ExploreTemplate({ title, subtitle, data }: TemplateProps) {
             value={activeTab}
             onChange={handleTabChange}
             aria-label="basic tabs example"
-            sx={{ mb: '-1px' }}
+            sx={{
+              mb: '-1px',
+            }}
           >
             {tabs.map(({ key, label }, index) => (
               <Tab
                 key={key}
                 label={label}
+                sx={(theme) => ({
+                  px: 0,
+                  mr: theme.spacing(3),
+                  fontWeight: 700,
+                })}
                 {...a11yTabProps('explore', index)}
               />
             ))}

@@ -1,4 +1,4 @@
-import { FieldError } from 'react-hook-form';
+import { FieldError, NestedValue } from 'react-hook-form';
 import { z } from 'zod';
 
 // Creator
@@ -10,10 +10,10 @@ export type Creator = {
 // Create Gate
 export type CreateGateTypes = {
   title: string;
-  categories: string[];
+  categories: NestedValue<string[]>;
   description: string;
   image: string;
-  skills: string[];
+  skills: NestedValue<string[]>;
   created_by: Creator[];
   tasks: TasksSchema;
 };
@@ -122,7 +122,7 @@ export type SnapshotDataError = {
 export type HoldTokenData = {
   chain?: string;
   token_address?: string;
-  quantity?: string;
+  quantity?: number;
 };
 
 export type HoldTokenDataError = {
@@ -162,9 +162,13 @@ export type verificationCodeType = {
 const fileTaskDataSchema = z.object({
   files: z
     .object({
-      title: z.string().min(2),
-      description: z.string().min(2),
-      link: z.string().min(2),
+      title: z
+        .string()
+        .min(2, 'The file title must contain at least 2 character(s)'),
+      description: z
+        .string()
+        .min(2, 'The file description must contain at least 2 character(s)'),
+      link: z.string().url('Invalid URL'),
     })
     .array(),
 });
@@ -196,17 +200,30 @@ const snapshotTaskDataSchema = z.object({
 
 const holdTokenTaskDataSchema = z.object({
   chain: z.number(),
-  token_address: z.string().min(2),
-  quantity: z.string().min(1),
+  token_address: z
+    .string()
+    .min(2, 'The token address must contain at least 2 character(s)')
+    .length(42, 'The token address must contain exactly 42 character(s)')
+    .refine((val) => val.startsWith('0x'), {
+      message: 'This is not a valid token address',
+    }),
+  quantity: z.number({
+    invalid_type_error: 'Quantity must be a number',
+    required_error: "Quantity can't be empty",
+  }),
 });
 
 export const verificationCodeDataSchema = z.object({
-  code: z.string().min(2),
+  code: z
+    .string()
+    .min(2, 'Verification code must contain at least 2 character(s)'),
 });
 
 export const taskMeetingCodeSchema = z.object({
-  title: z.string().min(2),
-  description: z.string().min(2),
+  title: z.string().min(2, 'The title must contain at least 2 character(s)'),
+  description: z
+    .string()
+    .min(2, 'The description must contain at least 2 character(s)'),
   task_type: z.literal('meeting_code'),
   task_data: verificationCodeDataSchema,
 });
@@ -215,12 +232,16 @@ export const quizDataSchema = z.object({
   pass_score: z.number().min(1).max(100),
   questions: z.array(
     z.object({
-      question: z.string().min(2),
+      question: z
+        .string()
+        .min(2, 'Question must contain at least 2 character(s)'),
       type: z.enum(['single', 'multiple']),
       options: z
         .array(
           z.object({
-            value: z.string().min(2),
+            value: z
+              .string()
+              .min(1, 'Answer must contain at least 1 character'),
             correct: z.boolean(),
           })
         )
@@ -233,39 +254,51 @@ export const quizDataSchema = z.object({
 });
 
 export const taskQuizSchema = z.object({
-  title: z.string().min(2),
-  description: z.string().min(2),
+  title: z.string().min(2, 'Quiz title must contain at least 2 character(s)'),
+  description: z
+    .string()
+    .min(2, 'Quiz description must contain at least 2 character(s)'),
   task_type: z.literal('quiz'),
   task_data: quizDataSchema,
 });
 
 export const taskHoldTokenSchema = z.object({
-  title: z.string().min(2),
-  description: z.string().min(2),
+  title: z
+    .string()
+    .min(2, 'Hold Token title must contain at least 2 character(s)'),
+  description: z
+    .string()
+    .min(2, 'The description must contain at least 2 character(s)'),
   task_type: z.literal('token_hold'),
   task_data: holdTokenTaskDataSchema,
 });
 
 export const taskSelfVerifySchema = z.object({
-  title: z.string().min(2),
-  description: z.string().min(2),
+  title: z.string().min(2, 'The title must contain at least 2 character(s)'),
+  description: z
+    .string()
+    .min(2, 'The description must contain at least 2 character(s)'),
   task_type: z.literal('self_verify'),
   task_data: fileTaskDataSchema,
 });
 
 export const taskSnapshotSchema = z.object({
-  title: z.string().min(2),
-  description: z.string().min(2),
+  title: z.string().min(2, 'The title must contain at least 2 character(s)'),
+  description: z
+    .string()
+    .min(2, 'The description must contain at least 2 character(s)'),
   task_type: z.literal('snapshot'),
   task_data: snapshotTaskDataSchema,
 });
 
 export const createGateSchema = z.object({
-  title: z.string().min(2),
-  categories: z.array(z.string()),
-  description: z.string().min(2),
+  title: z.string().min(2, 'The title must contain at least 2 character(s)'),
+  categories: z.array(z.string()).min(1, 'Please select at least 1 category'),
+  description: z
+    .string()
+    .min(2, 'The description must contain at least 2 character(s)'),
   image: z.string({ required_error: 'Image is required' }).min(2),
-  skills: z.array(z.string()),
+  skills: z.array(z.string()).min(1, 'Please select at least 1 skill'),
   created_by: z.array(
     z.object({
       id: z.string(),

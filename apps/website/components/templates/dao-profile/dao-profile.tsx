@@ -57,10 +57,21 @@ export function DaoProfileTemplate() {
           value={activeTab}
           onChange={handleTabChange}
           aria-label="basic tabs example"
-          sx={{ mb: '-1px' }}
+          sx={{
+            mb: '-1px',
+          }}
         >
           {tabs.map(({ key, label }, index) => (
-            <Tab key={key} label={label} {...a11yTabProps('dao', index)} />
+            <Tab
+              key={key}
+              label={label}
+              sx={(theme) => ({
+                fontWeight: 700,
+                px: 0,
+                mr: theme.spacing(3),
+              })}
+              {...a11yTabProps('dao', index)}
+            />
           ))}
         </Tabs>
       </Box>
