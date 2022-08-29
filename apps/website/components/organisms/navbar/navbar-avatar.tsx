@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
@@ -12,7 +13,12 @@ import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import LogoutIcon from '@mui/icons-material/Logout';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import { ListItemText } from '@mui/material';
+import Badge, { badgeClasses } from '@mui/material/Badge';
+import IconButton from '@mui/material/IconButton';
 import ListItem from '@mui/material/ListItem';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import Snackbar from '@mui/material/Snackbar';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 
@@ -106,16 +112,18 @@ export function NavBarAvatar({ hideProfile }: Props) {
           </MenuItem>
         </NestedMenuItem> */}
         {!hideProfile && (
-          <MenuItem
-            key="view-profile"
-            onClick={() => router.push(ROUTES.MY_PROFILE)}
-            sx={{
-              py: '12px',
-            }}
-          >
-            <AccountCircleIcon color="disabled" sx={{ mr: 3.5 }} />
-            <Typography textAlign="center">View my profile</Typography>
-          </MenuItem>
+          <Link passHref href={ROUTES.PROFILE}>
+            <MenuItem
+              href=""
+              key="view-profile"
+              sx={{
+                py: '12px',
+              }}
+            >
+              <AccountCircleIcon color="disabled" sx={{ mr: 3.5 }} />
+              <Typography textAlign="center">View my profile</Typography>
+            </MenuItem>
+          </Link>
         )}
         <MenuItem
           key="disconnect"
