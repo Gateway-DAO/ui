@@ -112,9 +112,9 @@ export function NavBarAvatar({ hideProfile }: Props) {
           </MenuItem>
         </NestedMenuItem> */}
         {!hideProfile && (
-          <Link passHref href={ROUTES.PROFILE}>
+          <Link passHref href={ROUTES.MY_PROFILE}>
             <MenuItem
-              href=""
+              component="a"
               key="view-profile"
               sx={{
                 py: '12px',
