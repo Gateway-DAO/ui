@@ -51,7 +51,7 @@ const defaultTaskData = (
   }
 };
 
-const TaskArea = ({ draftTasks }) => {
+const TaskArea = ({ draftTasks, onDelete }) => {
   const { control, setValue } = useFormContext<CreateGateTypes>();
 
   const { fields, append, remove } = useFieldArray({
@@ -63,10 +63,9 @@ const TaskArea = ({ draftTasks }) => {
     if (draftTasks.length > 0) {
       // Remove gate_ids from the tasks
       const formattedTasks = draftTasks.map((task) => {
-        const { gate_id: _gate_id, ...newTask } = task;
-        return newTask;
+        const { gate_id: _gate_id, id: task_id, ...newTask } = task;
+        return { id: task_id, task_id, ...newTask };
       });
-
       setValue('tasks.data', formattedTasks);
     }
   }, [draftTasks, setValue]);
@@ -83,13 +82,16 @@ const TaskArea = ({ draftTasks }) => {
 
   return (
     <>
-      {fields.map((task, index) => {
+      {fields.map((task: Task, index: number) => {
         const TaskComponent = TaskComponents[task.task_type];
         return (
           <TaskComponent
-            key={task.id}
+            key={task.task_id}
             taskId={index}
-            deleteTask={() => remove(index)}
+            deleteTask={() => {
+              remove(index);
+              onDelete((prev) => [...prev, task.task_id]);
+            }}
           />
         );
       })}

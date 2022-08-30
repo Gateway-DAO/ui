@@ -49,6 +49,8 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
   const [draftIsLoading, setDraftIsLoading] = useState(false);
   const [createIsLoading, setCreateIsLoading] = useState(false);
 
+  const [deletedTasks, setDeletedTasks] = useState([]);
+
   const { mutateAsync: uploadImage } = useMutation(
     'uploadImage',
     gqlAuthMethods.upload_image
@@ -59,17 +61,19 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
     gqlAuthMethods.create_gate
   );
 
+  const { mutateAsync: deleteTaskMutation } = useMutation(
+    'deleteTask',
+    gqlAuthMethods.delete_tasks_by_pk
+  );
+
   const handleMutation = async (data: CreateGateTypes, isDraft: boolean) => {
     isDraft ? setDraftIsLoading(true) : setCreateIsLoading(true);
     const dataIsValid = await methods.trigger();
-
     if (!dataIsValid) {
       return;
     }
-
     let permissionsData = null;
     let image_url = oldData.image || null;
-
     if (data.created_by.length > 0) {
       permissionsData = {
         data: data.created_by.map((creator) => {
@@ -77,7 +81,6 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
         }),
       };
     }
-
     if (image_url !== data.image && data.image !== undefined) {
       await uploadImage(
         {
@@ -100,7 +103,20 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
         }
       );
     }
-
+    if (deletedTasks.length > 0) {
+      deletedTasks.forEach(async (task_id) => {
+        await deleteTaskMutation(
+          {
+            task_id,
+          },
+          {
+            onSuccess() {
+              console.log('tasks deleted');
+            },
+          }
+        );
+      });
+    }
     if (data.title) {
       await createGateMutation(
         {
@@ -120,7 +136,10 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
           },
           image: image_url,
           tasks: {
-            ...data.tasks,
+            data: data.tasks.data.map((task) => {
+              const { task_id, ...cleanTask } = task;
+              return { id: task_id, ...cleanTask };
+            }),
             on_conflict: {
               constraint: Tasks_Constraint.KeysPk,
               update_columns: [
@@ -135,7 +154,6 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
         },
         {
           onSuccess(result) {
-            isDraft ? setDraftIsLoading(false) : setCreateIsLoading(false);
             snackbar.handleClick({
               message: isDraft ? 'Draft saved' : 'Gate created',
             });
@@ -266,7 +284,10 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
               >
                 <Stack direction="column" gap={2}>
                   <FormProvider {...methods}>
-                    <TaskArea draftTasks={oldData.tasks || []} />
+                    <TaskArea
+                      draftTasks={oldData.tasks || []}
+                      onDelete={setDeletedTasks}
+                    />
                   </FormProvider>
                 </Stack>
               </Stack>

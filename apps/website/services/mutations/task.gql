@@ -1,0 +1,21 @@
+mutation delete_tasks($task_ids: [tasks_bool_exp!]) {
+  delete_tasks(where: { _and: $task_ids }) {
+    affected_rows
+    returning {
+      id
+    }
+  }
+}
+
+mutation delete_tasks_by_pk($task_id: uuid!) {
+  delete_tasks_by_pk(id: $task_id) {
+    id
+  }
+}
+
+mutation complete_task($task_id: uuid!, $info: json) {
+  verify_key(input: { task_id: $task_id, info: $info }) {
+    completed_gate
+    task_info
+  }
+}

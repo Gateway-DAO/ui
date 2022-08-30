@@ -25,7 +25,14 @@ mutation create_gate(
     }
     on_conflict: {
       constraint: gates_pk
-      update_columns: [title, categories, description, skills, image, published]
+      update_columns: [
+        title
+        categories
+        description
+        skills
+        image
+        published
+      ]
     }
   ) {
     id

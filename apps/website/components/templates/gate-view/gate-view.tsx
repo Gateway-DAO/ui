@@ -80,8 +80,6 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
         permission.dao_id === gateProps.dao?.id && permission.dao?.is_admin
     ).length > 0;
 
-  console.log(isAdmin);
-
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
@@ -109,9 +107,6 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
                 : 'unpublished!'
             }`,
           });
-
-          //TODO: Refresh Chip component only
-          // router.reload();
 
           setPublished(data.update_gates_by_pk.published);
         },
