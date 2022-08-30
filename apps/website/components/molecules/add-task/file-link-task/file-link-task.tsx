@@ -43,7 +43,7 @@ const FileLinkTask = ({ taskId, deleteTask }) => {
   });
 
   useEffect(() => {
-    if (formValues.tasks.data[taskId].title === '') {
+    if (formValues.tasks.data[taskId]?.title === '') {
       setValue(`tasks.data.${taskId}.title`, 'Untitled Task');
     }
   }, [setValue, taskId, formValues.tasks.data]);

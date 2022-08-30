@@ -39,7 +39,7 @@ const SnapshotTask = ({ taskId, deleteTask }) => {
   const formValues = getValues();
 
   useEffect(() => {
-    if (formValues.tasks.data[taskId].title === '') {
+    if (formValues.tasks.data[taskId]?.title === '') {
       setValue(`tasks.data.${taskId}.title`, 'Untitled Task');
     }
     setValue(`tasks.data.${taskId}.task_type`, 'snapshot');
