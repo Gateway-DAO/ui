@@ -1,12 +1,9 @@
-import useTranslation from 'next-translate/useTranslation';
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 
 import { PartialDeep } from 'type-fest';
 
-import ViewInArIcon from '@mui/icons-material/ViewInAr';
 import {
-  Avatar,
   AvatarGroup,
   Chip,
   Grid,
@@ -14,12 +11,10 @@ import {
   Typography,
   Box,
   Divider,
-  Button,
   Tooltip,
 } from '@mui/material';
 
 import { useAuth } from '../../../../website/providers/auth';
-import { useMint } from '../../../hooks/use-mint';
 import { Gates } from '../../../services/graphql/types.generated';
 import { AvatarFile } from '../../atoms/avatar-file';
 import CircularProgressWithLabel from '../../atoms/circular-progress-label';
@@ -35,13 +30,10 @@ type Props = {
 export function GateViewTemplate({ gate }: Props) {
   const taskIds = gate.tasks.map((task) => task.id);
   const { me } = useAuth();
-  const { mint } = useMint();
 
   const [open, setOpen] = useState(false);
-  const [gateCompleted, setGateCompleted] = useState(false);
   const [completedTasksCount, setCompletedTasksCount] = useState(0);
 
-  const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   const countSimiliarIds = (arr1: string[], arr2: string[]) => {
@@ -51,16 +43,10 @@ export function GateViewTemplate({ gate }: Props) {
   useEffect(() => {
     const completedTaskIds =
       me?.task_progresses.map((task) => task.task_id) || [];
-    const allCompleted = taskIds.every((taskId) => {
-      return completedTaskIds.includes(taskId);
-    });
+
 
     setCompletedTasksCount(countSimiliarIds(completedTaskIds, taskIds));
 
-    if (allCompleted) {
-      setGateCompleted(true);
-      handleOpen();
-    }
   }, [taskIds, me?.task_progresses, completedTasksCount]);
 
   return (
@@ -127,17 +113,6 @@ export function GateViewTemplate({ gate }: Props) {
         </Box>
 
         <ReadMore>{gate.description}</ReadMore>
-        {gateCompleted && (
-          <Button
-            fullWidth
-            variant="contained"
-            sx={{ marginBottom: 4 }}
-            startIcon={<ViewInArIcon />}
-            onClick={() => mint()}
-          >
-            Mint as NFT
-          </Button>
-        )}
         <Box
           component="img"
           src={gate.image}
@@ -250,6 +225,9 @@ export function GateViewTemplate({ gate }: Props) {
             variant="determinate"
             value={(completedTasksCount / gate.tasks.length) * 100}
             label={`${completedTasksCount}/${gate.tasks.length}`}
+            sx={{
+              color: '#6DFFB9',
+            }}
           />
           <Stack
             sx={{
@@ -265,7 +243,11 @@ export function GateViewTemplate({ gate }: Props) {
 
         <TaskGroup>
           {gate.tasks.map((task, idx) => (
-            <Task key={'task-' + (idx + 1)} task={task} />
+            <Task
+              key={'task-' + (idx + 1)}
+              task={task}
+              setCompletedGate={setOpen}
+            />
           ))}
         </TaskGroup>
       </Grid>
