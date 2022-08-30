@@ -7,7 +7,6 @@ import { useMutation } from 'react-query';
 import { PartialDeep } from 'type-fest';
 import { v4 as uuidv4 } from 'uuid';
 
-import ViewInArIcon from '@mui/icons-material/ViewInAr';
 import {
   AvatarGroup,
   Chip,
@@ -16,14 +15,12 @@ import {
   Typography,
   Box,
   Divider,
-  Button,
   Tooltip,
   Snackbar,
 } from '@mui/material';
 
 import { useAuth } from '../../../../website/providers/auth';
 import { ROUTES } from '../../../constants/routes';
-import { useMint } from '../../../hooks/use-mint';
 import { useSnackbar } from '../../../hooks/use-snackbar';
 import { Gates } from '../../../services/graphql/types.generated';
 import { AvatarFile } from '../../atoms/avatar-file';
@@ -45,14 +42,12 @@ type GateViewProps = {
 
 export function GateViewTemplate({ gateProps }: GateViewProps) {
   const [open, setOpen] = useState(false);
-  const [gateCompleted, setGateCompleted] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [confirmToggleState, setConfirmToggleState] = useState(false);
   const [completedTasksCount, setCompletedTasksCount] = useState(0);
   const [published, setPublished] = useState(gateProps.published);
 
   const { me, gqlAuthMethods } = useAuth();
-  const { mint } = useMint();
   const router = useRouter();
   const snackbar = useSnackbar();
 
@@ -62,16 +57,8 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
   useEffect(() => {
     const completedTaskIds =
       me?.task_progresses.map((task) => task.task_id) || [];
-    const allCompleted = taskIds.every((taskId) => {
-      return completedTaskIds.includes(taskId);
-    });
 
     setCompletedTasksCount(countSimiliarIds(completedTaskIds, taskIds));
-
-    if (tasksCount > 0 && allCompleted) {
-      setGateCompleted(true);
-      handleOpen();
-    }
   }, [taskIds, me?.task_progresses, completedTasksCount, tasksCount]);
 
   const isAdmin =
@@ -80,7 +67,6 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
         permission.dao_id === gateProps.dao?.id && permission.dao?.is_admin
     ).length > 0;
 
-  const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   const countSimiliarIds = (arr1: string[], arr2: string[]) => {
@@ -244,17 +230,6 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
             {gateProps.description}
           </Typography>
         )}
-        {gateCompleted && (
-          <Button
-            fullWidth
-            variant="contained"
-            sx={{ marginBottom: 4 }}
-            startIcon={<ViewInArIcon />}
-            onClick={() => mint()}
-          >
-            Mint as NFT
-          </Button>
-        )}
         <Box
           component="img"
           src={gateProps.image}
@@ -369,6 +344,9 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
             variant="determinate"
             value={(completedTasksCount / gateProps.tasks.length) * 100}
             label={`${completedTasksCount}/${gateProps.tasks.length}`}
+            sx={{
+              color: '#6DFFB9',
+            }}
           />
           <Stack
             sx={{
@@ -388,6 +366,7 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
               key={'task-' + (idx + 1)}
               task={task}
               readOnly={published !== 'published'}
+              setCompletedGate={setOpen}
             />
           ))}
         </TaskGroup>

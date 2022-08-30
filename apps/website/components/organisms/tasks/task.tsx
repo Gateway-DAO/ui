@@ -14,6 +14,7 @@ import {
   IconButton,
   Collapse,
 } from '@mui/material';
+import CheckIcon from '@mui/icons-material/Check';
 
 import { useAuth } from '../../../providers/auth';
 import { Tasks } from '../../../services/graphql/types.generated';
@@ -31,6 +32,7 @@ type Props = {
   idx?: number;
   task?: PartialObjectDeep<Tasks>;
   readOnly?: boolean;
+  setCompletedGate?: (completed: boolean) => void;
 };
 
 interface Error {
@@ -45,7 +47,7 @@ interface Error {
   };
 }
 
-export function Task({ task, idx, readOnly }: Props) {
+export function Task({ task, idx, readOnly, setCompletedGate }: Props) {
   const { me, gqlAuthMethods, onOpenLogin } = useAuth();
 
   const [expanded, toggleExpanded] = useToggle(false);
@@ -100,7 +102,7 @@ export function Task({ task, idx, readOnly }: Props) {
   };
 
   const { mutate: completeTaskMutation, isLoading } = useMutation(
-    'completeTask',
+    ['completeTask', { gateId: task.gate_id, taskId: task.id }],
     gqlAuthMethods.complete_task,
     {
       onSuccess: async (data) => {
@@ -114,6 +116,8 @@ export function Task({ task, idx, readOnly }: Props) {
             ...oldTaskProgresses,
             data.verify_key.task_info,
           ];
+
+          data.verify_key.completed_gate && setCompletedGate(true);
 
           return {
             ...old,
@@ -168,13 +172,17 @@ export function Task({ task, idx, readOnly }: Props) {
         avatar={
           <Avatar
             sx={{
-              backgroundColor: expanded ? 'white' : 'transparent',
+              backgroundColor: completed
+                ? '#6DFFB9'
+                : expanded
+                ? 'white'
+                : 'transparent',
               color: (theme) =>
                 expanded ? theme.palette.background.default : 'white',
               border: expanded ? 'none' : '1px solid #FFFFFF4D',
             }}
           >
-            {idx || task.title[0]}
+            {completed ? <CheckIcon htmlColor='#10041C'/> : idx || task.title[0]}
           </Avatar>
         }
         title={<Typography variant="caption">{taskContent?.title}</Typography>}
