@@ -18,6 +18,7 @@ import {
   Permissions_Update_Column,
 } from '../../../services/graphql/types.generated';
 import ConfirmDialog from '../../organisms/confirm-dialog/confirm-dialog';
+import GatePublishedModal from '../../organisms/gates/create/gate-published';
 import { PublishNavbar } from '../../organisms/publish-navbar/publish-navbar';
 import TaskArea from '../../organisms/tasks-area/tasks-area';
 import { GateDetailsForm } from './details-form';
@@ -47,7 +48,9 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
   const router = useRouter();
   const { gqlAuthMethods } = useAuth();
 
+  const [gateId, setGateId] = useState(oldData.id || '');
   const [confirmPublish, setConfirmPublish] = useState(false);
+  const [isPublished, setIsPublished] = useState(false);
   const [draftIsLoading, setDraftIsLoading] = useState(false);
   const [createIsLoading, setCreateIsLoading] = useState(false);
 
@@ -67,6 +70,8 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
     'deleteTask',
     gqlAuthMethods.delete_tasks_by_pk
   );
+
+  const closePublishedModal = () => setIsPublished(false);
 
   const handleMutation = async (data: CreateGateTypes, isDraft: boolean) => {
     isDraft ? setDraftIsLoading(true) : setCreateIsLoading(true);
@@ -156,12 +161,17 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
         },
         {
           onSuccess(result) {
-            snackbar.onOpen({
-              message: isDraft ? 'Draft saved' : 'Gate created',
-            });
-            router.push(
-              ROUTES.GATE_PROFILE.replace('[id]', result.insert_gates_one.id)
-            );
+            if (isDraft) {
+              snackbar.onOpen({
+                message: 'Draft saved',
+              });
+              router.push(
+                ROUTES.GATE_PROFILE.replace('[id]', result.insert_gates_one.id)
+              );
+            } else {
+              setGateId(result.insert_gates_one.id);
+              setIsPublished(true);
+            }
           },
           onError() {
             isDraft ? setDraftIsLoading(false) : setCreateIsLoading(false);
@@ -326,6 +336,11 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
           If you publish this gate, you will no longer be allowed to edit it.
           You can unpublish or delete the credential any time.
         </ConfirmDialog>
+        <GatePublishedModal
+          open={isPublished}
+          handleClose={closePublishedModal}
+          gateId={gateId}
+        />
       </Stack>
     </>
   );

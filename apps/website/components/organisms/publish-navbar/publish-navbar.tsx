@@ -42,7 +42,7 @@ export const PublishNavbar = ({
           </IconButton>
           <Box sx={{ position: 'absolute', right: 0 }}>
             <LoadingButton
-              onClick={(e) => {
+              onClick={() => {
                 const values = getValues();
                 const nestedCategories = getValues('categories');
                 const nestedSkills = getValues('skills');
