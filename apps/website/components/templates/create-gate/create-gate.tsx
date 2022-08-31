@@ -17,6 +17,7 @@ import {
   Permissions_Constraint,
   Permissions_Update_Column,
 } from '../../../services/graphql/types.generated';
+import ConfirmDialog from '../../organisms/confirm-dialog/confirm-dialog';
 import { PublishNavbar } from '../../organisms/publish-navbar/publish-navbar';
 import TaskArea from '../../organisms/tasks-area/tasks-area';
 import { GateDetailsForm } from './details-form';
@@ -46,6 +47,7 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
   const router = useRouter();
   const { gqlAuthMethods } = useAuth();
 
+  const [confirmPublish, setConfirmPublish] = useState(false);
   const [draftIsLoading, setDraftIsLoading] = useState(false);
   const [createIsLoading, setCreateIsLoading] = useState(false);
 
@@ -190,14 +192,10 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
       <Stack
         component="form"
         id="gate-details-form"
-        onSubmit={methods.handleSubmit(createGate, (errors) => {
-          snackbar.onOpen({
-            message: Object.values(errors)[0].data.message || 'Invalid data',
-          });
-
-          setCreateIsLoading(false);
-          return;
-        })}
+        onSubmit={(e) => {
+          e.preventDefault();
+          setConfirmPublish(true);
+        }}
         padding={'0 90px'}
         sx={(theme) => ({
           p: '0 90px',
@@ -311,6 +309,23 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
           message={snackbar.message}
           key={snackbar.vertical + snackbar.horizontal}
         />
+        <ConfirmDialog
+          title="Are you sure you want to publish this gate?"
+          open={confirmPublish}
+          positiveAnswer="Publish"
+          negativeAnswer="Cancel"
+          setOpen={setConfirmPublish}
+          onConfirm={methods.handleSubmit(createGate, (errors) => {
+            snackbar.onOpen({
+              message: Object.values(errors)[0].data.message || 'Invalid data',
+            });
+            setCreateIsLoading(false);
+            return;
+          })}
+        >
+          If you publish this gate, you will no longer be allowed to edit it.
+          You can unpublish or delete the credential any time.
+        </ConfirmDialog>
       </Stack>
     </>
   );
