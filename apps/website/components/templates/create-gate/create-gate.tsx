@@ -70,6 +70,13 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
     isDraft ? setDraftIsLoading(true) : setCreateIsLoading(true);
     const dataIsValid = await methods.trigger();
     if (!dataIsValid) {
+      const errors = methods.formState.errors;
+
+      snackbar.onOpen({
+        message: Object.values(errors)[0].data.message || 'Invalid data',
+      });
+
+      isDraft ? setDraftIsLoading(false) : setCreateIsLoading(false);
       return;
     }
     let permissionsData = null;
@@ -96,7 +103,7 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
               image_id;
           },
           onError() {
-            snackbar.handleClick({
+            snackbar.onOpen({
               message: "An error occured, couldn't upload the image.",
             });
           },
@@ -105,16 +112,9 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
     }
     if (deletedTasks.length > 0) {
       deletedTasks.forEach(async (task_id) => {
-        await deleteTaskMutation(
-          {
-            task_id,
-          },
-          {
-            onSuccess() {
-              console.log('tasks deleted');
-            },
-          }
-        );
+        await deleteTaskMutation({
+          task_id,
+        });
       });
     }
     if (data.title) {
@@ -154,7 +154,7 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
         },
         {
           onSuccess(result) {
-            snackbar.handleClick({
+            snackbar.onOpen({
               message: isDraft ? 'Draft saved' : 'Gate created',
             });
             router.push(
@@ -163,7 +163,7 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
           },
           onError() {
             isDraft ? setDraftIsLoading(false) : setCreateIsLoading(false);
-            snackbar.handleClick({
+            snackbar.onOpen({
               message: isDraft
                 ? "An error occured, couldn't save the draft."
                 : "An error occured, couldn't create the gate.",
@@ -172,6 +172,7 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
         }
       );
     }
+    isDraft ? setDraftIsLoading(false) : setCreateIsLoading(false);
   };
 
   const saveDraft = (draftData: CreateGateTypes) =>
@@ -189,9 +190,14 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
       <Stack
         component="form"
         id="gate-details-form"
-        onSubmit={methods.handleSubmit(createGate, (error) =>
-          console.log(error)
-        )}
+        onSubmit={methods.handleSubmit(createGate, (errors) => {
+          snackbar.onOpen({
+            message: Object.values(errors)[0].data.message || 'Invalid data',
+          });
+
+          setCreateIsLoading(false);
+          return;
+        })}
         padding={'0 90px'}
         sx={(theme) => ({
           p: '0 90px',

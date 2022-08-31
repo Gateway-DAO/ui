@@ -334,14 +334,16 @@ export const createGateSchema = z.object({
     })
   ),
   tasks: z.object({
-    data: z.array(
-      z.discriminatedUnion('task_type', [
-        taskSelfVerifySchema,
-        taskMeetingCodeSchema,
-        taskQuizSchema,
-        taskSnapshotSchema,
-        taskHoldTokenSchema,
-      ])
-    ),
+    data: z
+      .array(
+        z.discriminatedUnion('task_type', [
+          taskSelfVerifySchema,
+          taskMeetingCodeSchema,
+          taskQuizSchema,
+          taskSnapshotSchema,
+          taskHoldTokenSchema,
+        ])
+      )
+      .nonempty({ message: 'A gate needs to have at least one task.' }),
   }),
 });
