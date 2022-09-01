@@ -4,7 +4,7 @@ import { useMutation } from 'react-query';
 
 import { useMenu } from '@gateway/ui';
 
-import { Menu, MenuItem } from '@mui/material';
+import { Button, Menu, MenuItem } from '@mui/material';
 
 import { useBidirectionFollow } from '../../../hooks/use-bidirectional-follow';
 import { LoadingButton } from '../loading-button';
@@ -16,22 +16,23 @@ export function FriendSentPendingButton({
 }: FollowButtonProps) {
   const menu = useMenu();
   const { t } = useTranslation('common');
-  const { onUnfollow } = useBidirectionFollow();
-  const unfollowMutation = useMutation(() => onUnfollow(wallet));
+  // const { onUnfollow } = useBidirectionFollow();
+  // const unfollowMutation = useMutation(() => onUnfollow(wallet));
   return (
     <>
-      <LoadingButton
-        variant="contained"
+      <Button
+        variant="outlined"
         color="primary"
         onClick={menu.onOpen}
-        isLoading={unfollowMutation.isLoading}
+        disabled
+        // isLoading={unfollowMutation.isLoading}
         {...props}
       >
         {t('actions.pending')}
-      </LoadingButton>
-      <Menu anchorEl={menu.element} open={menu.isOpen} onClose={menu.onClose}>
-        <MenuItem onClick={menu.onClose}>{t('actions.reject')}</MenuItem>
-      </Menu>
+      </Button>
+      {/* <Menu anchorEl={menu.element} open={menu.isOpen} onClose={menu.onClose}>
+        <MenuItem onClick={() => { unfollowMutation.mutate(); menu.onClose(); }}>{t('actions.withdraw')}</MenuItem>
+      </Menu> */}
     </>
   );
 }
