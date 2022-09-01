@@ -27,7 +27,9 @@ import { Users } from '../../../services/graphql/types.generated';
 import { SessionUser } from '../../../types/user';
 import { AvatarFile } from '../../atoms/avatar-file';
 import { FollowButtonUser } from '../../atoms/follow-button-user';
+import { useFollowStatus } from '../../atoms/follow-button-user/utils';
 import { SocialButtons } from '../../organisms/social-buttons';
+import { PendingReceivedSection } from './pending-received-section';
 import { ActivityTab, OverviewTab } from './tabs';
 
 type Props = {
@@ -38,6 +40,7 @@ export default function ProfileTemplate({ user }: Props) {
   const { t } = useTranslation();
   const { activeTab, handleTabChange, setTab } = useTab();
   const { me } = useAuth();
+  const { type: pendingType } = useFollowStatus(user.wallet);
 
   const tabs = useMemo(
     () => [
@@ -142,17 +145,24 @@ export default function ProfileTemplate({ user }: Props) {
             </Typography>
             .<Typography>{user.credentials.length} credential(s)</Typography>
           </Box>
-          <Stack
-            direction="row"
-            gap={1}
-            sx={{
-              mt: 4,
-            }}
-          >
-            {(user as Users)?.wallet && (
-              <FollowButtonUser wallet={(user as Users).wallet} />
+          <Stack direction="column" gap={0.75} mt={4}>
+            {!!(user as Users) && pendingType === 'received' && (
+              <PendingReceivedSection
+                username={user.username!}
+                wallet={user.wallet!}
+              />
             )}
-            <SocialButtons socials={user.socials} copyNetworks={['discord']} />
+            {user?.socials?.length > 0 || pendingType !== 'received' ? (
+              <Stack direction="row" gap={1}>
+                {(user as Users)?.wallet && pendingType !== 'received' && (
+                  <FollowButtonUser wallet={(user as Users).wallet} />
+                )}
+                <SocialButtons
+                  socials={user.socials}
+                  copyNetworks={['discord']}
+                />
+              </Stack>
+            ) : undefined}
           </Stack>
         </Box>
       </Box>

@@ -31,8 +31,8 @@ import { generateImageUrl } from '../../../hooks/use-file';
 import { useAuth } from '../../../providers/auth';
 import { AvatarFile } from '../../atoms/avatar-file';
 import { SocialButtons } from '../../organisms/social-buttons';
-import { ActivityTab, OverviewTab } from './tabs';
 import { GuideCard } from './edit/Components/guide-card';
+import { ActivityTab, OverviewTab } from './tabs';
 
 export default function PrivateProfileTemplate() {
   const [showCard, setShowCard] = useState(true);
@@ -163,7 +163,6 @@ export default function PrivateProfileTemplate() {
                 <Typography>{me.credentials?.length} credential(s)</Typography>
               </Box>
             </Box>
-
             <Stack
               direction="row"
               gap={1}

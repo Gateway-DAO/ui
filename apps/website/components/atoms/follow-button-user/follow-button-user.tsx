@@ -9,13 +9,13 @@ import { FriendReceivedPendingButton } from './pending-received';
 import { FriendSentPendingButton } from './pending-sent';
 import { FollowButtonProps } from './type';
 import { UnfollowUserButton } from './unfollow-user';
-import { useStatus } from './utils';
+import { useFollowStatus } from './utils';
 
 export function FollowButtonUser(props: FollowButtonProps) {
   const { t } = useTranslation('common');
   const { me, onOpenLogin } = useAuth();
   const { wallet } = props;
-  const { status, type } = useStatus(wallet);
+  const { status, type } = useFollowStatus(wallet);
 
   if (!me)
     return (

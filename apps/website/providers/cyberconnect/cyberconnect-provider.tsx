@@ -19,7 +19,7 @@ export function CyberConnectProvider({ children }: PropsWithChildren<unknown>) {
   const { isLoading, data, refetch, remove } = useQuery(
     ['cyberconnect-profile', wallet],
     () => gqlCyberConnectMethods.user_notifications({ address: wallet }),
-    { enabled: !!wallet }
+    { enabled: !!wallet, refetchOnWindowFocus: true, refetchInterval: 10000 }
   );
 
   useEffect(() => {

@@ -2,7 +2,7 @@ import { useAuth } from '../../../providers/auth';
 import { useCyberConnect } from '../../../providers/cyberconnect';
 import { BiConnState } from '../../../services-cyberconnect/types.generated';
 
-export const useStatus = (
+export const useFollowStatus = (
   wallet: string
 ): { status: BiConnState; type?: 'received' | 'sent' } => {
   const { friendsRequestsInbox, friendRequestsSent, friends } =
