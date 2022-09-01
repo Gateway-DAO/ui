@@ -24,8 +24,8 @@ const style: SxProps = {
   bgcolor: 'background.paper',
   px: { xs: 2, md: 6, lg: 12 },
   py: { xs: 1, md: 5 },
-  height: '100vh',
-  width: { md: '100vw' },
+  height: '100%',
+  width: { md: '100%' },
   display: 'flex',
   flexDirection: 'column',
 };
@@ -126,14 +126,18 @@ export default function GateCompletedModal({ gate, open, handleClose }) {
             <Box>
               <Typography color={'#FFFFFFB2'}>Share on</Typography>
               <Stack direction="row" spacing={1}>
-                <EmailShareButton url={URL} subject={'Next Share'} body="body">
+                <EmailShareButton
+                  url={URL}
+                  subject={'Conagralautions'}
+                  body={gate.dao.name + ' via @Gateway_xyz'}
+                >
                   <Avatar>
                     <SocialIcon icon="email" />
                   </Avatar>
                 </EmailShareButton>
                 <RedditShareButton
                   url={URL}
-                  title={'Congralautions!! you completed this gate'}
+                  title={gate.dao.name + ' via @Gateway_xyz'}
                 >
                   <Avatar>
                     <SocialIcon icon="reddit" />
@@ -141,7 +145,7 @@ export default function GateCompletedModal({ gate, open, handleClose }) {
                 </RedditShareButton>
                 <TwitterShareButton
                   url={URL}
-                  title={'Congralautions!! you completed this gate'}
+                  title={gate.dao.name + ' via @Gateway_xyz'}
                 >
                   <Avatar>
                     <SocialIcon icon="twitter" />
