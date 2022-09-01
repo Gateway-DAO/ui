@@ -1,3 +1,4 @@
+import { redirect } from 'next/dist/server/api-utils';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
@@ -26,14 +27,22 @@ export default function CreateGate({ gateProps }) {
   return <CreateGateTemplate oldData={gateProps} />;
 }
 
-export async function getServerSideProps({ query }) {
+export async function getServerSideProps({ res, query }) {
   const { gate: gateId } = query;
-  let gateProps = { gates_by_pk: {} };
+  let gateProps = { gates_by_pk: { id: '', published: '' } };
 
   if (gateId) {
     gateProps = await gqlAnonMethods.gate({
       id: gateId,
     });
+  }
+
+  const gateState = gateProps.gates_by_pk.published;
+  if (gateState === 'published' || gateState === 'paused') {
+    redirect(
+      res,
+      ROUTES.GATE_PROFILE.replace('[id]', gateProps.gates_by_pk.id)
+    );
   }
 
   return {
