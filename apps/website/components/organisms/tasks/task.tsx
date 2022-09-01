@@ -63,6 +63,7 @@ export function Task({ task, idx, readOnly, setCompletedGate }: Props) {
     if (progressTaskIndex !== undefined && progressTaskIndex !== -1) {
       setCompleted(true);
       setUpdatedAt(me?.task_progresses[progressTaskIndex].updated_at);
+      toggleExpanded(true);
     }
   }, [task.id, me?.task_progresses]);
 
@@ -182,7 +183,11 @@ export function Task({ task, idx, readOnly, setCompletedGate }: Props) {
               border: expanded ? 'none' : '1px solid #FFFFFF4D',
             }}
           >
-            {completed ? <CheckIcon htmlColor='#10041C'/> : idx || task.title[0]}
+            {completed ? (
+              <CheckIcon htmlColor="#10041C" />
+            ) : (
+              idx || task.title[0]
+            )}
           </Avatar>
         }
         title={<Typography variant="caption">{taskContent?.title}</Typography>}

@@ -39,7 +39,7 @@ export default function GateCompletedModal({ gate, open, handleClose }) {
 
   return (
     <Dialog
-      open={true}
+      open={open}
       fullScreen
       onClose={handleClose}
       aria-labelledby="modal-modal-title"
@@ -145,7 +145,8 @@ export default function GateCompletedModal({ gate, open, handleClose }) {
                 </RedditShareButton>
                 <TwitterShareButton
                   url={URL}
-                  title={gate.dao.name + ' via @Gateway_xyz'}
+                  title={gate.dao.name}
+                  via={'Gateway_xyz'}
                 >
                   <Avatar>
                     <SocialIcon icon="twitter" />
