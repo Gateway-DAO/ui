@@ -5,13 +5,21 @@ import { Avatar, AvatarProps } from '@mui/material';
 import { useFile } from '../../hooks/use-file';
 import { Files } from '../../services/graphql/types.generated';
 
-type Props = {
+type AvatarFileProps<
+  Component extends React.ElementType = 'div',
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  Props = {}
+> = {
   file: PartialDeep<Files>;
   fallback?: string;
-} & AvatarProps;
+} & AvatarProps<Component, Props>;
 
 /* Avatar with File image */
-export function AvatarFile({ file, fallback, ...props }: Props) {
+export function AvatarFile<Component extends React.ElementType>({
+  file,
+  fallback,
+  ...props
+}: AvatarFileProps<Component, { component?: Component }>) {
   const image = useFile(file);
 
   const src = image?.url ?? fallback;
