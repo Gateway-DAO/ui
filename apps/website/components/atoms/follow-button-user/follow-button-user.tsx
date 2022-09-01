@@ -24,11 +24,11 @@ export function FollowButtonUser(props: FollowButtonProps) {
       </Button>
     );
 
-  if (status === BiConnState.Connected && type === 'sent') {
+  if (status === BiConnState.Pending && type === 'sent') {
     return <FriendSentPendingButton {...props} />;
   }
 
-  if (status === BiConnState.Connected && type === 'received') {
+  if (status === BiConnState.Pending && type === 'received') {
     return <FriendReceivedPendingButton {...props} />;
   }
   if (status === BiConnState.Connected) {
