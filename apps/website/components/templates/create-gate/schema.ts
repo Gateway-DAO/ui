@@ -49,6 +49,11 @@ export type HoldTokenTask = {
   task_data: HoldTokenData;
 };
 
+export type FollowProfileTask = {
+  task_type: 'follow_profile';
+  task_data: TwitterFollowData;
+};
+
 export type Task = {
   title: string;
   description: string;
@@ -58,6 +63,7 @@ export type Task = {
   | QuizTask
   | SnapshotTask
   | HoldTokenTask
+  | FollowProfileTask
 );
 
 // Verification Code
@@ -68,6 +74,16 @@ export type VerificationCodeData = {
 export type VerificationCodeDataError = {
   id?: FieldError;
   code?: FieldError;
+};
+
+// Twitter follow
+export type TwitterFollowData = {
+  username?: string;
+};
+
+export type TwitterFollowDataError = {
+  id?: FieldError;
+  username?: FieldError;
 };
 
 // Quiz
@@ -159,6 +175,12 @@ export type verificationCodeType = {
   code: string;
 };
 
+const twitterFollowDataSchema = z.object({
+  username: z
+    .string()
+    .min(2, 'The username must contain at least 2 character(s)'),
+});
+
 const fileTaskDataSchema = z.object({
   files: z
     .object({
@@ -226,6 +248,15 @@ export const taskMeetingCodeSchema = z.object({
     .min(2, 'The description must contain at least 2 character(s)'),
   task_type: z.literal('meeting_code'),
   task_data: verificationCodeDataSchema,
+});
+
+export const TwitterFollowProfileSchema = z.object({
+  title: z.string().min(2, 'The title must contain at least 2 character(s)'),
+  description: z
+    .string()
+    .min(2, 'The description must contain at least 2 character(s)'),
+  task_type: z.literal('follow_profile'),
+  task_data: twitterFollowDataSchema,
 });
 
 export const quizDataSchema = z.object({
@@ -310,6 +341,7 @@ export const createGateSchema = z.object({
       z.discriminatedUnion('task_type', [
         taskSelfVerifySchema,
         taskMeetingCodeSchema,
+        TwitterFollowProfileSchema,
         taskQuizSchema,
         taskSnapshotSchema,
         taskHoldTokenSchema,

@@ -4,6 +4,7 @@ import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 import NumbersIcon from '@mui/icons-material/Numbers';
 import QuizIcon from '@mui/icons-material/Quiz';
 import StarIcon from '@mui/icons-material/Star';
+import Twitter from '@mui/icons-material/Twitter';
 import { Grid, Paper, Stack, Typography } from '@mui/material';
 
 import { CircleWithNumber } from '../../atoms/circle-with-number';
@@ -84,6 +85,15 @@ const AddTaskCard = ({ numberOfTasks, addTask }) => {
               icon={<NumbersIcon />}
               title={'Verification Code'}
               addTask={() => addTask('meeting_code')}
+            />
+          </Paper>
+        </Grid>
+        <Grid item xs={2} sm={4} md={4}>
+          <Paper>
+            <AddTaskButton
+              icon={<Twitter />}
+              title={'Follow Profile'}
+              addTask={() => addTask('follow_profile')}
             />
           </Paper>
         </Grid>
