@@ -3,7 +3,6 @@
   "gates": "Gates",
   "daos": "DAOs",
   "people": "People",
-  "follow": "follow",
   "count": {
     "gate": {
       "0": "No gates",
@@ -54,6 +53,7 @@
     "got-it": "got it",
     "follow": "Follow",
     "unfollow": "Unfollow",
-    "pending": "Pending"
+    "pending": "Pending",
+    "reject": "Reject"
   }
 }
