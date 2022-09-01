@@ -1,76 +1,45 @@
-import { PropsWithChildren } from 'react';
+import { PropsWithChildren, useEffect } from 'react';
 
 import { useQuery } from 'react-query';
-import { useAccount } from 'wagmi';
 
 import { gqlCyberConnectMethods } from '../../services-cyberconnect/api';
+import { useAuth } from '../auth';
 import { createCyberConnectClient } from './client';
 import { CyberConnectContext } from './context';
-import {
-  normalizeRequestConnection,
-  normalizeNotification,
-  normalizeFriend,
-} from './utils';
+import { useNormalizeData } from './utils';
 
 export function CyberConnectProvider({ children }: PropsWithChildren<unknown>) {
-  const {
-    data: { address },
-  } = useAccount();
+  const { me } = useAuth();
+
+  const { wallet } = me ?? {};
 
   const cyberConnect =
     typeof window !== 'undefined' ? createCyberConnectClient() : null;
 
-  const { isLoading, isRefetching, data, refetch } = useQuery(
-    ['cyberconnect-profile', address],
-    () => gqlCyberConnectMethods.user_notifications({ address }),
-    { enabled: !!address }
+  const { isLoading, data, refetch, remove } = useQuery(
+    ['cyberconnect-profile', wallet],
+    () => gqlCyberConnectMethods.user_notifications({ address: wallet }),
+    { enabled: !!wallet }
   );
 
-  /* Normalize data */
-  const friendsRequestsInbox =
-    data?.identity?.friendRequestsInbox?.list
-      /* .filter(
-        ({ bidirectionalConnection }) =>
-          bidirectionalConnection.namespace === 'GatewayDAO'
-      ) */
-      .map(({ bidirectionalConnection }) =>
-        normalizeRequestConnection(bidirectionalConnection)
-      ) ?? [];
-  const friendRequestsSent =
-    data?.identity?.friendRequestsSent?.list
-      /* .filter(
-        ({ bidirectionalConnection }) =>
-          bidirectionalConnection.namespace === 'GatewayDAO'
-      ) */
-      .map(({ bidirectionalConnection }) =>
-        normalizeRequestConnection(bidirectionalConnection)
-      ) ?? [];
+  useEffect(() => {
+    if (!wallet) remove();
+  }, [remove, wallet]);
 
-  const notifications =
-    data?.identity?.notifications?.list
-      .filter(({ namespace }) => namespace === 'GatewayDAO')
-      .map((n) => normalizeNotification(n)) ?? [];
-
-  const friends =
-    data?.identity?.bidirectionalFriends?.list
-      /* .filter(
-        ({ bidirectionalConnection }) =>
-          bidirectionalConnection.namespace === 'GatewayDAO'
-      ) */
-      .map(({ bidirectionalConnection }) =>
-        normalizeFriend(bidirectionalConnection, address)
-      ) ?? [];
+  const { friendsRequestsInbox, friendRequestsSent, notifications, friends } =
+    useNormalizeData(data, wallet);
 
   return (
     <CyberConnectContext.Provider
       value={{
         cyberConnect,
-        isLoading: isLoading || isRefetching,
         notifications,
+        unreadNotifications: data?.identity.unreadNotificationCount ?? 0,
         friends,
         friendsRequestsInbox,
         friendRequestsSent,
-        onResetCyberConnectProfile: refetch,
+        isLoading,
+        onRefetch: refetch,
       }}
     >
       {children}

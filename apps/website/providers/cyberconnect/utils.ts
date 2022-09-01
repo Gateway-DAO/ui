@@ -3,13 +3,19 @@ import { utils } from 'ethers';
 import {
   BiConnectReceivedNotification,
   Notification as ResponseNotification,
+  NotificationType,
+  User_NotificationsQuery,
 } from '../../services-cyberconnect/types.generated';
-import { Notification, BiconnectionRequest, CyberConnectFriend } from './types';
+import {
+  Notification,
+  BiconnectionRequest,
+  CyberConnectFriend,
+} from '../../types/cyberconnect';
 
 /** user addressess comes as lowercased from api
  * we need to use ethers' getAddress to get the checksummed address
  **/
-export const normalizeRequestConnection = ({
+const normalizeRequestConnection = ({
   to,
   from,
   state,
@@ -22,7 +28,7 @@ export const normalizeRequestConnection = ({
 /** user addressess comes as lowercased from api
  * we need to use ethers' getAddress to get the checksummed address
  **/
-export const normalizeNotification = (
+const normalizeNotification = (
   notification: ResponseNotification | BiConnectReceivedNotification
 ): Notification => ({
   ...notification,
@@ -39,10 +45,52 @@ export const normalizeNotification = (
 /**
  * parses friend connection
  */
-export const normalizeFriend = (
+const normalizeFriend = (
   request: BiconnectionRequest,
   myWallet: string
 ): CyberConnectFriend => ({
-  address: request.from === myWallet ? request.to : request.from,
+  address: utils.getAddress(
+    request.from === myWallet.toLowerCase() ? request.to : request.from
+  ),
   state: request.state,
 });
+
+export const useNormalizeData = (
+  data: User_NotificationsQuery | undefined,
+  wallet: string
+) => {
+  /* Normalize data */
+  const friendsRequestsInbox =
+    data?.identity?.friendRequestsInbox?.list.map(
+      ({ bidirectionalConnection }) =>
+        normalizeRequestConnection(bidirectionalConnection)
+    ) ?? [];
+  const friendRequestsSent =
+    data?.identity?.friendRequestsSent?.list.map(
+      ({ bidirectionalConnection }) =>
+        normalizeRequestConnection(bidirectionalConnection)
+    ) ?? [];
+
+  const notifications =
+    data?.identity?.notifications?.list
+      .filter(
+        (n) =>
+          // TODO: Commented for now because no design for now
+          // n.type === NotificationType.BiconnectAccepted ||
+          n.type === NotificationType.BiconnectReceived
+      )
+      .map((n) => normalizeNotification(n)) ?? [];
+
+  const friends =
+    data?.identity?.bidirectionalFriends?.list.map(
+      ({ bidirectionalConnection }) =>
+        normalizeFriend(bidirectionalConnection, wallet)
+    ) ?? [];
+
+  return {
+    friendsRequestsInbox,
+    friendRequestsSent,
+    notifications,
+    friends,
+  };
+};

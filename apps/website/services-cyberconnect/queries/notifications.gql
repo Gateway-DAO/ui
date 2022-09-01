@@ -1,6 +1,7 @@
 query user_notifications($address: String!) {
   identity(address: $address, network: ETH) {
-    notifications {
+    unreadNotificationCount(namespaces: ["GatewayDAO"])
+    notifications(namespaces: ["GatewayDAO"]) {
       list {
         network
         namespace
@@ -17,7 +18,7 @@ query user_notifications($address: String!) {
         }
       }
     }
-    bidirectionalFriends {
+    bidirectionalFriends{
       list {
         bidirectionalConnection {
           namespace

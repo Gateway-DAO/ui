@@ -2,25 +2,31 @@ import { createContext, useContext } from 'react';
 
 import type CyberConnect from '@cyberlab/cyberconnect';
 
-import { Notification, BiconnectionRequest, CyberConnectFriend } from './types';
+import {
+  Notification,
+  BiconnectionRequest,
+  CyberConnectFriend,
+} from '../../types/cyberconnect';
 
 type Context = {
-  cyberConnect?: CyberConnect;
   isLoading: boolean;
+  cyberConnect?: CyberConnect;
   notifications: Notification[];
+  unreadNotifications: number;
   friends: CyberConnectFriend[];
   friendsRequestsInbox: BiconnectionRequest[];
   friendRequestsSent: BiconnectionRequest[];
-  onResetCyberConnectProfile: () => Promise<any>;
+  onRefetch: () => Promise<any>;
 };
 
 export const CyberConnectContext = createContext<Context>({
   isLoading: false,
   notifications: [],
+  unreadNotifications: 0,
   friends: [],
   friendRequestsSent: [],
   friendsRequestsInbox: [],
-  onResetCyberConnectProfile: async () => {},
+  onRefetch: async () => {},
 });
 
 export const useCyberConnect = () => useContext(CyberConnectContext);
