@@ -26,7 +26,6 @@ type Props = {
 export function CredentialTemplate({ credential }: Props) {
   return (
     <>
-      <Navbar sx={{ zIndex: 1 }} />
       <Grid container height="100%">
         <Grid
           item

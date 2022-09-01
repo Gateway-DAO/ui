@@ -1,4 +1,11 @@
-import { Avatar, Button, IconButton, Stack, SxProps } from '@mui/material';
+import {
+  Avatar,
+  Button,
+  Dialog,
+  IconButton,
+  Stack,
+  SxProps,
+} from '@mui/material';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Typography from '@mui/material/Typography';
@@ -16,9 +23,9 @@ import { useEffect, useState } from 'react';
 const style: SxProps = {
   bgcolor: 'background.paper',
   px: { xs: 2, md: 6, lg: 12 },
-  py: 5,
-  height: '100%',
-  width: { md: '100%' },
+  py: { xs: 1, md: 5 },
+  height: '100vh',
+  width: { md: '100vw' },
   display: 'flex',
   flexDirection: 'column',
 };
@@ -31,8 +38,9 @@ export default function GateCompletedModal({ gate, open, handleClose }) {
   });
 
   return (
-    <Modal
+    <Dialog
       open={true}
+      fullScreen
       onClose={handleClose}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
@@ -62,8 +70,8 @@ export default function GateCompletedModal({ gate, open, handleClose }) {
             flexDirection: 'column',
             alignItems: 'center',
             marginTop: 2,
-            height: { md: theme.spacing(103.5) },
-            width: { md: theme.spacing(103.5) },
+            height: { xs: '100%', md: theme.spacing(103.5) },
+            width: { xs: '100%', md: theme.spacing(103.5) },
             alignSelf: 'center',
             background:
               'radial-gradient(50% 50% at 50% 50%, rgba(154, 83, 255, 0.3) 0%, rgba(154, 83, 255, 0) 100%)',
@@ -74,19 +82,24 @@ export default function GateCompletedModal({ gate, open, handleClose }) {
               id="modal-modal-title"
               variant="h3"
               component="h3"
-              fontSize={48}
               textAlign="center"
               sx={{
                 mb: 3,
+                fontSize: { xs: 24, md: 48 },
+                fontWeight: 700,
               }}
             >
               Congratulations!
             </Typography>
             <Typography
               id="modal-modal-description"
-              sx={{ textAlign: 'center' }}
               fontSize={16}
               color={'#FFFFFFB2'}
+              sx={{
+                mx: { xs: 4 },
+                textAlign: 'center',
+                alignSelf: 'center',
+              }}
             >
               You have completed the{' '}
               <span style={{ color: '#D083FF' }}>{gate.title}</span> Gate from{' '}
@@ -95,8 +108,8 @@ export default function GateCompletedModal({ gate, open, handleClose }) {
           </Box>
           <Box
             sx={(theme) => ({
-              height: theme.spacing(59.78),
-              width: theme.spacing(37.75),
+              height: { xs: theme.spacing(45.49), md: theme.spacing(59.78) },
+              width: { xs: theme.spacing(28.75), md: theme.spacing(37.75) },
               marginTop: 6,
             })}
           >
@@ -106,8 +119,8 @@ export default function GateCompletedModal({ gate, open, handleClose }) {
             sx={(theme) => ({
               display: 'flex',
               justifyContent: 'space-between',
-              width: '50%',
-              mt: theme.spacing(2.27),
+              width: { xs: '70%', md: '50%' },
+              mt: { xs: theme.spacing(10), md: theme.spacing(2.27) },
             })}
           >
             <Box>
@@ -149,6 +162,6 @@ export default function GateCompletedModal({ gate, open, handleClose }) {
           </Box>
         </Box>
       </Box>
-    </Modal>
+    </Dialog>
   );
 }
