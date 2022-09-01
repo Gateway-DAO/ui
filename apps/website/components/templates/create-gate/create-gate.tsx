@@ -73,19 +73,27 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
 
   const closePublishedModal = () => setIsPublished(false);
 
-  const handleMutation = async (data: CreateGateTypes, isDraft: boolean) => {
-    isDraft ? setDraftIsLoading(true) : setCreateIsLoading(true);
+  const checkFormErrors = async (isDraft) => {
     const dataIsValid = await methods.trigger();
+
     if (!dataIsValid) {
       const errors = methods.formState.errors;
 
       snackbar.onOpen({
-        message: Object.values(errors)[0].data.message || 'Invalid data',
+        message: Object.values(errors)[0].data?.message || 'Invalid data',
       });
-
       isDraft ? setDraftIsLoading(false) : setCreateIsLoading(false);
-      return;
     }
+
+    return dataIsValid;
+  };
+
+  const handleMutation = async (data: CreateGateTypes, isDraft: boolean) => {
+    isDraft ? setDraftIsLoading(true) : setCreateIsLoading(true);
+
+    const dataIsValid = await checkFormErrors(isDraft);
+    if (!dataIsValid) return;
+
     let permissionsData = null;
     let image_url = oldData.image || null;
     if (data.created_by.length > 0) {
@@ -165,6 +173,7 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
               snackbar.onOpen({
                 message: 'Draft saved',
               });
+              isDraft ? setDraftIsLoading(false) : setCreateIsLoading(false);
               router.push(
                 ROUTES.GATE_PROFILE.replace('[id]', result.insert_gates_one.id)
               );
@@ -202,9 +211,14 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
       <Stack
         component="form"
         id="gate-details-form"
-        onSubmit={(e) => {
+        onSubmit={async (e) => {
           e.preventDefault();
-          setConfirmPublish(true);
+
+          const dataIsValid = await checkFormErrors(false);
+
+          if (dataIsValid) {
+            setConfirmPublish(true);
+          }
         }}
         padding={'0 90px'}
         sx={(theme) => ({
@@ -327,7 +341,7 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
           setOpen={setConfirmPublish}
           onConfirm={methods.handleSubmit(createGate, (errors) => {
             snackbar.onOpen({
-              message: Object.values(errors)[0].data.message || 'Invalid data',
+              message: Object.values(errors)[0].data?.message || 'Invalid data',
             });
             setCreateIsLoading(false);
             return;
