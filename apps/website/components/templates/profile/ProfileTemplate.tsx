@@ -6,17 +6,12 @@ import { PartialDeep } from 'type-fest';
 
 import { TOKENS } from '@gateway/theme';
 
-import ShareIcon from '@mui/icons-material/IosShare';
 import {
-  Avatar,
-  Chip,
   Box,
   Stack,
   Typography,
   Tabs,
   Tab,
-  IconButton,
-  Button,
 } from '@mui/material';
 
 import { a11yTabProps, TabPanel, useTab } from '../../../components/atoms/tabs';
@@ -26,11 +21,18 @@ import { useAuth } from '../../../providers/auth';
 import { Users } from '../../../services/graphql/types.generated';
 import { SessionUser } from '../../../types/user';
 import { AvatarFile } from '../../atoms/avatar-file';
-import { FollowButtonUser } from '../../atoms/follow-button-user';
 import { useFollowStatus } from '../../atoms/follow-button-user/utils';
 import { SocialButtons } from '../../organisms/social-buttons';
-import { PendingReceivedSection } from './pending-received-section';
 import { ActivityTab, OverviewTab } from './tabs';
+import dynamic from 'next/dynamic';
+
+const PendingReceivedSection = dynamic<any>(() => import('./pending-received-section').then((mod) => mod.PendingReceivedSection), {
+  ssr: false,
+});
+
+const FollowButtonUser = dynamic<any>(() => import('../../atoms/follow-button-user').then((mod) => mod.FollowButtonUser), {
+  ssr: false,
+});
 
 type Props = {
   user: SessionUser | PartialDeep<Users>;
@@ -86,6 +88,7 @@ export default function ProfileTemplate({ user }: Props) {
           marginTop: -13,
         }}
         marginLeft={{ xs: '20px', md: '50px' }}
+        mr={{ xs: '20px', md: '0' }}
       >
         <AvatarFile
           sx={{
