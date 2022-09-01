@@ -47,6 +47,8 @@
     "see-more": "View more people"
   },
   "actions": {
+    "accept": "Accept",
+    "decline": "Decline",
     "connect": "connect",
     "disconnect": "disconnect",
     "cancel": "cancel",
