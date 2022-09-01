@@ -4,20 +4,23 @@
  * https://docs.cyberconnect.me/
  */
 
-import type { Blockchain } from '@cyberlab/cyberconnect';
+import {
+  BiConnectReceivedNotification,
+  BidirectionalConnection,
+} from '../services-cyberconnect/types.generated';
 
-export enum NotificationType {
-  NEW_CONNECTION = 'NEW_CONNECTION',
-  BICONNECT_RECEIVED = 'BICONNECT_RECEIVED',
-  BICONNECT_ACCEPTED = 'BICONNECT_ACCEPTED',
-}
+export type Notification = Pick<
+  BiConnectReceivedNotification,
+  'toAddress' | 'timestamp' | 'hasRead' | 'id'
+> &
+  Partial<Pick<BiConnectReceivedNotification, 'fromAddress'>>;
 
-export interface Notification {
-  id: string;
-  toAddress: string;
-  network: Blockchain;
-  namespace: string;
-  hasRead: boolean;
-  type: NotificationType;
-  timestamp: string;
-}
+export type BiconnectionRequest = Pick<
+  BidirectionalConnection,
+  'to' | 'from' | 'state'
+>;
+
+export type CyberConnectFriend = {
+  address: string;
+  state: BidirectionalConnection['state'];
+};
