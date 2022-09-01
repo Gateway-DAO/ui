@@ -67,8 +67,8 @@ export default function GateCompletedModal({ gate, open, handleClose }) {
                 fontSize={16}
               >
                 You have completed the{' '}
-                <span style={{ color: '#D083FF' }}>{gate.title}</span> Gate from{' '}
-                <span style={{ color: '#D083FF' }}>{gate.dao.name}</span>.
+                <span style={{ color: '#D083FF' }}>{gate?.title}</span> Gate
+                from <span style={{ color: '#D083FF' }}>{gate?.dao.name}</span>.
               </Typography>
             </Box>
             <GatesCard {...gate} />

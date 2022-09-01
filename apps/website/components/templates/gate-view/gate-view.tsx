@@ -45,26 +45,33 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [confirmToggleState, setConfirmToggleState] = useState(false);
   const [completedTasksCount, setCompletedTasksCount] = useState(0);
-  const [published, setPublished] = useState(gateProps.published);
+  const [published, setPublished] = useState('');
 
   const { me, gqlAuthMethods } = useAuth();
   const router = useRouter();
   const snackbar = useSnackbar();
 
   const taskIds = gateProps?.tasks.map((task) => task.id);
-  const tasksCount = gateProps.tasks.length;
+  const tasksCount = gateProps?.tasks.length;
 
   useEffect(() => {
+    setPublished(gateProps?.published);
     const completedTaskIds =
       me?.task_progresses.map((task) => task.task_id) || [];
 
     setCompletedTasksCount(countSimiliarIds(completedTaskIds, taskIds));
-  }, [taskIds, me?.task_progresses, completedTasksCount, tasksCount]);
+  }, [
+    taskIds,
+    me?.task_progresses,
+    completedTasksCount,
+    tasksCount,
+    gateProps?.published,
+  ]);
 
   const isAdmin =
     me?.permissions?.filter(
       (permission) =>
-        permission.dao_id === gateProps.dao?.id && permission.dao?.is_admin
+        permission.dao_id === gateProps?.dao?.id && permission.dao?.is_admin
     ).length > 0;
 
   const handleClose = () => setOpen(false);
@@ -81,7 +88,7 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
   const toggleGateState = () =>
     toggleGateStateMutation(
       {
-        gate_id: gateProps.id,
+        gate_id: gateProps?.id,
         state: published === 'published' ? 'paused' : 'published',
       },
       {
@@ -111,13 +118,13 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
 
   const deleteGate = () =>
     deleteGateMutation(
-      { gate_id: gateProps.id },
+      { gate_id: gateProps?.id },
       {
         onSuccess() {
           snackbar.onOpen({
             message: 'Gate deleted!',
           });
-          router.push(ROUTES.DAO_PROFILE.replace('[id]', gateProps.dao.id));
+          router.push(ROUTES.DAO_PROFILE.replace('[id]', gateProps?.dao.id));
         },
         onError(error) {
           console.log(error);
@@ -138,7 +145,7 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
       text: 'Edit',
       action: () =>
         router.push(
-          `${ROUTES.GATE_NEW}?dao=${gateProps.dao.id}&gate=${gateProps.id}`
+          `${ROUTES.GATE_NEW}?dao=${gateProps?.dao.id}&gate=${gateProps?.id}`
         ),
       hidden: published === 'published' || published === 'paused',
     },
@@ -158,7 +165,7 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
       />
       <Grid item xs={12} md={5} p={(theme) => theme.spacing(7)}>
         {/* DAO info */}
-        <Link passHref href={`/dao/${gateProps.dao.id}`}>
+        <Link passHref href={`/dao/${gateProps?.dao.id}`}>
           <Stack
             direction="row"
             alignItems="center"
@@ -172,9 +179,9 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
             })}
           >
             <AvatarFile
-              alt={gateProps.dao.name}
-              file={gateProps.dao.logo}
-              fallback={gateProps.dao.logo_url}
+              alt={gateProps?.dao.name}
+              file={gateProps?.dao.logo}
+              fallback={gateProps?.dao.logo_url}
               sx={{
                 height: (theme) => theme.spacing(3),
                 width: (theme) => theme.spacing(3),
@@ -185,13 +192,13 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
               variant="body2"
               color={(theme) => theme.palette.text.secondary}
             >
-              {gateProps.dao.name}
+              {gateProps?.dao.name}
             </Typography>
           </Stack>
         </Link>
 
         <Typography variant="h4" marginBottom={(theme) => theme.spacing(2)}>
-          {gateProps.title}
+          {gateProps?.title}
         </Typography>
 
         <Box marginBottom={(theme) => theme.spacing(4)}>
@@ -201,7 +208,7 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
           >
             <Box>
               {isAdmin && <GateStateChip published={published} />}
-              {gateProps.categories.map((category, idx) => (
+              {gateProps?.categories.map((category, idx) => (
                 <Chip
                   key={'category-' + (idx + 1)}
                   label={category}
@@ -213,13 +220,13 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
               ))}
             </Box>
             <Stack flexDirection="row" gap={1}>
-              <ShareButton title={`${gateProps.title} @ Gateway`} />
+              <ShareButton title={`${gateProps?.title} @ Gateway`} />
               {isAdmin && <MorePopover options={gateOptions} key={uuidv4()} />}
             </Stack>
           </Stack>
         </Box>
-        {gateProps.description?.length > 250 ? (
-          <ReadMore>{gateProps.description}</ReadMore>
+        {gateProps?.description?.length > 250 ? (
+          <ReadMore>{gateProps?.description}</ReadMore>
         ) : (
           <Typography
             variant="body1"
@@ -227,13 +234,13 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
             sx={{ wordBreak: 'break-word' }}
             paragraph={true}
           >
-            {gateProps.description}
+            {gateProps?.description}
           </Typography>
         )}
         <Box
           component="img"
-          src={gateProps.image}
-          alt={gateProps.title + ' image'}
+          src={gateProps?.image}
+          alt={gateProps?.title + ' image'}
           marginBottom={(theme) => theme.spacing(4)}
           sx={{
             width: '100%',
@@ -242,7 +249,7 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
         />
 
         <Grid container rowGap={(theme) => theme.spacing(3)}>
-          {gateProps.holders.length > 0 && (
+          {gateProps?.holders.length > 0 && (
             <>
               <Grid item xs={4}>
                 <Typography
@@ -255,13 +262,15 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
               <Grid item xs={8}>
                 <AvatarGroup
                   total={
-                    gateProps.holders.length >= 5 ? 5 : gateProps.holders.length
+                    gateProps?.holders.length >= 5
+                      ? 5
+                      : gateProps?.holders.length
                   }
                   sx={{
                     justifyContent: 'flex-end',
                   }}
                 >
-                  {gateProps.holders.map((holder) => {
+                  {gateProps?.holders.map((holder) => {
                     return (
                       <Link
                         key={holder.id}
@@ -293,7 +302,7 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
             </Typography>
           </Grid>
           <Grid item xs={8}>
-            {gateProps.skills.map((skill, idx) => (
+            {gateProps?.skills.map((skill, idx) => (
               <Chip
                 key={'skill-' + (idx + 1)}
                 label={skill}
@@ -304,7 +313,7 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
               />
             ))}
           </Grid>
-          {gateProps.creator && (
+          {gateProps?.creator && (
             <>
               <Grid item xs={4}>
                 <Typography
@@ -315,13 +324,13 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
                 </Typography>
               </Grid>
               <Grid item xs={8}>
-                <Link passHref href={`/profile/${gateProps.creator.username}`}>
-                  <Tooltip title={gateProps.creator.name}>
+                <Link passHref href={`/profile/${gateProps?.creator.username}`}>
+                  <Tooltip title={gateProps?.creator.name}>
                     <Box component="a" sx={{ display: 'inline-block' }}>
                       <AvatarFile
-                        alt={gateProps.creator.username}
-                        file={gateProps.creator.picture}
-                        fallback={gateProps.creator.pfp || '/logo.png'}
+                        alt={gateProps?.creator.username}
+                        file={gateProps?.creator.picture}
+                        fallback={gateProps?.creator.pfp || '/logo.png'}
                       />
                     </Box>
                   </Tooltip>
@@ -342,8 +351,8 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
         >
           <CircularProgressWithLabel
             variant="determinate"
-            value={(completedTasksCount / gateProps.tasks.length) * 100}
-            label={`${completedTasksCount}/${gateProps.tasks.length}`}
+            value={(completedTasksCount / gateProps?.tasks.length) * 100}
+            label={`${completedTasksCount}/${gateProps?.tasks.length}`}
             sx={{
               color: '#6DFFB9',
             }}
@@ -361,7 +370,7 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
         </Stack>
 
         <TaskGroup>
-          {gateProps.tasks.map((task, idx) => (
+          {gateProps?.tasks.map((task, idx) => (
             <Task
               key={'task-' + (idx + 1)}
               task={task}

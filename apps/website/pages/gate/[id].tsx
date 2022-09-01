@@ -41,6 +41,8 @@ export const getStaticProps = async ({ params }) => {
     id,
   });
 
+  if (!gateProps.gates_by_pk) return { notFound: true };
+
   return {
     props: {
       gateProps,
