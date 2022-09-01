@@ -22,11 +22,16 @@ export function PendingReceivedSection({ wallet, username }: Props) {
   return (
     <Stack
       alignSelf="flex-start"
-      direction="row"
       gap={3}
-      sx={{ background: '#E5E5E514', px: 3, py: 2 }}
+      sx={{ alignItems: {
+        xs: 'flex-start',
+        md: 'center',
+      }, flexDirection: {
+        xs: 'column',
+        md: 'row'
+      }, background: '#E5E5E514', px: 3, py: 2 }}
     >
-      <Typography>
+      <Typography sx={{opacity: 0.8}}>
         @{username} {t('user-requested')}
       </Typography>
       <Stack direction="row" gap={1}>

@@ -21,7 +21,7 @@ export function FriendReceivedPendingButton({
   return (
     <>
       <LoadingButton
-        variant="contained"
+        variant="outlined"
         color="primary"
         onClick={menu.onOpen}
         isLoading={unfollowMutation.isLoading}
