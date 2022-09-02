@@ -1,0 +1,13 @@
+{
+  "loading": {
+    "connections": "Loading connections"
+  },
+  "connections-count": {
+    "0": "No connections",
+    "one": "{{count}} connection",
+    "other": "{{count}} connections"
+  },
+  "connections-modal": {
+    "title": "Connections"
+  }
+}
