@@ -50,6 +50,7 @@
     "accept": "Accept",
     "decline": "Decline",
     "connect": "connect",
+    "connected": "connected",
     "close": "close",
     "disconnect": "disconnect",
     "cancel": "cancel",
