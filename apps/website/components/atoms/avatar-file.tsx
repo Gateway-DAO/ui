@@ -17,7 +17,7 @@ type AvatarFileProps<
 /* Avatar with File image */
 export function AvatarFile<Component extends React.ElementType>({
   file,
-  fallback,
+  fallback = '/logo.png',
   ...props
 }: AvatarFileProps<Component, { component?: Component }>) {
   const image = useFile(file);
