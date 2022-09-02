@@ -20,7 +20,7 @@ export function FollowButtonUser(props: FollowButtonProps) {
   if (!me)
     return (
       <Button variant="contained" onClick={onOpenLogin} {...props}>
-        {t('actions.follow')}
+        {t('actions.connect')}
       </Button>
     );
 

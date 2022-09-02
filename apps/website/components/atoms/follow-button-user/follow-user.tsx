@@ -23,7 +23,7 @@ export function FollowUserButton({
       onClick={() => followMutation.mutate()}
       {...props}
     >
-      {t('actions.follow')}
+      {t('actions.connect')}
     </LoadingButton>
   );
 }
