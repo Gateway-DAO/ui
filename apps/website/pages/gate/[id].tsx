@@ -1,4 +1,4 @@
-import { GetStaticPaths, InferGetStaticPropsType } from 'next';
+import { InferGetStaticPropsType } from 'next';
 
 import { Navbar } from '../../components/organisms/navbar';
 import { DashboardTemplate } from '../../components/templates/dashboard';
@@ -7,7 +7,7 @@ import { gqlAnonMethods } from '../../services/api';
 
 export default function GateProfilePage({
   gateProps,
-}: InferGetStaticPropsType<typeof getStaticProps>) {
+}: InferGetStaticPropsType<typeof getServerSideProps>) {
   if (!gateProps) return null;
   const { gates_by_pk: gate } = gateProps;
   return (
@@ -25,17 +25,16 @@ export default function GateProfilePage({
   );
 }
 
-export const getStaticPaths: GetStaticPaths = async ({ locales }) => {
-  const { gates } = await gqlAnonMethods.all_gates();
-
-  return {
-    paths: gates.map((gate) => ({ params: { id: gate.id } })),
-    fallback: 'blocking', //TODO: add loading state and change to fallback: true
-  };
-};
-
-export const getStaticProps = async ({ params }) => {
+export const getServerSideProps = async ({ params }) => {
   const { id } = params;
+
+  if (!id) {
+    return {
+      redirect: {
+        destination: '/',
+      },
+    };
+  }
 
   const gateProps = await gqlAnonMethods.gate({
     id,
@@ -47,6 +46,5 @@ export const getStaticProps = async ({ params }) => {
     props: {
       gateProps,
     },
-    revalidate: 60,
   };
 };
