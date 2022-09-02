@@ -14,7 +14,7 @@ import {
 import { LoadingButton } from '../../../../../../components/atoms/loading-button';
 import { useState } from 'react';
 
-const ViewButton = ({ incrementView, link }) => {
+const ViewButton = ({ incrementView, link, completed }) => {
   const [border, setBorder] = useState(false);
   function buttonLogic() {
     !border && incrementView();
@@ -27,8 +27,11 @@ const ViewButton = ({ incrementView, link }) => {
     );
   }
   return (
-    <Button variant={border ? 'outlined' : 'contained'} onClick={buttonLogic}>
-      {border ? 'viewed' : 'view'}
+    <Button
+      variant={completed ? 'outlined' : border ? 'outlined' : 'contained'}
+      onClick={buttonLogic}
+    >
+      {completed ? 'viewed' : border ? 'viewed' : 'view'}
     </Button>
   );
 };
@@ -54,7 +57,7 @@ const SelfVerifyContent = ({
         <ListItem
           key={index}
           secondaryAction={
-            <ViewButton {...{ incrementView, link: file.link }} />
+            <ViewButton {...{ incrementView, link: file.link, completed }} />
           }
         >
           <ListItemIcon>
