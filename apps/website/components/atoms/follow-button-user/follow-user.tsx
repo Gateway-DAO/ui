@@ -6,10 +6,14 @@ import { useBidirectionFollow } from '../../../hooks/use-bidirectional-follow';
 import { LoadingButton } from '../loading-button';
 import { FollowButtonProps } from './type';
 
-export function FollowUserButton({ wallet, ...props }: FollowButtonProps) {
+export function FollowUserButton({
+  wallet,
+  onSuccess,
+  ...props
+}: FollowButtonProps) {
   const { t } = useTranslation('common');
   const { onFollow } = useBidirectionFollow();
-  const followMutation = useMutation(() => onFollow(wallet));
+  const followMutation = useMutation(() => onFollow(wallet), { onSuccess });
 
   return (
     <LoadingButton
