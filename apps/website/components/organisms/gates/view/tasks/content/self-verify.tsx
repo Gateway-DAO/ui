@@ -13,26 +13,24 @@ import {
 
 import { LoadingButton } from '../../../../../../components/atoms/loading-button';
 import { useState } from 'react';
+import Link from 'next/link';
 
 const ViewButton = ({ incrementView, link, completed }) => {
   const [border, setBorder] = useState(false);
-  function buttonLogic() {
-    !border && incrementView();
-    setBorder(true);
-    window.open(
-      normalizeUrl(`${link}`, {
-        defaultProtocol: 'https:',
-      }),
-      '_blank'
-    );
-  }
   return (
-    <Button
-      variant={completed ? 'outlined' : border ? 'outlined' : 'contained'}
-      onClick={buttonLogic}
-    >
-      {completed ? 'viewed' : border ? 'viewed' : 'view'}
-    </Button>
+    <Link passHref href={link}>
+      <Button
+        component="a"
+        variant={completed ? 'outlined' : border ? 'outlined' : 'contained'}
+        onClick={() => {
+          !border && incrementView();
+          setBorder(true);
+        }}
+        target="_blank"
+      >
+        {completed ? 'viewed' : border ? 'viewed' : 'view'}
+      </Button>
+    </Link>
   );
 };
 
