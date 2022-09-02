@@ -45,28 +45,20 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [confirmToggleState, setConfirmToggleState] = useState(false);
   const [completedTasksCount, setCompletedTasksCount] = useState(0);
-  const [published, setPublished] = useState('');
+  const [published, setPublished] = useState(gateProps?.published);
 
   const { me, gqlAuthMethods } = useAuth();
   const router = useRouter();
   const snackbar = useSnackbar();
 
   const taskIds = gateProps?.tasks.map((task) => task.id);
-  const tasksCount = gateProps?.tasks.length;
 
   useEffect(() => {
-    setPublished(gateProps?.published);
     const completedTaskIds =
       me?.task_progresses.map((task) => task.task_id) || [];
 
     setCompletedTasksCount(countSimiliarIds(completedTaskIds, taskIds));
-  }, [
-    taskIds,
-    me?.task_progresses,
-    completedTasksCount,
-    tasksCount,
-    gateProps?.published,
-  ]);
+  }, [taskIds, me?.task_progresses]);
 
   const isAdmin =
     me?.permissions?.filter(
