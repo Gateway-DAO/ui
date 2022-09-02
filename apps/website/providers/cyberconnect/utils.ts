@@ -74,10 +74,14 @@ export const useNormalizeData = (
   const notifications =
     data?.identity?.notifications?.list
       .filter(
-        (n) =>
+        (n: BiConnectReceivedNotification) =>
           // TODO: Commented for now because no design for now
           // n.type === NotificationType.BiconnectAccepted ||
-          n.type === NotificationType.BiconnectReceived
+          n.type === NotificationType.BiconnectReceived &&
+          data?.identity?.friendRequestsInbox?.list.some(
+            ({ bidirectionalConnection }) =>
+              bidirectionalConnection.from === n.fromAddress
+          )
       )
       .map((n) => normalizeNotification(n)) ?? [];
 

@@ -13,6 +13,18 @@ query get_user_by_username($username: String!) {
   }
 }
 
+query users_by_wallets($wallets: [String!]!) {
+  users(where: { wallet: { _in: $wallets } }) {
+    id
+    name
+    username
+    wallet
+    picture {
+      ...file
+    }
+  }
+}
+
 mutation edit_user($id: uuid!, $bio: String, $name: String, $pic_id: uuid, $skills: jsonb, $username: String, $timezone: String, $cover_id: uuid, $languages: jsonb, $socials: [user_socials_insert_input!]!) {
   update_users_by_pk(pk_columns: {id: $id}, _set: {bio: $bio, cover_id: $cover_id, languages: $languages, name: $name, pic_id: $pic_id, skills: $skills, timezone: $timezone, username: $username}) {
     ...current_user

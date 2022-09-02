@@ -2,7 +2,7 @@ import { PropsWithChildren, useEffect } from 'react';
 
 import { useQuery } from 'react-query';
 
-import { gqlCyberConnectMethods } from '../../services-cyberconnect/api';
+import { cyberConnectSDK } from '../../services-cyberconnect/api';
 import { useAuth } from '../auth';
 import { createCyberConnectClient } from './client';
 import { CyberConnectContext } from './context';
@@ -18,7 +18,7 @@ export function CyberConnectProvider({ children }: PropsWithChildren<unknown>) {
 
   const { isLoading, data, refetch, remove } = useQuery(
     ['cyberconnect-profile', wallet],
-    () => gqlCyberConnectMethods.user_notifications({ address: wallet }),
+    () => cyberConnectSDK.user_notifications({ address: wallet }),
     { enabled: !!wallet, refetchOnWindowFocus: true, refetchInterval: 10000 }
   );
 
@@ -34,7 +34,8 @@ export function CyberConnectProvider({ children }: PropsWithChildren<unknown>) {
       value={{
         cyberConnect,
         notifications,
-        unreadNotifications: data?.identity.unreadNotificationCount ?? 0,
+        unreadNotifications:
+          notifications.filter((n) => !n.hasRead).length ?? 0,
         friends,
         friendsRequestsInbox,
         friendRequestsSent,
