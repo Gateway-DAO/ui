@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { utils } from 'ethers';
 import { useQuery } from 'react-query';
 
-import { Button, Dialog, Typography } from '@mui/material';
+import { Dialog, Link, Typography } from '@mui/material';
 
 import { cyberConnectSDK } from '../../../../services-cyberconnect/api';
 import { ConnectionsModal } from './modal';
@@ -46,9 +46,16 @@ export function ConnectionsButton({ wallet }: Props) {
 
   return (
     <>
-      <Button variant="text" color="secondary" onClick={() => setIsOpen(true)}>
+      <Link
+        component="button"
+        type="button"
+        color="text.primary"
+        onClick={() => setIsOpen(true)}
+        underline="hover"
+        sx={(theme) => ({ cursor: 'pointer', ...theme.typography.body1 })}
+      >
         {t('connections-count', { count: data?.length })}
-      </Button>
+      </Link>
       <Dialog
         open={isOpen}
         onClose={() => setIsOpen(false)}
