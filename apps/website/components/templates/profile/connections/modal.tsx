@@ -34,20 +34,18 @@ export function ConnectionsModal({ wallet, connections, onClose }: Props) {
   return (
     <>
       <DialogTitle>{t('connections-modal.title')}</DialogTitle>
-      <List sx={{ overflowY: 'auto', maxHeight: '60vh' }}>
-        {isLoading && (
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            <CircularProgress />
-          </Box>
-        )}
-        {isSuccess && <UsersList users={users} />}
-      </List>
+      {isLoading && (
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <CircularProgress />
+        </Box>
+      )}
+      {isSuccess && <UsersList users={users} />}
       <DialogActions sx={{ pt: 2 }}>
         <Button onClick={onClose} variant="contained" fullWidth>
           {t('common:actions.close')}

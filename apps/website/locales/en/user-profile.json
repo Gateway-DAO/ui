@@ -8,6 +8,7 @@
     "other": "{{count}} connections"
   },
   "connections-modal": {
-    "title": "Connections"
+    "title": "Connections",
+    "no-result": "No users with \"{{filter}}\" were found found"
   }
 }
