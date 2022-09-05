@@ -11,7 +11,7 @@ import {
 
 export type Notification = Pick<
   BiConnectReceivedNotification,
-  'toAddress' | 'timestamp' | 'hasRead' | 'id'
+  'toAddress' | 'timestamp' | 'hasRead' | 'id' | 'type'
 > &
   Partial<Pick<BiConnectReceivedNotification, 'fromAddress'>>;
 
