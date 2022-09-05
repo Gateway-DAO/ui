@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
+import debounce from 'lodash/debounce';
 import { useFormContext } from 'react-hook-form';
 
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
@@ -21,11 +22,23 @@ import {
   TwitterFollowDataError,
 } from '../../../templates/create-gate/schema';
 
+interface TwitterData {
+  username?: string;
+  name?: string;
+  profile_image_url?: string;
+  description?: string;
+  followers?: number;
+  following?: number;
+  verified?: boolean;
+}
+
 export const FollowProfile = ({ taskId, deleteTask }) => {
   const [taskVisible, setTaskVisible] = useState(false);
+  const [twitterData, setTwitterData] = useState<TwitterData>({});
   const {
     register,
     setValue,
+    getValues,
     formState: { errors },
     control,
   } = useFormContext<CreateGateTypes>();
@@ -34,16 +47,29 @@ export const FollowProfile = ({ taskId, deleteTask }) => {
     setValue(`tasks.data.${taskId}.title`, 'Untitled Task');
   }, [setValue, taskId]);
 
-  const twitterData = {
-    username: 'web3blair',
-    name: 'Blair',
-    profile_image_url:
-      'https://pbs.twimg.com/profile_images/1519498884220862466/Rki_FTXo_400x400.jpg',
-    description:
-      'Product and community builder | Helping blockchain artists and builders to reach the next level | Crypto and NFT Investor I Cat Lover | #NFT #NFTart $ETH $SOL',
-    followers: 2471,
-    following: 927,
-    verified: true,
+  const getTwitterData = async () => {
+    const username = getValues(`tasks.data.${taskId}.task_data.username`);
+    return setTwitterData({
+      username: username,
+      name: 'Blair',
+      profile_image_url:
+        'https://pbs.twimg.com/profile_images/1519498884220862466/Rki_FTXo_400x400.jpg',
+      description:
+        'Product and community builder | Helping blockchain artists and builders to reach the next level | Crypto and NFT Investor I Cat Lover | #NFT #NFTart $ETH $SOL',
+      followers: 2471,
+      following: 927,
+      verified: true,
+    });
+  };
+
+  const delayedQuery = useCallback(
+    debounce(() => getTwitterData(), 500),
+    []
+  );
+
+  const onHandleChange = () => {
+    delayedQuery();
+    setTwitterData({});
   };
 
   const numberFormat = (value) => {
@@ -201,9 +227,14 @@ export const FollowProfile = ({ taskId, deleteTask }) => {
             required
             InputLabelProps={{ shrink: true }}
             label="username"
+            {...register(`tasks.data.${taskId}.task_data.username`, {
+              onChange: (event) =>
+                onHandleChange(
+                  (event.target as HTMLInputElement).value as string
+                ),
+            })}
             maxRows={60}
             id="follow-profile-username"
-            {...register(`tasks.data.${taskId}.task_data.username`)}
             error={
               !!(errors.tasks?.data?.[taskId]?.task_data as TwitterFollowData)
                 ?.username
@@ -224,100 +255,102 @@ export const FollowProfile = ({ taskId, deleteTask }) => {
               },
             }}
           />
-          <Stack
-            sx={{
-              background: 'white',
-              borderRadius: '8px',
-              position: 'relative',
-              overflow: 'hidden',
-              pb: 2,
-            }}
-          >
-            <Box
+
+          {Object.entries(twitterData).length > 0 && (
+            <Stack
               sx={{
-                background: '#CFD9DE',
-                position: 'absolute',
-                top: 0,
-                zIndex: 0,
-                height: 106,
-                width: '100%',
+                background: 'white',
+                borderRadius: '8px',
+                position: 'relative',
+                overflow: 'hidden',
               }}
-            />
-            <Avatar
-              src={twitterData.profile_image_url}
-              alt={twitterData.name}
-              sx={{
-                height: '96px',
-                width: '96px',
-                ml: 2,
-                mt: 7,
-                border: '4px solid white',
-              }}
-              variant="circular"
-            />
-            <Stack sx={{ ml: 2 }}>
-              <Typography
+            >
+              <Box
                 sx={{
-                  color: '#0F1419',
-                  fontWeight: 'bold',
-                  size: '1.3125rem',
-                  fontFamily: 'sans-serif',
+                  background: '#CFD9DE',
+                  position: 'absolute',
+                  top: 0,
+                  zIndex: 0,
+                  height: 106,
+                  width: '100%',
                 }}
-              >
-                {twitterData.name}
-              </Typography>
-              <Typography
+              />
+              <Avatar
+                src={twitterData?.profile_image_url}
+                alt={twitterData?.name}
                 sx={{
-                  color: '#5B7083',
-                  size: '1rem',
-                  fontFamily: 'sans-serif',
+                  height: '96px',
+                  width: '96px',
+                  ml: 2,
+                  mt: 7,
+                  border: '4px solid white',
                 }}
-              >
-                {`@${twitterData.username}`}
-              </Typography>
-              <Typography
-                sx={{
-                  color: '#0F1419',
-                  size: '1rem',
-                  mt: 1,
-                  mb: 1,
-                  fontWeight: '500',
-                  fontFamily: 'sans-serif',
-                }}
-              >
-                {twitterData.description}
-              </Typography>
-              <Stack direction={'row'}>
+                variant="circular"
+              />
+              <Stack sx={{ p: 2 }}>
                 <Typography
                   sx={{
                     color: '#0F1419',
-                    size: '1rem',
                     fontWeight: 'bold',
+                    size: '1.3125rem',
                     fontFamily: 'sans-serif',
                   }}
                 >
-                  {numberFormat(twitterData.following)}{' '}
-                  <Typography component="span" sx={{ color: '#5B7083' }}>
-                    Following
-                  </Typography>
+                  {twitterData?.name}
+                </Typography>
+                <Typography
+                  sx={{
+                    color: '#5B7083',
+                    size: '1rem',
+                    fontFamily: 'sans-serif',
+                  }}
+                >
+                  {`@${twitterData?.username}`}
                 </Typography>
                 <Typography
                   sx={{
                     color: '#0F1419',
                     size: '1rem',
+                    mt: 1,
+                    mb: 1,
+                    fontWeight: '500',
                     fontFamily: 'sans-serif',
-                    fontWeight: '700',
-                    ml: '19px',
                   }}
                 >
-                  {numberFormat(twitterData.followers)}{' '}
-                  <Typography component="span" sx={{ color: '#5B7083' }}>
-                    Followers
-                  </Typography>
+                  {twitterData?.description}
                 </Typography>
+                <Stack direction={'row'}>
+                  <Typography
+                    sx={{
+                      color: '#0F1419',
+                      size: '1rem',
+                      fontWeight: 'bold',
+                      fontFamily: 'sans-serif',
+                    }}
+                  >
+                    {numberFormat(twitterData?.following)}{' '}
+                    <Typography component="span" sx={{ color: '#5B7083' }}>
+                      Following
+                    </Typography>
+                  </Typography>
+                  <Typography
+                    sx={{
+                      color: '#0F1419',
+                      size: '1rem',
+                      fontFamily: 'sans-serif',
+                      fontWeight: '700',
+                      ml: '19px',
+                    }}
+                  >
+                    {numberFormat(twitterData?.followers)}{' '}
+                    <Typography component="span" sx={{ color: '#5B7083' }}>
+                      Followers
+                    </Typography>
+                  </Typography>
+                </Stack>
               </Stack>
             </Stack>
-          </Stack>
+          )}
         </Stack>
       </FormControl>
     </Stack>
