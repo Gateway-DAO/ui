@@ -54,10 +54,6 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
   const taskIds = gateProps?.tasks.map((task) => task.id);
 
   useEffect(() => {
-    if (!gateProps) {
-      router.push('/home');
-    }
-
     const completedTaskIds =
       me?.task_progresses.map((task) => task.task_id) || [];
 
