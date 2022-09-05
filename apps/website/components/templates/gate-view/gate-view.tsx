@@ -26,13 +26,13 @@ import CircularProgressWithLabel from '../../atoms/circular-progress-label';
 import { ShareButton } from '../../atoms/share-button';
 import GateCompletedModal from '../../organisms/gates/view/modals/gate-completed';
 import { Task, TaskGroup } from '../../organisms/tasks';
+import { ReadMore } from '../../atoms/read-more-less';
 
 type Props = {
   gate: PartialDeep<Gates>;
 };
 
 export function GateViewTemplate({ gate }: Props) {
-  const { t } = useTranslation();
   const taskIds = gate.tasks.map((task) => task.id);
   const { me } = useAuth();
   const { mint } = useMint();
@@ -126,13 +126,7 @@ export function GateViewTemplate({ gate }: Props) {
           </Stack>
         </Box>
 
-        <Typography
-          variant="body1"
-          marginBottom={(theme) => theme.spacing(4)}
-          sx={{ wordBreak: 'break-word' }}
-        >
-          {gate.description}
-        </Typography>
+        <ReadMore>{gate.description}</ReadMore>
         {gateCompleted && (
           <Button
             fullWidth

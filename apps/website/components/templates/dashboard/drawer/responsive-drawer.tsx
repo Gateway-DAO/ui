@@ -1,6 +1,6 @@
 import { PropsWithChildren } from 'react';
 
-import { useMediaQuery, useTheme } from '@mui/material';
+import { Hidden, useMediaQuery, useTheme } from '@mui/material';
 import Drawer, { DrawerProps } from '@mui/material/Drawer';
 
 import { useNav } from '../../../../hooks/use-nav';
@@ -32,15 +32,27 @@ export const ResponsiveDrawer = ({ children }: PropsWithChildren<unknown>) => {
     <Drawer
       color="transparent"
       sx={(theme) => ({
-        height: '100%',
+        '*::-webkit-scrollbar': {
+          width: '0.2em',
+        },
+        '&:hover': {
+          '*::-webkit-scrollbar-thumb': {
+            backgroundColor: 'rgba(255, 255, 255, 0.3)',
+            borderRadius: 10,
+          },
+        },
+
+        height: '100vh',
+        overflow: 'hidden',
+        marginLeft: '4.8em',
         '& .MuiDrawer-paper': {
           pt: 0,
           background: 'transparent',
         },
         [theme.breakpoints.up('md')]: {
           '& .MuiDrawer-paper': {
-            position: 'static',
-            overflowY: 'visible',
+            position: 'fixed',
+            overflowY: 'auto',
           },
         },
         [theme.breakpoints.down('md')]: {

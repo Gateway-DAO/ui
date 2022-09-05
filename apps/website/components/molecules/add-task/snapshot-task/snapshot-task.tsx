@@ -157,7 +157,12 @@ const SnapshotTask = ({ taskId, deleteTask }) => {
           {...register(`tasks.data.${taskId}.description`)}
           error={!!errors.tasks?.data[taskId]?.description}
           helperText={errors.tasks?.data[taskId]?.description?.message}
-          sx={{ marginBottom: '60px' }}
+          sx={{
+            marginBottom: '60px',
+            '& fieldset legend span': {
+              marginRight: '10px',
+            },
+          }}
         />
         <Stack
           direction={{ xs: 'column', md: 'row' }}
@@ -167,7 +172,7 @@ const SnapshotTask = ({ taskId, deleteTask }) => {
             <TextField
               required
               label="Specific Proposal Number"
-              sx={{ maxWidth: { md: '50%', xs: '100%' } }}
+              sx={{ minWidth: { md: '50%', xs: '100%' } }}
               {...register(`tasks.data.${taskId}.task_data.proposal_number`)}
               error={
                 !!(errors.tasks?.data[taskId]?.task_data as SnapshotDataError)

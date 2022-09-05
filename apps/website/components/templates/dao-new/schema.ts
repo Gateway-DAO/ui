@@ -33,9 +33,13 @@ export const defaultValues = (
 };
 
 export const schema: SchemaOf<NewDAOSchema> = object({
-  name: string().defined(),
+  name: string()
+    .defined()
+    .min(2, 'The file title must contain at least 2 character(s)'),
   categories: array().of(string()).min(1).defined(),
-  description: string().defined(),
+  description: string()
+    .defined()
+    .min(2, 'The file title must contain at least 2 character(s)'),
   background: string().defined(),
   logo: string().defined(),
   socials: array().of(
