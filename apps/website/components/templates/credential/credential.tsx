@@ -1,5 +1,6 @@
+import dynamic from 'next/dynamic';
 import Link from 'next/link';
-import { useState } from 'react';
+import { ComponentType, useState } from 'react';
 
 import { PartialDeep } from 'type-fest';
 
@@ -25,8 +26,16 @@ import {
 import { useAuth } from '../../../providers/auth';
 import { Credentials } from '../../../services/graphql/types.generated';
 import { AvatarFile } from '../../atoms/avatar-file';
-import { MintCredentialButton } from '../../atoms/mint-button';
+import { Props as MintCredentialButtonProps } from '../../atoms/mint-button';
 import { Task, TaskGroup } from '../../organisms/tasks';
+
+const MintCredentialButton: ComponentType<MintCredentialButtonProps> = dynamic(
+  () =>
+    import('../../atoms/mint-button').then((mod) => mod.MintCredentialButton),
+  {
+    ssr: false,
+  }
+);
 
 type Props = {
   credential: PartialDeep<Credentials>;

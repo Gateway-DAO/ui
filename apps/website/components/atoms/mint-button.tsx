@@ -10,7 +10,7 @@ import { useBiconomy } from '../../providers/biconomy';
 import { Credentials } from '../../services/graphql/types.generated';
 import { LoadingButton } from './loading-button';
 
-type Props = {
+export type Props = {
   credential: PartialDeep<Credentials>;
 };
 
