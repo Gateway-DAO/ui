@@ -1,4 +1,4 @@
-/* eslint-disable react/no-unescaped-entities */
+import useTranslation from 'next-translate/useTranslation';
 import Link from 'next/link';
 import Box from '@mui/material/Box';
 import Avatar from '@mui/material/Avatar';
@@ -9,6 +9,7 @@ import { ROUTES } from '../constants/routes';
 import { Button } from '@mui/material';
 
 export default function Error404() {
+  const { t } = useTranslation('404');
   return (
     <Box
       sx={{
@@ -41,20 +42,20 @@ export default function Error404() {
         >
           <Avatar alt="Gateway" src="/logo.png" />
           <Typography variant="subtitle1" color={'#FFFFFF'} marginLeft={1}>
-            Gateway
+            {t('logo.title')}
           </Typography>
         </Box>
         <Image src="/404.png" width="469px" height="161px" />
         <Typography variant="h4" marginTop={3}>
-          Page not found
+          {t('title')}
         </Typography>
         <Typography variant="body1" marginTop={2} marginRight={10}>
-          Sorry, the page you were looking for was not found.
+          {t('message')}
         </Typography>
         <Link href={ROUTES.EXPLORE} passHref>
           <Box marginTop={6}>
             <Button component="a" variant="outlined">
-              Back to app
+              {t('home-button')}
             </Button>
           </Box>
         </Link>
