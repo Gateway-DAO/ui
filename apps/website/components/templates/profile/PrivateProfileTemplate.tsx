@@ -1,5 +1,6 @@
 import { InferGetStaticPropsType } from 'next';
 import useTranslation from 'next-translate/useTranslation';
+import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useMemo, useState } from 'react';
@@ -32,8 +33,13 @@ import { useAuth } from '../../../providers/auth';
 import { AvatarFile } from '../../atoms/avatar-file';
 import { SocialButtons } from '../../organisms/social-buttons';
 import { GuideCard } from './edit/Components/guide-card';
-import { ActivityTab, OverviewTab } from './tabs';
-
+import { OverviewTab } from './tabs';
+const ConnectionsButton = dynamic<any>(
+  () => import('./connections/button').then((mod) => mod.ConnectionsButton),
+  {
+    ssr: false,
+  }
+);
 export default function PrivateProfileTemplate() {
   const [showCard, setShowCard] = useState(true);
   const { t } = useTranslation();
@@ -166,11 +172,10 @@ export default function PrivateProfileTemplate() {
                   mt: 2,
                 }}
               >
-                <Typography>{me.following?.length} connection(s)</Typography>·
+                <ConnectionsButton wallet={me.wallet} />·
                 <Typography>{me.credentials?.length} credential(s)</Typography>
               </Box>
             </Box>
-
             <Stack
               direction="row"
               gap={1}
