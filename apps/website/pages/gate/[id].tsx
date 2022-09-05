@@ -1,15 +1,28 @@
-import { InferGetStaticPropsType } from 'next';
+import { useRouter } from 'next/router';
+
+import { useQuery } from 'react-query';
 
 import { Navbar } from '../../components/organisms/navbar';
 import { DashboardTemplate } from '../../components/templates/dashboard';
 import { GateViewTemplate } from '../../components/templates/gate-view';
-import { gqlAnonMethods } from '../../services/api';
+import { useAuth } from '../../providers/auth';
 
-export default function GateProfilePage({
-  gateProps,
-}: InferGetStaticPropsType<typeof getServerSideProps>) {
-  if (!gateProps) return null;
-  const { gates_by_pk: gate } = gateProps;
+// TODO: implement server side rendering
+export default function GateProfilePage() {
+  const router = useRouter();
+
+  const id = router.query.id as string;
+
+  const { gqlAuthMethods } = useAuth();
+
+  const { data: gatesData } = useQuery(['gate', id], () =>
+    gqlAuthMethods.gate({
+      id,
+    })
+  );
+
+  if (!gatesData?.gates_by_pk) return null;
+
   return (
     <DashboardTemplate
       containerProps={{
@@ -20,31 +33,7 @@ export default function GateProfilePage({
       }}
     >
       <Navbar isInternalPage={true} />
-      <GateViewTemplate gateProps={gate} />
+      <GateViewTemplate gateProps={gatesData.gates_by_pk} />
     </DashboardTemplate>
   );
 }
-
-export const getServerSideProps = async ({ params }) => {
-  const { id } = params;
-
-  if (!id) {
-    return {
-      redirect: {
-        destination: '/',
-      },
-    };
-  }
-
-  const gateProps = await gqlAnonMethods.gate({
-    id,
-  });
-
-  if (!gateProps.gates_by_pk) return { notFound: true };
-
-  return {
-    props: {
-      gateProps,
-    },
-  };
-};

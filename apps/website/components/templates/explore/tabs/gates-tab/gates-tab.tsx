@@ -7,15 +7,16 @@ import { Box, CircularProgress, IconButton, Stack } from '@mui/material';
 
 import { usePropertyFilter } from '../../../../../hooks/use-property-filter';
 import { useViewMode, ViewMode } from '../../../../../hooks/use-view-modes';
-import { gqlAnonMethods } from '../../../../../services/api';
+import { useAuth } from '../../../../../providers/auth';
 import { ChipDropdown } from '../../../../molecules/chip-dropdown';
 import { GatesCard } from '../../../../molecules/gates-card';
 import { TableView } from './table-view';
 
 export function GatesTab() {
+  const { gqlAuthMethods } = useAuth();
   const { view, toggleView } = useViewMode();
   const { data: gates, isLoading } = useQuery('gates-tab', async () => {
-    return (await gqlAnonMethods.gates_tab()).gates;
+    return (await gqlAuthMethods.gates_tab()).gates;
   });
 
   const {
