@@ -7,8 +7,7 @@ import { Files } from '../../services/graphql/types.generated';
 
 type AvatarFileProps<
   Component extends React.ElementType = 'div',
-  // eslint-disable-next-line @typescript-eslint/ban-types
-  Props = {}
+  Props = Record<string, unknown>
 > = {
   file: PartialDeep<Files>;
   fallback?: string;
