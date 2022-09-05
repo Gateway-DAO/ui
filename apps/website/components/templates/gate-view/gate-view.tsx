@@ -54,11 +54,15 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
   const taskIds = gateProps?.tasks.map((task) => task.id);
 
   useEffect(() => {
+    if (!gateProps) {
+      router.push('/home');
+    }
+
     const completedTaskIds =
       me?.task_progresses.map((task) => task.task_id) || [];
 
     setCompletedTasksCount(countSimiliarIds(completedTaskIds, taskIds));
-  }, [taskIds, me?.task_progresses]);
+  }, [taskIds, me?.task_progresses, gateProps, router]);
 
   const isAdmin =
     me?.permissions?.filter(

@@ -21,8 +21,6 @@ export default function GateProfilePage() {
     })
   );
 
-  if (!gatesData?.gates_by_pk) return null;
-
   return (
     <DashboardTemplate
       containerProps={{
@@ -33,7 +31,7 @@ export default function GateProfilePage() {
       }}
     >
       <Navbar isInternalPage={true} />
-      <GateViewTemplate gateProps={gatesData.gates_by_pk} />
+      <GateViewTemplate gateProps={gatesData?.gates_by_pk} />
     </DashboardTemplate>
   );
 }
