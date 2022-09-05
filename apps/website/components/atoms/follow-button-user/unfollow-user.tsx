@@ -30,7 +30,6 @@ export function UnfollowUserButton({
         {...props}
       >
         {t('actions.connected')}
-        {t('actions.unfollow')}
       </LoadingButton>
       <Menu
         anchorEl={menu.element}
