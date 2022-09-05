@@ -70,25 +70,45 @@ export const useNormalizeData = (
       ({ bidirectionalConnection }) =>
         normalizeRequestConnection(bidirectionalConnection)
     ) ?? [];
-
-  const notifications =
-    data?.identity?.notifications?.list
-      .filter(
-        (n: BiConnectReceivedNotification) =>
-          // TODO: Commented for now because no design for now
-          // n.type === NotificationType.BiconnectAccepted ||
-          n.type === NotificationType.BiconnectReceived &&
-          data?.identity?.friendRequestsInbox?.list.some(
-            ({ bidirectionalConnection }) =>
-              bidirectionalConnection.from === n.fromAddress
-          )
-      )
-      .map((n) => normalizeNotification(n)) ?? [];
-
   const friends =
     data?.identity?.bidirectionalFriends?.list.map(
       ({ bidirectionalConnection }) =>
         normalizeFriend(bidirectionalConnection, wallet)
+    ) ?? [];
+
+  const notifications: Notification[] =
+    data?.identity?.notifications?.list?.reduce(
+      (acc, notification: BiConnectReceivedNotification) => {
+        // If notification has already been processed, skip it
+        const hasNotification = acc.some(
+          (n) => n.fromAddress.toLowerCase() === notification.fromAddress
+        );
+        if (hasNotification) {
+          return acc;
+        }
+
+        const isFriendAccepted =
+          notification.type === NotificationType.BiconnectAccepted &&
+          friends.some(
+            (friend) =>
+              friend.address.toLowerCase() === notification.fromAddress
+          );
+
+        // Only shows a request notification if the user has not accepted the request
+
+        const isFriendReceived =
+          notification.type === NotificationType.BiconnectReceived &&
+          friendsRequestsInbox.some(
+            (request) => request.from.toLowerCase() === notification.fromAddress
+          );
+
+        if (!isFriendAccepted && !isFriendReceived) {
+          return acc;
+        }
+
+        return [...acc, normalizeNotification(notification)];
+      },
+      [] as Notification[]
     ) ?? [];
 
   return {
