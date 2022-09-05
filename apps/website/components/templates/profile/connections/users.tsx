@@ -1,4 +1,5 @@
 import useTranslation from 'next-translate/useTranslation';
+import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { ChangeEvent, Fragment, useMemo, useState } from 'react';
 
@@ -21,7 +22,16 @@ import { ROUTES } from '../../../../constants/routes';
 import { useAuth } from '../../../../providers/auth';
 import { Users } from '../../../../services/graphql/types.generated';
 import { AvatarFile } from '../../../atoms/avatar-file';
-import { FollowButtonUser } from '../../../atoms/follow-button-user';
+
+const FollowButtonUser = dynamic<any>(
+  () =>
+    import('../../../atoms/follow-button-user').then(
+      (mod) => mod.FollowButtonUser
+    ),
+  {
+    ssr: false,
+  }
+);
 
 type Props = {
   users: PartialDeep<Users>[];

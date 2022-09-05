@@ -1,3 +1,4 @@
+import dynamic from 'next/dynamic';
 import Link from 'next/link';
 
 import type { PartialDeep } from 'type-fest';
@@ -10,7 +11,14 @@ import { useAuth } from '../../providers/auth';
 import { Users } from '../../services/graphql/types.generated';
 import { AdminBadge } from '../atoms/admin-badge';
 import { AvatarFile } from '../atoms/avatar-file';
-import { FollowButtonUser } from '../atoms/follow-button-user';
+
+const FollowButtonUser = dynamic<any>(
+  () =>
+    import('../atoms/follow-button-user').then((mod) => mod.FollowButtonUser),
+  {
+    ssr: false,
+  }
+);
 
 type Props = {
   user: PartialDeep<Users>;

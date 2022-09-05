@@ -1,3 +1,4 @@
+import dynamic from 'next/dynamic';
 import Link from 'next/link';
 
 import { TOKENS } from '@gateway/theme';
@@ -13,8 +14,17 @@ import TableRow from '@mui/material/TableRow';
 import { ROUTES } from '../../../../../constants/routes';
 import { useAuth } from '../../../../../providers/auth';
 import { AvatarFile } from '../../../../atoms/avatar-file';
-import { FollowButtonUser } from '../../../../atoms/follow-button-user';
 import { ExploreProps } from '../../types';
+
+const FollowButtonUser = dynamic<any>(
+  () =>
+    import('../../../../atoms/follow-button-user').then(
+      (mod) => mod.FollowButtonUser
+    ),
+  {
+    ssr: false,
+  }
+);
 
 type Props = {
   people: ExploreProps['people'];
