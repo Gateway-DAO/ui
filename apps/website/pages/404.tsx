@@ -52,13 +52,13 @@ export default function Error404() {
         <Typography variant="body1" marginTop={2} marginRight={10}>
           {t('message')}
         </Typography>
-        <Link href={ROUTES.EXPLORE} passHref>
-          <Box marginTop={6}>
+        <Box marginTop={6}>
+          <Link href={ROUTES.EXPLORE} passHref>
             <Button component="a" variant="outlined">
               {t('home-button')}
             </Button>
-          </Box>
-        </Link>
+          </Link>
+        </Box>
       </Box>
     </Box>
   );
