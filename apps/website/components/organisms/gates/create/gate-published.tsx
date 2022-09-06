@@ -1,12 +1,14 @@
 import Image from 'next/image';
 import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 
 import { Button, SxProps } from '@mui/material';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Typography from '@mui/material/Typography';
 
-import { GatesCard } from '../../../../molecules/gates-card';
+import { gqlAnonMethods } from '../../../../services/api';
+import { GatesCard } from '../../../molecules/gates-card';
 
 const style: SxProps = {
   bgcolor: 'background.paper',
@@ -16,8 +18,41 @@ const style: SxProps = {
   flexDirection: 'column',
 };
 
-export default function GateCompletedModal({ gate, open, handleClose }) {
+type GatePublishedModalProps = {
+  gateId: string;
+  open: boolean;
+  handleClose: () => void;
+};
+
+export default function GatePublishedModal({
+  gateId,
+  open,
+  handleClose,
+}: GatePublishedModalProps) {
   const router = useRouter();
+  const [gate, setGate] = useState({
+    title: '',
+    image: '',
+    description: '',
+    categories: [],
+    dao: {
+      name: '',
+    },
+    id: '',
+    published: '',
+  });
+
+  useEffect(() => {
+    if (gateId) {
+      gqlAnonMethods
+        .gate({
+          id: gateId,
+        })
+        .then((response) => {
+          setGate(response.gates_by_pk);
+        });
+    }
+  }, [gateId]);
 
   return (
     <div>
@@ -59,16 +94,16 @@ export default function GateCompletedModal({ gate, open, handleClose }) {
                   mb: 3,
                 }}
               >
-                Congratulations!
+                Gate Published
               </Typography>
               <Typography
                 id="modal-modal-description"
                 sx={{ mb: 6, textAlign: 'center' }}
                 fontSize={16}
               >
-                You have completed the{' '}
-                <span style={{ color: '#D083FF' }}>{gate?.title}</span> Gate
-                from <span style={{ color: '#D083FF' }}>{gate?.dao.name}</span>.
+                You have published the{' '}
+                <span style={{ color: '#D083FF' }}>{gate.title}</span> Gate from{' '}
+                <span style={{ color: '#D083FF' }}>{gate.dao.name}</span>.
               </Typography>
             </Box>
             <GatesCard {...gate} />
@@ -76,9 +111,9 @@ export default function GateCompletedModal({ gate, open, handleClose }) {
               variant="outlined"
               size="medium"
               sx={{ margin: '20px 0 0 20px' }}
-              onClick={() => router.push('/profile')}
+              onClick={() => router.push(`/gate/${gateId}`)}
             >
-              View on Profile
+              Check Gate
             </Button>
           </Box>
         </Box>
