@@ -56,38 +56,29 @@ export function CredentialTemplate({ credential, openModal }: Props) {
   };
 
   return (
-    <>
-      <Navbar sx={{ zIndex: 1 }} />
-      <Grid container height="100%">
-        <Grid
-          item
-          xs={12}
-          md={5}
-          sx={(theme) => ({
-            p: { xs: theme.spacing(3), md: theme.spacing(7) },
-          })}
+    <Grid container height="100%">
+      <Grid item xs={12} md={5} p={(theme) => theme.spacing(7)}>
+        {/* DAO info */}
+        <Stack
+          direction="row"
+          alignItems="center"
+          marginBottom={(theme) => theme.spacing(2)}
         >
-          {/* DAO info */}
-          <Stack
-            direction="row"
-            alignItems="center"
-            marginBottom={(theme) => theme.spacing(2)}
+          <AvatarFile
+            file={credential.dao?.logo}
+            fallback={credential.dao?.logo_url || '/logo.png'}
+            sx={{ width: 32, height: 32 }}
+            aria-label={`${credential.dao?.name}'s DAO image`}
           >
-            <AvatarFile
-              file={credential.dao?.logo}
-              fallback={credential.dao?.logo_url || '/logo.png'}
-              sx={{ width: 32, height: 32, mr: 1 }}
-              aria-label={`${credential.dao?.name}'s DAO image`}
-            >
-              {credential.dao?.name?.[0]}
-            </AvatarFile>
-            <Typography
-              variant="body2"
-              color={(theme) => theme.palette.text.secondary}
-            >
-              {credential.dao?.name}
-            </Typography>
-          </Stack>
+            {credential.dao?.name?.[0]}
+          </AvatarFile>
+          <Typography
+            variant="body2"
+            color={(theme) => theme.palette.text.secondary}
+          >
+            {credential.dao?.name}
+          </Typography>
+        </Stack>
 
         <Typography variant="h4" marginBottom={(theme) => theme.spacing(2)}>
           {credential.name}
