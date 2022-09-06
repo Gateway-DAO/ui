@@ -27,13 +27,18 @@ const HoldTokenTask = ({ taskId, deleteTask }) => {
   const {
     register,
     setValue,
+    getValues,
     formState: { errors },
   } = useFormContext<CreateGateTypes>();
 
+  const formValues = getValues();
+
   useEffect(() => {
-    setValue(`tasks.data.${taskId}.title`, 'Untitled Task');
+    if (formValues.tasks.data[taskId]?.title === '') {
+      setValue(`tasks.data.${taskId}.title`, 'Untitled Task');
+    }
     setValue(`tasks.data.${taskId}.task_type`, 'token_hold');
-  }, [taskId, setValue]);
+  }, [taskId, setValue, formValues.tasks.data]);
 
   const [taskVisible, setTaskVisible] = useState(false);
 

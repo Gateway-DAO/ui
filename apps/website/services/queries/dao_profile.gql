@@ -25,12 +25,13 @@ query dao_profile($id: uuid!) {
       network
       url
     }
-    gates(limit: 4) {
+    gates(where: { published: { _eq: "published" } }, limit: 3) {
       id
       title
       description
       categories
       image
+      published
     }
   }
 }

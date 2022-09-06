@@ -1,17 +1,9 @@
 import Link from 'next/link';
 import { useMemo } from 'react';
 
-import { colord } from 'colord';
 import type { PartialDeep } from 'type-fest';
 
-import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
-import {
-  Avatar,
-  CardActionArea,
-  CardHeader,
-  IconButton,
-  Box,
-} from '@mui/material';
+import { CardActionArea, CardHeader, Box } from '@mui/material';
 import MUICard from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
@@ -24,6 +16,9 @@ import { AvatarFile } from '../atoms/avatar-file';
 import { CategoriesList } from './categories-list';
 
 /* TODO: Arias and Labels */
+type GatesCardProps = PartialDeep<Gates> & {
+  showStatus?: boolean;
+};
 
 export function GatesCard({
   title,
@@ -32,13 +27,17 @@ export function GatesCard({
   categories,
   dao,
   id,
-}: PartialDeep<Gates>) {
+  published,
+  showStatus,
+}: GatesCardProps): JSX.Element {
   const hasDao = !!dao;
+
   const url = useMemo(() => ROUTES.GATE_PROFILE.replace('[id]', id), [id]);
+
   return (
     <MUICard sx={{ position: 'relative' }}>
       <Link passHref href={url}>
-        <CardActionArea component="a">
+        <CardActionArea component="a" sx={{ height: '100%' }}>
           <CardMedia
             component="img"
             {...badgeProps({ image, title })}
@@ -74,19 +73,6 @@ export function GatesCard({
               }
               title={hasDao ? dao.name : title}
             />
-            {/* <IconButton
-              aria-label="settings"
-              sx={{
-                color: (theme) =>
-                  colord(theme.palette.action.active).alpha(0.56).toRgbString(),
-                width: '14px',
-                height: '18px',
-                zIndex: 1,
-                paddingTop: '16px',
-              }}
-            >
-              <BookmarkBorderIcon sx={{ fontSize: '20px' }} />
-            </IconButton> */}
           </Box>
           <CardContent sx={{ py: 1 }}>
             {hasDao && (
@@ -108,7 +94,12 @@ export function GatesCard({
               {description}
             </Typography>
           </CardContent>
-          <CategoriesList categories={categories} />
+          <CategoriesList
+            isGate
+            showStatus={showStatus}
+            published={published}
+            categories={categories}
+          />
         </CardActionArea>
       </Link>
     </MUICard>
