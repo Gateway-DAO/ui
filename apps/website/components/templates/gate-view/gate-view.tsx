@@ -25,7 +25,7 @@ import { useSnackbar } from '../../../hooks/use-snackbar';
 import { Gates } from '../../../services/graphql/types.generated';
 import { AvatarFile } from '../../atoms/avatar-file';
 import CircularProgressWithLabel from '../../atoms/circular-progress-label';
-import { MintCredentialButtonProps } from '../../atoms/mint-button';
+import { Props as MintCredentialButtonProps } from '../../atoms/mint-button';
 import MorePopover from '../../atoms/more-popover';
 import { ReadMore } from '../../atoms/read-more-less';
 import { ShareButton } from '../../atoms/share-button';
