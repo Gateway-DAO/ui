@@ -1,14 +1,27 @@
+import { FieldErrors } from 'react-hook-form';
+
 import { Search } from '@mui/icons-material';
-import { Chip, TextField, Autocomplete } from '@mui/material';
+import { Chip, TextField, Autocomplete, TextFieldProps } from '@mui/material';
 
 import { SKILLS } from '../../constants/skills';
 
-export const SkillsInput = ({ set, ...props }) => {
+type SkillsInputProps = {
+  set: (categories: string[]) => void;
+  defaultValue?: string[];
+} & TextFieldProps &
+  FieldErrors;
+
+export const SkillsInput = ({
+  set,
+  defaultValue,
+  ...props
+}: SkillsInputProps) => {
   return (
     <Autocomplete
       multiple
       id="skills-input"
       options={[...SKILLS.HARD, ...SKILLS.SOFT]}
+      defaultValue={defaultValue}
       groupBy={(option) =>
         SKILLS.HARD.includes(option) ? 'Hard Skills' : 'Soft Skills'
       }

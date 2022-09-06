@@ -11,7 +11,7 @@ import MUICard from '@mui/material/Card';
 import { ROUTES } from '../../../../../constants/routes';
 import { usePropertyFilter } from '../../../../../hooks/use-property-filter';
 import { useViewMode, ViewMode } from '../../../../../hooks/use-view-modes';
-import { gqlAnonMethods } from '../../../../../services/api';
+import { useAuth } from '../../../../../providers/auth';
 import { EmptyCard } from '../../../../atoms/empty-card';
 import { ChipDropdown } from '../../../../molecules/chip-dropdown';
 import { GatesCard } from '../../../../molecules/gates-card';
@@ -19,12 +19,13 @@ import { useDaoProfile } from '../../context';
 import { TableView } from './table-view';
 
 export function GatesTab() {
+  const { gqlAuthMethods } = useAuth();
   const { dao, isAdmin } = useDaoProfile();
   const { view, toggleView } = useViewMode();
 
   const gates = useQuery(
     ['dao-gates', dao?.id],
-    () => gqlAnonMethods.dao_gates_tab({ id: dao?.id }),
+    () => gqlAuthMethods.dao_gates_tab({ id: dao?.id }),
     { enabled: !!dao?.id }
   );
 
@@ -107,11 +108,18 @@ export function GatesTab() {
               )}
 
               {filteredGates.map((gate) => (
-                <GatesCard key={`gate-${gate.id}`} {...gate} />
+                <GatesCard
+                  key={`gate-${gate.id}`}
+                  {...gate}
+                  dao={dao}
+                  showStatus={isAdmin}
+                />
               ))}
             </Box>
           )}
-          {view === ViewMode.table && <TableView gates={filteredGates} />}
+          {view === ViewMode.table && (
+            <TableView gates={filteredGates} isGate showStatus />
+          )}
         </>
       )}
 

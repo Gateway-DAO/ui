@@ -1,8 +1,9 @@
 import useTranslation from 'next-translate/useTranslation';
 import Link from 'next/link';
-import { useMemo } from 'react';
+import React, { useMemo } from 'react';
 
 import { PartialDeep } from 'type-fest';
+import { v4 as uuid } from 'uuid';
 
 import { Button, Divider, Stack } from '@mui/material';
 
@@ -33,7 +34,7 @@ export function OverviewTab({ people, setTab }: Props) {
   const gateList = useMemo(() => {
     return isAdmin
       ? [
-          <>
+          <React.Fragment key={uuid()}>
             <Link key="create-gate" passHref href={newGateUrl}>
               <EmptyCard
                 title="Create Gate"
@@ -46,13 +47,15 @@ export function OverviewTab({ people, setTab }: Props) {
                 sx={{ minHeight: 440 }}
               />
             </Link>
-            {gates.map((gate) => (
-              <GatesCard key={gate.id} {...gate} />
-            ))}
-          </>,
+            {gates
+              .filter((gate) => gate.published === 'published')
+              .map((gate) => (
+                <GatesCard key={gate.id} {...gate} />
+              ))}
+          </React.Fragment>,
         ]
       : [
-          <>
+          <React.Fragment key={uuid()}>
             {!gates.length && (
               <EmptyCard
                 key="empty"
@@ -62,11 +65,7 @@ export function OverviewTab({ people, setTab }: Props) {
                 sx={{ minHeight: 440 }}
               />
             )}
-
-            {gates.map((gate) => (
-              <GatesCard key={gate.id} {...gate} />
-            ))}
-          </>,
+          </React.Fragment>,
         ];
   }, [gates, isAdmin, newGateUrl]);
 

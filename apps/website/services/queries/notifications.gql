@@ -1,0 +1,11 @@
+query user_from_wallet($wallet: String!) {
+  users(where: {wallet: {_eq: $wallet}}) {
+    id
+    wallet
+    name
+    username
+    picture {
+      ...file
+    }
+  }
+}
