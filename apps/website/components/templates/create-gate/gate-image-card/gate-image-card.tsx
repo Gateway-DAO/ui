@@ -14,9 +14,15 @@ type Props = {
   showGateData?: boolean;
   sx?: GatewaySxProps;
   draftImage?: string;
+  label?: string;
 };
 
-export function GateImageCard({ showGateData = true, sx, draftImage }: Props) {
+export function GateImageCard({
+  showGateData = true,
+  sx,
+  draftImage,
+  label,
+}: Props) {
   const theme = useTheme();
   const { control, setValue } = useFormContext<CreateGateTypes>();
 
@@ -75,7 +81,7 @@ export function GateImageCard({ showGateData = true, sx, draftImage }: Props) {
             withCrop
             control={control}
             name="image"
-            label="Drop to upload your avatar"
+            label={label || 'Drop to upload your avatar'}
           />
         </Box>
       </Box>

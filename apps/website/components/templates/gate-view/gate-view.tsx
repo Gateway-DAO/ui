@@ -1,9 +1,9 @@
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, ComponentType } from 'react';
 
-import { useMutation } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { PartialDeep } from 'type-fest';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -25,6 +25,7 @@ import { useSnackbar } from '../../../hooks/use-snackbar';
 import { Gates } from '../../../services/graphql/types.generated';
 import { AvatarFile } from '../../atoms/avatar-file';
 import CircularProgressWithLabel from '../../atoms/circular-progress-label';
+import { MintCredentialButtonProps } from '../../atoms/mint-button';
 import MorePopover from '../../atoms/more-popover';
 import { ReadMore } from '../../atoms/read-more-less';
 import { ShareButton } from '../../atoms/share-button';
@@ -35,6 +36,14 @@ import { Task, TaskGroup } from '../../organisms/tasks';
 const GateStateChip = dynamic(() => import('../../atoms/gate-state-chip'), {
   ssr: false,
 });
+
+const MintCredentialButton: ComponentType<MintCredentialButtonProps> = dynamic(
+  () =>
+    import('../../atoms/mint-button').then((mod) => mod.MintCredentialButton),
+  {
+    ssr: false,
+  }
+);
 
 type GateViewProps = {
   gateProps: PartialDeep<Gates>;
@@ -50,6 +59,8 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
   const { me, gqlAuthMethods } = useAuth();
   const router = useRouter();
   const snackbar = useSnackbar();
+  const queryClient = useQueryClient();
+  const completedGate = completedTasksCount === gateProps?.tasks?.length;
 
   const taskIds = gateProps?.tasks.map((task) => task.id);
 
@@ -72,6 +83,21 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
     return arr1.filter((id) => arr2.includes(id)).length;
   };
 
+  const credential_id = me?.credentials?.find(
+    (cred) => cred?.gate_id === gateProps?.id
+  )?.id;
+
+  const { data: credential } = useQuery(
+    ['credential', credential_id],
+    () =>
+      gqlAuthMethods.credential({
+        id: credential_id,
+      }),
+    {
+      enabled: !!credential_id,
+    }
+  );
+
   const { mutate: toggleGateStateMutation } = useMutation(
     'toggleGateState',
     gqlAuthMethods.toggle_gate_state
@@ -84,7 +110,9 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
         state: published === 'published' ? 'paused' : 'published',
       },
       {
-        onSuccess: (data) => {
+        onSuccess: async (data) => {
+          setPublished(data.update_gates_by_pk.published);
+
           snackbar.onOpen({
             message: `Gate ${
               published === 'not_published' || published === 'paused'
@@ -93,7 +121,8 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
             }`,
           });
 
-          setPublished(data.update_gates_by_pk.published);
+          await queryClient.refetchQueries(['gate', gateProps?.id]);
+          await queryClient.refetchQueries(['dao-gates', gateProps?.dao_id]);
         },
         onError() {
           snackbar.handleClick({
@@ -229,6 +258,11 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
             {gateProps?.description}
           </Typography>
         )}
+
+        {completedGate && credential?.credentials_by_pk.target_id == me?.id && (
+          <MintCredentialButton credential={credential?.credentials_by_pk} />
+        )}
+
         <Box
           component="img"
           src={gateProps?.image}

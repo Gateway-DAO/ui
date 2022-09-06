@@ -44,6 +44,7 @@ fragment public_user on users {
   }
   credentials {
     id
+    gate_id
   }
   picture {
     ...file
