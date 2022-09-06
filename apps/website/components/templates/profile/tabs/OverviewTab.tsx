@@ -50,11 +50,6 @@ export function OverviewTab({ user }: Props) {
       key: 'activity',
       label: t('Given'),
     },
-    {
-      key: 'bookmarked',
-      label: t('Bookmarked'),
-      //section: <ActivityTab />,
-    },
   ];
 
   const offset = TZ.find((tz) => tz.abbr === user.timezone)?.offset;

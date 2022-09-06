@@ -149,11 +149,11 @@ export const DefaultMintScreen = ({
               <a
                 href={details.credential.transaction_url}
                 target="_blank"
-                rel="noreferrer"
                 style={{
                   textDecoration: 'none',
                   color: 'white',
                 }}
+                rel="noreferrer"
               >
                 <Stack direction="row" alignItems="center">
                   <ListItemIcon>

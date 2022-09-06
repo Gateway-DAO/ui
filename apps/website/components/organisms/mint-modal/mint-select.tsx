@@ -1,7 +1,6 @@
 import useTranslation from 'next-translate/useTranslation';
 import { useEffect } from 'react';
 
-import { colord } from 'colord';
 import { v4 as uuidv4 } from 'uuid';
 import { useConnect } from 'wagmi';
 
@@ -90,8 +89,6 @@ export function MintSelect({ onSubmit, onCancel }: Props) {
           {t('common:actions.cancel')}
         </Button>
       </DialogActions>
-
-      {/* {error && <div>{error.message}</div>} */}
     </>
   );
 }

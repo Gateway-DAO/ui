@@ -20,12 +20,6 @@ type Context = {
   mintStatus: MintStatus;
 };
 
-// export const BiconomyContext = createContext<Context>({
-//   mint: async () => {},
-//   mintCredential: async () => {},
-//   asksSignature: false,
-// });
-
 // TODO: make this better for the love of God!
 export const BiconomyContext = createContext<Context | undefined>(undefined);
 
