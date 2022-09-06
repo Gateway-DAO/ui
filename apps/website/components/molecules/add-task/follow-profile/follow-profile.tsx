@@ -8,6 +8,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import {
   Avatar,
   Box,
+  CircularProgress,
   FormControl,
   IconButton,
   Stack,
@@ -15,6 +16,7 @@ import {
   Typography,
 } from '@mui/material';
 
+import { gqlAnonMethods } from '../../../../services/api';
 import { CircleWithNumber } from '../../../atoms/circle-with-number';
 import {
   CreateGateTypes,
@@ -35,6 +37,7 @@ interface TwitterData {
 export const FollowProfile = ({ taskId, deleteTask }) => {
   const [taskVisible, setTaskVisible] = useState(false);
   const [twitterData, setTwitterData] = useState<TwitterData>({});
+  const [loading, setLoading] = useState(false);
   const {
     register,
     setValue,
@@ -48,18 +51,13 @@ export const FollowProfile = ({ taskId, deleteTask }) => {
   }, [setValue, taskId]);
 
   const getTwitterData = async () => {
+    setLoading(true);
     const username = getValues(`tasks.data.${taskId}.task_data.username`);
-    return setTwitterData({
-      username: username,
-      name: 'Blair',
-      profile_image_url:
-        'https://pbs.twimg.com/profile_images/1519498884220862466/Rki_FTXo_400x400.jpg',
-      description:
-        'Product and community builder | Helping blockchain artists and builders to reach the next level | Crypto and NFT Investor I Cat Lover | #NFT #NFTart $ETH $SOL',
-      followers: 2471,
-      following: 927,
-      verified: true,
-    });
+    const response = await gqlAnonMethods.twitter_data({ username: username });
+    console.log(response);
+    setLoading(false);
+
+    return setTwitterData(response.get_twitter_user_data);
   };
 
   const delayedQuery = useCallback(
@@ -223,38 +221,47 @@ export const FollowProfile = ({ taskId, deleteTask }) => {
           >
             https://twitter.com/
           </Typography>
-          <TextField
-            required
-            InputLabelProps={{ shrink: true }}
-            label="username"
-            {...register(`tasks.data.${taskId}.task_data.username`, {
-              onChange: (event) =>
-                onHandleChange(
-                  (event.target as HTMLInputElement).value as string
-                ),
-            })}
-            maxRows={60}
-            id="follow-profile-username"
-            error={
-              !!(errors.tasks?.data?.[taskId]?.task_data as TwitterFollowData)
-                ?.username
-            }
-            helperText={
-              (
-                errors.tasks?.data?.[taskId]
-                  ?.task_data as TwitterFollowDataError
-              )?.username?.message
-            }
-            sx={{
-              marginBottom: '60px',
-              '& fieldset legend span': {
-                marginRight: '10px',
-              },
-              input: {
-                paddingLeft: '173px',
-              },
-            }}
-          />
+          <Stack sx={{ position: 'relative' }}>
+            {loading && (
+              <CircularProgress
+                sx={{
+                  position: 'absolute',
+                  top: '15px',
+                  right: '12px',
+                }}
+                size={24}
+              />
+            )}
+            <TextField
+              required
+              InputLabelProps={{ shrink: true }}
+              label="username"
+              {...register(`tasks.data.${taskId}.task_data.username`, {
+                onChange: () => onHandleChange(),
+              })}
+              maxRows={60}
+              id="follow-profile-username"
+              error={
+                !!(errors.tasks?.data?.[taskId]?.task_data as TwitterFollowData)
+                  ?.username
+              }
+              helperText={
+                (
+                  errors.tasks?.data?.[taskId]
+                    ?.task_data as TwitterFollowDataError
+                )?.username?.message
+              }
+              sx={{
+                marginBottom: '60px',
+                '& fieldset legend span': {
+                  marginRight: '10px',
+                },
+                input: {
+                  paddingLeft: '173px',
+                },
+              }}
+            />
+          </Stack>
 
           {Object.entries(twitterData).length > 0 && (
             <Stack
