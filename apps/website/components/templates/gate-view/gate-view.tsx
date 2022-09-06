@@ -140,22 +140,6 @@ export function GateViewTemplate({ gate }: Props) {
             </Box>
             <Stack sx={{ flexDirection: 'row', columnGap: '4px' }}>
               <ShareButton title={`${gate.title} @ Gateway`} />
-              <IconButton
-                sx={{
-                  p: 0,
-                }}
-                key="share"
-              >
-                <Avatar sx={{ width: '32px', height: '32px' }}>
-                  <BookmarkBorderIcon
-                    sx={{
-                      mt: -0.25,
-                      fontSize: '18px',
-                      color: '#E5E5E5',
-                    }}
-                  />
-                </Avatar>
-              </IconButton>
             </Stack>
           </Stack>
         </Box>

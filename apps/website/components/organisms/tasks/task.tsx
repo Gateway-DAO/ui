@@ -182,13 +182,17 @@ export function Task({ task, idx, readOnly, setCompletedGate }: Props) {
         title={<Typography variant="caption">{taskContent?.title}</Typography>}
         subheader={<Typography variant="h6">{task.title}</Typography>}
         action={
-          <IconButton onClick={toggleExpanded}>
+          <IconButton
+            onClick={toggleExpanded}
+            sx={{
+              marginBottom: '-35px',
+            }}
+          >
             {expanded ? (
               <ExpandLess
                 sx={{
                   color: 'rgba(255, 255, 255, 0.56)',
                   fontSize: '28px',
-                  marginBottom: '-35px',
                 }}
               ></ExpandLess>
             ) : (
@@ -196,7 +200,6 @@ export function Task({ task, idx, readOnly, setCompletedGate }: Props) {
                 sx={{
                   color: 'rgba(255, 255, 255, 0.56)',
                   fontSize: '28px',
-                  marginBottom: '-35px',
                 }}
               ></ExpandMore>
             )}
