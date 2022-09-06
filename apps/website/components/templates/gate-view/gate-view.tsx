@@ -26,7 +26,7 @@ import { Gates } from '../../../services/graphql/types.generated';
 import { AvatarFile } from '../../atoms/avatar-file';
 import CircularProgressWithLabel from '../../atoms/circular-progress-label';
 import { ReadMore } from '../../atoms/read-more-less';
-import { ShareButton } from '../../atoms/share-button';
+import { ShareButton } from '../../atoms/share-social';
 import GateCompletedModal from '../../organisms/gates/view/modals/gate-completed';
 import { Task, TaskGroup } from '../../organisms/tasks';
 
@@ -84,6 +84,7 @@ export function GateViewTemplate({ gate }: Props) {
           },
         }}
       >
+        <Box sx={{ height: { xs: '0px', md: '60px' } }}></Box>
         {/* DAO info */}
         <Link passHref href={`/dao/${gate.dao.id}`}>
           <Stack
@@ -272,6 +273,7 @@ export function GateViewTemplate({ gate }: Props) {
       </Grid>
       <Divider orientation="vertical" flexItem />
       <Grid item xs={12} md>
+        <Box sx={{ height: { xs: '0px', md: '60px' } }}></Box>
         {/* Task Counter */}
         <Stack
           direction="row"
