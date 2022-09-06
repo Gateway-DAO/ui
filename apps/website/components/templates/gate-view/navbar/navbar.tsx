@@ -71,20 +71,6 @@ export function Navbar({ isInternalPage, ...props }: NavbarProps) {
                     backgroundColor: 'red',
                   },
                 },
-                /*
-                  start adornment:
-                  sx: {
-                    '&.MuiInputLabel-root': {
-                      transform: `translate(36px, 0.5rem)`,
-                    },
-                    '&.Mui-focused': {
-                      transform: 'translate(14px, -9px) scale(0.75)',
-                    },
-                    '&.MuiInputLabel-root:not(.Mui-focused) ~ .MuiInputBase-root .MuiOutlinedInput-notchedOutline legend':
-                      {
-                        maxWidth: 0,
-                      },
-                  }, */
               }}
               InputProps={{
                 endAdornment: (
