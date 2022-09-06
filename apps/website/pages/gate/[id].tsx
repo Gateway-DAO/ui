@@ -42,17 +42,21 @@ export default function GateProfilePage() {
 
   const { gqlAuthMethods } = useAuth();
 
-  const { data: gatesData, isLoading } = useQuery(['gate', id], () =>
+  const {
+    data: gatesData,
+    isLoading,
+    isFetchedAfterMount,
+  } = useQuery(['gate', id], () =>
     gqlAuthMethods.gate({
       id,
     })
   );
 
   useEffect(() => {
-    if (!isLoading && !gatesData?.gates_by_pk) {
+    if (isFetchedAfterMount && !isLoading && !gatesData?.gates_by_pk) {
       router.push('/home');
     }
-  }, [gatesData?.gates_by_pk, isLoading]);
+  }, [gatesData?.gates_by_pk, isFetchedAfterMount, isLoading]);
 
   return (
     <DashboardTemplate
