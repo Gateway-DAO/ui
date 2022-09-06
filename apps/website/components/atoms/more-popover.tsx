@@ -63,6 +63,7 @@ const MorePopover = ({ options }: MorePopoverProps) => {
             <>
               {!option.hidden && (
                 <Typography
+                  role="button"
                   key={`${option.text}-${index}`}
                   sx={{
                     p: 2,
