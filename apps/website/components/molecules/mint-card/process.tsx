@@ -1,3 +1,6 @@
+import { PartialDeep } from 'type-fest';
+
+import { Credentials } from '../../../services/graphql/types.generated';
 import { DefaultMintScreen } from './screen/default-mint-screen';
 import { MintingScreen } from './screen/minting-screen';
 import { StartMintScreen } from './screen/start-mint-screen';
@@ -9,14 +12,8 @@ export function processScreen(
   setMintProcessStatus: React.Dispatch<React.SetStateAction<Subjects>>,
   mint: (token_uri?: string) => void,
   details: {
-    id: string;
-    title: string;
-    description: string;
-    image: string;
-    categories: string[];
-    nft_url?: string;
-    target_id: string;
     error?: any;
+    credential: PartialDeep<Credentials>;
   }
 ) {
   switch (mintProcessStatus) {

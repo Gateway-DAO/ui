@@ -108,16 +108,28 @@ export function MintingScreen({
         </Box>
       </Box>
       {mintProcessStatus === Subjects.failed && (
-        <Box sx={{ m: 2 }}>
-          <Button
-            size="large"
-            variant="contained"
-            fullWidth
-            onClick={() => setMintProcessStatus(Subjects.start)}
-          >
-            RETRY MINT AS NFT
-          </Button>
-        </Box>
+        <>
+          <Box sx={{ m: 2 }}>
+            <Button
+              size="large"
+              variant="contained"
+              fullWidth
+              onClick={() => setMintProcessStatus(Subjects.start)}
+            >
+              RETRY MINT AS NFT
+            </Button>
+          </Box>
+          <Box sx={{ mx: 2, my: 1 }}>
+            <Button
+              size="large"
+              variant="outlined"
+              fullWidth
+              onClick={() => setMintProcessStatus(Subjects.default)}
+            >
+              cancel
+            </Button>
+          </Box>
+        </>
       )}
     </>
   );

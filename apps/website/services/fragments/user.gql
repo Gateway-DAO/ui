@@ -8,6 +8,9 @@ fragment experience on experiences {
   }
   credentials {
     id
+    target_id
+    uri
+    transaction_url
     name
     image
     description
@@ -33,6 +36,7 @@ fragment public_user on users {
   skills
   languages
   timezone
+  wallet
   following_aggregate {
     aggregate {
       count

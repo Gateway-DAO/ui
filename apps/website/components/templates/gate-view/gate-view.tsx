@@ -1,7 +1,11 @@
+import dynamic from 'next/dynamic';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
 
+import { useMutation } from 'react-query';
 import { PartialDeep } from 'type-fest';
+import { v4 as uuidv4 } from 'uuid';
 
 import {
   AvatarGroup,
@@ -12,27 +16,55 @@ import {
   Box,
   Divider,
   Tooltip,
+  Snackbar,
 } from '@mui/material';
 
 import { useAuth } from '../../../../website/providers/auth';
+import { ROUTES } from '../../../constants/routes';
+import { useSnackbar } from '../../../hooks/use-snackbar';
 import { Gates } from '../../../services/graphql/types.generated';
 import { AvatarFile } from '../../atoms/avatar-file';
 import CircularProgressWithLabel from '../../atoms/circular-progress-label';
+import MorePopover from '../../atoms/more-popover';
+import { ReadMore } from '../../atoms/read-more-less';
 import { ShareButton } from '../../atoms/share-button';
+import ConfirmDialog from '../../organisms/confirm-dialog/confirm-dialog';
 import GateCompletedModal from '../../organisms/gates/view/modals/gate-completed';
 import { Task, TaskGroup } from '../../organisms/tasks';
-import { ReadMore } from '../../atoms/read-more-less';
 
-type Props = {
-  gate: PartialDeep<Gates>;
+const GateStateChip = dynamic(() => import('../../atoms/gate-state-chip'), {
+  ssr: false,
+});
+
+type GateViewProps = {
+  gateProps: PartialDeep<Gates>;
 };
 
-export function GateViewTemplate({ gate }: Props) {
-  const taskIds = gate.tasks.map((task) => task.id);
-  const { me } = useAuth();
-
+export function GateViewTemplate({ gateProps }: GateViewProps) {
   const [open, setOpen] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  const [confirmToggleState, setConfirmToggleState] = useState(false);
   const [completedTasksCount, setCompletedTasksCount] = useState(0);
+  const [published, setPublished] = useState(gateProps?.published);
+
+  const { me, gqlAuthMethods } = useAuth();
+  const router = useRouter();
+  const snackbar = useSnackbar();
+
+  const taskIds = gateProps?.tasks.map((task) => task.id);
+
+  useEffect(() => {
+    const completedTaskIds =
+      me?.task_progresses.map((task) => task.task_id) || [];
+
+    setCompletedTasksCount(countSimiliarIds(completedTaskIds, taskIds));
+  }, [taskIds, me?.task_progresses, gateProps, router]);
+
+  const isAdmin =
+    me?.permissions?.filter(
+      (permission) =>
+        permission.dao_id === gateProps?.dao?.id && permission.dao?.is_admin
+    ).length > 0;
 
   const handleClose = () => setOpen(false);
 
@@ -40,36 +72,108 @@ export function GateViewTemplate({ gate }: Props) {
     return arr1.filter((id) => arr2.includes(id)).length;
   };
 
-  useEffect(() => {
-    const completedTaskIds =
-      me?.task_progresses.map((task) => task.task_id) || [];
+  const { mutate: toggleGateStateMutation } = useMutation(
+    'toggleGateState',
+    gqlAuthMethods.toggle_gate_state
+  );
 
+  const toggleGateState = () =>
+    toggleGateStateMutation(
+      {
+        gate_id: gateProps?.id,
+        state: published === 'published' ? 'paused' : 'published',
+      },
+      {
+        onSuccess: (data) => {
+          snackbar.onOpen({
+            message: `Gate ${
+              published === 'not_published' || published === 'paused'
+                ? 'published!'
+                : 'unpublished!'
+            }`,
+          });
 
-    setCompletedTasksCount(countSimiliarIds(completedTaskIds, taskIds));
+          setPublished(data.update_gates_by_pk.published);
+        },
+        onError() {
+          snackbar.handleClick({
+            message: "An error occured, couldn't toggle gate state.",
+          });
+        },
+      }
+    );
 
-  }, [taskIds, me?.task_progresses, completedTasksCount]);
+  const { mutate: deleteGateMutation } = useMutation(
+    'deleteGate',
+    gqlAuthMethods.deleteGate
+  );
+
+  const deleteGate = () =>
+    deleteGateMutation(
+      { gate_id: gateProps?.id },
+      {
+        onSuccess() {
+          snackbar.onOpen({
+            message: 'Gate deleted!',
+          });
+          router.push(ROUTES.DAO_PROFILE.replace('[id]', gateProps?.dao.id));
+        },
+        onError(error) {
+          console.log(error);
+        },
+      }
+    );
+
+  const gateOptions = [
+    {
+      text:
+        published === 'not_published' || published === 'paused'
+          ? 'Publish'
+          : 'Unpublish',
+      action: () => setConfirmToggleState(true),
+      hidden: false,
+    },
+    {
+      text: 'Edit',
+      action: () =>
+        router.push(
+          `${ROUTES.GATE_NEW}?dao=${gateProps?.dao.id}&gate=${gateProps?.id}`
+        ),
+      hidden: published === 'published' || published === 'paused',
+    },
+    {
+      text: 'Delete',
+      action: () => setConfirmDelete(true),
+      hidden: false,
+    },
+  ];
 
   return (
     <Grid container height="100%" sx={{ flexWrap: 'nowrap' }}>
-      <GateCompletedModal open={open} handleClose={handleClose} gate={gate} />
+      <GateCompletedModal
+        open={open}
+        handleClose={handleClose}
+        gate={gateProps}
+      />
       <Grid item xs={12} md={5} p={(theme) => theme.spacing(7)}>
         {/* DAO info */}
-        <Link passHref href={`/dao/${gate.dao.id}`}>
+        <Link passHref href={`/dao/${gateProps?.dao.id}`}>
           <Stack
             direction="row"
             alignItems="center"
+            width="fit-content"
             marginBottom={(theme) => theme.spacing(2)}
             sx={(theme) => ({
-              minWidth: '408px',
               [theme.breakpoints.down('sm')]: {
                 width: '100%',
               },
+              cursor: 'pointer',
             })}
           >
             <AvatarFile
-              alt={gate.dao.name}
-              file={gate.dao.logo}
-              fallback={gate.dao.logo_url}
+              alt={gateProps?.dao.name}
+              file={gateProps?.dao.logo}
+              fallback={gateProps?.dao.logo_url}
               sx={{
                 height: (theme) => theme.spacing(3),
                 width: (theme) => theme.spacing(3),
@@ -80,13 +184,13 @@ export function GateViewTemplate({ gate }: Props) {
               variant="body2"
               color={(theme) => theme.palette.text.secondary}
             >
-              {gate.dao.name}
+              {gateProps?.dao.name}
             </Typography>
           </Stack>
         </Link>
 
         <Typography variant="h4" marginBottom={(theme) => theme.spacing(2)}>
-          {gate.title}
+          {gateProps?.title}
         </Typography>
 
         <Box marginBottom={(theme) => theme.spacing(4)}>
@@ -95,7 +199,8 @@ export function GateViewTemplate({ gate }: Props) {
             sx={{ alignItems: 'center', justifyContent: 'space-between' }}
           >
             <Box>
-              {gate.categories.map((category, idx) => (
+              {isAdmin && <GateStateChip published={published} />}
+              {gateProps?.categories.map((category, idx) => (
                 <Chip
                   key={'category-' + (idx + 1)}
                   label={category}
@@ -106,17 +211,28 @@ export function GateViewTemplate({ gate }: Props) {
                 />
               ))}
             </Box>
-            <Stack>
-              <ShareButton title={`${gate.title} @ Gateway`} />
+            <Stack flexDirection="row" gap={1}>
+              <ShareButton title={`${gateProps?.title} @ Gateway`} />
+              {isAdmin && <MorePopover options={gateOptions} key={uuidv4()} />}
             </Stack>
           </Stack>
         </Box>
-
-        <ReadMore>{gate.description}</ReadMore>
+        {gateProps?.description?.length > 250 ? (
+          <ReadMore>{gateProps?.description}</ReadMore>
+        ) : (
+          <Typography
+            variant="body1"
+            marginBottom={(theme) => theme.spacing(4)}
+            sx={{ wordBreak: 'break-word' }}
+            paragraph={true}
+          >
+            {gateProps?.description}
+          </Typography>
+        )}
         <Box
           component="img"
-          src={gate.image}
-          alt={gate.title + ' image'}
+          src={gateProps?.image}
+          alt={gateProps?.title + ' image'}
           marginBottom={(theme) => theme.spacing(4)}
           sx={{
             width: '100%',
@@ -125,7 +241,7 @@ export function GateViewTemplate({ gate }: Props) {
         />
 
         <Grid container rowGap={(theme) => theme.spacing(3)}>
-          {gate.holders.length > 0 && (
+          {gateProps?.holders.length > 0 && (
             <>
               <Grid item xs={4}>
                 <Typography
@@ -137,12 +253,16 @@ export function GateViewTemplate({ gate }: Props) {
               </Grid>
               <Grid item xs={8}>
                 <AvatarGroup
-                  total={gate.holders.length >= 5 ? 5 : gate.holders.length}
+                  total={
+                    gateProps?.holders.length >= 5
+                      ? 5
+                      : gateProps?.holders.length
+                  }
                   sx={{
                     justifyContent: 'flex-end',
                   }}
                 >
-                  {gate.holders.map((holder) => {
+                  {gateProps?.holders.map((holder) => {
                     return (
                       <Link
                         key={holder.id}
@@ -174,7 +294,7 @@ export function GateViewTemplate({ gate }: Props) {
             </Typography>
           </Grid>
           <Grid item xs={8}>
-            {gate.skills.map((skill, idx) => (
+            {gateProps?.skills.map((skill, idx) => (
               <Chip
                 key={'skill-' + (idx + 1)}
                 label={skill}
@@ -185,7 +305,7 @@ export function GateViewTemplate({ gate }: Props) {
               />
             ))}
           </Grid>
-          {gate.creator && (
+          {gateProps?.creator && (
             <>
               <Grid item xs={4}>
                 <Typography
@@ -196,13 +316,13 @@ export function GateViewTemplate({ gate }: Props) {
                 </Typography>
               </Grid>
               <Grid item xs={8}>
-                <Link passHref href={`/profile/${gate.creator.username}`}>
-                  <Tooltip title={gate.creator.name}>
+                <Link passHref href={`/profile/${gateProps?.creator.username}`}>
+                  <Tooltip title={gateProps?.creator.name}>
                     <Box component="a" sx={{ display: 'inline-block' }}>
                       <AvatarFile
-                        alt={gate.creator.username}
-                        file={gate.creator.picture}
-                        fallback={gate.creator.pfp || '/logo.png'}
+                        alt={gateProps?.creator.username}
+                        file={gateProps?.creator.picture}
+                        fallback={gateProps?.creator.pfp || '/logo.png'}
                       />
                     </Box>
                   </Tooltip>
@@ -223,8 +343,8 @@ export function GateViewTemplate({ gate }: Props) {
         >
           <CircularProgressWithLabel
             variant="determinate"
-            value={(completedTasksCount / gate.tasks.length) * 100}
-            label={`${completedTasksCount}/${gate.tasks.length}`}
+            value={(completedTasksCount / gateProps?.tasks.length) * 100}
+            label={`${completedTasksCount}/${gateProps?.tasks.length}`}
             sx={{
               color: '#6DFFB9',
             }}
@@ -242,15 +362,54 @@ export function GateViewTemplate({ gate }: Props) {
         </Stack>
 
         <TaskGroup>
-          {gate.tasks.map((task, idx) => (
+          {gateProps?.tasks.map((task, idx) => (
             <Task
               key={'task-' + (idx + 1)}
               task={task}
+              readOnly={published !== 'published'}
               setCompletedGate={setOpen}
             />
           ))}
         </TaskGroup>
       </Grid>
+      <Snackbar
+        anchorOrigin={{
+          vertical: snackbar.vertical,
+          horizontal: snackbar.horizontal,
+        }}
+        open={snackbar.open}
+        onClose={snackbar.handleClose}
+        message={snackbar.message}
+      />
+      <ConfirmDialog
+        title="Are you sure you want to delete this gate?"
+        open={confirmDelete}
+        positiveAnswer="Delete"
+        negativeAnswer="Cancel"
+        setOpen={setConfirmDelete}
+        onConfirm={deleteGate}
+      >
+        If you delete this gate, you will not be able to access it and this
+        action cannot be undone.
+      </ConfirmDialog>
+      <ConfirmDialog
+        title={
+          published === 'published'
+            ? 'Are you sure to unpublish this gate?'
+            : 'Are you sure you want to publish this gate?'
+        }
+        open={confirmToggleState}
+        positiveAnswer={`${
+          published === 'published' ? 'Unpublish' : 'Publish'
+        }`}
+        negativeAnswer="Cancel"
+        setOpen={setConfirmToggleState}
+        onConfirm={toggleGateState}
+      >
+        {published === 'published'
+          ? 'If you unpublish this gate, users will not be able to see it anymore.'
+          : 'Publishing this gate will make it accessible by all users.'}
+      </ConfirmDialog>
     </Grid>
   );
 }
