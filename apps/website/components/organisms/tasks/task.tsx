@@ -117,6 +117,7 @@ export function Task({ task, idx, readOnly, setCompletedGate }: Props) {
             task_progresses: newTaskProgress,
           };
         });
+        data.verify_key.completed_gate && queryClient.invalidateQueries('me');
       },
     }
   );
