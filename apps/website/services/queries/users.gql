@@ -8,7 +8,20 @@ query Users {
 query get_user_by_username($username: String!) {
   users(where: { username: { _eq: $username } }) {
     ...public_user
+    wallet
     pfp
+  }
+}
+
+query users_by_wallets($wallets: [String!]!) {
+  users(where: { wallet: { _in: $wallets } }) {
+    id
+    name
+    username
+    wallet
+    picture {
+      ...file
+    }
   }
 }
 

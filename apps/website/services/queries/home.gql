@@ -48,6 +48,7 @@ query get_home {
     name
     about
     username
+    wallet
     picture {
       ...file
     }
@@ -113,5 +114,6 @@ query people_tab {
     }
     about
     username
+    wallet
   }
 }

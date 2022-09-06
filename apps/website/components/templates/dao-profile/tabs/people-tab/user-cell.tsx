@@ -1,3 +1,4 @@
+import dynamic from 'next/dynamic';
 import Link from 'next/link';
 
 import { PartialDeep } from 'type-fest';
@@ -10,9 +11,18 @@ import { useAuth } from '../../../../../providers/auth';
 import { Users } from '../../../../../services/graphql/types.generated';
 import { AdminBadge } from '../../../../atoms/admin-badge';
 import { AvatarFile } from '../../../../atoms/avatar-file';
-import { FollowButtonUser } from '../../../../atoms/follow-button-user';
 import { useDaoProfile } from '../../context';
 import { AdminMenu } from './admin-menu';
+
+const FollowButtonUser = dynamic<any>(
+  () =>
+    import('../../../../atoms/follow-button-user').then(
+      (mod) => mod.FollowButtonUser
+    ),
+  {
+    ssr: false,
+  }
+);
 
 type Props = {
   user: PartialDeep<Users>;
@@ -66,7 +76,7 @@ export function UserCell({ user }: Props) {
         <>
           <TableCell align="right">
             <FollowButtonUser
-              userId={user.id}
+              wallet={user.wallet}
               variant="outlined"
               size="small"
               color="secondary"

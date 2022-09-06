@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
@@ -90,11 +91,10 @@ export function NavBarAvatar({ hideProfile }: Props) {
         </IconButton>
       </Tooltip>
       <Menu
-        sx={{ mt: (theme) => theme.spacing(7) }}
         id="menu-appbar"
         anchorEl={element}
         anchorOrigin={{
-          vertical: 'top',
+          vertical: 'bottom',
           horizontal: 'right',
         }}
         keepMounted
@@ -112,16 +112,18 @@ export function NavBarAvatar({ hideProfile }: Props) {
           </MenuItem>
         </NestedMenuItem> */}
         {!hideProfile && (
-          <MenuItem
-            key="view-profile"
-            onClick={() => router.push(ROUTES.MY_PROFILE)}
-            sx={{
-              py: '12px',
-            }}
-          >
-            <AccountCircleIcon color="disabled" sx={{ mr: 3.5 }} />
-            <Typography textAlign="center">View my profile</Typography>
-          </MenuItem>
+          <Link passHref href={ROUTES.MY_PROFILE}>
+            <MenuItem
+              component="a"
+              key="view-profile"
+              sx={{
+                py: '12px',
+              }}
+            >
+              <AccountCircleIcon color="disabled" sx={{ mr: 3.5 }} />
+              <Typography textAlign="center">View my profile</Typography>
+            </MenuItem>
+          </Link>
         )}
         <MenuItem
           key="disconnect"

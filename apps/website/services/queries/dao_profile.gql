@@ -62,6 +62,7 @@ query dao_profile_people($id: uuid!) {
         name
         username
         pfp
+        wallet
         picture {
           ...file
         }
