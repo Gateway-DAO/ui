@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 import copy from 'copy-to-clipboard';
+import { PartialDeep } from 'type-fest';
 
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
@@ -25,20 +26,28 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 
 import { useAuth } from '../../../../providers/auth';
+import { Credentials } from '../../../../services/graphql/types.generated';
+import { CategoriesList } from '../../categories-list';
 import { TokenFilled } from '../assets/token-filled';
 import { Subjects } from '../index';
-import { showCategories } from '../utlis/categories';
+import { Categories } from '../utlis/categories';
 
 export const DefaultMintScreen = ({
   mintProcessStatus,
   setMintProcessStatus,
   details,
+}: {
+  mintProcessStatus: Subjects;
+  setMintProcessStatus: React.Dispatch<React.SetStateAction<Subjects>>;
+  details: {
+    error?: any;
+    credential: PartialDeep<Credentials>;
+  };
 }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
   const { me } = useAuth();
-  const router = useRouter();
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -49,12 +58,12 @@ export const DefaultMintScreen = ({
 
   return (
     <>
-      <Link href={`/credential/${details.id}`} passHref>
+      <Link href={`/credential/${details.credential.id}`} passHref>
         <CardActionArea>
           <CardMedia
             component="img"
             height="275"
-            image={details.image}
+            image={details.credential.image}
             alt="nft image"
             sx={{ cursor: 'pointer' }}
           />
@@ -74,23 +83,22 @@ export const DefaultMintScreen = ({
           </IconButton>
         }
         title={
-          details.title.length > 15
-            ? details.title.slice(0, 13) + '...'
-            : details.title
+          details.credential.name.length > 15
+            ? details.credential.name.slice(0, 13) + '...'
+            : details.credential.name
         }
       />
       {/* TODO: fix the description overflow */}
 
       <CardContent sx={{ mt: -2.0 }}>
         <Typography variant="body2" color="text.secondary">
-          {details.description.length > 70
-            ? details.description.substring(0, 67) + '...'
-            : details.description}
+          {details.credential.description.length > 70
+            ? details.credential.description.substring(0, 67) + '...'
+            : details.credential.description}
         </Typography>
       </CardContent>
       <Stack direction="row" spacing={1} px={2} pt={1} pb={2}>
-        {me &&
-          details.target_id == me?.id &&
+        {details.credential.target_id === me?.id &&
           (mintProcessStatus === Subjects.default ? (
             <Chip
               key={'mint button'}
@@ -105,7 +113,8 @@ export const DefaultMintScreen = ({
               <Avatar sx={{ height: 24, width: 24 }}>
                 <IconButton
                   onClick={() =>
-                    details.nft_url && window.open(details.nft_url, '_blank')
+                    details.credential.transaction_url &&
+                    window.open(details.credential.transaction_url, '_blank')
                   }
                 >
                   <TokenFilled sx={{ height: 18, width: 18 }} />
@@ -114,7 +123,10 @@ export const DefaultMintScreen = ({
             </Tooltip>
           ))}
         {/* we can show maximum 2 categories , when mintProcessStauts is minted*/}
-        {showCategories(mintProcessStatus, details.categories)}
+        <Categories
+          mintProcessStatus={mintProcessStatus}
+          categories={details.credential.categories}
+        />
       </Stack>
       <Menu
         anchorEl={anchorEl}
@@ -132,22 +144,42 @@ export const DefaultMintScreen = ({
         }}
       >
         <MenuList>
-          {/* for later use */}
-          {/* <MenuItem>
-            <ListItemIcon>
-              <OpenInNewIcon fontSize="medium" color="disabled" />
-            </ListItemIcon>
-            Open on Ceramic
-          </MenuItem> */}
+          {details.credential.status == 'minted' && (
+            <MenuItem>
+              <a
+                href={details.credential.transaction_url}
+                target="_blank"
+                style={{
+                  textDecoration: 'none',
+                  color: 'white',
+                }}
+                rel="noreferrer"
+              >
+                <Stack direction="row" alignItems="center">
+                  <ListItemIcon>
+                    <OpenInNewIcon fontSize="medium" color="disabled" />
+                  </ListItemIcon>
+                  Open on Explorer
+                </Stack>
+              </a>
+            </MenuItem>
+          )}
           <MenuItem
             onClick={() => {
-              copy(details.nft_url);
+              navigator.clipboard.writeText(
+                window.location.protocol +
+                  '//' +
+                  window.location.hostname +
+                  (window.location.port && ':' + window.location.port) +
+                  '/credential/' +
+                  details.credential.id
+              );
             }}
           >
             <ListItemIcon>
               <ContentCopyIcon fontSize="medium" color="disabled" />
             </ListItemIcon>
-            Copy url address
+            Copy URL address
           </MenuItem>
         </MenuList>
       </Menu>

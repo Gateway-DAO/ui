@@ -23,6 +23,7 @@ import { web3client } from '../services/web3/client';
 
 import '../components/atoms/global-dependencies';
 import '../styles/next.css';
+import { BiconomyProvider } from '../providers/biconomy';
 
 type AppProps = NextAppProps & {
   Component: NextAppProps['Component'] & { auth?: boolean };
@@ -72,11 +73,16 @@ function CustomApp({ Component, pageProps: { ...pageProps } }: AppProps) {
           <QueryClientProvider client={queryClient}>
             <Hydrate state={pageProps.dehydratedState}>
               <AuthProvider isAuthPage={Component.auth}>
-                <CyberConnectProvider>
-                  <NavStateProvider>
-                    <Component {...pageProps} />
-                  </NavStateProvider>
-                </CyberConnectProvider>
+                <BiconomyProvider
+                  apiKey={process.env.NEXT_PUBLIC_WEB3_BICONOMY_API_KEY}
+                  contractAddress={process.env.NEXT_PUBLIC_WEB3_NFT_ADDRESS}
+                >
+                  <CyberConnectProvider>
+                    <NavStateProvider>
+                      <Component {...pageProps} />
+                    </NavStateProvider>
+                  </CyberConnectProvider>
+                </BiconomyProvider>
               </AuthProvider>
             </Hydrate>
           </QueryClientProvider>

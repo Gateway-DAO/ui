@@ -4,9 +4,14 @@ import React, { useEffect, useState } from 'react';
 // Web3
 import { Biconomy } from '@biconomy/mexa';
 import { ethers } from 'ethers';
+import { useMutation } from 'react-query';
+import { PartialDeep } from 'type-fest';
 import { useAccount, chain, useSigner, useNetwork } from 'wagmi';
 
 import { CREDENTIAL_ABI } from '../constants/web3';
+import { useAuth } from '../providers/auth';
+import { gqlMethods } from '../services/api';
+import { Credentials } from '../services/graphql/types.generated';
 import { useSnackbar } from './use-snackbar';
 
 let biconomy;
@@ -59,8 +64,6 @@ export function useMint(
 
     if (contract) {
       try {
-        console.log('Sending normal transaction');
-
         const promise = contract.mint(address.address, token_uri);
 
         setAsksSignature(true);
@@ -69,10 +72,7 @@ export function useMint(
 
         setAsksSignature(false);
 
-        console.log('Transaction hash : https://polygonscan.com/tx/' + tx.hash);
-
         const confirmation = await tx.wait();
-        console.log(confirmation);
 
         setLoading(false);
         setMinted(true);
@@ -136,9 +136,12 @@ export function useMint(
  * It creates a biconomy provider, signs the transaction and sends it to the contract
  * @param {string | null} contractAddress - The address of the contract you want to interact
  * with.
+ *
+ * @deprecated This function is deprecated. Use useBiconomy (from providers/biconomy) instead.
  */
 export function useBiconomyMint(
-  contractAddress: string | null = process.env.NEXT_PUBLIC_WEB3_NFT_ADDRESS
+  contractAddress: string | null = process.env.NEXT_PUBLIC_WEB3_NFT_ADDRESS,
+  isMainnet: boolean = process.env.NODE_ENV === 'production'
 ) {
   // From Wagmi
   const { data: address } = useAccount();
@@ -152,6 +155,20 @@ export function useBiconomyMint(
   // Snackbar
   const snackbar = useSnackbar();
 
+  // User info
+  const { me, gqlAuthMethods } = useAuth();
+
+  // Credential update
+  const { mutateAsync: updateCredential } = useMutation(
+    async (data: { id: string; tx_url: string }) => {
+      return await gqlAuthMethods.update_credential_status({
+        id: data.id,
+        status: 'minted',
+        transaction_url: data.tx_url,
+      });
+    }
+  );
+
   useEffect(() => {
     async function init() {
       if (
@@ -162,13 +179,15 @@ export function useBiconomyMint(
       ) {
         // We're creating biconomy provider linked to your network of choice where your contract is deployed
         const jsonRpcProvider = new ethers.providers.JsonRpcProvider(
-          process.env.NEXT_PUBLIC_WEB3_POLYGON_RPC
+          isMainnet
+            ? process.env.NEXT_PUBLIC_WEB3_POLYGON_RPC
+            : process.env.NEXT_PUBLIC_WEB3_RINKEBY_RPC
         );
 
         biconomy = new Biconomy(jsonRpcProvider, {
           walletProvider: window.ethereum,
           apiKey: process.env.NEXT_PUBLIC_WEB3_BICONOMY_API_KEY,
-          debug: false,
+          debug: process.env.NODE_ENV === 'development',
         });
 
         biconomy
@@ -210,6 +229,7 @@ export function useBiconomyMint(
     if (contract) {
       try {
         if (metaTxEnabled) {
+          setLoading(true);
           let tx;
 
           const { data: contractData } =
@@ -239,30 +259,33 @@ export function useBiconomyMint(
             throw new Error('Minting failed! Try again later.');
           }
 
-          console.log('Transaction hash : https://polygonscan.com/tx/' + tx);
-
           setMinted(true);
 
           return {
             isMinted: true,
-            polygonURL: 'https://polygonscan.com/tx/' + tx,
+            polygonURL:
+              (isMainnet
+                ? 'https://polygonscan.com'
+                : 'https://rinkeby.etherscan.io') +
+              '/tx/' +
+              tx,
           };
         } else {
-          console.log('Sending normal transaction');
-
           const tx = await contract.mint(address.address, token_uri);
-
-          console.log(
-            'Transaction hash : https://polygonscan.com/tx/' + tx.hash
-          );
 
           await tx.wait();
 
           setMinted(true);
+          setLoading(false);
 
           return {
             isMinted: true,
-            polygonURL: 'https://polygonscan.com/tx/' + tx.hash,
+            polygonURL:
+              (isMainnet
+                ? 'https://polygonscan.com'
+                : 'https://rinkeby.etherscan.io') +
+              '/tx/' +
+              tx.hash,
           };
         }
       } catch (error) {
@@ -270,6 +293,7 @@ export function useBiconomyMint(
         console.log('[useMint] Error:', error);
 
         setMinted(false);
+        setLoading(false);
 
         return {
           isMinted: false,
@@ -290,8 +314,48 @@ export function useBiconomyMint(
     };
   };
 
+  const mintCredential = async (
+    credential: PartialDeep<Credentials>
+  ): Promise<{
+    isMinted: boolean;
+    polygonURL?: string;
+    error?: any;
+  }> => {
+    try {
+      // 1. verify is the user owns the credential
+      if (credential.target_id !== me.id) {
+        throw new Error('You are not the owner of this credential!');
+      }
+
+      // 2. mint the NFT
+      const res = await mint(credential?.uri || '');
+
+      if (res.error) {
+        throw res.error;
+      }
+
+      // 3. change the status of the credential
+      await updateCredential({
+        id: credential.id,
+        tx_url: res.polygonURL,
+      });
+
+      return res;
+    } catch (error) {
+      console.log('[useMint] Error:', error);
+
+      setMinted(false);
+
+      return {
+        isMinted: false,
+        error,
+      };
+    }
+  };
+
   return {
     mint,
+    mintCredential,
     loading,
     minted,
     snackbar,

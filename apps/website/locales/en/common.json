@@ -59,6 +59,8 @@
     "unfollow": "Unfollow",
     "pending": "Pending",
     "reject": "Reject",
-    "withdraw": "Withdraw invitation"
+    "withdraw": "Withdraw invitation",
+    "mint": "Mint as NFT",
+    "check-transaction": "Verify Mint Transaction"
   }
 }

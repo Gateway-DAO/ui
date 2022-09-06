@@ -17,13 +17,19 @@ interface State extends Payload {
   type: AlertColor;
 }
 
+type Snackbar = State & {
+  onOpen: (newState: Payload) => void;
+  handleClick: (newState: Payload) => () => void;
+  handleClose: () => void;
+};
+
 /**
  * `useSnackbar` is a function that returns an object with the current state and functions to update
  * the state
  * @returns The return value is an object that contains the state and the functions that are used to
  * update the state.
  */
-export const useSnackbar = () => {
+export const useSnackbar = (): Snackbar => {
   const [state, setState] = useState<State>({
     open: false,
     vertical: 'top',

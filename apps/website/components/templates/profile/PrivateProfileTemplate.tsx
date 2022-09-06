@@ -54,16 +54,14 @@ export default function PrivateProfileTemplate() {
     !me?.timezone == undefined ||
     !me?.experiences?.length;
 
-  const tabs = useMemo(
-    () => [
-      {
-        key: 'overview',
-        label: t('common:tabs.overview'),
-        section: <OverviewTab user={me} />,
-      },
-    ],
-    []
-  );
+  const tabs = [
+    {
+      key: 'overview',
+      label: t('common:tabs.overview'),
+      section: <OverviewTab user={me} />,
+    },
+  ];
+
   return (
     <>
       <Box
