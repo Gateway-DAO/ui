@@ -1,8 +1,8 @@
 import { GetStaticPaths, InferGetStaticPropsType } from 'next';
 
-import { Navbar } from '../../components/organisms/navbar';
 import { DashboardTemplate } from '../../components/templates/dashboard';
 import { GateViewTemplate } from '../../components/templates/gate-view';
+import { Navbar } from '../../components/templates/gate-view/navbar/navbar';
 import { gqlAnonMethods } from '../../services/api';
 
 export default function GateProfilePage({
