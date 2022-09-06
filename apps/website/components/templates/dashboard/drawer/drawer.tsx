@@ -10,6 +10,7 @@ import { MotionTooltip } from '@gateway/ui';
 
 import ExploreIcon from '@mui/icons-material/Explore';
 import { Avatar, ListItemButton } from '@mui/material';
+import { IconButton } from '@mui/material';
 import ListItemIcon from '@mui/material/ListItemIcon';
 
 import { ROUTES } from '../../../../constants/routes';
@@ -46,7 +47,9 @@ export function Drawer({ currentDao, showExplore }: Props) {
               height: (theme) => theme.spacing(5),
             }}
           >
-            <GatewayIcon />
+            <Link passHref href={ROUTES.EXPLORE} prefetch={false}>
+              <GatewayIcon />
+            </Link>
           </ListItemIcon>
           <AnimatePresence>
             {showExplore && (
