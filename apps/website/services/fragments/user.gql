@@ -36,6 +36,7 @@ fragment public_user on users {
   skills
   languages
   timezone
+  wallet
   following_aggregate {
     aggregate {
       count

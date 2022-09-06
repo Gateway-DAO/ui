@@ -17,6 +17,7 @@ import { SEOSocial, SEOFavicon } from '../components/atoms/seo';
 import { NavStateProvider } from '../hooks/use-nav';
 import { usePersistLocale } from '../hooks/usePersistLocale';
 import { AuthProvider } from '../providers/auth';
+import { CyberConnectProvider } from '../providers/cyberconnect';
 import { queryClient } from '../services/query-client';
 import { web3client } from '../services/web3/client';
 
@@ -76,9 +77,11 @@ function CustomApp({ Component, pageProps: { ...pageProps } }: AppProps) {
                   apiKey={process.env.NEXT_PUBLIC_WEB3_BICONOMY_API_KEY}
                   contractAddress={process.env.NEXT_PUBLIC_WEB3_NFT_ADDRESS}
                 >
-                  <NavStateProvider>
-                    <Component {...pageProps} />
-                  </NavStateProvider>
+                  <CyberConnectProvider>
+                    <NavStateProvider>
+                      <Component {...pageProps} />
+                    </NavStateProvider>
+                  </CyberConnectProvider>
                 </BiconomyProvider>
               </AuthProvider>
             </Hydrate>

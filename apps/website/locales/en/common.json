@@ -3,7 +3,6 @@
   "gates": "Gates",
   "daos": "DAOs",
   "people": "People",
-  "follow": "follow",
   "count": {
     "gate": {
       "0": "No gates",
@@ -48,12 +47,19 @@
     "see-more": "View more people"
   },
   "actions": {
+    "accept": "Accept",
+    "decline": "Decline",
     "connect": "connect",
+    "connected": "connected",
+    "close": "close",
     "disconnect": "disconnect",
     "cancel": "cancel",
     "got-it": "got it",
     "follow": "Follow",
     "unfollow": "Unfollow",
+    "pending": "Pending",
+    "reject": "Reject",
+    "withdraw": "Withdraw invitation",
     "mint": "Mint as NFT",
     "check-transaction": "Verify Mint Transaction"
   }
