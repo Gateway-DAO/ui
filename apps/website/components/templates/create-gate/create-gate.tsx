@@ -54,7 +54,7 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
   const [draftIsLoading, setDraftIsLoading] = useState(false);
   const [createIsLoading, setCreateIsLoading] = useState(false);
 
-  const [deletedTasks, setDeletedTasks] = useState([]);
+  const [deletedTasks, setDeletedTasks] = useState<string[]>([]);
 
   const { mutateAsync: uploadImage } = useMutation(
     'uploadImage',

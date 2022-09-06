@@ -3,10 +3,14 @@ import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
 import { CreateGateTemplate } from '../../components/templates/create-gate';
+import { DraftGateTypes } from '../../components/templates/create-gate/schema';
 import { ROUTES } from '../../constants/routes';
 import { gqlAnonMethods } from '../../services/api';
 
-export default function CreateGate({ gateProps }) {
+type CreateGateProps = {
+  gateProps: DraftGateTypes;
+};
+export default function CreateGate({ gateProps }: CreateGateProps) {
   const router = useRouter();
 
   const {

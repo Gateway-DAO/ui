@@ -1,9 +1,21 @@
+import { FieldErrors } from 'react-hook-form';
+
 import { Search } from '@mui/icons-material';
-import { Chip, TextField, Autocomplete } from '@mui/material';
+import { Chip, TextField, Autocomplete, TextFieldProps } from '@mui/material';
 
 import { SKILLS } from '../../constants/skills';
 
-export const SkillsInput = ({ set, defaultValue, ...props }) => {
+type SkillsInputProps = {
+  set: (categories: string[]) => void;
+  defaultValue?: string[];
+} & TextFieldProps &
+  FieldErrors;
+
+export const SkillsInput = ({
+  set,
+  defaultValue,
+  ...props
+}: SkillsInputProps) => {
   return (
     <Autocomplete
       multiple

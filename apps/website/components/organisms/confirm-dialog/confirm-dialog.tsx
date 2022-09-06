@@ -6,7 +6,17 @@ import {
   DialogTitle,
 } from '@mui/material';
 
-const ConfirmDialog = (props) => {
+type ConfirmDialogProps = {
+  title: string;
+  children: React.ReactNode;
+  open: boolean;
+  setOpen: (open: boolean) => void;
+  onConfirm: () => void;
+  positiveAnswer: string;
+  negativeAnswer: string;
+};
+
+const ConfirmDialog = (props: ConfirmDialogProps) => {
   const {
     title,
     children,

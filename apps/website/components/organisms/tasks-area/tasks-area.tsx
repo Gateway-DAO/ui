@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { Dispatch, SetStateAction, useEffect } from 'react';
 
 import { useFieldArray, useFormContext } from 'react-hook-form';
 
@@ -11,7 +11,11 @@ import {
 } from '../../molecules/add-task/quiz-task/quiz-task';
 import SnapshotTask from '../../molecules/add-task/snapshot-task/snapshot-task';
 import VerificationCodeTask from '../../molecules/add-task/verification-task/verification-task';
-import { CreateGateTypes, Task } from '../../templates/create-gate/schema';
+import {
+  CreateGateTypes,
+  DraftTasksSchema,
+  Task,
+} from '../../templates/create-gate/schema';
 
 const TaskComponents = {
   meeting_code: VerificationCodeTask,
@@ -51,7 +55,12 @@ const defaultTaskData = (
   }
 };
 
-const TaskArea = ({ draftTasks, onDelete }) => {
+type TaskAreaProps = {
+  draftTasks: DraftTasksSchema;
+  onDelete: Dispatch<SetStateAction<string[]>>;
+};
+
+const TaskArea = ({ draftTasks, onDelete }: TaskAreaProps) => {
   const { control, setValue } = useFormContext<CreateGateTypes>();
 
   const { fields, append, remove } = useFieldArray({
@@ -90,7 +99,7 @@ const TaskArea = ({ draftTasks, onDelete }) => {
             taskId={index}
             deleteTask={() => {
               remove(index);
-              onDelete((prev) => [...prev, task.task_id]);
+              onDelete((prev: string[]) => [...prev, task.task_id]);
             }}
           />
         );

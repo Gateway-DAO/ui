@@ -18,7 +18,17 @@ const style: SxProps = {
   flexDirection: 'column',
 };
 
-export default function GatePublishedModal({ gateId, open, handleClose }) {
+type GatePublishedModalProps = {
+  gateId: string;
+  open: boolean;
+  handleClose: () => void;
+};
+
+export default function GatePublishedModal({
+  gateId,
+  open,
+  handleClose,
+}: GatePublishedModalProps) {
   const router = useRouter();
   const [gate, setGate] = useState({
     title: '',

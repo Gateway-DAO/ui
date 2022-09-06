@@ -3,7 +3,15 @@ import React from 'react';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { Avatar, IconButton, Popover, Typography } from '@mui/material';
 
-const MorePopover = ({ options }) => {
+type MorePopoverProps = {
+  options: {
+    text: string;
+    action: () => void;
+    hidden: boolean;
+  }[];
+};
+
+const MorePopover = ({ options }: MorePopoverProps) => {
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null
   );
