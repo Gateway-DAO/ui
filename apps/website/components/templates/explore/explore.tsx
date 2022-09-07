@@ -31,8 +31,8 @@ export function ExploreTemplate({ title, subtitle, data }: TemplateProps) {
         section: <AllTab {...data} setActiveTab={setTab} />,
       },
       {
-        key: 'gates',
-        label: t('common:tabs.gates'),
+        key: 'credentials',
+        label: t('common:tabs.credentials'),
         section: <GatesTab />,
       },
       {

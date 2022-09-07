@@ -238,7 +238,7 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
           variant="h4"
           sx={{ margin: '40px 0 40px 0', marginBottom: { md: '100px' } }}
         >
-          Create Gate
+          {oldData.id ? 'Edit' : 'Create'} Credential
         </Typography>
 
         {/* Details */}

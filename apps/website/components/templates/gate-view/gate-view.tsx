@@ -390,7 +390,7 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
           >
             <Typography variant="h6">Tasks</Typography>
             <Typography variant="caption">
-              Complete the tasks to open this gate
+              Complete the tasks to unlock this credential
             </Typography>
           </Stack>
         </Stack>
@@ -416,21 +416,21 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
         message={snackbar.message}
       />
       <ConfirmDialog
-        title="Are you sure you want to delete this gate?"
+        title="Are you sure you want to delete this credential?"
         open={confirmDelete}
         positiveAnswer="Delete"
         negativeAnswer="Cancel"
         setOpen={setConfirmDelete}
         onConfirm={deleteGate}
       >
-        If you delete this gate, you will not be able to access it and this
-        action cannot be undone.
+        If you delete this credential, you will not be able to access it and
+        this action cannot be undone.
       </ConfirmDialog>
       <ConfirmDialog
         title={
           published === 'published'
-            ? 'Are you sure to unpublish this gate?'
-            : 'Are you sure you want to publish this gate?'
+            ? 'Are you sure to unpublish this credential?'
+            : 'Are you sure you want to publish this credential?'
         }
         open={confirmToggleState}
         positiveAnswer={`${
@@ -441,8 +441,8 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
         onConfirm={toggleGateState}
       >
         {published === 'published'
-          ? 'If you unpublish this gate, users will not be able to see it anymore.'
-          : 'Publishing this gate will make it accessible by all users.'}
+          ? 'If you unpublish this credential, users will not be able to see it anymore.'
+          : 'Publishing this credential will make it accessible by all users.'}
       </ConfirmDialog>
     </Grid>
   );

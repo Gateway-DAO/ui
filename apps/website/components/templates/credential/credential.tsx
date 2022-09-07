@@ -327,14 +327,19 @@ export function CredentialTemplate({ credential, openModal }: Props) {
           >
             <Typography variant="h6">Tasks</Typography>
             <Typography variant="caption">
-              Complete the tasks to open this gate
+              Completed tasks to earn this credential
             </Typography>
           </Stack>
         </Stack>
 
         <TaskGroup>
           {credential?.pow.map((task, idx) => (
-            <Task key={'task-' + (idx + 1)} task={task} readOnly />
+            <Task
+              key={'task-' + (idx + 1)}
+              task={task}
+              readOnly
+              completed={true}
+            />
           ))}
         </TaskGroup>
       </Grid>

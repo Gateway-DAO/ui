@@ -25,6 +25,7 @@ import CardMedia from '@mui/material/CardMedia';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 
+import { ROUTES } from '../../../../constants/routes';
 import { useAuth } from '../../../../providers/auth';
 import { Credentials } from '../../../../services/graphql/types.generated';
 import { CategoriesList } from '../../categories-list';
@@ -58,7 +59,10 @@ export const DefaultMintScreen = ({
 
   return (
     <>
-      <Link href={`/credential/${details.credential.id}`} passHref>
+      <Link
+        href={ROUTES.EARNED.replace('[id]', details.credential.id)}
+        passHref
+      >
         <CardActionArea>
           <CardMedia
             component="img"

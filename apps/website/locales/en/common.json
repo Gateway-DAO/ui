@@ -27,14 +27,14 @@
   "tabs": {
     "all": "All",
     "overview": "Overview",
-    "gates": "Gates",
+    "credentials": "Credentials",
     "daos": "DAOs",
     "people": "People"
   },
-  "featured-gates": {
-    "title": "Featured Gates",
-    "caption": "People are really into these gates. We thought you would too.",
-    "see-more": "View more gates"
+  "featured-credentials": {
+    "title": "Featured Credentials",
+    "caption": "People are really into these credentials. We thought you would too.",
+    "see-more": "View more credentials"
   },
   "featured-daos": {
     "title": "Recommended DAOs",

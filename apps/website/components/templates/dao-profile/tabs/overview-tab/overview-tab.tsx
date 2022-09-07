@@ -35,12 +35,12 @@ export function OverviewTab({ people, setTab }: Props) {
     return isAdmin
       ? [
           <React.Fragment key={uuid()}>
-            <Link key="create-gate" passHref href={newGateUrl}>
+            <Link key="create-credential" passHref href={newGateUrl}>
               <EmptyCard
-                title="Create Gate"
+                title="Create Credential"
                 subtitle={
                   !gates.length
-                    ? 'Create your first Gate and help talents find you'
+                    ? 'Create your first Credential and help talents find you'
                     : 'Keep engaging your team'
                 }
                 component="a"
@@ -88,12 +88,12 @@ export function OverviewTab({ people, setTab }: Props) {
         }}
       >
         <SectionWithSliderResponsive
-          title={t('common:featured-gates.title')}
-          caption={t('common:featured-gates.caption')}
+          title={t('common:featured-credentials.title')}
+          caption={t('common:featured-credentials.caption')}
           action={
             gates.length > 0 && (
               <Button onClick={() => setTab(1)}>
-                {t('common:featured-gates.see-more')}
+                {t('common:featured-credentials.see-more')}
               </Button>
             )
           }

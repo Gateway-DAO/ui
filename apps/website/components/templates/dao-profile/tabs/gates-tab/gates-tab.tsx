@@ -39,10 +39,10 @@ export function GatesTab() {
   const newGateUrl = `${ROUTES.GATE_NEW}?dao=${dao?.id}`;
 
   const newGateCard = (
-    <Link key="create-gate" passHref href={newGateUrl}>
+    <Link key="create-credential" passHref href={newGateUrl}>
       <EmptyCard
-        title="Create Gate"
-        subtitle="Create your first Gate and help talents find you"
+        title="Create Credential"
+        subtitle="Create your first Credential and help talents find you"
         component="a"
         sx={{ minHeight: 440, maxWidth: { md: '25%' } }}
       />
@@ -62,7 +62,7 @@ export function GatesTab() {
               {isAdmin && (
                 <Link passHref href={newGateUrl}>
                   <Button variant="contained" startIcon={<Add />} size="small">
-                    Create a Gate
+                    Create a Credential
                   </Button>
                 </Link>
               )}
@@ -96,9 +96,9 @@ export function GatesTab() {
             >
               {isAdmin && (
                 <MUICard sx={{ position: 'relative' }}>
-                  <Link key="create-gate" passHref href={newGateUrl}>
+                  <Link key="create-credential" passHref href={newGateUrl}>
                     <EmptyCard
-                      title="Create Gate"
+                      title="Create Credential"
                       subtitle="Keep engaging your team"
                       component="a"
                       sx={{ height: '100%', width: '100%' }}
@@ -109,7 +109,7 @@ export function GatesTab() {
 
               {filteredGates.map((gate) => (
                 <GatesCard
-                  key={`gate-${gate.id}`}
+                  key={`credential-${gate.id}`}
                   {...gate}
                   dao={dao}
                   showStatus={isAdmin}
@@ -133,8 +133,8 @@ export function GatesTab() {
             !isAdmin && (
               <EmptyCard
                 key="empty"
-                title="No Gates yet"
-                subtitle="Follow us and get notificatons when a new Gate is created"
+                title="No Credentials yet"
+                subtitle="Follow us and get notificatons when a new Credential is created"
                 disabled
                 sx={{ height: 440, maxWidth: { md: '25%' } }}
               />

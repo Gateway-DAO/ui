@@ -53,7 +53,7 @@ const TokenHoldContent = ({
           Check Token
         </LoadingButton>
       )}
-      {completed && (
+      {completed && updatedAt && (
         <Typography color="#c5ffe3" variant="subtitle2">
           Task completed at {formattedDate}
         </Typography>
