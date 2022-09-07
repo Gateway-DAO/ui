@@ -61,6 +61,8 @@
     "reject": "Reject",
     "withdraw": "Withdraw invitation",
     "mint": "Mint as NFT",
-    "check-transaction": "Verify Mint Transaction"
+    "check-transaction": "Verify Mint Transaction",
+    "see-more": "See more",
+    "see-less": "See less"
   }
 }
