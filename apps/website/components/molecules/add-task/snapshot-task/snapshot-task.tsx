@@ -47,6 +47,8 @@ const SnapshotTask = ({ taskId, deleteTask }) => {
 
   const [taskVisible, setTaskVisible] = useState(false);
 
+  const [taskVisible, setTaskVisible] = useState(false);
+
   return (
     <Stack
       sx={(theme) => ({
