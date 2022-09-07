@@ -4,6 +4,7 @@ import { useQuery } from 'react-query';
 import { useToggle } from 'react-use';
 
 import { MintModal } from '../../components/organisms/mint-modal';
+import { Navbar } from '../../components/organisms/navbar';
 import { CredentialTemplate } from '../../components/templates/credential';
 import { DashboardTemplate } from '../../components/templates/dashboard';
 import { gqlAnonMethods } from '../../services/api';
@@ -37,6 +38,7 @@ export default function CredentialPage({
         },
       }}
     >
+      <Navbar isInternalPage={true} />
       <CredentialTemplate
         credential={data.credentials_by_pk}
         openModal={open}
