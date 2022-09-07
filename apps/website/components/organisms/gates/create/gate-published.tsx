@@ -1,125 +1,222 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
-import { Button, SxProps } from '@mui/material';
+import { useQuery } from 'react-query';
+import { PartialDeep } from 'type-fest';
+
+import CloseIcon from '@mui/icons-material/Close';
+import {
+  Button,
+  SxProps,
+  Dialog,
+  Stack,
+  Avatar,
+  IconButton,
+} from '@mui/material';
 import Box from '@mui/material/Box';
-import Modal from '@mui/material/Modal';
 import Typography from '@mui/material/Typography';
 
+import { ROUTES } from '../../../../constants/routes';
 import { useAuth } from '../../../../providers/auth';
+import { GateQuery, Gates } from '../../../../services/graphql/types.generated';
 import { GatesCard } from '../../../molecules/gates-card';
 
-const style: SxProps = {
-  bgcolor: 'background.paper',
-  p: 3,
-  minHeight: '100%',
-  display: 'flex',
-  flexDirection: 'column',
-};
-
 type GatePublishedModalProps = {
-  gateId: string;
+  gate?: PartialDeep<Gates>;
   open: boolean;
   handleClose: () => void;
 };
 
 export default function GatePublishedModal({
-  gateId,
+  gate: gateProp,
   open,
   handleClose,
 }: GatePublishedModalProps) {
   const router = useRouter();
   const { gqlAuthMethods } = useAuth();
-  const [gate, setGate] = useState({
-    title: '',
-    image: '',
-    description: '',
-    categories: [],
-    dao: {
-      name: '',
-    },
-    id: '',
-    published: '',
-  });
 
-  useEffect(() => {
-    if (gateId) {
-      gqlAuthMethods
-        .gate({
-          id: gateId,
-        })
-        .then((response) => {
-          setGate(response.gates_by_pk);
-        });
+  const {
+    data: { gates_by_pk: gate },
+  } = useQuery(
+    ['gate', gateProp?.id],
+    () =>
+      gqlAuthMethods.gate({
+        id: gateProp.id,
+      }),
+    {
+      initialData: {
+        gates_by_pk: {
+          title: '',
+          image: '',
+          description: '',
+          categories: [],
+          dao: {
+            name: '',
+          },
+          id: '',
+          published: '',
+          ...gateProp,
+        },
+      } as GateQuery,
     }
-  }, [gateId]);
+  );
+
+  //   return (
+  //     <div>
+  //       <Modal
+  //         open={open}
+  //         onClose={handleClose}
+  //         aria-labelledby="modal-modal-title"
+  //         aria-describedby="modal-modal-description"
+  //         sx={{
+  //           overflowY: 'auto',
+  //         }}
+  //       >
+  //         <Box sx={style}>
+  //           <Box>
+  //             <Image
+  //               src="/favicon-512.png"
+  //               alt="gateway-logo"
+  //               height={40}
+  //               width={40}
+  //             />
+  //           </Box>
+  //           <Box
+  //             sx={{
+  //               display: 'flex',
+  //               flexDirection: 'column',
+  //               alignItems: 'center',
+  //               justifyContent: 'center',
+  //               flex: 1,
+  //             }}
+  //           >
+  //             <Box>
+  //               <Typography
+  //                 id="modal-modal-title"
+  //                 variant="h3"
+  //                 component="h3"
+  //                 fontSize={48}
+  //                 textAlign="center"
+  //                 sx={{
+  //                   mb: 3,
+  //                 }}
+  //               >
+  //                 Credential Published
+  //               </Typography>
+  //               <Typography
+  //                 id="modal-modal-description"
+  //                 sx={{ mb: 6, textAlign: 'center' }}
+  //                 fontSize={16}
+  //               >
+  //                 You have published the{' '}
+  //                 <span style={{ color: '#D083FF' }}>{gate.title}</span>{' '}
+  //                 Credential from{' '}
+  //                 <span style={{ color: '#D083FF' }}>{gate.dao.name}</span>.
+  //               </Typography>
+  //             </Box>
+  //             <GatesCard {...gate} />
+  //             <Button
+  //               variant="outlined"
+  //               size="medium"
+  //               sx={{ margin: '20px 0 0 20px' }}
+  //               onClick={() => router.push(`/credential/${gateId}`)}
+  //             >
+  //               Check Credential
+  //             </Button>
+  //           </Box>
+  //         </Box>
+  //       </Modal>
+  //     </div>
+  //   );
 
   return (
-    <div>
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
+    <Dialog
+      open={open}
+      fullScreen
+      onClose={handleClose}
+      aria-labelledby="modal-modal-title"
+      aria-describedby="modal-modal-description"
+    >
+      <Stack
+        direction="column"
         sx={{
-          overflowY: 'auto',
+          bgcolor: 'background.paper',
+          px: { xs: 2, md: 6, lg: 12 },
+          py: { xs: 1, md: 5 },
+          height: '100%',
+          width: { md: '100%' },
+          display: 'flex',
         }}
       >
-        <Box sx={style}>
+        <Stack justifyContent="flex-start" direction="row">
+          <Avatar
+            src={'/favicon-512.png'}
+            alt={'gateway-logo'}
+            sizes={'40px'}
+          />
+        </Stack>
+
+        <Stack
+          direction="column"
+          flex={1}
+          alignSelf="center"
+          alignItems="center"
+          justifyContent="center"
+          sx={{
+            background:
+              'radial-gradient(50% 50% at 50% 50%, rgba(154, 83, 255, 0.3) 0%, rgba(154, 83, 255, 0) 100%)',
+            width: '100%',
+          }}
+        >
           <Box>
-            <Image
-              src="/favicon-512.png"
-              alt="gateway-logo"
-              height={40}
-              width={40}
-            />
+            <Typography
+              id="modal-modal-title"
+              variant="h3"
+              component="h3"
+              textAlign="center"
+              sx={{
+                mb: 3,
+                fontSize: { xs: 24, md: 48 },
+                fontWeight: 700,
+              }}
+            >
+              Congratulations!
+            </Typography>
+            <Typography
+              id="modal-modal-description"
+              fontSize={16}
+              color={'#FFFFFFB2'}
+              sx={{
+                mx: { xs: 4 },
+                textAlign: 'center',
+                alignSelf: 'center',
+              }}
+            >
+              You have published the{' '}
+              <span style={{ color: '#D083FF' }}>{gate.title}</span> Credential
+              from <span style={{ color: '#D083FF' }}>{gate.dao?.name}</span>.
+            </Typography>
           </Box>
           <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-              flex: 1,
-            }}
+            sx={(theme) => ({
+              height: { xs: theme.spacing(45.49), md: theme.spacing(59.78) },
+              width: { xs: theme.spacing(28.75), md: theme.spacing(37.75) },
+              marginY: (theme) => theme.spacing(5),
+            })}
           >
-            <Box>
-              <Typography
-                id="modal-modal-title"
-                variant="h3"
-                component="h3"
-                fontSize={48}
-                textAlign="center"
-                sx={{
-                  mb: 3,
-                }}
-              >
-                Credential Published
-              </Typography>
-              <Typography
-                id="modal-modal-description"
-                sx={{ mb: 6, textAlign: 'center' }}
-                fontSize={16}
-              >
-                You have published the{' '}
-                <span style={{ color: '#D083FF' }}>{gate.title}</span>{' '}
-                Credential from{' '}
-                <span style={{ color: '#D083FF' }}>{gate.dao.name}</span>.
-              </Typography>
-            </Box>
-            <GatesCard {...gate} />
-            <Button
-              variant="outlined"
-              size="medium"
-              sx={{ margin: '20px 0 0 20px' }}
-              onClick={() => router.push(`/gate/${gateId}`)}
-            >
-              Check Credential
-            </Button>
+            <GatesCard onClick={handleClose} {...gate} />
           </Box>
-        </Box>
-      </Modal>
-    </div>
+          <Stack direction="row" justifyContent="center">
+            <Link href={ROUTES.GATE_PROFILE.replace('[id]', gate.id)} passHref>
+              <Button variant="outlined" component="a" size="medium">
+                Check Credential
+              </Button>
+            </Link>
+          </Stack>
+        </Stack>
+      </Stack>
+    </Dialog>
   );
 }

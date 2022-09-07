@@ -53,6 +53,7 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
   const [isPublished, setIsPublished] = useState(false);
   const [draftIsLoading, setDraftIsLoading] = useState(false);
   const [createIsLoading, setCreateIsLoading] = useState(false);
+  const [result, setResult] = useState(null);
 
   const [deletedTasks, setDeletedTasks] = useState<string[]>([]);
 
@@ -179,6 +180,7 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
               );
             } else {
               setGateId(result.insert_gates_one.id);
+              setResult(result.insert_gates_one);
               setIsPublished(true);
             }
           },
@@ -354,7 +356,7 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
         <GatePublishedModal
           open={isPublished}
           handleClose={closePublishedModal}
-          gateId={gateId}
+          gate={result}
         />
       </Stack>
     </>
