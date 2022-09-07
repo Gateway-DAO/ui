@@ -19,6 +19,7 @@ import { ROUTES } from '../../../constants/routes';
 import { useFile } from '../../../hooks/use-file';
 import { AvatarFile } from '../../atoms/avatar-file';
 import { FollowButtonDAO } from '../../atoms/follow-button-dao';
+import { ReadMore } from '../../atoms/read-more-less';
 import { ShareButton } from '../../atoms/share-button';
 import { Navbar } from '../../organisms/navbar/navbar';
 import { SocialButtons } from '../../organisms/social-buttons';
@@ -123,7 +124,7 @@ export function DaoHeader({
             }}
             color="text.secondary"
           >
-            {dao.description}
+            <ReadMore>{dao.description}</ReadMore>
           </Typography>
           <Stack
             direction="row"

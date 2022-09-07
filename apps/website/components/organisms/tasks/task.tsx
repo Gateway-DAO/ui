@@ -208,15 +208,8 @@ export function Task({
           </IconButton>
         }
       />
-      <Collapse
-        in={expanded}
-        timeout="auto"
-        unmountOnExit
-        sx={{
-          paddingLeft: (theme) => theme.spacing(2) + 40,
-        }}
-      >
-        <CardContent sx={{ marginLeft: '55px' }}>
+      <Collapse in={expanded} timeout="auto" unmountOnExit>
+        <CardContent sx={{ marginLeft: { xs: '0px', md: '55px' } }}>
           <Typography variant="subtitle2">{task.description}</Typography>
           <TaskComponent
             data={task.task_data}
