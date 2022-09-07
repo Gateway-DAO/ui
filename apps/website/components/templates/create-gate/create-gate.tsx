@@ -174,7 +174,7 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
               snackbar.onOpen({
                 message: 'Draft saved',
               });
-              isDraft ? setDraftIsLoading(false) : setCreateIsLoading(false);
+              setDraftIsLoading(false);
               router.push(
                 ROUTES.GATE_PROFILE.replace('[id]', result.insert_gates_one.id)
               );
