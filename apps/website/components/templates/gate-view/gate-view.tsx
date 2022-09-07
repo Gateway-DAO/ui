@@ -178,13 +178,28 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
   ];
 
   return (
-    <Grid container height="100%" sx={{ flexWrap: 'nowrap' }}>
+    <Grid
+      container
+      height="100%"
+      sx={{ flexWrap: 'nowrap', flexDirection: { xs: 'column', md: 'row' } }}
+    >
       <GateCompletedModal
         open={open}
         handleClose={handleClose}
         gate={gateProps}
       />
-      <Grid item xs={12} md={5} p={(theme) => theme.spacing(7)}>
+      <Grid
+        item
+        xs={12}
+        md={5}
+        sx={(theme) => ({
+          padding: {
+            xs: `${theme.spacing(5)} ${theme.spacing(2)}`,
+            md: `${theme.spacing(5)} ${theme.spacing(7)}`,
+          },
+        })}
+      >
+        <Box sx={{ height: { xs: '0px', md: '60px' } }}></Box>
         {/* DAO info */}
         <Link passHref href={`/dao/${gateProps?.dao.id}`}>
           <Stack
@@ -222,10 +237,10 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
           {gateProps?.title}
         </Typography>
 
-        <Box marginBottom={(theme) => theme.spacing(4)}>
+        <Box marginBottom={(theme) => theme.spacing(2)}>
           <Stack
             direction={'row'}
-            sx={{ alignItems: 'center', justifyContent: 'space-between' }}
+            sx={{ alignItems: 'flex-start', justifyContent: 'space-between' }}
           >
             <Box>
               {isAdmin && <GateStateChip published={published} />}
@@ -277,7 +292,7 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
         <Grid container rowGap={(theme) => theme.spacing(3)}>
           {gateProps?.holders.length > 0 && (
             <>
-              <Grid item xs={4}>
+              <Grid item xs={4} sx={{ display: 'flex', alignItems: 'center' }}>
                 <Typography
                   variant="body2"
                   color={(theme) => theme.palette.text.secondary}
@@ -319,7 +334,7 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
               </Grid>
             </>
           )}
-          <Grid item xs={4}>
+          <Grid item xs={4} sx={{ display: 'flex', alignItems: 'center' }}>
             <Typography
               variant="body2"
               color={(theme) => theme.palette.text.secondary}
@@ -368,17 +383,21 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
       </Grid>
       <Divider orientation="vertical" flexItem />
       <Grid item xs={12} md>
+        <Box sx={{ height: { xs: '0px', md: '60px' } }}></Box>
         {/* Task Counter */}
         <Stack
           direction="row"
           alignItems="center"
-          m={(theme) => theme.spacing(7)}
-          marginBottom={(theme) => theme.spacing(10)}
+          sx={{
+            margin: { xs: '16px 16px 40px 16px', md: '60px' },
+          }}
         >
           <CircularProgressWithLabel
             variant="determinate"
             value={(completedTasksCount / gateProps?.tasks.length) * 100}
             label={`${completedTasksCount}/${gateProps?.tasks.length}`}
+            size={50}
+            thickness={4}
             sx={{
               color: '#6DFFB9',
             }}
