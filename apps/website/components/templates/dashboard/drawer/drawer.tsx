@@ -47,7 +47,9 @@ export function Drawer({ currentDao, showExplore }: Props) {
             }}
           >
             <Link passHref href={ROUTES.EXPLORE}>
-              <GatewayIcon />
+              <a>
+                <GatewayIcon />
+              </a>
             </Link>
           </ListItemIcon>
           <AnimatePresence>
