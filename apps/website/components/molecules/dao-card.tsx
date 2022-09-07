@@ -25,6 +25,7 @@ import { CategoriesList } from './categories-list';
 
 export function DaoCard({
   id,
+  slug,
   background,
   background_url,
   logo_url,
@@ -40,7 +41,7 @@ export function DaoCard({
   const isAdmin = !!me?.following_dao.find((dao) => dao.dao_id === id)?.dao
     ?.is_admin;
 
-  const url = useMemo(() => ROUTES.DAO_PROFILE.replace('[id]', id), [id]);
+  const url = useMemo(() => ROUTES.DAO_PROFILE.replace('[slug]', slug), [slug]);
 
   const cover = useFile(background);
 

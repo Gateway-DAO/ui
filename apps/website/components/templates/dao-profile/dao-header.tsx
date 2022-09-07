@@ -93,7 +93,7 @@ export function DaoHeader({
             </Typography>
 
             {isAdmin && (
-              <Link passHref href={ROUTES.DAO_EDIT.replace('[id]', dao.id)}>
+              <Link passHref href={ROUTES.DAO_EDIT.replace('[slug]', dao.slug)}>
                 <Tooltip title={t('edit')}>
                   <IconButton>
                     <Edit />

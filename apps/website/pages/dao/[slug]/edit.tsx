@@ -11,14 +11,16 @@ import { generateImageUrl } from '../../../hooks/use-file';
 import { useUploadImage } from '../../../hooks/use-upload-image';
 import { useAuth } from '../../../providers/auth';
 import { gqlAnonMethods } from '../../../services/api';
-import { Dao_ProfileQuery } from '../../../services/graphql/types.generated';
+import { Dao_Profile_By_SlugQuery } from '../../../services/graphql/types.generated';
 
 export default function DaoProfilePage({
   daoProps,
 }: {
-  daoProps?: Dao_ProfileQuery;
+  daoProps?: Dao_Profile_By_SlugQuery;
 }) {
-  const { daos_by_pk: dao } = daoProps ?? {};
+  const {
+    daos: [dao],
+  } = daoProps ?? {};
 
   const uploadImage = useUploadImage();
   const { me, gqlAuthMethods, onUpdateMe } = useAuth();
@@ -81,7 +83,7 @@ export default function DaoProfilePage({
             return followingDao;
           }),
         }));
-        router.replace(ROUTES.DAO_PROFILE.replace('[id]', edittedDao.id));
+        router.replace(ROUTES.DAO_PROFILE.replace('[slug]', edittedDao.slug));
       },
     }
   );
@@ -98,10 +100,10 @@ export default function DaoProfilePage({
 }
 
 export const getServerSideProps = async ({ params }) => {
-  const { id } = params;
+  const { slug } = params;
 
-  const daoProps = await gqlAnonMethods.dao_profile({
-    id,
+  const daoProps = await gqlAnonMethods.dao_profile_by_slug({
+    slug,
   });
 
   return {

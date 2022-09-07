@@ -12,8 +12,8 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 
 import { categoriesMap } from '../../../../../constants/dao';
-import { useAuth } from '../../../../../providers/auth';
 import { ROUTES } from '../../../../../constants/routes';
+import { useAuth } from '../../../../../providers/auth';
 import { AvatarFile } from '../../../../atoms/avatar-file';
 import { FollowButtonDAO } from '../../../../atoms/follow-button-dao';
 import { ExploreProps } from '../../types';
@@ -56,7 +56,7 @@ export function TableView({ daos }: Props) {
               <TableRow hover role="checkbox" tabIndex={-1} key={dao.id}>
                 <Link
                   passHref
-                  href={ROUTES.DAO_PROFILE.replace('[id]', dao.id)}
+                  href={ROUTES.DAO_PROFILE.replace('[slug]', dao.slug)}
                 >
                   <TableCell sx={{ cursor: 'pointer' }}>
                     <Stack alignItems="center" direction="row" gap={1}>
