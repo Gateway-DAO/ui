@@ -60,8 +60,22 @@ export function CredentialTemplate({ credential, openModal }: Props) {
   };
 
   return (
-    <Grid container height="100%" sx={{ flexWrap: 'nowrap' }}>
-      <Grid item xs={12} md={5} p={(theme) => theme.spacing(7)}>
+    <Grid
+      container
+      height="100%"
+      sx={{ flexWrap: 'nowrap', flexDirection: { xs: 'column', md: 'row' } }}
+    >
+      <Grid
+        item
+        xs={12}
+        md={5}
+        sx={(theme) => ({
+          padding: {
+            xs: `${theme.spacing(5)} ${theme.spacing(2)}`,
+            md: `${theme.spacing(5)} ${theme.spacing(7)}`,
+          },
+        })}
+      >
         {/* DAO info */}
         <Link passHref href={`/dao/${credential?.dao.id}`}>
           <Stack
@@ -209,7 +223,11 @@ export function CredentialTemplate({ credential, openModal }: Props) {
           }}
         />
 
-        <Grid container rowGap={(theme) => theme.spacing(3)}>
+        <Grid
+          container
+          rowGap={(theme) => theme.spacing(3)}
+          sx={{ display: 'flex', alignItems: 'center' }}
+        >
           {credential?.gate?.holders.length > 0 && (
             <>
               <Grid item xs={4}>
@@ -310,8 +328,9 @@ export function CredentialTemplate({ credential, openModal }: Props) {
         <Stack
           direction="row"
           alignItems="center"
-          m={(theme) => theme.spacing(7)}
-          marginBottom={(theme) => theme.spacing(10)}
+          sx={{
+            margin: { xs: '16px 16px 40px 16px', md: '60px' },
+          }}
         >
           <CircularProgressWithLabel
             variant="determinate"
