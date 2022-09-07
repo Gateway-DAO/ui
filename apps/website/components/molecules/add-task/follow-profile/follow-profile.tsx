@@ -16,7 +16,7 @@ import {
   Typography,
 } from '@mui/material';
 
-import { gqlAnonMethods } from '../../../../services/api';
+import { useAuth } from '../../../../providers/auth';
 import { CircleWithNumber } from '../../../atoms/circle-with-number';
 import {
   CreateGateTypes,
@@ -25,18 +25,26 @@ import {
 } from '../../../templates/create-gate/schema';
 
 interface TwitterData {
-  username?: string;
-  name?: string;
-  profile_image_url?: string;
-  description?: string;
-  followers?: number;
-  following?: number;
-  verified?: boolean;
+  description: string;
+  id: string;
+  location: string;
+  name: string;
+  profile_image_url: string;
+  protected: boolean;
+  public_metrics: {
+    followers_count: number;
+    following_count: number;
+    listed_count: number;
+    tweet_count: number;
+  };
+  username: string;
+  verified: boolean;
 }
 
 export const FollowProfile = ({ taskId, deleteTask }) => {
   const [taskVisible, setTaskVisible] = useState(false);
   const [twitterData, setTwitterData] = useState<TwitterData>({});
+  const { gqlAuthMethods } = useAuth();
   const [loading, setLoading] = useState(false);
   const {
     register,
@@ -52,12 +60,18 @@ export const FollowProfile = ({ taskId, deleteTask }) => {
 
   const getTwitterData = async () => {
     setLoading(true);
-    const username = getValues(`tasks.data.${taskId}.task_data.username`);
-    const response = await gqlAnonMethods.twitter_data({ username: username });
-    console.log(response);
-    setLoading(false);
-
-    return setTwitterData(response.get_twitter_user_data);
+    try {
+      const username = getValues(`tasks.data.${taskId}.task_data.username`);
+      const response = await gqlAuthMethods.twitter_data({
+        userName: username,
+      });
+      setLoading(false);
+      return setTwitterData(response.get_twitter_user_data);
+    } catch (error) {
+      setLoading(false);
+      // TODO: Implement Snackbar error
+      return console.error(error);
+    }
   };
 
   const delayedQuery = useCallback(
@@ -335,7 +349,7 @@ export const FollowProfile = ({ taskId, deleteTask }) => {
                       fontFamily: 'sans-serif',
                     }}
                   >
-                    {numberFormat(twitterData?.following)}{' '}
+                    {numberFormat(twitterData?.public_metrics.following_count)}{' '}
                     <Typography component="span" sx={{ color: '#5B7083' }}>
                       Following
                     </Typography>
@@ -349,7 +363,7 @@ export const FollowProfile = ({ taskId, deleteTask }) => {
                       ml: '19px',
                     }}
                   >
-                    {numberFormat(twitterData?.followers)}{' '}
+                    {numberFormat(twitterData?.public_metrics.followers_count)}{' '}
                     <Typography component="span" sx={{ color: '#5B7083' }}>
                       Followers
                     </Typography>
