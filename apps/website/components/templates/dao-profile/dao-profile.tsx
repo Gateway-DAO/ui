@@ -24,8 +24,8 @@ export function DaoProfileTemplate() {
       section: <OverviewTab people={people} setTab={setTab} />,
     },
     {
-      key: 'gates',
-      label: t('common:tabs.gates'),
+      key: 'credentials',
+      label: t('common:tabs.credentials'),
       section: <GatesTab />,
     },
     {

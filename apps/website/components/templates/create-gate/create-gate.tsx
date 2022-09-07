@@ -26,7 +26,7 @@ import { GateImageCard } from './gate-image-card/gate-image-card';
 import { createGateSchema, CreateGateTypes, DraftGateTypes } from './schema';
 
 type CreateGateProps = {
-  oldData: DraftGateTypes;
+  oldData?: DraftGateTypes;
 };
 
 export function CreateGateTemplate({ oldData }: CreateGateProps) {
@@ -238,7 +238,7 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
           variant="h4"
           sx={{ margin: '40px 0 40px 0', marginBottom: { md: '100px' } }}
         >
-          Create Gate
+          {oldData.id ? 'Edit' : 'Create'} Credential
         </Typography>
 
         {/* Details */}
@@ -275,6 +275,7 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
           <FormProvider {...methods}>
             <GateImageCard
               draftImage={oldData.image}
+              label="Drop to upload your credential image"
               sx={{
                 width: 400,
               }}

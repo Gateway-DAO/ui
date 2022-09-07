@@ -66,7 +66,7 @@ export const PublishNavbar = ({
               sx={{ marginLeft: 2 }}
               isLoading={createIsLoading}
             >
-              Publish Gate
+              Publish Credential
             </LoadingButton>
           </Box>
         </Toolbar>

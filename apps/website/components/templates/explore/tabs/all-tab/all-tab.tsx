@@ -37,11 +37,11 @@ export function AllTab({ daos, gates, people, setActiveTab }: Props) {
         }}
       >
         <SectionWithSliderResponsive
-          title={t('featured-gates.title')}
-          caption={t('featured-gates.caption')}
+          title={t('featured-credentials.title')}
+          caption={t('featured-credentials.caption')}
           action={
             <Button onClick={() => setActiveTab(1)}>
-              {t('featured-gates.see-more')}
+              {t('featured-credentials.see-more')}
             </Button>
           }
           itemWidth={(theme) => theme.spacing(37.75)}

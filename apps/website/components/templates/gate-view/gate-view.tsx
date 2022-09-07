@@ -1,9 +1,9 @@
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, ComponentType } from 'react';
 
-import { useMutation } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { PartialDeep } from 'type-fest';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -25,6 +25,7 @@ import { useSnackbar } from '../../../hooks/use-snackbar';
 import { Gates } from '../../../services/graphql/types.generated';
 import { AvatarFile } from '../../atoms/avatar-file';
 import CircularProgressWithLabel from '../../atoms/circular-progress-label';
+import { Props as MintCredentialButtonProps } from '../../atoms/mint-button';
 import MorePopover from '../../atoms/more-popover';
 import { ReadMore } from '../../atoms/read-more-less';
 import { ShareButton } from '../../atoms/share-button';
@@ -35,6 +36,14 @@ import { Task, TaskGroup } from '../../organisms/tasks';
 const GateStateChip = dynamic(() => import('../../atoms/gate-state-chip'), {
   ssr: false,
 });
+
+const MintCredentialButton: ComponentType<MintCredentialButtonProps> = dynamic(
+  () =>
+    import('../../atoms/mint-button').then((mod) => mod.MintCredentialButton),
+  {
+    ssr: false,
+  }
+);
 
 type GateViewProps = {
   gateProps: PartialDeep<Gates>;
@@ -50,6 +59,8 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
   const { me, gqlAuthMethods } = useAuth();
   const router = useRouter();
   const snackbar = useSnackbar();
+  const queryClient = useQueryClient();
+  const completedGate = completedTasksCount === gateProps?.tasks?.length;
 
   const taskIds = gateProps?.tasks.map((task) => task.id);
 
@@ -72,6 +83,21 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
     return arr1.filter((id) => arr2.includes(id)).length;
   };
 
+  const credential_id = me?.credentials?.find(
+    (cred) => cred?.gate_id === gateProps?.id
+  )?.id;
+
+  const { data: credential } = useQuery(
+    ['credential', credential_id],
+    () =>
+      gqlAuthMethods.credential({
+        id: credential_id,
+      }),
+    {
+      enabled: !!credential_id,
+    }
+  );
+
   const { mutate: toggleGateStateMutation } = useMutation(
     'toggleGateState',
     gqlAuthMethods.toggle_gate_state
@@ -84,16 +110,19 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
         state: published === 'published' ? 'paused' : 'published',
       },
       {
-        onSuccess: (data) => {
+        onSuccess: async (data) => {
+          setPublished(data.update_gates_by_pk.published);
+
           snackbar.onOpen({
-            message: `Gate ${
+            message: `Credential ${
               published === 'not_published' || published === 'paused'
                 ? 'published!'
                 : 'unpublished!'
             }`,
           });
 
-          setPublished(data.update_gates_by_pk.published);
+          await queryClient.refetchQueries(['gate', gateProps?.id]);
+          await queryClient.refetchQueries(['dao-gates', gateProps?.dao_id]);
         },
         onError() {
           snackbar.handleClick({
@@ -114,7 +143,7 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
       {
         onSuccess() {
           snackbar.onOpen({
-            message: 'Gate deleted!',
+            message: 'Credential deleted!',
           });
           router.push(ROUTES.DAO_PROFILE.replace('[id]', gateProps?.dao.id));
         },
@@ -229,6 +258,11 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
             {gateProps?.description}
           </Typography>
         )}
+
+        {completedGate && credential?.credentials_by_pk.target_id == me?.id && (
+          <MintCredentialButton credential={credential?.credentials_by_pk} />
+        )}
+
         <Box
           component="img"
           src={gateProps?.image}
@@ -356,7 +390,7 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
           >
             <Typography variant="h6">Tasks</Typography>
             <Typography variant="caption">
-              Complete the tasks to open this gate
+              Complete the tasks to unlock this credential
             </Typography>
           </Stack>
         </Stack>
@@ -382,21 +416,21 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
         message={snackbar.message}
       />
       <ConfirmDialog
-        title="Are you sure you want to delete this gate?"
+        title="Are you sure you want to delete this credential?"
         open={confirmDelete}
         positiveAnswer="Delete"
         negativeAnswer="Cancel"
         setOpen={setConfirmDelete}
         onConfirm={deleteGate}
       >
-        If you delete this gate, you will not be able to access it and this
-        action cannot be undone.
+        If you delete this credential, you will not be able to access it and
+        this action cannot be undone.
       </ConfirmDialog>
       <ConfirmDialog
         title={
           published === 'published'
-            ? 'Are you sure to unpublish this gate?'
-            : 'Are you sure you want to publish this gate?'
+            ? 'Are you sure to unpublish this credential?'
+            : 'Are you sure you want to publish this credential?'
         }
         open={confirmToggleState}
         positiveAnswer={`${
@@ -407,8 +441,8 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
         onConfirm={toggleGateState}
       >
         {published === 'published'
-          ? 'If you unpublish this gate, users will not be able to see it anymore.'
-          : 'Publishing this gate will make it accessible by all users.'}
+          ? 'If you unpublish this credential, users will not be able to see it anymore.'
+          : 'Publishing this credential will make it accessible by all users.'}
       </ConfirmDialog>
     </Grid>
   );

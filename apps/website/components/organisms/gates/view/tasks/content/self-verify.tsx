@@ -1,3 +1,6 @@
+import Link from 'next/link';
+import { useState } from 'react';
+
 import normalizeUrl from 'normalize-url';
 
 import DescriptionIcon from '@mui/icons-material/Description';
@@ -12,8 +15,6 @@ import {
 } from '@mui/material';
 
 import { LoadingButton } from '../../../../../../components/atoms/loading-button';
-import { useState } from 'react';
-import Link from 'next/link';
 
 const ViewButton = ({ incrementView, link, completed }) => {
   const [border, setBorder] = useState(false);
@@ -86,7 +87,7 @@ const SelfVerifyContent = ({
       >
         {files}
       </List>
-      {completed && (
+      {completed && updatedAt && (
         <Typography color="#c5ffe3" variant="subtitle2" marginTop={3.5}>
           Task completed at {formattedDate}
         </Typography>

@@ -21,12 +21,16 @@ import {
   MenuList,
   ListItemIcon,
   IconButton,
+  Avatar,
 } from '@mui/material';
 
 import { useAuth } from '../../../providers/auth';
 import { Credentials } from '../../../services/graphql/types.generated';
 import { AvatarFile } from '../../atoms/avatar-file';
+import CircularProgressWithLabel from '../../atoms/circular-progress-label';
 import { Props as MintCredentialButtonProps } from '../../atoms/mint-button';
+import { ReadMore } from '../../atoms/read-more-less';
+import { ShareButton } from '../../atoms/share-button';
 import { Task, TaskGroup } from '../../organisms/tasks';
 
 const MintCredentialButton: ComponentType<MintCredentialButtonProps> = dynamic(
@@ -56,32 +60,43 @@ export function CredentialTemplate({ credential, openModal }: Props) {
   };
 
   return (
-    <Grid container height="100%">
+    <Grid container height="100%" sx={{ flexWrap: 'nowrap' }}>
       <Grid item xs={12} md={5} p={(theme) => theme.spacing(7)}>
         {/* DAO info */}
-        <Stack
-          direction="row"
-          alignItems="center"
-          marginBottom={(theme) => theme.spacing(2)}
-        >
-          <AvatarFile
-            file={credential.dao?.logo}
-            fallback={credential.dao?.logo_url || '/logo.png'}
-            sx={{ width: 32, height: 32 }}
-            aria-label={`${credential.dao?.name}'s DAO image`}
+        <Link passHref href={`/dao/${credential?.dao.id}`}>
+          <Stack
+            direction="row"
+            alignItems="center"
+            width="fit-content"
+            marginBottom={(theme) => theme.spacing(2)}
+            sx={(theme) => ({
+              [theme.breakpoints.down('sm')]: {
+                width: '100%',
+              },
+              cursor: 'pointer',
+            })}
           >
-            {credential.dao?.name?.[0]}
-          </AvatarFile>
-          <Typography
-            variant="body2"
-            color={(theme) => theme.palette.text.secondary}
-          >
-            {credential.dao?.name}
-          </Typography>
-        </Stack>
+            <AvatarFile
+              alt={credential?.dao.name}
+              file={credential?.dao.logo}
+              fallback={credential?.dao.logo_url}
+              sx={{
+                height: (theme) => theme.spacing(3),
+                width: (theme) => theme.spacing(3),
+                marginRight: (theme) => theme.spacing(1),
+              }}
+            />
+            <Typography
+              variant="body2"
+              color={(theme) => theme.palette.text.secondary}
+            >
+              {credential?.dao.name}
+            </Typography>
+          </Stack>
+        </Link>
 
         <Typography variant="h4" marginBottom={(theme) => theme.spacing(2)}>
-          {credential.name}
+          {credential?.name}
         </Typography>
 
         <Stack
@@ -111,7 +126,9 @@ export function CredentialTemplate({ credential, openModal }: Props) {
             aria-haspopup="true"
             aria-expanded={open ? 'true' : undefined}
           >
-            <MoreVertIcon />
+            <Avatar>
+              <MoreVertIcon />
+            </Avatar>
           </IconButton>
 
           <Menu
@@ -164,9 +181,18 @@ export function CredentialTemplate({ credential, openModal }: Props) {
           </Menu>
         </Stack>
 
-        <Typography variant="body1" marginBottom={(theme) => theme.spacing(4)}>
-          {credential.description}
-        </Typography>
+        {credential?.description?.length > 250 ? (
+          <ReadMore>{credential?.description}</ReadMore>
+        ) : (
+          <Typography
+            variant="body1"
+            marginBottom={(theme) => theme.spacing(4)}
+            sx={{ wordBreak: 'break-word' }}
+            paragraph={true}
+          >
+            {credential?.description}
+          </Typography>
+        )}
 
         {credential?.target_id == me?.id && (
           <MintCredentialButton credential={credential} />
@@ -174,8 +200,8 @@ export function CredentialTemplate({ credential, openModal }: Props) {
 
         <Box
           component="img"
-          src={credential.image}
-          alt={credential.name + ' image'}
+          src={credential?.image}
+          alt={credential?.name + ' image'}
           marginBottom={(theme) => theme.spacing(4)}
           sx={{
             width: '100%',
@@ -184,7 +210,7 @@ export function CredentialTemplate({ credential, openModal }: Props) {
         />
 
         <Grid container rowGap={(theme) => theme.spacing(3)}>
-          {credential.gate?.holders.length > 0 && (
+          {credential?.gate?.holders.length > 0 && (
             <>
               <Grid item xs={4}>
                 <Typography
@@ -197,15 +223,15 @@ export function CredentialTemplate({ credential, openModal }: Props) {
               <Grid item xs={8}>
                 <AvatarGroup
                   total={
-                    credential.gate?.holders.length >= 5
+                    credential?.gate?.holders.length >= 5
                       ? 5
-                      : credential.gate?.holders.length
+                      : credential?.gate?.holders.length
                   }
                   sx={{
                     justifyContent: 'flex-end',
                   }}
                 >
-                  {credential.gate?.holders.map((holder) => {
+                  {credential?.gate?.holders.map((holder) => {
                     return (
                       <Link
                         key={holder.id}
@@ -237,7 +263,7 @@ export function CredentialTemplate({ credential, openModal }: Props) {
             </Typography>
           </Grid>
           <Grid item xs={8}>
-            {credential.skills.map((skill, idx) => (
+            {credential?.skills.map((skill, idx) => (
               <Chip
                 key={'skill-' + (idx + 1)}
                 label={skill}
@@ -248,7 +274,7 @@ export function CredentialTemplate({ credential, openModal }: Props) {
               />
             ))}
           </Grid>
-          {credential.gate?.creator && (
+          {credential?.issuer && (
             <>
               <Grid item xs={4}>
                 <Typography
@@ -259,16 +285,13 @@ export function CredentialTemplate({ credential, openModal }: Props) {
                 </Typography>
               </Grid>
               <Grid item xs={8}>
-                <Link
-                  passHref
-                  href={`/profile/${credential.gate?.creator.username}`}
-                >
-                  <Tooltip title={credential.gate?.creator.name}>
+                <Link passHref href={`/profile/${credential?.issuer.username}`}>
+                  <Tooltip title={credential?.issuer.name}>
                     <Box component="a" sx={{ display: 'inline-block' }}>
                       <AvatarFile
-                        alt={credential.gate?.creator.username}
-                        file={credential.gate?.creator.picture}
-                        fallback={'/logo.png'}
+                        alt={credential?.issuer.username}
+                        file={credential?.issuer.picture}
+                        fallback={credential?.issuer.pfp || '/logo.png'}
                       />
                     </Box>
                   </Tooltip>
@@ -287,6 +310,16 @@ export function CredentialTemplate({ credential, openModal }: Props) {
           m={(theme) => theme.spacing(7)}
           marginBottom={(theme) => theme.spacing(10)}
         >
+          <CircularProgressWithLabel
+            variant="determinate"
+            value={
+              (credential?.pow.length / credential?.gate?.tasks?.length) * 100
+            }
+            label={`${credential?.pow.length}/${credential?.gate?.tasks?.length}`}
+            sx={{
+              color: '#6DFFB9',
+            }}
+          />
           <Stack
             sx={{
               marginLeft: (theme) => theme.spacing(4),
@@ -294,14 +327,19 @@ export function CredentialTemplate({ credential, openModal }: Props) {
           >
             <Typography variant="h6">Tasks</Typography>
             <Typography variant="caption">
-              Complete the tasks to open this gate
+              Completed tasks to earn this credential
             </Typography>
           </Stack>
         </Stack>
 
         <TaskGroup>
-          {credential.pow.map((task, idx) => (
-            <Task key={'task-' + (idx + 1)} task={task} readOnly />
+          {credential?.pow.map((task, idx) => (
+            <Task
+              key={'task-' + (idx + 1)}
+              task={task}
+              readOnly
+              completed={true}
+            />
           ))}
         </TaskGroup>
       </Grid>

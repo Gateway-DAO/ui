@@ -5,6 +5,7 @@ import { useToggle } from 'react-use';
 import { PartialObjectDeep } from 'type-fest/source/partial-deep';
 
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
+import CheckIcon from '@mui/icons-material/Check';
 import {
   Card,
   CardContent,
@@ -14,7 +15,6 @@ import {
   IconButton,
   Collapse,
 } from '@mui/material';
-import CheckIcon from '@mui/icons-material/Check';
 
 import { useAuth } from '../../../providers/auth';
 import { Tasks } from '../../../services/graphql/types.generated';
@@ -33,6 +33,7 @@ type Props = {
   task?: PartialObjectDeep<Tasks>;
   readOnly?: boolean;
   setCompletedGate?: (completed: boolean) => void;
+  completed?: boolean;
 };
 
 interface Error {
@@ -47,11 +48,17 @@ interface Error {
   };
 }
 
-export function Task({ task, idx, readOnly, setCompletedGate }: Props) {
+export function Task({
+  task,
+  idx,
+  readOnly,
+  setCompletedGate,
+  completed: completedProp = false,
+}: Props) {
   const { me, gqlAuthMethods, onOpenLogin } = useAuth();
 
   const [expanded, toggleExpanded] = useToggle(false);
-  const [completed, setCompleted] = useState(false);
+  const [completed, setCompleted] = useState(completedProp);
   const [updatedAt, setUpdatedAt] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
