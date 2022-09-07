@@ -6,9 +6,6 @@ import { useCopyToClipboard } from 'react-use';
 import { useAccount, useNetwork } from 'wagmi';
 
 import { useMenu } from '@gateway/ui';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import Snackbar from '@mui/material/Snackbar';
 
 import { ArrowDropDown } from '@mui/icons-material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
@@ -24,18 +21,12 @@ import MenuItem from '@mui/material/MenuItem';
 import Snackbar from '@mui/material/Snackbar';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
-import { ListItemText } from '@mui/material';
-import ListItem from '@mui/material/ListItem';
 
 import { ROUTES } from '../../../constants/routes';
 import { useSnackbar } from '../../../hooks/use-snackbar';
 import { useAuth } from '../../../providers/auth';
 import { AvatarFile } from '../../atoms/avatar-file';
 import { icons } from './wallet-icons';
-
-import { useSnackbar } from '../../../hooks/use-snackbar';
-import { useCopyToClipboard } from 'react-use';
-import { useAccount, useNetwork } from 'wagmi';
 
 /* TODO: Refactor */
 
