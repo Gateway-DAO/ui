@@ -1,10 +1,10 @@
 {
   "title": "Explore",
-  "subtitle": "Discover Gates, DAOs, and People",
-  "featured-gates": {
-    "title": "Featured Gates",
-    "caption": "People are really into these gates. We thought you would too.",
-    "see-more": "View more gates"
+  "subtitle": "Discover Credentials, DAOs, and People",
+  "featured-credentials": {
+    "title": "Featured Credentials",
+    "caption": "People are really into these credentials. We thought you would too.",
+    "see-more": "View more credentials"
   },
   "featured-daos": {
     "title": "Recommended DAOs",

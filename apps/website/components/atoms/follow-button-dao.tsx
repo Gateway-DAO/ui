@@ -31,7 +31,7 @@ export function FollowButtonDAO({
       }
       {...props}
     >
-      {isFollowing ? t('actions.unfollow') : t('actions.follow')}
+      {isFollowing ? t('actions.unfollow') : t('actions.connect')}
     </LoadingButton>
   );
 }

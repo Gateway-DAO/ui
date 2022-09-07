@@ -1,8 +1,9 @@
 import { InferGetStaticPropsType } from 'next';
 import useTranslation from 'next-translate/useTranslation';
+import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 
 import { FaDiscord } from 'react-icons/fa';
 
@@ -31,24 +32,36 @@ import { generateImageUrl } from '../../../hooks/use-file';
 import { useAuth } from '../../../providers/auth';
 import { AvatarFile } from '../../atoms/avatar-file';
 import { SocialButtons } from '../../organisms/social-buttons';
-import { ActivityTab, OverviewTab } from './tabs';
-
+import { GuideCard } from './edit/Components/guide-card';
+import { OverviewTab } from './tabs';
+const ConnectionsButton = dynamic<any>(
+  () => import('./connections/button').then((mod) => mod.ConnectionsButton),
+  {
+    ssr: false,
+  }
+);
 export default function PrivateProfileTemplate() {
+  const [showCard, setShowCard] = useState(true);
   const { t } = useTranslation();
   const { activeTab, handleTabChange, setTab } = useTab();
   const router = useRouter();
   const { me } = useAuth();
 
-  const tabs = useMemo(
-    () => [
-      {
-        key: 'overview',
-        label: t('common:tabs.overview'),
-        section: <OverviewTab user={me} />,
-      },
-    ],
-    []
-  );
+  const shouldShowCard =
+    !me?.bio?.length ||
+    !me?.skills?.length ||
+    !me?.languages?.length ||
+    !me?.timezone == undefined ||
+    !me?.experiences?.length;
+
+  const tabs = [
+    {
+      key: 'overview',
+      label: t('common:tabs.overview'),
+      section: <OverviewTab user={me} />,
+    },
+  ];
+
   return (
     <>
       <Box
@@ -94,76 +107,95 @@ export default function PrivateProfileTemplate() {
           file={me.picture}
           fallback={'/logo.png'}
         ></AvatarFile>
-        <Box>
-          <Typography
-            sx={{ color: '#fff', paddingTop: { xs: '16px', md: '24px' } }}
-            component="h1"
-            variant="h4"
-          >
-            {me.name}
-            <EditIcon
-              onClick={() => router.push(ROUTES.PROFILE_EDIT)}
-              sx={{
-                marginLeft: '15px',
-                color: 'rgba(255, 255, 255, 0.56)',
-                cursor: 'pointer',
-              }}
-            ></EditIcon>
-          </Typography>
-          <Typography
-            component="h5"
-            sx={{
-              fontSize: '16px',
-              fontWeight: '400',
-              color: 'rgba(255, 255, 255, 0.7)',
-            }}
-            variant="h6"
-          >
-            @{me.username}
-          </Typography>
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              columnGap: '10px',
-              mt: 2,
-            }}
-          >
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: { xs: 'column', md: 'row' },
+            justifyContent: 'space-between',
+          }}
+        >
+          <Box>
             <Typography
+              sx={{ color: '#fff', paddingTop: { xs: '16px', md: '24px' } }}
+              component="h1"
+              variant="h4"
+            >
+              {me.name}
+              <EditIcon
+                onClick={() => router.push(ROUTES.PROFILE_EDIT)}
+                sx={{
+                  marginLeft: '15px',
+                  color: 'rgba(255, 255, 255, 0.56)',
+                  cursor: 'pointer',
+                }}
+              ></EditIcon>
+            </Typography>
+            <Typography
+              component="h5"
               sx={{
                 fontSize: '16px',
                 fontWeight: '400',
                 color: 'rgba(255, 255, 255, 0.7)',
               }}
-              width={{ xs: '100%', md: '50%' }}
+              variant="h6"
             >
-              {me.bio ||
-                'Write about your years of experience, industry, or skills. People also talk about their achievements or previous job experiences.'}
+              @{me.username}
             </Typography>
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                columnGap: '10px',
+                mt: 2,
+              }}
+            >
+              <Typography
+                sx={{
+                  fontSize: '16px',
+                  fontWeight: '400',
+                  color: 'rgba(255, 255, 255, 0.7)',
+                }}
+                width={{ xs: '100%', md: '100%' }}
+              >
+                {me.bio ||
+                  'Write about your years of experience, industry, or skills. People also talk about their achievements or previous job experiences.'}
+              </Typography>
+            </Box>
+            <Box>
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  columnGap: '10px',
+                  mt: 2,
+                }}
+              >
+                <ConnectionsButton wallet={me.wallet} />·
+                <Typography>{me.credentials?.length} credential(s)</Typography>
+              </Box>
+            </Box>
+            <Stack
+              direction="row"
+              gap={1}
+              sx={{
+                mt: 4,
+              }}
+            >
+              <SocialButtons
+                socials={me.socials || []}
+                copyNetworks={['discord']}
+              />
+            </Stack>
           </Box>
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'row',
-              columnGap: '10px',
-              mt: 2,
-            }}
-          >
-            <Typography>{me.following?.length} connection(s)</Typography>·
-            <Typography>{me.credentials?.length} credential(s)</Typography>
-          </Box>
-          <Stack
-            direction="row"
-            gap={1}
-            sx={{
-              mt: 4,
-            }}
-          >
-            <SocialButtons
-              socials={me.socials || []}
-              copyNetworks={['discord']}
-            />
-          </Stack>
+          {shouldShowCard && showCard && (
+            <Box
+              sx={{
+                mr: TOKENS.CONTAINER_PX,
+              }}
+            >
+              <GuideCard {...{ setShowCard }} />
+            </Box>
+          )}
         </Box>
       </Box>
       <Box

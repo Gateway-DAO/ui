@@ -19,7 +19,7 @@ const SnapshotContent = ({
         {proposal_number}
       </Typography>
       <Typography variant="caption">Specific Proposal Number</Typography>
-      {!readOnly && (
+      {!readOnly && !completed && (
         <LoadingButton
           variant="contained"
           sx={{ marginTop: '15px' }}
@@ -29,7 +29,7 @@ const SnapshotContent = ({
           Check Snapshot
         </LoadingButton>
       )}
-      {completed && (
+      {completed && updatedAt && (
         <Typography color="#c5ffe3" variant="subtitle2">
           Task completed at {formattedDate}
         </Typography>

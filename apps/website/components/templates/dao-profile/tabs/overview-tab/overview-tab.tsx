@@ -1,8 +1,9 @@
 import useTranslation from 'next-translate/useTranslation';
 import Link from 'next/link';
-import { useMemo } from 'react';
+import React, { useMemo } from 'react';
 
 import { PartialDeep } from 'type-fest';
+import { v4 as uuid } from 'uuid';
 
 import { Button, Divider, Stack } from '@mui/material';
 
@@ -31,30 +32,41 @@ export function OverviewTab({ people, setTab }: Props) {
   const newGateUrl = `${ROUTES.GATE_NEW}?dao=${dao?.id}`;
 
   const gateList = useMemo(() => {
-    if (!gates.length) {
-      return isAdmin
-        ? [
-            <Link key="create-gate" passHref href={newGateUrl}>
+    return isAdmin
+      ? [
+          <React.Fragment key={uuid()}>
+            <Link key="create-credential" passHref href={newGateUrl}>
               <EmptyCard
-                title="Create Gate"
-                subtitle="Create your first Gate and help talents find you"
+                title="Create Credential"
+                subtitle={
+                  !gates.length
+                    ? 'Create your first Credential and help talents find you'
+                    : 'Keep engaging your team'
+                }
                 component="a"
                 sx={{ minHeight: 440 }}
               />
-            </Link>,
-          ]
-        : [
-            <EmptyCard
-              key="empty"
-              title="No Gates yet"
-              subtitle="Follow us and get notificatons when a new Gate is created"
-              disabled
-              sx={{ minHeight: 440 }}
-            />,
-          ];
-    }
-
-    return gates.map((gate) => <GatesCard key={gate.id} {...gate} />);
+            </Link>
+            {gates
+              .filter((gate) => gate.published === 'published')
+              .map((gate) => (
+                <GatesCard key={gate.id} {...gate} />
+              ))}
+          </React.Fragment>,
+        ]
+      : [
+          <React.Fragment key={uuid()}>
+            {!gates.length && (
+              <EmptyCard
+                key="empty"
+                title="No Credentials yet"
+                subtitle="Follow us and get notificatons when a new Credential is created"
+                disabled
+                sx={{ minHeight: 440 }}
+              />
+            )}
+          </React.Fragment>,
+        ];
   }, [gates, isAdmin, newGateUrl]);
 
   return (
@@ -76,12 +88,12 @@ export function OverviewTab({ people, setTab }: Props) {
         }}
       >
         <SectionWithSliderResponsive
-          title={t('common:featured-gates.title')}
-          caption={t('common:featured-gates.caption')}
+          title={t('common:featured-credentials.title')}
+          caption={t('common:featured-credentials.caption')}
           action={
             gates.length > 0 && (
               <Button onClick={() => setTab(1)}>
-                {t('common:featured-gates.see-more')}
+                {t('common:featured-credentials.see-more')}
               </Button>
             )
           }

@@ -56,7 +56,7 @@ export function AboutForm({ isEdit }: Props) {
             {...register('description')}
             error={!!errors.description}
             helperText={errors.description?.message}
-            inputProps={{ maxLength: 200 }}
+            inputProps={{ maxLength: 400 }}
             sx={{
               '& div fieldset legend span': {
                 marginRight: '5px',
@@ -64,7 +64,7 @@ export function AboutForm({ isEdit }: Props) {
             }}
           />
           <Typography sx={{ pl: 2, pb: 1 }} variant="caption">
-            {descriptionRemaining}/200
+            {descriptionRemaining}/400
           </Typography>
         </Stack>
         <Controller

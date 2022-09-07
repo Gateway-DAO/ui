@@ -1,0 +1,14 @@
+query user_connections($address: String!) {
+  identity(address: $address, network: ETH) {
+    bidirectionalFriends{
+      list {
+        bidirectionalConnection {
+          namespace
+          from
+          to
+          state
+        }
+      }
+    }
+  }
+}

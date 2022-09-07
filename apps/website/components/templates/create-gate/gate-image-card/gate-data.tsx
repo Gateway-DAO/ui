@@ -15,7 +15,7 @@ export function GateData() {
   return (
     <>
       <CardHeader
-        title={limitChars(showIfNotEmpty(title, 'Gate Title'), 20)}
+        title={limitChars(showIfNotEmpty(title, 'Credential Title'), 40)}
         sx={(theme) => ({
           '& .MuiCardHeader-title': {
             pb: 1,
@@ -28,7 +28,7 @@ export function GateData() {
           },
         })}
         subheader={`${limitChars(
-          showIfNotEmpty(description, 'Gate Description'),
+          showIfNotEmpty(description, 'Credential Description'),
           70
         )}`}
       />

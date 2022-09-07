@@ -6,11 +6,12 @@ import { TOKENS } from '@gateway/theme';
 
 import { ViewModule, ViewList, Add } from '@mui/icons-material';
 import { Box, Button, IconButton, Stack } from '@mui/material';
+import MUICard from '@mui/material/Card';
 
 import { ROUTES } from '../../../../../constants/routes';
 import { usePropertyFilter } from '../../../../../hooks/use-property-filter';
 import { useViewMode, ViewMode } from '../../../../../hooks/use-view-modes';
-import { gqlAnonMethods } from '../../../../../services/api';
+import { useAuth } from '../../../../../providers/auth';
 import { EmptyCard } from '../../../../atoms/empty-card';
 import { ChipDropdown } from '../../../../molecules/chip-dropdown';
 import { GatesCard } from '../../../../molecules/gates-card';
@@ -18,12 +19,13 @@ import { useDaoProfile } from '../../context';
 import { TableView } from './table-view';
 
 export function GatesTab() {
+  const { gqlAuthMethods } = useAuth();
   const { dao, isAdmin } = useDaoProfile();
   const { view, toggleView } = useViewMode();
 
   const gates = useQuery(
     ['dao-gates', dao?.id],
-    () => gqlAnonMethods.dao_gates_tab({ id: dao?.id }),
+    () => gqlAuthMethods.dao_gates_tab({ id: dao?.id }),
     { enabled: !!dao?.id }
   );
 
@@ -37,10 +39,10 @@ export function GatesTab() {
   const newGateUrl = `${ROUTES.GATE_NEW}?dao=${dao?.id}`;
 
   const newGateCard = (
-    <Link key="create-gate" passHref href={newGateUrl}>
+    <Link key="create-credential" passHref href={newGateUrl}>
       <EmptyCard
-        title="Create Gate"
-        subtitle="Create your first Gate and help talents find you"
+        title="Create Credential"
+        subtitle="Create your first Credential and help talents find you"
         component="a"
         sx={{ minHeight: 440, maxWidth: { md: '25%' } }}
       />
@@ -60,7 +62,7 @@ export function GatesTab() {
               {isAdmin && (
                 <Link passHref href={newGateUrl}>
                   <Button variant="contained" startIcon={<Add />} size="small">
-                    Create a Gate
+                    Create a Credential
                   </Button>
                 </Link>
               )}
@@ -92,12 +94,32 @@ export function GatesTab() {
                 px: TOKENS.CONTAINER_PX,
               }}
             >
+              {isAdmin && (
+                <MUICard sx={{ position: 'relative' }}>
+                  <Link key="create-credential" passHref href={newGateUrl}>
+                    <EmptyCard
+                      title="Create Credential"
+                      subtitle="Keep engaging your team"
+                      component="a"
+                      sx={{ height: '100%', width: '100%' }}
+                    />
+                  </Link>
+                </MUICard>
+              )}
+
               {filteredGates.map((gate) => (
-                <GatesCard key={`gate-${gate.id}`} {...gate} />
+                <GatesCard
+                  key={`credential-${gate.id}`}
+                  {...gate}
+                  dao={dao}
+                  showStatus={isAdmin}
+                />
               ))}
             </Box>
           )}
-          {view === ViewMode.table && <TableView gates={filteredGates} />}
+          {view === ViewMode.table && (
+            <TableView gates={filteredGates} isGate showStatus />
+          )}
         </>
       )}
 
@@ -111,8 +133,8 @@ export function GatesTab() {
             !isAdmin && (
               <EmptyCard
                 key="empty"
-                title="No Gates yet"
-                subtitle="Follow us and get notificatons when a new Gate is created"
+                title="No Credentials yet"
+                subtitle="Follow us and get notificatons when a new Credential is created"
                 disabled
                 sx={{ height: 440, maxWidth: { md: '25%' } }}
               />

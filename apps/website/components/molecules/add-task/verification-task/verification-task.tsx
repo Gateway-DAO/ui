@@ -23,12 +23,18 @@ const VerificationCodeTask = ({ taskId, deleteTask }) => {
   const {
     register,
     setValue,
+    getValues,
+
     formState: { errors },
   } = useFormContext<CreateGateTypes>();
 
+  const formValues = getValues();
+
   useEffect(() => {
-    setValue(`tasks.data.${taskId}.title`, 'Untitled Task');
-  }, [setValue, taskId]);
+    if (formValues.tasks.data[taskId]?.title === '') {
+      setValue(`tasks.data.${taskId}.title`, 'Untitled Task');
+    }
+  }, [setValue, taskId, formValues.tasks.data]);
 
   const [taskVisible, setTaskVisible] = useState(false);
 
@@ -147,7 +153,12 @@ const VerificationCodeTask = ({ taskId, deleteTask }) => {
           {...register(`tasks.data.${taskId}.description`)}
           error={!!errors.tasks?.data?.[taskId]?.description}
           helperText={errors.tasks?.data?.[taskId]?.description?.message}
-          sx={{ marginBottom: '60px' }}
+          sx={{
+            marginBottom: '60px',
+            '& fieldset legend span': {
+              marginRight: '10px',
+            },
+          }}
         />
         <TextField
           required
@@ -165,6 +176,12 @@ const VerificationCodeTask = ({ taskId, deleteTask }) => {
                 ?.task_data as VerificationCodeDataError
             )?.code?.message
           }
+          sx={{
+            marginBottom: '60px',
+            '& fieldset legend span': {
+              marginRight: '10px',
+            },
+          }}
         />
       </FormControl>
     </Stack>

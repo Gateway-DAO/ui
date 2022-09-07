@@ -7,6 +7,7 @@ import {
   FaGithub,
   FaMedium,
   FaTelegram,
+  FaReddit,
 } from 'react-icons/fa';
 
 import { Language, Link, Mail } from '@mui/icons-material';
@@ -31,6 +32,8 @@ export function SocialIcon({ icon, ...other }: Props) {
         return Mail;
       case 'github':
         return FaGithub;
+      case 'reddit':
+        return FaReddit;
       case 'medium':
         return FaMedium;
       case 'telegram':

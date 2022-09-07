@@ -1,48 +1,67 @@
-import { GetStaticPaths, InferGetStaticPropsType } from 'next';
+import { GetStaticPaths } from 'next';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 
-import { CredentialTemplate } from '../../components/templates/credential';
+import { dehydrate, QueryClient, useQuery } from 'react-query';
+
+import { Navbar } from '../../components/organisms/navbar';
 import { DashboardTemplate } from '../../components/templates/dashboard';
+import { GateViewTemplate } from '../../components/templates/gate-view';
+import { useAuth } from '../../providers/auth';
 import { gqlAnonMethods } from '../../services/api';
 
-export default function CredentialPage({
-  credentialProps,
-}: InferGetStaticPropsType<typeof getStaticProps>) {
-  if (!credentialProps) return null;
-  const { credentials_by_pk: credential } = credentialProps;
+export async function getServerSideProps({ params }) {
+  const { id } = params;
+  const queryClient = new QueryClient();
+
+  await queryClient.prefetchQuery(['gate', id], () =>
+    gqlAnonMethods.gate({ id })
+  );
+
+  return {
+    props: {
+      dehydratedState: dehydrate(queryClient),
+    },
+  };
+}
+
+// TODO: implement server side rendering
+export default function GateProfilePage() {
+  const router = useRouter();
+
+  const id = router.query.id as string;
+
+  const { gqlAuthMethods } = useAuth();
+
+  const {
+    data: gatesData,
+    isLoading,
+    isFetchedAfterMount,
+  } = useQuery(['gate', id], () =>
+    gqlAuthMethods.gate({
+      id,
+    })
+  );
+
+  useEffect(() => {
+    if (isFetchedAfterMount && !isLoading && !gatesData?.gates_by_pk) {
+      router.push('/home');
+    }
+  }, [gatesData?.gates_by_pk, isFetchedAfterMount, isLoading]);
+
   return (
     <DashboardTemplate
       containerProps={{
         sx: {
-          overflow: 'hidden',
+          overflow: '',
           pt: 2,
         },
       }}
     >
-      <CredentialTemplate credential={credential} />
+      <Navbar isInternalPage={true} />
+      {!isLoading && gatesData?.gates_by_pk && (
+        <GateViewTemplate gateProps={gatesData.gates_by_pk} />
+      )}
     </DashboardTemplate>
   );
 }
-
-export const getStaticPaths: GetStaticPaths = async ({ locales }) => {
-  const { credentials } = await gqlAnonMethods.all_credentials();
-
-  return {
-    paths: credentials.map((credential) => ({ params: { id: credential.id } })),
-    fallback: 'blocking', //TODO: add loading state and change to fallback: true
-  };
-};
-
-export const getStaticProps = async ({ params }) => {
-  const { id } = params;
-
-  const credentialProps = await gqlAnonMethods.credential({
-    id,
-  });
-
-  return {
-    props: {
-      credentialProps,
-    },
-    revalidate: 60,
-  };
-};

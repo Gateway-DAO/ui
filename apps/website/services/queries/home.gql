@@ -1,10 +1,11 @@
 query get_home {
-  gates(limit: 4) {
+  gates(where: { published: { _eq: "published" } }, limit: 4) {
     id
     title
     description
     categories
     image
+    published
     dao {
       id
       logo_url
@@ -47,6 +48,7 @@ query get_home {
     name
     about
     username
+    wallet
     picture {
       ...file
     }
@@ -60,6 +62,7 @@ query gates_tab {
     description
     categories
     image
+    published
     dao {
       id
       logo_url
@@ -111,5 +114,6 @@ query people_tab {
     }
     about
     username
+    wallet
   }
 }

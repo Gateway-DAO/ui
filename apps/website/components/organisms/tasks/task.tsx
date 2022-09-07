@@ -5,6 +5,7 @@ import { useToggle } from 'react-use';
 import { PartialObjectDeep } from 'type-fest/source/partial-deep';
 
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
+import CheckIcon from '@mui/icons-material/Check';
 import {
   Card,
   CardContent,
@@ -19,31 +20,45 @@ import { useAuth } from '../../../providers/auth';
 import { Tasks } from '../../../services/graphql/types.generated';
 import { queryClient } from '../../../services/query-client';
 import { SessionUser } from '../../../types/user';
+import { getMapValueFromObject } from '../../../utils/map-object';
 import MeetingCodeContent from '../gates/view/tasks/content/meeting_code';
 import QuizContent from '../gates/view/tasks/content/quiz';
 import SelfVerifyContent from '../gates/view/tasks/content/self-verify';
 import SnapshotContent from '../gates/view/tasks/content/snapshot';
 import TokenHoldContent from '../gates/view/tasks/content/token_hold';
+import { taskErrorMessages } from './task-error-messages';
 
 type Props = {
   idx?: number;
   task?: PartialObjectDeep<Tasks>;
   readOnly?: boolean;
+  setCompletedGate?: (completed: boolean) => void;
+  completed?: boolean;
 };
 
 interface Error {
   response?: {
     errors?: {
+      extensions?: {
+        code: number;
+        error: string;
+      };
       message?: string;
     }[];
   };
 }
 
-export function Task({ task, idx, readOnly }: Props) {
+export function Task({
+  task,
+  idx,
+  readOnly,
+  setCompletedGate,
+  completed: completedProp = false,
+}: Props) {
   const { me, gqlAuthMethods, onOpenLogin } = useAuth();
 
   const [expanded, toggleExpanded] = useToggle(false);
-  const [completed, setCompleted] = useState(false);
+  const [completed, setCompleted] = useState(completedProp);
   const [updatedAt, setUpdatedAt] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -55,6 +70,7 @@ export function Task({ task, idx, readOnly }: Props) {
     if (progressTaskIndex !== undefined && progressTaskIndex !== -1) {
       setCompleted(true);
       setUpdatedAt(me?.task_progresses[progressTaskIndex].updated_at);
+      toggleExpanded(true);
     }
   }, [task.id, me?.task_progresses]);
 
@@ -94,7 +110,7 @@ export function Task({ task, idx, readOnly }: Props) {
   };
 
   const { mutate: completeTaskMutation, isLoading } = useMutation(
-    'completeTask',
+    ['completeTask', { gateId: task.gate_id, taskId: task.id }],
     gqlAuthMethods.complete_task,
     {
       onSuccess: async (data) => {
@@ -104,16 +120,21 @@ export function Task({ task, idx, readOnly }: Props) {
           const oldTaskProgresses = old.task_progresses.filter(
             (task_progress) => task_progress.task_id !== task.id
           );
+
           const newTaskProgress = [
             ...oldTaskProgresses,
             data.verify_key.task_info,
           ];
+
+          data.verify_key.completed_gate && setCompletedGate(true);
 
           return {
             ...old,
             task_progresses: newTaskProgress,
           };
         });
+
+        data.verify_key.completed_gate && queryClient.invalidateQueries('me');
       },
     }
   );
@@ -129,13 +150,17 @@ export function Task({ task, idx, readOnly }: Props) {
     };
 
     completeTaskMutation(data, {
-      onSuccess: (response) => {
+      onSuccess: () => {
         setErrorMessage('');
-        console.log('Completed!', response);
       },
       onError: (error: Error) => {
-        setErrorMessage(error.response.errors[0].message);
-        console.log(error.response.errors[0].message);
+        setErrorMessage(
+          getMapValueFromObject(
+            taskErrorMessages,
+            error.response.errors[0].extensions.error,
+            `There was an unexpected error, please, contact Gateway or try again`
+          )
+        );
       },
     });
   };
@@ -145,26 +170,34 @@ export function Task({ task, idx, readOnly }: Props) {
 
   return (
     <Card
-      sx={{
+      sx={(theme) => ({
         borderRadius: 0,
         borderLeft: 'none',
         backgroundColor: 'transparent !important',
         backgroundImage: 'none !important',
-        px: (theme) => theme.spacing(7),
-        py: (theme) => theme.spacing(5),
-      }}
+        px: { xs: theme.spacing(1), md: theme.spacing(7) },
+        py: { xs: theme.spacing(1), md: theme.spacing(5) },
+      })}
     >
       <CardHeader
         avatar={
           <Avatar
             sx={{
-              backgroundColor: expanded ? 'white' : 'transparent',
+              backgroundColor: completed
+                ? '#6DFFB9'
+                : expanded
+                ? 'white'
+                : 'transparent',
               color: (theme) =>
                 expanded ? theme.palette.background.default : 'white',
               border: expanded ? 'none' : '1px solid #FFFFFF4D',
             }}
           >
-            {idx || task.title[0]}
+            {completed ? (
+              <CheckIcon htmlColor="#10041C" />
+            ) : (
+              idx || task.title[0]
+            )}
           </Avatar>
         }
         title={<Typography variant="caption">{taskContent?.title}</Typography>}
@@ -175,15 +208,8 @@ export function Task({ task, idx, readOnly }: Props) {
           </IconButton>
         }
       />
-      <Collapse
-        in={expanded}
-        timeout="auto"
-        unmountOnExit
-        sx={{
-          paddingLeft: (theme) => theme.spacing(2) + 40,
-        }}
-      >
-        <CardContent sx={{ marginLeft: '55px' }}>
+      <Collapse in={expanded} timeout="auto" unmountOnExit>
+        <CardContent sx={{ marginLeft: { xs: '0px', md: '55px' } }}>
           <Typography variant="subtitle2">{task.description}</Typography>
           <TaskComponent
             data={task.task_data}

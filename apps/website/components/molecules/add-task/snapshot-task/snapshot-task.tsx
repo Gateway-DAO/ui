@@ -28,6 +28,7 @@ const SnapshotTask = ({ taskId, deleteTask }) => {
   const {
     register,
     setValue,
+    getValues,
     formState: { errors },
     watch,
     control,
@@ -35,10 +36,14 @@ const SnapshotTask = ({ taskId, deleteTask }) => {
     clearErrors,
   } = useFormContext<CreateGateTypes>();
 
+  const formValues = getValues();
+
   useEffect(() => {
-    setValue(`tasks.data.${taskId}.title`, 'Untitled Task');
+    if (formValues.tasks.data[taskId]?.title === '') {
+      setValue(`tasks.data.${taskId}.title`, 'Untitled Task');
+    }
     setValue(`tasks.data.${taskId}.task_type`, 'snapshot');
-  }, [taskId, setValue]);
+  }, [taskId, setValue, formValues.tasks.data]);
 
   const [taskVisible, setTaskVisible] = useState(false);
 
@@ -157,7 +162,12 @@ const SnapshotTask = ({ taskId, deleteTask }) => {
           {...register(`tasks.data.${taskId}.description`)}
           error={!!errors.tasks?.data[taskId]?.description}
           helperText={errors.tasks?.data[taskId]?.description?.message}
-          sx={{ marginBottom: '60px' }}
+          sx={{
+            marginBottom: '60px',
+            '& fieldset legend span': {
+              marginRight: '10px',
+            },
+          }}
         />
         <Stack
           direction={{ xs: 'column', md: 'row' }}
@@ -167,7 +177,7 @@ const SnapshotTask = ({ taskId, deleteTask }) => {
             <TextField
               required
               label="Specific Proposal Number"
-              sx={{ maxWidth: { md: '50%', xs: '100%' } }}
+              sx={{ minWidth: { md: '50%', xs: '100%' } }}
               {...register(`tasks.data.${taskId}.task_data.proposal_number`)}
               error={
                 !!(errors.tasks?.data[taskId]?.task_data as SnapshotDataError)

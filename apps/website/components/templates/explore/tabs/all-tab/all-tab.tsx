@@ -37,19 +37,21 @@ export function AllTab({ daos, gates, people, setActiveTab }: Props) {
         }}
       >
         <SectionWithSliderResponsive
-          title={t('featured-gates.title')}
-          caption={t('featured-gates.caption')}
+          title={t('featured-credentials.title')}
+          caption={t('featured-credentials.caption')}
           action={
             <Button onClick={() => setActiveTab(1)}>
-              {t('featured-gates.see-more')}
+              {t('featured-credentials.see-more')}
             </Button>
           }
           itemWidth={(theme) => theme.spacing(37.75)}
           gridSize={{ lg: 4 }}
         >
-          {gates.map((gate) => (
-            <GatesCard key={gate.id} {...gate} />
-          ))}
+          {gates
+            .filter((gate) => gate.published === 'published')
+            .map((gate) => (
+              <GatesCard key={gate.id} {...gate} />
+            ))}
         </SectionWithSliderResponsive>
         <SectionWithSliderResponsive
           title={t('featured-daos.title')}
@@ -59,7 +61,7 @@ export function AllTab({ daos, gates, people, setActiveTab }: Props) {
               {t('featured-daos.see-more')}
             </Button>
           }
-          itemWidth={(theme) => theme.spacing(51)}
+          itemWidth={(theme) => theme.spacing(41)}
         >
           {daos.map((dao) => (
             <DaoCard key={dao.id} {...dao} />

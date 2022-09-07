@@ -46,6 +46,7 @@ export const networksLabels = [
   'Email',
   'GitHub',
   'Medium',
+  'reddit',
   'Telegram',
   'Twitter',
   'Twitch',

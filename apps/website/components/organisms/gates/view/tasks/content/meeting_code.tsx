@@ -24,7 +24,7 @@ const MeetingCodeContent = ({
         onChange={(e) => setMeetingCode(e.target.value)}
         sx={{ margin: '20px 0' }}
       />
-      {!readOnly && (
+      {!readOnly && !completed && (
         <LoadingButton
           variant="contained"
           sx={{ marginTop: '15px' }}
@@ -34,7 +34,7 @@ const MeetingCodeContent = ({
           Submit
         </LoadingButton>
       )}
-      {completed && (
+      {completed && !!updatedAt && (
         <Typography color="#c5ffe3" variant="subtitle2">
           Task completed at {formattedDate}
         </Typography>

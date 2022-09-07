@@ -27,7 +27,6 @@ export const SKILLS = {
     'Accounting',
     'Community ',
     'Project Management',
-    'Accounting',
     'Tokenomics',
     'Quality Assurance',
     'Branding',

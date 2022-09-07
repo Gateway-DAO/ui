@@ -46,11 +46,13 @@ export function Drawer({ currentDao, showExplore }: Props) {
               height: (theme) => theme.spacing(5),
             }}
           >
-            <GatewayIcon />
+            <Link passHref href={ROUTES.EXPLORE}>
+              <GatewayIcon />
+            </Link>
           </ListItemIcon>
           <AnimatePresence>
             {showExplore && (
-              <Link passHref href={ROUTES.EXPLORE} prefetch={false}>
+              <Link passHref href={ROUTES.EXPLORE}>
                 <MotionTooltip
                   key="explore"
                   layoutId="Explore"
@@ -74,7 +76,7 @@ export function Drawer({ currentDao, showExplore }: Props) {
               const url = ROUTES.DAO_PROFILE.replace('[id]', dao.id);
 
               return (
-                <Link key={dao.id} passHref href={url} prefetch={false}>
+                <Link key={dao.id} passHref href={url}>
                   <MotionTooltip
                     layoutId={dao.id}
                     title={dao.name}
