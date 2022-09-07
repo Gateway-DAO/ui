@@ -109,7 +109,7 @@ export default function GateCompletedModal({ gate, open, handleClose }) {
               marginY: (theme) => theme.spacing(8),
             })}
           >
-            <GatesCard {...gate} />
+            <GatesCard onClick={handleClose} {...gate} />
           </Box>
           <Stack
             direction="row"

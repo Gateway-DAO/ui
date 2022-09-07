@@ -18,6 +18,7 @@ import { CategoriesList } from './categories-list';
 /* TODO: Arias and Labels */
 type GatesCardProps = PartialDeep<Gates> & {
   showStatus?: boolean;
+  onClick?: () => void;
 };
 
 export function GatesCard({
@@ -29,79 +30,91 @@ export function GatesCard({
   id,
   published,
   showStatus,
+  onClick,
 }: GatesCardProps): JSX.Element {
   const hasDao = !!dao;
 
   const url = useMemo(() => ROUTES.GATE_PROFILE.replace('[id]', id), [id]);
 
+  const children = (
+    <CardActionArea
+      sx={{ height: '100%' }}
+      {...(!onClick ? { component: 'a' } : { onClick })}
+    >
+      <CardMedia
+        component="img"
+        {...badgeProps({ image, title })}
+        sx={{ aspectRatio: '1/1' }}
+      />
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          paddingRight: '25px',
+          paddingLeft: '16px',
+        }}
+      >
+        <CardHeader
+          sx={{
+            pt: 2,
+            pb: 1,
+            '.MuiCardHeader-action': { alignSelf: 'unset' },
+            px: 0,
+          }}
+          avatar={
+            hasDao && (
+              <AvatarFile
+                file={dao.logo}
+                fallback={dao?.logo_url || '/logo.png'}
+                sx={{ width: 32, height: 32 }}
+                aria-label={`${dao.name}'s DAO image`}
+              >
+                {dao.name?.[0]}
+              </AvatarFile>
+            )
+          }
+          title={hasDao ? dao.name : title}
+        />
+      </Box>
+      <CardContent sx={{ py: 1 }}>
+        {hasDao && (
+          <Typography gutterBottom variant="h5">
+            {title}
+          </Typography>
+        )}
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          sx={{
+            /* TODO: make line-clamp reusable */
+            display: '-webkit-box',
+            WebkitLineClamp: 2,
+            WebkitBoxOrient: 'vertical',
+            overflow: 'hidden',
+          }}
+        >
+          {description}
+        </Typography>
+      </CardContent>
+      <CategoriesList
+        isGate
+        showStatus={showStatus}
+        published={published}
+        categories={categories}
+      />
+    </CardActionArea>
+  );
+
   return (
     <MUICard sx={{ position: 'relative' }}>
-      <Link passHref href={url}>
-        <CardActionArea component="a" sx={{ height: '100%' }}>
-          <CardMedia
-            component="img"
-            {...badgeProps({ image, title })}
-            sx={{ aspectRatio: '1/1' }}
-          />
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              paddingRight: '25px',
-              paddingLeft: '16px',
-            }}
-          >
-            <CardHeader
-              sx={{
-                pt: 2,
-                pb: 1,
-                '.MuiCardHeader-action': { alignSelf: 'unset' },
-                px: 0,
-              }}
-              avatar={
-                hasDao && (
-                  <AvatarFile
-                    file={dao.logo}
-                    fallback={dao?.logo_url || '/logo.png'}
-                    sx={{ width: 32, height: 32 }}
-                    aria-label={`${dao.name}'s DAO image`}
-                  >
-                    {dao.name?.[0]}
-                  </AvatarFile>
-                )
-              }
-              title={hasDao ? dao.name : title}
-            />
-          </Box>
-          <CardContent sx={{ py: 1 }}>
-            {hasDao && (
-              <Typography gutterBottom variant="h5">
-                {title}
-              </Typography>
-            )}
-            <Typography
-              variant="body2"
-              color="text.secondary"
-              sx={{
-                /* TODO: make line-clamp reusable */
-                display: '-webkit-box',
-                WebkitLineClamp: 2,
-                WebkitBoxOrient: 'vertical',
-                overflow: 'hidden',
-              }}
-            >
-              {description}
-            </Typography>
-          </CardContent>
-          <CategoriesList
-            isGate
-            showStatus={showStatus}
-            published={published}
-            categories={categories}
-          />
-        </CardActionArea>
-      </Link>
+      {onClick === undefined ? (
+        <Link passHref href={url}>
+          {children}
+        </Link>
+      ) : (
+        children
+      )}
     </MUICard>
   );
 }
