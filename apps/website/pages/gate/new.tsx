@@ -2,16 +2,35 @@ import { redirect } from 'next/dist/server/api-utils';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
+import { useQuery } from 'react-query';
+
 import { CreateGateTemplate } from '../../components/templates/create-gate';
 import { DraftGateTypes } from '../../components/templates/create-gate/schema';
 import { ROUTES } from '../../constants/routes';
+import { useAuth } from '../../providers/auth';
 import { gqlAnonMethods } from '../../services/api';
+import { GateQuery } from '../../services/graphql/types.generated';
 
 type CreateGateProps = {
-  gateProps: DraftGateTypes;
+  id: string;
+  gateProps: GateQuery;
 };
-export default function CreateGate({ gateProps }: CreateGateProps) {
+export default function CreateGate({ id, gateProps }: CreateGateProps) {
   const router = useRouter();
+  const { gqlAuthMethods } = useAuth();
+
+  const { data: oldGateData } = useQuery(
+    ['gate', id],
+    () =>
+      gqlAuthMethods.gate({
+        id,
+      }),
+    {
+      initialData: gateProps,
+    }
+  );
+
+  console.log(oldGateData);
 
   const {
     isReady,
@@ -28,7 +47,17 @@ export default function CreateGate({ gateProps }: CreateGateProps) {
     return null;
   }
 
-  return <CreateGateTemplate oldData={gateProps} />;
+  return (
+    <CreateGateTemplate
+      oldData={
+        {
+          created_by: [oldGateData?.gates_by_pk?.creator.id],
+          ...oldGateData?.gates_by_pk,
+          id,
+        } as DraftGateTypes
+      }
+    />
+  );
 }
 
 export async function getServerSideProps({ res, query }) {
@@ -41,7 +70,7 @@ export async function getServerSideProps({ res, query }) {
     });
   }
 
-  const gateState = gateProps.gates_by_pk.published;
+  const gateState = gateProps.gates_by_pk?.published;
   if (gateState === 'published' || gateState === 'paused') {
     redirect(
       res,
@@ -51,7 +80,8 @@ export async function getServerSideProps({ res, query }) {
 
   return {
     props: {
-      gateProps: gateProps.gates_by_pk,
+      id: gateId,
+      gateProps,
     },
   };
 }

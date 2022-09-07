@@ -7,7 +7,7 @@ import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Typography from '@mui/material/Typography';
 
-import { gqlAnonMethods } from '../../../../services/api';
+import { useAuth } from '../../../../providers/auth';
 import { GatesCard } from '../../../molecules/gates-card';
 
 const style: SxProps = {
@@ -30,6 +30,7 @@ export default function GatePublishedModal({
   handleClose,
 }: GatePublishedModalProps) {
   const router = useRouter();
+  const { gqlAuthMethods } = useAuth();
   const [gate, setGate] = useState({
     title: '',
     image: '',
@@ -44,7 +45,7 @@ export default function GatePublishedModal({
 
   useEffect(() => {
     if (gateId) {
-      gqlAnonMethods
+      gqlAuthMethods
         .gate({
           id: gateId,
         })

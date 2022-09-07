@@ -26,7 +26,7 @@ import { GateImageCard } from './gate-image-card/gate-image-card';
 import { createGateSchema, CreateGateTypes, DraftGateTypes } from './schema';
 
 type CreateGateProps = {
-  oldData: DraftGateTypes;
+  oldData?: DraftGateTypes;
 };
 
 export function CreateGateTemplate({ oldData }: CreateGateProps) {
