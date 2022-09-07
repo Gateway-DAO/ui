@@ -2,6 +2,7 @@ import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
 import { useMemo } from 'react';
 
+import { getTimeZones } from '@vvo/tzdb';
 import { DateTime } from 'luxon';
 import { PartialDeep } from 'type-fest';
 
@@ -19,7 +20,6 @@ import {
 } from '@mui/material';
 
 import { ROUTES } from '../../../../constants/routes';
-import { TZ } from '../../../../constants/user';
 import { useViewMode, ViewMode } from '../../../../hooks/use-view-modes';
 import { useAuth } from '../../../../providers/auth';
 import { Users } from '../../../../services/graphql/types.generated';
@@ -40,6 +40,8 @@ export function OverviewTab({ user }: Props) {
   const { me } = useAuth();
   const canEdit = user === me;
 
+  const TZ = getTimeZones();
+
   const tabs = [
     {
       key: 'overview',
@@ -52,10 +54,14 @@ export function OverviewTab({ user }: Props) {
     },
   ];
 
-  const offset = TZ.find((tz) => tz.abbr === user.timezone)?.offset;
+  const timezone = TZ.find((timeZone) => {
+    return (
+      user.timezone === timeZone.name || timeZone.group.includes(user.timezone)
+    );
+  });
   const hourToTimezone = DateTime.local()
     .setLocale('en-US')
-    .setZone('UTC' + (offset > 0 ? '+' : '') + offset);
+    .setZone(user?.timezone);
 
   return (
     <Box>
@@ -357,7 +363,7 @@ export function OverviewTab({ user }: Props) {
                         color: 'rgba(255, 255, 255, 0.7)',
                       }}
                     >
-                      {TZ.find((tz) => tz.abbr === user.timezone)?.text}
+                      {timezone?.alternativeName}
                     </Typography>
                   </>
                 ) : (
