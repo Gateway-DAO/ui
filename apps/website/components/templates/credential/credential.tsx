@@ -274,7 +274,7 @@ export function CredentialTemplate({ credential, openModal }: Props) {
               />
             ))}
           </Grid>
-          {credential?.issuer && (
+          {credential?.gate?.creator && (
             <>
               <Grid item xs={4}>
                 <Typography
@@ -285,13 +285,16 @@ export function CredentialTemplate({ credential, openModal }: Props) {
                 </Typography>
               </Grid>
               <Grid item xs={8}>
-                <Link passHref href={`/profile/${credential?.issuer.username}`}>
-                  <Tooltip title={credential?.issuer.name}>
+                <Link
+                  passHref
+                  href={`/profile/${credential?.gate?.creator.username}`}
+                >
+                  <Tooltip title={credential?.gate?.creator.name}>
                     <Box component="a" sx={{ display: 'inline-block' }}>
                       <AvatarFile
-                        alt={credential?.issuer.username}
-                        file={credential?.issuer.picture}
-                        fallback={credential?.issuer.pfp || '/logo.png'}
+                        alt={credential?.gate?.creator.username}
+                        file={credential?.gate?.creator.picture}
+                        fallback={credential?.gate?.creator.pfp || '/logo.png'}
                       />
                     </Box>
                   </Tooltip>
@@ -312,10 +315,8 @@ export function CredentialTemplate({ credential, openModal }: Props) {
         >
           <CircularProgressWithLabel
             variant="determinate"
-            value={
-              (credential?.pow.length / credential?.gate?.tasks?.length) * 100
-            }
-            label={`${credential?.pow.length}/${credential?.gate?.tasks?.length}`}
+            value={100}
+            label={`${credential?.pow.length}/${credential?.pow.length}`}
             sx={{
               color: '#6DFFB9',
             }}
