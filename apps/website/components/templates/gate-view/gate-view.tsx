@@ -114,7 +114,7 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
           setPublished(data.update_gates_by_pk.published);
 
           snackbar.onOpen({
-            message: `Gate ${
+            message: `Credential ${
               published === 'not_published' || published === 'paused'
                 ? 'published!'
                 : 'unpublished!'
@@ -143,7 +143,7 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
       {
         onSuccess() {
           snackbar.onOpen({
-            message: 'Gate deleted!',
+            message: 'Credential deleted!',
           });
           router.push(ROUTES.DAO_PROFILE.replace('[id]', gateProps?.dao.id));
         },

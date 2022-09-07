@@ -95,7 +95,7 @@ export default function GatePublishedModal({
                   mb: 3,
                 }}
               >
-                Gate Published
+                Credential Published
               </Typography>
               <Typography
                 id="modal-modal-description"
@@ -103,7 +103,8 @@ export default function GatePublishedModal({
                 fontSize={16}
               >
                 You have published the{' '}
-                <span style={{ color: '#D083FF' }}>{gate.title}</span> Gate from{' '}
+                <span style={{ color: '#D083FF' }}>{gate.title}</span>{' '}
+                Credential from{' '}
                 <span style={{ color: '#D083FF' }}>{gate.dao.name}</span>.
               </Typography>
             </Box>
@@ -114,7 +115,7 @@ export default function GatePublishedModal({
               sx={{ margin: '20px 0 0 20px' }}
               onClick={() => router.push(`/gate/${gateId}`)}
             >
-              Check Gate
+              Check Credential
             </Button>
           </Box>
         </Box>

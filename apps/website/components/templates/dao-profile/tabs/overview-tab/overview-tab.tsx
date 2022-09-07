@@ -59,8 +59,8 @@ export function OverviewTab({ people, setTab }: Props) {
             {!gates.length && (
               <EmptyCard
                 key="empty"
-                title="No Gates yet"
-                subtitle="Follow us and get notificatons when a new Gate is created"
+                title="No Credentials yet"
+                subtitle="Follow us and get notificatons when a new Credential is created"
                 disabled
                 sx={{ minHeight: 440 }}
               />
