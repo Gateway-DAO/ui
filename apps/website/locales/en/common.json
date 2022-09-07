@@ -9,6 +9,11 @@
       "one": "{{count}} gate",
       "other": "{{count}} gates"
     },
+    "credential": {
+      "0": "No credentials",
+      "one": "{{count}} credential",
+      "other": "{{count}} credentials"
+    },
     "follower": {
       "0": "No followers",
       "one": "{{count}} follower",

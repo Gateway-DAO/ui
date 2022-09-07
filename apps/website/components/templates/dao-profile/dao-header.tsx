@@ -140,7 +140,7 @@ export function DaoHeader({
               </Typography>
             )}
             <Typography variant="body1">
-              {t('common:count.gate', { count: dao.gates?.length ?? 0 })}
+              {t('common:count.credential', { count: dao.gates?.length ?? 0 })}
             </Typography>
           </Stack>
           <SocialButtons socials={dao.socials} sx={{ mt: 4 }}>
