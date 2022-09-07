@@ -47,7 +47,7 @@ const facebookLink = (props: Props) =>
 
 export function ShareButton({
   title = 'Gateway',
-  url = window.location.href,
+  url = typeof window !== 'undefined' ? window.location.href : '',
 }: Props) {
   const snackbar = useSnackbar();
   const [state, copyToClipboard] = useCopyToClipboard();
