@@ -99,43 +99,37 @@ export function BiconomyProvider({
 
   useEffect(() => {
     async function init() {
-      if (
-        // TODO: check if we can use Wagmi's provider instead
-        typeof window.ethereum !== 'undefined' &&
-        address.address
-      ) {
-        // We're creating biconomy provider linked to your network of choice where your contract is deployed
-        const jsonRpcProvider = RPC[process.env.NEXT_PUBLIC_MINT_CHAIN];
+      // We're creating biconomy provider linked to your network of choice where your contract is deployed
+      const jsonRpcProvider = RPC[process.env.NEXT_PUBLIC_MINT_CHAIN];
 
-        biconomy = new Biconomy(jsonRpcProvider, {
-          walletProvider: window.ethereum,
-          apiKey: process.env.NEXT_PUBLIC_WEB3_BICONOMY_API_KEY,
-          debug: process.env.NODE_ENV === 'development',
+      biconomy = new Biconomy(jsonRpcProvider, {
+        walletProvider: window.ethereum,
+        apiKey: process.env.NEXT_PUBLIC_WEB3_BICONOMY_API_KEY,
+        debug: process.env.NODE_ENV === 'development',
+      });
+
+      biconomy
+        .onEvent(biconomy.READY, async () => {
+          // Initialize your dapp here like getting user accounts etc
+          contract = new ethers.Contract(
+            contractAddress,
+            CREDENTIAL_ABI,
+            biconomy.getSignerByAddress(address.address)
+          );
+
+          contractInterface = new ethers.utils.Interface(CREDENTIAL_ABI);
+        })
+        .onEvent(biconomy.ERROR, (error, message) => {
+          // Handle error while initializing mexa
+          console.log(message);
+          console.log(error);
         });
-
-        biconomy
-          .onEvent(biconomy.READY, async () => {
-            // Initialize your dapp here like getting user accounts etc
-            contract = new ethers.Contract(
-              contractAddress,
-              CREDENTIAL_ABI,
-              biconomy.getSignerByAddress(address.address)
-            );
-
-            contractInterface = new ethers.utils.Interface(CREDENTIAL_ABI);
-          })
-          .onEvent(biconomy.ERROR, (error, message) => {
-            // Handle error while initializing mexa
-            console.log(message);
-            console.log(error);
-          });
-      } else {
-        throw new Error('Metamask not installed!');
-      }
     }
 
-    init();
-  }, [address]);
+    if (typeof window !== 'undefined' && (address?.address ?? false)) {
+      init();
+    }
+  }, [address?.address]);
 
   /**
    * It mints a new NFT token.
