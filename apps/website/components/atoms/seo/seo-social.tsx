@@ -6,7 +6,7 @@ export function SEOSocial() {
     <>
       <meta
         name="description"
-        content="Are you hungry to find your online community? We provide you all the information you need to make your decision all in one spot. Let us be your Gateway."
+        content="Gateway is a decentralized protocol for creating, consuming, and displaying verifiable credentials to serve as a basis for an interconnected web and portable reputation."
       />
 
       {/* Open Graph / Facebook */}
@@ -15,7 +15,7 @@ export function SEOSocial() {
       <meta property="og:title" content="Gateway - Find your Community" />
       <meta
         property="og:description"
-        content="Are you hungry to find your online community? We provide you all the information you need to make your decision all in one spot. Let us be your Gateway."
+        content="Gateway is a decentralized protocol for creating, consuming, and displaying verifiable credentials to serve as a basis for an interconnected web and portable reputation."
       />
       <meta property="og:image" content="/social.png" />
 
@@ -25,7 +25,7 @@ export function SEOSocial() {
       <meta property="twitter:title" content="Gateway - Find your Community" />
       <meta
         property="twitter:description"
-        content="Are you hungry to find your online community? We provide you all the information you need to make your decision all in one spot. Let us be your Gateway."
+        content="Gateway is a decentralized protocol for creating, consuming, and displaying verifiable credentials to serve as a basis for an interconnected web and portable reputation."
       />
       <meta property="twitter:image" content="/social.png" />
     </>
