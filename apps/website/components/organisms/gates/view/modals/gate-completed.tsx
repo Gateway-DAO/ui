@@ -1,4 +1,13 @@
 import {
+  EmailShareButton,
+  RedditShareButton,
+  TwitterShareButton,
+} from 'next-share';
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
+
+import CloseIcon from '@mui/icons-material/Close';
+import {
   Avatar,
   Button,
   Dialog,
@@ -9,26 +18,9 @@ import {
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Typography from '@mui/material/Typography';
-import CloseIcon from '@mui/icons-material/Close';
-import { GatesCard } from '../../../../molecules/gates-card';
-import Link from 'next/link';
-import {
-  EmailShareButton,
-  RedditShareButton,
-  TwitterShareButton,
-} from 'next-share';
-import { SocialIcon } from 'apps/website/components/atoms/social-icon';
-import { useEffect, useState } from 'react';
 
-const style: SxProps = {
-  bgcolor: 'background.paper',
-  px: { xs: 2, md: 6, lg: 12 },
-  py: { xs: 1, md: 5 },
-  height: '100%',
-  width: { md: '100%' },
-  display: 'flex',
-  flexDirection: 'column',
-};
+import { SocialIcon } from '../../../../atoms/social-icon';
+import { GatesCard } from '../../../../molecules/gates-card';
 
 export default function GateCompletedModal({ gate, open, handleClose }) {
   const [URL, setURL] = useState<string>();
@@ -45,13 +37,18 @@ export default function GateCompletedModal({ gate, open, handleClose }) {
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
-      <Box sx={style}>
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'space-between',
-          }}
-        >
+      <Stack
+        direction="column"
+        sx={{
+          bgcolor: 'background.paper',
+          px: { xs: 2, md: 6, lg: 12 },
+          py: { xs: 1, md: 5 },
+          height: '100%',
+          width: { md: '100%' },
+          display: 'flex',
+        }}
+      >
+        <Stack justifyContent="space-between" direction="row">
           <Avatar
             src={'/favicon-512.png'}
             alt={'gateway-logo'}
@@ -62,20 +59,19 @@ export default function GateCompletedModal({ gate, open, handleClose }) {
               <CloseIcon />
             </IconButton>
           </Avatar>
-        </Box>
+        </Stack>
 
-        <Box
-          sx={(theme) => ({
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            marginTop: 2,
-            height: { xs: '100%', md: theme.spacing(103.5) },
-            width: { xs: '100%', md: theme.spacing(103.5) },
-            alignSelf: 'center',
+        <Stack
+          direction="column"
+          flex={1}
+          alignSelf="center"
+          alignItems="center"
+          justifyContent="center"
+          sx={{
             background:
               'radial-gradient(50% 50% at 50% 50%, rgba(154, 83, 255, 0.3) 0%, rgba(154, 83, 255, 0) 100%)',
-          })}
+            width: '100%',
+          }}
         >
           <Box>
             <Typography
@@ -110,25 +106,32 @@ export default function GateCompletedModal({ gate, open, handleClose }) {
             sx={(theme) => ({
               height: { xs: theme.spacing(45.49), md: theme.spacing(59.78) },
               width: { xs: theme.spacing(28.75), md: theme.spacing(37.75) },
-              marginTop: 6,
+              marginY: (theme) => theme.spacing(8),
             })}
           >
             <GatesCard {...gate} />
           </Box>
-          <Box
-            sx={(theme) => ({
-              display: 'flex',
-              justifyContent: 'space-between',
-              width: { xs: '70%', md: '50%' },
-              mt: { xs: theme.spacing(10), md: theme.spacing(2.27) },
-            })}
+          <Stack
+            direction="row"
+            justifyContent="space-between"
+            sx={{
+              marginTop: {
+                xs: (theme) => theme.spacing(10),
+                md: (theme) => theme.spacing(3),
+              },
+            }}
           >
-            <Box>
-              <Typography color={'#FFFFFFB2'}>Share on</Typography>
+            <Stack>
+              <Typography
+                color={'#FFFFFFB2'}
+                marginBottom={(theme) => theme.spacing(2)}
+              >
+                Share on
+              </Typography>
               <Stack direction="row" spacing={1}>
                 <EmailShareButton
                   url={URL}
-                  subject={'Conagralautions'}
+                  subject={'Congratulations'}
                   body={gate.dao.name + ' via @Gateway_xyz'}
                 >
                   <Avatar>
@@ -153,7 +156,7 @@ export default function GateCompletedModal({ gate, open, handleClose }) {
                   </Avatar>
                 </TwitterShareButton>
               </Stack>
-            </Box>
+            </Stack>
             <Link href={'/profile'} passHref>
               <Button
                 variant="outlined"
@@ -164,9 +167,9 @@ export default function GateCompletedModal({ gate, open, handleClose }) {
                 View on Profile
               </Button>
             </Link>
-          </Box>
-        </Box>
-      </Box>
+          </Stack>
+        </Stack>
+      </Stack>
     </Dialog>
   );
 }

@@ -10,7 +10,7 @@ import { GateViewTemplate } from '../../components/templates/gate-view';
 import { useAuth } from '../../providers/auth';
 import { gqlAnonMethods } from '../../services/api';
 
-export async function getStaticProps({ params }) {
+export async function getServerSideProps({ params }) {
   const { id } = params;
   const queryClient = new QueryClient();
 
@@ -25,14 +25,14 @@ export async function getStaticProps({ params }) {
   };
 }
 
-export const getStaticPaths: GetStaticPaths = async ({ locales }) => {
-  const { gates } = await gqlAnonMethods.all_gates();
+// export const getStaticPaths: GetStaticPaths = async ({ locales }) => {
+//   const { gates } = await gqlAnonMethods.all_gates();
 
-  return {
-    paths: gates.map((gate) => ({ params: { id: gate.id } })),
-    fallback: true,
-  };
-};
+//   return {
+//     paths: gates.map((gate) => ({ params: { id: gate.id } })),
+//     fallback: true,
+//   };
+// };
 
 // TODO: implement server side rendering
 export default function GateProfilePage() {
