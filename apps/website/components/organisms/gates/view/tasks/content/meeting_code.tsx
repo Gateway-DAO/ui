@@ -10,6 +10,7 @@ const MeetingCodeContent = ({
   completeTask,
   readOnly,
   isLoading,
+  isAdmin,
 }) => {
   const [meetingCode, setMeetingCode] = useState('');
   const formattedDate = new Date(updatedAt.toLocaleString()).toLocaleString();

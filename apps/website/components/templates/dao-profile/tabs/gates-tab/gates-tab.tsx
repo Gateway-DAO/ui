@@ -99,7 +99,7 @@ export function GatesTab() {
                   <Link key="create-credential" passHref href={newGateUrl}>
                     <EmptyCard
                       title="Create Credential"
-                      subtitle="Keep engaging your team"
+                      subtitle="Engage with your community"
                       component="a"
                       sx={{ height: '100%', width: '100%' }}
                     />

@@ -421,6 +421,7 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
               task={task}
               readOnly={published !== 'published'}
               setCompletedGate={setOpen}
+              isAdmin={isAdmin}
             />
           ))}
         </TaskGroup>

@@ -9,6 +9,7 @@ const SnapshotContent = ({
   completeTask,
   readOnly,
   isLoading,
+  isAdmin,
 }) => {
   const { proposal_number } = data;
   const formattedDate = new Date(updatedAt.toLocaleString()).toLocaleString();

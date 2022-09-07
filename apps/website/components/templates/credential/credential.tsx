@@ -359,6 +359,7 @@ export function CredentialTemplate({ credential, openModal }: Props) {
               task={task}
               readOnly
               completed={true}
+              isAdmin={credential?.target_id == me?.id}
             />
           ))}
         </TaskGroup>
