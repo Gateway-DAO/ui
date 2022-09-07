@@ -18,6 +18,7 @@ import { CategoriesList } from './categories-list';
 /* TODO: Arias and Labels */
 type GatesCardProps = PartialDeep<Gates> & {
   showStatus?: boolean;
+  href?: string;
   onClick?: () => void;
 };
 
@@ -30,11 +31,15 @@ export function GatesCard({
   id,
   published,
   showStatus,
+  href,
   onClick,
 }: GatesCardProps): JSX.Element {
   const hasDao = !!dao;
 
-  const url = useMemo(() => ROUTES.GATE_PROFILE.replace('[id]', id), [id]);
+  const url = useMemo(
+    () => href || ROUTES.GATE_PROFILE.replace('[id]', id),
+    [id, href]
+  );
 
   const children = (
     <CardActionArea

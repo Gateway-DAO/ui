@@ -63,74 +63,6 @@ export default function GatePublishedModal({
     }
   );
 
-  //   return (
-  //     <div>
-  //       <Modal
-  //         open={open}
-  //         onClose={handleClose}
-  //         aria-labelledby="modal-modal-title"
-  //         aria-describedby="modal-modal-description"
-  //         sx={{
-  //           overflowY: 'auto',
-  //         }}
-  //       >
-  //         <Box sx={style}>
-  //           <Box>
-  //             <Image
-  //               src="/favicon-512.png"
-  //               alt="gateway-logo"
-  //               height={40}
-  //               width={40}
-  //             />
-  //           </Box>
-  //           <Box
-  //             sx={{
-  //               display: 'flex',
-  //               flexDirection: 'column',
-  //               alignItems: 'center',
-  //               justifyContent: 'center',
-  //               flex: 1,
-  //             }}
-  //           >
-  //             <Box>
-  //               <Typography
-  //                 id="modal-modal-title"
-  //                 variant="h3"
-  //                 component="h3"
-  //                 fontSize={48}
-  //                 textAlign="center"
-  //                 sx={{
-  //                   mb: 3,
-  //                 }}
-  //               >
-  //                 Credential Published
-  //               </Typography>
-  //               <Typography
-  //                 id="modal-modal-description"
-  //                 sx={{ mb: 6, textAlign: 'center' }}
-  //                 fontSize={16}
-  //               >
-  //                 You have published the{' '}
-  //                 <span style={{ color: '#D083FF' }}>{gate.title}</span>{' '}
-  //                 Credential from{' '}
-  //                 <span style={{ color: '#D083FF' }}>{gate.dao.name}</span>.
-  //               </Typography>
-  //             </Box>
-  //             <GatesCard {...gate} />
-  //             <Button
-  //               variant="outlined"
-  //               size="medium"
-  //               sx={{ margin: '20px 0 0 20px' }}
-  //               onClick={() => router.push(`/credential/${gateId}`)}
-  //             >
-  //               Check Credential
-  //             </Button>
-  //           </Box>
-  //         </Box>
-  //       </Modal>
-  //     </div>
-  //   );
-
   return (
     <Dialog
       open={open}
@@ -206,7 +138,10 @@ export default function GatePublishedModal({
               marginY: (theme) => theme.spacing(5),
             })}
           >
-            <GatesCard onClick={handleClose} {...gate} />
+            <GatesCard
+              href={ROUTES.GATE_PROFILE.replace('[id]', gate.id)}
+              {...gate}
+            />
           </Box>
           <Stack direction="row" justifyContent="center">
             <Link href={ROUTES.GATE_PROFILE.replace('[id]', gate.id)} passHref>
