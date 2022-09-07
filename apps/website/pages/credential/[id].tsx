@@ -25,15 +25,6 @@ export async function getServerSideProps({ params }) {
   };
 }
 
-// export const getStaticPaths: GetStaticPaths = async ({ locales }) => {
-//   const { gates } = await gqlAnonMethods.all_gates();
-
-//   return {
-//     paths: gates.map((gate) => ({ params: { id: gate.id } })),
-//     fallback: true,
-//   };
-// };
-
 // TODO: implement server side rendering
 export default function GateProfilePage() {
   const router = useRouter();
