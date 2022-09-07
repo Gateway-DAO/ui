@@ -12,7 +12,7 @@ import { gqlAnonMethods } from '../../services/api';
 import { GateQuery } from '../../services/graphql/types.generated';
 
 type CreateGateProps = {
-  id: string;
+  id: string | null;
   gateProps: GateQuery;
 };
 export default function CreateGate({ id, gateProps }: CreateGateProps) {
@@ -27,10 +27,9 @@ export default function CreateGate({ id, gateProps }: CreateGateProps) {
       }),
     {
       initialData: gateProps,
+      enabled: !!id,
     }
   );
-
-  console.log(oldGateData);
 
   const {
     isReady,
@@ -50,11 +49,12 @@ export default function CreateGate({ id, gateProps }: CreateGateProps) {
   return (
     <CreateGateTemplate
       oldData={
-        {
-          created_by: [oldGateData?.gates_by_pk?.creator.id],
+        oldGateData &&
+        ({
+          created_by: [oldGateData?.gates_by_pk?.creator?.id],
           ...oldGateData?.gates_by_pk,
           id,
-        } as DraftGateTypes
+        } as DraftGateTypes)
       }
     />
   );
@@ -80,7 +80,7 @@ export async function getServerSideProps({ res, query }) {
 
   return {
     props: {
-      id: gateId,
+      id: gateId || null,
       gateProps,
     },
   };
