@@ -24,17 +24,19 @@ export default function DaoProfilePage({
     ['dao', slug],
     () =>
       gqlAnonMethods.dao_profile_by_slug({
-        slug: router.query.slug as string,
+        slug,
       }),
     {
-      initialData: daoProps,
+      initialData: {
+        daos: [daoProps],
+      },
     }
   );
 
   const dao = data?.daos?.[0];
 
   const isAdmin =
-    me?.following_dao?.find((fdao) => fdao.dao_id === dao.id)?.dao?.is_admin ??
+    me?.following_dao?.find((fdao) => fdao.dao_id === dao?.id)?.dao?.is_admin ??
     false;
 
   const peopleQuery = useQuery(
@@ -82,14 +84,21 @@ export const getStaticPaths: GetStaticPaths = async ({ locales }) => {
 export const getStaticProps = async ({ params }) => {
   const { slug } = params;
 
-  const daoProps = await gqlAnonMethods.dao_profile_by_slug({
-    slug,
-  });
+  try {
+    const { daos } = await gqlAnonMethods.dao_profile_by_slug({ slug });
 
-  return {
-    props: {
-      daoProps,
-    },
-    revalidate: 60,
-  };
+    return {
+      props: {
+        daoProps: daos[0],
+      },
+      revalidate: 60,
+    };
+  } catch (err) {
+    return {
+      props: {
+        daoProps: null,
+      },
+      revalidate: 60,
+    };
+  }
 };
