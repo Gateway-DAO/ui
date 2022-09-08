@@ -18,9 +18,7 @@ export default function DaoProfilePage({
 }: {
   daoProps?: Dao_Profile_By_SlugQuery;
 }) {
-  const {
-    daos: [dao],
-  } = daoProps ?? {};
+  const dao = daoProps?.daos?.[0];
 
   const uploadImage = useUploadImage();
   const { me, gqlAuthMethods, onUpdateMe } = useAuth();

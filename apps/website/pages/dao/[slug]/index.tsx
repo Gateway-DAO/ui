@@ -31,9 +31,7 @@ export default function DaoProfilePage({
     }
   );
 
-  const {
-    daos: [dao],
-  } = data ?? {};
+  const dao = data?.daos?.[0];
 
   const isAdmin =
     me?.following_dao?.find((fdao) => fdao.dao_id === dao.id)?.dao?.is_admin ??
@@ -76,7 +74,8 @@ export const getStaticPaths: GetStaticPaths = async ({ locales }) => {
   const { daos } = await gqlAnonMethods.dao_pages();
 
   return {
-    paths: daos.map((dao) => ({ params: { slug: dao.slug } })),
+    // paths: daos.map((dao) => ({ params: { slug: dao.slug } })),
+    paths: [],
     fallback: true,
   };
 };
