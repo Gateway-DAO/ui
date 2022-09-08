@@ -12,7 +12,7 @@ const usernameRegex = /^(?=[a-z0-9._]{2,20}$)(?!.*[_.]{2})[^_.].*[^_.]$/;
 // 'Username can only have lowercase alphanumeric charaters and ._-'
 export const schema: SchemaOf<NewUserSchema> = object({
   name: string().min(2).max(50).defined(),
-  pfp: string().min(2).defined('You must insert a profile picture'),
+  pfp: string().min(2),
   username: string()
     .min(2)
     .max(20)
