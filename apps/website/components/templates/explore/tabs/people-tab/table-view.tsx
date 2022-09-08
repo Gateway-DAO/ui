@@ -60,7 +60,7 @@ export function TableView({ people }: Props) {
                 >
                   <TableCell sx={{ cursor: 'pointer' }}>
                     <Stack alignItems="center" direction="row" gap={1}>
-                      <AvatarFile file={user.picture} fallback="/logo.png">
+                      <AvatarFile file={user.picture} fallback="/avatar.png">
                         {user.name?.[0]}
                       </AvatarFile>
                       <Box>

@@ -50,7 +50,7 @@ export function UserCell({ user }: Props) {
             }}
           >
             <AdminBadge isAdmin={isUserAdminOfDao}>
-              <AvatarFile file={user.picture} fallback="/logo.png">
+              <AvatarFile file={user.picture} fallback="/avatar.png">
                 {user.name?.[0]}
               </AvatarFile>
             </AdminBadge>
