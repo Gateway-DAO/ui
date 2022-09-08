@@ -38,9 +38,9 @@ export default function DaoProfilePage({
     false;
 
   const peopleQuery = useQuery(
-    ['dao-people', dao.id],
+    ['dao-people', dao?.id],
     () => gqlAnonMethods.dao_profile_people({ id: dao.id }),
-    { enabled: !!dao.id }
+    { enabled: !!dao?.id }
   );
 
   const onResetPeopleQuery = () => {
