@@ -58,7 +58,7 @@ export const defaultValues = (
   };
 };
 
-const usernameRegex = /^(?=[a-z0-9_-]{2,20}$)(?!.*[_-]{2})[^_-].*[^_-]$/;
+const usernameRegex = /^(?=[a-z0-9._]{2,20}$)(?!.*[_.]{2})[^_.].*[^_.]$/;
 
 export const schema: SchemaOf<EditUserSchema> = object({
   name: string().required('Name is required'),
@@ -69,7 +69,8 @@ export const schema: SchemaOf<EditUserSchema> = object({
     .max(20)
     .test({
       name: 'username',
-      message: 'Username can only have lowercase alphanumeric charaters and _-',
+      message:
+        'Username can only have lowercase alphanumeric charaters and ._-',
       test: (value) => usernameRegex.test(value),
     }),
   cover: string().nullable(),
