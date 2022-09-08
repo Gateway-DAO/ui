@@ -74,8 +74,7 @@ export const getStaticPaths: GetStaticPaths = async ({ locales }) => {
   const { daos } = await gqlAnonMethods.dao_pages();
 
   return {
-    // paths: daos.map((dao) => ({ params: { slug: dao.slug } })),
-    paths: [],
+    paths: daos.map((dao) => ({ params: { slug: dao.slug } })),
     fallback: true,
   };
 };
