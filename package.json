@@ -40,6 +40,7 @@
     "framer-motion": "^6.3.3",
     "graphql": "^16.4.0",
     "graphql-request": "^4.2.0",
+    "lodash": "^4.17.21",
     "luxon": "^3.0.1",
     "mui-nested-menu": "^2.0.2",
     "next": "^12.1.6",
