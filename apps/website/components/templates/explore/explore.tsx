@@ -36,8 +36,8 @@ export function ExploreTemplate({ title, subtitle, data }: TemplateProps) {
         section: <GatesTab />,
       },
       {
-        key: 'daos',
-        label: t('common:tabs.daos'),
+        key: 'organizations',
+        label: t('common:tabs.organizations'),
         section: <DaosTab />,
       },
       {

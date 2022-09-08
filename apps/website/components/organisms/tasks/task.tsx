@@ -34,6 +34,7 @@ type Props = {
   readOnly?: boolean;
   setCompletedGate?: (completed: boolean) => void;
   completed?: boolean;
+  isAdmin?: boolean;
 };
 
 interface Error {
@@ -53,6 +54,7 @@ export function Task({
   idx,
   readOnly,
   setCompletedGate,
+  isAdmin = false,
   completed: completedProp = false,
 }: Props) {
   const { me, gqlAuthMethods, onOpenLogin } = useAuth();
@@ -218,6 +220,7 @@ export function Task({
             completeTask={completeTask}
             readOnly={readOnly}
             isLoading={isLoading}
+            isAdmin={isAdmin}
           />
           {errorMessage && (
             <Typography variant="subtitle2" color="red" marginTop={2}>

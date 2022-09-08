@@ -25,6 +25,7 @@ const TokenHoldContent = ({
   completeTask,
   readOnly,
   isLoading,
+  isAdmin,
 }) => {
   const { chain, token_address, quantity } = data;
   const formattedDate = new Date(updatedAt.toLocaleString()).toLocaleString();

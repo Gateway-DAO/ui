@@ -41,7 +41,7 @@ export function OverviewTab({ people, setTab }: Props) {
                 subtitle={
                   !gates.length
                     ? 'Create your first Credential and help talents find you'
-                    : 'Keep engaging your team'
+                    : 'Engage with your community'
                 }
                 component="a"
                 sx={{ minHeight: 440 }}
