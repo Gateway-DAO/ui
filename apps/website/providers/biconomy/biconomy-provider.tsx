@@ -70,10 +70,10 @@ export function BiconomyProvider({
     {
       onSuccess: (data) => {
         queryClient.invalidateQueries('credentials');
-        queryClient.invalidateQueries(
+        queryClient.invalidateQueries([
           'credential',
-          data.update_credentials_by_pk.id
-        );
+          data.update_credentials_by_pk.id,
+        ]);
 
         queryClient.setQueryData('me', (old: PartialDeep<Users>) => {
           const experiences = old.experiences.map((experience) => ({
