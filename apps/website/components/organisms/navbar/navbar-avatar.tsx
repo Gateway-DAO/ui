@@ -128,7 +128,7 @@ export function NavBarAvatar({ hideProfile }: Props) {
         <MenuItem
           key="disconnect"
           onClick={withOnClose(onSignOut)}
-          divider={true}
+          divider={!!accountDetail?.address}
           sx={{
             py: '12px',
           }}
@@ -136,44 +136,48 @@ export function NavBarAvatar({ hideProfile }: Props) {
           <LogoutIcon color="disabled" sx={{ mr: 3.5 }} />
           <Typography textAlign="center">Disconnect</Typography>
         </MenuItem>
-        <ListItem
-          disablePadding
-          sx={{
-            py: '12px',
-          }}
-        >
-          <IconButton disabled sx={{ mr: 2.5, ml: 1 }}>
-            {!!accountDetail?.connector?.id &&
-              icons[accountDetail.connector?.id]}
-          </IconButton>
-
-          <ListItemText
-            primary={
-              accountDetail?.address.slice(0, 5) +
-              '...' +
-              accountDetail?.address.slice(-4)
-            }
-            secondary={activeChain?.name}
-          />
-
-          <IconButton
-            sx={{ ml: 3, mr: 0.5, background: '#E5E5E529' }}
-            onClick={withOnClose(copyText)}
+        {accountDetail?.address && (
+          <ListItem
+            disablePadding
+            sx={{
+              py: '12px',
+            }}
           >
-            <ContentCopyIcon
-              color="disabled"
-              sx={{ height: 20, width: 20, color: '#FFFFFF8F' }}
+            <IconButton disabled sx={{ mr: 2.5, ml: 1 }}>
+              {!!accountDetail?.connector?.id &&
+                icons[accountDetail.connector?.id]}
+            </IconButton>
+
+            <ListItemText
+              primary={
+                accountDetail?.address.slice(0, 5) +
+                '...' +
+                accountDetail?.address.slice(-4)
+              }
+              secondary={activeChain?.name}
             />
-          </IconButton>
 
-          <IconButton
-            sx={{ mr: 1.5, background: '#E5E5E529' }}
-            href={`https://etherscan.io/address/${accountDetail?.address}`}
-            target="_blank"
-          >
-            <OpenInNewIcon sx={{ height: 20, width: 20, color: '#FFFFFF8F' }} />
-          </IconButton>
-        </ListItem>
+            <IconButton
+              sx={{ ml: 3, mr: 0.5, background: '#E5E5E529' }}
+              onClick={withOnClose(copyText)}
+            >
+              <ContentCopyIcon
+                color="disabled"
+                sx={{ height: 20, width: 20, color: '#FFFFFF8F' }}
+              />
+            </IconButton>
+
+            <IconButton
+              sx={{ mr: 1.5, background: '#E5E5E529' }}
+              href={`https://etherscan.io/address/${accountDetail?.address}`}
+              target="_blank"
+            >
+              <OpenInNewIcon
+                sx={{ height: 20, width: 20, color: '#FFFFFF8F' }}
+              />
+            </IconButton>
+          </ListItem>
+        )}
       </Menu>
       <Snackbar
         anchorOrigin={{

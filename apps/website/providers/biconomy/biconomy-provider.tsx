@@ -1,7 +1,8 @@
-import { PropsWithChildren, useEffect, useState } from 'react';
+import { PropsWithChildren, useCallback, useEffect, useState } from 'react';
 
 import { Biconomy } from '@biconomy/mexa';
 import { ethers } from 'ethers';
+import debounce from 'lodash/debounce';
 import { useMutation, useQueryClient } from 'react-query';
 import { PartialDeep } from 'type-fest';
 import { useAccount } from 'wagmi';
@@ -37,12 +38,8 @@ export function BiconomyProvider({
   children,
 }: PropsWithChildren<Props>) {
   const RPC = {
-    polygon: new ethers.providers.JsonRpcProvider(
-      process.env.NEXT_PUBLIC_WEB3_POLYGON_RPC
-    ),
-    rinkeby: new ethers.providers.JsonRpcProvider(
-      process.env.NEXT_PUBLIC_WEB3_RINKEBY_RPC
-    ),
+    polygon: process.env.NEXT_PUBLIC_WEB3_POLYGON_RPC,
+    rinkeby: process.env.NEXT_PUBLIC_WEB3_RINKEBY_RPC,
   };
 
   // State
@@ -70,10 +67,10 @@ export function BiconomyProvider({
     {
       onSuccess: (data) => {
         queryClient.invalidateQueries('credentials');
-        queryClient.invalidateQueries(
+        queryClient.invalidateQueries([
           'credential',
-          data.update_credentials_by_pk.id
-        );
+          data.update_credentials_by_pk.id,
+        ]);
 
         queryClient.setQueryData('me', (old: PartialDeep<Users>) => {
           const experiences = old.experiences.map((experience) => ({
@@ -100,7 +97,9 @@ export function BiconomyProvider({
   useEffect(() => {
     async function init() {
       // We're creating biconomy provider linked to your network of choice where your contract is deployed
-      const jsonRpcProvider = RPC[process.env.NEXT_PUBLIC_MINT_CHAIN];
+      const jsonRpcProvider = new ethers.providers.JsonRpcProvider(
+        RPC[process.env.NEXT_PUBLIC_MINT_CHAIN]
+      );
 
       biconomy = new Biconomy(jsonRpcProvider, {
         walletProvider: window.ethereum,

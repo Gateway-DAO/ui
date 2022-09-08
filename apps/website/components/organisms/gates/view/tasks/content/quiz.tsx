@@ -21,6 +21,7 @@ const QuizContent = ({
   completeTask,
   readOnly,
   isLoading,
+  isAdmin,
 }) => {
   const { questions } = data;
   const formattedDate = new Date(updatedAt?.toLocaleString()).toLocaleString();
@@ -73,9 +74,10 @@ const QuizContent = ({
                       key={index}
                       value={answer.value}
                       control={<Radio />}
-                      {...((readOnly || completed) && {
-                        checked: answer.correct,
-                      })}
+                      {...(isAdmin &&
+                        (readOnly || completed) && {
+                          checked: answer.correct,
+                        })}
                       label={answer.value}
                       disabled={readOnly || completed}
                     />

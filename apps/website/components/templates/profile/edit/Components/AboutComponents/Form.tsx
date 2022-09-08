@@ -65,7 +65,10 @@ export function Form() {
           id="username"
           {...register('username', { required: true })}
           error={!!errors.username}
-          helperText={errors.username?.message}
+          helperText={
+            errors.username?.message ??
+            'Valid: lowercase alphanumeric charaters and ._-'
+          }
         />
         <TextField
           sx={{

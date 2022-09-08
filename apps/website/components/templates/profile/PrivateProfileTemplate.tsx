@@ -154,11 +154,12 @@ export default function PrivateProfileTemplate() {
                   fontSize: '16px',
                   fontWeight: '400',
                   color: 'rgba(255, 255, 255, 0.7)',
+                  whiteSpace: 'pre-line',
                 }}
                 width={{ xs: '100%', md: '100%' }}
               >
                 {me.bio ||
-                  'Write about your years of experience, industry, or skills. People also talk about their achievements or previous job experiences.'}
+                  'This is your profesional bio. Click the pencil above to edit.'}
               </Typography>
             </Box>
             <Box>
