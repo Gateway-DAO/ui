@@ -18,8 +18,15 @@ if (typeof window !== 'undefined') {
     storage: localStorage,
   });
 
+  const persistedKeys = ['me', 'token'];
+
   persistQueryClient({
     queryClient,
     persistor: localStoragePersistor,
+    dehydrateOptions: {
+      shouldDehydrateQuery: (query) =>
+        query.state.status === 'success' &&
+        persistedKeys.includes(query.queryKey[0] as string),
+    },
   });
 }
