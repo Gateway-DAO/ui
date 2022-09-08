@@ -9,6 +9,7 @@ query get_home {
     dao {
       id
       logo_url
+      slug
       logo {
         ...file
       }
@@ -18,6 +19,7 @@ query get_home {
   daos(limit: 3) {
     id
     name
+    slug
     logo {
       ...file
     }
@@ -66,6 +68,7 @@ query gates_tab {
     dao {
       id
       logo_url
+      slug
       logo {
         ...file
       }
@@ -78,6 +81,7 @@ query daos_tab {
   daos(order_by: { name: asc }) {
     id
     name
+    slug
     logo {
       ...file
     }
