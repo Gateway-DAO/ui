@@ -7,7 +7,7 @@ export type NewUserSchema = Required<
   Pick<Users, 'name' | 'username' | 'pfp' | 'email_address'>
 >;
 
-const usernameRegex = /^(?=[a-zA-Z0-9._]{8,20}$)(?!.*[_.]{2})[^_.].*[^_.]$/;
+const usernameRegex = /^(?=[a-z0-9_-]{8,20}$)(?!.*[_-]{2})[^_-].*[^_-]$/;
 
 // 'Username can only have lowercase alphanumeric charaters and ._-'
 export const schema: SchemaOf<NewUserSchema> = object({
@@ -18,8 +18,7 @@ export const schema: SchemaOf<NewUserSchema> = object({
     .max(20)
     .test({
       name: 'username',
-      message:
-        'Username can only have lowercase alphanumeric charaters and ._-',
+      message: 'Username can only have lowercase alphanumeric charaters and _-',
       test: (value) => usernameRegex.test(value),
     })
     .defined(),
