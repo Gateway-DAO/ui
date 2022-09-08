@@ -106,6 +106,7 @@ export function UsersList({ users }: Props) {
                       component="a"
                       file={user.picture}
                       target="_blank"
+                      fallback="/avatar.png"
                     />
                   </Link>
                 </ListItemAvatar>
