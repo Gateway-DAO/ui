@@ -261,7 +261,7 @@ export function CredentialTemplate({ credential, openModal }: Props) {
                             <AvatarFile
                               alt={holder.username}
                               file={holder.picture}
-                              fallback={holder.pfp || '/logo.png'}
+                              fallback={holder.pfp || '/avatar.png'}
                             />
                           </Box>
                         </Tooltip>
@@ -312,7 +312,9 @@ export function CredentialTemplate({ credential, openModal }: Props) {
                       <AvatarFile
                         alt={credential?.gate?.creator.username}
                         file={credential?.gate?.creator.picture}
-                        fallback={credential?.gate?.creator.pfp || '/logo.png'}
+                        fallback={
+                          credential?.gate?.creator.pfp || '/avatar.png'
+                        }
                       />
                     </Box>
                   </Tooltip>

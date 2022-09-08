@@ -44,7 +44,7 @@ export function PersonCard({
             }}
             avatar={
               <AdminBadge isAdmin={isAdmin}>
-                <AvatarFile file={picture} fallback="/logo.png">
+                <AvatarFile file={picture} fallback="/avatar.png">
                   {name?.[0]}
                 </AvatarFile>
               </AdminBadge>
