@@ -104,9 +104,8 @@ query daos_tab {
     }
   }
 }
-
-query people_tab {
-  people: users(order_by: { name: asc }) {
+query people_tab($offset: Int!) {
+  people: users(order_by: { name: asc }, limit: 15, offset: $offset) {
     id
     name
     picture {
