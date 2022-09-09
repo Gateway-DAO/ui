@@ -1,21 +1,40 @@
-import { GetStaticPaths } from 'next';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
-import { dehydrate, QueryClient, useQuery } from 'react-query';
+import { dehydrate, QueryClient, useQuery } from '@tanstack/react-query';
+
+import { Box } from '@mui/material';
 
 import { Navbar } from '../../components/organisms/navbar';
 import { DashboardTemplate } from '../../components/templates/dashboard';
 import { GateViewTemplate } from '../../components/templates/gate-view';
+import { ROUTES } from '../../constants/routes';
 import { useAuth } from '../../providers/auth';
-import { gqlAnonMethods } from '../../services/api';
+import { gqlAnonMethods, gqlMethods } from '../../services/api';
 
-export async function getServerSideProps({ params }) {
+export async function getServerSideProps({ req, params }) {
   const { id } = params;
   const queryClient = new QueryClient();
 
+  const gate = await (req.cookies.token
+    ? gqlMethods(req.cookies.token, req.cookies.user_id)
+    : gqlAnonMethods
+  ).gate({ id });
+
+  if (!gate.gates_by_pk) {
+    return {
+      redirect: {
+        destination: ROUTES.EXPLORE,
+        permanent: false,
+      },
+    };
+  }
+
   await queryClient.prefetchQuery(['gate', id], () =>
-    gqlAnonMethods.gate({ id })
+    (req.cookies.token
+      ? gqlMethods(req.cookies.token, req.cookies.user_id)
+      : gqlAnonMethods
+    ).gate({ id })
   );
 
   return {
@@ -25,7 +44,6 @@ export async function getServerSideProps({ params }) {
   };
 }
 
-// TODO: implement server side rendering
 export default function GateProfilePage() {
   const router = useRouter();
 
@@ -33,21 +51,11 @@ export default function GateProfilePage() {
 
   const { gqlAuthMethods } = useAuth();
 
-  const {
-    data: gatesData,
-    isLoading,
-    isFetchedAfterMount,
-  } = useQuery(['gate', id], () =>
+  const { data: gatesData } = useQuery(['gate', id], () =>
     gqlAuthMethods.gate({
       id,
     })
   );
-
-  useEffect(() => {
-    if (isFetchedAfterMount && !isLoading && !gatesData?.gates_by_pk) {
-      router.push('/home');
-    }
-  }, [gatesData?.gates_by_pk, isFetchedAfterMount, isLoading]);
 
   return (
     <DashboardTemplate
@@ -58,10 +66,17 @@ export default function GateProfilePage() {
         },
       }}
     >
-      <Navbar isInternalPage={true} />
-      {!isLoading && gatesData?.gates_by_pk && (
-        <GateViewTemplate gateProps={gatesData.gates_by_pk} />
-      )}
+      <Box
+        sx={{
+          display: {
+            xs: 'flex',
+            md: 'none',
+          },
+        }}
+      >
+        <Navbar isInternalPage={true} />
+      </Box>
+      <GateViewTemplate gateProps={gatesData.gates_by_pk} />
     </DashboardTemplate>
   );
 }

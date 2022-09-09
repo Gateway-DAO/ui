@@ -8,7 +8,7 @@ import { v4 as uuid } from 'uuid';
 import { Button, Divider, Stack } from '@mui/material';
 
 import { ROUTES } from '../../../../../constants/routes';
-import { Users } from '../../../../../services/graphql/types.generated';
+import { Gates, Users } from '../../../../../services/graphql/types.generated';
 import { EmptyCard } from '../../../../atoms/empty-card';
 import { GatesCard } from '../../../../molecules/gates-card';
 import { PersonCard } from '../../../../molecules/person-card';
@@ -20,53 +20,42 @@ import { useDaoProfile } from '../../context';
 
 type Props = {
   people: PartialDeep<Users>[];
+  credentials: PartialDeep<Gates>[];
   setTab: (tab: number) => void;
 };
 
-export function OverviewTab({ people, setTab }: Props) {
+export function OverviewTab({ people, setTab, credentials }: Props) {
   const { t } = useTranslation('explore');
   const { dao, isAdmin } = useDaoProfile();
 
-  const gates = dao?.gates ?? [];
+  const gates = credentials ?? [];
 
   const newGateUrl = `${ROUTES.GATE_NEW}?dao=${dao?.id}`;
 
   const gateList = useMemo(() => {
-    return isAdmin
-      ? [
-          <React.Fragment key={uuid()}>
-            <Link key="create-credential" passHref href={newGateUrl}>
-              <EmptyCard
-                title="Create Credential"
-                subtitle={
-                  !gates.length
-                    ? 'Create your first Credential and help talents find you'
-                    : 'Engage with your community'
-                }
-                component="a"
-                sx={{ minHeight: 440 }}
-              />
-            </Link>
-            {gates
-              .filter((gate) => gate.published === 'published')
-              .map((gate) => (
-                <GatesCard key={gate.id} {...gate} />
-              ))}
-          </React.Fragment>,
-        ]
-      : [
-          <React.Fragment key={uuid()}>
-            {!gates.length && (
-              <EmptyCard
-                key="empty"
-                title="No Credentials yet"
-                subtitle="Follow us and get notificatons when a new Credential is created"
-                disabled
-                sx={{ minHeight: 440 }}
-              />
-            )}
-          </React.Fragment>,
-        ];
+    return [
+      ...(isAdmin
+        ? [
+            <React.Fragment key={uuid()}>
+              <Link key="create-credential" passHref href={newGateUrl}>
+                <EmptyCard
+                  title="Create Credential"
+                  subtitle={
+                    !gates.length
+                      ? 'Create your first Credential and help talents find you'
+                      : 'Engage with your community'
+                  }
+                  component="a"
+                  sx={{ minHeight: 440 }}
+                />
+              </Link>
+            </React.Fragment>,
+          ]
+        : []),
+      ...gates.map((gate) => (
+        <GatesCard key={gate.id} showStatus={isAdmin} {...gate} />
+      )),
+    ].slice(0, 4);
   }, [gates, isAdmin, newGateUrl]);
 
   return (
@@ -111,7 +100,7 @@ export function OverviewTab({ people, setTab }: Props) {
             </Button>
           }
         >
-          {people.map((person) => (
+          {people.slice(0, 6).map((person) => (
             <PersonCard
               key={person.id}
               user={person}

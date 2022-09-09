@@ -41,6 +41,7 @@ export function TableView({ people }: Props) {
         '& .MuiTableCell-root:last-of-type': {
           pr: TOKENS.CONTAINER_PX,
         },
+        overflowY: 'hidden',
       }}
     >
       <Table stickyHeader aria-label="sticky table">
