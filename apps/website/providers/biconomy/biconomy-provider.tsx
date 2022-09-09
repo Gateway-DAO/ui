@@ -45,7 +45,7 @@ export function BiconomyProvider({
   const [mintStatus, setMintStatus] = useState<MintStatus>(() => ({}));
 
   // From Wagmi
-  const { data: address } = useAccount();
+  const { address } = useAccount();
 
   // From auth
   const { me, gqlAuthMethods } = useAuth();
@@ -112,7 +112,7 @@ export function BiconomyProvider({
           contract = new ethers.Contract(
             contractAddress,
             CREDENTIAL_ABI,
-            biconomy.getSignerByAddress(address.address)
+            biconomy.getSignerByAddress(address)
           );
 
           contractInterface = new ethers.utils.Interface(CREDENTIAL_ABI);
@@ -124,10 +124,10 @@ export function BiconomyProvider({
         });
     }
 
-    if (typeof window !== 'undefined' && (address?.address ?? false)) {
+    if (typeof window !== 'undefined' && (address ?? false)) {
       init();
     }
-  }, [address?.address]);
+  }, [address]);
 
   /**
    * It mints a new NFT token.
@@ -139,7 +139,7 @@ export function BiconomyProvider({
       let tx: string;
 
       const { data: contractData } = await contract.populateTransaction.mint(
-        address.address,
+        address,
         token_uri
       );
 
@@ -147,14 +147,14 @@ export function BiconomyProvider({
         biconomy.getEthersProvider();
       const gasLimit = await provider.estimateGas({
         to: contractAddress,
-        from: address.address,
+        from: address,
         data: contractData,
       });
 
       const txParams = {
         data: contractData,
         to: contractAddress,
-        from: address.address,
+        from: address,
         gasLimit: gasLimit.toNumber() * 3,
         signatureType: 'EIP712_SIGN',
       };
