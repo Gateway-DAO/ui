@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
-import { useMutation } from '@tanstack/react-query';
-import { useAccount, useQuery, useSignMessage } from 'wagmi';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { useAccount, useSignMessage } from 'wagmi';
 
 import { useLogin } from '../../../providers/auth/hooks';
 import { gqlAnonMethods } from '../../../services/api';
