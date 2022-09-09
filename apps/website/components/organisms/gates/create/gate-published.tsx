@@ -40,7 +40,7 @@ export default function GatePublishedModal({
   const {
     data: { gates_by_pk: gate },
   } = useQuery(
-    [['gate'], gateProp?.id],
+    ['gate', gateProp?.id],
     () =>
       gqlAuthMethods.gate({
         id: gateProp.id,
