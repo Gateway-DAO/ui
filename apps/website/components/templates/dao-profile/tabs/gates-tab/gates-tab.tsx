@@ -23,12 +23,6 @@ export function GatesTab() {
   const { dao, isAdmin, credentials: gates } = useDaoProfile();
   const { view, toggleView } = useViewMode();
 
-  // const gates = useQuery(
-  //   ['dao-gates', dao?.id],
-  //   () => gqlAuthMethods.dao_gates_tab({ id: dao?.id }),
-  //   { enabled: !!dao?.id }
-  // );
-
   const {
     selectedFilters,
     filteredItems: filteredGates,
