@@ -75,7 +75,7 @@ export function Drawer({ currentDao, showExplore }: Props) {
               </Link>
             )}
             {followingDaos?.map((dao) => {
-              const url = ROUTES.DAO_PROFILE.replace('[id]', dao.id);
+              const url = ROUTES.DAO_PROFILE.replace('[slug]', dao.slug);
 
               return (
                 <Link key={dao.id} passHref href={url}>

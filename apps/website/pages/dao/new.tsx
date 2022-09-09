@@ -53,7 +53,7 @@ export default function CreateDAO() {
             : [followingDaoObject],
         }));
         router.replace(
-          ROUTES.DAO_PROFILE.replace('[id]', data.insert_daos_one.id)
+          ROUTES.DAO_PROFILE.replace('[slug]', data.insert_daos_one.slug)
         );
       },
     }

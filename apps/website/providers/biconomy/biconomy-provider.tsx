@@ -37,12 +37,8 @@ export function BiconomyProvider({
   children,
 }: PropsWithChildren<Props>) {
   const RPC = {
-    polygon: new ethers.providers.JsonRpcProvider(
-      process.env.NEXT_PUBLIC_WEB3_POLYGON_RPC
-    ),
-    rinkeby: new ethers.providers.JsonRpcProvider(
-      process.env.NEXT_PUBLIC_WEB3_RINKEBY_RPC
-    ),
+    polygon: process.env.NEXT_PUBLIC_WEB3_POLYGON_RPC,
+    rinkeby: process.env.NEXT_PUBLIC_WEB3_RINKEBY_RPC,
   };
 
   // State
@@ -100,7 +96,9 @@ export function BiconomyProvider({
   useEffect(() => {
     async function init() {
       // We're creating biconomy provider linked to your network of choice where your contract is deployed
-      const jsonRpcProvider = RPC[process.env.NEXT_PUBLIC_MINT_CHAIN];
+      const jsonRpcProvider = new ethers.providers.JsonRpcProvider(
+        RPC[process.env.NEXT_PUBLIC_MINT_CHAIN]
+      );
 
       biconomy = new Biconomy(jsonRpcProvider, {
         walletProvider: window.ethereum,

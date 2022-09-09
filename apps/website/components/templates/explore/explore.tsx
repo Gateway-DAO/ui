@@ -101,8 +101,9 @@ export function ExploreTemplate({ title, subtitle, data }: TemplateProps) {
             tabsId="explore"
             index={index}
             active={index === activeTab}
+            hidden={index !== activeTab}
           >
-            {section}
+            {activeTab === index && section}
           </TabPanel>
         ))}
       </Box>

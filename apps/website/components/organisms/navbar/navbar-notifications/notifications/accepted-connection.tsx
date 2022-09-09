@@ -39,7 +39,7 @@ export function AcceptedConnectionNotification({
       <Link passHref href={profileUrl}>
         <AvatarFile
           file={user.picture}
-          fallback="/logo.png"
+          fallback="/avatar.png"
           component="a"
           target="_blank"
         />

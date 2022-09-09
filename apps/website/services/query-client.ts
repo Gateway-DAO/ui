@@ -14,12 +14,19 @@ export const queryClient = new QueryClient({
 });
 
 if (typeof window !== 'undefined') {
-  const localStoragePersistor = createSyncStoragePersister({
+  const localStoragePersister = createSyncStoragePersister({
     storage: localStorage,
   });
 
+  const persistedKeys = ['me', 'token'];
+
   persistQueryClient({
     queryClient,
-    persister: localStoragePersistor,
+    persister: localStoragePersister,
+    dehydrateOptions: {
+      shouldDehydrateQuery: (query) =>
+        query.state.status === 'success' &&
+        persistedKeys.includes(query.queryKey[0] as string),
+    },
   });
 }
