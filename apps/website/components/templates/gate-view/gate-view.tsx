@@ -279,9 +279,11 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
           </Typography>
         )}
 
-        {completedGate && credential?.credentials_by_pk.target_id == me?.id && (
-          <MintCredentialButton credential={credential?.credentials_by_pk} />
-        )}
+        {completedGate &&
+          !!credential &&
+          credential?.credentials_by_pk.target_id == me?.id && (
+            <MintCredentialButton credential={credential?.credentials_by_pk} />
+          )}
 
         <Box
           component="img"

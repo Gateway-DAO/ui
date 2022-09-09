@@ -2,6 +2,7 @@ import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useCookie } from 'react-use';
 import { PartialDeep } from 'type-fest';
 import { useDisconnect } from 'wagmi';
 
@@ -26,6 +27,11 @@ type Props = {
 
 export function useLogin() {
   const queryClient = useQueryClient();
+  const [_token, updateTokenCookie, _deleteTokenCookie] = useCookie('token');
+  const [_refresh, updateRefreshCookie, _deleteRefreshCookie] =
+    useCookie('refresh');
+  const [_userId, updateUserIdCookie, _deleteUserIdCookie] =
+    useCookie('user_id');
 
   const signIn = useMutation(
     ['signIn'],
@@ -52,6 +58,11 @@ export function useLogin() {
       onSuccess({ login, me }) {
         queryClient.setQueryData(['token'], login);
         queryClient.setQueryData(['me'], me);
+
+        // Add to cookie
+        updateTokenCookie(login.token);
+        updateRefreshCookie(login.refresh_token);
+        updateUserIdCookie(me.id);
       },
     }
   );
@@ -62,6 +73,12 @@ export function useLogin() {
 export function useMe() {
   const queryClient = useQueryClient();
   const { disconnectAsync } = useDisconnect();
+
+  const [_token, _updateTokenCookie, deleteTokenCookie] = useCookie('token');
+  const [_refresh, _updateRefreshCookie, deleteRefreshCookie] =
+    useCookie('refresh');
+  const [_userId, _updateUserIdCookie, deleteUserIdCookie] =
+    useCookie('user_id');
 
   const token = useQuery(['token'], () =>
     queryClient.getQueryData<LoginMutation['login']>(['token'])
@@ -80,8 +97,13 @@ export function useMe() {
     } catch (_e) {
       //
     } finally {
+      deleteUserIdCookie();
+
       queryClient.setQueryData(['token'], null);
       queryClient.setQueryData(['me'], null);
+
+      deleteTokenCookie();
+      deleteRefreshCookie();
     }
   };
 
