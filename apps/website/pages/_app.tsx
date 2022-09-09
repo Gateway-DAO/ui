@@ -5,7 +5,6 @@ import { useRouter } from 'next/router';
 import Script from 'next/script';
 import { useEffect, useState } from 'react';
 
-import { Hydrate, QueryClientProvider } from 'react-query';
 import { WagmiConfig } from 'wagmi';
 
 import { ThemeProvider } from '@gateway/theme';
@@ -24,6 +23,8 @@ import { web3client } from '../services/web3/client';
 import '../components/atoms/global-dependencies';
 import '../styles/next.css';
 import { BiconomyProvider } from '../providers/biconomy';
+
+import { Hydrate, QueryClientProvider } from '@tanstack/react-query';
 
 type AppProps = NextAppProps & {
   Component: NextAppProps['Component'] & { auth?: boolean };

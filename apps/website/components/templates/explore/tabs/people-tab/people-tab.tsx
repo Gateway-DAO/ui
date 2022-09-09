@@ -1,4 +1,4 @@
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 
 import { Box, CircularProgress } from '@mui/material';
 
@@ -6,7 +6,7 @@ import { gqlAnonMethods } from '../../../../../services/api';
 import { TableView } from './table-view';
 
 export function PeopleTab() {
-  const { data: people, isLoading } = useQuery('people-tab', async () => {
+  const { data: people, isLoading } = useQuery(['people-tab'], async () => {
     return (await gqlAnonMethods.people_tab()).people;
   });
   return (

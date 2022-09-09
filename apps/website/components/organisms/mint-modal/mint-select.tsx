@@ -19,7 +19,6 @@ import {
   ListItemAvatar,
   ListItemSecondaryAction,
   ListItemText,
-  Stack,
   Badge,
   Typography,
 } from '@mui/material';
@@ -32,15 +31,15 @@ type Props = {
 };
 
 export function MintSelect({ onSubmit, onCancel }: Props) {
-  const { connect, connectors, activeConnector, isConnected } = useConnect();
+  const { isSuccess } = useConnect();
 
   const { t } = useTranslation('auth');
 
   useEffect(() => {
-    if (isConnected) {
+    if (isSuccess) {
       onSubmit();
     }
-  }, [isConnected, onSubmit]);
+  }, [isSuccess, onSubmit]);
 
   return (
     <>

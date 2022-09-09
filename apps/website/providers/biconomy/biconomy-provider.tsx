@@ -1,8 +1,8 @@
 import { PropsWithChildren, useEffect, useState } from 'react';
 
 import { Biconomy } from '@biconomy/mexa';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { ethers } from 'ethers';
-import { useMutation, useQueryClient } from 'react-query';
 import { PartialDeep } from 'type-fest';
 import { useAccount } from 'wagmi';
 
@@ -69,13 +69,13 @@ export function BiconomyProvider({
     },
     {
       onSuccess: (data) => {
-        queryClient.invalidateQueries('credentials');
+        queryClient.invalidateQueries(['credentials']);
         queryClient.invalidateQueries([
           'credential',
           data.update_credentials_by_pk.id,
         ]);
 
-        queryClient.setQueryData('me', (old: PartialDeep<Users>) => {
+        queryClient.setQueryData(['me'], (old: PartialDeep<Users>) => {
           const experiences = old.experiences.map((experience) => ({
             ...experience,
             credentials: experience.credentials.map((credential) =>

@@ -33,7 +33,7 @@ export function ConnectedWallet({
   onBack,
   onSuccess,
 }: Props) {
-  const { activeConnector } = useConnect();
+  const { data } = useConnect();
   const { disconnectAsync } = useDisconnect();
   const { step, error, isLoading } = useConnectWallet();
 
@@ -54,12 +54,12 @@ export function ConnectedWallet({
     }
   }, [error, isError, onError]);
 
-  if (!activeConnector?.name) return null;
+  if (!data?.connector?.name) return null;
 
   return (
     <Box>
       <DialogTitle sx={{ textAlign: 'center' }}>
-        Connecting using {activeConnector?.name}
+        Connecting using {data?.connector?.name}
       </DialogTitle>
       <Box
         sx={{

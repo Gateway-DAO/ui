@@ -1,6 +1,6 @@
 import { GetStaticPaths, InferGetStaticPropsType } from 'next';
 
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { useToggle } from 'react-use';
 
 import { MintModal } from '../../components/organisms/mint-modal';

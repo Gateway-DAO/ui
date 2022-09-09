@@ -2,8 +2,8 @@ import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
 
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useMutation } from '@tanstack/react-query';
 import { useForm, FormProvider } from 'react-hook-form';
-import { useMutation } from 'react-query';
 
 import { Box, Snackbar, Stack, Typography } from '@mui/material';
 
@@ -36,7 +36,7 @@ export function NewUserTemplate() {
   const uploadImage = useUploadImage();
 
   const updateMutation = useMutation(
-    'updateProfile',
+    ['updateProfile'],
     async ({ pfp, ...data }: NewUserSchema) => {
       const uploadedPicture = await uploadImage({
         base64: pfp,

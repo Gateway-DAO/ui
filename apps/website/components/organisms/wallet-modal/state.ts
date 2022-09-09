@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { useMutation } from 'react-query';
+import { useMutation } from '@tanstack/react-query';
 import { useAccount, useSignMessage } from 'wagmi';
 
 import { useLogin } from '../../../providers/auth/hooks';
@@ -28,29 +28,26 @@ export function useConnectWallet() {
 
   const sign = useSignMessage();
   const account = useAccount({
-    onSuccess(data) {
-      if (!data) {
-        return;
-        // throw new Error('Reconnect to Wallet');
+    onConnect(data) {
+      try {
+        if (!data) {
+          return;
+        }
+        const { address } = data ?? {};
+        console.log(address);
+        setStep('GET_NONCE');
+        nonce.mutate(address);
+      } catch (error) {
+        console.log(error);
       }
-      const { address } = data ?? {};
-
-      setStep('GET_NONCE');
-      nonce.mutate(address);
-    },
-    onError(e) {
-      setError({
-        label: 'Reconnect to Wallet',
-        message: account.error,
-      });
     },
   });
 
   /* Handles nonce generation */
   const nonce = useMutation(
-    [account.data?.address, 'nonce'],
+    [account.address, 'nonce'],
     (address?: string) =>
-      gqlAnonMethods.get_nonce({ wallet: address ?? account.data?.address }),
+      gqlAnonMethods.get_nonce({ wallet: address ?? account.address }),
     {
       async onSuccess({ get_nonce: { nonce } }) {
         setStep('GET_SIGNATURE');
@@ -67,7 +64,7 @@ export function useConnectWallet() {
 
   /* Handles wallet signature */
   const sendSignature = useMutation(
-    [account.data?.address, nonce.data?.get_nonce?.nonce, 'signature'],
+    [account.address, nonce.data?.get_nonce?.nonce, 'signature'],
     (nonce: number) =>
       sign.signMessageAsync({
         message: `Welcome to Gateway!\n\nPlease sign this message for access: ${nonce}`,
@@ -75,8 +72,8 @@ export function useConnectWallet() {
     {
       async onSuccess(signature) {
         setStep('GET_TOKEN');
-        const res = await signIn.mutateAsync({
-          wallet: account.data.address!,
+        await signIn.mutateAsync({
+          wallet: account.address!,
           signature,
         });
         setStep('FINISHED');

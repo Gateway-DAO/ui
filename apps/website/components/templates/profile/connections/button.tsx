@@ -1,8 +1,8 @@
 import useTranslation from 'next-translate/useTranslation';
 import { useState } from 'react';
 
+import { useQuery } from '@tanstack/react-query';
 import { utils } from 'ethers';
-import { useQuery } from 'react-query';
 
 import { Dialog, Link, Typography } from '@mui/material';
 

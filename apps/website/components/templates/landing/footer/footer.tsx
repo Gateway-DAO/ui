@@ -2,9 +2,9 @@ import Link from 'next/link';
 import React from 'react';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { FaMedium } from 'react-icons/fa';
-import { useMutation } from 'react-query';
 
 import { GatewayIcon, DiscordIcon } from '@gateway/assets';
 
@@ -45,7 +45,7 @@ export function Footer({
     isSuccess,
     isLoading,
   } = useMutation(
-    'subscribeToNewsletter',
+    ['subscribeToNewsletter'],
     gqlAnonMethods.subscribe_to_newsletter
   );
 

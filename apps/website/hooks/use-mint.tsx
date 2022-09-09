@@ -3,14 +3,13 @@ import React, { useEffect, useState } from 'react';
 
 // Web3
 import { Biconomy } from '@biconomy/mexa';
+import { useMutation } from '@tanstack/react-query';
 import { ethers } from 'ethers';
-import { useMutation } from 'react-query';
 import { PartialDeep } from 'type-fest';
 import { useAccount, chain, useSigner, useNetwork } from 'wagmi';
 
 import { CREDENTIAL_ABI } from '../constants/web3';
 import { useAuth } from '../providers/auth';
-import { gqlMethods } from '../services/api';
 import { Credentials } from '../services/graphql/types.generated';
 import { useSnackbar } from './use-snackbar';
 
@@ -30,17 +29,14 @@ export function useMint(
   contractAddress: string | null = process.env.NEXT_PUBLIC_WEB3_NFT_ADDRESS
 ) {
   // From Wagmi
-  const { data: address } = useAccount();
+  const { address } = useAccount();
   const { data: signer } = useSigner();
-  const { activeChain } = useNetwork();
+  const { chain: activeChain } = useNetwork();
 
   // State
   const [loading, setLoading] = useState<boolean>(false);
   const [minted, setMinted] = useState<boolean>(false);
   const [asksSignature, setAsksSignature] = useState<boolean>(false);
-
-  // Snackbar
-  const snackbar = useSnackbar();
 
   // Effects
   useEffect(() => {
@@ -64,7 +60,7 @@ export function useMint(
 
     if (contract) {
       try {
-        const promise = contract.mint(address.address, token_uri);
+        const promise = contract.mint(address, token_uri);
 
         setAsksSignature(true);
 
@@ -144,7 +140,7 @@ export function useBiconomyMint(
   isMainnet: boolean = process.env.NODE_ENV === 'production'
 ) {
   // From Wagmi
-  const { data: address } = useAccount();
+  const { address } = useAccount();
 
   // State
   const metaTxEnabled = true;
@@ -175,7 +171,7 @@ export function useBiconomyMint(
         // TODO: check if we can use Wagmi's provider instead
         typeof window.ethereum !== 'undefined' &&
         window.ethereum.isMetaMask &&
-        address.address
+        address
       ) {
         // We're creating biconomy provider linked to your network of choice where your contract is deployed
         const jsonRpcProvider = new ethers.providers.JsonRpcProvider(
@@ -196,7 +192,7 @@ export function useBiconomyMint(
             contract = new ethers.Contract(
               contractAddress,
               CREDENTIAL_ABI,
-              biconomy.getSignerByAddress(address.address)
+              biconomy.getSignerByAddress(address)
             );
 
             contractInterface = new ethers.utils.Interface(CREDENTIAL_ABI);
@@ -233,19 +229,19 @@ export function useBiconomyMint(
           let tx;
 
           const { data: contractData } =
-            await contract.populateTransaction.mint(address.address, token_uri);
+            await contract.populateTransaction.mint(address, token_uri);
 
           const provider = biconomy.getEthersProvider();
           const gasLimit = await provider.estimateGas({
             to: contractAddress,
-            from: address.address,
+            from: address,
             data: contractData,
           });
 
           const txParams = {
             data: contractData,
             to: contractAddress,
-            from: address.address,
+            from: address,
             gasLimit: gasLimit * 3,
             signatureType: 'EIP712_SIGN',
           };
@@ -271,7 +267,7 @@ export function useBiconomyMint(
               tx,
           };
         } else {
-          const tx = await contract.mint(address.address, token_uri);
+          const tx = await contract.mint(address, token_uri);
 
           await tx.wait();
 

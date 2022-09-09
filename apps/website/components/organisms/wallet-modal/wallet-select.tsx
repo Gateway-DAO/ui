@@ -23,15 +23,20 @@ type Props = {
 };
 
 export function WalletSelect({ onFaq, onSubmit, onCancel }: Props) {
-  const { connect, connectors, activeConnector, isConnected } = useConnect();
+  const { connectors, data, isSuccess, connectAsync } = useConnect();
 
   const { t } = useTranslation('auth');
 
+  const connect = async (connector) => {
+    await connectAsync({ connector });
+    onSubmit();
+  };
+
   useEffect(() => {
-    if (isConnected) {
+    if (isSuccess) {
       onSubmit();
     }
-  }, [isConnected, onSubmit]);
+  }, [isSuccess, onSubmit]);
 
   return (
     <>
@@ -53,11 +58,11 @@ export function WalletSelect({ onFaq, onSubmit, onCancel }: Props) {
           {t('select-wallet.choose-wallet')}
         </Typography>
         <Stack display="grid" gridTemplateColumns="repeat(2, 1fr)" gap={1}>
-          {connectors.map((x) => {
-            const isActive = x.id === activeConnector?.id;
+          {connectors.map((connector) => {
+            const isActive = connector.id === data?.connector?.id;
             return (
               <Button
-                key={x.id}
+                key={connector.id}
                 variant="outlined"
                 color="primary"
                 sx={{
@@ -75,15 +80,15 @@ export function WalletSelect({ onFaq, onSubmit, onCancel }: Props) {
                   py: 4,
                   px: 2,
                 }}
-                onClick={() => connect(x)}
+                onClick={() => connect(connector)}
               >
-                {icons[x.id]}
+                {icons[connector.id]}
                 <Typography
                   component="span"
                   variant="inherit"
                   color="text.secondary"
                 >
-                  {x.name}
+                  {connector.name}
                 </Typography>
               </Button>
             );
@@ -95,8 +100,6 @@ export function WalletSelect({ onFaq, onSubmit, onCancel }: Props) {
           {t('common:actions.cancel')}
         </Button>
       </DialogActions>
-
-      {/* {error && <div>{error.message}</div>} */}
     </>
   );
 }

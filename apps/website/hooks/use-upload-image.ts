@@ -1,5 +1,5 @@
+import { useMutation } from '@tanstack/react-query';
 import { paramCase } from 'change-case';
-import { useMutation } from 'react-query';
 
 import { useAuth } from '../providers/auth';
 import { Upload_ImageMutationVariables } from '../services/graphql/types.generated';

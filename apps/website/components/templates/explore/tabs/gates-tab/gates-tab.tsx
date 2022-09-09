@@ -1,4 +1,4 @@
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 
 import { TOKENS } from '@gateway/theme';
 
@@ -15,7 +15,7 @@ import { TableView } from './table-view';
 export function GatesTab() {
   const { gqlAuthMethods } = useAuth();
   const { view, toggleView } = useViewMode();
-  const { data: gates, isLoading } = useQuery('gates-tab', async () => {
+  const { data: gates, isLoading } = useQuery(['gates-tab'], async () => {
     return (await gqlAuthMethods.gates_tab()).gates;
   });
 

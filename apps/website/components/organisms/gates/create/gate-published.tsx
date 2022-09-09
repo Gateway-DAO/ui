@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { PartialDeep } from 'type-fest';
 
 import CloseIcon from '@mui/icons-material/Close';
@@ -40,7 +40,7 @@ export default function GatePublishedModal({
   const {
     data: { gates_by_pk: gate },
   } = useQuery(
-    ['gate', gateProp?.id],
+    [['gate'], gateProp?.id],
     () =>
       gqlAuthMethods.gate({
         id: gateProp.id,

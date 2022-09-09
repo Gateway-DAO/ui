@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 
-import { useMutation } from 'react-query';
+import { useMutation } from '@tanstack/react-query';
 
 import {
   NewDAOTemplate,
