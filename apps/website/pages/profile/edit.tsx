@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 
-import { useMutation } from 'react-query';
+import { useMutation } from '@tanstack/react-query';
 
 import { EditProfileTemplate } from '../../components/templates/profile/edit';
 import { EditUserSchema } from '../../components/templates/profile/edit/schema';

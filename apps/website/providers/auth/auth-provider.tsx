@@ -24,7 +24,7 @@ export function AuthProvider({
   const { status, onAuthenticated, onConnecting, onUnauthenticated } =
     useAuthStatus(tokens);
 
-  const { status: accountStatus, data: account } = useAccount();
+  const { status: accountStatus, address } = useAccount();
 
   const router = useRouter();
 
@@ -54,11 +54,12 @@ export function AuthProvider({
 
   useEffect(() => {
     if (!isAuthPage) return;
-    if (accountStatus === 'loading' || accountStatus === 'idle') return;
-    if (!account && me) {
+    if (accountStatus === 'connecting' || accountStatus === 'reconnecting')
+      return;
+    if (!address && me) {
       onSignOut();
     }
-  }, [account, accountStatus, isAuthPage, onSignOut, me]);
+  }, [address, accountStatus, isAuthPage, onSignOut, me]);
 
   useToggleContainerClass('blur', status === 'CONNECTING');
 

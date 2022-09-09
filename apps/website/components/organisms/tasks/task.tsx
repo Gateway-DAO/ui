@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { useMutation } from 'react-query';
+import { useMutation } from '@tanstack/react-query';
 import { useToggle } from 'react-use';
 import { PartialObjectDeep } from 'type-fest/source/partial-deep';
 
@@ -116,9 +116,9 @@ export function Task({
     gqlAuthMethods.complete_task,
     {
       onSuccess: async (data) => {
-        await queryClient.cancelQueries('me');
+        await queryClient.cancelQueries(['me']);
 
-        queryClient.setQueryData<SessionUser>('me', (old) => {
+        queryClient.setQueryData<SessionUser>(['me'], (old) => {
           const oldTaskProgresses = old.task_progresses.filter(
             (task_progress) => task_progress.task_id !== task.id
           );
@@ -136,7 +136,7 @@ export function Task({
           };
         });
 
-        data.verify_key.completed_gate && queryClient.invalidateQueries('me');
+        data.verify_key.completed_gate && queryClient.invalidateQueries(['me']);
       },
     }
   );

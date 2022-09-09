@@ -1,8 +1,7 @@
-import { GetStaticPaths } from 'next';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
-import { dehydrate, QueryClient, useQuery } from 'react-query';
+import { dehydrate, QueryClient, useQuery } from '@tanstack/react-query';
 
 import { Navbar } from '../../components/organisms/navbar';
 import { DashboardTemplate } from '../../components/templates/dashboard';

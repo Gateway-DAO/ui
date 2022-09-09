@@ -2,8 +2,8 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation } from '@tanstack/react-query';
 import { useForm, FormProvider } from 'react-hook-form';
-import { useMutation } from 'react-query';
 import { v4 as uuidv4 } from 'uuid';
 
 import { Box, Divider, Snackbar, Stack, Typography } from '@mui/material';
@@ -58,17 +58,17 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
   const [deletedTasks, setDeletedTasks] = useState<string[]>([]);
 
   const { mutateAsync: uploadImage } = useMutation(
-    'uploadImage',
+    ['uploadImage'],
     gqlAuthMethods.upload_image
   );
 
   const { mutateAsync: createGateMutation } = useMutation(
-    'createGate',
+    ['createGate'],
     gqlAuthMethods.create_gate
   );
 
   const { mutateAsync: deleteTaskMutation } = useMutation(
-    'deleteTask',
+    ['deleteTask'],
     gqlAuthMethods.delete_tasks_by_pk
   );
 

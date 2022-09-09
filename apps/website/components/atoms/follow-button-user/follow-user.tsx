@@ -1,6 +1,6 @@
 import useTranslation from 'next-translate/useTranslation';
 
-import { useMutation } from 'react-query';
+import { useMutation } from '@tanstack/react-query';
 
 import { useBidirectionFollow } from '../../../hooks/use-bidirectional-follow';
 import { LoadingButton } from '../loading-button';

@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
-import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { PartialDeep } from 'type-fest';
 import { useDisconnect } from 'wagmi';
 
@@ -28,7 +28,7 @@ export function useLogin() {
   const queryClient = useQueryClient();
 
   const signIn = useMutation(
-    'signIn',
+    ['signIn'],
     async (credentials: Props) => {
       const res = await gqlAnonMethods.login({
         signature: credentials.signature,
@@ -50,8 +50,8 @@ export function useLogin() {
     },
     {
       onSuccess({ login, me }) {
-        queryClient.setQueryData('token', login);
-        queryClient.setQueryData('me', me);
+        queryClient.setQueryData(['token'], login);
+        queryClient.setQueryData(['me'], me);
       },
     }
   );
@@ -63,12 +63,12 @@ export function useMe() {
   const queryClient = useQueryClient();
   const { disconnectAsync } = useDisconnect();
 
-  const token = useQuery('token', () =>
-    queryClient.getQueryData<LoginMutation['login']>('token')
+  const token = useQuery(['token'], () =>
+    queryClient.getQueryData<LoginMutation['login']>(['token'])
   );
 
   const onUpdateToken = (newToken: RefreshMutation['refresh']) =>
-    queryClient.setQueryData('token', (oldToken: LoginMutation['login']) => ({
+    queryClient.setQueryData(['token'], (oldToken: LoginMutation['login']) => ({
       ...oldToken,
       token: newToken.token,
       refresh_token: newToken.refresh_token,
@@ -80,13 +80,13 @@ export function useMe() {
     } catch (_e) {
       //
     } finally {
-      queryClient.setQueryData('token', null);
-      queryClient.setQueryData('me', null);
+      queryClient.setQueryData(['token'], null);
+      queryClient.setQueryData(['me'], null);
     }
   };
 
   const me = useQuery(
-    'me',
+    ['me'],
     async () =>
       (
         await gqlMethodsWithRefresh(
@@ -114,7 +114,7 @@ export function useMe() {
 
   const onUpdateMe = (
     cb: (oldMe: PartialDeep<SessionUser>) => PartialDeep<SessionUser>
-  ) => queryClient.setQueryData('me', cb);
+  ) => queryClient.setQueryData(['me'], cb);
 
   return {
     me: me.data,
