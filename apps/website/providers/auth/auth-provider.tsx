@@ -2,6 +2,7 @@
 import { useRouter } from 'next/router';
 import { PropsWithChildren, useEffect, useMemo } from 'react';
 
+import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { useAccount } from 'wagmi';
 
 import { WalletModal } from '../../components/organisms/wallet-modal';
@@ -11,7 +12,6 @@ import { gqlMethodsWithRefresh } from '../../services/api';
 import { AuthContext } from './context';
 import { useInitUser, useMe } from './hooks';
 import { useAuthStatus } from './state';
-
 type Props = {
   isAuthPage?: boolean;
 };
@@ -76,6 +76,9 @@ export function AuthProvider({
         gqlAuthMethods,
       }}
     >
+      <ConnectButton
+        accountStatus={{ largeScreen: 'full', smallScreen: 'avatar' }}
+      />
       {!isBlocked && children}
       {status !== 'AUTHENTICATED' && (
         <WalletModal

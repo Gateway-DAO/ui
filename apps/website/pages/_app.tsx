@@ -1,10 +1,11 @@
 /* eslint-disable @next/next/inline-script-id */
+import NextProgress from 'next-progress';
 import { AppProps as NextAppProps } from 'next/app';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import Script from 'next/script';
-import NextProgress from 'next-progress';
 
+import { RainbowKitProvider } from '@rainbow-me/rainbowkit';
 import { WagmiConfig } from 'wagmi';
 
 import { ThemeProvider } from '@gateway/theme';
@@ -17,7 +18,7 @@ import { usePersistLocale } from '../hooks/usePersistLocale';
 import { AuthProvider } from '../providers/auth';
 import { CyberConnectProvider } from '../providers/cyberconnect';
 import { queryClient } from '../services/query-client';
-import { web3client } from '../services/web3/client';
+import { chains, web3client } from '../services/web3/client';
 
 import '../components/atoms/global-dependencies';
 import '../styles/next.css';
@@ -48,24 +49,26 @@ function CustomApp({ Component, pageProps: { ...pageProps } }: AppProps) {
         options={{ showSpinner: false }}
       />
       <WagmiConfig client={web3client}>
-        <ThemeProvider>
-          <QueryClientProvider client={queryClient}>
-            <Hydrate state={pageProps.dehydratedState}>
-              <AuthProvider isAuthPage={Component.auth}>
-                <BiconomyProvider
-                  apiKey={process.env.NEXT_PUBLIC_WEB3_BICONOMY_API_KEY}
-                  contractAddress={process.env.NEXT_PUBLIC_WEB3_NFT_ADDRESS}
-                >
-                  <CyberConnectProvider>
-                    <NavStateProvider>
-                      <Component {...pageProps} />
-                    </NavStateProvider>
-                  </CyberConnectProvider>
-                </BiconomyProvider>
-              </AuthProvider>
-            </Hydrate>
-          </QueryClientProvider>
-        </ThemeProvider>
+        <RainbowKitProvider chains={chains}>
+          <ThemeProvider>
+            <QueryClientProvider client={queryClient}>
+              <Hydrate state={pageProps.dehydratedState}>
+                <AuthProvider isAuthPage={Component.auth}>
+                  <BiconomyProvider
+                    apiKey={process.env.NEXT_PUBLIC_WEB3_BICONOMY_API_KEY}
+                    contractAddress={process.env.NEXT_PUBLIC_WEB3_NFT_ADDRESS}
+                  >
+                    <CyberConnectProvider>
+                      <NavStateProvider>
+                        <Component {...pageProps} />
+                      </NavStateProvider>
+                    </CyberConnectProvider>
+                  </BiconomyProvider>
+                </AuthProvider>
+              </Hydrate>
+            </QueryClientProvider>
+          </ThemeProvider>
+        </RainbowKitProvider>
       </WagmiConfig>
       <Script
         strategy="afterInteractive"
