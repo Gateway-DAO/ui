@@ -4,6 +4,7 @@ import { PartialDeep } from 'type-fest';
 
 import {
   Daos,
+  Dao_Gates_TabQuery,
   Dao_Profile_PeopleQuery,
 } from '../../../services/graphql/types.generated';
 
@@ -11,6 +12,7 @@ type DaoProfileContextProps = {
   isAdmin: boolean;
   dao: PartialDeep<Daos>;
   followers?: Dao_Profile_PeopleQuery;
+  credentials?: Dao_Gates_TabQuery;
   followersIsLoaded: boolean;
   onRefetchFollowers: () => void;
 };

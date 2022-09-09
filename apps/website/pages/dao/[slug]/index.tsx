@@ -1,7 +1,8 @@
 import { GetStaticPaths, InferGetStaticPropsType } from 'next';
 import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 
-import { useQuery } from 'react-query';
+import { useQuery, useQueryClient } from 'react-query';
 
 import {
   DaoProfileTemplate,
@@ -18,7 +19,8 @@ export default function DaoProfilePage({
 
   const slug = router.query.slug as string;
 
-  const { me } = useAuth();
+  const { me, gqlAuthMethods } = useAuth();
+  const queryClient = useQueryClient();
 
   const { data } = useQuery(
     ['dao', slug],
@@ -45,9 +47,20 @@ export default function DaoProfilePage({
     { enabled: !!dao?.id }
   );
 
+  const credentialsQuery = useQuery(
+    ['dao-gates', dao?.id],
+    () => gqlAuthMethods.dao_gates_tab({ id: dao.id }),
+    { enabled: !!dao?.id }
+  );
+
   const onResetPeopleQuery = () => {
     peopleQuery.refetch();
   };
+
+  // TODO: validate this
+  useEffect(() => {
+    credentialsQuery.refetch();
+  }, [me]);
 
   if (!dao) return null;
   return (
@@ -65,6 +78,7 @@ export default function DaoProfilePage({
         followers={peopleQuery.data}
         followersIsLoaded={peopleQuery.isSuccess}
         onRefetchFollowers={onResetPeopleQuery}
+        credentials={credentialsQuery.data}
       >
         <DaoProfileTemplate />
       </DaoProfileProvider>

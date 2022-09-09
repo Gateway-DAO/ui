@@ -20,14 +20,14 @@ import { TableView } from './table-view';
 
 export function GatesTab() {
   const { gqlAuthMethods } = useAuth();
-  const { dao, isAdmin } = useDaoProfile();
+  const { dao, isAdmin, credentials: gates } = useDaoProfile();
   const { view, toggleView } = useViewMode();
 
-  const gates = useQuery(
-    ['dao-gates', dao?.id],
-    () => gqlAuthMethods.dao_gates_tab({ id: dao?.id }),
-    { enabled: !!dao?.id }
-  );
+  // const gates = useQuery(
+  //   ['dao-gates', dao?.id],
+  //   () => gqlAuthMethods.dao_gates_tab({ id: dao?.id }),
+  //   { enabled: !!dao?.id }
+  // );
 
   const {
     selectedFilters,
@@ -35,7 +35,7 @@ export function GatesTab() {
     availableFilters,
     toggleFilter,
     onClear,
-  } = usePropertyFilter(gates.data?.daos_by_pk?.gates ?? [], 'categories');
+  } = usePropertyFilter(gates?.daos_by_pk?.gates ?? [], 'categories');
   const newGateUrl = `${ROUTES.GATE_NEW}?dao=${dao?.id}`;
 
   const newGateCard = (
@@ -51,7 +51,7 @@ export function GatesTab() {
 
   return (
     <Box sx={{ py: 4 }}>
-      {gates.isSuccess && gates.data.daos_by_pk.gates.length > 0 && (
+      {!!gates && gates.daos_by_pk.gates.length > 0 && (
         <>
           <Stack
             direction="row"
@@ -123,7 +123,7 @@ export function GatesTab() {
         </>
       )}
 
-      {gates.isSuccess && !gates.data.daos_by_pk.gates.length && (
+      {!!gates && !gates.daos_by_pk.gates.length && (
         <Stack
           direction="row"
           justifyContent="space-between"
