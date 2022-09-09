@@ -3,14 +3,13 @@ import { AppProps as NextAppProps } from 'next/app';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import Script from 'next/script';
-import { useEffect, useState } from 'react';
+import NextProgress from 'next-progress';
 
 import { WagmiConfig } from 'wagmi';
 
 import { ThemeProvider } from '@gateway/theme';
 
 import { useTheme } from '@mui/material';
-import LinearProgress from '@mui/material/LinearProgress';
 
 import { SEOSocial, SEOFavicon } from '../components/atoms/seo';
 import { NavStateProvider } from '../hooks/use-nav';
@@ -35,22 +34,6 @@ function CustomApp({ Component, pageProps: { ...pageProps } }: AppProps) {
   const router = useRouter();
   usePersistLocale();
 
-  const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    router.events.on('routeChangeStart', () => {
-      setIsLoading(true);
-    });
-
-    router.events.on('routeChangeComplete', () => {
-      setIsLoading(false);
-    });
-
-    router.events.on('routeChangeError', () => {
-      setIsLoading(false);
-    });
-  }, [router.events]);
-
   return (
     <>
       <Head>
@@ -59,16 +42,11 @@ function CustomApp({ Component, pageProps: { ...pageProps } }: AppProps) {
         <SEOFavicon />
         <SEOSocial />
       </Head>
-      {isLoading && (
-        <LinearProgress
-          sx={{
-            backgroundColor: `${theme.palette.secondary.main}`,
-            '& .MuiLinearProgress-bar': {
-              backgroundColor: `${theme.palette.secondary.dark}`,
-            },
-          }}
-        />
-      )}
+      <NextProgress
+        height="4px"
+        color={theme.palette.primary.main}
+        options={{ showSpinner: false }}
+      />
       <WagmiConfig client={web3client}>
         <ThemeProvider>
           <QueryClientProvider client={queryClient}>
