@@ -145,7 +145,9 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
           snackbar.onOpen({
             message: 'Credential deleted!',
           });
-          router.push(ROUTES.DAO_PROFILE.replace('[id]', gateProps?.dao.id));
+          router.push(
+            ROUTES.DAO_PROFILE.replace('[slug]', gateProps?.dao.slug)
+          );
         },
         onError(error) {
           console.log(error);
@@ -201,7 +203,10 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
       >
         <Box sx={{ height: { xs: '0px', md: '60px' } }}></Box>
         {/* DAO info */}
-        <Link passHref href={`/dao/${gateProps?.dao.id}`}>
+        <Link
+          passHref
+          href={ROUTES.DAO_PROFILE.replace('[slug]', gateProps?.dao.slug)}
+        >
           <Stack
             direction="row"
             alignItems="center"

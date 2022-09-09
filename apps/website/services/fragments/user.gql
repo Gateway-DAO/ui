@@ -1,6 +1,7 @@
 fragment experience on experiences {
   dao {
     name
+    slug
     logo {
       ...file
     }

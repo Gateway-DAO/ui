@@ -26,6 +26,7 @@ query me {
       dao {
         id
         logo_url
+        slug
         name
         is_admin
         logo {
