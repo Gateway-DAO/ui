@@ -16,31 +16,33 @@ export default function DaoProfilePage({
 }: InferGetStaticPropsType<typeof getStaticProps>) {
   const router = useRouter();
 
-  const id = router.query.id as string;
+  const slug = router.query.slug as string;
 
   const { me } = useAuth();
 
   const { data } = useQuery(
-    ['dao', id],
+    ['dao', slug],
     () =>
-      gqlAnonMethods.dao_profile({
-        id: router.query.id as string,
+      gqlAnonMethods.dao_profile_by_slug({
+        slug,
       }),
     {
-      initialData: daoProps,
+      initialData: {
+        daos: [daoProps],
+      },
     }
   );
 
-  const { daos_by_pk: dao } = data ?? {};
+  const dao = data?.daos?.[0];
 
   const isAdmin =
-    me?.following_dao?.find((fdao) => fdao.dao_id === id)?.dao?.is_admin ??
+    me?.following_dao?.find((fdao) => fdao.dao_id === dao?.id)?.dao?.is_admin ??
     false;
 
   const peopleQuery = useQuery(
-    ['dao-people', id],
-    () => gqlAnonMethods.dao_profile_people({ id }),
-    { enabled: !!id }
+    ['dao-people', dao?.id],
+    () => gqlAnonMethods.dao_profile_people({ id: dao.id }),
+    { enabled: !!dao?.id }
   );
 
   const onResetPeopleQuery = () => {
@@ -74,22 +76,29 @@ export const getStaticPaths: GetStaticPaths = async ({ locales }) => {
   const { daos } = await gqlAnonMethods.dao_pages();
 
   return {
-    paths: daos.map((dao) => ({ params: { id: dao.id } })),
+    paths: daos.map((dao) => ({ params: { slug: dao.slug } })),
     fallback: true,
   };
 };
 
 export const getStaticProps = async ({ params }) => {
-  const { id } = params;
+  const { slug } = params;
 
-  const daoProps = await gqlAnonMethods.dao_profile({
-    id,
-  });
+  try {
+    const { daos } = await gqlAnonMethods.dao_profile_by_slug({ slug });
 
-  return {
-    props: {
-      daoProps,
-    },
-    revalidate: 60,
-  };
+    return {
+      props: {
+        daoProps: daos[0],
+      },
+      revalidate: 60,
+    };
+  } catch (err) {
+    return {
+      props: {
+        daoProps: null,
+      },
+      revalidate: 60,
+    };
+  }
 };

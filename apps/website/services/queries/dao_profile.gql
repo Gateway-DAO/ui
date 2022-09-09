@@ -1,6 +1,7 @@
 query dao_pages {
   daos(limit: 10) {
     id
+    slug
   }
 }
 
@@ -9,6 +10,40 @@ query dao_profile($id: uuid!) {
     id
     name
     description
+    slug
+    background {
+      id
+      blur
+      #url
+    }
+    logo {
+      id
+      blur
+    }
+    logo_url
+    background_url
+    categories
+    socials {
+      network
+      url
+    }
+    gates(where: { published: { _eq: "published" } }, limit: 3) {
+      id
+      title
+      description
+      categories
+      image
+      published
+    }
+  }
+}
+
+query dao_profile_by_slug($slug: String!) {
+  daos(where: { slug: { _eq: $slug } }) {
+    id
+    name
+    description
+    slug
     background {
       id
       blur
@@ -96,6 +131,7 @@ mutation create_dao(
     logo_url
     name
     is_admin
+    slug
     logo {
       ...file
     }
@@ -125,6 +161,7 @@ mutation edit_dao(
     logo_url
     name
     is_admin
+    slug
     logo {
       ...file
     }

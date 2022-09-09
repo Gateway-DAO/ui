@@ -32,18 +32,17 @@ export function SocialButton({ network, url: urlProp }: Props) {
   }, [urlProp, network]);
 
   return (
-    <Link href={url} key={url + network} passHref>
-      <Tooltip title={networkValueLabelMap[network]}>
-        <IconButton
-          sx={{
-            p: 0,
-          }}
-          component="a"
-          target="_blank"
-        >
-          {avatar}
-        </IconButton>
-      </Tooltip>
-    </Link>
+    <Tooltip title={networkValueLabelMap[network]} key={url + network}>
+      <IconButton
+        sx={{
+          p: 0,
+        }}
+        component="a"
+        target="_blank"
+        href={url}
+      >
+        {avatar}
+      </IconButton>
+    </Tooltip>
   );
 }
