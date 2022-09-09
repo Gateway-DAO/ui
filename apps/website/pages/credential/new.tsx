@@ -2,7 +2,7 @@ import { redirect } from 'next/dist/server/api-utils';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 
 import { CreateGateTemplate } from '../../components/templates/create-gate';
 import { DraftGateTypes } from '../../components/templates/create-gate/schema';

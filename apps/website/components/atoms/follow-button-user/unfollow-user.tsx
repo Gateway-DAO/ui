@@ -1,6 +1,6 @@
 import useTranslation from 'next-translate/useTranslation';
 
-import { useMutation } from 'react-query';
+import { useMutation } from '@tanstack/react-query';
 
 import { useMenu } from '@gateway/ui';
 

@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState, useEffect, ComponentType } from 'react';
 
-import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { PartialDeep } from 'type-fest';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -99,7 +99,7 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
   );
 
   const { mutate: toggleGateStateMutation } = useMutation(
-    'toggleGateState',
+    ['toggleGateState'],
     gqlAuthMethods.toggle_gate_state
   );
 
@@ -133,7 +133,7 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
     );
 
   const { mutate: deleteGateMutation } = useMutation(
-    'deleteGate',
+    ['deleteGate'],
     gqlAuthMethods.deleteGate
   );
 
@@ -279,9 +279,11 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
           </Typography>
         )}
 
-        {completedGate && credential?.credentials_by_pk.target_id == me?.id && (
-          <MintCredentialButton credential={credential?.credentials_by_pk} />
-        )}
+        {completedGate &&
+          !!credential &&
+          credential?.credentials_by_pk.target_id == me?.id && (
+            <MintCredentialButton credential={credential?.credentials_by_pk} />
+          )}
 
         <Box
           component="img"

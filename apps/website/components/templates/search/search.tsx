@@ -1,7 +1,7 @@
 import useTranslation from 'next-translate/useTranslation';
 import { useMemo } from 'react';
 
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 
 import { TOKENS } from '@gateway/theme';
 
@@ -32,7 +32,7 @@ export function SearchTemplate({ query }: TemplateProps) {
   const { activeTab, handleTabChange } = useTab();
 
   const { data, isLoading } = useQuery<SearchQuery>(
-    `search-${query}`,
+    [`search-${query}`],
     async () => {
       const { daos: daos_search, ...result } = await gqlAnonMethods.search({
         query,

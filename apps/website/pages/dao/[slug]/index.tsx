@@ -2,7 +2,7 @@ import { GetStaticPaths, InferGetStaticPropsType } from 'next';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
-import { useQuery, useQueryClient } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 
 import {
   DaoProfileTemplate,
@@ -20,7 +20,6 @@ export default function DaoProfilePage({
   const slug = router.query.slug as string;
 
   const { me, gqlAuthMethods } = useAuth();
-  const queryClient = useQueryClient();
 
   const { data } = useQuery(
     ['dao', slug],
