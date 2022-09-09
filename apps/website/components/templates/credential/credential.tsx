@@ -24,13 +24,13 @@ import {
   Avatar,
 } from '@mui/material';
 
+import { ROUTES } from '../../../constants/routes';
 import { useAuth } from '../../../providers/auth';
 import { Credentials } from '../../../services/graphql/types.generated';
 import { AvatarFile } from '../../atoms/avatar-file';
 import CircularProgressWithLabel from '../../atoms/circular-progress-label';
 import { Props as MintCredentialButtonProps } from '../../atoms/mint-button';
 import { ReadMore } from '../../atoms/read-more-less';
-import { ShareButton } from '../../atoms/share-button';
 import { Task, TaskGroup } from '../../organisms/tasks';
 
 const MintCredentialButton: ComponentType<MintCredentialButtonProps> = dynamic(
@@ -77,7 +77,10 @@ export function CredentialTemplate({ credential, openModal }: Props) {
         })}
       >
         {/* DAO info */}
-        <Link passHref href={`/dao/${credential?.dao.id}`}>
+        <Link
+          passHref
+          href={ROUTES.DAO_PROFILE.replace('[slug]', credential?.dao.slug)}
+        >
           <Stack
             direction="row"
             alignItems="center"
@@ -261,7 +264,7 @@ export function CredentialTemplate({ credential, openModal }: Props) {
                             <AvatarFile
                               alt={holder.username}
                               file={holder.picture}
-                              fallback={holder.pfp || '/logo.png'}
+                              fallback={holder.pfp || '/avatar.png'}
                             />
                           </Box>
                         </Tooltip>
@@ -312,7 +315,9 @@ export function CredentialTemplate({ credential, openModal }: Props) {
                       <AvatarFile
                         alt={credential?.gate?.creator.username}
                         file={credential?.gate?.creator.picture}
-                        fallback={credential?.gate?.creator.pfp || '/logo.png'}
+                        fallback={
+                          credential?.gate?.creator.pfp || '/avatar.png'
+                        }
                       />
                     </Box>
                   </Tooltip>

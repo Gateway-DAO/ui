@@ -17,6 +17,7 @@ query search_daos($ids: [uuid!]) {
   daos(where: {id: {_in: $ids}}) {
     id
     name
+    slug
     logo {
       ...file
     }

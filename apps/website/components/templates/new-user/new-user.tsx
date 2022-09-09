@@ -38,15 +38,19 @@ export function NewUserTemplate() {
   const updateMutation = useMutation(
     ['updateProfile'],
     async ({ pfp, ...data }: NewUserSchema) => {
-      const uploadedPicture = await uploadImage({
-        base64: pfp,
-        name: `${me.id}-pfp`,
-      });
+      let uploadedPicture = null;
+
+      if (pfp) {
+        uploadedPicture = await uploadImage({
+          base64: pfp,
+          name: `${me.id}-pfp`,
+        });
+      }
 
       return gqlAuthMethods.update_user_profile({
         ...data,
         id: me.id,
-        pic_id: uploadedPicture.upload_image.id,
+        ...(uploadedPicture && { pic_id: uploadedPicture.upload_image.id }),
       });
     },
     {

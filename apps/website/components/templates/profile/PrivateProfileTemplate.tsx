@@ -105,7 +105,7 @@ export default function PrivateProfileTemplate() {
             borderColor: 'background.default',
           }}
           file={me.picture}
-          fallback={'/logo.png'}
+          fallback={'/avatar.png'}
         ></AvatarFile>
         <Box
           sx={{
