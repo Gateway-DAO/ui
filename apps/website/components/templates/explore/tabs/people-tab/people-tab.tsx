@@ -98,7 +98,7 @@ export function PeopleTab() {
                 return (
                   <CenteredLoader
                     key={row.index}
-                    style={{s
+                    style={{
                       position: 'absolute',
                       top: 0,
                       left: 0,
