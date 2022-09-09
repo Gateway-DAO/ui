@@ -88,7 +88,10 @@ const MorePopover = ({ options, withBackground }: MorePopoverProps) => {
                     minWidth: '200px',
                     '&:hover': { backgroundColor: 'rgba(0, 0, 0, 0.08)' },
                   }}
-                  onClick={option.action}
+                  onClick={() => {
+                    option.action();
+                    handleClose();
+                  }}
                 >
                   {option.text}
                 </Typography>
