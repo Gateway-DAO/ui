@@ -63,7 +63,7 @@ export function ConnectedWallet({
   return (
     <Box>
       <DialogTitle sx={{ textAlign: 'center' }}>
-        Connecting using {activeConnector?.name} {step}
+        Connecting using {activeConnector?.name}
       </DialogTitle>
       <Box
         sx={{
