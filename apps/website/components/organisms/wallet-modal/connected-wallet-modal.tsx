@@ -2,7 +2,7 @@
 import { useEffect } from 'react';
 
 import { AnimatePresence } from 'framer-motion';
-import { useConnect, useDisconnect } from 'wagmi';
+import { useAccount, useConnect, useDisconnect } from 'wagmi';
 
 import { Check, Close } from '@mui/icons-material';
 import {
@@ -33,9 +33,9 @@ export function ConnectedWallet({
   onBack,
   onSuccess,
 }: Props) {
-  const { data } = useConnect();
-  const { disconnectAsync } = useDisconnect();
+  const { connector: activeConnector, address } = useAccount();
   const { step, error, isLoading } = useConnectWallet();
+  const { disconnectAsync } = useDisconnect();
 
   const onRetry = async () => {
     await disconnectAsync();
@@ -54,12 +54,16 @@ export function ConnectedWallet({
     }
   }, [error, isError, onError]);
 
-  if (!data?.connector?.name) return null;
+  useEffect(() => {
+    if (!address || !activeConnector) {
+      onBack();
+    }
+  }, [activeConnector, address, onBack]);
 
   return (
     <Box>
       <DialogTitle sx={{ textAlign: 'center' }}>
-        Connecting using {data?.connector?.name}
+        Connecting using {activeConnector?.name} {step}
       </DialogTitle>
       <Box
         sx={{

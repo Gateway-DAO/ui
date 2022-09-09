@@ -2,7 +2,7 @@ import useTranslation from 'next-translate/useTranslation';
 import { useEffect } from 'react';
 
 import { colord } from 'colord';
-import { useConnect } from 'wagmi';
+import { useAccount, useConnect } from 'wagmi';
 
 import {
   Button,
@@ -23,20 +23,21 @@ type Props = {
 };
 
 export function WalletSelect({ onFaq, onSubmit, onCancel }: Props) {
-  const { connectors, data, isSuccess, connectAsync } = useConnect();
+  const { connector: activeConnector } = useAccount();
+  const { connectors, data, connectAsync } = useConnect();
 
   const { t } = useTranslation('auth');
 
   const connect = async (connector) => {
-    await connectAsync({ connector });
-    onSubmit();
-  };
-
-  useEffect(() => {
-    if (isSuccess) {
+    try {
+      if (!activeConnector) {
+        await connectAsync({ connector });
+      }
       onSubmit();
+    } catch (e) {
+      console.error(e);
     }
-  }, [isSuccess, onSubmit]);
+  };
 
   return (
     <>
