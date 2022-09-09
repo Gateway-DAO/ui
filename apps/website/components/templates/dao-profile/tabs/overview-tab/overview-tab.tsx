@@ -100,7 +100,7 @@ export function OverviewTab({ people, setTab, credentials }: Props) {
             </Button>
           }
         >
-          {people.map((person) => (
+          {people.slice(0, 6).map((person) => (
             <PersonCard
               key={person.id}
               user={person}

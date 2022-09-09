@@ -3,6 +3,8 @@ import { useEffect } from 'react';
 
 import { dehydrate, QueryClient, useQuery } from '@tanstack/react-query';
 
+import { Box } from '@mui/material';
+
 import { Navbar } from '../../components/organisms/navbar';
 import { DashboardTemplate } from '../../components/templates/dashboard';
 import { GateViewTemplate } from '../../components/templates/gate-view';
@@ -64,7 +66,16 @@ export default function GateProfilePage() {
         },
       }}
     >
-      <Navbar isInternalPage={true} />
+      <Box
+        sx={{
+          display: {
+            xs: 'flex',
+            md: 'none',
+          },
+        }}
+      >
+        <Navbar isInternalPage={true} />
+      </Box>
       <GateViewTemplate gateProps={gatesData.gates_by_pk} />
     </DashboardTemplate>
   );
