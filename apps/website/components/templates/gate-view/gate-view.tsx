@@ -257,7 +257,13 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
             </Box>
             <Stack flexDirection="row" gap={1}>
               <ShareButton title={`${gateProps?.title} @ Gateway`} />
-              {isAdmin && <MorePopover options={gateOptions} key={uuidv4()} />}
+              {isAdmin && (
+                <MorePopover
+                  options={gateOptions}
+                  withBackground
+                  key={uuidv4()}
+                />
+              )}
             </Stack>
           </Stack>
         </Box>
