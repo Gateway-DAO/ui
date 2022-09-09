@@ -63,7 +63,7 @@ export function useConnectWallet() {
         });
         setStep('FINISHED');
       },
-      onError(e: any) {
+      onError() {
         setError({
           message:
             "Error signing message. Please try again or contact support if it doesn't work.",
