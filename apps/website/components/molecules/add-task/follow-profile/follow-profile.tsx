@@ -43,7 +43,7 @@ interface TwitterData {
 
 export const FollowProfile = ({ taskId, deleteTask }) => {
   const [taskVisible, setTaskVisible] = useState(false);
-  const [twitterData, setTwitterData] = useState<TwitterData>({});
+  const [twitterData, setTwitterData] = useState<TwitterData>();
   const { gqlAuthMethods } = useAuth();
   const [loading, setLoading] = useState(false);
   const {
@@ -87,7 +87,7 @@ export const FollowProfile = ({ taskId, deleteTask }) => {
 
   const onHandleChange = () => {
     delayedQuery();
-    setTwitterData({});
+    setTwitterData(undefined);
   };
 
   const numberFormat = (value) => {
@@ -283,7 +283,7 @@ export const FollowProfile = ({ taskId, deleteTask }) => {
             />
           </Stack>
 
-          {Object.entries(twitterData).length > 0 && (
+          {twitterData && Object.entries(twitterData).length > 0 && (
             <Stack
               sx={{
                 background: 'white',
