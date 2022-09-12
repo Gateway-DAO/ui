@@ -3,10 +3,13 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState, useEffect, ComponentType } from 'react';
 
-import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { PartialDeep } from 'type-fest';
 import { v4 as uuidv4 } from 'uuid';
 
+import { TOKENS } from '@gateway/theme';
+
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import {
   AvatarGroup,
   Chip,
@@ -17,6 +20,8 @@ import {
   Divider,
   Tooltip,
   Snackbar,
+  IconButton,
+  Avatar,
 } from '@mui/material';
 
 import { useAuth } from '../../../../website/providers/auth';
@@ -31,6 +36,7 @@ import { ReadMore } from '../../atoms/read-more-less';
 import { ShareButton } from '../../atoms/share-button';
 import ConfirmDialog from '../../organisms/confirm-dialog/confirm-dialog';
 import GateCompletedModal from '../../organisms/gates/view/modals/gate-completed';
+import { ClientNav } from '../../organisms/navbar/client-nav';
 import { Task, TaskGroup } from '../../organisms/tasks';
 
 const GateStateChip = dynamic(() => import('../../atoms/gate-state-chip'), {
@@ -99,7 +105,7 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
   );
 
   const { mutate: toggleGateStateMutation } = useMutation(
-    'toggleGateState',
+    ['toggleGateState'],
     gqlAuthMethods.toggle_gate_state
   );
 
@@ -133,7 +139,7 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
     );
 
   const { mutate: deleteGateMutation } = useMutation(
-    'deleteGate',
+    ['deleteGate'],
     gqlAuthMethods.deleteGate
   );
 
@@ -190,75 +196,204 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
         handleClose={handleClose}
         gate={gateProps}
       />
-      <Grid
-        item
-        xs={12}
-        md={5}
-        sx={(theme) => ({
-          padding: {
-            xs: `${theme.spacing(5)} ${theme.spacing(2)}`,
-            md: `${theme.spacing(5)} ${theme.spacing(7)}`,
-          },
-        })}
-      >
-        <Box sx={{ height: { xs: '0px', md: '60px' } }}></Box>
-        {/* DAO info */}
-        <Link
-          passHref
-          href={ROUTES.DAO_PROFILE.replace('[slug]', gateProps?.dao.slug)}
+      <Grid item xs={12} md={5}>
+        <Stack
+          direction="row"
+          flexGrow={1}
+          alignItems="center"
+          gap={1}
+          sx={{
+            display: {
+              xs: 'none',
+              md: 'flex',
+            },
+            px: TOKENS.CONTAINER_PX,
+            flexGrow: {
+              md: 0.5,
+            },
+          }}
         >
-          <Stack
-            direction="row"
-            alignItems="center"
-            width="fit-content"
-            marginBottom={(theme) => theme.spacing(2)}
-            sx={(theme) => ({
-              [theme.breakpoints.down('sm')]: {
-                width: '100%',
-              },
-              cursor: 'pointer',
-            })}
+          <IconButton onClick={() => router.back()}>
+            <Avatar>
+              <ArrowBackIcon />
+            </Avatar>
+          </IconButton>
+        </Stack>
+        {/* DAO info */}
+        <Box
+          sx={(theme) => ({
+            padding: {
+              xs: `${theme.spacing(5)} ${theme.spacing(2)}`,
+              md: `${theme.spacing(5)} ${theme.spacing(7)}`,
+            },
+          })}
+        >
+          <Link
+            passHref
+            href={ROUTES.DAO_PROFILE.replace('[slug]', gateProps?.dao.slug)}
           >
-            <AvatarFile
-              alt={gateProps?.dao.name}
-              file={gateProps?.dao.logo}
-              fallback={gateProps?.dao.logo_url}
-              sx={{
-                height: (theme) => theme.spacing(3),
-                width: (theme) => theme.spacing(3),
-                marginRight: (theme) => theme.spacing(1),
-              }}
-            />
-            <Typography
-              variant="body2"
-              color={(theme) => theme.palette.text.secondary}
+            <Stack
+              direction="row"
+              alignItems="center"
+              width="fit-content"
+              marginBottom={(theme) => theme.spacing(2)}
+              sx={(theme) => ({
+                [theme.breakpoints.down('sm')]: {
+                  width: '100%',
+                },
+                cursor: 'pointer',
+              })}
             >
-              {gateProps?.dao.name}
+              <AvatarFile
+                alt={gateProps?.dao.name}
+                file={gateProps?.dao.logo}
+                fallback={gateProps?.dao.logo_url}
+                sx={{
+                  height: (theme) => theme.spacing(3),
+                  width: (theme) => theme.spacing(3),
+                  marginRight: (theme) => theme.spacing(1),
+                }}
+              />
+              <Typography
+                variant="body2"
+                color={(theme) => theme.palette.text.secondary}
+              >
+                {gateProps?.dao.name}
+              </Typography>
+            </Stack>
+          </Link>
+
+          <Typography variant="h4" marginBottom={(theme) => theme.spacing(2)}>
+            {gateProps?.title}
+          </Typography>
+
+          <Box marginBottom={(theme) => theme.spacing(2)}>
+            <Stack
+              direction={'row'}
+              sx={{ alignItems: 'flex-start', justifyContent: 'space-between' }}
+            >
+              <Box>
+                {isAdmin && <GateStateChip published={published} />}
+                {gateProps?.categories.map((category, idx) => (
+                  <Chip
+                    key={'category-' + (idx + 1)}
+                    label={category}
+                    sx={{
+                      marginRight: (theme) => theme.spacing(1),
+                      marginBottom: (theme) => theme.spacing(1),
+                    }}
+                  />
+                ))}
+              </Box>
+              <Stack flexDirection="row" gap={1}>
+                <ShareButton title={`${gateProps?.title} @ Gateway`} />
+                {isAdmin && (
+                  <MorePopover options={gateOptions} withBackground key={uuidv4()} />
+                )}
+              </Stack>
+            </Stack>
+          </Box>
+          {gateProps?.description?.length > 250 ? (
+            <ReadMore>{gateProps?.description}</ReadMore>
+          ) : (
+            <Typography
+              variant="body1"
+              marginBottom={(theme) => theme.spacing(4)}
+              sx={{ wordBreak: 'break-word' }}
+              paragraph={true}
+            >
+              {gateProps?.description}
             </Typography>
-          </Stack>
-        </Link>
+          )}
 
-        <Typography variant="h4" marginBottom={(theme) => theme.spacing(2)}>
-          {gateProps?.title}
-        </Typography>
+          {completedGate &&
+            !!credential &&
+            credential?.credentials_by_pk.target_id == me?.id && (
+              <MintCredentialButton
+                credential={credential?.credentials_by_pk}
+              />
+            )}
 
-        <Box marginBottom={(theme) => theme.spacing(2)}>
-          <Stack
-            direction={'row'}
-            sx={{ alignItems: 'flex-start', justifyContent: 'space-between' }}
-          >
-            <Box>
-              {isAdmin && <GateStateChip published={published} />}
-              {gateProps?.categories.map((category, idx) => (
+          <Box
+            component="img"
+            src={gateProps?.image}
+            alt={gateProps?.title + ' image'}
+            marginBottom={(theme) => theme.spacing(4)}
+            sx={{
+              width: '100%',
+              borderRadius: (theme) => theme.spacing(1),
+            }}
+          />
+
+          <Grid container rowGap={(theme) => theme.spacing(3)}>
+            {gateProps?.holders.length > 0 && (
+              <>
+                <Grid
+                  item
+                  xs={4}
+                  sx={{ display: 'flex', alignItems: 'center' }}
+                >
+                  <Typography
+                    variant="body2"
+                    color={(theme) => theme.palette.text.secondary}
+                  >
+                    Holders
+                  </Typography>
+                </Grid>
+                <Grid item xs={8}>
+                  <AvatarGroup
+                    total={
+                      gateProps?.holders.length >= 5
+                        ? 5
+                        : gateProps?.holders.length
+                    }
+                    sx={{
+                      justifyContent: 'flex-end',
+                    }}
+                  >
+                    {gateProps?.holders.map((holder) => {
+                      return (
+                        <Link
+                          key={holder.id}
+                          passHref
+                          href={`/profile/${holder.username}`}
+                        >
+                          <Tooltip title={holder.name}>
+                            <Box component="a" sx={{ display: 'inline-block' }}>
+                              <AvatarFile
+                                alt={holder.username}
+                                file={holder.picture}
+                                fallback={holder.pfp || '/logo.png'}
+                              />
+                            </Box>
+                          </Tooltip>
+                        </Link>
+                      );
+                    })}
+                  </AvatarGroup>
+                </Grid>
+              </>
+            )}
+            <Grid item xs={4} sx={{ display: 'flex', alignItems: 'center' }}>
+              <Typography
+                variant="body2"
+                color={(theme) => theme.palette.text.secondary}
+              >
+                Skills
+              </Typography>
+            </Grid>
+            <Grid item xs={8}>
+              {gateProps?.skills.map((skill, idx) => (
                 <Chip
-                  key={'category-' + (idx + 1)}
-                  label={category}
+                  key={'skill-' + (idx + 1)}
+                  label={skill}
                   sx={{
                     marginRight: (theme) => theme.spacing(1),
                     marginBottom: (theme) => theme.spacing(1),
                   }}
                 />
               ))}
+<<<<<<< HEAD
             </Box>
             <Stack flexDirection="row" gap={1}>
               <ShareButton title={`${gateProps?.title} @ Gateway`} />
@@ -352,49 +487,58 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
             >
               Skills
             </Typography>
+=======
+            </Grid>
+            {gateProps?.creator && (
+              <>
+                <Grid item xs={4}>
+                  <Typography
+                    variant="body2"
+                    color={(theme) => theme.palette.text.secondary}
+                  >
+                    Created By
+                  </Typography>
+                </Grid>
+                <Grid item xs={8}>
+                  <Link
+                    passHref
+                    href={`/profile/${gateProps?.creator.username}`}
+                  >
+                    <Tooltip title={gateProps?.creator.name}>
+                      <Box component="a" sx={{ display: 'inline-block' }}>
+                        <AvatarFile
+                          alt={gateProps?.creator.username}
+                          file={gateProps?.creator.picture}
+                          fallback={gateProps?.creator.pfp || '/logo.png'}
+                        />
+                      </Box>
+                    </Tooltip>
+                  </Link>
+                </Grid>
+              </>
+            )}
+>>>>>>> 3e6e86537b91a1761b61f43f5fd5fd7d214b8604
           </Grid>
-          <Grid item xs={8}>
-            {gateProps?.skills.map((skill, idx) => (
-              <Chip
-                key={'skill-' + (idx + 1)}
-                label={skill}
-                sx={{
-                  marginRight: (theme) => theme.spacing(1),
-                  marginBottom: (theme) => theme.spacing(1),
-                }}
-              />
-            ))}
-          </Grid>
-          {gateProps?.creator && (
-            <>
-              <Grid item xs={4}>
-                <Typography
-                  variant="body2"
-                  color={(theme) => theme.palette.text.secondary}
-                >
-                  Created By
-                </Typography>
-              </Grid>
-              <Grid item xs={8}>
-                <Link passHref href={`/profile/${gateProps?.creator.username}`}>
-                  <Tooltip title={gateProps?.creator.name}>
-                    <Box component="a" sx={{ display: 'inline-block' }}>
-                      <AvatarFile
-                        alt={gateProps?.creator.username}
-                        file={gateProps?.creator.picture}
-                        fallback={gateProps?.creator.pfp || '/logo.png'}
-                      />
-                    </Box>
-                  </Tooltip>
-                </Link>
-              </Grid>
-            </>
-          )}
-        </Grid>
+        </Box>
       </Grid>
       <Divider orientation="vertical" flexItem />
       <Grid item xs={12} md>
-        <Box sx={{ height: { xs: '0px', md: '60px' } }}></Box>
+        <Stack
+          direction="row"
+          justifyContent="flex-end"
+          sx={{
+            px: TOKENS.CONTAINER_PX,
+            flexGrow: {
+              md: 0.5,
+            },
+            display: {
+              xs: 'none',
+              md: 'flex',
+            },
+          }}
+        >
+          <ClientNav />
+        </Stack>
         {/* Task Counter */}
         <Stack
           direction="row"

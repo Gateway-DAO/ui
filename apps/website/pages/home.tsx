@@ -1,9 +1,7 @@
 import { InferGetStaticPropsType } from 'next';
 import useTranslation from 'next-translate/useTranslation';
 
-import { useQuery } from 'react-query';
-
-// import { dehydrate, useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 
 import { DashboardTemplate } from '../components/templates/dashboard';
 import { ExploreTemplate } from '../components/templates/explore';
@@ -29,7 +27,7 @@ export default function Explore({
 }: InferGetStaticPropsType<typeof getStaticProps>) {
   const { t } = useTranslation('explore');
 
-  const { data } = useQuery('explore', () => gqlAnonMethods.get_home(), {
+  const { data } = useQuery(['explore'], () => gqlAnonMethods.get_home(), {
     initialData: exploreProps,
   });
 

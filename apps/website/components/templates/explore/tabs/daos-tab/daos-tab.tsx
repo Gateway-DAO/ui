@@ -1,4 +1,4 @@
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 
 import { TOKENS } from '@gateway/theme';
 
@@ -16,7 +16,7 @@ import { TableView } from './table-view';
 export function DaosTab() {
   const { view, toggleView } = useViewMode();
   /* TODO: !!!!!!!!!!!! WRITE PAGINATION!!!!!!!!!!!!!! */
-  const { data: daos, isLoading } = useQuery('daos-tab', async () => {
+  const { data: daos, isLoading } = useQuery(['daos-tab'], async () => {
     return (await gqlAnonMethods.daos_tab()).daos;
   });
 

@@ -22,12 +22,8 @@ const NetworksDetails = [
   },
 ];
 
-export const StartMintScreen = ({
-  mintProcessStatus,
-  setMintProcessStatus,
-  mint,
-}) => {
-  const { activeChain } = useNetwork();
+export const StartMintScreen = ({ setMintProcessStatus, mint }) => {
+  const { chain: activeChain } = useNetwork();
   return (
     <Stack display="flex" height="100%">
       <Box

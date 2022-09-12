@@ -1,6 +1,6 @@
 import { PropsWithChildren, useEffect } from 'react';
 
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 
 import { cyberConnectSDK } from '../../services-cyberconnect/api';
 import { useAuth } from '../auth';

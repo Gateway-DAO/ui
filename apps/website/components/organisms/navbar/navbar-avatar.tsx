@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
 import { useCopyToClipboard } from 'react-use';
@@ -36,9 +35,9 @@ type Props = {
 
 export function NavBarAvatar({ hideProfile }: Props) {
   const { element, isOpen, onClose, onOpen, withOnClose } = useMenu();
-  const router = useRouter();
-  const { data: accountDetail } = useAccount();
-  const { activeChain } = useNetwork();
+
+  const { address, connector } = useAccount();
+  const { chain } = useNetwork();
   const { onSignOut, me } = useAuth();
   const snackbar = useSnackbar();
   const [state, copyToClipboard] = useCopyToClipboard();
@@ -48,7 +47,7 @@ export function NavBarAvatar({ hideProfile }: Props) {
   }, [state]);
 
   const copyText = () => {
-    copyToClipboard(accountDetail?.address);
+    copyToClipboard(address);
   };
 
   return (
@@ -105,12 +104,6 @@ export function NavBarAvatar({ hideProfile }: Props) {
         open={isOpen}
         onClose={onClose}
       >
-        {/* <NestedMenuItem label="Languages" parentMenuOpen={isOpen}>
-          <MenuItem onClick={onChangeLanguage('en')}>English</MenuItem>
-          <MenuItem onClick={onChangeLanguage('pt-BR')}>
-            Portuguese (Brazil)
-          </MenuItem>
-        </NestedMenuItem> */}
         {!hideProfile && (
           <Link passHref href={ROUTES.MY_PROFILE}>
             <MenuItem
@@ -128,7 +121,7 @@ export function NavBarAvatar({ hideProfile }: Props) {
         <MenuItem
           key="disconnect"
           onClick={withOnClose(onSignOut)}
-          divider={!!accountDetail?.address}
+          divider={!!address}
           sx={{
             py: '12px',
           }}
@@ -136,7 +129,7 @@ export function NavBarAvatar({ hideProfile }: Props) {
           <LogoutIcon color="disabled" sx={{ mr: 3.5 }} />
           <Typography textAlign="center">Disconnect</Typography>
         </MenuItem>
-        {accountDetail?.address && (
+        {address && (
           <ListItem
             disablePadding
             sx={{
@@ -144,17 +137,12 @@ export function NavBarAvatar({ hideProfile }: Props) {
             }}
           >
             <IconButton disabled sx={{ mr: 2.5, ml: 1 }}>
-              {!!accountDetail?.connector?.id &&
-                icons[accountDetail.connector?.id]}
+              {!!connector?.id && icons[connector?.id]}
             </IconButton>
 
             <ListItemText
-              primary={
-                accountDetail?.address.slice(0, 5) +
-                '...' +
-                accountDetail?.address.slice(-4)
-              }
-              secondary={activeChain?.name}
+              primary={address.slice(0, 5) + '...' + address.slice(-4)}
+              secondary={chain?.name}
             />
 
             <IconButton
@@ -169,7 +157,7 @@ export function NavBarAvatar({ hideProfile }: Props) {
 
             <IconButton
               sx={{ mr: 1.5, background: '#E5E5E529' }}
-              href={`https://etherscan.io/address/${accountDetail?.address}`}
+              href={`https://etherscan.io/address/${address}`}
               target="_blank"
             >
               <OpenInNewIcon

@@ -2,7 +2,7 @@ import useTranslation from 'next-translate/useTranslation';
 import { useEffect } from 'react';
 
 import { colord } from 'colord';
-import { useConnect } from 'wagmi';
+import { useAccount, useConnect } from 'wagmi';
 
 import {
   Button,
@@ -23,15 +23,21 @@ type Props = {
 };
 
 export function WalletSelect({ onFaq, onSubmit, onCancel }: Props) {
-  const { connect, connectors, activeConnector, isConnected } = useConnect();
+  const { connector: activeConnector } = useAccount();
+  const { connectors, data, connectAsync } = useConnect();
 
   const { t } = useTranslation('auth');
 
-  useEffect(() => {
-    if (isConnected) {
+  const connect = async (connector) => {
+    try {
+      if (!activeConnector) {
+        await connectAsync({ connector });
+      }
       onSubmit();
+    } catch (e) {
+      console.error(e);
     }
-  }, [isConnected, onSubmit]);
+  };
 
   return (
     <>
@@ -53,11 +59,11 @@ export function WalletSelect({ onFaq, onSubmit, onCancel }: Props) {
           {t('select-wallet.choose-wallet')}
         </Typography>
         <Stack display="grid" gridTemplateColumns="repeat(2, 1fr)" gap={1}>
-          {connectors.map((x) => {
-            const isActive = x.id === activeConnector?.id;
+          {connectors.map((connector) => {
+            const isActive = connector.id === data?.connector?.id;
             return (
               <Button
-                key={x.id}
+                key={connector.id}
                 variant="outlined"
                 color="primary"
                 sx={{
@@ -75,15 +81,15 @@ export function WalletSelect({ onFaq, onSubmit, onCancel }: Props) {
                   py: 4,
                   px: 2,
                 }}
-                onClick={() => connect(x)}
+                onClick={() => connect(connector)}
               >
-                {icons[x.id]}
+                {icons[connector.id]}
                 <Typography
                   component="span"
                   variant="inherit"
                   color="text.secondary"
                 >
-                  {x.name}
+                  {connector.name}
                 </Typography>
               </Button>
             );
@@ -95,8 +101,6 @@ export function WalletSelect({ onFaq, onSubmit, onCancel }: Props) {
           {t('common:actions.cancel')}
         </Button>
       </DialogActions>
-
-      {/* {error && <div>{error.message}</div>} */}
     </>
   );
 }

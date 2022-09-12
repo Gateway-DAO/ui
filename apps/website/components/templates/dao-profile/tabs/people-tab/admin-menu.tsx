@@ -1,4 +1,4 @@
-import { useMutation } from 'react-query';
+import { useMutation } from '@tanstack/react-query';
 import { PartialDeep } from 'type-fest';
 
 import { useMenu } from '@gateway/ui';
@@ -22,7 +22,7 @@ type Props = {
 };
 export function AdminMenu({ user }: Props) {
   const { gqlAuthMethods } = useAuth();
-  const { element, isOpen, onClose, onOpen, withOnClose } = useMenu();
+  const { element, isOpen, onClose, onOpen } = useMenu();
   const { dao, onRefetchFollowers } = useDaoProfile();
   const userIsAdmin = user.permissions?.some(
     ({ permission }) => permission === 'dao_admin'
