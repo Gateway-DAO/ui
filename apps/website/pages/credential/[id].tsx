@@ -20,20 +20,31 @@ export async function getServerSideProps({ req, res, params }) {
   const { id } = params;
   const queryClient = new QueryClient();
 
-  const gate = await (req.cookies.token
-    ? gqlMethodsWithRefresh(
-        req.cookies.token,
-        req.cookies.refresh,
-        req.cookies.user_id,
-        ({ refresh_token, token }) => {
-          res.setHeader('Set-Cookie', [
-            `refresh=${refresh_token}; path=/; httpOnly; SameSite=Strict;`,
-            `token=${token}; path=/; httpOnly; SameSite=Strict;`,
-          ]);
-        }
-      )
-    : gqlAnonMethods
-  ).gate({ id });
+  let gate;
+
+  try {
+    gate = await (req.cookies.token
+      ? gqlMethodsWithRefresh(
+          req.cookies.token,
+          req.cookies.refresh,
+          req.cookies.user_id,
+          async ({ refresh_token, token }) => {
+            res.setHeader('Set-Cookie', [
+              `refresh=${refresh_token}; path=/; httpOnly; SameSite=Strict;`,
+              `token=${token}; path=/; httpOnly; SameSite=Strict;`,
+            ]);
+
+            await queryClient.prefetchQuery(['token'], () => ({
+              refresh_token,
+              token,
+            }));
+          }
+        )
+      : gqlAnonMethods
+    ).gate({ id });
+  } catch (e) {
+    gate = await gqlAnonMethods.gate({ id });
+  }
 
   if (!gate.gates_by_pk) {
     return {
