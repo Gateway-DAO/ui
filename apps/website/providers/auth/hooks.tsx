@@ -84,7 +84,7 @@ export function useMe() {
     queryClient.getQueryData<LoginMutation['login']>(['token'])
   );
 
-  const onUpdateToken = (newToken: RefreshMutation['refresh']) =>
+  const onUpdateToken = async (newToken: RefreshMutation['refresh']) =>
     queryClient.setQueryData(['token'], (oldToken: LoginMutation['login']) => ({
       ...oldToken,
       token: newToken.token,
