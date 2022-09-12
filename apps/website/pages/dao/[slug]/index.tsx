@@ -3,17 +3,19 @@ import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
 import { useQuery } from '@tanstack/react-query';
+import { validate as validateUuid } from 'uuid';
 
 import {
   DaoProfileTemplate,
   DaoProfileProvider,
 } from '../../../components/templates/dao-profile';
 import { DashboardTemplate } from '../../../components/templates/dashboard';
+import { ROUTES } from '../../../constants/routes';
 import { useAuth } from '../../../providers/auth';
 import { gqlAnonMethods } from '../../../services/api';
 
 export default function DaoProfilePage({
-  daoProps,
+  dao: daoProps,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
   const router = useRouter();
 
@@ -98,20 +100,33 @@ export const getStaticProps = async ({ params }) => {
   const { slug } = params;
 
   try {
+    // If slug is a UUID, then we redirect to the DAO profile page with the correct slug
+    if (validateUuid(slug)) {
+      const { daos_by_pk: dao } = await gqlAnonMethods.dao_profile_slug_by_id({
+        id: slug,
+      });
+      return {
+        redirect: {
+          destination: ROUTES.DAO_PROFILE.replace('[slug]', dao.slug),
+          permanent: true,
+        },
+      };
+    }
+
     const { daos } = await gqlAnonMethods.dao_profile_by_slug({ slug });
 
     return {
       props: {
-        daoProps: daos[0],
+        dao: daos[0],
       },
       revalidate: 60,
     };
   } catch (err) {
     return {
-      props: {
-        daoProps: null,
+      redirect: {
+        destination: ROUTES.EXPLORE,
+        permanent: true,
       },
-      revalidate: 60,
     };
   }
 };

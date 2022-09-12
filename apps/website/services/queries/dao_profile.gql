@@ -5,36 +5,9 @@ query dao_pages {
   }
 }
 
-query dao_profile($id: uuid!) {
+query dao_profile_slug_by_id($id: uuid!) {
   daos_by_pk(id: $id) {
-    id
-    name
-    description
     slug
-    background {
-      id
-      blur
-      #url
-    }
-    logo {
-      id
-      blur
-    }
-    logo_url
-    background_url
-    categories
-    socials {
-      network
-      url
-    }
-    gates(where: { published: { _eq: "published" } }, limit: 3) {
-      id
-      title
-      description
-      categories
-      image
-      published
-    }
   }
 }
 
