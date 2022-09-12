@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useMemo, useState } from 'react';
 
-import { useMutation, useQueryClient } from 'react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import type { PartialDeep } from 'type-fest';
 
 import { CardActionArea, CardHeader, Box, Snackbar } from '@mui/material';
@@ -79,7 +79,7 @@ export function GatesCard({
   ];
 
   const { mutate: toggleGateStateMutation } = useMutation(
-    'toggleGateState',
+    ['toggleGateState', id],
     gqlAuthMethods.toggle_gate_state
   );
 
@@ -112,7 +112,7 @@ export function GatesCard({
     );
 
   const { mutate: deleteGateMutation } = useMutation(
-    'deleteGate',
+    ['deleteGate', id],
     gqlAuthMethods.deleteGate
   );
 
