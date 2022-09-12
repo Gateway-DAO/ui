@@ -288,7 +288,11 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
               <Stack flexDirection="row" gap={1}>
                 <ShareButton title={`${gateProps?.title} @ Gateway`} />
                 {isAdmin && (
-                  <MorePopover options={gateOptions} withBackground key={uuidv4()} />
+                  <MorePopover
+                    options={gateOptions}
+                    withBackground
+                    key={uuidv4()}
+                  />
                 )}
               </Stack>
             </Stack>
@@ -393,101 +397,6 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
                   }}
                 />
               ))}
-<<<<<<< HEAD
-            </Box>
-            <Stack flexDirection="row" gap={1}>
-              <ShareButton title={`${gateProps?.title} @ Gateway`} />
-              {isAdmin && (
-                <MorePopover
-                  options={gateOptions}
-                  withBackground
-                  key={uuidv4()}
-                />
-              )}
-            </Stack>
-          </Stack>
-        </Box>
-        {gateProps?.description?.length > 250 ? (
-          <ReadMore>{gateProps?.description}</ReadMore>
-        ) : (
-          <Typography
-            variant="body1"
-            marginBottom={(theme) => theme.spacing(4)}
-            sx={{ wordBreak: 'break-word' }}
-            paragraph={true}
-          >
-            {gateProps?.description}
-          </Typography>
-        )}
-
-        {completedGate && credential?.credentials_by_pk.target_id == me?.id && (
-          <MintCredentialButton credential={credential?.credentials_by_pk} />
-        )}
-
-        <Box
-          component="img"
-          src={gateProps?.image}
-          alt={gateProps?.title + ' image'}
-          marginBottom={(theme) => theme.spacing(4)}
-          sx={{
-            width: '100%',
-            borderRadius: (theme) => theme.spacing(1),
-          }}
-        />
-
-        <Grid container rowGap={(theme) => theme.spacing(3)}>
-          {gateProps?.holders.length > 0 && (
-            <>
-              <Grid item xs={4} sx={{ display: 'flex', alignItems: 'center' }}>
-                <Typography
-                  variant="body2"
-                  color={(theme) => theme.palette.text.secondary}
-                >
-                  Holders
-                </Typography>
-              </Grid>
-              <Grid item xs={8}>
-                <AvatarGroup
-                  total={
-                    gateProps?.holders.length >= 5
-                      ? 5
-                      : gateProps?.holders.length
-                  }
-                  sx={{
-                    justifyContent: 'flex-end',
-                  }}
-                >
-                  {gateProps?.holders.map((holder) => {
-                    return (
-                      <Link
-                        key={holder.id}
-                        passHref
-                        href={`/profile/${holder.username}`}
-                      >
-                        <Tooltip title={holder.name}>
-                          <Box component="a" sx={{ display: 'inline-block' }}>
-                            <AvatarFile
-                              alt={holder.username}
-                              file={holder.picture}
-                              fallback={holder.pfp || '/logo.png'}
-                            />
-                          </Box>
-                        </Tooltip>
-                      </Link>
-                    );
-                  })}
-                </AvatarGroup>
-              </Grid>
-            </>
-          )}
-          <Grid item xs={4} sx={{ display: 'flex', alignItems: 'center' }}>
-            <Typography
-              variant="body2"
-              color={(theme) => theme.palette.text.secondary}
-            >
-              Skills
-            </Typography>
-=======
             </Grid>
             {gateProps?.creator && (
               <>
@@ -517,7 +426,6 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
                 </Grid>
               </>
             )}
->>>>>>> 3e6e86537b91a1761b61f43f5fd5fd7d214b8604
           </Grid>
         </Box>
       </Grid>
