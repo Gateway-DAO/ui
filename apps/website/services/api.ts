@@ -32,7 +32,8 @@ export const gqlMethodsWithRefresh = (
   token: string,
   refreshToken: string,
   userId: string | undefined,
-  saveToken: (newTokens: RefreshMutation['refresh']) => void
+  // saves the new token to the user. The callback response doesn't matter
+  saveToken: (newTokens: RefreshMutation['refresh']) => Promise<any>
 ) => {
   const wrapper: SdkFunctionWrapper = async (action) => {
     try {
@@ -51,7 +52,7 @@ export const gqlMethodsWithRefresh = (
 
         /* Saves the token on stored user */
         const res = await action(gqlUserHeader(userId, newTokens.token));
-        saveToken(newTokens);
+        await saveToken(newTokens);
         return res;
       }
       throw e;

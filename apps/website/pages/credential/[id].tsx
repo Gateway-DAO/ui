@@ -10,16 +10,41 @@ import { DashboardTemplate } from '../../components/templates/dashboard';
 import { GateViewTemplate } from '../../components/templates/gate-view';
 import { ROUTES } from '../../constants/routes';
 import { useAuth } from '../../providers/auth';
-import { gqlAnonMethods, gqlMethods } from '../../services/api';
+import {
+  gqlAnonMethods,
+  gqlMethods,
+  gqlMethodsWithRefresh,
+} from '../../services/api';
 
-export async function getServerSideProps({ req, params }) {
+export async function getServerSideProps({ req, res, params }) {
   const { id } = params;
   const queryClient = new QueryClient();
 
-  const gate = await (req.cookies.token
-    ? gqlMethods(req.cookies.token, req.cookies.user_id)
-    : gqlAnonMethods
-  ).gate({ id });
+  let gate;
+
+  try {
+    gate = await (req.cookies.token
+      ? gqlMethodsWithRefresh(
+          req.cookies.token,
+          req.cookies.refresh,
+          req.cookies.user_id,
+          async ({ refresh_token, token }) => {
+            res.setHeader('Set-Cookie', [
+              `refresh=${refresh_token}; path=/; httpOnly; SameSite=Strict;`,
+              `token=${token}; path=/; httpOnly; SameSite=Strict;`,
+            ]);
+
+            await queryClient.prefetchQuery(['token'], () => ({
+              refresh_token,
+              token,
+            }));
+          }
+        )
+      : gqlAnonMethods
+    ).gate({ id });
+  } catch (e) {
+    gate = await gqlAnonMethods.gate({ id });
+  }
 
   if (!gate.gates_by_pk) {
     return {
@@ -30,12 +55,7 @@ export async function getServerSideProps({ req, params }) {
     };
   }
 
-  await queryClient.prefetchQuery(['gate', id], () =>
-    (req.cookies.token
-      ? gqlMethods(req.cookies.token, req.cookies.user_id)
-      : gqlAnonMethods
-    ).gate({ id })
-  );
+  await queryClient.prefetchQuery(['gate', id], () => gate);
 
   return {
     props: {

@@ -1,9 +1,9 @@
 /* eslint-disable @next/next/inline-script-id */
+import NextProgress from 'next-progress';
 import { AppProps as NextAppProps } from 'next/app';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import Script from 'next/script';
-import NextProgress from 'next-progress';
 
 import { WagmiConfig } from 'wagmi';
 
