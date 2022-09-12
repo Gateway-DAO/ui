@@ -50,8 +50,8 @@ export const FollowProfile = ({ taskId, deleteTask }) => {
     register,
     setValue,
     getValues,
+    setError,
     formState: { errors },
-    control,
   } = useFormContext<CreateGateTypes>();
 
   useEffect(() => {
@@ -69,8 +69,14 @@ export const FollowProfile = ({ taskId, deleteTask }) => {
       return setTwitterData(response.get_twitter_user_data);
     } catch (error) {
       setLoading(false);
-      // TODO: Implement Snackbar error
-      return console.error(error);
+      if (error.message.includes('User is protected')) {
+        return setError(`tasks.data.${taskId}.task_data.username`, {
+          message: 'User is protected',
+        });
+      }
+      return setError(`tasks.data.${taskId}.task_data.username`, {
+        message: 'User not found',
+      });
     }
   };
 
