@@ -78,7 +78,8 @@ export function ExploreTemplate({ title, subtitle, data }: TemplateProps) {
             onChange={handleTabChange}
             aria-label="basic tabs example"
             variant="scrollable"
-            scrollButtons="auto"
+            scrollButtons
+            allowScrollButtonsMobile
             sx={{
               mb: '-1px',
             }}
