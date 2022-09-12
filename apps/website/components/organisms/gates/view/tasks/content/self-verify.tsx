@@ -66,6 +66,7 @@ const SelfVerifyContent = ({
           <ListItemText
             sx={(theme) => ({
               marginRight: theme.spacing(6),
+              wordBreak: 'break-word',
             })}
             primary={file.title}
             secondary={file.description}
