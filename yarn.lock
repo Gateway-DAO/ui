@@ -15469,6 +15469,13 @@ next-cookies@^2.0.3:
   dependencies:
     universal-cookie "^4.0.2"
 
+next-progress@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/next-progress/-/next-progress-2.2.0.tgz#8b764c3c9b24834d251dfe508112314ec1c756bf"
+  integrity sha512-g6VBoaj2SfUhKiBSJW/7ju06Ks3r3mUK79HdrLJ7fmvnjeyHPViAKLQDsMN1QIoBcTqN1hR7A8sISiMfm01qmQ==
+  dependencies:
+    universal-cookie "^4.0.2"
+
 next-share@^0.18.1:
   version "0.18.1"
   resolved "https://registry.yarnpkg.com/next-share/-/next-share-0.18.1.tgz#99cf78da0f9e86e68cad57f78a71d3263b98ed7b"
