@@ -1,3 +1,4 @@
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 
 import { PartialDeep } from 'type-fest';
@@ -14,7 +15,16 @@ import TableRow from '@mui/material/TableRow';
 
 import { ROUTES } from '../../../../../constants/routes';
 import { Users } from '../../../../../services/graphql/types.generated';
-import { FollowButtonUser } from '../../../../atoms/follow-button-user';
+
+const FollowButtonUser = dynamic<any>(
+  () =>
+    import('../../../../atoms/follow-button-user').then(
+      (mod) => mod.FollowButtonUser
+    ),
+  {
+    ssr: false,
+  }
+);
 
 type Props = {
   people: PartialDeep<Users>[];
@@ -82,7 +92,7 @@ export function TableView({ people }: Props) {
 
                 <TableCell align="right">
                   <FollowButtonUser
-                    userId={user.id}
+                    wallet={user.wallet}
                     variant="outlined"
                     size="small"
                     color="secondary"

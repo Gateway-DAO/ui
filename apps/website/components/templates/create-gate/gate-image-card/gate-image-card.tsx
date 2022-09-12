@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+
 import { useFormContext } from 'react-hook-form';
 
 import { GatewaySxProps } from '@gateway/theme';
@@ -11,11 +13,22 @@ import { GateData } from './gate-data';
 type Props = {
   showGateData?: boolean;
   sx?: GatewaySxProps;
+  draftImage?: string;
+  label?: string;
 };
 
-export function GateImageCard({ showGateData = true, sx }: Props) {
+export function GateImageCard({
+  showGateData = true,
+  sx,
+  draftImage,
+  label,
+}: Props) {
   const theme = useTheme();
-  const { control } = useFormContext<CreateGateTypes>();
+  const { control, setValue } = useFormContext<CreateGateTypes>();
+
+  useEffect(() => {
+    setValue('image', draftImage);
+  }, [draftImage, setValue]);
 
   return (
     <Card
@@ -68,7 +81,7 @@ export function GateImageCard({ showGateData = true, sx }: Props) {
             withCrop
             control={control}
             name="image"
-            label="Drop to upload your avatar"
+            label={label || 'Drop to upload your avatar'}
           />
         </Box>
       </Box>

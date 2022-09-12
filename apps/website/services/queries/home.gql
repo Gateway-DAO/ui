@@ -1,13 +1,15 @@
 query get_home {
-  gates(limit: 4) {
+  gates(where: { published: { _eq: "published" } }, limit: 4) {
     id
     title
     description
     categories
     image
+    published
     dao {
       id
       logo_url
+      slug
       logo {
         ...file
       }
@@ -17,6 +19,7 @@ query get_home {
   daos(limit: 3) {
     id
     name
+    slug
     logo {
       ...file
     }
@@ -47,6 +50,7 @@ query get_home {
     name
     about
     username
+    wallet
     picture {
       ...file
     }
@@ -60,9 +64,11 @@ query gates_tab {
     description
     categories
     image
+    published
     dao {
       id
       logo_url
+      slug
       logo {
         ...file
       }
@@ -75,6 +81,7 @@ query daos_tab {
   daos(order_by: { name: asc }) {
     id
     name
+    slug
     logo {
       ...file
     }
@@ -101,9 +108,8 @@ query daos_tab {
     }
   }
 }
-
-query people_tab {
-  people: users(order_by: { name: asc }) {
+query people_tab($offset: Int!) {
+  people: users(order_by: { name: asc }, limit: 15, offset: $offset) {
     id
     name
     picture {
@@ -111,5 +117,6 @@ query people_tab {
     }
     about
     username
+    wallet
   }
 }

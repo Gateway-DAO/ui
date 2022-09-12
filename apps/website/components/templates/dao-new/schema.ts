@@ -39,7 +39,8 @@ export const schema: SchemaOf<NewDAOSchema> = object({
   categories: array().of(string()).min(1).defined(),
   description: string()
     .defined()
-    .min(2, 'The file title must contain at least 2 character(s)'),
+    .min(2, 'The file description must contain at least 2 character(s)')
+    .max(400),
   background: string().defined(),
   logo: string().defined(),
   socials: array().of(

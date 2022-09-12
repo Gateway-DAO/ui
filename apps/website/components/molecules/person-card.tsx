@@ -1,3 +1,4 @@
+import dynamic from 'next/dynamic';
 import Link from 'next/link';
 
 import type { PartialDeep } from 'type-fest';
@@ -10,7 +11,14 @@ import { useAuth } from '../../providers/auth';
 import { Users } from '../../services/graphql/types.generated';
 import { AdminBadge } from '../atoms/admin-badge';
 import { AvatarFile } from '../atoms/avatar-file';
-import { FollowButtonUser } from '../atoms/follow-button-user';
+
+const FollowButtonUser = dynamic<any>(
+  () =>
+    import('../atoms/follow-button-user').then((mod) => mod.FollowButtonUser),
+  {
+    ssr: false,
+  }
+);
 
 type Props = {
   user: PartialDeep<Users>;
@@ -20,7 +28,7 @@ type Props = {
 /* TODO: Arias and Labels */
 /* TODO: Clamp text */
 export function PersonCard({
-  user: { id, name, username, picture },
+  user: { id, name, username, picture, wallet },
   isAdmin,
 }: Props) {
   const url = ROUTES.PROFILE.replace('[username]', username);
@@ -36,7 +44,7 @@ export function PersonCard({
             }}
             avatar={
               <AdminBadge isAdmin={isAdmin}>
-                <AvatarFile file={picture} fallback="/logo.png">
+                <AvatarFile file={picture} fallback="/avatar.png">
                   {name?.[0]}
                 </AvatarFile>
               </AdminBadge>
@@ -65,7 +73,7 @@ export function PersonCard({
           }}
         >
           <FollowButtonUser
-            userId={id}
+            wallet={wallet}
             variant="outlined"
             size="small"
             color="secondary"

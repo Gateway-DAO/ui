@@ -11,7 +11,8 @@ import { GatesTab, OverviewTab } from './tabs';
 import { PeopleTab } from './tabs/people-tab';
 
 export function DaoProfileTemplate() {
-  const { followers, onRefetchFollowers, followersIsLoaded } = useDaoProfile();
+  const { followers, onRefetchFollowers, followersIsLoaded, credentials } =
+    useDaoProfile();
   const { t } = useTranslation();
   const { activeTab, handleTabChange, setTab } = useTab();
 
@@ -21,11 +22,17 @@ export function DaoProfileTemplate() {
     {
       key: 'overview',
       label: t('common:tabs.overview'),
-      section: <OverviewTab people={people} setTab={setTab} />,
+      section: (
+        <OverviewTab
+          people={people}
+          setTab={setTab}
+          credentials={credentials?.daos_by_pk.gates}
+        />
+      ),
     },
     {
-      key: 'gates',
-      label: t('common:tabs.gates'),
+      key: 'credentials',
+      label: t('common:tabs.credentials'),
       section: <GatesTab />,
     },
     {

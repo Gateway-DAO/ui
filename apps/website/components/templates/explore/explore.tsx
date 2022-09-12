@@ -31,13 +31,13 @@ export function ExploreTemplate({ title, subtitle, data }: TemplateProps) {
         section: <AllTab {...data} setActiveTab={setTab} />,
       },
       {
-        key: 'gates',
-        label: t('common:tabs.gates'),
+        key: 'credentials',
+        label: t('common:tabs.credentials'),
         section: <GatesTab />,
       },
       {
-        key: 'daos',
-        label: t('common:tabs.daos'),
+        key: 'organizations',
+        label: t('common:tabs.organizations'),
         section: <DaosTab />,
       },
       {
@@ -101,8 +101,9 @@ export function ExploreTemplate({ title, subtitle, data }: TemplateProps) {
             tabsId="explore"
             index={index}
             active={index === activeTab}
+            hidden={index !== activeTab}
           >
-            {section}
+            {activeTab === index && section}
           </TabPanel>
         ))}
       </Box>

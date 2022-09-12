@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
 
-import { useMutation } from 'react-query';
+import { useMutation } from '@tanstack/react-query';
 import { useToggle } from 'react-use';
 import { PartialObjectDeep } from 'type-fest/source/partial-deep';
 
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
+import CheckIcon from '@mui/icons-material/Check';
 import {
   Card,
   CardContent,
@@ -14,7 +15,6 @@ import {
   IconButton,
   Collapse,
 } from '@mui/material';
-import CheckIcon from '@mui/icons-material/Check';
 
 import { useAuth } from '../../../providers/auth';
 import { Tasks } from '../../../services/graphql/types.generated';
@@ -33,6 +33,8 @@ type Props = {
   task?: PartialObjectDeep<Tasks>;
   readOnly?: boolean;
   setCompletedGate?: (completed: boolean) => void;
+  completed?: boolean;
+  isAdmin?: boolean;
 };
 
 interface Error {
@@ -47,11 +49,18 @@ interface Error {
   };
 }
 
-export function Task({ task, idx, readOnly, setCompletedGate }: Props) {
+export function Task({
+  task,
+  idx,
+  readOnly,
+  setCompletedGate,
+  isAdmin = false,
+  completed: completedProp = false,
+}: Props) {
   const { me, gqlAuthMethods, onOpenLogin } = useAuth();
 
   const [expanded, toggleExpanded] = useToggle(false);
-  const [completed, setCompleted] = useState(false);
+  const [completed, setCompleted] = useState(completedProp);
   const [updatedAt, setUpdatedAt] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -63,6 +72,7 @@ export function Task({ task, idx, readOnly, setCompletedGate }: Props) {
     if (progressTaskIndex !== undefined && progressTaskIndex !== -1) {
       setCompleted(true);
       setUpdatedAt(me?.task_progresses[progressTaskIndex].updated_at);
+      toggleExpanded(true);
     }
   }, [task.id, me?.task_progresses]);
 
@@ -106,12 +116,13 @@ export function Task({ task, idx, readOnly, setCompletedGate }: Props) {
     gqlAuthMethods.complete_task,
     {
       onSuccess: async (data) => {
-        await queryClient.cancelQueries('me');
+        await queryClient.cancelQueries(['me']);
 
-        queryClient.setQueryData<SessionUser>('me', (old) => {
+        queryClient.setQueryData<SessionUser>(['me'], (old) => {
           const oldTaskProgresses = old.task_progresses.filter(
             (task_progress) => task_progress.task_id !== task.id
           );
+
           const newTaskProgress = [
             ...oldTaskProgresses,
             data.verify_key.task_info,
@@ -124,6 +135,8 @@ export function Task({ task, idx, readOnly, setCompletedGate }: Props) {
             task_progresses: newTaskProgress,
           };
         });
+
+        data.verify_key.completed_gate && queryClient.invalidateQueries(['me']);
       },
     }
   );
@@ -182,7 +195,11 @@ export function Task({ task, idx, readOnly, setCompletedGate }: Props) {
               border: expanded ? 'none' : '1px solid #FFFFFF4D',
             }}
           >
-            {completed ? <CheckIcon htmlColor='#10041C'/> : idx || task.title[0]}
+            {completed ? (
+              <CheckIcon htmlColor="#10041C" />
+            ) : (
+              idx || task.title[0]
+            )}
           </Avatar>
         }
         title={<Typography variant="caption">{taskContent?.title}</Typography>}
@@ -193,15 +210,8 @@ export function Task({ task, idx, readOnly, setCompletedGate }: Props) {
           </IconButton>
         }
       />
-      <Collapse
-        in={expanded}
-        timeout="auto"
-        unmountOnExit
-        sx={{
-          paddingLeft: (theme) => theme.spacing(2) + 40,
-        }}
-      >
-        <CardContent sx={{ marginLeft: '55px' }}>
+      <Collapse in={expanded} timeout="auto" unmountOnExit>
+        <CardContent sx={{ marginLeft: { xs: '0px', md: '55px' } }}>
           <Typography variant="subtitle2">{task.description}</Typography>
           <TaskComponent
             data={task.task_data}
@@ -210,6 +220,7 @@ export function Task({ task, idx, readOnly, setCompletedGate }: Props) {
             completeTask={completeTask}
             readOnly={readOnly}
             isLoading={isLoading}
+            isAdmin={isAdmin}
           />
           {errorMessage && (
             <Typography variant="subtitle2" color="red" marginTop={2}>

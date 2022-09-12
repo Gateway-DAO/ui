@@ -10,6 +10,7 @@ const MeetingCodeContent = ({
   completeTask,
   readOnly,
   isLoading,
+  isAdmin,
 }) => {
   const [meetingCode, setMeetingCode] = useState('');
   const formattedDate = new Date(updatedAt.toLocaleString()).toLocaleString();
@@ -34,7 +35,7 @@ const MeetingCodeContent = ({
           Submit
         </LoadingButton>
       )}
-      {completed && (
+      {completed && !!updatedAt && (
         <Typography color="#c5ffe3" variant="subtitle2">
           Task completed at {formattedDate}
         </Typography>

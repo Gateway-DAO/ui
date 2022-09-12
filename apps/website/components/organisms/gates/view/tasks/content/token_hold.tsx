@@ -25,6 +25,7 @@ const TokenHoldContent = ({
   completeTask,
   readOnly,
   isLoading,
+  isAdmin,
 }) => {
   const { chain, token_address, quantity } = data;
   const formattedDate = new Date(updatedAt.toLocaleString()).toLocaleString();
@@ -53,7 +54,7 @@ const TokenHoldContent = ({
           Check Token
         </LoadingButton>
       )}
-      {completed && (
+      {completed && updatedAt && (
         <Typography color="#c5ffe3" variant="subtitle2">
           Task completed at {formattedDate}
         </Typography>

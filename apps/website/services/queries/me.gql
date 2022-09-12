@@ -1,6 +1,14 @@
 query me {
   me {
     ...current_user
+    permissions {
+      gate_id
+      dao_id
+      dao {
+        is_admin
+      }
+      permission
+    }
     picture {
       ...file
     }
@@ -18,6 +26,7 @@ query me {
       dao {
         id
         logo_url
+        slug
         name
         is_admin
         logo {

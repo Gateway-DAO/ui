@@ -7,8 +7,21 @@ export type Creator = {
   name: string;
 };
 
+// Draft Gate
+export type DraftGateTypes = {
+  id?: string;
+  title: string;
+  categories: string[];
+  description: string;
+  image: string;
+  skills: string[];
+  created_by: Creator[];
+  tasks: DraftTasksSchema;
+};
+
 // Create Gate
 export type CreateGateTypes = {
+  id?: string;
   title: string;
   categories: NestedValue<string[]>;
   description: string;
@@ -22,6 +35,9 @@ export type CreateGateTypes = {
 export type TasksSchema = {
   data: Array<Task>;
 };
+
+// Tasks when we get them back from a previous draft
+export type DraftTasksSchema = Array<Task>;
 
 // Task
 export type SelfVerifyTask = {
@@ -55,6 +71,9 @@ export type FollowProfileTask = {
 };
 
 export type Task = {
+  id?: string;
+  gate_id?: string;
+  task_id?: string;
   title: string;
   description: string;
 } & (
@@ -242,6 +261,8 @@ export const verificationCodeDataSchema = z.object({
 });
 
 export const taskMeetingCodeSchema = z.object({
+  id: z.string().optional(),
+  task_id: z.string().optional(),
   title: z.string().min(2, 'The title must contain at least 2 character(s)'),
   description: z
     .string()
@@ -285,6 +306,8 @@ export const quizDataSchema = z.object({
 });
 
 export const taskQuizSchema = z.object({
+  id: z.string().optional(),
+  task_id: z.string().optional(),
   title: z.string().min(2, 'Quiz title must contain at least 2 character(s)'),
   description: z
     .string()
@@ -294,6 +317,8 @@ export const taskQuizSchema = z.object({
 });
 
 export const taskHoldTokenSchema = z.object({
+  id: z.string().optional(),
+  task_id: z.string().optional(),
   title: z
     .string()
     .min(2, 'Hold Token title must contain at least 2 character(s)'),
@@ -305,6 +330,8 @@ export const taskHoldTokenSchema = z.object({
 });
 
 export const taskSelfVerifySchema = z.object({
+  id: z.string().optional(),
+  task_id: z.string().optional(),
   title: z.string().min(2, 'The title must contain at least 2 character(s)'),
   description: z
     .string()
@@ -314,6 +341,8 @@ export const taskSelfVerifySchema = z.object({
 });
 
 export const taskSnapshotSchema = z.object({
+  id: z.string().optional(),
+  task_id: z.string().optional(),
   title: z.string().min(2, 'The title must contain at least 2 character(s)'),
   description: z
     .string()
@@ -337,15 +366,17 @@ export const createGateSchema = z.object({
     })
   ),
   tasks: z.object({
-    data: z.array(
-      z.discriminatedUnion('task_type', [
-        taskSelfVerifySchema,
-        taskMeetingCodeSchema,
-        TwitterFollowProfileSchema,
-        taskQuizSchema,
-        taskSnapshotSchema,
-        taskHoldTokenSchema,
-      ])
-    ),
+    data: z
+      .array(
+        z.discriminatedUnion('task_type', [
+          taskSelfVerifySchema,
+          taskMeetingCodeSchema,
+          TwitterFollowProfileSchema,
+          taskQuizSchema,
+          taskSnapshotSchema,
+          taskHoldTokenSchema,
+        ])
+      )
+      .nonempty({ message: 'A gate needs to have at least one task.' }),
   }),
 });

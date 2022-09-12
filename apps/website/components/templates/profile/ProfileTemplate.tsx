@@ -1,23 +1,14 @@
 import useTranslation from 'next-translate/useTranslation';
+import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import { useMemo } from 'react';
 
+import { useQueryClient } from '@tanstack/react-query';
 import { PartialDeep } from 'type-fest';
 
 import { TOKENS } from '@gateway/theme';
 
-import ShareIcon from '@mui/icons-material/IosShare';
-import {
-  Avatar,
-  Chip,
-  Box,
-  Stack,
-  Typography,
-  Tabs,
-  Tab,
-  IconButton,
-  Button,
-} from '@mui/material';
+import { Box, Stack, Typography, Tabs, Tab } from '@mui/material';
 
 import { a11yTabProps, TabPanel, useTab } from '../../../components/atoms/tabs';
 import { Navbar } from '../../../components/organisms/navbar/navbar';
@@ -26,18 +17,51 @@ import { useAuth } from '../../../providers/auth';
 import { Users } from '../../../services/graphql/types.generated';
 import { SessionUser } from '../../../types/user';
 import { AvatarFile } from '../../atoms/avatar-file';
-import { FollowButtonUser } from '../../atoms/follow-button-user';
+import { useFollowStatus } from '../../atoms/follow-button-user/utils';
 import { SocialButtons } from '../../organisms/social-buttons';
-import { ActivityTab, OverviewTab } from './tabs';
+import { OverviewTab } from './tabs';
+
+const PendingReceivedSection = dynamic<any>(
+  () =>
+    import('./pending-received-section').then(
+      (mod) => mod.PendingReceivedSection
+    ),
+  {
+    ssr: false,
+  }
+);
+
+const FollowButtonUser = dynamic<any>(
+  () =>
+    import('../../atoms/follow-button-user').then(
+      (mod) => mod.FollowButtonUser
+    ),
+  {
+    ssr: false,
+  }
+);
+
+const ConnectionsButton = dynamic<any>(
+  () => import('./connections/button').then((mod) => mod.ConnectionsButton),
+  {
+    ssr: false,
+  }
+);
 
 type Props = {
   user: SessionUser | PartialDeep<Users>;
 };
 
 export default function ProfileTemplate({ user }: Props) {
-  const { t } = useTranslation();
+  const { t } = useTranslation('user-profile');
   const { activeTab, handleTabChange, setTab } = useTab();
   const { me } = useAuth();
+  const { type: pendingType } = useFollowStatus(user.wallet);
+
+  const queryClient = useQueryClient();
+  const onChangeConnections = () => {
+    queryClient.refetchQueries(['connections', user.wallet]);
+  };
 
   const tabs = useMemo(
     () => [
@@ -83,6 +107,7 @@ export default function ProfileTemplate({ user }: Props) {
           marginTop: -13,
         }}
         marginLeft={{ xs: '20px', md: '50px' }}
+        mr={{ xs: '20px', md: '0' }}
       >
         <AvatarFile
           sx={{
@@ -92,7 +117,7 @@ export default function ProfileTemplate({ user }: Props) {
             borderColor: 'background.default',
           }}
           file={user.picture}
-          fallback={'/logo.png'}
+          fallback={'/avatar.png'}
         ></AvatarFile>
         <Box>
           <Typography style={{ color: '#fff' }} component="h1" variant="h4">
@@ -133,24 +158,36 @@ export default function ProfileTemplate({ user }: Props) {
             sx={{
               display: 'flex',
               flexDirection: 'row',
+              alignItems: 'center',
               columnGap: '10px',
               mt: 2,
             }}
           >
-            <Typography>
-              {user?.following_aggregate?.aggregate?.count ?? 0} connections
-            </Typography>
-            .<Typography>{user.credentials.length} credential(s)</Typography>
+            <ConnectionsButton wallet={user.wallet} />.
+            <Typography>{user.credentials.length} credential(s)</Typography>
           </Box>
-          <Stack
-            direction="row"
-            gap={1}
-            sx={{
-              mt: 4,
-            }}
-          >
-            <FollowButtonUser userId={user.id} />
-            <SocialButtons socials={user.socials} copyNetworks={['discord']} />
+          <Stack direction="column" gap={4} mt={4}>
+            {!!(user as Users) && pendingType === 'received' && (
+              <PendingReceivedSection
+                username={user.username!}
+                wallet={user.wallet!}
+                onSuccess={onChangeConnections}
+              />
+            )}
+            {user?.socials?.length > 0 || pendingType !== 'received' ? (
+              <Stack direction="row" gap={1}>
+                {(user as Users)?.wallet && pendingType !== 'received' && (
+                  <FollowButtonUser
+                    wallet={(user as Users).wallet}
+                    onSuccess={onChangeConnections}
+                  />
+                )}
+                <SocialButtons
+                  socials={user.socials}
+                  copyNetworks={['discord']}
+                />
+              </Stack>
+            ) : undefined}
           </Stack>
         </Box>
       </Box>

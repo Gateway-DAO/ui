@@ -1,5 +1,6 @@
 import { InferGetStaticPropsType } from 'next';
 import useTranslation from 'next-translate/useTranslation';
+import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useMemo, useState } from 'react';
@@ -31,9 +32,14 @@ import { generateImageUrl } from '../../../hooks/use-file';
 import { useAuth } from '../../../providers/auth';
 import { AvatarFile } from '../../atoms/avatar-file';
 import { SocialButtons } from '../../organisms/social-buttons';
-import { ActivityTab, OverviewTab } from './tabs';
 import { GuideCard } from './edit/Components/guide-card';
-
+import { OverviewTab } from './tabs';
+const ConnectionsButton = dynamic<any>(
+  () => import('./connections/button').then((mod) => mod.ConnectionsButton),
+  {
+    ssr: false,
+  }
+);
 export default function PrivateProfileTemplate() {
   const [showCard, setShowCard] = useState(true);
   const { t } = useTranslation();
@@ -41,16 +47,21 @@ export default function PrivateProfileTemplate() {
   const router = useRouter();
   const { me } = useAuth();
 
-  const tabs = useMemo(
-    () => [
-      {
-        key: 'overview',
-        label: t('common:tabs.overview'),
-        section: <OverviewTab user={me} />,
-      },
-    ],
-    []
-  );
+  const shouldShowCard =
+    !me?.bio?.length ||
+    !me?.skills?.length ||
+    !me?.languages?.length ||
+    !me?.timezone == undefined ||
+    !me?.experiences?.length;
+
+  const tabs = [
+    {
+      key: 'overview',
+      label: t('common:tabs.overview'),
+      section: <OverviewTab user={me} />,
+    },
+  ];
+
   return (
     <>
       <Box
@@ -94,7 +105,7 @@ export default function PrivateProfileTemplate() {
             borderColor: 'background.default',
           }}
           file={me.picture}
-          fallback={'/logo.png'}
+          fallback={'/avatar.png'}
         ></AvatarFile>
         <Box
           sx={{
@@ -143,11 +154,12 @@ export default function PrivateProfileTemplate() {
                   fontSize: '16px',
                   fontWeight: '400',
                   color: 'rgba(255, 255, 255, 0.7)',
+                  whiteSpace: 'pre-line',
                 }}
-                width={{ xs: '100%', md: '50%' }}
+                width={{ xs: '100%', md: '100%' }}
               >
                 {me.bio ||
-                  'Write about your years of experience, industry, or skills. People also talk about their achievements or previous job experiences.'}
+                  'This is your profesional bio. Click the pencil above to edit.'}
               </Typography>
             </Box>
             <Box>
@@ -159,11 +171,10 @@ export default function PrivateProfileTemplate() {
                   mt: 2,
                 }}
               >
-                <Typography>{me.following?.length} connection(s)</Typography>·
+                <ConnectionsButton wallet={me.wallet} />·
                 <Typography>{me.credentials?.length} credential(s)</Typography>
               </Box>
             </Box>
-
             <Stack
               direction="row"
               gap={1}
@@ -177,13 +188,15 @@ export default function PrivateProfileTemplate() {
               />
             </Stack>
           </Box>
-          <Box
-            sx={{
-              mr: TOKENS.CONTAINER_PX,
-            }}
-          >
-            {showCard && <GuideCard {...{ setShowCard }} />}
-          </Box>
+          {shouldShowCard && showCard && (
+            <Box
+              sx={{
+                mr: TOKENS.CONTAINER_PX,
+              }}
+            >
+              <GuideCard {...{ setShowCard }} />
+            </Box>
+          )}
         </Box>
       </Box>
       <Box

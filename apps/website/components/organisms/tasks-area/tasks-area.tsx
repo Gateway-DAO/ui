@@ -1,3 +1,5 @@
+import { Dispatch, SetStateAction, useEffect } from 'react';
+
 import { useFieldArray, useFormContext } from 'react-hook-form';
 
 import AddTaskCard from '../../molecules/add-task/add-task-card';
@@ -10,7 +12,11 @@ import {
 } from '../../molecules/add-task/quiz-task/quiz-task';
 import SnapshotTask from '../../molecules/add-task/snapshot-task/snapshot-task';
 import VerificationCodeTask from '../../molecules/add-task/verification-task/verification-task';
-import { CreateGateTypes, Task } from '../../templates/create-gate/schema';
+import {
+  CreateGateTypes,
+  DraftTasksSchema,
+  Task,
+} from '../../templates/create-gate/schema';
 
 const TaskComponents = {
   meeting_code: VerificationCodeTask,
@@ -51,39 +57,52 @@ const defaultTaskData = (
   }
 };
 
-const TaskArea = () => {
-  const { control, trigger } = useFormContext<CreateGateTypes>();
+type TaskAreaProps = {
+  draftTasks: DraftTasksSchema;
+  onDelete: Dispatch<SetStateAction<string[]>>;
+};
+
+const TaskArea = ({ draftTasks, onDelete }: TaskAreaProps) => {
+  const { control, setValue } = useFormContext<CreateGateTypes>();
 
   const { fields, append, remove } = useFieldArray({
     control,
     name: 'tasks.data',
   });
 
+  useEffect(() => {
+    if (draftTasks.length > 0) {
+      // Remove gate_ids from the tasks
+      const formattedTasks = draftTasks.map((task) => {
+        const { gate_id: _gate_id, id: task_id, ...newTask } = task;
+        return { id: task_id, task_id, ...newTask };
+      });
+      setValue('tasks.data', formattedTasks);
+    }
+  }, [draftTasks, setValue]);
+
   const addTask = async (
     taskType: CreateGateTypes['tasks']['data'][0]['task_type']
   ) => {
-    const valid =
-      fields.length > 0
-        ? await trigger(`tasks.data.${fields.length - 1}.task_data`)
-        : true;
-    if (valid) {
-      append({
-        title: '',
-        description: '',
-        ...(defaultTaskData(taskType) as any),
-      });
-    }
+    append({
+      title: '',
+      description: '',
+      ...(defaultTaskData(taskType) as any),
+    });
   };
 
   return (
     <>
-      {fields.map((task, index) => {
+      {fields.map((task: Task, index: number) => {
         const TaskComponent = TaskComponents[task.task_type];
         return (
           <TaskComponent
-            key={task.id}
+            key={task.task_id}
             taskId={index}
-            deleteTask={() => remove(index)}
+            deleteTask={() => {
+              remove(index);
+              onDelete((prev: string[]) => [...prev, task.task_id]);
+            }}
           />
         );
       })}

@@ -10,16 +10,20 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 
+import GateStateChip from '../../../../../components/atoms/gate-state-chip';
+import { ReadMore } from '../../../../../components/atoms/read-more-less';
 import { Gates } from '../../../../../services/graphql/types.generated';
 import { badgeProps } from '../../../../../utils/badge-props';
 
 // TODO: make it generic
 // TODO: Fix Gate name column width
 
-type Props = {
+type TableViewProps = {
   gates: PartialDeep<Gates>[];
+  isGate?: boolean;
+  showStatus?: boolean;
 };
-export function TableView({ gates }: Props) {
+export function TableView({ gates, isGate, showStatus }: TableViewProps) {
   return (
     <TableContainer
       sx={{
@@ -55,16 +59,23 @@ export function TableView({ gates }: Props) {
                         sx={{
                           textOverflow: 'ellipsis',
                           overflow: 'hidden',
-                          whiteSpace: 'nowrap',
+                          whiteSpace: 'break-word',
                         }}
                       >
-                        {gate.description}
+                        {gate.description.length > 100 ? (
+                          <ReadMore>{gate.description}</ReadMore>
+                        ) : (
+                          gate.description
+                        )}
                       </Typography>
                     </Box>
                   </Stack>
                 </TableCell>
                 <TableCell>
                   <Stack direction="row" gap={1}>
+                    {isGate && showStatus && (
+                      <GateStateChip published={gate.published} />
+                    )}
                     {gate.categories?.map((category) => (
                       <Chip
                         key={`gate-${gate.id}-category-${category}`}

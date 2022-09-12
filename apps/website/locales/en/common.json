@@ -3,12 +3,16 @@
   "gates": "Gates",
   "daos": "DAOs",
   "people": "People",
-  "follow": "follow",
   "count": {
     "gate": {
       "0": "No gates",
       "one": "{{count}} gate",
       "other": "{{count}} gates"
+    },
+    "credential": {
+      "0": "No credentials",
+      "one": "{{count}} credential",
+      "other": "{{count}} credentials"
     },
     "follower": {
       "0": "No followers",
@@ -28,31 +32,44 @@
   "tabs": {
     "all": "All",
     "overview": "Overview",
-    "gates": "Gates",
+    "credentials": "Credentials",
     "daos": "DAOs",
+    "organizations": "Organizations",
     "people": "People"
   },
-  "featured-gates": {
-    "title": "Featured Gates",
-    "caption": "People are really into these gates. We thought you would too.",
-    "see-more": "View more gates"
+  "featured-credentials": {
+    "title": "Featured Credentials",
+    "caption": "People are really into these credentials. We thought you would too.",
+    "see-more": "View more credentials"
   },
-  "featured-daos": {
-    "title": "Recommended DAOs",
-    "caption": "These DAOs are shining, you should check them out.",
-    "see-more": "View more DAOs"
+  "featured-organizations": {
+    "title": "Recommended Organizations",
+    "caption": "These are the most active communities in Web3.",
+    "see-more": "View more organizations"
   },
   "featured-people": {
     "title": "Featured people",
-    "caption": "Follow the most prominent professionals on the Web3.",
+    "caption": "Follow the most prominent professionals in Web3.",
     "see-more": "View more people"
   },
   "actions": {
+    "accept": "Accept",
+    "decline": "Decline",
     "connect": "connect",
+    "connected": "connected",
+    "close": "close",
     "disconnect": "disconnect",
     "cancel": "cancel",
     "got-it": "got it",
     "follow": "Follow",
-    "unfollow": "Unfollow"
+    "unfollow": "Unfollow",
+    "pending": "Pending",
+    "reject": "Reject",
+    "withdraw": "Withdraw invitation",
+    "mint": "Mint as NFT",
+    "check-transaction": "Verify Mint Transaction",
+    "see-more": "See more",
+    "see-less": "See less",
+    "share-link": "Share link"
   }
 }

@@ -42,6 +42,7 @@ query gate($id: uuid!) {
     dao {
       id
       name
+      slug
       logo_url
       logo {
         id
