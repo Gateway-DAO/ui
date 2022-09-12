@@ -1,3 +1,4 @@
+import useTranslation from 'next-translate/useTranslation';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useMemo, useState } from 'react';
@@ -50,6 +51,7 @@ export function GatesCard({
   const { gqlAuthMethods } = useAuth();
   const { isAdmin } = useDaoProfile();
   const router = useRouter();
+  const { t } = useTranslation('gates-card');
 
   const [published, setPublished] = useState(publishedProps);
   const [confirmDelete, setConfirmDelete] = useState(false);
@@ -59,18 +61,18 @@ export function GatesCard({
     {
       text:
         published === 'not_published' || published === 'paused'
-          ? 'Publish'
-          : 'Unpublish',
+          ? t('publish')
+          : t('unpublish'),
       action: () => setConfirmToggleState(true),
       hidden: false,
     },
     {
-      text: 'Edit',
+      text: t('edit'),
       action: () => router.push(`${ROUTES.GATE_NEW}?dao=${dao.id}&gate=${id}`),
       hidden: published === 'published' || published === 'paused',
     },
     {
-      text: 'Delete',
+      text: t('delete'),
       action: () => setConfirmDelete(true),
       hidden: false,
     },
@@ -92,11 +94,10 @@ export function GatesCard({
           setPublished(data.update_gates_by_pk.published);
 
           snackbar.onOpen({
-            message: `Credential ${
+            message:
               published === 'not_published' || published === 'paused'
-                ? 'published!'
-                : 'unpublished!'
-            }`,
+                ? t('credential.published')
+                : t('credential.unpublished'),
           });
 
           await queryClient.refetchQueries(['gate', id]);
@@ -104,7 +105,7 @@ export function GatesCard({
         },
         onError() {
           snackbar.handleClick({
-            message: "An error occured, couldn't toggle gate state.",
+            message: t('credential.error.toggle'),
           });
         },
       }
@@ -121,12 +122,14 @@ export function GatesCard({
       {
         onSuccess() {
           snackbar.onOpen({
-            message: 'Credential deleted!',
+            message: t('credential.deleted'),
           });
           router.reload();
         },
-        onError(error) {
-          console.log(error);
+        onError() {
+          snackbar.handleClick({
+            message: t('credential.error.delete'),
+          });
         },
       }
     );
@@ -241,33 +244,32 @@ export function GatesCard({
         message={snackbar.message}
       />
       <ConfirmDialog
-        title="Are you sure you want to delete this credential?"
+        title={t('credential.confirm.delete.title')}
         open={confirmDelete}
         positiveAnswer="Delete"
         negativeAnswer="Cancel"
         setOpen={setConfirmDelete}
         onConfirm={deleteGate}
       >
-        If you delete this credential, you will not be able to access it and
-        this action cannot be undone.
+        {t('credential.confirm.delete.text')}
       </ConfirmDialog>
       <ConfirmDialog
         title={
           published === 'published'
-            ? 'Are you sure to unpublish this credential?'
-            : 'Are you sure you want to publish this credential?'
+            ? t('credential.confirm.unpublish.title')
+            : t('credential.confirm.publish.title')
         }
         open={confirmToggleState}
         positiveAnswer={`${
-          published === 'published' ? 'Unpublish' : 'Publish'
+          published === 'published' ? t('unpublish') : t('publish')
         }`}
-        negativeAnswer="Cancel"
+        negativeAnswer={t('cancel')}
         setOpen={setConfirmToggleState}
         onConfirm={toggleGateState}
       >
         {published === 'published'
-          ? 'If you unpublish this credential, users will not be able to see it anymore.'
-          : 'Publishing this credential will make it accessible by all users.'}
+          ? t('credential.confirm.unpublish.text')
+          : t('credential.confirm.publish.text')}
       </ConfirmDialog>
     </>
   );
