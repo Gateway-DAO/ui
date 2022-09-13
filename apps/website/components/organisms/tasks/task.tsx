@@ -26,6 +26,7 @@ import QuizContent from '../gates/view/tasks/content/quiz';
 import SelfVerifyContent from '../gates/view/tasks/content/self-verify';
 import SnapshotContent from '../gates/view/tasks/content/snapshot';
 import TokenHoldContent from '../gates/view/tasks/content/token_hold';
+import TwitterFollowContent from '../gates/view/tasks/content/twitter-follow';
 import { taskErrorMessages } from './task-error-messages';
 
 type Props = {
@@ -77,38 +78,39 @@ export function Task({
   }, [task.id, me?.task_progresses]);
 
   const getTaskContent = (task_type: string) => {
-    switch (task_type) {
-      case 'self_verify':
-        return {
-          title: 'Files & Links',
-          body: SelfVerifyContent,
-        };
-      case 'meeting_code':
-        return {
-          title: 'Verification Code',
-          body: MeetingCodeContent,
-        };
-      case 'token_hold':
-        return {
-          title: 'Hold Token',
-          body: TokenHoldContent,
-        };
-      case 'snapshot':
-        return {
-          title: 'Snapshot',
-          body: SnapshotContent,
-        };
-      case 'quiz':
-        return {
-          title: 'Quiz',
-          body: QuizContent,
-        };
-      default:
-        return {
-          title: '',
-          body: null,
-        };
-    }
+    const taskTypes = {
+      self_verify: {
+        title: 'Files & Links',
+        body: SelfVerifyContent,
+      },
+      meeting_code: {
+        title: 'Verification Code',
+        body: MeetingCodeContent,
+      },
+      token_hold: {
+        title: 'Hold Token',
+        body: TokenHoldContent,
+      },
+      snapshot: {
+        title: 'Snapshot',
+        body: SnapshotContent,
+      },
+      quiz: {
+        title: 'Quiz',
+        body: QuizContent,
+      },
+      twitter_follow: {
+        title: 'Twitter Follow',
+        body: TwitterFollowContent,
+      },
+    };
+
+    return (
+      taskTypes[task_type] || {
+        title: '',
+        body: null,
+      }
+    );
   };
 
   const { mutate: completeTaskMutation, isLoading } = useMutation(

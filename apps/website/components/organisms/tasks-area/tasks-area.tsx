@@ -4,13 +4,13 @@ import { useFieldArray, useFormContext } from 'react-hook-form';
 
 import AddTaskCard from '../../molecules/add-task/add-task-card';
 import FileLinkTask from '../../molecules/add-task/file-link-task/file-link-task';
-import { FollowProfile } from '../../molecules/add-task/follow-profile/follow-profile';
 import HoldTokenTask from '../../molecules/add-task/hold-token-task/hold-token-task';
 import {
   QuizTask,
   createQuestion,
 } from '../../molecules/add-task/quiz-task/quiz-task';
 import SnapshotTask from '../../molecules/add-task/snapshot-task/snapshot-task';
+import { FollowProfile } from '../../molecules/add-task/twitter-follow-profile/twitter-follow-profile';
 import VerificationCodeTask from '../../molecules/add-task/verification-task/verification-task';
 import {
   CreateGateTypes,
@@ -24,7 +24,7 @@ const TaskComponents = {
   snapshot: SnapshotTask,
   token_hold: HoldTokenTask,
   quiz: QuizTask,
-  follow_profile: FollowProfile,
+  twitter_follow: FollowProfile,
 };
 
 const defaultTaskData = (

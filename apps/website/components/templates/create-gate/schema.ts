@@ -66,7 +66,7 @@ export type HoldTokenTask = {
 };
 
 export type FollowProfileTask = {
-  task_type: 'follow_profile';
+  task_type: 'twitter_follow';
   task_data: TwitterFollowData;
 };
 
@@ -276,7 +276,7 @@ export const TwitterFollowProfileSchema = z.object({
   description: z
     .string()
     .min(2, 'The description must contain at least 2 character(s)'),
-  task_type: z.literal('follow_profile'),
+  task_type: z.literal('twitter_follow'),
   task_data: twitterFollowDataSchema,
 });
 

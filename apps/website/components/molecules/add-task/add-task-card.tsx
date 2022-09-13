@@ -93,7 +93,7 @@ const AddTaskCard = ({ numberOfTasks, addTask }) => {
             <AddTaskButton
               icon={<Twitter />}
               title={'Follow Profile'}
-              addTask={() => addTask('follow_profile')}
+              addTask={() => addTask('twitter_follow')}
             />
           </Paper>
         </Grid>
