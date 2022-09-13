@@ -10,8 +10,6 @@ import { WagmiConfig } from 'wagmi';
 
 import { ThemeProvider } from '@gateway/theme';
 
-import { useTheme } from '@mui/material';
-
 import { SEOSocial, SEOFavicon } from '../components/atoms/seo';
 import { NavStateProvider } from '../hooks/use-nav';
 import { usePersistLocale } from '../hooks/usePersistLocale';
@@ -28,7 +26,6 @@ type AppProps = NextAppProps & {
 };
 
 function CustomApp({ Component, pageProps: { ...pageProps } }: AppProps) {
-  const theme = useTheme();
   usePersistLocale();
 
   return (
