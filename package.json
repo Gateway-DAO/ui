@@ -49,6 +49,7 @@
     "luxon": "^3.0.1",
     "mui-nested-menu": "^2.0.2",
     "next": "^12.1.6",
+    "next-auth": "^4.10.3",
     "next-cookies": "^2.0.3",
     "next-progress": "^2.2.0",
     "next-share": "^0.18.1",

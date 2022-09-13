@@ -1,4 +1,5 @@
 /* eslint-disable @next/next/inline-script-id */
+import { SessionProvider } from 'next-auth/react';
 import { AppProps as NextAppProps } from 'next/app';
 import Head from 'next/head';
 import Script from 'next/script';
@@ -42,32 +43,34 @@ function CustomApp({ Component, pageProps: { ...pageProps } }: AppProps) {
         options={{ showSpinner: false }}
       />
       <WagmiConfig client={web3client}>
-        <RainbowKitProvider
-          chains={chains}
-          theme={darkTheme({ overlayBlur: 'small', accentColor: '#9A53FF' })}
-          appInfo={{
-            appName: 'GatewayDAO',
-          }}
-        >
-          <ThemeProvider>
-            <QueryClientProvider client={queryClient}>
-              <Hydrate state={pageProps.dehydratedState}>
-                <AuthProvider isAuthPage={Component.auth}>
-                  <BiconomyProvider
-                    apiKey={process.env.NEXT_PUBLIC_WEB3_BICONOMY_API_KEY}
-                    contractAddress={process.env.NEXT_PUBLIC_WEB3_NFT_ADDRESS}
-                  >
-                    <CyberConnectProvider>
-                      <NavStateProvider>
-                        <Component {...pageProps} />
-                      </NavStateProvider>
-                    </CyberConnectProvider>
-                  </BiconomyProvider>
-                </AuthProvider>
-              </Hydrate>
-            </QueryClientProvider>
-          </ThemeProvider>
-        </RainbowKitProvider>
+        <SessionProvider session={pageProps.session} refetchInterval={0}>
+          <RainbowKitProvider
+            chains={chains}
+            theme={darkTheme({ overlayBlur: 'small', accentColor: '#9A53FF' })}
+            appInfo={{
+              appName: 'GatewayDAO',
+            }}
+          >
+            <ThemeProvider>
+              <QueryClientProvider client={queryClient}>
+                <Hydrate state={pageProps.dehydratedState}>
+                  <AuthProvider isAuthPage={Component.auth}>
+                    <BiconomyProvider
+                      apiKey={process.env.NEXT_PUBLIC_WEB3_BICONOMY_API_KEY}
+                      contractAddress={process.env.NEXT_PUBLIC_WEB3_NFT_ADDRESS}
+                    >
+                      <CyberConnectProvider>
+                        <NavStateProvider>
+                          <Component {...pageProps} />
+                        </NavStateProvider>
+                      </CyberConnectProvider>
+                    </BiconomyProvider>
+                  </AuthProvider>
+                </Hydrate>
+              </QueryClientProvider>
+            </ThemeProvider>
+          </RainbowKitProvider>
+        </SessionProvider>
       </WagmiConfig>
       <Script
         strategy="afterInteractive"
