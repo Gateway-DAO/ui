@@ -2,10 +2,10 @@
 import NextProgress from 'next-progress';
 import { AppProps as NextAppProps } from 'next/app';
 import Head from 'next/head';
-import { useRouter } from 'next/router';
 import Script from 'next/script';
 
 import { RainbowKitProvider } from '@rainbow-me/rainbowkit';
+import { Hydrate, QueryClientProvider } from '@tanstack/react-query';
 import { WagmiConfig } from 'wagmi';
 
 import { ThemeProvider } from '@gateway/theme';
@@ -16,15 +16,12 @@ import { SEOSocial, SEOFavicon } from '../components/atoms/seo';
 import { NavStateProvider } from '../hooks/use-nav';
 import { usePersistLocale } from '../hooks/usePersistLocale';
 import { AuthProvider } from '../providers/auth';
+import { BiconomyProvider } from '../providers/biconomy';
 import { CyberConnectProvider } from '../providers/cyberconnect';
 import { queryClient } from '../services/query-client';
 import { chains, web3client } from '../services/web3/client';
-
 import '../components/atoms/global-dependencies';
 import '../styles/next.css';
-import { BiconomyProvider } from '../providers/biconomy';
-
-import { Hydrate, QueryClientProvider } from '@tanstack/react-query';
 
 type AppProps = NextAppProps & {
   Component: NextAppProps['Component'] & { auth?: boolean };
@@ -32,7 +29,6 @@ type AppProps = NextAppProps & {
 
 function CustomApp({ Component, pageProps: { ...pageProps } }: AppProps) {
   const theme = useTheme();
-  const router = useRouter();
   usePersistLocale();
 
   return (
