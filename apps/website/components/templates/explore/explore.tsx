@@ -70,7 +70,6 @@ export function ExploreTemplate({ title, subtitle, data }: TemplateProps) {
           sx={{
             borderBottom: 1,
             borderColor: 'divider',
-            px: TOKENS.CONTAINER_PX,
           }}
         >
           <Tabs
@@ -80,9 +79,14 @@ export function ExploreTemplate({ title, subtitle, data }: TemplateProps) {
             variant="scrollable"
             scrollButtons
             allowScrollButtonsMobile
-            sx={{
+            sx={(theme) => ({
               mb: '-1px',
-            }}
+              [theme.breakpoints.down('md')]: {
+                '.MuiTabs-scrollButtons.Mui-disabled': {
+                  opacity: 0.3,
+                },
+              },
+            })}
           >
             {tabs.map(({ key, label }, index) => (
               <Tab
