@@ -32,8 +32,13 @@ import { generateImageUrl } from '../../../hooks/use-file';
 import { useAuth } from '../../../providers/auth';
 import { AvatarFile } from '../../atoms/avatar-file';
 import { SocialButtons } from '../../organisms/social-buttons';
-import { GuideCard } from './edit/Components/guide-card';
 import { OverviewTab } from './tabs';
+
+const GuideCard = dynamic<any>(
+  () => import('./edit/Components/guide-card').then((mod) => mod.GuideCard),
+  { ssr: false }
+);
+
 const ConnectionsButton = dynamic<any>(
   () => import('./connections/button').then((mod) => mod.ConnectionsButton),
   {

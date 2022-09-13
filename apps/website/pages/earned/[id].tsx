@@ -1,30 +1,28 @@
 import { GetStaticPaths, InferGetStaticPropsType } from 'next';
+import { useRouter } from 'next/router';
 
-import { useQuery } from '@tanstack/react-query';
+import { dehydrate, QueryClient, useQuery } from '@tanstack/react-query';
 import { useToggle } from 'react-use';
 
 import { MintModal } from '../../components/organisms/mint-modal';
 import { Navbar } from '../../components/organisms/navbar';
 import { CredentialTemplate } from '../../components/templates/credential';
 import { DashboardTemplate } from '../../components/templates/dashboard';
+import { useAuth } from '../../providers/auth';
 import { gqlAnonMethods } from '../../services/api';
 
-export default function CredentialPage({
-  credentialProps,
-}: InferGetStaticPropsType<typeof getStaticProps>) {
+export default function CredentialPage() {
+  const { gqlAuthMethods } = useAuth();
+
+  const router = useRouter();
+  const id = router.query.id as string;
+
   const [isOpen, open] = useToggle(false);
 
-  const { credentials_by_pk: credential } = credentialProps;
-
-  const { data } = useQuery(
-    ['credential', credential.id],
-    () =>
-      gqlAnonMethods.credential({
-        id: credential.id,
-      }),
-    {
-      initialData: credentialProps,
-    }
+  const { data } = useQuery(['credential', id], () =>
+    gqlAuthMethods.credential({
+      id,
+    })
   );
 
   if (!data) return null;
@@ -52,26 +50,20 @@ export default function CredentialPage({
   );
 }
 
-export const getStaticPaths: GetStaticPaths = async ({ locales }) => {
-  const { credentials } = await gqlAnonMethods.all_credentials();
-
-  return {
-    paths: credentials.map((credential) => ({ params: { id: credential.id } })),
-    fallback: 'blocking', //TODO: add loading state and change to fallback: true
-  };
-};
-
-export const getStaticProps = async ({ params }) => {
+export const getServerSideProps = async ({ params }) => {
   const { id } = params;
 
-  const credentialProps = await gqlAnonMethods.credential({
-    id,
-  });
+  const queryClient = new QueryClient();
+
+  await queryClient.prefetchQuery(['credential', id], () =>
+    gqlAnonMethods.credential({
+      id,
+    })
+  );
 
   return {
     props: {
-      credentialProps,
+      dehydratedState: dehydrate(queryClient),
     },
-    revalidate: 60,
   };
 };
