@@ -2,12 +2,12 @@
 import { useRouter } from 'next/router';
 import { PropsWithChildren, useEffect, useMemo } from 'react';
 
-import { ConnectButton } from '@rainbow-me/rainbowkit';
+import { ConnectButton, useConnectModal } from '@rainbow-me/rainbowkit';
+import { useModalState } from '@rainbow-me/rainbowkit/dist/components/RainbowKitProvider/ModalContext';
 import { useAccount } from 'wagmi';
 
 import { WalletModal } from '../../components/organisms/wallet-modal';
 import { ROUTES } from '../../constants/routes';
-import useToggleContainerClass from '../../hooks/useToggleContainerClass';
 import { gqlMethodsWithRefresh } from '../../services/api';
 import { AuthContext } from './context';
 import { useInitUser, useMe } from './hooks';
@@ -61,32 +61,49 @@ export function AuthProvider({
     }
   }, [address, accountStatus, isAuthPage, onSignOut, me]);
 
-  useToggleContainerClass('blur', status === 'CONNECTING');
-
   useInitUser(status, me);
 
+  const { accountModalOpen } = useModalState();
+
   return (
-    <AuthContext.Provider
-      value={{
-        onSignOut,
-        status,
-        onOpenLogin: onConnecting,
-        me,
-        onUpdateMe,
-        gqlAuthMethods,
-      }}
-    >
-      <ConnectButton
+    <ConnectButton.Custom>
+      {({
+        authenticationStatus,
+        connectModalOpen,
+        openConnectModal,
+        account,
+      }) => {
+        console.log(`connectModalOpen: `, connectModalOpen);
+        console.log(`account: `, account);
+        return (
+          <>
+            <AuthContext.Provider
+              value={{
+                onSignOut,
+                status,
+                onOpenLogin: openConnectModal,
+                me,
+                onUpdateMe,
+                gqlAuthMethods,
+              }}
+            >
+              {/* <ConnectButton
         accountStatus={{ largeScreen: 'full', smallScreen: 'avatar' }}
-      />
-      {!isBlocked && children}
-      {status !== 'AUTHENTICATED' && (
-        <WalletModal
-          isOpen={status === 'CONNECTING'}
-          onClose={!isBlocked ? onUnauthenticated : onCloseModalWhenBlocked}
-          onSuccess={onAuthenticated}
-        />
-      )}
-    </AuthContext.Provider>
+      /> */}
+              {!isBlocked && children}
+              {status !== 'AUTHENTICATED' && (
+                <WalletModal
+                  isOpen={status === 'CONNECTING'}
+                  onClose={
+                    !isBlocked ? onUnauthenticated : onCloseModalWhenBlocked
+                  }
+                  onSuccess={onAuthenticated}
+                />
+              )}
+            </AuthContext.Provider>
+          </>
+        );
+      }}
+    </ConnectButton.Custom>
   );
 }

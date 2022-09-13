@@ -4,7 +4,7 @@ import Head from 'next/head';
 import Script from 'next/script';
 import NextNProgress from 'nextjs-progressbar';
 
-import { RainbowKitProvider } from '@rainbow-me/rainbowkit';
+import { RainbowKitProvider, darkTheme } from '@rainbow-me/rainbowkit';
 import { Hydrate, QueryClientProvider } from '@tanstack/react-query';
 import { WagmiConfig } from 'wagmi';
 
@@ -42,7 +42,13 @@ function CustomApp({ Component, pageProps: { ...pageProps } }: AppProps) {
         options={{ showSpinner: false }}
       />
       <WagmiConfig client={web3client}>
-        <RainbowKitProvider chains={chains}>
+        <RainbowKitProvider
+          chains={chains}
+          theme={darkTheme({ overlayBlur: 'small', accentColor: '#9A53FF' })}
+          appInfo={{
+            appName: 'GatewayDAO',
+          }}
+        >
           <ThemeProvider>
             <QueryClientProvider client={queryClient}>
               <Hydrate state={pageProps.dehydratedState}>
