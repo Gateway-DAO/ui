@@ -1,8 +1,8 @@
 /* eslint-disable @next/next/inline-script-id */
-import NextProgress from 'next-progress';
 import { AppProps as NextAppProps } from 'next/app';
 import Head from 'next/head';
 import Script from 'next/script';
+import NextNProgress from 'nextjs-progressbar';
 
 import { RainbowKitProvider } from '@rainbow-me/rainbowkit';
 import { Hydrate, QueryClientProvider } from '@tanstack/react-query';
@@ -39,9 +39,9 @@ function CustomApp({ Component, pageProps: { ...pageProps } }: AppProps) {
         <SEOFavicon />
         <SEOSocial />
       </Head>
-      <NextProgress
-        height="4px"
-        color={theme.palette.primary.main}
+      <NextNProgress
+        height={4}
+        color={'#9A53FF'}
         options={{ showSpinner: false }}
       />
       <WagmiConfig client={web3client}>
