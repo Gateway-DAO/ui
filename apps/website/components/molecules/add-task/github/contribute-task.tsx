@@ -14,6 +14,7 @@ import {
 } from '@mui/material';
 
 import { CircleWithNumber } from '../../../atoms/circle-with-number';
+import GithubDataCard from '../../../organisms/tasks/github-data-card';
 import {
   CreateGateTypes,
   GithubContributeDataError,
@@ -187,6 +188,7 @@ const GithubContributeTask = ({ taskId, deleteTask }) => {
             },
           }}
         />
+        <GithubDataCard />
       </FormControl>
     </Stack>
   );
