@@ -1,4 +1,5 @@
 import ElectricBoltIcon from '@mui/icons-material/ElectricBolt';
+import GitHubIcon from '@mui/icons-material/GitHub';
 import InsertLinkIcon from '@mui/icons-material/InsertLink';
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 import NumbersIcon from '@mui/icons-material/Numbers';
@@ -84,6 +85,15 @@ const AddTaskCard = ({ numberOfTasks, addTask }) => {
               icon={<NumbersIcon />}
               title={'Verification Code'}
               addTask={() => addTask('meeting_code')}
+            />
+          </Paper>
+        </Grid>
+        <Grid item xs={2} sm={4} md={4}>
+          <Paper>
+            <AddTaskButton
+              icon={<GitHubIcon />}
+              title={'Contribute to repository'}
+              addTask={() => addTask('github_contribute')}
             />
           </Paper>
         </Grid>
