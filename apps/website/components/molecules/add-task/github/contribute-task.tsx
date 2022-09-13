@@ -30,6 +30,27 @@ const GithubContributeTask = ({ taskId, deleteTask }) => {
 
   const formValues = getValues();
 
+  const [githubData, setGithubData] = useState(null);
+
+  const fetchRepositoryData = async (repository_url) => {
+    const regex = new RegExp('https://github.com/(.*)');
+    if (regex.test(repository_url)) {
+      const repository_owner = repository_url
+        .replace('https://github.com/', '')
+        .split('/')[0];
+      const repository_name = repository_url
+        .replace('https://github.com/', '')
+        .split('/')[1];
+
+      const fetch_url = `https://api.github.com/repos/${repository_owner}/${repository_name}`;
+      const data = await (await fetch(fetch_url)).json();
+
+      setGithubData(data);
+    } else {
+      setGithubData(null);
+    }
+  };
+
   useEffect(() => {
     if (formValues.tasks.data[taskId]?.title === '') {
       setValue(`tasks.data.${taskId}.title`, 'Untitled Task');
@@ -168,7 +189,9 @@ const GithubContributeTask = ({ taskId, deleteTask }) => {
         <TextField
           required
           label="Repository link"
-          {...register(`tasks.data.${taskId}.task_data.repository_link`)}
+          {...register(`tasks.data.${taskId}.task_data.repository_link`, {
+            onBlur: (e) => fetchRepositoryData(e.target.value),
+          })}
           error={
             !!(
               errors.tasks?.data?.[taskId]
@@ -188,7 +211,7 @@ const GithubContributeTask = ({ taskId, deleteTask }) => {
             },
           }}
         />
-        <GithubDataCard />
+        {githubData?.name && <GithubDataCard data={githubData} />}
       </FormControl>
     </Stack>
   );

@@ -8,8 +8,17 @@ import CircleIcon from '@mui/icons-material/Circle';
 import StarBorderOutlinedIcon from '@mui/icons-material/StarBorderOutlined';
 import { Chip, Stack, Typography } from '@mui/material';
 
-const GithubDataCard = () => {
+const GithubDataCard = ({ data }) => {
   const randomColor = `#${Math.floor(Math.random() * 16777215).toString(16)}`;
+
+  const repository = {
+    name: data.name || '',
+    description: data.description || '',
+    language: data.language || '',
+    url: data.html_url || '',
+    stars_count: data.stargazers_count || 0,
+    forks_count: data.forks_count || 0,
+  };
 
   return (
     <Stack
@@ -23,14 +32,14 @@ const GithubDataCard = () => {
       >
         <Stack flexDirection="row" gap={2}>
           <BookOutlined fontSize="medium" />
-          <Link passHref href="">
+          <Link passHref href={repository.url}>
             <Typography
               color="blue"
               fontSize={20}
               fontWeight="bold"
               sx={{ cursor: 'pointer' }}
             >
-              go-ethereum
+              {repository.name}
             </Typography>
           </Link>
           <Chip
@@ -42,9 +51,7 @@ const GithubDataCard = () => {
         <AiFillGithub fontSize="2rem" />
       </Stack>
       <Stack sx={{ padding: '0 2rem' }}>
-        <Typography>
-          Official Go implementation of the Ethereum protocol.
-        </Typography>
+        <Typography>{repository.description}</Typography>
       </Stack>
       <Stack
         flexDirection="row"
@@ -58,15 +65,15 @@ const GithubDataCard = () => {
             // Random color
             sx={{ color: randomColor }}
           />
-          <Typography>Go</Typography>
+          <Typography>{repository.language}</Typography>
         </Stack>
         <Stack flexDirection="row" alignItems="center" gap={1}>
           <StarBorderOutlinedIcon fontSize="small" />
-          <Typography>39.1k</Typography>
+          <Typography>{repository.stars_count}</Typography>
         </Stack>
         <Stack flexDirection="row" alignItems="center" gap={1}>
           <BiGitRepoForked />
-          <Typography>14.8k</Typography>
+          <Typography>{repository.forks_count}</Typography>
         </Stack>
       </Stack>
     </Stack>
