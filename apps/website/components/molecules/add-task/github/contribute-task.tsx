@@ -26,6 +26,7 @@ const GithubContributeTask = ({ taskId, deleteTask }) => {
     setValue,
     setError,
     getValues,
+    trigger,
     formState: { errors },
   } = useFormContext<CreateGateTypes>();
 
@@ -34,42 +35,36 @@ const GithubContributeTask = ({ taskId, deleteTask }) => {
   const [githubData, setGithubData] = useState(null);
 
   const fetchRepositoryData = async (repository_url) => {
-    // replace by hook form is valid logic
-    const regex = new RegExp('https://github.com/(.+)/(.+)');
-    if (regex.test(repository_url)) {
-      const repository_owner = repository_url
-        .replace('https://github.com/', '')
-        .split('/')[0];
-      const repository_name = repository_url
-        .replace('https://github.com/', '')
-        .split('/')[1];
+    const isValid = await trigger(
+      `tasks.data.${taskId}.task_data.repository_link`
+    );
 
-      // TODO: Fix this, error is set correctly but is not showing below the field for some reason
-      // Also with a perfect regex we can remove this
-      // if (!repository_owner || !repository_name) {
-      //   setError(`tasks.data.${taskId}.task_data.repository_link`, {
-      //     type: 'custom',
-      //     message: 'Repository owner or name is missing in your link.',
-      //   });
-      //   setGithubData(null);
-      //   return;
-      // }
-
-      const fetch_url = `https://api.github.com/repos/${repository_owner}/${repository_name}`;
-      const data = await fetch(fetch_url);
-
-      if (data.status !== 200) {
-        setError(`tasks.data.${taskId}.task_data.repository_link`, {
-          type: 'custom',
-          message: 'Repository private or not found.',
-        });
-        setGithubData(null);
-        return;
-      }
-
-      setGithubData(await data.json());
+    if (!isValid) {
+      setGithubData(null);
       return;
     }
+
+    const repository_owner = repository_url
+      .replace('https://github.com/', '')
+      .split('/')[0];
+    const repository_name = repository_url
+      .replace('https://github.com/', '')
+      .split('/')[1];
+
+    const fetch_url = `https://api.github.com/repos/${repository_owner}/${repository_name}`;
+    const data = await fetch(fetch_url);
+
+    if (data.status !== 200) {
+      setError(`tasks.data.${taskId}.task_data.repository_link`, {
+        type: 'custom',
+        message: 'Repository private or not found.',
+      });
+      setGithubData(null);
+      return;
+    }
+
+    setGithubData(await data.json());
+    return;
   };
 
   useEffect(() => {
