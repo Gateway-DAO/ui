@@ -8,9 +8,9 @@ import CircleIcon from '@mui/icons-material/Circle';
 import StarBorderOutlinedIcon from '@mui/icons-material/StarBorderOutlined';
 import { Chip, Stack, Typography } from '@mui/material';
 
-const GithubDataCard = ({ data }) => {
-  const randomColor = `#${Math.floor(Math.random() * 16777215).toString(16)}`;
+import * as colors from './colors.json';
 
+const GithubDataCard = ({ data }) => {
   const repository = {
     name: data.name || '',
     description: data.description || '',
@@ -62,8 +62,7 @@ const GithubDataCard = ({ data }) => {
         <Stack flexDirection="row" alignItems="center" gap={1}>
           <CircleIcon
             fontSize="small"
-            // Random color
-            sx={{ color: randomColor }}
+            sx={{ color: colors[repository.language] }}
           />
           <Typography>{repository.language}</Typography>
         </Stack>
