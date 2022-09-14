@@ -1,10 +1,12 @@
+import { signIn, signOut } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useCookie } from 'react-use';
 import { PartialDeep } from 'type-fest';
-import { useDisconnect } from 'wagmi';
+import { useAccount, useDisconnect, useSignMessage } from 'wagmi';
 
 import { ROUTES } from '../../constants/routes';
 import {
@@ -25,115 +27,102 @@ type Props = {
   signature: string;
 };
 
-export function useLogin() {
-  const queryClient = useQueryClient();
-  const [_token, updateTokenCookie, _deleteTokenCookie] = useCookie('token');
-  const [_refresh, updateRefreshCookie, _deleteRefreshCookie] =
-    useCookie('refresh');
-  const [_userId, updateUserIdCookie, _deleteUserIdCookie] =
-    useCookie('user_id');
+export const useAuthLogin = () => {
+  const { address } = useAccount();
+  const sign = useSignMessage();
+  const session = useSession();
 
-  const signIn = useMutation(
-    ['signIn'],
-    async (credentials: Props) => {
-      const res = await gqlAnonMethods.login({
-        signature: credentials.signature,
-        wallet: credentials.wallet,
-      });
+  const [error, setError] = useState<{
+    message: any;
+    label: string;
+    // eslint-disable-next-line @typescript-eslint/ban-types
+  }>();
 
-      const { error } = (res as any) ?? {};
-
-      if (error || !res.login) {
-        throw error;
-      }
-      /* get current user from hasura based on the token */
-      const { me } = await gqlMethods(res.login.token).me();
-
-      return {
-        login: res.login,
-        me: me,
-      };
-    },
+  const nonce = useQuery(
+    [address, 'nonce'],
+    () => gqlAnonMethods.get_nonce({ wallet: address }),
     {
-      onSuccess({ login, me }) {
-        queryClient.setQueryData(['token'], login);
-        queryClient.setQueryData(['me'], me);
-
-        // Add to cookie
-        updateTokenCookie(login.token);
-        updateRefreshCookie(login.refresh_token);
-        updateUserIdCookie(me.id);
+      enabled: !!address && session.status === 'unauthenticated',
+      async onSuccess({ get_nonce: { nonce } }) {
+        sendSignature.mutate(nonce);
+      },
+      onError(e: any) {
+        setError({
+          message: e?.response?.errors?.[0]?.message,
+          label: 'Try again',
+        });
       },
     }
   );
 
-  return signIn;
-}
+  const sendSignature = useMutation(
+    [address, nonce.data?.get_nonce?.nonce, 'signature'],
+    (nonce: number) =>
+      sign.signMessageAsync({
+        message: `Welcome to Gateway!\n\nPlease sign this message for access: ${nonce}`,
+      }),
+    {
+      async onSuccess(signature) {
+        try {
+          const res = await signIn('credentials', {
+            redirect: false,
+            wallet: address,
+            signature,
+          });
+          console.log('success', res);
+        } catch (e) {
+          console.log('Eth login error', e);
+        }
+      },
+      onError() {
+        setError({
+          message:
+            "Error signing message. Please try again or contact support if it doesn't work.",
+          label: 'Try again',
+        });
+      },
+      retry: false,
+    }
+  );
+};
 
 export function useMe() {
   const queryClient = useQueryClient();
+  const { address } = useAccount();
+  const session = useSession();
+  const token = session?.data?.token;
   const { disconnectAsync } = useDisconnect();
 
-  const [_token, updateTokenCookie, deleteTokenCookie] = useCookie('token');
-  const [_refresh, updateRefreshCookie, deleteRefreshCookie] =
-    useCookie('refresh');
-  const [_userId, _updateUserIdCookie, deleteUserIdCookie] =
-    useCookie('user_id');
-
-  const token = useQuery(['token'], () =>
-    queryClient.getQueryData<LoginMutation['login']>(['token'])
-  );
-
-  const onUpdateToken = async (newToken: RefreshMutation['refresh']) => {
-    queryClient.setQueryData(['token'], (oldToken: LoginMutation['login']) => ({
-      ...oldToken,
-      token: newToken.token,
-      refresh_token: newToken.refresh_token,
-    }));
-
-    updateTokenCookie(newToken.token);
-    updateRefreshCookie(newToken.refresh_token);
-  };
-
-  const onSignOut = async () => {
-    try {
-      await disconnectAsync();
-    } catch (_e) {
-      //
-    } finally {
-      deleteUserIdCookie();
-
-      queryClient.setQueryData(['token'], null);
-      queryClient.setQueryData(['me'], null);
-
-      deleteTokenCookie();
-      deleteRefreshCookie();
-    }
-  };
-
   const me = useQuery(
-    ['me'],
-    async () =>
-      (
-        await gqlMethodsWithRefresh(
-          token.data?.token,
-          token.data?.refresh_token,
-          undefined,
-          onUpdateToken
-        ).me()
-      ).me,
+    ['me', token, address],
+    async () => await gqlMethods(token).me(),
     {
-      enabled: !!token.data,
+      enabled: !!token && !!address,
+      select: (data) => data.me,
       refetchOnMount: true,
       refetchOnReconnect: true,
       refetchOnWindowFocus: true,
       refetchInterval: 1000 * 60 * 10,
-      onError(error: ErrorResponse) {
-        error.response.errors.forEach((err) => {
-          if (err.extensions.code === 500 && err.message.includes('token')) {
-            onSignOut();
-          }
-        });
+      async onError(error: ErrorResponse) {
+        const firstError = error?.response?.errors?.[0];
+        if (
+          firstError.extensions.code === 500 &&
+          firstError.message.includes('token')
+        ) {
+          try {
+            if (address) {
+              await disconnectAsync();
+            }
+            // eslint-disable-next-line no-empty
+          } catch {}
+
+          try {
+            if (token) {
+              await signOut({ redirect: false });
+            }
+            // eslint-disable-next-line no-empty
+          } catch {}
+        }
       },
     }
   );
@@ -144,10 +133,7 @@ export function useMe() {
 
   return {
     me: me.data,
-    tokens: token.data,
-    onSignOut,
     onUpdateMe,
-    onUpdateToken,
   };
 }
 

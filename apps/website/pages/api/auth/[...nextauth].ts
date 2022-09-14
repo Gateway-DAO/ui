@@ -1,6 +1,5 @@
 import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import { getCsrfToken } from 'next-auth/react';
 
 import { gqlAnonMethods } from '../../../services/api';
 
@@ -9,7 +8,7 @@ import { gqlAnonMethods } from '../../../services/api';
 export default async function auth(req, res) {
   const providers = [
     CredentialsProvider({
-      name: 'Ethereum',
+      name: 'ethereum',
       credentials: {
         wallet: {
           label: 'wallet',
@@ -28,6 +27,7 @@ export default async function auth(req, res) {
             signature: credentials.signature,
             wallet: credentials.wallet,
           });
+          console.log('res', res);
 
           const { error } = (res as any) ?? {};
 
@@ -35,9 +35,9 @@ export default async function auth(req, res) {
             throw error;
           }
 
-          const { __typename, ...tokens } = res.login;
+          const { __typename, ...token } = res.login;
 
-          return tokens;
+          return token;
         } catch (e) {
           return null;
         }
@@ -45,13 +45,13 @@ export default async function auth(req, res) {
     }),
   ];
 
-  const isDefaultSigninPage =
-    req.method === 'GET' && req.query.nextauth.includes('signin');
+  // const isDefaultSigninPage =
+  //   req.method === 'GET' && req.query.nextauth.includes('signin');
 
-  // Hides Sign-In with Ethereum from default sign page
-  if (isDefaultSigninPage) {
-    providers.pop();
-  }
+  // // Hides Sign-In with Ethereum from default sign page
+  // if (isDefaultSigninPage) {
+  //   providers.pop();
+  // }
 
   return await NextAuth(req, res, {
     // https://next-auth.js.org/configuration/providers/oauth
@@ -60,9 +60,16 @@ export default async function auth(req, res) {
       strategy: 'jwt',
     },
     callbacks: {
+      async jwt({ token, user }) {
+        // TODO: Implement refresh token
+        if (user) {
+          token = user;
+        }
+        return token;
+      },
       async session({ session, token }) {
-        session.address = token.sub;
-        session.user.name = token.sub;
+        session.token = token.token as string;
+        session.refresh_token = token.refresh_token as string;
         return session;
       },
     },

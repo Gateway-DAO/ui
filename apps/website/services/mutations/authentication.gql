@@ -11,6 +11,7 @@ mutation login(
   login(signature: $signature, wallet: $wallet) {
     refresh_token
     token
+    #expiry
   }
 }
 

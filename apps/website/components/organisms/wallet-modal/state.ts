@@ -3,7 +3,6 @@ import { useState } from 'react';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useAccount, useSignMessage } from 'wagmi';
 
-import { useLogin } from '../../../providers/auth/hooks';
 import { gqlAnonMethods } from '../../../services/api';
 
 export type Step =
@@ -24,8 +23,6 @@ export function useConnectWallet() {
     label: string;
     // eslint-disable-next-line @typescript-eslint/ban-types
   }>();
-
-  const signIn = useLogin();
 
   const sign = useSignMessage();
 
@@ -57,10 +54,6 @@ export function useConnectWallet() {
     {
       async onSuccess(signature) {
         setStep('GET_TOKEN');
-        await signIn.mutateAsync({
-          wallet: address!,
-          signature,
-        });
         setStep('FINISHED');
       },
       onError() {

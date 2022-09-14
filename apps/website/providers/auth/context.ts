@@ -3,11 +3,9 @@ import { createContext, useContext } from 'react';
 
 import { GqlMethods, gqlAnonMethods } from '../../services/api';
 import { SessionUser } from '../../types/user';
-import { AuthStatus } from './state';
 
 type Context = {
   me?: SessionUser;
-  status: AuthStatus;
   gqlAuthMethods: GqlMethods;
   onSignOut: () => void;
   onOpenLogin: () => void;
@@ -15,7 +13,6 @@ type Context = {
 };
 
 export const AuthContext = createContext<Context>({
-  status: 'UNAUTHENTICATED',
   gqlAuthMethods: gqlAnonMethods,
   onSignOut: () => {},
   onOpenLogin: () => {},
