@@ -34,7 +34,8 @@ const GithubContributeTask = ({ taskId, deleteTask }) => {
   const [githubData, setGithubData] = useState(null);
 
   const fetchRepositoryData = async (repository_url) => {
-    const regex = new RegExp('https://github.com/(.*)');
+    // replace by hook form is valid logic
+    const regex = new RegExp('https://github.com/(.+)/(.+)');
     if (regex.test(repository_url)) {
       const repository_owner = repository_url
         .replace('https://github.com/', '')

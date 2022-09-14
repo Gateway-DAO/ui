@@ -255,9 +255,12 @@ export const verificationCodeDataSchema = z.object({
 });
 
 export const githubContributeDataSchema = z.object({
-  repository_link: z.string().url().regex(RegExp('https://github.com/(.*)'), {
-    message: 'This is not a valid Github repository link',
-  }),
+  repository_link: z
+    .string()
+    .url()
+    .regex(RegExp('https://github.com/(.+)/(.+)'), {
+      message: 'This is not a valid Github repository link',
+    }),
 });
 
 export const taskMeetingCodeSchema = z.object({
