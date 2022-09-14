@@ -10,6 +10,7 @@ import {
   createQuestion,
 } from '../../molecules/add-task/quiz-task/quiz-task';
 import SnapshotTask from '../../molecules/add-task/snapshot-task/snapshot-task';
+import TwitterTweetTask from '../../molecules/add-task/twitter-tweet/twitter-tweet';
 import VerificationCodeTask from '../../molecules/add-task/verification-task/verification-task';
 import {
   CreateGateTypes,
@@ -23,6 +24,7 @@ const TaskComponents = {
   snapshot: SnapshotTask,
   token_hold: HoldTokenTask,
   quiz: QuizTask,
+  twitter_tweet: TwitterTweetTask,
 };
 
 const defaultTaskData = (

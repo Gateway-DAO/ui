@@ -26,6 +26,7 @@ import QuizContent from '../gates/view/tasks/content/quiz';
 import SelfVerifyContent from '../gates/view/tasks/content/self-verify';
 import SnapshotContent from '../gates/view/tasks/content/snapshot';
 import TokenHoldContent from '../gates/view/tasks/content/token_hold';
+import TwitterTweetContent from '../gates/view/tasks/content/twitter_tweet';
 import { taskErrorMessages } from './task-error-messages';
 
 type Props = {
@@ -102,6 +103,11 @@ export function Task({
         return {
           title: 'Quiz',
           body: QuizContent,
+        };
+      case 'twitter_tweet':
+        return {
+          title: 'Post Tweet',
+          body: TwitterTweetContent,
         };
       default:
         return {

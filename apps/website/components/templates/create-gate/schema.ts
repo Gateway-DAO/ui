@@ -65,6 +65,11 @@ export type HoldTokenTask = {
   task_data: HoldTokenData;
 };
 
+export type TwitterTweetTask = {
+  task_type: 'twitter_tweet';
+  task_data: TwitterTweetData;
+};
+
 export type Task = {
   id?: string;
   gate_id?: string;
@@ -77,6 +82,7 @@ export type Task = {
   | QuizTask
   | SnapshotTask
   | HoldTokenTask
+  | TwitterTweetTask
 );
 
 // Verification Code
@@ -87,6 +93,16 @@ export type VerificationCodeData = {
 export type VerificationCodeDataError = {
   id?: FieldError;
   code?: FieldError;
+};
+
+// Twitter Tweet
+export type TwitterTweetData = {
+  tweet_text?: string;
+};
+
+export type TwitterTweetDataError = {
+  id?: FieldError;
+  tweet_text?: FieldError;
 };
 
 // Quiz
@@ -177,6 +193,13 @@ export type verificationCodeType = {
   id: string;
   code: string;
 };
+
+const twitterTweetTaskDataSchema = z.object({
+  tweet_text: z
+    .string()
+    .min(3, 'The tweet text must contain at least 3 character(s)')
+    .max(280, 'The tweet text must contain until 280 character(s)'),
+});
 
 const fileTaskDataSchema = z.object({
   files: z
@@ -320,6 +343,17 @@ export const taskSnapshotSchema = z.object({
   task_data: snapshotTaskDataSchema,
 });
 
+export const taskTwitterTweetSchema = z.object({
+  id: z.string().optional(),
+  task_id: z.string().optional(),
+  title: z.string().min(2, 'The title must contain at least 2 character(s)'),
+  description: z
+    .string()
+    .min(2, 'The description must contain at least 2 character(s)'),
+  task_type: z.literal('twitter_tweet'),
+  task_data: twitterTweetTaskDataSchema,
+});
+
 export const createGateSchema = z.object({
   title: z.string().min(2, 'The title must contain at least 2 character(s)'),
   categories: z.array(z.string()).min(1, 'Please select at least 1 category'),
@@ -343,6 +377,7 @@ export const createGateSchema = z.object({
           taskQuizSchema,
           taskSnapshotSchema,
           taskHoldTokenSchema,
+          taskTwitterTweetSchema,
         ])
       )
       .nonempty({ message: 'A gate needs to have at least one task.' }),
