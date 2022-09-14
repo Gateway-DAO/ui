@@ -4,6 +4,7 @@ import { AppProps as NextAppProps } from 'next/app';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import Script from 'next/script';
+import NextNProgress from 'nextjs-progressbar';
 
 import { WagmiConfig } from 'wagmi';
 
@@ -42,9 +43,9 @@ function CustomApp({ Component, pageProps: { ...pageProps } }: AppProps) {
         <SEOFavicon />
         <SEOSocial />
       </Head>
-      <NextProgress
-        height="4px"
-        color={theme.palette.primary.main}
+      <NextNProgress
+        height={4}
+        color={'#9A53FF'}
         options={{ showSpinner: false }}
       />
       <WagmiConfig client={web3client}>

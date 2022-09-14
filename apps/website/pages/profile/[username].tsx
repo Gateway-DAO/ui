@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
+import { dehydrate, QueryClient, useQuery } from '@tanstack/react-query';
 import { PartialDeep } from 'type-fest';
 
 import { DashboardTemplate } from '../../components/templates/dashboard';
@@ -12,10 +13,20 @@ import { useAuth } from '../../providers/auth';
 import { gqlAnonMethods } from '../../services/api';
 import { SessionUser } from '../../types/user';
 
-export default function Profile({ user }: { user: PartialDeep<SessionUser> }) {
+export default function Profile() {
   const router = useRouter();
   const { username } = router.query;
-  const { me } = useAuth();
+  const { me, gqlAuthMethods } = useAuth();
+
+  const {
+    data: {
+      users: [user],
+    },
+  } = useQuery(['user', username], () =>
+    gqlAuthMethods.get_user_by_username({
+      username: username as string,
+    })
+  );
 
   return (
     <DashboardTemplate
@@ -45,13 +56,17 @@ export const getServerSideProps = async ({ params }) => {
     };
   }
 
-  const { users } = await gqlAnonMethods.get_user_by_username({
-    username,
-  });
+  const queryClient = new QueryClient();
+
+  await queryClient.prefetchQuery(['user', username], () =>
+    gqlAnonMethods.get_user_by_username({
+      username,
+    })
+  );
 
   return {
     props: {
-      user: users[0],
+      dehydratedState: dehydrate(queryClient),
     },
   };
 };

@@ -74,8 +74,8 @@ export function useMe() {
   const queryClient = useQueryClient();
   const { disconnectAsync } = useDisconnect();
 
-  const [_token, _updateTokenCookie, deleteTokenCookie] = useCookie('token');
-  const [_refresh, _updateRefreshCookie, deleteRefreshCookie] =
+  const [_token, updateTokenCookie, deleteTokenCookie] = useCookie('token');
+  const [_refresh, updateRefreshCookie, deleteRefreshCookie] =
     useCookie('refresh');
   const [_userId, _updateUserIdCookie, deleteUserIdCookie] =
     useCookie('user_id');
@@ -84,12 +84,16 @@ export function useMe() {
     queryClient.getQueryData<LoginMutation['login']>(['token'])
   );
 
-  const onUpdateToken = async (newToken: RefreshMutation['refresh']) =>
+  const onUpdateToken = async (newToken: RefreshMutation['refresh']) => {
     queryClient.setQueryData(['token'], (oldToken: LoginMutation['login']) => ({
       ...oldToken,
       token: newToken.token,
       refresh_token: newToken.refresh_token,
     }));
+
+    updateTokenCookie(newToken.token);
+    updateRefreshCookie(newToken.refresh_token);
+  };
 
   const onSignOut = async () => {
     try {
