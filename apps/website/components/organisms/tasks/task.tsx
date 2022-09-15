@@ -21,6 +21,7 @@ import { Tasks } from '../../../services/graphql/types.generated';
 import { queryClient } from '../../../services/query-client';
 import { SessionUser } from '../../../types/user';
 import { getMapValueFromObject } from '../../../utils/map-object';
+import GithubContributeContent from '../gates/view/tasks/content/github_contribute';
 import MeetingCodeContent from '../gates/view/tasks/content/meeting_code';
 import QuizContent from '../gates/view/tasks/content/quiz';
 import SelfVerifyContent from '../gates/view/tasks/content/self-verify';
@@ -103,6 +104,12 @@ export function Task({
           title: 'Quiz',
           body: QuizContent,
         };
+      case 'github_contribute': {
+        return {
+          title: 'Contribute to Repository',
+          body: GithubContributeContent,
+        };
+      }
       default:
         return {
           title: '',

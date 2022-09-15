@@ -10,7 +10,18 @@ import { Chip, Stack, Typography } from '@mui/material';
 
 import * as colors from './colors.json';
 
-const GithubDataCard = ({ data }) => {
+type GithubDataCardProps = {
+  data: {
+    name: string;
+    description: string;
+    language: string;
+    html_url: string;
+    stargazers_count: number;
+    forks_count: number;
+  };
+};
+
+const GithubDataCard = ({ data }: GithubDataCardProps) => {
   const repository = {
     name: data.name || '',
     description: data.description || '',
@@ -22,7 +33,12 @@ const GithubDataCard = ({ data }) => {
 
   return (
     <Stack
-      sx={{ color: 'black', backgroundColor: 'white', borderRadius: '10px' }}
+      sx={{
+        width: '100%',
+        color: 'black',
+        backgroundColor: 'white',
+        borderRadius: '10px',
+      }}
     >
       <Stack
         flexDirection="row"
