@@ -1,5 +1,7 @@
+import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
 
+import { EmojiStyle } from 'emoji-picker-react';
 import { useFormContext } from 'react-hook-form';
 
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
@@ -8,6 +10,7 @@ import {
   Box,
   FormControl,
   IconButton,
+  InputAdornment,
   Stack,
   TextField,
   Typography,
@@ -18,6 +21,13 @@ import {
   CreateGateTypes,
   TwitterTweetDataError,
 } from '../../../templates/create-gate/schema';
+
+const DynamicEmojiField = dynamic(
+  () => import('../../form/emoji-picker').then((mod) => mod.EmojiPicker),
+  {
+    ssr: false,
+  }
+);
 
 const TwitterTweetTask = ({ taskId, deleteTask }) => {
   const {
@@ -37,7 +47,22 @@ const TwitterTweetTask = ({ taskId, deleteTask }) => {
   }, [setValue, taskId, formValues.tasks.data]);
 
   const [taskVisible, setTaskVisible] = useState(false);
-  const [characterCounter, setCharacterCounter] = useState(0);
+  const [emoji, setEmoji] = useState('');
+  const [selectionStartTweet, setSelectionStartTweet] = useState(0);
+  const [tweetText, setTweetText] = useState('');
+
+  useEffect(() => {
+    if (selectionStartTweet > 0 && selectionStartTweet < tweetText.length) {
+      const firstPart = tweetText.substring(0, selectionStartTweet);
+      const secondPart = tweetText.substring(
+        selectionStartTweet,
+        tweetText.length
+      );
+      setTweetText(firstPart + emoji + secondPart);
+    } else {
+      setTweetText(tweetText + emoji);
+    }
+  }, [emoji]);
 
   return (
     <Stack
@@ -168,6 +193,8 @@ const TwitterTweetTask = ({ taskId, deleteTask }) => {
           required
           multiline
           label="Tweet Text"
+          id="tweet-text"
+          value={tweetText}
           {...register(`tasks.data.${taskId}.task_data.tweet_text`)}
           error={
             !!(errors.tasks?.data[taskId]?.task_data as TwitterTweetDataError)
@@ -178,13 +205,29 @@ const TwitterTweetTask = ({ taskId, deleteTask }) => {
               ?.tweet_text?.message
           }
           onChange={(event) => {
-            setCharacterCounter(event.target.value.length);
+            setTweetText(event.target.value);
+            setSelectionStartTweet(event.target.selectionStart);
           }}
           sx={{
             marginBottom: '10px',
             '& fieldset legend span': {
               marginRight: '10px',
             },
+          }}
+          inputProps={{
+            maxLength: 280,
+          }}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                {tweetText.length < 279 && (
+                  <DynamicEmojiField
+                    onchange={setEmoji}
+                    emojiStyle={EmojiStyle.TWITTER}
+                  />
+                )}
+              </InputAdornment>
+            ),
           }}
         />
         <Typography
@@ -193,7 +236,7 @@ const TwitterTweetTask = ({ taskId, deleteTask }) => {
             fontSize: '12px',
           }}
         >
-          {characterCounter}/280
+          {tweetText.length}/280
         </Typography>
       </FormControl>
     </Stack>
