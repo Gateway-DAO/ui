@@ -32,8 +32,8 @@ const AddTaskCard = ({ numberOfTasks, addTask }) => {
           })}
         />
         <Stack>
-          <Typography variant="h6">Add a task</Typography>
-          <Typography variant="subtitle2">Select your next task</Typography>
+          <Typography variant="h6">Add a requirement</Typography>
+          <Typography variant="subtitle2">Select your next requirement</Typography>
         </Stack>
       </Stack>
       <Grid
