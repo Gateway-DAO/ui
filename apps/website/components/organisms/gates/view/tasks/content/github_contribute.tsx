@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { Stack, Typography } from '@mui/material';
 
 import { LoadingButton } from '../../../../../../components/atoms/loading-button';
+import GithubConnectionCard from '../../../../../../components/organisms/tasks/github-connection-card';
 import GithubDataCard from '../../../../../../components/organisms/tasks/github-data-card';
 
 const GithubContributeContent = ({
@@ -65,6 +66,7 @@ const GithubContributeContent = ({
         You must contribute to
       </Typography>
       <GithubDataCard data={repository} />
+      <GithubConnectionCard />
       {completed && !!updatedAt && (
         <Typography color="#c5ffe3" variant="subtitle2">
           Task completed at {formattedDate}
