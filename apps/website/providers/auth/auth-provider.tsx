@@ -4,22 +4,19 @@ import { PropsWithChildren, useMemo } from 'react';
 
 import { useConnectModal } from '@rainbow-me/rainbowkit';
 
+import { AuthConnectingModal } from '../../components/organisms/auth-connecting-modal';
 import { gqlMethods } from '../../services/api';
 import { AuthContext } from './context';
-import {
-  useAuthLogin,
-  useBlockedRoute,
-  useInitUser,
-  useSignOut,
-} from './hooks';
+import { useAuthLogin, useBlockedRoute, useInitUser } from './hooks';
 type Props = {
   isAuthPage?: boolean;
 };
 
 // TODO:
-// - [ ] Add a loading state to the auth provider
+// - [x] Add a loading state to the auth provider
 // - [ ] Implement refresh token
 // - [ ] Route guard with loading state -> Go to a auth page while loading the session state
+// - [ ] Route guard new-user if the user is already verified ON MOUNT ONLY, because if the user is verified after the page submission, we don't always want to redirect to the home page
 
 export function AuthProvider({
   isAuthPage,
@@ -30,9 +27,7 @@ export function AuthProvider({
 
   const { openConnectModal } = useConnectModal();
 
-  const onSignOut = useSignOut();
-
-  const { me, onUpdateMe } = useAuthLogin(onSignOut);
+  const { me, error, onUpdateMe, authStep, onSignOut } = useAuthLogin();
 
   const isBlocked = isAuthPage && (!me || !token);
 
@@ -56,6 +51,17 @@ export function AuthProvider({
       }}
     >
       {!isBlocked && children}
+      <AuthConnectingModal
+        step={authStep}
+        error={error}
+        isOpen={
+          authStep === 'get-nonce' ||
+          authStep === 'send-signature' ||
+          authStep === 'get-me' ||
+          authStep === 'error'
+        }
+        onRetry={onSignOut}
+      />
     </AuthContext.Provider>
   );
 }

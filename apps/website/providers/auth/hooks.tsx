@@ -1,7 +1,8 @@
 import { signIn, signOut } from 'next-auth/react';
 import { useSession } from 'next-auth/react';
+import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { PartialDeep } from 'type-fest';
@@ -11,11 +12,12 @@ import { ROUTES } from '../../constants/routes';
 import { gqlAnonMethods, gqlMethods } from '../../services/api';
 import { ErrorResponse } from '../../types/graphql';
 import { SessionUser } from '../../types/user';
+import { AuthStep } from './types';
 
 /**
  * Handles Logoff session if there's no wallet connected
  */
-export function useSignOut() {
+function useSignOut(cb?: () => void) {
   const session = useSession();
   const { address } = useAccount();
   const { disconnectAsync } = useDisconnect();
@@ -35,7 +37,9 @@ export function useSignOut() {
       }
       // eslint-disable-next-line no-empty
     } catch {}
-  }, [address, disconnectAsync, token]);
+
+    cb?.();
+  }, [address, disconnectAsync, token, cb]);
 
   useEffect(() => {
     if (session.status === 'authenticated' && !address) {
@@ -54,10 +58,11 @@ export function useSignOut() {
  * After the signature is sent, NextAuth will put a session in place, and then useMe will
  * be executed
  */
-export const useAuthLogin = (onSignOut: () => Promise<void>) => {
+export const useAuthLogin = () => {
   const queryClient = useQueryClient();
   const { address } = useAccount();
   const sign = useSignMessage();
+  const { t } = useTranslation('common');
 
   const session = useSession();
   const token = session?.data?.token;
@@ -79,7 +84,7 @@ export const useAuthLogin = (onSignOut: () => Promise<void>) => {
       onError(e: any) {
         setError({
           message: e?.response?.errors?.[0]?.message,
-          label: 'Try again',
+          label: t('actions.try-again'),
         });
       },
     }
@@ -93,25 +98,33 @@ export const useAuthLogin = (onSignOut: () => Promise<void>) => {
       }),
     {
       async onSuccess(signature) {
-        try {
-          const res = await signIn('credentials', {
-            redirect: false,
-            wallet: address,
-            signature,
-          });
-          console.log('success', res);
-        } catch (e) {
-          console.log('Eth login error', e);
-        }
+        await signInMutation.mutateAsync(signature);
       },
       onError() {
         setError({
-          message:
-            "Error signing message. Please try again or contact support if it doesn't work.",
-          label: 'Try again',
+          message: t('auth:connecting.errors.signature'),
+          label: t('actions.try-again'),
         });
       },
       retry: false,
+    }
+  );
+
+  const signInMutation = useMutation(
+    ['signIn', address],
+    (signature: string) =>
+      signIn('credentials', {
+        redirect: false,
+        wallet: address,
+        signature,
+      }),
+    {
+      onError(e) {
+        setError({
+          message: JSON.stringify(e),
+          label: t('actions.try-again'),
+        });
+      },
     }
   );
 
@@ -137,13 +150,42 @@ export const useAuthLogin = (onSignOut: () => Promise<void>) => {
     }
   );
 
+  const authStep: AuthStep = useMemo(() => {
+    if (error) return 'error';
+    if (nonce.fetchStatus === 'fetching') return 'get-nonce';
+    if (sendSignature.isLoading) return 'send-signature';
+    if (!me.data && me.isLoading && signInMutation.isSuccess && address)
+      return 'get-me';
+    if (me.data) return 'authenticated';
+    return 'unauthenticated';
+  }, [
+    address,
+    error,
+    me.data,
+    me.isLoading,
+    nonce.fetchStatus,
+    sendSignature.isLoading,
+    signInMutation.isSuccess,
+  ]);
+
   const onUpdateMe = (
     cb: (oldMe: PartialDeep<SessionUser>) => PartialDeep<SessionUser>
   ) => queryClient.setQueryData(['me'], cb);
 
+  const onSignOut = useSignOut(() => {
+    setError(undefined);
+    me.remove();
+    nonce.remove();
+    sendSignature.reset();
+    signInMutation.reset();
+  });
+
   return {
     me: me.data,
     onUpdateMe,
+    authStep,
+    error,
+    onSignOut,
   };
 };
 
