@@ -1,36 +1,66 @@
 import { signIn, signOut } from 'next-auth/react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useCookie } from 'react-use';
 import { PartialDeep } from 'type-fest';
 import { useAccount, useDisconnect, useSignMessage } from 'wagmi';
 
 import { ROUTES } from '../../constants/routes';
-import {
-  gqlAnonMethods,
-  gqlMethods,
-  gqlMethodsWithRefresh,
-} from '../../services/api';
-import {
-  LoginMutation,
-  RefreshMutation,
-} from '../../services/graphql/types.generated';
+import { gqlAnonMethods, gqlMethods } from '../../services/api';
 import { ErrorResponse } from '../../types/graphql';
 import { SessionUser } from '../../types/user';
-import { AuthStatus } from './state';
 
-type Props = {
-  wallet: string;
-  signature: string;
-};
+/**
+ * Handles Logoff session if there's no wallet connected
+ */
+export function useSignOut() {
+  const session = useSession();
+  const { address } = useAccount();
+  const { disconnectAsync } = useDisconnect();
+  const token = session?.data?.token;
 
-export const useAuthLogin = () => {
+  const onSignOut = useCallback(async () => {
+    try {
+      if (address) {
+        await disconnectAsync();
+      }
+      // eslint-disable-next-line no-empty
+    } catch {}
+
+    try {
+      if (token) {
+        await signOut({ redirect: false });
+      }
+      // eslint-disable-next-line no-empty
+    } catch {}
+  }, [address, disconnectAsync, token]);
+
+  useEffect(() => {
+    if (session.status === 'authenticated' && !address) {
+      onSignOut();
+    }
+  }, [address, onSignOut, session.status]);
+
+  return onSignOut;
+}
+
+/**
+ * Handles the login flow.
+ * It listens for wallet connection, and if there's a wallet connected, it will
+ * send a signature request to the wallet so we can verify the user.
+ *
+ * After the signature is sent, NextAuth will put a session in place, and then useMe will
+ * be executed
+ */
+export const useAuthLogin = (onSignOut: () => Promise<void>) => {
+  const queryClient = useQueryClient();
   const { address } = useAccount();
   const sign = useSignMessage();
+
   const session = useSession();
+  const token = session?.data?.token;
 
   const [error, setError] = useState<{
     message: any;
@@ -84,14 +114,6 @@ export const useAuthLogin = () => {
       retry: false,
     }
   );
-};
-
-export function useMe() {
-  const queryClient = useQueryClient();
-  const { address } = useAccount();
-  const session = useSession();
-  const token = session?.data?.token;
-  const { disconnectAsync } = useDisconnect();
 
   const me = useQuery(
     ['me', token, address],
@@ -109,19 +131,7 @@ export function useMe() {
           firstError.extensions.code === 500 &&
           firstError.message.includes('token')
         ) {
-          try {
-            if (address) {
-              await disconnectAsync();
-            }
-            // eslint-disable-next-line no-empty
-          } catch {}
-
-          try {
-            if (token) {
-              await signOut({ redirect: false });
-            }
-            // eslint-disable-next-line no-empty
-          } catch {}
+          onSignOut();
         }
       },
     }
@@ -135,21 +145,37 @@ export function useMe() {
     me: me.data,
     onUpdateMe,
   };
+};
+
+/** Redirects to Explore if not authenticated on a route that requires authentication */
+export function useBlockedRoute(isBlocked: boolean) {
+  const router = useRouter();
+  const session = useSession();
+
+  useEffect(() => {
+    if (isBlocked && session.status !== 'loading') {
+      router.replace(ROUTES.EXPLORE);
+    }
+  }, [session.status, isBlocked, router]);
 }
 
-export function useInitUser(status: AuthStatus, me: PartialDeep<SessionUser>) {
+/**
+ * Handles the initialization of the user.
+ * If the user is authenticated but not registered, it will redirect to the New User page
+ */
+export function useInitUser(me: PartialDeep<SessionUser>) {
   const router = useRouter();
 
   useEffect(() => {
-    if (status !== 'AUTHENTICATED') return;
+    if (!me) return;
     // Redirects to New User if authenticated but not registered
     if (router.pathname !== ROUTES.NEW_USER && me && !me.init) {
       router.replace(ROUTES.NEW_USER);
     }
 
     // Redirect to Explore if authenticated and registered
-    if (router.pathname === ROUTES.NEW_USER && me && me.init) {
-      router.replace(ROUTES.EXPLORE);
-    }
-  }, [me, router, status]);
+    // if (router.pathname === ROUTES.NEW_USER && me && me.init) {
+    //   router.replace(ROUTES.EXPLORE);
+    // }
+  }, [me, router]);
 }
