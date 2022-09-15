@@ -33,7 +33,9 @@ const AddTaskCard = ({ numberOfTasks, addTask }) => {
         />
         <Stack>
           <Typography variant="h6">Add a requirement</Typography>
-          <Typography variant="subtitle2">Select your next requirement</Typography>
+          <Typography variant="subtitle2">
+            Select your next requirement
+          </Typography>
         </Stack>
       </Stack>
       <Grid
@@ -46,7 +48,7 @@ const AddTaskCard = ({ numberOfTasks, addTask }) => {
           <Paper>
             <AddTaskButton
               icon={<InsertLinkIcon />}
-              title={'Files & Links'}
+              title={'Open Links'}
               addTask={() => addTask('self_verify')}
             />
           </Paper>
@@ -55,7 +57,7 @@ const AddTaskCard = ({ numberOfTasks, addTask }) => {
           <Paper>
             <AddTaskButton
               icon={<QuizIcon />}
-              title={'Create Quiz'}
+              title={'Take Quiz'}
               addTask={() => addTask('quiz')}
             />
           </Paper>
@@ -64,7 +66,7 @@ const AddTaskCard = ({ numberOfTasks, addTask }) => {
           <Paper>
             <AddTaskButton
               icon={<MonetizationOnIcon />}
-              title={'Hold Token'}
+              title={'Verify Token'}
               addTask={() => addTask('token_hold')}
             />
           </Paper>
@@ -73,7 +75,7 @@ const AddTaskCard = ({ numberOfTasks, addTask }) => {
           <Paper>
             <AddTaskButton
               icon={<ElectricBoltIcon />}
-              title={'Snapshot Governance'}
+              title={'Verify Proposal'}
               addTask={() => addTask('snapshot')}
             />
           </Paper>
@@ -82,7 +84,7 @@ const AddTaskCard = ({ numberOfTasks, addTask }) => {
           <Paper>
             <AddTaskButton
               icon={<NumbersIcon />}
-              title={'Verification Code'}
+              title={'Verify Code'}
               addTask={() => addTask('meeting_code')}
             />
           </Paper>
