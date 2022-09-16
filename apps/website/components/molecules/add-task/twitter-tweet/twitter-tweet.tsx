@@ -224,6 +224,17 @@ const TwitterTweetTask = ({ taskId, deleteTask }) => {
                   <DynamicEmojiField
                     onchange={setEmoji}
                     emojiStyle={EmojiStyle.TWITTER}
+                    boxSxProps={{
+                      position: 'absolute',
+                      top: '142px',
+                      left: '10px',
+                      zIndex: '1',
+                    }}
+                    pickerSxProps={{
+                      position: 'absolute',
+                      left: { xs: '-40px', md: '0' },
+                    }}
+                    iconColor="#9B96A0"
                   />
                 )}
               </InputAdornment>

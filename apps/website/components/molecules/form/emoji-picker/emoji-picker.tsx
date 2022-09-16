@@ -4,7 +4,8 @@ import { useEffect, useState, useRef, MutableRefObject } from 'react';
 import { Theme, EmojiStyle } from 'emoji-picker-react';
 
 import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions';
-import { Box } from '@mui/material';
+import { Box, SxProps } from '@mui/material';
+import { Theme as ThemeSX } from '@mui/material/styles/createTheme';
 
 const Picker = dynamic(
   () => {
@@ -16,24 +17,27 @@ const Picker = dynamic(
 type Props = {
   onchange: any;
   emojiStyle?: EmojiStyle;
+  boxSxProps: SxProps<ThemeSX>;
+  pickerSxProps: SxProps<ThemeSX>;
+  iconColor: string;
 };
 
 export function EmojiPicker(props: Props) {
-  const [boxEmoji, setBoxEmoji] = useState(false);
+  const [boxEmojiIsVisible, setBoxEmojiIsVisible] = useState(false);
   const [chosenEmoji, setChosenEmoji] = useState(null);
   const wrapperRef = useRef(null);
 
   const onEmojiClick = (emojiObject) => {
     setChosenEmoji(emojiObject.emoji);
     props.onchange(emojiObject.emoji);
-    setBoxEmoji(false);
+    setBoxEmojiIsVisible(false);
   };
 
   const useOutsideAlerter = (ref: MutableRefObject<HTMLDivElement>) => {
     useEffect(() => {
       function handleClickOutside(event) {
         if (ref.current && !ref.current.contains(event.target)) {
-          setBoxEmoji(false);
+          setBoxEmojiIsVisible(false);
         }
       }
       document.addEventListener('mousedown', handleClickOutside);
@@ -46,22 +50,21 @@ export function EmojiPicker(props: Props) {
   useOutsideAlerter(wrapperRef);
 
   return (
-    <Box
-      ref={wrapperRef}
-      style={{ position: 'absolute', top: '142px', left: '10px', zIndex: '1' }}
-    >
+    <Box ref={wrapperRef} sx={props.boxSxProps}>
       <EmojiEmotionsIcon
-        style={{ color: '#9B96A0', cursor: 'pointer' }}
+        style={{ color: props.iconColor, cursor: 'pointer' }}
         onClick={() => {
-          boxEmoji ? setBoxEmoji(false) : setBoxEmoji(true);
+          boxEmojiIsVisible ? setBoxEmojiIsVisible(false) : setBoxEmojiIsVisible(true);
         }}
       />
-      {boxEmoji && (
-        <Picker
-          onEmojiClick={onEmojiClick}
-          theme={Theme.DARK}
-          emojiStyle={props.emojiStyle}
-        />
+      {boxEmojiIsVisible && (
+        <Box sx={props.pickerSxProps}>
+          <Picker
+            onEmojiClick={onEmojiClick}
+            theme={Theme.DARK}
+            emojiStyle={props.emojiStyle}
+          />
+        </Box>
       )}
     </Box>
   );
