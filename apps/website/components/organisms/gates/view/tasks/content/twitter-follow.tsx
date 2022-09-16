@@ -1,5 +1,7 @@
 import { useMemo, useState } from 'react';
 
+import { MdVerified } from 'react-icons/md';
+
 import { Avatar, Box, Button, Stack, Typography } from '@mui/material';
 
 import { LoadingButton } from '../../../../../../components/atoms/loading-button';
@@ -17,13 +19,14 @@ const TwitterFollowContent = ({
   const { gqlAuthMethods } = useAuth();
   const formattedDate = new Date(updatedAt.toLocaleString()).toLocaleString();
   const [twitterData, setTwitterData] = useState(null);
+
   const getTwitterData = async () => {
     try {
       const username = data.username;
       const response = await gqlAuthMethods.twitter_data({
         userName: username,
       });
-      console.log();
+
       return setTwitterData(response.get_twitter_user_data);
     } catch (error) {
       console.log(error);
@@ -63,6 +66,7 @@ const TwitterFollowContent = ({
             width: '100%',
           }}
         />
+        {twitterData?.verified}
         <Avatar
           src={twitterData?.profile_image_url}
           alt={twitterData?.name}
@@ -96,6 +100,7 @@ const TwitterFollowContent = ({
             >
               {`@${twitterData?.username}`}
             </Typography>
+            {twitterData?.verified && <MdVerified color="#1DA1F2" />}
             <Typography
               sx={{
                 color: '#0F1419',
