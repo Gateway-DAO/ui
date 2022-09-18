@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import { MdVerified } from 'react-icons/md';
 
@@ -16,6 +16,7 @@ const TwitterFollowContent = ({
   isLoading,
   isAdmin,
 }) => {
+  const [twitterKeys, setTwitterKeys] = useState(null);
   const { gqlAuthMethods } = useAuth();
   const formattedDate = new Date(updatedAt.toLocaleString()).toLocaleString();
   const [twitterData, setTwitterData] = useState(null);
@@ -33,9 +34,20 @@ const TwitterFollowContent = ({
     }
   };
 
-  useMemo(() => {
-    getTwitterData();
-  }, []);
+  const connectTwitter = async () => {
+    try {
+      const response: any = await fetch('/api/oauth/twitter/login');
+      const data = await response.json();
+      if (typeof window !== 'undefined') {
+        window.localStorage.setItem('redirectURL', window.location.href);
+      }
+      if (data.confirmed && window.localStorage.getItem('redirectURL')) {
+        window.location.href = data.callbackURL;
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const numberFormat = (value) => {
     if (value < 10000) {
@@ -46,6 +58,20 @@ const TwitterFollowContent = ({
       return `${(value / 1000000).toFixed(1)}M`;
     }
   };
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const twitter = JSON.parse(window.localStorage.getItem('twitter'));
+      if (twitter) {
+        setTwitterKeys(twitter);
+      }
+    }
+  }, []);
+
+  useMemo(() => {
+    getTwitterData();
+  }, []);
+
   return (
     <Stack marginTop={5} alignItems="start">
       <Stack
@@ -143,19 +169,23 @@ const TwitterFollowContent = ({
               </Typography>
             </Stack>
           </Stack>
-          <Stack sx={{ position: 'relative', background: '#1B97F0', p: 2 }}>
-            <Typography>Connect your account</Typography>
-            <Stack direction={'row'}>
-              <Typography>
-                To complete this task, you need to authorize Gateway access your
-                Twitter account.
-              </Typography>
-              <Button>Connect Twitter</Button>
+          {!twitterKeys && (
+            <Stack sx={{ position: 'relative', background: '#1B97F0', p: 2 }}>
+              <Typography>Connect your account</Typography>
+              <Stack direction={'row'}>
+                <Typography>
+                  To complete this task, you need to authorize Gateway access
+                  your Twitter account.
+                </Typography>
+                <Button onClick={() => connectTwitter()}>
+                  Connect Twitter
+                </Button>
+              </Stack>
             </Stack>
-          </Stack>
+          )}
         </Stack>
       </Stack>
-      {!readOnly && !completed && (
+      {!readOnly && !completed && twitterKeys && (
         <LoadingButton
           variant="contained"
           sx={{ marginTop: '15px' }}

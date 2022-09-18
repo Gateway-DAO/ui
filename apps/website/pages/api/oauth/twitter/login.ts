@@ -14,14 +14,17 @@ const client = new Twitter({
   access_token_secret: '',
 });
 
-export default async function handler(req, res) {
+export default async function handler(_req, res) {
   try {
     const response: any = await client.getRequestToken(
-      'http://twitter.local:4200/api/oauth/twitter/callback'
+      'http://twitter.local:4200/following'
     );
-    res.redirect(
-      `https://api.twitter.com/oauth/authenticate?oauth_token=${response?.oauth_token}`
-    );
+    res.status(200).json({
+      oauth_token: response.oauth_token,
+      oauth_token_secret: response.oauth_token_secret,
+      confirmed: response.oauth_callback_confirmed,
+      callbackURL: `https://api.twitter.com/oauth/authenticate?oauth_token=${response?.oauth_token}`,
+    });
   } catch (error) {
     console.log(error);
   }
