@@ -6,17 +6,16 @@ import { useConnectModal } from '@rainbow-me/rainbowkit';
 
 import { AuthConnectingModal } from '../../components/organisms/auth-connecting-modal';
 import { gqlMethods } from '../../services/api';
+import { BlockedPage } from './blocked-page';
 import { AuthContext } from './context';
-import { useAuthLogin, useBlockedRoute, useInitUser } from './hooks';
+import { useAuthLogin, useInitUser } from './hooks';
 type Props = {
   isAuthPage?: boolean;
 };
 
 // TODO:
-// - [x] Add a loading state to the auth provider
 // - [ ] Implement refresh token
 // - [ ] Route guard with loading state -> Go to a auth page while loading the session state
-// - [x] Route guard new-user if the user is already verified ON MOUNT ONLY, because if the user is verified after the page submission, we don't always want to redirect to the home page
 
 export function AuthProvider({
   isAuthPage,
@@ -30,14 +29,12 @@ export function AuthProvider({
   const { me, error, onUpdateMe, authStep, onSignOut, onInvalidateMe } =
     useAuthLogin();
 
-  const isBlocked = isAuthPage && (!me || !token);
+  const isBlocked = !!isAuthPage && (!me || !token);
 
   const gqlAuthMethods = useMemo(
     () => gqlMethods(session?.data?.token, me?.id),
     [session?.data?.token, me?.id]
   );
-
-  useBlockedRoute(isBlocked);
 
   useInitUser(me);
 
@@ -64,6 +61,7 @@ export function AuthProvider({
         }
         onRetry={onSignOut}
       />
+      <BlockedPage isBlocked={isBlocked} />
     </AuthContext.Provider>
   );
 }

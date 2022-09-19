@@ -192,18 +192,6 @@ export const useAuthLogin = () => {
   };
 };
 
-/** Redirects to Explore if not authenticated on a route that requires authentication */
-export function useBlockedRoute(isBlocked: boolean) {
-  const router = useRouter();
-  const session = useSession();
-
-  useEffect(() => {
-    if (isBlocked && session.status === 'unauthenticated') {
-      router.replace(ROUTES.EXPLORE);
-    }
-  }, [session.status, isBlocked, router]);
-}
-
 /**
  * Handles the initialization of the user.
  * If the user is authenticated but not registered, it will redirect to the New User page
