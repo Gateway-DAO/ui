@@ -27,7 +27,8 @@ export function AuthProvider({
 
   const { openConnectModal } = useConnectModal();
 
-  const { me, error, onUpdateMe, authStep, onSignOut } = useAuthLogin();
+  const { me, error, onUpdateMe, authStep, onSignOut, onInvalidateMe } =
+    useAuthLogin();
 
   const isBlocked = isAuthPage && (!me || !token);
 
@@ -44,10 +45,11 @@ export function AuthProvider({
     <AuthContext.Provider
       value={{
         me,
-        onSignOut,
-        onOpenLogin: openConnectModal,
-        onUpdateMe,
         gqlAuthMethods,
+        onOpenLogin: openConnectModal,
+        onSignOut,
+        onUpdateMe,
+        onInvalidateMe,
       }}
     >
       {!isBlocked && children}

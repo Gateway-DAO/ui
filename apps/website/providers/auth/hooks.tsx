@@ -129,7 +129,7 @@ export const useAuthLogin = () => {
   );
 
   const me = useQuery(
-    ['me', token, address],
+    ['me', address],
     async () => await gqlMethods(token).me(),
     {
       enabled: !!token && !!address,
@@ -170,7 +170,9 @@ export const useAuthLogin = () => {
 
   const onUpdateMe = (
     cb: (oldMe: PartialDeep<SessionUser>) => PartialDeep<SessionUser>
-  ) => queryClient.setQueryData(['me'], cb);
+  ) => queryClient.setQueryData(['me', address], cb);
+
+  const onInvalidateMe = () => queryClient.invalidateQueries(['me', address]);
 
   const onSignOut = useSignOut(() => {
     setError(undefined);
@@ -181,11 +183,12 @@ export const useAuthLogin = () => {
   });
 
   return {
-    me: me.data,
-    onUpdateMe,
-    authStep,
+    me: token ? me.data : undefined,
     error,
+    authStep,
+    onUpdateMe,
     onSignOut,
+    onInvalidateMe,
   };
 };
 
@@ -195,7 +198,7 @@ export function useBlockedRoute(isBlocked: boolean) {
   const session = useSession();
 
   useEffect(() => {
-    if (isBlocked && session.status !== 'loading') {
+    if (isBlocked && session.status === 'unauthenticated') {
       router.replace(ROUTES.EXPLORE);
     }
   }, [session.status, isBlocked, router]);
@@ -212,7 +215,10 @@ export function useInitUser(me: PartialDeep<SessionUser>) {
     if (!me) return;
     // Redirects to New User if authenticated but not registered
     if (router.pathname !== ROUTES.NEW_USER && me && !me.init) {
-      router.replace(ROUTES.NEW_USER);
+      router.replace({
+        pathname: ROUTES.NEW_USER,
+        query: { callback: router.pathname },
+      });
     }
 
     // Redirect to Explore if authenticated and registered

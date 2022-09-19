@@ -10,6 +10,7 @@ type Context = {
   onSignOut: () => void;
   onOpenLogin: () => void;
   onUpdateMe: (cb: (oldMe: SessionUser) => SessionUser) => SessionUser | void;
+  onInvalidateMe: () => void;
 };
 
 export const AuthContext = createContext<Context>({
@@ -17,6 +18,7 @@ export const AuthContext = createContext<Context>({
   onSignOut: () => {},
   onOpenLogin: () => {},
   onUpdateMe: () => {},
+  onInvalidateMe: () => {},
 });
 
 export const useAuth = () => useContext(AuthContext);
