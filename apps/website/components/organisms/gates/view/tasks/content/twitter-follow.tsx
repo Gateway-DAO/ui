@@ -49,6 +49,31 @@ const TwitterFollowContent = ({
     }
   };
 
+  const checkTwitterFollow = async () => {
+    try {
+      const twitterLocalStorage = JSON.parse(
+        window.localStorage.getItem('twitter')
+      );
+
+      const response: any = await fetch('/api/oauth/twitter/follow', {
+        method: 'POST',
+        body: JSON.stringify({
+          accTkn: twitterLocalStorage.accTkn,
+          accTknSecret: twitterLocalStorage.accTknSecret,
+          source_id: twitterLocalStorage.userId,
+          target_id: twitterData.id,
+        }),
+      });
+
+      const data = await response.json();
+      if (data.following) {
+        completeTask({});
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const numberFormat = (value) => {
     if (value < 10000) {
       return value;
@@ -189,7 +214,7 @@ const TwitterFollowContent = ({
         <LoadingButton
           variant="contained"
           sx={{ marginTop: '15px' }}
-          onClick={() => completeTask({})}
+          onClick={() => checkTwitterFollow()}
           isLoading={isLoading}
         >
           Check Token
