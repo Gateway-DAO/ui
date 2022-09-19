@@ -7,6 +7,11 @@ import { ConnectButtonRendererProps } from '@rainbow-me/rainbowkit/dist/componen
 
 import { ROUTES } from '../../constants/routes';
 
+/**
+ * Handles the blocked page logic:
+ * - If the user is not authenticated, open the connect modal
+ * - If the user closes the connect modal, redirect to the explore page
+ */
 export function BlockedPage({ isBlocked }) {
   if (!isBlocked) return null;
 

@@ -15,7 +15,6 @@ type Props = {
 
 // TODO:
 // - [ ] Implement refresh token
-// - [ ] Route guard with loading state -> Go to a auth page while loading the session state
 
 export function AuthProvider({
   isAuthPage,
