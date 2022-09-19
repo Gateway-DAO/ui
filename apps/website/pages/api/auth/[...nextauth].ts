@@ -27,7 +27,6 @@ export default async function auth(req, res) {
             signature: credentials.signature,
             wallet: credentials.wallet,
           });
-          console.log('res', res);
 
           const { error } = (res as any) ?? {};
 
@@ -37,7 +36,9 @@ export default async function auth(req, res) {
 
           const { __typename, ...token } = res.login;
 
-          return token;
+          return {
+            ...token,
+          };
         } catch (e) {
           return null;
         }

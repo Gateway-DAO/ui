@@ -16,7 +16,7 @@ type Props = {
 // - [x] Add a loading state to the auth provider
 // - [ ] Implement refresh token
 // - [ ] Route guard with loading state -> Go to a auth page while loading the session state
-// - [ ] Route guard new-user if the user is already verified ON MOUNT ONLY, because if the user is verified after the page submission, we don't always want to redirect to the home page
+// - [x] Route guard new-user if the user is already verified ON MOUNT ONLY, because if the user is verified after the page submission, we don't always want to redirect to the home page
 
 export function AuthProvider({
   isAuthPage,
