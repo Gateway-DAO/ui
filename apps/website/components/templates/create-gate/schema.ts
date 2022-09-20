@@ -70,6 +70,11 @@ export type TwitterTweetTask = {
   task_data: TwitterTweetData;
 };
 
+export type TwitterRetweetTask = {
+  task_type: 'twitter_retweet';
+  task_data: TwitterRetweetData;
+};
+
 export type Task = {
   id?: string;
   gate_id?: string;
@@ -83,6 +88,7 @@ export type Task = {
   | SnapshotTask
   | HoldTokenTask
   | TwitterTweetTask
+  | TwitterRetweetTask
 );
 
 // Verification Code
@@ -104,6 +110,17 @@ export type TwitterTweetDataError = {
   id?: FieldError;
   tweet_text?: FieldError;
 };
+
+// Twitter Retweet
+export type TwitterRetweetData = {
+  tweet_link?: string;
+};
+
+export type TwitterRetweetDataError = {
+  id?: FieldError;
+  tweet_link?: FieldError;
+};
+
 
 // Quiz
 export type QuizTaskData = {
@@ -199,6 +216,13 @@ const twitterTweetTaskDataSchema = z.object({
     .string()
     .min(3, 'The tweet text must contain at least 3 character(s)')
     .max(280, 'The tweet text must contain until 280 character(s)'),
+});
+
+const twitterRetweetTaskDataSchema = z.object({
+  tweet_link: z
+    .string()
+    .min(3, 'The tweet link must contain at least 3 character(s)')
+    .max(280, 'The tweet link must contain until 280 character(s)'),
 });
 
 const fileTaskDataSchema = z.object({
@@ -354,6 +378,17 @@ export const taskTwitterTweetSchema = z.object({
   task_data: twitterTweetTaskDataSchema,
 });
 
+export const taskTwitterRetweetSchema = z.object({
+  id: z.string().optional(),
+  task_id: z.string().optional(),
+  title: z.string().min(2, 'The title must contain at least 2 character(s)'),
+  description: z
+    .string()
+    .min(2, 'The description must contain at least 2 character(s)'),
+  task_type: z.literal('twitter_retweet'),
+  task_data: twitterRetweetTaskDataSchema,
+});
+
 export const createGateSchema = z.object({
   title: z.string().min(2, 'The title must contain at least 2 character(s)'),
   categories: z.array(z.string()).min(1, 'Please select at least 1 category'),
@@ -378,6 +413,7 @@ export const createGateSchema = z.object({
           taskSnapshotSchema,
           taskHoldTokenSchema,
           taskTwitterTweetSchema,
+          taskTwitterRetweetSchema,
         ])
       )
       .nonempty({ message: 'A gate needs to have at least one task.' }),

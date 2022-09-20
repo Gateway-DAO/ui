@@ -28,6 +28,7 @@ import SnapshotContent from '../gates/view/tasks/content/snapshot';
 import TokenHoldContent from '../gates/view/tasks/content/token_hold';
 import TwitterTweetContent from '../gates/view/tasks/content/twitter_tweet';
 import { taskErrorMessages } from './task-error-messages';
+import TwitterRetweetContent from '../gates/view/tasks/content/twitter_retweet';
 
 type Props = {
   idx?: number;
@@ -108,6 +109,11 @@ export function Task({
         return {
           title: 'Post Tweet',
           body: TwitterTweetContent,
+        };
+      case 'twitter_retweet':
+        return {
+          title: 'Retweet Post',
+          body: TwitterRetweetContent,
         };
       default:
         return {

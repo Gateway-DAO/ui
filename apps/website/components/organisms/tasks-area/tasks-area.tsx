@@ -10,6 +10,7 @@ import {
   createQuestion,
 } from '../../molecules/add-task/quiz-task/quiz-task';
 import SnapshotTask from '../../molecules/add-task/snapshot-task/snapshot-task';
+import TwitterRetweetTask from '../../molecules/add-task/twitter-retweet/twitter-retweet';
 import TwitterTweetTask from '../../molecules/add-task/twitter-tweet/twitter-tweet';
 import VerificationCodeTask from '../../molecules/add-task/verification-task/verification-task';
 import {
@@ -25,6 +26,7 @@ const TaskComponents = {
   token_hold: HoldTokenTask,
   quiz: QuizTask,
   twitter_tweet: TwitterTweetTask,
+  twitter_retweet: TwitterRetweetTask,
 };
 
 const defaultTaskData = (
