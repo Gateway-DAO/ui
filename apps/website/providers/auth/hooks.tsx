@@ -208,10 +208,5 @@ export function useInitUser(me: PartialDeep<SessionUser>) {
         query: { callback: router.pathname },
       });
     }
-
-    // Redirect to Explore if authenticated and registered
-    // if (router.pathname === ROUTES.NEW_USER && me && me.init) {
-    //   router.replace(ROUTES.EXPLORE);
-    // }
   }, [me, router]);
 }
