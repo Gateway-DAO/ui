@@ -1,6 +1,12 @@
 import { Button, Stack, Typography } from '@mui/material';
 
 const GithubConnectionCard = () => {
+  const connectGithub = async () => {
+    window.localStorage.setItem('github_redirect_url', window.location.href);
+
+    window.location.href = `https://github.com/login/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID}`;
+  };
+
   return (
     <Stack
       flexDirection="row"
@@ -29,6 +35,7 @@ const GithubConnectionCard = () => {
         <Button
           variant="contained"
           size="large"
+          onClick={connectGithub}
           sx={{ margin: '15px', color: 'black', backgroundColor: '#E5E5E5' }}
         >
           Connect Github
