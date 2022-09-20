@@ -30,10 +30,10 @@ const callLogin = async (
     return null;
   }
 };
-const callRefresh = async (refresh_token: string): Promise<SessionToken> => {
+const callRefresh = async (token: SessionToken): Promise<SessionToken> => {
   try {
     const res = await gqlAnonMethods.refresh({
-      refresh_token,
+      refresh_token: token.refresh_token,
     });
 
     const { error } = (res as any) ?? {};
@@ -42,11 +42,11 @@ const callRefresh = async (refresh_token: string): Promise<SessionToken> => {
       throw error;
     }
 
-    const { __typename, ...token } = res.refresh;
+    const { __typename, ...newToken } = res.refresh;
 
     return {
-      ...token,
-      expiry: Date.parse(token.expiry),
+      ...newToken,
+      expiry: Date.parse(newToken.expiry),
     };
   } catch (e) {
     return null;
@@ -87,15 +87,16 @@ export const config: NextAuthOptions = {
       }
 
       if (token.expiry < Date.now()) {
-        return callRefresh(token.refresh_token);
+        return callRefresh(token);
       }
 
       return token;
     },
     async session({ session, token }) {
-      session.token = token.token as string;
-      session.refresh_token = token.refresh_token as string;
-      return session;
+      return {
+        ...session,
+        ...token,
+      };
     },
   },
 };

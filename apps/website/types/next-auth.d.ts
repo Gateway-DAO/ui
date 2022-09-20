@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* REASON: We can only override interfaces like this */
 /* eslint-disable @typescript-eslint/no-empty-interface */
-import NextAuth from 'next-auth';
+import NextAuth, { Session } from 'next-auth';
 import { JWT } from 'next-auth/jwt';
 
 import { SessionUser, SessionToken } from './user';
@@ -12,6 +12,9 @@ declare module 'next-auth' {
    * Returned by `useSession`, `getSession` and received as a prop on the `SessionProvider` React Context
    */
   interface User extends SessionToken {}
+  interface Session extends Session, SessionToken {
+    error?: string;
+  }
 }
 
 declare module 'next-auth/jwt' {
