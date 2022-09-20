@@ -13,9 +13,6 @@ type Props = {
   isAuthPage?: boolean;
 };
 
-// TODO:
-// - [ ] Implement refresh token
-
 export function AuthProvider({
   isAuthPage,
   children,
