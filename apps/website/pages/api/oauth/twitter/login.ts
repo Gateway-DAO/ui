@@ -17,7 +17,9 @@ const client = new Twitter({
 export default async function handler(_req, res) {
   try {
     const response: any = await client.getRequestToken(
-      'http://twitter.local:4200/following'
+      `${
+        process.env.NEXT_PUBLIC_VERCEL_URL || 'https://www.mygateway.xyz/'
+      }/following`
     );
     res.status(200).json({
       oauth_token: response.oauth_token,

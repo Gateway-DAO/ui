@@ -11,7 +11,7 @@ export default async function handler(req, res) {
     return;
   }
   const client = new Twitter({
-    subdomain: 'api', // "api" is the default (change for other subdomains)
+    subdomain: 'api',
     version: '1.1',
     consumer_key: KEYS.consumer_key,
     consumer_secret: KEYS.consumer_secret,
@@ -22,7 +22,7 @@ export default async function handler(req, res) {
   const { source_id, target_id } = JSON.parse(req.body);
 
   try {
-    const response: any = await client.get('friendships/show', {
+    const response = await client.get('friendships/show', {
       source_id,
       target_id,
     });
@@ -31,9 +31,9 @@ export default async function handler(req, res) {
       response.relationship.source.followed_by &&
       response.relationship.target.following
     ) {
-      return res.status(200).json({ following: true });
+      return res.status(200).json({ twitter_follow: true });
     }
-    return res.status(200).json({ following: false });
+    return res.status(200).json({ twitter_follow: false });
   } catch (error) {
     res.status(400).json(error);
     console.log(error);
