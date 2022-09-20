@@ -1,13 +1,12 @@
 import useTranslation from 'next-translate/useTranslation';
-import { useRouter } from 'next/router';
 
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useForm, FormProvider } from 'react-hook-form';
+import { useAccount } from 'wagmi';
 
 import { Box, Snackbar, Stack, Typography } from '@mui/material';
 
-import { ROUTES } from '../../../constants/routes';
 import { useSnackbar } from '../../../hooks/use-snackbar';
 import { useUploadImage } from '../../../hooks/use-upload-image';
 import { useAuth } from '../../../providers/auth';
@@ -24,7 +23,7 @@ import { schema, NewUserSchema, defaultValues } from './schema';
 
 export function NewUserTemplate() {
   const { t } = useTranslation('dashboard-new-user');
-  const { me, gqlAuthMethods, onUpdateMe } = useAuth();
+  const { me, gqlAuthMethods, onInvalidateMe } = useAuth();
   const methods = useForm<NewUserSchema>({
     resolver: yupResolver(schema),
     defaultValues: defaultValues(me),
@@ -32,11 +31,10 @@ export function NewUserTemplate() {
 
   const snackbar = useSnackbar();
 
-  const router = useRouter();
   const uploadImage = useUploadImage();
 
   const updateMutation = useMutation(
-    ['updateProfile'],
+    ['updateProfile', me.id],
     async ({ pfp, ...data }: NewUserSchema) => {
       let uploadedPicture = null;
 
@@ -54,14 +52,9 @@ export function NewUserTemplate() {
       });
     },
     {
-      onSuccess(data) {
+      onSuccess() {
         snackbar.onOpen({ message: 'Profile created!' });
-        onUpdateMe((oldMe) => ({
-          ...oldMe,
-          ...data.update_users_by_pk,
-          init: true,
-        }));
-        router.replace(ROUTES.EXPLORE);
+        onInvalidateMe();
       },
       onError(error: ErrorResponse) {
         let totalUnmappedErrors = 0;
