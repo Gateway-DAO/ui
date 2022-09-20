@@ -119,8 +119,6 @@ export function BiconomyProvider({
         })
         .onEvent(biconomy.ERROR, (error, message) => {
           // Handle error while initializing mexa
-          // console.log(message);
-          // console.log(error);
         });
     }
 
