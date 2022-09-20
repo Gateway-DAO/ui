@@ -1,17 +1,14 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
-import { useRouter } from 'next/router';
-import { PropsWithChildren, useEffect, useMemo } from 'react';
+import { useSession } from 'next-auth/react';
+import { PropsWithChildren, useMemo } from 'react';
 
-import { useAccount } from 'wagmi';
+import { useConnectModal } from '@rainbow-me/rainbowkit';
 
-import { WalletModal } from '../../components/organisms/wallet-modal';
-import { ROUTES } from '../../constants/routes';
-import useToggleContainerClass from '../../hooks/useToggleContainerClass';
-import { gqlMethodsWithRefresh } from '../../services/api';
+import { AuthConnectingModal } from '../../components/organisms/auth-connecting-modal';
+import { gqlMethods } from '../../services/api';
+import { BlockedPage } from './blocked-page';
 import { AuthContext } from './context';
-import { useInitUser, useMe } from './hooks';
-import { useAuthStatus } from './state';
-
+import { useAuthLogin, useInitUser } from './hooks';
 type Props = {
   isAuthPage?: boolean;
 };
@@ -20,70 +17,47 @@ export function AuthProvider({
   isAuthPage,
   children,
 }: PropsWithChildren<Props>) {
-  const { me, tokens, onSignOut, onUpdateMe, onUpdateToken } = useMe();
-  const { status, onAuthenticated, onConnecting, onUnauthenticated } =
-    useAuthStatus(tokens);
+  const session = useSession();
+  const token = session?.data?.token;
 
-  const { status: accountStatus, address } = useAccount();
+  const { openConnectModal } = useConnectModal();
 
-  const router = useRouter();
+  const { me, error, onUpdateMe, authStep, onSignOut, onInvalidateMe } =
+    useAuthLogin();
+
+  const isBlocked = !!isAuthPage && (!me || !token);
 
   const gqlAuthMethods = useMemo(
-    () =>
-      gqlMethodsWithRefresh(
-        tokens?.token,
-        tokens?.refresh_token,
-        me?.id,
-        onUpdateToken
-      ),
-    [tokens?.token, tokens?.refresh_token, me?.id, onUpdateToken]
+    () => gqlMethods(session?.data?.token, me?.id),
+    [session?.data?.token, me?.id]
   );
 
-  const isBlocked = isAuthPage && (!me || !tokens);
-
-  const onCloseModalWhenBlocked = async () => {
-    await router.replace(ROUTES.LANDING);
-    onUnauthenticated();
-  };
-
-  useEffect(() => {
-    if (isBlocked && status === 'UNAUTHENTICATED') {
-      onConnecting();
-    }
-  }, [isBlocked, onConnecting, status]);
-
-  useEffect(() => {
-    if (!isAuthPage) return;
-    if (accountStatus === 'connecting' || accountStatus === 'reconnecting')
-      return;
-    if (!address && me) {
-      onSignOut();
-    }
-  }, [address, accountStatus, isAuthPage, onSignOut, me]);
-
-  useToggleContainerClass('blur', status === 'CONNECTING');
-
-  useInitUser(status, me);
+  useInitUser(me);
 
   return (
     <AuthContext.Provider
       value={{
-        onSignOut,
-        status,
-        onOpenLogin: onConnecting,
         me,
-        onUpdateMe,
         gqlAuthMethods,
+        onOpenLogin: openConnectModal,
+        onSignOut,
+        onUpdateMe,
+        onInvalidateMe,
       }}
     >
       {!isBlocked && children}
-      {status !== 'AUTHENTICATED' && (
-        <WalletModal
-          isOpen={status === 'CONNECTING'}
-          onClose={!isBlocked ? onUnauthenticated : onCloseModalWhenBlocked}
-          onSuccess={onAuthenticated}
-        />
-      )}
+      <AuthConnectingModal
+        step={authStep}
+        error={error}
+        isOpen={
+          authStep === 'get-nonce' ||
+          authStep === 'send-signature' ||
+          authStep === 'get-me' ||
+          authStep === 'error'
+        }
+        onRetry={onSignOut}
+      />
+      <BlockedPage isBlocked={isBlocked} />
     </AuthContext.Provider>
   );
 }
