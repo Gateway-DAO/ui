@@ -15474,7 +15474,7 @@ next-progress@^2.2.0:
   resolved "https://registry.yarnpkg.com/next-progress/-/next-progress-2.2.0.tgz#8b764c3c9b24834d251dfe508112314ec1c756bf"
   integrity sha512-g6VBoaj2SfUhKiBSJW/7ju06Ks3r3mUK79HdrLJ7fmvnjeyHPViAKLQDsMN1QIoBcTqN1hR7A8sISiMfm01qmQ==
   dependencies:
-    nprogress "^0.2.0"
+    universal-cookie "^4.0.2"
 
 next-share@^0.18.1:
   version "0.18.1"
@@ -15510,6 +15510,14 @@ next@^12.1.6:
     "@next/swc-win32-arm64-msvc" "12.1.6"
     "@next/swc-win32-ia32-msvc" "12.1.6"
     "@next/swc-win32-x64-msvc" "12.1.6"
+
+nextjs-progressbar@^0.0.14:
+  version "0.0.14"
+  resolved "https://registry.yarnpkg.com/nextjs-progressbar/-/nextjs-progressbar-0.0.14.tgz#cc2630ee4e9dec598314394bd0fffb0cbfc40444"
+  integrity sha512-AXYXHDN6M52AwFnGqH/vlwyo0gbC9zM7QS/4ryOTI0RUqfze5FJl8uSrxKJMzK6hGFdDeQXcZoWsLGXeCVtTwg==
+  dependencies:
+    nprogress "^0.2.0"
+    prop-types "^15.7.2"
 
 nice-try@^1.0.4:
   version "1.0.5"
