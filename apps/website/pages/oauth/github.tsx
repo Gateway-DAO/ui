@@ -1,6 +1,8 @@
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
+import { Stack, Typography } from '@mui/material';
+
 function GithubAuthPage() {
   const router = useRouter();
 
@@ -39,7 +41,13 @@ function GithubAuthPage() {
 
     fetchToken();
   }, [code]);
-  return <p>Loading</p>;
+  return (
+    <Stack sx={{ textAlign: 'center' }}>
+      <Typography variant="h6" padding={'10px 0'}>
+        Loading...
+      </Typography>
+    </Stack>
+  );
 }
 
 export default GithubAuthPage;
