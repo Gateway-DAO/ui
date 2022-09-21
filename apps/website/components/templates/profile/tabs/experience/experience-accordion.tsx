@@ -15,11 +15,13 @@ import { MintCard } from '../../../../molecules/mint-card';
 
 type Props = {
   experience: PartialDeep<Experiences>;
+  index: Number;
 };
 
-export function ExperienceAccordion({ experience }: Props) {
+export function ExperienceAccordion({ experience, index }: Props) {
   return (
     <Accordion
+      defaultExpanded={index === 0 ? true : false}
       sx={{
         display: 'flex',
         flexDirection: 'column',

@@ -255,8 +255,11 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
           }}
         >
           <Box>
-            <Typography component="h2" variant="h5">
-              Details
+            <Typography component="h2" variant="h5" gutterBottom>
+              Add details
+            </Typography>
+            <Typography variant="body2" color={'text.secondary'}>
+              Add the details of the credential
             </Typography>
           </Box>
           <Stack
@@ -295,15 +298,26 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
               sx={(theme) => ({
                 width: '100%',
                 display: { xs: 'block', md: 'flex' },
-                p: '0 90px',
                 [theme.breakpoints.down('sm')]: { p: '0 20px' },
               })}
             >
               <Box
-                sx={{ minWidth: { lg: '20%' }, marginBottom: { xs: '40px' } }}
+                sx={{
+                  maxWidth: {
+                    lg: `15%`,
+                  },
+                }}
               >
-                <Typography component="h2" variant="h5">
-                  Tasks
+                <Typography component="h2" variant="h5" gutterBottom>
+                  Set requirements
+                </Typography>
+                <Typography
+                  variant="body2"
+                  color={'text.secondary'}
+                  marginBottom={4}
+                >
+                  Define the requirements that the user must meet to obtain the
+                  credential
                 </Typography>
               </Box>
               <Stack

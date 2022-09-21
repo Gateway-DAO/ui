@@ -10,36 +10,20 @@ import { DashboardTemplate } from '../../components/templates/dashboard';
 import { GateViewTemplate } from '../../components/templates/gate-view';
 import { ROUTES } from '../../constants/routes';
 import { useAuth } from '../../providers/auth';
-import {
-  gqlAnonMethods,
-  gqlMethods,
-  gqlMethodsWithRefresh,
-} from '../../services/api';
+import { gqlAnonMethods, gqlMethods } from '../../services/api';
+import { getServerSession } from '../../services/next-auth';
 
 export async function getServerSideProps({ req, res, params }) {
   const { id } = params;
   const queryClient = new QueryClient();
 
+  const session = await getServerSession(req, res);
+
   let gate;
 
   try {
-    gate = await (req.cookies.token
-      ? gqlMethodsWithRefresh(
-          req.cookies.token,
-          req.cookies.refresh,
-          req.cookies.user_id,
-          async ({ refresh_token, token }) => {
-            res.setHeader('Set-Cookie', [
-              `refresh=${refresh_token}; path=/; httpOnly; SameSite=Strict;`,
-              `token=${token}; path=/; httpOnly; SameSite=Strict;`,
-            ]);
-
-            await queryClient.prefetchQuery(['token'], () => ({
-              refresh_token,
-              token,
-            }));
-          }
-        )
+    gate = await (session
+      ? gqlMethods(session.token, session.user_id)
       : gqlAnonMethods
     ).gate({ id });
   } catch (e) {

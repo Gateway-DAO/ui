@@ -5,10 +5,10 @@ import { NavBarAvatar } from './navbar-avatar';
 import { NavBarNotifications } from './navbar-notifications/navbar-notifications';
 
 export function ClientNav() {
-  const { onOpenLogin, status } = useAuth();
+  const { onOpenLogin, me } = useAuth();
   return (
     <>
-      {status === 'AUTHENTICATED' && typeof window !== 'undefined' ? (
+      {typeof window !== 'undefined' && me ? (
         <>
           <NavBarNotifications />
           <NavBarAvatar />
