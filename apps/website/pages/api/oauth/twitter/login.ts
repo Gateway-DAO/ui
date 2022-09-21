@@ -19,7 +19,7 @@ export default async function handler(_req, res) {
     const response: any = await client.getRequestToken(
       `${
         process.env.NEXT_PUBLIC_VERCEL_URL || 'https://www.mygateway.xyz/'
-      }/following`
+      }/oauth/twitter/following`
     );
     res.status(200).json({
       oauth_token: response.oauth_token,
