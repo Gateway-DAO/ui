@@ -1,12 +1,13 @@
 import { useEffect, useMemo, useState } from 'react';
 
+import { useQuery } from '@tanstack/react-query';
 import { MdVerified } from 'react-icons/md';
+import { useLocalStorage } from 'react-use';
 
 import { Avatar, Box, Button, Stack, Typography } from '@mui/material';
 
 import { LoadingButton } from '../../../../../../components/atoms/loading-button';
 import { useAuth } from '../../../../../../providers/auth';
-import { useQuery } from '@tanstack/react-query';
 
 type TwitterFollowData = {
   twitter_follow: boolean;
@@ -21,92 +22,73 @@ const TwitterFollowContent = ({
   isLoading,
   isAdmin,
 }) => {
-  const [twitterKeys, setTwitterKeys] = useState(null);
   const { gqlAuthMethods } = useAuth();
   const formattedDate = new Date(updatedAt.toLocaleString()).toLocaleString();
-  const [twitterData, setTwitterData] = useState(null);
+  const [twitterKeys] = useLocalStorage<any>('twitter');
+  const [_redirectURL, setRedirectURL] = useLocalStorage('redirectURL', null, {
+    raw: true,
+  });
 
-  const getTwitterData = useQuery(['twitter-data'], async () => {
+  const { data: twitterData } = useQuery(['twitter-data'], async () => {
     try {
       const username = data.username;
       const response = await gqlAuthMethods.twitter_data({
         userName: username,
       });
-      return setTwitterData(response.get_twitter_user_data);
+      return response.get_twitter_user_data;
     } catch (error) {
       throw Error(error);
     }
   });
 
-  // const getTwitterData = async () => {
-  //   try {
-  //     const username = data.username;
-  //     const response = await gqlAuthMethods.twitter_data({
-  //       userName: username,
-  //     });
-  //     return setTwitterData(response.get_twitter_user_data);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-
-  const connectTwitter = useQuery(['connect-twitter'], async () => {
-    try {
-      const response = await fetch('/api/oauth/twitter/login');
-      const data = await response.json();
-
-      if (typeof window !== 'undefined') {
-        window.localStorage.setItem('redirectURL', window.location.href);
+  const connectTwitter = useQuery(
+    ['connect-twitter'],
+    async () => {
+      try {
+        const response = await fetch('/api/oauth/twitter/login');
+        const data = await response.json();
+        setRedirectURL(window.location.href);
+        if (data.confirmed) {
+          window.location.href = data.callbackURL;
+        }
+        return data;
+      } catch (error) {
+        console.log(error);
       }
-      if (data.confirmed && window.localStorage.getItem('redirectURL')) {
-        window.location.href = data.callbackURL;
-      }
-    } catch (error) {
-      throw Error(error);
+    },
+    {
+      enabled: false,
     }
-  });
+  );
 
-  // const connectTwitter = async () => {
-  //   try {
-  //     const response = await fetch('/api/oauth/twitter/login');
-  //     const data = await response.json();
+  const checkTwitterFollow = useQuery(
+    ['check-twitter-follow'],
+    async () => {
+      try {
+        const twitterLocalStorage = twitterKeys;
+        const response = await fetch('/api/oauth/twitter/follow', {
+          method: 'POST',
+          body: JSON.stringify({
+            accTkn: twitterLocalStorage.accTkn,
+            accTknSecret: twitterLocalStorage.accTknSecret,
+            source_id: twitterLocalStorage.userId,
+            target_id: twitterData.id,
+          }),
+        });
 
-  //     if (typeof window !== 'undefined') {
-  //       window.localStorage.setItem('redirectURL', window.location.href);
-  //     }
-  //     if (data.confirmed && window.localStorage.getItem('redirectURL')) {
-  //       window.location.href = data.callbackURL;
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
+        const data: TwitterFollowData = await response.json();
 
-  const checkTwitterFollow = async () => {
-    try {
-      const twitterLocalStorage = JSON.parse(
-        window.localStorage.getItem('twitter')
-      );
-
-      const response = await fetch('/api/oauth/twitter/follow', {
-        method: 'POST',
-        body: JSON.stringify({
-          accTkn: twitterLocalStorage.accTkn,
-          accTknSecret: twitterLocalStorage.accTknSecret,
-          source_id: twitterLocalStorage.userId,
-          target_id: twitterData.id,
-        }),
-      });
-
-      const data: TwitterFollowData = await response.json();
-
-      if (data.twitter_follow) {
-        completeTask({ twitter_follow: data.twitter_follow });
+        if (data.twitter_follow) {
+          completeTask({ twitter_follow: data.twitter_follow });
+        }
+      } catch (error) {
+        console.log(error);
       }
-    } catch (error) {
-      console.log(error);
+    },
+    {
+      enabled: false,
     }
-  };
+  );
 
   const numberFormat = (value: number) => {
     if (value < 10000) {
@@ -117,19 +99,6 @@ const TwitterFollowContent = ({
       return `${(value / 1000000).toFixed(1)}M`;
     }
   };
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const twitter = JSON.parse(window.localStorage.getItem('twitter'));
-      if (twitter) {
-        setTwitterKeys(twitter);
-      }
-    }
-  }, []);
-
-  useMemo(() => {
-    getTwitterData.refetch();
-  }, []);
 
   return (
     <Stack marginTop={5} alignItems="start">
@@ -268,7 +237,7 @@ const TwitterFollowContent = ({
         <LoadingButton
           variant="contained"
           sx={{ marginTop: '15px' }}
-          onClick={() => checkTwitterFollow()}
+          onClick={() => checkTwitterFollow.refetch()}
           isLoading={isLoading}
         >
           VERIFY
