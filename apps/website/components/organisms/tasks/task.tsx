@@ -176,6 +176,7 @@ export function Task({
       sx={(theme) => ({
         borderRadius: 0,
         borderLeft: 'none',
+        borderTop : 'none',
         backgroundColor: 'transparent !important',
         backgroundImage: 'none !important',
         px: { xs: theme.spacing(1), md: theme.spacing(7) },
