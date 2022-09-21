@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { ReactElement, ReactNode, useEffect } from 'react';
 
 import { useFormContext } from 'react-hook-form';
 
@@ -14,7 +14,7 @@ type Props = {
   showGateData?: boolean;
   sx?: GatewaySxProps;
   draftImage?: string;
-  label?: string;
+  label?: string | ReactElement;
 };
 
 export function GateImageCard({
