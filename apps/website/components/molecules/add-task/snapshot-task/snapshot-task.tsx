@@ -16,6 +16,8 @@ import {
   Switch,
   FormControlLabel,
   FormLabel,
+  RadioGroup,
+  Radio,
 } from '@mui/material';
 
 import { CircleWithNumber } from '../../../atoms/circle-with-number';
@@ -163,15 +165,39 @@ const SnapshotTask = ({ taskId, deleteTask }) => {
           error={!!errors.tasks?.data[taskId]?.description}
           helperText={errors.tasks?.data[taskId]?.description?.message}
           sx={{
-            marginBottom: '60px',
+            marginBottom: 8,
             '& fieldset legend span': {
               marginRight: '10px',
             },
           }}
         />
+
+        <FormLabel sx={{ mb: 1 }}>Verify if user</FormLabel>
+        <RadioGroup
+          row
+          name={`tasks.data.${taskId}.task_data.type`}
+          defaultValue={'vote'}
+          sx={{ ml: 1 }}
+          onChange={(e) => {
+            setValue(`tasks.data.${taskId}.task_data.type`, e.target.value);
+          }}
+        >
+          <FormControlLabel
+            value="proposal"
+            control={<Radio />}
+            label="Created Proposal"
+          />
+          <FormControlLabel
+            value="vote"
+            control={<Radio />}
+            label="Voted for Proposal"
+          />
+        </RadioGroup>
+
         <Stack
           direction={{ xs: 'column', md: 'row' }}
           justifyContent="space-between"
+          marginTop={2}
         >
           <Stack direction="column" order={{ xs: 1, md: 0 }}>
             <TextField
@@ -198,31 +224,6 @@ const SnapshotTask = ({ taskId, deleteTask }) => {
                 the proposal number
               </Typography>
             )}
-          </Stack>
-          <Stack
-            direction="row"
-            alignItems="center"
-            sx={{
-              marginBottom: { xs: 2, md: 0 },
-            }}
-          >
-            <Typography variant="body2">Created Proposal</Typography>
-            <Controller
-              control={control}
-              defaultValue="proposal"
-              name={`tasks.data.${taskId}.task_data.type`}
-              rules={{ required: true }}
-              render={({ field: { onChange, value } }) => (
-                <Switch
-                  value={value == 'vote'}
-                  onChange={(e) => {
-                    const type = e.target.checked ? 'vote' : 'proposal';
-                    setValue(`tasks.data.${taskId}.task_data.type`, type);
-                  }}
-                />
-              )}
-            />
-            <Typography variant="body2">Voted for Proposal</Typography>
           </Stack>
         </Stack>
       </FormControl>
