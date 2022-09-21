@@ -221,8 +221,10 @@ const twitterTweetTaskDataSchema = z.object({
 const twitterRetweetTaskDataSchema = z.object({
   tweet_link: z
     .string()
-    .min(3, 'The tweet link must contain at least 3 character(s)')
-    .max(280, 'The tweet link must contain until 280 character(s)'),
+    .url('Invalid URL')
+    .refine((val) => val.includes('twitter.com'), {
+      message: 'This is not a Twitter URL',
+    }),
 });
 
 const fileTaskDataSchema = z.object({

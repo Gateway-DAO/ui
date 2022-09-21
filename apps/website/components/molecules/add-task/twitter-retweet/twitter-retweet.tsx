@@ -1,5 +1,5 @@
 import dynamic from 'next/dynamic';
-import { useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 
 import { useFormContext } from 'react-hook-form';
 
@@ -7,6 +7,7 @@ import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import {
   Box,
+  CircularProgress,
   FormControl,
   IconButton,
   InputAdornment,
@@ -33,7 +34,7 @@ const TwitterRetweetTask = ({ taskId, deleteTask }) => {
     register,
     setValue,
     getValues,
-
+    clearErrors,
     formState: { errors },
   } = useFormContext<CreateGateTypes>();
 
@@ -46,6 +47,7 @@ const TwitterRetweetTask = ({ taskId, deleteTask }) => {
   }, [setValue, taskId, formValues.tasks.data]);
 
   const [taskVisible, setTaskVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [tweetLink, setTweetLink] = useState('');
 
   return (
@@ -180,15 +182,19 @@ const TwitterRetweetTask = ({ taskId, deleteTask }) => {
           value={tweetLink}
           {...register(`tasks.data.${taskId}.task_data.tweet_link`)}
           error={
-            !!(errors.tasks?.data[taskId]?.task_data as TwitterRetweetDataError)
-              ?.tweet_link
+            !!(errors.tasks?.data[taskId]?.task_data as TwitterRetweetDataError)?.tweet_link
           }
           helperText={
-            (errors.tasks?.data[taskId]?.task_data as TwitterRetweetDataError)
-              ?.tweet_link?.message
+            (errors.tasks?.data[taskId]?.task_data as TwitterRetweetDataError)?.tweet_link?.message
           }
           onChange={(event) => {
+            setIsLoading(true);
+            clearErrors(`tasks.data.${taskId}.task_data.tweet_link`);
             setTweetLink(event.target.value);
+            console.log(errors);
+          }}
+          onBlurCapture={(event) => {
+            setIsLoading(false);
           }}
           sx={{
             marginBottom: '10px',
@@ -202,6 +208,7 @@ const TwitterRetweetTask = ({ taskId, deleteTask }) => {
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
+                {isLoading && <CircularProgress size={20} /> }
               </InputAdornment>
             ),
           }}
