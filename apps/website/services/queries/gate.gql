@@ -59,3 +59,11 @@ query gate($id: uuid!) {
     }
   }
 }
+
+query GateProgress($gateID: uuid!, $userID: uuid!) {
+  gate_progress(
+    where: { gate_id: { _eq: $gateID }, user_id: { _eq: $userID } }
+  ) {
+    completed_at
+  }
+}

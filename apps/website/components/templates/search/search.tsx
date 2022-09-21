@@ -58,13 +58,13 @@ export function SearchTemplate({ query }: TemplateProps) {
     () => [
       {
         key: 'gates',
-        label: t('common:tabs.organizations'),
+        label: t('common:tabs.credentials'),
         section: <GatesTab data={data?.gates.hits} />,
         count: data?.gates.hits.length,
       },
       {
         key: 'daos',
-        label: t('common:tabs.daos'),
+        label: t('common:tabs.organizations'),
         section: <DaosTab data={data?.daos.hits} />,
         count: data?.daos.hits.length,
       },
