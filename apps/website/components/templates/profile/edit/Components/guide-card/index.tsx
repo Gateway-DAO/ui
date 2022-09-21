@@ -56,14 +56,14 @@ export function GuideCard({ setShowCard }) {
 
   const handleCardProgress = (move: string) => {
     if (move === 'next') {
-      return progress == details.length
+      return progress == details.length - 1
         ? setProgress(0)
         : setProgress(progress + 1);
     }
 
     if (move === 'previous') {
       return progress == 0
-        ? setProgress(details.length)
+        ? setProgress(details.length - 1)
         : setProgress(progress - 1);
     }
   };
@@ -72,7 +72,7 @@ export function GuideCard({ setShowCard }) {
     if (link == 'contribute') {
       return `${ROUTES.EXPLORE}`;
     }
-    return `${ROUTES.PROFILE_EDIT + details[progress]?.link}`;
+    return `${ROUTES.PROFILE_EDIT + details?.[progress]?.link}`;
   };
 
   return (
@@ -110,7 +110,7 @@ export function GuideCard({ setShowCard }) {
           }}
         >
           <Typography variant="caption" component="div" color="text.secondary">
-            {progress} / {details.length}
+            {progress + 1} / {details.length}
           </Typography>
         </Box>
       </Box>
