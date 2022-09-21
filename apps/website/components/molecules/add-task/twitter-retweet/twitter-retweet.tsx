@@ -191,7 +191,6 @@ const TwitterRetweetTask = ({ taskId, deleteTask }) => {
             setIsLoading(true);
             clearErrors(`tasks.data.${taskId}.task_data.tweet_link`);
             setTweetLink(event.target.value);
-            console.log(errors);
           }}
           onBlurCapture={(event) => {
             setIsLoading(false);
