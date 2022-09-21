@@ -23,12 +23,12 @@ type GithubDataCardProps = {
 
 const GithubDataCard = ({ data }: GithubDataCardProps) => {
   const repository = {
-    name: data.name || '',
-    description: data.description || '',
-    language: data.language || '',
-    url: data.html_url || '',
-    stars_count: data.stargazers_count || 0,
-    forks_count: data.forks_count || 0,
+    name: data?.name || '',
+    description: data?.description || '',
+    language: data?.language || '',
+    url: data?.html_url || '',
+    stars_count: data?.stargazers_count || 0,
+    forks_count: data?.forks_count || 0,
   };
 
   return (

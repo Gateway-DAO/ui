@@ -286,7 +286,8 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
         </Stack>
 
         {/* Tasks */}
-        {hasTitleAndDescription && (
+        {(hasTitleAndDescription ||
+          (gateDetails.title && gateDetails.description)) && (
           <>
             <Divider sx={{ margin: '60px 0', width: '100%' }} />
             <Stack
