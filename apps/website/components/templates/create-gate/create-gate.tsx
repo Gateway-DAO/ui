@@ -281,13 +281,16 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
             <GateImageCard
               draftImage={oldData.image}
               label={
-                <Typography textAlign={'center'} paddingX={4}>
-                  Drop or{' '}
-                  <Typography color={'primary'} display={'inline'}>
-                    upload
-                  </Typography>{' '}
-                  your credential image
-                </Typography>
+                <>
+                  <Typography textAlign={'center'} paddingX={4}>
+                    Drop or{' '}
+                    <Typography color={'primary'} display={'inline'}>
+                      upload
+                    </Typography>{' '}
+                    your credential image
+                  </Typography>
+                
+                </>
               }
               sx={{
                 width: 300,
