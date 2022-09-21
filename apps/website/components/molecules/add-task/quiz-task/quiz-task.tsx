@@ -62,7 +62,7 @@ export function QuizTask({
 
   useEffect(() => {
     if (formValues.tasks.data[taskId]?.title === '') {
-      setValue(`tasks.data.${taskId}.title`, 'Untitled Task');
+      setValue(`tasks.data.${taskId}.title`, 'Untitled Requirement');
     }
   }, [setValue, taskId, formValues.tasks.data]);
 
@@ -185,7 +185,7 @@ export function QuizTask({
           minRows={3}
           fullWidth
           required
-          label="Task description"
+          label="Requirement Description"
           id="quiz-description"
           {...register(`tasks.data.${taskId}.description`)}
           error={!!errors.tasks?.data?.[taskId]?.description}

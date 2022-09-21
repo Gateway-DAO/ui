@@ -73,6 +73,9 @@ export function PeopleTab() {
           '& .MuiTableCell-root:last-of-type': {
             pr: TOKENS.CONTAINER_PX,
           },
+          '::-webkit-scrollbar': {
+            display: 'none',
+          },
         }}
       >
         <Table stickyHeader aria-label="sticky table">

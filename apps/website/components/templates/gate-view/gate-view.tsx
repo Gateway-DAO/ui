@@ -342,16 +342,15 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
                 </Grid>
                 <Grid item xs={8}>
                   <AvatarGroup
-                    total={
-                      gateProps?.holders.length >= 5
-                        ? 5
-                        : gateProps?.holders.length
-                    }
+                    total={gateProps?.holders.length}
+                    spacing={'medium'}
+                    max={4}
                     sx={{
                       justifyContent: 'flex-end',
                     }}
                   >
-                    {gateProps?.holders.map((holder) => {
+                    {gateProps?.holders.map((holder, index) => {
+                      if (index == 3) return;
                       return (
                         <Link
                           key={holder.id}

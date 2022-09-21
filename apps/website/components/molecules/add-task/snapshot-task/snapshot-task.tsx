@@ -40,7 +40,7 @@ const SnapshotTask = ({ taskId, deleteTask }) => {
 
   useEffect(() => {
     if (formValues.tasks.data[taskId]?.title === '') {
-      setValue(`tasks.data.${taskId}.title`, 'Untitled Task');
+      setValue(`tasks.data.${taskId}.title`, 'Untitled Requirement');
     }
     setValue(`tasks.data.${taskId}.task_type`, 'snapshot');
   }, [taskId, setValue, formValues.tasks.data]);
@@ -157,7 +157,7 @@ const SnapshotTask = ({ taskId, deleteTask }) => {
           required
           multiline
           minRows={3}
-          label="Task Description"
+          label="Task Requirement"
           id="task-description"
           {...register(`tasks.data.${taskId}.description`)}
           error={!!errors.tasks?.data[taskId]?.description}
