@@ -23,6 +23,7 @@ import {
   TwitterFollowData,
   TwitterFollowDataError,
 } from '../../../templates/create-gate/schema';
+import { useQuery } from '@tanstack/react-query';
 
 interface TwitterData {
   description: string;
@@ -58,7 +59,7 @@ export const FollowProfile = ({ taskId, deleteTask }) => {
     setValue(`tasks.data.${taskId}.title`, 'Untitled Task');
   }, [setValue, taskId]);
 
-  const getTwitterData = async () => {
+  const getTwitterData = useQuery(['twitter-data'], async () => {
     setLoading(true);
     try {
       const username = getValues(`tasks.data.${taskId}.task_data.username`);
@@ -69,7 +70,6 @@ export const FollowProfile = ({ taskId, deleteTask }) => {
       return setTwitterData(response.get_twitter_user_data);
     } catch (error) {
       setLoading(false);
-      console.log(error);
       if (error.message.includes('User is protected')) {
         return setError(`tasks.data.${taskId}.task_data.username`, {
           message: 'User is protected',
@@ -79,10 +79,33 @@ export const FollowProfile = ({ taskId, deleteTask }) => {
         message: 'User not found',
       });
     }
-  };
+  });
+
+  // const getTwitterData = async () => {
+  //   setLoading(true);
+  //   try {
+  //     const username = getValues(`tasks.data.${taskId}.task_data.username`);
+  //     const response = await gqlAuthMethods.twitter_data({
+  //       userName: username,
+  //     });
+  //     setLoading(false);
+  //     return setTwitterData(response.get_twitter_user_data);
+  //   } catch (error) {
+  //     setLoading(false);
+  //     console.log(error);
+  //     if (error.message.includes('User is protected')) {
+  //       return setError(`tasks.data.${taskId}.task_data.username`, {
+  //         message: 'User is protected',
+  //       });
+  //     }
+  //     return setError(`tasks.data.${taskId}.task_data.username`, {
+  //       message: 'User not found',
+  //     });
+  //   }
+  // };
 
   const delayedQuery = useCallback(
-    debounce(() => getTwitterData(), 500),
+    debounce(() => getTwitterData.refetch(), 500),
     []
   );
 

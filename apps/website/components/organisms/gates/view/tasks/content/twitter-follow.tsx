@@ -6,6 +6,7 @@ import { Avatar, Box, Button, Stack, Typography } from '@mui/material';
 
 import { LoadingButton } from '../../../../../../components/atoms/loading-button';
 import { useAuth } from '../../../../../../providers/auth';
+import { useQuery } from '@tanstack/react-query';
 
 type TwitterFollowData = {
   twitter_follow: boolean;
@@ -25,20 +26,31 @@ const TwitterFollowContent = ({
   const formattedDate = new Date(updatedAt.toLocaleString()).toLocaleString();
   const [twitterData, setTwitterData] = useState(null);
 
-  const getTwitterData = async () => {
+  const getTwitterData = useQuery(['twitter-data'], async () => {
     try {
       const username = data.username;
       const response = await gqlAuthMethods.twitter_data({
         userName: username,
       });
-
       return setTwitterData(response.get_twitter_user_data);
     } catch (error) {
-      console.log(error);
+      throw Error(error);
     }
-  };
+  });
 
-  const connectTwitter = async () => {
+  // const getTwitterData = async () => {
+  //   try {
+  //     const username = data.username;
+  //     const response = await gqlAuthMethods.twitter_data({
+  //       userName: username,
+  //     });
+  //     return setTwitterData(response.get_twitter_user_data);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+
+  const connectTwitter = useQuery(['connect-twitter'], async () => {
     try {
       const response = await fetch('/api/oauth/twitter/login');
       const data = await response.json();
@@ -50,9 +62,25 @@ const TwitterFollowContent = ({
         window.location.href = data.callbackURL;
       }
     } catch (error) {
-      console.log(error);
+      throw Error(error);
     }
-  };
+  });
+
+  // const connectTwitter = async () => {
+  //   try {
+  //     const response = await fetch('/api/oauth/twitter/login');
+  //     const data = await response.json();
+
+  //     if (typeof window !== 'undefined') {
+  //       window.localStorage.setItem('redirectURL', window.location.href);
+  //     }
+  //     if (data.confirmed && window.localStorage.getItem('redirectURL')) {
+  //       window.location.href = data.callbackURL;
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   const checkTwitterFollow = async () => {
     try {
@@ -100,7 +128,7 @@ const TwitterFollowContent = ({
   }, []);
 
   useMemo(() => {
-    getTwitterData();
+    getTwitterData.refetch();
   }, []);
 
   return (
@@ -215,7 +243,7 @@ const TwitterFollowContent = ({
                     your Twitter account.
                   </Typography>
                   <Button
-                    onClick={() => connectTwitter()}
+                    onClick={() => connectTwitter.refetch()}
                     sx={{
                       background: (theme) => theme.palette.secondary.main,
                       color: 'black',
