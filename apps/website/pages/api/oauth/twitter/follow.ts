@@ -35,7 +35,7 @@ export default async function handler(req, res) {
     }
     return res.status(200).json({ twitter_follow: false });
   } catch (error) {
-    res.status(400).json(error);
     console.log(error);
+    res.status(400).json(error);
   }
 }
