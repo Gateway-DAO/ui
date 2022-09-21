@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import { useFormContext } from 'react-hook-form';
 
@@ -34,44 +34,61 @@ const GithubContributeTask = ({ taskId, deleteTask }) => {
 
   const [githubData, setGithubData] = useState(null);
 
-  const fetchRepositoryData = async (repository_url) => {
-    const isValid = await trigger(
-      `tasks.data.${taskId}.task_data.repository_link`
-    );
+  const fetchRepositoryData = useCallback(
+    async (repository_url) => {
+      const isValid = await trigger(
+        `tasks.data.${taskId}.task_data.repository_link`
+      );
 
-    if (!isValid) {
-      setGithubData(null);
+      if (!isValid) {
+        setGithubData(null);
+        return;
+      }
+
+      const repository_owner = repository_url
+        .replace('https://github.com/', '')
+        .split('/')[0];
+      const repository_name = repository_url
+        .replace('https://github.com/', '')
+        .split('/')[1];
+
+      const fetch_url = `https://api.github.com/repos/${repository_owner}/${repository_name}`;
+      const data = await fetch(fetch_url);
+
+      if (data.status !== 200) {
+        setError(`tasks.data.${taskId}.task_data.repository_link`, {
+          type: 'custom',
+          message: 'Repository private or not found.',
+        });
+        setGithubData(null);
+        return;
+      }
+
+      setGithubData(await data.json());
       return;
-    }
-
-    const repository_owner = repository_url
-      .replace('https://github.com/', '')
-      .split('/')[0];
-    const repository_name = repository_url
-      .replace('https://github.com/', '')
-      .split('/')[1];
-
-    const fetch_url = `https://api.github.com/repos/${repository_owner}/${repository_name}`;
-    const data = await fetch(fetch_url);
-
-    if (data.status !== 200) {
-      setError(`tasks.data.${taskId}.task_data.repository_link`, {
-        type: 'custom',
-        message: 'Repository private or not found.',
-      });
-      setGithubData(null);
-      return;
-    }
-
-    setGithubData(await data.json());
-    return;
-  };
+    },
+    [setError, taskId, trigger]
+  );
 
   useEffect(() => {
     if (formValues.tasks.data[taskId]?.title === '') {
       setValue(`tasks.data.${taskId}.title`, 'Untitled Task');
     }
-  }, [setValue, taskId, formValues.tasks.data]);
+
+    const isValid = trigger(`tasks.data.${taskId}.task_data.repository_link`);
+    if (isValid) {
+      fetchRepositoryData(
+        getValues(`tasks.data.${taskId}.task_data.repository_link`)
+      );
+    }
+  }, [
+    setValue,
+    taskId,
+    formValues.tasks.data,
+    fetchRepositoryData,
+    getValues,
+    trigger,
+  ]);
 
   const [taskVisible, setTaskVisible] = useState(false);
 
