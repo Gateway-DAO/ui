@@ -15,7 +15,9 @@ const GithubContributeContent = ({
   isLoading,
 }) => {
   const formattedDate = new Date(updatedAt.toLocaleString()).toLocaleString();
-  const githubAccessToken = window.localStorage.getItem('github_access_token');
+  const githubAccessToken = JSON.parse(
+    window.localStorage.getItem('github_access_token')
+  );
   const { repository_link } = data;
 
   const [repository, setRepository] = useState({
