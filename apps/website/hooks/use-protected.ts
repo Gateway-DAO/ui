@@ -7,29 +7,29 @@ import { useAuth } from '../providers/auth';
 /* PAuthenticated only method execution,  */
 export function useProtected(protectedCallback: (...e: any[]) => void) {
   const [isHanging, toggleHanging] = useToggle(false);
-  const { status, onOpenLogin } = useAuth();
+  const { me, onOpenLogin } = useAuth();
 
   const method = useCallback(
     (...e: any[]) => {
-      if (status !== 'AUTHENTICATED') {
+      if (me) {
         onOpenLogin();
         toggleHanging(true);
         return;
       }
       protectedCallback(...e);
     },
-    [status, protectedCallback, onOpenLogin, toggleHanging]
+    [me, protectedCallback, onOpenLogin, toggleHanging]
   );
 
   useEffect(() => {
-    if (isHanging && status === 'AUTHENTICATED') {
+    if (isHanging && me) {
       protectedCallback();
       toggleHanging(false);
     }
-    if (isHanging && status == 'UNAUTHENTICATED') {
+    if (isHanging && !me) {
       toggleHanging(false);
     }
-  }, [protectedCallback, isHanging, status, toggleHanging]);
+  }, [protectedCallback, isHanging, me, toggleHanging]);
 
   return method;
 }

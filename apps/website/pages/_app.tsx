@@ -1,37 +1,29 @@
 /* eslint-disable @next/next/inline-script-id */
 import { AppProps as NextAppProps } from 'next/app';
 import Head from 'next/head';
-import { useRouter } from 'next/router';
 import Script from 'next/script';
-import NextProgress from 'next-progress';
+import NextNProgress from 'nextjs-progressbar';
 
-import { WagmiConfig } from 'wagmi';
+import { Hydrate, QueryClientProvider } from '@tanstack/react-query';
 
 import { ThemeProvider } from '@gateway/theme';
-
-import { useTheme } from '@mui/material';
 
 import { SEOSocial, SEOFavicon } from '../components/atoms/seo';
 import { NavStateProvider } from '../hooks/use-nav';
 import { usePersistLocale } from '../hooks/usePersistLocale';
 import { AuthProvider } from '../providers/auth';
+import { BiconomyProvider } from '../providers/biconomy';
 import { CyberConnectProvider } from '../providers/cyberconnect';
+import { WalletProvider } from '../providers/wallet/wallet-provider';
 import { queryClient } from '../services/query-client';
-import { web3client } from '../services/web3/client';
-
 import '../components/atoms/global-dependencies';
 import '../styles/next.css';
-import { BiconomyProvider } from '../providers/biconomy';
-
-import { Hydrate, QueryClientProvider } from '@tanstack/react-query';
 
 type AppProps = NextAppProps & {
   Component: NextAppProps['Component'] & { auth?: boolean };
 };
 
-function CustomApp({ Component, pageProps: { ...pageProps } }: AppProps) {
-  const theme = useTheme();
-  const router = useRouter();
+function CustomApp({ Component, pageProps }: AppProps) {
   usePersistLocale();
 
   return (
@@ -42,13 +34,14 @@ function CustomApp({ Component, pageProps: { ...pageProps } }: AppProps) {
         <SEOFavicon />
         <SEOSocial />
       </Head>
-      <NextProgress
-        height="4px"
-        color={theme.palette.primary.main}
+      <NextNProgress
+        height={4}
+        color={'#9A53FF'}
         options={{ showSpinner: false }}
       />
-      <WagmiConfig client={web3client}>
-        <ThemeProvider>
+
+      <ThemeProvider>
+        <WalletProvider session={pageProps.session}>
           <QueryClientProvider client={queryClient}>
             <Hydrate state={pageProps.dehydratedState}>
               <AuthProvider isAuthPage={Component.auth}>
@@ -65,8 +58,9 @@ function CustomApp({ Component, pageProps: { ...pageProps } }: AppProps) {
               </AuthProvider>
             </Hydrate>
           </QueryClientProvider>
-        </ThemeProvider>
-      </WagmiConfig>
+        </WalletProvider>
+      </ThemeProvider>
+
       <Script
         strategy="afterInteractive"
         dangerouslySetInnerHTML={{

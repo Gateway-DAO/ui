@@ -32,7 +32,7 @@ const VerificationCodeTask = ({ taskId, deleteTask }) => {
 
   useEffect(() => {
     if (formValues.tasks.data[taskId]?.title === '') {
-      setValue(`tasks.data.${taskId}.title`, 'Untitled Task');
+      setValue(`tasks.data.${taskId}.title`, 'Untitled Requirement');
     }
   }, [setValue, taskId, formValues.tasks.data]);
 
@@ -148,7 +148,7 @@ const VerificationCodeTask = ({ taskId, deleteTask }) => {
           required
           multiline
           minRows={3}
-          label="Task Description"
+          label="Task Requirement"
           id="file-description"
           {...register(`tasks.data.${taskId}.description`)}
           error={!!errors.tasks?.data?.[taskId]?.description}
