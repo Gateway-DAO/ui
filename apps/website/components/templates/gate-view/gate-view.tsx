@@ -170,7 +170,7 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
       })
   );
 
-  const completedAt = gateProgress?.gate_progress[0].completed_at;
+  const completedAt = gateProgress?.gate_progress[0]?.completed_at;
 
   const formattedDate = new Date(completedAt?.toLocaleString()).toLocaleString(
     'en-us',
@@ -489,7 +489,7 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
             </Stack>
           </Box>
         </Stack>
-        {completedAt && (
+        {!!completedAt && (
           <Typography
             sx={{
               marginX: TOKENS.CONTAINER_PX,
