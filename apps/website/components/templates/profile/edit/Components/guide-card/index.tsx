@@ -93,7 +93,7 @@ export function GuideCard({ setShowCard }) {
         />
         <CircularProgress
           variant="determinate"
-          value={(100 / details.length) * progress}
+          value={(100 / details.length) * (progress + 1)}
           sx={{ m: 2, color: '#FFFFFF', position: 'relative' }}
           thickness={4.6}
         />
