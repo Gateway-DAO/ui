@@ -1,7 +1,5 @@
-import { useCallback } from 'react';
-
 import { useMenu } from '@gateway/ui';
-
+import useTranslation from 'next-translate/useTranslation';
 import { Edit } from '@mui/icons-material';
 import { Photo, RemoveCircle, Token } from '@mui/icons-material';
 import {
@@ -22,11 +20,12 @@ type Props = {
 
 export default function EditDropdownMenu({
   name,
-  hasImage,
+
   onClickUploadPhoto,
   onReset,
 }: Props) {
   const { element, isOpen, onClose, onOpen, withOnClose } = useMenu();
+  const { t } = useTranslation('common');
 
   return (
     <>
@@ -36,13 +35,7 @@ export default function EditDropdownMenu({
         onClick={onOpen}
         className="MuiEditButton-root"
       >
-        <Avatar
-          sx={[
-            hasImage && {
-              backgroundColor: 'primary.dark',
-            },
-          ]}
-        >
+        <Avatar>
           <Edit />
         </Avatar>
       </IconButton>
@@ -56,21 +49,21 @@ export default function EditDropdownMenu({
           <ListItemIcon>
             <Photo fontSize="small" color="secondary" />
           </ListItemIcon>
-          <ListItemText>Upload photo</ListItemText>
+          <ListItemText>{t('image-drop-field.upload-photo')}</ListItemText>
         </MenuItem>
-        {hasImage && (
-          <MenuItem onClick={withOnClose(onReset)}>
-            <ListItemIcon>
-              <RemoveCircle fontSize="small" color="secondary" />
-            </ListItemIcon>
-            <ListItemText>Remove photo</ListItemText>
-          </MenuItem>
-        )}
+
+        <MenuItem onClick={withOnClose(onReset)}>
+          <ListItemIcon>
+            <RemoveCircle fontSize="small" color="secondary" />
+          </ListItemIcon>
+          <ListItemText>{t('image-drop-field.remove-photo')}</ListItemText>
+        </MenuItem>
+
         <MenuItem disabled>
           <ListItemIcon>
             <Token fontSize="small" color="secondary" />
           </ListItemIcon>
-          <ListItemText>Select NFT (soon)</ListItemText>
+          <ListItemText>{t('image-drop-field.select-nft')}</ListItemText>
         </MenuItem>
       </Menu>
     </>

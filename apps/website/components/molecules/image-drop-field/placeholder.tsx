@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+import useTranslation from 'next-translate/useTranslation';
 
 import { UploadFileOutlined } from '@mui/icons-material';
 import { Avatar, Box, Typography } from '@mui/material';
@@ -8,6 +9,7 @@ type Props = {
 };
 
 export function Placeholder({ label }: Props) {
+  const { t } = useTranslation('common');
   return (
     <Box
       sx={{
@@ -29,7 +31,7 @@ export function Placeholder({ label }: Props) {
         paddingX={4}
         marginTop={2}
       >
-        File supported: JPG, PNG, GIF, SVG Max size: 5 MB
+        {t('image-drop-field.upload-info')}
       </Typography>
     </Box>
   );
