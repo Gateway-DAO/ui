@@ -46,7 +46,6 @@ interface TwitterData {
 
 export const FollowProfile = ({ taskId, deleteTask }) => {
   const [taskVisible, setTaskVisible] = useState(false);
-  const [twitterData, setTwitterData] = useState<TwitterData>();
   const { gqlAuthMethods } = useAuth();
   const {
     register,
@@ -60,13 +59,17 @@ export const FollowProfile = ({ taskId, deleteTask }) => {
     setValue(`tasks.data.${taskId}.title`, 'Untitled Task');
   }, [setValue, taskId]);
 
-  const getTwitterData = useMutation(['twitter-data'], async () => {
+  const {
+    mutate: getTwitterMutate,
+    data: twitterData,
+    isLoading: isLoadingTwitterData,
+  } = useMutation(['twitter-data'], async () => {
     try {
       const username = getValues(`tasks.data.${taskId}.task_data.username`);
       const response = await gqlAuthMethods.twitter_data({
         userName: username,
       });
-      return setTwitterData(response.get_twitter_user_data);
+      return response.get_twitter_user_data;
     } catch (error) {
       if (error.message.includes('User is protected')) {
         return setError(`tasks.data.${taskId}.task_data.username`, {
@@ -80,13 +83,12 @@ export const FollowProfile = ({ taskId, deleteTask }) => {
   });
 
   const delayedQuery = useCallback(
-    debounce(() => getTwitterData.mutate(), 500),
+    debounce(() => getTwitterMutate(), 500),
     []
   );
 
   const onHandleChange = () => {
     delayedQuery();
-    setTwitterData(undefined);
   };
 
   const numberFormat = (value) => {
@@ -241,7 +243,7 @@ export const FollowProfile = ({ taskId, deleteTask }) => {
             https://twitter.com/
           </Typography>
           <Stack sx={{ position: 'relative' }}>
-            {getTwitterData.isLoading && (
+            {isLoadingTwitterData && (
               <CircularProgress
                 sx={{
                   position: 'absolute',
@@ -281,18 +283,6 @@ export const FollowProfile = ({ taskId, deleteTask }) => {
               }}
             />
           </Stack>
-          {getTwitterData.isLoading && (
-            <Stack
-              sx={{
-                background: (theme) => theme.palette.background.elevated,
-                alignItems: 'center',
-                justifyContent: 'center',
-                height: '250px',
-              }}
-            >
-              <CircularProgress size={24} />
-            </Stack>
-          )}
 
           {twitterData && Object.entries(twitterData).length > 0 && (
             <Stack
