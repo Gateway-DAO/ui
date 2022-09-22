@@ -94,6 +94,15 @@ const AddTaskCard = ({ numberOfTasks, addTask }) => {
           <Paper>
             <AddTaskButton
               icon={<Twitter />}
+              title={'Follow Profile'}
+              addTask={() => addTask('twitter_follow')}
+            />
+          </Paper>
+        </Grid>
+        <Grid item xs={2} sm={4} md={4}>
+          <Paper>
+            <AddTaskButton
+              icon={<Twitter />}
               title={'Retweet Post'}
               addTask={() => addTask('twitter_retweet')}
             />

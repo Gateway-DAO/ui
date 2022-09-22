@@ -26,9 +26,10 @@ import QuizContent from '../gates/view/tasks/content/quiz';
 import SelfVerifyContent from '../gates/view/tasks/content/self-verify';
 import SnapshotContent from '../gates/view/tasks/content/snapshot';
 import TokenHoldContent from '../gates/view/tasks/content/token_hold';
+import TwitterFollowContent from '../gates/view/tasks/content/twitter-follow';
 import TwitterTweetContent from '../gates/view/tasks/content/twitter_tweet';
-import { taskErrorMessages } from './task-error-messages';
 import TwitterRetweetContent from '../gates/view/tasks/content/twitter_retweet';
+import { taskErrorMessages } from './task-error-messages';
 
 type Props = {
   idx?: number;
@@ -80,48 +81,47 @@ export function Task({
   }, [task.id, me?.task_progresses]);
 
   const getTaskContent = (task_type: string) => {
-    switch (task_type) {
-      case 'self_verify':
-        return {
-          title: 'Files & Links',
-          body: SelfVerifyContent,
-        };
-      case 'meeting_code':
-        return {
-          title: 'Verification Code',
-          body: MeetingCodeContent,
-        };
-      case 'token_hold':
-        return {
-          title: 'Hold Token',
-          body: TokenHoldContent,
-        };
-      case 'snapshot':
-        return {
-          title: 'Snapshot',
-          body: SnapshotContent,
-        };
-      case 'quiz':
-        return {
-          title: 'Quiz',
-          body: QuizContent,
-        };
-      case 'twitter_tweet':
-        return {
-          title: 'Post Tweet',
-          body: TwitterTweetContent,
-        };
-      case 'twitter_retweet':
-        return {
-          title: 'Retweet Post',
-          body: TwitterRetweetContent,
-        };
-      default:
-        return {
-          title: '',
-          body: null,
-        };
-    }
+    const taskTypes = {
+      self_verify: {
+        title: 'Files & Links',
+        body: SelfVerifyContent,
+      },
+      meeting_code: {
+        title: 'Verification Code',
+        body: MeetingCodeContent,
+      },
+      token_hold: {
+        title: 'Hold Token',
+        body: TokenHoldContent,
+      },
+      snapshot: {
+        title: 'Snapshot',
+        body: SnapshotContent,
+      },
+      quiz: {
+        title: 'Quiz',
+        body: QuizContent,
+      },
+      twitter_follow: {
+        title: 'Twitter Follow',
+        body: TwitterFollowContent,
+      },
+      twitter_retweet: {
+        title: 'Retweet Post',
+        body: TwitterRetweetContent,
+      },
+      twitter_retweet: {
+        title: 'Post Tweet',
+        body: TwitterTweetContent,
+      },
+    };
+
+    return (
+      taskTypes[task_type] || {
+        title: '',
+        body: null,
+      }
+    );
   };
 
   const { mutate: completeTaskMutation, isLoading } = useMutation(
@@ -188,7 +188,7 @@ export function Task({
       sx={(theme) => ({
         borderRadius: 0,
         borderLeft: 'none',
-        borderTop : 'none',
+        borderTop: 'none',
         backgroundColor: 'transparent !important',
         backgroundImage: 'none !important',
         px: { xs: theme.spacing(1), md: theme.spacing(7) },
