@@ -79,7 +79,6 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
 
     if (!dataIsValid) {
       const errors = methods.formState.errors;
-
       snackbar.onOpen({
         message: Object.values(errors)[0].data?.message || 'Invalid data',
       });

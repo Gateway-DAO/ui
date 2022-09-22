@@ -8,6 +8,9 @@ import {
   Box,
   FormControl,
   IconButton,
+  InputLabel,
+  MenuItem,
+  Select,
   Stack,
   TextField,
   Typography,
@@ -20,7 +23,7 @@ import {
   GithubContributeDataError,
 } from '../../../templates/create-gate/schema';
 
-const GithubContributeTask = ({ taskId, deleteTask }) => {
+const GithubPRTask = ({ taskId, deleteTask }) => {
   const {
     register,
     setValue,
@@ -131,9 +134,7 @@ const GithubContributeTask = ({ taskId, deleteTask }) => {
             })}
           />
           <Stack>
-            <Typography variant="subtitle2">
-              Contribute to Repository
-            </Typography>
+            <Typography variant="subtitle2">Verify Pull Requests</Typography>
             <TextField
               variant="standard"
               autoFocus
@@ -220,8 +221,27 @@ const GithubContributeTask = ({ taskId, deleteTask }) => {
             },
           }}
         />
-        <Typography variant="body1" sx={{ paddingBottom: 4 }}>
-          The user must contribute to the repository
+        <Typography variant="body1" sx={{ paddingBottom: 2 }}>
+          Verify if user has created and merged the number of pull requests
+        </Typography>
+        <FormControl>
+          <InputLabel htmlFor="requested_pr_amount">
+            Select the amount of Pull Requests
+          </InputLabel>
+          <Select
+            id="requested_pr_amount"
+            sx={{ maxWidth: { md: '50%', xs: '100%' } }}
+            {...register(`tasks.data.${taskId}.task_data.requested_pr_amount`)}
+          >
+            <MenuItem value={1}>1+</MenuItem>
+            <MenuItem value={5}>5+</MenuItem>
+            <MenuItem value={10}>10+</MenuItem>
+            <MenuItem value={25}>25+</MenuItem>
+            <MenuItem value={50}>50+</MenuItem>
+          </Select>
+        </FormControl>
+        <Typography variant="body1" sx={{ paddingTop: 4, paddingBottom: 2 }}>
+          Specify the repository of the pull requests
         </Typography>
         <TextField
           required
@@ -254,4 +274,4 @@ const GithubContributeTask = ({ taskId, deleteTask }) => {
   );
 };
 
-export default GithubContributeTask;
+export default GithubPRTask;

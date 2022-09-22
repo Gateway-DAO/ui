@@ -5,6 +5,7 @@ import { useFieldArray, useFormContext } from 'react-hook-form';
 import AddTaskCard from '../../molecules/add-task/add-task-card';
 import FileLinkTask from '../../molecules/add-task/file-link-task/file-link-task';
 import GithubContributeTask from '../../molecules/add-task/github/contribute-task';
+import GithubPRTask from '../../molecules/add-task/github/pr-task';
 import HoldTokenTask from '../../molecules/add-task/hold-token-task/hold-token-task';
 import {
   QuizTask,
@@ -25,6 +26,7 @@ const TaskComponents = {
   token_hold: HoldTokenTask,
   quiz: QuizTask,
   github_contribute: GithubContributeTask,
+  github_pr: GithubPRTask,
 };
 
 const defaultTaskData = (

@@ -102,6 +102,15 @@ const AddTaskCard = ({ numberOfTasks, addTask }) => {
         <Grid item xs={2} sm={4} md={4}>
           <Paper>
             <AddTaskButton
+              icon={<GitHubIcon />}
+              title={'Verify Pull Requests'}
+              addTask={() => addTask('github_pr')}
+            />
+          </Paper>
+        </Grid>
+        <Grid item xs={2} sm={4} md={4}>
+          <Paper>
+            <AddTaskButton
               icon={<StarIcon />}
               title={'Bounty'}
               disabled
