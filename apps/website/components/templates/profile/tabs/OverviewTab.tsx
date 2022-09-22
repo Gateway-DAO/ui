@@ -105,7 +105,7 @@ export function OverviewTab({ user }: Props) {
                   style={{ color: '#fff', fontSize: '20px' }}
                   variant="h2"
                 >
-                  Experiences
+                  Credentials
                 </Typography>
                 {/* comment out the Edit experiennce */}
                 {/* {canEdit && (
@@ -123,7 +123,7 @@ export function OverviewTab({ user }: Props) {
               </Box>
               {user.experiences?.length > 0 ? (
                 <Stack>
-                  {user.experiences.map((experience) => (
+                  {user.experiences.map((experience, index) => (
                     <Box
                       key={experience.id}
                       sx={{
@@ -134,7 +134,7 @@ export function OverviewTab({ user }: Props) {
                         borderColor: 'divider',
                       }}
                     >
-                      <ExperienceAccordion experience={experience} />
+                      <ExperienceAccordion {...{ experience, index }} />
                     </Box>
                   ))}
                 </Stack>

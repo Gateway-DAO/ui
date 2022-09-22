@@ -36,11 +36,13 @@ type Props = {
 export function NavBarAvatar({ hideProfile }: Props) {
   const { element, isOpen, onClose, onOpen, withOnClose } = useMenu();
 
-  const { address, connector } = useAccount();
+  const { connector } = useAccount();
   const { chain } = useNetwork();
   const { onSignOut, me } = useAuth();
   const snackbar = useSnackbar();
   const [state, copyToClipboard] = useCopyToClipboard();
+
+  const address = me?.wallet;
 
   useEffect(() => {
     if (state?.value) snackbar.onOpen({ message: 'Copied Wallet Address!' });

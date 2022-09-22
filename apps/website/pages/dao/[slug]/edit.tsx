@@ -97,6 +97,8 @@ export default function DaoProfilePage({
   );
 }
 
+DaoProfilePage.auth = true;
+
 export const getServerSideProps = async ({ params }) => {
   const { slug } = params;
 

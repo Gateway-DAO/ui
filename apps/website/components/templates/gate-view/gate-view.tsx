@@ -161,6 +161,22 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
       }
     );
 
+  const { data: gateProgress } = useQuery(
+    ['gate_progress', gateProps?.id, me?.id],
+    () =>
+      gqlAuthMethods.GateProgress({
+        gateID: gateProps?.id,
+        userID: me?.id,
+      })
+  );
+
+  const completedAt = gateProgress?.gate_progress[0].completed_at;
+
+  const formattedDate = new Date(completedAt?.toLocaleString()).toLocaleString(
+    'en-us',
+    { hour12: true }
+  );
+
   const gateOptions = [
     {
       text:
@@ -342,16 +358,15 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
                 </Grid>
                 <Grid item xs={8}>
                   <AvatarGroup
-                    total={
-                      gateProps?.holders.length >= 5
-                        ? 5
-                        : gateProps?.holders.length
-                    }
+                    total={gateProps?.holders.length}
+                    spacing={'medium'}
+                    max={4}
                     sx={{
                       justifyContent: 'flex-end',
                     }}
                   >
-                    {gateProps?.holders.map((holder) => {
+                    {gateProps?.holders.map((holder, index) => {
+                      if (index == 3) return;
                       return (
                         <Link
                           key={holder.id}
@@ -451,27 +466,43 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
             margin: { xs: '16px 16px 40px 16px', md: '60px' },
           }}
         >
-          <CircularProgressWithLabel
-            variant="determinate"
-            value={(completedTasksCount / gateProps?.tasks.length) * 100}
-            label={`${completedTasksCount}/${gateProps?.tasks.length}`}
-            size={50}
-            thickness={4}
-            sx={{
-              color: '#6DFFB9',
-            }}
-          />
-          <Stack
-            sx={{
-              marginLeft: (theme) => theme.spacing(4),
-            }}
-          >
-            <Typography variant="h6">Tasks</Typography>
-            <Typography variant="caption">
-              Complete the tasks to unlock this credential
-            </Typography>
-          </Stack>
+          <Box display={'flex'}>
+            <CircularProgressWithLabel
+              variant="determinate"
+              value={(completedTasksCount / gateProps?.tasks.length) * 100}
+              label={`${completedTasksCount}/${gateProps?.tasks.length}`}
+              size={50}
+              thickness={4}
+              sx={{
+                color: '#6DFFB9',
+              }}
+            />
+            <Stack
+              sx={{
+                marginLeft: (theme) => theme.spacing(4),
+              }}
+            >
+              <Typography variant="h6">Tasks</Typography>
+              <Typography variant="caption">
+                Complete the tasks to unlock this credential
+              </Typography>
+            </Stack>
+          </Box>
         </Stack>
+        {completedAt && (
+          <Typography
+            sx={{
+              marginX: TOKENS.CONTAINER_PX,
+              py: 1,
+              px: 4,
+              border: 1,
+              borderRadius: 1,
+            }}
+            color={'#c5ffe3'}
+          >
+            You have completed this credential at {formattedDate}
+          </Typography>
+        )}
 
         <TaskGroup>
           {gateProps?.tasks.map((task, idx) => (
