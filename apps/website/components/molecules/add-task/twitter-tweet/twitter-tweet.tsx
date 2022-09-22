@@ -1,5 +1,5 @@
 import dynamic from 'next/dynamic';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { EmojiStyle } from 'emoji-picker-react';
 import { useFormContext } from 'react-hook-form';
@@ -34,11 +34,12 @@ const TwitterTweetTask = ({ taskId, deleteTask }) => {
     register,
     setValue,
     getValues,
-
+    clearErrors,
     formState: { errors },
   } = useFormContext<CreateGateTypes>();
 
   const formValues = getValues();
+  const tweetRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (formValues.tasks.data[taskId]?.title === '') {
@@ -48,14 +49,13 @@ const TwitterTweetTask = ({ taskId, deleteTask }) => {
 
   const [taskVisible, setTaskVisible] = useState(false);
   const [emoji, setEmoji] = useState('');
-  const [selectionStartTweet, setSelectionStartTweet] = useState(0);
   const [tweetText, setTweetText] = useState('');
 
   useEffect(() => {
-    if (selectionStartTweet > 0 && selectionStartTweet < tweetText.length) {
-      const firstPart = tweetText.substring(0, selectionStartTweet);
+    if (tweetRef?.current?.selectionStart > 0 && tweetRef?.current?.selectionStart < tweetText.length) {
+      const firstPart = tweetText.substring(0, tweetRef?.current?.selectionStart);
       const secondPart = tweetText.substring(
-        selectionStartTweet,
+        tweetRef?.current?.selectionStart,
         tweetText.length
       );
       setTweetText(firstPart + emoji + secondPart);
@@ -192,9 +192,11 @@ const TwitterTweetTask = ({ taskId, deleteTask }) => {
         <TextField
           required
           multiline
+          maxLength={280}
           label="Tweet Text"
           id="tweet-text"
           value={tweetText}
+          inputRef={tweetRef}
           {...register(`tasks.data.${taskId}.task_data.tweet_text`)}
           error={
             !!(errors.tasks?.data[taskId]?.task_data as TwitterTweetDataError)
@@ -206,9 +208,6 @@ const TwitterTweetTask = ({ taskId, deleteTask }) => {
           }
           onChange={(event) => {
             setTweetText(event.target.value);
-          }}
-          onBlur={(event) => {
-            setSelectionStartTweet(event.target.selectionStart);
           }}
           sx={{
             marginBottom: '10px',
