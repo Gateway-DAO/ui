@@ -1,169 +1,212 @@
+import { signIn, signOut } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
+import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useCookie } from 'react-use';
 import { PartialDeep } from 'type-fest';
-import { useDisconnect } from 'wagmi';
+import { useAccount, useDisconnect, useSignMessage } from 'wagmi';
 
 import { ROUTES } from '../../constants/routes';
-import {
-  gqlAnonMethods,
-  gqlMethods,
-  gqlMethodsWithRefresh,
-} from '../../services/api';
-import {
-  LoginMutation,
-  RefreshMutation,
-} from '../../services/graphql/types.generated';
+import { gqlAnonMethods, gqlMethods } from '../../services/api';
 import { ErrorResponse } from '../../types/graphql';
 import { SessionUser } from '../../types/user';
-import { AuthStatus } from './state';
+import { AuthStep } from './types';
 
-type Props = {
-  wallet: string;
-  signature: string;
-};
+/**
+ * Handles Logoff session if there's no wallet connected
+ */
+function useSignOut(cb?: () => void) {
+  const session = useSession();
+  const { address } = useAccount();
+  const { disconnectAsync } = useDisconnect();
+  const token = session?.data?.token;
 
-export function useLogin() {
-  const queryClient = useQueryClient();
-  const [_token, updateTokenCookie, _deleteTokenCookie] = useCookie('token');
-  const [_refresh, updateRefreshCookie, _deleteRefreshCookie] =
-    useCookie('refresh');
-  const [_userId, updateUserIdCookie, _deleteUserIdCookie] =
-    useCookie('user_id');
-
-  const signIn = useMutation(
-    ['signIn'],
-    async (credentials: Props) => {
-      const res = await gqlAnonMethods.login({
-        signature: credentials.signature,
-        wallet: credentials.wallet,
-      });
-
-      const { error } = (res as any) ?? {};
-
-      if (error || !res.login) {
-        throw error;
+  const onSignOut = useCallback(async () => {
+    try {
+      if (address) {
+        await disconnectAsync();
       }
-      /* get current user from hasura based on the token */
-      const { me } = await gqlMethods(res.login.token).me();
+      // eslint-disable-next-line no-empty
+    } catch {}
 
-      return {
-        login: res.login,
-        me: me,
-      };
-    },
-    {
-      onSuccess({ login, me }) {
-        queryClient.setQueryData(['token'], login);
-        queryClient.setQueryData(['me'], me);
+    try {
+      if (token) {
+        await signOut({ redirect: false });
+      }
+      // eslint-disable-next-line no-empty
+    } catch {}
 
-        // Add to cookie
-        updateTokenCookie(login.token);
-        updateRefreshCookie(login.refresh_token);
-        updateUserIdCookie(me.id);
-      },
+    cb?.();
+  }, [address, disconnectAsync, token, cb]);
+
+  useEffect(() => {
+    if (session.status === 'authenticated' && !address) {
+      onSignOut();
     }
-  );
+  }, [address, onSignOut, session.status]);
 
-  return signIn;
+  return onSignOut;
 }
 
-export function useMe() {
+/**
+ * Handles the login flow.
+ * It listens for wallet connection, and if there's a wallet connected, it will
+ * send a signature request to the wallet so we can verify the user.
+ *
+ * After the signature is sent, NextAuth will put a session in place, and then useMe will
+ * be executed
+ */
+export const useAuthLogin = () => {
   const queryClient = useQueryClient();
-  const { disconnectAsync } = useDisconnect();
+  const { address } = useAccount();
+  const sign = useSignMessage();
+  const { t } = useTranslation('common');
 
-  const [_token, updateTokenCookie, deleteTokenCookie] = useCookie('token');
-  const [_refresh, updateRefreshCookie, deleteRefreshCookie] =
-    useCookie('refresh');
-  const [_userId, _updateUserIdCookie, deleteUserIdCookie] =
-    useCookie('user_id');
+  const session = useSession();
+  const token = session?.data?.token;
 
-  const token = useQuery(['token'], () =>
-    queryClient.getQueryData<LoginMutation['login']>(['token'])
-  );
+  const [error, setError] = useState<{
+    message: any;
+    label: string;
+    // eslint-disable-next-line @typescript-eslint/ban-types
+  }>();
 
-  const onUpdateToken = async (newToken: RefreshMutation['refresh']) => {
-    queryClient.setQueryData(['token'], (oldToken: LoginMutation['login']) => ({
-      ...oldToken,
-      token: newToken.token,
-      refresh_token: newToken.refresh_token,
-    }));
-
-    updateTokenCookie(newToken.token);
-    updateRefreshCookie(newToken.refresh_token);
-  };
-
-  const onSignOut = async () => {
-    try {
-      await disconnectAsync();
-    } catch (_e) {
-      //
-    } finally {
-      deleteUserIdCookie();
-
-      queryClient.setQueryData(['token'], null);
-      queryClient.setQueryData(['me'], null);
-
-      deleteTokenCookie();
-      deleteRefreshCookie();
-    }
-  };
-
-  const me = useQuery(
-    ['me'],
-    async () =>
-      (
-        await gqlMethodsWithRefresh(
-          token.data?.token,
-          token.data?.refresh_token,
-          undefined,
-          onUpdateToken
-        ).me()
-      ).me,
+  const nonce = useQuery(
+    [address, 'nonce'],
+    () => gqlAnonMethods.get_nonce({ wallet: address }),
     {
-      enabled: !!token.data,
-      refetchOnMount: true,
-      refetchOnReconnect: true,
-      refetchOnWindowFocus: true,
-      refetchInterval: 1000 * 60 * 10,
-      onError(error: ErrorResponse) {
-        error.response.errors.forEach((err) => {
-          if (err.extensions.code === 500 && err.message.includes('token')) {
-            onSignOut();
-          }
+      enabled: !!address && session.status === 'unauthenticated',
+      async onSuccess({ get_nonce: { nonce } }) {
+        sendSignature.mutate(nonce);
+      },
+      onError(e: any) {
+        setError({
+          message: e?.response?.errors?.[0]?.message,
+          label: t('actions.try-again'),
         });
       },
     }
   );
 
+  const sendSignature = useMutation(
+    [address, nonce.data?.get_nonce?.nonce, 'signature'],
+    (nonce: number) =>
+      sign.signMessageAsync({
+        message: `Welcome to Gateway!\n\nPlease sign this message for access: ${nonce}`,
+      }),
+    {
+      async onSuccess(signature) {
+        await signInMutation.mutateAsync(signature);
+      },
+      onError() {
+        setError({
+          message: t('auth:connecting.errors.signature'),
+          label: t('actions.try-again'),
+        });
+      },
+      retry: false,
+    }
+  );
+
+  const signInMutation = useMutation(
+    ['signIn', address],
+    (signature: string) =>
+      signIn('credentials', {
+        redirect: false,
+        wallet: address,
+        signature,
+      }),
+    {
+      onError(e) {
+        setError({
+          message: JSON.stringify(e),
+          label: t('actions.try-again'),
+        });
+      },
+    }
+  );
+
+  const me = useQuery(
+    ['me', address],
+    async () => await gqlMethods(token).me(),
+    {
+      enabled: !!token && !!address,
+      select: (data) => data.me,
+      refetchOnMount: true,
+      refetchOnReconnect: true,
+      refetchOnWindowFocus: true,
+      refetchInterval: 1000 * 60 * 10,
+      async onError(error: ErrorResponse) {
+        const firstError = error?.response?.errors?.[0];
+        if (
+          firstError.extensions.code === 500 &&
+          firstError.message.includes('token')
+        ) {
+          onSignOut();
+        }
+      },
+    }
+  );
+
+  const authStep: AuthStep = useMemo(() => {
+    if (error) return 'error';
+    if (nonce.fetchStatus === 'fetching') return 'get-nonce';
+    if (sendSignature.isLoading) return 'send-signature';
+    if (!me.data && me.isLoading && signInMutation.isSuccess && address)
+      return 'get-me';
+    if (me.data) return 'authenticated';
+    return 'unauthenticated';
+  }, [
+    address,
+    error,
+    me.data,
+    me.isLoading,
+    nonce.fetchStatus,
+    sendSignature.isLoading,
+    signInMutation.isSuccess,
+  ]);
+
   const onUpdateMe = (
     cb: (oldMe: PartialDeep<SessionUser>) => PartialDeep<SessionUser>
-  ) => queryClient.setQueryData(['me'], cb);
+  ) => queryClient.setQueryData(['me', address], cb);
+
+  const onInvalidateMe = () => queryClient.invalidateQueries(['me', address]);
+
+  const onSignOut = useSignOut(() => {
+    setError(undefined);
+    me.remove();
+    nonce.remove();
+    sendSignature.reset();
+    signInMutation.reset();
+  });
 
   return {
-    me: me.data,
-    tokens: token.data,
-    onSignOut,
+    me: token ? me.data : undefined,
+    error,
+    authStep,
     onUpdateMe,
-    onUpdateToken,
+    onSignOut,
+    onInvalidateMe,
   };
-}
+};
 
-export function useInitUser(status: AuthStatus, me: PartialDeep<SessionUser>) {
+/**
+ * Handles the initialization of the user.
+ * If the user is authenticated but not registered, it will redirect to the New User page
+ */
+export function useInitUser(me: PartialDeep<SessionUser>) {
   const router = useRouter();
 
   useEffect(() => {
-    if (status !== 'AUTHENTICATED') return;
+    if (!me) return;
     // Redirects to New User if authenticated but not registered
     if (router.pathname !== ROUTES.NEW_USER && me && !me.init) {
-      router.replace(ROUTES.NEW_USER);
+      router.replace({
+        pathname: ROUTES.NEW_USER,
+        query: { callback: router.pathname },
+      });
     }
-
-    // Redirect to Explore if authenticated and registered
-    if (router.pathname === ROUTES.NEW_USER && me && me.init) {
-      router.replace(ROUTES.EXPLORE);
-    }
-  }, [me, router, status]);
+  }, [me, router]);
 }

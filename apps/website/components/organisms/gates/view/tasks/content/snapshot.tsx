@@ -16,7 +16,13 @@ const SnapshotContent = ({
 
   return (
     <Stack marginTop={5} alignItems="start">
-      <Typography variant="subtitle1" fontWeight={'bold'}>
+      <Typography
+        variant="subtitle1"
+        fontWeight={'bold'}
+        sx={{
+          wordBreak: 'break-word',
+        }}
+      >
         {proposal_number}
       </Typography>
       <Typography variant="caption">Specific Proposal Number</Typography>

@@ -44,7 +44,7 @@ const FileLinkTask = ({ taskId, deleteTask }) => {
 
   useEffect(() => {
     if (formValues.tasks.data[taskId]?.title === '') {
-      setValue(`tasks.data.${taskId}.title`, 'Untitled Task');
+      setValue(`tasks.data.${taskId}.title`, 'Untitled Requirement');
     }
   }, [setValue, taskId, formValues.tasks.data]);
 
@@ -160,7 +160,7 @@ const FileLinkTask = ({ taskId, deleteTask }) => {
           required
           multiline
           minRows={3}
-          label="Task Description"
+          label="Requirement Description"
           id="file-description"
           {...register(`tasks.data.${taskId}.description`)}
           error={!!errors.tasks?.data?.[taskId]?.description}

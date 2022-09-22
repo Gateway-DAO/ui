@@ -58,13 +58,21 @@ export function TableView({ gates }: Props) {
                         <Typography
                           variant="caption"
                           color="text.secondary"
-                          sx={{
+                          sx={(theme) => ({
+                            display: 'block',
                             textOverflow: 'ellipsis',
                             overflow: 'hidden',
-                            whiteSpace: 'nowrap',
-                          }}
+                            maxWidth: '70ch',
+                            [`${theme.breakpoints.down('md')}`]: {
+                              display: '-webkit-box',
+                              WebkitLineClamp: 2,
+                              WebkitBoxOrient: 'vertical',
+                            },
+                          })}
                         >
-                          {gate.description}
+                          {gate.description.length > 140
+                            ? `${gate.description.slice(0, 139)}...`
+                            : gate.description}
                         </Typography>
                       </Box>
                     </Stack>
