@@ -63,6 +63,8 @@ export function EmojiPicker(props: Props) {
             onEmojiClick={onEmojiClick}
             theme={Theme.DARK}
             emojiStyle={props.emojiStyle}
+            lazyLoadEmojis={true}
+            autoFocusSearch={false}
           />
         </Box>
       )}

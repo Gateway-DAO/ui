@@ -206,6 +206,8 @@ const TwitterTweetTask = ({ taskId, deleteTask }) => {
           }
           onChange={(event) => {
             setTweetText(event.target.value);
+          }}
+          onBlur={(event) => {
             setSelectionStartTweet(event.target.selectionStart);
           }}
           sx={{
