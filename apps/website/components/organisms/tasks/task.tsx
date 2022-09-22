@@ -27,6 +27,8 @@ import SelfVerifyContent from '../gates/view/tasks/content/self-verify';
 import SnapshotContent from '../gates/view/tasks/content/snapshot';
 import TokenHoldContent from '../gates/view/tasks/content/token_hold';
 import TwitterFollowContent from '../gates/view/tasks/content/twitter-follow';
+import TwitterTweetContent from '../gates/view/tasks/content/twitter_tweet';
+import TwitterRetweetContent from '../gates/view/tasks/content/twitter_retweet';
 import { taskErrorMessages } from './task-error-messages';
 
 type Props = {
@@ -103,6 +105,14 @@ export function Task({
       twitter_follow: {
         title: 'Twitter Follow',
         body: TwitterFollowContent,
+      },
+      twitter_retweet: {
+        title: 'Retweet Post',
+        body: TwitterRetweetContent,
+      },
+      twitter_tweet: {
+        title: 'Post Tweet',
+        body: TwitterTweetContent,
       },
     };
 

@@ -102,6 +102,24 @@ const AddTaskCard = ({ numberOfTasks, addTask }) => {
         <Grid item xs={2} sm={4} md={4}>
           <Paper>
             <AddTaskButton
+              icon={<Twitter />}
+              title={'Retweet Post'}
+              addTask={() => addTask('twitter_retweet')}
+            />
+          </Paper>
+        </Grid>
+        <Grid item xs={2} sm={4} md={4}>
+          <Paper>
+            <AddTaskButton
+              icon={<Twitter />}
+              title={'Post Tweet'}
+              addTask={() => addTask('twitter_tweet')}
+            />
+          </Paper>
+        </Grid>
+        <Grid item xs={2} sm={4} md={4}>
+          <Paper>
+            <AddTaskButton
               icon={<StarIcon />}
               title={'Bounty'}
               disabled
