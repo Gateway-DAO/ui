@@ -1,10 +1,16 @@
-import { useEffect, useMemo, useState } from 'react';
-
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { FaTwitter } from 'react-icons/fa';
 import { MdVerified } from 'react-icons/md';
 import { useLocalStorage } from 'react-use';
 
-import { Avatar, Box, Button, Stack, Typography } from '@mui/material';
+import {
+  Avatar,
+  Box,
+  Button,
+  CircularProgress,
+  Stack,
+  Typography,
+} from '@mui/material';
 
 import { LoadingButton } from '../../../../../../components/atoms/loading-button';
 import { useAuth } from '../../../../../../providers/auth';
@@ -20,7 +26,6 @@ const TwitterFollowContent = ({
   completeTask,
   readOnly,
   isLoading,
-  isAdmin,
 }) => {
   const { gqlAuthMethods } = useAuth();
   const formattedDate = new Date(updatedAt.toLocaleString()).toLocaleString();
@@ -29,66 +34,57 @@ const TwitterFollowContent = ({
     raw: true,
   });
 
-  const { data: twitterData } = useQuery(['twitter-data'], async () => {
+  const { data: twitterData, isLoading: isLoadingTwitterData } = useQuery(
+    ['twitter-data'],
+    async () => {
+      try {
+        const username = data.username;
+        const response = await gqlAuthMethods.twitter_data({
+          userName: username,
+        });
+        return response.get_twitter_user_data;
+      } catch (error) {
+        throw Error(error);
+      }
+    }
+  );
+
+  const connectTwitter = useMutation(['connect-twitter'], async () => {
     try {
-      const username = data.username;
-      const response = await gqlAuthMethods.twitter_data({
-        userName: username,
-      });
-      return response.get_twitter_user_data;
+      const response = await fetch('/api/oauth/twitter/login');
+      const data = await response.json();
+      setRedirectURL(window.location.href);
+      if (data.confirmed) {
+        window.location.href = data.callbackURL;
+      }
+      return data;
     } catch (error) {
-      throw Error(error);
+      console.log(error);
     }
   });
 
-  const connectTwitter = useQuery(
-    ['connect-twitter'],
-    async () => {
-      try {
-        const response = await fetch('/api/oauth/twitter/login');
-        const data = await response.json();
-        setRedirectURL(window.location.href);
-        if (data.confirmed) {
-          window.location.href = data.callbackURL;
-        }
-        return data;
-      } catch (error) {
-        console.log(error);
+  const checkTwitterFollow = useMutation(['check-twitter-follow'], async () => {
+    try {
+      const twitterLocalStorage = twitterKeys;
+      const response = await fetch('/api/oauth/twitter/follow', {
+        method: 'POST',
+        body: JSON.stringify({
+          accTkn: twitterLocalStorage.accTkn,
+          accTknSecret: twitterLocalStorage.accTknSecret,
+          source_id: twitterLocalStorage.userId,
+          target_id: twitterData.id,
+        }),
+      });
+
+      const data: TwitterFollowData = await response.json();
+
+      if (data.twitter_follow) {
+        completeTask({ twitter_follow: data.twitter_follow });
       }
-    },
-    {
-      enabled: false,
+    } catch (error) {
+      console.log(error);
     }
-  );
-
-  const checkTwitterFollow = useQuery(
-    ['check-twitter-follow'],
-    async () => {
-      try {
-        const twitterLocalStorage = twitterKeys;
-        const response = await fetch('/api/oauth/twitter/follow', {
-          method: 'POST',
-          body: JSON.stringify({
-            accTkn: twitterLocalStorage.accTkn,
-            accTknSecret: twitterLocalStorage.accTknSecret,
-            source_id: twitterLocalStorage.userId,
-            target_id: twitterData.id,
-          }),
-        });
-
-        const data: TwitterFollowData = await response.json();
-
-        if (data.twitter_follow) {
-          completeTask({ twitter_follow: data.twitter_follow });
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    },
-    {
-      enabled: false,
-    }
-  );
+  });
 
   const numberFormat = (value: number) => {
     if (value < 10000) {
@@ -102,6 +98,20 @@ const TwitterFollowContent = ({
 
   return (
     <Stack marginTop={5} alignItems="start">
+      {isLoadingTwitterData && (
+        <Stack
+          sx={{
+            background: (theme) => theme.palette.background.elevated,
+            alignItems: 'center',
+            justifyContent: 'center',
+            borderRadius: '8px',
+            height: '250px',
+            width: '100%',
+          }}
+        >
+          <CircularProgress size={24} />
+        </Stack>
+      )}
       {twitterData && (
         <Stack
           sx={{
@@ -133,18 +143,22 @@ const TwitterFollowContent = ({
             }}
             variant="circular"
           />
-          {twitterData?.verified}
           <Stack>
             <Stack sx={{ p: 2 }}>
               <Typography
                 sx={{
+                  display: 'flex',
                   color: '#0F1419',
                   fontWeight: 'bold',
                   size: '1.3125rem',
                   fontFamily: 'sans-serif',
+                  alignItems: 'center',
                 }}
               >
                 {twitterData?.name}
+                {twitterData.verified && (
+                  <MdVerified size={20} color={'#1DA1F2'} />
+                )}
               </Typography>
               <Typography
                 sx={{
@@ -155,7 +169,6 @@ const TwitterFollowContent = ({
               >
                 {`@${twitterData?.username}`}
               </Typography>
-              {twitterData?.verified && <MdVerified color="#1DA1F2" />}
               <Typography
                 sx={{
                   color: '#0F1419',
@@ -186,6 +199,7 @@ const TwitterFollowContent = ({
                   sx={{
                     color: '#0F1419',
                     size: '1rem',
+                    flexGrow: 1,
                     fontFamily: 'sans-serif',
                     fontWeight: '700',
                     ml: '19px',
@@ -196,6 +210,14 @@ const TwitterFollowContent = ({
                     Followers
                   </Typography>
                 </Typography>
+                <Box
+                  sx={{
+                    color: '#1B97F0',
+                    fontSize: '20px',
+                  }}
+                >
+                  <FaTwitter />
+                </Box>
               </Stack>
             </Stack>
             {!twitterKeys && (
@@ -212,7 +234,7 @@ const TwitterFollowContent = ({
                     your Twitter account.
                   </Typography>
                   <Button
-                    onClick={() => connectTwitter.refetch()}
+                    onClick={() => connectTwitter.mutate()}
                     sx={{
                       background: (theme) => theme.palette.secondary.main,
                       color: 'black',
@@ -237,7 +259,7 @@ const TwitterFollowContent = ({
         <LoadingButton
           variant="contained"
           sx={{ marginTop: '15px' }}
-          onClick={() => checkTwitterFollow.refetch()}
+          onClick={() => checkTwitterFollow.mutate()}
           isLoading={isLoading}
         >
           VERIFY

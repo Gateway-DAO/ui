@@ -1,10 +1,12 @@
 import { useCallback, useEffect, useState } from 'react';
 
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import debounce from 'lodash/debounce';
 import { useFormContext } from 'react-hook-form';
+import { FaTwitter } from 'react-icons/fa';
+import { MdVerified } from 'react-icons/md';
 
-import { ExpandLess, ExpandMore } from '@mui/icons-material';
+import { ExpandLess, ExpandMore, Twitter } from '@mui/icons-material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import {
   Avatar,
@@ -58,31 +60,27 @@ export const FollowProfile = ({ taskId, deleteTask }) => {
     setValue(`tasks.data.${taskId}.title`, 'Untitled Task');
   }, [setValue, taskId]);
 
-  const getTwitterData = useQuery(
-    ['twitter-data'],
-    async () => {
-      try {
-        const username = getValues(`tasks.data.${taskId}.task_data.username`);
-        const response = await gqlAuthMethods.twitter_data({
-          userName: username,
-        });
-        return setTwitterData(response.get_twitter_user_data);
-      } catch (error) {
-        if (error.message.includes('User is protected')) {
-          return setError(`tasks.data.${taskId}.task_data.username`, {
-            message: 'User is protected',
-          });
-        }
+  const getTwitterData = useMutation(['twitter-data'], async () => {
+    try {
+      const username = getValues(`tasks.data.${taskId}.task_data.username`);
+      const response = await gqlAuthMethods.twitter_data({
+        userName: username,
+      });
+      return setTwitterData(response.get_twitter_user_data);
+    } catch (error) {
+      if (error.message.includes('User is protected')) {
         return setError(`tasks.data.${taskId}.task_data.username`, {
-          message: 'User not found',
+          message: 'User is protected',
         });
       }
-    },
-    { enabled: false }
-  );
+      return setError(`tasks.data.${taskId}.task_data.username`, {
+        message: 'User not found',
+      });
+    }
+  });
 
   const delayedQuery = useCallback(
-    debounce(() => getTwitterData.refetch(), 500),
+    debounce(() => getTwitterData.mutate(), 500),
     []
   );
 
@@ -243,7 +241,7 @@ export const FollowProfile = ({ taskId, deleteTask }) => {
             https://twitter.com/
           </Typography>
           <Stack sx={{ position: 'relative' }}>
-            {getTwitterData.isLoading && getTwitterData.isFetching && (
+            {getTwitterData.isLoading && (
               <CircularProgress
                 sx={{
                   position: 'absolute',
@@ -283,6 +281,18 @@ export const FollowProfile = ({ taskId, deleteTask }) => {
               }}
             />
           </Stack>
+          {getTwitterData.isLoading && (
+            <Stack
+              sx={{
+                background: (theme) => theme.palette.background.elevated,
+                alignItems: 'center',
+                justifyContent: 'center',
+                height: '250px',
+              }}
+            >
+              <CircularProgress size={24} />
+            </Stack>
+          )}
 
           {twitterData && Object.entries(twitterData).length > 0 && (
             <Stack
@@ -315,16 +325,22 @@ export const FollowProfile = ({ taskId, deleteTask }) => {
                 }}
                 variant="circular"
               />
+
               <Stack sx={{ p: 2 }}>
                 <Typography
                   sx={{
+                    display: 'flex',
                     color: '#0F1419',
                     fontWeight: 'bold',
                     size: '1.3125rem',
                     fontFamily: 'sans-serif',
+                    alignItems: 'center',
                   }}
                 >
                   {twitterData?.name}
+                  {twitterData.verified && (
+                    <MdVerified size={20} color={'#1DA1F2'} />
+                  )}
                 </Typography>
                 <Typography
                   sx={{
@@ -365,6 +381,7 @@ export const FollowProfile = ({ taskId, deleteTask }) => {
                     sx={{
                       color: '#0F1419',
                       size: '1rem',
+                      flexGrow: 1,
                       fontFamily: 'sans-serif',
                       fontWeight: '700',
                       ml: '19px',
@@ -375,6 +392,14 @@ export const FollowProfile = ({ taskId, deleteTask }) => {
                       Followers
                     </Typography>
                   </Typography>
+                  <Box
+                    sx={{
+                      color: '#1B97F0',
+                      fontSize: '20px',
+                    }}
+                  >
+                    <FaTwitter />
+                  </Box>
                 </Stack>
               </Stack>
             </Stack>
