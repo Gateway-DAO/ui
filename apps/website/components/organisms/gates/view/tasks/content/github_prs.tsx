@@ -6,7 +6,7 @@ import { LoadingButton } from '../../../../../../components/atoms/loading-button
 import GithubConnectionCard from '../../../../../../components/organisms/tasks/github-connection-card';
 import GithubDataCard from '../../../../../../components/organisms/tasks/github-data-card';
 
-const GithubContributeContent = ({
+const GithubPRContent = ({
   data,
   completeTask,
   completed,
@@ -16,7 +16,6 @@ const GithubContributeContent = ({
 }) => {
   const formattedDate = new Date(updatedAt.toLocaleString()).toLocaleString();
   const [githubAccessToken, setGithubAccessToken] = useState('');
-
   const { repository_link } = data;
 
   const [repository, setRepository] = useState({
@@ -63,10 +62,13 @@ const GithubContributeContent = ({
 
   return (
     <Stack alignItems="start">
-      <Typography variant="body2" padding={'30px 0'}>
-        You must contribute to
+      <Typography variant="body1" padding={'30px 0'}>
+        You must have created and merged this number of pull requests
       </Typography>
-      <GithubDataCard data={repository} />
+      <GithubDataCard
+        data={repository}
+        requested_pr_amount={data.requested_pr_amount}
+      />
       {!completed && !readOnly && githubAccessToken && (
         <LoadingButton
           isLoading={isLoading}
@@ -99,4 +101,4 @@ const GithubContributeContent = ({
   );
 };
 
-export default GithubContributeContent;
+export default GithubPRContent;

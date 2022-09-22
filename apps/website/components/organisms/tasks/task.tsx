@@ -22,6 +22,7 @@ import { queryClient } from '../../../services/query-client';
 import { SessionUser } from '../../../types/user';
 import { getMapValueFromObject } from '../../../utils/map-object';
 import GithubContributeContent from '../gates/view/tasks/content/github_contribute';
+import GithubPRContent from '../gates/view/tasks/content/github_prs';
 import MeetingCodeContent from '../gates/view/tasks/content/meeting_code';
 import QuizContent from '../gates/view/tasks/content/quiz';
 import SelfVerifyContent from '../gates/view/tasks/content/self-verify';
@@ -76,7 +77,7 @@ export function Task({
       setUpdatedAt(me?.task_progresses[progressTaskIndex].updated_at);
       toggleExpanded(true);
     }
-  }, [task.id, me?.task_progresses]);
+  }, [task.id, me?.task_progresses, toggleExpanded]);
 
   const getTaskContent = (task_type: string) => {
     switch (task_type) {
@@ -109,6 +110,12 @@ export function Task({
         return {
           title: 'Contribute to Repository',
           body: GithubContributeContent,
+        };
+      }
+      case 'github_prs': {
+        return {
+          title: 'Verify Pull Requests',
+          body: GithubPRContent,
         };
       }
       default:
@@ -183,7 +190,7 @@ export function Task({
       sx={(theme) => ({
         borderRadius: 0,
         borderLeft: 'none',
-        borderTop : 'none',
+        borderTop: 'none',
         backgroundColor: 'transparent !important',
         backgroundImage: 'none !important',
         px: { xs: theme.spacing(1), md: theme.spacing(7) },
