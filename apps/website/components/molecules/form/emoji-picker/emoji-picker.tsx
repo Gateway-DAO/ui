@@ -1,5 +1,5 @@
 import dynamic from 'next/dynamic';
-import { useEffect, useState, useRef, MutableRefObject } from 'react';
+import { useEffect, useState, useRef, MutableRefObject, Dispatch, SetStateAction } from 'react';
 
 import { Theme, EmojiStyle } from 'emoji-picker-react';
 
@@ -14,15 +14,15 @@ const Picker = dynamic(
   { ssr: false }
 );
 
-type Props = {
-  onEmoji: any;
+export type EmojiPickerProps = {
+  onEmoji: Dispatch<SetStateAction<string>>;
   emojiStyle?: EmojiStyle;
   boxSxProps: SxProps<ThemeSX>;
   pickerSxProps: SxProps<ThemeSX>;
   iconColor: string;
 };
 
-export function EmojiPicker(props: Props) {
+export function EmojiPicker(props: EmojiPickerProps) {
   const [boxEmojiIsVisible, setBoxEmojiIsVisible] = useState(false);
   const [chosenEmoji, setChosenEmoji] = useState(null);
   const wrapperRef = useRef(null);
