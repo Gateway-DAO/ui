@@ -11,6 +11,8 @@ mutation login(
   login(signature: $signature, wallet: $wallet) {
     refresh_token
     token
+    expiry
+    user_id
   }
 }
 
@@ -20,5 +22,7 @@ mutation refresh(
   refresh(token: $refresh_token) {
     refresh_token
     token
+    expiry
+    user_id
   }
 }

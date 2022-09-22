@@ -1,49 +1,27 @@
-import {
-  WagmiConfig,
-  createClient,
-  defaultChains,
-  configureChains,
-} from 'wagmi';
-import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet';
-import { InjectedConnector } from 'wagmi/connectors/injected';
-import { MetaMaskConnector } from 'wagmi/connectors/metaMask';
-import { WalletConnectConnector } from 'wagmi/connectors/walletConnect';
-import { alchemyProvider } from 'wagmi/providers/alchemy';
+import { getDefaultWallets } from '@rainbow-me/rainbowkit';
+import { createClient, chain, configureChains } from 'wagmi';
 import { publicProvider } from 'wagmi/providers/public';
 
 // const alchemyId = process.env.ALCHEMY_ID
 
 // Configure chains & providers with the Alchemy provider.
 // Two popular providers are Alchemy (alchemy.com) and Infura (infura.io)
-const { chains, provider, webSocketProvider } = configureChains(defaultChains, [
-  // alchemyProvider({ alchemyId }),
-  publicProvider(),
-]);
+export const { chains, provider, webSocketProvider } = configureChains(
+  [chain.mainnet, chain.polygon, chain.optimism, chain.arbitrum],
+  [
+    // alchemyProvider({ alchemyId }),
+    publicProvider(),
+  ]
+);
+
+const { connectors } = getDefaultWallets({
+  appName: 'GatewayDAO',
+  chains,
+});
 
 export const web3client = createClient({
   autoConnect: true,
-  connectors: [
-    new MetaMaskConnector({ chains }),
-    new CoinbaseWalletConnector({
-      chains,
-      options: {
-        appName: 'GatewayDAO',
-      },
-    }),
-    new WalletConnectConnector({
-      chains,
-      options: {
-        qrcode: true,
-      },
-    }),
-    new InjectedConnector({
-      chains,
-      options: {
-        name: 'Injector',
-        shimDisconnect: true,
-      },
-    }),
-  ],
+  connectors,
   provider,
   webSocketProvider,
 });

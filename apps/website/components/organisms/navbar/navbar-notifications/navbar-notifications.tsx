@@ -27,10 +27,14 @@ export function NavBarNotifications() {
         <IconButton onClick={userMenu.onOpen}>
           {unreadNotifications > 0 ? (
             <Badge
-              color="secondary"
+              color="primary"
               variant="dot"
               overlap="circular"
               badgeContent={unreadNotifications}
+              anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'right',
+              }}
             >
               {icon}
             </Badge>
