@@ -34,7 +34,6 @@ const TwitterTweetTask = ({ taskId, deleteTask }) => {
     register,
     setValue,
     getValues,
-    clearErrors,
     formState: { errors },
   } = useFormContext<CreateGateTypes>();
 

@@ -58,13 +58,12 @@ export function EmojiPicker(props: Props) {
         }}
       />
       {boxEmojiIsVisible && (
-        <Box sx={props.pickerSxProps}>
+        <Box sx={props.pickerSxProps} onClick={e => e.preventDefault()}>
           <Picker
             onEmojiClick={onEmojiClick}
             theme={Theme.DARK}
             emojiStyle={props.emojiStyle}
             lazyLoadEmojis={true}
-            autoFocusSearch={false}
           />
         </Box>
       )}
