@@ -75,11 +75,15 @@ const GithubContributeTask = ({ taskId, deleteTask }) => {
       setValue(`tasks.data.${taskId}.title`, 'Untitled Task');
     }
 
-    const isValid = trigger(`tasks.data.${taskId}.task_data.repository_link`);
-    if (isValid) {
-      fetchRepositoryData(
-        getValues(`tasks.data.${taskId}.task_data.repository_link`)
-      );
+    const repository_url = getValues(
+      `tasks.data.${taskId}.task_data.repository_link`
+    );
+
+    if (repository_url) {
+      const isValid = trigger(`tasks.data.${taskId}.task_data.repository_link`);
+      if (isValid) {
+        fetchRepositoryData(repository_url);
+      }
     }
   }, [
     setValue,
