@@ -222,7 +222,7 @@ const TwitterTweetTask = ({ taskId, deleteTask }) => {
               <InputAdornment position="end">
                 {tweetText.length < 279 && (
                   <DynamicEmojiField
-                    onchange={setEmoji}
+                    onEmoji={setEmoji}
                     emojiStyle={EmojiStyle.TWITTER}
                     boxSxProps={{
                       position: 'absolute',

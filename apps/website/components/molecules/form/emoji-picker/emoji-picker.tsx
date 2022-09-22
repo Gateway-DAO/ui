@@ -15,7 +15,7 @@ const Picker = dynamic(
 );
 
 type Props = {
-  onchange: any;
+  onEmoji: any;
   emojiStyle?: EmojiStyle;
   boxSxProps: SxProps<ThemeSX>;
   pickerSxProps: SxProps<ThemeSX>;
@@ -29,7 +29,7 @@ export function EmojiPicker(props: Props) {
 
   const onEmojiClick = (emojiObject) => {
     setChosenEmoji(emojiObject.emoji);
-    props.onchange(emojiObject.emoji);
+    props.onEmoji(emojiObject.emoji);
     setBoxEmojiIsVisible(false);
   };
 
