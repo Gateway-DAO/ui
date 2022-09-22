@@ -104,7 +104,7 @@ const AddTaskCard = ({ numberOfTasks, addTask }) => {
             <AddTaskButton
               icon={<GitHubIcon />}
               title={'Verify Pull Requests'}
-              addTask={() => addTask('github_pr')}
+              addTask={() => addTask('github_prs')}
             />
           </Paper>
         </Grid>

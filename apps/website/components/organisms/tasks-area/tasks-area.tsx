@@ -26,7 +26,7 @@ const TaskComponents = {
   token_hold: HoldTokenTask,
   quiz: QuizTask,
   github_contribute: GithubContributeTask,
-  github_pr: GithubPRTask,
+  github_prs: GithubPRTask,
 };
 
 const defaultTaskData = (

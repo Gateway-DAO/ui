@@ -71,7 +71,7 @@ export type GithubContributeTask = {
 };
 
 export type GithubPRTask = {
-  task_type: 'github_pr';
+  task_type: 'github_prs';
   task_data: GithubPRData;
 };
 
@@ -394,7 +394,7 @@ export const taskGithubPRSchema = z.object({
   description: z
     .string()
     .min(2, 'The description must contain at least 2 character(s)'),
-  task_type: z.literal('github_pr'),
+  task_type: z.literal('github_prs'),
   task_data: githubPRDataSchema,
 });
 
