@@ -110,7 +110,7 @@ export function Task({
         title: 'Retweet Post',
         body: TwitterRetweetContent,
       },
-      twitter_retweet: {
+      twitter_tweet: {
         title: 'Post Tweet',
         body: TwitterTweetContent,
       },
