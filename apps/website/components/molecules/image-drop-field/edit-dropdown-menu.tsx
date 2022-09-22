@@ -35,7 +35,7 @@ export default function EditDropdownMenu({
         onClick={onOpen}
         className="MuiEditButton-root"
       >
-        <Avatar>
+        <Avatar sx={{ backgroundColor: 'primary.dark' }}>
           <Edit />
         </Avatar>
       </IconButton>
