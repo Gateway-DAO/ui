@@ -1,5 +1,5 @@
 import dynamic from 'next/dynamic';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { EmojiStyle } from 'emoji-picker-react';
 import { useFormContext } from 'react-hook-form';
@@ -21,24 +21,18 @@ import {
   CreateGateTypes,
   TwitterTweetDataError,
 } from '../../../templates/create-gate/schema';
-
-const DynamicEmojiField = dynamic(
-  () => import('../../form/emoji-picker').then((mod) => mod.EmojiPicker),
-  {
-    ssr: false,
-  }
-);
+import { EmojiPicker, EmojiPickerProps } from '../../form/emoji-picker';
 
 const TwitterTweetTask = ({ taskId, deleteTask }) => {
   const {
     register,
     setValue,
     getValues,
-
     formState: { errors },
   } = useFormContext<CreateGateTypes>();
 
   const formValues = getValues();
+  const tweetRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (formValues.tasks.data[taskId]?.title === '') {
@@ -48,21 +42,47 @@ const TwitterTweetTask = ({ taskId, deleteTask }) => {
 
   const [taskVisible, setTaskVisible] = useState(false);
   const [emoji, setEmoji] = useState('');
-  const [selectionStartTweet, setSelectionStartTweet] = useState(0);
   const [tweetText, setTweetText] = useState('');
 
   useEffect(() => {
-    if (selectionStartTweet > 0 && selectionStartTweet < tweetText.length) {
-      const firstPart = tweetText.substring(0, selectionStartTweet);
+    if (
+      tweetRef?.current?.selectionStart > 0 &&
+      tweetRef?.current?.selectionStart < tweetText.length
+    ) {
+      const firstPart = tweetText.substring(
+        0,
+        tweetRef?.current?.selectionStart
+      );
       const secondPart = tweetText.substring(
-        selectionStartTweet,
+        tweetRef?.current?.selectionStart,
         tweetText.length
       );
       setTweetText(firstPart + emoji + secondPart);
+      setValue(
+        `tasks.data.${taskId}.task_data.tweet_text`,
+        firstPart + emoji + secondPart
+      );
     } else {
       setTweetText(tweetText + emoji);
+      setValue(`tasks.data.${taskId}.task_data.tweet_text`, tweetText + emoji);
     }
   }, [emoji]);
+
+  const emojiProps: EmojiPickerProps = {
+    onEmoji: setEmoji,
+    emojiStyle: EmojiStyle.TWITTER,
+    boxSxProps: {
+      position: 'absolute',
+      top: '142px',
+      left: '10px',
+      zIndex: '1',
+    },
+    pickerSxProps: {
+      position: 'absolute',
+      left: { xs: '-40px', md: '0' },
+    },
+    iconColor: '#9B96A0',
+  };
 
   return (
     <Stack
@@ -192,9 +212,11 @@ const TwitterTweetTask = ({ taskId, deleteTask }) => {
         <TextField
           required
           multiline
+          maxLength={280}
           label="Tweet Text"
           id="tweet-text"
           value={tweetText}
+          inputRef={tweetRef}
           {...register(`tasks.data.${taskId}.task_data.tweet_text`)}
           error={
             !!(errors.tasks?.data[taskId]?.task_data as TwitterTweetDataError)
@@ -206,7 +228,6 @@ const TwitterTweetTask = ({ taskId, deleteTask }) => {
           }
           onChange={(event) => {
             setTweetText(event.target.value);
-            setSelectionStartTweet(event.target.selectionStart);
           }}
           sx={{
             marginBottom: '10px',
@@ -220,23 +241,7 @@ const TwitterTweetTask = ({ taskId, deleteTask }) => {
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
-                {tweetText.length < 279 && (
-                  <DynamicEmojiField
-                    onchange={setEmoji}
-                    emojiStyle={EmojiStyle.TWITTER}
-                    boxSxProps={{
-                      position: 'absolute',
-                      top: '142px',
-                      left: '10px',
-                      zIndex: '1',
-                    }}
-                    pickerSxProps={{
-                      position: 'absolute',
-                      left: { xs: '-40px', md: '0' },
-                    }}
-                    iconColor="#9B96A0"
-                  />
-                )}
+                {tweetText.length < 279 && <EmojiPicker {...emojiProps} />}
               </InputAdornment>
             ),
           }}

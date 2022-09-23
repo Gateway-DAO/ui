@@ -1,5 +1,5 @@
 import dynamic from 'next/dynamic';
-import { useEffect, useState, useRef, MutableRefObject } from 'react';
+import { useEffect, useState, useRef, MutableRefObject, Dispatch, SetStateAction } from 'react';
 
 import { Theme, EmojiStyle } from 'emoji-picker-react';
 
@@ -14,22 +14,22 @@ const Picker = dynamic(
   { ssr: false }
 );
 
-type Props = {
-  onchange: any;
+export type EmojiPickerProps = {
+  onEmoji: Dispatch<SetStateAction<string>>;
   emojiStyle?: EmojiStyle;
   boxSxProps: SxProps<ThemeSX>;
   pickerSxProps: SxProps<ThemeSX>;
   iconColor: string;
 };
 
-export function EmojiPicker(props: Props) {
+export function EmojiPicker(props: EmojiPickerProps) {
   const [boxEmojiIsVisible, setBoxEmojiIsVisible] = useState(false);
   const [chosenEmoji, setChosenEmoji] = useState(null);
   const wrapperRef = useRef(null);
 
   const onEmojiClick = (emojiObject) => {
     setChosenEmoji(emojiObject.emoji);
-    props.onchange(emojiObject.emoji);
+    props.onEmoji(emojiObject.emoji);
     setBoxEmojiIsVisible(false);
   };
 
@@ -58,11 +58,12 @@ export function EmojiPicker(props: Props) {
         }}
       />
       {boxEmojiIsVisible && (
-        <Box sx={props.pickerSxProps}>
+        <Box sx={props.pickerSxProps} onClick={e => e.preventDefault()}>
           <Picker
             onEmojiClick={onEmojiClick}
             theme={Theme.DARK}
             emojiStyle={props.emojiStyle}
+            lazyLoadEmojis={true}
           />
         </Box>
       )}
