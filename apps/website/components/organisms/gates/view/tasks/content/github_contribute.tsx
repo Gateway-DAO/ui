@@ -76,7 +76,9 @@ const GithubContributeContent = ({
           }}
           onClick={() =>
             completeTask({
-              info: { githubAccessToken, repository_name, repository_owner },
+              githubAccessToken,
+              repository_name,
+              repository_owner,
             })
           }
         >

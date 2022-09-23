@@ -78,7 +78,10 @@ const GithubPRContent = ({
           }}
           onClick={() =>
             completeTask({
-              info: { githubAccessToken, repository_name, repository_owner, requested_pr_amount: data.requested_pr_amount },
+              githubAccessToken,
+              repository_name,
+              repository_owner,
+              requested_pr_amount: data.requested_pr_amount,
             })
           }
         >
