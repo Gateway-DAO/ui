@@ -21,6 +21,8 @@ import { Tasks } from '../../../services/graphql/types.generated';
 import { queryClient } from '../../../services/query-client';
 import { SessionUser } from '../../../types/user';
 import { getMapValueFromObject } from '../../../utils/map-object';
+import GithubContributeContent from '../gates/view/tasks/content/github_contribute';
+import GithubPRContent from '../gates/view/tasks/content/github_prs';
 import MeetingCodeContent from '../gates/view/tasks/content/meeting_code';
 import QuizContent from '../gates/view/tasks/content/quiz';
 import SelfVerifyContent from '../gates/view/tasks/content/self-verify';
@@ -75,7 +77,7 @@ export function Task({
       setUpdatedAt(me?.task_progresses[progressTaskIndex].updated_at);
       toggleExpanded(true);
     }
-  }, [task.id, me?.task_progresses]);
+  }, [task.id, me?.task_progresses, toggleExpanded]);
 
   const getTaskContent = (task_type: string) => {
     switch (task_type) {
@@ -104,6 +106,18 @@ export function Task({
           title: 'Quiz',
           body: QuizContent,
         };
+      case 'github_contribute': {
+        return {
+          title: 'Contribute to Repository',
+          body: GithubContributeContent,
+        };
+      }
+      case 'github_prs': {
+        return {
+          title: 'Verify Pull Requests',
+          body: GithubPRContent,
+        };
+      }
       default:
         return {
           title: '',
