@@ -173,24 +173,24 @@ const SnapshotTask = ({ taskId, deleteTask }) => {
         />
 
         <FormLabel sx={{ mb: 1 }}>Verify if user</FormLabel>
+
         <RadioGroup
-          row
           name={`tasks.data.${taskId}.task_data.type`}
+          row
           defaultValue={'vote'}
           sx={{ ml: 1 }}
-          onChange={(e) => {
-            setValue(`tasks.data.${taskId}.task_data.type`, e.target.value);
-          }}
         >
           <FormControlLabel
             value="proposal"
             control={<Radio />}
             label="Created Proposal"
+            {...register(`tasks.data.${taskId}.task_data.type`)}
           />
           <FormControlLabel
             value="vote"
             control={<Radio />}
             label="Voted for Proposal"
+            {...register(`tasks.data.${taskId}.task_data.type`)}
           />
         </RadioGroup>
 
