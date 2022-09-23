@@ -45,15 +45,26 @@ const TwitterTweetTask = ({ taskId, deleteTask }) => {
   const [tweetText, setTweetText] = useState('');
 
   useEffect(() => {
-    if (tweetRef?.current?.selectionStart > 0 && tweetRef?.current?.selectionStart < tweetText.length) {
-      const firstPart = tweetText.substring(0, tweetRef?.current?.selectionStart);
+    if (
+      tweetRef?.current?.selectionStart > 0 &&
+      tweetRef?.current?.selectionStart < tweetText.length
+    ) {
+      const firstPart = tweetText.substring(
+        0,
+        tweetRef?.current?.selectionStart
+      );
       const secondPart = tweetText.substring(
         tweetRef?.current?.selectionStart,
         tweetText.length
       );
       setTweetText(firstPart + emoji + secondPart);
+      setValue(
+        `tasks.data.${taskId}.task_data.tweet_text`,
+        firstPart + emoji + secondPart
+      );
     } else {
       setTweetText(tweetText + emoji);
+      setValue(`tasks.data.${taskId}.task_data.tweet_text`, tweetText + emoji);
     }
   }, [emoji]);
 
@@ -70,8 +81,8 @@ const TwitterTweetTask = ({ taskId, deleteTask }) => {
       position: 'absolute',
       left: { xs: '-40px', md: '0' },
     },
-    iconColor: "#9B96A0"
-  }
+    iconColor: '#9B96A0',
+  };
 
   return (
     <Stack
@@ -230,9 +241,7 @@ const TwitterTweetTask = ({ taskId, deleteTask }) => {
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
-                {tweetText.length < 279 && (
-                  <EmojiPicker {...emojiProps} />
-                )}
+                {tweetText.length < 279 && <EmojiPicker {...emojiProps} />}
               </InputAdornment>
             ),
           }}

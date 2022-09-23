@@ -1,4 +1,5 @@
-import { Stack, Typography } from '@mui/material';
+import { Twitter } from '@mui/icons-material';
+import { Box, Button, Stack, Typography } from '@mui/material';
 
 import { LoadingButton } from '../../../../../../components/atoms/loading-button';
 
@@ -15,10 +16,59 @@ const TwitterTweetContent = ({
 
   return (
     <Stack marginTop={5} alignItems="start">
-      <Typography variant="subtitle1" fontWeight={'bold'} marginTop={2}>
-        {tweet_text}
-      </Typography>
-      <Typography variant="caption">Tweet Text</Typography>
+      <Stack
+        sx={{
+          background: (theme) => theme.palette.secondary.light,
+          justifyContent: 'space-between',
+          borderRadius: '8px',
+          width: '100%',
+        }}
+      >
+        <Box
+          sx={{
+            padding: '20px',
+          }}
+        >
+          <Twitter sx={{ color: '#5B7083' }} />
+          <Typography
+            variant="subtitle1"
+            fontWeight={'bold'}
+            marginTop={2}
+            sx={{
+              color: '#5B7083',
+              size: '1rem',
+              fontFamily: 'sans-serif',
+            }}
+          >
+            {tweet_text}
+          </Typography>
+        </Box>
+        <Box
+          sx={{
+            background: '#188CD8',
+            borderRadius: '0 0 8px 8px',
+            padding: '10px',
+            textAlign: 'right',
+          }}
+        >
+          <Button
+            onClick={() => console.log('joao')}
+            href={`https://twitter.com/intent/tweet?text=${tweet_text}`}
+            sx={{
+              background: (theme) => theme.palette.grey[300],
+              color: 'black',
+              fontSize: '0.75rem',
+              padding: '6px 16px',
+              lineHeight: '24px',
+              '&:hover': {
+                background: (theme) => theme.palette.grey[100],
+              },
+            }}
+          >
+            Tweet
+          </Button>
+        </Box>
+      </Stack>
       {!readOnly && !completed && (
         <LoadingButton
           variant="contained"
