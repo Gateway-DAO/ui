@@ -16,3 +16,11 @@ query twitter_data($userName: String!) {
     }
   }
 }
+
+query twitter_tweet($id: String!) {
+  get_twitter_tweet(id: $id) {
+    id
+    author_id
+    text
+  }
+}
