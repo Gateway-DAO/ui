@@ -10,19 +10,20 @@ export default async function handler(req, res) {
     res.status(405).send({ message: 'Only POST requests allowed' });
     return;
   }
+
+  const { tweet_link, accTkn, accTknSecret } = JSON.parse(req.body);
+
   const client = new Twitter({
     subdomain: 'api',
     version: '1.1',
     consumer_key: KEYS.consumer_key,
     consumer_secret: KEYS.consumer_secret,
-    access_token_key: req.body.accTkn,
-    access_token_secret: req.body.accTknSecret,
+    access_token_key: accTkn,
+    access_token_secret: accTknSecret,
   });
 
-  const { tweet_link } = JSON.parse(req.body);
-
   try {
-    const response = await client.get('statuses/show', {
+    const response = await client.get('statuses/lookup', {
       id: tweet_link.split('/').at(-1),
     });
 

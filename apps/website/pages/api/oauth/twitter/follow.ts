@@ -28,8 +28,8 @@ export default async function handler(req, res) {
     });
 
     if (
-      response.relationship.source.followed_by &&
-      response.relationship.target.following
+      response.relationship.source.following &&
+      response.relationship.target.followed_by
     ) {
       return res.status(200).json({ twitter_follow: true });
     }

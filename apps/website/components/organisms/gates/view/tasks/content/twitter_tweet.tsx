@@ -54,6 +54,7 @@ const TwitterTweetContent = ({
           <Button
             onClick={() => console.log('joao')}
             href={`https://twitter.com/intent/tweet?text=${tweet_text}`}
+            target="_blank"
             sx={{
               background: (theme) => theme.palette.grey[300],
               color: 'black',
