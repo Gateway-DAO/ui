@@ -22,13 +22,6 @@ import {
   TwitterRetweetDataError,
 } from '../../../templates/create-gate/schema';
 
-const DynamicEmojiField = dynamic(
-  () => import('../../form/emoji-picker').then((mod) => mod.EmojiPicker),
-  {
-    ssr: false,
-  }
-);
-
 const TwitterRetweetTask = ({ taskId, deleteTask }) => {
   const {
     register,
@@ -182,18 +175,16 @@ const TwitterRetweetTask = ({ taskId, deleteTask }) => {
           value={tweetLink}
           {...register(`tasks.data.${taskId}.task_data.tweet_link`)}
           error={
-            !!(errors.tasks?.data[taskId]?.task_data as TwitterRetweetDataError)?.tweet_link
+            !!(errors.tasks?.data[taskId]?.task_data as TwitterRetweetDataError)
+              ?.tweet_link
           }
           helperText={
-            (errors.tasks?.data[taskId]?.task_data as TwitterRetweetDataError)?.tweet_link?.message
+            (errors.tasks?.data[taskId]?.task_data as TwitterRetweetDataError)
+              ?.tweet_link?.message
           }
           onChange={(event) => {
-            setIsLoading(true);
             clearErrors(`tasks.data.${taskId}.task_data.tweet_link`);
             setTweetLink(event.target.value);
-          }}
-          onBlurCapture={(event) => {
-            setIsLoading(false);
           }}
           sx={{
             marginBottom: '10px',
@@ -207,7 +198,7 @@ const TwitterRetweetTask = ({ taskId, deleteTask }) => {
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
-                {isLoading && <CircularProgress size={20} /> }
+                {isLoading && <CircularProgress size={20} />}
               </InputAdornment>
             ),
           }}

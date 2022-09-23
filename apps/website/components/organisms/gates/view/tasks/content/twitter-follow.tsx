@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { FaTwitter } from 'react-icons/fa';
 import { MdVerified } from 'react-icons/md';
@@ -34,20 +36,21 @@ const TwitterFollowContent = ({
     raw: true,
   });
 
-  const { data: twitterData, isLoading: isLoadingTwitterData } = useQuery(
-    ['twitter-data'],
-    async () => {
-      try {
-        const username = data.username;
-        const response = await gqlAuthMethods.twitter_data({
-          userName: username,
-        });
-        return response.get_twitter_user_data;
-      } catch (error) {
-        throw Error(error);
-      }
+  const {
+    data: twitterData,
+    isLoading: isLoadingTwitterData,
+    refetch,
+  } = useQuery(['twitter-data'], async () => {
+    try {
+      const username = data.username;
+      const response = await gqlAuthMethods.twitter_data({
+        userName: username,
+      });
+      return response.get_twitter_user_data;
+    } catch (error) {
+      throw Error(error);
     }
-  );
+  });
 
   const connectTwitter = useMutation(['connect-twitter'], async () => {
     try {
@@ -61,6 +64,10 @@ const TwitterFollowContent = ({
     } catch (error) {
       console.log(error);
     }
+  });
+
+  useEffect(() => {
+    refetch();
   });
 
   const checkTwitterFollow = useMutation(['check-twitter-follow'], async () => {
@@ -112,7 +119,7 @@ const TwitterFollowContent = ({
           <CircularProgress size={24} />
         </Stack>
       )}
-      {twitterData && (
+      {twitterData && Object.entries(twitterData).length > 0 && (
         <Stack
           sx={{
             background: 'white',
@@ -190,7 +197,7 @@ const TwitterFollowContent = ({
                     fontFamily: 'sans-serif',
                   }}
                 >
-                  {numberFormat(twitterData?.public_metrics.following_count)}{' '}
+                  {numberFormat(twitterData?.public_metrics?.following_count)}{' '}
                   <Typography component="span" sx={{ color: '#5B7083' }}>
                     Following
                   </Typography>
@@ -205,7 +212,7 @@ const TwitterFollowContent = ({
                     ml: '19px',
                   }}
                 >
-                  {numberFormat(twitterData?.public_metrics.followers_count)}{' '}
+                  {numberFormat(twitterData?.public_metrics?.followers_count)}{' '}
                   <Typography component="span" sx={{ color: '#5B7083' }}>
                     Followers
                   </Typography>
