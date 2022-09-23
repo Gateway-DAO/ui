@@ -489,7 +489,7 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
             </Stack>
           </Box>
         </Stack>
-        {completedAt && (
+        {!!completedAt && (
           <Typography
             sx={{
               marginX: TOKENS.CONTAINER_PX,
