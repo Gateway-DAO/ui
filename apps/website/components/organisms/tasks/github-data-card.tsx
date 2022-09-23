@@ -1,12 +1,12 @@
 import Link from 'next/link';
 
 import { AiFillGithub } from 'react-icons/ai';
-import { BiGitRepoForked } from 'react-icons/bi';
+import { BiGitPullRequest, BiGitRepoForked } from 'react-icons/bi';
 
 import { BookOutlined } from '@mui/icons-material';
 import CircleIcon from '@mui/icons-material/Circle';
 import StarBorderOutlinedIcon from '@mui/icons-material/StarBorderOutlined';
-import { Chip, Stack, Typography } from '@mui/material';
+import { Chip, Divider, Stack, Typography } from '@mui/material';
 
 import * as colors from './colors.json';
 
@@ -19,9 +19,10 @@ type GithubDataCardProps = {
     stargazers_count: number;
     forks_count: number;
   };
+  requested_pr_amount?: number;
 };
 
-const GithubDataCard = ({ data }: GithubDataCardProps) => {
+const GithubDataCard = ({ data, requested_pr_amount }: GithubDataCardProps) => {
   const repository = {
     name: data?.name || '',
     description: data?.description || '',
@@ -40,6 +41,29 @@ const GithubDataCard = ({ data }: GithubDataCardProps) => {
         borderRadius: '10px',
       }}
     >
+      {requested_pr_amount && <Stack
+        flexDirection="row"
+        justifyContent="space-between"
+        alignItems="baseline"
+        sx={{ padding: '2rem' }}
+      >
+        <Stack flexDirection="row" gap={2} sx={{ border: "1px solid #BDBEC0", borderRadius: "15px", padding: "10px" }}>
+          <BiGitPullRequest fontSize="2rem" />
+          <Typography
+            fontSize={20}
+            fontWeight="bold"
+          >
+            {requested_pr_amount}
+          </Typography>
+        </Stack>
+        <AiFillGithub fontSize="2rem" />
+      </Stack>}
+      {requested_pr_amount && <Typography variant="body2" sx={{ padding: "1rem 2rem" }}>
+        Pull requests created and merged
+      </Typography>}
+      {
+        requested_pr_amount && <Divider color="#BDBEC0" sx={{ marginTop: "20px" }} />
+      }
       <Stack
         flexDirection="row"
         justifyContent="space-between"
@@ -64,7 +88,7 @@ const GithubDataCard = ({ data }: GithubDataCardProps) => {
             sx={{ color: 'black', fontWeight: 'bold' }}
           />
         </Stack>
-        <AiFillGithub fontSize="2rem" />
+        {!requested_pr_amount && <AiFillGithub fontSize="2rem" />}
       </Stack>
       <Stack sx={{ padding: '0 2rem' }}>
         <Typography>{repository.description}</Typography>

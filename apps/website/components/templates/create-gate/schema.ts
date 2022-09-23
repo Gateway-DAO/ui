@@ -70,6 +70,11 @@ export type GithubContributeTask = {
   task_data: GithubContributeData;
 };
 
+export type GithubPRTask = {
+  task_type: 'github_prs';
+  task_data: GithubPRData;
+};
+
 export type Task = {
   id?: string;
   gate_id?: string;
@@ -83,6 +88,7 @@ export type Task = {
   | SnapshotTask
   | HoldTokenTask
   | GithubContributeTask
+  | GithubPRTask
 );
 
 // Verification Code
@@ -103,6 +109,18 @@ export type GithubContributeData = {
 export type GithubContributeDataError = {
   id?: FieldError;
   repository_link?: FieldError;
+};
+
+// Github PR
+export type GithubPRData = {
+  repository_link?: string;
+  requested_pr_amount?: number;
+};
+
+export type GithubPRDataError = {
+  id?: FieldError;
+  repository_link?: FieldError;
+  requested_pr_amount?: FieldError;
 };
 
 // Quiz
@@ -263,6 +281,19 @@ export const githubContributeDataSchema = z.object({
     }),
 });
 
+export const githubPRDataSchema = z.object({
+  repository_link: z
+    .string()
+    .url()
+    .regex(RegExp('https://github.com/(.+)/(.+)'), {
+      message: 'This is not a valid Github repository link',
+    }),
+  requested_pr_amount: z.number({
+    invalid_type_error: 'Requested PR amount must be a number',
+    required_error: "Requested PR amount can't be empty",
+  }),
+});
+
 export const taskMeetingCodeSchema = z.object({
   id: z.string().optional(),
   task_id: z.string().optional(),
@@ -356,6 +387,17 @@ export const taskGithubContributeSchema = z.object({
   task_data: githubContributeDataSchema,
 });
 
+export const taskGithubPRSchema = z.object({
+  id: z.string().optional(),
+  task_id: z.string().optional(),
+  title: z.string().min(2, 'The title must contain at least 2 character(s)'),
+  description: z
+    .string()
+    .min(2, 'The description must contain at least 2 character(s)'),
+  task_type: z.literal('github_prs'),
+  task_data: githubPRDataSchema,
+});
+
 export const createGateSchema = z.object({
   title: z.string().min(2, 'The title must contain at least 2 character(s)'),
   categories: z.array(z.string()).min(1, 'Please select at least 1 category'),
@@ -380,6 +422,7 @@ export const createGateSchema = z.object({
           taskSnapshotSchema,
           taskHoldTokenSchema,
           taskGithubContributeSchema,
+          taskGithubPRSchema,
         ])
       )
       .nonempty({ message: 'A gate needs to have at least one task.' }),
