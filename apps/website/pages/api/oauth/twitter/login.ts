@@ -6,7 +6,7 @@ const KEYS = {
 };
 
 const client = new Twitter({
-  subdomain: 'api', // "api" is the default (change for other subdomains)
+  subdomain: 'api',
   version: '1.1',
   consumer_key: KEYS.consumer_key,
   consumer_secret: KEYS.consumer_secret,

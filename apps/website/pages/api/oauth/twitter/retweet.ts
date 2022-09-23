@@ -19,15 +19,17 @@ export default async function handler(req, res) {
     access_token_secret: req.body.accTknSecret,
   });
 
+  const { tweet_link } = JSON.parse(req.body);
+
   try {
-    const response = await client.get('statuses/lookup', {
-      id: req.body.tweet_link.split('/').at(-1),
+    const response = await client.get('statuses/show', {
+      id: tweet_link.split('/').at(-1),
     });
 
     if (response[0].retweeted) {
-      return res.status(200).json({ tweet_retweeted: true });
+      return res.status(200).json({ twitter_retweet: true });
     }
-    return res.status(200).json({ tweet_retweeted: false });
+    return res.status(200).json({ twitter_retweet: false });
   } catch (error) {
     console.log(error);
     res.status(400).json(error);
