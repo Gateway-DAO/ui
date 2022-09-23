@@ -136,9 +136,6 @@ export function Task({
             };
           });
 
-          console.log(data);
-          console.log(data.verify_key);
-          data.verify_key.completed_gate && console.log('ALOOO');
           data.verify_key.completed_gate && setCompletedGate(true);
 
           data.verify_key.completed_gate &&
@@ -149,8 +146,6 @@ export function Task({
       },
     }
   );
-
-  console.log(isLoading);
 
   const completeTask = (info) => {
     if (!me) {
