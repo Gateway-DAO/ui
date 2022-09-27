@@ -1,9 +1,22 @@
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
+
 import { TOKENS } from '@gateway/theme';
 
 import { DashboardTemplate } from '../components/templates/dashboard';
 import { NewUserTemplate } from '../components/templates/new-user';
+import { ROUTES } from '../constants/routes';
+import { useAuth } from '../providers/auth';
 
 export default function NewUser() {
+  const { me } = useAuth();
+  const router = useRouter();
+  useEffect(() => {
+    if (me?.init) {
+      router.replace((router.query?.callback as string) ?? ROUTES.EXPLORE);
+    }
+  }, [me?.init, router]);
+
   return (
     <DashboardTemplate
       showExplore={false}

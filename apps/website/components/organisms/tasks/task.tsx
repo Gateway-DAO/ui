@@ -21,6 +21,8 @@ import { Tasks } from '../../../services/graphql/types.generated';
 import { queryClient } from '../../../services/query-client';
 import { SessionUser } from '../../../types/user';
 import { getMapValueFromObject } from '../../../utils/map-object';
+import GithubContributeContent from '../gates/view/tasks/content/github_contribute';
+import GithubPRContent from '../gates/view/tasks/content/github_prs';
 import MeetingCodeContent from '../gates/view/tasks/content/meeting_code';
 import QuizContent from '../gates/view/tasks/content/quiz';
 import SelfVerifyContent from '../gates/view/tasks/content/self-verify';
@@ -60,6 +62,7 @@ export function Task({
   const { me, gqlAuthMethods, onOpenLogin } = useAuth();
 
   const [expanded, toggleExpanded] = useToggle(false);
+  const [defaultOpen, setOpen] = useState(true);
   const [completed, setCompleted] = useState(completedProp);
   const [updatedAt, setUpdatedAt] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -74,7 +77,7 @@ export function Task({
       setUpdatedAt(me?.task_progresses[progressTaskIndex].updated_at);
       toggleExpanded(true);
     }
-  }, [task.id, me?.task_progresses]);
+  }, [task.id, me?.task_progresses, toggleExpanded]);
 
   const getTaskContent = (task_type: string) => {
     switch (task_type) {
@@ -103,6 +106,18 @@ export function Task({
           title: 'Quiz',
           body: QuizContent,
         };
+      case 'github_contribute': {
+        return {
+          title: 'Contribute to Repository',
+          body: GithubContributeContent,
+        };
+      }
+      case 'github_prs': {
+        return {
+          title: 'Verify Pull Requests',
+          body: GithubPRContent,
+        };
+      }
       default:
         return {
           title: '',
@@ -116,27 +131,32 @@ export function Task({
     gqlAuthMethods.complete_task,
     {
       onSuccess: async (data) => {
-        await queryClient.cancelQueries(['me']);
+        try {
+          await queryClient.cancelQueries(['me']);
 
-        queryClient.setQueryData<SessionUser>(['me'], (old) => {
-          const oldTaskProgresses = old.task_progresses.filter(
-            (task_progress) => task_progress.task_id !== task.id
-          );
+          queryClient.setQueryData<SessionUser>(['me'], (old) => {
+            const oldTaskProgresses = (old?.task_progresses || []).filter(
+              (task_progress) => task_progress.task_id !== task.id
+            );
 
-          const newTaskProgress = [
-            ...oldTaskProgresses,
-            data.verify_key.task_info,
-          ];
+            const newTaskProgress = [
+              ...oldTaskProgresses,
+              data.verify_key.task_info,
+            ];
+
+            return {
+              ...old,
+              task_progresses: newTaskProgress,
+            };
+          });
 
           data.verify_key.completed_gate && setCompletedGate(true);
 
-          return {
-            ...old,
-            task_progresses: newTaskProgress,
-          };
-        });
-
-        data.verify_key.completed_gate && queryClient.invalidateQueries(['me']);
+          data.verify_key.completed_gate &&
+            queryClient.invalidateQueries(['me']);
+        } catch (err) {
+          console.log(err);
+        }
       },
     }
   );
@@ -175,6 +195,7 @@ export function Task({
       sx={(theme) => ({
         borderRadius: 0,
         borderLeft: 'none',
+        borderTop: 'none',
         backgroundColor: 'transparent !important',
         backgroundImage: 'none !important',
         px: { xs: theme.spacing(1), md: theme.spacing(7) },
@@ -205,12 +226,23 @@ export function Task({
         title={<Typography variant="caption">{taskContent?.title}</Typography>}
         subheader={<Typography variant="h6">{task.title}</Typography>}
         action={
-          <IconButton onClick={toggleExpanded}>
+          <IconButton
+            onClick={() => {
+              idx == 1 && defaultOpen
+                ? toggleExpanded(false)
+                : toggleExpanded();
+              setOpen(false);
+            }}
+          >
             {expanded ? <ExpandLess /> : <ExpandMore />}
           </IconButton>
         }
       />
-      <Collapse in={expanded} timeout="auto" unmountOnExit>
+      <Collapse
+        in={idx == 1 && defaultOpen ? true : expanded}
+        timeout="auto"
+        unmountOnExit
+      >
         <CardContent sx={{ marginLeft: { xs: '0px', md: '55px' } }}>
           <Typography variant="subtitle2">{task.description}</Typography>
           <TaskComponent

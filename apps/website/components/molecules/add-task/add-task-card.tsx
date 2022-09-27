@@ -1,4 +1,5 @@
 import ElectricBoltIcon from '@mui/icons-material/ElectricBolt';
+import GitHubIcon from '@mui/icons-material/GitHub';
 import InsertLinkIcon from '@mui/icons-material/InsertLink';
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 import NumbersIcon from '@mui/icons-material/Numbers';
@@ -32,8 +33,10 @@ const AddTaskCard = ({ numberOfTasks, addTask }) => {
           })}
         />
         <Stack>
-          <Typography variant="h6">Add a task</Typography>
-          <Typography variant="subtitle2">Select your next task</Typography>
+          <Typography variant="h6">Add a requirement</Typography>
+          <Typography variant="subtitle2">
+            Select your next requirement
+          </Typography>
         </Stack>
       </Stack>
       <Grid
@@ -46,7 +49,7 @@ const AddTaskCard = ({ numberOfTasks, addTask }) => {
           <Paper>
             <AddTaskButton
               icon={<InsertLinkIcon />}
-              title={'Files & Links'}
+              title={'Open Links'}
               addTask={() => addTask('self_verify')}
             />
           </Paper>
@@ -55,7 +58,7 @@ const AddTaskCard = ({ numberOfTasks, addTask }) => {
           <Paper>
             <AddTaskButton
               icon={<QuizIcon />}
-              title={'Create Quiz'}
+              title={'Take Quiz'}
               addTask={() => addTask('quiz')}
             />
           </Paper>
@@ -64,7 +67,7 @@ const AddTaskCard = ({ numberOfTasks, addTask }) => {
           <Paper>
             <AddTaskButton
               icon={<MonetizationOnIcon />}
-              title={'Hold Token'}
+              title={'Verify Token'}
               addTask={() => addTask('token_hold')}
             />
           </Paper>
@@ -73,7 +76,7 @@ const AddTaskCard = ({ numberOfTasks, addTask }) => {
           <Paper>
             <AddTaskButton
               icon={<ElectricBoltIcon />}
-              title={'Snapshot Governance'}
+              title={'Verify Proposal'}
               addTask={() => addTask('snapshot')}
             />
           </Paper>
@@ -82,8 +85,26 @@ const AddTaskCard = ({ numberOfTasks, addTask }) => {
           <Paper>
             <AddTaskButton
               icon={<NumbersIcon />}
-              title={'Verification Code'}
+              title={'Verify Code'}
               addTask={() => addTask('meeting_code')}
+            />
+          </Paper>
+        </Grid>
+        <Grid item xs={2} sm={4} md={4}>
+          <Paper>
+            <AddTaskButton
+              icon={<GitHubIcon />}
+              title={'Contribute to repository'}
+              addTask={() => addTask('github_contribute')}
+            />
+          </Paper>
+        </Grid>
+        <Grid item xs={2} sm={4} md={4}>
+          <Paper>
+            <AddTaskButton
+              icon={<GitHubIcon />}
+              title={'Verify Pull Requests'}
+              addTask={() => addTask('github_prs')}
             />
           </Paper>
         </Grid>

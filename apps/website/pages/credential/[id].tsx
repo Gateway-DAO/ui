@@ -11,15 +11,24 @@ import { GateViewTemplate } from '../../components/templates/gate-view';
 import { ROUTES } from '../../constants/routes';
 import { useAuth } from '../../providers/auth';
 import { gqlAnonMethods, gqlMethods } from '../../services/api';
+import { getServerSession } from '../../services/next-auth';
 
-export async function getServerSideProps({ req, params }) {
+export async function getServerSideProps({ req, res, params }) {
   const { id } = params;
   const queryClient = new QueryClient();
 
-  const gate = await (req.cookies.token
-    ? gqlMethods(req.cookies.token, req.cookies.user_id)
-    : gqlAnonMethods
-  ).gate({ id });
+  const session = await getServerSession(req, res);
+
+  let gate;
+
+  try {
+    gate = await (session
+      ? gqlMethods(session.token, session.user_id)
+      : gqlAnonMethods
+    ).gate({ id });
+  } catch (e) {
+    gate = await gqlAnonMethods.gate({ id });
+  }
 
   if (!gate.gates_by_pk) {
     return {
@@ -30,12 +39,7 @@ export async function getServerSideProps({ req, params }) {
     };
   }
 
-  await queryClient.prefetchQuery(['gate', id], () =>
-    (req.cookies.token
-      ? gqlMethods(req.cookies.token, req.cookies.user_id)
-      : gqlAnonMethods
-    ).gate({ id })
-  );
+  await queryClient.prefetchQuery(['gate', id], () => gate);
 
   return {
     props: {

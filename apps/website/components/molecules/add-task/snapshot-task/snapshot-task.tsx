@@ -16,6 +16,8 @@ import {
   Switch,
   FormControlLabel,
   FormLabel,
+  RadioGroup,
+  Radio,
 } from '@mui/material';
 
 import { CircleWithNumber } from '../../../atoms/circle-with-number';
@@ -40,7 +42,7 @@ const SnapshotTask = ({ taskId, deleteTask }) => {
 
   useEffect(() => {
     if (formValues.tasks.data[taskId]?.title === '') {
-      setValue(`tasks.data.${taskId}.title`, 'Untitled Task');
+      setValue(`tasks.data.${taskId}.title`, 'Untitled Requirement');
     }
     setValue(`tasks.data.${taskId}.task_type`, 'snapshot');
   }, [taskId, setValue, formValues.tasks.data]);
@@ -157,21 +159,45 @@ const SnapshotTask = ({ taskId, deleteTask }) => {
           required
           multiline
           minRows={3}
-          label="Task Description"
+          label="Task Requirement"
           id="task-description"
           {...register(`tasks.data.${taskId}.description`)}
           error={!!errors.tasks?.data[taskId]?.description}
           helperText={errors.tasks?.data[taskId]?.description?.message}
           sx={{
-            marginBottom: '60px',
+            marginBottom: 8,
             '& fieldset legend span': {
               marginRight: '10px',
             },
           }}
         />
+
+        <FormLabel sx={{ mb: 1 }}>Verify if user</FormLabel>
+
+        <RadioGroup
+          name={`tasks.data.${taskId}.task_data.type`}
+          row
+          defaultValue={'vote'}
+          sx={{ ml: 1 }}
+        >
+          <FormControlLabel
+            value="proposal"
+            control={<Radio />}
+            label="Created Proposal"
+            {...register(`tasks.data.${taskId}.task_data.type`)}
+          />
+          <FormControlLabel
+            value="vote"
+            control={<Radio />}
+            label="Voted for Proposal"
+            {...register(`tasks.data.${taskId}.task_data.type`)}
+          />
+        </RadioGroup>
+
         <Stack
           direction={{ xs: 'column', md: 'row' }}
           justifyContent="space-between"
+          marginTop={2}
         >
           <Stack direction="column" order={{ xs: 1, md: 0 }}>
             <TextField
@@ -198,31 +224,6 @@ const SnapshotTask = ({ taskId, deleteTask }) => {
                 the proposal number
               </Typography>
             )}
-          </Stack>
-          <Stack
-            direction="row"
-            alignItems="center"
-            sx={{
-              marginBottom: { xs: 2, md: 0 },
-            }}
-          >
-            <Typography variant="body2">Created Proposal</Typography>
-            <Controller
-              control={control}
-              defaultValue="proposal"
-              name={`tasks.data.${taskId}.task_data.type`}
-              rules={{ required: true }}
-              render={({ field: { onChange, value } }) => (
-                <Switch
-                  value={value == 'vote'}
-                  onChange={(e) => {
-                    const type = e.target.checked ? 'vote' : 'proposal';
-                    setValue(`tasks.data.${taskId}.task_data.type`, type);
-                  }}
-                />
-              )}
-            />
-            <Typography variant="body2">Voted for Proposal</Typography>
           </Stack>
         </Stack>
       </FormControl>
