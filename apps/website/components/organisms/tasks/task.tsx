@@ -136,21 +136,27 @@ export function Task({
         try {
           await queryClient.cancelQueries(['me', address]);
 
-          queryClient.setQueryData<SessionUser>(['me', address], (old) => {
-            const oldTaskProgresses = (old?.task_progresses || []).filter(
-              (task_progress) => task_progress.task_id !== task.id
-            );
+          // queryClient.setQueryData<SessionUser>(['me', address], (old) => {
+          //   try {
+          //     const oldTaskProgresses = old?.task_progresses?.filter(
+          //       (task_progress) => task_progress.task_id !== task.id
+          //     );
 
-            const newTaskProgress = [
-              ...oldTaskProgresses,
-              data.verify_key.task_info,
-            ];
+          //     const newTaskProgress = [
+          //       ...oldTaskProgresses,
+          //       data.verify_key.task_info,
+          //     ];
 
-            return {
-              ...old,
-              task_progresses: newTaskProgress,
-            };
-          });
+          //     return {
+          //       ...old,
+          //       task_progresses: newTaskProgress,
+          //     };
+          //   } catch (err) {
+          //     console.log(err);
+          //   }
+          // });
+
+          queryClient.refetchQueries(['me', address]);
 
           data.verify_key.completed_gate && setCompletedGate(true);
 

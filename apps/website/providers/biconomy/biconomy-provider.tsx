@@ -71,24 +71,26 @@ export function BiconomyProvider({
           data.update_credentials_by_pk.id,
         ]);
 
-        queryClient.setQueryData(['me', address], (old: PartialDeep<Users>) => {
-          const experiences = old.experiences.map((experience) => ({
-            ...experience,
-            credentials: experience.credentials.map((credential) =>
-              credential.id === data.update_credentials_by_pk.id
-                ? {
-                    ...credential,
-                    ...data.update_credentials_by_pk,
-                  }
-                : credential
-            ),
-          }));
+        // queryClient.setQueryData(['me', address], (old: PartialDeep<Users>) => {
+        //   const experiences = old.experiences.map((experience) => ({
+        //     ...experience,
+        //     credentials: experience.credentials.map((credential) =>
+        //       credential.id === data.update_credentials_by_pk.id
+        //         ? {
+        //             ...credential,
+        //             ...data.update_credentials_by_pk,
+        //           }
+        //         : credential
+        //     ),
+        //   }));
 
-          return {
-            ...old,
-            experiences,
-          };
-        });
+        //   return {
+        //     ...old,
+        //     experiences,
+        //   };
+        // });
+
+        queryClient.refetchQueries(['me', address]);
       },
     }
   );
