@@ -1,8 +1,6 @@
-import { useEffect, useState, useRef } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
-import normalizeUrl from 'normalize-url';
-import { Controller, useFormContext } from 'react-hook-form';
-import { setErrorMap } from 'zod';
+import { useFormContext } from 'react-hook-form';
 
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -13,39 +11,88 @@ import {
   Stack,
   TextField,
   Typography,
-  Switch,
-  FormControlLabel,
-  FormLabel,
-  RadioGroup,
-  Radio,
 } from '@mui/material';
 
 import { CircleWithNumber } from '../../../atoms/circle-with-number';
+import GithubDataCard from '../../../organisms/tasks/github-data-card';
 import {
   CreateGateTypes,
-  SnapshotDataError,
+  GithubContributeDataError,
 } from '../../../templates/create-gate/schema';
 
-const SnapshotTask = ({ taskId, deleteTask }) => {
+const GithubContributeTask = ({ taskId, deleteTask }) => {
   const {
     register,
     setValue,
-    getValues,
-    formState: { errors },
-    watch,
-    control,
     setError,
-    clearErrors,
+    getValues,
+    trigger,
+    formState: { errors },
   } = useFormContext<CreateGateTypes>();
 
   const formValues = getValues();
 
+  const [githubData, setGithubData] = useState(null);
+
+  const fetchRepositoryData = useCallback(
+    async (repository_url) => {
+      const isValid = await trigger(
+        `tasks.data.${taskId}.task_data.repository_link`
+      );
+
+      if (!isValid) {
+        setGithubData(null);
+        return;
+      }
+
+      const repository_owner = repository_url
+        .replace('https://github.com/', '')
+        .split('/')[0];
+      const repository_name = repository_url
+        .replace('https://github.com/', '')
+        .split('/')[1];
+
+      const fetch_url = `https://api.github.com/repos/${repository_owner}/${repository_name}`;
+      const data = await fetch(fetch_url);
+
+      if (data.status !== 200) {
+        setError(`tasks.data.${taskId}.task_data.repository_link`, {
+          type: 'custom',
+          message: 'Repository private or not found.',
+        });
+        setGithubData(null);
+        return;
+      }
+
+      setGithubData(await data.json());
+      return;
+    },
+    [setError, taskId, trigger]
+  );
+
   useEffect(() => {
     if (formValues.tasks.data[taskId]?.title === '') {
-      setValue(`tasks.data.${taskId}.title`, 'Untitled Requirement');
+      setValue(`tasks.data.${taskId}.title`, 'Untitled Task');
     }
-    setValue(`tasks.data.${taskId}.task_type`, 'snapshot');
-  }, [taskId, setValue, formValues.tasks.data]);
+
+    const repository_url = getValues(
+      `tasks.data.${taskId}.task_data.repository_link`
+    );
+
+    if (repository_url) {
+      const isValid = trigger(`tasks.data.${taskId}.task_data.repository_link`);
+      if (isValid) {
+        fetchRepositoryData(repository_url);
+      }
+    }
+  }, [
+    setValue,
+    taskId,
+    formValues.tasks.data,
+    fetchRepositoryData,
+    getValues,
+    trigger,
+  ]);
 
   const [taskVisible, setTaskVisible] = useState(false);
 
@@ -84,7 +131,9 @@ const SnapshotTask = ({ taskId, deleteTask }) => {
             })}
           />
           <Stack>
-            <Typography variant="subtitle2">Snapshot Governance</Typography>
+            <Typography variant="subtitle2">
+              Contribute to Repository
+            </Typography>
             <TextField
               variant="standard"
               autoFocus
@@ -106,8 +155,8 @@ const SnapshotTask = ({ taskId, deleteTask }) => {
               }}
               id="task-title"
               {...register(`tasks.data.${taskId}.title`)}
-              error={!!errors.tasks?.data[taskId]?.title}
-              helperText={errors.tasks?.data[taskId]?.title?.message}
+              error={!!errors.tasks?.data?.[taskId]?.title}
+              helperText={errors.tasks?.data?.[taskId]?.title?.message}
             />
           </Stack>
         </Stack>
@@ -159,76 +208,50 @@ const SnapshotTask = ({ taskId, deleteTask }) => {
           required
           multiline
           minRows={3}
-          label="Task Requirement"
+          label="Task Description"
           id="task-description"
           {...register(`tasks.data.${taskId}.description`)}
-          error={!!errors.tasks?.data[taskId]?.description}
-          helperText={errors.tasks?.data[taskId]?.description?.message}
+          error={!!errors.tasks?.data?.[taskId]?.description}
+          helperText={errors.tasks?.data?.[taskId]?.description?.message}
           sx={{
-            marginBottom: 8,
+            marginBottom: '60px',
             '& fieldset legend span': {
               marginRight: '10px',
             },
           }}
         />
-
-        <FormLabel sx={{ mb: 1 }}>Verify if user</FormLabel>
-
-        <RadioGroup
-          name={`tasks.data.${taskId}.task_data.type`}
-          row
-          defaultValue={'vote'}
-          sx={{ ml: 1 }}
-        >
-          <FormControlLabel
-            value="proposal"
-            control={<Radio />}
-            label="Created Proposal"
-            {...register(`tasks.data.${taskId}.task_data.type`)}
-          />
-          <FormControlLabel
-            value="vote"
-            control={<Radio />}
-            label="Voted for Proposal"
-            {...register(`tasks.data.${taskId}.task_data.type`)}
-          />
-        </RadioGroup>
-
-        <Stack
-          direction={{ xs: 'column', md: 'row' }}
-          justifyContent="space-between"
-          marginTop={2}
-        >
-          <Stack direction="column" order={{ xs: 1, md: 0 }}>
-            <TextField
-              required
-              label="Specific Proposal Number"
-              sx={{ minWidth: { md: '50%', xs: '100%' } }}
-              {...register(`tasks.data.${taskId}.task_data.proposal_number`)}
-              error={
-                !!(errors.tasks?.data[taskId]?.task_data as SnapshotDataError)
-                  ?.proposal_number
-              }
-              helperText={
-                (errors.tasks?.data[taskId]?.task_data as SnapshotDataError)
-                  ?.proposal_number?.message
-              }
-            />
-            {!(errors.tasks?.data[taskId]?.task_data as SnapshotDataError)
-              ?.proposal_number && (
-              <Typography
-                variant="caption"
-                marginTop={(theme) => theme.spacing(1)}
-              >
-                Pro tip: paste a Snapshot URL directly into the box to extract
-                the proposal number
-              </Typography>
-            )}
-          </Stack>
-        </Stack>
+        <Typography variant="body1" sx={{ paddingBottom: 4 }}>
+          The user must contribute to the repository
+        </Typography>
+        <TextField
+          required
+          label="Repository link"
+          {...register(`tasks.data.${taskId}.task_data.repository_link`, {
+            onBlur: (e) => fetchRepositoryData(e.target.value),
+          })}
+          error={
+            !!(
+              errors.tasks?.data?.[taskId]
+                ?.task_data as GithubContributeDataError
+            )?.repository_link
+          }
+          helperText={
+            (
+              errors.tasks?.data?.[taskId]
+                ?.task_data as GithubContributeDataError
+            )?.repository_link?.message
+          }
+          sx={{
+            marginBottom: '60px',
+            '& fieldset legend span': {
+              marginRight: '10px',
+            },
+          }}
+        />
+        {githubData?.name && <GithubDataCard data={githubData} />}
       </FormControl>
     </Stack>
   );
 };
 
-export default SnapshotTask;
+export default GithubContributeTask;

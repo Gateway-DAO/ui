@@ -4,6 +4,8 @@ import { useFieldArray, useFormContext } from 'react-hook-form';
 
 import AddTaskCard from '../../molecules/add-task/add-task-card';
 import FileLinkTask from '../../molecules/add-task/file-link-task/file-link-task';
+import GithubContributeTask from '../../molecules/add-task/github/contribute-task';
+import GithubPRTask from '../../molecules/add-task/github/pr-task';
 import HoldTokenTask from '../../molecules/add-task/hold-token-task/hold-token-task';
 import {
   QuizTask,
@@ -29,6 +31,8 @@ const TaskComponents = {
   twitter_follow: FollowProfile,
   twitter_tweet: TwitterTweetTask,
   twitter_retweet: TwitterRetweetTask,
+  github_contribute: GithubContributeTask,
+  github_prs: GithubPRTask,
 };
 
 const defaultTaskData = (

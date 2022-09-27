@@ -79,7 +79,6 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
 
     if (!dataIsValid) {
       const errors = methods.formState.errors;
-
       snackbar.onOpen({
         message: Object.values(errors)[0].data?.message || 'Invalid data',
       });
@@ -289,7 +288,8 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
         </Stack>
 
         {/* Tasks */}
-        {hasTitleAndDescription && (
+        {(hasTitleAndDescription ||
+          (gateDetails.title && gateDetails.description)) && (
           <>
             <Divider sx={{ margin: '60px 0', width: '100%' }} />
             <Stack

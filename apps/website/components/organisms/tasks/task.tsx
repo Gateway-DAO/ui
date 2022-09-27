@@ -21,14 +21,16 @@ import { Tasks } from '../../../services/graphql/types.generated';
 import { queryClient } from '../../../services/query-client';
 import { SessionUser } from '../../../types/user';
 import { getMapValueFromObject } from '../../../utils/map-object';
+import GithubContributeContent from '../gates/view/tasks/content/github_contribute';
+import GithubPRContent from '../gates/view/tasks/content/github_prs';
 import MeetingCodeContent from '../gates/view/tasks/content/meeting_code';
 import QuizContent from '../gates/view/tasks/content/quiz';
 import SelfVerifyContent from '../gates/view/tasks/content/self-verify';
 import SnapshotContent from '../gates/view/tasks/content/snapshot';
 import TokenHoldContent from '../gates/view/tasks/content/token_hold';
 import TwitterFollowContent from '../gates/view/tasks/content/twitter-follow';
-import TwitterTweetContent from '../gates/view/tasks/content/twitter_tweet';
 import TwitterRetweetContent from '../gates/view/tasks/content/twitter_retweet';
+import TwitterTweetContent from '../gates/view/tasks/content/twitter_tweet';
 import { taskErrorMessages } from './task-error-messages';
 
 type Props = {
@@ -78,7 +80,7 @@ export function Task({
       setUpdatedAt(me?.task_progresses[progressTaskIndex].updated_at);
       toggleExpanded(true);
     }
-  }, [task.id, me?.task_progresses]);
+  }, [task.id, me?.task_progresses, toggleExpanded]);
 
   const getTaskContent = (task_type: string) => {
     const taskTypes = {
@@ -114,6 +116,14 @@ export function Task({
         title: 'Post Tweet',
         body: TwitterTweetContent,
       },
+      github_contribute: {
+        title: 'Contribute to Repository',
+        body: GithubContributeContent,
+      },
+      github_prs: {
+        title: 'Verify Pull Requests',
+        body: GithubPRContent,
+      },
     };
 
     return (
@@ -129,27 +139,32 @@ export function Task({
     gqlAuthMethods.complete_task,
     {
       onSuccess: async (data) => {
-        await queryClient.cancelQueries(['me']);
+        try {
+          await queryClient.cancelQueries(['me']);
 
-        queryClient.setQueryData<SessionUser>(['me'], (old) => {
-          const oldTaskProgresses = old.task_progresses.filter(
-            (task_progress) => task_progress.task_id !== task.id
-          );
+          queryClient.setQueryData<SessionUser>(['me'], (old) => {
+            const oldTaskProgresses = (old?.task_progresses || []).filter(
+              (task_progress) => task_progress.task_id !== task.id
+            );
 
-          const newTaskProgress = [
-            ...oldTaskProgresses,
-            data.verify_key.task_info,
-          ];
+            const newTaskProgress = [
+              ...oldTaskProgresses,
+              data.verify_key.task_info,
+            ];
+
+            return {
+              ...old,
+              task_progresses: newTaskProgress,
+            };
+          });
 
           data.verify_key.completed_gate && setCompletedGate(true);
 
-          return {
-            ...old,
-            task_progresses: newTaskProgress,
-          };
-        });
-
-        data.verify_key.completed_gate && queryClient.invalidateQueries(['me']);
+          data.verify_key.completed_gate &&
+            queryClient.invalidateQueries(['me']);
+        } catch (err) {
+          console.log(err);
+        }
       },
     }
   );
