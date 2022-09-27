@@ -71,7 +71,7 @@ export function BiconomyProvider({
           data.update_credentials_by_pk.id,
         ]);
 
-        queryClient.setQueryData(['me'], (old: PartialDeep<Users>) => {
+        queryClient.setQueryData(['me', address], (old: PartialDeep<Users>) => {
           const experiences = old.experiences.map((experience) => ({
             ...experience,
             credentials: experience.credentials.map((credential) =>
