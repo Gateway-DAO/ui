@@ -29,15 +29,13 @@ import { ROUTES } from '../../../constants/routes';
 import { useSnackbar } from '../../../hooks/use-snackbar';
 import { Gates } from '../../../services/graphql/types.generated';
 import { AvatarFile } from '../../atoms/avatar-file';
-import CircularProgressWithLabel from '../../atoms/circular-progress-label';
 import { Props as MintCredentialButtonProps } from '../../atoms/mint-button';
 import MorePopover from '../../atoms/more-popover';
 import { ReadMore } from '../../atoms/read-more-less';
 import { ShareButton } from '../../atoms/share-button';
 import ConfirmDialog from '../../organisms/confirm-dialog/confirm-dialog';
 import GateCompletedModal from '../../organisms/gates/view/modals/gate-completed';
-import { ClientNav } from '../../organisms/navbar/client-nav';
-import { Task, TaskGroup } from '../../organisms/tasks';
+import { TaskList } from './task-list';
 
 const GateStateChip = dynamic(() => import('../../atoms/gate-state-chip'), {
   ssr: false,
@@ -442,79 +440,15 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
       </Grid>
       <Divider orientation="vertical" flexItem />
       <Grid item xs={12} md>
-        <Stack
-          direction="row"
-          justifyContent="flex-end"
-          sx={{
-            px: TOKENS.CONTAINER_PX,
-            flexGrow: {
-              md: 0.5,
-            },
-            display: {
-              xs: 'none',
-              md: 'flex',
-            },
-          }}
-        >
-          <ClientNav />
-        </Stack>
-        {/* Task Counter */}
-        <Stack
-          direction="row"
-          alignItems="center"
-          sx={{
-            margin: { xs: '16px 16px 40px 16px', md: '60px' },
-          }}
-        >
-          <Box display={'flex'}>
-            <CircularProgressWithLabel
-              variant="determinate"
-              value={(completedTasksCount / gateProps?.tasks.length) * 100}
-              label={`${completedTasksCount}/${gateProps?.tasks.length}`}
-              size={50}
-              thickness={4}
-              sx={{
-                color: '#6DFFB9',
-              }}
-            />
-            <Stack
-              sx={{
-                marginLeft: (theme) => theme.spacing(4),
-              }}
-            >
-              <Typography variant="h6">Tasks</Typography>
-              <Typography variant="caption">
-                Complete the tasks to unlock this credential
-              </Typography>
-            </Stack>
-          </Box>
-        </Stack>
-        {!!completedAt && (
-          <Typography
-            sx={{
-              marginX: TOKENS.CONTAINER_PX,
-              py: 1,
-              px: 4,
-              border: 1,
-              borderRadius: 1,
-            }}
-            color={'#c5ffe3'}
-          >
-            You have completed this credential at {formattedDate}
-          </Typography>
-        )}
-
-        <TaskGroup>
-          {gateProps?.tasks.map((task, idx) => (
-            <Task
-              key={'task-' + (idx + 1)}
-              task={task}
-              readOnly={published !== 'published'}
-              setCompletedGate={setOpen}
-              isAdmin={isAdmin}
-            />
-          ))}
-        </TaskGroup>
+        <TaskList
+          tasks={gateProps?.tasks}
+          completedAt={completedAt}
+          completedTasksCount={completedTasksCount}
+          formattedDate={formattedDate}
+          isAdmin={isAdmin}
+          published={published}
+          setOpen={setOpen}
+        />
       </Grid>
       <Snackbar
         anchorOrigin={{
