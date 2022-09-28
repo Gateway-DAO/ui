@@ -1,15 +1,8 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { FaTwitter } from 'react-icons/fa';
 import { TwitterTweetEmbed } from 'react-twitter-embed';
 import { useLocalStorage } from 'react-use';
 
-import {
-  Box,
-  Button,
-  CircularProgress,
-  Stack,
-  Typography,
-} from '@mui/material';
+import { Button, Stack, Typography } from '@mui/material';
 
 import { LoadingButton } from '../../../../../../components/atoms/loading-button';
 import { useAuth } from '../../../../../../providers/auth';
