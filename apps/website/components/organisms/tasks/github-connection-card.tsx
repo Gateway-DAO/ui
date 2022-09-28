@@ -1,10 +1,15 @@
 import { Button, Stack, Typography } from '@mui/material';
+import { useRouter } from 'next/router';
 
-const GithubConnectionCard = () => {
+export default function GithubConnectionCard() {
+  const router = useRouter();
+
   const connectGithub = async () => {
     window.localStorage.setItem('github_redirect_url', window.location.href);
 
-    window.location.href = `https://github.com/login/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID}`;
+    router.push(
+      `https://github.com/login/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID}`
+    );
   };
 
   return (
@@ -43,6 +48,4 @@ const GithubConnectionCard = () => {
       </Stack>
     </Stack>
   );
-};
-
-export default GithubConnectionCard;
+}
