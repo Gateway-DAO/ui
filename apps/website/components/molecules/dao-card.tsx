@@ -50,7 +50,7 @@ export function DaoCard({
     const gates = gates_aggregate?.aggregate?.count ?? null;
     return `${followers > 0 ? `${followers} Follower(s)` : ''} ${
       followers && gates ? '·' : ''
-    } ${gates > 0 ? `${gates} gate(s)` : ''}`;
+    } ${gates > 0 ? `${gates} credential(s)` : ''}`;
   };
 
   return (
