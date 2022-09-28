@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { useToggle } from 'react-use';
 import { PartialObjectDeep } from 'type-fest/source/partial-deep';
+import { useAccount } from 'wagmi';
 
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import CheckIcon from '@mui/icons-material/Check';
@@ -63,6 +64,7 @@ export function Task({
   completed: completedProp = false,
 }: Props) {
   const { me, gqlAuthMethods, onOpenLogin } = useAuth();
+  const { address } = useAccount();
 
   const [expanded, toggleExpanded] = useToggle(false);
   const [defaultOpen, setOpen] = useState(true);
@@ -140,28 +142,34 @@ export function Task({
     {
       onSuccess: async (data) => {
         try {
-          await queryClient.cancelQueries(['me']);
+          await queryClient.cancelQueries(['me', address]);
 
-          queryClient.setQueryData<SessionUser>(['me'], (old) => {
-            const oldTaskProgresses = (old?.task_progresses || []).filter(
-              (task_progress) => task_progress.task_id !== task.id
-            );
+          // queryClient.setQueryData<SessionUser>(['me', address], (old) => {
+          //   try {
+          //     const oldTaskProgresses = old?.task_progresses?.filter(
+          //       (task_progress) => task_progress.task_id !== task.id
+          //     );
 
-            const newTaskProgress = [
-              ...oldTaskProgresses,
-              data.verify_key.task_info,
-            ];
+          //     const newTaskProgress = [
+          //       ...oldTaskProgresses,
+          //       data.verify_key.task_info,
+          //     ];
 
-            return {
-              ...old,
-              task_progresses: newTaskProgress,
-            };
-          });
+          //     return {
+          //       ...old,
+          //       task_progresses: newTaskProgress,
+          //     };
+          //   } catch (err) {
+          //     console.log(err);
+          //   }
+          // });
+
+          queryClient.refetchQueries(['me', address]);
 
           data.verify_key.completed_gate && setCompletedGate(true);
 
           data.verify_key.completed_gate &&
-            queryClient.invalidateQueries(['me']);
+            queryClient.invalidateQueries(['me', address]);
         } catch (err) {
           console.log(err);
         }
@@ -188,7 +196,7 @@ export function Task({
           getMapValueFromObject(
             taskErrorMessages,
             error.response.errors[0].extensions.error,
-            `There was an unexpected error, please, contact Gateway or try again`
+            `There was an unexpected error, please contact Gateway or try again`
           )
         );
       },

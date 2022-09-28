@@ -529,6 +529,6 @@ export const createGateSchema = z.object({
           taskGithubPRSchema,
         ])
       )
-      .nonempty({ message: 'A gate needs to have at least one task.' }),
+      .nonempty({ message: 'A credential needs to have at least one task.' }),
   }),
 });

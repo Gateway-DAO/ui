@@ -152,7 +152,7 @@ export function OverviewTab({ user }: Props) {
                     }}
                     variant="h6"
                   >
-                    No experiences
+                    No credentials
                   </Typography>
                 </Box>
               )}
