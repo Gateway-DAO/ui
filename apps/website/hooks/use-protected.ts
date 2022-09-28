@@ -11,7 +11,7 @@ export function useProtected(protectedCallback: (...e: any[]) => void) {
 
   const method = useCallback(
     (...e: any[]) => {
-      if (me) {
+      if (!me) {
         onOpenLogin();
         toggleHanging(true);
         return;
