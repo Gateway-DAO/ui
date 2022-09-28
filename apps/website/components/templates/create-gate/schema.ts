@@ -65,6 +65,16 @@ export type HoldTokenTask = {
   task_data: HoldTokenData;
 };
 
+export type GithubContributeTask = {
+  task_type: 'github_contribute';
+  task_data: GithubContributeData;
+};
+
+export type GithubPRTask = {
+  task_type: 'github_prs';
+  task_data: GithubPRData;
+};
+
 export type Task = {
   id?: string;
   gate_id?: string;
@@ -77,6 +87,8 @@ export type Task = {
   | QuizTask
   | SnapshotTask
   | HoldTokenTask
+  | GithubContributeTask
+  | GithubPRTask
 );
 
 // Verification Code
@@ -87,6 +99,28 @@ export type VerificationCodeData = {
 export type VerificationCodeDataError = {
   id?: FieldError;
   code?: FieldError;
+};
+
+// Github Contribute
+export type GithubContributeData = {
+  repository_link?: string;
+};
+
+export type GithubContributeDataError = {
+  id?: FieldError;
+  repository_link?: FieldError;
+};
+
+// Github PR
+export type GithubPRData = {
+  repository_link?: string;
+  requested_pr_amount?: number;
+};
+
+export type GithubPRDataError = {
+  id?: FieldError;
+  repository_link?: FieldError;
+  requested_pr_amount?: FieldError;
 };
 
 // Quiz
@@ -238,6 +272,28 @@ export const verificationCodeDataSchema = z.object({
     .min(2, 'Verification code must contain at least 2 character(s)'),
 });
 
+export const githubContributeDataSchema = z.object({
+  repository_link: z
+    .string()
+    .url()
+    .regex(RegExp('https://github.com/(.+)/(.+)'), {
+      message: 'This is not a valid Github repository link',
+    }),
+});
+
+export const githubPRDataSchema = z.object({
+  repository_link: z
+    .string()
+    .url()
+    .regex(RegExp('https://github.com/(.+)/(.+)'), {
+      message: 'This is not a valid Github repository link',
+    }),
+  requested_pr_amount: z.number({
+    invalid_type_error: 'Requested PR amount must be a number',
+    required_error: "Requested PR amount can't be empty",
+  }),
+});
+
 export const taskMeetingCodeSchema = z.object({
   id: z.string().optional(),
   task_id: z.string().optional(),
@@ -320,6 +376,28 @@ export const taskSnapshotSchema = z.object({
   task_data: snapshotTaskDataSchema,
 });
 
+export const taskGithubContributeSchema = z.object({
+  id: z.string().optional(),
+  task_id: z.string().optional(),
+  title: z.string().min(2, 'The title must contain at least 2 character(s)'),
+  description: z
+    .string()
+    .min(2, 'The description must contain at least 2 character(s)'),
+  task_type: z.literal('github_contribute'),
+  task_data: githubContributeDataSchema,
+});
+
+export const taskGithubPRSchema = z.object({
+  id: z.string().optional(),
+  task_id: z.string().optional(),
+  title: z.string().min(2, 'The title must contain at least 2 character(s)'),
+  description: z
+    .string()
+    .min(2, 'The description must contain at least 2 character(s)'),
+  task_type: z.literal('github_prs'),
+  task_data: githubPRDataSchema,
+});
+
 export const createGateSchema = z.object({
   title: z.string().min(2, 'The title must contain at least 2 character(s)'),
   categories: z.array(z.string()).min(1, 'Please select at least 1 category'),
@@ -343,8 +421,10 @@ export const createGateSchema = z.object({
           taskQuizSchema,
           taskSnapshotSchema,
           taskHoldTokenSchema,
+          taskGithubContributeSchema,
+          taskGithubPRSchema,
         ])
       )
-      .nonempty({ message: 'A gate needs to have at least one task.' }),
+      .nonempty({ message: 'A credential needs to have at least one task.' }),
   }),
 });

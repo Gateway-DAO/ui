@@ -56,11 +56,15 @@ export function GuideCard({ setShowCard }) {
 
   const handleCardProgress = (move: string) => {
     if (move === 'next') {
-      return progress === 4 ? setProgress(0) : setProgress(progress + 1);
+      return progress == details.length - 1
+        ? setProgress(0)
+        : setProgress(progress + 1);
     }
 
     if (move === 'previous') {
-      return progress === 0 ? setProgress(4) : setProgress(progress - 1);
+      return progress == 0
+        ? setProgress(details.length - 1)
+        : setProgress(progress - 1);
     }
   };
 
@@ -68,7 +72,7 @@ export function GuideCard({ setShowCard }) {
     if (link == 'contribute') {
       return `${ROUTES.EXPLORE}`;
     }
-    return `${ROUTES.PROFILE_EDIT + details[progress].link}`;
+    return `${ROUTES.PROFILE_EDIT + details?.[progress]?.link}`;
   };
 
   return (
@@ -89,7 +93,7 @@ export function GuideCard({ setShowCard }) {
         />
         <CircularProgress
           variant="determinate"
-          value={20 * progress}
+          value={(100 / details.length) * (progress + 1)}
           sx={{ m: 2, color: '#FFFFFF', position: 'relative' }}
           thickness={4.6}
         />
@@ -106,7 +110,7 @@ export function GuideCard({ setShowCard }) {
           }}
         >
           <Typography variant="caption" component="div" color="text.secondary">
-            {progress} / {details.length}
+            {progress + 1} / {details.length}
           </Typography>
         </Box>
       </Box>
@@ -118,11 +122,11 @@ export function GuideCard({ setShowCard }) {
         }}
       >
         <Typography variant="subtitle2">Complete your profile</Typography>
-        <Typography variant="h6"> {details[progress].title}</Typography>
+        <Typography variant="h6"> {details[progress]?.title}</Typography>
       </Box>
       <Box sx={{ display: 'flex', mx: 2, justifyContent: 'space-between' }}>
         <Stack direction="row" spacing={1}>
-          <Link href={redirectLink(details[progress].link)} passHref>
+          <Link href={redirectLink(details[progress]?.link)} passHref>
             <Button
               variant="contained"
               size="small"

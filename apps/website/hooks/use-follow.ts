@@ -1,4 +1,4 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, queryClient } from '@tanstack/react-query';
 
 import { useAuth } from '../providers/auth';
 import { useProtected } from './use-protected';
@@ -76,13 +76,14 @@ export const useFollowDAO = (cb?: UseFollowProps) => {
   const follow = useMutation(
     (id: string) => gqlAuthMethods.follow_dao({ id }),
     {
-      onSuccess({ follow_dao }) {
-        onUpdateMe((oldMe) => ({
-          ...oldMe,
-          following_dao: oldMe.following_dao
-            ? [...oldMe.following_dao, follow_dao]
-            : [follow_dao],
-        }));
+      async onSuccess({ follow_dao }) {
+        // onUpdateMe((oldMe) => ({
+        //   ...oldMe,
+        //   following_dao: oldMe.following_dao
+        //     ? [...oldMe.following_dao, follow_dao]
+        //     : [follow_dao],
+        // }));
+        await queryClient.refetchQueries(['me', address]);
         cb?.onFollow(follow_dao.dao_id);
       },
     }
@@ -91,13 +92,14 @@ export const useFollowDAO = (cb?: UseFollowProps) => {
   const unfollow = useMutation(
     (id: string) => gqlAuthMethods.unfollow_dao({ id }),
     {
-      onSuccess({ unfollow_dao }) {
-        onUpdateMe((oldMe) => ({
-          ...oldMe,
-          following_dao: oldMe.following_dao.filter(
-            ({ dao }) => dao.id !== unfollow_dao.dao_id
-          ),
-        }));
+      async onSuccess({ unfollow_dao }) {
+        // onUpdateMe((oldMe) => ({
+        //   ...oldMe,
+        //   following_dao: oldMe.following_dao.filter(
+        //     ({ dao }) => dao.id !== unfollow_dao.dao_id
+        //   ),
+        // }));
+        await queryClient.refetchQueries(['me', address]);
         cb?.onUnfollow(unfollow_dao.dao_id);
       },
     }
