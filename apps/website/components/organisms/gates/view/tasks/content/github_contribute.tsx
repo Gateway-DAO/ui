@@ -6,6 +6,7 @@ import { LoadingButton } from '../../../../../../components/atoms/loading-button
 import GithubConnectionCard from '../../../../../../components/organisms/tasks/github-connection-card';
 import GithubDataCard from '../../../../../../components/organisms/tasks/github-data-card';
 import { GithubContributeData } from 'apps/website/components/templates/create-gate/schema';
+import { useQuery } from '@tanstack/react-query';
 
 type GithubContributeContentProps = {
   data: GithubContributeData;
@@ -33,15 +34,6 @@ export default function GithubContributeContent({
 
   const { repository_link } = data;
 
-  const [repository, setRepository] = useState({
-    name: '',
-    description: '',
-    language: '',
-    html_url: '',
-    stargazers_count: 0,
-    forks_count: 0,
-  });
-
   const repository_owner = repository_link
     .replace('https://github.com/', '')
     .split('/')[0];
@@ -49,31 +41,26 @@ export default function GithubContributeContent({
     .replace('https://github.com/', '')
     .split('/')[1];
 
+  const fetchRepository = async () => {
+    const response = await fetch(
+      `https://api.github.com/repos/${repository_owner}/${repository_name}`
+    );
+    const data = await response.json();
+
+    return data;
+  };
+
+  const { data: repository } = useQuery(['github-data', repository_link], () =>
+    fetchRepository()
+  );
+
   useEffect(() => {
     if (window) {
       setGithubAccessToken(
         JSON.parse(window.localStorage.getItem('github_access_token'))
       );
     }
-
-    const fetchRepository = async () => {
-      const response = await fetch(
-        `https://api.github.com/repos/${repository_owner}/${repository_name}`
-      );
-      const data = await response.json();
-
-      setRepository({
-        name: data.name,
-        description: data.description,
-        language: data.language,
-        html_url: data.html_url,
-        stargazers_count: data.stargazers_count,
-        forks_count: data.forks_count,
-      });
-    };
-
-    fetchRepository();
-  }, [repository_link, repository_owner, repository_name]);
+  });
 
   return (
     <Stack alignItems="start">
