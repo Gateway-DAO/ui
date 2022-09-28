@@ -1,0 +1,8 @@
+{
+  "tasks": {
+    "github_contribute": {
+      "description": "You must contribute to"
+    },
+    "completed": "Task completed at "
+  }
+}

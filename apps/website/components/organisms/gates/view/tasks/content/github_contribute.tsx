@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import { Stack, Typography } from '@mui/material';
+import useTranslation from 'next-translate/useTranslation';
 
 import { LoadingButton } from '../../../../../../components/atoms/loading-button';
 import GithubConnectionCard from '../../../../../../components/organisms/tasks/github-connection-card';
@@ -29,6 +30,8 @@ export default function GithubContributeContent({
   readOnly,
   isLoading,
 }: GithubContributeContentProps) {
+  const { t } = useTranslation('gate-profile');
+
   const formattedDate = new Date(updatedAt.toLocaleString()).toLocaleString();
   const [githubAccessToken, setGithubAccessToken] = useState('');
 
@@ -65,7 +68,7 @@ export default function GithubContributeContent({
   return (
     <Stack alignItems="start">
       <Typography variant="body2" padding={'30px 0'}>
-        You must contribute to
+        {t('tasks.github_contribute.description')}
       </Typography>
       <GithubDataCard data={repository} />
       {!completed && !readOnly && githubAccessToken && (
@@ -95,7 +98,7 @@ export default function GithubContributeContent({
           variant="subtitle2"
           sx={{ paddingTop: '20px' }}
         >
-          Task completed at {formattedDate}
+          {t('tasks.completed')} {formattedDate}
         </Typography>
       )}
     </Stack>
