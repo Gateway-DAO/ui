@@ -40,7 +40,6 @@ const TwitterRetweetContent = ({
         });
         return response.get_twitter_tweet;
       } catch (error) {
-        // throw Error(error);
         console.log(error);
       }
     }
@@ -63,7 +62,6 @@ const TwitterRetweetContent = ({
   const checkForRetweet = useMutation(['check-twitter-retweet'], async () => {
     try {
       const twitterLocalStorage = twitterKeys;
-      console.log(twitterLocalStorage);
       const response = await fetch('/api/oauth/twitter/retweet', {
         method: 'POST',
         body: JSON.stringify({

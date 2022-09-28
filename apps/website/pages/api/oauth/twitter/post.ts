@@ -32,7 +32,6 @@ export default async function handler(req, res) {
     let tweet_posted = false;
     if (response && response.length) {
       response.find((tweet) => {
-        console.log(tweet.text, tweet_text);
         if (tweet.text == tweet_text) {
           tweet_posted = true;
         }
