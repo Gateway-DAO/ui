@@ -1,0 +1,8 @@
+{
+  "tasks": {
+    "github_contribute": {
+      "title": "Contribute to the Repository",
+      "description": "The user must contribute to the repository"
+    }
+  }
+}

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import { useFormContext } from 'react-hook-form';
+import useTranslation from 'next-translate/useTranslation';
 
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -30,6 +31,8 @@ export default function GithubContributeTask({
   taskId,
   deleteTask,
 }: GithubContributeTaskProps) {
+  const { t } = useTranslation('gate-new');
+
   const {
     register,
     setValue,
@@ -125,7 +128,7 @@ export default function GithubContributeTask({
           />
           <Stack>
             <Typography variant="subtitle2">
-              Contribute to Repository
+              {t('tasks.github_contribute.title')}
             </Typography>
             <TextField
               variant="standard"
@@ -214,7 +217,7 @@ export default function GithubContributeTask({
           }}
         />
         <Typography variant="body1" sx={{ paddingBottom: 4 }}>
-          The user must contribute to the repository
+        {t('tasks.github_contribute.description')}
         </Typography>
         <TextField
           required
