@@ -11,7 +11,7 @@ export default async function handler(req, res) {
     return;
   }
 
-  const { accTkn, accTknSecret, tweet_text } = JSON.parse(req.body);
+  const { accTkn, accTknSecret, tweet_text, source_id } = JSON.parse(req.body);
 
   const client = new Twitter({
     subdomain: 'api',
@@ -23,16 +23,22 @@ export default async function handler(req, res) {
   });
 
   try {
-    const response = await client.get('statuses/lookup', {
-      text: tweet_text,
+    const response = await client.get('statuses/user_timeline', {
+      exclude_replies: true,
+      user_id: source_id,
+      include_rts: false,
     });
 
-    console.log('Testando', response);
-
-    if (response[0].text.indexOf(req.body.tweet_content) > -1) {
-      return res.status(200).json({ tweet_posted: true });
+    let tweet_posted = false;
+    if (response && response.length) {
+      response.find((tweet) => {
+        console.log(tweet.text, tweet_text);
+        if (tweet.text == tweet_text) {
+          tweet_posted = true;
+        }
+      });
     }
-    return res.status(200).json({ tweet_posted: false });
+    return res.status(200).json({ tweet_posted });
   } catch (error) {
     console.log(error);
     res.status(400).json(error);

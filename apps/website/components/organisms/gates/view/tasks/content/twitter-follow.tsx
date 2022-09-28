@@ -62,7 +62,7 @@ const TwitterFollowContent = ({
       }
       return data;
     } catch (error) {
-      console.log(error);
+      throw Error(error);
     }
   });
 
@@ -89,7 +89,7 @@ const TwitterFollowContent = ({
         completeTask({ twitter_follow: data.twitter_follow });
       }
     } catch (error) {
-      console.log(error);
+      throw Error(error);
     }
   });
 
