@@ -1,4 +1,5 @@
-import { useMutation, queryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useAccount } from 'wagmi';
 
 import { useAuth } from '../providers/auth';
 import { useProtected } from './use-protected';
@@ -72,6 +73,8 @@ export const useFollowUser = (cb?: UseFollowProps) => {
 
 export const useFollowDAO = (cb?: UseFollowProps) => {
   const { me, gqlAuthMethods, onUpdateMe } = useAuth();
+  const { address } = useAccount();
+  const queryClient = useQueryClient();
 
   const follow = useMutation(
     (id: string) => gqlAuthMethods.follow_dao({ id }),
