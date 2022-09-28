@@ -38,6 +38,7 @@ import ConfirmDialog from '../../organisms/confirm-dialog/confirm-dialog';
 import GateCompletedModal from '../../organisms/gates/view/modals/gate-completed';
 import { ClientNav } from '../../organisms/navbar/client-nav';
 import { Task, TaskGroup } from '../../organisms/tasks';
+import { HolderDialog } from '../../organisms/holder-dialog';
 
 const GateStateChip = dynamic(() => import('../../atoms/gate-state-chip'), {
   ssr: false,
@@ -57,6 +58,7 @@ type GateViewProps = {
 
 export function GateViewTemplate({ gateProps }: GateViewProps) {
   const [open, setOpen] = useState(false);
+  const [isHolderDialog, setIsHolderDialog] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [confirmToggleState, setConfirmToggleState] = useState(false);
   const [completedTasksCount, setCompletedTasksCount] = useState(0);
@@ -356,17 +358,21 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
                     Holders
                   </Typography>
                 </Grid>
-                <Grid item xs={8}>
+
+                <HolderDialog
+                  isOpen={isHolderDialog}
+                  setIsOpen={setIsHolderDialog}
+                  holders={gateProps?.holders}
+                />
+                <Grid item xs={8} display="flex" alignItems={'center'}>
                   <AvatarGroup
-                    total={gateProps?.holders.length}
-                    spacing={'medium'}
-                    max={4}
+                    spacing={'small'}
                     sx={{
                       justifyContent: 'flex-end',
                     }}
                   >
                     {gateProps?.holders.map((holder, index) => {
-                      if (index == 3) return;
+                      if (index == 8) return null;
                       return (
                         <Link
                           key={holder.id}
@@ -386,6 +392,12 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
                       );
                     })}
                   </AvatarGroup>
+                  {gateProps?.holders.length > 8 ? (
+                    <Chip
+                      label={`+ ${gateProps?.holders.length - 8}`}
+                      onClick={() => setIsHolderDialog(!isHolderDialog)}
+                    />
+                  ) : null}
                 </Grid>
               </>
             )}

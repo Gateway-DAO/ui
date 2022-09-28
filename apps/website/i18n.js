@@ -16,6 +16,7 @@ const config = {
     [ROUTES.DAO_EDIT]: ['dao-edit'],
     [ROUTES.PROFILE]: ['user-profile'],
     [ROUTES.MY_PROFILE]: ['user-profile'],
+    [ROUTES.GATE_PROFILE]: ['credential'],
   },
   localeDetection: false,
 };

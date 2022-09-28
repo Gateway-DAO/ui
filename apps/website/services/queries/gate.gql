@@ -35,6 +35,7 @@ query gate($id: uuid!) {
       name
       username
       pfp
+      wallet
       picture {
         ...file
       }
