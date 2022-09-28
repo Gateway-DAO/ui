@@ -1,13 +1,14 @@
-import dynamic from 'next/dynamic';
-import { ChangeEvent, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
+import { useMutation } from '@tanstack/react-query';
 import { useFormContext } from 'react-hook-form';
 
-import { ExpandLess, ExpandMore } from '@mui/icons-material';
+import { ExpandLess, ExpandMore, Twitter } from '@mui/icons-material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import {
   Box,
   CircularProgress,
+  debounce,
   FormControl,
   IconButton,
   InputAdornment,
@@ -16,6 +17,7 @@ import {
   Typography,
 } from '@mui/material';
 
+import { useAuth } from '../../../../providers/auth';
 import { CircleWithNumber } from '../../../atoms/circle-with-number';
 import {
   CreateGateTypes,
@@ -23,14 +25,16 @@ import {
 } from '../../../templates/create-gate/schema';
 
 const TwitterRetweetTask = ({ taskId, deleteTask }) => {
+  const { gqlAuthMethods } = useAuth();
   const {
     register,
     setValue,
     getValues,
-    clearErrors,
+    setError,
     formState: { errors },
   } = useFormContext<CreateGateTypes>();
 
+  const [taskVisible, setTaskVisible] = useState(false);
   const formValues = getValues();
 
   useEffect(() => {
@@ -39,9 +43,38 @@ const TwitterRetweetTask = ({ taskId, deleteTask }) => {
     }
   }, [setValue, taskId, formValues.tasks.data]);
 
-  const [taskVisible, setTaskVisible] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [tweetLink, setTweetLink] = useState('');
+  const {
+    mutate: getTwitterMutateTweet,
+    data: twitterTweet,
+    isLoading: isLoadingTwitterTweeet,
+  } = useMutation(['twitter-tweet'], async () => {
+    try {
+      const tweetLink = getValues(`tasks.data.${taskId}.task_data.tweet_link`);
+      const tweetId = tweetLink.split('/').at(-1);
+      const response = await gqlAuthMethods.twitter_tweet({
+        id: tweetId,
+      });
+      return response.get_twitter_tweet;
+    } catch (error) {
+      if (error.message.includes('User is protected')) {
+        return setError(`tasks.data.${taskId}.task_data.tweet_link`, {
+          message: 'Tweet is protected',
+        });
+      }
+      return setError(`tasks.data.${taskId}.task_data.tweet_link`, {
+        message: 'Tweet not found',
+      });
+    }
+  });
+
+  const delayedQueryTweet = useCallback(
+    debounce(() => getTwitterMutateTweet(), 500),
+    []
+  );
+
+  const onHandleChangeTweet = () => {
+    delayedQueryTweet();
+  };
 
   return (
     <Stack
@@ -172,8 +205,9 @@ const TwitterRetweetTask = ({ taskId, deleteTask }) => {
           required
           label="Tweet Link"
           id="tweet-link"
-          value={tweetLink}
-          {...register(`tasks.data.${taskId}.task_data.tweet_link`)}
+          {...register(`tasks.data.${taskId}.task_data.tweet_link`, {
+            onChange: () => onHandleChangeTweet(),
+          })}
           error={
             !!(errors.tasks?.data[taskId]?.task_data as TwitterRetweetDataError)
               ?.tweet_link
@@ -182,10 +216,6 @@ const TwitterRetweetTask = ({ taskId, deleteTask }) => {
             (errors.tasks?.data[taskId]?.task_data as TwitterRetweetDataError)
               ?.tweet_link?.message
           }
-          onChange={(event) => {
-            clearErrors(`tasks.data.${taskId}.task_data.tweet_link`);
-            setTweetLink(event.target.value);
-          }}
           sx={{
             marginBottom: '10px',
             '& fieldset legend span': {
@@ -198,11 +228,53 @@ const TwitterRetweetTask = ({ taskId, deleteTask }) => {
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
-                {isLoading && <CircularProgress size={20} />}
+                {isLoadingTwitterTweeet && <CircularProgress size={20} />}
               </InputAdornment>
             ),
           }}
         />
+        {twitterTweet && Object.entries(twitterTweet).length > 0 && (
+          <Stack
+            sx={{
+              background: (theme) => theme.palette.secondary.light,
+              justifyContent: 'space-between',
+              borderRadius: '8px',
+              marginTop: '12px',
+              width: '100%',
+            }}
+          >
+            <Box
+              sx={{
+                padding: '0 12px',
+              }}
+            >
+              <Typography
+                variant="subtitle1"
+                marginTop={2}
+                sx={{
+                  color: '#212121',
+                  fontWeight: '400',
+                  size: '1rem',
+                  fontFamily: 'sans-serif',
+                }}
+              >
+                {twitterTweet?.text}
+              </Typography>
+            </Box>
+            <Stack
+              sx={{
+                borderRadius: '0 0 8px 8px',
+                padding: '8px 12px 12px',
+                textAlign: 'right',
+                alignItems: 'center',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+              }}
+            >
+              <Twitter sx={{ color: '#1DA1F2' }} />
+            </Stack>
+          </Stack>
+        )}
       </FormControl>
     </Stack>
   );
