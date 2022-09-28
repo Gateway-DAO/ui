@@ -76,7 +76,7 @@ export default function GithubContributeTask({
     return data.json();
   };
 
-  const { data: githubData, mutateGithubData } = useMutation(
+  const { data: githubData, mutate: mutateGithubData } = useMutation(
     ['github-data', repository_url],
     (repository_url) => fetchRepositoryData(repository_url)
   );
