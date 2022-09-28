@@ -5,15 +5,29 @@ import { Stack, Typography } from '@mui/material';
 import { LoadingButton } from '../../../../../../components/atoms/loading-button';
 import GithubConnectionCard from '../../../../../../components/organisms/tasks/github-connection-card';
 import GithubDataCard from '../../../../../../components/organisms/tasks/github-data-card';
+import { GithubContributeData } from 'apps/website/components/templates/create-gate/schema';
 
-const GithubContributeContent = ({
+type GithubContributeContentProps = {
+  data: GithubContributeData;
+  completeTask: ({
+    githubAccessToken,
+    repository_name,
+    repository_owner,
+  }) => void;
+  completed: boolean;
+  updatedAt: string;
+  readOnly: boolean;
+  isLoading: boolean;
+};
+
+export default function GithubContributeContent({
   data,
   completeTask,
   completed,
   updatedAt,
   readOnly,
   isLoading,
-}) => {
+}: GithubContributeContentProps) {
   const formattedDate = new Date(updatedAt.toLocaleString()).toLocaleString();
   const [githubAccessToken, setGithubAccessToken] = useState('');
 
@@ -99,6 +113,4 @@ const GithubContributeContent = ({
       )}
     </Stack>
   );
-};
-
-export default GithubContributeContent;
+}
