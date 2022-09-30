@@ -8,6 +8,10 @@
     "github_contribute": {
       "description": "You must contribute to"
     },
+    "github_prs": {
+      "description": "You must have created and merged this number of pull requests",
+      "action": "Verify"
+    },
     "completed": "Task completed at "
   }
 }
