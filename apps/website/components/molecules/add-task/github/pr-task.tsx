@@ -245,7 +245,7 @@ export default function GithubPRTask({
           required
           label="Repository link"
           {...register(`tasks.data.${taskId}.task_data.repository_link`, {
-            onChange: (e) => mutateGithubData(e.target.value),
+            onBlur: (e) => mutateGithubData(e.target.value),
           })}
           error={
             !!(
