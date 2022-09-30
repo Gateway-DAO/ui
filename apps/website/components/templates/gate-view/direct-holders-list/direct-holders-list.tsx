@@ -8,7 +8,6 @@ import { TOKENS } from '@gateway/theme';
 
 import SearchIcon from '@mui/icons-material/Search';
 import {
-  Alert,
   Box,
   Divider,
   InputAdornment,
@@ -24,8 +23,7 @@ import { Gates } from '../../../../services/graphql/types.generated';
 import { CenteredLoader } from '../../../atoms/centered-loader';
 import { UserListItem } from '../../../molecules/user-list-item';
 import { ClientNav } from '../../../organisms/navbar/client-nav';
-import { CheckEligibilityBanner } from './check-eligibility-banner';
-import { HoldersTitle } from './holders-title';
+import { DirectHoldersHeader } from './header';
 
 type Props = {
   gate: PartialDeep<Gates>;
@@ -45,10 +43,9 @@ export function DirectHoldersList({ gate }: Props) {
               offset: pageParam,
               search: `%${filter}%`,
             })
-          : */ gqlAnonMethods.credential_holders({
+          : */ gqlAnonMethods.direct_credential_holders({
           offset: pageParam,
           gate_id: gate.id,
-          wallet: me?.wallet ?? '',
         }),
       {
         getNextPageParam: (lastPage, pages) => {
@@ -57,13 +54,6 @@ export function DirectHoldersList({ gate }: Props) {
         },
       }
     );
-
-  const hasCredential =
-    data?.pages[data.pages.length - 1]?.hasCredential?.aggregate?.count > 0;
-
-  const totalHolders =
-    data?.pages[data.pages.length - 1].whitelisted_wallets_aggregate.aggregate
-      .count;
 
   const whitelistedWallets =
     data?.pages?.flatMap((page) => page.whitelisted_wallets) ?? [];
@@ -81,9 +71,7 @@ export function DirectHoldersList({ gate }: Props) {
     setFilter(event.target.value);
   };
 
-  return isLoading ? (
-    <CenteredLoader />
-  ) : (
+  return (
     <>
       <Stack
         direction="row"
@@ -111,30 +99,7 @@ export function DirectHoldersList({ gate }: Props) {
           },
         }}
       >
-        <HoldersTitle total={totalHolders}></HoldersTitle>
-        {!me && <CheckEligibilityBanner />}
-        {!!me && hasCredential && (
-          <Alert
-            variant="outlined"
-            severity="success"
-            icon={<></>}
-            sx={{ mb: 3.75 }}
-          >
-            {t('direct-credential.eligibility.has', {
-              published: 'xx/xx/xxxx',
-            })}
-          </Alert>
-        )}
-        {!!me && !hasCredential && (
-          <Alert
-            variant="outlined"
-            severity="warning"
-            icon={<></>}
-            sx={{ mb: 3.75 }}
-          >
-            {t('direct-credential.eligibility.not')}
-          </Alert>
-        )}
+        <DirectHoldersHeader gateId={gate.id} />
         <TextField
           label="Search"
           variant="outlined"
@@ -167,87 +132,91 @@ export function DirectHoldersList({ gate }: Props) {
             mb: 4,
           }}
         />
-        <List
-          sx={{
-            width: '100%',
-            position: 'relative',
-          }}
-          style={{
-            height: `${rowVirtualizer.getTotalSize()}px`,
-          }}
-        >
-          {items.map((row) => {
-            const { size, start, index } = row;
-            const isLoaderRow = index > whitelistedWallets.length - 1;
-            const walletUser = whitelistedWallets[index];
-            if (!hasNextPage && isLoaderRow) return null;
-            if (isLoaderRow) {
-              return (
-                <CenteredLoader
-                  key={row.index}
-                  style={{
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    width: '100%',
-                    height: `${size}px`,
-                    transform: `translateY(${start}px)`,
-                  }}
-                />
-              );
-            }
-            return (
-              <>
-                <UserListItem
-                  key={walletUser?.user?.id ?? walletUser.wallet}
-                  user={
-                    walletUser?.user ?? {
-                      name: 'Unknown User',
-                      username: walletUser.wallet,
-                    }
-                  }
-                  showFollow={!!walletUser?.user}
-                  hasLink={!!walletUser?.user}
-                  hasUsernamePrefix={!!walletUser?.user}
-                  style={{
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    width: '100%',
-                    height: `${size}px`,
-                    transform: `translateY(${start}px)`,
-                  }}
-                />
-                {index !== whitelistedWallets.length - 1 && (
-                  <Divider
-                    sx={(theme) => ({
-                      position: 'absolute',
-                      left: {
-                        xs: theme.spacing(-TOKENS.CONTAINER_PX.xs),
-                        md: theme.spacing(-TOKENS.CONTAINER_PX.md),
-                        lg: theme.spacing(-7.5),
-                      },
-                      top: 0,
-                      right: 0,
-                      width: {
-                        xs: `calc(100% + ${theme.spacing(
-                          TOKENS.CONTAINER_PX.xs * 2
-                        )} ) `,
-                        md: `calc(100% + ${theme.spacing(
-                          TOKENS.CONTAINER_PX.md * 2
-                        )} ) `,
-                        lg: `calc(100% + ${theme.spacing(15)} ) `,
-                      },
-                    })}
+        {isLoading ? (
+          <CenteredLoader />
+        ) : (
+          <List
+            sx={{
+              width: '100%',
+              position: 'relative',
+            }}
+            style={{
+              height: `${rowVirtualizer.getTotalSize()}px`,
+            }}
+          >
+            {items.map((row) => {
+              const { size, start, index } = row;
+              const isLoaderRow = index > whitelistedWallets.length - 1;
+              const walletUser = whitelistedWallets[index];
+              if (!hasNextPage && isLoaderRow) return null;
+              if (isLoaderRow) {
+                return (
+                  <CenteredLoader
+                    key={row.index}
                     style={{
-                      transform: `translateY(${start + size}px)`,
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      width: '100%',
+                      height: `${size}px`,
+                      transform: `translateY(${start}px)`,
                     }}
                   />
-                )}
-              </>
-            );
-          })}
-        </List>
+                );
+              }
+              return (
+                <>
+                  <UserListItem
+                    key={walletUser?.user?.id ?? walletUser.wallet}
+                    user={
+                      walletUser?.user ?? {
+                        name: 'Unknown User',
+                        username: walletUser.wallet,
+                      }
+                    }
+                    showFollow={!!walletUser?.user}
+                    hasLink={!!walletUser?.user}
+                    hasUsernamePrefix={!!walletUser?.user}
+                    style={{
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      width: '100%',
+                      height: `${size}px`,
+                      transform: `translateY(${start}px)`,
+                    }}
+                  />
+                  {index !== whitelistedWallets.length - 1 && (
+                    <Divider
+                      sx={(theme) => ({
+                        position: 'absolute',
+                        left: {
+                          xs: theme.spacing(-TOKENS.CONTAINER_PX.xs),
+                          md: theme.spacing(-TOKENS.CONTAINER_PX.md),
+                          lg: theme.spacing(-7.5),
+                        },
+                        top: 0,
+                        right: 0,
+                        width: {
+                          xs: `calc(100% + ${theme.spacing(
+                            TOKENS.CONTAINER_PX.xs * 2
+                          )} ) `,
+                          md: `calc(100% + ${theme.spacing(
+                            TOKENS.CONTAINER_PX.md * 2
+                          )} ) `,
+                          lg: `calc(100% + ${theme.spacing(15)} ) `,
+                        },
+                      })}
+                      style={{
+                        transform: `translateY(${start + size}px)`,
+                      }}
+                    />
+                  )}
+                </>
+              );
+            })}
+          </List>
+        )}
       </Box>
     </>
   );
