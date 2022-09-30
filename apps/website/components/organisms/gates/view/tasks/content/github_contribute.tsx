@@ -8,6 +8,7 @@ import GithubConnectionCard from '../../../../../../components/organisms/tasks/g
 import GithubDataCard from '../../../../../../components/organisms/tasks/github-data-card';
 import { GithubContributeData } from 'apps/website/components/templates/create-gate/schema';
 import { useQuery } from '@tanstack/react-query';
+import { useLocalStorage } from 'react-use';
 
 type completeTaskData = {
   githubAccessToken: string;
@@ -35,7 +36,10 @@ export default function GithubContributeContent({
   const { t } = useTranslation('gate-profile');
 
   const formattedDate = new Date(updatedAt.toLocaleString()).toLocaleString();
-  const [githubAccessToken, setGithubAccessToken] = useState('');
+  const [githubAccessToken, setGithubAccessToken, remove] = useLocalStorage(
+    'github_access_token',
+    ''
+  );
 
   const { repository_link } = data;
 
@@ -58,14 +62,6 @@ export default function GithubContributeContent({
   const { data: repository } = useQuery(['github-data', repository_link], () =>
     fetchRepository()
   );
-
-  useEffect(() => {
-    if (window) {
-      setGithubAccessToken(
-        JSON.parse(window.localStorage.getItem('github_access_token'))
-      );
-    }
-  });
 
   return (
     <Stack alignItems="start">
