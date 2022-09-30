@@ -21,6 +21,7 @@ query gate($id: uuid!) {
     published
     links
     image
+    type
     creator {
       id
       name
