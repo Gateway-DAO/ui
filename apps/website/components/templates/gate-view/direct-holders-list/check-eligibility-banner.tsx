@@ -18,6 +18,7 @@ export function CheckEligibilityBanner() {
       borderRadius={1}
       sx={{
         backgroundColor: 'rgba(229, 229, 229, 0.08)',
+        mb: 3.75,
       }}
     >
       <Box>

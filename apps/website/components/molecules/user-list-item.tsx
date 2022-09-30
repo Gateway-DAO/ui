@@ -68,7 +68,7 @@ export function UserListItem({
           />
         )}
       </ListItemAvatar>
-      <Stack direction="column">
+      <Stack direction="column" minWidth={0}>
         {hasLink ? (
           <>
             <Link passHref href={url}>
@@ -82,6 +82,10 @@ export function UserListItem({
                 color="text.secondary"
                 underline="hover"
                 target="_blank"
+                sx={{
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                }}
               >
                 {hasUsernamePrefix ? `@${user.username}` : user.username}
               </MUILink>
@@ -90,7 +94,14 @@ export function UserListItem({
         ) : (
           <>
             <Typography color="text.primary">{user.name}</Typography>
-            <Typography variant="body2" color="text.secondary">
+            <Typography
+              variant="body2"
+              color="text.secondary"
+              sx={{
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+              }}
+            >
               {hasUsernamePrefix ? `@${user.username}` : user.username}
             </Typography>
           </>

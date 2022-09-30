@@ -4,8 +4,18 @@ import { ChangeEvent, useState } from 'react';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { PartialDeep } from 'type-fest';
 
+import { TOKENS } from '@gateway/theme';
+
 import SearchIcon from '@mui/icons-material/Search';
-import { Alert, InputAdornment, List, TextField } from '@mui/material';
+import {
+  Alert,
+  Box,
+  Divider,
+  InputAdornment,
+  List,
+  Stack,
+  TextField,
+} from '@mui/material';
 
 import { useWindowVirtualInfiniteScroll } from '../../../../hooks/use-virtual-infinite-scroll';
 import { useAuth } from '../../../../providers/auth';
@@ -75,100 +85,170 @@ export function DirectHoldersList({ gate }: Props) {
     <CenteredLoader />
   ) : (
     <>
-      <ClientNav />
-      <HoldersTitle total={totalHolders}></HoldersTitle>
-      {!me && <CheckEligibilityBanner />}
-      {!!me && hasCredential && (
-        <Alert variant="outlined" severity="success" icon={<></>}>
-          {t('direct-credential.eligibility.has', { published: '22/09/2022' })}
-        </Alert>
-      )}
-      {!!me && !hasCredential && (
-        <Alert variant="outlined" severity="warning" icon={<></>}>
-          {t('direct-credential.eligibility.not')}
-        </Alert>
-      )}
-      <TextField
-        label="Search"
-        variant="outlined"
-        size="small"
-        onChange={handleChange}
-        value={filter}
-        fullWidth
-        InputProps={{
-          endAdornment: (
-            <InputAdornment
-              position="end"
-              sx={{
-                paddingRight: 1,
-              }}
-            >
-              <SearchIcon
-                sx={{
-                  color: 'rgba(255, 255, 255, 0.56)',
-                }}
-              />
-            </InputAdornment>
-          ),
-          fullWidth: true,
-          sx: {
-            borderRadius: 100,
+      <Stack
+        direction="row"
+        justifyContent="flex-end"
+        alignItems="center"
+        sx={{
+          height: (theme) => theme.spacing(7),
+          px: TOKENS.CONTAINER_PX,
+          flexGrow: {
+            md: 0.5,
           },
-          size: 'small',
-        }}
-      />
-
-      <List
-        style={{
-          height: `${rowVirtualizer.getTotalSize()}px`,
-          width: '100%',
-          position: 'relative',
+          display: {
+            xs: 'none',
+            md: 'flex',
+          },
         }}
       >
-        {items.map((row) => {
-          const { size, start, index } = row;
-          const isLoaderRow = index > whitelistedWallets.length - 1;
-          const walletUser = whitelistedWallets[index];
-          if (!hasNextPage && isLoaderRow) return null;
-          if (isLoaderRow) {
-            return (
-              <CenteredLoader
-                key={row.index}
-                style={{
-                  position: 'absolute',
-                  top: 0,
-                  left: 0,
-                  width: '100%',
-                  height: `${size}px`,
-                  transform: `translateY(${start}px)`,
+        <ClientNav />
+      </Stack>
+      <Box
+        sx={{
+          px: {
+            ...TOKENS.CONTAINER_PX,
+            lg: 7.5,
+          },
+        }}
+      >
+        <HoldersTitle total={totalHolders}></HoldersTitle>
+        {!me && <CheckEligibilityBanner />}
+        {!!me && hasCredential && (
+          <Alert
+            variant="outlined"
+            severity="success"
+            icon={<></>}
+            sx={{ mb: 3.75 }}
+          >
+            {t('direct-credential.eligibility.has', {
+              published: 'xx/xx/xxxx',
+            })}
+          </Alert>
+        )}
+        {!!me && !hasCredential && (
+          <Alert
+            variant="outlined"
+            severity="warning"
+            icon={<></>}
+            sx={{ mb: 3.75 }}
+          >
+            {t('direct-credential.eligibility.not')}
+          </Alert>
+        )}
+        <TextField
+          label="Search"
+          variant="outlined"
+          size="small"
+          onChange={handleChange}
+          value={filter}
+          fullWidth
+          InputProps={{
+            endAdornment: (
+              <InputAdornment
+                position="end"
+                sx={{
+                  paddingRight: 1,
                 }}
-              />
+              >
+                <SearchIcon
+                  sx={{
+                    color: 'rgba(255, 255, 255, 0.56)',
+                  }}
+                />
+              </InputAdornment>
+            ),
+            fullWidth: true,
+            sx: {
+              borderRadius: 100,
+            },
+            size: 'small',
+          }}
+          sx={{
+            mb: 4,
+          }}
+        />
+        <List
+          sx={{
+            width: '100%',
+            position: 'relative',
+          }}
+          style={{
+            height: `${rowVirtualizer.getTotalSize()}px`,
+          }}
+        >
+          {items.map((row) => {
+            const { size, start, index } = row;
+            const isLoaderRow = index > whitelistedWallets.length - 1;
+            const walletUser = whitelistedWallets[index];
+            if (!hasNextPage && isLoaderRow) return null;
+            if (isLoaderRow) {
+              return (
+                <CenteredLoader
+                  key={row.index}
+                  style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: `${size}px`,
+                    transform: `translateY(${start}px)`,
+                  }}
+                />
+              );
+            }
+            return (
+              <>
+                <UserListItem
+                  key={walletUser?.user?.id ?? walletUser.wallet}
+                  user={
+                    walletUser?.user ?? {
+                      name: 'Unknown User',
+                      username: walletUser.wallet,
+                    }
+                  }
+                  showFollow={!!walletUser?.user}
+                  hasLink={!!walletUser?.user}
+                  hasUsernamePrefix={!!walletUser?.user}
+                  style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: `${size}px`,
+                    transform: `translateY(${start}px)`,
+                  }}
+                />
+                {index !== whitelistedWallets.length - 1 && (
+                  <Divider
+                    sx={(theme) => ({
+                      position: 'absolute',
+                      left: {
+                        xs: theme.spacing(-TOKENS.CONTAINER_PX.xs),
+                        md: theme.spacing(-TOKENS.CONTAINER_PX.md),
+                        lg: theme.spacing(-7.5),
+                      },
+                      top: 0,
+                      right: 0,
+                      width: {
+                        xs: `calc(100% + ${theme.spacing(
+                          TOKENS.CONTAINER_PX.xs * 2
+                        )} ) `,
+                        md: `calc(100% + ${theme.spacing(
+                          TOKENS.CONTAINER_PX.md * 2
+                        )} ) `,
+                        lg: `calc(100% + ${theme.spacing(15)} ) `,
+                      },
+                    })}
+                    style={{
+                      transform: `translateY(${start + size}px)`,
+                    }}
+                  />
+                )}
+              </>
             );
-          }
-          return (
-            <UserListItem
-              key={walletUser?.user?.id ?? walletUser.wallet}
-              user={
-                walletUser?.user ?? {
-                  name: 'Unknown User',
-                  username: walletUser.wallet,
-                }
-              }
-              showFollow={!!walletUser?.user}
-              hasLink={!!walletUser?.user}
-              hasUsernamePrefix={!!walletUser?.user}
-              style={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                width: '100%',
-                height: `${size}px`,
-                transform: `translateY(${start}px)`,
-              }}
-            />
-          );
-        })}
-      </List>
+          })}
+        </List>
+      </Box>
     </>
   );
 }
