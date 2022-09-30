@@ -35,7 +35,9 @@ function GithubAuthPage() {
 
       const data = await response.json();
       const token = data?.token;
-      const redirectURL = window.localStorage.getItem('github_redirect_url');
+      const redirectURL = JSON.parse(
+        window.localStorage.getItem('github_redirect_url')
+      );
 
       if (token) {
         window.localStorage.setItem(

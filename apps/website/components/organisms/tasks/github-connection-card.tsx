@@ -1,23 +1,23 @@
 import { Button, Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
+import { useLocalStorage } from 'react-use';
 
 export default function GithubConnectionCard() {
   const router = useRouter();
+  const [githubRedirectUrl, setGithubRedirectUrl, remove] = useLocalStorage(
+    'github_redirect_url',
+    router.asPath
+  );
 
   const client_id =
     process.env.NODE_ENV === 'development'
       ? process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID_DEV
       : process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID_PROD;
 
-  console.log(client_id);
-
-  const connectGithub = async () => {
-    window.localStorage.setItem('github_redirect_url', window.location.href);
-
+  const connectGithub = async () =>
     router.push(
       `https://github.com/login/oauth/authorize?client_id=${client_id}`
     );
-  };
 
   return (
     <Stack
