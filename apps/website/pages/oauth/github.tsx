@@ -8,6 +8,16 @@ function GithubAuthPage() {
 
   const { code } = router.query;
 
+  const client_id =
+    process.env.NODE_ENV === 'development'
+      ? process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID_DEV
+      : process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID_PROD;
+
+  const client_secret =
+    process.env.NODE_ENV === 'development'
+      ? process.env.NEXT_PUBLIC_GITHUB_SECRET_DEV
+      : process.env.NEXT_PUBLIC_GITHUB_SECRET_PROD;
+
   useEffect(() => {
     const fetchToken = async () => {
       const response = await fetch(`/api/oauth/github`, {
@@ -17,8 +27,8 @@ function GithubAuthPage() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          client_id: process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID,
-          client_secret: process.env.NEXT_PUBLIC_GITHUB_SECRET,
+          client_id,
+          client_secret,
           code,
         }),
       });
