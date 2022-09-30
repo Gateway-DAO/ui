@@ -14,6 +14,7 @@ const config = {
     [ROUTES.DAO_PROFILE]: ['dao-profile'],
     [ROUTES.DAO_NEW]: ['dao-new'],
     [ROUTES.DAO_EDIT]: ['dao-edit'],
+    [ROUTES.GATE_PROFILE]: ['credential'],
     [ROUTES.PROFILE]: ['user-profile'],
     [ROUTES.MY_PROFILE]: ['user-profile'],
   },
