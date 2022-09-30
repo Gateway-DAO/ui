@@ -48,7 +48,7 @@ const TwitterFollowContent = ({
       });
       return response.get_twitter_user_data;
     } catch (error) {
-      throw Error(error);
+      console.log(error);
     }
   });
 
@@ -62,7 +62,7 @@ const TwitterFollowContent = ({
       }
       return data;
     } catch (error) {
-      throw Error(error);
+      console.log(error);
     }
   });
 
@@ -85,11 +85,11 @@ const TwitterFollowContent = ({
 
       const data: TwitterFollowData = await response.json();
 
-      if (data.twitter_follow) {
+      if (data) {
         completeTask({ twitter_follow: data.twitter_follow });
       }
     } catch (error) {
-      throw Error(error);
+      console.log(error);
     }
   });
 
@@ -228,28 +228,46 @@ const TwitterFollowContent = ({
               </Stack>
             </Stack>
             {!twitterKeys && (
-              <Stack sx={{ position: 'relative', background: '#1B97F0', p: 2 }}>
-                <Typography sx={{ fontWeight: '600', mb: 1 }}>
-                  Connect your account
-                </Typography>
+              <Stack
+                sx={{
+                  position: 'relative',
+                  background: '#1B97F0',
+                  p: 2,
+                  borderRadius: '0 0 8px 8px',
+                }}
+              >
                 <Stack
                   direction={'row'}
-                  sx={{ justifyContent: 'space-between', alignItems: 'center' }}
+                  sx={{
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    verticalAlign: 'middle',
+                  }}
                 >
-                  <Typography>
-                    To complete this task, you need to authorize Gateway access
-                    your Twitter account.
-                  </Typography>
+                  <Box>
+                    <Typography sx={{ fontWeight: '600', mb: 1 }}>
+                      Connect your account
+                    </Typography>
+                    <Typography sx={{ flexGrow: 1, opacity: 0.7 }}>
+                      To complete this task, you need to authorize Gateway
+                      access your Twitter account.
+                    </Typography>
+                  </Box>
                   <Button
                     onClick={() => connectTwitter.mutate()}
                     sx={{
-                      background: (theme) => theme.palette.secondary.main,
+                      background: (theme) => theme.palette.grey[300],
                       color: 'black',
                       fontSize: '0.75rem',
                       padding: '6px 16px',
+                      whiteSpace: 'nowrap',
                       lineHeight: '24px',
+                      minWidth: '145px',
+                      marginLeft: '15px',
+                      boxShadow: '#444 1px 1px 2px',
+                      flexGrow: 0,
                       '&:hover': {
-                        background: (theme) => theme.palette.text.secondary,
+                        background: (theme) => theme.palette.grey[400],
                       },
                     }}
                   >
@@ -265,9 +283,9 @@ const TwitterFollowContent = ({
       {!readOnly && !completed && twitterKeys && (
         <LoadingButton
           variant="contained"
-          sx={{ marginTop: '15px' }}
+          sx={{ marginTop: '20px' }}
           onClick={() => checkTwitterFollow.mutate()}
-          isLoading={isLoading}
+          isLoading={isLoading || checkTwitterFollow.isLoading}
         >
           VERIFY
         </LoadingButton>

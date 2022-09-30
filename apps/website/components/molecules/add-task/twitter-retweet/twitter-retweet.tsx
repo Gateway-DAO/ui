@@ -245,7 +245,7 @@ const TwitterRetweetTask = ({ taskId, deleteTask }) => {
           >
             <Box
               sx={{
-                padding: '0 12px',
+                padding: '0 12px 12px',
               }}
             >
               <Typography
@@ -256,6 +256,7 @@ const TwitterRetweetTask = ({ taskId, deleteTask }) => {
                   fontWeight: '400',
                   size: '1rem',
                   fontFamily: 'sans-serif',
+                  whiteSpace: 'pre-line',
                 }}
               >
                 {twitterTweet?.text}
