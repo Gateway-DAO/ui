@@ -35,6 +35,7 @@ import { ReadMore } from '../../atoms/read-more-less';
 import { ShareButton } from '../../atoms/share-button';
 import ConfirmDialog from '../../organisms/confirm-dialog/confirm-dialog';
 import GateCompletedModal from '../../organisms/gates/view/modals/gate-completed';
+import { DirectHoldersList } from './direct-holders-list/direct-holders-list';
 import { TaskList } from './task-list';
 
 const GateStateChip = dynamic(() => import('../../atoms/gate-state-chip'), {
@@ -440,15 +441,18 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
       </Grid>
       <Divider orientation="vertical" flexItem />
       <Grid item xs={12} md>
-        <TaskList
-          tasks={gateProps?.tasks}
-          completedAt={completedAt}
-          completedTasksCount={completedTasksCount}
-          formattedDate={formattedDate}
-          isAdmin={isAdmin}
-          published={published}
-          setOpen={setOpen}
-        />
+        {gateProps.type === 'direct' && <DirectHoldersList gate={gateProps} />}
+        {gateProps.type === 'task_based' && (
+          <TaskList
+            tasks={gateProps?.tasks}
+            completedAt={completedAt}
+            completedTasksCount={completedTasksCount}
+            formattedDate={formattedDate}
+            isAdmin={isAdmin}
+            published={published}
+            setOpen={setOpen}
+          />
+        )}
       </Grid>
       <Snackbar
         anchorOrigin={{
