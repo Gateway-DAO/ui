@@ -14,8 +14,8 @@ import {
   Typography,
 } from '@mui/material';
 
-import { LoadingButton } from '../../../../../../components/atoms/loading-button';
 import { useAuth } from '../../../../../../providers/auth';
+import { LoadingButton } from '../../../../../atoms/loading-button';
 
 type TwitterFollowData = {
   twitter_follow: boolean;

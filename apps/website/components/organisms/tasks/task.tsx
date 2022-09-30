@@ -20,7 +20,6 @@ import {
 import { useAuth } from '../../../providers/auth';
 import { Tasks } from '../../../services/graphql/types.generated';
 import { queryClient } from '../../../services/query-client';
-import { SessionUser } from '../../../types/user';
 import { getMapValueFromObject } from '../../../utils/map-object';
 import GithubContributeContent from '../gates/view/tasks/content/github_contribute';
 import GithubPRContent from '../gates/view/tasks/content/github_prs';
@@ -29,7 +28,7 @@ import QuizContent from '../gates/view/tasks/content/quiz';
 import SelfVerifyContent from '../gates/view/tasks/content/self-verify';
 import SnapshotContent from '../gates/view/tasks/content/snapshot';
 import TokenHoldContent from '../gates/view/tasks/content/token_hold';
-import TwitterFollowContent from '../gates/view/tasks/content/twitter-follow';
+import TwitterFollowContent from '../gates/view/tasks/content/twitter_follow';
 import TwitterRetweetContent from '../gates/view/tasks/content/twitter_retweet';
 import TwitterTweetContent from '../gates/view/tasks/content/twitter_tweet';
 import { taskErrorMessages } from './task-error-messages';

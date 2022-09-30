@@ -2,8 +2,9 @@ import { useCallback, useEffect, useState } from 'react';
 
 import { useMutation } from '@tanstack/react-query';
 import { useFormContext } from 'react-hook-form';
+import { TwitterTweetEmbed } from 'react-twitter-embed';
 
-import { ExpandLess, ExpandMore, Twitter } from '@mui/icons-material';
+import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import {
   Box,
@@ -46,7 +47,7 @@ const TwitterRetweetTask = ({ taskId, deleteTask }) => {
   const {
     mutate: getTwitterMutateTweet,
     data: twitterTweet,
-    isLoading: isLoadingTwitterTweeet,
+    isLoading: isTwitterLoading,
   } = useMutation(['twitter-tweet'], async () => {
     try {
       const tweetLink = getValues(`tasks.data.${taskId}.task_data.tweet_link`);
@@ -228,52 +229,26 @@ const TwitterRetweetTask = ({ taskId, deleteTask }) => {
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
-                {isLoadingTwitterTweeet && <CircularProgress size={20} />}
+                {isTwitterLoading && <CircularProgress size={20} />}
               </InputAdornment>
             ),
           }}
         />
         {twitterTweet && Object.entries(twitterTweet).length > 0 && (
-          <Stack
-            sx={{
-              background: (theme) => theme.palette.secondary.light,
-              justifyContent: 'space-between',
-              borderRadius: '8px',
-              marginTop: '12px',
-              width: '100%',
-            }}
-          >
-            <Box
-              sx={{
-                padding: '0 12px 12px',
+          <Stack sx={{ width: '100%', justifyContent: 'flex-start' }}>
+            <TwitterTweetEmbed
+              tweetId={getValues(`tasks.data.${taskId}.task_data.tweet_link`)
+                ?.split('/')
+                .at(-1)}
+              options={{
+                cards: 'hidden',
+                conversation: 'none',
+                display: 'flex',
+                flex: 1,
+                align: 'center',
+                width: '100%',
               }}
-            >
-              <Typography
-                variant="subtitle1"
-                marginTop={2}
-                sx={{
-                  color: '#212121',
-                  fontWeight: '400',
-                  size: '1rem',
-                  fontFamily: 'sans-serif',
-                  whiteSpace: 'pre-line',
-                }}
-              >
-                {twitterTweet?.text}
-              </Typography>
-            </Box>
-            <Stack
-              sx={{
-                borderRadius: '0 0 8px 8px',
-                padding: '8px 12px 12px',
-                textAlign: 'right',
-                alignItems: 'center',
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-              }}
-            >
-              <Twitter sx={{ color: '#1DA1F2' }} />
-            </Stack>
+            />
           </Stack>
         )}
       </FormControl>

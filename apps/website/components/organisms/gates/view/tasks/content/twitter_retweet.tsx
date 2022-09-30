@@ -1,11 +1,10 @@
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { TwitterTweetEmbed } from 'react-twitter-embed';
 import { useLocalStorage } from 'react-use';
 
-import { Button, Stack, Typography } from '@mui/material';
+import { Box, Button, Stack, Typography } from '@mui/material';
 
 import { LoadingButton } from '../../../../../../components/atoms/loading-button';
-import { useAuth } from '../../../../../../providers/auth';
 
 const TwitterRetweetContent = ({
   data,
@@ -15,28 +14,12 @@ const TwitterRetweetContent = ({
   readOnly,
   isLoading,
 }) => {
-  const { gqlAuthMethods } = useAuth();
   const { tweet_link } = data;
   const formattedDate = new Date(updatedAt.toLocaleString()).toLocaleString();
   const [twitterKeys] = useLocalStorage<any>('twitter');
   const [_redirectURL, setRedirectURL] = useLocalStorage('redirectURL', null, {
     raw: true,
   });
-
-  const { data: tweetData, isLoading: isLoadingTweetData } = useQuery(
-    ['twitter-data'],
-    async () => {
-      try {
-        const id = tweet_link.split('/').at(-1);
-        const response = await gqlAuthMethods.twitter_tweet({
-          id,
-        });
-        return response.get_twitter_tweet;
-      } catch (error) {
-        console.log(error);
-      }
-    }
-  );
 
   const connectTwitter = useMutation(['connect-twitter'], async () => {
     try {
@@ -66,7 +49,7 @@ const TwitterRetweetContent = ({
 
       const data: any = await response.json();
 
-      if (data.twitter_retweet) {
+      if (data) {
         completeTask({ twitter_retweet: data.twitter_retweet });
       }
     } catch (error) {
@@ -83,10 +66,22 @@ const TwitterRetweetContent = ({
           position: 'relative',
           overflow: 'hidden',
           display: 'flex',
-          alignItems: 'center',
+          alignItems: 'left',
         }}
       >
-        <Stack sx={{ width: '100%' }}>
+        <Typography
+          variant="subtitle1"
+          marginBottom={2}
+          sx={{
+            color: (theme) => theme.palette.grey[500],
+            fontWeight: '400',
+            size: '.875rem',
+            fontFamily: 'sans-serif',
+          }}
+        >
+          You must retweet the post
+        </Typography>
+        <Stack sx={{ width: '100%', justifyContent: 'flex-start' }}>
           <TwitterTweetEmbed
             tweetId={tweet_link.split('/').at(-1)}
             options={{
@@ -99,53 +94,77 @@ const TwitterRetweetContent = ({
             }}
           />
         </Stack>
-        {tweetData && (
-          <Stack
+        {twitterKeys && (
+          <Button
+            href={`https://twitter.com/intent/retweet?tweet_id=${tweet_link
+              .split('/')
+              .at(-1)}`}
+            target="_blank"
             sx={{
-              background: 'white',
-              borderRadius: '8px',
-              position: 'relative',
-              overflow: 'hidden',
+              background: '#1DA1F2',
+              color: (theme) => theme.palette.secondary.light,
+              fontSize: '0.75rem',
+              padding: '6px 16px',
+              lineHeight: '24px',
+              width: '100%',
+              maxWidth: '550px',
+              '&:hover': {
+                background: '#1c95db',
+              },
             }}
           >
-            <Stack>
-              {!twitterKeys && (
-                <Stack
-                  sx={{ position: 'relative', background: '#1B97F0', p: 2 }}
-                >
-                  <Typography sx={{ fontWeight: '600', mb: 1 }}>
-                    Connect your account
-                  </Typography>
-                  <Stack
-                    direction={'row'}
-                    sx={{
-                      justifyContent: 'space-between',
-                      alignItems: 'center',
-                    }}
-                  >
-                    <Typography>
-                      To complete this task, you need to authorize Gateway
-                      access your Twitter account.
-                    </Typography>
-                    <Button
-                      onClick={() => connectTwitter.mutate()}
-                      sx={{
-                        background: (theme) => theme.palette.secondary.main,
-                        color: 'black',
-                        fontSize: '0.75rem',
-                        padding: '6px 16px',
-                        ml: 2,
-                        lineHeight: '24px',
-                        '&:hover': {
-                          background: (theme) => theme.palette.text.secondary,
-                        },
-                      }}
-                    >
-                      Connect Twitter
-                    </Button>
-                  </Stack>
-                </Stack>
-              )}
+            Retweet
+          </Button>
+        )}
+        {!twitterKeys && (
+          <Stack
+            sx={{
+              position: 'relative',
+              background: '#1B97F0',
+              p: 2,
+              mt: 1,
+              borderRadius: '8px',
+              width: '100%',
+              maxWidth: '550px',
+            }}
+          >
+            <Stack
+              direction={'row'}
+              sx={{
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                verticalAlign: 'middle',
+              }}
+            >
+              <Box>
+                <Typography sx={{ fontWeight: '600', mb: 1 }}>
+                  Connect your account
+                </Typography>
+                <Typography sx={{ flexGrow: 1, opacity: 0.7 }}>
+                  To complete this task, you need to authorize Gateway access
+                  your Twitter account.
+                </Typography>
+              </Box>
+              <Button
+                onClick={() => connectTwitter.mutate()}
+                sx={{
+                  background: (theme) => theme.palette.grey[300],
+                  color: 'black',
+                  fontSize: '0.75rem',
+                  padding: '6px 16px',
+                  whiteSpace: 'nowrap',
+                  lineHeight: '24px',
+                  minWidth: '145px',
+                  marginLeft: '15px',
+                  boxShadow: '#444 1px 1px 2px',
+                  flexGrow: 0,
+                  '&:hover': {
+                    background: (theme) => theme.palette.grey[400],
+                  },
+                }}
+              >
+                Connect Twitter
+              </Button>
             </Stack>
           </Stack>
         )}
@@ -156,7 +175,7 @@ const TwitterRetweetContent = ({
           variant="contained"
           sx={{ marginTop: '15px' }}
           onClick={() => checkForRetweet.mutate()}
-          isLoading={isLoading}
+          isLoading={isLoading || checkForRetweet.isLoading}
         >
           VERIFY
         </LoadingButton>
