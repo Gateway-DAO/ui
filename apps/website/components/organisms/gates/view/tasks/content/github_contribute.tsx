@@ -9,13 +9,15 @@ import GithubDataCard from '../../../../../../components/organisms/tasks/github-
 import { GithubContributeData } from 'apps/website/components/templates/create-gate/schema';
 import { useQuery } from '@tanstack/react-query';
 
+type completeTaskData = {
+  githubAccessToken: string;
+  repository_name: string;
+  repository_owner: string;
+};
+
 type GithubContributeContentProps = {
   data: GithubContributeData;
-  completeTask: ({
-    githubAccessToken,
-    repository_name,
-    repository_owner,
-  }) => void;
+  completeTask: (data: completeTaskData) => void;
   completed: boolean;
   updatedAt: string;
   readOnly: boolean;
