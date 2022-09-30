@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import useTranslation from 'next-translate/useTranslation';
 
 import { AiFillGithub } from 'react-icons/ai';
 import { BiGitPullRequest, BiGitRepoForked } from 'react-icons/bi';
@@ -28,6 +29,8 @@ export default function GithubDataCard({
   data,
   requested_pr_amount,
 }: GithubDataCardProps) {
+  const { t } = useTranslation('gate-profile');
+
   const repository = {
     name: data?.name || '',
     description: data?.description || '',
@@ -72,7 +75,7 @@ export default function GithubDataCard({
       )}
       {requested_pr_amount && (
         <Typography variant="body2" sx={{ padding: '1rem 2rem' }}>
-          Pull requests created and merged
+          {t('github.prs')}
         </Typography>
       )}
       {requested_pr_amount && (
