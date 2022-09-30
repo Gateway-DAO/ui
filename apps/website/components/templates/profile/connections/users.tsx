@@ -1,6 +1,4 @@
 import useTranslation from 'next-translate/useTranslation';
-import dynamic from 'next/dynamic';
-import Link from 'next/link';
 import { ChangeEvent, Fragment, useMemo, useState } from 'react';
 
 import { PartialDeep } from 'type-fest';
@@ -8,10 +6,6 @@ import { PartialDeep } from 'type-fest';
 import SearchIcon from '@mui/icons-material/Search';
 import {
   Divider,
-  ListItem,
-  ListItemAvatar,
-  Link as MUILink,
-  Stack,
   List,
   TextField,
   InputAdornment,
@@ -19,26 +13,14 @@ import {
 } from '@mui/material';
 
 import { ROUTES } from '../../../../constants/routes';
-import { useAuth } from '../../../../providers/auth';
 import { Users } from '../../../../services/graphql/types.generated';
-import { AvatarFile } from '../../../atoms/avatar-file';
-
-const FollowButtonUser = dynamic<any>(
-  () =>
-    import('../../../atoms/follow-button-user').then(
-      (mod) => mod.FollowButtonUser
-    ),
-  {
-    ssr: false,
-  }
-);
+import { UserListItem } from '../../../molecules/user-list-item';
 
 type Props = {
   users: PartialDeep<Users>[];
 };
 
 export function UsersList({ users }: Props) {
-  const { me } = useAuth();
   const [filter, setFilter] = useState('');
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setFilter(event.target.value);
@@ -93,45 +75,7 @@ export function UsersList({ users }: Props) {
           const url = ROUTES.PROFILE.replace('[username]', user.username);
           return (
             <Fragment key={index}>
-              <ListItem
-                secondaryAction={
-                  me?.wallet !== user.wallet ? (
-                    <FollowButtonUser wallet={user.wallet} variant="outlined" />
-                  ) : undefined
-                }
-              >
-                <ListItemAvatar>
-                  <Link passHref href={url}>
-                    <AvatarFile
-                      component="a"
-                      file={user.picture}
-                      target="_blank"
-                      fallback="/avatar.png"
-                    />
-                  </Link>
-                </ListItemAvatar>
-                <Stack direction="column">
-                  <Link passHref href={url}>
-                    <MUILink
-                      color="text.primary"
-                      underline="hover"
-                      target="_blank"
-                    >
-                      {user.name}
-                    </MUILink>
-                  </Link>
-                  <Link passHref href={url}>
-                    <MUILink
-                      variant="body2"
-                      color="text.secondary"
-                      underline="hover"
-                      target="_blank"
-                    >
-                      {`@${user.username}`}
-                    </MUILink>
-                  </Link>
-                </Stack>
-              </ListItem>
+              <UserListItem user={user} />
               {index !== users.length - 1 && <Divider component="li" />}
             </Fragment>
           );
