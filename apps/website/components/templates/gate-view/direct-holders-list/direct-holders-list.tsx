@@ -38,15 +38,16 @@ export function DirectHoldersList({ gate }: Props) {
     useInfiniteQuery(
       ['direct-credential-holders', me?.wallet, gate.id, filter],
       ({ pageParam = 0 }) =>
-        /* filter?.length
-          ? gqlAnonMethods.credential_holders_search({
+        filter?.length
+          ? gqlAnonMethods.direct_credential_holders_search({
+              gate_id: gate.id,
               offset: pageParam,
               search: `%${filter}%`,
             })
-          : */ gqlAnonMethods.direct_credential_holders({
-          offset: pageParam,
-          gate_id: gate.id,
-        }),
+          : gqlAnonMethods.direct_credential_holders({
+              offset: pageParam,
+              gate_id: gate.id,
+            }),
       {
         getNextPageParam: (lastPage, pages) => {
           if (lastPage.whitelisted_wallets.length < 15) return undefined;
