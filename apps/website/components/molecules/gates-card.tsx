@@ -120,11 +120,13 @@ export function GatesCard({
     deleteGateMutation(
       { gate_id: id },
       {
-        onSuccess() {
+        async onSuccess() {
           snackbar.onOpen({
             message: t('credential.deleted'),
           });
-          router.reload();
+
+          await queryClient.refetchQueries(['gate', id]);
+          await queryClient.refetchQueries(['dao-gates', dao.id]);
         },
         onError() {
           snackbar.handleClick({
