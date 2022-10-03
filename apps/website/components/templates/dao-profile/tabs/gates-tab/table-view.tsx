@@ -37,6 +37,7 @@ export function TableView({ gates, isGate, showStatus }: TableViewProps) {
           <TableRow>
             <TableCell align="left">Gate</TableCell>
             <TableCell align="left">Category</TableCell>
+            <TableCell align="left"></TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
