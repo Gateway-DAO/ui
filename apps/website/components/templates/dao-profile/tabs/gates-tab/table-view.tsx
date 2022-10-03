@@ -2,7 +2,6 @@ import { PartialDeep } from 'type-fest';
 
 import { TOKENS } from '@gateway/theme';
 
-import { Avatar, Box, Chip, Stack, Typography } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -10,10 +9,8 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 
-import GateStateChip from '../../../../../components/atoms/gate-state-chip';
-import { ReadMore } from '../../../../../components/atoms/read-more-less';
 import { Gates } from '../../../../../services/graphql/types.generated';
-import { badgeProps } from '../../../../../utils/badge-props';
+import GateRow from 'apps/website/components/molecules/gate-row';
 
 // TODO: make it generic
 // TODO: Fix Gate name column width
@@ -43,50 +40,9 @@ export function TableView({ gates, isGate, showStatus }: TableViewProps) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {gates.map((gate) => {
-            return (
-              <TableRow hover role="checkbox" tabIndex={-1} key={gate.id}>
-                <TableCell>
-                  <Stack alignItems="center" direction="row" gap={1}>
-                    <Avatar variant="rounded" {...badgeProps(gate)}>
-                      {gate.title?.[0]}
-                    </Avatar>
-                    <Box>
-                      <Typography>{gate.title}</Typography>
-                      <Typography
-                        variant="caption"
-                        color="text.secondary"
-                        sx={{
-                          textOverflow: 'ellipsis',
-                          overflow: 'hidden',
-                          whiteSpace: 'break-word',
-                        }}
-                      >
-                        {gate.description.length > 100 ? (
-                          <ReadMore>{gate.description}</ReadMore>
-                        ) : (
-                          gate.description
-                        )}
-                      </Typography>
-                    </Box>
-                  </Stack>
-                </TableCell>
-                <TableCell>
-                  <Stack direction="row" gap={1}>
-                    {isGate && showStatus && (
-                      <GateStateChip published={gate.published} />
-                    )}
-                    {gate.categories?.map((category) => (
-                      <Chip
-                        key={`gate-${gate.id}-category-${category}`}
-                        label={category}
-                      />
-                    ))}
-                  </Stack>
-                </TableCell>
-              </TableRow>
-            );
-          })}
+          {gates.map((gate) => (
+            <GateRow gate={gate} isGate={isGate} showStatus={showStatus} />
+          ))}
         </TableBody>
       </Table>
     </TableContainer>
