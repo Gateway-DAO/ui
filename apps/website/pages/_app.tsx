@@ -19,6 +19,8 @@ import { queryClient } from '../services/query-client';
 import '../components/atoms/global-dependencies';
 import '../styles/next.css';
 
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+
 type AppProps = NextAppProps & {
   Component: NextAppProps['Component'] & { auth?: boolean };
 };
@@ -57,6 +59,7 @@ function CustomApp({ Component, pageProps }: AppProps) {
                 </BiconomyProvider>
               </AuthProvider>
             </Hydrate>
+            <ReactQueryDevtools initialIsOpen={false} />
           </QueryClientProvider>
         </WalletProvider>
       </ThemeProvider>
