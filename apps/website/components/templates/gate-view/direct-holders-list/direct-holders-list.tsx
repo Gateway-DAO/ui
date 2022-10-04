@@ -79,83 +79,82 @@ export function DirectHoldersList({ gate }: Props) {
       >
         <ClientNav />
       </Stack>
-      {isLoading ? (
-        <CenteredLoader />
-      ) : (
-        <>
-          <Box
-            sx={{
-              px: {
-                ...TOKENS.CONTAINER_PX,
-                lg: 7.5,
-              },
-              pb: 2,
-            }}
-          >
-            <DirectHoldersHeader gateId={gate.id} />
-            <TextField
-              label="Search"
-              variant="outlined"
-              size="small"
-              onChange={handleChange}
-              value={filter}
-              fullWidth
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment
-                    position="end"
-                    sx={{
-                      paddingRight: 1,
-                    }}
-                  >
-                    <SearchIcon
-                      sx={{
-                        color: 'rgba(255, 255, 255, 0.56)',
-                      }}
-                    />
-                  </InputAdornment>
-                ),
-                fullWidth: true,
-                sx: {
-                  borderRadius: 100,
-                },
-                size: 'small',
-              }}
-            />
-          </Box>
 
-          <Box sx={{ height: { lg: '100%', xs: '100vh' } }}>
-            <Virtuoso
-              style={{ height: '100%' }}
-              data={whitelistedWallets}
-              endReached={() => hasNextPage && fetchNextPage()}
-              components={{
-                Footer: () => (isFetchingNextPage ? <CenteredLoader /> : null),
-              }}
-              itemContent={(index, whitelisted) => (
-                <>
-                  <UserListItem
-                    key={whitelisted?.user?.id ?? whitelisted.wallet}
-                    user={
-                      whitelisted?.user ?? {
-                        name: 'Unknown User',
-                        username: whitelisted.wallet,
-                      }
+      <Box
+        sx={{
+          px: {
+            ...TOKENS.CONTAINER_PX,
+            lg: 7.5,
+          },
+          pb: 2,
+        }}
+      >
+        <DirectHoldersHeader gateId={gate.id} />
+        <TextField
+          label="Search"
+          variant="outlined"
+          size="small"
+          onChange={handleChange}
+          value={filter}
+          fullWidth
+          InputProps={{
+            endAdornment: (
+              <InputAdornment
+                position="end"
+                sx={{
+                  paddingRight: 1,
+                }}
+              >
+                <SearchIcon
+                  sx={{
+                    color: 'rgba(255, 255, 255, 0.56)',
+                  }}
+                />
+              </InputAdornment>
+            ),
+            fullWidth: true,
+            sx: {
+              borderRadius: 100,
+            },
+            size: 'small',
+          }}
+        />
+      </Box>
+
+      <Box sx={{ height: { lg: '100%', xs: '100vh' } }}>
+        {isLoading ? (
+          <CenteredLoader />
+        ) : (
+          <Virtuoso
+            style={{ height: '100%' }}
+            data={whitelistedWallets}
+            endReached={() => hasNextPage && fetchNextPage()}
+            components={{
+              Footer: () => (isFetchingNextPage ? <CenteredLoader /> : null),
+            }}
+            itemContent={(index, whitelisted) => (
+              <>
+                <UserListItem
+                  key={whitelisted?.user?.id ?? whitelisted.wallet}
+                  user={
+                    whitelisted?.user ?? {
+                      name: 'Unknown User',
+                      username: whitelisted.wallet,
                     }
-                    showFollow={!!whitelisted?.user}
-                    hasLink={!!whitelisted?.user}
-                    hasUsernamePrefix={!!whitelisted?.user}
-                    sx={{
-                      px: TOKENS.CONTAINER_PX,
-                    }}
-                  />
-                  {index !== whitelistedWallets.length - 1 && <Divider />}
-                </>
-              )}
-            />
-          </Box>
-        </>
-      )}
+                  }
+                  showFollow={!!whitelisted?.user}
+                  hasLink={!!whitelisted?.user}
+                  hasUsernamePrefix={!!whitelisted?.user}
+                  sx={{
+                    px: TOKENS.CONTAINER_PX,
+                  }}
+                />
+                {index !== whitelistedWallets.length - 1 && <Divider />}
+              </>
+            )}
+          />
+        )}
+      </Box>
     </Grid>
   );
 }
