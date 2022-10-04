@@ -1,0 +1,14 @@
+{
+  "tasks": {
+    "github_prs": {
+      "title": "Verify Pull Requests",
+      "amount_description": "Verify if user has created and merged the number of pull requests",
+      "amount_action": "Select the amount of Pull Requests",
+      "repository_description": "Specify the repository of the pull requests"
+    },
+    "github_contribute": {
+      "title": "Contribute to the Repository",
+      "description": "The user must contribute to the repository"
+    }
+  }
+}

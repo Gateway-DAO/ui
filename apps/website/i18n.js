@@ -16,6 +16,8 @@ const config = {
     [ROUTES.DAO_EDIT]: ['dao-edit'],
     [ROUTES.PROFILE]: ['user-profile'],
     [ROUTES.MY_PROFILE]: ['user-profile'],
+    [ROUTES.GATE_NEW]: ['gate-new'],
+    [ROUTES.GATE_PROFILE]: ['gate-profile'],
   },
   localeDetection: false,
 };
