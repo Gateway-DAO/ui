@@ -1,31 +1,25 @@
 import useTranslation from 'next-translate/useTranslation';
 
 import { useQuery } from '@tanstack/react-query';
-import { gqlAnonMethods } from 'apps/website/services/api';
 
 import { Alert, Box, Button, Stack, Typography } from '@mui/material';
 
 import { useAuth } from '../../../../providers/auth';
+import { gqlAnonMethods } from '../../../../services/api';
 
 type Props = {
-  gateId: string;
+  isLoading?: boolean;
+  hasCredential: boolean;
+  totalHolders: number;
 };
 
-export function DirectHoldersHeader({ gateId }: Props) {
+export function DirectHoldersHeader({
+  hasCredential,
+  totalHolders,
+  isLoading,
+}: Props) {
   const { me, onOpenLogin } = useAuth();
   const { t } = useTranslation('credential');
-
-  const { data } = useQuery(
-    ['direct-credential-info', me?.wallet, gateId],
-    () =>
-      gqlAnonMethods.direct_credential_info({
-        gate_id: gateId,
-        wallet: me?.wallet ?? '',
-      })
-  );
-
-  const hasCredential = data?.hasCredential?.aggregate?.count > 0;
-  const totalHolders = data?.whitelisted_wallets_aggregate.aggregate.count;
 
   return (
     <>
@@ -64,7 +58,7 @@ export function DirectHoldersHeader({ gateId }: Props) {
           </Button>
         </Stack>
       )}
-      {!!me && hasCredential && (
+      {!!me && !isLoading && hasCredential && (
         <Alert
           variant="outlined"
           severity="success"
@@ -74,7 +68,7 @@ export function DirectHoldersHeader({ gateId }: Props) {
           {t('direct-credential.eligibility.has')}
         </Alert>
       )}
-      {!!me && !hasCredential && (
+      {!!me && !isLoading && !hasCredential && (
         <Alert
           variant="outlined"
           severity="warning"

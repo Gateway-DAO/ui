@@ -1,5 +1,5 @@
 import useTranslation from 'next-translate/useTranslation';
-import { ChangeEvent, useRef, useState } from 'react';
+import { ChangeEvent, ReactNode, useRef, useState } from 'react';
 
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { Virtuoso } from 'react-virtuoso';
@@ -23,13 +23,13 @@ import { Gates } from '../../../../services/graphql/types.generated';
 import { CenteredLoader } from '../../../atoms/centered-loader';
 import { UserListItem } from '../../../molecules/user-list-item';
 import { ClientNav } from '../../../organisms/navbar/client-nav';
-import { DirectHoldersHeader } from './header';
 
 type Props = {
   gate: PartialDeep<Gates>;
+  header: ReactNode;
 };
 
-export function DirectHoldersList({ gate }: Props) {
+export function DirectHoldersList({ gate, header }: Props) {
   const [filter, setFilter] = useState('');
   const { me } = useAuth();
 
@@ -89,7 +89,7 @@ export function DirectHoldersList({ gate }: Props) {
           pb: 2,
         }}
       >
-        <DirectHoldersHeader gateId={gate.id} />
+        {header}
         <TextField
           label="Search"
           variant="outlined"

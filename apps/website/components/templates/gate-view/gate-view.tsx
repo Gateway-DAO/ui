@@ -24,9 +24,10 @@ import {
   Avatar,
 } from '@mui/material';
 
-import { useAuth } from '../../../../website/providers/auth';
 import { ROUTES } from '../../../constants/routes';
 import { useSnackbar } from '../../../hooks/use-snackbar';
+import { useAuth } from '../../../providers/auth';
+import { gqlAnonMethods } from '../../../services/api';
 import { Gates } from '../../../services/graphql/types.generated';
 import { AvatarFile } from '../../atoms/avatar-file';
 import { Props as MintCredentialButtonProps } from '../../atoms/mint-button';
@@ -36,6 +37,7 @@ import { ShareButton } from '../../atoms/share-button';
 import ConfirmDialog from '../../organisms/confirm-dialog/confirm-dialog';
 import GateCompletedModal from '../../organisms/gates/view/modals/gate-completed';
 import { DirectHoldersList } from './direct-holders-list/direct-holders-list';
+import { DirectHoldersHeader } from './direct-holders-list/header';
 import { TaskList } from './task-list';
 
 const GateStateChip = dynamic(() => import('../../atoms/gate-state-chip'), {
@@ -65,7 +67,23 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
   const router = useRouter();
   const snackbar = useSnackbar();
   const queryClient = useQueryClient();
-  const completedGate = completedTasksCount === gateProps?.tasks?.length;
+
+  const directCredentialInfo = useQuery(
+    ['direct-credential-info', me?.wallet, gateProps.id],
+    () =>
+      gqlAnonMethods.direct_credential_info({
+        gate_id: gateProps.id,
+        wallet: me?.wallet ?? '',
+      }),
+    {
+      enabled: gateProps.type === 'direct',
+    }
+  );
+
+  const completedGate =
+    gateProps.type === 'direct'
+      ? directCredentialInfo.data?.hasCredential?.aggregate?.count > 0
+      : completedTasksCount === gateProps?.tasks?.length;
 
   const taskIds = gateProps?.tasks.map((task) => task.id);
 
@@ -440,7 +458,21 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
         </Box>
       </Grid>
       <Divider orientation="vertical" flexItem />
-      {gateProps.type === 'direct' && <DirectHoldersList gate={gateProps} />}
+      {gateProps.type === 'direct' && (
+        <DirectHoldersList
+          gate={gateProps}
+          header={
+            <DirectHoldersHeader
+              hasCredential={completedGate}
+              totalHolders={
+                directCredentialInfo.data?.whitelisted_wallets_aggregate
+                  .aggregate.count
+              }
+              isLoading={directCredentialInfo.isLoading}
+            />
+          }
+        />
+      )}
       {gateProps.type === 'task_based' && (
         <TaskList
           tasks={gateProps?.tasks}
