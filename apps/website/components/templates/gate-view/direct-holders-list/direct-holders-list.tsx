@@ -142,7 +142,9 @@ export function DirectHoldersList({ gate }: Props) {
                       username: whitelisted.wallet,
                     }
                   }
-                  showFollow={!!whitelisted?.user}
+                  showFollow={
+                    !!whitelisted?.user && whitelisted.user.id !== me?.id
+                  }
                   hasLink={!!whitelisted?.user}
                   hasUsernamePrefix={!!whitelisted?.user}
                   sx={{
