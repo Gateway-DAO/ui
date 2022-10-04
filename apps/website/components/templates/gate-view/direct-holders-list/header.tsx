@@ -71,9 +71,7 @@ export function DirectHoldersHeader({ gateId }: Props) {
           icon={<></>}
           sx={{ mb: 3.75 }}
         >
-          {t('direct-credential.eligibility.has', {
-            published: 'xx/xx/xxxx',
-          })}
+          {t('direct-credential.eligibility.has')}
         </Alert>
       )}
       {!!me && !hasCredential && (
