@@ -440,20 +440,18 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
         </Box>
       </Grid>
       <Divider orientation="vertical" flexItem />
-      <Grid item xs={12} md>
-        {gateProps.type === 'direct' && <DirectHoldersList gate={gateProps} />}
-        {gateProps.type === 'task_based' && (
-          <TaskList
-            tasks={gateProps?.tasks}
-            completedAt={completedAt}
-            completedTasksCount={completedTasksCount}
-            formattedDate={formattedDate}
-            isAdmin={isAdmin}
-            published={published}
-            setOpen={setOpen}
-          />
-        )}
-      </Grid>
+      {gateProps.type === 'direct' && <DirectHoldersList gate={gateProps} />}
+      {gateProps.type === 'task_based' && (
+        <TaskList
+          tasks={gateProps?.tasks}
+          completedAt={completedAt}
+          completedTasksCount={completedTasksCount}
+          formattedDate={formattedDate}
+          isAdmin={isAdmin}
+          published={published}
+          setOpen={setOpen}
+        />
+      )}
       <Snackbar
         anchorOrigin={{
           vertical: snackbar.vertical,

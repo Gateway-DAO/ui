@@ -2,7 +2,7 @@ import { PartialDeep } from 'type-fest';
 
 import { TOKENS } from '@gateway/theme';
 
-import { Box, Stack, Typography } from '@mui/material';
+import { Box, Grid, Stack, Typography } from '@mui/material';
 
 import { Tasks } from '../../../services/graphql/types.generated';
 import CircularProgressWithLabel from '../../atoms/circular-progress-label';
@@ -29,7 +29,7 @@ export function TaskList({
   setOpen,
 }: Props) {
   return (
-    <>
+    <Grid item xs={12} md>
       <Stack
         direction="row"
         justifyContent="flex-end"
@@ -103,6 +103,6 @@ export function TaskList({
           />
         ))}
       </TaskGroup>
-    </>
+    </Grid>
   );
 }
