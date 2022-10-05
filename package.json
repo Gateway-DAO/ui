@@ -63,6 +63,7 @@
     "react-icons": "^4.4.0",
     "react-json-view": "^1.21.3",
     "react-use": "^17.3.2",
+    "react-virtuoso": "^2.19.1",
     "regenerator-runtime": "0.13.7",
     "swiper": "^8.1.4",
     "tslib": "^2.0.0",

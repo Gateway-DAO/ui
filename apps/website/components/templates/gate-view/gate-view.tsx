@@ -172,6 +172,19 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
       })
   );
 
+  const { data: totalHolders } = useQuery(
+    ['count_total_holders', gateProps?.id],
+    () =>
+      gqlAuthMethods.count_total_holders({
+        id: gateProps?.id,
+      }),
+    {
+      enabled: !!gateProps?.id,
+    }
+  );
+
+
+
   const completedAt = gateProgress?.gate_progress[0]?.completed_at;
 
   const formattedDate = new Date(completedAt?.toLocaleString()).toLocaleString(
@@ -213,6 +226,11 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
         open={open}
         handleClose={handleClose}
         gate={gateProps}
+      />
+      <HolderDialog
+        isOpen={isHolderDialog}
+        setIsOpen={setIsHolderDialog}
+        credentialId={gateProps?.id}
       />
       <Grid item xs={12} md={5}>
         <Stack
@@ -350,20 +368,17 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
                   item
                   xs={4}
                   sx={{ display: 'flex', alignItems: 'center' }}
+                  onClick={() => setIsHolderDialog(true)}
                 >
                   <Typography
                     variant="body2"
                     color={(theme) => theme.palette.text.secondary}
+                    onClick={() => setIsHolderDialog(true)}
                   >
                     Holders
                   </Typography>
                 </Grid>
 
-                <HolderDialog
-                  isOpen={isHolderDialog}
-                  setIsOpen={setIsHolderDialog}
-                  holders={gateProps?.holders}
-                />
                 <Grid item xs={8} display="flex" alignItems={'center'}>
                   <AvatarGroup
                     spacing={'small'}
@@ -392,6 +407,7 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
                       );
                     })}
                   </AvatarGroup>
+
                   {gateProps?.holders.length > 8 ? (
                     <Chip
                       label={`+ ${gateProps?.holders.length - 8}`}

@@ -1,70 +1,90 @@
 import {
+  Box,
   Button,
+  CircularProgress,
   Dialog,
   DialogActions,
   DialogTitle,
   Divider,
   InputAdornment,
-  List,
-  ListItem,
-  ListItemAvatar,
-  Stack,
   TextField,
   Typography,
 } from '@mui/material';
 
 import useTranslation from 'next-translate/useTranslation';
-import { Dispatch, Fragment, SetStateAction, useMemo, useState } from 'react';
+import { Dispatch, SetStateAction, useMemo, useState } from 'react';
 import SearchIcon from '@mui/icons-material/Search';
 import { ChangeEvent } from 'react';
-import { PartialObjectDeep } from 'type-fest/source/partial-deep';
-import { Users } from 'apps/website/services/graphql/types.generated';
+
 import { useAuth } from 'apps/website/providers/auth';
-import { ROUTES } from 'apps/website/constants/routes';
-import { FollowButtonUser } from '../../atoms/follow-button-user';
-import { Link as MUILink } from '@mui/material';
-import { AvatarFile } from '../../atoms/avatar-file';
-import Link from 'next/link';
+
+import { useInfiniteQuery } from '@tanstack/react-query';
+import { UserList } from './user-list';
+import { Virtuoso } from 'react-virtuoso';
+import { CenteredLoader } from '../../atoms/centered-loader';
 
 type Props = {
   isOpen: boolean;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
-  holders: PartialObjectDeep<Users>[];
+  credentialId: String;
 };
 
-export function HolderDialog({ isOpen, setIsOpen, holders }: Props) {
-  const { me } = useAuth();
+export function HolderDialog({ isOpen, setIsOpen, credentialId }: Props) {
+  const { me, gqlAuthMethods } = useAuth();
+
   const [filter, setFilter] = useState('');
   const { t } = useTranslation('credential');
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setFilter(event.target.value);
   };
 
-  const filteredUsers = useMemo(
-    () =>
-      filter.length > 0
-        ? holders.filter(
-            (holder) =>
-              holder.username.toLowerCase().includes(filter.toLowerCase()) ||
-              holder.name.toLowerCase().includes(filter.toLowerCase())
-          )
-        : holders,
-    [filter, holders]
+  const {
+    data,
+    isLoading,
+    hasNextPage,
+    isFetchingNextPage,
+    fetchNextPage,
+    refetch,
+    isFetching,
+  } = useInfiniteQuery(
+    ['holders_by_gate', credentialId],
+    ({ pageParam = 0 }) =>
+      filter?.length
+        ? gqlAuthMethods.holders_by_search({
+            id: credentialId,
+            search: `%${filter}%`,
+            offset: pageParam,
+          })
+        : gqlAuthMethods.holders_by_gate({
+            id: credentialId,
+            offset: pageParam,
+          }),
+    {
+      getNextPageParam: (lastPage, pages) => {
+        if (lastPage.gates_by_pk?.holders?.length < 6) return undefined;
+        return pages.length * 6;
+      },
+    }
   );
+
+  const holders = data?.pages.flatMap((page) => page.gates_by_pk.holders);
+
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      refetch();
+    }
+  };
+
   return (
-    <Dialog
-      open={isOpen}
-      onClose={() => setIsOpen(false)}
-      keepMounted={false}
-      fullWidth
-    >
+    <Dialog open={isOpen} keepMounted={false} fullWidth>
       <DialogTitle> {t('holders-dialog.title')} </DialogTitle>
       <TextField
         label="Search"
         variant="outlined"
         size="small"
-        sx={{ mx: 2, mt: 1 }}
+        sx={{ mx: 2, mt: 1, mb: 4 }}
         onChange={handleChange}
+        onKeyDown={handleKeyDown}
         value={filter}
         InputProps={{
           endAdornment: (
@@ -78,6 +98,7 @@ export function HolderDialog({ isOpen, setIsOpen, holders }: Props) {
                 sx={{
                   color: 'rgba(255, 255, 255, 0.56)',
                 }}
+                onClick={() => refetch()}
               />
             </InputAdornment>
           ),
@@ -88,63 +109,41 @@ export function HolderDialog({ isOpen, setIsOpen, holders }: Props) {
           size: 'small',
         }}
       />
-      <List sx={{ mt: 2, overflowY: 'auto', maxHeight: '60vh' }}>
-        {filteredUsers.map((holder, index) => {
-          const url = ROUTES.PROFILE.replace('[username]', holder.username);
-          return (
-            <Fragment key={index}>
-              <ListItem
-                secondaryAction={
-                  me?.wallet !== holder.wallet ? (
-                    <FollowButtonUser
-                      wallet={holder.wallet}
-                      variant="outlined"
-                    />
-                  ) : undefined
-                }
-              >
-                <ListItemAvatar>
-                  <Link passHref href={url}>
-                    <AvatarFile
-                      component="a"
-                      file={holder.picture}
-                      target="_blank"
-                      fallback="/avatar.png"
-                    />
-                  </Link>
-                </ListItemAvatar>
-                <Stack direction="column">
-                  <Link passHref href={url}>
-                    <MUILink
-                      color="text.primary"
-                      underline="hover"
-                      target="_blank"
-                    >
-                      {holder.name}
-                    </MUILink>
-                  </Link>
-                  <Link passHref href={url}>
-                    <MUILink
-                      variant="body2"
-                      color="text.secondary"
-                      underline="hover"
-                      target="_blank"
-                    >
-                      {`@${holder.username}`}
-                    </MUILink>
-                  </Link>
-                </Stack>
-              </ListItem>
-              {index !== holders.length - 1 && <Divider component="li" />}
-            </Fragment>
-          );
-        })}
-        {!filteredUsers.length && filter.length > 0 && (
-          <Typography variant="body2" color="text.secondary" sx={{ mx: 3 }}>
-            {t('holders-dialog.no-result', { filter })}
-          </Typography>
-        )}
-      </List>
+
+      {isFetching ? (
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            p: 4,
+          }}
+        >
+          <CircularProgress />
+        </Box>
+      ) : (
+        <Virtuoso
+          style={{ height: '40vh' }}
+          data={holders}
+          endReached={() => hasNextPage && fetchNextPage()}
+          components={{
+            Footer: () => (isFetchingNextPage ? <CenteredLoader /> : null),
+          }}
+          itemContent={(index, holder) => (
+            <>
+              <UserList {...{ holder, index, me }} />
+              {index !== holders.length - 1 && <Divider />}
+            </>
+          )}
+        />
+      )}
+
+      {!holders.length && filter.length > 0 && (
+        <Typography variant="body2" color="text.secondary" sx={{ mx: 3 }}>
+          {t('holders-dialog.no-result', { filter })}
+        </Typography>
+      )}
+
       <DialogActions sx={{ pt: 2 }}>
         <Button onClick={() => setIsOpen(false)} variant="contained" fullWidth>
           close
