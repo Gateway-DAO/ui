@@ -123,7 +123,7 @@ export function HolderDialog({ isOpen, setIsOpen, credentialId }: Props) {
         </Box>
       ) : (
         <Virtuoso
-          style={{ height: '40vh' }}
+          style={{ height: holders.length > 4 ? '40vh' : '22vh' }}
           data={holders}
           endReached={() => hasNextPage && fetchNextPage()}
           components={{
@@ -132,13 +132,14 @@ export function HolderDialog({ isOpen, setIsOpen, credentialId }: Props) {
           itemContent={(index, holder) => (
             <>
               <UserList {...{ holder, index, me }} />
-              {index !== holders.length - 1 && <Divider />}
+
+              {index !== holders?.length - 1 && <Divider />}
             </>
           )}
         />
       )}
 
-      {!holders.length && filter.length > 0 && (
+      {!holders?.length && filter.length > 0 && (
         <Typography variant="body2" color="text.secondary" sx={{ mx: 3 }}>
           {t('holders-dialog.no-result', { filter })}
         </Typography>
@@ -146,7 +147,7 @@ export function HolderDialog({ isOpen, setIsOpen, credentialId }: Props) {
 
       <DialogActions sx={{ pt: 2 }}>
         <Button onClick={() => setIsOpen(false)} variant="contained" fullWidth>
-          close
+          {t('holders-dialog.close')}
         </Button>
       </DialogActions>
     </Dialog>

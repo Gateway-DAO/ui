@@ -38,7 +38,6 @@ import ConfirmDialog from '../../organisms/confirm-dialog/confirm-dialog';
 import GateCompletedModal from '../../organisms/gates/view/modals/gate-completed';
 import { ClientNav } from '../../organisms/navbar/client-nav';
 import { Task, TaskGroup } from '../../organisms/tasks';
-import { HolderDialog } from '../../organisms/holder-dialog';
 
 const GateStateChip = dynamic(() => import('../../atoms/gate-state-chip'), {
   ssr: false,
@@ -50,6 +49,11 @@ const MintCredentialButton: ComponentType<MintCredentialButtonProps> = dynamic(
   {
     ssr: false,
   }
+);
+
+const HolderDialog = dynamic(
+  () => import('../../organisms/holder-dialog').then((mod) => mod.HolderDialog),
+  { ssr: false }
 );
 
 type GateViewProps = {
@@ -177,15 +181,12 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
     () =>
       gqlAuthMethods.count_total_holders({
         id: gateProps?.id,
-      }),
-    {
-      enabled: !!gateProps?.id,
-    }
+      })
   );
 
-
-
   const completedAt = gateProgress?.gate_progress[0]?.completed_at;
+  const totalNoOfHolders =
+    totalHolders?.credentials_aggregate?.aggregate?.count ?? 0;
 
   const formattedDate = new Date(completedAt?.toLocaleString()).toLocaleString(
     'en-us',
@@ -368,24 +369,17 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
                   item
                   xs={4}
                   sx={{ display: 'flex', alignItems: 'center' }}
-                  onClick={() => setIsHolderDialog(true)}
                 >
                   <Typography
                     variant="body2"
                     color={(theme) => theme.palette.text.secondary}
-                    onClick={() => setIsHolderDialog(true)}
                   >
                     Holders
                   </Typography>
                 </Grid>
 
                 <Grid item xs={8} display="flex" alignItems={'center'}>
-                  <AvatarGroup
-                    spacing={'small'}
-                    sx={{
-                      justifyContent: 'flex-end',
-                    }}
-                  >
+                  <AvatarGroup spacing={'small'}>
                     {gateProps?.holders.map((holder, index) => {
                       if (index == 8) return null;
                       return (
@@ -408,12 +402,17 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
                     })}
                   </AvatarGroup>
 
-                  {gateProps?.holders.length > 8 ? (
+                  {gateProps?.holders.length >= 8 ? (
                     <Chip
-                      label={`+ ${gateProps?.holders.length - 8}`}
+                      label={`+ ${totalNoOfHolders - 8}`}
                       onClick={() => setIsHolderDialog(!isHolderDialog)}
                     />
-                  ) : null}
+                  ) : (
+                    <Chip
+                      label={'expand'}
+                      onClick={() => setIsHolderDialog(!isHolderDialog)}
+                    />
+                  )}
                 </Grid>
               </>
             )}
