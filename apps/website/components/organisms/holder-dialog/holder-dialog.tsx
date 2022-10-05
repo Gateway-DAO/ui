@@ -29,7 +29,11 @@ type Props = {
   credentialId: String;
 };
 
-export function HolderDialog({ isHolderDialog, setIsHolderDialog, credentialId }: Props) {
+export function HolderDialog({
+  isHolderDialog,
+  setIsHolderDialog,
+  credentialId,
+}: Props) {
   const { me, gqlAuthMethods } = useAuth();
 
   const [filter, setFilter] = useState('');
@@ -77,7 +81,7 @@ export function HolderDialog({ isHolderDialog, setIsHolderDialog, credentialId }
 
   return (
     <Dialog open={isHolderDialog} keepMounted={false} fullWidth>
-      <DialogTitle> {t('holders-dialog.title')} </DialogTitle>
+      <DialogTitle> Holders </DialogTitle>
       <TextField
         label="Search"
         variant="outlined"
@@ -141,13 +145,17 @@ export function HolderDialog({ isHolderDialog, setIsHolderDialog, credentialId }
 
       {!holders?.length && filter.length > 0 && (
         <Typography variant="body2" color="text.secondary" sx={{ mx: 3 }}>
-          {t('holders-dialog.no-result', { filter })}
+          No users with "{filter}" were found
         </Typography>
       )}
 
       <DialogActions sx={{ pt: 2 }}>
-        <Button onClick={() => setIsHolderDialog(false)} variant="contained" fullWidth>
-          {t('holders-dialog.close')}
+        <Button
+          onClick={() => setIsHolderDialog(false)}
+          variant="contained"
+          fullWidth
+        >
+          close
         </Button>
       </DialogActions>
     </Dialog>

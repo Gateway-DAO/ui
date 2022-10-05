@@ -229,9 +229,11 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
         gate={gateProps}
       />
       <HolderDialog
-        isHolderDialog={isHolderDialog}
-        setIsHolderDialog={setIsHolderDialog}
-        credentialId={gateProps?.id}
+        {...{
+          isHolderDialog,
+          setIsHolderDialog,
+          credentialId: gateProps?.id,
+        }}
       />
       <Grid item xs={12} md={5}>
         <Stack
