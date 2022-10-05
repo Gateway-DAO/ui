@@ -38,6 +38,7 @@ import ConfirmDialog from '../../organisms/confirm-dialog/confirm-dialog';
 import GateCompletedModal from '../../organisms/gates/view/modals/gate-completed';
 import { ClientNav } from '../../organisms/navbar/client-nav';
 import { Task, TaskGroup } from '../../organisms/tasks';
+import { Props as HolderDialogProps } from '../../organisms/holder-dialog';
 
 const GateStateChip = dynamic(() => import('../../atoms/gate-state-chip'), {
   ssr: false,
@@ -51,7 +52,7 @@ const MintCredentialButton: ComponentType<MintCredentialButtonProps> = dynamic(
   }
 );
 
-const HolderDialog = dynamic(
+const HolderDialog: ComponentType<HolderDialogProps> = dynamic(
   () => import('../../organisms/holder-dialog').then((mod) => mod.HolderDialog),
   { ssr: false }
 );

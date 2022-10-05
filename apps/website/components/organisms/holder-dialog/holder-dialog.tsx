@@ -23,7 +23,7 @@ import { UserList } from './user-list';
 import { Virtuoso } from 'react-virtuoso';
 import { CenteredLoader } from '../../atoms/centered-loader';
 
-type Props = {
+export type Props = {
   isHolderDialog: boolean;
   setIsHolderDialog: Dispatch<SetStateAction<boolean>>;
   credentialId: String;
