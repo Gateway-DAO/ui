@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import useTranslation from 'next-translate/useTranslation';
 
 import { AiFillGithub } from 'react-icons/ai';
 import { BiGitPullRequest, BiGitRepoForked } from 'react-icons/bi';
@@ -10,19 +11,26 @@ import { Chip, Divider, Stack, Typography } from '@mui/material';
 
 import * as colors from './colors.json';
 
+type GithubDataProps = {
+  name: string;
+  description: string;
+  language: string;
+  html_url: string;
+  stargazers_count: number;
+  forks_count: number;
+};
+
 type GithubDataCardProps = {
-  data: {
-    name: string;
-    description: string;
-    language: string;
-    html_url: string;
-    stargazers_count: number;
-    forks_count: number;
-  };
+  data: GithubDataProps;
   requested_pr_amount?: number;
 };
 
-const GithubDataCard = ({ data, requested_pr_amount }: GithubDataCardProps) => {
+export default function GithubDataCard({
+  data,
+  requested_pr_amount,
+}: GithubDataCardProps) {
+  const { t } = useTranslation('gate-profile');
+
   const repository = {
     name: data?.name || '',
     description: data?.description || '',
@@ -67,7 +75,7 @@ const GithubDataCard = ({ data, requested_pr_amount }: GithubDataCardProps) => {
       )}
       {requested_pr_amount && (
         <Typography variant="body2" sx={{ padding: '1rem 2rem' }}>
-          Pull requests created and merged
+          {t('github.prs')}
         </Typography>
       )}
       {requested_pr_amount && (
@@ -131,6 +139,4 @@ const GithubDataCard = ({ data, requested_pr_amount }: GithubDataCardProps) => {
       </Stack>
     </Stack>
   );
-};
-
-export default GithubDataCard;
+}
