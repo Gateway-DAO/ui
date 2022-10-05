@@ -39,6 +39,7 @@ export function TableView({ gates, isGate, showStatus }: TableViewProps) {
         <TableHead>
           <TableRow>
             <TableCell align="left">Gate</TableCell>
+            {isGate && showStatus && <TableCell align="left">Status</TableCell>}
             <TableCell align="left">Category</TableCell>
           </TableRow>
         </TableHead>
@@ -72,10 +73,12 @@ export function TableView({ gates, isGate, showStatus }: TableViewProps) {
                   </Stack>
                 </TableCell>
                 <TableCell>
+                  {isGate && showStatus && (
+                    <GateStateChip published={gate.published} />
+                  )}
+                </TableCell>
+                <TableCell>
                   <Stack direction="row" gap={1}>
-                    {isGate && showStatus && (
-                      <GateStateChip published={gate.published} />
-                    )}
                     {gate.categories?.map((category) => (
                       <Chip
                         key={`gate-${gate.id}-category-${category}`}

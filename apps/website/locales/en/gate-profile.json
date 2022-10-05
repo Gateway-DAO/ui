@@ -1,0 +1,18 @@
+{
+  "github": {
+    "connect": "Connect your account",
+    "description": "To complete this task, you need to authorize Gateway to access your GitHub account.",
+    "prs": "Pull requests created and merged",
+    "action": "Connect Github"
+  },
+  "tasks": {
+    "github_contribute": {
+      "description": "You must contribute to"
+    },
+    "github_prs": {
+      "description": "You must have created and merged this number of pull requests",
+      "action": "Verify"
+    },
+    "completed": "Task completed at "
+  }
+}
