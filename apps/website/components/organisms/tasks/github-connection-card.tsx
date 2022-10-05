@@ -1,11 +1,25 @@
 import { Button, Stack, Typography } from '@mui/material';
+import useTranslation from 'next-translate/useTranslation';
+import { useRouter } from 'next/router';
+import { useLocalStorage } from 'react-use';
 
-const GithubConnectionCard = () => {
-  const connectGithub = async () => {
-    window.localStorage.setItem('github_redirect_url', window.location.href);
+export default function GithubConnectionCard() {
+  const { t } = useTranslation('gate-profile');
+  const router = useRouter();
+  const [githubRedirectUrl, setGithubRedirectUrl, remove] = useLocalStorage(
+    'github_redirect_url',
+    router.asPath
+  );
 
-    window.location.href = `https://github.com/login/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID}`;
-  };
+  const client_id =
+    process.env.NODE_ENV === 'development'
+      ? process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID_DEV
+      : process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID_PROD;
+
+  const connectGithub = async () =>
+    router.push(
+      `https://github.com/login/oauth/authorize?client_id=${client_id}`
+    );
 
   return (
     <Stack
@@ -24,11 +38,10 @@ const GithubConnectionCard = () => {
     >
       <Stack maxWidth="400px">
         <Typography variant="h6" padding={'10px 0'}>
-          Connect your account
+          {t('github.connect')}
         </Typography>
         <Typography variant="body2" sx={{ color: '#BDBEC0' }}>
-          To complete this task, you need to authorize Gateway to access your
-          GitHub account.
+          {t('github.description')}
         </Typography>
       </Stack>
       <Stack>
@@ -38,11 +51,9 @@ const GithubConnectionCard = () => {
           onClick={connectGithub}
           sx={{ margin: '15px', color: 'black', backgroundColor: '#E5E5E5' }}
         >
-          Connect Github
+          {t('github.action')}
         </Button>
       </Stack>
     </Stack>
   );
-};
-
-export default GithubConnectionCard;
+}
