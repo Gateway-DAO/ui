@@ -24,12 +24,12 @@ import { Virtuoso } from 'react-virtuoso';
 import { CenteredLoader } from '../../atoms/centered-loader';
 
 type Props = {
-  isOpen: boolean;
-  setIsOpen: Dispatch<SetStateAction<boolean>>;
+  isHolderDialog: boolean;
+  setIsHolderDialog: Dispatch<SetStateAction<boolean>>;
   credentialId: String;
 };
 
-export function HolderDialog({ isOpen, setIsOpen, credentialId }: Props) {
+export function HolderDialog({ isHolderDialog, setIsHolderDialog, credentialId }: Props) {
   const { me, gqlAuthMethods } = useAuth();
 
   const [filter, setFilter] = useState('');
@@ -76,7 +76,7 @@ export function HolderDialog({ isOpen, setIsOpen, credentialId }: Props) {
   };
 
   return (
-    <Dialog open={isOpen} keepMounted={false} fullWidth>
+    <Dialog open={isHolderDialog} keepMounted={false} fullWidth>
       <DialogTitle> {t('holders-dialog.title')} </DialogTitle>
       <TextField
         label="Search"
@@ -146,7 +146,7 @@ export function HolderDialog({ isOpen, setIsOpen, credentialId }: Props) {
       )}
 
       <DialogActions sx={{ pt: 2 }}>
-        <Button onClick={() => setIsOpen(false)} variant="contained" fullWidth>
+        <Button onClick={() => setIsHolderDialog(false)} variant="contained" fullWidth>
           {t('holders-dialog.close')}
         </Button>
       </DialogActions>
