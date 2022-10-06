@@ -24,14 +24,17 @@ import { Virtuoso } from 'react-virtuoso';
 import { CenteredLoader } from '../../atoms/centered-loader';
 import { UserList } from 'apps/website/components/atoms/users-list';
 
-export type PropsTypes = {
+export type Props = {
   isHolderDialog: boolean;
   setIsHolderDialog: Dispatch<SetStateAction<boolean>>;
   credentialId: String;
 };
 
-export function HolderDialog(Props: PropsTypes) {
-  const { isHolderDialog, setIsHolderDialog, credentialId } = Props;
+export function HolderDialog({
+  isHolderDialog,
+  setIsHolderDialog,
+  credentialId,
+}: Props) {
   const { gqlAuthMethods } = useAuth();
 
   const [filter, setFilter] = useState('');
@@ -77,8 +80,17 @@ export function HolderDialog(Props: PropsTypes) {
     }
   };
 
+  const handleClose = () => {
+    setIsHolderDialog(false);
+  };
+
   return (
-    <Dialog open={isHolderDialog} keepMounted={false} fullWidth>
+    <Dialog
+      open={isHolderDialog}
+      onClose={handleClose}
+      keepMounted={false}
+      fullWidth
+    >
       <DialogTitle> Holders </DialogTitle>
       <TextField
         label="Search"
@@ -132,10 +144,10 @@ export function HolderDialog(Props: PropsTypes) {
             Footer: () => (isFetchingNextPage ? <CenteredLoader /> : null),
           }}
           itemContent={(index, holder) => (
-            <>
+            <Fragment key={index}>
               <UserList {...{ user: holder, index }} />
               {index !== holders?.length - 1 && <Divider />}
-            </>
+            </Fragment>
           )}
         />
       )}
@@ -147,11 +159,7 @@ export function HolderDialog(Props: PropsTypes) {
       )}
 
       <DialogActions sx={{ pt: 2 }}>
-        <Button
-          onClick={() => setIsHolderDialog(false)}
-          variant="contained"
-          fullWidth
-        >
+        <Button onClick={handleClose} variant="contained" fullWidth>
           close
         </Button>
       </DialogActions>

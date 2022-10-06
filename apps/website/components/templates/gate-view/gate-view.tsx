@@ -38,7 +38,7 @@ import ConfirmDialog from '../../organisms/confirm-dialog/confirm-dialog';
 import GateCompletedModal from '../../organisms/gates/view/modals/gate-completed';
 import { ClientNav } from '../../organisms/navbar/client-nav';
 import { Task, TaskGroup } from '../../organisms/tasks';
-import { PropsTypes as HolderDialogProps } from '../../organisms/holder-dialog';
+import { Props as HolderDialogProps } from '../../organisms/holder-dialog';
 
 const GateStateChip = dynamic(() => import('../../atoms/gate-state-chip'), {
   ssr: false,
@@ -100,15 +100,18 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
     (cred) => cred?.gate_id === gateProps?.id
   )?.id;
 
-  const { data: credential } = useQuery(
-    ['credential', credential_id],
+  const { data: totalHolders } = useQuery(
+    ['count_total_holders', gateProps?.id],
     () =>
-      gqlAuthMethods.credential({
-        id: credential_id,
-      }),
-    {
-      enabled: !!credential_id,
-    }
+      gqlAuthMethods.count_total_holders({
+        id: gateProps?.id,
+      })
+  );
+
+  const { data: credential } = useQuery(['credential', credential_id], () =>
+    gqlAuthMethods.credential({
+      id: credential_id,
+    })
   );
 
   const { mutate: toggleGateStateMutation } = useMutation(
@@ -177,17 +180,9 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
       })
   );
 
-  const { data: totalHolders } = useQuery(
-    ['count_total_holders', gateProps?.id],
-    () =>
-      gqlAuthMethods.count_total_holders({
-        id: gateProps?.id,
-      })
-  );
-
   const completedAt = gateProgress?.gate_progress[0]?.completed_at;
   const totalNoOfHolders =
-    totalHolders?.credentials_aggregate?.aggregate?.count ?? 0;
+    totalHolders?.credentials_aggregate?.aggregate?.count;
 
   const formattedDate = new Date(completedAt?.toLocaleString()).toLocaleString(
     'en-us',
@@ -382,9 +377,9 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
                 </Grid>
 
                 <Grid item xs={8} display="flex" alignItems={'center'}>
-                  <AvatarGroup spacing={'small'}>
+                  <AvatarGroup>
                     {gateProps?.holders.map((holder, index) => {
-                      if (index == 8) return null;
+                      if (index == 4) return null;
                       return (
                         <Link
                           key={holder.id}
@@ -397,6 +392,9 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
                                 alt={holder.username}
                                 file={holder.picture}
                                 fallback={holder.pfp || '/logo.png'}
+                                sx={{
+                                  mx: 1,
+                                }}
                               />
                             </Box>
                           </Tooltip>
@@ -405,17 +403,15 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
                     })}
                   </AvatarGroup>
 
-                  {gateProps?.holders.length >= 8 ? (
+                  {gateProps?.holders.length > 3 ? (
                     <Chip
-                      label={`+ ${totalNoOfHolders - 8}`}
-                      onClick={() => setIsHolderDialog(!isHolderDialog)}
+                      label={`+ ${totalNoOfHolders - 3}`}
+                      onClick={() => {
+                        setIsHolderDialog(!isHolderDialog);
+                        console.log(totalNoOfHolders);
+                      }}
                     />
-                  ) : (
-                    <Chip
-                      label={'expand'}
-                      onClick={() => setIsHolderDialog(!isHolderDialog)}
-                    />
-                  )}
+                  ) : null}
                 </Grid>
               </>
             )}
@@ -441,7 +437,11 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
             </Grid>
             {gateProps?.creator && (
               <>
-                <Grid item xs={4}>
+                <Grid
+                  item
+                  xs={4}
+                  sx={{ display: 'flex', alignItems: 'center' }}
+                >
                   <Typography
                     variant="body2"
                     color={(theme) => theme.palette.text.secondary}
