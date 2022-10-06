@@ -12,16 +12,17 @@ import {
 } from '@mui/material';
 
 import useTranslation from 'next-translate/useTranslation';
-import { Dispatch, SetStateAction, useMemo, useState } from 'react';
+import { Dispatch, Fragment, SetStateAction, useMemo, useState } from 'react';
 import SearchIcon from '@mui/icons-material/Search';
 import { ChangeEvent } from 'react';
 
 import { useAuth } from 'apps/website/providers/auth';
 
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { UserList } from './user-list';
+
 import { Virtuoso } from 'react-virtuoso';
 import { CenteredLoader } from '../../atoms/centered-loader';
+import { UserList } from 'apps/website/components/atoms/users-list';
 
 export type Props = {
   isHolderDialog: boolean;
@@ -34,7 +35,7 @@ export function HolderDialog({
   setIsHolderDialog,
   credentialId,
 }: Props) {
-  const { me, gqlAuthMethods } = useAuth();
+  const { gqlAuthMethods } = useAuth();
 
   const [filter, setFilter] = useState('');
   const { t } = useTranslation('credential');
@@ -134,11 +135,10 @@ export function HolderDialog({
             Footer: () => (isFetchingNextPage ? <CenteredLoader /> : null),
           }}
           itemContent={(index, holder) => (
-            <>
-              <UserList {...{ holder, index, me }} />
-
+            <Fragment key={index}>
+              <UserList {...{ user: holder, index }} />
               {index !== holders?.length - 1 && <Divider />}
-            </>
+            </Fragment>
           )}
         />
       )}
