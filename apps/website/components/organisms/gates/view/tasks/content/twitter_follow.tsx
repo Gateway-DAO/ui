@@ -16,6 +16,7 @@ import {
 
 import { useAuth } from '../../../../../../providers/auth';
 import { LoadingButton } from '../../../../../atoms/loading-button';
+import { numberFormat } from './../../../../../../components/molecules/add-task/twitter-follow-profile/twitter-follow-profile';
 
 type TwitterFollowData = {
   twitter_follow: boolean;
@@ -92,16 +93,6 @@ const TwitterFollowContent = ({
       console.log(error);
     }
   });
-
-  const numberFormat = (value: number) => {
-    if (value < 10000) {
-      return value;
-    } else if (value < 1000000) {
-      return `${(value / 1000).toFixed(1)}K`;
-    } else if (value < 1000000000) {
-      return `${(value / 1000000).toFixed(1)}M`;
-    }
-  };
 
   return (
     <Stack marginTop={5} alignItems="start">

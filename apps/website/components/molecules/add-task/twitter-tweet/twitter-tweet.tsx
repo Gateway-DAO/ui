@@ -1,4 +1,3 @@
-import dynamic from 'next/dynamic';
 import { useEffect, useRef, useState } from 'react';
 
 import { EmojiStyle } from 'emoji-picker-react';
@@ -119,7 +118,7 @@ const TwitterTweetTask = ({ taskId, deleteTask }) => {
             })}
           />
           <Stack>
-            <Typography variant="subtitle2">Verification Code</Typography>
+            <Typography variant="subtitle2">Post Tweet</Typography>
             <TextField
               variant="standard"
               autoFocus
@@ -258,5 +257,4 @@ const TwitterTweetTask = ({ taskId, deleteTask }) => {
     </Stack>
   );
 };
-
 export default TwitterTweetTask;

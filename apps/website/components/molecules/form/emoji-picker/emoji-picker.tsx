@@ -1,5 +1,12 @@
 import dynamic from 'next/dynamic';
-import { useEffect, useState, useRef, MutableRefObject, Dispatch, SetStateAction } from 'react';
+import {
+  useEffect,
+  useState,
+  useRef,
+  MutableRefObject,
+  Dispatch,
+  SetStateAction,
+} from 'react';
 
 import { Theme, EmojiStyle } from 'emoji-picker-react';
 
@@ -24,11 +31,9 @@ export type EmojiPickerProps = {
 
 export function EmojiPicker(props: EmojiPickerProps) {
   const [boxEmojiIsVisible, setBoxEmojiIsVisible] = useState(false);
-  const [chosenEmoji, setChosenEmoji] = useState(null);
   const wrapperRef = useRef(null);
 
-  const onEmojiClick = (emojiObject) => {
-    setChosenEmoji(emojiObject.emoji);
+  const onEmojiClick = (emojiObject: { emoji: SetStateAction<string> }) => {
     props.onEmoji(emojiObject.emoji);
     setBoxEmojiIsVisible(false);
   };
@@ -54,11 +59,13 @@ export function EmojiPicker(props: EmojiPickerProps) {
       <EmojiEmotionsIcon
         style={{ color: props.iconColor, cursor: 'pointer' }}
         onClick={() => {
-          boxEmojiIsVisible ? setBoxEmojiIsVisible(false) : setBoxEmojiIsVisible(true);
+          boxEmojiIsVisible
+            ? setBoxEmojiIsVisible(false)
+            : setBoxEmojiIsVisible(true);
         }}
       />
       {boxEmojiIsVisible && (
-        <Box sx={props.pickerSxProps} onClick={e => e.preventDefault()}>
+        <Box sx={props.pickerSxProps} onClick={(e) => e.preventDefault()}>
           <Picker
             onEmojiClick={onEmojiClick}
             theme={Theme.DARK}

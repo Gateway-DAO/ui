@@ -112,7 +112,7 @@ const TwitterRetweetTask = ({ taskId, deleteTask }) => {
             })}
           />
           <Stack>
-            <Typography variant="subtitle2">Verification Code</Typography>
+            <Typography variant="subtitle2">Retweet Post</Typography>
             <TextField
               variant="standard"
               autoFocus
@@ -255,5 +255,4 @@ const TwitterRetweetTask = ({ taskId, deleteTask }) => {
     </Stack>
   );
 };
-
 export default TwitterRetweetTask;

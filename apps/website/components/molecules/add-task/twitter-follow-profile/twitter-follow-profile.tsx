@@ -1,12 +1,12 @@
 import { useCallback, useEffect, useState } from 'react';
 
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import debounce from 'lodash/debounce';
 import { useFormContext } from 'react-hook-form';
 import { FaTwitter } from 'react-icons/fa';
 import { MdVerified } from 'react-icons/md';
 
-import { ExpandLess, ExpandMore, Twitter } from '@mui/icons-material';
+import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import {
   Avatar,
@@ -27,22 +27,15 @@ import {
   TwitterFollowDataError,
 } from '../../../templates/create-gate/schema';
 
-interface TwitterData {
-  description: string;
-  id: string;
-  location: string;
-  name: string;
-  profile_image_url: string;
-  protected: boolean;
-  public_metrics: {
-    followers_count: number;
-    following_count: number;
-    listed_count: number;
-    tweet_count: number;
-  };
-  username: string;
-  verified: boolean;
-}
+export const numberFormat = (value: number) => {
+  if (value < 10000) {
+    return value;
+  } else if (value < 1000000) {
+    return `${(value / 1000).toFixed(1)}K`;
+  } else if (value < 1000000000) {
+    return `${(value / 1000000).toFixed(1)}M`;
+  }
+};
 
 export const FollowProfile = ({ taskId, deleteTask }) => {
   const [taskVisible, setTaskVisible] = useState(false);
@@ -89,16 +82,6 @@ export const FollowProfile = ({ taskId, deleteTask }) => {
 
   const onHandleChange = () => {
     delayedQuery();
-  };
-
-  const numberFormat = (value) => {
-    if (value < 10000) {
-      return value;
-    } else if (value < 1000000) {
-      return `${(value / 1000).toFixed(1)}K`;
-    } else if (value < 1000000000) {
-      return `${(value / 1000000).toFixed(1)}M`;
-    }
   };
 
   return (
