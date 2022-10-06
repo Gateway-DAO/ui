@@ -48,6 +48,7 @@ export function BiconomyProvider({
   // From Wagmi
   const { address } = useAccount();
   const { data: signer } = useSigner();
+  const signerProvider = (signer?.provider as any)?.provider;
 
   // From auth
   const { me, gqlAuthMethods } = useAuth();
@@ -106,8 +107,7 @@ export function BiconomyProvider({
       );
 
       biconomy = new Biconomy(jsonRpcProvider, {
-        walletProvider:
-          (signer?.provider as any)?.provider || (await correctProvider()),
+        walletProvider: signerProvider || (await correctProvider()),
         apiKey: process.env.NEXT_PUBLIC_WEB3_BICONOMY_API_KEY,
         debug: process.env.NODE_ENV === 'development',
       });
@@ -132,10 +132,10 @@ export function BiconomyProvider({
         });
     }
 
-    if (typeof window !== 'undefined' && (address ?? false)) {
-      init();
-    }
-  }, [address]);
+    signer?.getAddress().then((address) => {
+      typeof window !== 'undefined' && (address ?? false) && init();
+    });
+  }, [signer]);
 
   /**
    * It mints a new NFT token.
