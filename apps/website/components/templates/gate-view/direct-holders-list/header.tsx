@@ -1,11 +1,9 @@
 import useTranslation from 'next-translate/useTranslation';
 
-import { useQuery } from '@tanstack/react-query';
-
 import { Alert, Box, Button, Stack, Typography } from '@mui/material';
 
 import { useAuth } from '../../../../providers/auth';
-import { gqlAnonMethods } from '../../../../services/api';
+import { CenteredLoader } from '../../../atoms/centered-loader';
 
 type Props = {
   isLoading?: boolean;
@@ -20,6 +18,14 @@ export function DirectHoldersHeader({
 }: Props) {
   const { me, onOpenLogin } = useAuth();
   const { t } = useTranslation('credential');
+
+  if (isLoading) {
+    return (
+      <Box sx={{ mb: 3 }}>
+        <CenteredLoader />
+      </Box>
+    );
+  }
 
   return (
     <>
@@ -58,7 +64,7 @@ export function DirectHoldersHeader({
           </Button>
         </Stack>
       )}
-      {!!me && !isLoading && hasCredential && (
+      {!!me && hasCredential && (
         <Alert
           variant="outlined"
           severity="success"
@@ -68,7 +74,7 @@ export function DirectHoldersHeader({
           {t('direct-credential.eligibility.has')}
         </Alert>
       )}
-      {!!me && !isLoading && !hasCredential && (
+      {!!me && !hasCredential && (
         <Alert
           variant="outlined"
           severity="warning"
