@@ -24,17 +24,14 @@ import { Virtuoso } from 'react-virtuoso';
 import { CenteredLoader } from '../../atoms/centered-loader';
 import { UserList } from 'apps/website/components/atoms/users-list';
 
-export type Props = {
+export type PropsTypes = {
   isHolderDialog: boolean;
   setIsHolderDialog: Dispatch<SetStateAction<boolean>>;
   credentialId: String;
 };
 
-export function HolderDialog({
-  isHolderDialog,
-  setIsHolderDialog,
-  credentialId,
-}: Props) {
+export function HolderDialog(Props: PropsTypes) {
+  const { isHolderDialog, setIsHolderDialog, credentialId } = Props;
   const { gqlAuthMethods } = useAuth();
 
   const [filter, setFilter] = useState('');
@@ -135,10 +132,10 @@ export function HolderDialog({
             Footer: () => (isFetchingNextPage ? <CenteredLoader /> : null),
           }}
           itemContent={(index, holder) => (
-            <Fragment key={index}>
+            <>
               <UserList {...{ user: holder, index }} />
               {index !== holders?.length - 1 && <Divider />}
-            </Fragment>
+            </>
           )}
         />
       )}
