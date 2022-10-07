@@ -24,21 +24,22 @@ import {
   Avatar,
 } from '@mui/material';
 
-import { useAuth } from '../../../../website/providers/auth';
 import { ROUTES } from '../../../constants/routes';
 import { useSnackbar } from '../../../hooks/use-snackbar';
+import { useAuth } from '../../../providers/auth';
+import { gqlAnonMethods } from '../../../services/api';
 import { Gates } from '../../../services/graphql/types.generated';
 import { AvatarFile } from '../../atoms/avatar-file';
-import CircularProgressWithLabel from '../../atoms/circular-progress-label';
 import { Props as MintCredentialButtonProps } from '../../atoms/mint-button';
 import MorePopover from '../../atoms/more-popover';
 import { ReadMore } from '../../atoms/read-more-less';
 import { ShareButton } from '../../atoms/share-button';
 import ConfirmDialog from '../../organisms/confirm-dialog/confirm-dialog';
 import GateCompletedModal from '../../organisms/gates/view/modals/gate-completed';
-import { ClientNav } from '../../organisms/navbar/client-nav';
-import { Task, TaskGroup } from '../../organisms/tasks';
-import { Props as HolderDialogProps } from '../../organisms/holder-dialog';
+import type { Props as HolderDialogProps } from '../../organisms/holder-dialog';
+import { DirectHoldersList } from './direct-holders-list/direct-holders-list';
+import { DirectHoldersHeader } from './direct-holders-list/header';
+import { TaskList } from './task-list';
 
 const GateStateChip = dynamic(() => import('../../atoms/gate-state-chip'), {
   ssr: false,
@@ -73,7 +74,23 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
   const router = useRouter();
   const snackbar = useSnackbar();
   const queryClient = useQueryClient();
-  const completedGate = completedTasksCount === gateProps?.tasks?.length;
+
+  const directCredentialInfo = useQuery(
+    ['direct-credential-info', me?.wallet, gateProps.id],
+    () =>
+      gqlAnonMethods.direct_credential_info({
+        gate_id: gateProps.id,
+        wallet: me?.wallet ?? '',
+      }),
+    {
+      enabled: gateProps.type === 'direct',
+    }
+  );
+
+  const completedGate =
+    gateProps.type === 'direct'
+      ? directCredentialInfo.data?.hasCredential?.aggregate?.count > 0
+      : completedTasksCount === gateProps?.tasks?.length;
 
   const taskIds = gateProps?.tasks.map((task) => task.id);
 
@@ -475,81 +492,33 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
         </Box>
       </Grid>
       <Divider orientation="vertical" flexItem />
-      <Grid item xs={12} md>
-        <Stack
-          direction="row"
-          justifyContent="flex-end"
-          sx={{
-            px: TOKENS.CONTAINER_PX,
-            flexGrow: {
-              md: 0.5,
-            },
-            display: {
-              xs: 'none',
-              md: 'flex',
-            },
-          }}
-        >
-          <ClientNav />
-        </Stack>
-        {/* Task Counter */}
-        <Stack
-          direction="row"
-          alignItems="center"
-          sx={{
-            margin: { xs: '16px 16px 40px 16px', md: '60px' },
-          }}
-        >
-          <Box display={'flex'}>
-            <CircularProgressWithLabel
-              variant="determinate"
-              value={(completedTasksCount / gateProps?.tasks.length) * 100}
-              label={`${completedTasksCount}/${gateProps?.tasks.length}`}
-              size={50}
-              thickness={4}
-              sx={{
-                color: '#6DFFB9',
-              }}
+      {gateProps.type === 'direct' && (
+        <DirectHoldersList
+          gate={gateProps}
+          isLoading={directCredentialInfo.isLoading}
+          header={
+            <DirectHoldersHeader
+              hasCredential={completedGate}
+              totalHolders={
+                directCredentialInfo.data?.whitelisted_wallets_aggregate
+                  ?.aggregate.count
+              }
+              completedAt={credential?.credentials_by_pk?.created_at}
             />
-            <Stack
-              sx={{
-                marginLeft: (theme) => theme.spacing(4),
-              }}
-            >
-              <Typography variant="h6">Tasks</Typography>
-              <Typography variant="caption">
-                Complete the tasks to unlock this credential
-              </Typography>
-            </Stack>
-          </Box>
-        </Stack>
-        {!!completedAt && (
-          <Typography
-            sx={{
-              marginX: TOKENS.CONTAINER_PX,
-              py: 1,
-              px: 4,
-              border: 1,
-              borderRadius: 1,
-            }}
-            color={'#c5ffe3'}
-          >
-            You have completed this credential at {formattedDate}
-          </Typography>
-        )}
-
-        <TaskGroup>
-          {gateProps?.tasks.map((task, idx) => (
-            <Task
-              key={'task-' + (idx + 1)}
-              task={task}
-              readOnly={published !== 'published'}
-              setCompletedGate={setOpen}
-              isAdmin={isAdmin}
-            />
-          ))}
-        </TaskGroup>
-      </Grid>
+          }
+        />
+      )}
+      {gateProps.type === 'task_based' && (
+        <TaskList
+          tasks={gateProps?.tasks}
+          completedAt={completedAt}
+          completedTasksCount={completedTasksCount}
+          formattedDate={formattedDate}
+          isAdmin={isAdmin}
+          published={published}
+          setOpen={setOpen}
+        />
+      )}
       <Snackbar
         anchorOrigin={{
           vertical: snackbar.vertical,

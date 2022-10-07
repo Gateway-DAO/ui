@@ -1,6 +1,4 @@
 import useTranslation from 'next-translate/useTranslation';
-import dynamic from 'next/dynamic';
-import Link from 'next/link';
 import { ChangeEvent, Fragment, useMemo, useState } from 'react';
 
 import { PartialDeep } from 'type-fest';
@@ -14,16 +12,14 @@ import {
   Typography,
 } from '@mui/material';
 
-import { useAuth } from '../../../../providers/auth';
 import { Users } from '../../../../services/graphql/types.generated';
-import { UserList } from '../../../atoms/users-list';
+import { UserListItem } from '../../../molecules/user-list-item';
 
 type Props = {
   users: PartialDeep<Users>[];
 };
 
 export function UsersList({ users }: Props) {
-  const { me } = useAuth();
   const [filter, setFilter] = useState('');
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setFilter(event.target.value);
@@ -77,8 +73,8 @@ export function UsersList({ users }: Props) {
         {filteredUsers.map((user, index) => {
           return (
             <Fragment key={index}>
-              <UserList {...{ user, index }} />
-              {index !== users?.length - 1 && <Divider />}
+              <UserListItem user={user} />
+              {index !== users.length - 1 && <Divider component="li" />}
             </Fragment>
           );
         })}

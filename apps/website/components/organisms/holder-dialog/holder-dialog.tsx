@@ -3,8 +3,6 @@ import { Dispatch, Fragment, SetStateAction, useMemo, useState } from 'react';
 import { ChangeEvent } from 'react';
 
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { UserList } from 'apps/website/components/atoms/users-list';
-import { useAuth } from 'apps/website/providers/auth';
 import { Virtuoso } from 'react-virtuoso';
 
 import SearchIcon from '@mui/icons-material/Search';
@@ -21,7 +19,9 @@ import {
   Typography,
 } from '@mui/material';
 
+import { useAuth } from '../../../providers/auth';
 import { CenteredLoader } from '../../atoms/centered-loader';
+import { UserListItem } from '../../molecules/user-list-item';
 
 export type Props = {
   isHolderDialog: boolean;
@@ -144,7 +144,7 @@ export function HolderDialog({
           }}
           itemContent={(index, holder) => (
             <Fragment key={index}>
-              <UserList {...{ user: holder, index }} />
+              <UserListItem user={holder} />
               {index !== holders?.length - 1 && <Divider />}
             </Fragment>
           )}
