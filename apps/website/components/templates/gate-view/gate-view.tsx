@@ -461,14 +461,15 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
       {gateProps.type === 'direct' && (
         <DirectHoldersList
           gate={gateProps}
+          isLoading={directCredentialInfo.isLoading}
           header={
             <DirectHoldersHeader
               hasCredential={completedGate}
               totalHolders={
                 directCredentialInfo.data?.whitelisted_wallets_aggregate
-                  .aggregate.count
+                  ?.aggregate.count
               }
-              isLoading={directCredentialInfo.isLoading}
+              completedAt={credential?.credentials_by_pk?.created_at}
             />
           }
         />

@@ -27,9 +27,14 @@ import { ClientNav } from '../../../organisms/navbar/client-nav';
 type Props = {
   gate: PartialDeep<Gates>;
   header: ReactNode;
+  isLoading: boolean;
 };
 
-export function DirectHoldersList({ gate, header }: Props) {
+export function DirectHoldersList({
+  gate,
+  header,
+  isLoading: isLoadingInfo,
+}: Props) {
   const [filter, setFilter] = useState('');
   const { me } = useAuth();
 
@@ -48,6 +53,7 @@ export function DirectHoldersList({ gate, header }: Props) {
               gate_id: gate.id,
             }),
       {
+        enabled: !isLoadingInfo,
         getNextPageParam: (lastPage, pages) => {
           if (lastPage.whitelisted_wallets.length < 15) return undefined;
           return pages.length * 15;
@@ -61,6 +67,14 @@ export function DirectHoldersList({ gate, header }: Props) {
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setFilter(event.target.value);
   };
+
+  if (isLoadingInfo) {
+    return (
+      <Grid display="flex" flexDirection="column" item xs={12} md>
+        <CenteredLoader />
+      </Grid>
+    );
+  }
 
   return (
     <Grid display="flex" flexDirection="column" item xs={12} md>
@@ -132,28 +146,31 @@ export function DirectHoldersList({ gate, header }: Props) {
             components={{
               Footer: () => (isFetchingNextPage ? <CenteredLoader /> : null),
             }}
-            itemContent={(index, whitelisted) => (
-              <>
-                <UserListItem
-                  key={whitelisted?.user?.id ?? whitelisted.wallet}
-                  user={
-                    whitelisted?.user ?? {
-                      name: 'Unknown User',
-                      username: whitelisted.wallet,
+            itemContent={(index, whitelisted) => {
+              const user = whitelisted.user?.[0]?.id
+                ? whitelisted.user[0]
+                : null;
+              return (
+                <>
+                  <UserListItem
+                    key={user?.id ?? whitelisted.wallet}
+                    user={
+                      user ?? {
+                        name: 'Unknown User',
+                        username: whitelisted.wallet,
+                      }
                     }
-                  }
-                  showFollow={
-                    !!whitelisted?.user && whitelisted.user.id !== me?.id
-                  }
-                  hasLink={!!whitelisted?.user}
-                  hasUsernamePrefix={!!whitelisted?.user}
-                  sx={{
-                    px: TOKENS.CONTAINER_PX,
-                  }}
-                />
-                {index !== whitelistedWallets.length - 1 && <Divider />}
-              </>
-            )}
+                    showFollow={!!user && user.id !== me?.id}
+                    hasLink={!!user}
+                    hasUsernamePrefix={!!user}
+                    sx={{
+                      px: TOKENS.CONTAINER_PX,
+                    }}
+                  />
+                  {index !== whitelistedWallets.length - 1 && <Divider />}
+                </>
+              );
+            }}
           />
         )}
       </Box>

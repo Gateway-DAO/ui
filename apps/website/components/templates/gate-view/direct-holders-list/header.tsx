@@ -1,31 +1,25 @@
 import useTranslation from 'next-translate/useTranslation';
 
+import { DateTime } from 'luxon';
+
 import { Alert, Box, Button, Stack, Typography } from '@mui/material';
 
 import { useAuth } from '../../../../providers/auth';
-import { CenteredLoader } from '../../../atoms/centered-loader';
 
 type Props = {
   isLoading?: boolean;
   hasCredential: boolean;
   totalHolders: number;
+  completedAt?: string;
 };
 
 export function DirectHoldersHeader({
   hasCredential,
   totalHolders,
-  isLoading,
+  completedAt,
 }: Props) {
   const { me, onOpenLogin } = useAuth();
   const { t } = useTranslation('credential');
-
-  if (isLoading) {
-    return (
-      <Box sx={{ mb: 3 }}>
-        <CenteredLoader />
-      </Box>
-    );
-  }
 
   return (
     <>
@@ -71,7 +65,11 @@ export function DirectHoldersHeader({
           icon={<></>}
           sx={{ mb: 3.75 }}
         >
-          {t('direct-credential.eligibility.has')}
+          {completedAt
+            ? t('direct-credential.eligibility.has-at', {
+                published: DateTime.fromISO(completedAt).toFormat(`MM/dd/yyyy`),
+              })
+            : t('direct-credential.eligibility.has')}
         </Alert>
       )}
       {!!me && !hasCredential && (
