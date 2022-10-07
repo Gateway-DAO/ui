@@ -8,30 +8,15 @@ import { PartialDeep } from 'type-fest';
 import SearchIcon from '@mui/icons-material/Search';
 import {
   Divider,
-  ListItem,
-  ListItemAvatar,
-  Link as MUILink,
-  Stack,
   List,
   TextField,
   InputAdornment,
   Typography,
 } from '@mui/material';
 
-import { ROUTES } from '../../../../constants/routes';
 import { useAuth } from '../../../../providers/auth';
 import { Users } from '../../../../services/graphql/types.generated';
-import { AvatarFile } from '../../../atoms/avatar-file';
-
-const FollowButtonUser = dynamic<any>(
-  () =>
-    import('../../../atoms/follow-button-user').then(
-      (mod) => mod.FollowButtonUser
-    ),
-  {
-    ssr: false,
-  }
-);
+import { UserList } from '../../../atoms/users-list';
 
 type Props = {
   users: PartialDeep<Users>[];
@@ -90,49 +75,10 @@ export function UsersList({ users }: Props) {
       />
       <List sx={{ mt: 2, overflowY: 'auto', maxHeight: '60vh' }}>
         {filteredUsers.map((user, index) => {
-          const url = ROUTES.PROFILE.replace('[username]', user.username);
           return (
             <Fragment key={index}>
-              <ListItem
-                secondaryAction={
-                  me?.wallet !== user.wallet ? (
-                    <FollowButtonUser wallet={user.wallet} variant="outlined" />
-                  ) : undefined
-                }
-              >
-                <ListItemAvatar>
-                  <Link passHref href={url}>
-                    <AvatarFile
-                      component="a"
-                      file={user.picture}
-                      target="_blank"
-                      fallback="/avatar.png"
-                    />
-                  </Link>
-                </ListItemAvatar>
-                <Stack direction="column">
-                  <Link passHref href={url}>
-                    <MUILink
-                      color="text.primary"
-                      underline="hover"
-                      target="_blank"
-                    >
-                      {user.name}
-                    </MUILink>
-                  </Link>
-                  <Link passHref href={url}>
-                    <MUILink
-                      variant="body2"
-                      color="text.secondary"
-                      underline="hover"
-                      target="_blank"
-                    >
-                      {`@${user.username}`}
-                    </MUILink>
-                  </Link>
-                </Stack>
-              </ListItem>
-              {index !== users.length - 1 && <Divider component="li" />}
+              <UserList {...{ user, index }} />
+              {index !== users?.length - 1 && <Divider />}
             </Fragment>
           );
         })}
