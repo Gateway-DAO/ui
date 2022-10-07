@@ -1,0 +1,26 @@
+query twitter_data($userName: String!) {
+  get_twitter_user_data(userName: $userName) {
+    verified
+    username
+    protected
+    profile_image_url
+    name
+    location
+    id
+    description
+    public_metrics {
+      followers_count
+      following_count
+      listed_count
+      tweet_count
+    }
+  }
+}
+
+query twitter_tweet($id: String!) {
+  get_twitter_tweet(id: $id) {
+    id
+    author_id
+    text
+  }
+}

@@ -10,7 +10,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 
 import { Gates } from '../../../../../services/graphql/types.generated';
-import GateRow from 'apps/website/components/molecules/gate-row';
+import GateRow from '../../../../molecules/gate-row';
 
 // TODO: make it generic
 // TODO: Fix Gate name column width
@@ -36,13 +36,19 @@ export function TableView({ gates, isGate, showStatus }: TableViewProps) {
         <TableHead>
           <TableRow>
             <TableCell align="left">Gate</TableCell>
+            {isGate && showStatus && <TableCell align="left">Status</TableCell>}
             <TableCell align="left">Category</TableCell>
             <TableCell align="left"></TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {gates.map((gate) => (
-            <GateRow gate={gate} isGate={isGate} showStatus={showStatus} />
+            <GateRow
+              key={gate.id}
+              gate={gate}
+              isGate={isGate}
+              showStatus={showStatus}
+            />
           ))}
         </TableBody>
       </Table>

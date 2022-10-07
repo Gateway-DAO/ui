@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
+import { EmojiStyle } from 'emoji-picker-react';
 import { useFormContext } from 'react-hook-form';
-import useTranslation from 'next-translate/useTranslation';
 
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -9,91 +9,79 @@ import {
   Box,
   FormControl,
   IconButton,
-  InputLabel,
-  MenuItem,
-  Select,
+  InputAdornment,
   Stack,
   TextField,
   Typography,
 } from '@mui/material';
 
 import { CircleWithNumber } from '../../../atoms/circle-with-number';
-import GithubDataCard from '../../../organisms/tasks/github-data-card';
 import {
   CreateGateTypes,
-  GithubContributeDataError,
+  TwitterTweetDataError,
 } from '../../../templates/create-gate/schema';
-import { useMutation } from '@tanstack/react-query';
+import { EmojiPicker, EmojiPickerProps } from '../../form/emoji-picker';
 
-type GithubPRTaskProps = {
-  taskId: number;
-  deleteTask: (taskId: number) => void;
-};
-
-export default function GithubPRTask({
-  taskId,
-  deleteTask,
-}: GithubPRTaskProps) {
-  const { t } = useTranslation('gate-new');
-
+const TwitterTweetTask = ({ taskId, deleteTask }) => {
   const {
     register,
     setValue,
-    setError,
     getValues,
-    trigger,
     formState: { errors },
   } = useFormContext<CreateGateTypes>();
 
-  const [title, repository_url] = getValues([
-    `tasks.data.${taskId}.title`,
-    `tasks.data.${taskId}.task_data.repository_link`,
-  ]);
-
-  const fetchRepositoryData = async (repository_url) => {
-    if (!repository_url) return;
-    const isValid = await trigger(
-      `tasks.data.${taskId}.task_data.repository_link`
-    );
-
-    if (!isValid) {
-      return null;
-    }
-
-    const repository_owner = repository_url
-      .replace('https://github.com/', '')
-      .split('/')[0];
-    const repository_name = repository_url
-      .replace('https://github.com/', '')
-      .split('/')[1];
-
-    const fetch_url = `https://api.github.com/repos/${repository_owner}/${repository_name}`;
-    const data = await fetch(fetch_url);
-
-    if (data.status !== 200) {
-      setError(`tasks.data.${taskId}.task_data.repository_link`, {
-        type: 'custom',
-        message: 'Repository private or not found.',
-      });
-
-      return null;
-    }
-
-    return data.json();
-  };
-
-  const { data: githubData, mutate: mutateGithubData } = useMutation(
-    ['github-data', repository_url],
-    (repository_url) => fetchRepositoryData(repository_url)
-  );
+  const formValues = getValues();
+  const tweetRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    if (title === '') {
+    if (formValues.tasks.data[taskId]?.title === '') {
       setValue(`tasks.data.${taskId}.title`, 'Untitled Task');
     }
-  }, [setValue, taskId]);
+  }, [setValue, taskId, formValues.tasks.data]);
 
   const [taskVisible, setTaskVisible] = useState(false);
+  const [emoji, setEmoji] = useState('');
+  const [tweetText, setTweetText] = useState('');
+
+  useEffect(() => {
+    if (
+      tweetRef?.current?.selectionStart > 0 &&
+      tweetRef?.current?.selectionStart < tweetText.length
+    ) {
+      const firstPart = tweetText.substring(
+        0,
+        tweetRef?.current?.selectionStart
+      );
+      const secondPart = tweetText.substring(
+        tweetRef?.current?.selectionStart,
+        tweetText.length
+      );
+      setTweetText(firstPart + emoji + secondPart);
+      setValue(
+        `tasks.data.${taskId}.task_data.tweet_text`,
+        firstPart + emoji + secondPart
+      );
+    } else {
+      setTweetText(tweetText + emoji);
+      setValue(`tasks.data.${taskId}.task_data.tweet_text`, tweetText + emoji);
+    }
+  }, [emoji]);
+
+  const emojiProps: EmojiPickerProps = {
+    onEmoji: setEmoji,
+    emojiStyle: EmojiStyle.TWITTER,
+    boxSxProps: {
+      position: 'absolute',
+      top: '142px',
+      left: '10px',
+      zIndex: '1',
+    },
+    pickerSxProps: {
+      position: 'absolute',
+      left: { xs: '-40px', md: '0' },
+    },
+    iconColor: '#9B96A0',
+  };
 
   return (
     <Stack
@@ -130,9 +118,7 @@ export default function GithubPRTask({
             })}
           />
           <Stack>
-            <Typography variant="subtitle2">
-              {t('tasks.github_prs.title')}
-            </Typography>
+            <Typography variant="subtitle2">Post Tweet</Typography>
             <TextField
               variant="standard"
               autoFocus
@@ -152,7 +138,7 @@ export default function GithubPRTask({
                   },
                 },
               }}
-              id="task-title"
+              id="file-title"
               {...register(`tasks.data.${taskId}.title`)}
               error={!!errors.tasks?.data?.[taskId]?.title}
               helperText={errors.tasks?.data?.[taskId]?.title?.message}
@@ -208,7 +194,7 @@ export default function GithubPRTask({
           multiline
           minRows={3}
           label="Task Description"
-          id="task-description"
+          id="file-description"
           {...register(`tasks.data.${taskId}.description`)}
           error={!!errors.tasks?.data?.[taskId]?.description}
           helperText={errors.tasks?.data?.[taskId]?.description?.message}
@@ -219,55 +205,56 @@ export default function GithubPRTask({
             },
           }}
         />
-        <Typography variant="body1" sx={{ paddingBottom: 2 }}>
-          {t('tasks.github_prs.amount_description')}
-        </Typography>
-        <FormControl>
-          <InputLabel htmlFor="requested_pr_amount">
-            {t('tasks.github_prs.amount_action')}
-          </InputLabel>
-          <Select
-            id="requested_pr_amount"
-            sx={{ maxWidth: { md: '50%', xs: '100%' } }}
-            {...register(`tasks.data.${taskId}.task_data.requested_pr_amount`)}
-          >
-            <MenuItem value={1}>1+</MenuItem>
-            <MenuItem value={5}>5+</MenuItem>
-            <MenuItem value={10}>10+</MenuItem>
-            <MenuItem value={25}>25+</MenuItem>
-            <MenuItem value={50}>50+</MenuItem>
-          </Select>
-        </FormControl>
-        <Typography variant="body1" sx={{ paddingTop: 4, paddingBottom: 2 }}>
-          {t('tasks.github_prs.repository_description')}
+        <Typography variant="body2" sx={{ marginBottom: { xs: 1, md: 4 } }}>
+          The user must post the tweet
         </Typography>
         <TextField
           required
-          label="Repository link"
-          {...register(`tasks.data.${taskId}.task_data.repository_link`, {
-            onBlur: (e) => mutateGithubData(e.target.value),
-          })}
+          multiline
+          maxLength={280}
+          label="Tweet Text"
+          id="tweet-text"
+          value={tweetText}
+          inputRef={tweetRef}
+          {...register(`tasks.data.${taskId}.task_data.tweet_text`)}
           error={
-            !!(
-              errors.tasks?.data?.[taskId]
-                ?.task_data as GithubContributeDataError
-            )?.repository_link
+            !!(errors.tasks?.data[taskId]?.task_data as TwitterTweetDataError)
+              ?.tweet_text
           }
           helperText={
-            (
-              errors.tasks?.data?.[taskId]
-                ?.task_data as GithubContributeDataError
-            )?.repository_link?.message
+            (errors.tasks?.data[taskId]?.task_data as TwitterTweetDataError)
+              ?.tweet_text?.message
           }
+          onChange={(event) => {
+            setTweetText(event.target.value);
+          }}
           sx={{
-            marginBottom: '60px',
+            marginBottom: '10px',
             '& fieldset legend span': {
               marginRight: '10px',
             },
           }}
+          inputProps={{
+            maxLength: 280,
+          }}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                {tweetText.length < 279 && <EmojiPicker {...emojiProps} />}
+              </InputAdornment>
+            ),
+          }}
         />
-        {githubData && <GithubDataCard data={githubData} />}
+        <Typography
+          variant="body2"
+          style={{
+            fontSize: '12px',
+          }}
+        >
+          {tweetText.length}/280
+        </Typography>
       </FormControl>
     </Stack>
   );
-}
+};
+export default TwitterTweetTask;

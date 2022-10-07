@@ -5,9 +5,11 @@ import Script from 'next/script';
 import NextNProgress from 'nextjs-progressbar';
 
 import { Hydrate, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 import { ThemeProvider } from '@gateway/theme';
 
+import Notistack from '../components/atoms/notistack';
 import { SEOSocial, SEOFavicon } from '../components/atoms/seo';
 import { NavStateProvider } from '../hooks/use-nav';
 import { usePersistLocale } from '../hooks/usePersistLocale';
@@ -18,8 +20,6 @@ import { WalletProvider } from '../providers/wallet/wallet-provider';
 import { queryClient } from '../services/query-client';
 import '../components/atoms/global-dependencies';
 import '../styles/next.css';
-
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 type AppProps = NextAppProps & {
   Component: NextAppProps['Component'] & { auth?: boolean };
@@ -53,7 +53,9 @@ function CustomApp({ Component, pageProps }: AppProps) {
                 >
                   <CyberConnectProvider>
                     <NavStateProvider>
-                      <Component {...pageProps} />
+                      <Notistack>
+                        <Component {...pageProps} />
+                      </Notistack>
                     </NavStateProvider>
                   </CyberConnectProvider>
                 </BiconomyProvider>

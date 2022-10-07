@@ -20,7 +20,6 @@ import {
 import { useAuth } from '../../../providers/auth';
 import { Tasks } from '../../../services/graphql/types.generated';
 import { queryClient } from '../../../services/query-client';
-import { SessionUser } from '../../../types/user';
 import { getMapValueFromObject } from '../../../utils/map-object';
 import GithubContributeContent from '../gates/view/tasks/content/github_contribute';
 import GithubPRContent from '../gates/view/tasks/content/github_prs';
@@ -29,6 +28,9 @@ import QuizContent from '../gates/view/tasks/content/quiz';
 import SelfVerifyContent from '../gates/view/tasks/content/self-verify';
 import SnapshotContent from '../gates/view/tasks/content/snapshot';
 import TokenHoldContent from '../gates/view/tasks/content/token_hold';
+import TwitterFollowContent from '../gates/view/tasks/content/twitter_follow';
+import TwitterRetweetContent from '../gates/view/tasks/content/twitter_retweet';
+import TwitterTweetContent from '../gates/view/tasks/content/twitter_tweet';
 import { taskErrorMessages } from './task-error-messages';
 
 type Props = {
@@ -82,50 +84,55 @@ export function Task({
   }, [task.id, me?.task_progresses, toggleExpanded]);
 
   const getTaskContent = (task_type: string) => {
-    switch (task_type) {
-      case 'self_verify':
-        return {
-          title: 'Files & Links',
-          body: SelfVerifyContent,
-        };
-      case 'meeting_code':
-        return {
-          title: 'Verification Code',
-          body: MeetingCodeContent,
-        };
-      case 'token_hold':
-        return {
-          title: 'Hold Token',
-          body: TokenHoldContent,
-        };
-      case 'snapshot':
-        return {
-          title: 'Snapshot',
-          body: SnapshotContent,
-        };
-      case 'quiz':
-        return {
-          title: 'Quiz',
-          body: QuizContent,
-        };
-      case 'github_contribute': {
-        return {
-          title: 'Contribute to Repository',
-          body: GithubContributeContent,
-        };
+    const taskTypes = {
+      self_verify: {
+        title: 'Files & Links',
+        body: SelfVerifyContent,
+      },
+      meeting_code: {
+        title: 'Verification Code',
+        body: MeetingCodeContent,
+      },
+      token_hold: {
+        title: 'Hold Token',
+        body: TokenHoldContent,
+      },
+      snapshot: {
+        title: 'Snapshot',
+        body: SnapshotContent,
+      },
+      quiz: {
+        title: 'Quiz',
+        body: QuizContent,
+      },
+      twitter_follow: {
+        title: 'Twitter Follow',
+        body: TwitterFollowContent,
+      },
+      twitter_retweet: {
+        title: 'Retweet Post',
+        body: TwitterRetweetContent,
+      },
+      twitter_tweet: {
+        title: 'Post Tweet',
+        body: TwitterTweetContent,
+      },
+      github_contribute: {
+        title: 'Contribute to Repository',
+        body: GithubContributeContent,
+      },
+      github_prs: {
+        title: 'Verify Pull Requests',
+        body: GithubPRContent,
+      },
+    };
+
+    return (
+      taskTypes[task_type] || {
+        title: '',
+        body: null,
       }
-      case 'github_prs': {
-        return {
-          title: 'Verify Pull Requests',
-          body: GithubPRContent,
-        };
-      }
-      default:
-        return {
-          title: '',
-          body: null,
-        };
-    }
+    );
   };
 
   const { mutate: completeTaskMutation, isLoading } = useMutation(

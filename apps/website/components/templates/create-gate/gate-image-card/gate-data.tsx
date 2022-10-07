@@ -23,7 +23,6 @@ export function GateData() {
             fontSize: theme.typography.h6,
           },
           '& .MuiCardHeader-subheader': {
-            wordBreak: 'break-all',
             fontSize: theme.typography.body2,
           },
         })}

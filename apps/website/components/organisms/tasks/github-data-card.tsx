@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import useTranslation from 'next-translate/useTranslation';
 
 import { AiFillGithub } from 'react-icons/ai';
 import { BiGitPullRequest, BiGitRepoForked } from 'react-icons/bi';
@@ -10,19 +11,26 @@ import { Chip, Divider, Stack, Typography } from '@mui/material';
 
 import * as colors from './colors.json';
 
+type GithubDataProps = {
+  name: string;
+  description: string;
+  language: string;
+  html_url: string;
+  stargazers_count: number;
+  forks_count: number;
+};
+
 type GithubDataCardProps = {
-  data: {
-    name: string;
-    description: string;
-    language: string;
-    html_url: string;
-    stargazers_count: number;
-    forks_count: number;
-  };
+  data: GithubDataProps;
   requested_pr_amount?: number;
 };
 
-const GithubDataCard = ({ data, requested_pr_amount }: GithubDataCardProps) => {
+export default function GithubDataCard({
+  data,
+  requested_pr_amount,
+}: GithubDataCardProps) {
+  const { t } = useTranslation('gate-profile');
+
   const repository = {
     name: data?.name || '',
     description: data?.description || '',
@@ -41,41 +49,50 @@ const GithubDataCard = ({ data, requested_pr_amount }: GithubDataCardProps) => {
         borderRadius: '10px',
       }}
     >
-      {requested_pr_amount && <Stack
-        flexDirection="row"
-        justifyContent="space-between"
-        alignItems="baseline"
-        sx={{ padding: '2rem' }}
-      >
-        <Stack flexDirection="row" gap={2} sx={{ border: "1px solid #BDBEC0", borderRadius: "15px", padding: "10px" }}>
-          <BiGitPullRequest fontSize="2rem" />
-          <Typography
-            fontSize={20}
-            fontWeight="bold"
+      {requested_pr_amount && (
+        <Stack
+          flexDirection="row"
+          justifyContent="space-between"
+          alignItems="baseline"
+          sx={{ padding: '2rem' }}
+        >
+          <Stack
+            flexDirection="row"
+            gap={2}
+            sx={{
+              border: '1px solid #BDBEC0',
+              borderRadius: '15px',
+              padding: '10px',
+            }}
           >
-            {requested_pr_amount}
-          </Typography>
+            <BiGitPullRequest fontSize="2rem" />
+            <Typography fontSize={20} fontWeight="bold">
+              + {requested_pr_amount}
+            </Typography>
+          </Stack>
+          <AiFillGithub fontSize="2rem" />
         </Stack>
-        <AiFillGithub fontSize="2rem" />
-      </Stack>}
-      {requested_pr_amount && <Typography variant="body2" sx={{ padding: "1rem 2rem" }}>
-        Pull requests created and merged
-      </Typography>}
-      {
-        requested_pr_amount && <Divider color="#BDBEC0" sx={{ marginTop: "20px" }} />
-      }
+      )}
+      {requested_pr_amount && (
+        <Typography variant="body2" sx={{ padding: '1rem 2rem' }}>
+          {t('github.prs')}
+        </Typography>
+      )}
+      {requested_pr_amount && (
+        <Divider color="#BDBEC0" sx={{ marginTop: '20px' }} />
+      )}
       <Stack
         flexDirection="row"
         justifyContent="space-between"
         alignItems="baseline"
         sx={{ padding: '2rem' }}
       >
-        <Stack flexDirection="row" gap={2}>
+        <Stack flexDirection="row" gap={2} alignItems="center">
           <BookOutlined fontSize="medium" />
           <Link passHref href={repository.url}>
             <Typography
               color="blue"
-              fontSize={20}
+              fontSize="16px"
               fontWeight="bold"
               sx={{ cursor: 'pointer' }}
             >
@@ -85,7 +102,12 @@ const GithubDataCard = ({ data, requested_pr_amount }: GithubDataCardProps) => {
           <Chip
             label="Public"
             variant="outlined"
-            sx={{ color: 'black', fontWeight: 'bold' }}
+            sx={{
+              height: '20px',
+              color: 'black',
+              fontWeight: 'bold',
+              fontSize: '12px',
+            }}
           />
         </Stack>
         {!requested_pr_amount && <AiFillGithub fontSize="2rem" />}
@@ -104,19 +126,17 @@ const GithubDataCard = ({ data, requested_pr_amount }: GithubDataCardProps) => {
             fontSize="small"
             sx={{ color: colors[repository.language] }}
           />
-          <Typography>{repository.language}</Typography>
+          <Typography fontSize="12px">{repository.language}</Typography>
         </Stack>
         <Stack flexDirection="row" alignItems="center" gap={1}>
           <StarBorderOutlinedIcon fontSize="small" />
-          <Typography>{repository.stars_count}</Typography>
+          <Typography fontSize="12px">{repository.stars_count}</Typography>
         </Stack>
         <Stack flexDirection="row" alignItems="center" gap={1}>
           <BiGitRepoForked />
-          <Typography>{repository.forks_count}</Typography>
+          <Typography fontSize="12px">{repository.forks_count}</Typography>
         </Stack>
       </Stack>
     </Stack>
   );
-};
-
-export default GithubDataCard;
+}

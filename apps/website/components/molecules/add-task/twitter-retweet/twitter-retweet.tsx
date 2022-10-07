@@ -1,99 +1,81 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
+import { useMutation } from '@tanstack/react-query';
 import { useFormContext } from 'react-hook-form';
-import useTranslation from 'next-translate/useTranslation';
+import { TwitterTweetEmbed } from 'react-twitter-embed';
 
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import {
   Box,
+  CircularProgress,
+  debounce,
   FormControl,
   IconButton,
-  InputLabel,
-  MenuItem,
-  Select,
+  InputAdornment,
   Stack,
   TextField,
   Typography,
 } from '@mui/material';
 
+import { useAuth } from '../../../../providers/auth';
 import { CircleWithNumber } from '../../../atoms/circle-with-number';
-import GithubDataCard from '../../../organisms/tasks/github-data-card';
 import {
   CreateGateTypes,
-  GithubContributeDataError,
+  TwitterRetweetDataError,
 } from '../../../templates/create-gate/schema';
-import { useMutation } from '@tanstack/react-query';
 
-type GithubPRTaskProps = {
-  taskId: number;
-  deleteTask: (taskId: number) => void;
-};
-
-export default function GithubPRTask({
-  taskId,
-  deleteTask,
-}: GithubPRTaskProps) {
-  const { t } = useTranslation('gate-new');
-
+const TwitterRetweetTask = ({ taskId, deleteTask }) => {
+  const { gqlAuthMethods } = useAuth();
   const {
     register,
     setValue,
-    setError,
     getValues,
-    trigger,
+    setError,
     formState: { errors },
   } = useFormContext<CreateGateTypes>();
 
-  const [title, repository_url] = getValues([
-    `tasks.data.${taskId}.title`,
-    `tasks.data.${taskId}.task_data.repository_link`,
-  ]);
-
-  const fetchRepositoryData = async (repository_url) => {
-    if (!repository_url) return;
-    const isValid = await trigger(
-      `tasks.data.${taskId}.task_data.repository_link`
-    );
-
-    if (!isValid) {
-      return null;
-    }
-
-    const repository_owner = repository_url
-      .replace('https://github.com/', '')
-      .split('/')[0];
-    const repository_name = repository_url
-      .replace('https://github.com/', '')
-      .split('/')[1];
-
-    const fetch_url = `https://api.github.com/repos/${repository_owner}/${repository_name}`;
-    const data = await fetch(fetch_url);
-
-    if (data.status !== 200) {
-      setError(`tasks.data.${taskId}.task_data.repository_link`, {
-        type: 'custom',
-        message: 'Repository private or not found.',
-      });
-
-      return null;
-    }
-
-    return data.json();
-  };
-
-  const { data: githubData, mutate: mutateGithubData } = useMutation(
-    ['github-data', repository_url],
-    (repository_url) => fetchRepositoryData(repository_url)
-  );
+  const [taskVisible, setTaskVisible] = useState(false);
+  const formValues = getValues();
 
   useEffect(() => {
-    if (title === '') {
+    if (formValues.tasks.data[taskId]?.title === '') {
       setValue(`tasks.data.${taskId}.title`, 'Untitled Task');
     }
-  }, [setValue, taskId]);
+  }, [setValue, taskId, formValues.tasks.data]);
 
-  const [taskVisible, setTaskVisible] = useState(false);
+  const {
+    mutate: getTwitterMutateTweet,
+    data: twitterTweet,
+    isLoading: isTwitterLoading,
+  } = useMutation(['twitter-tweet'], async () => {
+    try {
+      const tweetLink = getValues(`tasks.data.${taskId}.task_data.tweet_link`);
+      const tweetId = tweetLink.split('/').at(-1);
+      const response = await gqlAuthMethods.twitter_tweet({
+        id: tweetId,
+      });
+      return response.get_twitter_tweet;
+    } catch (error) {
+      if (error.message.includes('User is protected')) {
+        return setError(`tasks.data.${taskId}.task_data.tweet_link`, {
+          message: 'Tweet is protected',
+        });
+      }
+      return setError(`tasks.data.${taskId}.task_data.tweet_link`, {
+        message: 'Tweet not found',
+      });
+    }
+  });
+
+  const delayedQueryTweet = useCallback(
+    debounce(() => getTwitterMutateTweet(), 500),
+    []
+  );
+
+  const onHandleChangeTweet = () => {
+    delayedQueryTweet();
+  };
 
   return (
     <Stack
@@ -130,9 +112,7 @@ export default function GithubPRTask({
             })}
           />
           <Stack>
-            <Typography variant="subtitle2">
-              {t('tasks.github_prs.title')}
-            </Typography>
+            <Typography variant="subtitle2">Retweet Post</Typography>
             <TextField
               variant="standard"
               autoFocus
@@ -152,7 +132,7 @@ export default function GithubPRTask({
                   },
                 },
               }}
-              id="task-title"
+              id="file-title"
               {...register(`tasks.data.${taskId}.title`)}
               error={!!errors.tasks?.data?.[taskId]?.title}
               helperText={errors.tasks?.data?.[taskId]?.title?.message}
@@ -208,7 +188,7 @@ export default function GithubPRTask({
           multiline
           minRows={3}
           label="Task Description"
-          id="task-description"
+          id="file-description"
           {...register(`tasks.data.${taskId}.description`)}
           error={!!errors.tasks?.data?.[taskId]?.description}
           helperText={errors.tasks?.data?.[taskId]?.description?.message}
@@ -219,55 +199,60 @@ export default function GithubPRTask({
             },
           }}
         />
-        <Typography variant="body1" sx={{ paddingBottom: 2 }}>
-          {t('tasks.github_prs.amount_description')}
-        </Typography>
-        <FormControl>
-          <InputLabel htmlFor="requested_pr_amount">
-            {t('tasks.github_prs.amount_action')}
-          </InputLabel>
-          <Select
-            id="requested_pr_amount"
-            sx={{ maxWidth: { md: '50%', xs: '100%' } }}
-            {...register(`tasks.data.${taskId}.task_data.requested_pr_amount`)}
-          >
-            <MenuItem value={1}>1+</MenuItem>
-            <MenuItem value={5}>5+</MenuItem>
-            <MenuItem value={10}>10+</MenuItem>
-            <MenuItem value={25}>25+</MenuItem>
-            <MenuItem value={50}>50+</MenuItem>
-          </Select>
-        </FormControl>
-        <Typography variant="body1" sx={{ paddingTop: 4, paddingBottom: 2 }}>
-          {t('tasks.github_prs.repository_description')}
+        <Typography variant="body2" sx={{ marginBottom: { xs: 1, md: 4 } }}>
+          The user must retweet the post
         </Typography>
         <TextField
           required
-          label="Repository link"
-          {...register(`tasks.data.${taskId}.task_data.repository_link`, {
-            onBlur: (e) => mutateGithubData(e.target.value),
+          label="Tweet Link"
+          id="tweet-link"
+          {...register(`tasks.data.${taskId}.task_data.tweet_link`, {
+            onChange: () => onHandleChangeTweet(),
           })}
           error={
-            !!(
-              errors.tasks?.data?.[taskId]
-                ?.task_data as GithubContributeDataError
-            )?.repository_link
+            !!(errors.tasks?.data[taskId]?.task_data as TwitterRetweetDataError)
+              ?.tweet_link
           }
           helperText={
-            (
-              errors.tasks?.data?.[taskId]
-                ?.task_data as GithubContributeDataError
-            )?.repository_link?.message
+            (errors.tasks?.data[taskId]?.task_data as TwitterRetweetDataError)
+              ?.tweet_link?.message
           }
           sx={{
-            marginBottom: '60px',
+            marginBottom: '10px',
             '& fieldset legend span': {
               marginRight: '10px',
             },
           }}
+          inputProps={{
+            maxLength: 280,
+          }}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                {isTwitterLoading && <CircularProgress size={20} />}
+              </InputAdornment>
+            ),
+          }}
         />
-        {githubData && <GithubDataCard data={githubData} />}
+        {twitterTweet && Object.entries(twitterTweet).length > 0 && (
+          <Stack sx={{ width: '100%', justifyContent: 'flex-start' }}>
+            <TwitterTweetEmbed
+              tweetId={getValues(`tasks.data.${taskId}.task_data.tweet_link`)
+                ?.split('/')
+                .at(-1)}
+              options={{
+                cards: 'hidden',
+                conversation: 'none',
+                display: 'flex',
+                flex: 1,
+                align: 'center',
+                width: '100%',
+              }}
+            />
+          </Stack>
+        )}
       </FormControl>
     </Stack>
   );
-}
+};
+export default TwitterRetweetTask;

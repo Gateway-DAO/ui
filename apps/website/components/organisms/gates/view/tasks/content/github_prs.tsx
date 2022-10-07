@@ -1,31 +1,45 @@
-import { useEffect, useState } from 'react';
-
 import { Stack, Typography } from '@mui/material';
+import useTranslation from 'next-translate/useTranslation';
 
 import { LoadingButton } from '../../../../../../components/atoms/loading-button';
 import GithubConnectionCard from '../../../../../../components/organisms/tasks/github-connection-card';
 import GithubDataCard from '../../../../../../components/organisms/tasks/github-data-card';
+import { GithubPRData } from 'apps/website/components/templates/create-gate/schema';
+import { useQuery } from '@tanstack/react-query';
+import { useLocalStorage } from 'react-use';
 
-const GithubPRContent = ({
+type completeTaskData = {
+  githubAccessToken: string;
+  repository_name: string;
+  repository_owner: string;
+  requested_pr_amount: number;
+};
+
+type GithubContributeContentProps = {
+  data: GithubPRData;
+  completeTask: (data: completeTaskData) => void;
+  completed: boolean;
+  updatedAt: string;
+  readOnly: boolean;
+  isLoading: boolean;
+};
+
+export default function GithubPRContent({
   data,
   completeTask,
   completed,
   updatedAt,
   readOnly,
   isLoading,
-}) => {
-  const formattedDate = new Date(updatedAt.toLocaleString()).toLocaleString();
-  const [githubAccessToken, setGithubAccessToken] = useState('');
-  const { repository_link } = data;
+}: GithubContributeContentProps) {
+  const { t } = useTranslation('gate-profile');
 
-  const [repository, setRepository] = useState({
-    name: '',
-    description: '',
-    language: '',
-    html_url: '',
-    stargazers_count: 0,
-    forks_count: 0,
-  });
+  const formattedDate = new Date(updatedAt.toLocaleString()).toLocaleString();
+  const [githubAccessToken, setGithubAccessToken, remove] = useLocalStorage(
+    'github_access_token',
+    ''
+  );
+  const { repository_link } = data;
 
   const repository_owner = repository_link
     .replace('https://github.com/', '')
@@ -34,36 +48,22 @@ const GithubPRContent = ({
     .replace('https://github.com/', '')
     .split('/')[1];
 
-  useEffect(() => {
-    if (window) {
-      setGithubAccessToken(
-        JSON.parse(window.localStorage.getItem('github_access_token'))
-      );
-    }
+  const fetchRepository = async () => {
+    const response = await fetch(
+      `https://api.github.com/repos/${repository_owner}/${repository_name}`
+    );
 
-    const fetchRepository = async () => {
-      const response = await fetch(
-        `https://api.github.com/repos/${repository_owner}/${repository_name}`
-      );
-      const data = await response.json();
+    return response.json();
+  };
 
-      setRepository({
-        name: data.name,
-        description: data.description,
-        language: data.language,
-        html_url: data.html_url,
-        stargazers_count: data.stargazers_count,
-        forks_count: data.forks_count,
-      });
-    };
-
-    fetchRepository();
-  }, [repository_link, repository_owner, repository_name]);
+  const { data: repository } = useQuery(['github-data', repository_link], () =>
+    fetchRepository()
+  );
 
   return (
     <Stack alignItems="start">
       <Typography variant="body1" padding={'30px 0'}>
-        You must have created and merged this number of pull requests
+        {t('tasks.github_prs.description')}
       </Typography>
       <GithubDataCard
         data={repository}
@@ -85,7 +85,7 @@ const GithubPRContent = ({
             })
           }
         >
-          Verify
+          {t('tasks.github_prs.action')}
         </LoadingButton>
       )}
       {!completed && !readOnly && !githubAccessToken && (
@@ -97,11 +97,9 @@ const GithubPRContent = ({
           variant="subtitle2"
           sx={{ paddingTop: '20px' }}
         >
-          Task completed at {formattedDate}
+          {t('tasks.completed')} {formattedDate}
         </Typography>
       )}
     </Stack>
   );
-};
-
-export default GithubPRContent;
+}
