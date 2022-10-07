@@ -31,11 +31,12 @@ query gate($id: uuid!) {
         ...file
       }
     }
-    holders {
+    holders(limit: 4) {
       id
       name
       username
       pfp
+      wallet
       picture {
         ...file
       }

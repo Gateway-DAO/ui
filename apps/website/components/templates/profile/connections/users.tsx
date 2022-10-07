@@ -12,7 +12,6 @@ import {
   Typography,
 } from '@mui/material';
 
-import { ROUTES } from '../../../../constants/routes';
 import { Users } from '../../../../services/graphql/types.generated';
 import { UserListItem } from '../../../molecules/user-list-item';
 
@@ -72,7 +71,6 @@ export function UsersList({ users }: Props) {
       />
       <List sx={{ mt: 2, overflowY: 'auto', maxHeight: '60vh' }}>
         {filteredUsers.map((user, index) => {
-          const url = ROUTES.PROFILE.replace('[username]', user.username);
           return (
             <Fragment key={index}>
               <UserListItem user={user} />

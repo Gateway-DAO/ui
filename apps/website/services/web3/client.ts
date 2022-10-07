@@ -20,7 +20,7 @@ const { connectors } = getDefaultWallets({
 });
 
 export const web3client = createClient({
-  autoConnect: false,
+  autoConnect: true,
   connectors,
   provider,
   webSocketProvider,

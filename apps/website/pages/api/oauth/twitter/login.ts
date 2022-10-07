@@ -1,0 +1,34 @@
+import Twitter from 'twitter-lite';
+
+const KEYS = {
+  consumer_key: process.env.TWITTER_CONSUMER_KEY,
+  consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
+};
+
+const client = new Twitter({
+  subdomain: 'api',
+  version: '1.1',
+  consumer_key: KEYS.consumer_key,
+  consumer_secret: KEYS.consumer_secret,
+  access_token_key: '',
+  access_token_secret: '',
+});
+
+export default async function handler(_req, res) {
+  try {
+    const response: any = await client.getRequestToken(
+      `${
+        process.env.NEXT_PUBLIC_VERCEL_URL || 'https://www.mygateway.xyz/'
+      }/oauth/twitter/following`
+    );
+    res.status(200).json({
+      oauth_token: response.oauth_token,
+      oauth_token_secret: response.oauth_token_secret,
+      confirmed: response.oauth_callback_confirmed,
+      callbackURL: `https://api.twitter.com/oauth/authenticate?oauth_token=${response?.oauth_token}`,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ error });
+  }
+}

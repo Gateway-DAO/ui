@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { useState } from 'react';
+import { Fragment, useState } from 'react';
 
 import normalizeUrl from 'normalize-url';
 
@@ -52,7 +52,7 @@ const SelfVerifyContent = ({
 
   const files = data.files.map((file, index) => {
     return (
-      <>
+      <Fragment key={index}>
         {index == 0 ? null : <Divider />}
         <ListItem
           key={index}
@@ -72,7 +72,7 @@ const SelfVerifyContent = ({
             secondary={file.description}
           />
         </ListItem>
-      </>
+      </Fragment>
     );
   });
 

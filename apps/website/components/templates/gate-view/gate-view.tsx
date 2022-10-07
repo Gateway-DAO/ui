@@ -36,6 +36,7 @@ import { ReadMore } from '../../atoms/read-more-less';
 import { ShareButton } from '../../atoms/share-button';
 import ConfirmDialog from '../../organisms/confirm-dialog/confirm-dialog';
 import GateCompletedModal from '../../organisms/gates/view/modals/gate-completed';
+import type { Props as HolderDialogProps } from '../../organisms/holder-dialog';
 import { DirectHoldersList } from './direct-holders-list/direct-holders-list';
 import { DirectHoldersHeader } from './direct-holders-list/header';
 import { TaskList } from './task-list';
@@ -52,12 +53,18 @@ const MintCredentialButton: ComponentType<MintCredentialButtonProps> = dynamic(
   }
 );
 
+const HolderDialog: ComponentType<HolderDialogProps> = dynamic(
+  () => import('../../organisms/holder-dialog').then((mod) => mod.HolderDialog),
+  { ssr: false }
+);
+
 type GateViewProps = {
   gateProps: PartialDeep<Gates>;
 };
 
 export function GateViewTemplate({ gateProps }: GateViewProps) {
   const [open, setOpen] = useState(false);
+  const [isHolderDialog, setIsHolderDialog] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [confirmToggleState, setConfirmToggleState] = useState(false);
   const [completedTasksCount, setCompletedTasksCount] = useState(0);
@@ -110,15 +117,18 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
     (cred) => cred?.gate_id === gateProps?.id
   )?.id;
 
-  const { data: credential } = useQuery(
-    ['credential', credential_id],
+  const { data: totalHolders, isSuccess } = useQuery(
+    ['count_total_holders', gateProps?.id],
     () =>
-      gqlAuthMethods.credential({
-        id: credential_id,
-      }),
-    {
-      enabled: !!credential_id,
-    }
+      gqlAuthMethods.count_total_holders({
+        id: gateProps?.id,
+      })
+  );
+
+  const { data: credential } = useQuery(['credential', credential_id], () =>
+    gqlAuthMethods.credential({
+      id: credential_id,
+    })
   );
 
   const { mutate: toggleGateStateMutation } = useMutation(
@@ -188,6 +198,8 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
   );
 
   const completedAt = gateProgress?.gate_progress[0]?.completed_at;
+  const totalNoOfHolders =
+    totalHolders?.credentials_aggregate?.aggregate?.count;
 
   const formattedDate = new Date(completedAt?.toLocaleString()).toLocaleString(
     'en-us',
@@ -228,6 +240,13 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
         open={open}
         handleClose={handleClose}
         gate={gateProps}
+      />
+      <HolderDialog
+        {...{
+          isHolderDialog,
+          setIsHolderDialog,
+          credentialId: gateProps?.id,
+        }}
       />
       <Grid item xs={12} md={5}>
         <Stack
@@ -373,17 +392,11 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
                     Holders
                   </Typography>
                 </Grid>
-                <Grid item xs={8}>
-                  <AvatarGroup
-                    total={gateProps?.holders.length}
-                    spacing={'medium'}
-                    max={4}
-                    sx={{
-                      justifyContent: 'flex-end',
-                    }}
-                  >
+
+                <Grid item xs={8} display="flex" alignItems={'center'}>
+                  <AvatarGroup>
                     {gateProps?.holders.map((holder, index) => {
-                      if (index == 3) return;
+                      if (index == 3) return null;
                       return (
                         <Link
                           key={holder.id}
@@ -396,6 +409,9 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
                                 alt={holder.username}
                                 file={holder.picture}
                                 fallback={holder.pfp || '/logo.png'}
+                                sx={{
+                                  mx: 1,
+                                }}
                               />
                             </Box>
                           </Tooltip>
@@ -403,6 +419,16 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
                       );
                     })}
                   </AvatarGroup>
+
+                  {gateProps?.holders.length > 3 ? (
+                    <Chip
+                      label={`+ ${totalNoOfHolders - 3}`}
+                      onClick={() => {
+                        setIsHolderDialog(!isHolderDialog);
+                        console.log(totalNoOfHolders);
+                      }}
+                    />
+                  ) : null}
                 </Grid>
               </>
             )}
@@ -428,7 +454,11 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
             </Grid>
             {gateProps?.creator && (
               <>
-                <Grid item xs={4}>
+                <Grid
+                  item
+                  xs={4}
+                  sx={{ display: 'flex', alignItems: 'center' }}
+                >
                   <Typography
                     variant="body2"
                     color={(theme) => theme.palette.text.secondary}

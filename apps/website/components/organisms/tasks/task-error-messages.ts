@@ -14,6 +14,8 @@ export const taskErrorMessages = {
   NO_PROPOSAL_CREATION: `You didn't create any proposal on the Snapshot space.`,
   NO_QUIZ_BODY: `The Quiz was not filled out correctly.`,
   FAILED_QUIZ: `You didn't pass the quiz.`,
+  FAILED_GITHUB_CONTRIBUTE: `You didn't contribute to this GitHub repository.`,
+  FAILED_GITHUB_PRS: `You haven't merged enough pull requests on this GitHub repository.`,
   NO_INPUT: `There was an error with your Quiz validation, please, try again.`,
   NO_TASK_ID: `There was an error with your Quiz validation, please, try again.`,
   NO_MANUAL_TASK_IDS: `There was an error with your Quiz validation, please, try again.`,
@@ -23,4 +25,7 @@ export const taskErrorMessages = {
   FILE_NOT_FOUND: `There was an error retrieving your image, please, contact Gateway or try again.`,
   UNABLE_TO_RETRIEVE_FILE: `There was an error retrieving your image, please, contact Gateway or try again.`,
   UNEXPECTED_ERROR: `There was an unexpected error, please, contact Gateway or try again.`,
+  NO_POSTED_TWEET: `You have not posted the tweet`,
+  NO_POSTED_RETWEET: `You have not posted the tweet`,
+  NO_FOLLOW: `The user does not follow the twitter account`,
 };
