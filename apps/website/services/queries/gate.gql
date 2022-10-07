@@ -30,7 +30,8 @@ query gate($id: uuid!) {
         ...file
       }
     }
-    holders {
+    holder_count
+    holders(limit: 100) {
       id
       name
       username
