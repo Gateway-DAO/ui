@@ -70,7 +70,14 @@ export function DirectHoldersList({
 
   if (isLoadingInfo) {
     return (
-      <Grid display="flex" flexDirection="column" item xs={12} md>
+      <Grid
+        display="flex"
+        flexDirection="column"
+        alignSelf="center"
+        item
+        xs={12}
+        md
+      >
         <CenteredLoader />
       </Grid>
     );
