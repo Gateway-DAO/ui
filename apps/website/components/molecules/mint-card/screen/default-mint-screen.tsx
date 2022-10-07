@@ -96,8 +96,8 @@ export const DefaultMintScreen = ({
 
       <CardContent sx={{ mt: -2.0 }}>
         <Typography variant="body2" color="text.secondary">
-          {details.credential.description.length > 70
-            ? details.credential.description.substring(0, 67) + '...'
+          {details.credential.description.length > 63
+            ? details.credential.description.substring(0, 60) + '...'
             : details.credential.description}
         </Typography>
       </CardContent>

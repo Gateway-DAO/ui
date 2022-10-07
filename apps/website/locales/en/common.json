@@ -55,6 +55,7 @@
   "actions": {
     "accept": "Accept",
     "decline": "Decline",
+    "check": "check",
     "connect": "connect",
     "connected": "connected",
     "close": "close",
@@ -72,5 +73,12 @@
     "see-more": "See more",
     "see-less": "See less",
     "share-link": "Share link"
+  },
+  "image-drop-field": {
+    "default-label": "Drop to upload your avatar",
+    "upload-photo": "Upload photo",
+    "remove-photo": "Remove photo",
+    "select-nft": "Select NFT (soon)",
+    "upload-info": "File supported: JPG, PNG, GIF, SVG Max size: 5 MB"
   }
 }

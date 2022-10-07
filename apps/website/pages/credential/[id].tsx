@@ -68,6 +68,7 @@ export default function GateProfilePage() {
           overflow: '',
           pt: 2,
         },
+        height: gatesData.gates_by_pk?.type === 'direct' ? '100%' : undefined,
       }}
     >
       <Box

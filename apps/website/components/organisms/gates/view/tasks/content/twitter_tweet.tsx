@@ -48,7 +48,7 @@ const TwitterTweetContent = ({
           accTkn: twitterLocalStorage.accTkn,
           accTknSecret: twitterLocalStorage.accTknSecret,
           source_id: twitterLocalStorage.userId,
-          tweet_text,
+          tweet_text: tweet_text.trim(),
         }),
       });
 

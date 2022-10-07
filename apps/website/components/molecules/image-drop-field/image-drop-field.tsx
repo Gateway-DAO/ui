@@ -1,5 +1,6 @@
 import { ChangeEvent, ReactNode, useRef } from 'react';
 
+
 import { Control, FieldValues, Path, useController } from 'react-hook-form';
 import { useDropArea } from 'react-use';
 
@@ -104,14 +105,15 @@ export function ImageDropField<TFormSchema extends FieldValues = FieldValues>({
           {...register}
         />
 
-        <EditDropdownMenu
-          {...{
-            name,
-            hasImage: !!value,
-            onReset,
-            onClickUploadPhoto: onFocus,
-          }}
-        />
+        {!!value && (
+          <EditDropdownMenu
+            {...{
+              name,
+              onReset,
+              onClickUploadPhoto: onFocus,
+            }}
+          />
+        )}
         {value && <BackgroundImage {...{ value, isOver }} />}
       </Container>
       {imageCropDialog.isOpen && (

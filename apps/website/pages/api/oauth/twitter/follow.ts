@@ -1,8 +1,8 @@
 import Twitter from 'twitter-lite';
 
 const KEYS = {
-  consumer_key: process.env.TWITTER_CONSUMER_KEY,
-  consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
+  consumer_key: process.env.NEXT_PUBLIC_TWITTER_CONSUMER_KEY,
+  consumer_secret: process.env.NEXT_PUBLIC_TWITTER_CONSUMER_SECRET,
 };
 
 export default async function handler(req, res) {
