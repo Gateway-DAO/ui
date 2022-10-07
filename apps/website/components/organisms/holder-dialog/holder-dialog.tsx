@@ -1,3 +1,13 @@
+import useTranslation from 'next-translate/useTranslation';
+import { Dispatch, Fragment, SetStateAction, useMemo, useState } from 'react';
+import { ChangeEvent } from 'react';
+
+import { useInfiniteQuery } from '@tanstack/react-query';
+import { UserList } from 'apps/website/components/atoms/users-list';
+import { useAuth } from 'apps/website/providers/auth';
+import { Virtuoso } from 'react-virtuoso';
+
+import SearchIcon from '@mui/icons-material/Search';
 import {
   Box,
   Button,
@@ -11,23 +21,12 @@ import {
   Typography,
 } from '@mui/material';
 
-import useTranslation from 'next-translate/useTranslation';
-import { Dispatch, Fragment, SetStateAction, useMemo, useState } from 'react';
-import SearchIcon from '@mui/icons-material/Search';
-import { ChangeEvent } from 'react';
-
-import { useAuth } from 'apps/website/providers/auth';
-
-import { useInfiniteQuery } from '@tanstack/react-query';
-
-import { Virtuoso } from 'react-virtuoso';
 import { CenteredLoader } from '../../atoms/centered-loader';
-import { UserList } from 'apps/website/components/atoms/users-list';
 
 export type Props = {
   isHolderDialog: boolean;
   setIsHolderDialog: Dispatch<SetStateAction<boolean>>;
-  credentialId: String;
+  credentialId: string;
 };
 
 export function HolderDialog({
@@ -154,7 +153,7 @@ export function HolderDialog({
 
       {!holders?.length && filter.length > 0 && (
         <Typography variant="body2" color="text.secondary" sx={{ mx: 3 }}>
-          No users with "{filter}" were found
+          No users with &quot;{filter}&quot; were found
         </Typography>
       )}
 

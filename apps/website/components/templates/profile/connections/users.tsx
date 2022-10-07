@@ -16,8 +16,7 @@ import {
 
 import { useAuth } from '../../../../providers/auth';
 import { Users } from '../../../../services/graphql/types.generated';
-
-import { UserList } from 'apps/website/components/atoms/users-list';
+import { UserList } from '../../../atoms/users-list';
 
 type Props = {
   users: PartialDeep<Users>[];
