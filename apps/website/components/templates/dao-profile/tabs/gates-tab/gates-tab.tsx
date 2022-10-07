@@ -107,6 +107,7 @@ export function GatesTab() {
                   {...gate}
                   dao={dao}
                   showStatus={isAdmin}
+                  showOptions
                 />
               ))}
             </Box>

@@ -1,0 +1,30 @@
+{
+  "publish": "Publish",
+  "unpublish": "Unpublish",
+  "edit": "Edit",
+  "delete": "Delete",
+  "cancel": "Cancel",
+  "credential": {
+    "published": "Credential published!",
+    "unpublished": "Credential unpublished!",
+    "deleted": "Credential deleted!",
+    "confirm": {
+      "publish": {
+        "title": "Are you sure you want to publish this credential?",
+        "text": "Publishing this credential will make it accessible by all users."
+      },
+      "unpublish": {
+        "title": "Are you sure to unpublish this credential?",
+        "text": "If you unpublish this credential, users will not be able to see it anymore."
+      },
+      "delete": {
+        "title": "Are you sure you want to delete this credential?",
+        "text": "If you delete this credential, you will not be able to access it and this action cannot be undone."
+      },
+      "error": {
+        "toggle": "An error occured, couldn't toggle gate state.",
+        "delete": "An error occured, couldn't delete credential."
+      }
+    }
+  }
+}
