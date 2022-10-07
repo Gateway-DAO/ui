@@ -22,12 +22,12 @@ type NotistackContextProps = {
 };
 
 export const NotistackContext = createContext<NotistackContextProps>({
-  maxSnack: 3, // Maximum snackbars that can be stacked on top of one another.
-  variant: 'default', // 'default' | 'error' | 'success' | 'warning' | 'info'
+  maxSnack: 3,
+  variant: 'default',
   preventDuplicate: true,
   position: {
-    vertical: 'top', // 'top' | 'bottom'
-    horizontal: 'center', // 'left' | 'center' | 'right'
+    vertical: 'top',
+    horizontal: 'center',
   },
   autoHideDuration: 3000,
 });
