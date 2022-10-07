@@ -100,7 +100,7 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
     (cred) => cred?.gate_id === gateProps?.id
   )?.id;
 
-  const { data: totalHolders } = useQuery(
+  const { data: totalHolders, isSuccess } = useQuery(
     ['count_total_holders', gateProps?.id],
     () =>
       gqlAuthMethods.count_total_holders({
@@ -379,7 +379,7 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
                 <Grid item xs={8} display="flex" alignItems={'center'}>
                   <AvatarGroup>
                     {gateProps?.holders.map((holder, index) => {
-                      if (index == 4) return null;
+                      if (index == 3) return null;
                       return (
                         <Link
                           key={holder.id}

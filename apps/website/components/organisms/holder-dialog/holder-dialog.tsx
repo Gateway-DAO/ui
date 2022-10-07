@@ -137,7 +137,7 @@ export function HolderDialog({
         </Box>
       ) : (
         <Virtuoso
-          style={{ height: holders.length > 4 ? '40vh' : '22vh' }}
+          style={{ height: holders.length > 4 ? '40vh' : '26vh' }}
           data={holders}
           endReached={() => hasNextPage && fetchNextPage()}
           components={{
