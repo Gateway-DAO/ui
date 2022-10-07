@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { ReactElement, useEffect } from 'react';
 
 import { useFormContext } from 'react-hook-form';
 
@@ -9,12 +9,13 @@ import { Box, Card, useTheme } from '@mui/material';
 import { ImageDropField } from '../../../molecules/image-drop-field';
 import { CreateGateTypes } from '../schema';
 import { GateData } from './gate-data';
+import useTranslation from 'next-translate/useTranslation';
 
 type Props = {
   showGateData?: boolean;
   sx?: GatewaySxProps;
   draftImage?: string;
-  label?: string;
+  label?: string | ReactElement;
 };
 
 export function GateImageCard({
@@ -25,6 +26,7 @@ export function GateImageCard({
 }: Props) {
   const theme = useTheme();
   const { control, setValue } = useFormContext<CreateGateTypes>();
+  const { t } = useTranslation('common');
 
   useEffect(() => {
     setValue('image', draftImage);
@@ -81,7 +83,7 @@ export function GateImageCard({
             withCrop
             control={control}
             name="image"
-            label={label || 'Drop to upload your avatar'}
+            label={label || t('image-drop-field.default-label')}
           />
         </Box>
       </Box>

@@ -279,9 +279,20 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
           <FormProvider {...methods}>
             <GateImageCard
               draftImage={oldData.image}
-              label="Drop to upload your credential image"
+              label={
+                <>
+                  <Typography textAlign={'center'} paddingX={4}>
+                    Drop or{' '}
+                    <Typography color={'primary'} display={'inline'}>
+                      upload
+                    </Typography>{' '}
+                    your credential image
+                  </Typography>
+                
+                </>
+              }
               sx={{
-                width: 400,
+                width: 300,
               }}
             />
           </FormProvider>
