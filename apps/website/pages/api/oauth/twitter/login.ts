@@ -1,8 +1,8 @@
 import Twitter from 'twitter-lite';
 
 const KEYS = {
-  consumer_key: process.env.TWITTER_CONSUMER_KEY,
-  consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
+  consumer_key: process.env.NEXT_PUBLIC_TWITTER_CONSUMER_KEY,
+  consumer_secret: process.env.NEXT_PUBLIC_TWITTER_CONSUMER_SECRET,
 };
 
 const client = new Twitter({
@@ -18,7 +18,9 @@ export default async function handler(_req, res) {
   try {
     const response: any = await client.getRequestToken(
       `${
-        process.env.NEXT_PUBLIC_VERCEL_URL || 'https://www.mygateway.xyz/'
+        process.env.NODE_ENV === 'development'
+          ? 'http://twitter.local:4200'
+          : process.env.NEXT_PUBLIC_VERCEL_URL
       }/oauth/twitter/following`
     );
     res.status(200).json({
