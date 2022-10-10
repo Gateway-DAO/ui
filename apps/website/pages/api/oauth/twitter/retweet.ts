@@ -32,13 +32,14 @@ export default async function handler(req, res) {
     access_token_secret: accTknSecret,
   });
 
-  const id = tweet_link.split('/').at(-1);
+  const id = tweet_link.split('/');
 
   console.log(id);
+  console.log(id[id.length - 1]);
 
   try {
     const response = await client.get('statuses/lookup', {
-      id,
+      id: id[id.length - 1],
     });
 
     if (response[0].retweeted) {
