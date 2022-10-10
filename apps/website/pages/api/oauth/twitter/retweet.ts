@@ -11,7 +11,15 @@ export default async function handler(req, res) {
     return;
   }
 
-  const { accTkn, accTknSecret, tweet_link } = JSON.parse(req.body);
+  const {
+    accTkn,
+    accTknSecret,
+    tweet_link,
+  }: {
+    accTkn: string;
+    accTknSecret: string;
+    tweet_link: string;
+  } = JSON.parse(req.body);
 
   const client = new Twitter({
     subdomain: 'api',
