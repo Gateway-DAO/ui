@@ -14,14 +14,10 @@ const client = new Twitter({
   access_token_secret: '',
 });
 
-export default async function handler(_req, res) {
+export default async function handler(req, res) {
   try {
     const response: any = await client.getRequestToken(
-      `${
-        process.env.NODE_ENV === 'development'
-          ? 'http://twitter.local:4200'
-          : process.env.NEXT_PUBLIC_VERCEL_URL
-      }/oauth/twitter/following`
+      `https://${req.headers.host}/oauth/twitter/following`
     );
     res.status(200).json({
       oauth_token: response.oauth_token,
