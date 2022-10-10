@@ -113,7 +113,7 @@ const TwitterTweetContent = ({
           }}
         >
           <Twitter sx={{ color: '#1DA1F2' }} />
-          {twitterKeys && (
+          {twitterKeys && !completed && (
             <Button
               href={`https://twitter.com/intent/tweet?text=${tweet_text}`}
               target="_blank"
@@ -195,7 +195,11 @@ const TwitterTweetContent = ({
         </LoadingButton>
       )}
       {completed && updatedAt && (
-        <Typography color="#c5ffe3" variant="subtitle2">
+        <Typography
+          color="#c5ffe3"
+          variant="subtitle2"
+          sx={{ marginTop: '8px' }}
+        >
           Task completed at {formattedDate}
         </Typography>
       )}
