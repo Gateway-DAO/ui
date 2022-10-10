@@ -22,7 +22,7 @@
         "text": "If you delete this credential, you will not be able to access it and this action cannot be undone."
       },
       "error": {
-        "toggle": "An error occured, couldn't toggle gate state.",
+        "toggle": "An error occured, couldn't toggle credential state.",
         "delete": "An error occured, couldn't delete credential."
       }
     }

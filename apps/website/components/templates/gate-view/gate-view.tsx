@@ -117,14 +117,6 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
     (cred) => cred?.gate_id === gateProps?.id
   )?.id;
 
-  const { data: totalHolders, isSuccess } = useQuery(
-    ['count_total_holders', gateProps?.id],
-    () =>
-      gqlAuthMethods.count_total_holders({
-        id: gateProps?.id,
-      })
-  );
-
   const { data: credential } = useQuery(['credential', credential_id], () =>
     gqlAuthMethods.credential({
       id: credential_id,
@@ -198,8 +190,6 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
   );
 
   const completedAt = gateProgress?.gate_progress[0]?.completed_at;
-  const totalNoOfHolders =
-    totalHolders?.credentials_aggregate?.aggregate?.count;
 
   const formattedDate = new Date(completedAt?.toLocaleString()).toLocaleString(
     'en-us',
@@ -424,12 +414,11 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
                     })}
                   </AvatarGroup>
 
-                  {gateProps?.holders.length > 3 ? (
+                  {gateProps?.holder_count > 3 ? (
                     <Chip
-                      label={`+ ${totalNoOfHolders - 3}`}
+                      label={`+ ${gateProps?.holder_count - 3}`}
                       onClick={() => {
                         setIsHolderDialog(!isHolderDialog);
-                        console.log(totalNoOfHolders);
                       }}
                     />
                   ) : null}

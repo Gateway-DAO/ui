@@ -11,7 +11,17 @@ export default async function handler(req, res) {
     return;
   }
 
-  const { accTkn, accTknSecret, tweet_link } = JSON.parse(req.body);
+  const {
+    accTkn,
+    accTknSecret,
+    tweet_link,
+  }: {
+    accTkn: string;
+    accTknSecret: string;
+    tweet_link: string;
+  } = JSON.parse(req.body);
+
+  console.log(JSON.parse(req.body));
 
   const client = new Twitter({
     subdomain: 'api',
@@ -24,7 +34,7 @@ export default async function handler(req, res) {
 
   try {
     const response = await client.get('statuses/lookup', {
-      id: tweet_link?.toString().split('/').at(-1),
+      id: tweet_link.toString().split('/').at(-1),
     });
 
     if (response[0].retweeted) {

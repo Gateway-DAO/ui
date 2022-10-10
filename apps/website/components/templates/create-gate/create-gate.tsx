@@ -288,7 +288,6 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
                     </Typography>{' '}
                     your credential image
                   </Typography>
-                
                 </>
               }
               sx={{
@@ -362,7 +361,7 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
           key={snackbar.vertical + snackbar.horizontal}
         />
         <ConfirmDialog
-          title="Are you sure you want to publish this gate?"
+          title="Are you sure you want to publish this credential?"
           open={confirmPublish}
           positiveAnswer="Publish"
           negativeAnswer="Cancel"
@@ -375,8 +374,8 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
             return;
           })}
         >
-          If you publish this gate, you will no longer be allowed to edit it.
-          You can unpublish or delete the credential any time.
+          If you publish this credential, you will no longer be allowed to edit
+          it. You can unpublish or delete the credential any time.
         </ConfirmDialog>
         <GatePublishedModal
           open={isPublished}
