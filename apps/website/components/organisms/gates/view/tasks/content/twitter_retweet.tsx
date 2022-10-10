@@ -94,7 +94,7 @@ const TwitterRetweetContent = ({
             }}
           />
         </Stack>
-        {twitterKeys && (
+        {twitterKeys && !completed && (
           <Button
             href={`https://twitter.com/intent/retweet?tweet_id=${tweet_link
               .split('/')

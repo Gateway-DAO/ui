@@ -117,6 +117,7 @@ const TwitterFollowContent = ({
             borderRadius: '8px',
             position: 'relative',
             overflow: 'hidden',
+            width: '100%',
           }}
         >
           <Box
@@ -142,31 +143,49 @@ const TwitterFollowContent = ({
             variant="circular"
           />
           <Stack>
-            <Stack sx={{ p: 2 }}>
-              <Typography
+            <Stack sx={{ p: 2, position: 'relative' }}>
+              <Stack
                 sx={{
-                  display: 'flex',
-                  color: '#0F1419',
-                  fontWeight: 'bold',
-                  size: '1.3125rem',
-                  fontFamily: 'sans-serif',
-                  alignItems: 'center',
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  alignItems: 'baseline',
                 }}
               >
-                {twitterData?.name}
-                {twitterData.verified && (
-                  <MdVerified size={20} color={'#1DA1F2'} />
-                )}
-              </Typography>
-              <Typography
-                sx={{
-                  color: '#5B7083',
-                  size: '1rem',
-                  fontFamily: 'sans-serif',
-                }}
-              >
-                {`@${twitterData?.username}`}
-              </Typography>
+                <Box>
+                  <Typography
+                    sx={{
+                      display: 'flex',
+                      color: '#0F1419',
+                      fontWeight: 'bold',
+                      size: '1.3125rem',
+                      fontFamily: 'sans-serif',
+                      alignItems: 'center',
+                    }}
+                  >
+                    {twitterData?.name}
+                    {twitterData.verified && (
+                      <MdVerified size={20} color={'#1DA1F2'} />
+                    )}
+                  </Typography>
+                  <Typography
+                    sx={{
+                      color: '#5B7083',
+                      size: '1rem',
+                      fontFamily: 'sans-serif',
+                    }}
+                  >
+                    {`@${twitterData?.username}`}
+                  </Typography>
+                </Box>
+                <Box
+                  sx={{
+                    color: '#1B97F0',
+                    fontSize: '20px',
+                  }}
+                >
+                  <FaTwitter />
+                </Box>
+              </Stack>
               <Typography
                 sx={{
                   color: '#0F1419',
@@ -179,7 +198,7 @@ const TwitterFollowContent = ({
               >
                 {twitterData?.description}
               </Typography>
-              <Stack direction={'row'}>
+              <Stack direction={'row'} alignItems={'center'}>
                 <Typography
                   sx={{
                     color: '#0F1419',
@@ -208,14 +227,26 @@ const TwitterFollowContent = ({
                     Followers
                   </Typography>
                 </Typography>
-                <Box
-                  sx={{
-                    color: '#1B97F0',
-                    fontSize: '20px',
-                  }}
-                >
-                  <FaTwitter />
-                </Box>
+                {twitterKeys && !completed && (
+                  <Button
+                    href={`https://twitter.com/intent/follow?screen_name=${twitterData?.username}`}
+                    target="_blank"
+                    sx={{
+                      background: '#1DA1F2',
+                      color: (theme) => theme.palette.secondary.light,
+                      fontSize: '0.75rem',
+                      padding: '6px 16px',
+                      lineHeight: '24px',
+                      width: '100%',
+                      maxWidth: '200px',
+                      '&:hover': {
+                        background: '#1c95db',
+                      },
+                    }}
+                  >
+                    Follow
+                  </Button>
+                )}
               </Stack>
             </Stack>
             {!twitterKeys && (
@@ -282,7 +313,11 @@ const TwitterFollowContent = ({
         </LoadingButton>
       )}
       {completed && updatedAt && (
-        <Typography color="#c5ffe3" variant="subtitle2">
+        <Typography
+          color="#c5ffe3"
+          variant="subtitle2"
+          sx={{ marginTop: '8px' }}
+        >
           Task completed at {formattedDate}
         </Typography>
       )}
