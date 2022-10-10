@@ -24,7 +24,7 @@ export default async function handler(req, res) {
 
   try {
     const response = await client.get('statuses/user_timeline', {
-      exclude_replies: true,
+      exclude_replies: false,
       user_id: source_id,
       include_rts: false,
     });
