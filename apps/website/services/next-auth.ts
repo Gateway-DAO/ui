@@ -90,13 +90,12 @@ export const nextAuthConfig: NextAuthOptions = {
         const refreshedToken = await callRefresh(token);
         return refreshedToken;
       }
-
       return token;
     },
     async session({ session, token }) {
       return {
         ...session,
-        ...token,
+        ...(token ?? {}),
       };
     },
   },
