@@ -8,27 +8,23 @@ const callLogin = async (
   signature: string,
   wallet: string
 ): Promise<SessionToken> => {
-  try {
-    const res = await gqlAnonMethods.login({
-      signature,
-      wallet,
-    });
+  const res = await gqlAnonMethods.login({
+    signature,
+    wallet,
+  });
 
-    const { error } = (res as any) ?? {};
+  const { error } = (res as any) ?? {};
 
-    if (error || !res.login) {
-      throw error;
-    }
-
-    const { __typename, ...token } = res.login;
-
-    return {
-      ...token,
-      expiry: Date.parse(token.expiry),
-    };
-  } catch (e) {
-    return null;
+  if (error || !res.login) {
+    throw error;
   }
+
+  const { __typename, ...token } = res.login;
+
+  return {
+    ...token,
+    expiry: Date.parse(token.expiry),
+  };
 };
 const callRefresh = async (token: SessionToken): Promise<SessionToken> => {
   try {
@@ -50,7 +46,10 @@ const callRefresh = async (token: SessionToken): Promise<SessionToken> => {
       expiry: Date.parse(newToken.expiry),
     };
   } catch (e) {
-    return null;
+    return {
+      ...token,
+      error: e,
+    };
   }
 };
 

@@ -5,7 +5,7 @@ import { LoginMutation, MeQuery } from '../services/graphql/types.generated';
 export type SessionToken = Omit<
   LoginMutation['login'],
   '__typename' | 'expiry'
-> & { expiry: number };
+> & { expiry: number; error?: any };
 
 export type SessionUser = PartialDeep<
   Omit<MeQuery['me'], '__typename'> & {
