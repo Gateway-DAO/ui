@@ -74,7 +74,7 @@ export function TableView({ people }: Props) {
                     <AvatarFile
                       variant="circular"
                       file={user.picture}
-                      fallback={user.pfp}
+                      fallback={'/avatar.png'}
                     >
                       {user.name?.[0]}
                     </AvatarFile>
