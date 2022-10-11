@@ -19,6 +19,7 @@ import { gqlAnonMethods } from '../../../services/api';
 import { SearchQuery } from '../../../services/graphql/types.generated';
 import { a11yTabProps, TabPanel, useTab } from '../../atoms/tabs';
 import { Navbar } from '../../organisms/navbar';
+import { useAuth } from './../../../providers/auth';
 import { DaosTab } from './tabs/daos-tab';
 import { GatesTab } from './tabs/gates-tab';
 import { PeopleTab } from './tabs/people-tab';
@@ -30,11 +31,12 @@ type TemplateProps = {
 export function SearchTemplate({ query }: TemplateProps) {
   const { t } = useTranslation('search');
   const { activeTab, handleTabChange } = useTab();
+  const { gqlAuthMethods } = useAuth();
 
   const { data, isLoading } = useQuery<SearchQuery>(
     [`search-${query}`],
     async () =>
-      await gqlAnonMethods.search({
+      await gqlAuthMethods.search({
         query,
       })
   );
