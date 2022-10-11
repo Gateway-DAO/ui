@@ -96,6 +96,18 @@ const TwitterFollowContent = ({
 
   return (
     <Stack marginTop={5} alignItems="start">
+      <Typography
+        variant="subtitle1"
+        marginBottom={2}
+        sx={{
+          color: (theme) => theme.palette.grey[500],
+          fontWeight: '400',
+          size: '.875rem',
+          fontFamily: 'sans-serif',
+        }}
+      >
+        You must follow the profile
+      </Typography>
       {isLoadingTwitterData && (
         <Stack
           sx={{
@@ -144,48 +156,32 @@ const TwitterFollowContent = ({
           />
           <Stack>
             <Stack sx={{ p: 2, position: 'relative' }}>
-              <Stack
-                sx={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  alignItems: 'baseline',
-                }}
-              >
-                <Box>
-                  <Typography
-                    sx={{
-                      display: 'flex',
-                      color: '#0F1419',
-                      fontWeight: 'bold',
-                      size: '1.3125rem',
-                      fontFamily: 'sans-serif',
-                      alignItems: 'center',
-                    }}
-                  >
-                    {twitterData?.name}
-                    {twitterData.verified && (
-                      <MdVerified size={20} color={'#1DA1F2'} />
-                    )}
-                  </Typography>
-                  <Typography
-                    sx={{
-                      color: '#5B7083',
-                      size: '1rem',
-                      fontFamily: 'sans-serif',
-                    }}
-                  >
-                    {`@${twitterData?.username}`}
-                  </Typography>
-                </Box>
-                <Box
+              <Box>
+                <Typography
                   sx={{
-                    color: '#1B97F0',
-                    fontSize: '20px',
+                    display: 'flex',
+                    color: '#0F1419',
+                    fontWeight: 'bold',
+                    size: '1.3125rem',
+                    fontFamily: 'sans-serif',
+                    alignItems: 'center',
                   }}
                 >
-                  <FaTwitter />
-                </Box>
-              </Stack>
+                  {twitterData?.name}
+                  {twitterData.verified && (
+                    <MdVerified size={20} color={'#1DA1F2'} />
+                  )}
+                </Typography>
+                <Typography
+                  sx={{
+                    color: '#5B7083',
+                    size: '1rem',
+                    fontFamily: 'sans-serif',
+                  }}
+                >
+                  {`@${twitterData?.username}`}
+                </Typography>
+              </Box>
               <Typography
                 sx={{
                   color: '#0F1419',
@@ -227,6 +223,24 @@ const TwitterFollowContent = ({
                     Followers
                   </Typography>
                 </Typography>
+              </Stack>
+              <Stack
+                sx={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  paddingTop: '8px',
+                }}
+              >
+                <Box
+                  sx={{
+                    color: '#1B97F0',
+                    fontSize: '20px',
+                    marginTop: '10px',
+                  }}
+                >
+                  <FaTwitter />
+                </Box>
                 {twitterKeys && !completed && (
                   <Button
                     href={`https://twitter.com/intent/follow?screen_name=${twitterData?.username}`}
@@ -238,7 +252,7 @@ const TwitterFollowContent = ({
                       padding: '6px 16px',
                       lineHeight: '24px',
                       width: '100%',
-                      maxWidth: '200px',
+                      maxWidth: '90px',
                       '&:hover': {
                         background: '#1c95db',
                       },
