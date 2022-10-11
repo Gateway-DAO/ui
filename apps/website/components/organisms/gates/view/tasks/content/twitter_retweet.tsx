@@ -1,4 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
+import { FaTwitter } from 'react-icons/fa';
 import { TwitterTweetEmbed } from 'react-twitter-embed';
 import { useLocalStorage } from 'react-use';
 
@@ -81,93 +82,120 @@ const TwitterRetweetContent = ({
         >
           You must retweet the post
         </Typography>
-        <Stack sx={{ width: '100%', justifyContent: 'flex-start' }}>
-          <TwitterTweetEmbed
-            tweetId={tweet_link.split('/').at(-1)}
-            options={{
-              cards: 'hidden',
-              conversation: 'none',
-              display: 'flex',
-              flex: 1,
-              align: 'center',
-              width: '100%',
-            }}
-          />
-        </Stack>
-        {twitterKeys && !completed && (
-          <Button
-            href={`https://twitter.com/intent/retweet?tweet_id=${tweet_link
-              .split('/')
-              .at(-1)}`}
-            target="_blank"
-            sx={{
-              background: '#1DA1F2',
-              color: (theme) => theme.palette.secondary.light,
-              fontSize: '0.75rem',
-              padding: '6px 16px',
-              lineHeight: '24px',
-              width: '100%',
-              maxWidth: '550px',
-              '&:hover': {
-                background: '#1c95db',
-              },
-            }}
-          >
-            Retweet
-          </Button>
-        )}
-        {!twitterKeys && (
+        <Stack
+          sx={{
+            width: '100%',
+            justifyContent: 'flex-start',
+            background: (theme) => theme.palette.secondary.light,
+            borderRadius: '8px',
+            maxWidth: '550px',
+          }}
+        >
+          <Box sx={{ padding: '0 10px 10px' }}>
+            <TwitterTweetEmbed
+              tweetId={tweet_link.split('/').at(-1)}
+              options={{
+                cards: 'hidden',
+                conversation: 'none',
+                display: 'flex',
+                flex: 1,
+                align: 'center',
+                width: '100%',
+              }}
+            />
+          </Box>
           <Stack
             sx={{
-              position: 'relative',
-              background: '#1B97F0',
-              p: 2,
-              mt: 1,
-              borderRadius: '8px',
-              width: '100%',
-              maxWidth: '550px',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              padding: '0 12px 14px',
             }}
           >
-            <Stack
-              direction={'row'}
+            <Box
               sx={{
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                verticalAlign: 'middle',
+                color: '#1B97F0',
+                fontSize: '20px',
+                marginTop: '2px',
               }}
             >
-              <Box>
-                <Typography sx={{ fontWeight: '600', mb: 1 }}>
-                  Connect your account
-                </Typography>
-                <Typography sx={{ flexGrow: 1, opacity: 0.7 }}>
-                  To complete this task, you need to authorize Gateway access
-                  your Twitter account.
-                </Typography>
-              </Box>
+              <FaTwitter />
+            </Box>
+            {twitterKeys && !completed && (
               <Button
-                onClick={() => connectTwitter.mutate()}
+                href={`https://twitter.com/intent/retweet?tweet_id=${tweet_link
+                  .split('/')
+                  .at(-1)}`}
+                target="_blank"
                 sx={{
-                  background: (theme) => theme.palette.grey[300],
-                  color: 'black',
+                  background: '#1DA1F2',
+                  color: (theme) => theme.palette.secondary.light,
                   fontSize: '0.75rem',
                   padding: '6px 16px',
-                  whiteSpace: 'nowrap',
                   lineHeight: '24px',
-                  minWidth: '145px',
-                  marginLeft: '15px',
-                  boxShadow: '#444 1px 1px 2px',
-                  flexGrow: 0,
+                  width: '100%',
+                  maxWidth: '100px',
                   '&:hover': {
-                    background: (theme) => theme.palette.grey[400],
+                    background: '#1c95db',
                   },
                 }}
               >
-                Connect Twitter
+                Retweet
               </Button>
-            </Stack>
+            )}
           </Stack>
-        )}
+          {!twitterKeys && (
+            <Stack
+              sx={{
+                position: 'relative',
+                background: '#1B97F0',
+                p: 2,
+                borderRadius: '0 0 8px 8px',
+                width: '100%',
+                maxWidth: '550px',
+              }}
+            >
+              <Stack
+                direction={'row'}
+                sx={{
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  verticalAlign: 'middle',
+                }}
+              >
+                <Box>
+                  <Typography sx={{ fontWeight: '600', mb: 1 }}>
+                    Connect your account
+                  </Typography>
+                  <Typography sx={{ flexGrow: 1, opacity: 0.7 }}>
+                    To complete this task, you need to authorize Gateway access
+                    your Twitter account.
+                  </Typography>
+                </Box>
+                <Button
+                  onClick={() => connectTwitter.mutate()}
+                  sx={{
+                    background: (theme) => theme.palette.grey[300],
+                    color: 'black',
+                    fontSize: '0.75rem',
+                    padding: '6px 16px',
+                    whiteSpace: 'nowrap',
+                    lineHeight: '24px',
+                    minWidth: '145px',
+                    marginLeft: '15px',
+                    boxShadow: '#444 1px 1px 2px',
+                    flexGrow: 0,
+                    '&:hover': {
+                      background: (theme) => theme.palette.grey[400],
+                    },
+                  }}
+                >
+                  Connect Twitter
+                </Button>
+              </Stack>
+            </Stack>
+          )}
+        </Stack>
       </Stack>
 
       {!readOnly && !completed && twitterKeys && (
