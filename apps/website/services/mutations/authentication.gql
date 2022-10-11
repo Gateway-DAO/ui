@@ -23,6 +23,5 @@ mutation refresh(
     refresh_token
     token
     expiry
-    user_id
   }
 }

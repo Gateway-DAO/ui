@@ -2,7 +2,7 @@ import { NextAuthOptions, unstable_getServerSession } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 
 import { SessionToken } from '../types/user';
-import { gqlAnonMethods } from './api';
+import { gqlAnonMethods, gqlMethods } from './api';
 
 const callLogin = async (
   signature: string,
@@ -32,7 +32,7 @@ const callLogin = async (
 };
 const callRefresh = async (token: SessionToken): Promise<SessionToken> => {
   try {
-    const res = await gqlAnonMethods.refresh({
+    const res = await gqlMethods(token.token, token.user_id).refresh({
       refresh_token: token.refresh_token,
     });
 
@@ -46,6 +46,7 @@ const callRefresh = async (token: SessionToken): Promise<SessionToken> => {
 
     return {
       ...newToken,
+      user_id: token.user_id,
       expiry: Date.parse(newToken.expiry),
     };
   } catch (e) {
@@ -87,15 +88,15 @@ export const nextAuthConfig: NextAuthOptions = {
       }
 
       if (token.expiry < Date.now()) {
-        return callRefresh(token);
+        const refreshedToken = await callRefresh(token);
+        return refreshedToken;
       }
-
       return token;
     },
     async session({ session, token }) {
       return {
         ...session,
-        ...token,
+        ...(token ?? {}),
       };
     },
   },
