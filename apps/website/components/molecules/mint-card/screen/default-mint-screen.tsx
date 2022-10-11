@@ -60,7 +60,7 @@ export const DefaultMintScreen = ({
   return (
     <>
       <Link
-        href={ROUTES.EARNED.replace('[id]', details.credential.id)}
+        href={ROUTES.GATE_PROFILE.replace('[id]', details.credential.gate_id)}
         passHref
       >
         <CardActionArea>
