@@ -1,14 +1,15 @@
+import useTranslation from 'next-translate/useTranslation';
 import { useEffect, useState } from 'react';
 
+import { useQuery } from '@tanstack/react-query';
+import { useLocalStorage } from 'react-use';
+
 import { Stack, Typography } from '@mui/material';
-import useTranslation from 'next-translate/useTranslation';
 
 import { LoadingButton } from '../../../../../../components/atoms/loading-button';
 import GithubConnectionCard from '../../../../../../components/organisms/tasks/github-connection-card';
 import GithubDataCard from '../../../../../../components/organisms/tasks/github-data-card';
-import { GithubContributeData } from 'apps/website/components/templates/create-gate/schema';
-import { useQuery } from '@tanstack/react-query';
-import { useLocalStorage } from 'react-use';
+import { GithubContributeData } from '../../../../../../components/templates/create-gate/schema';
 
 type completeTaskData = {
   githubAccessToken: string;
