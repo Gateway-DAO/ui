@@ -1,25 +1,34 @@
-import { Button } from '@mui/material';
+import { useSession } from 'next-auth/react';
 
 import { useAuth } from '../../../providers/auth';
+import { LoadingButton } from '../../atoms/loading-button';
 import { NavBarAvatar } from './navbar-avatar';
 import { NavBarNotifications } from './navbar-notifications/navbar-notifications';
 
 export function ClientNav() {
   const { onOpenLogin, me } = useAuth();
+
+  const session = useSession();
+
+  if (typeof window !== 'undefined' && me) {
+    return (
+      <>
+        <NavBarNotifications />
+        <NavBarAvatar />
+      </>
+    );
+  }
+
   return (
     <>
-      {typeof window !== 'undefined' && me ? (
-        <>
-          <NavBarNotifications />
-          <NavBarAvatar />
-        </>
-      ) : (
-        <>
-          <Button variant="outlined" color="secondary" onClick={onOpenLogin}>
-            Connect Wallet
-          </Button>
-        </>
-      )}
+      <LoadingButton
+        isLoading={session.status === 'loading'}
+        variant="outlined"
+        color="secondary"
+        onClick={onOpenLogin}
+      >
+        Connect Wallet
+      </LoadingButton>
     </>
   );
 }
