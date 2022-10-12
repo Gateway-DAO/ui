@@ -15,7 +15,6 @@ import {
   Chip,
 } from '@mui/material';
 
-import { gqlAnonMethods } from '../../../services/api';
 import { SearchQuery } from '../../../services/graphql/types.generated';
 import { a11yTabProps, TabPanel, useTab } from '../../atoms/tabs';
 import { Navbar } from '../../organisms/navbar';

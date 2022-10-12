@@ -9,9 +9,6 @@ query search($query: String!) {
     links
     image
   }
-  credentials: search_credentials(query: $query) {
-    hits
-  }
   daos: search_daos(args: {search: $query}) {
     id
     name
@@ -44,37 +41,5 @@ query search($query: String!) {
   users: search_users(args: {search: $query}) {
     ...public_user
     pfp
-  }
-}
-
-query search_daos($ids: [uuid!]) {
-  daos(where: {id: {_in: $ids}}) {
-    id
-    name
-    slug
-    logo {
-      ...file
-    }
-    logo_url
-    background {
-      ...file
-    }
-    followers_aggregate {
-      aggregate {
-        count
-      }
-    }
-    gates_aggregate {
-      aggregate {
-        count
-      }
-    }
-    background_url
-    description
-    categories
-    permissions {
-      user_id
-      permission
-    }
   }
 }
