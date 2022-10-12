@@ -386,15 +386,8 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
                     Holders
                   </Typography>
                 </Grid>
-                <Grid item xs={8}>
-                  <AvatarGroup
-                    total={gateProps?.holder_count}
-                    spacing={'medium'}
-                    max={4}
-                    sx={{
-                      justifyContent: 'flex-end',
-                    }}
-                  >
+                <Grid item xs={8} display="flex" alignItems="center">
+                  <AvatarGroup>
                     {gateProps?.holders.map((holder, index) => {
                       if (index == 3) return null;
                       return (
