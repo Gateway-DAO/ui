@@ -6,6 +6,7 @@ import AddTaskCard from '../../molecules/add-task/add-task-card';
 import FileLinkTask from '../../molecules/add-task/file-link-task/file-link-task';
 import GithubContributeTask from '../../molecules/add-task/github/contribute-task';
 import GithubPRTask from '../../molecules/add-task/github/pr-task';
+import HoldNFTTask from '../../molecules/add-task/hold-nft-task/hold-nft-task';
 import HoldTokenTask from '../../molecules/add-task/hold-token-task/hold-token-task';
 import {
   QuizTask,
@@ -27,6 +28,7 @@ const TaskComponents = {
   self_verify: FileLinkTask,
   snapshot: SnapshotTask,
   token_hold: HoldTokenTask,
+  nft_hold: HoldNFTTask,
   quiz: QuizTask,
   twitter_follow: FollowProfile,
   twitter_tweet: TwitterTweetTask,
