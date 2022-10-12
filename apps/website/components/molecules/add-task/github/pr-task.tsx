@@ -1,7 +1,8 @@
+import useTranslation from 'next-translate/useTranslation';
 import { useEffect, useState } from 'react';
 
+import { useMutation } from '@tanstack/react-query';
 import { useFormContext } from 'react-hook-form';
-import useTranslation from 'next-translate/useTranslation';
 
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -23,7 +24,6 @@ import {
   CreateGateTypes,
   GithubContributeDataError,
 } from '../../../templates/create-gate/schema';
-import { useMutation } from '@tanstack/react-query';
 
 type GithubPRTaskProps = {
   taskId: number;
