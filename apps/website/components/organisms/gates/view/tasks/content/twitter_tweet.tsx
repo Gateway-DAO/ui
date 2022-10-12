@@ -84,6 +84,39 @@ const TwitterTweetContent = ({
           width: '100%',
         }}
       >
+        <Stack
+          direction={'row'}
+          alignItems={'center'}
+          sx={{ m: '14px 0 0 10px' }}
+        >
+          <Box
+            sx={{
+              backgroundColor: (theme) => theme.palette.grey[300],
+              borderRadius: '50%',
+              width: '40px',
+              height: '40px',
+            }}
+          ></Box>
+          <Stack direction={'column'} sx={{ ml: 1 }}>
+            <Box
+              sx={{
+                backgroundColor: (theme) => theme.palette.grey[300],
+                borderRadius: '8px',
+                width: '100px',
+                height: '15px',
+                mb: '4px',
+              }}
+            ></Box>
+            <Box
+              sx={{
+                backgroundColor: (theme) => theme.palette.grey[300],
+                borderRadius: '4px',
+                width: '60px',
+                height: '10px',
+              }}
+            ></Box>
+          </Stack>
+        </Stack>
         <Box
           sx={{
             padding: '0 12px',
@@ -91,7 +124,7 @@ const TwitterTweetContent = ({
         >
           <Typography
             variant="subtitle1"
-            marginTop={2}
+            marginTop={1}
             sx={{
               color: '#212121',
               fontWeight: '400',

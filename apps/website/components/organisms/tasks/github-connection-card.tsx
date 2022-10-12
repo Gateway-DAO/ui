@@ -1,7 +1,9 @@
-import { Button, Stack, Typography } from '@mui/material';
 import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
+
 import { useLocalStorage } from 'react-use';
+
+import { Button, Stack, Typography } from '@mui/material';
 
 export default function GithubConnectionCard() {
   const { t } = useTranslation('gate-profile');

@@ -33,8 +33,10 @@ export default async function handler(req, res) {
   });
 
   try {
+    const id = tweet_link.split('/');
+
     const response = await client.get('statuses/lookup', {
-      id: tweet_link.toString().split('/').at(-1),
+      id: id[id.length - 1],
     });
 
     if (response[0].retweeted) {
