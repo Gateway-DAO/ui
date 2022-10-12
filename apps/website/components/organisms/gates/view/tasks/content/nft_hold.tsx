@@ -51,7 +51,7 @@ const NFTHoldContent = ({
         </LoadingButton>
       )}
       {completed && updatedAt && (
-        <Typography color="#c5ffe3" variant="subtitle2">
+        <Typography color="#c5ffe3" variant="subtitle2" marginTop={3}>
           Task completed at {formattedDate}
         </Typography>
       )}
