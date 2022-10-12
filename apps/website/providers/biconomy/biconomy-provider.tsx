@@ -39,7 +39,7 @@ export function BiconomyProvider({
 }: PropsWithChildren<Props>) {
   const RPC = {
     polygon: process.env.NEXT_PUBLIC_WEB3_POLYGON_RPC,
-    rinkeby: process.env.NEXT_PUBLIC_WEB3_RINKEBY_RPC,
+    goerli: process.env.NEXT_PUBLIC_WEB3_GOERLI_RPC,
   };
 
   // State
@@ -225,7 +225,7 @@ export function BiconomyProvider({
           transactionUrl:
             (process.env.NEXT_PUBLIC_MINT_CHAIN === 'polygon'
               ? 'https://polygonscan.com'
-              : 'https://rinkeby.etherscan.io') +
+              : 'https://goerli.etherscan.io') +
             '/tx/' +
             tx,
         };
