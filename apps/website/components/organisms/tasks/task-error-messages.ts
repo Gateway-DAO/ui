@@ -9,6 +9,7 @@ export const taskErrorMessages = {
   NO_VERIFICATION_CODE: 'No verification code found.',
   INVALID_VERIFICATION_CODE: 'Invalid verification code.',
   NO_HOLD: `You don't hold the token, contact the DAO's admin.`,
+  NO_HOLD_NFT: `You don't hold the NFT, contact the DAO's admin.`,
   NO_CONTRACT_INTERACTION: `There was an error with the contract interaction, contact the DAO's admin.`,
   NO_PROPOSAL_VOTE: `You didn't vote for this proposal.`,
   NO_PROPOSAL_CREATION: `You didn't create any proposal on the Snapshot space.`,
