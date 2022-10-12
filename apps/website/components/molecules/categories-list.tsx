@@ -50,68 +50,72 @@ export function CategoriesList({
   }, [intersection]);
 
   return (
-    <Stack
-      aria-hidden={false}
-      direction="row"
-      sx={{ position: 'relative' }}
-      justifyContent={'space-between'}
-      ref={parentRef}
-    >
+    <>
+      <Stack
+        aria-hidden={false}
+        direction="row"
+        sx={{ position: 'relative' }}
+        justifyContent={'space-between'}
+        ref={parentRef}
+      >
+        <Stack direction="row" spacing={1} px={2} pt={1} pb={2} {...props}>
+          {categories.map((category, index) => {
+            const formattedLabel =
+              category.charAt(0).toUpperCase() + category.slice(1);
+            return (
+              <Chip
+                aria-hidden={false}
+                ref={(element) => (refs.current[index] = element)}
+                key={category}
+                label={formattedLabel}
+                size="small"
+              />
+            );
+          })}
+        </Stack>
+
+        {itemsPopover.length > 0 && (
+          <Stack mr={2} mt={1}>
+            <Chip
+              size="small"
+              aria-owns={open ? 'mouse-over-popover' : undefined}
+              onMouseEnter={(event) => setAnchorEl(event.currentTarget)}
+              onMouseLeave={() => setAnchorEl(null)}
+              label={`+ ${itemsPopover.length}`}
+            />
+          </Stack>
+        )}
+
+        <Popover
+          id="mouse-over-popover"
+          sx={{
+            pointerEvents: 'none',
+          }}
+          open={open}
+          anchorEl={anchorEl}
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'left',
+          }}
+          transformOrigin={{
+            vertical: 'top',
+            horizontal: 'left',
+          }}
+          onClose={() => setAnchorEl(null)}
+          disableRestoreFocus
+        >
+          <List>
+            {itemsPopover.map((listItem) => (
+              <ListItem key={listItem} sx={{ px: 2, py: 1, width: '200px' }}>
+                {listItem}
+              </ListItem>
+            ))}
+          </List>
+        </Popover>
+      </Stack>
       <Stack direction="row" spacing={1} px={2} pt={1} pb={2} {...props}>
         {isGate && showStatus && <GateStateChip published={published} small />}
-        {categories.map((category, index) => {
-          const formattedLabel =
-            category.charAt(0).toUpperCase() + category.slice(1);
-          return (
-            <Chip
-              aria-hidden={false}
-              ref={(element) => (refs.current[index] = element)}
-              key={category}
-              label={formattedLabel}
-              size="small"
-            />
-          );
-        })}
       </Stack>
-
-      {itemsPopover.length > 0 && (
-        <Stack mr={2} mt={1}>
-          <Chip
-            size="small"
-            aria-owns={open ? 'mouse-over-popover' : undefined}
-            onMouseEnter={(event) => setAnchorEl(event.currentTarget)}
-            onMouseLeave={() => setAnchorEl(null)}
-            label={`+ ${itemsPopover.length}`}
-          />
-        </Stack>
-      )}
-
-      <Popover
-        id="mouse-over-popover"
-        sx={{
-          pointerEvents: 'none',
-        }}
-        open={open}
-        anchorEl={anchorEl}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'left',
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'left',
-        }}
-        onClose={() => setAnchorEl(null)}
-        disableRestoreFocus
-      >
-        <List>
-          {itemsPopover.map((listItem) => (
-            <ListItem key={listItem} sx={{ px: 2, py: 1, width: '200px' }}>
-              {listItem}
-            </ListItem>
-          ))}
-        </List>
-      </Popover>
-    </Stack>
+    </>
   );
 }

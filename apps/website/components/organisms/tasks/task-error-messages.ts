@@ -25,4 +25,7 @@ export const taskErrorMessages = {
   FILE_NOT_FOUND: `There was an error retrieving your image, please, contact Gateway or try again.`,
   UNABLE_TO_RETRIEVE_FILE: `There was an error retrieving your image, please, contact Gateway or try again.`,
   UNEXPECTED_ERROR: `There was an unexpected error, please, contact Gateway or try again.`,
+  NO_POSTED_TWEET: `You have not posted the tweet`,
+  NO_POSTED_RETWEET: `You have not posted the tweet`,
+  NO_FOLLOW: `The user does not follow the twitter account`,
 };

@@ -21,6 +21,7 @@ query gate($id: uuid!) {
     published
     links
     image
+    type
     creator {
       id
       name
@@ -31,11 +32,12 @@ query gate($id: uuid!) {
       }
     }
     holder_count
-    holders(limit: 100) {
+    holders(limit: 4) {
       id
       name
       username
       pfp
+      wallet
       picture {
         ...file
       }

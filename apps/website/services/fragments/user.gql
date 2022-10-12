@@ -9,6 +9,7 @@ fragment experience on experiences {
   }
   credentials {
     id
+    gate_id
     target_id
     uri
     transaction_url
@@ -72,6 +73,7 @@ fragment current_user on users {
     ...experience
     hidden_credentials {
       credential {
+        gate_id
         id
         name
         image

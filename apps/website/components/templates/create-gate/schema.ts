@@ -65,6 +65,21 @@ export type HoldTokenTask = {
   task_data: HoldTokenData;
 };
 
+export type FollowProfileTask = {
+  task_type: 'twitter_follow';
+  task_data: TwitterFollowData;
+};
+
+export type TwitterTweetTask = {
+  task_type: 'twitter_tweet';
+  task_data: TwitterTweetData;
+};
+
+export type TwitterRetweetTask = {
+  task_type: 'twitter_retweet';
+  task_data: TwitterRetweetData;
+};
+
 export type GithubContributeTask = {
   task_type: 'github_contribute';
   task_data: GithubContributeData;
@@ -87,6 +102,9 @@ export type Task = {
   | QuizTask
   | SnapshotTask
   | HoldTokenTask
+  | FollowProfileTask
+  | TwitterTweetTask
+  | TwitterRetweetTask
   | GithubContributeTask
   | GithubPRTask
 );
@@ -99,6 +117,36 @@ export type VerificationCodeData = {
 export type VerificationCodeDataError = {
   id?: FieldError;
   code?: FieldError;
+};
+
+// Twitter follow
+export type TwitterFollowData = {
+  username?: string;
+};
+
+export type TwitterFollowDataError = {
+  id?: FieldError;
+  username?: FieldError;
+};
+
+// Twitter Tweet
+export type TwitterTweetData = {
+  tweet_text?: string;
+};
+
+export type TwitterTweetDataError = {
+  id?: FieldError;
+  tweet_text?: FieldError;
+};
+
+// Twitter Retweet
+export type TwitterRetweetData = {
+  tweet_link?: string;
+};
+
+export type TwitterRetweetDataError = {
+  id?: FieldError;
+  tweet_link?: FieldError;
 };
 
 // Github Contribute
@@ -212,6 +260,28 @@ export type verificationCodeType = {
   code: string;
 };
 
+const twitterFollowDataSchema = z.object({
+  username: z
+    .string()
+    .min(2, 'The username must contain at least 2 character(s)'),
+});
+
+const twitterTweetTaskDataSchema = z.object({
+  tweet_text: z
+    .string()
+    .min(3, 'The tweet text must contain at least 3 character(s)')
+    .max(280, 'The tweet text must contain until 280 character(s)'),
+});
+
+const twitterRetweetTaskDataSchema = z.object({
+  tweet_link: z
+    .string()
+    .url('Invalid URL')
+    .refine((val) => val.includes('twitter.com'), {
+      message: 'This is not a Twitter URL',
+    }),
+});
+
 const fileTaskDataSchema = z.object({
   files: z
     .object({
@@ -305,6 +375,15 @@ export const taskMeetingCodeSchema = z.object({
   task_data: verificationCodeDataSchema,
 });
 
+export const TwitterFollowProfileSchema = z.object({
+  title: z.string().min(2, 'The title must contain at least 2 character(s)'),
+  description: z
+    .string()
+    .min(2, 'The description must contain at least 2 character(s)'),
+  task_type: z.literal('twitter_follow'),
+  task_data: twitterFollowDataSchema,
+});
+
 export const quizDataSchema = z.object({
   pass_score: z.number().min(1).max(100),
   questions: z.array(
@@ -376,6 +455,28 @@ export const taskSnapshotSchema = z.object({
   task_data: snapshotTaskDataSchema,
 });
 
+export const taskTwitterTweetSchema = z.object({
+  id: z.string().optional(),
+  task_id: z.string().optional(),
+  title: z.string().min(2, 'The title must contain at least 2 character(s)'),
+  description: z
+    .string()
+    .min(2, 'The description must contain at least 2 character(s)'),
+  task_type: z.literal('twitter_tweet'),
+  task_data: twitterTweetTaskDataSchema,
+});
+
+export const taskTwitterRetweetSchema = z.object({
+  id: z.string().optional(),
+  task_id: z.string().optional(),
+  title: z.string().min(2, 'The title must contain at least 2 character(s)'),
+  description: z
+    .string()
+    .min(2, 'The description must contain at least 2 character(s)'),
+  task_type: z.literal('twitter_retweet'),
+  task_data: twitterRetweetTaskDataSchema,
+});
+
 export const taskGithubContributeSchema = z.object({
   id: z.string().optional(),
   task_id: z.string().optional(),
@@ -421,6 +522,9 @@ export const createGateSchema = z.object({
           taskQuizSchema,
           taskSnapshotSchema,
           taskHoldTokenSchema,
+          TwitterFollowProfileSchema,
+          taskTwitterTweetSchema,
+          taskTwitterRetweetSchema,
           taskGithubContributeSchema,
           taskGithubPRSchema,
         ])

@@ -279,9 +279,19 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
           <FormProvider {...methods}>
             <GateImageCard
               draftImage={oldData.image}
-              label="Drop to upload your credential image"
+              label={
+                <>
+                  <Typography textAlign={'center'} paddingX={4}>
+                    Drop or{' '}
+                    <Typography color={'primary'} display={'inline'}>
+                      upload
+                    </Typography>{' '}
+                    your credential image
+                  </Typography>
+                </>
+              }
               sx={{
-                width: 400,
+                width: 300,
               }}
             />
           </FormProvider>
@@ -351,7 +361,7 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
           key={snackbar.vertical + snackbar.horizontal}
         />
         <ConfirmDialog
-          title="Are you sure you want to publish this gate?"
+          title="Are you sure you want to publish this credential?"
           open={confirmPublish}
           positiveAnswer="Publish"
           negativeAnswer="Cancel"
@@ -364,8 +374,8 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
             return;
           })}
         >
-          If you publish this gate, you will no longer be allowed to edit it.
-          You can unpublish or delete the credential any time.
+          If you publish this credential, you will no longer be allowed to edit
+          it. You can unpublish or delete the credential any time.
         </ConfirmDialog>
         <GatePublishedModal
           open={isPublished}

@@ -9,9 +9,10 @@ type MorePopoverProps = {
     action: () => void;
     hidden: boolean;
   }[];
+  withBackground?: boolean;
 };
 
-const MorePopover = ({ options }: MorePopoverProps) => {
+const MorePopover = ({ options, withBackground }: MorePopoverProps) => {
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null
   );
@@ -29,21 +30,37 @@ const MorePopover = ({ options }: MorePopoverProps) => {
 
   return (
     <>
-      <IconButton
-        sx={{
-          p: 0,
-        }}
-        onClick={handleClick}
-        key="gate-options"
-      >
-        <Avatar>
+      {withBackground ? (
+        <IconButton
+          sx={{
+            p: 0,
+          }}
+          onClick={handleClick}
+          key="gate-options"
+        >
+          <Avatar>
+            <MoreVertIcon
+              sx={{
+                mt: -0.25,
+              }}
+            />
+          </Avatar>
+        </IconButton>
+      ) : (
+        <IconButton
+          sx={{
+            p: 0,
+          }}
+          onClick={handleClick}
+          key="gate-options"
+        >
           <MoreVertIcon
             sx={{
               mt: -0.25,
             }}
           />
-        </Avatar>
-      </IconButton>
+        </IconButton>
+      )}
       <Popover
         id={id}
         open={open}
@@ -71,7 +88,10 @@ const MorePopover = ({ options }: MorePopoverProps) => {
                     minWidth: '200px',
                     '&:hover': { backgroundColor: 'rgba(0, 0, 0, 0.08)' },
                   }}
-                  onClick={option.action}
+                  onClick={() => {
+                    option.action();
+                    handleClose();
+                  }}
                 >
                   {option.text}
                 </Typography>

@@ -80,6 +80,9 @@ query dao_gates_tab($id: uuid!) {
       categories
       image
       published
+      dao {
+        id
+      }
     }
   }
 }

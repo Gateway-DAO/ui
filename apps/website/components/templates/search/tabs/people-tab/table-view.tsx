@@ -13,6 +13,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 
+import { AvatarFile } from '../../../../../components/atoms/avatar-file';
 import { ROUTES } from '../../../../../constants/routes';
 import { Users } from '../../../../../services/graphql/types.generated';
 
@@ -70,9 +71,13 @@ export function TableView({ people }: Props) {
                   }}
                 >
                   <Stack alignItems="center" direction="row" gap={1}>
-                    <Avatar variant="circular" src={user.pfp}>
+                    <AvatarFile
+                      variant="circular"
+                      file={user.picture}
+                      fallback={'/avatar.png'}
+                    >
                       {user.name?.[0]}
-                    </Avatar>
+                    </AvatarFile>
                     <Box>
                       <Typography>{user.name}</Typography>
                       <Typography

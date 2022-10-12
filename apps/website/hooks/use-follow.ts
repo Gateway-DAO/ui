@@ -73,8 +73,8 @@ export const useFollowUser = (cb?: UseFollowProps) => {
 
 export const useFollowDAO = (cb?: UseFollowProps) => {
   const { me, gqlAuthMethods, onUpdateMe } = useAuth();
-  const { address } = useAccount();
   const queryClient = useQueryClient();
+  const { address } = useAccount();
 
   const follow = useMutation(
     (id: string) => gqlAuthMethods.follow_dao({ id }),

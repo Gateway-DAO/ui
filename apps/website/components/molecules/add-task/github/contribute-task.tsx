@@ -1,5 +1,7 @@
-import { useCallback, useEffect, useState } from 'react';
+import useTranslation from 'next-translate/useTranslation';
+import { useEffect, useState } from 'react';
 
+import { useMutation } from '@tanstack/react-query';
 import { useFormContext } from 'react-hook-form';
 
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
@@ -20,7 +22,17 @@ import {
   GithubContributeDataError,
 } from '../../../templates/create-gate/schema';
 
-const GithubContributeTask = ({ taskId, deleteTask }) => {
+type GithubContributeTaskProps = {
+  taskId: number;
+  deleteTask: (taskId: number) => void;
+};
+
+export default function GithubContributeTask({
+  taskId,
+  deleteTask,
+}: GithubContributeTaskProps) {
+  const { t } = useTranslation('gate-new');
+
   const {
     register,
     setValue,
@@ -30,69 +42,53 @@ const GithubContributeTask = ({ taskId, deleteTask }) => {
     formState: { errors },
   } = useFormContext<CreateGateTypes>();
 
-  const formValues = getValues();
+  const [title, repository_url] = getValues([
+    `tasks.data.${taskId}.title`,
+    `tasks.data.${taskId}.task_data.repository_link`,
+  ]);
 
-  const [githubData, setGithubData] = useState(null);
-
-  const fetchRepositoryData = useCallback(
-    async (repository_url) => {
-      const isValid = await trigger(
-        `tasks.data.${taskId}.task_data.repository_link`
-      );
-
-      if (!isValid) {
-        setGithubData(null);
-        return;
-      }
-
-      const repository_owner = repository_url
-        .replace('https://github.com/', '')
-        .split('/')[0];
-      const repository_name = repository_url
-        .replace('https://github.com/', '')
-        .split('/')[1];
-
-      const fetch_url = `https://api.github.com/repos/${repository_owner}/${repository_name}`;
-      const data = await fetch(fetch_url);
-
-      if (data.status !== 200) {
-        setError(`tasks.data.${taskId}.task_data.repository_link`, {
-          type: 'custom',
-          message: 'Repository private or not found.',
-        });
-        setGithubData(null);
-        return;
-      }
-
-      setGithubData(await data.json());
-      return;
-    },
-    [setError, taskId, trigger]
-  );
-
-  useEffect(() => {
-    if (formValues.tasks.data[taskId]?.title === '') {
-      setValue(`tasks.data.${taskId}.title`, 'Untitled Task');
-    }
-
-    const repository_url = getValues(
+  const fetchRepositoryData = async (repository_url) => {
+    if (!repository_url) return;
+    const isValid = await trigger(
       `tasks.data.${taskId}.task_data.repository_link`
     );
 
-    if (repository_url) {
-      const isValid = trigger(`tasks.data.${taskId}.task_data.repository_link`);
-      if (isValid) {
-        fetchRepositoryData(repository_url);
-      }
+    if (!isValid) {
+      return null;
     }
-  }, [
-    setValue,
-    taskId,
-    formValues.tasks.data,
-    fetchRepositoryData,
-    getValues,
-    trigger,
-  ]);
+
+    const repository_owner = repository_url
+      .replace('https://github.com/', '')
+      .split('/')[0];
+    const repository_name = repository_url
+      .replace('https://github.com/', '')
+      .split('/')[1];
+
+    const fetch_url = `https://api.github.com/repos/${repository_owner}/${repository_name}`;
+    const data = await fetch(fetch_url);
+
+    if (data.status !== 200) {
+      setError(`tasks.data.${taskId}.task_data.repository_link`, {
+        type: 'custom',
+        message: 'Repository private or not found.',
+      });
+
+      return null;
+    }
+
+    return data.json();
+  };
+
+  const { data: githubData, mutate: mutateGithubData } = useMutation(
+    ['github-data', repository_url],
+    (repository_url) => fetchRepositoryData(repository_url)
+  );
+
+  useEffect(() => {
+    if (title === '') {
+      setValue(`tasks.data.${taskId}.title`, 'Untitled Task');
+    }
+  }, [setValue, taskId]);
 
   const [taskVisible, setTaskVisible] = useState(false);
 
@@ -132,7 +128,7 @@ const GithubContributeTask = ({ taskId, deleteTask }) => {
           />
           <Stack>
             <Typography variant="subtitle2">
-              Contribute to Repository
+              {t('tasks.github_contribute.title')}
             </Typography>
             <TextField
               variant="standard"
@@ -221,13 +217,13 @@ const GithubContributeTask = ({ taskId, deleteTask }) => {
           }}
         />
         <Typography variant="body1" sx={{ paddingBottom: 4 }}>
-          The user must contribute to the repository
+          {t('tasks.github_contribute.description')}
         </Typography>
         <TextField
           required
           label="Repository link"
           {...register(`tasks.data.${taskId}.task_data.repository_link`, {
-            onBlur: (e) => fetchRepositoryData(e.target.value),
+            onBlur: (e) => mutateGithubData(e.target.value),
           })}
           error={
             !!(
@@ -248,10 +244,8 @@ const GithubContributeTask = ({ taskId, deleteTask }) => {
             },
           }}
         />
-        {githubData?.name && <GithubDataCard data={githubData} />}
+        {githubData && <GithubDataCard data={githubData} />}
       </FormControl>
     </Stack>
   );
-};
-
-export default GithubContributeTask;
+}

@@ -78,8 +78,12 @@ export function PeopleTab() {
           },
         }}
       >
-        <Table stickyHeader aria-label="sticky table">
-          <TableHead>
+        <Table
+          style={{ display: 'block' }}
+          stickyHeader
+          aria-label="sticky table"
+        >
+          <TableHead style={{ display: 'table', width: '100%' }}>
             <TableRow>
               <TableCell>User</TableCell>
               <TableCell></TableCell>
@@ -90,6 +94,7 @@ export function PeopleTab() {
               height: `${rowVirtualizer.getTotalSize()}px`,
               width: '100%',
               position: 'relative',
+              display: 'table',
             }}
           >
             {items.map((row) => {
