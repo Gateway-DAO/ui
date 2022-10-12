@@ -24,6 +24,7 @@ import { getMapValueFromObject } from '../../../utils/map-object';
 import GithubContributeContent from '../gates/view/tasks/content/github_contribute';
 import GithubPRContent from '../gates/view/tasks/content/github_prs';
 import MeetingCodeContent from '../gates/view/tasks/content/meeting_code';
+import NFTHoldContent from '../gates/view/tasks/content/nft_hold';
 import QuizContent from '../gates/view/tasks/content/quiz';
 import SelfVerifyContent from '../gates/view/tasks/content/self-verify';
 import SnapshotContent from '../gates/view/tasks/content/snapshot';
@@ -124,6 +125,10 @@ export function Task({
       github_prs: {
         title: 'Verify Pull Requests',
         body: GithubPRContent,
+      },
+      nft_hold: {
+        title: 'Hold NFT',
+        body: NFTHoldContent,
       },
     };
 
