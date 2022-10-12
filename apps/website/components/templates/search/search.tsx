@@ -83,7 +83,7 @@ export function SearchTemplate({ query }: TemplateProps) {
           px={TOKENS.CONTAINER_PX}
           color="text.secondary"
         >
-          {count} {t('results')}
+          {isLoading ? t('loading') : `${count} ${t('results')}`}
         </Typography>
       </Box>
       <Box sx={{ mt: 5 }}>
