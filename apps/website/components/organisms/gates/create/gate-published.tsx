@@ -145,7 +145,12 @@ export default function GatePublishedModal({
           </Box>
           <Stack direction="row" justifyContent="center">
             <Link href={ROUTES.GATE_PROFILE.replace('[id]', gate.id)} passHref>
-              <Button variant="outlined" component="a" size="medium">
+              <Button
+                variant="outlined"
+                component="a"
+                size="medium"
+                sx={{ mt: {xs : 6 , md : 2} }}
+              >
                 Check Credential
               </Button>
             </Link>
