@@ -46,20 +46,20 @@ function CustomApp({ Component, pageProps }: AppProps) {
         <WalletProvider session={pageProps.session}>
           <QueryClientProvider client={queryClient}>
             <Hydrate state={pageProps.dehydratedState}>
-              <AuthProvider isAuthPage={Component.auth}>
-                <BiconomyProvider
-                  apiKey={process.env.NEXT_PUBLIC_WEB3_BICONOMY_API_KEY}
-                  contractAddress={process.env.NEXT_PUBLIC_WEB3_NFT_ADDRESS}
-                >
-                  <CyberConnectProvider>
-                    <NavStateProvider>
-                      <Notistack>
+              <Notistack>
+                <AuthProvider isAuthPage={Component.auth}>
+                  <BiconomyProvider
+                    apiKey={process.env.NEXT_PUBLIC_WEB3_BICONOMY_API_KEY}
+                    contractAddress={process.env.NEXT_PUBLIC_WEB3_NFT_ADDRESS}
+                  >
+                    <CyberConnectProvider>
+                      <NavStateProvider>
                         <Component {...pageProps} />
-                      </Notistack>
-                    </NavStateProvider>
-                  </CyberConnectProvider>
-                </BiconomyProvider>
-              </AuthProvider>
+                      </NavStateProvider>
+                    </CyberConnectProvider>
+                  </BiconomyProvider>
+                </AuthProvider>
+              </Notistack>
             </Hydrate>
             <ReactQueryDevtools initialIsOpen={false} />
           </QueryClientProvider>
