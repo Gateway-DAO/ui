@@ -15,10 +15,10 @@ import {
   Chip,
 } from '@mui/material';
 
-import { gqlAnonMethods } from '../../../services/api';
 import { SearchQuery } from '../../../services/graphql/types.generated';
 import { a11yTabProps, TabPanel, useTab } from '../../atoms/tabs';
 import { Navbar } from '../../organisms/navbar';
+import { useAuth } from './../../../providers/auth';
 import { DaosTab } from './tabs/daos-tab';
 import { GatesTab } from './tabs/gates-tab';
 import { PeopleTab } from './tabs/people-tab';
@@ -30,28 +30,20 @@ type TemplateProps = {
 export function SearchTemplate({ query }: TemplateProps) {
   const { t } = useTranslation('search');
   const { activeTab, handleTabChange } = useTab();
+  const { gqlAuthMethods } = useAuth();
 
   const { data, isLoading } = useQuery<SearchQuery>(
     [`search-${query}`],
-    async () => {
-      const { daos: daos_search, ...result } = await gqlAnonMethods.search({
+    async () =>
+      await gqlAuthMethods.search({
         query,
-      });
-      const { daos } = await gqlAnonMethods.search_daos({
-        ids: daos_search.hits.map((dao) => dao.id),
-      });
-      return {
-        ...result,
-        daos: {
-          hits: daos,
-        },
-      };
-    }
+      })
   );
 
   const count: number = data
     ? // eslint-disable-next-line no-unsafe-optional-chaining
-      [...data?.daos.hits, ...data?.gates.hits, ...data?.users.hits].length
+      [...(data?.daos || []), ...(data?.gates || []), ...(data?.users || [])]
+        .length
     : 0;
 
   const tabs = useMemo(
@@ -59,20 +51,20 @@ export function SearchTemplate({ query }: TemplateProps) {
       {
         key: 'gates',
         label: t('common:tabs.credentials'),
-        section: <GatesTab data={data?.gates.hits} />,
-        count: data?.gates.hits.length,
+        section: <GatesTab data={data?.gates} />,
+        count: data?.gates?.length,
       },
       {
         key: 'daos',
         label: t('common:tabs.organizations'),
-        section: <DaosTab data={data?.daos.hits} />,
-        count: data?.daos.hits.length,
+        section: <DaosTab data={data?.daos} />,
+        count: data?.daos?.length,
       },
       {
         key: 'people',
         label: t('common:tabs.people'),
-        section: <PeopleTab data={data?.users.hits} />,
-        count: data?.users.hits.length,
+        section: <PeopleTab data={data?.users} />,
+        count: data?.users?.length,
       },
     ],
     [data]
@@ -91,7 +83,7 @@ export function SearchTemplate({ query }: TemplateProps) {
           px={TOKENS.CONTAINER_PX}
           color="text.secondary"
         >
-          {count} {t('results')}
+          {isLoading ? t('loading') : `${count} ${t('results')}`}
         </Typography>
       </Box>
       <Box sx={{ mt: 5 }}>

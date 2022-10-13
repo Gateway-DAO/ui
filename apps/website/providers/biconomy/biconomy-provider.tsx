@@ -4,7 +4,7 @@ import { Biconomy } from '@biconomy/mexa';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { ethers } from 'ethers';
 import { PartialDeep } from 'type-fest';
-import { useAccount } from 'wagmi';
+import { useAccount, useProvider, useSigner } from 'wagmi';
 
 import { Alert, Snackbar } from '@mui/material';
 
@@ -19,6 +19,7 @@ type Props = {
   contractAddress: string;
 };
 
+let provider;
 export let biconomy: Biconomy;
 export let contract: ethers.Contract;
 export let contractInterface: ethers.ContractInterface;
@@ -38,7 +39,7 @@ export function BiconomyProvider({
 }: PropsWithChildren<Props>) {
   const RPC = {
     polygon: process.env.NEXT_PUBLIC_WEB3_POLYGON_RPC,
-    rinkeby: process.env.NEXT_PUBLIC_WEB3_RINKEBY_RPC,
+    goerli: process.env.NEXT_PUBLIC_WEB3_GOERLI_RPC,
   };
 
   // State
@@ -46,6 +47,8 @@ export function BiconomyProvider({
 
   // From Wagmi
   const { address } = useAccount();
+  const { data: signer } = useSigner();
+  const signerProvider = (signer?.provider as any)?.provider;
 
   // From auth
   const { me, gqlAuthMethods } = useAuth();
@@ -71,29 +74,30 @@ export function BiconomyProvider({
           data.update_credentials_by_pk.id,
         ]);
 
-        // queryClient.setQueryData(['me', address], (old: PartialDeep<Users>) => {
-        //   const experiences = old.experiences.map((experience) => ({
-        //     ...experience,
-        //     credentials: experience.credentials.map((credential) =>
-        //       credential.id === data.update_credentials_by_pk.id
-        //         ? {
-        //             ...credential,
-        //             ...data.update_credentials_by_pk,
-        //           }
-        //         : credential
-        //     ),
-        //   }));
-
-        //   return {
-        //     ...old,
-        //     experiences,
-        //   };
-        // });
-
         queryClient.refetchQueries(['me', address]);
       },
     }
   );
+
+  const correctProvider = async () => {
+    if (typeof window.ethereum !== 'undefined') {
+      provider = window.ethereum;
+
+      // edge case if MM and CBW are both installed
+      if (window.ethereum?.providers?.length) {
+        window.ethereum.providers.forEach(async (p) => {
+          if (p.isMetaMask) provider = p;
+        });
+      }
+
+      await provider.request({
+        method: 'eth_requestAccounts',
+        params: [],
+      });
+    }
+
+    return provider;
+  };
 
   useEffect(() => {
     async function init() {
@@ -103,13 +107,14 @@ export function BiconomyProvider({
       );
 
       biconomy = new Biconomy(jsonRpcProvider, {
-        walletProvider: window.ethereum,
+        walletProvider: signerProvider || (await correctProvider()),
         apiKey: process.env.NEXT_PUBLIC_WEB3_BICONOMY_API_KEY,
         debug: process.env.NODE_ENV === 'development',
       });
 
       biconomy
         .onEvent(biconomy.READY, async () => {
+          console.log('Biconomy is ready!');
           // Initialize your dapp here like getting user accounts etc
           contract = new ethers.Contract(
             contractAddress,
@@ -120,14 +125,17 @@ export function BiconomyProvider({
           contractInterface = new ethers.utils.Interface(CREDENTIAL_ABI);
         })
         .onEvent(biconomy.ERROR, (error, message) => {
+          console.log('Biconomy error');
           // Handle error while initializing mexa
+          console.log(error);
+          console.log(message);
         });
     }
 
-    if (typeof window !== 'undefined' && (address ?? false)) {
-      init();
-    }
-  }, [address]);
+    signer?.getAddress().then((address) => {
+      typeof window !== 'undefined' && (address ?? false) && init();
+    });
+  }, [signer]);
 
   /**
    * It mints a new NFT token.
@@ -135,96 +143,105 @@ export function BiconomyProvider({
    * @returns A boolean value.
    */
   const mint = async (token_uri = ''): Promise<MintResponse> => {
-    if (contract) {
-      let tx: string;
+    try {
+      if (contract) {
+        let tx: string;
 
-      const { data: contractData } = await contract.populateTransaction.mint(
-        address,
-        token_uri
-      );
+        const { data: contractData } = await contract.populateTransaction.mint(
+          address,
+          token_uri
+        );
 
-      const provider: ethers.providers.Web3Provider =
-        biconomy.getEthersProvider();
-      const gasLimit = await provider.estimateGas({
-        to: contractAddress,
-        from: address,
-        data: contractData,
-      });
-
-      const txParams = {
-        data: contractData,
-        to: contractAddress,
-        from: address,
-        gasLimit: gasLimit.toNumber() * 3,
-        signatureType: 'EIP712_SIGN',
-      };
-
-      try {
-        setMintStatus((prev) => ({
-          ...prev,
-          [token_uri]: {
-            askingSignature: true,
-            isMinted: false,
-            error: null,
-          },
-        }));
-
-        const promise = provider.send('eth_sendTransaction', [txParams]);
-
-        setMintStatus((prev) => ({
-          ...prev,
-          [token_uri]: {
-            askingSignature: false,
-            isMinted: false,
-            error: null,
-          },
-        }));
-
-        tx = await promise;
-
-        setMintStatus((prev) => ({
-          ...prev,
-          [token_uri]: {
-            askingSignature: false,
-            isMinted: true,
-            error: null,
-          },
-        }));
-      } catch (err) {
-        snackbar.onOpen({
-          message: 'Minting failed, please try again',
-          type: 'error',
+        const provider: ethers.providers.Web3Provider =
+          biconomy.getEthersProvider();
+        const gasLimit = await provider.estimateGas({
+          to: contractAddress,
+          from: address,
+          data: contractData,
         });
 
-        setMintStatus((prev) => ({
-          ...prev,
-          [token_uri]: {
-            askingSignature: false,
-            isMinted: true,
+        const txParams = {
+          data: contractData,
+          to: contractAddress,
+          from: address,
+          gasLimit: gasLimit.toNumber() * 3,
+          signatureType: 'EIP712_SIGN',
+        };
+
+        try {
+          setMintStatus((prev) => ({
+            ...prev,
+            [token_uri]: {
+              askingSignature: true,
+              isMinted: false,
+              error: null,
+            },
+          }));
+
+          const promise = provider.send('eth_sendTransaction', [txParams]);
+
+          setMintStatus((prev) => ({
+            ...prev,
+            [token_uri]: {
+              askingSignature: false,
+              isMinted: false,
+              error: null,
+            },
+          }));
+
+          tx = await promise;
+
+          setMintStatus((prev) => ({
+            ...prev,
+            [token_uri]: {
+              askingSignature: false,
+              isMinted: true,
+              error: null,
+            },
+          }));
+        } catch (err) {
+          snackbar.onOpen({
+            message: 'Minting failed, please try again',
+            type: 'error',
+          });
+
+          setMintStatus((prev) => ({
+            ...prev,
+            [token_uri]: {
+              askingSignature: false,
+              isMinted: true,
+              error: err,
+            },
+          }));
+
+          return {
+            isMinted: false,
             error: err,
-          },
-        }));
+          };
+        }
+
+        return {
+          isMinted: true,
+          transactionUrl:
+            (process.env.NEXT_PUBLIC_MINT_CHAIN === 'polygon'
+              ? 'https://polygonscan.com'
+              : 'https://goerli.etherscan.io') +
+            '/tx/' +
+            tx,
+        };
+      } else {
+        snackbar.onOpen({
+          message: 'Biconomy is still loading. Try again in a few minutes!',
+          type: 'warning',
+        });
 
         return {
           isMinted: false,
-          error: err,
+          error: 'Biconomy is still loading. Try again in a few minutes!',
         };
       }
-
-      return {
-        isMinted: true,
-        transactionUrl:
-          (process.env.NEXT_PUBLIC_MINT_CHAIN === 'polygon'
-            ? 'https://polygonscan.com'
-            : 'https://rinkeby.etherscan.io') +
-          '/tx/' +
-          tx,
-      };
-    } else {
-      snackbar.onOpen({
-        message: 'Biconomy is still loading. Try again in a few minutes!',
-        type: 'warning',
-      });
+    } catch (err) {
+      console.log(err);
     }
   };
 
@@ -240,7 +257,7 @@ export function BiconomyProvider({
       // 2. mint the NFT
       const res = await mint(credential?.uri || '');
 
-      if (res.error) {
+      if (res?.error) {
         throw res.error;
       }
 

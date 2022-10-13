@@ -1,7 +1,5 @@
-import useTranslation from 'next-translate/useTranslation';
 import { useEffect, useState } from 'react';
 
-import { useMutation } from '@tanstack/react-query';
 import { useFormContext } from 'react-hook-form';
 
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
@@ -19,79 +17,28 @@ import {
 } from '@mui/material';
 
 import { CircleWithNumber } from '../../../atoms/circle-with-number';
-import GithubDataCard from '../../../organisms/tasks/github-data-card';
 import {
   CreateGateTypes,
-  GithubContributeDataError,
+  HoldNFTDataError,
 } from '../../../templates/create-gate/schema';
+import { mockChains } from '../hold-token-task/__mock__';
 
-type GithubPRTaskProps = {
-  taskId: number;
-  deleteTask: (taskId: number) => void;
-};
-
-export default function GithubPRTask({
-  taskId,
-  deleteTask,
-}: GithubPRTaskProps) {
-  const { t } = useTranslation('gate-new');
-
+const HoldNFTTask = ({ taskId, deleteTask }) => {
   const {
     register,
     setValue,
-    setError,
     getValues,
-    trigger,
     formState: { errors },
   } = useFormContext<CreateGateTypes>();
 
-  const [title, repository_url] = getValues([
-    `tasks.data.${taskId}.title`,
-    `tasks.data.${taskId}.task_data.repository_link`,
-  ]);
-
-  const fetchRepositoryData = async (repository_url) => {
-    if (!repository_url) return;
-    const isValid = await trigger(
-      `tasks.data.${taskId}.task_data.repository_link`
-    );
-
-    if (!isValid) {
-      return null;
-    }
-
-    const repository_owner = repository_url
-      .replace('https://github.com/', '')
-      .split('/')[0];
-    const repository_name = repository_url
-      .replace('https://github.com/', '')
-      .split('/')[1];
-
-    const fetch_url = `https://api.github.com/repos/${repository_owner}/${repository_name}`;
-    const data = await fetch(fetch_url);
-
-    if (data.status !== 200) {
-      setError(`tasks.data.${taskId}.task_data.repository_link`, {
-        type: 'custom',
-        message: 'Repository private or not found.',
-      });
-
-      return null;
-    }
-
-    return data.json();
-  };
-
-  const { data: githubData, mutate: mutateGithubData } = useMutation(
-    ['github-data', repository_url],
-    (repository_url) => fetchRepositoryData(repository_url)
-  );
+  const formValues = getValues();
 
   useEffect(() => {
-    if (title === '') {
-      setValue(`tasks.data.${taskId}.title`, 'Untitled Task');
+    if (formValues.tasks.data[taskId]?.title === '') {
+      setValue(`tasks.data.${taskId}.title`, 'Untitled Requirement');
     }
-  }, [setValue, taskId]);
+    setValue(`tasks.data.${taskId}.task_type`, 'nft_hold');
+  }, [taskId, setValue, formValues.tasks.data]);
 
   const [taskVisible, setTaskVisible] = useState(false);
 
@@ -130,9 +77,7 @@ export default function GithubPRTask({
             })}
           />
           <Stack>
-            <Typography variant="subtitle2">
-              {t('tasks.github_prs.title')}
-            </Typography>
+            <Typography variant="subtitle2">Hold NFT</Typography>
             <TextField
               variant="standard"
               autoFocus
@@ -154,8 +99,8 @@ export default function GithubPRTask({
               }}
               id="task-title"
               {...register(`tasks.data.${taskId}.title`)}
-              error={!!errors.tasks?.data?.[taskId]?.title}
-              helperText={errors.tasks?.data?.[taskId]?.title?.message}
+              error={!!errors.tasks?.data[taskId]?.title}
+              helperText={errors.tasks?.data[taskId]?.title?.message}
             />
           </Stack>
         </Stack>
@@ -207,11 +152,11 @@ export default function GithubPRTask({
           required
           multiline
           minRows={3}
-          label="Task Description"
+          label="Task Requirement"
           id="task-description"
           {...register(`tasks.data.${taskId}.description`)}
-          error={!!errors.tasks?.data?.[taskId]?.description}
-          helperText={errors.tasks?.data?.[taskId]?.description?.message}
+          error={!!errors.tasks?.data[taskId]?.description}
+          helperText={errors.tasks?.data[taskId]?.description?.message}
           sx={{
             marginBottom: '60px',
             '& fieldset legend span': {
@@ -219,55 +164,40 @@ export default function GithubPRTask({
             },
           }}
         />
-        <Typography variant="body1" sx={{ paddingBottom: 2 }}>
-          {t('tasks.github_prs.amount_description')}
-        </Typography>
         <FormControl>
-          <InputLabel htmlFor="requested_pr_amount">
-            {t('tasks.github_prs.amount_action')}
-          </InputLabel>
+          <InputLabel htmlFor="chains">Chain</InputLabel>
           <Select
-            id="requested_pr_amount"
+            id="chains"
             sx={{ maxWidth: { md: '50%', xs: '100%' } }}
-            {...register(`tasks.data.${taskId}.task_data.requested_pr_amount`)}
+            {...register(`tasks.data.${taskId}.task_data.chain`)}
           >
-            <MenuItem value={1}>1+</MenuItem>
-            <MenuItem value={5}>5+</MenuItem>
-            <MenuItem value={10}>10+</MenuItem>
-            <MenuItem value={25}>25+</MenuItem>
-            <MenuItem value={50}>50+</MenuItem>
+            <MenuItem value="">
+              <em>None</em>
+            </MenuItem>
+            {mockChains.map((chain) => (
+              <MenuItem key={chain.value} value={chain.value}>
+                {chain.label}
+              </MenuItem>
+            ))}
           </Select>
         </FormControl>
-        <Typography variant="body1" sx={{ paddingTop: 4, paddingBottom: 2 }}>
-          {t('tasks.github_prs.repository_description')}
-        </Typography>
         <TextField
           required
-          label="Repository link"
-          {...register(`tasks.data.${taskId}.task_data.repository_link`, {
-            onBlur: (e) => mutateGithubData(e.target.value),
-          })}
+          label="NFT Contract Address"
+          sx={{ marginTop: '15px', maxWidth: { md: '50%', xs: '100%' } }}
+          {...register(`tasks.data.${taskId}.task_data.nft_address`)}
           error={
-            !!(
-              errors.tasks?.data?.[taskId]
-                ?.task_data as GithubContributeDataError
-            )?.repository_link
+            !!(errors.tasks?.data[taskId]?.task_data as HoldNFTDataError)
+              ?.nft_address
           }
           helperText={
-            (
-              errors.tasks?.data?.[taskId]
-                ?.task_data as GithubContributeDataError
-            )?.repository_link?.message
+            (errors.tasks?.data[taskId]?.task_data as HoldNFTDataError)
+              ?.nft_address?.message
           }
-          sx={{
-            marginBottom: '60px',
-            '& fieldset legend span': {
-              marginRight: '10px',
-            },
-          }}
         />
-        {githubData && <GithubDataCard data={githubData} />}
       </FormControl>
     </Stack>
   );
-}
+};
+
+export default HoldNFTTask;

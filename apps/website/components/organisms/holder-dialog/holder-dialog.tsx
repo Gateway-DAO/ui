@@ -123,7 +123,7 @@ export function HolderDialog({
         }}
       />
 
-      {isFetching ? (
+      {isLoading ? (
         <Box
           sx={{
             display: 'flex',

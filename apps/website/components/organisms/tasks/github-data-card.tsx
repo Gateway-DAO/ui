@@ -1,5 +1,5 @@
-import Link from 'next/link';
 import useTranslation from 'next-translate/useTranslation';
+import Link from 'next/link';
 
 import { AiFillGithub } from 'react-icons/ai';
 import { BiGitPullRequest, BiGitRepoForked } from 'react-icons/bi';

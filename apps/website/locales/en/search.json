@@ -1,4 +1,5 @@
 {
+  "loading": "Loading...",
   "results": "result(s) found",
   "gates-found": {
     "title": "Credential(s) Found"

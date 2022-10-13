@@ -1,20 +1,15 @@
 query search($query: String!) {
-  gates: search_gates(query: $query) {
-    hits
+  gates: search_gates(args: {search: $query}) {
+    id
+    title
+    description
+    categories
+    skills
+    published
+    links
+    image
   }
-  credentials: search_credentials(query: $query) {
-    hits
-  }
-  daos: search_daos(query: $query) {
-    hits
-  }
-  users: search_users(query: $query) {
-    hits
-  }
-}
-
-query search_daos($ids: [uuid!]) {
-  daos(where: {id: {_in: $ids}}) {
+  daos: search_daos(args: {search: $query}) {
     id
     name
     slug
@@ -42,5 +37,9 @@ query search_daos($ids: [uuid!]) {
       user_id
       permission
     }
+  }
+  users: search_users(args: {search: $query}) {
+    ...public_user
+    pfp
   }
 }
