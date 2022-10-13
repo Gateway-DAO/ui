@@ -107,21 +107,10 @@ const TwitterRetweetContent = ({
           <Stack
             sx={{
               flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
               padding: '0 12px 14px',
             }}
           >
-            <Box
-              sx={{
-                color: '#1B97F0',
-                fontSize: '20px',
-                marginTop: '2px',
-              }}
-            >
-              <FaTwitter />
-            </Box>
-            {twitterKeys && !completed && (
+            {!twitterKeys && !completed && (
               <Button
                 href={`https://twitter.com/intent/retweet?tweet_id=${tweet_link
                   .split('/')
@@ -134,7 +123,6 @@ const TwitterRetweetContent = ({
                   padding: '6px 16px',
                   lineHeight: '24px',
                   width: '100%',
-                  maxWidth: '100px',
                   '&:hover': {
                     background: '#1c95db',
                   },
@@ -144,7 +132,7 @@ const TwitterRetweetContent = ({
               </Button>
             )}
           </Stack>
-          {!twitterKeys && (
+          {twitterKeys && (
             <Stack
               sx={{
                 position: 'relative',
