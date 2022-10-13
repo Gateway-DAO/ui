@@ -27,12 +27,13 @@ export default async function handler(req, res) {
       exclude_replies: false,
       user_id: source_id,
       include_rts: false,
+      tweet_mode: 'extended',
     });
 
     let tweet_posted = false;
     if (response && response.length) {
       response.find((tweet) => {
-        if (tweet.text == tweet_text) {
+        if (tweet.full_text == tweet_text) {
           tweet_posted = true;
         }
       });
