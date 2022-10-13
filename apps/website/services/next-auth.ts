@@ -1,6 +1,8 @@
 import { NextAuthOptions, unstable_getServerSession } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 
+import jwt from 'jsonwebtoken';
+
 import { SessionToken } from '../types/user';
 import { gqlAnonMethods, gqlMethods } from './api';
 
@@ -21,10 +23,7 @@ const callLogin = async (
 
   const { __typename, ...token } = res.login;
 
-  return {
-    ...token,
-    expiry: Date.parse(token.expiry),
-  };
+  return token;
 };
 const callRefresh = async (token: SessionToken): Promise<SessionToken> => {
   try {
@@ -43,7 +42,6 @@ const callRefresh = async (token: SessionToken): Promise<SessionToken> => {
     return {
       ...newToken,
       user_id: token.user_id,
-      expiry: Date.parse(newToken.expiry),
     };
   } catch (e) {
     return {
@@ -86,7 +84,9 @@ export const nextAuthConfig: NextAuthOptions = {
         token = user;
       }
 
-      if (token.expiry < Date.now()) {
+      const parsedToken = jwt.decode(token.token, { json: true });
+
+      if (parsedToken.exp < Date.now() / 1000) {
         const refreshedToken = await callRefresh(token);
         return refreshedToken;
       }
