@@ -42,6 +42,7 @@ const defaultTaskData = (
 ): Omit<Task, 'title' | 'description'> => {
   const defaultValues = {
     task_type: taskType,
+    order: 0,
   };
   switch (taskType) {
     case 'self_verify':
@@ -94,10 +95,12 @@ const TaskArea = ({ draftTasks, onDelete }: TaskAreaProps) => {
   const addTask = async (
     taskType: CreateGateTypes['tasks']['data'][0]['task_type']
   ) => {
+    const highestOrder = Math.max(...fields.map((o) => o.order));
     append({
       title: '',
       description: '',
       ...(defaultTaskData(taskType) as any),
+      order: highestOrder + 1,
     });
   };
 
