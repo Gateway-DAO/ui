@@ -110,7 +110,7 @@ const TwitterRetweetContent = ({
               padding: '0 12px 14px',
             }}
           >
-            {!twitterKeys && !completed && (
+            {twitterKeys && !completed && (
               <Button
                 href={`https://twitter.com/intent/retweet?tweet_id=${tweet_link
                   .split('/')
@@ -132,7 +132,7 @@ const TwitterRetweetContent = ({
               </Button>
             )}
           </Stack>
-          {twitterKeys && (
+          {!twitterKeys && (
             <Stack
               sx={{
                 position: 'relative',
