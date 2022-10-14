@@ -156,7 +156,7 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
               return {
                 ...cleanTask,
                 id: task_id,
-                order: index + 1,
+                order: index,
               };
             }),
             on_conflict: {
