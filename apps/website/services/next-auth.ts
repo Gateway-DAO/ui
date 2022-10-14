@@ -4,30 +4,34 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import jwt from 'jsonwebtoken';
 
 import { SessionToken } from '../types/user';
-import { gqlAnonMethods, gqlMethods } from './api';
+import { gqlAnonMethods } from './api';
 
 const callLogin = async (
   signature: string,
   wallet: string
 ): Promise<SessionToken> => {
-  const res = await gqlAnonMethods.login({
-    signature,
-    wallet,
-  });
+  try {
+    const res = await gqlAnonMethods.login({
+      signature,
+      wallet,
+    });
 
-  const { error } = (res as any) ?? {};
+    const { error } = (res as any) ?? {};
 
-  if (error || !res.login) {
-    throw error;
+    if (error || !res.login) {
+      return null;
+    }
+
+    const { __typename, ...token } = res.login;
+
+    return token;
+  } catch (e) {
+    throw new Error(e);
   }
-
-  const { __typename, ...token } = res.login;
-
-  return token;
 };
 const callRefresh = async (token: SessionToken): Promise<SessionToken> => {
   try {
-    const res = await gqlMethods(token.token, token.user_id).refresh({
+    const res = await gqlAnonMethods.refresh({
       refresh_token: token.refresh_token,
     });
 
@@ -46,7 +50,7 @@ const callRefresh = async (token: SessionToken): Promise<SessionToken> => {
   } catch (e) {
     return {
       ...token,
-      error: e,
+      error: 'RefreshAccessTokenError',
     };
   }
 };
