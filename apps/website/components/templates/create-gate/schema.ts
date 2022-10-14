@@ -101,6 +101,7 @@ export type Task = {
   task_id?: string;
   title: string;
   description: string;
+  order: number;
 } & (
   | SelfVerifyTask
   | MeetingCodeTask
@@ -396,6 +397,7 @@ export const githubPRDataSchema = z.object({
 export const taskMeetingCodeSchema = z.object({
   id: z.string().optional(),
   task_id: z.string().optional(),
+  order: z.number().optional(),
   title: z.string().min(2, 'The title must contain at least 2 character(s)'),
   description: z
     .string()
@@ -406,6 +408,7 @@ export const taskMeetingCodeSchema = z.object({
 
 export const TwitterFollowProfileSchema = z.object({
   title: z.string().min(2, 'The title must contain at least 2 character(s)'),
+  order: z.number().optional(),
   description: z
     .string()
     .min(2, 'The description must contain at least 2 character(s)'),
@@ -441,6 +444,7 @@ export const quizDataSchema = z.object({
 export const taskQuizSchema = z.object({
   id: z.string().optional(),
   task_id: z.string().optional(),
+  order: z.number().optional(),
   title: z.string().min(2, 'Quiz title must contain at least 2 character(s)'),
   description: z
     .string()
@@ -452,6 +456,7 @@ export const taskQuizSchema = z.object({
 export const taskHoldTokenSchema = z.object({
   id: z.string().optional(),
   task_id: z.string().optional(),
+  order: z.number().optional(),
   title: z
     .string()
     .min(2, 'Hold Token title must contain at least 2 character(s)'),
@@ -478,6 +483,7 @@ export const taskHoldNFTSchema = z.object({
 export const taskSelfVerifySchema = z.object({
   id: z.string().optional(),
   task_id: z.string().optional(),
+  order: z.number().optional(),
   title: z.string().min(2, 'The title must contain at least 2 character(s)'),
   description: z
     .string()
@@ -489,6 +495,7 @@ export const taskSelfVerifySchema = z.object({
 export const taskSnapshotSchema = z.object({
   id: z.string().optional(),
   task_id: z.string().optional(),
+  order: z.number().optional(),
   title: z.string().min(2, 'The title must contain at least 2 character(s)'),
   description: z
     .string()
@@ -500,6 +507,7 @@ export const taskSnapshotSchema = z.object({
 export const taskTwitterTweetSchema = z.object({
   id: z.string().optional(),
   task_id: z.string().optional(),
+  order: z.number().optional(),
   title: z.string().min(2, 'The title must contain at least 2 character(s)'),
   description: z
     .string()
@@ -511,6 +519,7 @@ export const taskTwitterTweetSchema = z.object({
 export const taskTwitterRetweetSchema = z.object({
   id: z.string().optional(),
   task_id: z.string().optional(),
+  order: z.number().optional(),
   title: z.string().min(2, 'The title must contain at least 2 character(s)'),
   description: z
     .string()
@@ -522,6 +531,7 @@ export const taskTwitterRetweetSchema = z.object({
 export const taskGithubContributeSchema = z.object({
   id: z.string().optional(),
   task_id: z.string().optional(),
+  order: z.number().optional(),
   title: z.string().min(2, 'The title must contain at least 2 character(s)'),
   description: z
     .string()
@@ -533,6 +543,7 @@ export const taskGithubContributeSchema = z.object({
 export const taskGithubPRSchema = z.object({
   id: z.string().optional(),
   task_id: z.string().optional(),
+  order: z.number().optional(),
   title: z.string().min(2, 'The title must contain at least 2 character(s)'),
   description: z
     .string()

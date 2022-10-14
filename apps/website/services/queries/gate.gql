@@ -59,6 +59,7 @@ query gate($id: uuid!) {
       task_data
       task_type
       title
+      order
     }
   }
 }
