@@ -14,7 +14,7 @@ const nextConfig = {
   },
   experimental: { images: { layoutRaw: true } },
   images: {
-    domains: ['api.staging.mygateway.xyz', 'node.mygateway.xyz'],
+    domains: ['api.staging.mygateway.xyz', 'node.mygateway.xyz', 'localhost'],
   },
   compiler: {
     emotion: true,
