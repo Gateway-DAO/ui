@@ -41,7 +41,11 @@ const TwitterTweetTask = ({ taskId, deleteTask }) => {
 
   const [taskVisible, setTaskVisible] = useState(false);
   const [emoji, setEmoji] = useState('');
-  const [tweetText, setTweetText] = useState('');
+  const [tweetText, setTweetText] = useState(
+    formValues.tasks.data[taskId]?.task_data['tweet_text']
+      ? formValues.tasks.data[taskId]?.task_data['tweet_text']
+      : ''
+  );
 
   useEffect(() => {
     if (
@@ -74,7 +78,7 @@ const TwitterTweetTask = ({ taskId, deleteTask }) => {
       position: 'absolute',
       top: '142px',
       left: '10px',
-      zIndex: '1',
+      zIndex: '2',
     },
     pickerSxProps: {
       position: 'absolute',
