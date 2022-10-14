@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useSnackbar } from 'notistack';
 import { PartialDeep } from 'type-fest';
 import { useAccount, useDisconnect, useSignMessage } from 'wagmi';
 
@@ -66,6 +67,8 @@ export const useAuthLogin = () => {
 
   const session = useSession();
   const token = session?.data?.token;
+
+  const { enqueueSnackbar } = useSnackbar();
 
   const [error, setError] = useState<{
     message: any;
@@ -140,12 +143,17 @@ export const useAuthLogin = () => {
       refetchInterval: 1000 * 60 * 10,
       async onError(error: ErrorResponse) {
         const firstError = error?.response?.errors?.[0];
-        if (
-          firstError.extensions.code === 500 &&
-          firstError.message.includes('token')
-        ) {
-          onSignOut();
-        }
+
+        enqueueSnackbar(
+          firstError?.message?.includes('token') ||
+            firstError?.message?.includes('jwt')
+            ? t('auth:me.errors.invalid-token')
+            : t('auth:me.errors.unknown'),
+          {
+            variant: 'error',
+          }
+        );
+        onSignOut();
       },
     }
   );
