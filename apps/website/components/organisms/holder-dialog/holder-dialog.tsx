@@ -64,6 +64,7 @@ export function HolderDialog({
             offset: pageParam,
           }),
     {
+      enabled: !!credentialId,
       getNextPageParam: (lastPage, pages) => {
         if (lastPage.gates_by_pk?.holders?.length < 6) return undefined;
         return pages.length * 6;
@@ -71,7 +72,7 @@ export function HolderDialog({
     }
   );
 
-  const holders = data?.pages.flatMap((page) => page.gates_by_pk.holders);
+  const holders = data?.pages.flatMap((page) => page.gates_by_pk?.holders);
 
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
