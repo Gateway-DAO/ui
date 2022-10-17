@@ -129,10 +129,10 @@ export const useAuthLogin = () => {
   );
 
   const me = useQuery(
-    ['me', address],
+    ['me', session?.data?.user_id],
     async () => await gqlMethods(token).me(),
     {
-      enabled: !!token && !!address,
+      enabled: !!token,
       select: (data) => data.me,
       refetchOnMount: true,
       refetchOnReconnect: true,
