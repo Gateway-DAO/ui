@@ -48,6 +48,8 @@ const callRefresh = async (token: SessionToken): Promise<SessionToken> => {
       user_id: token.user_id,
     };
   } catch (e) {
+    console.log(e);
+
     return {
       ...token,
       error: 'RefreshAccessTokenError',
@@ -99,6 +101,7 @@ export const nextAuthConfig: NextAuthOptions = {
     async session({ session, token }) {
       return {
         ...session,
+        ...(token.error && { error: token.error }),
         ...(token ?? {}),
       };
     },
