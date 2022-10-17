@@ -170,9 +170,10 @@ export const useAuthLogin = () => {
 
   const onUpdateMe = (
     cb: (oldMe: PartialDeep<SessionUser>) => PartialDeep<SessionUser>
-  ) => queryClient.setQueryData(['me', address], cb);
+  ) => queryClient.setQueryData(['me', me.data?.id], cb);
 
-  const onInvalidateMe = () => queryClient.invalidateQueries(['me', address]);
+  const onInvalidateMe = () =>
+    queryClient.invalidateQueries(['me', me.data?.id]);
 
   const onSignOut = useSignOut(() => {
     setError(undefined);

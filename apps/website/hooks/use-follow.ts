@@ -86,7 +86,7 @@ export const useFollowDAO = (cb?: UseFollowProps) => {
         //     ? [...oldMe.following_dao, follow_dao]
         //     : [follow_dao],
         // }));
-        await queryClient.refetchQueries(['me', address]);
+        await queryClient.refetchQueries(['me', me?.id]);
         cb?.onFollow(follow_dao.dao_id);
       },
     }
@@ -102,7 +102,7 @@ export const useFollowDAO = (cb?: UseFollowProps) => {
         //     ({ dao }) => dao.id !== unfollow_dao.dao_id
         //   ),
         // }));
-        await queryClient.refetchQueries(['me', address]);
+        await queryClient.refetchQueries(['me', me?.id]);
         cb?.onUnfollow(unfollow_dao.dao_id);
       },
     }
