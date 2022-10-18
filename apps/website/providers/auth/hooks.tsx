@@ -42,11 +42,11 @@ function useSignOut(cb?: () => void) {
     cb?.();
   }, [address, disconnectAsync, token, cb]);
 
-  useEffect(() => {
-    if (session.status === 'authenticated' && !address) {
-      onSignOut();
-    }
-  }, [address, onSignOut, session.status]);
+  // useEffect(() => {
+  //   if (session.status === 'authenticated' && !address) {
+  //     onSignOut();
+  //   }
+  // }, [address, onSignOut, session.status]);
 
   return onSignOut;
 }
@@ -162,12 +162,10 @@ export const useAuthLogin = () => {
     if (error) return 'error';
     if (nonce.fetchStatus === 'fetching') return 'get-nonce';
     if (sendSignature.isLoading) return 'send-signature';
-    if (!me.data && me.isLoading && signInMutation.isSuccess && address)
-      return 'get-me';
+    if (!me.data && me.isLoading && signInMutation.isSuccess) return 'get-me';
     if (me.data) return 'authenticated';
     return 'unauthenticated';
   }, [
-    address,
     error,
     me.data,
     me.isLoading,

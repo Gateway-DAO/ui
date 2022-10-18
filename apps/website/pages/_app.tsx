@@ -18,8 +18,10 @@ import { BiconomyProvider } from '../providers/biconomy';
 import { CyberConnectProvider } from '../providers/cyberconnect';
 import { WalletProvider } from '../providers/wallet/wallet-provider';
 import { queryClient } from '../services/query-client';
+
 import '../components/atoms/global-dependencies';
 import '../styles/next.css';
+import { SessionProvider } from 'next-auth/react';
 
 type AppProps = NextAppProps & {
   Component: NextAppProps['Component'] & { auth?: boolean };
@@ -43,27 +45,29 @@ function CustomApp({ Component, pageProps }: AppProps) {
       />
 
       <ThemeProvider>
-        <WalletProvider session={pageProps.session}>
-          <QueryClientProvider client={queryClient}>
-            <Hydrate state={pageProps.dehydratedState}>
-              <Notistack>
-                <AuthProvider isAuthPage={Component.auth}>
-                  <BiconomyProvider
-                    apiKey={process.env.NEXT_PUBLIC_WEB3_BICONOMY_API_KEY}
-                    contractAddress={process.env.NEXT_PUBLIC_WEB3_NFT_ADDRESS}
-                  >
-                    <CyberConnectProvider>
-                      <NavStateProvider>
-                        <Component {...pageProps} />
-                      </NavStateProvider>
-                    </CyberConnectProvider>
-                  </BiconomyProvider>
-                </AuthProvider>
-              </Notistack>
-            </Hydrate>
-            <ReactQueryDevtools initialIsOpen={false} />
-          </QueryClientProvider>
-        </WalletProvider>
+        <SessionProvider session={pageProps.session} refetchInterval={0}>
+          <WalletProvider session={pageProps.session}>
+            <QueryClientProvider client={queryClient}>
+              <Hydrate state={pageProps.dehydratedState}>
+                <Notistack>
+                  <AuthProvider isAuthPage={Component.auth}>
+                    <BiconomyProvider
+                      apiKey={process.env.NEXT_PUBLIC_WEB3_BICONOMY_API_KEY}
+                      contractAddress={process.env.NEXT_PUBLIC_WEB3_NFT_ADDRESS}
+                    >
+                      <CyberConnectProvider>
+                        <NavStateProvider>
+                          <Component {...pageProps} />
+                        </NavStateProvider>
+                      </CyberConnectProvider>
+                    </BiconomyProvider>
+                  </AuthProvider>
+                </Notistack>
+              </Hydrate>
+              <ReactQueryDevtools initialIsOpen={false} />
+            </QueryClientProvider>
+          </WalletProvider>
+        </SessionProvider>
       </ThemeProvider>
 
       <Script
