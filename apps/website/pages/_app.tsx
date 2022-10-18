@@ -46,7 +46,7 @@ function CustomApp({ Component, pageProps }: AppProps) {
 
       <ThemeProvider>
         <SessionProvider session={pageProps.session} refetchInterval={0}>
-          <WalletProvider session={pageProps.session}>
+          <WalletProvider>
             <QueryClientProvider client={queryClient}>
               <Hydrate state={pageProps.dehydratedState}>
                 <Notistack>
