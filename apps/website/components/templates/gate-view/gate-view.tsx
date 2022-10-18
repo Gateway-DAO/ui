@@ -83,7 +83,7 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
         wallet: me?.wallet ?? '',
       }),
     {
-      enabled: gateProps.type === 'direct',
+      enabled: gateProps && gateProps.type === 'direct',
     }
   );
 

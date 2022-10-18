@@ -1,11 +1,12 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
-import { useSession } from 'next-auth/react';
-import { PropsWithChildren, useMemo } from 'react';
+import { Session } from 'next-auth';
+import { useSession, signOut } from 'next-auth/react';
+import { PropsWithChildren, useMemo, useEffect } from 'react';
 
 import { useConnectModal } from '@rainbow-me/rainbowkit';
 
 import { AuthConnectingModal } from '../../components/organisms/auth-connecting-modal';
-import { gqlMethods } from '../../services/api';
+import { gqlMethodsWithRefresh } from '../../services/api';
 import { BlockedPage } from './blocked-page';
 import { AuthContext } from './context';
 import { useAuthLogin, useInitUser } from './hooks';
@@ -17,19 +18,38 @@ export function AuthProvider({
   isAuthPage,
   children,
 }: PropsWithChildren<Props>) {
-  const session = useSession();
-  const token = session?.data?.token;
+  const { data: session } = useSession();
+  const token = session?.token;
 
   const { openConnectModal } = useConnectModal();
 
   const { me, error, onUpdateMe, authStep, onSignOut, onInvalidateMe } =
     useAuthLogin();
 
+  const onInvalidRT = async (
+    session: Session,
+    callback?: (...args: any) => Promise<void>
+  ) => {
+    if (!!session && session?.error === 'RefreshAccessTokenError') {
+      await signOut({ redirect: false });
+      return;
+    }
+
+    if (session && callback) {
+      await callback();
+      return;
+    }
+  };
+
+  useEffect(() => {
+    onInvalidRT(session);
+  }, [session]);
+
   const isBlocked = !!isAuthPage && (!me || !token);
 
   const gqlAuthMethods = useMemo(
-    () => gqlMethods(session?.data?.token, me?.id),
-    [session?.data?.token, me?.id]
+    () => gqlMethodsWithRefresh(session?.token, session?.user_id, onInvalidRT),
+    [session]
   );
 
   useInitUser(me);
@@ -43,6 +63,7 @@ export function AuthProvider({
         onSignOut,
         onUpdateMe,
         onInvalidateMe,
+        authenticated: !!me && !!session,
       }}
     >
       {!isBlocked && children}

@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
 
 import { dehydrate, QueryClient, useQuery } from '@tanstack/react-query';
+import jwt from 'jsonwebtoken';
 
 import { Box } from '@mui/material';
 
@@ -13,16 +13,30 @@ import { useAuth } from '../../providers/auth';
 import { gqlAnonMethods, gqlMethods } from '../../services/api';
 import { getServerSession } from '../../services/next-auth';
 
+const unaccesible = {
+  redirect: {
+    destination: ROUTES.EXPLORE,
+    permanent: false,
+  },
+};
+
 export async function getServerSideProps({ req, res, params }) {
   const { id } = params;
   const queryClient = new QueryClient();
 
   const session = await getServerSession(req, res);
 
+  if (!session) {
+    return unaccesible;
+  }
+
+  const parsedToken = jwt.decode(session.token, { json: true });
+  const expired = !!session && parsedToken.exp < Date.now() / 1000;
+
   let gate;
 
   try {
-    gate = await (session
+    gate = await (!!session || !expired
       ? gqlMethods(session.token, session.user_id)
       : gqlAnonMethods
     ).gate({ id });
@@ -31,12 +45,7 @@ export async function getServerSideProps({ req, res, params }) {
   }
 
   if (!gate.gates_by_pk) {
-    return {
-      redirect: {
-        destination: ROUTES.EXPLORE,
-        permanent: false,
-      },
-    };
+    return unaccesible;
   }
 
   await queryClient.prefetchQuery(['gate', id], () => gate);
@@ -53,12 +62,15 @@ export default function GateProfilePage() {
 
   const id = router.query.id as string;
 
-  const { gqlAuthMethods } = useAuth();
+  const { gqlAuthMethods, authenticated } = useAuth();
 
-  const { data: gatesData } = useQuery(['gate', id], () =>
-    gqlAuthMethods.gate({
-      id,
-    })
+  const { data: gatesData } = useQuery(
+    ['gate', id],
+    () =>
+      gqlAuthMethods.gate({
+        id,
+      }),
+    { enabled: authenticated }
   );
 
   return (
