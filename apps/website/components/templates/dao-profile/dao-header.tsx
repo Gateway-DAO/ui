@@ -38,7 +38,7 @@ export function DaoHeader({
   onFollow,
   onUnfollow,
 }: Props) {
-  const { dao, isAdmin } = useDaoProfile();
+  const { dao, credentials, isAdmin } = useDaoProfile();
   const cover = useFile(dao.background);
   const { t } = useTranslation('dao-profile');
 
@@ -140,7 +140,9 @@ export function DaoHeader({
               </Typography>
             )}
             <Typography variant="body1">
-              {t('common:count.credential', { count: dao.gates?.length ?? 0 })}
+              {t('common:count.credential', {
+                count: credentials?.daos_by_pk.gates.length ?? 0,
+              })}
             </Typography>
           </Stack>
           <SocialButtons socials={dao.socials} sx={{ mt: 4 }}>
