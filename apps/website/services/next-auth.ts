@@ -1,34 +1,37 @@
 import { NextAuthOptions, unstable_getServerSession } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 
+import jwt from 'jsonwebtoken';
+
 import { SessionToken } from '../types/user';
-import { gqlAnonMethods, gqlMethods } from './api';
+import { gqlAnonMethods } from './api';
 
 const callLogin = async (
   signature: string,
   wallet: string
 ): Promise<SessionToken> => {
-  const res = await gqlAnonMethods.login({
-    signature,
-    wallet,
-  });
+  try {
+    const res = await gqlAnonMethods.login({
+      signature,
+      wallet,
+    });
 
-  const { error } = (res as any) ?? {};
+    const { error } = (res as any) ?? {};
 
-  if (error || !res.login) {
-    throw error;
+    if (error || !res.login) {
+      return null;
+    }
+
+    const { __typename, ...token } = res.login;
+
+    return token;
+  } catch (e) {
+    throw new Error(e);
   }
-
-  const { __typename, ...token } = res.login;
-
-  return {
-    ...token,
-    expiry: Date.parse(token.expiry),
-  };
 };
 const callRefresh = async (token: SessionToken): Promise<SessionToken> => {
   try {
-    const res = await gqlMethods(token.token, token.user_id).refresh({
+    const res = await gqlAnonMethods.refresh({
       refresh_token: token.refresh_token,
     });
 
@@ -43,12 +46,13 @@ const callRefresh = async (token: SessionToken): Promise<SessionToken> => {
     return {
       ...newToken,
       user_id: token.user_id,
-      expiry: Date.parse(newToken.expiry),
     };
   } catch (e) {
+    console.log(e);
+
     return {
       ...token,
-      error: e,
+      error: 'RefreshAccessTokenError',
     };
   }
 };
@@ -86,7 +90,9 @@ export const nextAuthConfig: NextAuthOptions = {
         token = user;
       }
 
-      if (token.expiry < Date.now()) {
+      const parsedToken = jwt.decode(token.token, { json: true });
+
+      if (parsedToken.exp < Date.now() / 1000) {
         const refreshedToken = await callRefresh(token);
         return refreshedToken;
       }
@@ -95,6 +101,7 @@ export const nextAuthConfig: NextAuthOptions = {
     async session({ session, token }) {
       return {
         ...session,
+        ...(token.error && { error: token.error }),
         ...(token ?? {}),
       };
     },

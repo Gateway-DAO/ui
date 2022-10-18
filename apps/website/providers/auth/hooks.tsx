@@ -132,10 +132,10 @@ export const useAuthLogin = () => {
   );
 
   const me = useQuery(
-    ['me', address],
+    ['me', session?.data?.user_id],
     async () => await gqlMethods(token).me(),
     {
-      enabled: !!token && !!address,
+      enabled: !!token,
       select: (data) => data.me,
       refetchOnMount: true,
       refetchOnReconnect: true,
@@ -178,9 +178,10 @@ export const useAuthLogin = () => {
 
   const onUpdateMe = (
     cb: (oldMe: PartialDeep<SessionUser>) => PartialDeep<SessionUser>
-  ) => queryClient.setQueryData(['me', address], cb);
+  ) => queryClient.setQueryData(['me', me.data?.id], cb);
 
-  const onInvalidateMe = () => queryClient.invalidateQueries(['me', address]);
+  const onInvalidateMe = () =>
+    queryClient.invalidateQueries(['me', me.data?.id]);
 
   const onSignOut = useSignOut(() => {
     setError(undefined);

@@ -1,10 +1,8 @@
+import { getSession } from 'next-auth/react';
+
 import { GraphQLClient } from 'graphql-request';
 
-import {
-  getSdk,
-  RefreshMutation,
-  SdkFunctionWrapper,
-} from './graphql/types.generated';
+import { getSdk, SdkFunctionWrapper } from './graphql/types.generated';
 
 export type GqlMethods = ReturnType<typeof getSdk>;
 
@@ -30,10 +28,8 @@ export const gqlMethods = (token: string, userId?: string) =>
 
 export const gqlMethodsWithRefresh = (
   token: string,
-  refreshToken: string,
   userId: string | undefined,
-  // saves the new token to the user. The callback response doesn't matter
-  saveToken: (newTokens: RefreshMutation['refresh']) => Promise<any>
+  callback: (session) => void
 ) => {
   const wrapper: SdkFunctionWrapper = async (action) => {
     try {
@@ -43,17 +39,8 @@ export const gqlMethodsWithRefresh = (
       const isExpiredToken =
         e?.response?.errors?.[0].extensions.code === 'invalid-jwt';
       if (isExpiredToken) {
-        /* Retrieves the new token */
-        const newTokens = (
-          await gqlAnonMethods.refresh({
-            refresh_token: refreshToken,
-          })
-        )?.refresh;
-
-        /* Saves the token on stored user */
-        const res = await action(gqlUserHeader(userId, newTokens.token));
-        await saveToken(newTokens);
-        return res;
+        const session = await getSession();
+        await callback(session);
       }
       throw e;
     }
