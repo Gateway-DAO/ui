@@ -40,11 +40,6 @@ export function ExploreTemplate({ title, subtitle, data }: TemplateProps) {
         label: t('common:tabs.organizations'),
         section: <DaosTab />,
       },
-      {
-        key: 'people',
-        label: t('common:tabs.people'),
-        section: <PeopleTab />,
-      },
     ],
     []
   );

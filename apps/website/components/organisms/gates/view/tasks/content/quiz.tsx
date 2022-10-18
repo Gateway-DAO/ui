@@ -79,7 +79,7 @@ const QuizContent = ({
                           checked: answer.correct,
                         })}
                       label={answer.value}
-                      disabled={readOnly || completed}
+                      disabled={readOnly || completed || isLoading}
                     />
                   );
                 })}
@@ -93,7 +93,7 @@ const QuizContent = ({
                       value={answer.value}
                       control={<Checkbox />}
                       label={answer.value}
-                      disabled={readOnly || completed}
+                      disabled={readOnly || completed || isLoading}
                     />
                   );
                 })}
