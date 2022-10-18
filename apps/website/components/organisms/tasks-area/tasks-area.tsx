@@ -1,6 +1,10 @@
 import { Dispatch, SetStateAction, useEffect } from 'react';
 
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { useFieldArray, useFormContext } from 'react-hook-form';
+
+import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
+import { Box, Stack } from '@mui/material';
 
 import AddTaskCard from '../../molecules/add-task/add-task-card';
 import FileLinkTask from '../../molecules/add-task/file-link-task/file-link-task';
@@ -76,7 +80,7 @@ type TaskAreaProps = {
 const TaskArea = ({ draftTasks, onDelete }: TaskAreaProps) => {
   const { control, setValue } = useFormContext<CreateGateTypes>();
 
-  const { fields, append, remove } = useFieldArray({
+  const { fields, append, remove, update, swap } = useFieldArray({
     control,
     name: 'tasks.data',
   });
@@ -104,22 +108,73 @@ const TaskArea = ({ draftTasks, onDelete }: TaskAreaProps) => {
     });
   };
 
+  const onDragEnd = (result) => {
+    if (!result.destination) {
+      return;
+    }
+    swap(result.source.index, result.destination.index);
+  };
+
   return (
     <>
-      {fields.map((task: Task, index: number) => {
-        const TaskComponent = TaskComponents[task.task_type];
-        return (
-          <TaskComponent
-            key={index}
-            taskId={index}
-            deleteTask={() => {
-              remove(index);
-              onDelete((prev: string[]) => [...prev, task.task_id]);
-            }}
-          />
-        );
-      })}
-      <AddTaskCard numberOfTasks={fields.length} addTask={addTask} />
+      <DragDropContext onDragEnd={onDragEnd}>
+        <Droppable droppableId="tasks">
+          {(provided) => (
+            <div
+              ref={provided.innerRef}
+              {...provided.droppableProps}
+              style={{ width: '100%' }}
+            >
+              {fields.map((task: Task, index: number) => {
+                const TaskComponent = TaskComponents[task.task_type];
+                return (
+                  <Draggable
+                    key={index}
+                    draggableId={`t-${index}`}
+                    index={index}
+                  >
+                    {(provided) => (
+                      <Stack
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                        direction="row"
+                        alignItems={'center'}
+                        sx={{
+                          width: '100%',
+                          position: 'relative',
+                        }}
+                      >
+                        <DragIndicatorIcon
+                          sx={{
+                            position: 'absolute',
+                            left: '-30px',
+                            color: '#ddd',
+                          }}
+                        />
+                        <Box sx={{ width: '100%', mb: 2 }}>
+                          <TaskComponent
+                            taskId={index}
+                            deleteTask={() => {
+                              remove(index);
+                              onDelete((prev: string[]) => [
+                                ...prev,
+                                task.task_id,
+                              ]);
+                            }}
+                          />
+                        </Box>
+                      </Stack>
+                    )}
+                  </Draggable>
+                );
+              })}
+              <AddTaskCard numberOfTasks={fields.length} addTask={addTask} />
+              {provided.placeholder}
+            </div>
+          )}
+        </Droppable>
+      </DragDropContext>
     </>
   );
 };

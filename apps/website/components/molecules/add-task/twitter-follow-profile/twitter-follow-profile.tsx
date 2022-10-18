@@ -48,9 +48,13 @@ export const FollowProfile = ({ taskId, deleteTask }) => {
     formState: { errors },
   } = useFormContext<CreateGateTypes>();
 
+  const formValues = getValues();
+
   useEffect(() => {
-    setValue(`tasks.data.${taskId}.title`, 'Untitled Task');
-  }, [setValue, taskId]);
+    if (formValues.tasks.data[taskId]?.title === '') {
+      setValue(`tasks.data.${taskId}.title`, 'Untitled Task');
+    }
+  }, [setValue, taskId, formValues.tasks.data]);
 
   const {
     mutate: getTwitterMutate,

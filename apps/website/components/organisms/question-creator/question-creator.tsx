@@ -81,7 +81,11 @@ export function QuestionCreator({
                         })}
                       >
                         <DragIndicatorIcon
-                          sx={{ position: 'absolute', left: '-30px' }}
+                          sx={{
+                            position: 'absolute',
+                            left: '-30px',
+                            color: '#ddd',
+                          }}
                         />
                         <QuestionField questionIndex={index} taskId={taskId} />
 
