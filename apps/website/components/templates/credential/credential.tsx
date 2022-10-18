@@ -358,17 +358,15 @@ export function CredentialTemplate({ credential, openModal }: Props) {
         </Stack>
 
         <TaskGroup>
-          {credential?.pow
-            .map((task, idx) => (
-              <Task
-                key={'task-' + (idx + 1)}
-                task={task}
-                readOnly
-                completed={true}
-                isAdmin={credential?.target_id == me?.id}
-              />
-            ))
-            .sort((a, b) => a.props?.task?.order - b.props?.task?.order)}
+          {credential?.pow.map((task, idx) => (
+            <Task
+              key={'task-' + (idx + 1)}
+              task={task}
+              readOnly
+              completed={true}
+              isAdmin={credential?.target_id == me?.id}
+            />
+          ))}
         </TaskGroup>
       </Grid>
     </Grid>

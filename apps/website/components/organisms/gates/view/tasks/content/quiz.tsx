@@ -59,49 +59,51 @@ const QuizContent = ({
 
   return (
     <Stack alignItems="start" marginTop={3} gap={2}>
-      {questions.map((question, index) => {
-        return (
-          <FormControl
-            key={index}
-            onChange={(e) => updateAnswers(e, question, index)}
-          >
-            <FormLabel>{question.question}</FormLabel>
-            {question.type === 'single' ? (
-              <RadioGroup>
-                {question.options.map((answer, index) => {
-                  return (
-                    <FormControlLabel
-                      key={index}
-                      value={answer.value}
-                      control={<Radio />}
-                      {...(isAdmin &&
-                        (readOnly || completed) && {
-                          checked: answer.correct,
-                        })}
-                      label={answer.value}
-                      disabled={readOnly || completed}
-                    />
-                  );
-                })}
-              </RadioGroup>
-            ) : (
-              <FormGroup>
-                {question.options.map((answer, index) => {
-                  return (
-                    <FormControlLabel
-                      key={index}
-                      value={answer.value}
-                      control={<Checkbox />}
-                      label={answer.value}
-                      disabled={readOnly || completed}
-                    />
-                  );
-                })}
-              </FormGroup>
-            )}
-          </FormControl>
-        );
-      })}
+      {questions
+        .sort((a, b) => a.order - b.order)
+        .map((question, index) => {
+          return (
+            <FormControl
+              key={index}
+              onChange={(e) => updateAnswers(e, question, index)}
+            >
+              <FormLabel>{question.question}</FormLabel>
+              {question.type === 'single' ? (
+                <RadioGroup>
+                  {question.options.map((answer, index) => {
+                    return (
+                      <FormControlLabel
+                        key={index}
+                        value={answer.value}
+                        control={<Radio />}
+                        {...(isAdmin &&
+                          (readOnly || completed) && {
+                            checked: answer.correct,
+                          })}
+                        label={answer.value}
+                        disabled={readOnly || completed}
+                      />
+                    );
+                  })}
+                </RadioGroup>
+              ) : (
+                <FormGroup>
+                  {question.options.map((answer, index) => {
+                    return (
+                      <FormControlLabel
+                        key={index}
+                        value={answer.value}
+                        control={<Checkbox />}
+                        label={answer.value}
+                        disabled={readOnly || completed}
+                      />
+                    );
+                  })}
+                </FormGroup>
+              )}
+            </FormControl>
+          );
+        })}
       {!readOnly && !completed && (
         <LoadingButton
           variant="contained"
