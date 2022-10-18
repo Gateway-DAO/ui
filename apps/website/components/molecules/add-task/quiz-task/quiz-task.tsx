@@ -28,7 +28,7 @@ export const createQuestion = (order = 0) => ({
   order,
   question: '',
   type: 'single',
-  options: [{ value: '', correct: false }],
+  options: [{ value: '', correct: false, order: 0 }],
 });
 
 export function QuizTask({
@@ -216,7 +216,9 @@ export function QuizTask({
                 `tasks.data.${taskId}.task_data.questions`
               );
               if (isValid) {
-                return append(createQuestion(questions.length));
+                return append(
+                  createQuestion(Math.max(...questions.map((o) => o.order)) + 1)
+                );
               }
             }}
           >

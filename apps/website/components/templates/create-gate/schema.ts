@@ -195,6 +195,7 @@ export type QuizTaskDataError = {
       id?: FieldError;
       value?: FieldError;
       correct?: FieldError;
+      order?: FieldError;
     }[] &
       FieldError;
   }[];
@@ -212,6 +213,7 @@ export type Option = {
   id?: string;
   value: string;
   correct: boolean;
+  order: number;
 };
 
 // Snapshot
@@ -431,6 +433,7 @@ export const quizDataSchema = z.object({
               .string()
               .min(1, 'Answer must contain at least 1 character'),
             correct: z.boolean(),
+            order: z.number(),
           })
         )
         .refine(

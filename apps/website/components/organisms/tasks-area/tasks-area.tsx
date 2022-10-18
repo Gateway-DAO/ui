@@ -110,7 +110,7 @@ const TaskArea = ({ draftTasks, onDelete }: TaskAreaProps) => {
         const TaskComponent = TaskComponents[task.task_type];
         return (
           <TaskComponent
-            key={task.task_id}
+            key={index}
             taskId={index}
             deleteTask={() => {
               remove(index);
