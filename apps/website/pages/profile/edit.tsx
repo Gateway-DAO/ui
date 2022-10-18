@@ -11,7 +11,7 @@ import { useAuth } from '../../providers/auth';
 
 export default function EditProfilePage() {
   const uploadImage = useUploadImage();
-  const { me, gqlAuthMethods, onUpdateMe } = useAuth();
+  const { me, gqlAuthMethods, onInvalidateMe } = useAuth();
   const router = useRouter();
 
   const editUserMutation = useMutation(
@@ -67,11 +67,7 @@ export default function EditProfilePage() {
     },
     {
       onSuccess(data) {
-        const newUser = data.update_users_by_pk;
-        onUpdateMe((oldMe) => ({
-          ...oldMe,
-          ...newUser,
-        }));
+        onInvalidateMe();
         router.push(ROUTES.MY_PROFILE);
       },
     }
