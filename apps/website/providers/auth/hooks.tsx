@@ -42,12 +42,6 @@ function useSignOut(cb?: () => void) {
     cb?.();
   }, [address, disconnectAsync, token, cb]);
 
-  // useEffect(() => {
-  //   if (session.status === 'authenticated' && !address) {
-  //     onSignOut();
-  //   }
-  // }, [address, onSignOut, session.status]);
-
   return onSignOut;
 }
 
