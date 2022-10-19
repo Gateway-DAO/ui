@@ -1,8 +1,13 @@
 export const getMapValueFromObject = (
   objectToMap,
+  backendMessages,
   identifier,
+  backendMessage,
   defaultValue
 ) => {
+  if (backendMessages.indexOf(identifier) > -1) {
+    return backendMessage;
+  }
   if (objectToMap) {
     return objectToMap[identifier] || defaultValue;
   }

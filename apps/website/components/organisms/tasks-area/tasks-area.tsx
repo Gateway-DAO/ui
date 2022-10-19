@@ -58,6 +58,7 @@ const defaultTaskData = (
         task_data: {
           pass_score: 1,
           questions: [createQuestion()],
+          time_period: 1,
         },
       };
     default:

@@ -9,7 +9,10 @@ import {
   Box,
   Button,
   Divider,
+  FormControl,
   IconButton,
+  MenuItem,
+  Select,
   Slider,
   Snackbar,
   Stack,
@@ -23,6 +26,25 @@ import {
   CreateGateTypes,
   QuizTaskDataError,
 } from '../../../templates/create-gate/schema';
+
+// Time Period (hours)
+export enum TimePeriod {
+  IMMEDIATELY = 0,
+  ONE_HOUR = 1,
+  ONE_DAY = 24,
+  ONE_WEEK = 168,
+  ONE_MONTH = 720,
+  NEVER = -1,
+}
+
+export const TimePeriodTitle = {
+  [TimePeriod.IMMEDIATELY]: 'Immediately',
+  [TimePeriod.ONE_HOUR]: '1 Hour',
+  [TimePeriod.ONE_DAY]: '1 day',
+  [TimePeriod.ONE_WEEK]: '1 Week',
+  [TimePeriod.ONE_MONTH]: '1 Month',
+  [TimePeriod.NEVER]: 'Never',
+};
 
 export const createQuestion = (order = 0) => ({
   order,
@@ -71,7 +93,6 @@ export function QuizTask({
   return (
     <Stack
       sx={(theme) => ({
-        padding: '50px',
         border: '2px solid rgba(229, 229, 229, 0.08)',
         background: `linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.05) 100%), ${theme.palette.background.paper}`,
         borderRadius: '10px',
@@ -83,6 +104,7 @@ export function QuizTask({
       <Stack
         direction={'row'}
         alignItems={'center'}
+        margin={'50px 50px 0'}
         marginBottom={!taskVisible ? '40px' : 0}
         sx={{
           display: 'flex',
@@ -176,6 +198,7 @@ export function QuizTask({
         sx={{
           display: 'flex',
           flexDirection: 'column',
+          margin: '0 50px',
         }}
         style={!taskVisible ? {} : { display: 'none' }}
       >
@@ -208,70 +231,128 @@ export function QuizTask({
         sx={{ paddingTop: !taskVisible ? '30px' : 0 }}
       >
         {!taskVisible && (
-          <Button
-            variant="text"
-            sx={{ px: 0 }}
-            onClick={async () => {
-              const isValid = await trigger(
-                `tasks.data.${taskId}.task_data.questions`
-              );
-              if (isValid) {
-                return append(createQuestion(questions.length));
-              }
-            }}
+          <Stack
+            direction="column"
+            alignItems="baseline"
+            sx={{ padding: '0 50px', width: '100%' }}
           >
-            Add question
-          </Button>
-        )}
-        {questions.length > 1 && !taskVisible && (
-          <>
-            <Stack
-              sx={[
-                {
-                  mt: '24px',
-                  mb: '48px',
-                },
-              ]}
-            >
-              <Typography>
-                How many questions necessary to pass the quiz?
-              </Typography>
-              <Typography
-                sx={(theme) => ({ color: theme.palette.text.secondary })}
-              >
-                The quantity that user must answer correctly
-              </Typography>
-            </Stack>
-
-            <Controller
-              control={control}
-              name={`tasks.data.${taskId}.task_data.pass_score`}
-              defaultValue={1}
-              rules={{ required: true, min: 1, max: questions.length }}
-              render={({
-                field: { onChange, value, ...props },
-                fieldState: { error },
-              }) => {
-                return (
-                  <Slider
-                    key={`slider-${props.name}`}
-                    {...props}
-                    size="medium"
-                    min={1}
-                    value={value}
-                    sx={{ mx: '10px', width: 'calc(100% - 10px)' }}
-                    max={questions.length > 0 ? questions.length : 1}
-                    onChange={onChange}
-                    marks
-                    onError={() => error?.message}
-                    aria-label="Medium"
-                    valueLabelDisplay="on"
-                  />
+            <Button
+              variant="text"
+              sx={{ px: 0, marginBottom: '30px' }}
+              onClick={async () => {
+                const isValid = await trigger(
+                  `tasks.data.${taskId}.task_data.questions`
                 );
+                if (isValid) {
+                  return append(
+                    createQuestion(
+                      Math.max(...questions.map((o) => o.order)) + 1
+                    )
+                  );
+                }
               }}
-            />
-          </>
+            >
+              Add question
+            </Button>
+            <Divider sx={{ margin: '0 -50px', width: 'calc(100% + 100px)' }} />
+          </Stack>
         )}
+        <Stack
+          direction="column"
+          sx={(theme) => ({
+            width: '100%',
+            padding: '50px',
+            background: theme.palette.background.light,
+          })}
+        >
+          <Typography variant="h6">Settings</Typography>
+          {questions.length > 1 && !taskVisible && (
+            <>
+              <Stack
+                sx={[
+                  {
+                    mt: '24px',
+                    mb: '48px',
+                  },
+                ]}
+              >
+                <Typography>
+                  How many questions necessary to pass the quiz?
+                </Typography>
+                <Typography
+                  sx={(theme) => ({ color: theme.palette.text.secondary })}
+                >
+                  The quantity that user must answer correctly
+                </Typography>
+              </Stack>
+
+              <Controller
+                control={control}
+                name={`tasks.data.${taskId}.task_data.pass_score`}
+                defaultValue={1}
+                rules={{ required: true, min: 1, max: questions.length }}
+                render={({
+                  field: { onChange, value, ...props },
+                  fieldState: { error },
+                }) => {
+                  return (
+                    <Slider
+                      key={`slider-${props.name}`}
+                      {...props}
+                      size="medium"
+                      min={1}
+                      value={value}
+                      sx={{ mx: '10px', width: 'calc(100% - 10px)' }}
+                      max={questions.length > 0 ? questions.length : 1}
+                      onChange={onChange}
+                      marks
+                      onError={() => error?.message}
+                      aria-label="Medium"
+                      valueLabelDisplay="on"
+                    />
+                  );
+                }}
+              />
+              <Divider
+                sx={{ margin: '50px -50px 0', width: 'calc(100% + 100px)' }}
+              />
+            </>
+          )}
+          <Stack>
+            <Stack sx={{ mt: '48px' }}>
+              <Typography>Retry after</Typography>
+              <Typography
+                sx={(theme) => ({ color: theme.palette.text.secondary, mb: 2 })}
+              >
+                The users will be able to retry after a time period
+              </Typography>
+              <FormControl>
+                <Select
+                  defaultValue={TimePeriod.ONE_HOUR}
+                  id="time_period"
+                  sx={{ maxWidth: { md: '50%', xs: '100%' } }}
+                  {...register(`tasks.data.${taskId}.task_data.time_period`)}
+                >
+                  <MenuItem value={TimePeriod.IMMEDIATELY}>
+                    {TimePeriodTitle[TimePeriod.IMMEDIATELY]}
+                  </MenuItem>
+                  <MenuItem value={TimePeriod.ONE_HOUR}>
+                    {TimePeriodTitle[TimePeriod.ONE_HOUR]}
+                  </MenuItem>
+                  <MenuItem value={TimePeriod.ONE_DAY}>
+                    {TimePeriodTitle[TimePeriod.ONE_DAY]}
+                  </MenuItem>
+                  <MenuItem value={TimePeriod.ONE_WEEK}>
+                    {TimePeriodTitle[TimePeriod.ONE_WEEK]}
+                  </MenuItem>
+                  <MenuItem value={TimePeriod.NEVER}>
+                    {TimePeriodTitle[TimePeriod.NEVER]}
+                  </MenuItem>
+                </Select>
+              </FormControl>
+            </Stack>
+          </Stack>
+        </Stack>
       </Stack>
       <Snackbar
         open={

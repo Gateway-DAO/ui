@@ -30,3 +30,5 @@ export const taskErrorMessages = {
   NO_POSTED_RETWEET: `You have not posted the tweet`,
   NO_FOLLOW: `The user does not follow the twitter account`,
 };
+
+export const backendMessages = ['FAILED_QUIZ_MINIMUM_AMOUNT'];
