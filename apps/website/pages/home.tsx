@@ -11,8 +11,14 @@ import { gqlAnonMethods } from '../services/api';
  * https://nextjs.org/docs/basic-features/layouts
  * */
 
+const HARDCODED_DAOS = ['goldfinch', 'cyberconnect', 'lifi'];
+
 export const getStaticProps = async () => {
-  const exploreProps = await gqlAnonMethods.get_home();
+  const exploreProps = await gqlAnonMethods.get_home({
+    daos_where: {
+      slug: { _in: HARDCODED_DAOS },
+    },
+  });
 
   return {
     props: {
