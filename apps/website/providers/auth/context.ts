@@ -7,6 +7,7 @@ import { SessionUser } from '../../types/user';
 type Context = {
   me?: SessionUser;
   gqlAuthMethods: GqlMethods;
+  authenticated: boolean;
   onSignOut: () => void;
   onOpenLogin: () => void;
   onUpdateMe: (cb: (oldMe: SessionUser) => SessionUser) => SessionUser | void;
@@ -15,6 +16,7 @@ type Context = {
 
 export const AuthContext = createContext<Context>({
   gqlAuthMethods: gqlAnonMethods,
+  authenticated: false,
   onSignOut: () => {},
   onOpenLogin: () => {},
   onUpdateMe: () => {},

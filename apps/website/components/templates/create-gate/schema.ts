@@ -65,6 +65,11 @@ export type HoldTokenTask = {
   task_data: HoldTokenData;
 };
 
+export type HoldNFTTask = {
+  task_type: 'nft_hold';
+  task_data: HoldNFTData;
+};
+
 export type FollowProfileTask = {
   task_type: 'twitter_follow';
   task_data: TwitterFollowData;
@@ -96,12 +101,14 @@ export type Task = {
   task_id?: string;
   title: string;
   description: string;
+  order: number;
 } & (
   | SelfVerifyTask
   | MeetingCodeTask
   | QuizTask
   | SnapshotTask
   | HoldTokenTask
+  | HoldNFTTask
   | FollowProfileTask
   | TwitterTweetTask
   | TwitterRetweetTask
@@ -233,6 +240,18 @@ export type HoldTokenDataError = {
   quantity?: FieldError;
 };
 
+// Hold NFT
+export type HoldNFTData = {
+  chain?: string;
+  nft_address?: string;
+};
+
+export type HoldNFTDataError = {
+  id?: FieldError;
+  chain?: FieldError;
+  nft_address?: FieldError;
+};
+
 // Files
 export type FileTaskData = {
   files?: Array<FileTypes>;
@@ -336,6 +355,17 @@ const holdTokenTaskDataSchema = z.object({
   }),
 });
 
+const holdNFTTaskDataSchema = z.object({
+  chain: z.number(),
+  nft_address: z
+    .string()
+    .min(2, 'The NFT contract address must contain at least 2 character(s)')
+    .length(42, 'The NFT contract address must contain exactly 42 character(s)')
+    .refine((val) => val.startsWith('0x'), {
+      message: 'This is not a valid NFT contract address',
+    }),
+});
+
 export const verificationCodeDataSchema = z.object({
   code: z
     .string()
@@ -367,6 +397,7 @@ export const githubPRDataSchema = z.object({
 export const taskMeetingCodeSchema = z.object({
   id: z.string().optional(),
   task_id: z.string().optional(),
+  order: z.number().optional(),
   title: z.string().min(2, 'The title must contain at least 2 character(s)'),
   description: z
     .string()
@@ -377,6 +408,7 @@ export const taskMeetingCodeSchema = z.object({
 
 export const TwitterFollowProfileSchema = z.object({
   title: z.string().min(2, 'The title must contain at least 2 character(s)'),
+  order: z.number().optional(),
   description: z
     .string()
     .min(2, 'The description must contain at least 2 character(s)'),
@@ -412,6 +444,7 @@ export const quizDataSchema = z.object({
 export const taskQuizSchema = z.object({
   id: z.string().optional(),
   task_id: z.string().optional(),
+  order: z.number().optional(),
   title: z.string().min(2, 'Quiz title must contain at least 2 character(s)'),
   description: z
     .string()
@@ -423,6 +456,7 @@ export const taskQuizSchema = z.object({
 export const taskHoldTokenSchema = z.object({
   id: z.string().optional(),
   task_id: z.string().optional(),
+  order: z.number().optional(),
   title: z
     .string()
     .min(2, 'Hold Token title must contain at least 2 character(s)'),
@@ -433,9 +467,23 @@ export const taskHoldTokenSchema = z.object({
   task_data: holdTokenTaskDataSchema,
 });
 
+export const taskHoldNFTSchema = z.object({
+  id: z.string().optional(),
+  task_id: z.string().optional(),
+  title: z
+    .string()
+    .min(2, 'Hold NFT title must contain at least 2 character(s)'),
+  description: z
+    .string()
+    .min(2, 'The description must contain at least 2 character(s)'),
+  task_type: z.literal('nft_hold'),
+  task_data: holdNFTTaskDataSchema,
+});
+
 export const taskSelfVerifySchema = z.object({
   id: z.string().optional(),
   task_id: z.string().optional(),
+  order: z.number().optional(),
   title: z.string().min(2, 'The title must contain at least 2 character(s)'),
   description: z
     .string()
@@ -447,6 +495,7 @@ export const taskSelfVerifySchema = z.object({
 export const taskSnapshotSchema = z.object({
   id: z.string().optional(),
   task_id: z.string().optional(),
+  order: z.number().optional(),
   title: z.string().min(2, 'The title must contain at least 2 character(s)'),
   description: z
     .string()
@@ -458,6 +507,7 @@ export const taskSnapshotSchema = z.object({
 export const taskTwitterTweetSchema = z.object({
   id: z.string().optional(),
   task_id: z.string().optional(),
+  order: z.number().optional(),
   title: z.string().min(2, 'The title must contain at least 2 character(s)'),
   description: z
     .string()
@@ -469,6 +519,7 @@ export const taskTwitterTweetSchema = z.object({
 export const taskTwitterRetweetSchema = z.object({
   id: z.string().optional(),
   task_id: z.string().optional(),
+  order: z.number().optional(),
   title: z.string().min(2, 'The title must contain at least 2 character(s)'),
   description: z
     .string()
@@ -480,6 +531,7 @@ export const taskTwitterRetweetSchema = z.object({
 export const taskGithubContributeSchema = z.object({
   id: z.string().optional(),
   task_id: z.string().optional(),
+  order: z.number().optional(),
   title: z.string().min(2, 'The title must contain at least 2 character(s)'),
   description: z
     .string()
@@ -491,6 +543,7 @@ export const taskGithubContributeSchema = z.object({
 export const taskGithubPRSchema = z.object({
   id: z.string().optional(),
   task_id: z.string().optional(),
+  order: z.number().optional(),
   title: z.string().min(2, 'The title must contain at least 2 character(s)'),
   description: z
     .string()
@@ -522,6 +575,7 @@ export const createGateSchema = z.object({
           taskQuizSchema,
           taskSnapshotSchema,
           taskHoldTokenSchema,
+          taskHoldNFTSchema,
           TwitterFollowProfileSchema,
           taskTwitterTweetSchema,
           taskTwitterRetweetSchema,

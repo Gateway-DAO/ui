@@ -53,7 +53,7 @@ export function OverviewTab({ people, setTab, credentials }: Props) {
           ]
         : []),
       ...gates.map((gate) => (
-        <GatesCard key={gate.id} showStatus={isAdmin} {...gate} />
+        <GatesCard {...gate} key={gate.id} showStatus={isAdmin} dao={dao} />
       )),
     ].slice(0, 4);
   }, [gates, isAdmin, newGateUrl]);

@@ -6,6 +6,7 @@ import AddTaskCard from '../../molecules/add-task/add-task-card';
 import FileLinkTask from '../../molecules/add-task/file-link-task/file-link-task';
 import GithubContributeTask from '../../molecules/add-task/github/contribute-task';
 import GithubPRTask from '../../molecules/add-task/github/pr-task';
+import HoldNFTTask from '../../molecules/add-task/hold-nft-task/hold-nft-task';
 import HoldTokenTask from '../../molecules/add-task/hold-token-task/hold-token-task';
 import {
   QuizTask,
@@ -27,6 +28,7 @@ const TaskComponents = {
   self_verify: FileLinkTask,
   snapshot: SnapshotTask,
   token_hold: HoldTokenTask,
+  nft_hold: HoldNFTTask,
   quiz: QuizTask,
   twitter_follow: FollowProfile,
   twitter_tweet: TwitterTweetTask,
@@ -40,6 +42,7 @@ const defaultTaskData = (
 ): Omit<Task, 'title' | 'description'> => {
   const defaultValues = {
     task_type: taskType,
+    order: 0,
   };
   switch (taskType) {
     case 'self_verify':
@@ -92,10 +95,12 @@ const TaskArea = ({ draftTasks, onDelete }: TaskAreaProps) => {
   const addTask = async (
     taskType: CreateGateTypes['tasks']['data'][0]['task_type']
   ) => {
+    const highestOrder = Math.max(...fields.map((o) => o.order));
     append({
       title: '',
       description: '',
       ...(defaultTaskData(taskType) as any),
+      order: highestOrder + 1,
     });
   };
 

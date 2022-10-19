@@ -1,6 +1,5 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 
-import { EmojiStyle } from 'emoji-picker-react';
 import { useFormContext } from 'react-hook-form';
 
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
@@ -9,7 +8,9 @@ import {
   Box,
   FormControl,
   IconButton,
-  InputAdornment,
+  InputLabel,
+  MenuItem,
+  Select,
   Stack,
   TextField,
   Typography,
@@ -18,11 +19,11 @@ import {
 import { CircleWithNumber } from '../../../atoms/circle-with-number';
 import {
   CreateGateTypes,
-  TwitterTweetDataError,
+  HoldNFTDataError,
 } from '../../../templates/create-gate/schema';
-import { EmojiPicker, EmojiPickerProps } from '../../form/emoji-picker';
+import { mockChains } from '../hold-token-task/__mock__';
 
-const TwitterTweetTask = ({ taskId, deleteTask }) => {
+const HoldNFTTask = ({ taskId, deleteTask }) => {
   const {
     register,
     setValue,
@@ -31,61 +32,15 @@ const TwitterTweetTask = ({ taskId, deleteTask }) => {
   } = useFormContext<CreateGateTypes>();
 
   const formValues = getValues();
-  const tweetRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (formValues.tasks.data[taskId]?.title === '') {
-      setValue(`tasks.data.${taskId}.title`, 'Untitled Task');
+      setValue(`tasks.data.${taskId}.title`, 'Untitled Requirement');
     }
-  }, [setValue, taskId, formValues.tasks.data]);
+    setValue(`tasks.data.${taskId}.task_type`, 'nft_hold');
+  }, [taskId, setValue, formValues.tasks.data]);
 
   const [taskVisible, setTaskVisible] = useState(false);
-  const [emoji, setEmoji] = useState('');
-  const [tweetText, setTweetText] = useState(
-    formValues.tasks.data[taskId]?.task_data['tweet_text']
-      ? formValues.tasks.data[taskId]?.task_data['tweet_text']
-      : ''
-  );
-
-  useEffect(() => {
-    if (
-      tweetRef?.current?.selectionStart > 0 &&
-      tweetRef?.current?.selectionStart < tweetText.length
-    ) {
-      const firstPart = tweetText.substring(
-        0,
-        tweetRef?.current?.selectionStart
-      );
-      const secondPart = tweetText.substring(
-        tweetRef?.current?.selectionStart,
-        tweetText.length
-      );
-      setTweetText(firstPart + emoji + secondPart);
-      setValue(
-        `tasks.data.${taskId}.task_data.tweet_text`,
-        firstPart + emoji + secondPart
-      );
-    } else {
-      setTweetText(tweetText + emoji);
-      setValue(`tasks.data.${taskId}.task_data.tweet_text`, tweetText + emoji);
-    }
-  }, [emoji]);
-
-  const emojiProps: EmojiPickerProps = {
-    onEmoji: setEmoji,
-    emojiStyle: EmojiStyle.TWITTER,
-    boxSxProps: {
-      position: 'absolute',
-      top: '142px',
-      left: '10px',
-      zIndex: '2',
-    },
-    pickerSxProps: {
-      position: 'absolute',
-      left: { xs: '-40px', md: '0' },
-    },
-    iconColor: '#9B96A0',
-  };
 
   return (
     <Stack
@@ -122,7 +77,7 @@ const TwitterTweetTask = ({ taskId, deleteTask }) => {
             })}
           />
           <Stack>
-            <Typography variant="subtitle2">Post Tweet</Typography>
+            <Typography variant="subtitle2">Hold NFT</Typography>
             <TextField
               variant="standard"
               autoFocus
@@ -142,10 +97,10 @@ const TwitterTweetTask = ({ taskId, deleteTask }) => {
                   },
                 },
               }}
-              id="file-title"
+              id="task-title"
               {...register(`tasks.data.${taskId}.title`)}
-              error={!!errors.tasks?.data?.[taskId]?.title}
-              helperText={errors.tasks?.data?.[taskId]?.title?.message}
+              error={!!errors.tasks?.data[taskId]?.title}
+              helperText={errors.tasks?.data[taskId]?.title?.message}
             />
           </Stack>
         </Stack>
@@ -197,11 +152,11 @@ const TwitterTweetTask = ({ taskId, deleteTask }) => {
           required
           multiline
           minRows={3}
-          label="Task Description"
-          id="file-description"
+          label="Task Requirement"
+          id="task-description"
           {...register(`tasks.data.${taskId}.description`)}
-          error={!!errors.tasks?.data?.[taskId]?.description}
-          helperText={errors.tasks?.data?.[taskId]?.description?.message}
+          error={!!errors.tasks?.data[taskId]?.description}
+          helperText={errors.tasks?.data[taskId]?.description?.message}
           sx={{
             marginBottom: '60px',
             '& fieldset legend span': {
@@ -209,56 +164,40 @@ const TwitterTweetTask = ({ taskId, deleteTask }) => {
             },
           }}
         />
-        <Typography variant="body2" sx={{ marginBottom: { xs: 1, md: 4 } }}>
-          The user must post the tweet
-        </Typography>
+        <FormControl>
+          <InputLabel htmlFor="chains">Chain</InputLabel>
+          <Select
+            id="chains"
+            sx={{ maxWidth: { md: '50%', xs: '100%' } }}
+            {...register(`tasks.data.${taskId}.task_data.chain`)}
+          >
+            <MenuItem value="">
+              <em>None</em>
+            </MenuItem>
+            {mockChains.map((chain) => (
+              <MenuItem key={chain.value} value={chain.value}>
+                {chain.label}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
         <TextField
           required
-          multiline
-          maxLength={280}
-          label="Tweet Text"
-          id="tweet-text"
-          value={tweetText}
-          inputRef={tweetRef}
-          {...register(`tasks.data.${taskId}.task_data.tweet_text`)}
+          label="NFT Contract Address"
+          sx={{ marginTop: '15px', maxWidth: { md: '50%', xs: '100%' } }}
+          {...register(`tasks.data.${taskId}.task_data.nft_address`)}
           error={
-            !!(errors.tasks?.data[taskId]?.task_data as TwitterTweetDataError)
-              ?.tweet_text
+            !!(errors.tasks?.data[taskId]?.task_data as HoldNFTDataError)
+              ?.nft_address
           }
           helperText={
-            (errors.tasks?.data[taskId]?.task_data as TwitterTweetDataError)
-              ?.tweet_text?.message
+            (errors.tasks?.data[taskId]?.task_data as HoldNFTDataError)
+              ?.nft_address?.message
           }
-          onChange={(event) => {
-            setTweetText(event.target.value);
-          }}
-          sx={{
-            marginBottom: '10px',
-            '& fieldset legend span': {
-              marginRight: '10px',
-            },
-          }}
-          inputProps={{
-            maxLength: 280,
-          }}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                {tweetText.length < 279 && <EmojiPicker {...emojiProps} />}
-              </InputAdornment>
-            ),
-          }}
         />
-        <Typography
-          variant="body2"
-          style={{
-            fontSize: '12px',
-          }}
-        >
-          {tweetText.length}/280
-        </Typography>
       </FormControl>
     </Stack>
   );
 };
-export default TwitterTweetTask;
+
+export default HoldNFTTask;

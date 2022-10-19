@@ -24,6 +24,7 @@ import { getMapValueFromObject } from '../../../utils/map-object';
 import GithubContributeContent from '../gates/view/tasks/content/github_contribute';
 import GithubPRContent from '../gates/view/tasks/content/github_prs';
 import MeetingCodeContent from '../gates/view/tasks/content/meeting_code';
+import NFTHoldContent from '../gates/view/tasks/content/nft_hold';
 import QuizContent from '../gates/view/tasks/content/quiz';
 import SelfVerifyContent from '../gates/view/tasks/content/self-verify';
 import SnapshotContent from '../gates/view/tasks/content/snapshot';
@@ -125,6 +126,10 @@ export function Task({
         title: 'Verify Pull Requests',
         body: GithubPRContent,
       },
+      nft_hold: {
+        title: 'Hold NFT',
+        body: NFTHoldContent,
+      },
     };
 
     return (
@@ -141,34 +146,14 @@ export function Task({
     {
       onSuccess: async (data) => {
         try {
-          await queryClient.cancelQueries(['me', address]);
+          await queryClient.cancelQueries(['me', me?.id]);
 
-          // queryClient.setQueryData<SessionUser>(['me', address], (old) => {
-          //   try {
-          //     const oldTaskProgresses = old?.task_progresses?.filter(
-          //       (task_progress) => task_progress.task_id !== task.id
-          //     );
-
-          //     const newTaskProgress = [
-          //       ...oldTaskProgresses,
-          //       data.verify_key.task_info,
-          //     ];
-
-          //     return {
-          //       ...old,
-          //       task_progresses: newTaskProgress,
-          //     };
-          //   } catch (err) {
-          //     console.log(err);
-          //   }
-          // });
-
-          queryClient.refetchQueries(['me', address]);
+          queryClient.refetchQueries(['me', me?.id]);
 
           data.verify_key.completed_gate && setCompletedGate(true);
 
           data.verify_key.completed_gate &&
-            queryClient.invalidateQueries(['me', address]);
+            queryClient.invalidateQueries(['me', me?.id]);
         } catch (err) {
           console.log(err);
         }

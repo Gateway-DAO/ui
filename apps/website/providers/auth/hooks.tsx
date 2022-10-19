@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useSnackbar } from 'notistack';
 import { PartialDeep } from 'type-fest';
 import { useAccount, useDisconnect, useSignMessage } from 'wagmi';
 
@@ -41,12 +42,6 @@ function useSignOut(cb?: () => void) {
     cb?.();
   }, [address, disconnectAsync, token, cb]);
 
-  useEffect(() => {
-    if (session.status === 'authenticated' && !address) {
-      onSignOut();
-    }
-  }, [address, onSignOut, session.status]);
-
   return onSignOut;
 }
 
@@ -66,6 +61,8 @@ export const useAuthLogin = () => {
 
   const session = useSession();
   const token = session?.data?.token;
+
+  const { enqueueSnackbar } = useSnackbar();
 
   const [error, setError] = useState<{
     message: any;
@@ -129,10 +126,10 @@ export const useAuthLogin = () => {
   );
 
   const me = useQuery(
-    ['me', address],
+    ['me', session?.data?.user_id],
     async () => await gqlMethods(token).me(),
     {
-      enabled: !!token && !!address,
+      enabled: !!token,
       select: (data) => data.me,
       refetchOnMount: true,
       refetchOnReconnect: true,
@@ -140,12 +137,17 @@ export const useAuthLogin = () => {
       refetchInterval: 1000 * 60 * 10,
       async onError(error: ErrorResponse) {
         const firstError = error?.response?.errors?.[0];
-        if (
-          firstError.extensions.code === 500 &&
-          firstError.message.includes('token')
-        ) {
-          onSignOut();
-        }
+
+        enqueueSnackbar(
+          firstError?.message?.includes('token') ||
+            firstError?.message?.includes('jwt')
+            ? t('auth:me.errors.invalid-token')
+            : t('auth:me.errors.unknown'),
+          {
+            variant: 'error',
+          }
+        );
+        onSignOut();
       },
     }
   );
@@ -154,12 +156,10 @@ export const useAuthLogin = () => {
     if (error) return 'error';
     if (nonce.fetchStatus === 'fetching') return 'get-nonce';
     if (sendSignature.isLoading) return 'send-signature';
-    if (!me.data && me.isLoading && signInMutation.isSuccess && address)
-      return 'get-me';
+    if (!me.data && me.isLoading && signInMutation.isSuccess) return 'get-me';
     if (me.data) return 'authenticated';
     return 'unauthenticated';
   }, [
-    address,
     error,
     me.data,
     me.isLoading,
@@ -170,9 +170,10 @@ export const useAuthLogin = () => {
 
   const onUpdateMe = (
     cb: (oldMe: PartialDeep<SessionUser>) => PartialDeep<SessionUser>
-  ) => queryClient.setQueryData(['me', address], cb);
+  ) => queryClient.setQueryData(['me', me.data?.id], cb);
 
-  const onInvalidateMe = () => queryClient.invalidateQueries(['me', address]);
+  const onInvalidateMe = () =>
+    queryClient.invalidateQueries(['me', me.data?.id]);
 
   const onSignOut = useSignOut(() => {
     setError(undefined);

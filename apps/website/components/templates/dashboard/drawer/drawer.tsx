@@ -3,10 +3,8 @@ import { useRouter } from 'next/router';
 import { useMemo } from 'react';
 
 import clsx from 'clsx';
-import { AnimatePresence } from 'framer-motion';
 
 import { GatewayIcon } from '@gateway/assets';
-import { MotionTooltip } from '@gateway/ui';
 
 import ExploreIcon from '@mui/icons-material/Explore';
 import { Avatar, ListItemButton } from '@mui/material';
@@ -52,56 +50,45 @@ export function Drawer({ currentDao, showExplore }: Props) {
               </a>
             </Link>
           </ListItemIcon>
-          <AnimatePresence>
-            {showExplore && (
-              <Link passHref href={ROUTES.EXPLORE}>
-                <MotionTooltip
-                  key="explore"
-                  layoutId="Explore"
-                  title="Explore"
-                  placement="right"
-                  className={clsx({
-                    active: router.pathname === ROUTES.EXPLORE,
-                  })}
-                >
-                  <ListItemButton component="a">
-                    <ListItemIcon>
-                      <Avatar>
-                        <ExploreIcon />
-                      </Avatar>
-                    </ListItemIcon>
-                  </ListItemButton>
-                </MotionTooltip>
-              </Link>
-            )}
-            {followingDaos?.map((dao) => {
-              const url = ROUTES.DAO_PROFILE.replace('[slug]', dao.slug);
+          {showExplore && (
+            <Link passHref href={ROUTES.EXPLORE}>
+              <ListItemButton
+                component="a"
+                title="Explore"
+                className={clsx({
+                  active: router.pathname === ROUTES.EXPLORE,
+                })}
+              >
+                <ListItemIcon>
+                  <Avatar>
+                    <ExploreIcon />
+                  </Avatar>
+                </ListItemIcon>
+              </ListItemButton>
+            </Link>
+          )}
+          {followingDaos?.map((dao) => {
+            const url = ROUTES.DAO_PROFILE.replace('[slug]', dao.slug);
 
-              return (
-                <Link key={dao.id} passHref href={url}>
-                  <MotionTooltip
-                    layoutId={dao.id}
-                    title={dao.name}
-                    placement="right"
-                  >
-                    <ListItemButton
-                      component="a"
-                      aria-label={`Go to ${dao.name}`}
-                      className={clsx({ active: dao.id === currentDao?.id })}
-                    >
-                      <ListItemIcon>
-                        <AdminBadge isAdmin={dao.is_admin}>
-                          <AvatarFile file={dao?.logo} fallback={dao?.logo_url}>
-                            {dao.name?.[0]}
-                          </AvatarFile>
-                        </AdminBadge>
-                      </ListItemIcon>
-                    </ListItemButton>
-                  </MotionTooltip>
-                </Link>
-              );
-            })}
-          </AnimatePresence>
+            return (
+              <Link key={dao.id} passHref href={url}>
+                <ListItemButton
+                  title={dao.name}
+                  component="a"
+                  aria-label={`Go to ${dao.name}`}
+                  className={clsx({ active: dao.id === currentDao?.id })}
+                >
+                  <ListItemIcon>
+                    <AdminBadge isAdmin={dao.is_admin}>
+                      <AvatarFile file={dao?.logo} fallback={dao?.logo_url}>
+                        {dao.name?.[0]}
+                      </AvatarFile>
+                    </AdminBadge>
+                  </ListItemIcon>
+                </ListItemButton>
+              </Link>
+            );
+          })}
         </DaosList>
       </ResponsiveDrawer>
     </DrawerContainer>
