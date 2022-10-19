@@ -26,17 +26,15 @@ export async function getServerSideProps({ req, res, params }) {
 
   const session = await getServerSession(req, res);
 
-  if (!session) {
-    return unaccesible;
-  }
+  let expired = false;
 
-  const parsedToken = jwt.decode(session.token, { json: true });
-  const expired = !!session && parsedToken.exp < Date.now() / 1000;
+  const parsedToken = jwt.decode(session?.token, { json: true });
+  expired = !!session && parsedToken.exp < Date.now() / 1000;
 
   let gate;
 
   try {
-    gate = await (!!session || !expired
+    gate = await (!!session && !expired
       ? gqlMethods(session.token, session.user_id)
       : gqlAnonMethods
     ).gate({ id });
