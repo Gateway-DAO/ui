@@ -27,9 +27,20 @@ export default function Explore({
 }: InferGetStaticPropsType<typeof getStaticProps>) {
   const { t } = useTranslation('explore');
 
-  const { data } = useQuery(['explore'], () => gqlAnonMethods.get_home(), {
-    initialData: exploreProps,
-  });
+  const HARDCODED_DAOS = ['goldfinch', 'cyberconnect', 'lifi'];
+
+  const { data } = useQuery(
+    ['explore'],
+    () =>
+      gqlAnonMethods.get_home({
+        daos_where: {
+          slug: { _in: HARDCODED_DAOS },
+        },
+      }),
+    {
+      initialData: exploreProps,
+    }
+  );
 
   if (!data) return null;
 
