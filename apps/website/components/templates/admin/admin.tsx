@@ -89,6 +89,11 @@ export function AdminTemplate({ data }) {
                   bgcolor: 'background.paper',
                 }}
               >
+                {data.credential_data.length == 0 && (
+                  <Typography m={2}>
+                    Ser... we don&apos;t have any claimed credentials
+                  </Typography>
+                )}
                 {data.credential_data.map((credential) => {
                   return (
                     <ListItem key={credential.name}>
