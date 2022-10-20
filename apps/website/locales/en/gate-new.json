@@ -9,6 +9,23 @@
     "github_contribute": {
       "title": "Contribute to the Repository",
       "description": "The user must contribute to the repository"
+    },
+    "quiz": {
+      "timePeriodAction": "Select a time period",
+      "addQuestion": "Add question",
+      "settingsTitle": "Settings",
+      "settingsHowManyQuestionsTitle": "How many questions necessary to pass the quiz?",
+      "settingsHowManyQuestionsDescription": "The quantity that user must answer correctly",
+      "settingsRetryAfterTitle": "Retry after",
+      "settingsRetryAfterDescription": "The users will be able to retry after a time period",
+      "timePeriodImmediately": "Immediately",
+      "timePeriodFifteenMinutes": "15 Minutes",
+      "timePeriodThirtyMinutes": "30 Minutes",
+      "timePeriodOneHour": "1 Hour",
+      "timePeriodOneDay": "1 Day",
+      "timePeriodOneWeek": "1 Week",
+      "timePeriodOneMonth": "1 Month",
+      "timePeriodNever": "Never"
     }
   }
 }

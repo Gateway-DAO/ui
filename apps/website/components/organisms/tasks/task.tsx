@@ -32,7 +32,7 @@ import TokenHoldContent from '../gates/view/tasks/content/token_hold';
 import TwitterFollowContent from '../gates/view/tasks/content/twitter_follow';
 import TwitterRetweetContent from '../gates/view/tasks/content/twitter_retweet';
 import TwitterTweetContent from '../gates/view/tasks/content/twitter_tweet';
-import { backendMessages, taskErrorMessages } from './task-error-messages';
+import { taskErrorMessages } from './task-error-messages';
 
 type Props = {
   idx?: number;
@@ -179,9 +179,7 @@ export function Task({
         setErrorMessage(
           getMapValueFromObject(
             taskErrorMessages,
-            backendMessages,
-            error.response.errors[0].extensions.error,
-            error.response.errors[0].message,
+            error.response.errors[0].extensions,
             `There was an unexpected error, please contact Gateway or try again`
           )
         );

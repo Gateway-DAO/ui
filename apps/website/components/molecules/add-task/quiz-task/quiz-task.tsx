@@ -1,3 +1,4 @@
+import useTranslation from 'next-translate/useTranslation';
 import { useEffect, useState } from 'react';
 
 import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
@@ -11,6 +12,7 @@ import {
   Divider,
   FormControl,
   IconButton,
+  InputLabel,
   MenuItem,
   Select,
   Slider,
@@ -27,24 +29,17 @@ import {
   QuizTaskDataError,
 } from '../../../templates/create-gate/schema';
 
-// Time Period (hours)
+// Time Period (minutes)
 export enum TimePeriod {
   IMMEDIATELY = 0,
+  FIFTEEN_MINUTES = 15,
+  THIRTY_MINUTES = 30,
   ONE_HOUR = 1,
-  ONE_DAY = 24,
-  ONE_WEEK = 168,
-  ONE_MONTH = 720,
+  ONE_DAY = 1440,
+  ONE_WEEK = 10080,
+  ONE_MONTH = 302400,
   NEVER = -1,
 }
-
-export const TimePeriodTitle = {
-  [TimePeriod.IMMEDIATELY]: 'Immediately',
-  [TimePeriod.ONE_HOUR]: '1 Hour',
-  [TimePeriod.ONE_DAY]: '1 Day',
-  [TimePeriod.ONE_WEEK]: '1 Week',
-  [TimePeriod.ONE_MONTH]: '1 Month',
-  [TimePeriod.NEVER]: 'Never',
-};
 
 export const createQuestion = (order = 0) => ({
   order,
@@ -60,6 +55,7 @@ export function QuizTask({
   taskId: number;
   deleteTask: (taskId) => void;
 }): JSX.Element {
+  const { t } = useTranslation('gate-new');
   const {
     register,
     setValue,
@@ -252,7 +248,7 @@ export function QuizTask({
                 }
               }}
             >
-              Add question
+              {t('tasks.quiz.addQuestion')}
             </Button>
             <Divider sx={{ margin: '0 -50px', width: 'calc(100% + 100px)' }} />
           </Stack>
@@ -265,7 +261,7 @@ export function QuizTask({
             background: theme.palette.background.light,
           })}
         >
-          <Typography variant="h6">Settings</Typography>
+          <Typography variant="h6">{t('tasks.quiz.settingsTitle')}</Typography>
           {questions.length > 1 && !taskVisible && (
             <>
               <Stack
@@ -277,12 +273,12 @@ export function QuizTask({
                 ]}
               >
                 <Typography>
-                  How many questions necessary to pass the quiz?
+                  {t('tasks.quiz.settingsHowManyQuestionsTitle')}
                 </Typography>
                 <Typography
                   sx={(theme) => ({ color: theme.palette.text.secondary })}
                 >
-                  The quantity that user must answer correctly
+                  {t('tasks.quiz.settingsHowManyQuestionsDescription')}
                 </Typography>
               </Stack>
 
@@ -320,35 +316,62 @@ export function QuizTask({
           )}
           <Stack>
             <Stack sx={{ mt: '48px' }}>
-              <Typography>Retry after</Typography>
+              <Typography>{t('tasks.quiz.settingsRetryAfterTitle')}</Typography>
               <Typography
                 sx={(theme) => ({ color: theme.palette.text.secondary, mb: 2 })}
               >
-                The users will be able to retry after a time period
+                {t('tasks.quiz.settingsRetryAfterDescription')}
               </Typography>
               <FormControl>
+                <InputLabel htmlFor="time_period">
+                  {t('tasks.quiz.timePeriodAction')}
+                </InputLabel>
                 <Select
-                  defaultValue={TimePeriod.ONE_HOUR}
+                  label={t('tasks.quiz.timePeriodAction')}
+                  defaultValue=""
+                  datatype="number"
                   id="time_period"
                   sx={{ maxWidth: { md: '50%', xs: '100%' } }}
+                  error={
+                    !!(
+                      errors.tasks?.data?.[taskId]
+                        ?.task_data as QuizTaskDataError
+                    )?.time_period
+                  }
                   {...register(`tasks.data.${taskId}.task_data.time_period`)}
                 >
                   <MenuItem value={TimePeriod.IMMEDIATELY}>
-                    {TimePeriodTitle[TimePeriod.IMMEDIATELY]}
+                    {t('tasks.quiz.timePeriodImmediately')}
+                  </MenuItem>
+                  <MenuItem value={TimePeriod.FIFTEEN_MINUTES}>
+                    {t('tasks.quiz.timePeriodFifteenMinutes')}
+                  </MenuItem>
+                  <MenuItem value={TimePeriod.THIRTY_MINUTES}>
+                    {t('tasks.quiz.timePeriodThirtyMinutes')}
                   </MenuItem>
                   <MenuItem value={TimePeriod.ONE_HOUR}>
-                    {TimePeriodTitle[TimePeriod.ONE_HOUR]}
+                    {t('tasks.quiz.timePeriodOneHour')}
                   </MenuItem>
                   <MenuItem value={TimePeriod.ONE_DAY}>
-                    {TimePeriodTitle[TimePeriod.ONE_DAY]}
-                  </MenuItem>
-                  <MenuItem value={TimePeriod.ONE_WEEK}>
-                    {TimePeriodTitle[TimePeriod.ONE_WEEK]}
+                    {t('tasks.quiz.timePeriodOneDay')}
                   </MenuItem>
                   <MenuItem value={TimePeriod.NEVER}>
-                    {TimePeriodTitle[TimePeriod.NEVER]}
+                    {t('tasks.quiz.timePeriodNever')}
                   </MenuItem>
                 </Select>
+                {!!(
+                  errors.tasks?.data?.[taskId]?.task_data as QuizTaskDataError
+                )?.time_period && (
+                  <Typography
+                    color={(theme) => theme.palette.error.main}
+                    sx={{ mt: '5px' }}
+                  >
+                    {
+                      errors.tasks?.data?.[taskId]?.task_data?.['time_period']
+                        ?.message
+                    }
+                  </Typography>
+                )}
               </FormControl>
             </Stack>
           </Stack>

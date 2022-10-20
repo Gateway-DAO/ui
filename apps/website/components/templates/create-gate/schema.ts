@@ -420,7 +420,10 @@ export const TwitterFollowProfileSchema = z.object({
 
 export const quizDataSchema = z.object({
   pass_score: z.number().min(1).max(100),
-  time_period: z.number(),
+  time_period: z.number({
+    invalid_type_error: 'Select a time period',
+    required_error: 'Select a time period',
+  }),
   questions: z.array(
     z.object({
       question: z

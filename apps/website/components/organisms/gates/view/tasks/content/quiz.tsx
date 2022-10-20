@@ -30,8 +30,9 @@ const QuizContent = ({
   });
 
   const [answers, setAnswers] = useState(initialAnswers);
-  const randomQuestion = questions[Math.floor(Math.random() * questions.length)]
-  const [spammers , setSpammers] = useState(false)
+  const randomQuestion =
+    questions[Math.floor(Math.random() * questions.length)];
+  const [spammers, setSpammers] = useState(false);
 
   const updateAnswers = (e, question, questionIndex) => {
     const answersCopy = answers;
@@ -62,41 +63,53 @@ const QuizContent = ({
   return (
     <Stack alignItems="start" marginTop={3} gap={2}>
       {/* Honey pot trap  for bot/scripts(Spammers)*/}
-      <FormControl key={'d232'} onChange={() => setSpammers(true) } sx={{ opacity : 0 , position : 'absolute' , top : 0 , left : 0 ,  height : 0 , width : 0 , zIndex : -1}}>
+      <FormControl
+        key={'d232'}
+        onChange={() => setSpammers(true)}
+        sx={{
+          opacity: 0,
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          height: 0,
+          width: 0,
+          zIndex: -1,
+        }}
+      >
         <FormLabel>{randomQuestion.question}</FormLabel>
         {randomQuestion.type === 'single' ? (
-              <RadioGroup>
-                {randomQuestion.options.map((answer, index) => {
-                  return (
-                    <FormControlLabel
-                      key={index}
-                      value={answer.value}
-                      control={<Radio />}
-                      {...(isAdmin &&
-                        (readOnly || completed) && {
-                          checked: answer.correct,
-                        })}
-                      label={answer.value}
-                      disabled={readOnly || completed || isLoading}
-                    />
-                  );
-                })}
-              </RadioGroup>
-            ) : (
-              <FormGroup>
-                {randomQuestion.options.map((answer, index) => {
-                  return (
-                    <FormControlLabel
-                      key={index}
-                      value={answer.value}
-                      control={<Checkbox />}
-                      label={answer.value}
-                      disabled={readOnly || completed || isLoading}
-                    />
-                  );
-                })}
-              </FormGroup>
-            )}
+          <RadioGroup>
+            {randomQuestion.options.map((answer, index) => {
+              return (
+                <FormControlLabel
+                  key={index}
+                  value={answer.value}
+                  control={<Radio />}
+                  {...(isAdmin &&
+                    (readOnly || completed) && {
+                      checked: answer.correct,
+                    })}
+                  label={answer.value}
+                  disabled={readOnly || completed || isLoading}
+                />
+              );
+            })}
+          </RadioGroup>
+        ) : (
+          <FormGroup>
+            {randomQuestion.options.map((answer, index) => {
+              return (
+                <FormControlLabel
+                  key={index}
+                  value={answer.value}
+                  control={<Checkbox />}
+                  label={answer.value}
+                  disabled={readOnly || completed || isLoading}
+                />
+              );
+            })}
+          </FormGroup>
+        )}
       </FormControl>
       {questions.map((question, index) => {
         return (
@@ -145,7 +158,9 @@ const QuizContent = ({
         <LoadingButton
           variant="contained"
           sx={{ marginTop: '15px' }}
-          onClick={() => {spammers ? null : completeTask({ questions: answers })}}
+          onClick={() =>
+            !spammers ? completeTask({ questions: answers }) : null
+          }
           isLoading={isLoading}
         >
           Submit

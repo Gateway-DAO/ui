@@ -1,15 +1,16 @@
 export const getMapValueFromObject = (
   objectToMap,
-  backendMessages,
-  identifier,
-  backendMessage,
+  errorExtensions,
   defaultValue
 ) => {
-  if (backendMessages.indexOf(identifier) > -1) {
-    return backendMessage;
+  if (errorExtensions?.error === 'FAILED_QUIZ_MINIMUM_AMOUNT') {
+    return formatMinimumAmountMessage(
+      errorExtensions,
+      objectToMap[errorExtensions.error]
+    );
   }
   if (objectToMap) {
-    return objectToMap[identifier] || defaultValue;
+    return objectToMap[errorExtensions?.error] || defaultValue;
   }
   return defaultValue;
 };
@@ -26,3 +27,28 @@ export default function objectToParams(object: {
 
   return params.length > 0 ? `?${params.join('&')}` : '';
 }
+
+const formatMinimumAmountMessage = (
+  errorExtensions,
+  message: string
+): string => {
+  let timeMessage = '';
+  if (errorExtensions?.timeLeft) {
+    const timeLeftSplitted = errorExtensions?.timeLeft.split(':');
+    const hours: number = parseInt(timeLeftSplitted[0], 0);
+    const minutes: number = parseInt(timeLeftSplitted[1], 0);
+    if (minutes > 0) {
+      timeMessage = `${minutes} minute${minutes > 1 ? 's' : ''}`;
+    }
+    if (hours > 0 && hours < 48) {
+      timeMessage = `${hours} hour${hours > 1 ? 's' : ''}${
+        minutes > 0 && hours < 4 ? ` and ${timeMessage}` : ``
+      }`;
+    }
+    if (hours >= 48) {
+      timeMessage = `${Math.floor(hours / 24)} days`;
+    }
+    return `${message} ${timeMessage}.`;
+  }
+  return message;
+};
