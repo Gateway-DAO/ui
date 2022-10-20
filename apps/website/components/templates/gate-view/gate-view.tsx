@@ -96,7 +96,9 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
 
   useEffect(() => {
     const completedTaskIds =
-      me?.task_progresses.map((task) => task.task_id) || [];
+      me?.task_progresses
+        .filter((task) => task.completed == 'done')
+        .map((task) => task.task_id) || [];
 
     setCompletedTasksCount(countSimiliarIds(completedTaskIds, taskIds));
   }, [taskIds, me?.task_progresses, gateProps, router]);
