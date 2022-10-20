@@ -37,18 +37,31 @@ const formatMinimumAmountMessage = (
     const timeLeftSplitted = errorExtensions?.timeLeft.split(':');
     const hours: number = parseInt(timeLeftSplitted[0], 0);
     const minutes: number = parseInt(timeLeftSplitted[1], 0);
-    if (minutes > 0) {
-      timeMessage = `${minutes} minute${minutes > 1 ? 's' : ''}`;
-    }
-    if (hours > 0 && hours < 48) {
-      timeMessage = `${hours} hour${hours > 1 ? 's' : ''}${
-        minutes > 0 && hours < 4 ? ` and ${timeMessage}` : ``
-      }`;
-    }
-    if (hours >= 48) {
-      timeMessage = `${Math.floor(hours / 24)} days`;
-    }
+    timeMessage = setTimeMinutes(minutes);
+    timeMessage = setTimeHours(minutes, hours, timeMessage);
+    timeMessage = setTimeDays(hours, timeMessage);
     return `${message} ${timeMessage}.`;
   }
-  return message;
+  return `${message} some minutes.`;
+};
+
+const setTimeMinutes = (minutes: number): string => {
+  return minutes > 0 ? `${minutes} minute${minutes > 1 ? 's' : ''}` : '';
+};
+
+const setTimeHours = (
+  minutes: number,
+  hours: number,
+  timeMessage: string
+): string => {
+  if (hours > 0 && hours < 48) {
+    timeMessage = `${hours} hour${hours > 1 ? 's' : ''}${
+      minutes > 0 && hours < 4 ? ` and ${timeMessage}` : timeMessage
+    }`;
+  }
+  return timeMessage;
+};
+
+const setTimeDays = (hours: number, timeMessage: string): string => {
+  return hours >= 48 ? `${Math.floor(hours / 24)} days` : timeMessage;
 };
