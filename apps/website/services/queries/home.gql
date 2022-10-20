@@ -1,5 +1,5 @@
-query get_home {
-  gates(where: { published: { _eq: "published" } }, limit: 4, order_by: { updated_at: desc }) {
+query get_home($daos_where: daos_bool_exp = {}) {
+  gates(where: { published: { _eq: "published" } }, limit: 4, order_by: { published_at: desc, updated_at: desc }) {
     id
     title
     description
@@ -16,7 +16,7 @@ query get_home {
       name
     }
   }
-  daos(limit: 3) {
+  daos(limit: 3, where: $daos_where) {
     id
     name
     slug
@@ -58,7 +58,7 @@ query get_home {
 }
 
 query gates_tab {
-  gates(order_by: { title: asc }) {
+  gates(order_by: { published_at: desc, updated_at: desc }) {
     id
     title
     description

@@ -151,9 +151,13 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
           },
           image: image_url,
           tasks: {
-            data: data.tasks.data.map((task) => {
+            data: data.tasks.data.map((task, index) => {
               const { task_id, ...cleanTask } = task;
-              return { id: task_id, ...cleanTask };
+              return {
+                ...cleanTask,
+                id: task_id,
+                order: index,
+              };
             }),
             on_conflict: {
               constraint: Tasks_Constraint.KeysPk,
@@ -162,6 +166,7 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
                 Tasks_Update_Column.Description,
                 Tasks_Update_Column.TaskData,
                 Tasks_Update_Column.TaskType,
+                Tasks_Update_Column.Order,
               ],
             },
           },

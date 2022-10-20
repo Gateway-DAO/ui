@@ -113,12 +113,9 @@ export default function GateCompletedModal({ gate, open, handleClose }) {
           </Box>
           <Stack
             direction="row"
-            justifyContent="space-between"
+            justifyContent={'center'}
             sx={{
-              marginTop: {
-                xs: (theme) => theme.spacing(10),
-                md: (theme) => theme.spacing(3),
-              },
+              marginTop: { xs: 5 , md :0 },
             }}
           >
             <Stack>
@@ -128,7 +125,7 @@ export default function GateCompletedModal({ gate, open, handleClose }) {
               >
                 Share on
               </Typography>
-              <Stack direction="row" spacing={1}>
+              <Stack direction="row" justifyContent={'center'} spacing={1}>
                 <EmailShareButton
                   url={URL}
                   subject={'Congratulations'}
@@ -157,16 +154,13 @@ export default function GateCompletedModal({ gate, open, handleClose }) {
                 </TwitterShareButton>
               </Stack>
             </Stack>
-            <Link href={'/profile'} passHref>
-              <Button
-                variant="outlined"
-                component="a"
-                size="medium"
-                sx={{ margin: '20px 0 0 20px' }}
-              >
-                View on Profile
-              </Button>
-            </Link>
+            <Box alignSelf={'flex-end'} marginLeft={4}>
+              <Link href={'/profile'} passHref>
+                <Button variant="outlined" component="a" size="large">
+                  View on Profile
+                </Button>
+              </Link>
+            </Box>
           </Stack>
         </Stack>
       </Stack>
