@@ -40,7 +40,7 @@ export enum TimePeriod {
 export const TimePeriodTitle = {
   [TimePeriod.IMMEDIATELY]: 'Immediately',
   [TimePeriod.ONE_HOUR]: '1 Hour',
-  [TimePeriod.ONE_DAY]: '1 day',
+  [TimePeriod.ONE_DAY]: '1 Day',
   [TimePeriod.ONE_WEEK]: '1 Week',
   [TimePeriod.ONE_MONTH]: '1 Month',
   [TimePeriod.NEVER]: 'Never',
