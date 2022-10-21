@@ -1,5 +1,5 @@
 import { Session } from 'next-auth';
-import { SessionProvider } from 'next-auth/react';
+import { SessionProvider, useSession } from 'next-auth/react';
 import { PropsWithChildren } from 'react';
 
 import {
@@ -12,10 +12,6 @@ import { WagmiConfig } from 'wagmi';
 import { brandColors } from '@gateway/theme';
 
 import { chains, web3client } from '../../services/web3/client';
-
-type Props = {
-  session: Session; // as defined in next-auth
-};
 
 const darkTheme = DarkTheme({
   overlayBlur: 'small',
@@ -30,24 +26,21 @@ const theme: Theme = {
   },
 };
 
-export function WalletProvider({
-  children,
-  session,
-}: PropsWithChildren<Props>) {
+export function WalletProvider({ children }) {
+  const session = useSession();
+
   return (
-    <WagmiConfig client={web3client}>
-      <SessionProvider session={session} refetchInterval={0}>
-        <RainbowKitProvider
-          chains={chains}
-          modalSize="compact"
-          theme={theme}
-          appInfo={{
-            appName: 'GatewayDAO',
-          }}
-        >
-          {children}
-        </RainbowKitProvider>
-      </SessionProvider>
+    <WagmiConfig client={web3client(!!session)}>
+      <RainbowKitProvider
+        chains={chains}
+        modalSize="compact"
+        theme={theme}
+        appInfo={{
+          appName: 'GatewayDAO',
+        }}
+      >
+        {children}
+      </RainbowKitProvider>
     </WagmiConfig>
   );
 }
