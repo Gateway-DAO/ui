@@ -67,6 +67,11 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
     gqlAuthMethods.create_gate
   );
 
+  const { mutate: publishGate } = useMutation(
+    ['publishGate'],
+    gqlAuthMethods.publish_gate
+  );
+
   const { mutateAsync: deleteTaskMutation } = useMutation(
     ['deleteTask'],
     gqlAuthMethods.delete_tasks_by_pk
@@ -170,10 +175,11 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
               ],
             },
           },
-          published: isDraft ? 'not_published' : 'published',
+          // published: isDraft ? 'not_published' : 'published',
+          published: 'not_published',
         },
         {
-          onSuccess(result) {
+          async onSuccess(result) {
             if (isDraft) {
               snackbar.onOpen({
                 message: 'Draft saved',
@@ -183,6 +189,9 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
                 ROUTES.GATE_PROFILE.replace('[id]', result.insert_gates_one.id)
               );
             } else {
+              await publishGate({
+                gate_id: result.insert_gates_one.id,
+              });
               setGateId(result.insert_gates_one.id);
               setResult(result.insert_gates_one);
               setIsPublished(true);
