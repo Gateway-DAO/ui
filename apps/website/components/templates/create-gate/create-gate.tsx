@@ -175,7 +175,6 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
               ],
             },
           },
-          // published: isDraft ? 'not_published' : 'published',
           published: 'not_published',
         },
         {
