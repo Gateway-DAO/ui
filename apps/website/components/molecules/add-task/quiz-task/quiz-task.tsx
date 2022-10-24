@@ -6,7 +6,6 @@ import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import {
-  Alert,
   Box,
   Button,
   Divider,
@@ -16,7 +15,6 @@ import {
   MenuItem,
   Select,
   Slider,
-  Snackbar,
   Stack,
   TextField,
   Typography,
@@ -377,20 +375,6 @@ export function QuizTask({
           </Stack>
         </Stack>
       </Stack>
-      <Snackbar
-        open={
-          !!(errors?.tasks?.data?.[taskId]?.task_data as QuizTaskDataError)
-            ?.questions
-        }
-        autoHideDuration={3000}
-      >
-        <Alert severity="error" sx={{ width: '100%' }}>
-          {
-            (errors.tasks?.data?.[taskId]?.task_data as QuizTaskDataError)
-              ?.questions?.[questions.length - 1]?.options?.message
-          }
-        </Alert>
-      </Snackbar>
     </Stack>
   );
 }
