@@ -1,10 +1,10 @@
-import { Dispatch, SetStateAction, useEffect } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
-import { Box, Stack } from '@mui/material';
+import { Box, Button, Stack } from '@mui/material';
 
 import AddTaskCard from '../../molecules/add-task/add-task-card';
 import FileLinkTask from '../../molecules/add-task/file-link-task/file-link-task';
@@ -85,6 +85,8 @@ const TaskArea = ({ draftTasks, onDelete }: TaskAreaProps) => {
     name: 'tasks.data',
   });
 
+  const [enableTaskReordering, setEnableTaskReordering] = useState(false);
+
   useEffect(() => {
     if (draftTasks.length > 0) {
       // Remove gate_ids from the tasks
@@ -115,6 +117,16 @@ const TaskArea = ({ draftTasks, onDelete }: TaskAreaProps) => {
     swap(result.source.index, result.destination.index);
   };
 
+  const EnableTaskReordering = (e) => {
+    e.preventDefault();
+    setEnableTaskReordering(true);
+  };
+
+  const SaveTaskReordering = (e) => {
+    e.preventDefault();
+    setEnableTaskReordering(false);
+  };
+
   return (
     <>
       <DragDropContext onDragEnd={onDragEnd}>
@@ -123,8 +135,24 @@ const TaskArea = ({ draftTasks, onDelete }: TaskAreaProps) => {
             <div
               ref={provided.innerRef}
               {...provided.droppableProps}
-              style={{ width: '100%' }}
+              style={{
+                width: '100%',
+                paddingBottom: enableTaskReordering ? '100px' : '0',
+              }}
             >
+              {fields.length > 1 && (
+                <Stack direction="row">
+                  {!enableTaskReordering ? (
+                    <Button onClick={(e) => EnableTaskReordering(e)}>
+                      Mover
+                    </Button>
+                  ) : (
+                    <Button onClick={(e) => SaveTaskReordering(e)}>
+                      Salvar
+                    </Button>
+                  )}
+                </Stack>
+              )}
               {fields.map((task: Task, index: number) => {
                 const TaskComponent = TaskComponents[task.task_type];
                 return (
@@ -132,6 +160,7 @@ const TaskArea = ({ draftTasks, onDelete }: TaskAreaProps) => {
                     key={index}
                     draggableId={`t-${index}`}
                     index={index}
+                    isDragDisabled={!enableTaskReordering}
                   >
                     {(provided) => (
                       <Stack
@@ -145,15 +174,18 @@ const TaskArea = ({ draftTasks, onDelete }: TaskAreaProps) => {
                           position: 'relative',
                         }}
                       >
-                        <DragIndicatorIcon
-                          sx={{
-                            position: 'absolute',
-                            left: '-30px',
-                            color: '#ddd',
-                          }}
-                        />
+                        {enableTaskReordering && (
+                          <DragIndicatorIcon
+                            sx={{
+                              position: 'absolute',
+                              left: '-30px',
+                              color: '#ddd',
+                            }}
+                          />
+                        )}
                         <Box sx={{ width: '100%', mb: 2 }}>
                           <TaskComponent
+                            dragAndDrop={enableTaskReordering}
                             taskId={index}
                             deleteTask={() => {
                               remove(index);
@@ -169,11 +201,13 @@ const TaskArea = ({ draftTasks, onDelete }: TaskAreaProps) => {
                   </Draggable>
                 );
               })}
-              <AddTaskCard numberOfTasks={fields.length} addTask={addTask} />
               {provided.placeholder}
             </div>
           )}
         </Droppable>
+        {!enableTaskReordering && (
+          <AddTaskCard numberOfTasks={fields.length} addTask={addTask} />
+        )}
       </DragDropContext>
     </>
   );
