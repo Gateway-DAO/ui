@@ -22,7 +22,7 @@ import {
 } from '../../../templates/create-gate/schema';
 import { EmojiPicker, EmojiPickerProps } from '../../form/emoji-picker';
 
-const TwitterTweetTask = ({ taskId, deleteTask }) => {
+const TwitterTweetTask = ({ dragAndDrop, taskId, deleteTask }) => {
   const {
     register,
     setValue,
@@ -40,6 +40,7 @@ const TwitterTweetTask = ({ taskId, deleteTask }) => {
   }, [setValue, taskId, formValues.tasks.data]);
 
   const [taskVisible, setTaskVisible] = useState(false);
+  const [taskIsMoving, setTaskIsMoving] = useState(false);
   const [emoji, setEmoji] = useState('');
   const [tweetText, setTweetText] = useState(
     formValues.tasks.data[taskId]?.task_data['tweet_text']
@@ -70,6 +71,11 @@ const TwitterTweetTask = ({ taskId, deleteTask }) => {
       setValue(`tasks.data.${taskId}.task_data.tweet_text`, tweetText + emoji);
     }
   }, [emoji]);
+
+  useEffect(() => {
+    setTaskVisible(dragAndDrop);
+    setTaskIsMoving(dragAndDrop);
+  }, [dragAndDrop]);
 
   const emojiProps: EmojiPickerProps = {
     onEmoji: setEmoji,
@@ -149,48 +155,50 @@ const TwitterTweetTask = ({ taskId, deleteTask }) => {
             />
           </Stack>
         </Stack>
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <IconButton
-            onClick={() => deleteTask(taskId)}
-            sx={(theme) => ({
-              color: theme.palette.text.secondary,
-              cursor: 'pointer',
-              marginRight: '20px',
-              '&:hover': {
-                color: theme.palette.text.primary,
-              },
-            })}
-          >
-            <DeleteIcon fontSize="medium" />
-          </IconButton>
-          {taskVisible ? (
+        {!taskIsMoving && (
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <IconButton
-              onClick={() => setTaskVisible(false)}
+              onClick={() => deleteTask(taskId)}
               sx={(theme) => ({
                 color: theme.palette.text.secondary,
                 cursor: 'pointer',
+                marginRight: '20px',
                 '&:hover': {
                   color: theme.palette.text.primary,
                 },
               })}
             >
-              <ExpandMore fontSize="medium" />
+              <DeleteIcon fontSize="medium" />
             </IconButton>
-          ) : (
-            <IconButton
-              onClick={() => setTaskVisible(true)}
-              sx={(theme) => ({
-                color: theme.palette.text.secondary,
-                cursor: 'pointer',
-                '&:hover': {
-                  color: theme.palette.text.primary,
-                },
-              })}
-            >
-              <ExpandLess fontSize="medium" />
-            </IconButton>
-          )}
-        </Box>
+            {taskVisible ? (
+              <IconButton
+                onClick={() => setTaskVisible(false)}
+                sx={(theme) => ({
+                  color: theme.palette.text.secondary,
+                  cursor: 'pointer',
+                  '&:hover': {
+                    color: theme.palette.text.primary,
+                  },
+                })}
+              >
+                <ExpandMore fontSize="medium" />
+              </IconButton>
+            ) : (
+              <IconButton
+                onClick={() => setTaskVisible(true)}
+                sx={(theme) => ({
+                  color: theme.palette.text.secondary,
+                  cursor: 'pointer',
+                  '&:hover': {
+                    color: theme.palette.text.primary,
+                  },
+                })}
+              >
+                <ExpandLess fontSize="medium" />
+              </IconButton>
+            )}
+          </Box>
+        )}
       </Stack>
       <FormControl style={!taskVisible ? {} : { display: 'none' }}>
         <TextField

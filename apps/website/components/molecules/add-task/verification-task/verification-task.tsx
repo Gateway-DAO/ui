@@ -19,7 +19,7 @@ import {
   VerificationCodeDataError,
 } from '../../../templates/create-gate/schema';
 
-const VerificationCodeTask = ({ taskId, deleteTask }) => {
+const VerificationCodeTask = ({ dragAndDrop, taskId, deleteTask }) => {
   const {
     register,
     setValue,
@@ -36,7 +36,13 @@ const VerificationCodeTask = ({ taskId, deleteTask }) => {
     }
   }, [setValue, taskId, formValues.tasks.data]);
 
+  useEffect(() => {
+    setTaskVisible(dragAndDrop);
+    setTaskIsMoving(dragAndDrop);
+  }, [dragAndDrop]);
+
   const [taskVisible, setTaskVisible] = useState(false);
+  const [taskIsMoving, setTaskIsMoving] = useState(false);
 
   return (
     <Stack
@@ -100,48 +106,50 @@ const VerificationCodeTask = ({ taskId, deleteTask }) => {
             />
           </Stack>
         </Stack>
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <IconButton
-            onClick={() => deleteTask(taskId)}
-            sx={(theme) => ({
-              color: theme.palette.text.secondary,
-              cursor: 'pointer',
-              marginRight: '20px',
-              '&:hover': {
-                color: theme.palette.text.primary,
-              },
-            })}
-          >
-            <DeleteIcon fontSize="medium" />
-          </IconButton>
-          {taskVisible ? (
+        {!taskIsMoving && (
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <IconButton
-              onClick={() => setTaskVisible(false)}
+              onClick={() => deleteTask(taskId)}
               sx={(theme) => ({
                 color: theme.palette.text.secondary,
                 cursor: 'pointer',
+                marginRight: '20px',
                 '&:hover': {
                   color: theme.palette.text.primary,
                 },
               })}
             >
-              <ExpandMore fontSize="medium" />
+              <DeleteIcon fontSize="medium" />
             </IconButton>
-          ) : (
-            <IconButton
-              onClick={() => setTaskVisible(true)}
-              sx={(theme) => ({
-                color: theme.palette.text.secondary,
-                cursor: 'pointer',
-                '&:hover': {
-                  color: theme.palette.text.primary,
-                },
-              })}
-            >
-              <ExpandLess fontSize="medium" />
-            </IconButton>
-          )}
-        </Box>
+            {taskVisible ? (
+              <IconButton
+                onClick={() => setTaskVisible(false)}
+                sx={(theme) => ({
+                  color: theme.palette.text.secondary,
+                  cursor: 'pointer',
+                  '&:hover': {
+                    color: theme.palette.text.primary,
+                  },
+                })}
+              >
+                <ExpandMore fontSize="medium" />
+              </IconButton>
+            ) : (
+              <IconButton
+                onClick={() => setTaskVisible(true)}
+                sx={(theme) => ({
+                  color: theme.palette.text.secondary,
+                  cursor: 'pointer',
+                  '&:hover': {
+                    color: theme.palette.text.primary,
+                  },
+                })}
+              >
+                <ExpandLess fontSize="medium" />
+              </IconButton>
+            )}
+          </Box>
+        )}
       </Stack>
       <FormControl style={!taskVisible ? {} : { display: 'none' }}>
         <TextField

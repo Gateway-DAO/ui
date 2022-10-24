@@ -1,12 +1,12 @@
 import useTranslation from 'next-translate/useTranslation';
 import { useEffect, useState } from 'react';
 
+import { useSnackbar } from 'notistack';
 import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
 
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import {
-  Alert,
   Box,
   Button,
   Divider,
@@ -16,7 +16,6 @@ import {
   MenuItem,
   Select,
   Slider,
-  Snackbar,
   Stack,
   TextField,
   Typography,
@@ -49,9 +48,11 @@ export const createQuestion = (order = 0) => ({
 });
 
 export function QuizTask({
+  dragAndDrop,
   taskId,
   deleteTask,
 }: {
+  dragAndDrop: boolean;
   taskId: number;
   deleteTask: (taskId) => void;
 }): JSX.Element {
@@ -67,8 +68,6 @@ export function QuizTask({
 
   const formValues = getValues();
 
-  const [taskVisible, setTaskVisible] = useState(false);
-
   const {
     fields: questions,
     append,
@@ -78,13 +77,40 @@ export function QuizTask({
     control,
   });
 
+  const { enqueueSnackbar } = useSnackbar();
+
   useEffect(() => {
     if (formValues.tasks.data[taskId]?.title === '') {
       setValue(`tasks.data.${taskId}.title`, 'Untitled Requirement');
     }
   }, [setValue, taskId, formValues.tasks.data]);
 
+  useEffect(() => {
+    setTaskVisible(dragAndDrop);
+    setTaskIsMoving(dragAndDrop);
+  }, [dragAndDrop]);
+
+  useEffect(() => {
+    errorOptionIsNecessary();
+  }, [errors, questions]);
+
+  const [taskVisible, setTaskVisible] = useState(false);
+  const [taskIsMoving, setTaskIsMoving] = useState(false);
   const onRemoveQuestion = (index: number) => remove(index);
+
+  const errorOptionIsNecessary = () => {
+    if (
+      (errors?.tasks?.data?.[taskId]?.task_data as QuizTaskDataError)?.questions
+    ) {
+      enqueueSnackbar(
+        (errors.tasks?.data?.[taskId]?.task_data as QuizTaskDataError)
+          ?.questions?.[questions.length - 1]?.options?.message,
+        {
+          variant: 'error',
+        }
+      );
+    }
+  };
 
   return (
     <Stack
@@ -147,48 +173,50 @@ export function QuizTask({
             helperText={errors.tasks?.data?.[taskId]?.title?.message}
           />
         </Stack>
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <IconButton
-            onClick={() => deleteTask(taskId)}
-            sx={(theme) => ({
-              color: theme.palette.text.secondary,
-              cursor: 'pointer',
-              marginRight: '20px',
-              '&:hover': {
-                color: theme.palette.text.primary,
-              },
-            })}
-          >
-            <DeleteIcon fontSize="medium" />
-          </IconButton>
-          {taskVisible ? (
+        {!taskIsMoving && (
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <IconButton
-              onClick={() => setTaskVisible(false)}
+              onClick={() => deleteTask(taskId)}
               sx={(theme) => ({
                 color: theme.palette.text.secondary,
                 cursor: 'pointer',
+                marginRight: '20px',
                 '&:hover': {
                   color: theme.palette.text.primary,
                 },
               })}
             >
-              <ExpandMore fontSize="medium" />
+              <DeleteIcon fontSize="medium" />
             </IconButton>
-          ) : (
-            <IconButton
-              onClick={() => setTaskVisible(true)}
-              sx={(theme) => ({
-                color: theme.palette.text.secondary,
-                cursor: 'pointer',
-                '&:hover': {
-                  color: theme.palette.text.primary,
-                },
-              })}
-            >
-              <ExpandLess fontSize="medium" />
-            </IconButton>
-          )}
-        </Box>
+            {taskVisible ? (
+              <IconButton
+                onClick={() => setTaskVisible(false)}
+                sx={(theme) => ({
+                  color: theme.palette.text.secondary,
+                  cursor: 'pointer',
+                  '&:hover': {
+                    color: theme.palette.text.primary,
+                  },
+                })}
+              >
+                <ExpandMore fontSize="medium" />
+              </IconButton>
+            ) : (
+              <IconButton
+                onClick={() => setTaskVisible(true)}
+                sx={(theme) => ({
+                  color: theme.palette.text.secondary,
+                  cursor: 'pointer',
+                  '&:hover': {
+                    color: theme.palette.text.primary,
+                  },
+                })}
+              >
+                <ExpandLess fontSize="medium" />
+              </IconButton>
+            )}
+          </Box>
+        )}
       </Stack>
       <Box
         sx={{
@@ -245,6 +273,8 @@ export function QuizTask({
                       Math.max(...questions.map((o) => o.order)) + 1
                     )
                   );
+                } else {
+                  errorOptionIsNecessary();
                 }
               }}
             >
@@ -258,7 +288,7 @@ export function QuizTask({
           sx={(theme) => ({
             width: '100%',
             padding: '50px',
-            background: theme.palette.background.light,
+            background: `linear-gradient(180deg, rgba(255, 255, 255, 0.07) 0%, rgba(255, 255, 255, 0.07) 100%), ${theme.palette.background.default}`,
           })}
         >
           <Typography variant="h6">{t('tasks.quiz.settingsTitle')}</Typography>
@@ -377,20 +407,6 @@ export function QuizTask({
           </Stack>
         </Stack>
       </Stack>
-      <Snackbar
-        open={
-          !!(errors?.tasks?.data?.[taskId]?.task_data as QuizTaskDataError)
-            ?.questions
-        }
-        autoHideDuration={3000}
-      >
-        <Alert severity="error" sx={{ width: '100%' }}>
-          {
-            (errors.tasks?.data?.[taskId]?.task_data as QuizTaskDataError)
-              ?.questions?.[questions.length - 1]?.options?.message
-          }
-        </Alert>
-      </Snackbar>
     </Stack>
   );
 }

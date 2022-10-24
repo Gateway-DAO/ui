@@ -37,8 +37,7 @@ export const numberFormat = (value: number) => {
   }
 };
 
-export const FollowProfile = ({ taskId, deleteTask }) => {
-  const [taskVisible, setTaskVisible] = useState(false);
+export const FollowProfile = ({ dragAndDrop, taskId, deleteTask }) => {
   const { gqlAuthMethods } = useAuth();
   const {
     register,
@@ -55,6 +54,14 @@ export const FollowProfile = ({ taskId, deleteTask }) => {
       setValue(`tasks.data.${taskId}.title`, 'Untitled Task');
     }
   }, [setValue, taskId, formValues.tasks.data]);
+
+  useEffect(() => {
+    setTaskVisible(dragAndDrop);
+    setTaskIsMoving(dragAndDrop);
+  }, [dragAndDrop]);
+
+  const [taskVisible, setTaskVisible] = useState(false);
+  const [taskIsMoving, setTaskIsMoving] = useState(false);
 
   const {
     mutate: getTwitterMutate,
@@ -150,48 +157,50 @@ export const FollowProfile = ({ taskId, deleteTask }) => {
             />
           </Stack>
         </Stack>
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <IconButton
-            onClick={() => deleteTask(taskId)}
-            sx={(theme) => ({
-              color: theme.palette.text.secondary,
-              cursor: 'pointer',
-              marginRight: '20px',
-              '&:hover': {
-                color: theme.palette.text.primary,
-              },
-            })}
-          >
-            <DeleteIcon fontSize="medium" />
-          </IconButton>
-          {taskVisible ? (
+        {!taskIsMoving && (
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <IconButton
-              onClick={() => setTaskVisible(false)}
+              onClick={() => deleteTask(taskId)}
               sx={(theme) => ({
                 color: theme.palette.text.secondary,
                 cursor: 'pointer',
+                marginRight: '20px',
                 '&:hover': {
                   color: theme.palette.text.primary,
                 },
               })}
             >
-              <ExpandMore fontSize="medium" />
+              <DeleteIcon fontSize="medium" />
             </IconButton>
-          ) : (
-            <IconButton
-              onClick={() => setTaskVisible(true)}
-              sx={(theme) => ({
-                color: theme.palette.text.secondary,
-                cursor: 'pointer',
-                '&:hover': {
-                  color: theme.palette.text.primary,
-                },
-              })}
-            >
-              <ExpandLess fontSize="medium" />
-            </IconButton>
-          )}
-        </Box>
+            {taskVisible ? (
+              <IconButton
+                onClick={() => setTaskVisible(false)}
+                sx={(theme) => ({
+                  color: theme.palette.text.secondary,
+                  cursor: 'pointer',
+                  '&:hover': {
+                    color: theme.palette.text.primary,
+                  },
+                })}
+              >
+                <ExpandMore fontSize="medium" />
+              </IconButton>
+            ) : (
+              <IconButton
+                onClick={() => setTaskVisible(true)}
+                sx={(theme) => ({
+                  color: theme.palette.text.secondary,
+                  cursor: 'pointer',
+                  '&:hover': {
+                    color: theme.palette.text.primary,
+                  },
+                })}
+              >
+                <ExpandLess fontSize="medium" />
+              </IconButton>
+            )}
+          </Box>
+        )}
       </Stack>
       <FormControl style={!taskVisible ? {} : { display: 'none' }}>
         <TextField

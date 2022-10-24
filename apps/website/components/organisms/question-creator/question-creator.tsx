@@ -60,10 +60,11 @@ export function QuestionCreator({
                       ref={provided.innerRef}
                       {...provided.draggableProps}
                       {...provided.dragHandleProps}
-                      sx={{
+                      sx={(theme) => ({
                         width: '100%',
                         py: '48px',
-                      }}
+                        background: theme.palette.background.light,
+                      })}
                     >
                       {index !== 0 && (
                         <Divider sx={{ margin: '-40px -50px 60px -50px' }} />
