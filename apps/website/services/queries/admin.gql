@@ -1,0 +1,27 @@
+query get_admin_data {
+  credential_count: credentials_aggregate {
+    aggregate {
+      count
+    }
+  }
+
+  minted_credential_count: credentials_aggregate(where: {status: {_eq: "minted"}}) {
+    aggregate {
+      count
+    }
+  }
+
+  credential_data: all_credential_count {
+    count
+    gate {
+      image
+    }
+    name
+  }
+
+  user_data: users_aggregate {
+    aggregate {
+      count
+    }
+  }
+}

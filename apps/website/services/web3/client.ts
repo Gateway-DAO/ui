@@ -1,5 +1,6 @@
 import { getDefaultWallets } from '@rainbow-me/rainbowkit';
 import { createClient, chain, configureChains } from 'wagmi';
+import { alchemyProvider } from 'wagmi/providers/alchemy';
 import { publicProvider } from 'wagmi/providers/public';
 
 // const alchemyId = process.env.ALCHEMY_ID
@@ -8,10 +9,7 @@ import { publicProvider } from 'wagmi/providers/public';
 // Two popular providers are Alchemy (alchemy.com) and Infura (infura.io)
 export const { chains, provider, webSocketProvider } = configureChains(
   [chain.mainnet, chain.polygon, chain.optimism, chain.arbitrum],
-  [
-    // alchemyProvider({ alchemyId }),
-    publicProvider(),
-  ]
+  [alchemyProvider({ apiKey: process.env.NEXT_PUBLIC_ALCHEMY_KEY })]
 );
 
 const { connectors } = getDefaultWallets({
