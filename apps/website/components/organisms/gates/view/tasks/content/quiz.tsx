@@ -160,9 +160,9 @@ const QuizContent = ({
         <LoadingButton
           variant="contained"
           sx={{ marginTop: '15px' }}
-          onClick={() => {
-            spammers ? null : completeTask({ questions: answers });
-          }}
+          onClick={() =>
+            !spammers ? completeTask({ questions: answers }) : null
+          }
           isLoading={isLoading}
         >
           Submit

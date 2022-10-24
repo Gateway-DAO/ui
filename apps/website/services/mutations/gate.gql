@@ -1,3 +1,10 @@
+mutation publish_gate($gate_id: uuid!) {
+  publish_gate(gate_id: $gate_id) {
+    published
+    gate_id
+  }
+}
+
 mutation toggle_gate_state($gate_id: uuid!, $state: gate_state!) {
   update_gates_by_pk(
     pk_columns: { id: $gate_id }

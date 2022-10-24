@@ -96,7 +96,9 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
 
   useEffect(() => {
     const completedTaskIds =
-      me?.task_progresses.map((task) => task.task_id) || [];
+      me?.task_progresses
+        .filter((task) => task.completed == 'done')
+        .map((task) => task.task_id) || [];
 
     setCompletedTasksCount(countSimiliarIds(completedTaskIds, taskIds));
   }, [taskIds, me?.task_progresses, gateProps, router]);
@@ -121,6 +123,30 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
     gqlAuthMethods.credential({
       id: credential_id,
     })
+  );
+
+  const { mutate: publishGate } = useMutation(
+    ['publishGate'],
+    () =>
+      gqlAuthMethods.publish_gate({
+        gate_id: gateProps.id,
+      }),
+    {
+      onSuccess: async (data) => {
+        setPublished(data.publish_gate.published);
+
+        snackbar.onOpen({
+          message: `Credential ${
+            published === 'not_published' || published === 'paused'
+              ? 'published!'
+              : 'unpublished!'
+          }`,
+        });
+
+        await queryClient.refetchQueries(['gate', gateProps?.id]);
+        await queryClient.refetchQueries(['dao-gates', gateProps?.dao_id]);
+      },
+    }
   );
 
   const { mutate: toggleGateStateMutation } = useMutation(
@@ -539,7 +565,11 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
         }`}
         negativeAnswer="Cancel"
         setOpen={setConfirmToggleState}
-        onConfirm={toggleGateState}
+        onConfirm={
+          gateProps?.published === 'not_published'
+            ? publishGate
+            : toggleGateState
+        }
       >
         {published === 'published'
           ? 'If you unpublish this credential, users will not be able to see it anymore.'

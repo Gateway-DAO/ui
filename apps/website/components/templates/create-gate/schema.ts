@@ -182,11 +182,13 @@ export type GithubPRDataError = {
 export type QuizTaskData = {
   questions?: Question[];
   pass_score?: number;
+  time_period?: number;
 };
 
 export type QuizTaskDataError = {
   id?: FieldError;
   pass_score?: FieldError;
+  time_period?: FieldError;
   questions?: {
     id?: FieldError;
     question?: FieldError;
@@ -420,6 +422,10 @@ export const TwitterFollowProfileSchema = z.object({
 
 export const quizDataSchema = z.object({
   pass_score: z.number().min(1).max(100),
+  time_period: z.number({
+    invalid_type_error: 'Select a time period',
+    required_error: 'Select a time period',
+  }),
   questions: z.array(
     z.object({
       question: z
