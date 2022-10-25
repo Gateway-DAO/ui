@@ -3,8 +3,10 @@ import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
-import { Box, Button, Stack } from '@mui/material';
+import { Box, Button, Stack, Typography } from '@mui/material';
 
 import AddTaskCard from '../../molecules/add-task/add-task-card';
 import FileLinkTask from '../../molecules/add-task/file-link-task/file-link-task';
@@ -117,16 +119,6 @@ const TaskArea = ({ draftTasks, onDelete }: TaskAreaProps) => {
     swap(result.source.index, result.destination.index);
   };
 
-  const EnableTaskReordering = (e) => {
-    e.preventDefault();
-    setEnableTaskReordering(true);
-  };
-
-  const SaveTaskReordering = (e) => {
-    e.preventDefault();
-    setEnableTaskReordering(false);
-  };
-
   return (
     <>
       <DragDropContext onDragEnd={onDragEnd}>
@@ -141,16 +133,68 @@ const TaskArea = ({ draftTasks, onDelete }: TaskAreaProps) => {
               }}
             >
               {fields.length > 1 && (
-                <Stack direction="row">
-                  {!enableTaskReordering ? (
-                    <Button onClick={(e) => EnableTaskReordering(e)}>
-                      Mover
-                    </Button>
-                  ) : (
-                    <Button onClick={(e) => SaveTaskReordering(e)}>
-                      Salvar
-                    </Button>
-                  )}
+                <Stack
+                  direction="row"
+                  alignItems="center"
+                  justifyContent="flex-end"
+                  sx={{ mb: 4 }}
+                >
+                  <Typography
+                    sx={(theme) => ({
+                      textTransform: 'uppercase',
+                      color: theme.palette.grey[500],
+                      fontWeight: theme.typography.fontWeightMedium,
+                      fontSize: '1rem',
+                      marginRight: '12px',
+                    })}
+                  >
+                    Reorder
+                  </Typography>
+                  <Button
+                    sx={(theme) => ({
+                      position: 'relative',
+                      display: 'block',
+                      width: '32px',
+                      minWidth: '32px',
+                      height: '32px',
+                      padding: '0',
+                      textAlign: 'center',
+                      background: enableTaskReordering
+                        ? theme.palette.grey[200]
+                        : theme.palette.background.light,
+                      color: enableTaskReordering
+                        ? theme.palette.grey[900]
+                        : theme.palette.grey[400],
+                      '&:hover': {
+                        background: enableTaskReordering
+                          ? theme.palette.grey[300]
+                          : '#342741',
+                      },
+                    })}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      enableTaskReordering
+                        ? setEnableTaskReordering(false)
+                        : setEnableTaskReordering(true);
+                    }}
+                  >
+                    <ArrowDropUpIcon
+                      sx={{
+                        fontSize: '30px',
+                        position: 'absolute',
+                        top: '-3px',
+                        left: '1px',
+                      }}
+                    />
+                    <ArrowDropDownIcon
+                      sx={{
+                        fontSize: '30px',
+                        position: 'absolute',
+                        bottom: '-3px',
+                        left: '1px',
+                      }}
+                    />
+                  </Button>
                 </Stack>
               )}
               {fields.map((task: Task, index: number) => {
@@ -178,17 +222,25 @@ const TaskArea = ({ draftTasks, onDelete }: TaskAreaProps) => {
                           <DragIndicatorIcon
                             sx={(theme) => ({
                               position: 'absolute',
-                              top: 'calc(50% - 18px)',
+                              top: 'calc(50% - 25px)',
                               left: '15px',
                               color: '#ddd',
                               [theme.breakpoints.down('sm')]: {
-                                top: 'calc(50% - 18px)',
+                                top: 'calc(50% - 25px)',
                                 left: '10px',
                               },
                             })}
                           />
                         )}
-                        <Box sx={{ width: '100%', mb: 2 }}>
+                        <Box
+                          sx={(theme) => ({
+                            width: '100%',
+                            mb: 4,
+                            [theme.breakpoints.down('sm')]: {
+                              mb: 3,
+                            },
+                          })}
+                        >
                           <TaskComponent
                             dragAndDrop={enableTaskReordering}
                             taskId={index}
