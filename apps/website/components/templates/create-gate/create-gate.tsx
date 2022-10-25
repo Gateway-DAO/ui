@@ -24,7 +24,12 @@ import TaskArea from '../../organisms/tasks-area/tasks-area';
 import { GateDetailsForm } from './details-form';
 import { GateImageCard } from './gate-image-card/gate-image-card';
 import { GateTypeSelector } from './gate-type-selector';
-import { createGateSchema, CreateGateTypes, DraftGateTypes } from './schema';
+import {
+  createGateSchema,
+  CreateGateTypes,
+  DraftGateTypes,
+  GateType,
+} from './schema';
 
 type CreateGateProps = {
   oldData?: DraftGateTypes;
@@ -234,6 +239,9 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
     return message !== '' ? message : null;
   };
 
+  const gateType: GateType = methods.watch('type');
+  console.log(gateType);
+
   const saveDraft = (draftData: CreateGateTypes) =>
     handleMutation(draftData, true);
 
@@ -313,25 +321,23 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
               </Stack>
             </Stack>
 
-            <FormProvider {...methods}>
-              <GateImageCard
-                draftImage={oldData.image}
-                label={
-                  <>
-                    <Typography textAlign={'center'} paddingX={4}>
-                      Drop or{' '}
-                      <Typography color={'primary'} display={'inline'}>
-                        upload
-                      </Typography>{' '}
-                      your credential image
-                    </Typography>
-                  </>
-                }
-                sx={{
-                  width: 300,
-                }}
-              />
-            </FormProvider>
+            <GateImageCard
+              draftImage={oldData.image}
+              label={
+                <>
+                  <Typography textAlign={'center'} paddingX={4}>
+                    Drop or{' '}
+                    <Typography color={'primary'} display={'inline'}>
+                      upload
+                    </Typography>{' '}
+                    your credential image
+                  </Typography>
+                </>
+              }
+              sx={{
+                width: 300,
+              }}
+            />
           </Stack>
 
           {/* Tasks */}
@@ -339,50 +345,52 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
             <>
               <GateTypeSelector />
               <Divider sx={{ margin: '60px 0', width: '100%' }} />
-              <Stack
-                direction="row"
-                gap={{ lg: 5, xs: 2, md: 2 }}
-                sx={(theme) => ({
-                  width: '100%',
-                  display: { xs: 'block', md: 'flex' },
-                  [theme.breakpoints.down('sm')]: { p: '0 20px' },
-                })}
-              >
-                <Box
-                  sx={{
-                    maxWidth: {
-                      lg: `15%`,
-                    },
-                  }}
-                >
-                  <Typography component="h2" variant="h5" gutterBottom>
-                    Set requirements
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    color={'text.secondary'}
-                    marginBottom={4}
-                  >
-                    Define the requirements that the user must meet to obtain
-                    the credential
-                  </Typography>
-                </Box>
+              {gateType === 'task_based' && (
                 <Stack
-                  direction="column"
-                  sx={{
-                    margin: 'auto',
+                  direction="row"
+                  gap={{ lg: 5, xs: 2, md: 2 }}
+                  sx={(theme) => ({
                     width: '100%',
-                    maxWidth: { xs: '100%', md: '100%', lg: '80%' },
-                  }}
+                    display: { xs: 'block', md: 'flex' },
+                    [theme.breakpoints.down('sm')]: { p: '0 20px' },
+                  })}
                 >
-                  <Stack direction="column" gap={2}>
-                    <TaskArea
-                      draftTasks={oldData.tasks || []}
-                      onDelete={setDeletedTasks}
-                    />
+                  <Box
+                    sx={{
+                      maxWidth: {
+                        lg: `15%`,
+                      },
+                    }}
+                  >
+                    <Typography component="h2" variant="h5" gutterBottom>
+                      Set requirements
+                    </Typography>
+                    <Typography
+                      variant="body2"
+                      color={'text.secondary'}
+                      marginBottom={4}
+                    >
+                      Define the requirements that the user must meet to obtain
+                      the credential
+                    </Typography>
+                  </Box>
+                  <Stack
+                    direction="column"
+                    sx={{
+                      margin: 'auto',
+                      width: '100%',
+                      maxWidth: { xs: '100%', md: '100%', lg: '80%' },
+                    }}
+                  >
+                    <Stack direction="column" gap={2}>
+                      <TaskArea
+                        draftTasks={oldData.tasks || []}
+                        onDelete={setDeletedTasks}
+                      />
+                    </Stack>
                   </Stack>
                 </Stack>
-              </Stack>
+              )}
             </>
           )}
 
