@@ -23,6 +23,7 @@ import { PublishNavbar } from '../../organisms/publish-navbar/publish-navbar';
 import TaskArea from '../../organisms/tasks-area/tasks-area';
 import { GateDetailsForm } from './details-form';
 import { GateImageCard } from './gate-image-card/gate-image-card';
+import { GateTypeSelector } from './gate-type-selector';
 import { createGateSchema, CreateGateTypes, DraftGateTypes } from './schema';
 
 type CreateGateProps = {
@@ -243,173 +244,172 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
     .watch(['title', 'description'])
     .every((value) => !!value);
 
+  const canShowTasks =
+    hasTitleAndDescription || (gateDetails.title && gateDetails.description);
+
   return (
     <>
-      <Stack
-        component="form"
-        id="gate-details-form"
-        onSubmit={async (e) => {
-          e.preventDefault();
+      <FormProvider {...methods}>
+        <Stack
+          component="form"
+          id="gate-details-form"
+          onSubmit={async (e) => {
+            e.preventDefault();
 
-          const dataIsValid = await checkFormErrors(false);
+            const dataIsValid = await checkFormErrors(false);
 
-          if (dataIsValid) {
-            setConfirmPublish(true);
-          }
-        }}
-        padding={'0 90px'}
-        sx={(theme) => ({
-          p: '0 90px',
-          [theme.breakpoints.down('sm')]: { p: '0 20px' },
-        })}
-      >
-        <FormProvider {...methods}>
+            if (dataIsValid) {
+              setConfirmPublish(true);
+            }
+          }}
+          padding={'0 90px'}
+          sx={(theme) => ({
+            p: '0 90px',
+            [theme.breakpoints.down('sm')]: { p: '0 20px' },
+          })}
+        >
           <PublishNavbar
             draftIsLoading={draftIsLoading}
             createIsLoading={createIsLoading}
             saveDraft={saveDraft}
           />
-        </FormProvider>
-        <Typography
-          component="h1"
-          variant="h4"
-          sx={{ margin: '40px 0 40px 0', marginBottom: { md: '100px' } }}
-        >
-          {oldData.id ? 'Edit' : 'Create'} Credential
-        </Typography>
+          <Typography
+            component="h1"
+            variant="h4"
+            sx={{ margin: '40px 0 40px 0', marginBottom: { md: '100px' } }}
+          >
+            {oldData.id ? 'Edit' : 'Create'} Credential
+          </Typography>
 
-        {/* Details */}
-        <Stack
-          direction="row"
-          justifyContent="space-between"
-          alignItems="stretch"
-          gap={2}
-          sx={{
-            width: '100%',
-            flexDirection: { xs: 'column', md: 'row' },
-          }}
-        >
-          <Box>
-            <Typography component="h2" variant="h5" gutterBottom>
-              Add details
-            </Typography>
-            <Typography variant="body2" color={'text.secondary'}>
-              Add the details of the credential
-            </Typography>
-          </Box>
+          {/* Details */}
           <Stack
-            gap={7.5}
-            mt={2}
+            direction="row"
+            justifyContent="space-between"
+            alignItems="stretch"
+            gap={2}
             sx={{
-              maxWidth: { xs: '100%', md: '50%', lg: '40%' },
               width: '100%',
+              flexDirection: { xs: 'column', md: 'row' },
             }}
           >
-            <Stack direction="column" gap={4}>
-              <FormProvider {...methods}>
+            <Box>
+              <Typography component="h2" variant="h5" gutterBottom>
+                Add details
+              </Typography>
+              <Typography variant="body2" color={'text.secondary'}>
+                Add the details of the credential
+              </Typography>
+            </Box>
+            <Stack
+              gap={7.5}
+              mt={2}
+              sx={{
+                maxWidth: { xs: '100%', md: '50%', lg: '40%' },
+                width: '100%',
+              }}
+            >
+              <Stack direction="column" gap={4}>
                 <GateDetailsForm gateData={gateDetails} />
-              </FormProvider>
+              </Stack>
             </Stack>
+
+            <FormProvider {...methods}>
+              <GateImageCard
+                draftImage={oldData.image}
+                label={
+                  <>
+                    <Typography textAlign={'center'} paddingX={4}>
+                      Drop or{' '}
+                      <Typography color={'primary'} display={'inline'}>
+                        upload
+                      </Typography>{' '}
+                      your credential image
+                    </Typography>
+                  </>
+                }
+                sx={{
+                  width: 300,
+                }}
+              />
+            </FormProvider>
           </Stack>
 
-          <FormProvider {...methods}>
-            <GateImageCard
-              draftImage={oldData.image}
-              label={
-                <>
-                  <Typography textAlign={'center'} paddingX={4}>
-                    Drop or{' '}
-                    <Typography color={'primary'} display={'inline'}>
-                      upload
-                    </Typography>{' '}
-                    your credential image
-                  </Typography>
-                </>
-              }
-              sx={{
-                width: 300,
-              }}
-            />
-          </FormProvider>
-        </Stack>
-
-        {/* Tasks */}
-        {(hasTitleAndDescription ||
-          (gateDetails.title && gateDetails.description)) && (
-          <>
-            <Divider sx={{ margin: '60px 0', width: '100%' }} />
-            <Stack
-              direction="row"
-              gap={{ lg: 5, xs: 2, md: 2 }}
-              sx={(theme) => ({
-                width: '100%',
-                display: { xs: 'block', md: 'flex' },
-                [theme.breakpoints.down('sm')]: { p: '0 20px' },
-              })}
-            >
-              <Box
-                sx={{
-                  maxWidth: {
-                    lg: `15%`,
-                  },
-                }}
-              >
-                <Typography component="h2" variant="h5" gutterBottom>
-                  Set requirements
-                </Typography>
-                <Typography
-                  variant="body2"
-                  color={'text.secondary'}
-                  marginBottom={4}
-                >
-                  Define the requirements that the user must meet to obtain the
-                  credential
-                </Typography>
-              </Box>
+          {/* Tasks */}
+          {canShowTasks && (
+            <>
+              <GateTypeSelector />
+              <Divider sx={{ margin: '60px 0', width: '100%' }} />
               <Stack
-                direction="column"
-                sx={{
-                  margin: 'auto',
+                direction="row"
+                gap={{ lg: 5, xs: 2, md: 2 }}
+                sx={(theme) => ({
                   width: '100%',
-                  maxWidth: { xs: '100%', md: '100%', lg: '80%' },
-                }}
+                  display: { xs: 'block', md: 'flex' },
+                  [theme.breakpoints.down('sm')]: { p: '0 20px' },
+                })}
               >
-                <Stack direction="column" gap={2}>
-                  <FormProvider {...methods}>
+                <Box
+                  sx={{
+                    maxWidth: {
+                      lg: `15%`,
+                    },
+                  }}
+                >
+                  <Typography component="h2" variant="h5" gutterBottom>
+                    Set requirements
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    color={'text.secondary'}
+                    marginBottom={4}
+                  >
+                    Define the requirements that the user must meet to obtain
+                    the credential
+                  </Typography>
+                </Box>
+                <Stack
+                  direction="column"
+                  sx={{
+                    margin: 'auto',
+                    width: '100%',
+                    maxWidth: { xs: '100%', md: '100%', lg: '80%' },
+                  }}
+                >
+                  <Stack direction="column" gap={2}>
                     <TaskArea
                       draftTasks={oldData.tasks || []}
                       onDelete={setDeletedTasks}
                     />
-                  </FormProvider>
+                  </Stack>
                 </Stack>
               </Stack>
-            </Stack>
-          </>
-        )}
+            </>
+          )}
 
-        <ConfirmDialog
-          title="Are you sure you want to publish this credential?"
-          open={confirmPublish}
-          positiveAnswer="Publish"
-          negativeAnswer="Cancel"
-          setOpen={setConfirmPublish}
-          onConfirm={methods.handleSubmit(createGate, (errors) => {
-            enqueueSnackbar(
-              Object.values(errors)[0].data?.message || 'Invalid data'
-            );
-            setCreateIsLoading(false);
-            return;
-          })}
-        >
-          If you publish this credential, you will no longer be allowed to edit
-          it. You can unpublish or delete the credential any time.
-        </ConfirmDialog>
-        <GatePublishedModal
-          open={isPublished}
-          handleClose={closePublishedModal}
-          gate={result}
-        />
-      </Stack>
+          <ConfirmDialog
+            title="Are you sure you want to publish this credential?"
+            open={confirmPublish}
+            positiveAnswer="Publish"
+            negativeAnswer="Cancel"
+            setOpen={setConfirmPublish}
+            onConfirm={methods.handleSubmit(createGate, (errors) => {
+              enqueueSnackbar(
+                Object.values(errors)[0].data?.message || 'Invalid data'
+              );
+              setCreateIsLoading(false);
+              return;
+            })}
+          >
+            If you publish this credential, you will no longer be allowed to
+            edit it. You can unpublish or delete the credential any time.
+          </ConfirmDialog>
+          <GatePublishedModal
+            open={isPublished}
+            handleClose={closePublishedModal}
+            gate={result}
+          />
+        </Stack>
+      </FormProvider>
     </>
   );
 }
