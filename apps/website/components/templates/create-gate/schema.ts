@@ -1,6 +1,8 @@
 import { FieldError, NestedValue } from 'react-hook-form';
 import { z } from 'zod';
 
+import { Gates } from '../../../services/graphql/types.generated';
+
 // Creator
 export type Creator = {
   id: string;
@@ -17,6 +19,7 @@ export type DraftGateTypes = {
   skills: string[];
   created_by: Creator[];
   tasks: DraftTasksSchema;
+  type: Gates['type'];
 };
 
 // Create Gate

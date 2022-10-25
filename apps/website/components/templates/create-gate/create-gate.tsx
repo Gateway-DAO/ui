@@ -36,7 +36,10 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
     description,
     skills,
     created_by,
-  }) => ({ title, categories, description, skills, created_by }))(oldData);
+    type,
+  }) => ({ title, categories, description, skills, created_by, type }))(
+    oldData
+  );
 
   const methods = useForm({
     resolver: zodResolver(createGateSchema),
