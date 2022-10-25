@@ -119,20 +119,22 @@ export function QuizTask({
         background: `linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.05) 100%), ${theme.palette.background.paper}`,
         borderRadius: '10px',
         [theme.breakpoints.down('sm')]: {
-          padding: '20px',
+          pl: taskIsMoving ? '20px' : '0',
         },
       })}
     >
       <Stack
         direction={'row'}
         alignItems={'center'}
-        margin={'50px 50px 0'}
-        marginBottom={!taskVisible ? '40px' : 0}
-        sx={{
+        margin={'50px'}
+        sx={(theme) => ({
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-        }}
+          [theme.breakpoints.down('sm')]: {
+            margin: '20px',
+          },
+        })}
       >
         <Stack
           direction={'row'}
@@ -219,11 +221,14 @@ export function QuizTask({
         )}
       </Stack>
       <Box
-        sx={{
+        sx={(theme) => ({
           display: 'flex',
           flexDirection: 'column',
           margin: '0 50px',
-        }}
+          [theme.breakpoints.down('sm')]: {
+            margin: '0 20px',
+          },
+        })}
         style={!taskVisible ? {} : { display: 'none' }}
       >
         <TextField
@@ -248,7 +253,14 @@ export function QuizTask({
           onRemove={onRemoveQuestion}
           taskId={taskId}
         />
-        <Divider sx={{ margin: '0 -50px' }} />
+        <Divider
+          sx={(theme) => ({
+            margin: '0 -50px',
+            [theme.breakpoints.down('sm')]: {
+              margin: '0 -20px',
+            },
+          })}
+        />
       </Box>
       <Stack
         alignItems={'flex-start'}
@@ -258,7 +270,13 @@ export function QuizTask({
           <Stack
             direction="column"
             alignItems="baseline"
-            sx={{ padding: '0 50px', width: '100%' }}
+            sx={(theme) => ({
+              padding: '0 50px',
+              width: '100%',
+              [theme.breakpoints.down('sm')]: {
+                padding: '0 20px',
+              },
+            })}
           >
             <Button
               variant="text"
@@ -280,19 +298,34 @@ export function QuizTask({
             >
               {t('tasks.quiz.addQuestion')}
             </Button>
-            <Divider sx={{ margin: '0 -50px', width: 'calc(100% + 100px)' }} />
+            <Divider
+              sx={(theme) => ({
+                margin: '0 -50px',
+                width: 'calc(100% + 100px)',
+                [theme.breakpoints.down('sm')]: {
+                  margin: '0 -20px',
+                  width: 'calc(100% + 40px)',
+                },
+              })}
+            />
           </Stack>
         )}
-        <Stack
-          direction="column"
-          sx={(theme) => ({
-            width: '100%',
-            padding: '50px',
-            background: `linear-gradient(180deg, rgba(255, 255, 255, 0.07) 0%, rgba(255, 255, 255, 0.07) 100%), ${theme.palette.background.default}`,
-          })}
-        >
-          <Typography variant="h6">{t('tasks.quiz.settingsTitle')}</Typography>
-          {questions.length > 1 && !taskVisible && (
+        {questions.length > 1 && !taskVisible && (
+          <Stack
+            direction="column"
+            sx={(theme) => ({
+              width: '100%',
+              padding: '50px',
+              background: `linear-gradient(180deg, rgba(255, 255, 255, 0.07) 0%, rgba(255, 255, 255, 0.07) 100%), ${theme.palette.background.default}`,
+              borderRadius: '0 0 8px 8px',
+              [theme.breakpoints.down('sm')]: {
+                padding: '30px 20px 50px',
+              },
+            })}
+          >
+            <Typography variant="h6">
+              {t('tasks.quiz.settingsTitle')}
+            </Typography>
             <>
               <Stack
                 sx={[
@@ -343,69 +376,80 @@ export function QuizTask({
                 sx={{ margin: '50px -50px 0', width: 'calc(100% + 100px)' }}
               />
             </>
-          )}
-          <Stack>
-            <Stack sx={{ mt: '48px' }}>
-              <Typography>{t('tasks.quiz.settingsRetryAfterTitle')}</Typography>
-              <Typography
-                sx={(theme) => ({ color: theme.palette.text.secondary, mb: 2 })}
-              >
-                {t('tasks.quiz.settingsRetryAfterDescription')}
-              </Typography>
-              <FormControl>
-                <InputLabel htmlFor="time_period">
-                  {t('tasks.quiz.timePeriodAction')}
-                </InputLabel>
-                <Select
-                  label={t('tasks.quiz.timePeriodAction')}
-                  defaultValue=""
-                  datatype="number"
-                  id="time_period"
-                  sx={{ maxWidth: { md: '50%', xs: '100%' } }}
-                  error={
-                    !!(
-                      errors.tasks?.data?.[taskId]
-                        ?.task_data as QuizTaskDataError
-                    )?.time_period
-                  }
-                  {...register(`tasks.data.${taskId}.task_data.time_period`)}
+            <Stack>
+              <Stack sx={{ mt: '48px' }}>
+                <Typography>
+                  {t('tasks.quiz.settingsRetryAfterTitle')}
+                </Typography>
+                <Typography
+                  sx={(theme) => ({
+                    color: theme.palette.text.secondary,
+                    mb: 2,
+                  })}
                 >
-                  <MenuItem value={TimePeriod.IMMEDIATELY}>
-                    {t('tasks.quiz.timePeriodImmediately')}
-                  </MenuItem>
-                  <MenuItem value={TimePeriod.FIFTEEN_MINUTES}>
-                    {t('tasks.quiz.timePeriodFifteenMinutes')}
-                  </MenuItem>
-                  <MenuItem value={TimePeriod.THIRTY_MINUTES}>
-                    {t('tasks.quiz.timePeriodThirtyMinutes')}
-                  </MenuItem>
-                  <MenuItem value={TimePeriod.ONE_HOUR}>
-                    {t('tasks.quiz.timePeriodOneHour')}
-                  </MenuItem>
-                  <MenuItem value={TimePeriod.ONE_DAY}>
-                    {t('tasks.quiz.timePeriodOneDay')}
-                  </MenuItem>
-                  <MenuItem value={TimePeriod.NEVER}>
-                    {t('tasks.quiz.timePeriodNever')}
-                  </MenuItem>
-                </Select>
-                {!!(
-                  errors.tasks?.data?.[taskId]?.task_data as QuizTaskDataError
-                )?.time_period && (
-                  <Typography
-                    color={(theme) => theme.palette.error.main}
-                    sx={{ mt: '5px' }}
-                  >
-                    {
-                      errors.tasks?.data?.[taskId]?.task_data?.['time_period']
-                        ?.message
+                  {t('tasks.quiz.settingsRetryAfterDescription')}
+                </Typography>
+                <FormControl>
+                  <InputLabel htmlFor="time_period">
+                    {t('tasks.quiz.timePeriodAction')}
+                  </InputLabel>
+                  <Select
+                    label={t('tasks.quiz.timePeriodAction')}
+                    defaultValue={
+                      formValues?.tasks?.data[taskId]?.task_data['time_period']
+                        ? formValues?.tasks?.data[taskId]?.task_data[
+                            'time_period'
+                          ]
+                        : ''
                     }
-                  </Typography>
-                )}
-              </FormControl>
+                    datatype="number"
+                    id="time_period"
+                    sx={{ maxWidth: { md: '50%', xs: '100%' } }}
+                    error={
+                      !!(
+                        errors.tasks?.data?.[taskId]
+                          ?.task_data as QuizTaskDataError
+                      )?.time_period
+                    }
+                    {...register(`tasks.data.${taskId}.task_data.time_period`)}
+                  >
+                    <MenuItem value={TimePeriod.IMMEDIATELY}>
+                      {t('tasks.quiz.timePeriodImmediately')}
+                    </MenuItem>
+                    <MenuItem value={TimePeriod.FIFTEEN_MINUTES}>
+                      {t('tasks.quiz.timePeriodFifteenMinutes')}
+                    </MenuItem>
+                    <MenuItem value={TimePeriod.THIRTY_MINUTES}>
+                      {t('tasks.quiz.timePeriodThirtyMinutes')}
+                    </MenuItem>
+                    <MenuItem value={TimePeriod.ONE_HOUR}>
+                      {t('tasks.quiz.timePeriodOneHour')}
+                    </MenuItem>
+                    <MenuItem value={TimePeriod.ONE_DAY}>
+                      {t('tasks.quiz.timePeriodOneDay')}
+                    </MenuItem>
+                    <MenuItem value={TimePeriod.NEVER}>
+                      {t('tasks.quiz.timePeriodNever')}
+                    </MenuItem>
+                  </Select>
+                  {!!(
+                    errors.tasks?.data?.[taskId]?.task_data as QuizTaskDataError
+                  )?.time_period && (
+                    <Typography
+                      color={(theme) => theme.palette.error.main}
+                      sx={{ mt: '5px' }}
+                    >
+                      {
+                        errors.tasks?.data?.[taskId]?.task_data?.['time_period']
+                          ?.message
+                      }
+                    </Typography>
+                  )}
+                </FormControl>
+              </Stack>
             </Stack>
           </Stack>
-        </Stack>
+        )}
       </Stack>
     </Stack>
   );

@@ -108,7 +108,7 @@ export default function GithubContributeTask({
         background: `linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.05) 100%), ${theme.palette.background.paper}`,
         borderRadius: '10px',
         [theme.breakpoints.down('sm')]: {
-          padding: '20px',
+          padding: taskIsMoving ? '20px 20px 20px 40px' : '20px',
         },
       })}
     >

@@ -176,11 +176,16 @@ const TaskArea = ({ draftTasks, onDelete }: TaskAreaProps) => {
                       >
                         {enableTaskReordering && (
                           <DragIndicatorIcon
-                            sx={{
+                            sx={(theme) => ({
                               position: 'absolute',
-                              left: '-30px',
+                              top: 'calc(50% - 18px)',
+                              left: '15px',
                               color: '#ddd',
-                            }}
+                              [theme.breakpoints.down('sm')]: {
+                                top: 'calc(50% - 18px)',
+                                left: '10px',
+                              },
+                            })}
                           />
                         )}
                         <Box sx={{ width: '100%', mb: 2 }}>

@@ -321,7 +321,7 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
               sx={(theme) => ({
                 width: '100%',
                 display: { xs: 'block', md: 'flex' },
-                [theme.breakpoints.down('sm')]: { p: '0 20px' },
+                [theme.breakpoints.down('sm')]: { p: '0' },
               })}
             >
               <Box
@@ -347,6 +347,7 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
                 direction="column"
                 sx={{
                   margin: 'auto',
+                  width: '100%',
                   maxWidth: { xs: '100%', md: '100%', lg: '80%' },
                 }}
               >

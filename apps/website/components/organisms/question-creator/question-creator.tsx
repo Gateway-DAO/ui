@@ -63,11 +63,22 @@ export function QuestionCreator({
                       sx={(theme) => ({
                         width: '100%',
                         py: '48px',
-                        background: theme.palette.background.light,
+                        background: `linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.05) 100%), ${theme.palette.background.paper}`,
+                        [theme.breakpoints.down('sm')]: {
+                          pt: '38px',
+                          pb: '28px',
+                        },
                       })}
                     >
                       {index !== 0 && (
-                        <Divider sx={{ margin: '-40px -50px 60px -50px' }} />
+                        <Divider
+                          sx={(theme) => ({
+                            margin: '-40px -50px 60px -50px',
+                            [theme.breakpoints.down('sm')]: {
+                              margin: '-38px -20px 40px -20px',
+                            },
+                          })}
+                        />
                       )}
                       <Stack
                         direction="row"
@@ -82,17 +93,29 @@ export function QuestionCreator({
                         })}
                       >
                         <DragIndicatorIcon
-                          sx={{
+                          sx={(theme) => ({
                             position: 'absolute',
                             left: '-30px',
+                            top: '15px',
                             color: '#ddd',
-                          }}
+                            [theme.breakpoints.down('sm')]: {
+                              position: 'relative',
+                              left: '-5px',
+                              top: '0',
+                            },
+                          })}
                         />
                         <QuestionField questionIndex={index} taskId={taskId} />
 
                         {questions.length > 1 && (
                           <IconButton
-                            sx={{ marginLeft: '24px', cursor: 'pointer' }}
+                            sx={(theme) => ({
+                              marginLeft: '24px',
+                              cursor: 'pointer',
+                              [theme.breakpoints.down('sm')]: {
+                                marginLeft: '6px',
+                              },
+                            })}
                             onClick={() => onRemove(index)}
                           >
                             <CloseIcon />
