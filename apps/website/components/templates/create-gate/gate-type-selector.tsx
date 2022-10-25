@@ -1,3 +1,5 @@
+import { useFormContext } from 'react-hook-form';
+
 import { CheckCircle, ChevronRight, Send } from '@mui/icons-material';
 import {
   Avatar,
@@ -8,6 +10,8 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
+
+import { CreateGateTypes, type GateType } from './schema';
 
 const types = [
   {
@@ -23,9 +27,16 @@ const types = [
       'Send this credential directly to someone or a group of people',
     icon: Send,
   },
-];
+] as const;
 
 export function GateTypeSelector() {
+  const methods = useFormContext<CreateGateTypes>();
+
+  const onClick = (type: GateType) => () => {
+    console.log('WAWO');
+    methods.setValue('type', type);
+  };
+
   return (
     <>
       <Divider sx={{ margin: '60px 0', width: '100%' }} />
@@ -65,6 +76,7 @@ export function GateTypeSelector() {
               <Paper
                 component={ButtonBase}
                 elevation={1}
+                onClick={onClick(type)}
                 sx={[
                   {
                     justifyContent: 'flex-start',
