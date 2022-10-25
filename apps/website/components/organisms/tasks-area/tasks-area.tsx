@@ -142,10 +142,11 @@ const TaskArea = ({ draftTasks, onDelete }: TaskAreaProps) => {
                   <Typography
                     sx={(theme) => ({
                       textTransform: 'uppercase',
-                      color: theme.palette.grey[500],
-                      fontWeight: theme.typography.fontWeightMedium,
-                      fontSize: '1rem',
+                      color: 'rgba(255, 255, 255, 0.56)',
+                      fontWeight: 600,
+                      fontSize: '12px',
                       marginRight: '12px',
+                      letterSpacing: '0.1px',
                     })}
                   >
                     Reorder
@@ -180,18 +181,18 @@ const TaskArea = ({ draftTasks, onDelete }: TaskAreaProps) => {
                   >
                     <ArrowDropUpIcon
                       sx={{
-                        fontSize: '30px',
+                        fontSize: '24px',
                         position: 'absolute',
-                        top: '-3px',
-                        left: '1px',
+                        top: '1px',
+                        left: '4px',
                       }}
                     />
                     <ArrowDropDownIcon
                       sx={{
-                        fontSize: '30px',
+                        fontSize: '24px',
                         position: 'absolute',
-                        bottom: '-3px',
-                        left: '1px',
+                        bottom: '0',
+                        left: '4px',
                       }}
                     />
                   </Button>
