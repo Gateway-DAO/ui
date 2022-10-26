@@ -73,9 +73,9 @@ export function Task({
   const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
-    const progressTaskIndex = me?.task_progresses.findIndex(
-      (task_progress) => task_progress.task_id === task.id
-    );
+    const progressTaskIndex = me?.task_progresses
+      .filter((task) => task.completed === 'done')
+      .findIndex((task_progress) => task_progress.task_id === task.id);
 
     if (progressTaskIndex !== undefined && progressTaskIndex !== -1) {
       setCompleted(true);
@@ -179,7 +179,7 @@ export function Task({
         setErrorMessage(
           getMapValueFromObject(
             taskErrorMessages,
-            error.response.errors[0].extensions.error,
+            error.response.errors[0].extensions,
             `There was an unexpected error, please contact Gateway or try again`
           )
         );

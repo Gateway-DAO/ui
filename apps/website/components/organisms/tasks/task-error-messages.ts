@@ -29,4 +29,6 @@ export const taskErrorMessages = {
   NO_POSTED_TWEET: `You have not posted the tweet`,
   NO_POSTED_RETWEET: `You have not posted the tweet`,
   NO_FOLLOW: `The user does not follow the twitter account`,
+  FAILED_QUIZ_WONT_RETRY: `You didn't correctly answer the minimum amount requested. You won't be able to retry again.`,
+  FAILED_QUIZ_MINIMUM_AMOUNT: `You didn't correctly answer the minimum amount requested. You will be able to retry in`,
 };
