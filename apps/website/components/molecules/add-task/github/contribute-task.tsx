@@ -23,11 +23,13 @@ import {
 } from '../../../templates/create-gate/schema';
 
 type GithubContributeTaskProps = {
+  dragAndDrop: boolean;
   taskId: number;
   deleteTask: (taskId: number) => void;
 };
 
 export default function GithubContributeTask({
+  dragAndDrop,
   taskId,
   deleteTask,
 }: GithubContributeTaskProps) {
@@ -90,7 +92,13 @@ export default function GithubContributeTask({
     }
   }, [setValue, taskId]);
 
+  useEffect(() => {
+    setTaskVisible(dragAndDrop);
+    setTaskIsMoving(dragAndDrop);
+  }, [dragAndDrop]);
+
   const [taskVisible, setTaskVisible] = useState(false);
+  const [taskIsMoving, setTaskIsMoving] = useState(false);
 
   return (
     <Stack
@@ -100,7 +108,7 @@ export default function GithubContributeTask({
         background: `linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.05) 100%), ${theme.palette.background.paper}`,
         borderRadius: '10px',
         [theme.breakpoints.down('sm')]: {
-          padding: '20px',
+          padding: taskIsMoving ? '20px 20px 20px 40px' : '20px',
         },
       })}
     >
@@ -156,48 +164,50 @@ export default function GithubContributeTask({
             />
           </Stack>
         </Stack>
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <IconButton
-            onClick={() => deleteTask(taskId)}
-            sx={(theme) => ({
-              color: theme.palette.text.secondary,
-              cursor: 'pointer',
-              marginRight: '20px',
-              '&:hover': {
-                color: theme.palette.text.primary,
-              },
-            })}
-          >
-            <DeleteIcon fontSize="medium" />
-          </IconButton>
-          {taskVisible ? (
+        {!taskIsMoving && (
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <IconButton
-              onClick={() => setTaskVisible(false)}
+              onClick={() => deleteTask(taskId)}
               sx={(theme) => ({
                 color: theme.palette.text.secondary,
                 cursor: 'pointer',
+                marginRight: '20px',
                 '&:hover': {
                   color: theme.palette.text.primary,
                 },
               })}
             >
-              <ExpandMore fontSize="medium" />
+              <DeleteIcon fontSize="medium" />
             </IconButton>
-          ) : (
-            <IconButton
-              onClick={() => setTaskVisible(true)}
-              sx={(theme) => ({
-                color: theme.palette.text.secondary,
-                cursor: 'pointer',
-                '&:hover': {
-                  color: theme.palette.text.primary,
-                },
-              })}
-            >
-              <ExpandLess fontSize="medium" />
-            </IconButton>
-          )}
-        </Box>
+            {taskVisible ? (
+              <IconButton
+                onClick={() => setTaskVisible(false)}
+                sx={(theme) => ({
+                  color: theme.palette.text.secondary,
+                  cursor: 'pointer',
+                  '&:hover': {
+                    color: theme.palette.text.primary,
+                  },
+                })}
+              >
+                <ExpandMore fontSize="medium" />
+              </IconButton>
+            ) : (
+              <IconButton
+                onClick={() => setTaskVisible(true)}
+                sx={(theme) => ({
+                  color: theme.palette.text.secondary,
+                  cursor: 'pointer',
+                  '&:hover': {
+                    color: theme.palette.text.primary,
+                  },
+                })}
+              >
+                <ExpandLess fontSize="medium" />
+              </IconButton>
+            )}
+          </Box>
+        )}
       </Stack>
       <FormControl style={!taskVisible ? {} : { display: 'none' }}>
         <TextField

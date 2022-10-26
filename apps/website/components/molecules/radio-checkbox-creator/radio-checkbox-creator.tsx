@@ -20,6 +20,7 @@ export function RadioCheckBoxCreator({
   const DEFAULT_OPTION: Option = {
     value: '',
     correct: false,
+    order: 0,
   };
 
   const {
@@ -30,6 +31,12 @@ export function RadioCheckBoxCreator({
     control,
     name: `tasks.data.${taskId}.task_data.questions.${questionIndex}.options`,
   });
+
+  const setDefaultOption = (): Option => {
+    const opt = DEFAULT_OPTION;
+    opt.order = Math.max(...options.map((o) => o.order)) + 1;
+    return opt;
+  };
 
   const onRemoveOption = (index: number) => {
     remove(index);
@@ -53,7 +60,7 @@ export function RadioCheckBoxCreator({
         onClick={() => {
           if (options.length < 5) {
             setMaxAlert(false);
-            return append(DEFAULT_OPTION);
+            return append(setDefaultOption());
           }
           setMaxAlert(true);
         }}
