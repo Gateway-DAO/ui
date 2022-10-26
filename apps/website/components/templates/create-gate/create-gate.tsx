@@ -23,7 +23,8 @@ import { PublishNavbar } from '../../organisms/publish-navbar/publish-navbar';
 import TaskArea from '../../organisms/tasks-area/tasks-area';
 import { GateDetailsForm } from './details-form';
 import { GateImageCard } from './gate-image-card/gate-image-card';
-import { GateTypeSelector } from './gate-type-selector';
+import { GateTypeChanger } from './gate-type-selector/gate-type-changer';
+import { GateTypeSelector } from './gate-type-selector/gate-type-selector';
 import {
   createGateSchema,
   CreateGateTypes,
@@ -273,9 +274,9 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
               setConfirmPublish(true);
             }
           }}
-          padding={'0 90px'}
           sx={(theme) => ({
             p: '0 90px',
+            pb: 12,
             [theme.breakpoints.down('sm')]: { p: '0 20px' },
           })}
         >
@@ -346,54 +347,58 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
           {/* Tasks */}
           {canShowTasks && (
             <>
-              <GateTypeSelector />
               <Divider sx={{ margin: '60px 0', width: '100%' }} />
-              {gateType === 'task_based' && (
-                <Stack
-                  direction="row"
-                  gap={{ lg: 5, xs: 2, md: 2 }}
-                  sx={(theme) => ({
-                    width: '100%',
-                    display: { xs: 'block', md: 'flex' },
-                    [theme.breakpoints.down('sm')]: { p: '0 20px' },
-                  })}
+              <Stack
+                direction="row"
+                gap={{ lg: 5, xs: 2, md: 2 }}
+                sx={(theme) => ({
+                  width: '100%',
+                  display: { xs: 'block', md: 'flex' },
+                  [theme.breakpoints.down('sm')]: { p: '0 20px' },
+                })}
+              >
+                <Box
+                  sx={{
+                    maxWidth: {
+                      lg: `15%`,
+                    },
+                  }}
                 >
-                  <Box
-                    sx={{
-                      maxWidth: {
-                        lg: `15%`,
-                      },
-                    }}
+                  <Typography component="h2" variant="h5" gutterBottom>
+                    Define how to obtain
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    color={'text.secondary'}
+                    marginBottom={4}
                   >
-                    <Typography component="h2" variant="h5" gutterBottom>
-                      Set requirements
-                    </Typography>
-                    <Typography
-                      variant="body2"
-                      color={'text.secondary'}
-                      marginBottom={4}
-                    >
-                      Define the requirements that the user must meet to obtain
-                      the credential
-                    </Typography>
-                  </Box>
-                  <Stack
-                    direction="column"
-                    sx={{
-                      margin: 'auto',
-                      width: '100%',
-                      maxWidth: { xs: '100%', md: '100%', lg: '80%' },
-                    }}
-                  >
+                    Set what is necessary to do to obtain this credential
+                  </Typography>
+                </Box>
+                <Stack
+                  direction="column"
+                  sx={{
+                    margin: 'auto',
+                    width: '100%',
+                    maxWidth: { xs: '100%', md: '100%', lg: '80%' },
+                  }}
+                  gap={4}
+                >
+                  {gateType ? (
+                    <GateTypeChanger type={gateType} />
+                  ) : (
+                    <GateTypeSelector />
+                  )}
+                  {gateType === 'task_based' && (
                     <Stack direction="column" gap={2}>
                       <TaskArea
                         draftTasks={oldData.tasks || []}
                         onDelete={setDeletedTasks}
                       />
                     </Stack>
-                  </Stack>
+                  )}
                 </Stack>
-              )}
+              </Stack>
             </>
           )}
 

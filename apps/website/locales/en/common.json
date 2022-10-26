@@ -55,6 +55,7 @@
   "actions": {
     "accept": "Accept",
     "decline": "Decline",
+    "change": "change",
     "check": "check",
     "connect": "connect",
     "connected": "connected",
