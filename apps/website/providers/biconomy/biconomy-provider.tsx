@@ -3,13 +3,11 @@ import { PropsWithChildren, useEffect, useState } from 'react';
 import { Biconomy } from '@biconomy/mexa';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { ethers } from 'ethers';
+import { useSnackbar } from 'notistack';
 import { PartialDeep } from 'type-fest';
 import { useAccount, useProvider, useSigner } from 'wagmi';
 
-import { Alert, Snackbar } from '@mui/material';
-
 import { CREDENTIAL_ABI } from '../../constants/web3';
-import { useSnackbar } from '../../hooks/use-snackbar';
 import { Credentials, Users } from '../../services/graphql/types.generated';
 import { useAuth } from '../auth';
 import { BiconomyContext, MintResponse } from './context';
@@ -53,7 +51,7 @@ export function BiconomyProvider({
   // From auth
   const { me, gqlAuthMethods } = useAuth();
 
-  const snackbar = useSnackbar();
+  const { enqueueSnackbar } = useSnackbar();
 
   // Credential update
   const queryClient = useQueryClient();
@@ -200,9 +198,8 @@ export function BiconomyProvider({
             },
           }));
         } catch (err) {
-          snackbar.onOpen({
-            message: 'Minting failed, please try again',
-            type: 'error',
+          enqueueSnackbar('Minting failed, please try again', {
+            variant: 'error',
           });
 
           setMintStatus((prev) => ({
@@ -230,11 +227,12 @@ export function BiconomyProvider({
             tx,
         };
       } else {
-        snackbar.onOpen({
-          message: 'Biconomy is still loading. Try again in a few minutes!',
-          type: 'warning',
-        });
-
+        enqueueSnackbar(
+          'Biconomy is still loading. Try again in a few minutes!',
+          {
+            variant: 'warning',
+          }
+        );
         return {
           isMinted: false,
           error: 'Biconomy is still loading. Try again in a few minutes!',
@@ -287,13 +285,6 @@ export function BiconomyProvider({
       }}
     >
       {children}
-      <Snackbar
-        open={snackbar.open}
-        autoHideDuration={6000}
-        onClose={snackbar.handleClose}
-      >
-        <Alert severity={snackbar.type}>{snackbar.message}</Alert>
-      </Snackbar>
     </BiconomyContext.Provider>
   );
 }

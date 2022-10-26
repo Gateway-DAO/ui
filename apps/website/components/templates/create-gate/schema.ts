@@ -1,6 +1,8 @@
 import { FieldError, NestedValue } from 'react-hook-form';
 import { z } from 'zod';
 
+export type GateType = 'task_based' | 'direct';
+
 // Creator
 export type Creator = {
   id: string;
@@ -26,6 +28,7 @@ export type CreateGateTypes = {
   categories: NestedValue<string[]>;
   description: string;
   image: string;
+  type: GateType;
   skills: NestedValue<string[]>;
   created_by: Creator[];
   tasks: TasksSchema;

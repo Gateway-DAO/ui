@@ -5,13 +5,13 @@ import React, { useEffect, useState } from 'react';
 import { Biconomy } from '@biconomy/mexa';
 import { useMutation } from '@tanstack/react-query';
 import { ethers } from 'ethers';
+import { useSnackbar } from 'notistack';
 import { PartialDeep } from 'type-fest';
 import { useAccount, chain, useSigner, useNetwork } from 'wagmi';
 
 import { CREDENTIAL_ABI } from '../constants/web3';
 import { useAuth } from '../providers/auth';
 import { Credentials } from '../services/graphql/types.generated';
-import { useSnackbar } from './use-snackbar';
 
 let biconomy;
 let contract: ethers.Contract, contractInterface: ethers.ContractInterface;
@@ -148,8 +148,8 @@ export function useBiconomyMint(
   const [minted, setMinted] = useState<boolean>(false);
   const [asksSignature, setAsksSignature] = useState<boolean>(false);
 
-  // Snackbar
-  const snackbar = useSnackbar();
+  // Notistack
+  const { enqueueSnackbar } = useSnackbar();
 
   // User info
   const { me, gqlAuthMethods } = useAuth();
@@ -285,7 +285,9 @@ export function useBiconomyMint(
           };
         }
       } catch (error) {
-        snackbar.onOpen({ message: error.message || error, type: 'error' });
+        enqueueSnackbar(error.message || error, {
+          variant: 'error',
+        });
         console.log('[useMint] Error:', error);
 
         setMinted(false);
@@ -297,10 +299,12 @@ export function useBiconomyMint(
         };
       }
     } else {
-      snackbar.onOpen({
-        message: 'Biconomy is still loading. Try again in a few minutes!',
-        type: 'warning',
-      });
+      enqueueSnackbar(
+        'Biconomy is still loading. Try again in a few minutes!',
+        {
+          variant: 'warning',
+        }
+      );
     }
 
     setMinted(false);
@@ -354,7 +358,6 @@ export function useBiconomyMint(
     mintCredential,
     loading,
     minted,
-    snackbar,
     asksSignature,
   };
 }
