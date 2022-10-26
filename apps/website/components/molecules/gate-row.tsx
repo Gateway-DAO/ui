@@ -3,17 +3,13 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { ROUTES } from 'apps/website/constants/routes';
-import { useSnackbar } from 'apps/website/hooks/use-snackbar';
-import { useAuth } from 'apps/website/providers/auth';
-import { badgeProps } from 'apps/website/utils/badge-props';
+import { useSnackbar } from 'notistack';
 
 import { ReadMore } from '@mui/icons-material';
 import {
   Avatar,
   Box,
   Chip,
-  Snackbar,
   Stack,
   TableCell,
   TableRow,
@@ -23,6 +19,9 @@ import {
 import GateStateChip from '../atoms/gate-state-chip';
 import MorePopover from '../atoms/more-popover';
 import ConfirmDialog from '../organisms/confirm-dialog/confirm-dialog';
+import { ROUTES } from './../../constants/routes';
+import { useAuth } from './../../providers/auth';
+import { badgeProps } from './../../utils/badge-props';
 
 type DaoType = {
   id?: string;
@@ -46,7 +45,7 @@ type GateRowProps = {
 export default function GateRow({ isGate, gate, showStatus }: GateRowProps) {
   const { t } = useTranslation('gates-card');
   const router = useRouter();
-  const snackbar = useSnackbar();
+  const { enqueueSnackbar } = useSnackbar();
   const { gqlAuthMethods } = useAuth();
   const queryClient = useQueryClient();
 
@@ -69,20 +68,17 @@ export default function GateRow({ isGate, gate, showStatus }: GateRowProps) {
         onSuccess: async (data) => {
           setPublished(data.update_gates_by_pk.published);
 
-          snackbar.onOpen({
-            message:
-              published === 'not_published' || published === 'paused'
-                ? t('credential.published')
-                : t('credential.unpublished'),
-          });
+          enqueueSnackbar(
+            published === 'not_published' || published === 'paused'
+              ? t('credential.published')
+              : t('credential.unpublished')
+          );
 
           await queryClient.refetchQueries(['gate', gate.id]);
           await queryClient.refetchQueries(['dao-gates', gate.dao.id]);
         },
         onError() {
-          snackbar.handleClick({
-            message: t('credential.error.toggle'),
-          });
+          enqueueSnackbar(t('credential.error.toggle'), { variant: 'error' });
         },
       }
     );
@@ -97,17 +93,13 @@ export default function GateRow({ isGate, gate, showStatus }: GateRowProps) {
       { gate_id: gate.id },
       {
         async onSuccess() {
-          snackbar.onOpen({
-            message: t('credential.deleted'),
-          });
+          enqueueSnackbar(t('credential.deleted'));
 
           await queryClient.refetchQueries(['gate', gate.id]);
           await queryClient.refetchQueries(['dao-gates', gate.dao.id]);
         },
         onError() {
-          snackbar.handleClick({
-            message: t('credential.error.delete'),
-          });
+          enqueueSnackbar(t('credential.error.delete'));
         },
       }
     );
@@ -179,15 +171,6 @@ export default function GateRow({ isGate, gate, showStatus }: GateRowProps) {
           <MorePopover options={gateOptions} />
         </TableCell>
       </TableRow>
-      <Snackbar
-        anchorOrigin={{
-          vertical: snackbar.vertical,
-          horizontal: snackbar.horizontal,
-        }}
-        open={snackbar.open}
-        onClose={snackbar.handleClose}
-        message={snackbar.message}
-      />
       <ConfirmDialog
         title={t('credential.confirm.delete.title')}
         open={confirmDelete}
