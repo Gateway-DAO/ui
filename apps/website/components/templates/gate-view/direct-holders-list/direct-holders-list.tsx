@@ -156,7 +156,12 @@ export function DirectHoldersList({
                     key={user?.id ?? whitelisted.wallet}
                     user={
                       user ?? {
-                        name: 'Gatekeeper',
+                        name: `${whitelisted.wallet.slice(
+                          0,
+                          6
+                        )}...${whitelisted.wallet.slice(
+                          whitelisted.wallet.length - 4
+                        )}`,
                         username: whitelisted.wallet,
                       }
                     }

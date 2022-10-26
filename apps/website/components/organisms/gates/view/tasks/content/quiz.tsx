@@ -79,21 +79,23 @@ const QuizContent = ({
         <FormLabel>{randomQuestion.question}</FormLabel>
         {randomQuestion.type === 'single' ? (
           <RadioGroup>
-            {randomQuestion.options.map((answer, index) => {
-              return (
-                <FormControlLabel
-                  key={index}
-                  value={answer.value}
-                  control={<Radio />}
-                  {...(isAdmin &&
-                    (readOnly || completed) && {
-                      checked: answer.correct,
-                    })}
-                  label={answer.value}
-                  disabled={readOnly || completed || isLoading}
-                />
-              );
-            })}
+            {randomQuestion.options
+              .sort((a, b) => a.order - b.order)
+              .map((answer, index) => {
+                return (
+                  <FormControlLabel
+                    key={index}
+                    value={answer.value}
+                    control={<Radio />}
+                    {...(isAdmin &&
+                      (readOnly || completed) && {
+                        checked: answer.correct,
+                      })}
+                    label={answer.value}
+                    disabled={readOnly || completed || isLoading}
+                  />
+                );
+              })}
           </RadioGroup>
         ) : (
           <FormGroup>

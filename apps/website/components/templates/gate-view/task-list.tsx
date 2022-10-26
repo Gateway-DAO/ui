@@ -94,6 +94,7 @@ export function TaskList({
 
       <TaskGroup>
         {tasks
+          .sort((a, b) => a.order - b.order)
           .map((task, idx) => (
             <Task
               key={'task-' + (idx + 1)}
@@ -102,8 +103,7 @@ export function TaskList({
               setCompletedGate={setOpen}
               isAdmin={isAdmin}
             />
-          ))
-          .sort((a, b) => a.props?.task?.order - b.props?.task?.order)}
+          ))}
       </TaskGroup>
     </Grid>
   );

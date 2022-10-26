@@ -344,7 +344,7 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
               sx={(theme) => ({
                 width: '100%',
                 display: { xs: 'block', md: 'flex' },
-                [theme.breakpoints.down('sm')]: { p: '0 20px' },
+                [theme.breakpoints.down('sm')]: { p: '0' },
               })}
             >
               <Box

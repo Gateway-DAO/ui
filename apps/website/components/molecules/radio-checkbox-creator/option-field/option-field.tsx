@@ -99,20 +99,20 @@ export function OptionField({
                 sx={(theme) => ({
                   cursor: 'pointer',
                   ml: '24px',
-                  color: options[optionIndex].correct
+                  color: options[optionIndex]?.correct
                     ? theme.palette.success.light
                     : theme.palette.text.primary,
                 })}
                 onClick={() => {
                   if (
                     questionType === 'multiple' ||
-                    options[optionIndex].correct === true ||
+                    options[optionIndex]?.correct === true ||
                     (questionType === 'single' &&
                       options.filter((option) => option.correct).length === 0)
                   ) {
                     return setValue(
                       `tasks.data.${taskId}.task_data.questions.${questionIndex}.options.${optionIndex}.correct`,
-                      !options[optionIndex].correct
+                      !options[optionIndex]?.correct
                     );
                   }
                   setIsOpen(true);
