@@ -1,8 +1,10 @@
-import { ChangeEvent, ReactNode, useEffect, useRef } from 'react';
+import { ChangeEvent, ReactNode, useRef } from 'react';
 
-import { useSnackbar } from 'notistack';
+
 import { Control, FieldValues, Path, useController } from 'react-hook-form';
 import { useDropArea } from 'react-use';
+
+import { Alert, Snackbar } from '@mui/material';
 
 import { BackgroundImage } from './background-image';
 import { Container } from './container';
@@ -36,7 +38,6 @@ export function ImageDropField<TFormSchema extends FieldValues = FieldValues>({
 
   const inputRef = useRef<HTMLInputElement>(null);
   const imageCropDialog = useImageCropState();
-  const { enqueueSnackbar } = useSnackbar();
 
   const readFiles = (files: FileList | File[]) => {
     /* TODO: Mimetype validation */
@@ -55,12 +56,6 @@ export function ImageDropField<TFormSchema extends FieldValues = FieldValues>({
 
     reader.readAsDataURL(file);
   };
-
-  useEffect(() => {
-    if (error) {
-      enqueueSnackbar(error?.message, { variant: 'error' });
-    }
-  }, [error]);
 
   const onSelectFile = (event: ChangeEvent<HTMLInputElement>) => {
     if (!event.target.files?.length) {
@@ -129,6 +124,11 @@ export function ImageDropField<TFormSchema extends FieldValues = FieldValues>({
           cropRatio={cropRatio}
         />
       )}
+      <Snackbar open={!!error} autoHideDuration={2000}>
+        <Alert severity="error" sx={{ width: '100%' }}>
+          {error?.message}
+        </Alert>
+      </Snackbar>
     </>
   );
 }
