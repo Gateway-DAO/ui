@@ -257,11 +257,6 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
             setConfirmPublish(true);
           }
         }}
-        padding={'0 90px'}
-        sx={(theme) => ({
-          p: '0 90px',
-          [theme.breakpoints.down('sm')]: { p: '0 20px' },
-        })}
       >
         <FormProvider {...methods}>
           <PublishNavbar
@@ -270,87 +265,96 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
             saveDraft={saveDraft}
           />
         </FormProvider>
-        <Typography
-          component="h1"
-          variant="h4"
-          sx={{ margin: '40px 0 40px 0', marginBottom: { md: '100px' } }}
+        <Box
+          padding={'0 90px'}
+          sx={(theme) => ({
+            p: '0 90px',
+            [theme.breakpoints.down('sm')]: { p: '0 20px' },
+          })}
         >
-          {oldData.id ? 'Edit' : 'Create'} Credential
-        </Typography>
+          <Typography
+            component="h1"
+            variant="h4"
+            sx={{ margin: '40px 0 40px 0', marginBottom: { md: '100px' } }}
+          >
+            {oldData.id ? 'Edit' : 'Create'} Credential
+          </Typography>
 
-        {/* Details */}
-        <Stack
-          direction="row"
-          justifyContent="space-between"
-          alignItems="stretch"
-          gap={2}
-          sx={{
-            width: '100%',
-            flexDirection: { xs: 'column', md: 'row' },
-          }}
-        >
-          <Box>
-            <Typography component="h2" variant="h5" gutterBottom>
-              Add details
-            </Typography>
-            <Typography variant="body2" color={'text.secondary'}>
-              Add the details of the credential
-            </Typography>
-          </Box>
+          {/* Details */}
           <Stack
-            gap={7.5}
-            mt={2}
+            direction="row"
+            justifyContent="space-between"
+            alignItems="stretch"
+            gap={2}
             sx={{
-              maxWidth: { xs: '100%', md: '50%', lg: '40%' },
               width: '100%',
+              flexDirection: { xs: 'column', md: 'row' },
             }}
           >
-            <Stack direction="column" gap={4}>
-              <FormProvider {...methods}>
-                <GateDetailsForm gateData={gateDetails} />
-              </FormProvider>
-            </Stack>
-          </Stack>
-
-          <FormProvider {...methods}>
-            <GateImageCard
-              draftImage={oldData.image}
-              label={
-                <>
-                  <Typography textAlign={'center'} paddingX={4}>
-                    Drop or{' '}
-                    <Typography color={'primary'} display={'inline'}>
-                      upload
-                    </Typography>{' '}
-                    your credential image
-                  </Typography>
-                </>
-              }
+            <Box>
+              <Typography component="h2" variant="h5" gutterBottom>
+                Add details
+              </Typography>
+              <Typography variant="body2" color={'text.secondary'}>
+                Add the details of the credential
+              </Typography>
+            </Box>
+            <Stack
+              gap={7.5}
+              mt={2}
               sx={{
-                width: 300,
+                maxWidth: { xs: '100%', md: '50%', lg: '40%' },
+                width: '100%',
               }}
-            />
-          </FormProvider>
-        </Stack>
+            >
+              <Stack direction="column" gap={4}>
+                <FormProvider {...methods}>
+                  <GateDetailsForm gateData={gateDetails} />
+                </FormProvider>
+              </Stack>
+            </Stack>
+
+            <FormProvider {...methods}>
+              <GateImageCard
+                draftImage={oldData.image}
+                label={
+                  <>
+                    <Typography textAlign={'center'} paddingX={4}>
+                      Drop or{' '}
+                      <Typography color={'primary'} display={'inline'}>
+                        upload
+                      </Typography>{' '}
+                      your credential image
+                    </Typography>
+                  </>
+                }
+                sx={{
+                  width: 300,
+                }}
+              />
+            </FormProvider>
+          </Stack>
+        </Box>
 
         {/* Tasks */}
         {(hasTitleAndDescription ||
           (gateDetails.title && gateDetails.description)) && (
           <>
-            <Divider sx={{ margin: '60px 0', width: '100%' }} />
-            <Stack
-              direction="row"
-              gap={{ lg: 5, xs: 2, md: 2 }}
+            <Divider sx={{ my: 5 }}  />
+            <Box
               sx={(theme) => ({
+                display: 'flex',
                 width: '100%',
-                display: { xs: 'block', md: 'flex' },
-                [theme.breakpoints.down('sm')]: { p: '0' },
+                p: '0 90px',
+                flexDirection: { xs: 'column', md: 'row' },
+                justifyContent: 'space-between',
+                [theme.breakpoints.down('sm')]: { p: '0 20px' },
               })}
             >
               <Box
                 sx={{
                   maxWidth: {
-                    lg: `15%`,
+                    md: `18%`,
                   },
                 }}
               >
@@ -366,24 +370,15 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
                   credential
                 </Typography>
               </Box>
-              <Stack
-                direction="column"
-                sx={{
-                  margin: 'auto',
-                  width: '100%',
-                  maxWidth: { xs: '100%', md: '100%', lg: '80%' },
-                }}
-              >
-                <Stack direction="column" gap={2}>
-                  <FormProvider {...methods}>
-                    <TaskArea
-                      draftTasks={oldData.tasks || []}
-                      onDelete={setDeletedTasks}
-                    />
-                  </FormProvider>
-                </Stack>
-              </Stack>
-            </Stack>
+              <Box sx={{ width: { md: '73%' } }}>
+                <FormProvider {...methods}>
+                  <TaskArea
+                    draftTasks={oldData.tasks || []}
+                    onDelete={setDeletedTasks}
+                  />
+                </FormProvider>
+              </Box>
+            </Box>
           </>
         )}
 
