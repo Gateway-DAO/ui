@@ -18,6 +18,11 @@ const config = {
     [ROUTES.PROFILE_EDIT]: ['profile-edit'],
     [ROUTES.PROFILE]: ['user-profile'],
     [ROUTES.SEARCH]: ['search'],
+    [ROUTES.SETTINGS]: ['settings'],
+    [ROUTES.SETTINGS_PUBLIC_PROFILE]: ['settings'],
+    [ROUTES.SETTINGS_ACCOUNT_MANAGEMENT]: ['settings'],
+    [ROUTES.SETTINGS_CONNECTED_ACCOUNTS]: ['settings'],
+    [ROUTES.SETTINGS_NOTIFICATIONS]: ['settings'],
   },
   localeDetection: false,
 };

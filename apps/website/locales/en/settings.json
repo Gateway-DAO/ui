@@ -1,0 +1,13 @@
+{
+  "settings-title": "Settings",
+  "nav": {
+    "public-profile-title": "Public profile",
+    "public-profile-description": "Edit all info of your profile",
+    "account-management-title": "Account management",
+    "account-management-description": "Edit your e-mail and wallet settings",
+    "connected-accounts-title": "Connected accounts",
+    "connected-accounts-description": "These are the accounts you connected to your Gateway account",
+    "notifications-title": "Notifications",
+    "notifications-description": "Select the sort of notifications you get about"
+  }
+}

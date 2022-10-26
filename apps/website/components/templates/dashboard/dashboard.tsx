@@ -24,6 +24,7 @@ export function DashboardTemplate({
     <MotionBox
       sx={{
         display: 'flex',
+        height: '100%',
         flex: 1,
         width: '100%',
         position: 'relative',
