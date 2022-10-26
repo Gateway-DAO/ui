@@ -4,15 +4,15 @@ import { useRouter } from 'next/router';
 import { useMemo, useState } from 'react';
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useSnackbar } from 'notistack';
 import type { PartialDeep } from 'type-fest';
 
-import { CardActionArea, CardHeader, Box } from '@mui/material';
+import { CardActionArea, CardHeader, Box, Snackbar } from '@mui/material';
 import MUICard from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 
+import { useSnackbar } from '../../../website/hooks/use-snackbar';
 import { useAuth } from '../../../website/providers/auth';
 import { ROUTES } from '../../constants/routes';
 import { Gates } from '../../services/graphql/types.generated';
@@ -46,7 +46,7 @@ export function GatesCard({
 }: GatesCardProps): JSX.Element {
   const hasDao = !!dao;
 
-  const { enqueueSnackbar } = useSnackbar();
+  const snackbar = useSnackbar();
   const queryClient = useQueryClient();
   const { gqlAuthMethods } = useAuth();
   const { isAdmin } = useDaoProfile();
@@ -93,17 +93,20 @@ export function GatesCard({
         onSuccess: async (data) => {
           setPublished(data.update_gates_by_pk.published);
 
-          enqueueSnackbar(
-            published === 'not_published' || published === 'paused'
-              ? t('credential.published')
-              : t('credential.unpublished')
-          );
+          snackbar.onOpen({
+            message:
+              published === 'not_published' || published === 'paused'
+                ? t('credential.published')
+                : t('credential.unpublished'),
+          });
 
           await queryClient.refetchQueries(['gate', id]);
           await queryClient.refetchQueries(['dao-gates', dao.id]);
         },
         onError() {
-          enqueueSnackbar(t('credential.error.toggle'), { variant: 'error' });
+          snackbar.handleClick({
+            message: t('credential.error.toggle'),
+          });
         },
       }
     );
@@ -118,13 +121,17 @@ export function GatesCard({
       { gate_id: id },
       {
         async onSuccess() {
-          enqueueSnackbar(t('credential.deleted'));
+          snackbar.onOpen({
+            message: t('credential.deleted'),
+          });
 
           await queryClient.refetchQueries(['gate', id]);
           await queryClient.refetchQueries(['dao-gates', dao.id]);
         },
         onError() {
-          enqueueSnackbar(t('credential.error.delete'), { variant: 'error' });
+          snackbar.handleClick({
+            message: t('credential.error.delete'),
+          });
         },
       }
     );
@@ -229,6 +236,15 @@ export function GatesCard({
           {contentChildren}
         </MUICard>
       )}
+      <Snackbar
+        anchorOrigin={{
+          vertical: snackbar.vertical,
+          horizontal: snackbar.horizontal,
+        }}
+        open={snackbar.open}
+        onClose={snackbar.handleClose}
+        message={snackbar.message}
+      />
       <ConfirmDialog
         title={t('credential.confirm.delete.title')}
         open={confirmDelete}
