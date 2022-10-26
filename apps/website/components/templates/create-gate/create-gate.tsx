@@ -3,13 +3,13 @@ import { useState } from 'react';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
+import { useSnackbar } from 'notistack';
 import { useForm, FormProvider } from 'react-hook-form';
 import { v4 as uuidv4 } from 'uuid';
 
-import { Box, Divider, Snackbar, Stack, Typography } from '@mui/material';
+import { Box, Divider, Stack, Typography } from '@mui/material';
 
 import { ROUTES } from '../../../constants/routes';
-import { useSnackbar } from '../../../hooks/use-snackbar';
 import { useAuth } from '../../../providers/auth';
 import {
   Tasks_Constraint,
@@ -53,8 +53,6 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
     mode: 'onBlur',
   });
 
-  const snackbar = useSnackbar();
-
   const router = useRouter();
   const { gqlAuthMethods } = useAuth();
 
@@ -66,6 +64,8 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
   const [result, setResult] = useState(null);
 
   const [deletedTasks, setDeletedTasks] = useState<string[]>([]);
+
+  const { enqueueSnackbar } = useSnackbar();
 
   const { mutateAsync: uploadImage } = useMutation(
     ['uploadImage'],
@@ -94,9 +94,14 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
 
     if (!dataIsValid) {
       const errors = methods.formState.errors;
-      snackbar.onOpen({
-        message: Object.values(errors)[0].data?.message || 'Invalid data',
-      });
+      enqueueSnackbar(
+        Object.values(errors)[0].data?.message ||
+          taskErrorMessage(errors?.tasks?.data) ||
+          'Invalid data',
+        {
+          variant: 'error',
+        }
+      );
       isDraft ? setDraftIsLoading(false) : setCreateIsLoading(false);
     }
 
@@ -133,8 +138,8 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
               image_id;
           },
           onError() {
-            snackbar.onOpen({
-              message: "An error occured, couldn't upload the image.",
+            enqueueSnackbar("An error occured, couldn't upload the image.", {
+              variant: 'error',
             });
           },
         }
@@ -190,9 +195,7 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
         {
           async onSuccess(result) {
             if (isDraft) {
-              snackbar.onOpen({
-                message: 'Draft saved',
-              });
+              enqueueSnackbar('Draft saved');
               setDraftIsLoading(false);
               router.push(
                 ROUTES.GATE_PROFILE.replace('[id]', result.insert_gates_one.id)
@@ -208,11 +211,11 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
           },
           onError() {
             isDraft ? setDraftIsLoading(false) : setCreateIsLoading(false);
-            snackbar.onOpen({
-              message: isDraft
+            enqueueSnackbar(
+              isDraft
                 ? "An error occured, couldn't save the draft."
-                : "An error occured, couldn't create the gate.",
-            });
+                : "An error occured, couldn't create the gate."
+            );
           },
         }
       );
@@ -343,54 +346,58 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
           {/* Tasks */}
           {canShowTasks && (
             <>
-              <GateTypeSelector />
               <Divider sx={{ margin: '60px 0', width: '100%' }} />
-              {gateType === 'task_based' && (
-                <Stack
-                  direction="row"
-                  gap={{ lg: 5, xs: 2, md: 2 }}
-                  sx={(theme) => ({
-                    width: '100%',
-                    display: { xs: 'block', md: 'flex' },
-                    [theme.breakpoints.down('sm')]: { p: '0 20px' },
-                  })}
+              <Stack
+                direction="row"
+                gap={{ lg: 5, xs: 2, md: 2 }}
+                sx={(theme) => ({
+                  width: '100%',
+                  display: { xs: 'block', md: 'flex' },
+                  [theme.breakpoints.down('sm')]: { p: '0 20px' },
+                })}
+              >
+                <Box
+                  sx={{
+                    maxWidth: {
+                      lg: `15%`,
+                    },
+                  }}
                 >
-                  <Box
-                    sx={{
-                      maxWidth: {
-                        lg: `15%`,
-                      },
-                    }}
+                  <Typography component="h2" variant="h5" gutterBottom>
+                    Define how to obtain
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    color={'text.secondary'}
+                    marginBottom={4}
                   >
-                    <Typography component="h2" variant="h5" gutterBottom>
-                      Set requirements
-                    </Typography>
-                    <Typography
-                      variant="body2"
-                      color={'text.secondary'}
-                      marginBottom={4}
-                    >
-                      Define the requirements that the user must meet to obtain
-                      the credential
-                    </Typography>
-                  </Box>
-                  <Stack
-                    direction="column"
-                    sx={{
-                      margin: 'auto',
-                      width: '100%',
-                      maxWidth: { xs: '100%', md: '100%', lg: '80%' },
-                    }}
-                  >
+                    Set what is necessary to do to obtain this credential
+                  </Typography>
+                </Box>
+                <Stack
+                  direction="column"
+                  sx={{
+                    margin: 'auto',
+                    width: '100%',
+                    maxWidth: { xs: '100%', md: '100%', lg: '80%' },
+                  }}
+                  gap={4}
+                >
+                  {gateType ? (
+                    <GateTypeChanger type={gateType} />
+                  ) : (
+                    <GateTypeSelector />
+                  )}
+                  {gateType === 'task_based' && (
                     <Stack direction="column" gap={2}>
                       <TaskArea
                         draftTasks={oldData.tasks || []}
                         onDelete={setDeletedTasks}
                       />
                     </Stack>
-                  </Stack>
+                  )}
                 </Stack>
-              )}
+              </Stack>
             </>
           )}
 
