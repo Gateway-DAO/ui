@@ -1,12 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
-import { useSnackbar } from 'notistack';
 import { Controller, useFormContext } from 'react-hook-form';
 
 import { CircleOutlined, SquareOutlined } from '@mui/icons-material';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CloseIcon from '@mui/icons-material/Close';
-import { Stack, TextField } from '@mui/material';
+import { Alert, Snackbar, Stack, TextField } from '@mui/material';
 
 import {
   CreateGateTypes,
@@ -36,16 +35,7 @@ export function OptionField({
     formState: { errors },
     control,
   } = useFormContext<CreateGateTypes>();
-  const { enqueueSnackbar } = useSnackbar();
   const [isOpen, setIsOpen] = useState(false);
-
-  useEffect(() => {
-    if (isOpen) {
-      enqueueSnackbar(`Question type needs to be multiple.`, {
-        variant: 'error',
-      });
-    }
-  }, [isOpen]);
 
   const questionType = watch(
     `tasks.data.${taskId}.task_data.questions.${questionIndex}.type`
@@ -129,6 +119,15 @@ export function OptionField({
           />
         )}
       </Stack>
+      <Snackbar
+        open={isOpen}
+        autoHideDuration={3000}
+        onClose={() => setIsOpen(false)}
+      >
+        <Alert severity="error" sx={{ width: '100%' }}>
+          Question type needs to be multiple.
+        </Alert>
+      </Snackbar>
     </Stack>
   );
 }

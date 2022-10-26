@@ -1,7 +1,6 @@
 import useTranslation from 'next-translate/useTranslation';
 import { useEffect } from 'react';
 
-import { useSnackbar } from 'notistack';
 import { useCopyToClipboard } from 'react-use';
 
 import { useMenu } from '@gateway/ui';
@@ -20,8 +19,10 @@ import {
   ListItemText,
   Menu,
   MenuItem,
+  Snackbar,
 } from '@mui/material';
 
+import { useSnackbar } from '../../hooks/use-snackbar';
 import objectToParams from '../../utils/map-object';
 
 type Props = {
@@ -48,7 +49,7 @@ export function ShareButton({
   title = 'Gateway',
   url = typeof window !== 'undefined' ? window.location.href : '',
 }: Props) {
-  const { enqueueSnackbar } = useSnackbar();
+  const snackbar = useSnackbar();
   const [state, copyToClipboard] = useCopyToClipboard();
   const menu = useMenu();
   const data = { title, url };
@@ -68,9 +69,7 @@ export function ShareButton({
   };
 
   useEffect(() => {
-    if (state?.value) {
-      enqueueSnackbar('Copied link!');
-    }
+    if (state?.value) snackbar.onOpen({ message: 'Copied link!' });
   }, [state]);
 
   return (
@@ -116,6 +115,15 @@ export function ShareButton({
           <ListItemText>{t('actions.share-link')}</ListItemText>
         </MenuItem>
       </Menu>
+      <Snackbar
+        anchorOrigin={{
+          vertical: snackbar.vertical,
+          horizontal: snackbar.horizontal,
+        }}
+        open={snackbar.open}
+        onClose={snackbar.handleClose}
+        message={snackbar.message}
+      />
     </>
   );
 }

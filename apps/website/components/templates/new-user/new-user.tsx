@@ -1,12 +1,13 @@
 import useTranslation from 'next-translate/useTranslation';
 
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useMutation } from '@tanstack/react-query';
-import { useSnackbar } from 'notistack';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useForm, FormProvider } from 'react-hook-form';
+import { useAccount } from 'wagmi';
 
-import { Box, Stack, Typography } from '@mui/material';
+import { Box, Snackbar, Stack, Typography } from '@mui/material';
 
+import { useSnackbar } from '../../../hooks/use-snackbar';
 import { useUploadImage } from '../../../hooks/use-upload-image';
 import { useAuth } from '../../../providers/auth';
 import { ErrorResponse } from '../../../types/graphql';
@@ -28,7 +29,7 @@ export function NewUserTemplate() {
     defaultValues: defaultValues(me),
   });
 
-  const { enqueueSnackbar } = useSnackbar();
+  const snackbar = useSnackbar();
 
   const uploadImage = useUploadImage();
 
@@ -52,7 +53,7 @@ export function NewUserTemplate() {
     },
     {
       onSuccess() {
-        enqueueSnackbar(`Profile created!`);
+        snackbar.onOpen({ message: 'Profile created!' });
         onInvalidateMe();
       },
       onError(error: ErrorResponse) {
@@ -78,7 +79,7 @@ export function NewUserTemplate() {
         });
 
         if (totalUnmappedErrors) {
-          enqueueSnackbar(`Unknown server error`, { variant: 'error' });
+          snackbar.onOpen({ message: 'Unknown server error', type: 'error' });
         }
       },
     }
@@ -141,6 +142,16 @@ export function NewUserTemplate() {
           />
         </FormProvider>
       </Stack>
+      <Snackbar
+        anchorOrigin={{
+          vertical: snackbar.vertical,
+          horizontal: snackbar.horizontal,
+        }}
+        open={snackbar.open}
+        onClose={snackbar.handleClose}
+        message={snackbar.message}
+        key={snackbar.vertical + snackbar.horizontal}
+      />
     </>
   );
 }

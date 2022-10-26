@@ -1,9 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
-import { useSnackbar } from 'notistack';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 
-import { Button, Stack } from '@mui/material';
+import { Alert, Button, Snackbar, Stack } from '@mui/material';
 
 import { CreateGateTypes, Option } from '../../templates/create-gate/schema';
 import { OptionField } from './option-field/option-field';
@@ -17,7 +16,6 @@ export function RadioCheckBoxCreator({
 }): JSX.Element {
   const [maxAlert, setMaxAlert] = useState(false);
   const { control } = useFormContext<CreateGateTypes>();
-  const { enqueueSnackbar } = useSnackbar();
 
   const DEFAULT_OPTION: Option = {
     value: '',
@@ -36,14 +34,6 @@ export function RadioCheckBoxCreator({
   const onRemoveOption = (index: number) => {
     remove(index);
   };
-
-  useEffect(() => {
-    if (maxAlert) {
-      enqueueSnackbar(`You can only add up to 5 options`, {
-        variant: 'error',
-      });
-    }
-  }, [maxAlert]);
 
   return (
     <Stack alignItems={'flex-start'} sx={{ width: '100%' }}>
@@ -70,6 +60,15 @@ export function RadioCheckBoxCreator({
       >
         Add option
       </Button>
+      <Snackbar
+        open={maxAlert}
+        autoHideDuration={3000}
+        onClose={() => setMaxAlert(false)}
+      >
+        <Alert severity="warning" sx={{ width: '100%' }}>
+          You can only add up to 5 options
+        </Alert>
+      </Snackbar>
     </Stack>
   );
 }

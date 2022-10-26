@@ -29,7 +29,7 @@ export const NotistackContext = createContext<NotistackContextProps>({
     vertical: 'top',
     horizontal: 'center',
   },
-  autoHideDuration: 5000,
+  autoHideDuration: 3000,
 });
 
 const Notistack = (props) => {
@@ -53,7 +53,6 @@ const Notistack = (props) => {
       preventDuplicate={notistackContext.preventDuplicate}
       anchorOrigin={notistackContext.position}
       autoHideDuration={notistackContext.autoHideDuration}
-      hideIconVariant={notistackContext.variant == 'default' ? true : false}
       style={defaultStyle()}
     >
       {props.children}
