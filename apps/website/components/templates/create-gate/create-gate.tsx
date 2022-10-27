@@ -211,7 +211,7 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
             enqueueSnackbar(
               isDraft
                 ? "An error occured, couldn't save the draft."
-                : "An error occured, couldn't create the gate."
+                : "An error occured, couldn't create the credential."
             );
           },
         }
