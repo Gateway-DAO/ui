@@ -17,7 +17,8 @@ import {
 
 import { ClientNav } from '../../organisms/navbar/client-nav';
 import { NavBarSettings } from '../../organisms/settings/navbar-settings';
-import { ROUTES } from 'apps/website/constants/routes';
+import { ROUTES } from '../../../constants/routes';
+import { useWindowSize } from '../../../hooks/use-window-size';
 
 type Props = {
   children?: React.ReactNode;
@@ -28,6 +29,7 @@ export default function SettingsTemplate(props: Props) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const { t } = useTranslation('settings');
+  const windowSize = useWindowSize();
 
   const isMenuPage = () => {
     return router.pathname === ROUTES.SETTINGS;
@@ -38,7 +40,7 @@ export default function SettingsTemplate(props: Props) {
       <Grid
         container
         height={isMobile && !isMenuPage() ? 'auto' : '100%'}
-        sx={{ flexWrap: 'nowrap', flexDirection: { xs: 'column', md: 'row' } }}
+        sx={{ flexWrap: 'nowrap', flexDirection: { xs: 'column', md: 'row' }, minHeight: `${windowSize.height}px` }}
       >
         <Grid item xs={12} md={5} sx={{ pt: 2, flexGrow: 0 }}>
           <Stack
@@ -110,7 +112,7 @@ export default function SettingsTemplate(props: Props) {
               direction="row"
               alignItems="center"
               sx={{
-                margin: { xs: '16px 16px 40px 16px', md: '60px' },
+                margin: { xs: '16px 16px 40px 16px', md: '40px 60px 60px' },
               }}
             >
               {props?.children}

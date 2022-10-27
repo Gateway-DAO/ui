@@ -9,5 +9,26 @@
     "connected-accounts-description": "These are the accounts you connected to your Gateway account",
     "notifications-title": "Notifications",
     "notifications-description": "Select the sort of notifications you get about"
+  },
+  "profile": {
+    "description": "Information provided will be displayed on your Gateway profile.",
+    "submit": "Submit",
+    "social-links-labels": {
+      "discord": "Username"
+    },
+    "avatar-and-cover": "Avatar and cover",
+    "social-links": "Social links",
+    "details": "Details",
+    "username-helper-text": "Valid: lowercase alphanumeric charaters and ._-",
+    "display-name": "Display Name",
+    "username": "Username",
+    "your-bio": "Your Bio",
+    "select-your-time-zone": "Select your time zone",
+    "select-your-languages": "Select your languages",
+    "about": "About",
+    "experience": "Experience",
+    "languages": "Languages",
+    "skills": "Skills",
+    "time-zone": "Time zone"
   }
 }
