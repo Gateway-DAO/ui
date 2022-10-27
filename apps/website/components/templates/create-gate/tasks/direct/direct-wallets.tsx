@@ -1,29 +1,55 @@
 import { useRef, useState } from 'react';
 
+import { useQueries } from '@tanstack/react-query';
+import { ethers } from 'ethers';
 import { useSnackbar } from 'notistack';
+import { useProvider } from 'wagmi';
 
 import { UploadFile } from '@mui/icons-material';
 import {
   Box,
   Button,
   Chip,
+  CircularProgress,
   Paper,
   Stack,
   TextField,
   Typography,
 } from '@mui/material';
 
+type Wallet = {
+  input: string;
+  address?: string;
+};
+
 export function DirectWallets() {
   const [wallets, setWallets] = useState<string[]>([]);
   const [inputValue, setInputValue] = useState('');
   const { enqueueSnackbar } = useSnackbar();
   const inputRef = useRef<HTMLInputElement>(null);
+  const provider = useProvider();
+
+  const walletsQueries = useQueries({
+    queries: wallets.map((wallet) => ({
+      queryKey: ['wallet', wallet],
+      queryFn: async (): Promise<string> => {
+        const input = wallet;
+        if (ethers.utils.isAddress(input)) {
+          /* Check if wallet address is valid */
+          return ethers.utils.getAddress(input);
+        }
+        /* Check if ENS name is valid */
+        return provider.resolveName(wallet);
+      },
+    })),
+  });
 
   const onDelete = (index: number) => () => {
     const newWallets = [...wallets];
     newWallets.splice(index, 1);
     setWallets(newWallets);
   };
+
   const onEdit = (wallet: string, index: number) => () => {
     const newWallets = [...wallets];
     newWallets.splice(index, 1);
@@ -35,8 +61,9 @@ export function DirectWallets() {
   const onParseText = (text: string) => {
     const newWallets = text
       .split(/[,\n\s]/g)
-      .map((w) => w.trim())
-      .filter((w) => w.length && !wallets.includes(w));
+      .map((wallet) => wallet.trim())
+      .filter((wallet) => wallet.length && !wallets.includes(wallet));
+
     setWallets((prev) => [...prev, ...newWallets]);
   };
 
@@ -92,14 +119,39 @@ export function DirectWallets() {
         InputProps={{
           startAdornment: wallets.length ? (
             <Stack gap={1} direction="row" flexWrap="wrap">
-              {wallets.map((wallet, index) => (
-                <Chip
-                  key={wallet}
-                  label={wallet}
-                  onClick={onEdit(wallet, index)}
-                  onDelete={onDelete(index)}
-                />
-              ))}
+              {wallets.map((wallet, index) => {
+                const resolvedWallet = walletsQueries[index];
+                const { isLoading, isError } = resolvedWallet;
+
+                /*                 if (isLoading) {
+                  return (
+                    <Chip
+                      key={wallet}
+                      label={wallets}
+                      deleteIcon={
+                        <CircularProgress color="inherit" size={12} />
+                      }
+                    />
+                  );
+                }
+
+                return (
+                  <Chip
+                    key={wallet}
+                    label={wallets}
+                    color={isError ? 'error' : 'success'}
+                    onClick={onEdit(wallet, index)}
+                    onDelete={onDelete(index)}
+                  />
+                ); */
+                return (
+                  <Chip
+                    key={wallet}
+                    label={wallets}
+                    deleteIcon={<CircularProgress color="inherit" size={12} />}
+                  />
+                );
+              })}
             </Stack>
           ) : null,
         }}
