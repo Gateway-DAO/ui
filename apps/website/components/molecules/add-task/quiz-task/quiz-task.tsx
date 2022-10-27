@@ -100,7 +100,7 @@ export function QuizTask({
 
   const errorOptionIsNecessary = () => {
     if (
-      (errors?.tasks?.data?.[taskId]?.task_data as QuizTaskDataError)?.questions
+      (errors.tasks?.data?.[taskId]?.task_data as QuizTaskDataError)?.questions?.[questions.length - 1]?.options?.message
     ) {
       enqueueSnackbar(
         (errors.tasks?.data?.[taskId]?.task_data as QuizTaskDataError)
