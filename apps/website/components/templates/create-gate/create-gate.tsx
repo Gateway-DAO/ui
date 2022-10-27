@@ -31,6 +31,7 @@ import {
   DraftGateTypes,
   GateType,
 } from './schema';
+import { DirectWallets } from './tasks/direct/direct-wallets';
 
 type CreateGateProps = {
   oldData?: DraftGateTypes;
@@ -388,6 +389,7 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
                   ) : (
                     <GateTypeSelector />
                   )}
+                  {gateType === 'direct' && <DirectWallets />}
                   {gateType === 'task_based' && (
                     <Stack direction="column" gap={2}>
                       <TaskArea

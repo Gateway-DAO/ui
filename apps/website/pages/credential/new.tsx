@@ -22,7 +22,7 @@ export default function CreateGate({ id, gateProps }: CreateGateProps) {
   const { data: oldGateData } = useQuery(
     ['gate', id],
     () =>
-      gqlAuthMethods.gate({
+      gqlAuthMethods.gate_new({
         id,
       }),
     {
@@ -65,7 +65,7 @@ export async function getServerSideProps({ res, query }) {
   let gateProps = { gates_by_pk: { id: '', published: '' } };
 
   if (gateId) {
-    gateProps = await gqlAnonMethods.gate({
+    gateProps = await gqlAnonMethods.gate_new({
       id: gateId,
     });
   }

@@ -11,9 +11,8 @@ query all_gates {
   }
 }
 
-query gate($id: uuid!) {
-  gates_by_pk(id: $id) {
-    id
+fragment gate_data on gates {
+id
     title
     description
     categories
@@ -60,6 +59,20 @@ query gate($id: uuid!) {
       task_type
       title
       order
+    }
+}
+
+query gate($id: uuid!) {
+  gates_by_pk(id: $id) {
+    ...gate_data
+  }
+}
+
+query gate_new($id: uuid!) {
+  gates_by_pk(id: $id) {
+    ...gate_data
+  	whitelisted_wallets {
+      wallet
     }
   }
 }

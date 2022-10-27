@@ -1,4 +1,5 @@
 import { FieldError, NestedValue } from 'react-hook-form';
+import { PartialDeep } from 'type-fest';
 import { z } from 'zod';
 
 import { Gates } from '../../../services/graphql/types.generated';
@@ -19,9 +20,9 @@ export type DraftGateTypes = {
   image: string;
   skills: string[];
   created_by: Creator[];
-  tasks: DraftTasksSchema;
-  type: Gates['type'];
-};
+  tasks?: DraftTasksSchema;
+} & Pick<Gates, 'type'> &
+  PartialDeep<Pick<Gates, 'whitelisted_wallets'>>;
 
 // Create Gate
 export type CreateGateTypes = {
