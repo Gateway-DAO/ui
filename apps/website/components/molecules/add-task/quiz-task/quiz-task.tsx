@@ -300,7 +300,8 @@ export function QuizTask({
             </Button>
             <Divider
               sx={(theme) => ({
-                margin: '0 -50px',
+                position: 'relative',
+                left: '-50px',
                 width: 'calc(100% + 100px)',
                 [theme.breakpoints.down('sm')]: {
                   margin: '0 -20px',
