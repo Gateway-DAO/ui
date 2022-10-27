@@ -31,6 +31,15 @@ export function DirectWallets() {
     setInputValue(wallet);
     inputRef.current?.focus();
   };
+
+  const onParseText = (text: string) => {
+    const newWallets = text
+      .split(/[,\n\s]/g)
+      .map((w) => w.trim())
+      .filter((w) => w.length && !wallets.includes(w));
+    setWallets((prev) => [...prev, ...newWallets]);
+  };
+
   return (
     <Paper
       elevation={1}
@@ -48,8 +57,25 @@ export function DirectWallets() {
             Copy and paste, fill, import the wallet address and/or ens name
           </Typography>
         </Box>
-        <Button variant="outlined" startIcon={<UploadFile />}>
+        <Button component="label" variant="outlined" startIcon={<UploadFile />}>
           Import from a CSV
+          <input
+            hidden
+            type="file"
+            accept=".csv"
+            onChange={(event) => {
+              const reader = new FileReader();
+              reader.onload = (e) => {
+                console.log(e);
+                const text = e.target?.result as string;
+                onParseText(text);
+              };
+              if (event.target.files?.length) {
+                reader.readAsText(event.target.files![0]);
+              }
+            }}
+            value={[]}
+          />
         </Button>
       </Stack>
       <TextField
@@ -88,11 +114,7 @@ export function DirectWallets() {
           ) {
             event.preventDefault();
             if (inputValue.length) {
-              if (!wallets.includes(inputValue)) {
-                setWallets((prev) => [...prev, inputValue]);
-              } else {
-                enqueueSnackbar('Wallet already added', { variant: 'error' });
-              }
+              onParseText(inputValue);
               setInputValue('');
             }
           }
@@ -101,12 +123,8 @@ export function DirectWallets() {
           setInputValue(e.target.value);
         }}
         onPaste={(e) => {
-          const pasted = e.clipboardData.getData('text');
-          const newWallets = pasted
-            .split(/[,\n\s]/g)
-            .map((w) => w.trim())
-            .filter((w) => w.length && !wallets.includes(w));
-          setWallets((prev) => [...prev, ...newWallets]);
+          const text = e.clipboardData.getData('text');
+          onParseText(text);
           e.preventDefault();
         }}
       />
