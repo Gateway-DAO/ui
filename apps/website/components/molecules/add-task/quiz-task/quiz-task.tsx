@@ -21,12 +21,12 @@ import {
   Typography,
 } from '@mui/material';
 
-import { CircleWithNumber } from '../../../atoms/circle-with-number';
 import { QuestionCreator } from '../../../organisms/question-creator/question-creator';
 import {
   CreateGateTypes,
   QuizTaskDataError,
 } from '../../../templates/create-gate/schema';
+import { TaskIcon } from 'apps/website/components/atoms/task-icon';
 
 // Time Period (minutes)
 export enum TimePeriod {
@@ -141,13 +141,7 @@ export function QuizTask({
           alignItems={'center'}
           sx={{ width: '100%', mr: '20px' }}
         >
-          <CircleWithNumber
-            number={taskId + 1}
-            sx={(theme) => ({
-              mr: theme.spacing(3.75),
-              [theme.breakpoints.down('sm')]: { mr: theme.spacing(2.5) },
-            })}
-          />
+          <TaskIcon type="quiz" sx={{ marginRight: 3 }} />
           <TextField
             variant="standard"
             label="Quiz"

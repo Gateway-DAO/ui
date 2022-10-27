@@ -16,12 +16,12 @@ import {
   Typography,
 } from '@mui/material';
 
-import { CircleWithNumber } from '../../../atoms/circle-with-number';
 import {
   CreateGateTypes,
   HoldNFTDataError,
 } from '../../../templates/create-gate/schema';
 import { mockChains } from '../hold-token-task/__mock__';
+import { TaskIcon } from 'apps/website/components/atoms/task-icon';
 
 const HoldNFTTask = ({ dragAndDrop, taskId, deleteTask }) => {
   const {
@@ -75,13 +75,8 @@ const HoldNFTTask = ({ dragAndDrop, taskId, deleteTask }) => {
           alignItems={'center'}
           sx={{ width: '100%', mr: '20px' }}
         >
-          <CircleWithNumber
-            number={taskId + 1}
-            sx={(theme) => ({
-              mr: theme.spacing(3.75),
-              [theme.breakpoints.down('sm')]: { mr: theme.spacing(2.5) },
-            })}
-          />
+          <TaskIcon type="nft_hold" sx={{ marginRight: 3 }} />
+
           <Stack>
             <Typography variant="subtitle2">Hold NFT</Typography>
             <TextField

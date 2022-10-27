@@ -19,11 +19,12 @@ import {
 } from '@mui/material';
 
 import { useAuth } from '../../../../providers/auth';
-import { CircleWithNumber } from '../../../atoms/circle-with-number';
+
 import {
   CreateGateTypes,
   TwitterRetweetDataError,
 } from '../../../templates/create-gate/schema';
+import { TaskIcon } from 'apps/website/components/atoms/task-icon';
 
 const TwitterRetweetTask = ({ dragAndDrop, taskId, deleteTask }) => {
   const { gqlAuthMethods } = useAuth();
@@ -111,13 +112,7 @@ const TwitterRetweetTask = ({ dragAndDrop, taskId, deleteTask }) => {
           alignItems={'center'}
           sx={{ width: '100%', mr: '20px' }}
         >
-          <CircleWithNumber
-            number={taskId + 1}
-            sx={(theme) => ({
-              mr: theme.spacing(3.75),
-              [theme.breakpoints.down('sm')]: { mr: theme.spacing(2.5) },
-            })}
-          />
+          <TaskIcon type="twitter_retweet" sx={{ marginRight: 3 }} />
           <Stack>
             <Typography variant="subtitle2">Retweet Post</Typography>
             <TextField

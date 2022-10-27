@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import { useFieldArray, useFormContext } from 'react-hook-form';
-
+import { TaskIcon } from 'apps/website/components/atoms/task-icon';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import Clear from '@mui/icons-material/Clear';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -83,13 +83,7 @@ const FileLinkTask = ({ dragAndDrop, taskId, deleteTask }) => {
           alignItems={'center'}
           sx={{ width: '100%', mr: '20px' }}
         >
-          <CircleWithNumber
-            number={taskId + 1}
-            sx={(theme) => ({
-              mr: theme.spacing(3.75),
-              [theme.breakpoints.down('sm')]: { mr: theme.spacing(2.5) },
-            })}
-          />
+          <TaskIcon type="self_verify" sx={{ marginRight: 3 }} />
           <Stack>
             <Typography variant="subtitle2">File &#38; Text</Typography>
             <TextField
