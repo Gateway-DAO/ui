@@ -2,30 +2,19 @@ import { useRef, useState } from 'react';
 
 import { useQueries } from '@tanstack/react-query';
 import { ethers } from 'ethers';
-import { useSnackbar } from 'notistack';
+import { useDropArea } from 'react-use';
 import { useProvider } from 'wagmi';
 
-import { UploadFile } from '@mui/icons-material';
-import {
-  Box,
-  Button,
-  Chip,
-  CircularProgress,
-  Paper,
-  Stack,
-  TextField,
-  Typography,
-} from '@mui/material';
+import { Delete } from '@mui/icons-material';
+import { Button, Paper, TextField } from '@mui/material';
 
-type Wallet = {
-  input: string;
-  address?: string;
-};
+import { DirectWalletsChips } from './direct-wallets-chips';
+import { DirectWalletsHeader } from './direct-wallets-header';
 
 export function DirectWallets() {
   const [wallets, setWallets] = useState<string[]>([]);
   const [inputValue, setInputValue] = useState('');
-  const { enqueueSnackbar } = useSnackbar();
+
   const inputRef = useRef<HTMLInputElement>(null);
   const provider = useProvider();
 
@@ -62,57 +51,56 @@ export function DirectWallets() {
   };
 
   const onParseText = (text: string) => {
-    const newWallets = text
-      .split(/[,\n\s]/g)
-      .map((wallet) => wallet.trim())
-      .filter((wallet) => wallet.length && !wallets.includes(wallet));
+    const newWallets = text.split(/[,\n\s]/g).reduce((acc, wallet) => {
+      const trimmedWallet = wallet.trim();
+      if (trimmedWallet.length && !wallets.includes(trimmedWallet)) {
+        return [...acc, trimmedWallet];
+      }
+      return acc;
+    }, [] as string[]);
 
     setWallets((prev) => [...prev, ...newWallets]);
   };
 
+  const readFiles = (files: FileList | File[]) => {
+    const file = files[0];
+
+    if (file.type !== 'text/csv') return;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const text = e.target?.result as string;
+      onParseText(text);
+    };
+    reader.readAsText(file);
+  };
+
+  const [dropBond, { over: isOver }] = useDropArea({
+    onFiles: readFiles,
+  });
+
   return (
     <Paper
       elevation={1}
-      sx={{
-        px: { xs: 2, lg: 6 },
-        py: { xs: 3, lg: 6 },
-        display: 'flex',
-        flexFlow: 'column',
-        gap: 4,
-      }}
+      sx={[
+        {
+          px: { xs: 2, lg: 6 },
+          py: { xs: 3, lg: 6 },
+          display: 'flex',
+          flexFlow: 'column',
+          gap: 4,
+          transition: 'opacity 0.25s ease',
+        },
+        isOver && {
+          opacity: 0.5,
+        },
+      ]}
+      {...dropBond}
     >
-      <Stack
-        direction={{ xs: 'column', lg: 'row' }}
-        alignItems={{ xs: 'flex-start', lg: 'center' }}
-        justifyContent="space-between"
-        gap={2}
-      >
-        <Box>
-          <Typography variant="h6">0 recipients</Typography>
-          <Typography variant="body1" color="text.secondary">
-            Copy and paste, fill, import the wallet address and/or ens name
-          </Typography>
-        </Box>
-        <Button component="label" variant="outlined" startIcon={<UploadFile />}>
-          Import from a CSV
-          <input
-            hidden
-            type="file"
-            accept=".csv"
-            onChange={(event) => {
-              const reader = new FileReader();
-              reader.onload = (e) => {
-                const text = e.target?.result as string;
-                onParseText(text);
-              };
-              if (event.target.files?.length) {
-                reader.readAsText(event.target.files![0]);
-              }
-            }}
-            value={[]}
-          />
-        </Button>
-      </Stack>
+      <DirectWalletsHeader
+        readFiles={readFiles}
+        walletsQueries={walletsQueries}
+      ></DirectWalletsHeader>
       <TextField
         sx={{
           display: 'flex',
@@ -126,35 +114,12 @@ export function DirectWallets() {
         }}
         InputProps={{
           startAdornment: wallets.length ? (
-            <Stack gap={1} direction="row" flexWrap="wrap">
-              {wallets.map((wallet, index) => {
-                const resolvedWallet = walletsQueries[index];
-                const { isLoading, isError } = resolvedWallet;
-
-                if (isLoading) {
-                  return (
-                    <Chip
-                      key={wallet}
-                      label={wallet}
-                      deleteIcon={
-                        <CircularProgress color="inherit" size={12} />
-                      }
-                      onDelete={() => {}}
-                    />
-                  );
-                }
-
-                return (
-                  <Chip
-                    key={wallet}
-                    label={wallet}
-                    color={isError ? 'error' : 'success'}
-                    onClick={onEdit(wallet, index)}
-                    onDelete={onDelete(index)}
-                  />
-                );
-              })}
-            </Stack>
+            <DirectWalletsChips
+              wallets={wallets}
+              walletsQueries={walletsQueries}
+              onDelete={onDelete}
+              onEdit={onEdit}
+            ></DirectWalletsChips>
           ) : null,
         }}
         helperText="Fill the addresses separated by comma"
@@ -182,6 +147,14 @@ export function DirectWallets() {
           e.preventDefault();
         }}
       />
+      <Button
+        sx={{ alignSelf: 'flex-end' }}
+        startIcon={<Delete />}
+        variant="outlined"
+        onClick={() => setWallets([])}
+      >
+        Reset
+      </Button>
     </Paper>
   );
 }
