@@ -85,16 +85,16 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
     if (!dataIsValid) {
       const errors = methods.formState.errors;
 
-      recursiveErrorMessage(errors);
+      // Tasks errors
+      if (errors?.tasks?.data?.length) {
+        taskErrorMessage(errors?.tasks?.data);
+      }
 
       if (Object.values(errors)[0].data?.message) {
         showErrorMessage(Object.values(errors)[0].data?.message);
       }
 
-      // Tasks errors
-      if (errors?.tasks?.data?.length) {
-        taskErrorMessage(errors?.tasks?.data);
-      }
+      recursiveErrorMessage(errors);
 
       isDraft ? setDraftIsLoading(false) : setCreateIsLoading(false);
     }
@@ -234,7 +234,6 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
   const recursiveErrorMessage = (obj) => {
     for (const prop in obj) {
       if (obj.hasOwnProperty.call(obj, prop)) {
-        console.log(obj[prop]);
         if (obj[prop]?.message) {
           showErrorMessage(obj[prop]?.message);
         } else if (obj[prop]?.length) {
