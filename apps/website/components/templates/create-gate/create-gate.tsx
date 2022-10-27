@@ -84,14 +84,21 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
 
     if (!dataIsValid) {
       const errors = methods.formState.errors;
-      enqueueSnackbar(
-        Object.values(errors)[0].data?.message ||
-          taskErrorMessage(errors?.tasks?.data) ||
-          'Invalid data',
-        {
-          variant: 'error',
-        }
-      );
+
+      if (Object.values(errors)[0].data?.message) {
+        showErrorMessage(Object.values(errors)[0].data?.message);
+      }
+
+      // Tasks errors
+      if (errors?.tasks?.data?.length) {
+        taskErrorMessage(errors?.tasks?.data);
+      }
+
+      // General errors
+      if (!Object.values(errors)[0].data?.message && !errors?.tasks?.data?.length) {
+        showErrorMessage('Invalid data');
+      }
+
       isDraft ? setDraftIsLoading(false) : setCreateIsLoading(false);
     }
 
@@ -204,7 +211,7 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
             enqueueSnackbar(
               isDraft
                 ? "An error occured, couldn't save the draft."
-                : "An error occured, couldn't create the gate."
+                : "An error occured, couldn't create the credential."
             );
           },
         }
@@ -213,24 +220,30 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
     isDraft ? setDraftIsLoading(false) : setCreateIsLoading(false);
   };
 
-  const taskErrorMessage = (data): string | null => {
-    return data?.length && data[0].task_data
-      ? takeErrorMessage(data[0].task_data)
-      : null;
+  const showErrorMessage = (message: string) => {
+    enqueueSnackbar(message, { variant: 'error', autoHideDuration: 8000 });
+  }
+
+  const taskErrorMessage = (data) => {
+    data.forEach((taskData, i) => {
+      console.log(taskData);
+      recursiveErrorMessage(taskData);
+      if (taskData?.task_data) {
+        recursiveErrorMessage(taskData.task_data);
+      }
+    });
   };
 
-  const takeErrorMessage = (obj): string | null => {
-    let message = '';
+  const recursiveErrorMessage = (obj) => {
     for (const task in obj) {
       if (obj.hasOwnProperty.call(obj, task)) {
         if (obj[task]?.message) {
-          message = obj[task]?.message;
-        } else if (obj[task].length) {
-          message = takeErrorMessage(obj[task][0]);
+          showErrorMessage(obj[task]?.message);
+        } else if (obj[task]?.length) {
+          recursiveErrorMessage(obj[task][0]);
         }
       }
     }
-    return message !== '' ? message : null;
   };
 
   const saveDraft = (draftData: CreateGateTypes) =>

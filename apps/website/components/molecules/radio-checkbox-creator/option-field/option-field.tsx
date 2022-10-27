@@ -99,7 +99,7 @@ export function OptionField({
                 sx={(theme) => ({
                   cursor: 'pointer',
                   ml: '24px',
-                  color: options[optionIndex]?.correct
+                  color: options?.[optionIndex]?.correct
                     ? theme.palette.success.light
                     : theme.palette.text.primary,
                 })}
