@@ -73,11 +73,17 @@ export function DirectWallets() {
   return (
     <Paper
       elevation={1}
-      sx={{ p: { md: 6 }, display: 'flex', flexFlow: 'column', gap: 4 }}
+      sx={{
+        px: { xs: 2, lg: 6 },
+        py: { xs: 3, lg: 6 },
+        display: 'flex',
+        flexFlow: 'column',
+        gap: 4,
+      }}
     >
       <Stack
-        direction="row"
-        alignItems="center"
+        direction={{ xs: 'column', lg: 'row' }}
+        alignItems={{ xs: 'flex-start', lg: 'center' }}
         justifyContent="space-between"
         gap={2}
       >
