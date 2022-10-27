@@ -100,7 +100,7 @@ export function QuizTask({
 
   const errorOptionIsNecessary = () => {
     if (
-      (errors?.tasks?.data?.[taskId]?.task_data as QuizTaskDataError)?.questions
+      (errors.tasks?.data?.[taskId]?.task_data as QuizTaskDataError)?.questions?.[questions.length - 1]?.options?.message
     ) {
       enqueueSnackbar(
         (errors.tasks?.data?.[taskId]?.task_data as QuizTaskDataError)
@@ -300,7 +300,8 @@ export function QuizTask({
             </Button>
             <Divider
               sx={(theme) => ({
-                margin: '0 -50px',
+                position: 'relative',
+                left: '-50px',
                 width: 'calc(100% + 100px)',
                 [theme.breakpoints.down('sm')]: {
                   margin: '0 -20px',
@@ -310,7 +311,7 @@ export function QuizTask({
             />
           </Stack>
         )}
-        {questions.length > 1 && !taskVisible && (
+        {!taskVisible && (
           <Stack
             direction="column"
             sx={(theme) => ({
@@ -326,56 +327,58 @@ export function QuizTask({
             <Typography variant="h6">
               {t('tasks.quiz.settingsTitle')}
             </Typography>
-            <>
-              <Stack
-                sx={[
-                  {
-                    mt: '24px',
-                    mb: '48px',
-                  },
-                ]}
-              >
-                <Typography>
-                  {t('tasks.quiz.settingsHowManyQuestionsTitle')}
-                </Typography>
-                <Typography
-                  sx={(theme) => ({ color: theme.palette.text.secondary })}
+            {questions.length > 1 && (
+              <>
+                <Stack
+                  sx={[
+                    {
+                      mt: '24px',
+                      mb: '48px',
+                    },
+                  ]}
                 >
-                  {t('tasks.quiz.settingsHowManyQuestionsDescription')}
-                </Typography>
-              </Stack>
+                  <Typography>
+                    {t('tasks.quiz.settingsHowManyQuestionsTitle')}
+                  </Typography>
+                  <Typography
+                    sx={(theme) => ({ color: theme.palette.text.secondary })}
+                  >
+                    {t('tasks.quiz.settingsHowManyQuestionsDescription')}
+                  </Typography>
+                </Stack>
 
-              <Controller
-                control={control}
-                name={`tasks.data.${taskId}.task_data.pass_score`}
-                defaultValue={1}
-                rules={{ required: true, min: 1, max: questions.length }}
-                render={({
-                  field: { onChange, value, ...props },
-                  fieldState: { error },
-                }) => {
-                  return (
-                    <Slider
-                      key={`slider-${props.name}`}
-                      {...props}
-                      size="medium"
-                      min={1}
-                      value={value}
-                      sx={{ mx: '10px', width: 'calc(100% - 10px)' }}
-                      max={questions.length > 0 ? questions.length : 1}
-                      onChange={onChange}
-                      marks
-                      onError={() => error?.message}
-                      aria-label="Medium"
-                      valueLabelDisplay="on"
-                    />
-                  );
-                }}
-              />
-              <Divider
-                sx={{ margin: '50px -50px 0', width: 'calc(100% + 100px)' }}
-              />
-            </>
+                <Controller
+                  control={control}
+                  name={`tasks.data.${taskId}.task_data.pass_score`}
+                  defaultValue={1}
+                  rules={{ required: true, min: 1, max: questions.length }}
+                  render={({
+                    field: { onChange, value, ...props },
+                    fieldState: { error },
+                  }) => {
+                    return (
+                      <Slider
+                        key={`slider-${props.name}`}
+                        {...props}
+                        size="medium"
+                        min={1}
+                        value={value}
+                        sx={{ mx: '10px', width: 'calc(100% - 10px)' }}
+                        max={questions.length > 0 ? questions.length : 1}
+                        onChange={onChange}
+                        marks
+                        onError={() => error?.message}
+                        aria-label="Medium"
+                        valueLabelDisplay="on"
+                      />
+                    );
+                  }}
+                />
+                <Divider
+                  sx={{ margin: '50px -50px 0', width: 'calc(100% + 100px)' }}
+                />
+              </>
+            )}
             <Stack>
               <Stack sx={{ mt: '48px' }}>
                 <Typography>
