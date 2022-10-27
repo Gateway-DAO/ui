@@ -90,10 +90,6 @@ export function QuizTask({
     setTaskIsMoving(dragAndDrop);
   }, [dragAndDrop]);
 
-  useEffect(() => {
-    errorOptionIsNecessary();
-  }, [errors, questions]);
-
   const [taskVisible, setTaskVisible] = useState(false);
   const [taskIsMoving, setTaskIsMoving] = useState(false);
   const onRemoveQuestion = (index: number) => remove(index);

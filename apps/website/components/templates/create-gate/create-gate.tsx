@@ -85,6 +85,8 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
     if (!dataIsValid) {
       const errors = methods.formState.errors;
 
+      recursiveErrorMessage(errors);
+
       if (Object.values(errors)[0].data?.message) {
         showErrorMessage(Object.values(errors)[0].data?.message);
       }
@@ -92,11 +94,6 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
       // Tasks errors
       if (errors?.tasks?.data?.length) {
         taskErrorMessage(errors?.tasks?.data);
-      }
-
-      // General errors
-      if (!Object.values(errors)[0].data?.message && !errors?.tasks?.data?.length) {
-        showErrorMessage('Invalid data');
       }
 
       isDraft ? setDraftIsLoading(false) : setCreateIsLoading(false);
@@ -235,12 +232,13 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
   };
 
   const recursiveErrorMessage = (obj) => {
-    for (const task in obj) {
-      if (obj.hasOwnProperty.call(obj, task)) {
-        if (obj[task]?.message) {
-          showErrorMessage(obj[task]?.message);
-        } else if (obj[task]?.length) {
-          recursiveErrorMessage(obj[task][0]);
+    for (const prop in obj) {
+      if (obj.hasOwnProperty.call(obj, prop)) {
+        console.log(obj[prop]);
+        if (obj[prop]?.message) {
+          showErrorMessage(obj[prop]?.message);
+        } else if (obj[prop]?.length) {
+          recursiveErrorMessage(obj[prop][0]);
         }
       }
     }
