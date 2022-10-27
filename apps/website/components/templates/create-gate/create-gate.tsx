@@ -214,8 +214,8 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
   };
 
   const taskErrorMessage = (data): string | null => {
-    return data?.length && data[0].task_data
-      ? takeErrorMessage(data[0].task_data)
+    return data?.length && data[0]?.task_data
+      ? takeErrorMessage(data[0]?.task_data)
       : null;
   };
 
@@ -225,7 +225,7 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
       if (obj.hasOwnProperty.call(obj, task)) {
         if (obj[task]?.message) {
           message = obj[task]?.message;
-        } else if (obj[task].length) {
+        } else if (obj[task]?.length) {
           message = takeErrorMessage(obj[task][0]);
         }
       }
