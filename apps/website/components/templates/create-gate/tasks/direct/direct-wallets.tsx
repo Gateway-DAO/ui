@@ -31,15 +31,18 @@ export function DirectWallets() {
 
   const walletsQueries = useQueries({
     queries: wallets.map((wallet) => ({
-      queryKey: ['wallet', wallet],
+      queryKey: ['address-validate', wallet],
       queryFn: async (): Promise<string> => {
-        const input = wallet;
-        if (ethers.utils.isAddress(input)) {
+        if (ethers.utils.isAddress(wallet)) {
           /* Check if wallet address is valid */
-          return ethers.utils.getAddress(input);
+          return ethers.utils.getAddress(wallet);
         }
         /* Check if ENS name is valid */
-        return provider.resolveName(wallet);
+        const address = await provider.resolveName(wallet);
+        if (!address) {
+          throw new Error('Invalid ENS name');
+        }
+        return address;
       },
     })),
   });
@@ -93,7 +96,6 @@ export function DirectWallets() {
             onChange={(event) => {
               const reader = new FileReader();
               reader.onload = (e) => {
-                console.log(e);
                 const text = e.target?.result as string;
                 onParseText(text);
               };
@@ -123,14 +125,15 @@ export function DirectWallets() {
                 const resolvedWallet = walletsQueries[index];
                 const { isLoading, isError } = resolvedWallet;
 
-                /*                 if (isLoading) {
+                if (isLoading) {
                   return (
                     <Chip
                       key={wallet}
-                      label={wallets}
+                      label={wallet}
                       deleteIcon={
                         <CircularProgress color="inherit" size={12} />
                       }
+                      onDelete={() => {}}
                     />
                   );
                 }
@@ -138,17 +141,10 @@ export function DirectWallets() {
                 return (
                   <Chip
                     key={wallet}
-                    label={wallets}
+                    label={wallet}
                     color={isError ? 'error' : 'success'}
                     onClick={onEdit(wallet, index)}
                     onDelete={onDelete(index)}
-                  />
-                ); */
-                return (
-                  <Chip
-                    key={wallet}
-                    label={wallets}
-                    deleteIcon={<CircularProgress color="inherit" size={12} />}
                   />
                 );
               })}
