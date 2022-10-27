@@ -19,7 +19,6 @@ export function GateTypeSelector() {
   const methods = useFormContext<CreateGateTypes>();
 
   const onClick = (type: GateType) => () => {
-    console.log('WAWO');
     methods.setValue('type', type);
     // Cleanup data from direct gate and task based gate
     // methods.setValue('direct_gate', undefined);
