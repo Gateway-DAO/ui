@@ -9,11 +9,11 @@ type connectGithubProps = {
 
 export function connectionHandlerGithub(props: connectGithubProps = { disconnect: false }): AccountHandlerConnection {
   const router = useRouter();
-  const [githubAccessToken, setGithubAccessToken, remove] = useLocalStorage('github_access_token');
-  const [githubRedirectUrl, setGithubRedirectUrl, removeGithubRedirectUrl] = useLocalStorage(
-    'github_redirect_url',
-    router.asPath
+  const [githubAccessToken, setGithubAccessToken, remove] = useLocalStorage(
+    'github_access_token',
+    ''
   );
+  const [githubRedirectUrl, setGithubRedirectUrl, removeGithubRedirectUrl] = useLocalStorage('github_redirect_url');
 
   const client_id =
     process.env.NODE_ENV === 'development'
@@ -21,6 +21,8 @@ export function connectionHandlerGithub(props: connectGithubProps = { disconnect
       : process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID_PROD;
 
   const connect = async () => {
+    setGithubAccessToken('');
+    setGithubRedirectUrl(window?.location?.href);
     router.push(
       `https://github.com/login/oauth/authorize?client_id=${client_id}`
     );
