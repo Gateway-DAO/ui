@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { AccountHandlerConnection } from "../../../../molecules/accounts-card";
+import { AccountHandlerConnection } from "../components/accounts-card";
 import { useLocalStorage } from "react-use";
 
 type connectTwitterProps = {

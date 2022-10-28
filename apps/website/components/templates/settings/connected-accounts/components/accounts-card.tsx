@@ -1,8 +1,7 @@
-import { CircularProgress, IconButton, Paper, Stack, Typography } from "@mui/material";
+import { Paper, Stack, Typography } from "@mui/material";
 import { ReactNode, useEffect, useState } from "react";
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import { brandColors } from "@gateway/theme";
-import { CheckedButton } from "../atoms/check-button";
+import { CheckedButton } from "../../../../atoms/check-button";
+import useTranslation from "next-translate/useTranslation";
 
 export type AccountHandlerConnection = {
   isConnected: boolean;
@@ -19,9 +18,9 @@ export type AccountsCardProps = {
   connectHandler: AccountHandlerConnection;
 };
 
-export function AccountsCard(props: AccountsCardProps) {
+export function AccountsCard({ id, title, description, icon, connectHandler }: AccountsCardProps) {
   const [connectedState, setConnectedState] = useState(false);
-  const { id, title, description, icon, connectHandler } = props;
+  const { t } = useTranslation('settings');
 
   useEffect(() => {
     setConnectedState(connectHandler.isConnected);
@@ -65,7 +64,7 @@ export function AccountsCard(props: AccountsCardProps) {
           checked={connectedState}
           clickHandler={connectToggle}
         >
-          {connectedState ? 'Connected' : 'Connect'}
+          {connectedState ? t('connected-accounts.connected') : t('connected-accounts.connect')}
         </CheckedButton>
       </Stack>
       <Stack>

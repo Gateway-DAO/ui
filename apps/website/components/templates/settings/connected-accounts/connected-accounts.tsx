@@ -1,5 +1,5 @@
 import { Stack, Typography } from "@mui/material";
-import { AccountsCard } from "./../../../../components/molecules/accounts-card";
+import { AccountsCard } from "./components/accounts-card";
 import useTranslation from "next-translate/useTranslation";
 import { FaTwitter } from "react-icons/fa";
 import { AiFillGithub } from 'react-icons/ai';
@@ -26,15 +26,15 @@ const ConnectedAccountsSettings = () => {
       >
         <AccountsCard
           id="twitter"
-          title="Twitter"
-          description="Connect your account to claim credentials with follow profile, retweet and post a tweet requirements."
+          title={t('connected-accounts.twitter.title')}
+          description={t('connected-accounts.twitter.description')}
           icon={<FaTwitter fontSize="20px" />}
           connectHandler={twitterConnection}
         />
         <AccountsCard
           id="github"
-          title="Github"
-          description="Connect your account to claim credentials with repository contribution and pull requests requirements."
+          title={t('connected-accounts.github.title')}
+          description={t('connected-accounts.github.description')}
           icon={<AiFillGithub fontSize="20px" />}
           connectHandler={githubConnection}
         />

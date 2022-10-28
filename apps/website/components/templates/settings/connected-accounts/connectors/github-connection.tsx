@@ -1,4 +1,4 @@
-import { AccountHandlerConnection } from "./../../../../../components/molecules/accounts-card";
+import { AccountHandlerConnection } from "../components/accounts-card";
 import { useRouter } from "next/router";
 import { useLocalStorage } from "react-use";
 import { useMutation } from "@tanstack/react-query";

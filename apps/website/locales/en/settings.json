@@ -32,6 +32,16 @@
     "time-zone": "Time zone"
   },
   "connected-accounts": {
-    "description": "Connect your account to claim credentials with third-party platforms requirements."
+    "description": "Connect your account to claim credentials with third-party platforms requirements.",
+    "connected": "Connected",
+    "connect": "Connect",
+    "twitter": {
+      "title": "Twitter",
+      "description": "Connect your account to claim credentials with follow profile, retweet and post a tweet requirements."
+    },
+    "github": {
+      "title": "Github",
+      "description": "Connect your account to claim credentials with repository contribution and pull requests requirements."
+    }
   }
 }
