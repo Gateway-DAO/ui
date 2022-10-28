@@ -2,6 +2,7 @@ import { Paper, Stack, Typography } from "@mui/material";
 import { ReactNode, useEffect, useState } from "react";
 import { CheckedButton } from "../../../../atoms/check-button";
 import useTranslation from "next-translate/useTranslation";
+import { useLocalStorage } from "react-use";
 
 export type AccountHandlerConnection = {
   isConnected: boolean;
@@ -21,6 +22,10 @@ export type AccountsCardProps = {
 export function AccountsCard({ id, title, description, icon, connectHandler }: AccountsCardProps) {
   const [connectedState, setConnectedState] = useState(false);
   const { t } = useTranslation('settings');
+  const [githubAccessToken, setGithubAccessToken, remove] = useLocalStorage(
+    'github_access_token',
+    ''
+  );
 
   useEffect(() => {
     setConnectedState(connectHandler.isConnected);
@@ -32,7 +37,7 @@ export function AccountsCard({ id, title, description, icon, connectHandler }: A
       connectHandler.disconnect();
     } else {
       setConnectedState(false);
-      connectHandler.connect.mutate();
+      connectHandler.connect();
     }
   }
 

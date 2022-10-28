@@ -6,6 +6,8 @@ import { useLocalStorage } from 'react-use';
 import { Box, Button, Stack, Typography } from '@mui/material';
 
 import { LoadingButton } from '../../../../../../components/atoms/loading-button';
+import TwitterConnectionCard from '../../../../../../components/organisms/tasks/twitter-connection-card';
+import useTranslation from 'next-translate/useTranslation';
 
 const TwitterRetweetContent = ({
   data,
@@ -18,23 +20,7 @@ const TwitterRetweetContent = ({
   const { tweet_link } = data;
   const formattedDate = new Date(updatedAt.toLocaleString()).toLocaleString();
   const [twitterKeys] = useLocalStorage<any>('twitter');
-  const [_redirectURL, setRedirectURL] = useLocalStorage('redirectURL', null, {
-    raw: true,
-  });
-
-  const connectTwitter = useMutation(['connect-twitter'], async () => {
-    try {
-      const response = await fetch('/api/oauth/twitter/login');
-      const data = await response.json();
-      setRedirectURL(window.location.href);
-      if (data.confirmed) {
-        window.location.href = data.callbackURL;
-      }
-      return data;
-    } catch (error) {
-      console.log(error);
-    }
-  });
+  const { t } = useTranslation('gate-profile');
 
   const checkForRetweet = useMutation(['check-twitter-retweet'], async () => {
     try {
@@ -80,7 +66,7 @@ const TwitterRetweetContent = ({
             fontFamily: 'sans-serif',
           }}
         >
-          You must retweet the post
+          {t('tasks.twitter_retweet.description')}
         </Typography>
         <Stack
           sx={{
@@ -128,60 +114,12 @@ const TwitterRetweetContent = ({
                   },
                 }}
               >
-                Retweet
+                {t('tasks.twitter_retweet.action')}
               </Button>
             )}
           </Stack>
           {!twitterKeys && (
-            <Stack
-              sx={{
-                position: 'relative',
-                background: '#1B97F0',
-                p: 2,
-                borderRadius: '0 0 8px 8px',
-                width: '100%',
-                maxWidth: '550px',
-              }}
-            >
-              <Stack
-                direction={'row'}
-                sx={{
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  verticalAlign: 'middle',
-                }}
-              >
-                <Box>
-                  <Typography sx={{ fontWeight: '600', mb: 1 }}>
-                    Connect your account
-                  </Typography>
-                  <Typography sx={{ flexGrow: 1, opacity: 0.7 }}>
-                    To complete this task, you need to authorize Gateway access
-                    your Twitter account.
-                  </Typography>
-                </Box>
-                <Button
-                  onClick={() => connectTwitter.mutate()}
-                  sx={{
-                    background: (theme) => theme.palette.grey[300],
-                    color: 'black',
-                    fontSize: '0.75rem',
-                    padding: '6px 16px',
-                    whiteSpace: 'nowrap',
-                    lineHeight: '24px',
-                    minWidth: '145px',
-                    marginLeft: '15px',
-                    boxShadow: '#444 1px 1px 2px',
-                    flexGrow: 0,
-                    '&:hover': {
-                      background: (theme) => theme.palette.grey[400],
-                    },
-                  }}
-                >
-                  Connect Twitter
-                </Button>
-              </Stack>
-            </Stack>
+            <TwitterConnectionCard maxWidth='550px' />
           )}
         </Stack>
       </Stack>
@@ -193,12 +131,13 @@ const TwitterRetweetContent = ({
           onClick={() => checkForRetweet.mutate()}
           isLoading={isLoading || checkForRetweet.isLoading}
         >
-          VERIFY
+          {t('tasks.check_action')}
         </LoadingButton>
       )}
+
       {completed && updatedAt && (
         <Typography color="#c5ffe3" variant="subtitle2">
-          Task completed at {formattedDate}
+          {t('tasks.completed')}{formattedDate}
         </Typography>
       )}
     </Stack>

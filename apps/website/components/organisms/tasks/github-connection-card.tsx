@@ -1,27 +1,11 @@
 import useTranslation from 'next-translate/useTranslation';
-import { useRouter } from 'next/router';
-
-import { useLocalStorage } from 'react-use';
 
 import { Button, Stack, Typography } from '@mui/material';
+import { connectionHandlerGithub } from '../../templates/settings/connected-accounts/connectors/github-connection';
 
 export default function GithubConnectionCard() {
   const { t } = useTranslation('gate-profile');
-  const router = useRouter();
-  const [githubRedirectUrl, setGithubRedirectUrl, remove] = useLocalStorage(
-    'github_redirect_url',
-    router.asPath
-  );
-
-  const client_id =
-    process.env.NODE_ENV === 'development'
-      ? process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID_DEV
-      : process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID_PROD;
-
-  const connectGithub = async () =>
-    router.push(
-      `https://github.com/login/oauth/authorize?client_id=${client_id}`
-    );
+  const { connect } = connectionHandlerGithub();
 
   return (
     <Stack
@@ -50,7 +34,7 @@ export default function GithubConnectionCard() {
         <Button
           variant="contained"
           size="large"
-          onClick={connectGithub}
+          onClick={() => connect()}
           sx={{ margin: '15px', color: 'black', backgroundColor: '#E5E5E5' }}
         >
           {t('github.action')}

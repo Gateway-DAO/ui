@@ -20,9 +20,7 @@ const ConnectedAccountsSettings = () => {
       <Stack
         direction="row"
         justifyContent="space-between"
-        sx={{
-          flexWrap: 'wrap'
-        }}
+        sx={{ flexWrap: 'wrap' }}
       >
         <AccountsCard
           id="twitter"

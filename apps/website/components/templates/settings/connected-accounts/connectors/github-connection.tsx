@@ -9,9 +9,10 @@ type connectGithubProps = {
 
 export function connectionHandlerGithub(props: connectGithubProps = { disconnect: false }): AccountHandlerConnection {
   const router = useRouter();
-  const [githubAccessToken, setGithubAccessToken, remove] = useLocalStorage(
-    'github_access_token',
-    ''
+  const [githubAccessToken, setGithubAccessToken, remove] = useLocalStorage('github_access_token');
+  const [githubRedirectUrl, setGithubRedirectUrl, removeGithubRedirectUrl] = useLocalStorage(
+    'github_redirect_url',
+    router.asPath
   );
 
   const client_id =
@@ -19,19 +20,16 @@ export function connectionHandlerGithub(props: connectGithubProps = { disconnect
       ? process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID_DEV
       : process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID_PROD;
 
-  const connect = useMutation(['connect-github'], async () => {
-    try {
-      router.push(
-        `https://github.com/login/oauth/authorize?client_id=${client_id}`
-      );
-    } catch (error) {
-      console.log(error);
-    }
-  });
+  const connect = async () => {
+    router.push(
+      `https://github.com/login/oauth/authorize?client_id=${client_id}`
+    );
+  }
 
   const disconnect = async () => {
     remove();
+    removeGithubRedirectUrl();
   }
 
-  return { isConnected: !!githubAccessToken, connect, disconnect, isLoading: connect.isLoading };
+  return { isConnected: !!githubAccessToken, connect, disconnect, isLoading: false };
 }
