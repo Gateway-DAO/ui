@@ -85,13 +85,33 @@ export function EditProfileSettings({ onSubmit, isLoading }: Props) {
       </Stack>
 
       <FormProvider {...methods}>
-        <Accordion id="about" title={t('profile.about')} expanded={!anchorName || anchorName == 'about'} children={<About />}></Accordion>
+        <Accordion
+          id="about"
+          title={t('profile.about')}
+          expanded={!anchorName || anchorName == 'about'}
+          children={<About />}
+        />
         <Divider light sx={dividerStyle} />
-        <Accordion id="skills" title={t('profile.skills')} expanded={anchorName == 'skills'} children={<Skills />}></Accordion>
+        <Accordion
+          id="skills"
+          title={t('profile.skills')}
+          expanded={anchorName == 'skills'}
+          children={<Skills />}
+        />
         <Divider light sx={dividerStyle} />
-        <Accordion id="languages" title={t('profile.languages')} expanded={anchorName == 'languages'} children={<Languages />}></Accordion>
+        <Accordion
+          id="languages"
+          title={t('profile.languages')}
+          expanded={anchorName == 'languages'}
+          children={<Languages />}
+        />
         <Divider light sx={dividerStyle} />
-        <Accordion id="timezones" title={t('profile.time-zone')} expanded={anchorName == 'timezones'} children={<TimeZone />}></Accordion>
+        <Accordion
+          id="timezones"
+          title={t('profile.time-zone')}
+          expanded={anchorName == 'timezones'}
+          children={<TimeZone />}
+        />
       </FormProvider>
     </Stack>
   );

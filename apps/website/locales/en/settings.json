@@ -30,5 +30,8 @@
     "languages": "Languages",
     "skills": "Skills",
     "time-zone": "Time zone"
+  },
+  "connected-accounts": {
+    "description": "Connect your account to claim credentials with third-party platforms requirements."
   }
 }

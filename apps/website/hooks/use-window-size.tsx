@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 
-// Hook
 export function useWindowSize() {
   const [windowSize, setWindowSize] = useState({
     width: undefined,

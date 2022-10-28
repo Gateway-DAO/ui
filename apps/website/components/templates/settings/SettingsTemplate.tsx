@@ -40,9 +40,13 @@ export default function SettingsTemplate(props: Props) {
       <Grid
         container
         height={isMobile && !isMenuPage() ? 'auto' : '100%'}
-        sx={{ flexWrap: 'nowrap', flexDirection: { xs: 'column', md: 'row' }, minHeight: `${windowSize.height}px` }}
+        sx={{
+          flexWrap: 'nowrap',
+          flexDirection: { xs: 'column', md: 'row' },
+          minHeight: `${windowSize.height}px`
+        }}
       >
-        <Grid item xs={12} md={5} sx={{ pt: 2, flexGrow: 0 }}>
+        <Grid item xs={12} md={4} sx={{ pt: 2, flexGrow: 0 }}>
           <Stack
             direction="row"
             flexGrow={1}
