@@ -567,7 +567,7 @@ export const taskGithubPRSchema = z.object({
   task_data: githubPRDataSchema,
 });
 
-export const createGateSchema = z.object({
+const gateBase = z.object({
   title: z.string().min(2, 'The title must contain at least 2 character(s)'),
   categories: z.array(z.string()).min(1, 'Please select at least 1 category'),
   description: z
@@ -581,6 +581,10 @@ export const createGateSchema = z.object({
       name: z.string(),
     })
   ),
+});
+
+const taskGate = gateBase.augment({
+  type: z.literal('task_based' as GateType),
   tasks: z.object({
     data: z
       .array(
@@ -601,3 +605,18 @@ export const createGateSchema = z.object({
       .nonempty({ message: 'A credential needs to have at least one task.' }),
   }),
 });
+
+const directGate = gateBase.augment({
+  type: z.literal('direct' as GateType),
+  whitelisted_wallets: z.array(
+    z.object({
+      wallet: z.string(),
+      ens: z.string().optional(),
+    })
+  ),
+});
+
+export const createGateSchema = z.discriminatedUnion('type', [
+  taskGate,
+  directGate,
+]);
