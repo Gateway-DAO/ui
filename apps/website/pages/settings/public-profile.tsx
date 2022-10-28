@@ -6,7 +6,7 @@ import { EditUserSchema } from '../../components/templates/settings/profile/sche
 import { generateImageUrl } from '../../hooks/use-file';
 import { DashboardTemplate } from '../../components/templates/dashboard';
 import { SettingsTemplate } from '../../components/templates/settings';
-import { EditProfileTemplate } from '../../components/templates/settings/profile';
+import { EditProfileSettings } from '../../components/templates/settings';
 import { useUploadImage } from '../../hooks/use-upload-image';
 import { useRouter } from 'next/router';
 import { ROUTES } from '../../constants/routes';
@@ -84,7 +84,7 @@ export default function PublicProfileSettingsPage() {
         height: '100%',
       }}
     >
-      <SettingsTemplate children={<EditProfileTemplate onSubmit={editUserMutation.mutateAsync} isLoading={editUserMutation.isLoading} />} />
+      <SettingsTemplate children={<EditProfileSettings onSubmit={editUserMutation.mutateAsync} isLoading={editUserMutation.isLoading} />} />
     </DashboardTemplate>
   ) : null;
 }

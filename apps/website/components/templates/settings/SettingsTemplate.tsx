@@ -16,7 +16,7 @@ import {
 } from '@mui/material';
 
 import { ClientNav } from '../../organisms/navbar/client-nav';
-import { NavBarSettings } from '../../organisms/settings/navbar-settings';
+import { NavBarSettings } from './navbar-settings';
 import { ROUTES } from '../../../constants/routes';
 import { useWindowSize } from '../../../hooks/use-window-size';
 

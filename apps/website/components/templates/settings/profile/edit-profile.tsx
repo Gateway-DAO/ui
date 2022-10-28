@@ -11,13 +11,13 @@ import {
 
 import { useAuth } from '../../../../providers/auth';
 import { LoadingButton } from '../../../atoms/loading-button';
-import { About } from './Components/About';
-import { Languages } from './Components/Languages';
-import { Skills } from './Components/Skills';
-import { TimeZone } from './Components/TimeZone';
+import { About } from './components/about';
+import { Languages } from './components/languages';
+import { Skills } from './components/skills';
+import { TimeZone } from './components/timeZone';
 import { schema, defaultValues, EditUserSchema } from './schema';
 import useTranslation from 'next-translate/useTranslation';
-import { Accordion } from './../../../../components/molecules/accordion';
+import { Accordion } from '../../../molecules/accordion';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
@@ -26,7 +26,7 @@ type Props = {
   isLoading: boolean;
 };
 
-export function EditProfileTemplate({ onSubmit, isLoading }: Props) {
+export function EditProfileSettings({ onSubmit, isLoading }: Props) {
   const { me } = useAuth();
   const router = useRouter();
   const methods = useForm({
@@ -71,7 +71,7 @@ export function EditProfileTemplate({ onSubmit, isLoading }: Props) {
         sx={{ width: '100%', mb: 7 }}
       >
         <Stack sx={{ width: '100%', flexGrow: 1, mr: 1 }}>
-          <Typography variant="h6">{t('nav.public-profile-title')}</Typography>
+          <Typography variant="h6" sx={{ mb: '4px' }}>{t('nav.public-profile-title')}</Typography>
           <Typography variant="body2" fontSize="12px">{t('profile.description')}</Typography>
         </Stack>
         <LoadingButton

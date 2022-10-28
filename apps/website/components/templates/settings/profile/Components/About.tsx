@@ -10,7 +10,7 @@ import {
 import { AvatarBackgroundFields } from '../../../../molecules/form/avatar-background-fields';
 import { SocialLinks } from '../../../../molecules/form/social-links';
 import { EditUserSchema } from '../schema';
-import { Form } from './AboutComponents/Form';
+import { Form } from './aboutComponents/Form';
 
 export function About() {
   const { control, watch } = useFormContext<EditUserSchema>();

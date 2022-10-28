@@ -2,7 +2,7 @@ import { useAuth } from '../../providers/auth';
 
 import { DashboardTemplate } from '../../components/templates/dashboard';
 import { SettingsTemplate } from '../../components/templates/settings';
-import { NotificationsSettings } from 'apps/website/components/organisms/settings';
+import { NotificationsSettings } from '../../components/templates/settings';
 
 export default function NotificationsSettingsPage() {
   const { me } = useAuth();

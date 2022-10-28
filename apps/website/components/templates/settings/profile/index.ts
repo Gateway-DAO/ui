@@ -1,1 +1,1 @@
-export * from './EditProfileTemplate';
+export * from './edit-profile';

@@ -2,7 +2,7 @@ import { useAuth } from '../../providers/auth';
 
 import { DashboardTemplate } from '../../components/templates/dashboard';
 import { SettingsTemplate } from '../../components/templates/settings';
-import { ConnectedAccountsSettings } from 'apps/website/components/organisms/settings';
+import { ConnectedAccountsSettings } from '../../components/templates/settings';
 
 export default function ConnectedAccountsSettingsPage() {
   const { me } = useAuth();
