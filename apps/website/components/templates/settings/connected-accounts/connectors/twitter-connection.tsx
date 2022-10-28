@@ -13,7 +13,6 @@ export function connectionHandlerTwitter(props: connectTwitterProps = { disconne
   });
 
   const connect = useMutation(['connect-twitter'], async () => {
-    console.log('entrou connect twitter');
     try {
       const response = await fetch('/api/oauth/twitter/login');
       const data = await response.json();
@@ -28,7 +27,6 @@ export function connectionHandlerTwitter(props: connectTwitterProps = { disconne
   });
 
   const disconnect = async () => {
-    console.log('entrou disconnect twitter');
     remove();
   }
 

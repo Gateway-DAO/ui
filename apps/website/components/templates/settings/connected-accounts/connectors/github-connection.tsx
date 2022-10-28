@@ -20,7 +20,6 @@ export function connectionHandlerGithub(props: connectGithubProps = { disconnect
       : process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID_PROD;
 
   const connect = useMutation(['connect-github'], async () => {
-    console.log('entrou connect github');
     try {
       router.push(
         `https://github.com/login/oauth/authorize?client_id=${client_id}`
@@ -30,13 +29,7 @@ export function connectionHandlerGithub(props: connectGithubProps = { disconnect
     }
   });
 
-  // const connect = async () =>
-  //   router.push(
-  //     `https://github.com/login/oauth/authorize?client_id=${client_id}`
-  //   );
-
   const disconnect = async () => {
-    console.log('entrou disconnect github');
     remove();
   }
 

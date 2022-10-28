@@ -1,7 +1,8 @@
-import { Box, CircularProgress, IconButton, Paper, Stack, Typography } from "@mui/material";
+import { CircularProgress, IconButton, Paper, Stack, Typography } from "@mui/material";
 import { ReactNode, useEffect, useState } from "react";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { brandColors } from "@gateway/theme";
+import { CheckedButton } from "../atoms/check-button";
 
 export type AccountHandlerConnection = {
   isConnected: boolean;
@@ -27,12 +28,12 @@ export function AccountsCard(props: AccountsCardProps) {
   }, [connectHandler.isConnected]);
 
   const connectToggle = () => {
-    if (connectHandler.connect) {
-      setConnectedState(false);
-      connectHandler.connect.mutate();
-    } else {
+    if (connectedState) {
       setConnectedState(true);
       connectHandler.disconnect();
+    } else {
+      setConnectedState(false);
+      connectHandler.connect.mutate();
     }
   }
 
@@ -59,36 +60,13 @@ export function AccountsCard(props: AccountsCardProps) {
         sx={{ mb: 2 }}
       >
         {icon}
-        <IconButton
-          onClick={() => connectToggle()}
-          sx={(theme) => ({
-            borderRadius: '20px',
-            cursor: 'pointer',
-            background: connectedState ? brandColors.green.main : brandColors.background.light,
-            fontSize: '11px',
-            textTransform: 'uppercase',
-            fontWeight: theme.typography.fontWeightBold,
-            border: connectedState ? '1px solid transparent' : `1px solid ${brandColors.purple.main}`,
-            color: connectedState ? '#170627' : brandColors.purple.main,
-            padding: '4px 8px',
-            minHeight: '30px',
-            transition: 'all .3s ease',
-            '&:hover': {
-              borderColor: connectedState ? brandColors.green.dark : brandColors.purple.dark,
-              backgroundColor: connectedState ? brandColors.green.dark : brandColors.background.light,
-            },
-          })}
-          >
-            {
-              connectHandler.isLoading &&
-              <CircularProgress size="15px" sx={{ mr: 1 }} />
-            }
-            {
-              connectedState && !connectHandler.isLoading &&
-              <CheckCircleIcon sx={{ fontSize: '15px', display: connectedState ? 'block' : 'none', mr: 1 }} />
-            }
-            {connectedState ? 'Connected' : 'Connect'}
-        </IconButton>
+        <CheckedButton
+          isLoading={connectHandler.isLoading}
+          checked={connectedState}
+          clickHandler={connectToggle}
+        >
+          {connectedState ? 'Connected' : 'Connect'}
+        </CheckedButton>
       </Stack>
       <Stack>
         <Typography fontSize="16px" fontWeight={400} sx={{ mb: 1 }}>{title}</Typography>
