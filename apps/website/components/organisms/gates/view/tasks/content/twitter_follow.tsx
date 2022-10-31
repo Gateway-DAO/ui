@@ -1,3 +1,4 @@
+import useTranslation from 'next-translate/useTranslation';
 import { useEffect } from 'react';
 
 import { useMutation, useQuery } from '@tanstack/react-query';
@@ -37,6 +38,7 @@ const TwitterFollowContent = ({
   });
 
   const { enqueueSnackbar } = useSnackbar();
+  const { t } = useTranslation('errors');
 
   const {
     data: twitterData,
@@ -59,7 +61,8 @@ const TwitterFollowContent = ({
 
       const resData = await res.json();
 
-      if (!res.ok) {
+      // eslint-disable-next-line no-constant-condition
+      if (true) {
         throw new Error(resData.err);
       }
 
@@ -109,12 +112,9 @@ const TwitterFollowContent = ({
 
   useEffect(() => {
     if (error) {
-      enqueueSnackbar(
-        'An error occurred while loading the task. Try again later!',
-        {
-          variant: 'warning',
-        }
-      );
+      enqueueSnackbar(t('errors.generic.loading'), {
+        variant: 'warning',
+      });
     }
   }, [error]);
 
