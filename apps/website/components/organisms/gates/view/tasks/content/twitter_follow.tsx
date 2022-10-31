@@ -1,6 +1,8 @@
+import useTranslation from 'next-translate/useTranslation';
 import { useEffect } from 'react';
 
 import { useMutation, useQuery } from '@tanstack/react-query';
+import { useSnackbar } from 'notistack';
 import { FaTwitter } from 'react-icons/fa';
 import { MdVerified } from 'react-icons/md';
 import { useLocalStorage } from 'react-use';
@@ -14,7 +16,6 @@ import {
   Typography,
 } from '@mui/material';
 
-import { useAuth } from '../../../../../../providers/auth';
 import { LoadingButton } from '../../../../../atoms/loading-button';
 import { numberFormat } from './../../../../../../components/molecules/add-task/twitter-follow-profile/twitter-follow-profile';
 
@@ -30,28 +31,47 @@ const TwitterFollowContent = ({
   readOnly,
   isLoading,
 }) => {
-  const { gqlAuthMethods } = useAuth();
   const formattedDate = new Date(updatedAt.toLocaleString()).toLocaleString();
   const [twitterKeys] = useLocalStorage<any>('twitter');
   const [_redirectURL, setRedirectURL] = useLocalStorage('redirectURL', null, {
     raw: true,
   });
 
+  const { enqueueSnackbar } = useSnackbar();
+  const { t } = useTranslation('errors');
+
   const {
     data: twitterData,
     isLoading: isLoadingTwitterData,
-    refetch,
-  } = useQuery(['twitter-data'], async () => {
-    try {
+    error,
+  } = useQuery(
+    ['twitter-data', data.username],
+    async () => {
       const username = data.username;
-      const response = await gqlAuthMethods.twitter_data({
-        userName: username,
+
+      const res = await fetch('/api/twitter/get-user-by-username', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username,
+        }),
       });
-      return response.get_twitter_user_data;
-    } catch (error) {
-      console.log(error);
+
+      const resData = await res.json();
+
+      // eslint-disable-next-line no-constant-condition
+      if (true) {
+        throw new Error(resData.err);
+      }
+
+      return resData;
+    },
+    {
+      enabled: !!data.username,
     }
-  });
+  );
 
   const connectTwitter = useMutation(['connect-twitter'], async () => {
     try {
@@ -65,10 +85,6 @@ const TwitterFollowContent = ({
     } catch (error) {
       console.log(error);
     }
-  });
-
-  useEffect(() => {
-    refetch();
   });
 
   const checkTwitterFollow = useMutation(['check-twitter-follow'], async () => {
@@ -93,6 +109,14 @@ const TwitterFollowContent = ({
       console.log(error);
     }
   });
+
+  useEffect(() => {
+    if (error) {
+      enqueueSnackbar(t('errors.generic.loading'), {
+        variant: 'warning',
+      });
+    }
+  }, [error]);
 
   return (
     <Stack marginTop={5} alignItems="start">
