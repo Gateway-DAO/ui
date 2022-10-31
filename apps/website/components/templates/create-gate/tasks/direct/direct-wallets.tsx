@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { useQueries } from '@tanstack/react-query';
 import { ethers } from 'ethers';
@@ -6,7 +6,7 @@ import { useDropArea } from 'react-use';
 import { useProvider } from 'wagmi';
 
 import { Delete } from '@mui/icons-material';
-import { Button, Paper, TextField } from '@mui/material';
+import { Button, Paper, Stack, TextField } from '@mui/material';
 
 import { DirectWalletsChips } from './direct-wallets-chips';
 import { DirectWalletsHeader } from './direct-wallets-header';
@@ -101,60 +101,62 @@ export function DirectWallets() {
         readFiles={readFiles}
         walletsQueries={walletsQueries}
       ></DirectWalletsHeader>
-      <TextField
-        sx={{
-          display: 'flex',
-          '.MuiInputBase-root': {
-            flexDirection: 'column',
-            p: 1.75,
-            gap: 1,
-            alignItems: 'flex-start',
-          },
-          '.MuiInputBase-input': { p: 0 },
-        }}
-        InputProps={{
-          startAdornment: wallets.length ? (
-            <DirectWalletsChips
-              wallets={wallets}
-              walletsQueries={walletsQueries}
-              onDelete={onDelete}
-              onEdit={onEdit}
-            ></DirectWalletsChips>
-          ) : null,
-        }}
-        helperText="Fill the addresses separated by comma"
-        value={inputValue}
-        ref={inputRef}
-        onKeyDown={(event) => {
-          if (
-            event.key === 'Enter' ||
-            event.key === ',' ||
-            event.code === 'Space'
-          ) {
-            event.preventDefault();
-            if (inputValue.length) {
-              onParseText(inputValue);
-              setInputValue('');
+      <Stack direction="column" gap={1}>
+        <TextField
+          sx={{
+            display: 'flex',
+            '.MuiInputBase-root': {
+              flexDirection: 'column',
+              p: 1.75,
+              gap: 1,
+              alignItems: 'flex-start',
+            },
+            '.MuiInputBase-input': { p: 0 },
+          }}
+          InputProps={{
+            startAdornment: wallets.length ? (
+              <DirectWalletsChips
+                wallets={wallets}
+                walletsQueries={walletsQueries}
+                onDelete={onDelete}
+                onEdit={onEdit}
+              ></DirectWalletsChips>
+            ) : null,
+          }}
+          helperText="Fill the addresses separated by comma"
+          value={inputValue}
+          ref={inputRef}
+          onKeyDown={(event) => {
+            if (
+              event.key === 'Enter' ||
+              event.key === ',' ||
+              event.code === 'Space'
+            ) {
+              event.preventDefault();
+              if (inputValue.length) {
+                onParseText(inputValue);
+                setInputValue('');
+              }
             }
-          }
-        }}
-        onChange={(e) => {
-          setInputValue(e.target.value);
-        }}
-        onPaste={(e) => {
-          const text = e.clipboardData.getData('text');
-          onParseText(text);
-          e.preventDefault();
-        }}
-      />
-      <Button
-        sx={{ alignSelf: 'flex-end' }}
-        startIcon={<Delete />}
-        variant="outlined"
-        onClick={() => setWallets([])}
-      >
-        Reset
-      </Button>
+          }}
+          onChange={(e) => {
+            setInputValue(e.target.value);
+          }}
+          onPaste={(e) => {
+            const text = e.clipboardData.getData('text');
+            onParseText(text);
+            e.preventDefault();
+          }}
+        />
+        <Button
+          sx={{ alignSelf: 'flex-end' }}
+          startIcon={<Delete />}
+          variant="outlined"
+          onClick={() => setWallets([])}
+        >
+          Reset
+        </Button>
+      </Stack>
     </Paper>
   );
 }
