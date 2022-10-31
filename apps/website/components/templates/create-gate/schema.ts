@@ -2,7 +2,10 @@ import { FieldError, NestedValue } from 'react-hook-form';
 import { PartialDeep } from 'type-fest';
 import { z } from 'zod';
 
-import { Gates } from '../../../services/graphql/types.generated';
+import {
+  Gates,
+  Whitelisted_Wallets,
+} from '../../../services/graphql/types.generated';
 export type GateType = 'task_based' | 'direct';
 
 // Creator
@@ -10,6 +13,10 @@ export type Creator = {
   id: string;
   name: string;
 };
+
+export type Gate_Whitelisted_Wallet = PartialDeep<
+  Pick<Whitelisted_Wallets, 'wallet' | 'ens'>
+>;
 
 // Draft Gate
 export type DraftGateTypes = {
@@ -21,8 +28,7 @@ export type DraftGateTypes = {
   skills: string[];
   created_by: Creator[];
   tasks?: DraftTasksSchema;
-} & Pick<Gates, 'type'> &
-  PartialDeep<Pick<Gates, 'whitelisted_wallets'>>;
+} & Pick<Gates, 'type'> & { whitelisted_wallets: Gate_Whitelisted_Wallet };
 
 // Create Gate
 export type CreateGateTypes = {
@@ -35,7 +41,7 @@ export type CreateGateTypes = {
   skills: NestedValue<string[]>;
   created_by: Creator[];
   tasks: TasksSchema;
-};
+} & Pick<Gates, 'type'> & { whitelisted_wallets: Gate_Whitelisted_Wallet };
 
 // Tasks
 export type TasksSchema = {

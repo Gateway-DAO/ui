@@ -2,8 +2,10 @@ import { UseQueryResult } from '@tanstack/react-query';
 
 import { Chip, CircularProgress, Stack } from '@mui/material';
 
+import { Gate_Whitelisted_Wallet } from '../../schema';
+
 type Props = {
-  wallets: string[];
+  wallets: Gate_Whitelisted_Wallet[];
   walletsQueries: UseQueryResult<string, unknown>[];
   onDelete: (index: number) => () => void;
   onEdit: (wallet: string, index: number) => () => void;
@@ -16,15 +18,15 @@ export function DirectWalletsChips({
 }: Props) {
   return (
     <Stack gap={1} direction="row" flexWrap="wrap">
-      {wallets.map((wallet, index) => {
+      {wallets.map(({ wallet, ens }, index) => {
         const resolvedWallet = walletsQueries[index];
-        const { isLoading, isError } = resolvedWallet;
+        const { isFetching, isError } = resolvedWallet;
 
-        if (isLoading) {
+        if (isFetching) {
           return (
             <Chip
-              key={wallet}
-              label={wallet}
+              key={ens ?? wallet}
+              label={ens ?? wallet}
               avatar={<CircularProgress color="inherit" size={12} />}
               onDelete={onDelete(index)}
             />
@@ -33,10 +35,10 @@ export function DirectWalletsChips({
 
         return (
           <Chip
-            key={wallet}
-            label={wallet}
+            key={ens ?? wallet}
+            label={ens ?? wallet}
             color={isError ? 'error' : 'success'}
-            onClick={onEdit(wallet, index)}
+            onClick={onEdit(ens ?? wallet, index)}
             onDelete={onDelete(index)}
           />
         );

@@ -2,36 +2,57 @@ import { useEffect, useRef, useState } from 'react';
 
 import { useQueries } from '@tanstack/react-query';
 import { ethers } from 'ethers';
+import { useController } from 'react-hook-form';
 import { useDropArea } from 'react-use';
 import { useProvider } from 'wagmi';
 
 import { Delete } from '@mui/icons-material';
 import { Button, Paper, Stack, TextField } from '@mui/material';
 
+import { DraftGateTypes, Gate_Whitelisted_Wallet } from '../../schema';
 import { DirectWalletsChips } from './direct-wallets-chips';
 import { DirectWalletsHeader } from './direct-wallets-header';
 
 export function DirectWallets() {
-  const [wallets, setWallets] = useState<string[]>([]);
+  const {
+    field: { onChange, value },
+  } = useController<DraftGateTypes>({
+    name: 'whitelisted_wallets',
+    defaultValue: [],
+  });
+
+  const wallets = value as Gate_Whitelisted_Wallet[];
+  // const [wallets, setWallets] = useState<string[]>([]);
   const [inputValue, setInputValue] = useState('');
 
   const inputRef = useRef<HTMLInputElement>(null);
   const provider = useProvider();
 
   const walletsQueries = useQueries({
-    queries: wallets.map((wallet) => ({
-      queryKey: ['address-validate', wallet],
+    queries: wallets.map(({ wallet, ens }, index) => ({
+      queryKey: ['address-validate', wallet, ens],
       queryFn: async (): Promise<string> => {
-        if (ethers.utils.isAddress(wallet)) {
-          /* Check if wallet address is valid */
-          return ethers.utils.getAddress(wallet);
+        if (ens && !wallet) {
+          const address = await provider.resolveName(ens);
+          if (!address) {
+            throw new Error('Invalid ENS name');
+          }
+          return address;
         }
+
+        if (ens && wallet) {
+          return wallet;
+        }
+
+        return ethers.utils.getAddress(wallet);
         /* Check if ENS name is valid */
-        const address = await provider.resolveName(wallet);
-        if (!address) {
-          throw new Error('Invalid ENS name');
+      },
+      onSuccess(data: string) {
+        if (ens && !wallet) {
+          const newWallets = [...wallets];
+          newWallets[index] = { wallet: data, ens };
+          onChange(newWallets);
         }
-        return address;
       },
     })),
   });
@@ -39,27 +60,36 @@ export function DirectWallets() {
   const onDelete = (index: number) => () => {
     const newWallets = [...wallets];
     newWallets.splice(index, 1);
-    setWallets(newWallets);
+    onChange(newWallets);
   };
 
   const onEdit = (wallet: string, index: number) => () => {
     const newWallets = [...wallets];
     newWallets.splice(index, 1);
-    setWallets(newWallets);
+    onChange(newWallets);
     setInputValue(wallet);
     inputRef.current?.focus();
   };
 
   const onParseText = (text: string) => {
     const newWallets = text.split(/[,\n\s]/g).reduce((acc, wallet) => {
-      const trimmedWallet = wallet.trim();
-      if (trimmedWallet.length && !wallets.includes(trimmedWallet)) {
-        return [...acc, trimmedWallet];
+      if (
+        wallet.length &&
+        !wallets.some(
+          (whitelistedWallet) =>
+            whitelistedWallet.wallet === wallet ||
+            whitelistedWallet.ens === wallet
+        )
+      ) {
+        const obj: Gate_Whitelisted_Wallet = ethers.utils.isAddress(wallet)
+          ? { wallet }
+          : { ens: wallet };
+        return [...acc, obj];
       }
       return acc;
     }, [] as string[]);
 
-    setWallets((prev) => [...prev, ...newWallets]);
+    onChange([...wallets, ...newWallets]);
   };
 
   const readFiles = (files: FileList | File[]) => {
@@ -114,7 +144,7 @@ export function DirectWallets() {
             '.MuiInputBase-input': { p: 0 },
           }}
           InputProps={{
-            startAdornment: wallets.length ? (
+            startAdornment: wallets?.length ? (
               <DirectWalletsChips
                 wallets={wallets}
                 walletsQueries={walletsQueries}
@@ -143,16 +173,17 @@ export function DirectWallets() {
             setInputValue(e.target.value);
           }}
           onPaste={(e) => {
+            e.preventDefault();
             const text = e.clipboardData.getData('text');
             onParseText(text);
-            e.preventDefault();
+            setInputValue('');
           }}
         />
         <Button
           sx={{ alignSelf: 'flex-end' }}
           startIcon={<Delete />}
           variant="outlined"
-          onClick={() => setWallets([])}
+          onClick={() => onChange([])}
         >
           Reset
         </Button>

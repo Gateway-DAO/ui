@@ -64,7 +64,7 @@ export function DirectWalletsHeader({ readFiles, walletsQueries }: Props) {
       </Stack>
       {invalidWallets ? (
         <Typography variant="body2" color="error">
-          You have {invalidWallets} invalid wallets
+          You have {invalidWallets} invalid wallet address
         </Typography>
       ) : null}
     </Stack>
