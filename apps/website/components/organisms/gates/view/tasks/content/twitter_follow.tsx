@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 
 import { useMutation, useQuery } from '@tanstack/react-query';
+import { useSnackbar } from 'notistack';
 import { FaTwitter } from 'react-icons/fa';
 import { MdVerified } from 'react-icons/md';
 import { useLocalStorage } from 'react-use';
@@ -35,7 +36,13 @@ const TwitterFollowContent = ({
     raw: true,
   });
 
-  const { data: twitterData, isLoading: isLoadingTwitterData } = useQuery(
+  const { enqueueSnackbar } = useSnackbar();
+
+  const {
+    data: twitterData,
+    isLoading: isLoadingTwitterData,
+    error,
+  } = useQuery(
     ['twitter-data', data.username],
     async () => {
       const username = data.username;
@@ -57,6 +64,9 @@ const TwitterFollowContent = ({
       }
 
       return resData;
+    },
+    {
+      enabled: !!data.username,
     }
   );
 
@@ -96,6 +106,17 @@ const TwitterFollowContent = ({
       console.log(error);
     }
   });
+
+  useEffect(() => {
+    if (error) {
+      enqueueSnackbar(
+        'An error occurred while loading the task. Try again later!',
+        {
+          variant: 'warning',
+        }
+      );
+    }
+  }, [error]);
 
   return (
     <Stack marginTop={5} alignItems="start">
