@@ -20115,6 +20115,14 @@ tweetnacl@^1.0.3:
   resolved "https://registry.yarnpkg.com/tweetnacl/-/tweetnacl-1.0.3.tgz#ac0af71680458d8a6378d0d0d050ab1407d35596"
   integrity sha512-6rt+RN7aOi1nGMyC4Xa5DdYiukl2UWCbcJft7YhxReBGQD7OAM8Pbxw6YMo4r2diNEA8FEmu32YOn9rhaiE5yw==
 
+twitter-api-sdk@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/twitter-api-sdk/-/twitter-api-sdk-1.2.1.tgz#53ac3f13cdccfdf06ad71fbc7c24a0184cb9bb15"
+  integrity sha512-tNQ6DGYucFk94JlnUMsHCkHg5o1wnCdHh71Y2ukygNVssOdD1gNVjOpaojJrdwbEAhoZvcWdGHerCa55F8HKxQ==
+  dependencies:
+    abort-controller "^3.0.0"
+    node-fetch "^2.6.1"
+
 twitter-lite@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/twitter-lite/-/twitter-lite-1.1.0.tgz#77f250cc73f14ecc5a493ddb81ff0a3e9ae72680"
