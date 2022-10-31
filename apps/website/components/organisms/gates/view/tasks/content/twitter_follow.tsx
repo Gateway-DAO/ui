@@ -14,7 +14,6 @@ import {
   Typography,
 } from '@mui/material';
 
-import { useAuth } from '../../../../../../providers/auth';
 import { LoadingButton } from '../../../../../atoms/loading-button';
 import { numberFormat } from './../../../../../../components/molecules/add-task/twitter-follow-profile/twitter-follow-profile';
 
@@ -30,28 +29,36 @@ const TwitterFollowContent = ({
   readOnly,
   isLoading,
 }) => {
-  const { gqlAuthMethods } = useAuth();
   const formattedDate = new Date(updatedAt.toLocaleString()).toLocaleString();
   const [twitterKeys] = useLocalStorage<any>('twitter');
   const [_redirectURL, setRedirectURL] = useLocalStorage('redirectURL', null, {
     raw: true,
   });
 
-  const {
-    data: twitterData,
-    isLoading: isLoadingTwitterData,
-    refetch,
-  } = useQuery(['twitter-data'], async () => {
-    try {
+  const { data: twitterData, isLoading: isLoadingTwitterData } = useQuery(
+    ['twitter-data', data.username],
+    async () => {
       const username = data.username;
-      const response = await gqlAuthMethods.twitter_data({
-        userName: username,
+
+      const res = await fetch('/api/twitter/get-user-by-username', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username,
+        }),
       });
-      return response.get_twitter_user_data;
-    } catch (error) {
-      console.log(error);
+
+      const resData = await res.json();
+
+      if (!res.ok) {
+        throw new Error(resData.err);
+      }
+
+      return resData;
     }
-  });
+  );
 
   const connectTwitter = useMutation(['connect-twitter'], async () => {
     try {
@@ -65,10 +72,6 @@ const TwitterFollowContent = ({
     } catch (error) {
       console.log(error);
     }
-  });
-
-  useEffect(() => {
-    refetch();
   });
 
   const checkTwitterFollow = useMutation(['check-twitter-follow'], async () => {
