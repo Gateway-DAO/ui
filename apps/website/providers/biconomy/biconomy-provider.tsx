@@ -30,26 +30,6 @@ export type MintStatus = {
   };
 };
 
-const correctProvider = async () => {
-  if (typeof window.ethereum !== 'undefined') {
-    provider = window.ethereum;
-
-    // edge case if MM and CBW are both installed
-    if (window.ethereum?.providers?.length) {
-      window.ethereum.providers.forEach(async (p) => {
-        if (p.isMetaMask) provider = p;
-      });
-    }
-
-    await provider.request({
-      method: 'eth_requestAccounts',
-      params: [],
-    });
-  }
-
-  return provider;
-};
-
 export function BiconomyProvider({
   apiKey,
   contractAddress,
@@ -65,43 +45,7 @@ export function BiconomyProvider({
 
   // From Wagmi
   const { address } = useAccount();
-  const {
-    data: signer,
-    status,
-    refetch,
-  } = useSigner({
-    async onSuccess(data) {
-      // We're creating biconomy provider linked to your network of choice where your contract is deployed
-      const jsonRpcProvider = new ethers.providers.JsonRpcProvider(
-        RPC[process.env.NEXT_PUBLIC_MINT_CHAIN]
-      );
-
-      biconomy = new Biconomy(jsonRpcProvider, {
-        walletProvider: signerProvider || (await correctProvider()),
-        apiKey: process.env.NEXT_PUBLIC_WEB3_BICONOMY_API_KEY,
-        debug: process.env.NODE_ENV === 'development',
-      });
-
-      biconomy
-        .onEvent(biconomy.READY, async () => {
-          console.log('Biconomy is ready!');
-          // Initialize your dapp here like getting user accounts etc
-          contract = new ethers.Contract(
-            contractAddress,
-            CREDENTIAL_ABI,
-            biconomy.getSignerByAddress(address)
-          );
-
-          contractInterface = new ethers.utils.Interface(CREDENTIAL_ABI);
-        })
-        .onEvent(biconomy.ERROR, (error, message) => {
-          console.log('Biconomy error');
-          // Handle error while initializing mexa
-          console.log(error);
-          console.log(message);
-        });
-    },
-  });
+  const { data: signer } = useSigner();
   const signerProvider = (signer?.provider as any)?.provider;
 
   // From auth
@@ -133,11 +77,63 @@ export function BiconomyProvider({
     }
   );
 
-  useEffect(() => {
-    if (!signer && status == 'success') {
-      refetch();
+  const correctProvider = async () => {
+    if (typeof window.ethereum !== 'undefined') {
+      provider = window.ethereum;
+
+      // edge case if MM and CBW are both installed
+      if (window.ethereum?.providers?.length) {
+        window.ethereum.providers.forEach(async (p) => {
+          if (p.isMetaMask) provider = p;
+        });
+      }
+
+      await provider.request({
+        method: 'eth_requestAccounts',
+        params: [],
+      });
     }
-  }, [signer, status, refetch]);
+
+    return provider;
+  };
+
+  useEffect(() => {
+    async function init() {
+      // We're creating biconomy provider linked to your network of choice where your contract is deployed
+      const jsonRpcProvider = new ethers.providers.JsonRpcProvider(
+        RPC[process.env.NEXT_PUBLIC_MINT_CHAIN]
+      );
+
+      biconomy = new Biconomy(jsonRpcProvider, {
+        walletProvider: signerProvider || (await correctProvider()),
+        apiKey: process.env.NEXT_PUBLIC_WEB3_BICONOMY_API_KEY,
+        debug: process.env.NODE_ENV === 'development',
+      });
+
+      biconomy
+        .onEvent(biconomy.READY, async () => {
+          console.log('Biconomy is ready!');
+          // Initialize your dapp here like getting user accounts etc
+          contract = new ethers.Contract(
+            contractAddress,
+            CREDENTIAL_ABI,
+            biconomy.getSignerByAddress(address)
+          );
+
+          contractInterface = new ethers.utils.Interface(CREDENTIAL_ABI);
+        })
+        .onEvent(biconomy.ERROR, (error, message) => {
+          console.log('Biconomy error');
+          // Handle error while initializing mexa
+          console.log(error);
+          console.log(message);
+        });
+    }
+
+    signer?.getAddress().then((address) => {
+      typeof window !== 'undefined' && (address ?? false) && init();
+    });
+  }, [signer]);
 
   /**
    * It mints a new NFT token.
