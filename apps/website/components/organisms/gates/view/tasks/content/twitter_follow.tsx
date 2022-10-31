@@ -61,8 +61,8 @@ const TwitterFollowContent = ({
 
       const resData = await res.json();
 
-      // eslint-disable-next-line no-constant-condition
-      if (true) {
+      if (!res.ok) {
+        console.log(resData.err);
         throw new Error(resData.err);
       }
 
