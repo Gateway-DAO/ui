@@ -43,7 +43,8 @@ export function Accordion(props: AccordionProps) {
           overflow: 'hidden',
           transform: expanded ? 'scaleY(0px)' : 'scaleY(-50px)',
           maxHeight: expanded ? '1000px' : 0,
-          transition: 'all .3s cubic-bezier(0,.7,.24,.83) 0s'
+          transition: 'all .3s cubic-bezier(0,.7,.24,.83) 0s',
+          pt: '5px'
         }}
       >
         {props.children}

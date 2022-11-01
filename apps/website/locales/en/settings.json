@@ -43,5 +43,18 @@
       "title": "Github",
       "description": "Connect your account to claim credentials with repository contribution and pull requests requirements."
     }
+  },
+  "account-management": {
+    "registered-email-title": "Registered email",
+    "registered-email-description": "We send updates, promotions and notifications by this email. You can select what you want to get about",
+    "email-address-label": "E-mail address",
+    "email-address-helper": "To update your email is necessary verify it.",
+    "email-address-action": "send code to verify",
+    "verify-your-email-title": "Verify your email",
+    "verify-your-email-description": "It has been sent a code for your email address. Paste the code here to verify it. This code will expire in 30 minutes.",
+    "here": "here",
+    "code-placeholder": "Code",
+    "code-action": "Verify",
+    "code-send-again": "send code again"
   }
 }
