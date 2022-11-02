@@ -1,0 +1,11 @@
+mutation create_code($user_id: String!) {
+  create_code(user_id: $user_id) {
+    code
+  }
+}
+
+mutation verify_code($user_id: String!, $code: String!) {
+  verify_code(user_id: $user_id, code: $code) {
+    success
+  }
+}
