@@ -25,16 +25,11 @@ import { GateDetailsForm } from './details-form';
 import { GateImageCard } from './gate-image-card/gate-image-card';
 import { GateTypeChanger } from './gate-type-selector/gate-type-changer';
 import { GateTypeSelector } from './gate-type-selector/gate-type-selector';
-import {
-  createGateSchema,
-  CreateGateTypes,
-  DraftGateTypes,
-  GateType,
-} from './schema';
+import { createGateSchema, CreateGateData, GateType } from './schema';
 import { DirectWallets } from './tasks/direct/direct-wallets';
 
 type CreateGateProps = {
-  oldData?: DraftGateTypes;
+  oldData?: CreateGateData;
 };
 
 export function CreateGateTemplate({ oldData }: CreateGateProps) {
@@ -109,7 +104,7 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
     return dataIsValid;
   };
 
-  const handleMutation = async (data: CreateGateTypes, isDraft: boolean) => {
+  const handleMutation = async (data: CreateGateData, isDraft: boolean) => {
     isDraft ? setDraftIsLoading(true) : setCreateIsLoading(true);
 
     const dataIsValid = await checkFormErrors(isDraft);
@@ -246,10 +241,10 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
 
   const gateType: GateType = methods.watch('type');
 
-  const saveDraft = (draftData: CreateGateTypes) =>
+  const saveDraft = (draftData: CreateGateData) =>
     handleMutation(draftData, true);
 
-  const createGate = (gateData: CreateGateTypes) =>
+  const createGate = (gateData: CreateGateData) =>
     handleMutation(gateData, false);
 
   const hasTitleAndDescription = methods

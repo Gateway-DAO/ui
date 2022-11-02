@@ -4,10 +4,10 @@ import { limitChars, showIfNotEmpty } from '@gateway/helpers';
 
 import { CardHeader, Chip, Stack } from '@mui/material';
 
-import { CreateGateTypes } from '../schema';
+import { CreateGateData } from '../schema';
 
 export function GateData() {
-  const { watch } = useFormContext<CreateGateTypes>();
+  const { watch } = useFormContext<CreateGateData>();
   const title = watch('title');
   const description = watch('description');
   const categories = watch('categories');

@@ -17,7 +17,7 @@ import {
 
 import { CircleWithNumber } from '../../../atoms/circle-with-number';
 import {
-  CreateGateTypes,
+  CreateGateData,
   TwitterTweetDataError,
 } from '../../../templates/create-gate/schema';
 import { EmojiPicker, EmojiPickerProps } from '../../form/emoji-picker';
@@ -28,7 +28,7 @@ const TwitterTweetTask = ({ dragAndDrop, taskId, deleteTask }) => {
     setValue,
     getValues,
     formState: { errors },
-  } = useFormContext<CreateGateTypes>();
+  } = useFormContext<CreateGateData>();
 
   const formValues = getValues();
   const tweetRef = useRef<HTMLInputElement>(null);

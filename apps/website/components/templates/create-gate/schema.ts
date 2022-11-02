@@ -1,8 +1,11 @@
-import { FieldError, NestedValue } from 'react-hook-form';
+import { FieldError } from 'react-hook-form';
 import { PartialDeep } from 'type-fest';
 import { z } from 'zod';
 
-import { Whitelisted_Wallets } from '../../../services/graphql/types.generated';
+import {
+  Gates,
+  Whitelisted_Wallets,
+} from '../../../services/graphql/types.generated';
 
 // Creator
 export type Creator = {
@@ -15,50 +18,30 @@ export type Gate_Whitelisted_Wallet = PartialDeep<
 >;
 
 // Draft Gate
-type DraftGate = {
+export type GateBase = {
   id?: string;
-  title: string;
   categories: string[];
-  description: string;
-  image: string;
   skills: string[];
   created_by: Creator[];
-};
+} & Required<
+  Pick<Gates, 'title' | 'categories' | 'skills' | 'image' | 'description'>
+>;
 
-export type DraftGateTask = DraftGate & {
+export type GateTask = GateBase & {
   type: 'task_based';
-  tasks?: DraftTasksSchema;
+  tasks?: { data: DraftTasksSchema };
   whitelisted_wallets?: never;
 };
 
-export type DraftGateDirect = DraftGate & {
+export type GateDirect = GateBase & {
   type: 'direct';
   tasks?: never;
   whitelisted_wallets?: Gate_Whitelisted_Wallet[];
 };
 
-export type DraftGateTypes = DraftGateTask | DraftGateDirect;
+export type CreateGateData = GateTask | GateDirect;
 
-// Create Gate
-export type CreateGate = Omit<DraftGate, 'skills'> & {
-  skills: NestedValue<string[]>;
-};
-
-export type CreateGateTask = CreateGate & {
-  type: 'task_based';
-  tasks: TasksSchema;
-  whitelisted_wallets?: never;
-};
-
-export type CreateGateDirect = CreateGate & {
-  type: 'direct';
-  tasks?: never;
-  whitelisted_wallets: Gate_Whitelisted_Wallet[];
-};
-
-export type CreateGateTypes = CreateGateTask | CreateGateDirect;
-
-export type GateType = CreateGateTypes['type'];
+export type GateType = CreateGateData['type'];
 
 // Tasks
 export type TasksSchema = {

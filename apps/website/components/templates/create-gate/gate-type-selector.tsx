@@ -11,7 +11,7 @@ import {
   Typography,
 } from '@mui/material';
 
-import { CreateGateTypes, type GateType } from './schema';
+import { CreateGateData, type GateType } from './schema';
 
 const types = [
   {
@@ -30,7 +30,7 @@ const types = [
 ] as const;
 
 export function GateTypeSelector() {
-  const methods = useFormContext<CreateGateTypes>();
+  const methods = useFormContext<CreateGateData>();
 
   const onClick = (type: GateType) => () => {
     methods.setValue('type', type);

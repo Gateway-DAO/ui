@@ -2,9 +2,9 @@ import useTranslation from 'next-translate/useTranslation';
 
 import { CheckCircle, Send, type SvgIconComponent } from '@mui/icons-material';
 
-import { CreateGateTypes, type GateType } from '../schema';
+import { type GateType } from '../schema';
 
-export function useGateTypes() {
+export function useCreateGateData() {
   const { t } = useTranslation('gate-new');
 
   const typesContent: Record<

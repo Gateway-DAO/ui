@@ -5,15 +5,15 @@ import { useFormContext } from 'react-hook-form';
 
 import { Avatar, Box, Button, Paper, Stack, Typography } from '@mui/material';
 
-import { CreateGateTypes, type GateType } from '../schema';
-import { useGateTypes } from './gate-type';
+import { CreateGateData, type GateType } from '../schema';
+import { useCreateGateData } from './gate-type';
 import { ModalConfirmCleanup } from './modal-confirm-cleanup';
 
 export function GateTypeChanger({ type }: { type: GateType }) {
-  const { typesContent } = useGateTypes();
+  const { typesContent } = useCreateGateData();
   const { description, icon: Icon, title } = typesContent[type];
   const [isModalOpen, setModalOpen] = useState(false);
-  const { getValues, setValue } = useFormContext<CreateGateTypes>();
+  const { getValues, setValue } = useFormContext<CreateGateData>();
   const { t } = useTranslation('gate-new');
 
   const onClick = () => {

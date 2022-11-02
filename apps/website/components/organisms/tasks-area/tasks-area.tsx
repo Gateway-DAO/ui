@@ -24,7 +24,7 @@ import TwitterRetweetTask from '../../molecules/add-task/twitter-retweet/twitter
 import TwitterTweetTask from '../../molecules/add-task/twitter-tweet/twitter-tweet';
 import VerificationCodeTask from '../../molecules/add-task/verification-task/verification-task';
 import {
-  CreateGateTypes,
+  CreateGateData,
   DraftTasksSchema,
   Task,
 } from '../../templates/create-gate/schema';
@@ -44,7 +44,7 @@ const TaskComponents = {
 };
 
 const defaultTaskData = (
-  taskType: CreateGateTypes['tasks']['data'][0]['task_type']
+  taskType: CreateGateData['tasks']['data'][0]['task_type']
 ): Omit<Task, 'title' | 'description'> => {
   const defaultValues = {
     task_type: taskType,
@@ -80,7 +80,7 @@ type TaskAreaProps = {
 };
 
 const TaskArea = ({ draftTasks, onDelete }: TaskAreaProps) => {
-  const { control, setValue } = useFormContext<CreateGateTypes>();
+  const { control, setValue } = useFormContext<CreateGateData>();
 
   const { fields, append, remove, update, swap } = useFieldArray({
     control,
@@ -101,7 +101,7 @@ const TaskArea = ({ draftTasks, onDelete }: TaskAreaProps) => {
   }, [draftTasks, setValue]);
 
   const addTask = async (
-    taskType: CreateGateTypes['tasks']['data'][0]['task_type']
+    taskType: CreateGateData['tasks']['data'][0]['task_type']
   ) => {
     const highestOrder = Math.max(...fields.map((o) => o.order));
     append({

@@ -10,7 +10,7 @@ import {
 } from '@mui/material';
 
 import {
-  CreateGateTypes,
+  CreateGateData,
   QuizTaskDataError,
 } from '../../../../templates/create-gate/schema';
 
@@ -26,7 +26,7 @@ export function QuestionField({
     setValue,
     formState: { errors },
     control,
-  } = useFormContext<CreateGateTypes>();
+  } = useFormContext<CreateGateData>();
 
   const { fields: questions } = useFieldArray({
     name: `tasks.data.${taskId}.task_data.questions`,

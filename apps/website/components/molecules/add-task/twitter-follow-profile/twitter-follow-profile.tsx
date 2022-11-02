@@ -22,7 +22,7 @@ import {
 import { useAuth } from '../../../../providers/auth';
 import { CircleWithNumber } from '../../../atoms/circle-with-number';
 import {
-  CreateGateTypes,
+  CreateGateData,
   TwitterFollowData,
   TwitterFollowDataError,
 } from '../../../templates/create-gate/schema';
@@ -45,7 +45,7 @@ export const FollowProfile = ({ dragAndDrop, taskId, deleteTask }) => {
     getValues,
     setError,
     formState: { errors },
-  } = useFormContext<CreateGateTypes>();
+  } = useFormContext<CreateGateData>();
 
   const formValues = getValues();
 

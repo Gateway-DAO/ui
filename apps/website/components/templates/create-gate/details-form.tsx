@@ -8,14 +8,14 @@ import { useAuth } from '../../../providers/auth';
 import CategoriesInput from '../../molecules/categories-input';
 import CreatedByInput from '../../molecules/creators-input';
 import SkillsInput from '../../molecules/skills-input';
-import { CreateGateTypes, Creator } from './schema';
+import { CreateGateData, Creator } from './schema';
 
 export function GateDetailsForm({ gateData }) {
   const {
     register,
     formState: { errors },
     setValue,
-  } = useFormContext<CreateGateTypes>();
+  } = useFormContext<CreateGateData>();
   const { me } = useAuth();
   const { title, categories, description, skills } = gateData;
   const creators = useMemo(() => [{ id: me?.id, name: me?.name }], [me]);

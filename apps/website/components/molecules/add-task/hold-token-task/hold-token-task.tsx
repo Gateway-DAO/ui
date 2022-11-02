@@ -18,7 +18,7 @@ import {
 
 import { CircleWithNumber } from '../../../atoms/circle-with-number';
 import {
-  CreateGateTypes,
+  CreateGateData,
   HoldTokenDataError,
 } from '../../../templates/create-gate/schema';
 import { mockChains } from './__mock__';
@@ -29,7 +29,7 @@ const HoldTokenTask = ({ dragAndDrop, taskId, deleteTask }) => {
     setValue,
     getValues,
     formState: { errors },
-  } = useFormContext<CreateGateTypes>();
+  } = useFormContext<CreateGateData>();
 
   const formValues = getValues();
 

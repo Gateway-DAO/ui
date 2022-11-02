@@ -18,7 +18,7 @@ import {
 
 import { CircleWithNumber } from '../../../atoms/circle-with-number';
 import {
-  CreateGateTypes,
+  CreateGateData,
   HoldNFTDataError,
 } from '../../../templates/create-gate/schema';
 import { mockChains } from '../hold-token-task/__mock__';
@@ -29,7 +29,7 @@ const HoldNFTTask = ({ dragAndDrop, taskId, deleteTask }) => {
     setValue,
     getValues,
     formState: { errors },
-  } = useFormContext<CreateGateTypes>();
+  } = useFormContext<CreateGateData>();
 
   const formValues = getValues();
 

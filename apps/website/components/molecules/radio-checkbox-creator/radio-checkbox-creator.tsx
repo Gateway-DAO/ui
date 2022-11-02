@@ -4,7 +4,7 @@ import { useFieldArray, useFormContext } from 'react-hook-form';
 
 import { Alert, Button, Snackbar, Stack } from '@mui/material';
 
-import { CreateGateTypes, Option } from '../../templates/create-gate/schema';
+import { CreateGateData, Option } from '../../templates/create-gate/schema';
 import { OptionField } from './option-field/option-field';
 
 export function RadioCheckBoxCreator({
@@ -15,7 +15,7 @@ export function RadioCheckBoxCreator({
   taskId: number;
 }): JSX.Element {
   const [maxAlert, setMaxAlert] = useState(false);
-  const { control } = useFormContext<CreateGateTypes>();
+  const { control } = useFormContext<CreateGateData>();
 
   const DEFAULT_OPTION: Option = {
     value: '',

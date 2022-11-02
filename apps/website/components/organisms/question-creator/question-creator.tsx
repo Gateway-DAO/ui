@@ -7,7 +7,7 @@ import { Divider, IconButton, Stack } from '@mui/material';
 
 import { QuestionField } from '../../molecules/add-task/quiz-task/question-field/question-field';
 import { RadioCheckBoxCreator } from '../../molecules/radio-checkbox-creator/radio-checkbox-creator';
-import { CreateGateTypes, Question } from '../../templates/create-gate/schema';
+import { CreateGateData, Question } from '../../templates/create-gate/schema';
 
 export function QuestionCreator({
   questions,
@@ -15,7 +15,7 @@ export function QuestionCreator({
   onRemove,
   ...rest
 }): JSX.Element {
-  const { control } = useFormContext<CreateGateTypes>();
+  const { control } = useFormContext<CreateGateData>();
 
   const { fields, remove, swap, update } = useFieldArray({
     name: `tasks.data.${taskId}.task_data.questions`,

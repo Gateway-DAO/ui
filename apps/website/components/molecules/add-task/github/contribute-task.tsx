@@ -18,7 +18,7 @@ import {
 import { CircleWithNumber } from '../../../atoms/circle-with-number';
 import GithubDataCard from '../../../organisms/tasks/github-data-card';
 import {
-  CreateGateTypes,
+  CreateGateData,
   GithubContributeDataError,
 } from '../../../templates/create-gate/schema';
 
@@ -42,7 +42,7 @@ export default function GithubContributeTask({
     getValues,
     trigger,
     formState: { errors },
-  } = useFormContext<CreateGateTypes>();
+  } = useFormContext<CreateGateData>();
 
   const [title, repository_url] = getValues([
     `tasks.data.${taskId}.title`,

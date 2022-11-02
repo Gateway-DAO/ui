@@ -8,7 +8,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { Alert, Snackbar, Stack, TextField } from '@mui/material';
 
 import {
-  CreateGateTypes,
+  CreateGateData,
   QuizTaskDataError,
 } from '../../../templates/create-gate/schema';
 
@@ -34,7 +34,7 @@ export function OptionField({
     watch,
     formState: { errors },
     control,
-  } = useFormContext<CreateGateTypes>();
+  } = useFormContext<CreateGateData>();
   const [isOpen, setIsOpen] = useState(false);
 
   const questionType = watch(

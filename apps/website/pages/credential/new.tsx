@@ -3,9 +3,10 @@ import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
 import { useQuery } from '@tanstack/react-query';
+import { UnionToIntersection } from 'type-fest';
 
 import { CreateGateTemplate } from '../../components/templates/create-gate';
-import { DraftGateTypes } from '../../components/templates/create-gate/schema';
+import { CreateGateData } from '../../components/templates/create-gate/schema';
 import { ROUTES } from '../../constants/routes';
 import { useAuth } from '../../providers/auth';
 import { gqlAnonMethods } from '../../services/api';
@@ -54,12 +55,11 @@ export default function CreateGate({ id, gateProps }: CreateGateProps) {
           created_by: [oldGateData?.gates_by_pk?.creator?.id],
           ...oldGateData?.gates_by_pk,
           id,
-        } as DraftGateTypes)
+        } as UnionToIntersection<CreateGateData>)
       }
     />
   );
 }
-
 export async function getServerSideProps({ res, query }) {
   const { gate: gateId } = query;
   let gateProps = { gates_by_pk: { id: '', published: '' } };

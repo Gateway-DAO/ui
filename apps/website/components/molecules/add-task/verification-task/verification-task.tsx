@@ -15,7 +15,7 @@ import {
 
 import { CircleWithNumber } from '../../../atoms/circle-with-number';
 import {
-  CreateGateTypes,
+  CreateGateData,
   VerificationCodeDataError,
 } from '../../../templates/create-gate/schema';
 
@@ -26,7 +26,7 @@ const VerificationCodeTask = ({ dragAndDrop, taskId, deleteTask }) => {
     getValues,
 
     formState: { errors },
-  } = useFormContext<CreateGateTypes>();
+  } = useFormContext<CreateGateData>();
 
   const formValues = getValues();
 

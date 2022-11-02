@@ -24,7 +24,7 @@ import {
 import { CircleWithNumber } from '../../../atoms/circle-with-number';
 import { QuestionCreator } from '../../../organisms/question-creator/question-creator';
 import {
-  CreateGateTypes,
+  CreateGateData,
   QuizTaskDataError,
 } from '../../../templates/create-gate/schema';
 
@@ -64,7 +64,7 @@ export function QuizTask({
     trigger,
     formState: { errors },
     control,
-  } = useFormContext<CreateGateTypes>();
+  } = useFormContext<CreateGateData>();
 
   const formValues = getValues();
 

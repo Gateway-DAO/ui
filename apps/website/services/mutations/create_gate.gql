@@ -3,6 +3,7 @@ mutation create_gate(
   $dao_id: uuid!
   $title: String!
   $categories: jsonb
+  $type: String
   $description: String
   $skills: jsonb
   $permissions: permissions_arr_rel_insert_input
@@ -15,6 +16,7 @@ mutation create_gate(
       id: $id
       dao_id: $dao_id
       title: $title
+      type: $type
       categories: $categories
       description: $description
       skills: $skills
@@ -27,6 +29,7 @@ mutation create_gate(
       constraint: gates_pk
       update_columns: [
         title
+        type
         categories
         description
         skills

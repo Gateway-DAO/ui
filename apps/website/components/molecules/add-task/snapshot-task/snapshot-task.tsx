@@ -22,7 +22,7 @@ import {
 
 import { CircleWithNumber } from '../../../atoms/circle-with-number';
 import {
-  CreateGateTypes,
+  CreateGateData,
   SnapshotDataError,
 } from '../../../templates/create-gate/schema';
 
@@ -36,7 +36,7 @@ const SnapshotTask = ({ dragAndDrop, taskId, deleteTask }) => {
     control,
     setError,
     clearErrors,
-  } = useFormContext<CreateGateTypes>();
+  } = useFormContext<CreateGateData>();
 
   const formValues = getValues();
 

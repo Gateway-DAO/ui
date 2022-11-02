@@ -18,7 +18,7 @@ import {
 
 import { CircleWithNumber } from '../../../atoms/circle-with-number';
 import {
-  CreateGateTypes,
+  CreateGateData,
   FileTaskDataError,
 } from '../../../templates/create-gate/schema';
 
@@ -29,7 +29,7 @@ const FileLinkTask = ({ dragAndDrop, taskId, deleteTask }) => {
     getValues,
     formState: { errors },
     control,
-  } = useFormContext<CreateGateTypes>();
+  } = useFormContext<CreateGateData>();
 
   const formValues = getValues();
 
