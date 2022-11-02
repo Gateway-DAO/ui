@@ -1,7 +1,5 @@
 import useTranslation from 'next-translate/useTranslation';
 
-import { useFormContext } from 'react-hook-form';
-
 import {
   Button,
   Dialog,
@@ -11,20 +9,13 @@ import {
   DialogTitle,
 } from '@mui/material';
 
-import { CreateGateTypes } from '../schema';
-
 type Props = {
   onClose: () => void;
+  onConfirm: () => void;
 };
 
-export function ModalConfirmCleanup({ onClose }: Props) {
+export function ModalConfirmCleanup({ onClose, onConfirm }: Props) {
   const { t } = useTranslation('gate-new');
-  const methods = useFormContext<CreateGateTypes>();
-
-  const onConfirm = () => {
-    methods.setValue('type', undefined);
-    methods.setValue('tasks', undefined);
-  };
 
   return (
     <Dialog open onClose={onClose}>

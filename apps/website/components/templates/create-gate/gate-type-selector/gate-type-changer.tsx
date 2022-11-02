@@ -13,19 +13,34 @@ export function GateTypeChanger({ type }: { type: GateType }) {
   const { typesContent } = useGateTypes();
   const { description, icon: Icon, title } = typesContent[type];
   const [isModalOpen, setModalOpen] = useState(false);
-  const methods = useFormContext<CreateGateTypes>();
+  const { getValues, setValue } = useFormContext<CreateGateTypes>();
   const { t } = useTranslation('gate-new');
 
   const onClick = () => {
-    const hasContent =
-      type === 'task_based'
-        ? methods.getValues('tasks')?.data?.length > 0
-        : false;
+    let hasContent = false;
+
+    switch (type) {
+      case 'task_based':
+        hasContent = getValues('tasks')?.data?.length > 0;
+        break;
+      case 'direct':
+        hasContent = getValues('whitelisted_wallets')?.length > 0;
+        break;
+      default:
+        break;
+    }
+
     if (hasContent) {
       setModalOpen(true);
     } else {
-      methods.setValue('type', undefined);
+      setValue('type', undefined);
     }
+  };
+
+  const onConfirm = () => {
+    setValue('type', undefined);
+    setValue('tasks', undefined);
+    setValue('whitelisted_wallets', undefined);
   };
 
   const onClose = () => {
@@ -77,7 +92,9 @@ export function GateTypeChanger({ type }: { type: GateType }) {
           {t('common:actions.change')}
         </Button>
       </Paper>
-      {isModalOpen && <ModalConfirmCleanup onClose={onClose} />}
+      {isModalOpen && (
+        <ModalConfirmCleanup onClose={onClose} onConfirm={onConfirm} />
+      )}
     </>
   );
 }
