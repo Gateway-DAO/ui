@@ -1,11 +1,11 @@
-mutation create_code($user_id: String!) {
-  create_code(user_id: $user_id) {
-    code
+mutation create_code($user_id: String!, $email: String!) {
+  create_code(user_id: $user_id, email: $email) {
+    success
   }
 }
 
-mutation verify_code($user_id: String!, $code: String!) {
-  verify_code(user_id: $user_id, code: $code) {
+mutation verify_code($user_id: String!, $email: String!, $code: String!) {
+  verify_code(user_id: $user_id, email: $email, code: $code) {
     success
   }
 }
