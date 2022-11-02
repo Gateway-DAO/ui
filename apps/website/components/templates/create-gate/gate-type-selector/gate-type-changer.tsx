@@ -21,7 +21,7 @@ export function GateTypeChanger({ type }: { type: GateType }) {
 
     switch (type) {
       case 'task_based':
-        hasContent = getValues('tasks')?.data?.length > 0;
+        hasContent = getValues('tasks')?.length > 0;
         break;
       case 'direct':
         hasContent = getValues('whitelisted_wallets')?.length > 0;

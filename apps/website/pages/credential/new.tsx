@@ -27,6 +27,13 @@ export default function CreateGate({ id, gateProps }: CreateGateProps) {
         id,
       }),
     {
+      select: (data) => data.gates_by_pk,
+      /*       select: (data) => ({
+        ...data.gates_by_pk,
+        tasks: {
+          data: data.gates_by_pk.tasks,
+        },
+      }), */
       initialData: gateProps,
       enabled: !!id,
     }
@@ -46,16 +53,16 @@ export default function CreateGate({ id, gateProps }: CreateGateProps) {
   if (!daoId) {
     return null;
   }
+  console.log(oldGateData);
 
   return (
     <CreateGateTemplate
       oldData={
-        oldGateData &&
-        ({
-          created_by: [oldGateData?.gates_by_pk?.creator?.id],
-          ...oldGateData?.gates_by_pk,
+        oldGateData && {
+          ...oldGateData,
+          created_by: [oldGateData?.creator?.id],
           id,
-        } as UnionToIntersection<CreateGateData>)
+        }
       }
     />
   );

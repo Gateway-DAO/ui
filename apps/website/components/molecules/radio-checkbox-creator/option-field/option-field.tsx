@@ -38,11 +38,11 @@ export function OptionField({
   const [isOpen, setIsOpen] = useState(false);
 
   const questionType = watch(
-    `tasks.data.${taskId}.task_data.questions.${questionIndex}.type`
+    `tasks.${taskId}.task_data.questions.${questionIndex}.type`
   );
 
   const options = watch(
-    `tasks.data.${taskId}.task_data.questions.${questionIndex}.options`
+    `tasks.${taskId}.task_data.questions.${questionIndex}.options`
   );
 
   return (
@@ -65,14 +65,14 @@ export function OptionField({
           InputProps={{ disableUnderline: true }}
           variant={'standard'}
           {...register(
-            `tasks.data.${taskId}.task_data.questions.${questionIndex}.options.${optionIndex}.value`
+            `tasks.${taskId}.task_data.questions.${questionIndex}.options.${optionIndex}.value`
           )}
           error={
-            !!(errors.tasks?.data[taskId]?.task_data as QuizTaskDataError)
+            !!(errors.tasks?.[taskId]?.task_data as QuizTaskDataError)
               ?.questions?.[questionIndex]?.options?.[optionIndex]?.value
           }
           helperText={
-            (errors.tasks?.data[taskId]?.task_data as QuizTaskDataError)
+            (errors.tasks?.[taskId]?.task_data as QuizTaskDataError)
               ?.questions?.[questionIndex]?.options?.[optionIndex]?.value
               ?.message
           }
@@ -81,7 +81,7 @@ export function OptionField({
       <Stack direction={'row'} alignItems={'center'}>
         <Controller
           control={control}
-          name={`tasks.data.${taskId}.task_data.questions.${questionIndex}.options.${optionIndex}.correct`}
+          name={`tasks.${taskId}.task_data.questions.${questionIndex}.options.${optionIndex}.correct`}
           defaultValue={false}
           render={() => (
             <>
@@ -101,7 +101,7 @@ export function OptionField({
                       options.filter((option) => option.correct).length === 0)
                   ) {
                     return setValue(
-                      `tasks.data.${taskId}.task_data.questions.${questionIndex}.options.${optionIndex}.correct`,
+                      `tasks.${taskId}.task_data.questions.${questionIndex}.options.${optionIndex}.correct`,
                       !options[optionIndex]?.correct
                     );
                   }

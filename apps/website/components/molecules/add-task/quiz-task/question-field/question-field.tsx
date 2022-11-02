@@ -29,7 +29,7 @@ export function QuestionField({
   } = useFormContext<CreateGateData>();
 
   const { fields: questions } = useFieldArray({
-    name: `tasks.data.${taskId}.task_data.questions`,
+    name: `tasks.${taskId}.task_data.questions`,
     control,
   });
 
@@ -54,24 +54,25 @@ export function QuestionField({
           [theme.breakpoints.down('sm')]: { width: '100%' },
         })}
         required
-        name={`tasks.data.${taskId}.task_data.questions.${questionIndex}.question`}
+        name={`tasks.${taskId}.task_data.questions.${questionIndex}.question`}
         {...register(
-          `tasks.data.${taskId}.task_data.questions.${questionIndex}.question`
+          `tasks.${taskId}.task_data.questions.${questionIndex}.question`
         )}
         error={
-          errors?.tasks?.data.length > 0 &&
-          !!(errors.tasks?.data?.[taskId]?.task_data as QuizTaskDataError)
+          errors?.tasks?.length > 0 &&
+          !!(errors.tasks?.[taskId]?.task_data as QuizTaskDataError)
             ?.questions?.[questionIndex]?.question
         }
         helperText={
-          (errors.tasks?.data?.[taskId]?.task_data as QuizTaskDataError)
-            ?.questions?.[questionIndex]?.question?.message
+          (errors.tasks?.[taskId]?.task_data as QuizTaskDataError)?.questions?.[
+            questionIndex
+          ]?.question?.message
         }
       />
       <Controller
         control={control}
         defaultValue="single"
-        name={`tasks.data.${taskId}.task_data.questions.${questionIndex}.type`}
+        name={`tasks.${taskId}.task_data.questions.${questionIndex}.type`}
         rules={{ required: true }}
         render={({ field: { onChange, value } }) => (
           <FormControl
@@ -92,7 +93,7 @@ export function QuestionField({
               labelId={`question-select-label${questionIndex}`}
               value={value}
               error={
-                !!(errors.tasks?.data?.[taskId]?.task_data as QuizTaskDataError)
+                !!(errors.tasks?.[taskId]?.task_data as QuizTaskDataError)
                   ?.questions?.[questionIndex]?.type
               }
               onChange={(event) => {
@@ -106,7 +107,7 @@ export function QuestionField({
                     .filter((option) => option.correct)
                     .map((_option, index) =>
                       setValue(
-                        `tasks.data.${taskId}.task_data.questions.${questionIndex}.options.${index}.correct`,
+                        `tasks.${taskId}.task_data.questions.${questionIndex}.options.${index}.correct`,
                         false
                       )
                     );

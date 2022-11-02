@@ -29,7 +29,7 @@ export function RadioCheckBoxCreator({
     remove,
   } = useFieldArray({
     control,
-    name: `tasks.data.${taskId}.task_data.questions.${questionIndex}.options`,
+    name: `tasks.${taskId}.task_data.questions.${questionIndex}.options`,
   });
 
   const setDefaultOption = (): Option => {

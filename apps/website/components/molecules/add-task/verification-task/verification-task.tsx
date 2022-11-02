@@ -31,10 +31,10 @@ const VerificationCodeTask = ({ dragAndDrop, taskId, deleteTask }) => {
   const formValues = getValues();
 
   useEffect(() => {
-    if (formValues.tasks.data[taskId]?.title === '') {
-      setValue(`tasks.data.${taskId}.title`, 'Untitled Requirement');
+    if (formValues.tasks[taskId]?.title === '') {
+      setValue(`tasks.${taskId}.title`, 'Untitled Requirement');
     }
-  }, [setValue, taskId, formValues.tasks.data]);
+  }, [setValue, taskId, formValues.tasks]);
 
   useEffect(() => {
     setTaskVisible(dragAndDrop);
@@ -100,9 +100,9 @@ const VerificationCodeTask = ({ dragAndDrop, taskId, deleteTask }) => {
                 },
               }}
               id="file-title"
-              {...register(`tasks.data.${taskId}.title`)}
-              error={!!errors.tasks?.data?.[taskId]?.title}
-              helperText={errors.tasks?.data?.[taskId]?.title?.message}
+              {...register(`tasks.${taskId}.title`)}
+              error={!!errors.tasks?.[taskId]?.title}
+              helperText={errors.tasks?.[taskId]?.title?.message}
             />
           </Stack>
         </Stack>
@@ -158,9 +158,9 @@ const VerificationCodeTask = ({ dragAndDrop, taskId, deleteTask }) => {
           minRows={3}
           label="Task Requirement"
           id="file-description"
-          {...register(`tasks.data.${taskId}.description`)}
-          error={!!errors.tasks?.data?.[taskId]?.description}
-          helperText={errors.tasks?.data?.[taskId]?.description?.message}
+          {...register(`tasks.${taskId}.description`)}
+          error={!!errors.tasks?.[taskId]?.description}
+          helperText={errors.tasks?.[taskId]?.description?.message}
           sx={{
             marginBottom: '60px',
             '& fieldset legend span': {
@@ -171,18 +171,14 @@ const VerificationCodeTask = ({ dragAndDrop, taskId, deleteTask }) => {
         <TextField
           required
           label="Verification Code"
-          {...register(`tasks.data.${taskId}.task_data.code`)}
+          {...register(`tasks.${taskId}.task_data.code`)}
           error={
-            !!(
-              errors.tasks?.data?.[taskId]
-                ?.task_data as VerificationCodeDataError
-            )?.code
+            !!(errors.tasks?.[taskId]?.task_data as VerificationCodeDataError)
+              ?.code
           }
           helperText={
-            (
-              errors.tasks?.data?.[taskId]
-                ?.task_data as VerificationCodeDataError
-            )?.code?.message
+            (errors.tasks?.[taskId]?.task_data as VerificationCodeDataError)
+              ?.code?.message
           }
           sx={{
             marginBottom: '60px',

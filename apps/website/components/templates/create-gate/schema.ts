@@ -29,7 +29,7 @@ export type GateBase = {
 
 export type GateTask = GateBase & {
   type: 'task_based';
-  tasks?: { data: DraftTasksSchema };
+  tasks?: Task[];
   whitelisted_wallets?: never;
 };
 
@@ -42,14 +42,6 @@ export type GateDirect = GateBase & {
 export type CreateGateData = GateTask | GateDirect;
 
 export type GateType = CreateGateData['type'];
-
-// Tasks
-export type TasksSchema = {
-  data: Array<Task>;
-};
-
-// Tasks when we get them back from a previous draft
-export type DraftTasksSchema = Array<Task>;
 
 // Task
 export type SelfVerifyTask = {
@@ -591,25 +583,23 @@ const gateBase = z.object({
 
 const taskGate = gateBase.augment({
   type: z.literal('task_based' as GateType),
-  tasks: z.object({
-    data: z
-      .array(
-        z.discriminatedUnion('task_type', [
-          taskSelfVerifySchema,
-          taskMeetingCodeSchema,
-          taskQuizSchema,
-          taskSnapshotSchema,
-          taskHoldTokenSchema,
-          taskHoldNFTSchema,
-          TwitterFollowProfileSchema,
-          taskTwitterTweetSchema,
-          taskTwitterRetweetSchema,
-          taskGithubContributeSchema,
-          taskGithubPRSchema,
-        ])
-      )
-      .nonempty({ message: 'A credential needs to have at least one task.' }),
-  }),
+  tasks: z
+    .array(
+      z.discriminatedUnion('task_type', [
+        taskSelfVerifySchema,
+        taskMeetingCodeSchema,
+        taskQuizSchema,
+        taskSnapshotSchema,
+        taskHoldTokenSchema,
+        taskHoldNFTSchema,
+        TwitterFollowProfileSchema,
+        taskTwitterTweetSchema,
+        taskTwitterRetweetSchema,
+        taskGithubContributeSchema,
+        taskGithubPRSchema,
+      ])
+    )
+    .nonempty({ message: 'A credential needs to have at least one task.' }),
 });
 
 const directGate = gateBase.augment({

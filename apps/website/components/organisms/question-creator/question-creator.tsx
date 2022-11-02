@@ -18,7 +18,7 @@ export function QuestionCreator({
   const { control } = useFormContext<CreateGateData>();
 
   const { fields, remove, swap, update } = useFieldArray({
-    name: `tasks.data.${taskId}.task_data.questions`,
+    name: `tasks.${taskId}.task_data.questions`,
     control,
   });
 

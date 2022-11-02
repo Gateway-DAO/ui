@@ -50,10 +50,10 @@ export const FollowProfile = ({ dragAndDrop, taskId, deleteTask }) => {
   const formValues = getValues();
 
   useEffect(() => {
-    if (formValues.tasks.data[taskId]?.title === '') {
-      setValue(`tasks.data.${taskId}.title`, 'Untitled Task');
+    if (formValues.tasks[taskId]?.title === '') {
+      setValue(`tasks.${taskId}.title`, 'Untitled Task');
     }
-  }, [setValue, taskId, formValues.tasks.data]);
+  }, [setValue, taskId, formValues.tasks]);
 
   useEffect(() => {
     setTaskVisible(dragAndDrop);
@@ -69,18 +69,18 @@ export const FollowProfile = ({ dragAndDrop, taskId, deleteTask }) => {
     isLoading: isLoadingTwitterData,
   } = useMutation(['twitter-data'], async () => {
     try {
-      const username = getValues(`tasks.data.${taskId}.task_data.username`);
+      const username = getValues(`tasks.${taskId}.task_data.username`);
       const response = await gqlAuthMethods.twitter_data({
         userName: username,
       });
       return response.get_twitter_user_data;
     } catch (error) {
       if (error.message.includes('User is protected')) {
-        return setError(`tasks.data.${taskId}.task_data.username`, {
+        return setError(`tasks.${taskId}.task_data.username`, {
           message: 'User is protected',
         });
       }
-      return setError(`tasks.data.${taskId}.task_data.username`, {
+      return setError(`tasks.${taskId}.task_data.username`, {
         message: 'User not found',
       });
     }
@@ -151,9 +151,9 @@ export const FollowProfile = ({ dragAndDrop, taskId, deleteTask }) => {
                 },
               }}
               id="follow-profile-title"
-              {...register(`tasks.data.${taskId}.title`)}
-              error={!!errors.tasks?.data?.[taskId]?.title}
-              helperText={errors.tasks?.data?.[taskId]?.title?.message}
+              {...register(`tasks.${taskId}.title`)}
+              error={!!errors.tasks?.[taskId]?.title}
+              helperText={errors.tasks?.[taskId]?.title?.message}
             />
           </Stack>
         </Stack>
@@ -209,9 +209,9 @@ export const FollowProfile = ({ dragAndDrop, taskId, deleteTask }) => {
           minRows={3}
           label="Task Description"
           id="follow-profile-description"
-          {...register(`tasks.data.${taskId}.description`)}
-          error={!!errors.tasks?.data?.[taskId]?.description}
-          helperText={errors.tasks?.data?.[taskId]?.description?.message}
+          {...register(`tasks.${taskId}.description`)}
+          error={!!errors.tasks?.[taskId]?.description}
+          helperText={errors.tasks?.[taskId]?.description?.message}
           sx={{
             marginBottom: '60px',
             '& fieldset legend span': {
@@ -253,20 +253,18 @@ export const FollowProfile = ({ dragAndDrop, taskId, deleteTask }) => {
               required
               InputLabelProps={{ shrink: true }}
               label="username"
-              {...register(`tasks.data.${taskId}.task_data.username`, {
+              {...register(`tasks.${taskId}.task_data.username`, {
                 onChange: () => onHandleChange(),
               })}
               maxRows={60}
               id="follow-profile-username"
               error={
-                !!(errors.tasks?.data?.[taskId]?.task_data as TwitterFollowData)
+                !!(errors.tasks?.[taskId]?.task_data as TwitterFollowData)
                   ?.username
               }
               helperText={
-                (
-                  errors.tasks?.data?.[taskId]
-                    ?.task_data as TwitterFollowDataError
-                )?.username?.message
+                (errors.tasks?.[taskId]?.task_data as TwitterFollowDataError)
+                  ?.username?.message
               }
               sx={{
                 marginBottom: '60px',
