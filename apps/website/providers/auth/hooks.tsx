@@ -125,9 +125,9 @@ export const useAuthLogin = () => {
     }
   );
 
-  const me = useQuery(
-    ['me', session?.data?.user_id],
-    async () => await gqlMethods(token).me(),
+  const user_info = useQuery(
+    ['user_info', session?.data?.user_id],
+    async () => await gqlMethods(token).me_user_info(),
     {
       enabled: !!token,
       select: (data) => data.me,
@@ -152,6 +152,105 @@ export const useAuthLogin = () => {
     }
   );
 
+  const user_permissions = useQuery(
+    ['user_permissions', session?.data?.user_id],
+    async () => await gqlMethods(token).me_permissions(),
+    {
+      enabled: !!token,
+      select: (data) => data.me,
+      refetchOnMount: true,
+      refetchOnReconnect: true,
+      refetchOnWindowFocus: true,
+      refetchInterval: 1000 * 60 * 10,
+      async onError(error: ErrorResponse) {
+        const firstError = error?.response?.errors?.[0];
+
+        enqueueSnackbar(
+          firstError?.message?.includes('token') ||
+            firstError?.message?.includes('jwt')
+            ? t('auth:me.errors.invalid-token')
+            : t('auth:me.errors.unknown'),
+          {
+            variant: 'error',
+          }
+        );
+        onSignOut();
+      },
+    }
+  );
+
+  const user_following = useQuery(
+    ['user_following', session?.data?.user_id],
+    async () => await gqlMethods(token).me_following(),
+    {
+      enabled: !!token,
+      select: (data) => data.me,
+      refetchOnMount: true,
+      refetchOnReconnect: true,
+      refetchOnWindowFocus: true,
+      refetchInterval: 1000 * 60 * 10,
+      async onError(error: ErrorResponse) {
+        const firstError = error?.response?.errors?.[0];
+
+        enqueueSnackbar(
+          firstError?.message?.includes('token') ||
+            firstError?.message?.includes('jwt')
+            ? t('auth:me.errors.invalid-token')
+            : t('auth:me.errors.unknown'),
+          {
+            variant: 'error',
+          }
+        );
+        onSignOut();
+      },
+    }
+  );
+
+  const user_task_progresses = useQuery(
+    ['user_task_progresses', session?.data?.user_id],
+    async () => await gqlMethods(token).me_task_progresses(),
+    {
+      enabled: !!token,
+      select: (data) => data.me,
+      // refetchOnMount: true,
+      // refetchOnReconnect: true,
+      // refetchOnWindowFocus: true,
+      // refetchInterval: 1000 * 60 * 10,
+      async onError(error: ErrorResponse) {
+        const firstError = error?.response?.errors?.[0];
+
+        enqueueSnackbar(
+          firstError?.message?.includes('token') ||
+            firstError?.message?.includes('jwt')
+            ? t('auth:me.errors.invalid-token')
+            : t('auth:me.errors.unknown'),
+          {
+            variant: 'error',
+          }
+        );
+        onSignOut();
+      },
+    }
+  );
+
+  const me = useQuery(
+    ['me', session?.data?.user_id],
+    () => ({
+      ...user_info.data,
+      ...user_permissions.data,
+      ...user_following.data,
+      ...user_task_progresses.data,
+    }),
+    {
+      enabled:
+        !!token &&
+        !!user_info.data &&
+        !!user_permissions.data &&
+        !!user_following.data &&
+        !!user_task_progresses.data,
+    }
+  );
+
   const authStep: AuthStep = useMemo(() => {
     if (error) return 'error';
     if (nonce.fetchStatus === 'fetching') return 'get-nonce';
@@ -170,14 +269,18 @@ export const useAuthLogin = () => {
 
   const onUpdateMe = (
     cb: (oldMe: PartialDeep<SessionUser>) => PartialDeep<SessionUser>
-  ) => queryClient.setQueryData(['me', me.data?.id], cb);
+  ) => queryClient.setQueryData(['me', user_info.data?.id], cb);
 
   const onInvalidateMe = () =>
-    queryClient.invalidateQueries(['me', me.data?.id]);
+    queryClient.invalidateQueries(['me', user_info.data?.id]);
 
   const onSignOut = useSignOut(() => {
     setError(undefined);
     me.remove();
+    user_info.remove();
+    user_permissions.remove();
+    user_following.remove();
+    user_task_progresses.remove();
     nonce.remove();
     sendSignature.reset();
     signInMutation.reset();
