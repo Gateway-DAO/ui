@@ -8,10 +8,13 @@ import { emailSchema } from "./../types";
 import { useEffect, useRef, useState } from "react";
 import { useSnackbar } from "notistack";
 import { useAuth } from "apps/website/providers/auth";
+import { useRouter } from "next/router";
 
 
 const Email = () => {
-  const { gqlAuthMethods, me } = useAuth();
+  const { gqlAuthMethods, me, onUpdateMe } = useAuth();
+  const [actualEmail, setActualEmail] = useState(me?.email_address);
+
   const {
     register,
     watch,
@@ -22,7 +25,7 @@ const Email = () => {
     resolver: zodResolver(emailSchema),
     mode: 'onChange',
     defaultValues: {
-      email: me?.email_address,
+      email: actualEmail,
       code: '',
     },
   });
@@ -31,6 +34,7 @@ const Email = () => {
   const email = watch('email');
   const code = watch('code');
   const { t } = useTranslation('settings');
+  const router = useRouter();
   const [emailSent, setEmailSent] = useState<boolean>(false);
   const [codeSent, setCodeSent] = useState<boolean>(false);
   const [timeToResend, setTimeToResend] = useState<number>(initialTime);
@@ -78,7 +82,16 @@ const Email = () => {
       const response = await verifyCode({ user_id: me?.id, email, code });
       if (response?.verify_code?.success) {
         enqueueSnackbar(t('account-management.email-verified'));
+        onUpdateMe((oldMe) => {
+          console.log('joaozinho', oldMe);
+          return {
+            ...oldMe,
+            email_address: email,
+          }
+        });
+        setActualEmail(email);
         resetForm();
+        router.reload();
         return true;
       }
       return false;
@@ -86,7 +99,7 @@ const Email = () => {
       if (error?.response?.errors[0]?.message) {
         enqueueSnackbar(error?.response?.errors[0]?.message, { variant: 'error' });
         if (error?.response?.errors[0]?.message?.indexOf('Maximum') > -1) {
-          setValue('email', me?.email_address);
+          setValue('email', actualEmail);
           resetForm();
         }
       } else {
@@ -132,7 +145,7 @@ const Email = () => {
     return !emailSent &&
     !errors?.email &&
     emailVerified &&
-    email !== me?.email_address &&
+    email !== actualEmail &&
     email !== '';
   }
 
