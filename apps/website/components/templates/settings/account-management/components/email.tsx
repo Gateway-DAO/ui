@@ -74,9 +74,6 @@ const Email = () => {
 
   const onVerify = async (event) => {
     event.preventDefault();
-    if (!email || !code || email === '' || code === '') {
-      return;
-    }
     try {
       const response = await verifyCode({ user_id: me?.id, email, code });
       if (response?.verify_code?.success) {
@@ -88,6 +85,10 @@ const Email = () => {
     } catch (error) {
       if (error?.response?.errors[0]?.message) {
         enqueueSnackbar(error?.response?.errors[0]?.message, { variant: 'error' });
+        if (error?.response?.errors[0]?.message?.indexOf('Maximum') > -1) {
+          setValue('email', me?.email_address);
+          resetForm();
+        }
       } else {
         enqueueSnackbar(t('account-management.email-error-validating'), { variant: 'error' });
       }
