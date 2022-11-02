@@ -1,5 +1,5 @@
 import useTranslation from 'next-translate/useTranslation';
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 
 import { useQueries } from '@tanstack/react-query';
 import { ethers } from 'ethers';
@@ -10,14 +10,15 @@ import { useProvider } from 'wagmi';
 import { Delete } from '@mui/icons-material';
 import { Button, Paper, Stack, TextField } from '@mui/material';
 
-import { DraftGateTypes, Gate_Whitelisted_Wallet } from '../../schema';
+import { DraftGateDirect, Gate_Whitelisted_Wallet } from '../../schema';
 import { DirectWalletsChips } from './direct-wallets-chips';
 import { DirectWalletsHeader } from './direct-wallets-header';
 
 export function DirectWallets() {
   const {
-    field: { onChange, value },
-  } = useController<DraftGateTypes>({
+    field: { onChange, value, ref },
+    fieldState: { error },
+  } = useController<DraftGateDirect>({
     name: 'whitelisted_wallets',
     defaultValue: [],
   });
@@ -154,9 +155,16 @@ export function DirectWallets() {
               ></DirectWalletsChips>
             ) : null,
           }}
-          helperText={t('gate-new:direct.input-helper')}
+          helperText={
+            // Wrong type error
+            error?.message ?? t('gate-new:direct.input-helper')
+          }
           value={inputValue}
-          ref={inputRef}
+          inputRef={(input) => {
+            inputRef.current = input;
+            ref(input);
+          }}
+          error={!!error?.message}
           onKeyDown={(event) => {
             if (
               event.key === 'Enter' ||

@@ -2,11 +2,7 @@ import { FieldError, NestedValue } from 'react-hook-form';
 import { PartialDeep } from 'type-fest';
 import { z } from 'zod';
 
-import {
-  Gates,
-  Whitelisted_Wallets,
-} from '../../../services/graphql/types.generated';
-export type GateType = 'task_based' | 'direct';
+import { Whitelisted_Wallets } from '../../../services/graphql/types.generated';
 
 // Creator
 export type Creator = {
@@ -19,7 +15,7 @@ export type Gate_Whitelisted_Wallet = PartialDeep<
 >;
 
 // Draft Gate
-export type DraftGateTypes = {
+type DraftGate = {
   id?: string;
   title: string;
   categories: string[];
@@ -27,21 +23,42 @@ export type DraftGateTypes = {
   image: string;
   skills: string[];
   created_by: Creator[];
+};
+
+export type DraftGateTask = DraftGate & {
+  type: 'task_based';
   tasks?: DraftTasksSchema;
-} & Pick<Gates, 'type'> & { whitelisted_wallets: Gate_Whitelisted_Wallet };
+  whitelisted_wallets?: never;
+};
+
+export type DraftGateDirect = DraftGate & {
+  type: 'direct';
+  tasks?: never;
+  whitelisted_wallets?: Gate_Whitelisted_Wallet[];
+};
+
+export type DraftGateTypes = DraftGateTask | DraftGateDirect;
 
 // Create Gate
-export type CreateGateTypes = {
-  id?: string;
-  title: string;
-  categories: NestedValue<string[]>;
-  description: string;
-  image: string;
-  type: GateType;
+export type CreateGate = Omit<DraftGate, 'skills'> & {
   skills: NestedValue<string[]>;
-  created_by: Creator[];
+};
+
+export type CreateGateTask = CreateGate & {
+  type: 'task_based';
   tasks: TasksSchema;
-} & Pick<Gates, 'type'> & { whitelisted_wallets: Gate_Whitelisted_Wallet };
+  whitelisted_wallets?: never;
+};
+
+export type CreateGateDirect = CreateGate & {
+  type: 'direct';
+  tasks?: never;
+  whitelisted_wallets: Gate_Whitelisted_Wallet[];
+};
+
+export type CreateGateTypes = CreateGateTask | CreateGateDirect;
+
+export type GateType = CreateGateTypes['type'];
 
 // Tasks
 export type TasksSchema = {
@@ -614,12 +631,14 @@ const taskGate = gateBase.augment({
 
 const directGate = gateBase.augment({
   type: z.literal('direct' as GateType),
-  whitelisted_wallets: z.array(
-    z.object({
-      wallet: z.string(),
-      ens: z.string().optional(),
-    })
-  ),
+  whitelisted_wallets: z
+    .array(
+      z.object({
+        wallet: z.string(),
+        ens: z.string().optional(),
+      })
+    )
+    .min(1, 'Please add at least 1 wallet'),
 });
 
 export const createGateSchema = z.discriminatedUnion('type', [
