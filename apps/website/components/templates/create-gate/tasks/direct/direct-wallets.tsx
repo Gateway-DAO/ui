@@ -1,3 +1,4 @@
+import useTranslation from 'next-translate/useTranslation';
 import { useEffect, useRef, useState } from 'react';
 
 import { useQueries } from '@tanstack/react-query';
@@ -20,9 +21,8 @@ export function DirectWallets() {
     name: 'whitelisted_wallets',
     defaultValue: [],
   });
-
+  const { t } = useTranslation('common');
   const wallets = value as Gate_Whitelisted_Wallet[];
-  // const [wallets, setWallets] = useState<string[]>([]);
   const [inputValue, setInputValue] = useState('');
 
   const inputRef = useRef<HTMLInputElement>(null);
@@ -133,6 +133,7 @@ export function DirectWallets() {
       ></DirectWalletsHeader>
       <Stack direction="column" gap={1}>
         <TextField
+          label={t('gate-new:direct.label')}
           sx={{
             display: 'flex',
             '.MuiInputBase-root': {
@@ -153,7 +154,7 @@ export function DirectWallets() {
               ></DirectWalletsChips>
             ) : null,
           }}
-          helperText="Fill the addresses separated by comma"
+          helperText={t('gate-new:direct.input-helper')}
           value={inputValue}
           ref={inputRef}
           onKeyDown={(event) => {
@@ -185,7 +186,7 @@ export function DirectWallets() {
           variant="outlined"
           onClick={() => onChange([])}
         >
-          Reset
+          {t('actions.clear')}
         </Button>
       </Stack>
     </Paper>

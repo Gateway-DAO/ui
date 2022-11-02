@@ -41,5 +41,20 @@
       "timePeriodOneMonth": "1 Month",
       "timePeriodNever": "Never"
     }
+  },
+  "direct": {
+    "title": {
+      "0": "No recipients",
+      "one": "1 recipient",
+      "other": "{{count}} recipients"
+    },
+    "description": "Copy and paste, fill, import the wallet address and/or ens name",
+    "import-csv": "Import from a CSV",
+    "invalid": {
+      "one": "You have 1 invalid wallet address",
+      "other": "You have {{count}} invalid wallet addresses"
+    },
+    "label": "Wallet address or ENS name",
+    "input-helper": "Fill the addresses separated by comma"
   }
 }

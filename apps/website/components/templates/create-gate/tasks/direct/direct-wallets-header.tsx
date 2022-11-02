@@ -1,3 +1,5 @@
+import useTranslation from 'next-translate/useTranslation';
+
 import { UseQueryResult } from '@tanstack/react-query';
 
 import { UploadFile } from '@mui/icons-material';
@@ -8,6 +10,7 @@ type Props = {
   walletsQueries: UseQueryResult<string, unknown>[];
 };
 export function DirectWalletsHeader({ readFiles, walletsQueries }: Props) {
+  const { t } = useTranslation('gate-new');
   const { validWallets, invalidWallets } = walletsQueries.reduce(
     (acc, query) => {
       if (query.isSuccess) {
@@ -42,13 +45,15 @@ export function DirectWalletsHeader({ readFiles, walletsQueries }: Props) {
         gap={2}
       >
         <Box>
-          <Typography variant="h6">{validWallets} recipients</Typography>
+          <Typography variant="h6">
+            {t('direct.title', { count: validWallets })}
+          </Typography>
           <Typography variant="body1" color="text.secondary">
-            Copy and paste, fill, import the wallet address and/or ens name
+            {t('direct.description')}
           </Typography>
         </Box>
         <Button component="label" variant="outlined" startIcon={<UploadFile />}>
-          Import from a CSV
+          {t('direct.import-csv')}
           <input
             hidden
             type="file"
@@ -64,7 +69,7 @@ export function DirectWalletsHeader({ readFiles, walletsQueries }: Props) {
       </Stack>
       {invalidWallets ? (
         <Typography variant="body2" color="error">
-          You have {invalidWallets} invalid wallet address
+          {t('direct.invalid', { count: invalidWallets })}
         </Typography>
       ) : null}
     </Stack>
