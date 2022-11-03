@@ -92,15 +92,11 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
 
     if (!dataIsValid) return;
 
-    let permissionsData = null;
+    const permissionsData = data.created_by?.map((creator) => {
+      return { user_id: creator.id, permission: 'gate_editor' };
+    });
     let image_url = oldData.image || null;
-    if (data.created_by.length > 0) {
-      permissionsData = {
-        data: data.created_by.map((creator) => {
-          return { user_id: creator.id, permission: 'gate_editor' };
-        }),
-      };
-    }
+
     if (image_url !== data.image && data.image !== undefined) {
       const image_id = (
         await uploadImage.mutateAsync({
@@ -129,16 +125,9 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
         categories: data.categories || [],
         description: data.description,
         skills: data.skills || [],
-        permissions: {
-          ...permissionsData,
-          on_conflict: {
-            constraint:
-              Permissions_Constraint.PermissionsDaoIdUserIdCredentialIdKey,
-            update_columns: [Permissions_Update_Column.Permission],
-          },
-        },
+        permissions: permissionsData,
         image: image_url,
-        tasks: data.tasks.map(({ task_id, ...task }, index) => ({
+        tasks: data.tasks?.map(({ task_id, ...task }, index) => ({
           ...task,
           id: task_id,
           order: index,

@@ -6,7 +6,7 @@ mutation create_gate_tasks_based(
   $type: gate_type
   $description: String
   $skills: jsonb
-  $permissions: permissions_arr_rel_insert_input
+  $permissions: [permissions_insert_input!] = []
   $image: String!
   $tasks: [tasks_insert_input!] = []
   $published: gate_state!
@@ -20,7 +20,13 @@ mutation create_gate_tasks_based(
       categories: $categories
       description: $description
       skills: $skills
-      permissions: $permissions
+      permissions: {
+      	data: $permissions
+        on_conflict: {
+          constraint: permissions_dao_id_user_id_credential_id_key,
+          update_columns: [permission]
+        }
+      }
       image: $image
       tasks: {
         data: $tasks
