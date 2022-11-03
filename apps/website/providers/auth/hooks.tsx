@@ -131,9 +131,7 @@ export const useAuthLogin = () => {
     {
       enabled: !!token,
       select: (data) => data.me,
-      refetchOnMount: true,
       refetchOnReconnect: true,
-      refetchOnWindowFocus: true,
       refetchInterval: 1000 * 60 * 10,
       async onError(error: ErrorResponse) {
         const firstError = error?.response?.errors?.[0];
@@ -158,9 +156,7 @@ export const useAuthLogin = () => {
     {
       enabled: !!token,
       select: (data) => data.me,
-      refetchOnMount: true,
       refetchOnReconnect: true,
-      refetchOnWindowFocus: true,
       refetchInterval: 1000 * 60 * 10,
       async onError(error: ErrorResponse) {
         const firstError = error?.response?.errors?.[0];
@@ -185,9 +181,7 @@ export const useAuthLogin = () => {
     {
       enabled: !!token,
       select: (data) => data.me,
-      refetchOnMount: true,
       refetchOnReconnect: true,
-      refetchOnWindowFocus: true,
       refetchInterval: 1000 * 60 * 10,
       async onError(error: ErrorResponse) {
         const firstError = error?.response?.errors?.[0];
@@ -212,10 +206,6 @@ export const useAuthLogin = () => {
     {
       enabled: !!token,
       select: (data) => data.me,
-      // refetchOnMount: true,
-      // refetchOnReconnect: true,
-      // refetchOnWindowFocus: true,
-      // refetchInterval: 1000 * 60 * 10,
       async onError(error: ErrorResponse) {
         const firstError = error?.response?.errors?.[0];
 
@@ -242,6 +232,10 @@ export const useAuthLogin = () => {
       ...user_task_progresses.data,
     }),
     {
+      refetchOnMount: true,
+      refetchOnReconnect: true,
+      refetchOnWindowFocus: true,
+      refetchInterval: 1000 * 60 * 10,
       enabled:
         !!token &&
         !!user_info.data &&
