@@ -12,10 +12,8 @@ import { Box, Divider, Stack, Typography } from '@mui/material';
 import { ROUTES } from '../../../constants/routes';
 import { useAuth } from '../../../providers/auth';
 import {
-  Tasks_Constraint,
-  Tasks_Update_Column,
-  Permissions_Constraint,
-  Permissions_Update_Column,
+  Create_Gate_DirectMutationVariables,
+  Create_Gate_Tasks_BasedMutationVariables,
 } from '../../../services/graphql/types.generated';
 import ConfirmDialog from '../../organisms/confirm-dialog/confirm-dialog';
 import GatePublishedModal from '../../organisms/gates/create/gate-published';
@@ -57,7 +55,20 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
 
   const createGate = useMutation(
     ['createGate'],
-    gqlAuthMethods.create_gate_tasks_based
+    ({
+      whitelisted_wallets,
+      tasks,
+      ...data
+    }: Create_Gate_Tasks_BasedMutationVariables &
+      Create_Gate_DirectMutationVariables) => {
+      if (data.type === 'direct') {
+        return gqlAuthMethods.create_gate_direct({
+          ...data,
+          whitelisted_wallets,
+        });
+      }
+      return gqlAuthMethods.create_gate_tasks_based({ ...data, tasks });
+    }
   );
 
   const publishGate = useMutation(['publishGate'], gqlAuthMethods.publish_gate);
@@ -92,9 +103,9 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
 
     if (!dataIsValid) return;
 
-    const permissionsData = data.created_by?.map((creator) => {
-      return { user_id: creator.id, permission: 'gate_editor' };
-    });
+    const permissionsData = [
+      { user_id: data.creator.id, permission: 'gate_editor' },
+    ];
     let image_url = oldData.image || null;
 
     if (image_url !== data.image && data.image !== undefined) {
@@ -116,23 +127,22 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
       );
     }
     if (data.title) {
-      delete data.created_by;
       const response = await createGate.mutateAsync({
-        ...data,
         id: oldData.id || uuidv4(),
-        dao_id: router.query.dao,
+        dao_id: router.query.dao as string,
         title: data.title,
         categories: data.categories || [],
         description: data.description,
         skills: data.skills || [],
         permissions: permissionsData,
+        type: data.type,
         image: image_url,
         tasks: data.tasks?.map(({ task_id, ...task }, index) => ({
           ...task,
           id: task_id,
           order: index,
         })),
-        published: 'not_published',
+        whitelisted_wallets: data.whitelisted_wallets,
       });
       if (isDraft) {
         enqueueSnackbar('Draft saved');

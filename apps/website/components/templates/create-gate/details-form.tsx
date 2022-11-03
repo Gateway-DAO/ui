@@ -18,7 +18,7 @@ export function GateDetailsForm() {
     getValues,
   } = useFormContext<CreateGateData>();
   const { me } = useAuth();
-  const creators = useMemo(() => [{ id: me?.id, name: me?.name }], [me]);
+  const creators = useMemo(() => ({ id: me?.id, name: me?.name }), [me]);
   const { skills, categories } = getValues();
 
   return (
@@ -89,22 +89,22 @@ export function GateDetailsForm() {
       />
       <CreatedByInput
         label="Created By"
-        id="created_by"
-        name="created_by"
+        id="creator"
+        name="creator"
         disabled
-        {...register('created_by')}
-        creators={creators}
-        defaultValue={creators}
-        error={!!errors.created_by}
-        errors={errors.created_by}
-        helperText={errors.created_by && 'Invalid creator added'}
+        {...register('creator')}
+        creators={[creators]}
+        defaultValue={[creators]}
+        error={!!errors.creator}
+        errors={errors.creator}
+        helperText={errors.creator && 'Invalid creator added'}
         sx={{
           width: '100%',
           '& div fieldset legend span': {
             marginRight: '6px',
           },
         }}
-        set={(created_by: Creator[]) => setValue('created_by', created_by)}
+        set={(creator) => setValue('creator', creator)}
       />
     </Stack>
   );

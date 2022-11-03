@@ -22,10 +22,10 @@ export type GateBase = {
   id?: string;
   categories: string[];
   skills: string[];
-  created_by: Creator[];
 } & Required<
   Pick<Gates, 'title' | 'categories' | 'skills' | 'image' | 'description'>
->;
+> &
+  Required<{ creator: Pick<Gates['creator'], 'id' | 'name'> }>;
 
 export type GateTask = GateBase & {
   type: 'task_based';
@@ -573,12 +573,10 @@ const gateBase = z.object({
     .min(2, 'The description must contain at least 2 character(s)'),
   image: z.string({ required_error: 'Image is required' }).min(2),
   skills: z.array(z.string()).min(1, 'Please select at least 1 skill'),
-  created_by: z.array(
-    z.object({
-      id: z.string(),
-      name: z.string(),
-    })
-  ),
+  creator: z.object({
+    id: z.string(),
+    name: z.string(),
+  }),
 });
 
 const taskGate = gateBase.augment({

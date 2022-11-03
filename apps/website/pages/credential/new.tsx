@@ -3,10 +3,8 @@ import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
 import { useQuery } from '@tanstack/react-query';
-import { UnionToIntersection } from 'type-fest';
 
 import { CreateGateTemplate } from '../../components/templates/create-gate';
-import { CreateGateData } from '../../components/templates/create-gate/schema';
 import { ROUTES } from '../../constants/routes';
 import { useAuth } from '../../providers/auth';
 import { gqlAnonMethods } from '../../services/api';
@@ -19,11 +17,12 @@ type CreateGateProps = {
 export default function CreateGate({ id, gateProps }: CreateGateProps) {
   const router = useRouter();
   const { gqlAuthMethods } = useAuth();
+  const { me } = useAuth();
 
   const { data: oldGateData } = useQuery(
     ['gate', id],
     () =>
-      gqlAuthMethods.gate_new({
+      gqlAuthMethods.gate({
         id,
       }),
     {
@@ -52,7 +51,7 @@ export default function CreateGate({ id, gateProps }: CreateGateProps) {
     <CreateGateTemplate
       oldData={{
         ...oldGateData,
-        created_by: [oldGateData?.creator?.id],
+        creator: oldGateData?.creator ?? { id: me?.id, name: me?.name },
         id,
       }}
     />
