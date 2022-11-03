@@ -4,7 +4,12 @@ import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import {
+  useMutation,
+  useQueries,
+  useQuery,
+  useQueryClient,
+} from '@tanstack/react-query';
 import { useSnackbar } from 'notistack';
 import { PartialDeep } from 'type-fest';
 import { useAccount, useDisconnect, useSignMessage } from 'wagmi';
@@ -125,30 +130,69 @@ export const useAuthLogin = () => {
     }
   );
 
+  const queryDefinitions = {
+    enabled: !!token,
+    select: (data) => data.me,
+    refetchOnReconnect: true,
+    refetchInterval: 1000 * 60 * 10,
+    async onError(error: ErrorResponse) {
+      const firstError = error?.response?.errors?.[0];
+
+      enqueueSnackbar(
+        firstError?.message?.includes('token') ||
+          firstError?.message?.includes('jwt')
+          ? t('auth:me.errors.invalid-token')
+          : t('auth:me.errors.unknown'),
+        {
+          variant: 'error',
+        }
+      );
+      onSignOut();
+    },
+  };
+
+  const { refetchOnReconnect, refetchInterval, ...queryDefNoRefetch } =
+    queryDefinitions;
+
+  const user = useQueries({
+    queries: [
+      {
+        queryKey: ['user_info', session?.data?.user_id],
+        queryFn: () => gqlMethods(token).me_user_info(),
+        ...queryDefinitions,
+      },
+      {
+        queryKey: ['user_permissions', session?.data?.user_id],
+        queryFn: () => gqlMethods(token).me_permissions(),
+        ...queryDefinitions,
+      },
+      {
+        queryKey: ['user_following', session?.data?.user_id],
+        queryFn: () => gqlMethods(token).me_following(),
+        ...queryDefinitions,
+      },
+      {
+        queryKey: ['user_task_progresses', session?.data?.user_id],
+        queryFn: () => gqlMethods(token).me_task_progresses(),
+        ...queryDefNoRefetch,
+      },
+    ],
+  });
+
   const me = useQuery(
     ['me', session?.data?.user_id],
-    async () => await gqlMethods(token).me(),
+    () => ({
+      ...user[0].data,
+      ...user[1].data,
+      ...user[2].data,
+      ...user[3].data,
+    }),
     {
-      enabled: !!token,
-      select: (data) => data.me,
       refetchOnMount: true,
       refetchOnReconnect: true,
       refetchOnWindowFocus: true,
       refetchInterval: 1000 * 60 * 10,
-      async onError(error: ErrorResponse) {
-        const firstError = error?.response?.errors?.[0];
-
-        enqueueSnackbar(
-          firstError?.message?.includes('token') ||
-            firstError?.message?.includes('jwt')
-            ? t('auth:me.errors.invalid-token')
-            : t('auth:me.errors.unknown'),
-          {
-            variant: 'error',
-          }
-        );
-        onSignOut();
-      },
+      enabled: !!token && !!user.every((obj) => !!obj.data),
     }
   );
 
@@ -170,14 +214,19 @@ export const useAuthLogin = () => {
 
   const onUpdateMe = (
     cb: (oldMe: PartialDeep<SessionUser>) => PartialDeep<SessionUser>
-  ) => queryClient.setQueryData(['me', me.data?.id], cb);
+  ) => queryClient.setQueryData(['me', user[0].data?.id], cb);
 
-  const onInvalidateMe = () =>
-    queryClient.invalidateQueries(['me', me.data?.id]);
+  const onInvalidateMe = () => {
+    queryClient.resetQueries(['user_info', session?.data?.user_id]);
+    queryClient.resetQueries(['user_permissions', session?.data?.user_id]);
+    queryClient.resetQueries(['user_following', session?.data?.user_id]);
+    queryClient.resetQueries(['user_task_progresses', session?.data?.user_id]);
+  };
 
   const onSignOut = useSignOut(() => {
     setError(undefined);
     me.remove();
+    user.forEach((q) => q.remove());
     nonce.remove();
     sendSignature.reset();
     signInMutation.reset();
