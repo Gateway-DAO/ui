@@ -265,8 +265,12 @@ export const useAuthLogin = () => {
     cb: (oldMe: PartialDeep<SessionUser>) => PartialDeep<SessionUser>
   ) => queryClient.setQueryData(['me', user_info.data?.id], cb);
 
-  const onInvalidateMe = () =>
-    queryClient.invalidateQueries(['me', user_info.data?.id]);
+  const onInvalidateMe = () => {
+    queryClient.resetQueries(['user_info', user_info.data?.id]);
+    queryClient.resetQueries(['user_permissions', user_info.data?.id]);
+    queryClient.resetQueries(['user_following', user_info.data?.id]);
+    queryClient.resetQueries(['user_task_progresses', user_info.data?.id]);
+  };
 
   const onSignOut = useSignOut(() => {
     setError(undefined);
