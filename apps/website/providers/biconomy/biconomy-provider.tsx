@@ -128,7 +128,7 @@ export function BiconomyProvider({
           data.update_credentials_by_pk.id,
         ]);
 
-        queryClient.refetchQueries(['me', me?.id]);
+        queryClient.resetQueries(['user_info', me?.id]);
       },
     }
   );
