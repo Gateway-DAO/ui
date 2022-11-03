@@ -62,7 +62,7 @@ export async function getServerSideProps({ res, query }) {
   const { gate: gateId } = query;
   let gateProps = { gates_by_pk: { id: '', published: '' } };
   if (gateId) {
-    gateProps = await gqlAnonMethods.gate_new({
+    gateProps = await gqlAnonMethods.gate({
       id: gateId,
     });
   }
