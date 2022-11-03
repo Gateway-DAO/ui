@@ -1,14 +1,14 @@
-mutation create_gate(
+mutation create_gate_tasks_based(
   $id: uuid
   $dao_id: uuid!
   $title: String!
   $categories: jsonb
-  $type: String
+  $type: gate_type
   $description: String
   $skills: jsonb
   $permissions: permissions_arr_rel_insert_input
   $image: String!
-  $tasks: tasks_arr_rel_insert_input
+  $tasks: [tasks_insert_input!] = []
   $published: gate_state!
 ) {
   insert_gates_one(
@@ -22,7 +22,19 @@ mutation create_gate(
       skills: $skills
       permissions: $permissions
       image: $image
-      tasks: $tasks
+      tasks: {
+        data: $tasks
+        on_conflict: {
+          constraint: keys_pk
+          update_columns: [
+            title
+            description
+            task_data
+            task_type
+            order
+          ]
+        }
+      }
       published: $published
     }
     on_conflict: {
