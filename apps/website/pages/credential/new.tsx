@@ -28,12 +28,6 @@ export default function CreateGate({ id, gateProps }: CreateGateProps) {
       }),
     {
       select: (data) => data.gates_by_pk,
-      /*       select: (data) => ({
-        ...data.gates_by_pk,
-        tasks: {
-          data: data.gates_by_pk.tasks,
-        },
-      }), */
       initialData: gateProps,
       enabled: !!id,
     }
@@ -50,27 +44,23 @@ export default function CreateGate({ id, gateProps }: CreateGateProps) {
     }
   }, [daoId, isReady, router]);
 
-  if (!daoId) {
+  if (!daoId || !oldGateData) {
     return null;
   }
-  console.log(oldGateData);
 
   return (
     <CreateGateTemplate
-      oldData={
-        oldGateData && {
-          ...oldGateData,
-          created_by: [oldGateData?.creator?.id],
-          id,
-        }
-      }
+      oldData={{
+        ...oldGateData,
+        created_by: [oldGateData?.creator?.id],
+        id,
+      }}
     />
   );
 }
 export async function getServerSideProps({ res, query }) {
   const { gate: gateId } = query;
   let gateProps = { gates_by_pk: { id: '', published: '' } };
-
   if (gateId) {
     gateProps = await gqlAnonMethods.gate_new({
       id: gateId,

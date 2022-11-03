@@ -12,54 +12,54 @@ query all_gates {
 }
 
 fragment gate_data on gates {
-id
-    title
+  id
+  title
+  description
+  categories
+  skills
+  published
+  links
+  image
+  type
+  creator {
+    id
+    name
+    username
+    pfp
+    picture {
+      ...file
+    }
+  }
+  holder_count
+  holders(limit: 4) {
+    id
+    name
+    username
+    pfp
+    wallet
+    picture {
+      ...file
+    }
+  }
+  dao {
+    id
+    name
+    slug
+    logo_url
+    logo {
+      id
+      blur
+    }
+  }
+  tasks {
     description
-    categories
-    skills
-    published
-    links
-    image
-    type
-    creator {
-      id
-      name
-      username
-      pfp
-      picture {
-        ...file
-      }
-    }
-    holder_count
-    holders(limit: 4) {
-      id
-      name
-      username
-      pfp
-      wallet
-      picture {
-        ...file
-      }
-    }
-    dao {
-      id
-      name
-      slug
-      logo_url
-      logo {
-        id
-        blur
-      }
-    }
-    tasks {
-      description
-      gate_id
-      id
-      task_data
-      task_type
-      title
-      order
-    }
+    gate_id
+    id
+    task_data
+    task_type
+    title
+    order
+  }
 }
 
 query gate($id: uuid!) {

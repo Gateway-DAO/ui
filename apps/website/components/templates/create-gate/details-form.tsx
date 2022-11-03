@@ -10,24 +10,16 @@ import CreatedByInput from '../../molecules/creators-input';
 import SkillsInput from '../../molecules/skills-input';
 import { CreateGateData, Creator } from './schema';
 
-export function GateDetailsForm({ gateData }) {
+export function GateDetailsForm() {
   const {
     register,
     formState: { errors },
     setValue,
+    getValues,
   } = useFormContext<CreateGateData>();
   const { me } = useAuth();
-  const { title, categories, description, skills } = gateData;
   const creators = useMemo(() => [{ id: me?.id, name: me?.name }], [me]);
-
-  useEffect(() => {
-    setValue('title', title);
-    setValue('categories', categories);
-    setValue('description', description);
-    setValue('skills', skills);
-    setValue('created_by', creators);
-    setValue('tasks', { data: [] });
-  }, [title, categories, description, skills, creators, setValue]);
+  const { skills, categories } = getValues();
 
   return (
     <Stack direction="column" gap={2}>

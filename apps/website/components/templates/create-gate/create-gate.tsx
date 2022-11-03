@@ -36,20 +36,10 @@ type CreateGateProps = {
 // Delete all tasks and create the new ones.
 
 export function CreateGateTemplate({ oldData }: CreateGateProps) {
-  const gateDetails = (({
-    title,
-    categories,
-    description,
-    skills,
-    created_by,
-    type,
-  }) => ({ title, categories, description, skills, created_by, type }))(
-    oldData
-  );
-
   const methods = useForm({
     resolver: zodResolver(createGateSchema),
     mode: 'onBlur',
+    defaultValues: oldData,
   });
 
   const router = useRouter();
@@ -212,9 +202,6 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
     .watch(['title', 'description'])
     .every((value) => !!value);
 
-  const canShowTasks =
-    hasTitleAndDescription || (gateDetails.title && gateDetails.description);
-
   return (
     <>
       <FormProvider {...methods}>
@@ -280,7 +267,7 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
               }}
             >
               <Stack direction="column" gap={4}>
-                <GateDetailsForm gateData={gateDetails} />
+                <GateDetailsForm />
               </Stack>
             </Stack>
 
@@ -304,7 +291,7 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
           </Stack>
 
           {/* Tasks */}
-          {canShowTasks && (
+          {hasTitleAndDescription && (
             <>
               <Divider sx={{ margin: '60px 0', width: '100%' }} />
               <Stack
