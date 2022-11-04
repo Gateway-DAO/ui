@@ -20,8 +20,7 @@ export function GateTypeSelector() {
 
   const onClick = (type: GateType) => () => {
     methods.setValue('type', type);
-    // Cleanup data from direct gate and task based gate
-    // methods.setValue('direct_gate', undefined);
+    methods.setValue('whitelisted_wallets', undefined);
     methods.setValue('tasks', undefined);
   };
 
