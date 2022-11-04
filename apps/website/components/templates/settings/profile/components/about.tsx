@@ -2,10 +2,7 @@ import useTranslation from 'next-translate/useTranslation';
 
 import { useFormContext } from 'react-hook-form';
 
-import {
-  Stack,
-  Typography,
-} from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 
 import { AvatarBackgroundFields } from '../../../../molecules/form/avatar-background-fields';
 import { SocialLinks } from '../../../../molecules/form/social-links';
@@ -17,10 +14,7 @@ export function About() {
   const { t } = useTranslation('settings');
 
   return (
-    <Stack
-      direction="column"
-      sx={{ width: '100%' }}
-    >
+    <Stack direction="column" sx={{ width: '100%' }}>
       <Stack sx={{ width: '100%', mb: 4 }}>
         <Typography sx={{ fontSize: '16px', mb: 3 }}>
           {t('profile.avatar-and-cover')}
@@ -36,7 +30,7 @@ export function About() {
 
       <Stack sx={{ width: '100%', mb: 4 }}>
         <Typography sx={{ fontSize: '16px' }}>
-        {t('profile.social-links')}
+          {t('profile.social-links')}
         </Typography>
         <Stack sx={{ width: '100%' }}>
           <SocialLinks

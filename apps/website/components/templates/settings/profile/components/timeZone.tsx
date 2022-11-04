@@ -1,3 +1,5 @@
+import useTranslation from 'next-translate/useTranslation';
+
 import { getTimeZones } from '@vvo/tzdb';
 import { useFormContext } from 'react-hook-form';
 
@@ -8,7 +10,6 @@ import {
   MenuItem,
   InputLabel,
 } from '@mui/material';
-import useTranslation from 'next-translate/useTranslation';
 
 export function TimeZone() {
   const { setValue, watch } = useFormContext();
@@ -16,11 +17,7 @@ export function TimeZone() {
   const { t } = useTranslation('settings');
 
   return (
-    <Stack
-      direction="column"
-      sx={{ mb: 3 }}
-      width={{ sx: '100%', md: '65%' }}
-    >
+    <Stack direction="column" sx={{ mb: 3 }} width={{ sx: '100%', md: '65%' }}>
       <FormControl fullWidth>
         <InputLabel
           sx={{

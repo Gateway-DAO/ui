@@ -1,7 +1,8 @@
+import useTranslation from 'next-translate/useTranslation';
+
 import { useFormContext } from 'react-hook-form';
 
 import { Stack, Typography, TextField } from '@mui/material';
-import useTranslation from 'next-translate/useTranslation';
 
 export function Form() {
   const {
@@ -62,8 +63,7 @@ export function Form() {
           {...register('username', { required: true })}
           error={!!errors.username}
           helperText={
-            errors.username?.message ??
-            t('profile.username-helper-text')
+            errors.username?.message ?? t('profile.username-helper-text')
           }
         />
         <TextField

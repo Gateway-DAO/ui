@@ -1,10 +1,7 @@
 import { useFormContext } from 'react-hook-form';
 
 import SearchIcon from '@mui/icons-material/Search';
-import {
-  Stack,
-  TextField,
-} from '@mui/material';
+import { Stack, TextField } from '@mui/material';
 import Autocomplete, { autocompleteClasses } from '@mui/material/Autocomplete';
 
 import { SKILLS } from '../../../../../constants/skills';
@@ -14,10 +11,7 @@ export function Skills() {
   const { control, watch, setValue } = useFormContext();
 
   return (
-    <Stack
-      direction="column"
-      sx={{ mb: 3 }}
-    >
+    <Stack direction="column" sx={{ mb: 3 }}>
       <Autocomplete
         multiple
         id="tags-standard"

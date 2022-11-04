@@ -1,6 +1,7 @@
-import { Stack, Typography } from "@mui/material";
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useEffect, useState } from 'react';
+
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import { Stack, Typography } from '@mui/material';
 
 export type AccordionProps = {
   id: string;
@@ -31,20 +32,27 @@ export function Accordion(props: AccordionProps) {
           py: 2,
           mb: expanded ? 3 : 0,
           cursor: 'pointer',
-          transition: 'all .4s ease'
+          transition: 'all .4s ease',
         }}
       >
-        <Typography fontSize="16px" fontWeight={600}>{props?.title}</Typography>
-        <KeyboardArrowDownIcon sx={{ transform: expanded ? 'rotateX(180deg)' : null, transition: 'all .4s ease' }} />
+        <Typography fontSize="16px" fontWeight={600}>
+          {props?.title}
+        </Typography>
+        <KeyboardArrowDownIcon
+          sx={{
+            transform: expanded ? 'rotateX(180deg)' : null,
+            transition: 'all .4s ease',
+          }}
+        />
       </Stack>
       <Stack
         sx={{
           opacity: expanded ? 1 : 0,
           overflow: 'hidden',
           transform: expanded ? 'scaleY(0px)' : 'scaleY(-50px)',
-          maxHeight: expanded ? '1000px' : 0,
+          maxHeight: expanded ? '100%' : 0,
           transition: 'all .3s cubic-bezier(0,.7,.24,.83) 0s',
-          pt: '5px'
+          pt: '5px',
         }}
       >
         {props.children}
