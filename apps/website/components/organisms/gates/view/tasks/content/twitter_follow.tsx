@@ -123,7 +123,7 @@ const TwitterFollowContent = ({
                 },
               }}
             >
-              Follow
+              {t('tasks.twitter_follow.action')}
             </Button>
           )}
         </Stack>
