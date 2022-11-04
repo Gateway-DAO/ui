@@ -83,7 +83,6 @@ const Email = () => {
       if (response?.verify_code?.success) {
         enqueueSnackbar(t('account-management.email-verified'));
         onUpdateMe((oldMe) => {
-          console.log('joaozinho', oldMe);
           return {
             ...oldMe,
             email_address: email,

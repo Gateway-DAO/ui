@@ -70,7 +70,7 @@ export default function PublicProfileSettingsPage() {
     {
       onSuccess(data) {
         onInvalidateMe();
-        router.push(ROUTES.MY_PROFILE);
+        router.push(ROUTES.SETTINGS_PUBLIC_PROFILE);
       },
     }
   );
