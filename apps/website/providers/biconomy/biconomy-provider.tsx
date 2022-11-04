@@ -3,13 +3,11 @@ import { PropsWithChildren, useEffect, useState } from 'react';
 import { Biconomy } from '@biconomy/mexa';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { ethers } from 'ethers';
+import { useSnackbar } from 'notistack';
 import { PartialDeep } from 'type-fest';
 import { useAccount, useProvider, useSigner } from 'wagmi';
 
-import { Alert, Snackbar } from '@mui/material';
-
 import { CREDENTIAL_ABI } from '../../constants/web3';
-import { useSnackbar } from '../../hooks/use-snackbar';
 import { Credentials, Users } from '../../services/graphql/types.generated';
 import { useAuth } from '../auth';
 import { BiconomyContext, MintResponse } from './context';
@@ -32,6 +30,26 @@ export type MintStatus = {
   };
 };
 
+const correctProvider = async () => {
+  if (typeof window.ethereum !== 'undefined') {
+    provider = window.ethereum;
+
+    // edge case if MM and CBW are both installed
+    if (window.ethereum?.providers?.length) {
+      window.ethereum.providers.forEach(async (p) => {
+        if (p.isMetaMask) provider = p;
+      });
+    }
+
+    await provider.request({
+      method: 'eth_requestAccounts',
+      params: [],
+    });
+  }
+
+  return provider;
+};
+
 export function BiconomyProvider({
   apiKey,
   contractAddress,
@@ -47,60 +65,12 @@ export function BiconomyProvider({
 
   // From Wagmi
   const { address } = useAccount();
-  const { data: signer } = useSigner();
-  const signerProvider = (signer?.provider as any)?.provider;
-
-  // From auth
-  const { me, gqlAuthMethods } = useAuth();
-
-  const snackbar = useSnackbar();
-
-  // Credential update
-  const queryClient = useQueryClient();
-
-  const { mutateAsync: updateCredential } = useMutation(
-    async (data: { id: string; tx_url: string }) => {
-      return await gqlAuthMethods.update_credential_status({
-        id: data.id,
-        status: 'minted',
-        transaction_url: data.tx_url,
-      });
-    },
-    {
-      onSuccess: (data) => {
-        queryClient.invalidateQueries(['credentials']);
-        queryClient.invalidateQueries([
-          'credential',
-          data.update_credentials_by_pk.id,
-        ]);
-
-        queryClient.refetchQueries(['me', me?.id]);
-      },
-    }
-  );
-
-  const correctProvider = async () => {
-    if (typeof window.ethereum !== 'undefined') {
-      provider = window.ethereum;
-
-      // edge case if MM and CBW are both installed
-      if (window.ethereum?.providers?.length) {
-        window.ethereum.providers.forEach(async (p) => {
-          if (p.isMetaMask) provider = p;
-        });
-      }
-
-      await provider.request({
-        method: 'eth_requestAccounts',
-        params: [],
-      });
-    }
-
-    return provider;
-  };
-
-  useEffect(() => {
-    async function init() {
+  const {
+    data: signer,
+    status,
+    refetch,
+  } = useSigner({
+    async onSuccess(data) {
       // We're creating biconomy provider linked to your network of choice where your contract is deployed
       const jsonRpcProvider = new ethers.providers.JsonRpcProvider(
         RPC[process.env.NEXT_PUBLIC_MINT_CHAIN]
@@ -130,12 +100,44 @@ export function BiconomyProvider({
           console.log(error);
           console.log(message);
         });
-    }
+    },
+  });
+  const signerProvider = (signer?.provider as any)?.provider;
 
-    signer?.getAddress().then((address) => {
-      typeof window !== 'undefined' && (address ?? false) && init();
-    });
-  }, [signer]);
+  // From auth
+  const { me, gqlAuthMethods } = useAuth();
+
+  const { enqueueSnackbar } = useSnackbar();
+
+  // Credential update
+  const queryClient = useQueryClient();
+
+  const { mutateAsync: updateCredential } = useMutation(
+    async (data: { id: string; tx_url: string }) => {
+      return await gqlAuthMethods.update_credential_status({
+        id: data.id,
+        status: 'minted',
+        transaction_url: data.tx_url,
+      });
+    },
+    {
+      onSuccess: (data) => {
+        queryClient.invalidateQueries(['credentials']);
+        queryClient.invalidateQueries([
+          'credential',
+          data.update_credentials_by_pk.id,
+        ]);
+
+        queryClient.resetQueries(['user_info', me?.id]);
+      },
+    }
+  );
+
+  useEffect(() => {
+    if (!signer && status == 'success') {
+      refetch();
+    }
+  }, [signer, status, refetch]);
 
   /**
    * It mints a new NFT token.
@@ -200,9 +202,8 @@ export function BiconomyProvider({
             },
           }));
         } catch (err) {
-          snackbar.onOpen({
-            message: 'Minting failed, please try again',
-            type: 'error',
+          enqueueSnackbar('Minting failed, please try again', {
+            variant: 'error',
           });
 
           setMintStatus((prev) => ({
@@ -230,11 +231,12 @@ export function BiconomyProvider({
             tx,
         };
       } else {
-        snackbar.onOpen({
-          message: 'Biconomy is still loading. Try again in a few minutes!',
-          type: 'warning',
-        });
-
+        enqueueSnackbar(
+          'Biconomy is still loading. Try again in a few minutes!',
+          {
+            variant: 'warning',
+          }
+        );
         return {
           isMinted: false,
           error: 'Biconomy is still loading. Try again in a few minutes!',
@@ -287,13 +289,6 @@ export function BiconomyProvider({
       }}
     >
       {children}
-      <Snackbar
-        open={snackbar.open}
-        autoHideDuration={6000}
-        onClose={snackbar.handleClose}
-      >
-        <Alert severity={snackbar.type}>{snackbar.message}</Alert>
-      </Snackbar>
     </BiconomyContext.Provider>
   );
 }

@@ -1,5 +1,6 @@
+import useTranslation from 'next-translate/useTranslation';
+
 import { useMutation } from '@tanstack/react-query';
-import { FaTwitter } from 'react-icons/fa';
 import { TwitterTweetEmbed } from 'react-twitter-embed';
 import { useLocalStorage } from 'react-use';
 
@@ -7,7 +8,6 @@ import { Box, Button, Stack, Typography } from '@mui/material';
 
 import { LoadingButton } from '../../../../../../components/atoms/loading-button';
 import TwitterConnectionCard from '../../../../../../components/organisms/tasks/twitter-connection-card';
-import useTranslation from 'next-translate/useTranslation';
 
 const TwitterRetweetContent = ({
   data,
@@ -118,9 +118,7 @@ const TwitterRetweetContent = ({
               </Button>
             )}
           </Stack>
-          {!twitterKeys && (
-            <TwitterConnectionCard maxWidth='550px' />
-          )}
+          {!twitterKeys && <TwitterConnectionCard maxWidth="550px" />}
         </Stack>
       </Stack>
 
@@ -137,7 +135,8 @@ const TwitterRetweetContent = ({
 
       {completed && updatedAt && (
         <Typography color="#c5ffe3" variant="subtitle2">
-          {t('tasks.completed')}{formattedDate}
+          {t('tasks.completed')}
+          {formattedDate}
         </Typography>
       )}
     </Stack>

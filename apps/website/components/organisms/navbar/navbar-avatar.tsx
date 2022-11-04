@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { useEffect } from 'react';
 
+import { useSnackbar } from 'notistack';
 import { useCopyToClipboard } from 'react-use';
 import { useAccount, useNetwork } from 'wagmi';
 
@@ -18,12 +19,10 @@ import IconButton from '@mui/material/IconButton';
 import ListItem from '@mui/material/ListItem';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import Snackbar from '@mui/material/Snackbar';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 
 import { ROUTES } from '../../../constants/routes';
-import { useSnackbar } from '../../../hooks/use-snackbar';
 import { useAuth } from '../../../providers/auth';
 import { AvatarFile } from '../../atoms/avatar-file';
 import { icons } from './wallet-icons';
@@ -41,14 +40,16 @@ export function NavBarAvatar({ hideProfile }: Props) {
   const { connector } = useAccount();
   const { chain } = useNetwork();
   const { onSignOut, me } = useAuth();
-  const snackbar = useSnackbar();
+  const { enqueueSnackbar } = useSnackbar();
   const [state, copyToClipboard] = useCopyToClipboard();
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
 
   const address = me?.wallet;
 
   useEffect(() => {
-    if (state?.value) snackbar.onOpen({ message: 'Copied Wallet Address!' });
+    if (state?.value) {
+      enqueueSnackbar(`Copied Wallet Address!`);
+    }
   }, [state]);
 
   const copyText = () => {
@@ -184,15 +185,6 @@ export function NavBarAvatar({ hideProfile }: Props) {
           </ListItem>
         )}
       </Menu>
-      <Snackbar
-        anchorOrigin={{
-          vertical: snackbar.vertical,
-          horizontal: snackbar.horizontal,
-        }}
-        open={snackbar.open}
-        onClose={snackbar.handleClose}
-        message={snackbar.message}
-      />
     </>
   );
 }

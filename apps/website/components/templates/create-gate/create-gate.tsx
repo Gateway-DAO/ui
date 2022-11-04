@@ -3,13 +3,13 @@ import { useState } from 'react';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
+import { useSnackbar } from 'notistack';
 import { useForm, FormProvider } from 'react-hook-form';
 import { v4 as uuidv4 } from 'uuid';
 
-import { Box, Divider, Snackbar, Stack, Typography } from '@mui/material';
+import { Box, Divider, Stack, Typography } from '@mui/material';
 
 import { ROUTES } from '../../../constants/routes';
-import { useSnackbar } from '../../../hooks/use-snackbar';
 import { useAuth } from '../../../providers/auth';
 import {
   Tasks_Constraint,
@@ -43,8 +43,6 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
     mode: 'onBlur',
   });
 
-  const snackbar = useSnackbar();
-
   const router = useRouter();
   const { gqlAuthMethods } = useAuth();
 
@@ -56,6 +54,8 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
   const [result, setResult] = useState(null);
 
   const [deletedTasks, setDeletedTasks] = useState<string[]>([]);
+
+  const { enqueueSnackbar } = useSnackbar();
 
   const { mutateAsync: uploadImage } = useMutation(
     ['uploadImage'],
@@ -84,9 +84,21 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
 
     if (!dataIsValid) {
       const errors = methods.formState.errors;
-      snackbar.onOpen({
-        message: Object.values(errors)[0].data?.message || 'Invalid data',
-      });
+
+      if (Object.values(errors)[0].data?.message) {
+        showErrorMessage(Object.values(errors)[0].data?.message);
+      }
+
+      // Tasks errors
+      if (errors?.tasks?.data?.length) {
+        taskErrorMessage(errors?.tasks?.data);
+      }
+
+      // General errors
+      if (!Object.values(errors)[0].data?.message && !errors?.tasks?.data?.length) {
+        showErrorMessage('Invalid data');
+      }
+
       isDraft ? setDraftIsLoading(false) : setCreateIsLoading(false);
     }
 
@@ -123,8 +135,8 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
               image_id;
           },
           onError() {
-            snackbar.onOpen({
-              message: "An error occured, couldn't upload the image.",
+            enqueueSnackbar("An error occured, couldn't upload the image.", {
+              variant: 'error',
             });
           },
         }
@@ -180,9 +192,7 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
         {
           async onSuccess(result) {
             if (isDraft) {
-              snackbar.onOpen({
-                message: 'Draft saved',
-              });
+              enqueueSnackbar('Draft saved');
               setDraftIsLoading(false);
               router.push(
                 ROUTES.GATE_PROFILE.replace('[id]', result.insert_gates_one.id)
@@ -198,16 +208,42 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
           },
           onError() {
             isDraft ? setDraftIsLoading(false) : setCreateIsLoading(false);
-            snackbar.onOpen({
-              message: isDraft
+            enqueueSnackbar(
+              isDraft
                 ? "An error occured, couldn't save the draft."
-                : "An error occured, couldn't create the gate.",
-            });
+                : "An error occured, couldn't create the credential."
+            );
           },
         }
       );
     }
     isDraft ? setDraftIsLoading(false) : setCreateIsLoading(false);
+  };
+
+  const showErrorMessage = (message: string) => {
+    enqueueSnackbar(message, { variant: 'error', autoHideDuration: 8000 });
+  }
+
+  const taskErrorMessage = (data) => {
+    data.forEach((taskData, i) => {
+      console.log(taskData);
+      recursiveErrorMessage(taskData);
+      if (taskData?.task_data) {
+        recursiveErrorMessage(taskData.task_data);
+      }
+    });
+  };
+
+  const recursiveErrorMessage = (obj) => {
+    for (const task in obj) {
+      if (obj.hasOwnProperty.call(obj, task)) {
+        if (obj[task]?.message) {
+          showErrorMessage(obj[task]?.message);
+        } else if (obj[task]?.length) {
+          recursiveErrorMessage(obj[task][0]);
+        }
+      }
+    }
   };
 
   const saveDraft = (draftData: CreateGateTypes) =>
@@ -321,7 +357,7 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
               sx={(theme) => ({
                 width: '100%',
                 display: { xs: 'block', md: 'flex' },
-                [theme.breakpoints.down('sm')]: { p: '0 20px' },
+                [theme.breakpoints.down('sm')]: { p: '0' },
               })}
             >
               <Box
@@ -347,6 +383,7 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
                 direction="column"
                 sx={{
                   margin: 'auto',
+                  width: '100%',
                   maxWidth: { xs: '100%', md: '100%', lg: '80%' },
                 }}
               >
@@ -363,16 +400,6 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
           </>
         )}
 
-        <Snackbar
-          anchorOrigin={{
-            vertical: snackbar.vertical,
-            horizontal: snackbar.horizontal,
-          }}
-          open={snackbar.open}
-          onClose={snackbar.handleClose}
-          message={snackbar.message}
-          key={snackbar.vertical + snackbar.horizontal}
-        />
         <ConfirmDialog
           title="Are you sure you want to publish this credential?"
           open={confirmPublish}
@@ -380,9 +407,9 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
           negativeAnswer="Cancel"
           setOpen={setConfirmPublish}
           onConfirm={methods.handleSubmit(createGate, (errors) => {
-            snackbar.onOpen({
-              message: Object.values(errors)[0].data?.message || 'Invalid data',
-            });
+            enqueueSnackbar(
+              Object.values(errors)[0].data?.message || 'Invalid data'
+            );
             setCreateIsLoading(false);
             return;
           })}

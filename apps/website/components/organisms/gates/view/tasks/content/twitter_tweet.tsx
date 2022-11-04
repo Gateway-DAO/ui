@@ -1,3 +1,5 @@
+import useTranslation from 'next-translate/useTranslation';
+
 import { useMutation } from '@tanstack/react-query';
 import { useLocalStorage } from 'react-use';
 
@@ -6,7 +8,6 @@ import { Box, Button, Stack, Typography } from '@mui/material';
 
 import { LoadingButton } from '../../../../../../components/atoms/loading-button';
 import TwitterConnectionCard from '../../../../../../components/organisms/tasks/twitter-connection-card';
-import useTranslation from 'next-translate/useTranslation';
 
 type TwitterTweetData = {
   tweet_posted: boolean;
@@ -152,9 +153,7 @@ const TwitterTweetContent = ({
             </Button>
           )}
         </Stack>
-        {!twitterKeys && (
-          <TwitterConnectionCard />
-        )}
+        {!twitterKeys && <TwitterConnectionCard />}
       </Stack>
 
       {!readOnly && !completed && twitterKeys && (
@@ -174,7 +173,8 @@ const TwitterTweetContent = ({
           variant="subtitle2"
           sx={{ marginTop: '8px' }}
         >
-          {t('tasks.completed')}{formattedDate}
+          {t('tasks.completed')}
+          {formattedDate}
         </Typography>
       )}
     </Stack>
