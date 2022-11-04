@@ -22,6 +22,7 @@ import GatePublishedModal from '../../organisms/gates/create/gate-published';
 import { PublishNavbar } from '../../organisms/publish-navbar/publish-navbar';
 import TaskArea from '../../organisms/tasks-area/tasks-area';
 import { GateDetailsForm } from './details-form';
+import { AdvancedSetting } from './advanced-settings';
 import { GateImageCard } from './gate-image-card/gate-image-card';
 import { createGateSchema, CreateGateTypes, DraftGateTypes } from './schema';
 
@@ -308,6 +309,7 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
             <Stack direction="column" gap={4}>
               <FormProvider {...methods}>
                 <GateDetailsForm gateData={gateDetails} />
+                <AdvancedSetting gateData={gateDetails} />
               </FormProvider>
             </Stack>
           </Stack>

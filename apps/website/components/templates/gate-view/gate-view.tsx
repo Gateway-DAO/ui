@@ -393,6 +393,56 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
           />
 
           <Grid container rowGap={(theme) => theme.spacing(3)}>
+            <Grid item xs={4} sx={{ display: 'flex', alignItems: 'center' }}>
+              <Typography
+                variant="body2"
+                color={(theme) => theme.palette.text.secondary}
+              >
+                Expire date
+              </Typography>
+            </Grid>
+            <Grid item xs={8}>
+              <Typography
+                variant="subtitle2"
+                color={'#FFA726'}
+                fontWeight={600}
+              >
+                {' '}
+                Oct 24th, 2022{' '}
+                <Chip
+                  sx={{ marginLeft: 2 }}
+                  label="expired"
+                  color={'warning'}
+                  variant="outlined"
+                />
+              </Typography>
+            </Grid>
+
+            <Grid item xs={4} sx={{ display: 'flex', alignItems: 'center' }}>
+              <Typography
+                variant="body2"
+                color={(theme) => theme.palette.text.secondary}
+              >
+                Claimed
+              </Typography>
+            </Grid>
+            <Grid item xs={8}>
+              <Typography
+                variant="subtitle2"
+                color={'#FFA726'}
+                fontWeight={600}
+              >
+                {' '}
+                99 of 100{' '}
+                <Chip
+                  sx={{ marginLeft: 2 }}
+                  label="completed"
+                  color={'warning'}
+                  variant="outlined"
+                />
+              </Typography>
+            </Grid>
+
             {gateProps?.holder_count > 0 && (
               <>
                 <Grid

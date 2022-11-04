@@ -16,6 +16,8 @@ export type DraftGateTypes = {
   image: string;
   skills: string[];
   created_by: Creator[];
+  expire_date?: string;
+  claim_limit?: Number | null;
   tasks: DraftTasksSchema;
 };
 
@@ -28,6 +30,8 @@ export type CreateGateTypes = {
   image: string;
   skills: NestedValue<string[]>;
   created_by: Creator[];
+  expire_date?: string;
+  claim_limit?: Number | null;
   tasks: TasksSchema;
 };
 
@@ -569,6 +573,10 @@ export const createGateSchema = z.object({
     .min(2, 'The description must contain at least 2 character(s)'),
   image: z.string({ required_error: 'Image is required' }).min(2),
   skills: z.array(z.string()).min(1, 'Please select at least 1 skill'),
+  claim_limit: z
+    .number()
+    .int({ message: 'please enter a valid value' })
+    .positive({ message: 'please enter a valid value' }),
   created_by: z.array(
     z.object({
       id: z.string(),
