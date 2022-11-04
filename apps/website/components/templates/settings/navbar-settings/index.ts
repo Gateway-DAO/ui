@@ -1,3 +1,3 @@
-import { NavBarSettings } from "./navbar-settings";
+import { NavBarSettings } from './navbar-settings';
 
 export { NavBarSettings };

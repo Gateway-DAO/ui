@@ -1,21 +1,28 @@
-import { Stack, Typography } from "@mui/material";
-import { AccountsCard } from "./components/accounts-card";
-import useTranslation from "next-translate/useTranslation";
-import { FaTwitter } from "react-icons/fa";
+import useTranslation from 'next-translate/useTranslation';
+
 import { AiFillGithub } from 'react-icons/ai';
-import { connectionHandlerTwitter } from "./connectors/twitter-connection";
-import { connectionHandlerGithub } from "./connectors/github-connection";
+import { FaTwitter } from 'react-icons/fa';
+
+import { Stack, Typography } from '@mui/material';
+
+import { AccountsCard } from './components/accounts-card';
+import { ConnectionHandlerGithub } from './connectors/github-connection';
+import { ConnectionHandlerTwitter } from './connectors/twitter-connection';
 
 const ConnectedAccountsSettings = () => {
   const { t } = useTranslation('settings');
-  const twitterConnection = connectionHandlerTwitter();
-  const githubConnection = connectionHandlerGithub();
+  const twitterConnection = ConnectionHandlerTwitter();
+  const githubConnection = ConnectionHandlerGithub();
 
   return (
     <Stack>
       <Stack sx={{ width: '100%', mb: 5 }}>
-        <Typography variant="h6" sx={{ mb: '4px' }}>{t('nav.connected-accounts-title')}</Typography>
-        <Typography variant="body2" fontSize="12px">{t('connected-accounts.description')}</Typography>
+        <Typography variant="h6" sx={{ mb: '4px' }}>
+          {t('nav.connected-accounts-title')}
+        </Typography>
+        <Typography variant="body2" fontSize="12px">
+          {t('connected-accounts.description')}
+        </Typography>
       </Stack>
       <Stack
         direction="row"
@@ -37,7 +44,7 @@ const ConnectedAccountsSettings = () => {
           connectHandler={githubConnection}
         />
       </Stack>
-    </ Stack>
+    </Stack>
   );
 };
 

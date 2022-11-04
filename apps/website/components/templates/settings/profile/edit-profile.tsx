@@ -1,25 +1,20 @@
+import useTranslation from 'next-translate/useTranslation';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
+
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FormProvider, useForm } from 'react-hook-form';
 
-import {
-  Stack,
-  Typography,
-  Divider,
-  SxProps,
-  Theme,
-} from '@mui/material';
+import { Stack, Typography, Divider, SxProps, Theme } from '@mui/material';
 
 import { useAuth } from '../../../../providers/auth';
 import { LoadingButton } from '../../../atoms/loading-button';
+import { Accordion } from '../../../molecules/accordion';
 import { About } from './components/about';
 import { Languages } from './components/languages';
 import { Skills } from './components/skills';
 import { TimeZone } from './components/timeZone';
 import { schema, defaultValues, EditUserSchema } from './schema';
-import useTranslation from 'next-translate/useTranslation';
-import { Accordion } from '../../../molecules/accordion';
-import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
 
 type Props = {
   onSubmit: (data: EditUserSchema) => Promise<unknown>;
@@ -44,15 +39,17 @@ export function EditProfileSettings({ onSubmit, isLoading }: Props) {
     mx: {
       xs: '-10px',
       md: '-60px',
-    }
-  }
+    },
+  };
 
   const [anchorName, setAnchorName] = useState(null);
 
   useEffect(() => {
     if (router?.asPath) {
       const asPathAnchorSplit = router.asPath.split('#');
-      setAnchorName(asPathAnchorSplit?.length > 1 ? asPathAnchorSplit[1] : null);
+      setAnchorName(
+        asPathAnchorSplit?.length > 1 ? asPathAnchorSplit[1] : null
+      );
     }
   }, []);
 
@@ -71,8 +68,12 @@ export function EditProfileSettings({ onSubmit, isLoading }: Props) {
         sx={{ width: '100%', mb: 7 }}
       >
         <Stack sx={{ width: '100%', flexGrow: 1, mr: 1 }}>
-          <Typography variant="h6" sx={{ mb: '4px' }}>{t('nav.public-profile-title')}</Typography>
-          <Typography variant="body2" fontSize="12px">{t('profile.description')}</Typography>
+          <Typography variant="h6" sx={{ mb: '4px' }}>
+            {t('nav.public-profile-title')}
+          </Typography>
+          <Typography variant="body2" fontSize="12px">
+            {t('profile.description')}
+          </Typography>
         </Stack>
         <LoadingButton
           sx={{ minWidth: '100px' }}
@@ -89,29 +90,33 @@ export function EditProfileSettings({ onSubmit, isLoading }: Props) {
           id="about"
           title={t('profile.about')}
           expanded={!anchorName || anchorName == 'about'}
-          children={<About />}
-        />
+        >
+          <About />
+        </Accordion>
         <Divider light sx={dividerStyle} />
         <Accordion
           id="skills"
           title={t('profile.skills')}
           expanded={anchorName == 'skills'}
-          children={<Skills />}
-        />
+        >
+          <Skills />
+        </Accordion>
         <Divider light sx={dividerStyle} />
         <Accordion
           id="languages"
           title={t('profile.languages')}
           expanded={anchorName == 'languages'}
-          children={<Languages />}
-        />
+        >
+          <Languages />
+        </Accordion>
         <Divider light sx={dividerStyle} />
         <Accordion
           id="timezones"
           title={t('profile.time-zone')}
           expanded={anchorName == 'timezones'}
-          children={<TimeZone />}
-        />
+        >
+          <TimeZone />
+        </Accordion>
       </FormProvider>
     </Stack>
   );

@@ -1,7 +1,8 @@
+import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
+
 import { TOKENS } from '@gateway/theme';
 
-import useTranslation from 'next-translate/useTranslation';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import {
   Avatar,
@@ -15,10 +16,10 @@ import {
   useTheme,
 } from '@mui/material';
 
-import { ClientNav } from '../../organisms/navbar/client-nav';
-import { NavBarSettings } from './navbar-settings';
 import { ROUTES } from '../../../constants/routes';
 import { useWindowSize } from '../../../hooks/use-window-size';
+import { ClientNav } from '../../organisms/navbar/client-nav';
+import { NavBarSettings } from './navbar-settings';
 
 type Props = {
   children?: React.ReactNode;
@@ -33,7 +34,7 @@ export default function SettingsTemplate(props: Props) {
 
   const isMenuPage = () => {
     return router.pathname === ROUTES.SETTINGS;
-  }
+  };
 
   return (
     <>
@@ -43,7 +44,7 @@ export default function SettingsTemplate(props: Props) {
         sx={{
           flexWrap: 'nowrap',
           flexDirection: { xs: 'column', md: 'row' },
-          minHeight: `${windowSize.height}px`
+          minHeight: `${windowSize.height}px`,
         }}
       >
         <Grid item xs={12} md={4} sx={{ pt: 2, flexGrow: 0 }}>
@@ -61,12 +62,18 @@ export default function SettingsTemplate(props: Props) {
               },
             }}
           >
-            <IconButton onClick={() => isMobile && !isMenuPage() ? router.push(ROUTES.SETTINGS) : router.back()}>
+            <IconButton
+              onClick={() =>
+                isMobile && !isMenuPage()
+                  ? router.push(ROUTES.SETTINGS)
+                  : router.back()
+              }
+            >
               <Avatar>
                 <ArrowBackIcon />
               </Avatar>
             </IconButton>
-            <Box sx={{ display: { sm: 'flex', md: 'none' }, mr: 2}}>
+            <Box sx={{ display: { sm: 'flex', md: 'none' }, mr: 2 }}>
               <ClientNav />
             </Box>
           </Stack>
@@ -91,9 +98,7 @@ export default function SettingsTemplate(props: Props) {
             </>
           )}
         </Grid>
-        {!isMobile && (
-          <Divider orientation="vertical" flexItem />
-        )}
+        {!isMobile && <Divider orientation="vertical" flexItem />}
         {((isMobile && !isMenuPage()) || !isMobile) && (
           <Grid item xs={12} md sx={{ pt: 2 }}>
             <Stack

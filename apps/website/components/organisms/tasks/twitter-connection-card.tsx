@@ -1,16 +1,20 @@
 import useTranslation from 'next-translate/useTranslation';
 
 import { Box, Button, Stack, Typography } from '@mui/material';
-import { connectionHandlerTwitter } from '../../templates/settings/connected-accounts/connectors/twitter-connection';
+
+import { ConnectionHandlerTwitter } from '../../templates/settings/connected-accounts/connectors/twitter-connection';
 
 type TwitterCardConnectionProps = {
   width?: string;
   maxWidth?: string;
-}
+};
 
-export default function TwitterConnectionCard({ width = 'auto', maxWidth = '100%' }: TwitterCardConnectionProps) {
+export default function TwitterConnectionCard({
+  width = 'auto',
+  maxWidth = '100%',
+}: TwitterCardConnectionProps) {
   const { t } = useTranslation('gate-profile');
-  const { connect } = connectionHandlerTwitter();
+  const { connect } = ConnectionHandlerTwitter();
 
   return (
     <Stack

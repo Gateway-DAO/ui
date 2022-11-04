@@ -1,3 +1,3 @@
-import ConnectedAccountsSettings from "./connected-accounts";
+import ConnectedAccountsSettings from './connected-accounts';
 
 export { ConnectedAccountsSettings };

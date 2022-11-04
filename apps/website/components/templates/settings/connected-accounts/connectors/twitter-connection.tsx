@@ -1,18 +1,26 @@
-import { useMutation } from "@tanstack/react-query";
-import { AccountHandlerConnection } from "../components/accounts-card";
-import { useLocalStorage } from "react-use";
-import { useRouter } from "next/router";
+import { useRouter } from 'next/router';
+
+import { useMutation } from '@tanstack/react-query';
+import { useLocalStorage } from 'react-use';
+
+import { AccountHandlerConnection } from '../components/accounts-card';
 
 type connectTwitterProps = {
   disconnect?: boolean;
-}
+};
 
-export function connectionHandlerTwitter(props: connectTwitterProps = { disconnect: false }): AccountHandlerConnection {
+export function ConnectionHandlerTwitter(
+  props: connectTwitterProps = { disconnect: false }
+): AccountHandlerConnection {
   const router = useRouter();
   const [twitterKeys, setTwitterKeys, remove] = useLocalStorage<any>('twitter');
-  const [_redirectURL, setRedirectURL, removeRedirectUrl] = useLocalStorage('redirectURL', null, {
-    raw: true,
-  });
+  const [_redirectURL, setRedirectURL, removeRedirectUrl] = useLocalStorage(
+    'redirectURL',
+    null,
+    {
+      raw: true,
+    }
+  );
 
   const connectMutation = useMutation(['connect-twitter'], async () => {
     try {
@@ -33,7 +41,12 @@ export function connectionHandlerTwitter(props: connectTwitterProps = { disconne
   const disconnect = async () => {
     remove();
     removeRedirectUrl();
-  }
+  };
 
-  return { isConnected: !!twitterKeys, connect, disconnect, isLoading: connectMutation.isLoading };
+  return {
+    isConnected: !!twitterKeys,
+    connect,
+    disconnect,
+    isLoading: connectMutation.isLoading,
+  };
 }
