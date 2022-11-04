@@ -37,3 +37,58 @@ query me {
     # TODO: ADMIN DAOS
   }
 }
+
+query me_user_info {
+  me {
+    ...current_user
+
+    picture {
+      ...file
+    }
+  }
+}
+
+query me_permissions {
+  me {
+    permissions {
+      gate_id
+      dao_id
+      dao {
+        is_admin
+      }
+      permission
+    }
+  }
+}
+
+query me_following {
+  me {
+    following {
+      user_id
+    }
+    following_dao(where: { status: { _eq: "following" } }) {
+      dao_id
+      dao {
+        id
+        logo_url
+        slug
+        name
+        is_admin
+        logo {
+          ...file
+        }
+      }
+    }
+  }
+}
+
+query me_task_progresses {
+  me {
+    task_progresses {
+      task_id
+      gate_id
+      completed
+      updated_at
+    }
+  }
+}

@@ -144,16 +144,14 @@ export function Task({
     ['completeTask', { gateId: task.gate_id, taskId: task.id }],
     gqlAuthMethods.complete_task,
     {
-      onSuccess: async (data) => {
+      onSuccess: (data) => {
         try {
-          await queryClient.cancelQueries(['me', me?.id]);
-
-          queryClient.refetchQueries(['me', me?.id]);
-
           data.verify_key.completed_gate && setCompletedGate(true);
 
           data.verify_key.completed_gate &&
-            queryClient.invalidateQueries(['me', me?.id]);
+            queryClient.resetQueries(['user_info', me?.id]);
+
+          queryClient.resetQueries(['user_task_progresses', me?.id]);
         } catch (err) {
           console.log(err);
         }

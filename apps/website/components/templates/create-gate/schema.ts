@@ -556,17 +556,29 @@ export const taskGithubPRSchema = z.object({
 });
 
 const gateBase = z.object({
-  title: z.string().min(2, 'The title must contain at least 2 character(s)'),
-  categories: z.array(z.string()).min(1, 'Please select at least 1 category'),
+  title: z
+    .string({ required_error: 'Title is required' })
+    .min(2, 'The title must contain at least 2 character(s)'),
+  categories: z
+    .array(z.string({ required_error: 'Categories is required' }), {
+      invalid_type_error: 'Categories is required',
+    })
+    .min(1, 'Please select at least 1 category'),
   description: z
-    .string()
+    .string({ required_error: 'Description is required' })
     .min(2, 'The description must contain at least 2 character(s)'),
   image: z.string({ required_error: 'Image is required' }).min(2),
-  skills: z.array(z.string()).min(1, 'Please select at least 1 skill'),
-  creator: z.object({
-    id: z.string(),
-    name: z.string(),
-  }),
+  skills: z
+    .array(z.string({ required_error: 'Skills is required' }), {
+      invalid_type_error: 'Skills is required',
+    })
+    .min(1, 'Please select at least 1 skill'),
+  created_by: z.array(
+    z.object({
+      id: z.string(),
+      name: z.string(),
+    })
+  ),
 });
 
 const taskGate = gateBase.augment({
