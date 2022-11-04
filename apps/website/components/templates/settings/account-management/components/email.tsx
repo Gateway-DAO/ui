@@ -1,18 +1,21 @@
-import { Stack, TextField, Typography } from "@mui/material";
-import { LoadingButton } from "../../../../../components/atoms/loading-button";
-import useTranslation from "next-translate/useTranslation";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
-import { emailSchema } from "./../types";
-import { useEffect, useRef, useState } from "react";
-import { useSnackbar } from "notistack";
-import { useAuth } from "apps/website/providers/auth";
-import { useRouter } from "next/router";
+import useTranslation from 'next-translate/useTranslation';
+import { useRouter } from 'next/router';
+import { useEffect, useRef, useState } from 'react';
 
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation } from '@tanstack/react-query';
+import { useSnackbar } from 'notistack';
+import { useForm } from 'react-hook-form';
+
+import { Stack, TextField, Typography } from '@mui/material';
+
+import { LoadingButton } from '../../../../../components/atoms/loading-button';
+import { ROUTES } from './../../../../../../website/constants/routes';
+import { useAuth } from './../../../../../../website/providers/auth';
+import { emailSchema } from './../types';
 
 const Email = () => {
-  const { gqlAuthMethods, me, onUpdateMe } = useAuth();
+  const { gqlAuthMethods, me, onUpdateMe, onInvalidateMe } = useAuth();
   const [actualEmail, setActualEmail] = useState(me?.email_address);
 
   const {
@@ -40,15 +43,24 @@ const Email = () => {
   const [timeToResend, setTimeToResend] = useState<number>(initialTime);
   const [emailVerified, setEmailVerified] = useState<boolean>(true);
   const [errorVerify, setErrorVerify] = useState(null);
-  const countDownInterval = useRef<any>(null)
+  const countDownInterval = useRef<any>(null);
   const { enqueueSnackbar } = useSnackbar();
 
-  const { mutateAsync: createCode, isLoading: isLoadingCreateCode } = useMutation(
-    (data: any) => gqlAuthMethods.create_code({ user_id: data.user_id, email: data.email })
-  );
+  const { mutateAsync: createCode, isLoading: isLoadingCreateCode } =
+    useMutation((data: any) =>
+      gqlAuthMethods.create_code({ user_id: data.user_id, email: data.email })
+    );
 
-  const { mutateAsync: verifyCode, isLoading: isLoadingVerifyCode, error: errorVerifyCode } = useMutation(
-    (data: any) => gqlAuthMethods.verify_code({ user_id: data.user_id, email: data.email, code: data.code })
+  const {
+    mutateAsync: verifyCode,
+    isLoading: isLoadingVerifyCode,
+    error: errorVerifyCode,
+  } = useMutation((data: any) =>
+    gqlAuthMethods.verify_code({
+      user_id: data.user_id,
+      email: data.email,
+      code: data.code,
+    })
   );
 
   const onSendingEmail = async (event) => {
@@ -68,9 +80,13 @@ const Email = () => {
       return false;
     } catch (error) {
       if (error?.response?.errors[0]?.message) {
-        enqueueSnackbar(error?.response?.errors[0]?.message, { variant: 'error' });
+        enqueueSnackbar(error?.response?.errors[0]?.message, {
+          variant: 'error',
+        });
       } else {
-        enqueueSnackbar(t('account-management.email-error-sending'), { variant: 'error' });
+        enqueueSnackbar(t('account-management.email-error-sending'), {
+          variant: 'error',
+        });
       }
       return error;
     }
@@ -86,23 +102,28 @@ const Email = () => {
           return {
             ...oldMe,
             email_address: email,
-          }
+          };
         });
         setActualEmail(email);
         resetForm();
-        router.reload();
+        onInvalidateMe();
+        router.push(ROUTES.SETTINGS_ACCOUNT_MANAGEMENT);
         return true;
       }
       return false;
     } catch (error) {
       if (error?.response?.errors[0]?.message) {
-        enqueueSnackbar(error?.response?.errors[0]?.message, { variant: 'error' });
+        enqueueSnackbar(error?.response?.errors[0]?.message, {
+          variant: 'error',
+        });
         if (error?.response?.errors[0]?.message?.indexOf('Maximum') > -1) {
           setValue('email', actualEmail);
           resetForm();
         }
       } else {
-        enqueueSnackbar(t('account-management.email-error-validating'), { variant: 'error' });
+        enqueueSnackbar(t('account-management.email-error-validating'), {
+          variant: 'error',
+        });
       }
       return error;
     }
@@ -141,12 +162,14 @@ const Email = () => {
   };
 
   const showSendButton = () => {
-    return !emailSent &&
-    !errors?.email &&
-    emailVerified &&
-    email !== actualEmail &&
-    email !== '';
-  }
+    return (
+      !emailSent &&
+      !errors?.email &&
+      emailVerified &&
+      email !== actualEmail &&
+      email !== ''
+    );
+  };
 
   return (
     <Stack sx={{ mb: 4 }}>
@@ -165,8 +188,7 @@ const Email = () => {
           {...register('email', { required: true })}
           placeholder={t('account-management.email-address-label')}
         />
-        {
-          showSendButton() && (
+        {showSendButton() && (
           <LoadingButton
             variant="contained"
             isLoading={isLoadingCreateCode}
@@ -175,7 +197,7 @@ const Email = () => {
               height: '42px',
               display: 'flex',
               width: '205px',
-              borderRadius: '20px'
+              borderRadius: '20px',
             })}
           >
             {t('account-management.email-address-action')}
@@ -186,8 +208,12 @@ const Email = () => {
       {!emailVerified && (
         <>
           <Stack sx={{ width: '100%', mb: 4 }}>
-            <Typography fontSize="16px" sx={{ fontWeight: 600 }}>{t('account-management.verify-your-email-title')}</Typography>
-            <Typography variant="body2" fontSize="12px">{t('account-management.verify-your-email-description')}</Typography>
+            <Typography fontSize="16px" sx={{ fontWeight: 600 }}>
+              {t('account-management.verify-your-email-title')}
+            </Typography>
+            <Typography variant="body2" fontSize="12px">
+              {t('account-management.verify-your-email-description')}
+            </Typography>
           </Stack>
           <TextField
             sx={{ width: '315px', mb: 2 }}
@@ -198,7 +224,13 @@ const Email = () => {
               setErrorVerify(null);
             }}
             error={!!errors?.code || !!errorVerify}
-            helperText={!!errors?.code ? errors?.code.message : !!errorVerify ? errorVerify : ''}
+            helperText={
+              errors?.code
+                ? errors?.code.message
+                : errorVerify
+                ? errorVerify
+                : ''
+            }
             {...register('code', { required: true })}
             placeholder={t('account-management.code-placeholder')}
           />
@@ -212,7 +244,7 @@ const Email = () => {
                 height: '42px',
                 display: 'flex',
                 borderRadius: '20px',
-                mr: 1
+                mr: 1,
               })}
             >
               {t('account-management.code-action')}
@@ -225,15 +257,16 @@ const Email = () => {
               sx={() => ({
                 height: '42px',
                 display: 'flex',
-                borderRadius: '20px'
+                borderRadius: '20px',
               })}
             >
-              {t('account-management.code-send-again')} {timeToResend && codeSent ? `(${timeToResend})` : ''}
+              {t('account-management.code-send-again')}{' '}
+              {timeToResend && codeSent ? `(${timeToResend})` : ''}
             </LoadingButton>
           </Stack>
         </>
       )}
-    </ Stack>
+    </Stack>
   );
 };
 
