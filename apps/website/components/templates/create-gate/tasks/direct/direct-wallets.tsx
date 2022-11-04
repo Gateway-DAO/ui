@@ -10,7 +10,7 @@ import { useProvider } from 'wagmi';
 import { Delete } from '@mui/icons-material';
 import { Button, Paper, Stack, TextField } from '@mui/material';
 
-import { GateDirect, Gate_Whitelisted_Wallet } from '../../schema';
+import { CreateGateData, Gate_Whitelisted_Wallet } from '../../schema';
 import { DirectWalletsChips } from './direct-wallets-chips';
 import { DirectWalletsHeader } from './direct-wallets-header';
 
@@ -18,7 +18,7 @@ export function DirectWallets() {
   const {
     field: { onChange, value, ref },
     fieldState: { error },
-  } = useController<GateDirect>({
+  } = useController<CreateGateData>({
     name: 'whitelisted_wallets',
     defaultValue: [],
   });

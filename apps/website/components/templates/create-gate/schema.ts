@@ -18,28 +18,18 @@ export type Gate_Whitelisted_Wallet = PartialDeep<
 >;
 
 // Draft Gate
-export type GateBase = {
+export type CreateGateData = {
   id?: string;
   categories: string[];
   skills: string[];
 } & Required<
   Pick<Gates, 'title' | 'categories' | 'skills' | 'image' | 'description'>
 > &
-  Required<{ creator: Pick<Gates['creator'], 'id' | 'name'> }>;
-
-export type GateTask = GateBase & {
-  type: 'task_based';
-  tasks?: Task[];
-  whitelisted_wallets?: never;
-};
-
-export type GateDirect = GateBase & {
-  type: 'direct';
-  tasks?: never;
-  whitelisted_wallets?: Gate_Whitelisted_Wallet[];
-};
-
-export type CreateGateData = GateTask | GateDirect;
+  Required<{ creator: Pick<Gates['creator'], 'id' | 'name'> }> & {
+    type: 'task_based' | 'direct';
+    whitelisted_wallets?: Gate_Whitelisted_Wallet[];
+    tasks?: Task[];
+  };
 
 export type GateType = CreateGateData['type'];
 
