@@ -9,7 +9,6 @@ mutation create_gate_tasks_based(
   $permissions: [permissions_insert_input!] = []
   $image: String!
   $tasks: [tasks_insert_input!] = []
-  $published: gate_state!
 ) {
   insert_gates_one(
     object: {
@@ -41,7 +40,7 @@ mutation create_gate_tasks_based(
           ]
         }
       }
-      published: $published
+      published: "not_published"
     }
     on_conflict: {
       constraint: gates_pk
@@ -57,6 +56,67 @@ mutation create_gate_tasks_based(
     }
   ) {
     id
+    title
+    image
+    published
+  }
+}
+
+mutation create_gate_direct(
+  $id: uuid,
+  $dao_id: uuid!,
+  $title: String!,
+  $categories: jsonb,
+  $type: gate_type,
+  $description: String,
+  $skills: jsonb,
+  $permissions: [permissions_insert_input!] = [],
+  $image: String!,
+  $whitelisted_wallets: [whitelisted_wallets_insert_input!] = []) {
+
+  insert_gates_one(
+    object: {
+      id: $id,
+      dao_id: $dao_id,
+      title: $title,
+      type: $type,
+      categories: $categories,
+      description: $description,
+      skills: $skills,
+      permissions: {
+        data: $permissions,
+        on_conflict: {
+          constraint: permissions_dao_id_user_id_credential_id_key,
+          update_columns: [permission]
+        }
+      },
+      image: $image,
+      published: "not_published",
+      whitelisted_wallets: {
+        data: $whitelisted_wallets,
+        on_conflict: {
+          update_columns: [
+            wallet,
+            ens
+          ],
+        constraint: whitelisted_wallets_gate_id_wallet_uindex
+        }
+      }
+    },
+    on_conflict: {
+      constraint: gates_pk,
+      update_columns: [
+        type,
+        title,
+        categories,
+        description,
+        skills,
+        image,
+        published
+      ]
+    }) {
+    id
+    type
     title
     image
     published
