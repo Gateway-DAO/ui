@@ -1,3 +1,4 @@
+import useTranslation from 'next-translate/useTranslation';
 import { ReactElement, useEffect } from 'react';
 
 import { useFormContext } from 'react-hook-form';
@@ -7,9 +8,8 @@ import { GatewaySxProps } from '@gateway/theme';
 import { Box, Card, useTheme } from '@mui/material';
 
 import { ImageDropField } from '../../../molecules/image-drop-field';
-import { CreateGateTypes } from '../schema';
+import { CreateGateData } from '../schema';
 import { GateData } from './gate-data';
-import useTranslation from 'next-translate/useTranslation';
 
 type Props = {
   showGateData?: boolean;
@@ -25,7 +25,7 @@ export function GateImageCard({
   label,
 }: Props) {
   const theme = useTheme();
-  const { control, setValue } = useFormContext<CreateGateTypes>();
+  const { control, setValue } = useFormContext<CreateGateData>();
   const { t } = useTranslation('common');
 
   useEffect(() => {

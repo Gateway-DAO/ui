@@ -12,10 +12,8 @@ import { Box, Divider, Stack, Typography } from '@mui/material';
 import { ROUTES } from '../../../constants/routes';
 import { useAuth } from '../../../providers/auth';
 import {
-  Tasks_Constraint,
-  Tasks_Update_Column,
-  Permissions_Constraint,
-  Permissions_Update_Column,
+  Create_Gate_DirectMutationVariables,
+  Create_Gate_Tasks_BasedMutationVariables,
 } from '../../../services/graphql/types.generated';
 import ConfirmDialog from '../../organisms/confirm-dialog/confirm-dialog';
 import GatePublishedModal from '../../organisms/gates/create/gate-published';
@@ -23,71 +21,74 @@ import { PublishNavbar } from '../../organisms/publish-navbar/publish-navbar';
 import TaskArea from '../../organisms/tasks-area/tasks-area';
 import { GateDetailsForm } from './details-form';
 import { GateImageCard } from './gate-image-card/gate-image-card';
-import { createGateSchema, CreateGateTypes, DraftGateTypes } from './schema';
+import { GateTypeChanger } from './gate-type-selector/gate-type-changer';
+import { GateTypeSelector } from './gate-type-selector/gate-type-selector';
+import { createGateSchema, CreateGateData, GateType } from './schema';
+import { DirectWallets } from './tasks/direct/direct-wallets';
 
 type CreateGateProps = {
-  oldData?: DraftGateTypes;
+  oldData?: CreateGateData;
 };
 
-export function CreateGateTemplate({ oldData }: CreateGateProps) {
-  const gateDetails = (({
-    title,
-    categories,
-    description,
-    skills,
-    created_by,
-  }) => ({ title, categories, description, skills, created_by }))(oldData);
+// TODO: Delete unused tasks when changing gate type or when editing a gate
+// Delete all tasks and create the new ones.
 
+export function CreateGateTemplate({ oldData }: CreateGateProps) {
   const methods = useForm({
     resolver: zodResolver(createGateSchema),
     mode: 'onBlur',
+    defaultValues: oldData,
   });
 
   const router = useRouter();
   const { gqlAuthMethods } = useAuth();
 
-  const [gateId, setGateId] = useState(oldData.id || '');
   const [confirmPublish, setConfirmPublish] = useState(false);
   const [isPublished, setIsPublished] = useState(false);
-  const [draftIsLoading, setDraftIsLoading] = useState(false);
-  const [createIsLoading, setCreateIsLoading] = useState(false);
   const [result, setResult] = useState(null);
 
   const [deletedTasks, setDeletedTasks] = useState<string[]>([]);
 
   const { enqueueSnackbar } = useSnackbar();
 
-  const { mutateAsync: uploadImage } = useMutation(
-    ['uploadImage'],
-    gqlAuthMethods.upload_image
-  );
+  const uploadImage = useMutation(['uploadImage'], gqlAuthMethods.upload_image);
 
-  const { mutateAsync: createGateMutation } = useMutation(
+  const createGate = useMutation(
     ['createGate'],
-    gqlAuthMethods.create_gate
+    ({
+      whitelisted_wallets,
+      tasks,
+      ...data
+    }: Create_Gate_Tasks_BasedMutationVariables &
+      Create_Gate_DirectMutationVariables) => {
+      if (data.type === 'direct') {
+        return gqlAuthMethods.create_gate_direct({
+          ...data,
+          whitelisted_wallets,
+        });
+      }
+      return gqlAuthMethods.create_gate_tasks_based({ ...data, tasks });
+    }
   );
 
-  const { mutate: publishGate } = useMutation(
-    ['publishGate'],
-    gqlAuthMethods.publish_gate
-  );
+  const publishGate = useMutation(['publishGate'], gqlAuthMethods.publish_gate);
 
-  const { mutateAsync: deleteTaskMutation } = useMutation(
+  const deleteTask = useMutation(
     ['deleteTask'],
     gqlAuthMethods.delete_tasks_by_pk
   );
 
   const closePublishedModal = () => setIsPublished(false);
 
-  const checkFormErrors = async (isDraft) => {
+  const checkFormErrors = async () => {
     const dataIsValid = await methods.trigger();
 
     if (!dataIsValid) {
       const errors = methods.formState.errors;
 
       // Tasks errors
-      if (errors?.tasks?.data?.length) {
-        taskErrorMessage(errors?.tasks?.data);
+      if (errors?.tasks?.length) {
+        taskErrorMessage(errors?.tasks);
       }
 
       if (Object.values(errors)[0].data?.message) {
@@ -95,135 +96,78 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
       }
 
       recursiveErrorMessage(errors);
-
-      isDraft ? setDraftIsLoading(false) : setCreateIsLoading(false);
     }
 
     return dataIsValid;
   };
 
-  const handleMutation = async (data: CreateGateTypes, isDraft: boolean) => {
-    isDraft ? setDraftIsLoading(true) : setCreateIsLoading(true);
+  const handleMutation = async (data: CreateGateData, isDraft: boolean) => {
+    const dataIsValid = await checkFormErrors();
 
-    const dataIsValid = await checkFormErrors(isDraft);
     if (!dataIsValid) return;
 
-    let permissionsData = null;
+    const permissionsData = [
+      { user_id: data.creator.id, permission: 'gate_editor' },
+    ];
     let image_url = oldData.image || null;
-    if (data.created_by.length > 0) {
-      permissionsData = {
-        data: data.created_by.map((creator) => {
-          return { user_id: creator.id, permission: 'gate_editor' };
-        }),
-      };
-    }
+
     if (image_url !== data.image && data.image !== undefined) {
-      await uploadImage(
-        {
+      const image_id = (
+        await uploadImage.mutateAsync({
           base64: data.image,
           name: data.title,
-        },
-        {
-          onSuccess(imageData) {
-            const image_id = imageData['upload_image'].id;
-            image_url =
-              process.env.NEXT_PUBLIC_NODE_ENDPOINT +
-              '/storage/file?id=' +
-              image_id;
-          },
-          onError() {
-            enqueueSnackbar("An error occured, couldn't upload the image.", {
-              variant: 'error',
-            });
-          },
-        }
-      );
+        })
+      )?.upload_image.id;
+      image_url = `${process.env.NEXT_PUBLIC_NODE_ENDPOINT}/storage/file?id=${image_id}`;
     }
     if (deletedTasks.length > 0) {
-      deletedTasks.forEach(async (task_id) => {
-        await deleteTaskMutation({
-          task_id,
-        });
-      });
-    }
-    if (data.title) {
-      await createGateMutation(
-        {
-          id: oldData.id || uuidv4(),
-          dao_id: router.query.dao,
-          title: data.title,
-          categories: data.categories || [],
-          description: data.description,
-          skills: data.skills || [],
-          permissions: {
-            ...permissionsData,
-            on_conflict: {
-              constraint:
-                Permissions_Constraint.PermissionsDaoIdUserIdCredentialIdKey,
-              update_columns: [Permissions_Update_Column.Permission],
-            },
-          },
-          image: image_url,
-          tasks: {
-            data: data.tasks.data.map((task, index) => {
-              const { task_id, ...cleanTask } = task;
-              return {
-                ...cleanTask,
-                id: task_id,
-                order: index,
-              };
-            }),
-            on_conflict: {
-              constraint: Tasks_Constraint.KeysPk,
-              update_columns: [
-                Tasks_Update_Column.Title,
-                Tasks_Update_Column.Description,
-                Tasks_Update_Column.TaskData,
-                Tasks_Update_Column.TaskType,
-                Tasks_Update_Column.Order,
-              ],
-            },
-          },
-          published: 'not_published',
-        },
-        {
-          async onSuccess(result) {
-            if (isDraft) {
-              enqueueSnackbar('Draft saved');
-              setDraftIsLoading(false);
-              router.push(
-                ROUTES.GATE_PROFILE.replace('[id]', result.insert_gates_one.id)
-              );
-            } else {
-              await publishGate({
-                gate_id: result.insert_gates_one.id,
-              });
-              setGateId(result.insert_gates_one.id);
-              setResult(result.insert_gates_one);
-              setIsPublished(true);
-            }
-          },
-          onError() {
-            isDraft ? setDraftIsLoading(false) : setCreateIsLoading(false);
-            enqueueSnackbar(
-              isDraft
-                ? "An error occured, couldn't save the draft."
-                : "An error occured, couldn't create the credential."
-            );
-          },
-        }
+      await Promise.all(
+        deletedTasks.map((task_id) =>
+          deleteTask.mutateAsync({
+            task_id,
+          })
+        )
       );
     }
-    isDraft ? setDraftIsLoading(false) : setCreateIsLoading(false);
+    if (data.title) {
+      const response = await createGate.mutateAsync({
+        id: oldData.id || uuidv4(),
+        dao_id: router.query.dao as string,
+        title: data.title,
+        categories: data.categories || [],
+        description: data.description,
+        skills: data.skills || [],
+        permissions: permissionsData,
+        type: data.type,
+        image: image_url,
+        tasks: data.tasks?.map(({ task_id, ...task }, index) => ({
+          ...task,
+          id: task_id,
+          order: index,
+        })),
+        whitelisted_wallets: data.whitelisted_wallets,
+      });
+      if (isDraft) {
+        enqueueSnackbar('Draft saved');
+        router.push(
+          ROUTES.GATE_PROFILE.replace('[id]', response.insert_gates_one.id)
+        );
+        return;
+      }
+      await publishGate.mutateAsync({
+        gate_id: response.insert_gates_one.id,
+      });
+      setResult(response.insert_gates_one);
+      setIsPublished(true);
+    }
   };
 
   const showErrorMessage = (message: string) => {
     enqueueSnackbar(message, { variant: 'error', autoHideDuration: 8000 });
-  }
+  };
 
   const taskErrorMessage = (data) => {
     data.forEach((taskData, i) => {
-      console.log(taskData);
       recursiveErrorMessage(taskData);
       if (taskData?.task_data) {
         recursiveErrorMessage(taskData.task_data);
@@ -243,11 +187,37 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
     }
   };
 
-  const saveDraft = (draftData: CreateGateTypes) =>
-    handleMutation(draftData, true);
+  const takeErrorMessage = (obj): string | null => {
+    let message = '';
+    for (const task in obj) {
+      if (obj.hasOwnProperty.call(obj, task)) {
+        if (obj[task]?.message) {
+          message = obj[task]?.message;
+        } else if (obj[task].length) {
+          message = takeErrorMessage(obj[task][0]);
+        }
+      }
+    }
+    return message !== '' ? message : null;
+  };
 
-  const createGate = (gateData: CreateGateTypes) =>
-    handleMutation(gateData, false);
+  const gateType: GateType = methods.watch('type');
+
+  const onSaveDraft = async (draftData: CreateGateData) => {
+    try {
+      await handleMutation(draftData, true);
+    } catch (e) {
+      enqueueSnackbar("An error occured, couldn't save the draft.");
+    }
+  };
+
+  const onCreateGate = async (gateData: CreateGateData) => {
+    try {
+      await handleMutation(gateData, false);
+    } catch (e) {
+      enqueueSnackbar("An error occured, couldn't save the draft.");
+    }
+  };
 
   const hasTitleAndDescription = methods
     .watch(['title', 'description'])
@@ -255,74 +225,73 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
 
   return (
     <>
-      <Stack
-        component="form"
-        id="gate-details-form"
-        onSubmit={async (e) => {
-          e.preventDefault();
-
-          const dataIsValid = await checkFormErrors(false);
-
-          if (dataIsValid) {
-            setConfirmPublish(true);
-          }
-        }}
-        padding={'0 90px'}
-        sx={(theme) => ({
-          p: '0 90px',
-          [theme.breakpoints.down('sm')]: { p: '0 20px' },
-        })}
-      >
-        <FormProvider {...methods}>
-          <PublishNavbar
-            draftIsLoading={draftIsLoading}
-            createIsLoading={createIsLoading}
-            saveDraft={saveDraft}
-          />
-        </FormProvider>
-        <Typography
-          component="h1"
-          variant="h4"
-          sx={{ margin: '40px 0 40px 0', marginBottom: { md: '100px' } }}
-        >
-          {oldData.id ? 'Edit' : 'Create'} Credential
-        </Typography>
-
-        {/* Details */}
+      <FormProvider {...methods}>
         <Stack
-          direction="row"
-          justifyContent="space-between"
-          alignItems="stretch"
-          gap={2}
-          sx={{
-            width: '100%',
-            flexDirection: { xs: 'column', md: 'row' },
+          component="form"
+          id="gate-details-form"
+          onSubmit={async (e) => {
+            e.preventDefault();
+
+            const dataIsValid = await checkFormErrors();
+
+            if (dataIsValid) {
+              setConfirmPublish(true);
+            }
           }}
+          sx={(theme) => ({
+            p: '0 90px',
+            pb: 12,
+            [theme.breakpoints.down('sm')]: { p: '0 20px' },
+          })}
         >
-          <Box>
-            <Typography component="h2" variant="h5" gutterBottom>
-              Add details
-            </Typography>
-            <Typography variant="body2" color={'text.secondary'}>
-              Add the details of the credential
-            </Typography>
-          </Box>
+          <PublishNavbar
+            isLoading={
+              createGate.isLoading ||
+              publishGate.isLoading ||
+              deleteTask.isLoading
+            }
+            saveDraft={onSaveDraft}
+          />
+          <Typography
+            component="h1"
+            variant="h4"
+            sx={{ margin: '40px 0 40px 0', marginBottom: { md: '100px' } }}
+          >
+            {oldData.id ? 'Edit' : 'Create'} Credential
+          </Typography>
+
+          {/* Details */}
           <Stack
-            gap={7.5}
-            mt={2}
+            direction="row"
+            justifyContent="space-between"
+            alignItems="stretch"
+            gap={2}
             sx={{
-              maxWidth: { xs: '100%', md: '50%', lg: '40%' },
               width: '100%',
+              flexDirection: { xs: 'column', md: 'row' },
             }}
           >
-            <Stack direction="column" gap={4}>
-              <FormProvider {...methods}>
-                <GateDetailsForm gateData={gateDetails} />
-              </FormProvider>
+            <Box>
+              <Typography component="h2" variant="h5" gutterBottom>
+                Add details
+              </Typography>
+              <Typography variant="body2" color={'text.secondary'}>
+                Add the details of the credential
+              </Typography>
+            </Box>
+            <Stack
+              gap={7.5}
+              mt={2}
+              sx={{
+                maxWidth: { xs: '100%', md: '50%', lg: '40%' },
+                width: '100%',
+              }}
+            >
+              <Stack direction="column" gap={4}>
+                <GateDetailsForm />
+              </Stack>
             </Stack>
-          </Stack>
 
-          <FormProvider {...methods}>
             <GateImageCard
               draftImage={oldData.image}
               label={
@@ -340,86 +309,89 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
                 width: 300,
               }}
             />
-          </FormProvider>
-        </Stack>
+          </Stack>
 
-        {/* Tasks */}
-        {(hasTitleAndDescription ||
-          (gateDetails.title && gateDetails.description)) && (
-          <>
-            <Divider sx={{ margin: '60px 0', width: '100%' }} />
-            <Stack
-              direction="row"
-              gap={{ lg: 5, xs: 2, md: 2 }}
-              sx={(theme) => ({
-                width: '100%',
-                display: { xs: 'block', md: 'flex' },
-                [theme.breakpoints.down('sm')]: { p: '0' },
-              })}
-            >
-              <Box
-                sx={{
-                  maxWidth: {
-                    lg: `15%`,
-                  },
-                }}
-              >
-                <Typography component="h2" variant="h5" gutterBottom>
-                  Set requirements
-                </Typography>
-                <Typography
-                  variant="body2"
-                  color={'text.secondary'}
-                  marginBottom={4}
-                >
-                  Define the requirements that the user must meet to obtain the
-                  credential
-                </Typography>
-              </Box>
+          {/* Tasks */}
+          {hasTitleAndDescription && (
+            <>
+              <Divider sx={{ margin: '60px 0', width: '100%' }} />
               <Stack
-                direction="column"
-                sx={{
-                  margin: 'auto',
+                direction="row"
+                gap={{ lg: 5, xs: 2, md: 2 }}
+                sx={(theme) => ({
                   width: '100%',
-                  maxWidth: { xs: '100%', md: '100%', lg: '80%' },
-                }}
+                  display: { xs: 'block', md: 'flex' },
+                  [theme.breakpoints.down('sm')]: { p: '0 20px' },
+                })}
               >
-                <Stack direction="column" gap={2}>
-                  <FormProvider {...methods}>
-                    <TaskArea
-                      draftTasks={oldData.tasks || []}
-                      onDelete={setDeletedTasks}
-                    />
-                  </FormProvider>
+                <Box
+                  sx={{
+                    maxWidth: {
+                      lg: `15%`,
+                    },
+                  }}
+                >
+                  <Typography component="h2" variant="h5" gutterBottom>
+                    Define how to obtain
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    color={'text.secondary'}
+                    marginBottom={4}
+                  >
+                    Set what is necessary to do to obtain this credential
+                  </Typography>
+                </Box>
+                <Stack
+                  direction="column"
+                  sx={{
+                    margin: 'auto',
+                    width: '100%',
+                    maxWidth: { xs: '100%', md: '100%', lg: '80%' },
+                  }}
+                  gap={4}
+                >
+                  {gateType ? (
+                    <GateTypeChanger type={gateType} />
+                  ) : (
+                    <GateTypeSelector />
+                  )}
+                  {gateType === 'direct' && <DirectWallets />}
+                  {gateType === 'task_based' && (
+                    <Stack direction="column" gap={2}>
+                      <TaskArea
+                        draftTasks={oldData.tasks || []}
+                        onDelete={setDeletedTasks}
+                      />
+                    </Stack>
+                  )}
                 </Stack>
               </Stack>
-            </Stack>
-          </>
-        )}
+            </>
+          )}
 
-        <ConfirmDialog
-          title="Are you sure you want to publish this credential?"
-          open={confirmPublish}
-          positiveAnswer="Publish"
-          negativeAnswer="Cancel"
-          setOpen={setConfirmPublish}
-          onConfirm={methods.handleSubmit(createGate, (errors) => {
-            enqueueSnackbar(
-              Object.values(errors)[0].data?.message || 'Invalid data'
-            );
-            setCreateIsLoading(false);
-            return;
-          })}
-        >
-          If you publish this credential, you will no longer be allowed to edit
-          it. You can unpublish or delete the credential any time.
-        </ConfirmDialog>
-        <GatePublishedModal
-          open={isPublished}
-          handleClose={closePublishedModal}
-          gate={result}
-        />
-      </Stack>
+          <ConfirmDialog
+            title="Are you sure you want to publish this credential?"
+            open={confirmPublish}
+            positiveAnswer="Publish"
+            negativeAnswer="Cancel"
+            setOpen={setConfirmPublish}
+            onConfirm={methods.handleSubmit(onCreateGate, (errors) => {
+              enqueueSnackbar(
+                Object.values(errors)[0].data?.message || 'Invalid data'
+              );
+            })}
+          >
+            If you publish this credential, you will no longer be allowed to
+            edit it. You can unpublish or delete the credential any time.
+          </ConfirmDialog>
+          <GatePublishedModal
+            open={isPublished}
+            handleClose={closePublishedModal}
+            gate={result}
+          />
+        </Stack>
+      </FormProvider>
     </>
   );
 }

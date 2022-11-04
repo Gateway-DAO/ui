@@ -1,4 +1,18 @@
 {
+  "gate_type": {
+    "task_based": {
+      "title": "Through requirements",
+      "description": "Define the requirements to obtain the credential."
+    },
+    "direct": {
+      "title": "Send credential directly",
+      "description": "Send this credential directly to someone or a group of people."
+    }
+  },
+  "gate_type_change_modal": {
+    "title": "Are you sure you want to change the method?",
+    "description": "If you change the method, you will lose the created requirement."
+  },
   "tasks": {
     "github_prs": {
       "title": "Verify Pull Requests",
@@ -27,5 +41,20 @@
       "timePeriodOneMonth": "1 Month",
       "timePeriodNever": "Never"
     }
+  },
+  "direct": {
+    "title": {
+      "0": "No recipients",
+      "one": "1 recipient",
+      "other": "{{count}} recipients"
+    },
+    "description": "Copy and paste, fill, import the wallet address and/or ens name",
+    "import-csv": "Import from a CSV",
+    "invalid": {
+      "one": "You have 1 invalid wallet address",
+      "other": "You have {{count}} invalid wallet addresses"
+    },
+    "label": "Wallet address or ENS name",
+    "input-helper": "Fill the addresses separated by comma"
   }
 }

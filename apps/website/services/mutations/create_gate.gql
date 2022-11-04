@@ -1,32 +1,52 @@
-mutation create_gate(
+mutation create_gate_tasks_based(
   $id: uuid
   $dao_id: uuid!
   $title: String!
   $categories: jsonb
+  $type: gate_type
   $description: String
   $skills: jsonb
-  $permissions: permissions_arr_rel_insert_input
+  $permissions: [permissions_insert_input!] = []
   $image: String!
-  $tasks: tasks_arr_rel_insert_input
-  $published: gate_state!
+  $tasks: [tasks_insert_input!] = []
 ) {
   insert_gates_one(
     object: {
       id: $id
       dao_id: $dao_id
       title: $title
+      type: $type
       categories: $categories
       description: $description
       skills: $skills
-      permissions: $permissions
+      permissions: {
+      	data: $permissions
+        on_conflict: {
+          constraint: permissions_dao_id_user_id_credential_id_key,
+          update_columns: [permission]
+        }
+      }
       image: $image
-      tasks: $tasks
-      published: $published
+      tasks: {
+        data: $tasks
+        on_conflict: {
+          constraint: keys_pk
+          update_columns: [
+            title
+            description
+            task_data
+            task_type
+            order
+          ]
+        }
+      }
+      published: "not_published"
     }
     on_conflict: {
       constraint: gates_pk
       update_columns: [
         title
+        type
         categories
         description
         skills
@@ -36,6 +56,67 @@ mutation create_gate(
     }
   ) {
     id
+    title
+    image
+    published
+  }
+}
+
+mutation create_gate_direct(
+  $id: uuid,
+  $dao_id: uuid!,
+  $title: String!,
+  $categories: jsonb,
+  $type: gate_type,
+  $description: String,
+  $skills: jsonb,
+  $permissions: [permissions_insert_input!] = [],
+  $image: String!,
+  $whitelisted_wallets: [whitelisted_wallets_insert_input!] = []) {
+
+  insert_gates_one(
+    object: {
+      id: $id,
+      dao_id: $dao_id,
+      title: $title,
+      type: $type,
+      categories: $categories,
+      description: $description,
+      skills: $skills,
+      permissions: {
+        data: $permissions,
+        on_conflict: {
+          constraint: permissions_dao_id_user_id_credential_id_key,
+          update_columns: [permission]
+        }
+      },
+      image: $image,
+      published: "not_published",
+      whitelisted_wallets: {
+        data: $whitelisted_wallets,
+        on_conflict: {
+          update_columns: [
+            wallet,
+            ens
+          ],
+        constraint: whitelisted_wallets_gate_id_wallet_uindex
+        }
+      }
+    },
+    on_conflict: {
+      constraint: gates_pk,
+      update_columns: [
+        type,
+        title,
+        categories,
+        description,
+        skills,
+        image,
+        published
+      ]
+    }) {
+    id
+    type
     title
     image
     published
