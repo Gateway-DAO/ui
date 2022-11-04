@@ -12,7 +12,8 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import LogoutIcon from '@mui/icons-material/Logout';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
-import { ListItemText } from '@mui/material';
+import Settings from '@mui/icons-material/Settings';
+import { ListItemText, useMediaQuery } from '@mui/material';
 import Badge, { badgeClasses } from '@mui/material/Badge';
 import IconButton from '@mui/material/IconButton';
 import ListItem from '@mui/material/ListItem';
@@ -25,6 +26,7 @@ import { ROUTES } from '../../../constants/routes';
 import { useAuth } from '../../../providers/auth';
 import { AvatarFile } from '../../atoms/avatar-file';
 import { icons } from './wallet-icons';
+import { theme } from '@gateway/theme';
 
 /* TODO: Refactor */
 
@@ -40,6 +42,7 @@ export function NavBarAvatar({ hideProfile }: Props) {
   const { onSignOut, me } = useAuth();
   const { enqueueSnackbar } = useSnackbar();
   const [state, copyToClipboard] = useCopyToClipboard();
+  const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
 
   const address = me?.wallet;
 
@@ -121,6 +124,18 @@ export function NavBarAvatar({ hideProfile }: Props) {
             </MenuItem>
           </Link>
         )}
+        <Link passHref href={isDesktop ? ROUTES.SETTINGS_PUBLIC_PROFILE : ROUTES.SETTINGS}>
+          <MenuItem
+            component="a"
+            key="settings"
+            sx={{
+              py: '12px',
+            }}
+          >
+            <Settings color="disabled" sx={{ mr: 3.5 }} />
+            <Typography textAlign="center">Settings</Typography>
+          </MenuItem>
+        </Link>
         <MenuItem
           key="disconnect"
           onClick={withOnClose(onSignOut)}

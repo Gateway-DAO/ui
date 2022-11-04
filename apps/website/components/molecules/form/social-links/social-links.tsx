@@ -47,6 +47,7 @@ export function SocialLinks<TFormSchema extends FieldValues = FieldValues>({
         startIcon={<Add />}
         sx={{
           alignSelf: 'flex-start',
+          mt: 2
         }}
       >
         {t('common:fields.add-link')}

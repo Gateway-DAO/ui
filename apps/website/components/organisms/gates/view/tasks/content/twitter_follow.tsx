@@ -1,19 +1,12 @@
 import useTranslation from 'next-translate/useTranslation';
-import { useEffect } from 'react';
 
-import { useMutation, useQuery } from '@tanstack/react-query';
-import { FaTwitter } from 'react-icons/fa';
+import { useMutation } from '@tanstack/react-query';
 import { useLocalStorage } from 'react-use';
 
-import {
-  Avatar,
-  Box,
-  Button,
-  Stack,
-  Typography,
-} from '@mui/material';
+import { Box, Button, Stack, Typography } from '@mui/material';
 
 import { LoadingButton } from '../../../../../atoms/loading-button';
+import TwitterConnectionCard from './../../../../../../components/organisms/tasks/twitter-connection-card';
 
 type TwitterFollowData = {
   twitter_follow: boolean;
@@ -29,23 +22,7 @@ const TwitterFollowContent = ({
 }) => {
   const formattedDate = new Date(updatedAt.toLocaleString()).toLocaleString();
   const [twitterKeys] = useLocalStorage<any>('twitter');
-  const [_redirectURL, setRedirectURL] = useLocalStorage('redirectURL', null, {
-    raw: true,
-  });
-
-  const connectTwitter = useMutation(['connect-twitter'], async () => {
-    try {
-      const response = await fetch('/api/oauth/twitter/login');
-      const data = await response.json();
-      setRedirectURL(window.location.href);
-      if (data.confirmed) {
-        window.location.href = data.callbackURL;
-      }
-      return data;
-    } catch (error) {
-      console.log(error);
-    }
-  });
+  const { t } = useTranslation('gate-profile');
 
   const checkTwitterFollow = useMutation(['check-twitter-follow'], async () => {
     try {
@@ -82,7 +59,7 @@ const TwitterFollowContent = ({
           fontFamily: 'sans-serif',
         }}
       >
-        You must follow the profile
+        {t('tasks.twitter_follow.description')}
       </Typography>
 
       <Stack
@@ -105,7 +82,7 @@ const TwitterFollowContent = ({
               borderRadius: '50%',
               width: '40px',
               height: '40px',
-              flexGrow: 0
+              flexGrow: 0,
             }}
           ></Box>
           <Stack direction={'column'} sx={{ ml: 1, flexGrow: 1 }}>
@@ -114,7 +91,7 @@ const TwitterFollowContent = ({
                 color: '#5B7083',
                 size: '1rem',
                 fontFamily: 'sans-serif',
-                mb: '4px'
+                mb: '4px',
               }}
             >
               {data?.username}
@@ -146,7 +123,7 @@ const TwitterFollowContent = ({
                 },
               }}
             >
-              Follow
+              {t('tasks.twitter_follow.action')}
             </Button>
           )}
         </Stack>
@@ -157,58 +134,8 @@ const TwitterFollowContent = ({
               alignItems: 'center',
               paddingTop: '8px',
             }}
-          >
-
-          </Stack>
-          {!twitterKeys && (
-            <Stack
-              sx={{
-                position: 'relative',
-                background: '#1B97F0',
-                p: 2,
-                borderRadius: '0 0 8px 8px',
-              }}
-            >
-              <Stack
-                direction={'row'}
-                sx={{
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  verticalAlign: 'middle',
-                }}
-              >
-                <Box>
-                  <Typography sx={{ fontWeight: '600', mb: 1 }}>
-                    Connect your account
-                  </Typography>
-                  <Typography sx={{ flexGrow: 1, opacity: 0.7 }}>
-                    To complete this task, you need to authorize Gateway
-                    access your Twitter account.
-                  </Typography>
-                </Box>
-                <Button
-                  onClick={() => connectTwitter.mutate()}
-                  sx={{
-                    background: (theme) => theme.palette.grey[300],
-                    color: 'black',
-                    fontSize: '0.75rem',
-                    padding: '6px 16px',
-                    whiteSpace: 'nowrap',
-                    lineHeight: '24px',
-                    minWidth: '145px',
-                    marginLeft: '15px',
-                    boxShadow: '#444 1px 1px 2px',
-                    flexGrow: 0,
-                    '&:hover': {
-                      background: (theme) => theme.palette.grey[400],
-                    },
-                  }}
-                >
-                  Connect Twitter
-                </Button>
-              </Stack>
-            </Stack>
-          )}
+          ></Stack>
+          {!twitterKeys && <TwitterConnectionCard />}
         </Stack>
       </Stack>
 
@@ -219,7 +146,7 @@ const TwitterFollowContent = ({
           onClick={() => checkTwitterFollow.mutate()}
           isLoading={isLoading || checkTwitterFollow.isLoading}
         >
-          VERIFY
+          {t('tasks.check_action')}
         </LoadingButton>
       )}
       {completed && updatedAt && (
@@ -228,7 +155,8 @@ const TwitterFollowContent = ({
           variant="subtitle2"
           sx={{ marginTop: '8px' }}
         >
-          Task completed at {formattedDate}
+          {t('tasks.completed')}
+          {formattedDate}
         </Typography>
       )}
     </Stack>
