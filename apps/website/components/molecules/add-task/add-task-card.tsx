@@ -46,7 +46,7 @@ const AddTaskCard = ({ numberOfTasks, addTask }) => {
     },
     {
       type: 'meeting_code',
-      title: 'Verify Token',
+      title: 'Verify Code',
       description: 'Ask users to put a code',
     },
     {

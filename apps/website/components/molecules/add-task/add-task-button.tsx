@@ -36,7 +36,7 @@ const AddTaskButton = ({
         padding: '20px',
         cursor: !disabled && 'pointer',
         '&:hover': {
-          filter: !disabled && 'brightness(150%)',
+          backgroundColor: !disabled && 'background.paper',
         },
       }}
       onClick={() => addTask()}
