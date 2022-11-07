@@ -44,7 +44,7 @@ export const ResponsiveDrawer = ({ children }: PropsWithChildren<unknown>) => {
 
         height: '100vh',
         overflow: 'hidden',
-        marginLeft: '4.8em',
+        marginLeft: (theme) => `calc(${theme.spacing(9)} + 1px)`,
         '& .MuiDrawer-paper': {
           pt: 0,
           background: 'transparent',
