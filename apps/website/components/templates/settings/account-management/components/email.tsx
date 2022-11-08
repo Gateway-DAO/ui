@@ -10,6 +10,7 @@ import { useForm } from 'react-hook-form';
 import { Stack, TextField, Typography } from '@mui/material';
 
 import { LoadingButton } from '../../../../../components/atoms/loading-button';
+import { taskErrorMessages } from '../../../../../components/organisms/tasks/task-error-messages';
 import { ROUTES } from './../../../../../../website/constants/routes';
 import { useAuth } from './../../../../../../website/providers/auth';
 import { emailSchema } from './../types';
@@ -80,9 +81,13 @@ const Email = () => {
       return false;
     } catch (error) {
       if (error?.response?.errors[0]?.message) {
-        enqueueSnackbar(error?.response?.errors[0]?.message, {
-          variant: 'error',
-        });
+        enqueueSnackbar(
+          taskErrorMessages[error?.response?.errors[0]?.message] ||
+            taskErrorMessages['UNEXPECTED_ERROR'],
+          {
+            variant: 'error',
+          }
+        );
       } else {
         enqueueSnackbar(t('account-management.email-error-sending'), {
           variant: 'error',
@@ -113,10 +118,14 @@ const Email = () => {
       return false;
     } catch (error) {
       if (error?.response?.errors[0]?.message) {
-        enqueueSnackbar(error?.response?.errors[0]?.message, {
-          variant: 'error',
-        });
-        if (error?.response?.errors[0]?.message?.indexOf('Maximum') > -1) {
+        enqueueSnackbar(
+          taskErrorMessages[error?.response?.errors[0]?.message] ||
+            taskErrorMessages['UNEXPECTED_ERROR'],
+          {
+            variant: 'error',
+          }
+        );
+        if (error?.response?.errors[0]?.message == 'MAXIMUM_ATTEMPTS_REACHED') {
           setValue('email', actualEmail);
           resetForm();
         }
@@ -149,7 +158,11 @@ const Email = () => {
 
   useEffect(() => {
     if ((errorVerifyCode as any)?.response?.errors?.length) {
-      setErrorVerify((errorVerifyCode as any)?.response?.errors[0]?.message);
+      setErrorVerify(
+        taskErrorMessages[
+          (errorVerifyCode as any)?.response?.errors[0]?.message
+        ] || taskErrorMessages['UNEXPECTED_ERROR']
+      );
     } else {
       setErrorVerify(null);
     }
@@ -183,6 +196,7 @@ const Email = () => {
           error={!!errors?.email}
           onKeyUp={(e) => {
             setEmailSent(false);
+            setEmailVerified(true);
           }}
           helperText={t('account-management.email-address-helper')}
           {...register('email', { required: true })}
