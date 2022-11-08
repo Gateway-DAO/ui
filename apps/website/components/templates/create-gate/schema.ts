@@ -573,12 +573,10 @@ const gateBase = z.object({
       invalid_type_error: 'Skills is required',
     })
     .min(1, 'Please select at least 1 skill'),
-  created_by: z.array(
-    z.object({
-      id: z.string(),
-      name: z.string(),
-    })
-  ),
+  creator: z.object({
+    id: z.string(),
+    name: z.string(),
+  }),
 });
 
 const taskGate = gateBase.augment({
