@@ -3,7 +3,7 @@ import { useRef, useState } from 'react';
 
 import { useQueries } from '@tanstack/react-query';
 import { ethers } from 'ethers';
-import { useController } from 'react-hook-form';
+import { useController, useFormContext } from 'react-hook-form';
 import { useDropArea } from 'react-use';
 import { useProvider } from 'wagmi';
 
@@ -22,6 +22,7 @@ export function DirectWallets() {
     name: 'whitelisted_wallets',
     defaultValue: [],
   });
+  const { setValue } = useFormContext<CreateGateData>();
   const { t } = useTranslation('common');
   const wallets = value as Gate_Whitelisted_Wallet[];
   const [inputValue, setInputValue] = useState('');
@@ -50,9 +51,7 @@ export function DirectWallets() {
       },
       onSuccess(data: string) {
         if (ens && !wallet) {
-          const newWallets = [...wallets];
-          newWallets[index] = { wallet: data, ens };
-          onChange(newWallets);
+          setValue(`whitelisted_wallets.${index}.wallet`, data);
         }
       },
     })),
