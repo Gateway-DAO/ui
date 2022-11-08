@@ -3,7 +3,8 @@ import { useRef, useState } from 'react';
 
 import { useQueries } from '@tanstack/react-query';
 import { ethers } from 'ethers';
-import { useController } from 'react-hook-form';
+import { useSnackbar } from 'notistack';
+import { useController, useFormContext } from 'react-hook-form';
 import { useDropArea } from 'react-use';
 import { useProvider } from 'wagmi';
 
@@ -22,18 +23,23 @@ export function DirectWallets() {
     name: 'whitelisted_wallets',
     defaultValue: [],
   });
+  const { setValue } = useFormContext<CreateGateData>();
   const { t } = useTranslation('common');
-  const wallets = value as Gate_Whitelisted_Wallet[];
-  const [inputValue, setInputValue] = useState('');
 
+  const [inputValue, setInputValue] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
+
   const provider = useProvider();
+  const { enqueueSnackbar } = useSnackbar();
+
+  const wallets = value as Gate_Whitelisted_Wallet[];
 
   const walletsQueries = useQueries({
     queries: wallets.map(({ wallet, ens }, index) => ({
       queryKey: ['address-validate', wallet, ens],
       queryFn: async (): Promise<string> => {
         if (ens && !wallet) {
+          /* Check if ENS name is valid */
           const address = await provider.resolveName(ens);
           if (!address) {
             throw new Error('Invalid ENS name');
@@ -46,13 +52,10 @@ export function DirectWallets() {
         }
 
         return ethers.utils.getAddress(wallet);
-        /* Check if ENS name is valid */
       },
       onSuccess(data: string) {
         if (ens && !wallet) {
-          const newWallets = [...wallets];
-          newWallets[index] = { wallet: data, ens };
-          onChange(newWallets);
+          setValue(`whitelisted_wallets.${index}.wallet`, data);
         }
       },
     })),
@@ -73,21 +76,23 @@ export function DirectWallets() {
   };
 
   const onParseText = (text: string) => {
-    const newWallets = text.split(/[,\n\s]/g).reduce((acc, wallet) => {
+    const newWallets = text.split(/[,\n\s\r\t]+/g).reduce((acc, wallet) => {
+      if (!wallet.length) return acc;
       if (
-        wallet.length &&
-        !wallets.some(
+        wallets.some(
           (whitelistedWallet) =>
             whitelistedWallet.wallet === wallet ||
             whitelistedWallet.ens === wallet
         )
       ) {
-        const obj: Gate_Whitelisted_Wallet = ethers.utils.isAddress(wallet)
-          ? { wallet }
-          : { ens: wallet };
-        return [...acc, obj];
+        enqueueSnackbar(`Duplicated wallet ${wallet}`, { variant: 'warning' });
+        return acc;
       }
-      return acc;
+
+      const obj: Gate_Whitelisted_Wallet = ethers.utils.isAddress(wallet)
+        ? { wallet }
+        : { ens: wallet };
+      return [...acc, obj];
     }, [] as string[]);
 
     onChange([...wallets, ...newWallets]);
