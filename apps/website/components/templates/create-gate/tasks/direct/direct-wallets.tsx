@@ -35,6 +35,7 @@ export function DirectWallets() {
       queryKey: ['address-validate', wallet, ens],
       queryFn: async (): Promise<string> => {
         if (ens && !wallet) {
+          /* Check if ENS name is valid */
           const address = await provider.resolveName(ens);
           if (!address) {
             throw new Error('Invalid ENS name');
@@ -47,7 +48,6 @@ export function DirectWallets() {
         }
 
         return ethers.utils.getAddress(wallet);
-        /* Check if ENS name is valid */
       },
       onSuccess(data: string) {
         if (ens && !wallet) {
