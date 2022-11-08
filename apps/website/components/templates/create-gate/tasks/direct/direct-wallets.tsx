@@ -73,7 +73,7 @@ export function DirectWallets() {
   };
 
   const onParseText = (text: string) => {
-    const newWallets = text.split(/[,\n\s]/g).reduce((acc, wallet) => {
+    const newWallets = text.split(/[,\n\s\r\t]+/g).reduce((acc, wallet) => {
       if (
         wallet.length &&
         !wallets.some(
