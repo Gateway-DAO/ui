@@ -77,11 +77,10 @@ export function AccountsCard({
           isLoading={connectHandler.isLoading}
           checked={connectedState}
           clickHandler={connectToggle}
-        >
-          {connectedState
-            ? t('connected-accounts.connected')
-            : t('connected-accounts.connect')}
-        </CheckedButton>
+          labelOn={t('connected-accounts.connected')}
+          labelOff={t('connected-accounts.connect')}
+          labelOffHover={t('connected-accounts.disconnect')}
+        />
       </Stack>
       <Stack>
         <Typography fontSize="16px" fontWeight={400} sx={{ mb: 1 }}>

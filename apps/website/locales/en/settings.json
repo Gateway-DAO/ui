@@ -12,7 +12,7 @@
   },
   "profile": {
     "description": "Information provided will be displayed on your Gateway profile.",
-    "submit": "Submit",
+    "submit": "Save",
     "social-links-labels": {
       "discord": "Username"
     },
@@ -35,6 +35,7 @@
     "description": "Connect your account to claim credentials with third-party platforms requirements.",
     "connected": "Connected",
     "connect": "Connect",
+    "disconnect": "Disconnect",
     "twitter": {
       "title": "Twitter",
       "description": "Connect your account to claim credentials with follow profile, retweet and post a tweet requirements."
@@ -46,7 +47,7 @@
   },
   "account-management": {
     "registered-email-title": "Registered email",
-    "registered-email-description": "We send updates, promotions and notifications by this email. You can select what you want to get about",
+    "registered-email-description": "We send updates, promotions and notifications by this email.",
     "email-address-label": "E-mail address",
     "email-address-helper": "To update your email is necessary verify it.",
     "email-address-action": "send code to verify",
