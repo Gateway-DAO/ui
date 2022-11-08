@@ -81,7 +81,7 @@ export const schema: SchemaOf<EditUserSchema> = object({
   socials: array()
     .of(
       object({
-        network: string().defined(),
+        network: string().defined('The field must be defined'),
         url: string()
           .when('network', (network: Network, schema: StringSchema) => {
             switch (network) {
@@ -92,12 +92,19 @@ export const schema: SchemaOf<EditUserSchema> = object({
               default:
                 return schema
                   .matches(URL, 'The URL should be valid')
-                  .transform((val: string) =>
-                    normalizeUrl(val, { forceHttps: !URL_PROTOCOL.test(val) })
-                  );
+                  .transform((val: string) => {
+                    try {
+                      return normalizeUrl(val, {
+                        forceHttps: !URL_PROTOCOL.test(val),
+                      });
+                    } catch (e) {
+                      return;
+                    }
+                  })
+                  .defined('The field must be defined');
             }
           })
-          .defined(),
+          .defined('The field must be defined'),
       })
     )
     .nullable(),
