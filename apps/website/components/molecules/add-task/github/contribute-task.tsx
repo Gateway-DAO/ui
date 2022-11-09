@@ -18,7 +18,7 @@ import {
 
 import GithubDataCard from '../../../organisms/tasks/github-data-card';
 import {
-  CreateGateTypes,
+  CreateGateData,
   GithubContributeDataError,
 } from '../../../templates/create-gate/schema';
 import { TaskIcon } from 'apps/website/components/atoms/task-icon';
@@ -43,18 +43,16 @@ export default function GithubContributeTask({
     getValues,
     trigger,
     formState: { errors },
-  } = useFormContext<CreateGateTypes>();
+  } = useFormContext<CreateGateData>();
 
   const [title, repository_url] = getValues([
-    `tasks.data.${taskId}.title`,
-    `tasks.data.${taskId}.task_data.repository_link`,
+    `tasks.${taskId}.title`,
+    `tasks.${taskId}.task_data.repository_link`,
   ]);
 
   const fetchRepositoryData = async (repository_url) => {
     if (!repository_url) return;
-    const isValid = await trigger(
-      `tasks.data.${taskId}.task_data.repository_link`
-    );
+    const isValid = await trigger(`tasks.${taskId}.task_data.repository_link`);
 
     if (!isValid) {
       return null;
@@ -71,7 +69,7 @@ export default function GithubContributeTask({
     const data = await fetch(fetch_url);
 
     if (data.status !== 200) {
-      setError(`tasks.data.${taskId}.task_data.repository_link`, {
+      setError(`tasks.${taskId}.task_data.repository_link`, {
         type: 'custom',
         message: 'Repository private or not found.',
       });
@@ -89,7 +87,7 @@ export default function GithubContributeTask({
 
   useEffect(() => {
     if (title === '') {
-      setValue(`tasks.data.${taskId}.title`, 'Untitled Task');
+      setValue(`tasks.${taskId}.title`, 'Untitled Task');
     }
   }, [setValue, taskId]);
 
@@ -153,9 +151,9 @@ export default function GithubContributeTask({
                 },
               }}
               id="task-title"
-              {...register(`tasks.data.${taskId}.title`)}
-              error={!!errors.tasks?.data?.[taskId]?.title}
-              helperText={errors.tasks?.data?.[taskId]?.title?.message}
+              {...register(`tasks.${taskId}.title`)}
+              error={!!errors.tasks?.[taskId]?.title}
+              helperText={errors.tasks?.[taskId]?.title?.message}
             />
           </Stack>
         </Stack>
@@ -211,9 +209,9 @@ export default function GithubContributeTask({
           minRows={3}
           label="Task Description"
           id="task-description"
-          {...register(`tasks.data.${taskId}.description`)}
-          error={!!errors.tasks?.data?.[taskId]?.description}
-          helperText={errors.tasks?.data?.[taskId]?.description?.message}
+          {...register(`tasks.${taskId}.description`)}
+          error={!!errors.tasks?.[taskId]?.description}
+          helperText={errors.tasks?.[taskId]?.description?.message}
           sx={{
             marginBottom: '60px',
             '& fieldset legend span': {
@@ -227,20 +225,16 @@ export default function GithubContributeTask({
         <TextField
           required
           label="Repository link"
-          {...register(`tasks.data.${taskId}.task_data.repository_link`, {
+          {...register(`tasks.${taskId}.task_data.repository_link`, {
             onBlur: (e) => mutateGithubData(e.target.value),
           })}
           error={
-            !!(
-              errors.tasks?.data?.[taskId]
-                ?.task_data as GithubContributeDataError
-            )?.repository_link
+            !!(errors.tasks?.[taskId]?.task_data as GithubContributeDataError)
+              ?.repository_link
           }
           helperText={
-            (
-              errors.tasks?.data?.[taskId]
-                ?.task_data as GithubContributeDataError
-            )?.repository_link?.message
+            (errors.tasks?.[taskId]?.task_data as GithubContributeDataError)
+              ?.repository_link?.message
           }
           sx={{
             marginBottom: '60px',

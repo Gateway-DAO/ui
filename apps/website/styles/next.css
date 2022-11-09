@@ -3,7 +3,12 @@
   flex-direction: column;
   justify-content: stretch;
   min-height: 100%;
+  height: 100%;
   transition: .25s ease-in-out filter;
+}
+
+#__next > div {
+  height: 100%;
 }
 
 #__next.blur {

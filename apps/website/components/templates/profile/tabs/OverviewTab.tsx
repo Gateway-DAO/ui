@@ -191,7 +191,7 @@ export function OverviewTab({ user }: Props) {
                       color: 'rgba(255, 255, 255, 0.56)',
                       cursor: 'pointer',
                     }}
-                    onClick={() => router.push(ROUTES.PROFILE_EDIT + '#skills')}
+                    onClick={() => router.push(ROUTES.SETTINGS_PUBLIC_PROFILE + '#skills')}
                   ></EditIcon>
                 )}
               </Box>
@@ -256,7 +256,7 @@ export function OverviewTab({ user }: Props) {
                       cursor: 'pointer',
                     }}
                     onClick={() =>
-                      router.push(ROUTES.PROFILE_EDIT + '#languages')
+                      router.push(ROUTES.SETTINGS_PUBLIC_PROFILE + '#languages')
                     }
                   ></EditIcon>
                 )}
@@ -319,7 +319,7 @@ export function OverviewTab({ user }: Props) {
                       cursor: 'pointer',
                     }}
                     onClick={() =>
-                      router.push(ROUTES.PROFILE_EDIT + '#timezones')
+                      router.push(ROUTES.SETTINGS_PUBLIC_PROFILE + '#timezones')
                     }
                   ></EditIcon>
                 )}

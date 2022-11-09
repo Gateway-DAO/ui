@@ -6,21 +6,16 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { AppBar, Toolbar, Avatar, IconButton, Box } from '@mui/material';
 
 import { LoadingButton } from '../../atoms/loading-button';
-import { CreateGateTypes } from '../../templates/create-gate/schema';
+import { CreateGateData } from '../../templates/create-gate/schema';
 
 type Props = {
-  draftIsLoading: boolean;
-  createIsLoading: boolean;
-  saveDraft: (data: CreateGateTypes) => void;
+  isLoading: boolean;
+  saveDraft: (data: CreateGateData) => void;
 };
 
-export const PublishNavbar = ({
-  draftIsLoading,
-  createIsLoading,
-  saveDraft,
-}: Props) => {
+export const PublishNavbar = ({ isLoading, saveDraft }: Props) => {
   const router = useRouter();
-  const { getValues } = useFormContext<CreateGateTypes>();
+  const { getValues } = useFormContext<CreateGateData>();
 
   return (
     <>
@@ -44,17 +39,11 @@ export const PublishNavbar = ({
             <LoadingButton
               onClick={() => {
                 const values = getValues();
-                const nestedCategories = getValues('categories');
-                const nestedSkills = getValues('skills');
-                saveDraft({
-                  ...values,
-                  categories: nestedCategories,
-                  skills: nestedSkills,
-                });
+                saveDraft(values);
               }}
               variant="outlined"
               size="large"
-              isLoading={draftIsLoading}
+              isLoading={isLoading}
             >
               Save as Draft
             </LoadingButton>
@@ -64,7 +53,7 @@ export const PublishNavbar = ({
               variant="contained"
               size="large"
               sx={{ marginLeft: 2 }}
-              isLoading={createIsLoading}
+              isLoading={isLoading}
             >
               Publish Credential
             </LoadingButton>

@@ -67,7 +67,7 @@ export function SocialLink<TFormSchema extends FieldValues = FieldValues>({
   }, [t, linkFieldLabelProp, networkField.field.value]);
 
   return (
-    <Card sx={{ display: 'flex', flexFlow: 'column', gap: 2, p: 2 }}>
+    <Card sx={{ display: 'flex', flexFlow: 'column', gap: 2, p: 2, mt: 2 }}>
       <Stack
         sx={{
           flexFlow: 'row',

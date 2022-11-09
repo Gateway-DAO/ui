@@ -21,7 +21,7 @@ import {
 } from '@mui/material';
 
 import {
-  CreateGateTypes,
+  CreateGateData,
   SnapshotDataError,
 } from '../../../templates/create-gate/schema';
 import { TaskIcon } from 'apps/website/components/atoms/task-icon';
@@ -36,16 +36,16 @@ const SnapshotTask = ({ dragAndDrop, taskId, deleteTask }) => {
     control,
     setError,
     clearErrors,
-  } = useFormContext<CreateGateTypes>();
+  } = useFormContext<CreateGateData>();
 
   const formValues = getValues();
 
   useEffect(() => {
-    if (formValues.tasks.data[taskId]?.title === '') {
-      setValue(`tasks.data.${taskId}.title`, 'Untitled Requirement');
+    if (formValues.tasks[taskId]?.title === '') {
+      setValue(`tasks.${taskId}.title`, 'Untitled Requirement');
     }
-    setValue(`tasks.data.${taskId}.task_type`, 'snapshot');
-  }, [taskId, setValue, formValues.tasks.data]);
+    setValue(`tasks.${taskId}.task_type`, 'snapshot');
+  }, [taskId, setValue, formValues.tasks]);
 
   useEffect(() => {
     setTaskVisible(dragAndDrop);
@@ -105,9 +105,9 @@ const SnapshotTask = ({ dragAndDrop, taskId, deleteTask }) => {
                 },
               }}
               id="task-title"
-              {...register(`tasks.data.${taskId}.title`)}
-              error={!!errors.tasks?.data[taskId]?.title}
-              helperText={errors.tasks?.data[taskId]?.title?.message}
+              {...register(`tasks.${taskId}.title`)}
+              error={!!errors.tasks?.[taskId]?.title}
+              helperText={errors.tasks?.[taskId]?.title?.message}
             />
           </Stack>
         </Stack>
@@ -163,9 +163,9 @@ const SnapshotTask = ({ dragAndDrop, taskId, deleteTask }) => {
           minRows={3}
           label="Task Requirement"
           id="task-description"
-          {...register(`tasks.data.${taskId}.description`)}
-          error={!!errors.tasks?.data[taskId]?.description}
-          helperText={errors.tasks?.data[taskId]?.description?.message}
+          {...register(`tasks.${taskId}.description`)}
+          error={!!errors.tasks?.[taskId]?.description}
+          helperText={errors.tasks?.[taskId]?.description?.message}
           sx={{
             marginBottom: 8,
             '& fieldset legend span': {
@@ -177,7 +177,7 @@ const SnapshotTask = ({ dragAndDrop, taskId, deleteTask }) => {
         <FormLabel sx={{ mb: 1 }}>Verify if user</FormLabel>
 
         <RadioGroup
-          name={`tasks.data.${taskId}.task_data.type`}
+          name={`tasks.${taskId}.task_data.type`}
           row
           defaultValue={'vote'}
           sx={{ ml: 1 }}
@@ -186,13 +186,13 @@ const SnapshotTask = ({ dragAndDrop, taskId, deleteTask }) => {
             value="proposal"
             control={<Radio />}
             label="Created Proposal"
-            {...register(`tasks.data.${taskId}.task_data.type`)}
+            {...register(`tasks.${taskId}.task_data.type`)}
           />
           <FormControlLabel
             value="vote"
             control={<Radio />}
             label="Voted for Proposal"
-            {...register(`tasks.data.${taskId}.task_data.type`)}
+            {...register(`tasks.${taskId}.task_data.type`)}
           />
         </RadioGroup>
 
@@ -206,17 +206,17 @@ const SnapshotTask = ({ dragAndDrop, taskId, deleteTask }) => {
               required
               label="Specific Proposal Number"
               sx={{ minWidth: { md: '50%', xs: '100%' } }}
-              {...register(`tasks.data.${taskId}.task_data.proposal_number`)}
+              {...register(`tasks.${taskId}.task_data.proposal_number`)}
               error={
-                !!(errors.tasks?.data[taskId]?.task_data as SnapshotDataError)
+                !!(errors.tasks?.[taskId]?.task_data as SnapshotDataError)
                   ?.proposal_number
               }
               helperText={
-                (errors.tasks?.data[taskId]?.task_data as SnapshotDataError)
+                (errors.tasks?.[taskId]?.task_data as SnapshotDataError)
                   ?.proposal_number?.message
               }
             />
-            {!(errors.tasks?.data[taskId]?.task_data as SnapshotDataError)
+            {!(errors.tasks?.[taskId]?.task_data as SnapshotDataError)
               ?.proposal_number && (
               <Typography
                 variant="caption"

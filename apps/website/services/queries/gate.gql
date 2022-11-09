@@ -61,6 +61,10 @@ query gate($id: uuid!) {
       title
       order
     }
+    whitelisted_wallets {
+      ens
+      wallet
+    }
   }
 }
 

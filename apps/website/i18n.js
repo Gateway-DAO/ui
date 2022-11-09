@@ -5,7 +5,7 @@ const config = {
   locales: ['en'],
   defaultLocale: 'en',
   pages: {
-    '*': ['common', 'auth', 'notifications', '404', 'gates-card'],
+    '*': ['common', 'auth', 'notifications', '404', 'gates-card', 'errors'],
     [ROUTES.DAO_EDIT]: ['dao-edit'],
     [ROUTES.DAO_NEW]: ['dao-new'],
     [ROUTES.DAO_PROFILE]: ['dao-profile'],
@@ -18,6 +18,11 @@ const config = {
     [ROUTES.PROFILE_EDIT]: ['profile-edit'],
     [ROUTES.PROFILE]: ['user-profile'],
     [ROUTES.SEARCH]: ['search'],
+    [ROUTES.SETTINGS]: ['settings'],
+    [ROUTES.SETTINGS_PUBLIC_PROFILE]: ['settings'],
+    [ROUTES.SETTINGS_ACCOUNT_MANAGEMENT]: ['settings'],
+    [ROUTES.SETTINGS_CONNECTED_ACCOUNTS]: ['settings'],
+    [ROUTES.SETTINGS_NOTIFICATIONS]: ['settings'],
   },
   localeDetection: false,
 };

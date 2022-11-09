@@ -84,7 +84,6 @@ const AddTaskCard = ({ numberOfTasks, addTask }) => {
     <Stack
       sx={{
         padding: { md: '50px', xs: '20px' },
-        marginBottom: '80px',
         border: '2px solid rgba(229, 229, 229, 0.08)',
         borderRadius: '10px',
       }}

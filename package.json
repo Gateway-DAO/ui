@@ -71,10 +71,11 @@
     "regenerator-runtime": "0.13.7",
     "swiper": "^8.1.4",
     "tslib": "^2.0.0",
+    "twitter-api-sdk": "^1.2.1",
     "twitter-lite": "^1.1.0",
     "type-fest": "^2.12.2",
     "use-breakpoint": "^3.0.2",
-    "wagmi": "^0.6.5",
+    "wagmi": "0.6.8",
     "yup": "^0.32.11",
     "zod": "^3.17.3"
   },

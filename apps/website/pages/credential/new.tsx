@@ -5,7 +5,6 @@ import { useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 
 import { CreateGateTemplate } from '../../components/templates/create-gate';
-import { DraftGateTypes } from '../../components/templates/create-gate/schema';
 import { ROUTES } from '../../constants/routes';
 import { useAuth } from '../../providers/auth';
 import { gqlAnonMethods } from '../../services/api';
@@ -18,6 +17,7 @@ type CreateGateProps = {
 export default function CreateGate({ id, gateProps }: CreateGateProps) {
   const router = useRouter();
   const { gqlAuthMethods } = useAuth();
+  const { me } = useAuth();
 
   const { data: oldGateData } = useQuery(
     ['gate', id],
@@ -26,6 +26,7 @@ export default function CreateGate({ id, gateProps }: CreateGateProps) {
         id,
       }),
     {
+      select: (data) => data.gates_by_pk,
       initialData: gateProps,
       enabled: !!id,
     }
@@ -42,28 +43,23 @@ export default function CreateGate({ id, gateProps }: CreateGateProps) {
     }
   }, [daoId, isReady, router]);
 
-  if (!daoId) {
+  if (!daoId || !oldGateData) {
     return null;
   }
 
   return (
     <CreateGateTemplate
-      oldData={
-        oldGateData &&
-        ({
-          created_by: [oldGateData?.gates_by_pk?.creator?.id],
-          ...oldGateData?.gates_by_pk,
-          id,
-        } as DraftGateTypes)
-      }
+      oldData={{
+        ...oldGateData,
+        creator: oldGateData?.creator ?? { id: me?.id, name: me?.name },
+        id,
+      }}
     />
   );
 }
-
 export async function getServerSideProps({ res, query }) {
   const { gate: gateId } = query;
   let gateProps = { gates_by_pk: { id: '', published: '' } };
-
   if (gateId) {
     gateProps = await gqlAnonMethods.gate({
       id: gateId,

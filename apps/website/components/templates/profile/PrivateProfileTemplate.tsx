@@ -127,7 +127,7 @@ export default function PrivateProfileTemplate() {
             >
               {me.name}
               <EditIcon
-                onClick={() => router.push(ROUTES.PROFILE_EDIT)}
+                onClick={() => router.push(ROUTES.SETTINGS_PUBLIC_PROFILE)}
                 sx={{
                   marginLeft: '15px',
                   color: 'rgba(255, 255, 255, 0.56)',

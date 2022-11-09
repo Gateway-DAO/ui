@@ -23,7 +23,7 @@ import {
 
 import { QuestionCreator } from '../../../organisms/question-creator/question-creator';
 import {
-  CreateGateTypes,
+  CreateGateData,
   QuizTaskDataError,
 } from '../../../templates/create-gate/schema';
 import { TaskIcon } from 'apps/website/components/atoms/task-icon';
@@ -64,7 +64,7 @@ export function QuizTask({
     trigger,
     formState: { errors },
     control,
-  } = useFormContext<CreateGateTypes>();
+  } = useFormContext<CreateGateData>();
 
   const formValues = getValues();
 
@@ -73,26 +73,22 @@ export function QuizTask({
     append,
     remove,
   } = useFieldArray({
-    name: `tasks.data.${taskId}.task_data.questions`,
+    name: `tasks.${taskId}.task_data.questions`,
     control,
   });
 
   const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
-    if (formValues.tasks.data[taskId]?.title === '') {
-      setValue(`tasks.data.${taskId}.title`, 'Untitled Requirement');
+    if (formValues.tasks[taskId]?.title === '') {
+      setValue(`tasks.${taskId}.title`, 'Untitled Requirement');
     }
-  }, [setValue, taskId, formValues.tasks.data]);
+  }, [setValue, taskId, formValues.tasks]);
 
   useEffect(() => {
     setTaskVisible(dragAndDrop);
     setTaskIsMoving(dragAndDrop);
   }, [dragAndDrop]);
-
-  useEffect(() => {
-    errorOptionIsNecessary();
-  }, [errors, questions]);
 
   const [taskVisible, setTaskVisible] = useState(false);
   const [taskIsMoving, setTaskIsMoving] = useState(false);
@@ -100,11 +96,14 @@ export function QuizTask({
 
   const errorOptionIsNecessary = () => {
     if (
-      (errors?.tasks?.data?.[taskId]?.task_data as QuizTaskDataError)?.questions
+      (errors.tasks?.[taskId]?.task_data as QuizTaskDataError)?.questions?.[
+        questions.length - 1
+      ]?.options?.message
     ) {
       enqueueSnackbar(
-        (errors.tasks?.data?.[taskId]?.task_data as QuizTaskDataError)
-          ?.questions?.[questions.length - 1]?.options?.message,
+        (errors.tasks?.[taskId]?.task_data as QuizTaskDataError)?.questions?.[
+          questions.length - 1
+        ]?.options?.message,
         {
           variant: 'error',
         }
@@ -164,9 +163,9 @@ export function QuizTask({
                 },
               },
             }}
-            {...register(`tasks.data.${taskId}.title`)}
-            error={!!errors.tasks?.data?.[taskId]?.title}
-            helperText={errors.tasks?.data?.[taskId]?.title?.message}
+            {...register(`tasks.${taskId}.title`)}
+            error={!!errors.tasks?.[taskId]?.title}
+            helperText={errors.tasks?.[taskId]?.title?.message}
           />
         </Stack>
         {!taskIsMoving && (
@@ -233,9 +232,9 @@ export function QuizTask({
           required
           label="Requirement Description"
           id="quiz-description"
-          {...register(`tasks.data.${taskId}.description`)}
-          error={!!errors.tasks?.data?.[taskId]?.description}
-          helperText={errors.tasks?.data?.[taskId]?.description?.message}
+          {...register(`tasks.${taskId}.description`)}
+          error={!!errors.tasks?.[taskId]?.description}
+          helperText={errors.tasks?.[taskId]?.description?.message}
           sx={{
             '& fieldset legend span': {
               marginRight: '10px',
@@ -277,7 +276,7 @@ export function QuizTask({
               sx={{ px: 0, marginBottom: '30px' }}
               onClick={async () => {
                 const isValid = await trigger(
-                  `tasks.data.${taskId}.task_data.questions`
+                  `tasks.${taskId}.task_data.questions`
                 );
                 if (isValid) {
                   return append(
@@ -294,7 +293,8 @@ export function QuizTask({
             </Button>
             <Divider
               sx={(theme) => ({
-                margin: '0 -50px',
+                position: 'relative',
+                left: '-50px',
                 width: 'calc(100% + 100px)',
                 [theme.breakpoints.down('sm')]: {
                   margin: '0 -20px',
@@ -304,7 +304,7 @@ export function QuizTask({
             />
           </Stack>
         )}
-        {questions.length > 1 && !taskVisible && (
+        {!taskVisible && (
           <Stack
             direction="column"
             sx={(theme) => ({
@@ -320,56 +320,58 @@ export function QuizTask({
             <Typography variant="h6">
               {t('tasks.quiz.settingsTitle')}
             </Typography>
-            <>
-              <Stack
-                sx={[
-                  {
-                    mt: '24px',
-                    mb: '48px',
-                  },
-                ]}
-              >
-                <Typography>
-                  {t('tasks.quiz.settingsHowManyQuestionsTitle')}
-                </Typography>
-                <Typography
-                  sx={(theme) => ({ color: theme.palette.text.secondary })}
+            {questions.length > 1 && (
+              <>
+                <Stack
+                  sx={[
+                    {
+                      mt: '24px',
+                      mb: '48px',
+                    },
+                  ]}
                 >
-                  {t('tasks.quiz.settingsHowManyQuestionsDescription')}
-                </Typography>
-              </Stack>
+                  <Typography>
+                    {t('tasks.quiz.settingsHowManyQuestionsTitle')}
+                  </Typography>
+                  <Typography
+                    sx={(theme) => ({ color: theme.palette.text.secondary })}
+                  >
+                    {t('tasks.quiz.settingsHowManyQuestionsDescription')}
+                  </Typography>
+                </Stack>
 
-              <Controller
-                control={control}
-                name={`tasks.data.${taskId}.task_data.pass_score`}
-                defaultValue={1}
-                rules={{ required: true, min: 1, max: questions.length }}
-                render={({
-                  field: { onChange, value, ...props },
-                  fieldState: { error },
-                }) => {
-                  return (
-                    <Slider
-                      key={`slider-${props.name}`}
-                      {...props}
-                      size="medium"
-                      min={1}
-                      value={value}
-                      sx={{ mx: '10px', width: 'calc(100% - 10px)' }}
-                      max={questions.length > 0 ? questions.length : 1}
-                      onChange={onChange}
-                      marks
-                      onError={() => error?.message}
-                      aria-label="Medium"
-                      valueLabelDisplay="on"
-                    />
-                  );
-                }}
-              />
-              <Divider
-                sx={{ margin: '50px -50px 0', width: 'calc(100% + 100px)' }}
-              />
-            </>
+                <Controller
+                  control={control}
+                  name={`tasks.${taskId}.task_data.pass_score`}
+                  defaultValue={1}
+                  rules={{ required: true, min: 1, max: questions.length }}
+                  render={({
+                    field: { onChange, value, ...props },
+                    fieldState: { error },
+                  }) => {
+                    return (
+                      <Slider
+                        key={`slider-${props.name}`}
+                        {...props}
+                        size="medium"
+                        min={1}
+                        value={value}
+                        sx={{ mx: '10px', width: 'calc(100% - 10px)' }}
+                        max={questions.length > 0 ? questions.length : 1}
+                        onChange={onChange}
+                        marks
+                        onError={() => error?.message}
+                        aria-label="Medium"
+                        valueLabelDisplay="on"
+                      />
+                    );
+                  }}
+                />
+                <Divider
+                  sx={{ margin: '50px -50px 0', width: 'calc(100% + 100px)' }}
+                />
+              </>
+            )}
             <Stack>
               <Stack sx={{ mt: '48px' }}>
                 <Typography>
@@ -390,22 +392,18 @@ export function QuizTask({
                   <Select
                     label={t('tasks.quiz.timePeriodAction')}
                     defaultValue={
-                      formValues?.tasks?.data[taskId]?.task_data['time_period']
-                        ? formValues?.tasks?.data[taskId]?.task_data[
-                            'time_period'
-                          ]
+                      formValues?.tasks?.[taskId]?.task_data['time_period']
+                        ? formValues?.tasks?.[taskId]?.task_data['time_period']
                         : ''
                     }
                     datatype="number"
                     id="time_period"
                     sx={{ maxWidth: { md: '50%', xs: '100%' } }}
                     error={
-                      !!(
-                        errors.tasks?.data?.[taskId]
-                          ?.task_data as QuizTaskDataError
-                      )?.time_period
+                      !!(errors.tasks?.[taskId]?.task_data as QuizTaskDataError)
+                        ?.time_period
                     }
-                    {...register(`tasks.data.${taskId}.task_data.time_period`)}
+                    {...register(`tasks.${taskId}.task_data.time_period`)}
                   >
                     <MenuItem value={TimePeriod.IMMEDIATELY}>
                       {t('tasks.quiz.timePeriodImmediately')}
@@ -426,15 +424,14 @@ export function QuizTask({
                       {t('tasks.quiz.timePeriodNever')}
                     </MenuItem>
                   </Select>
-                  {!!(
-                    errors.tasks?.data?.[taskId]?.task_data as QuizTaskDataError
-                  )?.time_period && (
+                  {!!(errors.tasks?.[taskId]?.task_data as QuizTaskDataError)
+                    ?.time_period && (
                     <Typography
                       color={(theme) => theme.palette.error.main}
                       sx={{ mt: '5px' }}
                     >
                       {
-                        errors.tasks?.data?.[taskId]?.task_data?.['time_period']
+                        errors.tasks?.[taskId]?.task_data?.['time_period']
                           ?.message
                       }
                     </Typography>

@@ -72,21 +72,14 @@ export const useFollowUser = (cb?: UseFollowProps) => {
 };
 
 export const useFollowDAO = (cb?: UseFollowProps) => {
-  const { me, gqlAuthMethods, onUpdateMe } = useAuth();
+  const { me, gqlAuthMethods } = useAuth();
   const queryClient = useQueryClient();
-  const { address } = useAccount();
 
   const follow = useMutation(
     (id: string) => gqlAuthMethods.follow_dao({ id }),
     {
       async onSuccess({ follow_dao }) {
-        // onUpdateMe((oldMe) => ({
-        //   ...oldMe,
-        //   following_dao: oldMe.following_dao
-        //     ? [...oldMe.following_dao, follow_dao]
-        //     : [follow_dao],
-        // }));
-        await queryClient.refetchQueries(['me', me?.id]);
+        await queryClient.resetQueries(['user_following', me?.id]);
         cb?.onFollow(follow_dao.dao_id);
       },
     }
@@ -96,13 +89,7 @@ export const useFollowDAO = (cb?: UseFollowProps) => {
     (id: string) => gqlAuthMethods.unfollow_dao({ id }),
     {
       async onSuccess({ unfollow_dao }) {
-        // onUpdateMe((oldMe) => ({
-        //   ...oldMe,
-        //   following_dao: oldMe.following_dao.filter(
-        //     ({ dao }) => dao.id !== unfollow_dao.dao_id
-        //   ),
-        // }));
-        await queryClient.refetchQueries(['me', me?.id]);
+        await queryClient.resetQueries(['user_following', me?.id]);
         cb?.onUnfollow(unfollow_dao.dao_id);
       },
     }

@@ -31,4 +31,10 @@ export const taskErrorMessages = {
   NO_FOLLOW: `The user does not follow the twitter account`,
   FAILED_QUIZ_WONT_RETRY: `You didn't correctly answer the minimum amount requested. You won't be able to retry again.`,
   FAILED_QUIZ_MINIMUM_AMOUNT: `You didn't correctly answer the minimum amount requested. You will be able to retry in`,
+  EMAIL_ALREADY_REGISTERED: `E-mail already registered`,
+  ERROR_TRYING_TO_SEND_THE_CODE: `An error ocurred trying to send the code`,
+  ERROR_TRYING_TO_CREATE_THE_CODE: `An error ocurred trying to create the code`,
+  EXPIRED_CODE: `Expired code`,
+  INVALID_CODE_VERIFICATION: `Invalid code verification`,
+  MAXIMUM_ATTEMPTS_REACHED: `Maximum attempts reached`,
 };

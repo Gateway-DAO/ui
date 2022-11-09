@@ -16,7 +16,7 @@ import {
 } from '@mui/material';
 
 import {
-  CreateGateTypes,
+  CreateGateData,
   TwitterTweetDataError,
 } from '../../../templates/create-gate/schema';
 import { EmojiPicker, EmojiPickerProps } from '../../form/emoji-picker';
@@ -28,23 +28,23 @@ const TwitterTweetTask = ({ dragAndDrop, taskId, deleteTask }) => {
     setValue,
     getValues,
     formState: { errors },
-  } = useFormContext<CreateGateTypes>();
+  } = useFormContext<CreateGateData>();
 
   const formValues = getValues();
   const tweetRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    if (formValues.tasks.data[taskId]?.title === '') {
-      setValue(`tasks.data.${taskId}.title`, 'Untitled Task');
+    if (formValues.tasks[taskId]?.title === '') {
+      setValue(`tasks.${taskId}.title`, 'Untitled Task');
     }
-  }, [setValue, taskId, formValues.tasks.data]);
+  }, [setValue, taskId, formValues.tasks]);
 
   const [taskVisible, setTaskVisible] = useState(false);
   const [taskIsMoving, setTaskIsMoving] = useState(false);
   const [emoji, setEmoji] = useState('');
   const [tweetText, setTweetText] = useState(
-    formValues.tasks.data[taskId]?.task_data['tweet_text']
-      ? formValues.tasks.data[taskId]?.task_data['tweet_text']
+    formValues.tasks[taskId]?.task_data['tweet_text']
+      ? formValues.tasks[taskId]?.task_data['tweet_text']
       : ''
   );
 
@@ -63,12 +63,12 @@ const TwitterTweetTask = ({ dragAndDrop, taskId, deleteTask }) => {
       );
       setTweetText(firstPart + emoji + secondPart);
       setValue(
-        `tasks.data.${taskId}.task_data.tweet_text`,
+        `tasks.${taskId}.task_data.tweet_text`,
         firstPart + emoji + secondPart
       );
     } else {
       setTweetText(tweetText + emoji);
-      setValue(`tasks.data.${taskId}.task_data.tweet_text`, tweetText + emoji);
+      setValue(`tasks.${taskId}.task_data.tweet_text`, tweetText + emoji);
     }
   }, [emoji]);
 
@@ -143,9 +143,9 @@ const TwitterTweetTask = ({ dragAndDrop, taskId, deleteTask }) => {
                 },
               }}
               id="file-title"
-              {...register(`tasks.data.${taskId}.title`)}
-              error={!!errors.tasks?.data?.[taskId]?.title}
-              helperText={errors.tasks?.data?.[taskId]?.title?.message}
+              {...register(`tasks.${taskId}.title`)}
+              error={!!errors.tasks?.[taskId]?.title}
+              helperText={errors.tasks?.[taskId]?.title?.message}
             />
           </Stack>
         </Stack>
@@ -201,9 +201,9 @@ const TwitterTweetTask = ({ dragAndDrop, taskId, deleteTask }) => {
           minRows={3}
           label="Task Description"
           id="file-description"
-          {...register(`tasks.data.${taskId}.description`)}
-          error={!!errors.tasks?.data?.[taskId]?.description}
-          helperText={errors.tasks?.data?.[taskId]?.description?.message}
+          {...register(`tasks.${taskId}.description`)}
+          error={!!errors.tasks?.[taskId]?.description}
+          helperText={errors.tasks?.[taskId]?.description?.message}
           sx={{
             marginBottom: '60px',
             '& fieldset legend span': {
@@ -222,13 +222,13 @@ const TwitterTweetTask = ({ dragAndDrop, taskId, deleteTask }) => {
           id="tweet-text"
           value={tweetText}
           inputRef={tweetRef}
-          {...register(`tasks.data.${taskId}.task_data.tweet_text`)}
+          {...register(`tasks.${taskId}.task_data.tweet_text`)}
           error={
-            !!(errors.tasks?.data[taskId]?.task_data as TwitterTweetDataError)
+            !!(errors.tasks?.[taskId]?.task_data as TwitterTweetDataError)
               ?.tweet_text
           }
           helperText={
-            (errors.tasks?.data[taskId]?.task_data as TwitterTweetDataError)
+            (errors.tasks?.[taskId]?.task_data as TwitterTweetDataError)
               ?.tweet_text?.message
           }
           onChange={(event) => {
