@@ -48,7 +48,6 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
   const [result, setResult] = useState(null);
 
   const [deletedTasks, setDeletedTasks] = useState<string[]>([]);
-  console.log('deletedTasks', deletedTasks);
 
   const { enqueueSnackbar } = useSnackbar();
 
