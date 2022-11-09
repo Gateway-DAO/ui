@@ -9,6 +9,8 @@ mutation create_gate(
   $image: String!
   $tasks: tasks_arr_rel_insert_input
   $published: gate_state!
+  $claim_limit: Int
+  $expire_date: timestamptz
 ) {
   insert_gates_one(
     object: {
@@ -22,6 +24,8 @@ mutation create_gate(
       image: $image
       tasks: $tasks
       published: $published
+      claim_limit: $claim_limit
+      expire_date: $expire_date
     }
     on_conflict: {
       constraint: gates_pk
@@ -32,6 +36,8 @@ mutation create_gate(
         skills
         image
         published
+        claim_limit
+        expire_date
       ]
     }
   ) {

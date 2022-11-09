@@ -37,7 +37,17 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
     description,
     skills,
     created_by,
-  }) => ({ title, categories, description, skills, created_by }))(oldData);
+    claim_limit,
+    expire_date,
+  }) => ({
+    title,
+    categories,
+    description,
+    skills,
+    created_by,
+    claim_limit,
+    expire_date,
+  }))(oldData);
 
   const methods = useForm({
     resolver: zodResolver(createGateSchema),
@@ -152,6 +162,8 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
           categories: data.categories || [],
           description: data.description,
           skills: data.skills || [],
+          claim_limit: data.claim_limit,
+          expire_date: data.expire_date,
           permissions: {
             ...permissionsData,
             on_conflict: {
@@ -192,7 +204,7 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
                 ROUTES.GATE_PROFILE.replace('[id]', result.insert_gates_one.id)
               );
             } else {
-              await publishGate({
+              publishGate({
                 gate_id: result.insert_gates_one.id,
               });
               setGateId(result.insert_gates_one.id);

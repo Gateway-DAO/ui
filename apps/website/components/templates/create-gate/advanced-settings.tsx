@@ -39,7 +39,6 @@ export function AdvancedSetting({ gateData }) {
   const [collapse, setCollapse] = useState(false);
   const [customLimit, setCustomLimit] = useState<null | number>(null);
   const {
-    register,
     formState: { errors },
     setValue,
     control,
@@ -77,6 +76,7 @@ export function AdvancedSetting({ gateData }) {
             <Stack>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <Controller
+                  control={control}
                   name="expire_date"
                   defaultValue={null}
                   render={({ field }) => (
@@ -86,7 +86,7 @@ export function AdvancedSetting({ gateData }) {
                         inputFormat="MM/DD/YYYY"
                         disablePast
                         value={field?.value}
-                        onChange={(date) => field.onChange(date)}
+                        onChange={(date) => field.onChange(date.toISOString())}
                         renderInput={(params) => <TextField {...params} />}
                       />
                     </>
@@ -108,8 +108,8 @@ export function AdvancedSetting({ gateData }) {
               Limit amount of people who can claim the credential
             </Typography>
             <Controller
-              control={control}
               name="claim_limit"
+              control={control}
               defaultValue={null}
               render={({ field: { onChange, value } }) => (
                 <FormControl>
@@ -143,9 +143,13 @@ export function AdvancedSetting({ gateData }) {
                         return (
                           <StyledToggleButton
                             aria-label={btn.label}
+                            key={btn.value}
                             value={btn.value}
                             color="primary"
-                            size={'large'}
+                            size={'medium'}
+                            sx={{
+                              px: 3,
+                            }}
                             selected={value == btn.value}
                             onClick={() => {
                               onChange(btn.value);
@@ -159,6 +163,7 @@ export function AdvancedSetting({ gateData }) {
 
                     <OutlinedInput
                       aria-label="others"
+                      key={'cutom-input'}
                       size="small"
                       value={customLimit}
                       error={!!errors?.claim_limit}

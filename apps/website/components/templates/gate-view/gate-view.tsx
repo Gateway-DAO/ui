@@ -241,6 +241,11 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
     },
   ];
 
+  const isDateExpired =
+    new Date(gateProps?.expire_date).getTime() < new Date().getTime();
+
+  const isLimitExceeded = gateProps?.claim_limit < gateProps?.holder_count;
+
   return (
     <Grid
       container
@@ -393,55 +398,77 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
           />
 
           <Grid container rowGap={(theme) => theme.spacing(3)}>
-            <Grid item xs={4} sx={{ display: 'flex', alignItems: 'center' }}>
-              <Typography
-                variant="body2"
-                color={(theme) => theme.palette.text.secondary}
-              >
-                Expire date
-              </Typography>
-            </Grid>
-            <Grid item xs={8}>
-              <Typography
-                variant="subtitle2"
-                color={'#FFA726'}
-                fontWeight={600}
-              >
-                {' '}
-                Oct 24th, 2022{' '}
-                <Chip
-                  sx={{ marginLeft: 2 }}
-                  label="expired"
-                  color={'warning'}
-                  variant="outlined"
-                />
-              </Typography>
-            </Grid>
+            {gateProps?.expire_date && (
+              <>
+                <Grid
+                  item
+                  xs={4}
+                  sx={{ display: 'flex', alignItems: 'center' }}
+                >
+                  <Typography
+                    variant="body2"
+                    color={(theme) => theme.palette.text.secondary}
+                  >
+                    Expire date
+                  </Typography>
+                </Grid>
+                <Grid item xs={8}>
+                  <Typography
+                    variant="subtitle2"
+                    color={isDateExpired ? '#FFA726' : 'secondary'}
+                    fontWeight={600}
+                  >
+                    {new Date(gateProps.expire_date).toLocaleDateString(
+                      'en-us',
+                      { year: 'numeric', month: 'short', day: 'numeric' }
+                    )}
+                    {isDateExpired && (
+                      <Chip
+                        sx={{ marginLeft: 2 }}
+                        label="expired"
+                        color={'warning'}
+                        variant="outlined"
+                      />
+                    )}
+                  </Typography>
+                </Grid>
+              </>
+            )}
 
-            <Grid item xs={4} sx={{ display: 'flex', alignItems: 'center' }}>
-              <Typography
-                variant="body2"
-                color={(theme) => theme.palette.text.secondary}
-              >
-                Claimed
-              </Typography>
-            </Grid>
-            <Grid item xs={8}>
-              <Typography
-                variant="subtitle2"
-                color={'#FFA726'}
-                fontWeight={600}
-              >
-                {' '}
-                99 of 100{' '}
-                <Chip
-                  sx={{ marginLeft: 2 }}
-                  label="completed"
-                  color={'warning'}
-                  variant="outlined"
-                />
-              </Typography>
-            </Grid>
+            {gateProps?.claim_limit && (
+              <>
+                <Grid
+                  item
+                  xs={4}
+                  sx={{ display: 'flex', alignItems: 'center' }}
+                >
+                  <Typography
+                    variant="body2"
+                    color={(theme) => theme.palette.text.secondary}
+                  >
+                    Claimed
+                  </Typography>
+                </Grid>
+                <Grid item xs={8}>
+                  <Typography
+                    variant="subtitle2"
+                    color={isLimitExceeded ? '#FFA726' : 'secondary'}
+                    fontWeight={600}
+                  >
+                    {' '}
+                    {gateProps?.holder_count} of {gateProps?.claim_limit}{' '}
+                    {isLimitExceeded && (
+                      <Chip
+                        sx={{ marginLeft: 2 }}
+                        label="completed"
+                        color={'warning'}
+                        variant="outlined"
+                      />
+                    )}
+                  </Typography>
+                </Grid>
+              </>
+            )}
 
             {gateProps?.holder_count > 0 && (
               <>
@@ -576,6 +603,7 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
           isAdmin={isAdmin}
           published={published}
           setOpen={setOpen}
+          isCredentialExpired={isDateExpired || isLimitExceeded}
         />
       )}
       <ConfirmDialog

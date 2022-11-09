@@ -31,6 +31,8 @@ query gate($id: uuid!) {
         ...file
       }
     }
+    claim_limit
+    expire_date
     holder_count
     holders(limit: 4) {
       id
