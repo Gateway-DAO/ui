@@ -69,6 +69,7 @@
     "react-use": "^17.3.2",
     "react-virtuoso": "^2.19.1",
     "regenerator-runtime": "0.13.7",
+    "socket.io-client": "^4.5.3",
     "swiper": "^8.1.4",
     "tslib": "^2.0.0",
     "twitter-api-sdk": "^1.2.1",
