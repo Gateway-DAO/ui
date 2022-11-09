@@ -43,11 +43,11 @@ export function SocialLinks<TFormSchema extends FieldValues = FieldValues>({
       <Button
         variant="outlined"
         type="button"
-        onClick={() => append({})}
+        onClick={() => append({ network: '', url: '' } as any)}
         startIcon={<Add />}
         sx={{
           alignSelf: 'flex-start',
-          mt: 2
+          mt: 2,
         }}
       >
         {t('common:fields.add-link')}
