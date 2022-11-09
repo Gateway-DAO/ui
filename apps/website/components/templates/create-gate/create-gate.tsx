@@ -48,6 +48,7 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
   const [result, setResult] = useState(null);
 
   const [deletedTasks, setDeletedTasks] = useState<string[]>([]);
+  console.log('deletedTasks', deletedTasks);
 
   const { enqueueSnackbar } = useSnackbar();
 
@@ -122,11 +123,13 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
     }
     if (deletedTasks.length > 0) {
       await Promise.all(
-        deletedTasks.map((task_id) =>
-          deleteTask.mutateAsync({
-            task_id,
-          })
-        )
+        deletedTasks
+          .filter((task) => !!task)
+          .map((task_id) =>
+            deleteTask.mutateAsync({
+              task_id,
+            })
+          )
       );
     }
     if (data.title) {
@@ -354,7 +357,7 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
                 <Stack
                   direction="column"
                   sx={{
-                    margin: 'auto',
+                    marginLeft: 'auto',
                     width: '100%',
                     maxWidth: { xs: '100%', md: '100%', lg: '80%' },
                   }}
