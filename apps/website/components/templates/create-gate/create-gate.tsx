@@ -1,3 +1,4 @@
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
@@ -24,7 +25,13 @@ import { GateImageCard } from './gate-image-card/gate-image-card';
 import { GateTypeChanger } from './gate-type-selector/gate-type-changer';
 import { GateTypeSelector } from './gate-type-selector/gate-type-selector';
 import { createGateSchema, CreateGateData, GateType } from './schema';
-import { DirectWallets } from './tasks/direct/direct-wallets';
+const DirectWallets = dynamic(
+  () =>
+    import('./tasks/direct/direct-wallets').then((mod) => mod.DirectWallets),
+  {
+    ssr: false,
+  }
+);
 
 type CreateGateProps = {
   oldData?: CreateGateData;

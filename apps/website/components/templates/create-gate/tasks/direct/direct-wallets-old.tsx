@@ -1,4 +1,3 @@
-<<<<<<< Updated upstream
 import useTranslation from 'next-translate/useTranslation';
 import { useRef, useState } from 'react';
 
@@ -15,14 +14,8 @@ import { Button, Paper, Stack, TextField } from '@mui/material';
 import { CreateGateData, Gate_Whitelisted_Wallet } from '../../schema';
 import { DirectWalletsChips } from './direct-wallets-chips';
 import { DirectWalletsHeader } from './direct-wallets-header';
-=======
-import { useEffect } from 'react';
->>>>>>> Stashed changes
 
-import { io } from 'socket.io-client';
-const socket = io(process.env.NEXT_PUBLIC_NODE_ENDPOINT);
 export function DirectWallets() {
-<<<<<<< Updated upstream
   const {
     field: { onChange, value, ref },
     fieldState: { error },
@@ -114,12 +107,101 @@ export function DirectWallets() {
     reader.onload = (e) => {
       const text = e.target?.result as string;
       onParseText(text);
-=======
-  useEffect(() => {
-    return () => {
-      socket.disconnect();
->>>>>>> Stashed changes
     };
-  }, []);
-  return <></>;
+    reader.readAsText(file);
+  };
+
+  const [dropBond, { over: isOver }] = useDropArea({
+    onFiles: readFiles,
+  });
+
+  return (
+    <Paper
+      elevation={1}
+      sx={[
+        {
+          px: { xs: 2, lg: 6 },
+          py: { xs: 3, lg: 6 },
+          display: 'flex',
+          flexFlow: 'column',
+          gap: 4,
+          transition: 'opacity 0.25s ease',
+        },
+        isOver && {
+          opacity: 0.5,
+        },
+      ]}
+      {...dropBond}
+    >
+      <DirectWalletsHeader
+        readFiles={readFiles}
+        walletsQueries={walletsQueries}
+      ></DirectWalletsHeader>
+      <Stack direction="column" gap={1}>
+        <TextField
+          label={t('gate-new:direct.label')}
+          sx={{
+            display: 'flex',
+            '.MuiInputBase-root': {
+              flexDirection: 'column',
+              p: 1.75,
+              gap: 1,
+              alignItems: 'flex-start',
+            },
+            '.MuiInputBase-input': { p: 0 },
+          }}
+          InputProps={{
+            startAdornment: wallets?.length ? (
+              <DirectWalletsChips
+                wallets={wallets}
+                walletsQueries={walletsQueries}
+                onDelete={onDelete}
+                onEdit={onEdit}
+              ></DirectWalletsChips>
+            ) : null,
+          }}
+          helperText={
+            // Wrong type error
+            error?.message ?? t('gate-new:direct.input-helper')
+          }
+          value={inputValue}
+          inputRef={(input) => {
+            inputRef.current = input;
+            ref(input);
+          }}
+          error={!!error?.message}
+          onKeyDown={(event) => {
+            if (
+              event.key === 'Enter' ||
+              event.key === ',' ||
+              event.code === 'Space'
+            ) {
+              event.preventDefault();
+              if (inputValue.length) {
+                onParseText(inputValue);
+                setInputValue('');
+              }
+            }
+          }}
+          onChange={(e) => {
+            setInputValue(e.target.value);
+          }}
+          onPaste={(e) => {
+            e.preventDefault();
+            const text = e.clipboardData.getData('text');
+            onParseText(text);
+            setInputValue('');
+          }}
+        />
+        <Button
+          sx={{ alignSelf: 'flex-end' }}
+          startIcon={<Delete />}
+          variant="outlined"
+          onClick={() => onChange([])}
+        >
+          {t('actions.clear')}
+        </Button>
+      </Stack>
+    </Paper>
+  );
 }
