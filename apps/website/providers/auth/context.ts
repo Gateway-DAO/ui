@@ -6,6 +6,7 @@ import { SessionUser } from '../../types/user';
 
 type Context = {
   me?: SessionUser;
+  token?: string;
   gqlAuthMethods: GqlMethods;
   authenticated: boolean;
   onSignOut: () => void;

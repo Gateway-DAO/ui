@@ -58,6 +58,7 @@ export function AuthProvider({
     <AuthContext.Provider
       value={{
         me,
+        token,
         gqlAuthMethods,
         onOpenLogin: openConnectModal,
         onSignOut,
