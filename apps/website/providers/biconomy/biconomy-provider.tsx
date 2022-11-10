@@ -17,6 +17,7 @@ type Props = {
   contractAddress: string;
 };
 
+let provider;
 export let biconomy: Biconomy;
 export let contract: ethers.Contract;
 export let contractInterface: ethers.ContractInterface;
@@ -27,6 +28,26 @@ export type MintStatus = {
     isMinted: boolean;
     error: any;
   };
+};
+
+const correctProvider = async () => {
+  if (typeof window.ethereum !== 'undefined') {
+    provider = window.ethereum;
+
+    // edge case if MM and CBW are both installed
+    if (window.ethereum?.providers?.length) {
+      window.ethereum.providers.forEach(async (p) => {
+        if (p.isMetaMask) provider = p;
+      });
+    }
+
+    await provider.request({
+      method: 'eth_requestAccounts',
+      params: [],
+    });
+  }
+
+  return provider;
 };
 
 export function BiconomyProvider({
@@ -55,14 +76,8 @@ export function BiconomyProvider({
         RPC[process.env.NEXT_PUBLIC_MINT_CHAIN]
       );
 
-      const prov = (data?.provider as any)?.provider;
-
-      if (!prov) {
-        return refetch();
-      }
-
       biconomy = new Biconomy(jsonRpcProvider, {
-        walletProvider: prov,
+        walletProvider: signerProvider || (await correctProvider()),
         apiKey: process.env.NEXT_PUBLIC_WEB3_BICONOMY_API_KEY,
         debug: process.env.NODE_ENV === 'development',
       });
@@ -87,6 +102,7 @@ export function BiconomyProvider({
         });
     },
   });
+  const signerProvider = (signer?.provider as any)?.provider;
 
   // From auth
   const { me, gqlAuthMethods } = useAuth();
@@ -116,6 +132,12 @@ export function BiconomyProvider({
       },
     }
   );
+
+  useEffect(() => {
+    if (!signer && status == 'success') {
+      refetch();
+    }
+  }, [signer, status, refetch]);
 
   /**
    * It mints a new NFT token.
