@@ -1,5 +1,11 @@
-import { FieldError, NestedValue } from 'react-hook-form';
+import { FieldError } from 'react-hook-form';
+import { PartialDeep } from 'type-fest';
 import { z } from 'zod';
+
+import {
+  Gates,
+  Whitelisted_Wallets,
+} from '../../../services/graphql/types.generated';
 
 // Creator
 export type Creator = {
@@ -7,37 +13,25 @@ export type Creator = {
   name: string;
 };
 
+export type Gate_Whitelisted_Wallet = PartialDeep<
+  Pick<Whitelisted_Wallets, 'wallet' | 'ens'>
+>;
+
 // Draft Gate
-export type DraftGateTypes = {
+export type CreateGateData = {
   id?: string;
-  title: string;
   categories: string[];
-  description: string;
-  image: string;
   skills: string[];
-  created_by: Creator[];
-  tasks: DraftTasksSchema;
-};
+} & Required<
+  Pick<Gates, 'title' | 'categories' | 'skills' | 'image' | 'description'>
+> &
+  Required<{ creator: Pick<Gates['creator'], 'id' | 'name'> }> & {
+    type: 'task_based' | 'direct';
+    whitelisted_wallets?: Gate_Whitelisted_Wallet[];
+    tasks?: Task[];
+  };
 
-// Create Gate
-export type CreateGateTypes = {
-  id?: string;
-  title: string;
-  categories: NestedValue<string[]>;
-  description: string;
-  image: string;
-  skills: NestedValue<string[]>;
-  created_by: Creator[];
-  tasks: TasksSchema;
-};
-
-// Tasks
-export type TasksSchema = {
-  data: Array<Task>;
-};
-
-// Tasks when we get them back from a previous draft
-export type DraftTasksSchema = Array<Task>;
+export type GateType = CreateGateData['type'];
 
 // Task
 export type SelfVerifyTask = {
@@ -561,37 +555,64 @@ export const taskGithubPRSchema = z.object({
   task_data: githubPRDataSchema,
 });
 
-export const createGateSchema = z.object({
-  title: z.string().min(2, 'The title must contain at least 2 character(s)'),
-  categories: z.array(z.string()).min(1, 'Please select at least 1 category'),
+const gateBase = z.object({
+  title: z
+    .string({ required_error: 'Title is required' })
+    .min(2, 'The title must contain at least 2 character(s)'),
+  categories: z
+    .array(z.string({ required_error: 'Categories is required' }), {
+      invalid_type_error: 'Categories is required',
+    })
+    .min(1, 'Please select at least 1 category'),
   description: z
-    .string()
+    .string({ required_error: 'Description is required' })
     .min(2, 'The description must contain at least 2 character(s)'),
   image: z.string({ required_error: 'Image is required' }).min(2),
-  skills: z.array(z.string()).min(1, 'Please select at least 1 skill'),
-  created_by: z.array(
-    z.object({
-      id: z.string(),
-      name: z.string(),
+  skills: z
+    .array(z.string({ required_error: 'Skills is required' }), {
+      invalid_type_error: 'Skills is required',
     })
-  ),
-  tasks: z.object({
-    data: z
-      .array(
-        z.discriminatedUnion('task_type', [
-          taskSelfVerifySchema,
-          taskMeetingCodeSchema,
-          taskQuizSchema,
-          taskSnapshotSchema,
-          taskHoldTokenSchema,
-          taskHoldNFTSchema,
-          TwitterFollowProfileSchema,
-          taskTwitterTweetSchema,
-          taskTwitterRetweetSchema,
-          taskGithubContributeSchema,
-          taskGithubPRSchema,
-        ])
-      )
-      .nonempty({ message: 'A credential needs to have at least one task.' }),
+    .min(1, 'Please select at least 1 skill'),
+  creator: z.object({
+    id: z.string(),
+    name: z.string(),
   }),
 });
+
+const taskGate = gateBase.augment({
+  type: z.literal('task_based' as GateType),
+  tasks: z
+    .array(
+      z.discriminatedUnion('task_type', [
+        taskSelfVerifySchema,
+        taskMeetingCodeSchema,
+        taskQuizSchema,
+        taskSnapshotSchema,
+        taskHoldTokenSchema,
+        taskHoldNFTSchema,
+        TwitterFollowProfileSchema,
+        taskTwitterTweetSchema,
+        taskTwitterRetweetSchema,
+        taskGithubContributeSchema,
+        taskGithubPRSchema,
+      ])
+    )
+    .nonempty({ message: 'A credential needs to have at least one task.' }),
+});
+
+const directGate = gateBase.augment({
+  type: z.literal('direct' as GateType),
+  whitelisted_wallets: z
+    .array(
+      z.object({
+        wallet: z.string(),
+        ens: z.string().optional(),
+      })
+    )
+    .min(1, 'Please add at least 1 wallet'),
+});
+
+export const createGateSchema = z.discriminatedUnion('type', [
+  taskGate,
+  directGate,
+]);

@@ -18,7 +18,7 @@ import {
 
 import { CircleWithNumber } from '../../../atoms/circle-with-number';
 import {
-  CreateGateTypes,
+  CreateGateData,
   HoldTokenDataError,
 } from '../../../templates/create-gate/schema';
 import { mockChains } from './__mock__';
@@ -29,16 +29,16 @@ const HoldTokenTask = ({ dragAndDrop, taskId, deleteTask }) => {
     setValue,
     getValues,
     formState: { errors },
-  } = useFormContext<CreateGateTypes>();
+  } = useFormContext<CreateGateData>();
 
   const formValues = getValues();
 
   useEffect(() => {
-    if (formValues.tasks.data[taskId]?.title === '') {
-      setValue(`tasks.data.${taskId}.title`, 'Untitled Requirement');
+    if (formValues.tasks[taskId]?.title === '') {
+      setValue(`tasks.${taskId}.title`, 'Untitled Requirement');
     }
-    setValue(`tasks.data.${taskId}.task_type`, 'token_hold');
-  }, [taskId, setValue, formValues.tasks.data]);
+    setValue(`tasks.${taskId}.task_type`, 'token_hold');
+  }, [taskId, setValue, formValues.tasks]);
 
   useEffect(() => {
     setTaskVisible(dragAndDrop);
@@ -104,9 +104,9 @@ const HoldTokenTask = ({ dragAndDrop, taskId, deleteTask }) => {
                 },
               }}
               id="task-title"
-              {...register(`tasks.data.${taskId}.title`)}
-              error={!!errors.tasks?.data[taskId]?.title}
-              helperText={errors.tasks?.data[taskId]?.title?.message}
+              {...register(`tasks.${taskId}.title`)}
+              error={!!errors.tasks?.[taskId]?.title}
+              helperText={errors.tasks?.[taskId]?.title?.message}
             />
           </Stack>
         </Stack>
@@ -162,9 +162,9 @@ const HoldTokenTask = ({ dragAndDrop, taskId, deleteTask }) => {
           minRows={3}
           label="Task Requirement"
           id="task-description"
-          {...register(`tasks.data.${taskId}.description`)}
-          error={!!errors.tasks?.data[taskId]?.description}
-          helperText={errors.tasks?.data[taskId]?.description?.message}
+          {...register(`tasks.${taskId}.description`)}
+          error={!!errors.tasks?.[taskId]?.description}
+          helperText={errors.tasks?.[taskId]?.description?.message}
           sx={{
             marginBottom: '60px',
             '& fieldset legend span': {
@@ -177,7 +177,7 @@ const HoldTokenTask = ({ dragAndDrop, taskId, deleteTask }) => {
           <Select
             id="chains"
             sx={{ maxWidth: { md: '50%', xs: '100%' } }}
-            {...register(`tasks.data.${taskId}.task_data.chain`)}
+            {...register(`tasks.${taskId}.task_data.chain`)}
           >
             <MenuItem value="">
               <em>None</em>
@@ -193,13 +193,13 @@ const HoldTokenTask = ({ dragAndDrop, taskId, deleteTask }) => {
           required
           label="Token address"
           sx={{ marginTop: '15px', maxWidth: { md: '50%', xs: '100%' } }}
-          {...register(`tasks.data.${taskId}.task_data.token_address`)}
+          {...register(`tasks.${taskId}.task_data.token_address`)}
           error={
-            !!(errors.tasks?.data[taskId]?.task_data as HoldTokenDataError)
+            !!(errors.tasks?.[taskId]?.task_data as HoldTokenDataError)
               ?.token_address
           }
           helperText={
-            (errors.tasks?.data[taskId]?.task_data as HoldTokenDataError)
+            (errors.tasks?.[taskId]?.task_data as HoldTokenDataError)
               ?.token_address?.message
           }
         />
@@ -207,18 +207,18 @@ const HoldTokenTask = ({ dragAndDrop, taskId, deleteTask }) => {
           required
           label="Quantity"
           sx={{ marginTop: '15px', maxWidth: { md: '50%', xs: '100%' } }}
-          {...register(`tasks.data.${taskId}.task_data.quantity`, {
+          {...register(`tasks.${taskId}.task_data.quantity`, {
             min: 0,
             valueAsNumber: true,
           })}
           type="number"
           error={
-            !!(errors.tasks?.data[taskId]?.task_data as HoldTokenDataError)
+            !!(errors.tasks?.[taskId]?.task_data as HoldTokenDataError)
               ?.quantity
           }
           helperText={
-            (errors.tasks?.data[taskId]?.task_data as HoldTokenDataError)
-              ?.quantity?.message
+            (errors.tasks?.[taskId]?.task_data as HoldTokenDataError)?.quantity
+              ?.message
           }
         />
       </FormControl>

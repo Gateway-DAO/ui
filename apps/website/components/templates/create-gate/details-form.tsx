@@ -8,26 +8,18 @@ import { useAuth } from '../../../providers/auth';
 import CategoriesInput from '../../molecules/categories-input';
 import CreatedByInput from '../../molecules/creators-input';
 import SkillsInput from '../../molecules/skills-input';
-import { CreateGateTypes, Creator } from './schema';
+import { CreateGateData, Creator } from './schema';
 
-export function GateDetailsForm({ gateData }) {
+export function GateDetailsForm() {
   const {
     register,
     formState: { errors },
     setValue,
-  } = useFormContext<CreateGateTypes>();
+    getValues,
+  } = useFormContext<CreateGateData>();
   const { me } = useAuth();
-  const { title, categories, description, skills } = gateData;
-  const creators = useMemo(() => [{ id: me?.id, name: me?.name }], [me]);
-
-  useEffect(() => {
-    setValue('title', title);
-    setValue('categories', categories);
-    setValue('description', description);
-    setValue('skills', skills);
-    setValue('created_by', creators);
-    setValue('tasks', { data: [] });
-  }, [title, categories, description, skills, creators, setValue]);
+  const creators = useMemo(() => ({ id: me?.id, name: me?.name }), [me]);
+  const { skills, categories } = getValues();
 
   return (
     <Stack direction="column" gap={2}>
@@ -97,22 +89,22 @@ export function GateDetailsForm({ gateData }) {
       />
       <CreatedByInput
         label="Created By"
-        id="created_by"
-        name="created_by"
+        id="creator"
+        name="creator"
         disabled
-        {...register('created_by')}
-        creators={creators}
-        defaultValue={creators}
-        error={!!errors.created_by}
-        errors={errors.created_by}
-        helperText={errors.created_by && 'Invalid creator added'}
+        {...register('creator')}
+        creators={[creators]}
+        defaultValue={[creators]}
+        error={!!errors.creator}
+        errors={errors.creator}
+        helperText={errors.creator && 'Invalid creator added'}
         sx={{
           width: '100%',
           '& div fieldset legend span': {
             marginRight: '6px',
           },
         }}
-        set={(created_by: Creator[]) => setValue('created_by', created_by)}
+        set={(creator) => setValue('creator', creator)}
       />
     </Stack>
   );

@@ -18,7 +18,7 @@ import {
 
 import { CircleWithNumber } from '../../../atoms/circle-with-number';
 import {
-  CreateGateTypes,
+  CreateGateData,
   FileTaskDataError,
 } from '../../../templates/create-gate/schema';
 
@@ -29,7 +29,7 @@ const FileLinkTask = ({ dragAndDrop, taskId, deleteTask }) => {
     getValues,
     formState: { errors },
     control,
-  } = useFormContext<CreateGateTypes>();
+  } = useFormContext<CreateGateData>();
 
   const formValues = getValues();
 
@@ -38,15 +38,15 @@ const FileLinkTask = ({ dragAndDrop, taskId, deleteTask }) => {
     append,
     remove,
   } = useFieldArray({
-    name: `tasks.data.${taskId}.task_data.files`,
+    name: `tasks.${taskId}.task_data.files`,
     control,
   });
 
   useEffect(() => {
-    if (formValues.tasks.data[taskId]?.title === '') {
-      setValue(`tasks.data.${taskId}.title`, 'Untitled Requirement');
+    if (formValues.tasks[taskId]?.title === '') {
+      setValue(`tasks.${taskId}.title`, 'Untitled Requirement');
     }
-  }, [setValue, taskId, formValues.tasks.data]);
+  }, [setValue, taskId, formValues.tasks]);
 
   useEffect(() => {
     setTaskVisible(dragAndDrop);
@@ -112,9 +112,9 @@ const FileLinkTask = ({ dragAndDrop, taskId, deleteTask }) => {
                 },
               }}
               id="file-title"
-              {...register(`tasks.data.${taskId}.title`)}
-              error={!!errors.tasks?.data?.[taskId]?.title}
-              helperText={errors.tasks?.data?.[taskId]?.title?.message}
+              {...register(`tasks.${taskId}.title`)}
+              error={!!errors.tasks?.[taskId]?.title}
+              helperText={errors.tasks?.[taskId]?.title?.message}
             />
           </Stack>
         </Stack>
@@ -170,9 +170,9 @@ const FileLinkTask = ({ dragAndDrop, taskId, deleteTask }) => {
           minRows={3}
           label="Requirement Description"
           id="file-description"
-          {...register(`tasks.data.${taskId}.description`)}
-          error={!!errors.tasks?.data?.[taskId]?.description}
-          helperText={errors.tasks?.data?.[taskId]?.description?.message}
+          {...register(`tasks.${taskId}.description`)}
+          error={!!errors.tasks?.[taskId]?.description}
+          helperText={errors.tasks?.[taskId]?.description?.message}
           sx={{
             marginBottom: '60px',
             '& fieldset legend span': {
@@ -193,20 +193,14 @@ const FileLinkTask = ({ dragAndDrop, taskId, deleteTask }) => {
                 <TextField
                   required
                   label="File Title"
-                  {...register(
-                    `tasks.data.${taskId}.task_data.files.${idx}.title`
-                  )}
+                  {...register(`tasks.${taskId}.task_data.files.${idx}.title`)}
                   error={
-                    !!(
-                      errors.tasks?.data?.[taskId]
-                        ?.task_data as FileTaskDataError
-                    )?.files?.[idx]?.title
+                    !!(errors.tasks?.[taskId]?.task_data as FileTaskDataError)
+                      ?.files?.[idx]?.title
                   }
                   helperText={
-                    (
-                      errors.tasks?.data?.[taskId]
-                        ?.task_data as FileTaskDataError
-                    )?.files?.[idx]?.title?.message
+                    (errors.tasks?.[taskId]?.task_data as FileTaskDataError)
+                      ?.files?.[idx]?.title?.message
                   }
                   sx={{ minWidth: { md: '60%', xs: '80%' } }}
                 />
@@ -230,15 +224,14 @@ const FileLinkTask = ({ dragAndDrop, taskId, deleteTask }) => {
                 minRows={3}
                 label="File Description"
                 {...register(
-                  `tasks.data.${taskId}.task_data.files.${idx}.description`
+                  `tasks.${taskId}.task_data.files.${idx}.description`
                 )}
                 error={
-                  !!(
-                    errors.tasks?.data?.[taskId]?.task_data as FileTaskDataError
-                  )?.files?.[idx]?.description
+                  !!(errors.tasks?.[taskId]?.task_data as FileTaskDataError)
+                    ?.files?.[idx]?.description
                 }
                 helperText={
-                  (errors.tasks?.data?.[taskId]?.task_data as FileTaskDataError)
+                  (errors.tasks?.[taskId]?.task_data as FileTaskDataError)
                     ?.files?.[idx]?.description?.message
                 }
                 sx={{
@@ -250,16 +243,13 @@ const FileLinkTask = ({ dragAndDrop, taskId, deleteTask }) => {
               <TextField
                 required
                 label="Link"
-                {...register(
-                  `tasks.data.${taskId}.task_data.files.${idx}.link`
-                )}
+                {...register(`tasks.${taskId}.task_data.files.${idx}.link`)}
                 error={
-                  !!(
-                    errors.tasks?.data?.[taskId]?.task_data as FileTaskDataError
-                  )?.files?.[idx]?.link
+                  !!(errors.tasks?.[taskId]?.task_data as FileTaskDataError)
+                    ?.files?.[idx]?.link
                 }
                 helperText={
-                  (errors.tasks?.data?.[taskId]?.task_data as FileTaskDataError)
+                  (errors.tasks?.[taskId]?.task_data as FileTaskDataError)
                     ?.files?.[idx]?.link?.message
                 }
               />

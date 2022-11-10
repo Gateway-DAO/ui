@@ -5,7 +5,26 @@
     "prs": "Pull requests created and merged",
     "action": "Connect Github"
   },
+  "twitter": {
+    "connect": "Connect your account",
+    "description": "To complete this task, you need to authorize Gateway access your Twitter account.",
+    "action": "Connect Twitter"
+  },
   "tasks": {
+    "twitter_tweet": {
+      "description": "You must post the tweet",
+      "action": "Tweet"
+    },
+    "twitter_retweet": {
+      "description": "You must retweet the post",
+      "action": "Retweet"
+    },
+    "twitter_follow": {
+      "description": "You must follow the profile",
+      "action": "Follow",
+      "followers": "Followers",
+      "following": "Following"
+    },
     "github_contribute": {
       "description": "You must contribute to"
     },
@@ -13,6 +32,7 @@
       "description": "You must have created and merged this number of pull requests",
       "action": "Verify"
     },
+    "check_action": "Verify",
     "completed": "Task completed at "
   }
 }

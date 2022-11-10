@@ -1,4 +1,4 @@
-import { PropsWithChildren } from 'react';
+import { PropsWithChildren, useEffect, useState } from 'react';
 
 import { MotionBox } from '@gateway/ui';
 
@@ -8,7 +8,7 @@ import { useNav } from '../../../hooks/use-nav';
 import { Drawer } from './drawer';
 import { withGradientAfter } from './styles';
 import { DashboardTemplateProps } from './types';
-// eslint-disable-next-line @typescript-eslint/ban-types
+import { useWindowSize } from '../../../hooks/use-window-size';
 
 /* TODO: buttons to next/link */
 
@@ -19,6 +19,7 @@ export function DashboardTemplate({
   showExplore = true,
 }: PropsWithChildren<DashboardTemplateProps>) {
   const { isOpen } = useNav();
+  const windowSize = useWindowSize();
 
   return (
     <MotionBox
@@ -52,6 +53,8 @@ export function DashboardTemplate({
             [theme.breakpoints.down('md')]: {
               transition: 'transform 225ms ease-out',
             },
+            height: '100%',
+            minHeight: `${windowSize.height}px`
           }),
           isOpen &&
             ((theme) => ({

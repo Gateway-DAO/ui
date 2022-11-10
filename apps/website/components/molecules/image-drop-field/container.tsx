@@ -5,7 +5,7 @@ import { DropAreaBond } from 'react-use/lib/useDrop';
 
 import { Box } from '@mui/material';
 
-import { CreateGateTypes } from '../../templates/create-gate/schema';
+import { CreateGateData } from '../../templates/create-gate/schema';
 type Props = {
   hasImage?: boolean;
   isOver?: boolean;
@@ -22,7 +22,7 @@ export function Container({
 }: PropsWithChildren<Props>) {
   const {
     formState: { errors },
-  } = useFormContext<CreateGateTypes>();
+  } = useFormContext<CreateGateData>();
   return (
     <Box
       component="label"

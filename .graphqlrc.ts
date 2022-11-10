@@ -26,13 +26,14 @@ const generateConfig = {
 
 const config: IGraphQLConfig = {
   schema: '',
+  documents: [],
   extensions: {
     codegen: {
       generates: {
         './apps/website/services-cyberconnect/types.generated.ts': {
           ...generateConfig,
           schema: process.env.NEXT_PUBLIC_CYBERCONNECT_ENDPOINT as string,
-          documents: ['apps/website/services-cyberconnect/**/*.{graphql,gql}'],
+          documents: ['apps/website/services-cyberconnect/**/*.gql'],
         },
         './apps/website/services/graphql/types.generated.ts': {
           ...generateConfig,
@@ -43,7 +44,7 @@ const config: IGraphQLConfig = {
               },
             },
           },
-          documents: ['apps/website/services/**/*.{graphql,gql}'],
+          documents: ['apps/website/services/**/*.gql'],
         }
       },
     },
