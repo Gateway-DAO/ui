@@ -20,10 +20,7 @@ export function ConnectionHandlerGithub(
   const [githubRedirectUrl, setGithubRedirectUrl, removeGithubRedirectUrl] =
     useLocalStorage('github_redirect_url');
 
-  const client_id =
-    process.env.NODE_ENV === 'development'
-      ? process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID_DEV
-      : process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID_PROD;
+  const client_id = process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID;
 
   const connect = async () => {
     setGithubAccessToken('');
