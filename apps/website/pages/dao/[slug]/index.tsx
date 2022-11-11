@@ -21,7 +21,8 @@ export default function DaoProfilePage({
 
   const { me, gqlAuthMethods } = useAuth();
 
-  const { data } = useQuery(
+  // TODO: remove refetch and think about a better way to do this
+  const { data, refetch } = useQuery(
     ['dao', slug],
     () =>
       gqlAnonMethods.dao_profile_by_slug({
@@ -40,21 +41,11 @@ export default function DaoProfilePage({
     me?.following_dao?.find((fdao) => fdao.dao_id === dao?.id)?.dao?.is_admin ??
     false;
 
-  const peopleQuery = useQuery(
-    ['dao-people', dao?.id],
-    () => gqlAnonMethods.dao_profile_people({ id: dao.id }),
-    { enabled: !!dao?.id }
-  );
-
   const credentialsQuery = useQuery(
     ['dao-gates', dao?.id],
     () => gqlAuthMethods.dao_gates_tab({ id: dao.id }),
     { enabled: !!dao?.id }
   );
-
-  const onResetPeopleQuery = () => {
-    peopleQuery.refetch();
-  };
 
   // TODO: validate this
   useEffect(() => {
@@ -62,6 +53,7 @@ export default function DaoProfilePage({
   }, [me]);
 
   if (!dao) return null;
+
   return (
     <DashboardTemplate
       currentDao={dao}
@@ -74,10 +66,9 @@ export default function DaoProfilePage({
       <DaoProfileProvider
         dao={dao}
         isAdmin={isAdmin}
-        followers={peopleQuery.data}
-        followersIsLoaded={peopleQuery.isSuccess}
-        onRefetchFollowers={onResetPeopleQuery}
+        followersCount={dao.followers_aggregate.aggregate.count}
         credentials={credentialsQuery.data}
+        onRefetchFollowers={refetch}
       >
         <DaoProfileTemplate />
       </DaoProfileProvider>
