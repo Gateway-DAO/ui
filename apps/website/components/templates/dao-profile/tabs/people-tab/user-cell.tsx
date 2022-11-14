@@ -7,6 +7,7 @@ import { Box, Stack, Typography } from '@mui/material';
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
 
+import { ROUTES } from '../../../../../constants/routes';
 import { useAuth } from '../../../../../providers/auth';
 import { Users } from '../../../../../services/graphql/types.generated';
 import { AdminBadge } from '../../../../atoms/admin-badge';
@@ -26,8 +27,10 @@ const FollowButtonUser = dynamic<any>(
 
 type Props = {
   user: PartialDeep<Users>;
+  size: number;
+  start: number;
 };
-export function UserCell({ user }: Props) {
+export function UserCell({ user, size, start }: Props) {
   const { me } = useAuth();
   const { isAdmin } = useDaoProfile();
 
@@ -36,19 +39,22 @@ export function UserCell({ user }: Props) {
     false;
 
   return (
-    <TableRow hover role="checkbox" tabIndex={-1}>
-      <TableCell>
-        <Link href={'/profile/' + user.username} passHref>
-          <Stack
-            alignItems="center"
-            direction="row"
-            gap={1}
-            component="a"
-            sx={{
-              textDecoration: 'none',
-              color: 'text.primary',
-            }}
-          >
+    <TableRow
+      hover
+      role="checkbox"
+      tabIndex={-1}
+      style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: `${size}px`,
+        transform: `translateY(${start}px)`,
+      }}
+    >
+      <Link passHref href={ROUTES.PROFILE.replace('[username]', user.username)}>
+        <TableCell sx={{ cursor: 'pointer', width: '100%' }}>
+          <Stack alignItems="center" direction="row" gap={1}>
             <AdminBadge isAdmin={isUserAdminOfDao}>
               <AvatarFile file={user.picture} fallback="/avatar.png">
                 {user.name?.[0]}
@@ -69,8 +75,8 @@ export function UserCell({ user }: Props) {
               </Typography>
             </Box>
           </Stack>
-        </Link>
-      </TableCell>
+        </TableCell>
+      </Link>
 
       {me?.id !== user.id ? (
         <>

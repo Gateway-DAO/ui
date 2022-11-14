@@ -11,16 +11,15 @@ import {
 type DaoProfileContextProps = {
   isAdmin: boolean;
   dao: PartialDeep<Daos>;
-  followers?: Dao_Profile_PeopleQuery;
+  followersCount: number;
   credentials?: Dao_Gates_TabQuery;
-  followersIsLoaded: boolean;
   onRefetchFollowers: () => void;
 };
 
 export const DaoProfileContext = createContext<DaoProfileContextProps>({
   dao: {},
+  followersCount: 0,
   isAdmin: false,
-  followersIsLoaded: false,
   onRefetchFollowers: () => {},
 });
 export const useDaoProfile = () => useContext(DaoProfileContext);
