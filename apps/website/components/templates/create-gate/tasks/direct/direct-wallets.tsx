@@ -127,18 +127,20 @@ export function DirectWallets() {
           totalWallets={file?.metadata?.total}
         />
         {file && (
-          <DirectWalletsFile
-            key={file.id}
-            file={file}
-            status={progressStatus}
-          />
+          <>
+            <DirectWalletsFile
+              key={file.id}
+              file={file}
+              status={progressStatus}
+            />
+            <DirectWalletsProgress
+              total={file?.metadata?.total}
+              valid={0}
+              invalid={[]}
+              {...progress}
+            />
+          </>
         )}
-        <DirectWalletsProgress
-          total={file?.metadata?.total}
-          valid={0}
-          invalid={[]}
-          {...progress}
-        />
       </Paper>
     </>
   );
