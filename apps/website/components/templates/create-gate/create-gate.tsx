@@ -1,4 +1,3 @@
-import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
@@ -25,13 +24,7 @@ import { GateImageCard } from './gate-image-card/gate-image-card';
 import { GateTypeChanger } from './gate-type-selector/gate-type-changer';
 import { GateTypeSelector } from './gate-type-selector/gate-type-selector';
 import { createGateSchema, CreateGateData, GateType } from './schema';
-const DirectWallets = dynamic(
-  () =>
-    import('./tasks/direct/direct-wallets').then((mod) => mod.DirectWallets),
-  {
-    ssr: false,
-  }
-);
+import { DirectWallets } from './tasks/direct/direct-wallets';
 
 type CreateGateProps = {
   oldData?: CreateGateData;
@@ -63,7 +56,7 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
   const createGate = useMutation(
     ['createGate'],
     ({
-      whitelisted_wallets,
+      whitelisted_wallets_file,
       tasks,
       ...data
     }: Create_Gate_Tasks_BasedMutationVariables &
@@ -71,7 +64,7 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
       if (data.type === 'direct') {
         return gqlAuthMethods.create_gate_direct({
           ...data,
-          whitelisted_wallets,
+          whitelisted_wallets_file,
         });
       }
       return gqlAuthMethods.create_gate_tasks_based({ ...data, tasks });
@@ -152,7 +145,7 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
           id: task_id,
           order: index,
         })),
-        whitelisted_wallets: data.whitelisted_wallets,
+        whitelisted_wallets_file: data.whitelisted_wallets_file?.id,
       });
       if (isDraft) {
         enqueueSnackbar('Draft saved');
@@ -248,7 +241,7 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
           sx={(theme) => ({
             p: '0 90px',
             pb: 12,
-            [theme.breakpoints.down('sm')]: { p: '0 20px' },
+            [theme.breakpoints.down('sm')]: { px: 2.5, pb: 6 },
           })}
         >
           <PublishNavbar
@@ -385,7 +378,7 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
             setOpen={setConfirmPublish}
             onConfirm={methods.handleSubmit(onCreateGate, (errors) => {
               enqueueSnackbar(
-                Object.values(errors)[0].data?.message || 'Invalid data'
+                Object.values(errors)[0]?.data?.message || 'Invalid data'
               );
             })}
           >

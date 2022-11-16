@@ -55,6 +55,12 @@
       "other": "You have {{count}} invalid wallet addresses"
     },
     "label": "Wallet address or ENS name",
-    "input-helper": "Fill the addresses separated by comma"
+    "input-helper": "Fill the addresses separated by comma",
+    "progress": {
+      "title": "Verifying wallets",
+      "description": "You don't need to wait, you can save as draft and come back later",
+      "verified": "Verified",
+      "total": "Total"
+    }
   }
 }
