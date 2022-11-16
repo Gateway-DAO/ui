@@ -8,11 +8,11 @@ import { CreateGateTemplate } from '../../components/templates/create-gate';
 import { ROUTES } from '../../constants/routes';
 import { useAuth } from '../../providers/auth';
 import { gqlAnonMethods } from '../../services/api';
-import { GateQuery } from '../../services/graphql/types.generated';
+import { Get_Create_GateQuery } from '../../services/graphql/types.generated';
 
 type CreateGateProps = {
   id: string | null;
-  gateProps: GateQuery;
+  gateProps: Get_Create_GateQuery;
 };
 export default function CreateGate({ id, gateProps }: CreateGateProps) {
   const router = useRouter();
@@ -22,7 +22,7 @@ export default function CreateGate({ id, gateProps }: CreateGateProps) {
   const { data: oldGateData } = useQuery(
     ['gate', id],
     () =>
-      gqlAuthMethods.gate({
+      gqlAuthMethods.get_create_gate({
         id,
       }),
     {
@@ -61,7 +61,7 @@ export async function getServerSideProps({ res, query }) {
   const { gate: gateId } = query;
   let gateProps = { gates_by_pk: { id: '', published: '' } };
   if (gateId) {
-    gateProps = await gqlAnonMethods.gate({
+    gateProps = await gqlAnonMethods.get_create_gate({
       id: gateId,
     });
   }

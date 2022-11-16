@@ -72,7 +72,8 @@ mutation create_gate_direct(
   $skills: jsonb,
   $permissions: [permissions_insert_input!] = [],
   $image: String!,
-  $whitelisted_wallets: [whitelisted_wallets_insert_input!] = []) {
+  $whitelisted_wallets_file: uuid!
+  ) {
 
   insert_gates_one(
     object: {
@@ -92,16 +93,7 @@ mutation create_gate_direct(
       },
       image: $image,
       published: "not_published",
-      whitelisted_wallets: {
-        data: $whitelisted_wallets,
-        on_conflict: {
-          update_columns: [
-            wallet,
-            ens
-          ],
-        constraint: whitelisted_wallets_gate_id_wallet_uindex
-        }
-      }
+      whitelisted_wallets_file_id: $whitelisted_wallets_file
     },
     on_conflict: {
       constraint: gates_pk,
