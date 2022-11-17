@@ -14,6 +14,7 @@ import { Files } from '../../../../../services/graphql/types.generated';
 import { CreateGateData } from '../../schema';
 import { DirectWalletsFile } from './direct-wallets-file';
 import { DirectWalletsHeader } from './direct-wallets-header';
+import { DirectWalletsList } from './direct-wallets-lists';
 import { DirectWalletsProgress } from './direct-wallets-progress';
 import { ProgressVerifyCSV, UploadVerifyCSV } from './types';
 
@@ -98,7 +99,7 @@ export function DirectWallets() {
   const progressStatus = useMemo(() => {
     if (!progress) return;
     if (!progress.isDone) return 'loading';
-    if (progress.invalid.length > 0) return 'error';
+    if (progress.invalid > 0) return 'error';
     return 'success';
   }, [progress]);
 
@@ -112,7 +113,7 @@ export function DirectWallets() {
             py: { xs: 3, lg: 6 },
             display: 'flex',
             flexFlow: 'column',
-            gap: 4,
+            gap: 2,
             transition: 'opacity 0.25s ease',
           },
           isOver && {
@@ -133,12 +134,15 @@ export function DirectWallets() {
               file={file}
               status={progressStatus}
             />
-            <DirectWalletsProgress
-              total={file?.metadata?.total}
-              valid={0}
-              invalid={[]}
-              {...progress}
-            />
+            {progress && !progress.isDone && (
+              <DirectWalletsProgress
+                total={file?.metadata?.total}
+                valid={0}
+                invalid={0}
+                {...progress}
+              />
+            )}
+            {progress?.isDone && <DirectWalletsList {...progress} />}
           </>
         )}
       </Paper>
