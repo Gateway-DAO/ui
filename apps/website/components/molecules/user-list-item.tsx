@@ -1,5 +1,6 @@
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
+import { ReactNode, useMemo } from 'react';
 
 import { PartialDeep } from 'type-fest';
 
@@ -10,6 +11,7 @@ import {
   Stack,
   ListItemProps,
   Typography,
+  Avatar,
 } from '@mui/material';
 
 import { ROUTES } from '../../constants/routes';
@@ -29,6 +31,7 @@ type Props = {
   hasLink?: boolean;
   hasUsernamePrefix?: boolean;
   showFollow?: boolean;
+  icon?: ReactNode;
 } & ListItemProps;
 
 export function UserListItem({
@@ -36,10 +39,37 @@ export function UserListItem({
   showFollow = true,
   hasLink = true,
   hasUsernamePrefix = true,
+  icon,
   ...props
 }: Props) {
   const { me } = useAuth();
   const url = ROUTES.PROFILE.replace('[username]', user.username);
+
+  const avatarIcon = useMemo(() => {
+    if (icon) {
+      return hasLink ? (
+        <Link passHref href={url}>
+          <Avatar component="a" target="_blank">
+            {icon}
+          </Avatar>
+        </Link>
+      ) : (
+        <Avatar>{icon}</Avatar>
+      );
+    }
+    return hasLink ? (
+      <Link passHref href={url}>
+        <AvatarFile
+          component="a"
+          file={user.picture}
+          target="_blank"
+          fallback="/avatar.png"
+        />
+      </Link>
+    ) : (
+      <AvatarFile file={user.picture} target="_blank" fallback="/avatar.png" />
+    );
+  }, [hasLink, icon, url, user.picture]);
 
   return (
     <ListItem
@@ -50,24 +80,7 @@ export function UserListItem({
       }
       {...props}
     >
-      <ListItemAvatar>
-        {hasLink ? (
-          <Link passHref href={url}>
-            <AvatarFile
-              component="a"
-              file={user.picture}
-              target="_blank"
-              fallback="/avatar.png"
-            />
-          </Link>
-        ) : (
-          <AvatarFile
-            file={user.picture}
-            target="_blank"
-            fallback="/avatar.png"
-          />
-        )}
-      </ListItemAvatar>
+      <ListItemAvatar>{avatarIcon}</ListItemAvatar>
       <Stack direction="column" minWidth={0}>
         {hasLink ? (
           <>
