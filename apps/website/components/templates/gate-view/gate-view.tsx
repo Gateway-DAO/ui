@@ -38,6 +38,7 @@ import GateCompletedModal from '../../organisms/gates/view/modals/gate-completed
 import type { Props as HolderDialogProps } from '../../organisms/holder-dialog';
 import { DirectHoldersList } from './direct-holders-list/direct-holders-list';
 import { DirectHoldersHeader } from './direct-holders-list/header';
+import { DraftDirectHoldersList } from './draft-direct-holders-list/draft-direct-holders-list';
 import { TaskList } from './task-list';
 
 const GateStateChip = dynamic(() => import('../../atoms/gate-state-chip'), {
@@ -82,7 +83,10 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
         wallet: me?.wallet ?? '',
       }),
     {
-      enabled: gateProps && gateProps.type === 'direct',
+      enabled:
+        gateProps &&
+        gateProps.type === 'direct' &&
+        gateProps.published === 'published',
     }
   );
 
@@ -501,7 +505,7 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
         </Box>
       </Grid>
       <Divider orientation="vertical" flexItem />
-      {gateProps.type === 'direct' && (
+      {published !== 'not_published' && gateProps.type === 'direct' && (
         <DirectHoldersList
           gate={gateProps}
           isLoading={directCredentialInfo.isLoading}
@@ -516,6 +520,9 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
             />
           }
         />
+      )}
+      {published !== 'published' && gateProps.type === 'direct' && (
+        <DraftDirectHoldersList gate={gateProps} />
       )}
       {gateProps.type === 'task_based' && (
         <TaskList

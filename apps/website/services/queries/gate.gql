@@ -65,6 +65,10 @@ query gate($id: uuid!) {
       ens
       wallet
     }
+    whitelisted_wallets_file {
+      id
+      metadata
+    }
   }
 }
 
