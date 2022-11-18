@@ -64,6 +64,7 @@ export function NotificationList() {
 
         return isCustom ? (
           <CustomNotification
+            id={notification.id}
             event_type={notification.event_type}
             opened={notification.opened}
             timestamp={notification.timestamp}

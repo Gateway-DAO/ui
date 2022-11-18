@@ -7,6 +7,7 @@ import { ROUTES } from '../../../../../constants/routes';
 import { useTimeAgo } from '../../../../../utils/time';
 import { AvatarFile } from '../../../../atoms/avatar-file';
 import { useState } from 'react';
+import { useAuth } from 'apps/website/providers/auth';
 
 type DataProps = {
   dao_name?: string;
@@ -16,6 +17,7 @@ type DataProps = {
 };
 
 type Props = {
+  id: string;
   event_type: string;
   opened: boolean;
   timestamp: string;
@@ -25,6 +27,7 @@ type Props = {
 };
 
 export function CustomNotification({
+  id,
   event_type,
   opened,
   timestamp,
@@ -33,6 +36,7 @@ export function CustomNotification({
 }: Props) {
   const { t } = useTranslation('gate-new');
   const timeAgo = useTimeAgo(timestamp);
+  const { me } = useAuth();
 
   const daoProfileUrl = ROUTES.DAO_PROFILE.replace(
     '[slug]',
@@ -42,8 +46,23 @@ export function CustomNotification({
 
   const [hasRead, setHasRead] = useState(opened);
 
-  const onRead = () => {
-    !hasRead && setHasRead(true);
+  const onRead = async () => {
+    if (!hasRead) {
+      setHasRead(true);
+      fetch('/api/notify', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          queueUrl: process.env.NEXT_PUBLIC_READ_NOTIFICATIONS_QUEUE_URL,
+          body: {
+            user_id: me?.id,
+            notification_id: id,
+          },
+        }),
+      });
+    }
   };
 
   return (
