@@ -16,7 +16,7 @@ export function DaoProfileTemplate() {
   const { t } = useTranslation();
   const { activeTab, handleTabChange, setTab } = useTab();
 
-  const people = dao?.followers.map(({ user }) => user) ?? [];
+  const people = dao?.followers?.map(({ user }) => user) ?? [];
 
   const tabs = [
     {
