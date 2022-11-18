@@ -1,6 +1,4 @@
 import { Stack } from '@mui/material';
-import { useQuery } from '@tanstack/react-query';
-import { useAuth } from 'apps/website/providers/auth';
 
 import { useCyberConnect } from '../../../../providers/cyberconnect';
 import { NotificationType } from '../../../../services-cyberconnect/types.generated';
@@ -10,31 +8,8 @@ import { AcceptedConnectionNotification } from './notifications/accepted-connect
 import { NewConnectionNotification } from './notifications/new-connection';
 import { CustomNotification } from './notifications/custom';
 
-export function NotificationList() {
+export function NotificationList({ redisNotifications }) {
   const { isLoading, notifications: CCNotifications } = useCyberConnect();
-  const { me } = useAuth();
-
-  const { data: redisNotifications } = useQuery(
-    ['user-notifications', me?.id],
-    async () => {
-      const res = await fetch(`/api/notifications?userId=${me?.id}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-
-      const data = await res.json();
-      const notifications = JSON.parse(data.notifications);
-
-      return notifications;
-    },
-    {
-      onError: (error) => {
-        console.log(error);
-      },
-    }
-  );
 
   const notifications = [
     ...CCNotifications,
