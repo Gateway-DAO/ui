@@ -1,13 +1,13 @@
 import useTranslation from 'next-translate/useTranslation';
 import Link from 'next/link';
+import { useState } from 'react';
 
 import { Box, Stack, Typography } from '@mui/material';
 
 import { ROUTES } from '../../../../../constants/routes';
+import { useAuth } from '../../../../../providers/auth';
 import { useTimeAgo } from '../../../../../utils/time';
 import { AvatarFile } from '../../../../atoms/avatar-file';
-import { useState } from 'react';
-import { useAuth } from 'apps/website/providers/auth';
 
 type DataProps = {
   dao_name?: string;
