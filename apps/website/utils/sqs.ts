@@ -4,9 +4,9 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 AWS.config.update({
-  region: process.env.AWS_REGION,
-  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  region: process.env.SQS_REGION,
+  accessKeyId: process.env.SQS_ACCESS_KEY_ID,
+  secretAccessKey: process.env.SQS_SECRET_ACCESS_KEY,
 });
 
 const sqs = new AWS.SQS({ apiVersion: '2012-11-05' });
