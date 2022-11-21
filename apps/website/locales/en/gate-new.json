@@ -58,6 +58,6 @@
     "input-helper": "Fill the addresses separated by comma"
   },
   "notifications": {
-    "published": "published a new ceredential: "
+    "published": "published a new credential: "
   }
 }
