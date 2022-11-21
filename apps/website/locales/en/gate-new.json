@@ -56,5 +56,8 @@
     },
     "label": "Wallet address or ENS name",
     "input-helper": "Fill the addresses separated by comma"
+  },
+  "notifications": {
+    "published": "published a new credential: "
   }
 }
