@@ -1,6 +1,6 @@
 import Redis from 'ioredis';
 
-let redis = new Redis(process.env.NEXT_PUBLIC_REDIS_URL);
+const redis = new Redis(process.env.REDIS_URL);
 
 export default async function handler(req, res) {
   const { userId } = req.query;
