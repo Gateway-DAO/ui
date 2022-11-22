@@ -123,7 +123,11 @@ export function DirectWallets() {
           <>
             {file ? (
               <>
-                <DirectWalletsHeader totalWallets={file?.metadata?.total} />
+                <DirectWalletsHeader
+                  totalWallets={file?.metadata?.total}
+                  disabled={progress && !progress.isDone}
+                  readFiles={readFiles}
+                />
                 {progress && !progress.isDone && (
                   <DirectWalletsProgress
                     total={file?.metadata?.total}

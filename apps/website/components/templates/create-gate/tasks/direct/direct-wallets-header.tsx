@@ -1,10 +1,7 @@
 import useTranslation from 'next-translate/useTranslation';
 
-import { Box, Stack, Typography } from '@mui/material';
-
-type Props = {
-  totalWallets?: number;
-};
+import { UploadFile } from '@mui/icons-material';
+import { Box, Button, Stack, Typography } from '@mui/material';
 
 export function DirectWalletsEmptyHeader() {
   const { t } = useTranslation('gate-new');
@@ -34,7 +31,17 @@ export function DirectWalletsEmptyHeader() {
   );
 }
 
-export function DirectWalletsHeader({ totalWallets = 0 }: Props) {
+type Props = {
+  totalWallets?: number;
+  disabled?: boolean;
+  readFiles: (files: File[] | FileList) => void;
+};
+
+export function DirectWalletsHeader({
+  totalWallets = 0,
+  disabled,
+  readFiles,
+}: Props) {
   const { t } = useTranslation('gate-new');
 
   return (
@@ -56,6 +63,26 @@ export function DirectWalletsHeader({ totalWallets = 0 }: Props) {
             {t('direct.title-filled', { count: totalWallets })}
           </Typography>
         </Box>
+        <Button
+          disabled={disabled}
+          component="label"
+          variant="outlined"
+          startIcon={<UploadFile />}
+        >
+          {t('direct.import-csv')}
+          <input
+            hidden
+            type="file"
+            accept=".csv"
+            disabled={disabled}
+            onChange={(event) => {
+              if (event.target.files?.length) {
+                readFiles(event.target.files);
+              }
+            }}
+            value={[]}
+          />
+        </Button>
       </Stack>
     </Stack>
   );
