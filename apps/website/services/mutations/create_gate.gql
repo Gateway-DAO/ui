@@ -104,7 +104,8 @@ mutation create_gate_direct(
         description,
         skills,
         image,
-        published
+        published,
+        whitelisted_wallets_file_id
       ]
     }) {
     id
