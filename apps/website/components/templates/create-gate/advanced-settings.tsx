@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, ChangeEvent } from 'react';
 
 import {
   Box,
@@ -34,21 +34,35 @@ const StyledToggleButton = styled(ToggleButton)(({ theme }) => ({
   },
 }));
 
+const claimLimitValues = [
+  { label: '1', value: 1 },
+  {
+    label: '100',
+    value: 100,
+  },
+  {
+    label: '1000',
+    value: 1000,
+  },
+  {
+    label: '10000',
+    value: 10000,
+  },
+  {
+    label: 'unlimited',
+    value: null,
+  },
+];
+
 export function AdvancedSetting() {
+  
   const [collapse, setCollapse] = useState(false);
-  const [customLimit, setCustomLimit] = useState<null | number>(null);
   const {
     formState: { errors },
     setValue,
     control,
     getValues,
   } = useFormContext<CreateGateData>();
-  const { expire_date, claim_limit } = getValues();
-
-  useEffect(() => {
-    setValue('expire_date', expire_date);
-    setValue('claim_limit', claim_limit);
-  }, [expire_date, claim_limit]);
 
   return (
     <section>
@@ -86,9 +100,7 @@ export function AdvancedSetting() {
                         inputFormat="MM/DD/YYYY"
                         disablePast
                         value={field?.value}
-                        onChange={(date) =>
-                          field.onChange(date.toISOString() as String)
-                        }
+                        onChange={(date: Date) => field.onChange(date.toISOString())}
                         renderInput={(params) => <TextField {...params} />}
                       />
                     </>
@@ -113,92 +125,77 @@ export function AdvancedSetting() {
               name="claim_limit"
               control={control}
               defaultValue={null}
-              render={({ field: { onChange, value } }) => (
-                <FormControl>
-                  <Stack
-                    direction={'row'}
-                    sx={{
-                      flexDirection: { xs: 'column', md: 'row' },
-                    }}
-                    gap={2}
-                  >
-                    <>
-                      {[
-                        { label: '1', value: 1 },
-                        {
-                          label: '100',
-                          value: 100,
-                        },
-                        {
-                          label: '1000',
-                          value: 1000,
-                        },
-                        {
-                          label: '10000',
-                          value: 10000,
-                        },
-                        {
-                          label: 'unlimited',
-                          value: null,
-                        },
-                      ].map((btn) => {
-                        return (
-                          <StyledToggleButton
-                            aria-label={btn.label}
-                            key={btn.value}
-                            value={btn.value}
-                            color="primary"
-                            size={'medium'}
-                            sx={{
-                              px: 3,
-                            }}
-                            selected={value == btn.value}
-                            onClick={() => {
-                              onChange(btn.value);
-                            }}
-                          >
-                            {btn.label}
-                          </StyledToggleButton>
-                        );
-                      })}
-                    </>
-
-                    <OutlinedInput
-                      aria-label="others"
-                      key={'cutom-input'}
-                      size="small"
-                      value={customLimit}
-                      error={!!errors?.claim_limit}
-                      placeholder="OTHERS"
-                      onChange={(e) => {
-                        setCustomLimit(
-                          (e.target as HTMLInputElement).valueAsNumber
-                        );
-                        onChange(customLimit);
-                      }}
-                      onClick={() => onChange(customLimit)}
-                      sx={[
-                        [null, 1, 10, 100, 1000, 10000].every(
-                          (el) => el !== value
-                        ) && {
-                          border: '2px solid #9A53FF',
-                        },
-                      ]}
-                      type="number"
-                      endAdornment={
-                        <InputAdornment position="end">
-                          <EditIcon />
-                        </InputAdornment>
-                      }
-                    />
-                  </Stack>
-                  {!!errors.claim_limit && (
-                    <FormHelperText error id="outlined-weight-helper-text">
-                      {errors?.claim_limit?.message}
-                    </FormHelperText>
-                  )}
-                </FormControl>
-              )}
+              render={({ field: { onChange, value, ref } }) => {
+                const isCustomValue = !claimLimitValues.some((btn) => btn.value === value);
+                console.log(errors?.claim_limit, value)
+                return (
+                    <FormControl>
+                      <Stack
+                        direction={'row'}
+                        sx={{
+                          flexDirection: { xs: 'column', md: 'row' },
+                        }}
+                        gap={2}
+                      >
+                        <>
+                          {claimLimitValues.map((btn) => {
+                            return (
+                              <StyledToggleButton
+                                aria-label={btn.label}
+                                key={btn.value}
+                                value={btn.value}
+                                color="primary"
+                                size={'medium'}
+                                sx={{
+                                  px: 3,
+                                }}
+                                selected={value === btn.value}
+                                onClick={() => {
+                                  onChange(btn.value);
+                                }}
+                              >
+                                {btn.label}
+                              </StyledToggleButton>
+                            );
+                          })}
+                        </>
+    
+                        <OutlinedInput
+                          aria-label="others"
+                          key={'cutom-input'}
+                          size="small"
+                          value={isCustomValue ? value : ''}
+                          error={!!errors?.claim_limit}
+                          placeholder="OTHERS"
+                          type="number"
+                          onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                            if(e.target.value === '') {
+                              onChange(null);
+                            } else {
+                              onChange(e.target.valueAsNumber);
+                            }
+                          }}
+                          sx={[
+                            isCustomValue && {
+                              border: '2px solid #9A53FF',
+                            },
+                          ]}
+                          endAdornment={
+                            <InputAdornment position="end">
+                              <EditIcon />
+                            </InputAdornment>
+                          }
+                          ref={ref}
+                        />
+                      </Stack>
+                      {!!errors.claim_limit && (
+                        <FormHelperText error id="outlined-weight-helper-text">
+                          {errors?.claim_limit?.message}
+                        </FormHelperText>
+                      )}
+                    </FormControl>
+                )
+              }}
             />
           </div>
         </Stack>

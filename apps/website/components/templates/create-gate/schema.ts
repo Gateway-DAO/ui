@@ -22,7 +22,7 @@ export type CreateGateData = {
   id?: string;
   categories: string[];
   skills: string[];
-  expire_date?: String;
+  expire_date?: string;
   claim_limit?: number;
 } & Required<
   Pick<Gates, 'title' | 'categories' | 'skills' | 'image' | 'description'>
@@ -583,9 +583,8 @@ const gateBase = z.object({
     .number()
     .positive({ message: 'please enter a valid value' })
     .int({ message: `please enter a valid value , don't use decimal value` })
-    .nullable(),
-
-  expire_date: z.string().nullable(),
+    .nullish(),
+  expire_date: z.string().nullish(),
 });
 
 const taskGate = gateBase.augment({

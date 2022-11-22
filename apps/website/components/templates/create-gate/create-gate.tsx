@@ -36,6 +36,8 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
     resolver: zodResolver(createGateSchema),
     mode: 'onBlur',
     defaultValues: {
+      // claim_limit: null,
+      // expire_date: null,
       ...oldData,
       type: 'task_based',
     },
