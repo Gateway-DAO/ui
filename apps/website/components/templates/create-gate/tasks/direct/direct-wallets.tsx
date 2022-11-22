@@ -1,22 +1,24 @@
-import { useMemo, useState } from 'react';
-
 import { useMutation } from '@tanstack/react-query';
 import { useSnackbar } from 'notistack';
 import { useController } from 'react-hook-form';
 import { useDropArea } from 'react-use';
 import { useInfiniteQuery } from 'wagmi';
 
-import { CircularProgress, Paper } from '@mui/material';
+import { Paper } from '@mui/material';
 
 import { useAuth } from '../../../../../providers/auth';
 import { gqlUserHeader } from '../../../../../services/api';
 import { Files } from '../../../../../services/graphql/types.generated';
 import { CreateGateData } from '../../schema';
-import { DirectWalletsFile } from './direct-wallets-file';
-import { DirectWalletsHeader } from './direct-wallets-header';
+import {
+  DirectWalletsEmptyHeader,
+  DirectWalletsHeader,
+} from './direct-wallets-header';
 import { DirectWalletsList } from './direct-wallets-lists';
-import { DirectWalletsProgress } from './direct-wallets-progress';
-import { ProgressVerifyCSV, UploadVerifyCSV } from './types';
+import { DirectWalletsDropzone } from './fields/direct-wallets-dropzone';
+import { DirectWalletsProgress } from './fields/direct-wallets-progress';
+import { DirectWalletsUploading } from './fields/direct-wallets-uploading';
+import { ProgressVerifyCSV } from './types';
 
 export function DirectWallets() {
   const { me, token } = useAuth();
@@ -96,13 +98,6 @@ export function DirectWallets() {
     onFiles: readFiles,
   });
 
-  const progressStatus = useMemo(() => {
-    if (!progress) return;
-    if (!progress.isDone) return 'loading';
-    if (progress.invalid > 0) return 'error';
-    return 'success';
-  }, [progress]);
-
   return (
     <>
       <Paper
@@ -122,27 +117,31 @@ export function DirectWallets() {
         ]}
         {...dropBond}
       >
-        <DirectWalletsHeader
-          disabled={isUploadDisabled}
-          readFiles={readFiles}
-          totalWallets={file?.metadata?.total}
-        />
-        {file && (
+        {verifyCSV.isLoading ? (
+          <DirectWalletsUploading />
+        ) : (
           <>
-            <DirectWalletsFile
-              key={file.id}
-              file={file}
-              status={progressStatus}
-            />
-            {progress && !progress.isDone && (
-              <DirectWalletsProgress
-                total={file?.metadata?.total}
-                valid={0}
-                invalid={0}
-                {...progress}
-              />
+            {file ? (
+              <>
+                <DirectWalletsHeader totalWallets={file?.metadata?.total} />
+                {progress && !progress.isDone && (
+                  <DirectWalletsProgress
+                    total={file?.metadata?.total}
+                    valid={0}
+                    invalid={0}
+                    {...progress}
+                  />
+                )}
+                {progress?.isDone && <DirectWalletsList {...progress} />}
+              </>
+            ) : (
+              <>
+                <DirectWalletsEmptyHeader />
+                <DirectWalletsDropzone
+                  readFiles={readFiles}
+                ></DirectWalletsDropzone>
+              </>
             )}
-            {progress?.isDone && <DirectWalletsList {...progress} />}
           </>
         )}
       </Paper>

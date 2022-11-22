@@ -43,7 +43,8 @@
     }
   },
   "direct": {
-    "title": {
+    "title": "Import .CSV file",
+    "title-filled": {
       "0": "No recipients",
       "one": "1 recipient",
       "other": "{{count}} recipients"
