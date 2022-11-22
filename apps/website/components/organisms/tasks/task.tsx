@@ -23,6 +23,7 @@ import { queryClient } from '../../../services/query-client';
 import { getMapValueFromObject } from '../../../utils/map-object';
 import GithubContributeContent from '../gates/view/tasks/content/github_contribute';
 import GithubPRContent from '../gates/view/tasks/content/github_prs';
+import ManualContent from '../gates/view/tasks/content/manual';
 import MeetingCodeContent from '../gates/view/tasks/content/meeting_code';
 import NFTHoldContent from '../gates/view/tasks/content/nft_hold';
 import QuizContent from '../gates/view/tasks/content/quiz';
@@ -129,6 +130,10 @@ export function Task({
       nft_hold: {
         title: 'Hold NFT',
         body: NFTHoldContent,
+      },
+      manual: {
+        title: 'Submit Link',
+        body: ManualContent,
       },
     };
 
@@ -242,7 +247,9 @@ export function Task({
         unmountOnExit
       >
         <CardContent sx={{ marginLeft: { xs: '0px', md: '55px' } }}>
-          <Typography variant="subtitle2">{task.description}</Typography>
+          <Typography variant="subtitle2" fontSize={16}>
+            {task.description}
+          </Typography>
           <TaskComponent
             data={task.task_data}
             completed={completed}

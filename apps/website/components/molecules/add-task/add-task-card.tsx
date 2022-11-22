@@ -1,4 +1,5 @@
 import { PhotoCameraBack } from '@mui/icons-material';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ElectricBoltIcon from '@mui/icons-material/ElectricBolt';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import InsertLinkIcon from '@mui/icons-material/InsertLink';
@@ -70,6 +71,15 @@ const AddTaskCard = ({ numberOfTasks, addTask }) => {
               icon={<MonetizationOnIcon />}
               title={'Verify Token'}
               addTask={() => addTask('token_hold')}
+            />
+          </Paper>
+        </Grid>
+        <Grid item xs={2} sm={4} md={4}>
+          <Paper>
+            <AddTaskButton
+              icon={<CheckCircleIcon />}
+              title={'Submit Link'}
+              addTask={() => addTask('manual')}
             />
           </Paper>
         </Grid>

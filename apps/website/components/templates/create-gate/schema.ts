@@ -39,6 +39,11 @@ export type SelfVerifyTask = {
   task_data: FileTaskData;
 };
 
+export type ManualTask = {
+  task_type: 'manual';
+  task_data: ManualTaskData;
+};
+
 export type MeetingCodeTask = {
   task_type: 'meeting_code';
   task_data: VerificationCodeData;
@@ -108,6 +113,7 @@ export type Task = {
   | TwitterRetweetTask
   | GithubContributeTask
   | GithubPRTask
+  | ManualTask
 );
 
 // Verification Code
@@ -263,6 +269,15 @@ export type FileTaskDataError = {
     description?: FieldError;
     link?: FieldError;
   }[];
+};
+
+// Manual
+export type ManualTaskData = {
+  id?: string;
+};
+
+export type ManualTaskDataError = {
+  id?: FieldError;
 };
 
 // Files
@@ -555,6 +570,17 @@ export const taskGithubPRSchema = z.object({
   task_data: githubPRDataSchema,
 });
 
+export const taskManualSchema = z.object({
+  id: z.string().optional(),
+  task_id: z.string().optional(),
+  order: z.number().optional(),
+  title: z.string().min(2, 'The title must contain at least 2 character(s)'),
+  description: z
+    .string()
+    .min(2, 'The description must contain at least 2 character(s)'),
+  task_type: z.literal('manual'),
+});
+
 const gateBase = z.object({
   title: z
     .string({ required_error: 'Title is required' })
@@ -595,6 +621,7 @@ const taskGate = gateBase.augment({
         taskTwitterRetweetSchema,
         taskGithubContributeSchema,
         taskGithubPRSchema,
+        taskManualSchema,
       ])
     )
     .nonempty({ message: 'A credential needs to have at least one task.' }),

@@ -32,6 +32,10 @@
       "description": "You must have created and merged this number of pull requests",
       "action": "Verify"
     },
+    "manual": {
+      "title": "Submit Link",
+      "action": "Submit"
+    },
     "check_action": "Verify",
     "completed": "Task completed at "
   }
