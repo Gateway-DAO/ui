@@ -1,17 +1,34 @@
 import useTranslation from 'next-translate/useTranslation';
+import { useMemo } from 'react';
 
 import { Box, CircularProgress, Stack, Typography } from '@mui/material';
 
 import { ProgressVerifyCSV } from '../types';
+import { useRemainingTime } from '../utils';
 
 export function DirectWalletsProgress({
   total,
   valid,
   invalid,
+  uploadedTime,
 }: ProgressVerifyCSV) {
   const { t } = useTranslation('gate-new');
   const verified = valid + invalid;
-  const progress = Math.floor((verified / total) * 100);
+  const percent = verified / total;
+  const progress = Math.floor(percent * 100);
+
+  const remainingTime = useRemainingTime(uploadedTime, percent);
+
+  const remainingTimeText = useMemo(() => {
+    if (!remainingTime) return;
+
+    // Get remaining time in seconds and convert to minutes
+    const minutes = Math.floor(remainingTime / 60);
+    if (minutes > 0) {
+      return t('direct.progress.remaining.minutes', { total: minutes });
+    }
+    return t('direct.progress.remaining.seconds', { total: remainingTime });
+  }, [remainingTime]);
 
   return (
     <Stack
@@ -48,7 +65,9 @@ export function DirectWalletsProgress({
       </Box>
       <Stack gap={0.5} alignItems="center">
         <Typography variant="body1">{t('direct.progress.title')}</Typography>
-        {/* <Typography variant="body2">15 sec remaining</Typography> */}
+        {remainingTime > 0 && (
+          <Typography variant="body2">{remainingTimeText}</Typography>
+        )}
       </Stack>
       <Box>
         <Typography variant="body2" color="text.secondary">

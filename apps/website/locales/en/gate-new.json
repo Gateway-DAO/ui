@@ -61,7 +61,11 @@
       "title": "Verifying wallets",
       "description": "You don't need to wait, you can save as draft and come back later",
       "verified": "Verified",
-      "total": "Total"
+      "total": "Total",
+      "remaining": {
+        "seconds": "About {{total}} seconds remaining",
+        "minutes": "About {{total}} minutes remaining"
+      }
     }
   }
 }

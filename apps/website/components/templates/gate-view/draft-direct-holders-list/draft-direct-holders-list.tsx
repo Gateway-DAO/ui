@@ -24,7 +24,7 @@ import { gqlUserHeader } from '../../../../services/api';
 import { Gates } from '../../../../services/graphql/types.generated';
 import { UserListItem } from '../../../molecules/user-list-item';
 import { ClientNav } from '../../../organisms/navbar/client-nav';
-import { DirectWalletsProgress } from '../../create-gate/tasks/direct/direct-wallets-progress';
+import { DirectWalletsProgress } from '../../create-gate/tasks/direct/fields/direct-wallets-progress';
 import {
   ProgressVerifyCSV,
   ValidatedWallet,

@@ -6,6 +6,7 @@ export type ProgressVerifyCSV = {
   valid: number;
   invalid: number;
   validList: string[];
+  uploadedTime: number;
   invalidList: string[];
 };
 export type ValidatedWallet = { wallet: string; ens?: string };
