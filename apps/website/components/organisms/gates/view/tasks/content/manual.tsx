@@ -60,16 +60,9 @@ const ManualContent = ({
                 required
                 label="Submit the link address"
                 id="submit-link-address"
-                // {...register(`tasks.${taskId}.description`)}
-                // error={!!errors.tasks?.[taskId]?.description}
-                // helperText={errors.tasks?.[taskId]?.description?.message}
                 sx={{ flexGrow: 1 }}
               />
-              <Button
-                size="large"
-                variant="contained"
-                href={`https://twitter.com/intent/follow?screen_name=${data?.username}`}
-              >
+              <Button size="large" variant="contained">
                 {t('tasks.manual.action')}
               </Button>
             </>
