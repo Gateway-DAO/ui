@@ -71,11 +71,6 @@ export function DirectWallets() {
       enabled: !!file?.id,
       keepPreviousData: false,
       refetchInterval: (data) => !data?.pages[0].isDone && 1000,
-      onSuccess(data) {
-        if (data.pages[0].isDone) {
-          // onFinish();
-        }
-      },
     }
   );
 

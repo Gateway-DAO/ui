@@ -45,9 +45,9 @@
   "direct": {
     "title": "Import .CSV file",
     "title-filled": {
-      "0": "No recipients",
-      "one": "1 recipient",
-      "other": "{{count}} recipients"
+      "0": "No valid recipients",
+      "one": "1 valid recipient",
+      "other": "{{count}} valid recipients"
     },
     "description": "Copy and paste, fill, import the wallet address and/or ens name",
     "import-csv": "Import from a CSV",
