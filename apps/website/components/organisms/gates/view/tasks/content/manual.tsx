@@ -1,17 +1,10 @@
 import useTranslation from 'next-translate/useTranslation';
 
-import { useMutation } from '@tanstack/react-query';
-
-import { Box, Button, Stack, TextField, Typography } from '@mui/material';
+import { Button, Stack, TextField, Typography } from '@mui/material';
 
 import { LoadingButton } from '../../../../../atoms/loading-button';
 
-type ManualData = {
-  manual: boolean;
-};
-
 const ManualContent = ({
-  data,
   completed,
   updatedAt,
   completeTask,
@@ -21,27 +14,8 @@ const ManualContent = ({
   const { t } = useTranslation('gate-profile');
   const formattedDate = new Date(updatedAt.toLocaleString()).toLocaleString();
 
-  const checkManual = useMutation(['check-twitter-follow'], async () => {
-    try {
-      const response = await fetch('/api/oauth/twitter/follow', {
-        method: 'POST',
-        body: JSON.stringify({
-          target_screen_name: data?.username,
-        }),
-      });
-
-      const twitterData: ManualData = await response.json();
-
-      if (twitterData) {
-        completeTask({ manual: twitterData.manual });
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  });
-
   return (
-    <Stack marginTop={5} alignItems="start">
+    <Stack marginTop={4} alignItems="start">
       <Stack
         sx={{
           justifyContent: 'space-between',
@@ -74,8 +48,8 @@ const ManualContent = ({
         <LoadingButton
           variant="contained"
           sx={{ marginTop: '20px' }}
-          onClick={() => checkManual.mutate()}
-          isLoading={isLoading || checkManual.isLoading}
+          onClick={() => completeTask({ manual: true })}
+          isLoading={isLoading}
         >
           {t('tasks.check_action')}
         </LoadingButton>
