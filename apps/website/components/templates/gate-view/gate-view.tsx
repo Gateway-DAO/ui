@@ -241,10 +241,13 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
     },
   ];
 
-  const isDateExpired =
-    new Date(gateProps?.expire_date).getTime() < new Date().getTime();
+  const isDateExpired = gateProps?.expire_date
+    ? new Date(gateProps?.expire_date).getTime() < new Date().getTime()
+    : false;
 
-  const isLimitExceeded = gateProps?.claim_limit < gateProps?.holder_count;
+  const isLimitExceeded = gateProps?.claim_limit
+    ? gateProps?.claim_limit < gateProps?.holder_count
+    : false;
 
   return (
     <Grid

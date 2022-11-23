@@ -14,14 +14,15 @@ import {
 } from '@mui/material';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import dayjs, { Dayjs } from 'dayjs';
+
 import { DesktopDatePicker } from '@mui/x-date-pickers';
 import EditIcon from '@mui/icons-material/Edit';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import { styled } from '@mui/material/styles';
 import { Controller, useFormContext } from 'react-hook-form';
 import { CreateGateData } from './schema';
+import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon';
+import { DateTime } from 'luxon';
 
 const StyledToggleButton = styled(ToggleButton)(({ theme }) => ({
   '&.MuiToggleButton-root': {
@@ -55,7 +56,6 @@ const claimLimitValues = [
 ];
 
 export function AdvancedSetting() {
-  
   const [collapse, setCollapse] = useState(false);
   const {
     formState: { errors },
@@ -88,7 +88,7 @@ export function AdvancedSetting() {
               Set a expiration date to claim the credential
             </Typography>
             <Stack>
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <LocalizationProvider dateAdapter={AdapterLuxon}>
                 <Controller
                   control={control}
                   name="expire_date"
@@ -97,10 +97,14 @@ export function AdvancedSetting() {
                     <>
                       <DesktopDatePicker
                         label="Add expire date"
-                        inputFormat="MM/DD/YYYY"
+                        inputFormat="MM/dd/yyyy"
                         disablePast
-                        value={field?.value}
-                        onChange={(date: Date) => field.onChange(date.toISOString())}
+                        value={
+                          field.value ? DateTime.fromISO(field.value) : null
+                        }
+                        onChange={(date: DateTime) => {
+                          field.onChange(date?.toISO());
+                        }}
                         renderInput={(params) => <TextField {...params} />}
                       />
                     </>
@@ -126,75 +130,77 @@ export function AdvancedSetting() {
               control={control}
               defaultValue={null}
               render={({ field: { onChange, value, ref } }) => {
-                const isCustomValue = !claimLimitValues.some((btn) => btn.value === value);
-                console.log(errors?.claim_limit, value)
+                const isCustomValue = !claimLimitValues.some(
+                  (btn) => btn.value === value
+                );
+
                 return (
-                    <FormControl>
-                      <Stack
-                        direction={'row'}
-                        sx={{
-                          flexDirection: { xs: 'column', md: 'row' },
-                        }}
-                        gap={2}
-                      >
-                        <>
-                          {claimLimitValues.map((btn) => {
-                            return (
-                              <StyledToggleButton
-                                aria-label={btn.label}
-                                key={btn.value}
-                                value={btn.value}
-                                color="primary"
-                                size={'medium'}
-                                sx={{
-                                  px: 3,
-                                }}
-                                selected={value === btn.value}
-                                onClick={() => {
-                                  onChange(btn.value);
-                                }}
-                              >
-                                {btn.label}
-                              </StyledToggleButton>
-                            );
-                          })}
-                        </>
-    
-                        <OutlinedInput
-                          aria-label="others"
-                          key={'cutom-input'}
-                          size="small"
-                          value={isCustomValue ? value : ''}
-                          error={!!errors?.claim_limit}
-                          placeholder="OTHERS"
-                          type="number"
-                          onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                            if(e.target.value === '') {
-                              onChange(null);
-                            } else {
-                              onChange(e.target.valueAsNumber);
-                            }
-                          }}
-                          sx={[
-                            isCustomValue && {
-                              border: '2px solid #9A53FF',
-                            },
-                          ]}
-                          endAdornment={
-                            <InputAdornment position="end">
-                              <EditIcon />
-                            </InputAdornment>
+                  <FormControl>
+                    <Stack
+                      direction={'row'}
+                      sx={{
+                        flexDirection: { xs: 'column', md: 'row' },
+                      }}
+                      gap={2}
+                    >
+                      <>
+                        {claimLimitValues.map((btn) => {
+                          return (
+                            <StyledToggleButton
+                              aria-label={btn.label}
+                              key={btn.value}
+                              value={btn.value}
+                              color="primary"
+                              size={'medium'}
+                              sx={{
+                                px: 3,
+                              }}
+                              selected={value === btn.value}
+                              onClick={() => {
+                                onChange(btn.value);
+                              }}
+                            >
+                              {btn.label}
+                            </StyledToggleButton>
+                          );
+                        })}
+                      </>
+
+                      <OutlinedInput
+                        aria-label="others"
+                        key={'cutom-input'}
+                        size="small"
+                        value={isCustomValue ? value : ''}
+                        error={!!errors?.claim_limit}
+                        placeholder="OTHERS"
+                        type="number"
+                        onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                          if (e.target.value === '') {
+                            onChange(null);
+                          } else {
+                            onChange(e.target.valueAsNumber);
                           }
-                          ref={ref}
-                        />
-                      </Stack>
-                      {!!errors.claim_limit && (
-                        <FormHelperText error id="outlined-weight-helper-text">
-                          {errors?.claim_limit?.message}
-                        </FormHelperText>
-                      )}
-                    </FormControl>
-                )
+                        }}
+                        sx={[
+                          isCustomValue && {
+                            border: '2px solid #9A53FF',
+                          },
+                        ]}
+                        endAdornment={
+                          <InputAdornment position="end">
+                            <EditIcon />
+                          </InputAdornment>
+                        }
+                        ref={ref}
+                      />
+                    </Stack>
+                    {!!errors.claim_limit && (
+                      <FormHelperText error id="outlined-weight-helper-text">
+                        {errors?.claim_limit?.message}
+                      </FormHelperText>
+                    )}
+                  </FormControl>
+                );
               }}
             />
           </div>
