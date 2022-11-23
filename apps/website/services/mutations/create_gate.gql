@@ -50,6 +50,8 @@ mutation create_gate_tasks_based(
         skills
         image
         published
+        expire_date
+        claim_limit
       ]
     }
   ) {
