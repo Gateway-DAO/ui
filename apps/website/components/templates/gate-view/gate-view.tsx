@@ -246,7 +246,7 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
     : false;
 
   const isLimitExceeded = gateProps?.claim_limit
-    ? gateProps?.claim_limit < gateProps?.holder_count
+    ? gateProps?.claim_limit <= gateProps?.holder_count
     : false;
 
   return (
