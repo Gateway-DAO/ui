@@ -22,6 +22,7 @@ import TaskArea from '../../organisms/tasks-area/tasks-area';
 import { GateDetailsForm } from './details-form';
 import { GateImageCard } from './gate-image-card/gate-image-card';
 import { createGateSchema, CreateGateData } from './schema';
+import { AdvancedSetting } from './advanced-settings';
 
 type CreateGateProps = {
   oldData?: CreateGateData;
@@ -137,6 +138,8 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
         categories: data.categories || [],
         description: data.description,
         skills: data.skills || [],
+        claim_limit: data.claim_limit,
+        expire_date: data.expire_date,
         permissions: permissionsData,
         type: data.type,
         image: image_url,
@@ -287,6 +290,7 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
             >
               <Stack direction="column" gap={4}>
                 <GateDetailsForm />
+                <AdvancedSetting />
               </Stack>
             </Stack>
 
