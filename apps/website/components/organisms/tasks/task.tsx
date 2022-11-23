@@ -23,7 +23,7 @@ import { queryClient } from '../../../services/query-client';
 import { getMapValueFromObject } from '../../../utils/map-object';
 import GithubContributeContent from '../gates/view/tasks/content/github_contribute';
 import GithubPRContent from '../gates/view/tasks/content/github_prs';
-import ManualContent from '../gates/view/tasks/content/manual';
+import ManualContent from '../gates/view/tasks/content/manual/manual';
 import MeetingCodeContent from '../gates/view/tasks/content/meeting_code';
 import NFTHoldContent from '../gates/view/tasks/content/nft_hold';
 import QuizContent from '../gates/view/tasks/content/quiz';
