@@ -248,8 +248,10 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
   return (
     <Grid
       container
-      height="100%"
-      sx={{ flexWrap: 'nowrap', flexDirection: { xs: 'column', md: 'row' } }}
+      sx={{
+        flexWrap: 'nowrap',
+        flexDirection: { xs: 'column', md: 'row' },
+      }}
     >
       <GateCompletedModal
         open={open}

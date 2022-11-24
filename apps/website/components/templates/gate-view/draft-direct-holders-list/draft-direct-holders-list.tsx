@@ -92,6 +92,24 @@ export function DraftDirectHoldersList({ gate }: Props) {
                 {children}
               </Box>
             )}
+            listProps={{
+              style: {
+                height: '100%',
+              },
+            }}
+            listContainerProps={{
+              sx: {
+                height: {
+                  xs: 'calc(100vh - 112px)',
+                  md: '100%',
+                },
+              },
+            }}
+            listItemProps={{
+              sx: {
+                px: TOKENS.CONTAINER_PX,
+              },
+            }}
           />
         </>
       ) : (

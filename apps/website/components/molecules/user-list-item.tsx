@@ -26,6 +26,7 @@ const FollowButtonUser = dynamic<any>(
     ssr: false,
   }
 );
+
 type Props = {
   user: PartialDeep<Users>;
   hasLink?: boolean;

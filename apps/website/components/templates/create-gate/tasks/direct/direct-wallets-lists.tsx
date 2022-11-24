@@ -6,12 +6,20 @@ import {
   useState,
 } from 'react';
 
-import { Virtuoso } from 'react-virtuoso';
-
-import { TOKENS } from '@gateway/theme';
+import { Virtuoso, VirtuosoProps } from 'react-virtuoso';
 
 import SearchIcon from '@mui/icons-material/Search';
-import { Stack, Divider, InputAdornment, TextField, Chip } from '@mui/material';
+import {
+  Stack,
+  Divider,
+  InputAdornment,
+  TextField,
+  Chip,
+  ListItemProps,
+  StackProps,
+  Box,
+  BoxProps,
+} from '@mui/material';
 
 import { UserListItem } from '../../../../molecules/user-list-item';
 import { ProgressVerifyCSV, ValidatedWallet } from './types';
@@ -20,8 +28,16 @@ export function DirectWalletsList({
   invalidList,
   validList,
   searchContainer: SearchContainer,
+  containerProps,
+  listContainerProps,
+  listProps,
+  listItemProps,
 }: Required<Pick<ProgressVerifyCSV, 'validList' | 'invalidList'>> & {
   searchContainer?: (props: PropsWithChildren<unknown>) => JSX.Element;
+  containerProps?: StackProps;
+  listContainerProps?: BoxProps;
+  listProps?: Partial<VirtuosoProps<any, any>>;
+  listItemProps?: Partial<ListItemProps>;
 }) {
   const [filter, setFilter] = useState('');
 
@@ -92,50 +108,50 @@ export function DirectWalletsList({
   );
 
   return (
-    <Stack gap={3}>
+    <Stack gap={3} sx={{ height: '100%' }} {...containerProps}>
       {SearchContainer ? (
         <SearchContainer>{searchInput}</SearchContainer>
       ) : (
         searchInput
       )}
-      <Virtuoso
-        style={{ height: Math.min(400, whitelistedWallets.length * 61) }}
-        data={whitelistedWallets}
-        itemContent={(index, whitelisted) => {
-          return (
-            <>
-              <UserListItem
-                user={{
-                  name: whitelisted.ens
-                    ? whitelisted.ens
-                    : `${whitelisted.wallet.slice(
-                        0,
-                        6
-                      )}...${whitelisted.wallet.slice(
-                        whitelisted.wallet.length - 4
-                      )}`,
-                  username: whitelisted.wallet,
-                }}
-                showFollow={false}
-                hasLink={false}
-                hasUsernamePrefix={false}
-                sx={{
-                  px: TOKENS.CONTAINER_PX,
-                  color: whitelisted.invalid && 'red !important',
-                }}
-                secondaryAction={
-                  whitelisted.invalid ? (
-                    <Chip variant="outlined" color="error" label="Invalid" />
-                  ) : (
-                    <Chip variant="outlined" color="success" label="Valid" />
-                  )
-                }
-              />
-              {index !== whitelistedWallets.length - 1 && <Divider />}
-            </>
-          );
-        }}
-      />
+      <Box {...listContainerProps}>
+        <Virtuoso
+          style={{ height: Math.min(400, whitelistedWallets.length * 61) }}
+          data={whitelistedWallets}
+          itemContent={(index, whitelisted) => {
+            return (
+              <>
+                <UserListItem
+                  user={{
+                    name: whitelisted.ens
+                      ? whitelisted.ens
+                      : `${whitelisted.wallet.slice(
+                          0,
+                          6
+                        )}...${whitelisted.wallet.slice(
+                          whitelisted.wallet.length - 4
+                        )}`,
+                    username: whitelisted.wallet,
+                  }}
+                  showFollow={false}
+                  hasLink={false}
+                  hasUsernamePrefix={false}
+                  secondaryAction={
+                    whitelisted.invalid ? (
+                      <Chip variant="outlined" color="error" label="Invalid" />
+                    ) : (
+                      <Chip variant="outlined" color="success" label="Valid" />
+                    )
+                  }
+                  {...listItemProps}
+                />
+                {index !== whitelistedWallets.length - 1 && <Divider />}
+              </>
+            );
+          }}
+          {...listProps}
+        />
+      </Box>
     </Stack>
   );
 }
