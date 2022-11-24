@@ -93,6 +93,7 @@ const Email = () => {
           variant: 'error',
         });
       }
+      resetForm();
       return error;
     }
   };
@@ -161,7 +162,7 @@ const Email = () => {
       setErrorVerify(
         taskErrorMessages[
           (errorVerifyCode as any)?.response?.errors[0]?.message
-        ] || taskErrorMessages['UNEXPECTED_ERROR']
+        ] || taskErrorMessages['INVALID_CODE_VERIFICATION']
       );
     } else {
       setErrorVerify(null);

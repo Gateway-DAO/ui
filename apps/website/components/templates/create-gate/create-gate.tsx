@@ -19,12 +19,10 @@ import ConfirmDialog from '../../organisms/confirm-dialog/confirm-dialog';
 import GatePublishedModal from '../../organisms/gates/create/gate-published';
 import { PublishNavbar } from '../../organisms/publish-navbar/publish-navbar';
 import TaskArea from '../../organisms/tasks-area/tasks-area';
+import { AdvancedSetting } from './advanced-settings';
 import { GateDetailsForm } from './details-form';
 import { GateImageCard } from './gate-image-card/gate-image-card';
-import { GateTypeChanger } from './gate-type-selector/gate-type-changer';
-import { GateTypeSelector } from './gate-type-selector/gate-type-selector';
-import { createGateSchema, CreateGateData, GateType } from './schema';
-import { DirectWallets } from './tasks/direct/direct-wallets';
+import { createGateSchema, CreateGateData } from './schema';
 
 type CreateGateProps = {
   oldData?: CreateGateData;
@@ -37,7 +35,10 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
   const methods = useForm({
     resolver: zodResolver(createGateSchema),
     mode: 'onBlur',
-    defaultValues: oldData,
+    defaultValues: {
+      ...oldData,
+      type: 'task_based',
+    },
   });
 
   const router = useRouter();
@@ -139,6 +140,8 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
         categories: data.categories || [],
         description: data.description,
         skills: data.skills || [],
+        claim_limit: data.claim_limit,
+        expire_date: data.expire_date,
         permissions: permissionsData,
         type: data.type,
         image: image_url,
@@ -202,8 +205,6 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
     }
     return message !== '' ? message : null;
   };
-
-  const gateType: GateType = methods.watch('type');
 
   const onSaveDraft = async (draftData: CreateGateData) => {
     try {
@@ -299,6 +300,7 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
                 <Stack direction="column" gap={4}>
                   <GateDetailsForm />
                 </Stack>
+                <AdvancedSetting />
               </Stack>
 
               <GateImageCard
@@ -362,20 +364,12 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
                   }}
                   gap={4}
                 >
-                  {gateType ? (
-                    <GateTypeChanger type={gateType} />
-                  ) : (
-                    <GateTypeSelector />
-                  )}
-                  {gateType === 'direct' && <DirectWallets />}
-                  {gateType === 'task_based' && (
-                    <Stack direction="column" gap={2}>
-                      <TaskArea
-                        draftTasks={oldData.tasks || []}
-                        onDelete={setDeletedTasks}
-                      />
-                    </Stack>
-                  )}
+                  <Stack direction="column" gap={2}>
+                    <TaskArea
+                      draftTasks={oldData.tasks ?? []}
+                      onDelete={setDeletedTasks}
+                    />
+                  </Stack>
                 </Stack>
               </Box>
             </>

@@ -22,6 +22,8 @@ export type CreateGateData = {
   id?: string;
   categories: string[];
   skills: string[];
+  expire_date?: string;
+  claim_limit?: number;
 } & Required<
   Pick<Gates, 'title' | 'categories' | 'skills' | 'image' | 'description'>
 > &
@@ -577,6 +579,12 @@ const gateBase = z.object({
     id: z.string(),
     name: z.string(),
   }),
+  claim_limit: z
+    .number()
+    .positive({ message: 'please enter a valid value' })
+    .int({ message: `please enter a valid value , don't use decimal value` })
+    .nullish(),
+  expire_date: z.string().nullish(),
 });
 
 const taskGate = gateBase.augment({

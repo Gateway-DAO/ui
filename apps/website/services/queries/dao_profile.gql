@@ -1,3 +1,39 @@
+fragment dao_profile on daos {
+  id
+  name
+  description
+  slug
+  background {
+    id
+    blur
+    #url
+  }
+  logo {
+    id
+    blur
+  }
+  logo_url
+  background_url
+  categories
+  socials {
+    network
+    url
+  }
+  gates(where: { published: { _eq: "published" } }, limit: 3) {
+    id
+    title
+    description
+    categories
+    image
+    published
+  }
+  followers_aggregate(where: { status: { _eq: "following" } }) {
+    aggregate {
+      count
+    }
+  }
+}
+
 query dao_pages {
   daos(limit: 10) {
     id
@@ -7,66 +43,40 @@ query dao_pages {
 
 query dao_profile($id: uuid!) {
   daos_by_pk(id: $id) {
-    id
-    name
-    description
-    slug
-    background {
-      id
-      blur
-      #url
-    }
-    logo {
-      id
-      blur
-    }
-    logo_url
-    background_url
-    categories
-    socials {
-      network
-      url
-    }
-    gates(where: { published: { _eq: "published" } }, limit: 3) {
-      id
-      title
-      description
-      categories
-      image
-      published
+    ...dao_profile
+    followers(where: { status: { _eq: "following" } }, limit: 6) {
+      user {
+        id
+        name
+        username
+        pfp
+        picture {
+          ...file
+        }
+        permissions(where: { dao_id: { _eq: $id } }) {
+          permission
+        }
+      }
     }
   }
 }
 
 query dao_profile_by_slug($slug: String!) {
   daos(where: { slug: { _eq: $slug } }) {
-    id
-    name
-    description
-    slug
-    background {
-      id
-      blur
-      #url
-    }
-    logo {
-      id
-      blur
-    }
-    logo_url
-    background_url
-    categories
-    socials {
-      network
-      url
-    }
-    gates(where: { published: { _eq: "published" } }, limit: 3) {
-      id
-      title
-      description
-      categories
-      image
-      published
+    ...dao_profile
+    followers(where: { status: { _eq: "following" } }, limit: 6) {
+      user {
+        id
+        name
+        username
+        pfp
+        picture {
+          ...file
+        }
+        permissions(where: { dao: { slug: { _eq: $slug } } }) {
+          permission
+        }
+      }
     }
   }
 }
@@ -87,20 +97,14 @@ query dao_gates_tab($id: uuid!) {
   }
 }
 
-query dao_profile_people($id: uuid!) {
+query dao_profile_people($id: uuid!, $offset: Int!) {
   daos_by_pk(id: $id) {
-    followers_aggregate(where: { status: { _eq: "following" } }) {
-      aggregate {
-        count
-      }
-    }
-    followers(where: { status: { _eq: "following" } }) {
+    followers(where: { status: { _eq: "following" } }, order_by: { user: { name: asc } }, limit: 15, offset: $offset) {
       user {
         id
         name
         username
         pfp
-        wallet
         picture {
           ...file
         }
