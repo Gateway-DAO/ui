@@ -1,13 +1,17 @@
-import { ChangeEvent, useMemo, useState } from 'react';
+import {
+  ChangeEvent,
+  PropsWithChildren,
+  ReactNode,
+  useMemo,
+  useState,
+} from 'react';
 
 import { Virtuoso } from 'react-virtuoso';
 
 import { TOKENS } from '@gateway/theme';
 
-import CheckIcon from '@mui/icons-material/Check';
-import CloseIcon from '@mui/icons-material/Close';
 import SearchIcon from '@mui/icons-material/Search';
-import { Stack, Divider, InputAdornment, TextField } from '@mui/material';
+import { Stack, Divider, InputAdornment, TextField, Chip } from '@mui/material';
 
 import { UserListItem } from '../../../../molecules/user-list-item';
 import { ProgressVerifyCSV, ValidatedWallet } from './types';
@@ -15,7 +19,10 @@ import { ProgressVerifyCSV, ValidatedWallet } from './types';
 export function DirectWalletsList({
   invalidList,
   validList,
-}: Required<Pick<ProgressVerifyCSV, 'validList' | 'invalidList'>>) {
+  searchContainer: SearchContainer,
+}: Required<Pick<ProgressVerifyCSV, 'validList' | 'invalidList'>> & {
+  searchContainer?: (props: PropsWithChildren<unknown>) => JSX.Element;
+}) {
   const [filter, setFilter] = useState('');
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -28,52 +35,69 @@ export function DirectWalletsList({
       ens?: string;
       invalid?: boolean;
     }[] = [
-      ...(validList?.map((string) => JSON.parse(string) as ValidatedWallet) ??
-        []),
-      ...(invalidList?.map((wallet) => ({ invalid: true, wallet })) ?? []),
-    ];
-    if (filter.length > 0) {
-      return wallets.filter(({ wallet, ens }) => {
-        if (ens) {
-          return wallet.includes(filter) || ens.includes(filter);
+      ...(invalidList?.reduce((acc, wallet) => {
+        const obj = { invalid: true, wallet };
+        if (!filter.length) {
+          return [...acc, obj];
         }
-        return wallet.includes(filter);
-      });
-    }
+        return wallet.toLowerCase().includes(filter.toLowerCase())
+          ? [...acc, obj]
+          : acc;
+      }, []) ?? []),
+      ...(validList?.reduce((acc, string) => {
+        const obj: ValidatedWallet = JSON.parse(string);
+        if (!filter.length) {
+          return [...acc, obj];
+        }
+        const { wallet, ens } = obj;
+        return wallet.toLowerCase().includes(filter.toLowerCase()) ||
+          ens?.toLowerCase().includes(filter.toLowerCase())
+          ? [...acc, obj]
+          : acc;
+      }, []) ?? []),
+    ];
     return wallets;
   }, [filter, invalidList, validList]);
 
+  const searchInput = (
+    <TextField
+      label="Search"
+      variant="outlined"
+      size="small"
+      onChange={handleChange}
+      value={filter}
+      fullWidth
+      InputProps={{
+        endAdornment: (
+          <InputAdornment
+            position="end"
+            sx={{
+              paddingRight: 1,
+            }}
+          >
+            <SearchIcon
+              sx={{
+                color: 'rgba(255, 255, 255, 0.56)',
+              }}
+            />
+          </InputAdornment>
+        ),
+        fullWidth: true,
+        sx: {
+          borderRadius: 100,
+        },
+        size: 'small',
+      }}
+    />
+  );
+
   return (
     <Stack gap={3}>
-      <TextField
-        label="Search"
-        variant="outlined"
-        size="small"
-        onChange={handleChange}
-        value={filter}
-        fullWidth
-        InputProps={{
-          endAdornment: (
-            <InputAdornment
-              position="end"
-              sx={{
-                paddingRight: 1,
-              }}
-            >
-              <SearchIcon
-                sx={{
-                  color: 'rgba(255, 255, 255, 0.56)',
-                }}
-              />
-            </InputAdornment>
-          ),
-          fullWidth: true,
-          sx: {
-            borderRadius: 100,
-          },
-          size: 'small',
-        }}
-      />
+      {SearchContainer ? (
+        <SearchContainer>{searchInput}</SearchContainer>
+      ) : (
+        searchInput
+      )}
       <Virtuoso
         style={{ height: Math.min(400, whitelistedWallets.length * 61) }}
         data={whitelistedWallets}
@@ -99,7 +123,13 @@ export function DirectWalletsList({
                   px: TOKENS.CONTAINER_PX,
                   color: whitelisted.invalid && 'red !important',
                 }}
-                icon={whitelisted.invalid ? <CloseIcon /> : <CheckIcon />}
+                secondaryAction={
+                  whitelisted.invalid ? (
+                    <Chip variant="outlined" color="error" label="Invalid" />
+                  ) : (
+                    <Chip variant="outlined" color="success" label="Valid" />
+                  )
+                }
               />
               {index !== whitelistedWallets.length - 1 && <Divider />}
             </>
@@ -108,32 +138,4 @@ export function DirectWalletsList({
       />
     </Stack>
   );
-
-  /*   return (
-    <Stack gap={3}>
-      {!!validList.length && (
-        <Stack gap={2}>
-          <Typography fontWeight="bold">Valid</Typography>
-          <Virtuoso
-            style={{ height: Math.min(400, validList.length * 24) }}
-            data={validList}
-            itemContent={(index, validated) => {
-              const { ens, wallet } = JSON.parse(validated);
-              return <Typography>{ens ?? wallet}</Typography>;
-            }}
-          />
-        </Stack>
-      )}
-      {!!invalidList.length && (
-        <Stack gap={2}>
-          <Typography fontWeight="bold">Invalid</Typography>
-          <Virtuoso
-            style={{ height: Math.min(400, invalidList.length * 24) }}
-            data={invalidList}
-            itemContent={(index, wallet) => <Typography>{wallet}</Typography>}
-          />
-        </Stack>
-      )}
-    </Stack>
-  ); */
 }

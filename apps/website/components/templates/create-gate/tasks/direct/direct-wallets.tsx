@@ -13,6 +13,7 @@ import { CreateGateData } from '../../schema';
 import {
   DirectWalletsEmptyHeader,
   DirectWalletsHeader,
+  DirectWalletsVerifyingHeader,
 } from './direct-wallets-header';
 import { DirectWalletsList } from './direct-wallets-lists';
 import { DirectWalletsDropzone } from './fields/direct-wallets-dropzone';
@@ -118,11 +119,15 @@ export function DirectWallets() {
           <>
             {file ? (
               <>
-                <DirectWalletsHeader
-                  totalWallets={file?.metadata?.total}
-                  disabled={progress && !progress.isDone}
-                  readFiles={readFiles}
-                />
+                {progress?.isDone ? (
+                  <DirectWalletsHeader
+                    validWallets={progress.valid}
+                    invalidWallets={progress.invalid}
+                    readFiles={readFiles}
+                  />
+                ) : (
+                  <DirectWalletsVerifyingHeader total={file?.metadata?.total} />
+                )}
                 {progress && !progress.isDone && (
                   <DirectWalletsProgress
                     total={file?.metadata?.total}

@@ -25,9 +25,13 @@ export function DirectWalletsProgress({
     // Get remaining time in seconds and convert to minutes
     const minutes = Math.floor(remainingTime / 60);
     if (minutes > 0) {
-      return t('direct.progress.remaining.minutes', { total: minutes });
+      return t('direct.verifying.progress.remaining.minutes', {
+        total: minutes,
+      });
     }
-    return t('direct.progress.remaining.seconds', { total: remainingTime });
+    return t('direct.verifying.progress.remaining.seconds', {
+      total: remainingTime,
+    });
   }, [remainingTime]);
 
   return (
@@ -64,14 +68,16 @@ export function DirectWalletsProgress({
         </Box>
       </Box>
       <Stack gap={0.5} alignItems="center">
-        <Typography variant="body1">{t('direct.progress.title')}</Typography>
+        <Typography variant="body1">
+          {t('direct.verifying.progress.title')}
+        </Typography>
         {remainingTime > 0 && (
           <Typography variant="body2">{remainingTimeText}</Typography>
         )}
       </Stack>
       <Box>
         <Typography variant="body2" color="text.secondary">
-          {t('direct.progress.description')}
+          {t('direct.verifying.progress.description')}
         </Typography>
       </Box>
     </Stack>
