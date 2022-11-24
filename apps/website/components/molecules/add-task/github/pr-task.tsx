@@ -18,12 +18,13 @@ import {
   Typography,
 } from '@mui/material';
 
-import { CircleWithNumber } from '../../../atoms/circle-with-number';
+
 import GithubDataCard from '../../../organisms/tasks/github-data-card';
 import {
   CreateGateData,
   GithubContributeDataError,
 } from '../../../templates/create-gate/schema';
+import { TaskIcon } from 'apps/website/components/atoms/task-icon';
 
 type GithubPRTaskProps = {
   dragAndDrop: boolean;
@@ -128,13 +129,7 @@ export default function GithubPRTask({
           alignItems={'center'}
           sx={{ width: '100%', mr: '20px' }}
         >
-          <CircleWithNumber
-            number={taskId + 1}
-            sx={(theme) => ({
-              mr: theme.spacing(3.75),
-              [theme.breakpoints.down('sm')]: { mr: theme.spacing(2.5) },
-            })}
-          />
+          <TaskIcon type="github_prs" sx={{ marginRight: 3 }} />
           <Stack>
             <Typography variant="subtitle2">
               {t('tasks.github_prs.title')}

@@ -19,10 +19,10 @@ import ConfirmDialog from '../../organisms/confirm-dialog/confirm-dialog';
 import GatePublishedModal from '../../organisms/gates/create/gate-published';
 import { PublishNavbar } from '../../organisms/publish-navbar/publish-navbar';
 import TaskArea from '../../organisms/tasks-area/tasks-area';
+import { AdvancedSetting } from './advanced-settings';
 import { GateDetailsForm } from './details-form';
 import { GateImageCard } from './gate-image-card/gate-image-card';
 import { createGateSchema, CreateGateData } from './schema';
-import { AdvancedSetting } from './advanced-settings';
 
 type CreateGateProps = {
   oldData?: CreateGateData;
@@ -123,11 +123,13 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
     }
     if (deletedTasks.length > 0) {
       await Promise.all(
-        deletedTasks.map((task_id) =>
-          deleteTask.mutateAsync({
-            task_id,
-          })
-        )
+        deletedTasks
+          .filter((task) => !!task)
+          .map((task_id) =>
+            deleteTask.mutateAsync({
+              task_id,
+            })
+          )
       );
     }
     if (data.title) {
@@ -253,83 +255,92 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
             }
             saveDraft={onSaveDraft}
           />
-          <Typography
-            component="h1"
-            variant="h4"
-            sx={{ margin: '40px 0 40px 0', marginBottom: { md: '100px' } }}
+          <Box
+            padding={'0 90px'}
+            sx={(theme) => ({
+              p: '0 90px',
+              [theme.breakpoints.down('sm')]: { p: '0 20px' },
+            })}
           >
-            {oldData.id ? 'Edit' : 'Create'} Credential
-          </Typography>
+            <Typography
+              component="h1"
+              variant="h4"
+              sx={{ margin: '40px 0 40px 0', marginBottom: { md: '100px' } }}
+            >
+              {oldData.id ? 'Edit' : 'Create'} Credential
+            </Typography>
 
-          {/* Details */}
-          <Stack
-            direction="row"
-            justifyContent="space-between"
-            alignItems="stretch"
-            gap={2}
-            sx={{
-              width: '100%',
-              flexDirection: { xs: 'column', md: 'row' },
-            }}
-          >
-            <Box>
-              <Typography component="h2" variant="h5" gutterBottom>
-                Add details
-              </Typography>
-              <Typography variant="body2" color={'text.secondary'}>
-                Add the details of the credential
-              </Typography>
-            </Box>
+            {/* Details */}
             <Stack
-              gap={7.5}
-              mt={2}
+              direction="row"
+              justifyContent="space-between"
+              alignItems="stretch"
+              gap={2}
               sx={{
-                maxWidth: { xs: '100%', md: '50%', lg: '40%' },
                 width: '100%',
+                flexDirection: { xs: 'column', md: 'row' },
               }}
             >
-              <Stack direction="column" gap={4}>
-                <GateDetailsForm />
+              <Box>
+                <Typography component="h2" variant="h5" gutterBottom>
+                  Add details
+                </Typography>
+                <Typography variant="body2" color={'text.secondary'}>
+                  Add the details of the credential
+                </Typography>
+              </Box>
+              <Stack
+                gap={7.5}
+                mt={2}
+                sx={{
+                  maxWidth: { xs: '100%', md: '50%', lg: '40%' },
+                  width: '100%',
+                }}
+              >
+                <Stack direction="column" gap={4}>
+                  <GateDetailsForm />
+                </Stack>
                 <AdvancedSetting />
               </Stack>
-            </Stack>
 
-            <GateImageCard
-              draftImage={oldData.image}
-              label={
-                <>
-                  <Typography textAlign={'center'} paddingX={4}>
-                    Drop or{' '}
-                    <Typography color={'primary'} display={'inline'}>
-                      upload
-                    </Typography>{' '}
-                    your credential image
-                  </Typography>
-                </>
-              }
-              sx={{
-                width: 300,
-              }}
-            />
-          </Stack>
+              <GateImageCard
+                draftImage={oldData.image}
+                label={
+                  <>
+                    <Typography textAlign={'center'} paddingX={4}>
+                      Drop or{' '}
+                      <Typography color={'primary'} display={'inline'}>
+                        upload
+                      </Typography>{' '}
+                      your credential image
+                    </Typography>
+                  </>
+                }
+                sx={{
+                  width: 300,
+                }}
+              />
+            </Stack>
+          </Box>
 
           {/* Tasks */}
           {hasTitleAndDescription && (
             <>
-              <Divider sx={{ margin: '60px 0', width: '100%' }} />
-              <Stack
-                direction="row"
-                gap={{ lg: 5, xs: 2, md: 2 }}
+              <Divider sx={{ my: 5 }} />
+              <Box
                 sx={(theme) => ({
+                  display: 'flex',
                   width: '100%',
-                  display: { xs: 'block', md: 'flex' },
+                  p: '0 90px',
+                  flexDirection: { xs: 'column', md: 'row' },
+                  justifyContent: 'space-between',
                   [theme.breakpoints.down('sm')]: { p: '0 20px' },
                 })}
               >
                 <Box
                   sx={{
                     maxWidth: {
-                      lg: `15%`,
+                      md: `18%`,
                     },
                   }}
                 >
@@ -347,7 +358,7 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
                 <Stack
                   direction="column"
                   sx={{
-                    margin: 'auto',
+                    marginLeft: 'auto',
                     width: '100%',
                     maxWidth: { xs: '100%', md: '100%', lg: '80%' },
                   }}
@@ -360,7 +371,7 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
                     />
                   </Stack>
                 </Stack>
-              </Stack>
+              </Box>
             </>
           )}
 
