@@ -75,5 +75,8 @@
         }
       }
     }
+  },
+  "notifications": {
+    "published": "published a new credential: "
   }
 }

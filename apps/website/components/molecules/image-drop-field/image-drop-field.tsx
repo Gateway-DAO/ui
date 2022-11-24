@@ -46,7 +46,8 @@ export function ImageDropField<TFormSchema extends FieldValues = FieldValues>({
 
     reader.onload = (event) => {
       const image = event.target.result as string;
-      if (withCrop) {
+      const isGif = event.target.result.toString().match('data:image/gif;');
+      if (withCrop && !isGif) {
         imageCropDialog.onOpen(image);
       } else {
         onChange(image);

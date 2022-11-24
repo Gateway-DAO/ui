@@ -15,6 +15,7 @@ type Props = {
   completedTasksCount: number;
   formattedDate: string;
   published: string;
+  isCredentialExpired: boolean;
   tasks?: PartialDeep<Tasks>[];
   setOpen: (open: boolean) => void;
 };
@@ -26,6 +27,7 @@ export function TaskList({
   tasks = [],
   formattedDate,
   published,
+  isCredentialExpired,
   setOpen,
 }: Props) {
   return (
@@ -77,7 +79,7 @@ export function TaskList({
           </Stack>
         </Box>
       </Stack>
-      {!!completedAt && (
+      {!!completedAt ? (
         <Typography
           sx={{
             marginX: TOKENS.CONTAINER_PX,
@@ -90,7 +92,21 @@ export function TaskList({
         >
           You have completed this credential at {formattedDate}
         </Typography>
-      )}
+      ) : isCredentialExpired ? (
+        <Typography
+          sx={{
+            marginX: TOKENS.CONTAINER_PX,
+            py: 1,
+            px: 4,
+            border: 1,
+            borderColor: '#FFA726',
+            borderRadius: 1,
+          }}
+          color={'#FFA726'}
+        >
+          This credential is not available
+        </Typography>
+      ) : null}
 
       <TaskGroup>
         {tasks
@@ -99,7 +115,7 @@ export function TaskList({
             <Task
               key={'task-' + (idx + 1)}
               task={task}
-              readOnly={published !== 'published'}
+              readOnly={published !== 'published' || isCredentialExpired}
               setCompletedGate={setOpen}
               isAdmin={isAdmin}
             />

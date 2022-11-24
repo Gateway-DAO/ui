@@ -1,17 +1,21 @@
-import { Stack } from '@mui/material';
+import { Stack, Box } from '@mui/material';
+import Typography from '@mui/material/Typography';
+import { TaskIcon, TaskType } from '../../atoms/task-icon';
 
 type AddTaskButtonProps = {
-  icon: JSX.Element;
+  type: TaskType;
   title: string;
+  description: string;
   disabled?: boolean;
   addTask: () => void;
 };
 
 const AddTaskButton = ({
-  icon,
+  type,
   title,
-  disabled,
+  description,
   addTask,
+  disabled,
 }: AddTaskButtonProps) => {
   return (
     <Stack
@@ -26,26 +30,29 @@ const AddTaskButton = ({
         borderColor: 'rgba(255, 255, 255, 0.1)',
         borderRadius: '10px',
         alignItems: 'center',
-        justifyContent: 'center',
-        flexDirection: { xs: 'row', md: 'column' },
+
+        flexDirection: 'row',
         columnGap: '10px',
-        padding: '20px 0',
+        padding: '20px',
         cursor: !disabled && 'pointer',
         '&:hover': {
-          filter: !disabled && 'brightness(150%)',
+          backgroundColor: !disabled && 'background.paper',
         },
-        fontWeight: '700',
-        fontSize: '15px',
-        lineHeight: '22px',
-        letterSpacing: '0.46px',
-        textTransform: 'uppercase',
       }}
       onClick={() => addTask()}
     >
-      <span>{icon}</span>
-      <span style={{ margin: '5px 0px 5px 0px', fontSize: '11px' }}>
-        {disabled ? title + ' (Soon)' : title}
-      </span>
+      <TaskIcon type={type} />
+      <Stack>
+        <Typography
+          variant="subtitle2"
+          color={'#FFFFFF'}
+          fontWeight={600}
+          gutterBottom
+        >
+          {title}
+        </Typography>
+        <Typography variant="caption">{description}</Typography>
+      </Stack>
     </Stack>
   );
 };

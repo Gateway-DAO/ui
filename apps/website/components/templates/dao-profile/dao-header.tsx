@@ -26,18 +26,12 @@ import { SocialButtons } from '../../organisms/social-buttons';
 import { useDaoProfile } from './context';
 
 type Props = {
-  followCount?: number;
-  followIsLoaded: boolean;
+  followCount: number;
   onFollow: () => void;
   onUnfollow: () => void;
 };
 
-export function DaoHeader({
-  followCount,
-  followIsLoaded,
-  onFollow,
-  onUnfollow,
-}: Props) {
+export function DaoHeader({ followCount, onFollow, onUnfollow }: Props) {
   const { dao, credentials, isAdmin } = useDaoProfile();
   const cover = useFile(dao.background);
   const { t } = useTranslation('dao-profile');
@@ -132,13 +126,11 @@ export function DaoHeader({
             divider={<span>·</span>}
             sx={{ mt: 12 / 8 }}
           >
-            {followIsLoaded && (
-              <Typography variant="body1">
-                {t('common:count.follower', {
-                  count: followCount ?? 0,
-                })}
-              </Typography>
-            )}
+            <Typography variant="body1">
+              {t('common:count.follower', {
+                count: followCount ?? 0,
+              })}
+            </Typography>
             <Typography variant="body1">
               {t('common:count.credential', {
                 count: credentials?.daos_by_pk.gates.length ?? 0,

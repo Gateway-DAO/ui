@@ -11,12 +11,12 @@ import { GatesTab, OverviewTab } from './tabs';
 import { PeopleTab } from './tabs/people-tab';
 
 export function DaoProfileTemplate() {
-  const { followers, onRefetchFollowers, followersIsLoaded, credentials } =
+  const { dao, onRefetchFollowers, followersCount, credentials } =
     useDaoProfile();
   const { t } = useTranslation();
   const { activeTab, handleTabChange, setTab } = useTab();
 
-  const people = followers?.daos_by_pk?.followers.map(({ user }) => user) ?? [];
+  const people = dao?.followers?.map(({ user }) => user) ?? [];
 
   const tabs = [
     {
@@ -38,17 +38,14 @@ export function DaoProfileTemplate() {
     {
       key: 'people',
       label: t('common:tabs.people'),
-      section: <PeopleTab people={people} />,
+      section: <PeopleTab />,
     },
   ];
 
   return (
     <>
       <DaoHeader
-        followIsLoaded={followersIsLoaded}
-        followCount={
-          followers?.daos_by_pk?.followers_aggregate?.aggregate?.count
-        }
+        followCount={followersCount}
         onFollow={onRefetchFollowers}
         onUnfollow={onRefetchFollowers}
       />
