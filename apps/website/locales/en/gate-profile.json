@@ -38,5 +38,8 @@
     },
     "check_action": "Verify",
     "completed": "Task completed at "
+  },
+  "submissions": {
+    "title": "Submissions"
   }
 }

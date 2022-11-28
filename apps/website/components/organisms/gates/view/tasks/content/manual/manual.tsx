@@ -55,6 +55,16 @@ const ManualContent = ({
           <Divider sx={{ width: '100%', mb: 5 }} />
           <Stack sx={{ width: '100%' }}>
             <TaskInteration
+              type={InterationType.APPROVED}
+              headerText="approved the submission - 10/05/2022, 11:24 am"
+              user="hst"
+            />
+            <TaskInteration
+              type={InterationType.DENIED}
+              headerText="denied the submission - 10/05/2022, 11:24 am"
+              user="hst"
+            />
+            <TaskInteration
               type={InterationType.WAITING}
               headerText="Waiting for feedback from"
               user="hst"

@@ -33,6 +33,7 @@ import TokenHoldContent from '../gates/view/tasks/content/token_hold';
 import TwitterFollowContent from '../gates/view/tasks/content/twitter_follow';
 import TwitterRetweetContent from '../gates/view/tasks/content/twitter_retweet';
 import TwitterTweetContent from '../gates/view/tasks/content/twitter_tweet';
+import { Submissions } from './submissions';
 import { taskErrorMessages } from './task-error-messages';
 
 type Props = {
@@ -203,6 +204,7 @@ export function Task({
         backgroundImage: 'none !important',
         px: { xs: theme.spacing(1), md: theme.spacing(7) },
         py: { xs: theme.spacing(1), md: theme.spacing(5) },
+        position: 'relative',
       })}
     >
       <CardHeader
@@ -266,6 +268,7 @@ export function Task({
           )}
         </CardContent>
       </Collapse>
+      <Submissions />
     </Card>
   );
 }
