@@ -3,7 +3,7 @@ import { useMemo } from 'react';
 
 import { Box, CircularProgress, Stack, Typography } from '@mui/material';
 
-import { ProgressVerifyCSV } from '../types';
+import { VerifyCsvProgressOutput } from '../../../../../../services/graphql/types.generated';
 import { useRemainingTime } from '../utils';
 
 export function DirectWalletsProgress({
@@ -11,7 +11,7 @@ export function DirectWalletsProgress({
   valid,
   invalid,
   uploadedTime,
-}: ProgressVerifyCSV) {
+}: VerifyCsvProgressOutput) {
   const { t } = useTranslation('gate-new');
   const verified = valid + invalid;
   const percent = verified / total;

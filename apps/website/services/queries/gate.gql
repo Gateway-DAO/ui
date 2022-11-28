@@ -131,6 +131,19 @@ query get_create_gate($id: uuid!) {
   }
 }
 
+query verify_csv_progress ($file_id: uuid!) {
+  verifyCSVProgress(id: $file_id) {
+    id
+    invalid
+    invalidList
+    isDone
+    total
+    uploadedTime
+    valid
+    validList
+  }
+}
+
 query GateProgress($gateID: uuid!, $userID: uuid!) {
   gate_progress(
     where: { gate_id: { _eq: $gateID }, user_id: { _eq: $userID } }

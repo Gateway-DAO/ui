@@ -6,7 +6,6 @@ import { TOKENS } from '@gateway/theme';
 import { Box, CircularProgress, Grid, Stack } from '@mui/material';
 
 import { useAuth } from '../../../../providers/auth';
-import { gqlUserHeader } from '../../../../services/api';
 import { Gates } from '../../../../services/graphql/types.generated';
 import { ClientNav } from '../../../organisms/navbar/client-nav';
 import {
@@ -15,37 +14,28 @@ import {
 } from '../../create-gate/tasks/direct/direct-wallets-header';
 import { DirectWalletsList } from '../../create-gate/tasks/direct/direct-wallets-lists';
 import { DirectWalletsProgress } from '../../create-gate/tasks/direct/fields/direct-wallets-progress';
-import { ProgressVerifyCSV } from '../../create-gate/tasks/direct/types';
 
 type Props = {
   gate: PartialDeep<Gates>;
 };
 
 export function DraftDirectHoldersList({ gate }: Props) {
-  const { me, token } = useAuth();
+  const { gqlAuthMethods } = useAuth();
 
   const file = gate.whitelisted_wallets_file;
 
   const progressReq = useInfiniteQuery(
     ['progress', file?.id],
-    async (): Promise<ProgressVerifyCSV> => {
-      const res = await fetch(
-        `http://localhost:8080/test/progress?id=${file?.id}`,
-        {
-          method: 'GET',
-          headers: gqlUserHeader(token, me?.id),
-        }
-      );
-      return res.json();
-    },
+    () => gqlAuthMethods.verify_csv_progress({ file_id: file?.id }),
     {
       enabled: !!file?.id,
       keepPreviousData: false,
-      refetchInterval: (data) => !data?.pages[0].isDone && 1000,
+      refetchInterval: (data) =>
+        !data?.pages[0].verifyCSVProgress.isDone && 1000,
     }
   );
 
-  const progress = progressReq.data?.pages[0];
+  const progress = progressReq.data?.pages?.[0]?.verifyCSVProgress;
 
   return (
     <Grid display="flex" flexDirection="column" item xs={12} md>

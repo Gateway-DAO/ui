@@ -19,10 +19,9 @@ import { DirectWalletsList } from './direct-wallets-lists';
 import { DirectWalletsDropzone } from './fields/direct-wallets-dropzone';
 import { DirectWalletsProgress } from './fields/direct-wallets-progress';
 import { DirectWalletsUploading } from './fields/direct-wallets-uploading';
-import { ProgressVerifyCSV } from './types';
 
 export function DirectWallets() {
-  const { me, token } = useAuth();
+  const { me, token, gqlAuthMethods } = useAuth();
   const { enqueueSnackbar } = useSnackbar();
   const { field } = useController<CreateGateData>({
     name: 'whitelisted_wallets_file',
@@ -36,11 +35,14 @@ export function DirectWallets() {
       if (verifyCSV.data?.id) {
         formData.append('file_id', verifyCSV.data?.id);
       }
-      const res = await fetch('http://localhost:8080/test/verify-csv', {
-        method: 'POST',
-        headers: gqlUserHeader(token, me?.id),
-        body: formData,
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_HASURA_ENDPOINT}/verify/direct/verify-csv`,
+        {
+          method: 'POST',
+          headers: gqlUserHeader(token, me?.id),
+          body: formData,
+        }
+      );
 
       return res.json();
     },
@@ -58,24 +60,16 @@ export function DirectWallets() {
 
   const progressReq = useInfiniteQuery(
     ['progress', file?.id],
-    async (): Promise<ProgressVerifyCSV> => {
-      const res = await fetch(
-        `http://localhost:8080/test/progress?id=${file?.id}`,
-        {
-          method: 'GET',
-          headers: gqlUserHeader(token, me?.id),
-        }
-      );
-      return res.json();
-    },
+    () => gqlAuthMethods.verify_csv_progress({ file_id: file?.id }),
     {
       enabled: !!file?.id,
       keepPreviousData: false,
-      refetchInterval: (data) => !data?.pages[0].isDone && 1000,
+      refetchInterval: (data) =>
+        !data?.pages[0].verifyCSVProgress.isDone && 1000,
     }
   );
 
-  const progress = progressReq.data?.pages?.[0];
+  const progress = progressReq.data?.pages?.[0]?.verifyCSVProgress;
   const isUploadDisabled = file && progress && !progress.isDone;
 
   const readFiles = (files: File[] | FileList) => {

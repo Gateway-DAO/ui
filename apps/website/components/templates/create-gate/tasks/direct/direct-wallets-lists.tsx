@@ -21,8 +21,9 @@ import {
   BoxProps,
 } from '@mui/material';
 
+import { VerifyCsvProgressOutput } from '../../../../../services/graphql/types.generated';
 import { UserListItem } from '../../../../molecules/user-list-item';
-import { ProgressVerifyCSV, ValidatedWallet } from './types';
+import { ValidatedWallet } from './types';
 
 export function DirectWalletsList({
   invalidList,
@@ -32,7 +33,7 @@ export function DirectWalletsList({
   listContainerProps,
   listProps,
   listItemProps,
-}: Required<Pick<ProgressVerifyCSV, 'validList' | 'invalidList'>> & {
+}: Required<Pick<VerifyCsvProgressOutput, 'validList' | 'invalidList'>> & {
   searchContainer?: (props: PropsWithChildren<unknown>) => JSX.Element;
   containerProps?: StackProps;
   listContainerProps?: BoxProps;
