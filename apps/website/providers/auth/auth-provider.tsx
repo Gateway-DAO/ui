@@ -54,7 +54,7 @@ export function AuthProvider({
   const fetchAuth = useCallback(
     async (url: string, options: Parameters<typeof fetch>[1]) => {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_HASURA_ENDPOINT}/${url}`,
+        `${process.env.NEXT_PUBLIC_NODE_ENDPOINT}/${url}`,
         {
           ...options,
           headers: {
@@ -63,7 +63,11 @@ export function AuthProvider({
           },
         }
       );
-      return res.json();
+      const json = await res.json();
+      if (!res.ok) {
+        throw new Error(json);
+      }
+      return json;
     },
     [me?.id, token]
   );
