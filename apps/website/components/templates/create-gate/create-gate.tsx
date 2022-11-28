@@ -22,7 +22,10 @@ import TaskArea from '../../organisms/tasks-area/tasks-area';
 import { AdvancedSetting } from './advanced-settings';
 import { GateDetailsForm } from './details-form';
 import { GateImageCard } from './gate-image-card/gate-image-card';
+import { GateTypeChanger } from './gate-type-selector/gate-type-changer';
+import { GateTypeSelector } from './gate-type-selector/gate-type-selector';
 import { createGateSchema, CreateGateData } from './schema';
+import { DirectWallets } from './tasks/direct/direct-wallets';
 
 type CreateGateProps = {
   oldData?: CreateGateData;
@@ -37,7 +40,6 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
     mode: 'onBlur',
     defaultValues: {
       ...oldData,
-      type: 'task_based',
     },
   });
 
@@ -222,6 +224,7 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
     }
   };
 
+  const gateType = methods.watch('type');
   const hasTitleAndDescription = methods
     .watch(['title', 'description'])
     .every((value) => !!value);
@@ -364,12 +367,20 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
                   }}
                   gap={4}
                 >
-                  <Stack direction="column" gap={2}>
-                    <TaskArea
-                      draftTasks={oldData.tasks ?? []}
-                      onDelete={setDeletedTasks}
-                    />
-                  </Stack>
+                  {gateType ? (
+                    <GateTypeChanger type={gateType} />
+                  ) : (
+                    <GateTypeSelector />
+                  )}
+                  {gateType === 'direct' && <DirectWallets />}
+                  {gateType === 'task_based' && (
+                    <Stack direction="column" gap={2}>
+                      <TaskArea
+                        draftTasks={oldData.tasks ?? []}
+                        onDelete={setDeletedTasks}
+                      />
+                    </Stack>
+                  )}
                 </Stack>
               </Box>
             </>
