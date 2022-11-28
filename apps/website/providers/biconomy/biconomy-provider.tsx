@@ -133,6 +133,11 @@ export function BiconomyProvider({
     }
   );
 
+  // Mint - backend
+  const { mutateAsync: mintGasless } = useMutation((id: string) =>
+    gqlAuthMethods.mint_credential({ id })
+  );
+
   useEffect(() => {
     if (!signer && status == 'success') {
       refetch();
@@ -247,7 +252,14 @@ export function BiconomyProvider({
     }
   };
 
-  const mintCredential = async (
+  /**
+   * Mints a credential as an NFT on the blockchain using Biconomy
+   * @param credential - PartialDeep<Credentials>
+   * @returns A function that takes a credential and returns a promise that resolves to a MintResponse.
+   *
+   * @deprecated Use `mintCredential` instead
+   */
+  const mintCredential__biconomy = async (
     credential: PartialDeep<Credentials>
   ): Promise<MintResponse> => {
     try {
@@ -270,6 +282,27 @@ export function BiconomyProvider({
       });
 
       return res;
+    } catch (error) {
+      console.log('[useMint] Error:', error);
+
+      return {
+        isMinted: false,
+        error,
+      };
+    }
+  };
+
+  const mintCredential = async (
+    credential: PartialDeep<Credentials>
+  ): Promise<MintResponse> => {
+    try {
+      // 2. mint the NFT
+      const { mint_credential: res } = await mintGasless(credential.id);
+
+      return {
+        isMinted: true,
+        transactionUrl: res.info.transaction_hash,
+      };
     } catch (error) {
       console.log('[useMint] Error:', error);
 
