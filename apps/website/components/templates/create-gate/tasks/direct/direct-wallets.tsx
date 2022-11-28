@@ -7,7 +7,6 @@ import { useInfiniteQuery } from 'wagmi';
 import { Paper } from '@mui/material';
 
 import { useAuth } from '../../../../../providers/auth';
-import { gqlUserHeader } from '../../../../../services/api';
 import { Files } from '../../../../../services/graphql/types.generated';
 import { CreateGateData } from '../../schema';
 import {
@@ -21,7 +20,7 @@ import { DirectWalletsProgress } from './fields/direct-wallets-progress';
 import { DirectWalletsUploading } from './fields/direct-wallets-uploading';
 
 export function DirectWallets() {
-  const { me, token, gqlAuthMethods } = useAuth();
+  const { gqlAuthMethods, fetchAuth } = useAuth();
   const { enqueueSnackbar } = useSnackbar();
   const { field } = useController<CreateGateData>({
     name: 'whitelisted_wallets_file',
@@ -35,16 +34,10 @@ export function DirectWallets() {
       if (verifyCSV.data?.id) {
         formData.append('file_id', verifyCSV.data?.id);
       }
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_HASURA_ENDPOINT}/verify/direct/verify-csv`,
-        {
-          method: 'POST',
-          headers: gqlUserHeader(token, me?.id),
-          body: formData,
-        }
-      );
-
-      return res.json();
+      return fetchAuth(`verify/direct/verify-csv`, {
+        method: 'POST',
+        body: formData,
+      });
     },
     {
       onSuccess(data) {

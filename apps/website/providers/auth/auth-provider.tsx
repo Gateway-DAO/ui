@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import { Session } from 'next-auth';
 import { useSession, signOut } from 'next-auth/react';
-import { PropsWithChildren, useMemo, useEffect } from 'react';
+import { PropsWithChildren, useMemo, useEffect, useCallback } from 'react';
 
 import { useConnectModal } from '@rainbow-me/rainbowkit';
 
 import { AuthConnectingModal } from '../../components/organisms/auth-connecting-modal';
-import { gqlMethodsWithRefresh } from '../../services/api';
+import { gqlMethodsWithRefresh, gqlUserHeader } from '../../services/api';
 import { BlockedPage } from './blocked-page';
 import { AuthContext } from './context';
 import { useAuthLogin, useInitUser } from './hooks';
@@ -51,6 +51,22 @@ export function AuthProvider({
     () => gqlMethodsWithRefresh(session?.token, session?.user_id, onInvalidRT),
     [session]
   );
+  const fetchAuth = useCallback(
+    async (url: string, options: Parameters<typeof fetch>[1]) => {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_HASURA_ENDPOINT}/${url}`,
+        {
+          ...options,
+          headers: {
+            ...options.headers,
+            ...gqlUserHeader(token, me?.id),
+          },
+        }
+      );
+      return res.json();
+    },
+    [me?.id, token]
+  );
 
   useInitUser(me);
 
@@ -60,6 +76,7 @@ export function AuthProvider({
         me,
         token,
         gqlAuthMethods,
+        fetchAuth,
         onOpenLogin: openConnectModal,
         onSignOut,
         onUpdateMe,

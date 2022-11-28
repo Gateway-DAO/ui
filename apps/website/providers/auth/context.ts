@@ -8,6 +8,10 @@ type Context = {
   me?: SessionUser;
   token?: string;
   gqlAuthMethods: GqlMethods;
+  fetchAuth: (
+    url: string,
+    options: Parameters<typeof fetch>[1]
+  ) => Promise<any>;
   authenticated: boolean;
   onSignOut: () => void;
   onOpenLogin: () => void;
@@ -18,6 +22,7 @@ type Context = {
 export const AuthContext = createContext<Context>({
   gqlAuthMethods: gqlAnonMethods,
   authenticated: false,
+  fetchAuth: fetch,
   onSignOut: () => {},
   onOpenLogin: () => {},
   onUpdateMe: () => {},
