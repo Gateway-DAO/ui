@@ -118,7 +118,7 @@ export const Hero = forwardRef<
           <Button
             variant="outlined"
             component="a"
-            href="#professionals"
+            href="#credential-model"
             sx={(theme) => ({
               borderRadius: '50%',
               padding: '20px',
