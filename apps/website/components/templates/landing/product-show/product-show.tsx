@@ -124,6 +124,7 @@ export const ProductShow = forwardRef<
                 key={feature.title + index}
                 sx={(theme) => ({
                   flex: 1,
+                  mb: 8,
                   [theme.breakpoints.down('sm')]: {
                     mb: '40px',
                   },

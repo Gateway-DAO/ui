@@ -11,6 +11,7 @@ export type Features = {
 };
 
 export type FeaturedProps = {
+  comingSoon?: string;
   mainTitle: string;
   id?: string;
   secondaryTitle: string;
