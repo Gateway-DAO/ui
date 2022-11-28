@@ -32,12 +32,9 @@ export const Hero = forwardRef<
       component="section"
       sx={(theme) => ({
         width: '100%',
+        height: '100vh',
         position: 'relative',
-        mb: '144px',
         borderBottom: '1px solid rgba(229, 229, 229, 0.12)',
-        [theme.breakpoints.down('sm')]: {
-          height: '100vh',
-        },
       })}
     >
       <Stack
@@ -56,7 +53,7 @@ export const Hero = forwardRef<
             flexDirection: 'column',
             alignItems: 'flex-start',
             zIndex: 2,
-            paddingTop: theme.spacing(26),
+            paddingTop: theme.spacing(36),
             [theme.breakpoints.down('sm')]: {
               paddingTop: theme.spacing(17),
             },
