@@ -6,18 +6,23 @@ import { Box, CircularProgress, Stack, Typography } from '@mui/material';
 import { VerifyCsvProgressOutput } from '../../../../../../services/graphql/types.generated';
 import { useRemainingTime } from '../utils';
 
+type Props = VerifyCsvProgressOutput & {
+  isLoading?: boolean;
+};
+
 export function DirectWalletsProgress({
+  isLoading,
   total,
   valid,
   invalid,
   uploadedTime,
-}: VerifyCsvProgressOutput) {
+}: Props) {
   const { t } = useTranslation('gate-new');
   const verified = valid + invalid;
   const percent = verified / total;
   const progress = Math.floor(percent * 100);
 
-  const remainingTime = useRemainingTime(uploadedTime, percent);
+  const remainingTime = useRemainingTime(!isLoading, uploadedTime, percent);
 
   const remainingTimeText = useMemo(() => {
     if (!remainingTime) return;

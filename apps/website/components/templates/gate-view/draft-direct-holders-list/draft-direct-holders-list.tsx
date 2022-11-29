@@ -31,11 +31,11 @@ export function DraftDirectHoldersList({ gate }: Props) {
       enabled: !!file?.id,
       keepPreviousData: false,
       refetchInterval: (data) =>
-        !data?.pages[0].verifyCSVProgress.isDone && 1000,
+        !data?.pages[0].verify_csv_progress.isDone && 1000,
     }
   );
 
-  const progress = progressReq.data?.pages?.[0]?.verifyCSVProgress;
+  const progress = progressReq.data?.pages?.[0]?.verify_csv_progress;
 
   return (
     <Grid display="flex" flexDirection="column" item xs={12} md>

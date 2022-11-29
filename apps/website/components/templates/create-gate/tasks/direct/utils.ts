@@ -2,7 +2,11 @@ import { useRef, useState } from 'react';
 
 import { useInterval } from 'react-use';
 
-export const useRemainingTime = (initialTime = 0, percent = 0) => {
+export const useRemainingTime = (
+  isEnabled = true,
+  initialTime = 0,
+  percent = 0
+) => {
   const timer = useRef(0);
 
   const [remainingTime, setRemainingTime] = useState<number | undefined>(
@@ -17,7 +21,7 @@ export const useRemainingTime = (initialTime = 0, percent = 0) => {
         setRemainingTime(Math.floor(passedTime / percent - passedTime));
       }
     },
-    percent < 1 ? 1500 : null
+    isEnabled && percent < 1 ? 1500 : null
   );
 
   return remainingTime;

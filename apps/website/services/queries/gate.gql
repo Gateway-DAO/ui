@@ -132,7 +132,7 @@ query get_create_gate($id: uuid!) {
 }
 
 query verify_csv_progress ($file_id: uuid!) {
-  verifyCSVProgress(id: $file_id) {
+  verify_csv_progress(id: $file_id) {
     id
     invalid
     invalidList

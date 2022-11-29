@@ -43,8 +43,10 @@ export function DirectWallets() {
       onSuccess(data) {
         field.onChange(data);
       },
-      onError(error) {
-        console.log(error);
+      onError(error: any) {
+        enqueueSnackbar(error?.message ?? JSON.stringify(error), {
+          variant: 'error',
+        });
       },
     }
   );
@@ -58,11 +60,18 @@ export function DirectWallets() {
       enabled: !!file?.id,
       keepPreviousData: false,
       refetchInterval: (data) =>
-        !data?.pages[0].verifyCSVProgress.isDone && 1000,
+        !data?.pages[0].verify_csv_progress.isDone && 1000,
+      // retry: 5,
+      onError(error: any) {
+        enqueueSnackbar(error?.response?.errors?.[0]?.message, {
+          variant: 'error',
+        });
+        field.onChange(undefined);
+      },
     }
   );
 
-  const progress = progressReq.data?.pages?.[0]?.verifyCSVProgress;
+  const progress = progressReq.data?.pages?.[0]?.verify_csv_progress;
   const isUploadDisabled = file && progress && !progress.isDone;
 
   const readFiles = (files: File[] | FileList) => {
@@ -115,9 +124,11 @@ export function DirectWallets() {
                 ) : (
                   <DirectWalletsVerifyingHeader total={file?.metadata?.total} />
                 )}
-                {progress && !progress.isDone && (
+                {}
+                {(!progress || (progress && !progress.isDone)) && (
                   <DirectWalletsProgress
                     total={file?.metadata?.total}
+                    isLoading={!progress}
                     valid={0}
                     invalid={0}
                     {...progress}
