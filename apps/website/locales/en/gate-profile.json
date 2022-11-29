@@ -40,6 +40,11 @@
     "completed": "Task completed at "
   },
   "submissions": {
-    "title": "Submissions"
+    "title": "Submissions",
+    "approved": "Approved",
+    "waiting": "Waiting",
+    "denied": "Denied",
+    "pending_feedback": "Pending feedback",
+    "feeback_sent": "Feedback sent"
   }
 }
