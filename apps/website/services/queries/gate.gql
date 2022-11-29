@@ -67,6 +67,80 @@ query gate($id: uuid!) {
       ens
       wallet
     }
+    whitelisted_wallets_file {
+      id
+      metadata
+    }
+  }
+}
+
+query get_create_gate($id: uuid!) {
+  gates_by_pk(id: $id) {
+    id
+    title
+    description
+    categories
+    skills
+    published
+    links
+    image
+    type
+    creator {
+      id
+      name
+      username
+      pfp
+      picture {
+        ...file
+      }
+    }
+    holder_count
+    holders(limit: 4) {
+      id
+      name
+      username
+      pfp
+      wallet
+      picture {
+        ...file
+      }
+    }
+    dao {
+      id
+      name
+      slug
+      logo_url
+      logo {
+        id
+        blur
+      }
+    }
+    tasks {
+      description
+      gate_id
+      id
+      task_data
+      task_type
+      title
+      order
+    }
+    whitelisted_wallets_file {
+      id
+      metadata
+    }
+  }
+}
+
+query verify_csv_progress ($file_id: uuid!) {
+  verify_csv_progress(id: $file_id) {
+    id
+    invalid
+    invalidList
+    isDone
+    total
+    uploadedTime
+    valid
+    validList
   }
 }
 

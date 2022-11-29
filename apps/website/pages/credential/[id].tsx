@@ -77,6 +77,9 @@ export default function GateProfilePage() {
         sx: {
           overflow: '',
           pt: 2,
+          display: {
+            md: 'flex',
+          },
         },
         height: gatesData.gates_by_pk?.type === 'direct' ? '100%' : undefined,
       }}

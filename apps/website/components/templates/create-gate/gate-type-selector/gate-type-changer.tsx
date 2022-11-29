@@ -3,7 +3,7 @@ import { useState } from 'react';
 
 import { useFormContext } from 'react-hook-form';
 
-import { Avatar, Box, Button, Paper, Stack, Typography } from '@mui/material';
+import { Avatar, Box, Button, Paper, Typography } from '@mui/material';
 
 import { CreateGateData, type GateType } from '../schema';
 import { useCreateGateData } from './gate-type';
@@ -24,7 +24,7 @@ export function GateTypeChanger({ type }: { type: GateType }) {
         hasContent = getValues('tasks')?.length > 0;
         break;
       case 'direct':
-        hasContent = getValues('whitelisted_wallets')?.length > 0;
+        hasContent = !!getValues('whitelisted_wallets_file');
         break;
       default:
         break;
@@ -40,7 +40,7 @@ export function GateTypeChanger({ type }: { type: GateType }) {
   const onConfirm = () => {
     setValue('type', undefined);
     setValue('tasks', undefined);
-    setValue('whitelisted_wallets', undefined);
+    setValue('whitelisted_wallets_file', undefined);
   };
 
   const onClose = () => {

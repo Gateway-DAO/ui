@@ -1,114 +1,89 @@
-import useTranslation from 'next-translate/useTranslation';
-import { useRef, useState } from 'react';
-
-import { useQueries } from '@tanstack/react-query';
-import { ethers } from 'ethers';
+import { useMutation } from '@tanstack/react-query';
 import { useSnackbar } from 'notistack';
-import { useController, useFormContext } from 'react-hook-form';
+import { useController } from 'react-hook-form';
 import { useDropArea } from 'react-use';
-import { useProvider } from 'wagmi';
+import { useInfiniteQuery } from 'wagmi';
 
-import { Delete } from '@mui/icons-material';
-import { Button, Paper, Stack, TextField } from '@mui/material';
+import { Paper } from '@mui/material';
 
-import { CreateGateData, Gate_Whitelisted_Wallet } from '../../schema';
-import { DirectWalletsChips } from './direct-wallets-chips';
-import { DirectWalletsHeader } from './direct-wallets-header';
+import { useAuth } from '../../../../../providers/auth';
+import { Files } from '../../../../../services/graphql/types.generated';
+import { CreateGateData } from '../../schema';
+import {
+  DirectWalletsEmptyHeader,
+  DirectWalletsHeader,
+  DirectWalletsVerifyingHeader,
+} from './direct-wallets-header';
+import { DirectWalletsList } from './direct-wallets-lists';
+import { DirectWalletsDropzone } from './fields/direct-wallets-dropzone';
+import { DirectWalletsProgress } from './fields/direct-wallets-progress';
+import { DirectWalletsUploading } from './fields/direct-wallets-uploading';
 
 export function DirectWallets() {
-  const {
-    field: { onChange, value, ref },
-    fieldState: { error },
-  } = useController<CreateGateData>({
-    name: 'whitelisted_wallets',
-    defaultValue: [],
-  });
-  const { setValue } = useFormContext<CreateGateData>();
-  const { t } = useTranslation('common');
-
-  const [inputValue, setInputValue] = useState('');
-  const inputRef = useRef<HTMLInputElement>(null);
-
-  const provider = useProvider();
+  const { gqlAuthMethods, fetchAuth } = useAuth();
   const { enqueueSnackbar } = useSnackbar();
-
-  const wallets = value as Gate_Whitelisted_Wallet[];
-
-  const walletsQueries = useQueries({
-    queries: wallets.map(({ wallet, ens }, index) => ({
-      queryKey: ['address-validate', wallet, ens],
-      queryFn: async (): Promise<string> => {
-        if (ens && !wallet) {
-          /* Check if ENS name is valid */
-          const address = await provider.resolveName(ens);
-          if (!address) {
-            throw new Error('Invalid ENS name');
-          }
-          return address;
-        }
-
-        if (ens && wallet) {
-          return wallet;
-        }
-
-        return ethers.utils.getAddress(wallet);
-      },
-      onSuccess(data: string) {
-        if (ens && !wallet) {
-          setValue(`whitelisted_wallets.${index}.wallet`, data);
-        }
-      },
-    })),
+  const { field } = useController<CreateGateData>({
+    name: 'whitelisted_wallets_file',
   });
 
-  const onDelete = (index: number) => () => {
-    const newWallets = [...wallets];
-    newWallets.splice(index, 1);
-    onChange(newWallets);
-  };
-
-  const onEdit = (wallet: string, index: number) => () => {
-    const newWallets = [...wallets];
-    newWallets.splice(index, 1);
-    onChange(newWallets);
-    setInputValue(wallet);
-    inputRef.current?.focus();
-  };
-
-  const onParseText = (text: string) => {
-    const newWallets = text.split(/[,\n\s\r\t]+/g).reduce((acc, wallet) => {
-      if (!wallet.length) return acc;
-      if (
-        wallets.some(
-          (whitelistedWallet) =>
-            whitelistedWallet.wallet === wallet ||
-            whitelistedWallet.ens === wallet
-        )
-      ) {
-        enqueueSnackbar(`Duplicated wallet ${wallet}`, { variant: 'warning' });
-        return acc;
+  const verifyCSV = useMutation<Files, unknown, File>(
+    ['verify-csv'],
+    async (file: File) => {
+      const formData = new FormData();
+      formData.append('csv', file);
+      if (verifyCSV.data?.id) {
+        formData.append('file_id', verifyCSV.data?.id);
       }
+      return fetchAuth(`verify/direct/verify-csv`, {
+        method: 'POST',
+        body: formData,
+      });
+    },
+    {
+      onSuccess(data) {
+        field.onChange(data);
+      },
+      onError(error: any) {
+        enqueueSnackbar(error?.message ?? JSON.stringify(error), {
+          variant: 'error',
+        });
+      },
+    }
+  );
 
-      const obj: Gate_Whitelisted_Wallet = ethers.utils.isAddress(wallet)
-        ? { wallet }
-        : { ens: wallet };
-      return [...acc, obj];
-    }, [] as string[]);
+  const file = field.value;
 
-    onChange([...wallets, ...newWallets]);
-  };
+  const progressReq = useInfiniteQuery(
+    ['progress', file?.id],
+    () => gqlAuthMethods.verify_csv_progress({ file_id: file?.id }),
+    {
+      enabled: !!file?.id,
+      keepPreviousData: false,
+      refetchInterval: (data) =>
+        !data?.pages[0].verify_csv_progress.isDone && 1000,
+      // retry: 5,
+      onError(error: any) {
+        enqueueSnackbar(error?.response?.errors?.[0]?.message, {
+          variant: 'error',
+        });
+        field.onChange(undefined);
+      },
+    }
+  );
 
-  const readFiles = (files: FileList | File[]) => {
+  const progress = progressReq.data?.pages?.[0]?.verify_csv_progress;
+  const isUploadDisabled = file && progress && !progress.isDone;
+
+  const readFiles = (files: File[] | FileList) => {
     const file = files[0];
-
-    if (file.type !== 'text/csv') return;
-
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const text = e.target?.result as string;
-      onParseText(text);
-    };
-    reader.readAsText(file);
+    if (file && !isUploadDisabled) {
+      verifyCSV.mutate(file);
+    }
+    if (isUploadDisabled) {
+      enqueueSnackbar('Please wait for the current file to finish processing', {
+        variant: 'info',
+      });
+    }
   };
 
   const [dropBond, { over: isOver }] = useDropArea({
@@ -116,92 +91,62 @@ export function DirectWallets() {
   });
 
   return (
-    <Paper
-      elevation={1}
-      sx={[
-        {
-          px: { xs: 2, lg: 6 },
-          py: { xs: 3, lg: 6 },
-          display: 'flex',
-          flexFlow: 'column',
-          gap: 4,
-          transition: 'opacity 0.25s ease',
-        },
-        isOver && {
-          opacity: 0.5,
-        },
-      ]}
-      {...dropBond}
-    >
-      <DirectWalletsHeader
-        readFiles={readFiles}
-        walletsQueries={walletsQueries}
-      ></DirectWalletsHeader>
-      <Stack direction="column" gap={1}>
-        <TextField
-          label={t('gate-new:direct.label')}
-          sx={{
+    <>
+      <Paper
+        elevation={1}
+        sx={[
+          {
+            px: { xs: 2, lg: 6 },
+            py: { xs: 3, lg: 6 },
             display: 'flex',
-            '.MuiInputBase-root': {
-              flexDirection: 'column',
-              p: 1.75,
-              gap: 1,
-              alignItems: 'flex-start',
-            },
-            '.MuiInputBase-input': { p: 0 },
-          }}
-          InputProps={{
-            startAdornment: wallets?.length ? (
-              <DirectWalletsChips
-                wallets={wallets}
-                walletsQueries={walletsQueries}
-                onDelete={onDelete}
-                onEdit={onEdit}
-              ></DirectWalletsChips>
-            ) : null,
-          }}
-          helperText={
-            // Wrong type error
-            error?.message ?? t('gate-new:direct.input-helper')
-          }
-          value={inputValue}
-          inputRef={(input) => {
-            inputRef.current = input;
-            ref(input);
-          }}
-          error={!!error?.message}
-          onKeyDown={(event) => {
-            if (
-              event.key === 'Enter' ||
-              event.key === ',' ||
-              event.code === 'Space'
-            ) {
-              event.preventDefault();
-              if (inputValue.length) {
-                onParseText(inputValue);
-                setInputValue('');
-              }
-            }
-          }}
-          onChange={(e) => {
-            setInputValue(e.target.value);
-          }}
-          onPaste={(e) => {
-            e.preventDefault();
-            const text = e.clipboardData.getData('text');
-            onParseText(text);
-            setInputValue('');
-          }}
-        />
-        <Button
-          sx={{ alignSelf: 'flex-end' }}
-          startIcon={<Delete />}
-          variant="outlined"
-          onClick={() => onChange([])}
-        >
-          {t('actions.clear')}
-        </Button>
-      </Stack>
-    </Paper>
+            flexFlow: 'column',
+            gap: 2,
+            transition: 'opacity 0.25s ease',
+          },
+          isOver && {
+            opacity: 0.5,
+          },
+        ]}
+        {...dropBond}
+      >
+        {verifyCSV.isLoading ? (
+          <DirectWalletsUploading />
+        ) : (
+          <>
+            {file ? (
+              <>
+                {progress?.isDone ? (
+                  <DirectWalletsHeader
+                    validWallets={progress.valid}
+                    invalidWallets={progress.invalid}
+                    readFiles={readFiles}
+                  />
+                ) : (
+                  <DirectWalletsVerifyingHeader total={file?.metadata?.total} />
+                )}
+                {}
+                {(!progress || (progress && !progress.isDone)) && (
+                  <DirectWalletsProgress
+                    total={file?.metadata?.total}
+                    isLoading={!progress}
+                    valid={0}
+                    invalid={0}
+                    {...progress}
+                  />
+                )}
+                {progress?.isDone && <DirectWalletsList {...progress} />}
+              </>
+            ) : (
+              <>
+                <DirectWalletsEmptyHeader />
+                <DirectWalletsDropzone
+                  readFiles={readFiles}
+                ></DirectWalletsDropzone>
+              </>
+            )}
+          </>
+        )}
+      </Paper>
+    </>
   );
 }
