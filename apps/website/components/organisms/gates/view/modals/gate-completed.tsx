@@ -1,10 +1,5 @@
-import {
-  EmailShareButton,
-  RedditShareButton,
-  TwitterShareButton,
-} from 'next-share';
-import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import { useMenu } from '@gateway/ui';
 
 import CloseIcon from '@mui/icons-material/Close';
 import {
@@ -18,11 +13,13 @@ import {
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Typography from '@mui/material/Typography';
-
-import { SocialIcon } from '../../../../atoms/social-icon';
+import IosShareIcon from '@mui/icons-material/IosShare';
+import { TokenFilled } from '../../../../molecules/mint-card/assets/token-filled';
 import { GatesCard } from '../../../../molecules/gates-card';
+import { ShareButtonFn } from '../../../../atoms/share-btn-fn';
 
 export default function GateCompletedModal({ gate, open, handleClose }) {
+  const menu = useMenu();
   const [URL, setURL] = useState<string>();
 
   useEffect(() => {
@@ -73,7 +70,7 @@ export default function GateCompletedModal({ gate, open, handleClose }) {
             width: '100%',
           }}
         >
-          <Box>
+          <Stack alignSelf={'center'} rowGap={2}>
             <Typography
               id="modal-modal-title"
               variant="h3"
@@ -101,12 +98,38 @@ export default function GateCompletedModal({ gate, open, handleClose }) {
               <span style={{ color: '#D083FF' }}>{gate.title}</span> Credential
               from <span style={{ color: '#D083FF' }}>{gate.dao.name}</span>.
             </Typography>
-          </Box>
+            <Stack direction={'row'} alignSelf={'center'} columnGap={2}>
+              <Button
+                variant="outlined"
+                size="large"
+                onClick={menu.onOpen}
+                startIcon={<IosShareIcon />}
+              >
+                share
+              </Button>
+              <Button
+                variant="contained"
+                size="large"
+                sx={{
+                  paddingX: 6,
+                }}
+                startIcon={
+                  <TokenFilled height={20} width={20} color="action" />
+                }
+              >
+                Mint as NFT
+              </Button>
+              <ShareButtonFn
+                menu={menu}
+                title={`congralaution !! you have completed ${gate.title} Credential`}
+              />
+            </Stack>
+          </Stack>
           <Box
             sx={(theme) => ({
               height: { xs: theme.spacing(45.49), md: theme.spacing(59.78) },
               width: { xs: theme.spacing(28.75), md: theme.spacing(37.75) },
-              marginY: (theme) => theme.spacing(8),
+              marginY: (theme) => theme.spacing(5),
             })}
           >
             <GatesCard onClick={handleClose} {...gate} />
@@ -115,53 +138,9 @@ export default function GateCompletedModal({ gate, open, handleClose }) {
             direction="row"
             justifyContent={'center'}
             sx={{
-              marginTop: { xs: 5 , md :0 },
+              marginTop: { xs: 5, md: 0 },
             }}
-          >
-            <Stack>
-              <Typography
-                color={'#FFFFFFB2'}
-                marginBottom={(theme) => theme.spacing(2)}
-              >
-                Share on
-              </Typography>
-              <Stack direction="row" justifyContent={'center'} spacing={1}>
-                <EmailShareButton
-                  url={URL}
-                  subject={'Congratulations'}
-                  body={gate.dao.name + ' via @Gateway_xyz'}
-                >
-                  <Avatar>
-                    <SocialIcon icon="email" />
-                  </Avatar>
-                </EmailShareButton>
-                <RedditShareButton
-                  url={URL}
-                  title={gate.dao.name + ' via @Gateway_xyz'}
-                >
-                  <Avatar>
-                    <SocialIcon icon="reddit" />
-                  </Avatar>
-                </RedditShareButton>
-                <TwitterShareButton
-                  url={URL}
-                  title={gate.dao.name}
-                  via={'Gateway_xyz'}
-                >
-                  <Avatar>
-                    <SocialIcon icon="twitter" />
-                  </Avatar>
-                </TwitterShareButton>
-              </Stack>
-            </Stack>
-            <Box alignSelf={'flex-end'} marginLeft={4}>
-              <Link href={'/profile'} passHref>
-                <Button variant="outlined" component="a" size="large">
-                  View on Profile
-                </Button>
-              </Link>
-            </Box>
-          </Stack>
+          ></Stack>
         </Stack>
       </Stack>
     </Dialog>
