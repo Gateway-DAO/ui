@@ -13,11 +13,11 @@ import {
   Typography,
 } from '@mui/material';
 
-import { CircleWithNumber } from '../../../atoms/circle-with-number';
 import {
   CreateGateData,
   VerificationCodeDataError,
 } from '../../../templates/create-gate/schema';
+import { TaskIcon } from 'apps/website/components/atoms/task-icon';
 
 const VerificationCodeTask = ({ dragAndDrop, taskId, deleteTask }) => {
   const {
@@ -71,13 +71,8 @@ const VerificationCodeTask = ({ dragAndDrop, taskId, deleteTask }) => {
           alignItems={'center'}
           sx={{ width: '100%', mr: '20px' }}
         >
-          <CircleWithNumber
-            number={taskId + 1}
-            sx={(theme) => ({
-              mr: theme.spacing(3.75),
-              [theme.breakpoints.down('sm')]: { mr: theme.spacing(2.5) },
-            })}
-          />
+          <TaskIcon type={'meeting_code'} sx={{ marginRight: 3 }} />
+
           <Stack>
             <Typography variant="subtitle2">Verification Code</Typography>
             <TextField

@@ -20,7 +20,7 @@ export function GateTypeSelector() {
 
   const onClick = (type: GateType) => () => {
     methods.setValue('type', type);
-    methods.setValue('whitelisted_wallets', undefined);
+    methods.setValue('whitelisted_wallets_file', undefined);
     methods.setValue('tasks', undefined);
   };
 

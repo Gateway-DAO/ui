@@ -51,7 +51,7 @@
     "dev": {
       "executor": "@nrwl/workspace:run-commands",
       "options": {
-        "command": "yarn concurrently -n next,graphql \"yarn nx serve website\" \"yarn nx run website:generate --watch\""
+        "command": "yarn concurrently -n next,graphql \"yarn nx serve website\" \"yarn graphql-codegen --config .graphqlrc.ts -r dotenv/config --watch\""
       }
     },
     "export": {

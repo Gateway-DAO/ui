@@ -11,7 +11,7 @@ const config = {
     [ROUTES.DAO_PROFILE]: ['dao-profile'],
     [ROUTES.EXPLORE]: ['explore'],
     [ROUTES.GATE_NEW]: ['gate-new'],
-    [ROUTES.GATE_PROFILE]: ['gate-profile', 'credential'],
+    [ROUTES.GATE_PROFILE]: ['gate-new', 'gate-profile', 'credential'],
     [ROUTES.LANDING]: ['index'],
     [ROUTES.MY_PROFILE]: ['user-profile'],
     [ROUTES.NEW_USER]: ['dashboard-new-user'],

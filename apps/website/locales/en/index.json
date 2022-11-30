@@ -1,16 +1,16 @@
 {
   "menu": [
     {
-      "text": "Professionals",
-      "href": "#professionals"
+      "text": "Gateway D-App",
+      "href": "#d-app"
     },
     {
-      "text": "Organizations",
-      "href": "#organizations"
+      "text": "Gateway SDK ",
+      "href": "#sdk"
     },
     {
-      "text": "Build",
-      "href": "#build"
+      "text": "Gateway Stack",
+      "href": "#stack"
     },
     {
       "text": "Investors",
@@ -20,16 +20,16 @@
   "title": "Gateway",
   "openApp": "Open App",
   "signUp": "Sign Up",
-  "subtitle": "The Web3 Professional Network",
-  "titleDescription": "Where talent take ownership of their work and professional growth.",
+  "subtitle": "The Credential Protocol",
+  "titleDescription": "Your home to  issue, manage, and consume   verifiable credentials.",
   "enterButtonTitle": "Enter the gateway",
   "forUsers": {
-    "mainTitle": "Build your web3 native resume",
-    "secondaryTitle": "Do work, receive recognition from the community, and strengthen your professional identity.",
+    "mainTitle": "Gateway Credential dApp",
+    "secondaryTitle": "Create a Gateway Credential space to drive your community, protocol, or DAO goals! ",
     "features": [
       {
-        "title": "Join DAOs",
-        "description": "Discover and build with the best communities across web3.",
+        "title": "Your dedicated Space",
+        "description": "Gateway’s credential space is fully customizable and modular , allowing you to control your Gateway to web3!",
         "image": {
           "url": "/images/join-dao-featured-image.png",
           "width": 423,
@@ -37,8 +37,8 @@
         }
       },
       {
-        "title": "Earn Credentials",
-        "description": "Receive verified credentials that serve as attestations for your work and your abilities.",
+        "title": "Issue Credentials",
+        "description": "Gateway issues credentials in a decentralized manner  via our protocol and covers gas fees for any NFTs minted!",
         "image": {
           "url": "/images/earn-credentials-featured-image.png",
           "width": 439,
@@ -46,8 +46,8 @@
         }
       },
       {
-        "title": "Showcase Your Achievements",
-        "description": "Proudly display your accomplishments across web3 on your Gateway profile.",
+        "title": "Raise Brand Awareness",
+        "description": "Gateway’s Credential space  is a tool to drive social presence and promote your product.",
         "image": {
           "url": "/images/showcase-featured-image.png",
           "width": 360,
@@ -55,8 +55,8 @@
         }
       },
       {
-        "title": "Own Your Network",
-        "description": "Gateway allows professionals to take ownership and meet new builders in the space.",
+        "title": "Drive Product  Engagement",
+        "description": "Create quizzes, on-chain requirements,  governance tasks, and more to engage users.",
         "image": {
           "url": "/images/own-network-featured-image.png",
           "width": 353,
@@ -66,12 +66,13 @@
     ]
   },
   "forOrganizations": {
-    "mainTitle": "Built for Organizations, DAOs and Web3 Companies",
-    "secondaryTitle": "A new way for communities to engage their members and recognize their talents.",
+    "comingSoon": "Coming Soon",
+    "mainTitle": "Gateway SDK: Native Credential Issuance and Management",
+    "secondaryTitle": "Implement Gateway’s SDK by building credential models, define conditions for issuance, and consumption.",
     "features": [
       {
-        "title": "Own Your Spaces",
-        "description": "Spaces created are unique to communities and managed by admins and team leads.",
+        "title": "Build Data Models",
+        "description": "Build your own claim structure for data that will be stored in a credential or use existing models.",
         "image": {
           "url": "/images/own-spaces-featured-image.png",
           "width": 466,
@@ -79,8 +80,8 @@
         }
       },
       {
-        "title": "Create Gates",
-        "description": "Modular quests that allow teams to actively challenge, reward, and build their community.",
+        "title": "Set Custom Conditions",
+        "description": "Define when an issuance occurs by selecting a series of parameters that must be met.",
         "image": {
           "url": "/images/create-gates-featured-image.png",
           "width": 577,
@@ -88,8 +89,8 @@
         }
       },
       {
-        "title": "Issue Crendentials",
-        "description": "Recognize core contributors for their excellence in a publicly verifiable manner.",
+        "title": "Create Utility ",
+        "description": "Gateway credentials have endless usage from governance, to loyalty programs, access controls, and more! ",
         "image": {
           "url": "/images/issue-credentials-featured-image.png",
           "width": 539,
@@ -97,8 +98,8 @@
         }
       },
       {
-        "title": "Find Talent",
-        "description": "Gateway’s social graph highlights the best talent for your hiring needs.",
+        "title": "Simple Management",
+        "description": "Gateway’s credential model allows you to revoke a credential, set expirations, and reissue.",
         "image": {
           "url": "/images/find-talent-featured-image.png",
           "width": 501,
@@ -112,15 +113,15 @@
     "features": [
       {
         "title": "User Sovereignty",
-        "description": "Credentials issued on Gateway are fully controlled by users, including visibility and retention."
+        "description": "Gateway’s places your  autonomy first. Our credentials are privacy preserving, yet publicly verifiable. We give users control over credeneital permissions and access."
       },
       {
-        "title": "Secure",
-        "description": "Verified Credentials require cryptographic signatures, are easily traceable, and revocable by issuer."
+        "title": "Encrypted",
+        "description": "Gateway’s credential data lives on Arweave , allowing for greater encryption over individual data sets.Allowing for you to gate your digital identity and protect your digital rights."
       },
       {
         "title": "Composable",
-        "description": "Minting on Gateway is blockchain agnostic, just like your work!"
+        "description": "Credential existence can be verified on-chain, minted on any chain, while its information remains off-chain. Allowing for greater usage across web3!"
       }
     ],
     "image": {
@@ -130,21 +131,20 @@
     }
   },
   "buildAppsContent": {
-    "comingSoon": "Coming Soon",
-    "title": "Build apps with Web3 data",
-    "description": "Gateway's decentralized credential registry allows DAOs, web3 service providers, and tools to easily issue and curate verified credentials.",
+    "title": "The Gateway Standard",
+    "description": "We provide the technology needed to issue, manage, index, and utilize credentials to build  a robust digital identity.",
     "features": [
       {
-        "title": "Consumer",
-        "description": "Gateway's credentials can be used by talent, organizations, and even Dapps for custom use-cases."
+        "title": "Consumption",
+        "description": "Credentials issued via Gateway can be used for governance weighting, community scores, credit scores, access controls, and much more!"
       },
       {
-        "title": "Credential SDK",
-        "description": "Gateway's SDK is the powerhouse for web3 credentials. Allowing you to issue, index, curate, and handle data for the future of professional identity."
+        "title": "Gateway Protocol",
+        "description": "Gateway’s protocol allows organizations to easily manage and issue credentials, while Gateway handles the indexing and curation of data-models."
       },
       {
-        "title": "Data-Partners",
-        "description": "Every engine needs it's fuel. Gateway's data partners support  an open-source and composable network of models."
+        "title": "Data-Providers",
+        "description": "Every engine needs it's fuel. Gateway's data partners support  an open-source and composable data network, which serves as the basis of Gateway’s credential protocol."
       }
     ],
     "image": {

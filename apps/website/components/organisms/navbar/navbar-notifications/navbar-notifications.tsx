@@ -7,6 +7,8 @@ import Badge from '@mui/material/Badge';
 import IconButton from '@mui/material/IconButton';
 import Popover from '@mui/material/Popover';
 import Tooltip from '@mui/material/Tooltip';
+import { useQuery } from '@tanstack/react-query';
+import { useAuth } from 'apps/website/providers/auth';
 
 import { useCyberConnect } from '../../../../providers/cyberconnect';
 import { NotificationList } from './list';
@@ -14,6 +16,33 @@ import { NotificationList } from './list';
 export function NavBarNotifications() {
   const { unreadNotifications } = useCyberConnect();
   const userMenu = useMenu();
+  const { me } = useAuth();
+
+  const { data: redisNotifications } = useQuery(
+    ['user-notifications', me?.id],
+    async () => {
+      const res = await fetch(`/api/notifications?userId=${me?.id}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      const data = await res.json();
+      const notifications = JSON.parse(data.notifications);
+
+      return notifications;
+    },
+    {
+      onError: (error) => {
+        console.log(error);
+      },
+    }
+  );
+
+  const unreadRedisNotifications = redisNotifications?.filter(
+    (notification) => !notification.opened
+  ).length;
 
   const icon = (
     <Avatar>
@@ -25,12 +54,14 @@ export function NavBarNotifications() {
     <>
       <Tooltip title="Open Notifications">
         <IconButton onClick={userMenu.onOpen}>
-          {unreadNotifications > 0 ? (
+          {unreadNotifications + unreadRedisNotifications > 0 ? (
             <Badge
               color="primary"
               variant="dot"
               overlap="circular"
-              badgeContent={unreadNotifications}
+              badgeContent={parseInt(
+                unreadNotifications + unreadRedisNotifications
+              )}
               anchorOrigin={{
                 vertical: 'bottom',
                 horizontal: 'right',
@@ -63,7 +94,7 @@ export function NavBarNotifications() {
             title="Notifications"
             titleTypographyProps={{ variant: 'body1', color: 'text.secondary' }}
           />
-          <NotificationList />
+          <NotificationList redisNotifications={redisNotifications} />
         </Card>
       </Popover>
     </>

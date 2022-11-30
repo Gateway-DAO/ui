@@ -38,6 +38,7 @@ import GateCompletedModal from '../../organisms/gates/view/modals/gate-completed
 import type { Props as HolderDialogProps } from '../../organisms/holder-dialog';
 import { DirectHoldersList } from './direct-holders-list/direct-holders-list';
 import { DirectHoldersHeader } from './direct-holders-list/header';
+import { DraftDirectHoldersList } from './draft-direct-holders-list/draft-direct-holders-list';
 import { TaskList } from './task-list';
 
 const GateStateChip = dynamic(() => import('../../atoms/gate-state-chip'), {
@@ -82,7 +83,10 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
         wallet: me?.wallet ?? '',
       }),
     {
-      enabled: gateProps && gateProps.type === 'direct',
+      enabled:
+        gateProps &&
+        gateProps.type === 'direct' &&
+        gateProps.published === 'published',
     }
   );
 
@@ -241,11 +245,21 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
     },
   ];
 
+  const isDateExpired = gateProps?.expire_date
+    ? new Date(gateProps?.expire_date).getTime() < new Date().getTime()
+    : false;
+
+  const isLimitExceeded = gateProps?.claim_limit
+    ? gateProps?.claim_limit <= gateProps?.holder_count
+    : false;
+
   return (
     <Grid
       container
-      height="100%"
-      sx={{ flexWrap: 'nowrap', flexDirection: { xs: 'column', md: 'row' } }}
+      sx={{
+        flexWrap: 'nowrap',
+        flexDirection: { xs: 'column', md: 'row' },
+      }}
     >
       <GateCompletedModal
         open={open}
@@ -393,6 +407,78 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
           />
 
           <Grid container rowGap={(theme) => theme.spacing(3)}>
+            {gateProps?.expire_date && (
+              <>
+                <Grid
+                  item
+                  xs={4}
+                  sx={{ display: 'flex', alignItems: 'center' }}
+                >
+                  <Typography
+                    variant="body2"
+                    color={(theme) => theme.palette.text.secondary}
+                  >
+                    Expire date
+                  </Typography>
+                </Grid>
+                <Grid item xs={8}>
+                  <Typography
+                    variant="subtitle2"
+                    color={isDateExpired ? '#FFA726' : 'secondary'}
+                    fontWeight={600}
+                  >
+                    {new Date(gateProps.expire_date).toLocaleDateString(
+                      'en-us',
+                      { year: 'numeric', month: 'short', day: 'numeric' }
+                    )}
+                    {isDateExpired && (
+                      <Chip
+                        sx={{ marginLeft: 2 }}
+                        label="expired"
+                        color={'warning'}
+                        variant="outlined"
+                      />
+                    )}
+                  </Typography>
+                </Grid>
+              </>
+            )}
+
+            {gateProps?.claim_limit && (
+              <>
+                <Grid
+                  item
+                  xs={4}
+                  sx={{ display: 'flex', alignItems: 'center' }}
+                >
+                  <Typography
+                    variant="body2"
+                    color={(theme) => theme.palette.text.secondary}
+                  >
+                    Claimed
+                  </Typography>
+                </Grid>
+                <Grid item xs={8}>
+                  <Typography
+                    variant="subtitle2"
+                    color={isLimitExceeded ? '#FFA726' : 'secondary'}
+                    fontWeight={600}
+                  >
+                    {' '}
+                    {gateProps?.holder_count} of {gateProps?.claim_limit}{' '}
+                    {isLimitExceeded && (
+                      <Chip
+                        sx={{ marginLeft: 2 }}
+                        label="completed"
+                        color={'warning'}
+                        variant="outlined"
+                      />
+                    )}
+                  </Typography>
+                </Grid>
+              </>
+            )}
+
             {gateProps?.holder_count > 0 && (
               <>
                 <Grid
@@ -501,7 +587,7 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
         </Box>
       </Grid>
       <Divider orientation="vertical" flexItem />
-      {gateProps.type === 'direct' && (
+      {published !== 'not_published' && gateProps.type === 'direct' && (
         <DirectHoldersList
           gate={gateProps}
           isLoading={directCredentialInfo.isLoading}
@@ -517,6 +603,9 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
           }
         />
       )}
+      {published !== 'published' && gateProps.type === 'direct' && (
+        <DraftDirectHoldersList gate={gateProps} />
+      )}
       {gateProps.type === 'task_based' && (
         <TaskList
           tasks={gateProps?.tasks}
@@ -526,6 +615,7 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
           isAdmin={isAdmin}
           published={published}
           setOpen={setOpen}
+          isCredentialExpired={isDateExpired || isLimitExceeded}
         />
       )}
       <ConfirmDialog

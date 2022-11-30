@@ -43,18 +43,40 @@
     }
   },
   "direct": {
-    "title": {
-      "0": "No recipients",
-      "one": "1 recipient",
-      "other": "{{count}} recipients"
-    },
-    "description": "Copy and paste, fill, import the wallet address and/or ens name",
     "import-csv": "Import from a CSV",
-    "invalid": {
-      "one": "You have 1 invalid wallet address",
-      "other": "You have {{count}} invalid wallet addresses"
-    },
     "label": "Wallet address or ENS name",
-    "input-helper": "Fill the addresses separated by comma"
+    "empty": {
+      "title": "Import .CSV file",
+      "description": "Import the wallet address and/or ens name"
+    },
+    "verifying": {
+      "title": "Verifying {{count}} recipients",
+      "progress": {
+        "title": "Verifying wallets",
+        "description": "You don't need to wait, you can save as draft and come back later",
+        "verified": "Verified",
+        "total": "Total",
+        "remaining": {
+          "seconds": "About {{total}} seconds remaining",
+          "minutes": "About {{total}} minutes remaining"
+        }
+      }
+    },
+    "result": {
+      "title": {
+        "valid": {
+          "0": "No valid recipients",
+          "one": "1 valid recipient",
+          "other": "{{count}} valid recipients"
+        },
+        "invalid": {
+          "one": "1 invalid recipient",
+          "other": "{{count}} invalid recipients"
+        }
+      }
+    }
+  },
+  "notifications": {
+    "published": "published a new credential: "
   }
 }

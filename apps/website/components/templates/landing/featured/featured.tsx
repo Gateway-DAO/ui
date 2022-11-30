@@ -22,7 +22,7 @@ export const Featured = forwardRef<
   OverridableComponent<BoxTypeMap<Record<string, unknown>, 'div'>>,
   FeaturedProps
 >(function FeaturedComponent(
-  { mainTitle, secondaryTitle, id, features }: FeaturedProps,
+  { mainTitle, secondaryTitle, id, comingSoon, features }: FeaturedProps,
   ref
 ): JSX.Element {
   const myRefs = useRef<HTMLDivElement[]>([]);
@@ -47,6 +47,19 @@ export const Featured = forwardRef<
         },
       })}
     >
+      {comingSoon && (
+        <Typography
+          component="p"
+          variant="body1"
+          px={1}
+          sx={(theme) => ({
+            textTransform: 'uppercase',
+            color: theme.palette.primary.main,
+          })}
+        >
+          {comingSoon}
+        </Typography>
+      )}
       <Title>
         <LandingTitleLimiter>{mainTitle}</LandingTitleLimiter>
       </Title>

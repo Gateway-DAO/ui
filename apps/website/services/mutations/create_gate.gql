@@ -8,6 +8,8 @@ mutation create_gate_tasks_based(
   $skills: jsonb
   $permissions: [permissions_insert_input!] = []
   $image: String!
+  $claim_limit: Int
+  $expire_date: timestamptz
   $tasks: [tasks_insert_input!] = []
 ) {
   insert_gates_one(
@@ -19,10 +21,12 @@ mutation create_gate_tasks_based(
       categories: $categories
       description: $description
       skills: $skills
+      claim_limit: $claim_limit
+      expire_date: $expire_date
       permissions: {
-      	data: $permissions
+        data: $permissions
         on_conflict: {
-          constraint: permissions_dao_id_user_id_credential_id_key,
+          constraint: permissions_dao_id_user_id_credential_id_key
           update_columns: [permission]
         }
       }
@@ -31,13 +35,7 @@ mutation create_gate_tasks_based(
         data: $tasks
         on_conflict: {
           constraint: keys_pk
-          update_columns: [
-            title
-            description
-            task_data
-            task_type
-            order
-          ]
+          update_columns: [title, description, task_data, task_type, order]
         }
       }
       published: "not_published"
@@ -52,6 +50,8 @@ mutation create_gate_tasks_based(
         skills
         image
         published
+        expire_date
+        claim_limit
       ]
     }
   ) {
@@ -71,50 +71,50 @@ mutation create_gate_direct(
   $description: String,
   $skills: jsonb,
   $permissions: [permissions_insert_input!] = [],
+  $claim_limit: Int
+  $expire_date: timestamptz
   $image: String!,
-  $whitelisted_wallets: [whitelisted_wallets_insert_input!] = []) {
+  $whitelisted_wallets_file: uuid!
+  ) {
 
   insert_gates_one(
     object: {
-      id: $id,
-      dao_id: $dao_id,
-      title: $title,
-      type: $type,
-      categories: $categories,
-      description: $description,
-      skills: $skills,
+      id: $id
+      dao_id: $dao_id
+      title: $title
+      type: $type
+      categories: $categories
+      description: $description
+      skills: $skills
+      claim_limit: $claim_limit
+      expire_date: $expire_date
       permissions: {
-        data: $permissions,
+        data: $permissions
         on_conflict: {
-          constraint: permissions_dao_id_user_id_credential_id_key,
+          constraint: permissions_dao_id_user_id_credential_id_key
           update_columns: [permission]
         }
       },
       image: $image,
       published: "not_published",
-      whitelisted_wallets: {
-        data: $whitelisted_wallets,
-        on_conflict: {
-          update_columns: [
-            wallet,
-            ens
-          ],
-        constraint: whitelisted_wallets_gate_id_wallet_uindex
-        }
-      }
+      whitelisted_wallets_file_id: $whitelisted_wallets_file
     },
     on_conflict: {
-      constraint: gates_pk,
+      constraint: gates_pk
       update_columns: [
-        type,
-        title,
-        categories,
-        description,
-        skills,
-        image,
+        type
+        title
+        categories
+        description
+        skills
+        image
         published
+        whitelisted_wallets_file_id
+        expire_date
+        claim_limit
       ]
-    }) {
+    }
+  ) {
     id
     type
     title
