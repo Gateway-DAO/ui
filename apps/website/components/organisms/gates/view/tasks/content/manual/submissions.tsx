@@ -4,11 +4,11 @@ import { useToggle } from 'react-use';
 
 import { Stack } from '@mui/material';
 
-import { InterationType } from '../../gates/view/tasks/content/manual/components/task-interation';
-import { SubmissionsAccordion } from './submissions-accordion';
-import { SubmissionsHeader } from './submissions-header';
-import { SubmissionsItemProps } from './submissions-item';
-import { SubmissionsList } from './submissions-list';
+import { Accordion } from './components/accordion';
+import { SubmissionsHeader } from './components/submissions-header';
+import { SubmissionsItemProps } from './components/submissions-item';
+import { SubmissionsList } from './components/submissions-list';
+import { InterationType } from './components/task-interation';
 
 export function Submissions() {
   const { t } = useTranslation('gate-profile');
@@ -78,9 +78,9 @@ export function Submissions() {
         border: '1px solid rgba(229, 229, 229, 0.12)',
       }}
     >
-      <SubmissionsAccordion expanded={expanded} clickHandler={toggleExpanded}>
+      <Accordion expanded={expanded} clickHandler={toggleExpanded}>
         <SubmissionsHeader amount={amount} amountNew={amountNew} />
-      </SubmissionsAccordion>
+      </Accordion>
       <Stack
         sx={{
           width: '100%',

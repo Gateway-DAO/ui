@@ -8,20 +8,23 @@ type documentCardProps = {
   docTitle?: string;
   docUrl?: string;
   docText?: string;
+  elevation?: number;
 };
 
 const DocumentCard = ({
   docTitle = 'Title',
   docUrl,
   docText = 'document',
+  elevation = 1,
 }: documentCardProps) => {
   return (
     <Paper
-      elevation={1}
+      elevation={elevation}
       sx={{
         display: 'flex',
         direction: 'row',
         border: '1px solid rgba(229, 229, 229, 0.12)',
+        boxShadow: 'none',
         borderRadius: 1,
         mt: 2,
         width: '100%',

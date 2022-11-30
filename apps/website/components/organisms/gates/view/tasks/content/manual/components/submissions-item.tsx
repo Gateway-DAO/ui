@@ -8,8 +8,8 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import { Stack, Typography, alpha, Divider } from '@mui/material';
 
-import { AvatarFile } from '../../../atoms/avatar-file';
-import { InterationType } from '../../gates/view/tasks/content/manual/components/task-interation';
+import { AvatarFile } from '../../../../../../../atoms/avatar-file';
+import { InterationType } from '../components/task-interation';
 
 export type SubmissionsItemProps = {
   username: string;
@@ -25,7 +25,11 @@ export function SubmissionsItem({
   type,
 }: SubmissionsItemProps) {
   const { t, lang } = useTranslation('gate-profile');
-  const datetimeString = ISOToString(datetime, lang);
+  const datetimeString =
+    ISOToString(datetime, lang) == 'now'
+      ? t('submissions.just_now')
+      : ISOToString(datetime, lang);
+
   return (
     <Stack>
       <Stack
@@ -53,11 +57,7 @@ export function SubmissionsItem({
                 color: `${alpha(brandColors.white.main, 0.7)}`,
               }}
             >
-              {`- ${
-                datetimeString == 'now'
-                  ? t('submissions.just_now')
-                  : datetimeString
-              }`}
+              {`- ${datetimeString}`}
             </Typography>
           </Stack>
           <Typography

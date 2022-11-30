@@ -24,6 +24,8 @@ import { getMapValueFromObject } from '../../../utils/map-object';
 import GithubContributeContent from '../gates/view/tasks/content/github_contribute';
 import GithubPRContent from '../gates/view/tasks/content/github_prs';
 import ManualContent from '../gates/view/tasks/content/manual/manual';
+import { SubmissionDetail } from '../gates/view/tasks/content/manual/submission-detail';
+import { Submissions } from '../gates/view/tasks/content/manual/submissions';
 import MeetingCodeContent from '../gates/view/tasks/content/meeting_code';
 import NFTHoldContent from '../gates/view/tasks/content/nft_hold';
 import QuizContent from '../gates/view/tasks/content/quiz';
@@ -33,7 +35,6 @@ import TokenHoldContent from '../gates/view/tasks/content/token_hold';
 import TwitterFollowContent from '../gates/view/tasks/content/twitter_follow';
 import TwitterRetweetContent from '../gates/view/tasks/content/twitter_retweet';
 import TwitterTweetContent from '../gates/view/tasks/content/twitter_tweet';
-import { Submissions } from './submissions/submissions';
 import { taskErrorMessages } from './task-error-messages';
 
 type Props = {
@@ -268,7 +269,11 @@ export function Task({
           )}
         </CardContent>
       </Collapse>
-      <Submissions />
+      {/* <Submissions /> */}
+      <SubmissionDetail
+        username="kbooz"
+        backButtonHandler={() => console.log('clicked')}
+      />
     </Card>
   );
 }

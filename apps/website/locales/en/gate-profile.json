@@ -34,7 +34,8 @@
     },
     "manual": {
       "title": "Submit Link",
-      "action": "Submit"
+      "action": "Submit",
+      "label": "Submit the link address"
     },
     "check_action": "Verify",
     "completed": "Task completed at "
@@ -51,6 +52,7 @@
     "denied_submission": "denied the submission",
     "approved_submission": "approved the submission",
     "waiting_feedback": "Waiting for feedback from",
-    "just_now": "just now"
+    "just_now": "just now",
+    "label": "Ask a question or request"
   }
 }

@@ -1,18 +1,28 @@
 import useTranslation from 'next-translate/useTranslation';
 
+import { PartialObjectDeep } from 'type-fest/source/partial-deep';
+
 import { ISOToString } from '@gateway/helpers';
 
 import { Stack, Typography } from '@mui/material';
 
+import { Files } from '../../../../../../../../services/graphql/types.generated';
 import Bullet from './bullet';
 import CommentCard from './comment-card';
 import DocumentCard from './document-card';
 
-type taskInterationProps = {
+export type TaskInterationProps = {
   firstItem?: boolean;
   type: InterationType;
   datetime?: string;
-  user: string;
+  username: string;
+  avatarFile?: PartialObjectDeep<Files>;
+  fullname?: string;
+  comment?: string;
+  docTitle?: string;
+  docText?: string;
+  docUrl?: string;
+  elevation?: number;
 };
 
 export enum InterationType {
@@ -27,22 +37,20 @@ const TaskInteration = ({
   firstItem = false,
   type,
   datetime,
-  user,
-}: taskInterationProps) => {
+  username,
+  avatarFile,
+  fullname,
+  comment,
+  docTitle,
+  docText,
+  docUrl,
+  elevation = 1,
+}: TaskInterationProps) => {
   const { t, lang } = useTranslation('gate-profile');
-  const datetimeString = ISOToString(datetime, lang);
-
-  // MOCK
-  const docTitle = 'Title of Page';
-  const docUrl = 'docs.google.com';
-  const docText =
-    "Other hits by Coolio, who won a Grammy for 'Gangsta`s Paradise' in the mid-1990s, included “Fantastic Voyage”";
-  const fullname = 'Harisson Santos';
-  const avatarFile = null;
-  const username = 'h.st';
-  const comment =
-    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec condimentum sodales ipsum eget molestie.';
-  // MOCK - END
+  const datetimeString =
+    ISOToString(datetime, lang) == 'now'
+      ? t('submissions.just_now')
+      : ISOToString(datetime, lang);
 
   return (
     <Stack
@@ -67,7 +75,7 @@ const TaskInteration = ({
         >
           {type === InterationType.WAITING
             ? `${t('submissions.waiting_feedback')}`
-            : `@${user}`}
+            : `@${username}`}
         </Typography>
         <Typography
           fontSize={14}
@@ -76,7 +84,7 @@ const TaskInteration = ({
               type === InterationType.WAITING ? null : theme.palette.grey[500],
           })}
         >
-          {type === InterationType.WAITING && `@${user}`}
+          {type === InterationType.WAITING && `@${username}`}
           {type === InterationType.LINK &&
             `${t('submissions.submitted_link')} - ${datetimeString}`}
           {type === InterationType.COMMENT &&
@@ -93,6 +101,7 @@ const TaskInteration = ({
           avatarFile={avatarFile}
           username={username}
           comment={comment}
+          elevation={elevation}
         ></CommentCard>
       )}
       {type === InterationType.LINK && (
@@ -100,6 +109,7 @@ const TaskInteration = ({
           docTitle={docTitle}
           docUrl={docUrl}
           docText={docText}
+          elevation={elevation}
         ></DocumentCard>
       )}
     </Stack>

@@ -10,6 +10,7 @@ type commentCardProps = {
   avatarFile?: PartialObjectDeep<Files>;
   username?: string;
   comment: string;
+  elevation?: number;
 };
 
 const CommentCard = ({
@@ -17,14 +18,16 @@ const CommentCard = ({
   avatarFile,
   username,
   comment,
+  elevation = 1,
 }: commentCardProps) => {
   return (
     <Paper
-      elevation={1}
+      elevation={elevation}
       sx={{
         display: 'flex',
         flexDirection: 'column',
         border: '1px solid rgba(229, 229, 229, 0.12)',
+        boxShadow: 'none',
         borderRadius: 1,
         mt: 2,
         p: 2,

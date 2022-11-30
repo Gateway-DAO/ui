@@ -1,6 +1,6 @@
 import { brandColors, theme } from '@gateway/theme';
 
-import { Box } from '@mui/material';
+import { Box, Paper } from '@mui/material';
 
 import { InterationType } from './task-interation';
 
@@ -36,17 +36,17 @@ const Bullet = ({ type }) => {
           zIndex: 2,
         }}
       ></Box>
-      <Box
-        sx={(theme) => ({
+      <Paper
+        elevation={10}
+        sx={{
           width: '6px',
           height: '12px',
-          background: theme.palette.background.elevated,
           position: 'absolute',
           left: '-3px',
           top: 0,
           zIndex: 1,
-        })}
-      ></Box>
+        }}
+      ></Paper>
     </>
   );
 };
