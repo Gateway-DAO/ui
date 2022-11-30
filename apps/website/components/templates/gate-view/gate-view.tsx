@@ -245,9 +245,15 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
     },
   ];
 
-  const isDateExpired = gateProps?.expire_date
-    ? new Date(gateProps?.expire_date).getTime() < new Date().getTime()
-    : false;
+  const isDateExpired = (() => {
+    if (!gateProps?.expire_date) {
+      return false;
+    }
+    const expireDate = new Date(gateProps?.expire_date);
+    expireDate.setDate(expireDate.getDate() + 1);
+    return expireDate.getTime() < new Date().getTime();
+  })();
+
 
   const isLimitExceeded = gateProps?.claim_limit
     ? gateProps?.claim_limit <= gateProps?.holder_count
