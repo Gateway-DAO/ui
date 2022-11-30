@@ -65,44 +65,6 @@ export function BiconomyProvider({
 
   // From Wagmi
   const { address } = useAccount();
-  const {
-    data: signer,
-    status,
-    refetch,
-  } = useSigner({
-    async onSuccess(data) {
-      // We're creating biconomy provider linked to your network of choice where your contract is deployed
-      const jsonRpcProvider = new ethers.providers.JsonRpcProvider(
-        RPC[process.env.NEXT_PUBLIC_MINT_CHAIN]
-      );
-
-      biconomy = new Biconomy(jsonRpcProvider, {
-        walletProvider: signerProvider || (await correctProvider()),
-        apiKey: process.env.NEXT_PUBLIC_WEB3_BICONOMY_API_KEY,
-        debug: process.env.NODE_ENV === 'development',
-      });
-
-      biconomy
-        .onEvent(biconomy.READY, async () => {
-          console.log('Biconomy is ready!');
-          // Initialize your dapp here like getting user accounts etc
-          contract = new ethers.Contract(
-            contractAddress,
-            CREDENTIAL_ABI,
-            biconomy.getSignerByAddress(address)
-          );
-
-          contractInterface = new ethers.utils.Interface(CREDENTIAL_ABI);
-        })
-        .onEvent(biconomy.ERROR, (error, message) => {
-          console.log('Biconomy error');
-          // Handle error while initializing mexa
-          console.log(error);
-          console.log(message);
-        });
-    },
-  });
-  const signerProvider = (signer?.provider as any)?.provider;
 
   // From auth
   const { me, gqlAuthMethods } = useAuth();
@@ -112,37 +74,18 @@ export function BiconomyProvider({
   // Credential update
   const queryClient = useQueryClient();
 
-  const { mutateAsync: updateCredential } = useMutation(
-    async (data: { id: string; tx_url: string }) => {
-      return await gqlAuthMethods.update_credential_status({
-        id: data.id,
-        status: 'minted',
-        transaction_url: data.tx_url,
-      });
-    },
+  // Mint - backend
+  const { mutateAsync: mintGasless } = useMutation(
+    (id: string) => gqlAuthMethods.mint_credential({ id }),
     {
-      onSuccess: (data) => {
+      onSuccess: (data, id) => {
         queryClient.invalidateQueries(['credentials']);
-        queryClient.invalidateQueries([
-          'credential',
-          data.update_credentials_by_pk.id,
-        ]);
+        queryClient.invalidateQueries(['credential', id]);
 
         queryClient.resetQueries(['user_info', me?.id]);
       },
     }
   );
-
-  // Mint - backend
-  const { mutateAsync: mintGasless } = useMutation((id: string) =>
-    gqlAuthMethods.mint_credential({ id })
-  );
-
-  useEffect(() => {
-    if (!signer && status == 'success') {
-      refetch();
-    }
-  }, [signer, status, refetch]);
 
   /**
    * It mints a new NFT token.
@@ -249,46 +192,6 @@ export function BiconomyProvider({
       }
     } catch (err) {
       console.log(err);
-    }
-  };
-
-  /**
-   * Mints a credential as an NFT on the blockchain using Biconomy
-   * @param credential - PartialDeep<Credentials>
-   * @returns A function that takes a credential and returns a promise that resolves to a MintResponse.
-   *
-   * @deprecated Use `mintCredential` instead
-   */
-  const mintCredential__biconomy = async (
-    credential: PartialDeep<Credentials>
-  ): Promise<MintResponse> => {
-    try {
-      // 1. verify is the user owns the credential
-      if (credential.target_id !== me.id) {
-        throw new Error('You are not the owner of this credential!');
-      }
-
-      // 2. mint the NFT
-      const res = await mint(credential?.uri || '');
-
-      if (res?.error) {
-        throw res.error;
-      }
-
-      // 3. change the status of the credential
-      await updateCredential({
-        id: credential.id,
-        tx_url: res.transactionUrl,
-      });
-
-      return res;
-    } catch (error) {
-      console.log('[useMint] Error:', error);
-
-      return {
-        isMinted: false,
-        error,
-      };
     }
   };
 
