@@ -35,5 +35,5 @@ export const ISOToString = (datetime: string, locale = 'en-US') => {
     hour: '2-digit',
     minute: '2-digit',
   });
-  return now.getTime() - date.getTime() < 120000 ? `just now` : `${formatted}`;
+  return now.getTime() - date.getTime() < 120000 ? `now` : `${formatted}`;
 };

@@ -24,8 +24,8 @@ export function SubmissionsItem({
   approver,
   type,
 }: SubmissionsItemProps) {
-  const { t } = useTranslation('gate-profile');
-
+  const { t, lang } = useTranslation('gate-profile');
+  const datetimeString = ISOToString(datetime, lang);
   return (
     <Stack>
       <Stack
@@ -53,7 +53,11 @@ export function SubmissionsItem({
                 color: `${alpha(brandColors.white.main, 0.7)}`,
               }}
             >
-              {`- ${ISOToString(datetime)}`}
+              {`- ${
+                datetimeString == 'now'
+                  ? t('submissions.just_now')
+                  : datetimeString
+              }`}
             </Typography>
           </Stack>
           <Typography
