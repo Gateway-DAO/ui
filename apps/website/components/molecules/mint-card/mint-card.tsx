@@ -63,9 +63,9 @@ export const MintCard = ({ credential, sx, ...props }: MintCardProps) => {
   }, [credential.status]);
 
   useEffect(() => {
-    mintStatus[credential.uri]?.askingSignature &&
+    mintStatus[credential.id]?.askingSignature &&
       setMintProcessStatus(Subjects.sign);
-  }, [mintStatus[credential.uri]]);
+  }, [mintStatus[credential.id]]);
 
   return (
     <Card
