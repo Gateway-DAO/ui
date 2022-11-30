@@ -63,8 +63,10 @@ export function BiconomyProvider({ children }: ProviderProps) {
           },
         }));
 
+        console.log(id);
+
         queryClient.invalidateQueries(['credentials']);
-        queryClient.invalidateQueries(['credential', id]);
+        queryClient.resetQueries(['credential', id]);
 
         queryClient.resetQueries(['user_info', me?.id]);
       },

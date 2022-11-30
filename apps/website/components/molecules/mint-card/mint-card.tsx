@@ -33,7 +33,7 @@ export const MintCard = ({ credential, sx, ...props }: MintCardProps) => {
   );
   const [error, setError] = useState<any | null>(null);
 
-  const { mintCredential: triggerMint, mintStatus } = useBiconomy();
+  const { mintCredential: triggerMint } = useBiconomy();
 
   const mint = () => {
     const trigger = triggerMint(credential);
@@ -61,11 +61,6 @@ export const MintCard = ({ credential, sx, ...props }: MintCardProps) => {
       setMintProcessStatus(Subjects.default);
     }
   }, [credential.status]);
-
-  useEffect(() => {
-    mintStatus[credential.id]?.askingSignature &&
-      setMintProcessStatus(Subjects.sign);
-  }, [mintStatus[credential.id]]);
 
   return (
     <Card
