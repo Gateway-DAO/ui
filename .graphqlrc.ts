@@ -32,7 +32,7 @@ const config: IGraphQLConfig = {
       generates: {
         './apps/website/services-cyberconnect/types.generated.ts': {
           ...generateConfig,
-          schema: process.env.NEXT_PUBLIC_CYBERCONNECT_ENDPOINT as string,
+          schema: process.env.CYBERCONNECT_ENDPOINT as string,
           documents: ['apps/website/services-cyberconnect/**/*.gql'],
         },
         './apps/website/services/graphql/types.generated.ts': {
