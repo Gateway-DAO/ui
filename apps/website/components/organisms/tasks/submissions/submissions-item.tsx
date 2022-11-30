@@ -71,35 +71,33 @@ export function SubmissionsItem({
             {type === InterationType.DENIED &&
               `@${approver} ${t('submissions.denied_submission')}`}
             {type === InterationType.APPROVED &&
-              `${approver} ${t('submissions.approved_submission')}`}
+              `@${approver} ${t('submissions.approved_submission')}`}
           </Typography>
         </Stack>
-        {type && (
-          <Stack direction="row" gap={0.5} alignItems="center">
-            {type === InterationType.APPROVED && (
-              <CheckCircleIcon
-                sx={{ color: brandColors.green.main, fontSize: 15 }}
-              />
-            )}
-            {type === InterationType.DENIED && (
-              <CancelIcon sx={{ color: brandColors.red.main, fontSize: 15 }} />
-            )}
-            <Typography
-              fontSize={11}
-              fontWeight={700}
-              sx={{
-                textTransform: 'uppercase',
-                color:
-                  type === InterationType.APPROVED
-                    ? brandColors.green.main
-                    : brandColors.red.main,
-              }}
-            >
-              {type === InterationType.APPROVED && t('submissions.approved')}
-              {type === InterationType.DENIED && t('submissions.denied')}
-            </Typography>
-          </Stack>
-        )}
+        <Stack direction="row" gap={0.5} alignItems="center">
+          {type === InterationType.APPROVED && (
+            <CheckCircleIcon
+              sx={{ color: brandColors.green.main, fontSize: 15 }}
+            />
+          )}
+          {type === InterationType.DENIED && (
+            <CancelIcon sx={{ color: brandColors.red.main, fontSize: 15 }} />
+          )}
+          <Typography
+            fontSize={11}
+            fontWeight={700}
+            sx={{
+              textTransform: 'uppercase',
+              color:
+                type === InterationType.APPROVED
+                  ? brandColors.green.main
+                  : brandColors.red.main,
+            }}
+          >
+            {type === InterationType.APPROVED && t('submissions.approved')}
+            {type === InterationType.DENIED && t('submissions.denied')}
+          </Typography>
+        </Stack>
         <KeyboardArrowRightIcon
           sx={{ color: `${alpha(brandColors.white.main, 0.7)}` }}
         />
