@@ -17,14 +17,38 @@ import IosShareIcon from '@mui/icons-material/IosShare';
 import { TokenFilled } from '../../../../molecules/mint-card/assets/token-filled';
 import { GatesCard } from '../../../../molecules/gates-card';
 import { ShareButtonFn } from '../../../../atoms/share-btn-fn';
+import { MintDialogProps } from '../../../../molecules/mint-dialog';
+import { ComponentType } from 'react';
+import dynamic from 'next/dynamic';
+import { PartialDeep } from 'type-fest';
+import { useAuth } from '../../../../../providers/auth';
+import {
+  Credentials,
+  Gates,
+} from '../../../../../services/graphql/types.generated';
 
-export default function GateCompletedModal({ gate, open, handleClose }) {
+const MintDialog: ComponentType<MintDialogProps> = dynamic(
+  () =>
+    import('../../../../molecules/mint-dialog').then((mod) => mod.MintDialog),
+  { ssr: false }
+);
+
+type Props = {
+  open: boolean;
+  gate: PartialDeep<Gates>;
+  credential: PartialDeep<Credentials>;
+  handleClose: () => void;
+};
+
+export default function GateCompletedModal({
+  gate,
+  open,
+  handleClose,
+  credential,
+}: Props) {
   const menu = useMenu();
-  const [URL, setURL] = useState<string>();
-
-  useEffect(() => {
-    setURL(window.location.href);
-  });
+  const [isMintDialog, setMintModal] = useState(false);
+  const { me } = useAuth();
 
   return (
     <Dialog
@@ -45,6 +69,11 @@ export default function GateCompletedModal({ gate, open, handleClose }) {
           display: 'flex',
         }}
       >
+        <MintDialog
+          isOpen={isMintDialog}
+          setOpen={setMintModal}
+          credential={credential}
+        />
         <Stack justifyContent="space-between" direction="row">
           <Avatar
             src={'/favicon-512.png'}
@@ -98,7 +127,12 @@ export default function GateCompletedModal({ gate, open, handleClose }) {
               <span style={{ color: '#D083FF' }}>{gate.title}</span> Credential
               from <span style={{ color: '#D083FF' }}>{gate.dao.name}</span>.
             </Typography>
-            <Stack direction={'row'} alignSelf={'center'} columnGap={2}>
+            <Stack
+              direction={{ xs: 'column', md: 'row' }}
+              alignSelf={'center'}
+              columnGap={2}
+              rowGap={{ xs: 2, md: 0 }}
+            >
               <Button
                 variant="outlined"
                 size="large"
@@ -107,18 +141,40 @@ export default function GateCompletedModal({ gate, open, handleClose }) {
               >
                 share
               </Button>
-              <Button
-                variant="contained"
-                size="large"
-                sx={{
-                  paddingX: 6,
-                }}
-                startIcon={
-                  <TokenFilled height={20} width={20} color="action" />
-                }
-              >
-                Mint as NFT
-              </Button>
+              {!!credential &&
+              credential.target_id == me?.id &&
+              credential?.status == 'minted' ? (
+                <Button
+                  component="a"
+                  variant="outlined"
+                  href={credential.transaction_url}
+                  target="_blank"
+                  startIcon={
+                    <TokenFilled height={20} width={20} color="action" />
+                  }
+                  size="large"
+                  sx={{
+                    borderColor: '#E5E5E580',
+                    color: 'white',
+                  }}
+                >
+                  VERIFY MINT 
+                </Button>
+              ) : (
+                <Button
+                  variant="contained"
+                  size="large"
+                  sx={{
+                    paddingX: 6,
+                  }}
+                  onClick={() => setMintModal(true)}
+                  startIcon={
+                    <TokenFilled height={20} width={20} color="action" />
+                  }
+                >
+                  Mint as NFT
+                </Button>
+              )}
               <ShareButtonFn
                 menu={menu}
                 title={`congralaution !! you have completed ${gate.title} Credential`}
