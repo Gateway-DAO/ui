@@ -21,3 +21,19 @@ export const limitChars = (str: string, limit: number) => {
   }
   return str;
 };
+
+/**
+ * Convert ISO date to string.
+ */
+export const ISOToString = (datetime: string, locale = 'en-US') => {
+  const now = new Date();
+  const date = new Date(datetime);
+  if (!date) {
+    return '';
+  }
+  const formatted = date.toLocaleDateString(locale, {
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+  return now.getTime() - date.getTime() < 120000 ? `just now` : `${formatted}`;
+};

@@ -33,7 +33,7 @@ import TokenHoldContent from '../gates/view/tasks/content/token_hold';
 import TwitterFollowContent from '../gates/view/tasks/content/twitter_follow';
 import TwitterRetweetContent from '../gates/view/tasks/content/twitter_retweet';
 import TwitterTweetContent from '../gates/view/tasks/content/twitter_tweet';
-import { Submissions } from './submissions';
+import { Submissions } from './submissions/submissions';
 import { taskErrorMessages } from './task-error-messages';
 
 type Props = {
