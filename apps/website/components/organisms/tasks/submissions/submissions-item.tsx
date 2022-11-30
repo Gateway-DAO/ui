@@ -67,7 +67,8 @@ export function SubmissionsItem({
             }}
           >
             {type === InterationType.LINK && t('submissions.submitted_link')}
-            {type === InterationType.COMMENT && t('submissions.sent_comment')}
+            {type === InterationType.COMMENT &&
+              `@${approver} ${t('submissions.sent_comment')}`}
             {type === InterationType.DENIED &&
               `@${approver} ${t('submissions.denied_submission')}`}
             {type === InterationType.APPROVED &&
