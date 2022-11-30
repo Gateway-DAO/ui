@@ -65,7 +65,6 @@ const TaskInteration = ({
               type === InterationType.WAITING ? theme.palette.grey[500] : null,
           })}
         >
-          {/* {type === InterationType.WAITING ? headerText : `@${user}`} */}
           {type === InterationType.WAITING
             ? `${t('submissions.waiting_feedback')}`
             : `@${user}`}
