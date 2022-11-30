@@ -1,5 +1,7 @@
 import useTranslation from 'next-translate/useTranslation';
 
+import { ISOToString } from '@gateway/helpers';
+
 import { Stack, Typography } from '@mui/material';
 
 import Bullet from './bullet';
@@ -9,7 +11,7 @@ import DocumentCard from './document-card';
 type taskInterationProps = {
   firstItem?: boolean;
   type: InterationType;
-  headerText: string;
+  datetime?: string;
   user: string;
 };
 
@@ -24,14 +26,11 @@ export enum InterationType {
 const TaskInteration = ({
   firstItem = false,
   type,
-  headerText,
+  datetime,
   user,
 }: taskInterationProps) => {
-  const { t } = useTranslation('gate-profile');
-
-  const isWaiting = type === InterationType.WAITING;
-  const isComment = type === InterationType.COMMENT;
-  const isFile = type === InterationType.LINK;
+  const { t, lang } = useTranslation('gate-profile');
+  const datetimeString = ISOToString(datetime, lang);
 
   // MOCK
   const docTitle = 'Title of Page';
@@ -62,21 +61,34 @@ const TaskInteration = ({
         <Typography
           fontSize={14}
           sx={(theme) => ({
-            color: isWaiting ? theme.palette.grey[500] : null,
+            color:
+              type === InterationType.WAITING ? theme.palette.grey[500] : null,
           })}
         >
-          {isWaiting ? headerText : `@${user}`}
+          {/* {type === InterationType.WAITING ? headerText : `@${user}`} */}
+          {type === InterationType.WAITING
+            ? `${t('submissions.waiting_feedback')}`
+            : `@${user}`}
         </Typography>
         <Typography
           fontSize={14}
           sx={(theme) => ({
-            color: isWaiting ? null : theme.palette.grey[500],
+            color:
+              type === InterationType.WAITING ? null : theme.palette.grey[500],
           })}
         >
-          {isWaiting ? `@${user}` : headerText}
+          {type === InterationType.WAITING && `@${user}`}
+          {type === InterationType.LINK &&
+            `${t('submissions.submitted_link')} - ${datetimeString}`}
+          {type === InterationType.COMMENT &&
+            `${t('submissions.sent_comment')} - ${datetimeString}`}
+          {type === InterationType.APPROVED &&
+            `${t('submissions.approved_submission')} - ${datetimeString}`}
+          {type === InterationType.DENIED &&
+            `${t('submissions.denied_submission')} - ${datetimeString}`}
         </Typography>
       </Stack>
-      {isComment && (
+      {type === InterationType.COMMENT && (
         <CommentCard
           fullname={fullname}
           avatarFile={avatarFile}
@@ -84,7 +96,7 @@ const TaskInteration = ({
           comment={comment}
         ></CommentCard>
       )}
-      {isFile && (
+      {type === InterationType.LINK && (
         <DocumentCard
           docTitle={docTitle}
           docUrl={docUrl}

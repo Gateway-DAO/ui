@@ -56,42 +56,42 @@ const ManualContent = ({
           <Stack sx={{ width: '100%' }}>
             <TaskInteration
               type={InterationType.APPROVED}
-              headerText="approved the submission - 10/05/2022, 11:24 am"
+              datetime="2022-11-09T19:23:00.000-00:00"
               user="hst"
             />
             <TaskInteration
               type={InterationType.DENIED}
-              headerText="denied the submission - 10/05/2022, 11:24 am"
+              datetime="2022-11-09T19:23:00.000-00:00"
               user="hst"
             />
             <TaskInteration
               type={InterationType.WAITING}
-              headerText="Waiting for feedback from"
+              datetime="2022-11-09T19:23:00.000-00:00"
               user="hst"
             />
             <TaskInteration
               type={InterationType.LINK}
-              headerText="submitted a link - 10/03/2022, 4:23 pm"
+              datetime="2022-11-09T19:23:00.000-00:00"
               user="kbooz"
             />
             <TaskInteration
               type={InterationType.COMMENT}
-              headerText="sent a comment - 10/04/2022 11:20 am"
+              datetime="2022-11-09T19:23:00.000-00:00"
               user="hst"
             />
             <TaskInteration
               type={InterationType.LINK}
-              headerText="submitted a link - 10/03/2022, 4:23 pm"
+              datetime="2022-11-09T19:23:00.000-00:00"
               user="kbooz"
             />
             <TaskInteration
               type={InterationType.COMMENT}
-              headerText="sent a comment - 10/04/2022 11:20 am"
+              datetime="2022-11-09T19:23:00.000-00:00"
               user="hst"
             />
             <TaskInteration
               type={InterationType.LINK}
-              headerText="submitted a link - 10/03/2022, 4:23 pm"
+              datetime="2022-11-09T19:23:00.000-00:00"
               user="kbooz"
               firstItem={true}
             />

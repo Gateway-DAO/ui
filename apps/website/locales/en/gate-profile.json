@@ -46,10 +46,11 @@
     "denied": "Denied",
     "pending_feedback": "Pending feedback",
     "feeback_sent": "Feedback sent",
-    "submitted_link": "Submitted a link",
+    "submitted_link": "submitted a link",
     "sent_comment": "sent a comment",
     "denied_submission": "denied the submission",
     "approved_submission": "approved the submission",
+    "waiting_feedback": "Waiting for feedback from",
     "just_now": "just now"
   }
 }

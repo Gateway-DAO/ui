@@ -88,6 +88,7 @@ export function Submissions() {
           overflow: 'auto',
           py: expanded ? 2 : 0,
           height: expanded ? '500px' : 0,
+          maxHeight: '100%',
           opacity: expanded ? 1 : 0,
           transition: 'all .3s ease',
         }}
