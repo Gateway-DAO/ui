@@ -6,8 +6,9 @@ import { Box, Grid, Stack, Typography } from '@mui/material';
 
 import { Tasks } from '../../../services/graphql/types.generated';
 import CircularProgressWithLabel from '../../atoms/circular-progress-label';
+import { RecaptchaTask } from '../../organisms/gates/view/tasks/content/recaptcha';
 import { ClientNav } from '../../organisms/navbar/client-nav';
-import { Task, TaskGroup } from '../../organisms/tasks';
+import { Task } from '../../organisms/tasks';
 
 type Props = {
   isAdmin: boolean;
@@ -79,7 +80,7 @@ export function TaskList({
           </Stack>
         </Box>
       </Stack>
-      {!!completedAt ? (
+      {completedAt ? (
         <Typography
           sx={{
             marginX: TOKENS.CONTAINER_PX,
@@ -108,19 +109,21 @@ export function TaskList({
         </Typography>
       ) : null}
 
-      <TaskGroup>
+      <Box>
         {tasks
           .sort((a, b) => a.order - b.order)
           .map((task, idx) => (
             <Task
               key={'task-' + (idx + 1)}
               task={task}
+              idx={idx + 1}
               readOnly={published !== 'published' || isCredentialExpired}
               setCompletedGate={setOpen}
               isAdmin={isAdmin}
             />
           ))}
-      </TaskGroup>
+        <RecaptchaTask isEnabled={completedTasksCount === tasks.length} />
+      </Box>
     </Grid>
   );
 }

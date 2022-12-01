@@ -93,7 +93,7 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
   const completedGate =
     gateProps.type === 'direct'
       ? directCredentialInfo.data?.hasCredential?.aggregate?.count > 0
-      : completedTasksCount === gateProps?.tasks?.length;
+      : completedTasksCount === gateProps?.tasks?.length; //TODO: ADD CAPTCHA VERIFIER
 
   const taskIds = gateProps?.tasks.map((task) => task.id);
 
@@ -253,7 +253,6 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
     expireDate.setDate(expireDate.getDate() + 1);
     return expireDate.getTime() < new Date().getTime();
   })();
-
 
   const isLimitExceeded = gateProps?.claim_limit
     ? gateProps?.claim_limit <= gateProps?.holder_count
