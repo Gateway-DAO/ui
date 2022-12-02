@@ -144,22 +144,7 @@ export default function GateCompletedModal({
               {!!credential &&
               credential.target_id == me?.id &&
               credential?.status == 'minted' ? (
-                <Button
-                  component="a"
-                  variant="outlined"
-                  href={credential.transaction_url}
-                  target="_blank"
-                  startIcon={
-                    <TokenFilled height={20} width={20} color="action" />
-                  }
-                  size="large"
-                  sx={{
-                    borderColor: '#E5E5E580',
-                    color: 'white',
-                  }}
-                >
-                  VERIFY MINT 
-                </Button>
+                handleClose()
               ) : (
                 <Button
                   variant="contained"
