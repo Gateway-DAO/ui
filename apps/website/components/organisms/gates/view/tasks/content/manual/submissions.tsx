@@ -68,7 +68,7 @@ export function Submissions() {
       sx={{
         background:
           'linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.12) 100%), #10041C',
-        width: '56%',
+        width: { xs: '100%', lg: '56%' },
         maxHeight: '90%',
         position: 'fixed',
         bottom: 0,
@@ -87,7 +87,7 @@ export function Submissions() {
           borderRadius: '8px 8px 0 0',
           overflow: 'auto',
           py: expanded ? 2 : 0,
-          height: expanded ? '500px' : 0,
+          height: expanded ? '700px' : 0,
           maxHeight: '100%',
           opacity: expanded ? 1 : 0,
           transition: 'all .3s ease',

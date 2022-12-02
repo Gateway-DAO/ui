@@ -117,7 +117,7 @@ export function SubmissionDetail({
           borderRadius: '8px 8px 0 0',
           overflow: 'auto',
           py: expanded ? 2 : 0,
-          height: expanded ? '500px' : 0,
+          height: expanded ? '700px' : 0,
           opacity: expanded ? 1 : 0,
           transition: 'all .3s ease',
         }}

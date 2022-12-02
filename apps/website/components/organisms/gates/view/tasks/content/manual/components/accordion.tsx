@@ -23,9 +23,9 @@ export function Accordion({
       sx={{
         width: '100%',
         borderRadius: '8px 8px 0 0',
-        pt: 6,
-        pb: 5,
-        px: 7.5,
+        pt: { xs: 2, lg: 6 },
+        pb: { xs: 2, lg: 5 },
+        px: { xs: 2, lg: 7.5 },
         boxShadow:
           '0px -5px 5px -3px rgba(0, 0, 0, 0.2), 0px -8px 10px 1px rgba(0, 0, 0, 0.14), 0px -3px 14px 2px rgba(0, 0, 0, 0.12)',
       }}

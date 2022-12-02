@@ -17,13 +17,13 @@ export function SubmissionsList({ title, list }: SubmissionsListProps) {
         sx={{
           textTransform: 'uppercase',
           color: `${alpha(brandColors.white.main, 0.7)}`,
-          px: 7.5,
+          px: { xs: 2, lg: 7.5 },
           mb: 1,
         }}
       >
         {title}
       </Typography>
-      <Stack sx={{ mb: 4 }}>
+      <Stack sx={{ mb: { xs: 3, lg: 4 } }}>
         {list
           .sort((a, b) => {
             return (

@@ -1,12 +1,18 @@
 import useTranslation from 'next-translate/useTranslation';
 
 import { ISOToString } from '@gateway/helpers';
-import { brandColors } from '@gateway/theme';
+import { brandColors, theme } from '@gateway/theme';
 
 import CancelIcon from '@mui/icons-material/Cancel';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
-import { Stack, Typography, alpha, Divider } from '@mui/material';
+import {
+  Stack,
+  Typography,
+  alpha,
+  Divider,
+  useMediaQuery,
+} from '@mui/material';
 
 import { AvatarFile } from '../../../../../../../atoms/avatar-file';
 import { InterationType } from '../components/task-interation';
@@ -25,6 +31,7 @@ export function SubmissionsItem({
   type,
 }: SubmissionsItemProps) {
   const { t, lang } = useTranslation('gate-profile');
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const datetimeString =
     ISOToString(datetime, lang) == 'now'
       ? t('submissions.just_now')
@@ -39,8 +46,8 @@ export function SubmissionsItem({
         gap={2}
         sx={{
           cursor: 'pointer',
-          px: 7.5,
-          py: 1.5,
+          px: { xs: 2, lg: 7.5 },
+          py: { xs: 1, lg: 1.5 },
           transition: '.3s ease all',
           '&:hover': {
             background: `${alpha(brandColors.purple.main, 0.3)}`,
@@ -49,7 +56,7 @@ export function SubmissionsItem({
       >
         <AvatarFile file={null} fallback="/avatar.png"></AvatarFile>
         <Stack sx={{ flexGrow: 1 }}>
-          <Stack direction="row" gap={0.5}>
+          <Stack gap={0.5} sx={{ flexDirection: { xs: 'column', lg: 'row' } }}>
             <Typography>{`@${username}`}</Typography>
             <Typography
               fontSize={14}
@@ -57,7 +64,7 @@ export function SubmissionsItem({
                 color: `${alpha(brandColors.white.main, 0.7)}`,
               }}
             >
-              {`- ${datetimeString}`}
+              {`${isMobile ? '' : '- '}${datetimeString}`}
             </Typography>
           </Stack>
           <Typography
