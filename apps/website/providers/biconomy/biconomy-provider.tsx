@@ -1,6 +1,5 @@
 import { useState } from 'react';
 
-import { Biconomy } from '@biconomy/mexa';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { ethers } from 'ethers';
 import { useSnackbar } from 'notistack';
@@ -15,7 +14,6 @@ type ProviderProps = {
 };
 
 let provider;
-export let biconomy: Biconomy;
 export let contract: ethers.Contract;
 export let contractInterface: ethers.ContractInterface;
 
