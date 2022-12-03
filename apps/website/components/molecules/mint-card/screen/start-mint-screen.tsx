@@ -17,7 +17,8 @@ import { Subjects } from '../mint-card';
 const NetworksDetails = [
   {
     name: 'Polygon',
-    costInfo: 'Cost free',
+    costInfo:
+      process.env.NEXT_PUBLIC_GASLESS_MINTING === 'true' ? 'Cost free' : '',
     imgSrc: '/images/polygon.png',
   },
 ];
