@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { ethers } from 'ethers';
 import { useSnackbar } from 'notistack';
 import { PartialDeep } from 'type-fest';
 import {
@@ -33,8 +32,7 @@ export type MintStatus = {
   };
 };
 
-// const isGasless = process.env.NEXT_PUBLIC_GASLESS_MINTING === 'true';
-const isGasless = false;
+const isGasless = process.env.NEXT_PUBLIC_GASLESS_MINTING === 'true';
 
 export function BiconomyProvider({ children }: ProviderProps) {
   // State
@@ -55,7 +53,9 @@ export function BiconomyProvider({ children }: ProviderProps) {
   });
   const { address } = useAccount();
   const { chain } = useNetwork();
-  const { switchNetwork } = useSwitchNetwork();
+  const { switchNetworkAsync } = useSwitchNetwork({
+    throwForSwitchChainNotSupported: true,
+  });
   const contract = useContract({
     addressOrName: process.env.NEXT_PUBLIC_CONTRACT_ADDRESS,
     signerOrProvider: signer,
@@ -117,14 +117,11 @@ export function BiconomyProvider({ children }: ProviderProps) {
     mintOptions
   );
 
+  // Mint - local
   const { mutateAsync: mint } = useMutation(
     async (
       credential: PartialDeep<Credentials>
     ): Promise<Update_Credential_StatusMutation> => {
-      if (chain.id !== parseInt(process.env.NEXT_PUBLIC_CHAIN_ID)) {
-        await switchNetwork(parseInt(process.env.NEXT_PUBLIC_CHAIN_ID));
-      }
-
       const tx = await contract.mint(address, credential.uri);
 
       // Update credential data
@@ -143,6 +140,14 @@ export function BiconomyProvider({ children }: ProviderProps) {
     credential: PartialDeep<Credentials>
   ): Promise<MintResponse> => {
     try {
+      if (me.id !== credential.target_id) {
+        throw new Error('You are not the owner of this credential');
+      }
+
+      if (chain.id !== parseInt(process.env.NEXT_PUBLIC_CHAIN_ID)) {
+        await switchNetworkAsync?.(parseInt(process.env.NEXT_PUBLIC_CHAIN_ID));
+      }
+
       // 2. mint the NFT
       if (isGasless) {
         const { mint_credential } = await mintGasless(credential.id);
