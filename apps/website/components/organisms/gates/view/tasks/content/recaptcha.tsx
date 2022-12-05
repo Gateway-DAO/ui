@@ -1,5 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useSnackbar } from 'notistack';
 import { useToggle } from 'react-use';
 import Reaptcha from 'reaptcha';
 
@@ -12,14 +14,53 @@ import {
   Avatar,
   IconButton,
   Collapse,
-  Button,
 } from '@mui/material';
+
+import { useAuth } from '../../../../../../providers/auth';
+import { LoadingButton } from '../../../../../atoms/loading-button';
+
 type Props = {
+  taskNumber: number;
+  gateId: string;
   isEnabled: boolean;
+  onCompleteGate: () => void;
 };
-export function RecaptchaTask({ isEnabled }: Props) {
-  const [verified, setVerified] = useState<string>();
-  const [expanded, toggleExpanded] = useToggle(false);
+export function RecaptchaTask({
+  taskNumber,
+  isEnabled,
+  gateId,
+  onCompleteGate,
+}: Props) {
+  const { me, gqlAuthMethods } = useAuth();
+  const [recaptchaResponse, setRecaptchaResponse] = useState<string>();
+  const [expanded, toggleExpanded] = useToggle(isEnabled);
+  const recaptchaRef = useRef<Reaptcha>(null);
+
+  useEffect(() => {
+    toggleExpanded(isEnabled);
+  }, [isEnabled]);
+
+  const snackbar = useSnackbar();
+
+  const queryClient = useQueryClient();
+
+  const completeGate = useMutation(
+    ['complete-gate', { gateId }],
+    gqlAuthMethods.complete_gate,
+    {
+      onSuccess: () => {
+        onCompleteGate();
+        queryClient.resetQueries(['user_info', me?.id]);
+      },
+      onError: (e: any) => {
+        setRecaptchaResponse(undefined);
+        recaptchaRef.current?.reset();
+        snackbar.enqueueSnackbar(e?.response?.errors?.[0]?.message, {
+          variant: 'error',
+        });
+      },
+    }
+  );
 
   return (
     <Card
@@ -43,11 +84,11 @@ export function RecaptchaTask({ isEnabled }: Props) {
               border: expanded ? 'none' : '1px solid #FFFFFF4D',
             }}
           >
-            {'TaskTitle'}
+            {taskNumber}
           </Avatar>
         }
-        title={<Typography variant="caption">Captcha</Typography>}
-        subheader={<Typography variant="h6">Recaptchaaaa</Typography>}
+        title={<Typography variant="caption">Are you a robot?</Typography>}
+        subheader={<Typography variant="h6">reCaptcha</Typography>}
         action={
           <IconButton
             onClick={() => {
@@ -61,19 +102,24 @@ export function RecaptchaTask({ isEnabled }: Props) {
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent sx={{ marginLeft: { xs: '0px', md: '55px' } }}>
           <Reaptcha
-            sitekey="6Lfi4kcjAAAAAOXoH341Iu2Gnd8R_P6cWzRmqLId"
+            sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_KEY}
             onVerify={(e) => {
-              setVerified(e);
+              setRecaptchaResponse(e);
             }}
+            ref={(e) => (recaptchaRef.current = e)}
           />
-          <Button
+          <LoadingButton
             type="button"
-            disabled={!verified || !isEnabled}
+            disabled={!recaptchaResponse || !isEnabled}
+            isLoading={completeGate.isLoading}
             variant="contained"
             sx={{ mt: 4 }}
+            onClick={() => {
+              completeGate.mutate({ gateId, recaptcha: recaptchaResponse });
+            }}
           >
             Submit
-          </Button>
+          </LoadingButton>
         </CardContent>
       </Collapse>
     </Card>

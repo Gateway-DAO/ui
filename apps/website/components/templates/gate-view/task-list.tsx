@@ -11,8 +11,9 @@ import { ClientNav } from '../../organisms/navbar/client-nav';
 import { Task } from '../../organisms/tasks';
 
 type Props = {
+  gateId: string;
   isAdmin: boolean;
-  completedAt: string;
+  completedAt?: string;
   completedTasksCount: number;
   formattedDate: string;
   published: string;
@@ -22,6 +23,7 @@ type Props = {
 };
 
 export function TaskList({
+  gateId,
   isAdmin,
   completedAt,
   completedTasksCount,
@@ -31,6 +33,9 @@ export function TaskList({
   isCredentialExpired,
   setOpen,
 }: Props) {
+  const completedGate = !!completedAt;
+  const totalTasksCount = completedGate ? tasks.length : tasks.length + 1;
+
   return (
     <Grid item xs={12} md>
       <Stack
@@ -60,8 +65,8 @@ export function TaskList({
         <Box display={'flex'}>
           <CircularProgressWithLabel
             variant="determinate"
-            value={(completedTasksCount / tasks.length) * 100}
-            label={`${completedTasksCount}/${tasks.length}`}
+            value={(completedTasksCount / totalTasksCount) * 100}
+            label={`${completedTasksCount}/${totalTasksCount}`}
             size={50}
             thickness={4}
             sx={{
@@ -117,12 +122,19 @@ export function TaskList({
               key={'task-' + (idx + 1)}
               task={task}
               idx={idx + 1}
+              isDefaultOpen={completedTasksCount === idx}
               readOnly={published !== 'published' || isCredentialExpired}
-              setCompletedGate={setOpen}
               isAdmin={isAdmin}
             />
           ))}
-        <RecaptchaTask isEnabled={completedTasksCount === tasks.length} />
+        {!completedGate && (
+          <RecaptchaTask
+            taskNumber={totalTasksCount}
+            gateId={gateId}
+            isEnabled={completedTasksCount + 1 === totalTasksCount}
+            onCompleteGate={() => setOpen(true)}
+          />
+        )}
       </Box>
     </Grid>
   );
