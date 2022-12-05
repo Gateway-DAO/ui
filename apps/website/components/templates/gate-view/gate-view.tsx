@@ -619,7 +619,7 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
           isAdmin={isAdmin}
           published={published}
           setOpen={() => {
-            gateProgress.refetch();
+            gateProgress.remove();
             setOpen(true);
           }}
           isCredentialExpired={isDateExpired || isLimitExceeded}
