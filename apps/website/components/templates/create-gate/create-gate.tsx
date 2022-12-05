@@ -302,8 +302,8 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
               >
                 <Stack direction="column" gap={4}>
                   <GateDetailsForm />
+                  <AdvancedSetting />
                 </Stack>
-                <AdvancedSetting />
               </Stack>
 
               <GateImageCard
