@@ -141,25 +141,27 @@ export default function GateCompletedModal({
               >
                 share
               </Button>
-              {!!credential &&
-              credential.target_id == me?.id &&
-              credential?.status == 'minted' ? (
-                handleClose()
-              ) : (
-                <Button
-                  variant="contained"
-                  size="large"
-                  sx={{
-                    paddingX: 6,
-                  }}
-                  onClick={() => setMintModal(true)}
-                  startIcon={
-                    <TokenFilled height={20} width={20} color="action" />
-                  }
-                >
-                  Mint as NFT
-                </Button>
-              )}
+              <>
+                {!!credential &&
+                credential.target_id == me?.id &&
+                credential?.status == 'minted' ? (
+                  handleClose()
+                ) : (
+                  <Button
+                    variant="contained"
+                    size="large"
+                    sx={{
+                      paddingX: 6,
+                    }}
+                    onClick={() => setMintModal(true)}
+                    startIcon={
+                      <TokenFilled height={20} width={20} color="action" />
+                    }
+                  >
+                    Mint as NFT
+                  </Button>
+                )}
+              </>
               <ShareButtonFn
                 menu={menu}
                 title={`congralaution !! you have completed ${gate.title} Credential`}
@@ -175,13 +177,6 @@ export default function GateCompletedModal({
           >
             <GatesCard onClick={handleClose} {...gate} />
           </Box>
-          <Stack
-            direction="row"
-            justifyContent={'center'}
-            sx={{
-              marginTop: { xs: 5, md: 0 },
-            }}
-          ></Stack>
         </Stack>
       </Stack>
     </Dialog>
