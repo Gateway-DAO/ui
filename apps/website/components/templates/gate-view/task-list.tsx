@@ -6,21 +6,24 @@ import { Box, Grid, Stack, Typography } from '@mui/material';
 
 import { Tasks } from '../../../services/graphql/types.generated';
 import CircularProgressWithLabel from '../../atoms/circular-progress-label';
+import { RecaptchaTask } from '../../organisms/gates/view/tasks/content/recaptcha';
 import { ClientNav } from '../../organisms/navbar/client-nav';
-import { Task, TaskGroup } from '../../organisms/tasks';
+import { Task } from '../../organisms/tasks';
 
 type Props = {
+  gateId: string;
   isAdmin: boolean;
-  completedAt: string;
+  completedAt?: string;
   completedTasksCount: number;
   formattedDate: string;
   published: string;
   isCredentialExpired: boolean;
   tasks?: PartialDeep<Tasks>[];
-  setOpen: (open: boolean) => void;
+  setOpen: () => void;
 };
 
 export function TaskList({
+  gateId,
   isAdmin,
   completedAt,
   completedTasksCount,
@@ -30,6 +33,9 @@ export function TaskList({
   isCredentialExpired,
   setOpen,
 }: Props) {
+  const completedGate = !!completedAt;
+  const totalTasksCount = completedGate ? tasks.length : tasks.length + 1;
+
   return (
     <Grid item xs={12} md>
       <Stack
@@ -59,8 +65,8 @@ export function TaskList({
         <Box display={'flex'}>
           <CircularProgressWithLabel
             variant="determinate"
-            value={(completedTasksCount / tasks.length) * 100}
-            label={`${completedTasksCount}/${tasks.length}`}
+            value={(completedTasksCount / totalTasksCount) * 100}
+            label={`${completedTasksCount}/${totalTasksCount}`}
             size={50}
             thickness={4}
             sx={{
@@ -79,7 +85,7 @@ export function TaskList({
           </Stack>
         </Box>
       </Stack>
-      {!!completedAt ? (
+      {completedAt ? (
         <Typography
           sx={{
             marginX: TOKENS.CONTAINER_PX,
@@ -108,19 +114,28 @@ export function TaskList({
         </Typography>
       ) : null}
 
-      <TaskGroup>
+      <Box>
         {tasks
           .sort((a, b) => a.order - b.order)
           .map((task, idx) => (
             <Task
               key={'task-' + (idx + 1)}
               task={task}
+              idx={idx + 1}
+              isDefaultOpen={completedTasksCount === idx}
               readOnly={published !== 'published' || isCredentialExpired}
-              setCompletedGate={setOpen}
               isAdmin={isAdmin}
             />
           ))}
-      </TaskGroup>
+        {!completedGate && (
+          <RecaptchaTask
+            taskNumber={totalTasksCount}
+            gateId={gateId}
+            isEnabled={completedTasksCount + 1 === totalTasksCount}
+            onCompleteGate={setOpen}
+          />
+        )}
+      </Box>
     </Grid>
   );
 }

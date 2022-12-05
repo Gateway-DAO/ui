@@ -145,9 +145,7 @@ query verify_csv_progress ($file_id: uuid!) {
 }
 
 query GateProgress($gateID: uuid!, $userID: uuid!) {
-  gate_progress(
-    where: { gate_id: { _eq: $gateID }, user_id: { _eq: $userID } }
-  ) {
-    completed_at
+  credentials (where: {gate_id: {_eq: $gateID}, target_id: {_eq: $userID}}) {
+    created_at
   }
 }

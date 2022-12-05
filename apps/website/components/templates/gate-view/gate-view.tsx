@@ -206,16 +206,14 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
       }
     );
 
-  const { data: gateProgress } = useQuery(
-    ['gate_progress', gateProps?.id, me?.id],
-    () =>
-      gqlAuthMethods.GateProgress({
-        gateID: gateProps?.id,
-        userID: me?.id,
-      })
+  const gateProgress = useQuery(['gate_progress', gateProps?.id, me?.id], () =>
+    gqlAuthMethods.GateProgress({
+      gateID: gateProps?.id,
+      userID: me?.id,
+    })
   );
 
-  const completedAt = gateProgress?.gate_progress[0]?.completed_at;
+  const completedAt = gateProgress.data?.credentials?.[0]?.created_at;
 
   const formattedDate = new Date(completedAt?.toLocaleString()).toLocaleString(
     'en-us',
@@ -649,13 +647,17 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
       )}
       {gateProps.type === 'task_based' && (
         <TaskList
+          gateId={gateProps.id}
           tasks={gateProps?.tasks}
           completedAt={completedAt}
           completedTasksCount={completedTasksCount}
           formattedDate={formattedDate}
           isAdmin={isAdmin}
           published={published}
-          setOpen={setOpen}
+          setOpen={() => {
+            gateProgress.remove();
+            setOpen(true);
+          }}
           isCredentialExpired={isDateExpired || isLimitExceeded}
         />
       )}
