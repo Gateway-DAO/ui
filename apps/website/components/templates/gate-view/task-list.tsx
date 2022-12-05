@@ -19,7 +19,7 @@ type Props = {
   published: string;
   isCredentialExpired: boolean;
   tasks?: PartialDeep<Tasks>[];
-  setOpen: (open: boolean) => void;
+  setOpen: () => void;
 };
 
 export function TaskList({
@@ -132,7 +132,7 @@ export function TaskList({
             taskNumber={totalTasksCount}
             gateId={gateId}
             isEnabled={completedTasksCount + 1 === totalTasksCount}
-            onCompleteGate={() => setOpen(true)}
+            onCompleteGate={setOpen}
           />
         )}
       </Box>

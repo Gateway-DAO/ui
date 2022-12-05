@@ -618,7 +618,10 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
           formattedDate={formattedDate}
           isAdmin={isAdmin}
           published={published}
-          setOpen={setOpen}
+          setOpen={() => {
+            gateProgress.refetch();
+            setOpen(true);
+          }}
           isCredentialExpired={isDateExpired || isLimitExceeded}
         />
       )}
