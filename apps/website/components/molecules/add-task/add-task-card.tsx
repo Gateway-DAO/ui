@@ -2,24 +2,11 @@ import AddIcon from '@mui/icons-material/Add';
 import { Grid, IconButton, Paper, Stack, Typography } from '@mui/material';
 import { Box } from '@mui/material';
 
+import { TaskType } from '../../../types/tasks';
 import AddTaskButton from './add-task-button';
 
-type taskTypes =
-  | 'self_verify'
-  | 'quiz'
-  | 'token_hold'
-  | 'nft_hold'
-  | 'meeting_code'
-  | 'twitter_follow'
-  | 'twitter_retweet'
-  | 'twitter_tweet'
-  | 'github_contribute'
-  | 'manual'
-  | 'github_prs'
-  | 'snapshot';
-
 type taskStructure = {
-  type: taskTypes;
+  type: TaskType;
   title: string;
   description: string;
 };
@@ -134,7 +121,7 @@ const AddTaskCard = ({ numberOfTasks, addTask }) => {
         columns={{ xs: 4, sm: 8, md: 8 }}
       >
         {Tasks.map((task, index) => (
-          <Grid item xs={2} sm={4} md={4}>
+          <Grid item xs={2} sm={4} md={4} key={task.type}>
             <Paper>
               <AddTaskButton
                 type={task.type}

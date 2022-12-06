@@ -8,5 +8,6 @@ export type TaskType =
   | 'twitter_retweet'
   | 'twitter_tweet'
   | 'github_contribute'
+  | 'manual'
   | 'github_prs'
   | 'snapshot';

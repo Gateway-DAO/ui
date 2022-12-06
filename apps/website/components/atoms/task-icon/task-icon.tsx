@@ -11,7 +11,7 @@ import Box from '@mui/material/Box';
 import { SvgIcon, SvgIconProps } from '@mui/material';
 import { useMemo } from 'react';
 import { SxProps } from '@mui/material';
-import { TaskType } from './types';
+import { TaskType } from '../../../types/tasks';
 
 export function TaskIcon({ type, sx }: { type: TaskType; sx?: SxProps }) {
   const iconBgColor =
