@@ -68,8 +68,8 @@ const AddTaskCard = ({ numberOfTasks, addTask }) => {
     },
     {
       type: 'manual',
-      title: 'Post Tweet',
-      description: 'Ask users to post a tweet on Twitter',
+      title: 'Submit Link',
+      description: 'Ask users to put a link',
     },
     {
       type: 'github_contribute',
