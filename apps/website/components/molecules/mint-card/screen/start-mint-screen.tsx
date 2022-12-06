@@ -63,7 +63,7 @@ export const StartMintScreen = ({ setMintProcessStatus, mint }) => {
                   <ListItemAvatar>
                     <Badge
                       color={
-                        activeChain.name == network.name ? 'success' : 'warning'
+                        activeChain?.name == network.name ? 'success' : 'warning'
                       }
                       overlap="circular"
                       badgeContent=" "

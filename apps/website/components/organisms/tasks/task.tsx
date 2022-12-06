@@ -37,8 +37,8 @@ import { taskErrorMessages } from './task-error-messages';
 type Props = {
   idx?: number;
   task?: PartialObjectDeep<Tasks>;
+  isDefaultOpen?: boolean;
   readOnly?: boolean;
-  setCompletedGate?: (completed: boolean) => void;
   completed?: boolean;
   isAdmin?: boolean;
 };
@@ -58,16 +58,14 @@ interface Error {
 export function Task({
   task,
   idx,
+  isDefaultOpen,
   readOnly,
-  setCompletedGate,
   isAdmin = false,
   completed: completedProp = false,
 }: Props) {
   const { me, gqlAuthMethods, onOpenLogin } = useAuth();
-  const { address } = useAccount();
 
-  const [expanded, toggleExpanded] = useToggle(false);
-  const [defaultOpen, setOpen] = useState(true);
+  const [expanded, toggleExpanded] = useToggle(isDefaultOpen);
   const [completed, setCompleted] = useState(completedProp);
   const [updatedAt, setUpdatedAt] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -80,9 +78,12 @@ export function Task({
     if (progressTaskIndex !== undefined && progressTaskIndex !== -1) {
       setCompleted(true);
       setUpdatedAt(me?.task_progresses[progressTaskIndex].updated_at);
-      toggleExpanded(true);
     }
   }, [task.id, me?.task_progresses, toggleExpanded]);
+
+  useEffect(() => {
+    toggleExpanded(isDefaultOpen);
+  }, [isDefaultOpen]);
 
   const getTaskContent = (task_type: string) => {
     const taskTypes = {
@@ -146,11 +147,6 @@ export function Task({
     {
       onSuccess: (data) => {
         try {
-          data.verify_key.completed_gate && setCompletedGate(true);
-
-          data.verify_key.completed_gate &&
-            queryClient.resetQueries(['user_info', me?.id]);
-
           queryClient.resetQueries(['user_task_progresses', me?.id]);
         } catch (err) {
           console.log(err);
@@ -226,21 +222,14 @@ export function Task({
         action={
           <IconButton
             onClick={() => {
-              idx == 1 && defaultOpen
-                ? toggleExpanded(false)
-                : toggleExpanded();
-              setOpen(false);
+              toggleExpanded();
             }}
           >
             {expanded ? <ExpandLess /> : <ExpandMore />}
           </IconButton>
         }
       />
-      <Collapse
-        in={idx == 1 && defaultOpen ? true : expanded}
-        timeout="auto"
-        unmountOnExit
-      >
+      <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent sx={{ marginLeft: { xs: '0px', md: '55px' } }}>
           <Typography variant="subtitle2">{task.description}</Typography>
           <TaskComponent

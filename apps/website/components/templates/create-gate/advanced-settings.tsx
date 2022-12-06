@@ -15,7 +15,7 @@ import {
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 
-import { DesktopDatePicker } from '@mui/x-date-pickers';
+import { DesktopDatePicker, MobileDatePicker } from '@mui/x-date-pickers';
 import EditIcon from '@mui/icons-material/Edit';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import { styled } from '@mui/material/styles';
@@ -95,7 +95,7 @@ export function AdvancedSetting() {
                   defaultValue={null}
                   render={({ field }) => (
                     <>
-                      <DesktopDatePicker
+                      <MobileDatePicker
                         label="Add expire date"
                         inputFormat="MM/dd/yyyy"
                         disablePast
