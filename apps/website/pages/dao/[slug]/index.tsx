@@ -66,7 +66,7 @@ export default function DaoProfilePage({
       <DaoProfileProvider
         dao={dao}
         isAdmin={isAdmin}
-        followersCount={dao.followers_aggregate.aggregate.count}
+        followersCount={dao.followers_aggregate?.aggregate.count}
         credentials={credentialsQuery.data}
         onRefetchFollowers={refetch}
       >

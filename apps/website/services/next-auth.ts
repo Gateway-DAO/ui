@@ -87,7 +87,7 @@ export const nextAuthConfig: NextAuthOptions = {
     async jwt({ token, user }) {
       // We're retrieving the token from the provider
       if (user) {
-        token = user;
+        token = user as SessionToken;
       }
 
       const parsedToken = jwt.decode(token.token, { json: true });

@@ -51,10 +51,7 @@ function CustomApp({ Component, pageProps }: AppProps) {
               <Hydrate state={pageProps.dehydratedState}>
                 <Notistack>
                   <AuthProvider isAuthPage={Component.auth}>
-                    <BiconomyProvider
-                      apiKey={process.env.NEXT_PUBLIC_WEB3_BICONOMY_API_KEY}
-                      contractAddress={process.env.NEXT_PUBLIC_WEB3_NFT_ADDRESS}
-                    >
+                    <BiconomyProvider>
                       <CyberConnectProvider>
                         <NavStateProvider>
                           <Component {...pageProps} />

@@ -12,7 +12,7 @@ const glqAnonClient = new GraphQLClient(
 
 export const gqlAnonMethods = getSdk(glqAnonClient);
 
-const gqlUserHeader = (token: string, userId?: string) => ({
+export const gqlUserHeader = (token: string, userId?: string) => ({
   'X-Hasura-Role': 'user',
   Authorization: `Bearer ${token}`,
   ...(userId && { 'X-Hasura-User-Id': userId }),

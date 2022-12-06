@@ -3,6 +3,7 @@ import { PartialDeep } from 'type-fest';
 import { z } from 'zod';
 
 import {
+  Files,
   Gates,
   Whitelisted_Wallets,
 } from '../../../services/graphql/types.generated';
@@ -13,21 +14,20 @@ export type Creator = {
   name: string;
 };
 
-export type Gate_Whitelisted_Wallet = PartialDeep<
-  Pick<Whitelisted_Wallets, 'wallet' | 'ens'>
->;
-
 // Draft Gate
 export type CreateGateData = {
   id?: string;
   categories: string[];
   skills: string[];
+  expire_date?: string;
+  claim_limit?: number;
 } & Required<
   Pick<Gates, 'title' | 'categories' | 'skills' | 'image' | 'description'>
 > &
   Required<{ creator: Pick<Gates['creator'], 'id' | 'name'> }> & {
     type: 'task_based' | 'direct';
-    whitelisted_wallets?: Gate_Whitelisted_Wallet[];
+    whitelisted_wallets_file?: Partial<Files>;
+    isFalid?: boolean;
     tasks?: Task[];
   };
 
@@ -603,6 +603,12 @@ const gateBase = z.object({
     id: z.string(),
     name: z.string(),
   }),
+  claim_limit: z
+    .number()
+    .positive({ message: 'please enter a valid value' })
+    .int({ message: `please enter a valid value , don't use decimal value` })
+    .nullish(),
+  expire_date: z.string().nullish(),
 });
 
 const taskGate = gateBase.augment({
@@ -629,14 +635,9 @@ const taskGate = gateBase.augment({
 
 const directGate = gateBase.augment({
   type: z.literal('direct' as GateType),
-  whitelisted_wallets: z
-    .array(
-      z.object({
-        wallet: z.string(),
-        ens: z.string().optional(),
-      })
-    )
-    .min(1, 'Please add at least 1 wallet'),
+  whitelisted_wallets_file: z.object({
+    id: z.string(),
+  }),
 });
 
 export const createGateSchema = z.discriminatedUnion('type', [

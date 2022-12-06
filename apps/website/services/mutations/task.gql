@@ -15,7 +15,13 @@ mutation delete_tasks_by_pk($task_id: uuid!) {
 
 mutation complete_task($task_id: uuid!, $info: json) {
   verify_key(input: { task_id: $task_id, info: $info }) {
-    completed_gate
     task_info
   }
+}
+
+mutation complete_gate($gateId: uuid!, $recaptcha: String!) {
+  complete_gate(
+    gate_id: $gateId
+    recaptcha: $recaptcha
+  )
 }

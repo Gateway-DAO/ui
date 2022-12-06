@@ -1,14 +1,14 @@
-import { PropsWithChildren, useEffect, useState } from 'react';
+import { PropsWithChildren } from 'react';
 
 import { MotionBox } from '@gateway/ui';
 
 import Box from '@mui/material/Box';
 
 import { useNav } from '../../../hooks/use-nav';
+import { useWindowSize } from '../../../hooks/use-window-size';
 import { Drawer } from './drawer';
 import { withGradientAfter } from './styles';
 import { DashboardTemplateProps } from './types';
-import { useWindowSize } from '../../../hooks/use-window-size';
 
 /* TODO: buttons to next/link */
 
@@ -47,15 +47,15 @@ export function DashboardTemplate({
         component="main"
         {...containerProps}
         sx={[
-          containerProps?.sx as any,
           (theme) => ({
             flexGrow: 1,
             [theme.breakpoints.down('md')]: {
               transition: 'transform 225ms ease-out',
             },
             height: '100%',
-            minHeight: `${windowSize.height}px`
+            minHeight: `${windowSize.height}px`,
           }),
+          containerProps?.sx as any,
           isOpen &&
             ((theme) => ({
               [theme.breakpoints.down('md')]: {

@@ -37,4 +37,5 @@ export const taskErrorMessages = {
   EXPIRED_CODE: `Expired code`,
   INVALID_CODE_VERIFICATION: `Invalid code verification`,
   MAXIMUM_ATTEMPTS_REACHED: `Maximum attempts reached`,
+  GATE_CLAIM_LIMIT: `You can no longer complete tasks for this credential.`,
 };

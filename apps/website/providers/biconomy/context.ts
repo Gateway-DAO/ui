@@ -13,7 +13,6 @@ export type MintResponse = {
 };
 
 type Context = {
-  mint: () => Promise<MintResponse>;
   mintCredential: (
     credential: PartialDeep<Credentials>
   ) => Promise<MintResponse>;

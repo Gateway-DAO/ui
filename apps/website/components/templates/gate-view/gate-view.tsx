@@ -22,6 +22,7 @@ import {
   Tooltip,
   IconButton,
   Avatar,
+  Button,
 } from '@mui/material';
 
 import { ROUTES } from '../../../constants/routes';
@@ -29,7 +30,7 @@ import { useAuth } from '../../../providers/auth';
 import { gqlAnonMethods } from '../../../services/api';
 import { Gates } from '../../../services/graphql/types.generated';
 import { AvatarFile } from '../../atoms/avatar-file';
-import { Props as MintCredentialButtonProps } from '../../atoms/mint-button';
+
 import MorePopover from '../../atoms/more-popover';
 import { ReadMore } from '../../atoms/read-more-less';
 import { ShareButton } from '../../atoms/share-button';
@@ -38,18 +39,18 @@ import GateCompletedModal from '../../organisms/gates/view/modals/gate-completed
 import type { Props as HolderDialogProps } from '../../organisms/holder-dialog';
 import { DirectHoldersList } from './direct-holders-list/direct-holders-list';
 import { DirectHoldersHeader } from './direct-holders-list/header';
+import { DraftDirectHoldersList } from './draft-direct-holders-list/draft-direct-holders-list';
 import { TaskList } from './task-list';
+import { MintDialogProps } from '../../molecules/mint-dialog';
+import { TokenFilled } from '../../molecules/mint-card/assets/token-filled';
 
 const GateStateChip = dynamic(() => import('../../atoms/gate-state-chip'), {
   ssr: false,
 });
 
-const MintCredentialButton: ComponentType<MintCredentialButtonProps> = dynamic(
-  () =>
-    import('../../atoms/mint-button').then((mod) => mod.MintCredentialButton),
-  {
-    ssr: false,
-  }
+const MintDialog: ComponentType<MintDialogProps> = dynamic(
+  () => import('../../molecules/mint-dialog').then((mod) => mod.MintDialog),
+  { ssr: false }
 );
 
 const HolderDialog: ComponentType<HolderDialogProps> = dynamic(
@@ -64,6 +65,7 @@ type GateViewProps = {
 export function GateViewTemplate({ gateProps }: GateViewProps) {
   const [open, setOpen] = useState(false);
   const [isHolderDialog, setIsHolderDialog] = useState(false);
+  const [isMintDialog, setMintModal] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [confirmToggleState, setConfirmToggleState] = useState(false);
   const [completedTasksCount, setCompletedTasksCount] = useState(0);
@@ -82,7 +84,10 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
         wallet: me?.wallet ?? '',
       }),
     {
-      enabled: gateProps && gateProps.type === 'direct',
+      enabled:
+        gateProps &&
+        gateProps.type === 'direct' &&
+        gateProps.published === 'published',
     }
   );
 
@@ -201,16 +206,14 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
       }
     );
 
-  const { data: gateProgress } = useQuery(
-    ['gate_progress', gateProps?.id, me?.id],
-    () =>
-      gqlAuthMethods.GateProgress({
-        gateID: gateProps?.id,
-        userID: me?.id,
-      })
+  const gateProgress = useQuery(['gate_progress', gateProps?.id, me?.id], () =>
+    gqlAuthMethods.GateProgress({
+      gateID: gateProps?.id,
+      userID: me?.id,
+    })
   );
 
-  const completedAt = gateProgress?.gate_progress[0]?.completed_at;
+  const completedAt = gateProgress.data?.credentials?.[0]?.created_at;
 
   const formattedDate = new Date(completedAt?.toLocaleString()).toLocaleString(
     'en-us',
@@ -241,16 +244,32 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
     },
   ];
 
+  const isDateExpired = (() => {
+    if (!gateProps?.expire_date) {
+      return false;
+    }
+    const expireDate = new Date(gateProps?.expire_date);
+    expireDate.setDate(expireDate.getDate() + 1);
+    return expireDate.getTime() < new Date().getTime();
+  })();
+
+  const isLimitExceeded = gateProps?.claim_limit
+    ? gateProps?.claim_limit <= gateProps?.holder_count
+    : false;
+
   return (
     <Grid
       container
-      height="100%"
-      sx={{ flexWrap: 'nowrap', flexDirection: { xs: 'column', md: 'row' } }}
+      sx={{
+        flexWrap: 'nowrap',
+        flexDirection: { xs: 'column', md: 'row' },
+      }}
     >
       <GateCompletedModal
         open={open}
         handleClose={handleClose}
         gate={gateProps}
+        credential={credential?.credentials_by_pk}
       />
       <HolderDialog
         {...{
@@ -258,6 +277,11 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
           setIsHolderDialog,
           credentialId: gateProps?.id,
         }}
+      />
+      <MintDialog
+        credential={credential?.credentials_by_pk}
+        isOpen={isMintDialog}
+        setOpen={setMintModal}
       />
       <Grid item xs={12} md={5}>
         <Stack
@@ -375,11 +399,40 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
 
           {completedGate &&
             !!credential &&
-            credential?.credentials_by_pk.target_id == me?.id && (
-              <MintCredentialButton
-                credential={credential?.credentials_by_pk}
-              />
-            )}
+            credential?.credentials_by_pk.target_id == me?.id &&
+            (credential?.credentials_by_pk.status == 'minted' ? (
+              <Button
+                component="a"
+                variant="outlined"
+                href={credential.credentials_by_pk.transaction_url}
+                target="_blank"
+                startIcon={
+                  <TokenFilled height={20} width={20} color="action" />
+                }
+                fullWidth
+                sx={{
+                  borderColor: '#E5E5E580',
+                  color: 'white',
+                  mb: 2,
+                }}
+              >
+                VERIFY MINT TRANSACTION
+              </Button>
+            ) : (
+              <Button
+                variant="contained"
+                startIcon={
+                  <TokenFilled height={20} width={20} color="action" />
+                }
+                fullWidth
+                onClick={() => setMintModal(true)}
+                sx={{
+                  mb: 2,
+                }}
+              >
+                MINT AS NFT
+              </Button>
+            ))}
 
           <Box
             component="img"
@@ -393,6 +446,78 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
           />
 
           <Grid container rowGap={(theme) => theme.spacing(3)}>
+            {gateProps?.expire_date && (
+              <>
+                <Grid
+                  item
+                  xs={4}
+                  sx={{ display: 'flex', alignItems: 'center' }}
+                >
+                  <Typography
+                    variant="body2"
+                    color={(theme) => theme.palette.text.secondary}
+                  >
+                    Expire date
+                  </Typography>
+                </Grid>
+                <Grid item xs={8}>
+                  <Typography
+                    variant="subtitle2"
+                    color={isDateExpired ? '#FFA726' : 'secondary'}
+                    fontWeight={600}
+                  >
+                    {new Date(gateProps.expire_date).toLocaleDateString(
+                      'en-us',
+                      { year: 'numeric', month: 'short', day: 'numeric' }
+                    )}
+                    {isDateExpired && (
+                      <Chip
+                        sx={{ marginLeft: 2 }}
+                        label="expired"
+                        color={'warning'}
+                        variant="outlined"
+                      />
+                    )}
+                  </Typography>
+                </Grid>
+              </>
+            )}
+
+            {gateProps?.claim_limit && (
+              <>
+                <Grid
+                  item
+                  xs={4}
+                  sx={{ display: 'flex', alignItems: 'center' }}
+                >
+                  <Typography
+                    variant="body2"
+                    color={(theme) => theme.palette.text.secondary}
+                  >
+                    Claimed
+                  </Typography>
+                </Grid>
+                <Grid item xs={8}>
+                  <Typography
+                    variant="subtitle2"
+                    color={isLimitExceeded ? '#FFA726' : 'secondary'}
+                    fontWeight={600}
+                  >
+                    {' '}
+                    {gateProps?.holder_count} of {gateProps?.claim_limit}{' '}
+                    {isLimitExceeded && (
+                      <Chip
+                        sx={{ marginLeft: 2 }}
+                        label="completed"
+                        color={'warning'}
+                        variant="outlined"
+                      />
+                    )}
+                  </Typography>
+                </Grid>
+              </>
+            )}
+
             {gateProps?.holder_count > 0 && (
               <>
                 <Grid
@@ -501,7 +626,7 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
         </Box>
       </Grid>
       <Divider orientation="vertical" flexItem />
-      {gateProps.type === 'direct' && (
+      {published !== 'not_published' && gateProps.type === 'direct' && (
         <DirectHoldersList
           gate={gateProps}
           isLoading={directCredentialInfo.isLoading}
@@ -517,15 +642,23 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
           }
         />
       )}
+      {published !== 'published' && gateProps.type === 'direct' && (
+        <DraftDirectHoldersList gate={gateProps} />
+      )}
       {gateProps.type === 'task_based' && (
         <TaskList
+          gateId={gateProps.id}
           tasks={gateProps?.tasks}
           completedAt={completedAt}
           completedTasksCount={completedTasksCount}
           formattedDate={formattedDate}
           isAdmin={isAdmin}
           published={published}
-          setOpen={setOpen}
+          setOpen={() => {
+            gateProgress.remove();
+            setOpen(true);
+          }}
+          isCredentialExpired={isDateExpired || isLimitExceeded}
         />
       )}
       <ConfirmDialog

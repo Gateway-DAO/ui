@@ -60,13 +60,13 @@ export function LandingTemplate({
 
   const refs = {
     hero: useRef(null),
-    professionals: useRef(null),
-    organizations: useRef(null),
+    dApps: useRef(null),
+    sdk: useRef(null),
     build: useRef(null),
     investors: useRef(null),
   };
 
-  const organizationIntersection = useIntersection(refs.organizations, {
+  const organizationIntersection = useIntersection(refs.dApps, {
     root: null,
     rootMargin: '0px',
     threshold: 0.3,
@@ -123,18 +123,15 @@ export function LandingTemplate({
           }}
         >
           <Hero {...heroProps} ref={refs.hero} />
-          <Featured
-            {...forUsersContent}
-            id="professionals"
-            ref={refs.professionals}
+          <ProductShow
+            {...theGatewayContent}
+            id="credential-model"
+            ref={refs.build}
           />
-          <Featured
-            {...forOrganizationsContent}
-            ref={refs.organizations}
-            id="organizations"
-          />
-          <ProductShow {...theGatewayContent} id="build" ref={refs.build} />
-          <ProductShow revert={true} {...buildAppsContent} />
+          <ProductShow revert={true} {...buildAppsContent} id="stack" />
+          <Featured {...forUsersContent} id="d-app" ref={refs.dApps} />
+          <Featured {...forOrganizationsContent} ref={refs.sdk} id="sdk" />
+
           <Investors
             {...investorsContent}
             id="investors"

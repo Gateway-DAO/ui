@@ -1,20 +1,17 @@
-import { PropsWithChildren, useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import { Biconomy } from '@biconomy/mexa';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { ethers } from 'ethers';
 import { useSnackbar } from 'notistack';
 import { PartialDeep } from 'type-fest';
-import { useAccount, useProvider, useSigner } from 'wagmi';
 
-import { CREDENTIAL_ABI } from '../../constants/web3';
-import { Credentials, Users } from '../../services/graphql/types.generated';
+import { Credentials } from '../../services/graphql/types.generated';
 import { useAuth } from '../auth';
 import { BiconomyContext, MintResponse } from './context';
 
-type Props = {
-  apiKey: string;
-  contractAddress: string;
+type ProviderProps = {
+  children: React.ReactNode;
 };
 
 let provider;
@@ -30,79 +27,9 @@ export type MintStatus = {
   };
 };
 
-const correctProvider = async () => {
-  if (typeof window.ethereum !== 'undefined') {
-    provider = window.ethereum;
-
-    // edge case if MM and CBW are both installed
-    if (window.ethereum?.providers?.length) {
-      window.ethereum.providers.forEach(async (p) => {
-        if (p.isMetaMask) provider = p;
-      });
-    }
-
-    await provider.request({
-      method: 'eth_requestAccounts',
-      params: [],
-    });
-  }
-
-  return provider;
-};
-
-export function BiconomyProvider({
-  apiKey,
-  contractAddress,
-  children,
-}: PropsWithChildren<Props>) {
-  const RPC = {
-    polygon: process.env.NEXT_PUBLIC_WEB3_POLYGON_RPC,
-    goerli: process.env.NEXT_PUBLIC_WEB3_GOERLI_RPC,
-  };
-
+export function BiconomyProvider({ children }: ProviderProps) {
   // State
   const [mintStatus, setMintStatus] = useState<MintStatus>(() => ({}));
-
-  // From Wagmi
-  const { address } = useAccount();
-  const {
-    data: signer,
-    status,
-    refetch,
-  } = useSigner({
-    async onSuccess(data) {
-      // We're creating biconomy provider linked to your network of choice where your contract is deployed
-      const jsonRpcProvider = new ethers.providers.JsonRpcProvider(
-        RPC[process.env.NEXT_PUBLIC_MINT_CHAIN]
-      );
-
-      biconomy = new Biconomy(jsonRpcProvider, {
-        walletProvider: signerProvider || (await correctProvider()),
-        apiKey: process.env.NEXT_PUBLIC_WEB3_BICONOMY_API_KEY,
-        debug: process.env.NODE_ENV === 'development',
-      });
-
-      biconomy
-        .onEvent(biconomy.READY, async () => {
-          console.log('Biconomy is ready!');
-          // Initialize your dapp here like getting user accounts etc
-          contract = new ethers.Contract(
-            contractAddress,
-            CREDENTIAL_ABI,
-            biconomy.getSignerByAddress(address)
-          );
-
-          contractInterface = new ethers.utils.Interface(CREDENTIAL_ABI);
-        })
-        .onEvent(biconomy.ERROR, (error, message) => {
-          console.log('Biconomy error');
-          // Handle error while initializing mexa
-          console.log(error);
-          console.log(message);
-        });
-    },
-  });
-  const signerProvider = (signer?.provider as any)?.provider;
 
   // From auth
   const { me, gqlAuthMethods } = useAuth();
@@ -112,167 +39,59 @@ export function BiconomyProvider({
   // Credential update
   const queryClient = useQueryClient();
 
-  const { mutateAsync: updateCredential } = useMutation(
-    async (data: { id: string; tx_url: string }) => {
-      return await gqlAuthMethods.update_credential_status({
-        id: data.id,
-        status: 'minted',
-        transaction_url: data.tx_url,
-      });
-    },
+  // Mint - backend
+  const { mutateAsync: mintGasless } = useMutation(
+    (id: string) => gqlAuthMethods.mint_credential({ id }),
     {
-      onSuccess: (data) => {
+      onMutate: (id) => {
+        setMintStatus((prev) => ({
+          ...prev,
+          [id]: {
+            askingSignature: true,
+            isMinted: false,
+            error: null,
+          },
+        }));
+      },
+      onSuccess: (data, id) => {
+        setMintStatus((prev) => ({
+          ...prev,
+          [id]: {
+            askingSignature: false,
+            isMinted: true,
+            error: null,
+          },
+        }));
+
+        console.log(id);
+
         queryClient.invalidateQueries(['credentials']);
-        queryClient.invalidateQueries([
-          'credential',
-          data.update_credentials_by_pk.id,
-        ]);
+        queryClient.resetQueries(['credential', id]);
 
         queryClient.resetQueries(['user_info', me?.id]);
       },
-    }
-  );
-
-  useEffect(() => {
-    if (!signer && status == 'success') {
-      refetch();
-    }
-  }, [signer, status, refetch]);
-
-  /**
-   * It mints a new NFT token.
-   * @param [token_uri] - This is the metadata that you want to attach to the token.
-   * @returns A boolean value.
-   */
-  const mint = async (token_uri = ''): Promise<MintResponse> => {
-    try {
-      if (contract) {
-        let tx: string;
-
-        const { data: contractData } = await contract.populateTransaction.mint(
-          address,
-          token_uri
-        );
-
-        const provider: ethers.providers.Web3Provider =
-          biconomy.getEthersProvider();
-        const gasLimit = await provider.estimateGas({
-          to: contractAddress,
-          from: address,
-          data: contractData,
+      onError: (error) => {
+        enqueueSnackbar('Minting failed, please try again', {
+          variant: 'error',
         });
 
-        const txParams = {
-          data: contractData,
-          to: contractAddress,
-          from: address,
-          gasLimit: gasLimit.toNumber() * 3,
-          signatureType: 'EIP712_SIGN',
-        };
-
-        try {
-          setMintStatus((prev) => ({
-            ...prev,
-            [token_uri]: {
-              askingSignature: true,
-              isMinted: false,
-              error: null,
-            },
-          }));
-
-          const promise = provider.send('eth_sendTransaction', [txParams]);
-
-          setMintStatus((prev) => ({
-            ...prev,
-            [token_uri]: {
-              askingSignature: false,
-              isMinted: false,
-              error: null,
-            },
-          }));
-
-          tx = await promise;
-
-          setMintStatus((prev) => ({
-            ...prev,
-            [token_uri]: {
-              askingSignature: false,
-              isMinted: true,
-              error: null,
-            },
-          }));
-        } catch (err) {
-          enqueueSnackbar('Minting failed, please try again', {
-            variant: 'error',
-          });
-
-          setMintStatus((prev) => ({
-            ...prev,
-            [token_uri]: {
-              askingSignature: false,
-              isMinted: true,
-              error: err,
-            },
-          }));
-
-          return {
-            isMinted: false,
-            error: err,
-          };
-        }
-
-        return {
-          isMinted: true,
-          transactionUrl:
-            (process.env.NEXT_PUBLIC_MINT_CHAIN === 'polygon'
-              ? 'https://polygonscan.com'
-              : 'https://goerli.etherscan.io') +
-            '/tx/' +
-            tx,
-        };
-      } else {
-        enqueueSnackbar(
-          'Biconomy is still loading. Try again in a few minutes!',
-          {
-            variant: 'warning',
-          }
-        );
-        return {
-          isMinted: false,
-          error: 'Biconomy is still loading. Try again in a few minutes!',
-        };
-      }
-    } catch (err) {
-      console.log(err);
+        console.log('[useMint] Error:', error);
+      },
     }
-  };
+  );
 
   const mintCredential = async (
     credential: PartialDeep<Credentials>
   ): Promise<MintResponse> => {
     try {
-      // 1. verify is the user owns the credential
-      if (credential.target_id !== me.id) {
-        throw new Error('You are not the owner of this credential!');
-      }
-
       // 2. mint the NFT
-      const res = await mint(credential?.uri || '');
+      const { mint_credential: res } = await mintGasless(credential.id);
 
-      if (res?.error) {
-        throw res.error;
-      }
-
-      // 3. change the status of the credential
-      await updateCredential({
-        id: credential.id,
-        tx_url: res.transactionUrl,
-      });
-
-      return res;
+      return {
+        isMinted: true,
+        transactionUrl: res.info.transaction_hash,
+      };
     } catch (error) {
-      console.log('[useMint] Error:', error);
-
       return {
         isMinted: false,
         error,
@@ -283,7 +102,6 @@ export function BiconomyProvider({
   return (
     <BiconomyContext.Provider
       value={{
-        mint,
         mintCredential,
         mintStatus,
       }}
