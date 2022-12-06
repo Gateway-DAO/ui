@@ -29,6 +29,11 @@ const AddTaskCard = ({ numberOfTasks, addTask }) => {
       description: 'Check if the users hold a token',
     },
     {
+      type: 'manual',
+      title: 'Submit Link',
+      description: 'Ask users to put a link',
+    },
+    {
       type: 'nft_hold',
       title: 'Verify NFT',
       description: 'Check if the users hold a token',
@@ -54,11 +59,6 @@ const AddTaskCard = ({ numberOfTasks, addTask }) => {
       description: 'Ask users to post a tweet on Twitter',
     },
     {
-      type: 'manual',
-      title: 'Submit Link',
-      description: 'Ask users to put a link',
-    },
-    {
       type: 'github_contribute',
       title: 'Contribute to repository',
       description: 'Check if users contribute to the repository',
@@ -67,11 +67,6 @@ const AddTaskCard = ({ numberOfTasks, addTask }) => {
       type: 'github_prs',
       title: 'Verify Pull Requests',
       description: 'Check the number of pull requests',
-    },
-    {
-      type: 'snapshot',
-      title: 'Verify Proposal',
-      description: 'Check if the user created or voted on a proposal',
     },
     {
       type: 'snapshot',

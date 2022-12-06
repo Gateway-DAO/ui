@@ -243,6 +243,7 @@ export function Task({
             {task.description}
           </Typography>
           <TaskComponent
+            task={task}
             data={task.task_data}
             completed={completed}
             updatedAt={updatedAt}
