@@ -17,6 +17,7 @@ type Context = {
     credential: PartialDeep<Credentials>
   ) => Promise<MintResponse>;
   mintStatus: MintStatus;
+  readyToMint: boolean;
 };
 
 // TODO: make this better for the love of God!

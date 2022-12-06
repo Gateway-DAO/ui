@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useSnackbar } from 'notistack';
@@ -8,9 +8,7 @@ import {
   usePrepareContractWrite,
   useContractWrite,
   useNetwork,
-  useSigner,
   useSwitchNetwork,
-  useWaitForTransaction,
 } from 'wagmi';
 
 import { CREDENTIAL_ABI } from '../../constants/web3';
@@ -58,7 +56,12 @@ export function BiconomyProvider({ children }: ProviderProps) {
     throwForSwitchChainNotSupported: true,
   });
 
-  const { writeAsync: contractMint, data, error } = useContractWrite(config);
+  const {
+    writeAsync: contractMint,
+    data,
+    error,
+    isLoading,
+  } = useContractWrite(config);
 
   // From auth
   const { me, gqlAuthMethods } = useAuth();
@@ -89,7 +92,7 @@ export function BiconomyProvider({ children }: ProviderProps) {
         },
       }));
 
-      queryClient.invalidateQueries(['credentials']);
+      queryClient.resetQueries(['credentials']);
       queryClient.resetQueries(['credential', id]);
 
       queryClient.resetQueries(['user_info', me?.id]);
@@ -111,21 +114,21 @@ export function BiconomyProvider({ children }: ProviderProps) {
 
   // Mint - local
   const { mutateAsync: mint } = useMutation(
-    async (
-      credential: PartialDeep<Credentials>
-    ): Promise<Update_Credential_StatusMutation> => {
+    async (id: string): Promise<PartialDeep<Credentials>> => {
       try {
         const tx = await contractMint?.();
-        const receipt = await tx?.wait(3);
+        const receipt = await tx.wait();
 
         // Update credential data
-        return await gqlAuthMethods.update_credential_status({
-          id: credential.id,
+        const update = await gqlAuthMethods.update_credential_status({
+          id,
           status: 'minted',
           transaction_url: `${getExplorer(
             parseInt(process.env.NEXT_PUBLIC_CHAIN_ID)
           )}/tx/${receipt?.transactionHash}`,
         });
+
+        return update.update_credentials_by_pk;
       } catch (error) {
         console.log(error);
         throw error;
@@ -158,10 +161,11 @@ export function BiconomyProvider({ children }: ProviderProps) {
         };
       }
 
-      const { update_credential_status: res } = await mint(credential);
+      const res: PartialDeep<Credentials> = await mint(credential.id);
 
       return { isMinted: true, transactionUrl: res.transaction_url };
     } catch (error) {
+      console.log('[Error]:', error);
       return {
         isMinted: false,
         error,
@@ -169,11 +173,14 @@ export function BiconomyProvider({ children }: ProviderProps) {
     }
   };
 
+  const readyToMint = useMemo(() => !!contractMint, [contractMint]);
+
   return (
     <BiconomyContext.Provider
       value={{
         mintCredential,
         mintStatus,
+        readyToMint,
       }}
     >
       {children}
