@@ -26,11 +26,11 @@ export type TaskInterationProps = {
 };
 
 export enum InterationType {
-  WAITING = 0,
-  COMMENT = 1,
-  LINK = 2,
-  APPROVED = 3,
-  DENIED = 4,
+  COMMENT = 0,
+  LINK = 1,
+  APPROVED = 2,
+  DENIED = 3,
+  WAITING = 4,
 }
 
 const TaskInteration = ({

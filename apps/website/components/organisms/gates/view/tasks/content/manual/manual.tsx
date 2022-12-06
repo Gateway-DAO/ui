@@ -91,7 +91,7 @@ const ManualContent = ({
                     onClick={() => completeTask({ manual: true })}
                     isLoading={isLoading}
                   >
-                    {t('tasks.check_action')}
+                    {t('tasks.manual.action')}
                   </LoadingButton>
                 </>
               )}
