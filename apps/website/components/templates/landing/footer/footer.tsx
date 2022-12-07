@@ -125,7 +125,11 @@ export function Footer({
                 })}
               >
                 <ListItem sx={{ display: 'flex', width: 'auto', p: 0 }}>
-                  <Link passHref href="twitter.com/gateway_xyz" target="_blank">
+                  <Link
+                    passHref
+                    href="https://twitter.com/gateway_xyz"
+                    target="_blank"
+                  >
                     <IconContainer component="a">
                       <Twitter color="secondary" />
                     </IconContainer>
