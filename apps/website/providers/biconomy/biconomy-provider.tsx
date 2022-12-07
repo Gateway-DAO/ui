@@ -100,7 +100,6 @@ export function BiconomyProvider({ children }: ProviderProps) {
   const { writeAsync: contractMint, data } = useContractWrite({
     addressOrName: process.env.NEXT_PUBLIC_CONTRACT_ADDRESS,
     contractInterface: CREDENTIAL_ABI,
-    chainId: parseInt(process.env.NEXT_PUBLIC_CHAIN_ID),
     functionName: 'mint',
     mode: 'recklesslyUnprepared',
     overrides: {
