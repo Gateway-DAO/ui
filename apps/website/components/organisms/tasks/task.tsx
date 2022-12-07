@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 import { useMutation } from '@tanstack/react-query';
 import { useToggle } from 'react-use';
-import { PartialObjectDeep } from 'type-fest/source/partial-deep';
+import { PartialDeep } from 'type-fest';
 import { useAccount } from 'wagmi';
 
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
@@ -18,7 +18,7 @@ import {
 } from '@mui/material';
 
 import { useAuth } from '../../../providers/auth';
-import { Tasks } from '../../../services/graphql/types.generated';
+import { Tasks, Gates } from '../../../services/graphql/types.generated';
 import { queryClient } from '../../../services/query-client';
 import { getMapValueFromObject } from '../../../utils/map-object';
 import GithubContributeContent from '../gates/view/tasks/content/github_contribute';
@@ -39,7 +39,8 @@ import { taskErrorMessages } from './task-error-messages';
 
 type Props = {
   idx?: number;
-  task?: PartialObjectDeep<Tasks>;
+  gate: PartialDeep<Gates>;
+  task?: PartialDeep<Tasks>;
   isDefaultOpen?: boolean;
   readOnly?: boolean;
   completed?: boolean;
@@ -59,8 +60,9 @@ interface Error {
 }
 
 export function Task({
-  task,
   idx,
+  gate,
+  task,
   isDefaultOpen,
   readOnly,
   isAdmin = false,
@@ -243,6 +245,7 @@ export function Task({
             {task.description}
           </Typography>
           <TaskComponent
+            gate={gate}
             task={task}
             data={task.task_data}
             completed={completed}

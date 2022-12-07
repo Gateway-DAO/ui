@@ -17,6 +17,7 @@ import { TaskProps } from '../types';
 import { InterationList } from './components/interation-list';
 
 const ManualContent = ({
+  gate,
   task,
   data,
   completed,
@@ -96,6 +97,7 @@ const ManualContent = ({
           ) : (
             <InterationList
               list={manualTaskEvents.data?.manual_task_events ?? []}
+              gate={gate}
               status={currentTaskProgress.completed}
             />
           )}
