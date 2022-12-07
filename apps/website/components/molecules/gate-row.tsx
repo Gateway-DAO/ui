@@ -4,6 +4,7 @@ import { useState } from 'react';
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useSnackbar } from 'notistack';
+import { PartialDeep } from 'type-fest';
 
 import { ReadMore } from '@mui/icons-material';
 import {
@@ -16,6 +17,7 @@ import {
   Typography,
 } from '@mui/material';
 
+import { Gates } from '../../services/graphql/types.generated';
 import GateStateChip from '../atoms/gate-state-chip';
 import MorePopover from '../atoms/more-popover';
 import ConfirmDialog from '../organisms/confirm-dialog/confirm-dialog';
@@ -23,22 +25,9 @@ import { ROUTES } from './../../constants/routes';
 import { useAuth } from './../../providers/auth';
 import { badgeProps } from './../../utils/badge-props';
 
-type DaoType = {
-  id?: string;
-};
-
-type GateType = {
-  id?: string;
-  title?: string;
-  description?: string;
-  published?: string;
-  categories?: string[];
-  dao?: DaoType;
-};
-
 type GateRowProps = {
   isGate?: boolean;
-  gate: GateType;
+  gate: PartialDeep<Gates>;
   showStatus?: boolean;
 };
 

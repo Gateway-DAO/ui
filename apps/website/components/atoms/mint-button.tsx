@@ -39,7 +39,9 @@ const MintedButton = (props) => (
 );
 
 export const MintCredentialButton = ({ credential }: Props) => {
-  const [status, setStatus] = useState<'to_mint' | 'minted'>(credential.status);
+  const [status, setStatus] = useState<'to_mint' | 'minted'>(
+    credential.status as 'to_mint' | 'minted'
+  );
   const [transactionUrl, setTransactionUrl] = useState<string | null>(
     credential.transaction_url
   );
