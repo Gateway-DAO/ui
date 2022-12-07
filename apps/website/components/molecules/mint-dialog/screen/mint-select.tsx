@@ -1,3 +1,7 @@
+import { v4 as uuidv4 } from 'uuid';
+import { useNetwork } from 'wagmi';
+
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import {
   Avatar,
   Badge,
@@ -12,14 +16,11 @@ import {
   Typography,
 } from '@mui/material';
 
-import { v4 as uuidv4 } from 'uuid';
-import { useNetwork } from 'wagmi';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-
 const NetworksDetails = [
   {
     name: 'Polygon',
-    costInfo: 'Cost free',
+    costInfo:
+      process.env.NEXT_PUBLIC_GASLESS_MINTING === 'true' ? 'Cost free' : '',
     imgSrc: '/images/polygon.png',
   },
 ];

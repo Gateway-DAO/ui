@@ -1,8 +1,11 @@
-import { Dialog, DialogTitle, SxProps } from '@mui/material';
-import { Credentials } from '../../../services/graphql/types.generated';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+
 import { PartialDeep } from 'type-fest';
-import { Dispatch, SetStateAction, useState } from 'react';
+
+import { Dialog, DialogTitle, SxProps } from '@mui/material';
+
 import { useBiconomy } from '../../../providers/biconomy';
+import { Credentials } from '../../../services/graphql/types.generated';
 import { MintSelect } from './screen/mint-select';
 import { Minting } from './screen/minting';
 
@@ -25,27 +28,29 @@ export function MintDialog({
   ...props
 }: MintDialogProps) {
   const [screen, setScreen] = useState<ScreenTypes>('mint');
-  const [error, setError] = useState<any | null>(null);
-  const { mintCredential: triggerMint } = useBiconomy();
+  const { mintCredential: triggerMint, mintStatus } = useBiconomy();
 
-  const mint = () => {
-    const trigger = triggerMint(credential);
+  const mint = () => triggerMint(credential);
 
-    setScreen('minting');
+  useEffect(() => {
+    const status = mintStatus[credential?.id];
 
-    trigger.then((value) => {
-      if (!value.error && value.isMinted) {
-        setScreen('successful');
-        setTimeout(() => {
-          setOpen(false);
-          props.onMint && props.onMint();
-        }, 2500);
-      } else {
-        setError(value.error);
-        setScreen('failed');
-      }
-    });
-  };
+    if (!status) {
+      setScreen('mint');
+      return;
+    }
+
+    status.askingSignature && setScreen('signin');
+    status.minting && setScreen('minting');
+    if (status.isMinted) {
+      setScreen('successful');
+      setTimeout(() => {
+        setOpen(false);
+        props.onMint && props.onMint();
+      }, 2500);
+    }
+    status.error && setScreen('failed');
+  }, [mintStatus[credential?.id]]);
 
   const DialogScreen = {
     mint: <MintSelect {...{ setScreen, mint, setOpen }} />,
