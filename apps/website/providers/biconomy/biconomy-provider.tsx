@@ -1,22 +1,18 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useRef, useState } from 'react';
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { ethers } from 'ethers';
 import { useSnackbar } from 'notistack';
 import { PartialDeep } from 'type-fest';
 import {
   useAccount,
-  usePrepareContractWrite,
   useContractWrite,
   useNetwork,
   useSwitchNetwork,
+  useWaitForTransaction,
 } from 'wagmi';
 
 import { CREDENTIAL_ABI } from '../../constants/web3';
-import {
-  Credentials,
-  Update_Credential_StatusMutation,
-} from '../../services/graphql/types.generated';
+import { Credentials } from '../../services/graphql/types.generated';
 import { getExplorer } from '../../utils/web3';
 import { useAuth } from '../auth';
 import { BiconomyContext, MintResponse } from './context';
@@ -29,6 +25,7 @@ export type MintStatus = {
   [key: string]: {
     askingSignature: boolean;
     isMinted: boolean;
+    minting: boolean;
     error: any;
   };
 };
@@ -38,40 +35,7 @@ const isGasless = process.env.NEXT_PUBLIC_GASLESS_MINTING === 'true';
 export function BiconomyProvider({ children }: ProviderProps) {
   // State
   const [mintStatus, setMintStatus] = useState<MintStatus>(() => ({}));
-  const [currentTokenURI, setTokenURI] = useState<string>();
-
-  // From Wagmi
-  const { address } = useAccount();
-  const { chain } = useNetwork();
-
-  const { switchNetworkAsync } = useSwitchNetwork({
-    throwForSwitchChainNotSupported: true,
-  });
-
-  const {
-    writeAsync: contractMint,
-    data,
-    error,
-    isError,
-  } = useContractWrite({
-    addressOrName: process.env.NEXT_PUBLIC_CONTRACT_ADDRESS,
-    contractInterface: CREDENTIAL_ABI,
-    chainId: parseInt(process.env.NEXT_PUBLIC_CHAIN_ID),
-    functionName: 'mint',
-    mode: 'recklesslyUnprepared',
-    overrides: {
-      gasLimit: 300000,
-    },
-    onError(error, variables, context) {
-      alert('Fodeu');
-      alert(error.message);
-    },
-  });
-
-  // From auth
-  const { me, gqlAuthMethods } = useAuth();
-
-  const { enqueueSnackbar } = useSnackbar();
+  const currentCredential = useRef<PartialDeep<Credentials> | null>(null);
 
   // Credential update
   const queryClient = useQueryClient();
@@ -81,7 +45,8 @@ export function BiconomyProvider({ children }: ProviderProps) {
       setMintStatus((prev) => ({
         ...prev,
         [variables.id]: {
-          askingSignature: true,
+          askingSignature: !isGasless,
+          minting: isGasless,
           isMinted: false,
           error: null,
         },
@@ -92,6 +57,7 @@ export function BiconomyProvider({ children }: ProviderProps) {
         ...prev,
         [variables.id]: {
           askingSignature: false,
+          minting: false,
           isMinted: true,
           error: null,
         },
@@ -101,15 +67,77 @@ export function BiconomyProvider({ children }: ProviderProps) {
       queryClient.resetQueries(['credential', variables.id]);
 
       queryClient.resetQueries(['user_info', me?.id]);
+
+      currentCredential.current = null;
     },
-    onError: (error) => {
+    onError: (error, variables) => {
       enqueueSnackbar('Minting failed, please try again', {
         variant: 'error',
       });
 
+      setMintStatus((prev) => ({
+        ...prev,
+        [variables.id]: {
+          askingSignature: false,
+          minting: false,
+          isMinted: false,
+          error,
+        },
+      }));
+
       console.log('[useMint] Error:', error);
     },
   };
+
+  // From Wagmi
+  const { address } = useAccount();
+  const { chain } = useNetwork();
+
+  const { switchNetworkAsync } = useSwitchNetwork({
+    throwForSwitchChainNotSupported: true,
+  });
+
+  const { writeAsync: contractMint, data } = useContractWrite({
+    addressOrName: process.env.NEXT_PUBLIC_CONTRACT_ADDRESS,
+    contractInterface: CREDENTIAL_ABI,
+    chainId: parseInt(process.env.NEXT_PUBLIC_CHAIN_ID),
+    functionName: 'mint',
+    mode: 'recklesslyUnprepared',
+    overrides: {
+      gasLimit: 300000,
+    },
+    onMutate: () => mintOptions.onMutate({ id: currentCredential.current?.id }),
+    onSuccess: () => {
+      setMintStatus((prev) => ({
+        ...prev,
+        [currentCredential.current?.id]: {
+          askingSignature: false,
+          minting: true,
+          isMinted: false,
+          error: null,
+        },
+      }));
+    },
+    onError: (err) =>
+      mintOptions.onError(err, { id: currentCredential.current?.id }),
+  });
+
+  const waitForTransaction = useWaitForTransaction({
+    hash: data?.hash,
+    onSuccess: (data) =>
+      updateCredential({
+        id: currentCredential.current?.id,
+        uri: currentCredential.current?.uri,
+        txHash: data.transactionHash,
+      }),
+    onError: (err) =>
+      mintOptions.onError(err, { id: currentCredential.current?.id }),
+  });
+
+  // From auth
+  const { me, gqlAuthMethods } = useAuth();
+
+  const { enqueueSnackbar } = useSnackbar();
 
   // Mint - backend
   const { mutateAsync: mintGasless } = useMutation(
@@ -118,38 +146,19 @@ export function BiconomyProvider({ children }: ProviderProps) {
     mintOptions
   );
 
-  // Mint - local
-  const { mutateAsync: mint } = useMutation(
-    async (credential: {
-      id: string;
-      uri?: string;
-    }): Promise<PartialDeep<Credentials>> => {
-      try {
-        const tx = await contractMint({
-          recklesslySetUnpreparedArgs: [address, credential.uri],
-        });
-        const receipt = await tx.wait();
-
-        if (isError) {
-          throw error;
-        }
-
-        // Update credential data
-        const update = await gqlAuthMethods.update_credential_status({
-          id: credential.id,
-          status: 'minted',
-          transaction_url: `${getExplorer(
-            parseInt(process.env.NEXT_PUBLIC_CHAIN_ID)
-          )}/tx/${receipt?.transactionHash}`,
-        });
-
-        return update.update_credentials_by_pk;
-      } catch (error) {
-        console.log(error);
-        throw error;
-      }
-    },
-    mintOptions
+  const { mutateAsync: updateCredential } = useMutation(
+    (credential: { id: string; uri?: string; txHash?: string }) =>
+      gqlAuthMethods.update_credential_status({
+        id: credential?.id,
+        status: 'minted',
+        transaction_url: `${getExplorer(
+          parseInt(process.env.NEXT_PUBLIC_CHAIN_ID)
+        )}/tx/${credential.txHash}`,
+      }),
+    {
+      onSuccess: mintOptions.onSuccess,
+      onError: mintOptions.onError,
+    }
   );
 
   const mintCredential = async (
@@ -159,6 +168,8 @@ export function BiconomyProvider({ children }: ProviderProps) {
       if (me.id !== credential.target_id) {
         throw new Error('You are not the owner of this credential');
       }
+
+      currentCredential.current = credential;
 
       if (chain.id !== parseInt(process.env.NEXT_PUBLIC_CHAIN_ID)) {
         await switchNetworkAsync?.(parseInt(process.env.NEXT_PUBLIC_CHAIN_ID));
@@ -174,29 +185,19 @@ export function BiconomyProvider({ children }: ProviderProps) {
         };
       }
 
-      const res: PartialDeep<Credentials> = await mint({
-        id: credential.id,
-        uri: credential.uri,
+      await contractMint({
+        recklesslySetUnpreparedArgs: [address, credential.uri],
       });
-
-      return { isMinted: true, transactionUrl: res.transaction_url };
     } catch (error) {
       console.log('[Error]:', error);
-      return {
-        isMinted: false,
-        error,
-      };
     }
   };
-
-  const readyToMint = useMemo(() => !!contractMint, [contractMint]);
 
   return (
     <BiconomyContext.Provider
       value={{
         mintCredential,
         mintStatus,
-        readyToMint,
       }}
     >
       {children}
