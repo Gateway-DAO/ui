@@ -17,7 +17,8 @@ import { Subjects } from '../mint-card';
 const NetworksDetails = [
   {
     name: 'Polygon',
-    costInfo: 'Cost free',
+    costInfo:
+      process.env.NEXT_PUBLIC_GASLESS_MINTING === 'true' ? 'Cost free' : '',
     imgSrc: '/images/polygon.png',
   },
 ];
@@ -62,7 +63,7 @@ export const StartMintScreen = ({ setMintProcessStatus, mint }) => {
                   <ListItemAvatar>
                     <Badge
                       color={
-                        activeChain.name == network.name ? 'success' : 'warning'
+                        activeChain?.name == network.name ? 'success' : 'warning'
                       }
                       overlap="circular"
                       badgeContent=" "
