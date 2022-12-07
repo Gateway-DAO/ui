@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { ethers } from 'ethers';
 import { useSnackbar } from 'notistack';
 import { PartialDeep } from 'type-fest';
 import {
@@ -42,20 +43,7 @@ export function BiconomyProvider({ children }: ProviderProps) {
   // From Wagmi
   const { address } = useAccount();
   const { chain } = useNetwork();
-  const {
-    config,
-    isError: isPreparedError,
-    error: preparedError,
-  } = usePrepareContractWrite({
-    addressOrName: process.env.NEXT_PUBLIC_CONTRACT_ADDRESS,
-    contractInterface: CREDENTIAL_ABI,
-    chainId: parseInt(process.env.NEXT_PUBLIC_CHAIN_ID),
-    functionName: 'mint',
-    args: [address, currentTokenURI],
-    overrides: {
-      gasLimit: 300000,
-    },
-  });
+
   const { switchNetworkAsync } = useSwitchNetwork({
     throwForSwitchChainNotSupported: true,
   });
@@ -65,7 +53,20 @@ export function BiconomyProvider({ children }: ProviderProps) {
     data,
     error,
     isError,
-  } = useContractWrite(config);
+  } = useContractWrite({
+    addressOrName: process.env.NEXT_PUBLIC_CONTRACT_ADDRESS,
+    contractInterface: CREDENTIAL_ABI,
+    chainId: parseInt(process.env.NEXT_PUBLIC_CHAIN_ID),
+    functionName: 'mint',
+    mode: 'recklesslyUnprepared',
+    overrides: {
+      gasLimit: 300000,
+    },
+    onError(error, variables, context) {
+      alert('Fodeu');
+      alert(error.message);
+    },
+  });
 
   // From auth
   const { me, gqlAuthMethods } = useAuth();
@@ -76,20 +77,20 @@ export function BiconomyProvider({ children }: ProviderProps) {
   const queryClient = useQueryClient();
 
   const mintOptions = {
-    onMutate: (id) => {
+    onMutate: (variables) => {
       setMintStatus((prev) => ({
         ...prev,
-        [id]: {
+        [variables.id]: {
           askingSignature: true,
           isMinted: false,
           error: null,
         },
       }));
     },
-    onSuccess: (data, id) => {
+    onSuccess: (data, variables) => {
       setMintStatus((prev) => ({
         ...prev,
-        [id]: {
+        [variables.id]: {
           askingSignature: false,
           isMinted: true,
           error: null,
@@ -97,7 +98,7 @@ export function BiconomyProvider({ children }: ProviderProps) {
       }));
 
       queryClient.resetQueries(['credentials']);
-      queryClient.resetQueries(['credential', id]);
+      queryClient.resetQueries(['credential', variables.id]);
 
       queryClient.resetQueries(['user_info', me?.id]);
     },
@@ -112,19 +113,21 @@ export function BiconomyProvider({ children }: ProviderProps) {
 
   // Mint - backend
   const { mutateAsync: mintGasless } = useMutation(
-    (id: string) => gqlAuthMethods.mint_credential({ id }),
+    (credential: { id: string; uri?: string }) =>
+      gqlAuthMethods.mint_credential({ id: credential.id }),
     mintOptions
   );
 
   // Mint - local
   const { mutateAsync: mint } = useMutation(
-    async (id: string): Promise<PartialDeep<Credentials>> => {
+    async (credential: {
+      id: string;
+      uri?: string;
+    }): Promise<PartialDeep<Credentials>> => {
       try {
-        if (isPreparedError) {
-          throw preparedError;
-        }
-
-        const tx = await contractMint?.();
+        const tx = await contractMint({
+          recklesslySetUnpreparedArgs: [address, credential.uri],
+        });
         const receipt = await tx.wait();
 
         if (isError) {
@@ -133,7 +136,7 @@ export function BiconomyProvider({ children }: ProviderProps) {
 
         // Update credential data
         const update = await gqlAuthMethods.update_credential_status({
-          id,
+          id: credential.id,
           status: 'minted',
           transaction_url: `${getExplorer(
             parseInt(process.env.NEXT_PUBLIC_CHAIN_ID)
@@ -157,15 +160,13 @@ export function BiconomyProvider({ children }: ProviderProps) {
         throw new Error('You are not the owner of this credential');
       }
 
-      setTokenURI(credential.uri);
-
       if (chain.id !== parseInt(process.env.NEXT_PUBLIC_CHAIN_ID)) {
         await switchNetworkAsync?.(parseInt(process.env.NEXT_PUBLIC_CHAIN_ID));
       }
 
       // 2. mint the NFT
       if (isGasless) {
-        const { mint_credential } = await mintGasless(credential.id);
+        const { mint_credential } = await mintGasless({ id: credential.id });
 
         return {
           isMinted: true,
@@ -173,7 +174,10 @@ export function BiconomyProvider({ children }: ProviderProps) {
         };
       }
 
-      const res: PartialDeep<Credentials> = await mint(credential.id);
+      const res: PartialDeep<Credentials> = await mint({
+        id: credential.id,
+        uri: credential.uri,
+      });
 
       return { isMinted: true, transactionUrl: res.transaction_url };
     } catch (error) {
