@@ -42,3 +42,5 @@ Thumbs.db
 .env
 # Sentry
 .sentryclirc
+
+prisma/schema.prisma

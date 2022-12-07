@@ -3,10 +3,22 @@
   "sourceRoot": "apps/website",
   "projectType": "application",
   "targets": {
+    "prisma-generate": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "node tools/scripts/create-prisma.js && npx prisma db pull && npx prisma generate"
+      }
+    },
+    "graphql-generate": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "npx graphql-codegen --config .graphqlrc.ts -r dotenv/config"
+      }
+    },
     "generate": {
       "executor": "@nrwl/workspace:run-commands",
       "options": {
-        "command": "yarn graphql-codegen --config .graphqlrc.ts -r dotenv/config"
+        "command": "npx nx run website:prisma-generate && npx nx run website:graphql-generate"
       }
     },
     "build": {

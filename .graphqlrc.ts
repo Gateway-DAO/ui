@@ -1,6 +1,7 @@
 import { IGraphQLProjects, IGraphQLConfig } from 'graphql-config';
-
+import * as prismaEnums from "@prisma/client";
 require('dotenv').config();
+
 
 const generateConfig = {
   plugins: [
@@ -12,6 +13,7 @@ const generateConfig = {
   config: {
     scalars: {
       _text: 'string',
+      ...prismaEnums,
     },
     defaultMapper: 'Partial<{T}>',
     avoidOptionals: {
