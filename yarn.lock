@@ -1611,6 +1611,13 @@
     stream-browserify "^3.0.0"
     util "^0.12.4"
 
+"@corets/use-throttle@^0.2.2":
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/@corets/use-throttle/-/use-throttle-0.2.2.tgz#45af5089998841e223108bbc4b606f1e6d9b1bfb"
+  integrity sha512-1BqvLWGwuXLqY1NEbhPRUKq7d2iI9b7+JH5vOM70STOi6Hcx/p/Hc44lo8t7AmCul2fAgl/v1AuwP/cix4f+mg==
+  dependencies:
+    lodash "^4.17.21"
+
 "@cyberlab/cyberconnect@^4.5.0":
   version "4.5.0"
   resolved "https://registry.yarnpkg.com/@cyberlab/cyberconnect/-/cyberconnect-4.5.0.tgz#c85671f39cde17fc34d5f2c7157bcc7bd4b99d97"

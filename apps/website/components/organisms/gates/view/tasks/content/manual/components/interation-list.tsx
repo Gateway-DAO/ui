@@ -1,4 +1,3 @@
-import { useAuth } from 'apps/website/providers/auth';
 import { PartialDeep } from 'type-fest';
 
 import { Stack } from '@mui/material';
@@ -26,7 +25,7 @@ export const InterationList = ({
 }: InterationListProps) => {
   return (
     <Stack sx={{ width: '100%' }}>
-      {status === 'in_review' && (
+      {list?.length > 0 && status === 'in_review' && (
         <SubmissionWaiting username={gate.creator.username} />
       )}
       {list.map((event, index) => (

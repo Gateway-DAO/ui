@@ -9,7 +9,7 @@ import { Stack, Typography } from '@mui/material';
 import { Manual_Task_Events } from '../../../../../../../../services/graphql/types.generated';
 import Bullet from './bullet';
 import CommentCard from './comment-card';
-import DocumentCard from './document-card';
+import LinkPreviewCard from './link-preview-card';
 
 export type TaskInterationProps = PartialDeep<Manual_Task_Events> & {
   firstItem?: boolean;
@@ -71,12 +71,7 @@ const TaskInteration = ({
         ></CommentCard>
       )}
       {event_type === 'send_link' && (
-        <DocumentCard
-          docTitle={data}
-          docUrl={data}
-          docText={data}
-          elevation={elevation}
-        ></DocumentCard>
+        <LinkPreviewCard {...data} elevation={elevation}></LinkPreviewCard>
       )}
     </Stack>
   );
