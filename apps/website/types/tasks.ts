@@ -1,13 +1,3 @@
-export type TaskType =
-  | 'self_verify'
-  | 'quiz'
-  | 'token_hold'
-  | 'nft_hold'
-  | 'meeting_code'
-  | 'twitter_follow'
-  | 'twitter_retweet'
-  | 'twitter_tweet'
-  | 'github_contribute'
-  | 'manual'
-  | 'github_prs'
-  | 'snapshot';
+import { Scalars } from '../services/graphql/types.generated';
+
+export type TaskType = Exclude<Scalars['task_type'], 'contract_interaction'>;

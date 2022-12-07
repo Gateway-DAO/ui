@@ -14,12 +14,7 @@ import {
 import { useAuth } from '../../../../../../../providers/auth';
 import { LoadingButton } from '../../../../../../atoms/loading-button';
 import { TaskProps } from '../types';
-import DocumentCard from './components/document-card';
 import { InterationList } from './components/interation-list';
-import {
-  InterationType,
-  TaskInterationProps,
-} from './components/task-interation';
 
 const ManualContent = ({
   task,
@@ -56,53 +51,6 @@ const ManualContent = ({
     });
     manualTaskEvents.remove();
   };
-
-  // MOCK
-  const interations: TaskInterationProps[] = [];
-  // const interations: TaskInterationProps[] = [
-  //   {
-  //     username: 'kbooz',
-  //     datetime: new Date().toISOString(),
-  //     type: InterationType.APPROVED,
-  //   },
-  //   {
-  //     username: 'kbooz',
-  //     datetime: '2022-11-09T09:35:00.000-00:00',
-  //     type: InterationType.DENIED,
-  //   },
-  //   {
-  //     username: 'kbooz',
-  //     datetime: '2022-11-09T05:12:00.000-00:00',
-  //     type: InterationType.WAITING,
-  //   },
-  //   {
-  //     username: 'kbooz',
-  //     datetime: '2022-11-09T19:01:00.000-00:00',
-  //     type: InterationType.LINK,
-  //     docTitle: 'Title of Page',
-  //     docUrl: 'docs.google.com',
-  //     docText:
-  //       "Other hits by Coolio, who won a Grammy for 'Gangsta`s Paradise' in the mid-1990s, included “Fantastic Voyage”",
-  //   },
-  //   {
-  //     username: 'h.st',
-  //     fullname: 'Harisson Santos',
-  //     datetime: '2022-11-08T11:10:00.000-00:00',
-  //     type: InterationType.COMMENT,
-  //     comment:
-  //       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec condimentum sodales ipsum eget molestie.',
-  //   },
-  //   {
-  //     username: 'kbooz',
-  //     datetime: '2022-11-07T19:23:00.000-00:00',
-  //     type: InterationType.LINK,
-  //     docTitle: 'Title of Page',
-  //     docUrl: 'docs.google.com',
-  //     docText:
-  //       "Other hits by Coolio, who won a Grammy for 'Gangsta`s Paradise' in the mid-1990s, included “Fantastic Voyage”",
-  //   },
-  // ];
-  // MOCK - END
 
   return (
     <Stack marginTop={4} alignItems="start">
@@ -148,6 +96,7 @@ const ManualContent = ({
           ) : (
             <InterationList
               list={manualTaskEvents.data?.manual_task_events ?? []}
+              status={currentTaskProgress.completed}
             />
           )}
         </>

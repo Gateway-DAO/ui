@@ -16,14 +16,6 @@ export type TaskInterationProps = PartialDeep<Manual_Task_Events> & {
   elevation?: number;
 };
 
-export enum InterationType {
-  COMMENT = 0,
-  LINK = 1,
-  APPROVED = 2,
-  DENIED = 3,
-  WAITING = 4,
-}
-
 const TaskInteration = ({
   event_type,
   created_at,
@@ -50,42 +42,26 @@ const TaskInteration = ({
           : 'none',
       })}
     >
-      <Bullet type={event_type} />
+      <Bullet event_type={event_type} />
       <Stack direction="row" gap={0.5} sx={{ marginTop: -0.5 }}>
+        <Typography fontSize={14}>{`@${issuer.username}`}</Typography>
         <Typography
           fontSize={14}
           sx={(theme) => ({
-            color:
-              event_type === InterationType.WAITING
-                ? theme.palette.grey[500]
-                : null,
+            color: theme.palette.grey[500],
           })}
         >
-          {event_type === InterationType.WAITING
-            ? `${t('submissions.waiting_feedback')}`
-            : `@${issuer.username}`}
-        </Typography>
-        <Typography
-          fontSize={14}
-          sx={(theme) => ({
-            color:
-              event_type === InterationType.WAITING
-                ? null
-                : theme.palette.grey[500],
-          })}
-        >
-          {event_type === InterationType.WAITING && `@${issuer.username}`}
-          {event_type === InterationType.LINK &&
+          {event_type === 'send_link' &&
             `${t('submissions.submitted_link')} - ${datetimeString}`}
-          {event_type === InterationType.COMMENT &&
+          {event_type === 'comment' &&
             `${t('submissions.sent_comment')} - ${datetimeString}`}
-          {event_type === InterationType.APPROVED &&
+          {event_type === 'approve' &&
             `${t('submissions.approved_submission')} - ${datetimeString}`}
-          {event_type === InterationType.DENIED &&
+          {event_type === 'reject' &&
             `${t('submissions.denied_submission')} - ${datetimeString}`}
         </Typography>
       </Stack>
-      {event_type === InterationType.COMMENT && (
+      {event_type === 'comment' && (
         <CommentCard
           fullname={issuer.name}
           avatarFile={issuer.picture}
@@ -94,7 +70,7 @@ const TaskInteration = ({
           elevation={elevation}
         ></CommentCard>
       )}
-      {event_type === InterationType.LINK && (
+      {event_type === 'send_link' && (
         <DocumentCard
           docTitle={data}
           docUrl={data}

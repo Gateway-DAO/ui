@@ -2,16 +2,18 @@ import { brandColors, theme } from '@gateway/theme';
 
 import { Box, Paper } from '@mui/material';
 
-import { InterationType } from './task-interation';
+import { Manual_Task_Events } from '../../../../../../../../services/graphql/types.generated';
 
-const Bullet = ({ type }) => {
+const Bullet = ({
+  event_type: type,
+}: Pick<Manual_Task_Events, 'event_type'>) => {
   const bulletColor = () => {
     switch (type) {
-      case InterationType.WAITING:
+      case 'waiting':
         return brandColors.purple.main;
-      case InterationType.DENIED:
+      case 'reject':
         return brandColors.red.main;
-      case InterationType.APPROVED:
+      case 'approve':
         return brandColors.green.main;
       default:
         return theme.palette.grey[500];
@@ -26,7 +28,7 @@ const Bullet = ({ type }) => {
           height: '6px',
           background: bulletColor(),
           boxShadow:
-            type === InterationType.WAITING
+            type === 'waiting'
               ? '0px 0px 0px 8px rgba(154, 83, 255, 0.15)'
               : 'none',
           borderRadius: '50%',
