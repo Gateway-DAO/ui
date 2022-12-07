@@ -1,27 +1,18 @@
 import useTranslation from 'next-translate/useTranslation';
 
-import { PartialObjectDeep } from 'type-fest/source/partial-deep';
+import { PartialDeep } from 'type-fest';
 
 import { ISOToString } from '@gateway/helpers';
 
 import { Stack, Typography } from '@mui/material';
 
-import { Files } from '../../../../../../../../services/graphql/types.generated';
+import { Manual_Task_Events } from '../../../../../../../../services/graphql/types.generated';
 import Bullet from './bullet';
 import CommentCard from './comment-card';
 import DocumentCard from './document-card';
 
-export type TaskInterationProps = {
+export type TaskInterationProps = PartialDeep<Manual_Task_Events> & {
   firstItem?: boolean;
-  type: InterationType;
-  datetime?: string;
-  username: string;
-  avatarFile?: PartialObjectDeep<Files>;
-  fullname?: string;
-  comment?: string;
-  docTitle?: string;
-  docText?: string;
-  docUrl?: string;
   elevation?: number;
 };
 
@@ -34,23 +25,18 @@ export enum InterationType {
 }
 
 const TaskInteration = ({
+  event_type,
+  created_at,
+  issuer,
+  data,
   firstItem = false,
-  type,
-  datetime,
-  username,
-  avatarFile,
-  fullname,
-  comment,
-  docTitle,
-  docText,
-  docUrl,
   elevation = 1,
 }: TaskInterationProps) => {
   const { t, lang } = useTranslation('gate-profile');
   const datetimeString =
-    ISOToString(datetime, lang) == 'now'
+    ISOToString(created_at, lang) == 'now'
       ? t('submissions.just_now')
-      : ISOToString(datetime, lang);
+      : ISOToString(created_at, lang);
 
   return (
     <Stack
@@ -64,51 +50,55 @@ const TaskInteration = ({
           : 'none',
       })}
     >
-      <Bullet type={type} />
+      <Bullet type={event_type} />
       <Stack direction="row" gap={0.5} sx={{ marginTop: -0.5 }}>
         <Typography
           fontSize={14}
           sx={(theme) => ({
             color:
-              type === InterationType.WAITING ? theme.palette.grey[500] : null,
+              event_type === InterationType.WAITING
+                ? theme.palette.grey[500]
+                : null,
           })}
         >
-          {type === InterationType.WAITING
+          {event_type === InterationType.WAITING
             ? `${t('submissions.waiting_feedback')}`
-            : `@${username}`}
+            : `@${issuer.username}`}
         </Typography>
         <Typography
           fontSize={14}
           sx={(theme) => ({
             color:
-              type === InterationType.WAITING ? null : theme.palette.grey[500],
+              event_type === InterationType.WAITING
+                ? null
+                : theme.palette.grey[500],
           })}
         >
-          {type === InterationType.WAITING && `@${username}`}
-          {type === InterationType.LINK &&
+          {event_type === InterationType.WAITING && `@${issuer.username}`}
+          {event_type === InterationType.LINK &&
             `${t('submissions.submitted_link')} - ${datetimeString}`}
-          {type === InterationType.COMMENT &&
+          {event_type === InterationType.COMMENT &&
             `${t('submissions.sent_comment')} - ${datetimeString}`}
-          {type === InterationType.APPROVED &&
+          {event_type === InterationType.APPROVED &&
             `${t('submissions.approved_submission')} - ${datetimeString}`}
-          {type === InterationType.DENIED &&
+          {event_type === InterationType.DENIED &&
             `${t('submissions.denied_submission')} - ${datetimeString}`}
         </Typography>
       </Stack>
-      {type === InterationType.COMMENT && (
+      {event_type === InterationType.COMMENT && (
         <CommentCard
-          fullname={fullname}
-          avatarFile={avatarFile}
-          username={username}
-          comment={comment}
+          fullname={issuer.name}
+          avatarFile={issuer.picture}
+          username={issuer.username}
+          comment={data}
           elevation={elevation}
         ></CommentCard>
       )}
-      {type === InterationType.LINK && (
+      {event_type === InterationType.LINK && (
         <DocumentCard
-          docTitle={docTitle}
-          docUrl={docUrl}
-          docText={docText}
+          docTitle={data}
+          docUrl={data}
+          docText={data}
           elevation={elevation}
         ></DocumentCard>
       )}

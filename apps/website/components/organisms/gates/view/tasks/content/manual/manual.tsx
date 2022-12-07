@@ -1,7 +1,17 @@
 import useTranslation from 'next-translate/useTranslation';
+import { useState } from 'react';
 
-import { Divider, Stack, TextField, Typography } from '@mui/material';
+import { useQuery } from '@tanstack/react-query';
 
+import {
+  CircularProgress,
+  Divider,
+  Stack,
+  TextField,
+  Typography,
+} from '@mui/material';
+
+import { useAuth } from '../../../../../../../providers/auth';
 import { LoadingButton } from '../../../../../../atoms/loading-button';
 import { TaskProps } from '../types';
 import DocumentCard from './components/document-card';
@@ -21,7 +31,31 @@ const ManualContent = ({
   isLoading,
 }: TaskProps) => {
   const { t } = useTranslation('gate-profile');
+  const { me, gqlAuthMethods } = useAuth();
   const formattedDate = new Date(updatedAt.toLocaleString()).toLocaleString();
+  const [link, setLink] = useState<string>();
+  const currentTaskProgress = me?.task_progresses?.find(
+    (tp) => tp.task_id === task.id
+  );
+
+  const manualTaskEvents = useQuery(
+    ['manual-task-events', currentTaskProgress?.id, me?.id],
+    () =>
+      gqlAuthMethods.manual_task_events({
+        task_progress_id: currentTaskProgress!.id,
+      }),
+    {
+      enabled: !!currentTaskProgress?.id,
+    }
+  );
+
+  const onSubmitLink = async () => {
+    await completeTask({
+      event_type: 'send_link',
+      data: 'https://www.google.com/',
+    });
+    manualTaskEvents.remove();
+  };
 
   // MOCK
   const interations: TaskInterationProps[] = [];
@@ -88,11 +122,13 @@ const ManualContent = ({
                     label={t('tasks.manual.label')}
                     id="submit-link-address"
                     sx={{ flexGrow: 1 }}
+                    value={link}
+                    onChange={(e) => setLink(e.target.value)}
                   />
                   <LoadingButton
                     size="large"
                     variant="contained"
-                    onClick={() => completeTask({ manual: true })}
+                    onClick={onSubmitLink}
                     isLoading={isLoading}
                   >
                     {t('tasks.manual.action')}
@@ -106,8 +142,14 @@ const ManualContent = ({
               docText="Dolor sit amet propectus"
             ></DocumentCard> */}
           </Stack>
-          {/* <Divider sx={{ width: '100%', mb: 5 }} /> */}
-          <InterationList list={interations} />
+          <Divider sx={{ width: '100%', mb: 5 }} />
+          {manualTaskEvents.isLoading ? (
+            <CircularProgress />
+          ) : (
+            <InterationList
+              list={manualTaskEvents.data?.manual_task_events ?? []}
+            />
+          )}
         </>
       )}
 

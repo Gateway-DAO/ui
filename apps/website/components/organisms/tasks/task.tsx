@@ -148,7 +148,7 @@ export function Task({
     );
   };
 
-  const { mutate: completeTaskMutation, isLoading } = useMutation(
+  const { mutateAsync: completeTaskMutation, isLoading } = useMutation(
     ['completeTask', { gateId: task.gate_id, taskId: task.id }],
     gqlAuthMethods.complete_task,
     {
@@ -162,7 +162,7 @@ export function Task({
     }
   );
 
-  const completeTask = (info) => {
+  const completeTask = async (info) => {
     if (!me) {
       return onOpenLogin();
     }
@@ -172,7 +172,7 @@ export function Task({
       info,
     };
 
-    completeTaskMutation(data, {
+    await completeTaskMutation(data, {
       onSuccess: () => {
         setErrorMessage('');
       },

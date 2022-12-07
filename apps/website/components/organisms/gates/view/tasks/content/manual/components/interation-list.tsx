@@ -1,9 +1,12 @@
+import { PartialDeep } from 'type-fest';
+
 import { Stack } from '@mui/material';
 
-import TaskInteration, { TaskInterationProps } from './task-interation';
+import { Manual_Task_Events } from '../../../../../../../../services/graphql/types.generated';
+import TaskInteration from './task-interation';
 
 export type InterationListProps = {
-  list: TaskInterationProps[];
+  list: PartialDeep<Manual_Task_Events>[];
   elevation?: number;
 };
 
@@ -13,27 +16,14 @@ export const InterationList = ({
 }: InterationListProps) => {
   return (
     <Stack sx={{ width: '100%' }}>
-      {list
-        .sort((a, b) => {
-          return (
-            new Date(b.datetime).getTime() - new Date(a.datetime).getTime()
-          );
-        })
-        .map((item, index) => (
-          <TaskInteration
-            key={index}
-            type={item.type}
-            datetime={item.datetime}
-            username={item.username}
-            firstItem={item.firstItem}
-            comment={item.comment}
-            fullname={item.fullname}
-            docTitle={item.docTitle}
-            docText={item.docText}
-            docUrl={item.docUrl}
-            elevation={elevation}
-          />
-        ))}
+      {list.map((event, index) => (
+        <TaskInteration
+          key={event.id}
+          firstItem={index === 0}
+          {...event}
+          elevation={elevation}
+        />
+      ))}
     </Stack>
   );
 };

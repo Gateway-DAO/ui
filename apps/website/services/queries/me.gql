@@ -16,6 +16,7 @@ query me {
       user_id
     }
     task_progresses {
+      id
       task_id
       gate_id
       completed
@@ -85,6 +86,7 @@ query me_following {
 query me_task_progresses {
   me {
     task_progresses {
+      id
       task_id
       gate_id
       completed
