@@ -42,7 +42,11 @@ export function BiconomyProvider({ children }: ProviderProps) {
   // From Wagmi
   const { address } = useAccount();
   const { chain } = useNetwork();
-  const { config } = usePrepareContractWrite({
+  const {
+    config,
+    isError: isPreparedError,
+    error: preparedError,
+  } = usePrepareContractWrite({
     addressOrName: process.env.NEXT_PUBLIC_CONTRACT_ADDRESS,
     contractInterface: CREDENTIAL_ABI,
     chainId: parseInt(process.env.NEXT_PUBLIC_CHAIN_ID),
@@ -60,7 +64,7 @@ export function BiconomyProvider({ children }: ProviderProps) {
     writeAsync: contractMint,
     data,
     error,
-    isLoading,
+    isError,
   } = useContractWrite(config);
 
   // From auth
@@ -116,8 +120,16 @@ export function BiconomyProvider({ children }: ProviderProps) {
   const { mutateAsync: mint } = useMutation(
     async (id: string): Promise<PartialDeep<Credentials>> => {
       try {
+        if (isPreparedError) {
+          throw preparedError;
+        }
+
         const tx = await contractMint?.();
         const receipt = await tx.wait();
+
+        if (isError) {
+          throw error;
+        }
 
         // Update credential data
         const update = await gqlAuthMethods.update_credential_status({
