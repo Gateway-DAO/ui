@@ -36,7 +36,7 @@ export function SubmissionsList({ title, list }: SubmissionsListProps) {
               username={item.username}
               datetime={item.datetime}
               approver={item.approver}
-              type={item.type}
+              event_type={item.event_type}
             />
           ))}
       </Stack>
