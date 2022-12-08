@@ -32,7 +32,7 @@ const AddTaskButton = ({
         borderColor: 'rgba(255, 255, 255, 0.1)',
         borderRadius: '10px',
         alignItems: 'center',
-
+        height: '100%',
         flexDirection: 'row',
         columnGap: '10px',
         padding: '20px',

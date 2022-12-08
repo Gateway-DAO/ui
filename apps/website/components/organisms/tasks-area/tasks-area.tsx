@@ -260,7 +260,7 @@ const TaskArea = ({ draftTasks, onDelete }: TaskAreaProps) => {
           )}
         </Droppable>
         {!enableTaskReordering && (
-          <AddTaskCard numberOfTasks={fields.length} addTask={addTask} />
+          <AddTaskCard tasks={fields} addTask={addTask} />
         )}
       </DragDropContext>
     </>
