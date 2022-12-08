@@ -1,12 +1,14 @@
+import { PartialDeep } from 'type-fest';
+
 import { brandColors } from '@gateway/theme';
 
 import { Stack, Typography, alpha } from '@mui/material';
 
+import { Task_Progress } from '../../../../../../../../services/graphql/types.generated';
 import { SubmissionsItem, SubmissionsItemProps } from './submissions-item';
-
 export type SubmissionsListProps = {
   title: string;
-  list: SubmissionsItemProps[];
+  list: PartialDeep<Task_Progress>[];
 };
 
 export function SubmissionsList({ title, list }: SubmissionsListProps) {
@@ -24,21 +26,9 @@ export function SubmissionsList({ title, list }: SubmissionsListProps) {
         {title}
       </Typography>
       <Stack sx={{ mb: { xs: 3, lg: 4 } }}>
-        {list
-          .sort((a, b) => {
-            return (
-              new Date(b.datetime).getTime() - new Date(a.datetime).getTime()
-            );
-          })
-          .map((item, index) => (
-            <SubmissionsItem
-              key={index}
-              username={item.username}
-              datetime={item.datetime}
-              approver={item.approver}
-              event_type={item.event_type}
-            />
-          ))}
+        {list.map((item, index) => (
+          <SubmissionsItem key={index} progress={item} />
+        ))}
       </Stack>
     </>
   );

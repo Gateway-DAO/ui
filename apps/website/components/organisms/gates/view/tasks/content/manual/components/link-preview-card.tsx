@@ -29,6 +29,7 @@ const LinkPreviewCard = ({
       elevation={elevation}
       sx={{
         mt: 2,
+        boxShadow: 'none',
       }}
     >
       <CardActionArea
@@ -69,13 +70,15 @@ const LinkPreviewCard = ({
               {limitChars(url, 30)}
             </Typography>
           )}
-          <Typography
-            sx={{
-              color: brandColors.purple.main,
-            }}
-          >
-            {limitChars(title, 30)}
-          </Typography>
+          {(!!title || !!siteName) && (
+            <Typography
+              sx={{
+                color: brandColors.purple.main,
+              }}
+            >
+              {limitChars(title ?? siteName, 30)}
+            </Typography>
+          )}
           {description?.length && (
             <Typography
               title=""

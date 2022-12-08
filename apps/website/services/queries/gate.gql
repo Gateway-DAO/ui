@@ -149,20 +149,3 @@ query GateProgress($gateID: uuid!, $userID: uuid!) {
     created_at
   }
 }
-
-query manual_task_events ($task_progress_id: uuid!) {
-  manual_task_events (where: {task_progress_id: {_eq: $task_progress_id}}, order_by: {created_at: desc}) {
-    id
-    issuer {
-      id
-      picture {
-        ...file
-      }
-      username
-      name
-    }
-    event_type
-    data
-    created_at
-  }
-}

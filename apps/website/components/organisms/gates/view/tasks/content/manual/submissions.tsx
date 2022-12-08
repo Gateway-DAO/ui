@@ -1,66 +1,60 @@
 import useTranslation from 'next-translate/useTranslation';
 
+import { useQuery } from '@tanstack/react-query';
 import { useToggle } from 'react-use';
+import { PartialDeep } from 'type-fest';
 
 import { Stack } from '@mui/material';
 
+import { useAuth } from '../../../../../../../providers/auth';
+import {
+  Tasks,
+  Gates,
+  Task_Progress,
+} from '../../../../../../../services/graphql/types.generated';
 import { Accordion } from './components/accordion';
 import { SubmissionsHeader } from './components/submissions-header';
 import { SubmissionsItemProps } from './components/submissions-item';
 import { SubmissionsList } from './components/submissions-list';
 
-export function Submissions() {
+type Props = {
+  gate: PartialDeep<Gates>;
+  task: PartialDeep<Tasks>;
+};
+
+export function Submissions({ gate, task }: Props) {
+  const { me, gqlAuthMethods } = useAuth();
   const { t } = useTranslation('gate-profile');
   const [expanded, toggleExpanded] = useToggle(false);
 
-  // MOCK
-  const amount = 10;
-  const amountNew = 4;
-  const pendingFeedbackList: SubmissionsItemProps[] = [
+  const manualTasksSubmissions = useQuery(
+    ['admin-manual-task-submissions', gate.id, me.id],
+    () => gqlAuthMethods.manual_tasks_progress({ gate_id: gate.id }),
     {
-      username: 'kbooz',
-      datetime: new Date().toISOString(),
-      event_type: 'send_link',
-    },
-    {
-      username: 'kbooz',
-      datetime: '2022-11-09T16:23:00.000-00:00',
-      event_type: 'comment',
-      approver: 'h.st',
-    },
-    {
-      username: 'kbooz',
-      datetime: '2022-11-09T19:23:00.000-00:00',
-      event_type: 'send_link',
-    },
-  ];
-  const feedbackSentList: SubmissionsItemProps[] = [
-    {
-      username: 'kbooz',
-      datetime: '2022-11-10T16:23:00.000-00:00',
-      event_type: 'reject',
-      approver: 'h.st',
-    },
-    {
-      username: 'kbooz',
-      datetime: '2022-11-10T20:23:00.000-00:00',
-      event_type: 'approve',
-      approver: 'h.st',
-    },
-    {
-      username: 'kbooz',
-      datetime: '2022-11-09T16:00:00.000-00:00',
-      event_type: 'reject',
-      approver: 'h.st',
-    },
-    {
-      username: 'kbooz',
-      datetime: '2022-11-10T11:20:00.000-00:00',
-      event_type: 'approve',
-      approver: 'h.st',
-    },
-  ];
-  // MOCK - END
+      select: (data) =>
+        data.task_progress.reduce(
+          (acc, task_progress) => {
+            if (
+              task_progress.completed === 'in_review' ||
+              task_progress.completed === 'not_done'
+            ) {
+              acc.pending.push(task_progress);
+            } else {
+              acc.sent.push(task_progress);
+            }
+            return acc;
+          },
+          {
+            pending: [] as PartialDeep<Task_Progress>[],
+            sent: [] as PartialDeep<Task_Progress>[],
+          }
+        ),
+    }
+  );
+
+  const tasksInReview = manualTasksSubmissions.data?.pending.filter(
+    (task_progress) => task_progress.completed === 'in_review'
+  );
 
   return (
     <Stack
@@ -78,7 +72,14 @@ export function Submissions() {
       }}
     >
       <Accordion expanded={expanded} clickHandler={toggleExpanded}>
-        <SubmissionsHeader amount={amount} amountNew={amountNew} />
+        <SubmissionsHeader
+          amount={
+            manualTasksSubmissions.data?.pending.length ??
+            0 + manualTasksSubmissions.data?.sent.length ??
+            0
+          }
+          amountNew={tasksInReview?.length ?? 0}
+        />
       </Accordion>
       <Stack
         sx={{
@@ -92,14 +93,18 @@ export function Submissions() {
           transition: 'all .3s ease',
         }}
       >
-        <SubmissionsList
-          title={t('submissions.pending_feedback')}
-          list={pendingFeedbackList}
-        />
-        <SubmissionsList
-          title={t('submissions.feeback_sent')}
-          list={feedbackSentList}
-        />
+        {manualTasksSubmissions.data?.pending?.length > 0 && (
+          <SubmissionsList
+            title={t('submissions.pending_feedback')}
+            list={manualTasksSubmissions.data.pending}
+          />
+        )}
+        {manualTasksSubmissions.data?.sent?.length > 0 && (
+          <SubmissionsList
+            title={t('submissions.feeback_sent')}
+            list={manualTasksSubmissions.data.sent}
+          />
+        )}
       </Stack>
     </Stack>
   );

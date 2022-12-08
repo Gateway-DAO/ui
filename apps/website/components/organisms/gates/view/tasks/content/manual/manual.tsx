@@ -18,8 +18,6 @@ import { TaskProps } from '../types';
 import { InterationList } from './components/interation-list';
 import LinkPreviewCard from './components/link-preview-card';
 
-// Doubt: Hide the link submission when waiting for admin response?
-
 const ManualContent = ({
   gate,
   task,
@@ -63,12 +61,6 @@ const ManualContent = ({
     manualTaskEvents.remove();
     setLink('');
   };
-
-  console.log(
-    linkPreview.error,
-    linkPreview.isFetching,
-    !!linkPreview.error && !linkPreview.isFetching
-  );
 
   return (
     <Stack marginTop={4} alignItems="start">

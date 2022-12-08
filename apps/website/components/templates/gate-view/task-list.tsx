@@ -4,8 +4,11 @@ import { TOKENS } from '@gateway/theme';
 
 import { Box, Grid, Stack, Typography } from '@mui/material';
 
+import { useAuth } from '../../../providers/auth';
 import { Gates } from '../../../services/graphql/types.generated';
 import CircularProgressWithLabel from '../../atoms/circular-progress-label';
+import { SubmissionDetail } from '../../organisms/gates/view/tasks/content/manual/submission-detail';
+import { Submissions } from '../../organisms/gates/view/tasks/content/manual/submissions';
 import { RecaptchaTask } from '../../organisms/gates/view/tasks/content/recaptcha';
 import { ClientNav } from '../../organisms/navbar/client-nav';
 import { Task } from '../../organisms/tasks';
@@ -31,10 +34,13 @@ export function TaskList({
   isCredentialExpired,
   setOpen,
 }: Props) {
+  const { me } = useAuth();
   const completedGate = !!completedAt;
   const totalTasksCount = completedGate
     ? gate.tasks.length
     : gate.tasks.length + 1;
+
+  const manualTask = gate.tasks.find((task) => task.task_type === 'manual');
 
   return (
     <Grid item xs={12} md>
@@ -137,6 +143,13 @@ export function TaskList({
           />
         )}
       </Box>
+      {me?.id === gate.creator.id && !!manualTask && (
+        <Submissions gate={gate} task={manualTask} />
+      )}
+      {/* <SubmissionDetail
+        username="kbooz"
+        backButtonHandler={() => console.log('clicked')}
+      /> */}
     </Grid>
   );
 }

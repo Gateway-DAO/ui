@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { useToggle } from 'react-use';
 import { PartialDeep } from 'type-fest';
-import { useAccount } from 'wagmi';
 
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import CheckIcon from '@mui/icons-material/Check';
@@ -24,8 +23,6 @@ import { getMapValueFromObject } from '../../../utils/map-object';
 import GithubContributeContent from '../gates/view/tasks/content/github_contribute';
 import GithubPRContent from '../gates/view/tasks/content/github_prs';
 import ManualContent from '../gates/view/tasks/content/manual/manual';
-import { SubmissionDetail } from '../gates/view/tasks/content/manual/submission-detail';
-import { Submissions } from '../gates/view/tasks/content/manual/submissions';
 import MeetingCodeContent from '../gates/view/tasks/content/meeting_code';
 import NFTHoldContent from '../gates/view/tasks/content/nft_hold';
 import QuizContent from '../gates/view/tasks/content/quiz';
@@ -262,11 +259,6 @@ export function Task({
           )}
         </CardContent>
       </Collapse>
-      <Submissions />
-      {/* <SubmissionDetail
-        username="kbooz"
-        backButtonHandler={() => console.log('clicked')}
-      /> */}
     </Card>
   );
 }

@@ -12,7 +12,7 @@ import CommentCard from './comment-card';
 import LinkPreviewCard from './link-preview-card';
 
 export type TaskInterationProps = PartialDeep<Manual_Task_Events> & {
-  firstItem?: boolean;
+  lastItem?: boolean;
   elevation?: number;
 };
 
@@ -21,7 +21,7 @@ const TaskInteration = ({
   created_at,
   issuer,
   data,
-  firstItem = false,
+  lastItem = false,
   elevation = 1,
 }: TaskInterationProps) => {
   const { t, lang } = useTranslation('gate-profile');
@@ -37,9 +37,7 @@ const TaskInteration = ({
         pl: 3,
         pb: 4,
         width: '100%',
-        borderLeft: !firstItem
-          ? `1px solid ${theme.palette.grey[700]}`
-          : 'none',
+        borderLeft: !lastItem ? `1px solid ${theme.palette.grey[700]}` : 'none',
       })}
     >
       <Bullet event_type={event_type} />

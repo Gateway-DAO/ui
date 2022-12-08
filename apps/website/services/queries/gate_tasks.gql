@@ -1,0 +1,68 @@
+query manual_task_events ($task_progress_id: uuid!) {
+  manual_task_events (where: {task_progress_id: {_eq: $task_progress_id}}, order_by: {created_at: desc}) {
+    id
+    issuer {
+      id
+      picture {
+        ...file
+      }
+      username
+      name
+    }
+    event_type
+    data
+    created_at
+  }
+}
+
+query manual_tasks_progress($gate_id: uuid = "") {
+    task_progress(where: {gate_id: {_eq: $gate_id}, task:{task_type: {_eq:"manual"}}}, order_by: {updated_at: desc}) {
+        id
+        task_id
+        completed
+        user {
+        id
+        username
+        name
+        picture {
+            ...file
+        }
+        }
+        created_at
+        updated_at
+    }
+}
+
+
+query manual_tasks_status($task_progress_id: uuid = "") {
+    manual_task_events(where:{task_progress_id:{_eq:$task_progress_id}}, order_by: {updated_at:desc}, limit: 1) {
+        event_type
+        issuer {
+            name
+            username
+        }
+        updated_at
+    }
+}
+
+query manual_tasks_submissions($task_id: uuid = "") {
+  manual_task_events(where:{task_progress:{task_id: {_eq:$task_id}}}, order_by: {updated_at: desc}) {
+    id
+    event_type
+    data
+    issuer {
+      id
+      username
+      name
+      picture {
+        ...file
+      }
+    }
+    task_progress {
+      id
+      completed
+    }
+    created_at
+    updated_at
+  }
+}

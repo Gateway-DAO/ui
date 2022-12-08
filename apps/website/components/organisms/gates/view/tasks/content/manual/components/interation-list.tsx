@@ -31,7 +31,7 @@ export const InterationList = ({
       {list.map((event, index) => (
         <TaskInteration
           key={event.id}
-          firstItem={index === 0}
+          lastItem={index === list.length - 1}
           elevation={elevation}
           {...event}
         />
