@@ -8,7 +8,6 @@ import { Accordion } from './components/accordion';
 import { SubmissionsHeader } from './components/submissions-header';
 import { SubmissionsItemProps } from './components/submissions-item';
 import { SubmissionsList } from './components/submissions-list';
-import { InterationType } from './components/task-interation';
 
 export function Submissions() {
   const { t } = useTranslation('gate-profile');
@@ -21,43 +20,43 @@ export function Submissions() {
     {
       username: 'kbooz',
       datetime: new Date().toISOString(),
-      type: InterationType.LINK,
+      event_type: 'send_link',
     },
     {
       username: 'kbooz',
       datetime: '2022-11-09T16:23:00.000-00:00',
-      type: InterationType.COMMENT,
+      event_type: 'comment',
       approver: 'h.st',
     },
     {
       username: 'kbooz',
       datetime: '2022-11-09T19:23:00.000-00:00',
-      type: InterationType.LINK,
+      event_type: 'send_link',
     },
   ];
   const feedbackSentList: SubmissionsItemProps[] = [
     {
       username: 'kbooz',
       datetime: '2022-11-10T16:23:00.000-00:00',
-      type: InterationType.DENIED,
+      event_type: 'reject',
       approver: 'h.st',
     },
     {
       username: 'kbooz',
       datetime: '2022-11-10T20:23:00.000-00:00',
-      type: InterationType.APPROVED,
+      event_type: 'approve',
       approver: 'h.st',
     },
     {
       username: 'kbooz',
       datetime: '2022-11-09T16:00:00.000-00:00',
-      type: InterationType.DENIED,
+      event_type: 'reject',
       approver: 'h.st',
     },
     {
       username: 'kbooz',
       datetime: '2022-11-10T11:20:00.000-00:00',
-      type: InterationType.APPROVED,
+      event_type: 'approve',
       approver: 'h.st',
     },
   ];

@@ -14,13 +14,13 @@ import {
   useMediaQuery,
 } from '@mui/material';
 
+import { Scalars } from '../../../../../../../../services/graphql/types.generated';
 import { AvatarFile } from '../../../../../../../atoms/avatar-file';
-import { InterationType } from '../components/task-interation';
 
 export type SubmissionsItemProps = {
   username: string;
   datetime: string;
-  type: InterationType;
+  event_type: Scalars['manual_task_event_type'];
   approver?: string;
 };
 
@@ -28,7 +28,7 @@ export function SubmissionsItem({
   username,
   datetime,
   approver,
-  type,
+  event_type,
 }: SubmissionsItemProps) {
   const { t, lang } = useTranslation('gate-profile');
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
@@ -73,22 +73,22 @@ export function SubmissionsItem({
               color: `${alpha(brandColors.white.main, 0.7)}`,
             }}
           >
-            {type === InterationType.LINK && t('submissions.submitted_link')}
-            {type === InterationType.COMMENT &&
+            {event_type === 'send_link' && t('submissions.submitted_link')}
+            {event_type === 'comment' &&
               `@${approver} ${t('submissions.sent_comment')}`}
-            {type === InterationType.DENIED &&
+            {event_type === 'reject' &&
               `@${approver} ${t('submissions.denied_submission')}`}
-            {type === InterationType.APPROVED &&
+            {event_type === 'approve' &&
               `@${approver} ${t('submissions.approved_submission')}`}
           </Typography>
         </Stack>
         <Stack direction="row" gap={0.5} alignItems="center">
-          {type === InterationType.APPROVED && (
+          {event_type === 'approve' && (
             <CheckCircleIcon
               sx={{ color: brandColors.green.main, fontSize: 15 }}
             />
           )}
-          {type === InterationType.DENIED && (
+          {event_type === 'reject' && (
             <CancelIcon sx={{ color: brandColors.red.main, fontSize: 15 }} />
           )}
           <Typography
@@ -97,13 +97,13 @@ export function SubmissionsItem({
             sx={{
               textTransform: 'uppercase',
               color:
-                type === InterationType.APPROVED
+                event_type === 'approve'
                   ? brandColors.green.main
                   : brandColors.red.main,
             }}
           >
-            {type === InterationType.APPROVED && t('submissions.approved')}
-            {type === InterationType.DENIED && t('submissions.denied')}
+            {event_type === 'approve' && t('submissions.approved')}
+            {event_type === 'reject' && t('submissions.denied')}
           </Typography>
         </Stack>
         <KeyboardArrowRightIcon
