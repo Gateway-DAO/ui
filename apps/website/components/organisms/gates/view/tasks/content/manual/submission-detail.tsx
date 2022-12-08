@@ -1,6 +1,7 @@
 import useTranslation from 'next-translate/useTranslation';
 
 import { useToggle } from 'react-use';
+import { PartialDeep } from 'type-fest/source/partial-deep';
 
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import {
@@ -11,13 +12,10 @@ import {
   Typography,
 } from '@mui/material';
 
+import { Manual_Task_Events } from '../../../../../../../services/graphql/types.generated';
 import { AvatarFile } from '../../../../../../atoms/avatar-file';
 import { Accordion } from './components/accordion';
 import { InterationList } from './components/interation-list';
-import {
-  InterationType,
-  TaskInterationProps,
-} from './components/task-interation';
 
 type SubmissionDetailProps = {
   username: string;
@@ -32,48 +30,43 @@ export function SubmissionDetail({
   const [expanded, toggleExpanded] = useToggle(false);
 
   // MOCK
-  const interations: TaskInterationProps[] = [
+  const interations: PartialDeep<Manual_Task_Events>[] = [
     {
-      username: 'kbooz',
-      datetime: new Date().toISOString(),
-      type: InterationType.APPROVED,
+      issuer: {
+        username: 'kbooz',
+      },
+      created_at: new Date().toISOString(),
+      event_type: 'approve',
     },
     {
-      username: 'kbooz',
-      datetime: '2022-11-10T09:35:00.000-00:00',
-      type: InterationType.DENIED,
+      issuer: {
+        username: 'kbooz',
+      },
+      created_at: '2022-11-10T09:35:00.000-00:00',
+      event_type: 'reject',
     },
     {
-      username: 'kbooz',
-      datetime: '2022-11-10T05:12:00.000-00:00',
-      type: InterationType.WAITING,
+      issuer: {
+        username: 'kbooz',
+      },
+      created_at: '2022-11-09T19:01:00.000-00:00',
+      event_type: 'send_link',
     },
     {
-      username: 'kbooz',
-      datetime: '2022-11-09T19:01:00.000-00:00',
-      type: InterationType.LINK,
-      docTitle: 'Title of Page',
-      docUrl: 'docs.google.com',
-      docText:
-        "Other hits by Coolio, who won a Grammy for 'Gangsta`s Paradise' in the mid-1990s, included “Fantastic Voyage”",
+      issuer: {
+        username: 'h.st',
+        name: 'Harisson Santos',
+      },
+      created_at: '2022-11-08T11:10:00.000-00:00',
+      event_type: 'comment',
+      data: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec condimentum sodales ipsum eget molestie.',
     },
     {
-      username: 'h.st',
-      fullname: 'Harisson Santos',
-      datetime: '2022-11-08T11:10:00.000-00:00',
-      type: InterationType.COMMENT,
-      comment:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec condimentum sodales ipsum eget molestie.',
-    },
-    {
-      username: 'kbooz',
-      datetime: '2022-11-07T19:23:00.000-00:00',
-      type: InterationType.LINK,
-      docTitle: 'Title of Page',
-      docUrl: 'docs.google.com',
-      docText:
-        "Other hits by Coolio, who won a Grammy for 'Gangsta`s Paradise' in the mid-1990s, included “Fantastic Voyage”",
-      firstItem: true,
+      issuer: {
+        username: 'kbooz',
+      },
+      created_at: '2022-11-07T19:23:00.000-00:00',
+      event_type: 'send_link',
     },
   ];
   // MOCK - END
@@ -123,7 +116,12 @@ export function SubmissionDetail({
         }}
       >
         <Stack sx={{ mx: 7.5 }}>
-          <InterationList list={interations} elevation={20} />
+          <InterationList
+            list={interations}
+            elevation={20}
+            gate={null}
+            status="not_done"
+          />
         </Stack>
         <Divider sx={{ width: '100%', mb: 5 }} />
         <TextField

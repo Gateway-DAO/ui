@@ -50,7 +50,7 @@ export default function CreateGate({ id, gateProps }: CreateGateProps) {
   return (
     <CreateGateTemplate
       oldData={{
-        ...oldGateData,
+        ...(oldGateData as any),
         creator: oldGateData?.creator ?? { id: me?.id, name: me?.name },
         id,
       }}

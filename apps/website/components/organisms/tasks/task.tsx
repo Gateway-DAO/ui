@@ -262,7 +262,7 @@ export function Task({
           )}
         </CardContent>
       </Collapse>
-      {/* <Submissions /> */}
+      <Submissions />
       {/* <SubmissionDetail
         username="kbooz"
         backButtonHandler={() => console.log('clicked')}
