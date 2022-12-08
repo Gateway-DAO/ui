@@ -1,4 +1,5 @@
 import useTranslation from 'next-translate/useTranslation';
+import { useState } from 'react';
 
 import { useQuery } from '@tanstack/react-query';
 import { useToggle } from 'react-use';
@@ -11,10 +12,11 @@ import {
   Tasks,
   Gates,
   Task_Progress,
+  Manual_Task_Events,
 } from '../../../../../../../services/graphql/types.generated';
 import { Accordion } from './components/accordion';
+import { SubmissionsDetailHeader } from './components/submissions-detail-header';
 import { SubmissionsHeader } from './components/submissions-header';
-import { SubmissionsItemProps } from './components/submissions-item';
 import { SubmissionsList } from './components/submissions-list';
 
 type Props = {
@@ -26,6 +28,10 @@ export function Submissions({ gate, task }: Props) {
   const { me, gqlAuthMethods } = useAuth();
   const { t } = useTranslation('gate-profile');
   const [expanded, toggleExpanded] = useToggle(false);
+  const [detailedSubmission, setDetailedSubmission] = useState<{
+    event: PartialDeep<Manual_Task_Events>;
+    progress: PartialDeep<Task_Progress>;
+  }>();
 
   const manualTasksSubmissions = useQuery(
     ['admin-manual-task-submissions', gate.id, me.id],
@@ -72,14 +78,21 @@ export function Submissions({ gate, task }: Props) {
       }}
     >
       <Accordion expanded={expanded} clickHandler={toggleExpanded}>
-        <SubmissionsHeader
-          amount={
-            manualTasksSubmissions.data?.pending.length ??
-            0 + manualTasksSubmissions.data?.sent.length ??
-            0
-          }
-          amountNew={tasksInReview?.length ?? 0}
-        />
+        {detailedSubmission ? (
+          <SubmissionsDetailHeader
+            user={detailedSubmission.progress.user}
+            onBack={() => setDetailedSubmission(undefined)}
+          />
+        ) : (
+          <SubmissionsHeader
+            amount={
+              manualTasksSubmissions.data?.pending.length ??
+              0 + manualTasksSubmissions.data?.sent.length ??
+              0
+            }
+            amountNew={tasksInReview?.length ?? 0}
+          />
+        )}
       </Accordion>
       <Stack
         sx={{
@@ -97,12 +110,18 @@ export function Submissions({ gate, task }: Props) {
           <SubmissionsList
             title={t('submissions.pending_feedback')}
             list={manualTasksSubmissions.data.pending}
+            onSelect={(event, progress) => {
+              setDetailedSubmission({ event, progress });
+            }}
           />
         )}
         {manualTasksSubmissions.data?.sent?.length > 0 && (
           <SubmissionsList
             title={t('submissions.feeback_sent')}
             list={manualTasksSubmissions.data.sent}
+            onSelect={(event, progress) => {
+              setDetailedSubmission({ event, progress });
+            }}
           />
         )}
       </Stack>

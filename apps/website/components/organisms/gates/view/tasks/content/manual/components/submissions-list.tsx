@@ -2,16 +2,27 @@ import { PartialDeep } from 'type-fest';
 
 import { brandColors } from '@gateway/theme';
 
-import { Stack, Typography, alpha } from '@mui/material';
+import { Stack, Typography, alpha, Divider } from '@mui/material';
 
-import { Task_Progress } from '../../../../../../../../services/graphql/types.generated';
-import { SubmissionsItem, SubmissionsItemProps } from './submissions-item';
+import {
+  Task_Progress,
+  Manual_Task_Events,
+} from '../../../../../../../../services/graphql/types.generated';
+import { SubmissionsItem } from './submissions-item';
 export type SubmissionsListProps = {
   title: string;
   list: PartialDeep<Task_Progress>[];
+  onSelect: (
+    event: PartialDeep<Manual_Task_Events>,
+    progress: PartialDeep<Task_Progress>
+  ) => void;
 };
 
-export function SubmissionsList({ title, list }: SubmissionsListProps) {
+export function SubmissionsList({
+  title,
+  list,
+  onSelect,
+}: SubmissionsListProps) {
   return (
     <>
       <Typography
@@ -25,9 +36,12 @@ export function SubmissionsList({ title, list }: SubmissionsListProps) {
       >
         {title}
       </Typography>
-      <Stack sx={{ mb: { xs: 3, lg: 4 } }}>
+      <Stack
+        sx={{ mb: { xs: 3, lg: 4 } }}
+        divider={<Divider sx={{ width: '100%' }} />}
+      >
         {list.map((item, index) => (
-          <SubmissionsItem key={index} progress={item} />
+          <SubmissionsItem key={index} progress={item} onSelect={onSelect} />
         ))}
       </Stack>
     </>
