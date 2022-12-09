@@ -1,7 +1,6 @@
 import useTranslation from 'next-translate/useTranslation';
 
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useSnackbar } from 'notistack';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { PartialDeep } from 'type-fest';
 
@@ -19,9 +18,16 @@ import { InterationList } from './components/interation-list';
 export type SubmissionDetailProps = {
   gate: PartialDeep<Gates>;
   progress: PartialDeep<Task_Progress>;
+  isSubmitEventLoading: boolean;
+  onSubmitEvent: (event_type: ManualTaskEventType, data: any) => void;
 };
 
-export function SubmissionDetail({ progress, gate }: SubmissionDetailProps) {
+export function SubmissionDetail({
+  progress,
+  gate,
+  isSubmitEventLoading,
+  onSubmitEvent,
+}: SubmissionDetailProps) {
   const { me, gqlAuthMethods } = useAuth();
   const { t } = useTranslation('gate-profile');
   const { handleSubmit, register } = useForm({
@@ -29,31 +35,6 @@ export function SubmissionDetail({ progress, gate }: SubmissionDetailProps) {
       comment: '',
     },
   });
-
-  const snackbar = useSnackbar();
-
-  const queryClient = useQueryClient();
-
-  const modifyTask = useMutation(
-    ['completeTask', { gateId: gate.id, taskId: progress.task_id }],
-    gqlAuthMethods.complete_task,
-    {
-      onSuccess: () => {
-        queryClient.resetQueries(['user_task_progresses', me?.id]);
-        queryClient.resetQueries([
-          'admin-manual-task-submissions',
-          gate.id,
-          me?.id,
-        ]);
-        queryClient.resetQueries(['manual-task-events', progress?.id]);
-      },
-      onError: (error: any) => {
-        snackbar.enqueueSnackbar(error?.response?.errors?.[0]?.message, {
-          variant: 'error',
-        });
-      },
-    }
-  );
 
   const manualTaskEvents = useQuery(['manual-task-events', progress.id], () =>
     gqlAuthMethods.manual_task_events({
@@ -63,13 +44,7 @@ export function SubmissionDetail({ progress, gate }: SubmissionDetailProps) {
 
   const onSubmit = handleSubmit(async (data) => {
     if (manualTaskEvents.isLoading) return;
-    modifyTask.mutate({
-      task_id: progress.task_id,
-      info: {
-        event_type: 'comment' as ManualTaskEventType,
-        data,
-      },
-    });
+    onSubmitEvent('comment', data);
   });
 
   return (
@@ -101,7 +76,7 @@ export function SubmissionDetail({ progress, gate }: SubmissionDetailProps) {
           <LoadingButton
             type="submit"
             variant="contained"
-            isLoading={modifyTask.isLoading}
+            isLoading={isSubmitEventLoading}
             disabled={manualTaskEvents.isLoading}
           >
             Submit

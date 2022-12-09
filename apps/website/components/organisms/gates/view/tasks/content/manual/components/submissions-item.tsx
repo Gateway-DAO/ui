@@ -27,7 +27,7 @@ import { AvatarFile } from '../../../../../../../atoms/avatar-file';
 
 export type SubmissionsItemProps = {
   progress: PartialDeep<Task_Progress>;
-  onSelect: (progress: PartialDeep<Task_Progress>) => void;
+  onSelect: (progressId: string) => void;
 };
 
 export function SubmissionsItem({ progress, onSelect }: SubmissionsItemProps) {
@@ -68,7 +68,7 @@ export function SubmissionsItem({ progress, onSelect }: SubmissionsItemProps) {
         },
         textAlign: 'left',
       }}
-      onClick={() => onSelect(progress)}
+      onClick={() => onSelect(progress.id)}
     >
       <AvatarFile
         file={progress.user.picture}

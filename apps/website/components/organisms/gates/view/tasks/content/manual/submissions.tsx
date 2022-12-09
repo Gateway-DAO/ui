@@ -1,7 +1,8 @@
 import useTranslation from 'next-translate/useTranslation';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useSnackbar } from 'notistack';
 import { useToggle } from 'react-use';
 import { PartialDeep } from 'type-fest';
 
@@ -13,6 +14,7 @@ import {
   Gates,
   Task_Progress,
 } from '../../../../../../../services/graphql/types.generated';
+import { ManualTaskEventType } from '../../../../../../../types/tasks';
 import { Accordion } from './components/accordion';
 import { SubmissionsDetailHeader } from './components/submissions-detail-header';
 import { SubmissionsHeader } from './components/submissions-header';
@@ -28,41 +30,95 @@ export function Submissions({ gate, task }: Props) {
   const { me, gqlAuthMethods } = useAuth();
   const { t } = useTranslation('gate-profile');
   const [expanded, toggleExpanded] = useToggle(false);
-  const [detailedTaskProgress, setDetailedTaskProgress] =
-    useState<PartialDeep<Task_Progress>>();
+  const [detailedTaskProgressId, setDetailedTaskProgressId] =
+    useState<string>();
+
+  const snackbar = useSnackbar();
+
+  const queryClient = useQueryClient();
+
+  const onSubmitEvent = (event_type: ManualTaskEventType, data?: any) => {
+    modifyTask.mutate({
+      task_id: detailedTaskProgress.task_id,
+      info: {
+        event_type,
+        data,
+      },
+    });
+  };
 
   const manualTasksSubmissions = useQuery(
     ['admin-manual-task-submissions', gate.id, me.id],
-    () => gqlAuthMethods.manual_tasks_progress({ gate_id: gate.id }),
-    {
-      select: (data) =>
-        data.task_progress.reduce(
-          (acc, task_progress) => {
-            if (
-              task_progress.completed === 'in_review' ||
-              task_progress.completed === 'not_done'
-            ) {
-              acc.pending.push(task_progress);
-            } else {
-              acc.sent.push(task_progress);
-            }
-            return acc;
-          },
-          {
-            pending: [] as PartialDeep<Task_Progress>[],
-            sent: [] as PartialDeep<Task_Progress>[],
-          }
-        ),
-    }
+    () => gqlAuthMethods.manual_tasks_progress({ gate_id: gate.id })
   );
 
-  const tasksInReview = manualTasksSubmissions.data?.pending.filter(
+  const tasksSubmissions: {
+    pending: PartialDeep<Task_Progress>[];
+    sent: PartialDeep<Task_Progress>[];
+  } = useMemo(
+    () =>
+      manualTasksSubmissions.data?.task_progress.reduce(
+        (acc, task_progress) => {
+          if (
+            task_progress.completed === 'in_review' ||
+            task_progress.completed === 'not_done'
+          ) {
+            acc.pending.push(task_progress);
+          } else {
+            acc.sent.push(task_progress);
+          }
+          return acc;
+        },
+        {
+          pending: [] as PartialDeep<Task_Progress>[],
+          sent: [] as PartialDeep<Task_Progress>[],
+        }
+      ) ?? {
+        pending: [],
+        sent: [],
+      },
+    [manualTasksSubmissions.data?.task_progress]
+  );
+
+  const tasksInReview = tasksSubmissions.pending.filter(
     (task_progress) => task_progress.completed === 'in_review'
   );
 
   const amount =
-    (manualTasksSubmissions.data?.pending.length ?? 0) +
-    (manualTasksSubmissions.data?.sent.length ?? 0);
+    (tasksSubmissions.pending.length ?? 0) +
+    (tasksSubmissions.sent.length ?? 0);
+
+  const detailedTaskProgress = manualTasksSubmissions.data?.task_progress.find(
+    (task_progress) => task_progress.id === detailedTaskProgressId
+  );
+
+  const modifyTask = useMutation(
+    [
+      'completeTask',
+      { gateId: gate.id, taskId: detailedTaskProgress?.task_id },
+    ],
+    gqlAuthMethods.complete_task,
+    {
+      onSuccess: () => {
+        queryClient.resetQueries(['gate', gate.id]);
+        queryClient.resetQueries(['user_task_progresses', me?.id]);
+        queryClient.resetQueries([
+          'admin-manual-task-submissions',
+          gate.id,
+          me?.id,
+        ]);
+        queryClient.resetQueries([
+          'manual-task-events',
+          detailedTaskProgress?.id,
+        ]);
+      },
+      onError: (error: any) => {
+        snackbar.enqueueSnackbar(error?.response?.errors?.[0]?.message, {
+          variant: 'error',
+        });
+      },
+    }
+  );
 
   return (
     <Stack
@@ -86,8 +142,11 @@ export function Submissions({ gate, task }: Props) {
       >
         {detailedTaskProgress ? (
           <SubmissionsDetailHeader
+            progress={detailedTaskProgress}
             user={detailedTaskProgress.user}
-            onBack={() => setDetailedTaskProgress(undefined)}
+            isSubmitEventLoading={modifyTask.isLoading}
+            onBack={() => setDetailedTaskProgressId(undefined)}
+            onSubmitEvent={onSubmitEvent}
           />
         ) : (
           <SubmissionsHeader
@@ -109,21 +168,26 @@ export function Submissions({ gate, task }: Props) {
         }}
       >
         {detailedTaskProgress ? (
-          <SubmissionDetail progress={detailedTaskProgress} gate={gate} />
+          <SubmissionDetail
+            progress={detailedTaskProgress}
+            gate={gate}
+            onSubmitEvent={onSubmitEvent}
+            isSubmitEventLoading={modifyTask.isLoading}
+          />
         ) : (
           <>
-            {manualTasksSubmissions.data?.pending?.length > 0 && (
+            {tasksSubmissions.pending?.length > 0 && (
               <SubmissionsList
                 title={t('submissions.pending_feedback')}
-                list={manualTasksSubmissions.data.pending}
-                onSelect={setDetailedTaskProgress}
+                list={tasksSubmissions.pending}
+                onSelect={setDetailedTaskProgressId}
               />
             )}
-            {manualTasksSubmissions.data?.sent?.length > 0 && (
+            {tasksSubmissions.sent?.length > 0 && (
               <SubmissionsList
                 title={t('submissions.feeback_sent')}
-                list={manualTasksSubmissions.data.sent}
-                onSelect={setDetailedTaskProgress}
+                list={tasksSubmissions.sent}
+                onSelect={setDetailedTaskProgressId}
               />
             )}
           </>
