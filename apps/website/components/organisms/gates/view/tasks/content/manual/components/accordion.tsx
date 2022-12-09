@@ -5,14 +5,16 @@ import { IconButton, Stack } from '@mui/material';
 
 type AccordionProps = {
   expanded: boolean;
-  clickHandler: () => void;
   children: ReactNode;
+  isEnabled: boolean;
+  clickHandler: () => void;
 };
 
 export function Accordion({
   expanded,
-  clickHandler,
   children,
+  isEnabled,
+  clickHandler,
 }: AccordionProps) {
   return (
     <Stack
@@ -31,20 +33,22 @@ export function Accordion({
       }}
     >
       {children}
-      <IconButton
-        sx={{
-          p: 1,
-        }}
-        onClick={() => clickHandler()}
-        key="arrow-down"
-      >
-        <KeyboardArrowDownIcon
+      {isEnabled && (
+        <IconButton
           sx={{
-            transition: 'all .4s ease',
-            transform: !expanded ? 'rotateX(180deg)' : 'none',
+            p: 1,
           }}
-        />
-      </IconButton>
+          onClick={() => clickHandler()}
+          key="arrow-down"
+        >
+          <KeyboardArrowDownIcon
+            sx={{
+              transition: 'all .4s ease',
+              transform: !expanded ? 'rotateX(180deg)' : 'none',
+            }}
+          />
+        </IconButton>
+      )}
     </Stack>
   );
 }

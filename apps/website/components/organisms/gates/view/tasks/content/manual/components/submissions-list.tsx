@@ -12,10 +12,7 @@ import { SubmissionsItem } from './submissions-item';
 export type SubmissionsListProps = {
   title: string;
   list: PartialDeep<Task_Progress>[];
-  onSelect: (
-    event: PartialDeep<Manual_Task_Events>,
-    progress: PartialDeep<Task_Progress>
-  ) => void;
+  onSelect: (progress: PartialDeep<Task_Progress>) => void;
 };
 
 export function SubmissionsList({

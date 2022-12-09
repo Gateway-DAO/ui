@@ -122,10 +122,15 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
     (cred) => cred?.gate_id === gateProps?.id
   )?.id;
 
-  const { data: credential } = useQuery(['credential', credential_id], () =>
-    gqlAuthMethods.credential({
-      id: credential_id,
-    })
+  const { data: credential } = useQuery(
+    ['credential', credential_id],
+    () =>
+      gqlAuthMethods.credential({
+        id: credential_id,
+      }),
+    {
+      enabled: credential_id,
+    }
   );
 
   const { mutate: publishGate } = useMutation(

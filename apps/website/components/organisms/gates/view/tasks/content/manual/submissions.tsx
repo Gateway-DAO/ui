@@ -12,12 +12,12 @@ import {
   Tasks,
   Gates,
   Task_Progress,
-  Manual_Task_Events,
 } from '../../../../../../../services/graphql/types.generated';
 import { Accordion } from './components/accordion';
 import { SubmissionsDetailHeader } from './components/submissions-detail-header';
 import { SubmissionsHeader } from './components/submissions-header';
 import { SubmissionsList } from './components/submissions-list';
+import { SubmissionDetail } from './submission-detail';
 
 type Props = {
   gate: PartialDeep<Gates>;
@@ -28,10 +28,8 @@ export function Submissions({ gate, task }: Props) {
   const { me, gqlAuthMethods } = useAuth();
   const { t } = useTranslation('gate-profile');
   const [expanded, toggleExpanded] = useToggle(false);
-  const [detailedSubmission, setDetailedSubmission] = useState<{
-    event: PartialDeep<Manual_Task_Events>;
-    progress: PartialDeep<Task_Progress>;
-  }>();
+  const [detailedTaskProgress, setDetailedTaskProgress] =
+    useState<PartialDeep<Task_Progress>>();
 
   const manualTasksSubmissions = useQuery(
     ['admin-manual-task-submissions', gate.id, me.id],
@@ -62,6 +60,10 @@ export function Submissions({ gate, task }: Props) {
     (task_progress) => task_progress.completed === 'in_review'
   );
 
+  const amount =
+    (manualTasksSubmissions.data?.pending.length ?? 0) +
+    (manualTasksSubmissions.data?.sent.length ?? 0);
+
   return (
     <Stack
       sx={{
@@ -77,19 +79,19 @@ export function Submissions({ gate, task }: Props) {
         border: '1px solid rgba(229, 229, 229, 0.12)',
       }}
     >
-      <Accordion expanded={expanded} clickHandler={toggleExpanded}>
-        {detailedSubmission ? (
+      <Accordion
+        isEnabled={amount > 0}
+        expanded={expanded}
+        clickHandler={toggleExpanded}
+      >
+        {detailedTaskProgress ? (
           <SubmissionsDetailHeader
-            user={detailedSubmission.progress.user}
-            onBack={() => setDetailedSubmission(undefined)}
+            user={detailedTaskProgress.user}
+            onBack={() => setDetailedTaskProgress(undefined)}
           />
         ) : (
           <SubmissionsHeader
-            amount={
-              manualTasksSubmissions.data?.pending.length ??
-              0 + manualTasksSubmissions.data?.sent.length ??
-              0
-            }
+            amount={amount}
             amountNew={tasksInReview?.length ?? 0}
           />
         )}
@@ -98,31 +100,32 @@ export function Submissions({ gate, task }: Props) {
         sx={{
           width: '100%',
           borderRadius: '8px 8px 0 0',
-          overflow: 'auto',
           py: expanded ? 2 : 0,
-          height: expanded ? '700px' : 0,
+          height: expanded ? 'auto' : 0,
           maxHeight: '100%',
           opacity: expanded ? 1 : 0,
           transition: 'all .3s ease',
         }}
       >
-        {manualTasksSubmissions.data?.pending?.length > 0 && (
-          <SubmissionsList
-            title={t('submissions.pending_feedback')}
-            list={manualTasksSubmissions.data.pending}
-            onSelect={(event, progress) => {
-              setDetailedSubmission({ event, progress });
-            }}
-          />
-        )}
-        {manualTasksSubmissions.data?.sent?.length > 0 && (
-          <SubmissionsList
-            title={t('submissions.feeback_sent')}
-            list={manualTasksSubmissions.data.sent}
-            onSelect={(event, progress) => {
-              setDetailedSubmission({ event, progress });
-            }}
-          />
+        {detailedTaskProgress ? (
+          <SubmissionDetail progress={detailedTaskProgress} gate={gate} />
+        ) : (
+          <>
+            {manualTasksSubmissions.data?.pending?.length > 0 && (
+              <SubmissionsList
+                title={t('submissions.pending_feedback')}
+                list={manualTasksSubmissions.data.pending}
+                onSelect={setDetailedTaskProgress}
+              />
+            )}
+            {manualTasksSubmissions.data?.sent?.length > 0 && (
+              <SubmissionsList
+                title={t('submissions.feeback_sent')}
+                list={manualTasksSubmissions.data.sent}
+                onSelect={setDetailedTaskProgress}
+              />
+            )}
+          </>
         )}
       </Stack>
     </Stack>

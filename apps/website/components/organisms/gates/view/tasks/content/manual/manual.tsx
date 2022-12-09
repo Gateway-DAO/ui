@@ -2,7 +2,7 @@ import useTranslation from 'next-translate/useTranslation';
 import { useState } from 'react';
 
 import { useThrottle } from '@corets/use-throttle';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import {
   CircularProgress,
@@ -34,6 +34,9 @@ const ManualContent = ({
   const currentTaskProgress = me?.task_progresses?.find(
     (tp) => tp.task_id === task.id
   );
+
+  const queryClient = useQueryClient();
+
   const throttledLink = useThrottle(link, 1000);
 
   const linkPreview = useQuery(
@@ -45,7 +48,7 @@ const ManualContent = ({
   const isManualTaskEventsEnabled = !!currentTaskProgress?.id;
 
   const manualTaskEvents = useQuery(
-    ['manual-task-events', currentTaskProgress?.id, me?.id],
+    ['manual-task-events', currentTaskProgress?.id],
     () =>
       gqlAuthMethods.manual_task_events({
         task_progress_id: currentTaskProgress!.id,
@@ -61,6 +64,11 @@ const ManualContent = ({
       data: linkPreview.data?.link_preview,
     });
     manualTaskEvents.remove();
+    queryClient.removeQueries([
+      'admin-manual-task-submissions',
+      gate.id,
+      me?.id,
+    ]);
     setLink('');
   };
 

@@ -35,14 +35,15 @@ query manual_tasks_progress($gate_id: uuid = "") {
 
 
 query manual_tasks_status($task_progress_id: uuid = "") {
-    manual_task_events(where:{task_progress_id:{_eq:$task_progress_id}}, order_by: {updated_at:desc}, limit: 1) {
-        event_type
-        issuer {
-            name
-            username
-        }
-        updated_at
+  manual_task_events(where:{task_progress_id:{_eq:$task_progress_id}}, order_by: {updated_at:desc}, limit: 1) {
+    id
+    event_type
+    issuer {
+        name
+        username
     }
+    updated_at
+  }
 }
 
 query manual_tasks_submissions($task_id: uuid = "") {
