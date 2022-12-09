@@ -61,7 +61,7 @@ const ManualContent = ({
   const onSubmitLink = async () => {
     await completeTask({
       event_type: 'send_link',
-      data: linkPreview.data?.link_preview,
+      data: { link: linkPreview.data?.link_preview },
     });
     manualTaskEvents.remove();
     queryClient.removeQueries([

@@ -61,6 +61,7 @@
     "connect": "connect",
     "connected": "connected",
     "close": "close",
+    "loading": "loading",
     "disconnect": "disconnect",
     "cancel": "cancel",
     "got-it": "got it",

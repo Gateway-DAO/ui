@@ -91,6 +91,7 @@ export function Submissions({ gate, task }: Props) {
           />
         ) : (
           <SubmissionsHeader
+            isLoading={manualTasksSubmissions.isLoading}
             amount={amount}
             amountNew={tasksInReview?.length ?? 0}
           />

@@ -99,11 +99,11 @@ export function SubmissionsItem({ progress, onSelect }: SubmissionsItemProps) {
             >
               {event_type === 'send_link' && t('submissions.submitted_link')}
               {event_type === 'comment' &&
-                `@${issuer.name} ${t('submissions.sent_comment')}`}
+                `@${issuer.username} ${t('submissions.sent_comment')}`}
               {event_type === 'reject' &&
-                `@${issuer.name} ${t('submissions.denied_submission')}`}
+                `@${issuer.username} ${t('submissions.denied_submission')}`}
               {event_type === 'approve' &&
-                `@${issuer.name} ${t('submissions.approved_submission')}`}
+                `@${issuer.username} ${t('submissions.approved_submission')}`}
             </Typography>
           </Stack>
           <Stack direction="row" gap={0.5} alignItems="center">

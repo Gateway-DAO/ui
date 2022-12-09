@@ -41,9 +41,17 @@ export function TaskList({
     : gate.tasks.length + 1;
 
   const manualTask = gate.tasks.find((task) => task.task_type === 'manual');
-
+  const isGateAdmin = me?.id === gate.creator.id;
+  console.log(manualTask, isGateAdmin);
   return (
-    <Grid item xs={12} md>
+    <Grid
+      item
+      xs={12}
+      md
+      sx={{
+        pb: isGateAdmin && manualTask ? 20 : 0,
+      }}
+    >
       <Stack
         direction="row"
         justifyContent="flex-end"
@@ -143,13 +151,9 @@ export function TaskList({
           />
         )}
       </Box>
-      {me?.id === gate.creator.id && !!manualTask && (
+      {isGateAdmin && !!manualTask && (
         <Submissions gate={gate} task={manualTask} />
       )}
-      {/* <SubmissionDetail
-        username="kbooz"
-        backButtonHandler={() => console.log('clicked')}
-      /> */}
     </Grid>
   );
 }

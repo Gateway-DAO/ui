@@ -5,11 +5,13 @@ import { brandColors } from '@gateway/theme';
 import { Stack, Typography } from '@mui/material';
 
 type SubmissionsHeaderProps = {
+  isLoading: boolean;
   amount: number;
   amountNew: number;
 };
 
 export function SubmissionsHeader({
+  isLoading,
   amount,
   amountNew,
 }: SubmissionsHeaderProps) {
@@ -27,7 +29,7 @@ export function SubmissionsHeader({
       </Typography>
       <Stack direction="row" alignItems="center" gap={1}>
         <Typography fontSize={20} fontWeight={700}>
-          {amount}
+          {isLoading ? t('common:action.loading') : amount}
         </Typography>
         {amountNew > 0 && (
           <Typography

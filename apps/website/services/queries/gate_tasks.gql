@@ -16,21 +16,21 @@ query manual_task_events ($task_progress_id: uuid!) {
 }
 
 query manual_tasks_progress($gate_id: uuid = "") {
-    task_progress(where: {gate_id: {_eq: $gate_id}, task:{task_type: {_eq:"manual"}}}, order_by: {updated_at: desc}) {
-        id
-        task_id
-        completed
-        user {
-        id
-        username
-        name
-        picture {
-            ...file
-        }
-        }
-        created_at
-        updated_at
+  task_progress(where: {gate_id: {_eq: $gate_id}, task:{task_type: {_eq:"manual"}}}, order_by: {updated_at: desc}) {
+    id
+    task_id
+    completed
+    user {
+      id
+      username
+      name
+      picture {
+          ...file
+      }
     }
+    created_at
+    updated_at
+  }
 }
 
 

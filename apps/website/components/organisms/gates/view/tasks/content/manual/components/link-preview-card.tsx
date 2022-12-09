@@ -76,7 +76,7 @@ const LinkPreviewCard = ({
                 color: brandColors.purple.main,
               }}
             >
-              {limitChars(title ?? siteName, 30)}
+              {limitChars(title?.length > 0 ? title : siteName, 30)}
             </Typography>
           )}
           {description?.length && (

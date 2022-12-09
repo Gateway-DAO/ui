@@ -64,12 +64,12 @@ const TaskInteration = ({
           fullname={issuer.name}
           avatarFile={issuer.picture}
           username={issuer.username}
-          comment={data}
+          comment={data.comment}
           elevation={elevation}
         ></CommentCard>
       )}
       {event_type === 'send_link' && (
-        <LinkPreviewCard {...data} elevation={elevation}></LinkPreviewCard>
+        <LinkPreviewCard {...data.link} elevation={elevation}></LinkPreviewCard>
       )}
     </Stack>
   );
