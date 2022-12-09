@@ -36,23 +36,7 @@ export function SubmissionDetail({ progress, gate }: SubmissionDetailProps) {
     <>
       <Stack sx={{ px: 7.5, maxHeight: '400px', overflow: 'auto' }}>
         <InterationList
-          list={[
-            ...manualTaskEvents.data.manual_task_events,
-            ...manualTaskEvents.data.manual_task_events,
-            ...manualTaskEvents.data.manual_task_events,
-            ...manualTaskEvents.data.manual_task_events,
-            ...manualTaskEvents.data.manual_task_events,
-            ...manualTaskEvents.data.manual_task_events,
-            ...manualTaskEvents.data.manual_task_events,
-            ...manualTaskEvents.data.manual_task_events,
-            ...manualTaskEvents.data.manual_task_events,
-            ...manualTaskEvents.data.manual_task_events,
-            ...manualTaskEvents.data.manual_task_events,
-            ...manualTaskEvents.data.manual_task_events,
-            ...manualTaskEvents.data.manual_task_events,
-            ...manualTaskEvents.data.manual_task_events,
-            ...manualTaskEvents.data.manual_task_events,
-          ]}
+          list={manualTaskEvents.data.manual_task_events}
           elevation={20}
           gate={gate}
           status={progress.completed}
