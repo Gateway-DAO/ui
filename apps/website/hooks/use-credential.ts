@@ -24,7 +24,9 @@ export const useCredential = (credential: PartialDeep<Credentials>) => {
   // State
   const [status, setStatus] = useState<Status>('idle');
   const [error, setError] = useState<Error | null>(null);
-  const { me, gqlAuthMethods } = useAuth();
+  const { me, gqlAuthMethods, onInvalidateMe } = useAuth();
+
+  const resetStatus = () => setStatus('idle');
 
   // Query client
   const queryClient = useQueryClient();
@@ -52,6 +54,22 @@ export const useCredential = (credential: PartialDeep<Credentials>) => {
     },
   });
 
+  const mintOptions = {
+    onMutate: () => setStatus('minting'),
+    onSuccess: async () => {
+      onInvalidateMe();
+
+      queryClient.resetQueries(['credentials']);
+      queryClient.resetQueries(['credential', credential.id]);
+
+      setStatus('minted');
+    },
+    onError: (err) => {
+      setStatus('error');
+      setError(err);
+    },
+  };
+
   const { mutateAsync: updateCredential } = useMutation(
     (txHash: string) =>
       gqlAuthMethods.update_credential_status({
@@ -62,42 +80,22 @@ export const useCredential = (credential: PartialDeep<Credentials>) => {
         )}/tx/${txHash}`,
       }),
     {
-      onSuccess: () => {
-        queryClient.resetQueries(['credentials']);
-        queryClient.resetQueries(['credential', credential.id]);
-
-        queryClient.resetQueries(['user_info', me?.id]);
-
-        setStatus('minted');
-      },
-      onError: () => setStatus('error'),
+      onSuccess: mintOptions.onSuccess,
+      onError: mintOptions.onError,
     }
   );
 
   const { isLoading, isError } = useWaitForTransaction({
     hash: data?.hash,
-    onSuccess: (data) => {
-      updateCredential(data.transactionHash);
-    },
-    onError: (err) => {
-      setStatus('error');
-      setError(err);
-    },
+    onSuccess: (data) => updateCredential(data.transactionHash),
+    onError: mintOptions.onError,
   });
 
   // Gasless minting
   const { mutateAsync: mintGasless } = useMutation(
     (credential: { id: string; uri?: string }) =>
       gqlAuthMethods.mint_credential({ id: credential.id }),
-    {
-      onMutate: () => setStatus('minting'),
-      onSuccess: () => {
-        queryClient.resetQueries(['credentials']);
-        queryClient.resetQueries(['credential', credential.id]);
-
-        queryClient.resetQueries(['user_info', me?.id]);
-      },
-    }
+    mintOptions
   );
 
   const mintCredential = async (credential: PartialDeep<Credentials>) => {
@@ -132,5 +130,6 @@ export const useCredential = (credential: PartialDeep<Credentials>) => {
     status,
     error,
     mintCredential,
+    resetStatus,
   };
 };
