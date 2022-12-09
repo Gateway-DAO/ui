@@ -42,6 +42,8 @@ const ManualContent = ({
     { enabled: throttledLink?.length > 5, retry: false }
   );
 
+  const isManualTaskEventsEnabled = !!currentTaskProgress?.id;
+
   const manualTaskEvents = useQuery(
     ['manual-task-events', currentTaskProgress?.id, me?.id],
     () =>
@@ -49,7 +51,7 @@ const ManualContent = ({
         task_progress_id: currentTaskProgress!.id,
       }),
     {
-      enabled: !!currentTaskProgress?.id,
+      enabled: isManualTaskEventsEnabled,
     }
   );
 
@@ -103,8 +105,11 @@ const ManualContent = ({
               <LinkPreviewCard {...linkPreview.data.link_preview} />
             )}
           </Stack>
-          {manualTaskEvents.isLoading && <CircularProgress />}
-          {!manualTaskEvents.isLoading &&
+          {isManualTaskEventsEnabled && manualTaskEvents.isLoading && (
+            <CircularProgress />
+          )}
+          {isManualTaskEventsEnabled &&
+            !manualTaskEvents.isLoading &&
             manualTaskEvents.data?.manual_task_events?.length > 0 && (
               <>
                 <Divider sx={{ width: '100%', mb: 5 }} />
