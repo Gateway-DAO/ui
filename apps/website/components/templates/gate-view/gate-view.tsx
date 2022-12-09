@@ -30,10 +30,11 @@ import { useAuth } from '../../../providers/auth';
 import { gqlAnonMethods } from '../../../services/api';
 import { Gates } from '../../../services/graphql/types.generated';
 import { AvatarFile } from '../../atoms/avatar-file';
-
 import MorePopover from '../../atoms/more-popover';
 import { ReadMore } from '../../atoms/read-more-less';
 import { ShareButton } from '../../atoms/share-button';
+import { TokenFilled } from '../../molecules/mint-card/assets/token-filled';
+import { MintDialogProps } from '../../molecules/mint-dialog';
 import ConfirmDialog from '../../organisms/confirm-dialog/confirm-dialog';
 import GateCompletedModal from '../../organisms/gates/view/modals/gate-completed';
 import type { Props as HolderDialogProps } from '../../organisms/holder-dialog';
@@ -41,8 +42,6 @@ import { DirectHoldersList } from './direct-holders-list/direct-holders-list';
 import { DirectHoldersHeader } from './direct-holders-list/header';
 import { DraftDirectHoldersList } from './draft-direct-holders-list/draft-direct-holders-list';
 import { TaskList } from './task-list';
-import { MintDialogProps } from '../../molecules/mint-dialog';
-import { TokenFilled } from '../../molecules/mint-card/assets/token-filled';
 
 const GateStateChip = dynamic(() => import('../../atoms/gate-state-chip'), {
   ssr: false,
@@ -399,8 +398,8 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
 
           {completedGate &&
             !!credential &&
-            credential?.credentials_by_pk.target_id == me?.id &&
-            (credential?.credentials_by_pk.status == 'minted' ? (
+            credential?.credentials_by_pk?.target_id == me?.id &&
+            (credential?.credentials_by_pk?.status == 'minted' ? (
               <Button
                 component="a"
                 variant="outlined"
