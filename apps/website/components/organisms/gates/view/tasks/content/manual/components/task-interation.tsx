@@ -25,10 +25,7 @@ const TaskInteration = ({
   elevation = 1,
 }: TaskInterationProps) => {
   const { t, lang } = useTranslation('gate-profile');
-  const datetimeString =
-    ISOToString(created_at, lang) == 'now'
-      ? t('submissions.just_now')
-      : ISOToString(created_at, lang);
+  const datetimeString = ISOToString(created_at, lang);
 
   return (
     <Stack

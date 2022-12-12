@@ -32,7 +32,7 @@ export type SubmissionsItemProps = {
 
 export function SubmissionsItem({ progress, onSelect }: SubmissionsItemProps) {
   const { t, lang } = useTranslation('gate-profile');
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const isMobile = useMediaQuery(theme.breakpoints.down('lg'));
 
   const { gqlAuthMethods } = useAuth();
   const progressEvent = useQuery(
@@ -48,9 +48,7 @@ export function SubmissionsItem({ progress, onSelect }: SubmissionsItemProps) {
 
   const datetimeString = useMemo(() => {
     if (!progressEvent.data?.updated_at) return '';
-    return ISOToString(progressEvent.data.updated_at, lang) == 'now'
-      ? t('submissions.just_now')
-      : ISOToString(progressEvent.data.updated_at, lang);
+    return ISOToString(progressEvent.data.updated_at, lang);
   }, [progressEvent.data?.updated_at, lang]);
 
   return (
@@ -79,7 +77,10 @@ export function SubmissionsItem({ progress, onSelect }: SubmissionsItemProps) {
           <Stack sx={{ flexGrow: 1 }}>
             <Stack
               gap={0.5}
-              sx={{ flexDirection: { xs: 'column', lg: 'row' } }}
+              sx={{
+                flexDirection: { xs: 'column', lg: 'row' },
+                alignItems: 'baseline',
+              }}
             >
               <Typography>{`@${progressEvent.data.issuer.username}`}</Typography>
               <Typography
