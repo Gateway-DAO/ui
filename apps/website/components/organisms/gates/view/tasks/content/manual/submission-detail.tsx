@@ -19,10 +19,12 @@ export type SubmissionDetailProps = {
   gate: PartialDeep<Gates>;
   progress: PartialDeep<Task_Progress>;
   isSubmitEventLoading: boolean;
+  latestSubmitEvent?: ManualTaskEventType;
   onSubmitEvent: (event_type: ManualTaskEventType, data: any) => void;
 };
 
 export function SubmissionDetail({
+  latestSubmitEvent,
   progress,
   gate,
   isSubmitEventLoading,
@@ -76,8 +78,8 @@ export function SubmissionDetail({
           <LoadingButton
             type="submit"
             variant="contained"
-            isLoading={isSubmitEventLoading}
-            disabled={manualTaskEvents.isLoading}
+            isLoading={isSubmitEventLoading && latestSubmitEvent === 'comment'}
+            disabled={isSubmitEventLoading || manualTaskEvents.isLoading}
           >
             Submit
           </LoadingButton>

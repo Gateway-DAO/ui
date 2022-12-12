@@ -16,6 +16,7 @@ type Props = {
   progress: PartialDeep<Task_Progress>;
   user: PartialDeep<Users>;
   isSubmitEventLoading: boolean;
+  latestSubmitEvent?: ManualTaskEventType;
   onSubmitEvent: (event_type: ManualTaskEventType) => void;
   onBack: () => void;
 };
@@ -23,6 +24,7 @@ type Props = {
 export function SubmissionsDetailHeader({
   progress,
   user,
+  latestSubmitEvent,
   isSubmitEventLoading,
   onBack,
   onSubmitEvent,
@@ -49,9 +51,9 @@ export function SubmissionsDetailHeader({
         <LoadingButton
           variant="outlined"
           color="error"
-          disabled={progress.completed === 'reject'}
+          disabled={isSubmitEventLoading || progress.completed === 'reject'}
           startIcon={<Cancel />}
-          isLoading={isSubmitEventLoading}
+          isLoading={isSubmitEventLoading && latestSubmitEvent === 'reject'}
           onClick={() => onSubmitEvent('reject')}
         >
           Reject
@@ -60,8 +62,8 @@ export function SubmissionsDetailHeader({
           variant="outlined"
           color="success"
           startIcon={<CheckCircle />}
-          isLoading={isSubmitEventLoading}
-          disabled={progress.completed === 'done'}
+          isLoading={isSubmitEventLoading && latestSubmitEvent === 'approve'}
+          disabled={isSubmitEventLoading || progress.completed === 'done'}
           onClick={() => onSubmitEvent('approve')}
         >
           Approve

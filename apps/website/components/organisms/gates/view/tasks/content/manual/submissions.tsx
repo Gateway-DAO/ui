@@ -90,9 +90,9 @@ export function Submissions({ gate, task }: Props) {
     gqlAuthMethods.complete_task,
     {
       onSuccess: () => {
-        queryClient.resetQueries(['gate', gate.id]);
-        queryClient.resetQueries(['user_task_progresses', me?.id]);
-        queryClient.resetQueries([
+        queryClient.refetchQueries(['gate', gate.id]);
+        queryClient.refetchQueries(['user_task_progresses', me?.id]);
+        queryClient.refetchQueries([
           'admin-manual-task-submissions',
           gate.id,
           me?.id,
@@ -145,6 +145,7 @@ export function Submissions({ gate, task }: Props) {
           <SubmissionsDetailHeader
             progress={detailedTaskProgress}
             user={detailedTaskProgress.user}
+            latestSubmitEvent={modifyTask.variables?.info?.event_type}
             isSubmitEventLoading={modifyTask.isLoading}
             onBack={() => setDetailedTaskProgressId(undefined)}
             onSubmitEvent={onSubmitEvent}
@@ -172,6 +173,7 @@ export function Submissions({ gate, task }: Props) {
           <SubmissionDetail
             progress={detailedTaskProgress}
             gate={gate}
+            latestSubmitEvent={modifyTask.variables?.info?.event_type}
             onSubmitEvent={onSubmitEvent}
             isSubmitEventLoading={modifyTask.isLoading}
           />
