@@ -82,7 +82,7 @@ export function SubmissionsItem({ progress, onSelect }: SubmissionsItemProps) {
                 alignItems: 'baseline',
               }}
             >
-              <Typography>{`@${progressEvent.data.issuer.username}`}</Typography>
+              <Typography>{`@${progress.user.username}`}</Typography>
               <Typography
                 fontSize={14}
                 sx={{
