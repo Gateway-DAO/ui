@@ -42,7 +42,7 @@ export function TaskList({
 
   const manualTask = gate.tasks.find((task) => task.task_type === 'manual');
   const isGateAdmin = me?.id === gate.creator.id;
-  console.log(manualTask, isGateAdmin);
+
   return (
     <Grid
       item

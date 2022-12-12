@@ -37,16 +37,6 @@ export function Submissions({ gate, task }: Props) {
 
   const queryClient = useQueryClient();
 
-  const onSubmitEvent = (event_type: ManualTaskEventType, data?: any) => {
-    modifyTask.mutate({
-      task_id: detailedTaskProgress.task_id,
-      info: {
-        event_type,
-        data,
-      },
-    });
-  };
-
   const manualTasksSubmissions = useQuery(
     ['admin-manual-task-submissions', gate.id, me.id],
     () => gqlAuthMethods.manual_tasks_progress({ gate_id: gate.id })
@@ -119,6 +109,17 @@ export function Submissions({ gate, task }: Props) {
       },
     }
   );
+
+  const onSubmitEvent = (event_type: ManualTaskEventType, data?: any) => {
+    modifyTask.mutate({
+      task_id: detailedTaskProgress.task_id,
+      info: {
+        task_progress_id: detailedTaskProgress.id,
+        event_type,
+        data,
+      },
+    });
+  };
 
   return (
     <Stack
