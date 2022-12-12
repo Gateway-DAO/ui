@@ -121,6 +121,8 @@ export function Submissions({ gate, task }: Props) {
     });
   };
 
+  if (!amount) return null;
+
   return (
     <Stack
       sx={{
