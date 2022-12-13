@@ -143,8 +143,9 @@ export function Submissions({ gate, task }: Props) {
       sx={{
         background:
           'linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.12) 100%), #10041C',
-        width: { xs: '100%', lg: '56%' },
+        width: { xs: '100%', md: '90%', lg: '56%' },
         maxHeight: '90%',
+        ml: { md: '10%' },
         position: 'fixed',
         bottom: 0,
         right: 0,

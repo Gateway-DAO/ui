@@ -29,6 +29,7 @@ export function SubmissionsList({
           color: `${alpha(brandColors.white.main, 0.7)}`,
           px: { xs: 2, lg: 7.5 },
           mb: 1,
+          mt: 2,
         }}
       >
         {title}

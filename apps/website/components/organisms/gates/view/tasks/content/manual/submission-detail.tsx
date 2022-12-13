@@ -65,7 +65,7 @@ export function SubmissionDetail({
             px: 7.5,
             overflow: 'auto',
             flexGrow: 1,
-            pt: { lg: 2 },
+            pt: 2,
           }}
         >
           <InterationList
