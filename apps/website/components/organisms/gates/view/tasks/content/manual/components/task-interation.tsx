@@ -1,4 +1,5 @@
 import useTranslation from 'next-translate/useTranslation';
+import Link from 'next/link';
 
 import { PartialDeep } from 'type-fest';
 
@@ -6,6 +7,7 @@ import { ISOToString } from '@gateway/helpers';
 
 import { Stack, Typography } from '@mui/material';
 
+import { ROUTES } from '../../../../../../../../constants/routes';
 import { Manual_Task_Events } from '../../../../../../../../services/graphql/types.generated';
 import Bullet from './bullet';
 import CommentCard from './comment-card';
@@ -39,7 +41,21 @@ const TaskInteration = ({
     >
       <Bullet event_type={event_type} />
       <Stack direction="row" gap={0.5} sx={{ marginTop: -0.5 }}>
-        <Typography fontSize={14}>{`@${issuer.username}`}</Typography>
+        <Link
+          passHref
+          href={ROUTES.PROFILE.replace('[username]', issuer.username)}
+        >
+          <Typography
+            fontSize={14}
+            component="a"
+            target="_blank"
+            color="text.primary"
+            sx={{
+              textDecoration: 'none',
+              '&:hover': { textDecoration: 'underline' },
+            }}
+          >{`@${issuer.username}`}</Typography>
+        </Link>
         <Typography
           fontSize={14}
           sx={(theme) => ({
