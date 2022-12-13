@@ -179,6 +179,7 @@ export function Submissions({ gate, task }: Props) {
         sx={{
           width: '100%',
           borderRadius: '8px 8px 0 0',
+          pb: 2,
           height: expanded ? componentHeight() : 0,
           opacity: expanded ? 1 : 0,
           transition: 'all .3s ease',
