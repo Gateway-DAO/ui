@@ -86,7 +86,6 @@ export function SubmissionDetail({
           <TextField
             multiline
             required
-            minRows={2}
             rows={2}
             label={t('submissions.label')}
             id="comment-field"
