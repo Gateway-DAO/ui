@@ -39,7 +39,11 @@ export function SubmissionsDetailHeader({
     progress.completed === 'reject' || progress.completed === 'done';
   return (
     <>
-      <Stack direction="row" justifyContent="space-between" sx={{ flex: 1 }}>
+      <Stack
+        direction="row"
+        justifyContent="space-between"
+        sx={{ flex: 1, flexDirection: { lg: 'row', xs: 'column' } }}
+      >
         <Stack direction="row" gap={1} alignItems="center">
           <IconButton
             sx={{
@@ -56,7 +60,12 @@ export function SubmissionsDetailHeader({
             sx={{ flexGrow: 1, ml: 0.5 }}
           >{`@${user.username}`}</Typography>
         </Stack>
-        <Stack direction="row" gap={1} alignItems="center">
+        <Stack
+          direction="row"
+          gap={1}
+          alignItems="center"
+          sx={{ mt: { xs: 2, lg: 0 } }}
+        >
           <LoadingButton
             variant={progress.completed === 'reject' ? 'contained' : 'outlined'}
             color="error"

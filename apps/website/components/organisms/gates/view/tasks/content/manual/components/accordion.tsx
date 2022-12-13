@@ -21,13 +21,13 @@ export function Accordion({
       direction="row"
       gap={1}
       justifyContent="space-between"
-      alignItems="center"
       sx={{
         width: '100%',
         borderRadius: '8px 8px 0 0',
         pt: { xs: 2, lg: 6 },
         pb: { xs: 2, lg: 5 },
         px: { xs: 2, lg: 7.5 },
+        alignItems: 'center',
         borderBottom: '1px solid rgba(229, 229, 229, 0.12)',
         zIndex: 1,
         boxShadow:
