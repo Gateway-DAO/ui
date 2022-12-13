@@ -6,7 +6,7 @@ import { useSnackbar } from 'notistack';
 import { useToggle } from 'react-use';
 import { PartialDeep } from 'type-fest';
 
-import { Stack } from '@mui/material';
+import { Stack, useMediaQuery } from '@mui/material';
 
 import { useAuth } from '../../../../../../../providers/auth';
 import {
@@ -41,6 +41,21 @@ export function Submissions({ gate, task }: Props) {
     ['admin-manual-task-submissions', gate.id, me.id],
     () => gqlAuthMethods.manual_tasks_progress({ gate_id: gate.id })
   );
+
+  const smallScreen = useMediaQuery('(max-height:799px)');
+  const mediumScreen = useMediaQuery(
+    '(min-height:800px) and (max-height:999px)'
+  );
+
+  const componentHeight = () => {
+    if (smallScreen) {
+      return '450px';
+    } else if (mediumScreen) {
+      return '650px';
+    } else {
+      return '900px';
+    }
+  };
 
   const tasksSubmissions: {
     pending: PartialDeep<Task_Progress>[];
@@ -165,8 +180,7 @@ export function Submissions({ gate, task }: Props) {
           width: '100%',
           borderRadius: '8px 8px 0 0',
           py: expanded ? 2 : 0,
-          height: expanded ? 'auto' : 0,
-          maxHeight: '100%',
+          height: expanded ? componentHeight() : 0,
           opacity: expanded ? 1 : 0,
           transition: 'all .3s ease',
         }}

@@ -54,7 +54,14 @@ export function SubmissionDetail({
       {manualTaskEvents.isLoading ? (
         <CircularProgress sx={{ alignSelf: 'center', my: 10 }} />
       ) : (
-        <Stack sx={{ px: 7.5, maxHeight: '400px', overflow: 'auto' }}>
+        <Stack
+          sx={{
+            px: 7.5,
+            overflow: 'auto',
+            flexGrow: 1,
+            pt: { lg: 2 },
+          }}
+        >
           <InterationList
             list={manualTaskEvents.data.manual_task_events}
             elevation={20}
@@ -63,13 +70,18 @@ export function SubmissionDetail({
           />
         </Stack>
       )}
-      <Stack component="form" onSubmit={onSubmit}>
+      <Stack
+        component="form"
+        onSubmit={onSubmit}
+        sx={{ minHeight: '285px', flexGrow: 0, height: 'auto' }}
+      >
         <Divider sx={{ width: '100%', mb: 5 }} />
         <Stack sx={{ px: 7.5, mb: 3 }}>
           <TextField
             multiline
             required
-            maxRows={3}
+            minRows={2}
+            rows={2}
             label={t('submissions.label')}
             id="comment-field"
             sx={{ mb: 2 }}
