@@ -27,7 +27,7 @@ export function Accordion({
         pt: { xs: 2, lg: 6 },
         pb: { xs: 2, lg: 5 },
         px: { xs: 2, lg: 7.5 },
-        alignItems: { lg: 'center', xs: 'baseline' },
+        alignItems: 'center',
         borderBottom: '1px solid rgba(229, 229, 229, 0.12)',
         zIndex: 1,
         boxShadow:
