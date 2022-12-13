@@ -90,8 +90,8 @@ export function Submissions({ gate, task }: Props) {
     gqlAuthMethods.complete_task,
     {
       onSuccess: () => {
-        queryClient.refetchQueries(['gate', gate.id]);
-        queryClient.refetchQueries(['user_task_progresses', me?.id]);
+        queryClient.resetQueries(['gate', gate.id]);
+        queryClient.resetQueries(['user_task_progresses', me?.id]);
         queryClient.refetchQueries([
           'admin-manual-task-submissions',
           gate.id,
