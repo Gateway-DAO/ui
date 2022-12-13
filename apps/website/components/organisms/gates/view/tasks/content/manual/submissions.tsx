@@ -53,7 +53,7 @@ export function Submissions({ gate, task }: Props) {
     } else if (mediumScreen) {
       return '650px';
     } else {
-      return '900px';
+      return '850px';
     }
   };
 
