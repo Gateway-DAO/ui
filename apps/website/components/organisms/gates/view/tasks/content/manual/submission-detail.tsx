@@ -10,6 +10,7 @@ import { useAuth } from '../../../../../../../providers/auth';
 import {
   Task_Progress,
   Gates,
+  Complete_TaskMutation,
 } from '../../../../../../../services/graphql/types.generated';
 import { ManualTaskEventType } from '../../../../../../../types/tasks';
 import { LoadingButton } from '../../../../../../atoms/loading-button';
@@ -20,7 +21,10 @@ export type SubmissionDetailProps = {
   progress: PartialDeep<Task_Progress>;
   isSubmitEventLoading: boolean;
   latestSubmitEvent?: ManualTaskEventType;
-  onSubmitEvent: (event_type: ManualTaskEventType, data: any) => void;
+  onSubmitEvent: (
+    event_type: ManualTaskEventType,
+    data: any
+  ) => Promise<Complete_TaskMutation>;
 };
 
 export function SubmissionDetail({
@@ -32,7 +36,7 @@ export function SubmissionDetail({
 }: SubmissionDetailProps) {
   const { me, gqlAuthMethods } = useAuth();
   const { t } = useTranslation('gate-profile');
-  const { handleSubmit, register } = useForm({
+  const { handleSubmit, register, setValue } = useForm({
     defaultValues: {
       comment: '',
     },
@@ -46,7 +50,9 @@ export function SubmissionDetail({
 
   const onSubmit = handleSubmit(async (data) => {
     if (manualTaskEvents.isLoading) return;
-    onSubmitEvent('comment', data);
+    onSubmitEvent('comment', data)
+      .then((s) => setValue('comment', ''))
+      .catch((e) => setValue('comment', data.comment));
   });
 
   return (

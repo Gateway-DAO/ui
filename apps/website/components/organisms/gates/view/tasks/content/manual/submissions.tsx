@@ -125,8 +125,8 @@ export function Submissions({ gate, task }: Props) {
     }
   );
 
-  const onSubmitEvent = (event_type: ManualTaskEventType, data?: any) => {
-    modifyTask.mutate({
+  const onSubmitEvent = async (event_type: ManualTaskEventType, data?: any) => {
+    return modifyTask.mutateAsync({
       task_id: detailedTaskProgress.task_id,
       info: {
         task_progress_id: detailedTaskProgress.id,
