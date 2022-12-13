@@ -403,8 +403,8 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
 
           {completedGate &&
             !!credential &&
-            credential?.credentials_by_pk.target_id == me?.id &&
-            (credential?.credentials_by_pk.status == 'minted' ? (
+            credential?.credentials_by_pk?.target_id == me?.id &&
+            (credential?.credentials_by_pk?.status == 'minted' ? (
               <Button
                 component="a"
                 variant="outlined"

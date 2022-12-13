@@ -15,7 +15,7 @@ import { MintCard } from '../../../../molecules/mint-card';
 
 type Props = {
   experience: PartialDeep<Experiences>;
-  index: Number;
+  index: number;
 };
 
 export function ExperienceAccordion({ experience, index }: Props) {
