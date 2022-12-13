@@ -5,6 +5,7 @@ import { PartialDeep } from 'type-fest';
 import { Box, Button, SxProps } from '@mui/material';
 import Card from '@mui/material/Card';
 
+import { useCredential } from '../../../hooks/use-credential';
 import { useBiconomy } from '../../../providers/biconomy';
 import { Credentials } from '../../../services/graphql/types.generated';
 import { processScreen } from './process';
@@ -33,34 +34,34 @@ export const MintCard = ({ credential, sx, ...props }: MintCardProps) => {
   );
   const [error, setError] = useState<any | null>(null);
 
-  const { mintCredential: triggerMint } = useBiconomy();
+  // const { mintCredential: triggerMint, mintStatus } = useBiconomy();
+  const {
+    mintCredential: triggerMint,
+    status,
+    resetStatus,
+  } = useCredential(credential);
 
-  const mint = () => {
-    const trigger = triggerMint(credential);
-
-    setMintProcessStatus(Subjects.minting);
-
-    trigger.then((value) => {
-      if (!value.error && value.isMinted) {
-        setMintProcessStatus(Subjects.successful);
-        setTimeout(() => {
-          setMintProcessStatus(Subjects.alreadyMinted);
-          props.onMint && props.onMint();
-        }, 2500);
-      } else {
-        setError(value.error);
-        setMintProcessStatus(Subjects.failed);
-      }
-    });
-  };
+  const mint = () => triggerMint(credential);
 
   useEffect(() => {
-    if (credential.status == 'minted') {
-      setMintProcessStatus(Subjects.alreadyMinted);
-    } else {
-      setMintProcessStatus(Subjects.default);
+    (!status || status == 'idle') &&
+      setMintProcessStatus(
+        credential.status == 'minted'
+          ? Subjects.alreadyMinted
+          : Subjects.default
+      );
+    status == 'asking_signature' && setMintProcessStatus(Subjects.sign);
+    status == 'minting' && setMintProcessStatus(Subjects.minting);
+    if (status == 'minted') {
+      setMintProcessStatus(Subjects.successful);
+      setTimeout(() => {
+        props.onMint && props.onMint();
+        setMintProcessStatus(Subjects.alreadyMinted);
+        // resetStatus();
+      }, 2500);
     }
-  }, [credential.status]);
+    status == 'error' && setMintProcessStatus(Subjects.failed);
+  }, [status, credential]);
 
   return (
     <Card

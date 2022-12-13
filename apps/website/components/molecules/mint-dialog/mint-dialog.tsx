@@ -1,8 +1,12 @@
-import { Dialog, DialogTitle, SxProps } from '@mui/material';
-import { Credentials } from '../../../services/graphql/types.generated';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+
 import { PartialDeep } from 'type-fest';
-import { Dispatch, SetStateAction, useState } from 'react';
+
+import { Dialog, DialogTitle, SxProps } from '@mui/material';
+
+import { useCredential } from '../../../hooks/use-credential';
 import { useBiconomy } from '../../../providers/biconomy';
+import { Credentials } from '../../../services/graphql/types.generated';
 import { MintSelect } from './screen/mint-select';
 import { Minting } from './screen/minting';
 
@@ -25,27 +29,28 @@ export function MintDialog({
   ...props
 }: MintDialogProps) {
   const [screen, setScreen] = useState<ScreenTypes>('mint');
-  const [error, setError] = useState<any | null>(null);
-  const { mintCredential: triggerMint } = useBiconomy();
+  // const { mintCredential: triggerMint, mintStatus } = useBiconomy();
+  const { mintCredential: triggerMint, status } = useCredential(credential);
 
-  const mint = () => {
-    const trigger = triggerMint(credential);
+  const mint = () => triggerMint(credential);
 
-    setScreen('minting');
+  useEffect(() => {
+    if (!status) {
+      setScreen('mint');
+      return;
+    }
 
-    trigger.then((value) => {
-      if (!value.error && value.isMinted) {
-        setScreen('successful');
-        setTimeout(() => {
-          setOpen(false);
-          props.onMint && props.onMint();
-        }, 2500);
-      } else {
-        setError(value.error);
-        setScreen('failed');
-      }
-    });
-  };
+    status == 'asking_signature' && setScreen('signin');
+    status == 'minting' && setScreen('minting');
+    if (status == 'minted') {
+      setScreen('successful');
+      setTimeout(() => {
+        setOpen(false);
+        props.onMint && props.onMint();
+      }, 2500);
+    }
+    status == 'error' && setScreen('failed');
+  }, [status]);
 
   const DialogScreen = {
     mint: <MintSelect {...{ setScreen, mint, setOpen }} />,

@@ -10,6 +10,7 @@ import { useAuth } from '../../../../../../../providers/auth';
 import {
   Task_Progress,
   Gates,
+  Complete_TaskMutation,
 } from '../../../../../../../services/graphql/types.generated';
 import { ManualTaskEventType } from '../../../../../../../types/tasks';
 import { LoadingButton } from '../../../../../../atoms/loading-button';
@@ -20,7 +21,10 @@ export type SubmissionDetailProps = {
   progress: PartialDeep<Task_Progress>;
   isSubmitEventLoading: boolean;
   latestSubmitEvent?: ManualTaskEventType;
-  onSubmitEvent: (event_type: ManualTaskEventType, data: any) => void;
+  onSubmitEvent: (
+    event_type: ManualTaskEventType,
+    data: any
+  ) => Promise<Complete_TaskMutation>;
 };
 
 export function SubmissionDetail({
@@ -32,7 +36,7 @@ export function SubmissionDetail({
 }: SubmissionDetailProps) {
   const { me, gqlAuthMethods } = useAuth();
   const { t } = useTranslation('gate-profile');
-  const { handleSubmit, register } = useForm({
+  const { handleSubmit, register, setValue } = useForm({
     defaultValues: {
       comment: '',
     },
@@ -46,7 +50,9 @@ export function SubmissionDetail({
 
   const onSubmit = handleSubmit(async (data) => {
     if (manualTaskEvents.isLoading) return;
-    onSubmitEvent('comment', data);
+    onSubmitEvent('comment', data)
+      .then((s) => setValue('comment', ''))
+      .catch((e) => setValue('comment', data.comment));
   });
 
   return (
@@ -54,7 +60,14 @@ export function SubmissionDetail({
       {manualTaskEvents.isLoading ? (
         <CircularProgress sx={{ alignSelf: 'center', my: 10 }} />
       ) : (
-        <Stack sx={{ px: 7.5, maxHeight: '400px', overflow: 'auto' }}>
+        <Stack
+          sx={{
+            px: 7.5,
+            overflow: 'auto',
+            flexGrow: 1,
+            pt: { lg: 2 },
+          }}
+        >
           <InterationList
             list={manualTaskEvents.data.manual_task_events}
             elevation={20}
@@ -63,13 +76,18 @@ export function SubmissionDetail({
           />
         </Stack>
       )}
-      <Stack component="form" onSubmit={onSubmit}>
+      <Stack
+        component="form"
+        onSubmit={onSubmit}
+        sx={{ minHeight: '285px', flexGrow: 0, height: 'auto' }}
+      >
         <Divider sx={{ width: '100%', mb: 5 }} />
         <Stack sx={{ px: 7.5, mb: 3 }}>
           <TextField
             multiline
             required
-            maxRows={3}
+            minRows={2}
+            rows={2}
             label={t('submissions.label')}
             id="comment-field"
             sx={{ mb: 2 }}
