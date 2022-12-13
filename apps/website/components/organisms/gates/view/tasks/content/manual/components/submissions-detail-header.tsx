@@ -49,7 +49,7 @@ export function SubmissionsDetailHeader({
       </Stack>
       <Stack direction="row" gap={1} alignItems="center">
         <LoadingButton
-          variant="outlined"
+          variant={progress.completed === 'reject' ? 'contained' : 'outlined'}
           color="error"
           disabled={isSubmitEventLoading || progress.completed === 'reject'}
           startIcon={<Cancel />}
@@ -59,7 +59,7 @@ export function SubmissionsDetailHeader({
           Reject
         </LoadingButton>
         <LoadingButton
-          variant="outlined"
+          variant={progress.completed === 'done' ? 'contained' : 'outlined'}
           color="success"
           startIcon={<CheckCircle />}
           isLoading={isSubmitEventLoading && latestSubmitEvent === 'approve'}

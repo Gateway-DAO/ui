@@ -1,7 +1,9 @@
 import useTranslation from 'next-translate/useTranslation';
+import Link from 'next/link';
 
 import { Stack, Typography } from '@mui/material';
 
+import { ROUTES } from '../../../../../../../../constants/routes';
 import Bullet from './bullet';
 
 export function SubmissionWaiting({ username }: { username: string }) {
@@ -27,7 +29,18 @@ export function SubmissionWaiting({ username }: { username: string }) {
         >
           {t('submissions.waiting_feedback')}
         </Typography>
-        <Typography fontSize={14}>{`@${username}`}</Typography>
+        <Link passHref href={ROUTES.PROFILE.replace('[username]', username)}>
+          <Typography
+            fontSize={14}
+            component="a"
+            target="_blank"
+            color="text.primary"
+            sx={{
+              textDecoration: 'none',
+              '&:hover': { textDecoration: 'underline' },
+            }}
+          >{`@${username}`}</Typography>
+        </Link>
       </Stack>
     </Stack>
   );

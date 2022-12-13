@@ -66,22 +66,12 @@ export function Task({
   completed: completedProp = false,
 }: Props) {
   const { me, gqlAuthMethods, onOpenLogin } = useAuth();
-
+  const taskProgress = me?.task_progresses.find(
+    (task_progress) => task_progress.task_id === task.id
+  );
+  const completed = taskProgress?.completed === 'done';
   const [expanded, toggleExpanded] = useToggle(isDefaultOpen);
-  const [completed, setCompleted] = useState(completedProp);
-  const [updatedAt, setUpdatedAt] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-
-  useEffect(() => {
-    const progressTaskIndex = me?.task_progresses
-      .filter((task) => task.completed === 'done')
-      .findIndex((task_progress) => task_progress.task_id === task.id);
-
-    if (progressTaskIndex !== undefined && progressTaskIndex !== -1) {
-      setCompleted(true);
-      setUpdatedAt(me?.task_progresses[progressTaskIndex].updated_at);
-    }
-  }, [task.id, me?.task_progresses, toggleExpanded]);
 
   useEffect(() => {
     toggleExpanded(isDefaultOpen);
@@ -246,7 +236,7 @@ export function Task({
             task={task}
             data={task.task_data}
             completed={completed}
-            updatedAt={updatedAt}
+            updatedAt={completed ? taskProgress?.updated_at : ''}
             completeTask={completeTask}
             readOnly={readOnly}
             isLoading={isLoading}
