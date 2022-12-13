@@ -195,7 +195,7 @@ export function Submissions({ gate, task }: Props) {
             isSubmitEventLoading={modifyTask.isLoading}
           />
         ) : (
-          <>
+          <Stack sx={{ overflow: 'auto', maxHeight: '100%' }}>
             {tasksSubmissions.pending?.length > 0 && (
               <SubmissionsList
                 title={t('submissions.pending_feedback')}
@@ -210,7 +210,7 @@ export function Submissions({ gate, task }: Props) {
                 onSelect={setDetailedTaskProgressId}
               />
             )}
-          </>
+          </Stack>
         )}
       </Stack>
     </Stack>
