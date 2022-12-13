@@ -19,10 +19,7 @@ import {
 } from '@mui/material';
 
 import { useAuth } from '../../../../../../../../providers/auth';
-import {
-  Task_Progress,
-  Manual_Task_Events,
-} from '../../../../../../../../services/graphql/types.generated';
+import { Task_Progress } from '../../../../../../../../services/graphql/types.generated';
 import { AvatarFile } from '../../../../../../../atoms/avatar-file';
 
 export type SubmissionsItemProps = {
