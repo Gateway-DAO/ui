@@ -39,7 +39,10 @@ export function Submissions({ gate, task }: Props) {
 
   const manualTasksSubmissions = useQuery(
     ['admin-manual-task-submissions', gate.id, me.id],
-    () => gqlAuthMethods.manual_tasks_progress({ gate_id: gate.id })
+    () => gqlAuthMethods.manual_tasks_progress({ gate_id: gate.id }),
+    {
+      refetchInterval: 10000,
+    }
   );
 
   const smallScreen = useMediaQuery('(max-height:799px)');

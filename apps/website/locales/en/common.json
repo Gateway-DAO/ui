@@ -58,6 +58,7 @@
     "change": "change",
     "check": "check",
     "clear": "clear",
+    "confirm": "confirm",
     "connect": "connect",
     "connected": "connected",
     "close": "close",

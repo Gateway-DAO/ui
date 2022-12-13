@@ -42,10 +42,33 @@ export function SubmissionDetail({
     },
   });
 
-  const manualTaskEvents = useQuery(['manual-task-events', progress.id], () =>
-    gqlAuthMethods.manual_task_events({
-      task_progress_id: progress.id,
-    })
+  const queryClient = useQueryClient();
+
+  const manualTaskEvents = useQuery(
+    ['manual-task-events', progress.id],
+    () =>
+      gqlAuthMethods.manual_task_events({
+        task_progress_id: progress.id,
+      }),
+    {
+      onSuccess() {
+        queryClient.refetchQueries(['user_task_progresses', me?.id]);
+      },
+      refetchInterval(data) {
+        if (
+          data?.manual_task_events.some(
+            ({ event_type }) =>
+              event_type === 'approve' || event_type === 'reject'
+          )
+        ) {
+          return false;
+        }
+        return 2000;
+      },
+      refetchOnMount: true,
+      refetchOnWindowFocus: false,
+      refetchIntervalInBackground: false,
+    }
   );
 
   const onSubmit = handleSubmit(async (data) => {

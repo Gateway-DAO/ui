@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import { PartialDeep } from 'type-fest';
 
 import { Cancel, CheckCircle } from '@mui/icons-material';
@@ -11,6 +13,7 @@ import {
 import { ManualTaskEventType } from '../../../../../../../../types/tasks';
 import { AvatarFile } from '../../../../../../../atoms/avatar-file';
 import { LoadingButton } from '../../../../../../../atoms/loading-button';
+import { SubmissionConfirmModal } from './submission-confirm-modal';
 
 type Props = {
   progress: PartialDeep<Task_Progress>;
@@ -29,54 +32,70 @@ export function SubmissionsDetailHeader({
   onBack,
   onSubmitEvent,
 }: Props) {
+  const [selectedEvent, setSelectedEvent] = useState<
+    Extract<ManualTaskEventType, 'approve' | 'reject'> | undefined
+  >();
+  const isCompleted =
+    progress.completed === 'reject' || progress.completed === 'done';
   return (
-    <Stack
-      sx={{ flex: 1, flexDirection: { lg: 'row', xs: 'column' } }}
-      justifyContent="space-between"
-    >
-      <Stack direction="row" gap={1} alignItems="center">
-        <IconButton
-          sx={{
-            p: 1,
-            background: 'rgba(229, 229, 229, 0.16)',
-          }}
-          onClick={onBack}
-          key="arrow-left"
-        >
-          <ArrowBackIcon sx={{ fontSize: 20 }} />
-        </IconButton>
-        <AvatarFile file={user.picture} fallback="/avatar.png"></AvatarFile>
-        <Typography
-          sx={{ flexGrow: 1, ml: 0.5 }}
-        >{`@${user.username}`}</Typography>
-      </Stack>
+    <>
       <Stack
         direction="row"
-        gap={1}
-        alignItems="center"
-        sx={{ mt: { xs: 2, lg: 0 } }}
+        justifyContent="space-between"
+        sx={{ flex: 1, flexDirection: { lg: 'row', xs: 'column' } }}
       >
-        <LoadingButton
-          variant={progress.completed === 'reject' ? 'contained' : 'outlined'}
-          color="error"
-          disabled={isSubmitEventLoading || progress.completed === 'reject'}
-          startIcon={<Cancel />}
-          isLoading={isSubmitEventLoading && latestSubmitEvent === 'reject'}
-          onClick={() => onSubmitEvent('reject')}
+        <Stack direction="row" gap={1} alignItems="center">
+          <IconButton
+            sx={{
+              p: 1,
+              background: 'rgba(229, 229, 229, 0.16)',
+            }}
+            onClick={onBack}
+            key="arrow-left"
+          >
+            <ArrowBackIcon sx={{ fontSize: 20 }} />
+          </IconButton>
+          <AvatarFile file={user.picture} fallback="/avatar.png"></AvatarFile>
+          <Typography
+            sx={{ flexGrow: 1, ml: 0.5 }}
+          >{`@${user.username}`}</Typography>
+        </Stack>
+        <Stack
+          direction="row"
+          gap={1}
+          alignItems="center"
+          sx={{ mt: { xs: 2, lg: 0 } }}
         >
-          Reject
-        </LoadingButton>
-        <LoadingButton
-          variant={progress.completed === 'done' ? 'contained' : 'outlined'}
-          color="success"
-          startIcon={<CheckCircle />}
-          isLoading={isSubmitEventLoading && latestSubmitEvent === 'approve'}
-          disabled={isSubmitEventLoading || progress.completed === 'done'}
-          onClick={() => onSubmitEvent('approve')}
-        >
-          Approve
-        </LoadingButton>
+          <LoadingButton
+            variant={progress.completed === 'reject' ? 'contained' : 'outlined'}
+            color="error"
+            startIcon={<Cancel />}
+            isLoading={isSubmitEventLoading && latestSubmitEvent === 'reject'}
+            disabled={isSubmitEventLoading || isCompleted}
+            onClick={() => setSelectedEvent('reject')}
+          >
+            Reject
+          </LoadingButton>
+          <LoadingButton
+            variant={progress.completed === 'done' ? 'contained' : 'outlined'}
+            color="success"
+            startIcon={<CheckCircle />}
+            isLoading={isSubmitEventLoading && latestSubmitEvent === 'approve'}
+            disabled={isSubmitEventLoading || isCompleted}
+            onClick={() => setSelectedEvent('approve')}
+          >
+            Approve
+          </LoadingButton>
+        </Stack>
       </Stack>
-    </Stack>
+      <SubmissionConfirmModal
+        selectedEvent={selectedEvent}
+        onCancel={() => setSelectedEvent(undefined)}
+        onSubmit={() => {
+          onSubmitEvent(selectedEvent);
+          setSelectedEvent(undefined);
+        }}
+      />
+    </>
   );
 }
