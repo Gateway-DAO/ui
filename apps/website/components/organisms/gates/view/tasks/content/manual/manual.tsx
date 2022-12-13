@@ -21,7 +21,6 @@ import LinkPreviewCard from './components/link-preview-card';
 const ManualContent = ({
   gate,
   task,
-  completed,
   updatedAt,
   completeTask,
   readOnly,
@@ -72,47 +71,49 @@ const ManualContent = ({
     setLink('');
   };
 
+  const completed =
+    currentTaskProgress?.completed === 'done' ||
+    currentTaskProgress?.completed === 'reject';
+
   return (
     <Stack marginTop={4} alignItems="start">
       {!readOnly && (
         <>
-          <Stack sx={{ width: '100%', mb: 5 }}>
-            <Stack
-              direction="row"
-              alignItems="center"
-              justifyContent="space-between"
-              gap={2}
-            >
-              {!completed && (
-                <>
-                  <TextField
-                    required
-                    label={t('tasks.manual.label')}
-                    id="submit-link-address"
-                    sx={{ flexGrow: 1 }}
-                    value={link}
-                    onChange={(e) => setLink(e.target.value)}
-                    error={!!linkPreview.error && !linkPreview.isFetching}
-                    helperText={
-                      (linkPreview.error as any)?.response?.errors[0]?.message
-                    }
-                  />
-                  <LoadingButton
-                    size="large"
-                    variant="contained"
-                    onClick={onSubmitLink}
-                    isLoading={isLoading}
-                    disabled={!linkPreview.data?.link_preview}
-                  >
-                    {t('tasks.manual.action')}
-                  </LoadingButton>
-                </>
+          {!completed && (
+            <Stack sx={{ width: '100%', mb: 5 }}>
+              <Stack
+                direction="row"
+                alignItems="center"
+                justifyContent="space-between"
+                gap={2}
+              >
+                <TextField
+                  required
+                  label={t('tasks.manual.label')}
+                  id="submit-link-address"
+                  sx={{ flexGrow: 1 }}
+                  value={link}
+                  onChange={(e) => setLink(e.target.value)}
+                  error={!!linkPreview.error && !linkPreview.isFetching}
+                  helperText={
+                    (linkPreview.error as any)?.response?.errors[0]?.message
+                  }
+                />
+                <LoadingButton
+                  size="large"
+                  variant="contained"
+                  onClick={onSubmitLink}
+                  isLoading={isLoading}
+                  disabled={!linkPreview.data?.link_preview}
+                >
+                  {t('tasks.manual.action')}
+                </LoadingButton>
+              </Stack>
+              {linkPreview.data?.link_preview && (
+                <LinkPreviewCard {...linkPreview.data.link_preview} />
               )}
             </Stack>
-            {linkPreview.data?.link_preview && (
-              <LinkPreviewCard {...linkPreview.data.link_preview} />
-            )}
-          </Stack>
+          )}
           {isManualTaskEventsEnabled && manualTaskEvents.isLoading && (
             <CircularProgress />
           )}
