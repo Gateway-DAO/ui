@@ -54,6 +54,23 @@ const ManualContent = ({
       }),
     {
       enabled: isManualTaskEventsEnabled,
+      onSuccess() {
+        queryClient.refetchQueries(['user_task_progresses', me?.id]);
+      },
+      refetchInterval(data) {
+        if (
+          data?.manual_task_events.some(
+            ({ event_type }) =>
+              event_type === 'approve' || event_type === 'reject'
+          )
+        ) {
+          return false;
+        }
+        return 2000;
+      },
+      refetchOnMount: true,
+      refetchOnWindowFocus: false,
+      refetchIntervalInBackground: false,
     }
   );
 
