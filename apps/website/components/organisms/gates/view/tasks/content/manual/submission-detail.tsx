@@ -79,9 +79,9 @@ export function SubmissionDetail({
       <Stack
         component="form"
         onSubmit={onSubmit}
-        sx={{ minHeight: '285px', flexGrow: 0, height: 'auto' }}
+        sx={{ minHeight: '270px', flexGrow: 0, height: 'auto' }}
       >
-        <Divider sx={{ width: '100%', mb: 5 }} />
+        <Divider sx={{ width: '100%', mb: 3 }} />
         <Stack sx={{ px: 7.5, mb: 3 }}>
           <TextField
             multiline

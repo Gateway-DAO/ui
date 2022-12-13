@@ -53,7 +53,7 @@ export function Submissions({ gate, task }: Props) {
     } else if (mediumScreen) {
       return '650px';
     } else {
-      return '900px';
+      return '850px';
     }
   };
 
@@ -179,7 +179,7 @@ export function Submissions({ gate, task }: Props) {
         sx={{
           width: '100%',
           borderRadius: '8px 8px 0 0',
-          py: expanded ? 2 : 0,
+          pb: expanded ? 2 : 0,
           height: expanded ? componentHeight() : 0,
           opacity: expanded ? 1 : 0,
           transition: 'all .3s ease',
