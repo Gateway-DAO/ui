@@ -23,15 +23,15 @@ export function GatePublishedNotification({ data, timestamp }: Props) {
 
   const daoProfileUrl = ROUTES.DAO_PROFILE.replace(
     '[slug]',
-    data.dao_name?.toLowerCase()
+    data?.dao_name?.toLowerCase()
   );
-  const gateUrl = ROUTES.GATE_PROFILE.replace('[id]', data.gate_id);
+  const gateUrl = ROUTES.GATE_PROFILE.replace('[id]', data?.gate_id);
 
   return (
     <Stack direction="row" gap={2} alignItems="center">
       <Link passHref href={daoProfileUrl}>
         <AvatarFile
-          file={data.dao_img_url as any}
+          file={data?.dao_img_url as any}
           component="a"
           target="_blank"
         />
@@ -46,7 +46,7 @@ export function GatePublishedNotification({ data, timestamp }: Props) {
               sx={{ textDecoration: 'none' }}
             >
               <Typography component="span" sx={{ textDecoration: 'underline' }}>
-                {data.dao_name}
+                {data?.dao_name}
               </Typography>
             </Typography>
           </Link>{' '}
@@ -62,7 +62,7 @@ export function GatePublishedNotification({ data, timestamp }: Props) {
             >
               <Typography component="span" sx={{ textDecoration: 'underline' }}>
                 {' '}
-                {data.gate_name}
+                {data?.gate_name}
               </Typography>
             </Typography>
           </Link>{' '}

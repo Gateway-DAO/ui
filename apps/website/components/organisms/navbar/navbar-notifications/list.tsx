@@ -35,7 +35,11 @@ export function NotificationList({ redisNotifications }) {
             event_type={notification.event_type}
             opened={notification.opened}
             timestamp={notification.timestamp}
-            data={notification.data}
+            data={
+              notification.data ?? {
+                ...notification,
+              }
+            }
           />
         ) : (
           <NotificationMethods key={notification.id} {...notification}>
