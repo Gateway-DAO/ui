@@ -53,6 +53,10 @@
     "approved_submission": "approved the submission",
     "waiting_feedback": "Waiting for feedback from",
     "just_now": "just now",
-    "label": "Ask a question or request"
+    "label": "Ask a question or request",
+    "dialog_title": "Are you sure you want to",
+    "dialog_text": "This action cannot be undone",
+    "approve": "approve",
+    "reject": "reject"
   }
 }

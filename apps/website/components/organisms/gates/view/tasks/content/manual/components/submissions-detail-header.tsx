@@ -1,3 +1,4 @@
+import useTranslation from 'next-translate/useTranslation';
 import { useState } from 'react';
 
 import { PartialDeep } from 'type-fest';
@@ -6,6 +7,7 @@ import { Cancel, CheckCircle } from '@mui/icons-material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { IconButton, Stack, Typography } from '@mui/material';
 
+import ConfirmDialog from '../../../../../../../../components/organisms/confirm-dialog/confirm-dialog';
 import {
   Users,
   Task_Progress,
@@ -13,7 +15,6 @@ import {
 import { ManualTaskEventType } from '../../../../../../../../types/tasks';
 import { AvatarFile } from '../../../../../../../atoms/avatar-file';
 import { LoadingButton } from '../../../../../../../atoms/loading-button';
-import { SubmissionConfirmModal } from './submission-confirm-modal';
 
 type Props = {
   progress: PartialDeep<Task_Progress>;
@@ -37,6 +38,7 @@ export function SubmissionsDetailHeader({
   >();
   const isCompleted =
     progress.completed === 'reject' || progress.completed === 'done';
+  const { t } = useTranslation('gate-profile');
   return (
     <>
       <Stack
@@ -74,7 +76,7 @@ export function SubmissionsDetailHeader({
             disabled={isSubmitEventLoading || isCompleted}
             onClick={() => setSelectedEvent('reject')}
           >
-            Reject
+            {t('submissions.reject')}
           </LoadingButton>
           <LoadingButton
             variant={progress.completed === 'done' ? 'contained' : 'outlined'}
@@ -84,18 +86,24 @@ export function SubmissionsDetailHeader({
             disabled={isSubmitEventLoading || isCompleted}
             onClick={() => setSelectedEvent('approve')}
           >
-            Approve
+            {t('submissions.approve')}
           </LoadingButton>
         </Stack>
       </Stack>
-      <SubmissionConfirmModal
-        selectedEvent={selectedEvent}
-        onCancel={() => setSelectedEvent(undefined)}
-        onSubmit={() => {
-          onSubmitEvent(selectedEvent);
-          setSelectedEvent(undefined);
-        }}
-      />
+      <ConfirmDialog
+        title={`${t('submissions.dialog_title')} ${
+          selectedEvent === 'approve'
+            ? t('submissions.approve')
+            : t('submissions.reject')
+        }`}
+        open={!!selectedEvent}
+        setOpen={() => setSelectedEvent(undefined)}
+        positiveAnswer={t('common:actions.confirm')}
+        negativeAnswer={t('common:actions.cancel')}
+        onConfirm={() => onSubmitEvent(selectedEvent)}
+      >
+        {t('submissions.dialog_text')}
+      </ConfirmDialog>
     </>
   );
 }
