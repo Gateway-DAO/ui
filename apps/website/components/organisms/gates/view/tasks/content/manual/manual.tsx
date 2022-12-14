@@ -43,7 +43,6 @@ const ManualContent = ({
     async () => gqlAuthMethods.link_preview({ url: throttledLink }),
     { enabled: throttledLink?.length > 5, retry: false }
   );
-
   const isManualTaskEventsEnabled = !!currentTaskProgress?.id;
 
   const manualTaskEvents = useQuery(
@@ -77,7 +76,10 @@ const ManualContent = ({
   const onSubmitLink = async () => {
     await completeTask({
       event_type: 'send_link',
-      data: { link: linkPreview.data?.link_preview },
+      data: {
+        link: linkPreview.data?.link_preview,
+        task_progress_id: currentTaskProgress?.id,
+      },
     });
     manualTaskEvents.remove();
     queryClient.removeQueries([
