@@ -48,8 +48,6 @@ const callRefresh = async (token: SessionToken): Promise<SessionToken> => {
       user_id: token.user_id,
     };
   } catch (e) {
-    console.log(e);
-
     return {
       ...token,
       error: 'RefreshAccessTokenError',
