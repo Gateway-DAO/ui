@@ -1,3 +1,4 @@
+import useTranslation from 'next-translate/useTranslation';
 import Link from 'next/link';
 
 import { useQuery } from '@tanstack/react-query';
@@ -23,6 +24,7 @@ type Props = {
 
 export function ManualTaskEventNotification({ data, timestamp }: Props) {
   const { gqlAuthMethods } = useAuth();
+  const { t } = useTranslation('notifications');
   const userInfo = useQuery(
     ['user', data.issuer_id],
     () => gqlAuthMethods.user_by_id({ id: data.issuer_id }),
@@ -67,7 +69,10 @@ export function ManualTaskEventNotification({ data, timestamp }: Props) {
             </Typography>
           </Link>{' '}
           <Typography component="span" color="text.secondary">
-            {data.event_type}
+            {data.event_type == 'comment' && `${t('manual.comment')}`}
+            {data.event_type == 'approve' && `${t('manual.approve')}`}
+            {data.event_type == 'reject' && `${t('manual.reject')}`}
+            {data.event_type == 'send_link' && `${t('manual.send_link')}`}
           </Typography>
           <Link passHref href={gateUrl}>
             <Typography
