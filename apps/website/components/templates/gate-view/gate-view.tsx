@@ -95,7 +95,7 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
       ? directCredentialInfo.data?.hasCredential?.aggregate?.count > 0
       : completedTasksCount === gateProps?.tasks?.length;
 
-  const taskIds = gateProps?.tasks.map((task) => task.id);
+  const taskIds = gateProps?.tasks?.map((task) => task.id);
 
   useEffect(() => {
     const completedTaskIds =
