@@ -56,11 +56,12 @@ export const useCredential = (credential: PartialDeep<Credentials>) => {
 
   const mintOptions = {
     onMutate: () => setStatus('minting'),
-    onSuccess: async () => {
-      onInvalidateMe();
+    onSuccess: () => {
+      // queryClient.refetchQueries(['credentials']);
+      // queryClient.resetQueries(['credential', credential.id]);
+      window.location.reload();
 
-      queryClient.resetQueries(['credentials']);
-      queryClient.resetQueries(['credential', credential.id]);
+      onInvalidateMe();
 
       setStatus('minted');
     },
@@ -104,10 +105,6 @@ export const useCredential = (credential: PartialDeep<Credentials>) => {
         throw new Error('You are not the owner of this credential');
       }
 
-      if (chain.id !== parseInt(process.env.NEXT_PUBLIC_CHAIN_ID)) {
-        await switchNetworkAsync?.(parseInt(process.env.NEXT_PUBLIC_CHAIN_ID));
-      }
-
       // 2. mint the NFT
       if (isGasless) {
         const { mint_credential } = await mintGasless({ id: credential.id });
@@ -116,6 +113,10 @@ export const useCredential = (credential: PartialDeep<Credentials>) => {
           isMinted: true,
           transactionUrl: mint_credential.info.transaction_hash,
         };
+      }
+
+      if (chain.id !== parseInt(process.env.NEXT_PUBLIC_CHAIN_ID)) {
+        await switchNetworkAsync?.(parseInt(process.env.NEXT_PUBLIC_CHAIN_ID));
       }
 
       await contractMint({
