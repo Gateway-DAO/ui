@@ -1,11 +1,13 @@
 import useTranslation from 'next-translate/useTranslation';
 
 import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useSnackbar } from 'notistack';
 import { useForm } from 'react-hook-form';
 import { PartialDeep } from 'type-fest';
 
 import { CircularProgress, Divider, Stack, TextField } from '@mui/material';
 
+import { taskErrorMessages } from '../../../../../../../components/organisms/tasks/task-error-messages';
 import { useAuth } from '../../../../../../../providers/auth';
 import {
   Task_Progress,
@@ -42,6 +44,7 @@ export function SubmissionDetail({
     },
   });
 
+  const { enqueueSnackbar } = useSnackbar();
   const queryClient = useQueryClient();
 
   const manualTaskEvents = useQuery(
@@ -74,8 +77,18 @@ export function SubmissionDetail({
   const onSubmit = handleSubmit(async (data) => {
     if (manualTaskEvents.isLoading) return;
     onSubmitEvent('comment', data)
-      .then((s) => setValue('comment', ''))
-      .catch((e) => setValue('comment', data.comment));
+      .then(() => setValue('comment', ''))
+      .catch((error) => {
+        if (error?.response?.errors[0]?.message) {
+          enqueueSnackbar(
+            taskErrorMessages[error?.response?.errors[0]?.message] ||
+              taskErrorMessages['UNEXPECTED_ERROR'],
+            {
+              variant: 'error',
+            }
+          );
+        }
+      });
   });
 
   return (
@@ -118,10 +131,11 @@ export function SubmissionDetail({
           <LoadingButton
             type="submit"
             variant="contained"
+            sx={{ textTransform: 'capitalize' }}
             isLoading={isSubmitEventLoading && latestSubmitEvent === 'comment'}
             disabled={isSubmitEventLoading || manualTaskEvents.isLoading}
           >
-            Submit
+            {t('common:actions.submit')}
           </LoadingButton>
         </Stack>
       </Stack>

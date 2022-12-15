@@ -8,6 +8,7 @@ import { PartialDeep } from 'type-fest';
 
 import { Stack, useMediaQuery } from '@mui/material';
 
+import { taskErrorMessages } from '../../../../../../../components/organisms/tasks/task-error-messages';
 import { useAuth } from '../../../../../../../providers/auth';
 import {
   Tasks,
@@ -120,10 +121,16 @@ export function Submissions({ gate, task }: Props) {
           detailedTaskProgress?.id,
         ]);
       },
-      onError: (error: any) => {
-        snackbar.enqueueSnackbar(error?.response?.errors?.[0]?.message, {
-          variant: 'error',
-        });
+      onError(error: any) {
+        if (error?.response?.errors[0]?.message) {
+          snackbar.enqueueSnackbar(
+            taskErrorMessages[error?.response?.errors[0]?.message] ||
+              taskErrorMessages['UNEXPECTED_ERROR'],
+            {
+              variant: 'error',
+            }
+          );
+        }
       },
     }
   );

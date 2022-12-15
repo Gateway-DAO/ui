@@ -65,6 +65,7 @@
     "loading": "loading",
     "disconnect": "disconnect",
     "cancel": "cancel",
+    "submit": "submit",
     "got-it": "got it",
     "follow": "Follow",
     "unfollow": "Unfollow",

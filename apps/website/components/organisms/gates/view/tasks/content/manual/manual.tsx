@@ -2,7 +2,8 @@ import useTranslation from 'next-translate/useTranslation';
 import { useState } from 'react';
 
 import { useThrottle } from '@corets/use-throttle';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useSnackbar } from 'notistack';
 
 import {
   CircularProgress,
@@ -12,6 +13,7 @@ import {
   Typography,
 } from '@mui/material';
 
+import { taskErrorMessages } from '../../../../../../../components/organisms/tasks/task-error-messages';
 import { useAuth } from '../../../../../../../providers/auth';
 import { LoadingButton } from '../../../../../../atoms/loading-button';
 import { TaskProps } from '../types';
@@ -35,6 +37,7 @@ const ManualContent = ({
   );
 
   const queryClient = useQueryClient();
+  const { enqueueSnackbar } = useSnackbar();
 
   const throttledLink = useThrottle(link, 1000);
 
@@ -66,6 +69,17 @@ const ManualContent = ({
           return false;
         }
         return 2000;
+      },
+      onError(error: any) {
+        if (error?.response?.errors[0]?.message) {
+          enqueueSnackbar(
+            taskErrorMessages[error?.response?.errors[0]?.message] ||
+              taskErrorMessages['UNEXPECTED_ERROR'],
+            {
+              variant: 'error',
+            }
+          );
+        }
       },
       refetchOnMount: true,
       refetchOnWindowFocus: false,
