@@ -58,7 +58,7 @@ export function CategoriesList({
         justifyContent={'space-between'}
         ref={parentRef}
       >
-        <Stack direction="row" spacing={1} px={2} pt={1} pb={2} {...props}>
+        <Stack direction="row" spacing={1} px={2} pt={1}  {...props}>
           {categories.map((category, index) => {
             const formattedLabel =
               category.charAt(0).toUpperCase() + category.slice(1);
