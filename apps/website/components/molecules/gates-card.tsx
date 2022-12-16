@@ -192,6 +192,7 @@ export function GatesCard({
           </Link>
         )}
         <Typography
+          height={40}
           variant="body2"
           color="text.secondary"
           sx={{
