@@ -34,6 +34,8 @@ import TwitterRetweetContent from '../gates/view/tasks/content/twitter_retweet';
 import TwitterTweetContent from '../gates/view/tasks/content/twitter_tweet';
 import { taskErrorMessages } from './task-error-messages';
 
+import { TaskIcon } from '../../atoms/task-icon';
+
 type Props = {
   idx?: number;
   gate: PartialDeep<Gates>;
@@ -187,7 +189,7 @@ export function Task({
         borderLeft: 'none',
         borderTop: 'none',
         backgroundColor: 'transparent !important',
-        backgroundImage: 'none !important',
+        backgroundImage: !expanded && 'none !important',
         px: { xs: theme.spacing(1), md: theme.spacing(7) },
         py: { xs: theme.spacing(1), md: theme.spacing(5) },
         position: 'relative',
@@ -196,11 +198,10 @@ export function Task({
       <CardHeader
         avatar={
           <Avatar
+            variant="rounded"
             sx={{
               backgroundColor: completed
                 ? '#6DFFB9'
-                : expanded
-                ? 'white'
                 : 'transparent',
               color: (theme) =>
                 expanded ? theme.palette.background.default : 'white',
@@ -210,7 +211,7 @@ export function Task({
             {completed ? (
               <CheckIcon htmlColor="#10041C" />
             ) : (
-              idx || task.title[0]
+              <TaskIcon type={task.task_type}/>
             )}
           </Avatar>
         }

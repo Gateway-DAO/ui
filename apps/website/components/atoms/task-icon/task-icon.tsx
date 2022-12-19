@@ -10,6 +10,7 @@ import NumbersIcon from '@mui/icons-material/Numbers';
 import PhotoCameraBackIcon from '@mui/icons-material/PhotoCameraBack';
 import QuizIcon from '@mui/icons-material/Quiz';
 import Twitter from '@mui/icons-material/Twitter';
+import KeyIcon from '@mui/icons-material/Key';
 import { SvgIcon, SvgIconProps } from '@mui/material';
 import { SxProps } from '@mui/material';
 import Box from '@mui/material/Box';
@@ -29,6 +30,7 @@ const iconBgColor: Record<TaskType, string> = {
   github_prs: '#4A4F57',
   snapshot: '#F3B04E',
   manual: '#9A53FF',
+  recaptcha: '#9A53FF',
 };
 const typeIcons: Record<TaskType, SvgIconComponent> = {
   self_verify: InsertLinkIcon,
@@ -43,6 +45,7 @@ const typeIcons: Record<TaskType, SvgIconComponent> = {
   github_prs: GitHubIcon,
   snapshot: ElectricBoltIcon,
   manual: CheckCircleIcon,
+  recaptcha: KeyIcon,
 };
 
 export function TaskIcon({ type, sx }: { type: TaskType; sx?: SxProps }) {
