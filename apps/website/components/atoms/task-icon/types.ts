@@ -9,4 +9,5 @@ export type TaskType =
   | 'twitter_tweet'
   | 'github_contribute'
   | 'github_prs'
-  | 'snapshot';
+  | 'snapshot'
+  | 'recaptcha';

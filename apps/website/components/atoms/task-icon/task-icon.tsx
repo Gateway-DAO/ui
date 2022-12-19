@@ -7,6 +7,7 @@ import NumbersIcon from '@mui/icons-material/Numbers';
 import QuizIcon from '@mui/icons-material/Quiz';
 import StarIcon from '@mui/icons-material/Star';
 import Twitter from '@mui/icons-material/Twitter';
+import KeyIcon from '@mui/icons-material/Key';
 import Box from '@mui/material/Box';
 import { SvgIcon, SvgIconProps } from '@mui/material';
 import { useMemo } from 'react';
@@ -27,6 +28,7 @@ export function TaskIcon({ type, sx }: { type: TaskType; sx?: SxProps }) {
       github_contribute: '#4A4F57',
       github_prs: '#4A4F57',
       snapshot: '#F3B04E',
+      recaptcha: '#9A53FF',
     } ?? '#9A53FF';
 
   const iconComponent = useMemo(() => {
@@ -42,6 +44,7 @@ export function TaskIcon({ type, sx }: { type: TaskType; sx?: SxProps }) {
       github_contribute: GitHubIcon,
       github_prs: GitHubIcon,
       snapshot: ElectricBoltIcon,
+      recaptcha: KeyIcon,
     };
 
     return types[type] || null;
