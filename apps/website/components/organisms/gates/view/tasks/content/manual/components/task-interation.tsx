@@ -8,7 +8,7 @@ import { ISOToString } from '@gateway/helpers';
 import { Stack, Typography } from '@mui/material';
 
 import { ROUTES } from '../../../../../../../../constants/routes';
-import { Manual_Task_Events } from '../../../../../../../../services/hasura/graphql/types.generated';
+import { Manual_Task_Events } from '../../../../../../../../services/hasura/types';
 import Bullet from './bullet';
 import CommentCard from './comment-card';
 import LinkPreviewCard from './link-preview-card';
