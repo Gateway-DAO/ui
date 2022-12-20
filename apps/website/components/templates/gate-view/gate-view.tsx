@@ -114,8 +114,8 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
 
   const handleClose = () => setOpen(false);
 
-  const countSimiliarIds = (arr1: string[], arr2: string[]) => {
-    return arr1.filter((id) => arr2.includes(id)).length;
+  const countSimiliarIds = (arr1: string[], arr2?: string[]) => {
+    return arr1.filter((id) => !!arr2?.includes(id)).length;
   };
 
   const credential_id = me?.credentials?.find(
