@@ -6,7 +6,7 @@ import { TOKENS } from '@gateway/theme';
 import { Box, CircularProgress, Grid, Stack } from '@mui/material';
 
 import { useAuth } from '../../../../providers/auth';
-import { Gates } from '../../../../services/graphql/types.generated';
+import { Gates } from '../../../../services/hasura/types';
 import { ClientNav } from '../../../organisms/navbar/client-nav';
 import {
   DirectWalletsHeader,

@@ -3,7 +3,7 @@ import useTranslation from 'next-translate/useTranslation';
 import { Button } from '@mui/material';
 
 import { useAuth } from '../../../providers/auth';
-import { BiConnState } from '../../../services-cyberconnect/types.generated';
+import { BiConnState } from '../../../services/cyberconnect/types';
 import { FollowUserButton } from './follow-user';
 import { FriendReceivedPendingButton } from './pending-received';
 import { FriendSentPendingButton } from './pending-sent';

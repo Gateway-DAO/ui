@@ -5,7 +5,7 @@ import { TOKENS } from '@gateway/theme';
 import { Box, Grid, Stack, Typography } from '@mui/material';
 
 import { useAuth } from '../../../providers/auth';
-import { Gates } from '../../../services/graphql/types.generated';
+import { Gates } from '../../../services/hasura/types';
 import CircularProgressWithLabel from '../../atoms/circular-progress-label';
 import { SubmissionDetail } from '../../organisms/gates/view/tasks/content/manual/submission-detail';
 import { Submissions } from '../../organisms/gates/view/tasks/content/manual/submissions';

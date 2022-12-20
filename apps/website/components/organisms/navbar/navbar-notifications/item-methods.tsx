@@ -5,8 +5,8 @@ import { PartialDeep } from 'type-fest';
 
 import { useBidirectionFollow } from '../../../../hooks/use-bidirectional-follow';
 import { useCyberConnect } from '../../../../providers/cyberconnect';
-import { gqlAnonMethods } from '../../../../services/api';
-import { Users } from '../../../../services/graphql/types.generated';
+import { gqlAnonMethods } from '../../../../services/hasura/api';
+import { Users } from '../../../../services/hasura/types';
 import type { Notification } from '../../../../types/cyberconnect';
 
 export type Methods = {

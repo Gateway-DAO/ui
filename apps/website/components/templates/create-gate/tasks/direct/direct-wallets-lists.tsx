@@ -21,7 +21,7 @@ import {
   BoxProps,
 } from '@mui/material';
 
-import { VerifyCsvProgressOutput } from '../../../../../services/graphql/types.generated';
+import { VerifyCsvProgressOutput } from '../../../../../services/hasura/types';
 import { UserListItem } from '../../../../molecules/user-list-item';
 import { ValidatedWallet } from './types';
 

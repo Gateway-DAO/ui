@@ -7,7 +7,7 @@
 import {
   BiConnectReceivedNotification,
   BidirectionalConnection,
-} from '../services-cyberconnect/types.generated';
+} from '../services/cyberconnect/types';
 
 export type Notification = Pick<
   BiConnectReceivedNotification,

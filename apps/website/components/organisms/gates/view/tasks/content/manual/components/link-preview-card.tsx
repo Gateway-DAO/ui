@@ -10,7 +10,7 @@ import {
   Typography,
 } from '@mui/material';
 
-import { LinkPreviewOutput } from '../../../../../../../../services/graphql/types.generated';
+import { LinkPreviewOutput } from '../../../../../../../../services/hasura/types';
 
 type LinkPreviewCardProps = LinkPreviewOutput & {
   elevation?: number;

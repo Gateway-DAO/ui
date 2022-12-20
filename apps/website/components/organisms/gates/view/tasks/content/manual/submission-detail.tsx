@@ -13,7 +13,7 @@ import {
   Task_Progress,
   Gates,
   Complete_TaskMutation,
-} from '../../../../../../../services/graphql/types.generated';
+} from '../../../../../../../services/hasura/types';
 import { ManualTaskEventType } from '../../../../../../../types/tasks';
 import { LoadingButton } from '../../../../../../atoms/loading-button';
 import { InterationList } from './components/interation-list';

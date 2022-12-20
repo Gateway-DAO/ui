@@ -2,7 +2,7 @@ import { getSession } from 'next-auth/react';
 
 import { GraphQLClient } from 'graphql-request';
 
-import { getSdk, SdkFunctionWrapper } from './graphql/types.generated';
+import { getSdk, SdkFunctionWrapper } from './types';
 
 export type GqlMethods = ReturnType<typeof getSdk>;
 

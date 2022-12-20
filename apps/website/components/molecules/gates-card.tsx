@@ -15,7 +15,7 @@ import Typography from '@mui/material/Typography';
 
 import { useAuth } from '../../../website/providers/auth';
 import { ROUTES } from '../../constants/routes';
-import { Gates } from '../../services/graphql/types.generated';
+import { Gates } from '../../services/hasura/types';
 import { badgeProps } from '../../utils/badge-props';
 import { AvatarFile } from '../atoms/avatar-file';
 import MorePopover from '../atoms/more-popover';
