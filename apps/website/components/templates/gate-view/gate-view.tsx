@@ -583,7 +583,7 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
               </Typography>
             </Grid>
             <Grid item xs={8}>
-              {gateProps?.skills.map((skill, idx) => (
+              {gateProps?.skills?.map((skill, idx) => (
                 <Chip
                   key={'skill-' + (idx + 1)}
                   label={skill}
