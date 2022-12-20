@@ -14,6 +14,7 @@ import GithubContributeTask from '../../molecules/add-task/github/contribute-tas
 import GithubPRTask from '../../molecules/add-task/github/pr-task';
 import HoldNFTTask from '../../molecules/add-task/hold-nft-task/hold-nft-task';
 import HoldTokenTask from '../../molecules/add-task/hold-token-task/hold-token-task';
+import { ManualTask } from '../../molecules/add-task/manual/manual-task';
 import {
   QuizTask,
   createQuestion,
@@ -37,6 +38,7 @@ const TaskComponents = {
   twitter_retweet: TwitterRetweetTask,
   github_contribute: GithubContributeTask,
   github_prs: GithubPRTask,
+  manual: ManualTask,
 };
 
 const defaultTaskData = (
@@ -258,7 +260,7 @@ const TaskArea = ({ draftTasks, onDelete }: TaskAreaProps) => {
           )}
         </Droppable>
         {!enableTaskReordering && (
-          <AddTaskCard numberOfTasks={fields.length} addTask={addTask} />
+          <AddTaskCard tasks={fields} addTask={addTask} />
         )}
       </DragDropContext>
     </>

@@ -35,8 +35,6 @@ export function PeopleTab() {
       page.daos_by_pk.followers.flatMap((follower) => follower.user)
     ) ?? [];
 
-  console.log(people);
-
   const rowVirtualizer = useWindowVirtualizer({
     count: hasNextPage ? people.length + 1 : people.length,
     estimateSize: () => 78.9,

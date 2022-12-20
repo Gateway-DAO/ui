@@ -38,4 +38,8 @@ export const taskErrorMessages = {
   INVALID_CODE_VERIFICATION: `Invalid code verification`,
   MAXIMUM_ATTEMPTS_REACHED: `Maximum attempts reached`,
   GATE_CLAIM_LIMIT: `You can no longer complete tasks for this credential.`,
+  TASK_ALREADY_REJECTED: `The task has already been rejected.`,
+  TASK_ALREADY_APPROVED: `The task has already been approved.`,
+  NOT_ALLOWED_TO_APPROVE_OR_REJECT: `Not allowed to approve or reject`,
+  INVALID_EVENT_TYPE: `An error ocurred trying to send the event`,
 };

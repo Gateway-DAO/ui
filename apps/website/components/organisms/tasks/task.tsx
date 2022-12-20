@@ -2,8 +2,7 @@ import { useEffect, useState } from 'react';
 
 import { useMutation } from '@tanstack/react-query';
 import { useToggle } from 'react-use';
-import { PartialObjectDeep } from 'type-fest/source/partial-deep';
-import { useAccount } from 'wagmi';
+import { PartialDeep } from 'type-fest';
 
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import CheckIcon from '@mui/icons-material/Check';
@@ -18,11 +17,12 @@ import {
 } from '@mui/material';
 
 import { useAuth } from '../../../providers/auth';
-import { Tasks } from '../../../services/graphql/types.generated';
+import { Tasks, Gates } from '../../../services/graphql/types.generated';
 import { queryClient } from '../../../services/query-client';
 import { getMapValueFromObject } from '../../../utils/map-object';
 import GithubContributeContent from '../gates/view/tasks/content/github_contribute';
 import GithubPRContent from '../gates/view/tasks/content/github_prs';
+import ManualContent from '../gates/view/tasks/content/manual/manual';
 import MeetingCodeContent from '../gates/view/tasks/content/meeting_code';
 import NFTHoldContent from '../gates/view/tasks/content/nft_hold';
 import QuizContent from '../gates/view/tasks/content/quiz';
@@ -36,7 +36,8 @@ import { taskErrorMessages } from './task-error-messages';
 
 type Props = {
   idx?: number;
-  task?: PartialObjectDeep<Tasks>;
+  gate: PartialDeep<Gates>;
+  task?: PartialDeep<Tasks>;
   isDefaultOpen?: boolean;
   readOnly?: boolean;
   completed?: boolean;
@@ -56,30 +57,21 @@ interface Error {
 }
 
 export function Task({
-  task,
   idx,
+  gate,
+  task,
   isDefaultOpen,
   readOnly,
   isAdmin = false,
   completed: completedProp = false,
 }: Props) {
   const { me, gqlAuthMethods, onOpenLogin } = useAuth();
-
+  const taskProgress = me?.task_progresses.find(
+    (task_progress) => task_progress.task_id === task.id
+  );
+  const completed = taskProgress?.completed === 'done';
   const [expanded, toggleExpanded] = useToggle(isDefaultOpen);
-  const [completed, setCompleted] = useState(completedProp);
-  const [updatedAt, setUpdatedAt] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-
-  useEffect(() => {
-    const progressTaskIndex = me?.task_progresses
-      .filter((task) => task.completed === 'done')
-      .findIndex((task_progress) => task_progress.task_id === task.id);
-
-    if (progressTaskIndex !== undefined && progressTaskIndex !== -1) {
-      setCompleted(true);
-      setUpdatedAt(me?.task_progresses[progressTaskIndex].updated_at);
-    }
-  }, [task.id, me?.task_progresses, toggleExpanded]);
 
   useEffect(() => {
     toggleExpanded(isDefaultOpen);
@@ -131,6 +123,10 @@ export function Task({
         title: 'Hold NFT',
         body: NFTHoldContent,
       },
+      manual: {
+        title: 'Submit Link',
+        body: ManualContent,
+      },
     };
 
     return (
@@ -141,7 +137,7 @@ export function Task({
     );
   };
 
-  const { mutate: completeTaskMutation, isLoading } = useMutation(
+  const { mutateAsync: completeTaskMutation, isLoading } = useMutation(
     ['completeTask', { gateId: task.gate_id, taskId: task.id }],
     gqlAuthMethods.complete_task,
     {
@@ -155,7 +151,7 @@ export function Task({
     }
   );
 
-  const completeTask = (info) => {
+  const completeTask = async (info) => {
     if (!me) {
       return onOpenLogin();
     }
@@ -165,7 +161,7 @@ export function Task({
       info,
     };
 
-    completeTaskMutation(data, {
+    await completeTaskMutation(data, {
       onSuccess: () => {
         setErrorMessage('');
       },
@@ -194,6 +190,7 @@ export function Task({
         backgroundImage: 'none !important',
         px: { xs: theme.spacing(1), md: theme.spacing(7) },
         py: { xs: theme.spacing(1), md: theme.spacing(5) },
+        position: 'relative',
       })}
     >
       <CardHeader
@@ -231,11 +228,15 @@ export function Task({
       />
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent sx={{ marginLeft: { xs: '0px', md: '55px' } }}>
-          <Typography variant="subtitle2">{task.description}</Typography>
+          <Typography variant="subtitle2" fontSize={16}>
+            {task.description}
+          </Typography>
           <TaskComponent
+            gate={gate}
+            task={task}
             data={task.task_data}
             completed={completed}
-            updatedAt={updatedAt}
+            updatedAt={completed ? taskProgress?.updated_at : ''}
             completeTask={completeTask}
             readOnly={readOnly}
             isLoading={isLoading}

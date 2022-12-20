@@ -5,8 +5,8 @@ import { NotificationType } from '../../../../services-cyberconnect/types.genera
 import { EmptyNotifications } from './empty';
 import { NotificationMethods } from './item-methods';
 import { AcceptedConnectionNotification } from './notifications/accepted-connection';
-import { NewConnectionNotification } from './notifications/new-connection';
 import { CustomNotification } from './notifications/custom';
+import { NewConnectionNotification } from './notifications/new-connection';
 
 export function NotificationList({ redisNotifications }) {
   const { isLoading, notifications: CCNotifications } = useCyberConnect();
@@ -29,21 +29,17 @@ export function NotificationList({ redisNotifications }) {
   return (
     <Stack>
       {notifications.map((notification, index) => {
-        const isCustom = notification.hasOwnProperty('event_type');
-        let notificationData = {};
-
-        if (isCustom) {
-          const { event_type, opened, createdAt, ...rest } = notification;
-          notificationData = rest;
-        }
-
-        return isCustom ? (
+        return notification?.event_type ? (
           <CustomNotification
             id={notification.id}
             event_type={notification.event_type}
             opened={notification.opened}
             timestamp={notification.timestamp}
-            data={notificationData}
+            data={
+              notification.data ?? {
+                ...notification,
+              }
+            }
           />
         ) : (
           <NotificationMethods key={notification.id} {...notification}>

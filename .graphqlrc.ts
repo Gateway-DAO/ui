@@ -1,6 +1,15 @@
 import { IGraphQLProjects, IGraphQLConfig } from 'graphql-config';
-
+import * as prismaEnumsBase from "@prisma/client";
 require('dotenv').config();
+
+const prismaEnums = Object.keys(prismaEnumsBase)
+// Remove non-objects and uppercased keys
+.filter(key => typeof prismaEnumsBase[key] === 'object' && key[0] !== key[0].toUpperCase())
+// Transform object to union type
+.reduce((acc,curr) => ({
+  ...acc,
+  [curr]: Object.keys(prismaEnumsBase[curr]).map(el => `"${el}"`).join(" | "),
+}), {} as Record<keyof typeof prismaEnumsBase, string>)
 
 const generateConfig = {
   plugins: [
@@ -12,6 +21,11 @@ const generateConfig = {
   config: {
     scalars: {
       _text: 'string',
+      // TODO: Fix all type errors on build when enabling next line
+      // ...prismaEnums,
+      manual_task_event_type: prismaEnums.manual_task_event_type,
+      task_type: prismaEnums.task_type,
+      key_status: prismaEnums.key_status
     },
     defaultMapper: 'Partial<{T}>',
     avoidOptionals: {

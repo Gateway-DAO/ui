@@ -360,6 +360,7 @@ export function CredentialTemplate({ credential, openModal }: Props) {
         <TaskGroup>
           {credential?.pow.map((task, idx) => (
             <Task
+              gate={credential.gate}
               key={'task-' + (idx + 1)}
               task={task}
               readOnly

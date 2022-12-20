@@ -95,7 +95,7 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
       ? directCredentialInfo.data?.hasCredential?.aggregate?.count > 0
       : completedTasksCount === gateProps?.tasks?.length;
 
-  const taskIds = gateProps?.tasks.map((task) => task.id);
+  const taskIds = gateProps?.tasks?.map((task) => task.id);
 
   useEffect(() => {
     const completedTaskIds =
@@ -122,10 +122,15 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
     (cred) => cred?.gate_id === gateProps?.id
   )?.id;
 
-  const { data: credential } = useQuery(['credential', credential_id], () =>
-    gqlAuthMethods.credential({
-      id: credential_id,
-    })
+  const { data: credential } = useQuery(
+    ['credential', credential_id],
+    () =>
+      gqlAuthMethods.credential({
+        id: credential_id,
+      }),
+    {
+      enabled: credential_id,
+    }
   );
 
   const { mutate: publishGate } = useMutation(
@@ -646,8 +651,7 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
       )}
       {gateProps.type === 'task_based' && (
         <TaskList
-          gateId={gateProps.id}
-          tasks={gateProps?.tasks}
+          gate={gateProps}
           completedAt={completedAt}
           completedTasksCount={completedTasksCount}
           formattedDate={formattedDate}
