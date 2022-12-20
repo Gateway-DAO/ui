@@ -1,6 +1,6 @@
 import { useAuth } from '../../../providers/auth';
 import { useCyberConnect } from '../../../providers/cyberconnect';
-import { BiConnState } from '../../../services-cyberconnect/types.generated';
+import { BiConnState } from '../../../services/cyberconnect/types';
 
 export const useFollowStatus = (
   wallet: string

@@ -14,7 +14,7 @@ import { a11yTabProps, TabPanel, useTab } from '../../../components/atoms/tabs';
 import { Navbar } from '../../../components/organisms/navbar/navbar';
 import { generateImageUrl } from '../../../hooks/use-file';
 import { useAuth } from '../../../providers/auth';
-import { Users } from '../../../services/graphql/types.generated';
+import { Users } from '../../../services/hasura/types';
 import { SessionUser } from '../../../types/user';
 import { AvatarFile } from '../../atoms/avatar-file';
 import { useFollowStatus } from '../../atoms/follow-button-user/utils';

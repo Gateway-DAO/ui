@@ -27,7 +27,7 @@ import Typography from '@mui/material/Typography';
 
 import { ROUTES } from '../../../../constants/routes';
 import { useAuth } from '../../../../providers/auth';
-import { Credentials } from '../../../../services/graphql/types.generated';
+import { Credentials } from '../../../../services/hasura/types';
 import { CategoriesList } from '../../categories-list';
 import { TokenFilled } from '../assets/token-filled';
 import { Subjects } from '../index';

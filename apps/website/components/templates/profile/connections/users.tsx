@@ -12,7 +12,7 @@ import {
   Typography,
 } from '@mui/material';
 
-import { Users } from '../../../../services/graphql/types.generated';
+import { Users } from '../../../../services/hasura/types';
 import { UserListItem } from '../../../molecules/user-list-item';
 
 type Props = {

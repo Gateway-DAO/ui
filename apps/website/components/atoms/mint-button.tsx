@@ -7,7 +7,7 @@ import { Button, Stack } from '@mui/material';
 
 import { TokenFilled } from '../../components/molecules/mint-card/assets/token-filled';
 import { useBiconomy } from '../../providers/biconomy';
-import { Credentials } from '../../services/graphql/types.generated';
+import { Credentials } from '../../services/hasura/types';
 import { LoadingButton } from './loading-button';
 
 export type Props = {

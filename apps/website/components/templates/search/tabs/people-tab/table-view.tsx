@@ -15,7 +15,7 @@ import TableRow from '@mui/material/TableRow';
 
 import { AvatarFile } from '../../../../../components/atoms/avatar-file';
 import { ROUTES } from '../../../../../constants/routes';
-import { Users } from '../../../../../services/graphql/types.generated';
+import { Users } from '../../../../../services/hasura/types';
 
 const FollowButtonUser = dynamic<any>(
   () =>

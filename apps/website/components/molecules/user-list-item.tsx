@@ -16,7 +16,7 @@ import {
 
 import { ROUTES } from '../../constants/routes';
 import { useAuth } from '../../providers/auth';
-import { Users } from '../../services/graphql/types.generated';
+import { Users } from '../../services/hasura/types';
 import { AvatarFile } from '../atoms/avatar-file';
 
 const FollowButtonUser = dynamic<any>(

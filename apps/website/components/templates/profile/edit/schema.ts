@@ -9,7 +9,7 @@ import {
   Experiences,
   Users,
   User_Socials,
-} from '../../../../services/graphql/types.generated';
+} from '../../../../services/hasura/types';
 import { SessionUser } from '../../../../types/user';
 
 export type EditUserSchema = Required<

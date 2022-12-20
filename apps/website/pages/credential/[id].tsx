@@ -10,7 +10,7 @@ import { DashboardTemplate } from '../../components/templates/dashboard';
 import { GateViewTemplate } from '../../components/templates/gate-view';
 import { ROUTES } from '../../constants/routes';
 import { useAuth } from '../../providers/auth';
-import { gqlAnonMethods, gqlMethods } from '../../services/api';
+import { gqlAnonMethods, gqlMethods } from '../../services/hasura/api';
 import { getServerSession } from '../../services/next-auth';
 
 const unaccesible = {

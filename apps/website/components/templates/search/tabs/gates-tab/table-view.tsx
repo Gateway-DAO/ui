@@ -10,7 +10,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 
-import { Gates } from '../../../../../services/graphql/types.generated';
+import { Gates } from '../../../../../services/hasura/types';
 import { badgeProps } from '../../../../../utils/badge-props';
 
 type Props = {

@@ -13,7 +13,7 @@ import {
   Chip,
 } from '@mui/material';
 
-import { Credentials } from '../../../../../../services/graphql/types.generated';
+import { Credentials } from '../../../../../../services/hasura/types';
 
 type Props = {
   credential: PartialDeep<Credentials>;

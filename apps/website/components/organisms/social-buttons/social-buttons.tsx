@@ -4,7 +4,7 @@ import { PropsWithChildren } from 'react';
 import { Stack, SxProps, IconButton, Avatar } from '@mui/material';
 
 import { Network } from '../../../constants/dao';
-import { User_Socials } from '../../../services/graphql/types.generated';
+import { User_Socials } from '../../../services/hasura/types';
 import { SocialIcon } from '../../atoms/social-icon';
 import { SocialButton } from './social-button';
 import { SocialCopyButton } from './social-copy-button';

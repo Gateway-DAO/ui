@@ -6,7 +6,7 @@ import { TOKENS } from '@gateway/theme';
 
 import { Box, Typography, Stack } from '@mui/material';
 
-import { Users } from '../../../../../services/graphql/types.generated';
+import { Users } from '../../../../../services/hasura/types';
 import { TableView } from './table-view';
 
 interface PeopleTabProps {

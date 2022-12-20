@@ -2,7 +2,7 @@ import { brandColors, theme } from '@gateway/theme';
 
 import { Box, Paper } from '@mui/material';
 
-import { Manual_Task_Events } from '../../../../../../../../services/graphql/types.generated';
+import { Manual_Task_Events } from '../../../../../../../../services/hasura/types';
 
 const Bullet = ({
   event_type: type,

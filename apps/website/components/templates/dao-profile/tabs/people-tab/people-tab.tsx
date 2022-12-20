@@ -8,7 +8,7 @@ import { TOKENS } from '@gateway/theme';
 import { Box, Table, TableBody, TableContainer } from '@mui/material';
 
 import { CenteredLoader } from '../../../../../components/atoms/centered-loader';
-import { gqlAnonMethods } from '../../../../../services/api';
+import { gqlAnonMethods } from '../../../../../services/hasura/api';
 import { useDaoProfile } from '../../context';
 import { UserCell } from './user-cell';
 

@@ -27,8 +27,8 @@ import {
 
 import { ROUTES } from '../../../constants/routes';
 import { useAuth } from '../../../providers/auth';
-import { gqlAnonMethods } from '../../../services/api';
-import { Gates } from '../../../services/graphql/types.generated';
+import { gqlAnonMethods } from '../../../services/hasura/api';
+import { Gates } from '../../../services/hasura/types';
 import { AvatarFile } from '../../atoms/avatar-file';
 import MorePopover from '../../atoms/more-popover';
 import { ReadMore } from '../../atoms/read-more-less';

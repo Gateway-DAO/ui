@@ -5,7 +5,7 @@ import {
   Notification as ResponseNotification,
   NotificationType,
   User_NotificationsQuery,
-} from '../../services-cyberconnect/types.generated';
+} from '../../services/cyberconnect/types';
 import {
   Notification,
   BiconnectionRequest,

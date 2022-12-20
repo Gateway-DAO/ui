@@ -15,7 +15,7 @@ import {
   Chip,
 } from '@mui/material';
 
-import { SearchQuery } from '../../../services/graphql/types.generated';
+import { SearchQuery } from '../../../services/hasura/types';
 import { a11yTabProps, TabPanel, useTab } from '../../atoms/tabs';
 import { Navbar } from '../../organisms/navbar';
 import { useAuth } from './../../../providers/auth';

@@ -17,7 +17,7 @@ import {
   Typography,
 } from '@mui/material';
 
-import { Gates } from '../../services/graphql/types.generated';
+import { Gates } from '../../services/hasura/types';
 import GateStateChip from '../atoms/gate-state-chip';
 import MorePopover from '../atoms/more-popover';
 import ConfirmDialog from '../organisms/confirm-dialog/confirm-dialog';

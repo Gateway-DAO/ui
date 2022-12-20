@@ -1,7 +1,7 @@
 import { decodeBlurHash } from 'fast-blurhash';
 import { PartialDeep } from 'type-fest';
 
-import { Files } from '../services/graphql/types.generated';
+import { Files } from '../services/hasura/types';
 
 export const generateImageUrl = (id?: string) =>
   id
