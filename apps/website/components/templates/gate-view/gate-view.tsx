@@ -129,7 +129,7 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
         id: credential_id,
       }),
     {
-      enabled: credential_id,
+      enabled: !!credential_id,
     }
   );
 
