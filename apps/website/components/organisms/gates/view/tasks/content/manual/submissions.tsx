@@ -42,7 +42,7 @@ export function Submissions({ gate, task }: Props) {
     ['admin-manual-task-submissions', gate.id, me.id],
     () => gqlAuthMethods.manual_tasks_progress({ gate_id: gate.id }),
     {
-      refetchInterval: 10000,
+      refetchInterval: 3000,
     }
   );
 
