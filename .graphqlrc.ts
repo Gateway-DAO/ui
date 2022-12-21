@@ -44,12 +44,12 @@ const config: IGraphQLConfig = {
   extensions: {
     codegen: {
       generates: {
-        './apps/website/services-cyberconnect/types.generated.ts': {
+        './apps/website/services/cyberconnect/types.ts': {
           ...generateConfig,
           schema: process.env.CYBERCONNECT_ENDPOINT as string,
-          documents: ['apps/website/services-cyberconnect/**/*.gql'],
+          documents: ['apps/website/services/cyberconnect/**/*.gql'],
         },
-        './apps/website/services/graphql/types.generated.ts': {
+        './apps/website/services/hasura/types.ts': {
           ...generateConfig,
           schema: {
             [`${process.env.HASURA_ENDPOINT}`]: {
@@ -58,7 +58,7 @@ const config: IGraphQLConfig = {
               },
             },
           },
-          documents: ['apps/website/services/**/*.gql'],
+          documents: ['apps/website/services/hasura/**/*.gql'],
         }
       },
     },

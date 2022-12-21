@@ -27,8 +27,8 @@ import {
 
 import { ROUTES } from '../../../constants/routes';
 import { useAuth } from '../../../providers/auth';
-import { gqlAnonMethods } from '../../../services/api';
-import { Gates } from '../../../services/graphql/types.generated';
+import { gqlAnonMethods } from '../../../services/hasura/api';
+import { Gates } from '../../../services/hasura/types';
 import { AvatarFile } from '../../atoms/avatar-file';
 import MorePopover from '../../atoms/more-popover';
 import { ReadMore } from '../../atoms/read-more-less';
@@ -114,8 +114,8 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
 
   const handleClose = () => setOpen(false);
 
-  const countSimiliarIds = (arr1: string[], arr2: string[]) => {
-    return arr1.filter((id) => arr2.includes(id)).length;
+  const countSimiliarIds = (arr1: string[], arr2?: string[]) => {
+    return arr1.filter((id) => !!arr2?.includes(id)).length;
   };
 
   const credential_id = me?.credentials?.find(
@@ -129,7 +129,7 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
         id: credential_id,
       }),
     {
-      enabled: credential_id,
+      enabled: !!credential_id,
     }
   );
 
@@ -583,7 +583,7 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
               </Typography>
             </Grid>
             <Grid item xs={8}>
-              {gateProps?.skills.map((skill, idx) => (
+              {gateProps?.skills?.map((skill, idx) => (
                 <Chip
                   key={'skill-' + (idx + 1)}
                   label={skill}

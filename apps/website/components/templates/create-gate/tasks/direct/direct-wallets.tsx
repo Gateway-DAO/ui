@@ -7,7 +7,7 @@ import { useInfiniteQuery } from 'wagmi';
 import { Paper } from '@mui/material';
 
 import { useAuth } from '../../../../../providers/auth';
-import { Files } from '../../../../../services/graphql/types.generated';
+import { Files } from '../../../../../services/hasura/types';
 import { CreateGateData } from '../../schema';
 import {
   DirectWalletsEmptyHeader,

@@ -1,6 +1,6 @@
 import { object, string, SchemaOf } from 'yup';
 
-import { Users } from '../../../../../../services/graphql/types.generated';
+import { Users } from '../../../../../../services/hasura/types';
 
 export type ProfileSchema = Pick<Users, 'name' | 'username'>;
 

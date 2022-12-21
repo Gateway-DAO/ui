@@ -10,7 +10,7 @@ import {
   PrivateProfileTemplate,
 } from '../../components/templates/profile';
 import { useAuth } from '../../providers/auth';
-import { gqlAnonMethods } from '../../services/api';
+import { gqlAnonMethods } from '../../services/hasura/api';
 import { SessionUser } from '../../types/user';
 
 export default function Profile() {

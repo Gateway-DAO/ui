@@ -1,6 +1,6 @@
 import { PartialDeep } from 'type-fest';
 
-import { LoginMutation, MeQuery } from '../services/graphql/types.generated';
+import { LoginMutation, MeQuery } from '../services/hasura/types';
 
 export type SessionToken = Omit<
   LoginMutation['login'],

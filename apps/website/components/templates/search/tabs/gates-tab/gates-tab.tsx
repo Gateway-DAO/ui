@@ -11,7 +11,7 @@ import { Box, Chip, IconButton, Stack, Typography } from '@mui/material';
 import { CATEGORIES } from '../../../../../constants/gate';
 import { usePropertyFilter } from '../../../../../hooks/use-property-filter';
 import { useViewMode, ViewMode } from '../../../../../hooks/use-view-modes';
-import { Gates } from '../../../../../services/graphql/types.generated';
+import { Gates } from '../../../../../services/hasura/types';
 import { ChipDropdown } from '../../../../molecules/chip-dropdown';
 import { GatesCard } from '../../../../molecules/gates-card';
 import { TableView } from './table-view';

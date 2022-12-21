@@ -6,7 +6,7 @@ import { AdminTemplate } from '../components/templates/admin';
 import { DashboardTemplate } from '../components/templates/dashboard';
 import { ROUTES } from '../constants/routes';
 import { useAuth } from '../providers/auth';
-import { gqlMethods } from '../services/api';
+import { gqlMethods } from '../services/hasura/api';
 import { getServerSession } from '../services/next-auth';
 
 /** TODO: Prevent template remount when navigating between dashboard pages

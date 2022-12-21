@@ -1,7 +1,7 @@
 import { PartialDeep } from 'type-fest';
 import { object, string, SchemaOf } from 'yup';
 
-import { Users } from '../../../services/graphql/types.generated';
+import { Users } from '../../../services/hasura/types';
 
 export type NewUserSchema = Required<
   Pick<Users, 'name' | 'username' | 'pfp' | 'email_address'>

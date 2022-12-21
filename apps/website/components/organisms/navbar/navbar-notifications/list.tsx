@@ -1,7 +1,7 @@
 import { Stack } from '@mui/material';
 
 import { useCyberConnect } from '../../../../providers/cyberconnect';
-import { NotificationType } from '../../../../services-cyberconnect/types.generated';
+import { NotificationType } from '../../../../services/cyberconnect/types';
 import { EmptyNotifications } from './empty';
 import { NotificationMethods } from './item-methods';
 import { AcceptedConnectionNotification } from './notifications/accepted-connection';

@@ -4,7 +4,7 @@ import { brandColors } from '@gateway/theme';
 
 import { Stack, Typography, alpha, Divider } from '@mui/material';
 
-import { Task_Progress } from '../../../../../../../../services/graphql/types.generated';
+import { Task_Progress } from '../../../../../../../../services/hasura/types';
 import { SubmissionsItem } from './submissions-item';
 export type SubmissionsListProps = {
   title: string;

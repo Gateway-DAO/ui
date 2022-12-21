@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import { createContext, useContext } from 'react';
 
-import { GqlMethods, gqlAnonMethods } from '../../services/api';
+import { GqlMethods, gqlAnonMethods } from '../../services/hasura/api';
 import { SessionUser } from '../../types/user';
 
 type Context = {

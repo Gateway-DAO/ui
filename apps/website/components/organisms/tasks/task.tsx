@@ -17,7 +17,7 @@ import {
 } from '@mui/material';
 
 import { useAuth } from '../../../providers/auth';
-import { Tasks, Gates } from '../../../services/graphql/types.generated';
+import { Tasks, Gates } from '../../../services/hasura/types';
 import { queryClient } from '../../../services/query-client';
 import { getMapValueFromObject } from '../../../utils/map-object';
 import GithubContributeContent from '../gates/view/tasks/content/github_contribute';

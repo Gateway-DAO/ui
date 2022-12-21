@@ -1,6 +1,6 @@
 import { PartialDeep } from 'type-fest';
 
-import { Credentials } from '../../../services/graphql/types.generated';
+import { Credentials } from '../../../services/hasura/types';
 import { DefaultMintScreen } from './screen/default-mint-screen';
 import { MintingScreen } from './screen/minting-screen';
 import { StartMintScreen } from './screen/start-mint-screen';

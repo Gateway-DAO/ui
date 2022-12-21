@@ -6,7 +6,7 @@ import {
   Files,
   Gates,
   Whitelisted_Wallets,
-} from '../../../services/graphql/types.generated';
+} from '../../../services/hasura/types';
 
 // Creator
 export type Creator = {

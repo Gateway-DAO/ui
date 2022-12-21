@@ -1,6 +1,6 @@
 import { PartialDeep } from 'type-fest';
 
-import { Gates } from '../services/graphql/types.generated';
+import { Gates } from '../services/hasura/types';
 
 export const badgeProps = (gate: PartialDeep<Gates>) =>
   gate?.image

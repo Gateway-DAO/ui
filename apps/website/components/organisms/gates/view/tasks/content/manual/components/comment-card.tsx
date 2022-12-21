@@ -3,7 +3,7 @@ import { PartialObjectDeep } from 'type-fest/source/partial-deep';
 import { Paper, Stack, Typography } from '@mui/material';
 
 import { AvatarFile } from '../../../../../../../../components/atoms/avatar-file';
-import { Files } from '../../../../../../../../services/graphql/types.generated';
+import { Files } from '../../../../../../../../services/hasura/types';
 
 type commentCardProps = {
   fullname?: string;
