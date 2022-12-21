@@ -17,7 +17,7 @@ import Box from '@mui/material/Box';
 
 import { TaskType } from '../../../types/tasks';
 
-const iconBgColor: Record<TaskType, string> = {
+const iconBgColor: Record<TaskType | 'recaptcha', string> = {
   self_verify: '#9A53FF',
   quiz: '#9A53FF',
   token_hold: '#9A53FF',
@@ -32,7 +32,7 @@ const iconBgColor: Record<TaskType, string> = {
   manual: '#9A53FF',
   recaptcha: '#9A53FF',
 };
-const typeIcons: Record<TaskType, SvgIconComponent> = {
+const typeIcons: Record<TaskType | 'recaptcha', SvgIconComponent> = {
   self_verify: InsertLinkIcon,
   quiz: QuizIcon,
   token_hold: MonetizationOnIcon,
