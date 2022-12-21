@@ -124,7 +124,7 @@ export function Task({
         body: NFTHoldContent,
       },
       manual: {
-        title: 'Submit Link',
+        title: 'Manual Submission',
         body: ManualContent,
       },
     };

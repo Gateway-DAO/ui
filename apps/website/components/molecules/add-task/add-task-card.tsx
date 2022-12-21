@@ -33,8 +33,8 @@ const AddTaskCard = ({ tasks, addTask }) => {
     },
     {
       type: 'manual' as TaskType,
-      title: 'Submit Link',
-      description: 'Ask users to put a link',
+      title: 'Manual Submission',
+      description: 'Submit links as proof of work',
     },
     {
       type: 'nft_hold' as TaskType,
