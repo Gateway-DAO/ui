@@ -31,6 +31,7 @@ const iconBgColor: Record<TaskType, string> = {
   snapshot: '#F3B04E',
   manual: '#9A53FF',
   recaptcha: '#9A53FF',
+  contract_interaction: null,
 };
 const typeIcons: Record<TaskType, SvgIconComponent> = {
   self_verify: InsertLinkIcon,
@@ -46,6 +47,7 @@ const typeIcons: Record<TaskType, SvgIconComponent> = {
   snapshot: ElectricBoltIcon,
   manual: CheckCircleIcon,
   recaptcha: KeyIcon,
+  contract_interaction: null,
 };
 
 export function TaskIcon({ type, sx }: { type: TaskType; sx?: SxProps }) {
