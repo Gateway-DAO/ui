@@ -44,7 +44,7 @@ export default function BasicInformation({ credential }: Props) {
           <Typography variant="h4">{credential?.title}</Typography>
         </Stack>
       </Stack>
-      {credential?.tags?.length && (
+      {credential?.tags?.length > 0 && (
         <Stack direction="row" gap={1} sx={{ mb: 2 }}>
           {credential.tags.map((tag, index) => (
             <Chip label={tag} key={index} />
