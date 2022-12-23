@@ -1,0 +1,14 @@
+{
+  "credential": {
+    "issuance-date": "Issuance date",
+    "expiration-date": "Expiration date",
+    "status": "Status",
+    "valid": "Valid",
+    "expired": "Expired",
+    "revoked": "Revoked",
+    "invalid": "Invalid",
+    "issuer-id": "Issuer ID",
+    "recipient-id": "Recipient ID",
+    "credential-id": "Credential ID"
+  }
+}

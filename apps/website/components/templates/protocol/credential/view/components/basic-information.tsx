@@ -2,8 +2,16 @@ import { limitChars } from '@gateway/helpers';
 import { brandColors } from '@gateway/theme';
 
 import { Stack, Typography, Box, alpha, Chip } from '@mui/material';
+import useTranslation from 'next-translate/useTranslation';
+import { MockCredential } from '../credential-view';
 
-export default function BasicInformation() {
+type Props = {
+  credential: MockCredential;
+}
+
+export default function BasicInformation({ credential }: Props) {
+  const { t } = useTranslation('protocol');
+
   return (
     <>
       <Stack direction="row" gap={3} sx={{ mb: 3 }}>
@@ -24,27 +32,26 @@ export default function BasicInformation() {
               fontSize={12}
               sx={{ color: alpha(brandColors.white.main, 0.7) }}
             >
-              Credential ID
+              {t('credential.credential-id')}
             </Typography>
             <Typography
               fontSize={12}
               sx={{ color: alpha(brandColors.white.main, 0.7) }}
             >
-              {limitChars('fbabef4b-809f-4a55-af71-32e00b6e6828', 20)}
+              {limitChars(credential?.id, 20)}
             </Typography>
           </Stack>
-          <Typography variant="h4">Certification of Degree</Typography>
+          <Typography variant="h4">{credential?.title}</Typography>
         </Stack>
       </Stack>
-      <Stack direction="row" gap={1} sx={{ mb: 2 }}>
-        <Chip label="Education" />
-        <Chip label="Undergraduate" />
-        <Chip label="Development" />
-      </Stack>
-      <Typography sx={{ mb: 3 }}>
-        This credential certifies that the student has completed the
-        undergraduate degree program at Harvard University.
-      </Typography>
+      {credential?.tags?.length && (
+        <Stack direction="row" gap={1} sx={{ mb: 2 }}>
+          {credential.tags.map((tag, index) => (
+            <Chip label={tag} key={index} />
+          ))}
+        </Stack>
+      )}
+      <Typography sx={{ mb: 3 }}>{credential?.description}</Typography>
     </>
   );
 }
