@@ -1,8 +1,7 @@
-import { useAuth } from '../../providers/auth';
-
 import { DashboardTemplate } from '../../components/templates/dashboard';
 import { SettingsTemplate } from '../../components/templates/settings';
 import { ConnectedAccountsSettings } from '../../components/templates/settings';
+import { useAuth } from '../../providers/auth';
 
 export default function ConnectedAccountsSettingsPage() {
   const { me } = useAuth();
@@ -16,7 +15,9 @@ export default function ConnectedAccountsSettingsPage() {
         height: '100%',
       }}
     >
-      <SettingsTemplate children={<ConnectedAccountsSettings />} />
+      <SettingsTemplate>
+        <ConnectedAccountsSettings />
+      </SettingsTemplate>
     </DashboardTemplate>
   ) : null;
 }

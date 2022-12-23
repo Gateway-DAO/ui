@@ -1,3 +1,3 @@
-import AccountManagementSettings from "./account-management";
+import AccountManagementSettings from './account-management';
 
 export { AccountManagementSettings };
