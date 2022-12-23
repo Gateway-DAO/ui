@@ -6,11 +6,11 @@ import {
   useAccount,
   useContractWrite,
   useNetwork,
-  useQueryClient,
   useSwitchNetwork,
   useWaitForTransaction,
 } from 'wagmi';
 
+import { useQueryClient } from '@tanstack/react-query';
 import { CREDENTIAL_ABI } from '../constants/web3';
 import { useAuth } from '../providers/auth';
 import { Credentials } from '../services/hasura/types';
@@ -57,10 +57,7 @@ export const useCredential = (credential: PartialDeep<Credentials>) => {
   const mintOptions = {
     onMutate: () => setStatus('minting'),
     onSuccess: () => {
-      // queryClient.refetchQueries(['credentials']);
-      // queryClient.resetQueries(['credential', credential.id]);
-      window.location.reload();
-
+      queryClient.refetchQueries(['credential', credential.id]);
       onInvalidateMe();
 
       setStatus('minted');

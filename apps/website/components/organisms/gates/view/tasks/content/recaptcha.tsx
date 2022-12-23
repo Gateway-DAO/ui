@@ -18,6 +18,7 @@ import {
 
 import { useAuth } from '../../../../../../providers/auth';
 import { LoadingButton } from '../../../../../atoms/loading-button';
+import { TaskIcon } from '../../../../../atoms/task-icon';
 
 type Props = {
   taskNumber: number;
@@ -69,7 +70,7 @@ export function RecaptchaTask({
         borderLeft: 'none',
         borderTop: 'none',
         backgroundColor: 'transparent !important',
-        backgroundImage: 'none !important',
+        backgroundImage: !expanded && 'none !important',
         px: { xs: theme.spacing(1), md: theme.spacing(7) },
         py: { xs: theme.spacing(1), md: theme.spacing(5) },
       })}
@@ -77,14 +78,15 @@ export function RecaptchaTask({
       <CardHeader
         avatar={
           <Avatar
+            variant="rounded"
             sx={{
-              backgroundColor: expanded ? 'white' : 'transparent',
+              backgroundColor: 'transparent',
               color: (theme) =>
                 expanded ? theme.palette.background.default : 'white',
               border: expanded ? 'none' : '1px solid #FFFFFF4D',
             }}
           >
-            {taskNumber}
+            <TaskIcon type="recaptcha" />
           </Avatar>
         }
         title={<Typography variant="caption">Are you a robot?</Typography>}
