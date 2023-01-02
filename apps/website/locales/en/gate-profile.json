@@ -33,7 +33,7 @@
       "action": "Verify"
     },
     "manual": {
-      "title": "Submit Link",
+      "title": "Manual Submission",
       "action": "Submit",
       "label": "Submit the link address"
     },

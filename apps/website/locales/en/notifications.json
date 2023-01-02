@@ -4,8 +4,8 @@
   "empty": "No notifications yet",
   "manual": {
     "comment": "sent a comment on",
-    "approve": "rejected a link on",
-    "reject": "approved a link on",
+    "reject": "rejected a link on",
+    "approve": "approved a link on",
     "send_link": "submitted a link on"
   }
 }
