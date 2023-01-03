@@ -14,7 +14,7 @@ type Props = {
   limit?: number;
 };
 
-export default function CopyPaste({ text, sucessMessage, limit = 20 }: Props) {
+export default function CopyPaste({ text, sucessMessage, limit = 15 }: Props) {
   const { enqueueSnackbar } = useSnackbar();
 
   const copy = async (text: string) => {
@@ -33,11 +33,12 @@ export default function CopyPaste({ text, sucessMessage, limit = 20 }: Props) {
       alignItems="center"
       justifyContent="space-between"
       gap={1}
+      title={text}
       onClick={() => copy(text)}
     >
       <Typography
         fontSize={12}
-        sx={{ color: alpha(brandColors.white.main, 0.7) }}
+        sx={{ color: alpha(brandColors.white.main, 0.7), whiteSpace: 'nowrap' }}
       >
         {limitChars(text, limit)}
       </Typography>

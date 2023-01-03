@@ -1,6 +1,8 @@
 import useTranslation from 'next-translate/useTranslation';
 
-import { Stack, Box } from '@mui/material';
+import { theme } from '@gateway/theme';
+
+import { Stack, Box, useMediaQuery } from '@mui/material';
 
 import { MockEntity } from '../credential-view';
 import CardUserCell from './card-user-cell';
@@ -12,15 +14,30 @@ type Props = {
 
 export default function CardUsers({ issuer, recipient }: Props) {
   const { t } = useTranslation('protocol');
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
 
   return (
-    <Stack direction="row" alignItems="center" justifyContent="space-between">
+    <Stack
+      justifyContent="space-between"
+      sx={{
+        flexDirection: isMobile ? 'column' : 'row',
+        alignItems: isMobile ? 'baseline' : 'center',
+      }}
+    >
       <CardUserCell user={issuer} label={t('credential.issuer-id')} />
-      <Box sx={{ p: 2 }}>&#62;</Box>
+      <Box
+        sx={{
+          py: isMobile ? 0 : 2,
+          px: isMobile ? 3 : 2,
+          transform: isMobile ? 'rotate(90deg)' : 'none',
+        }}
+      >
+        &#62;
+      </Box>
       <CardUserCell
         user={recipient}
         label={t('credential.recipient-id')}
-        alignRight={true}
+        alignRight={!isMobile}
       />
     </Stack>
   );

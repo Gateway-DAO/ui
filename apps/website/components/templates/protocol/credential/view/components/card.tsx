@@ -1,6 +1,8 @@
 import useTranslation from 'next-translate/useTranslation';
 
-import { Stack, Paper, Box, Divider, Chip } from '@mui/material';
+import { theme } from '@gateway/theme';
+
+import { Stack, Paper, Box, Divider, Chip, useMediaQuery } from '@mui/material';
 
 import { MockCredential, MockEntity } from '../credential-view';
 import CardCell from './card-cell';
@@ -14,6 +16,7 @@ type Props = {
 
 export default function Card({ issuer, recipient, credential }: Props) {
   const { t } = useTranslation('protocol');
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
 
   return (
     <Paper
@@ -24,12 +27,14 @@ export default function Card({ issuer, recipient, credential }: Props) {
     >
       <CardUsers issuer={issuer} recipient={recipient} />
       <Stack
-        direction="row"
         alignItems="stretch"
         justifyContent="space-around"
+        sx={{
+          flexDirection: isMobile ? 'column' : 'row',
+        }}
         divider={
           <Box>
-            <Divider orientation="vertical" />
+            <Divider orientation={isMobile ? 'horizontal' : 'vertical'} />
           </Box>
         }
       >

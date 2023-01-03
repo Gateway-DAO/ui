@@ -1,8 +1,15 @@
 import useTranslation from 'next-translate/useTranslation';
 
-import { brandColors } from '@gateway/theme';
+import { brandColors, theme } from '@gateway/theme';
 
-import { Stack, Typography, Box, alpha, Chip } from '@mui/material';
+import {
+  Stack,
+  Typography,
+  Box,
+  alpha,
+  Chip,
+  useMediaQuery,
+} from '@mui/material';
 
 import { MockCredential } from '../credential-view';
 import CopyPaste from './copy-paste';
@@ -13,6 +20,7 @@ type Props = {
 
 export default function GeneralInformation({ credential }: Props) {
   const { t } = useTranslation('protocol');
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
 
   return (
     <>
@@ -41,13 +49,19 @@ export default function GeneralInformation({ credential }: Props) {
               sucessMessage={t('credential.copy-id')}
             />
           </Stack>
-          <Typography variant="h4">{credential?.title}</Typography>
+          <Typography variant="h4" fontSize={isMobile ? 20 : 34}>
+            {credential?.title}
+          </Typography>
         </Stack>
       </Stack>
       {credential?.tags?.length > 0 && (
         <Stack direction="row" gap={1} sx={{ mb: 2 }}>
           {credential.tags.map((tag, index) => (
-            <Chip label={tag} key={index} />
+            <Chip
+              label={tag}
+              key={index}
+              size={isMobile ? 'small' : 'medium'}
+            />
           ))}
         </Stack>
       )}
