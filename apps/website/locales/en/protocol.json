@@ -9,6 +9,7 @@
     "invalid": "Invalid",
     "issuer-id": "Issuer ID",
     "recipient-id": "Recipient ID",
-    "credential-id": "Credential ID"
+    "credential-id": "Credential ID",
+    "copy-id": "Credential ID copied to clipboard"
   }
 }

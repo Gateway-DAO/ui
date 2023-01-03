@@ -1,15 +1,17 @@
-import { limitChars } from '@gateway/helpers';
+import useTranslation from 'next-translate/useTranslation';
+
 import { brandColors } from '@gateway/theme';
 
 import { Stack, Typography, Box, alpha, Chip } from '@mui/material';
-import useTranslation from 'next-translate/useTranslation';
+
+import CopyPaste from '../../../../../../components/molecules/copy-paste';
 import { MockCredential } from '../credential-view';
 
 type Props = {
   credential: MockCredential;
-}
+};
 
-export default function BasicInformation({ credential }: Props) {
+export default function GeneralInformation({ credential }: Props) {
   const { t } = useTranslation('protocol');
 
   return (
@@ -27,19 +29,17 @@ export default function BasicInformation({ credential }: Props) {
           QR
         </Box>
         <Stack sx={{ verticalAlign: 'center', justifyContent: 'center' }}>
-          <Stack direction="row" gap={1}>
+          <Stack direction="row" alignItems="center" gap={1}>
             <Typography
               fontSize={12}
               sx={{ color: alpha(brandColors.white.main, 0.7) }}
             >
               {t('credential.credential-id')}
             </Typography>
-            <Typography
-              fontSize={12}
-              sx={{ color: alpha(brandColors.white.main, 0.7) }}
-            >
-              {limitChars(credential?.id, 20)}
-            </Typography>
+            <CopyPaste
+              text={credential?.id}
+              sucessMessage={t('credential.copy-id')}
+            />
           </Stack>
           <Typography variant="h4">{credential?.title}</Typography>
         </Stack>
