@@ -27,18 +27,15 @@ export default function ModalImage({ open, handleClose, image, title }: Props) {
           display: 'flex',
         }}
       >
-        <Stack direction="row" justifyContent="space-between">
+        <Stack
+          direction="row"
+          justifyContent="space-between"
+          alignItems="center"
+        >
           <Typography variant="body1" fontSize={14}>
             {title}
           </Typography>
-          <IconButton
-            sx={{
-              position: 'absolute',
-              top: '30px',
-              right: '30px',
-            }}
-            onClick={() => handleClose()}
-          >
+          <IconButton onClick={() => handleClose()}>
             <CloseIcon />
           </IconButton>
         </Stack>
