@@ -4,8 +4,8 @@ import { brandColors } from '@gateway/theme';
 
 import { Stack, Typography, Box, alpha, Chip } from '@mui/material';
 
-import CopyPaste from '../../../../../../components/molecules/copy-paste';
 import { MockCredential } from '../credential-view';
+import CopyPaste from './copy-paste';
 
 type Props = {
   credential: MockCredential;

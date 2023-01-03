@@ -6,7 +6,7 @@ import { brandColors } from '@gateway/theme';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { alpha, Button, Stack, Typography } from '@mui/material';
 
-import { taskErrorMessages } from '../organisms/tasks/task-error-messages';
+import { taskErrorMessages } from '../../../../../organisms/tasks/task-error-messages';
 
 type Props = {
   text: string;
@@ -17,7 +17,7 @@ type Props = {
 export default function CopyPaste({ text, sucessMessage, limit = 20 }: Props) {
   const { enqueueSnackbar } = useSnackbar();
 
-  const copy = async (text) => {
+  const copy = async (text: string) => {
     try {
       await navigator.clipboard.writeText(text);
       enqueueSnackbar(sucessMessage);
