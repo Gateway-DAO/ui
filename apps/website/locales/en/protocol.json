@@ -10,6 +10,7 @@
     "issuer-id": "Issuer ID",
     "recipient-id": "Recipient ID",
     "credential-id": "Credential ID",
-    "copy-id": "Credential ID copied to clipboard"
+    "copy-id": "Credential ID copied to clipboard",
+    "qrcode": "QR Code"
   }
 }

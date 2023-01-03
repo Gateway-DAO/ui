@@ -1,16 +1,18 @@
 import useTranslation from 'next-translate/useTranslation';
+import { useState } from 'react';
 
 import { brandColors, theme } from '@gateway/theme';
 
 import {
   Stack,
   Typography,
-  Box,
   alpha,
   Chip,
   useMediaQuery,
+  IconButton,
 } from '@mui/material';
 
+import ModalImage from '../../../../../../components/molecules/modal-image';
 import { MockCredential } from '../credential-view';
 import CopyPaste from './copy-paste';
 
@@ -20,22 +22,29 @@ type Props = {
 
 export default function GeneralInformation({ credential }: Props) {
   const { t } = useTranslation('protocol');
+  const [QRCodeIsOpen, setQRCodeIsOpen] = useState<boolean>(false);
   const isMobile = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
 
   return (
     <>
       <Stack direction="row" gap={3} sx={{ mb: 3 }}>
-        <Box
+        <IconButton
+          onClick={() => setQRCodeIsOpen(true)}
           sx={{
             width: 80,
             height: 80,
-            background: brandColors.background.elevated,
+            backgroundColor: brandColors.background.elevated,
             textAlign: 'center',
             verticalAlign: 'center',
+            borderRadius: 2,
           }}
         >
-          QR
-        </Box>
+          <img
+            src={credential?.qrCode}
+            alt={t('credential.qrcode')}
+            width="100%"
+          />
+        </IconButton>
         <Stack sx={{ verticalAlign: 'center', justifyContent: 'center' }}>
           <Stack direction="row" alignItems="center" gap={1}>
             <Typography
@@ -66,6 +75,12 @@ export default function GeneralInformation({ credential }: Props) {
         </Stack>
       )}
       <Typography sx={{ mb: 3 }}>{credential?.description}</Typography>
+      <ModalImage
+        open={QRCodeIsOpen}
+        image={credential?.qrCode}
+        title={credential?.title}
+        handleClose={() => setQRCodeIsOpen(false)}
+      />
     </>
   );
 }

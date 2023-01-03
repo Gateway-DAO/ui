@@ -7,6 +7,7 @@ import GeneralInformation from './components/general-information';
 export type MockCredential = {
   id: string;
   title: string;
+  qrCode: string;
   description: string;
   tags: string[];
   issuanceDate: string;
@@ -27,6 +28,8 @@ export default function CredentialProtocolView() {
   const mockCredential: MockCredential = {
     id: 'fbabef4b-809f-4a55-af71-32e00b6e6828',
     title: 'Certification of Degree',
+    qrCode:
+      'https://www.canalautismo.com.br/wp-content/uploads/2018/05/qrcode-RevistaAutismo.png',
     description:
       'This credential certifies that the student has completed the undergraduate degree program at Harvard University.',
     tags: ['Education', 'Undergraduate', 'Development'],
