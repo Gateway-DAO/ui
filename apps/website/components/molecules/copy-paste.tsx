@@ -6,6 +6,8 @@ import { brandColors } from '@gateway/theme';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { alpha, Button, Stack, Typography } from '@mui/material';
 
+import { taskErrorMessages } from '../organisms/tasks/task-error-messages';
+
 type Props = {
   text: string;
   sucessMessage: string;
@@ -19,9 +21,8 @@ export default function CopyPaste({ text, sucessMessage, limit = 20 }: Props) {
     try {
       await navigator.clipboard.writeText(text);
       enqueueSnackbar(sucessMessage);
-      console.log('Content copied to clipboard');
     } catch (err) {
-      console.error('Failed to copy: ', err);
+      enqueueSnackbar(taskErrorMessages['UNEXPECTED_ERROR']);
     }
   };
 
