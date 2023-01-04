@@ -8,6 +8,8 @@ type Props = {
   label: string;
   children: ReactNode;
   margin?: boolean;
+  px?: number;
+  py?: number;
   alignRight?: boolean;
 };
 
@@ -15,13 +17,16 @@ export default function CardCell({
   label,
   children,
   margin = true,
+  py = 2,
+  px = 2,
   alignRight = false,
 }: Props) {
   return (
     <Stack
       gap={margin ? 1 : 0}
       sx={{
-        p: 2,
+        px,
+        py,
         width: '100%',
         textAlign: alignRight ? 'right' : 'left',
       }}

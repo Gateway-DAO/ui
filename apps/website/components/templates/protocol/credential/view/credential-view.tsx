@@ -1,6 +1,9 @@
+import useTranslation from 'next-translate/useTranslation';
+
 import { Stack } from '@mui/material';
 
 import Card from './components/card';
+import DataTable from './components/data-table';
 import GeneralInformation from './components/general-information';
 
 // MOCK
@@ -13,6 +16,13 @@ export type MockCredential = {
   issuanceDate: string;
   expirationDate: string;
   status: number;
+  claim: MockDataItems[];
+  evidence: MockDataItems[];
+};
+
+export type MockDataItems = {
+  title: string;
+  data: any;
 };
 
 export type MockEntity = {
@@ -24,6 +34,8 @@ export type MockEntity = {
 // MOCK - END
 
 export default function CredentialProtocolView() {
+  const { t } = useTranslation('protocol');
+
   // MOCK
   const mockCredential: MockCredential = {
     id: 'fbabef4b-809f-4a55-af71-32e00b6e6828',
@@ -35,6 +47,26 @@ export default function CredentialProtocolView() {
     tags: ['Education', 'Undergraduate', 'Development'],
     issuanceDate: 'Aug 5th, 2022',
     expirationDate: 'Indeterminate',
+    claim: [
+      {
+        title: 'Institution',
+        data: 'Harvard College',
+      },
+      {
+        title: 'Degree Program',
+        data: 'Computer Science',
+      },
+      {
+        title: 'Category of Degree',
+        data: 'Bachelor of Arts (A.B.)',
+      },
+    ],
+    evidence: [
+      {
+        title: 'Undergraduate Thesis',
+        data: 'http://id.lib.harvard.edu/alma/990040031760203941/catalog',
+      },
+    ],
     status: 0,
   };
 
@@ -67,6 +99,11 @@ export default function CredentialProtocolView() {
         issuer={mockEntity1}
         recipient={mockEntity2}
         credential={mockCredential}
+      />
+      <DataTable title={t('credential.claim')} data={mockCredential?.claim} />
+      <DataTable
+        title={t('credential.evidence')}
+        data={mockCredential?.evidence}
       />
     </Stack>
   );
