@@ -4,7 +4,7 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import jwt from 'jsonwebtoken';
 
 import { SessionToken } from '../types/user';
-import { gqlAnonMethods } from './api';
+import { gqlAnonMethods } from './hasura/api';
 
 const callLogin = async (
   signature: string,
@@ -48,8 +48,6 @@ const callRefresh = async (token: SessionToken): Promise<SessionToken> => {
       user_id: token.user_id,
     };
   } catch (e) {
-    console.log(e);
-
     return {
       ...token,
       error: 'RefreshAccessTokenError',

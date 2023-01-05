@@ -6,7 +6,10 @@ import { PropsWithChildren, useMemo, useEffect, useCallback } from 'react';
 import { useConnectModal } from '@rainbow-me/rainbowkit';
 
 import { AuthConnectingModal } from '../../components/organisms/auth-connecting-modal';
-import { gqlMethodsWithRefresh, gqlUserHeader } from '../../services/api';
+import {
+  gqlMethodsWithRefresh,
+  gqlUserHeader,
+} from '../../services/hasura/api';
 import { BlockedPage } from './blocked-page';
 import { AuthContext } from './context';
 import { useAuthLogin, useInitUser } from './hooks';

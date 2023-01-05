@@ -22,7 +22,7 @@ import {
 import { ROUTES } from '../../../../constants/routes';
 import { useViewMode, ViewMode } from '../../../../hooks/use-view-modes';
 import { useAuth } from '../../../../providers/auth';
-import { Users } from '../../../../services/graphql/types.generated';
+import { Users } from '../../../../services/hasura/types';
 import { SessionUser } from '../../../../types/user';
 import { a11yTabProps, TabPanel, useTab } from '../../../atoms/tabs';
 import { ExperienceAccordion } from './experience';

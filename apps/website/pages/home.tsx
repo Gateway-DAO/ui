@@ -5,7 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 
 import { DashboardTemplate } from '../components/templates/dashboard';
 import { ExploreTemplate } from '../components/templates/explore';
-import { gqlAnonMethods } from '../services/api';
+import { gqlAnonMethods } from '../services/hasura/api';
 
 /** TODO: Prevent template remount when navigating between dashboard pages
  * https://nextjs.org/docs/basic-features/layouts

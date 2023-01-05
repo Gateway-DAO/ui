@@ -8,7 +8,7 @@ import { Box, CircularProgress, IconButton, Stack } from '@mui/material';
 import { categoriesMap } from '../../../../../constants/dao';
 import { usePropertyFilter } from '../../../../../hooks/use-property-filter';
 import { useViewMode, ViewMode } from '../../../../../hooks/use-view-modes';
-import { gqlAnonMethods } from '../../../../../services/api';
+import { gqlAnonMethods } from '../../../../../services/hasura/api';
 import { ChipDropdown } from '../../../../molecules/chip-dropdown';
 import { DaoCard } from '../../../../molecules/dao-card';
 import { TableView } from './table-view';

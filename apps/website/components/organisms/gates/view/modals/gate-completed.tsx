@@ -25,7 +25,7 @@ import { useAuth } from '../../../../../providers/auth';
 import {
   Credentials,
   Gates,
-} from '../../../../../services/graphql/types.generated';
+} from '../../../../../services/hasura/types';
 
 const MintDialog: ComponentType<MintDialogProps> = dynamic(
   () =>

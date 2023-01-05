@@ -8,7 +8,7 @@ import { v4 as uuid } from 'uuid';
 import { Button, Divider, Stack } from '@mui/material';
 
 import { ROUTES } from '../../../../../constants/routes';
-import { Gates, Users } from '../../../../../services/graphql/types.generated';
+import { Gates, Users } from '../../../../../services/hasura/types';
 import { EmptyCard } from '../../../../atoms/empty-card';
 import { GatesCard } from '../../../../molecules/gates-card';
 import { PersonCard } from '../../../../molecules/person-card';

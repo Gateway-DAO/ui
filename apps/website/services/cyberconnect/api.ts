@@ -1,6 +1,6 @@
 import { GraphQLClient } from 'graphql-request';
 
-import { getSdk } from './types.generated';
+import { getSdk } from './types';
 
 export type GqlMethods = ReturnType<typeof getSdk>;
 

@@ -6,7 +6,7 @@ import {
   Daos,
   Dao_Gates_TabQuery,
   Dao_Profile_PeopleQuery,
-} from '../../../services/graphql/types.generated';
+} from '../../../services/hasura/types';
 
 type DaoProfileContextProps = {
   isAdmin: boolean;

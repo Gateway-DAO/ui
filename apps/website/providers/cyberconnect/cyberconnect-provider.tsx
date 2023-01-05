@@ -2,7 +2,7 @@ import { PropsWithChildren, useEffect } from 'react';
 
 import { useQuery } from '@tanstack/react-query';
 
-import { cyberConnectSDK } from '../../services-cyberconnect/api';
+import { cyberConnectSDK } from '../../services/cyberconnect/api';
 import { useAuth } from '../auth';
 import { createCyberConnectClient } from './client';
 import { CyberConnectContext } from './context';

@@ -14,7 +14,7 @@ import { useAuth } from '../../../providers/auth';
 import {
   Create_Gate_DirectMutationVariables,
   Create_Gate_Tasks_BasedMutationVariables,
-} from '../../../services/graphql/types.generated';
+} from '../../../services/hasura/types';
 import ConfirmDialog from '../../organisms/confirm-dialog/confirm-dialog';
 import GatePublishedModal from '../../organisms/gates/create/gate-published';
 import { PublishNavbar } from '../../organisms/publish-navbar/publish-navbar';

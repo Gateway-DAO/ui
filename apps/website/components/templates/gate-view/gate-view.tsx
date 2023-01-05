@@ -27,8 +27,8 @@ import {
 
 import { ROUTES } from '../../../constants/routes';
 import { useAuth } from '../../../providers/auth';
-import { gqlAnonMethods } from '../../../services/api';
-import { Gates } from '../../../services/graphql/types.generated';
+import { gqlAnonMethods } from '../../../services/hasura/api';
+import { Gates } from '../../../services/hasura/types';
 import { AvatarFile } from '../../atoms/avatar-file';
 import MorePopover from '../../atoms/more-popover';
 import { ReadMore } from '../../atoms/read-more-less';
@@ -95,7 +95,7 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
       ? directCredentialInfo.data?.hasCredential?.aggregate?.count > 0
       : completedTasksCount === gateProps?.tasks?.length;
 
-  const taskIds = gateProps?.tasks.map((task) => task.id);
+  const taskIds = gateProps?.tasks?.map((task) => task.id);
 
   useEffect(() => {
     const completedTaskIds =
@@ -114,18 +114,23 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
 
   const handleClose = () => setOpen(false);
 
-  const countSimiliarIds = (arr1: string[], arr2: string[]) => {
-    return arr1.filter((id) => arr2.includes(id)).length;
+  const countSimiliarIds = (arr1: string[], arr2?: string[]) => {
+    return arr1.filter((id) => !!arr2?.includes(id)).length;
   };
 
   const credential_id = me?.credentials?.find(
     (cred) => cred?.gate_id === gateProps?.id
   )?.id;
 
-  const { data: credential } = useQuery(['credential', credential_id], () =>
-    gqlAuthMethods.credential({
-      id: credential_id,
-    })
+  const { data: credential } = useQuery(
+    ['credential', credential_id],
+    () =>
+      gqlAuthMethods.credential({
+        id: credential_id,
+      }),
+    {
+      enabled: !!credential_id,
+    }
   );
 
   const { mutate: publishGate } = useMutation(
@@ -578,7 +583,7 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
               </Typography>
             </Grid>
             <Grid item xs={8}>
-              {gateProps?.skills.map((skill, idx) => (
+              {gateProps?.skills?.map((skill, idx) => (
                 <Chip
                   key={'skill-' + (idx + 1)}
                   label={skill}
@@ -646,8 +651,7 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
       )}
       {gateProps.type === 'task_based' && (
         <TaskList
-          gateId={gateProps.id}
-          tasks={gateProps?.tasks}
+          gate={gateProps}
           completedAt={completedAt}
           completedTasksCount={completedTasksCount}
           formattedDate={formattedDate}

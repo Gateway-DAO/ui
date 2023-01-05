@@ -1,0 +1,13 @@
+mutation link_preview($url: String!) {
+  link_preview(url: $url) {
+    url
+    title
+    siteName
+    description
+    images
+    mediaType
+    contentType
+    videos
+    favicons
+  }
+}

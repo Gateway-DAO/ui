@@ -12,7 +12,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 
-import { Daos } from '../../../../../services/graphql/types.generated';
+import { Daos } from '../../../../../services/hasura/types';
 import { FollowButtonDAO } from '../../../../atoms/follow-button-dao';
 
 type Props = {

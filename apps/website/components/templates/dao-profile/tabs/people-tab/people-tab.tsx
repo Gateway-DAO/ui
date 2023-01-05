@@ -8,7 +8,7 @@ import { TOKENS } from '@gateway/theme';
 import { Box, Table, TableBody, TableContainer } from '@mui/material';
 
 import { CenteredLoader } from '../../../../../components/atoms/centered-loader';
-import { gqlAnonMethods } from '../../../../../services/api';
+import { gqlAnonMethods } from '../../../../../services/hasura/api';
 import { useDaoProfile } from '../../context';
 import { UserCell } from './user-cell';
 
@@ -34,8 +34,6 @@ export function PeopleTab() {
     data?.pages?.flatMap((page) =>
       page.daos_by_pk.followers.flatMap((follower) => follower.user)
     ) ?? [];
-
-  console.log(people);
 
   const rowVirtualizer = useWindowVirtualizer({
     count: hasNextPage ? people.length + 1 : people.length,

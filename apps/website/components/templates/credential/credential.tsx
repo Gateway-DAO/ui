@@ -26,7 +26,7 @@ import {
 
 import { ROUTES } from '../../../constants/routes';
 import { useAuth } from '../../../providers/auth';
-import { Credentials } from '../../../services/graphql/types.generated';
+import { Credentials } from '../../../services/hasura/types';
 import { AvatarFile } from '../../atoms/avatar-file';
 import CircularProgressWithLabel from '../../atoms/circular-progress-label';
 import { Props as MintCredentialButtonProps } from '../../atoms/mint-button';
@@ -360,6 +360,7 @@ export function CredentialTemplate({ credential, openModal }: Props) {
         <TaskGroup>
           {credential?.pow.map((task, idx) => (
             <Task
+              gate={credential.gate}
               key={'task-' + (idx + 1)}
               task={task}
               readOnly

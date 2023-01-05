@@ -1,85 +1,82 @@
-import { Grid, IconButton, Paper, Stack, Typography } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
+import { Grid, IconButton, Paper, Stack, Typography } from '@mui/material';
 import { Box } from '@mui/material';
+
+import { TaskType } from '../../../types/tasks';
 import AddTaskButton from './add-task-button';
 
-type taskTypes =
-  | 'self_verify'
-  | 'quiz'
-  | 'token_hold'
-  | 'nft_hold'
-  | 'meeting_code'
-  | 'twitter_follow'
-  | 'twitter_retweet'
-  | 'twitter_tweet'
-  | 'github_contribute'
-  | 'github_prs'
-  | 'snapshot';
-
 type taskStructure = {
-  type: taskTypes;
+  type: TaskType;
   title: string;
   description: string;
 };
 
-const AddTaskCard = ({ numberOfTasks, addTask }) => {
+const AddTaskCard = ({ tasks, addTask }) => {
+  // Rules
+  const hasManualTask = !!tasks?.some((task) => task.task_type === 'manual');
+
   const Tasks: taskStructure[] = [
     {
-      type: 'self_verify',
+      type: 'self_verify' as TaskType,
       title: 'Open Links',
       description: 'Ask users to access a link address',
     },
     {
-      type: 'quiz',
+      type: 'quiz' as TaskType,
       title: 'Take Quiz',
       description: 'Ask questions with multiple or single answer choices',
     },
     {
-      type: 'token_hold',
+      type: 'token_hold' as TaskType,
       title: 'Verify Token',
       description: 'Check if the users hold a token',
     },
     {
-      type: 'nft_hold',
+      type: 'manual' as TaskType,
+      title: 'Manual Submission',
+      description: 'Submit links as proof of work',
+    },
+    {
+      type: 'nft_hold' as TaskType,
       title: 'Verify NFT',
       description: 'Check if the users hold a token',
     },
     {
-      type: 'meeting_code',
+      type: 'meeting_code' as TaskType,
       title: 'Verify Code',
       description: 'Ask users to put a code',
     },
     {
-      type: 'twitter_follow',
+      type: 'twitter_follow' as TaskType,
       title: 'Follow Profile',
       description: 'Ask users to follow a profile on Twitter',
     },
     {
-      type: 'twitter_retweet',
+      type: 'twitter_retweet' as TaskType,
       title: 'Retweet Post',
       description: 'Ask users to retweet a post on Twitter',
     },
     {
-      type: 'twitter_tweet',
+      type: 'twitter_tweet' as TaskType,
       title: 'Post Tweet',
       description: 'Ask users to post a tweet on Twitter',
     },
     {
-      type: 'github_contribute',
+      type: 'github_contribute' as TaskType,
       title: 'Contribute to repository',
       description: 'Check if users contribute to the repository',
     },
     {
-      type: 'github_prs',
+      type: 'github_prs' as TaskType,
       title: 'Verify Pull Requests',
       description: 'Check the number of pull requests',
     },
     {
-      type: 'snapshot',
+      type: 'snapshot' as TaskType,
       title: 'Verify Proposal',
       description: 'Check if the user created or voted on a proposal',
     },
-  ];
+  ].filter((task) => !hasManualTask || task.type !== 'manual');
   return (
     <Stack
       sx={{
@@ -122,8 +119,8 @@ const AddTaskCard = ({ numberOfTasks, addTask }) => {
         columns={{ xs: 4, sm: 8, md: 8 }}
       >
         {Tasks.map((task, index) => (
-          <Grid item xs={2} sm={4} md={4}>
-            <Paper>
+          <Grid item xs={2} sm={4} md={4} key={task.type}>
+            <Paper sx={{ height: '100%' }}>
               <AddTaskButton
                 type={task.type}
                 title={task.title}

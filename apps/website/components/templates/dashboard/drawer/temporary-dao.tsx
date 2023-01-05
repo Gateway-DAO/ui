@@ -8,7 +8,7 @@ import { MotionAvatar } from '@gateway/ui';
 import { ListItemButton } from '@mui/material';
 import ListItemIcon from '@mui/material/ListItemIcon';
 
-import { Daos } from '../../../../services/graphql/types.generated';
+import { Daos } from '../../../../services/hasura/types';
 
 export function TemporaryDao({ dao }: { dao: PartialDeep<Daos> }) {
   const [isPresent, safeToRemove] = usePresence();

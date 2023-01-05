@@ -38,7 +38,9 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
-
 .env
+
 # Sentry
 .sentryclirc
+
+prisma/schema.prisma

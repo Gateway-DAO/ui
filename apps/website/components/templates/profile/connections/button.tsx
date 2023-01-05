@@ -6,7 +6,7 @@ import { utils } from 'ethers';
 
 import { Dialog, Link, Typography } from '@mui/material';
 
-import { cyberConnectSDK } from '../../../../services-cyberconnect/api';
+import { cyberConnectSDK } from '../../../../services/cyberconnect/api';
 import { ConnectionsModal } from './modal';
 
 type Props = {

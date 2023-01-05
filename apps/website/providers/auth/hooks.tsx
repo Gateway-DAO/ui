@@ -15,7 +15,7 @@ import { PartialDeep } from 'type-fest';
 import { useAccount, useDisconnect, useSignMessage } from 'wagmi';
 
 import { ROUTES } from '../../constants/routes';
-import { gqlAnonMethods, gqlMethods } from '../../services/api';
+import { gqlAnonMethods, gqlMethods } from '../../services/hasura/api';
 import { ErrorResponse } from '../../types/graphql';
 import { SessionUser } from '../../types/user';
 import { AuthStep } from './types';

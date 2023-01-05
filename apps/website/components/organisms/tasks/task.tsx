@@ -2,8 +2,7 @@ import { useEffect, useState } from 'react';
 
 import { useMutation } from '@tanstack/react-query';
 import { useToggle } from 'react-use';
-import { PartialObjectDeep } from 'type-fest/source/partial-deep';
-import { useAccount } from 'wagmi';
+import { PartialDeep } from 'type-fest';
 
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import CheckIcon from '@mui/icons-material/Check';
@@ -18,11 +17,12 @@ import {
 } from '@mui/material';
 
 import { useAuth } from '../../../providers/auth';
-import { Tasks } from '../../../services/graphql/types.generated';
+import { Tasks, Gates } from '../../../services/hasura/types';
 import { queryClient } from '../../../services/query-client';
 import { getMapValueFromObject } from '../../../utils/map-object';
 import GithubContributeContent from '../gates/view/tasks/content/github_contribute';
 import GithubPRContent from '../gates/view/tasks/content/github_prs';
+import ManualContent from '../gates/view/tasks/content/manual/manual';
 import MeetingCodeContent from '../gates/view/tasks/content/meeting_code';
 import NFTHoldContent from '../gates/view/tasks/content/nft_hold';
 import QuizContent from '../gates/view/tasks/content/quiz';
@@ -34,9 +34,12 @@ import TwitterRetweetContent from '../gates/view/tasks/content/twitter_retweet';
 import TwitterTweetContent from '../gates/view/tasks/content/twitter_tweet';
 import { taskErrorMessages } from './task-error-messages';
 
+import { TaskIcon } from '../../atoms/task-icon';
+
 type Props = {
   idx?: number;
-  task?: PartialObjectDeep<Tasks>;
+  gate: PartialDeep<Gates>;
+  task?: PartialDeep<Tasks>;
   isDefaultOpen?: boolean;
   readOnly?: boolean;
   completed?: boolean;
@@ -56,30 +59,21 @@ interface Error {
 }
 
 export function Task({
-  task,
   idx,
+  gate,
+  task,
   isDefaultOpen,
   readOnly,
   isAdmin = false,
   completed: completedProp = false,
 }: Props) {
   const { me, gqlAuthMethods, onOpenLogin } = useAuth();
-
+  const taskProgress = me?.task_progresses.find(
+    (task_progress) => task_progress.task_id === task.id
+  );
+  const completed = taskProgress?.completed === 'done';
   const [expanded, toggleExpanded] = useToggle(isDefaultOpen);
-  const [completed, setCompleted] = useState(completedProp);
-  const [updatedAt, setUpdatedAt] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-
-  useEffect(() => {
-    const progressTaskIndex = me?.task_progresses
-      .filter((task) => task.completed === 'done')
-      .findIndex((task_progress) => task_progress.task_id === task.id);
-
-    if (progressTaskIndex !== undefined && progressTaskIndex !== -1) {
-      setCompleted(true);
-      setUpdatedAt(me?.task_progresses[progressTaskIndex].updated_at);
-    }
-  }, [task.id, me?.task_progresses, toggleExpanded]);
 
   useEffect(() => {
     toggleExpanded(isDefaultOpen);
@@ -131,6 +125,10 @@ export function Task({
         title: 'Hold NFT',
         body: NFTHoldContent,
       },
+      manual: {
+        title: 'Manual Submission',
+        body: ManualContent,
+      },
     };
 
     return (
@@ -141,7 +139,7 @@ export function Task({
     );
   };
 
-  const { mutate: completeTaskMutation, isLoading } = useMutation(
+  const { mutateAsync: completeTaskMutation, isLoading } = useMutation(
     ['completeTask', { gateId: task.gate_id, taskId: task.id }],
     gqlAuthMethods.complete_task,
     {
@@ -155,7 +153,7 @@ export function Task({
     }
   );
 
-  const completeTask = (info) => {
+  const completeTask = async (info) => {
     if (!me) {
       return onOpenLogin();
     }
@@ -165,7 +163,7 @@ export function Task({
       info,
     };
 
-    completeTaskMutation(data, {
+    await completeTaskMutation(data, {
       onSuccess: () => {
         setErrorMessage('');
       },
@@ -191,19 +189,19 @@ export function Task({
         borderLeft: 'none',
         borderTop: 'none',
         backgroundColor: 'transparent !important',
-        backgroundImage: 'none !important',
+        backgroundImage: !expanded && 'none !important',
         px: { xs: theme.spacing(1), md: theme.spacing(7) },
         py: { xs: theme.spacing(1), md: theme.spacing(5) },
+        position: 'relative',
       })}
     >
       <CardHeader
         avatar={
           <Avatar
+            variant="rounded"
             sx={{
               backgroundColor: completed
                 ? '#6DFFB9'
-                : expanded
-                ? 'white'
                 : 'transparent',
               color: (theme) =>
                 expanded ? theme.palette.background.default : 'white',
@@ -213,7 +211,7 @@ export function Task({
             {completed ? (
               <CheckIcon htmlColor="#10041C" />
             ) : (
-              idx || task.title[0]
+              <TaskIcon type={task.task_type}/>
             )}
           </Avatar>
         }
@@ -231,11 +229,15 @@ export function Task({
       />
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent sx={{ marginLeft: { xs: '0px', md: '55px' } }}>
-          <Typography variant="subtitle2">{task.description}</Typography>
+          <Typography variant="subtitle2" fontSize={16}>
+            {task.description}
+          </Typography>
           <TaskComponent
+            gate={gate}
+            task={task}
             data={task.task_data}
             completed={completed}
-            updatedAt={updatedAt}
+            updatedAt={completed ? taskProgress?.updated_at : ''}
             completeTask={completeTask}
             readOnly={readOnly}
             isLoading={isLoading}

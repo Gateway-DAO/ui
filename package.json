@@ -15,6 +15,7 @@
   },
   "private": true,
   "dependencies": {
+    "@corets/use-throttle": "^0.2.2",
     "@cyberlab/cyberconnect": "^4.5.0",
     "@emotion/react": "11.8.2",
     "@emotion/server": "11.4.0",
@@ -29,6 +30,7 @@
     "@mui/x-date-pickers": "^5.0.0-beta.1",
     "@next/bundle-analyzer": "^12.2.2",
     "@nrwl/next": "14.0.3",
+    "@prisma/client": "^4.7.1",
     "@rainbow-me/rainbowkit": "^0.5.2",
     "@tanstack/react-query": "^4.2.3",
     "@tanstack/react-query-devtools": "^4.6.1",
@@ -135,6 +137,7 @@
     "jest": "27.5.1",
     "nx": "14.0.3",
     "prettier": "^2.5.1",
+    "prisma": "^4.7.1",
     "react-docgen-typescript": "^2.2.2",
     "react-test-renderer": "18.0.0",
     "swc-loader": "0.1.15",

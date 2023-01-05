@@ -28,7 +28,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 
 import { AvatarFile } from '../../../../../../components/atoms/avatar-file';
-import { Experiences } from '../../../../../../services/graphql/types.generated';
+import { Experiences } from '../../../../../../services/hasura/types';
 import ExperienceCredential from './experience-credential';
 
 type Props = {

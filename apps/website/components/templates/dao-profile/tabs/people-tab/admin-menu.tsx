@@ -14,7 +14,7 @@ import {
 } from '@mui/material';
 
 import { useAuth } from '../../../../../providers/auth';
-import { Users } from '../../../../../services/graphql/types.generated';
+import { Users } from '../../../../../services/hasura/types';
 import { useDaoProfile } from '../../context';
 
 type Props = {

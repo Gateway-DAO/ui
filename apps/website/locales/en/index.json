@@ -1,16 +1,16 @@
 {
   "menu": [
     {
+      "text": "Gateway Stack",
+      "href": "#stack"
+    },
+    {
       "text": "Gateway D-App",
       "href": "#d-app"
     },
     {
       "text": "Gateway SDK ",
       "href": "#sdk"
-    },
-    {
-      "text": "Gateway Stack",
-      "href": "#stack"
     },
     {
       "text": "Investors",

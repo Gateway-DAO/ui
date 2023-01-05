@@ -7,7 +7,7 @@ import { Box, Typography, Stack } from '@mui/material';
 import Chip from '@mui/material/Chip';
 
 import { useViewMode, ViewMode } from '../../../../hooks/use-view-modes';
-import { Gates } from '../../../../services/graphql/types.generated';
+import { Gates } from '../../../../services/hasura/types';
 
 type Props = {
   gates: PartialDeep<Gates>[];

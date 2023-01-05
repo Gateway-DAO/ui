@@ -32,7 +32,31 @@
       "description": "You must have created and merged this number of pull requests",
       "action": "Verify"
     },
+    "manual": {
+      "title": "Manual Submission",
+      "action": "Submit",
+      "label": "Submit the link address"
+    },
     "check_action": "Verify",
     "completed": "Task completed at "
+  },
+  "submissions": {
+    "title": "Submissions",
+    "approved": "Approved",
+    "waiting": "Waiting",
+    "denied": "Denied",
+    "pending_feedback": "Pending feedback",
+    "feeback_sent": "Feedback sent",
+    "submitted_link": "submitted a link",
+    "sent_comment": "sent a comment",
+    "denied_submission": "denied the submission",
+    "approved_submission": "approved the submission",
+    "waiting_feedback": "Waiting for feedback from",
+    "just_now": "just now",
+    "label": "Ask a question or request",
+    "dialog_title": "Are you sure you want to",
+    "dialog_text": "This action cannot be undone",
+    "approve": "approve",
+    "reject": "reject"
   }
 }

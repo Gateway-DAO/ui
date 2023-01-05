@@ -40,6 +40,9 @@
       "timePeriodOneWeek": "1 Week",
       "timePeriodOneMonth": "1 Month",
       "timePeriodNever": "Never"
+    },
+    "manual": {
+      "title": "Manual Submission Title"
     }
   },
   "direct": {

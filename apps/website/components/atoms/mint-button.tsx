@@ -7,7 +7,7 @@ import { Button, Stack } from '@mui/material';
 
 import { TokenFilled } from '../../components/molecules/mint-card/assets/token-filled';
 import { useBiconomy } from '../../providers/biconomy';
-import { Credentials } from '../../services/graphql/types.generated';
+import { Credentials } from '../../services/hasura/types';
 import { LoadingButton } from './loading-button';
 
 export type Props = {
@@ -39,7 +39,9 @@ const MintedButton = (props) => (
 );
 
 export const MintCredentialButton = ({ credential }: Props) => {
-  const [status, setStatus] = useState<'to_mint' | 'minted'>(credential.status);
+  const [status, setStatus] = useState<'to_mint' | 'minted'>(
+    credential.status as 'to_mint' | 'minted'
+  );
   const [transactionUrl, setTransactionUrl] = useState<string | null>(
     credential.transaction_url
   );

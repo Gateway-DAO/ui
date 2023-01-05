@@ -18,8 +18,8 @@ import {
 } from '@mui/material';
 
 import { useAuth } from '../../../../providers/auth';
-import { gqlAnonMethods } from '../../../../services/api';
-import { Gates } from '../../../../services/graphql/types.generated';
+import { gqlAnonMethods } from '../../../../services/hasura/api';
+import { Gates } from '../../../../services/hasura/types';
 import { CenteredLoader } from '../../../atoms/centered-loader';
 import { UserListItem } from '../../../molecules/user-list-item';
 import { ClientNav } from '../../../organisms/navbar/client-nav';
