@@ -22,8 +22,8 @@ export default function DataTable({ title, data }: Props) {
       <Typography sx={{ px: 2, pt: 2, fontWeight: 700 }}>{title}</Typography>
       <Stack divider={<Divider />}>
         {data?.map((item, index) => (
-          <CardCell key={index} label={item.title} margin={false} py={3}>
-            {item.data}
+          <CardCell key={index} label={item.name} margin={false} py={3}>
+            {item.value}
           </CardCell>
         ))}
       </Stack>

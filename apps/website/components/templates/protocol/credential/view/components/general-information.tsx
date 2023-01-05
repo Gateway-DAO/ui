@@ -78,8 +78,9 @@ export default function GeneralInformation({ credential }: Props) {
       <ModalImage
         open={QRCodeIsOpen}
         image={credential?.qrCode}
-        title={credential?.title}
+        alt={credential?.title}
         handleClose={() => setQRCodeIsOpen(false)}
+        downloadButtonText={t('credential.download-qrcode')}
       />
     </>
   );

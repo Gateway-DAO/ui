@@ -13,6 +13,7 @@
     "copy-id": "Credential ID copied to clipboard",
     "qrcode": "QR Code",
     "claim": "Claim",
-    "evidence": "Evidence"
+    "evidence": "Evidence",
+    "download-qrcode": "Download QRCode"
   }
 }

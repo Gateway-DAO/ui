@@ -21,8 +21,8 @@ export type MockCredential = {
 };
 
 export type MockDataItems = {
-  title: string;
-  data: any;
+  name: string;
+  value: any;
 };
 
 export type MockEntity = {
@@ -49,22 +49,22 @@ export default function CredentialProtocolView() {
     expirationDate: 'Indeterminate',
     claim: [
       {
-        title: 'Institution',
-        data: 'Harvard College',
+        name: 'Institution',
+        value: 'Harvard College',
       },
       {
-        title: 'Degree Program',
-        data: 'Computer Science',
+        name: 'Degree Program',
+        value: 'Computer Science',
       },
       {
-        title: 'Category of Degree',
-        data: 'Bachelor of Arts (A.B.)',
+        name: 'Category of Degree',
+        value: 'Bachelor of Arts (A.B.)',
       },
     ],
     evidence: [
       {
-        title: 'Undergraduate Thesis',
-        data: 'http://id.lib.harvard.edu/alma/990040031760203941/catalog',
+        name: 'Undergraduate Thesis',
+        value: 'http://id.lib.harvard.edu/alma/990040031760203941/catalog',
       },
     ],
     status: 0,
