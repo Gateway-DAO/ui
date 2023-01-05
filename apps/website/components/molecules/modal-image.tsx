@@ -1,71 +1,87 @@
 import useTranslation from 'next-translate/useTranslation';
 
-import { Dialog, Stack, Button, Box, Paper } from '@mui/material';
+import { theme } from '@gateway/theme';
+
+import { Stack, Button, Box, useMediaQuery } from '@mui/material';
+
+import Modal from './modal';
+import SwipeableDrawerMobile from './swipeable-drawer-mobile';
 
 type Props = {
   open: boolean;
   handleClose: () => void;
+  handleOpen: () => void;
   image: string;
   alt: string;
   downloadButtonText?: string;
+  swipeableDrawer?: boolean;
 };
 
 export default function ModalImage({
   open,
   handleClose,
+  handleOpen,
   image,
   alt,
   downloadButtonText,
+  swipeableDrawer = false,
 }: Props) {
   const { t } = useTranslation('protocol');
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
+
+  const renderImage = (image: string, alt: string) => {
+    return <img src={image} alt={alt} width="100%" />;
+  };
+
   return (
-    <Dialog
-      open={open}
-      onClose={handleClose}
-      aria-labelledby="modal-modal-title"
-      aria-describedby="modal-modal-description"
-    >
-      <Paper
-        direction="column"
-        elevation={5}
-        component={Stack}
-        sx={{
-          px: { xs: 2, lg: 3 },
-          py: { xs: 2, lg: 3 },
-          height: '100%',
-          width: { md: '100%' },
-          display: 'flex',
-          borderRadius: 1,
-        }}
-      >
-        <Box
-          sx={{
-            textAlign: 'center',
-            maxWidth: '396px',
-            margin: 'auto',
-            mb: 3,
-            borderRadius: 1,
-            overflow: 'hidden',
-            display: 'flex',
-          }}
+    <>
+      {isMobile && swipeableDrawer ? (
+        <SwipeableDrawerMobile
+          open={open}
+          handleClose={() => handleClose()}
+          handleOpen={() => handleOpen()}
         >
-          <img src={image} alt={alt} width="100%" />
-        </Box>
-        <Stack gap={1}>
-          {downloadButtonText && (
-            <Button variant="contained" href={image} target="_blank" download>
-              {downloadButtonText}
-            </Button>
-          )}
-          <Button
-            component="a"
-            variant="outlined"
-            onClick={() => handleClose()}
-          >
-            {t('common:actions.close')}
-          </Button>
-        </Stack>
-      </Paper>
-    </Dialog>
+          {renderImage(image, alt)}
+        </SwipeableDrawerMobile>
+      ) : (
+        <Modal
+          open={open}
+          handleClose={() => handleClose()}
+          modalTitle={`Modal ${alt}`}
+          modalDescription={`Modal ${alt}`}
+        >
+          <>
+            <Box
+              sx={{
+                textAlign: 'center',
+                maxWidth: '396px',
+                margin: 'auto',
+                mb: 3,
+                borderRadius: 1,
+                overflow: 'hidden',
+                display: 'flex',
+              }}
+            >
+              {renderImage(image, alt)}
+            </Box>
+            <Stack gap={1}>
+              {downloadButtonText && (
+                <Button
+                  variant="contained"
+                  href={image}
+                  target="_blank"
+                  download
+                >
+                  {downloadButtonText}
+                </Button>
+              )}
+              <Button variant="outlined" onClick={() => handleClose()}>
+                {t('common:actions.close')}
+              </Button>
+            </Stack>
+          </>
+        </Modal>
+      )}
+    </>
   );
 }

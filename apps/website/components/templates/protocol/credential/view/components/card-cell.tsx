@@ -37,7 +37,12 @@ export default function CardCell({
       >
         {label}
       </Typography>
-      <Box fontSize={14}>{children}</Box>
+      <Box
+        fontSize={14}
+        sx={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}
+      >
+        {children}
+      </Box>
     </Stack>
   );
 }
