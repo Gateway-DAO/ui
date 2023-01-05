@@ -22,7 +22,11 @@ export default function Card({ issuer, recipient, credential }: Props) {
     <Paper
       elevation={2}
       component={Stack}
-      sx={{ border: '1px solid rgba(229, 229, 229, 0.12)', borderRadius: 2 }}
+      sx={{
+        border: '1px solid rgba(229, 229, 229, 0.12)',
+        borderRadius: 2,
+        mb: 2,
+      }}
       divider={<Divider sx={{ width: '100%' }} />}
     >
       <CardUsers issuer={issuer} recipient={recipient} />

@@ -11,6 +11,9 @@
     "recipient-id": "Recipient ID",
     "credential-id": "Credential ID",
     "copy-id": "Credential ID copied to clipboard",
-    "qrcode": "QR Code"
+    "qrcode": "QR Code",
+    "claim": "Claim",
+    "evidence": "Evidence",
+    "download-qrcode": "Download QRCode"
   }
 }
