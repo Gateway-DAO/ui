@@ -17,7 +17,7 @@ export type MockCredential = {
   expirationDate: string;
   status: number;
   claim: MockDataItems[];
-  evidence: MockDataItems[];
+  evidences: MockDataItems[];
 };
 
 export type MockDataItems = {
@@ -61,7 +61,7 @@ export default function CredentialProtocolView() {
         value: 'Bachelor of Arts (A.B.)',
       },
     ],
-    evidence: [
+    evidences: [
       {
         name: 'Undergraduate Thesis',
         value: 'http://id.lib.harvard.edu/alma/990040031760203941/catalog',
@@ -103,7 +103,7 @@ export default function CredentialProtocolView() {
       <DataTable title={t('credential.claim')} data={mockCredential?.claim} />
       <DataTable
         title={t('credential.evidence')}
-        data={mockCredential?.evidence}
+        data={mockCredential?.evidences}
       />
     </Stack>
   );
