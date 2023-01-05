@@ -32,7 +32,15 @@ export default function CardUsers({ issuer, recipient }: Props) {
           transform: isMobile ? 'rotate(90deg)' : 'none',
         }}
       >
-        &#62;
+        <svg width="18" height="36" fill="none" viewBox="0 0 18 36">
+          <path
+            stroke="#fff"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeOpacity=".7"
+            d="m.5 1 17 17-17 17"
+          />
+        </svg>
       </Box>
       <CardUserCell
         user={recipient}

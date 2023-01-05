@@ -24,4 +24,4 @@ export default function ProtocolCredential() {
   ) : null;
 }
 
-ProtocolCredential.auth = true;
+// ProtocolCredential.auth = true;
