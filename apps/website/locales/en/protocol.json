@@ -14,6 +14,8 @@
     "qrcode": "QR Code",
     "claim": "Claim",
     "evidence": "Evidence",
-    "download-qrcode": "Download QRCode"
+    "download-qrcode": "Download QRCode",
+    "hide-activity": "Hide Activity",
+    "show-activity": "Show Activity"
   }
 }

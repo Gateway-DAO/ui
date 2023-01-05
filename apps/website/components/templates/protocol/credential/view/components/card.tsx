@@ -25,7 +25,7 @@ export default function Card({ issuer, recipient, credential }: Props) {
       sx={{
         border: '1px solid rgba(229, 229, 229, 0.12)',
         borderRadius: 2,
-        mb: 2,
+        mb: 1,
       }}
       divider={<Divider sx={{ width: '100%' }} />}
     >

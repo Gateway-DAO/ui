@@ -15,7 +15,7 @@ export default function ProtocolTemplate({ children }: Props) {
   const router = useRouter();
 
   return (
-    <Stack sx={{ px: TOKENS.CONTAINER_PX }}>
+    <>
       <Stack
         direction="row"
         alignItems="center"
@@ -27,6 +27,7 @@ export default function ProtocolTemplate({ children }: Props) {
           flexGrow: {
             md: 0.5,
           },
+          px: TOKENS.CONTAINER_PX,
         }}
       >
         <IconButton onClick={() => router.back()}>
@@ -39,6 +40,6 @@ export default function ProtocolTemplate({ children }: Props) {
         </Box>
       </Stack>
       <Stack sx={{ py: 2 }}>{children}</Stack>
-    </Stack>
+    </>
   );
 }

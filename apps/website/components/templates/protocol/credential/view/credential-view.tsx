@@ -1,7 +1,8 @@
 import useTranslation from 'next-translate/useTranslation';
 
-import { Stack } from '@mui/material';
+import { Divider, Stack } from '@mui/material';
 
+import Activities from './components/activities';
 import Card from './components/card';
 import DataTable from './components/data-table';
 import GeneralInformation from './components/general-information';
@@ -16,13 +17,19 @@ export type MockCredential = {
   issuanceDate: string;
   expirationDate: string;
   status: number;
-  claim: MockDataItems[];
-  evidences: MockDataItems[];
+  claim: MockDataItem[];
+  evidences: MockDataItem[];
+  activities: MockActivity[];
 };
 
-export type MockDataItems = {
+export type MockDataItem = {
   name: string;
   value: any;
+};
+
+export type MockActivity = {
+  name: string;
+  description: string;
 };
 
 export type MockEntity = {
@@ -47,6 +54,20 @@ export default function CredentialProtocolView() {
     tags: ['Education', 'Undergraduate', 'Development'],
     issuanceDate: 'Aug 5th, 2022',
     expirationDate: 'Indeterminate',
+    activities: [
+      {
+        name: 'Credential expired',
+        description: 'Oct/05/2022, 4:20 pm',
+      },
+      {
+        name: 'Credential issued',
+        description: 'Oct/05/2022, 4:20 pm',
+      },
+      {
+        name: 'Credential issued',
+        description: 'Oct/05/2022, 4:20 pm',
+      },
+    ],
     claim: [
       {
         name: 'Institution',
@@ -86,25 +107,40 @@ export default function CredentialProtocolView() {
   // MOCK - END
 
   return (
-    <Stack
-      sx={{
-        maxWidth: '564px',
-        width: '100%',
-        mx: 'auto',
-        textAlign: 'left',
-      }}
-    >
-      <GeneralInformation credential={mockCredential} />
-      <Card
-        issuer={mockEntity1}
-        recipient={mockEntity2}
-        credential={mockCredential}
-      />
-      <DataTable title={t('credential.claim')} data={mockCredential?.claim} />
-      <DataTable
-        title={t('credential.evidence')}
-        data={mockCredential?.evidences}
-      />
-    </Stack>
+    <>
+      <Stack
+        sx={{
+          maxWidth: '564px',
+          width: '100%',
+          mx: 'auto',
+          textAlign: 'left',
+        }}
+      >
+        <GeneralInformation credential={mockCredential} />
+        <Card
+          issuer={mockEntity1}
+          recipient={mockEntity2}
+          credential={mockCredential}
+        />
+        {mockCredential?.activities?.length > 0 && (
+          <Activities activities={mockCredential?.activities} />
+        )}
+      </Stack>
+      <Divider sx={{ mt: 3, mb: 4, marginLeft: '2px' }} />
+      <Stack
+        sx={{
+          maxWidth: '564px',
+          width: '100%',
+          mx: 'auto',
+          textAlign: 'left',
+        }}
+      >
+        <DataTable title={t('credential.claim')} data={mockCredential?.claim} />
+        <DataTable
+          title={t('credential.evidence')}
+          data={mockCredential?.evidences}
+        />
+      </Stack>
+    </>
   );
 }

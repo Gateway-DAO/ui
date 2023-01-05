@@ -1,11 +1,11 @@
 import { Stack, Paper, Divider, Typography } from '@mui/material';
 
-import { MockDataItems } from '../credential-view';
+import { MockDataItem } from '../credential-view';
 import CardCell from './card-cell';
 
 type Props = {
   title: string;
-  data: MockDataItems[];
+  data: MockDataItem[];
 };
 
 export default function DataTable({ title, data }: Props) {
