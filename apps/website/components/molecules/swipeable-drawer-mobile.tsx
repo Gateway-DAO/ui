@@ -35,11 +35,11 @@ export default function SwipeableDrawerMobile({
           height: 6,
           backgroundColor: brandColors.grays.dark,
           borderRadius: 3,
-          mt: 2,
+          my: 2,
           mx: 'auto',
         }}
       ></Box>
-      <Box sx={{ p: 2, maxWidth: '100%' }}>{children}</Box>
+      <Box sx={{ px: 2, pt: 2, pb: 4, maxWidth: '100%' }}>{children}</Box>
     </SwipeableDrawer>
   );
 }
