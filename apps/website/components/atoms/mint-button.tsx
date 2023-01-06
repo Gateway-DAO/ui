@@ -53,7 +53,7 @@ export const MintCredentialButton = ({ credential }: Props) => {
     <Stack
       sx={{
         flex: 1,
-        marginBottom: (theme) => theme.spacing(4),
+        marginBottom: (theme) => theme.spacing(3),
       }}
     >
       {status === 'minted' ? (

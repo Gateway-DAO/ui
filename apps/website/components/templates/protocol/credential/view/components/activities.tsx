@@ -15,6 +15,7 @@ import {
 } from '@mui/material';
 
 import { MockActivity } from '../credential-view';
+import ExternalLink from './../../../../../../components/atoms/external-link';
 
 type Props = {
   activities: MockActivity[];
@@ -43,35 +44,48 @@ export default function Activities({ activities }: Props) {
           sx={{
             p: 0,
             m: 0,
+            mb: 1,
             position: 'relative',
+            minHeight: '30px!important',
             '& > *': {
               p: 0,
               m: '0!important',
-              minHeight: '64px',
+              minHeight: '30px!important',
             },
           }}
         >
-          <Stack direction="row" alignItems="center">
-            <Typography
-              fontSize={12}
-              sx={{
-                flexGrow: 0,
-                mr: 1,
-                textTransform: 'uppercase',
-                fontWeight: 700,
-                color: brandColors.purple.main,
-              }}
-            >
-              {expanded
-                ? t('credential.hide-activity')
-                : t('credential.show-activity')}
-            </Typography>
-            <ArrowDropDownIcon
-              sx={{
-                transform: expanded ? 'rotate(180deg)' : 'none',
-                color: brandColors.purple.main,
-                transition: 'all .3s ease',
-              }}
+          <Stack
+            direction="row"
+            alignItems="center"
+            justifyContent="space-between"
+            sx={{ width: '100%' }}
+          >
+            <Stack direction="row" alignItems="center" flexGrow={1}>
+              <Typography
+                fontSize={12}
+                sx={{
+                  flexGrow: 0,
+                  mr: 1,
+                  textTransform: 'uppercase',
+                  fontWeight: 700,
+                  color: brandColors.purple.main,
+                }}
+              >
+                {expanded
+                  ? t('credential.hide-activity')
+                  : t('credential.show-activity')}
+              </Typography>
+              <ArrowDropDownIcon
+                sx={{
+                  transform: expanded ? 'rotate(180deg)' : 'none',
+                  color: brandColors.purple.main,
+                  transition: 'all .3s ease',
+                }}
+              />
+            </Stack>
+            <ExternalLink
+              text={t('credential.data-model-id')}
+              url="https://google.com"
             />
           </Stack>
         </AccordionSummary>

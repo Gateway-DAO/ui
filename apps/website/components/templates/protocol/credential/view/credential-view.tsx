@@ -2,6 +2,8 @@ import useTranslation from 'next-translate/useTranslation';
 
 import { Divider, Stack } from '@mui/material';
 
+import ExternalLink from './../../../../../components/atoms/external-link';
+import { MintCredentialButton } from './../../../../../components/atoms/mint-button';
 import Activities from './components/activities';
 import Card from './components/card';
 import DataTable from './components/data-table';
@@ -104,6 +106,11 @@ export default function CredentialProtocolView() {
     wallet: 'nunocarvalho.ens',
     id: '1234',
   };
+
+  const credMint = {
+    status: 'to_mint',
+    transaction_url: 'x',
+  };
   // MOCK - END
 
   return (
@@ -122,6 +129,7 @@ export default function CredentialProtocolView() {
           recipient={mockEntity2}
           credential={mockCredential}
         />
+        <MintCredentialButton credential={credMint} />
         {mockCredential?.activities?.length > 0 && (
           <Activities activities={mockCredential?.activities} />
         )}
@@ -135,6 +143,9 @@ export default function CredentialProtocolView() {
           textAlign: 'left',
         }}
       >
+        <Stack direction="row" justifyContent="flex-end" sx={{ mb: 2 }}>
+          <ExternalLink text={t('credential.storage-id')} url="" />
+        </Stack>
         <DataTable title={t('credential.claim')} data={mockCredential?.claim} />
         <DataTable
           title={t('credential.evidence')}

@@ -1,9 +1,9 @@
 import { useRouter } from 'next/router';
 
-import { TOKENS } from '@gateway/theme';
+import { theme, TOKENS } from '@gateway/theme';
 
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { Avatar, Box, IconButton, Stack } from '@mui/material';
+import { Avatar, Box, IconButton, Stack, useMediaQuery } from '@mui/material';
 
 import { ClientNav } from '../../../components/organisms/navbar/client-nav';
 
@@ -13,6 +13,7 @@ type Props = {
 
 export default function ProtocolTemplate({ children }: Props) {
   const router = useRouter();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
 
   return (
     <>
@@ -39,7 +40,14 @@ export default function ProtocolTemplate({ children }: Props) {
           <ClientNav />
         </Box>
       </Stack>
-      <Stack sx={{ py: 2 }}>{children}</Stack>
+      <Stack
+        sx={{
+          py: 2,
+          px: isMobile ? TOKENS.CONTAINER_PX : 0,
+        }}
+      >
+        {children}
+      </Stack>
     </>
   );
 }

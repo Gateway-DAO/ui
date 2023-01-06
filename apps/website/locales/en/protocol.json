@@ -16,6 +16,8 @@
     "evidence": "Evidence",
     "download-qrcode": "Download QRCode",
     "hide-activity": "Hide Activity",
-    "show-activity": "Show Activity"
+    "show-activity": "See Activity",
+    "data-model-id": "Data model ID",
+    "storage-id": "Storage ID"
   }
 }
