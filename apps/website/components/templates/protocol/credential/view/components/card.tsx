@@ -1,9 +1,12 @@
 import useTranslation from 'next-translate/useTranslation';
 
+import { PartialDeep } from 'type-fest';
+
 import { theme } from '@gateway/theme';
 
 import { Stack, Paper, Box, Divider, Chip, useMediaQuery } from '@mui/material';
 
+import { Credential } from '../../../../../../services/gateway-protocol/types';
 import { MockCredential, MockEntity } from '../credential-view';
 import CardCell from './card-cell';
 import CardUsers from './card-users';
@@ -11,7 +14,7 @@ import CardUsers from './card-users';
 type Props = {
   issuer: MockEntity;
   recipient: MockEntity;
-  credential: MockCredential;
+  credential: PartialDeep<Credential>;
 };
 
 export default function Card({ issuer, recipient, credential }: Props) {
@@ -49,7 +52,7 @@ export default function Card({ issuer, recipient, credential }: Props) {
           {credential?.expirationDate}
         </CardCell>
         <CardCell label={t('credential.status')}>
-          {credential?.status === 0 && (
+          {credential?.status === 'VALID' && (
             <Chip
               label={t('credential.valid')}
               size="small"
@@ -57,7 +60,7 @@ export default function Card({ issuer, recipient, credential }: Props) {
               color="success"
             />
           )}
-          {credential?.status === 1 && (
+          {credential?.status === 'EXPIRED' && (
             <Chip
               label={t('credential.expired')}
               size="small"
@@ -65,7 +68,7 @@ export default function Card({ issuer, recipient, credential }: Props) {
               color="warning"
             />
           )}
-          {credential?.status === 2 && (
+          {credential?.status === 'REVOKED' && (
             <Chip
               label={t('credential.revoked')}
               size="small"
@@ -73,7 +76,7 @@ export default function Card({ issuer, recipient, credential }: Props) {
               color="warning"
             />
           )}
-          {credential?.status === 3 && (
+          {credential?.status === 'INVALID' && (
             <Chip
               label={t('credential.invalid')}
               size="small"

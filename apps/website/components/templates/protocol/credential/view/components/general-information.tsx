@@ -1,6 +1,8 @@
 import useTranslation from 'next-translate/useTranslation';
 import { useState } from 'react';
 
+import { PartialDeep } from 'type-fest';
+
 import { brandColors, theme } from '@gateway/theme';
 
 import {
@@ -13,11 +15,11 @@ import {
 } from '@mui/material';
 
 import ModalImage from '../../../../../../components/molecules/modal-image';
-import { MockCredential } from '../credential-view';
+import { Credential } from '../../../../../../services/gateway-protocol/types';
 import CopyPaste from './copy-paste';
 
 type Props = {
-  credential: MockCredential;
+  credential: PartialDeep<Credential>;
 };
 
 export default function GeneralInformation({ credential }: Props) {
@@ -40,7 +42,7 @@ export default function GeneralInformation({ credential }: Props) {
           }}
         >
           <img
-            src={credential?.qrCode}
+            src="https://picsum.photos/536/536"
             alt={t('credential.qrcode')}
             width="100%"
           />
@@ -54,7 +56,7 @@ export default function GeneralInformation({ credential }: Props) {
               {t('credential.credential-id')}
             </Typography>
             <CopyPaste
-              text={credential?.id}
+              text={credential?._id}
               sucessMessage={t('credential.copy-id')}
             />
           </Stack>
@@ -63,9 +65,9 @@ export default function GeneralInformation({ credential }: Props) {
           </Typography>
         </Stack>
       </Stack>
-      {credential?.tags?.length > 0 && (
+      {credential?.dataModel?.tags?.length > 0 && (
         <Stack direction="row" gap={1} sx={{ mb: 2 }}>
-          {credential.tags.map((tag, index) => (
+          {credential.dataModel.tags.map((tag, index) => (
             <Chip
               label={tag}
               key={index}
@@ -77,7 +79,7 @@ export default function GeneralInformation({ credential }: Props) {
       <Typography sx={{ mb: 3 }}>{credential?.description}</Typography>
       <ModalImage
         open={QRCodeIsOpen}
-        image={credential?.qrCode}
+        image={'https://picsum.photos/536/536'}
         alt={credential?.title}
         handleClose={() => setQRCodeIsOpen(false)}
         handleOpen={() => setQRCodeIsOpen(true)}
