@@ -2,6 +2,7 @@
   "credential": {
     "issuance-date": "Issuance date",
     "expiration-date": "Expiration date",
+    "indeterminate": "Indeterminate",
     "status": "Status",
     "valid": "Valid",
     "expired": "Expired",

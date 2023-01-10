@@ -1,22 +1,42 @@
 import useTranslation from 'next-translate/useTranslation';
 
 import { PartialDeep } from 'type-fest';
+import { PartialObjectDeep } from 'type-fest/source/partial-deep';
 
 import { theme } from '@gateway/theme';
 
 import { Stack, Paper, Box, Divider, Chip, useMediaQuery } from '@mui/material';
 
 import { Credential } from '../../../../../../services/gateway-protocol/types';
+import { Users } from '../../../../../../services/hasura/types';
 import CardCell from './card-cell';
 import CardUsers from './card-users';
 
 type Props = {
   credential: PartialDeep<Credential>;
+  issuer: PartialObjectDeep<Users>;
+  recipient: PartialObjectDeep<Users>;
 };
 
-export default function Card({ credential }: Props) {
-  const { t } = useTranslation('protocol');
+export default function Card({ credential, issuer, recipient }: Props) {
+  const { t, lang } = useTranslation('protocol');
   const isMobile = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
+
+  const timestampToString = (date) => {
+    if (!date) {
+      return t('credential.indeterminate');
+    }
+    return new Date(date?.toLocaleString(lang)).toLocaleString(lang);
+  };
+
+  const isDateExpired = (() => {
+    if (!credential?.expirationDate) {
+      return false;
+    }
+    const expireDate = new Date(credential?.expirationDate);
+    expireDate.setDate(expireDate.getDate());
+    return expireDate.getTime() < new Date().getTime();
+  })();
 
   return (
     <Paper
@@ -29,10 +49,7 @@ export default function Card({ credential }: Props) {
       }}
       divider={<Divider sx={{ width: '100%' }} />}
     >
-      <CardUsers
-        issuer={credential?.issuer}
-        recipient={credential?.recipient}
-      />
+      <CardUsers issuer={issuer} recipient={recipient} />
       <Stack
         alignItems="stretch"
         justifyContent="space-around"
@@ -46,13 +63,13 @@ export default function Card({ credential }: Props) {
         }
       >
         <CardCell label={t('credential.issuance-date')}>
-          {credential?.issuanceDate}
+          {timestampToString(credential?.issuanceDate)}
         </CardCell>
         <CardCell label={t('credential.expiration-date')}>
-          {credential?.expirationDate}
+          {timestampToString(credential?.expirationDate)}
         </CardCell>
         <CardCell label={t('credential.status')}>
-          {credential?.status === 'VALID' && (
+          {!isDateExpired && (
             <Chip
               label={t('credential.valid')}
               size="small"
@@ -60,7 +77,7 @@ export default function Card({ credential }: Props) {
               color="success"
             />
           )}
-          {credential?.status === 'EXPIRED' && (
+          {isDateExpired && (
             <Chip
               label={t('credential.expired')}
               size="small"
@@ -68,7 +85,7 @@ export default function Card({ credential }: Props) {
               color="warning"
             />
           )}
-          {credential?.status === 'REVOKED' && (
+          {/* {credential?.status === 'REVOKED' && (
             <Chip
               label={t('credential.revoked')}
               size="small"
@@ -83,7 +100,7 @@ export default function Card({ credential }: Props) {
               variant="outlined"
               color="error"
             />
-          )}
+          )} */}
         </CardCell>
       </Stack>
     </Paper>

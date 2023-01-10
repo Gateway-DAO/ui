@@ -1,9 +1,11 @@
 import useTranslation from 'next-translate/useTranslation';
 
+import { useQuery } from '@tanstack/react-query';
 import { PartialDeep } from 'type-fest';
 
-import { Divider, Stack } from '@mui/material';
+import { CircularProgress, Divider, Stack } from '@mui/material';
 
+import { useAuth } from '../../../../../providers/auth';
 import { Credential } from '../../../../../services/gateway-protocol/types';
 import ExternalLink from '../../../../atoms/external-link';
 import { MintCredentialButton } from '../../../../atoms/mint-button';
@@ -18,6 +20,33 @@ type Props = {
 
 export default function CredentialProtocolView({ credential }: Props) {
   const { t } = useTranslation('protocol');
+  const { gqlAuthMethods } = useAuth();
+
+  const issuer = useQuery(
+    ['issuer', credential?.issuer?._id],
+    () =>
+      gqlAuthMethods.user_from_wallet({
+        wallet: credential?.issuer?.primaryWallet?.address,
+      }),
+    {
+      select: (data) => data.users?.[0],
+      refetchOnMount: false,
+      refetchOnWindowFocus: false,
+    }
+  );
+
+  const recipient = useQuery(
+    ['recipient', credential?.recipient?._id],
+    () =>
+      gqlAuthMethods.user_from_wallet({
+        wallet: credential?.recipient?.primaryWallet?.address,
+      }),
+    {
+      select: (data) => data.users?.[0],
+      refetchOnMount: false,
+      refetchOnWindowFocus: false,
+    }
+  );
 
   // MOCK
   const credMint = {
@@ -25,6 +54,14 @@ export default function CredentialProtocolView({ credential }: Props) {
     transaction_url: 'x',
   };
   // MOCK - END
+
+  if (!issuer.data || !recipient.data) {
+    return (
+      <Stack direction="row" gap={2} alignItems="center">
+        <CircularProgress />
+      </Stack>
+    );
+  }
 
   return (
     <>
@@ -37,7 +74,11 @@ export default function CredentialProtocolView({ credential }: Props) {
         }}
       >
         <GeneralInformation credential={credential} />
-        <Card credential={credential} />
+        <Card
+          credential={credential}
+          issuer={issuer?.data}
+          recipient={recipient?.data}
+        />
         <MintCredentialButton credential={credMint} />
         {/* {credential?.activities?.length > 0 && (
           <Activities activities={credential?.activities} />

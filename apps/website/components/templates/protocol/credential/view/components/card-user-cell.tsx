@@ -1,14 +1,14 @@
-import { PartialDeep } from 'type-fest';
+import { PartialObjectDeep } from 'type-fest/source/partial-deep';
 
 import { Stack, Link } from '@mui/material';
 
-import { User } from '../../../../../../services/gateway-protocol/types';
+import { Users } from '../../../../../../services/hasura/types';
 import { AvatarFile } from '../../../../../atoms/avatar-file';
 import CardCell from './card-cell';
 
 type Props = {
   label: string;
-  user: PartialDeep<User>;
+  user: PartialObjectDeep<Users>;
   alignRight?: boolean;
 };
 
@@ -25,18 +25,18 @@ export default function CardUserCell({
       }}
     >
       <AvatarFile
-        file={'test' as any}
+        file={user?.picture}
         fallback="/avatar.png"
         sx={{ ml: alignRight ? 0 : 2, mr: alignRight ? 2 : 0 }}
       >
-        {'Teste'}
+        {user?.username}
       </AvatarFile>
       <CardCell label={label} margin={false} alignRight={alignRight}>
         <Link
-          href={`http://localhost:4200/${user?._id}`}
+          href={`http://localhost:4200/${user?.username}`}
           sx={{ textDecoration: 'none' }}
         >
-          {user?.primaryWallet?.address}
+          {user?.wallet}
         </Link>
       </CardCell>
     </Stack>

@@ -1,17 +1,18 @@
 import useTranslation from 'next-translate/useTranslation';
 
 import { PartialDeep } from 'type-fest';
+import { PartialObjectDeep } from 'type-fest/source/partial-deep';
 
 import { theme } from '@gateway/theme';
 
 import { Stack, Box, useMediaQuery } from '@mui/material';
 
-import { User } from '../../../../../../services/gateway-protocol/types';
+import { Users } from '../../../../../../services/hasura/types';
 import CardUserCell from './card-user-cell';
 
 type Props = {
-  issuer: PartialDeep<User>;
-  recipient: PartialDeep<User>;
+  issuer: PartialObjectDeep<Users>;
+  recipient: PartialObjectDeep<Users>;
 };
 
 export default function CardUsers({ issuer, recipient }: Props) {
