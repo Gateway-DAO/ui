@@ -12,39 +12,6 @@ import Card from './components/card';
 import DataTable from './components/data-table';
 import GeneralInformation from './components/general-information';
 
-// MOCK
-export type MockCredential = {
-  id: string;
-  title: string;
-  qrCode: string;
-  description: string;
-  tags: string[];
-  issuanceDate: string;
-  expirationDate: string;
-  status: number;
-  claim: MockDataItem[];
-  evidences: MockDataItem[];
-  activities: MockActivity[];
-};
-
-export type MockDataItem = {
-  name: string;
-  value: any;
-};
-
-export type MockActivity = {
-  name: string;
-  description: string;
-};
-
-export type MockEntity = {
-  avatar: any;
-  username: string;
-  wallet: string;
-  id: string;
-};
-// MOCK - END
-
 type Props = {
   credential: PartialDeep<Credential>;
 };
@@ -52,20 +19,7 @@ type Props = {
 export default function CredentialProtocolView({ credential }: Props) {
   const { t } = useTranslation('protocol');
 
-  const mockEntity1: MockEntity = {
-    username: 'havard',
-    avatar: undefined,
-    wallet: 'havarduniversity.ens',
-    id: '1234',
-  };
-
-  const mockEntity2: MockEntity = {
-    username: 'nuno21',
-    avatar: undefined,
-    wallet: 'nunocarvalho.ens',
-    id: '1234',
-  };
-
+  // MOCK
   const credMint = {
     status: 'to_mint',
     transaction_url: 'x',
@@ -83,11 +37,7 @@ export default function CredentialProtocolView({ credential }: Props) {
         }}
       >
         <GeneralInformation credential={credential} />
-        <Card
-          issuer={mockEntity1}
-          recipient={mockEntity2}
-          credential={credential}
-        />
+        <Card credential={credential} />
         <MintCredentialButton credential={credMint} />
         {/* {credential?.activities?.length > 0 && (
           <Activities activities={credential?.activities} />
@@ -105,7 +55,7 @@ export default function CredentialProtocolView({ credential }: Props) {
         <Stack direction="row" justifyContent="flex-end" sx={{ mb: 2 }}>
           <ExternalLink text={t('credential.storage-id')} url="" />
         </Stack>
-        <DataTable title={t('credential.claim')} data={credential?.claim} />
+        {/* <DataTable title={t('credential.claim')} data={credential?.claim} /> */}
         <DataTable
           title={t('credential.evidence')}
           data={credential?.evidences}

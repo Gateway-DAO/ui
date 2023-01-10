@@ -7,17 +7,14 @@ import { theme } from '@gateway/theme';
 import { Stack, Paper, Box, Divider, Chip, useMediaQuery } from '@mui/material';
 
 import { Credential } from '../../../../../../services/gateway-protocol/types';
-import { MockCredential, MockEntity } from '../credential-view';
 import CardCell from './card-cell';
 import CardUsers from './card-users';
 
 type Props = {
-  issuer: MockEntity;
-  recipient: MockEntity;
   credential: PartialDeep<Credential>;
 };
 
-export default function Card({ issuer, recipient, credential }: Props) {
+export default function Card({ credential }: Props) {
   const { t } = useTranslation('protocol');
   const isMobile = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
 
@@ -32,7 +29,10 @@ export default function Card({ issuer, recipient, credential }: Props) {
       }}
       divider={<Divider sx={{ width: '100%' }} />}
     >
-      <CardUsers issuer={issuer} recipient={recipient} />
+      <CardUsers
+        issuer={credential?.issuer}
+        recipient={credential?.recipient}
+      />
       <Stack
         alignItems="stretch"
         justifyContent="space-around"

@@ -1,11 +1,10 @@
 import { Stack, Paper, Divider, Typography } from '@mui/material';
 
-import { MockDataItem } from '../credential-view';
 import CardCell from './card-cell';
 
 type Props = {
   title: string;
-  data: MockDataItem[];
+  data: any[];
 };
 
 export default function DataTable({ title, data }: Props) {
@@ -23,7 +22,7 @@ export default function DataTable({ title, data }: Props) {
       <Stack divider={<Divider />}>
         {data?.map((item, index) => (
           <CardCell key={index} label={item.name} margin={false} py={3}>
-            {item.value}
+            {`${item.value}`}
           </CardCell>
         ))}
       </Stack>

@@ -1,4 +1,4 @@
-import { GetStaticProps, InferGetServerSidePropsType } from 'next';
+import { InferGetServerSidePropsType } from 'next';
 
 import { DashboardTemplate } from '../../../components/templates/dashboard';
 import {
@@ -31,13 +31,12 @@ export default function ProtocolCredential({ credential }: Props) {
 
 export const getServerSideProps = async () => {
   const credential = await gatewayProtocolSDK.credential({
-    id: '63b83a519564717ec74cb026',
+    id: '63bc8114128934b464ffc811',
   });
 
   return {
     props: {
       credential: credential?.credentialById,
     },
-    revalidate: 10,
   };
 };

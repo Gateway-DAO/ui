@@ -14,11 +14,10 @@ import {
   Divider,
 } from '@mui/material';
 
-import { MockActivity } from '../credential-view';
 import ExternalLink from './../../../../../../components/atoms/external-link';
 
 type Props = {
-  activities: MockActivity[];
+  activities: any[];
 };
 
 export default function Activities({ activities }: Props) {

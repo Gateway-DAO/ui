@@ -1,15 +1,17 @@
 import useTranslation from 'next-translate/useTranslation';
 
+import { PartialDeep } from 'type-fest';
+
 import { theme } from '@gateway/theme';
 
 import { Stack, Box, useMediaQuery } from '@mui/material';
 
-import { MockEntity } from '../credential-view';
+import { User } from '../../../../../../services/gateway-protocol/types';
 import CardUserCell from './card-user-cell';
 
 type Props = {
-  issuer: MockEntity;
-  recipient: MockEntity;
+  issuer: PartialDeep<User>;
+  recipient: PartialDeep<User>;
 };
 
 export default function CardUsers({ issuer, recipient }: Props) {

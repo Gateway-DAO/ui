@@ -1,12 +1,14 @@
+import { PartialDeep } from 'type-fest';
+
 import { Stack, Link } from '@mui/material';
 
+import { User } from '../../../../../../services/gateway-protocol/types';
 import { AvatarFile } from '../../../../../atoms/avatar-file';
-import { MockEntity } from '../credential-view';
 import CardCell from './card-cell';
 
 type Props = {
   label: string;
-  user: MockEntity;
+  user: PartialDeep<User>;
   alignRight?: boolean;
 };
 
@@ -23,18 +25,18 @@ export default function CardUserCell({
       }}
     >
       <AvatarFile
-        file={user?.avatar}
+        file={'test' as any}
         fallback="/avatar.png"
         sx={{ ml: alignRight ? 0 : 2, mr: alignRight ? 2 : 0 }}
       >
-        {user?.username}
+        {'Teste'}
       </AvatarFile>
       <CardCell label={label} margin={false} alignRight={alignRight}>
         <Link
-          href={`http://localhost:4200/${user?.id}`}
+          href={`http://localhost:4200/${user?._id}`}
           sx={{ textDecoration: 'none' }}
         >
-          {user?.wallet}
+          {user?.primaryWallet?.address}
         </Link>
       </CardCell>
     </Stack>
