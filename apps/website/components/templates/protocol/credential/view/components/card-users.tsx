@@ -53,16 +53,25 @@ export default function CardUsers({
     <Stack
       justifyContent="space-between"
       sx={{
-        flexDirection: isMobile ? 'column' : 'row',
-        alignItems: isMobile ? 'baseline' : 'center',
+        flexDirection: { xs: 'column', md: 'row' },
+        alignItems: { xs: 'baseline', md: 'stretch' },
       }}
     >
-      <CardUserCell user={issuer.data} label={t('credential.issuer-id')} />
+      <CardUserCell
+        user={{
+          wallet: issuerCredential.primaryWallet?.address,
+          ens: issuerCredential.primaryWallet?.ens,
+          ...issuer.data,
+        }}
+        label={t('credential.issuer-id')}
+        hasLink={!!issuer.data}
+      />
       <Box
         sx={{
-          py: isMobile ? 0 : 2,
-          px: isMobile ? 3 : 2,
-          transform: isMobile ? 'rotate(90deg)' : 'none',
+          alignSelf: { md: 'center' },
+          py: { xs: 0, md: 2 },
+          px: { xs: 3, md: 2 },
+          transform: { xs: 'rotate(90deg)', md: 'none' },
         }}
       >
         <svg width="18" height="36" fill="none" viewBox="0 0 18 36">
@@ -76,9 +85,14 @@ export default function CardUsers({
         </svg>
       </Box>
       <CardUserCell
-        user={recipient.data}
+        user={{
+          wallet: recipientCredential.primaryWallet?.address,
+          ens: recipientCredential.primaryWallet?.ens,
+          ...recipient.data,
+        }}
         label={t('credential.recipient-id')}
         alignRight={!isMobile}
+        hasLink={!!recipient.data}
       />
     </Stack>
   );

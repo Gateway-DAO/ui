@@ -6,7 +6,6 @@ import {
   CredentialProtocolView,
   ProtocolTemplate,
 } from '../../../components/templates/protocol';
-import { useAuth } from '../../../providers/auth';
 import { gatewayProtocolSDK } from '../../../services/gateway-protocol/api';
 
 type Props = InferGetServerSidePropsType<typeof getServerSideProps>;
