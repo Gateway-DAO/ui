@@ -16,6 +16,7 @@ import {
 
 import ModalImage from '../../../../../../components/molecules/modal-image';
 import { Credential } from '../../../../../../services/gateway-protocol/types';
+import { useProtocolTemplateContext } from '../../../context';
 import CopyPaste from './copy-paste';
 
 type Props = {
@@ -26,6 +27,7 @@ export default function GeneralInformation({ credential }: Props) {
   const { t } = useTranslation('protocol');
   const [QRCodeIsOpen, setQRCodeIsOpen] = useState<boolean>(false);
   const isMobile = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
+  const { qrCode } = useProtocolTemplateContext();
 
   return (
     <>
@@ -42,8 +44,8 @@ export default function GeneralInformation({ credential }: Props) {
           }}
         >
           <img
-            src="https://picsum.photos/536/536"
-            alt={t('credential.qrcode')}
+            src={credential?.image ?? qrCode}
+            alt={credential.title}
             width="100%"
           />
         </IconButton>
@@ -79,7 +81,7 @@ export default function GeneralInformation({ credential }: Props) {
       <Typography sx={{ mb: 3 }}>{credential?.description}</Typography>
       <ModalImage
         open={QRCodeIsOpen}
-        image={'https://picsum.photos/536/536'}
+        image={credential?.image ?? qrCode}
         alt={credential?.title}
         handleClose={() => setQRCodeIsOpen(false)}
         handleOpen={() => setQRCodeIsOpen(true)}
