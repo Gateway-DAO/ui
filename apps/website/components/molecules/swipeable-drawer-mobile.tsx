@@ -37,6 +37,7 @@ export default function SwipeableDrawerMobile({
           borderRadius: 3,
           my: 2,
           mx: 'auto',
+          pointerEvents: 'none',
         }}
       ></Box>
       <Box sx={{ px: 2, pt: 2, pb: 4, maxWidth: '100%' }}>{children}</Box>
