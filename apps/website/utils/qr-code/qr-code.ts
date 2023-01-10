@@ -13,7 +13,7 @@ export const useCreateQrCode = () => {
         height: 300,
         image: GatewayPixelLogo.src,
         data: typeof window !== 'undefined' ? window?.location?.href : '',
-        margin: 6,
+        margin: 8,
         qrOptions: { typeNumber: 0, mode: 'Byte', errorCorrectionLevel: 'Q' },
         imageOptions: { hideBackgroundDots: true, imageSize: 0.65, margin: 0 },
         dotsOptions: { type: 'square', color: '#000000' },
