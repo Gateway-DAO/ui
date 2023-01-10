@@ -1,4 +1,4 @@
-import { InferGetServerSidePropsType } from 'next';
+import { InferGetServerSidePropsType, GetServerSidePropsContext } from 'next';
 import { useEffect, useMemo } from 'react';
 
 import { DashboardTemplate } from '../../../components/templates/dashboard';
@@ -28,9 +28,9 @@ export default function ProtocolCredential({ credential }: Props) {
   );
 }
 
-export const getServerSideProps = async () => {
+export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const credential = await gatewayProtocolSDK.credential({
-    id: '63b83a519564717ec74cb026',
+    id: ctx.query.id as string,
   });
 
   return {
