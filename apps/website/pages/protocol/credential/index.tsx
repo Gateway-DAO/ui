@@ -12,9 +12,7 @@ import { gatewayProtocolSDK } from '../../../services/gateway-protocol/api';
 type Props = InferGetServerSidePropsType<typeof getServerSideProps>;
 
 export default function ProtocolCredential({ credential }: Props) {
-  const { me } = useAuth();
-
-  return me?.id ? (
+  return (
     <DashboardTemplate
       containerProps={{
         sx: {
@@ -27,12 +25,12 @@ export default function ProtocolCredential({ credential }: Props) {
         <CredentialProtocolView credential={credential} />
       </ProtocolTemplate>
     </DashboardTemplate>
-  ) : null;
+  );
 }
 
 export const getServerSideProps = async () => {
   const credential = await gatewayProtocolSDK.credential({
-    id: '63bc8114128934b464ffc811',
+    id: '63b83a519564717ec74cb026',
   });
 
   return {

@@ -20,33 +20,6 @@ type Props = {
 
 export default function CredentialProtocolView({ credential }: Props) {
   const { t } = useTranslation('protocol');
-  const { gqlAuthMethods } = useAuth();
-
-  const issuer = useQuery(
-    ['issuer', credential?.issuer?._id],
-    () =>
-      gqlAuthMethods.user_from_wallet({
-        wallet: credential?.issuer?.primaryWallet?.address,
-      }),
-    {
-      select: (data) => data.users?.[0],
-      refetchOnMount: false,
-      refetchOnWindowFocus: false,
-    }
-  );
-
-  const recipient = useQuery(
-    ['recipient', credential?.recipient?._id],
-    () =>
-      gqlAuthMethods.user_from_wallet({
-        wallet: credential?.recipient?.primaryWallet?.address,
-      }),
-    {
-      select: (data) => data.users?.[0],
-      refetchOnMount: false,
-      refetchOnWindowFocus: false,
-    }
-  );
 
   // MOCK
   const credMint = {
@@ -54,14 +27,6 @@ export default function CredentialProtocolView({ credential }: Props) {
     transaction_url: 'x',
   };
   // MOCK - END
-
-  if (!issuer.data || !recipient.data) {
-    return (
-      <Stack direction="row" gap={2} alignItems="center">
-        <CircularProgress />
-      </Stack>
-    );
-  }
 
   return (
     <>
@@ -76,8 +41,8 @@ export default function CredentialProtocolView({ credential }: Props) {
         <GeneralInformation credential={credential} />
         <Card
           credential={credential}
-          issuer={issuer?.data}
-          recipient={recipient?.data}
+          issuer={credential.issuer}
+          recipient={credential.recipient}
         />
         <MintCredentialButton credential={credMint} />
         {/* {credential?.activities?.length > 0 && (

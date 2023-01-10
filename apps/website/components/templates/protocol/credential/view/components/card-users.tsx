@@ -1,23 +1,53 @@
 import useTranslation from 'next-translate/useTranslation';
 
+import { useQuery } from '@tanstack/react-query';
 import { PartialDeep } from 'type-fest';
-import { PartialObjectDeep } from 'type-fest/source/partial-deep';
 
 import { theme } from '@gateway/theme';
 
 import { Stack, Box, useMediaQuery } from '@mui/material';
 
-import { Users } from '../../../../../../services/hasura/types';
+import { User } from '../../../../../../services/gateway-protocol/types';
+import { gqlAnonMethods } from '../../../../../../services/hasura/api';
 import CardUserCell from './card-user-cell';
 
 type Props = {
-  issuer: PartialObjectDeep<Users>;
-  recipient: PartialObjectDeep<Users>;
+  issuer: PartialDeep<User>;
+  recipient: PartialDeep<User>;
 };
 
-export default function CardUsers({ issuer, recipient }: Props) {
+export default function CardUsers({
+  issuer: issuerCredential,
+  recipient: recipientCredential,
+}: Props) {
   const { t } = useTranslation('protocol');
   const isMobile = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
+
+  const issuer = useQuery(
+    ['issuer', issuerCredential._id],
+    () =>
+      gqlAnonMethods.user_from_wallet({
+        wallet: issuerCredential.primaryWallet?.address,
+      }),
+    {
+      select: (data) => data.users?.[0],
+      refetchOnMount: false,
+      refetchOnWindowFocus: false,
+    }
+  );
+
+  const recipient = useQuery(
+    ['recipient', recipientCredential._id],
+    () =>
+      gqlAnonMethods.user_from_wallet({
+        wallet: recipientCredential.primaryWallet?.address,
+      }),
+    {
+      select: (data) => data.users?.[0],
+      refetchOnMount: false,
+      refetchOnWindowFocus: false,
+    }
+  );
 
   return (
     <Stack
@@ -27,7 +57,7 @@ export default function CardUsers({ issuer, recipient }: Props) {
         alignItems: isMobile ? 'baseline' : 'center',
       }}
     >
-      <CardUserCell user={issuer} label={t('credential.issuer-id')} />
+      <CardUserCell user={issuer.data} label={t('credential.issuer-id')} />
       <Box
         sx={{
           py: isMobile ? 0 : 2,
@@ -46,7 +76,7 @@ export default function CardUsers({ issuer, recipient }: Props) {
         </svg>
       </Box>
       <CardUserCell
-        user={recipient}
+        user={recipient.data}
         label={t('credential.recipient-id')}
         alignRight={!isMobile}
       />
