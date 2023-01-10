@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import GatewayPixelLogo from './gateway-pixel-logo.png';
 
 export const useCreateQrCode = () => {
-  const [qrCode, setQrCode] = useState<string>('');
+  const [qrCode, setQrCode] = useState<string>();
 
   useEffect(() => {
     const createQrCode = async () => {

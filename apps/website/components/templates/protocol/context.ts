@@ -1,7 +1,7 @@
 import { createContext, useContext } from 'react';
 
 export type ProtocolTemplateContextType = {
-  qrCode: string;
+  qrCode?: string;
 };
 
 export const ProtocolTemplateContext =

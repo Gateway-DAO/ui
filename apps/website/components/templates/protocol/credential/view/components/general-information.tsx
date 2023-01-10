@@ -12,6 +12,7 @@ import {
   Chip,
   useMediaQuery,
   IconButton,
+  CircularProgress,
 } from '@mui/material';
 
 import ModalImage from '../../../../../../components/molecules/modal-image';
@@ -34,6 +35,7 @@ export default function GeneralInformation({ credential }: Props) {
       <Stack direction="row" gap={3} sx={{ mb: 3 }}>
         <IconButton
           onClick={() => setQRCodeIsOpen(true)}
+          disabled={!credential?.image && !qrCode}
           sx={{
             width: 80,
             height: 80,
@@ -43,11 +45,16 @@ export default function GeneralInformation({ credential }: Props) {
             borderRadius: 2,
           }}
         >
-          <img
-            src={credential?.image ?? qrCode}
-            alt={credential.title}
-            width="100%"
-          />
+          {credential?.image || qrCode ? (
+            <img
+              src={credential?.image ?? qrCode}
+              alt={credential.title}
+              width="100%"
+              style={{ objectFit: 'cover' }}
+            />
+          ) : (
+            <CircularProgress size={40} />
+          )}
         </IconButton>
         <Stack sx={{ verticalAlign: 'center', justifyContent: 'center' }}>
           <Stack direction="row" alignItems="center" gap={1}>
