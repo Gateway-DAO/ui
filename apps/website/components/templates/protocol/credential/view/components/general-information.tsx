@@ -42,7 +42,9 @@ export default function GeneralInformation({ credential }: Props) {
             backgroundColor: brandColors.background.elevated,
             textAlign: 'center',
             verticalAlign: 'center',
-            borderRadius: 2,
+            borderRadius: 1.5,
+            p: 0,
+            overflow: 'hidden',
           }}
         >
           {credential?.image || qrCode ? (
