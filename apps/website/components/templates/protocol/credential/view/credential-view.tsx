@@ -2,16 +2,17 @@ import useTranslation from 'next-translate/useTranslation';
 
 import { PartialDeep } from 'type-fest';
 
-import { Divider, Stack, SxProps } from '@mui/material';
+import { Divider, Stack, SxProps, Typography } from '@mui/material';
 import { Theme } from '@mui/material/styles/createTheme';
 
 import { Credential } from '../../../../../services/gateway-protocol/types';
 import ExternalLink from '../../../../atoms/external-link';
 import { MintCredentialButton } from '../../../../atoms/mint-button';
+import Tags from '../../components/tags';
 import Activities from './components/activities';
 import CredentialCardInfo from './components/credential-card-info';
+import CredentialTitleAndImage from './components/credential-title-and-image';
 import DataTable from './components/data-table';
-import GeneralInformation from './components/general-information';
 
 type Props = {
   credential: PartialDeep<Credential>;
@@ -37,7 +38,9 @@ export default function CredentialProtocolView({ credential }: Props) {
   return (
     <>
       <Stack sx={boxStyles}>
-        <GeneralInformation credential={credential} />
+        <CredentialTitleAndImage credential={credential} />
+        <Tags tags={credential?.dataModel?.tags} />
+        <Typography sx={{ mb: 3 }}>{credential?.description}</Typography>
         <CredentialCardInfo credential={credential} />
         <MintCredentialButton credential={credMint} />
         {/* {credential?.activities?.length > 0 && (

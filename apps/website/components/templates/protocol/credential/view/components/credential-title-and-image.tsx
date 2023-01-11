@@ -3,30 +3,20 @@ import { useState } from 'react';
 
 import { PartialDeep } from 'type-fest';
 
-import { brandColors, theme } from '@gateway/theme';
+import { brandColors } from '@gateway/theme';
 
-import {
-  Stack,
-  Typography,
-  alpha,
-  Chip,
-  useMediaQuery,
-  IconButton,
-  CircularProgress,
-} from '@mui/material';
+import { Stack, IconButton, CircularProgress } from '@mui/material';
 
-import ModalContent from '../../../../../../components/molecules/modal-content';
 import { Credential } from '../../../../../../services/gateway-protocol/types';
-import CopyPaste from '../../../components/copy-paste';
+import ModalContent from '../../../../../molecules/modal-content';
 import InfoTitle from '../../../components/info-title';
-import Tags from '../../../components/tags';
 import { useProtocolTemplateContext } from '../../../context';
 
 type Props = {
   credential: PartialDeep<Credential>;
 };
 
-export default function GeneralInformation({ credential }: Props) {
+export default function CredentialTitleAndImage({ credential }: Props) {
   const { t } = useTranslation('protocol');
   const [QRCodeIsOpen, setQRCodeIsOpen] = useState<boolean>(false);
   const { qrCode } = useProtocolTemplateContext();
@@ -66,8 +56,6 @@ export default function GeneralInformation({ credential }: Props) {
           copySucessMessage={t('credential.copy-id')}
         />
       </Stack>
-      <Tags tags={credential?.dataModel?.tags} />
-      <Typography sx={{ mb: 3 }}>{credential?.description}</Typography>
       <ModalContent
         open={QRCodeIsOpen}
         imageUrl={credential?.image ?? qrCode}
