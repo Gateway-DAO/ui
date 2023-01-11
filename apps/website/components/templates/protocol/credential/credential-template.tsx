@@ -5,9 +5,9 @@ import { theme, TOKENS } from '@gateway/theme';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { Avatar, Box, IconButton, Stack, useMediaQuery } from '@mui/material';
 
-import { useCreateQrCode } from '../../../utils/qr-code/qr-code';
-import { ClientNav } from '../../organisms/navbar/client-nav';
-import { CredentialTemplateContext } from './context';
+import { useCreateQrCode } from '../../../../utils/qr-code/qr-code';
+import { ClientNav } from '../../../organisms/navbar/client-nav';
+import { CredentialTemplateContext } from '../context';
 
 type Props = {
   children: React.ReactNode;
