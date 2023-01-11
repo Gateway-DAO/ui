@@ -47,7 +47,12 @@ export default function DataModelTabs({ tabs }: Props) {
           />
         </Tabs>
       </Box>
-      <TabPanel tabsId="dao" index={1} active={1 === activeTab}>
+      <TabPanel
+        tabsId="dao"
+        index={0}
+        active={0 === activeTab}
+        sx={{ py: 3, px: TOKENS.CONTAINER_PX }}
+      >
         Content
       </TabPanel>
     </>
