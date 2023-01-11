@@ -17,7 +17,7 @@ import {
 
 import ModalImage from '../../../../../../components/molecules/modal-image';
 import { Credential } from '../../../../../../services/gateway-protocol/types';
-import { useProtocolTemplateContext } from '../../../context';
+import { useProtocolTemplateContext } from '../../context';
 import CopyPaste from './copy-paste';
 
 type Props = {
