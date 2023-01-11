@@ -23,7 +23,7 @@ export default function InfoTitle({
   badgeTooltip,
 }: Props) {
   return (
-    <Stack sx={{ verticalAlign: 'center', justifyContent: 'center' }}>
+    <Stack sx={{ verticalAlign: 'center', justifyContent: 'center', mb: 1 }}>
       <Stack direction="row" alignItems="center" gap={0.5}>
         <Typography
           fontSize={12}

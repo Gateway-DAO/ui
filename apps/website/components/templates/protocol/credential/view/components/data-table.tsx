@@ -1,6 +1,6 @@
 import { Stack, Paper, Divider, Typography } from '@mui/material';
 
-import CardCell from './card-cell';
+import CardCell from '../../../components/card-cell';
 
 type Props = {
   title: string;

@@ -9,7 +9,7 @@ import { Credential } from '../../../../../services/gateway-protocol/types';
 import ExternalLink from '../../../../atoms/external-link';
 import { MintCredentialButton } from '../../../../atoms/mint-button';
 import Activities from './components/activities';
-import Card from './components/card';
+import CredentialCardInfo from './components/credential-card-info';
 import DataTable from './components/data-table';
 import GeneralInformation from './components/general-information';
 
@@ -38,7 +38,7 @@ export default function CredentialProtocolView({ credential }: Props) {
     <>
       <Stack sx={boxStyles}>
         <GeneralInformation credential={credential} />
-        <Card credential={credential} />
+        <CredentialCardInfo credential={credential} />
         <MintCredentialButton credential={credMint} />
         {/* {credential?.activities?.length > 0 && (
           <Activities activities={credential?.activities} />

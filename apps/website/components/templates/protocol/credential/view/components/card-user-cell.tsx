@@ -4,7 +4,7 @@ import { Stack, Link, Typography } from '@mui/material';
 
 import { Users } from '../../../../../../services/hasura/types';
 import { AvatarFile } from '../../../../../atoms/avatar-file';
-import CardCell from './card-cell';
+import CardCell from '../../../components/card-cell';
 
 type Props = {
   label: string;

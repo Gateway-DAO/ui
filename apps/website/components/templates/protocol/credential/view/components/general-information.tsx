@@ -19,6 +19,7 @@ import ModalContent from '../../../../../../components/molecules/modal-content';
 import { Credential } from '../../../../../../services/gateway-protocol/types';
 import CopyPaste from '../../../components/copy-paste';
 import InfoTitle from '../../../components/info-title';
+import Tags from '../../../components/tags';
 import { useProtocolTemplateContext } from '../../../context';
 
 type Props = {
@@ -28,7 +29,6 @@ type Props = {
 export default function GeneralInformation({ credential }: Props) {
   const { t } = useTranslation('protocol');
   const [QRCodeIsOpen, setQRCodeIsOpen] = useState<boolean>(false);
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
   const { qrCode } = useProtocolTemplateContext();
 
   return (
@@ -66,17 +66,7 @@ export default function GeneralInformation({ credential }: Props) {
           copySucessMessage={t('credential.copy-id')}
         />
       </Stack>
-      {credential?.dataModel?.tags?.length > 0 && (
-        <Stack direction="row" gap={1} sx={{ mb: 2 }}>
-          {credential.dataModel.tags.map((tag, index) => (
-            <Chip
-              label={tag}
-              key={index}
-              size={isMobile ? 'small' : 'medium'}
-            />
-          ))}
-        </Stack>
-      )}
+      <Tags tags={credential?.dataModel?.tags} />
       <Typography sx={{ mb: 3 }}>{credential?.description}</Typography>
       <ModalContent
         open={QRCodeIsOpen}

@@ -7,14 +7,14 @@ import { theme } from '@gateway/theme';
 import { Stack, Paper, Box, Divider, Chip, useMediaQuery } from '@mui/material';
 
 import { Credential } from '../../../../../../services/gateway-protocol/types';
-import CardCell from './card-cell';
+import CardCell from '../../../components/card-cell';
 import CardUsers from './card-users';
 
 type Props = {
   credential: PartialDeep<Credential>;
 };
 
-export default function Card({ credential }: Props) {
+export default function CredentialCardInfo({ credential }: Props) {
   const { t, lang } = useTranslation('protocol');
   const isMobile = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
 
