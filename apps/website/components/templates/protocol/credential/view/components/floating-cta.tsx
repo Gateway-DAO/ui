@@ -72,6 +72,7 @@ export default function FloatingCta() {
         handleClose={() => setQrCodeIsOpen(false)}
         handleOpen={() => setQrCodeIsOpen(true)}
         swipeableDrawer={true}
+        imageUrl={qrCode}
       >
         <img src={qrCode} alt={t('credential.qrcode')} width="100%" />
       </ModalContent>
