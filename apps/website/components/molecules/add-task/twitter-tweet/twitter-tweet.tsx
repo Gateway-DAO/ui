@@ -15,12 +15,12 @@ import {
   Typography,
 } from '@mui/material';
 
+import { TaskIcon } from '../../../../components/atoms/task-icon';
 import {
   CreateGateData,
   TwitterTweetDataError,
 } from '../../../templates/create-gate/schema';
 import { EmojiPicker, EmojiPickerProps } from '../../form/emoji-picker';
-import { TaskIcon } from 'apps/website/components/atoms/task-icon';
 
 const TwitterTweetTask = ({ dragAndDrop, taskId, deleteTask }) => {
   const {
