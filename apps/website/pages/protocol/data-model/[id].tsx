@@ -2,7 +2,7 @@ import { InferGetServerSidePropsType, GetServerSidePropsContext } from 'next';
 
 import { DashboardTemplate } from '../../../components/templates/dashboard';
 import {
-  DataModelTemplate,
+  ProtocolTemplate,
   DataModelView,
 } from '../../../components/templates/protocol';
 import { gatewayProtocolSDK } from '../../../services/gateway-protocol/api';
@@ -19,9 +19,9 @@ export default function ProtocolDataModel({ dataModel }: Props) {
         height: '100%',
       }}
     >
-      <DataModelTemplate>
+      <ProtocolTemplate>
         <DataModelView dataModel={dataModel} />
-      </DataModelTemplate>
+      </ProtocolTemplate>
     </DashboardTemplate>
   );
 }
