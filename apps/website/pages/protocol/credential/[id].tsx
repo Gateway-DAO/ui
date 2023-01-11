@@ -1,10 +1,9 @@
 import { InferGetServerSidePropsType, GetServerSidePropsContext } from 'next';
-import { useEffect, useMemo } from 'react';
 
 import { DashboardTemplate } from '../../../components/templates/dashboard';
 import {
   CredentialProtocolView,
-  ProtocolTemplate,
+  CredentialTemplate,
 } from '../../../components/templates/protocol';
 import { gatewayProtocolSDK } from '../../../services/gateway-protocol/api';
 
@@ -20,9 +19,9 @@ export default function ProtocolCredential({ credential }: Props) {
         height: '100%',
       }}
     >
-      <ProtocolTemplate>
+      <CredentialTemplate>
         <CredentialProtocolView credential={credential} />
-      </ProtocolTemplate>
+      </CredentialTemplate>
     </DashboardTemplate>
   );
 }

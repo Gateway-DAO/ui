@@ -1,11 +1,11 @@
 import { createContext, useContext } from 'react';
 
-export type ProtocolTemplateContextType = {
+export type CredentialTemplateContextType = {
   qrCode?: string;
 };
 
-export const ProtocolTemplateContext =
-  createContext<ProtocolTemplateContextType>(null);
+export const CredentialTemplateContext =
+  createContext<CredentialTemplateContextType>(null);
 
-export const useProtocolTemplateContext = () =>
-  useContext(ProtocolTemplateContext);
+export const useCredentialTemplateContext = () =>
+  useContext(CredentialTemplateContext);

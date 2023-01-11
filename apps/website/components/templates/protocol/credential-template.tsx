@@ -5,21 +5,21 @@ import { theme, TOKENS } from '@gateway/theme';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { Avatar, Box, IconButton, Stack, useMediaQuery } from '@mui/material';
 
-import { ClientNav } from '../../../components/organisms/navbar/client-nav';
 import { useCreateQrCode } from '../../../utils/qr-code/qr-code';
-import { ProtocolTemplateContext } from './context';
+import { ClientNav } from '../../organisms/navbar/client-nav';
+import { CredentialTemplateContext } from './context';
 
 type Props = {
   children: React.ReactNode;
 };
 
-export default function ProtocolTemplate({ children }: Props) {
+export default function CredentialTemplate({ children }: Props) {
   const router = useRouter();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
   const qrCode = useCreateQrCode();
 
   return (
-    <ProtocolTemplateContext.Provider value={{ qrCode }}>
+    <CredentialTemplateContext.Provider value={{ qrCode }}>
       <Stack
         direction="row"
         alignItems="center"
@@ -51,6 +51,6 @@ export default function ProtocolTemplate({ children }: Props) {
       >
         {children}
       </Stack>
-    </ProtocolTemplateContext.Provider>
+    </CredentialTemplateContext.Provider>
   );
 }
