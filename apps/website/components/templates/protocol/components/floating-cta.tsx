@@ -10,10 +10,10 @@ import LinkIcon from '@mui/icons-material/Link';
 import QrCodeIcon from '@mui/icons-material/QrCode';
 import { Stack, alpha } from '@mui/material';
 
-import ShareOn from '../../../../../../components/atoms/share-on';
-import ModalContent from '../../../../../../components/molecules/modal-content';
-import { taskErrorMessages } from '../../../../../../components/organisms/tasks/task-error-messages';
-import { useProtocolTemplateContext } from '../../../context';
+import ShareOn from '../../../atoms/share-on';
+import ModalContent from '../../../molecules/modal-content';
+import { taskErrorMessages } from '../../../organisms/tasks/task-error-messages';
+import { useProtocolTemplateContext } from '../context';
 import FloatingCtaButton from './floating-cta-button';
 
 export default function FloatingCta() {

@@ -11,7 +11,6 @@ import { MintCredentialButton } from '../../../../atoms/mint-button';
 import Activities from './components/activities';
 import Card from './components/card';
 import DataTable from './components/data-table';
-import FloatingCta from './components/floating-cta';
 import GeneralInformation from './components/general-information';
 
 type Props = {
@@ -56,7 +55,6 @@ export default function CredentialProtocolView({ credential }: Props) {
           data={credential?.evidences}
         />
       </Stack>
-      <FloatingCta />
     </>
   );
 }

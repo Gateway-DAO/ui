@@ -21,5 +21,11 @@
     "show-activity": "See Activity",
     "data-model-id": "Data model ID",
     "storage-id": "Storage ID"
+  },
+  "data-model": {
+    "data-model-id": "Data model ID",
+    "copy-id": "Data model ID copied to clipboard",
+    "verified-description": "This data model is verified by Gateway",
+    "issue-credential-button": "Issue Credential"
   }
 }

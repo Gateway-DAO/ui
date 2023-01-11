@@ -17,8 +17,9 @@ import {
 
 import ModalContent from '../../../../../../components/molecules/modal-content';
 import { Credential } from '../../../../../../services/gateway-protocol/types';
+import CopyPaste from '../../../components/copy-paste';
+import InfoTitle from '../../../components/info-title';
 import { useProtocolTemplateContext } from '../../../context';
-import CopyPaste from './copy-paste';
 
 type Props = {
   credential: PartialDeep<Credential>;
@@ -58,23 +59,12 @@ export default function GeneralInformation({ credential }: Props) {
             <CircularProgress size={40} />
           )}
         </IconButton>
-        <Stack sx={{ verticalAlign: 'center', justifyContent: 'center' }}>
-          <Stack direction="row" alignItems="center" gap={1}>
-            <Typography
-              fontSize={12}
-              sx={{ color: alpha(brandColors.white.main, 0.7) }}
-            >
-              {t('credential.credential-id')}
-            </Typography>
-            <CopyPaste
-              text={credential?._id}
-              sucessMessage={t('credential.copy-id')}
-            />
-          </Stack>
-          <Typography variant="h4" fontSize={isMobile ? 20 : 34}>
-            {credential?.title}
-          </Typography>
-        </Stack>
+        <InfoTitle
+          title={credential?.title}
+          labelId={t('credential.credential-id')}
+          id={credential?._id}
+          copySucessMessage={t('credential.copy-id')}
+        />
       </Stack>
       {credential?.dataModel?.tags?.length > 0 && (
         <Stack direction="row" gap={1} sx={{ mb: 2 }}>
