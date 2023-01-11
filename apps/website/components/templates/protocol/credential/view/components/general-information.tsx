@@ -15,7 +15,7 @@ import {
   CircularProgress,
 } from '@mui/material';
 
-import ModalImage from '../../../../../../components/molecules/modal-image';
+import ModalContent from '../../../../../../components/molecules/modal-content';
 import { Credential } from '../../../../../../services/gateway-protocol/types';
 import { useCredentialTemplateContext } from '../../context';
 import CopyPaste from './copy-paste';
@@ -88,15 +88,20 @@ export default function GeneralInformation({ credential }: Props) {
         </Stack>
       )}
       <Typography sx={{ mb: 3 }}>{credential?.description}</Typography>
-      <ModalImage
+      <ModalContent
         open={QRCodeIsOpen}
-        image={credential?.image ?? qrCode}
-        alt={credential?.title}
+        imageUrl={credential?.image ?? qrCode}
+        title={credential?.title}
         handleClose={() => setQRCodeIsOpen(false)}
         handleOpen={() => setQRCodeIsOpen(true)}
-        downloadButtonText={t('credential.download-qrcode')}
         swipeableDrawer={true}
-      />
+      >
+        <img
+          src={credential?.image ?? qrCode}
+          alt={credential?.title}
+          width="100%"
+        />
+      </ModalContent>
     </>
   );
 }

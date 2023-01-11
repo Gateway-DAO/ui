@@ -1,4 +1,5 @@
 import useTranslation from 'next-translate/useTranslation';
+import { ReactNode } from 'react';
 
 import { theme } from '@gateway/theme';
 
@@ -11,27 +12,27 @@ type Props = {
   open: boolean;
   handleClose: () => void;
   handleOpen: () => void;
-  image: string;
-  alt: string;
-  downloadButtonText?: string;
+  children: ReactNode;
+  title?: string;
+  imageUrl?: string;
   swipeableDrawer?: boolean;
 };
 
-export default function ModalImage({
+export default function ModalContent({
   open,
   handleClose,
   handleOpen,
-  image,
-  alt,
-  downloadButtonText,
+  children,
+  title,
+  imageUrl,
   swipeableDrawer = false,
 }: Props) {
   const { t } = useTranslation('protocol');
   const isMobile = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
 
-  const modalContent = (image: string, alt: string) => {
+  const modalContent = () => {
     return (
-      <Box sx={{ maxWidth: '396px', margin: 'auto' }}>
+      <Box sx={{ maxWidth: '396px', minWidth: '250px', margin: 'auto' }}>
         <Box
           sx={{
             textAlign: 'center',
@@ -41,12 +42,17 @@ export default function ModalImage({
             display: 'flex',
           }}
         >
-          <img src={image} alt={alt} width="100%" />
+          {children}
         </Box>
         <Stack gap={1}>
-          {downloadButtonText && (
-            <Button variant="contained" href={image} target="_blank" download>
-              {downloadButtonText}
+          {imageUrl && (
+            <Button
+              variant="contained"
+              href={imageUrl}
+              target="_blank"
+              download
+            >
+              {t('common:actions.download')}
             </Button>
           )}
           {((swipeableDrawer && !isMobile) || !swipeableDrawer) && (
@@ -67,16 +73,16 @@ export default function ModalImage({
           handleClose={() => handleClose()}
           handleOpen={() => handleOpen()}
         >
-          {modalContent(image, alt)}
+          {modalContent()}
         </SwipeableDrawerMobile>
       ) : (
         <Modal
           open={open}
           handleClose={() => handleClose()}
-          modalTitle={`Modal ${alt}`}
-          modalDescription={`Modal ${alt}`}
+          modalTitle={`Modal ${title}`}
+          modalDescription={`Modal ${title}`}
         >
-          {modalContent(image, alt)}
+          {modalContent()}
         </Modal>
       )}
     </>
