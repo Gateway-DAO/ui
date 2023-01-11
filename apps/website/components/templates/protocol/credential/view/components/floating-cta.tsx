@@ -13,7 +13,7 @@ import { Stack, alpha } from '@mui/material';
 import ShareOn from '../../../../../../components/atoms/share-on';
 import ModalContent from '../../../../../../components/molecules/modal-content';
 import { taskErrorMessages } from '../../../../../../components/organisms/tasks/task-error-messages';
-import { useCredentialTemplateContext } from '../../../context';
+import { useProtocolTemplateContext } from '../../../context';
 import FloatingCtaButton from './floating-cta-button';
 
 export default function FloatingCta() {
@@ -21,7 +21,7 @@ export default function FloatingCta() {
   const { enqueueSnackbar } = useSnackbar();
   const [shareIsOpen, setShareIsOpen] = useState<boolean>(false);
   const [qrCodeIsOpen, setQrCodeIsOpen] = useState<boolean>(false);
-  const { qrCode } = useCredentialTemplateContext();
+  const { qrCode } = useProtocolTemplateContext();
 
   const copyUrl = async () => {
     try {
