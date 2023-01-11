@@ -1,11 +1,10 @@
 import useTranslation from 'next-translate/useTranslation';
 
-import { useQuery } from '@tanstack/react-query';
 import { PartialDeep } from 'type-fest';
 
-import { CircularProgress, Divider, Stack } from '@mui/material';
+import { Divider, Stack, SxProps } from '@mui/material';
+import { Theme } from '@mui/material/styles/createTheme';
 
-import { useAuth } from '../../../../../providers/auth';
 import { Credential } from '../../../../../services/gateway-protocol/types';
 import ExternalLink from '../../../../atoms/external-link';
 import { MintCredentialButton } from '../../../../atoms/mint-button';
@@ -28,16 +27,16 @@ export default function CredentialProtocolView({ credential }: Props) {
   };
   // MOCK - END
 
+  const boxStyles: SxProps<Theme> = {
+    maxWidth: '564px',
+    width: '100%',
+    mx: 'auto',
+    textAlign: 'left',
+  };
+
   return (
     <>
-      <Stack
-        sx={{
-          maxWidth: '564px',
-          width: '100%',
-          mx: 'auto',
-          textAlign: 'left',
-        }}
-      >
+      <Stack sx={boxStyles}>
         <GeneralInformation credential={credential} />
         <Card credential={credential} />
         <MintCredentialButton credential={credMint} />
@@ -46,14 +45,7 @@ export default function CredentialProtocolView({ credential }: Props) {
         )} */}
       </Stack>
       <Divider sx={{ mt: 3, mb: 4, marginLeft: '2px' }} />
-      <Stack
-        sx={{
-          maxWidth: '564px',
-          width: '100%',
-          mx: 'auto',
-          textAlign: 'left',
-        }}
-      >
+      <Stack sx={boxStyles}>
         <Stack direction="row" justifyContent="flex-end" sx={{ mb: 2 }}>
           <ExternalLink text={t('credential.storage-id')} url="" />
         </Stack>
