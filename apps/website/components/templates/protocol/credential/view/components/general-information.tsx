@@ -17,7 +17,7 @@ import {
 
 import ModalImage from '../../../../../../components/molecules/modal-image';
 import { Credential } from '../../../../../../services/gateway-protocol/types';
-import { useProtocolTemplateContext } from '../../context';
+import { useCredentialTemplateContext } from '../../context';
 import CopyPaste from './copy-paste';
 
 type Props = {
@@ -28,7 +28,7 @@ export default function GeneralInformation({ credential }: Props) {
   const { t } = useTranslation('protocol');
   const [QRCodeIsOpen, setQRCodeIsOpen] = useState<boolean>(false);
   const isMobile = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
-  const { qrCode } = useProtocolTemplateContext();
+  const { qrCode } = useCredentialTemplateContext();
 
   return (
     <>
