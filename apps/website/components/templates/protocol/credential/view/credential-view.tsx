@@ -39,11 +39,7 @@ export default function CredentialProtocolView({ credential }: Props) {
         }}
       >
         <GeneralInformation credential={credential} />
-        <Card
-          credential={credential}
-          issuer={credential.issuer}
-          recipient={credential.recipient}
-        />
+        <Card credential={credential} />
         <MintCredentialButton credential={credMint} />
         {/* {credential?.activities?.length > 0 && (
           <Activities activities={credential?.activities} />
