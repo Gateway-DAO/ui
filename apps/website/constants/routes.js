@@ -20,6 +20,7 @@ const ROUTES = {
   GATE_PROFILE: '/credential/[id]',
   GATE_NEW: '/credential/new',
   PROTOCOL_CREDENTIAL: '/protocol/credential/[id]',
+  PROTOCOL_DATAMODEL: '/protocol/data-model/[id]',
 };
 
 module.exports = {
