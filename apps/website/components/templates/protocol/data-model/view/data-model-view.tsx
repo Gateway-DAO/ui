@@ -30,7 +30,7 @@ export default function DataModelView({ dataModel }: Props) {
         />
         <Tags tags={dataModel?.tags} />
         <Typography sx={{ mb: 3 }}>{dataModel?.description}</Typography>
-        <Button variant="contained" disabled={true} sx={{ maxWidth: '230px' }}>
+        <Button variant="contained" disabled={true} sx={{ width: '180px' }}>
           {t('data-model.issue-credential-button')}
         </Button>
       </Stack>

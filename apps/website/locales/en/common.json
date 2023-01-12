@@ -35,7 +35,10 @@
     "credentials": "Credentials",
     "daos": "DAOs",
     "organizations": "Organizations",
-    "people": "People"
+    "people": "People",
+    "issuers": "Issuers",
+    "recipients": "Recipients",
+    "playground": "Playground"
   },
   "featured-credentials": {
     "title": "Featured Credentials",
