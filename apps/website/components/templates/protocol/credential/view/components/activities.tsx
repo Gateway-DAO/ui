@@ -21,8 +21,12 @@ type Props = {
 };
 
 export default function Activities({ activities }: Props) {
-  const { t } = useTranslation('protocol');
+  const { t, lang } = useTranslation('protocol');
   const [expanded, setExpanded] = useState<boolean>(false);
+
+  const timestampToString = (date) => {
+    return new Date(date?.toLocaleString(lang)).toLocaleString(lang);
+  };
 
   const handleChange =
     () => (event: React.SyntheticEvent, isExpanded: boolean) => {
@@ -92,12 +96,12 @@ export default function Activities({ activities }: Props) {
           <Stack sx={{ mb: 2 }} gap={1} divider={<Divider />}>
             {activities?.map((activity, index) => (
               <Stack key={index}>
-                <Typography fontSize={14}>{activity.name}</Typography>
+                <Typography fontSize={14}>{activity?.name}</Typography>
                 <Typography
                   fontSize={12}
                   sx={{ color: alpha(brandColors.white.main, 0.7) }}
                 >
-                  {activity.description}
+                  {timestampToString(activity?.date)}
                 </Typography>
               </Stack>
             ))}

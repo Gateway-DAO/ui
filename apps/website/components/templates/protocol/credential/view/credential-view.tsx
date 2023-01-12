@@ -13,6 +13,7 @@ import Activities from './components/activities';
 import CredentialCardInfo from './components/credential-card-info';
 import CredentialTitleAndImage from './components/credential-title-and-image';
 import DataTable from './components/data-table';
+import DataTableClaim from './components/data-table-claim';
 
 type Props = {
   credential: PartialDeep<Credential>;
@@ -26,6 +27,20 @@ export default function CredentialProtocolView({ credential }: Props) {
     status: 'to_mint',
     transaction_url: 'x',
   };
+  const activities = [
+    {
+      name: 'Credential expired',
+      date: '2022-10-03 17:23:00.222',
+    },
+    {
+      name: 'Credential issued',
+      date: '2022-10-03 17:23:00.222',
+    },
+    {
+      name: 'Credential issued',
+      date: '2022-10-03 17:23:00.222',
+    },
+  ];
   // MOCK - END
 
   const boxStyles: SxProps<Theme> = {
@@ -35,6 +50,8 @@ export default function CredentialProtocolView({ credential }: Props) {
     textAlign: 'left',
   };
 
+  console.log(credential);
+
   return (
     <>
       <Stack sx={boxStyles}>
@@ -43,16 +60,17 @@ export default function CredentialProtocolView({ credential }: Props) {
         <Typography sx={{ mb: 3 }}>{credential?.description}</Typography>
         <CredentialCardInfo credential={credential} />
         <MintCredentialButton credential={credMint} />
-        {/* {credential?.activities?.length > 0 && (
-          <Activities activities={credential?.activities} />
-        )} */}
+        {activities?.length > 0 && <Activities activities={activities} />}
       </Stack>
       <Divider sx={{ mt: 3, mb: 4, marginLeft: '2px' }} />
       <Stack sx={boxStyles}>
         <Stack direction="row" justifyContent="flex-end" sx={{ mb: 2 }}>
           <ExternalLink text={t('credential.storage-id')} url="" />
         </Stack>
-        {/* <DataTable title={t('credential.claim')} data={credential?.claim} /> */}
+        <DataTableClaim
+          title={t('credential.claim')}
+          data={credential?.claim}
+        />
         <DataTable
           title={t('credential.evidence')}
           data={credential?.evidences}

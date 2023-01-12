@@ -1,7 +1,12 @@
+import Link from 'next/link';
+
 import { PartialObjectDeep } from 'type-fest/source/partial-deep';
 
-import { Stack, Link, Typography } from '@mui/material';
+import { brandColors } from '@gateway/theme';
 
+import { Stack, Typography } from '@mui/material';
+
+import { ROUTES } from '../../../../../../constants/routes';
 import { Users } from '../../../../../../services/hasura/types';
 import { AvatarFile } from '../../../../../atoms/avatar-file';
 import CardCell from '../../../components/card-cell';
@@ -39,10 +44,17 @@ export default function CardUserCell({
       <CardCell label={label} margin={false} alignRight={alignRight}>
         {hasLink ? (
           <Link
-            href={`http://localhost:4200/${user?.username}`}
-            sx={{ textDecoration: 'none' }}
+            href={ROUTES.PROFILE.replace('[username]', user.username)}
+            passHref
+            target="_blank"
           >
-            {name}
+            <Stack
+              component="a"
+              title={`${label} ${user?.username}`}
+              sx={{ color: brandColors.purple.main, textDecoration: 'none' }}
+            >
+              {name}
+            </Stack>
           </Link>
         ) : (
           <Typography variant="body2">{name}</Typography>
