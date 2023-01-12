@@ -46,10 +46,10 @@ export default function CardUserCell({
           <Link
             href={ROUTES.PROFILE.replace('[username]', user.username)}
             passHref
-            target="_blank"
           >
             <Stack
               component="a"
+              target="_blank"
               title={`${label} ${user?.username}`}
               sx={{ color: brandColors.purple.main, textDecoration: 'none' }}
             >
