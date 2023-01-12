@@ -8,3 +8,15 @@ export const ISOToString = (datetime: string, locale = 'en-US') => {
     .setLocale(locale)
     .toRelative();
 };
+
+export const timestampToString = (
+  datetime: string,
+  locale = 'en-US',
+  nullableMessage: string
+) => {
+  console.log('entrou', datetime);
+  if (!datetime) {
+    return nullableMessage;
+  }
+  return new Date(datetime?.toLocaleString()).toLocaleString(locale);
+};

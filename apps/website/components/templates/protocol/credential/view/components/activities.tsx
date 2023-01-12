@@ -1,6 +1,7 @@
 import useTranslation from 'next-translate/useTranslation';
 import { useState } from 'react';
 
+import { timestampToString } from '@gateway/helpers';
 import { brandColors } from '@gateway/theme';
 
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
@@ -23,10 +24,6 @@ type Props = {
 export default function Activities({ activities }: Props) {
   const { t, lang } = useTranslation('protocol');
   const [expanded, setExpanded] = useState<boolean>(false);
-
-  const timestampToString = (date) => {
-    return new Date(date?.toLocaleString(lang)).toLocaleString(lang);
-  };
 
   const handleChange =
     () => (event: React.SyntheticEvent, isExpanded: boolean) => {
@@ -101,7 +98,11 @@ export default function Activities({ activities }: Props) {
                   fontSize={12}
                   sx={{ color: alpha(brandColors.white.main, 0.7) }}
                 >
-                  {timestampToString(activity?.date)}
+                  {timestampToString(
+                    activity?.date,
+                    lang,
+                    t('credential.indeterminate')
+                  )}
                 </Typography>
               </Stack>
             ))}

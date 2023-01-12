@@ -1,12 +1,20 @@
 import useTranslation from 'next-translate/useTranslation';
 
+import { PartialDeep } from 'type-fest/source/partial-deep';
+
 import { TOKENS } from '@gateway/theme';
 
 import { Box, Tab, Tabs } from '@mui/material';
 
+import { DataModel } from '../../../../../../services/gateway-protocol/types';
 import { useTab, TabPanel } from '../../../../../atoms/tabs';
+import OverviewTab from './overview-tab';
 
-export default function DataModelTabs() {
+type Props = {
+  dataModel: PartialDeep<DataModel>;
+};
+
+export default function DataModelTabs({ dataModel }: Props) {
   const { activeTab, handleTabChange, setTab } = useTab();
   const { t } = useTranslation('protocol');
 
@@ -14,7 +22,7 @@ export default function DataModelTabs() {
     {
       key: 'overview',
       label: t('common:tabs.overview'),
-      section: <>Overview</>,
+      section: <OverviewTab dataModel={dataModel} />,
     },
     {
       key: 'issuers',
@@ -53,6 +61,13 @@ export default function DataModelTabs() {
           onChange={handleTabChange}
           sx={{
             mb: '-1px',
+            '& > div': {
+              maxWidth: { xs: '350px', md: '100%' },
+              overflow: { xs: 'scroll!important', md: 'hidden' },
+              '&::-webkit-scrollbar': {
+                display: 'none',
+              },
+            },
           }}
         >
           {tabs.map(({ key, label }) => (

@@ -2,6 +2,7 @@ import useTranslation from 'next-translate/useTranslation';
 
 import { PartialDeep } from 'type-fest';
 
+import { timestampToString } from '@gateway/helpers';
 import { theme } from '@gateway/theme';
 
 import { Stack, Paper, Box, Divider, Chip, useMediaQuery } from '@mui/material';
@@ -17,13 +18,6 @@ type Props = {
 export default function CredentialCardInfo({ credential }: Props) {
   const { t, lang } = useTranslation('protocol');
   const isMobile = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
-
-  const timestampToString = (date) => {
-    if (!date) {
-      return t('credential.indeterminate');
-    }
-    return new Date(date?.toLocaleString(lang)).toLocaleString(lang);
-  };
 
   const isDateExpired = (() => {
     if (!credential?.expirationDate) {
@@ -62,10 +56,18 @@ export default function CredentialCardInfo({ credential }: Props) {
         }
       >
         <CardCell label={t('credential.issuance-date')}>
-          {timestampToString(credential?.issuanceDate)}
+          {timestampToString(
+            credential?.issuanceDate,
+            lang,
+            t('credential.indeterminate')
+          )}
         </CardCell>
         <CardCell label={t('credential.expiration-date')}>
-          {timestampToString(credential?.expirationDate)}
+          {timestampToString(
+            credential?.expirationDate,
+            lang,
+            t('credential.indeterminate')
+          )}
         </CardCell>
         <CardCell label={t('credential.status')}>
           {!isDateExpired && (

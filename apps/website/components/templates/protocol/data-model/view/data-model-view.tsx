@@ -34,7 +34,7 @@ export default function DataModelView({ dataModel }: Props) {
           {t('data-model.issue-credential-button')}
         </Button>
       </Stack>
-      <DataModelTabs />
+      <DataModelTabs dataModel={dataModel} />
     </>
   );
 }

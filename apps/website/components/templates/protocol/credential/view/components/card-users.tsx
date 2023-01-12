@@ -7,6 +7,7 @@ import { theme } from '@gateway/theme';
 
 import { Stack, Box, useMediaQuery } from '@mui/material';
 
+import { ROUTES } from '../../../../../../constants/routes';
 import { User } from '../../../../../../services/gateway-protocol/types';
 import { gqlAnonMethods } from '../../../../../../services/hasura/api';
 import CardUserCell from './card-user-cell';
@@ -49,6 +50,16 @@ export default function CardUsers({
     }
   );
 
+  const issuerName =
+    issuer?.data?.username ??
+    issuerCredential.primaryWallet?.ens ??
+    issuerCredential.primaryWallet?.address;
+
+  const recipientName =
+    recipient?.data?.username ??
+    recipientCredential.primaryWallet?.ens ??
+    recipientCredential.primaryWallet?.address;
+
   return (
     <Stack
       justifyContent="space-between"
@@ -58,12 +69,10 @@ export default function CardUsers({
       }}
     >
       <CardUserCell
-        user={{
-          wallet: issuerCredential.primaryWallet?.address,
-          ens: issuerCredential.primaryWallet?.ens,
-          ...issuer.data,
-        }}
         label={t('credential.issuer-id')}
+        picture={issuer?.data?.picture}
+        name={issuerName}
+        href={ROUTES.PROFILE.replace('[username]', issuerName)}
         hasLink={!!issuer.data}
       />
       <Box
@@ -85,12 +94,10 @@ export default function CardUsers({
         </svg>
       </Box>
       <CardUserCell
-        user={{
-          wallet: recipientCredential.primaryWallet?.address,
-          ens: recipientCredential.primaryWallet?.ens,
-          ...recipient.data,
-        }}
         label={t('credential.recipient-id')}
+        picture={recipient?.data?.picture}
+        name={recipientName}
+        href={ROUTES.PROFILE.replace('[username]', recipientName)}
         alignRight={!isMobile}
         hasLink={!!recipient.data}
       />

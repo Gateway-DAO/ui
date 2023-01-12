@@ -6,26 +6,27 @@ import { brandColors } from '@gateway/theme';
 
 import { Stack, Typography } from '@mui/material';
 
-import { ROUTES } from '../../../../../../constants/routes';
-import { Users } from '../../../../../../services/hasura/types';
+import { Files } from '../../../../../../services/hasura/types';
 import { AvatarFile } from '../../../../../atoms/avatar-file';
 import CardCell from '../../../components/card-cell';
 
 type Props = {
   label: string;
-  user: PartialObjectDeep<Users>;
+  name: string;
+  picture: PartialObjectDeep<Files>;
+  href: string;
   hasLink?: boolean;
   alignRight?: boolean;
 };
 
 export default function CardUserCell({
   label,
-  user,
+  name,
+  picture,
+  href,
   alignRight = false,
   hasLink = false,
 }: Props) {
-  const name = user?.username ?? user?.ens ?? user?.wallet;
-
   return (
     <Stack
       sx={{
@@ -35,22 +36,27 @@ export default function CardUserCell({
       }}
     >
       <AvatarFile
-        file={user?.picture}
+        file={picture}
         fallback="/avatar.png"
         sx={{ ml: alignRight ? 0 : 2, mr: alignRight ? 2 : 0 }}
       >
-        {user?.username}
+        {name}
       </AvatarFile>
       <CardCell label={label} margin={false} alignRight={alignRight}>
         {hasLink ? (
           <Link
-            href={ROUTES.PROFILE.replace('[username]', user.username)}
+            // href={
+            //   isDao
+            //     ? ROUTES.DAO_PROFILE.replace('[slug]', name)
+            //     : ROUTES.PROFILE.replace('[username]', name)
+            // }
+            href={href}
             passHref
           >
             <Stack
               component="a"
               target="_blank"
-              title={`${label} ${user?.username}`}
+              title={`${label} ${name}`}
               sx={{ color: brandColors.purple.main, textDecoration: 'none' }}
             >
               {name}

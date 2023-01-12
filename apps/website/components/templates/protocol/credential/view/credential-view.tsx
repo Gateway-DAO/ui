@@ -30,15 +30,15 @@ export default function CredentialProtocolView({ credential }: Props) {
   const activities = [
     {
       name: 'Credential expired',
-      date: '2022-10-03 17:23:00.222',
+      date: '2023-01-09T21:03:11.566Z',
     },
     {
       name: 'Credential issued',
-      date: '2022-10-03 17:23:00.222',
+      date: '2023-01-09T21:03:11.566Z',
     },
     {
       name: 'Credential issued',
-      date: '2022-10-03 17:23:00.222',
+      date: '2023-01-09T21:03:11.566Z',
     },
   ];
   // MOCK - END
@@ -49,8 +49,6 @@ export default function CredentialProtocolView({ credential }: Props) {
     mx: 'auto',
     textAlign: 'left',
   };
-
-  console.log(credential);
 
   return (
     <>

@@ -26,6 +26,9 @@
     "data-model-id": "Data model ID",
     "copy-id": "Data model ID copied to clipboard",
     "verified-description": "This data model is verified by Gateway",
-    "issue-credential-button": "Issue Credential"
+    "issue-credential-button": "Issue Credential",
+    "created-by": "Created by",
+    "creation-date": "Creation date",
+    "last-update": "Last update"
   }
 }
