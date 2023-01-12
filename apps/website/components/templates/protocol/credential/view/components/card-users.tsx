@@ -10,7 +10,7 @@ import { Stack, Box, useMediaQuery } from '@mui/material';
 import { ROUTES } from '../../../../../../constants/routes';
 import { User } from '../../../../../../services/gateway-protocol/types';
 import { gqlAnonMethods } from '../../../../../../services/hasura/api';
-import CardUserCell from './card-user-cell';
+import CardUserCell from '../../../components/card-user-cell';
 
 type Props = {
   issuer: PartialDeep<User>;

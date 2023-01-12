@@ -6,9 +6,9 @@ import { brandColors } from '@gateway/theme';
 
 import { Stack, Typography } from '@mui/material';
 
-import { Files } from '../../../../../../services/hasura/types';
-import { AvatarFile } from '../../../../../atoms/avatar-file';
-import CardCell from '../../../components/card-cell';
+import { Files } from '../../../../services/hasura/types';
+import { AvatarFile } from '../../../atoms/avatar-file';
+import CardCell from './card-cell';
 
 type Props = {
   label: string;
@@ -44,15 +44,7 @@ export default function CardUserCell({
       </AvatarFile>
       <CardCell label={label} margin={false} alignRight={alignRight}>
         {hasLink ? (
-          <Link
-            // href={
-            //   isDao
-            //     ? ROUTES.DAO_PROFILE.replace('[slug]', name)
-            //     : ROUTES.PROFILE.replace('[username]', name)
-            // }
-            href={href}
-            passHref
-          >
+          <Link href={href} passHref>
             <Stack
               component="a"
               target="_blank"

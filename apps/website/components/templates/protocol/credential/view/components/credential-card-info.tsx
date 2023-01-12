@@ -1,8 +1,8 @@
 import useTranslation from 'next-translate/useTranslation';
 
+import { DateTime } from 'luxon';
 import { PartialDeep } from 'type-fest';
 
-import { timestampToString } from '@gateway/helpers';
 import { theme } from '@gateway/theme';
 
 import { Stack, Paper, Box, Divider, Chip, useMediaQuery } from '@mui/material';
@@ -16,7 +16,7 @@ type Props = {
 };
 
 export default function CredentialCardInfo({ credential }: Props) {
-  const { t, lang } = useTranslation('protocol');
+  const { t } = useTranslation('protocol');
   const isMobile = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
 
   const isDateExpired = (() => {
@@ -56,18 +56,16 @@ export default function CredentialCardInfo({ credential }: Props) {
         }
       >
         <CardCell label={t('credential.issuance-date')}>
-          {timestampToString(
-            credential?.issuanceDate,
-            lang,
-            t('credential.indeterminate')
+          {DateTime.fromISO(credential?.issuanceDate).toLocaleString(
+            DateTime.DATETIME_SHORT
           )}
         </CardCell>
         <CardCell label={t('credential.expiration-date')}>
-          {timestampToString(
-            credential?.expirationDate,
-            lang,
-            t('credential.indeterminate')
-          )}
+          {credential?.expirationDate
+            ? DateTime.fromISO(credential?.expirationDate).toLocaleString(
+                DateTime.DATETIME_SHORT
+              )
+            : t('credential.indeterminate')}
         </CardCell>
         <CardCell label={t('credential.status')}>
           {!isDateExpired && (

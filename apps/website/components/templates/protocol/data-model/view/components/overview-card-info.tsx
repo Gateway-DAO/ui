@@ -1,9 +1,9 @@
 import useTranslation from 'next-translate/useTranslation';
 
 import { useQuery } from '@tanstack/react-query';
+import { DateTime } from 'luxon';
 import { PartialDeep } from 'type-fest';
 
-import { timestampToString } from '@gateway/helpers';
 import { theme } from '@gateway/theme';
 
 import { Stack, Paper, Box, Divider, useMediaQuery } from '@mui/material';
@@ -12,14 +12,14 @@ import { ROUTES } from '../../../../../../constants/routes';
 import { DataModel } from '../../../../../../services/gateway-protocol/types';
 import { gqlAnonMethods } from '../../../../../../services/hasura/api';
 import CardCell from '../../../components/card-cell';
-import CardUserCell from '../../../credential/view/components/card-user-cell';
+import CardUserCell from '../../../components/card-user-cell';
 
 type Props = {
   dataModel: PartialDeep<DataModel>;
 };
 
 export default function OverviewCardInfo({ dataModel }: Props) {
-  const { t, lang } = useTranslation('protocol');
+  const { t } = useTranslation('protocol');
   const isMobile = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
 
   // MOCK
@@ -52,7 +52,7 @@ export default function OverviewCardInfo({ dataModel }: Props) {
       sx={{
         border: '1px solid rgba(229, 229, 229, 0.12)',
         borderRadius: 2,
-        mb: 3,
+        mb: 1,
       }}
       divider={<Divider sx={{ width: '100%' }} />}
     >
@@ -79,17 +79,13 @@ export default function OverviewCardInfo({ dataModel }: Props) {
         }
       >
         <CardCell label={t('data-model.creation-date')}>
-          {timestampToString(
-            mockDataModel?.createdAt,
-            lang,
-            t('credential.indeterminate')
+          {DateTime.fromISO(mockDataModel?.createdAt).toLocaleString(
+            DateTime.DATE_FULL
           )}
         </CardCell>
         <CardCell label={t('data-model.last-update')}>
-          {timestampToString(
-            mockDataModel?.lastUpdate,
-            lang,
-            t('credential.indeterminate')
+          {DateTime.fromISO(mockDataModel?.lastUpdate).toLocaleString(
+            DateTime.DATE_FULL
           )}
         </CardCell>
       </Stack>

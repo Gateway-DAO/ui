@@ -29,6 +29,10 @@
     "issue-credential-button": "Issue Credential",
     "created-by": "Created by",
     "creation-date": "Creation date",
-    "last-update": "Last update"
+    "last-update": "Last update",
+    "arweave-hash": "Arweave Hash",
+    "issuers": "Issuers",
+    "issued-credentials": "Issued credentials",
+    "recipients": "Recipients"
   }
 }
