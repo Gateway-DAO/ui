@@ -21,7 +21,7 @@
   "openApp": "Open App",
   "signUp": "Sign Up",
   "subtitle": "The Credential Protocol",
-  "titleDescription": "Your home to  issue, manage, and consume   verifiable credentials.",
+  "titleDescription": "Your home to issue, manage, and consume verifiable credentials.",
   "enterButtonTitle": "Enter the gateway",
   "forUsers": {
     "mainTitle": "Gateway Credential dApp",
@@ -29,7 +29,7 @@
     "features": [
       {
         "title": "Your dedicated Space",
-        "description": "Gateway’s credential space is fully customizable and modular , allowing you to control your Gateway to web3!",
+        "description": "Gateway’s credential space is fully customizable and modular, allowing you to control your Gateway to web3!",
         "image": {
           "url": "/images/join-dao-featured-image.png",
           "width": 423,
@@ -38,7 +38,7 @@
       },
       {
         "title": "Issue Credentials",
-        "description": "Gateway issues credentials in a decentralized manner  via our protocol and covers gas fees for any NFTs minted!",
+        "description": "Gateway issues credentials in a decentralized manner via our protocol and covers gas fees for any NFTs minted!",
         "image": {
           "url": "/images/earn-credentials-featured-image.png",
           "width": 439,
@@ -47,7 +47,7 @@
       },
       {
         "title": "Raise Brand Awareness",
-        "description": "Gateway’s Credential space  is a tool to drive social presence and promote your product.",
+        "description": "Gateway’s Credential space is a tool to drive social presence and promote your product.",
         "image": {
           "url": "/images/showcase-featured-image.png",
           "width": 360,
@@ -55,8 +55,8 @@
         }
       },
       {
-        "title": "Drive Product  Engagement",
-        "description": "Create quizzes, on-chain requirements,  governance tasks, and more to engage users.",
+        "title": "Drive Product Engagement",
+        "description": "Create quizzes, on-chain requirements, governance tasks, and more to engage users.",
         "image": {
           "url": "/images/own-network-featured-image.png",
           "width": 353,
@@ -113,11 +113,11 @@
     "features": [
       {
         "title": "User Sovereignty",
-        "description": "Gateway’s places your  autonomy first. Our credentials are privacy preserving, yet publicly verifiable. We give users control over credeneital permissions and access."
+        "description": "Gateway’s places your autonomy first. Our credentials are privacy preserving, yet publicly verifiable. We give users control over credential permissions and access."
       },
       {
         "title": "Encrypted",
-        "description": "Gateway’s credential data lives on Arweave , allowing for greater encryption over individual data sets.Allowing for you to gate your digital identity and protect your digital rights."
+        "description": "Gateway’s credential data lives on Arweave, allowing for greater encryption over individual data sets. Allowing for you to gate your digital identity and protect your digital rights."
       },
       {
         "title": "Composable",
@@ -132,7 +132,7 @@
   },
   "buildAppsContent": {
     "title": "The Gateway Standard",
-    "description": "We provide the technology needed to issue, manage, index, and utilize credentials to build  a robust digital identity.",
+    "description": "We provide the technology needed to issue, manage, index, and utilize credentials to build a robust digital identity.",
     "features": [
       {
         "title": "Consumption",
@@ -144,7 +144,7 @@
       },
       {
         "title": "Data-Providers",
-        "description": "Every engine needs it's fuel. Gateway's data partners support  an open-source and composable data network, which serves as the basis of Gateway’s credential protocol."
+        "description": "Every engine needs it's fuel. Gateway's data partners support an open-source and composable data network, which serves as the basis of Gateway’s credential protocol."
       }
     ],
     "image": {
@@ -221,12 +221,30 @@
       }
     ],
     "investorsonlyNames": [
-      { "name": "Sandeep Nailwal", "url": "#" },
-      { "name": "David Gan", "url": "#" },
-      { "name": "David Sneider and Chris Wiggum", "url": "#" },
-      { "name": "Ryan Selkis", "url": "#" },
-      { "name": "Stepan Simkin", "url": "#" },
-      { "name": "Ryan Li", "url": "#" }
+      {
+        "name": "Sandeep Nailwal",
+        "url": "#"
+      },
+      {
+        "name": "David Gan",
+        "url": "#"
+      },
+      {
+        "name": "David Sneider and Chris Wiggum",
+        "url": "#"
+      },
+      {
+        "name": "Ryan Selkis",
+        "url": "#"
+      },
+      {
+        "name": "Stepan Simkin",
+        "url": "#"
+      },
+      {
+        "name": "Ryan Li",
+        "url": "#"
+      }
     ]
   },
   "scheduleDemoContent": {
