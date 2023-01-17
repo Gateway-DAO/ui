@@ -35,7 +35,10 @@
     "credentials": "Credentials",
     "daos": "DAOs",
     "organizations": "Organizations",
-    "people": "People"
+    "people": "People",
+    "issuers": "Issuers",
+    "recipients": "Recipients",
+    "playground": "Playground"
   },
   "featured-credentials": {
     "title": "Featured Credentials",
@@ -77,7 +80,8 @@
     "check-transaction": "Verify Mint Transaction",
     "see-more": "See more",
     "see-less": "See less",
-    "share-link": "Share link"
+    "share-link": "Share link",
+    "download": "Download"
   },
   "image-drop-field": {
     "default-label": "Drop to upload your avatar",
@@ -85,5 +89,13 @@
     "remove-photo": "Remove photo",
     "select-nft": "Select NFT (soon)",
     "upload-info": "File supported: JPG, PNG, GIF, SVG Max size: 5 MB"
+  },
+  "social": {
+    "share-on": "Share on",
+    "share-title": "See my credential",
+    "email": "E-mail",
+    "linkedin": "LinkedIn",
+    "reddit": "Reddit",
+    "twitter": "Twitter"
   }
 }

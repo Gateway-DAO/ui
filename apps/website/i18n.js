@@ -23,6 +23,8 @@ const config = {
     [ROUTES.SETTINGS_ACCOUNT_MANAGEMENT]: ['settings'],
     [ROUTES.SETTINGS_CONNECTED_ACCOUNTS]: ['settings'],
     [ROUTES.SETTINGS_NOTIFICATIONS]: ['settings'],
+    [ROUTES.PROTOCOL_CREDENTIAL]: ['protocol'],
+    [ROUTES.PROTOCOL_DATAMODEL]: ['protocol'],
   },
   localeDetection: false,
 };

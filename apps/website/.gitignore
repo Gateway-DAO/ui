@@ -1,4 +1,4 @@
-services/**/types.ts
+services/**/**/types.ts
 
 # Sentry
 .sentryclirc

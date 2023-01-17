@@ -1,0 +1,10 @@
+query dataModel($id: String!) {
+  dataModel(id:$id) {
+    _id
+    description
+    official
+    schema
+    tags
+    title
+  }
+}

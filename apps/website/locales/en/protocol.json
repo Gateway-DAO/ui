@@ -1,0 +1,38 @@
+{
+  "credential": {
+    "issuance-date": "Issuance date",
+    "expiration-date": "Expiration date",
+    "indeterminate": "Indeterminate",
+    "status": "Status",
+    "valid": "Valid",
+    "expired": "Expired",
+    "revoked": "Revoked",
+    "invalid": "Invalid",
+    "issuer-id": "Issuer ID",
+    "recipient-id": "Recipient ID",
+    "credential-id": "Credential ID",
+    "copy-id": "Credential ID copied to clipboard",
+    "copy-link": "Link copied to clipboard",
+    "qrcode": "QR Code",
+    "claim": "Claim",
+    "evidence": "Evidence",
+    "download-qrcode": "Download QRCode",
+    "hide-activity": "Hide Activity",
+    "show-activity": "See Activity",
+    "data-model-id": "Data model ID",
+    "storage-id": "Storage ID"
+  },
+  "data-model": {
+    "data-model-id": "Data model ID",
+    "copy-id": "Data model ID copied to clipboard",
+    "verified-description": "This data model is verified by Gateway",
+    "issue-credential-button": "Issue Credential",
+    "created-by": "Created by",
+    "creation-date": "Creation date",
+    "last-update": "Last update",
+    "arweave-hash": "Arweave Hash",
+    "issuers": "Issuers",
+    "issued-credentials": "Issued credentials",
+    "recipients": "Recipients"
+  }
+}
