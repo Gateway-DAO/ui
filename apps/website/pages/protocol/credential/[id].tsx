@@ -10,7 +10,8 @@ import { gatewayProtocolSDK } from '../../../services/gateway-protocol/api';
 type Props = InferGetServerSidePropsType<typeof getServerSideProps>;
 
 export default function ProtocolCredential({ credential, error }: Props) {
-  if (error) return <div>{error}</div>;
+  console.log(error);
+  if (error) return null;
   return (
     <DashboardTemplate
       containerProps={{
@@ -41,7 +42,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   } catch (e) {
     return {
       props: {
-        error: JSON.stringify(e),
+        error: e,
       },
     };
   }
