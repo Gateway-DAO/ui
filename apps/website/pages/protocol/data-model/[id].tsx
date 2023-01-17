@@ -9,9 +9,7 @@ import { gatewayProtocolSDK } from '../../../services/gateway-protocol/api';
 
 type Props = InferGetServerSidePropsType<typeof getServerSideProps>;
 
-export default function ProtocolDataModel({ dataModel, error }: Props) {
-  console.log(error);
-  if (error) return null;
+export default function ProtocolDataModel({ dataModel }: Props) {
   return (
     <DashboardTemplate
       containerProps={{
@@ -29,21 +27,13 @@ export default function ProtocolDataModel({ dataModel, error }: Props) {
 }
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-  try {
-    const dataModel = await gatewayProtocolSDK.dataModel({
-      id: ctx.query.id as string,
-    });
+  const dataModel = await gatewayProtocolSDK.dataModel({
+    id: ctx.query.id as string,
+  });
 
-    return {
-      props: {
-        dataModel: dataModel?.dataModel,
-      },
-    };
-  } catch (e) {
-    return {
-      props: {
-        error: e,
-      },
-    };
-  }
+  return {
+    props: {
+      dataModel: dataModel?.dataModel,
+    },
+  };
 };

@@ -9,9 +9,7 @@ import { gatewayProtocolSDK } from '../../../services/gateway-protocol/api';
 
 type Props = InferGetServerSidePropsType<typeof getServerSideProps>;
 
-export default function ProtocolCredential({ credential, error }: Props) {
-  console.log(error);
-  if (error) return null;
+export default function ProtocolCredential({ credential }: Props) {
   return (
     <DashboardTemplate
       containerProps={{
@@ -29,21 +27,13 @@ export default function ProtocolCredential({ credential, error }: Props) {
 }
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-  try {
-    const credential = await gatewayProtocolSDK.credential({
-      id: ctx.query.id as string,
-    });
+  const credential = await gatewayProtocolSDK.credential({
+    id: ctx.query.id as string,
+  });
 
-    return {
-      props: {
-        credential: credential?.credentialById,
-      },
-    };
-  } catch (e) {
-    return {
-      props: {
-        error: e,
-      },
-    };
-  }
+  return {
+    props: {
+      credential: credential?.credentialById,
+    },
+  };
 };
