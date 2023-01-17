@@ -1,10 +1,9 @@
 import { brandColors } from '@gateway/theme';
 
-import { Stack, Paper, Divider, Typography, alpha } from '@mui/material';
+import { Stack, Paper, Typography, alpha } from '@mui/material';
 
-import CardCell from './card-cell';
-import OneColumn from './one-column';
-import TwoColumns from './two-columns';
+import ContentTableOneColumn from './content-table-one-column';
+import ContentTableTwoColumns from './content-table-two-columns';
 
 type Props = {
   title: string;
@@ -64,12 +63,15 @@ export default function DataTable({
           )}
         </Stack>
       )}
-      <Stack divider={<Divider />}>
-        {!column2 && <OneColumn data={data} />}
-        {column2 && (
-          <TwoColumns data={data} column2={column2} isInputType={isInputType} />
-        )}
-      </Stack>
+
+      {!column2 && <ContentTableOneColumn data={data} />}
+      {column2 && (
+        <ContentTableTwoColumns
+          data={data}
+          column2={column2}
+          isInputType={isInputType}
+        />
+      )}
     </Paper>
   );
 }

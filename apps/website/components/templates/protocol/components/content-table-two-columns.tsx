@@ -2,7 +2,7 @@ import InsertLinkIcon from '@mui/icons-material/InsertLink';
 import PhotoIcon from '@mui/icons-material/Photo';
 import PinIcon from '@mui/icons-material/Pin';
 import TextFieldsIcon from '@mui/icons-material/TextFields';
-import { Chip, Stack, Typography } from '@mui/material';
+import { Chip, Divider, Stack, Typography } from '@mui/material';
 
 import CardCell from './card-cell';
 
@@ -36,7 +36,7 @@ export default function TwoColumns({
     );
   };
   return (
-    <>
+    <Stack divider={<Divider />}>
       {data?.map((item, index) => (
         <Stack
           key={index}
@@ -56,6 +56,6 @@ export default function TwoColumns({
           </Typography>
         </Stack>
       ))}
-    </>
+    </Stack>
   );
 }
