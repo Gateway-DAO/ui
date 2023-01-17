@@ -12,7 +12,7 @@ import Tags from '../../components/tags';
 import Activities from './components/activities';
 import CredentialCardInfo from './components/credential-card-info';
 import CredentialTitleAndImage from './components/credential-title-and-image';
-import DataTable from './components/data-table';
+import DataTable from '../../components/data-table';
 import DataTableClaim from './components/data-table-claim';
 
 type Props = {

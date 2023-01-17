@@ -11,6 +11,7 @@ type Props = {
   px?: number;
   py?: number;
   alignRight?: boolean;
+  inverted?: boolean;
 };
 
 export default function CardCell({
@@ -20,6 +21,7 @@ export default function CardCell({
   py = 2,
   px = 2,
   alignRight = false,
+  inverted = false,
 }: Props) {
   return (
     <Stack
@@ -31,18 +33,37 @@ export default function CardCell({
         textAlign: alignRight ? 'right' : 'left',
       }}
     >
-      <Typography
-        fontSize={12}
-        sx={{ color: alpha(brandColors.white.main, 0.7) }}
-      >
-        {label}
-      </Typography>
-      <Box
-        fontSize={14}
-        sx={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}
-      >
-        {children}
-      </Box>
+      {inverted ? (
+        <>
+          <Typography
+            fontSize={12}
+            sx={{ color: alpha(brandColors.white.main, 0.7) }}
+          >
+            {label}
+          </Typography>
+          <Box
+            fontSize={14}
+            sx={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}
+          >
+            {children}
+          </Box>
+        </>
+      ) : (
+        <>
+          <Typography
+            fontSize={14}
+            sx={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}
+          >
+            {label}
+          </Typography>
+          <Typography
+            fontSize={12}
+            sx={{ color: alpha(brandColors.white.main, 0.7) }}
+          >
+            {children}
+          </Typography>
+        </>
+      )}
     </Stack>
   );
 }
