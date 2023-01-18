@@ -36,6 +36,7 @@ export default function CredentialCardInfo({ credential }: Props) {
         border: '1px solid rgba(229, 229, 229, 0.12)',
         borderRadius: 2,
         mb: 3,
+        overflow: 'hidden',
       }}
       divider={<Divider sx={{ width: '100%' }} />}
     >
