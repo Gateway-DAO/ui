@@ -15,8 +15,8 @@ type Props = {
 export default function FloatingCtaButton({
   children,
   handlerClick,
-  bgColor = '#1D0836',
-  bgColorHover = '#3A1374',
+  bgColor = 'rgba(154, 83, 255, 0.15)',
+  bgColorHover = 'rgba(154, 83, 255, 0.3)',
   color = brandColors.purple.main,
 }: Props) {
   return (
@@ -28,6 +28,7 @@ export default function FloatingCtaButton({
           width: '56px',
           height: '56px',
           backgroundColor: bgColor,
+          backdropFilter: 'blur(16px)',
           color: color,
           '&:hover': {
             backgroundColor: bgColorHover,
