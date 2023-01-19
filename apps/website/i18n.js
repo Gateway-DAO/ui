@@ -25,6 +25,7 @@ const config = {
     [ROUTES.SETTINGS_NOTIFICATIONS]: ['settings'],
     [ROUTES.PROTOCOL_CREDENTIAL]: ['protocol'],
     [ROUTES.PROTOCOL_DATAMODEL]: ['protocol'],
+    [ROUTES.PROTOCOL_DATAMODEL_CREDENTIAL_CREATE]: ['protocol'],
   },
   localeDetection: false,
 };

@@ -8,18 +8,18 @@ import { Theme } from '@mui/material/styles/createTheme';
 import { Credential } from '../../../../../services/gateway-protocol/types';
 import ExternalLink from '../../../../atoms/external-link';
 import { MintCredentialButton } from '../../../../atoms/mint-button';
+import DataTable from '../../components/data-table';
 import Tags from '../../components/tags';
 import Activities from './components/activities';
 import CredentialCardInfo from './components/credential-card-info';
 import CredentialTitleAndImage from './components/credential-title-and-image';
-import DataTable from '../../components/data-table';
 import DataTableClaim from './components/data-table-claim';
 
 type Props = {
   credential: PartialDeep<Credential>;
 };
 
-export default function CredentialProtocolView({ credential }: Props) {
+export default function CredentialProtocolShow({ credential }: Props) {
   const { t } = useTranslation('protocol');
 
   // MOCK

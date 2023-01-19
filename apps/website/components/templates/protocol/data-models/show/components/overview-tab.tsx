@@ -4,7 +4,7 @@ import { PartialDeep } from 'type-fest/source/partial-deep';
 
 import { Stack } from '@mui/material';
 
-import ExternalLink from '../../../../../../components/atoms/external-link';
+import ExternalLink from '../../../../../atoms/external-link';
 import { DataModel } from '../../../../../../services/gateway-protocol/types';
 import DashboardCard from '../../../components/dashboard-card';
 import DataTable from '../../../components/data-table';
