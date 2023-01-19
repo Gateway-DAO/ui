@@ -6,7 +6,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { Stack, Typography, IconButton, alpha } from '@mui/material';
 
 import { ROUTES } from '../../../../../constants/routes';
-import FormGeneralInformation from './components/form-general-information';
+import CredentialCreateForm from './components/credential-create-form';
 import { CreateCredentialData } from './schema';
 
 type CreateCredentialProps = {
@@ -62,7 +62,7 @@ export default function CredentialProtocolCreate({
       >
         Add the details of the credential
       </Typography>
-      <FormGeneralInformation oldData={oldData} />
+      <CredentialCreateForm oldData={oldData} />
     </Stack>
   );
 }
