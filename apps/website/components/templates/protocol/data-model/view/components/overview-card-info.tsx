@@ -65,6 +65,7 @@ export default function OverviewCardInfo({ dataModel }: Props) {
           mockDataModel?.createdBy?.slug
         )}
         hasLink={!!creator.data}
+        unique={true}
       />
       <Stack
         alignItems="stretch"

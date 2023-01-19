@@ -2,7 +2,9 @@ import useTranslation from 'next-translate/useTranslation';
 
 import { PartialDeep } from 'type-fest/source/partial-deep';
 
-import { Stack } from '@mui/material';
+import { theme } from '@gateway/theme';
+
+import { Stack, useMediaQuery } from '@mui/material';
 
 import ExternalLink from '../../../../../../components/atoms/external-link';
 import { DataModel } from '../../../../../../services/gateway-protocol/types';
@@ -15,6 +17,7 @@ type Props = {
 
 export default function OverviewTab({ dataModel }: Props) {
   const { t } = useTranslation('protocol');
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
 
   return (
     <Stack sx={{ maxWidth: '726px', pt: 2 }}>
@@ -23,7 +26,7 @@ export default function OverviewTab({ dataModel }: Props) {
         <ExternalLink text={t('data-model.arweave-hash')} url="" />
       </Stack>
       <Stack
-        gap={2}
+        gap={isMobile ? 1 : 2}
         justifyContent="space-between"
         sx={{ flexDirection: { xs: 'column', md: 'row' } }}
       >

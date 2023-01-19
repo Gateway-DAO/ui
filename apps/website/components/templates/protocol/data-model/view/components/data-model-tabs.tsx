@@ -52,7 +52,7 @@ export default function DataModelTabs({ dataModel }: Props) {
         sx={{
           borderBottom: 1,
           borderColor: 'divider',
-          px: TOKENS.CONTAINER_PX,
+          px: { xs: 0, md: 4, lg: 6 },
           mt: 4,
         }}
       >
@@ -78,6 +78,7 @@ export default function DataModelTabs({ dataModel }: Props) {
                 fontWeight: 700,
                 px: 0,
                 mr: theme.spacing(3),
+                fontSize: '12px',
               })}
             />
           ))}
@@ -89,7 +90,7 @@ export default function DataModelTabs({ dataModel }: Props) {
           tabsId="protocol"
           index={index}
           active={index === activeTab}
-          sx={{ py: 3, px: TOKENS.CONTAINER_PX }}
+          sx={{ py: 3, px: { xs: 0, md: 4, lg: 6 } }}
         >
           {section}
         </TabPanel>
