@@ -29,56 +29,58 @@ export default function CardUserCell({
   hasLink = false,
   unique = false,
 }: Props) {
-  const userCell = () => (
-    <Stack
-      sx={{
-        flexDirection: alignRight ? 'row-reverse' : 'row',
-        alignItems: 'center',
-        flexBasis: '100%',
-        cursor: hasLink ? 'pointer' : 'default',
-        borderRadius: unique
-          ? '16px 16px 0 0'
-          : alignRight
-          ? '0 16px 0 0'
-          : '16px 0 0 0',
-        transition: 'background .3s ease',
-        '&:hover': {
-          background: alpha(brandColors.white.main, 0.05),
-        },
-      }}
-    >
-      <AvatarFile
-        file={picture}
-        fallback="/avatar.png"
-        sx={{ ml: alignRight ? 0 : 2, mr: alignRight ? 2 : 0 }}
+  function UserCell() {
+    return (
+      <Stack
+        sx={{
+          flexDirection: alignRight ? 'row-reverse' : 'row',
+          alignItems: 'center',
+          flexBasis: '100%',
+          cursor: hasLink ? 'pointer' : 'default',
+          borderRadius: unique
+            ? '16px 16px 0 0'
+            : alignRight
+            ? '0 16px 0 0'
+            : '16px 0 0 0',
+          transition: 'background .3s ease',
+          '&:hover': {
+            background: alpha(brandColors.white.main, 0.05),
+          },
+        }}
       >
-        {name}
-      </AvatarFile>
-      <CardCell label={label} margin={false} alignRight={alignRight}>
-        {hasLink ? (
-          <Stack
-            component="a"
-            target="_blank"
-            title={`${label} ${name}`}
-            sx={{ color: brandColors.purple.main, textDecoration: 'none' }}
-          >
-            {name}
-          </Stack>
-        ) : (
-          <Typography variant="body2">{name}</Typography>
-        )}
-      </CardCell>
-    </Stack>
-  );
+        <AvatarFile
+          file={picture}
+          fallback="/avatar.png"
+          sx={{ ml: alignRight ? 0 : 2, mr: alignRight ? 2 : 0 }}
+        >
+          {name}
+        </AvatarFile>
+        <CardCell label={label} margin={false} alignRight={alignRight}>
+          {hasLink ? (
+            <Stack
+              component="a"
+              target="_blank"
+              title={`${label} ${name}`}
+              sx={{ color: brandColors.purple.main, textDecoration: 'none' }}
+            >
+              {name}
+            </Stack>
+          ) : (
+            <Typography variant="body2">{name}</Typography>
+          )}
+        </CardCell>
+      </Stack>
+    );
+  }
 
   return (
     <>
       {hasLink ? (
         <Link href={href} passHref>
-          {userCell()}
+          {UserCell()}
         </Link>
       ) : (
-        userCell()
+        UserCell()
       )}
     </>
   );
