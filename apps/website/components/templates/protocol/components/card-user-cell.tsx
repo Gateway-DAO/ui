@@ -77,10 +77,10 @@ export default function CardUserCell({
     <>
       {hasLink ? (
         <Link href={href} passHref>
-          {UserCell()}
+          <UserCell />
         </Link>
       ) : (
-        UserCell()
+        <UserCell />
       )}
     </>
   );
