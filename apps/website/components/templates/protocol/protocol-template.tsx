@@ -47,6 +47,7 @@ export default function ProtocolTemplate({ children }: Props) {
       <Stack
         sx={{
           py: 2,
+          pb: { md: 35, xs: 27 },
           px: isMobile ? TOKENS.CONTAINER_PX : 0,
         }}
       >

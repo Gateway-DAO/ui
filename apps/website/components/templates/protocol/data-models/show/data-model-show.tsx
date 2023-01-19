@@ -35,7 +35,7 @@ export default function DataModelShow({
 
   return (
     <>
-      <Stack sx={{ px: TOKENS.CONTAINER_PX }}>
+      <Stack sx={{ px: { xs: 0, md: 4, lg: 6 } }}>
         <InfoTitle
           title={dataModel?.title}
           labelId={t('data-model.data-model-id')}

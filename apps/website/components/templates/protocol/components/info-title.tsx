@@ -24,7 +24,7 @@ export default function InfoTitle({
 }: Props) {
   return (
     <Stack sx={{ verticalAlign: 'center', justifyContent: 'center', mb: 1 }}>
-      <Stack direction="row" alignItems="center" gap={0.5}>
+      <Stack direction="row" alignItems="center">
         <Typography
           fontSize={12}
           sx={{ color: alpha(brandColors.white.main, 0.7) }}
