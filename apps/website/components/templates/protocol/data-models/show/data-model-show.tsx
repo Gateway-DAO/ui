@@ -59,7 +59,7 @@ export default function DataModelShow({
         </Button>
       </Stack>
       <DataModelTabs dataModel={dataModel} />
-      {isCredentialCreate && <CredentialProtocolCreate />}
+      {isCredentialCreate && <CredentialProtocolCreate dataModel={dataModel} />}
     </>
   );
 }

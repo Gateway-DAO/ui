@@ -1,5 +1,7 @@
 import { useRouter } from 'next/router';
 
+import { PartialDeep } from 'type-fest/source/partial-deep';
+
 import { brandColors } from '@gateway/theme';
 
 import CloseIcon from '@mui/icons-material/Close';
@@ -7,13 +9,16 @@ import { Stack, Typography, IconButton, alpha } from '@mui/material';
 
 import { ROUTES } from '../../../../../constants/routes';
 import { CreateCredentialInput } from '../../../../../services/gateway-protocol/types';
+import { DataModel } from '../../../../../services/gateway-protocol/types';
 import CredentialCreateForm from './components/credential-create-form';
 
 type CreateCredentialProps = {
+  dataModel: PartialDeep<DataModel>;
   oldData?: CreateCredentialInput;
 };
 
 export default function CredentialProtocolCreate({
+  dataModel,
   oldData,
 }: CreateCredentialProps) {
   const router = useRouter();
@@ -78,7 +83,7 @@ export default function CredentialProtocolCreate({
         >
           Add the details of the credential
         </Typography>
-        <CredentialCreateForm oldData={oldData} />
+        <CredentialCreateForm oldData={oldData} dataModel={dataModel} />
       </Stack>
     </>
   );

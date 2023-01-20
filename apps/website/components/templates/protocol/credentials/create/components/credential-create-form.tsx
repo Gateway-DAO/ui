@@ -4,8 +4,9 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { useSnackbar } from 'notistack';
 import { FormProvider, useForm } from 'react-hook-form';
+import { PartialDeep } from 'type-fest';
 
-import { Box, CircularProgress, Stack } from '@mui/material';
+import { Box, CircularProgress, Divider, Stack } from '@mui/material';
 
 import { gatewayProtocolSDK } from '../../../../../../services/gateway-protocol/api';
 import {
@@ -13,15 +14,18 @@ import {
   CredentialStatus,
   CreateCredentialInput,
 } from '../../../../../../services/gateway-protocol/types';
+import { DataModel } from '../../../../../../services/gateway-protocol/types';
 import { CreateCredentialInputSchema } from '../../../../../../services/gateway-protocol/validation';
 import { LoadingButton } from '../../../../../atoms/loading-button';
 import ConfirmDialog from '../../../../../organisms/confirm-dialog/confirm-dialog';
 import GeneralInfoForm from './general-info-form';
 
 type CreateCredentialProps = {
+  dataModel: PartialDeep<DataModel>;
   oldData?: CreateCredentialInput;
 };
 export default function CredentialCreateForm({
+  dataModel,
   oldData,
 }: CreateCredentialProps) {
   const methods = useForm({
@@ -91,6 +95,8 @@ export default function CredentialCreateForm({
           dataModel: '63c5b109697d875a76000608',
           title: data.title,
           description: data.description,
+          tags: data.tags,
+          expirationDate: data.expirationDate,
           issuer: '63c5b71b697d875a7600064e',
           recipient: '63c5c6a0697d875a76000654',
           claim: {
@@ -120,9 +126,7 @@ export default function CredentialCreateForm({
               value: false,
             },
           ],
-          tags: ['Education'],
           image: '',
-          expirationDate: undefined,
           issuanceDate: undefined,
           status: CredentialStatus.Valid,
         });
@@ -133,6 +137,8 @@ export default function CredentialCreateForm({
       }
     }
   };
+
+  console.log(dataModel);
 
   return (
     <FormProvider {...methods}>
@@ -161,7 +167,10 @@ export default function CredentialCreateForm({
             <CircularProgress />
           </Box>
         ) : (
-          <GeneralInfoForm />
+          <>
+            <GeneralInfoForm />
+            <Divider sx={{ mb: 4, mt: 2, mx: { xs: -3, md: -6 } }} />
+          </>
         )}
         <LoadingButton
           variant="contained"
@@ -170,11 +179,10 @@ export default function CredentialCreateForm({
           sx={() => ({
             height: '42px',
             display: 'flex',
-            width: '122px',
             borderRadius: '20px',
           })}
         >
-          Create
+          Issue Credential
         </LoadingButton>
       </Stack>
       <ConfirmDialog
