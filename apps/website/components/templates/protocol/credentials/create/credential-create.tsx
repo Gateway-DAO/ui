@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 
 import { PartialDeep } from 'type-fest/source/partial-deep';
 
@@ -22,6 +23,10 @@ export default function CredentialProtocolCreate({
   oldData,
 }: CreateCredentialProps) {
   const router = useRouter();
+
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+  }, []);
 
   const closeForm = () => {
     router

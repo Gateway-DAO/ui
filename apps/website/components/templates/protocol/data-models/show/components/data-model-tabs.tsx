@@ -1,14 +1,14 @@
 import useTranslation from 'next-translate/useTranslation';
+import dynamic from 'next/dynamic';
 
 import { PartialDeep } from 'type-fest/source/partial-deep';
-
-import { TOKENS } from '@gateway/theme';
 
 import { Box, Tab, Tabs } from '@mui/material';
 
 import { DataModel } from '../../../../../../services/gateway-protocol/types';
 import { useTab, TabPanel } from '../../../../../atoms/tabs';
-import OverviewTab from './overview-tab';
+
+const OverviewTab = dynamic(() => import('./overview-tab'), { ssr: false });
 
 type Props = {
   dataModel: PartialDeep<DataModel>;

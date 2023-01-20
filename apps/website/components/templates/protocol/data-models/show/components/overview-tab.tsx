@@ -6,8 +6,8 @@ import { theme } from '@gateway/theme';
 
 import { Stack, useMediaQuery } from '@mui/material';
 
-import ExternalLink from '../../../../../atoms/external-link';
 import { DataModel } from '../../../../../../services/gateway-protocol/types';
+import ExternalLink from '../../../../../atoms/external-link';
 import DashboardCard from '../../../components/dashboard-card';
 import DataTable from '../../../components/data-table';
 import OverviewCardInfo from './overview-card-info';

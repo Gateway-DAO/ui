@@ -138,8 +138,6 @@ export default function CredentialCreateForm({
     }
   };
 
-  console.log(dataModel);
-
   return (
     <FormProvider {...methods}>
       <Stack
@@ -164,7 +162,7 @@ export default function CredentialCreateForm({
               justifyContent: 'center',
             }}
           >
-            <CircularProgress />
+            <CircularProgress sx={{ my: 3 }} />
           </Box>
         ) : (
           <>
