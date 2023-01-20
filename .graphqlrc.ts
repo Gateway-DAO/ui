@@ -64,9 +64,25 @@ const config: IGraphQLConfig = {
           ...generateConfig,
           schema: {
             [`${process.env.GATEWAY_PROTOCOL_ENDPOINT}`]: {
-              // headers: {
-                // 'x-hasura-admin-secret': process.env.HASURA_ADMIN_SECRET as string,
-              // },
+            },
+          },
+          documents: ['apps/website/services/gateway-protocol/**/*.gql'],
+        },
+        './apps/website/services/gateway-protocol/validation.ts': {
+          plugins: [
+            'typescript-validation-schema',
+          ],
+          config: {
+            scalars: {
+              DateTime: 'string',
+              JSON: 'any',
+            },
+            strictScalars: true,
+            schema: 'zod',
+            importFrom: './types.ts'
+          },
+          schema: {
+            [`${process.env.GATEWAY_PROTOCOL_ENDPOINT}`]: {
             },
           },
           documents: ['apps/website/services/gateway-protocol/**/*.gql'],

@@ -47,6 +47,7 @@
     "fast-blurhash": "^1.0.1",
     "framer-motion": "^6.3.3",
     "graphql": "^16.4.0",
+    "graphql-codegen-typescript-validation-schema": "^0.7.1",
     "graphql-request": "^4.2.0",
     "ioredis": "^5.2.4",
     "jsonwebtoken": "^8.5.1",

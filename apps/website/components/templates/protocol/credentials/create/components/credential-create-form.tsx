@@ -11,20 +11,21 @@ import { gatewayProtocolSDK } from '../../../../../../services/gateway-protocol/
 import {
   CreateCredentialMutationVariables,
   CredentialStatus,
+  CreateCredentialInput,
 } from '../../../../../../services/gateway-protocol/types';
+import { CreateCredentialInputSchema } from '../../../../../../services/gateway-protocol/validation';
 import { LoadingButton } from '../../../../../atoms/loading-button';
 import ConfirmDialog from '../../../../../organisms/confirm-dialog/confirm-dialog';
-import { CreateCredentialData, createCredentialSchema } from '../schema';
 import GeneralInfoForm from './general-info-form';
 
 type CreateCredentialProps = {
-  oldData?: CreateCredentialData;
+  oldData?: CreateCredentialInput;
 };
 export default function CredentialCreateForm({
   oldData,
 }: CreateCredentialProps) {
   const methods = useForm({
-    resolver: zodResolver(createCredentialSchema),
+    resolver: zodResolver(CreateCredentialInputSchema()),
     mode: 'onBlur',
     defaultValues: {
       ...oldData,
@@ -33,10 +34,6 @@ export default function CredentialCreateForm({
 
   const { enqueueSnackbar } = useSnackbar();
   const [confirmCreate, setConfirmCreate] = useState(false);
-
-  const showErrorMessage = (message: string) => {
-    enqueueSnackbar(message, { variant: 'error', autoHideDuration: 8000 });
-  };
 
   const createCredential = useMutation(
     ['createCredential'],
@@ -47,21 +44,35 @@ export default function CredentialCreateForm({
     }
   );
 
-  const checkFormErrors = async () => {
-    const dataIsValid = await methods.trigger();
+  const showErrorMessage = (message: string) => {
+    enqueueSnackbar(message, { variant: 'error', autoHideDuration: 8000 });
+  };
 
-    if (!dataIsValid) {
-      const errors = methods.formState.errors;
-
-      if (Object.values(errors)[0].data?.message) {
-        showErrorMessage(Object.values(errors)[0].data?.message);
+  const recursiveErrorMessage = (obj) => {
+    for (const prop in obj) {
+      if (obj.hasOwnProperty.call(obj, prop)) {
+        if (obj[prop]?.message) {
+          showErrorMessage(obj[prop]?.message);
+        } else if (obj[prop]?.length) {
+          recursiveErrorMessage(obj[prop][0]);
+        }
       }
     }
+  };
 
+  const checkFormErrors = async () => {
+    const dataIsValid = await methods.trigger();
+    if (!dataIsValid) {
+      const errors = methods.formState.errors;
+      console.log(errors);
+      if (Object.values(errors)[0]) {
+        recursiveErrorMessage(errors);
+      }
+    }
     return dataIsValid;
   };
 
-  const onCreateCredential = async (data: CreateCredentialData) => {
+  const onCreateCredential = async (data: CreateCredentialInput) => {
     try {
       await handleMutation(data);
     } catch (e) {
@@ -69,7 +80,7 @@ export default function CredentialCreateForm({
     }
   };
 
-  const handleMutation = async (data: CreateCredentialData) => {
+  const handleMutation = async (data: CreateCredentialInput) => {
     const dataIsValid = await checkFormErrors();
 
     if (!dataIsValid) return;
@@ -155,7 +166,6 @@ export default function CredentialCreateForm({
         <LoadingButton
           variant="contained"
           isLoading={createCredential.isLoading}
-          onClick={() => setConfirmCreate(true)}
           type="submit"
           sx={() => ({
             height: '42px',
@@ -175,7 +185,7 @@ export default function CredentialCreateForm({
         setOpen={setConfirmCreate}
         onConfirm={methods.handleSubmit(onCreateCredential, (errors) => {
           enqueueSnackbar(
-            Object.values(errors)[0]?.data?.message || 'Invalid data'
+            (Object.values(errors)[0]?.message as string) || 'Invalid data'
           );
         })}
       >

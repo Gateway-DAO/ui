@@ -1,14 +1,14 @@
 import { useFormContext } from 'react-hook-form';
 
-import { Stack, TextField, Typography } from '@mui/material';
+import { Stack, TextField } from '@mui/material';
 
-import { CreateCredentialData } from '../schema';
+import { CreateCredentialInput } from '../../../../../../services/gateway-protocol/types';
 
 export default function GeneralInfoForm() {
   const {
     register,
     formState: { errors },
-  } = useFormContext<CreateCredentialData>();
+  } = useFormContext<CreateCredentialInput>();
 
   return (
     <Stack sx={{ mb: 3 }} gap={2}>

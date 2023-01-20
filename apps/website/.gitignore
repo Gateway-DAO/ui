@@ -1,4 +1,6 @@
 services/**/**/types.ts
+services/**/**/validation.ts
 
 # Sentry
 .sentryclirc
+
