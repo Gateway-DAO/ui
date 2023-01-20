@@ -6,11 +6,11 @@ import CloseIcon from '@mui/icons-material/Close';
 import { Stack, Typography, IconButton, alpha } from '@mui/material';
 
 import { ROUTES } from '../../../../../constants/routes';
+import { CreateCredentialInput } from '../../../../../services/gateway-protocol/types';
 import CredentialCreateForm from './components/credential-create-form';
-import { CreateCredentialData } from './schema';
 
 type CreateCredentialProps = {
-  oldData?: CreateCredentialData;
+  oldData?: CreateCredentialInput;
 };
 
 export default function CredentialProtocolCreate({
