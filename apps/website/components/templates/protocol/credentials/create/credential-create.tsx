@@ -4,8 +4,7 @@ import { PartialDeep } from 'type-fest/source/partial-deep';
 
 import { brandColors } from '@gateway/theme';
 
-import CloseIcon from '@mui/icons-material/Close';
-import { Stack, Typography, IconButton, alpha } from '@mui/material';
+import { Stack, Typography, alpha } from '@mui/material';
 
 import { CreateCredentialInput } from '../../../../../services/gateway-protocol/types';
 import { DataModel } from '../../../../../services/gateway-protocol/types';
@@ -14,98 +13,22 @@ import CredentialCreateForm from './components/credential-create-form';
 type CreateCredentialProps = {
   dataModel: PartialDeep<DataModel>;
   oldData?: CreateCredentialInput;
-  onClose: () => void;
 };
 
 export default function CredentialProtocolCreate({
   dataModel,
   oldData,
-  onClose,
 }: CreateCredentialProps) {
-  const modal = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    document.body.style.overflow = 'hidden';
-    animateModal();
-  }, []);
-
-  const closeForm = () => {
-    document.body.style.overflow = 'auto';
-    animateModal(onClose, true);
-  };
-
-  const animateModal = (callback = undefined, isClosing = false) => {
-    isClosing
-      ? modal.current.classList.add('animate')
-      : modal.current.classList.remove('animate');
-    setTimeout(() => {
-      if (callback) {
-        callback();
-      }
-    }, 400);
-  };
-
   return (
-    <>
-      <Stack
-        onClick={() => closeForm()}
-        sx={{
-          background: 'rgba(0,0,0, 0.3)',
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          height: '100%',
-          width: '100%',
-          zIndex: 9998,
-          cursor: 'alias',
-        }}
-      ></Stack>
-      <Stack
-        className="animate"
-        ref={modal}
-        sx={{
-          background:
-            'linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.12) 100%), #10041C',
-          px: { xs: 3, md: 6 },
-          py: { xs: 3, md: 6 },
-          position: 'fixed',
-          top: 0,
-          right: 0,
-          height: '100%',
-          width: { xs: '100%', md: '600px', lg: '720px' },
-          boxShadow: '1px 0px 4px rgba(0,0,0,0.3)',
-          transition: 'all ease .2s',
-          zIndex: 9999,
-          '&.animate': {
-            transform: 'translateX(200px)',
-            right: '-10px',
-            opacity: '0',
-          },
-        }}
+    <Stack>
+      <Typography fontWeight={600}>Add details</Typography>
+      <Typography
+        fontSize={14}
+        sx={{ color: alpha(brandColors.white.main, 0.7), mb: 3 }}
       >
-        <Stack
-          direction="row"
-          alignItems="center"
-          justifyContent="space-between"
-          sx={{ mb: 5 }}
-        >
-          <Typography variant="h5">Issue Credential</Typography>
-          <IconButton
-            sx={{ background: alpha(brandColors.white.main, 0.16) }}
-            onClick={() => closeForm()}
-          >
-            <CloseIcon />
-          </IconButton>
-        </Stack>
-        <Typography fontWeight={600}>Add details</Typography>
-        <Typography
-          fontSize={14}
-          sx={{ color: alpha(brandColors.white.main, 0.7), mb: 3 }}
-        >
-          Add the details of the credential
-        </Typography>
-        <CredentialCreateForm oldData={oldData} dataModel={dataModel} />
-      </Stack>
-    </>
+        Add the details of the credential
+      </Typography>
+      <CredentialCreateForm dataModel={dataModel} />
+    </Stack>
   );
 }

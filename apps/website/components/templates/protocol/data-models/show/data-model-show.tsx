@@ -1,11 +1,11 @@
 import useTranslation from 'next-translate/useTranslation';
-import { useTransition } from 'react';
 
 import { useToggle } from 'react-use';
 import { PartialDeep } from 'type-fest/source/partial-deep';
 
 import { Stack, Typography, Button } from '@mui/material';
 
+import ModalRight from '../../../../../components/molecules/right-modal';
 import { DataModel } from '../../../../../services/gateway-protocol/types';
 import InfoTitle from '../../components/info-title';
 import Tags from '../../components/tags';
@@ -48,12 +48,14 @@ export default function DataModelShow({
         </Button>
       </Stack>
       <DataModelTabs dataModel={dataModel} />
-      {openCreateCredential && (
-        <CredentialProtocolCreate
-          dataModel={dataModel}
-          onClose={() => setOpenCreateCredential()}
-        />
-      )}
+
+      <ModalRight
+        open={openCreateCredential}
+        title="Issue Credential"
+        handleClose={setOpenCreateCredential}
+      >
+        <CredentialProtocolCreate dataModel={dataModel} />
+      </ModalRight>
     </>
   );
 }
