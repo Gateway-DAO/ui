@@ -1,5 +1,4 @@
-import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 import { PartialDeep } from 'type-fest/source/partial-deep';
 
@@ -8,7 +7,6 @@ import { brandColors } from '@gateway/theme';
 import CloseIcon from '@mui/icons-material/Close';
 import { Stack, Typography, IconButton, alpha } from '@mui/material';
 
-import { ROUTES } from '../../../../../constants/routes';
 import { CreateCredentialInput } from '../../../../../services/gateway-protocol/types';
 import { DataModel } from '../../../../../services/gateway-protocol/types';
 import CredentialCreateForm from './components/credential-create-form';
@@ -16,25 +14,35 @@ import CredentialCreateForm from './components/credential-create-form';
 type CreateCredentialProps = {
   dataModel: PartialDeep<DataModel>;
   oldData?: CreateCredentialInput;
+  onClose: () => void;
 };
 
 export default function CredentialProtocolCreate({
   dataModel,
   oldData,
+  onClose,
 }: CreateCredentialProps) {
-  const router = useRouter();
+  const modal = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     document.body.style.overflow = 'hidden';
+    animateModal();
   }, []);
 
   const closeForm = () => {
-    router
-      .push({
-        pathname: ROUTES.PROTOCOL_DATAMODEL,
-        query: { id: router?.query?.id },
-      })
-      .then(() => (document.body.style.overflow = 'auto'));
+    document.body.style.overflow = 'auto';
+    animateModal(onClose, true);
+  };
+
+  const animateModal = (callback = undefined, isClosing = false) => {
+    isClosing
+      ? modal.current.classList.add('animate')
+      : modal.current.classList.remove('animate');
+    setTimeout(() => {
+      if (callback) {
+        callback();
+      }
+    }, 400);
   };
 
   return (
@@ -42,7 +50,7 @@ export default function CredentialProtocolCreate({
       <Stack
         onClick={() => closeForm()}
         sx={{
-          background: 'rgba(0,0,0, 0.2)',
+          background: 'rgba(0,0,0, 0.3)',
           position: 'fixed',
           top: 0,
           left: 0,
@@ -53,6 +61,8 @@ export default function CredentialProtocolCreate({
         }}
       ></Stack>
       <Stack
+        className="animate"
+        ref={modal}
         sx={{
           background:
             'linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.12) 100%), #10041C',
@@ -64,7 +74,13 @@ export default function CredentialProtocolCreate({
           height: '100%',
           width: { xs: '100%', md: '600px', lg: '720px' },
           boxShadow: '1px 0px 4px rgba(0,0,0,0.3)',
+          transition: 'all ease .2s',
           zIndex: 9999,
+          '&.animate': {
+            transform: 'translateX(200px)',
+            right: '-10px',
+            opacity: '0',
+          },
         }}
       >
         <Stack

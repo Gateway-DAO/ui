@@ -1,11 +1,11 @@
 import useTranslation from 'next-translate/useTranslation';
-import { useRouter } from 'next/router';
+import { useTransition } from 'react';
 
+import { useToggle } from 'react-use';
 import { PartialDeep } from 'type-fest/source/partial-deep';
 
 import { Stack, Typography, Button } from '@mui/material';
 
-import { ROUTES } from '../../../../../constants/routes';
 import { DataModel } from '../../../../../services/gateway-protocol/types';
 import InfoTitle from '../../components/info-title';
 import Tags from '../../components/tags';
@@ -22,7 +22,8 @@ export default function DataModelShow({
   isCredentialCreate = false,
 }: Props) {
   const { t } = useTranslation('protocol');
-  const router = useRouter();
+  const [openCreateCredential, setOpenCreateCredential] =
+    useToggle(isCredentialCreate);
 
   return (
     <>
@@ -40,17 +41,19 @@ export default function DataModelShow({
           variant="contained"
           sx={{ width: '180px' }}
           onClick={() => {
-            router.push({
-              pathname: ROUTES.PROTOCOL_DATAMODEL_CREDENTIAL_CREATE,
-              query: { id: router?.query?.id },
-            });
+            setOpenCreateCredential();
           }}
         >
           {t('data-model.issue-credential-button')}
         </Button>
       </Stack>
       <DataModelTabs dataModel={dataModel} />
-      {isCredentialCreate && <CredentialProtocolCreate dataModel={dataModel} />}
+      {openCreateCredential && (
+        <CredentialProtocolCreate
+          dataModel={dataModel}
+          onClose={() => setOpenCreateCredential()}
+        />
+      )}
     </>
   );
 }
