@@ -5,8 +5,8 @@ import { PartialDeep } from 'type-fest/source/partial-deep';
 
 import { Stack, Typography, Button } from '@mui/material';
 
-import ModalRight from '../../../../../components/molecules/right-modal';
 import { DataModel } from '../../../../../services/gateway-protocol/types';
+import ModalRight from '../../../../molecules/modal-right';
 import InfoTitle from '../../components/info-title';
 import Tags from '../../components/tags';
 import CredentialProtocolCreate from '../../credentials/create/credential-create';
