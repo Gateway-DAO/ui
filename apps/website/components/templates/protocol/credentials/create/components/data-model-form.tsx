@@ -11,19 +11,19 @@ import { DataModel } from '../../../../../../services/gateway-protocol/types';
 import { schemaStringToJson } from '../../../../../../utils/map-object';
 import DataModelField from './data-model-field';
 
-const mapDataModelFields = {
+export const mapDataModelFields = {
   string: 'text',
   integer: 'number',
 };
 
-type Props = {
-  dataModel: PartialDeep<DataModel>;
-};
-
-type DataModelFieldProps = {
+export type DataModelFieldProps = {
   type: string;
   label: string;
   fieldName: string;
+};
+
+type Props = {
+  dataModel: PartialDeep<DataModel>;
 };
 
 // TODO: Change to useForm
@@ -45,7 +45,7 @@ export default function DataModelForm({ dataModel }: Props) {
     return {
       fieldName: Object.keys(schemaFields)[index],
       type: mapDataModelFields[schemaFields[item]?.type],
-      label: schemaFields[item]?.name?.title,
+      label: schemaFields[item]?.title,
     };
   };
 
@@ -82,7 +82,9 @@ export default function DataModelForm({ dataModel }: Props) {
                   sx={{ width: '100%' }}
                   label={label}
                   id={`data-model-field-${fieldName}`}
-                  {...register(`claim.${fieldName}`)}
+                  {...register(`claim.${fieldName}`, {
+                    valueAsNumber: type === 'number',
+                  })}
                   error={!!errors?.claim && !!errors?.claim[fieldName]}
                   helperText={
                     !!errors?.claim &&

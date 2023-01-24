@@ -43,6 +43,8 @@ export default function CredentialCreateForm({
         schemaStringToJson(dataModel?.schema)
       )(claim, _, options as any);
 
+      console.log({ ...zodResult.values, claim: claimResult.values });
+
       return {
         values: {
           ...zodResult.values,
@@ -59,6 +61,13 @@ export default function CredentialCreateForm({
     },
     mode: 'onBlur',
     defaultValues: {
+      dataModel: dataModel._id,
+      issuer: '63c5b71b697d875a7600064e', //TODO: Issuer
+      recipient: '63c5c6a0697d875a76000654', //TODO: Recipient
+      status: CredentialStatus.Valid,
+      evidences: [], // Create a field
+      image: '', // Create a field
+      issuanceDate: undefined, // Create a field?
       ...oldData,
       claim: {},
     },
@@ -116,52 +125,14 @@ export default function CredentialCreateForm({
 
     if (!dataIsValid) return;
 
-    if (data.title) {
-      try {
-        const response = await createCredential.mutateAsync({
-          dataModel: '63c5b109697d875a76000608',
-          title: data.title,
-          description: data.description,
-          tags: data.tags,
-          expirationDate: data.expirationDate,
-          issuer: '63c5b71b697d875a7600064e',
-          recipient: '63c5c6a0697d875a76000654',
-          claim: {
-            firstName: 'Lorem',
-            lastName: 'Ipsum',
-            age: 22,
-          },
-          evidences: [
-            {
-              name: 'Evidence String',
-              value: 'This is an evidence',
-            },
-            {
-              name: 'Evidence Link',
-              value: 'https://twitter.com/home',
-            },
-            {
-              name: 'Evidence Array',
-              value: ['ma', 'oeeee'],
-            },
-            {
-              name: 'Evidence boolean',
-              value: true,
-            },
-            {
-              name: 'Evidence boolean',
-              value: false,
-            },
-          ],
-          image: '',
-          issuanceDate: undefined,
-          status: CredentialStatus.Valid,
-        });
-        methods.reset();
-        console.log('Created', response);
-      } catch (e) {
-        console.log('Error', e);
-      }
+    try {
+      const response = await createCredential.mutateAsync(
+        data as CreateCredentialMutationVariables
+      );
+      methods.reset();
+      console.log('Created', response);
+    } catch (e) {
+      console.log('Error', e);
     }
   };
 

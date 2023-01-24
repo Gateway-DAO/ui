@@ -68,11 +68,14 @@ export default function CredentialProtocolShow({ credential }: Props) {
         <DataTableClaim
           title={t('credential.claim')}
           data={credential?.claim}
+          dataModel={credential?.dataModel}
         />
-        <DataTable
-          title={t('credential.evidence')}
-          data={credential?.evidences}
-        />
+        {credential.evidences && credential.evidences.length > 0 && (
+          <DataTable
+            title={t('credential.evidence')}
+            data={credential?.evidences}
+          />
+        )}
       </Stack>
     </>
   );
