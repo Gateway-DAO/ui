@@ -26,13 +26,13 @@ export default function TwoColumns({
           <CardCell label={item.name} margin={false} py={3}>
             {`${item.value}`}
           </CardCell>
-          <Typography sx={{ mr: { xs: 0, md: 2 }, my: 2 }}>
+          <Stack sx={{ mr: { xs: 0, md: 2 }, my: 2 }}>
             {isInputType ? (
               <ChipInputType type={item[column2]} />
             ) : (
-              item[column2]
+              <Typography>item[column2]</Typography>
             )}
-          </Typography>
+          </Stack>
         </Stack>
       ))}
     </Stack>

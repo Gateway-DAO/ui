@@ -65,3 +65,10 @@ const setTimeHours = (
 const setTimeDays = (hours: number, timeMessage: string): string => {
   return hours >= 48 ? `${Math.floor(hours / 24)} days` : timeMessage;
 };
+
+export const schemaStringToJson = (value: string) => {
+  if (!value) return;
+  const json = JSON.parse(value);
+  delete json.$schema;
+  return json;
+};

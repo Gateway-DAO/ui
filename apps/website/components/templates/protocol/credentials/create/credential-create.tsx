@@ -1,5 +1,6 @@
 import { useState } from 'react';
 
+import { ajvResolver } from '@hookform/resolvers/ajv';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { useSnackbar } from 'notistack';
@@ -18,6 +19,7 @@ import {
 } from '../../../../../services/gateway-protocol/types';
 import { DataModel } from '../../../../../services/gateway-protocol/types';
 import { CreateCredentialInputSchema } from '../../../../../services/gateway-protocol/validation';
+import { schemaStringToJson } from '../../../../../utils/map-object';
 import DataModelForm from './components/data-model-form';
 import GeneralInfoForm from './components/general-info-form';
 
@@ -30,10 +32,35 @@ export default function CredentialCreateForm({
   oldData,
 }: CreateCredentialProps) {
   const methods = useForm({
-    resolver: zodResolver(CreateCredentialInputSchema()),
+    resolver: async (values, _, options) => {
+      const { claim, ...rawData } = values;
+      const zodResult = await zodResolver(CreateCredentialInputSchema())(
+        rawData,
+        _,
+        options as any
+      );
+      const claimResult = await ajvResolver(
+        schemaStringToJson(dataModel?.schema)
+      )(claim, _, options as any);
+
+      return {
+        values: {
+          ...zodResult.values,
+          claim: claimResult.values,
+        },
+        errors: {
+          ...zodResult.errors,
+          // only add claim errors if claimResult.errors is not empty
+          ...(Object.keys(claimResult.errors).length > 0 && {
+            claim: claimResult.errors,
+          }),
+        },
+      };
+    },
     mode: 'onBlur',
     defaultValues: {
       ...oldData,
+      claim: {},
     },
   });
 
@@ -69,7 +96,6 @@ export default function CredentialCreateForm({
     const dataIsValid = await methods.trigger();
     if (!dataIsValid) {
       const errors = methods.formState.errors;
-      console.log(errors);
       if (Object.values(errors)[0]) {
         recursiveErrorMessage(errors);
       }

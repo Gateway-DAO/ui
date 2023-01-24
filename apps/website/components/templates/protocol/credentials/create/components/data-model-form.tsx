@@ -1,18 +1,54 @@
+import { useMemo } from 'react';
+
+import { useFormContext } from 'react-hook-form';
 import { PartialDeep } from 'type-fest/source/partial-deep';
 
 import { brandColors } from '@gateway/theme';
 
-import { alpha, Typography, Stack } from '@mui/material';
+import { alpha, Typography, Stack, TextField } from '@mui/material';
 
 import { DataModel } from '../../../../../../services/gateway-protocol/types';
+import { schemaStringToJson } from '../../../../../../utils/map-object';
 import DataModelField from './data-model-field';
+
+const mapDataModelFields = {
+  string: 'text',
+  integer: 'number',
+};
 
 type Props = {
   dataModel: PartialDeep<DataModel>;
 };
 
+type DataModelFieldProps = {
+  type: string;
+  label: string;
+  fieldName: string;
+};
+
+// TODO: Change to useForm
 export default function DataModelForm({ dataModel }: Props) {
-  console.log(dataModel);
+  const {
+    register,
+    formState: { errors },
+  } = useFormContext();
+
+  const schemaFields = useMemo(() => {
+    return schemaStringToJson(dataModel?.schema)?.properties;
+  }, [dataModel]);
+
+  const fieldProps = (
+    schemaFields,
+    item: string,
+    index: number
+  ): DataModelFieldProps => {
+    return {
+      fieldName: Object.keys(schemaFields)[index],
+      type: mapDataModelFields[schemaFields[item]?.type],
+      label: schemaFields[item]?.name?.title,
+    };
+  };
+
   return (
     <>
       <Typography fontWeight={600}>Set claims</Typography>
@@ -22,14 +58,42 @@ export default function DataModelForm({ dataModel }: Props) {
       >
         Set the claims that will define your credential
       </Typography>
-      <Stack gap={2}>
-        <DataModelField type="string" label="Name" />
-        <DataModelField
-          type="number"
-          label="GPA"
-          caption="Lorem ipsum dolor sit amet"
-        />
-      </Stack>
+      {schemaFields && (
+        <Stack gap={2}>
+          {Object.keys(schemaFields)?.map((item: any, index) => {
+            const { fieldName, type, label } = fieldProps(
+              schemaFields,
+              item,
+              index
+            );
+            return (
+              <DataModelField key={index} type={type} label={label}>
+                <TextField
+                  type={type}
+                  InputProps={{
+                    disableUnderline: true,
+                    sx: {
+                      '&.Mui-focused': {
+                        borderBottom: '2px solid #9A53FF',
+                      },
+                      width: '100%',
+                    },
+                  }}
+                  sx={{ width: '100%' }}
+                  label={label}
+                  id={`data-model-field-${fieldName}`}
+                  {...register(`claim.${fieldName}`)}
+                  error={!!errors?.claim && !!errors?.claim[fieldName]}
+                  helperText={
+                    !!errors?.claim &&
+                    errors?.claim[fieldName]?.message?.toString()
+                  }
+                />
+              </DataModelField>
+            );
+          })}
+        </Stack>
+      )}
     </>
   );
 }

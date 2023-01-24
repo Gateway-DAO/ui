@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { ReactNode, useState } from 'react';
 
 import { useToggle } from 'react-use';
 
@@ -12,7 +12,6 @@ import {
   Accordion,
   AccordionSummary,
   AccordionDetails,
-  TextField,
 } from '@mui/material';
 
 import ChipInputType from '../../../components/chip-input-type';
@@ -21,9 +20,15 @@ type Props = {
   type: string;
   label: string;
   caption?: string;
+  children: ReactNode;
 };
 
-export default function DataModelField({ type, label, caption }: Props) {
+export default function DataModelField({
+  type,
+  label,
+  caption,
+  children,
+}: Props) {
   const [expanded, setExpanded] = useToggle(true);
 
   return (
@@ -87,21 +92,7 @@ export default function DataModelField({ type, label, caption }: Props) {
           </Stack>
         </AccordionSummary>
         <AccordionDetails sx={{ pt: 3, pb: 0, px: 0, m: 0 }}>
-          <TextField
-            type={type}
-            InputProps={{
-              disableUnderline: true,
-              sx: {
-                '&.Mui-focused': {
-                  borderBottom: '2px solid #9A53FF',
-                },
-                width: '100%',
-              },
-            }}
-            sx={{ width: '100%' }}
-            label={label}
-            id="data-model-field"
-          />
+          {children}
         </AccordionDetails>
       </Accordion>
     </Stack>

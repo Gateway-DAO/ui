@@ -8,7 +8,15 @@ type Props = {
   type: string;
 };
 
+const FieldsIcon = {
+  text: TextFieldsIcon,
+  number: PinIcon,
+  image: PhotoIcon,
+  link: InsertLinkIcon,
+};
+
 export default function ChipInputType({ type }: Props) {
+  const FieldIcon = FieldsIcon[type];
   return (
     <Chip
       variant="filled"
@@ -19,12 +27,9 @@ export default function ChipInputType({ type }: Props) {
           alignItems="center"
           gap={0.5}
         >
-          {type === 'string' && <TextFieldsIcon sx={{ fontSize: '16px' }} />}
-          {type === 'number' && <PinIcon sx={{ fontSize: '16px' }} />}
-          {type === 'image' && <PhotoIcon sx={{ fontSize: '16px' }} />}
-          {type === 'link' && <InsertLinkIcon sx={{ fontSize: '16px' }} />}
+          <FieldIcon sx={{ fontSize: '16px' }} />
           <Typography fontSize={12} sx={{ textTransform: 'capitalize' }}>
-            {type === 'string' ? 'Text' : type}
+            {type}
           </Typography>
         </Stack>
       }
