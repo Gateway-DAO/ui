@@ -43,16 +43,6 @@ export default function CredentialCreateForm({
         options as any
       );
 
-      console.log({
-        errors: {
-          ...zodResult.errors,
-          // only add claim errors if claimResult.errors is not empty
-          ...(Object.keys(claimResult.errors).length > 0 && {
-            claim: claimResult.errors,
-          }),
-        },
-      });
-
       return {
         values: {
           ...zodResult.values,
