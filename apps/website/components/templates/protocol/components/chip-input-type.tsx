@@ -16,7 +16,7 @@ const FieldsIcon = {
 };
 
 export default function ChipInputType({ type }: Props) {
-  const FieldIcon = FieldsIcon[type];
+  const FieldIcon = FieldsIcon[type] || TextFieldsIcon;
   return (
     <Chip
       variant="filled"

@@ -25,7 +25,7 @@ export default function CardUsers({
   const isMobile = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
 
   const issuer = useQuery(
-    ['issuer', issuerCredential._id],
+    ['issuer', issuerCredential.id],
     () =>
       gqlAnonMethods.user_from_wallet({
         wallet: issuerCredential.primaryWallet?.address,
@@ -38,7 +38,7 @@ export default function CardUsers({
   );
 
   const recipient = useQuery(
-    ['recipient', recipientCredential._id],
+    ['recipient', recipientCredential.id],
     () =>
       gqlAnonMethods.user_from_wallet({
         wallet: recipientCredential.primaryWallet?.address,

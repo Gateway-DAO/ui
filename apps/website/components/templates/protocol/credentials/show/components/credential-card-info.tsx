@@ -57,7 +57,7 @@ export default function CredentialCardInfo({ credential }: Props) {
         }
       >
         <CardCell label={t('credential.issuance-date')}>
-          {DateTime.fromISO(credential?.issuanceDate).toLocaleString(
+          {DateTime.fromISO(credential?.createdAt).toLocaleString(
             DateTime.DATETIME_SHORT
           )}
         </CardCell>

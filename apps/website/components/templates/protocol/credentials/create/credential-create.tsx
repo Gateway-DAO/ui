@@ -14,7 +14,6 @@ import ConfirmDialog from '../../../../../components/organisms/confirm-dialog/co
 import { gatewayProtocolSDK } from '../../../../../services/gateway-protocol/api';
 import {
   CreateCredentialMutationVariables,
-  CredentialStatus,
   CreateCredentialInput,
 } from '../../../../../services/gateway-protocol/types';
 import { DataModel } from '../../../../../services/gateway-protocol/types';
@@ -43,8 +42,6 @@ export default function CredentialCreateForm({
         schemaStringToJson(dataModel?.schema)
       )(claim, _, options as any);
 
-      console.log({ ...zodResult.values, claim: claimResult.values });
-
       return {
         values: {
           ...zodResult.values,
@@ -61,13 +58,9 @@ export default function CredentialCreateForm({
     },
     mode: 'onBlur',
     defaultValues: {
-      dataModel: dataModel._id,
+      dataModel: dataModel.id,
       issuer: '63c5b71b697d875a7600064e', //TODO: Issuer
       recipient: '63c5c6a0697d875a76000654', //TODO: Recipient
-      status: CredentialStatus.Valid,
-      evidences: [], // Create a field
-      image: '', // Create a field
-      issuanceDate: undefined, // Create a field?
       ...oldData,
       claim: {},
     },

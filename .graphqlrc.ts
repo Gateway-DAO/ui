@@ -76,6 +76,7 @@ const config: IGraphQLConfig = {
             scalars: {
               DateTime: 'string',
               JSON: 'any',
+              StringSchema: 'string'
             },
             strictScalars: true,
             schema: 'zod',

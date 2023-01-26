@@ -1,4 +1,5 @@
 import useTranslation from 'next-translate/useTranslation';
+import dynamic from 'next/dynamic';
 
 import { PartialDeep } from 'type-fest';
 
@@ -8,12 +9,17 @@ import { Theme } from '@mui/material/styles/createTheme';
 import { Credential } from '../../../../../services/gateway-protocol/types';
 import ExternalLink from '../../../../atoms/external-link';
 import { MintCredentialButton } from '../../../../atoms/mint-button';
-import DataTable from '../../components/data-table';
 import Tags from '../../components/tags';
 import Activities from './components/activities';
-import CredentialCardInfo from './components/credential-card-info';
 import CredentialTitleAndImage from './components/credential-title-and-image';
-import DataTableClaim from './components/data-table-claim';
+import DataTable from './components/data-table';
+
+const CredentialCardInfo = dynamic(
+  () => {
+    return import('./components/credential-card-info');
+  },
+  { ssr: false }
+);
 
 type Props = {
   credential: PartialDeep<Credential>;
@@ -65,17 +71,10 @@ export default function CredentialProtocolShow({ credential }: Props) {
         <Stack direction="row" justifyContent="flex-end" sx={{ mb: 2 }}>
           <ExternalLink text={t('credential.storage-id')} url="" />
         </Stack>
-        <DataTableClaim
+        <DataTable
           title={t('credential.claim')}
-          data={credential?.claim}
-          dataModel={credential?.dataModel}
+          data={credential?.claimArray}
         />
-        {credential.evidences && credential.evidences.length > 0 && (
-          <DataTable
-            title={t('credential.evidence')}
-            data={credential?.evidences}
-          />
-        )}
       </Stack>
     </>
   );

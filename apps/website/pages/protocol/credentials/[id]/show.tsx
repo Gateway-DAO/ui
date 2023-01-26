@@ -33,7 +33,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 
   return {
     props: {
-      credential: credential?.credentialById,
+      credential: credential?.credential,
     },
   };
 };

@@ -52,7 +52,7 @@ export default function CredentialTitleAndImage({ credential }: Props) {
         <InfoTitle
           title={credential?.title}
           labelId={t('credential.credential-id')}
-          id={credential?._id}
+          id={credential?.id}
           copySucessMessage={t('credential.copy-id')}
         />
       </Stack>

@@ -14,7 +14,6 @@ export const timestampToString = (
   locale = 'en-US',
   nullableMessage: string
 ) => {
-  console.log('entrou', datetime);
   if (!datetime) {
     return nullableMessage;
   }

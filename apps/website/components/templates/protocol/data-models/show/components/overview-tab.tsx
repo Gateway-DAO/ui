@@ -9,8 +9,8 @@ import { Stack, useMediaQuery } from '@mui/material';
 import { DataModel } from '../../../../../../services/gateway-protocol/types';
 import ExternalLink from '../../../../../atoms/external-link';
 import DashboardCard from '../../../components/dashboard-card';
-import DataTable from '../../../components/data-table';
 import OverviewCardInfo from './overview-card-info';
+import DataTable from './table-schema';
 
 type Props = {
   dataModel: PartialDeep<DataModel>;
@@ -19,41 +19,6 @@ type Props = {
 export default function OverviewTab({ dataModel }: Props) {
   const { t } = useTranslation('protocol');
   const isMobile = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
-
-  // MOCK
-  const data = [
-    {
-      name: 'Name',
-      value: '',
-      inputType: 'text',
-    },
-    {
-      name: 'GPA',
-      value: 'Grade point average',
-      inputType: 'number',
-    },
-    {
-      name: 'College',
-      value: 'Lorem ipsum dolor sit amet',
-      inputType: 'text',
-    },
-    {
-      name: 'College Grades',
-      value: 'Lorem ipsum dolor sit amet',
-      inputType: 'number',
-    },
-    {
-      name: 'Profile Picture',
-      value: '',
-      inputType: 'image',
-    },
-    {
-      name: 'Certification',
-      value: '',
-      inputType: 'link',
-    },
-  ];
-  // MOCK - END
 
   return (
     <Stack sx={{ maxWidth: '726px', pt: 2 }}>
@@ -84,16 +49,12 @@ export default function OverviewTab({ dataModel }: Props) {
           indicator={-0.001}
         />
       </Stack>
-      <Stack>
-        <DataTable
-          title="Claim"
-          data={data}
-          subtitle1="Field"
-          subtitle2="Input Type"
-          column2="inputType"
-          isInputType={true}
-        />
-      </Stack>
+      <DataTable
+        title="Claim"
+        data={dataModel?.schema?.properties}
+        subtitle1="Field"
+        subtitle2="Input Type"
+      />
     </Stack>
   );
 }

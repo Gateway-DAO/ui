@@ -31,7 +31,7 @@ export default function DataModelShow({
         <InfoTitle
           title={dataModel?.title}
           labelId={t('data-model.data-model-id')}
-          id={dataModel?._id}
+          id={dataModel?.id}
           copySucessMessage={t('data-model.copy-id')}
           badgeTooltip={t('data-model.verified-description')}
         />

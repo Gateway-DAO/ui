@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-import { PartialObjectDeep } from 'type-fest/source/partial-deep';
+import { PartialDeep } from 'type-fest/source/partial-deep';
 
 import { brandColors } from '@gateway/theme';
 
@@ -13,7 +13,7 @@ import CardCell from './card-cell';
 type Props = {
   label: string;
   name: string;
-  picture: PartialObjectDeep<Files>;
+  picture: PartialDeep<Files>;
   href: string;
   hasLink?: boolean;
   alignRight?: boolean;
