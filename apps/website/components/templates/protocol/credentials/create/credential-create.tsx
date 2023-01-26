@@ -1,8 +1,9 @@
+import dynamic from 'next/dynamic';
 import { useState } from 'react';
 
 import { ajvResolver } from '@hookform/resolvers/ajv';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { useSnackbar } from 'notistack';
 import { FormProvider, useForm } from 'react-hook-form';
 import { PartialDeep } from 'type-fest/source/partial-deep';
@@ -11,6 +12,7 @@ import { Box, CircularProgress, Divider, Stack } from '@mui/material';
 
 import { LoadingButton } from '../../../../../components/atoms/loading-button';
 import ConfirmDialog from '../../../../../components/organisms/confirm-dialog/confirm-dialog';
+import { useAuth } from '../../../../../providers/auth';
 import { gatewayProtocolSDK } from '../../../../../services/gateway-protocol/api';
 import {
   CreateCredentialMutationVariables,
@@ -19,7 +21,14 @@ import {
 import { DataModel } from '../../../../../services/gateway-protocol/types';
 import { CreateCredentialInputSchema } from '../../../../../services/gateway-protocol/validation';
 import DataModelForm from './components/data-model-form';
-import GeneralInfoForm from './components/general-info-form';
+import RecipientForm from './components/recipient-form';
+
+const GeneralInfoForm = dynamic(
+  () => {
+    return import('./components/general-info-form');
+  },
+  { ssr: false }
+);
 
 type CreateCredentialProps = {
   dataModel: PartialDeep<DataModel>;
@@ -29,6 +38,20 @@ export default function CredentialCreateForm({
   dataModel,
   oldData,
 }: CreateCredentialProps) {
+  const { me } = useAuth();
+  const issuer = useQuery(
+    ['issuer', me?.wallet],
+    () =>
+      gatewayProtocolSDK.userByWallet({
+        wallet: me?.wallet,
+      }),
+    {
+      select: (data) => data?.userByWallet,
+      refetchOnMount: false,
+      refetchOnWindowFocus: false,
+    }
+  );
+
   const methods = useForm({
     resolver: async (values, _, options) => {
       const { claim, ...rawData } = values;
@@ -60,8 +83,7 @@ export default function CredentialCreateForm({
     mode: 'onBlur',
     defaultValues: {
       dataModelId: dataModel.id,
-      issuerId: 'd0326c06-05c9-4606-9b5a-a367678d12b5', //TODO: Issuer
-      recipientId: 'ac197f15-c039-449d-93bd-f96b8f8eeedc', //TODO: Recipient
+      issuerId: issuer?.data?.id,
       ...oldData,
       claim: {},
     },
@@ -157,11 +179,14 @@ export default function CredentialCreateForm({
             <CircularProgress sx={{ mt: 2 }} />
           </Box>
         ) : (
-          <>
+          <Stack
+            divider={<Divider sx={{ mb: 2, mt: 2, mx: { xs: -3, md: -6 } }} />}
+            gap={3}
+          >
             <GeneralInfoForm />
-            <Divider sx={{ mb: 4, mt: 2, mx: { xs: -3, md: -6 } }} />
             <DataModelForm dataModel={dataModel} />
-          </>
+            <RecipientForm />
+          </Stack>
         )}
         <LoadingButton
           variant="contained"
@@ -171,7 +196,7 @@ export default function CredentialCreateForm({
             height: '42px',
             display: 'flex',
             borderRadius: '20px',
-            mt: 4,
+            mt: 3,
           })}
         >
           Issue Credential

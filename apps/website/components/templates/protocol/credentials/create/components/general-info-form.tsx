@@ -1,3 +1,5 @@
+import dynamic from 'next/dynamic';
+
 import { DateTime } from 'luxon';
 import { Controller, useFormContext } from 'react-hook-form';
 
@@ -8,9 +10,15 @@ import { MobileDatePicker } from '@mui/x-date-pickers';
 import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 
-import CategoriesInput from '../../../../../../components/molecules/categories-input';
 import { CATEGORIES } from '../../../../../../constants/gate';
 import { CreateCredentialInput } from '../../../../../../services/gateway-protocol/types';
+
+const CategoriesInput = dynamic(
+  () => {
+    return import('../../../../../../components/molecules/categories-input');
+  },
+  { ssr: false }
+);
 
 export default function GeneralInfoForm() {
   const {
@@ -21,7 +29,7 @@ export default function GeneralInfoForm() {
   } = useFormContext<CreateCredentialInput>();
 
   return (
-    <>
+    <Stack>
       <Typography fontWeight={600}>Add details</Typography>
       <Typography
         fontSize={14}
@@ -29,7 +37,7 @@ export default function GeneralInfoForm() {
       >
         Add the details of the credential
       </Typography>
-      <Stack sx={{ mb: 3 }} gap={3}>
+      <Stack gap={3}>
         <TextField
           autoFocus
           InputProps={{
@@ -113,6 +121,6 @@ export default function GeneralInfoForm() {
           </Stack>
         </Stack>
       </Stack>
-    </>
+    </Stack>
   );
 }

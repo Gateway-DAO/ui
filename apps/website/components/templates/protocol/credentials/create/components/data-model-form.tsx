@@ -49,7 +49,7 @@ export default function DataModelForm({ dataModel }: Props) {
   };
 
   return (
-    <>
+    <Stack>
       <Typography fontWeight={600}>Set claims</Typography>
       <Typography
         fontSize={14}
@@ -95,6 +95,6 @@ export default function DataModelForm({ dataModel }: Props) {
           })}
         </Stack>
       )}
-    </>
+    </Stack>
   );
 }
