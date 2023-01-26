@@ -23,7 +23,6 @@ export default function RecipientForm() {
       </Typography>
       <Stack sx={{ mb: 3 }} gap={3}>
         <TextField
-          autoFocus
           InputProps={{
             disableUnderline: true,
             sx: {
