@@ -18,7 +18,6 @@ import {
 } from '../../../../../services/gateway-protocol/types';
 import { DataModel } from '../../../../../services/gateway-protocol/types';
 import { CreateCredentialInputSchema } from '../../../../../services/gateway-protocol/validation';
-import { schemaStringToJson } from '../../../../../utils/map-object';
 import DataModelForm from './components/data-model-form';
 import GeneralInfoForm from './components/general-info-form';
 
@@ -38,9 +37,21 @@ export default function CredentialCreateForm({
         _,
         options as any
       );
-      const claimResult = await ajvResolver(
-        schemaStringToJson(dataModel?.schema)
-      )(claim, _, options as any);
+      const claimResult = await ajvResolver(dataModel?.schema)(
+        claim,
+        _,
+        options as any
+      );
+
+      console.log({
+        errors: {
+          ...zodResult.errors,
+          // only add claim errors if claimResult.errors is not empty
+          ...(Object.keys(claimResult.errors).length > 0 && {
+            claim: claimResult.errors,
+          }),
+        },
+      });
 
       return {
         values: {
@@ -58,9 +69,9 @@ export default function CredentialCreateForm({
     },
     mode: 'onBlur',
     defaultValues: {
-      dataModel: dataModel.id,
-      issuer: '63c5b71b697d875a7600064e', //TODO: Issuer
-      recipient: '63c5c6a0697d875a76000654', //TODO: Recipient
+      dataModelId: dataModel.id,
+      issuerId: 'd0326c06-05c9-4606-9b5a-a367678d12b5', //TODO: Issuer
+      recipientId: 'ac197f15-c039-449d-93bd-f96b8f8eeedc', //TODO: Recipient
       ...oldData,
       claim: {},
     },

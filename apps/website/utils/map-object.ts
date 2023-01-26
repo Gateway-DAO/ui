@@ -65,15 +65,3 @@ const setTimeHours = (
 const setTimeDays = (hours: number, timeMessage: string): string => {
   return hours >= 48 ? `${Math.floor(hours / 24)} days` : timeMessage;
 };
-
-export const schemaStringToJson = (value: string) => {
-  if (!value) return;
-  const json = JSON.parse(value);
-  delete json.$schema;
-  json.properties.firstName.minLength = 1;
-  json.properties.firstName.errorMessage = {
-    minLength: 'username field is required',
-  };
-  json.required = ['firstName'];
-  return json;
-};

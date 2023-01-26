@@ -8,7 +8,6 @@ import { brandColors } from '@gateway/theme';
 import { alpha, Typography, Stack, TextField } from '@mui/material';
 
 import { DataModel } from '../../../../../../services/gateway-protocol/types';
-import { schemaStringToJson } from '../../../../../../utils/map-object';
 import DataModelField from './data-model-field';
 
 export const mapDataModelFields = {
@@ -34,7 +33,7 @@ export default function DataModelForm({ dataModel }: Props) {
   } = useFormContext();
 
   const schemaFields = useMemo(() => {
-    return schemaStringToJson(dataModel?.schema)?.properties;
+    return dataModel?.schema?.properties;
   }, [dataModel]);
 
   const fieldProps = (
