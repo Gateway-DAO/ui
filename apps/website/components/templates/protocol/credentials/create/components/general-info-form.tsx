@@ -53,10 +53,11 @@ export default function GeneralInfoForm() {
     if (issuer?.data) {
       setValue('issuerId', issuer?.data?.id);
     }
-  }, []);
+  }, [issuer, setValue]);
 
   return (
     <Stack>
+      Foi: {issuer?.data?.id}
       <Typography fontWeight={600}>
         {t('data-model.issue-credential.group-general-title')}
       </Typography>

@@ -27,15 +27,9 @@ import {
 import { DataModel } from '../../../../../services/gateway-protocol/types';
 import { CreateCredentialInputSchema } from '../../../../../services/gateway-protocol/validation';
 import ClaimForm from './components/claim-form';
+import GeneralInfoForm from './components/general-info-form';
 import RecipientForm from './components/recipient-form';
 import SuccessfullyCreated from './components/successfully-created';
-
-const GeneralInfoForm = dynamic(
-  () => {
-    return import('./components/general-info-form');
-  },
-  { ssr: false }
-);
 
 type CreateCredentialProps = {
   dataModel: PartialDeep<DataModel>;
@@ -63,6 +57,14 @@ export default function CredentialCreateForm({
         _,
         options as any
       );
+
+      console.log({
+        ...zodResult.errors,
+        // only add claim errors if claimResult.errors is not empty
+        ...(Object.keys(claimResult.errors).length > 0 && {
+          claim: claimResult.errors,
+        }),
+      });
 
       return {
         values: {
@@ -213,8 +215,10 @@ export default function CredentialCreateForm({
           <ConfirmDialog
             title={t('data-model.confirmation-dialog-title')}
             open={confirmCreate}
-            positiveAnswer={t('data-model.confirmation-dialog-positive')}
-            negativeAnswer={t('data-model.confirmation-dialog-cancel')}
+            positiveAnswer={t(
+              'data-model.actions.confirmation-dialog-positive'
+            )}
+            negativeAnswer={t('data-model.actions.confirmation-dialog-cancel')}
             setOpen={setConfirmCreate}
             onConfirm={methods.handleSubmit(onCreateCredential, (errors) => {
               enqueueSnackbar(
