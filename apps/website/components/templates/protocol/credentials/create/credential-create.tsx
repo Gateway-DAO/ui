@@ -1,3 +1,4 @@
+import useTranslation from 'next-translate/useTranslation';
 import dynamic from 'next/dynamic';
 import { useState } from 'react';
 
@@ -8,7 +9,13 @@ import { useSnackbar } from 'notistack';
 import { FormProvider, useForm } from 'react-hook-form';
 import { PartialDeep } from 'type-fest/source/partial-deep';
 
-import { Box, CircularProgress, Divider, Stack } from '@mui/material';
+import {
+  Box,
+  CircularProgress,
+  Divider,
+  Stack,
+  Typography,
+} from '@mui/material';
 
 import { LoadingButton } from '../../../../../components/atoms/loading-button';
 import ConfirmDialog from '../../../../../components/organisms/confirm-dialog/confirm-dialog';
@@ -19,8 +26,9 @@ import {
 } from '../../../../../services/gateway-protocol/types';
 import { DataModel } from '../../../../../services/gateway-protocol/types';
 import { CreateCredentialInputSchema } from '../../../../../services/gateway-protocol/validation';
-import DataModelForm from './components/data-model-form';
+import ClaimForm from './components/claim-form';
 import RecipientForm from './components/recipient-form';
+import SuccessfullyCreated from './components/successfully-created';
 
 const GeneralInfoForm = dynamic(
   () => {
@@ -39,6 +47,8 @@ export default function CredentialCreateForm({
 }: CreateCredentialProps) {
   const { enqueueSnackbar } = useSnackbar();
   const [confirmCreate, setConfirmCreate] = useState(false);
+  const { t } = useTranslation('protocol');
+  const [credentialCreated, setCredentialCreated] = useState<string>(null);
 
   const methods = useForm({
     resolver: async (values, _, options) => {
@@ -116,7 +126,7 @@ export default function CredentialCreateForm({
     try {
       await handleMutation(data);
     } catch (e) {
-      enqueueSnackbar("An error occured, couldn't create the credential.");
+      enqueueSnackbar(t('data-model.error-on-create-credential'));
     }
   };
 
@@ -130,74 +140,93 @@ export default function CredentialCreateForm({
         data as CreateCredentialMutationVariables
       );
       methods.reset();
-      console.log('Created', response);
+      setCredentialCreated(response?.createCredential?.id);
     } catch (e) {
       console.log('Error', e);
     }
   };
 
   return (
-    <FormProvider {...methods}>
-      <Stack
-        component="form"
-        id="create-credential-form"
-        onSubmit={async (e) => {
-          e.preventDefault();
-          const dataIsValid = await checkFormErrors();
-          if (dataIsValid) {
-            setConfirmCreate(true);
-          }
-        }}
-      >
-        {createCredential.isLoading ? (
-          <Box
-            key="loading"
+    <>
+      {credentialCreated ? (
+        <SuccessfullyCreated credentialId={credentialCreated} />
+      ) : (
+        <FormProvider {...methods}>
+          <Typography
+            variant="h5"
             sx={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
+              mb: 3,
+              position: 'absolute',
+              top: { xs: '28px', md: '48px' },
             }}
           >
-            <CircularProgress sx={{ mt: 2 }} />
-          </Box>
-        ) : (
+            {t('data-model.issue-credential-title')}
+          </Typography>
           <Stack
-            divider={<Divider sx={{ mb: 2, mt: 2, mx: { xs: -3, md: -6 } }} />}
-            gap={3}
+            component="form"
+            id="create-credential-form"
+            onSubmit={async (e) => {
+              e.preventDefault();
+              const dataIsValid = await checkFormErrors();
+              if (dataIsValid) {
+                setConfirmCreate(true);
+              }
+            }}
           >
-            <GeneralInfoForm />
-            <DataModelForm dataModel={dataModel} />
-            <RecipientForm />
+            {createCredential.isLoading ? (
+              <Box
+                key="loading"
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <CircularProgress sx={{ mt: 2 }} />
+              </Box>
+            ) : (
+              <Stack
+                divider={
+                  <Divider sx={{ mb: 2, mt: 2, mx: { xs: -3, md: -6 } }} />
+                }
+                gap={3}
+              >
+                <GeneralInfoForm />
+                <ClaimForm dataModel={dataModel} />
+                <RecipientForm />
+              </Stack>
+            )}
+            <LoadingButton
+              variant="contained"
+              isLoading={createCredential.isLoading}
+              type="submit"
+              sx={() => ({
+                height: '42px',
+                display: 'flex',
+                borderRadius: '20px',
+                mt: 3,
+              })}
+            >
+              {t('data-model.actions.issue-credential')}
+            </LoadingButton>
           </Stack>
-        )}
-        <LoadingButton
-          variant="contained"
-          isLoading={createCredential.isLoading}
-          type="submit"
-          sx={() => ({
-            height: '42px',
-            display: 'flex',
-            borderRadius: '20px',
-            mt: 3,
-          })}
-        >
-          Issue Credential
-        </LoadingButton>
-      </Stack>
-      <ConfirmDialog
-        title="Confirmation"
-        open={confirmCreate}
-        positiveAnswer="Create"
-        negativeAnswer="Cancel"
-        setOpen={setConfirmCreate}
-        onConfirm={methods.handleSubmit(onCreateCredential, (errors) => {
-          enqueueSnackbar(
-            (Object.values(errors)[0]?.message as string) || 'Invalid data'
-          );
-        })}
-      >
-        Are you sure you want to create this credential?
-      </ConfirmDialog>
-    </FormProvider>
+          <ConfirmDialog
+            title={t('data-model.confirmation-dialog-title')}
+            open={confirmCreate}
+            positiveAnswer={t('data-model.confirmation-dialog-positive')}
+            negativeAnswer={t('data-model.confirmation-dialog-cancel')}
+            setOpen={setConfirmCreate}
+            onConfirm={methods.handleSubmit(onCreateCredential, (errors) => {
+              enqueueSnackbar(
+                ((Object.values(errors)[0] as any)?.message as string) ||
+                  'Invalid data'
+              );
+            })}
+          >
+            {t('data-model.confirmation-dialog-text')}
+          </ConfirmDialog>
+        </FormProvider>
+      )}
+    </>
   );
 }

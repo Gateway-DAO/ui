@@ -33,6 +33,31 @@
     "arweave-hash": "Arweave Hash",
     "issuers": "Issuers",
     "issued-credentials": "Issued credentials",
-    "recipients": "Recipients"
+    "recipients": "Recipients",
+    "issue-credential-title": "Issue Credential",
+    "successfully-title": "Credential issued successfully",
+    "confirmation-dialog-title": "Confirmation",
+    "confirmation-dialog-text": "Are you sure you want to create this credential?",
+    "error-on-create-credential": "An error occured, couldn't create the credential.",
+    "actions": {
+      "issue-credential": "Issue Credential",
+      "confirmation-dialog-positive": "Create",
+      "confirmation-dialog-cancel": "Cancel"
+    },
+    "issue-credential": {
+      "group-recipient-title": "Send to",
+      "group-recipient-description": "Send this credential directly to someone",
+      "recipient-label": "Gateway ID or wallet address",
+      "group-general-title": "Add details",
+      "group-general-description": "Add the details of the credential",
+      "title-label": "Title",
+      "description-label": "Description",
+      "categories-label": "Categories",
+      "expire-date-title": "Expire date",
+      "expire-date-description": "Set a expiration date to claim the credential",
+      "expire-date-label": "Add expire date",
+      "group-claim-title": "Send to",
+      "group-claim-description": "Set the claims that will define your credential"
+    }
   }
 }

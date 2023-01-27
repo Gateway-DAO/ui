@@ -7,7 +7,7 @@ import { Stack, Paper, Typography, alpha, Divider } from '@mui/material';
 import { CredentialData } from '../../../../../../services/gateway-protocol/types';
 import CardCell from '../../../components/card-cell';
 import ChipInputType from '../../../components/chip-input-type';
-import { mapDataModelFields } from '../../../credentials/create/components/data-model-form';
+import { mapClaimFields } from '../../../credentials/create/components/claim-form';
 
 type Props = {
   title: string;
@@ -72,7 +72,7 @@ export default function TableSchema({
               {data[item].description}
             </CardCell>
             <Stack sx={{ mr: { xs: 0, md: 2 }, my: 2 }}>
-              <ChipInputType type={mapDataModelFields[data[item]?.type]} />
+              <ChipInputType type={mapClaimFields[data[item]?.type]} />
             </Stack>
           </Stack>
         ))}

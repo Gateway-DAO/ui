@@ -1,3 +1,4 @@
+import useTranslation from 'next-translate/useTranslation';
 import { useMemo } from 'react';
 
 import { useFormContext } from 'react-hook-form';
@@ -8,14 +9,14 @@ import { brandColors } from '@gateway/theme';
 import { alpha, Typography, Stack, TextField } from '@mui/material';
 
 import { DataModel } from '../../../../../../services/gateway-protocol/types';
-import DataModelField from './data-model-field';
+import ClaimField from './claim-field';
 
-export const mapDataModelFields = {
+export const mapClaimFields = {
   string: 'text',
   integer: 'number',
 };
 
-export type DataModelFieldProps = {
+export type ClaimFieldProps = {
   type: string;
   label: string;
   fieldName: string;
@@ -25,12 +26,13 @@ type Props = {
   dataModel: PartialDeep<DataModel>;
 };
 
-// TODO: Change to useForm
-export default function DataModelForm({ dataModel }: Props) {
+export default function ClaimForm({ dataModel }: Props) {
   const {
     register,
     formState: { errors },
   } = useFormContext();
+
+  const { t } = useTranslation('protocol');
 
   const schemaFields = useMemo(() => {
     return dataModel?.schema?.properties;
@@ -40,22 +42,24 @@ export default function DataModelForm({ dataModel }: Props) {
     schemaFields,
     item: string,
     index: number
-  ): DataModelFieldProps => {
+  ): ClaimFieldProps => {
     return {
       fieldName: Object.keys(schemaFields)[index],
-      type: mapDataModelFields[schemaFields[item]?.type],
+      type: mapClaimFields[schemaFields[item]?.type],
       label: schemaFields[item]?.title,
     };
   };
 
   return (
     <Stack>
-      <Typography fontWeight={600}>Set claims</Typography>
+      <Typography fontWeight={600}>
+        {t('data-model.issue-credential.group-claim-title')}
+      </Typography>
       <Typography
         fontSize={14}
         sx={{ color: alpha(brandColors.white.main, 0.7), mb: 3 }}
       >
-        Set the claims that will define your credential
+        {t('data-model.issue-credential.group-claim-description')}
       </Typography>
       {schemaFields && (
         <Stack gap={2}>
@@ -66,7 +70,7 @@ export default function DataModelForm({ dataModel }: Props) {
               index
             );
             return (
-              <DataModelField key={index} type={type} label={label}>
+              <ClaimField key={index} type={type} label={label}>
                 <TextField
                   type={type}
                   InputProps={{
@@ -90,7 +94,7 @@ export default function DataModelForm({ dataModel }: Props) {
                     errors?.claim[fieldName]?.message?.toString()
                   }
                 />
-              </DataModelField>
+              </ClaimField>
             );
           })}
         </Stack>

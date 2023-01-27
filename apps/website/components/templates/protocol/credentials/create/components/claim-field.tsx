@@ -23,12 +23,7 @@ type Props = {
   children: ReactNode;
 };
 
-export default function DataModelField({
-  type,
-  label,
-  caption,
-  children,
-}: Props) {
+export default function ClaimField({ type, label, caption, children }: Props) {
   const [expanded, setExpanded] = useToggle(true);
 
   return (

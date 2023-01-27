@@ -28,7 +28,7 @@ const Transition = React.forwardRef(function Transition(
 type Props = {
   open: boolean;
   handleClose: () => void;
-  title: string;
+  title?: string;
   children: React.ReactNode;
 };
 
@@ -59,14 +59,15 @@ export default function ModalRight({
         component={Stack}
         direction="row"
         alignItems="center"
-        justifyContent="space-between"
+        justifyContent={title ? 'space-between' : 'flex-end'}
         sx={{
-          py: { xs: 3, md: 6 },
+          pt: { xs: 3, md: 6 },
+          pb: { xs: 2, md: 3 },
           px: { xs: 3, md: 6 },
         }}
         id="scroll-dialog-title"
       >
-        <Typography variant="h5">{title}</Typography>
+        {title && <Typography variant="h5">{title}</Typography>}
         <IconButton
           aria-label="close"
           sx={{ background: alpha(brandColors.white.main, 0.16) }}

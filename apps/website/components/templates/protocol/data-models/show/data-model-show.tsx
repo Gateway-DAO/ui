@@ -56,7 +56,6 @@ export default function DataModelShow({
       {me?.id && (
         <ModalRight
           open={openCreateCredential}
-          title="Issue Credential"
           handleClose={setOpenCreateCredential}
         >
           <CredentialProtocolCreate dataModel={dataModel} />

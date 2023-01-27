@@ -16,7 +16,7 @@ import DataTable from './components/data-table';
 
 const CredentialCardInfo = dynamic(
   () => {
-    return import('./components/credential-card-info');
+    return import('../../components/credential-card-info');
   },
   { ssr: false }
 );

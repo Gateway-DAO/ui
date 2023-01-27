@@ -1,3 +1,4 @@
+import useTranslation from 'next-translate/useTranslation';
 import dynamic from 'next/dynamic';
 import { useEffect } from 'react';
 
@@ -32,6 +33,7 @@ export default function GeneralInfoForm() {
     formState: { errors },
   } = useFormContext<CreateCredentialInput>();
 
+  const { t } = useTranslation('protocol');
   const { me } = useAuth();
 
   const issuer = useQuery(
@@ -55,12 +57,14 @@ export default function GeneralInfoForm() {
 
   return (
     <Stack>
-      <Typography fontWeight={600}>Add details</Typography>
+      <Typography fontWeight={600}>
+        {t('data-model.issue-credential.group-general-title')}
+      </Typography>
       <Typography
         fontSize={14}
         sx={{ color: alpha(brandColors.white.main, 0.7), mb: 3 }}
       >
-        Add the details of the credential
+        {t('data-model.issue-credential.group-general-description')}
       </Typography>
       <Stack gap={3}>
         <TextField
@@ -73,7 +77,7 @@ export default function GeneralInfoForm() {
               },
             },
           }}
-          label="Title"
+          label={t('data-model.issue-credential.title-label')}
           id="title"
           {...register(`title`)}
           error={!!errors.title}
@@ -90,7 +94,7 @@ export default function GeneralInfoForm() {
               },
             },
           }}
-          label="Description"
+          label={t('data-model.issue-credential.description-label')}
           id="description"
           {...register(`description`)}
           error={!!errors.description}
@@ -98,7 +102,7 @@ export default function GeneralInfoForm() {
         />
         <CategoriesInput
           variant="outlined"
-          label="Categories"
+          label={t('data-model.issue-credential.categories-label')}
           id="categories"
           name="categories"
           error={!!errors.tags}
@@ -117,9 +121,11 @@ export default function GeneralInfoForm() {
           }}
         />
         <Stack>
-          <Typography variant="body1">Expire date</Typography>
+          <Typography variant="body1">
+            {t('data-model.issue-credential.expire-date-title')}
+          </Typography>
           <Typography variant="body2" color="text.secondary" marginBottom={2}>
-            Set a expiration date to claim the credential
+            {t('data-model.issue-credential.expire-date-description')}
           </Typography>
           <Stack sx={{ maxWidth: '400px' }}>
             <LocalizationProvider dateAdapter={AdapterLuxon}>
@@ -130,7 +136,7 @@ export default function GeneralInfoForm() {
                 render={({ field }) => (
                   <>
                     <MobileDatePicker
-                      label="Add expire date"
+                      label={t('data-model.issue-credential.expire-date-label')}
                       inputFormat="MM/dd/yyyy"
                       disablePast
                       value={field.value ? DateTime.fromISO(field.value) : null}

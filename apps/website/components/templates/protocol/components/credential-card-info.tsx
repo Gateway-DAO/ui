@@ -7,15 +7,19 @@ import { theme } from '@gateway/theme';
 
 import { Stack, Paper, Box, Divider, Chip, useMediaQuery } from '@mui/material';
 
-import { Credential } from '../../../../../../services/gateway-protocol/types';
-import CardCell from '../../../components/card-cell';
-import CardUsers from './card-users';
+import { Credential } from '../../../../services/gateway-protocol/types';
+import CardUsers from '../credentials/show/components/card-users';
+import CardCell from './card-cell';
 
 type Props = {
   credential: PartialDeep<Credential>;
+  elevation?: number;
 };
 
-export default function CredentialCardInfo({ credential }: Props) {
+export default function CredentialCardInfo({
+  credential,
+  elevation = 2,
+}: Props) {
   const { t } = useTranslation('protocol');
   const isMobile = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
 
@@ -30,13 +34,14 @@ export default function CredentialCardInfo({ credential }: Props) {
 
   return (
     <Paper
-      elevation={2}
+      elevation={elevation}
       component={Stack}
       sx={{
         border: '1px solid rgba(229, 229, 229, 0.12)',
         borderRadius: 2,
         mb: 3,
         overflow: 'hidden',
+        boxShadow: 'none',
       }}
       divider={<Divider sx={{ width: '100%' }} />}
     >
