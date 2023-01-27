@@ -57,7 +57,6 @@ export default function GeneralInfoForm() {
 
   return (
     <Stack>
-      Foi: {issuer?.data?.id}
       <Typography fontWeight={600}>
         {t('data-model.issue-credential.group-general-title')}
       </Typography>
