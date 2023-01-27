@@ -3,7 +3,7 @@ import { useState } from 'react';
 
 import { ajvResolver } from '@hookform/resolvers/ajv';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { useSnackbar } from 'notistack';
 import { FormProvider, useForm } from 'react-hook-form';
 import { PartialDeep } from 'type-fest/source/partial-deep';
@@ -12,7 +12,6 @@ import { Box, CircularProgress, Divider, Stack } from '@mui/material';
 
 import { LoadingButton } from '../../../../../components/atoms/loading-button';
 import ConfirmDialog from '../../../../../components/organisms/confirm-dialog/confirm-dialog';
-import { useAuth } from '../../../../../providers/auth';
 import { gatewayProtocolSDK } from '../../../../../services/gateway-protocol/api';
 import {
   CreateCredentialMutationVariables,
@@ -38,19 +37,8 @@ export default function CredentialCreateForm({
   dataModel,
   oldData,
 }: CreateCredentialProps) {
-  const { me } = useAuth();
-  const issuer = useQuery(
-    ['issuer', me?.wallet],
-    () =>
-      gatewayProtocolSDK.userByWallet({
-        wallet: me?.wallet,
-      }),
-    {
-      select: (data) => data?.userByWallet,
-      refetchOnMount: false,
-      refetchOnWindowFocus: false,
-    }
-  );
+  const { enqueueSnackbar } = useSnackbar();
+  const [confirmCreate, setConfirmCreate] = useState(false);
 
   const methods = useForm({
     resolver: async (values, _, options) => {
@@ -83,14 +71,10 @@ export default function CredentialCreateForm({
     mode: 'onBlur',
     defaultValues: {
       dataModelId: dataModel.id,
-      issuerId: issuer?.data?.id,
       ...oldData,
       claim: {},
     },
   });
-
-  const { enqueueSnackbar } = useSnackbar();
-  const [confirmCreate, setConfirmCreate] = useState(false);
 
   const createCredential = useMutation(
     ['createCredential'],
@@ -159,9 +143,7 @@ export default function CredentialCreateForm({
         id="create-credential-form"
         onSubmit={async (e) => {
           e.preventDefault();
-
           const dataIsValid = await checkFormErrors();
-
           if (dataIsValid) {
             setConfirmCreate(true);
           }

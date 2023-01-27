@@ -53,13 +53,15 @@ export default function DataModelShow({
       </Stack>
       <DataModelTabs dataModel={dataModel} />
 
-      <ModalRight
-        open={openCreateCredential}
-        title="Issue Credential"
-        handleClose={setOpenCreateCredential}
-      >
-        <CredentialProtocolCreate dataModel={dataModel} />
-      </ModalRight>
+      {me?.id && (
+        <ModalRight
+          open={openCreateCredential}
+          title="Issue Credential"
+          handleClose={setOpenCreateCredential}
+        >
+          <CredentialProtocolCreate dataModel={dataModel} />
+        </ModalRight>
+      )}
     </>
   );
 }

@@ -1,5 +1,7 @@
 import dynamic from 'next/dynamic';
+import { useEffect } from 'react';
 
+import { useQuery } from '@tanstack/react-query';
 import { DateTime } from 'luxon';
 import { Controller, useFormContext } from 'react-hook-form';
 
@@ -11,6 +13,8 @@ import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 
 import { CATEGORIES } from '../../../../../../constants/gate';
+import { useAuth } from '../../../../../../providers/auth';
+import { gatewayProtocolSDK } from '../../../../../../services/gateway-protocol/api';
 import { CreateCredentialInput } from '../../../../../../services/gateway-protocol/types';
 
 const CategoriesInput = dynamic(
@@ -27,6 +31,27 @@ export default function GeneralInfoForm() {
     control,
     formState: { errors },
   } = useFormContext<CreateCredentialInput>();
+
+  const { me } = useAuth();
+
+  const issuer = useQuery(
+    ['issuer', me?.wallet],
+    () =>
+      gatewayProtocolSDK.userByWallet({
+        wallet: me?.wallet,
+      }),
+    {
+      select: (data) => data?.userByWallet,
+      refetchOnMount: false,
+      refetchOnWindowFocus: false,
+    }
+  );
+
+  useEffect(() => {
+    if (issuer?.data) {
+      setValue('issuerId', issuer?.data?.id);
+    }
+  }, []);
 
   return (
     <Stack>
