@@ -67,26 +67,6 @@ const config: IGraphQLConfig = {
             },
           },
           documents: ['apps/website/services/gateway-protocol/**/*.gql'],
-        },
-        './apps/website/services/gateway-protocol/validation.ts': {
-          plugins: [
-            'typescript-validation-schema',
-          ],
-          config: {
-            scalars: {
-              DateTime: 'string',
-              JSON: 'any',
-              StringSchema: 'string'
-            },
-            strictScalars: true,
-            schema: 'zod',
-            importFrom: './types.ts'
-          },
-          schema: {
-            [`${process.env.GATEWAY_PROTOCOL_ENDPOINT}`]: {
-            },
-          },
-          documents: ['apps/website/services/gateway-protocol/**/*.gql'],
         }
       }
     }

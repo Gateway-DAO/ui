@@ -25,11 +25,11 @@ import {
   CreateCredentialInput,
 } from '../../../../../services/gateway-protocol/types';
 import { DataModel } from '../../../../../services/gateway-protocol/types';
-import { CreateCredentialInputSchema } from '../../../../../services/gateway-protocol/validation';
 import ClaimForm from './components/claim-form';
 import GeneralInfoForm from './components/general-info-form';
 import RecipientForm from './components/recipient-form';
 import SuccessfullyCreated from './components/successfully-created';
+import { createCredentialSchema } from './schema';
 
 type CreateCredentialProps = {
   dataModel: PartialDeep<DataModel>;
@@ -47,7 +47,7 @@ export default function CredentialCreateForm({
   const methods = useForm({
     resolver: async (values, _, options) => {
       const { claim, ...rawData } = values;
-      const zodResult = await zodResolver(CreateCredentialInputSchema())(
+      const zodResult = await zodResolver(createCredentialSchema)(
         rawData,
         _,
         options as any
