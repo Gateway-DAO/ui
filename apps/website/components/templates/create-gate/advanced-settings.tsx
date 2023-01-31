@@ -1,5 +1,10 @@
 import { useState, ChangeEvent } from 'react';
 
+import { DateTime } from 'luxon';
+import { Controller, useFormContext } from 'react-hook-form';
+
+import { ExpandLess, ExpandMore } from '@mui/icons-material';
+import EditIcon from '@mui/icons-material/Edit';
 import {
   Box,
   Button,
@@ -12,17 +17,13 @@ import {
   FormHelperText,
   FormControl,
 } from '@mui/material';
-import { ExpandLess, ExpandMore } from '@mui/icons-material';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-
-import { DesktopDatePicker, MobileDatePicker } from '@mui/x-date-pickers';
-import EditIcon from '@mui/icons-material/Edit';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import { styled } from '@mui/material/styles';
-import { Controller, useFormContext } from 'react-hook-form';
-import { CreateGateData } from './schema';
+import { DatePicker } from '@mui/x-date-pickers';
 import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon';
-import { DateTime } from 'luxon';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+
+import { CreateGateData } from './schema';
 
 const StyledToggleButton = styled(ToggleButton)(({ theme }) => ({
   '&.MuiToggleButton-root': {
@@ -95,17 +96,25 @@ export function AdvancedSetting() {
                   defaultValue={null}
                   render={({ field }) => (
                     <>
-                      <MobileDatePicker
-                        label="Add expire date"
-                        inputFormat="MM/dd/yyyy"
+                      <DatePicker
                         disablePast
+                        inputFormat="MM/dd/yyyy"
+                        label="Add expire date"
                         value={
                           field.value ? DateTime.fromISO(field.value) : null
                         }
                         onChange={(date: DateTime) => {
                           field.onChange(date?.toISO());
                         }}
-                        renderInput={(params) => <TextField {...params} />}
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            inputProps={{
+                              ...params.inputProps,
+                              placeholder: 'mm/dd/yyyy',
+                            }}
+                          />
+                        )}
                       />
                     </>
                   )}
