@@ -21,7 +21,7 @@ import { useProtocolTemplateContext } from '../context';
 export default function FloatingCta() {
   const { t } = useTranslation('protocol');
   const { enqueueSnackbar } = useSnackbar();
-  const [open, setOpen] = useState<boolean>(false);
+  const [open, setOpen] = useState<boolean>(true);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const [shareIsOpen, setShareIsOpen] = useState<boolean>(false);
@@ -30,7 +30,7 @@ export default function FloatingCta() {
 
   useEffect(() => {
     function handleScroll() {
-      setOpen(window.pageYOffset > 100);
+      setOpen(window.pageYOffset < 100);
     }
 
     window.addEventListener('scroll', handleScroll);
