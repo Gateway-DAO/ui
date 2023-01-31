@@ -1,0 +1,11 @@
+query getTotalofIssuersByDataModel($dataModelId: String!) {
+  getTotalofIssuersByDataModel(dataModelId: $dataModelId)
+}
+
+query getTotalCredentialsByDataModel($dataModelId: String!) {
+  getTotalCredentialsByDataModel(dataModelId: $dataModelId)
+}
+
+query getTotalCredentialsByDataModelGroupByIssuer($dataModelId: String!) {
+  getTotalCredentialsByDataModelGroupByIssuer(dataModelId: $dataModelId)
+}

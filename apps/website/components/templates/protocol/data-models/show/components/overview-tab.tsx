@@ -14,9 +14,10 @@ import DataTable from './table-schema';
 
 type Props = {
   dataModel: PartialDeep<DataModel>;
+  stats: any;
 };
 
-export default function OverviewTab({ dataModel }: Props) {
+export default function OverviewTab({ dataModel, stats }: Props) {
   const { t } = useTranslation('protocol');
   const isMobile = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
 
@@ -31,22 +32,14 @@ export default function OverviewTab({ dataModel }: Props) {
         justifyContent="space-between"
         sx={{ flexDirection: { xs: 'column', md: 'row' }, mb: 5 }}
       >
-        <DashboardCard
-          label={t('data-model.issuers')}
-          value={100}
-          caption="from 100 (in 1 day)"
-        />
+        <DashboardCard label={t('data-model.issuers')} value={stats?.issuers} />
         <DashboardCard
           label={t('data-model.issued-credentials')}
-          value={1345459}
-          caption="from 954,504 (in 1 day)"
-          indicator={0.04}
+          value={stats?.totalCredentials}
         />
         <DashboardCard
           label={t('data-model.recipients')}
-          value={200124}
-          caption="from 200,000 (in 1 day)"
-          indicator={-0.001}
+          value={stats?.totalCredentialsByIssuer}
         />
       </Stack>
       <DataTable

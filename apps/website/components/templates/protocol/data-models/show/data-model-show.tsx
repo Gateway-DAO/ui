@@ -15,11 +15,14 @@ import DataModelTabs from './components/data-model-tabs';
 
 type Props = {
   dataModel: PartialDeep<DataModel>;
+  // TODO: create an interface or check with the team if we have a nice way to import this type
+  stats: any;
   isCredentialCreate?: boolean;
 };
 
 export default function DataModelShow({
   dataModel,
+  stats,
   isCredentialCreate = false,
 }: Props) {
   const { t } = useTranslation('protocol');
@@ -51,7 +54,7 @@ export default function DataModelShow({
           </Button>
         )}
       </Stack>
-      <DataModelTabs dataModel={dataModel} />
+      <DataModelTabs dataModel={dataModel} stats={stats} />
 
       {me?.id && (
         <ModalRight
