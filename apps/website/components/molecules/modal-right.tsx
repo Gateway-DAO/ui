@@ -56,14 +56,14 @@ export default function ModalRight({
       }}
     >
       <DialogTitle
-        component={Stack}
-        direction="row"
-        alignItems="center"
-        justifyContent={title ? 'space-between' : 'flex-end'}
         sx={{
           pt: { xs: 3, md: 6 },
           pb: { xs: 2, md: 3 },
           px: { xs: 3, md: 6 },
+          display: 'flex',
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: title ? 'space-between' : 'flex-end',
         }}
         id="scroll-dialog-title"
       >
