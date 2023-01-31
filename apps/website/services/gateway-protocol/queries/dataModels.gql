@@ -1,9 +1,10 @@
 query dataModel($id: String!) {
-  dataModel(id:$id) {
+  dataModel(id: $id) {
     id
     description
     schema
     tags
     title
+    arweaveInfo
   }
 }

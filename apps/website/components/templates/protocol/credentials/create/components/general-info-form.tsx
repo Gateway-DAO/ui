@@ -108,7 +108,7 @@ export default function GeneralInfoForm() {
           error={!!errors.tags}
           {...register('tags')}
           categories={CATEGORIES}
-          helperText={errors.tags?.message?.toString()}
+          helperText={(errors.tags as any)?.message?.toString()}
           sx={{
             width: '100%',
             '& div fieldset legend span': {
