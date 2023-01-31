@@ -31,29 +31,14 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     id: ctx.query.id as string,
   });
 
-  const issuers = await gatewayProtocolSDK.getTotalofIssuersByDataModel({
+  const stats = await gatewayProtocolSDK.getDataModelStats({
     dataModelId: ctx.query.id as string,
   });
-
-  const totalCredentials =
-    await gatewayProtocolSDK.getTotalCredentialsByDataModel({
-      dataModelId: ctx.query.id as string,
-    });
-
-  const totalCredentialsByIssuer =
-    await gatewayProtocolSDK.getTotalCredentialsByDataModelGroupByIssuer({
-      dataModelId: ctx.query.id as string,
-    });
 
   return {
     props: {
       dataModel: dataModel?.dataModel,
-      stats: {
-        issuers: issuers.getTotalofIssuersByDataModel,
-        totalCredentials: totalCredentials.getTotalCredentialsByDataModel,
-        totalCredentialsByIssuer:
-          totalCredentialsByIssuer.getTotalCredentialsByDataModelGroupByIssuer,
-      },
+      stats,
     },
   };
 };

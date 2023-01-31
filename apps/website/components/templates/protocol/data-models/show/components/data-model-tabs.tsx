@@ -5,14 +5,17 @@ import { PartialDeep } from 'type-fest/source/partial-deep';
 
 import { Box, Tab, Tabs } from '@mui/material';
 
-import { DataModel } from '../../../../../../services/gateway-protocol/types';
+import {
+  DataModel,
+  GetDataModelStatsQuery,
+} from '../../../../../../services/gateway-protocol/types';
 import { useTab, TabPanel } from '../../../../../atoms/tabs';
 
 const OverviewTab = dynamic(() => import('./overview-tab'), { ssr: false });
 
 type Props = {
   dataModel: PartialDeep<DataModel>;
-  stats: any;
+  stats: GetDataModelStatsQuery;
 };
 
 export default function DataModelTabs({ dataModel, stats }: Props) {

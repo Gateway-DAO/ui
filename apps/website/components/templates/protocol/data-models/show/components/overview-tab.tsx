@@ -6,7 +6,10 @@ import { theme } from '@gateway/theme';
 
 import { Stack, useMediaQuery } from '@mui/material';
 
-import { DataModel } from '../../../../../../services/gateway-protocol/types';
+import {
+  DataModel,
+  GetDataModelStatsQuery,
+} from '../../../../../../services/gateway-protocol/types';
 import ExternalLink from '../../../../../atoms/external-link';
 import DashboardCard from '../../../components/dashboard-card';
 import OverviewCardInfo from './overview-card-info';
@@ -14,7 +17,7 @@ import DataTable from './table-schema';
 
 type Props = {
   dataModel: PartialDeep<DataModel>;
-  stats: any;
+  stats: GetDataModelStatsQuery;
 };
 
 export default function OverviewTab({ dataModel, stats }: Props) {
@@ -35,14 +38,17 @@ export default function OverviewTab({ dataModel, stats }: Props) {
         justifyContent="space-between"
         sx={{ flexDirection: { xs: 'column', md: 'row' }, mb: 5 }}
       >
-        <DashboardCard label={t('data-model.issuers')} value={stats?.issuers} />
+        <DashboardCard
+          label={t('data-model.issuers')}
+          value={stats?.getTotalofIssuersByDataModel}
+        />
         <DashboardCard
           label={t('data-model.issued-credentials')}
-          value={stats?.totalCredentials}
+          value={stats?.getTotalCredentialsByDataModel}
         />
         <DashboardCard
           label={t('data-model.recipients')}
-          value={stats?.totalCredentialsByIssuer}
+          value={stats?.getTotalCredentialsByDataModelGroupByRecipient}
         />
       </Stack>
       <DataTable
