@@ -64,9 +64,6 @@ const config: IGraphQLConfig = {
           ...generateConfig,
           schema: {
             [`${process.env.GATEWAY_PROTOCOL_ENDPOINT}`]: {
-              // headers: {
-                // 'x-hasura-admin-secret': process.env.HASURA_ADMIN_SECRET as string,
-              // },
             },
           },
           documents: ['apps/website/services/gateway-protocol/**/*.gql'],

@@ -27,13 +27,13 @@ export default function OverviewCardInfo({ dataModel }: Props) {
   mockDataModel.createdAt = '2023-01-09T21:03:11.566Z';
   mockDataModel.lastUpdate = '2023-01-09T21:03:11.566Z';
   mockDataModel.createdBy = {
-    _id: '63bc7fc62e7bd8b316b77133',
+    id: '63bc7fc62e7bd8b316b77133',
     slug: 'gateway',
   };
   // MOCK - END
 
   const creator = useQuery(
-    ['issuer', mockDataModel._id],
+    ['issuer', mockDataModel.id],
     () =>
       gqlAnonMethods.dao_profile_by_slug({
         slug: 'gateway',

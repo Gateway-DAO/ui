@@ -1,5 +1,11 @@
-import CredentialProtocolView from './credential/view/credential-view';
-import DataModelView from './data-model/view/data-model-view';
+import CredentialProtocolShow from './credentials/show/credential-show';
+import CredentialProtocolCreate from './credentials/create/credential-create';
+import DataModelShow from './data-models/show/data-model-show';
 import ProtocolTemplate from './protocol-template';
 
-export { ProtocolTemplate, CredentialProtocolView, DataModelView };
+export {
+  ProtocolTemplate,
+  CredentialProtocolShow,
+  CredentialProtocolCreate,
+  DataModelShow,
+};

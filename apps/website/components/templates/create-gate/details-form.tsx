@@ -1,14 +1,15 @@
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 
 import { useFormContext } from 'react-hook-form';
 
 import { Stack, TextField } from '@mui/material';
 
+import { CATEGORIES } from '../../../constants/gate';
 import { useAuth } from '../../../providers/auth';
 import CategoriesInput from '../../molecules/categories-input';
 import CreatedByInput from '../../molecules/creators-input';
 import SkillsInput from '../../molecules/skills-input';
-import { CreateGateData, Creator } from './schema';
+import { CreateGateData } from './schema';
 
 export function GateDetailsForm() {
   const {
@@ -43,6 +44,7 @@ export function GateDetailsForm() {
         errors={errors.categories}
         defaultValue={categories}
         {...register('categories')}
+        categories={CATEGORIES}
         helperText={errors.categories?.message}
         sx={{
           width: '100%',

@@ -6,10 +6,11 @@ import { theme } from '@gateway/theme';
 
 import { Stack, useMediaQuery } from '@mui/material';
 
-import ExternalLink from '../../../../../../components/atoms/external-link';
 import { DataModel } from '../../../../../../services/gateway-protocol/types';
+import ExternalLink from '../../../../../atoms/external-link';
 import DashboardCard from '../../../components/dashboard-card';
 import OverviewCardInfo from './overview-card-info';
+import DataTable from './table-schema';
 
 type Props = {
   dataModel: PartialDeep<DataModel>;
@@ -28,7 +29,7 @@ export default function OverviewTab({ dataModel }: Props) {
       <Stack
         gap={isMobile ? 1 : 2}
         justifyContent="space-between"
-        sx={{ flexDirection: { xs: 'column', md: 'row' } }}
+        sx={{ flexDirection: { xs: 'column', md: 'row' }, mb: 5 }}
       >
         <DashboardCard
           label={t('data-model.issuers')}
@@ -48,6 +49,12 @@ export default function OverviewTab({ dataModel }: Props) {
           indicator={-0.001}
         />
       </Stack>
+      <DataTable
+        title="Claim"
+        data={dataModel?.schema?.properties}
+        subtitle1="Field"
+        subtitle2="Input Type"
+      />
     </Stack>
   );
 }

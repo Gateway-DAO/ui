@@ -1,8 +1,7 @@
 query dataModel($id: String!) {
   dataModel(id:$id) {
-    _id
+    id
     description
-    official
     schema
     tags
     title

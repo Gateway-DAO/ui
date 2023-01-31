@@ -15,7 +15,7 @@ import {
   Divider,
 } from '@mui/material';
 
-import ExternalLink from './../../../../../../components/atoms/external-link';
+import ExternalLink from '../../../../../atoms/external-link';
 
 type Props = {
   activities: any[];

@@ -1,4 +1,5 @@
 import useTranslation from 'next-translate/useTranslation';
+import dynamic from 'next/dynamic';
 
 import { PartialDeep } from 'type-fest';
 
@@ -10,16 +11,21 @@ import ExternalLink from '../../../../atoms/external-link';
 import { MintCredentialButton } from '../../../../atoms/mint-button';
 import Tags from '../../components/tags';
 import Activities from './components/activities';
-import CredentialCardInfo from './components/credential-card-info';
 import CredentialTitleAndImage from './components/credential-title-and-image';
 import DataTable from './components/data-table';
-import DataTableClaim from './components/data-table-claim';
+
+const CredentialCardInfo = dynamic(
+  () => {
+    return import('../../components/credential-card-info');
+  },
+  { ssr: false }
+);
 
 type Props = {
   credential: PartialDeep<Credential>;
 };
 
-export default function CredentialProtocolView({ credential }: Props) {
+export default function CredentialProtocolShow({ credential }: Props) {
   const { t } = useTranslation('protocol');
 
   // MOCK
@@ -65,13 +71,9 @@ export default function CredentialProtocolView({ credential }: Props) {
         <Stack direction="row" justifyContent="flex-end" sx={{ mb: 2 }}>
           <ExternalLink text={t('credential.storage-id')} url="" />
         </Stack>
-        <DataTableClaim
-          title={t('credential.claim')}
-          data={credential?.claim}
-        />
         <DataTable
-          title={t('credential.evidence')}
-          data={credential?.evidences}
+          title={t('credential.claim')}
+          data={credential?.claimArray}
         />
       </Stack>
     </>

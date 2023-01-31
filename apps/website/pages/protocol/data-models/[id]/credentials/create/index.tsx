@@ -1,15 +1,17 @@
 import { InferGetServerSidePropsType, GetServerSidePropsContext } from 'next';
 
-import { DashboardTemplate } from '../../../components/templates/dashboard';
+import { DashboardTemplate } from '../../../../../../components/templates/dashboard';
 import {
   ProtocolTemplate,
-  DataModelView,
-} from '../../../components/templates/protocol';
-import { gatewayProtocolSDK } from '../../../services/gateway-protocol/api';
+  DataModelShow,
+} from '../../../../../../components/templates/protocol';
+import { gatewayProtocolSDK } from '../../../../../../services/gateway-protocol/api';
 
 type Props = InferGetServerSidePropsType<typeof getServerSideProps>;
 
-export default function ProtocolDataModel({ dataModel }: Props) {
+export default function ProtocolDataModelCredentialCreate({
+  dataModel,
+}: Props) {
   return (
     <DashboardTemplate
       containerProps={{
@@ -20,7 +22,7 @@ export default function ProtocolDataModel({ dataModel }: Props) {
       }}
     >
       <ProtocolTemplate>
-        <DataModelView dataModel={dataModel} />
+        <DataModelShow dataModel={dataModel} isCredentialCreate={true} />
       </ProtocolTemplate>
     </DashboardTemplate>
   );

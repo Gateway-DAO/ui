@@ -1,5 +1,5 @@
 import useTranslation from 'next-translate/useTranslation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { useSnackbar } from 'notistack';
 
@@ -7,21 +7,37 @@ import { brandColors } from '@gateway/theme';
 
 import IosShareIcon from '@mui/icons-material/IosShare';
 import LinkIcon from '@mui/icons-material/Link';
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import QrCodeIcon from '@mui/icons-material/QrCode';
-import { Stack, alpha } from '@mui/material';
+import { SpeedDial, SpeedDialAction } from '@mui/material';
+import { SpeedDialIcon } from '@mui/material';
+import { Box } from '@mui/system';
 
 import ShareOn from '../../../atoms/share-on';
 import ModalContent from '../../../molecules/modal-content';
 import { taskErrorMessages } from '../../../organisms/tasks/task-error-messages';
 import { useProtocolTemplateContext } from '../context';
-import FloatingCtaButton from './floating-cta-button';
 
 export default function FloatingCta() {
   const { t } = useTranslation('protocol');
   const { enqueueSnackbar } = useSnackbar();
+  const [open, setOpen] = useState<boolean>(true);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
   const [shareIsOpen, setShareIsOpen] = useState<boolean>(false);
   const [qrCodeIsOpen, setQrCodeIsOpen] = useState<boolean>(false);
   const { qrCode } = useProtocolTemplateContext();
+
+  useEffect(() => {
+    function handleScroll() {
+      setOpen(window.pageYOffset < 100);
+    }
+
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
 
   const copyUrl = async () => {
     try {
@@ -32,31 +48,69 @@ export default function FloatingCta() {
     }
   };
 
+  const actions = [
+    {
+      icon: <IosShareIcon />,
+      name: 'Share',
+      action: () => setShareIsOpen(true),
+    },
+    { icon: <LinkIcon />, name: 'Copy', action: () => copyUrl() },
+  ];
+
   return (
     <>
-      <Stack
-        gap={1}
+      <Box
         sx={{
           position: 'fixed',
           right: { xs: '20px', md: '60px' },
           bottom: { xs: '20px', md: '60px' },
+          height: 320,
+          transform: 'translateZ(0px)',
+          flexGrow: 1,
         }}
       >
-        <FloatingCtaButton handlerClick={() => setShareIsOpen(true)}>
-          <IosShareIcon />
-        </FloatingCtaButton>
-        <FloatingCtaButton handlerClick={() => copyUrl()}>
-          <LinkIcon />
-        </FloatingCtaButton>
-        <FloatingCtaButton
-          handlerClick={() => setQrCodeIsOpen(true)}
-          bgColor={brandColors.purple.main}
-          bgColorHover={alpha(brandColors.purple.main, 0.7)}
-          color={brandColors.white.main}
+        <SpeedDial
+          openIcon={<QrCodeIcon />}
+          ariaLabel="sharing options"
+          sx={{ position: 'absolute', bottom: 16, right: 16 }}
+          icon={
+            <SpeedDialIcon
+              icon={<MoreHorizIcon />}
+              openIcon={<QrCodeIcon />}
+              onClick={() => setQrCodeIsOpen(true)}
+            />
+          }
+          FabProps={{
+            sx: {
+              color: open ? 'white' : brandColors.purple.main,
+              bgcolor: open ? 'primary.main' : 'rgba(154, 83, 255, 0.1)',
+              '&:hover': {
+                bgcolor: 'primary.main',
+                color: 'white',
+              },
+            },
+          }}
+          onOpen={handleOpen}
+          onClose={handleClose}
+          open={open}
         >
-          <QrCodeIcon />
-        </FloatingCtaButton>
-      </Stack>
+          {actions.map((fab) => (
+            <SpeedDialAction
+              FabProps={{
+                size: 'large',
+                sx: {
+                  color: brandColors.purple.main,
+                  bgcolor: 'rgba(154, 83, 255, 0.1)',
+                },
+              }}
+              key={fab.name}
+              icon={fab.icon}
+              onClick={fab.action}
+              tooltipTitle={fab.name}
+            />
+          ))}
+        </SpeedDial>
+      </Box>
       <ModalContent
         open={shareIsOpen}
         title={t('common:social.share-on')}
