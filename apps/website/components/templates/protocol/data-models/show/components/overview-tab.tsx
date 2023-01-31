@@ -24,7 +24,10 @@ export default function OverviewTab({ dataModel }: Props) {
     <Stack sx={{ maxWidth: '726px', pt: 2 }}>
       <OverviewCardInfo dataModel={dataModel} />
       <Stack direction="row" justifyContent="flex-end" sx={{ mb: 2 }}>
-        <ExternalLink text={t('data-model.arweave-hash')} url="" />
+        <ExternalLink
+          text={t('data-model.arweave-hash')}
+          url={dataModel.arweaveInfo?.url}
+        />
       </Stack>
       <Stack
         gap={isMobile ? 1 : 2}
