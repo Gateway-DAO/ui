@@ -220,9 +220,11 @@ export function GatesCard({
       {onClick === undefined ? (
         <MUICard sx={{ position: 'relative' }}>
           <Link passHref href={url}>
-            {actionChildren}
+            <CardActionArea component="a" sx={{ height: '100%' }}>
+              {actionChildren}
+              {contentChildren}
+            </CardActionArea>
           </Link>
-          {contentChildren}
         </MUICard>
       ) : (
         <MUICard sx={{ position: 'relative' }}>
