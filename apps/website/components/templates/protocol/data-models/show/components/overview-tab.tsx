@@ -6,7 +6,10 @@ import { theme } from '@gateway/theme';
 
 import { Stack, useMediaQuery } from '@mui/material';
 
-import { DataModel } from '../../../../../../services/gateway-protocol/types';
+import {
+  DataModel,
+  GetDataModelStatsQuery,
+} from '../../../../../../services/gateway-protocol/types';
 import ExternalLink from '../../../../../atoms/external-link';
 import DashboardCard from '../../../components/dashboard-card';
 import OverviewCardInfo from './overview-card-info';
@@ -14,9 +17,10 @@ import DataTable from './table-schema';
 
 type Props = {
   dataModel: PartialDeep<DataModel>;
+  stats: GetDataModelStatsQuery;
 };
 
-export default function OverviewTab({ dataModel }: Props) {
+export default function OverviewTab({ dataModel, stats }: Props) {
   const { t } = useTranslation('protocol');
   const isMobile = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
 
@@ -36,20 +40,15 @@ export default function OverviewTab({ dataModel }: Props) {
       >
         <DashboardCard
           label={t('data-model.issuers')}
-          value={100}
-          caption="from 100 (in 1 day)"
+          value={stats?.getTotalofIssuersByDataModel}
         />
         <DashboardCard
           label={t('data-model.issued-credentials')}
-          value={1345459}
-          caption="from 954,504 (in 1 day)"
-          indicator={0.04}
+          value={stats?.getTotalCredentialsByDataModel}
         />
         <DashboardCard
           label={t('data-model.recipients')}
-          value={200124}
-          caption="from 200,000 (in 1 day)"
-          indicator={-0.001}
+          value={stats?.getTotalCredentialsByDataModelGroupByRecipient}
         />
       </Stack>
       <DataTable

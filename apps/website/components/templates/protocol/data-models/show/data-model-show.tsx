@@ -6,7 +6,10 @@ import { PartialDeep } from 'type-fest/source/partial-deep';
 import { Stack, Typography, Button } from '@mui/material';
 
 import { useAuth } from '../../../../../providers/auth';
-import { DataModel } from '../../../../../services/gateway-protocol/types';
+import {
+  DataModel,
+  GetDataModelStatsQuery,
+} from '../../../../../services/gateway-protocol/types';
 import ModalRight from '../../../../molecules/modal-right';
 import InfoTitle from '../../components/info-title';
 import Tags from '../../components/tags';
@@ -15,11 +18,13 @@ import DataModelTabs from './components/data-model-tabs';
 
 type Props = {
   dataModel: PartialDeep<DataModel>;
+  stats?: GetDataModelStatsQuery;
   isCredentialCreate?: boolean;
 };
 
 export default function DataModelShow({
   dataModel,
+  stats,
   isCredentialCreate = false,
 }: Props) {
   const { t } = useTranslation('protocol');
@@ -51,7 +56,7 @@ export default function DataModelShow({
           </Button>
         )}
       </Stack>
-      <DataModelTabs dataModel={dataModel} />
+      <DataModelTabs dataModel={dataModel} stats={stats} />
 
       {me?.id && (
         <ModalRight
