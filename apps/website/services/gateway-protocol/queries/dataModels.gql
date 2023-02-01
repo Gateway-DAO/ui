@@ -6,5 +6,6 @@ query dataModel($id: String!) {
     tags
     title
     arweaveInfo
+    createdAt
   }
 }

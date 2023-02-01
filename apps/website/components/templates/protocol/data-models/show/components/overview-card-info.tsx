@@ -24,8 +24,6 @@ export default function OverviewCardInfo({ dataModel }: Props) {
 
   // MOCK
   const mockDataModel: any = dataModel;
-  mockDataModel.createdAt = '2023-01-09T21:03:11.566Z';
-  mockDataModel.lastUpdate = '2023-01-09T21:03:11.566Z';
   mockDataModel.createdBy = {
     id: '63bc7fc62e7bd8b316b77133',
     slug: 'gateway',
@@ -80,12 +78,12 @@ export default function OverviewCardInfo({ dataModel }: Props) {
         }
       >
         <CardCell label={t('data-model.creation-date')}>
-          {DateTime.fromISO(mockDataModel?.createdAt).toLocaleString(
+          {DateTime.fromISO(dataModel?.createdAt).toLocaleString(
             DateTime.DATE_FULL
           )}
         </CardCell>
         <CardCell label={t('data-model.last-update')}>
-          {DateTime.fromISO(mockDataModel?.lastUpdate).toLocaleString(
+          {DateTime.fromISO(dataModel?.createdAt).toLocaleString(
             DateTime.DATE_FULL
           )}
         </CardCell>
