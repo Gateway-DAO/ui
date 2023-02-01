@@ -43,7 +43,6 @@ export function ImageField({
             />
           </Box>
         </Box>
-        {/* {showUserData && <>Joao</>} */}
       </Card>
     </Stack>
   );
