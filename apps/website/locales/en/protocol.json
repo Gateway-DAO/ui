@@ -42,7 +42,8 @@
     "actions": {
       "issue-credential": "Issue Credential",
       "confirmation-dialog-positive": "Create",
-      "confirmation-dialog-cancel": "Cancel"
+      "confirmation-dialog-cancel": "Cancel",
+      "check-credential": "Check credential"
     },
     "issue-credential": {
       "group-recipient-title": "Send to",

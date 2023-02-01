@@ -1,5 +1,4 @@
 import useTranslation from 'next-translate/useTranslation';
-import dynamic from 'next/dynamic';
 import { useState } from 'react';
 
 import { ajvResolver } from '@hookform/resolvers/ajv';
@@ -19,6 +18,7 @@ import {
 
 import { LoadingButton } from '../../../../../components/atoms/loading-button';
 import ConfirmDialog from '../../../../../components/organisms/confirm-dialog/confirm-dialog';
+import { useAuth } from '../../../../../providers/auth';
 import { gatewayProtocolSDK } from '../../../../../services/gateway-protocol/api';
 import {
   CreateCredentialMutationVariables,
@@ -39,6 +39,7 @@ export default function CredentialCreateForm({
   dataModel,
   oldData,
 }: CreateCredentialProps) {
+  const { gqlAuthMethods } = useAuth();
   const { enqueueSnackbar } = useSnackbar();
   const [confirmCreate, setConfirmCreate] = useState(false);
   const { t } = useTranslation('protocol');
@@ -57,14 +58,6 @@ export default function CredentialCreateForm({
         _,
         options as any
       );
-
-      console.log({
-        ...zodResult.errors,
-        // only add claim errors if claimResult.errors is not empty
-        ...(Object.keys(claimResult.errors).length > 0 && {
-          claim: claimResult.errors,
-        }),
-      });
 
       return {
         values: {
@@ -95,6 +88,10 @@ export default function CredentialCreateForm({
         ...data,
       });
     }
+  );
+
+  const uploadArweave = useMutation(['uploadArweave'], (base64: string) =>
+    gqlAuthMethods.upload_arweave({ base64 })
   );
 
   const showErrorMessage = (message: string) => {
@@ -132,17 +129,33 @@ export default function CredentialCreateForm({
     }
   };
 
+  const uploadClaimImages = async (data) => {
+    const claimProps = dataModel?.schema?.properties;
+    if (!Object.keys(claimProps)) return data;
+    for (const item of Object.keys(claimProps)) {
+      if (claimProps[item]?.contentMediaType) {
+        const picture = await uploadArweave.mutateAsync(data?.claim[item]);
+        data.claim[item] = picture?.upload_arweave?.url;
+      }
+    }
+    return data;
+  };
+
   const handleMutation = async (data: CreateCredentialInput) => {
     const dataIsValid = await checkFormErrors();
 
     if (!dataIsValid) return;
 
     try {
-      const response = await createCredential.mutateAsync(
-        data as CreateCredentialMutationVariables
-      );
-      methods.reset();
-      setCredentialCreated(response?.createCredential?.id);
+      await uploadClaimImages(data)
+        .then(async (res) => (data = res))
+        .finally(async () => {
+          const response = await createCredential.mutateAsync(
+            data as CreateCredentialMutationVariables
+          );
+          setCredentialCreated(response?.createCredential?.id);
+          methods.reset();
+        });
     } catch (e) {
       console.log('Error', e);
     }
@@ -175,7 +188,7 @@ export default function CredentialCreateForm({
               }
             }}
           >
-            {createCredential.isLoading ? (
+            {createCredential.isLoading || uploadArweave.isLoading ? (
               <Box
                 key="loading"
                 sx={{
@@ -200,7 +213,7 @@ export default function CredentialCreateForm({
             )}
             <LoadingButton
               variant="contained"
-              isLoading={createCredential.isLoading}
+              isLoading={createCredential.isLoading || uploadArweave.isLoading}
               type="submit"
               sx={() => ({
                 height: '42px',

@@ -1,6 +1,6 @@
 import { PartialDeep } from 'type-fest/source/partial-deep';
 
-import { Stack, Paper, Typography, Divider } from '@mui/material';
+import { Stack, Paper, Typography, Divider, Box, alpha } from '@mui/material';
 
 import { CredentialData } from '../../../../../../services/gateway-protocol/types';
 import CardCell from '../../../components/card-cell';
@@ -26,7 +26,24 @@ export default function DataTable({ title, data }: Props) {
         {data?.map((item, index) => (
           <Stack key={index} direction="row" justifyContent="space-between">
             <CardCell label={item?.label} margin={false} py={3}>
-              {`${item?.value}`}
+              {item.metadata?.contentMediaType ? (
+                <Stack
+                  justifyContent="center"
+                  direction="row"
+                  sx={{
+                    background: alpha('rgba(0,0,0)', 0.25),
+                    mt: 1.5,
+                    borderRadius: 1,
+                    '& > img': {
+                      maxWidth: '350px',
+                    },
+                  }}
+                >
+                  <img src={item.value} alt={item.label} width="100%" />
+                </Stack>
+              ) : (
+                `${item.value}`
+              )}
             </CardCell>
           </Stack>
         ))}

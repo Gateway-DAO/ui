@@ -1,0 +1,6 @@
+mutation upload_arweave($base64: String!) {
+  upload_arweave(base64: $base64) {
+    id
+    url
+  }
+}
