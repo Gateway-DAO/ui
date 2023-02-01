@@ -46,7 +46,18 @@ export default function DataModelTabs({ dataModel, stats }: Props) {
     {
       key: 'playground',
       label: t('common:tabs.playground'),
-      section: <>Playground</>,
+      section: (
+        <>
+          <iframe
+            id="playground"
+            src={process.env.NEXT_PUBLIC_GATEWAY_PROTOCOL_ENDPOINT}
+            name="playground"
+            width="100%"
+            height="800"
+            frameBorder="0"
+          ></iframe>
+        </>
+      ),
     },
   ];
 
@@ -94,7 +105,10 @@ export default function DataModelTabs({ dataModel, stats }: Props) {
           tabsId="protocol"
           index={index}
           active={index === activeTab}
-          sx={{ py: 3, px: { xs: 0, md: 4, lg: 6 } }}
+          sx={{
+            py: key === 'playground' ? 0 : 3,
+            px: key === 'playground' ? 0 : { xs: 0, md: 4, lg: 6 },
+          }}
         >
           {section}
         </TabPanel>
