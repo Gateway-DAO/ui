@@ -8,7 +8,14 @@ import { Controller, useFormContext } from 'react-hook-form';
 
 import { brandColors } from '@gateway/theme';
 
-import { alpha, Stack, TextField, Typography } from '@mui/material';
+import {
+  alpha,
+  MenuItem,
+  Select,
+  Stack,
+  TextField,
+  Typography,
+} from '@mui/material';
 import { MobileDatePicker } from '@mui/x-date-pickers';
 import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -17,6 +24,7 @@ import { CATEGORIES } from '../../../../../../constants/gate';
 import { useAuth } from '../../../../../../providers/auth';
 import { gatewayProtocolSDK } from '../../../../../../services/gateway-protocol/api';
 import { CreateCredentialInput } from '../../../../../../services/gateway-protocol/types';
+import { AvatarFile } from '../../../../../atoms/avatar-file';
 
 const CategoriesInput = dynamic(
   () => {
@@ -55,6 +63,15 @@ export default function GeneralInfoForm() {
     }
   }, [issuer, setValue]);
 
+  // MOCK USERS
+  const users = [
+    {
+      picture: me.picture,
+      label: me.username,
+      value: issuer?.data?.id,
+    },
+  ];
+
   return (
     <Stack>
       <Typography fontWeight={600}>
@@ -67,6 +84,27 @@ export default function GeneralInfoForm() {
         {t('data-model.issue-credential.group-general-description')}
       </Typography>
       <Stack gap={3}>
+        <Select
+          id="chains"
+          sx={{ maxWidth: { md: '50%', xs: '100%' } }}
+          {...register('issuerId')}
+          defaultValue={issuer?.data?.id}
+        >
+          {users.map((user) => (
+            <MenuItem key={user.value} value={user.value}>
+              <Stack direction="row" alignItems="center">
+                <AvatarFile
+                  file={user.picture}
+                  fallback="/avatar.png"
+                  sx={{ mr: 2, width: 24, height: 24 }}
+                >
+                  {user.label}
+                </AvatarFile>
+                <Typography variant="body2">{user.label}</Typography>
+              </Stack>
+            </MenuItem>
+          ))}
+        </Select>
         <TextField
           autoFocus
           InputProps={{
