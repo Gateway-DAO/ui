@@ -63,7 +63,7 @@ export default function CredentialProtocolShow({ credential }: Props) {
         <Tags tags={credential?.dataModel?.tags} />
         <Typography sx={{ mb: 3 }}>{credential?.description}</Typography>
         <CredentialCardInfo credential={credential} />
-        <MintCredentialButton credential={credMint} />
+        <MintCredentialButton sx={{ height: '48px' }} credential={credMint} />
         {activities?.length > 0 && <Activities activities={activities} />}
       </Stack>
       <Divider sx={{ mt: 3, mb: 4, marginLeft: '2px' }} />
