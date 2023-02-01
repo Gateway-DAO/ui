@@ -136,7 +136,6 @@ export default function CredentialCreateForm({
       if (claimProps[item]?.contentMediaType) {
         const picture = await uploadArweave.mutateAsync(data?.claim[item]);
         data.claim[item] = picture?.upload_arweave?.url;
-        console.log('picture ' + item, picture);
       }
     }
     return data;
