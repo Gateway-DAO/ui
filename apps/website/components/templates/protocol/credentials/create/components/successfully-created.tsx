@@ -1,11 +1,20 @@
 import useTranslation from 'next-translate/useTranslation';
+import { useRouter } from 'next/router';
 
 import { useQuery } from '@tanstack/react-query';
 
 import { brandColors } from '@gateway/theme';
 
-import { alpha, Box, CircularProgress, Stack, Typography } from '@mui/material';
+import {
+  alpha,
+  Box,
+  Button,
+  CircularProgress,
+  Stack,
+  Typography,
+} from '@mui/material';
 
+import { ROUTES } from '../../../../../../constants/routes';
 import { gatewayProtocolSDK } from '../../../../../../services/gateway-protocol/api';
 import CredentialCardInfo from '../../../components/credential-card-info';
 
@@ -15,6 +24,7 @@ type Props = {
 
 export default function SuccessfullyCreated({ credentialId }: Props) {
   const { t } = useTranslation('protocol');
+  const router = useRouter();
   const credential = useQuery(
     ['credential', credentialId],
     () =>
@@ -77,6 +87,20 @@ export default function SuccessfullyCreated({ credentialId }: Props) {
               {credential?.data?.description}
             </Typography>
             <CredentialCardInfo credential={credential?.data} elevation={20} />
+            <Button
+              variant="contained"
+              onClick={() =>
+                router.push({
+                  pathname: ROUTES.PROTOCOL_CREDENTIAL,
+                  query: {
+                    id: credential?.data?.id,
+                  },
+                })
+              }
+              sx={{ mb: 3 }}
+            >
+              {t('data-model.actions.check-credential')}
+            </Button>
           </Stack>
         </>
       )}

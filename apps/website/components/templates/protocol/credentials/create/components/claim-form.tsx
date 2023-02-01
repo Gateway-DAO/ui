@@ -1,54 +1,58 @@
 import useTranslation from 'next-translate/useTranslation';
 import { useMemo } from 'react';
 
-import { useFormContext } from 'react-hook-form';
 import { PartialDeep } from 'type-fest/source/partial-deep';
 
 import { brandColors } from '@gateway/theme';
 
-import { alpha, Typography, Stack, TextField } from '@mui/material';
+import { alpha, Typography, Stack } from '@mui/material';
 
 import { DataModel } from '../../../../../../services/gateway-protocol/types';
-import ClaimField from './claim-field';
+import { ClaimFieldProps } from './ClaimFieldProps';
+import ClaimAccordion from './claim-accordion';
+import ClaimFormText from './claim-form-text';
+import { ImageField } from './image-field';
 
-export const mapClaimFields = {
-  string: 'text',
-  integer: 'number',
+export const claimTypes = {
+  image: 'image',
+  text: 'text',
+  number: 'number',
 };
 
-export type ClaimFieldProps = {
-  type: string;
-  label: string;
-  fieldName: string;
+export const mapClaimFields = (
+  type: string,
+  contentMediaType: string = null
+) => {
+  if (contentMediaType) return claimTypes.image;
+  switch (type) {
+    case 'string':
+      return claimTypes.text;
+    case 'integer':
+      return claimTypes.number;
+    default:
+      return claimTypes.text;
+  }
 };
+
+function ClaimField(props: ClaimFieldProps) {
+  switch (props.type) {
+    case claimTypes.image:
+      return <ImageField {...props} />;
+    default:
+      return <ClaimFormText {...props} />;
+  }
+}
 
 type Props = {
   dataModel: PartialDeep<DataModel>;
 };
 
 export default function ClaimForm({ dataModel }: Props) {
-  const {
-    register,
-    formState: { errors },
-  } = useFormContext();
-
   const { t } = useTranslation('protocol');
 
   const schemaFields = useMemo(() => {
     return dataModel?.schema?.properties;
   }, [dataModel]);
-
-  const fieldProps = (
-    schemaFields,
-    item: string,
-    index: number
-  ): ClaimFieldProps => {
-    return {
-      fieldName: Object.keys(schemaFields)[index],
-      type: mapClaimFields[schemaFields[item]?.type],
-      label: schemaFields[item]?.title,
-    };
-  };
 
   return (
     <Stack>
@@ -63,38 +67,26 @@ export default function ClaimForm({ dataModel }: Props) {
       </Typography>
       {schemaFields && (
         <Stack gap={2}>
-          {Object.keys(schemaFields)?.map((item: any, index) => {
-            const { fieldName, type, label } = fieldProps(
-              schemaFields,
-              item,
-              index
-            );
+          {Object.keys(schemaFields)?.map((item, index) => {
             return (
-              <ClaimField key={index} type={type} label={label}>
-                <TextField
-                  type={type}
-                  InputProps={{
-                    disableUnderline: true,
-                    sx: {
-                      '&.Mui-focused': {
-                        borderBottom: '2px solid #9A53FF',
-                      },
-                      width: '100%',
-                    },
-                  }}
-                  sx={{ width: '100%' }}
-                  label={label}
-                  id={`data-model-field-${fieldName}`}
-                  {...register(`claim.${fieldName}`, {
-                    valueAsNumber: type === 'number',
-                  })}
-                  error={!!errors?.claim && !!errors?.claim[fieldName]}
-                  helperText={
-                    !!errors?.claim &&
-                    errors?.claim[fieldName]?.message?.toString()
-                  }
+              <ClaimAccordion
+                key={index}
+                type={mapClaimFields(
+                  schemaFields[item]?.type,
+                  schemaFields[item]?.contentMediaType
+                )}
+                label={schemaFields[item]?.title}
+              >
+                <ClaimField
+                  label={schemaFields[item]?.title}
+                  type={mapClaimFields(
+                    schemaFields[item]?.type,
+                    schemaFields[item]?.contentMediaType
+                  )}
+                  fieldName={Object.keys(schemaFields)[index]}
+                  contentMediaType={schemaFields[item]?.contentMediaType}
                 />
-              </ClaimField>
+              </ClaimAccordion>
             );
           })}
         </Stack>

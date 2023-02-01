@@ -1,5 +1,4 @@
 import useTranslation from 'next-translate/useTranslation';
-import dynamic from 'next/dynamic';
 import { useState } from 'react';
 
 import { ajvResolver } from '@hookform/resolvers/ajv';
@@ -19,6 +18,7 @@ import {
 
 import { LoadingButton } from '../../../../../components/atoms/loading-button';
 import ConfirmDialog from '../../../../../components/organisms/confirm-dialog/confirm-dialog';
+import { useAuth } from '../../../../../providers/auth';
 import { gatewayProtocolSDK } from '../../../../../services/gateway-protocol/api';
 import {
   CreateCredentialMutationVariables,
@@ -39,6 +39,7 @@ export default function CredentialCreateForm({
   dataModel,
   oldData,
 }: CreateCredentialProps) {
+  const { gqlAuthMethods } = useAuth();
   const { enqueueSnackbar } = useSnackbar();
   const [confirmCreate, setConfirmCreate] = useState(false);
   const { t } = useTranslation('protocol');
@@ -97,6 +98,10 @@ export default function CredentialCreateForm({
     }
   );
 
+  const uploadArweave = useMutation(['uploadArweave'], (base64: string) =>
+    gqlAuthMethods.upload_arweave({ base64 })
+  );
+
   const showErrorMessage = (message: string) => {
     enqueueSnackbar(message, { variant: 'error', autoHideDuration: 8000 });
   };
@@ -132,17 +137,32 @@ export default function CredentialCreateForm({
     }
   };
 
+  const uploadClaimImages = async (data) => {
+    const claimProps = dataModel?.schema?.properties;
+    if (Object.keys(claimProps)) {
+      Object.keys(claimProps).map(async (item, index) => {
+        if (claimProps[item].contentMediaType) {
+          const key = Object.keys(claimProps)[index];
+          const picture = await uploadArweave.mutateAsync(data?.claim[key]);
+          data.claim[key] = picture?.upload_arweave?.url;
+        }
+      });
+    }
+    return data;
+  };
+
   const handleMutation = async (data: CreateCredentialInput) => {
     const dataIsValid = await checkFormErrors();
 
     if (!dataIsValid) return;
 
     try {
+      await uploadClaimImages(data).then((res) => (data = res));
       const response = await createCredential.mutateAsync(
         data as CreateCredentialMutationVariables
       );
-      methods.reset();
       setCredentialCreated(response?.createCredential?.id);
+      methods.reset();
     } catch (e) {
       console.log('Error', e);
     }
@@ -175,7 +195,7 @@ export default function CredentialCreateForm({
               }
             }}
           >
-            {createCredential.isLoading ? (
+            {createCredential.isLoading || uploadArweave.isLoading ? (
               <Box
                 key="loading"
                 sx={{
@@ -200,7 +220,7 @@ export default function CredentialCreateForm({
             )}
             <LoadingButton
               variant="contained"
-              isLoading={createCredential.isLoading}
+              isLoading={createCredential.isLoading || uploadArweave.isLoading}
               type="submit"
               sx={() => ({
                 height: '42px',

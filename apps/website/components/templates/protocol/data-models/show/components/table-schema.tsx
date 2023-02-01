@@ -72,7 +72,12 @@ export default function TableSchema({
               {data[item].description}
             </CardCell>
             <Stack sx={{ mr: 2, my: 2 }}>
-              <ChipInputType type={mapClaimFields(data[item]?.type)} />
+              <ChipInputType
+                type={mapClaimFields(
+                  data[item]?.type,
+                  data[item]?.contentMediaType
+                )}
+              />
             </Stack>
           </Stack>
         ))}
