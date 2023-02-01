@@ -10,6 +10,10 @@ import { brandColors } from '@gateway/theme';
 
 import {
   alpha,
+  Box,
+  CircularProgress,
+  FormControl,
+  InputLabel,
   MenuItem,
   Select,
   Stack,
@@ -84,27 +88,48 @@ export default function GeneralInfoForm() {
         {t('data-model.issue-credential.group-general-description')}
       </Typography>
       <Stack gap={3}>
-        <Select
-          id="chains"
-          sx={{ maxWidth: { md: '50%', xs: '100%' } }}
-          {...register('issuerId')}
-          defaultValue={issuer?.data?.id}
-        >
-          {users.map((user) => (
-            <MenuItem key={user.value} value={user.value}>
-              <Stack direction="row" alignItems="center">
-                <AvatarFile
-                  file={user.picture}
-                  fallback="/avatar.png"
-                  sx={{ mr: 2, width: 24, height: 24 }}
-                >
-                  {user.label}
-                </AvatarFile>
-                <Typography variant="body2">{user.label}</Typography>
-              </Stack>
-            </MenuItem>
-          ))}
-        </Select>
+        {issuer.isLoading ? (
+          <Box
+            key="loading"
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+            }}
+          >
+            <CircularProgress sx={{ mb: 2 }} />
+          </Box>
+        ) : (
+          <FormControl>
+            <InputLabel>{t('data-model.issue-credential.issue-by')}</InputLabel>
+            <Select
+              id="chains"
+              sx={{ maxWidth: { md: '50%', xs: '100%' } }}
+              {...register('issuerId')}
+              label={t('data-model.issue-credential.issue-by')}
+              defaultValue={
+                issuer?.data?.id || {
+                  label: t('data-model.issue-credential.issue-by'),
+                  value: 0,
+                }
+              }
+            >
+              {users.map((user) => (
+                <MenuItem key={user.value} value={user.value}>
+                  <Stack direction="row" alignItems="center">
+                    <AvatarFile
+                      file={user.picture}
+                      fallback="/avatar.png"
+                      sx={{ mr: 2, width: 24, height: 24 }}
+                    >
+                      {user.label}
+                    </AvatarFile>
+                    <Typography variant="body2">{user.label}</Typography>
+                  </Stack>
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        )}
         <TextField
           autoFocus
           InputProps={{
