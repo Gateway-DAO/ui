@@ -131,14 +131,13 @@ export default function CredentialCreateForm({
 
   const uploadClaimImages = async (data) => {
     const claimProps = dataModel?.schema?.properties;
-    if (Object.keys(claimProps)) {
-      Object.keys(claimProps).map(async (item, index) => {
-        if (claimProps[item].contentMediaType) {
-          const key = Object.keys(claimProps)[index];
-          const picture = await uploadArweave.mutateAsync(data?.claim[key]);
-          data.claim[key] = picture?.upload_arweave?.url;
-        }
-      });
+    if (!Object.keys(claimProps)) return data;
+    for (const item of Object.keys(claimProps)) {
+      if (claimProps[item]?.contentMediaType) {
+        const picture = await uploadArweave.mutateAsync(data?.claim[item]);
+        data.claim[item] = picture?.upload_arweave?.url;
+        console.log('picture ' + item, picture);
+      }
     }
     return data;
   };
@@ -149,12 +148,15 @@ export default function CredentialCreateForm({
     if (!dataIsValid) return;
 
     try {
-      await uploadClaimImages(data).then((res) => (data = res));
-      const response = await createCredential.mutateAsync(
-        data as CreateCredentialMutationVariables
-      );
-      setCredentialCreated(response?.createCredential?.id);
-      methods.reset();
+      await uploadClaimImages(data)
+        .then(async (res) => (data = res))
+        .finally(async () => {
+          const response = await createCredential.mutateAsync(
+            data as CreateCredentialMutationVariables
+          );
+          setCredentialCreated(response?.createCredential?.id);
+          methods.reset();
+        });
     } catch (e) {
       console.log('Error', e);
     }
