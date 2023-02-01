@@ -58,7 +58,8 @@
       "expire-date-description": "Set a expiration date to claim the credential",
       "expire-date-label": "Add expire date",
       "group-claim-title": "Add details",
-      "group-claim-description": "Add the details of the credential"
+      "group-claim-description": "Add the details of the credential",
+      "issue-by": "Issue by"
     }
   }
 }
