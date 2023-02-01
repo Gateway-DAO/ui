@@ -11,6 +11,7 @@ type Props = InferGetServerSidePropsType<typeof getServerSideProps>;
 
 export default function ProtocolDataModelCredentialCreate({
   dataModel,
+  stats,
 }: Props) {
   return (
     <DashboardTemplate
@@ -22,7 +23,11 @@ export default function ProtocolDataModelCredentialCreate({
       }}
     >
       <ProtocolTemplate>
-        <DataModelShow dataModel={dataModel} isCredentialCreate={true} />
+        <DataModelShow
+          dataModel={dataModel}
+          stats={stats}
+          isCredentialCreate={true}
+        />
       </ProtocolTemplate>
     </DashboardTemplate>
   );
@@ -33,9 +38,14 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     id: ctx.query.id as string,
   });
 
+  const stats = await gatewayProtocolSDK.getDataModelStats({
+    dataModelId: ctx.query.id as string,
+  });
+
   return {
     props: {
       dataModel: dataModel?.dataModel,
+      stats,
     },
   };
 };
