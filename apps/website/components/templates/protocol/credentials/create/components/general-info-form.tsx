@@ -1,34 +1,18 @@
 import useTranslation from 'next-translate/useTranslation';
 import dynamic from 'next/dynamic';
-import { useEffect } from 'react';
 
-import { useQuery } from '@tanstack/react-query';
 import { DateTime } from 'luxon';
 import { Controller, useFormContext } from 'react-hook-form';
 
 import { brandColors } from '@gateway/theme';
 
-import {
-  alpha,
-  Box,
-  CircularProgress,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  Stack,
-  TextField,
-  Typography,
-} from '@mui/material';
+import { alpha, Stack, TextField, Typography } from '@mui/material';
 import { MobileDatePicker } from '@mui/x-date-pickers';
 import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 
 import { CATEGORIES } from '../../../../../../constants/gate';
-import { useAuth } from '../../../../../../providers/auth';
-import { gatewayProtocolSDK } from '../../../../../../services/gateway-protocol/api';
 import { CreateCredentialInput } from '../../../../../../services/gateway-protocol/types';
-import { AvatarFile } from '../../../../../atoms/avatar-file';
 
 const CategoriesInput = dynamic(
   () => {
@@ -46,35 +30,6 @@ export default function GeneralInfoForm() {
   } = useFormContext<CreateCredentialInput>();
 
   const { t } = useTranslation('protocol');
-  const { me } = useAuth();
-
-  const issuer = useQuery(
-    ['issuer', me?.wallet],
-    () =>
-      gatewayProtocolSDK.userByWallet({
-        wallet: me?.wallet,
-      }),
-    {
-      select: (data) => data?.userByWallet,
-      refetchOnMount: false,
-      refetchOnWindowFocus: false,
-    }
-  );
-
-  useEffect(() => {
-    if (issuer?.data) {
-      setValue('issuerId', issuer?.data?.id);
-    }
-  }, [issuer, setValue]);
-
-  // MOCK USERS
-  const users = [
-    {
-      picture: me.picture,
-      label: me.username,
-      value: issuer?.data?.id,
-    },
-  ];
 
   return (
     <Stack>
@@ -88,48 +43,6 @@ export default function GeneralInfoForm() {
         {t('data-model.issue-credential.group-general-description')}
       </Typography>
       <Stack gap={3}>
-        {issuer.isLoading ? (
-          <Box
-            key="loading"
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-            }}
-          >
-            <CircularProgress sx={{ mb: 2 }} />
-          </Box>
-        ) : (
-          <FormControl>
-            <InputLabel>{t('data-model.issue-credential.issue-by')}</InputLabel>
-            <Select
-              id="chains"
-              sx={{ maxWidth: { md: '50%', xs: '100%' } }}
-              {...register('issuerId')}
-              label={t('data-model.issue-credential.issue-by')}
-              defaultValue={
-                issuer?.data?.id || {
-                  label: t('data-model.issue-credential.issue-by'),
-                  value: 0,
-                }
-              }
-            >
-              {users.map((user) => (
-                <MenuItem key={user.value} value={user.value}>
-                  <Stack direction="row" alignItems="center">
-                    <AvatarFile
-                      file={user.picture}
-                      fallback="/avatar.png"
-                      sx={{ mr: 2, width: 24, height: 24 }}
-                    >
-                      {user.label}
-                    </AvatarFile>
-                    <Typography variant="body2">{user.label}</Typography>
-                  </Stack>
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        )}
         <TextField
           autoFocus
           InputProps={{
