@@ -24,9 +24,7 @@ export function ImageField({
           display: 'flex',
           flexDirection: 'column',
           height: '100%',
-          width: 232,
-          border: 1,
-          borderColor: 'rgba(255,255,255,.12)',
+          width: '100%',
           maxWidth: {
             xs: '75%',
             md: '100%',

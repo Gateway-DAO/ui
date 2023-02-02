@@ -17,7 +17,6 @@ import {
 } from '@mui/material';
 
 import { LoadingButton } from '../../../../../components/atoms/loading-button';
-import ConfirmDialog from '../../../../../components/organisms/confirm-dialog/confirm-dialog';
 import { useAuth } from '../../../../../providers/auth';
 import { gatewayProtocolSDK } from '../../../../../services/gateway-protocol/api';
 import {
@@ -27,6 +26,7 @@ import {
 import { DataModel } from '../../../../../services/gateway-protocol/types';
 import ClaimForm from './components/claim-form';
 import GeneralInfoForm from './components/general-info-form';
+import IssueByForm from './components/issue-by-form';
 import RecipientForm from './components/recipient-form';
 import SuccessfullyCreated from './components/successfully-created';
 import { createCredentialSchema } from './schema';
@@ -41,7 +41,6 @@ export default function CredentialCreateForm({
 }: CreateCredentialProps) {
   const { gqlAuthMethods } = useAuth();
   const { enqueueSnackbar } = useSnackbar();
-  const [confirmCreate, setConfirmCreate] = useState(false);
   const { t } = useTranslation('protocol');
   const [credentialCreated, setCredentialCreated] = useState<string>(null);
 
@@ -94,46 +93,11 @@ export default function CredentialCreateForm({
     gqlAuthMethods.upload_arweave({ base64 })
   );
 
-  const showErrorMessage = (message: string) => {
-    enqueueSnackbar(message, { variant: 'error', autoHideDuration: 8000 });
-  };
-
-  const recursiveErrorMessage = (obj) => {
-    for (const prop in obj) {
-      if (obj.hasOwnProperty.call(obj, prop)) {
-        if (obj[prop]?.message) {
-          showErrorMessage(obj[prop]?.message);
-        } else if (obj[prop]?.length) {
-          recursiveErrorMessage(obj[prop][0]);
-        }
-      }
-    }
-  };
-
-  const checkFormErrors = async () => {
-    const dataIsValid = await methods.trigger();
-    if (!dataIsValid) {
-      const errors = methods.formState.errors;
-      if (Object.values(errors)[0]) {
-        recursiveErrorMessage(errors);
-      }
-    }
-    return dataIsValid;
-  };
-
-  const onCreateCredential = async (data: CreateCredentialInput) => {
-    try {
-      await handleMutation(data);
-    } catch (e) {
-      enqueueSnackbar(t('data-model.error-on-create-credential'));
-    }
-  };
-
   const uploadClaimImages = async (data) => {
     const claimProps = dataModel?.schema?.properties;
     if (!Object.keys(claimProps)) return data;
     for (const item of Object.keys(claimProps)) {
-      if (claimProps[item]?.contentMediaType) {
+      if (claimProps[item]?.contentMediaType && data?.claim[item]) {
         const picture = await uploadArweave.mutateAsync(data?.claim[item]);
         data.claim[item] = picture?.upload_arweave?.url;
       }
@@ -142,22 +106,23 @@ export default function CredentialCreateForm({
   };
 
   const handleMutation = async (data: CreateCredentialInput) => {
-    const dataIsValid = await checkFormErrors();
-
-    if (!dataIsValid) return;
+    if (!(await methods.trigger())) return;
 
     try {
       await uploadClaimImages(data)
-        .then(async (res) => (data = res))
-        .finally(async () => {
+        .then(async (res) => {
+          data = res;
           const response = await createCredential.mutateAsync(
             data as CreateCredentialMutationVariables
           );
           setCredentialCreated(response?.createCredential?.id);
           methods.reset();
+        })
+        .catch((e) => {
+          enqueueSnackbar(t('data-model.error-on-upload'));
         });
     } catch (e) {
-      console.log('Error', e);
+      enqueueSnackbar(t('data-model.error-on-create-credential'));
     }
   };
 
@@ -180,13 +145,7 @@ export default function CredentialCreateForm({
           <Stack
             component="form"
             id="create-credential-form"
-            onSubmit={async (e) => {
-              e.preventDefault();
-              const dataIsValid = await checkFormErrors();
-              if (dataIsValid) {
-                setConfirmCreate(true);
-              }
-            }}
+            onSubmit={methods.handleSubmit(handleMutation)}
           >
             {createCredential.isLoading || uploadArweave.isLoading ? (
               <Box
@@ -206,6 +165,7 @@ export default function CredentialCreateForm({
                 }
                 gap={3}
               >
+                <IssueByForm />
                 <GeneralInfoForm />
                 <ClaimForm dataModel={dataModel} />
                 <RecipientForm />
@@ -225,23 +185,6 @@ export default function CredentialCreateForm({
               {t('data-model.actions.issue-credential')}
             </LoadingButton>
           </Stack>
-          <ConfirmDialog
-            title={t('data-model.confirmation-dialog-title')}
-            open={confirmCreate}
-            positiveAnswer={t(
-              'data-model.actions.confirmation-dialog-positive'
-            )}
-            negativeAnswer={t('data-model.actions.confirmation-dialog-cancel')}
-            setOpen={setConfirmCreate}
-            onConfirm={methods.handleSubmit(onCreateCredential, (errors) => {
-              enqueueSnackbar(
-                ((Object.values(errors)[0] as any)?.message as string) ||
-                  'Invalid data'
-              );
-            })}
-          >
-            {t('data-model.confirmation-dialog-text')}
-          </ConfirmDialog>
         </FormProvider>
       )}
     </>
