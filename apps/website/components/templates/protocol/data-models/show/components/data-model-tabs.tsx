@@ -10,6 +10,7 @@ import {
   GetDataModelStatsQuery,
 } from '../../../../../../services/gateway-protocol/types';
 import { useTab, TabPanel } from '../../../../../atoms/tabs';
+import GridViewTab from './grid-view-tab';
 
 const OverviewTab = dynamic(() => import('./overview-tab'), { ssr: false });
 
@@ -21,6 +22,18 @@ type Props = {
 export default function DataModelTabs({ dataModel, stats }: Props) {
   const { activeTab, handleTabChange, setTab } = useTab();
   const { t } = useTranslation('protocol');
+
+  const credentialGridColumns = [
+    'Credential ID',
+    'Category',
+    'Issuer ID',
+    'Recipient ID',
+    'Issuance Date',
+    'Status',
+    'Minted',
+  ];
+
+  const credentialRows = [];
 
   const tabs = [
     {
@@ -40,11 +53,19 @@ export default function DataModelTabs({ dataModel, stats }: Props) {
     },
     {
       key: 'credentials',
+      noPadding: true,
       label: t('common:tabs.credentials'),
-      section: <>Credentials</>,
+      section: (
+        <GridViewTab
+          dataModel={dataModel}
+          columns={credentialGridColumns}
+          rows={credentialRows}
+        />
+      ),
     },
     {
       key: 'playground',
+      noPadding: true,
       label: t('common:tabs.playground'),
       section: (
         <>
@@ -99,15 +120,15 @@ export default function DataModelTabs({ dataModel, stats }: Props) {
           ))}
         </Tabs>
       </Box>
-      {tabs.map(({ key, section }, index) => (
+      {tabs.map(({ key, noPadding, section }, index) => (
         <TabPanel
           key={key}
           tabsId="protocol"
           index={index}
           active={index === activeTab}
           sx={{
-            py: key === 'playground' ? 0 : 3,
-            px: key === 'playground' ? 0 : { xs: 0, md: 4, lg: 6 },
+            py: noPadding ? 0 : 3,
+            px: noPadding ? 0 : { xs: 0, md: 4, lg: 6 },
           }}
         >
           {section}
