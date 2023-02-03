@@ -1,8 +1,6 @@
 import Image from 'next/image';
 import { ReactNode } from 'react';
 
-import NetworkTransactionLink from 'apps/website/components/atoms/network-transaction-link';
-import { CategoriesList } from 'apps/website/components/molecules/categories-list';
 import { DateTime } from 'luxon';
 
 import { limitCharsCentered } from '@gateway/helpers';
@@ -12,9 +10,14 @@ import VerifiedIcon from '@mui/icons-material/Verified';
 import { Typography, Avatar, Tooltip, Chip } from '@mui/material';
 import { alpha, Stack, Box } from '@mui/material';
 
+import NetworkTransactionLink from '../../../../../atoms/network-transaction-link';
+import { CategoriesList } from '../../../../../molecules/categories-list';
+
 type Props = {
   columns: ColumnType[];
-  data: any[];
+  data: {
+    pages: any[];
+  };
 };
 
 type ColumnType =
@@ -98,11 +101,7 @@ const defineCols = (columns: ColumnType[]) => {
       cell: (params) => (
         <Box sx={{ display: 'flex', gap: '5px', alignItems: 'center' }}>
           <Stack sx={{ maxWidth: '150px' }}>
-            <CategoriesList
-              listMode
-              categories={['Education', 'NFT', 'VCs', 'University']}
-            />
-            {/* <CategoriesList categories={params.tags} /> */}
+            <CategoriesList categories={params.tags} />
           </Stack>
         </Box>
       ),
@@ -246,46 +245,50 @@ export default function DataGrid({ columns, data }: Props): JSX.Element {
           </Typography>
         ))}
       </Box>
-      {data.length > 0 && (
+      {data.pages && data.pages.length > 0 && (
         <>
-          {data.map((row, rowIndex) => (
-            <Box
-              key={rowIndex}
-              sx={{
-                borderBottom: '1px solid',
-                borderColor: alpha(brandColors.grays.main, 0.12),
-                py: 3,
-              }}
-            >
-              <Box
-                key={rowIndex}
-                sx={{
-                  px: { xs: 0, md: 4, lg: 6 },
-                  display: 'grid',
-                  gridTemplateColumns: '2fr 1fr 1fr 1fr 1fr 1fr 1fr',
-                }}
-              >
-                {gridColumns.map((column) => (
-                  <>
-                    {column.cell ? (
-                      <>{column.cell(row)}</>
-                    ) : (
-                      <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                        <Typography
-                          sx={{
-                            fontSize: '14px',
-                            fontWeight: '400',
-                            letterSpacing: '0.17px',
-                          }}
-                        >
-                          {column.valueGetter(row) || row[column.field]}
-                        </Typography>
-                      </Box>
-                    )}
-                  </>
-                ))}
-              </Box>
-            </Box>
+          {data.pages.map((page) => (
+            <>
+              {page.map((row, rowIndex) => (
+                <Box
+                  key={rowIndex}
+                  sx={{
+                    borderBottom: '1px solid',
+                    borderColor: alpha(brandColors.grays.main, 0.12),
+                    py: 3,
+                  }}
+                >
+                  <Box
+                    key={rowIndex}
+                    sx={{
+                      px: { xs: 0, md: 4, lg: 6 },
+                      display: 'grid',
+                      gridTemplateColumns: '2fr 1fr 1fr 1fr 1fr 1fr 1fr',
+                    }}
+                  >
+                    {gridColumns.map((column) => (
+                      <>
+                        {column.cell ? (
+                          <>{column.cell(row)}</>
+                        ) : (
+                          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                            <Typography
+                              sx={{
+                                fontSize: '14px',
+                                fontWeight: '400',
+                                letterSpacing: '0.17px',
+                              }}
+                            >
+                              {column.valueGetter(row) || row[column.field]}
+                            </Typography>
+                          </Box>
+                        )}
+                      </>
+                    ))}
+                  </Box>
+                </Box>
+              ))}
+            </>
           ))}
         </>
       )}

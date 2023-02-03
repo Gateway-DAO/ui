@@ -11,9 +11,10 @@ import {
   GetDataModelStatsQuery,
 } from '../../../../../../services/gateway-protocol/types';
 import { useTab, TabPanel } from '../../../../../atoms/tabs';
-import GridViewTab from './grid-view-tab';
+// import GridViewTab from './grid-view-tab';
 
 const OverviewTab = dynamic(() => import('./overview-tab'), { ssr: false });
+const GridViewTab = dynamic(() => import('./grid-view-tab'), { ssr: false });
 
 type Props = {
   dataModel: PartialDeep<DataModel>;
@@ -60,6 +61,7 @@ export default function DataModelTabs({ dataModel, stats }: Props) {
           columns={credentialGridColumns}
           queryString={query.credentialsByDataModel}
           queryFnName={'findCredentialsByDataModel'}
+          pageSize={3}
         />
       ),
     },
