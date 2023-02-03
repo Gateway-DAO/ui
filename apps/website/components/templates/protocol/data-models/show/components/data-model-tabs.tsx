@@ -101,6 +101,7 @@ export default function DataModelTabs({ dataModel, stats }: Props) {
             width="100%"
             height="800"
             frameBorder="0"
+            scrolling="no"
           ></iframe>
         </>
       ),

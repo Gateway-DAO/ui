@@ -37,7 +37,7 @@ export default function DashboardCard({
         {label}
       </Typography>
       <Stack direction="row" justifyContent="space-between" alignItems="center">
-        <Typography variant="h6">{value.toLocaleString(lang)}</Typography>
+        <Typography variant="h6">{value?.toLocaleString(lang)}</Typography>
         {indicator ? (
           <Chip
             variant="filled"

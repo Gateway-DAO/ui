@@ -18,7 +18,7 @@ import DataModelTabs from './components/data-model-tabs';
 
 type Props = {
   dataModel: PartialDeep<DataModel>;
-  stats?: GetDataModelStatsQuery;
+  stats: GetDataModelStatsQuery;
   isCredentialCreate?: boolean;
 };
 

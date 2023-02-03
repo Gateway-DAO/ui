@@ -13,7 +13,7 @@ import {
 import ExternalLink from '../../../../../atoms/external-link';
 import DashboardCard from '../../../components/dashboard-card';
 import OverviewCardInfo from './overview-card-info';
-import DataTable from './table-schema';
+import TableSchema from './table-schema';
 
 type Props = {
   dataModel: PartialDeep<DataModel>;
@@ -51,7 +51,7 @@ export default function OverviewTab({ dataModel, stats }: Props) {
           value={stats?.getTotalCredentialsByDataModelGroupByRecipient}
         />
       </Stack>
-      <DataTable
+      <TableSchema
         title="Claim"
         data={dataModel?.schema?.properties}
         subtitle1="Field"

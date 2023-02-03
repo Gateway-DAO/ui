@@ -1,4 +1,4 @@
-import { ReactNode, useState } from 'react';
+import { ReactNode } from 'react';
 
 import { useToggle } from 'react-use';
 
@@ -23,7 +23,12 @@ type Props = {
   children: ReactNode;
 };
 
-export default function ClaimField({ type, label, caption, children }: Props) {
+export default function ClaimAccordion({
+  type,
+  label,
+  caption,
+  children,
+}: Props) {
   const [expanded, setExpanded] = useToggle(true);
 
   return (
