@@ -4,11 +4,25 @@ import { Stack, Paper, Typography, Divider, Box, alpha } from '@mui/material';
 
 import { CredentialData } from '../../../../../../services/gateway-protocol/types';
 import CardCell from '../../../components/card-cell';
+import { claimFields } from '../../create/components/ClaimTypes';
+import { ImageView } from './image-view';
+import { ListView } from './list-view';
 
 type Props = {
   title: string;
   data: PartialDeep<CredentialData>[];
 };
+
+function ClaimView(fieldData: PartialDeep<CredentialData>) {
+  switch (fieldData.type) {
+    case claimFields.image:
+      return <ImageView {...fieldData} />;
+    case claimFields.array:
+      return <ListView {...fieldData} />;
+    default:
+      return <span>{fieldData.value}</span>;
+  }
+}
 
 export default function DataTable({ title, data }: Props) {
   return (
@@ -23,27 +37,10 @@ export default function DataTable({ title, data }: Props) {
     >
       <Typography sx={{ px: 2, pt: 2, fontWeight: 700 }}>{title}</Typography>
       <Stack divider={<Divider />}>
-        {data?.map((item, index) => (
+        {data?.map((fieldData, index) => (
           <Stack key={index} direction="row" justifyContent="space-between">
-            <CardCell label={item?.label} margin={false} py={3}>
-              {item.metadata?.contentMediaType ? (
-                <Stack
-                  justifyContent="center"
-                  direction="row"
-                  sx={{
-                    background: alpha('rgba(0,0,0)', 0.25),
-                    mt: 1.5,
-                    borderRadius: 1,
-                    '& > img': {
-                      maxWidth: '350px',
-                    },
-                  }}
-                >
-                  <img src={item.value} alt={item.label} width="100%" />
-                </Stack>
-              ) : (
-                `${item.value}`
-              )}
+            <CardCell label={fieldData?.label} margin={false} py={3}>
+              <ClaimView {...fieldData} />
             </CardCell>
           </Stack>
         ))}
