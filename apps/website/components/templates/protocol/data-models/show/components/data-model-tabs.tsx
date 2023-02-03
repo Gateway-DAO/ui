@@ -1,6 +1,7 @@
 import useTranslation from 'next-translate/useTranslation';
 import dynamic from 'next/dynamic';
 
+import { query } from 'apps/website/constants/queries';
 import { PartialDeep } from 'type-fest/source/partial-deep';
 
 import { Box, Tab, Tabs } from '@mui/material';
@@ -33,33 +34,6 @@ export default function DataModelTabs({ dataModel, stats }: Props) {
     'minted',
   ];
 
-  const credentialData = [
-    {
-      id: 'bd750ea8-8666-4195-859d-acfebf06b8ac',
-      title: 'Valid Person Credential',
-      image: '',
-      createdAt: '2023-01-31T15:21:23.112Z',
-      status: 'Valid',
-      tags: [],
-    },
-    {
-      id: '6814d47a-3571-4092-8ab5-8e5a34a52ec1',
-      title: 'Valid Person Credential',
-      image: '',
-      createdAt: '2023-01-31T17:51:43.238Z',
-      status: 'Revoked',
-      tags: [],
-    },
-    {
-      id: 'yh14d47a-3571-4092-8ab5-8e5a34a52ec1',
-      title: 'Person Credential',
-      image: '',
-      createdAt: '2023-01-31T17:51:43.238Z',
-      status: 'Invalid',
-      tags: [],
-    },
-  ];
-
   const tabs = [
     {
       key: 'overview',
@@ -84,7 +58,8 @@ export default function DataModelTabs({ dataModel, stats }: Props) {
         <GridViewTab
           dataModel={dataModel}
           columns={credentialGridColumns}
-          data={credentialData}
+          queryString={query.credentialsByDataModel}
+          queryFnName={'findCredentialsByDataModel'}
         />
       ),
     },
