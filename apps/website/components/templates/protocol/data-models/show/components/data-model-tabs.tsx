@@ -24,16 +24,41 @@ export default function DataModelTabs({ dataModel, stats }: Props) {
   const { t } = useTranslation('protocol');
 
   const credentialGridColumns = [
-    'Credential ID',
-    'Category',
-    'Issuer ID',
-    'Recipient ID',
-    'Issuance Date',
-    'Status',
-    'Minted',
+    'credential_id',
+    'category',
+    'issuer_id',
+    'recipient_id',
+    'issuance_date',
+    'status',
+    'minted',
   ];
 
-  const credentialRows = [];
+  const credentialData = [
+    {
+      id: 'bd750ea8-8666-4195-859d-acfebf06b8ac',
+      title: 'Valid Person Credential',
+      image: '',
+      createdAt: '2023-01-31T15:21:23.112Z',
+      status: 'Valid',
+      tags: [],
+    },
+    {
+      id: '6814d47a-3571-4092-8ab5-8e5a34a52ec1',
+      title: 'Valid Person Credential',
+      image: '',
+      createdAt: '2023-01-31T17:51:43.238Z',
+      status: 'Revoked',
+      tags: [],
+    },
+    {
+      id: 'yh14d47a-3571-4092-8ab5-8e5a34a52ec1',
+      title: 'Person Credential',
+      image: '',
+      createdAt: '2023-01-31T17:51:43.238Z',
+      status: 'Invalid',
+      tags: [],
+    },
+  ];
 
   const tabs = [
     {
@@ -59,7 +84,7 @@ export default function DataModelTabs({ dataModel, stats }: Props) {
         <GridViewTab
           dataModel={dataModel}
           columns={credentialGridColumns}
-          rows={credentialRows}
+          data={credentialData}
         />
       ),
     },

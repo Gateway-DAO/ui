@@ -1,5 +1,6 @@
 import useTranslation from 'next-translate/useTranslation';
 
+import { useQuery } from '@tanstack/react-query';
 import { PartialDeep } from 'type-fest/source/partial-deep';
 
 import { Stack } from '@mui/material';
@@ -10,21 +11,18 @@ import DataGrid from './data-grid';
 type Props = {
   dataModel: PartialDeep<DataModel>;
   columns: any[];
-  rows: any[];
+  data: any[];
 };
 
-export default function GridViewTab({ dataModel, columns, rows }: Props) {
+export default function GridViewTab({ dataModel, columns, data }: Props) {
   const { t } = useTranslation('protocol');
+
+  // const credentials = useQuery([])
   return (
-    <>
-      <Stack
-        sx={{ maxWidth: '726px', pt: 2, py: 3, px: { xs: 0, md: 4, lg: 6 } }}
-      >
-        Filter
-      </Stack>
+    <Stack sx={{ py: 15 }}>
       <Stack>
-        <DataGrid columns={columns} />
+        <DataGrid columns={columns} data={data} />
       </Stack>
-    </>
+    </Stack>
   );
 }
