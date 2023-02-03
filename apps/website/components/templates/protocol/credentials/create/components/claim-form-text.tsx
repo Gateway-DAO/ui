@@ -2,7 +2,7 @@ import { useFormContext } from 'react-hook-form';
 
 import { TextField } from '@mui/material';
 
-import { ClaimFieldProps } from './ClaimFieldProps';
+import { ClaimFieldProps } from './ClaimTypes';
 
 export default function ClaimFormText({
   type,

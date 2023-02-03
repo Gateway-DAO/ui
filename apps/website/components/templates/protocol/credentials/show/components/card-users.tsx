@@ -51,14 +51,10 @@ export default function CardUsers({
   );
 
   const issuerName =
-    issuer?.data?.username ??
-    issuerCredential.primaryWallet?.ens ??
-    issuerCredential.primaryWallet?.address;
+    issuer?.data?.username ?? issuerCredential.primaryWallet?.address;
 
   const recipientName =
-    recipient?.data?.username ??
-    recipientCredential.primaryWallet?.ens ??
-    recipientCredential.primaryWallet?.address;
+    recipient?.data?.username ?? recipientCredential.primaryWallet?.address;
 
   return (
     <Stack

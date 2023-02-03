@@ -3,7 +3,7 @@ import { useFormContext } from 'react-hook-form';
 import { alpha, Box, Card, Stack } from '@mui/material';
 
 import { ImageDropField } from '../../../../../molecules/image-drop-field';
-import { ClaimFieldProps } from './ClaimFieldProps';
+import { ClaimFieldProps } from './ClaimTypes';
 
 export function ImageField({
   fieldName,

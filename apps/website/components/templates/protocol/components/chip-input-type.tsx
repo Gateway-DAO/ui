@@ -1,3 +1,4 @@
+import DataArrayIcon from '@mui/icons-material/DataArray';
 import InsertLinkIcon from '@mui/icons-material/InsertLink';
 import PhotoIcon from '@mui/icons-material/Photo';
 import PinIcon from '@mui/icons-material/Pin';
@@ -13,6 +14,7 @@ const FieldsIcon = {
   number: PinIcon,
   image: PhotoIcon,
   link: InsertLinkIcon,
+  array: DataArrayIcon,
 };
 
 export default function ChipInputType({ type }: Props) {
