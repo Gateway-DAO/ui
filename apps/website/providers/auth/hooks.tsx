@@ -4,6 +4,7 @@ import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
+import { useWallet } from '@solana/wallet-adapter-react';
 import {
   useMutation,
   useQueries,
@@ -60,8 +61,16 @@ function useSignOut(cb?: () => void) {
  */
 export const useAuthLogin = () => {
   const queryClient = useQueryClient();
-  const { address } = useAccount();
+
+  // EVM
+  const { address: EVMaddress } = useAccount();
   const sign = useSignMessage();
+
+  // Solana
+  const { publicKey: solanaAddress, connecting } = useWallet();
+
+  const address = EVMaddress || solanaAddress?.toString();
+
   const { t } = useTranslation('common');
 
   const session = useSession();

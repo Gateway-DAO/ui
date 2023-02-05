@@ -9,8 +9,6 @@ import {
   useState,
 } from 'react';
 
-import { useConnectModal } from '@rainbow-me/rainbowkit';
-
 import { AuthConnectingModal } from '../../components/organisms/auth-connecting-modal';
 import { AuthModal } from '../../components/organisms/auth-modal';
 import {
@@ -99,10 +97,7 @@ export function AuthProvider({
       }}
     >
       {!isBlocked && children}
-      <AuthModal
-        isOpen={isModalVisible && authStep == 'unauthenticated'}
-        close={() => setModalVisible(false)}
-      />
+      <AuthModal isOpen={isModalVisible} close={() => setModalVisible(false)} />
       <AuthConnectingModal
         step={authStep}
         error={error}

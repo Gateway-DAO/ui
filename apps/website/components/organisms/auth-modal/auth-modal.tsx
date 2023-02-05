@@ -28,7 +28,6 @@ type Props = {
 
 export function AuthModal({ isOpen, close }: Props) {
   // Connectors
-  const { connector: EVMConnector } = useAccount();
   const { setVisible } = useWalletModal();
   const { openConnectModal } = useConnectModal();
 
@@ -40,7 +39,7 @@ export function AuthModal({ isOpen, close }: Props) {
   const { t } = useTranslation('auth');
 
   return (
-    <Dialog open={isOpen} maxWidth="xs">
+    <Dialog open={isOpen} onClose={close} maxWidth="xs">
       <DialogTitle sx={{ textAlign: 'left' }}>
         {t('select-wallet.title')}
       </DialogTitle>
