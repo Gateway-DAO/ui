@@ -1,11 +1,18 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import { Session } from 'next-auth';
 import { useSession, signOut } from 'next-auth/react';
-import { PropsWithChildren, useMemo, useEffect, useCallback } from 'react';
+import {
+  PropsWithChildren,
+  useMemo,
+  useEffect,
+  useCallback,
+  useState,
+} from 'react';
 
 import { useConnectModal } from '@rainbow-me/rainbowkit';
 
 import { AuthConnectingModal } from '../../components/organisms/auth-connecting-modal';
+import { AuthModal } from '../../components/organisms/auth-modal';
 import {
   gqlMethodsWithRefresh,
   gqlUserHeader,
@@ -24,7 +31,7 @@ export function AuthProvider({
   const { data: session } = useSession();
   const token = session?.token;
 
-  const { openConnectModal } = useConnectModal();
+  const [isModalVisible, setModalVisible] = useState(false);
 
   const { me, error, onUpdateMe, authStep, onSignOut, onInvalidateMe } =
     useAuthLogin();
@@ -84,7 +91,7 @@ export function AuthProvider({
         token,
         gqlAuthMethods,
         fetchAuth,
-        onOpenLogin: openConnectModal,
+        onOpenLogin: () => setModalVisible(true),
         onSignOut,
         onUpdateMe,
         onInvalidateMe,
@@ -92,6 +99,10 @@ export function AuthProvider({
       }}
     >
       {!isBlocked && children}
+      <AuthModal
+        isOpen={isModalVisible && authStep == 'unauthenticated'}
+        close={() => setModalVisible(false)}
+      />
       <AuthConnectingModal
         step={authStep}
         error={error}
