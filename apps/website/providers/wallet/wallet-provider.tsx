@@ -1,12 +1,28 @@
-import { Session } from 'next-auth';
-import { SessionProvider, useSession } from 'next-auth/react';
-import { PropsWithChildren } from 'react';
+import { useSession } from 'next-auth/react';
+import { useMemo } from 'react';
 
 import {
   RainbowKitProvider,
   darkTheme as DarkTheme,
   Theme,
 } from '@rainbow-me/rainbowkit';
+import { WalletAdapterNetwork } from '@solana/wallet-adapter-base';
+import {
+  ConnectionProvider,
+  WalletProvider as SolanaWalletProvider,
+} from '@solana/wallet-adapter-react';
+import { WalletModalProvider } from '@solana/wallet-adapter-react-ui';
+import {
+  GlowWalletAdapter,
+  LedgerWalletAdapter,
+  PhantomWalletAdapter,
+  SlopeWalletAdapter,
+  SolflareWalletAdapter,
+  SolletExtensionWalletAdapter,
+  SolletWalletAdapter,
+  TorusWalletAdapter,
+} from '@solana/wallet-adapter-wallets';
+import { clusterApiUrl } from '@solana/web3.js';
 import { WagmiConfig } from 'wagmi';
 
 import { brandColors } from '@gateway/theme';
@@ -29,6 +45,23 @@ const theme: Theme = {
 export function WalletProvider({ children }) {
   const session = useSession();
 
+  const solNetwork = WalletAdapterNetwork.Mainnet;
+  const endpoint = useMemo(() => clusterApiUrl(solNetwork), [solNetwork]);
+  // initialise all the wallets you want to use
+  const wallets = useMemo(
+    () => [
+      new PhantomWalletAdapter(),
+      new GlowWalletAdapter(),
+      new SlopeWalletAdapter(),
+      new SolflareWalletAdapter({ network: solNetwork }),
+      new TorusWalletAdapter(),
+      new LedgerWalletAdapter(),
+      new SolletExtensionWalletAdapter(),
+      new SolletWalletAdapter(),
+    ],
+    [solNetwork]
+  );
+
   return (
     <WagmiConfig client={web3client(!!session)}>
       <RainbowKitProvider
@@ -36,10 +69,14 @@ export function WalletProvider({ children }) {
         modalSize="compact"
         theme={theme}
         appInfo={{
-          appName: 'GatewayDAO',
+          appName: 'Gateway DAO',
         }}
       >
-        {children}
+        <ConnectionProvider endpoint={endpoint}>
+          <SolanaWalletProvider wallets={wallets}>
+            <WalletModalProvider>{children}</WalletModalProvider>
+          </SolanaWalletProvider>
+        </ConnectionProvider>
       </RainbowKitProvider>
     </WagmiConfig>
   );
