@@ -8,49 +8,31 @@ import { brandColors } from '@gateway/theme';
 import { alpha, Typography, Stack } from '@mui/material';
 
 import { DataModel } from '../../../../../../services/gateway-protocol/types';
-import { ClaimFieldProps } from './ClaimFieldProps';
+import { ClaimFieldProps, claimFields, getClaimType } from './ClaimTypes';
 import ClaimAccordion from './claim-accordion';
+import ClaimFormArray from './claim-form-array';
 import ClaimFormText from './claim-form-text';
 import { ImageField } from './image-field';
-
-export const claimTypes = {
-  image: 'image',
-  text: 'text',
-  number: 'number',
-};
-
-export const mapClaimFields = (
-  type: string,
-  contentMediaType: string = null
-) => {
-  if (contentMediaType) return claimTypes.image;
-  switch (type) {
-    case 'string':
-      return claimTypes.text;
-    case 'integer':
-      return claimTypes.number;
-    default:
-      return claimTypes.text;
-  }
-};
-
-function ClaimField(props: ClaimFieldProps) {
-  switch (props.type) {
-    case claimTypes.image:
-      return <ImageField {...props} />;
-    default:
-      return <ClaimFormText {...props} />;
-  }
-}
 
 type Props = {
   dataModel: PartialDeep<DataModel>;
 };
 
+function ClaimField(props: ClaimFieldProps) {
+  switch (props.type) {
+    case claimFields.image:
+      return <ImageField {...props} />;
+    case claimFields.array:
+      return <ClaimFormArray {...props} />;
+    default:
+      return <ClaimFormText {...props} />;
+  }
+}
+
 export default function ClaimForm({ dataModel }: Props) {
   const { t } = useTranslation('protocol');
 
-  const schemaFields = useMemo(() => {
+  const fields = useMemo(() => {
     return dataModel?.schema?.properties;
   }, [dataModel]);
 
@@ -65,26 +47,25 @@ export default function ClaimForm({ dataModel }: Props) {
       >
         {t('data-model.issue-credential.group-claim-description')}
       </Typography>
-      {schemaFields && (
+      {fields && (
         <Stack gap={2}>
-          {Object.keys(schemaFields)?.map((item, index) => {
+          {Object.keys(fields)?.map((item, index) => {
+            const type = getClaimType(
+              fields[item]?.type,
+              fields[item]?.contentMediaType
+            );
             return (
               <ClaimAccordion
                 key={index}
-                type={mapClaimFields(
-                  schemaFields[item]?.type,
-                  schemaFields[item]?.contentMediaType
-                )}
-                label={schemaFields[item]?.title}
+                type={type}
+                label={fields[item]?.title}
               >
                 <ClaimField
-                  label={schemaFields[item]?.title}
-                  type={mapClaimFields(
-                    schemaFields[item]?.type,
-                    schemaFields[item]?.contentMediaType
-                  )}
-                  fieldName={Object.keys(schemaFields)[index]}
-                  contentMediaType={schemaFields[item]?.contentMediaType}
+                  label={fields[item]?.title}
+                  type={type}
+                  fieldName={Object.keys(fields)[index]}
+                  contentMediaType={fields[item]?.contentMediaType}
+                  subType={fields[item]?.items?.type}
                 />
               </ClaimAccordion>
             );
