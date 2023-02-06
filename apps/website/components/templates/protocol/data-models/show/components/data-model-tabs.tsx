@@ -1,6 +1,7 @@
 import useTranslation from 'next-translate/useTranslation';
 import dynamic from 'next/dynamic';
 
+import { DateTime } from 'luxon';
 import { PartialDeep } from 'type-fest/source/partial-deep';
 
 import { Box, Tab, Tabs } from '@mui/material';
@@ -56,6 +57,21 @@ export default function DataModelTabs({ dataModel, stats }: Props) {
     },
   ];
 
+  const issuersGridColumns: IColumnGrid[] = [
+    { column_name: 'issuer_id', header_name: 'Issuer Id' },
+    {
+      column_name: 'issuance_date',
+      header_name: 'Started Using',
+      valueGetter: (params) =>
+        DateTime.fromISO(params.createdAt).toFormat('MM/dd, yyyy'),
+    },
+    {
+      column_name: 'default',
+      header_name: 'Issued',
+      field: 'createdAt', //[ ] Change to issued number
+    },
+  ];
+
   const tabs = [
     {
       key: 'overview',
@@ -68,9 +84,9 @@ export default function DataModelTabs({ dataModel, stats }: Props) {
       section: (
         <GridViewTab
           dataModel={dataModel}
-          columns={credentialGridColumns}
+          columns={issuersGridColumns}
           queryString={query.issuersByDataModel}
-          queryFnName={'findCredentialsByDataModel'}
+          queryFnName={'findIssuersByDataModel'}
           pageSize={3}
         />
       ),

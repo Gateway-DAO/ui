@@ -17,6 +17,8 @@ import { CategoriesList } from '../../../../../molecules/categories-list';
 export interface IColumnGrid {
   header_name: string;
   column_name: ColumnType;
+  valueGetter?: (params: any) => string;
+  field?: string;
 }
 
 type Props = {
@@ -33,13 +35,14 @@ type ColumnType =
   | 'recipient_id'
   | 'issuance_date'
   | 'status'
+  | 'default'
   | 'minted';
 
 type Column = {
   field: string;
   column_name: ColumnType;
   cell?: (params: any) => ReactNode;
-  valueGetter?: (params: any) => any;
+  valueGetter?: (params: any) => string;
   minWidth?: number;
   width?: number;
 };
@@ -104,7 +107,9 @@ const defineCols = (columns: IColumnGrid[]) => {
       cell: (params) => (
         <Box sx={{ display: 'flex', gap: '5px', alignItems: 'center' }}>
           <Stack sx={{ maxWidth: '150px' }}>
-            <CategoriesList categories={params.tags} />
+            {params.tags && params.tags.length > 0 && (
+              <CategoriesList categories={params.tags} />
+            )}
           </Stack>
         </Box>
       ),
@@ -168,7 +173,7 @@ const defineCols = (columns: IColumnGrid[]) => {
       field: 'createdAt',
       column_name: 'issuance_date',
       valueGetter: (params) =>
-        DateTime.fromISO(params.createdAt).toFormat('MM/dd/yy, HH:mm a'),
+        DateTime.fromISO(params.createdAt).toFormat('MMM dd, yyyy'),
     },
     {
       field: 'status',
@@ -227,25 +232,6 @@ const defineCols = (columns: IColumnGrid[]) => {
     }
     return { ...column };
   });
-
-  // return allColumns.map((column) => {
-  //   const op = columns.some((pColumn) => pColumn.column_name === column.column_name)
-  //   }
-  //   return {
-  //     ...column,
-  //     ...op
-  //   }
-  // );
-
-  // return allColumns.filter((column) =>
-  //   columns.some((patCollumn) => patCollumn.column_name === column.column_name)
-  // );
-
-  // return allColumns
-  //   .filter((column) => columns.includes(column.column_name))
-  //   .sort(
-  //     (a, b) => columns.indexOf(a.column_name) - columns.indexOf(b.column_name)
-  //   );
 };
 
 export default function DataGrid({ columns, data }: Props): JSX.Element {
@@ -310,7 +296,9 @@ export default function DataGrid({ columns, data }: Props): JSX.Element {
                                 letterSpacing: '0.17px',
                               }}
                             >
-                              {column.valueGetter(row) || row[column.field]}
+                              {column.valueGetter
+                                ? column.valueGetter(row)
+                                : row[column.field]}
                             </Typography>
                           </Box>
                         )}
