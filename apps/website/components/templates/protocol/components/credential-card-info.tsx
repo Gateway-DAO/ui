@@ -46,8 +46,8 @@ export default function CredentialCardInfo({
       divider={<Divider sx={{ width: '100%' }} />}
     >
       <CardUsers
-        issuer={credential?.issuer}
-        recipient={credential?.recipient}
+        issuer={credential?.issuerUser}
+        recipient={credential?.recipientUser}
       />
       <Stack
         alignItems="stretch"

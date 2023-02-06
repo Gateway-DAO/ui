@@ -48,7 +48,7 @@ export default function IssueByForm() {
 
   useEffect(() => {
     if (issuer?.data) {
-      setValue('issuerId', issuer?.data?.id);
+      setValue('issuerUserId', issuer?.data?.id);
     }
   }, [issuer, setValue]);
 
@@ -89,7 +89,7 @@ export default function IssueByForm() {
             <Select
               id="chains"
               sx={{ maxWidth: { md: '50%', xs: '100%' } }}
-              {...register('issuerId')}
+              {...register('issuerUserId')}
               label={t('data-model.issue-credential.issue-by')}
               defaultValue={
                 issuer?.data?.id || {

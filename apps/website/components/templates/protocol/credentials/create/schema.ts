@@ -20,8 +20,9 @@ export const createCredentialSchema = z.object({
   claim: definedNonNullAnySchema.nullish(),
   dataModelId: z.string(),
   image: z.string().nullish(),
-  issuerId: z.string(),
-  recipientId: z
+  issuerUserId: z.string(),
+  issuerOrganizationId: z.string(),
+  recipientUserId: z
     .string({ required_error: 'Recipient is required' })
     .min(2, 'The recipient must contain at least 2 character(s)'),
   status: definedNonNullAnySchema.nullish(),

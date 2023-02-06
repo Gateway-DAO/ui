@@ -23,15 +23,17 @@ export default function OverviewCardInfo({ dataModel }: Props) {
   const isMobile = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
 
   // MOCK
-  const mockDataModel: any = dataModel;
-  mockDataModel.createdBy = {
-    id: '63bc7fc62e7bd8b316b77133',
-    slug: 'gateway',
-  };
+  let mockDataModel: any = dataModel;
+  mockDataModel
+    ? (mockDataModel.createdBy = {
+        id: '63bc7fc62e7bd8b316b77133',
+        slug: 'gateway',
+      })
+    : (mockDataModel = null);
   // MOCK - END
 
   const creator = useQuery(
-    ['issuer', mockDataModel.id],
+    ['issuer', mockDataModel?.id],
     () =>
       gqlAnonMethods.dao_profile_by_slug({
         slug: 'gateway',
