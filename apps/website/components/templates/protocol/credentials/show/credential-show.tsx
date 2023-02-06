@@ -3,7 +3,14 @@ import dynamic from 'next/dynamic';
 
 import { PartialDeep } from 'type-fest';
 
-import { Divider, Stack, SxProps, Typography } from '@mui/material';
+import {
+  Alert,
+  AlertTitle,
+  Divider,
+  Stack,
+  SxProps,
+  Typography,
+} from '@mui/material';
 import { Theme } from '@mui/material/styles/createTheme';
 
 import { Credential } from '../../../../../services/gateway-protocol/types';
@@ -13,6 +20,7 @@ import Tags from '../../components/tags';
 import Activities from './components/activities';
 import CredentialTitleAndImage from './components/credential-title-and-image';
 import DataTable from './components/data-table';
+import { brandColors } from '../../../../../../../libs/theme/src';
 
 const CredentialCardInfo = dynamic(
   () => {
@@ -64,6 +72,31 @@ export default function CredentialProtocolShow({ credential }: Props) {
         <Typography sx={{ mb: 3 }}>{credential?.description}</Typography>
         <CredentialCardInfo credential={credential} />
         <MintCredentialButton sx={{ height: '48px' }} credential={credMint} />
+
+        {credMint.status == 'invalid' && (
+          <Alert
+            variant="outlined"
+            severity="error"
+            sx={{
+              borderRadius: 2,
+              borderColor: '#FF002E',
+              '.MuiAlert-icon': {
+                alignItems: 'center',
+              },
+            }}
+          >
+            <AlertTitle
+              sx={{
+                fontWeight: 600,
+                color: brandColors.red.main,
+              }}
+            >
+              {t('credential.alert-title')}
+            </AlertTitle>
+            {t('credential.alert-description')}
+          </Alert>
+        )}
+
         {activities?.length > 0 && <Activities activities={activities} />}
       </Stack>
       <Divider sx={{ mt: 3, mb: 4, marginLeft: '2px' }} />

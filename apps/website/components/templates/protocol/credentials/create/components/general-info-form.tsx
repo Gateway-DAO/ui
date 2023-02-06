@@ -44,7 +44,6 @@ export default function GeneralInfoForm() {
       </Typography>
       <Stack gap={3}>
         <TextField
-          autoFocus
           InputProps={{
             disableUnderline: true,
             sx: {

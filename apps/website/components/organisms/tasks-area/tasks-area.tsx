@@ -112,7 +112,25 @@ const TaskArea = ({ draftTasks, onDelete }: TaskAreaProps) => {
     if (!result.destination) {
       return;
     }
-    swap(result.source.index, result.destination.index);
+
+    if (result.source.index < result.destination.index) {
+      for (
+        let current = result.source.index;
+        current < result.destination.index;
+        current++
+      ) {
+        swap(current, current + 1);
+      }
+    } else {
+      console.log(result);
+      for (
+        let current = result.source.index;
+        current > result.destination.index;
+        current--
+      ) {
+        swap(current, current - 1);
+      }
+    }
   };
 
   return (

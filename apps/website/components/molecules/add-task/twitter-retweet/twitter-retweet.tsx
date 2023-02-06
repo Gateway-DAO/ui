@@ -19,12 +19,11 @@ import {
 } from '@mui/material';
 
 import { useAuth } from '../../../../providers/auth';
-
+import { TaskIcon } from '../../../atoms/task-icon';
 import {
   CreateGateData,
   TwitterRetweetDataError,
 } from '../../../templates/create-gate/schema';
-import { TaskIcon } from 'apps/website/components/atoms/task-icon';
 
 const TwitterRetweetTask = ({ dragAndDrop, taskId, deleteTask }) => {
   const { gqlAuthMethods } = useAuth();
@@ -49,8 +48,8 @@ const TwitterRetweetTask = ({ dragAndDrop, taskId, deleteTask }) => {
     setTaskIsMoving(dragAndDrop);
   }, [dragAndDrop]);
 
-  const [taskVisible, setTaskVisible] = useState(false);
-  const [taskIsMoving, setTaskIsMoving] = useState(false);
+  const [taskVisible, setTaskVisible] = useState(true);
+  const [taskIsMoving, setTaskIsMoving] = useState(true);
 
   const {
     mutate: getTwitterMutateTweet,
@@ -117,7 +116,6 @@ const TwitterRetweetTask = ({ dragAndDrop, taskId, deleteTask }) => {
             <Typography variant="subtitle2">Retweet Post</Typography>
             <TextField
               variant="standard"
-              autoFocus
               sx={{
                 minWidth: { md: '600px', xs: '110%' },
                 maxWidth: { xs: '100%', md: '110%' },
