@@ -30,7 +30,7 @@ export default function OverviewTab({ dataModel, stats }: Props) {
       <Stack direction="row" justifyContent="flex-end" sx={{ mb: 2 }}>
         <ExternalLink
           text={t('data-model.arweave-hash')}
-          url={dataModel.arweaveInfo?.url}
+          url={dataModel?.arweaveInfo?.url}
         />
       </Stack>
       <Stack

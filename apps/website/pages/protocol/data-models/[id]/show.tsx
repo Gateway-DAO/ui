@@ -27,18 +27,23 @@ export default function ProtocolDataModel({ dataModel, stats }: Props) {
 }
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-  const dataModel = await gatewayProtocolSDK.dataModel({
-    id: ctx.query.id as string,
-  });
+  try {
+    const dataModel = await gatewayProtocolSDK.dataModel({
+      id: ctx.query.id as string,
+    });
 
-  const stats = await gatewayProtocolSDK.getDataModelStats({
-    dataModelId: ctx.query.id as string,
-  });
+    const stats = await gatewayProtocolSDK.getDataModelStats({
+      dataModelId: ctx.query.id as string,
+    });
 
-  return {
-    props: {
-      dataModel: dataModel?.dataModel,
-      stats,
-    },
-  };
+    return {
+      props: {
+        dataModel: dataModel?.dataModel,
+        stats,
+      },
+    };
+  } catch (e) {
+    console.log(e);
+    return {};
+  }
 };

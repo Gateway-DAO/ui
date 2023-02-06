@@ -61,26 +61,27 @@ export default function TableSchema({
       </Stack>
 
       <Stack divider={<Divider />}>
-        {Object.keys(data)?.map((item, index) => (
-          <Stack
-            key={index}
-            direction="row"
-            justifyContent="space-between"
-            alignItems="center"
-          >
-            <CardCell label={data[item].title} margin={false} py={3}>
-              {data[item].description}
-            </CardCell>
-            <Stack sx={{ mr: 2, my: 2 }}>
-              <ChipInputType
-                type={getClaimType(
-                  data[item]?.type,
-                  data[item]?.contentMediaType
-                )}
-              />
+        {data &&
+          Object.keys(data)?.map((item, index) => (
+            <Stack
+              key={index}
+              direction="row"
+              justifyContent="space-between"
+              alignItems="center"
+            >
+              <CardCell label={data[item].title} margin={false} py={3}>
+                {data[item].description}
+              </CardCell>
+              <Stack sx={{ mr: 2, my: 2 }}>
+                <ChipInputType
+                  type={getClaimType(
+                    data[item]?.type,
+                    data[item]?.contentMediaType
+                  )}
+                />
+              </Stack>
             </Stack>
-          </Stack>
-        ))}
+          ))}
       </Stack>
     </Paper>
   );
