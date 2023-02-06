@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { ajvResolver } from '@hookform/resolvers/ajv';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
+import { fullFormats } from 'ajv-formats/dist/formats';
 import { useSnackbar } from 'notistack';
 import { FormProvider, useForm } from 'react-hook-form';
 import { PartialDeep } from 'type-fest/source/partial-deep';
@@ -52,11 +53,9 @@ export default function CredentialCreateForm({
         _,
         options as any
       );
-      const claimResult = await ajvResolver(dataModel?.schema)(
-        claim,
-        _,
-        options as any
-      );
+      const claimResult = await ajvResolver(dataModel?.schema, {
+        formats: fullFormats,
+      })(claim, _, options as any);
 
       return {
         values: {
@@ -97,9 +96,17 @@ export default function CredentialCreateForm({
     const claimProps = dataModel?.schema?.properties;
     if (!Object.keys(claimProps)) return data;
     for (const item of Object.keys(claimProps)) {
-      if (claimProps[item]?.contentMediaType && data?.claim[item]) {
-        const picture = await uploadArweave.mutateAsync(data?.claim[item]);
-        data.claim[item] = picture?.upload_arweave?.url;
+      if (
+        claimProps[item]?.contentMediaType &&
+        data?.claim[item] &&
+        data?.claim[item].indexOf('https://') === -1
+      ) {
+        try {
+          const picture = await uploadArweave.mutateAsync(data?.claim[item]);
+          data.claim[item] = picture?.upload_arweave?.url;
+        } catch (e) {
+          enqueueSnackbar(t('data-model.error-on-upload'));
+        }
       }
     }
     return data;
@@ -109,18 +116,15 @@ export default function CredentialCreateForm({
     if (!(await methods.trigger())) return;
 
     try {
-      await uploadClaimImages(data)
-        .then(async (res) => {
-          data = res;
-          const response = await createCredential.mutateAsync(
-            data as CreateCredentialMutationVariables
-          );
-          setCredentialCreated(response?.createCredential?.id);
-          methods.reset();
-        })
-        .catch((e) => {
-          enqueueSnackbar(t('data-model.error-on-upload'));
-        });
+      const newData = data;
+      await uploadClaimImages(newData).then(async (res) => {
+        await createCredential
+          .mutateAsync(res as CreateCredentialMutationVariables)
+          .then((suc) => {
+            setCredentialCreated(suc?.createCredential?.id);
+            methods.reset();
+          });
+      });
     } catch (e) {
       enqueueSnackbar(t('data-model.error-on-create-credential'));
     }
@@ -147,7 +151,7 @@ export default function CredentialCreateForm({
             id="create-credential-form"
             onSubmit={methods.handleSubmit(handleMutation)}
           >
-            {createCredential.isLoading || uploadArweave.isLoading ? (
+            {(createCredential.isLoading || uploadArweave.isLoading) && (
               <Box
                 key="loading"
                 sx={{
@@ -158,19 +162,24 @@ export default function CredentialCreateForm({
               >
                 <CircularProgress sx={{ mt: 2 }} />
               </Box>
-            ) : (
-              <Stack
-                divider={
-                  <Divider sx={{ mb: 2, mt: 2, mx: { xs: -3, md: -6 } }} />
-                }
-                gap={3}
-              >
-                <IssueByForm />
-                <GeneralInfoForm />
-                <ClaimForm dataModel={dataModel} />
-                <RecipientForm />
-              </Stack>
             )}
+            <Stack
+              sx={{
+                display:
+                  createCredential.isLoading || uploadArweave.isLoading
+                    ? 'none'
+                    : 'flex',
+              }}
+              divider={
+                <Divider sx={{ mb: 2, mt: 2, mx: { xs: -3, md: -6 } }} />
+              }
+              gap={3}
+            >
+              <IssueByForm />
+              <GeneralInfoForm />
+              <ClaimForm dataModel={dataModel} />
+              <RecipientForm />
+            </Stack>
             <LoadingButton
               variant="contained"
               isLoading={createCredential.isLoading || uploadArweave.isLoading}
