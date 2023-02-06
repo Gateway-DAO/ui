@@ -1,3 +1,4 @@
+import useTranslation from 'next-translate/useTranslation';
 import Image from 'next/image';
 import { ReactNode } from 'react';
 
@@ -13,10 +14,15 @@ import { alpha, Stack, Box } from '@mui/material';
 import NetworkTransactionLink from '../../../../../atoms/network-transaction-link';
 import { CategoriesList } from '../../../../../molecules/categories-list';
 
+export interface IColumnGrid {
+  header_name: string;
+  column_name: ColumnType;
+}
+
 type Props = {
-  columns: ColumnType[];
+  columns: IColumnGrid[];
   data: {
-    pages: any[];
+    pages: any[]; // [ ] Add interface/type
   };
 };
 
@@ -31,7 +37,6 @@ type ColumnType =
 
 type Column = {
   field: string;
-  headerName: string;
   column_name: ColumnType;
   cell?: (params: any) => ReactNode;
   valueGetter?: (params: any) => any;
@@ -55,17 +60,16 @@ const setColorStatus = (status: 'Valid' | 'Invalid' | string): string => {
   }
 };
 
-const defineCols = (columns: ColumnType[]) => {
+const defineCols = (columns: IColumnGrid[]) => {
   const allColumns: Column[] = [
     {
       field: 'credential_id',
-      headerName: 'Credential ID',
       column_name: 'credential_id',
       cell: (params) => (
         <Box sx={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
           <Image
-            src="/images/qr-code-blur.png"
-            alt="QR code"
+            src="/images/qr-code-blur.png" //[ ] Remove mock
+            alt="QR Code"
             width="56"
             height="56"
           />
@@ -96,7 +100,6 @@ const defineCols = (columns: ColumnType[]) => {
     },
     {
       field: 'category',
-      headerName: 'Category',
       column_name: 'category',
       cell: (params) => (
         <Box sx={{ display: 'flex', gap: '5px', alignItems: 'center' }}>
@@ -108,13 +111,12 @@ const defineCols = (columns: ColumnType[]) => {
     },
     {
       field: 'issuer_id',
-      headerName: 'Issuer ID',
       column_name: 'issuer_id',
       cell: (params) => (
         <Box sx={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <Avatar
             alt="Name"
-            src="https://upload.wikimedia.org/wikipedia/en/thumb/2/29/Harvard_shield_wreath.svg/1024px-Harvard_shield_wreath.svg.png"
+            src="https://upload.wikimedia.org/wikipedia/en/thumb/2/29/Harvard_shield_wreath.svg/1024px-Harvard_shield_wreath.svg.png" //[ ] Remove mock
             sx={{ width: 24, height: 24 }}
           />
           <Box sx={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
@@ -130,6 +132,7 @@ const defineCols = (columns: ColumnType[]) => {
               }}
             >
               {params.issuer?.id || 'Dummy name'}
+              {/* [ ] Remove mock */}
             </Typography>
             <Tooltip title="Tooltip message">
               <VerifiedIcon sx={{ color: brandColors.purple.main }} />
@@ -140,13 +143,12 @@ const defineCols = (columns: ColumnType[]) => {
     },
     {
       field: 'recipient_id',
-      headerName: 'Recipient ID',
       column_name: 'recipient_id',
       cell: (params) => (
         <Box sx={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
           <Avatar
             alt="Name"
-            src="https://upload.wikimedia.org/wikipedia/en/thumb/2/29/Harvard_shield_wreath.svg/1024px-Harvard_shield_wreath.svg.png"
+            src="https://upload.wikimedia.org/wikipedia/en/thumb/2/29/Harvard_shield_wreath.svg/1024px-Harvard_shield_wreath.svg.png" //[ ] Remove mock
             sx={{ width: 24, height: 24 }}
           />
           <Typography
@@ -157,20 +159,19 @@ const defineCols = (columns: ColumnType[]) => {
             }}
           >
             username
+            {/* [ ] Remove mock */}
           </Typography>
         </Box>
       ),
     },
     {
       field: 'createdAt',
-      headerName: 'Issuance Date',
       column_name: 'issuance_date',
       valueGetter: (params) =>
         DateTime.fromISO(params.createdAt).toFormat('MM/dd/yy, HH:mm a'),
     },
     {
       field: 'status',
-      headerName: 'Status',
       column_name: 'status',
       cell: (params) => (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -187,11 +188,11 @@ const defineCols = (columns: ColumnType[]) => {
     },
     {
       field: 'minted',
-      headerName: 'Minted',
       column_name: 'minted',
       cell: (params) => (
         <Box sx={{ display: 'flex', gap: '5px', alignItems: 'center' }}>
           <NetworkTransactionLink url="#">
+            {/* [ ] Remove mock */}
             <Image
               src="/images/polygon-icon.svg"
               alt="Polygon icon"
@@ -200,6 +201,8 @@ const defineCols = (columns: ColumnType[]) => {
             />
           </NetworkTransactionLink>
           <NetworkTransactionLink url="#">
+            {/* [ ] Remove mock */}
+
             <Image
               src="/images/solana-icon.svg"
               alt="Polygon icon"
@@ -212,14 +215,42 @@ const defineCols = (columns: ColumnType[]) => {
     },
   ];
 
-  return allColumns
-    .filter((column) => columns.includes(column.column_name))
-    .sort(
-      (a, b) => columns.indexOf(a.column_name) - columns.indexOf(b.column_name)
+  return columns.map((column) => {
+    const i = allColumns.findIndex(
+      (pColumn) => pColumn.column_name === column.column_name
     );
+    if (i > -1) {
+      return {
+        ...column,
+        ...allColumns[i],
+      };
+    }
+    return { ...column };
+  });
+
+  // return allColumns.map((column) => {
+  //   const op = columns.some((pColumn) => pColumn.column_name === column.column_name)
+  //   }
+  //   return {
+  //     ...column,
+  //     ...op
+  //   }
+  // );
+
+  // return allColumns.filter((column) =>
+  //   columns.some((patCollumn) => patCollumn.column_name === column.column_name)
+  // );
+
+  // return allColumns
+  //   .filter((column) => columns.includes(column.column_name))
+  //   .sort(
+  //     (a, b) => columns.indexOf(a.column_name) - columns.indexOf(b.column_name)
+  //   );
 };
 
 export default function DataGrid({ columns, data }: Props): JSX.Element {
+  const { t } = useTranslation('protocol');
+
   const gridColumns = defineCols(columns);
   return (
     <>
@@ -241,7 +272,7 @@ export default function DataGrid({ columns, data }: Props): JSX.Element {
             }}
             key={column.field}
           >
-            {column.headerName}
+            {column.header_name}
           </Typography>
         ))}
       </Box>

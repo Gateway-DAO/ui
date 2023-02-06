@@ -1,17 +1,17 @@
 import useTranslation from 'next-translate/useTranslation';
 import dynamic from 'next/dynamic';
 
-import { query } from 'apps/website/constants/queries';
 import { PartialDeep } from 'type-fest/source/partial-deep';
 
 import { Box, Tab, Tabs } from '@mui/material';
 
+import { query } from '../../../../../../constants/queries';
 import {
   DataModel,
   GetDataModelStatsQuery,
 } from '../../../../../../services/gateway-protocol/types';
 import { useTab, TabPanel } from '../../../../../atoms/tabs';
-// import GridViewTab from './grid-view-tab';
+import { IColumnGrid } from './data-grid';
 
 const OverviewTab = dynamic(() => import('./overview-tab'), { ssr: false });
 const GridViewTab = dynamic(() => import('./grid-view-tab'), { ssr: false });
@@ -25,14 +25,35 @@ export default function DataModelTabs({ dataModel, stats }: Props) {
   const { activeTab, handleTabChange, setTab } = useTab();
   const { t } = useTranslation('protocol');
 
-  const credentialGridColumns = [
-    'credential_id',
-    'category',
-    'issuer_id',
-    'recipient_id',
-    'issuance_date',
-    'status',
-    'minted',
+  const credentialGridColumns: IColumnGrid[] = [
+    {
+      column_name: 'credential_id',
+      header_name: `${t('data-model.credentials-table.credential_id')}`,
+    },
+    {
+      column_name: 'category',
+      header_name: `${t('data-model.credentials-table.category')}`,
+    },
+    {
+      column_name: 'issuer_id',
+      header_name: `${t('data-model.credentials-table.issuer_id')}`,
+    },
+    {
+      column_name: 'recipient_id',
+      header_name: `${t('data-model.credentials-table.recipient_id')}`,
+    },
+    {
+      column_name: 'issuance_date',
+      header_name: `${t('data-model.credentials-table.issuance_date')}`,
+    },
+    {
+      column_name: 'status',
+      header_name: `${t('data-model.credentials-table.status')}`,
+    },
+    {
+      column_name: 'minted',
+      header_name: `${t('data-model.credentials-table.minted')}`,
+    },
   ];
 
   const tabs = [

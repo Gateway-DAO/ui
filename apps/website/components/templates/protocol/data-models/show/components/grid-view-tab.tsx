@@ -16,7 +16,7 @@ import DataGrid from './data-grid';
 
 type Props = {
   dataModel: PartialDeep<DataModel>;
-  columns: any[];
+  columns: any[]; //[ ] add interface/type
   queryString: string;
   queryFnName: keyof GatewayProtocolSDKTypes;
   pageSize?: number;
@@ -44,7 +44,7 @@ export default function GridViewTab({
         dataModelId: dataModel.id,
         take: internalPageSize,
         skip: pageParam || 0,
-      } as any);
+      } as any); //[ ] add interface/type
       return result[queryFnName];
     },
     {
