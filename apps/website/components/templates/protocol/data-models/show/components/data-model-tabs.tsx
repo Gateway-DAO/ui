@@ -65,7 +65,15 @@ export default function DataModelTabs({ dataModel, stats }: Props) {
     {
       key: 'issuers',
       label: t('common:tabs.issuers'),
-      section: <>Issuers</>,
+      section: (
+        <GridViewTab
+          dataModel={dataModel}
+          columns={credentialGridColumns}
+          queryString={query.issuersByDataModel}
+          queryFnName={'findCredentialsByDataModel'}
+          pageSize={3}
+        />
+      ),
     },
     {
       key: 'recipients',
