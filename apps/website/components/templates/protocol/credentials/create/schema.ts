@@ -21,7 +21,7 @@ export const createCredentialSchema = z.object({
   dataModelId: z.string(),
   image: z.string().nullish(),
   issuerUserId: z.string(),
-  issuerOrganizationId: z.string(),
+  issuerOrganizationId: z.string().nullish(),
   recipientUserId: z
     .string({ required_error: 'Recipient is required' })
     .min(2, 'The recipient must contain at least 2 character(s)'),
