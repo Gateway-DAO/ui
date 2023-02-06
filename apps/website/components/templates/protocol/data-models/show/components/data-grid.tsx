@@ -243,7 +243,7 @@ export default function DataGrid({ columns, data }: Props): JSX.Element {
       <Box
         sx={{
           display: 'grid',
-          gridTemplateColumns: '2fr 1fr 1fr 1fr 1fr 1fr 1fr',
+          gridTemplateColumns: '2fr 1fr 1fr 1fr 1fr 1fr 1fr', //[ ] This size should be dynamic
           px: { xs: 0, md: 4, lg: 6 },
         }}
       >
@@ -280,12 +280,12 @@ export default function DataGrid({ columns, data }: Props): JSX.Element {
                     sx={{
                       px: { xs: 0, md: 4, lg: 6 },
                       display: 'grid',
-                      gridTemplateColumns: '2fr 1fr 1fr 1fr 1fr 1fr 1fr',
+                      gridTemplateColumns: '2fr 1fr 1fr 1fr 1fr 1fr 1fr', //[ ] This size should be dynamic
                     }}
                   >
                     {gridColumns.map((column) => (
                       <>
-                        {column.cell ? (
+                        {column.cell ? ( // [ ] Check this property issue
                           <>{column.cell(row)}</>
                         ) : (
                           <Box sx={{ display: 'flex', alignItems: 'center' }}>

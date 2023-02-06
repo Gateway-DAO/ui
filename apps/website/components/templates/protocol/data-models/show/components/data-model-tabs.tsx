@@ -72,6 +72,21 @@ export default function DataModelTabs({ dataModel, stats }: Props) {
     },
   ];
 
+  const recipientsGridColumns: IColumnGrid[] = [
+    //[ ] Update all columns
+    { column_name: 'issuer_id', header_name: 'Recipient ID' },
+    {
+      column_name: 'default',
+      header_name: 'Received Credentials',
+      field: 'id',
+    },
+    {
+      column_name: 'default',
+      header_name: 'Minted',
+      field: 'id',
+    },
+  ];
+
   const tabs = [
     {
       key: 'overview',
@@ -94,7 +109,15 @@ export default function DataModelTabs({ dataModel, stats }: Props) {
     {
       key: 'recipients',
       label: t('common:tabs.recipients'),
-      section: <>Recipients</>,
+      section: (
+        <GridViewTab
+          dataModel={dataModel}
+          columns={recipientsGridColumns}
+          queryString={query.recipientsByDataModel}
+          queryFnName={'findRecipientsByDataModel'}
+          pageSize={3}
+        />
+      ),
     },
     {
       key: 'credentials',
