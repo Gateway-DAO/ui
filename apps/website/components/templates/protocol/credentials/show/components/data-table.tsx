@@ -4,7 +4,7 @@ import { Stack, Paper, Typography, Divider, Box, alpha } from '@mui/material';
 
 import { CredentialData } from '../../../../../../services/gateway-protocol/types';
 import CardCell from '../../../components/card-cell';
-import { claimFields } from '../../create/components/ClaimTypes';
+import { claimFields, getClaimType } from '../../create/components/ClaimTypes';
 import { ImageView } from './image-view';
 import { ListView } from './list-view';
 
@@ -14,7 +14,12 @@ type Props = {
 };
 
 function ClaimView(fieldData: PartialDeep<CredentialData>) {
-  switch (fieldData.type) {
+  const type = getClaimType(
+    fieldData.type,
+    fieldData.metadata?.contentMediaType,
+    fieldData.metadata?.format
+  );
+  switch (type) {
     case claimFields.image:
       return <ImageView {...fieldData} />;
     case claimFields.array:
