@@ -115,7 +115,7 @@ export function TaskList({
       ) : isCredentialExpired ? (
         <Typography
           sx={{
-            marginX: TOKENS.CONTAINER_PX,
+            margin: { xs: '16px 16px 40px 16px', md: '16px 75px 16px 75px' },
             py: 1,
             px: 4,
             border: 1,
