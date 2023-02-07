@@ -9,6 +9,8 @@ import { useSnackbar } from 'notistack';
 import { useForm } from 'react-hook-form';
 import { PartialDeep } from 'type-fest/source/partial-deep';
 
+import { Divider, Stack } from '@mui/material';
+
 import { useAuth } from '../../../../../providers/auth';
 import { gatewayProtocolSDK } from '../../../../../services/gateway-protocol/api';
 import {
@@ -131,12 +133,15 @@ export default function CredentialCreateForm({
           loading={createCredential.isLoading || uploadArweave.isLoading}
           onSubmit={methods.handleSubmit(handleMutation)}
         >
-          <>
+          <Stack
+            divider={<Divider sx={{ mb: 2, mt: 2, mx: { xs: -3, md: -6 } }} />}
+            gap={3}
+          >
             <IssueByForm />
             <GeneralInfoForm />
             <ClaimForm dataModel={dataModel} />
             <RecipientForm />
-          </>
+          </Stack>
         </CredentialCreateContainer>
       )}
     </>
