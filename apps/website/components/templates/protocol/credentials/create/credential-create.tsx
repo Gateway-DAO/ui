@@ -6,18 +6,9 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { fullFormats } from 'ajv-formats/dist/formats';
 import { useSnackbar } from 'notistack';
-import { FormProvider, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { PartialDeep } from 'type-fest/source/partial-deep';
 
-import {
-  Box,
-  CircularProgress,
-  Divider,
-  Stack,
-  Typography,
-} from '@mui/material';
-
-import { LoadingButton } from '../../../../../components/atoms/loading-button';
 import { useAuth } from '../../../../../providers/auth';
 import { gatewayProtocolSDK } from '../../../../../services/gateway-protocol/api';
 import {
@@ -26,6 +17,7 @@ import {
 } from '../../../../../services/gateway-protocol/types';
 import { DataModel } from '../../../../../services/gateway-protocol/types';
 import ClaimForm from './components/claim-form';
+import CredentialCreateContainer from './components/credential-create-container';
 import GeneralInfoForm from './components/general-info-form';
 import IssueByForm from './components/issue-by-form';
 import RecipientForm from './components/recipient-form';
@@ -64,7 +56,6 @@ export default function CredentialCreateForm({
         },
         errors: {
           ...zodResult.errors,
-          // only add claim errors if claimResult.errors is not empty
           ...(Object.keys(claimResult.errors).length > 0 && {
             claim: claimResult.errors,
           }),
@@ -135,66 +126,18 @@ export default function CredentialCreateForm({
       {credentialCreated ? (
         <SuccessfullyCreated credentialId={credentialCreated} />
       ) : (
-        <FormProvider {...methods}>
-          <Typography
-            variant="h5"
-            sx={{
-              mb: 3,
-              position: 'absolute',
-              top: { xs: '28px', md: '48px' },
-            }}
-          >
-            {t('data-model.issue-credential-title')}
-          </Typography>
-          <Stack
-            component="form"
-            id="create-credential-form"
-            onSubmit={methods.handleSubmit(handleMutation)}
-          >
-            {(createCredential.isLoading || uploadArweave.isLoading) && (
-              <Box
-                key="loading"
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-              >
-                <CircularProgress sx={{ mt: 2 }} />
-              </Box>
-            )}
-            <Stack
-              sx={{
-                display:
-                  createCredential.isLoading || uploadArweave.isLoading
-                    ? 'none'
-                    : 'flex',
-              }}
-              divider={
-                <Divider sx={{ mb: 2, mt: 2, mx: { xs: -3, md: -6 } }} />
-              }
-              gap={3}
-            >
-              <IssueByForm />
-              <GeneralInfoForm />
-              <ClaimForm dataModel={dataModel} />
-              <RecipientForm />
-            </Stack>
-            <LoadingButton
-              variant="contained"
-              isLoading={createCredential.isLoading || uploadArweave.isLoading}
-              type="submit"
-              sx={() => ({
-                height: '42px',
-                display: 'flex',
-                borderRadius: '20px',
-                mt: 3,
-              })}
-            >
-              {t('data-model.actions.issue-credential')}
-            </LoadingButton>
-          </Stack>
-        </FormProvider>
+        <CredentialCreateContainer
+          methods={methods}
+          loading={createCredential.isLoading || uploadArweave.isLoading}
+          onSubmit={methods.handleSubmit(handleMutation)}
+        >
+          <>
+            <IssueByForm />
+            <GeneralInfoForm />
+            <ClaimForm dataModel={dataModel} />
+            <RecipientForm />
+          </>
+        </CredentialCreateContainer>
       )}
     </>
   );
