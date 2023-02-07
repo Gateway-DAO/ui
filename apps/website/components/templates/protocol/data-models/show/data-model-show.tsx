@@ -62,7 +62,10 @@ export default function DataModelShow({
       <DataModelTabs dataModel={dataModel} stats={stats} />
 
       {me?.id && (
-        <ModalRight open={openCreateCredential}>
+        <ModalRight
+          open={openCreateCredential}
+          handleClose={setOpenCreateCredential}
+        >
           <Stack
             sx={{
               pt: { xs: 3, md: 6 },
