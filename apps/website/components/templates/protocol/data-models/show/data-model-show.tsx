@@ -3,7 +3,10 @@ import useTranslation from 'next-translate/useTranslation';
 import { useToggle } from 'react-use';
 import { PartialDeep } from 'type-fest/source/partial-deep';
 
-import { Stack, Typography, Button } from '@mui/material';
+import { brandColors } from '@gateway/theme';
+
+import CloseIcon from '@mui/icons-material/Close';
+import { Stack, Typography, Button, IconButton, alpha } from '@mui/material';
 
 import { useAuth } from '../../../../../providers/auth';
 import {
@@ -59,10 +62,24 @@ export default function DataModelShow({
       <DataModelTabs dataModel={dataModel} stats={stats} />
 
       {me?.id && (
-        <ModalRight
-          open={openCreateCredential}
-          handleClose={setOpenCreateCredential}
-        >
+        <ModalRight open={openCreateCredential}>
+          <Stack
+            sx={{
+              pt: { xs: 3, md: 6 },
+              pb: { xs: 2, md: 3 },
+              flexDirection: 'row',
+              justifyContent: 'flex-end',
+              width: '100%',
+            }}
+          >
+            <IconButton
+              aria-label="close"
+              sx={{ background: alpha(brandColors.white.main, 0.16) }}
+              onClick={() => setOpenCreateCredential()}
+            >
+              <CloseIcon />
+            </IconButton>
+          </Stack>
           <CredentialProtocolCreate dataModel={dataModel} />
         </ModalRight>
       )}
