@@ -47,7 +47,12 @@ export default function DataTable({ title, data }: Props) {
       <Stack divider={<Divider />}>
         {data?.map((fieldData, index) => (
           <Stack key={index} direction="row" justifyContent="space-between">
-            <CardCell label={fieldData?.label} margin={false} py={3}>
+            <CardCell
+              label={fieldData?.label}
+              margin={false}
+              inverted={true}
+              py={3}
+            >
               <ClaimView {...fieldData} />
             </CardCell>
           </Stack>

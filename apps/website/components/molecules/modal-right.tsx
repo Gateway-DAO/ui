@@ -17,15 +17,17 @@ const Transition = React.forwardRef(function Transition(
 type Props = {
   open: boolean;
   children: React.ReactNode;
+  handleClose: () => void;
 };
 
-export default function ModalRight({ children, open }: Props) {
+export default function ModalRight({ children, open, handleClose }: Props) {
   return (
     <Dialog
       fullScreen
       open={open}
       TransitionComponent={Transition}
       scroll="paper"
+      onClose={handleClose}
       sx={{
         width: { xs: '100%', md: '600px', lg: '720px' },
         left: 'auto',

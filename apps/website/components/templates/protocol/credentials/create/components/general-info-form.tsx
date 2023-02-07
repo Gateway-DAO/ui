@@ -118,7 +118,12 @@ export default function GeneralInfoForm() {
                       onChange={(date: DateTime) => {
                         field.onChange(date?.toISO());
                       }}
-                      renderInput={(params) => <TextField {...params} />}
+                      renderInput={(params) => (
+                        <TextField
+                          helperText={t('data-model.issue-credential.optional')}
+                          {...params}
+                        />
+                      )}
                     />
                   </>
                 )}
