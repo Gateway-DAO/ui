@@ -122,7 +122,6 @@ const TaskArea = ({ draftTasks, onDelete }: TaskAreaProps) => {
         swap(current, current + 1);
       }
     } else {
-      console.log(result);
       for (
         let current = result.source.index;
         current > result.destination.index;
