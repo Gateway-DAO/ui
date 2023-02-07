@@ -1,0 +1,17 @@
+mutation get_nonce($wallet: String!, $chain: Chain!) {
+  createNonce(CreateNonceInput: {
+    wallet:$wallet
+    chain: $chain
+  }) {
+    message
+  }
+}
+
+mutation login($wallet: String!, $signature: String!) {
+  login(CreateNonceInput: {
+    wallet: $wallet
+    signature: $signature
+  }) {
+    token
+  }
+}
