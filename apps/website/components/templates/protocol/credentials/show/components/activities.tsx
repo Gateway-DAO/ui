@@ -15,8 +15,6 @@ import {
   Divider,
 } from '@mui/material';
 
-import ExternalLink from '../../../../../atoms/external-link';
-
 type Props = {
   activities: any[];
 };
@@ -31,13 +29,14 @@ export default function Activities({ activities }: Props) {
     };
 
   return (
-    <>
+    <Stack sx={{ mt: '-24px' }}>
       <Accordion
         expanded={expanded}
         onChange={handleChange()}
         sx={{
           ':before': { display: 'none' },
           m: '0!important',
+          background: 'transparent!important',
         }}
       >
         <AccordionSummary
@@ -83,10 +82,6 @@ export default function Activities({ activities }: Props) {
                 }}
               />
             </Stack>
-            <ExternalLink
-              text={t('credential.data-model-id')}
-              url="https://google.com"
-            />
           </Stack>
         </AccordionSummary>
         <AccordionDetails sx={{ p: 0, m: 0 }}>
@@ -109,6 +104,6 @@ export default function Activities({ activities }: Props) {
           </Stack>
         </AccordionDetails>
       </Accordion>
-    </>
+    </Stack>
   );
 }
