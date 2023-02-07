@@ -245,6 +245,7 @@ export default function DataGrid({ columns, data }: Props): JSX.Element {
           display: 'grid',
           gridTemplateColumns: '2fr 1fr 1fr 1fr 1fr 1fr 1fr', //[ ] This size should be dynamic
           px: { xs: 0, md: 4, lg: 6 },
+          minWidth: '1200px',
         }}
       >
         {gridColumns.map((column) => (
