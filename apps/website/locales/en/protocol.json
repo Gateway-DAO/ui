@@ -1,5 +1,6 @@
 {
   "credential": {
+    "authenticated-by": "Authenticated by",
     "issuance-date": "Issuance date",
     "expiration-date": "Expiration date",
     "indeterminate": "Indeterminate",
@@ -20,7 +21,9 @@
     "hide-activity": "Hide Activity",
     "show-activity": "See Activity",
     "data-model-id": "Data model ID",
-    "storage-id": "Storage ID"
+    "storage-id": "Storage ID",
+    "alert-title": "This credential is not valid",
+    "alert-description": "The contents of this credential were not created by the issuer"
   },
   "data-model": {
     "data-model-id": "Data model ID",

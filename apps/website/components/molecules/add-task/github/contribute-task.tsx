@@ -15,13 +15,12 @@ import {
   Typography,
 } from '@mui/material';
 
-
+import { TaskIcon } from '../../../atoms/task-icon';
 import GithubDataCard from '../../../organisms/tasks/github-data-card';
 import {
   CreateGateData,
   GithubContributeDataError,
 } from '../../../templates/create-gate/schema';
-import { TaskIcon } from 'apps/website/components/atoms/task-icon';
 
 type GithubContributeTaskProps = {
   dragAndDrop: boolean;
@@ -96,8 +95,8 @@ export default function GithubContributeTask({
     setTaskIsMoving(dragAndDrop);
   }, [dragAndDrop]);
 
-  const [taskVisible, setTaskVisible] = useState(false);
-  const [taskIsMoving, setTaskIsMoving] = useState(false);
+  const [taskVisible, setTaskVisible] = useState(true);
+  const [taskIsMoving, setTaskIsMoving] = useState(true);
 
   return (
     <Stack
@@ -133,7 +132,6 @@ export default function GithubContributeTask({
             </Typography>
             <TextField
               variant="standard"
-              autoFocus
               sx={{
                 minWidth: { md: '600px', xs: '110%' },
                 maxWidth: { xs: '100%', md: '110%' },

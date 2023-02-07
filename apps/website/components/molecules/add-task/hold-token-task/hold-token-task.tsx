@@ -16,12 +16,12 @@ import {
   Typography,
 } from '@mui/material';
 
+import { TaskIcon } from '../../../atoms/task-icon';
 import {
   CreateGateData,
   HoldTokenDataError,
 } from '../../../templates/create-gate/schema';
 import { mockChains } from './__mock__';
-import { TaskIcon } from 'apps/website/components/atoms/task-icon';
 
 const HoldTokenTask = ({ dragAndDrop, taskId, deleteTask }) => {
   const {
@@ -45,8 +45,8 @@ const HoldTokenTask = ({ dragAndDrop, taskId, deleteTask }) => {
     setTaskIsMoving(dragAndDrop);
   }, [dragAndDrop]);
 
-  const [taskVisible, setTaskVisible] = useState(false);
-  const [taskIsMoving, setTaskIsMoving] = useState(false);
+  const [taskVisible, setTaskVisible] = useState(true);
+  const [taskIsMoving, setTaskIsMoving] = useState(true);
 
   return (
     <Stack
@@ -80,7 +80,6 @@ const HoldTokenTask = ({ dragAndDrop, taskId, deleteTask }) => {
             <Typography variant="subtitle2">Hold Token</Typography>
             <TextField
               variant="standard"
-              autoFocus
               sx={{
                 minWidth: { md: '600px', xs: '110%' },
                 maxWidth: { xs: '100%', md: '110%' },
