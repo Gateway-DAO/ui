@@ -23,6 +23,7 @@ export const limitChars = (str: string, limit: number) => {
 };
 
 export const limitCharsCentered = (str: string, characters: number) => {
+  if (!str) return '';
   if (str.length > characters) {
     return (
       str.substring(0, characters / 2) +

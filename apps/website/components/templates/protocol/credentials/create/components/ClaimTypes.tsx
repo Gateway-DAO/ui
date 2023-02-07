@@ -7,6 +7,7 @@ export type ClaimFieldProps = {
   fieldName: string;
   type: string;
   contentMediaType?: string;
+  format?: string;
   subType?: string;
 };
 
@@ -16,6 +17,7 @@ export const claimFields: ClaimTypes = {
   text: 'text',
   number: 'number',
   array: 'array',
+  link: 'link',
 };
 
 // List all backend Types
@@ -27,9 +29,11 @@ export const mapBackendTypes = {
 
 export const getClaimType = (
   backendType: string,
-  contentMediaType: string = null
+  contentMediaType: string = null,
+  format: string = null
 ) => {
   if (contentMediaType) return claimFields.image;
+  if (format === 'uri') return claimFields.link;
   if (mapBackendTypes[backendType]) {
     backendType = mapBackendTypes[backendType];
   }
