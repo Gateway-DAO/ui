@@ -62,7 +62,8 @@
       "group-issue-by-title": "Set the issuer",
       "group-issue-by-description": "The issuer will be issued by",
       "issue-by": "Issue by",
-      "add-field": "Add field"
+      "add-field": "Add field",
+      "optional": "Optional"
     }
   }
 }
