@@ -27,12 +27,14 @@ import {
 import { a11yTabProps, TabPanel, useTab } from '../../../components/atoms/tabs';
 import { Navbar } from '../../../components/organisms/navbar/navbar';
 import { DashboardTemplate } from '../../../components/templates/dashboard';
+import { query } from '../../../constants/queries';
 import { ROUTES } from '../../../constants/routes';
 import { generateImageUrl } from '../../../hooks/use-file';
 import { useAuth } from '../../../providers/auth';
 import { AvatarFile } from '../../atoms/avatar-file';
 import { SocialButtons } from '../../organisms/social-buttons';
 import { OverviewTab } from './tabs';
+import { GridTab } from './tabs/GridTab';
 
 const GuideCard = dynamic<any>(
   () => import('./edit/Components/guide-card').then((mod) => mod.GuideCard),
@@ -64,6 +66,30 @@ export default function PrivateProfileTemplate() {
       key: 'overview',
       label: t('common:tabs.overview'),
       section: <OverviewTab user={me} />,
+    },
+    {
+      key: 'received',
+      label: t('common:tabs.received'),
+      section: (
+        <GridTab
+          columns={[]}
+          queryFnName="findCredentialsByIssuerUser"
+          queryString={query.credentialsByIssuerUser}
+          user={me}
+        />
+      ),
+    },
+    {
+      key: 'issued',
+      label: t('common:tabs.issued'),
+      section: (
+        <GridTab
+          columns={[]}
+          queryFnName="findCredentialsByRecipientUser"
+          queryString={query.credentialsByRecipientUser}
+          user={me}
+        />
+      ),
     },
   ];
 

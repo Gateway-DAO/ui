@@ -38,6 +38,8 @@
     "people": "People",
     "issuers": "Issuers",
     "recipients": "Recipients",
+    "received": "Received",
+    "issued": "Issued",
     "playground": "Playground"
   },
   "featured-credentials": {

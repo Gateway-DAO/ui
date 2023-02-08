@@ -33,7 +33,7 @@ export default function GridViewTab({
   const internalPageSize = pageSize || 10;
 
   const {
-    data: credentials,
+    data: credentials, //[ ] Rename this data credentials
     isLoading,
     isFetchingNextPage,
     fetchNextPage,

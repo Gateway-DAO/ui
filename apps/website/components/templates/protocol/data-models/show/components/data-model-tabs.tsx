@@ -101,7 +101,7 @@ export default function DataModelTabs({ dataModel, stats }: Props) {
           dataModel={dataModel}
           columns={issuersGridColumns}
           queryString={query.issuersByDataModel}
-          queryFnName={'findIssuersByDataModel'}
+          queryFnName="findIssuersByDataModel"
           pageSize={3}
         />
       ),
