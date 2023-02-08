@@ -109,7 +109,16 @@ const TwitterRetweetTask = ({ dragAndDrop, taskId, deleteTask }) => {
         <Stack
           direction={'row'}
           alignItems={'center'}
-          sx={{ width: '100%', mr: '20px' }}
+          sx={(theme) => ({
+            width: '100%',
+            mr: '20px',
+            [theme.breakpoints.between('md', 'lg')]: {
+              margin: '-22px',
+            },
+            [theme.breakpoints.between('lg', 'xl')]: {
+              margin: '-22px',
+            },
+          })}
         >
           <TaskIcon type="twitter_retweet" sx={{ marginRight: 3 }} />
           <Stack>
