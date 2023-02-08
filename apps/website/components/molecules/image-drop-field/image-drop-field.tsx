@@ -39,22 +39,32 @@ export function ImageDropField<TFormSchema extends FieldValues = FieldValues>({
   const { enqueueSnackbar } = useSnackbar();
 
   const readFiles = (files: FileList | File[]) => {
-    /* TODO: Mimetype validation */
-    /* TODO: Filesize validation */
     const file = files[0];
     const reader = new FileReader();
+    console.log(file);
+    /* TODO: File size can be constant */
+    const imageTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
+    if (file.size <= 5245329 && imageTypes.includes(file.type)) {
+      reader.onload = (event) => {
+        const image = event.target.result as string;
+        const isGif = event.target.result.toString().match('data:image/gif;');
+        if (withCrop && !isGif) {
+          imageCropDialog.onOpen(image);
+        } else {
+          onChange(image);
+        }
+      };
 
-    reader.onload = (event) => {
-      const image = event.target.result as string;
-      const isGif = event.target.result.toString().match('data:image/gif;');
-      if (withCrop && !isGif) {
-        imageCropDialog.onOpen(image);
-      } else {
-        onChange(image);
-      }
-    };
-
-    reader.readAsDataURL(file);
+      reader.readAsDataURL(file);
+    } else if (file.size > 5245329) {
+      enqueueSnackbar('File size should be less than 5 mb', {
+        variant: 'error',
+      });
+    } else {
+      enqueueSnackbar('Only JPG,PNG,GIF,SVG are allowed', {
+        variant: 'error',
+      });
+    }
   };
 
   useEffect(() => {
