@@ -64,6 +64,15 @@
       "issue-by": "Issue by",
       "add-field": "Add field",
       "optional": "Optional"
+    },
+    "credentials-table": {
+      "credential_id": "Credential ID",
+      "category": "Category",
+      "issuer_id": "Issuer ID",
+      "recipient_id": "Recipient ID",
+      "issuance_date": "Issuance date",
+      "status": "Status",
+      "minted": "Minted"
     }
   }
 }
