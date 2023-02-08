@@ -3,9 +3,17 @@ import useTranslation from 'next-translate/useTranslation';
 import { DateTime } from 'luxon';
 import { PartialDeep } from 'type-fest';
 
-import { theme } from '@gateway/theme';
+import { brandColors, theme } from '@gateway/theme';
 
-import { Stack, Paper, Box, Divider, Chip, useMediaQuery } from '@mui/material';
+import {
+  Stack,
+  Paper,
+  Box,
+  Divider,
+  Chip,
+  useMediaQuery,
+  Typography,
+} from '@mui/material';
 
 import { Credential } from '../../../../services/gateway-protocol/types';
 import CardUsers from '../credentials/show/components/card-users';
@@ -46,8 +54,8 @@ export default function CredentialCardInfo({
       divider={<Divider sx={{ width: '100%' }} />}
     >
       <CardUsers
-        issuer={credential?.issuer}
-        recipient={credential?.recipient}
+        issuer={credential?.issuerUser}
+        recipient={credential?.recipientUser}
       />
       <Stack
         alignItems="stretch"
@@ -61,17 +69,10 @@ export default function CredentialCardInfo({
           </Box>
         }
       >
-        <CardCell label={t('credential.issuance-date')}>
-          {DateTime.fromISO(credential?.createdAt).toLocaleString(
-            DateTime.DATETIME_SHORT
-          )}
-        </CardCell>
-        <CardCell label={t('credential.expiration-date')}>
-          {credential?.expirationDate
-            ? DateTime.fromISO(credential?.expirationDate).toLocaleString(
-                DateTime.DATETIME_SHORT
-              )
-            : t('credential.indeterminate')}
+        <CardCell label={t('credential.authenticated-by')}>
+          <Typography color={brandColors.purple.main} variant="body2">
+            sanket.gate
+          </Typography>
         </CardCell>
         <CardCell label={t('credential.status')}>
           {!isDateExpired && (
@@ -106,6 +107,31 @@ export default function CredentialCardInfo({
               color="error"
             />
           )} */}
+        </CardCell>
+      </Stack>
+      <Stack
+        alignItems="stretch"
+        justifyContent="space-around"
+        sx={{
+          flexDirection: isMobile ? 'column' : 'row',
+        }}
+        divider={
+          <Box>
+            <Divider orientation={isMobile ? 'horizontal' : 'vertical'} />
+          </Box>
+        }
+      >
+        <CardCell label={t('credential.issuance-date')}>
+          {DateTime.fromISO(credential?.createdAt).toLocaleString(
+            DateTime.DATETIME_SHORT
+          )}
+        </CardCell>
+        <CardCell label={t('credential.expiration-date')}>
+          {credential?.expirationDate
+            ? DateTime.fromISO(credential?.expirationDate).toLocaleString(
+                DateTime.DATETIME_SHORT
+              )
+            : t('credential.indeterminate')}
         </CardCell>
       </Stack>
     </Paper>

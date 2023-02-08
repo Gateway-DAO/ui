@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 
 import { PartialDeep } from 'type-fest';
 
-import { Button, Stack } from '@mui/material';
+import { Button, Stack, SxProps } from '@mui/material';
 
 import { TokenFilled } from '../../components/molecules/mint-card/assets/token-filled';
 import { useBiconomy } from '../../providers/biconomy';
@@ -12,6 +12,7 @@ import { LoadingButton } from './loading-button';
 
 export type Props = {
   credential: PartialDeep<Credentials>;
+  sx?: SxProps;
 };
 
 const ToMintButton = (props) => (
@@ -38,7 +39,7 @@ const MintedButton = (props) => (
   </Button>
 );
 
-export const MintCredentialButton = ({ credential }: Props) => {
+export const MintCredentialButton = ({ credential, sx }: Props) => {
   const [status, setStatus] = useState<'to_mint' | 'minted'>(
     credential.status as 'to_mint' | 'minted'
   );
@@ -63,6 +64,7 @@ export const MintCredentialButton = ({ credential }: Props) => {
             borderColor: '#E5E5E580',
             color: 'white',
             width: '100%',
+            ...sx,
           }}
         >
           {t('actions.check-transaction')}
@@ -81,6 +83,7 @@ export const MintCredentialButton = ({ credential }: Props) => {
           isLoading={loading}
           sx={{
             width: '100%',
+            ...sx,
           }}
         >
           {t('actions.mint')}

@@ -52,7 +52,8 @@ export default function ClaimForm({ dataModel }: Props) {
           {Object.keys(fields)?.map((item, index) => {
             const type = getClaimType(
               fields[item]?.type,
-              fields[item]?.contentMediaType
+              fields[item]?.contentMediaType,
+              fields[item]?.format
             );
             return (
               <ClaimAccordion
@@ -65,6 +66,7 @@ export default function ClaimForm({ dataModel }: Props) {
                   type={type}
                   fieldName={Object.keys(fields)[index]}
                   contentMediaType={fields[item]?.contentMediaType}
+                  format={fields[item]?.format}
                   subType={fields[item]?.items?.type}
                 />
               </ClaimAccordion>

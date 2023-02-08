@@ -38,9 +38,9 @@ export default function RecipientForm() {
           }}
           label={t('data-model.issue-credential.recipient-label')}
           id="recipient-id"
-          {...register(`recipientId`)}
-          error={!!errors.recipientId}
-          helperText={errors.recipientId?.message}
+          {...register(`recipientUserId`)}
+          error={!!errors.recipientUserId}
+          helperText={errors.recipientUserId?.message}
         />
       </Stack>
     </Stack>

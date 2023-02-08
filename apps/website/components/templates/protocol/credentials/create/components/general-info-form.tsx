@@ -44,7 +44,6 @@ export default function GeneralInfoForm() {
       </Typography>
       <Stack gap={3}>
         <TextField
-          autoFocus
           InputProps={{
             disableUnderline: true,
             sx: {
@@ -119,7 +118,12 @@ export default function GeneralInfoForm() {
                       onChange={(date: DateTime) => {
                         field.onChange(date?.toISO());
                       }}
-                      renderInput={(params) => <TextField {...params} />}
+                      renderInput={(params) => (
+                        <TextField
+                          helperText={t('data-model.issue-credential.optional')}
+                          {...params}
+                        />
+                      )}
                     />
                   </>
                 )}
