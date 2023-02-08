@@ -261,6 +261,13 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
     ? gateProps?.claim_limit <= gateProps?.holder_count
     : false;
 
+  const dateFormatAccordingToTimeZone = new Intl.DateTimeFormat('en-US', {
+    timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+    timeZoneName: 'short',
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  });
   return (
     <Grid
       container
@@ -470,10 +477,7 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
                     color={isDateExpired ? '#FFA726' : 'secondary'}
                     fontWeight={600}
                   >
-                    {new Date(gateProps.expire_date).toLocaleDateString(
-                      'en-us',
-                      { year: 'numeric', month: 'short', day: 'numeric' }
-                    )}
+                    {dateFormatAccordingToTimeZone.format(new Date(gateProps?.expire_date))}
                     {isDateExpired && (
                       <Chip
                         sx={{ marginLeft: 2 }}
