@@ -161,7 +161,18 @@ export const FollowProfile = ({ dragAndDrop, taskId, deleteTask }) => {
           </Stack>
         </Stack>
         {!taskIsMoving && (
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <Box
+            sx={(theme) => ({
+              display: 'flex',
+              alignItems: 'center',
+              [theme.breakpoints.between('md', 'lg')]: {
+                margin: '-30px',
+              },
+              [theme.breakpoints.between('lg', 'xl')]: {
+                margin: '-30px',
+              },
+            })}
+          >
             <IconButton
               onClick={() => deleteTask(taskId)}
               sx={(theme) => ({
