@@ -17,6 +17,9 @@ import { CategoriesList } from '../../molecules/categories-list';
 export interface IColumnGrid {
   header_name: string;
   column_name: ColumnType;
+  field?: string;
+  cell?: (params: any) => ReactNode;
+  valueGetter?: (params: any) => any;
 }
 
 type Props = {
@@ -115,7 +118,7 @@ const defineCols = (columns: IColumnGrid[]) => {
       cell: (params) => (
         <Box sx={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <AvatarFile
-            file="/avatar.png"
+            file={params.issuerUser.image}
             fallback="/avatar.png"
             sx={{ width: 26, height: 26 }}
           />
@@ -147,7 +150,7 @@ const defineCols = (columns: IColumnGrid[]) => {
       cell: (params) => (
         <Box sx={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <AvatarFile
-            file="/avatar.png"
+            file={params.recipientUser.image}
             fallback="/avatar.png"
             sx={{ width: 26, height: 26 }}
           />
