@@ -12,7 +12,7 @@ import {
 } from '../../../../../../services/gateway-protocol/api';
 import { DataModel } from '../../../../../../services/gateway-protocol/types';
 import Loading from '../../../../../atoms/loading';
-import DataGrid from './data-grid';
+import DataGrid from '../../../../../organisms/data-grid/data-grid';
 
 type Props = {
   dataModel: PartialDeep<DataModel>;

@@ -11,8 +11,8 @@ import VerifiedIcon from '@mui/icons-material/Verified';
 import { Typography, Avatar, Tooltip, Chip } from '@mui/material';
 import { alpha, Stack, Box } from '@mui/material';
 
-import NetworkTransactionLink from '../../../../../atoms/network-transaction-link';
-import { CategoriesList } from '../../../../../molecules/categories-list';
+import NetworkTransactionLink from '../../atoms/network-transaction-link';
+import { CategoriesList } from '../../molecules/categories-list';
 
 export interface IColumnGrid {
   header_name: string;
@@ -254,74 +254,84 @@ export default function DataGrid({ columns, data }: Props): JSX.Element {
   const gridColumns = defineCols(columns);
   return (
     <>
-      <Box
-        sx={{
-          display: 'grid',
-          gridTemplateColumns: '2fr 1fr 1fr 1fr 1fr 1fr 1fr',
-          px: { xs: 0, md: 4, lg: 6 },
-        }}
-      >
-        {gridColumns.map((column) => (
-          <Typography
-            sx={{
-              fontWeight: 700,
-              fontSize: '12px',
-              letterSpacing: '0.17px',
-              color: alpha(brandColors.white.main, 0.7),
-              textTransform: 'uppercase',
-            }}
-            key={column.field}
-          >
-            {column.header_name}
-          </Typography>
-        ))}
-      </Box>
-      {data.pages && data.pages.length > 0 && (
+      {data.pages.length > 0 && data.pages[0].length > 0 ? (
         <>
-          {data.pages.map((page) => (
+          <Box
+            sx={{
+              display: 'grid',
+              gridTemplateColumns: '2fr 1fr 1fr 1fr 1fr 1fr',
+              px: { xs: 0, md: 4, lg: 6 },
+            }}
+          >
+            {gridColumns.map((column) => (
+              <Typography
+                sx={{
+                  fontWeight: 700,
+                  fontSize: '12px',
+                  letterSpacing: '0.17px',
+                  color: alpha(brandColors.white.main, 0.7),
+                  textTransform: 'uppercase',
+                }}
+                key={column.field}
+              >
+                {column.header_name}
+              </Typography>
+            ))}
+          </Box>
+          {data.pages && data.pages.length > 0 && (
             <>
-              {page.map((row, rowIndex) => (
-                <Box
-                  key={rowIndex}
-                  sx={{
-                    borderBottom: '1px solid',
-                    borderColor: alpha(brandColors.grays.main, 0.12),
-                    py: 3,
-                  }}
-                >
-                  <Box
-                    key={rowIndex}
-                    sx={{
-                      px: { xs: 0, md: 4, lg: 6 },
-                      display: 'grid',
-                      gridTemplateColumns: '2fr 1fr 1fr 1fr 1fr 1fr 1fr',
-                    }}
-                  >
-                    {gridColumns.map((column) => (
-                      <>
-                        {column.cell ? (
-                          <>{column.cell(row)}</>
-                        ) : (
-                          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                            <Typography
-                              sx={{
-                                fontSize: '14px',
-                                fontWeight: '400',
-                                letterSpacing: '0.17px',
-                              }}
-                            >
-                              {column.valueGetter(row) || row[column.field]}
-                            </Typography>
-                          </Box>
-                        )}
-                      </>
-                    ))}
-                  </Box>
-                </Box>
+              {data.pages.map((page) => (
+                <>
+                  {page.map((row, rowIndex) => (
+                    <Box
+                      key={rowIndex}
+                      sx={{
+                        borderBottom: '1px solid',
+                        borderColor: alpha(brandColors.grays.main, 0.12),
+                        py: 3,
+                      }}
+                    >
+                      <Box
+                        key={rowIndex}
+                        sx={{
+                          px: { xs: 0, md: 4, lg: 6 },
+                          display: 'grid',
+                          gridTemplateColumns: '2fr 1fr 1fr 1fr 1fr 1fr',
+                        }}
+                      >
+                        {gridColumns.map((column) => (
+                          <>
+                            {column.cell ? (
+                              <>{column.cell(row)}</>
+                            ) : (
+                              <Box
+                                sx={{ display: 'flex', alignItems: 'center' }}
+                              >
+                                <Typography
+                                  sx={{
+                                    fontSize: '14px',
+                                    fontWeight: '400',
+                                    letterSpacing: '0.17px',
+                                  }}
+                                >
+                                  {column.valueGetter(row) || row[column.field]}
+                                </Typography>
+                              </Box>
+                            )}
+                          </>
+                        ))}
+                      </Box>
+                    </Box>
+                  ))}
+                </>
               ))}
             </>
-          ))}
+          )}
         </>
+      ) : (
+        <Box sx={{ px: { xs: 0, md: 4, lg: 6 } }}>
+          <Typography>No data to display</Typography>
+        </Box>
       )}
     </>
   );
