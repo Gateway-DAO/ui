@@ -12,7 +12,7 @@ import {
   GetDataModelStatsQuery,
 } from '../../../../../../services/gateway-protocol/types';
 import { useTab, TabPanel } from '../../../../../atoms/tabs';
-import { IColumnGrid } from './data-grid';
+import { IColumnGrid } from '../../../../../organisms/data-grid/data-grid';
 
 const OverviewTab = dynamic(() => import('./overview-tab'), { ssr: false });
 const GridViewTab = dynamic(() => import('./grid-view-tab'), { ssr: false });
@@ -51,10 +51,10 @@ export default function DataModelTabs({ dataModel, stats }: Props) {
       column_name: 'status',
       header_name: `${t('data-model.credentials-table.status')}`,
     },
-    {
-      column_name: 'minted',
-      header_name: `${t('data-model.credentials-table.minted')}`,
-    },
+    // {
+    //   column_name: 'minted',
+    //   header_name: `${t('data-model.credentials-table.minted')}`,
+    // },
   ];
 
   const issuersGridColumns: IColumnGrid[] = [

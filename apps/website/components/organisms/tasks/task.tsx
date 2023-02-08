@@ -20,6 +20,7 @@ import { useAuth } from '../../../providers/auth';
 import { Tasks, Gates } from '../../../services/hasura/types';
 import { queryClient } from '../../../services/query-client';
 import { getMapValueFromObject } from '../../../utils/map-object';
+import { TaskIcon } from '../../atoms/task-icon';
 import GithubContributeContent from '../gates/view/tasks/content/github_contribute';
 import GithubPRContent from '../gates/view/tasks/content/github_prs';
 import ManualContent from '../gates/view/tasks/content/manual/manual';
@@ -33,8 +34,6 @@ import TwitterFollowContent from '../gates/view/tasks/content/twitter_follow';
 import TwitterRetweetContent from '../gates/view/tasks/content/twitter_retweet';
 import TwitterTweetContent from '../gates/view/tasks/content/twitter_tweet';
 import { taskErrorMessages } from './task-error-messages';
-
-import { TaskIcon } from '../../atoms/task-icon';
 
 type Props = {
   idx?: number;
@@ -200,9 +199,7 @@ export function Task({
           <Avatar
             variant="rounded"
             sx={{
-              backgroundColor: completed
-                ? '#6DFFB9'
-                : 'transparent',
+              backgroundColor: completed ? '#6DFFB9' : 'transparent',
               color: (theme) =>
                 expanded ? theme.palette.background.default : 'white',
               border: expanded ? 'none' : '1px solid #FFFFFF4D',
@@ -211,7 +208,7 @@ export function Task({
             {completed ? (
               <CheckIcon htmlColor="#10041C" />
             ) : (
-              <TaskIcon type={task.task_type}/>
+              <TaskIcon type={task.task_type} />
             )}
           </Avatar>
         }

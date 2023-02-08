@@ -7,24 +7,25 @@ import { DateTime } from 'luxon';
 import { limitCharsCentered } from '@gateway/helpers';
 import { brandColors } from '@gateway/theme';
 
-import VerifiedIcon from '@mui/icons-material/Verified';
-import { Typography, Avatar, Tooltip, Chip } from '@mui/material';
+import { Typography, Chip } from '@mui/material';
 import { alpha, Stack, Box } from '@mui/material';
 
-import NetworkTransactionLink from '../../../../../atoms/network-transaction-link';
-import { CategoriesList } from '../../../../../molecules/categories-list';
+import { AvatarFile } from '../../atoms/avatar-file';
+import NetworkTransactionLink from '../../atoms/network-transaction-link';
+import { CategoriesList } from '../../molecules/categories-list';
 
 export interface IColumnGrid {
   header_name: string;
   column_name: ColumnType;
-  valueGetter?: (params: any) => string;
   field?: string;
+  cell?: (params: any) => ReactNode;
+  valueGetter?: (params: any) => any;
 }
 
 type Props = {
   columns: IColumnGrid[];
   data: {
-    pages: any[]; // [ ] Add interface/type
+    pages: any[];
   };
 };
 
@@ -119,10 +120,10 @@ const defineCols = (columns: IColumnGrid[]) => {
       column_name: 'issuer_id',
       cell: (params) => (
         <Box sx={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <Avatar
-            alt="Name"
-            src="https://upload.wikimedia.org/wikipedia/en/thumb/2/29/Harvard_shield_wreath.svg/1024px-Harvard_shield_wreath.svg.png" //[ ] Remove mock
-            sx={{ width: 24, height: 24 }}
+          <AvatarFile
+            file={params.issuerUser.image}
+            fallback="/avatar.png"
+            sx={{ width: 26, height: 26 }}
           />
           <Box sx={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
             <Typography
@@ -136,12 +137,12 @@ const defineCols = (columns: IColumnGrid[]) => {
                 textOverflow: 'ellipsis',
               }}
             >
-              {params.issuer?.id || 'Dummy name'}
-              {/* [ ] Remove mock */}
+              {params.issuerUser.id}
+              {/* [x] Remove mock */}
             </Typography>
-            <Tooltip title="Tooltip message">
+            {/* <Tooltip title="Tooltip message">
               <VerifiedIcon sx={{ color: brandColors.purple.main }} />
-            </Tooltip>
+            </Tooltip> */}
           </Box>
         </Box>
       ),
@@ -150,22 +151,31 @@ const defineCols = (columns: IColumnGrid[]) => {
       field: 'recipient_id',
       column_name: 'recipient_id',
       cell: (params) => (
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <Avatar
-            alt="Name"
-            src="https://upload.wikimedia.org/wikipedia/en/thumb/2/29/Harvard_shield_wreath.svg/1024px-Harvard_shield_wreath.svg.png" //[ ] Remove mock
-            sx={{ width: 24, height: 24 }}
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <AvatarFile
+            file={params.recipientUser.image}
+            fallback="/avatar.png"
+            sx={{ width: 26, height: 26 }}
           />
-          <Typography
-            sx={{
-              fontSize: '14px',
-              fontWeight: 400,
-              letterSpacing: '0.17px',
-            }}
-          >
-            username
-            {/* [ ] Remove mock */}
-          </Typography>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+            <Typography
+              sx={{
+                fontSize: '14px',
+                fontWeight: 400,
+                letterSpacing: '0.17px',
+                maxWidth: '70px',
+                whiteSpace: 'nowrap',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+              }}
+            >
+              {params.recipientUser.id}
+              {/* [x] Remove mock */}
+            </Typography>
+            {/* <Tooltip title="Tooltip message">
+              <VerifiedIcon sx={{ color: brandColors.purple.main }} />
+            </Tooltip> */}
+          </Box>
         </Box>
       ),
     },
@@ -240,76 +250,84 @@ export default function DataGrid({ columns, data }: Props): JSX.Element {
   const gridColumns = defineCols(columns);
   return (
     <>
-      <Box
-        sx={{
-          display: 'grid',
-          gridTemplateColumns: '2fr 1fr 1fr 1fr 1fr 1fr 1fr',
-          px: { xs: 0, md: 4, lg: 6 },
-        }}
-      >
-        {gridColumns.map((column) => (
-          <Typography
-            sx={{
-              fontWeight: 700,
-              fontSize: '12px',
-              letterSpacing: '0.17px',
-              color: alpha(brandColors.white.main, 0.7),
-              textTransform: 'uppercase',
-            }}
-            key={column.field}
-          >
-            {column.header_name}
-          </Typography>
-        ))}
-      </Box>
-      {data.pages && data.pages.length > 0 && (
+      {data.pages.length > 0 && data.pages[0].length > 0 ? (
         <>
-          {data.pages.map((page) => (
+          <Box
+            sx={{
+              display: 'grid',
+              gridTemplateColumns: '2fr 1fr 1fr 1fr 1fr 1fr',
+              px: { xs: 0, md: 4, lg: 6 },
+            }}
+          >
+            {gridColumns.map((column) => (
+              <Typography
+                sx={{
+                  fontWeight: 700,
+                  fontSize: '12px',
+                  letterSpacing: '0.17px',
+                  color: alpha(brandColors.white.main, 0.7),
+                  textTransform: 'uppercase',
+                }}
+                key={column.field}
+              >
+                {column.header_name}
+              </Typography>
+            ))}
+          </Box>
+          {data.pages && data.pages.length > 0 && (
             <>
-              {page.map((row, rowIndex) => (
-                <Box
-                  key={rowIndex}
-                  sx={{
-                    borderBottom: '1px solid',
-                    borderColor: alpha(brandColors.grays.main, 0.12),
-                    py: 3,
-                  }}
-                >
-                  <Box
-                    key={rowIndex}
-                    sx={{
-                      px: { xs: 0, md: 4, lg: 6 },
-                      display: 'grid',
-                      gridTemplateColumns: '2fr 1fr 1fr 1fr 1fr 1fr 1fr',
-                    }}
-                  >
-                    {gridColumns.map((column) => (
-                      <>
-                        {column.cell ? (
-                          <>{column.cell(row)}</>
-                        ) : (
-                          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                            <Typography
-                              sx={{
-                                fontSize: '14px',
-                                fontWeight: '400',
-                                letterSpacing: '0.17px',
-                              }}
-                            >
-                              {column.valueGetter
-                                ? column.valueGetter(row)
-                                : row[column.field]}
-                            </Typography>
-                          </Box>
-                        )}
-                      </>
-                    ))}
-                  </Box>
-                </Box>
+              {data.pages.map((page) => (
+                <>
+                  {page.map((row, rowIndex) => (
+                    <Box
+                      key={rowIndex}
+                      sx={{
+                        borderBottom: '1px solid',
+                        borderColor: alpha(brandColors.grays.main, 0.12),
+                        py: 3,
+                      }}
+                    >
+                      <Box
+                        key={rowIndex}
+                        sx={{
+                          px: { xs: 0, md: 4, lg: 6 },
+                          display: 'grid',
+                          gridTemplateColumns: '2fr 1fr 1fr 1fr 1fr 1fr',
+                        }}
+                      >
+                        {gridColumns.map((column) => (
+                          <>
+                            {column.cell ? (
+                              <>{column.cell(row)}</>
+                            ) : (
+                              <Box
+                                sx={{ display: 'flex', alignItems: 'center' }}
+                              >
+                                <Typography
+                                  sx={{
+                                    fontSize: '14px',
+                                    fontWeight: '400',
+                                    letterSpacing: '0.17px',
+                                  }}
+                                >
+                                  {column.valueGetter(row) || row[column.field]}
+                                </Typography>
+                              </Box>
+                            )}
+                          </>
+                        ))}
+                      </Box>
+                    </Box>
+                  ))}
+                </>
               ))}
             </>
-          ))}
+          )}
         </>
+      ) : (
+        <Box sx={{ px: { xs: 0, md: 4, lg: 6 } }}>
+          <Typography>No data to display</Typography>
+        </Box>
       )}
     </>
   );

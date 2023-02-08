@@ -21,12 +21,12 @@ import {
 
 import { useAuth } from '../../../../providers/auth';
 import { CircleWithNumber } from '../../../atoms/circle-with-number';
+import { TaskIcon } from '../../../atoms/task-icon';
 import {
   CreateGateData,
   TwitterFollowData,
   TwitterFollowDataError,
 } from '../../../templates/create-gate/schema';
-import { TaskIcon } from 'apps/website/components/atoms/task-icon';
 
 export const numberFormat = (value: number) => {
   if (value < 10000) {
@@ -61,8 +61,8 @@ export const FollowProfile = ({ dragAndDrop, taskId, deleteTask }) => {
     setTaskIsMoving(dragAndDrop);
   }, [dragAndDrop]);
 
-  const [taskVisible, setTaskVisible] = useState(false);
-  const [taskIsMoving, setTaskIsMoving] = useState(false);
+  const [taskVisible, setTaskVisible] = useState(true);
+  const [taskIsMoving, setTaskIsMoving] = useState(true);
 
   const {
     mutate: getTwitterMutate,
@@ -128,7 +128,6 @@ export const FollowProfile = ({ dragAndDrop, taskId, deleteTask }) => {
             <Typography variant="subtitle2">Follow Profile</Typography>
             <TextField
               variant="standard"
-              autoFocus
               sx={{
                 minWidth: { md: '600px', xs: '110%' },
                 maxWidth: { xs: '100%', md: '110%' },
