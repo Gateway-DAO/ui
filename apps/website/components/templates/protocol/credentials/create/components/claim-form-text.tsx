@@ -26,6 +26,7 @@ export default function ClaimFormText({
           width: '100%',
         },
       }}
+      {...(type === 'number' && { inputProps: { step: 0.1 } })}
       sx={{ width: '100%' }}
       label={label}
       id={`data-model-field-${fieldName}`}
