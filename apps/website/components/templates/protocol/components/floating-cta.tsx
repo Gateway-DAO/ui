@@ -30,7 +30,7 @@ export default function FloatingCta() {
 
   useEffect(() => {
     function handleScroll() {
-      setOpen(window.pageYOffset < 100);
+      setOpen(window.pageYOffset < 80);
     }
 
     window.addEventListener('scroll', handleScroll);
@@ -73,25 +73,21 @@ export default function FloatingCta() {
           openIcon={<QrCodeIcon />}
           ariaLabel="sharing options"
           sx={{ position: 'absolute', bottom: 16, right: 16 }}
-          icon={
-            <SpeedDialIcon
-              icon={<MoreHorizIcon />}
-              openIcon={<QrCodeIcon />}
-              onClick={() => setQrCodeIsOpen(true)}
-            />
-          }
+          icon={open ? <QrCodeIcon /> : <MoreHorizIcon />}
           FabProps={{
             sx: {
               color: open ? 'white' : brandColors.purple.main,
               bgcolor: open ? 'primary.main' : 'rgba(154, 83, 255, 0.1)',
+              backdropFilter: 'blur(16px)',
               '&:hover': {
                 bgcolor: 'primary.main',
                 color: 'white',
               },
             },
+            onClick: () => {
+              open ? setQrCodeIsOpen(true) : handleOpen();
+            },
           }}
-          onOpen={handleOpen}
-          onClose={handleClose}
           open={open}
         >
           {actions.map((fab) => (
@@ -100,7 +96,11 @@ export default function FloatingCta() {
                 size: 'large',
                 sx: {
                   color: brandColors.purple.main,
-                  bgcolor: 'rgba(154, 83, 255, 0.1)',
+                  bgcolor: 'rgba(154, 83, 255, 0.15)',
+                  backdropFilter: 'blur(16px)',
+                  '&:hover': {
+                    backgroundColor: 'rgba(154, 83, 255, 0.3)',
+                  },
                 },
               }}
               key={fab.name}
