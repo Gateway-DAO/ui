@@ -9,3 +9,13 @@ query dataModel($id: String!) {
     createdAt
   }
 }
+
+query dataModels($take: Int!, $skip: Int!) {
+  dataModels(take: $take, skip: $skip) {
+    id
+    title
+    tags
+    version
+    description
+  }
+}
