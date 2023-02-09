@@ -74,6 +74,12 @@
       "issuance_date": "Issuance date",
       "status": "Status",
       "minted": "Minted"
+    },
+    "issuers-table": {
+      "issuer_id": "Issuer ID",
+      "started": "Started using",
+      "issued": "Issued",
+      "unique_recipients": "Unique recipients"
     }
   }
 }

@@ -17,6 +17,13 @@ export default function ClaimFormText({
   return (
     <TextField
       type={type}
+      inputProps={
+        type == 'number'
+          ? {
+              step: '0.01',
+            }
+          : {}
+      }
       InputProps={{
         disableUnderline: true,
         sx: {

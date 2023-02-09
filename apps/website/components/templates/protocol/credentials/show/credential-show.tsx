@@ -21,6 +21,8 @@ import Activities from './components/activities';
 import CredentialTitleAndImage from './components/credential-title-and-image';
 import DataTable from './components/data-table';
 import { brandColors } from '../../../../../../../libs/theme/src';
+import { ROUTES } from 'apps/website/constants/routes';
+import { useRouter } from 'next/router';
 
 const CredentialCardInfo = dynamic(
   () => {
@@ -35,6 +37,7 @@ type Props = {
 
 export default function CredentialProtocolShow({ credential }: Props) {
   const { t } = useTranslation('protocol');
+  const router = useRouter();
 
   // MOCK
   const credMint = {
@@ -56,7 +59,7 @@ export default function CredentialProtocolShow({ credential }: Props) {
         <Tags tags={credential?.dataModel?.tags} />
         <Typography sx={{ mb: 3 }}>{credential?.description}</Typography>
         <CredentialCardInfo credential={credential} />
-        {/* <MintCredentialButton sx={{ height: '48px' }} credential={credMint} /> */}
+        <MintCredentialButton sx={{ height: '48px' }} credential={credMint} disabled={true} />
 
         {credMint.status == 'invalid' && (
           <Alert
@@ -82,12 +85,25 @@ export default function CredentialProtocolShow({ credential }: Props) {
           </Alert>
         )}
 
-        {credential.activities?.length > 0 && <Activities credential={credential} />}
+        <ExternalLink
+          text={t('credential.data-model-id')}
+          sxProps={{ alignSelf: 'flex-end' }}
+          handleClick={() => {
+            router.push({ pathname: ROUTES.PROTOCOL_DATAMODEL, query: { id: credential?.dataModel?.id } })
+          }}
+        />
+
+        {credential?.activities?.length > 0 && <Activities activities={credential?.activities} />}
       </Stack>
       <Divider sx={{ mt: 3, mb: 4, marginLeft: '2px' }} />
       <Stack sx={boxStyles}>
         <Stack direction="row" justifyContent="flex-end" sx={{ mb: 2 }}>
-          <ExternalLink text={t('credential.storage-id')} url={credential?.arweaveInfo?.url} />
+          <ExternalLink
+            text={t('credential.storage-id')}
+            handleClick={() => {
+              router.push({ pathname: ROUTES.PROTOCOL_DATAMODEL, query: { id: credential?.dataModel?.id } })
+            }}
+          />
         </Stack>
         <DataTable
           title={t('credential.claim')}

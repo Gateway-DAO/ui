@@ -2,7 +2,7 @@ import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
-import { PartialDeep } from 'type-fest';
+import { PartialDeep } from 'type-fest/source/partial-deep';
 
 import { timestampToString } from '@gateway/helpers';
 import { brandColors } from '@gateway/theme';
@@ -18,13 +18,10 @@ import {
   Divider,
 } from '@mui/material';
 
-import { ROUTES } from '../../../../../../constants/routes';
-import { Credential } from '../../../../../../services/gateway-protocol/types';
-import ExternalLink from '../../../../../atoms/external-link';
-import InternalLink from '../../../../../atoms/internal-link';
+import { Activity } from '../../../../../../services/gateway-protocol/types';
 
 type Props = {
-  credential: PartialDeep<Credential>;
+  activities: PartialDeep<Activity>[];
 };
 
 const activityText = (type: string) => {
@@ -38,7 +35,7 @@ const activityText = (type: string) => {
   );
 };
 
-export default function Activities({ credential }: Props) {
+export default function Activities({ activities }: Props) {
   const { t, lang } = useTranslation('protocol');
   const [expanded, setExpanded] = useState<boolean>(false);
   const router = useRouter();
@@ -49,13 +46,14 @@ export default function Activities({ credential }: Props) {
     };
 
   return (
-    <>
+    <Stack sx={{ mt: '-24px' }}>
       <Accordion
         expanded={expanded}
         onChange={handleChange()}
         sx={{
           ':before': { display: 'none' },
           m: '0!important',
+          background: 'transparent!important',
         }}
       >
         <AccordionSummary
@@ -101,18 +99,11 @@ export default function Activities({ credential }: Props) {
                 }}
               />
             </Stack>
-            <InternalLink
-              text={t('credential.data-model-id')}
-              url={ROUTES.PROTOCOL_DATAMODEL.replace(
-                '[id]',
-                credential?.dataModel?.id
-              )}
-            />
           </Stack>
         </AccordionSummary>
         <AccordionDetails sx={{ p: 0, m: 0 }}>
           <Stack sx={{ mb: 2 }} gap={1} divider={<Divider />}>
-            {credential.activities
+            {activities
               ?.sort(
                 (a, b) =>
                   new Date(b.timestamp).getTime() -
@@ -138,6 +129,6 @@ export default function Activities({ credential }: Props) {
           </Stack>
         </AccordionDetails>
       </Accordion>
-    </>
+    </Stack>
   );
 }
