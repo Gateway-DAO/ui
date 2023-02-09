@@ -136,7 +136,7 @@ export default function GithubPRTask({
             <TextField
               variant="standard"
               sx={{
-                minWidth: { md: '600px', xs: '110%' },
+                minWidth: { md: '400px', xs: '110%', lg:'500px' },
                 maxWidth: { xs: '100%', md: '110%' },
               }}
               InputProps={{

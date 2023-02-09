@@ -363,7 +363,7 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
                   sx={{
                     marginLeft: 'auto',
                     width: '100%',
-                    maxWidth: { xs: '100%', md: '100%', lg: '80%' },
+                    maxWidth: { xs: '100%', md: '80%', lg: '75%' },
                   }}
                   gap={4}
                 >
