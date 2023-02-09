@@ -5,7 +5,7 @@ import { Stack, Link, Typography, alpha, SxProps, Theme } from '@mui/material';
 
 type Props = {
   text: string;
-  handleClick: () => void;
+  handleClick: (e) => void;
   sxProps?: SxProps<Theme>;
 };
 

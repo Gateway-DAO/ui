@@ -2,7 +2,7 @@ import { ReactNode } from 'react';
 
 import { brandColors } from '@gateway/theme';
 
-import { Stack, Typography, Box, alpha } from '@mui/material';
+import { Stack, Typography, alpha } from '@mui/material';
 
 type Props = {
   label: string;
@@ -12,28 +12,40 @@ type Props = {
   py?: number;
   alignRight?: boolean;
   inverted?: boolean;
+  disabled?: boolean;
 };
 
 type TextProps = {
   children: ReactNode;
+  disabled: boolean;
 };
 
-function TextBig({ children }: TextProps) {
+function TextBig({ children, disabled }: TextProps) {
   return (
     <Typography
       fontSize={14}
-      sx={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}
+      sx={{
+        whiteSpace: 'pre-wrap',
+        wordBreak: 'break-word',
+        color: disabled
+          ? alpha(brandColors.white.main, 0.3)
+          : brandColors.white.main,
+      }}
     >
       {children}
     </Typography>
   );
 }
 
-function TextSmall({ children }: TextProps) {
+function TextSmall({ children, disabled }: TextProps) {
   return (
     <Typography
       fontSize={12}
-      sx={{ color: alpha(brandColors.white.main, 0.7) }}
+      sx={{
+        color: disabled
+          ? alpha(brandColors.white.main, 0.3)
+          : alpha(brandColors.white.main, 0.5),
+      }}
     >
       {children}
     </Typography>
@@ -48,6 +60,7 @@ export default function CardCell({
   px = 2,
   alignRight = false,
   inverted = false,
+  disabled = false,
 }: Props) {
   return (
     <Stack
@@ -61,13 +74,13 @@ export default function CardCell({
     >
       {inverted ? (
         <>
-          <TextSmall>{label}</TextSmall>
-          <TextBig>{children}</TextBig>
+          <TextSmall disabled={disabled}>{label}</TextSmall>
+          <TextBig disabled={disabled}>{children}</TextBig>
         </>
       ) : (
         <>
-          <TextBig>{label}</TextBig>
-          <TextSmall>{children}</TextSmall>
+          <TextBig disabled={disabled}>{label}</TextBig>
+          <TextSmall disabled={disabled}>{children}</TextSmall>
         </>
       )}
     </Stack>
