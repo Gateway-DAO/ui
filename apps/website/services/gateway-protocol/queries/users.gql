@@ -3,3 +3,13 @@ query userByWallet($wallet: String!) {
     id
   }
 }
+
+query mePrimaryWallet {
+  me {
+    id
+    primaryWallet {
+      id
+      address
+    }
+  }
+}
