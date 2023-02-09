@@ -72,12 +72,6 @@ const defineCols = (columns: IColumnGrid[]) => {
       column_name: 'credential_id',
       cell: (params) => (
         <Box sx={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-          <Image
-            src="/images/qr-code-blur.png" //[ ] Remove mock
-            alt="QR Code"
-            width="56"
-            height="56"
-          />
           <Box>
             <Typography
               sx={{
@@ -138,12 +132,9 @@ const defineCols = (columns: IColumnGrid[]) => {
                 textOverflow: 'ellipsis',
               }}
             >
-              {params?.issuedCredentials[0].issuerUser.id}
+              {params?.issuedCredentials[0].issuerUser.gatewayId}
               {/* [x] Remove mock */}
             </Typography>
-            {/* <Tooltip title="Tooltip message">
-              <VerifiedIcon sx={{ color: brandColors.purple.main }} />
-            </Tooltip> */}
           </Box>
         </Box>
       ),
@@ -170,12 +161,8 @@ const defineCols = (columns: IColumnGrid[]) => {
                 textOverflow: 'ellipsis',
               }}
             >
-              {params?.issuerUser?.id}
-              {/* [x] Remove mock */}
+              {params?.issuerUser?.gatewayId}
             </Typography>
-            {/* <Tooltip title="Tooltip message">
-              <VerifiedIcon sx={{ color: brandColors.purple.main }} />
-            </Tooltip> */}
           </Box>
         </Box>
       ),
@@ -202,12 +189,8 @@ const defineCols = (columns: IColumnGrid[]) => {
                 textOverflow: 'ellipsis',
               }}
             >
-              {params.recipientUser.id}
-              {/* [x] Remove mock */}
+              {params.recipientUser.gatewayId}
             </Typography>
-            {/* <Tooltip title="Tooltip message">
-              <VerifiedIcon sx={{ color: brandColors.purple.main }} />
-            </Tooltip> */}
           </Box>
         </Box>
       ),
@@ -291,7 +274,7 @@ export default function DataGrid({ columns, data }: Props): JSX.Element {
           <Box
             sx={{
               display: 'grid',
-              gridTemplateColumns: '2fr 1fr 1fr 1fr 1fr 1fr',
+              gridTemplateColumns: '1.5fr 1fr 1fr 1fr 1fr 1fr',
               px: { xs: 0, md: 4, lg: 6 },
             }}
           >
@@ -328,7 +311,7 @@ export default function DataGrid({ columns, data }: Props): JSX.Element {
                         sx={{
                           px: { xs: 0, md: 4, lg: 6 },
                           display: 'grid',
-                          gridTemplateColumns: '2fr 1fr 1fr 1fr 1fr 1fr',
+                          gridTemplateColumns: '1.5fr 1fr 1fr 1fr 1fr 1fr',
                         }}
                       >
                         {gridColumns.map((column) => (

@@ -5,6 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 
 import { DashboardTemplate } from '../components/templates/dashboard';
 import { ExploreTemplate } from '../components/templates/explore';
+import { gatewayProtocolSDK } from '../services/gateway-protocol/api';
 import { gqlAnonMethods } from '../services/hasura/api';
 
 /** TODO: Prevent template remount when navigating between dashboard pages
@@ -20,9 +21,12 @@ export const getStaticProps = async () => {
     },
   });
 
+  const dataModels = await gatewayProtocolSDK.dataModels({ skip: 0, take: 4 });
+
   return {
     props: {
       exploreProps,
+      dataModels: dataModels.dataModels,
     },
     revalidate: 10,
   };
@@ -30,6 +34,7 @@ export const getStaticProps = async () => {
 
 export default function Explore({
   exploreProps,
+  dataModels,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
   const { t } = useTranslation('explore');
 
@@ -63,6 +68,7 @@ export default function Explore({
         title={t('title')}
         subtitle={t('subtitle')}
         data={data}
+        dataModels={dataModels}
       />
     </DashboardTemplate>
   );
