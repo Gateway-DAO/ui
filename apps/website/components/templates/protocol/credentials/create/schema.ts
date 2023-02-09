@@ -22,7 +22,7 @@ export const createCredentialSchema = z.object({
   image: z.string().nullish(),
   issuerUserId: z.string(),
   issuerOrganizationId: z.string().nullish(),
-  recipientUserId: z
+  recipientUserGatewayIdOrWallet: z
     .string({ required_error: 'Recipient is required' })
     .min(2, 'The recipient must contain at least 2 character(s)'),
   status: definedNonNullAnySchema.nullish(),
