@@ -1,9 +1,15 @@
-import { ReactNode } from 'react';
+import { useState } from 'react';
 
 import { brandColors } from '@gateway/theme';
 
 import VerifiedIcon from '@mui/icons-material/Verified';
-import { Stack, Typography, alpha, Tooltip } from '@mui/material';
+import {
+  Stack,
+  Typography,
+  alpha,
+  Tooltip,
+  ClickAwayListener,
+} from '@mui/material';
 
 import CopyPaste from './copy-paste';
 
@@ -22,6 +28,16 @@ export default function InfoTitle({
   copySucessMessage,
   badgeTooltip,
 }: Props) {
+  const [open, setOpen] = useState(false);
+
+  const handleTooltipClose = () => {
+    setOpen(false);
+  };
+
+  const handleTooltipOpen = () => {
+    setOpen(true);
+  };
+
   return (
     <Stack sx={{ verticalAlign: 'center', justifyContent: 'center', mb: 1 }}>
       <Stack direction="row" alignItems="center">
@@ -38,9 +54,22 @@ export default function InfoTitle({
           {title}
         </Typography>
         {badgeTooltip && (
-          <Tooltip title={badgeTooltip}>
-            <VerifiedIcon sx={{ color: brandColors.purple.main }} />
-          </Tooltip>
+          <ClickAwayListener onClickAway={handleTooltipClose}>
+            <Tooltip
+              title={badgeTooltip}
+              arrow
+              onClose={handleTooltipClose}
+              open={open}
+              disableFocusListener
+              disableHoverListener
+              disableTouchListener
+            >
+              <VerifiedIcon
+                onClick={handleTooltipOpen}
+                sx={{ color: brandColors.purple.main, cursor: 'pointer' }}
+              />
+            </Tooltip>
+          </ClickAwayListener>
         )}
       </Stack>
     </Stack>

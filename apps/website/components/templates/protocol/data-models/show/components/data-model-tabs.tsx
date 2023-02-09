@@ -5,13 +5,16 @@ import { PartialDeep } from 'type-fest/source/partial-deep';
 
 import { Box, Tab, Tabs } from '@mui/material';
 
+import { query } from '../../../../../../constants/queries';
 import {
   DataModel,
   GetDataModelStatsQuery,
 } from '../../../../../../services/gateway-protocol/types';
 import { useTab, TabPanel } from '../../../../../atoms/tabs';
+import { IColumnGrid } from '../../../../../organisms/data-grid/data-grid';
 
 const OverviewTab = dynamic(() => import('./overview-tab'), { ssr: false });
+const GridViewTab = dynamic(() => import('./grid-view-tab'), { ssr: false });
 
 type Props = {
   dataModel: PartialDeep<DataModel>;
@@ -21,6 +24,37 @@ type Props = {
 export default function DataModelTabs({ dataModel, stats }: Props) {
   const { activeTab, handleTabChange, setTab } = useTab();
   const { t } = useTranslation('protocol');
+
+  const credentialGridColumns: IColumnGrid[] = [
+    {
+      column_name: 'credential_id',
+      header_name: `${t('data-model.credentials-table.credential_id')}`,
+    },
+    {
+      column_name: 'category',
+      header_name: `${t('data-model.credentials-table.category')}`,
+    },
+    {
+      column_name: 'issuer_id',
+      header_name: `${t('data-model.credentials-table.issuer_id')}`,
+    },
+    {
+      column_name: 'recipient_id',
+      header_name: `${t('data-model.credentials-table.recipient_id')}`,
+    },
+    {
+      column_name: 'issuance_date',
+      header_name: `${t('data-model.credentials-table.issuance_date')}`,
+    },
+    {
+      column_name: 'status',
+      header_name: `${t('data-model.credentials-table.status')}`,
+    },
+    // {
+    //   column_name: 'minted',
+    //   header_name: `${t('data-model.credentials-table.minted')}`,
+    // },
+  ];
 
   const tabs = [
     {
@@ -40,11 +74,21 @@ export default function DataModelTabs({ dataModel, stats }: Props) {
     },
     {
       key: 'credentials',
+      noPadding: true,
       label: t('common:tabs.credentials'),
-      section: <>Credentials</>,
+      section: (
+        <GridViewTab
+          dataModel={dataModel}
+          columns={credentialGridColumns}
+          queryString={query.credentialsByDataModel}
+          queryFnName={'findCredentialsByDataModel'}
+          pageSize={3}
+        />
+      ),
     },
     {
       key: 'playground',
+      noPadding: true,
       label: t('common:tabs.playground'),
       section: (
         <>
@@ -100,15 +144,15 @@ export default function DataModelTabs({ dataModel, stats }: Props) {
           ))}
         </Tabs>
       </Box>
-      {tabs.map(({ key, section }, index) => (
+      {tabs.map(({ key, noPadding, section }, index) => (
         <TabPanel
           key={key}
           tabsId="protocol"
           index={index}
           active={index === activeTab}
           sx={{
-            py: key === 'playground' ? 0 : 3,
-            px: key === 'playground' ? 0 : { xs: 0, md: 4, lg: 6 },
+            py: noPadding ? 0 : 3,
+            px: noPadding ? 0 : { xs: 0, md: 4, lg: 6 },
           }}
         >
           {section}

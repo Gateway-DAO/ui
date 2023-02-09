@@ -39,8 +39,8 @@ const TwitterTweetTask = ({ dragAndDrop, taskId, deleteTask }) => {
     }
   }, [setValue, taskId, formValues.tasks]);
 
-  const [taskVisible, setTaskVisible] = useState(false);
-  const [taskIsMoving, setTaskIsMoving] = useState(false);
+  const [taskVisible, setTaskVisible] = useState(true);
+  const [taskIsMoving, setTaskIsMoving] = useState(true);
   const [emoji, setEmoji] = useState('');
   const [tweetText, setTweetText] = useState(
     formValues.tasks[taskId]?.task_data['tweet_text']
@@ -125,7 +125,6 @@ const TwitterTweetTask = ({ dragAndDrop, taskId, deleteTask }) => {
             <Typography variant="subtitle2">Post Tweet</Typography>
             <TextField
               variant="standard"
-              autoFocus
               sx={{
                 minWidth: { md: '600px', xs: '110%' },
                 maxWidth: { xs: '100%', md: '110%' },

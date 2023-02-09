@@ -16,12 +16,12 @@ import {
   Typography,
 } from '@mui/material';
 
+import { TaskIcon } from '../../../atoms/task-icon';
 import {
   CreateGateData,
   HoldNFTDataError,
 } from '../../../templates/create-gate/schema';
 import { mockChains } from '../hold-token-task/__mock__';
-import { TaskIcon } from 'apps/website/components/atoms/task-icon';
 
 const HoldNFTTask = ({ dragAndDrop, taskId, deleteTask }) => {
   const {
@@ -45,8 +45,8 @@ const HoldNFTTask = ({ dragAndDrop, taskId, deleteTask }) => {
     setTaskIsMoving(dragAndDrop);
   }, [dragAndDrop]);
 
-  const [taskVisible, setTaskVisible] = useState(false);
-  const [taskIsMoving, setTaskIsMoving] = useState(false);
+  const [taskVisible, setTaskVisible] = useState(true);
+  const [taskIsMoving, setTaskIsMoving] = useState(true);
 
   return (
     <Stack
@@ -81,7 +81,6 @@ const HoldNFTTask = ({ dragAndDrop, taskId, deleteTask }) => {
             <Typography variant="subtitle2">Hold NFT</Typography>
             <TextField
               variant="standard"
-              autoFocus
               sx={{
                 minWidth: { md: '600px', xs: '110%' },
                 maxWidth: { xs: '100%', md: '110%' },
