@@ -31,6 +31,7 @@ export const defaultValues = (
   };
 };
 
+
 export const schema: SchemaOf<NewDAOSchema> = object({
   name: string()
     .defined()
