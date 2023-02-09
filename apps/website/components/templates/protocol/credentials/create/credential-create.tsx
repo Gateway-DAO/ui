@@ -18,6 +18,7 @@ import {
   CreateCredentialInput,
 } from '../../../../../services/gateway-protocol/types';
 import { DataModel } from '../../../../../services/gateway-protocol/types';
+import { claimFields } from './components/ClaimTypes';
 import ClaimForm from './components/claim-form';
 import CredentialCreateContainer from './components/credential-create-container';
 import GeneralInfoForm from './components/general-info-form';
@@ -85,22 +86,45 @@ export default function CredentialCreateForm({
     gqlAuthMethods.upload_arweave({ base64 })
   );
 
-  const uploadClaimImages = async (data) => {
+  const removeEmptyDataFromArrayField = (type: string, fieldData) => {
+    if (
+      type === claimFields.array &&
+      fieldData.length > 0 &&
+      fieldData[0] === ''
+    ) {
+      fieldData = [];
+    }
+    return fieldData;
+  };
+
+  const uploadClaimImages = async (contentMediaType: string, fieldData) => {
+    if (
+      contentMediaType &&
+      fieldData &&
+      fieldData?.indexOf('https://') === -1
+    ) {
+      try {
+        const picture = await uploadArweave.mutateAsync(fieldData);
+        fieldData = picture?.upload_arweave?.url;
+      } catch (e) {
+        enqueueSnackbar(t('data-model.error-on-upload'));
+      }
+    }
+    return fieldData;
+  };
+
+  const handleClaimFields = async (data) => {
     const claimProps = dataModel?.schema?.properties;
     if (!Object.keys(claimProps)) return data;
     for (const item of Object.keys(claimProps)) {
-      if (
-        claimProps[item]?.contentMediaType &&
-        data?.claim[item] &&
-        data?.claim[item].indexOf('https://') === -1
-      ) {
-        try {
-          const picture = await uploadArweave.mutateAsync(data?.claim[item]);
-          data.claim[item] = picture?.upload_arweave?.url;
-        } catch (e) {
-          enqueueSnackbar(t('data-model.error-on-upload'));
-        }
-      }
+      data.claim[item] = removeEmptyDataFromArrayField(
+        claimProps[item]?.type,
+        data.claim[item]
+      );
+      data.claim[item] = await uploadClaimImages(
+        claimProps[item]?.contentMediaType,
+        data.claim[item]
+      );
     }
     return data;
   };
@@ -110,7 +134,7 @@ export default function CredentialCreateForm({
 
     try {
       const newData = data;
-      await uploadClaimImages(newData).then(async (res) => {
+      await handleClaimFields(newData).then(async (res) => {
         await createCredential
           .mutateAsync(res as CreateCredentialMutationVariables)
           .then((suc) => {
