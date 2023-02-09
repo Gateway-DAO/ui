@@ -22,13 +22,14 @@ export function DataModelCard({
   description,
   tags,
   version,
+  createdBy,
 }: PartialDeep<DataModel>): JSX.Element {
   const url = ROUTES.PROTOCOL_DATAMODEL.replace('[id]', id);
   return (
     <Link passHref href={url}>
       <MUICard sx={{ position: 'relative', cursor: 'pointer' }}>
         <CardHeader
-          title={title}
+          title={createdBy?.gatewayId}
           titleTypographyProps={{ fontSize: '14px', fontWeight: 400 }}
           avatar={
             <Avatar
