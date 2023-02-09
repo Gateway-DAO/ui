@@ -1,5 +1,8 @@
 import useTranslation from 'next-translate/useTranslation';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
+
+import { PartialDeep } from 'type-fest';
 
 import { timestampToString } from '@gateway/helpers';
 import { brandColors } from '@gateway/theme';
@@ -15,15 +18,20 @@ import {
   Divider,
 } from '@mui/material';
 
+import { ROUTES } from '../../../../../../constants/routes';
+import { Credential } from '../../../../../../services/gateway-protocol/types';
 import ExternalLink from '../../../../../atoms/external-link';
+import InternalLink from '../../../../../atoms/internal-link';
 
 type Props = {
   activities: any[];
+  credential: PartialDeep<Credential>;
 };
 
-export default function Activities({ activities }: Props) {
+export default function Activities({ activities, credential }: Props) {
   const { t, lang } = useTranslation('protocol');
   const [expanded, setExpanded] = useState<boolean>(false);
+  const router = useRouter();
 
   const handleChange =
     () => (event: React.SyntheticEvent, isExpanded: boolean) => {
@@ -83,9 +91,12 @@ export default function Activities({ activities }: Props) {
                 }}
               />
             </Stack>
-            <ExternalLink
+            <InternalLink
               text={t('credential.data-model-id')}
-              url="https://google.com"
+              url={ROUTES.PROTOCOL_DATAMODEL.replace(
+                '[id]',
+                credential?.dataModel?.id
+              )}
             />
           </Stack>
         </AccordionSummary>

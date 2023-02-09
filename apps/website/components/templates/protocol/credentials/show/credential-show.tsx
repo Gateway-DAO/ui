@@ -71,7 +71,7 @@ export default function CredentialProtocolShow({ credential }: Props) {
         <Tags tags={credential?.dataModel?.tags} />
         <Typography sx={{ mb: 3 }}>{credential?.description}</Typography>
         <CredentialCardInfo credential={credential} />
-        <MintCredentialButton sx={{ height: '48px' }} credential={credMint} />
+        {/* <MintCredentialButton sx={{ height: '48px' }} credential={credMint} /> */}
 
         {credMint.status == 'invalid' && (
           <Alert
@@ -97,12 +97,12 @@ export default function CredentialProtocolShow({ credential }: Props) {
           </Alert>
         )}
 
-        {activities?.length > 0 && <Activities activities={activities} />}
+        {activities?.length > 0 && <Activities credential={credential} activities={activities} />}
       </Stack>
       <Divider sx={{ mt: 3, mb: 4, marginLeft: '2px' }} />
       <Stack sx={boxStyles}>
         <Stack direction="row" justifyContent="flex-end" sx={{ mb: 2 }}>
-          <ExternalLink text={t('credential.storage-id')} url="" />
+          <ExternalLink text={t('credential.storage-id')} url={credential?.arweaveInfo?.url} />
         </Stack>
         <DataTable
           title={t('credential.claim')}
