@@ -44,21 +44,6 @@ export default function CredentialProtocolShow({ credential }: Props) {
     status: 'to_mint',
     transaction_url: 'x',
   };
-  const activities = [
-    {
-      name: 'Credential expired',
-      date: '2023-01-09T21:03:11.566Z',
-    },
-    {
-      name: 'Credential issued',
-      date: '2023-01-09T21:03:11.566Z',
-    },
-    {
-      name: 'Credential issued',
-      date: '2023-01-09T21:03:11.566Z',
-    },
-  ];
-  // MOCK - END
 
   const boxStyles: SxProps<Theme> = {
     maxWidth: '564px',
@@ -74,7 +59,7 @@ export default function CredentialProtocolShow({ credential }: Props) {
         <Tags tags={credential?.dataModel?.tags} />
         <Typography sx={{ mb: 3 }}>{credential?.description}</Typography>
         <CredentialCardInfo credential={credential} />
-        <MintCredentialButton sx={{ height: '48px' }} credential={credMint} />
+        <MintCredentialButton sx={{ height: '48px' }} credential={credMint} disabled={true} />
 
         {credMint.status == 'invalid' && (
           <Alert
@@ -108,7 +93,7 @@ export default function CredentialProtocolShow({ credential }: Props) {
           }}
         />
 
-        {activities?.length > 0 && <Activities activities={activities} />}
+        {credential?.activities?.length > 0 && <Activities activities={credential?.activities} />}
       </Stack>
       <Divider sx={{ mt: 3, mb: 4, marginLeft: '2px' }} />
       <Stack sx={boxStyles}>

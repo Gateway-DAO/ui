@@ -13,6 +13,7 @@ import { LoadingButton } from './loading-button';
 export type Props = {
   credential: PartialDeep<Credentials>;
   sx?: SxProps;
+  disabled?: boolean;
 };
 
 const ToMintButton = (props) => (
@@ -39,7 +40,7 @@ const MintedButton = (props) => (
   </Button>
 );
 
-export const MintCredentialButton = ({ credential, sx }: Props) => {
+export const MintCredentialButton = ({ credential, sx, disabled }: Props) => {
   const [status, setStatus] = useState<'to_mint' | 'minted'>(
     credential.status as 'to_mint' | 'minted'
   );
@@ -66,6 +67,7 @@ export const MintCredentialButton = ({ credential, sx }: Props) => {
             width: '100%',
             ...sx,
           }}
+          disabled={disabled}
         >
           {t('actions.check-transaction')}
         </MintedButton>
@@ -85,6 +87,7 @@ export const MintCredentialButton = ({ credential, sx }: Props) => {
             width: '100%',
             ...sx,
           }}
+          disabled={disabled}
         >
           {t('actions.mint')}
         </ToMintButton>

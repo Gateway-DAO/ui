@@ -1,6 +1,8 @@
 import useTranslation from 'next-translate/useTranslation';
 import { useState } from 'react';
 
+import { PartialDeep } from 'type-fest/source/partial-deep';
+
 import { timestampToString } from '@gateway/helpers';
 import { brandColors } from '@gateway/theme';
 
@@ -15,8 +17,10 @@ import {
   Divider,
 } from '@mui/material';
 
+import { Activity } from '../../../../../../services/gateway-protocol/types';
+
 type Props = {
-  activities: any[];
+  activities: PartialDeep<Activity>[];
 };
 
 export default function Activities({ activities }: Props) {
@@ -88,13 +92,13 @@ export default function Activities({ activities }: Props) {
           <Stack sx={{ mb: 2 }} gap={1} divider={<Divider />}>
             {activities?.map((activity, index) => (
               <Stack key={index}>
-                <Typography fontSize={14}>{activity?.name}</Typography>
+                <Typography fontSize={14}>{activity?.status}</Typography>
                 <Typography
                   fontSize={12}
                   sx={{ color: alpha(brandColors.white.main, 0.7) }}
                 >
                   {timestampToString(
-                    activity?.date,
+                    activity?.timestamp,
                     lang,
                     t('credential.indeterminate')
                   )}
