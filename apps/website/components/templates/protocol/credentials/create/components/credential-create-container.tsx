@@ -3,13 +3,7 @@ import { ReactNode } from 'react';
 
 import { FormProvider, UseFormReturn } from 'react-hook-form';
 
-import {
-  Box,
-  CircularProgress,
-  Divider,
-  Stack,
-  Typography,
-} from '@mui/material';
+import { Box, CircularProgress, Stack, Typography } from '@mui/material';
 
 import { LoadingButton } from '../../../../../atoms/loading-button';
 
@@ -52,15 +46,7 @@ export default function CredentialCreateContainer({
             <CircularProgress sx={{ mt: 2 }} />
           </Box>
         )}
-        <Stack
-          sx={{
-            display: loading ? 'none' : 'flex',
-          }}
-          divider={<Divider sx={{ mb: 2, mt: 2, mx: { xs: -3, md: -6 } }} />}
-          gap={3}
-        >
-          {children}
-        </Stack>
+        <Stack sx={{ display: loading ? 'none' : 'flex' }}>{children}</Stack>
         <LoadingButton
           variant="contained"
           isLoading={loading}

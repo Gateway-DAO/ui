@@ -1,5 +1,6 @@
 {
   "credential": {
+    "authenticated-by": "Authenticated by",
     "issuance-date": "Issuance date",
     "expiration-date": "Expiration date",
     "indeterminate": "Indeterminate",
@@ -20,7 +21,10 @@
     "hide-activity": "Hide Activity",
     "show-activity": "See Activity",
     "data-model-id": "Data model ID",
-    "storage-id": "Storage ID"
+    "storage-id": "Storage ID",
+    "alert-title": "This credential is not valid",
+    "alert-description": "The contents of this credential were not created by the issuer",
+    "unfilled": "Unfilled"
   },
   "data-model": {
     "data-model-id": "Data model ID",
@@ -59,7 +63,23 @@
       "group-issue-by-title": "Set the issuer",
       "group-issue-by-description": "The issuer will be issued by",
       "issue-by": "Issue by",
-      "add-field": "Add field"
+      "add-field": "Add field",
+      "optional": "Optional"
+    },
+    "credentials-table": {
+      "credential_id": "Credential ID",
+      "category": "Category",
+      "issuer_id": "Issuer ID",
+      "recipient_id": "Recipient ID",
+      "issuance_date": "Issuance date",
+      "status": "Status",
+      "minted": "Minted"
+    },
+    "issuers-table": {
+      "issuer_id": "Issuer ID",
+      "started": "Started using",
+      "issued": "Issued",
+      "unique_recipients": "Unique recipients"
     }
   }
 }

@@ -7,6 +7,7 @@ import { theme } from '@gateway/theme';
 
 import { Stack, Box, useMediaQuery } from '@mui/material';
 
+import Loading from '../../../../../../components/atoms/loading';
 import { ROUTES } from '../../../../../../constants/routes';
 import { User } from '../../../../../../services/gateway-protocol/types';
 import { gqlAnonMethods } from '../../../../../../services/hasura/api';
@@ -25,10 +26,10 @@ export default function CardUsers({
   const isMobile = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
 
   const issuer = useQuery(
-    ['issuer', issuerCredential.id],
+    ['issuer', issuerCredential?.id],
     () =>
       gqlAnonMethods.user_from_wallet({
-        wallet: issuerCredential.primaryWallet?.address,
+        wallet: issuerCredential?.primaryWallet?.address,
       }),
     {
       select: (data) => data.users?.[0],
@@ -64,13 +65,17 @@ export default function CardUsers({
         alignItems: { xs: 'baseline', md: 'stretch' },
       }}
     >
-      <CardUserCell
-        label={t('credential.issuer-id')}
-        picture={issuer?.data?.picture}
-        name={issuerName}
-        href={ROUTES.PROFILE.replace('[username]', issuerName)}
-        hasLink={!!issuer.data}
-      />
+      {issuer.isLoading ? (
+        <Loading margin={1} />
+      ) : (
+        <CardUserCell
+          label={t('credential.issuer-id')}
+          picture={issuer?.data?.picture}
+          name={issuerName}
+          href={ROUTES.PROFILE.replace('[username]', issuerName)}
+          hasLink={!!issuer.data}
+        />
+      )}
       <Box
         sx={{
           alignSelf: { md: 'center' },
@@ -89,14 +94,18 @@ export default function CardUsers({
           />
         </svg>
       </Box>
-      <CardUserCell
-        label={t('credential.recipient-id')}
-        picture={recipient?.data?.picture}
-        name={recipientName}
-        href={ROUTES.PROFILE.replace('[username]', recipientName)}
-        alignRight={!isMobile}
-        hasLink={!!recipient.data}
-      />
+      {recipient.isLoading ? (
+        <Loading margin={1} />
+      ) : (
+        <CardUserCell
+          label={t('credential.recipient-id')}
+          picture={recipient?.data?.picture}
+          name={recipientName}
+          href={ROUTES.PROFILE.replace('[username]', recipientName)}
+          alignRight={!isMobile}
+          hasLink={!!recipient.data}
+        />
+      )}
     </Stack>
   );
 }
