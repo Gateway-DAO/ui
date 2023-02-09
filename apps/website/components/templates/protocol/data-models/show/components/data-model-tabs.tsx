@@ -1,6 +1,7 @@
 import useTranslation from 'next-translate/useTranslation';
 import dynamic from 'next/dynamic';
 
+import { DateTime } from 'luxon';
 import { PartialDeep } from 'type-fest/source/partial-deep';
 
 import { Box, Tab, Tabs } from '@mui/material';
@@ -56,6 +57,24 @@ export default function DataModelTabs({ dataModel, stats }: Props) {
     // },
   ];
 
+  const issuersGridColumns: IColumnGrid[] = [
+    {
+      column_name: 'issuer_id_issuers',
+      header_name: `${t('data-model.issuers-table.issuer_id')}`,
+    },
+    {
+      column_name: 'issuance_date',
+      header_name: `${t('data-model.issuers-table.started')}`,
+      valueGetter: (params) =>
+        DateTime.fromISO(params.createdAt).toFormat('MM/dd, yyyy'),
+    },
+    {
+      column_name: 'default',
+      header_name: `${t('data-model.issuers-table.issued')}`,
+      field: 'createdAt', //[ ] Change to issued number
+    },
+  ];
+
   const tabs = [
     {
       key: 'overview',
@@ -65,7 +84,15 @@ export default function DataModelTabs({ dataModel, stats }: Props) {
     {
       key: 'issuers',
       label: t('common:tabs.issuers'),
-      section: <>Issuers</>,
+      section: (
+        <GridViewTab
+          dataModel={dataModel}
+          columns={issuersGridColumns}
+          queryString={query.issuersByDataModel}
+          queryFnName={'findIssuersByDataModel'}
+          pageSize={3}
+        />
+      ),
     },
     {
       key: 'recipients',
