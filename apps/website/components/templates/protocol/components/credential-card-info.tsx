@@ -81,7 +81,7 @@ export default function CredentialCardInfo({
       >
         <CardCell label={t('credential.authenticated-by')}>
           <Typography color={brandColors.purple.main} variant="body2">
-            {issuer?.data?.username}
+            {credential?.issuerUser.gatewayId}
           </Typography>
         </CardCell>
         <CardCell label={t('credential.status')}>
@@ -93,9 +93,9 @@ export default function CredentialCardInfo({
               color="success"
             />
           )}
-          {credential?.status === CredentialStatus.Expired && (
+          {credential?.status === CredentialStatus.Suspended && (
             <Chip
-              label={t('credential.expired')}
+              label={t('credential.suspended')}
               size="small"
               variant="outlined"
               color="warning"

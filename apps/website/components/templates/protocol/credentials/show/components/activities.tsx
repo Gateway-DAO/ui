@@ -1,4 +1,5 @@
 import useTranslation from 'next-translate/useTranslation';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 import { PartialDeep } from 'type-fest/source/partial-deep';
@@ -23,9 +24,21 @@ type Props = {
   activities: PartialDeep<Activity>[];
 };
 
+const activityText = (type: string) => {
+  return (
+    {
+      Issued: 'Credential issued',
+      Revoked: 'Credential revoked',
+      Suspended: 'Credential suspended',
+      Reactivated: 'Credential reactivated',
+    }[type] || 'Unknown activity'
+  );
+};
+
 export default function Activities({ activities }: Props) {
   const { t, lang } = useTranslation('protocol');
   const [expanded, setExpanded] = useState<boolean>(false);
+  const router = useRouter();
 
   const handleChange =
     () => (event: React.SyntheticEvent, isExpanded: boolean) => {
@@ -90,21 +103,29 @@ export default function Activities({ activities }: Props) {
         </AccordionSummary>
         <AccordionDetails sx={{ p: 0, m: 0 }}>
           <Stack sx={{ mb: 2 }} gap={1} divider={<Divider />}>
-            {activities?.map((activity, index) => (
-              <Stack key={index}>
-                <Typography fontSize={14}>{activity?.status}</Typography>
-                <Typography
-                  fontSize={12}
-                  sx={{ color: alpha(brandColors.white.main, 0.7) }}
-                >
-                  {timestampToString(
-                    activity?.timestamp,
-                    lang,
-                    t('credential.indeterminate')
-                  )}
-                </Typography>
-              </Stack>
-            ))}
+            {activities
+              ?.sort(
+                (a, b) =>
+                  new Date(b.timestamp).getTime() -
+                  new Date(a.timestamp).getTime()
+              )
+              .map((activity, index) => (
+                <Stack key={index}>
+                  <Typography fontSize={14}>
+                    {activityText(activity?.type)}
+                  </Typography>
+                  <Typography
+                    fontSize={12}
+                    sx={{ color: alpha(brandColors.white.main, 0.7) }}
+                  >
+                    {timestampToString(
+                      activity?.timestamp,
+                      lang,
+                      t('credential.indeterminate')
+                    )}
+                  </Typography>
+                </Stack>
+              ))}
           </Stack>
         </AccordionDetails>
       </Accordion>
