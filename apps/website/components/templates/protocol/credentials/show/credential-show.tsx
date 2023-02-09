@@ -100,8 +100,10 @@ export default function CredentialProtocolShow({ credential }: Props) {
         <Stack direction="row" justifyContent="flex-end" sx={{ mb: 2 }}>
           <ExternalLink
             text={t('credential.storage-id')}
-            handleClick={() => {
-              router.push({ pathname: ROUTES.PROTOCOL_DATAMODEL, query: { id: credential?.dataModel?.id } })
+            handleClick={(e) => {
+              e.preventDefault();
+              if (credential?.arweaveInfo?.url)
+                window.open(credential?.arweaveInfo?.url)
             }}
           />
         </Stack>
