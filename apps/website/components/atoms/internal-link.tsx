@@ -11,8 +11,6 @@ type Props = {
 };
 
 export default function InternalLink({ text, url }: Props) {
-  const router = useRouter();
-
   return (
     <Link
       component={Stack}
@@ -20,17 +18,19 @@ export default function InternalLink({ text, url }: Props) {
       direction="row"
       alignItems="center"
       sx={{ textDecoration: 'none', position: 'relative', cursor: 'pointer' }}
-      onClick={() => router.push(url)}
+      href={url}
     >
-      <Typography
-        fontSize={12}
-        sx={{ color: alpha(brandColors.white.main, 0.7) }}
-      >
-        {text}
-      </Typography>
-      <LaunchIcon
-        sx={{ color: alpha(brandColors.white.main, 0.7), fontSize: '14px' }}
-      />
+      <a>
+        <Typography
+          fontSize={12}
+          sx={{ color: alpha(brandColors.white.main, 0.7) }}
+        >
+          {text}
+        </Typography>
+        <LaunchIcon
+          sx={{ color: alpha(brandColors.white.main, 0.7), fontSize: '14px' }}
+        />
+      </a>
     </Link>
   );
 }
