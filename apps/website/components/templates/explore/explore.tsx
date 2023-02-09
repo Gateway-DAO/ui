@@ -1,10 +1,13 @@
 import useTranslation from 'next-translate/useTranslation';
 import { useMemo } from 'react';
 
+import { PartialDeep } from 'type-fest';
+
 import { TOKENS } from '@gateway/theme';
 
 import { Box, Tabs, Tab, Typography } from '@mui/material';
 
+import { DataModel } from '../../../services/gateway-protocol/types';
 import { a11yTabProps, TabPanel, useTab } from '../../atoms/tabs';
 import { Navbar } from '../../organisms/navbar';
 import { AllTab } from './tabs/all-tab';
@@ -18,9 +21,15 @@ type TemplateProps = {
   title: string;
   subtitle: string;
   data: ExploreProps;
+  dataModels: PartialDeep<DataModel>[];
 };
 
-export function ExploreTemplate({ title, subtitle, data }: TemplateProps) {
+export function ExploreTemplate({
+  title,
+  subtitle,
+  data,
+  dataModels,
+}: TemplateProps) {
   const { t } = useTranslation('explore');
   const { activeTab, handleTabChange, setTab } = useTab();
 
@@ -29,7 +38,9 @@ export function ExploreTemplate({ title, subtitle, data }: TemplateProps) {
       {
         key: 'all',
         label: t('common:tabs.all'),
-        section: <AllTab setActiveTab={setTab} {...data} />,
+        section: (
+          <AllTab setActiveTab={setTab} {...data} dataModels={dataModels} />
+        ),
       },
       {
         key: 'credentials',
