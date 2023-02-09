@@ -25,7 +25,10 @@
     "storage-id": "Storage ID",
     "alert-title": "This credential is not valid",
     "alert-description": "The contents of this credential were not created by the issuer",
-    "unfilled": "Unfilled"
+    "unfilled": "Unfilled",
+    "actions": {
+      "revoke": "Revoke"
+    }
   },
   "data-model": {
     "data-model-id": "Data model ID",
