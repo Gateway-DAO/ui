@@ -41,7 +41,6 @@ export function ImageDropField<TFormSchema extends FieldValues = FieldValues>({
   const readFiles = (files: FileList | File[]) => {
     const file = files[0];
     const reader = new FileReader();
-    console.log(file);
     /* TODO: File size can be constant */
     const imageTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
     if (file.size <= 5245329 && imageTypes.includes(file.type)) {
