@@ -10,6 +10,7 @@ import { brandColors } from '@gateway/theme';
 import { Typography, Chip, Avatar } from '@mui/material';
 import { alpha, Stack, Box } from '@mui/material';
 
+import { CredentialStatus } from '../../../services/gateway-protocol/types';
 import NetworkTransactionLink from '../../atoms/network-transaction-link';
 import { CategoriesList } from '../../molecules/categories-list';
 
@@ -48,15 +49,15 @@ type Column = {
   width?: number;
 };
 
-const setColorStatus = (status: 'Valid' | 'Invalid' | string): string => {
+const setColorStatus = (status: CredentialStatus): string => {
   switch (status) {
-    case 'Valid':
+    case CredentialStatus.Valid:
       return brandColors.green.main;
 
-    case 'Revoked' || 'Expired':
+    case CredentialStatus.Revoked || CredentialStatus.Expired:
       return brandColors.orange.main;
 
-    case 'Invalid':
+    case CredentialStatus.Invalid:
       return brandColors.red.main;
 
     default:

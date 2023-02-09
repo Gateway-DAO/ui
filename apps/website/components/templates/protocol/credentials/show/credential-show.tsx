@@ -13,7 +13,7 @@ import {
 } from '@mui/material';
 import { Theme } from '@mui/material/styles/createTheme';
 
-import { Credential } from '../../../../../services/gateway-protocol/types';
+import { Credential, CredentialStatus } from '../../../../../services/gateway-protocol/types';
 import ExternalLink from '../../../../atoms/external-link';
 import { MintCredentialButton } from '../../../../atoms/mint-button';
 import Tags from '../../components/tags';
@@ -61,7 +61,7 @@ export default function CredentialProtocolShow({ credential }: Props) {
         <CredentialCardInfo credential={credential} />
         <MintCredentialButton sx={{ height: '48px' }} credential={credMint} disabled={true} />
 
-        {credMint.status == 'invalid' && (
+        {credential.status === CredentialStatus.Invalid && (
           <Alert
             variant="outlined"
             severity="error"
