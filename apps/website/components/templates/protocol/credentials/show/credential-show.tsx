@@ -41,21 +41,6 @@ export default function CredentialProtocolShow({ credential }: Props) {
     status: 'to_mint',
     transaction_url: 'x',
   };
-  const activities = [
-    {
-      name: 'Credential expired',
-      date: '2023-01-09T21:03:11.566Z',
-    },
-    {
-      name: 'Credential issued',
-      date: '2023-01-09T21:03:11.566Z',
-    },
-    {
-      name: 'Credential issued',
-      date: '2023-01-09T21:03:11.566Z',
-    },
-  ];
-  // MOCK - END
 
   const boxStyles: SxProps<Theme> = {
     maxWidth: '564px',
@@ -97,7 +82,7 @@ export default function CredentialProtocolShow({ credential }: Props) {
           </Alert>
         )}
 
-        {activities?.length > 0 && <Activities credential={credential} activities={activities} />}
+        {credential.activities?.length > 0 && <Activities credential={credential} />}
       </Stack>
       <Divider sx={{ mt: 3, mb: 4, marginLeft: '2px' }} />
       <Stack sx={boxStyles}>
