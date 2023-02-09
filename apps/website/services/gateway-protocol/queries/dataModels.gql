@@ -7,6 +7,22 @@ query dataModel($id: String!) {
     title
     arweaveInfo
     createdAt
+    createdBy {
+      gatewayId
+    }
+  }
+}
+
+query dataModels($take: Int!, $skip: Int!) {
+  dataModels(take: $take, skip: $skip) {
+    id
+    title
+    tags
+    version
+    description
+    createdBy {
+      gatewayId
+    }
   }
 }
 

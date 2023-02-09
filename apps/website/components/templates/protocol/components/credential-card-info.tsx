@@ -2,7 +2,6 @@ import useTranslation from 'next-translate/useTranslation';
 
 import { DateTime } from 'luxon';
 import { PartialDeep } from 'type-fest';
-import { useQuery } from 'wagmi';
 
 import { brandColors, theme } from '@gateway/theme';
 
@@ -35,20 +34,6 @@ export default function CredentialCardInfo({
 }: Props) {
   const { t } = useTranslation('protocol');
   const isMobile = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
-
-  // TODO: Remove
-  const issuer = useQuery(
-    ['issuer', credential?.issuerUser?.id],
-    () =>
-      gqlAnonMethods.user_from_wallet({
-        wallet: credential?.issuerUser?.primaryWallet?.address,
-      }),
-    {
-      select: (data) => data.users?.[0],
-      refetchOnMount: false,
-      refetchOnWindowFocus: false,
-    }
-  );
 
   return (
     <Paper
