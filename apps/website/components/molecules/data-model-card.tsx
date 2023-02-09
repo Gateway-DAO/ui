@@ -1,5 +1,8 @@
 import Link from 'next/link';
 
+import { ROUTES } from 'apps/website/constants/routes';
+import { PartialDeep } from 'type-fest';
+
 import {
   Avatar,
   CardContent,
@@ -10,15 +13,8 @@ import {
 } from '@mui/material';
 import MUICard from '@mui/material/Card';
 
+import { DataModel } from '../../services/gateway-protocol/types';
 import { CategoriesList } from './categories-list';
-
-type Props = {
-  id: string;
-  title: string;
-  description: string;
-  tags: string[];
-  version: string;
-};
 
 export function DataModelCard({
   id,
@@ -26,9 +22,10 @@ export function DataModelCard({
   description,
   tags,
   version,
-}: Props): JSX.Element {
+}: PartialDeep<DataModel>): JSX.Element {
+  const url = ROUTES.PROTOCOL_DATAMODEL.replace('[id]', id);
   return (
-    <Link passHref href={`/protocol/data-models/${id}/show`}>
+    <Link passHref href={url}>
       <MUICard sx={{ position: 'relative', cursor: 'pointer' }}>
         <CardHeader
           title={title}
