@@ -71,11 +71,11 @@ export default function CredentialCardInfo({
       >
         <CardCell label={t('credential.authenticated-by')}>
           <Typography color={brandColors.purple.main} variant="body2">
-            sanket.gate
+            {credential?.issuerUser.gatewayId}
           </Typography>
         </CardCell>
         <CardCell label={t('credential.status')}>
-          {!isDateExpired && (
+          {credential?.status === 'Valid' && (
             <Chip
               label={t('credential.valid')}
               size="small"
@@ -83,15 +83,15 @@ export default function CredentialCardInfo({
               color="success"
             />
           )}
-          {isDateExpired && (
+          {credential?.status === 'Suspended' && (
             <Chip
-              label={t('credential.expired')}
+              label={t('credential.suspended')}
               size="small"
               variant="outlined"
               color="warning"
             />
           )}
-          {/* {credential?.status === 'REVOKED' && (
+          {credential?.status === 'Revoked' && (
             <Chip
               label={t('credential.revoked')}
               size="small"
@@ -99,14 +99,14 @@ export default function CredentialCardInfo({
               color="warning"
             />
           )}
-          {credential?.status === 'INVALID' && (
+          {credential?.status === 'Invalid' && (
             <Chip
               label={t('credential.invalid')}
               size="small"
               variant="outlined"
               color="error"
             />
-          )} */}
+          )}
         </CardCell>
       </Stack>
       <Stack
