@@ -58,16 +58,19 @@ export default function DataModelTabs({ dataModel, stats }: Props) {
   ];
 
   const issuersGridColumns: IColumnGrid[] = [
-    { column_name: 'issuer_id', header_name: 'Issuer Id' },
+    {
+      column_name: 'issuer_id_issuers',
+      header_name: `${t('data-model.issuers-table.issuer_id')}`,
+    },
     {
       column_name: 'issuance_date',
-      header_name: 'Started Using',
+      header_name: `${t('data-model.issuers-table.started')}`,
       valueGetter: (params) =>
         DateTime.fromISO(params.createdAt).toFormat('MM/dd, yyyy'),
     },
     {
       column_name: 'default',
-      header_name: 'Issued',
+      header_name: `${t('data-model.issuers-table.issued')}`,
       field: 'createdAt', //[ ] Change to issued number
     },
   ];

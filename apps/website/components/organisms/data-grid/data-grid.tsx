@@ -7,10 +7,9 @@ import { DateTime } from 'luxon';
 import { limitCharsCentered } from '@gateway/helpers';
 import { brandColors } from '@gateway/theme';
 
-import { Typography, Chip } from '@mui/material';
+import { Typography, Chip, Avatar } from '@mui/material';
 import { alpha, Stack, Box } from '@mui/material';
 
-import { AvatarFile } from '../../atoms/avatar-file';
 import NetworkTransactionLink from '../../atoms/network-transaction-link';
 import { CategoriesList } from '../../molecules/categories-list';
 
@@ -33,6 +32,7 @@ type ColumnType =
   | 'credential_id'
   | 'category'
   | 'issuer_id'
+  | 'issuer_id_issuers'
   | 'recipient_id'
   | 'issuance_date'
   | 'status'
@@ -117,13 +117,13 @@ const defineCols = (columns: IColumnGrid[]) => {
     },
     {
       field: 'issuer_id',
-      column_name: 'issuer_id',
+      column_name: 'issuer_id_issuers',
       cell: (params) => (
         <Box sx={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <AvatarFile
-            file={params.issuerUser.image}
-            fallback="/avatar.png"
-            sx={{ width: 26, height: 26 }}
+          <Avatar
+            alt="Name"
+            src="/images/avatar-default.png"
+            sx={{ width: 24, height: 24 }}
           />
           <Box sx={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
             <Typography
@@ -137,7 +137,39 @@ const defineCols = (columns: IColumnGrid[]) => {
                 textOverflow: 'ellipsis',
               }}
             >
-              {params.issuerUser.id}
+              {params?.issuedCredentials[0].issuerUser.id}
+              {/* [x] Remove mock */}
+            </Typography>
+            {/* <Tooltip title="Tooltip message">
+              <VerifiedIcon sx={{ color: brandColors.purple.main }} />
+            </Tooltip> */}
+          </Box>
+        </Box>
+      ),
+    },
+    {
+      field: 'issuer_id',
+      column_name: 'issuer_id',
+      cell: (params) => (
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <Avatar
+            alt="Name"
+            src="/images/avatar-default.png"
+            sx={{ width: 24, height: 24 }}
+          />
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+            <Typography
+              sx={{
+                fontSize: '14px',
+                fontWeight: 400,
+                letterSpacing: '0.17px',
+                maxWidth: '70px',
+                whiteSpace: 'nowrap',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+              }}
+            >
+              {params?.issuerUser?.id}
               {/* [x] Remove mock */}
             </Typography>
             {/* <Tooltip title="Tooltip message">
@@ -152,10 +184,10 @@ const defineCols = (columns: IColumnGrid[]) => {
       column_name: 'recipient_id',
       cell: (params) => (
         <Box sx={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <AvatarFile
-            file={params.recipientUser.image}
-            fallback="/avatar.png"
-            sx={{ width: 26, height: 26 }}
+          <Avatar
+            alt="Name"
+            src="/images/avatar-default.png"
+            sx={{ width: 24, height: 24 }}
           />
           <Box sx={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
             <Typography
@@ -250,7 +282,10 @@ export default function DataGrid({ columns, data }: Props): JSX.Element {
   const gridColumns = defineCols(columns);
   return (
     <>
-      {data.pages.length > 0 && data.pages[0].length > 0 ? (
+      {data &&
+      data.pages &&
+      data.pages.length > 0 &&
+      data.pages[0].length > 0 ? (
         <>
           <Box
             sx={{
@@ -310,7 +345,9 @@ export default function DataGrid({ columns, data }: Props): JSX.Element {
                                     letterSpacing: '0.17px',
                                   }}
                                 >
-                                  {column.valueGetter(row) || row[column.field]}
+                                  {column.valueGetter
+                                    ? column.valueGetter(row)
+                                    : row[column.field]}
                                 </Typography>
                               </Box>
                             )}
