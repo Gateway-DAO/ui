@@ -2,6 +2,7 @@ import useTranslation from 'next-translate/useTranslation';
 
 import { DateTime } from 'luxon';
 import { PartialDeep } from 'type-fest';
+import { useQuery } from 'wagmi';
 
 import { brandColors, theme } from '@gateway/theme';
 
@@ -15,7 +16,11 @@ import {
   Typography,
 } from '@mui/material';
 
-import { Credential } from '../../../../services/gateway-protocol/types';
+import {
+  Credential,
+  CredentialStatus,
+} from '../../../../services/gateway-protocol/types';
+import { gqlAnonMethods } from '../../../../services/hasura/api';
 import CardUsers from '../credentials/show/components/card-users';
 import CardCell from './card-cell';
 
@@ -31,14 +36,19 @@ export default function CredentialCardInfo({
   const { t } = useTranslation('protocol');
   const isMobile = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
 
-  const isDateExpired = (() => {
-    if (!credential?.expirationDate) {
-      return false;
+  // TODO: Remove
+  const issuer = useQuery(
+    ['issuer', credential?.issuerUser?.id],
+    () =>
+      gqlAnonMethods.user_from_wallet({
+        wallet: credential?.issuerUser?.primaryWallet?.address,
+      }),
+    {
+      select: (data) => data.users?.[0],
+      refetchOnMount: false,
+      refetchOnWindowFocus: false,
     }
-    const expireDate = new Date(credential?.expirationDate);
-    expireDate.setDate(expireDate.getDate());
-    return expireDate.getTime() < new Date().getTime();
-  })();
+  );
 
   return (
     <Paper
@@ -75,7 +85,7 @@ export default function CredentialCardInfo({
           </Typography>
         </CardCell>
         <CardCell label={t('credential.status')}>
-          {credential?.status === 'Valid' && (
+          {credential?.status === CredentialStatus.Valid && (
             <Chip
               label={t('credential.valid')}
               size="small"
@@ -83,7 +93,7 @@ export default function CredentialCardInfo({
               color="success"
             />
           )}
-          {credential?.status === 'Suspended' && (
+          {credential?.status === CredentialStatus.Suspended && (
             <Chip
               label={t('credential.suspended')}
               size="small"
@@ -91,7 +101,7 @@ export default function CredentialCardInfo({
               color="warning"
             />
           )}
-          {credential?.status === 'Revoked' && (
+          {credential?.status === CredentialStatus.Revoked && (
             <Chip
               label={t('credential.revoked')}
               size="small"
@@ -99,7 +109,7 @@ export default function CredentialCardInfo({
               color="warning"
             />
           )}
-          {credential?.status === 'Invalid' && (
+          {credential?.status === CredentialStatus.Invalid && (
             <Chip
               label={t('credential.invalid')}
               size="small"
