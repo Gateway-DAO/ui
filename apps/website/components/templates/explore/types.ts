@@ -6,4 +6,5 @@ export type ExploreProps = {
   daos: PartialDeep<Daos>[];
   gates: PartialDeep<Gates>[];
   people: PartialDeep<Users>[];
+  // dataModels: any[]; //[ ] Use PartialDeep
 };
