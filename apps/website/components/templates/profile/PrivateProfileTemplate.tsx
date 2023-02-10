@@ -33,8 +33,7 @@ import { generateImageUrl } from '../../../hooks/use-file';
 import { useAuth } from '../../../providers/auth';
 import { AvatarFile } from '../../atoms/avatar-file';
 import { SocialButtons } from '../../organisms/social-buttons';
-import { OverviewTab, IssuedTab } from './tabs';
-import { GridTab } from './tabs/GridTab';
+import { OverviewTab, IssuedTab, ReceivedTab } from './tabs';
 
 const GuideCard = dynamic<any>(
   () => import('./edit/Components/guide-card').then((mod) => mod.GuideCard),
@@ -70,14 +69,7 @@ export default function PrivateProfileTemplate() {
     {
       key: 'received',
       label: t('common:tabs.received'),
-      section: (
-        <GridTab
-          columns={[]}
-          queryFnName="findCredentialsByRecipientUser"
-          queryString={query.credentialsByRecipientUser}
-          user={me}
-        />
-      ),
+      section: <ReceivedTab user={me} />,
     },
     {
       key: 'issued',

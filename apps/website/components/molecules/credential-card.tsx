@@ -20,7 +20,7 @@ import {
 } from '../../services/gateway-protocol/types';
 
 type Props = PartialDeep<Credential> & {
-  showStatus?: boolean;
+  isRecipient?: boolean;
 };
 
 //[ ] Check with @kbooz how to transform into a helper
@@ -44,11 +44,10 @@ const setColorStatus = (status: CredentialStatus): string => {
 export default function CredentialCard({
   title,
   status,
-  tags,
-  id,
   description,
   issuerUser,
   recipientUser,
+  isRecipient,
 }: Props): JSX.Element {
   return (
     <MUICard sx={{ position: 'relative' }}>
@@ -58,7 +57,11 @@ export default function CredentialCard({
         sx={{ aspectRatio: '1/1' }}
       />
       <CardHeader
-        title={limitCharsCentered(recipientUser?.primaryWallet?.address, 6)}
+        title={
+          isRecipient
+            ? issuerUser.gatewayId
+            : limitCharsCentered(recipientUser?.primaryWallet?.address, 6)
+        }
         titleTypographyProps={{ fontSize: '14px', fontWeight: 400 }}
         avatar={
           <Avatar
