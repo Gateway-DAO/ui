@@ -13,5 +13,5 @@ export type SessionUser = PartialDeep<
     __typename?: any;
   }
 > & {
-  protocol: PartialDeep<MeProtocolQuery['me']>;
+  protocol?: PartialDeep<MeProtocolQuery['me']>;
 };
