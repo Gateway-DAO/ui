@@ -10,5 +10,17 @@ query findRecipientsByDataModel(
   ) {
     id
     createdAt
+    receivedCredentials {
+      id
+      expirationDate
+      recipientUser {
+        id
+        gatewayId
+      }
+      createdAt
+      image
+    }
+    createdAt
+    totalOfreceivedCredentials
   }
 }

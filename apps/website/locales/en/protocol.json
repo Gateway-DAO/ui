@@ -89,6 +89,11 @@
       "started": "Started using",
       "issued": "Issued",
       "unique_recipients": "Unique recipients"
+    },
+    "recipients-table": {
+      "recipient_id": "Recipient ID",
+      "received_credentials": "Received Credentials",
+      "minted": "Minted"
     }
   }
 }
