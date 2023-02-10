@@ -38,7 +38,7 @@ export function RevokeCredential({ credential }: Props) {
   return (
     <>
       {credential.status === CredentialStatus.Valid &&
-        me.wallet === credential?.issuerUser?.primaryWallet?.address && (
+        me?.wallet === credential?.issuerUser?.primaryWallet?.address && (
           <Button
             variant="outlined"
             color="error"
