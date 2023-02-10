@@ -64,7 +64,7 @@ export default function PrivateProfileTemplate() {
     {
       key: 'overview',
       label: t('common:tabs.overview'),
-      section: <OverviewTab user={me} />,
+      section: <OverviewTab setActiveTab={setTab} isPrivateProfile user={me} />,
     },
     {
       key: 'received',

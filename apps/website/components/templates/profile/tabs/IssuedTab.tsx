@@ -19,7 +19,8 @@ type Props = {
 };
 
 export default function IssuedTab({ user }: Props): JSX.Element {
-  const internalPageSize = 3;
+  const internalPageSize = 10;
+
   const {
     data: credentials,
     fetchNextPage,
@@ -75,6 +76,8 @@ export default function IssuedTab({ user }: Props): JSX.Element {
             }}
           >
             {credentials &&
+              credentials.pages &&
+              credentials.pages.length > 0 &&
               credentials.pages.map((page) => (
                 <>
                   {page.map((credential) => (
