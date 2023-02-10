@@ -2,8 +2,15 @@ import { useEffect, useState } from 'react';
 
 import GatewayPixelLogo from './gateway-pixel-logo.png';
 
-export const useCreateQrCode = () => {
+export const useCreateQrCode = (url: string = null) => {
   const [qrCode, setQrCode] = useState<string>();
+
+  const qrCodeData = (): string => {
+    if (url) {
+      return url;
+    }
+    return typeof window !== 'undefined' ? window?.location?.href : '';
+  };
 
   useEffect(() => {
     const createQrCode = async () => {
@@ -12,7 +19,7 @@ export const useCreateQrCode = () => {
         width: 300,
         height: 300,
         image: GatewayPixelLogo.src,
-        data: typeof window !== 'undefined' ? window?.location?.href : '',
+        data: qrCodeData(),
         margin: 8,
         qrOptions: { typeNumber: 0, mode: 'Byte', errorCorrectionLevel: 'Q' },
         imageOptions: { hideBackgroundDots: true, imageSize: 0.65, margin: 0 },

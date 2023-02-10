@@ -12,7 +12,7 @@ import {
   GetDataModelStatsQuery,
 } from '../../../../../../services/gateway-protocol/types';
 import { useTab, TabPanel } from '../../../../../atoms/tabs';
-import { IColumnGrid } from './data-grid';
+import { IColumnGrid } from '../../../../../organisms/data-grid/data-grid';
 
 const OverviewTab = dynamic(() => import('./overview-tab'), { ssr: false });
 const GridViewTab = dynamic(() => import('./grid-view-tab'), { ssr: false });
@@ -51,23 +51,26 @@ export default function DataModelTabs({ dataModel, stats }: Props) {
       column_name: 'status',
       header_name: `${t('data-model.credentials-table.status')}`,
     },
-    {
-      column_name: 'minted',
-      header_name: `${t('data-model.credentials-table.minted')}`,
-    },
+    // {
+    //   column_name: 'minted',
+    //   header_name: `${t('data-model.credentials-table.minted')}`,
+    // },
   ];
 
   const issuersGridColumns: IColumnGrid[] = [
-    { column_name: 'issuer_id', header_name: 'Issuer Id' },
+    {
+      column_name: 'issuer_id_issuers',
+      header_name: `${t('data-model.issuers-table.issuer_id')}`,
+    },
     {
       column_name: 'issuance_date',
-      header_name: 'Started Using',
+      header_name: `${t('data-model.issuers-table.started')}`,
       valueGetter: (params) =>
         DateTime.fromISO(params.createdAt).toFormat('MM/dd, yyyy'),
     },
     {
       column_name: 'default',
-      header_name: 'Issued',
+      header_name: `${t('data-model.issuers-table.issued')}`,
       field: 'createdAt', //[ ] Change to issued number
     },
   ];
@@ -93,32 +96,32 @@ export default function DataModelTabs({ dataModel, stats }: Props) {
       label: t('common:tabs.overview'),
       section: <OverviewTab dataModel={dataModel} stats={stats} />,
     },
-    {
-      key: 'issuers',
-      label: t('common:tabs.issuers'),
-      section: (
-        <GridViewTab
-          dataModel={dataModel}
-          columns={issuersGridColumns}
-          queryString={query.issuersByDataModel}
-          queryFnName="findIssuersByDataModel"
-          pageSize={3}
-        />
-      ),
-    },
-    {
-      key: 'recipients',
-      label: t('common:tabs.recipients'),
-      section: (
-        <GridViewTab
-          dataModel={dataModel}
-          columns={recipientsGridColumns}
-          queryString={query.recipientsByDataModel}
-          queryFnName={'findRecipientsByDataModel'}
-          pageSize={3}
-        />
-      ),
-    },
+    // {
+    //   key: 'issuers',
+    //   label: t('common:tabs.issuers'),
+    //   section: (
+    //     <GridViewTab
+    //       dataModel={dataModel}
+    //       columns={issuersGridColumns}
+    //       queryString={query.issuersByDataModel}
+    //       queryFnName="findIssuersByDataModel"
+    //       pageSize={3}
+    //     />
+    //   ),
+    // },
+    // {
+    //   key: 'recipients',
+    //   label: t('common:tabs.recipients'),
+    //   section: (
+    //     <GridViewTab
+    //       dataModel={dataModel}
+    //       columns={recipientsGridColumns}
+    //       queryString={query.recipientsByDataModel}
+    //       queryFnName={'findRecipientsByDataModel'}
+    //       pageSize={3}
+    //     />
+    //   ),
+    // },
     {
       key: 'credentials',
       noPadding: true,

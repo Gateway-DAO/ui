@@ -1,11 +1,14 @@
+import useTranslation from 'next-translate/useTranslation';
+
 import { PartialDeep } from 'type-fest/source/partial-deep';
 
-import { Stack, Paper, Typography, Divider, Box, alpha } from '@mui/material';
+import { Stack, Paper, Typography, Divider } from '@mui/material';
 
 import { CredentialData } from '../../../../../../services/gateway-protocol/types';
 import CardCell from '../../../components/card-cell';
-import { claimFields } from '../../create/components/ClaimTypes';
+import { claimFields, getClaimType } from '../../create/components/ClaimTypes';
 import { ImageView } from './image-view';
+import { LinkView } from './link-view';
 import { ListView } from './list-view';
 
 type Props = {
@@ -14,11 +17,22 @@ type Props = {
 };
 
 function ClaimView(fieldData: PartialDeep<CredentialData>) {
-  switch (fieldData.type) {
+  const { t } = useTranslation('protocol');
+
+  const type = getClaimType(
+    fieldData.type,
+    fieldData.metadata?.contentMediaType,
+    fieldData.metadata?.format
+  );
+  if (!fieldData.value || fieldData.value === '')
+    return <span>{t('credential.unfilled')}</span>;
+  switch (type) {
     case claimFields.image:
       return <ImageView {...fieldData} />;
     case claimFields.array:
       return <ListView {...fieldData} />;
+    case claimFields.link:
+      return <LinkView {...fieldData} />;
     default:
       return <span>{fieldData.value}</span>;
   }
@@ -39,7 +53,13 @@ export default function DataTable({ title, data }: Props) {
       <Stack divider={<Divider />}>
         {data?.map((fieldData, index) => (
           <Stack key={index} direction="row" justifyContent="space-between">
-            <CardCell label={fieldData?.label} margin={false} py={3}>
+            <CardCell
+              label={fieldData?.label}
+              margin={false}
+              inverted={true}
+              py={3}
+              disabled={!fieldData.value || fieldData.value === ''}
+            >
               <ClaimView {...fieldData} />
             </CardCell>
           </Stack>

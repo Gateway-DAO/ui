@@ -21,12 +21,12 @@ import {
   Typography,
 } from '@mui/material';
 
+import { TaskIcon } from '../../../atoms/task-icon';
 import { QuestionCreator } from '../../../organisms/question-creator/question-creator';
 import {
   CreateGateData,
   QuizTaskDataError,
 } from '../../../templates/create-gate/schema';
-import { TaskIcon } from 'apps/website/components/atoms/task-icon';
 
 // Time Period (minutes)
 export enum TimePeriod {
@@ -90,8 +90,8 @@ export function QuizTask({
     setTaskIsMoving(dragAndDrop);
   }, [dragAndDrop]);
 
-  const [taskVisible, setTaskVisible] = useState(false);
-  const [taskIsMoving, setTaskIsMoving] = useState(false);
+  const [taskVisible, setTaskVisible] = useState(true);
+  const [taskIsMoving, setTaskIsMoving] = useState(true);
   const onRemoveQuestion = (index: number) => remove(index);
 
   const errorOptionIsNecessary = () => {
@@ -141,32 +141,33 @@ export function QuizTask({
           sx={{ width: '100%', mr: '20px' }}
         >
           <TaskIcon type="quiz" sx={{ marginRight: 3 }} />
-          <TextField
-            variant="standard"
-            label="Quiz"
-            id="quiz-title"
-            required
-            autoFocus
-            sx={{
-              minWidth: { md: '600px', xs: '110%' },
-              maxWidth: { xs: '100%', md: '110%' },
-            }}
-            InputProps={{
-              style: {
-                fontSize: '20px',
-                fontWeight: 'bolder',
-              },
-              disableUnderline: true,
-              sx: {
-                '&.Mui-focused': {
-                  borderBottom: '2px solid #9A53FF',
+          <Stack>
+            <Typography variant="subtitle2">Quiz</Typography>
+            <TextField
+              variant="standard"
+              id="quiz-title"
+              required
+              sx={{
+                minWidth: { md: '600px', xs: '110%' },
+                maxWidth: { xs: '100%', md: '110%' },
+              }}
+              InputProps={{
+                style: {
+                  fontSize: '20px',
+                  fontWeight: 'bolder',
                 },
-              },
-            }}
-            {...register(`tasks.${taskId}.title`)}
-            error={!!errors.tasks?.[taskId]?.title}
-            helperText={errors.tasks?.[taskId]?.title?.message}
-          />
+                disableUnderline: true,
+                sx: {
+                  '&.Mui-focused': {
+                    borderBottom: '2px solid #9A53FF',
+                  },
+                },
+              }}
+              {...register(`tasks.${taskId}.title`)}
+              error={!!errors.tasks?.[taskId]?.title}
+              helperText={errors.tasks?.[taskId]?.title?.message}
+            />
+          </Stack>
         </Stack>
         {!taskIsMoving && (
           <Box sx={{ display: 'flex', alignItems: 'center' }}>

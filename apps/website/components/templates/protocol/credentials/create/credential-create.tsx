@@ -4,19 +4,13 @@ import { useState } from 'react';
 import { ajvResolver } from '@hookform/resolvers/ajv';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
+import { fullFormats } from 'ajv-formats/dist/formats';
 import { useSnackbar } from 'notistack';
-import { FormProvider, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { PartialDeep } from 'type-fest/source/partial-deep';
 
-import {
-  Box,
-  CircularProgress,
-  Divider,
-  Stack,
-  Typography,
-} from '@mui/material';
+import { Divider, Stack } from '@mui/material';
 
-import { LoadingButton } from '../../../../../components/atoms/loading-button';
 import { useAuth } from '../../../../../providers/auth';
 import { gatewayProtocolSDK } from '../../../../../services/gateway-protocol/api';
 import {
@@ -24,7 +18,9 @@ import {
   CreateCredentialInput,
 } from '../../../../../services/gateway-protocol/types';
 import { DataModel } from '../../../../../services/gateway-protocol/types';
+import { claimFields } from './components/ClaimTypes';
 import ClaimForm from './components/claim-form';
+import CredentialCreateContainer from './components/credential-create-container';
 import GeneralInfoForm from './components/general-info-form';
 import IssueByForm from './components/issue-by-form';
 import RecipientForm from './components/recipient-form';
@@ -52,11 +48,9 @@ export default function CredentialCreateForm({
         _,
         options as any
       );
-      const claimResult = await ajvResolver(dataModel?.schema)(
-        claim,
-        _,
-        options as any
-      );
+      const claimResult = await ajvResolver(dataModel?.schema, {
+        formats: fullFormats,
+      })(claim, _, options as any);
 
       return {
         values: {
@@ -65,7 +59,6 @@ export default function CredentialCreateForm({
         },
         errors: {
           ...zodResult.errors,
-          // only add claim errors if claimResult.errors is not empty
           ...(Object.keys(claimResult.errors).length > 0 && {
             claim: claimResult.errors,
           }),
@@ -93,14 +86,45 @@ export default function CredentialCreateForm({
     gqlAuthMethods.upload_arweave({ base64 })
   );
 
-  const uploadClaimImages = async (data) => {
+  const removeEmptyDataFromArrayField = (type: string, fieldData) => {
+    if (
+      type === claimFields.array &&
+      fieldData.length > 0 &&
+      fieldData[0] === ''
+    ) {
+      fieldData = [];
+    }
+    return fieldData;
+  };
+
+  const uploadClaimImages = async (contentMediaType: string, fieldData) => {
+    if (
+      contentMediaType &&
+      fieldData &&
+      fieldData?.indexOf('https://') === -1
+    ) {
+      try {
+        const picture = await uploadArweave.mutateAsync(fieldData);
+        fieldData = picture?.upload_arweave?.url;
+      } catch (e) {
+        enqueueSnackbar(t('data-model.error-on-upload'));
+      }
+    }
+    return fieldData;
+  };
+
+  const handleClaimFields = async (data) => {
     const claimProps = dataModel?.schema?.properties;
     if (!Object.keys(claimProps)) return data;
     for (const item of Object.keys(claimProps)) {
-      if (claimProps[item]?.contentMediaType && data?.claim[item]) {
-        const picture = await uploadArweave.mutateAsync(data?.claim[item]);
-        data.claim[item] = picture?.upload_arweave?.url;
-      }
+      data.claim[item] = removeEmptyDataFromArrayField(
+        claimProps[item]?.type,
+        data.claim[item]
+      );
+      data.claim[item] = await uploadClaimImages(
+        claimProps[item]?.contentMediaType,
+        data.claim[item]
+      );
     }
     return data;
   };
@@ -109,18 +133,15 @@ export default function CredentialCreateForm({
     if (!(await methods.trigger())) return;
 
     try {
-      await uploadClaimImages(data)
-        .then(async (res) => {
-          data = res;
-          const response = await createCredential.mutateAsync(
-            data as CreateCredentialMutationVariables
-          );
-          setCredentialCreated(response?.createCredential?.id);
-          methods.reset();
-        })
-        .catch((e) => {
-          enqueueSnackbar(t('data-model.error-on-upload'));
-        });
+      const newData = data;
+      await handleClaimFields(newData).then(async (res) => {
+        await createCredential
+          .mutateAsync(res as CreateCredentialMutationVariables)
+          .then((suc) => {
+            setCredentialCreated(suc?.createCredential?.id);
+            methods.reset();
+          });
+      });
     } catch (e) {
       enqueueSnackbar(t('data-model.error-on-create-credential'));
     }
@@ -131,61 +152,21 @@ export default function CredentialCreateForm({
       {credentialCreated ? (
         <SuccessfullyCreated credentialId={credentialCreated} />
       ) : (
-        <FormProvider {...methods}>
-          <Typography
-            variant="h5"
-            sx={{
-              mb: 3,
-              position: 'absolute',
-              top: { xs: '28px', md: '48px' },
-            }}
-          >
-            {t('data-model.issue-credential-title')}
-          </Typography>
+        <CredentialCreateContainer
+          methods={methods}
+          loading={createCredential.isLoading || uploadArweave.isLoading}
+          onSubmit={methods.handleSubmit(handleMutation)}
+        >
           <Stack
-            component="form"
-            id="create-credential-form"
-            onSubmit={methods.handleSubmit(handleMutation)}
+            divider={<Divider sx={{ mb: 2, mt: 2, mx: { xs: -3, md: -6 } }} />}
+            gap={3}
           >
-            {createCredential.isLoading || uploadArweave.isLoading ? (
-              <Box
-                key="loading"
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-              >
-                <CircularProgress sx={{ mt: 2 }} />
-              </Box>
-            ) : (
-              <Stack
-                divider={
-                  <Divider sx={{ mb: 2, mt: 2, mx: { xs: -3, md: -6 } }} />
-                }
-                gap={3}
-              >
-                <IssueByForm />
-                <GeneralInfoForm />
-                <ClaimForm dataModel={dataModel} />
-                <RecipientForm />
-              </Stack>
-            )}
-            <LoadingButton
-              variant="contained"
-              isLoading={createCredential.isLoading || uploadArweave.isLoading}
-              type="submit"
-              sx={() => ({
-                height: '42px',
-                display: 'flex',
-                borderRadius: '20px',
-                mt: 3,
-              })}
-            >
-              {t('data-model.actions.issue-credential')}
-            </LoadingButton>
+            <IssueByForm />
+            <GeneralInfoForm />
+            <ClaimForm dataModel={dataModel} />
+            <RecipientForm />
           </Stack>
-        </FormProvider>
+        </CredentialCreateContainer>
       )}
     </>
   );

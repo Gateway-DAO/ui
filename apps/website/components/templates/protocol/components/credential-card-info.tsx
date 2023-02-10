@@ -3,11 +3,23 @@ import useTranslation from 'next-translate/useTranslation';
 import { DateTime } from 'luxon';
 import { PartialDeep } from 'type-fest';
 
-import { theme } from '@gateway/theme';
+import { brandColors, theme } from '@gateway/theme';
 
-import { Stack, Paper, Box, Divider, Chip, useMediaQuery } from '@mui/material';
+import {
+  Stack,
+  Paper,
+  Box,
+  Divider,
+  Chip,
+  useMediaQuery,
+  Typography,
+} from '@mui/material';
 
-import { Credential } from '../../../../services/gateway-protocol/types';
+import {
+  Credential,
+  CredentialStatus,
+} from '../../../../services/gateway-protocol/types';
+import { gqlAnonMethods } from '../../../../services/hasura/api';
 import CardUsers from '../credentials/show/components/card-users';
 import CardCell from './card-cell';
 
@@ -22,15 +34,6 @@ export default function CredentialCardInfo({
 }: Props) {
   const { t } = useTranslation('protocol');
   const isMobile = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
-
-  const isDateExpired = (() => {
-    if (!credential?.expirationDate) {
-      return false;
-    }
-    const expireDate = new Date(credential?.expirationDate);
-    expireDate.setDate(expireDate.getDate());
-    return expireDate.getTime() < new Date().getTime();
-  })();
 
   return (
     <Paper
@@ -61,6 +64,58 @@ export default function CredentialCardInfo({
           </Box>
         }
       >
+        <CardCell label={t('credential.authenticated-by')}>
+          <Typography color={brandColors.purple.main} variant="body2">
+            {credential?.issuerUser.gatewayId}
+          </Typography>
+        </CardCell>
+        <CardCell label={t('credential.status')}>
+          {credential?.status === CredentialStatus.Valid && (
+            <Chip
+              label={t('credential.valid')}
+              size="small"
+              variant="outlined"
+              color="success"
+            />
+          )}
+          {credential?.status === CredentialStatus.Suspended && (
+            <Chip
+              label={t('credential.suspended')}
+              size="small"
+              variant="outlined"
+              color="warning"
+            />
+          )}
+          {credential?.status === CredentialStatus.Revoked && (
+            <Chip
+              label={t('credential.revoked')}
+              size="small"
+              variant="outlined"
+              color="warning"
+            />
+          )}
+          {credential?.status === CredentialStatus.Invalid && (
+            <Chip
+              label={t('credential.invalid')}
+              size="small"
+              variant="outlined"
+              color="error"
+            />
+          )}
+        </CardCell>
+      </Stack>
+      <Stack
+        alignItems="stretch"
+        justifyContent="space-around"
+        sx={{
+          flexDirection: isMobile ? 'column' : 'row',
+        }}
+        divider={
+          <Box>
+            <Divider orientation={isMobile ? 'horizontal' : 'vertical'} />
+          </Box>
+        }
+      >
         <CardCell label={t('credential.issuance-date')}>
           {DateTime.fromISO(credential?.createdAt).toLocaleString(
             DateTime.DATETIME_SHORT
@@ -72,40 +127,6 @@ export default function CredentialCardInfo({
                 DateTime.DATETIME_SHORT
               )
             : t('credential.indeterminate')}
-        </CardCell>
-        <CardCell label={t('credential.status')}>
-          {!isDateExpired && (
-            <Chip
-              label={t('credential.valid')}
-              size="small"
-              variant="outlined"
-              color="success"
-            />
-          )}
-          {isDateExpired && (
-            <Chip
-              label={t('credential.expired')}
-              size="small"
-              variant="outlined"
-              color="warning"
-            />
-          )}
-          {/* {credential?.status === 'REVOKED' && (
-            <Chip
-              label={t('credential.revoked')}
-              size="small"
-              variant="outlined"
-              color="warning"
-            />
-          )}
-          {credential?.status === 'INVALID' && (
-            <Chip
-              label={t('credential.invalid')}
-              size="small"
-              variant="outlined"
-              color="error"
-            />
-          )} */}
         </CardCell>
       </Stack>
     </Paper>

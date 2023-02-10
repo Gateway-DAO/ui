@@ -7,24 +7,25 @@ import { DateTime } from 'luxon';
 import { limitCharsCentered } from '@gateway/helpers';
 import { brandColors } from '@gateway/theme';
 
-import VerifiedIcon from '@mui/icons-material/Verified';
-import { Typography, Avatar, Tooltip, Chip } from '@mui/material';
+import { Typography, Chip, Avatar } from '@mui/material';
 import { alpha, Stack, Box } from '@mui/material';
 
-import NetworkTransactionLink from '../../../../../atoms/network-transaction-link';
-import { CategoriesList } from '../../../../../molecules/categories-list';
+import { CredentialStatus } from '../../../services/gateway-protocol/types';
+import NetworkTransactionLink from '../../atoms/network-transaction-link';
+import { CategoriesList } from '../../molecules/categories-list';
 
 export interface IColumnGrid {
   header_name: string;
   column_name: ColumnType;
-  valueGetter?: (params: any) => string;
   field?: string;
+  cell?: (params: any) => ReactNode;
+  valueGetter?: (params: any) => any;
 }
 
 type Props = {
   columns: IColumnGrid[];
   data: {
-    pages: any[]; // [ ] Add interface/type
+    pages: any[];
   };
 };
 
@@ -32,6 +33,7 @@ type ColumnType =
   | 'credential_id'
   | 'category'
   | 'issuer_id'
+  | 'issuer_id_issuers'
   | 'recipient_id'
   | 'issuance_date'
   | 'status'
@@ -47,15 +49,15 @@ type Column = {
   width?: number;
 };
 
-const setColorStatus = (status: 'Valid' | 'Invalid' | string): string => {
+const setColorStatus = (status: CredentialStatus): string => {
   switch (status) {
-    case 'Valid':
+    case CredentialStatus.Valid:
       return brandColors.green.main;
 
-    case 'Revoked' || 'Expired':
+    case CredentialStatus.Revoked || CredentialStatus.Expired:
       return brandColors.orange.main;
 
-    case 'Invalid':
+    case CredentialStatus.Invalid:
       return brandColors.red.main;
 
     default:
@@ -70,12 +72,6 @@ const defineCols = (columns: IColumnGrid[]) => {
       column_name: 'credential_id',
       cell: (params) => (
         <Box sx={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-          <Image
-            src="/images/qr-code-blur.png" //[ ] Remove mock
-            alt="QR Code"
-            width="56"
-            height="56"
-          />
           <Box>
             <Typography
               sx={{
@@ -116,12 +112,12 @@ const defineCols = (columns: IColumnGrid[]) => {
     },
     {
       field: 'issuer_id',
-      column_name: 'issuer_id',
+      column_name: 'issuer_id_issuers',
       cell: (params) => (
         <Box sx={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <Avatar
             alt="Name"
-            src="https://upload.wikimedia.org/wikipedia/en/thumb/2/29/Harvard_shield_wreath.svg/1024px-Harvard_shield_wreath.svg.png" //[ ] Remove mock
+            src="/images/avatar-default.png"
             sx={{ width: 24, height: 24 }}
           />
           <Box sx={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
@@ -136,12 +132,37 @@ const defineCols = (columns: IColumnGrid[]) => {
                 textOverflow: 'ellipsis',
               }}
             >
-              {params.issuer?.id || 'Dummy name'}
-              {/* [ ] Remove mock */}
+              {params?.issuedCredentials[0].issuerUser.gatewayId}
+              {/* [x] Remove mock */}
             </Typography>
-            <Tooltip title="Tooltip message">
-              <VerifiedIcon sx={{ color: brandColors.purple.main }} />
-            </Tooltip>
+          </Box>
+        </Box>
+      ),
+    },
+    {
+      field: 'issuer_id',
+      column_name: 'issuer_id',
+      cell: (params) => (
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <Avatar
+            alt="Name"
+            src="/images/avatar-default.png"
+            sx={{ width: 24, height: 24 }}
+          />
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+            <Typography
+              sx={{
+                fontSize: '14px',
+                fontWeight: 400,
+                letterSpacing: '0.17px',
+                maxWidth: '70px',
+                whiteSpace: 'nowrap',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+              }}
+            >
+              {params?.issuerUser?.gatewayId}
+            </Typography>
           </Box>
         </Box>
       ),
@@ -150,22 +171,27 @@ const defineCols = (columns: IColumnGrid[]) => {
       field: 'recipient_id',
       column_name: 'recipient_id',
       cell: (params) => (
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <Avatar
             alt="Name"
-            src="https://upload.wikimedia.org/wikipedia/en/thumb/2/29/Harvard_shield_wreath.svg/1024px-Harvard_shield_wreath.svg.png" //[ ] Remove mock
+            src="/images/avatar-default.png"
             sx={{ width: 24, height: 24 }}
           />
-          <Typography
-            sx={{
-              fontSize: '14px',
-              fontWeight: 400,
-              letterSpacing: '0.17px',
-            }}
-          >
-            username
-            {/* [ ] Remove mock */}
-          </Typography>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+            <Typography
+              sx={{
+                fontSize: '14px',
+                fontWeight: 400,
+                letterSpacing: '0.17px',
+                maxWidth: '70px',
+                whiteSpace: 'nowrap',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+              }}
+            >
+              {params.recipientUser.gatewayId}
+            </Typography>
+          </Box>
         </Box>
       ),
     },
@@ -240,77 +266,89 @@ export default function DataGrid({ columns, data }: Props): JSX.Element {
   const gridColumns = defineCols(columns);
   return (
     <>
-      <Box
-        sx={{
-          display: 'grid',
-          gridTemplateColumns: '2fr 1fr 1fr 1fr 1fr 1fr 1fr', //[ ] This size should be dynamic
-          px: { xs: 0, md: 4, lg: 6 },
-          minWidth: '1200px',
-        }}
-      >
-        {gridColumns.map((column) => (
-          <Typography
-            sx={{
-              fontWeight: 700,
-              fontSize: '12px',
-              letterSpacing: '0.17px',
-              color: alpha(brandColors.white.main, 0.7),
-              textTransform: 'uppercase',
-            }}
-            key={column.field}
-          >
-            {column.header_name}
-          </Typography>
-        ))}
-      </Box>
-      {data.pages && data.pages.length > 0 && (
+      {data &&
+      data.pages &&
+      data.pages.length > 0 &&
+      data.pages[0].length > 0 ? (
         <>
-          {data.pages.map((page) => (
+          <Box
+            sx={{
+              display: 'grid',
+              gridTemplateColumns: '1.5fr 1fr 1fr 1fr 1fr 1fr',
+              px: { xs: 0, md: 4, lg: 6 },
+            }}
+          >
+            {gridColumns.map((column) => (
+              <Typography
+                sx={{
+                  fontWeight: 700,
+                  fontSize: '12px',
+                  letterSpacing: '0.17px',
+                  color: alpha(brandColors.white.main, 0.7),
+                  textTransform: 'uppercase',
+                }}
+                key={column.field}
+              >
+                {column.header_name}
+              </Typography>
+            ))}
+          </Box>
+          {data.pages && data.pages.length > 0 && (
             <>
-              {page.map((row, rowIndex) => (
-                <Box
-                  key={rowIndex}
-                  sx={{
-                    borderBottom: '1px solid',
-                    borderColor: alpha(brandColors.grays.main, 0.12),
-                    py: 3,
-                  }}
-                >
-                  <Box
-                    key={rowIndex}
-                    sx={{
-                      px: { xs: 0, md: 4, lg: 6 },
-                      display: 'grid',
-                      gridTemplateColumns: '2fr 1fr 1fr 1fr 1fr 1fr 1fr', //[ ] This size should be dynamic
-                    }}
-                  >
-                    {gridColumns.map((column) => (
-                      <>
-                        {column.cell ? ( // [ ] Check this property issue
-                          <>{column.cell(row)}</>
-                        ) : (
-                          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                            <Typography
-                              sx={{
-                                fontSize: '14px',
-                                fontWeight: '400',
-                                letterSpacing: '0.17px',
-                              }}
-                            >
-                              {column.valueGetter
-                                ? column.valueGetter(row)
-                                : row[column.field]}
-                            </Typography>
-                          </Box>
-                        )}
-                      </>
-                    ))}
-                  </Box>
-                </Box>
+              {data.pages.map((page) => (
+                <>
+                  {page.map((row, rowIndex) => (
+                    <Box
+                      key={rowIndex}
+                      sx={{
+                        borderBottom: '1px solid',
+                        borderColor: alpha(brandColors.grays.main, 0.12),
+                        py: 3,
+                      }}
+                    >
+                      <Box
+                        key={rowIndex}
+                        sx={{
+                          px: { xs: 0, md: 4, lg: 6 },
+                          display: 'grid',
+                          gridTemplateColumns: '1.5fr 1fr 1fr 1fr 1fr 1fr',
+                        }}
+                      >
+                        {gridColumns.map((column) => (
+                          <>
+                            {column.cell ? (
+                              <>{column.cell(row)}</>
+                            ) : (
+                              <Box
+                                sx={{ display: 'flex', alignItems: 'center' }}
+                              >
+                                <Typography
+                                  sx={{
+                                    fontSize: '14px',
+                                    fontWeight: '400',
+                                    letterSpacing: '0.17px',
+                                  }}
+                                >
+                                  {column.valueGetter
+                                    ? column.valueGetter(row)
+                                    : row[column.field]}
+                                </Typography>
+                              </Box>
+                            )}
+                          </>
+                        ))}
+                      </Box>
+                    </Box>
+                  ))}
+                </>
               ))}
             </>
-          ))}
+          )}
         </>
+      ) : (
+        <Box sx={{ px: { xs: 0, md: 4, lg: 6 } }}>
+          <Typography>No data to display</Typography>
+        </Box>
       )}
     </>
   );

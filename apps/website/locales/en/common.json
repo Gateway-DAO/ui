@@ -32,7 +32,8 @@
   "tabs": {
     "all": "All",
     "overview": "Overview",
-    "credentials": "Credentials",
+    "credentials": "Earn",
+    "data-models": "Data models",
     "daos": "DAOs",
     "organizations": "Organizations",
     "people": "People",

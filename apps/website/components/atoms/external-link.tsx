@@ -1,27 +1,29 @@
 import { brandColors } from '@gateway/theme';
 
 import LaunchIcon from '@mui/icons-material/Launch';
-import { Stack, Link, Typography, alpha } from '@mui/material';
+import { Stack, Link, Typography, alpha, SxProps, Theme } from '@mui/material';
 
 type Props = {
   text: string;
-  url: string;
+  handleClick: (e) => void;
+  sxProps?: SxProps<Theme>;
 };
 
-export default function ExternalLink({ text, url }: Props) {
-  const navigate = (e) => {
-    e.stopPropagation();
-    window.open(url);
-  };
-
+export default function ExternalLink({ text, handleClick, sxProps }: Props) {
   return (
     <Link
       component={Stack}
       gap={1}
       direction="row"
       alignItems="center"
-      sx={{ textDecoration: 'none', position: 'relative', cursor: 'pointer' }}
-      onClick={(e) => navigate(e)}
+      sx={{
+        textDecoration: 'none',
+        position: 'relative',
+        cursor: 'pointer',
+        zIndex: 1,
+        ...sxProps,
+      }}
+      onClick={handleClick}
     >
       <Typography
         fontSize={12}
