@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-import { ROUTES } from 'apps/website/constants/routes';
+import { ROUTES } from 'apps/website/constants/routes'; //[ ] use right path
 import { PartialDeep } from 'type-fest';
 
 import {

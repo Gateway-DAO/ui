@@ -49,6 +49,8 @@ type Column = {
   width?: number;
 };
 
+//[ ] Check with @kbooz how to transform into a helper
+
 const setColorStatus = (status: CredentialStatus): string => {
   switch (status) {
     case CredentialStatus.Valid:

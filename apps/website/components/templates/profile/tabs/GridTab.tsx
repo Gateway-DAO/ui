@@ -12,7 +12,7 @@ import {
 import { Users } from '../../../../services/hasura/types';
 import { SessionUser } from '../../../../types/user';
 import Loading from '../../../atoms/loading';
-import DataGrid from '../../protocol/data-models/show/components/data-grid';
+import DataGrid from '../../../organisms/data-grid/data-grid';
 
 type Props = {
   user: PartialDeep<Users> | SessionUser;

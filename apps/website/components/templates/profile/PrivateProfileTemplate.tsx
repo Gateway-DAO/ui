@@ -33,7 +33,7 @@ import { generateImageUrl } from '../../../hooks/use-file';
 import { useAuth } from '../../../providers/auth';
 import { AvatarFile } from '../../atoms/avatar-file';
 import { SocialButtons } from '../../organisms/social-buttons';
-import { OverviewTab } from './tabs';
+import { OverviewTab, IssuedTab } from './tabs';
 import { GridTab } from './tabs/GridTab';
 
 const GuideCard = dynamic<any>(
@@ -73,8 +73,8 @@ export default function PrivateProfileTemplate() {
       section: (
         <GridTab
           columns={[]}
-          queryFnName="findCredentialsByIssuerUser"
-          queryString={query.credentialsByIssuerUser}
+          queryFnName="findCredentialsByRecipientUser"
+          queryString={query.credentialsByRecipientUser}
           user={me}
         />
       ),
@@ -82,14 +82,7 @@ export default function PrivateProfileTemplate() {
     {
       key: 'issued',
       label: t('common:tabs.issued'),
-      section: (
-        <GridTab
-          columns={[]}
-          queryFnName="findCredentialsByRecipientUser"
-          queryString={query.credentialsByRecipientUser}
-          user={me}
-        />
-      ),
+      section: <IssuedTab user={me} />,
     },
   ];
 
