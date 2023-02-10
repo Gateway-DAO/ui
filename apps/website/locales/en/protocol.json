@@ -26,8 +26,12 @@
     "alert-title": "This credential is not valid",
     "alert-description": "The contents of this credential were not created by the issuer",
     "unfilled": "Unfilled",
+    "revoke-dialog-title": "Are you sure to revoke this credential?",
+    "revoke-dialog-text": "If you revoke this credential, it will not be possible to undo this action.",
+    "revoke-error-message": "There was a problem performing the revoke. Try again later.",
     "actions": {
-      "revoke": "Revoke"
+      "revoke": "Revoke",
+      "cancel": "Cancel"
     }
   },
   "data-model": {
