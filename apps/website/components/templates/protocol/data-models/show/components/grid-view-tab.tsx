@@ -79,7 +79,7 @@ export default function GridViewTab({
       {isLoading ? (
         <Loading />
       ) : (
-        <Stack sx={{ pb: 15, pt: 1 }}>
+        <Stack sx={{ pb: 15, pt: 5 }}>
           <Stack>
             <DataGrid columns={columns} data={credentials} />
             {isFetchingNextPage && <Loading />}

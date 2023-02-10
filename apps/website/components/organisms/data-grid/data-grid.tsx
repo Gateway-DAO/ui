@@ -7,12 +7,13 @@ import { DateTime } from 'luxon';
 import { limitCharsCentered } from '@gateway/helpers';
 import { brandColors } from '@gateway/theme';
 
-import { Typography, Chip, Avatar } from '@mui/material';
+import { Typography, Chip, Avatar, Link } from '@mui/material';
 import { alpha, Stack, Box } from '@mui/material';
 
 import { CredentialStatus } from '../../../services/gateway-protocol/types';
 import NetworkTransactionLink from '../../atoms/network-transaction-link';
 import { CategoriesList } from '../../molecules/categories-list';
+import { ROUTES } from 'apps/website/constants/routes';
 
 export interface IColumnGrid {
   header_name: string;
@@ -163,7 +164,7 @@ const defineCols = (columns: IColumnGrid[]) => {
                 textOverflow: 'ellipsis',
               }}
             >
-              {params?.receivedCredentials[0].recipientUser.gatewayId}
+              {params?.receivedCredentials[0]?.recipientUser?.gatewayId}
             </Typography>
           </Box>
         </Box>

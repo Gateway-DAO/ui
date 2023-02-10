@@ -51,11 +51,6 @@ export default function CredentialCard({
 }: Props): JSX.Element {
   return (
     <MUICard sx={{ position: 'relative' }}>
-      <CardMedia
-        component="img"
-        src="/images/qr-code-blur.png"
-        sx={{ aspectRatio: '1/1' }}
-      />
       <CardHeader
         title={
           isRecipient

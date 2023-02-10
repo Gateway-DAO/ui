@@ -74,10 +74,10 @@ export function OverviewTab({ user, isPrivateProfile, setActiveTab }: Props) {
     .setZone(user?.timezone);
 
   const receivedCredentials = useQuery(
-    [`${query.credentialsByRecipientUser}_home`, user.id],
+    [`${query.credentialsByRecipientUser}_home`, user?.protocol?.id],
     async () => {
       const result = await gatewayProtocolSDK.findCredentialsByRecipientUser({
-        recipientUserId: user.id,
+        recipientUserId: user.protocol.id || user.id,
         skip: 0,
         take: 3,
       });
@@ -86,10 +86,10 @@ export function OverviewTab({ user, isPrivateProfile, setActiveTab }: Props) {
   );
 
   const issuedCredentials = useQuery(
-    [`${query.credentialsByIssuerUser}_home`, user.id],
+    [`${query.credentialsByIssuerUser}_home`, user?.protocol?.id],
     async () => {
       const result = await gatewayProtocolSDK.findCredentialsByIssuerUser({
-        issuerUserId: user.id,
+        issuerUserId: user.protocol.id || user.id,
         skip: 0,
         take: 3,
       });
