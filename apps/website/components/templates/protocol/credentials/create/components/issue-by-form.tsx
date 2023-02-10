@@ -55,8 +55,8 @@ export default function IssueByForm() {
   // MOCK USERS
   const users = [
     {
-      picture: me.picture,
-      label: me.username,
+      picture: me?.picture,
+      label: me?.username,
       value: issuer?.data?.id,
     },
   ];

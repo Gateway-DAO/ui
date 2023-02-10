@@ -73,7 +73,11 @@
       "group-issue-by-description": "The issuer will be issued by",
       "issue-by": "Issue by",
       "add-field": "Add field",
-      "optional": "Optional"
+      "optional": "Optional",
+      "dialog-title": "Confirmation",
+      "dialog-text": "Are you sure you want to discard the entered data?",
+      "dialog-positive": "Confirm",
+      "dialog-negative": "Cancel"
     },
     "credentials-table": {
       "credential_id": "Credential ID",
