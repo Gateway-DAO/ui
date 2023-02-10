@@ -6,11 +6,15 @@ query findIssuersByDataModel(
   findIssuersByDataModel(dataModelId: $dataModelId, take: $take, skip: $skip) {
     issuedCredentials {
       id
+      expirationDate
       issuerUser {
         id
+        gatewayId
       }
       createdAt
+      image
     }
     createdAt
+    totalOfIssuedCredentials
   }
 }

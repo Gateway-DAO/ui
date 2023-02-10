@@ -71,7 +71,7 @@ export default function DataModelTabs({ dataModel, stats }: Props) {
     {
       column_name: 'default',
       header_name: `${t('data-model.issuers-table.issued')}`,
-      field: 'createdAt', //[ ] Change to issued number
+      field: 'totalOfIssuedCredentials',
     },
   ];
 
@@ -96,19 +96,19 @@ export default function DataModelTabs({ dataModel, stats }: Props) {
       label: t('common:tabs.overview'),
       section: <OverviewTab dataModel={dataModel} stats={stats} />,
     },
-    // {
-    //   key: 'issuers',
-    //   label: t('common:tabs.issuers'),
-    //   section: (
-    //     <GridViewTab
-    //       dataModel={dataModel}
-    //       columns={issuersGridColumns}
-    //       queryString={query.issuersByDataModel}
-    //       queryFnName="findIssuersByDataModel"
-    //       pageSize={3}
-    //     />
-    //   ),
-    // },
+    {
+      key: 'issuers',
+      label: t('common:tabs.issuers'),
+      section: (
+        <GridViewTab
+          dataModel={dataModel}
+          columns={issuersGridColumns}
+          queryString={query.issuersByDataModel}
+          queryFnName="findIssuersByDataModel"
+          pageSize={10}
+        />
+      ),
+    },
     // {
     //   key: 'recipients',
     //   label: t('common:tabs.recipients'),
@@ -118,7 +118,7 @@ export default function DataModelTabs({ dataModel, stats }: Props) {
     //       columns={recipientsGridColumns}
     //       queryString={query.recipientsByDataModel}
     //       queryFnName={'findRecipientsByDataModel'}
-    //       pageSize={3}
+    //       pageSize={10}
     //     />
     //   ),
     // },
@@ -132,7 +132,7 @@ export default function DataModelTabs({ dataModel, stats }: Props) {
           columns={credentialGridColumns}
           queryString={query.credentialsByDataModel}
           queryFnName={'findCredentialsByDataModel'}
-          pageSize={3}
+          pageSize={10}
         />
       ),
     },
