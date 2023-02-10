@@ -44,6 +44,7 @@
     "last-update": "Last update",
     "arweave-hash": "Arweave Hash",
     "issuers": "Issuers",
+    "credentials": "Credentials",
     "issued-credentials": "Issued credentials",
     "recipients": "Recipients",
     "issue-credential-title": "Issue Credential",

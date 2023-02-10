@@ -26,7 +26,7 @@ export function RevokeCredential({ credential }: Props) {
   const { t } = useTranslation('protocol');
   const { enqueueSnackbar } = useSnackbar();
   const router = useRouter();
-  const { gqlProtocolAuthMethods } = useAuth();
+  const { gqlProtocolAuthMethods, me } = useAuth();
   const [confirmRevoke, setConfirmRevoke] = useState(false);
   const revokeCredential = useMutation(
     ['revokeCredential'],
@@ -37,25 +37,26 @@ export function RevokeCredential({ credential }: Props) {
 
   return (
     <>
-      {credential.status === CredentialStatus.Valid && (
-        <Button
-          variant="outlined"
-          color="error"
-          sx={{ mb: 2 }}
-          onClick={() => setConfirmRevoke(true)}
-          startIcon={
-            !revokeCredential.isLoading ? (
-              <CancelIcon height={20} width={20} color="error" />
-            ) : null
-          }
-        >
-          {revokeCredential.isLoading ? (
-            <CircularProgress size={20} />
-          ) : (
-            t('credential.actions.revoke')
-          )}
-        </Button>
-      )}
+      {credential.status === CredentialStatus.Valid &&
+        me?.wallet === credential?.issuerUser?.primaryWallet?.address && (
+          <Button
+            variant="outlined"
+            color="error"
+            sx={{ mb: 2 }}
+            onClick={() => setConfirmRevoke(true)}
+            startIcon={
+              !revokeCredential.isLoading ? (
+                <CancelIcon height={20} width={20} color="error" />
+              ) : null
+            }
+          >
+            {revokeCredential.isLoading ? (
+              <CircularProgress size={20} />
+            ) : (
+              t('credential.actions.revoke')
+            )}
+          </Button>
+        )}
       <ConfirmDialog
         title={t('credential.revoke-dialog-title')}
         open={confirmRevoke}
