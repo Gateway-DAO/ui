@@ -2,7 +2,12 @@ import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
 import { useMemo } from 'react';
 
+import { useQuery } from '@tanstack/react-query';
 import { getTimeZones } from '@vvo/tzdb';
+import Loading from 'apps/website/components/atoms/loading';
+import CredentialCard from 'apps/website/components/molecules/credential-card';
+import { query } from 'apps/website/constants/queries';
+import { gatewayProtocolSDK } from 'apps/website/services/gateway-protocol/api';
 import { DateTime } from 'luxon';
 import { PartialDeep } from 'type-fest';
 
@@ -68,6 +73,18 @@ export function OverviewTab({ user }: Props) {
 
   const setActiveTab = (number: number) => console.log(number);
 
+  const receivedCredentials = useQuery(
+    [query.credentialsByRecipientUser, user.id],
+    async () => {
+      const result = await gatewayProtocolSDK.findCredentialsByIssuerUser({
+        issuerUserId: user.id,
+        skip: 0,
+        take: 3,
+      });
+      return result.findCredentialsByIssuerUser;
+    }
+  );
+
   return (
     <Stack
       direction="column"
@@ -102,7 +119,40 @@ export function OverviewTab({ user }: Props) {
             description={t('common:profile.new-credential.description')}
             image="/images/new-credential-icon.png"
           />
-          <Box></Box>
+          <>
+            {receivedCredentials &&
+              receivedCredentials.data &&
+              receivedCredentials.data.length > 0 && (
+                <>
+                  {receivedCredentials.data.map((credential) => (
+                    <CredentialCard
+                      isRecipient
+                      key={credential.id}
+                      {...credential}
+                    />
+                  ))}
+                </>
+              )}
+          </>
+          {/* <Box>
+            {receivedCredentials.isLoading ? (
+              <Loading />
+            ) : (
+              <>
+                {receivedCredentials && receivedCredentials.data.length > 0 && (
+                  <>
+                    {receivedCredentials.data.map((credential) => (
+                      <CredentialCard
+                        isRecipient
+                        key={credential.id}
+                        {...credential}
+                      />
+                    ))}
+                  </>
+                )}
+              </>
+            )}
+          </Box> */}
         </SectionWithSliderResponsive>
         <SectionWithSliderResponsive
           title={t('common:profile.issued')}

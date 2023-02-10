@@ -75,6 +75,8 @@ export default function ReceivedTab({ user }: Props): JSX.Element {
             }}
           >
             {credentials &&
+              credentials.pages &&
+              credentials.pages.length > 0 &&
               credentials.pages.map((page) => (
                 <>
                   {page.map((credential) => (
