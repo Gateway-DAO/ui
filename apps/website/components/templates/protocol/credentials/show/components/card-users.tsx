@@ -3,6 +3,7 @@ import useTranslation from 'next-translate/useTranslation';
 import { useQuery } from '@tanstack/react-query';
 import { PartialDeep } from 'type-fest';
 
+import { limitCharsCentered } from '@gateway/helpers';
 import { theme } from '@gateway/theme';
 
 import { Stack, Box, useMediaQuery } from '@mui/material';
@@ -51,10 +52,15 @@ export default function CardUsers({
     }
   );
 
-  const issuerName = issuer?.data?.username ?? issuerCredential?.gatewayId;
+  const issuerName =
+    issuer?.data?.username ??
+    issuerCredential?.gatewayId ??
+    issuerCredential.primaryWallet.address;
 
   const recipientName =
-    recipient?.data?.username ?? recipientCredential?.gatewayId;
+    recipient?.data?.username ??
+    recipientCredential?.gatewayId ??
+    recipientCredential.primaryWallet.address;
 
   return (
     <Stack
@@ -70,7 +76,7 @@ export default function CardUsers({
         <CardUserCell
           label={t('credential.issuer-id')}
           picture={issuer?.data?.picture}
-          name={issuerName}
+          name={limitCharsCentered(issuerName, 10)}
           href={ROUTES.PROFILE.replace('[username]', issuerName)}
           hasLink={!!issuer.data}
         />
@@ -99,7 +105,7 @@ export default function CardUsers({
         <CardUserCell
           label={t('credential.recipient-id')}
           picture={recipient?.data?.picture}
-          name={recipientName}
+          name={limitCharsCentered(recipientName, 10)}
           href={ROUTES.PROFILE.replace('[username]', recipientName)}
           alignRight={!isMobile}
           hasLink={!!recipient.data}
