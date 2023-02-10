@@ -40,10 +40,10 @@ export default function AuthenticatedBy({
           }}
           href={ROUTES.PROFILE.replace('[username]', authenticatedByName)}
         >
-          {limitCharsCentered(authenticatedByName, 10)}
+          {limitCharsCentered(authenticatedByName, 20)}
         </Stack>
       ) : (
-        <span>{limitCharsCentered(authenticatedByName, 10)}</span>
+        <span>{limitCharsCentered(authenticatedByName, 20)}</span>
       )}
     </CardCell>
   );

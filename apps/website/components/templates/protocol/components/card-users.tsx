@@ -8,11 +8,11 @@ import { theme } from '@gateway/theme';
 
 import { Stack, Box, useMediaQuery } from '@mui/material';
 
-import Loading from '../../../../../../components/atoms/loading';
-import { ROUTES } from '../../../../../../constants/routes';
-import { User } from '../../../../../../services/gateway-protocol/types';
-import { gqlAnonMethods } from '../../../../../../services/hasura/api';
-import CardUserCell from '../../../components/card-user-cell';
+import { ROUTES } from '../../../../constants/routes';
+import { User } from '../../../../services/gateway-protocol/types';
+import { gqlAnonMethods } from '../../../../services/hasura/api';
+import Loading from '../../../atoms/loading';
+import CardUserCell from './card-user-cell';
 
 type Props = {
   issuer: PartialDeep<User>;
@@ -76,7 +76,7 @@ export default function CardUsers({
         <CardUserCell
           label={t('credential.issuer-id')}
           picture={issuer?.data?.picture}
-          name={limitCharsCentered(issuerName, 10)}
+          name={limitCharsCentered(issuerName, 20)}
           href={ROUTES.PROFILE.replace('[username]', issuerName)}
           hasLink={!!issuer.data}
         />
@@ -105,7 +105,7 @@ export default function CardUsers({
         <CardUserCell
           label={t('credential.recipient-id')}
           picture={recipient?.data?.picture}
-          name={limitCharsCentered(recipientName, 10)}
+          name={limitCharsCentered(recipientName, 20)}
           href={ROUTES.PROFILE.replace('[username]', recipientName)}
           alignRight={!isMobile}
           hasLink={!!recipient.data}

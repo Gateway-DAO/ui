@@ -11,7 +11,7 @@ import {
   Credential,
   CredentialStatus,
 } from '../../../../services/gateway-protocol/types';
-import CardUsers from '../credentials/show/components/card-users';
+import CardUsers from './card-users';
 import AuthenticatedBy from './authenticated-by';
 import CardCell from './card-cell';
 
