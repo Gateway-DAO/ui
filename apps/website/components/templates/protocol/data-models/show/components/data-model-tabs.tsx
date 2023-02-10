@@ -75,12 +75,53 @@ export default function DataModelTabs({ dataModel, stats }: Props) {
     },
   ];
 
+  const recipientsGridColumns: IColumnGrid[] = [
+    //[ ] Update all columns
+    { column_name: 'issuer_id', header_name: 'Recipient ID' },
+    {
+      column_name: 'default',
+      header_name: 'Received Credentials',
+      field: 'id',
+    },
+    {
+      column_name: 'default',
+      header_name: 'Minted',
+      field: 'id',
+    },
+  ];
+
   const tabs = [
     {
       key: 'overview',
       label: t('common:tabs.overview'),
       section: <OverviewTab dataModel={dataModel} stats={stats} />,
     },
+    // {
+    //   key: 'issuers',
+    //   label: t('common:tabs.issuers'),
+    //   section: (
+    //     <GridViewTab
+    //       dataModel={dataModel}
+    //       columns={issuersGridColumns}
+    //       queryString={query.issuersByDataModel}
+    //       queryFnName="findIssuersByDataModel"
+    //       pageSize={3}
+    //     />
+    //   ),
+    // },
+    // {
+    //   key: 'recipients',
+    //   label: t('common:tabs.recipients'),
+    //   section: (
+    //     <GridViewTab
+    //       dataModel={dataModel}
+    //       columns={recipientsGridColumns}
+    //       queryString={query.recipientsByDataModel}
+    //       queryFnName={'findRecipientsByDataModel'}
+    //       pageSize={3}
+    //     />
+    //   ),
+    // },
     {
       key: 'credentials',
       noPadding: true,

@@ -1,0 +1,14 @@
+query findRecipientsByDataModel(
+  $dataModelId: String!
+  $take: Float!
+  $skip: Float!
+) {
+  findRecipientsByDataModel(
+    dataModelId: $dataModelId
+    take: $take
+    skip: $skip
+  ) {
+    id
+    createdAt
+  }
+}

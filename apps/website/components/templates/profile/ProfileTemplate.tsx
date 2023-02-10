@@ -19,7 +19,7 @@ import { SessionUser } from '../../../types/user';
 import { AvatarFile } from '../../atoms/avatar-file';
 import { useFollowStatus } from '../../atoms/follow-button-user/utils';
 import { SocialButtons } from '../../organisms/social-buttons';
-import { OverviewTab } from './tabs';
+import { OverviewTab, ReceivedTab, IssuedTab } from './tabs';
 
 const PendingReceivedSection = dynamic<any>(
   () =>
@@ -68,7 +68,17 @@ export default function ProfileTemplate({ user }: Props) {
       {
         key: 'overview',
         label: t('common:tabs.overview'),
-        section: <OverviewTab user={user} />,
+        section: <OverviewTab setActiveTab={setTab} user={user} />,
+      },
+      {
+        key: 'received',
+        label: t('common:tabs.received'),
+        section: <ReceivedTab user={user} />,
+      },
+      {
+        key: 'issued',
+        label: t('common:tabs.issued'),
+        section: <IssuedTab user={user} />,
       },
     ],
     []
