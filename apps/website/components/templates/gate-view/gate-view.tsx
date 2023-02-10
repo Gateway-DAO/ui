@@ -268,6 +268,7 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
     month: 'short',
     day: 'numeric',
   });
+  console.log(gateProps?.creator);
   return (
     <Grid
       container
@@ -477,7 +478,9 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
                     color={isDateExpired ? '#FFA726' : 'secondary'}
                     fontWeight={600}
                   >
-                    {dateFormatAccordingToTimeZone.format(new Date(gateProps?.expire_date))}
+                    {dateFormatAccordingToTimeZone.format(
+                      new Date(gateProps?.expire_date)
+                    )}
                     {isDateExpired && (
                       <Chip
                         sx={{ marginLeft: 2 }}
