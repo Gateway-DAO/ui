@@ -4,9 +4,10 @@ query userByWallet($wallet: String!) {
   }
 }
 
-query mePrimaryWallet {
+query meProtocol {
   me {
     id
+    isCompleted
     primaryWallet {
       id
       address

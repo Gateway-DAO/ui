@@ -12,7 +12,7 @@ export default function NewUser() {
   const { me } = useAuth();
   const router = useRouter();
   useEffect(() => {
-    if (me?.init) {
+    if (me?.init && me?.protocol?.isCompleted) {
       router.replace((router.query?.callback as string) ?? ROUTES.EXPLORE);
     }
   }, [me?.init, router]);
