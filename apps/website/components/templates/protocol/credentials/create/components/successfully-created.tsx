@@ -38,7 +38,9 @@ export default function SuccessfullyCreated({ credentialId }: Props) {
       refetchOnWindowFocus: false,
     }
   );
-  const credentialRoute = `${window?.location?.origin}${ROUTES.PROTOCOL_CREDENTIAL.replace('[id]', credentialId)}`;
+  const credentialRoute = `${
+    window?.location?.origin
+  }${ROUTES.PROTOCOL_CREDENTIAL.replace('[id]', credentialId)}`;
   const qrCode = useCreateQrCode(credentialRoute);
 
   return (
@@ -83,7 +85,14 @@ export default function SuccessfullyCreated({ credentialId }: Props) {
             }}
           >
             <Stack direction="row" alignItems="center" gap={2} sx={{ mb: 2 }}>
-              <Box sx={{ width: 80, height: 80, borderRadius: 1.5, overflow: 'hidden' }}>
+              <Box
+                sx={{
+                  width: 80,
+                  height: 80,
+                  borderRadius: 1.5,
+                  overflow: 'hidden',
+                }}
+              >
                 <img src={qrCode} alt={credential?.data?.title} width="100%" />
               </Box>
               <Stack justifyContent="center">
@@ -93,9 +102,7 @@ export default function SuccessfullyCreated({ credentialId }: Props) {
                 >
                   ID {credential?.data?.id}
                 </Typography>
-                <Typography variant="h6">
-                  {credential?.data?.title}
-                </Typography>
+                <Typography variant="h6">{credential?.data?.title}</Typography>
               </Stack>
             </Stack>
             <CredentialCardInfo credential={credential?.data} elevation={20} />

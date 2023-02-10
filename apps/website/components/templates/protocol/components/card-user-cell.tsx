@@ -44,7 +44,9 @@ export default function CardUserCell({
             : '16px 0 0 0',
           transition: 'background .3s ease',
           '&:hover': {
-            background: alpha(brandColors.white.main, 0.05),
+            background: hasLink
+              ? alpha(brandColors.white.main, 0.05)
+              : 'inherit',
           },
         }}
       >

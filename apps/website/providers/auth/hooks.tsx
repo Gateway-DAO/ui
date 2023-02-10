@@ -260,7 +260,14 @@ export const useAuthLogin = () => {
       },
       {
         queryKey: ['user_protocol', protocolToken],
-        queryFn: () => gatewayProtocolAuthSDK(protocolToken).mePrimaryWallet(),
+        queryFn: async () => {
+          const res = await gatewayProtocolAuthSDK(protocolToken).meProtocol();
+          return {
+            me: {
+              protocol: res.me,
+            },
+          };
+        },
         ...queryDefNoRefetch,
       },
     ],
@@ -312,6 +319,7 @@ export const useAuthLogin = () => {
     queryClient.resetQueries(['user_permissions', session?.data?.user_id]);
     queryClient.resetQueries(['user_following', session?.data?.user_id]);
     queryClient.resetQueries(['user_task_progresses', session?.data?.user_id]);
+    queryClient.resetQueries(['user_protocol', protocolToken]);
   };
 
   const onSignOut = useSignOut(() => {

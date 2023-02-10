@@ -125,7 +125,7 @@ export default function DataModelTabs({ dataModel, stats }: Props) {
     {
       key: 'credentials',
       noPadding: true,
-      label: t('common:tabs.credentials'),
+      label: t('data-model.credentials'),
       section: (
         <GridViewTab
           dataModel={dataModel}
