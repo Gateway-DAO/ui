@@ -1,3 +1,5 @@
+import useTranslation from 'next-translate/useTranslation';
+
 import { PartialDeep } from 'type-fest/source/partial-deep';
 
 import { Stack, Paper, Typography, Divider } from '@mui/material';
@@ -15,11 +17,15 @@ type Props = {
 };
 
 function ClaimView(fieldData: PartialDeep<CredentialData>) {
+  const { t } = useTranslation('protocol');
+
   const type = getClaimType(
     fieldData.type,
     fieldData.metadata?.contentMediaType,
     fieldData.metadata?.format
   );
+  if (!fieldData.value || fieldData.value === '')
+    return <span>{t('credential.unfilled')}</span>;
   switch (type) {
     case claimFields.image:
       return <ImageView {...fieldData} />;
@@ -52,6 +58,7 @@ export default function DataTable({ title, data }: Props) {
               margin={false}
               inverted={true}
               py={3}
+              disabled={!fieldData.value || fieldData.value === ''}
             >
               <ClaimView {...fieldData} />
             </CardCell>

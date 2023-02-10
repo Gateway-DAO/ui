@@ -13,7 +13,7 @@ import {
 } from '@mui/material';
 import { Theme } from '@mui/material/styles/createTheme';
 
-import { Credential } from '../../../../../services/gateway-protocol/types';
+import { Credential, CredentialStatus } from '../../../../../services/gateway-protocol/types';
 import ExternalLink from '../../../../atoms/external-link';
 import { MintCredentialButton } from '../../../../atoms/mint-button';
 import Tags from '../../components/tags';
@@ -21,6 +21,8 @@ import Activities from './components/activities';
 import CredentialTitleAndImage from './components/credential-title-and-image';
 import DataTable from './components/data-table';
 import { brandColors } from '../../../../../../../libs/theme/src';
+import { ROUTES } from 'apps/website/constants/routes';
+import { useRouter } from 'next/router';
 
 const CredentialCardInfo = dynamic(
   () => {
@@ -35,27 +37,13 @@ type Props = {
 
 export default function CredentialProtocolShow({ credential }: Props) {
   const { t } = useTranslation('protocol');
+  const router = useRouter();
 
   // MOCK
   const credMint = {
     status: 'to_mint',
     transaction_url: 'x',
   };
-  const activities = [
-    {
-      name: 'Credential expired',
-      date: '2023-01-09T21:03:11.566Z',
-    },
-    {
-      name: 'Credential issued',
-      date: '2023-01-09T21:03:11.566Z',
-    },
-    {
-      name: 'Credential issued',
-      date: '2023-01-09T21:03:11.566Z',
-    },
-  ];
-  // MOCK - END
 
   const boxStyles: SxProps<Theme> = {
     maxWidth: '564px',
@@ -71,9 +59,9 @@ export default function CredentialProtocolShow({ credential }: Props) {
         <Tags tags={credential?.dataModel?.tags} />
         <Typography sx={{ mb: 3 }}>{credential?.description}</Typography>
         <CredentialCardInfo credential={credential} />
-        <MintCredentialButton sx={{ height: '48px' }} credential={credMint} />
+        <MintCredentialButton sx={{ height: '48px' }} credential={credMint} disabled={true} />
 
-        {credMint.status == 'invalid' && (
+        {credential.status === CredentialStatus.Invalid && (
           <Alert
             variant="outlined"
             severity="error"
@@ -97,12 +85,27 @@ export default function CredentialProtocolShow({ credential }: Props) {
           </Alert>
         )}
 
-        {activities?.length > 0 && <Activities activities={activities} />}
+        <ExternalLink
+          text={t('credential.data-model-id')}
+          sxProps={{ alignSelf: 'flex-end' }}
+          handleClick={() => {
+            router.push({ pathname: ROUTES.PROTOCOL_DATAMODEL, query: { id: credential?.dataModel?.id } })
+          }}
+        />
+
+        {credential?.activities?.length > 0 && <Activities activities={credential?.activities} />}
       </Stack>
       <Divider sx={{ mt: 3, mb: 4, marginLeft: '2px' }} />
       <Stack sx={boxStyles}>
         <Stack direction="row" justifyContent="flex-end" sx={{ mb: 2 }}>
-          <ExternalLink text={t('credential.storage-id')} url="" />
+          <ExternalLink
+            text={t('credential.storage-id')}
+            handleClick={(e) => {
+              e.preventDefault();
+              if (credential?.arweaveInfo?.url)
+                window.open(credential?.arweaveInfo?.url)
+            }}
+          />
         </Stack>
         <DataTable
           title={t('credential.claim')}

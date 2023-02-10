@@ -44,7 +44,7 @@ export default function ClaimFormArray({
   };
 
   useEffect(() => {
-    update(0, '');
+    append('');
   }, []);
 
   return (
@@ -57,7 +57,15 @@ export default function ClaimFormArray({
           sx={{ mb: 2 }}
         >
           <TextField
+            autoFocus={addFieldIsVisible}
             type={subType}
+            inputProps={
+              subType == 'number'
+                ? {
+                    step: '0.01',
+                  }
+                : {}
+            }
             InputProps={{
               disableUnderline: true,
               sx: {
