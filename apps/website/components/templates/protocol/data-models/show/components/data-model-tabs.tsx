@@ -71,23 +71,22 @@ export default function DataModelTabs({ dataModel, stats }: Props) {
     {
       column_name: 'default',
       header_name: `${t('data-model.issuers-table.issued')}`,
-      field: 'createdAt', //[ ] Change to issued number
+      field: 'totalOfIssuedCredentials',
     },
   ];
 
   const recipientsGridColumns: IColumnGrid[] = [
-    //[ ] Update all columns
-    { column_name: 'issuer_id', header_name: 'Recipient ID' },
+    { column_name: 'recipient_id_issuers', header_name: 'Recipient ID' },
     {
       column_name: 'default',
       header_name: 'Received Credentials',
-      field: 'id',
+      field: 'totalOfreceivedCredentials',
     },
-    {
-      column_name: 'default',
-      header_name: 'Minted',
-      field: 'id',
-    },
+    // {
+    //   column_name: 'default',
+    //   header_name: 'Minted',
+    //   field: 'id',
+    // },
   ];
 
   const tabs = [
@@ -96,32 +95,32 @@ export default function DataModelTabs({ dataModel, stats }: Props) {
       label: t('common:tabs.overview'),
       section: <OverviewTab dataModel={dataModel} stats={stats} />,
     },
-    // {
-    //   key: 'issuers',
-    //   label: t('common:tabs.issuers'),
-    //   section: (
-    //     <GridViewTab
-    //       dataModel={dataModel}
-    //       columns={issuersGridColumns}
-    //       queryString={query.issuersByDataModel}
-    //       queryFnName="findIssuersByDataModel"
-    //       pageSize={3}
-    //     />
-    //   ),
-    // },
-    // {
-    //   key: 'recipients',
-    //   label: t('common:tabs.recipients'),
-    //   section: (
-    //     <GridViewTab
-    //       dataModel={dataModel}
-    //       columns={recipientsGridColumns}
-    //       queryString={query.recipientsByDataModel}
-    //       queryFnName={'findRecipientsByDataModel'}
-    //       pageSize={3}
-    //     />
-    //   ),
-    // },
+    {
+      key: 'issuers',
+      label: t('common:tabs.issuers'),
+      section: (
+        <GridViewTab
+          dataModel={dataModel}
+          columns={issuersGridColumns}
+          queryString={query.issuersByDataModel}
+          queryFnName="findIssuersByDataModel"
+          pageSize={10}
+        />
+      ),
+    },
+    {
+      key: 'recipients',
+      label: t('common:tabs.recipients'),
+      section: (
+        <GridViewTab
+          dataModel={dataModel}
+          columns={recipientsGridColumns}
+          queryString={query.recipientsByDataModel}
+          queryFnName={'findRecipientsByDataModel'}
+          pageSize={10}
+        />
+      ),
+    },
     {
       key: 'credentials',
       noPadding: true,
@@ -132,7 +131,7 @@ export default function DataModelTabs({ dataModel, stats }: Props) {
           columns={credentialGridColumns}
           queryString={query.credentialsByDataModel}
           queryFnName={'findCredentialsByDataModel'}
-          pageSize={3}
+          pageSize={10}
         />
       ),
     },
