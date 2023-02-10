@@ -150,7 +150,7 @@ export function QuizTask({
             },
           })}
         >
-          <TaskIcon type="quiz" sx={{ marginRight: 3 }} />
+          <TaskIcon type="quiz" sx={{ marginRight: 3, marginLeft: 4 }} />
           <Stack>
             <Typography variant="subtitle2">Quiz</Typography>
             <TextField
@@ -185,10 +185,10 @@ export function QuizTask({
               display: 'flex',
               alignItems: 'center',
               [theme.breakpoints.between('md', 'lg')]: {
-                margin: '-30px',
+                marginLeft: '-55px',
               },
               [theme.breakpoints.between('lg', 'xl')]: {
-                margin: '-30px',
+                marginLeft: '-55px',
               },
             })}
           >

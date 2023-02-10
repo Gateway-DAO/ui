@@ -80,7 +80,10 @@ const VerificationCodeTask = ({ dragAndDrop, taskId, deleteTask }) => {
             },
           })}
         >
-          <TaskIcon type={'meeting_code'} sx={{ marginRight: 3 }} />
+          <TaskIcon
+            type={'meeting_code'}
+            sx={{ marginRight: 3, marginLeft: 4 }}
+          />
 
           <Stack>
             <Typography variant="subtitle2">Verification Code</Typography>
@@ -115,10 +118,10 @@ const VerificationCodeTask = ({ dragAndDrop, taskId, deleteTask }) => {
               display: 'flex',
               alignItems: 'center',
               [theme.breakpoints.between('md', 'lg')]: {
-                margin: '-30px',
+               marginLeft: '-55px',
               },
               [theme.breakpoints.between('lg', 'xl')]: {
-                margin: '-30px',
+               marginLeft: '-55px',
               },
             })}
           >

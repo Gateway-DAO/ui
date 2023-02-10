@@ -83,6 +83,7 @@ export const ManualTask = ({ dragAndDrop, taskId, deleteTask }) => {
             number={taskId + 1}
             sx={(theme) => ({
               mr: theme.spacing(3.75),
+              marginLeft: 4,
               [theme.breakpoints.down('sm')]: { mr: theme.spacing(2.5) },
             })}
           />
@@ -121,10 +122,10 @@ export const ManualTask = ({ dragAndDrop, taskId, deleteTask }) => {
               display: 'flex',
               alignItems: 'center',
               [theme.breakpoints.between('md', 'lg')]: {
-                margin: '-30px',
+                marginLeft: '-55px',
               },
               [theme.breakpoints.between('lg', 'xl')]: {
-                margin: '-30px',
+                marginLeft: '-55px',
               },
             })}
           >

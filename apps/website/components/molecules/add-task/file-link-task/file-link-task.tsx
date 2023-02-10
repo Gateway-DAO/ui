@@ -93,7 +93,7 @@ const FileLinkTask = ({ dragAndDrop, taskId, deleteTask }) => {
             },
           })}
         >
-          <TaskIcon type="self_verify" sx={{ marginRight: 3 }} />
+          <TaskIcon type="self_verify" sx={{ marginRight: 3, marginLeft: 4 }} />
           <Stack>
             <Typography variant="subtitle2">File &#38; Text</Typography>
             <TextField
@@ -127,10 +127,10 @@ const FileLinkTask = ({ dragAndDrop, taskId, deleteTask }) => {
               display: 'flex',
               alignItems: 'center',
               [theme.breakpoints.between('md', 'lg')]: {
-                margin: '-30px',
+                marginLeft: '-55px',
               },
               [theme.breakpoints.between('lg', 'xl')]: {
-                margin: '-30px',
+                marginLeft: '-55px',
               },
             })}
           >

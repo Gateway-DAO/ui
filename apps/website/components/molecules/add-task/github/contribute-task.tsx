@@ -134,7 +134,10 @@ export default function GithubContributeTask({
             },
           })}
         >
-          <TaskIcon type="github_contribute" sx={{ marginRight: 3 }} />
+          <TaskIcon
+            type="github_contribute"
+            sx={{ marginRight: 3, marginLeft: 4 }}
+          />
           <Stack>
             <Typography variant="subtitle2">
               {t('tasks.github_contribute.title')}
@@ -170,10 +173,10 @@ export default function GithubContributeTask({
               display: 'flex',
               alignItems: 'center',
               [theme.breakpoints.between('md', 'lg')]: {
-                margin: '-30px',
+                marginLeft: '-55px',
               },
               [theme.breakpoints.between('lg', 'xl')]: {
-                margin: '-30px',
+                marginLeft: '-55px',
               },
             })}
           >

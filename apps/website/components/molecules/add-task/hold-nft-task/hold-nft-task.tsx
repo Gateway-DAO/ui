@@ -84,7 +84,7 @@ const HoldNFTTask = ({ dragAndDrop, taskId, deleteTask }) => {
             },
           })}
         >
-          <TaskIcon type="nft_hold" sx={{ marginRight: 3 }} />
+          <TaskIcon type="nft_hold" sx={{ marginRight: 3, marginLeft: 4 }} />
 
           <Stack>
             <Typography variant="subtitle2">Hold NFT</Typography>
@@ -119,10 +119,10 @@ const HoldNFTTask = ({ dragAndDrop, taskId, deleteTask }) => {
               display: 'flex',
               alignItems: 'center',
               [theme.breakpoints.between('md', 'lg')]: {
-                margin: '-30px',
+                marginLeft: '-55px',
               },
               [theme.breakpoints.between('lg', 'xl')]: {
-                margin: '-30px',
+                marginLeft: '-55px',
               },
             })}
           >

@@ -137,7 +137,7 @@ export default function GithubPRTask({
             },
           })}
         >
-          <TaskIcon type="github_prs" sx={{ marginRight: 3 }} />
+          <TaskIcon type="github_prs" sx={{ marginRight: 3, marginLeft: 4 }} />
           <Stack>
             <Typography variant="subtitle2">
               {t('tasks.github_prs.title')}
@@ -173,10 +173,10 @@ export default function GithubPRTask({
               display: 'flex',
               alignItems: 'center',
               [theme.breakpoints.between('md', 'lg')]: {
-                margin: '-30px',
+                marginLeft: '-55px',
               },
               [theme.breakpoints.between('lg', 'xl')]: {
-                margin: '-30px',
+                marginLeft: '-55px',
               },
             })}
           >
