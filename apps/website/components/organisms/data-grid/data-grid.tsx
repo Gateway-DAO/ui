@@ -34,6 +34,7 @@ type ColumnType =
   | 'category'
   | 'issuer_id'
   | 'issuer_id_issuers'
+  | 'recipient_id_issuers'
   | 'recipient_id'
   | 'issuance_date'
   | 'status'
@@ -48,6 +49,8 @@ type Column = {
   minWidth?: number;
   width?: number;
 };
+
+//[ ] Check with @kbooz how to transform into a helper
 
 const setColorStatus = (status: CredentialStatus): string => {
   switch (status) {
@@ -72,12 +75,6 @@ const defineCols = (columns: IColumnGrid[]) => {
       column_name: 'credential_id',
       cell: (params) => (
         <Box sx={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-          <Image
-            src="/images/qr-code-blur.png" //[ ] Remove mock
-            alt="QR Code"
-            width="56"
-            height="56"
-          />
           <Box>
             <Typography
               sx={{
@@ -138,12 +135,36 @@ const defineCols = (columns: IColumnGrid[]) => {
                 textOverflow: 'ellipsis',
               }}
             >
-              {params?.issuedCredentials[0].issuerUser.id}
-              {/* [x] Remove mock */}
+              {params?.issuedCredentials[0].issuerUser.gatewayId}
             </Typography>
-            {/* <Tooltip title="Tooltip message">
-              <VerifiedIcon sx={{ color: brandColors.purple.main }} />
-            </Tooltip> */}
+          </Box>
+        </Box>
+      ),
+    },
+    {
+      field: 'recipient_id',
+      column_name: 'recipient_id_issuers',
+      cell: (params) => (
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <Avatar
+            alt="Name"
+            src="/images/avatar-default.png"
+            sx={{ width: 24, height: 24 }}
+          />
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+            <Typography
+              sx={{
+                fontSize: '14px',
+                fontWeight: 400,
+                letterSpacing: '0.17px',
+                maxWidth: '70px',
+                whiteSpace: 'nowrap',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+              }}
+            >
+              {params?.receivedCredentials[0].recipientUser.gatewayId}
+            </Typography>
           </Box>
         </Box>
       ),
@@ -170,12 +191,8 @@ const defineCols = (columns: IColumnGrid[]) => {
                 textOverflow: 'ellipsis',
               }}
             >
-              {params?.issuerUser?.id}
-              {/* [x] Remove mock */}
+              {params?.issuerUser?.gatewayId}
             </Typography>
-            {/* <Tooltip title="Tooltip message">
-              <VerifiedIcon sx={{ color: brandColors.purple.main }} />
-            </Tooltip> */}
           </Box>
         </Box>
       ),
@@ -202,12 +219,8 @@ const defineCols = (columns: IColumnGrid[]) => {
                 textOverflow: 'ellipsis',
               }}
             >
-              {params.recipientUser.id}
-              {/* [x] Remove mock */}
+              {params.recipientUser.gatewayId}
             </Typography>
-            {/* <Tooltip title="Tooltip message">
-              <VerifiedIcon sx={{ color: brandColors.purple.main }} />
-            </Tooltip> */}
           </Box>
         </Box>
       ),
@@ -291,7 +304,7 @@ export default function DataGrid({ columns, data }: Props): JSX.Element {
           <Box
             sx={{
               display: 'grid',
-              gridTemplateColumns: '2fr 1fr 1fr 1fr 1fr 1fr',
+              gridTemplateColumns: '1.5fr 1fr 1fr 1fr 1fr 1fr',
               px: { xs: 0, md: 4, lg: 6 },
             }}
           >
@@ -328,7 +341,7 @@ export default function DataGrid({ columns, data }: Props): JSX.Element {
                         sx={{
                           px: { xs: 0, md: 4, lg: 6 },
                           display: 'grid',
-                          gridTemplateColumns: '2fr 1fr 1fr 1fr 1fr 1fr',
+                          gridTemplateColumns: '1.5fr 1fr 1fr 1fr 1fr 1fr',
                         }}
                       >
                         {gridColumns.map((column) => (

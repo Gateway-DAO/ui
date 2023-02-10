@@ -19,6 +19,8 @@ import {
   Stack,
   TextField,
   Typography,
+  useMediaQuery,
+  useTheme,
 } from '@mui/material';
 
 import { TaskIcon } from '../../../atoms/task-icon';
@@ -78,7 +80,6 @@ export function QuizTask({
   });
 
   const { enqueueSnackbar } = useSnackbar();
-
   useEffect(() => {
     if (formValues.tasks[taskId]?.title === '') {
       setValue(`tasks.${taskId}.title`, 'Untitled Requirement');
@@ -138,9 +139,18 @@ export function QuizTask({
         <Stack
           direction={'row'}
           alignItems={'center'}
-          sx={{ width: '100%', mr: '20px' }}
+          sx={(theme) => ({
+            width: '100%',
+            mr: '20px',
+            [theme.breakpoints.between('md', 'lg')]: {
+              margin: '-22px',
+            },
+            [theme.breakpoints.between('lg', 'xl')]: {
+              margin: '-22px',
+            },
+          })}
         >
-          <TaskIcon type="quiz" sx={{ marginRight: 3 }} />
+          <TaskIcon type="quiz" sx={{ marginRight: 3, marginLeft: 4 }} />
           <Stack>
             <Typography variant="subtitle2">Quiz</Typography>
             <TextField
@@ -170,7 +180,18 @@ export function QuizTask({
           </Stack>
         </Stack>
         {!taskIsMoving && (
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <Box
+            sx={(theme) => ({
+              display: 'flex',
+              alignItems: 'center',
+              [theme.breakpoints.between('md', 'lg')]: {
+                marginLeft: '-55px',
+              },
+              [theme.breakpoints.between('lg', 'xl')]: {
+                marginLeft: '-55px',
+              },
+            })}
+          >
             <IconButton
               onClick={() => deleteTask(taskId)}
               sx={(theme) => ({
@@ -184,6 +205,7 @@ export function QuizTask({
             >
               <DeleteIcon fontSize="medium" />
             </IconButton>
+
             {taskVisible ? (
               <IconButton
                 onClick={() => setTaskVisible(false)}

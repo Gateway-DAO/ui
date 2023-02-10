@@ -33,11 +33,14 @@
     "all": "All",
     "overview": "Overview",
     "credentials": "Credentials",
+    "data-models": "Data models",
     "daos": "DAOs",
     "organizations": "Organizations",
     "people": "People",
     "issuers": "Issuers",
     "recipients": "Recipients",
+    "received": "Received",
+    "issued": "Issued",
     "playground": "Playground"
   },
   "featured-credentials": {
@@ -97,5 +100,19 @@
     "linkedin": "LinkedIn",
     "reddit": "Reddit",
     "twitter": "Twitter"
+  },
+  "profile": {
+    "received": "Received",
+    "received_see-more": "All Received",
+    "issued": "Issued",
+    "issued_see-more": "All Issued",
+    "issue-credential": {
+      "title": "Issue a credential",
+      "description": "Go to explore and issue a credential"
+    },
+    "earn-credential": {
+      "title": "Earn a credential",
+      "description": "Go to explore and try to earn credentials"
+    }
   }
 }
