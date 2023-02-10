@@ -7,6 +7,7 @@
     "status": "Status",
     "valid": "Valid",
     "expired": "Expired",
+    "suspended": "Suspended",
     "revoked": "Revoked",
     "invalid": "Invalid",
     "issuer-id": "Issuer ID",
@@ -23,7 +24,8 @@
     "data-model-id": "Data model ID",
     "storage-id": "Storage ID",
     "alert-title": "This credential is not valid",
-    "alert-description": "The contents of this credential were not created by the issuer"
+    "alert-description": "The contents of this credential were not created by the issuer",
+    "unfilled": "Unfilled"
   },
   "data-model": {
     "data-model-id": "Data model ID",
@@ -73,6 +75,12 @@
       "issuance_date": "Issuance date",
       "status": "Status",
       "minted": "Minted"
+    },
+    "issuers-table": {
+      "issuer_id": "Issuer ID",
+      "started": "Started using",
+      "issued": "Issued",
+      "unique_recipients": "Unique recipients"
     }
   }
 }

@@ -6,6 +6,7 @@ import { PropsWithChildren, useMemo, useEffect, useCallback } from 'react';
 import { useConnectModal } from '@rainbow-me/rainbowkit';
 
 import { AuthConnectingModal } from '../../components/organisms/auth-connecting-modal';
+import { gatewayProtocolAuthSDK } from '../../services/gateway-protocol/api';
 import {
   gqlMethodsWithRefresh,
   gqlUserHeader,
@@ -13,6 +14,7 @@ import {
 import { BlockedPage } from './blocked-page';
 import { AuthContext } from './context';
 import { useAuthLogin, useInitUser } from './hooks';
+
 type Props = {
   isAuthPage?: boolean;
 };
@@ -26,8 +28,15 @@ export function AuthProvider({
 
   const { openConnectModal } = useConnectModal();
 
-  const { me, error, onUpdateMe, authStep, onSignOut, onInvalidateMe } =
-    useAuthLogin();
+  const {
+    me,
+    protocolToken,
+    error,
+    onUpdateMe,
+    authStep,
+    onSignOut,
+    onInvalidateMe,
+  } = useAuthLogin();
 
   const onInvalidRT = async (
     session: Session,
@@ -46,7 +55,11 @@ export function AuthProvider({
 
   useEffect(() => {
     onInvalidRT(session);
-  }, [session]);
+    if (session && !protocolToken) {
+      onSignOut();
+      return;
+    }
+  }, [session, onSignOut, protocolToken]);
 
   const isBlocked = !!isAuthPage && (!me || !token);
 
@@ -54,6 +67,12 @@ export function AuthProvider({
     () => gqlMethodsWithRefresh(session?.token, session?.user_id, onInvalidRT),
     [session]
   );
+
+  const gqlProtocolAuthMethods = useMemo(
+    () => gatewayProtocolAuthSDK(protocolToken),
+    [protocolToken]
+  );
+
   const fetchAuth = useCallback(
     async (url: string, options: Parameters<typeof fetch>[1]) => {
       const res = await fetch(
@@ -83,12 +102,13 @@ export function AuthProvider({
         me,
         token,
         gqlAuthMethods,
+        gqlProtocolAuthMethods,
         fetchAuth,
         onOpenLogin: openConnectModal,
         onSignOut,
         onUpdateMe,
         onInvalidateMe,
-        authenticated: !!me && !!session,
+        authenticated: !!me && !!session && !!protocolToken,
       }}
     >
       {!isBlocked && children}
