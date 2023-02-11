@@ -44,7 +44,7 @@ export function ExploreTemplate({
       },
       {
         key: 'credentials',
-        label: t('common:tabs.credentials'),
+        label: t('common:tabs.earn'),
         section: <GatesTab />,
       },
       {

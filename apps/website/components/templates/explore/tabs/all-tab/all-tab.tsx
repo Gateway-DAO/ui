@@ -14,6 +14,7 @@ import {
   SectionWithGrid,
 } from '../../../../molecules/sections';
 import { ExploreProps } from '../../types';
+import Banner from './banner/banner';
 
 type Props = {
   setActiveTab: (tab: number) => void;
@@ -38,6 +39,7 @@ export function AllTab({
         },
       }}
     >
+      <Banner />
       <Stack
         direction="column"
         divider={<Divider />}
