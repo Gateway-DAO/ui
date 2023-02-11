@@ -261,6 +261,11 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
     ? gateProps?.claim_limit <= gateProps?.holder_count
     : false;
 
+  const createdByImage =
+    gateProps?.creator?.picture === null
+      ? gateProps?.creator.pfp
+      : gateProps?.creator.picture.id;
+
   return (
     <Grid
       container
@@ -615,10 +620,15 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
                   >
                     <Tooltip title={gateProps?.creator.name}>
                       <Box component="a" sx={{ display: 'inline-block' }}>
-                        <AvatarFile
-                          alt={gateProps?.creator.username}
-                          file={gateProps?.creator.picture}
-                          fallback={gateProps?.creator.pfp || '/logo.png'}
+                        <Chip
+                          variant="outlined"
+                          label={gateProps?.creator.username}
+                          avatar={
+                            <Avatar
+                              alt={gateProps?.creator.username}
+                              src={`https://api.staging.mygateway.xyz/storage/file?id=${createdByImage}`}
+                            />
+                          }
                         />
                       </Box>
                     </Tooltip>
