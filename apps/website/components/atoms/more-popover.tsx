@@ -1,7 +1,7 @@
 import React from 'react';
 
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { Avatar, IconButton, Popover, Typography } from '@mui/material';
+import { Avatar, IconButton, Popover, Stack, Typography } from '@mui/material';
 
 type MorePopoverProps = {
   options: {
@@ -38,7 +38,7 @@ const MorePopover = ({ options, withBackground }: MorePopoverProps) => {
           onClick={handleClick}
           key="gate-options"
         >
-          <Avatar>
+          <Avatar sx={{ height: '30px', width: '31px' }}>
             <MoreVertIcon
               sx={{
                 mt: -0.25,

@@ -14,7 +14,7 @@ export function ShareButton(Props: Props) {
   const menu = useMenu();
 
   return (
-    <Stack sx={{ height: '27px' }}>
+    <>
       <IconButton
         sx={{
           p: 0,
@@ -22,15 +22,16 @@ export function ShareButton(Props: Props) {
         onClick={menu.onOpen}
         key="share"
       >
-        <Avatar>
+        <Avatar sx={{ height: '30px', width: '31px' }}>
           <IosShare
             sx={{
               mt: -0.25,
+              height: '20px',
             }}
           />
         </Avatar>
       </IconButton>
       <ShareButtonFn {...{ ...Props, menu }} />
-    </Stack>
+    </>
   );
 }
