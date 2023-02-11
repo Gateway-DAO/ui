@@ -86,7 +86,11 @@ export const useAuthLogin = () => {
 
   const nonce = useQuery(
     [address, 'nonce'],
-    () => gqlAnonMethods.get_nonce({ wallet: address }),
+    () =>
+      gqlAnonMethods.get_nonce({
+        wallet: address,
+        network: address.startsWith('0x') ? 'EVM' : 'SOL',
+      }),
     {
       enabled: !!address && session.status === 'unauthenticated',
       async onSuccess({ get_nonce: { nonce } }) {
