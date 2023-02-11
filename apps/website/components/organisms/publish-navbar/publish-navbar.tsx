@@ -23,7 +23,7 @@ export const PublishNavbar = ({ isLoading, saveDraft }: Props) => {
         position="fixed"
         sx={{
           background: 'none',
-          padding: { xs: '0 20px 0 10px', md: '0 90px' },
+          padding: { xs: '0 20px 0 10px', md: '20px 90px' },
         }}
       >
         <Toolbar>

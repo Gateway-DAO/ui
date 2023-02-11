@@ -11,9 +11,20 @@ import { MenuListItem } from '../components/templates/landing/menu/types';
 import { ProductShowProps } from '../components/templates/landing/product-show/types';
 import { ScheduleDemoProps } from '../components/templates/landing/schedule-demo/types';
 import { useAuth } from '../providers/auth';
+import { useRouter } from 'next/router';
+import { ROUTES } from '../constants/routes';
 
 export default function Index() {
-  const { onOpenLogin } = useAuth();
+  const router = useRouter()
+  const { onOpenLogin, authenticated } = useAuth();
+  const handleLogin = () => {
+    if(authenticated){
+      router.push(ROUTES.EXPLORE);
+    }
+    else{
+      onOpenLogin()
+    }
+  }
 
   const { t } = useTranslation('index');
   const menuList = t('menu', null, { returnObjects: true }) as MenuListItem[];
@@ -47,7 +58,7 @@ export default function Index() {
             variant="contained"
             size="large"
             sx={{ whiteSpace: 'nowrap', height: '56px' }}
-            onClick={onOpenLogin}
+            onClick={handleLogin}
           >
             {t('signUp')}
           </Button>
@@ -87,7 +98,7 @@ export default function Index() {
             variant="contained"
             sx={{ height: '56px', marginTop: '38px' }}
             size="large"
-            onClick={onOpenLogin}
+            onClick={handleLogin}
           >
             {t('enterButtonTitle')}
           </Button>
