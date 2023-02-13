@@ -19,7 +19,7 @@ import {
 } from '@mui/material';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import { styled } from '@mui/material/styles';
-import { DatePicker } from '@mui/x-date-pickers';
+import { DatePicker, TimePicker } from '@mui/x-date-pickers';
 import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 
@@ -120,6 +120,37 @@ export function AdvancedSetting() {
                   )}
                 />
               </LocalizationProvider>
+              <Stack sx={{ marginTop: '13px', width: '250px' }}>
+                <LocalizationProvider dateAdapter={AdapterLuxon}>
+                  <Controller
+                    control={control}
+                    name="expire_date"
+                    defaultValue={null}
+                    render={({ field }) => (
+                      <>
+                        <TimePicker
+                          label="Add expire time"
+                          value={
+                            field.value ? DateTime.fromISO(field.value) : null
+                          }
+                          onChange={(newValue) => {
+                            field.onChange(newValue?.toISO());
+                          }}
+                          renderInput={(params) => (
+                            <TextField
+                              {...params}
+                              inputProps={{
+                                ...params.inputProps,
+                                placeholder: 'hh:mm am/pm',
+                              }}
+                            />
+                          )}
+                        />
+                      </>
+                    )}
+                  />
+                </LocalizationProvider>
+              </Stack>
             </Stack>
           </div>
           <div>

@@ -42,6 +42,7 @@ import { DirectHoldersList } from './direct-holders-list/direct-holders-list';
 import { DirectHoldersHeader } from './direct-holders-list/header';
 import { DraftDirectHoldersList } from './draft-direct-holders-list/draft-direct-holders-list';
 import { TaskList } from './task-list';
+import { ConnectResponse_Result } from 'apps/website/services/cyberconnect/types';
 
 const GateStateChip = dynamic(() => import('../../atoms/gate-state-chip'), {
   ssr: false,
@@ -264,15 +265,19 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
   const dateFormatAccordingToTimeZone = new Intl.DateTimeFormat('en-US', {
     timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
     timeZoneName: 'short',
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
   });
+
+  const getTime = dateFormatAccordingToTimeZone.format(
+    new Date(gateProps?.expire_date)
+  );
+  const time = getTime.substring(0, getTime.indexOf('M') + 1);
+  const timeZone = getTime.substring(getTime.indexOf('M') + 1);
   const createdByImage =
     gateProps?.creator?.picture === null
       ? gateProps?.creator.pfp
       : gateProps?.creator.picture.id;
-
   return (
     <Grid
       container
@@ -473,17 +478,18 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
                     variant="body2"
                     color={(theme) => theme.palette.text.secondary}
                   >
-                    Expire date
+                    Expiry
                   </Typography>
                 </Grid>
-                <Grid item xs={8}>
+                <Grid item xs={8} sx={{ marginTop: '19px' }}>
                   <Typography
                     variant="subtitle2"
                     color={isDateExpired ? '#FFA726' : 'secondary'}
                     fontWeight={600}
                   >
-                    {dateFormatAccordingToTimeZone.format(
-                      new Date(gateProps?.expire_date)
+                    {new Date(gateProps.expire_date).toLocaleDateString(
+                      'en-us',
+                      { year: 'numeric', month: 'numeric', day: 'numeric' }
                     )}
                     {isDateExpired && (
                       <Chip
@@ -493,6 +499,22 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
                         variant="outlined"
                       />
                     )}
+                  </Typography>
+                  <Typography
+                    variant="subtitle2"
+                    display={'inline'}
+                    color={isDateExpired ? '#FFA726' : 'secondary'}
+                    fontWeight={600}
+                  >
+                    {time}
+                  </Typography>
+                  <Typography
+                    variant="subtitle2"
+                    display={'inline'}
+                    color={isDateExpired ? '#FFA726' : '#FFFFFFB2'}
+                    fontWeight={600}
+                  >
+                    {timeZone}
                   </Typography>
                 </Grid>
               </>
