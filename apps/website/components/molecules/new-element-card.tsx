@@ -30,7 +30,7 @@ export default function NewElementCard({
           alignItems: 'center',
           textAlign: 'center',
           gap: '15px',
-          py: 25,
+          py: 10,
           px: 7,
           cursor: 'pointer',
         }}
