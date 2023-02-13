@@ -33,6 +33,7 @@ export default function ClaimFormText({
           width: '100%',
         },
       }}
+      onWheel={() => (document.activeElement as HTMLElement).blur()}
       {...(type === 'number' && { inputProps: { step: 0.1 } })}
       sx={{ width: '100%' }}
       label={label}

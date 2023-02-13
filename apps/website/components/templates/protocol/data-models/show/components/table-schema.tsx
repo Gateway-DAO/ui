@@ -76,7 +76,8 @@ export default function TableSchema({
                 <ChipInputType
                   type={getClaimType(
                     data[item]?.type,
-                    data[item]?.contentMediaType
+                    data[item]?.contentMediaType,
+                    data[item]?.format
                   )}
                 />
               </Stack>

@@ -34,6 +34,7 @@ type ColumnType =
   | 'category'
   | 'issuer_id'
   | 'issuer_id_issuers'
+  | 'recipient_id_issuers'
   | 'recipient_id'
   | 'issuance_date'
   | 'status'
@@ -48,6 +49,8 @@ type Column = {
   minWidth?: number;
   width?: number;
 };
+
+//[ ] Check with @kbooz how to transform into a helper
 
 const setColorStatus = (status: CredentialStatus): string => {
   switch (status) {
@@ -133,7 +136,34 @@ const defineCols = (columns: IColumnGrid[]) => {
               }}
             >
               {params?.issuedCredentials[0].issuerUser.gatewayId}
-              {/* [x] Remove mock */}
+            </Typography>
+          </Box>
+        </Box>
+      ),
+    },
+    {
+      field: 'recipient_id',
+      column_name: 'recipient_id_issuers',
+      cell: (params) => (
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <Avatar
+            alt="Name"
+            src="/images/avatar-default.png"
+            sx={{ width: 24, height: 24 }}
+          />
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+            <Typography
+              sx={{
+                fontSize: '14px',
+                fontWeight: 400,
+                letterSpacing: '0.17px',
+                maxWidth: '70px',
+                whiteSpace: 'nowrap',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+              }}
+            >
+              {params?.receivedCredentials[0].recipientUser.gatewayId}
             </Typography>
           </Box>
         </Box>
