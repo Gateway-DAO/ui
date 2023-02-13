@@ -261,11 +261,22 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
     ? gateProps?.claim_limit <= gateProps?.holder_count
     : false;
 
+  const dateFormatAccordingToTimeZone = new Intl.DateTimeFormat('en-US', {
+    timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+    timeZoneName: 'short',
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+
+  const getTime = dateFormatAccordingToTimeZone.format(
+    new Date(gateProps?.expire_date)
+  );
+  const time = getTime.substring(0, getTime.indexOf('M') + 1);
+  const timeZone = getTime.substring(getTime.indexOf('M') + 1);
   const createdByImage =
     gateProps?.creator?.picture === null
       ? gateProps?.creator.pfp
       : gateProps?.creator.picture.id;
-
   return (
     <Grid
       container
@@ -466,10 +477,10 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
                     variant="body2"
                     color={(theme) => theme.palette.text.secondary}
                   >
-                    Expire date
+                    Expiry
                   </Typography>
                 </Grid>
-                <Grid item xs={8}>
+                <Grid item xs={8} sx={{ marginTop: '19px' }}>
                   <Typography
                     variant="subtitle2"
                     color={isDateExpired ? '#FFA726' : 'secondary'}
@@ -477,7 +488,7 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
                   >
                     {new Date(gateProps.expire_date).toLocaleDateString(
                       'en-us',
-                      { year: 'numeric', month: 'short', day: 'numeric' }
+                      { year: 'numeric', month: 'numeric', day: 'numeric' }
                     )}
                     {isDateExpired && (
                       <Chip
@@ -487,6 +498,22 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
                         variant="outlined"
                       />
                     )}
+                  </Typography>
+                  <Typography
+                    variant="subtitle2"
+                    display={'inline'}
+                    color={isDateExpired ? '#FFA726' : 'secondary'}
+                    fontWeight={600}
+                  >
+                    {time}
+                  </Typography>
+                  <Typography
+                    variant="subtitle2"
+                    display={'inline'}
+                    color={isDateExpired ? '#FFA726' : '#FFFFFFB2'}
+                    fontWeight={600}
+                  >
+                    {timeZone}
                   </Typography>
                 </Grid>
               </>

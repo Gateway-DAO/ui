@@ -1,5 +1,10 @@
 import { useState, ChangeEvent } from 'react';
 
+import { DateTime } from 'luxon';
+import { Controller, useFormContext } from 'react-hook-form';
+
+import { ExpandLess, ExpandMore } from '@mui/icons-material';
+import EditIcon from '@mui/icons-material/Edit';
 import {
   Box,
   Button,
@@ -12,17 +17,14 @@ import {
   FormHelperText,
   FormControl,
 } from '@mui/material';
-import { ExpandLess, ExpandMore } from '@mui/icons-material';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-
-import { DesktopDatePicker, MobileDatePicker } from '@mui/x-date-pickers';
-import EditIcon from '@mui/icons-material/Edit';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import { styled } from '@mui/material/styles';
-import { Controller, useFormContext } from 'react-hook-form';
-import { CreateGateData } from './schema';
+import { DatePicker, TimePicker } from '@mui/x-date-pickers';
+import { DesktopDatePicker, MobileDatePicker } from '@mui/x-date-pickers';
 import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon';
-import { DateTime } from 'luxon';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+
+import { CreateGateData } from './schema';
 
 const StyledToggleButton = styled(ToggleButton)(({ theme }) => ({
   '&.MuiToggleButton-root': {
@@ -111,6 +113,37 @@ export function AdvancedSetting() {
                   )}
                 />
               </LocalizationProvider>
+              <Stack sx={{ marginTop: '13px', width: '250px' }}>
+                <LocalizationProvider dateAdapter={AdapterLuxon}>
+                  <Controller
+                    control={control}
+                    name="expire_date"
+                    defaultValue={null}
+                    render={({ field }) => (
+                      <>
+                        <TimePicker
+                          label="Add expire time"
+                          value={
+                            field.value ? DateTime.fromISO(field.value) : null
+                          }
+                          onChange={(newValue) => {
+                            field.onChange(newValue?.toISO());
+                          }}
+                          renderInput={(params) => (
+                            <TextField
+                              {...params}
+                              inputProps={{
+                                ...params.inputProps,
+                                placeholder: 'hh:mm am/pm',
+                              }}
+                            />
+                          )}
+                        />
+                      </>
+                    )}
+                  />
+                </LocalizationProvider>
+              </Stack>
             </Stack>
           </div>
           <div>
