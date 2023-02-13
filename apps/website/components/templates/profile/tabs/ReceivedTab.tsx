@@ -26,10 +26,10 @@ export default function ReceivedTab({ user }: Props): JSX.Element {
     isLoading,
     isFetchingNextPage,
   } = useInfiniteQuery(
-    [query.credentialsByRecipientUser, user.id],
+    [query.credentialsByRecipientUser, user.protocol.id],
     async ({ pageParam }) => {
       const result = await gatewayProtocolSDK.findCredentialsByRecipientUser({
-        recipientUserId: user.id,
+        recipientUserId: user.protocol.id,
         take: internalPageSize,
         skip: pageParam || 0,
       } as any);
