@@ -70,16 +70,16 @@ export default function ProfileTemplate({ user }: Props) {
         label: t('common:tabs.overview'),
         section: <OverviewTab setActiveTab={setTab} user={user} />,
       },
-      {
-        key: 'received',
-        label: t('common:tabs.received'),
-        section: <ReceivedTab user={user} />,
-      },
-      {
-        key: 'issued',
-        label: t('common:tabs.issued'),
-        section: <IssuedTab user={user} />,
-      },
+      // {
+      //   key: 'received',
+      //   label: t('common:tabs.received'),
+      //   section: <ReceivedTab user={user} />,
+      // },
+      // {
+      //   key: 'issued',
+      //   label: t('common:tabs.issued'),
+      //   section: <IssuedTab user={user} />,
+      // },
     ],
     []
   );

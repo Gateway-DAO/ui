@@ -12,7 +12,7 @@ import { gatewayProtocolSDK } from '../../../../../services/gateway-protocol/api
 import { DataModelCard } from '../../../../molecules/data-model-card';
 
 export default function DataModelsTab(): JSX.Element {
-  const internalPageSize = 3;
+  const internalPageSize = 10;
   const {
     data: dataModels,
     isLoading,
