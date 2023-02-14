@@ -1,11 +1,13 @@
 {
   "credential": {
+    "authenticated-by": "Authenticated by",
     "issuance-date": "Issuance date",
     "expiration-date": "Expiration date",
     "indeterminate": "Indeterminate",
     "status": "Status",
     "valid": "Valid",
     "expired": "Expired",
+    "suspended": "Suspended",
     "revoked": "Revoked",
     "invalid": "Invalid",
     "issuer-id": "Issuer ID",
@@ -20,7 +22,17 @@
     "hide-activity": "Hide Activity",
     "show-activity": "See Activity",
     "data-model-id": "Data model ID",
-    "storage-id": "Storage ID"
+    "storage-id": "Storage ID",
+    "alert-title": "This credential is not valid",
+    "alert-description": "The contents of this credential were not created by the issuer",
+    "unfilled": "Unfilled",
+    "revoke-dialog-title": "Are you sure to revoke this credential?",
+    "revoke-dialog-text": "If you revoke this credential, it will not be possible to undo this action.",
+    "revoke-error-message": "There was a problem performing the revoke. Try again later.",
+    "actions": {
+      "revoke": "Revoke",
+      "cancel": "Cancel"
+    }
   },
   "data-model": {
     "data-model-id": "Data model ID",
@@ -32,6 +44,7 @@
     "last-update": "Last update",
     "arweave-hash": "Arweave Hash",
     "issuers": "Issuers",
+    "credentials": "Credentials",
     "issued-credentials": "Issued credentials",
     "recipients": "Recipients",
     "issue-credential-title": "Issue Credential",
@@ -59,7 +72,32 @@
       "group-issue-by-title": "Set the issuer",
       "group-issue-by-description": "The issuer will be issued by",
       "issue-by": "Issue by",
-      "add-field": "Add field"
+      "add-field": "Add field",
+      "optional": "Optional",
+      "dialog-title": "Confirmation",
+      "dialog-text": "Are you sure you want to discard the entered data?",
+      "dialog-positive": "Confirm",
+      "dialog-negative": "Cancel"
+    },
+    "credentials-table": {
+      "credential_id": "Credential ID",
+      "category": "Category",
+      "issuer_id": "Issuer ID",
+      "recipient_id": "Recipient ID",
+      "issuance_date": "Issuance date",
+      "status": "Status",
+      "minted": "Minted"
+    },
+    "issuers-table": {
+      "issuer_id": "Issuer ID",
+      "started": "Started using",
+      "issued": "Issued",
+      "unique_recipients": "Unique recipients"
+    },
+    "recipients-table": {
+      "recipient_id": "Recipient ID",
+      "received_credentials": "Received Credentials",
+      "minted": "Minted"
     }
   }
 }

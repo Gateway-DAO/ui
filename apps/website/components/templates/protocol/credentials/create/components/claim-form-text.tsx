@@ -17,6 +17,13 @@ export default function ClaimFormText({
   return (
     <TextField
       type={type}
+      inputProps={
+        type == 'number'
+          ? {
+              step: '0.01',
+            }
+          : {}
+      }
       InputProps={{
         disableUnderline: true,
         sx: {
@@ -26,6 +33,8 @@ export default function ClaimFormText({
           width: '100%',
         },
       }}
+      onWheel={() => (document.activeElement as HTMLElement).blur()}
+      {...(type === 'number' && { inputProps: { step: 0.1 } })}
       sx={{ width: '100%' }}
       label={label}
       id={`data-model-field-${fieldName}`}

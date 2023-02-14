@@ -27,12 +27,13 @@ import {
 import { a11yTabProps, TabPanel, useTab } from '../../../components/atoms/tabs';
 import { Navbar } from '../../../components/organisms/navbar/navbar';
 import { DashboardTemplate } from '../../../components/templates/dashboard';
+import { query } from '../../../constants/queries';
 import { ROUTES } from '../../../constants/routes';
 import { generateImageUrl } from '../../../hooks/use-file';
 import { useAuth } from '../../../providers/auth';
 import { AvatarFile } from '../../atoms/avatar-file';
 import { SocialButtons } from '../../organisms/social-buttons';
-import { OverviewTab } from './tabs';
+import { OverviewTab, IssuedTab, ReceivedTab } from './tabs';
 
 const GuideCard = dynamic<any>(
   () => import('./edit/Components/guide-card').then((mod) => mod.GuideCard),
@@ -63,7 +64,17 @@ export default function PrivateProfileTemplate() {
     {
       key: 'overview',
       label: t('common:tabs.overview'),
-      section: <OverviewTab user={me} />,
+      section: <OverviewTab setActiveTab={setTab} isPrivateProfile user={me} />,
+    },
+    {
+      key: 'received',
+      label: t('common:tabs.received'),
+      section: <ReceivedTab user={me} />,
+    },
+    {
+      key: 'issued',
+      label: t('common:tabs.issued'),
+      section: <IssuedTab user={me} />,
     },
   ];
 

@@ -19,14 +19,16 @@ import {
   Stack,
   TextField,
   Typography,
+  useMediaQuery,
+  useTheme,
 } from '@mui/material';
 
+import { TaskIcon } from '../../../atoms/task-icon';
 import { QuestionCreator } from '../../../organisms/question-creator/question-creator';
 import {
   CreateGateData,
   QuizTaskDataError,
 } from '../../../templates/create-gate/schema';
-import { TaskIcon } from 'apps/website/components/atoms/task-icon';
 
 // Time Period (minutes)
 export enum TimePeriod {
@@ -78,7 +80,6 @@ export function QuizTask({
   });
 
   const { enqueueSnackbar } = useSnackbar();
-
   useEffect(() => {
     if (formValues.tasks[taskId]?.title === '') {
       setValue(`tasks.${taskId}.title`, 'Untitled Requirement');
@@ -90,8 +91,8 @@ export function QuizTask({
     setTaskIsMoving(dragAndDrop);
   }, [dragAndDrop]);
 
-  const [taskVisible, setTaskVisible] = useState(false);
-  const [taskIsMoving, setTaskIsMoving] = useState(false);
+  const [taskVisible, setTaskVisible] = useState(true);
+  const [taskIsMoving, setTaskIsMoving] = useState(true);
   const onRemoveQuestion = (index: number) => remove(index);
 
   const errorOptionIsNecessary = () => {
@@ -138,38 +139,59 @@ export function QuizTask({
         <Stack
           direction={'row'}
           alignItems={'center'}
-          sx={{ width: '100%', mr: '20px' }}
+          sx={(theme) => ({
+            width: '100%',
+            mr: '20px',
+            [theme.breakpoints.between('md', 'lg')]: {
+              margin: '-22px',
+            },
+            [theme.breakpoints.between('lg', 'xl')]: {
+              margin: '-22px',
+            },
+          })}
         >
-          <TaskIcon type="quiz" sx={{ marginRight: 3 }} />
-          <TextField
-            variant="standard"
-            label="Quiz"
-            id="quiz-title"
-            required
-            autoFocus
-            sx={{
-              minWidth: { md: '600px', xs: '110%' },
-              maxWidth: { xs: '100%', md: '110%' },
-            }}
-            InputProps={{
-              style: {
-                fontSize: '20px',
-                fontWeight: 'bolder',
-              },
-              disableUnderline: true,
-              sx: {
-                '&.Mui-focused': {
-                  borderBottom: '2px solid #9A53FF',
+          <TaskIcon type="quiz" sx={{ marginRight: 3, marginLeft: 4 }} />
+          <Stack>
+            <Typography variant="subtitle2">Quiz</Typography>
+            <TextField
+              variant="standard"
+              id="quiz-title"
+              required
+              sx={{
+                minWidth: { md: '600px', xs: '110%' },
+                maxWidth: { xs: '100%', md: '110%' },
+              }}
+              InputProps={{
+                style: {
+                  fontSize: '20px',
+                  fontWeight: 'bolder',
                 },
-              },
-            }}
-            {...register(`tasks.${taskId}.title`)}
-            error={!!errors.tasks?.[taskId]?.title}
-            helperText={errors.tasks?.[taskId]?.title?.message}
-          />
+                disableUnderline: true,
+                sx: {
+                  '&.Mui-focused': {
+                    borderBottom: '2px solid #9A53FF',
+                  },
+                },
+              }}
+              {...register(`tasks.${taskId}.title`)}
+              error={!!errors.tasks?.[taskId]?.title}
+              helperText={errors.tasks?.[taskId]?.title?.message}
+            />
+          </Stack>
         </Stack>
         {!taskIsMoving && (
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <Box
+            sx={(theme) => ({
+              display: 'flex',
+              alignItems: 'center',
+              [theme.breakpoints.between('md', 'lg')]: {
+                marginLeft: '-55px',
+              },
+              [theme.breakpoints.between('lg', 'xl')]: {
+                marginLeft: '-55px',
+              },
+            })}
+          >
             <IconButton
               onClick={() => deleteTask(taskId)}
               sx={(theme) => ({
@@ -183,6 +205,7 @@ export function QuizTask({
             >
               <DeleteIcon fontSize="medium" />
             </IconButton>
+
             {taskVisible ? (
               <IconButton
                 onClick={() => setTaskVisible(false)}

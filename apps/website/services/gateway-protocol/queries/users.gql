@@ -3,3 +3,14 @@ query userByWallet($wallet: String!) {
     id
   }
 }
+
+query meProtocol {
+  me {
+    id
+    isCompleted
+    primaryWallet {
+      id
+      address
+    }
+  }
+}

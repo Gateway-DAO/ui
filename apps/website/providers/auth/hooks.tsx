@@ -12,10 +12,16 @@ import {
   useQueryClient,
 } from '@tanstack/react-query';
 import { useSnackbar } from 'notistack';
+import { useLocalStorage } from 'react-use';
 import { PartialDeep } from 'type-fest';
 import { useAccount, useDisconnect, useSignMessage } from 'wagmi';
 
 import { ROUTES } from '../../constants/routes';
+import {
+  gatewayProtocolAuthSDK,
+  gatewayProtocolSDK,
+} from '../../services/gateway-protocol/api';
+import { Chain } from '../../services/gateway-protocol/types';
 import { gqlAnonMethods, gqlMethods } from '../../services/hasura/api';
 import { ErrorResponse } from '../../types/graphql';
 import { SessionUser } from '../../types/user';
@@ -72,7 +78,8 @@ export const useAuthLogin = () => {
   const address = EVMaddress || solanaAddress?.toString();
 
   const { t } = useTranslation('common');
-
+  const [protocolToken, setProtocolToken, removeProtocolToken] =
+    useLocalStorage<string>('protocol');
   const session = useSession();
   const token = session?.data?.token;
 
@@ -84,7 +91,7 @@ export const useAuthLogin = () => {
     // eslint-disable-next-line @typescript-eslint/ban-types
   }>();
 
-  const nonce = useQuery(
+  const nonceNode = useQuery(
     [address, 'nonce'],
     () =>
       gqlAnonMethods.get_nonce({
@@ -94,7 +101,7 @@ export const useAuthLogin = () => {
     {
       enabled: !!address && session.status === 'unauthenticated',
       async onSuccess({ get_nonce: { nonce } }) {
-        sendSignature.mutate(nonce);
+        sendSignatureNode.mutate(nonce);
       },
       onError(e: any) {
         setError({
@@ -105,15 +112,87 @@ export const useAuthLogin = () => {
     }
   );
 
-  const sendSignature = useMutation(
-    [address, nonce.data?.get_nonce?.nonce, 'signature'],
+  const sendSignatureNode = useMutation(
+    [address, nonceNode.data?.get_nonce?.nonce, 'signature'],
     (nonce: number) =>
       sign.signMessageAsync({
         message: `Welcome to Gateway!\n\nPlease sign this message for access: ${nonce}`,
       }),
     {
       async onSuccess(signature) {
-        await signInMutation.mutateAsync(signature);
+        queryClient.setQueryData(
+          [address, nonceNode.data?.get_nonce?.nonce, 'signature'],
+          signature
+        );
+        // await signInMutation.mutateAsync(signature);
+        nonceProtocol.mutate();
+      },
+      onError() {
+        queryClient.invalidateQueries([
+          address,
+          nonceNode.data?.get_nonce?.nonce,
+          'signature',
+        ]);
+        setError({
+          message: t('auth:connecting.errors.signature'),
+          label: t('actions.try-again'),
+        });
+      },
+      retry: false,
+    }
+  );
+
+  const nonceProtocol = useMutation(
+    [address, 'nonce'],
+    () => gatewayProtocolSDK.get_nonce({ wallet: address, chain: Chain.Evm }),
+    {
+      async onSuccess({ createNonce: { message } }) {
+        sendSignatureProtocol.mutate(message);
+      },
+      onError(e: any) {
+        setError({
+          message: e?.response?.errors?.[0]?.message,
+          label: t('actions.try-again'),
+        });
+      },
+    }
+  );
+
+  const sendSignatureProtocol = useMutation(
+    [address, nonceProtocol.data?.createNonce?.message, 'signature'],
+    (message: string) =>
+      sign.signMessageAsync({
+        message,
+      }),
+    {
+      async onSuccess(signature) {
+        await loginProtocol.mutateAsync(signature);
+      },
+      onError() {
+        setError({
+          message: t('auth:connecting.errors.signature'),
+          label: t('actions.try-again'),
+        });
+      },
+      retry: false,
+    }
+  );
+
+  const loginProtocol = useMutation(
+    [address, 'protocol-login'],
+    async (signature: string) => {
+      const {
+        login: { token },
+      } = await gatewayProtocolSDK.login({
+        wallet: address,
+        signature,
+      });
+      return token;
+    },
+    {
+      onSuccess(token) {
+        setProtocolToken(token);
+        signInMutation.mutateAsync(sendSignatureNode.data);
       },
       onError() {
         setError({
@@ -164,8 +243,11 @@ export const useAuthLogin = () => {
     },
   };
 
-  const { refetchOnReconnect, refetchInterval, ...queryDefNoRefetch } =
-    queryDefinitions;
+  const {
+    refetchOnReconnect: _1,
+    refetchInterval: _2,
+    ...queryDefNoRefetch
+  } = queryDefinitions;
 
   const user = useQueries({
     queries: [
@@ -189,17 +271,24 @@ export const useAuthLogin = () => {
         queryFn: () => gqlMethods(token).me_task_progresses(),
         ...queryDefNoRefetch,
       },
+      {
+        queryKey: ['user_protocol', protocolToken],
+        queryFn: async () => {
+          const res = await gatewayProtocolAuthSDK(protocolToken).meProtocol();
+          return {
+            me: {
+              protocol: res.me,
+            },
+          };
+        },
+        ...queryDefNoRefetch,
+      },
     ],
   });
 
   const me = useQuery(
     ['me', session?.data?.user_id],
-    () => ({
-      ...user[0].data,
-      ...user[1].data,
-      ...user[2].data,
-      ...user[3].data,
-    }),
+    () => user.reduce((acc, obj) => ({ ...acc, ...obj.data }), {}),
     {
       refetchOnMount: true,
       refetchOnReconnect: true,
@@ -211,17 +300,26 @@ export const useAuthLogin = () => {
 
   const authStep: AuthStep = useMemo(() => {
     if (error) return 'error';
-    if (nonce.fetchStatus === 'fetching') return 'get-nonce';
-    if (sendSignature.isLoading) return 'send-signature';
-    if (!me.data && me.isLoading && signInMutation.isSuccess) return 'get-me';
+    if (nonceNode.fetchStatus === 'fetching') return 'get-nonce';
+    if (sendSignatureNode.isLoading) return 'send-signature';
+    if (nonceProtocol.isLoading) return 'get-nonce';
+    if (sendSignatureProtocol.isLoading) return 'send-signature';
+    if (
+      loginProtocol.isLoading ||
+      (!me.data && me.isLoading && signInMutation.isSuccess)
+    )
+      return 'get-me';
     if (me.data) return 'authenticated';
     return 'unauthenticated';
   }, [
     error,
     me.data,
     me.isLoading,
-    nonce.fetchStatus,
-    sendSignature.isLoading,
+    nonceNode.fetchStatus,
+    nonceProtocol.isLoading,
+    sendSignatureNode.isLoading,
+    sendSignatureProtocol.isLoading,
+    loginProtocol.isLoading,
     signInMutation.isSuccess,
   ]);
 
@@ -234,19 +332,30 @@ export const useAuthLogin = () => {
     queryClient.resetQueries(['user_permissions', session?.data?.user_id]);
     queryClient.resetQueries(['user_following', session?.data?.user_id]);
     queryClient.resetQueries(['user_task_progresses', session?.data?.user_id]);
+    queryClient.resetQueries(['user_protocol', protocolToken]);
   };
 
   const onSignOut = useSignOut(() => {
     setError(undefined);
     me.remove();
     user.forEach((q) => q.remove());
-    nonce.remove();
-    sendSignature.reset();
+    nonceNode.remove();
+    sendSignatureNode.reset();
+    nonceProtocol.reset();
+    sendSignatureProtocol.reset();
     signInMutation.reset();
+    loginProtocol.reset();
+    queryClient.invalidateQueries([
+      address,
+      nonceNode.data?.get_nonce?.nonce,
+      'signature',
+    ]);
+    removeProtocolToken();
   });
 
   return {
     me: token ? me.data : undefined,
+    protocolToken,
     error,
     authStep,
     onUpdateMe,

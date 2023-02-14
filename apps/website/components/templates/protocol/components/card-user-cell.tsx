@@ -29,7 +29,7 @@ export default function CardUserCell({
   hasLink = false,
   unique = false,
 }: Props) {
-  function UserCell() {
+  function UserCell({ href = '' }) {
     return (
       <Stack
         sx={{
@@ -44,7 +44,9 @@ export default function CardUserCell({
             : '16px 0 0 0',
           transition: 'background .3s ease',
           '&:hover': {
-            background: alpha(brandColors.white.main, 0.05),
+            background: hasLink
+              ? alpha(brandColors.white.main, 0.05)
+              : 'inherit',
           },
         }}
       >
@@ -62,6 +64,7 @@ export default function CardUserCell({
               target="_blank"
               title={`${label} ${name}`}
               sx={{ color: brandColors.purple.main, textDecoration: 'none' }}
+              href={href}
             >
               {name}
             </Stack>

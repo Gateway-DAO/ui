@@ -1,5 +1,8 @@
 import useTranslation from 'next-translate/useTranslation';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
+
+import { PartialDeep } from 'type-fest/source/partial-deep';
 
 import { timestampToString } from '@gateway/helpers';
 import { brandColors } from '@gateway/theme';
@@ -15,10 +18,21 @@ import {
   Divider,
 } from '@mui/material';
 
-import ExternalLink from '../../../../../atoms/external-link';
+import { Activity } from '../../../../../../services/gateway-protocol/types';
 
 type Props = {
-  activities: any[];
+  activities: PartialDeep<Activity>[];
+};
+
+const activityText = (type: string) => {
+  return (
+    {
+      Issued: 'Credential issued',
+      Revoked: 'Credential revoked',
+      Suspended: 'Credential suspended',
+      Reactivated: 'Credential reactivated',
+    }[type] || 'Unknown activity'
+  );
 };
 
 export default function Activities({ activities }: Props) {
@@ -32,83 +46,92 @@ export default function Activities({ activities }: Props) {
 
   return (
     <>
-      <Accordion
-        expanded={expanded}
-        onChange={handleChange()}
-        sx={{
-          ':before': { display: 'none' },
-          m: '0!important',
-        }}
-      >
-        <AccordionSummary
-          sx={{
-            p: 0,
-            m: 0,
-            mb: 1,
-            position: 'relative',
-            minHeight: '30px!important',
-            '& > *': {
-              p: 0,
+      {activities?.length > 0 && (
+        <Stack sx={{ mt: '-24px' }}>
+          <Accordion
+            expanded={expanded}
+            onChange={handleChange()}
+            sx={{
+              ':before': { display: 'none' },
               m: '0!important',
-              minHeight: '30px!important',
-            },
-          }}
-        >
-          <Stack
-            direction="row"
-            alignItems="center"
-            justifyContent="space-between"
-            sx={{ width: '100%' }}
+              background: 'transparent!important',
+            }}
           >
-            <Stack direction="row" alignItems="center" flexGrow={1}>
-              <Typography
-                fontSize={12}
-                sx={{
-                  flexGrow: 0,
-                  mr: 1,
-                  textTransform: 'uppercase',
-                  fontWeight: 700,
-                  color: brandColors.purple.main,
-                }}
+            <AccordionSummary
+              sx={{
+                p: 0,
+                m: 0,
+                mb: 1,
+                position: 'relative',
+                minHeight: '30px!important',
+                '& > *': {
+                  p: 0,
+                  m: '0!important',
+                  minHeight: '30px!important',
+                },
+              }}
+            >
+              <Stack
+                direction="row"
+                alignItems="center"
+                justifyContent="space-between"
+                sx={{ width: '100%' }}
               >
-                {expanded
-                  ? t('credential.hide-activity')
-                  : t('credential.show-activity')}
-              </Typography>
-              <ArrowDropDownIcon
-                sx={{
-                  transform: expanded ? 'rotate(180deg)' : 'none',
-                  color: brandColors.purple.main,
-                  transition: 'all .3s ease',
-                }}
-              />
-            </Stack>
-            <ExternalLink
-              text={t('credential.data-model-id')}
-              url="https://google.com"
-            />
-          </Stack>
-        </AccordionSummary>
-        <AccordionDetails sx={{ p: 0, m: 0 }}>
-          <Stack sx={{ mb: 2 }} gap={1} divider={<Divider />}>
-            {activities?.map((activity, index) => (
-              <Stack key={index}>
-                <Typography fontSize={14}>{activity?.name}</Typography>
-                <Typography
-                  fontSize={12}
-                  sx={{ color: alpha(brandColors.white.main, 0.7) }}
-                >
-                  {timestampToString(
-                    activity?.date,
-                    lang,
-                    t('credential.indeterminate')
-                  )}
-                </Typography>
+                <Stack direction="row" alignItems="center" flexGrow={1}>
+                  <Typography
+                    fontSize={12}
+                    sx={{
+                      flexGrow: 0,
+                      mr: 1,
+                      textTransform: 'uppercase',
+                      fontWeight: 700,
+                      color: brandColors.purple.main,
+                    }}
+                  >
+                    {expanded
+                      ? t('credential.hide-activity')
+                      : t('credential.show-activity')}
+                  </Typography>
+                  <ArrowDropDownIcon
+                    sx={{
+                      transform: expanded ? 'rotate(180deg)' : 'none',
+                      color: brandColors.purple.main,
+                      transition: 'all .3s ease',
+                    }}
+                  />
+                </Stack>
               </Stack>
-            ))}
-          </Stack>
-        </AccordionDetails>
-      </Accordion>
+            </AccordionSummary>
+            <AccordionDetails sx={{ p: 0, m: 0 }}>
+              <Stack sx={{ mb: 2 }} gap={1} divider={<Divider />}>
+                {activities
+                  ?.sort(
+                    (a, b) =>
+                      new Date(b.timestamp).getTime() -
+                      new Date(a.timestamp).getTime()
+                  )
+                  .map((activity, index) => (
+                    <Stack key={index}>
+                      <Typography fontSize={14}>
+                        {activityText(activity?.type)}
+                      </Typography>
+                      <Typography
+                        fontSize={12}
+                        sx={{ color: alpha(brandColors.white.main, 0.7) }}
+                      >
+                        {timestampToString(
+                          activity?.timestamp,
+                          lang,
+                          t('credential.indeterminate')
+                        )}
+                      </Typography>
+                    </Stack>
+                  ))}
+              </Stack>
+            </AccordionDetails>
+          </Accordion>
+        </Stack>
+      )}
     </>
   );
 }

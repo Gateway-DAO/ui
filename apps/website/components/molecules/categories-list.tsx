@@ -11,6 +11,7 @@ type CategoriesListProps = {
   isGate?: boolean;
   showStatus?: boolean;
   published?: string;
+  listMode?: boolean;
 };
 
 export function CategoriesList({
@@ -18,6 +19,7 @@ export function CategoriesList({
   isGate,
   showStatus,
   published,
+  listMode,
   ...props
 }: CategoriesListProps): JSX.Element {
   const refs = useRef<HTMLDivElement[]>([]);
@@ -58,7 +60,13 @@ export function CategoriesList({
         justifyContent={'space-between'}
         ref={parentRef}
       >
-        <Stack direction="row" spacing={1} px={2} pt={1}  {...props}>
+        <Stack
+          direction="row"
+          pt={1}
+          spacing={listMode ? 0 : 1}
+          px={listMode ? 0 : 2}
+          {...props}
+        >
           {categories.map((category, index) => {
             const formattedLabel =
               category.charAt(0).toUpperCase() + category.slice(1);
@@ -69,6 +77,7 @@ export function CategoriesList({
                 key={category}
                 label={formattedLabel}
                 size="small"
+                sx={{ mr: listMode ? '10px' : 'none' }}
               />
             );
           })}

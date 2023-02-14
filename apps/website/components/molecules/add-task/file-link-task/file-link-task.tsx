@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import { useFieldArray, useFormContext } from 'react-hook-form';
-import { TaskIcon } from 'apps/website/components/atoms/task-icon';
+
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import Clear from '@mui/icons-material/Clear';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -17,6 +17,7 @@ import {
 } from '@mui/material';
 
 import { CircleWithNumber } from '../../../atoms/circle-with-number';
+import { TaskIcon } from '../../../atoms/task-icon';
 import {
   CreateGateData,
   FileTaskDataError,
@@ -53,8 +54,8 @@ const FileLinkTask = ({ dragAndDrop, taskId, deleteTask }) => {
     setTaskIsMoving(dragAndDrop);
   }, [dragAndDrop]);
 
-  const [taskVisible, setTaskVisible] = useState(false);
-  const [taskIsMoving, setTaskIsMoving] = useState(false);
+  const [taskVisible, setTaskVisible] = useState(true);
+  const [taskIsMoving, setTaskIsMoving] = useState(true);
 
   return (
     <Stack
@@ -81,14 +82,22 @@ const FileLinkTask = ({ dragAndDrop, taskId, deleteTask }) => {
         <Stack
           direction={'row'}
           alignItems={'center'}
-          sx={{ width: '100%', mr: '20px' }}
+          sx={(theme) => ({
+            width: '100%',
+            mr: '20px',
+            [theme.breakpoints.between('md', 'lg')]: {
+              margin: '-22px',
+            },
+            [theme.breakpoints.between('lg', 'xl')]: {
+              margin: '-22px',
+            },
+          })}
         >
-          <TaskIcon type="self_verify" sx={{ marginRight: 3 }} />
+          <TaskIcon type="self_verify" sx={{ marginRight: 3, marginLeft: 4 }} />
           <Stack>
             <Typography variant="subtitle2">File &#38; Text</Typography>
             <TextField
               variant="standard"
-              autoFocus
               sx={{
                 minWidth: { md: '600px', xs: '110%' },
                 maxWidth: { xs: '100%', md: '110%' },
@@ -113,7 +122,18 @@ const FileLinkTask = ({ dragAndDrop, taskId, deleteTask }) => {
           </Stack>
         </Stack>
         {!taskIsMoving && (
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <Box
+            sx={(theme) => ({
+              display: 'flex',
+              alignItems: 'center',
+              [theme.breakpoints.between('md', 'lg')]: {
+                marginLeft: '-55px',
+              },
+              [theme.breakpoints.between('lg', 'xl')]: {
+                marginLeft: '-55px',
+              },
+            })}
+          >
             <IconButton
               onClick={() => deleteTask(taskId)}
               sx={(theme) => ({
