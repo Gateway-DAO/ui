@@ -35,7 +35,7 @@ function ChainRow({
   return (
     <Stack
       sx={{
-        py: { xs: 0, md: 2 },
+        py: { xs: 2, md: 2 },
         px: { xs: 3, md: 2 },
         color: disabled
           ? alpha(brandColors.white.main, 0.5)
@@ -94,7 +94,7 @@ export default function MintNFTCard({
       <Stack>
         <Box
           sx={{
-            py: { xs: 0, md: 2 },
+            py: { xs: 2, md: 2 },
             px: { xs: 3, md: 2 },
             display: 'flex',
             flexDirection: 'column',
