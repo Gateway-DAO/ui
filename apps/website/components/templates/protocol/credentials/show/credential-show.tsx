@@ -15,6 +15,7 @@ import Activities from './components/activities';
 import CredentialTitleAndImage from './components/credential-title-and-image';
 import DataTable from './components/data-table';
 import { InvalidStatusBox } from './components/invalid-status-box';
+import MintNFTCard from './components/mint-nft-card';
 import { RevokeCredential } from './components/revoke-credential';
 
 type Props = {
@@ -39,6 +40,7 @@ export default function CredentialProtocolShow({ credential }: Props) {
         <Tags tags={credential?.dataModel?.tags} />
         <Typography sx={{ mb: 3 }}>{credential?.description}</Typography>
         <CredentialCardInfo credential={credential} />
+        <MintNFTCard />
         <RevokeCredential credential={credential} />
         <InvalidStatusBox credential={credential} />
         <ExternalLink
