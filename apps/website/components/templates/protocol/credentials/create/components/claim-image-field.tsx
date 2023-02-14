@@ -5,7 +5,7 @@ import { alpha, Box, Card, Stack } from '@mui/material';
 import { ImageDropField } from '../../../../../molecules/image-drop-field';
 import { ClaimFieldProps } from './ClaimTypes';
 
-export function ImageField({
+export function ClaimImageField({
   fieldName,
   label,
   type,
