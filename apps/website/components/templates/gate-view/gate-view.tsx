@@ -224,6 +224,17 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
     { hour12: true }
   );
 
+  const handleNavBack = () => {
+    
+    // If user directly lands to credential page using link
+    if ( window.history.state.idx === 0 ) {
+      router.replace(ROUTES.MY_PROFILE);
+    }
+    else {
+      router.back()
+    }
+  }
+
   const gateOptions = [
     {
       text:
@@ -304,7 +315,7 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
             },
           }}
         >
-          <IconButton onClick={() => router.back()}>
+          <IconButton onClick={() => handleNavBack()}>
             <Avatar>
               <ArrowBackIcon />
             </Avatar>

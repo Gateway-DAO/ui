@@ -305,7 +305,7 @@ export default function DataGrid({ columns, data }: Props): JSX.Element {
             sx={{
               display: 'grid',
               gridTemplateColumns: '1.5fr 1fr 1fr 1fr 1fr 1fr',
-              px: { xs: 0, md: 4, lg: 6 },
+              px: { xs: 0, md: 1, lg: 1 },
             }}
           >
             {gridColumns.map((column) => (
@@ -339,7 +339,7 @@ export default function DataGrid({ columns, data }: Props): JSX.Element {
                       <Box
                         key={rowIndex}
                         sx={{
-                          px: { xs: 0, md: 4, lg: 6 },
+                          px: { xs: 0, md: 1, lg: 1 },
                           display: 'grid',
                           gridTemplateColumns: '1.5fr 1fr 1fr 1fr 1fr 1fr',
                         }}
@@ -376,7 +376,7 @@ export default function DataGrid({ columns, data }: Props): JSX.Element {
           )}
         </>
       ) : (
-        <Box sx={{ px: { xs: 0, md: 4, lg: 6 } }}>
+        <Box sx={{ px: { xs: 0, md: 1, lg: 1 } }}>
           <Typography>No data to display</Typography>
         </Box>
       )}
