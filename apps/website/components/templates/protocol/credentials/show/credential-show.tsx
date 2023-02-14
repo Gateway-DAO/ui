@@ -40,7 +40,11 @@ export default function CredentialProtocolShow({ credential }: Props) {
         <Tags tags={credential?.dataModel?.tags} />
         <Typography sx={{ mb: 3 }}>{credential?.description}</Typography>
         <CredentialCardInfo credential={credential} />
-        <MintNFTCard />
+
+        <MintNFTCard
+          title={t('credential.mint-card.title')}
+          adText={t('credential.mint-card.chain-coming-message')}
+        />
         <RevokeCredential credential={credential} />
         <InvalidStatusBox credential={credential} />
         <ExternalLink

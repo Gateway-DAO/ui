@@ -32,6 +32,13 @@
     "actions": {
       "revoke": "Revoke",
       "cancel": "Cancel"
+    },
+    "mint-card": {
+      "title": "Minted on",
+      "chain-column": "Chain",
+      "chain-action": "Mint as NFT",
+      "chain-action-coming": "Coming soon",
+      "chain-coming-message": "Multi-chain wallets is coming soon"
     }
   },
   "data-model": {
