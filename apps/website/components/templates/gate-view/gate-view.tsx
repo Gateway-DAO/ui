@@ -646,7 +646,10 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
                     href={`/profile/${gateProps?.creator.username}`}
                   >
                     <Tooltip title={gateProps?.creator.name}>
-                      <Box sx={{ display: 'inline-block' }}>
+                      <Box
+                        component="a"
+                        sx={{ display: 'inline-block', textDecoration: 'none' }}
+                      >
                         <Chip
                           label={gateProps?.creator.username}
                           avatar={
