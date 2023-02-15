@@ -1,3 +1,5 @@
+import useTranslation from 'next-translate/useTranslation';
+
 import { useFormContext } from 'react-hook-form';
 
 import { alpha, Box, Card, Stack } from '@mui/material';
@@ -6,6 +8,7 @@ import { ImageDropField } from '../../../../../molecules/image-drop-field';
 
 export function ImageField() {
   const { control } = useFormContext();
+  const { t } = useTranslation('protocol');
 
   return (
     <Stack
@@ -32,7 +35,7 @@ export function ImageField() {
               withCrop
               control={control}
               name="image"
-              label="Image"
+              label={t('credential.image')}
             />
           </Box>
         </Box>
