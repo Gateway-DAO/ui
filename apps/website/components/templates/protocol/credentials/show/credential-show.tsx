@@ -29,7 +29,7 @@ export default function CredentialProtocolShow({ credential }: Props) {
 
   const router = useRouter();
   const isReceivedCredential =
-    !!me && me?.wallet === credential?.issuerUser?.primaryWallet?.address;
+    me && me?.wallet === credential?.recipientUser?.primaryWallet?.address;
 
   const boxStyles: SxProps<Theme> = {
     maxWidth: '564px',
@@ -56,7 +56,7 @@ export default function CredentialProtocolShow({ credential }: Props) {
           />
         )}
 
-        <MintNFTCard
+        {/* <MintNFTCard
           title={t('credential.mint-card.title')}
           comingSoon={{
             adText: `${t('credential.mint-card.chain-coming-message')}`,
@@ -86,7 +86,7 @@ export default function CredentialProtocolShow({ credential }: Props) {
               token: '3185',
             },
           ]}
-        />
+        /> */}
         <RevokeCredential credential={credential} />
         <InvalidStatusBox credential={credential} />
         <ExternalLink
