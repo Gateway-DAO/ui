@@ -29,7 +29,7 @@ export default function CredentialProtocolShow({ credential }: Props) {
 
   const router = useRouter();
   const isReceivedCredential =
-    !!me && me.protocol?.id === credential.recipientUser?.id;
+    !!me && me?.wallet === credential?.issuerUser?.primaryWallet?.address;
 
   const boxStyles: SxProps<Theme> = {
     maxWidth: '564px',
