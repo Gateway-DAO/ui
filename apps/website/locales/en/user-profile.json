@@ -3,7 +3,7 @@
     "connections": "Loading connections"
   },
   "connections-count": {
-    "0": "No connections",
+    "0": "{{count}} connections",
     "one": "{{count}} connection",
     "other": "{{count}} connections"
   },

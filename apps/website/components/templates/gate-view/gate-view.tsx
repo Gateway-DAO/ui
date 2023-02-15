@@ -42,6 +42,7 @@ import { DirectHoldersList } from './direct-holders-list/direct-holders-list';
 import { DirectHoldersHeader } from './direct-holders-list/header';
 import { DraftDirectHoldersList } from './draft-direct-holders-list/draft-direct-holders-list';
 import { TaskList } from './task-list';
+import { ConnectResponse_Result } from 'apps/website/services/cyberconnect/types';
 
 const GateStateChip = dynamic(() => import('../../atoms/gate-state-chip'), {
   ssr: false,
@@ -224,6 +225,17 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
     { hour12: true }
   );
 
+  const handleNavBack = () => {
+    
+    // If user directly lands to credential page using link
+    if ( window.history.state.idx === 0 ) {
+      router.replace(ROUTES.MY_PROFILE);
+    }
+    else {
+      router.back()
+    }
+  }
+
   const gateOptions = [
     {
       text:
@@ -253,7 +265,6 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
       return false;
     }
     const expireDate = new Date(gateProps?.expire_date);
-    expireDate.setDate(expireDate.getDate() + 1);
     return expireDate.getTime() < new Date().getTime();
   })();
 
@@ -261,6 +272,22 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
     ? gateProps?.claim_limit <= gateProps?.holder_count
     : false;
 
+  const dateFormatAccordingToTimeZone = new Intl.DateTimeFormat('en-US', {
+    timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+    timeZoneName: 'short',
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+
+  const getTime = dateFormatAccordingToTimeZone.format(
+    new Date(gateProps?.expire_date)
+  );
+  const time = getTime.substring(0, getTime.indexOf('M') + 1);
+  const timeZone = getTime.substring(getTime.indexOf('M') + 1);
+  const createdByImage =
+    gateProps?.creator?.picture === null
+      ? gateProps?.creator.pfp
+      : gateProps?.creator.picture.id;
   return (
     <Grid
       container
@@ -304,7 +331,7 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
             },
           }}
         >
-          <IconButton onClick={() => router.back()}>
+          <IconButton onClick={() => handleNavBack()}>
             <Avatar>
               <ArrowBackIcon />
             </Avatar>
@@ -461,10 +488,10 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
                     variant="body2"
                     color={(theme) => theme.palette.text.secondary}
                   >
-                    Expire date
+                    Expiry
                   </Typography>
                 </Grid>
-                <Grid item xs={8}>
+                <Grid item xs={8} sx={{ marginTop: '19px' }}>
                   <Typography
                     variant="subtitle2"
                     color={isDateExpired ? '#FFA726' : 'secondary'}
@@ -472,7 +499,7 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
                   >
                     {new Date(gateProps.expire_date).toLocaleDateString(
                       'en-us',
-                      { year: 'numeric', month: 'short', day: 'numeric' }
+                      { year: 'numeric', month: 'numeric', day: 'numeric' }
                     )}
                     {isDateExpired && (
                       <Chip
@@ -482,6 +509,22 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
                         variant="outlined"
                       />
                     )}
+                  </Typography>
+                  <Typography
+                    variant="subtitle2"
+                    display={'inline'}
+                    color={isDateExpired ? '#FFA726' : 'secondary'}
+                    fontWeight={600}
+                  >
+                    {time}
+                  </Typography>
+                  <Typography
+                    variant="subtitle2"
+                    display={'inline'}
+                    color={isDateExpired ? '#FFA726' : '#FFFFFFB2'}
+                    fontWeight={600}
+                  >
+                    {timeZone}
                   </Typography>
                 </Grid>
               </>
@@ -614,11 +657,18 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
                     href={`/profile/${gateProps?.creator.username}`}
                   >
                     <Tooltip title={gateProps?.creator.name}>
-                      <Box component="a" sx={{ display: 'inline-block' }}>
-                        <AvatarFile
-                          alt={gateProps?.creator.username}
-                          file={gateProps?.creator.picture}
-                          fallback={gateProps?.creator.pfp || '/logo.png'}
+                      <Box
+                        component="a"
+                        sx={{ display: 'inline-block', textDecoration: 'none' }}
+                      >
+                        <Chip
+                          label={gateProps?.creator.username}
+                          avatar={
+                            <Avatar
+                              alt={gateProps?.creator.username}
+                              src={`https://api.staging.mygateway.xyz/storage/file?id=${createdByImage}`}
+                            />
+                          }
                         />
                       </Box>
                     </Tooltip>

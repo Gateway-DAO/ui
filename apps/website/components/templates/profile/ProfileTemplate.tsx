@@ -173,8 +173,7 @@ export default function ProfileTemplate({ user }: Props) {
               mt: 2,
             }}
           >
-            <ConnectionsButton wallet={user.wallet} />.
-            <Typography>{user.credentials.length} credential(s)</Typography>
+            <ConnectionsButton wallet={user.wallet} />
           </Box>
           <Stack direction="column" gap={4} mt={4}>
             {!!(user as Users) && pendingType === 'received' && (

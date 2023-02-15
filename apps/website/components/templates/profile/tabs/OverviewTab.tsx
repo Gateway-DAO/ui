@@ -77,7 +77,7 @@ export function OverviewTab({ user, isPrivateProfile, setActiveTab }: Props) {
     [`${query.credentialsByRecipientUser}_home`, user.id],
     async () => {
       const result = await gatewayProtocolSDK.findCredentialsByRecipientUser({
-        recipientUserId: user.id,
+        recipientUserId: (user as SessionUser).protocol?.id || user.id,
         skip: 0,
         take: 3,
       });
@@ -89,14 +89,13 @@ export function OverviewTab({ user, isPrivateProfile, setActiveTab }: Props) {
     [`${query.credentialsByIssuerUser}_home`, user.id],
     async () => {
       const result = await gatewayProtocolSDK.findCredentialsByIssuerUser({
-        issuerUserId: user.id,
+        issuerUserId: (user as SessionUser).protocol?.id || user.id,
         skip: 0,
         take: 3,
       });
       return result.findCredentialsByIssuerUser;
     }
   );
-
   return (
     <Stack
       direction="column"
@@ -123,17 +122,19 @@ export function OverviewTab({ user, isPrivateProfile, setActiveTab }: Props) {
               {t('common:profile.received_see-more')}
             </Button>
           }
-          itemWidth={(theme) => theme.spacing(37.75)}
           gridSize={{ lg: 4 }}
         >
-          {isPrivateProfile && (
-            <NewElementCard
-              title={t('common:profile.earn-credential.title')}
-              description={t('common:profile.earn-credential.description')}
-              image="/images/new-credential-icon.png"
-              url={ROUTES.EXPLORE}
-            />
-          )}
+          {isPrivateProfile &&
+            receivedCredentials &&
+            receivedCredentials.data &&
+            receivedCredentials.data.length === 0 && (
+              <NewElementCard
+                title={t('common:profile.earn-credential.title')}
+                description={t('common:profile.earn-credential.description')}
+                image="/images/new-credential-icon.png"
+                url={ROUTES.EXPLORE}
+              />
+            )}
           <>
             {receivedCredentials &&
               receivedCredentials.data &&
@@ -148,6 +149,22 @@ export function OverviewTab({ user, isPrivateProfile, setActiveTab }: Props) {
                   ))}
                 </>
               )}
+            {receivedCredentials &&
+              !isPrivateProfile &&
+              receivedCredentials.data &&
+              receivedCredentials.data.length === 0 && (
+                <Typography
+                  component="h5"
+                  style={{
+                    fontSize: '16px',
+                    fontWeight: '400',
+                    color: 'rgba(255, 255, 255, 0.7)',
+                  }}
+                  variant="h6"
+                >
+                  No credentials yet
+                </Typography>
+              )}
           </>
         </SectionWithSliderResponsive>
         <SectionWithSliderResponsive
@@ -158,17 +175,19 @@ export function OverviewTab({ user, isPrivateProfile, setActiveTab }: Props) {
               {t('common:profile.issued_see-more')}
             </Button>
           }
-          itemWidth={(theme) => theme.spacing(37.75)}
           gridSize={{ lg: 4 }}
         >
-          {isPrivateProfile && (
-            <NewElementCard
-              title={t('common:profile.issue-credential.title')}
-              description={t('common:profile.issue-credential.description')}
-              image="/images/new-credential-icon.png"
-              url={ROUTES.EXPLORE}
-            />
-          )}
+          {isPrivateProfile &&
+            issuedCredentials &&
+            issuedCredentials.data &&
+            issuedCredentials.data.length === 0 && (
+              <NewElementCard
+                title={t('common:profile.issue-credential.title')}
+                description={t('common:profile.issue-credential.description')}
+                image="/images/new-credential-icon.png"
+                url={ROUTES.EXPLORE}
+              />
+            )}
           <>
             {issuedCredentials &&
               issuedCredentials.data &&
@@ -182,6 +201,22 @@ export function OverviewTab({ user, isPrivateProfile, setActiveTab }: Props) {
                     />
                   ))}
                 </>
+              )}
+            {issuedCredentials &&
+              !isPrivateProfile &&
+              issuedCredentials.data &&
+              issuedCredentials.data.length === 0 && (
+                <Typography
+                  component="h5"
+                  style={{
+                    fontSize: '16px',
+                    fontWeight: '400',
+                    color: 'rgba(255, 255, 255, 0.7)',
+                  }}
+                  variant="h6"
+                >
+                  No credentials yet
+                </Typography>
               )}
           </>
         </SectionWithSliderResponsive>

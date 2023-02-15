@@ -41,18 +41,17 @@ export default function CreateDAO() {
         background_id: bg.upload_image.id,
         socials: socials as any,
       });
-    },
-    {
-      onSuccess(data) {
+    }, {
+     async onSuccess(data) {
         const dao = data.insert_daos_one;
         const followingDaoObject = { dao_id: dao.id, dao };
-        onUpdateMe((oldMe) => ({
+         onUpdateMe((oldMe) => ({
           ...oldMe,
           following_dao: oldMe.following_dao
             ? [...oldMe.following_dao, followingDaoObject]
             : [followingDaoObject],
         }));
-        router.replace(
+       await router.replace(
           ROUTES.DAO_PROFILE.replace('[slug]', data.insert_daos_one.slug)
         );
       },
