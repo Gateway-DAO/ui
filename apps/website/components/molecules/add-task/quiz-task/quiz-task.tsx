@@ -21,12 +21,12 @@ import {
   Typography,
 } from '@mui/material';
 
+import { TaskIcon } from '../../../atoms/task-icon';
 import { QuestionCreator } from '../../../organisms/question-creator/question-creator';
 import {
   CreateGateData,
   QuizTaskDataError,
 } from '../../../templates/create-gate/schema';
-import { TaskIcon } from 'apps/website/components/atoms/task-icon';
 
 // Time Period (minutes)
 export enum TimePeriod {
@@ -148,7 +148,7 @@ export function QuizTask({
             required
             autoFocus
             sx={{
-              minWidth: { md: '600px', xs: '110%' },
+              minWidth: { md: '400px', xs: '110%', lg: '500px' },
               maxWidth: { xs: '100%', md: '110%' },
             }}
             InputProps={{
