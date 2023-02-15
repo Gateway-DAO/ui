@@ -254,7 +254,6 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
       return false;
     }
     const expireDate = new Date(gateProps?.expire_date);
-    expireDate.setDate(expireDate.getDate() + 1);
     return expireDate.getTime() < new Date().getTime();
   })();
 
@@ -647,9 +646,8 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
                     href={`/profile/${gateProps?.creator.username}`}
                   >
                     <Tooltip title={gateProps?.creator.name}>
-                      <Box component="a" sx={{ display: 'inline-block' }}>
+                      <Box sx={{ display: 'inline-block' }}>
                         <Chip
-                          variant="outlined"
                           label={gateProps?.creator.username}
                           avatar={
                             <Avatar
