@@ -203,15 +203,7 @@ export default function PrivateProfileTemplate() {
               />
             </Stack>
           </Box>
-          {shouldShowCard && showCard && (
-            <Box
-              sx={{
-                mr: TOKENS.CONTAINER_PX,
-              }}
-            >
-              <GuideCard {...{ setShowCard }} />
-            </Box>
-          )}
+
         </Box>
       </Box>
       <Box

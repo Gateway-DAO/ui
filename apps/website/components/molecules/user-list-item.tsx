@@ -1,6 +1,6 @@
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
-import { ReactNode, useMemo } from 'react';
+import { ReactNode, useMemo, useState } from 'react';
 
 import { PartialDeep } from 'type-fest';
 
@@ -46,6 +46,8 @@ export function UserListItem({
   const { me } = useAuth();
   const url = ROUTES.PROFILE.replace('[username]', user.username);
 
+  const [nameDisplay, setNameDisplay] = useState('')
+
   const avatarIcon = useMemo(() => {
     if (icon) {
       return hasLink ? (
@@ -72,6 +74,23 @@ export function UserListItem({
     );
   }, [hasLink, icon, url, user.picture]);
 
+
+  function checkNameSize(name: string) {
+    if (name.length > 11) {
+      return name.slice(0, 10) + "...";
+    }
+    return name;
+  }
+
+
+  window.addEventListener('resize', () => {
+    if (window.screen.width < 376) {
+      setNameDisplay('slice')
+    } else {
+      setNameDisplay('full')
+    }
+  })
+
   return (
     <ListItem
       secondaryAction={
@@ -87,7 +106,7 @@ export function UserListItem({
           <>
             <Link passHref href={url}>
               <MUILink color="text.primary" underline="hover" target="_blank">
-                {user.name}
+                {nameDisplay === 'slice' ? checkNameSize(user.name) : user.name}
               </MUILink>
             </Link>
             <Link passHref href={url}>

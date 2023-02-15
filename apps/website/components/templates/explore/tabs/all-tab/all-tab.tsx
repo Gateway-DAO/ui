@@ -100,9 +100,7 @@ export function AllTab({
           title={t('featured-people.title')}
           caption={t('featured-people.caption')}
           action={
-            <Button onClick={() => setActiveTab(3)}>
-              {t('featured-people.see-more')}
-            </Button>
+           null
           }
         >
           {people.map((person) => (
