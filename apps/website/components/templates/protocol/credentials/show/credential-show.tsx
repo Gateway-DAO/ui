@@ -7,6 +7,7 @@ import { Divider, Stack, SxProps, Typography } from '@mui/material';
 import { Theme } from '@mui/material/styles/createTheme';
 
 import { ROUTES } from '../../../../../constants/routes';
+import { useAuth } from '../../../../../providers/auth';
 import { Credential } from '../../../../../services/gateway-protocol/types';
 import ExternalLink from '../../../../atoms/external-link';
 import CredentialCardInfo from '../../components/credential-card-info';
@@ -24,7 +25,11 @@ type Props = {
 
 export default function CredentialProtocolShow({ credential }: Props) {
   const { t } = useTranslation('protocol');
+  const { me } = useAuth();
+
   const router = useRouter();
+  const isReceivedCredential =
+    !!me && me.protocol?.id === credential.recipientUser?.id;
 
   const boxStyles: SxProps<Theme> = {
     maxWidth: '564px',
@@ -40,6 +45,16 @@ export default function CredentialProtocolShow({ credential }: Props) {
         <Tags tags={credential?.dataModel?.tags} />
         <Typography sx={{ mb: 3 }}>{credential?.description}</Typography>
         <CredentialCardInfo credential={credential} />
+
+        {isReceivedCredential && (
+          <MintNFTCard
+            title={t('credential.mint-card.title')}
+            comingSoon={{
+              adText: `${t('credential.mint-card.chain-coming-message')}`,
+              chains: ['ethereum', 'polygon'],
+            }}
+          />
+        )}
 
         <MintNFTCard
           title={t('credential.mint-card.title')}
