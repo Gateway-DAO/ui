@@ -8,7 +8,6 @@ import {
   Box,
   CardContent,
   CardHeader,
-  CardMedia,
   Chip,
   Typography,
 } from '@mui/material';

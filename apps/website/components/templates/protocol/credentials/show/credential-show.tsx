@@ -43,7 +43,34 @@ export default function CredentialProtocolShow({ credential }: Props) {
 
         <MintNFTCard
           title={t('credential.mint-card.title')}
-          adText={t('credential.mint-card.chain-coming-message')}
+          comingSoon={{
+            adText: `${t('credential.mint-card.chain-coming-message')}`,
+            chains: ['ethereum', 'polygon'],
+          }}
+        />
+        <MintNFTCard
+          title={t('credential.mint-card.title')}
+          mintedData={[
+            {
+              chain: 'solana',
+              transaction: '0x5465sa645af875440',
+              token: '3185',
+            },
+          ]}
+          comingSoon={{
+            adText: `${t('credential.mint-card.chain-coming-message')}`,
+            chains: ['ethereum', 'polygon'],
+          }}
+        />
+        <MintNFTCard
+          title={t('credential.mint-card.title')}
+          mintedData={[
+            {
+              chain: 'solana',
+              transaction: '0x5465sa645af875440',
+              token: '3185',
+            },
+          ]}
         />
         <RevokeCredential credential={credential} />
         <InvalidStatusBox credential={credential} />

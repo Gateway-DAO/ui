@@ -36,6 +36,8 @@
     "mint-card": {
       "title": "Minted on",
       "chain-column": "Chain",
+      "transaction-column": "Transaction hash",
+      "token-column": "Token ID",
       "chain-action": "Mint as NFT",
       "chain-action-coming": "Coming soon",
       "chain-coming-message": "Multi-chain wallets is coming soon"
