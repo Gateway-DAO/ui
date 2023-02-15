@@ -66,8 +66,15 @@ export default function GatePublishedModal({
   return (
     <Dialog
       open={open}
-      fullScreen
+      fullScreen={true}
       onClose={handleClose}
+      sx={{
+        '& .MuiPaper-root': {
+          bgcolor: 'background.paper',
+          backgroundImage: 'none',
+        },
+        backgroundImage: 'none',
+      }}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >

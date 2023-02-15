@@ -42,7 +42,7 @@ export default function SuccessfullyCreated({ credentialId }: Props) {
     window?.location?.origin
   }${ROUTES.PROTOCOL_CREDENTIAL.replace('[id]', credentialId)}`;
   const qrCode = useCreateQrCode(credentialRoute);
-
+  
   return (
     <Stack>
       {credential.isLoading ? (

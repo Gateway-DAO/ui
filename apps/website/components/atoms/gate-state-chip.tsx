@@ -15,6 +15,7 @@ const GateStateChip = ({ published, small }: GateStateChipProps) => {
       size={small ? 'small' : 'medium'}
       sx={{
         marginRight: (theme) => theme.spacing(1),
+        marginBottom: '8px',
       }}
     />
   );

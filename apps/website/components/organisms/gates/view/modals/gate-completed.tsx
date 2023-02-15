@@ -22,10 +22,7 @@ import { ComponentType } from 'react';
 import dynamic from 'next/dynamic';
 import { PartialDeep } from 'type-fest';
 import { useAuth } from '../../../../../providers/auth';
-import {
-  Credentials,
-  Gates,
-} from '../../../../../services/hasura/types';
+import { Credentials, Gates } from '../../../../../services/hasura/types';
 
 const MintDialog: ComponentType<MintDialogProps> = dynamic(
   () =>
@@ -53,8 +50,15 @@ export default function GateCompletedModal({
   return (
     <Dialog
       open={open}
-      fullScreen
+      fullScreen={true}
       onClose={handleClose}
+      sx={{
+        '& .MuiPaper-root': {
+          bgcolor: 'background.paper',
+          backgroundImage: 'none',
+        },
+        backgroundImage: 'none',
+      }}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
