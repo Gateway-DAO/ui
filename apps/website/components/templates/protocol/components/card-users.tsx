@@ -25,7 +25,6 @@ export default function CardUsers({
 }: Props) {
   const { t } = useTranslation('protocol');
   const isMobile = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
-
   const issuer = useQuery(
     ['issuer', issuerCredential?.id],
     () =>
@@ -40,7 +39,7 @@ export default function CardUsers({
   );
 
   const recipient = useQuery(
-    ['recipient', recipientCredential.id],
+    ['recipient', recipientCredential.gatewayId],
     () =>
       gqlAnonMethods.user_from_wallet({
         wallet: recipientCredential.primaryWallet?.address,
@@ -61,7 +60,6 @@ export default function CardUsers({
     recipient?.data?.username ??
     recipientCredential?.gatewayId ??
     recipientCredential.primaryWallet.address;
-
   return (
     <Stack
       justifyContent="space-between"

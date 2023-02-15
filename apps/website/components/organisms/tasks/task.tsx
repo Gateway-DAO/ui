@@ -225,7 +225,9 @@ export function Task({
         }
       />
       <Collapse in={expanded} timeout="auto" unmountOnExit>
-        <CardContent sx={{ marginLeft: { xs: '0px', md: '55px' } }}>
+        <CardContent
+          sx={{ marginLeft: { xs: '0px', md: '55px', marginTop: '24px' } }}
+        >
           <Typography variant="subtitle2" fontSize={16}>
             {task.description}
           </Typography>
