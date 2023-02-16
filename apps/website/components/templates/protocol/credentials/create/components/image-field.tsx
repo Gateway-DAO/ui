@@ -2,6 +2,8 @@ import useTranslation from 'next-translate/useTranslation';
 
 import { useFormContext } from 'react-hook-form';
 
+import { theme } from '@gateway/theme';
+
 import { alpha, Box, Card, Stack } from '@mui/material';
 
 import { ImageDropField } from '../../../../../molecules/image-drop-field';
@@ -15,7 +17,7 @@ export function ImageField() {
       justifyContent="center"
       flexDirection="row"
       sx={{
-        background: alpha('rgb(0,0,0)', 0.25),
+        background: alpha(theme.palette.common.black, 0.25),
         borderRadius: 2,
         mb: 3,
         maxWidth: '140px',
