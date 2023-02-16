@@ -33,15 +33,8 @@ export function AuthProvider({
 
   const [isModalVisible, setModalVisible] = useState(false);
 
-  const {
-    me,
-    protocolToken,
-    error,
-    onUpdateMe,
-    authStep,
-    onSignOut,
-    onInvalidateMe,
-  } = useAuthLogin();
+  const { me, error, onUpdateMe, authStep, onSignOut, onInvalidateMe } =
+    useAuthLogin();
 
   const onInvalidRT = async (
     session: Session,
@@ -60,22 +53,19 @@ export function AuthProvider({
 
   useEffect(() => {
     onInvalidRT(session);
-    if (session && !protocolToken) {
-      onSignOut();
-      return;
-    }
-  }, [session, onSignOut, protocolToken]);
+  }, [session]);
 
   const isBlocked = !!isAuthPage && (!me || !token);
 
   const gqlAuthMethods = useMemo(
-    () => gqlMethodsWithRefresh(session?.token, session?.user_id, onInvalidRT),
+    () =>
+      gqlMethodsWithRefresh(session?.token, session?.hasura_id, onInvalidRT),
     [session]
   );
 
   const gqlProtocolAuthMethods = useMemo(
-    () => gatewayProtocolAuthSDK(protocolToken),
-    [protocolToken]
+    () => gatewayProtocolAuthSDK(session?.token),
+    [session]
   );
 
   const fetchAuth = useCallback(
@@ -113,7 +103,7 @@ export function AuthProvider({
         onSignOut,
         onUpdateMe,
         onInvalidateMe,
-        authenticated: !!me && !!session && !!protocolToken,
+        authenticated: !!me && !!session,
       }}
     >
       {!isBlocked && children}

@@ -11,6 +11,7 @@
     "website:serve": "nx serve website",
     "website:build": "nx build website --verbose",
     "website:generate": "nx run website:generate",
+    "website:generate:graphql": "nx run website:graphql-generate",
     "nx:upgrade": "nx migrate latest && yarn && nx migrate --run-migrations && rm migrations.json"
   },
   "private": true,
@@ -45,6 +46,7 @@
     "ajv": "^8.12.0",
     "ajv-formats": "^2.1.1",
     "aws-sdk": "^2.1240.0",
+    "bs58": "^5.0.0",
     "change-case": "^4.1.2",
     "clsx": "^1.1.1",
     "colord": "^2.9.2",
