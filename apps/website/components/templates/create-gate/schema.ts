@@ -84,6 +84,11 @@ export type TwitterRetweetTask = {
   task_data: TwitterRetweetData;
 };
 
+export type TwitterLikeTask = {
+  task_type: 'twitter_like';
+  task_data: TwitterLikeData;
+};
+
 export type GithubContributeTask = {
   task_type: 'github_contribute';
   task_data: GithubContributeData;
@@ -110,6 +115,7 @@ export type Task = {
   | HoldNFTTask
   | FollowProfileTask
   | TwitterTweetTask
+  | TwitterLikeTask
   | TwitterRetweetTask
   | GithubContributeTask
   | GithubPRTask
@@ -148,6 +154,10 @@ export type TwitterTweetDataError = {
 
 // Twitter Retweet
 export type TwitterRetweetData = {
+  tweet_link?: string;
+};
+
+export type TwitterLikeData = {
   tweet_link?: string;
 };
 
@@ -306,6 +316,15 @@ const twitterTweetTaskDataSchema = z.object({
 });
 
 const twitterRetweetTaskDataSchema = z.object({
+  tweet_link: z
+    .string()
+    .url('Invalid URL')
+    .refine((val) => val.includes('twitter.com'), {
+      message: 'This is not a Twitter URL',
+    }),
+});
+
+const twitterLikeTaskDataSchema = z.object({
   tweet_link: z
     .string()
     .url('Invalid URL')
@@ -546,6 +565,18 @@ export const taskTwitterRetweetSchema = z.object({
   task_data: twitterRetweetTaskDataSchema,
 });
 
+export const taskTwitterLikeSchema = z.object({
+  id: z.string().optional(),
+  task_id: z.string().optional(),
+  order: z.number().optional(),
+  title: z.string().min(2, 'The title must contain at least 2 character(s)'),
+  description: z
+    .string()
+    .min(2, 'The description must contain at least 2 character(s)'),
+  task_type: z.literal('twitter_like'),
+  task_data: twitterLikeTaskDataSchema,
+});
+
 export const taskGithubContributeSchema = z.object({
   id: z.string().optional(),
   task_id: z.string().optional(),
@@ -624,6 +655,7 @@ const taskGate = gateBase.augment({
         taskHoldNFTSchema,
         TwitterFollowProfileSchema,
         taskTwitterTweetSchema,
+        taskTwitterLikeSchema,
         taskTwitterRetweetSchema,
         taskGithubContributeSchema,
         taskGithubPRSchema,
