@@ -19,7 +19,7 @@ export default async function handler(req, res) {
     const response: any = await client.getRequestToken(
       `${
         process.env.NODE_ENV === 'development'
-          ? 'http://twitter.local:4200'
+          ? 'http://localhost:4200'
           : `https://${req.headers.host}`
       }/oauth/twitter/following`
     );
