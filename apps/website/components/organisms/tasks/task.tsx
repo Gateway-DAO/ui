@@ -72,7 +72,6 @@ export function Task({
     (task_progress) => task_progress.task_id === task.id
   );
 
-  console.log('::::::' + taskProgress);
   const completed = taskProgress?.completed === 'done';
   const [expanded, toggleExpanded] = useToggle(isDefaultOpen);
   const [errorMessage, setErrorMessage] = useState('');
