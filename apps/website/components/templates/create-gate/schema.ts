@@ -166,6 +166,11 @@ export type TwitterRetweetDataError = {
   tweet_link?: FieldError;
 };
 
+export type TwitterLikeDataError = {
+  id?: FieldError;
+  tweet_link?: FieldError;
+};
+
 // Github Contribute
 export type GithubContributeData = {
   repository_link?: string;

@@ -22,7 +22,7 @@ import { useAuth } from '../../../../providers/auth';
 import { TaskIcon } from '../../../atoms/task-icon';
 import {
   CreateGateData,
-  TwitterRetweetDataError,
+  TwitterLikeDataError,
 } from '../../../templates/create-gate/schema';
 
 const TwitterLikeTask = ({ dragAndDrop, taskId, deleteTask }) => {
@@ -235,11 +235,11 @@ const TwitterLikeTask = ({ dragAndDrop, taskId, deleteTask }) => {
             onChange: () => onHandleChangeTweet(),
           })}
           error={
-            !!(errors.tasks?.[taskId]?.task_data as TwitterRetweetDataError)
+            !!(errors.tasks?.[taskId]?.task_data as TwitterLikeDataError)
               ?.tweet_link
           }
           helperText={
-            (errors.tasks?.[taskId]?.task_data as TwitterRetweetDataError)
+            (errors.tasks?.[taskId]?.task_data as TwitterLikeDataError)
               ?.tweet_link?.message
           }
           sx={{
