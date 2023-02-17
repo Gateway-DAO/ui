@@ -5,12 +5,12 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ElectricBoltIcon from '@mui/icons-material/ElectricBolt';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import InsertLinkIcon from '@mui/icons-material/InsertLink';
+import KeyIcon from '@mui/icons-material/Key';
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 import NumbersIcon from '@mui/icons-material/Numbers';
 import PhotoCameraBackIcon from '@mui/icons-material/PhotoCameraBack';
 import QuizIcon from '@mui/icons-material/Quiz';
 import Twitter from '@mui/icons-material/Twitter';
-import KeyIcon from '@mui/icons-material/Key';
 import { SvgIcon, SvgIconProps } from '@mui/material';
 import { SxProps } from '@mui/material';
 import Box from '@mui/material/Box';
@@ -24,6 +24,7 @@ const iconBgColor: Record<TaskType, string> = {
   nft_hold: '#9A53FF',
   meeting_code: '#9A53FF',
   twitter_follow: '#0094FF',
+  twitter_like: '#0094FF',
   twitter_retweet: '#0094FF',
   twitter_tweet: '#0094FF',
   github_contribute: '#4A4F57',
@@ -40,6 +41,7 @@ const typeIcons: Record<TaskType, SvgIconComponent> = {
   nft_hold: PhotoCameraBackIcon,
   meeting_code: NumbersIcon,
   twitter_follow: Twitter,
+  twitter_like: Twitter,
   twitter_retweet: Twitter,
   twitter_tweet: Twitter,
   github_contribute: GitHubIcon,
