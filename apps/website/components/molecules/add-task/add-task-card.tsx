@@ -57,6 +57,11 @@ const AddTaskCard = ({ tasks, addTask }) => {
       description: 'Ask users to retweet a post on Twitter',
     },
     {
+      type: 'twitter_like' as TaskType,
+      title: 'Like Tweet',
+      description: 'Ask users to like a post on Twitter',
+    },
+    {
       type: 'twitter_tweet' as TaskType,
       title: 'Post Tweet',
       description: 'Ask users to post a tweet on Twitter',

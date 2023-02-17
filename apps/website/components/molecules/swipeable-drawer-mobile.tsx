@@ -35,7 +35,7 @@ export default function SwipeableDrawerMobile({
           height: 6,
           backgroundColor: brandColors.grays.dark,
           borderRadius: 3,
-          my: 2,
+          mt: 2,
           mx: 'auto',
           pointerEvents: 'none',
         }}

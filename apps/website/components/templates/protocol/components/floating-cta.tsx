@@ -10,11 +10,10 @@ import LinkIcon from '@mui/icons-material/Link';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import QrCodeIcon from '@mui/icons-material/QrCode';
 import { SpeedDial, SpeedDialAction } from '@mui/material';
-import { SpeedDialIcon } from '@mui/material';
 import { Box } from '@mui/system';
 
 import ShareOn from '../../../atoms/share-on';
-import ModalContent from '../../../molecules/modal-content';
+import ModalContent from '../../../molecules/modal/modal-basic';
 import { taskErrorMessages } from '../../../organisms/tasks/task-error-messages';
 import { useProtocolTemplateContext } from '../context';
 
@@ -67,6 +66,7 @@ export default function FloatingCta() {
           height: 320,
           transform: 'translateZ(0px)',
           flexGrow: 1,
+          zIndex: 2,
         }}
       >
         <SpeedDial
