@@ -1,6 +1,5 @@
 import Link from 'next/link';
 
-import { ROUTES } from 'apps/website/constants/routes'; //[ ] use right path
 import { PartialDeep } from 'type-fest';
 
 import {
@@ -13,6 +12,7 @@ import {
 } from '@mui/material';
 import MUICard from '@mui/material/Card';
 
+import { ROUTES } from '../../constants/routes'; //[ ] use right path
 import { DataModel } from '../../services/gateway-protocol/types';
 import { CategoriesList } from './categories-list';
 
