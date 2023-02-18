@@ -61,11 +61,11 @@ export default function PrivateProfileTemplate() {
     !me?.experiences?.length;
 
   const tabs = [
-    {
-      key: 'overview',
-      label: t('common:tabs.overview'),
-      section: <OverviewTab setActiveTab={setTab} isPrivateProfile user={me} />,
-    },
+    // {
+    //   key: 'overview',
+    //   label: t('common:tabs.overview'),
+    //   section: <OverviewTab setActiveTab={setTab} isPrivateProfile user={me} />,
+    // },
     {
       key: 'received',
       label: t('common:tabs.received'),
