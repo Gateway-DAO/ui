@@ -105,42 +105,34 @@ export default function GeneralInfoForm() {
           <Typography variant="body2" color="text.secondary" marginBottom={2}>
             {t('data-model.issue-credential.expire-date-description')}
           </Typography>
-          <Stack sx={{ display: 'flex', flexDirection: 'row' }}>
-            <Stack sx={{ marginRight: '20px', maxWidth: '400px' }}>
-              <LocalizationProvider dateAdapter={AdapterLuxon}>
-                <Controller
-                  control={control}
-                  name="expirationDate"
-                  defaultValue={null}
-                  render={({ field }) => (
-                    <>
-                      <MobileDatePicker
-                        label={t(
-                          'data-model.issue-credential.expire-date-label'
-                        )}
-                        inputFormat="MM/dd/yyyy"
-                        disablePast
-                        value={
-                          field.value ? DateTime.fromISO(field.value) : null
-                        }
-                        onChange={(date: DateTime) => {
-                          field.onChange(date?.toISO());
-                        }}
-                        renderInput={(params) => (
-                          <TextField
-                            helperText={t(
-                              'data-model.issue-credential.optional'
-                            )}
-                            {...params}
-                          />
-                        )}
-                      />
-                    </>
-                  )}
-                />
-              </LocalizationProvider>
-            </Stack>
-            <Stack sx={{ maxWidth: '400px' }}>
+          <Stack sx={{ maxWidth: '400px' }}>
+            <LocalizationProvider dateAdapter={AdapterLuxon}>
+              <Controller
+                control={control}
+                name="expirationDate"
+                defaultValue={null}
+                render={({ field }) => (
+                  <>
+                    <MobileDatePicker
+                      label={t('data-model.issue-credential.expire-date-label')}
+                      inputFormat="MM/dd/yyyy"
+                      disablePast
+                      value={field.value ? DateTime.fromISO(field.value) : null}
+                      onChange={(date: DateTime) => {
+                        field.onChange(date?.toISO());
+                      }}
+                      renderInput={(params) => (
+                        <TextField
+                          helperText={t('data-model.issue-credential.optional')}
+                          {...params}
+                        />
+                      )}
+                    />
+                  </>
+                )}
+              />
+            </LocalizationProvider>
+            <Stack sx={{ marginTop: '13px', width: '250px' }}>
               <LocalizationProvider dateAdapter={AdapterLuxon}>
                 <Controller
                   control={control}

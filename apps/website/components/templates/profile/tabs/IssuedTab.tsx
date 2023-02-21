@@ -6,15 +6,13 @@ import { PartialDeep } from 'type-fest';
 import { TOKENS } from '@gateway/theme';
 
 import { Box, Stack } from '@mui/material';
-import { ROUTES } from '../../../../constants/routes';
+
 import { query } from '../../../../constants/queries';
 import { gatewayProtocolSDK } from '../../../../services/gateway-protocol/api';
 import { Users } from '../../../../services/hasura/types';
 import { SessionUser } from '../../../../types/user';
 import Loading from '../../../atoms/loading';
 import CredentialCard from '../../../molecules/credential-card';
-import NewElementCard from 'apps/website/components/molecules/new-element-card';
-import useTranslation from 'next-translate/useTranslation';
 
 type Props = {
   user: PartialDeep<Users> | SessionUser;
@@ -22,7 +20,7 @@ type Props = {
 
 export default function IssuedTab({ user }: Props): JSX.Element {
   const internalPageSize = 10;
-  const { t } = useTranslation();
+
   const {
     data: credentials,
     fetchNextPage,
@@ -80,16 +78,6 @@ export default function IssuedTab({ user }: Props): JSX.Element {
               px: TOKENS.CONTAINER_PX,
             }}
           >
-            {credentials &&
-              credentials.pages &&
-              credentials.pages[0].length === 0 && (
-                <NewElementCard
-                  title={t('common:profile.earn-credential.title')}
-                  description={t('common:profile.earn-credential.description')}
-                  image="/images/new-credential-icon.png"
-                  url={ROUTES.EXPLORE}
-                />
-              )}
             {credentials &&
               credentials.pages &&
               credentials.pages.length > 0 &&
