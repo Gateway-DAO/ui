@@ -226,15 +226,13 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
   );
 
   const handleNavBack = () => {
-    
     // If user directly lands to credential page using link
-    if ( window.history.state.idx === 0 ) {
+    if (window.history.state.idx === 0) {
       router.replace(ROUTES.MY_PROFILE);
+    } else {
+      router.back();
     }
-    else {
-      router.back()
-    }
-  }
+  };
 
   const gateOptions = [
     {
@@ -669,6 +667,7 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
                               src={`https://api.staging.mygateway.xyz/storage/file?id=${createdByImage}`}
                             />
                           }
+                          sx={{ cursor: 'pointer' }}
                         />
                       </Box>
                     </Tooltip>
