@@ -47,13 +47,13 @@ const ConnectionsButton = dynamic<any>(
   }
 );
 export default function PrivateProfileTemplate() {
-  const [showCard, setShowCard] = useState(true);
+  const [showCard, setShowCard] = useState(false);
   const { t } = useTranslation();
   const { activeTab, handleTabChange, setTab } = useTab();
   const router = useRouter();
   const { me } = useAuth();
-
   const shouldShowCard =
+    false ||
     !me?.bio?.length ||
     !me?.skills?.length ||
     !me?.languages?.length ||
@@ -187,8 +187,7 @@ export default function PrivateProfileTemplate() {
                   mt: 2,
                 }}
               >
-                <ConnectionsButton wallet={me.wallet} />·
-                <Typography>{me.credentials?.length} credential(s)</Typography>
+                <ConnectionsButton wallet={me.wallet} />
               </Box>
             </Box>
             <Stack
@@ -204,15 +203,7 @@ export default function PrivateProfileTemplate() {
               />
             </Stack>
           </Box>
-          {shouldShowCard && showCard && (
-            <Box
-              sx={{
-                mr: TOKENS.CONTAINER_PX,
-              }}
-            >
-              <GuideCard {...{ setShowCard }} />
-            </Box>
-          )}
+
         </Box>
       </Box>
       <Box
@@ -240,6 +231,7 @@ export default function PrivateProfileTemplate() {
                 px: 0,
                 mr: theme.spacing(3),
               })}
+              onClick={() => console.log(label)}
               {...a11yTabProps('dao', index)}
             />
           ))}

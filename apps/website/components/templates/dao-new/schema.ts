@@ -21,7 +21,6 @@ export const defaultValues = (
   if (!dao) return undefined;
 
   const { name, description, categories, socials, background, logo } = dao;
-
   return {
     name,
     description,
@@ -32,6 +31,7 @@ export const defaultValues = (
   };
 };
 
+
 export const schema: SchemaOf<NewDAOSchema> = object({
   name: string()
     .defined()
@@ -41,8 +41,8 @@ export const schema: SchemaOf<NewDAOSchema> = object({
     .defined()
     .min(2, 'The file description must contain at least 2 character(s)')
     .max(400),
-  background: string().defined(),
-  logo: string().defined(),
+  background: string().defined().min(1, 'background must be defined'),
+  logo: string().defined().min(1, 'logo must be defined'),
   socials: array().of(
     object({
       network: string().defined(),

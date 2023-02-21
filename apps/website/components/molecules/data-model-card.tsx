@@ -64,7 +64,6 @@ export function DataModelCard({
             mt: 1,
           }}
         >
-          <Chip label={`Version ${version}`} variant="outlined" />
           <div style={{ width: '100%', marginTop: '-4px' }}>
             {tags && tags.length > 0 && <CategoriesList categories={tags} />}
           </div>

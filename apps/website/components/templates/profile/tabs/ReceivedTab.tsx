@@ -39,7 +39,6 @@ export default function ReceivedTab({ user }: Props): JSX.Element {
       return result.findCredentialsByRecipientUser;
     }
   );
-
   useEffect(() => {
     //[ ] use virtualization scroll
     let fetching = false;

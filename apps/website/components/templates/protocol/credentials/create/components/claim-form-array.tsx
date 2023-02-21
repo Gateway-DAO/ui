@@ -21,12 +21,10 @@ export default function ClaimFormArray({
     formState: { errors },
     control,
   } = useFormContext();
-
-  const { fields, append, remove, update } = useFieldArray({
+  const { fields, append, remove, update, replace } = useFieldArray({
     name: `claim.${fieldName}`,
     control,
   });
-
   const { t } = useTranslation('protocol');
 
   const [addFieldIsVisible, setAddFieldIsVisible] = useState<boolean>(false);
@@ -101,7 +99,9 @@ export default function ClaimFormArray({
                 ml: { xs: 0.5, md: 1 },
                 cursor: 'pointer',
               }}
-              onClick={async () => remove(index)}
+              onClick={() => {
+                remove(index);
+              }}
             >
               <CloseIcon />
             </IconButton>
@@ -119,7 +119,7 @@ export default function ClaimFormArray({
                 `claim.${fieldName}.${fields.length - 1}`
               );
               if (isValid) {
-                return append('');
+                return append(' ');
               }
             }}
           >
