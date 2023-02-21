@@ -62,6 +62,7 @@ export default function ProfileTemplate({ user }: Props) {
   const onChangeConnections = () => {
     queryClient.refetchQueries(['connections', user.wallet]);
   };
+
   const tabs = useMemo(
     () => [
       {
