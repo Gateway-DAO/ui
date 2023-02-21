@@ -8,8 +8,10 @@ import { CredentialData } from '../../../../../../services/gateway-protocol/type
 
 export function ListView(data: PartialDeep<CredentialData>) {
   const items = useMemo(() => {
-    const list = data?.value?.indexOf(',') > -1 ? data?.value.split(',') : [];
-    if (data?.value !== '') {
+    let list = [];
+    if (data?.value?.indexOf(',') > -1) {
+      list = data?.value.split(',');
+    } else if (data?.value !== '') {
       list.push(data.value);
     }
     return list;

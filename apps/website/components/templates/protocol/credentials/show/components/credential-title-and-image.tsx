@@ -7,8 +7,13 @@ import { brandColors } from '@gateway/theme';
 
 import { Stack, IconButton, CircularProgress } from '@mui/material';
 
+import {
+  ModalTabProps,
+  modalContentTypes,
+  ModalContentProps,
+} from '../../../../../../components/molecules/modal/ModalContentTypes';
+import ModalTabs from '../../../../../../components/molecules/modal/modal-tabs';
 import { Credential } from '../../../../../../services/gateway-protocol/types';
-import ModalContent from '../../../../../molecules/modal-content';
 import InfoTitle from '../../../components/info-title';
 import { useProtocolTemplateContext } from '../../../context';
 
@@ -20,6 +25,33 @@ export default function CredentialTitleAndImage({ credential }: Props) {
   const { t } = useTranslation('protocol');
   const [QRCodeIsOpen, setQRCodeIsOpen] = useState<boolean>(false);
   const { qrCode } = useProtocolTemplateContext();
+
+  const setTabSection = (
+    imageUrl: string,
+    enableDownloadImage = false
+  ): ModalContentProps => {
+    return {
+      handleClose: () => setQRCodeIsOpen(false),
+      children: <img src={imageUrl} alt={credential?.title} width="100%" />,
+      imageUrl: imageUrl,
+      modalType: modalContentTypes.image,
+      swipeableDrawer: true,
+      enableDownloadImage,
+    };
+  };
+
+  const tabs: ModalTabProps[] = [
+    {
+      key: 'image',
+      label: t('credential.image'),
+      section: setTabSection(credential?.image),
+    },
+    {
+      key: 'qr-code',
+      label: t('credential.qr-code'),
+      section: setTabSection(qrCode, true),
+    },
+  ];
 
   return (
     <>
@@ -56,20 +88,14 @@ export default function CredentialTitleAndImage({ credential }: Props) {
           copySucessMessage={t('credential.copy-id')}
         />
       </Stack>
-      <ModalContent
+      <ModalTabs
         open={QRCodeIsOpen}
-        imageUrl={credential?.image ?? qrCode}
         title={credential?.title}
         handleClose={() => setQRCodeIsOpen(false)}
         handleOpen={() => setQRCodeIsOpen(true)}
         swipeableDrawer={true}
-      >
-        <img
-          src={credential?.image ?? qrCode}
-          alt={credential?.title}
-          width="100%"
-        />
-      </ModalContent>
+        tabs={tabs}
+      />
     </>
   );
 }
