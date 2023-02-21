@@ -1,23 +1,27 @@
+import useTranslation from 'next-translate/useTranslation';
+
 import { useFormContext } from 'react-hook-form';
+
+import { theme } from '@gateway/theme';
 
 import { alpha, Box, Card, Stack } from '@mui/material';
 
 import { ImageDropField } from '../../../../../molecules/image-drop-field';
-import { ClaimFieldProps } from './ClaimTypes';
 
-export function ImageField({
-  fieldName,
-  label,
-  type,
-  contentMediaType,
-}: ClaimFieldProps) {
+export function ImageField() {
   const { control } = useFormContext();
+  const { t } = useTranslation('protocol');
 
   return (
     <Stack
       justifyContent="center"
       flexDirection="row"
-      sx={{ background: alpha('rgb(0,0,0)', 0.25), borderRadius: 2 }}
+      sx={{
+        background: alpha(theme.palette.common.black, 0.25),
+        borderRadius: 2,
+        mb: 3,
+        maxWidth: '140px',
+      }}
     >
       <Card
         sx={{
@@ -25,10 +29,6 @@ export function ImageField({
           flexDirection: 'column',
           height: '100%',
           width: '100%',
-          maxWidth: {
-            xs: '75%',
-            md: '100%',
-          },
         }}
       >
         <Box sx={{ aspectRatio: 1, paddingTop: '100%', position: 'relative' }}>
@@ -36,8 +36,8 @@ export function ImageField({
             <ImageDropField
               withCrop
               control={control}
-              name={`claim.${fieldName}`}
-              label={label || `Drop to upload your avatar`}
+              name="image"
+              label={t('credential.image')}
             />
           </Box>
         </Box>

@@ -3,7 +3,7 @@ import { ShareButtonFn } from './share-btn-fn';
 import { useMenu } from '@gateway/ui';
 
 import { IosShare } from '@mui/icons-material';
-import { Avatar, IconButton } from '@mui/material';
+import { Avatar, IconButton, Stack } from '@mui/material';
 
 type Props = {
   title?: string;
@@ -22,10 +22,11 @@ export function ShareButton(Props: Props) {
         onClick={menu.onOpen}
         key="share"
       >
-        <Avatar>
+        <Avatar sx={{ height: '30px', width: '31px' }}>
           <IosShare
             sx={{
               mt: -0.25,
+              height: '20px',
             }}
           />
         </Avatar>

@@ -93,7 +93,11 @@ export default function SuccessfullyCreated({ credentialId }: Props) {
                   overflow: 'hidden',
                 }}
               >
-                <img src={qrCode} alt={credential?.data?.title} width="100%" />
+                <img
+                  src={credential?.data?.image ?? qrCode}
+                  alt={credential?.data?.title}
+                  width="100%"
+                />
               </Box>
               <Stack justifyContent="center">
                 <Typography

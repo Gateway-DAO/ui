@@ -7,12 +7,13 @@ import { Controller, useFormContext } from 'react-hook-form';
 import { brandColors } from '@gateway/theme';
 
 import { alpha, Stack, TextField, Typography } from '@mui/material';
-import { MobileDatePicker } from '@mui/x-date-pickers';
+import { MobileDatePicker, TimePicker } from '@mui/x-date-pickers';
 import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 
 import { CATEGORIES } from '../../../../../../constants/gate';
 import { CreateCredentialInput } from '../../../../../../services/gateway-protocol/types';
+import { ImageField } from './image-field';
 
 const CategoriesInput = dynamic(
   () => {
@@ -42,6 +43,7 @@ export default function GeneralInfoForm() {
       >
         {t('data-model.issue-credential.group-general-description')}
       </Typography>
+      <ImageField />
       <Stack gap={3}>
         <TextField
           autoFocus
@@ -130,6 +132,37 @@ export default function GeneralInfoForm() {
                 )}
               />
             </LocalizationProvider>
+            <Stack sx={{ marginTop: '13px', width: '250px' }}>
+              <LocalizationProvider dateAdapter={AdapterLuxon}>
+                <Controller
+                  control={control}
+                  name="expirationDate"
+                  defaultValue={null}
+                  render={({ field }) => (
+                    <>
+                      <TimePicker
+                        label="Add expire time"
+                        value={
+                          field.value ? DateTime.fromISO(field.value) : null
+                        }
+                        onChange={(newValue) => {
+                          field.onChange(newValue?.toISO());
+                        }}
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            inputProps={{
+                              ...params.inputProps,
+                              placeholder: 'hh:mm am/pm',
+                            }}
+                          />
+                        )}
+                      />
+                    </>
+                  )}
+                />
+              </LocalizationProvider>
+            </Stack>
           </Stack>
         </Stack>
       </Stack>
