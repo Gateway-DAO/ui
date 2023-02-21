@@ -27,7 +27,7 @@ export async function getServerSideProps({ req, res }) {
     };
   }
 
-  const { me } = await gqlMethods(session.token, session.user_id).me();
+  const { me } = await gqlMethods(session.token, session.hasura_id).me();
 
   const isAdmin =
     me?.permissions?.filter(
@@ -49,7 +49,7 @@ export async function getServerSideProps({ req, res }) {
   await queryClient.prefetchQuery(
     ['admin-data'],
     async () =>
-      await gqlMethods(session.token, session.user_id).get_admin_data()
+      await gqlMethods(session.token, session.hasura_id).get_admin_data()
   );
 
   return {

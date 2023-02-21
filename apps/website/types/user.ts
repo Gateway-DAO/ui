@@ -4,8 +4,8 @@ import { MeProtocolQuery } from '../services/gateway-protocol/types';
 import { LoginMutation, MeQuery } from '../services/hasura/types';
 
 export type SessionToken = Omit<
-  LoginMutation['login'],
-  '__typename' | 'expiry'
+  LoginMutation['protocol']['login'],
+  '__typename'
 > & { error?: any };
 
 export type SessionUser = PartialDeep<
