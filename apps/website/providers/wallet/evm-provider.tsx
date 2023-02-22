@@ -1,4 +1,3 @@
-import { useSession } from 'next-auth/react';
 import { PropsWithChildren } from 'react';
 
 import {
@@ -26,10 +25,8 @@ const theme: Theme = {
 };
 
 export function EvmWalletsProvider({ children }: PropsWithChildren<unknown>) {
-  const session = useSession();
-
   return (
-    <WagmiConfig client={web3client(!!session)}>
+    <WagmiConfig client={web3client}>
       <RainbowKitProvider
         chains={chains}
         modalSize="compact"
