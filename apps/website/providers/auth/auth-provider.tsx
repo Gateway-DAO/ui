@@ -33,8 +33,15 @@ export function AuthProvider({
 
   const [isModalVisible, setModalVisible] = useState(false);
 
-  const { me, error, onUpdateMe, authStep, onSignOut, onInvalidateMe } =
-    useAuthLogin();
+  const {
+    me,
+    error,
+    onUpdateMe,
+    authStep,
+    onRetry,
+    onSignOut,
+    onInvalidateMe,
+  } = useAuthLogin();
 
   const onInvalidRT = async (
     session: Session,
@@ -117,7 +124,8 @@ export function AuthProvider({
           authStep === 'get-me' ||
           authStep === 'error'
         }
-        onRetry={onSignOut}
+        onRetry={onRetry}
+        onCancel={onSignOut}
       />
       <BlockedPage isBlocked={isBlocked} />
     </AuthContext.Provider>

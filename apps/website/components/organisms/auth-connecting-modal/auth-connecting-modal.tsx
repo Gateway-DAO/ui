@@ -23,14 +23,25 @@ type Props = {
   error?: AuthStepError;
   isOpen?: boolean;
   onRetry?: () => void;
+  onCancel?: () => void;
 };
 
-export function AuthConnectingModal({ isOpen, step, error, onRetry }: Props) {
+export function AuthConnectingModal({
+  isOpen,
+  step,
+  error,
+  onRetry,
+  onCancel,
+}: Props) {
   const { connector } = useAccount();
   const { t } = useTranslation('auth');
 
   return (
-    <Dialog open={isOpen} maxWidth="xs">
+    <Dialog
+      open={isOpen}
+      maxWidth="xs"
+      onBackdropClick={step === 'error' && onCancel}
+    >
       <Box>
         <DialogTitle sx={{ textAlign: 'center' }}>
           {t('connecting.title', { connector: connector?.name })}
@@ -54,6 +65,14 @@ export function AuthConnectingModal({ isOpen, step, error, onRetry }: Props) {
               <DialogContentText>{error.message}</DialogContentText>
             </DialogContent>
             <DialogActions>
+              <Button
+                variant="outlined"
+                onClick={onCancel}
+                fullWidth
+                size="small"
+              >
+                {t('common:actions.cancel')}
+              </Button>
               <Button
                 variant="contained"
                 onClick={onRetry}
