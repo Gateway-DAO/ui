@@ -155,12 +155,17 @@ export const useAuthLogin = () => {
 
   const signInMutation = useMutation(
     ['signIn', address],
-    (signature: string) =>
-      signIn('credentials', {
+    async (signature: string) => {
+      const res = await signIn('credentials', {
         redirect: false,
         wallet: address,
         signature,
-      }),
+      });
+
+      if (!res.ok) {
+        throw new Error(res.error);
+      }
+    },
     {
       onError(e) {
         setError({
@@ -249,17 +254,18 @@ export const useAuthLogin = () => {
 
   const authStep: AuthStep = useMemo(() => {
     if (error) return 'error';
-    if (nonce.fetchStatus === 'fetching') return 'get-nonce';
+    if (nonce.isFetching) return 'get-nonce';
     if (sendSignature.isLoading) return 'send-signature';
-    if (!me.data && me.isLoading && signInMutation.isSuccess) return 'get-me';
+    if (signInMutation.isLoading || (!me.data && signInMutation.isSuccess))
+      return 'get-me';
     if (me.data) return 'authenticated';
     return 'unauthenticated';
   }, [
     error,
     me.data,
-    me.isLoading,
-    nonce.fetchStatus,
+    nonce.isFetching,
     sendSignature.isLoading,
+    signInMutation.isLoading,
     signInMutation.isSuccess,
   ]);
 
