@@ -135,7 +135,7 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
       );
     }
     if (data.title) {
-      const response = await createGate.mutateAsync({
+yarn      const response = await createGate.mutateAsync({
         id: oldData.id || uuidv4(),
         dao_id: router.query.dao as string,
         title: data.title,
@@ -321,7 +321,7 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
                 }
                 sx={{
                   width: 300,
-                  marginTop:'15px'
+                  marginTop: '15px',
                 }}
               />
             </Stack>

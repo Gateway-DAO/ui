@@ -256,6 +256,11 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
       action: () => setConfirmDelete(true),
       hidden: false,
     },
+    {
+      text: 'Download in CSV',
+      action: () => setConfirmDelete(true),
+      hidden: false,
+    },
   ];
 
   const isDateExpired = (() => {

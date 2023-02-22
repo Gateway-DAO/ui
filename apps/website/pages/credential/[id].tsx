@@ -70,7 +70,7 @@ export default function GateProfilePage() {
       }),
     { enabled: authenticated }
   );
-
+  console.log(gatesData.gates_by_pk);
   return (
     <DashboardTemplate
       containerProps={{

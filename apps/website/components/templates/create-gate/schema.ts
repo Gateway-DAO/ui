@@ -198,12 +198,14 @@ export type QuizTaskData = {
   questions?: Question[];
   pass_score?: number;
   time_period?: number;
+  attempt_limit?: number;
 };
 
 export type QuizTaskDataError = {
   id?: FieldError;
   pass_score?: FieldError;
   time_period?: FieldError;
+  attempt_limit?: FieldError;
   questions?: {
     id?: FieldError;
     question?: FieldError;
@@ -458,6 +460,10 @@ export const quizDataSchema = z.object({
   time_period: z.number({
     invalid_type_error: 'Select a time period',
     required_error: 'Select a time period',
+  }),
+  attempt_limit: z.number({
+    invalid_type_error: 'Select a attempt limit',
+    required_error: 'Select a attempt limit',
   }),
   questions: z.array(
     z.object({
