@@ -1,5 +1,6 @@
 import useTranslation from 'next-translate/useTranslation';
 
+import { useWallet } from '@solana/wallet-adapter-react';
 import { AnimatePresence } from 'framer-motion';
 import { useAccount } from 'wagmi';
 
@@ -34,6 +35,7 @@ export function AuthConnectingModal({
   onCancel,
 }: Props) {
   const { connector } = useAccount();
+  const { wallet } = useWallet();
   const { t } = useTranslation('auth');
 
   return (
@@ -44,7 +46,9 @@ export function AuthConnectingModal({
     >
       <Box>
         <DialogTitle sx={{ textAlign: 'center' }}>
-          {t('connecting.title', { connector: connector?.name })}
+          {t('connecting.title', {
+            connector: connector?.name ?? wallet?.adapter?.name,
+          })}
         </DialogTitle>
         <Box
           sx={{
