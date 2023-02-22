@@ -1,11 +1,16 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import { Session } from 'next-auth';
 import { useSession, signOut } from 'next-auth/react';
-import { PropsWithChildren, useMemo, useEffect, useCallback } from 'react';
-
-import { useConnectModal } from '@rainbow-me/rainbowkit';
+import {
+  PropsWithChildren,
+  useMemo,
+  useEffect,
+  useCallback,
+  useState,
+} from 'react';
 
 import { AuthConnectingModal } from '../../components/organisms/auth-connecting-modal';
+import { AuthModal } from '../../components/organisms/auth-modal';
 import { gatewayProtocolAuthSDK } from '../../services/gateway-protocol/api';
 import {
   gqlMethodsWithRefresh,
@@ -26,17 +31,10 @@ export function AuthProvider({
   const { data: session } = useSession();
   const token = session?.token;
 
-  const { openConnectModal } = useConnectModal();
+  const [isModalVisible, setModalVisible] = useState(false);
 
-  const {
-    me,
-    protocolToken,
-    error,
-    onUpdateMe,
-    authStep,
-    onSignOut,
-    onInvalidateMe,
-  } = useAuthLogin();
+  const { me, error, onUpdateMe, authStep, onSignOut, onInvalidateMe } =
+    useAuthLogin();
 
   const onInvalidRT = async (
     session: Session,
@@ -55,22 +53,19 @@ export function AuthProvider({
 
   useEffect(() => {
     onInvalidRT(session);
-    if (session && !protocolToken) {
-      onSignOut();
-      return;
-    }
-  }, [session, onSignOut, protocolToken]);
+  }, [session]);
 
   const isBlocked = !!isAuthPage && (!me || !token);
 
   const gqlAuthMethods = useMemo(
-    () => gqlMethodsWithRefresh(session?.token, session?.user_id, onInvalidRT),
+    () =>
+      gqlMethodsWithRefresh(session?.token, session?.hasura_id, onInvalidRT),
     [session]
   );
 
   const gqlProtocolAuthMethods = useMemo(
-    () => gatewayProtocolAuthSDK(protocolToken),
-    [protocolToken]
+    () => gatewayProtocolAuthSDK(session?.token),
+    [session]
   );
 
   const fetchAuth = useCallback(
@@ -104,14 +99,15 @@ export function AuthProvider({
         gqlAuthMethods,
         gqlProtocolAuthMethods,
         fetchAuth,
-        onOpenLogin: openConnectModal,
+        onOpenLogin: () => setModalVisible(true),
         onSignOut,
         onUpdateMe,
         onInvalidateMe,
-        authenticated: !!me && !!session && !!protocolToken,
+        authenticated: !!me && !!session,
       }}
     >
       {!isBlocked && children}
+      <AuthModal isOpen={isModalVisible} close={() => setModalVisible(false)} />
       <AuthConnectingModal
         step={authStep}
         error={error}

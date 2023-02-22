@@ -1,6 +1,8 @@
 import { useState } from 'react';
 
 import { useMutation } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
+import { BigNumber } from 'ethers';
 import { PartialDeep } from 'type-fest';
 import {
   useAccount,
@@ -10,7 +12,6 @@ import {
   useWaitForTransaction,
 } from 'wagmi';
 
-import { useQueryClient } from '@tanstack/react-query';
 import { CREDENTIAL_ABI } from '../constants/web3';
 import { useAuth } from '../providers/auth';
 import { Credentials } from '../services/hasura/types';
@@ -39,12 +40,12 @@ export const useCredential = (credential: PartialDeep<Credentials>) => {
   });
 
   const { writeAsync: contractMint, data } = useContractWrite({
-    addressOrName: process.env.NEXT_PUBLIC_CONTRACT_ADDRESS,
-    contractInterface: CREDENTIAL_ABI,
+    address: process.env.NEXT_PUBLIC_CONTRACT_ADDRESS as `0x${string}`,
+    abi: CREDENTIAL_ABI,
     functionName: 'mint',
     mode: 'recklesslyUnprepared',
     overrides: {
-      gasLimit: 300000,
+      gasLimit: BigNumber.from(300000),
     },
     onMutate: () => setStatus('asking_signature'),
     onSuccess: () => setStatus('minting'),

@@ -18,11 +18,11 @@ const callLogin = async (
 
     const { error } = (res as any) ?? {};
 
-    if (error || !res.login) {
+    if (error || !res.protocol.login) {
       return null;
     }
 
-    const { __typename, ...token } = res.login;
+    const { __typename, ...token } = res.protocol.login;
 
     return token;
   } catch (e) {
@@ -37,15 +37,14 @@ const callRefresh = async (token: SessionToken): Promise<SessionToken> => {
 
     const { error } = (res as any) ?? {};
 
-    if (error || !res.refresh) {
+    if (error || !res.protocol.refreshToken) {
       throw error;
     }
 
-    const { __typename, ...newToken } = res.refresh;
+    const { __typename, ...newToken } = res.protocol.refreshToken;
 
     return {
       ...newToken,
-      user_id: token.user_id,
     };
   } catch (e) {
     return {

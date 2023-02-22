@@ -1,14 +1,14 @@
 import { getDefaultWallets } from '@rainbow-me/rainbowkit';
-import { createClient, chain, configureChains } from 'wagmi';
+import { createClient, configureChains } from 'wagmi';
+import { mainnet, polygon, optimism, arbitrum, goerli } from 'wagmi/chains';
 import { alchemyProvider } from 'wagmi/providers/alchemy';
-import { publicProvider } from 'wagmi/providers/public';
 
 // const alchemyId = process.env.ALCHEMY_ID
 
 // Configure chains & providers with the Alchemy provider.
 // Two popular providers are Alchemy (alchemy.com) and Infura (infura.io)
 export const { chains, provider, webSocketProvider } = configureChains(
-  [chain.mainnet, chain.polygon, chain.optimism, chain.arbitrum, chain.goerli],
+  [mainnet, polygon, optimism, arbitrum, goerli],
   [alchemyProvider({ apiKey: process.env.NEXT_PUBLIC_ALCHEMY_KEY })]
 );
 
@@ -17,10 +17,9 @@ const { connectors } = getDefaultWallets({
   chains,
 });
 
-export const web3client = (autoConnect = false) =>
-  createClient({
-    autoConnect,
-    connectors,
-    provider,
-    webSocketProvider,
-  });
+export const web3client = createClient({
+  autoConnect: false,
+  connectors,
+  provider,
+  webSocketProvider,
+});

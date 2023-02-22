@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { BigNumber } from 'ethers';
 import { useSnackbar } from 'notistack';
 import { PartialDeep } from 'type-fest';
 import {
@@ -98,12 +99,12 @@ export function BiconomyProvider({ children }: ProviderProps) {
   });
 
   const { writeAsync: contractMint, data } = useContractWrite({
-    addressOrName: process.env.NEXT_PUBLIC_CONTRACT_ADDRESS,
-    contractInterface: CREDENTIAL_ABI,
+    address: process.env.NEXT_PUBLIC_CONTRACT_ADDRESS as `0x${string}`,
+    abi: CREDENTIAL_ABI,
     functionName: 'mint',
     mode: 'recklesslyUnprepared',
     overrides: {
-      gasLimit: 300000,
+      gasLimit: BigNumber.from(300000),
     },
     onMutate: () => mintOptions.onMutate({ id: currentCredential.current?.id }),
     onSuccess: () => {

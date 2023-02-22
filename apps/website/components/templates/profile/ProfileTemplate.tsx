@@ -62,23 +62,24 @@ export default function ProfileTemplate({ user }: Props) {
   const onChangeConnections = () => {
     queryClient.refetchQueries(['connections', user.wallet]);
   };
+
   const tabs = useMemo(
     () => [
+      // {
+      //   key: 'overview',
+      //   label: t('common:tabs.overview'),
+      //   section: <OverviewTab setActiveTab={setTab} user={user} />,
+      // },
       {
-        key: 'overview',
-        label: t('common:tabs.overview'),
-        section: <OverviewTab setActiveTab={setTab} user={user} />,
+        key: 'received',
+        label: t('common:tabs.received'),
+        section: <ReceivedTab user={user} />,
       },
-      // {
-      //   key: 'received',
-      //   label: t('common:tabs.received'),
-      //   section: <ReceivedTab user={user} />,
-      // },
-      // {
-      //   key: 'issued',
-      //   label: t('common:tabs.issued'),
-      //   section: <IssuedTab user={user} />,
-      // },
+      {
+        key: 'issued',
+        label: t('common:tabs.issued'),
+        section: <IssuedTab user={user} />,
+      },
     ],
     []
   );

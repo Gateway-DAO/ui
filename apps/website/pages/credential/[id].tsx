@@ -35,7 +35,7 @@ export async function getServerSideProps({ req, res, params }) {
 
   try {
     gate = await (!!session && !expired
-      ? gqlMethods(session.token, session.user_id)
+      ? gqlMethods(session.token, session.hasura_id)
       : gqlAnonMethods
     ).gate({ id });
   } catch (e) {
