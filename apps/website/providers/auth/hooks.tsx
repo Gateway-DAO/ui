@@ -29,15 +29,18 @@ import { AuthStep } from './types';
  */
 function useSignOut(cb?: () => void) {
   const session = useSession();
-  const { address } = useAccount();
-  const { disconnectAsync } = useDisconnect();
+  const { disconnectAsync: disconnectEVM } = useDisconnect();
   const token = session?.data?.token;
+  const { disconnect: disconnectSolana } = useWallet();
 
   const onSignOut = useCallback(async () => {
     try {
-      if (address) {
-        await disconnectAsync();
-      }
+      await disconnectEVM();
+      // eslint-disable-next-line no-empty
+    } catch {}
+
+    try {
+      await disconnectSolana();
       // eslint-disable-next-line no-empty
     } catch {}
 
@@ -49,7 +52,7 @@ function useSignOut(cb?: () => void) {
     } catch {}
 
     cb?.();
-  }, [address, disconnectAsync, token, cb]);
+  }, [cb, disconnectEVM, disconnectSolana, token]);
 
   return onSignOut;
 }
@@ -284,14 +287,16 @@ export const useAuthLogin = () => {
     queryClient.resetQueries(['user_protocol', session?.data?.hasura_id]);
   };
 
-  const onSignOut = useSignOut(() => {
+  const onRetry = () => {
     setError(undefined);
     me.remove();
     user.forEach((q) => q.remove());
     nonce.remove();
     sendSignature.reset();
     signInMutation.reset();
-  });
+  };
+
+  const onSignOut = useSignOut(onRetry);
 
   return {
     me: token ? me.data : undefined,
@@ -299,6 +304,7 @@ export const useAuthLogin = () => {
     authStep,
     onUpdateMe,
     onSignOut,
+    onRetry,
     onInvalidateMe,
   };
 };
