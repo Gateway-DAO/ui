@@ -31,12 +31,24 @@ export default function CredentialProtocolShow({ credential }: Props) {
   const isReceivedCredential =
     me && me?.wallet === credential?.recipientUser?.primaryWallet?.address;
 
+  const isAllowedToMint = credential.nft !== null;
+
   const boxStyles: SxProps<Theme> = {
     maxWidth: '564px',
     width: '100%',
     mx: 'auto',
     textAlign: 'left',
   };
+
+  const mintedData =
+    credential.nft && credential.nft.minted
+      ? [
+          {
+            chain: 'polygon',
+            transaction: credential.nft.txHash,
+          },
+        ]
+      : null;
 
   return (
     <>
@@ -46,47 +58,30 @@ export default function CredentialProtocolShow({ credential }: Props) {
         <Typography sx={{ mb: 3 }}>{credential?.description}</Typography>
         <CredentialCardInfo credential={credential} />
 
-        {isReceivedCredential && (
+        {isReceivedCredential && isAllowedToMint && (
           <MintNFTCard
             title={t('credential.mint-card.title')}
+            mintedData={
+              credential.nft && credential.nft.minted
+                ? [{ chain: 'polygon', transaction: credential.nft.txHash }]
+                : null
+            }
             comingSoon={{
               adText: `${t('credential.mint-card.chain-coming-message')}`,
-              chains: ['ethereum', 'polygon'],
+              chains: ['ethereum', 'solana'],
             }}
           />
         )}
 
-        {/* <MintNFTCard
-          title={t('credential.mint-card.title')}
-          comingSoon={{
-            adText: `${t('credential.mint-card.chain-coming-message')}`,
-            chains: ['ethereum', 'polygon'],
-          }}
-        />
-        <MintNFTCard
-          title={t('credential.mint-card.title')}
-          mintedData={[
-            {
-              chain: 'solana',
-              transaction: '0x5465sa645af875440',
-              token: '3185',
-            },
-          ]}
-          comingSoon={{
-            adText: `${t('credential.mint-card.chain-coming-message')}`,
-            chains: ['ethereum', 'polygon'],
-          }}
-        />
-        <MintNFTCard
-          title={t('credential.mint-card.title')}
-          mintedData={[
-            {
-              chain: 'solana',
-              transaction: '0x5465sa645af875440',
-              token: '3185',
-            },
-          ]}
-        /> */}
+        {!isReceivedCredential && mintedData && (
+          <MintNFTCard
+            title={t('credential.mint-card.title')}
+            mintedData={[
+              { chain: 'polygon', transaction: credential.nft.txHash },
+            ]}
+          />
+        )}
+
         <RevokeCredential credential={credential} />
         <InvalidStatusBox credential={credential} />
         <ExternalLink

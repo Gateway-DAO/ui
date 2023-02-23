@@ -26,17 +26,16 @@ type ComingSoonType = {
   chains: Chains[];
 };
 
-type MintedChain = {
+export type MintedChain = {
   chain: Chains;
   transaction: string;
-  token: string;
 };
 
 type Props = {
   title?: string;
   publicView?: boolean;
   comingSoon?: ComingSoonType;
-  mintedData?: MintedChain[];
+  mintedData?: MintedChain[] | null;
 };
 
 const chains = {
@@ -106,11 +105,9 @@ function ChainRow({
 function ChainMintedRow({
   chain,
   transaction,
-  token,
 }: {
   chain: Chains;
   transaction: string;
-  token: string;
 }): JSX.Element {
   return (
     <Stack
@@ -148,14 +145,6 @@ function ChainMintedRow({
           mr={2}
         >
           {limitCharsCentered(transaction, 6)}
-        </Typography>
-        <Typography
-          color={brandColors.purple.main}
-          fontSize="14px"
-          letterSpacing="0.17px"
-          fontWeight="400"
-        >
-          {token}
         </Typography>
       </Stack>
     </Stack>
@@ -227,16 +216,6 @@ export default function MintNFTCard({
                 >
                   {t('credential.mint-card.transaction-column')}
                 </Typography>
-                <Typography
-                  sx={{
-                    fontWeight: 400,
-                    fontSize: '12px',
-                    letterSpacing: '0.4px',
-                    color: alpha(brandColors.white.main, 0.7),
-                  }}
-                >
-                  {t('credential.mint-card.token-column')}
-                </Typography>
               </Stack>
             )}
           </Stack>
@@ -249,15 +228,14 @@ export default function MintNFTCard({
               <ChainMintedRow
                 key={chain.transaction}
                 chain={chain.chain}
-                token={chain.token}
                 transaction={chain.transaction}
               />
             ))}
           </>
         ) : (
           <ChainRow
-            icon={<SolanaIcon sx={{ width: 16, height: 13 }} />}
-            chain="Solana"
+            icon={<PolygonIcon sx={{ width: 17, height: 15 }} />}
+            chain="Polygon"
           />
         )}
 
