@@ -42,7 +42,10 @@
       "token-column": "Token ID",
       "chain-action": "Mint as NFT",
       "chain-action-coming": "Coming soon",
-      "chain-coming-message": "Multi-chain wallets is coming soon"
+      "chain-coming-message": "Multi-chain wallets is coming soon",
+      "feedback-minting": "Minting credential",
+      "feedback-successful": "Credential successfully minted as NFT",
+      "feedback-failed": "Something went wrong on minting"
     }
   },
   "data-model": {

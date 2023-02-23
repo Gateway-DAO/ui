@@ -1,14 +1,21 @@
 import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
+import { useState } from 'react';
 
+import { useMutation } from '@tanstack/react-query';
 import { PartialDeep } from 'type-fest';
 
 import { Divider, Stack, SxProps, Typography } from '@mui/material';
 import { Theme } from '@mui/material/styles/createTheme';
 
+import { query } from '../../../../../constants/queries';
 import { ROUTES } from '../../../../../constants/routes';
 import { useAuth } from '../../../../../providers/auth';
-import { Credential } from '../../../../../services/gateway-protocol/types';
+import { gatewayProtocolAuthSDK } from '../../../../../services/gateway-protocol/api';
+import {
+  Credential,
+  MintCredentialMutationVariables,
+} from '../../../../../services/gateway-protocol/types';
 import ExternalLink from '../../../../atoms/external-link';
 import CredentialCardInfo from '../../components/credential-card-info';
 import Tags from '../../components/tags';
@@ -16,7 +23,8 @@ import Activities from './components/activities';
 import CredentialTitleAndImage from './components/credential-title-and-image';
 import DataTable from './components/data-table';
 import { InvalidStatusBox } from './components/invalid-status-box';
-import MintNFTCard from './components/mint-nft-card';
+import { MintDialog } from './components/mint-dialog';
+import MintNFTCard, { MintedChain } from './components/mint-nft-card';
 import { RevokeCredential } from './components/revoke-credential';
 
 type Props = {
@@ -26,6 +34,7 @@ type Props = {
 export default function CredentialProtocolShow({ credential }: Props) {
   const { t } = useTranslation('protocol');
   const { me } = useAuth();
+  const { token } = useAuth();
 
   const router = useRouter();
   const isReceivedCredential =
@@ -33,14 +42,7 @@ export default function CredentialProtocolShow({ credential }: Props) {
 
   const isAllowedToMint = credential.nft !== null;
 
-  const boxStyles: SxProps<Theme> = {
-    maxWidth: '564px',
-    width: '100%',
-    mx: 'auto',
-    textAlign: 'left',
-  };
-
-  const mintedData =
+  const initialMintData: MintedChain[] | null =
     credential.nft && credential.nft.minted
       ? [
           {
@@ -49,6 +51,33 @@ export default function CredentialProtocolShow({ credential }: Props) {
           },
         ]
       : null;
+
+  const [mintData, setMintData] = useState(initialMintData);
+  const [isOpen, setIsOpen] = useState(false);
+
+  const mintCredential = useMutation(
+    [query.mintCredential],
+    ({ credentialId }: MintCredentialMutationVariables) => {
+      return gatewayProtocolAuthSDK(token).mintCredential({
+        credentialId: credentialId,
+      });
+    },
+    {
+      onSuccess: (data) => {
+        setIsOpen(true);
+        setMintData([
+          { chain: 'polygon', transaction: data.mintCredential.txHash },
+        ]);
+      },
+    }
+  );
+
+  const boxStyles: SxProps<Theme> = {
+    maxWidth: '564px',
+    width: '100%',
+    mx: 'auto',
+    textAlign: 'left',
+  };
 
   return (
     <>
@@ -61,26 +90,29 @@ export default function CredentialProtocolShow({ credential }: Props) {
         {isReceivedCredential && isAllowedToMint && (
           <MintNFTCard
             title={t('credential.mint-card.title')}
-            mintedData={
-              credential.nft && credential.nft.minted
-                ? [{ chain: 'polygon', transaction: credential.nft.txHash }]
-                : null
-            }
+            mintedData={mintData ? mintData : null}
             comingSoon={{
               adText: `${t('credential.mint-card.chain-coming-message')}`,
               chains: ['ethereum', 'solana'],
             }}
+            mintAction={() =>
+              mintCredential.mutate({ credentialId: credential.id })
+            }
           />
         )}
 
-        {!isReceivedCredential && mintedData && (
+        {!isReceivedCredential && mintData && (
           <MintNFTCard
             title={t('credential.mint-card.title')}
-            mintedData={[
-              { chain: 'polygon', transaction: credential.nft.txHash },
-            ]}
+            mintedData={mintData}
           />
         )}
+
+        <MintDialog
+          isOpen={mintCredential.isLoading || isOpen}
+          status={mintCredential.status}
+          onClose={() => setIsOpen(false)}
+        />
 
         <RevokeCredential credential={credential} />
         <InvalidStatusBox credential={credential} />

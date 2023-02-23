@@ -36,6 +36,7 @@ type Props = {
   publicView?: boolean;
   comingSoon?: ComingSoonType;
   mintedData?: MintedChain[] | null;
+  mintAction?: () => void;
 };
 
 const chains = {
@@ -57,10 +58,12 @@ function ChainRow({
   chain,
   disabled,
   icon,
+  mintAction,
 }: {
   chain: string;
   disabled?: boolean;
   icon: React.ReactNode;
+  mintAction: () => void;
 }): JSX.Element {
   const { t } = useTranslation('protocol');
 
@@ -93,7 +96,7 @@ function ChainRow({
         </span>
         <Typography>{chain}</Typography>
       </Box>
-      <Button variant="outlined" disabled={disabled}>
+      <Button variant="outlined" onClick={mintAction} disabled={disabled}>
         {disabled
           ? `${t('credential.mint-card.chain-action-coming')}`
           : `${t('credential.mint-card.chain-action')}`}
@@ -143,6 +146,10 @@ function ChainMintedRow({
           letterSpacing="0.17px"
           fontWeight="400"
           mr={2}
+          component="a"
+          href={`https://mumbai.polygonscan.com/tx/${transaction}`}
+          target="_blank"
+          sx={{ textDecoration: 'none' }}
         >
           {limitCharsCentered(transaction, 6)}
         </Typography>
@@ -156,6 +163,7 @@ export default function MintNFTCard({
   publicView,
   comingSoon,
   mintedData,
+  mintAction,
 }: Props): JSX.Element {
   const { t } = useTranslation('protocol');
 
@@ -236,6 +244,7 @@ export default function MintNFTCard({
           <ChainRow
             icon={<PolygonIcon sx={{ width: 17, height: 15 }} />}
             chain="Polygon"
+            mintAction={mintAction}
           />
         )}
 
