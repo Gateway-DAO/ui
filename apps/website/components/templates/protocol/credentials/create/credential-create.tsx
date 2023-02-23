@@ -12,7 +12,7 @@ import { PartialDeep } from 'type-fest/source/partial-deep';
 import { Divider, Stack } from '@mui/material';
 
 import { useAuth } from '../../../../../providers/auth';
-import { gatewayProtocolSDK } from '../../../../../services/gateway-protocol/api';
+import { gatewayProtocolAuthSDK } from '../../../../../services/gateway-protocol/api';
 import {
   CreateCredentialMutationVariables,
   CreateCredentialInput,
@@ -35,7 +35,7 @@ export default function CredentialCreateForm({
   dataModel,
   oldData,
 }: CreateCredentialProps) {
-  const { gqlAuthMethods } = useAuth();
+  const { gqlAuthMethods, token } = useAuth();
   const { enqueueSnackbar } = useSnackbar();
   const { t } = useTranslation('protocol');
   const [credentialCreated, setCredentialCreated] = useState<string>(null);
@@ -77,7 +77,7 @@ export default function CredentialCreateForm({
   const createCredential = useMutation(
     ['createCredential'],
     ({ ...data }: CreateCredentialMutationVariables) => {
-      return gatewayProtocolSDK.createCredential({
+      return gatewayProtocolAuthSDK(token).createCredential({
         ...data,
       });
     }

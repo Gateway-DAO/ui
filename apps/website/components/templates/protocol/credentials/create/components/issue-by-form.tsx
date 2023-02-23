@@ -46,11 +46,12 @@ export default function IssueByForm() {
     }
   );
 
-  useEffect(() => {
-    if (issuer?.data) {
-      setValue('issuerUserId', issuer?.data?.id);
-    }
-  }, [issuer, setValue]);
+  // TODO: ADD ORGANIZATION OR USER
+  // useEffect(() => {
+  //   if (issuer?.data) {
+  //     setValue('issuerUserId', issuer?.data?.id);
+  //   }
+  // }, [issuer, setValue]);
 
   // MOCK USERS
   const users = [
@@ -89,7 +90,7 @@ export default function IssueByForm() {
             <Select
               id="chains"
               sx={{ maxWidth: { md: '50%', xs: '100%' } }}
-              {...register('issuerUserId')}
+              // {...register('issuerUserId')}
               label={t('data-model.issue-credential.issue-by')}
               defaultValue={
                 issuer?.data?.id || {
