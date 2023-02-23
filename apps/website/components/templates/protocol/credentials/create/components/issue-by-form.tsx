@@ -1,4 +1,5 @@
 import useTranslation from 'next-translate/useTranslation';
+import { useEffect } from 'react';
 
 import { useFormContext } from 'react-hook-form';
 
@@ -19,10 +20,14 @@ import { CreateCredentialInput } from '../../../../../../services/gateway-protoc
 import { AvatarFile } from '../../../../../atoms/avatar-file';
 
 export default function IssueByForm() {
-  const { register } = useFormContext<CreateCredentialInput>();
+  const { register, setValue } = useFormContext<CreateCredentialInput>();
 
   const { t } = useTranslation('protocol');
   const { me } = useAuth();
+
+  useEffect(() => {
+    setValue('issuerOrganizationId', null);
+  }, []);
 
   const users = [
     {
@@ -56,7 +61,11 @@ export default function IssueByForm() {
             sx={{ maxWidth: { md: '50%', xs: '100%' } }}
             {...register('issuerOrganizationId', {
               value: null,
-              setValueAs: (value) => (value !== me?.id ? value : null),
+              onChange: (e) =>
+                setValue(
+                  'issuerOrganizationId',
+                  e.target.value !== me?.id ? e.target.value : null
+                ),
             })}
             label={t('data-model.issue-credential.issue-by')}
             defaultValue={me?.id}
