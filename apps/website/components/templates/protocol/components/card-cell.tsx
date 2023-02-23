@@ -29,7 +29,7 @@ function TextBig({ children, disabled }: TextProps) {
         wordBreak: 'break-word',
         color: disabled
           ? alpha(brandColors.white.main, 0.3)
-          : brandColors.white.main,
+          : alpha(brandColors.white.main, 0.7),
       }}
     >
       {children}
@@ -44,7 +44,7 @@ function TextSmall({ children, disabled }: TextProps) {
       sx={{
         color: disabled
           ? alpha(brandColors.white.main, 0.3)
-          : alpha(brandColors.white.main, 0.5),
+          : brandColors.white.main,
       }}
     >
       {children}
@@ -62,6 +62,7 @@ export default function CardCell({
   inverted = false,
   disabled = false,
 }: Props) {
+  console.log(label, children);
   return (
     <Stack
       gap={margin ? 1 : 0}

@@ -39,7 +39,13 @@
       "timePeriodOneDay": "1 Day",
       "timePeriodOneWeek": "1 Week",
       "timePeriodOneMonth": "1 Month",
-      "timePeriodNever": "Never"
+      "timePeriodNever": "Never",
+      "attemptLimitUnlimited": "Unlimited",
+      "attemptLimitOne": "1",
+      "attemptLimitTwo": "2",
+      "attemptLimitThree": "3",
+      "attemptLimitFive": "5",
+      "attemptLimitTen": "10"
     },
     "manual": {
       "title": "Manual Submission Title"
