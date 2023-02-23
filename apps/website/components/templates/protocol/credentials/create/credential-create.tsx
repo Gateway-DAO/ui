@@ -87,22 +87,22 @@ export default function CredentialCreateForm({
     gqlAuthMethods.upload_arweave({ base64 })
   );
 
-  const uploadCredentialImage = async (fieldData) => {
+  const uploadCredentialImage = async (fieldData): Promise<string> => {
     if (
-      fieldData?.indexOf('https://') === -1 &&
-      fieldData?.indexOf('images') === -1
+      fieldData &&
+      fieldData.indexOf('https://') === -1 &&
+      fieldData.indexOf('images') === -1
     ) {
+      console.log('entrou credential', fieldData);
       try {
-        const picture = await uploadArweave.mutateAsync(fieldData);
-        fieldData = picture?.upload_arweave?.url;
+        return await uploadArweave
+          .mutateAsync(fieldData)
+          .then((res) => res.upload_arweave?.url);
       } catch (e) {
         enqueueSnackbar(t('data-model.error-on-upload'));
       }
     }
-    if (fieldData?.indexOf('images') > -1) {
-      return null;
-    }
-    return fieldData;
+    return null;
   };
 
   const removeEmptyDataFromArrayField = (type: string, fieldData) => {
@@ -123,8 +123,9 @@ export default function CredentialCreateForm({
       fieldData?.indexOf('https://') === -1
     ) {
       try {
-        const picture = await uploadArweave.mutateAsync(fieldData);
-        fieldData = picture?.upload_arweave?.url;
+        return await uploadArweave
+          .mutateAsync(fieldData)
+          .then((res) => res.upload_arweave?.url);
       } catch (e) {
         enqueueSnackbar(t('data-model.error-on-upload'));
       }
@@ -132,7 +133,7 @@ export default function CredentialCreateForm({
     return fieldData;
   };
 
-  const handleClaimFields = async (data) => {
+  const handleClaimFields = async (data): Promise<any> => {
     const claimProps = dataModel?.schema?.properties;
     if (!Object.keys(claimProps)) return data;
     for (const item of Object.keys(claimProps)) {
@@ -140,17 +141,17 @@ export default function CredentialCreateForm({
         claimProps[item]?.type,
         data.claim[item]
       );
-      data.claim[item] = await uploadClaimImages(
+      await uploadClaimImages(
         claimProps[item]?.contentMediaType,
         data.claim[item]
-      );
+      ).then((res) => (data.claim[item] = res));
     }
     return data;
   };
 
-  const handleFields = async (data) => {
-    data = await handleClaimFields(data);
-    data.image = await uploadCredentialImage(data?.image);
+  const handleFields = async (data): Promise<any> => {
+    await handleClaimFields(data).then((res) => (data = res));
+    await uploadCredentialImage(data?.image).then((res) => (data.image = res));
     return data;
   };
 
@@ -158,15 +159,13 @@ export default function CredentialCreateForm({
     if (!(await methods.trigger())) return;
 
     try {
-      const newData = data;
-      await handleFields(newData).then(async (res) => {
-        await createCredential
-          .mutateAsync(res as CreateCredentialMutationVariables)
-          .then((suc) => {
-            setCredentialCreated(suc?.createCredential?.id);
-            methods.reset();
-          });
-      });
+      data = await handleFields(data);
+      await createCredential
+        .mutateAsync(data as CreateCredentialMutationVariables)
+        .then((suc) => {
+          setCredentialCreated(suc?.createCredential?.id);
+          methods.reset();
+        });
     } catch (e) {
       enqueueSnackbar(t('data-model.error-on-create-credential'));
     }
