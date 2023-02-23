@@ -12,7 +12,7 @@ import { ClaimFieldProps, claimFields, getClaimType } from './ClaimTypes';
 import ClaimAccordion from './claim-accordion';
 import ClaimFormArray from './claim-form-array';
 import ClaimFormText from './claim-form-text';
-import { ImageField } from './image-field';
+import { ClaimImageField } from './claim-image-field';
 
 type Props = {
   dataModel: PartialDeep<DataModel>;
@@ -21,7 +21,7 @@ type Props = {
 function ClaimField(props: ClaimFieldProps) {
   switch (props.type) {
     case claimFields.image:
-      return <ImageField {...props} />;
+      return <ClaimImageField {...props} />;
     case claimFields.array:
       return <ClaimFormArray {...props} />;
     default:

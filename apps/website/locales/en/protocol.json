@@ -29,6 +29,8 @@
     "revoke-dialog-title": "Are you sure to revoke this credential?",
     "revoke-dialog-text": "If you revoke this credential, it will not be possible to undo this action.",
     "revoke-error-message": "There was a problem performing the revoke. Try again later.",
+    "image": "Image",
+    "qr-code": "QR Code",
     "actions": {
       "revoke": "Revoke",
       "cancel": "Cancel"
@@ -84,7 +86,7 @@
       "add-field": "Add field",
       "optional": "Optional",
       "dialog-title": "Confirmation",
-      "dialog-text": "Are you sure you want to discard the entered data?",
+      "dialog-text": "Are you sure you want to exit?",
       "dialog-positive": "Confirm",
       "dialog-negative": "Cancel"
     },

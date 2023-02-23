@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 import { PartialDeep } from 'type-fest';
 
 import { limitCharsCentered } from '@gateway/helpers';
@@ -13,6 +15,7 @@ import {
 } from '@mui/material';
 import MUICard from '@mui/material/Card';
 
+import { ROUTES } from '../../constants/routes';
 import {
   Credential,
   CredentialStatus,
@@ -41,6 +44,7 @@ const setColorStatus = (status: CredentialStatus): string => {
 };
 
 export default function CredentialCard({
+  id,
   title,
   status,
   description,
@@ -48,50 +52,54 @@ export default function CredentialCard({
   recipientUser,
   isRecipient,
 }: Props): JSX.Element {
+  const url = ROUTES.PROTOCOL_CREDENTIAL.replace('[id]', id);
+
   return (
-    <MUICard sx={{ position: 'relative' }}>
-      <CardHeader
-        title={
-          isRecipient
-            ? issuerUser.gatewayId
-            : limitCharsCentered(recipientUser?.primaryWallet?.address, 6)
-        }
-        titleTypographyProps={{ fontSize: '14px', fontWeight: 400 }}
-        avatar={
-          <Avatar
-            src="/images/avatar-default.png"
-            sx={{ width: 32, height: 32 }}
-          />
-        }
-      />
-      <CardContent sx={{ py: 1 }}>
-        <Typography gutterBottom variant="h5" sx={{ cursor: 'pointer' }}>
-          {title}
-        </Typography>
-        <Typography
-          height={40}
-          variant="body2"
-          color="text.secondary"
-          sx={{
-            display: '-webkit-box',
-            WebkitLineClamp: 2,
-            WebkitBoxOrient: 'vertical',
-            overflow: 'hidden',
-          }}
-        >
-          {description}
-        </Typography>
-        <Box sx={{ mt: 5 }}>
-          <Chip
-            variant="outlined"
-            label={status}
+    <Link passHref href={url}>
+      <MUICard sx={{ position: 'relative', cursor: 'pointer' }}>
+        <CardHeader
+          title={
+            isRecipient
+              ? issuerUser.gatewayId
+              : limitCharsCentered(recipientUser?.primaryWallet?.address, 6)
+          }
+          titleTypographyProps={{ fontSize: '14px', fontWeight: 400 }}
+          avatar={
+            <Avatar
+              src="/images/avatar-default.png"
+              sx={{ width: 32, height: 32 }}
+            />
+          }
+        />
+        <CardContent sx={{ py: 1 }}>
+          <Typography gutterBottom variant="h5" sx={{ cursor: 'pointer' }}>
+            {title}
+          </Typography>
+          <Typography
+            height={40}
+            variant="body2"
+            color="text.secondary"
             sx={{
-              color: setColorStatus(status),
-              borderColor: setColorStatus(status),
+              display: '-webkit-box',
+              WebkitLineClamp: 2,
+              WebkitBoxOrient: 'vertical',
+              overflow: 'hidden',
             }}
-          />
-        </Box>
-      </CardContent>
-    </MUICard>
+          >
+            {description}
+          </Typography>
+          <Box sx={{ mt: 5 }}>
+            <Chip
+              variant="outlined"
+              label={status}
+              sx={{
+                color: setColorStatus(status),
+                borderColor: setColorStatus(status),
+              }}
+            />
+          </Box>
+        </CardContent>
+      </MUICard>
+    </Link>
   );
 }

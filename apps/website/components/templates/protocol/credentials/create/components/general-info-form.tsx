@@ -13,6 +13,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 
 import { CATEGORIES } from '../../../../../../constants/gate';
 import { CreateCredentialInput } from '../../../../../../services/gateway-protocol/types';
+import { ImageField } from './image-field';
 
 const CategoriesInput = dynamic(
   () => {
@@ -42,6 +43,7 @@ export default function GeneralInfoForm() {
       >
         {t('data-model.issue-credential.group-general-description')}
       </Typography>
+      <ImageField />
       <Stack gap={3}>
         <TextField
           autoFocus

@@ -12,7 +12,7 @@ import { PartialDeep } from 'type-fest/source/partial-deep';
 import { Divider, Stack } from '@mui/material';
 
 import { useAuth } from '../../../../../providers/auth';
-import { gatewayProtocolSDK } from '../../../../../services/gateway-protocol/api';
+import { gatewayProtocolAuthSDK } from '../../../../../services/gateway-protocol/api';
 import {
   CreateCredentialMutationVariables,
   CreateCredentialInput,
@@ -35,7 +35,7 @@ export default function CredentialCreateForm({
   dataModel,
   oldData,
 }: CreateCredentialProps) {
-  const { gqlAuthMethods } = useAuth();
+  const { gqlAuthMethods, token } = useAuth();
   const { enqueueSnackbar } = useSnackbar();
   const { t } = useTranslation('protocol');
   const [credentialCreated, setCredentialCreated] = useState<string>(null);
@@ -68,6 +68,7 @@ export default function CredentialCreateForm({
     mode: 'onBlur',
     defaultValues: {
       dataModelId: dataModel.id,
+      image: '/images/qr-code.png',
       ...oldData,
       claim: {},
     },
@@ -76,7 +77,7 @@ export default function CredentialCreateForm({
   const createCredential = useMutation(
     ['createCredential'],
     ({ ...data }: CreateCredentialMutationVariables) => {
-      return gatewayProtocolSDK.createCredential({
+      return gatewayProtocolAuthSDK(token).createCredential({
         ...data,
       });
     }
@@ -85,6 +86,24 @@ export default function CredentialCreateForm({
   const uploadArweave = useMutation(['uploadArweave'], (base64: string) =>
     gqlAuthMethods.upload_arweave({ base64 })
   );
+
+  const uploadCredentialImage = async (fieldData) => {
+    if (
+      fieldData?.indexOf('https://') === -1 &&
+      fieldData?.indexOf('images') === -1
+    ) {
+      try {
+        const picture = await uploadArweave.mutateAsync(fieldData);
+        fieldData = picture?.upload_arweave?.url;
+      } catch (e) {
+        enqueueSnackbar(t('data-model.error-on-upload'));
+      }
+    }
+    if (fieldData?.indexOf('images') > -1) {
+      return null;
+    }
+    return fieldData;
+  };
 
   const removeEmptyDataFromArrayField = (type: string, fieldData) => {
     if (
@@ -129,12 +148,18 @@ export default function CredentialCreateForm({
     return data;
   };
 
-  const handleMutation = async (data: CreateCredentialInput) => {
+  const handleFields = async (data) => {
+    data = await handleClaimFields(data);
+    data.image = await uploadCredentialImage(data?.image);
+    return data;
+  };
+
+  const handleMutation = async (data: CreateCredentialInput | any) => {
     if (!(await methods.trigger())) return;
 
     try {
       const newData = data;
-      await handleClaimFields(newData).then(async (res) => {
+      await handleFields(newData).then(async (res) => {
         await createCredential
           .mutateAsync(res as CreateCredentialMutationVariables)
           .then((suc) => {
