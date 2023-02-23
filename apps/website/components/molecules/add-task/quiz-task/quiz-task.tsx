@@ -46,7 +46,7 @@ export enum TimePeriod {
 }
 
 export enum LimitPeriod {
-  UNLIMITED = -1,
+  UNLIMITED = null,
   ONE = 1,
   TWO = 2,
   THREE = 3,
@@ -487,7 +487,7 @@ export function QuizTask({
                     <Controller
                       name={`tasks.${taskId}.task_data.attempt_limit`}
                       control={control}
-                      defaultValue={-1}
+                      defaultValue={null}
                       render={({ field: { onChange, value, ref } }) => {
                         return (
                           <FormControl>
