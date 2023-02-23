@@ -86,10 +86,10 @@ export default function CardUsers({
   const showPicture = () => {
     if (issuerOrganization && organization?.data)
       return organization?.data?.logo;
-    if (issuerOrganization) return undefined;
+    if (issuerOrganization) return;
     if (issuer?.data) return issuer?.data?.picture;
 
-    return undefined;
+    return;
   };
 
   return (
