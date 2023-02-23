@@ -101,7 +101,7 @@ export default function CredentialCreateForm({
         enqueueSnackbar(t('data-model.error-on-upload'));
       }
     }
-    return null;
+    return;
   };
 
   const removeEmptyDataFromArrayField = (type: string, fieldData) => {
