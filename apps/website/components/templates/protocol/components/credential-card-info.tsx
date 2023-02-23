@@ -11,9 +11,9 @@ import {
   Credential,
   CredentialStatus,
 } from '../../../../services/gateway-protocol/types';
-import CardUsers from './card-users';
 import AuthenticatedBy from './authenticated-by';
 import CardCell from './card-cell';
+import CardUsers from './card-users';
 
 type Props = {
   credential: PartialDeep<Credential>;
@@ -26,7 +26,7 @@ export default function CredentialCardInfo({
 }: Props) {
   const { t } = useTranslation('protocol');
   const isMobile = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
-  
+
   return (
     <Paper
       elevation={elevation}
@@ -42,6 +42,7 @@ export default function CredentialCardInfo({
     >
       <CardUsers
         issuer={credential?.issuerUser}
+        organization={credential?.issuerOrganization}
         recipient={credential?.recipientUser}
       />
       <Stack
