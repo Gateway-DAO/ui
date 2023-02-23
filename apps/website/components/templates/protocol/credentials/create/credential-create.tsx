@@ -93,7 +93,6 @@ export default function CredentialCreateForm({
       fieldData.indexOf('https://') === -1 &&
       fieldData.indexOf('images') === -1
     ) {
-      console.log('entrou credential', fieldData);
       try {
         return await uploadArweave
           .mutateAsync(fieldData)
