@@ -63,7 +63,7 @@ function ChainRow({
   chain: string;
   disabled?: boolean;
   icon: React.ReactNode;
-  mintAction: () => void;
+  mintAction?: () => void;
 }): JSX.Element {
   const { t } = useTranslation('protocol');
 
