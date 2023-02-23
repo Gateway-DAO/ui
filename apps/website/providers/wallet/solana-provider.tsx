@@ -23,6 +23,7 @@ export function SolanaWalletsProvider({
 }: PropsWithChildren<unknown>) {
   const solNetwork = WalletAdapterNetwork.Mainnet;
   const endpoint = useMemo(() => clusterApiUrl(solNetwork), [solNetwork]);
+
   // initialise all the wallets you want to use
   const wallets = useMemo(
     () => [
