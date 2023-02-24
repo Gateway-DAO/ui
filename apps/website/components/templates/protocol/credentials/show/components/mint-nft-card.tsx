@@ -94,7 +94,7 @@ function ChainRow({
         >
           {icon}
         </span>
-        <Typography>{chain}</Typography>
+        <Typography variant="body2">{chain}</Typography>
       </Box>
       <Button variant="outlined" onClick={mintAction} disabled={disabled}>
         {disabled
@@ -137,7 +137,7 @@ function ChainMintedRow({
         >
           {chains[chain].icon}
         </span>
-        <Typography>{chains[chain].name}</Typography>
+        <Typography variant="body2">{chains[chain].name}</Typography>
       </Box>
       <Stack justifyContent="space-between" direction="row" gap="30px">
         <Typography
@@ -145,7 +145,6 @@ function ChainMintedRow({
           fontSize="14px"
           letterSpacing="0.17px"
           fontWeight="400"
-          mr={2}
           component="a"
           href={`https://mumbai.polygonscan.com/tx/${transaction}`}
           target="_blank"
@@ -174,8 +173,6 @@ export default function MintNFTCard({
       sx={{
         border: '1px solid rgba(229, 229, 229, 0.12)',
         borderRadius: 2,
-        borderBottomRightRadius: comingSoon?.adText ? 30 : 20,
-        borderBottomLeftRadius: comingSoon?.adText ? 30 : 20,
         mb: 3,
         overflow: 'hidden',
         boxShadow: 'none',
