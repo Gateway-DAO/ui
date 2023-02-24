@@ -65,6 +65,9 @@ export default function CredentialProtocolShow({ credential }: Props) {
     {
       onSuccess: (data) => {
         setIsOpen(true);
+        setTimeout(() => {
+          setIsOpen(false);
+        }, 2500);
         setMintData([
           { chain: 'polygon', transaction: data.mintCredential.txHash },
         ]);
