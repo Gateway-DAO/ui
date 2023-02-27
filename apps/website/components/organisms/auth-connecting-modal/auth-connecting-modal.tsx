@@ -42,7 +42,7 @@ export function AuthConnectingModal({
     <Dialog
       open={isOpen}
       maxWidth="xs"
-      onBackdropClick={step === 'error' && onCancel}
+      onBackdropClick={step === 'error' ? onCancel : undefined}
     >
       <Box>
         <DialogTitle sx={{ textAlign: 'center' }}>
