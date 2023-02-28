@@ -1,5 +1,4 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useAccount } from 'wagmi';
 
 import { useAuth } from '../providers/auth';
 import { useProtected } from './use-protected';
