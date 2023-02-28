@@ -1,14 +1,18 @@
 import useTranslation from 'next-translate/useTranslation';
 import { useEffect, useState } from 'react';
 
-import { useFormContext } from 'react-hook-form';
+import { Controller, useFormContext } from 'react-hook-form';
 
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import {
   Box,
   FormControl,
+  FormControlLabel,
+  FormLabel,
   IconButton,
+  Radio,
+  RadioGroup,
   Stack,
   TextField,
   Typography,
@@ -21,6 +25,7 @@ export const ManualTask = ({ dragAndDrop, taskId, deleteTask }) => {
   const { t } = useTranslation('gate-new');
   const {
     register,
+    control,
     setValue,
     getValues,
     formState: { errors },
@@ -85,7 +90,7 @@ export const ManualTask = ({ dragAndDrop, taskId, deleteTask }) => {
               variant="standard"
               autoFocus
               sx={{
-                minWidth: { md: '400px', xs: '110%', lg:'500px' },
+                minWidth: { md: '400px', xs: '110%', lg: '500px' },
                 maxWidth: { xs: '100%', md: '110%' },
               }}
               InputProps={{
@@ -168,6 +173,34 @@ export const ManualTask = ({ dragAndDrop, taskId, deleteTask }) => {
               marginRight: '10px',
             },
           }}
+        />
+        <FormLabel id="demo-radio-buttons-group-label">
+          Ask users to submit a
+        </FormLabel>
+
+        <Controller
+          name={`tasks.${taskId}.task_data.event_type`}
+          control={control}
+          defaultValue={'send_link'}
+          render={({ field }) => (
+            <RadioGroup
+              row
+              aria-labelledby="demo-row-radio-buttons-group-label"
+              name="row-radio-buttons-group"
+              {...field}
+            >
+              <FormControlLabel
+                value="send_link"
+                control={<Radio />}
+                label="URL link"
+              />
+              <FormControlLabel
+                value="comment"
+                control={<Radio />}
+                label="Text"
+              />
+            </RadioGroup>
+          )}
         />
       </FormControl>
     </Stack>

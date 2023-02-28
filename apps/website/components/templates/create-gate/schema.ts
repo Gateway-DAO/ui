@@ -289,6 +289,7 @@ export type FileTaskDataError = {
 // Manual
 export type ManualTaskData = {
   id?: string;
+  event_type?: string;
 };
 
 export type ManualTaskDataError = {
@@ -614,6 +615,7 @@ export const taskManualSchema = z.object({
   description: z
     .string()
     .min(2, 'The description must contain at least 2 character(s)'),
+  task_data: z.object({ event_type: z.enum(['comment', 'send_link']) }),
   task_type: z.literal('manual'),
 });
 

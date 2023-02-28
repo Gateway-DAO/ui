@@ -39,7 +39,8 @@
     "manual": {
       "title": "Manual Submission",
       "action": "Submit",
-      "label": "Submit the link address"
+      "label_link": "Submit the link address",
+      "label_comment": "Submit the text"
     },
     "check_action": "Verify",
     "completed": "Task completed at "
