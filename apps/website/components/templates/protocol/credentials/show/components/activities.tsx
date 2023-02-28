@@ -31,6 +31,7 @@ const activityText = (type: string) => {
       Revoked: 'Credential revoked',
       Suspended: 'Credential suspended',
       Reactivated: 'Credential reactivated',
+      Updated: 'Credential updated',
     }[type] || 'Unknown activity'
   );
 };
