@@ -41,15 +41,15 @@ type Props = {
 
 const chains = {
   solana: {
-    icon: <SolanaIcon sx={{ width: 16, height: 13 }} />,
+    icon: <SolanaIcon />,
     name: 'Solana',
   },
   ethereum: {
-    icon: <EthereumIcon sx={{ width: 10, height: 17 }} />,
+    icon: <EthereumIcon />,
     name: 'Ethereum',
   },
   polygon: {
-    icon: <PolygonIcon sx={{ width: 17, height: 15 }} />,
+    icon: <PolygonIcon />,
     name: 'Polygon',
   },
 };
