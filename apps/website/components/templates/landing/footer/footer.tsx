@@ -6,7 +6,7 @@ import { useMutation } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { FaMedium } from 'react-icons/fa';
 
-import { GatewayIcon, DiscordIcon } from '@gateway/assets';
+import { GatewayIcon, DiscordIcon, SubstackIcon } from '@gateway/assets';
 
 import { GitHub, LinkedIn, Twitter } from '@mui/icons-material';
 import {
@@ -166,7 +166,7 @@ export function Footer({
                 >
                   <Link passHref href="#" target="_blank">
                     <IconContainer component="a">
-                      <FaMedium color="white" size={18} />
+                      <SubstackIcon />
                     </IconContainer>
                   </Link>
                 </ListItem>

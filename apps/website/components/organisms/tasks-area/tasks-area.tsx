@@ -21,6 +21,7 @@ import {
 } from '../../molecules/add-task/quiz-task/quiz-task';
 import SnapshotTask from '../../molecules/add-task/snapshot-task/snapshot-task';
 import { FollowProfile } from '../../molecules/add-task/twitter-follow-profile/twitter-follow-profile';
+import TwitterLikeTask from '../../molecules/add-task/twitter-like/twitter-like';
 import TwitterRetweetTask from '../../molecules/add-task/twitter-retweet/twitter-retweet';
 import TwitterTweetTask from '../../molecules/add-task/twitter-tweet/twitter-tweet';
 import VerificationCodeTask from '../../molecules/add-task/verification-task/verification-task';
@@ -34,6 +35,7 @@ const TaskComponents = {
   nft_hold: HoldNFTTask,
   quiz: QuizTask,
   twitter_follow: FollowProfile,
+  twitter_like: TwitterLikeTask,
   twitter_tweet: TwitterTweetTask,
   twitter_retweet: TwitterRetweetTask,
   github_contribute: GithubContributeTask,

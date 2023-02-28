@@ -42,6 +42,8 @@ export function TaskList({
 
   const manualTask = gate.tasks.find((task) => task.task_type === 'manual');
   const isGateAdmin = me?.id === gate.creator.id;
+  const taskProgress = (completedTasksCount / totalTasksCount) * 100;
+  const isTaskStarted = taskProgress === 0 ? false : true;
 
   return (
     <Grid
@@ -79,12 +81,12 @@ export function TaskList({
         <Box display={'flex'}>
           <CircularProgressWithLabel
             variant="determinate"
-            value={(completedTasksCount / totalTasksCount) * 100}
+            value={isTaskStarted ? taskProgress : 100}
             label={`${completedTasksCount}/${totalTasksCount}`}
             size={50}
             thickness={4}
             sx={{
-              color: '#6DFFB9',
+              color: isTaskStarted ? '#6DFFB9' : '#FFFFFF4D',
             }}
           />
           <Stack
@@ -115,7 +117,7 @@ export function TaskList({
       ) : isCredentialExpired ? (
         <Typography
           sx={{
-            marginX: TOKENS.CONTAINER_PX,
+            margin: { xs: '16px 16px 40px 16px', md: '16px 75px 16px 75px' },
             py: 1,
             px: 4,
             border: 1,

@@ -12,7 +12,7 @@ const nextConfig = {
     // See: https://github.com/gregberge/svgr
     svgr: false,
   },
-  experimental: { images: { layoutRaw: true } },
+  experimental: { images: { layoutRaw: true }, scrollRestoration:true },
   images: {
     domains: [
       'api.staging.mygateway.xyz',

@@ -19,14 +19,13 @@ import {
 } from '@mui/material';
 
 import { useAuth } from '../../../../providers/auth';
-
+import { TaskIcon } from '../../../atoms/task-icon';
 import {
   CreateGateData,
-  TwitterRetweetDataError,
+  TwitterLikeDataError,
 } from '../../../templates/create-gate/schema';
-import { TaskIcon } from 'apps/website/components/atoms/task-icon';
 
-const TwitterRetweetTask = ({ dragAndDrop, taskId, deleteTask }) => {
+const TwitterLikeTask = ({ dragAndDrop, taskId, deleteTask }) => {
   const { gqlAuthMethods } = useAuth();
   const {
     register,
@@ -49,8 +48,8 @@ const TwitterRetweetTask = ({ dragAndDrop, taskId, deleteTask }) => {
     setTaskIsMoving(dragAndDrop);
   }, [dragAndDrop]);
 
-  const [taskVisible, setTaskVisible] = useState(false);
-  const [taskIsMoving, setTaskIsMoving] = useState(false);
+  const [taskVisible, setTaskVisible] = useState(true);
+  const [taskIsMoving, setTaskIsMoving] = useState(true);
 
   const {
     mutate: getTwitterMutateTweet,
@@ -110,16 +109,27 @@ const TwitterRetweetTask = ({ dragAndDrop, taskId, deleteTask }) => {
         <Stack
           direction={'row'}
           alignItems={'center'}
-          sx={{ width: '100%', mr: '20px' }}
+          sx={(theme) => ({
+            width: '100%',
+            mr: '20px',
+            [theme.breakpoints.between('md', 'lg')]: {
+              margin: '-22px',
+            },
+            [theme.breakpoints.between('lg', 'xl')]: {
+              margin: '-22px',
+            },
+          })}
         >
-          <TaskIcon type="twitter_retweet" sx={{ marginRight: 3 }} />
+          <TaskIcon
+            type="twitter_retweet"
+            sx={{ marginRight: 3, marginLeft: 4 }}
+          />
           <Stack>
-            <Typography variant="subtitle2">Retweet Post</Typography>
+            <Typography variant="subtitle2">Like Post</Typography>
             <TextField
               variant="standard"
-              autoFocus
               sx={{
-                minWidth: { md: '400px', xs: '110%', lg:'500px' },
+                minWidth: { md: '400px', xs: '110%', lg: '500px' },
                 maxWidth: { xs: '100%', md: '110%' },
               }}
               InputProps={{
@@ -142,7 +152,18 @@ const TwitterRetweetTask = ({ dragAndDrop, taskId, deleteTask }) => {
           </Stack>
         </Stack>
         {!taskIsMoving && (
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <Box
+            sx={(theme) => ({
+              display: 'flex',
+              alignItems: 'center',
+              [theme.breakpoints.between('md', 'lg')]: {
+                marginLeft: '-55px',
+              },
+              [theme.breakpoints.between('lg', 'xl')]: {
+                marginLeft: '-55px',
+              },
+            })}
+          >
             <IconButton
               onClick={() => deleteTask(taskId)}
               sx={(theme) => ({
@@ -204,7 +225,7 @@ const TwitterRetweetTask = ({ dragAndDrop, taskId, deleteTask }) => {
           }}
         />
         <Typography variant="body2" sx={{ marginBottom: { xs: 1, md: 4 } }}>
-          The user must retweet the post
+          The user must Like the post
         </Typography>
         <TextField
           required
@@ -214,11 +235,11 @@ const TwitterRetweetTask = ({ dragAndDrop, taskId, deleteTask }) => {
             onChange: () => onHandleChangeTweet(),
           })}
           error={
-            !!(errors.tasks?.[taskId]?.task_data as TwitterRetweetDataError)
+            !!(errors.tasks?.[taskId]?.task_data as TwitterLikeDataError)
               ?.tweet_link
           }
           helperText={
-            (errors.tasks?.[taskId]?.task_data as TwitterRetweetDataError)
+            (errors.tasks?.[taskId]?.task_data as TwitterLikeDataError)
               ?.tweet_link?.message
           }
           sx={{
@@ -259,4 +280,4 @@ const TwitterRetweetTask = ({ dragAndDrop, taskId, deleteTask }) => {
     </Stack>
   );
 };
-export default TwitterRetweetTask;
+export default TwitterLikeTask;
