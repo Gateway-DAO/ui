@@ -53,7 +53,7 @@ function useEvmWallet(): UseConnectedWallet {
   };
 }
 
-export function useConnectedWallet(): UseConnectedWallet | undefined {
+export function useConnectedWallet(): null | UseConnectedWallet {
   const solana = useSolanaWallet();
   const evm = useEvmWallet();
 
@@ -65,5 +65,5 @@ export function useConnectedWallet(): UseConnectedWallet | undefined {
     return solana;
   }
 
-  return undefined;
+  return null;
 }

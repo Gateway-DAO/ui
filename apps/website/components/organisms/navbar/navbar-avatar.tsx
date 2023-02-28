@@ -157,12 +157,12 @@ export function NavBarAvatar({ hideProfile }: Props) {
             }}
           >
             <IconButton disabled sx={{ mr: 2.5, ml: 1 }}>
-              {wallet.adapter?.icon}
+              {wallet?.adapter?.icon}
             </IconButton>
 
             <ListItemText
               primary={address.slice(0, 5) + '...' + address.slice(-4)}
-              secondary={wallet.chainName}
+              secondary={wallet?.chainName}
             />
 
             <IconButton
