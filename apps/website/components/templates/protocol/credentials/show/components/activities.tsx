@@ -20,6 +20,7 @@ import {
 } from '@mui/material';
 
 import { Activity } from '../../../../../../services/gateway-protocol/types';
+import { getExplorer } from '../../../../../../utils/web3';
 
 type Props = {
   activities: PartialDeep<Activity>[];
@@ -135,7 +136,7 @@ export default function Activities({ activities }: Props) {
                         </Typography>
                       </Stack>
                       <a
-                        href={`https://mumbai.polygonscan.com/tx/${activity?.txHash}`}
+                        href={`${getExplorer(80001)}/tx/${activity?.txHash}`}
                         target="_blank"
                         rel="noreferrer"
                       >
