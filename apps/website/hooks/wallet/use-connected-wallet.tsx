@@ -1,10 +1,6 @@
 import { ReactNode } from 'react';
 
-import {
-  useWallet,
-  useConnection,
-  useAnchorWallet,
-} from '@solana/wallet-adapter-react';
+import { useWallet } from '@solana/wallet-adapter-react';
 import { useAccount, useNetwork } from 'wagmi';
 
 import { icons } from './wallet-icons';
@@ -21,7 +17,6 @@ type UseConnectedWallet = Partial<{
 
 function useSolanaWallet(): UseConnectedWallet {
   const { wallet, publicKey } = useWallet();
-  const { connection } = useConnection();
 
   return {
     address: publicKey?.toString(),
