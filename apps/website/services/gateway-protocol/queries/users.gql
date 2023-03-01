@@ -12,6 +12,13 @@ query meProtocol {
       id
       address
     }
+    accesses {
+      organization {
+        id
+        gatewayId
+        name
+      }
+    }
     totalOfIssuedCredentials
     totalOfreceivedCredentials
   }

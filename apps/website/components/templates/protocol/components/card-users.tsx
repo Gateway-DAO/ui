@@ -9,22 +9,28 @@ import { theme } from '@gateway/theme';
 import { Stack, Box, useMediaQuery } from '@mui/material';
 
 import { ROUTES } from '../../../../constants/routes';
-import { User } from '../../../../services/gateway-protocol/types';
+import {
+  Organization,
+  User,
+} from '../../../../services/gateway-protocol/types';
 import { gqlAnonMethods } from '../../../../services/hasura/api';
 import Loading from '../../../atoms/loading';
 import CardUserCell from './card-user-cell';
 
 type Props = {
   issuer: PartialDeep<User>;
+  organization?: PartialDeep<Organization>;
   recipient: PartialDeep<User>;
 };
 
 export default function CardUsers({
   issuer: issuerCredential,
+  organization: issuerOrganization,
   recipient: recipientCredential,
 }: Props) {
   const { t } = useTranslation('protocol');
   const isMobile = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
+
   const issuer = useQuery(
     ['issuer', issuerCredential?.id],
     () =>
@@ -33,6 +39,19 @@ export default function CardUsers({
       }),
     {
       select: (data) => data.users?.[0],
+      refetchOnMount: false,
+      refetchOnWindowFocus: false,
+    }
+  );
+
+  const organization = useQuery(
+    ['organization', issuerOrganization?.id],
+    () =>
+      gqlAnonMethods.dao_profile_by_slug({
+        slug: issuerOrganization?.gatewayId,
+      }),
+    {
+      select: (data) => data.daos?.[0],
       refetchOnMount: false,
       refetchOnWindowFocus: false,
     }
@@ -52,6 +71,9 @@ export default function CardUsers({
   );
 
   const issuerName =
+    organization?.data?.name ??
+    issuerOrganization?.gatewayId ??
+    issuerOrganization?.address ??
     issuer?.data?.username ??
     issuerCredential?.gatewayId ??
     issuerCredential.primaryWallet.address;
@@ -60,6 +82,16 @@ export default function CardUsers({
     recipient?.data?.username ??
     recipientCredential?.gatewayId ??
     recipientCredential.primaryWallet.address;
+
+  const showPicture = () => {
+    if (issuerOrganization && organization?.data)
+      return organization?.data?.logo;
+    if (issuerOrganization) return;
+    if (issuer?.data) return issuer?.data?.picture;
+
+    return;
+  };
+
   return (
     <Stack
       justifyContent="space-between"
@@ -73,10 +105,14 @@ export default function CardUsers({
       ) : (
         <CardUserCell
           label={t('credential.issuer-id')}
-          picture={issuer?.data?.picture}
+          picture={showPicture()}
           name={limitCharsCentered(issuerName, 20)}
-          href={ROUTES.PROFILE.replace('[username]', issuerName)}
-          hasLink={!!issuer.data}
+          href={
+            organization?.data?.slug
+              ? ROUTES.DAO_PROFILE.replace('[slug]', organization?.data?.slug)
+              : ROUTES.PROFILE.replace('[username]', issuer?.data?.username)
+          }
+          hasLink={!!organization.data || !!issuer.data}
         />
       )}
       <Box
