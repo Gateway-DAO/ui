@@ -3,7 +3,6 @@ import useTranslation from 'next-translate/useTranslation';
 import { useConnectModal } from '@rainbow-me/rainbowkit';
 import { useWalletModal } from '@solana/wallet-adapter-react-ui';
 import { FaEthereum } from 'react-icons/fa';
-import { useAccount } from 'wagmi';
 
 import { SolanaIcon } from '@gateway/assets';
 

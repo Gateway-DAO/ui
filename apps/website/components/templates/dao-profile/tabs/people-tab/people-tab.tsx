@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 
+import { useInfiniteQuery } from '@tanstack/react-query';
 import { useWindowVirtualizer } from '@tanstack/react-virtual';
-import { useInfiniteQuery } from 'wagmi';
 
 import { TOKENS } from '@gateway/theme';
 

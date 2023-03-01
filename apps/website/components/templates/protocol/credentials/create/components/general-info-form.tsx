@@ -4,6 +4,7 @@ import dynamic from 'next/dynamic';
 import { DateTime } from 'luxon';
 import { Controller, useFormContext } from 'react-hook-form';
 
+import { isToday } from '@gateway/helpers';
 import { brandColors } from '@gateway/theme';
 
 import { alpha, Stack, TextField, Typography } from '@mui/material';
@@ -28,6 +29,7 @@ export default function GeneralInfoForm() {
     setValue,
     control,
     formState: { errors },
+    getValues,
   } = useFormContext<CreateCredentialInput>();
 
   const { t } = useTranslation('protocol');
@@ -144,6 +146,11 @@ export default function GeneralInfoForm() {
                         label="Add expire time"
                         value={
                           field.value ? DateTime.fromISO(field.value) : null
+                        }
+                        minTime={
+                          isToday(getValues().expirationDate)
+                            ? DateTime.now()
+                            : null
                         }
                         onChange={(newValue) => {
                           field.onChange(newValue?.toISO());

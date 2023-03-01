@@ -13,6 +13,7 @@ import {
   Typography,
 } from '@mui/material';
 
+import { getExplorer } from '../../../../../../utils/web3';
 import {
   PolygonIcon,
   EthereumIcon,
@@ -41,15 +42,15 @@ type Props = {
 
 const chains = {
   solana: {
-    icon: <SolanaIcon sx={{ width: 16, height: 13 }} />,
+    icon: <SolanaIcon />,
     name: 'Solana',
   },
   ethereum: {
-    icon: <EthereumIcon sx={{ width: 10, height: 17 }} />,
+    icon: <EthereumIcon />,
     name: 'Ethereum',
   },
   polygon: {
-    icon: <PolygonIcon sx={{ width: 17, height: 15 }} />,
+    icon: <PolygonIcon />,
     name: 'Polygon',
   },
 };
@@ -146,7 +147,7 @@ function ChainMintedRow({
           letterSpacing="0.17px"
           fontWeight="400"
           component="a"
-          href={`https://mumbai.polygonscan.com/tx/${transaction}`}
+          href={`${getExplorer(80001)}/tx/${transaction}`}
           target="_blank"
           sx={{ textDecoration: 'none' }}
         >
