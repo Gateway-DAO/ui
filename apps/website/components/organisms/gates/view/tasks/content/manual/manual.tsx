@@ -32,6 +32,7 @@ const ManualContent = ({
   const { me, gqlAuthMethods } = useAuth();
   const formattedDate = new Date(updatedAt.toLocaleString()).toLocaleString();
   const [link, setLink] = useState<string>();
+  const [comment, setComment] = useState<string>();
   const currentTaskProgress = me?.task_progresses?.find(
     (tp) => tp.task_id === task.id
   );
@@ -47,7 +48,6 @@ const ManualContent = ({
     { enabled: throttledLink?.length > 5, retry: false }
   );
   const isManualTaskEventsEnabled = !!currentTaskProgress?.id;
-
   const manualTaskEvents = useQuery(
     ['manual-task-events', currentTaskProgress?.id],
     () =>
@@ -104,6 +104,23 @@ const ManualContent = ({
     setLink('');
   };
 
+  const onSubmitComment = async () => {
+    await completeTask({
+      event_type: 'comment',
+      data: {
+        comment,
+        task_progress_id: currentTaskProgress?.id,
+      },
+    });
+    manualTaskEvents.remove();
+    queryClient.removeQueries([
+      'admin-manual-task-submissions',
+      gate.id,
+      me?.id,
+    ]);
+    setComment('');
+  };
+
   const completed =
     currentTaskProgress?.completed === 'done' ||
     currentTaskProgress?.completed === 'reject';
@@ -114,39 +131,72 @@ const ManualContent = ({
         <>
           {!completed && (
             <Stack sx={{ width: '100%', mb: 5 }}>
-              <Stack
-                direction="row"
-                alignItems="center"
-                justifyContent="space-between"
-                gap={2}
-              >
-                <TextField
-                  required
-                  label={t('tasks.manual.label')}
-                  id="submit-link-address"
-                  sx={{ flexGrow: 1 }}
-                  value={link}
-                  onChange={(e) => setLink(e.target.value)}
-                  error={!!linkPreview.error && !linkPreview.isFetching}
-                  helperText={
-                    (linkPreview.error as any)?.response?.errors[0]?.message
-                  }
-                />
-                <LoadingButton
-                  size="large"
-                  variant="contained"
-                  onClick={onSubmitLink}
-                  isLoading={isLoading}
-                  disabled={!linkPreview.data?.link_preview}
-                >
-                  {t('tasks.manual.action')}
-                </LoadingButton>
-              </Stack>
-              {linkPreview.data?.link_preview && (
-                <LinkPreviewCard {...linkPreview.data.link_preview} />
+              {task.task_data?.event_type === 'send_link' && (
+                <>
+                  <Stack
+                    direction="row"
+                    alignItems="center"
+                    justifyContent="space-between"
+                    gap={2}
+                  >
+                    <TextField
+                      required
+                      label={t('tasks.manual.label_link')}
+                      id="submit-link-address"
+                      sx={{ flexGrow: 1 }}
+                      value={link}
+                      onChange={(e) => setLink(e.target.value)}
+                      error={!!linkPreview.error && !linkPreview.isFetching}
+                      helperText={
+                        (linkPreview.error as any)?.response?.errors[0]?.message
+                      }
+                    />
+                    <LoadingButton
+                      size="large"
+                      variant="contained"
+                      onClick={onSubmitLink}
+                      isLoading={isLoading}
+                      disabled={!linkPreview.data?.link_preview}
+                    >
+                      {t('tasks.manual.action')}
+                    </LoadingButton>
+                  </Stack>
+                  {linkPreview.data?.link_preview && (
+                    <LinkPreviewCard {...linkPreview.data.link_preview} />
+                  )}
+                </>
+              )}
+              {task.task_data?.event_type === 'comment' && (
+                <>
+                  <Stack
+                    direction="row"
+                    alignItems="center"
+                    justifyContent="space-between"
+                    gap={2}
+                  >
+                    <TextField
+                      required
+                      label={t('tasks.manual.label_comment')}
+                      id="submit-comment"
+                      sx={{ flexGrow: 1 }}
+                      value={comment}
+                      onChange={(e) => setComment(e.target.value)}
+                    />
+                    <LoadingButton
+                      size="large"
+                      variant="contained"
+                      onClick={onSubmitComment}
+                      isLoading={isLoading}
+                      disabled={!comment}
+                    >
+                      {t('tasks.manual.action')}
+                    </LoadingButton>
+                  </Stack>
+                </>
               )}
             </Stack>
           )}
+
           {isManualTaskEventsEnabled && manualTaskEvents.isLoading && (
             <CircularProgress />
           )}
