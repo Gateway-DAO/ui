@@ -1,5 +1,5 @@
 import { useState } from 'react';
-
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import {
   Checkbox,
   FormControl,
@@ -23,6 +23,7 @@ const QuizContent = ({
   isLoading,
   isAdmin,
 }) => {
+  console.log(data);
   const { questions } = data;
   const formattedDate = new Date(updatedAt?.toLocaleString()).toLocaleString();
   const initialAnswers = questions.map((question, index) => {
@@ -157,16 +158,29 @@ const QuizContent = ({
         );
       })}
       {!readOnly && !completed && (
-        <LoadingButton
-          variant="contained"
-          sx={{ marginTop: '15px' }}
-          onClick={() =>
-            !spammers ? completeTask({ questions: answers }) : null
-          }
-          isLoading={isLoading}
-        >
-          Submit
-        </LoadingButton>
+        <>
+          <Stack direction="row" justifyContent="space-between">
+            <InfoOutlinedIcon />
+            <Typography
+              color={(theme) => theme.palette.text.secondary}
+              variant="subtitle2"
+              sx={{ marginLeft: '10px' }}
+            >
+              You have 3 out of {3} attempts to answer
+            </Typography>
+          </Stack>
+
+          <LoadingButton
+            variant="contained"
+            sx={{ marginTop: '15px' }}
+            onClick={() =>
+              !spammers ? completeTask({ questions: answers }) : null
+            }
+            isLoading={isLoading}
+          >
+            Submit
+          </LoadingButton>
+        </>
       )}
       {completed && updatedAt && (
         <Typography color="#c5ffe3" variant="subtitle2">

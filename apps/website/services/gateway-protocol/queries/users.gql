@@ -12,5 +12,7 @@ query meProtocol {
       id
       address
     }
+    totalOfIssuedCredentials
+    totalOfreceivedCredentials
   }
 }

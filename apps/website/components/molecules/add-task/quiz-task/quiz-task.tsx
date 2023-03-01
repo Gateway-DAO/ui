@@ -186,6 +186,18 @@ export function QuizTask({
       value: LimitPeriod.TEN,
     },
   ];
+
+  const quizSettings = [
+    {
+      name: 'Attempt limit',
+      description: 'The attempt quantity that user will be able to answer',
+      options: attemptLimitValues,
+      defaultValue: 0,
+      formName: 'attempt_limit',
+      attempt_limit: 'attempt_limit',
+    },
+  ];
+
   return (
     <Stack
       sx={(theme) => ({
@@ -470,90 +482,83 @@ export function QuizTask({
               </>
             )}
             <Stack>
-              <Stack sx={{ mt: '48px', mb: '48px' }}>
-                <FormControl>
-                  <div>
-                    <Typography gutterBottom variant="body1">
-                      Attempt limit
-                    </Typography>
-                    <Typography
-                      variant="body2"
-                      gutterBottom
-                      color="text.secondary"
-                      marginBottom={4}
-                    >
-                      The attempt quantity that user will be able to answer
-                    </Typography>
-                    <Controller
-                      name={`tasks.${taskId}.task_data.attempt_limit`}
-                      control={control}
-                      defaultValue={null}
-                      render={({ field: { onChange, value, ref } }) => {
-                        return (
-                          <FormControl>
-                            <Stack
-                              direction={'row'}
-                              sx={{
-                                flexDirection: { xs: 'column', md: 'row' },
-                              }}
-                              gap={2}
-                            >
-                              <>
-                                {attemptLimitValues.map((btn) => {
-                                  return (
-                                    <StyledToggleButton
-                                      aria-label={btn.label}
-                                      key={btn.value}
-                                      value={btn.value}
-                                      color="primary"
-                                      size={'medium'}
-                                      sx={{
-                                        px: 3,
-                                      }}
-                                      selected={value === btn.value}
-                                      onClick={() => {
-                                        onChange(btn.value);
-                                      }}
-                                    >
-                                      {btn.label}
-                                    </StyledToggleButton>
-                                  );
-                                })}
-                              </>
-                            </Stack>
-                            {/* {!!errors.claim_limit && (
-                              <FormHelperText
-                                error
-                                id="outlined-weight-helper-text"
+              {quizSettings.map((setting) => (
+                <Stack sx={{ mt: '48px', mb: '48px' }}>
+                  <FormControl>
+                    <div>
+                      <Typography gutterBottom variant="body1">
+                        {setting.name}
+                      </Typography>
+                      <Typography
+                        variant="body2"
+                        gutterBottom
+                        color="text.secondary"
+                        marginBottom={4}
+                      >
+                        {setting.description}
+                      </Typography>
+                      <Controller
+                        name={`tasks.${taskId}.task_data.${setting.attempt_limit}`}
+                        control={control}
+                        defaultValue={setting.defaultValue}
+                        render={({ field: { onChange, value, ref } }) => {
+                          return (
+                            <FormControl>
+                              <Stack
+                                direction={'row'}
+                                sx={{
+                                  flexDirection: { xs: 'column', md: 'row' },
+                                }}
+                                gap={2}
                               >
-                                {errors?.claim_limit?.message}
-                              </FormHelperText>
-                            )} */}
-                          </FormControl>
-                        );
-                      }}
-                    />
-                  </div>
-                  {!!(errors.tasks?.[taskId]?.task_data as QuizTaskDataError)
-                    ?.time_period && (
-                    <Typography
-                      color={(theme) => theme.palette.error.main}
-                      sx={{ mt: '5px' }}
-                    >
-                      {
-                        errors.tasks?.[taskId]?.task_data?.['time_period']
-                          ?.message
-                      }
-                    </Typography>
-                  )}
-                </FormControl>
-              </Stack>
+                                <>
+                                  {setting.options.map((btn) => {
+                                    return (
+                                      <StyledToggleButton
+                                        aria-label={btn.label}
+                                        key={btn.value}
+                                        value={btn.value}
+                                        color="primary"
+                                        size={'medium'}
+                                        sx={{
+                                          px: 3,
+                                        }}
+                                        selected={value === btn.value}
+                                        onClick={() => {
+                                          onChange(btn.value);
+                                        }}
+                                      >
+                                        {btn.label}
+                                      </StyledToggleButton>
+                                    );
+                                  })}
+                                </>
+                              </Stack>
+                            </FormControl>
+                          );
+                        }}
+                      />
+                    </div>
+                    {!!(errors.tasks?.[taskId]?.task_data as QuizTaskDataError)
+                      ?.attempt_limit && (
+                      <Typography
+                        color={(theme) => theme.palette.error.main}
+                        sx={{ mt: '5px' }}
+                      >
+                        {
+                          errors.tasks?.[taskId]?.task_data?.[
+                            `${setting.formName}`
+                          ]?.message
+                        }
+                      </Typography>
+                    )}
+                  </FormControl>
+                </Stack>
+              ))}
               <Stack
                 sx={{
                   mt: '48px',
                   mb: '48px',
-                  borderTop: '1px',
-                  borderColor: '',
                 }}
               >
                 <FormControl>
@@ -606,14 +611,6 @@ export function QuizTask({
                                 })}
                               </>
                             </Stack>
-                            {/* {!!errors.claim_limit && (
-                              <FormHelperText
-                                error
-                                id="outlined-weight-helper-text"
-                              >
-                                {errors?.claim_limit?.message}
-                              </FormHelperText>
-                            )} */}
                           </FormControl>
                         );
                       }}

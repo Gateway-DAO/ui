@@ -40,7 +40,7 @@ function TextBig({ children, disabled }: TextProps) {
 function TextSmall({ children, disabled }: TextProps) {
   return (
     <Typography
-      fontSize={12}
+      fontSize={14}
       sx={{
         color: disabled
           ? alpha(brandColors.white.main, 0.3)
