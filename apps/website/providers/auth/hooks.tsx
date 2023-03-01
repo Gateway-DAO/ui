@@ -16,6 +16,7 @@ import { useAccount, useDisconnect, useSignMessage } from 'wagmi';
 
 import { ROUTES } from '../../constants/routes';
 import { gqlAnonMethods, gqlMethods } from '../../services/hasura/api';
+import { Network } from '../../services/hasura/types';
 import { ErrorResponse } from '../../types/graphql';
 import { SessionUser } from '../../types/user';
 import { AuthStep } from './types';
@@ -77,7 +78,7 @@ export const useAuthLogin = () => {
 
   const nonce = useQuery(
     [address, 'nonce'],
-    () => gqlAnonMethods.get_nonce({ wallet: address, network: 'EVM' }),
+    () => gqlAnonMethods.get_nonce({ wallet: address, network: Network.Evm }),
     {
       enabled: !!address && session.status === 'unauthenticated',
       async onSuccess({ get_nonce: { nonce } }) {
