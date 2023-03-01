@@ -1,13 +1,10 @@
-query get_nonce($wallet: String!) {
-  get_nonce(wallet: $wallet) {
+query get_nonce($wallet: String!, $network: Network) {
+  get_nonce(wallet: $wallet, network: $network) {
     nonce
   }
 }
 
-mutation login(
-  $signature: String!,
-  $wallet: String!,
-) {
+mutation login($signature: String!, $wallet: String!) {
   login(signature: $signature, wallet: $wallet) {
     refresh_token
     token
@@ -15,9 +12,7 @@ mutation login(
   }
 }
 
-mutation refresh(
-  $refresh_token: String!
-) {
+mutation refresh($refresh_token: String!) {
   refresh(token: $refresh_token) {
     refresh_token
     token
