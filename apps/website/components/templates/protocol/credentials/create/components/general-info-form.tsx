@@ -119,7 +119,6 @@ export default function GeneralInfoForm() {
                       label={t('data-model.issue-credential.expire-date-label')}
                       inputFormat="MM/dd/yyyy"
                       disablePast
-                      minDate={DateTime.now()}
                       value={field.value ? DateTime.fromISO(field.value) : null}
                       onChange={(date: DateTime) => {
                         field.onChange(date?.toISO());
