@@ -8,6 +8,7 @@ import { timestampToString } from '@gateway/helpers';
 import { brandColors } from '@gateway/theme';
 
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import {
   Accordion,
   AccordionDetails,
@@ -19,6 +20,7 @@ import {
 } from '@mui/material';
 
 import { Activity } from '../../../../../../services/gateway-protocol/types';
+import { getExplorer } from '../../../../../../utils/web3';
 
 type Props = {
   activities: PartialDeep<Activity>[];
@@ -31,6 +33,7 @@ const activityText = (type: string) => {
       Revoked: 'Credential revoked',
       Suspended: 'Credential suspended',
       Reactivated: 'Credential reactivated',
+      Updated: 'Credential updated',
     }[type] || 'Unknown activity'
   );
 };
@@ -111,20 +114,39 @@ export default function Activities({ activities }: Props) {
                       new Date(a.timestamp).getTime()
                   )
                   .map((activity, index) => (
-                    <Stack key={index}>
-                      <Typography fontSize={14}>
-                        {activityText(activity?.type)}
-                      </Typography>
-                      <Typography
-                        fontSize={12}
-                        sx={{ color: alpha(brandColors.white.main, 0.7) }}
+                    <Stack
+                      key={index}
+                      direction="row"
+                      alignItems="center"
+                      justifyContent="space-between"
+                    >
+                      <Stack>
+                        <Typography fontSize={14}>
+                          {activityText(activity?.type)}
+                        </Typography>
+                        <Typography
+                          fontSize={12}
+                          sx={{ color: alpha(brandColors.white.main, 0.7) }}
+                        >
+                          {timestampToString(
+                            activity?.timestamp,
+                            lang,
+                            t('credential.indeterminate')
+                          )}
+                        </Typography>
+                      </Stack>
+                      <a
+                        href={`${getExplorer(80001)}/tx/${activity?.txHash}`}
+                        target="_blank"
+                        rel="noreferrer"
                       >
-                        {timestampToString(
-                          activity?.timestamp,
-                          lang,
-                          t('credential.indeterminate')
-                        )}
-                      </Typography>
+                        <OpenInNewIcon
+                          sx={{
+                            color: alpha(brandColors.white.main, 0.56),
+                          }}
+                          fontSize="small"
+                        />
+                      </a>
                     </Stack>
                   ))}
               </Stack>

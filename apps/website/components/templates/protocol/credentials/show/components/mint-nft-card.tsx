@@ -13,6 +13,7 @@ import {
   Typography,
 } from '@mui/material';
 
+import { getExplorer } from '../../../../../../utils/web3';
 import {
   PolygonIcon,
   EthereumIcon,
@@ -146,7 +147,7 @@ function ChainMintedRow({
           letterSpacing="0.17px"
           fontWeight="400"
           component="a"
-          href={`https://mumbai.polygonscan.com/tx/${transaction}`}
+          href={`${getExplorer(80001)}/tx/${transaction}`}
           target="_blank"
           sx={{ textDecoration: 'none' }}
         >
