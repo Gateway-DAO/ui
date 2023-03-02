@@ -135,37 +135,36 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
       );
     }
     if (data.title) {
-      console.log(data.tasks);
-      // const response = await createGate.mutateAsync({
-      //   id: oldData.id || uuidv4(),
-      //   dao_id: router.query.dao as string,
-      //   title: data.title,
-      //   categories: data.categories || [],
-      //   description: data.description,
-      //   skills: data.skills || [],
-      //   claim_limit: data.claim_limit,
-      //   expire_date: data.expire_date,
-      //   permissions: permissionsData,
-      //   type: data.type,
-      //   image: image_url,
-      //   tasks: data.tasks?.map(({ task_id, ...task }, index) => ({
-      //     ...task,
-      //     id: task_id,
-      //     order: index,
-      //   })),
-      //   whitelisted_wallets_file: data.whitelisted_wallets_file?.id,
-      // });
-      // if (isDraft) {
-      //   enqueueSnackbar('Draft saved');
-      //   router.push(
-      //     ROUTES.GATE_PROFILE.replace('[id]', response.insert_gates_one.id)
-      //   );
-      //   return;
-      // }
-      // await publishGate.mutateAsync({
-      //   gate_id: response.insert_gates_one.id,
-      // });
-      // setResult(response.insert_gates_one);
+      const response = await createGate.mutateAsync({
+        id: oldData.id || uuidv4(),
+        dao_id: router.query.dao as string,
+        title: data.title,
+        categories: data.categories || [],
+        description: data.description,
+        skills: data.skills || [],
+        claim_limit: data.claim_limit,
+        expire_date: data.expire_date,
+        permissions: permissionsData,
+        type: data.type,
+        image: image_url,
+        tasks: data.tasks?.map(({ task_id, ...task }, index) => ({
+          ...task,
+          id: task_id,
+          order: index,
+        })),
+        whitelisted_wallets_file: data.whitelisted_wallets_file?.id,
+      });
+      if (isDraft) {
+        enqueueSnackbar('Draft saved');
+        router.push(
+          ROUTES.GATE_PROFILE.replace('[id]', response.insert_gates_one.id)
+        );
+        return;
+      }
+      await publishGate.mutateAsync({
+        gate_id: response.insert_gates_one.id,
+      });
+      setResult(response.insert_gates_one);
       setIsPublished(true);
     }
   };

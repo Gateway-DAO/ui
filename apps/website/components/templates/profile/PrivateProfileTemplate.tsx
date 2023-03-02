@@ -60,7 +60,6 @@ export default function PrivateProfileTemplate() {
     !me?.languages?.length ||
     !me?.timezone == undefined ||
     !me?.experiences?.length;
-  console.log(me.protocol);
   const tabs = [
     // {
     //   key: 'overview',
@@ -239,7 +238,6 @@ export default function PrivateProfileTemplate() {
                     iconPosition: 'end',
                   }
                 : {})}
-              onClick={() => console.log(label)}
               {...a11yTabProps('dao', index)}
             />
           ))}

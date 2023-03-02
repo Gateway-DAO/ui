@@ -23,7 +23,6 @@ const QuizContent = ({
   isLoading,
   isAdmin,
 }) => {
-  console.log(data);
   const { questions } = data;
   const formattedDate = new Date(updatedAt?.toLocaleString()).toLocaleString();
   const initialAnswers = questions.map((question, index) => {
@@ -159,7 +158,8 @@ const QuizContent = ({
       })}
       {!readOnly && !completed && (
         <>
-          <Stack direction="row" justifyContent="space-between">
+        {/* TODO FUTURE UPDATE WHEN BACKEND IS READY */}
+          {/* <Stack direction="row" justifyContent="space-between">
             <InfoOutlinedIcon />
             <Typography
               color={(theme) => theme.palette.text.secondary}
@@ -168,7 +168,7 @@ const QuizContent = ({
             >
               You have 3 out of {3} attempts to answer
             </Typography>
-          </Stack>
+          </Stack> */}
 
           <LoadingButton
             variant="contained"

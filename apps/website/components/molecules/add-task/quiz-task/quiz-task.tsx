@@ -54,6 +54,11 @@ export enum LimitPeriod {
   TEN = 10,
 }
 
+export enum values {
+  ATTEMPT_LIMIT = 'attempt_limit',
+  RETRY_PERIOD = 'time_period',
+}
+
 export const createQuestion = (order = 0) => ({
   order,
   question: '',
@@ -192,9 +197,15 @@ export function QuizTask({
       name: 'Attempt limit',
       description: 'The attempt quantity that user will be able to answer',
       options: attemptLimitValues,
-      defaultValue: 0,
-      formName: 'attempt_limit',
-      attempt_limit: 'attempt_limit',
+      defaultValue: LimitPeriod.UNLIMITED,
+      formName: values.ATTEMPT_LIMIT,
+    },
+    {
+      name: 'Retry after',
+      description: 'The users will be able to retry after a time period',
+      options: claimLimitValues,
+      defaultValue: TimePeriod.IMMEDIATELY,
+      formName: values.RETRY_PERIOD,
     },
   ];
 
@@ -498,7 +509,7 @@ export function QuizTask({
                         {setting.description}
                       </Typography>
                       <Controller
-                        name={`tasks.${taskId}.task_data.${setting.attempt_limit}`}
+                        name={`tasks.${taskId}.task_data.${setting.formName}`}
                         control={control}
                         defaultValue={setting.defaultValue}
                         render={({ field: { onChange, value, ref } }) => {
@@ -555,81 +566,6 @@ export function QuizTask({
                   </FormControl>
                 </Stack>
               ))}
-              <Stack
-                sx={{
-                  mt: '48px',
-                  mb: '48px',
-                }}
-              >
-                <FormControl>
-                  <div>
-                    <Typography gutterBottom variant="body1">
-                      Retry after
-                    </Typography>
-                    <Typography
-                      variant="body2"
-                      gutterBottom
-                      color="text.secondary"
-                      marginBottom={4}
-                    >
-                      The users will be able to retry after a time period
-                    </Typography>
-                    <Controller
-                      name={`tasks.${taskId}.task_data.time_period`}
-                      control={control}
-                      defaultValue={0}
-                      render={({ field: { onChange, value, ref } }) => {
-                        return (
-                          <FormControl>
-                            <Stack
-                              direction={'row'}
-                              sx={{
-                                flexDirection: { xs: 'column', md: 'row' },
-                              }}
-                              gap={2}
-                            >
-                              <>
-                                {claimLimitValues.map((btn) => {
-                                  return (
-                                    <StyledToggleButton
-                                      aria-label={btn.label}
-                                      key={btn.value}
-                                      value={btn.value}
-                                      color="primary"
-                                      size={'medium'}
-                                      sx={{
-                                        px: 3,
-                                      }}
-                                      selected={value === btn.value}
-                                      onClick={() => {
-                                        onChange(btn.value);
-                                      }}
-                                    >
-                                      {btn.label}
-                                    </StyledToggleButton>
-                                  );
-                                })}
-                              </>
-                            </Stack>
-                          </FormControl>
-                        );
-                      }}
-                    />
-                  </div>
-                  {!!(errors.tasks?.[taskId]?.task_data as QuizTaskDataError)
-                    ?.time_period && (
-                    <Typography
-                      color={(theme) => theme.palette.error.main}
-                      sx={{ mt: '5px' }}
-                    >
-                      {
-                        errors.tasks?.[taskId]?.task_data?.['time_period']
-                          ?.message
-                      }
-                    </Typography>
-                  )}
-                </FormControl>
-              </Stack>
             </Stack>
           </Stack>
         )}
