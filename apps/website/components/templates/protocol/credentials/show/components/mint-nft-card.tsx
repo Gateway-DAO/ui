@@ -240,7 +240,7 @@ export default function MintNFTCard({
           </>
         ) : (
           <ChainRow
-            icon={<PolygonIcon sx={{ width: 17, height: 15 }} />}
+            icon={<PolygonIcon />}
             chain="Polygon"
             mintAction={mintAction}
           />
