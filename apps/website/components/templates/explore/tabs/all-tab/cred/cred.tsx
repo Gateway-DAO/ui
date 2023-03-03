@@ -10,6 +10,28 @@ import { gatewayProtocolAuthSDK } from '../../../../../../services/gateway-proto
 
 export default function Cred() {
   const { me, token } = useAuth();
+
+  const score = useQuery(
+    ['credit-score', me?.protocol.primaryWallet.address],
+    async () => {
+      const res = await fetch(
+        `https://beta.credprotocol.com/api/score/address/${me?.protocol.primaryWallet.address}`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Token 677307b1a63eac35f3c364408a7da8f33d780fb7',
+          },
+        }
+      );
+      const json = await res.json();
+      return json;
+    },
+    {
+      refetchOnMount: true,
+      enabled: !!me?.protocol.primaryWallet.address,
+    }
+  );
+
   const credential = useQuery(
     ['cred-protocol', me?.id],
     async () => {
@@ -21,28 +43,27 @@ export default function Cred() {
         skip: 0,
       });
 
-      console.log(scoreCreds);
-
       const cred = scoreCreds.findCredentialsByDataModel.find(
         (cred) => cred.recipientUser.id === me.protocol.id
       );
-
-      console.log(cred);
 
       return cred;
     },
     {
       refetchOnMount: true,
+      refetchOnWindowFocus: true,
     }
   );
 
-  const issueCred = useMutation(['create-cred-protocol'], () => {
+  const issueCred = useMutation(['create-cred-protocol'], async () => {
+    const newScore = await score.refetch();
+
     return gatewayProtocolAuthSDK(token).createCredential({
       recipientUserGatewayIdOrWallet: me.protocol.primaryWallet.address,
       dataModelId: 'e79eeea6-0fb7-4d59-8254-5962d5ed493c',
       claim: {
-        creditScore: 800,
-        rating: 'Very Good',
+        creditScore: newScore.data.value || 0,
+        rating: newScore.data.value_rating || 'Unknown; insufficient data',
       },
       title: `Credit Score Credential for ${me.name}`,
       description: `This is a Credit Score Credential for ${me.name}`,
@@ -53,15 +74,20 @@ export default function Cred() {
     });
   });
 
-  const updateCred = useMutation(['update-cred-protocol'], () => {
+  const updateCred = useMutation(['update-cred-protocol'], async () => {
+    const newScore = await score.refetch();
+
+    if (newScore.data.error) return;
+    if (newScore.data.value === credential.data.claim.creditScore) return;
+
     return gatewayProtocolAuthSDK(token).updateCredential({
       id: credential.data.id,
       title: credential.data.title,
       description: credential.data.description,
       image: credential.data.image,
       claim: {
-        creditScore: 600,
-        rating: 'Very Bad',
+        creditScore: newScore.data.value || 0,
+        rating: newScore.data.value_rating || 'Unknown; insufficient data',
       },
     });
   });
@@ -71,21 +97,27 @@ export default function Cred() {
       <Typography variant="h4">Want a Credit Score Credential?</Typography>
 
       {credential.data ? (
-        <Typography variant="body1">
-          You already have a Credit Score Credential! Check it{' '}
-          <Link
-            href={ROUTES.PROTOCOL_CREDENTIAL.replace(
-              '[id]',
-              credential.data.id
-            )}
-            passHref
-          >
-            <a>here!</a>
-          </Link>
-        </Typography>
+        <>
+          <Typography variant="body1">
+            You already have a Credit Score Credential! Check it{' '}
+            <Link
+              href={ROUTES.PROTOCOL_CREDENTIAL.replace(
+                '[id]',
+                credential.data.id
+              )}
+              passHref
+            >
+              <a>here!</a>
+            </Link>
+          </Typography>
+          <Typography>
+            Your current score is {credential.data.claim.creditScore} (
+            {credential.data.claim.rating})
+          </Typography>
+        </>
       ) : (
         <Typography variant="body1">
-          You don't have a Credit Score Credential yet!
+          You do not have a Credit Score Credential yet!
         </Typography>
       )}
 
