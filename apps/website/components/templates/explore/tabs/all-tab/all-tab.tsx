@@ -2,7 +2,7 @@ import useTranslation from 'next-translate/useTranslation';
 
 import { PartialDeep } from 'type-fest';
 
-import { Button, Divider, Stack } from '@mui/material';
+import { Button, Card, Divider, Stack, Typography } from '@mui/material';
 
 import { DataModel } from '../../../../../services/gateway-protocol/types';
 import { DaoCard } from '../../../../molecules/dao-card';
@@ -15,6 +15,7 @@ import {
 } from '../../../../molecules/sections';
 import { ExploreProps } from '../../types';
 import Banner from './banner/banner';
+import Cred from './cred/cred';
 
 type Props = {
   setActiveTab: (tab: number) => void;
@@ -40,6 +41,7 @@ export function AllTab({
       }}
     >
       <Banner />
+      <Cred />
       <Stack
         direction="column"
         divider={<Divider />}
@@ -99,9 +101,7 @@ export function AllTab({
         <SectionWithGrid
           title={t('featured-people.title')}
           caption={t('featured-people.caption')}
-          action={
-           null
-          }
+          action={null}
         >
           {people.map((person) => (
             <PersonCard key={person.id} user={person} />
