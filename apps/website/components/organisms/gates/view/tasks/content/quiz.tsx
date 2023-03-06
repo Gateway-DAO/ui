@@ -22,7 +22,15 @@ const QuizContent = ({
   readOnly,
   isLoading,
   isAdmin,
+  attemptCount,
 }) => {
+  const isInitialAttempt = attemptCount === undefined ? true : false;
+  const attemptLimit = isInitialAttempt
+    ? data.attempt_limit
+    : attemptCount > data.attempt_limit
+    ? 0
+    : data.attempt_limit - attemptCount;
+
   const { questions } = data;
   const formattedDate = new Date(updatedAt?.toLocaleString()).toLocaleString();
   const initialAnswers = questions.map((question, index) => {
@@ -158,24 +166,30 @@ const QuizContent = ({
       })}
       {!readOnly && !completed && (
         <>
-        {/* TODO FUTURE UPDATE WHEN BACKEND IS READY */}
-          {/* <Stack direction="row" justifyContent="space-between">
-            <InfoOutlinedIcon />
-            <Typography
-              color={(theme) => theme.palette.text.secondary}
-              variant="subtitle2"
-              sx={{ marginLeft: '10px' }}
-            >
-              You have 3 out of {3} attempts to answer
-            </Typography>
-          </Stack> */}
-
+          {data.attempt_limit !== null && (
+            <Stack direction="row" justifyContent="space-between">
+              <InfoOutlinedIcon />
+              <Typography
+                color={(theme) =>
+                  attemptLimit === 0
+                    ? 'red'
+                    : theme.palette.text.secondary
+                }
+                variant="subtitle2"
+                sx={{ marginLeft: '10px' }}
+              >
+                You have {attemptLimit} out of {data.attempt_limit}{' '}
+                attempts to answer
+              </Typography>
+            </Stack>
+          )}
           <LoadingButton
             variant="contained"
             sx={{ marginTop: '15px' }}
             onClick={() =>
               !spammers ? completeTask({ questions: answers }) : null
             }
+            disabled={attemptLimit === 0}
             isLoading={isLoading}
           >
             Submit

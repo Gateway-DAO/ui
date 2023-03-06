@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { useToggle } from 'react-use';
 import { PartialDeep } from 'type-fest';
 
@@ -52,6 +52,7 @@ interface Error {
       extensions?: {
         code: number;
         error: string;
+        attemptLeft: number;
       };
       message?: string;
     }[];
@@ -68,17 +69,19 @@ export function Task({
   completed: completedProp = false,
 }: Props) {
   const { me, gqlAuthMethods, onOpenLogin } = useAuth();
+
   const taskProgress = me?.task_progresses.find(
     (task_progress) => task_progress.task_id === task.id
   );
 
   const completed = taskProgress?.completed === 'done';
+
   const [expanded, toggleExpanded] = useToggle(isDefaultOpen);
   const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
     toggleExpanded(isDefaultOpen);
-  }, [isDefaultOpen]);
+  }, [isDefaultOpen, taskProgress?.id]);
 
   const getTaskContent = (task_type: string) => {
     const taskTypes = {
@@ -144,6 +147,16 @@ export function Task({
     );
   };
 
+  let attemptCount = 0;
+  const { data, error, refetch } = useQuery(
+    ['findTaskProgressOfAUser', taskProgress?.id],
+    () => gqlAuthMethods.findTaskProgressOfAUser({ id: taskProgress?.id })
+  );
+  attemptCount = data?.task_progress[0]?.attempt_count;
+
+  const taskContent = getTaskContent(task.task_type);
+  const TaskComponent = taskContent?.body;
+
   const { mutateAsync: completeTaskMutation, isLoading } = useMutation(
     ['completeTask', { gateId: task.gate_id, taskId: task.id }],
     gqlAuthMethods.complete_task,
@@ -172,7 +185,10 @@ export function Task({
       onSuccess: () => {
         setErrorMessage('');
       },
-      onError: (error: Error) => {
+      onError: async (error: Error) => {
+        refetch();
+        if (taskProgress?.id === undefined)
+          await queryClient.resetQueries(['user_task_progresses', me?.id]);
         setErrorMessage(
           getMapValueFromObject(
             taskErrorMessages,
@@ -183,9 +199,6 @@ export function Task({
       },
     });
   };
-
-  const taskContent = getTaskContent(task.task_type);
-  const TaskComponent = taskContent?.body;
 
   return (
     <Card
@@ -241,6 +254,7 @@ export function Task({
             gate={gate}
             task={task}
             data={task.task_data}
+            attemptCount={attemptCount}
             completed={completed}
             updatedAt={completed ? taskProgress?.updated_at : ''}
             completeTask={completeTask}

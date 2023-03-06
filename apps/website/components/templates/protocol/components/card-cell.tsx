@@ -3,6 +3,7 @@ import { ReactNode } from 'react';
 import { brandColors } from '@gateway/theme';
 
 import { Stack, Typography, alpha } from '@mui/material';
+import { useTheme } from '@emotion/react';
 
 type Props = {
   label: string;
@@ -21,16 +22,18 @@ type TextProps = {
 };
 
 function TextBig({ children, disabled }: TextProps) {
+  const theme = useTheme();
+  console.log(theme);
   return (
     <Typography
       fontSize={14}
-      sx={{
+      sx={(theme) => ({
         whiteSpace: 'pre-wrap',
         wordBreak: 'break-word',
         color: disabled
           ? alpha(brandColors.white.main, 0.3)
           : alpha(brandColors.white.main, 0.7),
-      }}
+      })}
     >
       {children}
     </Typography>
@@ -41,11 +44,15 @@ function TextSmall({ children, disabled }: TextProps) {
   return (
     <Typography
       fontSize={14}
-      sx={{
+      sx={(theme) => ({
         color: disabled
           ? alpha(brandColors.white.main, 0.3)
           : brandColors.white.main,
-      }}
+        fontWeight: theme.typography.fontWeightRegular,
+        letterSpacing: '0.4px',
+        fontFamily: 'Plus Jakarta Sans',
+        fontStyle: 'normal',
+      })}
     >
       {children}
     </Typography>
