@@ -66,7 +66,7 @@ function CustomApp({ Component, pageProps }: AppProps) {
           </WalletProvider>
         </SessionProvider>
       </ThemeProvider>
-
+      {/* Smartlook */}
       <Script
         strategy="afterInteractive"
         dangerouslySetInnerHTML={{
@@ -77,6 +77,23 @@ function CustomApp({ Component, pageProps }: AppProps) {
             c.charset='utf-8';c.src='https://web-sdk.smartlook.com/recorder.js';h.appendChild(c);
             })(document);
             smartlook('init', '${process.env.NEXT_PUBLIC_SMARTLOOK_KEY}', { region: 'eu' });
+            `,
+        }}
+      />
+      {/* Google Analytics */}
+      <Script
+        strategy="afterInteractive"
+        src="https://www.googletagmanager.com/gtag/js?id=G-CKZ9WYMPM4"
+      />
+      <Script
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: `
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'G-CKZ9WYMPM4');
             `,
         }}
       />
