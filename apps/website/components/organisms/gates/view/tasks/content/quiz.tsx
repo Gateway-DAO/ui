@@ -168,18 +168,18 @@ const QuizContent = ({
         <>
           {data.attempt_limit !== null && (
             <Stack direction="row" justifyContent="space-between">
-              <InfoOutlinedIcon />
+              <InfoOutlinedIcon color={attemptLimit === 0 ? 'error' : 'inherit'} />
               <Typography
                 color={(theme) =>
-                  attemptLimit === 0
-                    ? 'red'
-                    : theme.palette.text.secondary
+                  attemptLimit === 0 ? 'red' : theme.palette.text.secondary
                 }
                 variant="subtitle2"
                 sx={{ marginLeft: '10px' }}
               >
-                You have {attemptLimit} out of {data.attempt_limit}{' '}
-                attempts to answer
+                {attemptLimit === 0
+                  ? `You're no longer able to answer`
+                  : `You have ${attemptLimit} out of ${data.attempt_limit} attempts to
+                answer`}
               </Typography>
             </Stack>
           )}

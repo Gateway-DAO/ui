@@ -23,10 +23,9 @@ type TextProps = {
 
 function TextBig({ children, disabled }: TextProps) {
   const theme = useTheme();
-  console.log(theme);
   return (
     <Typography
-      fontSize={14}
+      fontSize={12}
       sx={(theme) => ({
         whiteSpace: 'pre-wrap',
         wordBreak: 'break-word',
@@ -69,7 +68,6 @@ export default function CardCell({
   inverted = false,
   disabled = false,
 }: Props) {
-  console.log(label, children);
   return (
     <Stack
       gap={margin ? 1 : 0}
