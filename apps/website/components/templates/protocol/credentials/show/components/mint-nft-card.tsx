@@ -13,6 +13,7 @@ import {
   Typography,
 } from '@mui/material';
 
+import { Chain } from '../../../../../../services/gateway-protocol/types';
 import { getExplorer } from '../../../../../../utils/web3';
 import {
   PolygonIcon,
@@ -38,9 +39,10 @@ type Props = {
   comingSoon?: ComingSoonType;
   mintedData?: MintedChain[] | null;
   mintAction?: () => void;
+  chain?: Chain;
 };
 
-const chains = {
+const mintNetworks = {
   solana: {
     icon: <SolanaIcon />,
     name: 'Solana',
@@ -52,6 +54,15 @@ const chains = {
   polygon: {
     icon: <PolygonIcon />,
     name: 'Polygon',
+  },
+};
+
+const chains = {
+  [Chain.Sol]: {
+    mintNetworks: [mintNetworks.solana],
+  },
+  [Chain.Evm]: {
+    mintNetworks: [mintNetworks.polygon], // TODO: add mintNetworks.etherium
   },
 };
 
@@ -136,9 +147,9 @@ function ChainMintedRow({
             display: 'flex',
           }}
         >
-          {chains[chain].icon}
+          {mintNetworks[chain].icon}
         </span>
-        <Typography variant="body2">{chains[chain].name}</Typography>
+        <Typography variant="body2">{mintNetworks[chain].name}</Typography>
       </Box>
       <Stack justifyContent="space-between" direction="row" gap="30px">
         <Typography
@@ -164,6 +175,7 @@ export default function MintNFTCard({
   comingSoon,
   mintedData,
   mintAction,
+  chain,
 }: Props): JSX.Element {
   const { t } = useTranslation('protocol');
 
@@ -228,30 +240,40 @@ export default function MintNFTCard({
         </Box>
       </Stack>
       <Stack divider={<Divider sx={{ width: '100%' }} />}>
-        {mintedData ? (
+        {chain && (
           <>
-            {mintedData.map((chain) => (
-              <ChainMintedRow
-                key={chain.transaction}
-                chain={chain.chain}
-                transaction={chain.transaction}
-              />
-            ))}
+            {mintedData ? (
+              <>
+                {mintedData.map((chain) => (
+                  <ChainMintedRow
+                    key={chain.transaction}
+                    chain={chain.chain}
+                    transaction={chain.transaction}
+                  />
+                ))}
+              </>
+            ) : (
+              <>
+                {chains[chain].mintNetworks.map((network) => (
+                  <ChainRow
+                    key={network.name}
+                    icon={network.icon}
+                    chain={network.name}
+                    mintAction={mintAction}
+                  />
+                ))}
+              </>
+            )}
           </>
-        ) : (
-          <ChainRow
-            icon={<PolygonIcon />}
-            chain="Polygon"
-            mintAction={mintAction}
-          />
         )}
 
         {comingSoon &&
+          chain &&
           comingSoon.chains.map((chain) => (
             <ChainRow
-              key={chains[chain].name}
-              icon={chains[chain].icon}
-              chain={chains[chain].name}
+              key={mintNetworks[chain].name}
+              icon={mintNetworks[chain].icon}
+              chain={mintNetworks[chain].name}
               disabled
             />
           ))}
