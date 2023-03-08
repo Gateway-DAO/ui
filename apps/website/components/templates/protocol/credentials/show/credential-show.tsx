@@ -96,11 +96,12 @@ export default function CredentialProtocolShow({ credential }: Props) {
             mintedData={mintData ? mintData : null}
             comingSoon={{
               adText: `${t('credential.mint-card.chain-coming-message')}`,
-              chains: ['ethereum', 'solana'],
+              chains: ['ethereum'],
             }}
             mintAction={() =>
               mintCredential.mutate({ credentialId: credential.id })
             }
+            chain={credential?.recipientUser?.primaryWallet?.chain}
           />
         )}
 
@@ -108,6 +109,7 @@ export default function CredentialProtocolShow({ credential }: Props) {
           <MintNFTCard
             title={t('credential.mint-card.title')}
             mintedData={mintData}
+            chain={credential?.recipientUser?.primaryWallet?.chain}
           />
         )}
 
