@@ -24,7 +24,6 @@ export default function AuthenticatedBy({
 
   const authenticatedByName =
     authenticatedBy?.gatewayId ?? authenticatedBy.primaryWallet.address;
-
   return (
     <CardCell label={t('credential.authenticated-by')}>
       {hasLink ? (
@@ -36,7 +35,7 @@ export default function AuthenticatedBy({
             color: brandColors.purple.main,
             textDecoration: 'none',
             cursor: 'pointer',
-            fontSize: 12,
+            fontSize: 14,
           }}
           href={ROUTES.PROFILE.replace('[username]', authenticatedByName)}
         >
