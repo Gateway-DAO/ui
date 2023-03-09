@@ -40,7 +40,7 @@ export function Form({ onSubmit, isLoading }: Props) {
       />
       <TextField
         required
-        label="Username"
+        label="Gateway ID"
         id="username"
         {...register('username')}
         error={!!errors.username}

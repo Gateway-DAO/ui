@@ -13,14 +13,15 @@ import {
   Typography,
 } from '@mui/material';
 
-import { getExplorer } from '../../../../../../utils/web3';
+import { Chain } from '../../../../../../services/gateway-protocol/types';
+import { getExplorer, getSolanaExplorer } from '../../../../../../utils/web3';
 import {
   PolygonIcon,
   EthereumIcon,
   SolanaIcon,
 } from '../../../../../atoms/icons';
 
-type Chains = 'solana' | 'ethereum' | 'polygon';
+type Chains = 'Solana' | 'Ethereum' | 'Polygon'; // TODO: Remove
 
 type ComingSoonType = {
   adText?: string;
@@ -28,7 +29,7 @@ type ComingSoonType = {
 };
 
 export type MintedChain = {
-  chain: Chains;
+  chain: Chain;
   transaction: string;
 };
 
@@ -38,20 +39,32 @@ type Props = {
   comingSoon?: ComingSoonType;
   mintedData?: MintedChain[] | null;
   mintAction?: () => void;
+  chain?: Chain;
 };
 
-const chains = {
-  solana: {
+const mintNetworks = {
+  SOL: {
     icon: <SolanaIcon />,
     name: 'Solana',
   },
-  ethereum: {
+  Ethereum: {
     icon: <EthereumIcon />,
     name: 'Ethereum',
+    id: 1,
   },
-  polygon: {
+  EVM: {
     icon: <PolygonIcon />,
     name: 'Polygon',
+    id: 80001,
+  },
+};
+
+const chains = {
+  [Chain.Sol]: {
+    mintNetworks: [mintNetworks.SOL],
+  },
+  [Chain.Evm]: {
+    mintNetworks: [mintNetworks.EVM], // TODO: add mintNetworks.etherium
   },
 };
 
@@ -110,7 +123,7 @@ function ChainMintedRow({
   chain,
   transaction,
 }: {
-  chain: Chains;
+  chain: Chain;
   transaction: string;
 }): JSX.Element {
   return (
@@ -136,9 +149,9 @@ function ChainMintedRow({
             display: 'flex',
           }}
         >
-          {chains[chain].icon}
+          {mintNetworks[chain].icon}
         </span>
-        <Typography variant="body2">{chains[chain].name}</Typography>
+        <Typography variant="body2">{mintNetworks[chain].name}</Typography>
       </Box>
       <Stack justifyContent="space-between" direction="row" gap="30px">
         <Typography
@@ -147,7 +160,14 @@ function ChainMintedRow({
           letterSpacing="0.17px"
           fontWeight="400"
           component="a"
-          href={`${getExplorer(80001)}/tx/${transaction}`}
+          href={`${
+            chain === Chain.Evm
+              ? getExplorer(mintNetworks[chain].id) + '/tx/' + transaction
+              : getSolanaExplorer(
+                  process.env.NEXT_PUBLIC_SOLANA_CLUSTER,
+                  `/tx/${transaction}`
+                )
+          }`}
           target="_blank"
           sx={{ textDecoration: 'none' }}
         >
@@ -164,6 +184,7 @@ export default function MintNFTCard({
   comingSoon,
   mintedData,
   mintAction,
+  chain,
 }: Props): JSX.Element {
   const { t } = useTranslation('protocol');
 
@@ -228,30 +249,40 @@ export default function MintNFTCard({
         </Box>
       </Stack>
       <Stack divider={<Divider sx={{ width: '100%' }} />}>
-        {mintedData ? (
+        {chain && (
           <>
-            {mintedData.map((chain) => (
-              <ChainMintedRow
-                key={chain.transaction}
-                chain={chain.chain}
-                transaction={chain.transaction}
-              />
-            ))}
+            {mintedData ? (
+              <>
+                {mintedData.map((chain) => (
+                  <ChainMintedRow
+                    key={chain.transaction}
+                    chain={chain.chain}
+                    transaction={chain.transaction}
+                  />
+                ))}
+              </>
+            ) : (
+              <>
+                {chains[chain].mintNetworks.map((network) => (
+                  <ChainRow
+                    key={network.name}
+                    icon={network.icon}
+                    chain={network.name}
+                    mintAction={mintAction}
+                  />
+                ))}
+              </>
+            )}
           </>
-        ) : (
-          <ChainRow
-            icon={<PolygonIcon />}
-            chain="Polygon"
-            mintAction={mintAction}
-          />
         )}
 
         {comingSoon &&
+          chain &&
           comingSoon.chains.map((chain) => (
             <ChainRow
-              key={chains[chain].name}
-              icon={chains[chain].icon}
-              chain={chains[chain].name}
+              key={mintNetworks[chain].name}
+              icon={mintNetworks[chain].icon}
+              chain={mintNetworks[chain].name}
               disabled
             />
           ))}

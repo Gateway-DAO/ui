@@ -13,6 +13,7 @@ import { ROUTES } from '../../../../../constants/routes';
 import { useAuth } from '../../../../../providers/auth';
 import { gatewayProtocolAuthSDK } from '../../../../../services/gateway-protocol/api';
 import {
+  Chain,
   Credential,
   MintCredentialMutationVariables,
 } from '../../../../../services/gateway-protocol/types';
@@ -46,7 +47,7 @@ export default function CredentialProtocolShow({ credential }: Props) {
     credential.nft && credential.nft.minted
       ? [
           {
-            chain: 'polygon',
+            chain: credential.nft.chain as Chain,
             transaction: credential.nft.txHash,
           },
         ]
@@ -69,7 +70,10 @@ export default function CredentialProtocolShow({ credential }: Props) {
           setIsOpen(false);
         }, 2500);
         setMintData([
-          { chain: 'polygon', transaction: data.mintCredential.txHash },
+          {
+            chain: credential?.recipientUser?.primaryWallet?.chain,
+            transaction: data.mintCredential.txHash,
+          },
         ]);
       },
     }
@@ -96,11 +100,12 @@ export default function CredentialProtocolShow({ credential }: Props) {
             mintedData={mintData ? mintData : null}
             comingSoon={{
               adText: `${t('credential.mint-card.chain-coming-message')}`,
-              chains: ['ethereum', 'solana'],
+              chains: ['Ethereum'],
             }}
             mintAction={() =>
               mintCredential.mutate({ credentialId: credential.id })
             }
+            chain={credential?.recipientUser?.primaryWallet?.chain}
           />
         )}
 
@@ -108,6 +113,7 @@ export default function CredentialProtocolShow({ credential }: Props) {
           <MintNFTCard
             title={t('credential.mint-card.title')}
             mintedData={mintData}
+            chain={credential?.recipientUser?.primaryWallet?.chain}
           />
         )}
 

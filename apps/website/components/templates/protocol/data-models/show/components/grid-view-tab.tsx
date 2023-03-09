@@ -31,7 +31,6 @@ export default function GridViewTab({
 }: Props) {
   const { t } = useTranslation('protocol');
   const internalPageSize = pageSize || 10;
-
   const {
     data: credentials, //[ ] Rename this data credentials
     isLoading,
@@ -73,7 +72,6 @@ export default function GridViewTab({
       document.removeEventListener('scroll', onScroll);
     };
   }, []);
-
   return (
     <>
       {isLoading ? (

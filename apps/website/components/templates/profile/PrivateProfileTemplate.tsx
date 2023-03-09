@@ -22,6 +22,7 @@ import {
   Tabs,
   Tab,
   IconButton,
+  Chip,
 } from '@mui/material';
 
 import { a11yTabProps, TabPanel, useTab } from '../../../components/atoms/tabs';
@@ -59,7 +60,6 @@ export default function PrivateProfileTemplate() {
     !me?.languages?.length ||
     !me?.timezone == undefined ||
     !me?.experiences?.length;
-
   const tabs = [
     // {
     //   key: 'overview',
@@ -69,11 +69,13 @@ export default function PrivateProfileTemplate() {
     {
       key: 'received',
       label: t('common:tabs.received'),
+      count: me.protocol.totalOfreceivedCredentials,
       section: <ReceivedTab user={me} />,
     },
     {
       key: 'issued',
       label: t('common:tabs.issued'),
+      count: me.protocol.totalOfIssuedCredentials,
       section: <IssuedTab user={me} />,
     },
   ];
@@ -203,7 +205,6 @@ export default function PrivateProfileTemplate() {
               />
             </Stack>
           </Box>
-
         </Box>
       </Box>
       <Box
@@ -222,7 +223,7 @@ export default function PrivateProfileTemplate() {
             mb: '-1px',
           }}
         >
-          {tabs.map(({ key, label }, index) => (
+          {tabs.map(({ key, label, count }, index) => (
             <Tab
               key={key}
               label={label}
@@ -231,7 +232,12 @@ export default function PrivateProfileTemplate() {
                 px: 0,
                 mr: theme.spacing(3),
               })}
-              onClick={() => console.log(label)}
+              {...(count
+                ? {
+                    icon: <Chip label={count} size="small" />,
+                    iconPosition: 'end',
+                  }
+                : {})}
               {...a11yTabProps('dao', index)}
             />
           ))}
