@@ -21,7 +21,7 @@ import {
   SolanaIcon,
 } from '../../../../../atoms/icons';
 
-type Chains = 'solana' | 'ethereum' | 'polygon'; // TODO: Remove
+type Chains = 'Solana' | 'Ethereum' | 'Polygon'; // TODO: Remove
 
 type ComingSoonType = {
   adText?: string;
@@ -47,7 +47,7 @@ const mintNetworks = {
     icon: <SolanaIcon />,
     name: 'Solana',
   },
-  Etherium: {
+  Ethereum: {
     icon: <EthereumIcon />,
     name: 'Ethereum',
   },
