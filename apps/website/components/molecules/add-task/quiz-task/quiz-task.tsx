@@ -194,15 +194,15 @@ export function QuizTask({
 
   const quizSettings = [
     {
-      name: 'Attempt limit',
-      description: 'The attempt quantity that user will be able to answer',
+      name: t('tasks.quiz.quizAttemptLimitTittle'),
+      description: t('tasks.quiz.quizAttemptLimitDescription'),
       options: attemptLimitValues,
       defaultValue: LimitPeriod.UNLIMITED,
       formName: values.ATTEMPT_LIMIT,
     },
     {
-      name: 'Retry after',
-      description: 'The users will be able to retry after a time period',
+      name: t('tasks.quiz.quizRetryAfterTittle'),
+      description: t('tasks.quiz.quizRetryAfterDescription'),
       options: claimLimitValues,
       defaultValue: TimePeriod.IMMEDIATELY,
       formName: values.RETRY_PERIOD,

@@ -13,6 +13,7 @@ import {
 } from '@mui/material';
 
 import { LoadingButton } from '../../../../../../components/atoms/loading-button';
+import useTranslation from 'next-translate/useTranslation';
 
 const QuizContent = ({
   data,
@@ -36,7 +37,7 @@ const QuizContent = ({
   const initialAnswers = questions.map((question, index) => {
     return { questionIdx: index, answers: [] };
   });
-
+  const { t } = useTranslation('gate-new');
   const [answers, setAnswers] = useState(initialAnswers);
   const randomQuestion =
     questions[Math.floor(Math.random() * questions.length)];
@@ -179,10 +180,14 @@ const QuizContent = ({
                 sx={{ marginLeft: '10px' }}
               >
                 {attemptLimit === 0
-                  ? `You have ${attemptLimit} out of ${data.attempt_limit} attempts to
-                answer.You're no longer able to answer`
-                  : `You have ${attemptLimit} out of ${data.attempt_limit} attempts to
-                answer`}
+                  ? t('tasks.quiz.quizAttemptLimitCountMessage', {
+                      attemptLimit,
+                      attempt_limit: data.attempt_limit,
+                    }) + t('tasks.quiz.quizAttemptLimitExhaust')
+                  : t('tasks.quiz.quizAttemptLimitCountMessage', {
+                      attemptLimit,
+                      attempt_limit: data.attempt_limit,
+                    })}
               </Typography>
             </Stack>
           )}

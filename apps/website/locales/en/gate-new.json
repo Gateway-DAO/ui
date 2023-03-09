@@ -45,7 +45,13 @@
       "attemptLimitTwo": "2",
       "attemptLimitThree": "3",
       "attemptLimitFive": "5",
-      "attemptLimitTen": "10"
+      "attemptLimitTen": "10",
+      "quizAttemptLimitTittle": "Attempt limit",
+      "quizAttemptLimitDescription": "The attempt quantity that user will be able to answer",
+      "quizRetryAfterTittle": "Retry after",
+      "quizRetryAfterDescription": "The users will be able to retry after a time period",
+      "quizAttemptLimitCountMessage": "You have {{attemptLimit}} out of {{attempt_limit}} attempts to answer.",
+      "quizAttemptLimitExhaust": "You're no longer able to answer"
     },
     "manual": {
       "title": "Manual Submission Title"
