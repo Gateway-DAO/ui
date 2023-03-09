@@ -21,7 +21,7 @@ import {
   SolanaIcon,
 } from '../../../../../atoms/icons';
 
-type Chains = 'solana' | 'ethereum' | 'polygon';
+type Chains = 'solana' | 'ethereum' | 'polygon'; // TODO: Remove
 
 type ComingSoonType = {
   adText?: string;
@@ -29,7 +29,7 @@ type ComingSoonType = {
 };
 
 export type MintedChain = {
-  chain: Chains;
+  chain: Chain;
   transaction: string;
 };
 
@@ -43,15 +43,15 @@ type Props = {
 };
 
 const mintNetworks = {
-  solana: {
+  SOL: {
     icon: <SolanaIcon />,
     name: 'Solana',
   },
-  ethereum: {
+  Etherium: {
     icon: <EthereumIcon />,
     name: 'Ethereum',
   },
-  polygon: {
+  EVM: {
     icon: <PolygonIcon />,
     name: 'Polygon',
   },
@@ -59,10 +59,10 @@ const mintNetworks = {
 
 const chains = {
   [Chain.Sol]: {
-    mintNetworks: [mintNetworks.solana],
+    mintNetworks: [mintNetworks.SOL],
   },
   [Chain.Evm]: {
-    mintNetworks: [mintNetworks.polygon], // TODO: add mintNetworks.etherium
+    mintNetworks: [mintNetworks.EVM], // TODO: add mintNetworks.etherium
   },
 };
 
@@ -121,7 +121,7 @@ function ChainMintedRow({
   chain,
   transaction,
 }: {
-  chain: Chains;
+  chain: Chain;
   transaction: string;
 }): JSX.Element {
   return (

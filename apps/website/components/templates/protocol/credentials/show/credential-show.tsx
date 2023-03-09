@@ -13,6 +13,7 @@ import { ROUTES } from '../../../../../constants/routes';
 import { useAuth } from '../../../../../providers/auth';
 import { gatewayProtocolAuthSDK } from '../../../../../services/gateway-protocol/api';
 import {
+  Chain,
   Credential,
   MintCredentialMutationVariables,
 } from '../../../../../services/gateway-protocol/types';
@@ -46,7 +47,7 @@ export default function CredentialProtocolShow({ credential }: Props) {
     credential.nft && credential.nft.minted
       ? [
           {
-            chain: 'polygon',
+            chain: credential.nft.chain as Chain,
             transaction: credential.nft.txHash,
           },
         ]
@@ -69,7 +70,10 @@ export default function CredentialProtocolShow({ credential }: Props) {
           setIsOpen(false);
         }, 2500);
         setMintData([
-          { chain: 'polygon', transaction: data.mintCredential.txHash },
+          {
+            chain: credential?.recipientUser?.primaryWallet?.chain,
+            transaction: data.mintCredential.txHash,
+          },
         ]);
       },
     }
