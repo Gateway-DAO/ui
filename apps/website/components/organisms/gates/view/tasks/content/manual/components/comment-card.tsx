@@ -62,11 +62,8 @@ const CommentCard = ({
         </Stack>
       </Stack>
       <Typography
-        title={comment}
         sx={(theme) => ({
           color: theme.palette.grey[300],
-          maxHeight: '50px',
-          overflow: 'hidden',
         })}
       >
         {comment}
