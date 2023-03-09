@@ -56,7 +56,7 @@ export default function DataTable({ title, data }: Props) {
             <CardCell
               label={fieldData?.label}
               margin={false}
-              inverted={true}
+              inverted={false}
               py={3}
               disabled={!fieldData.value || fieldData.value === ''}
             >

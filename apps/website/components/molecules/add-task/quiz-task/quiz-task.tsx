@@ -1,5 +1,5 @@
 import useTranslation from 'next-translate/useTranslation';
-import { useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 
 import { useSnackbar } from 'notistack';
 import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
@@ -14,11 +14,14 @@ import {
   IconButton,
   InputLabel,
   MenuItem,
+  OutlinedInput,
   Select,
   Slider,
   Stack,
   TextField,
+  ToggleButton,
   Typography,
+  styled,
   useMediaQuery,
   useTheme,
 } from '@mui/material';
@@ -40,6 +43,20 @@ export enum TimePeriod {
   ONE_WEEK = 10080,
   ONE_MONTH = 302400,
   NEVER = -1,
+}
+
+export enum LimitPeriod {
+  UNLIMITED = null,
+  ONE = 1,
+  TWO = 2,
+  THREE = 3,
+  FIVE = 5,
+  TEN = 10,
+}
+
+export enum values {
+  ATTEMPT_LIMIT = 'attempt_limit',
+  RETRY_PERIOD = 'time_period',
 }
 
 export const createQuestion = (order = 0) => ({
@@ -111,6 +128,86 @@ export function QuizTask({
       );
     }
   };
+  const StyledToggleButton = styled(ToggleButton)(({ theme }) => ({
+    '&.MuiToggleButton-root': {
+      fontWeight: 700,
+      minWidth: '64px',
+      color: '#FFFFFF',
+    },
+    '&.Mui-selected , &.Mui-selected:hover': {
+      border: '2px solid #9A53FF',
+    },
+  }));
+
+  const claimLimitValues = [
+    {
+      label: t('tasks.quiz.timePeriodImmediately'),
+      value: TimePeriod.IMMEDIATELY,
+    },
+    {
+      label: t('tasks.quiz.timePeriodFifteenMinutes'),
+      value: TimePeriod.FIFTEEN_MINUTES,
+    },
+    {
+      label: t('tasks.quiz.timePeriodThirtyMinutes'),
+      value: TimePeriod.THIRTY_MINUTES,
+    },
+    {
+      label: t('tasks.quiz.timePeriodOneHour'),
+      value: TimePeriod.ONE_HOUR,
+    },
+    {
+      label: t('tasks.quiz.timePeriodOneDay'),
+      value: TimePeriod.ONE_DAY,
+    },
+    {
+      label: t('tasks.quiz.timePeriodNever'),
+      value: TimePeriod.NEVER,
+    },
+  ];
+  const attemptLimitValues = [
+    {
+      label: t('tasks.quiz.attemptLimitUnlimited'),
+      value: LimitPeriod.UNLIMITED,
+    },
+    {
+      label: t('tasks.quiz.attemptLimitOne'),
+      value: LimitPeriod.ONE,
+    },
+    {
+      label: t('tasks.quiz.attemptLimitTwo'),
+      value: LimitPeriod.TWO,
+    },
+    {
+      label: t('tasks.quiz.attemptLimitThree'),
+      value: LimitPeriod.THREE,
+    },
+    {
+      label: t('tasks.quiz.attemptLimitFive'),
+      value: LimitPeriod.FIVE,
+    },
+    {
+      label: t('tasks.quiz.attemptLimitTen'),
+      value: LimitPeriod.TEN,
+    },
+  ];
+
+  const quizSettings = [
+    {
+      name: t('tasks.quiz.quizAttemptLimitTittle'),
+      description: t('tasks.quiz.quizAttemptLimitDescription'),
+      options: attemptLimitValues,
+      defaultValue: LimitPeriod.UNLIMITED,
+      formName: values.ATTEMPT_LIMIT,
+    },
+    {
+      name: t('tasks.quiz.quizRetryAfterTittle'),
+      description: t('tasks.quiz.quizRetryAfterDescription'),
+      options: claimLimitValues,
+      defaultValue: TimePeriod.IMMEDIATELY,
+      formName: values.RETRY_PERIOD,
+    },
+  ];
 
   return (
     <Stack
@@ -158,7 +255,7 @@ export function QuizTask({
               id="quiz-title"
               required
               sx={{
-                minWidth: { md: '400px', xs: '110%', lg:'500px' },
+                minWidth: { md: '400px', xs: '110%', lg: '500px' },
                 maxWidth: { xs: '100%', md: '110%' },
               }}
               InputProps={{
@@ -396,71 +493,79 @@ export function QuizTask({
               </>
             )}
             <Stack>
-              <Stack sx={{ mt: '48px' }}>
-                <Typography>
-                  {t('tasks.quiz.settingsRetryAfterTitle')}
-                </Typography>
-                <Typography
-                  sx={(theme) => ({
-                    color: theme.palette.text.secondary,
-                    mb: 2,
-                  })}
-                >
-                  {t('tasks.quiz.settingsRetryAfterDescription')}
-                </Typography>
-                <FormControl>
-                  <InputLabel htmlFor="time_period">
-                    {t('tasks.quiz.timePeriodAction')}
-                  </InputLabel>
-                  <Select
-                    label={t('tasks.quiz.timePeriodAction')}
-                    defaultValue={
-                      formValues?.tasks?.[taskId]?.task_data['time_period']
-                        ? formValues?.tasks?.[taskId]?.task_data['time_period']
-                        : ''
-                    }
-                    datatype="number"
-                    id="time_period"
-                    sx={{ maxWidth: { md: '50%', xs: '100%' } }}
-                    error={
-                      !!(errors.tasks?.[taskId]?.task_data as QuizTaskDataError)
-                        ?.time_period
-                    }
-                    {...register(`tasks.${taskId}.task_data.time_period`)}
-                  >
-                    <MenuItem value={TimePeriod.IMMEDIATELY}>
-                      {t('tasks.quiz.timePeriodImmediately')}
-                    </MenuItem>
-                    <MenuItem value={TimePeriod.FIFTEEN_MINUTES}>
-                      {t('tasks.quiz.timePeriodFifteenMinutes')}
-                    </MenuItem>
-                    <MenuItem value={TimePeriod.THIRTY_MINUTES}>
-                      {t('tasks.quiz.timePeriodThirtyMinutes')}
-                    </MenuItem>
-                    <MenuItem value={TimePeriod.ONE_HOUR}>
-                      {t('tasks.quiz.timePeriodOneHour')}
-                    </MenuItem>
-                    <MenuItem value={TimePeriod.ONE_DAY}>
-                      {t('tasks.quiz.timePeriodOneDay')}
-                    </MenuItem>
-                    <MenuItem value={TimePeriod.NEVER}>
-                      {t('tasks.quiz.timePeriodNever')}
-                    </MenuItem>
-                  </Select>
-                  {!!(errors.tasks?.[taskId]?.task_data as QuizTaskDataError)
-                    ?.time_period && (
-                    <Typography
-                      color={(theme) => theme.palette.error.main}
-                      sx={{ mt: '5px' }}
-                    >
-                      {
-                        errors.tasks?.[taskId]?.task_data?.['time_period']
-                          ?.message
-                      }
-                    </Typography>
-                  )}
-                </FormControl>
-              </Stack>
+              {quizSettings.map((setting) => (
+                <Stack sx={{ mt: '48px', mb: '48px' }}>
+                  <FormControl>
+                    <div>
+                      <Typography gutterBottom variant="body1">
+                        {setting.name}
+                      </Typography>
+                      <Typography
+                        variant="body2"
+                        gutterBottom
+                        color="text.secondary"
+                        marginBottom={4}
+                      >
+                        {setting.description}
+                      </Typography>
+                      <Controller
+                        name={`tasks.${taskId}.task_data.${setting.formName}`}
+                        control={control}
+                        defaultValue={setting.defaultValue}
+                        render={({ field: { onChange, value, ref } }) => {
+                          return (
+                            <FormControl>
+                              <Stack
+                                direction={'row'}
+                                sx={{
+                                  flexDirection: { xs: 'column', md: 'row' },
+                                }}
+                                gap={2}
+                              >
+                                <>
+                                  {setting.options.map((btn) => {
+                                    return (
+                                      <StyledToggleButton
+                                        aria-label={btn.label}
+                                        key={btn.value}
+                                        value={btn.value}
+                                        color="primary"
+                                        size={'medium'}
+                                        sx={{
+                                          px: 3,
+                                        }}
+                                        selected={value === btn.value}
+                                        onClick={() => {
+                                          onChange(btn.value);
+                                        }}
+                                      >
+                                        {btn.label}
+                                      </StyledToggleButton>
+                                    );
+                                  })}
+                                </>
+                              </Stack>
+                            </FormControl>
+                          );
+                        }}
+                      />
+                    </div>
+                    {!!(errors.tasks?.[taskId]?.task_data as QuizTaskDataError)
+                      ?.attempt_limit && (
+                      <Typography
+                        color={(theme) => theme.palette.error.main}
+                        sx={{ mt: '5px' }}
+                      >
+                        {
+                          errors.tasks?.[taskId]?.task_data?.[
+                            `${setting.formName}`
+                          ]?.message
+                        }
+                      </Typography>
+                    )}
+                  </FormControl>
+                </Stack>
+              ))}
             </Stack>
           </Stack>
         )}

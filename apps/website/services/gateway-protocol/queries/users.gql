@@ -19,5 +19,7 @@ query meProtocol {
         name
       }
     }
+    totalOfIssuedCredentials
+    totalOfreceivedCredentials
   }
 }

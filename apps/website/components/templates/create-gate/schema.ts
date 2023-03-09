@@ -198,12 +198,14 @@ export type QuizTaskData = {
   questions?: Question[];
   pass_score?: number;
   time_period?: number;
+  attempt_limit?: number | null;
 };
 
 export type QuizTaskDataError = {
   id?: FieldError;
   pass_score?: FieldError;
   time_period?: FieldError;
+  attempt_limit?: FieldError;
   questions?: {
     id?: FieldError;
     question?: FieldError;
@@ -459,6 +461,11 @@ export const quizDataSchema = z.object({
     invalid_type_error: 'Select a time period',
     required_error: 'Select a time period',
   }),
+  attempt_limit: z
+    .number()
+    .positive({ message: 'please enter a valid value' })
+    .int({ message: `please enter a valid value , don't use decimal value` })
+    .nullish(),
   questions: z.array(
     z.object({
       question: z

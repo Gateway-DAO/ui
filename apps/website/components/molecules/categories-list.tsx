@@ -67,7 +67,7 @@ export function CategoriesList({
           px={listMode ? 0 : 2}
           {...props}
         >
-          {categories.map((category, index) => {
+          {categories?.map((category, index) => {
             const formattedLabel =
               category.charAt(0).toUpperCase() + category.slice(1);
             return (
