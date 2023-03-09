@@ -100,7 +100,7 @@ export default function CredentialProtocolShow({ credential }: Props) {
             mintedData={mintData ? mintData : null}
             comingSoon={{
               adText: `${t('credential.mint-card.chain-coming-message')}`,
-              chains: ['ethereum'],
+              chains: ['Ethereum'],
             }}
             mintAction={() =>
               mintCredential.mutate({ credentialId: credential.id })

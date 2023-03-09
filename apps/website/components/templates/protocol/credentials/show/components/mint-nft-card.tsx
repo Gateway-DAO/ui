@@ -14,14 +14,14 @@ import {
 } from '@mui/material';
 
 import { Chain } from '../../../../../../services/gateway-protocol/types';
-import { getExplorer } from '../../../../../../utils/web3';
+import { getExplorer, getSolanaExplorer } from '../../../../../../utils/web3';
 import {
   PolygonIcon,
   EthereumIcon,
   SolanaIcon,
 } from '../../../../../atoms/icons';
 
-type Chains = 'solana' | 'ethereum' | 'polygon'; // TODO: Remove
+type Chains = 'Solana' | 'Ethereum' | 'Polygon'; // TODO: Remove
 
 type ComingSoonType = {
   adText?: string;
@@ -47,13 +47,15 @@ const mintNetworks = {
     icon: <SolanaIcon />,
     name: 'Solana',
   },
-  Etherium: {
+  Ethereum: {
     icon: <EthereumIcon />,
     name: 'Ethereum',
+    id: 1,
   },
   EVM: {
     icon: <PolygonIcon />,
     name: 'Polygon',
+    id: 80001,
   },
 };
 
@@ -158,7 +160,14 @@ function ChainMintedRow({
           letterSpacing="0.17px"
           fontWeight="400"
           component="a"
-          href={`${getExplorer(80001)}/tx/${transaction}`}
+          href={`${
+            chain === Chain.Evm
+              ? getExplorer(mintNetworks[chain].id) + '/tx/' + transaction
+              : getSolanaExplorer(
+                  process.env.NEXT_PUBLIC_SOLANA_CLUSTER,
+                  `/tx/${transaction}`
+                )
+          }`}
           target="_blank"
           sx={{ textDecoration: 'none' }}
         >
