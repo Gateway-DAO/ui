@@ -141,7 +141,6 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
         title: data.title,
         categories: data.categories || [],
         description: data.description,
-        skills: data.skills || [],
         claim_limit: data.claim_limit,
         expire_date: data.expire_date,
         permissions: permissionsData,

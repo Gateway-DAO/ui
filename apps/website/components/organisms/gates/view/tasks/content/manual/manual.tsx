@@ -181,17 +181,21 @@ const ManualContent = ({
                       sx={{ flexGrow: 1 }}
                       value={comment}
                       onChange={(e) => setComment(e.target.value)}
+                      multiline
                     />
-                    <LoadingButton
-                      size="large"
-                      variant="contained"
-                      onClick={onSubmitComment}
-                      isLoading={isLoading}
-                      disabled={!comment}
-                    >
-                      {t('tasks.manual.action')}
-                    </LoadingButton>
                   </Stack>
+                  <LoadingButton
+                    sx={{
+                      marginTop: 2,
+                    }}
+                    size="large"
+                    variant="contained"
+                    onClick={onSubmitComment}
+                    isLoading={isLoading}
+                    disabled={!comment}
+                  >
+                    {t('tasks.manual.action')}
+                  </LoadingButton>
                 </>
               )}
             </Stack>
