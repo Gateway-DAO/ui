@@ -15,7 +15,6 @@ import { NavStateProvider } from '../hooks/use-nav';
 import { usePersistLocale } from '../hooks/usePersistLocale';
 import { AuthProvider } from '../providers/auth';
 import { BiconomyProvider } from '../providers/biconomy';
-import { CyberConnectProvider } from '../providers/cyberconnect';
 import { WalletProvider } from '../providers/wallet/wallet-provider';
 import { queryClient } from '../services/query-client';
 
@@ -52,11 +51,9 @@ function CustomApp({ Component, pageProps }: AppProps) {
                 <Notistack>
                   <AuthProvider isAuthPage={Component.auth}>
                     <BiconomyProvider>
-                      <CyberConnectProvider>
-                        <NavStateProvider>
-                          <Component {...pageProps} />
-                        </NavStateProvider>
-                      </CyberConnectProvider>
+                      <NavStateProvider>
+                        <Component {...pageProps} />
+                      </NavStateProvider>
                     </BiconomyProvider>
                   </AuthProvider>
                 </Notistack>
