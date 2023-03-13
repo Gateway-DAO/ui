@@ -1,10 +1,7 @@
 import useTranslation from 'next-translate/useTranslation';
 
-import { PartialDeep } from 'type-fest';
-
 import { Button, Divider, Stack } from '@mui/material';
 
-import { DataModel } from '../../../../../services/gateway-protocol/types';
 import { DaoCard } from '../../../../molecules/dao-card';
 import { DataModelCard } from '../../../../molecules/data-model-card';
 import { GatesCard } from '../../../../molecules/gates-card';
@@ -18,7 +15,6 @@ import Banner from './banner/banner';
 
 type Props = {
   setActiveTab: (tab: number) => void;
-  dataModels: PartialDeep<DataModel>[];
 } & ExploreProps;
 
 export function AllTab({
@@ -99,9 +95,7 @@ export function AllTab({
         <SectionWithGrid
           title={t('featured-people.title')}
           caption={t('featured-people.caption')}
-          action={
-           null
-          }
+          action={null}
         >
           {people.map((person) => (
             <PersonCard key={person.id} user={person} />

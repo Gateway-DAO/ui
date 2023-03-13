@@ -13,7 +13,7 @@ import {
 import MUICard from '@mui/material/Card';
 
 import { ROUTES } from '../../constants/routes'; //[ ] use right path
-import { DataModel } from '../../services/gateway-protocol/types';
+import { Protocol_Data_Model } from '../../services/hasura/types';
 import { CategoriesList } from './categories-list';
 
 export function DataModelCard({
@@ -21,9 +21,8 @@ export function DataModelCard({
   title,
   description,
   tags,
-  version,
   createdBy,
-}: PartialDeep<DataModel>): JSX.Element {
+}: PartialDeep<Protocol_Data_Model>): JSX.Element {
   const url = ROUTES.PROTOCOL_DATAMODEL.replace('[id]', id);
   return (
     <Link passHref href={url}>

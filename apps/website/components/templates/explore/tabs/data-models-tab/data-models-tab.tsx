@@ -8,7 +8,7 @@ import { Box } from '@mui/material';
 
 import Loading from '../../../../../components/atoms/loading';
 import { query } from '../../../../../constants/queries';
-import { gatewayProtocolSDK } from '../../../../../services/gateway-protocol/api';
+import { gqlAnonMethods } from '../../../../../services/hasura/api';
 import { DataModelCard } from '../../../../molecules/data-model-card';
 
 export default function DataModelsTab(): JSX.Element {
@@ -21,11 +21,11 @@ export default function DataModelsTab(): JSX.Element {
   } = useInfiniteQuery(
     [query.dataModels],
     async ({ pageParam }) => {
-      const result = await gatewayProtocolSDK.dataModels({
-        take: internalPageSize,
-        skip: pageParam || 0,
+      const result = await gqlAnonMethods.dataModels({
+        limit: internalPageSize,
+        offset: pageParam || 0,
       } as any);
-      return result.dataModels;
+      return result.protocol_data_model;
     },
     {
       getNextPageParam: (lastPage, pages) =>

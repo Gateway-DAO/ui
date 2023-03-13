@@ -55,6 +55,16 @@ query get_home($daos_where: daos_bool_exp = {}) {
       ...file
     }
   }
+  dataModels: protocol_data_model(limit: 4, offset: 0) {
+    id
+    title
+    tags
+    version
+    description
+    createdBy {
+      gatewayId
+    }
+  }
 }
 
 query gates_tab {

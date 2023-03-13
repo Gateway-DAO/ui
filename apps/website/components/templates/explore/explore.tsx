@@ -21,15 +21,9 @@ type TemplateProps = {
   title: string;
   subtitle: string;
   data: ExploreProps;
-  dataModels: PartialDeep<DataModel>[];
 };
 
-export function ExploreTemplate({
-  title,
-  subtitle,
-  data,
-  dataModels,
-}: TemplateProps) {
+export function ExploreTemplate({ title, subtitle, data }: TemplateProps) {
   const { t } = useTranslation('explore');
   const { activeTab, handleTabChange, setTab } = useTab();
 
@@ -38,9 +32,7 @@ export function ExploreTemplate({
       {
         key: 'all',
         label: t('common:tabs.all'),
-        section: (
-          <AllTab setActiveTab={setTab} {...data} dataModels={dataModels} />
-        ),
+        section: <AllTab setActiveTab={setTab} {...data} />,
       },
       {
         key: 'credentials',
