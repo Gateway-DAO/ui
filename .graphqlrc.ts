@@ -44,11 +44,6 @@ const config: IGraphQLConfig = {
   extensions: {
     codegen: {
       generates: {
-        './apps/website/services/cyberconnect/types.ts': {
-          ...generateConfig,
-          schema: process.env.CYBERCONNECT_ENDPOINT as string,
-          documents: ['apps/website/services/cyberconnect/**/*.gql'],
-        },
         './apps/website/services/hasura/types.ts': {
           ...generateConfig,
           schema: {

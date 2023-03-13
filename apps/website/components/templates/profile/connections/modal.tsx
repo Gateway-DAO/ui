@@ -24,7 +24,7 @@ export function ConnectionsModal({ wallet, connections, onClose }: Props) {
   const { t } = useTranslation('user-profile');
 
   const { isLoading, isSuccess, data } = useQuery(
-    ['cyberconnect-wallets', 'gateway-users', wallet],
+    ['gateway-users', wallet],
     () => gqlAnonMethods.users_by_wallets({ wallets: connections })
   );
 
