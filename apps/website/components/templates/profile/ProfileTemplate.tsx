@@ -13,40 +13,38 @@ import { Box, Stack, Typography, Tabs, Tab } from '@mui/material';
 import { a11yTabProps, TabPanel, useTab } from '../../../components/atoms/tabs';
 import { Navbar } from '../../../components/organisms/navbar/navbar';
 import { generateImageUrl } from '../../../hooks/use-file';
-import { useAuth } from '../../../providers/auth';
 import { Users } from '../../../services/hasura/types';
 import { SessionUser } from '../../../types/user';
 import { AvatarFile } from '../../atoms/avatar-file';
-import { useFollowStatus } from '../../atoms/follow-button-user/utils';
 import { SocialButtons } from '../../organisms/social-buttons';
 import { OverviewTab } from './tabs';
 
-const PendingReceivedSection = dynamic<any>(
-  () =>
-    import('./pending-received-section').then(
-      (mod) => mod.PendingReceivedSection
-    ),
-  {
-    ssr: false,
-  }
-);
+// const PendingReceivedSection = dynamic<any>(
+//   () =>
+//     import('./pending-received-section').then(
+//       (mod) => mod.PendingReceivedSection
+//     ),
+//   {
+//     ssr: false,
+//   }
+// );
 
-const FollowButtonUser = dynamic<any>(
-  () =>
-    import('../../atoms/follow-button-user').then(
-      (mod) => mod.FollowButtonUser
-    ),
-  {
-    ssr: false,
-  }
-);
+// const FollowButtonUser = dynamic<any>(
+//   () =>
+//     import('../../atoms/follow-button-user').then(
+//       (mod) => mod.FollowButtonUser
+//     ),
+//   {
+//     ssr: false,
+//   }
+// );
 
-const ConnectionsButton = dynamic<any>(
-  () => import('./connections/button').then((mod) => mod.ConnectionsButton),
-  {
-    ssr: false,
-  }
-);
+// const ConnectionsButton = dynamic<any>(
+//   () => import('./connections/button').then((mod) => mod.ConnectionsButton),
+//   {
+//     ssr: false,
+//   }
+// );
 
 type Props = {
   user: SessionUser | PartialDeep<Users>;
@@ -54,14 +52,7 @@ type Props = {
 
 export default function ProfileTemplate({ user }: Props) {
   const { t } = useTranslation('user-profile');
-  const { activeTab, handleTabChange, setTab } = useTab();
-  const { me } = useAuth();
-  const { type: pendingType } = useFollowStatus(user.wallet);
-
-  const queryClient = useQueryClient();
-  const onChangeConnections = () => {
-    queryClient.refetchQueries(['connections', user.wallet]);
-  };
+  const { activeTab, handleTabChange } = useTab();
 
   const tabs = useMemo(
     () => [
@@ -154,7 +145,7 @@ export default function ProfileTemplate({ user }: Props) {
               </Typography>
             )}
           </Box>
-          <Box
+          {/* <Box
             sx={{
               display: 'flex',
               flexDirection: 'row',
@@ -165,23 +156,23 @@ export default function ProfileTemplate({ user }: Props) {
           >
             <ConnectionsButton wallet={user.wallet} />.
             <Typography>{user.credentials.length} credential(s)</Typography>
-          </Box>
+          </Box> */}
           <Stack direction="column" gap={4} mt={4}>
-            {!!(user as Users) && pendingType === 'received' && (
+            {/* {!!(user as Users) && pendingType === 'received' && (
               <PendingReceivedSection
                 username={user.username!}
                 wallet={user.wallet!}
                 onSuccess={onChangeConnections}
               />
-            )}
-            {user?.socials?.length > 0 || pendingType !== 'received' ? (
+            )} */}
+            {user?.socials?.length > 0 ? (
               <Stack direction="row" gap={1}>
-                {(user as Users)?.wallet && pendingType !== 'received' && (
+                {/* {(user as Users)?.wallet && pendingType !== 'received' && (
                   <FollowButtonUser
                     wallet={(user as Users).wallet}
                     onSuccess={onChangeConnections}
                   />
-                )}
+                )} */}
                 <SocialButtons
                   socials={user.socials}
                   copyNetworks={['discord']}
