@@ -4,7 +4,7 @@ query all_gates {
     title
     description
     categories
-    skills
+
     published
     links
     image
@@ -17,7 +17,7 @@ query gate($id: uuid!) {
     title
     description
     categories
-    skills
+
     published
     links
     image
@@ -80,7 +80,6 @@ query get_create_gate($id: uuid!) {
     title
     description
     categories
-    skills
     published
     links
     image
@@ -131,7 +130,7 @@ query get_create_gate($id: uuid!) {
   }
 }
 
-query verify_csv_progress ($file_id: uuid!) {
+query verify_csv_progress($file_id: uuid!) {
   verify_csv_progress(id: $file_id) {
     id
     invalid
@@ -145,7 +144,9 @@ query verify_csv_progress ($file_id: uuid!) {
 }
 
 query GateProgress($gateID: uuid!, $userID: uuid!) {
-  credentials (where: {gate_id: {_eq: $gateID}, target_id: {_eq: $userID}}) {
+  credentials(
+    where: { gate_id: { _eq: $gateID }, target_id: { _eq: $userID } }
+  ) {
     created_at
   }
 }

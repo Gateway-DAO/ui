@@ -7,7 +7,6 @@ import { Stack, TextField } from '@mui/material';
 import { useAuth } from '../../../providers/auth';
 import CategoriesInput from '../../molecules/categories-input';
 import CreatedByInput from '../../molecules/creators-input';
-import SkillsInput from '../../molecules/skills-input';
 import { CreateGateData, Creator } from './schema';
 
 export function GateDetailsForm() {
@@ -19,7 +18,7 @@ export function GateDetailsForm() {
   } = useFormContext<CreateGateData>();
   const { me } = useAuth();
   const creators = useMemo(() => ({ id: me?.id, name: me?.name }), [me]);
-  const { skills, categories } = getValues();
+  const {  categories } = getValues();
 
   return (
     <Stack direction="column" gap={2}>
@@ -66,25 +65,6 @@ export function GateDetailsForm() {
           '& div fieldset legend span': {
             marginRight: '12px',
           },
-        }}
-      />
-      <SkillsInput
-        label="Skills"
-        id="skills"
-        name="skills"
-        error={!!errors.skills}
-        errors={errors.skills}
-        defaultValue={skills}
-        {...register('skills')}
-        helperText={errors.skills?.message}
-        sx={{
-          width: '100%',
-          '& div fieldset legend span': {
-            marginRight: '10px',
-          },
-        }}
-        set={(skills: string[]) => {
-          setValue('skills', skills);
         }}
       />
       <CreatedByInput

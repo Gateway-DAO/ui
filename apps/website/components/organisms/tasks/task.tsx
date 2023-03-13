@@ -30,6 +30,7 @@ import SelfVerifyContent from '../gates/view/tasks/content/self-verify';
 import SnapshotContent from '../gates/view/tasks/content/snapshot';
 import TokenHoldContent from '../gates/view/tasks/content/token_hold';
 import TwitterFollowContent from '../gates/view/tasks/content/twitter_follow';
+import TwitterLikeContent from '../gates/view/tasks/content/twitter_like';
 import TwitterRetweetContent from '../gates/view/tasks/content/twitter_retweet';
 import TwitterTweetContent from '../gates/view/tasks/content/twitter_tweet';
 import { taskErrorMessages } from './task-error-messages';
@@ -71,6 +72,7 @@ export function Task({
   const taskProgress = me?.task_progresses.find(
     (task_progress) => task_progress.task_id === task.id
   );
+
   const completed = taskProgress?.completed === 'done';
   const [expanded, toggleExpanded] = useToggle(isDefaultOpen);
   const [errorMessage, setErrorMessage] = useState('');
@@ -104,6 +106,10 @@ export function Task({
       twitter_follow: {
         title: 'Twitter Follow',
         body: TwitterFollowContent,
+      },
+      twitter_like: {
+        title: 'Like Tweet',
+        body: TwitterLikeContent,
       },
       twitter_retweet: {
         title: 'Retweet Post',

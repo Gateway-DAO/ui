@@ -18,11 +18,10 @@ export type Creator = {
 export type CreateGateData = {
   id?: string;
   categories: string[];
-  skills: string[];
   expire_date?: string;
   claim_limit?: number;
 } & Required<
-  Pick<Gates, 'title' | 'categories' | 'skills' | 'image' | 'description'>
+  Pick<Gates, 'title' | 'categories' | 'image' | 'description'>
 > &
   Required<{ creator: Pick<Gates['creator'], 'id' | 'name'> }> & {
     type: 'task_based' | 'direct';
@@ -84,6 +83,11 @@ export type TwitterRetweetTask = {
   task_data: TwitterRetweetData;
 };
 
+export type TwitterLikeTask = {
+  task_type: 'twitter_like';
+  task_data: TwitterLikeData;
+};
+
 export type GithubContributeTask = {
   task_type: 'github_contribute';
   task_data: GithubContributeData;
@@ -110,6 +114,7 @@ export type Task = {
   | HoldNFTTask
   | FollowProfileTask
   | TwitterTweetTask
+  | TwitterLikeTask
   | TwitterRetweetTask
   | GithubContributeTask
   | GithubPRTask
@@ -151,7 +156,16 @@ export type TwitterRetweetData = {
   tweet_link?: string;
 };
 
+export type TwitterLikeData = {
+  tweet_link?: string;
+};
+
 export type TwitterRetweetDataError = {
+  id?: FieldError;
+  tweet_link?: FieldError;
+};
+
+export type TwitterLikeDataError = {
   id?: FieldError;
   tweet_link?: FieldError;
 };
@@ -274,6 +288,7 @@ export type FileTaskDataError = {
 // Manual
 export type ManualTaskData = {
   id?: string;
+  event_type?: string;
 };
 
 export type ManualTaskDataError = {
@@ -306,6 +321,15 @@ const twitterTweetTaskDataSchema = z.object({
 });
 
 const twitterRetweetTaskDataSchema = z.object({
+  tweet_link: z
+    .string()
+    .url('Invalid URL')
+    .refine((val) => val.includes('twitter.com'), {
+      message: 'This is not a Twitter URL',
+    }),
+});
+
+const twitterLikeTaskDataSchema = z.object({
   tweet_link: z
     .string()
     .url('Invalid URL')
@@ -546,6 +570,18 @@ export const taskTwitterRetweetSchema = z.object({
   task_data: twitterRetweetTaskDataSchema,
 });
 
+export const taskTwitterLikeSchema = z.object({
+  id: z.string().optional(),
+  task_id: z.string().optional(),
+  order: z.number().optional(),
+  title: z.string().min(2, 'The title must contain at least 2 character(s)'),
+  description: z
+    .string()
+    .min(2, 'The description must contain at least 2 character(s)'),
+  task_type: z.literal('twitter_like'),
+  task_data: twitterLikeTaskDataSchema,
+});
+
 export const taskGithubContributeSchema = z.object({
   id: z.string().optional(),
   task_id: z.string().optional(),
@@ -578,6 +614,7 @@ export const taskManualSchema = z.object({
   description: z
     .string()
     .min(2, 'The description must contain at least 2 character(s)'),
+  task_data: z.object({ event_type: z.enum(['comment', 'send_link']) }),
   task_type: z.literal('manual'),
 });
 
@@ -594,11 +631,6 @@ const gateBase = z.object({
     .string({ required_error: 'Description is required' })
     .min(2, 'The description must contain at least 2 character(s)'),
   image: z.string({ required_error: 'Image is required' }).min(2),
-  skills: z
-    .array(z.string({ required_error: 'Skills is required' }), {
-      invalid_type_error: 'Skills is required',
-    })
-    .min(1, 'Please select at least 1 skill'),
   creator: z.object({
     id: z.string(),
     name: z.string(),
@@ -624,6 +656,7 @@ const taskGate = gateBase.augment({
         taskHoldNFTSchema,
         TwitterFollowProfileSchema,
         taskTwitterTweetSchema,
+        taskTwitterLikeSchema,
         taskTwitterRetweetSchema,
         taskGithubContributeSchema,
         taskGithubPRSchema,

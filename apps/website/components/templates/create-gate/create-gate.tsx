@@ -141,7 +141,6 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
         title: data.title,
         categories: data.categories || [],
         description: data.description,
-        skills: data.skills || [],
         claim_limit: data.claim_limit,
         expire_date: data.expire_date,
         permissions: permissionsData,
@@ -245,7 +244,7 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
             }
           }}
           sx={(theme) => ({
-            p: '0 90px',
+            p: '0 10px',
             pb: 12,
             [theme.breakpoints.down('sm')]: { px: 2.5, pb: 6 },
           })}
@@ -321,6 +320,7 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
                 }
                 sx={{
                   width: 300,
+                  marginTop: '15px',
                 }}
               />
             </Stack>
@@ -363,7 +363,7 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
                   sx={{
                     marginLeft: 'auto',
                     width: '100%',
-                    maxWidth: { xs: '100%', md: '100%', lg: '80%' },
+                    maxWidth: { xs: '100%', md: '80%', lg: '75%' },
                   }}
                   gap={4}
                 >
