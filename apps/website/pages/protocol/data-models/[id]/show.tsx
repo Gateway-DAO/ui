@@ -6,6 +6,7 @@ import {
   DataModelShow,
 } from '../../../../components/templates/protocol';
 import { gatewayProtocolSDK } from '../../../../services/gateway-protocol/api';
+import { gqlAnonMethods } from '../../../../services/hasura/api';
 
 type Props = InferGetServerSidePropsType<typeof getServerSideProps>;
 
@@ -27,7 +28,7 @@ export default function ProtocolDataModel({ dataModel, stats }: Props) {
 }
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-  const dataModel = await gatewayProtocolSDK.dataModel({
+  const dataModel = await gqlAnonMethods.dataModel({
     id: ctx.query.id as string,
   });
 
@@ -37,7 +38,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 
   return {
     props: {
-      dataModel: dataModel?.dataModel,
+      dataModel: dataModel?.protocol_data_model_by_pk,
       stats,
     },
   };

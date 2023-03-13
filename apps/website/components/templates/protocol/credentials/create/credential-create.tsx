@@ -17,7 +17,7 @@ import {
   CreateCredentialMutationVariables,
   CreateCredentialInput,
 } from '../../../../../services/gateway-protocol/types';
-import { DataModel } from '../../../../../services/gateway-protocol/types';
+import { Protocol_Data_Model } from '../../../../../services/hasura/types';
 import { claimFields } from './components/ClaimTypes';
 import ClaimForm from './components/claim-form';
 import CredentialCreateContainer from './components/credential-create-container';
@@ -28,7 +28,7 @@ import SuccessfullyCreated from './components/successfully-created';
 import { createCredentialSchema } from './schema';
 
 type CreateCredentialProps = {
-  dataModel: PartialDeep<DataModel>;
+  dataModel: PartialDeep<Protocol_Data_Model>;
   oldData?: CreateCredentialInput;
 };
 export default function CredentialCreateForm({

@@ -7,7 +7,7 @@ import { brandColors } from '@gateway/theme';
 
 import { alpha, Typography, Stack } from '@mui/material';
 
-import { DataModel } from '../../../../../../services/gateway-protocol/types';
+import { Protocol_Data_Model } from '../../../../../../services/hasura/types';
 import { ClaimFieldProps, claimFields, getClaimType } from './ClaimTypes';
 import ClaimAccordion from './claim-accordion';
 import ClaimFormArray from './claim-form-array';
@@ -15,7 +15,7 @@ import ClaimFormText from './claim-form-text';
 import { ClaimImageField } from './claim-image-field';
 
 type Props = {
-  dataModel: PartialDeep<DataModel>;
+  dataModel: PartialDeep<Protocol_Data_Model>;
 };
 
 function ClaimField(props: ClaimFieldProps) {

@@ -6,17 +6,15 @@ import { theme } from '@gateway/theme';
 
 import { Stack, useMediaQuery } from '@mui/material';
 
-import {
-  DataModel,
-  GetDataModelStatsQuery,
-} from '../../../../../../services/gateway-protocol/types';
+import { GetDataModelStatsQuery } from '../../../../../../services/gateway-protocol/types';
+import { Protocol_Data_Model } from '../../../../../../services/hasura/types';
 import ExternalLink from '../../../../../atoms/external-link';
 import DashboardCard from '../../../components/dashboard-card';
 import OverviewCardInfo from './overview-card-info';
 import TableSchema from './table-schema';
 
 type Props = {
-  dataModel: PartialDeep<DataModel>;
+  dataModel: PartialDeep<Protocol_Data_Model>;
   stats: GetDataModelStatsQuery;
 };
 

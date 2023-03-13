@@ -13,9 +13,10 @@ import { DataModel } from '../../../../../../services/gateway-protocol/types';
 import { gqlAnonMethods } from '../../../../../../services/hasura/api';
 import CardCell from '../../../components/card-cell';
 import CardUserCell from '../../../components/card-user-cell';
+import { Protocol_Data_Model } from '../../../../../../services/hasura/types';
 
 type Props = {
-  dataModel: PartialDeep<DataModel>;
+  dataModel: PartialDeep<Protocol_Data_Model>;
 };
 
 export default function OverviewCardInfo({ dataModel }: Props) {

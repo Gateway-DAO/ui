@@ -11,11 +11,12 @@ import {
   GatewayProtocolSDKTypes,
 } from '../../../../../../services/gateway-protocol/api';
 import { DataModel } from '../../../../../../services/gateway-protocol/types';
+import { Protocol_Data_Model } from '../../../../../../services/hasura/types';
 import Loading from '../../../../../atoms/loading';
 import DataGrid from '../../../../../organisms/data-grid/data-grid';
 
 type Props = {
-  dataModel: PartialDeep<DataModel>;
+  dataModel: PartialDeep<Protocol_Data_Model>;
   columns: any[]; //[ ] add interface/type
   queryString: string;
   queryFnName: keyof GatewayProtocolSDKTypes;

@@ -1,16 +1,14 @@
-query dataModel($id: String!) {
-  protocol {
-    dataModel(id: $id) {
-      id
-      description
-      schema
-      tags
-      title
-      arweaveInfo
-      createdAt
-      createdBy {
-        gatewayId
-      }
+query dataModel($id: uuid!) {
+  protocol_data_model_by_pk(id: $id) {
+    id
+    description
+    schema
+    tags
+    title
+    arweaveInfo
+    createdAt
+    createdBy {
+      gatewayId
     }
   }
 }

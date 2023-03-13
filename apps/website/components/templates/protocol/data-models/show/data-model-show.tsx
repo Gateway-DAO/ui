@@ -15,6 +15,7 @@ import {
   DataModel,
   GetDataModelStatsQuery,
 } from '../../../../../services/gateway-protocol/types';
+import { Protocol_Data_Model } from '../../../../../services/hasura/types';
 import ModalRight from '../../../../molecules/modal-right';
 import InfoTitle from '../../components/info-title';
 import Tags from '../../components/tags';
@@ -22,7 +23,7 @@ import CredentialProtocolCreate from '../../credentials/create/credential-create
 import DataModelTabs from './components/data-model-tabs';
 
 type Props = {
-  dataModel: PartialDeep<DataModel>;
+  dataModel: PartialDeep<Protocol_Data_Model>;
   stats: GetDataModelStatsQuery;
   isCredentialCreate?: boolean;
 };
