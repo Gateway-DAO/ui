@@ -3,13 +3,25 @@ import useTranslation from 'next-translate/useTranslation';
 import { Button } from '@mui/material';
 
 import { useAuth } from '../../../providers/auth';
-import { BiConnState } from '../../../services/cyberconnect/types';
 import { FollowUserButton } from './follow-user';
 import { FriendReceivedPendingButton } from './pending-received';
 import { FriendSentPendingButton } from './pending-sent';
 import { FollowButtonProps } from './type';
 import { UnfollowUserButton } from './unfollow-user';
-import { useFollowStatus } from './utils';
+
+// Mocked
+enum BiConnState {
+  Connected = 'connected',
+  Pending = 'pending',
+}
+
+function useFollowStatus(_wallet: string) {
+  return {
+    status: null,
+    type: null,
+  };
+}
+// Mocked
 
 export function FollowButtonUser(props: FollowButtonProps) {
   const { t } = useTranslation('common');

@@ -1,17 +1,20 @@
 import useTranslation from 'next-translate/useTranslation';
 import Link from 'next/link';
 
+import { PartialDeep } from 'type-fest';
+
 import { Box, Stack, Typography } from '@mui/material';
 
 import { ROUTES } from '../../../../../constants/routes';
-import { Notification } from '../../../../../types/cyberconnect';
+import { Users } from '../../../../../services/hasura/types';
 import { AvatarFile } from '../../../../atoms/avatar-file';
-import { Methods } from '../item-methods';
 
-type Props = Partial<Notification> &
-  Methods & {
-    isLast?: boolean;
-  };
+type Props = {
+  isLast?: boolean;
+  user: PartialDeep<Users>;
+  hasRead: boolean;
+  onRead: () => void;
+};
 
 export function AcceptedConnectionNotification({
   hasRead,
