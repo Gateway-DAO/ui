@@ -42,7 +42,6 @@ import { DirectHoldersList } from './direct-holders-list/direct-holders-list';
 import { DirectHoldersHeader } from './direct-holders-list/header';
 import { DraftDirectHoldersList } from './draft-direct-holders-list/draft-direct-holders-list';
 import { TaskList } from './task-list';
-import { ConnectResponse_Result } from 'apps/website/services/cyberconnect/types';
 
 const GateStateChip = dynamic(() => import('../../atoms/gate-state-chip'), {
   ssr: false,
@@ -226,15 +225,13 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
   );
 
   const handleNavBack = () => {
-    
     // If user directly lands to credential page using link
-    if ( window.history.state.idx === 0 ) {
+    if (window.history.state.idx === 0) {
       router.replace(ROUTES.MY_PROFILE);
+    } else {
+      router.back();
     }
-    else {
-      router.back()
-    }
-  }
+  };
 
   const gateOptions = [
     {
@@ -258,7 +255,6 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
       action: () => setConfirmDelete(true),
       hidden: false,
     },
-    
   ];
 
   const isDateExpired = (() => {

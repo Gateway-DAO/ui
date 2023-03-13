@@ -1,3 +1,5 @@
+import { useQuery } from '@tanstack/react-query';
+
 import { useMenu } from '@gateway/ui';
 
 import NotificationsIcon from '@mui/icons-material/Notifications';
@@ -7,14 +9,11 @@ import Badge from '@mui/material/Badge';
 import IconButton from '@mui/material/IconButton';
 import Popover from '@mui/material/Popover';
 import Tooltip from '@mui/material/Tooltip';
-import { useQuery } from '@tanstack/react-query';
-import { useAuth } from 'apps/website/providers/auth';
 
-import { useCyberConnect } from '../../../../providers/cyberconnect';
+import { useAuth } from '../../../../providers/auth';
 import { NotificationList } from './list';
 
 export function NavBarNotifications() {
-  const { unreadNotifications } = useCyberConnect();
   const userMenu = useMenu();
   const { me } = useAuth();
 
@@ -54,14 +53,12 @@ export function NavBarNotifications() {
     <>
       <Tooltip title="Open Notifications">
         <IconButton onClick={userMenu.onOpen}>
-          {unreadNotifications + unreadRedisNotifications > 0 ? (
+          {unreadRedisNotifications > 0 ? (
             <Badge
               color="primary"
               variant="dot"
               overlap="circular"
-              badgeContent={parseInt(
-                unreadNotifications + unreadRedisNotifications
-              )}
+              badgeContent={parseInt(unreadRedisNotifications)}
               anchorOrigin={{
                 vertical: 'bottom',
                 horizontal: 'right',
