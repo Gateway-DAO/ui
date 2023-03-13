@@ -3,8 +3,8 @@ import { useEffect } from 'react';
 
 import { useSnackbar } from 'notistack';
 import { useCopyToClipboard } from 'react-use';
-import { useAccount, useNetwork } from 'wagmi';
 
+import { theme } from '@gateway/theme';
 import { useMenu } from '@gateway/ui';
 
 import { ArrowDropDown } from '@mui/icons-material';
@@ -23,10 +23,9 @@ import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 
 import { ROUTES } from '../../../constants/routes';
+import { useConnectedWallet } from '../../../hooks/wallet/use-connected-wallet';
 import { useAuth } from '../../../providers/auth';
 import { AvatarFile } from '../../atoms/avatar-file';
-import { icons } from './wallet-icons';
-import { theme } from '@gateway/theme';
 
 /* TODO: Refactor */
 
@@ -37,8 +36,8 @@ type Props = {
 export function NavBarAvatar({ hideProfile }: Props) {
   const { element, isOpen, onClose, onOpen, withOnClose } = useMenu();
 
-  const { connector } = useAccount();
-  const { chain } = useNetwork();
+  const wallet = useConnectedWallet();
+
   const { onSignOut, me } = useAuth();
   const { enqueueSnackbar } = useSnackbar();
   const [state, copyToClipboard] = useCopyToClipboard();
@@ -124,7 +123,10 @@ export function NavBarAvatar({ hideProfile }: Props) {
             </MenuItem>
           </Link>
         )}
-        <Link passHref href={isDesktop ? ROUTES.SETTINGS_PUBLIC_PROFILE : ROUTES.SETTINGS}>
+        <Link
+          passHref
+          href={isDesktop ? ROUTES.SETTINGS_PUBLIC_PROFILE : ROUTES.SETTINGS}
+        >
           <MenuItem
             component="a"
             key="settings"
@@ -155,12 +157,12 @@ export function NavBarAvatar({ hideProfile }: Props) {
             }}
           >
             <IconButton disabled sx={{ mr: 2.5, ml: 1 }}>
-              {!!connector?.id && icons[connector?.id]}
+              {wallet?.adapter?.icon}
             </IconButton>
 
             <ListItemText
               primary={address.slice(0, 5) + '...' + address.slice(-4)}
-              secondary={chain?.name}
+              secondary={wallet?.chainName}
             />
 
             <IconButton

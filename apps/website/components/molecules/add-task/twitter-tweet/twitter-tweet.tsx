@@ -15,12 +15,12 @@ import {
   Typography,
 } from '@mui/material';
 
+import { TaskIcon } from '../../../../components/atoms/task-icon';
 import {
   CreateGateData,
   TwitterTweetDataError,
 } from '../../../templates/create-gate/schema';
 import { EmojiPicker, EmojiPickerProps } from '../../form/emoji-picker';
-import { TaskIcon } from 'apps/website/components/atoms/task-icon';
 
 const TwitterTweetTask = ({ dragAndDrop, taskId, deleteTask }) => {
   const {
@@ -39,8 +39,8 @@ const TwitterTweetTask = ({ dragAndDrop, taskId, deleteTask }) => {
     }
   }, [setValue, taskId, formValues.tasks]);
 
-  const [taskVisible, setTaskVisible] = useState(false);
-  const [taskIsMoving, setTaskIsMoving] = useState(false);
+  const [taskVisible, setTaskVisible] = useState(true);
+  const [taskIsMoving, setTaskIsMoving] = useState(true);
   const [emoji, setEmoji] = useState('');
   const [tweetText, setTweetText] = useState(
     formValues.tasks[taskId]?.task_data['tweet_text']
@@ -118,14 +118,25 @@ const TwitterTweetTask = ({ dragAndDrop, taskId, deleteTask }) => {
         <Stack
           direction={'row'}
           alignItems={'center'}
-          sx={{ width: '100%', mr: '20px' }}
+          sx={(theme) => ({
+            width: '100%',
+            mr: '20px',
+            [theme.breakpoints.between('md', 'lg')]: {
+              margin: '-22px',
+            },
+            [theme.breakpoints.between('lg', 'xl')]: {
+              margin: '-22px',
+            },
+          })}
         >
-          <TaskIcon type="twitter_tweet" sx={{ marginRight: 3 }} />
+          <TaskIcon
+            type="twitter_tweet"
+            sx={{ marginRight: 3, marginLeft: 4 }}
+          />
           <Stack>
             <Typography variant="subtitle2">Post Tweet</Typography>
             <TextField
               variant="standard"
-              autoFocus
               sx={{
                 minWidth: { md: '400px', xs: '110%', lg:'500px' },
                 maxWidth: { xs: '100%', md: '110%' },
@@ -150,7 +161,18 @@ const TwitterTweetTask = ({ dragAndDrop, taskId, deleteTask }) => {
           </Stack>
         </Stack>
         {!taskIsMoving && (
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <Box
+            sx={(theme) => ({
+              display: 'flex',
+              alignItems: 'center',
+              [theme.breakpoints.between('md', 'lg')]: {
+               marginLeft: '-55px',
+              },
+              [theme.breakpoints.between('lg', 'xl')]: {
+               marginLeft: '-55px',
+              },
+            })}
+          >
             <IconButton
               onClick={() => deleteTask(taskId)}
               sx={(theme) => ({

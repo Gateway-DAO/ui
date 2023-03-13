@@ -19,12 +19,11 @@ import {
 } from '@mui/material';
 
 import { useAuth } from '../../../../providers/auth';
-
+import { TaskIcon } from '../../../atoms/task-icon';
 import {
   CreateGateData,
   TwitterRetweetDataError,
 } from '../../../templates/create-gate/schema';
-import { TaskIcon } from 'apps/website/components/atoms/task-icon';
 
 const TwitterRetweetTask = ({ dragAndDrop, taskId, deleteTask }) => {
   const { gqlAuthMethods } = useAuth();
@@ -49,8 +48,8 @@ const TwitterRetweetTask = ({ dragAndDrop, taskId, deleteTask }) => {
     setTaskIsMoving(dragAndDrop);
   }, [dragAndDrop]);
 
-  const [taskVisible, setTaskVisible] = useState(false);
-  const [taskIsMoving, setTaskIsMoving] = useState(false);
+  const [taskVisible, setTaskVisible] = useState(true);
+  const [taskIsMoving, setTaskIsMoving] = useState(true);
 
   const {
     mutate: getTwitterMutateTweet,
@@ -110,14 +109,25 @@ const TwitterRetweetTask = ({ dragAndDrop, taskId, deleteTask }) => {
         <Stack
           direction={'row'}
           alignItems={'center'}
-          sx={{ width: '100%', mr: '20px' }}
+          sx={(theme) => ({
+            width: '100%',
+            mr: '20px',
+            [theme.breakpoints.between('md', 'lg')]: {
+              margin: '-22px',
+            },
+            [theme.breakpoints.between('lg', 'xl')]: {
+              margin: '-22px',
+            },
+          })}
         >
-          <TaskIcon type="twitter_retweet" sx={{ marginRight: 3 }} />
+          <TaskIcon
+            type="twitter_retweet"
+            sx={{ marginRight: 3, marginLeft: 4 }}
+          />
           <Stack>
             <Typography variant="subtitle2">Retweet Post</Typography>
             <TextField
               variant="standard"
-              autoFocus
               sx={{
                 minWidth: { md: '400px', xs: '110%', lg:'500px' },
                 maxWidth: { xs: '100%', md: '110%' },
@@ -142,7 +152,18 @@ const TwitterRetweetTask = ({ dragAndDrop, taskId, deleteTask }) => {
           </Stack>
         </Stack>
         {!taskIsMoving && (
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <Box
+            sx={(theme) => ({
+              display: 'flex',
+              alignItems: 'center',
+              [theme.breakpoints.between('md', 'lg')]: {
+                marginLeft: '-55px',
+              },
+              [theme.breakpoints.between('lg', 'xl')]: {
+                marginLeft: '-55px',
+              },
+            })}
+          >
             <IconButton
               onClick={() => deleteTask(taskId)}
               sx={(theme) => ({

@@ -1,5 +1,4 @@
 import { v4 as uuidv4 } from 'uuid';
-import { useNetwork } from 'wagmi';
 
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import {
@@ -16,6 +15,8 @@ import {
   Typography,
 } from '@mui/material';
 
+import { useConnectedWallet } from '../../../../hooks/wallet/use-connected-wallet';
+
 const NetworksDetails = [
   {
     name: 'Polygon',
@@ -26,7 +27,7 @@ const NetworksDetails = [
 ];
 
 export function MintSelect({ setScreen, mint, setOpen }) {
-  const { chain: activeChain } = useNetwork();
+  const wallet = useConnectedWallet();
   return (
     <>
       <DialogContent>
@@ -46,7 +47,9 @@ export function MintSelect({ setScreen, mint, setOpen }) {
                 <ListItemAvatar>
                   <Badge
                     color={
-                      activeChain?.name == network.name ? 'success' : 'warning'
+                      wallet?.adapter?.name == network.name
+                        ? 'success'
+                        : 'warning'
                     }
                     overlap="circular"
                     badgeContent=" "

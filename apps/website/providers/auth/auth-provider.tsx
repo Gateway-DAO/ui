@@ -1,11 +1,17 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import { Session } from 'next-auth';
 import { useSession, signOut } from 'next-auth/react';
-import { PropsWithChildren, useMemo, useEffect, useCallback } from 'react';
-
-import { useConnectModal } from '@rainbow-me/rainbowkit';
+import {
+  PropsWithChildren,
+  useMemo,
+  useEffect,
+  useCallback,
+  useState,
+} from 'react';
 
 import { AuthConnectingModal } from '../../components/organisms/auth-connecting-modal';
+import { AuthModal } from '../../components/organisms/auth-modal';
+import { gatewayProtocolAuthSDK } from '../../services/gateway-protocol/api';
 import {
   gqlMethodsWithRefresh,
   gqlUserHeader,
@@ -13,6 +19,7 @@ import {
 import { BlockedPage } from './blocked-page';
 import { AuthContext } from './context';
 import { useAuthLogin, useInitUser } from './hooks';
+
 type Props = {
   isAuthPage?: boolean;
 };
@@ -24,10 +31,17 @@ export function AuthProvider({
   const { data: session } = useSession();
   const token = session?.token;
 
-  const { openConnectModal } = useConnectModal();
+  const [isModalVisible, setModalVisible] = useState(false);
 
-  const { me, error, onUpdateMe, authStep, onSignOut, onInvalidateMe } =
-    useAuthLogin();
+  const {
+    me,
+    error,
+    onUpdateMe,
+    authStep,
+    onRetry,
+    onSignOut,
+    onInvalidateMe,
+  } = useAuthLogin();
 
   const onInvalidRT = async (
     session: Session,
@@ -51,9 +65,16 @@ export function AuthProvider({
   const isBlocked = !!isAuthPage && (!me || !token);
 
   const gqlAuthMethods = useMemo(
-    () => gqlMethodsWithRefresh(session?.token, session?.user_id, onInvalidRT),
+    () =>
+      gqlMethodsWithRefresh(session?.token, session?.hasura_id, onInvalidRT),
     [session]
   );
+
+  const gqlProtocolAuthMethods = useMemo(
+    () => gatewayProtocolAuthSDK(session?.token),
+    [session]
+  );
+
   const fetchAuth = useCallback(
     async (url: string, options: Parameters<typeof fetch>[1]) => {
       const res = await fetch(
@@ -83,8 +104,9 @@ export function AuthProvider({
         me,
         token,
         gqlAuthMethods,
+        gqlProtocolAuthMethods,
         fetchAuth,
-        onOpenLogin: openConnectModal,
+        onOpenLogin: () => setModalVisible(true),
         onSignOut,
         onUpdateMe,
         onInvalidateMe,
@@ -92,6 +114,7 @@ export function AuthProvider({
       }}
     >
       {!isBlocked && children}
+      <AuthModal isOpen={isModalVisible} close={() => setModalVisible(false)} />
       <AuthConnectingModal
         step={authStep}
         error={error}
@@ -101,7 +124,8 @@ export function AuthProvider({
           authStep === 'get-me' ||
           authStep === 'error'
         }
-        onRetry={onSignOut}
+        onRetry={onRetry}
+        onCancel={onSignOut}
       />
       <BlockedPage isBlocked={isBlocked} />
     </AuthContext.Provider>

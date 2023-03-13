@@ -33,3 +33,12 @@ export const getExplorer = (chainID: number): string => {
       return 'https://etherscan.io';
   }
 };
+
+export const getSolanaExplorer = (chainName: string, text: string): string => {
+  switch (chainName) {
+    case 'devnet':
+      return `https://solscan.io${text}?cluster=devnet`;
+    default:
+      return `https://solscan.io${text}`;
+  }
+};

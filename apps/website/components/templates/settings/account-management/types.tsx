@@ -7,5 +7,7 @@ export type emailProps = {
 
 export const emailSchema = z.object({
   email: z.string().email(),
-  code: z.string({ required_error: 'Code is required'}).min(1, { message: 'Code is required'}),
+  code: z
+    .string({ required_error: 'Code is required' })
+    .min(1, { message: 'Code is required' }),
 });

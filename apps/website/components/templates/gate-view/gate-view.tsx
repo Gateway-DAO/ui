@@ -262,7 +262,6 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
       return false;
     }
     const expireDate = new Date(gateProps?.expire_date);
-    expireDate.setDate(expireDate.getDate() + 1);
     return expireDate.getTime() < new Date().getTime();
   })();
 

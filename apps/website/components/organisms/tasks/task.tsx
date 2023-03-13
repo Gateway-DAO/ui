@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { useToggle } from 'react-use';
 import { PartialDeep } from 'type-fest';
 
@@ -20,6 +20,7 @@ import { useAuth } from '../../../providers/auth';
 import { Tasks, Gates } from '../../../services/hasura/types';
 import { queryClient } from '../../../services/query-client';
 import { getMapValueFromObject } from '../../../utils/map-object';
+import { TaskIcon } from '../../atoms/task-icon';
 import GithubContributeContent from '../gates/view/tasks/content/github_contribute';
 import GithubPRContent from '../gates/view/tasks/content/github_prs';
 import ManualContent from '../gates/view/tasks/content/manual/manual';
@@ -34,8 +35,6 @@ import TwitterLikeContent from '../gates/view/tasks/content/twitter_like';
 import TwitterRetweetContent from '../gates/view/tasks/content/twitter_retweet';
 import TwitterTweetContent from '../gates/view/tasks/content/twitter_tweet';
 import { taskErrorMessages } from './task-error-messages';
-
-import { TaskIcon } from '../../atoms/task-icon';
 
 type Props = {
   idx?: number;
@@ -53,6 +52,7 @@ interface Error {
       extensions?: {
         code: number;
         error: string;
+        attemptLeft: number;
       };
       message?: string;
     }[];
@@ -69,17 +69,19 @@ export function Task({
   completed: completedProp = false,
 }: Props) {
   const { me, gqlAuthMethods, onOpenLogin } = useAuth();
+
   const taskProgress = me?.task_progresses.find(
     (task_progress) => task_progress.task_id === task.id
   );
 
   const completed = taskProgress?.completed === 'done';
+
   const [expanded, toggleExpanded] = useToggle(isDefaultOpen);
   const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
     toggleExpanded(isDefaultOpen);
-  }, [isDefaultOpen]);
+  }, [isDefaultOpen, taskProgress?.id]);
 
   const getTaskContent = (task_type: string) => {
     const taskTypes = {
@@ -145,6 +147,16 @@ export function Task({
     );
   };
 
+  let attemptCount = 0;
+  const { data, error, refetch } = useQuery(
+    ['findTaskProgressOfAUser', taskProgress?.id],
+    () => gqlAuthMethods.findTaskProgressOfAUser({ id: taskProgress?.id })
+  );
+  attemptCount = data?.task_progress[0]?.attempt_count;
+
+  const taskContent = getTaskContent(task.task_type);
+  const TaskComponent = taskContent?.body;
+
   const { mutateAsync: completeTaskMutation, isLoading } = useMutation(
     ['completeTask', { gateId: task.gate_id, taskId: task.id }],
     gqlAuthMethods.complete_task,
@@ -173,7 +185,10 @@ export function Task({
       onSuccess: () => {
         setErrorMessage('');
       },
-      onError: (error: Error) => {
+      onError: async (error: Error) => {
+        refetch();
+        if (taskProgress?.id === undefined)
+          await queryClient.resetQueries(['user_task_progresses', me?.id]);
         setErrorMessage(
           getMapValueFromObject(
             taskErrorMessages,
@@ -184,9 +199,6 @@ export function Task({
       },
     });
   };
-
-  const taskContent = getTaskContent(task.task_type);
-  const TaskComponent = taskContent?.body;
 
   return (
     <Card
@@ -206,9 +218,7 @@ export function Task({
           <Avatar
             variant="rounded"
             sx={{
-              backgroundColor: completed
-                ? '#6DFFB9'
-                : 'transparent',
+              backgroundColor: completed ? '#6DFFB9' : 'transparent',
               color: (theme) =>
                 expanded ? theme.palette.background.default : 'white',
               border: expanded ? 'none' : '1px solid #FFFFFF4D',
@@ -217,7 +227,7 @@ export function Task({
             {completed ? (
               <CheckIcon htmlColor="#10041C" />
             ) : (
-              <TaskIcon type={task.task_type}/>
+              <TaskIcon type={task.task_type} />
             )}
           </Avatar>
         }
@@ -234,7 +244,9 @@ export function Task({
         }
       />
       <Collapse in={expanded} timeout="auto" unmountOnExit>
-        <CardContent sx={{ marginLeft: { xs: '0px', md: '55px' } }}>
+        <CardContent
+          sx={{ marginLeft: { xs: '0px', md: '55px', marginTop: '24px' } }}
+        >
           <Typography variant="subtitle2" fontSize={16}>
             {task.description}
           </Typography>
@@ -242,6 +254,7 @@ export function Task({
             gate={gate}
             task={task}
             data={task.task_data}
+            attemptCount={attemptCount}
             completed={completed}
             updatedAt={completed ? taskProgress?.updated_at : ''}
             completeTask={completeTask}

@@ -22,17 +22,19 @@ import {
   Tabs,
   Tab,
   IconButton,
+  Chip,
 } from '@mui/material';
 
 import { a11yTabProps, TabPanel, useTab } from '../../../components/atoms/tabs';
 import { Navbar } from '../../../components/organisms/navbar/navbar';
 import { DashboardTemplate } from '../../../components/templates/dashboard';
+import { query } from '../../../constants/queries';
 import { ROUTES } from '../../../constants/routes';
 import { generateImageUrl } from '../../../hooks/use-file';
 import { useAuth } from '../../../providers/auth';
 import { AvatarFile } from '../../atoms/avatar-file';
 import { SocialButtons } from '../../organisms/social-buttons';
-import { OverviewTab } from './tabs';
+import { OverviewTab, IssuedTab, ReceivedTab } from './tabs';
 
 const GuideCard = dynamic<any>(
   () => import('./edit/Components/guide-card').then((mod) => mod.GuideCard),
@@ -46,24 +48,35 @@ const ConnectionsButton = dynamic<any>(
   }
 );
 export default function PrivateProfileTemplate() {
-  const [showCard, setShowCard] = useState(true);
+  const [showCard, setShowCard] = useState(false);
   const { t } = useTranslation();
   const { activeTab, handleTabChange, setTab } = useTab();
   const router = useRouter();
   const { me } = useAuth();
-
   const shouldShowCard =
+    false ||
     !me?.bio?.length ||
     !me?.skills?.length ||
     !me?.languages?.length ||
     !me?.timezone == undefined ||
     !me?.experiences?.length;
-
   const tabs = [
+    // {
+    //   key: 'overview',
+    //   label: t('common:tabs.overview'),
+    //   section: <OverviewTab setActiveTab={setTab} isPrivateProfile user={me} />,
+    // },
     {
-      key: 'overview',
-      label: t('common:tabs.overview'),
-      section: <OverviewTab user={me} />,
+      key: 'received',
+      label: t('common:tabs.received'),
+      count: me.protocol.totalOfreceivedCredentials,
+      section: <ReceivedTab user={me} />,
+    },
+    {
+      key: 'issued',
+      label: t('common:tabs.issued'),
+      count: me.protocol.totalOfIssuedCredentials,
+      section: <IssuedTab user={me} />,
     },
   ];
 
@@ -176,8 +189,7 @@ export default function PrivateProfileTemplate() {
                   mt: 2,
                 }}
               >
-                <ConnectionsButton wallet={me.wallet} />·
-                <Typography>{me.credentials?.length} credential(s)</Typography>
+                <ConnectionsButton wallet={me.wallet} />
               </Box>
             </Box>
             <Stack
@@ -193,7 +205,6 @@ export default function PrivateProfileTemplate() {
               />
             </Stack>
           </Box>
-
         </Box>
       </Box>
       <Box
@@ -212,7 +223,7 @@ export default function PrivateProfileTemplate() {
             mb: '-1px',
           }}
         >
-          {tabs.map(({ key, label }, index) => (
+          {tabs.map(({ key, label, count }, index) => (
             <Tab
               key={key}
               label={label}
@@ -221,6 +232,12 @@ export default function PrivateProfileTemplate() {
                 px: 0,
                 mr: theme.spacing(3),
               })}
+              {...(count
+                ? {
+                    icon: <Chip label={count} size="small" />,
+                    iconPosition: 'end',
+                  }
+                : {})}
               {...a11yTabProps('dao', index)}
             />
           ))}

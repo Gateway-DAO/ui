@@ -3,7 +3,7 @@ import { ShareButtonFn } from './share-btn-fn';
 import { useMenu } from '@gateway/ui';
 
 import { IosShare } from '@mui/icons-material';
-import { Avatar, IconButton } from '@mui/material';
+import { Avatar, IconButton, Stack } from '@mui/material';
 
 type Props = {
   title?: string;

@@ -9,6 +9,9 @@ export const getMapValueFromObject = (
       objectToMap[errorExtensions.error]
     );
   }
+  if (errorExtensions?.error === 'EXHAUSTED_ATTEMPT_LIMIT') {
+    return '';
+  }
   if (objectToMap) {
     return objectToMap[errorExtensions?.error] || defaultValue;
   }

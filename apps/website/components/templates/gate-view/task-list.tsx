@@ -109,6 +109,7 @@ export function TaskList({
             px: 4,
             border: 1,
             borderRadius: 1,
+            marginBottom: '24px',
           }}
           color={'#c5ffe3'}
         >
@@ -123,6 +124,7 @@ export function TaskList({
             border: 1,
             borderColor: '#FFA726',
             borderRadius: 1,
+            marginBottom: '24px',
           }}
           color={'#FFA726'}
         >

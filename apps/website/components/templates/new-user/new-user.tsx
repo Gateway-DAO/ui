@@ -22,7 +22,8 @@ import { schema, NewUserSchema, defaultValues } from './schema';
 
 export function NewUserTemplate() {
   const { t } = useTranslation('dashboard-new-user');
-  const { me, gqlAuthMethods, onInvalidateMe } = useAuth();
+  const { me, gqlAuthMethods, gqlProtocolAuthMethods, onInvalidateMe } =
+    useAuth();
   const methods = useForm<NewUserSchema>({
     resolver: yupResolver(schema),
     defaultValues: defaultValues(me),
@@ -44,10 +45,14 @@ export function NewUserTemplate() {
         });
       }
 
-      return gqlAuthMethods.update_user_profile({
+      await gqlAuthMethods.update_user_profile({
         ...data,
         id: me.id,
         ...(uploadedPicture && { pic_id: uploadedPicture.upload_image.id }),
+      });
+      return gqlProtocolAuthMethods.updateUser({
+        email: data.email_address,
+        gatewayId: data.username,
       });
     },
     {

@@ -1,8 +1,7 @@
-import { useAuth } from '../../providers/auth';
-
 import { DashboardTemplate } from '../../components/templates/dashboard';
 import { SettingsTemplate } from '../../components/templates/settings';
 import { AccountManagementSettings } from '../../components/templates/settings';
+import { useAuth } from '../../providers/auth';
 
 export default function AccountManagementSettingsPage() {
   const { me } = useAuth();
@@ -16,7 +15,9 @@ export default function AccountManagementSettingsPage() {
         height: '100%',
       }}
     >
-      <SettingsTemplate children={<AccountManagementSettings />} />
+      <SettingsTemplate>
+        <AccountManagementSettings />
+      </SettingsTemplate>
     </DashboardTemplate>
   ) : null;
 }

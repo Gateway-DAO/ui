@@ -19,7 +19,7 @@ import { SessionUser } from '../../../types/user';
 import { AvatarFile } from '../../atoms/avatar-file';
 import { useFollowStatus } from '../../atoms/follow-button-user/utils';
 import { SocialButtons } from '../../organisms/social-buttons';
-import { OverviewTab } from './tabs';
+import { OverviewTab, ReceivedTab, IssuedTab } from './tabs';
 
 const PendingReceivedSection = dynamic<any>(
   () =>
@@ -65,10 +65,20 @@ export default function ProfileTemplate({ user }: Props) {
 
   const tabs = useMemo(
     () => [
+      // {
+      //   key: 'overview',
+      //   label: t('common:tabs.overview'),
+      //   section: <OverviewTab setActiveTab={setTab} user={user} />,
+      // },
       {
-        key: 'overview',
-        label: t('common:tabs.overview'),
-        section: <OverviewTab user={user} />,
+        key: 'received',
+        label: t('common:tabs.received'),
+        section: <ReceivedTab user={user} />,
+      },
+      {
+        key: 'issued',
+        label: t('common:tabs.issued'),
+        section: <IssuedTab user={user} />,
       },
     ],
     []
@@ -163,8 +173,7 @@ export default function ProfileTemplate({ user }: Props) {
               mt: 2,
             }}
           >
-            <ConnectionsButton wallet={user.wallet} />.
-            <Typography>{user.credentials.length} credential(s)</Typography>
+            <ConnectionsButton wallet={user.wallet} />
           </Box>
           <Stack direction="column" gap={4} mt={4}>
             {!!(user as Users) && pendingType === 'received' && (

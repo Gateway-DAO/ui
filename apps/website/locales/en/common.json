@@ -33,9 +33,21 @@
     "all": "All",
     "overview": "Overview",
     "credentials": "Credentials",
+    "earn": "Earn",
+    "data-models": "Data models",
     "daos": "DAOs",
     "organizations": "Organizations",
-    "people": "People"
+    "people": "People",
+    "issuers": "Issuers",
+    "recipients": "Recipients",
+    "received": "Received",
+    "issued": "Issued",
+    "playground": "Playground"
+  },
+  "featured-banner": {
+    "title": "Create a profile for your organization",
+    "subtitle": "A space for your organization issue, manage and consume verifiable credentials.",
+    "action": "Create now"
   },
   "featured-credentials": {
     "title": "Featured Credentials",
@@ -77,7 +89,8 @@
     "check-transaction": "Verify Mint Transaction",
     "see-more": "See more",
     "see-less": "See less",
-    "share-link": "Share link"
+    "share-link": "Share link",
+    "download": "Download"
   },
   "image-drop-field": {
     "default-label": "Drop to upload your avatar",
@@ -85,5 +98,27 @@
     "remove-photo": "Remove photo",
     "select-nft": "Select NFT (soon)",
     "upload-info": "File supported: JPG, PNG, GIF, SVG Max size: 5 MB"
+  },
+  "social": {
+    "share-on": "Share on",
+    "share-title": "See my credential",
+    "email": "E-mail",
+    "linkedin": "LinkedIn",
+    "reddit": "Reddit",
+    "twitter": "Twitter"
+  },
+  "profile": {
+    "received": "Received",
+    "received_see-more": "All Received",
+    "issued": "Issued",
+    "issued_see-more": "All Issued",
+    "issue-credential": {
+      "title": "Issue a credential",
+      "description": "Go to explore and issue a credential"
+    },
+    "earn-credential": {
+      "title": "Earn a credential",
+      "description": "Go to explore and try to earn credentials"
+    }
   }
 }

@@ -1,26 +1,23 @@
-import { FieldErrors } from 'react-hook-form';
-
 import { Search } from '@mui/icons-material';
-import { Chip, TextField, Autocomplete, TextFieldProps } from '@mui/material';
-
-import { CATEGORIES } from '../../constants/gate';
+import { Chip, TextField, Autocomplete } from '@mui/material';
 
 type CategoriesInputProps = {
   set: (categories: string[]) => void;
   defaultValue?: string[];
-} & TextFieldProps &
-  FieldErrors;
+  categories?: string[];
+} & any;
 
 export const CategoriesInput = ({
   set,
   defaultValue,
+  categories,
   ...props
 }: CategoriesInputProps) => {
   return (
     <Autocomplete
       multiple
       id="categories-input"
-      options={CATEGORIES}
+      options={categories}
       defaultValue={defaultValue}
       popupIcon={<Search />}
       sx={{
