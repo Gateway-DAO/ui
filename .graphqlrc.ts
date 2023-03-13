@@ -20,7 +20,7 @@ const generateConfig = {
   ],
   config: {
     scalars: {
-      _text: 'string',
+      _text: 'string[]',
       // TODO: Fix all type errors on build when enabling next line
       // ...prismaEnums,
       manual_task_event_type: prismaEnums.manual_task_event_type,
