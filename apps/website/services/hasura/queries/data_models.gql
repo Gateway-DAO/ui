@@ -9,6 +9,11 @@ query dataModel($id: uuid!) {
     createdAt
     createdBy {
       gatewayId
+      gatewayUser {
+        picture {
+          ...file
+        }
+      }
     }
   }
 }

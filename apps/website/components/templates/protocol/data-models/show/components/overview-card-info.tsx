@@ -1,6 +1,5 @@
 import useTranslation from 'next-translate/useTranslation';
 
-import { useQuery } from '@tanstack/react-query';
 import { DateTime } from 'luxon';
 import { PartialDeep } from 'type-fest';
 
@@ -9,11 +8,9 @@ import { theme } from '@gateway/theme';
 import { Stack, Paper, Box, Divider, useMediaQuery } from '@mui/material';
 
 import { ROUTES } from '../../../../../../constants/routes';
-import { DataModel } from '../../../../../../services/gateway-protocol/types';
-import { gqlAnonMethods } from '../../../../../../services/hasura/api';
+import { Protocol_Data_Model } from '../../../../../../services/hasura/types';
 import CardCell from '../../../components/card-cell';
 import CardUserCell from '../../../components/card-user-cell';
-import { Protocol_Data_Model } from '../../../../../../services/hasura/types';
 
 type Props = {
   dataModel: PartialDeep<Protocol_Data_Model>;
@@ -22,29 +19,6 @@ type Props = {
 export default function OverviewCardInfo({ dataModel }: Props) {
   const { t } = useTranslation('protocol');
   const isMobile = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
-
-  // MOCK
-  let mockDataModel: any = dataModel;
-  mockDataModel
-    ? (mockDataModel.createdBy = {
-        id: '63bc7fc62e7bd8b316b77133',
-        slug: 'gateway',
-      })
-    : (mockDataModel = null);
-  // MOCK - END
-
-  const creator = useQuery(
-    ['issuer', mockDataModel?.id],
-    () =>
-      gqlAnonMethods.dao_profile_by_slug({
-        slug: 'gateway',
-      }),
-    {
-      select: (data) => data.daos?.[0],
-      refetchOnMount: false,
-      refetchOnWindowFocus: false,
-    }
-  );
 
   return (
     <Paper
@@ -59,13 +33,13 @@ export default function OverviewCardInfo({ dataModel }: Props) {
     >
       <CardUserCell
         label={t('data-model.created-by')}
-        picture={creator?.data?.logo}
-        name={mockDataModel?.createdBy?.slug}
-        href={ROUTES.DAO_PROFILE.replace(
-          '[slug]',
-          mockDataModel?.createdBy?.slug
+        picture={dataModel?.createdBy?.gatewayUser?.picture}
+        name={dataModel?.createdBy?.gatewayId}
+        href={ROUTES.PROFILE.replace(
+          '[username]',
+          dataModel?.createdBy?.gatewayId
         )}
-        hasLink={!!creator.data}
+        hasLink={!!dataModel?.createdBy?.gatewayId}
         unique={true}
       />
       <Stack

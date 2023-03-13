@@ -7,14 +7,11 @@ import { PartialDeep } from 'type-fest/source/partial-deep';
 import { Box, Tab, Tabs } from '@mui/material';
 
 import { query } from '../../../../../../constants/queries';
-import {
-  DataModel,
-  GetDataModelStatsQuery,
-} from '../../../../../../services/gateway-protocol/types';
+import { GetDataModelStatsQuery } from '../../../../../../services/gateway-protocol/types';
+import { Protocol_Data_Model } from '../../../../../../services/hasura/types';
 import { useTab, TabPanel } from '../../../../../atoms/tabs';
 import { IColumnGrid } from '../../../../../organisms/data-grid/data-grid';
 import { PlaygroundTab } from './playground-tab';
-import { Protocol_Data_Model } from '../../../../../../services/hasura/types';
 
 const OverviewTab = dynamic(() => import('./overview-tab'), { ssr: false });
 const GridViewTab = dynamic(() => import('./grid-view-tab'), { ssr: false });

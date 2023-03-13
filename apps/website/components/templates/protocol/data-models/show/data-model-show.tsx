@@ -11,10 +11,7 @@ import { Stack, Typography, Button, IconButton, alpha } from '@mui/material';
 
 import ConfirmDialog from '../../../../../components/organisms/confirm-dialog/confirm-dialog';
 import { useAuth } from '../../../../../providers/auth';
-import {
-  DataModel,
-  GetDataModelStatsQuery,
-} from '../../../../../services/gateway-protocol/types';
+import { GetDataModelStatsQuery } from '../../../../../services/gateway-protocol/types';
 import { Protocol_Data_Model } from '../../../../../services/hasura/types';
 import ModalRight from '../../../../molecules/modal-right';
 import InfoTitle from '../../components/info-title';

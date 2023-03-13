@@ -10,7 +10,6 @@ import {
   gatewayProtocolSDK,
   GatewayProtocolSDKTypes,
 } from '../../../../../../services/gateway-protocol/api';
-import { DataModel } from '../../../../../../services/gateway-protocol/types';
 import { Protocol_Data_Model } from '../../../../../../services/hasura/types';
 import Loading from '../../../../../atoms/loading';
 import DataGrid from '../../../../../organisms/data-grid/data-grid';

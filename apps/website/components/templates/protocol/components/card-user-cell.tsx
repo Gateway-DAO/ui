@@ -57,6 +57,7 @@ export default function CardUserCell({
         >
           {name}
         </AvatarFile>
+        {/* TODO: Pass link to CardCell */}
         <CardCell label={label} margin={false} alignRight={alignRight}>
           {hasLink ? (
             <Stack
