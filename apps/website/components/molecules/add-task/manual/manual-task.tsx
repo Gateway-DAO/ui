@@ -16,6 +16,7 @@ import {
 
 import { CircleWithNumber } from '../../../atoms/circle-with-number';
 import { CreateGateData } from '../../../templates/create-gate/schema';
+import TextFieldWithEmoji from '../../form/TextFieldWithEmoji/TextFieldWithEmoji';
 
 export const ManualTask = ({ dragAndDrop, taskId, deleteTask }) => {
   const { t } = useTranslation('gate-new');
@@ -94,7 +95,7 @@ export const ManualTask = ({ dragAndDrop, taskId, deleteTask }) => {
             <TextField
               variant="standard"
               sx={{
-                minWidth: { md: '400px', xs: '110%', lg:'500px' },
+                minWidth: { md: '400px', xs: '110%', lg: '500px' },
                 maxWidth: { xs: '100%', md: '110%' },
               }}
               InputProps={{
@@ -173,21 +174,12 @@ export const ManualTask = ({ dragAndDrop, taskId, deleteTask }) => {
         )}
       </Stack>
       <FormControl style={!taskVisible ? {} : { display: 'none' }}>
-        <TextField
-          required
-          multiline
-          minRows={3}
-          label="Task Description"
-          id="submit-link-description"
-          {...register(`tasks.${taskId}.description`)}
-          error={!!errors.tasks?.[taskId]?.description}
-          helperText={errors.tasks?.[taskId]?.description?.message}
-          sx={{
-            marginBottom: '60px',
-            '& fieldset legend span': {
-              marginRight: '10px',
-            },
-          }}
+        <TextFieldWithEmoji
+          errors={errors}
+          formValues={formValues}
+          register={register}
+          setValue={setValue}
+          taskId={taskId}
         />
       </FormControl>
     </Stack>

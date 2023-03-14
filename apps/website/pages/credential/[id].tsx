@@ -98,14 +98,13 @@ export default function GateProfilePage() {
         <title>{gatesData.gates_by_pk.title}</title>
         <meta
           property="og:url"
-          content={`https://0cd2-45-113-250-147.in.ngrok.io/credential/${gatesData.gates_by_pk.id}`}
+          content={`https://v2.mygateway.xyz/credential/${gatesData.gates_by_pk.id}`}
         />
         <meta property="og:type" content="website" />
         <meta property="og:title" content={gatesData.gates_by_pk.title} />
-        <meta name="twitter:card" content="app" />
+        <meta name="twitter:card" content="summary" />
         <meta name="twitter:site" content="@Gateway_xyz" />
         <meta name="twitter:title" content={gatesData.gates_by_pk.title} />
-        <meta name="twitter:text:title" content={gatesData.gates_by_pk.title} />
         <meta
           name="twitter:description"
           content={`🎉 Just got my hands on the ${gatesData.gates_by_pk.title} issued from ${gatesData.gates_by_pk.creator?.name} via @Gateway_xyz`}
