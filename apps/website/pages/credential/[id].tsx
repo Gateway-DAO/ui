@@ -1,3 +1,4 @@
+import Head from 'next/head';
 import { useRouter } from 'next/router';
 
 import { dehydrate, QueryClient, useQuery } from '@tanstack/react-query';
@@ -93,6 +94,28 @@ export default function GateProfilePage() {
       >
         <Navbar isInternalPage={true} />
       </Box>
+      <Head>
+        <title>{gatesData.gates_by_pk.title}</title>
+        <meta
+          property="og:url"
+          content={`https://0cd2-45-113-250-147.in.ngrok.io/credential/${gatesData.gates_by_pk.id}`}
+        />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content={gatesData.gates_by_pk.title} />
+        <meta name="twitter:card" content="app" />
+        <meta name="twitter:site" content="@Gateway_xyz" />
+        <meta name="twitter:title" content={gatesData.gates_by_pk.title} />
+        <meta
+          name="twitter:description"
+          content={`🎉 Just got my hands on the ${gatesData.gates_by_pk.title} issued from ${gatesData.gates_by_pk.creator?.name} via @Gateway_xyz`}
+        />
+        <meta name="twitter:image" content={gatesData.gates_by_pk.image} />
+        <meta
+          property="og:description"
+          content={`🎉 Just got my hands on the ${gatesData.gates_by_pk.title} issued from ${gatesData.gates_by_pk.creator?.name} via @Gateway_xyz`}
+        />
+        <meta property="og:image" content={gatesData.gates_by_pk.image} />
+      </Head>
       <GateViewTemplate gateProps={gatesData.gates_by_pk} />
     </DashboardTemplate>
   );
