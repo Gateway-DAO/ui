@@ -43,11 +43,17 @@ export default function CredentialProtocolShow({ credential }: Props) {
 
   const isAllowedToMint = credential.nft !== null;
 
+  // TODO: Remove this method
+  const changeChainName = (chain): Chain => {
+    if (chain === 'ethereum') return Chain.Evm;
+    return chain;
+  };
+
   const initialMintData: MintedChain[] | null =
     credential.nft && credential.nft.minted
       ? [
           {
-            chain: credential.nft.chain as Chain,
+            chain: changeChainName(credential.nft.chain) as Chain,
             transaction: credential.nft.txHash,
           },
         ]
