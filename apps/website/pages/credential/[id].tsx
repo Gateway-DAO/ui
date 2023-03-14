@@ -102,9 +102,10 @@ export default function GateProfilePage() {
         />
         <meta property="og:type" content="website" />
         <meta property="og:title" content={gatesData.gates_by_pk.title} />
-        <meta name="twitter:card" content="app" />
+        <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:site" content="@Gateway_xyz" />
         <meta name="twitter:title" content={gatesData.gates_by_pk.title} />
+        <meta name="twitter:text:title" content={gatesData.gates_by_pk.title} />
         <meta
           name="twitter:description"
           content={`🎉 Just got my hands on the ${gatesData.gates_by_pk.title} issued from ${gatesData.gates_by_pk.creator?.name} via @Gateway_xyz`}
