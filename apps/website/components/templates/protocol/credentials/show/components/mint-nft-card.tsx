@@ -55,7 +55,7 @@ const mintNetworks = {
   EVM: {
     icon: <PolygonIcon />,
     name: 'Polygon',
-    id: 80001,
+    id: process.env.NODE_ENV === 'production' ? 137 : 80001, // TODO: Update this validation
   },
 };
 
