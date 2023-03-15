@@ -95,7 +95,6 @@ export default function GateProfilePage() {
         <Navbar isInternalPage={true} />
       </Box>
       <Head>
-        <title>{gatesData.gates_by_pk.title}</title>
         <meta
           property="og:url"
           content={`https://v2.mygateway.xyz/credential/${gatesData.gates_by_pk.id}`}
