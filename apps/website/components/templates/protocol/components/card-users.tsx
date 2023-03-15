@@ -9,6 +9,7 @@ import { theme } from '@gateway/theme';
 import { Stack, Box, useMediaQuery } from '@mui/material';
 
 import { ROUTES } from '../../../../constants/routes';
+import { useAuth } from '../../../../providers/auth';
 import {
   Organization,
   User,
@@ -29,6 +30,7 @@ export default function CardUsers({
   recipient: recipientCredential,
 }: Props) {
   const { t } = useTranslation('protocol');
+  const { me } = useAuth();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
 
   const issuer = useQuery(
@@ -112,7 +114,7 @@ export default function CardUsers({
               ? ROUTES.DAO_PROFILE.replace('[slug]', organization?.data?.slug)
               : ROUTES.PROFILE.replace('[username]', issuer?.data?.username)
           }
-          hasLink={!!organization.data || !!issuer.data}
+          hasLink={me?.id && (!!organization.data || !!issuer.data)}
         />
       )}
       <Box
@@ -142,7 +144,7 @@ export default function CardUsers({
           name={limitCharsCentered(recipientName, 20)}
           href={ROUTES.PROFILE.replace('[username]', recipientName)}
           alignRight={!isMobile}
-          hasLink={!!recipient.data}
+          hasLink={me?.id && !!recipient.data}
         />
       )}
     </Stack>

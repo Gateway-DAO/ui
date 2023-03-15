@@ -7,6 +7,7 @@ import { theme } from '@gateway/theme';
 
 import { Stack, Paper, Box, Divider, Chip, useMediaQuery } from '@mui/material';
 
+import { useAuth } from '../../../../providers/auth';
 import {
   Credential,
   CredentialStatus,
@@ -24,9 +25,10 @@ export default function CredentialCardInfo({
   credential,
   elevation = 2,
 }: Props) {
+  const { me } = useAuth();
   const { t } = useTranslation('protocol');
   const isMobile = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
-  
+
   return (
     <Paper
       elevation={elevation}
@@ -59,7 +61,7 @@ export default function CredentialCardInfo({
       >
         <AuthenticatedBy
           authenticatedBy={credential?.issuerUser}
-          hasLink={!!credential?.issuerUser.gatewayId}
+          hasLink={me?.id && !!credential?.issuerUser.gatewayId}
         />
         <CardCell label={t('credential.status')}>
           {credential?.status === CredentialStatus.Valid && (
