@@ -13,6 +13,7 @@ import { alpha, Stack, Box } from '@mui/material';
 import { CredentialStatus } from '../../../services/gateway-protocol/types';
 import NetworkTransactionLink from '../../atoms/network-transaction-link';
 import { CategoriesList } from '../../molecules/categories-list';
+import { ROUTES } from 'apps/website/constants/routes';
 
 export interface IColumnGrid {
   header_name: string;
@@ -86,16 +87,20 @@ const defineCols = (columns: IColumnGrid[]) => {
             >
               ID {limitCharsCentered(params.id, 6)}
             </Typography>
-            <Typography
+            <Stack
+              component="a"
+              target="_blank"
               sx={{
                 fontWeight: 400,
                 fontSize: '16px',
                 letterSpacing: '0.15px',
                 color: brandColors.white.main,
+                textDecoration: 'none',
               }}
+              href={ROUTES.PROTOCOL_CREDENTIAL.replace('[id]', params?.id)}
             >
               {params.title}
-            </Typography>
+            </Stack>
           </Box>
         </Box>
       ),
@@ -124,7 +129,9 @@ const defineCols = (columns: IColumnGrid[]) => {
             sx={{ width: 24, height: 24 }}
           />
           <Box sx={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-            <Typography
+            <Stack
+              component="a"
+              target="_blank"
               sx={{
                 fontSize: '14px',
                 fontWeight: 400,
@@ -133,10 +140,16 @@ const defineCols = (columns: IColumnGrid[]) => {
                 whiteSpace: 'nowrap',
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
+                textDecoration: 'none',
+                color: brandColors.white.main,
               }}
+              href={ROUTES.PROFILE.replace(
+                '[username]',
+                params?.issuedCredentials[0].issuerUser.gatewayId
+              )}
             >
               {params?.issuedCredentials[0].issuerUser.gatewayId}
-            </Typography>
+            </Stack>
           </Box>
         </Box>
       ),
@@ -152,7 +165,9 @@ const defineCols = (columns: IColumnGrid[]) => {
             sx={{ width: 24, height: 24 }}
           />
           <Box sx={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-            <Typography
+            <Stack
+              component="a"
+              target="_blank"
               sx={{
                 fontSize: '14px',
                 fontWeight: 400,
@@ -161,10 +176,16 @@ const defineCols = (columns: IColumnGrid[]) => {
                 whiteSpace: 'nowrap',
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
+                textDecoration: 'none',
+                color: brandColors.white.main,
               }}
+              href={ROUTES.PROFILE.replace(
+                '[username]',
+                params?.receivedCredentials[0]?.recipientUser?.gatewayId
+              )}
             >
               {params?.receivedCredentials[0]?.recipientUser?.gatewayId}
-            </Typography>
+            </Stack>
           </Box>
         </Box>
       ),
@@ -292,7 +313,7 @@ const defineCols = (columns: IColumnGrid[]) => {
 
 export default function DataGrid({ columns, data }: Props): JSX.Element {
   const { t } = useTranslation('protocol');
-
+  
   const gridColumns = defineCols(columns);
   return (
     <>
