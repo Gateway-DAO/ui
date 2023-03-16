@@ -1,45 +1,22 @@
-import { InferGetStaticPropsType } from 'next';
 import useTranslation from 'next-translate/useTranslation';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { useMemo, useState } from 'react';
-
-import { FaDiscord } from 'react-icons/fa';
 
 import { TOKENS } from '@gateway/theme';
 
 import EditIcon from '@mui/icons-material/Edit';
-import ShareIcon from '@mui/icons-material/IosShare';
-import LanguageIcon from '@mui/icons-material/Language';
-import TwitterIcon from '@mui/icons-material/Twitter';
-import {
-  Avatar,
-  Link,
-  Box,
-  Stack,
-  Typography,
-  Tabs,
-  Tab,
-  IconButton,
-  Chip,
-} from '@mui/material';
+import { Box, Stack, Typography, Tabs, Tab, Chip } from '@mui/material';
 
 import { a11yTabProps, TabPanel, useTab } from '../../../components/atoms/tabs';
 import { Navbar } from '../../../components/organisms/navbar/navbar';
-import { DashboardTemplate } from '../../../components/templates/dashboard';
-import { query } from '../../../constants/queries';
 import { ROUTES } from '../../../constants/routes';
 import { generateImageUrl } from '../../../hooks/use-file';
 import { useAuth } from '../../../providers/auth';
 import { AvatarFile } from '../../atoms/avatar-file';
 import { SocialButtons } from '../../organisms/social-buttons';
-import { OverviewTab, IssuedTab, ReceivedTab } from './tabs';
-
-const GuideCard = dynamic<any>(
-  () => import('./edit/Components/guide-card').then((mod) => mod.GuideCard),
-  { ssr: false }
-);
+import { IssuedTab, ReceivedTab } from './tabs';
+import { Earned } from './tabs/Earned';
 
 const ConnectionsButton = dynamic<any>(
   () => import('./connections/button').then((mod) => mod.ConnectionsButton),
@@ -48,18 +25,11 @@ const ConnectionsButton = dynamic<any>(
   }
 );
 export default function PrivateProfileTemplate() {
-  const [showCard, setShowCard] = useState(false);
   const { t } = useTranslation();
-  const { activeTab, handleTabChange, setTab } = useTab();
+  const { activeTab, handleTabChange } = useTab();
   const router = useRouter();
   const { me } = useAuth();
-  const shouldShowCard =
-    false ||
-    !me?.bio?.length ||
-    !me?.skills?.length ||
-    !me?.languages?.length ||
-    !me?.timezone == undefined ||
-    !me?.experiences?.length;
+
   const tabs = [
     // {
     //   key: 'overview',
@@ -77,6 +47,14 @@ export default function PrivateProfileTemplate() {
       label: t('common:tabs.issued'),
       count: me.protocol.totalOfIssuedCredentials,
       section: <IssuedTab user={me} />,
+    },
+    {
+      key: 'earned',
+      label: t('common:tabs.earned'),
+      count: me.experiences
+        .map((exp) => exp.credentials.length)
+        .reduce((acc, cur) => (acc += cur)),
+      section: <Earned />,
     },
   ];
 
