@@ -2,10 +2,15 @@ import useTranslation from 'next-translate/useTranslation';
 import Link from 'next/link';
 import React, { useMemo } from 'react';
 
+import DataGrid, {
+  IColumnGrid,
+} from 'apps/website/components/organisms/data-grid/data-grid';
 import { PartialDeep } from 'type-fest';
 import { v4 as uuid } from 'uuid';
 
-import { Button, Divider, Stack } from '@mui/material';
+import { TOKENS } from '@gateway/theme';
+
+import { Box, Button, Divider, Stack, Typography } from '@mui/material';
 
 import { ROUTES } from '../../../../../constants/routes';
 import { Gates, Users } from '../../../../../services/hasura/types';
@@ -26,7 +31,35 @@ type Props = {
 
 export function OverviewTab({ people, setTab, credentials }: Props) {
   const { t } = useTranslation('explore');
-  const { dao, isAdmin } = useDaoProfile();
+  const { dao, isAdmin, issuedCredentials } = useDaoProfile();
+  const columns: IColumnGrid[] = [
+    {
+      column_name: 'credential_id',
+      header_name: 'Credential ID',
+    },
+    {
+      column_name: 'category',
+      header_name: 'Category',
+    },
+    {
+      column_name: 'recipient_id',
+      header_name: 'Recipient ID',
+    },
+    {
+      column_name: 'issuance_date',
+      header_name: 'Issuance Date',
+    },
+    {
+      column_name: 'status',
+      header_name: 'Status',
+    },
+  ];
+
+  const credentialsGrid = issuedCredentials
+    ? { pages: [issuedCredentials] }
+    : null;
+
+  console.log(issuedCredentials, '$$$$$$$$$$$$$$$$$$$$$$$$$');
 
   const gates = credentials ?? [];
 
@@ -77,8 +110,8 @@ export function OverviewTab({ people, setTab, credentials }: Props) {
         }}
       >
         <SectionWithSliderResponsive
-          title={t('common:featured-credentials.title')}
-          caption={t('common:featured-credentials.caption')}
+          title="Earn credentials"
+          caption="People are really into these credentials. We thought you would too."
           action={
             gates.length > 0 && (
               <Button onClick={() => setTab(1)}>
@@ -91,25 +124,37 @@ export function OverviewTab({ people, setTab, credentials }: Props) {
         >
           {gateList}
         </SectionWithSliderResponsive>
-        <SectionWithGrid
-          title={t('common:featured-people.title')}
-          caption={t('common:featured-people.caption')}
-          action={
-            <Button onClick={() => setTab(2)}>
-              {t('common:featured-people.see-more')}
-            </Button>
-          }
-        >
-          {people.slice(0, 6).map((person) => (
-            <PersonCard
-              key={person.id}
-              user={person}
-              isAdmin={person.permissions.some(
-                ({ permission }) => permission === 'dao_admin'
-              )}
-            />
-          ))}
-        </SectionWithGrid>
+        {issuedCredentials && issuedCredentials.length > 0 && (
+          <Stack mt={5}>
+            <Stack
+              direction="row"
+              justifyContent="space-between"
+              alignItems="center"
+              px={TOKENS.CONTAINER_PX}
+              mb={8}
+            >
+              <Box>
+                <Typography variant="h6">Last issued credentials</Typography>
+                <Typography variant="caption" color="text.secondary">
+                  Lorem ipsum dolor et ex machina
+                </Typography>
+              </Box>
+              <Box
+                sx={{
+                  display: {
+                    xs: 'none',
+                    md: 'block',
+                  },
+                }}
+              >
+                <Button onClick={() => setTab(1)}>View more</Button>
+              </Box>
+            </Stack>
+            <Stack px={TOKENS.CONTAINER_PX} mb={4}>
+              <DataGrid columns={columns} data={credentialsGrid} />
+            </Stack>
+          </Stack>
+        )}
       </Stack>
     </Stack>
   );

@@ -1,4 +1,9 @@
-import { GetStaticPaths, InferGetStaticPropsType } from 'next';
+import {
+  GetServerSidePropsContext,
+  GetStaticPaths,
+  InferGetServerSidePropsType,
+  InferGetStaticPropsType,
+} from 'next';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
@@ -10,53 +15,30 @@ import {
 } from '../../../components/templates/dao-profile';
 import { DashboardTemplate } from '../../../components/templates/dashboard';
 import { useAuth } from '../../../providers/auth';
+import {
+  gatewayProtocolAuthSDK,
+  gatewayProtocolSDK,
+} from '../../../services/gateway-protocol/api';
 import { gqlAnonMethods } from '../../../services/hasura/api';
 
-export default function DaoProfilePage({
-  daoProps,
-}: InferGetStaticPropsType<typeof getStaticProps>) {
-  const router = useRouter();
+type Props = InferGetServerSidePropsType<typeof getServerSideProps>;
 
-  const slug = router.query.slug as string;
-
+export default function DaoProfilePage({ daoProps, issuedCredentials }: Props) {
   const { me, gqlAuthMethods } = useAuth();
 
-  // TODO: remove refetch and think about a better way to do this
-  const { data, refetch } = useQuery(
-    ['dao', slug],
-    () =>
-      gqlAnonMethods.dao_profile_by_slug({
-        slug,
-      }),
-    {
-      initialData: {
-        daos: [daoProps],
-      },
-    }
-  );
-
-  const dao = data?.daos?.[0];
-
   const isAdmin =
-    me?.following_dao?.find((fdao) => fdao.dao_id === dao?.id)?.dao?.is_admin ??
-    false;
+    me?.following_dao?.find((fdao) => fdao.dao_id === daoProps?.id)?.dao
+      ?.is_admin ?? false;
 
   const credentialsQuery = useQuery(
-    ['dao-gates', dao?.id],
-    () => gqlAuthMethods.dao_gates_tab({ id: dao.id }),
-    { enabled: !!dao?.id }
+    ['dao-gates', daoProps?.id],
+    () => gqlAuthMethods.dao_gates_tab({ id: daoProps.id }),
+    { enabled: !!daoProps?.id }
   );
-
-  // TODO: validate this
-  useEffect(() => {
-    credentialsQuery.refetch();
-  }, [me]);
-
-  if (!dao) return null;
 
   return (
     <DashboardTemplate
-      currentDao={dao}
+      currentDao={daoProps}
       containerProps={{
         sx: {
           overflow: 'hidden',
@@ -64,11 +46,12 @@ export default function DaoProfilePage({
       }}
     >
       <DaoProfileProvider
-        dao={dao}
+        dao={daoProps}
         isAdmin={isAdmin}
-        followersCount={dao.followers_aggregate?.aggregate.count}
+        followersCount={daoProps.followers_aggregate?.aggregate.count}
         credentials={credentialsQuery.data}
-        onRefetchFollowers={refetch}
+        onRefetchFollowers={() => console.log('observe')}
+        issuedCredentials={issuedCredentials}
       >
         <DaoProfileTemplate />
       </DaoProfileProvider>
@@ -76,33 +59,24 @@ export default function DaoProfilePage({
   );
 }
 
-export const getStaticPaths: GetStaticPaths = async ({ locales }) => {
-  const { daos } = await gqlAnonMethods.dao_pages();
+export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+  const slug = ctx.query.slug as string;
+
+  const { daos } = await gqlAnonMethods.dao_profile_by_slug({ slug });
+  const credentials = daos[0].protocolOrganization
+    ? await gatewayProtocolSDK.findCredentialsByIssuerOrganization({
+        issuerOrganizationId: daos[0].protocolOrganization.id,
+        skip: 0,
+        take: 5,
+      })
+    : null;
 
   return {
-    paths: daos.map((dao) => ({ params: { slug: dao.slug } })),
-    fallback: true,
+    props: {
+      daoProps: daos[0],
+      issuedCredentials: credentials
+        ? credentials.findCredentialsByIssuerOrganization
+        : null,
+    },
   };
-};
-
-export const getStaticProps = async ({ params }) => {
-  const { slug } = params;
-
-  try {
-    const { daos } = await gqlAnonMethods.dao_profile_by_slug({ slug });
-
-    return {
-      props: {
-        daoProps: daos[0],
-      },
-      revalidate: 60,
-    };
-  } catch (err) {
-    return {
-      props: {
-        daoProps: null,
-      },
-      revalidate: 60,
-    };
-  }
 };

@@ -2,6 +2,7 @@ import { createContext, PropsWithChildren, useContext } from 'react';
 
 import { PartialDeep } from 'type-fest';
 
+import { Credential } from '../../../services/gateway-protocol/types';
 import {
   Daos,
   Dao_Gates_TabQuery,
@@ -14,6 +15,7 @@ type DaoProfileContextProps = {
   followersCount: number;
   credentials?: Dao_Gates_TabQuery;
   onRefetchFollowers: () => void;
+  issuedCredentials?: PartialDeep<Credential>[];
 };
 
 export const DaoProfileContext = createContext<DaoProfileContextProps>({

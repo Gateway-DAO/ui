@@ -32,6 +32,10 @@ fragment dao_profile on daos {
       count
     }
   }
+  protocolOrganization {
+    gatewayId
+    id
+  }
 }
 
 query dao_pages {
@@ -99,7 +103,12 @@ query dao_gates_tab($id: uuid!) {
 
 query dao_profile_people($id: uuid!, $offset: Int!) {
   daos_by_pk(id: $id) {
-    followers(where: { status: { _eq: "following" } }, order_by: { user: { name: asc } }, limit: 15, offset: $offset) {
+    followers(
+      where: { status: { _eq: "following" } }
+      order_by: { user: { name: asc } }
+      limit: 15
+      offset: $offset
+    ) {
       user {
         id
         name
