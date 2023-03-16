@@ -147,7 +147,7 @@ export function OverviewTab({ people, setTab, credentials }: Props) {
                   },
                 }}
               >
-                <Button onClick={() => setTab(1)}>View more</Button>
+                <Button onClick={() => setTab(2)}>View more</Button>
               </Box>
             </Stack>
             <Stack px={TOKENS.CONTAINER_PX} mb={4}>

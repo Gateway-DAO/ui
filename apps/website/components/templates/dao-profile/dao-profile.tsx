@@ -4,11 +4,12 @@ import { TOKENS } from '@gateway/theme';
 
 import { Box, Tabs, Tab } from '@mui/material';
 
+import { query } from '../../../constants/queries';
 import { a11yTabProps, TabPanel, useTab } from '../../atoms/tabs';
 import { useDaoProfile } from './context';
 import { DaoHeader } from './dao-header';
 import { GatesTab, OverviewTab } from './tabs';
-import { PeopleTab } from './tabs/people-tab';
+import GridViewTab from './tabs/grid-view-tab';
 
 export function DaoProfileTemplate() {
   const { dao, onRefetchFollowers, followersCount, credentials } =
@@ -17,6 +18,29 @@ export function DaoProfileTemplate() {
   const { activeTab, handleTabChange, setTab } = useTab();
 
   const people = dao?.followers?.map(({ user }) => user) ?? [];
+
+  const issuedColumns: IColumnGrid[] = [
+    {
+      column_name: 'credential_id',
+      header_name: 'Credential ID',
+    },
+    {
+      column_name: 'category',
+      header_name: 'Category',
+    },
+    {
+      column_name: 'recipient_id',
+      header_name: 'Recipient ID',
+    },
+    {
+      column_name: 'issuance_date',
+      header_name: 'Issuance Date',
+    },
+    {
+      column_name: 'status',
+      header_name: 'Status',
+    },
+  ];
 
   const tabs = [
     {
@@ -32,13 +56,21 @@ export function DaoProfileTemplate() {
     },
     {
       key: 'credentials',
-      label: t('common:tabs.credentials'),
+      label: 'Earn',
       section: <GatesTab />,
     },
     {
-      key: 'people',
-      label: t('common:tabs.people'),
-      section: <PeopleTab />,
+      key: 'credentials-issued',
+      label: t('common:tabs.issued'),
+      section: (
+        <GridViewTab
+          columns={issuedColumns}
+          queryString={query.credentialsIssuedByOrg}
+          queryFnName="findCredentialsByIssuerOrganization"
+          parameterName="issuerOrganizationId"
+          pageSize={20}
+        />
+      ),
     },
   ];
 
