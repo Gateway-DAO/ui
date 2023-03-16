@@ -2,6 +2,7 @@ import useTranslation from 'next-translate/useTranslation';
 import { useEffect } from 'react';
 
 import { useFormContext } from 'react-hook-form';
+import { PartialDeep } from 'type-fest/source/partial-deep';
 
 import { brandColors } from '@gateway/theme';
 
@@ -16,10 +17,17 @@ import {
 } from '@mui/material';
 
 import { useAuth } from '../../../../../../providers/auth';
-import { CreateCredentialInput } from '../../../../../../services/gateway-protocol/types';
+import {
+  CreateCredentialInput,
+  DataModel,
+} from '../../../../../../services/gateway-protocol/types';
 import { AvatarFile } from '../../../../../atoms/avatar-file';
 
-export default function IssueByForm() {
+type Props = {
+  dataModel: PartialDeep<DataModel>;
+};
+
+export default function IssueByForm({ dataModel }: Props) {
   const { register, setValue } = useFormContext<CreateCredentialInput>();
 
   const { t } = useTranslation('protocol');
@@ -34,13 +42,25 @@ export default function IssueByForm() {
       picture: me?.picture,
       label: me?.username,
       value: me?.id,
+      disabled: dataModel?.allowedUsers?.indexOf(me?.id) === -1,
     },
     ...me.protocol.accesses.map((access) => ({
       picture: null,
       label: access.organization.name,
       value: access.organization.id,
+      disabled:
+        dataModel?.allowedOrganizations?.indexOf(access.organization.id) === -1,
     })),
   ];
+
+  const setDefaultValue = () => {
+    if (users) {
+      return users
+        .filter((user) => !user.disabled)
+        .map((user) => user.value)?.[0];
+    }
+    return me?.id;
+  };
 
   return (
     <Stack>
@@ -68,10 +88,14 @@ export default function IssueByForm() {
                 ),
             })}
             label={t('data-model.issue-credential.issue-by')}
-            defaultValue={me?.id}
+            defaultValue={setDefaultValue()}
           >
             {users.map((user) => (
-              <MenuItem key={user.value} value={user.value}>
+              <MenuItem
+                key={user.value}
+                value={user.value}
+                disabled={user.disabled}
+              >
                 <Stack direction="row" alignItems="center">
                   <AvatarFile
                     file={user?.picture}
@@ -80,7 +104,16 @@ export default function IssueByForm() {
                   >
                     {user.label}
                   </AvatarFile>
-                  <Typography variant="body2">{user.label}</Typography>
+                  <Typography
+                    variant="body2"
+                    sx={{
+                      color: user.disabled
+                        ? brandColors.grays.dark
+                        : brandColors.white.main,
+                    }}
+                  >
+                    {user.label}
+                  </Typography>
                 </Stack>
               </MenuItem>
             ))}

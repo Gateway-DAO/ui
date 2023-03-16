@@ -7,7 +7,7 @@ import { PartialDeep } from 'type-fest/source/partial-deep';
 import { brandColors } from '@gateway/theme';
 
 import CloseIcon from '@mui/icons-material/Close';
-import { Stack, Typography, Button, IconButton, alpha } from '@mui/material';
+import { Stack, Typography, IconButton, alpha } from '@mui/material';
 
 import ConfirmDialog from '../../../../../components/organisms/confirm-dialog/confirm-dialog';
 import { useAuth } from '../../../../../providers/auth';
@@ -17,6 +17,7 @@ import {
 } from '../../../../../services/gateway-protocol/types';
 import ModalRight from '../../../../molecules/modal-right';
 import InfoTitle from '../../components/info-title';
+import IssueCredentialButton from '../../components/issue-credential-button';
 import Tags from '../../components/tags';
 import CredentialProtocolCreate from '../../credentials/create/credential-create';
 import DataModelTabs from './components/data-model-tabs';
@@ -50,17 +51,10 @@ export default function DataModelShow({
         />
         <Tags tags={dataModel?.tags} />
         <Typography sx={{ mb: 3 }}>{dataModel?.description}</Typography>
-        {me?.id && (
-          <Button
-            variant="contained"
-            sx={{ width: '180px' }}
-            onClick={() => {
-              setOpenCreateCredential();
-            }}
-          >
-            {t('data-model.issue-credential-button')}
-          </Button>
-        )}
+        <IssueCredentialButton
+          dataModel={dataModel}
+          onClickIssueCredential={setOpenCreateCredential}
+        />
       </Stack>
       <DataModelTabs dataModel={dataModel} stats={stats} />
 
