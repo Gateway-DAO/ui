@@ -54,7 +54,7 @@ export default function PrivateProfileTemplate() {
       label: t('common:tabs.earned'),
       count: me.experiences
         .map((exp) => exp.credentials.length)
-        .reduce((acc, cur) => (acc += cur)),
+        .reduce((acc, cur) => (acc += cur), 0),
       section: <Earned user={me} />,
     },
   ];
