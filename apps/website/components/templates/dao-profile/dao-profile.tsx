@@ -24,34 +24,34 @@ export function DaoProfileTemplate() {
   const issuedColumns: IColumnGrid[] = [
     {
       column_name: 'credential_id',
-      header_name: `${t('dao-profile.issued-tab.grid-columns.credential_id')}`,
+      header_name: `${t('dao-profile:issued-tab.grid-columns.credential_id')}`,
     },
     {
       column_name: 'category',
-      header_name: `${t('dao-profile.issued-tab.grid-columns.category')}`,
+      header_name: `${t('dao-profile:issued-tab.grid-columns.category')}`,
     },
     {
       column_name: 'recipient_id',
-      header_name: `${t('dao-profile.issued-tab.grid-columns.recipient_id')}`,
+      header_name: `${t('dao-profile:issued-tab.grid-columns.recipient_id')}`,
     },
     {
       column_name: 'issuance_date',
-      header_name: `${t('dao-profile.issued-tab.grid-columns.issuance_date')}`,
+      header_name: `${t('dao-profile:issued-tab.grid-columns.issuance_date')}`,
     },
     {
       column_name: 'status',
-      header_name: `${t('dao-profile.issued-tab.grid-columns.status')}`,
+      header_name: `${t('dao-profile:issued-tab.grid-columns.status')}`,
     },
   ];
 
   const signersColumns: IColumnGrid[] = [
     {
       column_name: 'user_id',
-      header_name: `${t('dao-profile.signers-tab.grid-columns.user_id')}`,
+      header_name: `${t('dao-profile:signers-tab.grid-columns.user_id')}`,
     },
     {
       column_name: 'role',
-      header_name: `${t('dao-profile.signers-tab.grid-columns.role')}`,
+      header_name: `${t('dao-profile:signers-tab.grid-columns.role')}`,
     },
   ];
 

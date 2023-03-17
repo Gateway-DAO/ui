@@ -1,9 +1,11 @@
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
+import Head from 'next/head';
 import { useRouter } from 'next/router';
 
 import { useQuery } from '@tanstack/react-query';
 import { PartialDeep } from 'type-fest';
 
+import { HeadContainer } from '../../../components/molecules/head-container';
 import {
   DaoProfileTemplate,
   DaoProfileProvider,
@@ -38,26 +40,32 @@ export default function DaoProfilePage({
   );
 
   return (
-    <DashboardTemplate
-      currentDao={daoProps}
-      containerProps={{
-        sx: {
-          overflow: 'hidden',
-        },
-      }}
-    >
-      <DaoProfileProvider
-        dao={daoProps}
-        isAdmin={isAdmin}
-        followersCount={daoProps.followers_aggregate?.aggregate.count}
-        credentials={credentialsQuery.data}
-        onRefetchFollowers={refreshData}
-        issuedCredentials={issuedCredentials}
-        stats={stats}
+    <>
+      <HeadContainer
+        title={`${daoProps.name} DAO`}
+        description={daoProps.description}
+      />
+      <DashboardTemplate
+        currentDao={daoProps}
+        containerProps={{
+          sx: {
+            overflow: 'hidden',
+          },
+        }}
       >
-        <DaoProfileTemplate />
-      </DaoProfileProvider>
-    </DashboardTemplate>
+        <DaoProfileProvider
+          dao={daoProps}
+          isAdmin={isAdmin}
+          followersCount={daoProps.followers_aggregate?.aggregate.count}
+          credentials={credentialsQuery.data}
+          onRefetchFollowers={refreshData}
+          issuedCredentials={issuedCredentials}
+          stats={stats}
+        >
+          <DaoProfileTemplate />
+        </DaoProfileProvider>
+      </DashboardTemplate>
+    </>
   );
 }
 
