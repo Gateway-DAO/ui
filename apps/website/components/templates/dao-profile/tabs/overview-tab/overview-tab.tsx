@@ -121,14 +121,12 @@ export function OverviewTab({ people, setTab, credentials }: Props) {
                 justifyContent="space-between"
                 sx={{ flexDirection: { xs: 'column', md: 'row' }, mb: 2 }}
               >
-                {dao.gates_aggregate?.aggregate?.count && (
-                  <DashboardCard
-                    label={`${t(
-                      'dao-profile:overview-tab.credentials_stats_card'
-                    )}`}
-                    value={dao.gates_aggregate?.aggregate?.count}
-                  />
-                )}
+                <DashboardCard
+                  label={`${t(
+                    'dao-profile:overview-tab.credentials_stats_card'
+                  )}`}
+                  value={dao.gates_aggregate?.aggregate?.count}
+                />
                 <DashboardCard
                   label={`${t(
                     'dao-profile:overview-tab.protocol_credentials_stats_card'
