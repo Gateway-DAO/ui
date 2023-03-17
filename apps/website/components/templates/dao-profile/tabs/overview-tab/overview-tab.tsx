@@ -2,15 +2,19 @@ import useTranslation from 'next-translate/useTranslation';
 import Link from 'next/link';
 import React, { useMemo } from 'react';
 
-import DataGrid, {
-  IColumnGrid,
-} from 'apps/website/components/organisms/data-grid/data-grid';
 import { PartialDeep } from 'type-fest';
 import { v4 as uuid } from 'uuid';
 
-import { TOKENS } from '@gateway/theme';
+import { theme, TOKENS } from '@gateway/theme';
 
-import { Box, Button, Divider, Stack, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  Divider,
+  Stack,
+  Typography,
+  useMediaQuery,
+} from '@mui/material';
 
 import { ROUTES } from '../../../../../constants/routes';
 import { Gates, Users } from '../../../../../services/hasura/types';
@@ -21,6 +25,10 @@ import {
   SectionWithSliderResponsive,
   SectionWithGrid,
 } from '../../../../molecules/sections';
+import DataGrid, {
+  IColumnGrid,
+} from '../../../../organisms/data-grid/data-grid';
+import DashboardCard from '../../../protocol/components/dashboard-card';
 import { useDaoProfile } from '../../context';
 
 type Props = {
@@ -31,7 +39,9 @@ type Props = {
 
 export function OverviewTab({ people, setTab, credentials }: Props) {
   const { t } = useTranslation('explore');
-  const { dao, isAdmin, issuedCredentials } = useDaoProfile();
+  const { dao, isAdmin, issuedCredentials, stats } = useDaoProfile();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
+
   const columns: IColumnGrid[] = [
     {
       column_name: 'credential_id',
@@ -58,8 +68,6 @@ export function OverviewTab({ people, setTab, credentials }: Props) {
   const credentialsGrid = issuedCredentials
     ? { pages: [issuedCredentials] }
     : null;
-
-  console.log(issuedCredentials, '$$$$$$$$$$$$$$$$$$$$$$$$$');
 
   const gates = credentials ?? [];
 
@@ -109,21 +117,41 @@ export function OverviewTab({ people, setTab, credentials }: Props) {
           },
         }}
       >
-        <SectionWithSliderResponsive
-          title="Earn credentials"
-          caption="People are really into these credentials. We thought you would too."
-          action={
-            gates.length > 0 && (
-              <Button onClick={() => setTab(1)}>
-                {t('common:featured-credentials.see-more')}
-              </Button>
-            )
-          }
-          itemWidth={(theme) => theme.spacing(37.75)}
-          gridSize={{ lg: 4 }}
-        >
-          {gateList}
-        </SectionWithSliderResponsive>
+        <Stack>
+          {stats && (
+            <Stack px={TOKENS.CONTAINER_PX} mt={6}>
+              <Stack
+                gap={isMobile ? 1 : 2}
+                justifyContent="space-between"
+                sx={{ flexDirection: { xs: 'column', md: 'row' }, mb: 2 }}
+              >
+                {dao.gates_aggregate?.aggregate?.count && (
+                  <DashboardCard
+                    label="Credentials to earn"
+                    value={dao.gates_aggregate?.aggregate?.count}
+                  />
+                )}
+                <DashboardCard
+                  label="Issued credentials"
+                  value={stats?.getTotalodCredentialsIssuedByOrganization}
+                />
+              </Stack>
+            </Stack>
+          )}
+          <SectionWithSliderResponsive
+            title="Earn credentials"
+            caption="People are really into these credentials. We thought you would too."
+            action={
+              gates.length > 0 && (
+                <Button onClick={() => setTab(1)}>View more</Button>
+              )
+            }
+            itemWidth={(theme) => theme.spacing(37.75)}
+            gridSize={{ lg: 4 }}
+          >
+            {gateList}
+          </SectionWithSliderResponsive>
+        </Stack>
         {issuedCredentials && issuedCredentials.length > 0 && (
           <Stack mt={5}>
             <Stack

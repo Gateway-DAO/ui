@@ -32,6 +32,11 @@ fragment dao_profile on daos {
       count
     }
   }
+  gates_aggregate {
+    aggregate {
+      count
+    }
+  }
   protocolOrganization {
     gatewayId
     id

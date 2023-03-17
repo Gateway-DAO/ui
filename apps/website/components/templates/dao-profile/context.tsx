@@ -2,12 +2,11 @@ import { createContext, PropsWithChildren, useContext } from 'react';
 
 import { PartialDeep } from 'type-fest';
 
-import { Credential } from '../../../services/gateway-protocol/types';
 import {
-  Daos,
-  Dao_Gates_TabQuery,
-  Dao_Profile_PeopleQuery,
-} from '../../../services/hasura/types';
+  Credential,
+  GetDaoStatsQuery,
+} from '../../../services/gateway-protocol/types';
+import { Daos, Dao_Gates_TabQuery } from '../../../services/hasura/types';
 
 type DaoProfileContextProps = {
   isAdmin: boolean;
@@ -16,6 +15,7 @@ type DaoProfileContextProps = {
   credentials?: Dao_Gates_TabQuery;
   onRefetchFollowers: () => void;
   issuedCredentials?: PartialDeep<Credential>[];
+  stats?: GetDaoStatsQuery;
 };
 
 export const DaoProfileContext = createContext<DaoProfileContextProps>({
