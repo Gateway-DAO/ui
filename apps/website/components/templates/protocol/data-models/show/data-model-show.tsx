@@ -50,7 +50,7 @@ export default function DataModelShow({
     );
     switch (dataModel?.permissioning) {
       case PermissionType.SpecificIds:
-        return usersIdAndOrganizationsId.find(
+        return !!usersIdAndOrganizationsId.find(
           (userOrOrgId) =>
             availableToIssue.length && availableToIssue?.indexOf(userOrOrgId.id)
         );
