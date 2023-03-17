@@ -29,9 +29,11 @@ export default function IssueCredentialButton({
    */
   const hasAnAccountAvailableToIssue = () => {
     if (!me?.id) return;
-    const availableToIssue = dataModel?.allowedUsers.concat(
-      dataModel?.allowedOrganizations
+    const allowedUsersId = dataModel?.allowedUsers.map((item) => item.id);
+    const allowedOrganizationsId = dataModel?.allowedOrganizations.map(
+      (item) => item.id
     );
+    const availableToIssue = allowedUsersId.concat(allowedOrganizationsId);
     return !![me.id]
       .concat(me?.protocol?.accesses?.map((item) => item.organization.id))
       .find((user) => availableToIssue?.indexOf(user) > -1);

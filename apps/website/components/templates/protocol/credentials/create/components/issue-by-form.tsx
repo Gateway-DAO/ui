@@ -1,6 +1,8 @@
 import useTranslation from 'next-translate/useTranslation';
+import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
+import { useSnackbar } from 'notistack';
 import { useFormContext } from 'react-hook-form';
 import { PartialDeep } from 'type-fest/source/partial-deep';
 
@@ -16,12 +18,14 @@ import {
   Typography,
 } from '@mui/material';
 
+import { ROUTES } from '../../../../../../constants/routes';
 import { useAuth } from '../../../../../../providers/auth';
 import {
   CreateCredentialInput,
   DataModel,
 } from '../../../../../../services/gateway-protocol/types';
 import { AvatarFile } from '../../../../../atoms/avatar-file';
+import { taskErrorMessages } from '../../../../../organisms/tasks/task-error-messages';
 
 type Props = {
   dataModel: PartialDeep<DataModel>;
@@ -32,6 +36,8 @@ export default function IssueByForm({ dataModel }: Props) {
 
   const { t } = useTranslation('protocol');
   const { me } = useAuth();
+  const router = useRouter();
+  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
     setValue('issuerOrganizationId', null);
@@ -42,25 +48,35 @@ export default function IssueByForm({ dataModel }: Props) {
       picture: me?.picture,
       label: me?.username,
       value: me?.id,
-      disabled: dataModel?.allowedUsers?.indexOf(me?.id) === -1,
+      disabled: !dataModel?.allowedUsers?.find((user) => user.id === me?.id),
     },
     ...me.protocol.accesses.map((access) => ({
       picture: null,
       label: access.organization.name,
       value: access.organization.id,
-      disabled:
-        dataModel?.allowedOrganizations?.indexOf(access.organization.id) === -1,
+      disabled: !dataModel?.allowedOrganizations?.find(
+        (org) => org.id === access.organization.id
+      ),
     })),
   ];
 
   const setDefaultValue = () => {
-    if (users) {
-      return users
-        .filter((user) => !user.disabled)
-        .map((user) => user.value)?.[0];
-    }
-    return me?.id;
+    return users
+      .filter((user) => !user.disabled)
+      .map((user) => user.value)?.[0];
   };
+
+  useEffect(() => {
+    if (!setDefaultValue()) {
+      enqueueSnackbar(taskErrorMessages.NOT_ALLOWED_TO_CREATE_CREDENTIAL);
+      router.push({
+        pathname: ROUTES.PROTOCOL_DATAMODEL,
+        query: {
+          id: dataModel.id,
+        },
+      });
+    }
+  }, []);
 
   return (
     <Stack>

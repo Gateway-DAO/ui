@@ -10,8 +10,12 @@ query dataModel($id: String!) {
     createdBy {
       gatewayId
     }
-    allowedUsers
-    allowedOrganizations
+    allowedUsers {
+      id
+    }
+    allowedOrganizations {
+      id
+    }
   }
 }
 
