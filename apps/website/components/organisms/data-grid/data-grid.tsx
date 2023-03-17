@@ -130,84 +130,123 @@ const defineCols = (columns: IColumnGrid[]) => {
       field: 'issuer_id',
       column_name: 'issuer_id_issuers',
       cell: (params) => (
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <Avatar
-            alt="Name"
-            src="/images/avatar-default.png"
-            sx={{ width: 24, height: 24 }}
-          />
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-            <Typography
-              sx={{
-                fontSize: '14px',
-                fontWeight: 400,
-                letterSpacing: '0.17px',
-                maxWidth: '70px',
-                whiteSpace: 'nowrap',
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-              }}
-            >
-              {params?.issuedCredentials[0].issuerUser.gatewayId}
-            </Typography>
+        <Link
+          sx={{
+            all: 'unset',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+          }}
+          href={`${ROUTES.PROFILE.replace(
+            '[username]',
+            params?.issuedCredentials[0].issuerUser.gatewayId
+          )}`}
+        >
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <Avatar
+              alt="Name"
+              src="/images/avatar-default.png"
+              sx={{ width: 24, height: 24 }}
+            />
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+              <Typography
+                sx={{
+                  fontSize: '14px',
+                  fontWeight: 400,
+                  letterSpacing: '0.17px',
+                  maxWidth: '70px',
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                }}
+              >
+                {params?.issuedCredentials[0].issuerUser.gatewayId}
+              </Typography>
+            </Box>
           </Box>
-        </Box>
+        </Link>
       ),
     },
     {
       field: 'recipient_id',
       column_name: 'recipient_id_issuers',
       cell: (params) => (
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <Avatar
-            alt="Name"
-            src="/images/avatar-default.png"
-            sx={{ width: 24, height: 24 }}
-          />
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-            <Typography
-              sx={{
-                fontSize: '14px',
-                fontWeight: 400,
-                letterSpacing: '0.17px',
-                maxWidth: '70px',
-                whiteSpace: 'nowrap',
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-              }}
-            >
-              {params?.receivedCredentials[0]?.recipientUser?.gatewayId}
-            </Typography>
+        <Link
+          sx={{
+            all: 'unset',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+          }}
+          href={`${ROUTES.PROFILE.replace(
+            '[username]',
+            params?.receivedCredentials[0]?.recipientUser?.gatewayId
+          )}`}
+        >
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <Avatar
+              alt="Name"
+              src="/images/avatar-default.png"
+              sx={{ width: 24, height: 24 }}
+            />
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+              <Typography
+                sx={{
+                  fontSize: '14px',
+                  fontWeight: 400,
+                  letterSpacing: '0.17px',
+                  maxWidth: '70px',
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                }}
+              >
+                {params?.receivedCredentials[0]?.recipientUser?.gatewayId}
+              </Typography>
+            </Box>
           </Box>
-        </Box>
+        </Link>
       ),
     },
     {
       field: 'issuer_id',
       column_name: 'issuer_id',
       cell: (params) => (
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <Avatar
-            alt="Name"
-            src="/images/avatar-default.png"
-            sx={{ width: 24, height: 24 }}
-          />
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-            <Typography
-              sx={{
-                fontSize: '14px',
-                fontWeight: 400,
-                letterSpacing: '0.17px',
-                maxWidth: '70px',
-                whiteSpace: 'nowrap',
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-              }}
-            >
-              {params?.issuerUser?.gatewayId}
-            </Typography>
+        <Link
+          sx={{
+            all: 'unset',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+          }}
+          href={`${ROUTES.PROFILE.replace(
+            '[username]',
+            params?.issuerUser?.gatewayId
+          )}`}
+        >
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <Avatar
+              alt="Name"
+              src="/images/avatar-default.png"
+              sx={{ width: 24, height: 24 }}
+            />
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+              <Typography
+                sx={{
+                  fontSize: '14px',
+                  fontWeight: 400,
+                  letterSpacing: '0.17px',
+                  maxWidth: '70px',
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                }}
+              >
+                {params?.issuerUser?.gatewayId}
+              </Typography>
+            </Box>
           </Box>
-        </Box>
+        </Link>
       ),
     },
     {
