@@ -5,7 +5,7 @@ import { ReactNode } from 'react';
 import { DateTime } from 'luxon';
 
 import { limitCharsCentered } from '@gateway/helpers';
-import { brandColors } from '@gateway/theme';
+import { brandColors, TOKENS } from '@gateway/theme';
 
 import { Typography, Chip, Avatar, Link } from '@mui/material';
 import { alpha, Stack, Box } from '@mui/material';
@@ -382,28 +382,30 @@ export default function DataGrid({ columns, data }: Props): JSX.Element {
       data.pages.length > 0 &&
       data.pages[0].length > 0 ? (
         <>
-          <Box
-            sx={{
-              display: 'grid',
-              gridTemplateColumns: '1.5fr 1fr 1fr 1fr 1fr 1fr',
-              px: { xs: 0, md: 1, lg: 1 },
-            }}
-          >
-            {gridColumns.map((column) => (
-              <Typography
-                sx={{
-                  fontWeight: 700,
-                  fontSize: '12px',
-                  letterSpacing: '0.17px',
-                  color: alpha(brandColors.white.main, 0.7),
-                  textTransform: 'uppercase',
-                }}
-                key={column.field}
-              >
-                {column.header_name}
-              </Typography>
-            ))}
-          </Box>
+          <Stack px={TOKENS.CONTAINER_PX}>
+            <Box
+              sx={{
+                display: 'grid',
+                gridTemplateColumns: '1.5fr 1fr 1fr 1fr 1fr 1fr',
+                px: { xs: 0, md: 1, lg: 1 },
+              }}
+            >
+              {gridColumns.map((column) => (
+                <Typography
+                  sx={{
+                    fontWeight: 700,
+                    fontSize: '12px',
+                    letterSpacing: '0.17px',
+                    color: alpha(brandColors.white.main, 0.7),
+                    textTransform: 'uppercase',
+                  }}
+                  key={column.field}
+                >
+                  {column.header_name}
+                </Typography>
+              ))}
+            </Box>
+          </Stack>
           {data.pages && data.pages.length > 0 && (
             <>
               {data.pages.map((page) => (
@@ -412,43 +414,46 @@ export default function DataGrid({ columns, data }: Props): JSX.Element {
                     <Box
                       key={rowIndex}
                       sx={{
-                        borderBottom: '1px solid',
+                        borderBottom:
+                          rowIndex !== page.length - 1 ? '1px solid' : 'none',
                         borderColor: alpha(brandColors.grays.main, 0.12),
                         py: 3,
                       }}
                     >
-                      <Box
-                        key={rowIndex}
-                        sx={{
-                          px: { xs: 0, md: 1, lg: 1 },
-                          display: 'grid',
-                          gridTemplateColumns: '1.5fr 1fr 1fr 1fr 1fr 1fr',
-                        }}
-                      >
-                        {gridColumns.map((column) => (
-                          <>
-                            {column.cell ? (
-                              <>{column.cell(row)}</>
-                            ) : (
-                              <Box
-                                sx={{ display: 'flex', alignItems: 'center' }}
-                              >
-                                <Typography
-                                  sx={{
-                                    fontSize: '14px',
-                                    fontWeight: '400',
-                                    letterSpacing: '0.17px',
-                                  }}
+                      <Stack px={TOKENS.CONTAINER_PX}>
+                        <Box
+                          key={rowIndex}
+                          sx={{
+                            px: { xs: 0, md: 1, lg: 1 },
+                            display: 'grid',
+                            gridTemplateColumns: '1.5fr 1fr 1fr 1fr 1fr 1fr',
+                          }}
+                        >
+                          {gridColumns.map((column) => (
+                            <>
+                              {column.cell ? (
+                                <>{column.cell(row)}</>
+                              ) : (
+                                <Box
+                                  sx={{ display: 'flex', alignItems: 'center' }}
                                 >
-                                  {column.valueGetter
-                                    ? column.valueGetter(row)
-                                    : row[column.field]}
-                                </Typography>
-                              </Box>
-                            )}
-                          </>
-                        ))}
-                      </Box>
+                                  <Typography
+                                    sx={{
+                                      fontSize: '14px',
+                                      fontWeight: '400',
+                                      letterSpacing: '0.17px',
+                                    }}
+                                  >
+                                    {column.valueGetter
+                                      ? column.valueGetter(row)
+                                      : row[column.field]}
+                                  </Typography>
+                                </Box>
+                              )}
+                            </>
+                          ))}
+                        </Box>
+                      </Stack>
                     </Box>
                   ))}
                 </>

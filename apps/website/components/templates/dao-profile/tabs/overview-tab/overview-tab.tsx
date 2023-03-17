@@ -192,7 +192,7 @@ export function OverviewTab({ people, setTab, credentials }: Props) {
                 </Button>
               </Box>
             </Stack>
-            <Stack px={TOKENS.CONTAINER_PX} mb={4}>
+            <Stack mb={4}>
               <DataGrid columns={columns} data={credentialsGrid} />
             </Stack>
           </Stack>
