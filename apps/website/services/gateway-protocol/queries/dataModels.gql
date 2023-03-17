@@ -16,6 +16,7 @@ query dataModel($id: String!) {
     allowedOrganizations {
       id
     }
+    permissioning
   }
 }
 

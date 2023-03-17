@@ -23,6 +23,7 @@ import { useAuth } from '../../../../../../providers/auth';
 import {
   CreateCredentialInput,
   DataModel,
+  PermissionType,
 } from '../../../../../../services/gateway-protocol/types';
 import { AvatarFile } from '../../../../../atoms/avatar-file';
 import { taskErrorMessages } from '../../../../../organisms/tasks/task-error-messages';
@@ -43,20 +44,35 @@ export default function IssueByForm({ dataModel }: Props) {
     setValue('issuerOrganizationId', null);
   }, []);
 
+  const disableUserToIssueCredential = () => {
+    return (
+      dataModel.permissioning === PermissionType.Organizations ||
+      (dataModel.permissioning === PermissionType.SpecificIds &&
+        !dataModel?.allowedUsers?.find((user) => user.id === me?.id))
+    );
+  };
+
+  const disableOrganizationToIssueCredential = (access) => {
+    return (
+      dataModel.permissioning === PermissionType.SpecificIds &&
+      !dataModel?.allowedOrganizations?.find(
+        (org) => org.id === access.organization.id
+      )
+    );
+  };
+
   const users = [
     {
       picture: me?.picture,
       label: me?.username,
       value: me?.id,
-      disabled: !dataModel?.allowedUsers?.find((user) => user.id === me?.id),
+      disabled: disableUserToIssueCredential(),
     },
     ...me.protocol.accesses.map((access) => ({
       picture: null,
       label: access.organization.name,
       value: access.organization.id,
-      disabled: !dataModel?.allowedOrganizations?.find(
-        (org) => org.id === access.organization.id
-      ),
+      disabled: disableOrganizationToIssueCredential(access),
     })),
   ];
 

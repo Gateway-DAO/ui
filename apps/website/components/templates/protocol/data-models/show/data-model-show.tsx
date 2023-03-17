@@ -1,5 +1,5 @@
 import useTranslation from 'next-translate/useTranslation';
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import { useToggle } from 'react-use';
 import { PartialDeep } from 'type-fest/source/partial-deep';
@@ -14,13 +14,14 @@ import { useAuth } from '../../../../../providers/auth';
 import {
   DataModel,
   GetDataModelStatsQuery,
+  PermissionType,
 } from '../../../../../services/gateway-protocol/types';
 import ModalRight from '../../../../molecules/modal-right';
 import InfoTitle from '../../components/info-title';
-import IssueCredentialButton from '../../components/issue-credential-button';
 import Tags from '../../components/tags';
 import CredentialProtocolCreate from '../../credentials/create/credential-create';
 import DataModelTabs from './components/data-model-tabs';
+import IssueCredentialButton from './components/issue-credential-button';
 
 type Props = {
   dataModel: PartialDeep<DataModel>;
@@ -35,9 +36,37 @@ export default function DataModelShow({
 }: Props) {
   const { t } = useTranslation('protocol');
   const { me } = useAuth();
-  const [openCreateCredential, setOpenCreateCredential] =
-    useToggle(isCredentialCreate);
+  const [openCreateCredential, setOpenCreateCredential] = useToggle(false);
   const [confirmDiscardChanges, setConfirmDiscardChanges] = useState(false);
+
+  const hasAnAccountAvailableToIssue = useMemo(() => {
+    if (!me?.id) return;
+    const organizationsId = me?.protocol?.accesses?.map(
+      (item) => item.organization.id
+    );
+    const usersIdAndOrganizationsId = [me.id].concat(organizationsId);
+    const availableToIssue = dataModel?.allowedUsers.concat(
+      dataModel?.allowedOrganizations as any
+    );
+    switch (dataModel?.permissioning) {
+      case PermissionType.SpecificIds:
+        return usersIdAndOrganizationsId.find(
+          (userOrOrgId) =>
+            availableToIssue.length && availableToIssue?.indexOf(userOrOrgId.id)
+        );
+      case PermissionType.Organizations:
+        return !!organizationsId.length;
+      case PermissionType.All:
+      default:
+        return true;
+    }
+  }, [me]);
+
+  useEffect(() => {
+    if (hasAnAccountAvailableToIssue && isCredentialCreate) {
+      setOpenCreateCredential(true);
+    }
+  }, [me]);
 
   return (
     <>
@@ -52,7 +81,7 @@ export default function DataModelShow({
         <Tags tags={dataModel?.tags} />
         <Typography sx={{ mb: 3 }}>{dataModel?.description}</Typography>
         <IssueCredentialButton
-          dataModel={dataModel}
+          hasAnAccountAvailableToIssue={hasAnAccountAvailableToIssue}
           onClickIssueCredential={setOpenCreateCredential}
         />
       </Stack>
