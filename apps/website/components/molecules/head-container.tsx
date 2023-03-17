@@ -13,7 +13,7 @@ export function HeadContainer({
 }: HeadContainerProps): JSX.Element {
   title = title
     ? title + ' - Gateway'
-    : 'Best model to earn, issue and manage credentials - Gateway';
+    : 'The standard for credentials - Gateway';
   description =
     description ||
     'We provide the technology needed to issue, manage, index, and utilize credentials to build a robust digital identity.';
