@@ -2,7 +2,6 @@ import useTranslation from 'next-translate/useTranslation';
 import { useEffect } from 'react';
 
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { PartialDeep } from 'type-fest/source/partial-deep';
 
 import { Stack } from '@mui/material';
 

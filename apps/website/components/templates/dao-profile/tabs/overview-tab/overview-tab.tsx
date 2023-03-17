@@ -20,11 +20,7 @@ import { ROUTES } from '../../../../../constants/routes';
 import { Gates, Users } from '../../../../../services/hasura/types';
 import { EmptyCard } from '../../../../atoms/empty-card';
 import { GatesCard } from '../../../../molecules/gates-card';
-import { PersonCard } from '../../../../molecules/person-card';
-import {
-  SectionWithSliderResponsive,
-  SectionWithGrid,
-} from '../../../../molecules/sections';
+import { SectionWithSliderResponsive } from '../../../../molecules/sections';
 import DataGrid, {
   IColumnGrid,
 } from '../../../../organisms/data-grid/data-grid';
@@ -38,7 +34,7 @@ type Props = {
 };
 
 export function OverviewTab({ people, setTab, credentials }: Props) {
-  const { t } = useTranslation('explore');
+  const { t } = useTranslation();
   const { dao, isAdmin, issuedCredentials, stats } = useDaoProfile();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
 
@@ -127,23 +123,31 @@ export function OverviewTab({ people, setTab, credentials }: Props) {
               >
                 {dao.gates_aggregate?.aggregate?.count && (
                   <DashboardCard
-                    label="Credentials to earn"
+                    label={`${t(
+                      'dao-profile:overview-tab.credentials_stats_card'
+                    )}`}
                     value={dao.gates_aggregate?.aggregate?.count}
                   />
                 )}
                 <DashboardCard
-                  label="Issued credentials"
+                  label={`${t(
+                    'dao-profile:overview-tab.protocol_credentials_stats_card'
+                  )}`}
                   value={stats?.getTotalodCredentialsIssuedByOrganization}
                 />
               </Stack>
             </Stack>
           )}
           <SectionWithSliderResponsive
-            title="Earn credentials"
-            caption="People are really into these credentials. We thought you would too."
+            title={`${t('dao-profile:overview-tab.credentials-section.title')}`}
+            caption={`${t(
+              'dao-profile:overview-tab.credentials-section.caption'
+            )}`}
             action={
               gates.length > 0 && (
-                <Button onClick={() => setTab(1)}>View more</Button>
+                <Button onClick={() => setTab(1)}>
+                  {t('dao-profile:overview-tab.credentials-section.action')}
+                </Button>
               )
             }
             itemWidth={(theme) => theme.spacing(37.75)}
@@ -162,9 +166,15 @@ export function OverviewTab({ people, setTab, credentials }: Props) {
               mb={8}
             >
               <Box>
-                <Typography variant="h6">Last issued credentials</Typography>
+                <Typography variant="h6">
+                  {t(
+                    'dao-profile:overview-tab.issued-credentials-section.title'
+                  )}
+                </Typography>
                 <Typography variant="caption" color="text.secondary">
-                  Lorem ipsum dolor et ex machina
+                  {t(
+                    'dao-profile:overview-tab.issued-credentials-section.caption'
+                  )}
                 </Typography>
               </Box>
               <Box
@@ -175,7 +185,11 @@ export function OverviewTab({ people, setTab, credentials }: Props) {
                   },
                 }}
               >
-                <Button onClick={() => setTab(2)}>View more</Button>
+                <Button onClick={() => setTab(2)}>
+                  {t(
+                    'dao-profile:overview-tab.issued-credentials-section.action'
+                  )}
+                </Button>
               </Box>
             </Stack>
             <Stack px={TOKENS.CONTAINER_PX} mb={4}>

@@ -1,3 +1,20 @@
 {
-  "edit":"Edit DAO"
+  "edit": "Edit DAO",
+  "earn-tab": "Earn",
+  "issued-tab": {
+    "grid-columns": {
+      "credential_id": "Credential ID",
+      "category": "Category",
+      "recipient_id": "Recipient ID",
+      "issuance_date": "Issuance Date",
+      "status": "Status"
+    }
+  },
+  "signers-tab": {
+    "title": "Signers",
+    "grid-columns": {
+      "user_id": "User ID",
+      "role": "Role"
+    }
+  }
 }
