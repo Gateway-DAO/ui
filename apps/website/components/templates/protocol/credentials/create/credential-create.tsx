@@ -184,7 +184,7 @@ export default function CredentialCreateForm({
             divider={<Divider sx={{ mb: 2, mt: 2, mx: { xs: -3, md: -6 } }} />}
             gap={3}
           >
-            <IssueByForm dataModel={dataModel} />
+            <IssueByForm />
             <GeneralInfoForm />
             <ClaimForm dataModel={dataModel} />
             <RecipientForm />
