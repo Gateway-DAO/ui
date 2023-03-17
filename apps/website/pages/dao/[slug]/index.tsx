@@ -1,4 +1,5 @@
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
+import { useRouter } from 'next/router';
 
 import { useQuery } from '@tanstack/react-query';
 import { PartialDeep } from 'type-fest';
@@ -20,6 +21,11 @@ export default function DaoProfilePage({
   stats,
 }: Props) {
   const { me, gqlAuthMethods } = useAuth();
+  const router = useRouter();
+
+  const refreshData = () => {
+    router.replace(router.asPath);
+  };
 
   const isAdmin =
     me?.following_dao?.find((fdao) => fdao.dao_id === daoProps?.id)?.dao
@@ -45,7 +51,7 @@ export default function DaoProfilePage({
         isAdmin={isAdmin}
         followersCount={daoProps.followers_aggregate?.aggregate.count}
         credentials={credentialsQuery.data}
-        onRefetchFollowers={() => console.log('observe')}
+        onRefetchFollowers={refreshData}
         issuedCredentials={issuedCredentials}
         stats={stats}
       >
