@@ -40,6 +40,13 @@ fragment dao_profile on daos {
   protocolOrganization {
     gatewayId
     id
+    name
+    organization_accesses {
+      user {
+        gatewayId
+      }
+      role
+    }
   }
 }
 

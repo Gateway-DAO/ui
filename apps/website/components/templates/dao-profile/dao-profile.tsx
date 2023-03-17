@@ -11,6 +11,7 @@ import { useDaoProfile } from './context';
 import { DaoHeader } from './dao-header';
 import { GatesTab, OverviewTab } from './tabs';
 import GridViewTab from './tabs/grid-view-tab';
+import StaticGridViewTab from './tabs/static-grid-view-tab';
 
 export function DaoProfileTemplate() {
   const { dao, onRefetchFollowers, followersCount, credentials } =
@@ -43,6 +44,17 @@ export function DaoProfileTemplate() {
     },
   ];
 
+  const signersColumns: IColumnGrid[] = [
+    {
+      column_name: 'user_id',
+      header_name: 'User ID',
+    },
+    {
+      column_name: 'role',
+      header_name: 'Role',
+    },
+  ];
+
   const tabs = [
     {
       key: 'overview',
@@ -70,6 +82,16 @@ export function DaoProfileTemplate() {
           queryFnName="findCredentialsByIssuerOrganization"
           parameterName="issuerOrganizationId"
           pageSize={20}
+        />
+      ),
+    },
+    {
+      key: 'credentials-signers',
+      label: 'Signers',
+      section: (
+        <StaticGridViewTab
+          columns={signersColumns}
+          data={dao.protocolOrganization?.organization_accesses}
         />
       ),
     },

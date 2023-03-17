@@ -40,6 +40,8 @@ type ColumnType =
   | 'issuance_date'
   | 'status'
   | 'default'
+  | 'user_id'
+  | 'role'
   | 'minted';
 
 type Column = {
@@ -247,6 +249,61 @@ const defineCols = (columns: IColumnGrid[]) => {
             </Box>
           </Box>
         </Link>
+      ),
+    },
+    {
+      field: 'gatewayId',
+      column_name: 'user_id',
+      cell: (params) => (
+        <Link
+          sx={{
+            all: 'unset',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+          }}
+          href={`${ROUTES.PROFILE.replace(
+            '[username]',
+            params.user.gatewayId
+          )}`}
+        >
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <Avatar
+              alt="Name"
+              src="/images/avatar-default.png"
+              sx={{ width: 24, height: 24 }}
+            />
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+              <Typography
+                sx={{
+                  fontSize: '14px',
+                  fontWeight: 400,
+                  letterSpacing: '0.17px',
+                  maxWidth: '70px',
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                }}
+              >
+                {params?.user?.gatewayId}
+              </Typography>
+            </Box>
+          </Box>
+        </Link>
+      ),
+    },
+    {
+      field: 'role',
+      column_name: 'role',
+      cell: (params) => (
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <Chip
+            label={`${
+              params.role.charAt(0).toUpperCase() +
+              params.role.slice(1).toLowerCase()
+            }`}
+          />
+        </Box>
       ),
     },
     {
