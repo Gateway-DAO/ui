@@ -67,8 +67,7 @@
     "error-on-upload": "There was an error loading images.",
     "actions": {
       "issue-credential": "Issue Credential",
-      "check-credential": "Check credential",
-      "restricted": "Restricted"
+      "check-credential": "Check credential"
     },
     "issue-credential": {
       "group-recipient-title": "Send to",
