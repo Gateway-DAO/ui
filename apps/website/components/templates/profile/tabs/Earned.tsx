@@ -1,21 +1,27 @@
 import useTranslation from 'next-translate/useTranslation';
 
+import { PartialDeep } from 'type-fest/source/partial-deep';
+
 import { brandColors, TOKENS } from '@gateway/theme';
 
 import { alpha, Box, Stack, Typography } from '@mui/material';
 
-import { useAuth } from '../../../../providers/auth';
+import { Users } from '../../../../services/hasura/types';
+import { SessionUser } from '../../../../types/user';
 import { ExperienceAccordion } from './experience';
 
-export function Earned() {
-  const { me } = useAuth();
+type Props = {
+  user: SessionUser | PartialDeep<Users>;
+};
+
+export function Earned({ user }: Props) {
   const { t } = useTranslation();
 
   return (
     <Box
       sx={{
         py: 6,
-        ...(me.experiences?.length == 0 && {
+        ...(user?.experiences?.length == 0 && {
           borderBottom: 1,
           borderColor: 'divider',
         }),
@@ -35,9 +41,9 @@ export function Earned() {
           {t('common:tabs.credentials')}
         </Typography>
       </Box>
-      {me.experiences?.length > 0 ? (
+      {user?.experiences?.length > 0 ? (
         <Stack>
-          {me.experiences.map((experience, index) => (
+          {user?.experiences.map((experience, index) => (
             <Box
               key={index}
               sx={{

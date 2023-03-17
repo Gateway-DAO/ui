@@ -55,7 +55,7 @@ export default function PrivateProfileTemplate() {
       count: me.experiences
         .map((exp) => exp.credentials.length)
         .reduce((acc, cur) => (acc += cur)),
-      section: <Earned />,
+      section: <Earned user={me} />,
     },
   ];
 
