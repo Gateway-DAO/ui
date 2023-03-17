@@ -48,7 +48,7 @@ export default function IssueByForm({ dataModel }: Props) {
     return (
       dataModel.permissioning === PermissionType.Organizations ||
       (dataModel.permissioning === PermissionType.SpecificIds &&
-        !dataModel?.allowedUsers?.find((user) => user.id === me?.id))
+        !dataModel?.allowedUsers?.find((user) => user.id === me?.protocol?.id))
     );
   };
 
@@ -65,7 +65,7 @@ export default function IssueByForm({ dataModel }: Props) {
     {
       picture: me?.picture,
       label: me?.username,
-      value: me?.id,
+      value: me?.protocol?.id,
       disabled: disableUserToIssueCredential(),
     },
     ...me.protocol.accesses.map((access) => ({
