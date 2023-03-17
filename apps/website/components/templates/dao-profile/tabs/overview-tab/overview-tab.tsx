@@ -5,17 +5,26 @@ import React, { useMemo } from 'react';
 import { PartialDeep } from 'type-fest';
 import { v4 as uuid } from 'uuid';
 
-import { Button, Divider, Stack } from '@mui/material';
+import { theme, TOKENS } from '@gateway/theme';
+
+import {
+  Box,
+  Button,
+  Divider,
+  Stack,
+  Typography,
+  useMediaQuery,
+} from '@mui/material';
 
 import { ROUTES } from '../../../../../constants/routes';
 import { Gates, Users } from '../../../../../services/hasura/types';
 import { EmptyCard } from '../../../../atoms/empty-card';
 import { GatesCard } from '../../../../molecules/gates-card';
-import { PersonCard } from '../../../../molecules/person-card';
-import {
-  SectionWithSliderResponsive,
-  SectionWithGrid,
-} from '../../../../molecules/sections';
+import { SectionWithSliderResponsive } from '../../../../molecules/sections';
+import DataGrid, {
+  IColumnGrid,
+} from '../../../../organisms/data-grid/data-grid';
+import DashboardCard from '../../../protocol/components/dashboard-card';
 import { useDaoProfile } from '../../context';
 
 type Props = {
@@ -25,8 +34,36 @@ type Props = {
 };
 
 export function OverviewTab({ people, setTab, credentials }: Props) {
-  const { t } = useTranslation('explore');
-  const { dao, isAdmin } = useDaoProfile();
+  const { t } = useTranslation();
+  const { dao, isAdmin, issuedCredentials, stats } = useDaoProfile();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
+
+  const columns: IColumnGrid[] = [
+    {
+      column_name: 'credential_id',
+      header_name: 'Credential ID',
+    },
+    {
+      column_name: 'category',
+      header_name: 'Category',
+    },
+    {
+      column_name: 'recipient_id',
+      header_name: 'Recipient ID',
+    },
+    {
+      column_name: 'issuance_date',
+      header_name: 'Issuance Date',
+    },
+    {
+      column_name: 'status',
+      header_name: 'Status',
+    },
+  ];
+
+  const credentialsGrid = issuedCredentials
+    ? { pages: [issuedCredentials] }
+    : null;
 
   const gates = credentials ?? [];
 
@@ -76,40 +113,90 @@ export function OverviewTab({ people, setTab, credentials }: Props) {
           },
         }}
       >
-        <SectionWithSliderResponsive
-          title={t('common:featured-credentials.title')}
-          caption={t('common:featured-credentials.caption')}
-          action={
-            gates.length > 0 && (
-              <Button onClick={() => setTab(1)}>
-                {t('common:featured-credentials.see-more')}
-              </Button>
-            )
-          }
-          itemWidth={(theme) => theme.spacing(37.75)}
-          gridSize={{ lg: 4 }}
-        >
-          {gateList}
-        </SectionWithSliderResponsive>
-        <SectionWithGrid
-          title={t('common:featured-people.title')}
-          caption={t('common:featured-people.caption')}
-          action={
-            <Button onClick={() => setTab(2)}>
-              {t('common:featured-people.see-more')}
-            </Button>
-          }
-        >
-          {people.slice(0, 6).map((person) => (
-            <PersonCard
-              key={person.id}
-              user={person}
-              isAdmin={person.permissions.some(
-                ({ permission }) => permission === 'dao_admin'
-              )}
-            />
-          ))}
-        </SectionWithGrid>
+        <Stack>
+          {stats && (
+            <Stack px={TOKENS.CONTAINER_PX} mt={6}>
+              <Stack
+                gap={isMobile ? 1 : 2}
+                justifyContent="space-between"
+                sx={{ flexDirection: { xs: 'column', md: 'row' }, mb: 2 }}
+              >
+                {dao.gates_aggregate?.aggregate?.count && (
+                  <DashboardCard
+                    label={`${t(
+                      'dao-profile:overview-tab.credentials_stats_card'
+                    )}`}
+                    value={dao.gates_aggregate?.aggregate?.count}
+                  />
+                )}
+                <DashboardCard
+                  label={`${t(
+                    'dao-profile:overview-tab.protocol_credentials_stats_card'
+                  )}`}
+                  value={stats?.getTotalodCredentialsIssuedByOrganization}
+                />
+              </Stack>
+            </Stack>
+          )}
+          <SectionWithSliderResponsive
+            title={`${t('dao-profile:overview-tab.credentials-section.title')}`}
+            caption={`${t(
+              'dao-profile:overview-tab.credentials-section.caption'
+            )}`}
+            action={
+              gates.length > 0 && (
+                <Button onClick={() => setTab(1)}>
+                  {t('dao-profile:overview-tab.credentials-section.action')}
+                </Button>
+              )
+            }
+            itemWidth={(theme) => theme.spacing(37.75)}
+            gridSize={{ lg: 4 }}
+          >
+            {gateList}
+          </SectionWithSliderResponsive>
+        </Stack>
+        {issuedCredentials && issuedCredentials.length > 0 && (
+          <Stack mt={5}>
+            <Stack
+              direction="row"
+              justifyContent="space-between"
+              alignItems="center"
+              px={TOKENS.CONTAINER_PX}
+              mb={8}
+            >
+              <Box>
+                <Typography variant="h6">
+                  {t(
+                    'dao-profile:overview-tab.issued-credentials-section.title'
+                  )}
+                </Typography>
+                <Typography variant="caption" color="text.secondary">
+                  {t(
+                    'dao-profile:overview-tab.issued-credentials-section.caption'
+                  )}
+                </Typography>
+              </Box>
+              <Box
+                sx={{
+                  display: {
+                    xs: 'none',
+                    md: 'block',
+                  },
+                }}
+              >
+                <Button onClick={() => setTab(2)}>
+                  {t(
+                    'dao-profile:overview-tab.issued-credentials-section.action'
+                  )}
+                </Button>
+              </Box>
+            </Stack>
+            <Stack mb={4}>
+              <DataGrid columns={columns} data={credentialsGrid} />
+            </Stack>
+          </Stack>
+        )}
       </Stack>
     </Stack>
   );

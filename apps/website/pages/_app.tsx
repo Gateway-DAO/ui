@@ -1,6 +1,5 @@
 /* eslint-disable @next/next/inline-script-id */
 import { AppProps as NextAppProps } from 'next/app';
-import Head from 'next/head';
 import Script from 'next/script';
 import NextNProgress from 'nextjs-progressbar';
 
@@ -10,7 +9,6 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { ThemeProvider } from '@gateway/theme';
 
 import Notistack from '../components/atoms/notistack';
-import { SEOSocial, SEOFavicon } from '../components/atoms/seo';
 import { NavStateProvider } from '../hooks/use-nav';
 import { usePersistLocale } from '../hooks/usePersistLocale';
 import { AuthProvider } from '../providers/auth';
@@ -22,6 +20,8 @@ import '../components/atoms/global-dependencies';
 import '../styles/next.css';
 import { SessionProvider } from 'next-auth/react';
 
+import { HeadContainer } from '../components/molecules/head-container';
+
 type AppProps = NextAppProps & {
   Component: NextAppProps['Component'] & { auth?: boolean };
 };
@@ -31,12 +31,7 @@ function CustomApp({ Component, pageProps }: AppProps) {
 
   return (
     <>
-      <Head>
-        <title>Gateway</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <SEOFavicon />
-        <SEOSocial />
-      </Head>
+      <HeadContainer />
       <NextNProgress
         height={4}
         color={'#9A53FF'}
@@ -63,7 +58,7 @@ function CustomApp({ Component, pageProps }: AppProps) {
           </WalletProvider>
         </SessionProvider>
       </ThemeProvider>
-
+      {/* Smartlook */}
       <Script
         strategy="afterInteractive"
         dangerouslySetInnerHTML={{
@@ -75,6 +70,38 @@ function CustomApp({ Component, pageProps }: AppProps) {
             })(document);
             smartlook('init', '${process.env.NEXT_PUBLIC_SMARTLOOK_KEY}', { region: 'eu' });
             `,
+        }}
+      />
+      {/* Google Analytics */}
+      <Script
+        strategy="afterInteractive"
+        src="https://www.googletagmanager.com/gtag/js?id=G-CKZ9WYMPM4"
+      />
+      <Script
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: `
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'G-CKZ9WYMPM4');
+            `,
+        }}
+      />
+      {/* Hotjar */}
+      <Script
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: `
+          (function(h,o,t,j,a,r){
+            h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+            h._hjSettings={hjid:3399024,hjsv:6};
+            a=o.getElementsByTagName('head')[0];
+            r=o.createElement('script');r.async=1;
+            r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+            a.appendChild(r);
+        })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');`,
         }}
       />
     </>

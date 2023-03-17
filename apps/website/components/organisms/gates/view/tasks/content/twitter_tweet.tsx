@@ -135,7 +135,9 @@ const TwitterTweetContent = ({
           <Twitter sx={{ color: '#1DA1F2' }} />
           {twitterKeys && !completed && (
             <Button
-              href={`https://twitter.com/intent/tweet?text=${tweet_text}`}
+              href={`https://twitter.com/intent/tweet?text=${encodeURI(
+                tweet_text
+              )}`}
               target="_blank"
               sx={{
                 background: '#1DA1F2',

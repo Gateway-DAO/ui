@@ -1,3 +1,34 @@
 {
-  "edit":"Edit DAO"
+  "edit": "Edit DAO",
+  "earn-tab": "Earn",
+  "overview-tab": {
+    "credentials_stats_card": "Credentials to earn",
+    "protocol_credentials_stats_card": "Issued credentials",
+    "credentials-section": {
+      "title": "Earn credentials",
+      "caption": "People are really into these credentials. We thought you would too.",
+      "action": "View more"
+    },
+    "issued-credentials-section": {
+      "title": "Last issued credentials",
+      "caption": "Lorem ipsum dolor et ex machina",
+      "action": "View more"
+    }
+  },
+  "issued-tab": {
+    "grid-columns": {
+      "credential_id": "Credential ID",
+      "category": "Category",
+      "recipient_id": "Recipient ID",
+      "issuance_date": "Issuance Date",
+      "status": "Status"
+    }
+  },
+  "signers-tab": {
+    "title": "Signers",
+    "grid-columns": {
+      "user_id": "User ID",
+      "role": "Role"
+    }
+  }
 }
