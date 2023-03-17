@@ -37,10 +37,10 @@ export default function GridViewTab({
     isFetchingNextPage,
     fetchNextPage,
   } = useInfiniteQuery(
-    [queryString, dao.protocolOrganization.id],
+    [queryString, dao.protocolOrganization?.id],
     async ({ pageParam }) => {
       const result = await gatewayProtocolSDK[queryFnName]({
-        [parameterName || 'organizationId']: dao.protocolOrganization.id,
+        [parameterName || 'organizationId']: dao.protocolOrganization?.id,
         take: internalPageSize,
         skip: pageParam || 0,
       } as any); //[ ] add interface/type

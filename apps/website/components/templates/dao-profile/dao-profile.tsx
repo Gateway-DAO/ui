@@ -20,6 +20,7 @@ export function DaoProfileTemplate() {
   const { activeTab, handleTabChange, setTab } = useTab();
 
   const people = dao?.followers?.map(({ user }) => user) ?? [];
+  const hasProtocolOrganization = !!dao.protocolOrganization;
 
   const issuedColumns: IColumnGrid[] = [
     {
@@ -55,7 +56,7 @@ export function DaoProfileTemplate() {
     },
   ];
 
-  const tabs = [
+  const dApptabs = [
     {
       key: 'overview',
       label: t('common:tabs.overview'),
@@ -72,6 +73,9 @@ export function DaoProfileTemplate() {
       label: t('dao-profile:earn-tab'),
       section: <GatesTab />,
     },
+  ];
+
+  const protocolTabs = [
     {
       key: 'credentials-issued',
       label: t('common:tabs.issued'),
@@ -96,6 +100,10 @@ export function DaoProfileTemplate() {
       ),
     },
   ];
+
+  const tabs = hasProtocolOrganization
+    ? dApptabs.concat(protocolTabs)
+    : dApptabs;
 
   return (
     <>
