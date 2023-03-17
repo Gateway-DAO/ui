@@ -17,7 +17,6 @@
   "private": true,
   "dependencies": {
     "@corets/use-throttle": "^0.2.2",
-    "@cyberlab/cyberconnect": "^4.5.0",
     "@emotion/react": "11.8.2",
     "@emotion/server": "11.4.0",
     "@emotion/styled": "11.8.1",

@@ -13,6 +13,7 @@ import {
 } from '../../../../../../services/gateway-protocol/types';
 import { useTab, TabPanel } from '../../../../../atoms/tabs';
 import { IColumnGrid } from '../../../../../organisms/data-grid/data-grid';
+import { PlaygroundTab } from './playground-tab';
 
 const OverviewTab = dynamic(() => import('./overview-tab'), { ssr: false });
 const GridViewTab = dynamic(() => import('./grid-view-tab'), { ssr: false });
@@ -139,19 +140,7 @@ export default function DataModelTabs({ dataModel, stats }: Props) {
       key: 'playground',
       noPadding: true,
       label: t('common:tabs.playground'),
-      section: (
-        <>
-          <iframe
-            id="playground"
-            src={process.env.NEXT_PUBLIC_GATEWAY_PROTOCOL_ENDPOINT}
-            name="playground"
-            width="100%"
-            height="800"
-            frameBorder="0"
-            scrolling="no"
-          ></iframe>
-        </>
-      ),
+      section: <PlaygroundTab />,
     },
   ];
 

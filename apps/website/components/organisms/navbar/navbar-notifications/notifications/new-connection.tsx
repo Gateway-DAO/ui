@@ -1,18 +1,25 @@
 import useTranslation from 'next-translate/useTranslation';
 import Link from 'next/link';
 
+import { PartialDeep } from 'type-fest';
+
 import { Box, Button, Stack, Typography } from '@mui/material';
 
 import { ROUTES } from '../../../../../constants/routes';
-import { Notification } from '../../../../../types/cyberconnect';
+import { Users } from '../../../../../services/hasura/types';
 import { useTimeAgo } from '../../../../../utils/time';
 import { AvatarFile } from '../../../../atoms/avatar-file';
-import { Methods } from '../item-methods';
 
-type Props = Partial<Notification> &
-  Methods & {
-    isLast?: boolean;
-  };
+type Props = {
+  isLast?: boolean;
+  user: PartialDeep<Users>;
+  hasRead: boolean;
+  onRead: () => void;
+  timestamp: string;
+  isLoading: boolean;
+  onAccept: () => void;
+  onReject: () => void;
+};
 
 export function NewConnectionNotification({
   hasRead,
