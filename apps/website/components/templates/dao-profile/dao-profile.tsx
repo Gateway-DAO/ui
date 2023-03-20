@@ -4,11 +4,14 @@ import { TOKENS } from '@gateway/theme';
 
 import { Box, Tabs, Tab } from '@mui/material';
 
+import { query } from '../../../constants/queries';
 import { a11yTabProps, TabPanel, useTab } from '../../atoms/tabs';
+import { IColumnGrid } from '../../organisms/data-grid/data-grid';
 import { useDaoProfile } from './context';
 import { DaoHeader } from './dao-header';
 import { GatesTab, OverviewTab } from './tabs';
-import { PeopleTab } from './tabs/people-tab';
+import GridViewTab from './tabs/grid-view-tab';
+import StaticGridViewTab from './tabs/static-grid-view-tab';
 
 export function DaoProfileTemplate() {
   const { dao, onRefetchFollowers, followersCount, credentials } =
@@ -17,8 +20,43 @@ export function DaoProfileTemplate() {
   const { activeTab, handleTabChange, setTab } = useTab();
 
   const people = dao?.followers?.map(({ user }) => user) ?? [];
+  const hasProtocolOrganization = !!dao.protocolOrganization;
 
-  const tabs = [
+  const issuedColumns: IColumnGrid[] = [
+    {
+      column_name: 'credential_id',
+      header_name: `${t('dao-profile:issued-tab.grid-columns.credential_id')}`,
+    },
+    {
+      column_name: 'category',
+      header_name: `${t('dao-profile:issued-tab.grid-columns.category')}`,
+    },
+    {
+      column_name: 'recipient_id',
+      header_name: `${t('dao-profile:issued-tab.grid-columns.recipient_id')}`,
+    },
+    {
+      column_name: 'issuance_date',
+      header_name: `${t('dao-profile:issued-tab.grid-columns.issuance_date')}`,
+    },
+    {
+      column_name: 'status',
+      header_name: `${t('dao-profile:issued-tab.grid-columns.status')}`,
+    },
+  ];
+
+  const signersColumns: IColumnGrid[] = [
+    {
+      column_name: 'user_id',
+      header_name: `${t('dao-profile:signers-tab.grid-columns.user_id')}`,
+    },
+    {
+      column_name: 'role',
+      header_name: `${t('dao-profile:signers-tab.grid-columns.role')}`,
+    },
+  ];
+
+  const dApptabs = [
     {
       key: 'overview',
       label: t('common:tabs.overview'),
@@ -32,15 +70,40 @@ export function DaoProfileTemplate() {
     },
     {
       key: 'credentials',
-      label: t('common:tabs.credentials'),
+      label: t('dao-profile:earn-tab'),
       section: <GatesTab />,
     },
+  ];
+
+  const protocolTabs = [
     {
-      key: 'people',
-      label: t('common:tabs.people'),
-      section: <PeopleTab />,
+      key: 'credentials-issued',
+      label: t('common:tabs.issued'),
+      section: (
+        <GridViewTab
+          columns={issuedColumns}
+          queryString={query.credentialsIssuedByOrg}
+          queryFnName="findCredentialsByIssuerOrganization"
+          parameterName="issuerOrganizationId"
+          pageSize={20}
+        />
+      ),
+    },
+    {
+      key: 'credentials-signers',
+      label: t('dao-profile:signers-tab.title'),
+      section: (
+        <StaticGridViewTab
+          columns={signersColumns}
+          data={dao.protocolOrganization?.organization_accesses}
+        />
+      ),
     },
   ];
+
+  const tabs = hasProtocolOrganization
+    ? dApptabs.concat(protocolTabs)
+    : dApptabs;
 
   return (
     <>

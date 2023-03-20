@@ -16,6 +16,7 @@ import { useAuth } from '../../../providers/auth';
 import { AvatarFile } from '../../atoms/avatar-file';
 import { SocialButtons } from '../../organisms/social-buttons';
 import { IssuedTab, ReceivedTab } from './tabs';
+import { Earned } from './tabs/Earned';
 
 const ConnectionsButton = dynamic<any>(
   () => import('./connections/button').then((mod) => mod.ConnectionsButton),
@@ -26,7 +27,7 @@ const ConnectionsButton = dynamic<any>(
 
 export default function PrivateProfileTemplate() {
   const { t } = useTranslation();
-  const { activeTab, handleTabChange, setTab } = useTab();
+  const { activeTab, handleTabChange } = useTab();
   const router = useRouter();
   const { me } = useAuth();
 
@@ -47,6 +48,14 @@ export default function PrivateProfileTemplate() {
       label: t('common:tabs.issued'),
       count: me.protocol.totalOfIssuedCredentials,
       section: <IssuedTab user={me} />,
+    },
+    {
+      key: 'earned',
+      label: t('common:tabs.earned'),
+      count: me.experiences
+        .map((exp) => exp.credentials.length)
+        .reduce((acc, cur) => (acc += cur), 0),
+      section: <Earned user={me} />,
     },
   ];
 

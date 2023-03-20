@@ -136,7 +136,11 @@ export default function Activities({ activities }: Props) {
                         </Typography>
                       </Stack>
                       <a
-                        href={`${getExplorer(80001)}/tx/${activity?.txHash}`}
+                        href={`${getExplorer(
+                          process.env.NEXT_PUBLIC_PROTOCOL_ENV === 'production'
+                            ? 137
+                            : 80001
+                        )}/tx/${activity?.txHash}`}
                         target="_blank"
                         rel="noreferrer"
                       >

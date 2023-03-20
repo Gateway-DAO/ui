@@ -64,7 +64,7 @@ export default function Banner(): JSX.Element {
             <Button
               variant="contained"
               sx={{ mt: 4 }}
-              href="http://mygateway.xyz"
+              href="https://blb4ytkp5bp.typeform.com/onboardgateway"
               target="_blank"
             >
               {t('common:featured-banner.action')}

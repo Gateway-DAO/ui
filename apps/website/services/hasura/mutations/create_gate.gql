@@ -5,7 +5,6 @@ mutation create_gate_tasks_based(
   $categories: jsonb
   $type: gate_type
   $description: String
-  $skills: jsonb
   $permissions: [permissions_insert_input!] = []
   $image: String!
   $claim_limit: Int
@@ -20,7 +19,6 @@ mutation create_gate_tasks_based(
       type: $type
       categories: $categories
       description: $description
-      skills: $skills
       claim_limit: $claim_limit
       expire_date: $expire_date
       permissions: {
@@ -47,7 +45,6 @@ mutation create_gate_tasks_based(
         type
         categories
         description
-        skills
         image
         published
         expire_date
@@ -69,7 +66,6 @@ mutation create_gate_direct(
   $categories: jsonb,
   $type: gate_type,
   $description: String,
-  $skills: jsonb,
   $permissions: [permissions_insert_input!] = [],
   $claim_limit: Int
   $expire_date: timestamptz
@@ -85,7 +81,6 @@ mutation create_gate_direct(
       type: $type
       categories: $categories
       description: $description
-      skills: $skills
       claim_limit: $claim_limit
       expire_date: $expire_date
       permissions: {
@@ -106,7 +101,6 @@ mutation create_gate_direct(
         title
         categories
         description
-        skills
         image
         published
         whitelisted_wallets_file_id
