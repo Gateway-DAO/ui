@@ -1,0 +1,32 @@
+{
+  "root": "libs/theme-2",
+  "sourceRoot": "libs/theme-2/src",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/theme-2",
+        "main": "libs/theme-2/src/index.ts",
+        "tsConfig": "libs/theme-2/tsconfig.lib.json",
+        "assets": ["libs/theme-2/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/theme-2/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/theme-2"],
+      "options": {
+        "jestConfig": "libs/theme-2/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

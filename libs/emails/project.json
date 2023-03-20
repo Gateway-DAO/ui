@@ -1,0 +1,32 @@
+{
+  "root": "libs/emails",
+  "sourceRoot": "libs/emails/src",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/emails",
+        "main": "libs/emails/src/index.ts",
+        "tsConfig": "libs/emails/tsconfig.lib.json",
+        "assets": ["libs/emails/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/emails/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/emails"],
+      "options": {
+        "jestConfig": "libs/emails/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}
