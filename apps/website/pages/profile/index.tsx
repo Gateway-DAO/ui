@@ -1,3 +1,4 @@
+import { HeadContainer } from '../../components/molecules/head-container';
 import { DashboardTemplate } from '../../components/templates/dashboard';
 import { PrivateProfileTemplate } from '../../components/templates/profile';
 import { useAuth } from '../../providers/auth';
@@ -7,15 +8,18 @@ export default function Profile() {
   const { me } = useAuth();
 
   return me?.id ? (
-    <DashboardTemplate
-      containerProps={{
-        sx: {
-          overflow: 'hidden',
-        },
-      }}
-    >
-      <PrivateProfileTemplate />
-    </DashboardTemplate>
+    <>
+      <HeadContainer title="My Profile" />
+      <DashboardTemplate
+        containerProps={{
+          sx: {
+            overflow: 'hidden',
+          },
+        }}
+      >
+        <PrivateProfileTemplate />
+      </DashboardTemplate>
+    </>
   ) : null;
 }
 
