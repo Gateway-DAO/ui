@@ -1,5 +1,6 @@
 import { InferGetServerSidePropsType, GetServerSidePropsContext } from 'next';
 
+import { HeadContainer } from '../../../../components/molecules/head-container';
 import { DashboardTemplate } from '../../../../components/templates/dashboard';
 import {
   ProtocolTemplate,
@@ -11,18 +12,21 @@ type Props = InferGetServerSidePropsType<typeof getServerSideProps>;
 
 export default function ProtocolDataModel({ dataModel, stats }: Props) {
   return (
-    <DashboardTemplate
-      containerProps={{
-        sx: {
-          overflow: '',
-        },
-        height: '100%',
-      }}
-    >
-      <ProtocolTemplate>
-        <DataModelShow dataModel={dataModel} stats={stats} />
-      </ProtocolTemplate>
-    </DashboardTemplate>
+    <>
+      <HeadContainer title={`${dataModel.title} Data Model`} />
+      <DashboardTemplate
+        containerProps={{
+          sx: {
+            overflow: '',
+          },
+          height: '100%',
+        }}
+      >
+        <ProtocolTemplate>
+          <DataModelShow dataModel={dataModel} stats={stats} />
+        </ProtocolTemplate>
+      </DashboardTemplate>
+    </>
   );
 }
 
