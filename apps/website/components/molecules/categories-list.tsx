@@ -74,7 +74,7 @@ export function CategoriesList({
               <Chip
                 aria-hidden={false}
                 ref={(element) => (refs.current[index] = element)}
-                key={category}
+                key={category + index}
                 label={formattedLabel}
                 size="small"
                 sx={{ mr: listMode ? '10px' : 'none' }}

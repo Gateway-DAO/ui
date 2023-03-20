@@ -1,6 +1,5 @@
 /* eslint-disable @next/next/inline-script-id */
 import { AppProps as NextAppProps } from 'next/app';
-import Head from 'next/head';
 import Script from 'next/script';
 import NextNProgress from 'nextjs-progressbar';
 
@@ -10,18 +9,18 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { ThemeProvider } from '@gateway/theme';
 
 import Notistack from '../components/atoms/notistack';
-import { SEOSocial, SEOFavicon } from '../components/atoms/seo';
 import { NavStateProvider } from '../hooks/use-nav';
 import { usePersistLocale } from '../hooks/usePersistLocale';
 import { AuthProvider } from '../providers/auth';
 import { BiconomyProvider } from '../providers/biconomy';
-import { CyberConnectProvider } from '../providers/cyberconnect';
 import { WalletProvider } from '../providers/wallet/wallet-provider';
 import { queryClient } from '../services/query-client';
 
 import '../components/atoms/global-dependencies';
 import '../styles/next.css';
 import { SessionProvider } from 'next-auth/react';
+
+import { HeadContainer } from '../components/molecules/head-container';
 
 type AppProps = NextAppProps & {
   Component: NextAppProps['Component'] & { auth?: boolean };
@@ -32,12 +31,7 @@ function CustomApp({ Component, pageProps }: AppProps) {
 
   return (
     <>
-      <Head>
-        <title>Gateway</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <SEOFavicon />
-        <SEOSocial />
-      </Head>
+      <HeadContainer />
       <NextNProgress
         height={4}
         color={'#9A53FF'}
@@ -52,11 +46,9 @@ function CustomApp({ Component, pageProps }: AppProps) {
                 <Notistack>
                   <AuthProvider isAuthPage={Component.auth}>
                     <BiconomyProvider>
-                      <CyberConnectProvider>
-                        <NavStateProvider>
-                          <Component {...pageProps} />
-                        </NavStateProvider>
-                      </CyberConnectProvider>
+                      <NavStateProvider>
+                        <Component {...pageProps} />
+                      </NavStateProvider>
                     </BiconomyProvider>
                   </AuthProvider>
                 </Notistack>
