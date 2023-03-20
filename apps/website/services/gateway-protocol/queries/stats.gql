@@ -7,3 +7,7 @@ query getDataModelStats($dataModelId: String!) {
   getTotalCredentialsByDataModelGroupByRecipient(dataModelId: $dataModelId)
   getTotalCredentialsByDataModel(dataModelId: $dataModelId)
 }
+
+query getDaoStats($organizationId: String!) {
+  getTotalodCredentialsIssuedByOrganization(userId: $organizationId)
+}
