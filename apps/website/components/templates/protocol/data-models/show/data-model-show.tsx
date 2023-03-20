@@ -44,16 +44,21 @@ export default function DataModelShow({
     const organizationsId = me?.protocol?.accesses?.map(
       (item) => item.organization.id
     );
-    const usersIdAndOrganizationsId = [me.id].concat(organizationsId);
-    const availableToIssue = dataModel?.allowedUsers.concat(
-      dataModel?.allowedOrganizations as any
+    const usersIdAndOrganizationsId = [me?.protocol?.id].concat(
+      organizationsId
     );
+    const availableToIssue = dataModel?.allowedUsers
+      .concat(dataModel?.allowedOrganizations as any)
+      .map((availableItem) => availableItem.id);
+
     switch (dataModel?.permissioning) {
       case PermissionType.SpecificIds:
-        return !!usersIdAndOrganizationsId.find(
-          (userOrOrgId) =>
-            availableToIssue.length && availableToIssue?.indexOf(userOrOrgId.id)
-        );
+        return !!usersIdAndOrganizationsId.find((userOrOrgId) => {
+          return (
+            availableToIssue.length &&
+            availableToIssue?.indexOf(userOrOrgId) > -1
+          );
+        });
       case PermissionType.Organizations:
         return !!organizationsId.length;
       case PermissionType.All:
