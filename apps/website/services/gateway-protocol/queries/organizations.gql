@@ -1,0 +1,38 @@
+fragment org on Organization {
+  id
+  gatewayId
+  name
+  description
+  issuedCredentials {
+    id
+    expirationDate
+    issuerUser {
+      id
+      gatewayId
+    }
+    createdAt
+    image
+  }
+  receivedCredentials {
+    id
+    expirationDate
+    recipientUser {
+      id
+      gatewayId
+    }
+    createdAt
+    image
+  }
+}
+
+query organization($id: String!) {
+  organization(id: $id) {
+    ...org
+  }
+}
+
+query organizationByGatewayId($gatewayId: String!) {
+  organizationByGatewayId(gatewayId: $gatewayId) {
+    ...org
+  }
+}

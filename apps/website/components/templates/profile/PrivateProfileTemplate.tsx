@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import { TOKENS } from '@gateway/theme';
 
 import EditIcon from '@mui/icons-material/Edit';
-import { Box, Stack, Typography, Tabs, Tab } from '@mui/material';
+import { Box, Stack, Typography, Tabs, Tab, Chip } from '@mui/material';
 
 import { a11yTabProps, TabPanel, useTab } from '../../../components/atoms/tabs';
 import { Navbar } from '../../../components/organisms/navbar/navbar';
@@ -14,7 +14,8 @@ import { generateImageUrl } from '../../../hooks/use-file';
 import { useAuth } from '../../../providers/auth';
 import { AvatarFile } from '../../atoms/avatar-file';
 import { SocialButtons } from '../../organisms/social-buttons';
-import { OverviewTab } from './tabs';
+import { IssuedTab, ReceivedTab } from './tabs';
+import { Earned } from './tabs/Earned';
 
 export default function PrivateProfileTemplate() {
   const { t } = useTranslation();
@@ -23,10 +24,30 @@ export default function PrivateProfileTemplate() {
   const { me } = useAuth();
 
   const tabs = [
+    // {
+    //   key: 'overview',
+    //   label: t('common:tabs.overview'),
+    //   section: <OverviewTab setActiveTab={setTab} isPrivateProfile user={me} />,
+    // },
     {
-      key: 'overview',
-      label: t('common:tabs.overview'),
-      section: <OverviewTab user={me} />,
+      key: 'received',
+      label: t('common:tabs.received'),
+      count: me.protocol.totalOfreceivedCredentials,
+      section: <ReceivedTab user={me} />,
+    },
+    {
+      key: 'issued',
+      label: t('common:tabs.issued'),
+      count: me.protocol.totalOfIssuedCredentials,
+      section: <IssuedTab user={me} />,
+    },
+    {
+      key: 'earned',
+      label: t('common:tabs.earned'),
+      count: me.experiences
+        .map((exp) => exp.credentials.length)
+        .reduce((acc, cur) => (acc += cur), 0),
+      section: <Earned user={me} />,
     },
   ];
 
@@ -171,7 +192,7 @@ export default function PrivateProfileTemplate() {
             mb: '-1px',
           }}
         >
-          {tabs.map(({ key, label }, index) => (
+          {tabs.map(({ key, label, count }, index) => (
             <Tab
               key={key}
               label={label}
@@ -180,6 +201,12 @@ export default function PrivateProfileTemplate() {
                 px: 0,
                 mr: theme.spacing(3),
               })}
+              {...(count
+                ? {
+                    icon: <Chip label={count} size="small" />,
+                    iconPosition: 'end',
+                  }
+                : {})}
               {...a11yTabProps('dao', index)}
             />
           ))}

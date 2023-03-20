@@ -1,0 +1,20 @@
+query findIssuersByDataModel(
+  $dataModelId: String!
+  $take: Float!
+  $skip: Float!
+) {
+  findIssuersByDataModel(dataModelId: $dataModelId, take: $take, skip: $skip) {
+    issuedCredentials {
+      id
+      expirationDate
+      issuerUser {
+        id
+        gatewayId
+      }
+      createdAt
+      image
+    }
+    createdAt
+    totalOfIssuedCredentials
+  }
+}

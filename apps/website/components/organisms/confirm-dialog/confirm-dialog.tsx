@@ -33,7 +33,12 @@ const ConfirmDialog = (props: ConfirmDialogProps) => {
       aria-labelledby="confirm-dialog"
       maxWidth="xs"
     >
-      <DialogTitle id="confirm-dialog">{title}</DialogTitle>
+      <DialogTitle
+        id="confirm-dialog"
+        sx={{ minWidth: { xs: '200px', md: '400px' } }}
+      >
+        {title}
+      </DialogTitle>
       <DialogContent>{children}</DialogContent>
       <DialogActions
         sx={{

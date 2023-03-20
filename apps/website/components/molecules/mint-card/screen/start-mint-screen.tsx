@@ -1,5 +1,3 @@
-import { useNetwork } from 'wagmi';
-
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { Avatar, Badge, ListItemAvatar } from '@mui/material';
 import Box from '@mui/material/Box';
@@ -11,6 +9,7 @@ import ListItemText from '@mui/material/ListItemText';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
+import { useConnectedWallet } from '../../../../hooks/wallet/use-connected-wallet';
 import { GatewayGrayIcon } from '../assets/gateway-gray';
 import { Subjects } from '../mint-card';
 
@@ -24,7 +23,7 @@ const NetworksDetails = [
 ];
 
 export const StartMintScreen = ({ setMintProcessStatus, mint }) => {
-  const { chain: activeChain } = useNetwork();
+  const wallet = useConnectedWallet();
   return (
     <Stack display="flex" height="100%">
       <Box
@@ -63,7 +62,9 @@ export const StartMintScreen = ({ setMintProcessStatus, mint }) => {
                   <ListItemAvatar>
                     <Badge
                       color={
-                        activeChain?.name == network.name ? 'success' : 'warning'
+                        wallet?.adapter?.name == network.name
+                          ? 'success'
+                          : 'warning'
                       }
                       overlap="circular"
                       badgeContent=" "

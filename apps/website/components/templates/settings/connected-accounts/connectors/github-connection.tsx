@@ -1,6 +1,5 @@
 import { useRouter } from 'next/router';
 
-import { useMutation } from '@tanstack/react-query';
 import { useLocalStorage } from 'react-use';
 
 import { AccountHandlerConnection } from '../components/accounts-card';

@@ -25,7 +25,7 @@ type Props = {
   children?: React.ReactNode;
 };
 
-export default function SettingsTemplate(props: Props) {
+export default function SettingsTemplate({ children }: Props) {
   const router = useRouter();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
@@ -124,7 +124,7 @@ export default function SettingsTemplate(props: Props) {
                 margin: { xs: '16px 16px 40px 16px', md: '40px 60px 60px' },
               }}
             >
-              {props?.children}
+              {children}
             </Stack>
           </Grid>
         )}

@@ -97,17 +97,25 @@ export function AdvancedSetting() {
                   defaultValue={null}
                   render={({ field }) => (
                     <>
-                      <MobileDatePicker
-                        label="Add expire date"
-                        inputFormat="MM/dd/yyyy"
+                      <DatePicker
                         disablePast
+                        inputFormat="MM/dd/yyyy"
+                        label="Add expire date"
                         value={
                           field.value ? DateTime.fromISO(field.value) : null
                         }
                         onChange={(date: DateTime) => {
                           field.onChange(date?.toISO());
                         }}
-                        renderInput={(params) => <TextField {...params} />}
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            inputProps={{
+                              ...params.inputProps,
+                              placeholder: 'mm/dd/yyyy',
+                            }}
+                          />
+                        )}
                       />
                     </>
                   )}

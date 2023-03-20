@@ -1,5 +1,5 @@
 import { useState } from 'react';
-
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import {
   Checkbox,
   FormControl,
@@ -13,6 +13,7 @@ import {
 } from '@mui/material';
 
 import { LoadingButton } from '../../../../../../components/atoms/loading-button';
+import useTranslation from 'next-translate/useTranslation';
 
 const QuizContent = ({
   data,
@@ -22,13 +23,21 @@ const QuizContent = ({
   readOnly,
   isLoading,
   isAdmin,
+  attemptCount,
 }) => {
+  const isInitialAttempt = attemptCount === undefined ? true : false;
+  const attemptLimit = isInitialAttempt
+    ? data.attempt_limit
+    : attemptCount > data.attempt_limit
+    ? 0
+    : data.attempt_limit - attemptCount;
+
   const { questions } = data;
   const formattedDate = new Date(updatedAt?.toLocaleString()).toLocaleString();
   const initialAnswers = questions.map((question, index) => {
     return { questionIdx: index, answers: [] };
   });
-
+  const { t } = useTranslation('gate-new');
   const [answers, setAnswers] = useState(initialAnswers);
   const randomQuestion =
     questions[Math.floor(Math.random() * questions.length)];
@@ -157,16 +166,43 @@ const QuizContent = ({
         );
       })}
       {!readOnly && !completed && (
-        <LoadingButton
-          variant="contained"
-          sx={{ marginTop: '15px' }}
-          onClick={() =>
-            !spammers ? completeTask({ questions: answers }) : null
-          }
-          isLoading={isLoading}
-        >
-          Submit
-        </LoadingButton>
+        <>
+          {data.attempt_limit !== null && (
+            <Stack direction="row" justifyContent="space-between">
+              <InfoOutlinedIcon
+                color={attemptLimit === 0 ? 'error' : 'inherit'}
+              />
+              <Typography
+                color={(theme) =>
+                  attemptLimit === 0 ? 'red' : theme.palette.text.secondary
+                }
+                variant="subtitle2"
+                sx={{ marginLeft: '10px' }}
+              >
+                {attemptLimit === 0
+                  ? t('tasks.quiz.quizAttemptLimitCountMessage', {
+                      attemptLimit,
+                      attempt_limit: data.attempt_limit,
+                    }) + t('tasks.quiz.quizAttemptLimitExhaust')
+                  : t('tasks.quiz.quizAttemptLimitCountMessage', {
+                      attemptLimit,
+                      attempt_limit: data.attempt_limit,
+                    })}
+              </Typography>
+            </Stack>
+          )}
+          <LoadingButton
+            variant="contained"
+            sx={{ marginTop: '15px' }}
+            onClick={() =>
+              !spammers ? completeTask({ questions: answers }) : null
+            }
+            disabled={attemptLimit === 0}
+            isLoading={isLoading}
+          >
+            Submit
+          </LoadingButton>
+        </>
       )}
       {completed && updatedAt && (
         <Typography color="#c5ffe3" variant="subtitle2">

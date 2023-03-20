@@ -17,7 +17,8 @@ import { Users } from '../../../services/hasura/types';
 import { SessionUser } from '../../../types/user';
 import { AvatarFile } from '../../atoms/avatar-file';
 import { SocialButtons } from '../../organisms/social-buttons';
-import { OverviewTab } from './tabs';
+import { ReceivedTab, IssuedTab } from './tabs';
+import { Earned } from './tabs/Earned';
 
 // const PendingReceivedSection = dynamic<any>(
 //   () =>
@@ -57,9 +58,19 @@ export default function ProfileTemplate({ user }: Props) {
   const tabs = useMemo(
     () => [
       {
-        key: 'overview',
-        label: t('common:tabs.overview'),
-        section: <OverviewTab user={user} />,
+        key: 'received',
+        label: t('common:tabs.received'),
+        section: <ReceivedTab user={user} />,
+      },
+      {
+        key: 'issued',
+        label: t('common:tabs.issued'),
+        section: <IssuedTab user={user} />,
+      },
+      {
+        key: 'earned',
+        label: t('common:tabs.earned'),
+        section: <Earned user={user} />,
       },
     ],
     []
@@ -154,8 +165,7 @@ export default function ProfileTemplate({ user }: Props) {
               mt: 2,
             }}
           >
-            <ConnectionsButton wallet={user.wallet} />.
-            <Typography>{user.credentials.length} credential(s)</Typography>
+            <ConnectionsButton wallet={user.wallet} />
           </Box> */}
           <Stack direction="column" gap={4} mt={4}>
             {/* {!!(user as Users) && pendingType === 'received' && (

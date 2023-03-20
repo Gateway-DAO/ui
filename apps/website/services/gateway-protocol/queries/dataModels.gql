@@ -1,0 +1,34 @@
+query dataModel($id: String!) {
+  dataModel(id: $id) {
+    id
+    description
+    schema
+    tags
+    title
+    arweaveInfo
+    createdAt
+    createdBy {
+      gatewayId
+    }
+    allowedUsers {
+      id
+    }
+    allowedOrganizations {
+      id
+    }
+    permissioning
+  }
+}
+
+query dataModels($take: Int!, $skip: Int!) {
+  dataModels(take: $take, skip: $skip) {
+    id
+    title
+    tags
+    version
+    description
+    createdBy {
+      gatewayId
+    }
+  }
+}

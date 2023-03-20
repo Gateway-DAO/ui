@@ -1,0 +1,25 @@
+query userByWallet($wallet: String!) {
+  userByWallet(wallet: $wallet) {
+    id
+  }
+}
+
+query meProtocol {
+  me {
+    id
+    isCompleted
+    primaryWallet {
+      id
+      address
+    }
+    accesses {
+      organization {
+        id
+        gatewayId
+        name
+      }
+    }
+    totalOfIssuedCredentials
+    totalOfreceivedCredentials
+  }
+}

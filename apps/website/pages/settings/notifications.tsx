@@ -1,8 +1,7 @@
-import { useAuth } from '../../providers/auth';
-
 import { DashboardTemplate } from '../../components/templates/dashboard';
 import { SettingsTemplate } from '../../components/templates/settings';
 import { NotificationsSettings } from '../../components/templates/settings';
+import { useAuth } from '../../providers/auth';
 
 export default function NotificationsSettingsPage() {
   const { me } = useAuth();
@@ -16,7 +15,9 @@ export default function NotificationsSettingsPage() {
         height: '100%',
       }}
     >
-      <SettingsTemplate children={<NotificationsSettings />} />
+      <SettingsTemplate>
+        <NotificationsSettings />
+      </SettingsTemplate>
     </DashboardTemplate>
   ) : null;
 }
