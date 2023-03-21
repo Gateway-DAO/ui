@@ -72,7 +72,7 @@ export function DirectHoldersHeader({
             : t('direct-credential.eligibility.has')}
         </Alert>
       )}
-      {!!me && !hasCredential && (
+      {!!me && !hasCredential && !!totalHolders && (
         <Alert
           variant="outlined"
           severity="warning"
