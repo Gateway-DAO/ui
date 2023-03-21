@@ -15,7 +15,7 @@ const Notistack = (props) => {
       maxSnack={6}
       preventDuplicate={true}
       anchorOrigin={{
-        vertical: 'top',
+        vertical: 'bottom',
         horizontal: 'center',
       }}
       autoHideDuration={6000}

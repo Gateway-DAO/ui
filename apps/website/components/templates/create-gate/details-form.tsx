@@ -1,13 +1,15 @@
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 
 import { useFormContext } from 'react-hook-form';
 
 import { Stack, TextField } from '@mui/material';
 
+import { CATEGORIES } from '../../../constants/gate';
 import { useAuth } from '../../../providers/auth';
 import CategoriesInput from '../../molecules/categories-input';
 import CreatedByInput from '../../molecules/creators-input';
-import { CreateGateData, Creator } from './schema';
+import SkillsInput from '../../molecules/skills-input';
+import { CreateGateData } from './schema';
 
 export function GateDetailsForm() {
   const {
@@ -18,7 +20,7 @@ export function GateDetailsForm() {
   } = useFormContext<CreateGateData>();
   const { me } = useAuth();
   const creators = useMemo(() => ({ id: me?.id, name: me?.name }), [me]);
-  const {  categories } = getValues();
+  const { categories } = getValues();
 
   return (
     <Stack direction="column" gap={2}>
@@ -42,6 +44,7 @@ export function GateDetailsForm() {
         errors={errors.categories}
         defaultValue={categories}
         {...register('categories')}
+        categories={CATEGORIES}
         helperText={errors.categories?.message}
         sx={{
           width: '100%',

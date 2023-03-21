@@ -1,20 +1,37 @@
-query get_nonce($wallet: String!, $network: Network) {
-  get_nonce(wallet: $wallet, network: $network) {
-    nonce
+mutation get_nonce($wallet: String!, $chain: protocol_api_Chain) {
+  protocol {
+    createNonce(input: {
+      wallet: $wallet,
+      chain: $chain
+    }) {
+      message
+    }
   }
 }
 
 mutation login($signature: String!, $wallet: String!) {
-  login(signature: $signature, wallet: $wallet) {
-    refresh_token
-    token
-    user_id
+  protocol {
+    login(input: {
+      signature: $signature
+      wallet: $wallet
+    }) {
+      token
+      refresh_token
+      hasura_id
+      protocol_id
+    }
   }
 }
 
 mutation refresh($refresh_token: String!) {
-  refresh(token: $refresh_token) {
-    refresh_token
-    token
+  protocol {
+    refreshToken(input: {
+      refresh_token: $refresh_token
+    }) {
+      token
+      refresh_token
+      hasura_id
+      protocol_id
+    }
   }
 }

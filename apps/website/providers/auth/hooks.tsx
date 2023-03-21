@@ -4,19 +4,22 @@ import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
+import { useWallet } from '@solana/wallet-adapter-react';
 import {
   useMutation,
   useQueries,
   useQuery,
   useQueryClient,
 } from '@tanstack/react-query';
+import bs58 from 'bs58';
 import { useSnackbar } from 'notistack';
 import { PartialDeep } from 'type-fest';
 import { useAccount, useDisconnect, useSignMessage } from 'wagmi';
 
 import { ROUTES } from '../../constants/routes';
+import { gatewayProtocolAuthSDK } from '../../services/gateway-protocol/api';
 import { gqlAnonMethods, gqlMethods } from '../../services/hasura/api';
-import { Network } from '../../services/hasura/types';
+import { Protocol_Api_Chain } from '../../services/hasura/types';
 import { ErrorResponse } from '../../types/graphql';
 import { SessionUser } from '../../types/user';
 import { AuthStep } from './types';
@@ -26,15 +29,18 @@ import { AuthStep } from './types';
  */
 function useSignOut(cb?: () => void) {
   const session = useSession();
-  const { address } = useAccount();
-  const { disconnectAsync } = useDisconnect();
+  const { disconnectAsync: disconnectEVM } = useDisconnect();
   const token = session?.data?.token;
+  const { disconnect: disconnectSolana } = useWallet();
 
   const onSignOut = useCallback(async () => {
     try {
-      if (address) {
-        await disconnectAsync();
-      }
+      await disconnectEVM();
+      // eslint-disable-next-line no-empty
+    } catch {}
+
+    try {
+      await disconnectSolana();
       // eslint-disable-next-line no-empty
     } catch {}
 
@@ -46,7 +52,7 @@ function useSignOut(cb?: () => void) {
     } catch {}
 
     cb?.();
-  }, [address, disconnectAsync, token, cb]);
+  }, [cb, disconnectEVM, disconnectSolana, token]);
 
   return onSignOut;
 }
@@ -61,10 +67,23 @@ function useSignOut(cb?: () => void) {
  */
 export const useAuthLogin = () => {
   const queryClient = useQueryClient();
-  const { address } = useAccount();
-  const sign = useSignMessage();
-  const { t } = useTranslation('common');
 
+  // EVM
+  const { address: EVMaddress } = useAccount();
+  const sign = useSignMessage();
+
+  // Solana
+  const { publicKey: solanaAddress, connecting, signMessage } = useWallet();
+
+  const address = EVMaddress || solanaAddress?.toString();
+  const chain = useMemo(() => {
+    if (!address) return null;
+    return address.startsWith('0x')
+      ? Protocol_Api_Chain.Evm
+      : Protocol_Api_Chain.Sol;
+  }, [address]);
+
+  const { t } = useTranslation('common');
   const session = useSession();
   const token = session?.data?.token;
 
@@ -78,11 +97,19 @@ export const useAuthLogin = () => {
 
   const nonce = useQuery(
     [address, 'nonce'],
-    () => gqlAnonMethods.get_nonce({ wallet: address, network: Network.Evm }),
+    () =>
+      gqlAnonMethods.get_nonce({
+        wallet: address,
+        chain,
+      }),
     {
       enabled: !!address && session.status === 'unauthenticated',
-      async onSuccess({ get_nonce: { nonce } }) {
-        sendSignature.mutate(nonce);
+      async onSuccess({
+        protocol: {
+          createNonce: { message },
+        },
+      }) {
+        sendSignature.mutate(message);
       },
       onError(e: any) {
         setError({
@@ -94,14 +121,30 @@ export const useAuthLogin = () => {
   );
 
   const sendSignature = useMutation(
-    [address, nonce.data?.get_nonce?.nonce, 'signature'],
-    (nonce: number) =>
-      sign.signMessageAsync({
-        message: `Welcome to Gateway!\n\nPlease sign this message for access: ${nonce}`,
-      }),
+    [address, chain, 'signature'],
+    (message: string): Promise<any> => {
+      switch (chain) {
+        case Protocol_Api_Chain.Evm:
+          return sign.signMessageAsync({ message });
+        case Protocol_Api_Chain.Sol:
+          // pass message to signMessage from string to Uint8Array
+          return signMessage(new TextEncoder().encode(message));
+        default:
+          throw new Error('Invalid chain');
+      }
+    },
     {
       async onSuccess(signature) {
-        await signInMutation.mutateAsync(signature);
+        switch (chain) {
+          case Protocol_Api_Chain.Evm:
+            signInMutation.mutate(signature as string);
+            break;
+          case Protocol_Api_Chain.Sol:
+            signInMutation.mutate(bs58.encode(signature as Uint8Array));
+            break;
+          default:
+            throw new Error('Invalid chain');
+        }
       },
       onError() {
         setError({
@@ -115,12 +158,17 @@ export const useAuthLogin = () => {
 
   const signInMutation = useMutation(
     ['signIn', address],
-    (signature: string) =>
-      signIn('credentials', {
+    async (signature: string) => {
+      const res = await signIn('credentials', {
         redirect: false,
         wallet: address,
         signature,
-      }),
+      });
+
+      if (!res.ok) {
+        throw new Error(res.error);
+      }
+    },
     {
       onError(e) {
         setError({
@@ -152,42 +200,52 @@ export const useAuthLogin = () => {
     },
   };
 
-  const { refetchOnReconnect, refetchInterval, ...queryDefNoRefetch } =
-    queryDefinitions;
+  const {
+    refetchOnReconnect: _1,
+    refetchInterval: _2,
+    ...queryDefNoRefetch
+  } = queryDefinitions;
 
   const user = useQueries({
     queries: [
       {
-        queryKey: ['user_info', session?.data?.user_id],
+        queryKey: ['user_info', session?.data?.hasura_id],
         queryFn: () => gqlMethods(token).me_user_info(),
         ...queryDefinitions,
       },
       {
-        queryKey: ['user_permissions', session?.data?.user_id],
+        queryKey: ['user_permissions', session?.data?.hasura_id],
         queryFn: () => gqlMethods(token).me_permissions(),
         ...queryDefinitions,
       },
       {
-        queryKey: ['user_following', session?.data?.user_id],
+        queryKey: ['user_following', session?.data?.hasura_id],
         queryFn: () => gqlMethods(token).me_following(),
         ...queryDefinitions,
       },
       {
-        queryKey: ['user_task_progresses', session?.data?.user_id],
+        queryKey: ['user_task_progresses', session?.data?.hasura_id],
         queryFn: () => gqlMethods(token).me_task_progresses(),
+        ...queryDefNoRefetch,
+      },
+      {
+        queryKey: ['user_protocol', session?.data?.hasura_id],
+        queryFn: async () => {
+          const res = await gatewayProtocolAuthSDK(token).meProtocol();
+          return {
+            me: {
+              protocol: res.me,
+            },
+          };
+        },
         ...queryDefNoRefetch,
       },
     ],
   });
 
   const me = useQuery(
-    ['me', session?.data?.user_id],
-    () => ({
-      ...user[0].data,
-      ...user[1].data,
-      ...user[2].data,
-      ...user[3].data,
-    }),
+    ['me', session?.data?.hasura_id],
+    () => user.reduce((acc, obj) => ({ ...acc, ...obj.data }), {}),
     {
       refetchOnMount: true,
       refetchOnReconnect: true,
@@ -199,17 +257,18 @@ export const useAuthLogin = () => {
 
   const authStep: AuthStep = useMemo(() => {
     if (error) return 'error';
-    if (nonce.fetchStatus === 'fetching') return 'get-nonce';
+    if (nonce.isFetching) return 'get-nonce';
     if (sendSignature.isLoading) return 'send-signature';
-    if (!me.data && me.isLoading && signInMutation.isSuccess) return 'get-me';
+    if (signInMutation.isLoading || (!me.data && signInMutation.isSuccess))
+      return 'get-me';
     if (me.data) return 'authenticated';
     return 'unauthenticated';
   }, [
     error,
     me.data,
-    me.isLoading,
-    nonce.fetchStatus,
+    nonce.isFetching,
     sendSignature.isLoading,
+    signInMutation.isLoading,
     signInMutation.isSuccess,
   ]);
 
@@ -218,20 +277,26 @@ export const useAuthLogin = () => {
   ) => queryClient.setQueryData(['me', user[0].data?.id], cb);
 
   const onInvalidateMe = () => {
-    queryClient.resetQueries(['user_info', session?.data?.user_id]);
-    queryClient.resetQueries(['user_permissions', session?.data?.user_id]);
-    queryClient.resetQueries(['user_following', session?.data?.user_id]);
-    queryClient.resetQueries(['user_task_progresses', session?.data?.user_id]);
+    queryClient.resetQueries(['user_info', session?.data?.hasura_id]);
+    queryClient.resetQueries(['user_permissions', session?.data?.hasura_id]);
+    queryClient.resetQueries(['user_following', session?.data?.hasura_id]);
+    queryClient.resetQueries([
+      'user_task_progresses',
+      session?.data?.hasura_id,
+    ]);
+    queryClient.resetQueries(['user_protocol', session?.data?.hasura_id]);
   };
 
-  const onSignOut = useSignOut(() => {
+  const onRetry = () => {
     setError(undefined);
     me.remove();
     user.forEach((q) => q.remove());
     nonce.remove();
     sendSignature.reset();
     signInMutation.reset();
-  });
+  };
+
+  const onSignOut = useSignOut(onRetry);
 
   return {
     me: token ? me.data : undefined,
@@ -239,6 +304,7 @@ export const useAuthLogin = () => {
     authStep,
     onUpdateMe,
     onSignOut,
+    onRetry,
     onInvalidateMe,
   };
 };

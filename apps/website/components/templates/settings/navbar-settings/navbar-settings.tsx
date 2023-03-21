@@ -10,7 +10,6 @@ import {
   ManageAccounts,
   ChevronRight,
   Hub,
-  Notifications,
 } from '@mui/icons-material';
 import {
   Box,

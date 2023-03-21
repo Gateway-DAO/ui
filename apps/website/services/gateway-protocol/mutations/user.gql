@@ -1,0 +1,11 @@
+mutation updateUser(
+  $gatewayId: String!
+  $email: String!
+) {
+  updateUser(updateUserInput:{
+    gatewayId: $gatewayId
+    email: $email
+  }) {
+    id
+  }
+}

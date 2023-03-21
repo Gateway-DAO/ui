@@ -1,15 +1,16 @@
-import { useAuth } from '../../providers/auth';
+import { useRouter } from 'next/router';
 
 import { useMutation } from '@tanstack/react-query';
 
-import { EditUserSchema } from '../../components/templates/settings/profile/schema';
-import { generateImageUrl } from '../../hooks/use-file';
+import { HeadContainer } from '../../components/molecules/head-container';
 import { DashboardTemplate } from '../../components/templates/dashboard';
 import { SettingsTemplate } from '../../components/templates/settings';
 import { EditProfileSettings } from '../../components/templates/settings';
-import { useUploadImage } from '../../hooks/use-upload-image';
-import { useRouter } from 'next/router';
+import { EditUserSchema } from '../../components/templates/settings/profile/schema';
 import { ROUTES } from '../../constants/routes';
+import { generateImageUrl } from '../../hooks/use-file';
+import { useUploadImage } from '../../hooks/use-upload-image';
+import { useAuth } from '../../providers/auth';
 
 export default function PublicProfileSettingsPage() {
   const uploadImage = useUploadImage();
@@ -76,16 +77,24 @@ export default function PublicProfileSettingsPage() {
   );
 
   return me?.id ? (
-    <DashboardTemplate
-      containerProps={{
-        sx: {
-          overflow: '',
-        },
-        height: '100%',
-      }}
-    >
-      <SettingsTemplate children={<EditProfileSettings onSubmit={editUserMutation.mutateAsync} isLoading={editUserMutation.isLoading} />} />
-    </DashboardTemplate>
+    <>
+      <HeadContainer title="My settings" />
+      <DashboardTemplate
+        containerProps={{
+          sx: {
+            overflow: '',
+          },
+          height: '100%',
+        }}
+      >
+        <SettingsTemplate>
+          <EditProfileSettings
+            onSubmit={editUserMutation.mutateAsync}
+            isLoading={editUserMutation.isLoading}
+          />
+        </SettingsTemplate>
+      </DashboardTemplate>
+    </>
   ) : null;
 }
 

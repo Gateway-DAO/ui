@@ -1,8 +1,7 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useInfiniteQuery } from '@tanstack/react-query';
 import { useSnackbar } from 'notistack';
 import { useController } from 'react-hook-form';
 import { useDropArea } from 'react-use';
-import { useInfiniteQuery } from 'wagmi';
 
 import { Paper } from '@mui/material';
 

@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { dehydrate, QueryClient, useQuery } from '@tanstack/react-query';
 import { PartialDeep } from 'type-fest';
 
+import { HeadContainer } from '../../components/molecules/head-container';
 import { DashboardTemplate } from '../../components/templates/dashboard';
 import {
   ProfileTemplate,
@@ -29,19 +30,22 @@ export default function Profile() {
   );
 
   return (
-    <DashboardTemplate
-      containerProps={{
-        sx: {
-          overflow: 'hidden',
-        },
-      }}
-    >
-      {user.username == me?.username ? (
-        <PrivateProfileTemplate />
-      ) : (
-        <ProfileTemplate user={user} />
-      )}
-    </DashboardTemplate>
+    <>
+      <HeadContainer title={`${user.name} Profile`} />
+      <DashboardTemplate
+        containerProps={{
+          sx: {
+            overflow: 'hidden',
+          },
+        }}
+      >
+        {user.username == me?.username ? (
+          <PrivateProfileTemplate />
+        ) : (
+          <ProfileTemplate user={user} />
+        )}
+      </DashboardTemplate>
+    </>
   );
 }
 

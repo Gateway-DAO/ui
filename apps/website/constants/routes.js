@@ -19,6 +19,10 @@ const ROUTES = {
   DAO_NEW: '/dao/new',
   GATE_PROFILE: '/credential/[id]',
   GATE_NEW: '/credential/new',
+  PROTOCOL_CREDENTIAL: '/protocol/credentials/[id]/show',
+  PROTOCOL_DATAMODEL: '/protocol/data-models/[id]/show',
+  PROTOCOL_DATAMODEL_CREDENTIAL_CREATE:
+    '/protocol/data-models/[id]/credentials/create',
 };
 
 module.exports = {

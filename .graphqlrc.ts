@@ -54,10 +54,18 @@ const config: IGraphQLConfig = {
             },
           },
           documents: ['apps/website/services/hasura/**/*.gql'],
+        },
+        './apps/website/services/gateway-protocol/types.ts': {
+          ...generateConfig,
+          schema: {
+            [`${process.env.GATEWAY_PROTOCOL_ENDPOINT}`]: {
+            },
+          },
+          documents: ['apps/website/services/gateway-protocol/**/*.gql'],
         }
-      },
-    },
-  },
+      }
+    }
+  }
 }
 
 
