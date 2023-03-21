@@ -8,3 +8,4 @@ export * from './lib/discord';
 export * from './lib/polygon';
 export * from './lib/avalanche';
 export * from './lib/substack';
+export * from './lib/gate-filled';
