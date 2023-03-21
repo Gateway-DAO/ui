@@ -1,5 +1,5 @@
-import { theme, ThemeProvider } from "@gateway/theme"
-
+import { theme } from '@gateway/theme';
+import { ThemeProvider } from '@gateway/theme-react';
 
 export const parameters = {
   backgrounds: {
@@ -11,18 +11,21 @@ export const parameters = {
       },
     ],
   },
-  actions: { argTypesRegex: "^on[A-Z].*" },
+  actions: { argTypesRegex: '^on[A-Z].*' },
   controls: {
     matchers: {
       color: /(background|color)$/i,
       date: /Date$/,
     },
   },
-}
+};
 
 export const decorators = [
-  (Story, {parameters}) => {
-    return(
-    <ThemeProvider withGlobalStyles={parameters?.layout === "fullscreen"}><Story /></ThemeProvider>
-  )},
+  (Story, { parameters }) => {
+    return (
+      <ThemeProvider withGlobalStyles={parameters?.layout === 'fullscreen'}>
+        <Story />
+      </ThemeProvider>
+    );
+  },
 ];
