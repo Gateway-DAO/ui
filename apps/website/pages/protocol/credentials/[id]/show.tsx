@@ -1,5 +1,7 @@
 import { InferGetServerSidePropsType, GetServerSidePropsContext } from 'next';
+import { useRouter } from 'next/router';
 
+import { HeadContainer } from '../../../../components/molecules/head-container';
 import { DashboardTemplate } from '../../../../components/templates/dashboard';
 import {
   CredentialProtocolShow,
@@ -10,19 +12,30 @@ import { gatewayProtocolSDK } from '../../../../services/gateway-protocol/api';
 type Props = InferGetServerSidePropsType<typeof getServerSideProps>;
 
 export default function ProtocolCredential({ credential }: Props) {
+  const origin =
+    typeof window !== 'undefined' && window.location.origin
+      ? window.location.origin
+      : '';
+
   return (
-    <DashboardTemplate
-      containerProps={{
-        sx: {
-          overflow: '',
-        },
-        height: '100%',
-      }}
-    >
-      <ProtocolTemplate>
-        <CredentialProtocolShow credential={credential} />
-      </ProtocolTemplate>
-    </DashboardTemplate>
+    <>
+      <HeadContainer
+        title={credential.title}
+        ogImage={`${origin}/api/og-image/credential`}
+      />
+      <DashboardTemplate
+        containerProps={{
+          sx: {
+            overflow: '',
+          },
+          height: '100%',
+        }}
+      >
+        <ProtocolTemplate>
+          <CredentialProtocolShow credential={credential} />
+        </ProtocolTemplate>
+      </DashboardTemplate>
+    </>
   );
 }
 

@@ -5,18 +5,24 @@ import { SEOFavicon, SEOSocial } from '../atoms/seo';
 type HeadContainerProps = {
   title?: string;
   description?: string;
+  ogImage?: string;
+};
+
+const defaultTexts = {
+  title: 'The standard for credentials - Gateway',
+  description:
+    'We provide the technology needed to issue, manage, index, and utilize credentials to build a robust digital identity.',
+  ogImage: '/social.png',
 };
 
 export function HeadContainer({
   title,
   description,
+  ogImage,
 }: HeadContainerProps): JSX.Element {
-  title = title
-    ? title + ' - Gateway'
-    : 'The standard for credentials - Gateway';
-  description =
-    description ||
-    'We provide the technology needed to issue, manage, index, and utilize credentials to build a robust digital identity.';
+  title = title ? title + ' - Gateway' : defaultTexts.title;
+  description = description || defaultTexts.description;
+  ogImage = ogImage || defaultTexts.ogImage;
 
   return (
     <Head>
@@ -24,6 +30,7 @@ export function HeadContainer({
       <meta name="viewport" content="width=device-width, initial-scale=1" />
       <meta name="author" content="Gateway" />
       <meta name="description" content={description} />
+      <meta property="og:image" content={ogImage} />
       <SEOFavicon />
       <SEOSocial />
     </Head>
