@@ -2,6 +2,7 @@ import { useRouter } from 'next/router';
 
 import { useMutation } from '@tanstack/react-query';
 
+import { HeadContainer } from '../../components/molecules/head-container';
 import { DashboardTemplate } from '../../components/templates/dashboard';
 import { SettingsTemplate } from '../../components/templates/settings';
 import { EditProfileSettings } from '../../components/templates/settings';
@@ -76,21 +77,24 @@ export default function PublicProfileSettingsPage() {
   );
 
   return me?.id ? (
-    <DashboardTemplate
-      containerProps={{
-        sx: {
-          overflow: '',
-        },
-        height: '100%',
-      }}
-    >
-      <SettingsTemplate>
-        <EditProfileSettings
-          onSubmit={editUserMutation.mutateAsync}
-          isLoading={editUserMutation.isLoading}
-        />
-      </SettingsTemplate>
-    </DashboardTemplate>
+    <>
+      <HeadContainer title="My settings" />
+      <DashboardTemplate
+        containerProps={{
+          sx: {
+            overflow: '',
+          },
+          height: '100%',
+        }}
+      >
+        <SettingsTemplate>
+          <EditProfileSettings
+            onSubmit={editUserMutation.mutateAsync}
+            isLoading={editUserMutation.isLoading}
+          />
+        </SettingsTemplate>
+      </DashboardTemplate>
+    </>
   ) : null;
 }
 

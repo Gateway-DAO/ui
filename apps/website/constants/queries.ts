@@ -6,4 +6,6 @@ export const query = {
   credentialsByRecipientUser: 'credentials_by_recipient_user',
   dataModels: 'data_models',
   mintCredential: 'mint_credential',
+  credentialsIssuedByOrg: 'credentials_issued_by_organization',
+  credentialsReceivedByOrg: 'credentials_received_by_organization',
 };

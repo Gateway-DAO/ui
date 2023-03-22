@@ -99,6 +99,7 @@ export default function DataModelTabs({ dataModel, stats }: Props) {
     {
       key: 'issuers',
       label: t('common:tabs.issuers'),
+      noPadding: true,
       section: (
         <GridViewTab
           dataModel={dataModel}
@@ -112,6 +113,7 @@ export default function DataModelTabs({ dataModel, stats }: Props) {
     {
       key: 'recipients',
       label: t('common:tabs.recipients'),
+      noPadding: true,
       section: (
         <GridViewTab
           dataModel={dataModel}

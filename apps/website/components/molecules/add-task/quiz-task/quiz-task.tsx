@@ -485,7 +485,7 @@ export function QuizTask({
             )}
             <Stack>
               {quizSettings.map((setting) => (
-                <Stack sx={{ mt: '48px', mb: '48px' }}>
+                <Stack sx={{ mt: '48px', mb: '48px' }} key={setting.name}>
                   <FormControl>
                     <div>
                       <Typography gutterBottom variant="body1">

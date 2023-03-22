@@ -22,6 +22,7 @@ export function GateDetailsForm() {
   } = useFormContext<CreateGateData>();
   const { me } = useAuth();
   const creators = useMemo(() => ({ id: me?.id, name: me?.name }), [me]);
+<<<<<<< HEAD
   const { skills, categories } = getValues();
   const formValues = getValues();
   const descriptionRef = useRef<HTMLInputElement>(null);
@@ -66,6 +67,9 @@ export function GateDetailsForm() {
     },
     iconColor: '#9B96A0',
   };
+=======
+  const { categories } = getValues();
+>>>>>>> 3b47c44fb8ea4d4c59778c8ca6df05bc22181bd3
 
   return (
     <Stack direction="column" gap={2}>
@@ -125,25 +129,6 @@ export function GateDetailsForm() {
               {<EmojiPicker {...emojiProps} />}
             </InputAdornment>
           ),
-        }}
-      />
-      <SkillsInput
-        label="Skills"
-        id="skills"
-        name="skills"
-        error={!!errors.skills}
-        errors={errors.skills}
-        defaultValue={skills}
-        {...register('skills')}
-        helperText={errors.skills?.message}
-        sx={{
-          width: '100%',
-          '& div fieldset legend span': {
-            marginRight: '10px',
-          },
-        }}
-        set={(skills: string[]) => {
-          setValue('skills', skills);
         }}
       />
       <CreatedByInput

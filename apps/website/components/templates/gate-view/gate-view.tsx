@@ -617,26 +617,6 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
                 </Grid>
               </>
             )}
-            <Grid item xs={4} sx={{ display: 'flex', alignItems: 'center' }}>
-              <Typography
-                variant="body2"
-                color={(theme) => theme.palette.text.secondary}
-              >
-                Skills
-              </Typography>
-            </Grid>
-            <Grid item xs={8}>
-              {gateProps?.skills?.map((skill, idx) => (
-                <Chip
-                  key={'skill-' + (idx + 1)}
-                  label={skill}
-                  sx={{
-                    marginRight: (theme) => theme.spacing(1),
-                    marginBottom: (theme) => theme.spacing(1),
-                  }}
-                />
-              ))}
-            </Grid>
             {gateProps?.creator && (
               <>
                 <Grid
@@ -662,6 +642,7 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
                         sx={{ display: 'inline-block', textDecoration: 'none' }}
                       >
                         <Chip
+                          variant="outlined"
                           label={gateProps?.creator.username}
                           avatar={
                             <Avatar
@@ -669,6 +650,7 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
                               src={`https://api.staging.mygateway.xyz/storage/file?id=${createdByImage}`}
                             />
                           }
+                          sx={{ cursor: 'pointer' }}
                         />
                       </Box>
                     </Tooltip>
@@ -684,6 +666,10 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
         <DirectHoldersList
           gate={gateProps}
           isLoading={directCredentialInfo.isLoading}
+          totalHolders={
+            directCredentialInfo.data?.whitelisted_wallets_aggregate?.aggregate
+              .count
+          }
           header={
             <DirectHoldersHeader
               hasCredential={completedGate}

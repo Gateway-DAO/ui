@@ -18,6 +18,7 @@ import { SessionUser } from '../../../types/user';
 import { AvatarFile } from '../../atoms/avatar-file';
 import { SocialButtons } from '../../organisms/social-buttons';
 import { ReceivedTab, IssuedTab } from './tabs';
+import { Earned } from './tabs/Earned';
 
 // const PendingReceivedSection = dynamic<any>(
 //   () =>
@@ -65,6 +66,11 @@ export default function ProfileTemplate({ user }: Props) {
         key: 'issued',
         label: t('common:tabs.issued'),
         section: <IssuedTab user={user} />,
+      },
+      {
+        key: 'earned',
+        label: t('common:tabs.earned'),
+        section: <Earned user={user} />,
       },
     ],
     []

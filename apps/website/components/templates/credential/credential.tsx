@@ -275,26 +275,6 @@ export function CredentialTemplate({ credential, openModal }: Props) {
               </Grid>
             </>
           )}
-          <Grid item xs={4}>
-            <Typography
-              variant="body2"
-              color={(theme) => theme.palette.text.secondary}
-            >
-              Skills
-            </Typography>
-          </Grid>
-          <Grid item xs={8}>
-            {credential?.skills.map((skill, idx) => (
-              <Chip
-                key={'skill-' + (idx + 1)}
-                label={skill}
-                sx={{
-                  marginRight: (theme) => theme.spacing(1),
-                  marginBottom: (theme) => theme.spacing(1),
-                }}
-              />
-            ))}
-          </Grid>
           {credential?.gate?.creator && (
             <>
               <Grid item xs={4}>
