@@ -11,17 +11,19 @@ import { gatewayProtocolSDK } from '../../../../services/gateway-protocol/api';
 
 type Props = InferGetServerSidePropsType<typeof getServerSideProps>;
 
-export default function ProtocolCredential({ credential }: Props) {
-  const origin =
-    typeof window !== 'undefined' && window.location.origin
-      ? window.location.origin
-      : '';
+export default function ProtocolCredential({ credential, host }: Props) {
+  // const origin =
+  //   typeof window !== 'undefined' && window.location.origin
+  //     ? window.location.origin
+  //     : '';
+
+  console.log(host);
 
   return (
     <>
       <HeadContainer
         title={credential.title}
-        ogImage={`${origin}/api/og-image/credential`}
+        ogImage={`${host}/api/og-image/credential`}
       />
       <DashboardTemplate
         containerProps={{
@@ -40,6 +42,8 @@ export default function ProtocolCredential({ credential }: Props) {
 }
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+  const host = ctx.req.headers.host || null;
+
   const credential = await gatewayProtocolSDK.credential({
     id: ctx.query.id as string,
   });
@@ -47,6 +51,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   return {
     props: {
       credential: credential?.credential,
+      host,
     },
   };
 };
