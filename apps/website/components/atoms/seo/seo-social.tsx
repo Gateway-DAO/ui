@@ -29,7 +29,7 @@ export function SEOSocial() {
         property="twitter:description"
         content="Gateway is a decentralized protocol for creating, consuming, and displaying verifiable credentials to serve as a basis for an interconnected web and portable reputation."
       />
-      <meta property="twitter:image" content="/social.png" />
+      {/* <meta property="twitter:image" content="/social.png" /> */}
     </>
   );
 }
