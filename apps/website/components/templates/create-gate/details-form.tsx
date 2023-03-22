@@ -22,8 +22,7 @@ export function GateDetailsForm() {
   } = useFormContext<CreateGateData>();
   const { me } = useAuth();
   const creators = useMemo(() => ({ id: me?.id, name: me?.name }), [me]);
-<<<<<<< HEAD
-  const { skills, categories } = getValues();
+  const { categories } = getValues();
   const formValues = getValues();
   const descriptionRef = useRef<HTMLInputElement>(null);
   const [emoji, setEmoji] = useState('');
@@ -67,9 +66,7 @@ export function GateDetailsForm() {
     },
     iconColor: '#9B96A0',
   };
-=======
-  const { categories } = getValues();
->>>>>>> 3b47c44fb8ea4d4c59778c8ca6df05bc22181bd3
+
 
   return (
     <Stack direction="column" gap={2}>

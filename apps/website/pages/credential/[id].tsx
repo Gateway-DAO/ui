@@ -87,33 +87,6 @@ export default function GateProfilePage() {
           height: gatesData.gates_by_pk?.type === 'direct' ? '100%' : undefined,
         }}
       >
-<<<<<<< HEAD
-        <Navbar isInternalPage={true} />
-      </Box>
-      <Head>
-        <meta
-          property="og:url"
-          content={`https://v2.mygateway.xyz/credential/${gatesData.gates_by_pk.id}`}
-        />
-        <meta property="og:type" content="website" />
-        <meta property="og:title" content={gatesData.gates_by_pk.title} />
-        <meta name="twitter:card" content="summary" />
-        <meta name="twitter:site" content="@Gateway_xyz" />
-        <meta name="twitter:title" content={gatesData.gates_by_pk.title} />
-        <meta
-          name="twitter:description"
-          content={`🎉 Just got my hands on the ${gatesData.gates_by_pk.title} issued from ${gatesData.gates_by_pk.creator?.name} via @Gateway_xyz`}
-        />
-        <meta name="twitter:image" content={gatesData.gates_by_pk.image} />
-        <meta
-          property="og:description"
-          content={`🎉 Just got my hands on the ${gatesData.gates_by_pk.title} issued from ${gatesData.gates_by_pk.creator?.name} via @Gateway_xyz`}
-        />
-        <meta property="og:image" content={gatesData.gates_by_pk.image} />
-      </Head>
-      <GateViewTemplate gateProps={gatesData.gates_by_pk} />
-    </DashboardTemplate>
-=======
         <Box
           sx={{
             display: {
@@ -127,6 +100,5 @@ export default function GateProfilePage() {
         <GateViewTemplate gateProps={gatesData.gates_by_pk} />
       </DashboardTemplate>
     </>
->>>>>>> 3b47c44fb8ea4d4c59778c8ca6df05bc22181bd3
   );
 }
