@@ -24,7 +24,7 @@ export function HeadContainer({
 }: HeadContainerProps): JSX.Element {
   title = title ? title + ' - Gateway' : defaultTexts.title;
   description = description || defaultTexts.description;
-  ogImage = ogImage || defaultTexts.ogImage;
+  // ogImage = ogImage || defaultTexts.ogImage;
 
   return (
     <Head>
