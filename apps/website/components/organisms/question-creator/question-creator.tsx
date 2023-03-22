@@ -1,5 +1,5 @@
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-import { useFieldArray, useFormContext } from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
 
 import CloseIcon from '@mui/icons-material/Close';
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
@@ -12,28 +12,23 @@ import { CreateGateData, Question } from '../../templates/create-gate/schema';
 export function QuestionCreator({
   questions,
   taskId,
-  onRemove,
+  removeQuestion,
+  moveQuestion,
   ...rest
 }): JSX.Element {
-  const { control } = useFormContext<CreateGateData>();
-
-  const { fields, remove, swap, update } = useFieldArray({
-    name: `tasks.${taskId}.task_data.questions`,
-    control,
-  });
-
-  const onDragEnd = () => {
-    fields.forEach((q, i) => {
-      q.order = i;
-      update(i, q);
-    });
-  };
+  const { setValue } = useFormContext<CreateGateData>();
 
   const onDragUpdate = (result) => {
     if (!result.destination) {
       return;
     }
-    swap(result.source.index, result.destination.index);
+
+    moveQuestion(result.source.index, result.destination.index);
+
+    // Update the order field for all affected questions
+    for (let i = 0; i < questions.length; i++) {
+      setValue(`tasks.${taskId}.task_data.questions.${i}.order`, i);
+    }
   };
 
   return (
@@ -44,7 +39,7 @@ export function QuestionCreator({
       }}
       {...rest}
     >
-      <DragDropContext onDragEnd={onDragEnd} onDragUpdate={onDragUpdate}>
+      <DragDropContext onDragEnd={onDragUpdate}>
         <Droppable droppableId="questions">
           {(provided) => (
             <div
@@ -53,7 +48,11 @@ export function QuestionCreator({
               style={{ width: '100%' }}
             >
               {questions.map((question: Question, index: number) => (
-                <Draggable key={index} draggableId={`q-${index}`} index={index}>
+                <Draggable
+                  key={question.id}
+                  draggableId={`q-${question.id}`}
+                  index={index}
+                >
                   {(provided) => (
                     <Stack
                       key={question.id}
@@ -116,7 +115,7 @@ export function QuestionCreator({
                                 marginLeft: '6px',
                               },
                             })}
-                            onClick={() => onRemove(index)}
+                            onClick={() => removeQuestion(index)}
                           >
                             <CloseIcon />
                           </IconButton>
