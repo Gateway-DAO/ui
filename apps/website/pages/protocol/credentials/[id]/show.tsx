@@ -23,8 +23,8 @@ export default function ProtocolCredential({ credential, host }: Props) {
     <>
       <HeadContainer
         title={credential.title}
-        ogImage="/api/og-image/credential"
-        twitterImage="/api/og-image/credential"
+        ogImage={`https://${host}/api/og-image/credential`}
+        twitterImage={`https://${host}/api/og-image/credential`}
       />
       <DashboardTemplate
         containerProps={{
