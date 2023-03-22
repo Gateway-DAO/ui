@@ -6,6 +6,7 @@ type HeadContainerProps = {
   title?: string;
   description?: string;
   ogImage?: string;
+  twitterImage?: string;
 };
 
 const defaultTexts = {
@@ -19,10 +20,11 @@ export function HeadContainer({
   title,
   description,
   ogImage,
+  twitterImage,
 }: HeadContainerProps): JSX.Element {
   title = title ? title + ' - Gateway' : defaultTexts.title;
   description = description || defaultTexts.description;
-  // ogImage = ogImage || defaultTexts.ogImage;
+  ogImage = ogImage || defaultTexts.ogImage;
 
   return (
     <Head>
@@ -31,6 +33,7 @@ export function HeadContainer({
       <meta name="author" content="Gateway" />
       <meta name="description" content={description} />
       <meta property="og:image" content={ogImage} />
+      {twitterImage && <meta name="twitter:image" content={twitterImage} />}
       <SEOFavicon />
       <SEOSocial />
     </Head>
