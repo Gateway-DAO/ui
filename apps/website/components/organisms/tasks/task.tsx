@@ -147,12 +147,13 @@ export function Task({
     );
   };
 
-  let attemptCount = 0;
-  const { data, error, refetch } = useQuery(
-    ['findTaskProgressOfAUser', taskProgress?.id],
-    () => gqlAuthMethods.findTaskProgressOfAUser({ id: taskProgress?.id })
+  const {
+    data: tp,
+    error,
+    refetch,
+  } = useQuery(['findTaskProgressOfAUser', taskProgress?.id], () =>
+    gqlAuthMethods.findTaskProgressOfAUser({ id: taskProgress?.id })
   );
-  attemptCount = data?.task_progress[0]?.attempt_count;
 
   const taskContent = getTaskContent(task.task_type);
   const TaskComponent = taskContent?.body;
@@ -254,7 +255,7 @@ export function Task({
             gate={gate}
             task={task}
             data={task.task_data}
-            attemptCount={attemptCount}
+            attemptCount={tp?.task_progress[0]?.attempt_count}
             completed={completed}
             updatedAt={completed ? taskProgress?.updated_at : ''}
             completeTask={completeTask}
