@@ -1,6 +1,8 @@
 import { InferGetServerSidePropsType, GetServerSidePropsContext } from 'next';
 import { useRouter } from 'next/router';
 
+import { DateTime } from 'luxon';
+
 import { HeadContainer } from '../../../../components/molecules/head-container';
 import { DashboardTemplate } from '../../../../components/templates/dashboard';
 import {
@@ -12,6 +14,9 @@ import { gatewayProtocolSDK } from '../../../../services/gateway-protocol/api';
 type Props = InferGetServerSidePropsType<typeof getServerSideProps>;
 
 export default function ProtocolCredential({ credential, host }: Props) {
+  const issuanceDate = DateTime.fromISO(credential.createdAt).toFormat(
+    'MMM dd, yyyy a'
+  );
   return (
     <>
       <HeadContainer
@@ -21,13 +26,17 @@ export default function ProtocolCredential({ credential, host }: Props) {
         }&title=${credential.title}&description=${credential.description.slice(
           0,
           100
-        )}&issuer=${credential.issuerUser?.gatewayId}`}
+        )}&issuer=${
+          credential.issuerUser?.gatewayId
+        }&issuanceDate=${issuanceDate}`}
         twitterImage={`https://${host}/api/og-image/credential?id=${
           credential.id
         }&title=${credential.title}&description=${credential.description.slice(
           0,
           100
-        )}&issuer=${credential.issuerUser?.gatewayId}`}
+        )}&issuer=${
+          credential.issuerUser?.gatewayId
+        }&issuanceDate=${issuanceDate}`}
       />
       <DashboardTemplate
         containerProps={{

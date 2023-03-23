@@ -32,6 +32,16 @@ const handler = (req: NextRequest) => {
   const recipient = hasRecipient
     ? searchParams.get('recipient')?.slice(0, 100)
     : 'recipient';
+
+  const hasDate = searchParams.has('issuanceDate');
+  const issuanceDate = hasDate
+    ? searchParams.get('issuanceDate')?.slice(0, 100)
+    : '00/00/00, 00:00 am';
+
+  const hasQRCode = searchParams.has('qrCode');
+  const qrCode = hasQRCode
+    ? searchParams.get('qrCode')?.slice(0, 100)
+    : `${origin}/images/fake-qr-code.png`;
   return new ImageResponse(
     (
       <div
@@ -48,7 +58,7 @@ const handler = (req: NextRequest) => {
           style={{
             display: 'flex',
             flexDirection: 'column',
-            width: '70%',
+            width: '60%',
             paddingLeft: '45px',
             marginTop: '68px',
           }}
@@ -151,13 +161,52 @@ const handler = (req: NextRequest) => {
               />
             </div>
           </div>
+          <span
+            style={{
+              fontWeight: '400',
+              fontSize: '19.8px',
+              color: 'rgba(255, 255, 255, .7)',
+              marginTop: '25px',
+            }}
+          >
+            Issuance date {issuanceDate}
+          </span>
         </div>
-        <div style={{ display: 'flex', width: '30%' }}>
+        <div
+          style={{
+            display: 'flex',
+            width: '40%',
+            flexDirection: 'column',
+            position: 'relative',
+          }}
+        >
           <img
             src={`${origin}/images/share-top.png`}
             alt="Symbols"
             width="350px"
             height="300px"
+          />
+          <div
+            style={{
+              display: 'flex',
+              marginTop: '25px',
+              width: '100%',
+              paddingRight: '25px',
+              justifyContent: 'flex-end',
+            }}
+          >
+            <img src={qrCode} width="170px" height="170px" alt="QR Code" />
+          </div>
+          <img
+            src={`${origin}/images/share-bottom.png`}
+            alt="Symbol"
+            width="70px"
+            height="60px"
+            style={{
+              position: 'absolute',
+              bottom: '0',
+              right: '0',
+            }}
           />
         </div>
       </div>
