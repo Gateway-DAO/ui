@@ -42,6 +42,11 @@ const handler = (req: NextRequest) => {
   const qrCode = hasQRCode
     ? searchParams.get('qrCode')?.slice(0, 100)
     : `${origin}/images/fake-qr-code.png`;
+
+  const hasImage = searchParams.has('image');
+  const image = hasImage
+    ? searchParams.get('image')?.slice(0, 100)
+    : `${origin}/images/fake-qr-code.png`;
   return new ImageResponse(
     (
       <div
@@ -125,6 +130,9 @@ const handler = (req: NextRequest) => {
               width="28px"
               height="56px"
               alt="arrow transaction"
+              style={{
+                margin: '0 15px',
+              }}
             />
             <div
               style={{
@@ -192,16 +200,36 @@ const handler = (req: NextRequest) => {
               marginTop: '25px',
               width: '100%',
               paddingRight: '25px',
+              gap: '15px',
               justifyContent: 'flex-end',
             }}
           >
-            <img src={qrCode} width="170px" height="170px" alt="QR Code" />
+            {hasImage && (
+              <img
+                src={image}
+                width="170px"
+                height="170px"
+                alt="Credential image"
+                style={{
+                  borderRadius: '28px',
+                }}
+              />
+            )}
+            <img
+              src={qrCode}
+              width="170px"
+              height="170px"
+              alt="QR Code"
+              style={{
+                borderRadius: '28px',
+              }}
+            />
           </div>
           <img
             src={`${origin}/images/share-bottom.png`}
             alt="Symbol"
-            width="70px"
-            height="60px"
+            width="90px"
+            height="80px"
             style={{
               position: 'absolute',
               bottom: '0',

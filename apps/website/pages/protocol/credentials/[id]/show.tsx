@@ -21,6 +21,9 @@ export default function ProtocolCredential({ credential, host }: Props) {
     <>
       <HeadContainer
         title={credential.title}
+        ogTitle={`${credential.title} / Gateway`}
+        description={credential.description}
+        ogDescription={credential.description}
         ogImage={`https://${host}/api/og-image/credential?id=${
           credential.id
         }&title=${credential.title}&description=${credential.description.slice(
@@ -28,7 +31,7 @@ export default function ProtocolCredential({ credential, host }: Props) {
           100
         )}&issuer=${
           credential.issuerUser?.gatewayId
-        }&issuanceDate=${issuanceDate}`}
+        }&issuanceDate=${issuanceDate}&image=${credential.image}`}
         twitterImage={`https://${host}/api/og-image/credential?id=${
           credential.id
         }&title=${credential.title}&description=${credential.description.slice(
@@ -36,7 +39,7 @@ export default function ProtocolCredential({ credential, host }: Props) {
           100
         )}&issuer=${
           credential.issuerUser?.gatewayId
-        }&issuanceDate=${issuanceDate}`}
+        }&issuanceDate=${issuanceDate}&image=${credential.image}`}
       />
       <DashboardTemplate
         containerProps={{
