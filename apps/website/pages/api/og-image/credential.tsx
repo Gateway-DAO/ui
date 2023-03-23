@@ -22,6 +22,16 @@ const handler = (req: NextRequest) => {
   const description = hasDescription
     ? searchParams.get('description')?.slice(0, 150)
     : 'Credential description';
+
+  const hasIssuer = searchParams.has('issuer');
+  const issuer = hasIssuer
+    ? searchParams.get('issuer')?.slice(0, 100)
+    : 'issuer';
+
+  const hasRecipient = searchParams.has('recipient');
+  const recipient = hasRecipient
+    ? searchParams.get('recipient')?.slice(0, 100)
+    : 'recipient';
   return new ImageResponse(
     (
       <div
@@ -59,13 +69,87 @@ const handler = (req: NextRequest) => {
               display: 'flex',
               marginTop: '95px',
               borderRadius: '28px',
+              alignItems: 'center',
               background: 'rgba(255, 255, 255, 0.05)',
               border: '2px solid rgba(229, 229, 229, 0.12)',
+              padding: '52px 26px',
+              justifyContent: 'space-between',
             }}
           >
-            <div>coluna 1</div>
-            <div>seta</div>
-            <div>coluna 2</div>
+            <div
+              style={{
+                display: 'flex',
+                gap: '26px',
+                alignItems: 'center',
+              }}
+            >
+              <img
+                src={`${origin}/images/avatar-default.png`}
+                width="73px"
+                height="73px"
+                alt="Issuer profile image"
+              />
+              <div style={{ display: 'flex', flexDirection: 'column' }}>
+                <span
+                  style={{
+                    fontWeight: '400',
+                    fontSize: '19.8px',
+                    color: 'rgba(255, 255, 255, .7)',
+                  }}
+                >
+                  Issuer ID
+                </span>
+                <span
+                  style={{
+                    fontWeight: 400,
+                    fontSize: '23.1px',
+                    color: '#9A53FF',
+                  }}
+                >
+                  {issuer}
+                </span>
+              </div>
+            </div>
+            <img
+              src={`${origin}/images/arrow-transaction.png`}
+              width="28px"
+              height="56px"
+              alt="arrow transaction"
+            />
+            <div
+              style={{
+                display: 'flex',
+                gap: '26px',
+                alignItems: 'center',
+              }}
+            >
+              <div style={{ display: 'flex', flexDirection: 'column' }}>
+                <span
+                  style={{
+                    fontWeight: '400',
+                    fontSize: '19.8px',
+                    color: 'rgba(255, 255, 255, .7)',
+                  }}
+                >
+                  Recipient ID
+                </span>
+                <span
+                  style={{
+                    fontWeight: 400,
+                    fontSize: '23.1px',
+                    color: '#9A53FF',
+                  }}
+                >
+                  {recipient}
+                </span>
+              </div>
+              <img
+                src={`${origin}/images/avatar-default.png`}
+                width="73px"
+                height="73px"
+                alt="Recipient profile image"
+              />
+            </div>
           </div>
         </div>
         <div style={{ display: 'flex', width: '30%' }}>
@@ -80,34 +164,9 @@ const handler = (req: NextRequest) => {
     ),
     {
       width: 1200,
-      height: 600,
+      height: 630,
     }
   );
 };
 
 export default handler;
-
-// export default function () {
-//   return new ImageResponse(
-//     (
-//       <div
-//         style={{
-//           fontSize: 128,
-//           background: 'white',
-//           width: '100%',
-//           height: '100%',
-//           display: 'flex',
-//           textAlign: 'center',
-//           alignItems: 'center',
-//           justifyContent: 'center',
-//         }}
-//       >
-//         Hello world!
-//       </div>
-//     ),
-//     {
-//       width: 1200,
-//       height: 600,
-//     }
-//   );
-// }

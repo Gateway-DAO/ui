@@ -21,13 +21,13 @@ export default function ProtocolCredential({ credential, host }: Props) {
         }&title=${credential.title}&description=${credential.description.slice(
           0,
           100
-        )}`}
+        )}&issuer=${credential.issuerUser?.gatewayId}`}
         twitterImage={`https://${host}/api/og-image/credential?id=${
           credential.id
         }&title=${credential.title}&description=${credential.description.slice(
           0,
           100
-        )}`}
+        )}&issuer=${credential.issuerUser?.gatewayId}`}
       />
       <DashboardTemplate
         containerProps={{
