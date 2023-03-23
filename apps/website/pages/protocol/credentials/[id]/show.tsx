@@ -12,19 +12,22 @@ import { gatewayProtocolSDK } from '../../../../services/gateway-protocol/api';
 type Props = InferGetServerSidePropsType<typeof getServerSideProps>;
 
 export default function ProtocolCredential({ credential, host }: Props) {
-  // const origin =
-  //   typeof window !== 'undefined' && window.location.origin
-  //     ? window.location.origin
-  //     : '';
-
-  console.log(host);
-
   return (
     <>
       <HeadContainer
         title={credential.title}
-        ogImage={`https://${host}/api/og-image/credential`}
-        twitterImage={`https://${host}/api/og-image/credential`}
+        ogImage={`https://${host}/api/og-image/credential?id=${
+          credential.id
+        }&title=${credential.title}&description=${credential.description.slice(
+          0,
+          100
+        )}`}
+        twitterImage={`https://${host}/api/og-image/credential?id=${
+          credential.id
+        }&title=${credential.title}&description=${credential.description.slice(
+          0,
+          100
+        )}`}
       />
       <DashboardTemplate
         containerProps={{
