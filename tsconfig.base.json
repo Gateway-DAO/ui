@@ -18,6 +18,7 @@
       "@gateway/assets": ["libs/assets/src/index.ts"],
       "@gateway/helpers": ["libs/helpers/src/index.ts"],
       "@gateway/theme": ["libs/theme/src/index.ts"],
+      "@gateway/theme-react": ["libs/theme-react/src/index.ts"],
       "@gateway/ui": ["libs/ui/src/index.ts"]
     }
   },

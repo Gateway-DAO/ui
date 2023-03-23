@@ -1,6 +1,10 @@
 import { useTheme } from '@mui/material';
 import MUIGlobalStyles from '@mui/material/GlobalStyles';
 
+import '@fontsource/plus-jakarta-sans';
+import '@fontsource/plus-jakarta-sans/700.css';
+import '@fontsource/plus-jakarta-sans/800.css';
+
 export const GlobalStyles = () => {
   const theme = useTheme();
 
