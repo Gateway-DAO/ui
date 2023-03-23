@@ -20,9 +20,7 @@ export type CreateGateData = {
   categories: string[];
   expire_date?: string;
   claim_limit?: number;
-} & Required<
-  Pick<Gates, 'title' | 'categories' | 'image' | 'description'>
-> &
+} & Required<Pick<Gates, 'title' | 'categories' | 'image' | 'description'>> &
   Required<{ creator: Pick<Gates['creator'], 'id' | 'name'> }> & {
     type: 'task_based' | 'direct';
     whitelisted_wallets_file?: Partial<Files>;
