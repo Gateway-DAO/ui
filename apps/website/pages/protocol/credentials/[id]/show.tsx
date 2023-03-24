@@ -1,5 +1,4 @@
 import { InferGetServerSidePropsType, GetServerSidePropsContext } from 'next';
-import { useRouter } from 'next/router';
 
 import { DateTime } from 'luxon';
 
@@ -31,7 +30,9 @@ export default function ProtocolCredential({ credential, host }: Props) {
           100
         )}&issuer=${
           credential.issuerUser?.gatewayId
-        }&issuanceDate=${issuanceDate}&image=${credential.image}`}
+        }&issuanceDate=${issuanceDate}${
+          credential.image ? '&image=' + credential.image : ''
+        }`}
         twitterImage={`https://${host}/api/og-image/credential?id=${
           credential.id
         }&title=${credential.title}&description=${credential.description.slice(
@@ -39,7 +40,9 @@ export default function ProtocolCredential({ credential, host }: Props) {
           100
         )}&issuer=${
           credential.issuerUser?.gatewayId
-        }&issuanceDate=${issuanceDate}&image=${credential.image}`}
+        }&issuanceDate=${issuanceDate}${
+          credential.image ? '&image=' + credential.image : ''
+        }`}
       />
       <DashboardTemplate
         containerProps={{
