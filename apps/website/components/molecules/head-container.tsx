@@ -5,7 +5,7 @@ import { SEOFavicon, SEOSocial } from '../atoms/seo';
 type HeadContainerProps = {
   title?: string;
   description?: string;
-  ogImage?: string;
+  ogImage: 'default' | string;
   twitterImage?: string;
   ogTitle?: string;
   ogDescription?: string;
@@ -29,7 +29,6 @@ export function HeadContainer({
   title = title ? title + ' - Gateway' : defaultTexts.title;
   description = description || defaultTexts.description;
   ogDescription = ogDescription || description;
-  // ogImage = ogImage || defaultTexts.ogImage;
 
   return (
     <Head>
@@ -39,8 +38,14 @@ export function HeadContainer({
       <meta name="description" content={description} />
       {ogImage && (
         <>
-          <meta property="og:image" content={ogImage} />
-          <meta property="thumbnail" content={ogImage} />
+          <meta
+            property="og:image"
+            content={ogImage === 'default' ? defaultTexts.ogImage : ogImage}
+          />
+          <meta
+            property="thumbnail"
+            content={ogImage === 'default' ? defaultTexts.ogImage : ogImage}
+          />
         </>
       )}
       {twitterImage && <meta name="twitter:image" content={twitterImage} />}

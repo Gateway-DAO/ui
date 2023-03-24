@@ -31,7 +31,7 @@ export default function Profile() {
 
   return (
     <>
-      <HeadContainer title={`${user.name} Profile`} />
+      <HeadContainer title={`${user.name} Profile`} ogImage="default" />
       <DashboardTemplate
         containerProps={{
           sx: {

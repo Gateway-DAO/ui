@@ -43,6 +43,7 @@ export default function DaoProfilePage({
       <HeadContainer
         title={`${daoProps.name} DAO`}
         description={daoProps.description}
+        ogImage="default"
       />
       <DashboardTemplate
         currentDao={daoProps}
