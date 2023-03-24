@@ -16,6 +16,16 @@ export default function ProtocolCredential({ credential, host }: Props) {
   const issuanceDate = DateTime.fromISO(credential.createdAt).toFormat(
     'MMM dd, yyyy a'
   );
+
+  const ogImage = `https://${host}/api/og-image/credential?id=${
+    credential.id
+  }&title=${credential.title}&description=${credential.description.slice(
+    0,
+    100
+  )}&issuer=${credential.issuerUser?.gatewayId}&issuanceDate=${issuanceDate}${
+    credential.image ? '&image=' + credential.image : ''
+  }`;
+
   return (
     <>
       <HeadContainer
@@ -23,26 +33,8 @@ export default function ProtocolCredential({ credential, host }: Props) {
         ogTitle={`${credential.title} / Gateway`}
         description={credential.description}
         ogDescription={credential.description}
-        ogImage={`https://${host}/api/og-image/credential?id=${
-          credential.id
-        }&title=${credential.title}&description=${credential.description.slice(
-          0,
-          100
-        )}&issuer=${
-          credential.issuerUser?.gatewayId
-        }&issuanceDate=${issuanceDate}${
-          credential.image ? '&image=' + credential.image : ''
-        }`}
-        twitterImage={`https://${host}/api/og-image/credential?id=${
-          credential.id
-        }&title=${credential.title}&description=${credential.description.slice(
-          0,
-          100
-        )}&issuer=${
-          credential.issuerUser?.gatewayId
-        }&issuanceDate=${issuanceDate}${
-          credential.image ? '&image=' + credential.image : ''
-        }`}
+        ogImage={ogImage}
+        twitterImage={ogImage}
       />
       <DashboardTemplate
         containerProps={{
