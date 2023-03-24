@@ -215,8 +215,8 @@ const handler = (req: NextRequest) => {
               {hasImage && (
                 <img
                   src={image}
-                  width="170px"
-                  height="170px"
+                  width="185px"
+                  height="185px"
                   alt="Credential image"
                   style={{
                     borderRadius: '28px',
@@ -225,8 +225,8 @@ const handler = (req: NextRequest) => {
               )}
               <img
                 src={qrCode}
-                width="170px"
-                height="170px"
+                width="185px"
+                height="185px"
                 alt="QR Code"
                 style={{
                   borderRadius: '28px',
@@ -274,7 +274,7 @@ const handler = (req: NextRequest) => {
               height="80px"
               style={{
                 position: 'absolute',
-                bottom: '0',
+                bottom: '-15px',
                 right: '0',
               }}
             />
