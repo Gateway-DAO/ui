@@ -29,7 +29,7 @@ export function HeadContainer({
   title = title ? title + ' - Gateway' : defaultTexts.title;
   description = description || defaultTexts.description;
   ogDescription = ogDescription || description;
-  // ogImage = ogImage || defaultTexts.ogImage;
+  ogImage = ogImage || defaultTexts.ogImage;
 
   return (
     <Head>
