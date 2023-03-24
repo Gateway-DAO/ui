@@ -37,13 +37,11 @@ export function HeadContainer({
       <meta name="viewport" content="width=device-width, initial-scale=1" />
       <meta name="author" content="Gateway" />
       <meta name="description" content={description} />
-      {ogImage ? (
+      {ogImage && (
         <>
           <meta property="og:image" content={ogImage} />
           <meta property="thumbnail" content={ogImage} />
         </>
-      ) : (
-        <meta property="og:image" content={defaultTexts.ogImage} />
       )}
       {twitterImage && <meta name="twitter:image" content={twitterImage} />}
       {ogTitle && <meta name="og:title" content={ogTitle} />}
