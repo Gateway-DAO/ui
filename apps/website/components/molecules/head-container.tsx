@@ -29,7 +29,7 @@ export function HeadContainer({
   title = title ? title + ' - Gateway' : defaultTexts.title;
   description = description || defaultTexts.description;
   ogDescription = ogDescription || description;
-  ogImage = ogImage || defaultTexts.ogImage;
+  // ogImage = ogImage || defaultTexts.ogImage;
 
   return (
     <Head>
@@ -37,7 +37,14 @@ export function HeadContainer({
       <meta name="viewport" content="width=device-width, initial-scale=1" />
       <meta name="author" content="Gateway" />
       <meta name="description" content={description} />
-      <meta property="og:image" content={ogImage} />
+      {ogImage ? (
+        <>
+          <meta property="og:image" content={ogImage} />
+          <meta property="thumbnail" content={ogImage} />
+        </>
+      ) : (
+        <meta property="og:image" content={defaultTexts.ogImage} />
+      )}
       {twitterImage && <meta name="twitter:image" content={twitterImage} />}
       {ogTitle && <meta name="og:title" content={ogTitle} />}
       <meta name="og:description" content={ogDescription} />
