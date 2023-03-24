@@ -41,12 +41,10 @@ const handler = (req: NextRequest) => {
   const hasQRCode = searchParams.has('qrCode');
   const qrCode = hasQRCode
     ? searchParams.get('qrCode')?.slice(0, 100)
-    : `${origin}/images/fake-qr-code.png`;
+    : 'https://d2igf2y4k77tnt.cloudfront.net/qrcode.png';
 
   const hasImage = searchParams.has('image');
-  const image = hasImage
-    ? searchParams.get('image')?.slice(0, 100)
-    : `${origin}/images/fake-qr-code.png`;
+  const image = hasImage ? searchParams.get('image')?.slice(0, 100) : null;
   return new ImageResponse(
     (
       <div
@@ -82,7 +80,7 @@ const handler = (req: NextRequest) => {
           <div
             style={{
               display: 'flex',
-              marginTop: '95px',
+              marginTop: '85px',
               borderRadius: '28px',
               alignItems: 'center',
               background: 'rgba(255, 255, 255, 0.05)',
@@ -197,7 +195,7 @@ const handler = (req: NextRequest) => {
           <div
             style={{
               display: 'flex',
-              marginTop: '25px',
+              marginTop: '35px',
               width: '100%',
               paddingRight: '25px',
               gap: '15px',
