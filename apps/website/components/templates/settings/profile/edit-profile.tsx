@@ -71,9 +71,7 @@ export function EditProfileSettings({ onSubmit, isLoading }: Props) {
           <Typography variant="h6" sx={{ mb: '4px' }}>
             {t('nav.public-profile-title')}
           </Typography>
-          <Typography variant="body2" fontSize="12px">
-            {t('profile.description')}
-          </Typography>
+          <Typography variant="caption">{t('profile.description')}</Typography>
         </Stack>
         <LoadingButton
           sx={{ minWidth: '100px' }}
