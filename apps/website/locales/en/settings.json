@@ -61,5 +61,17 @@
     "email-verified": "Email successfully verified",
     "email-error-sending": "There was an error sending the code",
     "email-error-validating": "There was an error validating the code"
+  },
+  "notifications": {
+    "dapp": {
+      "title": "On Gateway",
+      "description": "Select which notifications to get directly on Gateway.",
+      "all": "Turn on all notifications on Gateway"
+    },
+    "email": {
+      "title": "By email",
+      "description": "Select which notifications to get by email.",
+      "all": "Turn on all notifications by email"
+    }
   }
 }

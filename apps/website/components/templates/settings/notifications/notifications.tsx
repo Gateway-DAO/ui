@@ -40,9 +40,9 @@ function NotificationsSettings() {
             sx={{ mx: -2 }}
           >
             <Stack>
-              <Typography>On Gateway</Typography>
+              <Typography>{t('notifications.dapp.title')}</Typography>
               <Typography variant="caption">
-                Select which notifications to get directly on Gateway.
+                {t('notifications.dapp.description')}
               </Typography>
             </Stack>
           </AccordionSummary>
@@ -88,9 +88,9 @@ function NotificationsSettings() {
             sx={{ mx: -2 }}
           >
             <Stack>
-              <Typography>By email</Typography>
+              <Typography>{t('notifications.email.title')}</Typography>
               <Typography variant="caption">
-                Select what types of email notifications you get
+                {t('notifications.email.description')}
               </Typography>
             </Stack>
           </AccordionSummary>
