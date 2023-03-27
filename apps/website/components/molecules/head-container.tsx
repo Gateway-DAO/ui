@@ -36,18 +36,14 @@ export function HeadContainer({
       <meta name="viewport" content="width=device-width, initial-scale=1" />
       <meta name="author" content="Gateway" />
       <meta name="description" content={description} />
-      {ogImage && (
-        <>
-          <meta
-            property="og:image"
-            content={ogImage === 'default' ? defaultTexts.ogImage : ogImage}
-          />
-          <meta
-            property="thumbnail"
-            content={ogImage === 'default' ? defaultTexts.ogImage : ogImage}
-          />
-        </>
-      )}
+      <meta
+        property="og:image"
+        content={ogImage === 'default' ? defaultTexts.ogImage : ogImage}
+      />
+      <meta
+        property="thumbnail"
+        content={ogImage === 'default' ? defaultTexts.ogImage : ogImage}
+      />
       {twitterImage && <meta name="twitter:image" content={twitterImage} />}
       {ogTitle && <meta name="og:title" content={ogTitle} />}
       <meta name="og:description" content={ogDescription} />
