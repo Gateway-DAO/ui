@@ -6,7 +6,18 @@ export const config = {
   runtime: 'experimental-edge',
 };
 
-const handler = (req: NextRequest) => {
+const fontRegular = fetch(
+  new URL('../../../assets/fonts/PlusJakartaSans-Regular.ttf', import.meta.url)
+).then((res) => res.arrayBuffer());
+
+const fontBold = fetch(
+  new URL('../../../assets/fonts/PlusJakartaSans-Bold.ttf', import.meta.url)
+).then((res) => res.arrayBuffer());
+
+const handler = async (req: NextRequest) => {
+  const fontRegularData = await fontRegular;
+  const fontBoldData = await fontBold;
+
   const { searchParams } = new URL(req.url);
   const origin = req.nextUrl.origin;
 
@@ -55,6 +66,7 @@ const handler = (req: NextRequest) => {
           display: 'flex',
           flexDirection: 'column',
           color: '#fff',
+          fontFamily: '"PlusJakartaRegular"',
         }}
       >
         <div style={{ display: 'flex', flexDirection: 'row' }}>
@@ -72,9 +84,22 @@ const handler = (req: NextRequest) => {
             >
               Credential ID {id}
             </span>
-            <span style={{ fontWeight: '700', fontSize: '48px' }}>{title}</span>
             <span
-              style={{ marginTop: '25px', fontWeight: '400', fontSize: '26px' }}
+              style={{
+                fontWeight: '700',
+                fontSize: '48px',
+                letterSpacing: '0.41px',
+              }}
+            >
+              {title}
+            </span>
+            <span
+              style={{
+                marginTop: '25px',
+                fontWeight: '400',
+                fontSize: '26px',
+                letterSpacing: '0.25px',
+              }}
             >
               {description}
             </span>
@@ -84,11 +109,17 @@ const handler = (req: NextRequest) => {
               display: 'flex',
               width: '40%',
               flexDirection: 'column',
+              justifyContent: 'flex-end',
               position: 'relative',
             }}
           >
             <img
               src={`${origin}/images/share-top.png`}
+              style={{
+                position: 'relative',
+                left: '100px',
+                display: 'flex',
+              }}
               alt="Symbols"
               width="350px"
               height="300px"
@@ -119,7 +150,7 @@ const handler = (req: NextRequest) => {
               <div
                 style={{
                   display: 'flex',
-                  gap: '26px',
+                  gap: '23px',
                   alignItems: 'center',
                 }}
               >
@@ -162,11 +193,17 @@ const handler = (req: NextRequest) => {
               <div
                 style={{
                   display: 'flex',
-                  gap: '26px',
+                  gap: '23px',
                   alignItems: 'center',
                 }}
               >
-                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                <div
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'flex-end',
+                  }}
+                >
                   <span
                     style={{
                       fontWeight: '400',
@@ -207,7 +244,7 @@ const handler = (req: NextRequest) => {
               style={{
                 display: 'flex',
                 width: '100%',
-                paddingRight: '25px',
+                paddingRight: '45px',
                 gap: '15px',
                 justifyContent: 'flex-end',
               }}
@@ -285,6 +322,20 @@ const handler = (req: NextRequest) => {
     {
       width: 1200,
       height: 630,
+      fonts: [
+        {
+          name: 'PlusJakartaRegular',
+          data: fontRegularData,
+          weight: 400,
+          style: 'normal',
+        },
+        {
+          name: 'PlusJakartaRegular',
+          data: fontBoldData,
+          weight: 700,
+          style: 'normal',
+        },
+      ],
     }
   );
 };
