@@ -3,15 +3,12 @@ import { object, string, SchemaOf } from 'yup';
 
 import { Users } from '../../../services/hasura/types';
 
-export type NewUserSchema = Required<
-  Pick<Users, 'username' | 'pfp' | 'email_address'>
->;
+export type NewUserSchema = Required<Pick<Users, 'username' | 'email_address'>>;
+export type TokenConfirmationSchema = Required<Pick<any, 'token'>>;
 
 const usernameRegex = /^(?=[a-z0-9._]{2,20}$)(?!.*[_.]{2})[^_.].*[^_.]$/;
 
-// 'Username can only have lowercase alphanumeric charaters and ._-'
-export const schema: SchemaOf<NewUserSchema> = object({
-  pfp: string().min(2),
+export const schemaCreateAccount: SchemaOf<NewUserSchema> = object({
   username: string()
     .min(2)
     .max(20)
@@ -24,12 +21,15 @@ export const schema: SchemaOf<NewUserSchema> = object({
   email_address: string().min(2).email().defined(),
 });
 
+export const schemaTokenConfirmation: SchemaOf<TokenConfirmationSchema> =
+  object({
+    token: string().length(6, { message: 'Invalid code' }).defined(),
+  });
+
 export const defaultValues = ({
   username,
-  pfp,
   email_address,
 }: PartialDeep<Users>): NewUserSchema => ({
   username,
-  pfp,
   email_address,
 });

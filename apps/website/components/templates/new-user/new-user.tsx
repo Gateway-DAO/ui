@@ -1,4 +1,5 @@
 import useTranslation from 'next-translate/useTranslation';
+import { useState } from 'react';
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useMutation } from '@tanstack/react-query';
@@ -7,22 +8,34 @@ import { useForm, FormProvider } from 'react-hook-form';
 
 import { theme } from '@gateway/theme';
 
-import { alpha, Box, Stack, Typography } from '@mui/material';
+import { alpha, Box, Stack } from '@mui/material';
 
 import { useAuth } from '../../../providers/auth';
 import { ErrorResponse } from '../../../types/graphql';
 import { NavBarAvatar } from '../../organisms/navbar/navbar-avatar';
 import { taskErrorMessages } from '../../organisms/tasks/task-error-messages';
-import { Form } from './form';
-import { schema, NewUserSchema, defaultValues } from './schema';
+import { FormSendEmail } from './form-send-email';
+import { FormVerifyToken } from './form-verify-token';
+import {
+  schemaCreateAccount,
+  schemaTokenConfirmation,
+  NewUserSchema,
+  TokenConfirmationSchema,
+  defaultValues,
+} from './schema';
 
 export function NewUserTemplate() {
   const { t } = useTranslation('dashboard-new-user');
   const { me, gqlAuthMethods, gqlProtocolAuthMethods, onInvalidateMe } =
     useAuth();
-  const methods = useForm<NewUserSchema>({
-    resolver: yupResolver(schema),
+  const [sentEmail, setSentEmail] = useState(false);
+  const [sendEmailData, setSendEmailData] = useState(null);
+  const methodsSendCode = useForm<NewUserSchema>({
+    resolver: yupResolver(schemaCreateAccount),
     defaultValues: defaultValues(me),
+  });
+  const methodsSendToken = useForm<TokenConfirmationSchema>({
+    resolver: yupResolver(schemaTokenConfirmation),
   });
 
   const { enqueueSnackbar } = useSnackbar();
@@ -32,20 +45,6 @@ export function NewUserTemplate() {
   const updateMutation = useMutation(
     ['updateProfile', me.id],
     async ({ ...data }: NewUserSchema) => {
-      // let uploadedPicture = null;
-
-      // if (pfp) {
-      //   uploadedPicture = await uploadImage({
-      //     base64: pfp,
-      //     name: `${me.id}-pfp`,
-      //   });
-      // }
-
-      // await gqlAuthMethods.update_user_profile({
-      //   ...data,
-      //   id: me.id,
-      //   ...(uploadedPicture && { pic_id: uploadedPicture.upload_image.id }),
-      // });
       return gqlProtocolAuthMethods.updateUser({
         email: data.email_address,
         gatewayId: data.username,
@@ -63,7 +62,7 @@ export function NewUserTemplate() {
             extensions.code === 'constraint-violation' &&
             message.includes('users_email_address_uindex')
           ) {
-            return methods.setError('email_address', {
+            return methodsSendCode.setError('email_address', {
               message: taskErrorMessages.EMAIL_ALREADY_IN_USE,
             });
           }
@@ -71,7 +70,7 @@ export function NewUserTemplate() {
             extensions.code === 'constraint-violation' &&
             message.includes('user_username_uindex')
           ) {
-            return methods.setError('username', {
+            return methodsSendCode.setError('username', {
               message: taskErrorMessages.USERNAME_ALREADY_IN_USE,
             });
           }
@@ -87,7 +86,10 @@ export function NewUserTemplate() {
     }
   );
 
-  const onSubmit = (data: NewUserSchema) => updateMutation.mutate(data);
+  const onSubmitSendEmail = (data: NewUserSchema) =>
+    updateMutation.mutate(data);
+
+  const onSubmitConfirmToken = (data: any) => updateMutation.mutate(data);
 
   return (
     <Stack
@@ -133,22 +135,29 @@ export function NewUserTemplate() {
             width="30"
           />
         </Box>
-        <Typography component="h1" variant="h4" sx={{ mb: 3 }}>
-          {t('title')}
-        </Typography>
-        <Stack direction="column" gap={3}>
-          <Box>
-            <Typography component="h2" variant="h6" fontSize={16}>
-              {t('form.title')}
-            </Typography>
-            <Typography component="p" variant="caption">
-              {t('form.caption')}
-            </Typography>
-          </Box>
-          <FormProvider {...methods}>
-            <Form onSubmit={onSubmit} isLoading={updateMutation.isLoading} />
+        {!sentEmail ? (
+          <FormProvider {...methodsSendCode}>
+            <FormSendEmail
+              // onSubmitSendEmail={onSubmitSendEmail}
+              onSubmitSendEmail={(data) => {
+                setSendEmailData(data);
+                setSentEmail(true);
+              }}
+              isLoading={updateMutation.isLoading}
+            />
           </FormProvider>
-        </Stack>
+        ) : (
+          <FormProvider {...methodsSendToken}>
+            <FormVerifyToken
+              onSubmitConfirmToken={onSubmitConfirmToken}
+              isLoadingConfirmToken={updateMutation.isLoading}
+              onSubmitSendEmail={onSubmitSendEmail}
+              isLoadingSendEmail={updateMutation.isLoading}
+              sendEmailData={sendEmailData}
+              onClickEdit={() => setSentEmail(false)}
+            />
+          </FormProvider>
+        )}
       </Stack>
     </Stack>
   );

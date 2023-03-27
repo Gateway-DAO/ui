@@ -2,13 +2,13 @@ import useTranslation from 'next-translate/useTranslation';
 
 import { useFormContext } from 'react-hook-form';
 
-import { Stack, TextField } from '@mui/material';
+import { Box, Stack, TextField, Typography } from '@mui/material';
 
 import { LoadingButton } from '../../atoms/loading-button';
 import { NewUserSchema } from './schema';
 
 type Props = {
-  onSubmit: (data: NewUserSchema) => void;
+  onSubmitSendEmail: (data: NewUserSchema) => void;
   isLoading: boolean;
 };
 
@@ -16,7 +16,7 @@ type Props = {
   TODO: Disable submit button on form error
   */
 
-export function Form({ onSubmit, isLoading }: Props) {
+export function FormSendEmail({ onSubmitSendEmail, isLoading }: Props) {
   const { t } = useTranslation('dashboard-new-user');
   const {
     register,
@@ -29,8 +29,19 @@ export function Form({ onSubmit, isLoading }: Props) {
       component="form"
       direction="column"
       gap={2}
-      onSubmit={handleSubmit(onSubmit)}
+      onSubmit={handleSubmit(onSubmitSendEmail)}
     >
+      <Typography component="h1" variant="h4" sx={{ mb: 3 }}>
+        {t('title-send-email')}
+      </Typography>
+      <Box>
+        <Typography component="h2" variant="h6" fontSize={16}>
+          {t('form.title-send-email')}
+        </Typography>
+        <Typography component="p" variant="caption">
+          {t('form.caption-send-email')}
+        </Typography>
+      </Box>
       <TextField
         required
         label={t('form.fields.gateway-id')}
@@ -58,7 +69,7 @@ export function Form({ onSubmit, isLoading }: Props) {
         sx={{ mt: 2 }}
         isLoading={isLoading}
       >
-        {t('form.form-action')}
+        {t('form.send-email-action')}
       </LoadingButton>
     </Stack>
   );
