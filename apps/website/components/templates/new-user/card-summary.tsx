@@ -14,7 +14,6 @@ type Props = {
 
 export function CardSummary({ filledData, onClickEdit }: Props) {
   const { t } = useTranslation('dashboard-new-user');
-  console.log(filledData);
 
   return (
     <Stack
@@ -29,7 +28,7 @@ export function CardSummary({ filledData, onClickEdit }: Props) {
         border: '1px solid rgba(229, 229, 229, 0.12)',
         borderRadius: 2,
         position: 'relative',
-        top: -80,
+        top: -50,
       })}
     >
       <Stack direction="column">

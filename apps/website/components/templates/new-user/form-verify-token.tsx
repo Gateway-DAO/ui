@@ -1,9 +1,11 @@
 import useTranslation from 'next-translate/useTranslation';
 
 import { useFormContext } from 'react-hook-form';
+import { useToggle } from 'react-use';
 
 import { Box, Stack, TextField, Typography } from '@mui/material';
 
+import { useCountdown } from '../../../hooks/use-countdown';
 import { LoadingButton } from '../../atoms/loading-button';
 import { CardSummary } from './card-summary';
 import { TokenConfirmationSchema, NewUserSchema } from './schema';
@@ -31,6 +33,13 @@ export function FormVerifyToken({
     handleSubmit,
     formState: { errors },
   } = useFormContext<TokenConfirmationSchema>();
+  const [startCountdown, setStartCountdown] = useToggle(true);
+  const countdown = useCountdown({ time: 30, trigger: startCountdown });
+
+  const sendEmailAgain = () => {
+    // onSubmitSendEmail(sendEmailData);
+    setStartCountdown();
+  };
 
   return (
     <Stack
@@ -76,9 +85,11 @@ export function FormVerifyToken({
           type="button"
           sx={{ mt: 2 }}
           isLoading={isLoadingSendEmail}
-          onClick={() => onSubmitSendEmail(sendEmailData)}
+          onClick={() => sendEmailAgain()}
+          disabled={countdown?.counting}
         >
-          {t('form.send-code-again-action')} (29)
+          {t('form.send-code-again-action')}
+          {countdown?.counting ? ` (${countdown.time})` : ' '}
         </LoadingButton>
       </Stack>
     </Stack>
