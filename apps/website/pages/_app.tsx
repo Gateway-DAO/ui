@@ -20,8 +20,6 @@ import '../components/atoms/global-dependencies';
 import '../styles/next.css';
 import { SessionProvider } from 'next-auth/react';
 
-// import { HeadContainer } from '../components/molecules/head-container';
-
 type AppProps = NextAppProps & {
   Component: NextAppProps['Component'] & { auth?: boolean };
 };
@@ -31,7 +29,6 @@ function CustomApp({ Component, pageProps }: AppProps) {
 
   return (
     <>
-      {/* <HeadContainer /> */}
       <NextNProgress
         height={4}
         color={'#9A53FF'}
