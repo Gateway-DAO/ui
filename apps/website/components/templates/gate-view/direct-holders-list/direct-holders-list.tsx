@@ -145,9 +145,11 @@ export function DirectHoldersList({
 
       <Box
         sx={{
-          display: 'flex',
-          alignSelf: 'center',
           height: { lg: '100%', xs: '100vh' },
+          ...(!totalHolders && {
+            display: 'flex',
+            alignSelf: 'center',
+          }),
         }}
       >
         {!totalHolders && (
@@ -178,6 +180,7 @@ export function DirectHoldersList({
             </Typography>
           </Box>
         )}
+
         {isLoading ? (
           <CenteredLoader />
         ) : (
@@ -192,6 +195,7 @@ export function DirectHoldersList({
               const user = whitelisted.user?.[0]?.id
                 ? whitelisted.user[0]
                 : null;
+
               return (
                 <>
                   <UserListItem
