@@ -52,7 +52,7 @@ const IssuerRecipientBox = ({
               color: 'rgba(255, 255, 255, .7)',
             }}
           >
-            Issuer ID***
+            Issuer ID
           </span>
           <span
             style={{
