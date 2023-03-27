@@ -50,9 +50,12 @@ const handler = async (req: NextRequest) => {
     : '00/00/00, 00:00 am';
 
   const hasQRCode = searchParams.has('qrCode');
+
   const qrCode = hasQRCode
-    ? searchParams.get('qrCode')?.slice(0, 100)
-    : 'https://d2igf2y4k77tnt.cloudfront.net/qrcode.png';
+    ? `${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/${searchParams
+        .get('qrCode')
+        ?.slice(0, 100)}`
+    : null;
 
   const hasImage = searchParams.has('image');
   const image = hasImage ? searchParams.get('image')?.slice(0, 100) : null;
@@ -260,15 +263,17 @@ const handler = async (req: NextRequest) => {
                   }}
                 />
               )}
-              <img
-                src={qrCode}
-                width="185px"
-                height="185px"
-                alt="QR Code"
-                style={{
-                  borderRadius: '28px',
-                }}
-              />
+              {hasQRCode && (
+                <img
+                  src={qrCode}
+                  width="185px"
+                  height="185px"
+                  alt="QR Code"
+                  style={{
+                    borderRadius: '28px',
+                  }}
+                />
+              )}
             </div>
           </div>
         </div>

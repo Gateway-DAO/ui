@@ -64,7 +64,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     credentialData.issuerUser?.gatewayId
   }&issuanceDate=${issuanceDate}${
     credentialData.image ? '&image=' + credentialData.image : ''
-  }`;
+  }&qrCode=${credentialData.qrCode}`;
 
   return {
     props: {
