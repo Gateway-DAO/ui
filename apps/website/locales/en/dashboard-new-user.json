@@ -1,10 +1,17 @@
 {
-  "title": "You’re a step closer to entering the Gateway.",
+  "title": "You’re a step closer to entering the Gateway",
+  "logo-alternative-text": "Gateway logo",
+  "profile-created-sucess": "Profile created!",
   "form": {
-    "title": "Create Profile",
-    "caption": "Information provided will be displayed on your Gateway profile.",
+    "title": "Create your personal Gateway ID",
+    "caption": "Through the ID you are recognized and found within the Gateway",
     "fields": {
-      "test": "test"
-    }
+      "test": "test",
+      "gateway-id": "Gateway ID",
+      "gateway-id-helper-text": "Only lowercase letters, numbers and ._-",
+      "e-mail": "E-mail",
+      "e-mail-helper-text": "You'll be notified when a credential is issued to you by e-mail"
+    },
+    "form-action": "Create account"
   }
 }

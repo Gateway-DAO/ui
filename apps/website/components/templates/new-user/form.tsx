@@ -1,3 +1,5 @@
+import useTranslation from 'next-translate/useTranslation';
+
 import { useFormContext } from 'react-hook-form';
 
 import { Stack, TextField } from '@mui/material';
@@ -11,12 +13,11 @@ type Props = {
 };
 
 /*
-  TODO: Change hardcoded text to translate
-  TODO: Loading submit button
   TODO: Disable submit button on form error
   */
 
 export function Form({ onSubmit, isLoading }: Props) {
+  const { t } = useTranslation('dashboard-new-user');
   const {
     register,
     handleSubmit,
@@ -32,31 +33,24 @@ export function Form({ onSubmit, isLoading }: Props) {
     >
       <TextField
         required
-        label="Display Name"
-        id="name"
-        {...register('name')}
-        error={!!errors.name}
-        helperText={errors.name?.message}
-      />
-      <TextField
-        required
-        label="Gateway ID"
+        label={t('form.fields.gateway-id')}
         id="username"
         {...register('username')}
         error={!!errors.username}
         helperText={
-          errors.username?.message ??
-          'Valid: lowercase alphanumeric charaters and ._-'
+          errors.username?.message ?? t('form.fields.gateway-id-helper-text')
         }
       />
       <TextField
         required
-        label="E-mail"
+        label={t('form.fields.e-mail')}
         type="email"
         id="email_address"
         {...register('email_address')}
         error={!!errors.email_address}
-        helperText={errors.email_address?.message}
+        helperText={
+          errors.email_address?.message ?? t('form.fields.e-mail-helper-text')
+        }
       />
       <LoadingButton
         variant="contained"
@@ -64,7 +58,7 @@ export function Form({ onSubmit, isLoading }: Props) {
         sx={{ mt: 2 }}
         isLoading={isLoading}
       >
-        Enter the Gateway
+        {t('form.form-action')}
       </LoadingButton>
     </Stack>
   );
