@@ -1,5 +1,4 @@
 import useTranslation from 'next-translate/useTranslation';
-import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 
@@ -17,13 +16,6 @@ import { AvatarFile } from '../../atoms/avatar-file';
 import { SocialButtons } from '../../organisms/social-buttons';
 import { IssuedTab, ReceivedTab } from './tabs';
 import { Earned } from './tabs/Earned';
-
-const ConnectionsButton = dynamic<any>(
-  () => import('./connections/button').then((mod) => mod.ConnectionsButton),
-  {
-    ssr: false,
-  }
-);
 
 export default function PrivateProfileTemplate() {
   const { t } = useTranslation();

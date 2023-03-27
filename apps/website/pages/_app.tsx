@@ -6,7 +6,7 @@ import NextNProgress from 'nextjs-progressbar';
 import { Hydrate, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
-import { ThemeProvider } from '@gateway/theme';
+import { ThemeProvider } from '@gateway/theme-react';
 
 import Notistack from '../components/atoms/notistack';
 import { NavStateProvider } from '../hooks/use-nav';
@@ -73,22 +73,27 @@ function CustomApp({ Component, pageProps }: AppProps) {
         }}
       />
       {/* Google Analytics */}
-      <Script
-        strategy="afterInteractive"
-        src="https://www.googletagmanager.com/gtag/js?id=G-CKZ9WYMPM4"
-      />
-      <Script
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: `
+      {process.env.NEXT_PUBLIC_ANALYTICS_TAG && (
+        <>
+          <Script
+            strategy="afterInteractive"
+            src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_ANALYTICS_TAG}`}
+          />
+          <Script
+            strategy="afterInteractive"
+            dangerouslySetInnerHTML={{
+              __html: `
           window.dataLayer = window.dataLayer || [];
           function gtag(){dataLayer.push(arguments);}
           gtag('js', new Date());
 
-          gtag('config', 'G-CKZ9WYMPM4');
-            `,
-        }}
-      />
+          gtag('config', '${process.env.NEXT_PUBLIC_ANALYTICS_TAG}');
+          `,
+            }}
+          />
+        </>
+      )}
+
       {/* Hotjar */}
       <Script
         strategy="afterInteractive"
