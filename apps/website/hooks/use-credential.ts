@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
+import { useConnectModal } from '@rainbow-me/rainbowkit';
 import { useMutation } from '@tanstack/react-query';
 import { useQueryClient } from '@tanstack/react-query';
 import { BigNumber } from 'ethers';
@@ -24,8 +25,10 @@ const isGasless = process.env.NEXT_PUBLIC_GASLESS_MINTING === 'true';
 export const useCredential = (credential: PartialDeep<Credentials>) => {
   // State
   const [status, setStatus] = useState<Status>('idle');
+  const [openedModal, setOpenedModal] = useState<boolean>(false);
   const [error, setError] = useState<Error | null>(null);
   const { me, gqlAuthMethods, onInvalidateMe } = useAuth();
+  const { openConnectModal } = useConnectModal();
 
   const resetStatus = () => setStatus('idle');
 
@@ -33,11 +36,18 @@ export const useCredential = (credential: PartialDeep<Credentials>) => {
   const queryClient = useQueryClient();
 
   // Wagmi
-  const { address } = useAccount();
+  const { address, isConnected, isConnecting } = useAccount();
   const { chain } = useNetwork();
   const { switchNetworkAsync } = useSwitchNetwork({
     throwForSwitchChainNotSupported: true,
   });
+
+  useEffect(() => {
+    if (!isConnecting && isConnected && openedModal) {
+      setOpenedModal(false);
+      mintCredential(credential);
+    }
+  }, [isConnecting, isConnected, openedModal]);
 
   const { writeAsync: contractMint, data } = useContractWrite({
     address: process.env.NEXT_PUBLIC_CONTRACT_ADDRESS as `0x${string}`,
@@ -113,7 +123,12 @@ export const useCredential = (credential: PartialDeep<Credentials>) => {
         };
       }
 
-      if (chain.id !== parseInt(process.env.NEXT_PUBLIC_CHAIN_ID)) {
+      if (!isConnected) {
+        openConnectModal();
+        setOpenedModal(true);
+      }
+
+      if (chain?.id !== parseInt(process.env.NEXT_PUBLIC_CHAIN_ID)) {
         await switchNetworkAsync?.(parseInt(process.env.NEXT_PUBLIC_CHAIN_ID));
       }
 
