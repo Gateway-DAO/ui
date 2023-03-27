@@ -13,10 +13,7 @@ type Props = InferGetServerSidePropsType<typeof getServerSideProps>;
 export default function ProtocolDataModel({ dataModel, stats }: Props) {
   return (
     <>
-      <HeadContainer
-        title={`${dataModel.title} Data Model`}
-        ogImage="default"
-      />
+      <HeadContainer title={`${dataModel.title} Data Model`} />
       <DashboardTemplate
         containerProps={{
           sx: {

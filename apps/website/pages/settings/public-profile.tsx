@@ -78,7 +78,7 @@ export default function PublicProfileSettingsPage() {
 
   return me?.id ? (
     <>
-      <HeadContainer title="My settings" ogImage="default" />
+      <HeadContainer title="My settings" />
       <DashboardTemplate
         containerProps={{
           sx: {

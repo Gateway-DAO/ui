@@ -73,10 +73,7 @@ export default function GateProfilePage() {
   );
   return (
     <>
-      <HeadContainer
-        title={`${gatesData.gates_by_pk?.title} Credential`}
-        ogImage="default"
-      />
+      <HeadContainer title={`${gatesData.gates_by_pk?.title} Credential`} />
       <DashboardTemplate
         containerProps={{
           sx: {

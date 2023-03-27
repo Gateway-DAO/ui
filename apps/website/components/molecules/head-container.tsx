@@ -5,7 +5,7 @@ import { SEOFavicon, SEOSocial } from '../atoms/seo';
 type HeadContainerProps = {
   title?: string;
   description?: string;
-  ogImage: 'default' | string;
+  ogImage?: string;
   twitterImage?: string;
   ogTitle?: string;
   ogDescription?: string;
@@ -21,7 +21,7 @@ const defaultTexts = {
 export function HeadContainer({
   title,
   description,
-  ogImage,
+  ogImage = 'default',
   twitterImage,
   ogTitle,
   ogDescription,

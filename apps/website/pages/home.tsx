@@ -58,7 +58,7 @@ export default function Explore({
 
   return (
     <>
-      <HeadContainer ogImage="default" />
+      <HeadContainer />
       <DashboardTemplate
         containerProps={{
           sx: {

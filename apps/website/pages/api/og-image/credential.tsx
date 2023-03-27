@@ -2,7 +2,7 @@ import { NextRequest } from 'next/server';
 
 import { ImageResponse } from '@vercel/og';
 
-import OgImage from '../../../components/organisms/og-image/og-image';
+import OgImage from '../../../components/templates/og-image/og-image';
 
 export const config = {
   runtime: 'experimental-edge',
