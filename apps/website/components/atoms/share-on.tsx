@@ -53,7 +53,7 @@ export default function ShareOn({ isCredential, credential }: Props) {
       </Typography>
       {isCredential && credential.id && (
         <Stack mb={3}>
-          <Image
+          <img
             style={{
               borderRadius: '12px',
             }}
