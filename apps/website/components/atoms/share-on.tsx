@@ -1,20 +1,13 @@
 import useTranslation from 'next-translate/useTranslation';
-import Image from 'next/image';
 
 import { PartialDeep } from 'type-fest';
 
 import { DiscordIcon } from '@gateway/assets';
 
-import {
-  Reddit,
-  LinkedIn,
-  Twitter,
-  Email,
-  Download,
-  Link,
-} from '@mui/icons-material';
+import { LinkedIn, Twitter, Download, Link } from '@mui/icons-material';
 import { Stack, Typography, Box } from '@mui/material';
 
+import { useAuth } from '../../providers/auth';
 import { Credential } from '../../services/gateway-protocol/types';
 import { getCredentialImageURLParams } from '../../utils/credential/build-image-url-params';
 import objectToParams from '../../utils/map-object';
@@ -27,13 +20,29 @@ type Props = {
 
 export default function ShareOn({ isCredential, credential }: Props) {
   const { t } = useTranslation('common');
+  const { me } = useAuth();
+
+  const isReceivedCredential =
+    me && me?.wallet === credential?.recipientUser?.primaryWallet?.address;
 
   const emailLink = `mailto:?body=${window.location.href}&subject=${t(
     'social.share-title'
   )}`;
 
+  let tweetText = t('social.share-title');
+
+  if (isReceivedCredential) {
+    tweetText = t('social.share-twitter-recipient')
+      .replace('[title]', credential.title)
+      .replace('[issuer]', credential.issuerUser?.gatewayId);
+  } else if (isCredential) {
+    tweetText = t('social.share-twitter')
+      .replace('[issuer]', credential.issuerUser?.gatewayId)
+      .replace('[recipient]', credential.recipientUser?.gatewayId);
+  }
+
   const tweetLink = `https://twitter.com/intent/tweet${objectToParams({
-    text: t('social.share-title'),
+    text: tweetText,
     url: window.location.href,
   })}`;
 
@@ -75,7 +84,7 @@ export default function ShareOn({ isCredential, credential }: Props) {
         </SquareButton>
         <SquareButton
           large
-          label="Discord"
+          label={t('social.discord')}
           clickHandler={() => window.open(tweetLink)}
         >
           <DiscordIcon color="secondary" />
@@ -89,7 +98,7 @@ export default function ShareOn({ isCredential, credential }: Props) {
         </SquareButton>
         <SquareButton
           large
-          label="Download image"
+          label={t('social.download-image')}
           clickHandler={(e) => {
             window.location.href = emailLink;
             e.preventDefault();
@@ -99,7 +108,7 @@ export default function ShareOn({ isCredential, credential }: Props) {
         </SquareButton>
         <SquareButton
           large
-          label="Copy link"
+          label={t('social.copy-link')}
           clickHandler={() => window.open(redditLink)}
         >
           <Link color="secondary" />
