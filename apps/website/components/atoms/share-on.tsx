@@ -13,7 +13,7 @@ import {
   Download,
   Link,
 } from '@mui/icons-material';
-import { Stack, Typography } from '@mui/material';
+import { Stack, Typography, Box } from '@mui/material';
 
 import { Credential } from '../../services/gateway-protocol/types';
 import { getCredentialImageURLParams } from '../../utils/credential/build-image-url-params';
@@ -53,14 +53,15 @@ export default function ShareOn({ isCredential, credential }: Props) {
       </Typography>
       {isCredential && credential.id && (
         <Stack mb={3}>
-          <img
-            style={{
+          <Box
+            component="img"
+            sx={{
               borderRadius: '12px',
+              width: { xs: '100%', sm: '620px' },
+              height: { xs: 'auto', sm: '326px' },
             }}
             src={`${window.location.origin}/api/og-image/credential${imageUrlParams}`}
-            alt="Credential Image"
-            width={620}
-            height={326}
+            alt={credential.title}
           />
         </Stack>
       )}
