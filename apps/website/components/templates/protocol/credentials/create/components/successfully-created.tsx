@@ -16,7 +16,6 @@ import {
 
 import { ROUTES } from '../../../../../../constants/routes';
 import { gatewayProtocolSDK } from '../../../../../../services/gateway-protocol/api';
-import { useCreateQrCode } from '../../../../../../utils/qr-code/qr-code';
 import CredentialCardInfo from '../../../components/credential-card-info';
 
 type Props = {
@@ -41,7 +40,6 @@ export default function SuccessfullyCreated({ credentialId }: Props) {
   const credentialRoute = `${
     window?.location?.origin
   }${ROUTES.PROTOCOL_CREDENTIAL.replace('[id]', credentialId)}`;
-  const qrCode = useCreateQrCode(credentialRoute);
 
   return (
     <Stack>
@@ -94,7 +92,10 @@ export default function SuccessfullyCreated({ credentialId }: Props) {
                 }}
               >
                 <img
-                  src={credential?.data?.image ?? qrCode}
+                  src={
+                    credential?.data?.image ??
+                    `${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/${credential?.data?.qrCode}`
+                  }
                   alt={credential?.data?.title}
                   width="100%"
                 />
