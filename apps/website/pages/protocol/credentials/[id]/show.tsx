@@ -1,7 +1,5 @@
 import { InferGetServerSidePropsType, GetServerSidePropsContext } from 'next';
 
-import { DateTime } from 'luxon';
-
 import { HeadContainer } from '../../../../components/molecules/head-container';
 import { DashboardTemplate } from '../../../../components/templates/dashboard';
 import {
@@ -9,6 +7,7 @@ import {
   ProtocolTemplate,
 } from '../../../../components/templates/protocol';
 import { gatewayProtocolSDK } from '../../../../services/gateway-protocol/api';
+import { getCredentialImageURLParams } from '../../../../utils/credential/build-image-url-params';
 
 type Props = InferGetServerSidePropsType<typeof getServerSideProps>;
 
@@ -33,7 +32,7 @@ export default function ProtocolCredential({ credential, ogImage }: Props) {
               height: '100%',
             }}
           >
-            <ProtocolTemplate>
+            <ProtocolTemplate credential={credential}>
               <CredentialProtocolShow credential={credential} />
             </ProtocolTemplate>
           </DashboardTemplate>
@@ -52,19 +51,9 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 
   const credentialData = credential.credential;
 
-  const issuanceDate = DateTime.fromISO(credentialData.createdAt).toFormat(
-    'MMM dd, yyyy a'
-  );
+  const urlParams = getCredentialImageURLParams(credentialData);
 
-  const ogImage = `https://${host}/api/og-image/credential?id=${
-    credentialData.id
-  }&title=${
-    credentialData.title
-  }&description=${credentialData.description.slice(0, 100)}&issuer=${
-    credentialData.issuerUser?.gatewayId
-  }&issuanceDate=${issuanceDate}${
-    credentialData.image ? '&image=' + credentialData.image : ''
-  }&qrCode=${credentialData.qrCode}`;
+  const ogImage = `https://${host}/api/og-image/credential${urlParams}`;
 
   return {
     props: {

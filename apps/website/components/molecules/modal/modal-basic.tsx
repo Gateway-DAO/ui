@@ -22,6 +22,7 @@ type Props = {
   imageUrl?: string;
   enableDownloadImage?: boolean;
   swipeableDrawer?: boolean;
+  fullWidth?: boolean;
 };
 
 export default function ModalBasic({
@@ -34,6 +35,7 @@ export default function ModalBasic({
   enableDownloadImage,
   swipeableDrawer = false,
   modalType = modalContentTypes.general,
+  fullWidth,
 }: Props) {
   const isMobile = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
 
@@ -44,6 +46,7 @@ export default function ModalBasic({
     imageUrl,
     enableDownloadImage,
     modalType,
+    fullWidth,
   };
 
   return (
