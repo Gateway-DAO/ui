@@ -8,6 +8,7 @@ type Props = {
   children: ReactNode;
   modalTitle: string;
   modalDescription: string;
+  fullWidth?: boolean;
 };
 
 export default function Modal({
@@ -16,6 +17,7 @@ export default function Modal({
   children,
   modalTitle,
   modalDescription,
+  fullWidth,
 }: Props) {
   return (
     <Dialog
@@ -23,6 +25,8 @@ export default function Modal({
       onClose={handleClose}
       aria-labelledby={modalTitle}
       aria-describedby={modalDescription}
+      fullWidth={fullWidth}
+      maxWidth={fullWidth ? 'md' : 'sm'}
     >
       <Paper
         direction="column"

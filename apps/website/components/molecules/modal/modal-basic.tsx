@@ -65,6 +65,7 @@ export default function ModalBasic({
           handleClose={() => handleClose()}
           modalTitle={`Modal ${title}`}
           modalDescription={`Modal ${title}`}
+          fullWidth={fullWidth}
         >
           <ModalContentView {...modalContentProps}>{children}</ModalContentView>
         </Modal>

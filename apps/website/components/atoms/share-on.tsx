@@ -1,14 +1,22 @@
 import useTranslation from 'next-translate/useTranslation';
 import Image from 'next/image';
 
-import { getCredentialImageURLParams } from 'apps/website/utils/credential/build-image-url-params';
-import { DateTime } from 'luxon';
 import { PartialDeep } from 'type-fest';
 
-import { Reddit, LinkedIn, Twitter, Email } from '@mui/icons-material';
+import { DiscordIcon } from '@gateway/assets';
+
+import {
+  Reddit,
+  LinkedIn,
+  Twitter,
+  Email,
+  Download,
+  Link,
+} from '@mui/icons-material';
 import { Stack, Typography } from '@mui/material';
 
 import { Credential } from '../../services/gateway-protocol/types';
+import { getCredentialImageURLParams } from '../../utils/credential/build-image-url-params';
 import objectToParams from '../../utils/map-object';
 import SquareButton from './square-button';
 
@@ -58,31 +66,42 @@ export default function ShareOn({ isCredential, credential }: Props) {
       )}
       <Stack gap={1} direction={{ xs: 'column', sm: 'row' }}>
         <SquareButton
-          label={t('social.email')}
-          clickHandler={(e) => {
-            window.location.href = emailLink;
-            e.preventDefault();
-          }}
-        >
-          <Email color="secondary" />
-        </SquareButton>
-        <SquareButton
-          label={t('social.reddit')}
-          clickHandler={() => window.open(redditLink)}
-        >
-          <Reddit color="secondary" />
-        </SquareButton>
-        <SquareButton
+          large
           label={t('social.twitter')}
           clickHandler={() => window.open(tweetLink)}
         >
           <Twitter color="secondary" />
         </SquareButton>
         <SquareButton
+          large
+          label="Discord"
+          clickHandler={() => window.open(tweetLink)}
+        >
+          <DiscordIcon color="secondary" />
+        </SquareButton>
+        <SquareButton
+          large
           label={t('social.linkedin')}
           clickHandler={() => window.open(linkedinLink)}
         >
           <LinkedIn color="secondary" />
+        </SquareButton>
+        <SquareButton
+          large
+          label="Download image"
+          clickHandler={(e) => {
+            window.location.href = emailLink;
+            e.preventDefault();
+          }}
+        >
+          <Download color="secondary" />
+        </SquareButton>
+        <SquareButton
+          large
+          label="Copy link"
+          clickHandler={() => window.open(redditLink)}
+        >
+          <Link color="secondary" />
         </SquareButton>
       </Stack>
     </Stack>
