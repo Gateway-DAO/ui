@@ -1,5 +1,8 @@
 import { InferGetServerSidePropsType, GetServerSidePropsContext } from 'next';
 
+import { DateTime } from 'luxon';
+
+import { HeadContainer } from '../../../../components/molecules/head-container';
 import { DashboardTemplate } from '../../../../components/templates/dashboard';
 import {
   CredentialProtocolShow,
@@ -9,31 +12,64 @@ import { gatewayProtocolSDK } from '../../../../services/gateway-protocol/api';
 
 type Props = InferGetServerSidePropsType<typeof getServerSideProps>;
 
-export default function ProtocolCredential({ credential }: Props) {
+export default function ProtocolCredential({ credential, ogImage }: Props) {
   return (
-    <DashboardTemplate
-      containerProps={{
-        sx: {
-          overflow: '',
-        },
-        height: '100%',
-      }}
-    >
-      <ProtocolTemplate>
-        <CredentialProtocolShow credential={credential} />
-      </ProtocolTemplate>
-    </DashboardTemplate>
+    <>
+      {credential.id && (
+        <>
+          <HeadContainer
+            title={credential.title}
+            ogTitle={`${credential.title} / Gateway`}
+            description={credential.description}
+            ogDescription={credential.description}
+            ogImage={ogImage}
+            twitterImage={ogImage}
+          />
+          <DashboardTemplate
+            containerProps={{
+              sx: {
+                overflow: '',
+              },
+              height: '100%',
+            }}
+          >
+            <ProtocolTemplate>
+              <CredentialProtocolShow credential={credential} />
+            </ProtocolTemplate>
+          </DashboardTemplate>
+        </>
+      )}
+    </>
   );
 }
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+  const host = ctx.req.headers.host || null;
+
   const credential = await gatewayProtocolSDK.credential({
     id: ctx.query.id as string,
   });
 
+  const credentialData = credential.credential;
+
+  const issuanceDate = DateTime.fromISO(credentialData.createdAt).toFormat(
+    'MMM dd, yyyy a'
+  );
+
+  const ogImage = `https://${host}/api/og-image/credential?id=${
+    credentialData.id
+  }&title=${
+    credentialData.title
+  }&description=${credentialData.description.slice(0, 100)}&issuer=${
+    credentialData.issuerUser?.gatewayId
+  }&issuanceDate=${issuanceDate}${
+    credentialData.image ? '&image=' + credentialData.image : ''
+  }&qrCode=${credentialData.qrCode}`;
+
   return {
     props: {
       credential: credential?.credential,
+      ogImage,
     },
   };
 };
