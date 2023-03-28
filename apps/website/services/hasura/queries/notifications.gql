@@ -9,3 +9,12 @@ query user_from_wallet($wallet: String!) {
     }
   }
 }
+
+query notification_settings($user_id: uuid!) {
+  notification_settings_by_pk(user_id: $user_id) {
+    dapp_enabled
+    dapp_optout
+    email_enabled
+    email_optout
+  }
+}

@@ -1,10 +1,14 @@
 import useTranslation from 'next-translate/useTranslation';
 
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+
 import { ExpandMore } from '@mui/icons-material';
+import { RestartAlt } from '@mui/icons-material';
 import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
+  Button,
   Checkbox,
   List,
   ListItem,
@@ -16,10 +20,33 @@ import {
   Typography,
 } from '@mui/material';
 
-const EMAIL_ENUMS = {};
+import { useAuth } from '../../../../providers/auth';
+import { ChangeNotificationSettings } from '../../../../services/hasura/types';
+import { DappNotifications, EmailNotifications } from './config';
 
 function NotificationsSettings() {
   const { t } = useTranslation('settings');
+  const { me, gqlAuthMethods } = useAuth();
+  const settings = useQuery(
+    ['notification-settings', me.id],
+    () => gqlAuthMethods.notification_settings({ user_id: me.id }),
+    { select: (data) => data.notification_settings_by_pk }
+  );
+
+  const changeSettings = useMutation(
+    (input: ChangeNotificationSettings) =>
+      gqlAuthMethods.notifications_settings_toggle_email({ input }),
+    {
+      onSuccess() {
+        settings.refetch();
+      },
+    }
+  );
+
+  const isPageLoading =
+    settings.isLoading || settings.isFetching || changeSettings.isLoading;
+  const isEmailEnabled = settings.data === null || settings.data?.email_enabled;
+  const isDappEnabled = settings.data === null || settings.data?.dapp_enabled;
 
   return (
     <Stack sx={{ width: '100%' }}>
@@ -48,35 +75,71 @@ function NotificationsSettings() {
           </AccordionSummary>
           <AccordionDetails sx={{ mx: -2 }}>
             <List>
-              <ListItem disablePadding>
-                <ListItemButton role={undefined} dense>
+              <ListItem
+                disablePadding
+                secondaryAction={
+                  <Button
+                    variant="outlined"
+                    startIcon={<RestartAlt />}
+                    disabled={isPageLoading}
+                    onClick={() => changeSettings.mutate({ dapp_reset: true })}
+                  >
+                    {t('common:actions.reset')}
+                  </Button>
+                }
+              >
+                <ListItemButton
+                  role={undefined}
+                  dense
+                  disabled={isPageLoading}
+                  onClick={() =>
+                    changeSettings.mutate({ dapp_enabled: !isDappEnabled })
+                  }
+                >
                   <ListItemIcon>
                     <Switch
                       edge="start"
-                      checked
+                      checked={isDappEnabled}
                       tabIndex={-1}
                       disableRipple
-                      inputProps={{ 'aria-labelledby': 'email-all' }}
+                      inputProps={{ 'aria-labelledby': 'dapp-all' }}
                       sx={{ ml: -2.5 }}
                     />
                   </ListItemIcon>
-                  <ListItemText id="email-all" primary={`Line item`} />
+                  <ListItemText
+                    id="dapp-all"
+                    primary={t('notifications.dapp.all')}
+                  />
                 </ListItemButton>
               </ListItem>
-              <ListItem disablePadding>
-                <ListItemButton role={undefined} dense>
-                  <ListItemIcon>
-                    <Checkbox
-                      edge="start"
-                      checked
-                      tabIndex={-1}
-                      disableRipple
-                      inputProps={{ 'aria-labelledby': 'email-single' }}
+              {DappNotifications.map((item) => (
+                <ListItem disablePadding key={`dapp-${item}`}>
+                  <ListItemButton
+                    role={undefined}
+                    dense
+                    disabled={isPageLoading || !isDappEnabled}
+                    onClick={() => changeSettings.mutate({ dapp_optout: item })}
+                  >
+                    <ListItemIcon>
+                      <Checkbox
+                        edge="start"
+                        checked={
+                          isDappEnabled &&
+                          !settings.data.dapp_optout?.includes(item)
+                        }
+                        tabIndex={-1}
+                        disableRipple
+                        inputProps={{ 'aria-labelledby': `dapp-${item}` }}
+                      />
+                    </ListItemIcon>
+                    <ListItemText
+                      id={`dapp-${item}`}
+                      primary={t(`notifications.types.${item}.title`)}
+                      secondary={t(`notifications.types.${item}.description`)}
                     />
-                  </ListItemIcon>
-                  <ListItemText id="email-single" primary={`Line item`} />
-                </ListItemButton>
-              </ListItem>
+                  </ListItemButton>
+                </ListItem>
+              ))}
             </List>
           </AccordionDetails>
         </Accordion>
@@ -96,35 +159,73 @@ function NotificationsSettings() {
           </AccordionSummary>
           <AccordionDetails sx={{ mx: -2 }}>
             <List>
-              <ListItem disablePadding>
-                <ListItemButton role={undefined} dense>
+              <ListItem
+                disablePadding
+                secondaryAction={
+                  <Button
+                    variant="outlined"
+                    startIcon={<RestartAlt />}
+                    disabled={isPageLoading}
+                    onClick={() => changeSettings.mutate({ email_reset: true })}
+                  >
+                    {t('common:actions.reset')}
+                  </Button>
+                }
+              >
+                <ListItemButton
+                  role={undefined}
+                  dense
+                  disabled={isPageLoading}
+                  onClick={() =>
+                    changeSettings.mutate({ email_enabled: !isEmailEnabled })
+                  }
+                >
                   <ListItemIcon>
                     <Switch
                       edge="start"
-                      checked
+                      checked={isEmailEnabled}
                       tabIndex={-1}
                       disableRipple
                       inputProps={{ 'aria-labelledby': 'email-all' }}
                       sx={{ ml: -2.5 }}
                     />
                   </ListItemIcon>
-                  <ListItemText id="email-all" primary={`Line item`} />
+                  <ListItemText
+                    id="email-all"
+                    primary={t('notifications.email.all')}
+                  />
                 </ListItemButton>
               </ListItem>
-              <ListItem disablePadding>
-                <ListItemButton role={undefined} dense>
-                  <ListItemIcon>
-                    <Checkbox
-                      edge="start"
-                      checked
-                      tabIndex={-1}
-                      disableRipple
-                      inputProps={{ 'aria-labelledby': 'email-single' }}
+              {EmailNotifications.map((item) => (
+                <ListItem disablePadding key={`email-${item}`}>
+                  <ListItemButton
+                    role={undefined}
+                    dense
+                    disabled={isPageLoading || !isEmailEnabled}
+                    onClick={() =>
+                      changeSettings.mutate({ email_optout: item })
+                    }
+                  >
+                    <ListItemIcon>
+                      <Checkbox
+                        edge="start"
+                        checked={
+                          isEmailEnabled &&
+                          !settings.data?.email_optout?.includes(item)
+                        }
+                        tabIndex={-1}
+                        disableRipple
+                        inputProps={{ 'aria-labelledby': `email-${item}` }}
+                      />
+                    </ListItemIcon>
+                    <ListItemText
+                      id={`email-${item}`}
+                      primary={t(`notifications.types.${item}.title`)}
+                      secondary={t(`notifications.types.${item}.description`)}
                     />
-                  </ListItemIcon>
-                  <ListItemText id="email-single" primary={`Line item`} />
-                </ListItemButton>
-              </ListItem>
+                  </ListItemButton>
+                </ListItem>
+              ))}
             </List>
           </AccordionDetails>
         </Accordion>

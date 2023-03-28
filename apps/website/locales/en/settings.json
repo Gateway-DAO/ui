@@ -72,6 +72,52 @@
       "title": "By email",
       "description": "Select which notifications to get by email.",
       "all": "Turn on all notifications by email"
+    },
+    "types": {
+      "credential_published": {
+        "title": "Credential published",
+        "description": "When a credential of a organization that you follows publishes a credential."
+      },
+      "credential_received": {
+        "title": "Credential received",
+        "description": "When you receive a credential"
+      },
+      "credential_revoked": {
+        "title": "Credential revoked",
+        "description": "When a credential that you own is revoked"
+      },
+      "credential_update": {
+        "title": "Credential update",
+        "description": ""
+      },
+      "manual_task_event_comment": {
+        "title": "Manual task event comment",
+        "description": ""
+      },
+      "manual_task_event_send_link": {
+        "title": "Manual task event send link",
+        "description": ""
+      },
+      "manual_task_event_approve": {
+        "title": "Manual task event approve",
+        "description": ""
+      },
+      "manual_task_event_reject": {
+        "title": "Manual task event reject",
+        "description": ""
+      },
+      "manual_task_event_waiting": {
+        "title": "Manual task event waiting",
+        "description": ""
+      },
+      "friend_request_new": {
+        "title": "Friend request new",
+        "description": "When you receive a new friend request"
+      },
+      "friend_request_accepted": {
+        "title": "Friend request accepted",
+        "description": "User accepts your friend request"
+      }
     }
   }
 }
