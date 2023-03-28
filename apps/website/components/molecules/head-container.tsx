@@ -26,16 +26,16 @@ export function HeadContainer({
   ogTitle,
   ogDescription,
 }: HeadContainerProps): JSX.Element {
-  title = title ? title + ' - Gateway' : defaultTexts.title;
-  description = description || defaultTexts.description;
-  ogDescription = ogDescription || description;
+  const customTitle = title ? title + ' - Gateway' : defaultTexts.title;
+  const customDescription = description || defaultTexts.description;
+  const customOgDescription = ogDescription || description;
 
   return (
     <Head>
-      <title>{title}</title>
+      <title>{customTitle}</title>
       <meta name="viewport" content="width=device-width, initial-scale=1" />
       <meta name="author" content="Gateway" />
-      <meta name="description" content={description} />
+      <meta name="description" content={customDescription} />
       <meta
         property="og:image"
         content={ogImage === 'default' ? defaultTexts.ogImage : ogImage}
@@ -46,7 +46,7 @@ export function HeadContainer({
       />
       {twitterImage && <meta name="twitter:image" content={twitterImage} />}
       {ogTitle && <meta name="og:title" content={ogTitle} />}
-      <meta name="og:description" content={ogDescription} />
+      <meta name="og:description" content={customOgDescription} />
       <SEOFavicon />
       <SEOSocial />
     </Head>
