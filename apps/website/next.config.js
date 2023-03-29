@@ -20,6 +20,7 @@ const nextConfig = {
       'd2igf2y4k77tnt.cloudfront.net',
       'api.mygateway.xyz',
       'node.mygateway.xyz',
+      'arweave.net',
       'localhost',
     ],
   },
