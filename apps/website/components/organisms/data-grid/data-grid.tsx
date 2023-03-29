@@ -99,7 +99,11 @@ const defineCols = (columns: IColumnGrid[]) => {
                 alt={`${params.title}`}
                 width={56}
                 height={56}
-                src={`${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/${params?.qrCode}`}
+                src={`${
+                  params.image
+                    ? params.image
+                    : process.env.NEXT_PUBLIC_CLOUDFRONT_URL
+                }/${params?.qrCode}`}
               />
             </Box>
             <Box>
