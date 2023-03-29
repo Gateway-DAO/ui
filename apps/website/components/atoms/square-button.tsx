@@ -8,14 +8,14 @@ type Props = {
   clickHandler: (event) => void;
   label: string;
   children: ReactNode;
-  large?: boolean;
+  fullWidth?: boolean;
 };
 
 export default function SquareButton({
   clickHandler,
   label,
   children,
-  large,
+  fullWidth,
 }: Props) {
   return (
     <Button
@@ -25,12 +25,12 @@ export default function SquareButton({
         background: 'rgba(229, 229, 229, 0.08)',
         textDecoration: 'none',
         textAlign: 'center',
-        width: large ? { xs: '100%', sm: '120px' } : '80px',
-        height: large ? { xs: '56px', sm: '80px' } : '80px',
+        width: fullWidth ? '100%' : '80px',
+        height: fullWidth ? { xs: '56px', sm: '80px' } : '80px',
         display: 'flex',
-        justifyContent: large ? { xs: 'start', sm: 'center' } : 'center',
+        justifyContent: fullWidth ? { xs: 'start', sm: 'center' } : 'center',
         alignItems: 'center',
-        flexDirection: large ? { xs: 'row', sm: 'column' } : 'column',
+        flexDirection: fullWidth ? { xs: 'row', sm: 'column' } : 'column',
         textTransform: 'capitalize',
         '&:hover': {
           background: 'rgba(229, 229, 229, 0.15)',
@@ -43,8 +43,8 @@ export default function SquareButton({
         sx={{
           color: brandColors.white.main,
           textDecoration: 'none',
-          mt: large ? { xs: 0, sm: 0.5 } : 0.5,
-          ml: large ? { xs: 2.5, sm: 0 } : 0,
+          mt: fullWidth ? { xs: 0, sm: 0.5 } : 0.5,
+          ml: fullWidth ? { xs: 2.5, sm: 0 } : 0,
         }}
       >
         {label}

@@ -111,7 +111,9 @@
     "twitter": "Twitter",
     "discord": "Discord",
     "download-image": "Download image",
-    "copy-link": "Copy link"
+    "download-image-feedback": "Image opened in another tab!",
+    "copy-link": "Copy link",
+    "copy-link-feedback": "Copied link!"
   },
   "profile": {
     "received": "Received",

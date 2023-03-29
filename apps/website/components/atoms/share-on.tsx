@@ -3,8 +3,6 @@ import useTranslation from 'next-translate/useTranslation';
 import { useSnackbar } from 'notistack';
 import { PartialDeep } from 'type-fest';
 
-import { DiscordIcon } from '@gateway/assets';
-
 import { LinkedIn, Twitter, Download, Link } from '@mui/icons-material';
 import { Stack, Typography, Box } from '@mui/material';
 
@@ -74,35 +72,36 @@ export default function ShareOn({ isCredential, credential }: Props) {
         justifyContent="space-between"
       >
         <SquareButton
-          large
+          fullWidth
           label={t('social.twitter')}
           clickHandler={() => window.open(tweetLink)}
         >
           <Twitter color="secondary" />
         </SquareButton>
         <SquareButton
-          large
+          fullWidth
           label={t('social.linkedin')}
           clickHandler={() => window.open(linkedinLink)}
         >
           <LinkedIn color="secondary" />
         </SquareButton>
         <SquareButton
-          large
+          fullWidth
           label={t('social.download-image')}
           clickHandler={(e) => {
             window.open(imageURL);
+            enqueueSnackbar(t('social.download-image-feedback'));
             e.preventDefault();
           }}
         >
           <Download color="secondary" />
         </SquareButton>
         <SquareButton
-          large
+          fullWidth
           label={t('social.copy-link')}
           clickHandler={() => {
             navigator.clipboard.writeText(window.location.href);
-            enqueueSnackbar('Copied link!');
+            enqueueSnackbar(t('social.copy-link-feedback'));
           }}
         >
           <Link color="secondary" />
