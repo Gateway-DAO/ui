@@ -1,5 +1,4 @@
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
-import Head from 'next/head';
 import { useRouter } from 'next/router';
 
 import { useQuery } from '@tanstack/react-query';

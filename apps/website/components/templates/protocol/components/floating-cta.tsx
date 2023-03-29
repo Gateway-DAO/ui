@@ -2,6 +2,7 @@ import useTranslation from 'next-translate/useTranslation';
 import { useEffect, useState } from 'react';
 
 import { useSnackbar } from 'notistack';
+import { PartialDeep } from 'type-fest';
 
 import { brandColors } from '@gateway/theme';
 
@@ -12,12 +13,19 @@ import QrCodeIcon from '@mui/icons-material/QrCode';
 import { SpeedDial, SpeedDialAction } from '@mui/material';
 import { Box } from '@mui/system';
 
+import { Credential } from '../../../../services/gateway-protocol/types';
 import ShareOn from '../../../atoms/share-on';
 import ModalContent from '../../../molecules/modal/modal-basic';
 import { taskErrorMessages } from '../../../organisms/tasks/task-error-messages';
 import { useProtocolTemplateContext } from '../context';
 
-export default function FloatingCta() {
+export default function FloatingCta({
+  isCredential,
+  credential,
+}: {
+  isCredential?: boolean;
+  credential?: PartialDeep<Credential>;
+}) {
   const { t } = useTranslation('protocol');
   const { enqueueSnackbar } = useSnackbar();
   const [open, setOpen] = useState<boolean>(true);
@@ -117,8 +125,9 @@ export default function FloatingCta() {
         handleClose={() => setShareIsOpen(false)}
         handleOpen={() => setShareIsOpen(true)}
         swipeableDrawer={true}
+        fullWidth
       >
-        <ShareOn />
+        <ShareOn isCredential={isCredential} credential={credential} />
       </ModalContent>
       <ModalContent
         open={qrCodeIsOpen}

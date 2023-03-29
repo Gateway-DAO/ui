@@ -9,7 +9,7 @@ export default function Profile() {
 
   return me?.id ? (
     <>
-      <HeadContainer title="My Profile" />
+      <HeadContainer title="My Profile" ogImage="default" />
       <DashboardTemplate
         containerProps={{
           sx: {

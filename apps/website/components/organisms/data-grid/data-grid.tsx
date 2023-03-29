@@ -87,6 +87,25 @@ const defineCols = (columns: IColumnGrid[]) => {
           href={`${ROUTES.PROTOCOL_CREDENTIAL.replace('[id]', params.id)}`}
         >
           <Box sx={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+            <Box
+              sx={{
+                borderRadius: '8px',
+                overflow: 'hidden',
+                height: '56px',
+                width: '56px',
+              }}
+            >
+              <Image
+                alt={`${params.title}`}
+                width={56}
+                height={56}
+                src={`${
+                  params.image
+                    ? params.image
+                    : process.env.NEXT_PUBLIC_CLOUDFRONT_URL
+                }/${params?.qrCode}`}
+              />
+            </Box>
             <Box>
               <Typography
                 sx={{
