@@ -24,10 +24,8 @@ type AppProps = NextAppProps & {
   Component: NextAppProps['Component'] & { auth?: boolean };
 };
 
-function CustomApp({ Component, pageProps, router }: AppProps) {
+function CustomApp({ Component, pageProps }: AppProps) {
   usePersistLocale();
-
-  console.log(router);
 
   return (
     <>
