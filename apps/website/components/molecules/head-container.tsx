@@ -1,5 +1,7 @@
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 
+import { BASE_URL } from '../../constants/config';
 import { SEOFavicon, SEOSocial } from '../atoms/seo';
 
 type HeadContainerProps = {
@@ -26,6 +28,9 @@ export function HeadContainer({
   ogTitle,
   ogDescription,
 }: HeadContainerProps): JSX.Element {
+  const router = useRouter();
+  const currentURL = `${BASE_URL}${router.asPath}`;
+
   const customTitle = title ? title + ' - Gateway' : defaultTexts.title;
   const customDescription = description || defaultTexts.description;
   const customOgDescription = ogDescription || description;
@@ -36,6 +41,7 @@ export function HeadContainer({
       <meta name="viewport" content="width=device-width, initial-scale=1" />
       <meta name="author" content="Gateway" />
       <meta name="description" content={customDescription} />
+      <meta property="og:url" content={currentURL} />
       <meta
         property="og:image"
         content={ogImage === 'default' ? defaultTexts.ogImage : ogImage}
@@ -45,6 +51,8 @@ export function HeadContainer({
         content={ogImage === 'default' ? defaultTexts.ogImage : ogImage}
       />
       {twitterImage && <meta name="twitter:image" content={twitterImage} />}
+      <meta property="twitter:url" content={currentURL} />
+
       {ogTitle && <meta name="og:title" content={ogTitle} />}
       <meta name="og:description" content={customOgDescription} />
       <SEOFavicon />

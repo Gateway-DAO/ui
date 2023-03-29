@@ -14,6 +14,8 @@ export const getCredentialImageURLParams = (
       credential.title
     }&description=${credential.description.slice(0, 100)}&issuer=${
       credential.issuerUser?.gatewayId
+    }&recipient=${
+      credential.recipientUser?.gatewayId
     }&issuanceDate=${issuanceDate}${
       credential.image ? '&image=' + credential.image : ''
     }&qrCode=${credential.qrCode}`;
