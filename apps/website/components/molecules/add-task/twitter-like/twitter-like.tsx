@@ -24,6 +24,7 @@ import {
   CreateGateData,
   TwitterLikeDataError,
 } from '../../../templates/create-gate/schema';
+import TextFieldWithEmoji from '../../form/TextFieldWithEmoji/TextFieldWithEmoji';
 
 const TwitterLikeTask = ({ dragAndDrop, taskId, deleteTask }) => {
   const { gqlAuthMethods } = useAuth();
@@ -208,21 +209,12 @@ const TwitterLikeTask = ({ dragAndDrop, taskId, deleteTask }) => {
         )}
       </Stack>
       <FormControl style={!taskVisible ? {} : { display: 'none' }}>
-        <TextField
-          required
-          multiline
-          minRows={3}
-          label="Task Description"
-          id="file-description"
-          {...register(`tasks.${taskId}.description`)}
-          error={!!errors.tasks?.[taskId]?.description}
-          helperText={errors.tasks?.[taskId]?.description?.message}
-          sx={{
-            marginBottom: '60px',
-            '& fieldset legend span': {
-              marginRight: '10px',
-            },
-          }}
+        <TextFieldWithEmoji
+          errors={errors}
+          formValues={formValues}
+          register={register}
+          setValue={setValue}
+          taskId={taskId}
         />
         <Typography variant="body2" sx={{ marginBottom: { xs: 1, md: 4 } }}>
           The user must Like the post
