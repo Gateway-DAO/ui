@@ -26,7 +26,7 @@ export default function ProtocolTemplate({ children, credential }: Props) {
   const isCredential = router.pathname.includes('/credentials/');
 
   return (
-    <ProtocolTemplateContext.Provider value={{ qrCode, credential }}>
+    <ProtocolTemplateContext.Provider value={{ qrCode }}>
       <Stack
         direction="row"
         alignItems="center"
