@@ -1,5 +1,6 @@
 import useTranslation from 'next-translate/useTranslation';
 
+import { useSnackbar } from 'notistack';
 import { PartialDeep } from 'type-fest';
 
 import { DiscordIcon } from '@gateway/assets';
@@ -21,13 +22,10 @@ type Props = {
 export default function ShareOn({ isCredential, credential }: Props) {
   const { t } = useTranslation('common');
   const { me } = useAuth();
+  const { enqueueSnackbar } = useSnackbar();
 
   const isReceivedCredential =
     me && me?.wallet === credential?.recipientUser?.primaryWallet?.address;
-
-  const emailLink = `mailto:?body=${window.location.href}&subject=${t(
-    'social.share-title'
-  )}`;
 
   let tweetText = t('social.share-title');
 
@@ -36,7 +34,7 @@ export default function ShareOn({ isCredential, credential }: Props) {
       .replace('[title]', credential.title)
       .replace('[issuer]', credential.issuerUser?.gatewayId);
   } else if (isCredential) {
-    tweetText = t('social.share-twitter')
+    tweetText = t('social.share-anonymous')
       .replace('[issuer]', credential.issuerUser?.gatewayId)
       .replace('[recipient]', credential.recipientUser?.gatewayId);
   }
@@ -46,14 +44,10 @@ export default function ShareOn({ isCredential, credential }: Props) {
     url: window.location.href,
   })}`;
 
-  const redditLink = `https://reddit.com/submit${objectToParams({
-    title: t('social.share-title'),
-    url: window.location.href,
-  })}`;
-
   const linkedinLink = `https://www.linkedin.com/shareArticle?mini=true&url=${window.location.href}`;
 
   const imageUrlParams = getCredentialImageURLParams(credential);
+  const imageURL = `${window.location.origin}/api/og-image/credential${imageUrlParams}`;
 
   return (
     <Stack sx={{ textAlign: 'left' }}>
@@ -69,25 +63,22 @@ export default function ShareOn({ isCredential, credential }: Props) {
               width: { xs: '100%', sm: '620px' },
               height: { xs: 'auto', sm: '326px' },
             }}
-            src={`${window.location.origin}/api/og-image/credential${imageUrlParams}`}
+            src={imageURL}
             alt={credential.title}
           />
         </Stack>
       )}
-      <Stack gap={1} direction={{ xs: 'column', sm: 'row' }}>
+      <Stack
+        gap={1}
+        direction={{ xs: 'column', sm: 'row' }}
+        justifyContent="space-between"
+      >
         <SquareButton
           large
           label={t('social.twitter')}
           clickHandler={() => window.open(tweetLink)}
         >
           <Twitter color="secondary" />
-        </SquareButton>
-        <SquareButton
-          large
-          label={t('social.discord')}
-          clickHandler={() => window.open(tweetLink)}
-        >
-          <DiscordIcon color="secondary" />
         </SquareButton>
         <SquareButton
           large
@@ -100,7 +91,7 @@ export default function ShareOn({ isCredential, credential }: Props) {
           large
           label={t('social.download-image')}
           clickHandler={(e) => {
-            window.location.href = emailLink;
+            window.open(imageURL);
             e.preventDefault();
           }}
         >
@@ -109,7 +100,10 @@ export default function ShareOn({ isCredential, credential }: Props) {
         <SquareButton
           large
           label={t('social.copy-link')}
-          clickHandler={() => window.open(redditLink)}
+          clickHandler={() => {
+            navigator.clipboard.writeText(window.location.href);
+            enqueueSnackbar('Copied link!');
+          }}
         >
           <Link color="secondary" />
         </SquareButton>
