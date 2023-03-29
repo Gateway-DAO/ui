@@ -27,7 +27,7 @@ const IssuerRecipientBox = ({
         alignItems: 'center',
         background: 'rgba(255, 255, 255, 0.05)',
         border: '2px solid rgba(229, 229, 229, 0.12)',
-        padding: '52px 26px',
+        padding: '52px 13px',
         justifyContent: 'space-between',
       }}
     >
@@ -59,6 +59,10 @@ const IssuerRecipientBox = ({
               fontWeight: 400,
               fontSize: '23.1px',
               color: '#9A53FF',
+              whiteSpace: 'nowrap',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              maxWidth: '185px',
             }}
           >
             {issuer}
@@ -102,6 +106,10 @@ const IssuerRecipientBox = ({
               fontWeight: 400,
               fontSize: '23.1px',
               color: '#9A53FF',
+              whiteSpace: 'nowrap',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              maxWidth: '185px',
             }}
           >
             {recipient}
