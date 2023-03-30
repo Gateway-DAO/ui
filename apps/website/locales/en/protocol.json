@@ -31,6 +31,7 @@
     "revoke-error-message": "There was a problem performing the revoke. Try again later.",
     "image": "Image",
     "qr-code": "QR Code",
+    "share-dialog-title": "Share credential",
     "actions": {
       "revoke": "Revoke",
       "cancel": "Cancel"
