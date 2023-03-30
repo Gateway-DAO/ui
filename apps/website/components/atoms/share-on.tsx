@@ -58,8 +58,8 @@ export default function ShareOn({ isCredential, credential }: Props) {
             component="img"
             sx={{
               borderRadius: '12px',
-              width: { xs: '100%', sm: '620px' },
-              height: { xs: 'auto', sm: '326px' },
+              width: { xs: '100%', sm: '550px' },
+              height: 'auto',
             }}
             src={imageURL}
             alt={credential.title}
