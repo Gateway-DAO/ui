@@ -50,7 +50,7 @@ export function MintSelect({ setScreen, mint, setOpen }) {
               <ListItemButton
                 key={uuidv4()}
                 onClick={() => mint()}
-                disabled={!network.active || wallet.chainName != network.name}
+                disabled={!network.active || wallet?.chainName != network.name}
               >
                 <ListItemAvatar>
                   <Badge
