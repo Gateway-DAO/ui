@@ -91,7 +91,8 @@
     "see-more": "See more",
     "see-less": "See less",
     "share-link": "Share link",
-    "download": "Download"
+    "download": "Download",
+    "reset": "Reset"
   },
   "image-drop-field": {
     "default-label": "Drop to upload your avatar",
