@@ -26,7 +26,7 @@ export default function Modal({
       aria-labelledby={modalTitle}
       aria-describedby={modalDescription}
       fullWidth={fullWidth}
-      maxWidth={fullWidth ? 'md' : 'sm'}
+      maxWidth="sm"
     >
       <Paper
         direction="column"
