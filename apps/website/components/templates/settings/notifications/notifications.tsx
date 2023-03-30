@@ -29,8 +29,8 @@ function NotificationsSettings() {
   const { me, gqlAuthMethods } = useAuth();
   const settings = useQuery(
     ['notification-settings', me.id],
-    () => gqlAuthMethods.notification_settings({ user_id: me.id }),
-    { select: (data) => data.notification_settings_by_pk }
+    () => gqlAuthMethods.me_notification_settings(),
+    { select: (data) => data.me.notification_settings }
   );
 
   const changeSettings = useMutation(
@@ -124,8 +124,10 @@ function NotificationsSettings() {
                       <Checkbox
                         edge="start"
                         checked={
-                          isDappEnabled &&
-                          !settings.data.dapp_optout?.includes(item)
+                          !!(
+                            isDappEnabled &&
+                            !settings.data?.dapp_optout?.includes(item)
+                          )
                         }
                         tabIndex={-1}
                         disableRipple
@@ -210,8 +212,10 @@ function NotificationsSettings() {
                       <Checkbox
                         edge="start"
                         checked={
-                          isEmailEnabled &&
-                          !settings.data?.email_optout?.includes(item)
+                          !!(
+                            isEmailEnabled &&
+                            !settings.data?.email_optout?.includes(item)
+                          )
                         }
                         tabIndex={-1}
                         disableRipple
