@@ -29,7 +29,7 @@ export function HeadContainer({
   ogDescription,
 }: HeadContainerProps): JSX.Element {
   const router = useRouter();
-  const currentURL = `${BASE_URL}${router.asPath}`;
+  const currentURL = `${BASE_URL()}${router.asPath}`;
 
   const customTitle = title ? title + ' - Gateway' : defaultTexts.title;
   const customDescription = description || defaultTexts.description;

@@ -33,6 +33,7 @@ export default function ShareOn({ isCredential, credential }: Props) {
       .replace('[issuer]', credential.issuerUser?.gatewayId);
   } else if (isCredential) {
     tweetText = t('social.share-anonymous')
+      .replace('[title]', credential.title)
       .replace('[issuer]', credential.issuerUser?.gatewayId)
       .replace('[recipient]', credential.recipientUser?.gatewayId);
   }
