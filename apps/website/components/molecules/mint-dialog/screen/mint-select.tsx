@@ -11,6 +11,7 @@ import {
   List,
   ListItem,
   ListItemAvatar,
+  ListItemButton,
   ListItemText,
   Typography,
 } from '@mui/material';
@@ -23,11 +24,19 @@ const NetworksDetails = [
     costInfo:
       process.env.NEXT_PUBLIC_GASLESS_MINTING === 'true' ? 'Cost free' : '',
     imgSrc: '/images/polygon.png',
+    active: true,
+  },
+  {
+    name: 'Solana',
+    costInfo: 'Coming soon...',
+    imgSrc: '/images/solana.webp',
+    active: false,
   },
 ];
 
 export function MintSelect({ setScreen, mint, setOpen }) {
   const wallet = useConnectedWallet();
+
   return (
     <>
       <DialogContent>
@@ -38,18 +47,18 @@ export function MintSelect({ setScreen, mint, setOpen }) {
           {NetworksDetails.map((network, index) => (
             <>
               {index !== 0 && <Divider light={true} sx={{ mx: 2 }} />}
-              <ListItem
-                disablePadding
-                button
+              <ListItemButton
                 key={uuidv4()}
                 onClick={() => mint()}
+                disabled={
+                  !network.active ||
+                  (wallet ? wallet.chainName != network.name : false)
+                }
               >
                 <ListItemAvatar>
                   <Badge
                     color={
-                      wallet?.adapter?.name == network.name
-                        ? 'success'
-                        : 'warning'
+                      wallet?.chainName == network.name ? 'success' : 'warning'
                     }
                     overlap="circular"
                     badgeContent=" "
@@ -67,7 +76,7 @@ export function MintSelect({ setScreen, mint, setOpen }) {
                   secondary={network.costInfo}
                 />
                 <ChevronRightIcon style={{ color: 'grey' }} />
-              </ListItem>
+              </ListItemButton>
             </>
           ))}
         </List>
