@@ -15,10 +15,10 @@ const AccountManagementSettings = () => {
         <Typography variant="h6" sx={{ mb: 7 }}>
           {t('nav.account-management-title')}
         </Typography>
-        <Typography fontSize="16px" sx={{ fontWeight: 600 }}>
+        <Typography variant="subtitle1" sx={{ color: 'white' }}>
           {t('account-management.registered-email-title')}
         </Typography>
-        <Typography variant="body2" fontSize="12px">
+        <Typography variant="caption">
           {t('account-management.registered-email-description')}
           <Link
             sx={{

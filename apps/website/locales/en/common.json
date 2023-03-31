@@ -91,7 +91,8 @@
     "see-more": "See more",
     "see-less": "See less",
     "share-link": "Share link",
-    "download": "Download"
+    "download": "Download",
+    "reset": "Reset"
   },
   "image-drop-field": {
     "default-label": "Drop to upload your avatar",
@@ -103,7 +104,7 @@
   "social": {
     "share-on": "Share on",
     "share-title": "See my credential",
-    "share-anonymous": "Certification of Degree issued by [issuer] to [recipient] via @Gateway_xyz\n\n",
+    "share-anonymous": "[title] issued by [issuer] to [recipient] via @Gateway_xyz\n\n",
     "share-twitter-recipient": "🎉 Just got my hands on the [title] issued by from [issuer] via @Gateway_xyz\n\n",
     "email": "E-mail",
     "linkedin": "LinkedIn",

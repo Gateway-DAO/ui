@@ -13,6 +13,11 @@ const prismaEnums = Object.keys(prismaEnumsBase)
 
 const generateConfig = {
   plugins: [
+    {
+      add: {
+        content: ['/* eslint-disable */', `export type Notification_Type = ${prismaEnums.notification_type};`],
+      }
+    },
     'typescript',
     'typescript-operations',
     'typescript-graphql-request',
@@ -23,6 +28,7 @@ const generateConfig = {
       _text: 'string',
       // TODO: Fix all type errors on build when enabling next line
       // ...prismaEnums,
+      "_notification_type": `Array<Notification_Type>`,
       manual_task_event_type: prismaEnums.manual_task_event_type,
       task_type: prismaEnums.task_type,
       key_status: prismaEnums.key_status

@@ -20,7 +20,7 @@ const ConnectedAccountsSettings = () => {
         <Typography variant="h6" sx={{ mb: '4px' }}>
           {t('nav.connected-accounts-title')}
         </Typography>
-        <Typography variant="body2" fontSize="12px">
+        <Typography variant="caption">
           {t('connected-accounts.description')}
         </Typography>
       </Stack>
