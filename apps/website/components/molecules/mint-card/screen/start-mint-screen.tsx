@@ -4,7 +4,7 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
 import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
@@ -16,9 +16,18 @@ import { Subjects } from '../mint-card';
 const NetworksDetails = [
   {
     name: 'Polygon',
+    type: 'evm',
     costInfo:
       process.env.NEXT_PUBLIC_GASLESS_MINTING === 'true' ? 'Cost free' : '',
     imgSrc: '/images/polygon.png',
+    active: true,
+  },
+  {
+    name: 'Solana',
+    type: 'solana',
+    costInfo: 'Coming soon...',
+    imgSrc: '/images/solana.webp',
+    active: false,
   },
 ];
 
@@ -58,11 +67,17 @@ export const StartMintScreen = ({ setMintProcessStatus, mint }) => {
             return (
               <>
                 {index !== 0 && <Divider light={true} sx={{ mx: 2 }} />}
-                <ListItem button onClick={() => mint()}>
+                <ListItemButton
+                  onClick={() => mint()}
+                  disabled={
+                    !network.active ||
+                    (wallet ? wallet.type !== network.type : false)
+                  }
+                >
                   <ListItemAvatar>
                     <Badge
                       color={
-                        wallet?.adapter?.name == network.name
+                        wallet?.chainName == network.name
                           ? 'success'
                           : 'warning'
                       }
@@ -82,7 +97,7 @@ export const StartMintScreen = ({ setMintProcessStatus, mint }) => {
                     secondary={network.costInfo}
                   />
                   <ChevronRightIcon style={{ color: 'grey' }} />
-                </ListItem>
+                </ListItemButton>
               </>
             );
           })}

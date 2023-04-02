@@ -7,6 +7,7 @@ import { icons } from './wallet-icons';
 
 type UseConnectedWallet = Partial<{
   address: string;
+  type: 'solana' | 'evm';
   chainName: string;
   adapter: Partial<{
     id: string;
@@ -20,6 +21,7 @@ function useSolanaWallet(): UseConnectedWallet {
 
   return {
     address: publicKey?.toString(),
+    type: 'solana',
     chainName: 'Solana',
     adapter: wallet?.adapter
       ? {
@@ -37,6 +39,7 @@ function useEvmWallet(): UseConnectedWallet {
 
   return {
     chainName: chain?.name,
+    type: 'evm',
     address,
     adapter: connector
       ? {
