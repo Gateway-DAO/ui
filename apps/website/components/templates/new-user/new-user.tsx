@@ -82,7 +82,7 @@ export function NewUserTemplate() {
     ['signupConfirmation'],
     async ({ ...data }: TokenConfirmationSchema) => {
       return gqlProtocolAuthMethods.signupConfirmation({
-        code: parseInt(data.token),
+        code: parseInt(data.token, 10),
         gateway_id: sendEmailData.username,
         email: sendEmailData.email_address,
         wallet: me?.wallet,
