@@ -1,10 +1,25 @@
 {
-  "title": "You’re a step closer to entering the Gateway.",
+  "title-send-email": "You’re a step closer to entering the Gateway",
+  "title-verify-token": "Verify your email to create your account",
+  "logo-alternative-text": "Gateway logo",
+  "profile-created-sucess": "Profile created!",
   "form": {
-    "title": "Create Profile",
-    "caption": "Information provided will be displayed on your Gateway profile.",
+    "title-send-email": "Create your personal Gateway ID",
+    "caption-send-email": "Through the ID you are recognized and found within the Gateway",
+    "title-verify-token": "Paste here the code sent to email address",
+    "caption-verify-token": "This code will expire in 30 minutes",
     "fields": {
-      "test": "test"
-    }
-  }
+      "gateway-id": "Gateway ID",
+      "gateway-id-helper-text": "Only lowercase letters, numbers and ._-",
+      "e-mail": "E-mail",
+      "e-mail-helper-text": "You'll be notified when a credential is issued to you by e-mail",
+      "token": "Token"
+    },
+    "send-email-action": "Create account",
+    "verify-token-action": "Verify",
+    "send-code-again-action": "Send code again",
+    "code-sent-to": "Code sent to",
+    "profile-created": "Profile created"
+  },
+  "card-summary-title": "Your account"
 }
