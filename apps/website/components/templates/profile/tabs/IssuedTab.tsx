@@ -29,11 +29,11 @@ export default function IssuedTab({ user }: Props): JSX.Element {
   } = useInfiniteQuery(
     [
       query.credentialsByIssuerUser,
-      (user as SessionUser).protocol?.id || user.id,
+      (user as PartialDeep<Users>).protocolUser?.id,
     ],
     async ({ pageParam }) => {
       const result = await gatewayProtocolSDK.findCredentialsByIssuerUser({
-        issuerUserId: (user as SessionUser).protocol?.id || user.id,
+        issuerUserId: (user as PartialDeep<Users>).protocolUser?.id,
         take: internalPageSize,
         skip: pageParam || 0,
       } as any);
