@@ -17,7 +17,9 @@
     },
     "send-email-action": "Create account",
     "verify-token-action": "Verify",
-    "send-code-again-action": "Send code again"
+    "send-code-again-action": "Send code again",
+    "code-sent-to": "Code sent to",
+    "profile-created": "Profile created"
   },
   "card-summary-title": "Your account"
 }

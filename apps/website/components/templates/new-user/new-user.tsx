@@ -12,6 +12,7 @@ import { alpha, Box, Stack } from '@mui/material';
 
 import { useAuth } from '../../../providers/auth';
 import { ErrorResponse } from '../../../types/graphql';
+import Loading from '../../atoms/loading';
 import { NavBarAvatar } from '../../organisms/navbar/navbar-avatar';
 import { taskErrorMessages } from '../../organisms/tasks/task-error-messages';
 import { FormSendEmail } from './form-send-email';
@@ -21,75 +22,106 @@ import {
   schemaTokenConfirmation,
   NewUserSchema,
   TokenConfirmationSchema,
-  defaultValues,
+  defaultValuesCreateAccount,
 } from './schema';
 
 export function NewUserTemplate() {
   const { t } = useTranslation('dashboard-new-user');
-  const { me, gqlAuthMethods, gqlProtocolAuthMethods, onInvalidateMe } =
-    useAuth();
+  const { me, gqlProtocolAuthMethods, onInvalidateMe } = useAuth();
   const [sentEmail, setSentEmail] = useState(false);
   const [sendEmailData, setSendEmailData] = useState(null);
-  const methodsSendCode = useForm<NewUserSchema>({
+  const [profileCreated, setProfileCreated] = useState(false);
+  const methodsSendEmail = useForm<NewUserSchema>({
     resolver: yupResolver(schemaCreateAccount),
-    defaultValues: defaultValues(me),
+    defaultValues: defaultValuesCreateAccount(me),
   });
-  const methodsSendToken = useForm<TokenConfirmationSchema>({
+  const methodsConfirmToken = useForm<TokenConfirmationSchema>({
     resolver: yupResolver(schemaTokenConfirmation),
   });
 
   const { enqueueSnackbar } = useSnackbar();
 
-  // const uploadImage = useUploadImage();
-
-  const updateMutation = useMutation(
-    ['updateProfile', me.id],
+  const signupMutation = useMutation(
+    ['signup'],
     async ({ ...data }: NewUserSchema) => {
-      return gqlProtocolAuthMethods.updateUser({
+      setSendEmailData(data);
+      return gqlProtocolAuthMethods.signup({
         email: data.email_address,
-        gatewayId: data.username,
+        gateway_id: data.username,
+      });
+    },
+    {
+      onSuccess(data) {
+        setSentEmail(true);
+        enqueueSnackbar(`${t('form.code-sent-to')} ${data.signup.email}`);
+      },
+      onError(error: ErrorResponse) {
+        error.response?.errors?.forEach(({ message }) => {
+          if (message === 'GATEWAY_ID_ALREADY_REGISTERED') {
+            methodsSendEmail.setError('username', {
+              message: taskErrorMessages.GATEWAY_ID_ALREADY_REGISTERED,
+            });
+          } else if (message === 'EMAIL_ALREADY_REGISTERED') {
+            methodsSendEmail.setError('email_address', {
+              message: taskErrorMessages.EMAIL_ALREADY_REGISTERED,
+            });
+          } else {
+            enqueueSnackbar(
+              taskErrorMessages[message] || taskErrorMessages.UNEXPECTED_ERROR,
+              {
+                variant: 'error',
+              }
+            );
+          }
+        });
+      },
+    }
+  );
+
+  const signupConfirmationMutation = useMutation(
+    ['signupConfirmation'],
+    async ({ ...data }: TokenConfirmationSchema) => {
+      return gqlProtocolAuthMethods.signupConfirmation({
+        code: parseInt(data.token),
+        gateway_id: sendEmailData.username,
+        email: sendEmailData.email_address,
+        wallet: me?.wallet,
       });
     },
     {
       onSuccess() {
-        enqueueSnackbar(t('profile-created-sucess'));
+        enqueueSnackbar(t('form.profile-created'));
+        setProfileCreated(true);
         onInvalidateMe();
       },
       onError(error: ErrorResponse) {
-        let totalUnmappedErrors = 0;
-        error.response.errors?.forEach(({ message, extensions }) => {
-          if (
-            extensions.code === 'constraint-violation' &&
-            message.includes('users_email_address_uindex')
-          ) {
-            return methodsSendCode.setError('email_address', {
-              message: taskErrorMessages.EMAIL_ALREADY_IN_USE,
+        error.response?.errors?.forEach(({ message }) => {
+          if (message === 'INVALID_CODE_VERIFICATION') {
+            methodsConfirmToken.setError('token', {
+              message: taskErrorMessages.INVALID_CODE_VERIFICATION,
             });
+          } else {
+            if (message === 'MAXIMUM_ATTEMPTS_REACHED') {
+              methodsConfirmToken.setValue('token', '');
+              setSentEmail(false);
+            }
+            enqueueSnackbar(
+              taskErrorMessages[message] || taskErrorMessages.UNEXPECTED_ERROR,
+              {
+                variant: 'error',
+              }
+            );
           }
-          if (
-            extensions.code === 'constraint-violation' &&
-            message.includes('user_username_uindex')
-          ) {
-            return methodsSendCode.setError('username', {
-              message: taskErrorMessages.USERNAME_ALREADY_IN_USE,
-            });
-          }
-          totalUnmappedErrors++;
         });
-
-        if (totalUnmappedErrors) {
-          enqueueSnackbar(taskErrorMessages.UNEXPECTED_ERROR, {
-            variant: 'error',
-          });
-        }
       },
     }
   );
 
   const onSubmitSendEmail = (data: NewUserSchema) =>
-    updateMutation.mutate(data);
+    signupMutation.mutate(data);
 
-  const onSubmitConfirmToken = (data: any) => updateMutation.mutate(data);
+  const onSubmitConfirmToken = (data: TokenConfirmationSchema) =>
+    signupConfirmationMutation.mutate(data);
 
   return (
     <Stack
@@ -135,28 +167,30 @@ export function NewUserTemplate() {
             width="30"
           />
         </Box>
-        {!sentEmail ? (
-          <FormProvider {...methodsSendCode}>
-            <FormSendEmail
-              // onSubmitSendEmail={onSubmitSendEmail}
-              onSubmitSendEmail={(data) => {
-                setSendEmailData(data);
-                setSentEmail(true);
-              }}
-              isLoading={updateMutation.isLoading}
-            />
-          </FormProvider>
+        {profileCreated ? (
+          <Loading />
         ) : (
-          <FormProvider {...methodsSendToken}>
-            <FormVerifyToken
-              onSubmitConfirmToken={onSubmitConfirmToken}
-              isLoadingConfirmToken={updateMutation.isLoading}
-              onSubmitSendEmail={onSubmitSendEmail}
-              isLoadingSendEmail={updateMutation.isLoading}
-              sendEmailData={sendEmailData}
-              onClickEdit={() => setSentEmail(false)}
-            />
-          </FormProvider>
+          <>
+            {!sentEmail ? (
+              <FormProvider {...methodsSendEmail}>
+                <FormSendEmail
+                  onSubmitSendEmail={onSubmitSendEmail}
+                  isLoading={signupMutation.isLoading}
+                />
+              </FormProvider>
+            ) : (
+              <FormProvider {...methodsConfirmToken}>
+                <FormVerifyToken
+                  onSubmitConfirmToken={onSubmitConfirmToken}
+                  isLoadingConfirmToken={signupConfirmationMutation.isLoading}
+                  onSubmitSendEmail={onSubmitSendEmail}
+                  isLoadingSendEmail={signupMutation.isLoading}
+                  sendEmailData={sendEmailData}
+                  onClickEdit={() => setSentEmail(false)}
+                />
+              </FormProvider>
+            )}
+          </>
         )}
       </Stack>
     </Stack>

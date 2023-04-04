@@ -26,7 +26,7 @@ export const schemaTokenConfirmation: SchemaOf<TokenConfirmationSchema> =
     token: string().length(6, { message: 'Invalid code' }).defined(),
   });
 
-export const defaultValues = ({
+export const defaultValuesCreateAccount = ({
   username,
   email_address,
 }: PartialDeep<Users>): NewUserSchema => ({

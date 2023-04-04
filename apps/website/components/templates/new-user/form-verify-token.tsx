@@ -37,7 +37,7 @@ export function FormVerifyToken({
   const countdown = useCountdown({ time: 30, trigger: startCountdown });
 
   const sendEmailAgain = () => {
-    // onSubmitSendEmail(sendEmailData);
+    onSubmitSendEmail(sendEmailData);
     setStartCountdown();
   };
 
@@ -67,6 +67,7 @@ export function FormVerifyToken({
         required
         label={t('form.fields.token')}
         id="token"
+        type="number"
         {...register('token')}
         error={!!errors.token}
         helperText={errors.token?.message}
