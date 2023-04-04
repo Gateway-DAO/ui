@@ -12,6 +12,12 @@ import { getCredentialImageURLParams } from '../../utils/credential/build-image-
 import objectToParams from '../../utils/map-object';
 import SquareButton from './square-button';
 
+declare global {
+  interface Window {
+    gtag: (...args: any[]) => void;
+  }
+}
+
 type Props = {
   isCredential?: boolean;
   credential?: PartialDeep<Credential>;
@@ -40,13 +46,25 @@ export default function ShareOn({ isCredential, credential }: Props) {
 
   const tweetLink = `https://twitter.com/intent/tweet${objectToParams({
     text: tweetText,
-    url: window.location.href,
+    url: window.location.href + '?utm_source=linkedin&utm_medium=social',
   })}`;
 
-  const linkedinLink = `https://www.linkedin.com/shareArticle?mini=true&url=${window.location.href}`;
+  const linkedinLink = `https://www.linkedin.com/shareArticle?mini=true&url=${window.location.href}&utm_source=linkedin&utm_medium=social`;
 
   const imageUrlParams = getCredentialImageURLParams(credential);
   const imageURL = `${window.location.origin}/api/og-image/credential${imageUrlParams}`;
+
+  const sendClickToGA = (
+    label: 'twitter' | 'linkedin' | 'download-image' | 'copy-url',
+    isCredential: boolean
+  ) => {
+    if (typeof window.gtag === 'function' && isCredential) {
+      window.gtag('event', 'share-click', {
+        event_category: 'credential_share_click',
+        event_label: label,
+      });
+    }
+  };
 
   return (
     <Stack sx={{ textAlign: 'left' }}>
@@ -75,14 +93,20 @@ export default function ShareOn({ isCredential, credential }: Props) {
         <SquareButton
           fullWidth
           label={t('social.twitter')}
-          clickHandler={() => window.open(tweetLink)}
+          clickHandler={() => {
+            window.open(tweetLink);
+            sendClickToGA('twitter', isCredential);
+          }}
         >
           <Twitter color="secondary" />
         </SquareButton>
         <SquareButton
           fullWidth
           label={t('social.linkedin')}
-          clickHandler={() => window.open(linkedinLink)}
+          clickHandler={() => {
+            window.open(linkedinLink);
+            sendClickToGA('linkedin', isCredential);
+          }}
         >
           <LinkedIn color="secondary" />
         </SquareButton>
@@ -92,6 +116,7 @@ export default function ShareOn({ isCredential, credential }: Props) {
           clickHandler={(e) => {
             window.open(imageURL);
             enqueueSnackbar(t('social.download-image-feedback'));
+            sendClickToGA('download-image', isCredential);
             e.preventDefault();
           }}
         >
@@ -103,6 +128,7 @@ export default function ShareOn({ isCredential, credential }: Props) {
           clickHandler={() => {
             navigator.clipboard.writeText(window.location.href);
             enqueueSnackbar(t('social.copy-link-feedback'));
+            sendClickToGA('copy-url', isCredential);
           }}
         >
           <Link color="secondary" />
