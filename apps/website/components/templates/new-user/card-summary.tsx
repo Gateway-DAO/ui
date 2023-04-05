@@ -28,7 +28,7 @@ export function CardSummary({ filledData, onClickEdit }: Props) {
         border: '1px solid rgba(229, 229, 229, 0.12)',
         borderRadius: 2,
         position: 'relative',
-        top: -50,
+        top: { xs: -30, md: -40, lg: -50 },
       })}
     >
       <Stack direction="column">

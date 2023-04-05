@@ -67,7 +67,9 @@ export function FormVerifyToken({
         required
         label={t('form.fields.token')}
         id="token"
-        type="number"
+        type="text"
+        inputMode="numeric"
+        inputProps={{ pattern: '\\d{6,6}', maxLength: 6 }}
         {...register('token')}
         error={!!errors.token}
         helperText={errors.token?.message}

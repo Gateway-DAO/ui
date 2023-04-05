@@ -19,7 +19,7 @@ export default function NewUser() {
 
   return (
     <>
-      <HeadContainer title={t('title')} />
+      <HeadContainer title={t('title-send-email')} />
       <NewUserTemplate />
     </>
   );
