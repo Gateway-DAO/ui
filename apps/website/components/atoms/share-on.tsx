@@ -46,10 +46,10 @@ export default function ShareOn({ isCredential, credential }: Props) {
 
   const tweetLink = `https://twitter.com/intent/tweet${objectToParams({
     text: tweetText,
-    url: window.location.href + '?utm_source=linkedin&utm_medium=share-dialog',
+    url: window.location.href + '?utm_source=linkedin&utm_medium=share_dialog',
   })}`;
 
-  const linkedinLink = `https://www.linkedin.com/shareArticle?mini=true&url=${window.location.href}&utm_source=linkedin&utm_medium=share-dialog`;
+  const linkedinLink = `https://www.linkedin.com/shareArticle?mini=true&url=${window.location.href}&utm_source=linkedin&utm_medium=share_dialog`;
 
   const imageUrlParams = getCredentialImageURLParams(credential);
   const imageURL = `${window.location.origin}/api/og-image/credential${imageUrlParams}`;
