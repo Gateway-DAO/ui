@@ -646,7 +646,7 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
                             <Avatar
                               alt={gateProps?.creator.username}
                               src={generateImageUrl(
-                                gateProps?.creator.picture.s3_key
+                                gateProps?.creator?.picture?.s3_key
                               )}
                             />
                           }
