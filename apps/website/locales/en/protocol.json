@@ -45,6 +45,7 @@
       "chain-action-coming": "Coming soon",
       "chain-coming-message": "Multi-chain wallets is coming soon",
       "feedback-minting": "Minting credential",
+      "feedback-share": "Share your credential now!",
       "feedback-successful": "Credential successfully minted as NFT",
       "feedback-failed": "Something went wrong on minting"
     }
