@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import { useState, useEffect, ComponentType } from 'react';
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { generateImageUrl } from 'apps/website/hooks/use-file';
 import { useSnackbar } from 'notistack';
 import { PartialDeep } from 'type-fest';
 import { v4 as uuidv4 } from 'uuid';
@@ -281,10 +282,7 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
   );
   const time = getTime.substring(0, getTime.indexOf('M') + 1);
   const timeZone = getTime.substring(getTime.indexOf('M') + 1);
-  const createdByImage =
-    gateProps?.creator?.picture === null
-      ? gateProps?.creator.pfp
-      : gateProps?.creator.picture.id;
+
   return (
     <Grid
       container
@@ -647,7 +645,9 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
                           avatar={
                             <Avatar
                               alt={gateProps?.creator.username}
-                              src={`https://api.staging.mygateway.xyz/storage/file?id=${createdByImage}`}
+                              src={generateImageUrl(
+                                gateProps?.creator.picture.s3_key
+                              )}
                             />
                           }
                           sx={{ cursor: 'pointer' }}

@@ -1,4 +1,5 @@
 fragment file on files {
   id
   blur
+  s3_key
 }

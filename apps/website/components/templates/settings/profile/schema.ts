@@ -53,8 +53,8 @@ export const defaultValues = (
     timezone,
     socials: socials?.map(({ network, url }) => ({ network, url })) || [],
     // experiences: experiences || [],
-    cover: generateImageUrl(cover?.id),
-    picture: generateImageUrl(picture?.id),
+    cover: generateImageUrl(cover?.s3_key),
+    picture: generateImageUrl(picture?.s3_key),
   };
 };
 

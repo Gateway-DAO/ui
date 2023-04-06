@@ -107,7 +107,9 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
   const handleMutation = async (data: CreateGateData, isDraft: boolean) => {
     const dataIsValid = await checkFormErrors();
 
-    if (!dataIsValid) return;
+    if (!dataIsValid) {
+      throw new Error();
+    }
 
     const permissionsData = [
       { user_id: data.creator.id, permission: 'gate_editor' },

@@ -92,6 +92,9 @@ export function QuizTask({
     fields: questions,
     append,
     remove,
+    swap,
+    update,
+    move,
   } = useFieldArray({
     name: `tasks.${taskId}.task_data.questions`,
     control,
@@ -111,7 +114,6 @@ export function QuizTask({
 
   const [taskVisible, setTaskVisible] = useState(true);
   const [taskIsMoving, setTaskIsMoving] = useState(true);
-  const onRemoveQuestion = (index: number) => remove(index);
 
   const errorOptionIsNecessary = () => {
     if (
@@ -354,8 +356,11 @@ export function QuizTask({
         />
         <QuestionCreator
           questions={questions}
-          onRemove={onRemoveQuestion}
           taskId={taskId}
+          removeQuestion={remove}
+          swapQuestion={swap}
+          updateQuestion={update}
+          moveQuestion={move}
         />
         <Divider
           sx={(theme) => ({
@@ -389,6 +394,7 @@ export function QuizTask({
                 const isValid = await trigger(
                   `tasks.${taskId}.task_data.questions`
                 );
+
                 if (isValid) {
                   return append(
                     createQuestion(

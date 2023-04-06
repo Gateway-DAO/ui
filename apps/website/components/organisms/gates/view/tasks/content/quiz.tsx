@@ -1,4 +1,6 @@
+import useTranslation from 'next-translate/useTranslation';
 import { useState } from 'react';
+
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import {
   Checkbox,
@@ -13,7 +15,6 @@ import {
 } from '@mui/material';
 
 import { LoadingButton } from '../../../../../../components/atoms/loading-button';
-import useTranslation from 'next-translate/useTranslation';
 
 const QuizContent = ({
   data,
@@ -25,7 +26,7 @@ const QuizContent = ({
   isAdmin,
   attemptCount,
 }) => {
-  const isInitialAttempt = attemptCount === undefined ? true : false;
+  const isInitialAttempt = !attemptCount;
   const attemptLimit = isInitialAttempt
     ? data.attempt_limit
     : attemptCount > data.attempt_limit
