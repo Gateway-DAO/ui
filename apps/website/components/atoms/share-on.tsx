@@ -59,7 +59,7 @@ export default function ShareOn({ isCredential, credential }: Props) {
     isCredential: boolean
   ) => {
     if (typeof window.gtag === 'function' && isCredential) {
-      window.gtag('event', 'share-click', {
+      window.gtag('event', 'share_click', {
         event_category: 'credential_share_click',
         event_label: label,
       });
