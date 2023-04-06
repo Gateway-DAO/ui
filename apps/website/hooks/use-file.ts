@@ -3,8 +3,10 @@ import { PartialDeep } from 'type-fest';
 
 import { Files } from '../services/hasura/types';
 
-export const generateImageUrl = (s3_key?: string) =>
-  s3_key ? `${process.env.NEXT_PUBLIC_CDN_ENDPOINT}/${s3_key}` : undefined;
+export const generateImageUrl = (id?: string) =>
+  id
+    ? `${process.env.NEXT_PUBLIC_NODE_ENDPOINT}/storage/file?id=${id}`
+    : undefined;
 
 /** Generates the url and blurred version from a File object  */
 export const useFile = (file?: PartialDeep<Files>) => {
@@ -12,7 +14,7 @@ export const useFile = (file?: PartialDeep<Files>) => {
     return undefined;
   }
 
-  const url = generateImageUrl(file.s3_key);
+  const url = generateImageUrl(file.id);
   const blur = file?.blur ? createImage(decodeBlurHash(file.blur, 32, 32)) : '';
 
   return {

@@ -50,7 +50,8 @@ query gate($id: uuid!) {
       slug
       logo_url
       logo {
-        ...file
+        id
+        blur
       }
     }
     tasks {
@@ -109,7 +110,8 @@ query get_create_gate($id: uuid!) {
       slug
       logo_url
       logo {
-        ...file
+        id
+        blur
       }
     }
     tasks {

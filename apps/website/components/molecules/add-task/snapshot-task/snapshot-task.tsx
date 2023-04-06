@@ -25,7 +25,6 @@ import {
   CreateGateData,
   SnapshotDataError,
 } from '../../../templates/create-gate/schema';
-import TextFieldWithEmoji from '../../form/TextFieldWithEmoji/TextFieldWithEmoji';
 
 const SnapshotTask = ({ dragAndDrop, taskId, deleteTask }) => {
   const {
@@ -98,7 +97,7 @@ const SnapshotTask = ({ dragAndDrop, taskId, deleteTask }) => {
             <TextField
               variant="standard"
               sx={{
-                minWidth: { md: '400px', xs: '110%', lg: '500px' },
+                minWidth: { md: '400px', xs: '110%', lg:'500px' },
                 maxWidth: { xs: '100%', md: '110%' },
               }}
               InputProps={{
@@ -177,12 +176,21 @@ const SnapshotTask = ({ dragAndDrop, taskId, deleteTask }) => {
         )}
       </Stack>
       <FormControl style={!taskVisible ? {} : { display: 'none' }}>
-        <TextFieldWithEmoji
-          errors={errors}
-          formValues={formValues}
-          register={register}
-          setValue={setValue}
-          taskId={taskId}
+        <TextField
+          required
+          multiline
+          minRows={3}
+          label="Task Requirement"
+          id="task-description"
+          {...register(`tasks.${taskId}.description`)}
+          error={!!errors.tasks?.[taskId]?.description}
+          helperText={errors.tasks?.[taskId]?.description?.message}
+          sx={{
+            marginBottom: 8,
+            '& fieldset legend span': {
+              marginRight: '10px',
+            },
+          }}
         />
 
         <FormLabel sx={{ mb: 1 }}>Verify if user</FormLabel>

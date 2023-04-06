@@ -24,7 +24,6 @@ import {
   CreateGateData,
   TwitterRetweetDataError,
 } from '../../../templates/create-gate/schema';
-import TextFieldWithEmoji from '../../form/TextFieldWithEmoji/TextFieldWithEmoji';
 
 const TwitterRetweetTask = ({ dragAndDrop, taskId, deleteTask }) => {
   const { gqlAuthMethods } = useAuth();
@@ -130,7 +129,7 @@ const TwitterRetweetTask = ({ dragAndDrop, taskId, deleteTask }) => {
             <TextField
               variant="standard"
               sx={{
-                minWidth: { md: '400px', xs: '110%', lg: '500px' },
+                minWidth: { md: '400px', xs: '110%', lg:'500px' },
                 maxWidth: { xs: '100%', md: '110%' },
               }}
               InputProps={{
@@ -209,12 +208,21 @@ const TwitterRetweetTask = ({ dragAndDrop, taskId, deleteTask }) => {
         )}
       </Stack>
       <FormControl style={!taskVisible ? {} : { display: 'none' }}>
-        <TextFieldWithEmoji
-          errors={errors}
-          formValues={formValues}
-          register={register}
-          setValue={setValue}
-          taskId={taskId}
+        <TextField
+          required
+          multiline
+          minRows={3}
+          label="Task Description"
+          id="file-description"
+          {...register(`tasks.${taskId}.description`)}
+          error={!!errors.tasks?.[taskId]?.description}
+          helperText={errors.tasks?.[taskId]?.description?.message}
+          sx={{
+            marginBottom: '60px',
+            '& fieldset legend span': {
+              marginRight: '10px',
+            },
+          }}
         />
         <Typography variant="body2" sx={{ marginBottom: { xs: 1, md: 4 } }}>
           The user must retweet the post

@@ -71,7 +71,7 @@ export default function PrivateProfileTemplate() {
         <Navbar sx={{ zIndex: 1 }} />
         {me.cover?.id && me.cover?.blur ? (
           <Image
-            src={generateImageUrl(me.cover.s3_key)}
+            src={generateImageUrl(me.cover.id)}
             blurDataURL={me.cover.blur}
             placeholder="blur"
             layout="fill"
