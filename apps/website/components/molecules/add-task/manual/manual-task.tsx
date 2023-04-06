@@ -20,6 +20,7 @@ import {
 
 import { CircleWithNumber } from '../../../atoms/circle-with-number';
 import { CreateGateData } from '../../../templates/create-gate/schema';
+import TextFieldWithEmoji from '../../form/TextFieldWithEmoji/TextFieldWithEmoji';
 
 export const ManualTask = ({ dragAndDrop, taskId, deleteTask }) => {
   const { t } = useTranslation('gate-new');
@@ -178,21 +179,12 @@ export const ManualTask = ({ dragAndDrop, taskId, deleteTask }) => {
         )}
       </Stack>
       <FormControl style={!taskVisible ? {} : { display: 'none' }}>
-        <TextField
-          required
-          multiline
-          minRows={3}
-          label="Task Description"
-          id="submit-link-description"
-          {...register(`tasks.${taskId}.description`)}
-          error={!!errors.tasks?.[taskId]?.description}
-          helperText={errors.tasks?.[taskId]?.description?.message}
-          sx={{
-            marginBottom: '60px',
-            '& fieldset legend span': {
-              marginRight: '10px',
-            },
-          }}
+        <TextFieldWithEmoji
+          errors={errors}
+          formValues={formValues}
+          register={register}
+          setValue={setValue}
+          taskId={taskId}
         />
         <FormLabel id="demo-radio-buttons-group-label">
           Ask users to submit a

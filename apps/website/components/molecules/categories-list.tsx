@@ -50,7 +50,7 @@ export function CategoriesList({
       setItemsPopover([...itemsPopover, ...arr]);
     }
   }, [intersection]);
-
+  
   return (
     <>
       <Stack
@@ -64,7 +64,6 @@ export function CategoriesList({
           direction="row"
           pt={1}
           spacing={listMode ? 0 : 1}
-          px={listMode ? 0 : 2}
           {...props}
         >
           {categories?.map((category, index) => {
@@ -77,14 +76,14 @@ export function CategoriesList({
                 key={category + index}
                 label={formattedLabel}
                 size="small"
-                sx={{ mr: listMode ? '10px' : 'none' }}
+                sx={{ mr: listMode ? 'none' : 'none' }}
               />
             );
           })}
         </Stack>
 
         {itemsPopover.length > 0 && (
-          <Stack mr={2} mt={1}>
+          <Stack  mt={1}>
             <Chip
               size="small"
               aria-owns={open ? 'mouse-over-popover' : undefined}

@@ -22,6 +22,7 @@ import {
   CreateGateData,
   FileTaskDataError,
 } from '../../../templates/create-gate/schema';
+import TextFieldWithEmoji from '../../form/TextFieldWithEmoji/TextFieldWithEmoji';
 
 const FileLinkTask = ({ dragAndDrop, taskId, deleteTask }) => {
   const {
@@ -99,7 +100,7 @@ const FileLinkTask = ({ dragAndDrop, taskId, deleteTask }) => {
             <TextField
               variant="standard"
               sx={{
-                minWidth: { md: '400px', xs: '110%', lg:'500px' },
+                minWidth: { md: '400px', xs: '110%', lg: '500px' },
                 maxWidth: { xs: '100%', md: '110%' },
               }}
               InputProps={{
@@ -178,21 +179,12 @@ const FileLinkTask = ({ dragAndDrop, taskId, deleteTask }) => {
         )}
       </Stack>
       <FormControl style={!taskVisible ? {} : { display: 'none' }}>
-        <TextField
-          required
-          multiline
-          minRows={3}
-          label="Requirement Description"
-          id="file-description"
-          {...register(`tasks.${taskId}.description`)}
-          error={!!errors.tasks?.[taskId]?.description}
-          helperText={errors.tasks?.[taskId]?.description?.message}
-          sx={{
-            marginBottom: '60px',
-            '& fieldset legend span': {
-              marginRight: '10px',
-            },
-          }}
+        <TextFieldWithEmoji
+          errors={errors}
+          formValues={formValues}
+          register={register}
+          setValue={setValue}
+          taskId={taskId}
         />
         {files.map((file, idx: number) => {
           return (
