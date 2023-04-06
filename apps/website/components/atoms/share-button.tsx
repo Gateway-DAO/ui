@@ -8,6 +8,7 @@ import { Avatar, IconButton, Stack } from '@mui/material';
 type Props = {
   title?: string;
   url?: string;
+  description?: string;
 };
 
 export function ShareButton(Props: Props) {

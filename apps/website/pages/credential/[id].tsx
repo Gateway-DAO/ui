@@ -1,3 +1,4 @@
+import Head from 'next/head';
 import { useRouter } from 'next/router';
 
 import { dehydrate, QueryClient, useQuery } from '@tanstack/react-query';
