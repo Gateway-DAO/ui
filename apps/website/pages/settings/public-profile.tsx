@@ -23,7 +23,7 @@ export default function PublicProfileSettingsPage() {
 
       const uploadPicture = async () => {
         if (me.picture?.id) {
-          const oldLogo = generateImageUrl(me.picture.s3_key);
+          const oldLogo = generateImageUrl(me.picture.id);
 
           if (picture64 === oldLogo) return me.picture.id;
         }
@@ -38,7 +38,7 @@ export default function PublicProfileSettingsPage() {
 
       const uploadCover = async () => {
         if (me.cover?.id) {
-          const oldBackground = generateImageUrl(me.cover.s3_key);
+          const oldBackground = generateImageUrl(me.cover.id);
           if (cover64 === oldBackground) return me.cover.id;
         }
 

@@ -21,7 +21,6 @@ import {
   CreateGateData,
   GithubContributeDataError,
 } from '../../../templates/create-gate/schema';
-import TextFieldWithEmoji from '../../form/TextFieldWithEmoji/TextFieldWithEmoji';
 
 type GithubContributeTaskProps = {
   dragAndDrop: boolean;
@@ -49,7 +48,6 @@ export default function GithubContributeTask({
     `tasks.${taskId}.title`,
     `tasks.${taskId}.task_data.repository_link`,
   ]);
-  const formValues = getValues();
 
   const fetchRepositoryData = async (repository_url) => {
     if (!repository_url) return;
@@ -147,7 +145,7 @@ export default function GithubContributeTask({
             <TextField
               variant="standard"
               sx={{
-                minWidth: { md: '400px', xs: '110%', lg: '500px' },
+                minWidth: { md: '400px', xs: '110%', lg:'500px' },
                 maxWidth: { xs: '100%', md: '110%' },
               }}
               InputProps={{
@@ -226,12 +224,21 @@ export default function GithubContributeTask({
         )}
       </Stack>
       <FormControl style={!taskVisible ? {} : { display: 'none' }}>
-        <TextFieldWithEmoji
-          errors={errors}
-          formValues={formValues}
-          register={register}
-          setValue={setValue}
-          taskId={taskId}
+        <TextField
+          required
+          multiline
+          minRows={3}
+          label="Task Description"
+          id="task-description"
+          {...register(`tasks.${taskId}.description`)}
+          error={!!errors.tasks?.[taskId]?.description}
+          helperText={errors.tasks?.[taskId]?.description?.message}
+          sx={{
+            marginBottom: '60px',
+            '& fieldset legend span': {
+              marginRight: '10px',
+            },
+          }}
         />
         <Typography variant="body1" sx={{ paddingBottom: 4 }}>
           {t('tasks.github_contribute.description')}

@@ -77,30 +77,40 @@ const defineCols = (columns: IColumnGrid[]) => {
       field: 'credential_id',
       column_name: 'credential_id',
       cell: (params) => (
-        <Box sx={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-          <Box>
-            <Typography
-              sx={{
-                fontWeight: 400,
-                fontSize: '14px',
-                letterSpacing: '0.17px',
-                color: alpha(brandColors.white.main, 0.7),
-              }}
-            >
-              ID {limitCharsCentered(params.id, 6)}
-            </Typography>
-            <Typography
-              sx={{
-                fontWeight: 400,
-                fontSize: '16px',
-                letterSpacing: '0.15px',
-                color: brandColors.white.main,
-              }}
-            >
-              {params.title}
-            </Typography>
+        <Link
+          sx={{
+            all: 'unset',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+          }}
+          href={`${ROUTES.PROTOCOL_CREDENTIAL.replace('[id]', params.id)}`}
+        >
+          <Box sx={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+            <Box>
+              <Typography
+                sx={{
+                  fontWeight: 400,
+                  fontSize: '14px',
+                  letterSpacing: '0.17px',
+                  color: alpha(brandColors.white.main, 0.7),
+                }}
+              >
+                ID {limitCharsCentered(params.id, 6)}
+              </Typography>
+              <Typography
+                sx={{
+                  fontWeight: 400,
+                  fontSize: '16px',
+                  letterSpacing: '0.15px',
+                  color: brandColors.white.main,
+                }}
+              >
+                {params.title}
+              </Typography>
+            </Box>
           </Box>
-        </Box>
+        </Link>
       ),
     },
     {
@@ -120,140 +130,205 @@ const defineCols = (columns: IColumnGrid[]) => {
       field: 'issuer_id',
       column_name: 'issuer_id_issuers',
       cell: (params) => (
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <Avatar
-            alt="Name"
-            src="/images/avatar-default.png"
-            sx={{ width: 24, height: 24 }}
-          />
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-            <Typography
-              sx={{
-                fontSize: '14px',
-                fontWeight: 400,
-                letterSpacing: '0.17px',
-                maxWidth: '70px',
-                whiteSpace: 'nowrap',
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-              }}
-            >
-              {params?.issuedCredentials[0].issuerUser.gatewayId}
-            </Typography>
+        <Link
+          sx={{
+            all: 'unset',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+          }}
+          href={`${ROUTES.PROFILE.replace(
+            '[username]',
+            params?.issuedCredentials[0].issuerUser.gatewayId
+          )}`}
+        >
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <Avatar
+              alt="Name"
+              src="/images/avatar-default.png"
+              sx={{ width: 24, height: 24 }}
+            />
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+              <Typography
+                sx={{
+                  fontSize: '14px',
+                  fontWeight: 400,
+                  letterSpacing: '0.17px',
+                  maxWidth: '70px',
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                }}
+              >
+                {params?.issuedCredentials[0].issuerUser.gatewayId}
+              </Typography>
+            </Box>
           </Box>
-        </Box>
+        </Link>
       ),
     },
     {
       field: 'recipient_id',
       column_name: 'recipient_id_issuers',
       cell: (params) => (
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <Avatar
-            alt="Name"
-            src="/images/avatar-default.png"
-            sx={{ width: 24, height: 24 }}
-          />
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-            <Typography
-              sx={{
-                fontSize: '14px',
-                fontWeight: 400,
-                letterSpacing: '0.17px',
-                maxWidth: '70px',
-                whiteSpace: 'nowrap',
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-              }}
-            >
-              {params?.receivedCredentials[0]?.recipientUser?.gatewayId}
-            </Typography>
+        <Link
+          sx={{
+            all: 'unset',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+          }}
+          href={`${ROUTES.PROFILE.replace(
+            '[username]',
+            params?.receivedCredentials[0]?.recipientUser?.gatewayId
+          )}`}
+        >
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <Avatar
+              alt="Name"
+              src="/images/avatar-default.png"
+              sx={{ width: 24, height: 24 }}
+            />
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+              <Typography
+                sx={{
+                  fontSize: '14px',
+                  fontWeight: 400,
+                  letterSpacing: '0.17px',
+                  maxWidth: '70px',
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                }}
+              >
+                {params?.receivedCredentials[0]?.recipientUser?.gatewayId}
+              </Typography>
+            </Box>
           </Box>
-        </Box>
+        </Link>
       ),
     },
     {
       field: 'issuer_id',
       column_name: 'issuer_id',
       cell: (params) => (
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <Avatar
-            alt="Name"
-            src="/images/avatar-default.png"
-            sx={{ width: 24, height: 24 }}
-          />
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-            <Typography
-              sx={{
-                fontSize: '14px',
-                fontWeight: 400,
-                letterSpacing: '0.17px',
-                maxWidth: '70px',
-                whiteSpace: 'nowrap',
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-              }}
-            >
-              {params?.issuerUser?.gatewayId}
-            </Typography>
+        <Link
+          sx={{
+            all: 'unset',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+          }}
+          href={`${ROUTES.PROFILE.replace(
+            '[username]',
+            params?.issuerUser?.gatewayId
+          )}`}
+        >
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <Avatar
+              alt="Name"
+              src="/images/avatar-default.png"
+              sx={{ width: 24, height: 24 }}
+            />
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+              <Typography
+                sx={{
+                  fontSize: '14px',
+                  fontWeight: 400,
+                  letterSpacing: '0.17px',
+                  maxWidth: '70px',
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                }}
+              >
+                {params?.issuerUser?.gatewayId}
+              </Typography>
+            </Box>
           </Box>
-        </Box>
+        </Link>
       ),
     },
     {
       field: 'recipient_id',
       column_name: 'recipient_id',
       cell: (params) => (
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <Avatar
-            alt="Name"
-            src="/images/avatar-default.png"
-            sx={{ width: 24, height: 24 }}
-          />
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-            <Typography
-              sx={{
-                fontSize: '14px',
-                fontWeight: 400,
-                letterSpacing: '0.17px',
-                maxWidth: '70px',
-                whiteSpace: 'nowrap',
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-              }}
-            >
-              {params.recipientUser.gatewayId}
-            </Typography>
+        <Link
+          sx={{
+            all: 'unset',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+          }}
+          href={`${ROUTES.PROFILE.replace(
+            '[username]',
+            params.recipientUser.gatewayId
+          )}`}
+        >
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <Avatar
+              alt="Name"
+              src="/images/avatar-default.png"
+              sx={{ width: 24, height: 24 }}
+            />
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+              <Typography
+                sx={{
+                  fontSize: '14px',
+                  fontWeight: 400,
+                  letterSpacing: '0.17px',
+                  maxWidth: '70px',
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                }}
+              >
+                {params.recipientUser.gatewayId}
+              </Typography>
+            </Box>
           </Box>
-        </Box>
+        </Link>
       ),
     },
     {
       field: 'gatewayId',
       column_name: 'user_id',
       cell: (params) => (
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <Avatar
-            alt="Name"
-            src="/images/avatar-default.png"
-            sx={{ width: 24, height: 24 }}
-          />
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-            <Typography
-              sx={{
-                fontSize: '14px',
-                fontWeight: 400,
-                letterSpacing: '0.17px',
-                maxWidth: '70px',
-                whiteSpace: 'nowrap',
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-              }}
-            >
-              {params?.user?.gatewayId}
-            </Typography>
+        <Link
+          sx={{
+            all: 'unset',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+          }}
+          href={`${ROUTES.PROFILE.replace(
+            '[username]',
+            params.user.gatewayId
+          )}`}
+        >
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <Avatar
+              alt="Name"
+              src="/images/avatar-default.png"
+              sx={{ width: 24, height: 24 }}
+            />
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+              <Typography
+                sx={{
+                  fontSize: '14px',
+                  fontWeight: 400,
+                  letterSpacing: '0.17px',
+                  maxWidth: '70px',
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                }}
+              >
+                {params?.user?.gatewayId}
+              </Typography>
+            </Box>
           </Box>
-        </Box>
+        </Link>
       ),
     },
     {
@@ -337,8 +412,8 @@ const defineCols = (columns: IColumnGrid[]) => {
 
 export default function DataGrid({ columns, data }: Props): JSX.Element {
   const { t } = useTranslation('protocol');
-  const gridColumns = defineCols(columns);
 
+  const gridColumns = defineCols(columns);
   return (
     <>
       {data &&
@@ -375,39 +450,14 @@ export default function DataGrid({ columns, data }: Props): JSX.Element {
               {data.pages.map((page) => (
                 <>
                   {page.map((row, rowIndex) => (
-                    <Link
+                    <Box
+                      key={rowIndex}
                       sx={{
-                        all: 'unset',
-                        cursor: 'pointer',
-                        '&:hover': {
-                          backgroundColor: '#ffffff14',
-                        },
                         borderBottom:
                           rowIndex !== page.length - 1 ? '1px solid' : 'none',
                         borderColor: alpha(brandColors.grays.main, 0.12),
                         py: 3,
                       }}
-                      href={
-                        // TODO: IN A SEPARATE FUNCTION
-                        row.issuedCredentials
-                          ? ROUTES.PROFILE.replace(
-                              '[username]',
-                              page[rowIndex].issuedCredentials[0].issuerUser
-                                .gatewayId
-                            )
-                          : row.receivedCredentials
-                          ? ROUTES.PROFILE.replace(
-                              '[username]',
-
-                              page[rowIndex].receivedCredentials[0]
-                                .recipientUser.gatewayId
-                            )
-                          : ROUTES.PROTOCOL_CREDENTIAL.replace(
-                              '[id]',
-                              page[rowIndex].id
-                            )
-                      }
-                      key={rowIndex}
                     >
                       <Stack px={TOKENS.CONTAINER_PX}>
                         <Box
@@ -443,7 +493,7 @@ export default function DataGrid({ columns, data }: Props): JSX.Element {
                           ))}
                         </Box>
                       </Stack>
-                    </Link>
+                    </Box>
                   ))}
                 </>
               ))}

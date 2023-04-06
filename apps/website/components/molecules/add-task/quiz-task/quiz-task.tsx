@@ -32,7 +32,6 @@ import {
   CreateGateData,
   QuizTaskDataError,
 } from '../../../templates/create-gate/schema';
-import TextFieldWithEmoji from '../../form/TextFieldWithEmoji/TextFieldWithEmoji';
 
 // Time Period (minutes)
 export enum TimePeriod {
@@ -347,12 +346,22 @@ export function QuizTask({
         })}
         style={!taskVisible ? {} : { display: 'none' }}
       >
-        <TextFieldWithEmoji
-          errors={errors}
-          formValues={formValues}
-          register={register}
-          setValue={setValue}
-          taskId={taskId}
+        <TextField
+          multiline
+          maxRows={4}
+          minRows={3}
+          fullWidth
+          required
+          label="Requirement Description"
+          id="quiz-description"
+          {...register(`tasks.${taskId}.description`)}
+          error={!!errors.tasks?.[taskId]?.description}
+          helperText={errors.tasks?.[taskId]?.description?.message}
+          sx={{
+            '& fieldset legend span': {
+              marginRight: '10px',
+            },
+          }}
         />
         <QuestionCreator
           questions={questions}

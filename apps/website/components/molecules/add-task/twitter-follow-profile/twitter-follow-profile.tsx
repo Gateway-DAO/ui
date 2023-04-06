@@ -27,7 +27,6 @@ import {
   TwitterFollowData,
   TwitterFollowDataError,
 } from '../../../templates/create-gate/schema';
-import TextFieldWithEmoji from '../../form/TextFieldWithEmoji/TextFieldWithEmoji';
 
 export const numberFormat = (value: number) => {
   if (value < 10000) {
@@ -142,7 +141,7 @@ export const FollowProfile = ({ dragAndDrop, taskId, deleteTask }) => {
             <TextField
               variant="standard"
               sx={{
-                minWidth: { md: '400px', xs: '110%', lg: '500px' },
+                minWidth: { md: '400px', xs: '110%', lg:'500px' },
                 maxWidth: { xs: '100%', md: '110%' },
               }}
               InputProps={{
@@ -221,12 +220,21 @@ export const FollowProfile = ({ dragAndDrop, taskId, deleteTask }) => {
         )}
       </Stack>
       <FormControl style={!taskVisible ? {} : { display: 'none' }}>
-        <TextFieldWithEmoji
-          errors={errors}
-          formValues={formValues}
-          register={register}
-          setValue={setValue}
-          taskId={taskId}
+        <TextField
+          required
+          multiline
+          minRows={3}
+          label="Task Description"
+          id="follow-profile-description"
+          {...register(`tasks.${taskId}.description`)}
+          error={!!errors.tasks?.[taskId]?.description}
+          helperText={errors.tasks?.[taskId]?.description?.message}
+          sx={{
+            marginBottom: '60px',
+            '& fieldset legend span': {
+              marginRight: '10px',
+            },
+          }}
         />
         <Typography
           sx={{

@@ -4,10 +4,13 @@ fragment dao_profile on daos {
   description
   slug
   background {
-    ...file
+    id
+    blur
+    #url
   }
   logo {
-    ...file
+    id
+    blur
   }
   logo_url
   background_url
