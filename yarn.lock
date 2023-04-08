@@ -20462,6 +20462,11 @@ raw-loader@^4.0.2:
     loader-utils "^2.0.0"
     schema-utils "^3.0.0"
 
+react-arc-progress@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/react-arc-progress/-/react-arc-progress-1.0.2.tgz#6dd1c8e21e92b9631c04be42ae50b39cf3bd5c48"
+  integrity sha512-UEfAOi6jOA+cn2oNsWu3XMVREuYDi3wiKUtLdNYBT24gQ8PQBkWlH2ZQ3hQQUCafcu1edgiO/IDlxwvwfbJX8A==
+
 react-base16-styling@^0.6.0:
   version "0.6.0"
   resolved "https://registry.yarnpkg.com/react-base16-styling/-/react-base16-styling-0.6.0.tgz#ef2156d66cf4139695c8a167886cb69ea660792c"
