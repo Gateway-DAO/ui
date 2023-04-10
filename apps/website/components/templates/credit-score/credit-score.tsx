@@ -47,6 +47,7 @@ const Item = styled(Paper)(({ theme }) => ({
 export function CreditScoreTemplate() {
   const { t } = useTranslation('credit-score');
   const { me, gqlAuthMethods } = useAuth();
+
   const router = useRouter();
 
   const handleNavBack = () => {
@@ -435,6 +436,7 @@ export function CreditScoreTemplate() {
             </Box>
             <Button
               sx={{ marginBottom: 4 }}
+              disabled={me?.wallet ? false : true}
               variant="outlined"
               href="https://app.credprotocol.com/"
               target="_blank"
