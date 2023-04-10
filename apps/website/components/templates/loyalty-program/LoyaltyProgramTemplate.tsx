@@ -1,5 +1,4 @@
 import { useRouter } from 'next/router';
-import { ReactNode } from 'react';
 
 import { TOKENS } from '@gateway/theme';
 
