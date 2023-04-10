@@ -47,8 +47,9 @@ const Item = styled(Paper)(({ theme }) => ({
 export function CreditScoreTemplate() {
   const { t } = useTranslation('credit-score');
   const { me, gqlAuthMethods } = useAuth();
-
   const router = useRouter();
+
+  const isUser = !!me;
 
   const handleNavBack = () => {
     // If user directly lands to credential page using link
@@ -403,23 +404,38 @@ export function CreditScoreTemplate() {
             <Box position={'relative'}>
               <ArcProgress
                 thickness={20}
-                progress={progress}
+                progress={isUser ? progress : 0}
                 // text={text}
                 fillThickness={35}
                 emptyColor="#FFFFFF26"
                 size={size}
-                fillColor={fillColor}
+                fillColor={isUser ? fillColor : '#312938'}
                 customText={customText}
                 arcStart={140}
                 arcEnd={400}
               />
               <Box position={'absolute'} top={160} left={170}>
-                <Typography align={'center'} variant="h1">
-                  789
-                </Typography>
-                <Typography align={'center'} variant="h6">
-                  Excellent
-                </Typography>
+                {isUser && (
+                  <>
+                    <Typography align={'center'} variant="h1">
+                      789
+                    </Typography>
+                    <Typography align={'center'} variant="h6">
+                      Excellent
+                    </Typography>
+                  </>
+                )}
+                {!isUser && (
+                  <>
+                    <Typography
+                      sx={{ marginTop: '60px' }}
+                      align={'center'}
+                      variant="body1"
+                    >
+                      Connect your wallet
+                    </Typography>
+                  </>
+                )}
               </Box>
               <Box position={'absolute'} bottom={35} left={198}>
                 <Typography align={'center'} variant="body1">
@@ -436,7 +452,7 @@ export function CreditScoreTemplate() {
             </Box>
             <Button
               sx={{ marginBottom: 4 }}
-              disabled={me?.wallet ? false : true}
+              disabled={!isUser}
               variant="outlined"
               href="https://app.credprotocol.com/"
               target="_blank"
