@@ -4,7 +4,6 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 import { useMutation } from '@tanstack/react-query';
-import { useAuth } from 'apps/website/providers/auth';
 import { useSnackbar } from 'notistack';
 import { PartialDeep } from 'type-fest/source/partial-deep';
 import { v4 as uuidv4 } from 'uuid';
@@ -26,6 +25,7 @@ import {
 } from '@mui/material';
 
 import { ROUTES } from '../../../constants/routes';
+import { useAuth } from '../../../providers/auth';
 import {
   CredentialQuery,
   Gates,
