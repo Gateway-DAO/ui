@@ -4,6 +4,7 @@ const ROUTES = {
   SEARCH: '/search/[key]',
   NEW_USER: '/new-user',
   CREDENTIALS: '/credentials',
+  CREDIT_SCORE: '/creditscore',
   CREDENTIALS_NEW: '/credentials/new',
   EARNED: '/earned/[id]',
   DAO_PROFILE: '/dao/[slug]',
