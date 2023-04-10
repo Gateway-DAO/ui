@@ -41,7 +41,12 @@ export default function LoyaltyProgramTemplate({
           minHeight: `${windowSize.height}px`,
         }}
       >
-        <Grid item xs={12} md={4} sx={{ pt: 2, flexGrow: 0 }}>
+        <Grid
+          item
+          xs={12}
+          md={4}
+          sx={{ pt: 2, pb: { xs: 2, md: 0 }, flexGrow: 0 }}
+        >
           <Stack
             direction="row"
             flexGrow={1}
@@ -68,12 +73,10 @@ export default function LoyaltyProgramTemplate({
           </Stack>
           {sidebar}
         </Grid>
-        {!isMobile && <Divider orientation="vertical" flexItem />}
-        {!isMobile && (
-          <Grid item xs={12} md sx={{ pt: 2 }}>
-            {mainContent}
-          </Grid>
-        )}
+        <Divider orientation={isMobile ? 'horizontal' : 'vertical'} flexItem />
+        <Grid item xs={12} md sx={{ pt: 2 }}>
+          {mainContent}
+        </Grid>
       </Grid>
     </>
   );
