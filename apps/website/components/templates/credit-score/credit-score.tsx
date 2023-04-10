@@ -14,7 +14,6 @@ import {
   styled,
 } from '@mui/material';
 import { Link as MUILink } from '@mui/material';
-import { AvatarFile } from '../../atoms/avatar-file';
 import { ReadMore } from '../../atoms/read-more-less';
 
 import { useRouter } from 'next/router';
@@ -28,9 +27,7 @@ import { ShareButton } from '../../atoms/share-button';
 import { ClientNav } from '../../organisms/navbar/client-nav';
 import Image from 'next/image';
 import ArcProgress from 'react-arc-progress';
-import { fontSize } from '@mui/system';
-
-const creditScoreDescription = `A credit score is a numerical representation of a person's creditworthiness and is used by lenders to evaluate their ability to repay loans. Maintaining a good credit score is essential as it can lead to a number of benefits. First and foremost, having a good credit score makes it easier to obtain loans, credit cards, and other financial products with favourable terms and lower interest rates.`;
+import useTranslation from 'next-translate/useTranslation';
 
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
@@ -48,6 +45,7 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 export function CreditScoreTemplate() {
+  const { t } = useTranslation('credit-score');
   const { me, gqlAuthMethods } = useAuth();
   const router = useRouter();
 
@@ -148,17 +146,6 @@ export function CreditScoreTemplate() {
                   cursor: 'pointer',
                 })}
               >
-                {/* <AvatarFile
-                  alt={'Gateway'}
-                  file={gateProps?.dao.logo}
-                  fallback={gateProps?.dao.logo_url}
-                  sx={{
-                    height: (theme) => theme.spacing(3),
-                    width: (theme) => theme.spacing(3),
-                    marginRight: (theme) => theme.spacing(1),
-                  }}
-                /> */}
-
                 <Avatar
                   alt="Gateway"
                   src="/logo.png"
@@ -172,13 +159,13 @@ export function CreditScoreTemplate() {
                   variant="body2"
                   color={(theme) => theme.palette.text.secondary}
                 >
-                  {'Gateway'}
+                  {t('gate.organization')}
                 </Typography>
               </Stack>
             </Link>
 
             <Typography variant="h4" marginBottom={(theme) => theme.spacing(2)}>
-              {'Credit Score'}
+              {t('gate.title')}
             </Typography>
 
             <Box marginBottom={(theme) => theme.spacing(2)}>
@@ -192,7 +179,7 @@ export function CreditScoreTemplate() {
                 <Box>
                   <Chip
                     key={'creditscore'}
-                    label={'Credit Score'}
+                    label={t('gate.label')}
                     sx={{
                       marginRight: (theme) => theme.spacing(1),
                       marginBottom: (theme) => theme.spacing(1),
@@ -200,12 +187,12 @@ export function CreditScoreTemplate() {
                   />
                 </Box>
                 <Stack flexDirection="row" gap={1}>
-                  <ShareButton title={`Check your Credit Score @ Gateway`} />
+                  <ShareButton title={t('gate.share-title')} />
                 </Stack>
               </Stack>
             </Box>
-            {creditScoreDescription?.length > 250 ? (
-              <ReadMore>{creditScoreDescription}</ReadMore>
+            {t('gate.description')?.length > 250 ? (
+              <ReadMore>{t('gate.description')}</ReadMore>
             ) : (
               <Typography
                 variant="body1"
@@ -213,7 +200,7 @@ export function CreditScoreTemplate() {
                 sx={{ wordBreak: 'break-word' }}
                 paragraph={true}
               >
-                {creditScoreDescription}
+                {t('gate.description')}
               </Typography>
             )}
 
@@ -333,7 +320,7 @@ export function CreditScoreTemplate() {
                       variant="body2"
                       color={(theme) => theme.palette.text.secondary}
                     >
-                      Created By
+                      {t('about.created-by')}
                     </Typography>
                   </Grid>
                   {/* <Grid item xs={8}>
@@ -400,10 +387,8 @@ export function CreditScoreTemplate() {
           </Stack>
 
           <Box sx={{ mb: 3 }}>
-            <Typography variant="h6">Your credit score</Typography>
-            <Typography variant="caption">
-              Issue your credit score credential
-            </Typography>
+            <Typography variant="h6">{t('about.title')}</Typography>
+            <Typography variant="caption">{t('about.caption')}</Typography>
           </Box>
 
           <Paper
@@ -437,14 +422,13 @@ export function CreditScoreTemplate() {
               </Box>
               <Box position={'absolute'} bottom={35} left={198}>
                 <Typography align={'center'} variant="body1">
-                  Powered by{' '}
+                  {t('about.progress.powered-by')}
                   <MUILink
                     href="https://www.credprotocol.com/"
                     target="_blank"
                     underline="none"
                   >
-                    {' '}
-                    <Typography>Cred Protocol</Typography>
+                    <Typography>{t('about.progress.cred-protocol')}</Typography>
                   </MUILink>
                 </Typography>
               </Box>
@@ -455,28 +439,20 @@ export function CreditScoreTemplate() {
               href="https://app.credprotocol.com/"
               target="_blank"
             >
-              get full report
+              {t('about.progress.btn-title')}
             </Button>
           </Paper>
 
           <Stack spacing={5} mt={3}>
             <Stack spacing={1}>
               <Typography variant="h6" gutterBottom>
-                Details
+                {t('details.title')}
               </Typography>
-              <Typography>
-                A credit score is a numerical representation of a person's
-                creditworthiness and is used by lenders to evaluate their
-                ability to repay loans. Maintaining a good credit score is
-                essential as it can lead to a number of benefits. First and
-                foremost, having a good credit score makes it easier to obtain
-                loans, credit cards, and other financial products with
-                favourable terms and lower interest rates.
-              </Typography>
+              <Typography>{t('details.description')}</Typography>
             </Stack>
             <Stack spacing={1}>
               <Typography variant="h6" gutterBottom>
-                Utility & Benefits
+                {t('utility.title')}
               </Typography>
               <Stack
                 direction={{
@@ -487,16 +463,14 @@ export function CreditScoreTemplate() {
                 }}
                 spacing={3}
               >
-                <Item variant="outlined">Rates as low as & 2% aa at AAVE</Item>
-                <Item variant="outlined">Early Access to Financial Events</Item>
-                <Item variant="outlined">
-                  Monthly Personal Financial Report
-                </Item>
+                <Item variant="outlined">{t('utility.label-1')}</Item>
+                <Item variant="outlined">{t('utility.label-2')}</Item>
+                <Item variant="outlined">{t('utility.label-3')}</Item>
               </Stack>
             </Stack>
             <Stack spacing={1}>
               <Typography variant="h6" gutterBottom>
-                Start using it
+                {t('start-using.title')}
               </Typography>
               <Stack
                 direction={{

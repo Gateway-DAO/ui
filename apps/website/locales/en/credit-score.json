@@ -1,0 +1,34 @@
+{
+  "gate": {
+    "description": "A credit score is a numerical representation of a person's creditworthiness and is used by lenders to evaluate their ability to repay loans. Maintaining a good credit score is essential as it can lead to a number of benefits. First and foremost, having a good credit score makes it easier to obtain loans, credit cards, and other financial products with favourable terms and lower interest rates.",
+    "organization": "Gateway",
+    "title": "Credit Score",
+    "label": "Credit Score",
+    "share-title": "Check your Credit Score @ Gateway"
+  },
+  "about": {
+    "title": "Your credit score",
+    "caption": "Issue your credit score credential",
+    "created-by": " Created By",
+    "progress": {
+      "powered-by": "Powered by",
+      "cred-protocol": "Cred Protocol",
+      "btn-title": "get full report"
+    }
+  },
+  "details": {
+    "title": "Details",
+    "description": "A credit score is a numerical representation of a person's creditworthiness and is used by lenders to evaluate their ability to repay loans. Maintaining a good credit score is essential as it can lead to a number of benefits. First and foremost, having a good credit score makes it easier to obtain loans, credit cards, and other financial products with favourable terms and lower interest rates."
+  },
+
+  "utility": {
+    "title": "Utility & Benefits",
+    "label-1": "Rates as low as & 2% aa at AAVE",
+    "label-2": "Early Access to Financial Events",
+    "label-3": " Monthly Personal Financial Report"
+  },
+
+  "start-using": {
+    "title": "Start using it"
+  }
+}
