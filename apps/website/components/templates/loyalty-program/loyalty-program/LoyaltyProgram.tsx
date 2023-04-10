@@ -10,12 +10,6 @@ type Props = {
 };
 
 export function LoyaltyProgram({ loyalty }: Props) {
-  //   id: {loyalty.id}
-  //   name: {loyalty.name}
-  //   description: {loyalty.description}
-  //   image: {loyalty.image}
-  //   categories: {loyalty.categories}
-
   return (
     <LoyaltyProgramTemplate
       sidebar={<LoyaltySidebar loyalty={loyalty} />}
