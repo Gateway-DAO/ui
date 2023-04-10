@@ -4,18 +4,17 @@ import { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { PartialDeep } from 'type-fest/source/partial-deep';
 
-import { useAuth } from '../../../../providers/auth';
-import { gqlAnonMethods } from '../../../../services/hasura/api';
-import { Gates, Loyalty_Program } from '../../../../services/hasura/types';
-import { GateViewTasks } from '../../../templates/gate-view/gate-view-tasks';
-import LoyaltyProgramTemplate from '../LoyaltyProgramTemplate';
+import { useAuth } from '../../../../../providers/auth';
+import { gqlAnonMethods } from '../../../../../services/hasura/api';
+import { Gates, Loyalty_Program } from '../../../../../services/hasura/types';
+import { GateViewTasks } from '../../../gate-view/gate-view-tasks';
 
-type LoyaltyCredentialProps = {
+type Props = {
   loyalty: PartialDeep<Loyalty_Program>;
   gate: PartialDeep<Gates>;
 };
 
-export function LoyaltyCredential({ gate, loyalty }: LoyaltyCredentialProps) {
+export function LoyaltyProgramCredentialTasks({ gate, loyalty }: Props) {
   const { me, gqlAuthMethods } = useAuth();
   const router = useRouter();
   const [completedTasksCount, setCompletedTasksCount] = useState(0);
@@ -74,18 +73,13 @@ export function LoyaltyCredential({ gate, loyalty }: LoyaltyCredentialProps) {
     ).length > 0;
 
   return (
-    <LoyaltyProgramTemplate
-      sidebar={<p>{loyalty?.id}</p>}
-      mainContent={
-        <GateViewTasks
-          completedGate={completedGate}
-          credential={credential}
-          gateProps={gate}
-          isAdmin={isAdmin}
-          published={gate.published}
-          completedTasksCount={completedTasksCount}
-        />
-      }
+    <GateViewTasks
+      completedGate={completedGate}
+      credential={credential}
+      gateProps={gate}
+      isAdmin={isAdmin}
+      published={gate.published}
+      completedTasksCount={completedTasksCount}
     />
   );
 }

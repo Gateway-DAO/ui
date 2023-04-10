@@ -2,7 +2,7 @@ import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
 
 import { HeadContainer } from '../../../components/molecules/head-container';
 import { DashboardTemplate } from '../../../components/templates/dashboard';
-import { LoyaltyCredential } from '../../../components/templates/loyalty-program/credential/LoyaltyCredential';
+import { LoyaltyProgramCredential } from '../../../components/templates/loyalty-program/credential/LoyaltyProgramCredential';
 import { gqlAnonMethods } from '../../../services/hasura/api';
 
 type Props = InferGetServerSidePropsType<typeof getServerSideProps>;
@@ -21,7 +21,7 @@ export default function LoyaltyCredentialPage({ loyalty, gate }: Props) {
           },
         }}
       >
-        <LoyaltyCredential gate={gate} loyalty={loyalty} />
+        <LoyaltyProgramCredential gate={gate} loyalty={loyalty} />
       </DashboardTemplate>
     </>
   );

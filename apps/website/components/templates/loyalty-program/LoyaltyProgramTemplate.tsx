@@ -1,5 +1,3 @@
-import useTranslation from 'next-translate/useTranslation';
-
 import { Divider, Grid, useMediaQuery, useTheme } from '@mui/material';
 
 import { useWindowSize } from '../../../hooks/use-window-size';
@@ -17,7 +15,6 @@ export default function LoyaltyProgramTemplate({
 }: Props) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-  const { t } = useTranslation('settings');
   const windowSize = useWindowSize();
 
   return (

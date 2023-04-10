@@ -1,4 +1,3 @@
-import useTranslation from 'next-translate/useTranslation';
 import { ReactNode } from 'react';
 
 import { TOKENS } from '@gateway/theme';
@@ -14,7 +13,6 @@ type Props = {
 export default function MainContentTemplate({ children }: Props) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-  const { t } = useTranslation('settings');
 
   return (
     <>

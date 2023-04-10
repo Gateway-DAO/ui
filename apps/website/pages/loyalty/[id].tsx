@@ -2,19 +2,12 @@ import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
 
 import { HeadContainer } from '../../components/molecules/head-container';
 import { DashboardTemplate } from '../../components/templates/dashboard';
-import LoyaltyProgramTemplate from '../../components/templates/loyalty-program/LoyaltyProgramTemplate';
+import { LoyaltyProgram } from '../../components/templates/loyalty-program/loyalty-program/LoyaltyProgram';
 import { gqlAnonMethods } from '../../services/hasura/api';
 
 type Props = InferGetServerSidePropsType<typeof getServerSideProps>;
 
 export default function LoyaltyPage({ loyalty }: Props) {
-  // <>
-  //   id: {loyalty.id}
-  //   name: {loyalty.name}
-  //   description: {loyalty.description}
-  //   image: {loyalty.image}
-  //   categories: {loyalty.categories}
-  // </>
   return (
     <>
       <HeadContainer
@@ -28,10 +21,7 @@ export default function LoyaltyPage({ loyalty }: Props) {
           },
         }}
       >
-        <LoyaltyProgramTemplate
-          sidebar={<p>{loyalty.id}</p>}
-          mainContent={<p>{loyalty.name}</p>}
-        />
+        <LoyaltyProgram loyalty={loyalty} />
       </DashboardTemplate>
     </>
   );
