@@ -1,50 +1,18 @@
-import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
-
 import { useQuery } from '@tanstack/react-query';
 import { PartialDeep } from 'type-fest/source/partial-deep';
 
+import { useGateCompleted } from '../../../../../hooks/use-gate-completed';
 import { useAuth } from '../../../../../providers/auth';
-import { gqlAnonMethods } from '../../../../../services/hasura/api';
-import { Gates, Loyalty_Program } from '../../../../../services/hasura/types';
+import { Gates } from '../../../../../services/hasura/types';
 import { GateViewTasks } from '../../../gate-view/gate-view-tasks';
 
 type Props = {
-  loyalty: PartialDeep<Loyalty_Program>;
   gate: PartialDeep<Gates>;
 };
 
-export function LoyaltyProgramCredentialTasks({ gate, loyalty }: Props) {
+export function LoyaltyProgramCredentialTasks({ gate }: Props) {
   const { me, gqlAuthMethods } = useAuth();
-  const router = useRouter();
-  const [completedTasksCount, setCompletedTasksCount] = useState(0);
-
-  const countSimiliarIds = (arr1: string[], arr2?: string[]) => {
-    return arr1.filter((id) => !!arr2?.includes(id)).length;
-  };
-
-  const taskIds = gate?.tasks?.map((task) => task.id);
-
-  useEffect(() => {
-    const completedTaskIds =
-      me?.task_progresses
-        .filter((task) => task.completed == 'done')
-        .map((task) => task.task_id) || [];
-
-    setCompletedTasksCount(countSimiliarIds(completedTaskIds, taskIds));
-  }, [taskIds, me?.task_progresses, gate, router]);
-
-  const directCredentialInfo = useQuery(
-    ['direct-credential-info', me?.wallet, gate.id],
-    () =>
-      gqlAnonMethods.direct_credential_info({
-        gate_id: gate.id,
-        wallet: me?.wallet ?? '',
-      }),
-    {
-      enabled: gate && gate.type === 'direct' && gate.published === 'published',
-    }
-  );
+  const gateCompleted = useGateCompleted(gate);
 
   const credential_id = me?.credentials?.find(
     (cred) => cred?.gate_id === gate?.id
@@ -61,11 +29,6 @@ export function LoyaltyProgramCredentialTasks({ gate, loyalty }: Props) {
     }
   );
 
-  const completedGate =
-    gate.type === 'direct'
-      ? directCredentialInfo.data?.hasCredential?.aggregate?.count > 0
-      : completedTasksCount === gate?.tasks?.length;
-
   const isAdmin =
     me?.permissions?.filter(
       (permission) =>
@@ -74,12 +37,12 @@ export function LoyaltyProgramCredentialTasks({ gate, loyalty }: Props) {
 
   return (
     <GateViewTasks
-      completedGate={completedGate}
+      completedGate={gateCompleted.isCompleted}
       credential={credential}
       gateProps={gate}
       isAdmin={isAdmin}
       published={gate.published}
-      completedTasksCount={completedTasksCount}
+      completedTasksCount={gateCompleted.completedTasksCount}
     />
   );
 }
