@@ -6,6 +6,7 @@ import { brandColors } from '@gateway/theme';
 
 import { Stack, Typography, alpha } from '@mui/material';
 
+import SuccessfullyIcon from '../../../../../components/atoms/icons/successfully-icon';
 import Loading from '../../../../../components/atoms/loading';
 import { ROUTES } from '../../../../../constants/routes';
 import { useGateCompleted } from '../../../../../hooks/use-gate-completed';
@@ -70,6 +71,7 @@ export function CredentialListItem({ gate }: Props) {
           </>
         )}
       </Typography>
+      <SuccessfullyIcon size="small" sx={{ width: 26, height: 26 }} />
     </Stack>
   );
 }
