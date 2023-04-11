@@ -1,39 +1,11 @@
 query loyaltys {
   loyalty_program {
-    id
-    name
-    description
-    image
-    categories
-    data_model_id
-    organization_id
-    categories
-    loyalty_tiers {
-      id
-      tier
-      min_pts
-      max_pts
-      image
-    }
+    ...loyalty
   }
 }
 
 query loyalty($id: uuid!) {
   loyalty_program_by_pk(id: $id) {
-    id
-    name
-    description
-    image
-    categories
-    data_model_id
-    organization_id
-    categories
-    loyalty_tiers {
-      id
-      tier
-      min_pts
-      max_pts
-      image
-    }
+    ...loyalty
   }
 }

@@ -1,14 +1,13 @@
 import dynamic from 'next/dynamic';
-import { useRouter } from 'next/router';
-import { useState, useEffect, ComponentType } from 'react';
+import { useState, ComponentType } from 'react';
 
 import { useQuery } from '@tanstack/react-query';
 import { PartialDeep } from 'type-fest';
 
 import { Grid, Divider } from '@mui/material';
 
+import { useGateCompleted } from '../../../hooks/use-gate-completed';
 import { useAuth } from '../../../providers/auth';
-import { gqlAnonMethods } from '../../../services/hasura/api';
 import { Gates } from '../../../services/hasura/types';
 import { MintDialogProps } from '../../molecules/mint-dialog';
 import type { Props as HolderDialogProps } from '../../organisms/holder-dialog';
@@ -32,46 +31,9 @@ type GateViewProps = {
 export function GateViewTemplate({ gateProps }: GateViewProps) {
   const [isHolderDialog, setIsHolderDialog] = useState(false);
   const [isMintDialog, setMintModal] = useState(false);
-  const [completedTasksCount, setCompletedTasksCount] = useState(0);
   const [published, setPublished] = useState(gateProps?.published);
-  const router = useRouter();
-
   const { me, gqlAuthMethods } = useAuth();
-
-  const directCredentialInfo = useQuery(
-    ['direct-credential-info', me?.wallet, gateProps.id],
-    () =>
-      gqlAnonMethods.direct_credential_info({
-        gate_id: gateProps.id,
-        wallet: me?.wallet ?? '',
-      }),
-    {
-      enabled:
-        gateProps &&
-        gateProps.type === 'direct' &&
-        gateProps.published === 'published',
-    }
-  );
-
-  const countSimiliarIds = (arr1: string[], arr2?: string[]) => {
-    return arr1.filter((id) => !!arr2?.includes(id)).length;
-  };
-
-  const taskIds = gateProps?.tasks?.map((task) => task.id);
-
-  useEffect(() => {
-    const completedTaskIds =
-      me?.task_progresses
-        .filter((task) => task.completed == 'done')
-        .map((task) => task.task_id) || [];
-
-    setCompletedTasksCount(countSimiliarIds(completedTaskIds, taskIds));
-  }, [taskIds, me?.task_progresses, gateProps, router]);
-
-  const completedGate =
-    gateProps.type === 'direct'
-      ? directCredentialInfo.data?.hasCredential?.aggregate?.count > 0
-      : completedTasksCount === gateProps?.tasks?.length;
+  const gateCompleted = useGateCompleted(gateProps);
 
   const isAdmin =
     me?.permissions?.filter(
@@ -121,7 +83,7 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
       <GateViewSidebar
         published={published}
         setPublished={setPublished}
-        completedGate={completedGate}
+        completedGate={gateCompleted.isCompleted}
         credential={credential}
         gateProps={gateProps}
         isAdmin={isAdmin}
@@ -130,12 +92,12 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
       />
       <Divider orientation="vertical" flexItem />
       <GateViewTasks
-        completedGate={completedGate}
+        completedGate={gateCompleted.isCompleted}
         credential={credential}
         gateProps={gateProps}
         isAdmin={isAdmin}
         published={published}
-        completedTasksCount={completedTasksCount}
+        completedTasksCount={gateCompleted.completedTasksCount}
       />
     </Grid>
   );
