@@ -7,6 +7,7 @@ import { brandColors } from '@gateway/theme';
 import { Stack, Typography, alpha } from '@mui/material';
 
 import SuccessfullyIcon from '../../../../../components/atoms/icons/successfully-icon';
+import SuccessfullyRoundedIcon from '../../../../../components/atoms/icons/successfully-rounded';
 import Loading from '../../../../../components/atoms/loading';
 import { ROUTES } from '../../../../../constants/routes';
 import { useGateCompleted } from '../../../../../hooks/use-gate-completed';
@@ -60,18 +61,17 @@ export function CredentialListItem({ gate }: Props) {
           {gate?.description}
         </Typography>
       </Stack>
-      <Typography variant="h6">
-        {gateCompleted.isLoading ? (
-          <Loading />
-        ) : (
-          <>
-            {gateCompleted?.isCompleted
-              ? 'Completed ' + gateCompleted.completedTasksCount
-              : 'Not completed'}
-          </>
-        )}
-      </Typography>
-      <SuccessfullyIcon size="small" sx={{ width: 26, height: 26 }} />
+      {gateCompleted.isLoading ? (
+        <Loading />
+      ) : (
+        <>
+          {gateCompleted?.isCompleted ? (
+            <SuccessfullyIcon size="small" sx={{ width: 28, height: 28 }} />
+          ) : (
+            <SuccessfullyRoundedIcon />
+          )}
+        </>
+      )}
     </Stack>
   );
 }
