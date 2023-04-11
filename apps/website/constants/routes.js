@@ -23,6 +23,8 @@ const ROUTES = {
   PROTOCOL_DATAMODEL: '/protocol/data-models/[id]/show',
   PROTOCOL_DATAMODEL_CREDENTIAL_CREATE:
     '/protocol/data-models/[id]/credentials/create',
+  LOYALTY_PROGRAM: '/loyalty/[id]',
+  LOYALTY_PROGRAM_CREDENTIAL: '/loyalty/credential/[id]',
 };
 
 module.exports = {
