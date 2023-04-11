@@ -6,6 +6,7 @@ import { Stack } from '@mui/material';
 
 import { Loyalty_Program } from '../../../../../services/hasura/types';
 import { ClientNav } from '../../../../organisms/navbar/client-nav';
+import { CredentialsList } from './CredentialsList';
 
 type Props = {
   loyalty: PartialDeep<Loyalty_Program>;
@@ -19,6 +20,7 @@ export function LoyaltyProgramMainContent({ loyalty }: Props) {
         justifyContent="flex-end"
         sx={{
           px: TOKENS.CONTAINER_PX,
+          mt: 1,
           flexGrow: {
             md: 0.5,
           },
@@ -30,15 +32,7 @@ export function LoyaltyProgramMainContent({ loyalty }: Props) {
       >
         <ClientNav />
       </Stack>
-      <Stack
-        direction="row"
-        alignItems="center"
-        sx={{
-          margin: { xs: '16px 16px 40px 16px', md: '40px 60px 60px' },
-        }}
-      >
-        <p>Loyalty Program Main Content</p>
-      </Stack>
+      <CredentialsList gates={loyalty?.gates} />
     </>
   );
 }
