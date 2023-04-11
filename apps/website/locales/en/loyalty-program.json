@@ -1,5 +1,10 @@
 {
   "loyalty-program-page": {
-    "missions": "Missions"
+    "missions": "Missions",
+    "sidebar": {
+      "display-credential": "See credential",
+      "mint-nft": "Mint as NFT",
+      "data-model-id": "Data model ID"
+    }
   }
 }

@@ -1,4 +1,4 @@
-// import credential from 'apps/website/pages/api/og-image/credential';
+import useTranslation from 'next-translate/useTranslation';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
@@ -22,6 +22,7 @@ type LoyaltySidebarProps = {
 };
 
 export function LoyaltySidebar({ gate, loyalty }: LoyaltySidebarProps) {
+  const { t } = useTranslation('loyalty-program');
   const router = useRouter();
 
   const texts = {
@@ -96,9 +97,10 @@ export function LoyaltySidebar({ gate, loyalty }: LoyaltySidebarProps) {
                 />
               ))}
             </Box>
-            <Stack flexDirection="row" gap={1}>
-              <ShareButton title={`${texts?.title} @ Gateway`} />
-            </Stack>
+            {/*TODO: use share dialog*/}
+            {/* <Stack flexDirection="row" gap={1}>
+              <ShareButton title={`${texts?.title} @Gateway`} />
+            </Stack> */}
           </Stack>
         </Box>
 
@@ -115,7 +117,7 @@ export function LoyaltySidebar({ gate, loyalty }: LoyaltySidebarProps) {
           </Typography>
         )}
 
-        <Stack direction="row" gap={2}>
+        <Stack direction="row" gap={2} mb={2}>
           <Button
             variant="outlined"
             disabled
@@ -124,7 +126,7 @@ export function LoyaltySidebar({ gate, loyalty }: LoyaltySidebarProps) {
               mb: 2,
             }}
           >
-            See credential
+            {t('loyalty-program-page.sidebar.display-credential')}
           </Button>
           <Button
             variant="contained"
@@ -135,7 +137,7 @@ export function LoyaltySidebar({ gate, loyalty }: LoyaltySidebarProps) {
               mb: 2,
             }}
           >
-            MINT AS NFT
+            {t('loyalty-program-page.sidebar.mint-nft')}
           </Button>
         </Stack>
 
@@ -156,7 +158,7 @@ export function LoyaltySidebar({ gate, loyalty }: LoyaltySidebarProps) {
               variant="body2"
               color={(theme) => theme.palette.text.secondary}
             >
-              Data model ID
+              {t('loyalty-program-page.sidebar.data-model-id')}
             </Typography>
             <ExternalLink
               text={limitCharsCentered(loyalty.data_model_id, 6)}
