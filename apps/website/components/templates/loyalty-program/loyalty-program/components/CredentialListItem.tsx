@@ -1,4 +1,4 @@
-import { useRouter } from 'next/router';
+import { useContext, useEffect } from 'react';
 
 import { PartialDeep } from 'type-fest/source/partial-deep';
 
@@ -11,16 +11,25 @@ import SuccessfullyIcon from '../../../../../components/atoms/icons/successfully
 import SuccessfullyRoundedIcon from '../../../../../components/atoms/icons/successfully-rounded';
 import Loading from '../../../../../components/atoms/loading';
 import { ROUTES } from '../../../../../constants/routes';
-import { useGateCompleted } from '../../../../../hooks/use-gate-completed';
+import { useGateStatus } from '../../../../../hooks/use-gate-completed';
 import { Gates } from '../../../../../services/hasura/types';
+import { useLoyaltyProgramContext } from '../../LoyaltyProgramContext';
 
 type Props = {
   gate: PartialDeep<Gates>;
 };
 
 export function CredentialListItem({ gate }: Props) {
-  const gateCompleted = useGateCompleted(gate);
-  const router = useRouter();
+  const gateStatus = useGateStatus(gate);
+  const { setTotalPoints } = useLoyaltyProgramContext();
+
+  useEffect(() => {
+    if (gateStatus.isCompleted) {
+      setTotalPoints((prev) => {
+        return prev + gate.points;
+      });
+    }
+  }, [gateStatus]);
 
   return (
     <Stack
@@ -33,22 +42,19 @@ export function CredentialListItem({ gate }: Props) {
         padding: { xs: 2, md: '36px 60px' },
         borderBottom: '1px solid rgba(229, 229, 229, 0.12)',
         cursor: 'pointer',
-        background: !gateCompleted.isCompleted
+        color: brandColors.white.main,
+        textDecoration: 'none',
+        background: !gateStatus.isCompleted
           ? alpha(brandColors.purple.main, 0.1)
           : 'none',
         transition: 'background .3s ease',
         '&:hover': {
-          background: !gateCompleted.isCompleted
+          background: !gateStatus.isCompleted
             ? alpha(brandColors.purple.main, 0.12)
             : alpha(brandColors.purple.main, 0.03),
         },
       }}
-      onClick={() =>
-        router.push({
-          pathname: ROUTES.LOYALTY_PROGRAM_CREDENTIAL,
-          query: { id: gate.id },
-        })
-      }
+      href={ROUTES.LOYALTY_PROGRAM_CREDENTIAL.replace('[id]', gate.id)}
     >
       <Stack
         sx={{
@@ -86,11 +92,11 @@ export function CredentialListItem({ gate }: Props) {
           }}
         />
       )}
-      {gateCompleted.isLoading ? (
+      {gateStatus.isLoading ? (
         <Loading />
       ) : (
         <>
-          {gateCompleted?.isCompleted ? (
+          {gateStatus?.isCompleted ? (
             <SuccessfullyIcon size="small" sx={{ width: 28, height: 28 }} />
           ) : (
             <SuccessfullyRoundedIcon />

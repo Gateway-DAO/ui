@@ -6,7 +6,7 @@ import { PartialDeep } from 'type-fest';
 
 import { Grid, Divider } from '@mui/material';
 
-import { useGateCompleted } from '../../../hooks/use-gate-completed';
+import { useGateStatus } from '../../../hooks/use-gate-completed';
 import { useAuth } from '../../../providers/auth';
 import { Gates } from '../../../services/hasura/types';
 import { MintDialogProps } from '../../molecules/mint-dialog';
@@ -33,7 +33,7 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
   const [isMintDialog, setMintModal] = useState(false);
   const [published, setPublished] = useState(gateProps?.published);
   const { me, gqlAuthMethods } = useAuth();
-  const gateCompleted = useGateCompleted(gateProps);
+  const gateStatus = useGateStatus(gateProps);
 
   const isAdmin =
     me?.permissions?.filter(
@@ -83,7 +83,7 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
       <GateViewSidebar
         published={published}
         setPublished={setPublished}
-        completedGate={gateCompleted.isCompleted}
+        completedGate={gateStatus.isCompleted}
         credential={credential}
         gateProps={gateProps}
         isAdmin={isAdmin}
@@ -92,12 +92,12 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
       />
       <Divider orientation="vertical" flexItem />
       <GateViewTasks
-        completedGate={gateCompleted.isCompleted}
+        completedGate={gateStatus.isCompleted}
         credential={credential}
         gateProps={gateProps}
         isAdmin={isAdmin}
         published={published}
-        completedTasksCount={gateCompleted.completedTasksCount}
+        completedTasksCount={gateStatus.completedTasksCount}
       />
     </Grid>
   );
