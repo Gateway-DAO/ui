@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { PartialDeep } from 'type-fest/source/partial-deep';
 
-import { useGateCompleted } from '../../../../../hooks/use-gate-completed';
+import { useGateStatus } from '../../../../../hooks/use-gate-completed';
 import { useAuth } from '../../../../../providers/auth';
 import { Gates } from '../../../../../services/hasura/types';
 import { GateViewTasks } from '../../../gate-view/gate-view-tasks';
@@ -12,7 +12,7 @@ type Props = {
 
 export function LoyaltyProgramCredentialTasks({ gate }: Props) {
   const { me, gqlAuthMethods } = useAuth();
-  const gateCompleted = useGateCompleted(gate);
+  const gateStatus = useGateStatus(gate);
 
   const credential_id = me?.credentials?.find(
     (cred) => cred?.gate_id === gate?.id
@@ -37,12 +37,12 @@ export function LoyaltyProgramCredentialTasks({ gate }: Props) {
 
   return (
     <GateViewTasks
-      completedGate={gateCompleted.isCompleted}
+      completedGate={gateStatus.isCompleted}
       credential={credential}
       gateProps={gate}
       isAdmin={isAdmin}
       published={gate.published}
-      completedTasksCount={gateCompleted.completedTasksCount}
+      completedTasksCount={gateStatus.completedTasksCount}
     />
   );
 }

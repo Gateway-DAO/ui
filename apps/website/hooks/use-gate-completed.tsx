@@ -8,8 +8,8 @@ import { useAuth } from '../providers/auth';
 import { gqlAnonMethods } from '../services/hasura/api';
 import { Gates } from '../services/hasura/types';
 
-export function useGateCompleted(gate: PartialDeep<Gates>) {
-  const [gateCompleted, setGateCompleted] = useState({
+export function useGateStatus(gate: PartialDeep<Gates>) {
+  const [gateStatus, setGateCompleted] = useState({
     isCompleted: false,
     completedTasksCount: 0,
     isLoading: false,
@@ -67,5 +67,5 @@ export function useGateCompleted(gate: PartialDeep<Gates>) {
     directCredentialInfo.isLoading,
   ]);
 
-  return gateCompleted;
+  return gateStatus;
 }

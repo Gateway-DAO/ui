@@ -2,10 +2,11 @@ import { PartialDeep } from 'type-fest/source/partial-deep';
 
 import { TOKENS } from '@gateway/theme';
 
-import { Stack } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 
 import { Loyalty_Program } from '../../../../../services/hasura/types';
 import { ClientNav } from '../../../../organisms/navbar/client-nav';
+import { useLoyaltyProgramContext } from '../../LoyaltyProgramContext';
 import { CredentialsList } from './CredentialsList';
 
 type Props = {
@@ -13,6 +14,8 @@ type Props = {
 };
 
 export function LoyaltyProgramMainContent({ loyalty }: Props) {
+  const { totalPoints } = useLoyaltyProgramContext();
+
   return (
     <>
       <Stack
@@ -32,6 +35,9 @@ export function LoyaltyProgramMainContent({ loyalty }: Props) {
       >
         <ClientNav />
       </Stack>
+      <Typography variant="h6" sx={{ m: '0px 60px 16px' }}>
+        Total Points: {totalPoints}
+      </Typography>
       <CredentialsList gates={loyalty?.gates} />
     </>
   );
