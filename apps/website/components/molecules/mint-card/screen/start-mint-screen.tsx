@@ -1,5 +1,5 @@
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import { Avatar, Badge, ListItemAvatar } from '@mui/material';
+import { Avatar, Badge, ListItemAvatar, ListItemButton } from '@mui/material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
@@ -16,9 +16,18 @@ import { Subjects } from '../mint-card';
 const NetworksDetails = [
   {
     name: 'Polygon',
+    type: 'evm',
     costInfo:
       process.env.NEXT_PUBLIC_GASLESS_MINTING === 'true' ? 'Cost free' : '',
     imgSrc: '/images/polygon.png',
+    active: true,
+  },
+  {
+    name: 'Solana',
+    type: 'solana',
+    costInfo: 'Coming soon...',
+    imgSrc: '/images/solana.webp',
+    active: false,
   },
 ];
 
@@ -58,11 +67,14 @@ export const StartMintScreen = ({ setMintProcessStatus, mint }) => {
             return (
               <>
                 {index !== 0 && <Divider light={true} sx={{ mx: 2 }} />}
-                <ListItem button onClick={() => mint()}>
+                <ListItemButton
+                  onClick={() => mint()}
+                  disabled={!network.active || wallet?.type != network.type}
+                >
                   <ListItemAvatar>
                     <Badge
                       color={
-                        wallet?.adapter?.name == network.name
+                        wallet?.chainName == network.name
                           ? 'success'
                           : 'warning'
                       }
@@ -82,7 +94,7 @@ export const StartMintScreen = ({ setMintProcessStatus, mint }) => {
                     secondary={network.costInfo}
                   />
                   <ChevronRightIcon style={{ color: 'grey' }} />
-                </ListItem>
+                </ListItemButton>
               </>
             );
           })}
