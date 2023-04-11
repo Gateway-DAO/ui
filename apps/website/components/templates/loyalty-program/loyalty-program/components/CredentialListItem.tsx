@@ -4,7 +4,8 @@ import { PartialDeep } from 'type-fest/source/partial-deep';
 
 import { brandColors } from '@gateway/theme';
 
-import { Stack, Typography, alpha } from '@mui/material';
+import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
+import { Chip, Stack, Typography, alpha } from '@mui/material';
 
 import SuccessfullyIcon from '../../../../../components/atoms/icons/successfully-icon';
 import SuccessfullyRoundedIcon from '../../../../../components/atoms/icons/successfully-rounded';
@@ -32,6 +33,15 @@ export function CredentialListItem({ gate }: Props) {
         padding: { xs: 2, md: '36px 60px' },
         borderBottom: '1px solid rgba(229, 229, 229, 0.12)',
         cursor: 'pointer',
+        background: !gateCompleted.isCompleted
+          ? alpha(brandColors.purple.main, 0.1)
+          : 'none',
+        transition: 'background .3s ease',
+        '&:hover': {
+          background: !gateCompleted.isCompleted
+            ? alpha(brandColors.purple.main, 0.12)
+            : alpha(brandColors.purple.main, 0.03),
+        },
       }}
       onClick={() =>
         router.push({
@@ -61,6 +71,21 @@ export function CredentialListItem({ gate }: Props) {
           {gate?.description}
         </Typography>
       </Stack>
+      {gate.points && gate.points > 0 && (
+        <Chip
+          variant="filled"
+          label={`+${gate.points} pts`}
+          size="medium"
+          sx={{
+            color: brandColors.white.main,
+            background: alpha(brandColors.white.main, 0.16),
+            fontSize: '13px',
+            fontWeight: 400,
+            lineHeight: 1,
+            mr: { xs: 0.5, md: 1 },
+          }}
+        />
+      )}
       {gateCompleted.isLoading ? (
         <Loading />
       ) : (
@@ -72,6 +97,12 @@ export function CredentialListItem({ gate }: Props) {
           )}
         </>
       )}
+      <KeyboardArrowRightIcon
+        sx={{
+          color: alpha(brandColors.white.main, 0.7),
+          ml: { xs: 0.5, md: 2 },
+        }}
+      />
     </Stack>
   );
 }
