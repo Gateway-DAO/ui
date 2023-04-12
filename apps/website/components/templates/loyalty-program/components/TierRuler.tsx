@@ -7,14 +7,15 @@ import { Box, Stack, Typography, alpha } from '@mui/material';
 import {
   Loyalty_Program,
   Loyalty_Tier,
-} from '../../../../../services/hasura/types';
-import { useLoyaltyProgramContext } from '../../LoyaltyProgramContext';
+} from '../../../../services/hasura/types';
+import { useLoyaltyProgramContext } from '../LoyaltyProgramContext';
 
 type Props = {
   loyalty: PartialDeep<Loyalty_Program>;
+  size?: 'small' | 'big';
 };
 
-export function TierRuler({ loyalty }: Props) {
+export function TierRuler({ loyalty, size = 'big' }: Props) {
   const { totalPoints } = useLoyaltyProgramContext();
   const tiers = loyalty?.loyalty_tiers?.sort((a, b) => a.min_pts - b.min_pts);
 
@@ -38,13 +39,15 @@ export function TierRuler({ loyalty }: Props) {
             .sort((a, b) => a.min_pts - b.min_pts)
             .map((tier, index) => (
               <Stack key={tier.id} flexGrow={1} sx={{ ml: 0.25 }}>
-                <Typography fontSize={12} sx={{ mb: 1.5 }}>
-                  {tier.tier}
-                </Typography>
+                {size === 'big' && (
+                  <Typography fontSize={12} sx={{ mb: 1.5 }}>
+                    {tier.tier}
+                  </Typography>
+                )}
                 <Box
                   sx={{
                     width: '100%',
-                    height: '12px',
+                    height: size === 'big' ? '12px' : '4px',
                     mb: 1.5,
                     position: 'relative',
                     background: alpha(brandColors.green.main, 0.3),
@@ -66,12 +69,14 @@ export function TierRuler({ loyalty }: Props) {
                     }}
                   />
                 </Box>
-                <Typography
-                  fontSize={12}
-                  sx={{ color: alpha(brandColors.white.main, 0.7) }}
-                >
-                  {tier.min_pts}
-                </Typography>
+                {size === 'big' && (
+                  <Typography
+                    fontSize={12}
+                    sx={{ color: alpha(brandColors.white.main, 0.7) }}
+                  >
+                    {tier.min_pts}
+                  </Typography>
+                )}
               </Stack>
             ))}
         </Stack>

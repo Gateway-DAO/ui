@@ -2,7 +2,9 @@
   "loyalty-program-page": {
     "missions": "Missions",
     "tier": {
-      "your-tier": "Your Tier"
+      "your-tier": "Your Tier",
+      "linked-to-the-loyalty-pass": "Linked to the loyalty pass",
+      "you-earned": "You earned"
     },
     "sidebar": {
       "display-credential": "See credential",

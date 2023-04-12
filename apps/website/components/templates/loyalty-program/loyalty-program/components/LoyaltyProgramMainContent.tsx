@@ -8,8 +8,8 @@ import { Stack } from '@mui/material';
 
 import { Loyalty_Program } from '../../../../../services/hasura/types';
 import { ClientNav } from '../../../../organisms/navbar/client-nav';
+import { Tier } from '../../components/Tier';
 import { CredentialsList } from './CredentialsList';
-import { Tier } from './Tier';
 
 type Props = {
   loyalty: PartialDeep<Loyalty_Program>;

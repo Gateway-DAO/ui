@@ -1,5 +1,4 @@
 import useTranslation from 'next-translate/useTranslation';
-import { useMemo } from 'react';
 
 import { PartialDeep } from 'type-fest/source/partial-deep';
 
@@ -7,8 +6,9 @@ import { TOKENS, brandColors } from '@gateway/theme';
 
 import { Chip, Stack, Typography, alpha } from '@mui/material';
 
-import { Loyalty_Program } from '../../../../../services/hasura/types';
-import { useLoyaltyProgramContext } from '../../LoyaltyProgramContext';
+import { useActualTier } from '../../../../hooks/use-actual-tier';
+import { Loyalty_Program } from '../../../../services/hasura/types';
+import { useLoyaltyProgramContext } from '../LoyaltyProgramContext';
 import { TierRuler } from './TierRuler';
 
 type Props = {
@@ -19,14 +19,10 @@ export function Tier({ loyalty }: Props) {
   const { t } = useTranslation('loyalty-program');
   const { totalPoints } = useLoyaltyProgramContext();
 
-  const actualTier = useMemo(() => {
-    const tiers = loyalty?.loyalty_tiers?.sort((a, b) => a.min_pts - b.min_pts);
-    return tiers?.find((tier) => {
-      if (totalPoints > tier.min_pts && totalPoints <= tier.max_pts) {
-        return tier;
-      }
-    });
-  }, [loyalty.loyalty_tiers, totalPoints]);
+  const actualTier = useActualTier({
+    tiers: loyalty.loyalty_tiers,
+    totalPoints,
+  });
 
   return (
     <Stack

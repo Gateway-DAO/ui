@@ -7,13 +7,22 @@ import { PartialDeep } from 'type-fest/source/partial-deep';
 import { limitCharsCentered } from '@gateway/helpers';
 
 import { ReadMore } from '@mui/icons-material';
-import { Box, Button, Chip, Grid, Stack, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  Chip,
+  Divider,
+  Grid,
+  Stack,
+  Typography,
+} from '@mui/material';
 
 import { ROUTES } from '../../../../constants/routes';
 import { Gates, Loyalty_Program } from '../../../../services/hasura/types';
 import { AvatarFile } from '../../../atoms/avatar-file';
 import ExternalLink from '../../../atoms/external-link';
 import { TokenFilled } from '../../../molecules/mint-card/assets/token-filled';
+import { SmallTier } from './SmallTier';
 
 type LoyaltySidebarProps = {
   loyalty: PartialDeep<Loyalty_Program>;
@@ -151,6 +160,17 @@ export function LoyaltySidebar({ gate, loyalty }: LoyaltySidebarProps) {
           }}
         />
 
+        <SmallTier loyalty={loyalty} />
+      </Box>
+      <Divider sx={{ mb: 4 }} />
+      <Box
+        sx={(theme) => ({
+          padding: {
+            xs: `0 ${theme.spacing(2)}`,
+            md: `0 ${theme.spacing(7)}`,
+          },
+        })}
+      >
         <Grid container rowGap={(theme) => theme.spacing(3)}>
           <Stack justifyContent="space-between" direction="row" width="100%">
             <Typography
