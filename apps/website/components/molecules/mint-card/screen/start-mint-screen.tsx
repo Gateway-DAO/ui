@@ -69,7 +69,11 @@ export const StartMintScreen = ({ setMintProcessStatus, mint }) => {
                 {index !== 0 && <Divider light={true} sx={{ mx: 2 }} />}
                 <ListItemButton
                   onClick={() => mint()}
-                  disabled={!network.active || wallet?.type != network.type}
+                  disabled={
+                    !network.active || wallet
+                      ? wallet?.type != network.type
+                      : false
+                  }
                 >
                   <ListItemAvatar>
                     <Badge
