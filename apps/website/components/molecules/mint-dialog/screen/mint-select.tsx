@@ -21,6 +21,7 @@ import { useConnectedWallet } from '../../../../hooks/wallet/use-connected-walle
 const NetworksDetails = [
   {
     name: 'Polygon',
+    type: 'evm',
     costInfo:
       process.env.NEXT_PUBLIC_GASLESS_MINTING === 'true' ? 'Cost free' : '',
     imgSrc: '/images/polygon.png',
@@ -28,6 +29,7 @@ const NetworksDetails = [
   },
   {
     name: 'Solana',
+    type: 'solana',
     costInfo: 'Coming soon...',
     imgSrc: '/images/solana.webp',
     active: false,
@@ -50,10 +52,7 @@ export function MintSelect({ setScreen, mint, setOpen }) {
               <ListItemButton
                 key={uuidv4()}
                 onClick={() => mint()}
-                disabled={
-                  !network.active ||
-                  (wallet ? wallet.chainName != network.name : false)
-                }
+                disabled={!network.active || wallet?.type != network.type}
               >
                 <ListItemAvatar>
                   <Badge
