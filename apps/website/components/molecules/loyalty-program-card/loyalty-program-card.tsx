@@ -23,7 +23,6 @@ export function LoyaltyProgramCard({
   dao,
   href,
 }: Props): JSX.Element {
-  console.log(dao);
   return (
     <Link passHref href={href}>
       <MUICard sx={{ position: 'relative', cursor: 'pointer' }}>
