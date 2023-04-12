@@ -6,7 +6,7 @@ import { PartialDeep } from 'type-fest';
 
 import { Grid, Divider } from '@mui/material';
 
-import { useGateStatus } from '../../../hooks/use-gate-completed';
+import { useGateStatus } from '../../../hooks/use-gate-status';
 import { useAuth } from '../../../providers/auth';
 import { Gates } from '../../../services/hasura/types';
 import { MintDialogProps } from '../../molecules/mint-dialog';

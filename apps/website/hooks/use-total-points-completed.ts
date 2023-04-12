@@ -13,8 +13,6 @@ type Props = {
 export function useTotalPointsCompleted({ loyaltyProgramId }: Props) {
   const { me, gqlAuthMethods } = useAuth();
 
-  console.log('entrou', loyaltyProgramId);
-
   const gatesCompleted = useQuery(
     [
       query.gate_progress_completed_by_loyalty_program,
@@ -33,7 +31,6 @@ export function useTotalPointsCompleted({ loyaltyProgramId }: Props) {
   const totalPoints = useMemo(() => {
     let pts = 0;
     if (gatesCompleted.data) {
-      console.log('jooa', gatesCompleted.data);
       gatesCompleted.data.map((gateProgress) => {
         if (gateProgress?.gate?.points > 0) {
           pts += gateProgress.gate.points;

@@ -36,7 +36,7 @@ export function LoyaltyProgramMainContent({ loyalty }: Props) {
         <ClientNav />
       </Stack>
       <Tier loyalty={loyalty} />
-      <CredentialsList gates={loyalty?.gates} />
+      <CredentialsList gates={loyalty?.gates} loyalty={loyalty} />
       <Stack sx={{ mx: TOKENS.CONTAINER_PX, my: { xs: 5, md: 12 } }}>
         <ReactMarkdown remarkPlugins={[remarkGfm]}>
           {loyalty.details}

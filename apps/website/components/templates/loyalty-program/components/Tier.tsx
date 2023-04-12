@@ -1,8 +1,6 @@
 import useTranslation from 'next-translate/useTranslation';
-import { useEffect, useMemo } from 'react';
 
 import { PartialDeep } from 'type-fest/source/partial-deep';
-import { useQuery } from 'wagmi';
 
 import { TOKENS, brandColors } from '@gateway/theme';
 

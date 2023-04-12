@@ -6,14 +6,15 @@ import { TOKENS, brandColors } from '@gateway/theme';
 
 import { Stack, Typography, alpha } from '@mui/material';
 
-import { Gates } from '../../../../../services/hasura/types';
+import { Gates, Loyalty_Program } from '../../../../../services/hasura/types';
 import { CredentialListItem } from './CredentialListItem';
 
 type Props = {
-  gates?: PartialDeep<Gates>[];
+  gates: PartialDeep<Gates>[];
+  loyalty: PartialDeep<Loyalty_Program>;
 };
 
-export function CredentialsList({ gates }: Props) {
+export function CredentialsList({ gates, loyalty }: Props) {
   const { t } = useTranslation('loyalty-program');
 
   return (
@@ -32,7 +33,7 @@ export function CredentialsList({ gates }: Props) {
       </Typography>
       <Stack direction="column">
         {gates.map((gate) => (
-          <CredentialListItem key={gate.id} gate={gate} />
+          <CredentialListItem key={gate.id} gate={gate} loyalty={loyalty} />
         ))}
       </Stack>
     </>
