@@ -11,8 +11,8 @@ export default function LoyaltyCredentialPage({ loyalty, gate }: Props) {
   return (
     <>
       <HeadContainer
-        title={`${loyalty.name} Loyalty`}
-        description={loyalty.description}
+        title={`${gate.title} Credential`}
+        description={gate.description}
       />
       <DashboardTemplate
         containerProps={{
