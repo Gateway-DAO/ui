@@ -1,14 +1,16 @@
 import useTranslation from 'next-translate/useTranslation';
+import { useEffect, useMemo } from 'react';
 
 import { PartialDeep } from 'type-fest/source/partial-deep';
+import { useQuery } from 'wagmi';
 
 import { TOKENS, brandColors } from '@gateway/theme';
 
 import { Chip, Stack, Typography, alpha } from '@mui/material';
 
 import { useActualTier } from '../../../../hooks/use-actual-tier';
+import { useTotalPointsCompleted } from '../../../../hooks/use-total-points-completed';
 import { Loyalty_Program } from '../../../../services/hasura/types';
-import { useLoyaltyProgramContext } from '../LoyaltyProgramContext';
 import { TierRuler } from './TierRuler';
 
 type Props = {
@@ -17,8 +19,7 @@ type Props = {
 
 export function Tier({ loyalty }: Props) {
   const { t } = useTranslation('loyalty-program');
-  const { totalPoints } = useLoyaltyProgramContext();
-
+  const totalPoints = useTotalPointsCompleted({ loyaltyProgramId: loyalty.id });
   const actualTier = useActualTier({
     tiers: loyalty.loyalty_tiers,
     totalPoints,
@@ -67,7 +68,7 @@ export function Tier({ loyalty }: Props) {
           }}
         />
       </Stack>
-      <TierRuler loyalty={loyalty} />
+      <TierRuler tiers={loyalty.loyalty_tiers} totalPoints={totalPoints} />
     </Stack>
   );
 }

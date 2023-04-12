@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import { useEffect } from 'react';
 
 import { PartialDeep } from 'type-fest/source/partial-deep';
 
@@ -14,7 +13,6 @@ import Loading from '../../../../../components/atoms/loading';
 import { ROUTES } from '../../../../../constants/routes';
 import { useGateStatus } from '../../../../../hooks/use-gate-completed';
 import { Gates } from '../../../../../services/hasura/types';
-import { useLoyaltyProgramContext } from '../../LoyaltyProgramContext';
 
 type Props = {
   gate: PartialDeep<Gates>;
@@ -22,15 +20,6 @@ type Props = {
 
 export function CredentialListItem({ gate }: Props) {
   const gateStatus = useGateStatus(gate);
-  const { setTotalPoints } = useLoyaltyProgramContext();
-
-  useEffect(() => {
-    if (gateStatus.isCompleted) {
-      setTotalPoints((prev) => {
-        return prev + gate.points;
-      });
-    }
-  }, [gateStatus]);
 
   return (
     <Link

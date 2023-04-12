@@ -4,11 +4,6 @@ import { PartialDeep } from 'type-fest/source/partial-deep';
 
 import { Loyalty_Tier } from '../services/hasura/types';
 
-export enum ViewMode {
-  grid,
-  table,
-}
-
 type Props = {
   tiers: PartialDeep<Loyalty_Tier>[];
   totalPoints: number;

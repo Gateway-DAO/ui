@@ -1,5 +1,3 @@
-import { useMemo, useState } from 'react';
-
 import { PartialDeep } from 'type-fest/source/partial-deep';
 
 import { Loyalty_Program } from '../../../../services/hasura/types';

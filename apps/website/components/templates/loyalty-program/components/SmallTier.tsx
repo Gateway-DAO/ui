@@ -7,6 +7,7 @@ import { brandColors } from '@gateway/theme';
 import { Box, Chip, Stack, Typography, alpha } from '@mui/material';
 
 import { useActualTier } from '../../../../hooks/use-actual-tier';
+import { useTotalPointsCompleted } from '../../../../hooks/use-total-points-completed';
 import { Loyalty_Program } from '../../../../services/hasura/types';
 import { TierRuler } from './TierRuler';
 
@@ -16,7 +17,7 @@ type Props = {
 
 export function SmallTier({ loyalty }: Props) {
   const { t } = useTranslation('loyalty-program');
-  const totalPoints = 130;
+  const totalPoints = useTotalPointsCompleted({ loyaltyProgramId: loyalty.id });
 
   const actualTier = useActualTier({
     tiers: loyalty.loyalty_tiers,
@@ -83,7 +84,11 @@ export function SmallTier({ loyalty }: Props) {
           </Typography>
           <Typography fontSize={12}>{totalPoints} pts</Typography>
         </Stack>
-        <TierRuler loyalty={loyalty} size="small" />
+        <TierRuler
+          tiers={loyalty.loyalty_tiers}
+          totalPoints={totalPoints}
+          size="small"
+        />
       </Stack>
       <Stack direction="row" alignItems="center" sx={{ mb: 4 }}>
         <Typography flexGrow={1}>Reward</Typography>
