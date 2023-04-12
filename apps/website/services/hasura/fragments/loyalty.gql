@@ -29,4 +29,5 @@ fragment loyalty on loyalty_program {
       id
     }
   }
+  details
 }
