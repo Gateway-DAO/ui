@@ -14,9 +14,7 @@ export function LoyaltyProgramCredential({ gate, loyalty }: Props) {
   return (
     <LoyaltyProgramTemplate
       sidebar={<LoyaltySidebar gate={gate} loyalty={loyalty} />}
-      mainContent={
-        <LoyaltyProgramCredentialTasks gate={gate} loyalty={loyalty} />
-      }
+      mainContent={<LoyaltyProgramCredentialTasks gate={gate} />}
     />
   );
 }
