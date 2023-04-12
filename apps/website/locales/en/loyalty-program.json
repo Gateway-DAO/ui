@@ -1,6 +1,9 @@
 {
   "loyalty-program-page": {
     "missions": "Missions",
+    "tier": {
+      "your-tier": "Your Tier"
+    },
     "sidebar": {
       "display-credential": "See credential",
       "mint-nft": "Mint as NFT",

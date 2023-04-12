@@ -4,20 +4,18 @@ import { PartialDeep } from 'type-fest/source/partial-deep';
 
 import { TOKENS } from '@gateway/theme';
 
-import { Stack, Typography } from '@mui/material';
+import { Stack } from '@mui/material';
 
 import { Loyalty_Program } from '../../../../../services/hasura/types';
 import { ClientNav } from '../../../../organisms/navbar/client-nav';
-import { useLoyaltyProgramContext } from '../../LoyaltyProgramContext';
 import { CredentialsList } from './CredentialsList';
+import { Tier } from './Tier';
 
 type Props = {
   loyalty: PartialDeep<Loyalty_Program>;
 };
 
 export function LoyaltyProgramMainContent({ loyalty }: Props) {
-  const { totalPoints } = useLoyaltyProgramContext();
-
   return (
     <>
       <Stack
@@ -37,11 +35,9 @@ export function LoyaltyProgramMainContent({ loyalty }: Props) {
       >
         <ClientNav />
       </Stack>
-      <Typography variant="h6" sx={{ m: '0px 60px 16px' }}>
-        Total Points: {totalPoints}
-      </Typography>
+      <Tier loyalty={loyalty} />
       <CredentialsList gates={loyalty?.gates} />
-      <Stack sx={{ m: '100px 60px' }}>
+      <Stack sx={{ mx: TOKENS.CONTAINER_PX, my: { xs: 5, md: 12 } }}>
         <ReactMarkdown remarkPlugins={[remarkGfm]}>
           {loyalty.details}
         </ReactMarkdown>

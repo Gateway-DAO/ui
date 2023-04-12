@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { useContext, useEffect } from 'react';
+import { useEffect } from 'react';
 
 import { PartialDeep } from 'type-fest/source/partial-deep';
 

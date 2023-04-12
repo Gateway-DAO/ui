@@ -74,7 +74,7 @@ export default function LoyaltyProgramTemplate({
           {sidebar}
         </Grid>
         <Divider orientation={isMobile ? 'horizontal' : 'vertical'} flexItem />
-        <Grid item xs={12} md sx={{ pt: 2 }}>
+        <Grid item xs={12} md sx={{ pt: 4 }}>
           {mainContent}
         </Grid>
       </Grid>
