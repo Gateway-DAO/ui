@@ -28,6 +28,7 @@ import { ClientNav } from '../../organisms/navbar/client-nav';
 import Image from 'next/image';
 import ArcProgress from 'react-arc-progress';
 import useTranslation from 'next-translate/useTranslation';
+import { useQuery } from '@tanstack/react-query';
 
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
@@ -49,8 +50,19 @@ export function CreditScoreTemplate() {
   const { me, gqlAuthMethods } = useAuth();
   const router = useRouter();
 
-  const isUser = !!me;
+  const { data: credScore, error } = useQuery(
+    ['cred-score-single', me?.wallet],
+    async () => {
+      const result = await gqlAuthMethods.get_cred_score({
+        address: me?.wallet,
+      });
+      return result.get_cred_score;
+    }
+  );
 
+  const isUser = !!me;
+  const isCreditScore = !!credScore?.account;
+  
   const handleNavBack = () => {
     // If user directly lands to credential page using link
     if (window.history.state.idx === 0) {
@@ -91,6 +103,7 @@ export function CreditScoreTemplate() {
       y: 422,
     },
   ];
+
   return (
     <>
       <Grid
@@ -404,7 +417,7 @@ export function CreditScoreTemplate() {
             <Box position={'relative'}>
               <ArcProgress
                 thickness={20}
-                progress={isUser ? progress : 0}
+                progress={isUser && isCreditScore ? credScore?.value / 1000 : 0}
                 // text={text}
                 fillThickness={35}
                 emptyColor="#FFFFFF26"
@@ -415,13 +428,13 @@ export function CreditScoreTemplate() {
                 arcEnd={400}
               />
               <Box position={'absolute'} top={160} left={170}>
-                {isUser && (
+                {isUser && isCreditScore && (
                   <>
                     <Typography align={'center'} variant="h1">
-                      789
+                      {credScore?.value}
                     </Typography>
                     <Typography align={'center'} variant="h6">
-                      Excellent
+                      {credScore?.value_rating}
                     </Typography>
                   </>
                 )}
@@ -433,6 +446,17 @@ export function CreditScoreTemplate() {
                       variant="body1"
                     >
                       Connect your wallet
+                    </Typography>
+                  </>
+                )}
+                {isUser && !isCreditScore && (
+                  <>
+                    <Typography
+                      sx={{ marginTop: '60px', marginLeft: '30px' }}
+                      align={'center'}
+                      variant="h6"
+                    >
+                      No Score
                     </Typography>
                   </>
                 )}
