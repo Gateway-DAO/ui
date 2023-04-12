@@ -1,10 +1,10 @@
-query loyaltys {
+query loyalty_programs {
   loyalty_program {
     ...loyalty
   }
 }
 
-query loyalty($id: uuid!) {
+query loyalty_program($id: uuid!) {
   loyalty_program_by_pk(id: $id) {
     ...loyalty
     dao {
@@ -12,6 +12,41 @@ query loyalty($id: uuid!) {
       name
       logo_url
       slug
+    }
+  }
+}
+
+query loyalty_programs_by_organization_id($id: uuid!) {
+  loyalty_program(where: { organization_id: { _eq: $id } }) {
+    organization_id
+    image
+    name
+    description
+    categories
+    data_model_id
+    dao {
+      background_url
+      name
+      logo_url
+      slug
+    }
+  }
+}
+
+query get_gate_progress_completed_by_loyalty_program(
+  $userId: uuid!
+  $loyaltyProgramId: uuid!
+) {
+  gate_progress(
+    where: {
+      user_id: { _eq: $userId }
+      status: { _eq: "completed" }
+      gate: { loyalty_id: { _eq: $loyaltyProgramId } }
+    }
+  ) {
+    gate_id
+    gate {
+      points
     }
   }
 }

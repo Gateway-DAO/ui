@@ -8,4 +8,5 @@ export const query = {
   mintCredential: 'mint_credential',
   credentialsIssuedByOrg: 'credentials_issued_by_organization',
   credentialsReceivedByOrg: 'credentials_received_by_organization',
+  gate: 'gate',
 };

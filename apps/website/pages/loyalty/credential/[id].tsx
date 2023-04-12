@@ -31,7 +31,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const id = ctx.query.id as string;
 
   const { gates_by_pk } = await gqlAnonMethods.gate({ id });
-  const { loyalty_program_by_pk } = await gqlAnonMethods.loyalty({
+  const { loyalty_program_by_pk } = await gqlAnonMethods.loyalty_program({
     id: gates_by_pk.loyalty_id,
   });
 
