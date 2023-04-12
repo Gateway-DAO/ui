@@ -400,8 +400,8 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
               </Box>
               <Stack flexDirection="row" gap={1}>
                 <ShareButton
-                  title={`${gateProps?.title} @ Gateway`}
-                  description={`🎉 Just got my hands on the ${gateProps.title} issued from ${gateProps.creator?.name} via @Gateway_xyz`}
+                  title={`${gateProps?.title} @Gateway_xyz`}
+                  description={`🎉 Just got my hands on the ${gateProps.title} issued from ${gateProps.dao?.name} via @Gateway_xyz`}
                 />
                 {isAdmin && (
                   <MorePopover

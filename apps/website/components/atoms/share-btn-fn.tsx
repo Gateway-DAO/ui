@@ -57,7 +57,7 @@ export function ShareButtonFn({
   const { enqueueSnackbar } = useSnackbar();
   const [state, copyToClipboard] = useCopyToClipboard();
   const data = { title, url, description };
-  console.log(tweetLink(data));
+  
   const { t } = useTranslation('common');
   const onShare = () => {
     try {
