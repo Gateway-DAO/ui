@@ -189,7 +189,11 @@ export function OverviewTab({
               gridSize={{ lg: 4 }}
             >
               {loyaltyPrograms.map((program) => (
-                <LoyaltyProgramCard href="/#/" {...program} key={program.id} />
+                <LoyaltyProgramCard
+                  href={ROUTES.LOYALTY_PROGRAM.replace('[id]', program.id)}
+                  {...program}
+                  key={program.id}
+                />
               ))}
             </SectionWithSliderResponsive>
           )}

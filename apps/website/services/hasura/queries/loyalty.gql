@@ -7,29 +7,12 @@ query loyalty_programs {
 query loyalty_program($id: uuid!) {
   loyalty_program_by_pk(id: $id) {
     ...loyalty
-    dao {
-      background_url
-      name
-      logo_url
-      slug
-    }
   }
 }
 
 query loyalty_programs_by_organization_id($id: uuid!) {
   loyalty_program(where: { organization_id: { _eq: $id } }) {
-    organization_id
-    image
-    name
-    description
-    categories
-    data_model_id
-    dao {
-      background_url
-      name
-      logo_url
-      slug
-    }
+    ...loyalty
   }
 }
 
