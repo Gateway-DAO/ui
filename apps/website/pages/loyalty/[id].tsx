@@ -2,7 +2,6 @@ import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
 
 import { HeadContainer } from '../../components/molecules/head-container';
 import { DashboardTemplate } from '../../components/templates/dashboard';
-import { LayoutProgramContextProvider } from '../../components/templates/loyalty-program/LoyaltyProgramContext';
 import { LoyaltyProgram } from '../../components/templates/loyalty-program/loyalty-program/LoyaltyProgram';
 import { gqlAnonMethods } from '../../services/hasura/api';
 
@@ -22,9 +21,7 @@ export default function LoyaltyPage({ loyalty }: Props) {
           },
         }}
       >
-        <LayoutProgramContextProvider>
-          <LoyaltyProgram loyalty={loyalty} />
-        </LayoutProgramContextProvider>
+        <LoyaltyProgram loyalty={loyalty} />
       </DashboardTemplate>
     </>
   );

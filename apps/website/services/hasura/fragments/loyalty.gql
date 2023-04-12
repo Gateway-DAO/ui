@@ -30,4 +30,11 @@ fragment loyalty on loyalty_program {
     }
   }
   details
+  loyalty_tiers {
+    tier
+    id
+    image
+    max_pts
+    min_pts
+  }
 }
