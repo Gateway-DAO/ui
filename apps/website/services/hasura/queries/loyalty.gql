@@ -10,7 +10,6 @@ query loyalty($id: uuid!) {
     dao {
       background_url
       name
-      logo
       logo_url
       slug
     }

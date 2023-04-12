@@ -13,7 +13,6 @@ import { ROUTES } from '../../../../constants/routes';
 import { Gates, Loyalty_Program } from '../../../../services/hasura/types';
 import { AvatarFile } from '../../../atoms/avatar-file';
 import ExternalLink from '../../../atoms/external-link';
-import { ShareButton } from '../../../atoms/share-button';
 import { TokenFilled } from '../../../molecules/mint-card/assets/token-filled';
 
 type LoyaltySidebarProps = {
@@ -36,8 +35,8 @@ export function LoyaltySidebar({ gate, loyalty }: LoyaltySidebarProps) {
       <Box
         sx={(theme) => ({
           padding: {
-            xs: `${theme.spacing(5)} ${theme.spacing(2)}`,
-            md: `${theme.spacing(5)} ${theme.spacing(7)}`,
+            xs: `0 ${theme.spacing(2)}`,
+            md: `0 ${theme.spacing(7)}`,
           },
         })}
       >

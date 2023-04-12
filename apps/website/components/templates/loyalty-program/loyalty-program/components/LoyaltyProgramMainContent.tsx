@@ -1,3 +1,5 @@
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import { PartialDeep } from 'type-fest/source/partial-deep';
 
 import { TOKENS } from '@gateway/theme';
@@ -39,6 +41,11 @@ export function LoyaltyProgramMainContent({ loyalty }: Props) {
         Total Points: {totalPoints}
       </Typography>
       <CredentialsList gates={loyalty?.gates} />
+      <Stack sx={{ m: '100px 60px' }}>
+        <ReactMarkdown remarkPlugins={[remarkGfm]}>
+          {loyalty.details}
+        </ReactMarkdown>
+      </Stack>
     </>
   );
 }
