@@ -35,7 +35,7 @@ type SocialProps = {
 
 const tweetLink = (props: SocialProps) =>
   `https://twitter.com/intent/tweet${objectToParams({
-    text: props.title + ' ' + props.description,
+    text: props.description,
     url: props.url,
   })}`;
 
@@ -57,7 +57,7 @@ export function ShareButtonFn({
   const { enqueueSnackbar } = useSnackbar();
   const [state, copyToClipboard] = useCopyToClipboard();
   const data = { title, url, description };
-  
+
   const { t } = useTranslation('common');
   const onShare = () => {
     try {
