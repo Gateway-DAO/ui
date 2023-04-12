@@ -2,7 +2,7 @@ import useTranslation from 'next-translate/useTranslation';
 
 import { brandColors } from '@gateway/theme';
 
-import { Check, Close } from '@mui/icons-material';
+import { Check, Close, IosShare } from '@mui/icons-material';
 import {
   Box,
   CircularProgress,
@@ -15,7 +15,7 @@ import { AnimatedMessage } from '../../../../../atoms/animated-message';
 
 type MintDialogProps = {
   isOpen: boolean;
-  status: 'loading' | 'error' | 'success' | 'idle';
+  status: 'loading' | 'error' | 'success' | 'idle' | 'share';
   onClose: any;
 };
 
@@ -44,6 +44,20 @@ export function MintDialog({ isOpen, status, onClose }: MintDialogProps) {
                 height: 60,
                 width: 60,
                 mb: 2,
+                p: 1,
+                bgcolor: 'primary.light',
+                borderRadius: '50%',
+              }}
+            />
+          )}
+
+          {status === 'share' && (
+            <IosShare
+              color="secondary"
+              sx={{
+                height: 40,
+                width: 40,
+                m: 2,
                 p: 1,
                 bgcolor: 'primary.light',
                 borderRadius: '50%',
@@ -87,6 +101,11 @@ export function MintDialog({ isOpen, status, onClose }: MintDialogProps) {
             {status === 'success' && (
               <AnimatedMessage key="successful">
                 {t('credential.mint-card.feedback-successful')}
+              </AnimatedMessage>
+            )}
+            {status === 'share' && (
+              <AnimatedMessage key="share">
+                {t('credential.mint-card.feedback-share')}
               </AnimatedMessage>
             )}
             {status === 'error' && (
