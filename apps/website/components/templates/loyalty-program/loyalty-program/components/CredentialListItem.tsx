@@ -107,7 +107,7 @@ export function CredentialListItem({ gate, loyalty }: Props) {
           />
         )}
         {gatesCompleted.isLoading ? (
-          <Loading />
+          <Loading size={28} marginTop={0} />
         ) : (
           <>
             {gatesCompleted.data ? (

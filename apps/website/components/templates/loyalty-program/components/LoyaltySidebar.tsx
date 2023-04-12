@@ -159,15 +159,14 @@ export function LoyaltySidebar({ gate, loyalty }: LoyaltySidebarProps) {
             borderRadius: (theme) => theme.spacing(1),
           }}
         />
-
-        <SmallTier loyalty={loyalty} />
+        {gate && <SmallTier loyalty={loyalty} />}
       </Box>
       <Divider sx={{ mb: 4 }} />
       <Box
         sx={(theme) => ({
           padding: {
             xs: `0 ${theme.spacing(2)}`,
-            md: `0 ${theme.spacing(7)}`,
+            md: `0 ${theme.spacing(7)} ${theme.spacing(7)}`,
           },
         })}
       >

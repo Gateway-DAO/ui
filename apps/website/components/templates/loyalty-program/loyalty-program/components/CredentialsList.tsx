@@ -18,7 +18,7 @@ export function CredentialsList({ gates, loyalty }: Props) {
   const { t } = useTranslation('loyalty-program');
 
   return (
-    <>
+    <Stack sx={{ mb: { xs: 5, md: 12 } }}>
       <Typography
         fontSize={12}
         sx={{
@@ -36,6 +36,6 @@ export function CredentialsList({ gates, loyalty }: Props) {
           <CredentialListItem key={gate.id} gate={gate} loyalty={loyalty} />
         ))}
       </Stack>
-    </>
+    </Stack>
   );
 }

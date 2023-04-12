@@ -40,5 +40,5 @@ export function useTotalPointsCompleted({ loyaltyProgramId }: Props) {
     return pts;
   }, [gatesCompleted]);
 
-  return totalPoints;
+  return { totalPoints, isLoading: gatesCompleted.isLoading };
 }
