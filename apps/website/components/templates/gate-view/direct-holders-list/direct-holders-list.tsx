@@ -1,33 +1,31 @@
 import useTranslation from 'next-translate/useTranslation';
-import { ChangeEvent, ReactNode, useRef, useState } from 'react';
+import { ChangeEvent, ReactNode, useState } from 'react';
 
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { Virtuoso } from 'react-virtuoso';
 import { PartialDeep } from 'type-fest';
 
-import { TOKENS } from '@gateway/theme';
 import { GateFilled } from '@gateway/assets';
+import { TOKENS } from '@gateway/theme';
 
 import SearchIcon from '@mui/icons-material/Search';
 import {
-  Avatar,
   Box,
   Divider,
   Grid,
   InputAdornment,
   Stack,
-  SvgIcon,
   TextField,
   Typography,
 } from '@mui/material';
 
+import { query } from '../../../../constants/queries';
 import { useAuth } from '../../../../providers/auth';
 import { gqlAnonMethods } from '../../../../services/hasura/api';
 import { Gates } from '../../../../services/hasura/types';
 import { CenteredLoader } from '../../../atoms/centered-loader';
 import { UserListItem } from '../../../molecules/user-list-item';
 import { ClientNav } from '../../../organisms/navbar/client-nav';
-import { background } from '../../../../../../libs/theme/src/lib/config/colors';
 
 type Props = {
   gate: PartialDeep<Gates>;
@@ -48,7 +46,7 @@ export function DirectHoldersList({
 
   const { data, isLoading, hasNextPage, isFetchingNextPage, fetchNextPage } =
     useInfiniteQuery(
-      ['direct-credential-holders', me?.wallet, gate.id, filter],
+      [query.direct_credentialholders, me?.wallet, gate.id, filter],
       ({ pageParam = 0 }) =>
         filter?.length
           ? gqlAnonMethods.direct_credential_holders_search({
@@ -68,6 +66,8 @@ export function DirectHoldersList({
         },
       }
     );
+
+  console.log(data);
 
   const whitelistedWallets =
     data?.pages?.flatMap((page) => page.whitelisted_wallets) ?? [];

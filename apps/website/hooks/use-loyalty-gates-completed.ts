@@ -1,10 +1,11 @@
 import { useMemo } from 'react';
 
 import { useQuery } from '@tanstack/react-query';
+import { PartialDeep } from 'type-fest/source/partial-deep';
 
 import { query } from '../constants/queries';
 import { useAuth } from '../providers/auth';
-import { Scalars } from '../services/hasura/types';
+import { Gate_Progress, Scalars } from '../services/hasura/types';
 
 type Props = {
   loyaltyProgramId: Scalars['uuid'];
@@ -24,22 +25,36 @@ export function useLoyaltyGatesCompleted({ loyaltyProgramId }: Props) {
         loyaltyProgramId: loyaltyProgramId,
       }),
     {
-      select: (data) => data.gate_progress,
+      select: (data) => data,
       enabled: !!me?.id,
     }
   );
 
   const totalPoints = useMemo(() => {
     let pts = 0;
-    if (gatesCompleted.data) {
-      gatesCompleted.data.map((gateProgress) => {
+    if (gatesCompleted?.data?.gate_progress) {
+      gatesCompleted.data.gate_progress.map((gateProgress) => {
         if (gateProgress?.gate?.points > 0) {
           pts += gateProgress.gate.points;
+        }
+      });
+    }
+    if (gatesCompleted?.data?.whitelisted_wallets) {
+      gatesCompleted?.data?.whitelisted_wallets?.map((whitelisted) => {
+        if (whitelisted?.gate?.points > 0) {
+          pts += whitelisted.gate.points;
         }
       });
     }
     return pts;
   }, [gatesCompleted]);
 
-  return { totalPoints, isLoading: gatesCompleted.isLoading, gatesCompleted };
+  return {
+    totalPoints,
+    isLoading: gatesCompleted.isLoading,
+    gatesCompleted: [
+      ...(gatesCompleted?.data?.gate_progress || []),
+      ...(gatesCompleted?.data?.whitelisted_wallets || []),
+    ] as PartialDeep<Gate_Progress>[],
+  };
 }

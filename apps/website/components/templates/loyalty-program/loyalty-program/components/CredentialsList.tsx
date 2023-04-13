@@ -1,6 +1,5 @@
 import useTranslation from 'next-translate/useTranslation';
 
-import { useQuery } from '@tanstack/react-query';
 import { PartialDeep } from 'type-fest/source/partial-deep';
 
 import { TOKENS, brandColors } from '@gateway/theme';
@@ -45,7 +44,7 @@ export function CredentialsList({ gates, loyalty }: Props) {
         >
           {t('missions.title')}
         </Typography>
-        {(gatesCompleted?.data?.length === 0 || !me?.id) && (
+        {(gatesCompleted?.length === 0 || !me?.id) && (
           <AlertCustom severity="error">
             {t('missions.message-missions-empty')}
           </AlertCustom>
@@ -56,7 +55,7 @@ export function CredentialsList({ gates, loyalty }: Props) {
           <CredentialListItem
             key={gate.id}
             gate={gate}
-            gatesCompleted={gatesCompleted}
+            gatesCompleted={gatesCompleted as any}
           />
         ))}
       </Stack>
