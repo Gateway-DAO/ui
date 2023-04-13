@@ -45,7 +45,7 @@ export function useGateStatus(gate: PartialDeep<Gates>) {
     if (
       (gate.type === 'direct' &&
         directCredentialInfo.data?.hasCredential?.aggregate?.count > 0) ||
-      completedTaskCount === gate?.tasks?.length
+      (gate.type === 'task_based' && completedTaskCount === gate?.tasks?.length)
     ) {
       setGateCompleted({
         isCompleted: true,
