@@ -106,14 +106,6 @@ export function OverviewTab({
     ].slice(0, 4);
   }, [gates, isAdmin, newGateUrl]);
 
-  const loyaltyProgramsList = useMemo(() => {
-    return [
-      ...loyaltyPrograms.map((program) => (
-        <GatesCard {...program} key={program.id} showStatus dao={dao} />
-      )),
-    ].slice(0, 4);
-  }, [loyaltyPrograms]);
-
   return (
     <Stack
       direction="column"
