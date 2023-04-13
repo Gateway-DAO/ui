@@ -72,6 +72,7 @@ query gates_tab {
     categories
     image
     published
+    loyalty_id
     dao {
       id
       logo_url
