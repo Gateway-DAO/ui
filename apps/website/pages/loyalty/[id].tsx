@@ -29,7 +29,9 @@ export default function LoyaltyPage({ loyalty }: Props) {
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const id = ctx.query.id as string;
-  const { loyalty_program_by_pk } = await gqlAnonMethods.loyalty({ id });
+  const { loyalty_program_by_pk } = await gqlAnonMethods.loyalty_program({
+    id,
+  });
 
   return {
     props: {

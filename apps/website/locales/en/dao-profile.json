@@ -9,6 +9,11 @@
       "caption": "People are really into these credentials. We thought you would too.",
       "action": "View more"
     },
+    "loyalty-section": {
+      "title": "Loyalty programs",
+      "caption": "Lorem ipsum dolor sit amet",
+      "action": "View more"
+    },
     "issued-credentials-section": {
       "title": "Last issued credentials",
       "caption": "Check out credentials issued using this template!",

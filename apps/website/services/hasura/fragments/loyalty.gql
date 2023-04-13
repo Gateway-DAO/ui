@@ -8,13 +8,6 @@ fragment loyalty on loyalty_program {
   organization_id
   categories
   details
-  loyalty_tiers {
-    id
-    tier
-    min_pts
-    max_pts
-    image
-  }
   gates {
     id
     title
@@ -36,5 +29,11 @@ fragment loyalty on loyalty_program {
     image
     max_pts
     min_pts
+  }
+  dao {
+    background_url
+    name
+    logo_url
+    slug
   }
 }

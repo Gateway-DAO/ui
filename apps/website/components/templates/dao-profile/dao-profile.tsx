@@ -14,8 +14,13 @@ import GridViewTab from './tabs/grid-view-tab';
 import StaticGridViewTab from './tabs/static-grid-view-tab';
 
 export function DaoProfileTemplate() {
-  const { dao, onRefetchFollowers, followersCount, credentials } =
-    useDaoProfile();
+  const {
+    dao,
+    onRefetchFollowers,
+    followersCount,
+    credentials,
+    loyaltyPrograms,
+  } = useDaoProfile();
   const { t } = useTranslation();
   const { activeTab, handleTabChange, setTab } = useTab();
 
@@ -65,6 +70,7 @@ export function DaoProfileTemplate() {
           people={people}
           setTab={setTab}
           credentials={credentials?.daos_by_pk.gates}
+          loyaltyPrograms={loyaltyPrograms}
         />
       ),
     },
