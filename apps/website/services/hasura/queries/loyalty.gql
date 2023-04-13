@@ -15,3 +15,18 @@ query loyalty($id: uuid!) {
     }
   }
 }
+
+query get_gate_progress_completed_by_loyalty_program($userId: uuid!, $loyaltyProgramId: uuid!) {
+  gate_progress(
+    where: {
+      user_id: { _eq: $userId }
+      status: { _eq: "completed" }
+      gate: { loyalty_id: { _eq: $loyaltyProgramId } }
+    }
+  ) {
+    gate_id
+    gate {
+      points
+    }
+  }
+}

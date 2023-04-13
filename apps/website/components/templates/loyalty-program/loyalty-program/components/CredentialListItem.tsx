@@ -1,6 +1,6 @@
 import Link from 'next/link';
-import { useContext, useEffect } from 'react';
 
+import { useQuery } from '@tanstack/react-query';
 import { PartialDeep } from 'type-fest/source/partial-deep';
 
 import { brandColors } from '@gateway/theme';
@@ -11,26 +11,36 @@ import { Chip, Stack, Typography, alpha } from '@mui/material';
 import SuccessfullyIcon from '../../../../../components/atoms/icons/successfully-icon';
 import SuccessfullyRoundedIcon from '../../../../../components/atoms/icons/successfully-rounded';
 import Loading from '../../../../../components/atoms/loading';
+import { query } from '../../../../../constants/queries';
 import { ROUTES } from '../../../../../constants/routes';
-import { useGateStatus } from '../../../../../hooks/use-gate-completed';
-import { Gates } from '../../../../../services/hasura/types';
-import { useLoyaltyProgramContext } from '../../LoyaltyProgramContext';
+import { useAuth } from '../../../../../providers/auth';
+import { Gates, Loyalty_Program } from '../../../../../services/hasura/types';
 
 type Props = {
   gate: PartialDeep<Gates>;
+  loyalty: PartialDeep<Loyalty_Program>;
 };
 
-export function CredentialListItem({ gate }: Props) {
-  const gateStatus = useGateStatus(gate);
-  const { setTotalPoints } = useLoyaltyProgramContext();
+export function CredentialListItem({ gate, loyalty }: Props) {
+  const { me, gqlAuthMethods } = useAuth();
 
-  useEffect(() => {
-    if (gateStatus.isCompleted) {
-      setTotalPoints((prev) => {
-        return prev + gate.points;
-      });
+  const gatesCompleted = useQuery(
+    [
+      query.gate_progress_completed_by_loyalty_program,
+      { userId: me?.id, loyaltyProgramId: loyalty?.id },
+    ],
+    () =>
+      gqlAuthMethods.get_gate_progress_completed_by_loyalty_program({
+        userId: me?.id,
+        loyaltyProgramId: loyalty?.id,
+      }),
+    {
+      select: (data) =>
+        data.gate_progress.find(
+          (gateProgress) => gateProgress.gate_id === gate.id
+        ).gate,
     }
-  }, [gateStatus]);
+  );
 
   return (
     <Link
@@ -49,12 +59,12 @@ export function CredentialListItem({ gate }: Props) {
           cursor: 'pointer',
           color: brandColors.white.main,
           textDecoration: 'none',
-          background: !gateStatus.isCompleted
+          background: !gatesCompleted.data
             ? alpha(brandColors.purple.main, 0.1)
             : 'none',
           transition: 'background .3s ease',
           '&:hover': {
-            background: !gateStatus.isCompleted
+            background: !gatesCompleted.data
               ? alpha(brandColors.purple.main, 0.12)
               : alpha(brandColors.purple.main, 0.03),
           },
@@ -96,11 +106,11 @@ export function CredentialListItem({ gate }: Props) {
             }}
           />
         )}
-        {gateStatus.isLoading ? (
-          <Loading />
+        {gatesCompleted.isLoading ? (
+          <Loading size={28} marginTop={0} />
         ) : (
           <>
-            {gateStatus?.isCompleted ? (
+            {gatesCompleted.data ? (
               <SuccessfullyIcon size="small" sx={{ width: 28, height: 28 }} />
             ) : (
               <SuccessfullyRoundedIcon />

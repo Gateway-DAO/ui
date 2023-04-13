@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { PartialDeep } from 'type-fest/source/partial-deep';
 
-import { useGateStatus } from '../../../../../hooks/use-gate-completed';
+import { useGateStatus } from '../../../../../hooks/use-gate-status';
 import { useAuth } from '../../../../../providers/auth';
 import { Gates } from '../../../../../services/hasura/types';
 import { GateViewTasks } from '../../../gate-view/gate-view-tasks';

@@ -2,26 +2,29 @@ import useTranslation from 'next-translate/useTranslation';
 
 import { PartialDeep } from 'type-fest/source/partial-deep';
 
-import { brandColors } from '@gateway/theme';
+import { TOKENS, brandColors } from '@gateway/theme';
 
-import { Stack, Typography, Box, alpha } from '@mui/material';
+import { Stack, Typography, alpha } from '@mui/material';
 
-import { Gates } from '../../../../../services/hasura/types';
+import { Gates, Loyalty_Program } from '../../../../../services/hasura/types';
 import { CredentialListItem } from './CredentialListItem';
 
 type Props = {
-  gates?: PartialDeep<Gates>[];
+  gates: PartialDeep<Gates>[];
+  loyalty: PartialDeep<Loyalty_Program>;
 };
 
-export function CredentialsList({ gates }: Props) {
+export function CredentialsList({ gates, loyalty }: Props) {
   const { t } = useTranslation('loyalty-program');
 
   return (
-    <Box>
+    <Stack sx={{ mb: { xs: 5, md: 12 } }}>
       <Typography
         fontSize={12}
         sx={{
-          m: { xs: 2, md: '40px 60px 16px' },
+          mx: TOKENS.CONTAINER_PX,
+          mt: { xs: 2, md: 5 },
+          mb: { xs: 2, md: 2 },
           color: alpha(brandColors.white.main, 0.7),
           textTransform: 'uppercase',
         }}
@@ -30,9 +33,9 @@ export function CredentialsList({ gates }: Props) {
       </Typography>
       <Stack direction="column">
         {gates.map((gate) => (
-          <CredentialListItem key={gate.id} gate={gate} />
+          <CredentialListItem key={gate.id} gate={gate} loyalty={loyalty} />
         ))}
       </Stack>
-    </Box>
+    </Stack>
   );
 }
