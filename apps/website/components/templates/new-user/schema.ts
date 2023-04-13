@@ -23,7 +23,7 @@ export const schemaCreateAccount: SchemaOf<NewUserSchema> = object({
 
 export const schemaTokenConfirmation: SchemaOf<TokenConfirmationSchema> =
   object({
-    token: string().length(6, { message: 'Invalid code' }).defined(),
+    token: string().max(6, 'Invalid code'),
   });
 
 export const defaultValuesCreateAccount = ({

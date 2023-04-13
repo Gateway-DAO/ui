@@ -69,7 +69,6 @@ export function FormVerifyToken({
         id="token"
         type="text"
         inputMode="numeric"
-        inputProps={{ pattern: '\\d{6,6}', maxLength: 6 }}
         {...register('token')}
         error={!!errors.token}
         helperText={errors.token?.message}
