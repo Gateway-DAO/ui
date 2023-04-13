@@ -10,4 +10,5 @@ export const query = {
   credentialsReceivedByOrg: 'credentials_received_by_organization',
   gate_progress_completed_by_loyalty_program:
     'gate_progress_completed_by_loyalty_program',
+  passes: 'passes', //loyalty programs
 };
