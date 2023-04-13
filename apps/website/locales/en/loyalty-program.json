@@ -1,0 +1,15 @@
+{
+  "loyalty-program-page": {
+    "missions": "Missions",
+    "tier": {
+      "your-tier": "Your Tier",
+      "linked-to-the-loyalty-pass": "Linked to the loyalty pass",
+      "you-earned": "You earned"
+    },
+    "sidebar": {
+      "display-credential": "See credential",
+      "mint-nft": "Mint as NFT",
+      "data-model-id": "Data model ID"
+    }
+  }
+}

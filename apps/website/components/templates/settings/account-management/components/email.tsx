@@ -15,6 +15,7 @@ import { ROUTES } from './../../../../../../website/constants/routes';
 import { useAuth } from './../../../../../../website/providers/auth';
 import { emailSchema } from './../types';
 
+// TODO: Refactor this component to use the hook useCountdown
 const Email = () => {
   const { gqlAuthMethods, me, onUpdateMe, onInvalidateMe } = useAuth();
   const [actualEmail, setActualEmail] = useState(me?.email_address);
