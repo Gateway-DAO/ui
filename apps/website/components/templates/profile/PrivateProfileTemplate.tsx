@@ -109,7 +109,7 @@ export default function PrivateProfileTemplate() {
               component="h1"
               variant="h4"
             >
-              {me.name}
+              {me.name ? me.name : me.username}
               <EditIcon
                 onClick={() => router.push(ROUTES.SETTINGS_PUBLIC_PROFILE)}
                 sx={{

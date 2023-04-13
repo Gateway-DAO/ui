@@ -66,7 +66,7 @@ export function FormSendEmail({ onSubmitSendEmail, isLoading }: Props) {
       <LoadingButton
         variant="contained"
         type="submit"
-        sx={{ mt: 2 }}
+        sx={{ mt: 2, height: 48 }}
         isLoading={isLoading}
       >
         {t('form.send-email-action')}
