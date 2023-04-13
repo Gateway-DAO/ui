@@ -12,6 +12,7 @@ type CategoriesListProps = {
   showStatus?: boolean;
   published?: string;
   listMode?: boolean;
+  isPass?: boolean;
 };
 
 export function CategoriesList({
@@ -20,6 +21,7 @@ export function CategoriesList({
   showStatus,
   published,
   listMode,
+  isPass,
   ...props
 }: CategoriesListProps): JSX.Element {
   const refs = useRef<HTMLDivElement[]>([]);
@@ -67,6 +69,15 @@ export function CategoriesList({
           px={listMode ? 0 : 2}
           {...props}
         >
+          {isPass && (
+            <Chip
+              aria-hidden={false}
+              label="Pass"
+              size="small"
+              sx={{ mr: listMode ? '10px' : 'none' }}
+              color="secondary"
+            />
+          )}
           {categories?.map((category, index) => {
             const formattedLabel =
               category.charAt(0).toUpperCase() + category.slice(1);
