@@ -55,8 +55,6 @@ export function DraftDirectHoldersList({ gate }: Props) {
         <ClientNav />
       </Stack>
 
-      {progressReq.isLoading && <CircularProgress />}
-
       {progress?.isDone ? (
         <>
           <Box
@@ -112,6 +110,10 @@ export function DraftDirectHoldersList({ gate }: Props) {
           <DirectWalletsVerifyingHeader total={file?.metadata?.total} />
           <DirectWalletsProgress total={file?.metadata?.total} {...progress} />
         </Stack>
+      )}
+
+      {progressReq.isLoading && (
+        <CircularProgress sx={{ mt: 4, alignSelf: 'center' }} />
       )}
     </Grid>
   );
