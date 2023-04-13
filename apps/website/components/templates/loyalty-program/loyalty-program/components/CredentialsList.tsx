@@ -51,7 +51,7 @@ export function CredentialsList({ gates, loyalty }: Props) {
         )}
       </Stack>
       <Stack direction="column">
-        {gates.map((gate) => (
+        {gates.reverse().map((gate) => (
           <CredentialListItem
             key={gate.id}
             gate={gate}
