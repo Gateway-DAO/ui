@@ -14,6 +14,7 @@ import { AllTab } from './tabs/all-tab';
 import { DaosTab } from './tabs/daos-tab';
 import DataModelsTab from './tabs/data-models-tab/data-models-tab';
 import { GatesTab } from './tabs/gates-tab';
+import PassesTab from './tabs/passes-tab';
 import { PeopleTab } from './tabs/people-tab';
 import { ExploreProps } from './types';
 
@@ -46,6 +47,11 @@ export function ExploreTemplate({
         key: 'credentials',
         label: t('common:tabs.earn'),
         section: <GatesTab />,
+      },
+      {
+        key: 'passes',
+        label: t('passes-tab'),
+        section: <PassesTab />,
       },
       {
         key: 'data-models',

@@ -221,7 +221,7 @@ export function OverviewTab({
                   },
                 }}
               >
-                <Button onClick={() => setTab(2)}>
+                <Button onClick={() => setTab(3)}>
                   {t(
                     'dao-profile:overview-tab.issued-credentials-section.action'
                   )}

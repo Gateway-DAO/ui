@@ -1,7 +1,6 @@
 import { TOKENS } from '@gateway/theme';
 
-import { ViewModule, ViewList } from '@mui/icons-material';
-import { Box, IconButton, Stack } from '@mui/material';
+import { Box } from '@mui/material';
 
 import { ROUTES } from '../../../../constants/routes';
 import { useViewMode, ViewMode } from '../../../../hooks/use-view-modes';
@@ -11,7 +10,7 @@ import { TableView } from './gates-tab/table-view';
 
 export default function PassesTab(): JSX.Element {
   const { loyaltyPrograms } = useDaoProfile();
-  const { view, toggleView } = useViewMode();
+  const { view } = useViewMode();
 
   return (
     <Box sx={{ py: 4 }}>
