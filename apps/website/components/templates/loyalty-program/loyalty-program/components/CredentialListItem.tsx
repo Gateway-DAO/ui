@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import { useMemo } from 'react';
 
 import { UseQueryResult } from '@tanstack/react-query';
 import { PartialDeep } from 'type-fest/source/partial-deep';
@@ -13,6 +12,7 @@ import SuccessfullyIcon from '../../../../../components/atoms/icons/successfully
 import SuccessfullyRoundedIcon from '../../../../../components/atoms/icons/successfully-rounded';
 import Loading from '../../../../../components/atoms/loading';
 import { ROUTES } from '../../../../../constants/routes';
+import { useLoyaltyGateCompleted } from '../../../../../hooks/use-loyalty-gate-completed';
 import { Gate_Progress, Gates } from '../../../../../services/hasura/types';
 
 type Props = {
@@ -21,15 +21,10 @@ type Props = {
 };
 
 export function CredentialListItem({ gate, gatesCompleted }: Props) {
-  const gateCompleted = useMemo(() => {
-    let gateCompleted = null;
-    if (gatesCompleted.data) {
-      gateCompleted = gatesCompleted.data.find(
-        (gateProgress) => gateProgress.gate_id === gate.id
-      );
-    }
-    return gateCompleted;
-  }, [gatesCompleted, gate]);
+  const { gateCompleted } = useLoyaltyGateCompleted({
+    gate,
+    gatesCompleted: gatesCompleted?.data,
+  });
 
   return (
     <Link

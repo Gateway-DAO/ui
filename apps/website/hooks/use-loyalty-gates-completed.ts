@@ -10,7 +10,7 @@ type Props = {
   loyaltyProgramId: Scalars['uuid'];
 };
 
-export function useTotalPointsCompleted({ loyaltyProgramId }: Props) {
+export function useLoyaltyGatesCompleted({ loyaltyProgramId }: Props) {
   const { me, gqlAuthMethods } = useAuth();
 
   const gatesCompleted = useQuery(
@@ -41,5 +41,5 @@ export function useTotalPointsCompleted({ loyaltyProgramId }: Props) {
     return pts;
   }, [gatesCompleted]);
 
-  return { totalPoints, isLoading: gatesCompleted.isLoading };
+  return { totalPoints, isLoading: gatesCompleted.isLoading, gatesCompleted };
 }

@@ -8,7 +8,7 @@ import { Chip, Stack, Typography, alpha } from '@mui/material';
 
 import Loading from '../../../../components/atoms/loading';
 import { useActualTier } from '../../../../hooks/use-actual-tier';
-import { useTotalPointsCompleted } from '../../../../hooks/use-total-points-completed';
+import { useLoyaltyGatesCompleted } from '../../../../hooks/use-loyalty-gates-completed';
 import { useAuth } from '../../../../providers/auth';
 import { Loyalty_Program } from '../../../../services/hasura/types';
 import { TierRuler } from './TierRuler';
@@ -20,7 +20,7 @@ type Props = {
 export function Tier({ loyalty }: Props) {
   const { t } = useTranslation('loyalty-program');
   const { me } = useAuth();
-  const { totalPoints, isLoading } = useTotalPointsCompleted({
+  const { totalPoints, isLoading } = useLoyaltyGatesCompleted({
     loyaltyProgramId: loyalty.id,
   });
   const actualTier = useActualTier({
@@ -44,7 +44,7 @@ export function Tier({ loyalty }: Props) {
           mb: { xs: 2, md: 3 },
         }}
       >
-        {t('loyalty-program-page.tier.your-tier')}
+        {t('tier.your-tier')}
       </Typography>
       <Stack
         direction="row"

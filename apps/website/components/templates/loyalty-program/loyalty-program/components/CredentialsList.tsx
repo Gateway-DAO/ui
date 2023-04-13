@@ -8,7 +8,7 @@ import { TOKENS, brandColors } from '@gateway/theme';
 import { Stack, Typography, alpha } from '@mui/material';
 
 import { AlertCustom } from '../../../../../components/atoms/alert';
-import { query } from '../../../../../constants/queries';
+import { useLoyaltyGatesCompleted } from '../../../../../hooks/use-loyalty-gates-completed';
 import { useAuth } from '../../../../../providers/auth';
 import { Gates, Loyalty_Program } from '../../../../../services/hasura/types';
 import { CredentialListItem } from './CredentialListItem';
@@ -20,23 +20,11 @@ type Props = {
 
 export function CredentialsList({ gates, loyalty }: Props) {
   const { t } = useTranslation('loyalty-program');
-  const { me, gqlAuthMethods } = useAuth();
+  const { me } = useAuth();
 
-  const gatesCompleted = useQuery(
-    [
-      query.gate_progress_completed_by_loyalty_program,
-      { userId: me?.id, loyaltyProgramId: loyalty?.id },
-    ],
-    () =>
-      gqlAuthMethods.get_gate_progress_completed_by_loyalty_program({
-        userId: me?.id,
-        loyaltyProgramId: loyalty?.id,
-      }),
-    {
-      select: (data) => data.gate_progress,
-      enabled: !!me?.id,
-    }
-  );
+  const { gatesCompleted } = useLoyaltyGatesCompleted({
+    loyaltyProgramId: loyalty.id,
+  });
 
   return (
     <Stack sx={{ mb: { xs: 5, md: 12 } }}>
@@ -55,11 +43,11 @@ export function CredentialsList({ gates, loyalty }: Props) {
             mb: { xs: 2, md: 3 },
           }}
         >
-          {t('loyalty-program-page.missions.title')}
+          {t('missions.title')}
         </Typography>
         {(gatesCompleted?.data?.length === 0 || !me?.id) && (
           <AlertCustom severity="error">
-            {t('loyalty-program-page.missions.message-missions-empty')}
+            {t('missions.message-missions-empty')}
           </AlertCustom>
         )}
       </Stack>
