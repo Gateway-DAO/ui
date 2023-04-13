@@ -2,6 +2,7 @@ import useTranslation from 'next-translate/useTranslation';
 import { ChangeEvent, ReactNode, useState } from 'react';
 
 import { useInfiniteQuery } from '@tanstack/react-query';
+import { useWindowSize } from 'react-use';
 import { Virtuoso } from 'react-virtuoso';
 import { PartialDeep } from 'type-fest';
 
@@ -43,6 +44,7 @@ export function DirectHoldersList({
   const { t } = useTranslation('credential');
   const [filter, setFilter] = useState('');
   const { me } = useAuth();
+  const windowSize = useWindowSize();
 
   const { data, isLoading, hasNextPage, isFetchingNextPage, fetchNextPage } =
     useInfiniteQuery(
@@ -66,8 +68,6 @@ export function DirectHoldersList({
         },
       }
     );
-
-  console.log(data);
 
   const whitelistedWallets =
     data?.pages?.flatMap((page) => page.whitelisted_wallets) ?? [];
@@ -185,7 +185,7 @@ export function DirectHoldersList({
           <CenteredLoader />
         ) : (
           <Virtuoso
-            style={{ height: '100%' }}
+            style={{ height: windowSize.height }}
             data={whitelistedWallets}
             endReached={() => hasNextPage && fetchNextPage()}
             components={{
