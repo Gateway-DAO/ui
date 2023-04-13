@@ -51,7 +51,7 @@ export function useLoyaltyGatesCompleted({ loyaltyProgramId }: Props) {
 
   return {
     totalPoints,
-    isLoading: gatesCompleted.isLoading,
+    isLoading: me?.id && gatesCompleted.isLoading,
     gatesCompleted: [
       ...(gatesCompleted?.data?.gate_progress || []),
       ...(gatesCompleted?.data?.whitelisted_wallets || []),
