@@ -9,18 +9,19 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 
-import { Gates } from '../../../../../services/hasura/types';
+import { Gates, Loyalty_Program } from '../../../../../services/hasura/types';
 import GateRow from '../../../../molecules/gate-row';
 
 // TODO: make it generic
 // TODO: Fix Gate name column width
 
 type TableViewProps = {
-  gates: PartialDeep<Gates>[];
+  data: PartialDeep<Gates>[] | PartialDeep<Loyalty_Program>[];
+  isPass?: boolean;
   isGate?: boolean;
   showStatus?: boolean;
 };
-export function TableView({ gates, isGate, showStatus }: TableViewProps) {
+export function TableView({ data, isGate, showStatus }: TableViewProps) {
   return (
     <TableContainer
       sx={{
@@ -42,10 +43,10 @@ export function TableView({ gates, isGate, showStatus }: TableViewProps) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {gates.map((gate) => (
+          {data.map((item) => (
             <GateRow
-              key={gate.id}
-              gate={gate}
+              key={item.id}
+              gate={item}
               isGate={isGate}
               showStatus={showStatus}
             />

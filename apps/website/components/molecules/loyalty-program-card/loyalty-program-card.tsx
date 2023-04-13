@@ -4,7 +4,7 @@ import type { PartialDeep } from 'type-fest';
 
 import { brandColors } from '@gateway/theme';
 
-import { CardHeader, Box, Stack, Skeleton } from '@mui/material';
+import { CardHeader, Box, Stack, Skeleton, Chip } from '@mui/material';
 import MUICard from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
@@ -16,6 +16,7 @@ import { useAuth } from '../../../providers/auth';
 import { Loyalty_Program } from '../../../services/hasura/types';
 import { AvatarFile } from '../../atoms/avatar-file';
 import Loading from '../../atoms/loading';
+import TierInfo from '../../templates/loyalty-program/components/TierInfo';
 import { TierRuler } from '../../templates/loyalty-program/components/TierRuler';
 import { CategoriesList } from '../categories-list';
 
@@ -83,33 +84,20 @@ export function LoyaltyProgramCard({
             {name}
           </Typography>
         </CardContent>
-        <CategoriesList isGate categories={categories} />
+        <Stack>
+          <CategoriesList isPass categories={categories} />
+        </Stack>
         {me?.id && (
           <Stack m={2}>
             {isLoading ? (
               <Skeleton />
             ) : (
               <>
-                <Stack
-                  direction="row"
-                  alignItems="center"
-                  justifyContent="space-between"
-                  sx={{ mb: 1 }}
-                >
-                  <Typography
-                    fontSize={12}
-                    sx={{ color: brandColors.green.main }}
-                  >
-                    {!isLoading ? actualTier?.tier : 'Loading..'}
-                  </Typography>
-                  <Typography fontSize={12}>
-                    {!isLoading ? (
-                      `${totalPoints} pts`
-                    ) : (
-                      <Loading size={12} marginTop={0} />
-                    )}
-                  </Typography>
-                </Stack>
+                <TierInfo
+                  tier={actualTier?.tier}
+                  totalPoints={totalPoints}
+                  isLoading={isLoading}
+                />
                 <TierRuler
                   tiers={loyalty_tiers}
                   totalPoints={totalPoints}
