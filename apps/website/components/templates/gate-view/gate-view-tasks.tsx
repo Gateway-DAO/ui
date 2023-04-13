@@ -61,7 +61,7 @@ export function GateViewTasks({
       enabled:
         gateProps &&
         gateProps.type === 'direct' &&
-        gateProps.published === 'published',
+        gateProps.published !== 'not_published',
     }
   );
 
@@ -107,7 +107,7 @@ export function GateViewTasks({
           }
         />
       )}
-      {published !== 'published' && gateProps.type === 'direct' && (
+      {published === 'not_published' && gateProps.type === 'direct' && (
         <DraftDirectHoldersList gate={gateProps} />
       )}
       {gateProps.type === 'task_based' && (
