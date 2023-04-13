@@ -1,0 +1,17 @@
+query loyaltys {
+  loyalty_program {
+    ...loyalty
+  }
+}
+
+query loyalty($id: uuid!) {
+  loyalty_program_by_pk(id: $id) {
+    ...loyalty
+    dao {
+      background_url
+      name
+      logo_url
+      slug
+    }
+  }
+}
