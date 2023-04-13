@@ -9,6 +9,7 @@ import { Chip, Stack, Typography, alpha } from '@mui/material';
 import Loading from '../../../../components/atoms/loading';
 import { useActualTier } from '../../../../hooks/use-actual-tier';
 import { useTotalPointsCompleted } from '../../../../hooks/use-total-points-completed';
+import { useAuth } from '../../../../providers/auth';
 import { Loyalty_Program } from '../../../../services/hasura/types';
 import { TierRuler } from './TierRuler';
 
@@ -18,6 +19,7 @@ type Props = {
 
 export function Tier({ loyalty }: Props) {
   const { t } = useTranslation('loyalty-program');
+  const { me } = useAuth();
   const { totalPoints, isLoading } = useTotalPointsCompleted({
     loyaltyProgramId: loyalty.id,
   });
@@ -30,7 +32,8 @@ export function Tier({ loyalty }: Props) {
     <Stack
       sx={{
         mx: TOKENS.CONTAINER_PX,
-        my: 2,
+        mt: 2,
+        mb: 3,
       }}
     >
       <Typography
@@ -64,17 +67,19 @@ export function Tier({ loyalty }: Props) {
             </Typography>
           </Stack>
         )}
-        <Chip
-          label={actualTier?.tier || 'Loading..'}
-          sx={{
-            backgroundColor: brandColors.green.main,
-            color: '#10041C',
-            fontWeight: 500,
-            fontSize: 16,
-            borderRadius: 3,
-            p: '24px 6px',
-          }}
-        />
+        {me?.id && actualTier?.tier && (
+          <Chip
+            label={actualTier?.tier}
+            sx={{
+              backgroundColor: brandColors.green.main,
+              color: '#10041C',
+              fontWeight: 500,
+              fontSize: 16,
+              borderRadius: 3,
+              p: '24px 6px',
+            }}
+          />
+        )}
       </Stack>
       <TierRuler tiers={loyalty.loyalty_tiers} totalPoints={totalPoints} />
     </Stack>
