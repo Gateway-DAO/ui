@@ -11,7 +11,7 @@ import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 
 import { useActualTier } from '../../../hooks/use-actual-tier';
-import { useTotalPointsCompleted } from '../../../hooks/use-total-points-completed';
+import { useLoyaltyGatesCompleted } from '../../../hooks/use-loyalty-gates-completed';
 import { useAuth } from '../../../providers/auth';
 import { Loyalty_Program } from '../../../services/hasura/types';
 import { AvatarFile } from '../../atoms/avatar-file';
@@ -33,7 +33,7 @@ export function LoyaltyProgramCard({
   loyalty_tiers,
   href,
 }: Props): JSX.Element {
-  const { totalPoints, isLoading } = useTotalPointsCompleted({
+  const { totalPoints, isLoading } = useLoyaltyGatesCompleted({
     loyaltyProgramId: id,
   });
   const actualTier = useActualTier({ tiers: loyalty_tiers, totalPoints });

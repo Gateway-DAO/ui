@@ -73,6 +73,7 @@ query gate($id: uuid!) {
     }
 
     loyalty_id
+    points
   }
 }
 

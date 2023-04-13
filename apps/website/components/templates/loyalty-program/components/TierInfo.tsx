@@ -1,3 +1,5 @@
+import useTranslation from 'next-translate/useTranslation';
+
 import { brandColors } from '@gateway/theme';
 
 import { Stack, Typography } from '@mui/material';
@@ -15,6 +17,8 @@ export default function TierInfo({
   totalPoints = 0,
   tier,
 }: Props): JSX.Element {
+  const { t } = useTranslation('loyalty-program');
+
   return (
     <Stack
       direction="row"
@@ -23,7 +27,7 @@ export default function TierInfo({
       sx={{ mb: 1 }}
     >
       <Typography fontSize={12} sx={{ color: brandColors.green.main }}>
-        {!isLoading ? tier : 'Loading..'}
+        {!isLoading ? tier : t('tier.loading')}
       </Typography>
       <Typography
         fontSize={12}

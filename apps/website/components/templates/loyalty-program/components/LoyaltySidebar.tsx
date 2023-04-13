@@ -134,7 +134,7 @@ export function LoyaltySidebar({ gate, loyalty }: LoyaltySidebarProps) {
               mb: 2,
             }}
           >
-            {t('loyalty-program-page.sidebar.display-credential')}
+            {t('sidebar.display-credential')}
           </Button>
           <Button
             variant="contained"
@@ -145,7 +145,7 @@ export function LoyaltySidebar({ gate, loyalty }: LoyaltySidebarProps) {
               mb: 2,
             }}
           >
-            {t('loyalty-program-page.sidebar.mint-nft')}
+            {t('sidebar.mint-nft')}
           </Button>
         </Stack>
 
@@ -159,7 +159,7 @@ export function LoyaltySidebar({ gate, loyalty }: LoyaltySidebarProps) {
             borderRadius: (theme) => theme.spacing(1),
           }}
         />
-        {gate && <SmallTier loyalty={loyalty} />}
+        {gate && <SmallTier loyalty={loyalty} gate={gate} />}
       </Box>
       <Divider sx={{ mb: 4 }} />
       <Box
@@ -176,7 +176,7 @@ export function LoyaltySidebar({ gate, loyalty }: LoyaltySidebarProps) {
               variant="body2"
               color={(theme) => theme.palette.text.secondary}
             >
-              {t('loyalty-program-page.sidebar.data-model-id')}
+              {t('sidebar.data-model-id')}
             </Typography>
             <ExternalLink
               text={limitCharsCentered(loyalty.data_model_id, 6)}

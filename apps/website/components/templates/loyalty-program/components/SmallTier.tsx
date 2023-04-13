@@ -7,26 +7,33 @@ import { brandColors } from '@gateway/theme';
 
 import { Box, Chip, Stack, Typography, alpha } from '@mui/material';
 
-import Loading from '../../../../components/atoms/loading';
 import { ROUTES } from '../../../../constants/routes';
 import { useActualTier } from '../../../../hooks/use-actual-tier';
-import { useTotalPointsCompleted } from '../../../../hooks/use-total-points-completed';
-import { Loyalty_Program } from '../../../../services/hasura/types';
+import { useLoyaltyGateCompleted } from '../../../../hooks/use-loyalty-gate-completed';
+import { useLoyaltyGatesCompleted } from '../../../../hooks/use-loyalty-gates-completed';
+import { Gates, Loyalty_Program } from '../../../../services/hasura/types';
+import TierInfo from './TierInfo';
 import { TierRuler } from './TierRuler';
 
 type Props = {
   loyalty: PartialDeep<Loyalty_Program>;
+  gate?: PartialDeep<Gates>;
 };
 
-export function SmallTier({ loyalty }: Props) {
+export function SmallTier({ loyalty, gate }: Props) {
   const { t } = useTranslation('loyalty-program');
-  const { totalPoints, isLoading } = useTotalPointsCompleted({
+  const { totalPoints, isLoading, gatesCompleted } = useLoyaltyGatesCompleted({
     loyaltyProgramId: loyalty.id,
   });
 
   const actualTier = useActualTier({
     tiers: loyalty.loyalty_tiers,
     totalPoints,
+  });
+
+  const { gateCompleted } = useLoyaltyGateCompleted({
+    gate,
+    gatesCompleted: gatesCompleted?.data,
   });
 
   return (
@@ -38,7 +45,7 @@ export function SmallTier({ loyalty }: Props) {
           mb: { xs: 2, md: 3 },
         }}
       >
-        {t('loyalty-program-page.tier.linked-to-the-loyalty-pass')}
+        {t('tier.linked-to-the-loyalty-pass')}
       </Typography>
       <Link href={ROUTES.LOYALTY_PROGRAM.replace('[id]', loyalty.id)} passHref>
         <Stack
@@ -80,23 +87,11 @@ export function SmallTier({ loyalty }: Props) {
               </Typography>
             </Stack>
           </Stack>
-          <Stack
-            direction="row"
-            alignItems="center"
-            justifyContent="space-between"
-            sx={{ mb: 1 }}
-          >
-            <Typography fontSize={12} sx={{ color: brandColors.green.main }}>
-              {!isLoading ? actualTier?.tier : 'Loading..'}
-            </Typography>
-            <Typography fontSize={12}>
-              {!isLoading ? (
-                `${totalPoints} pts`
-              ) : (
-                <Loading size={12} marginTop={0} />
-              )}
-            </Typography>
-          </Stack>
+          <TierInfo
+            tier={actualTier?.tier}
+            isLoading={isLoading}
+            totalPoints={totalPoints}
+          />
           <TierRuler
             tiers={loyalty.loyalty_tiers}
             totalPoints={totalPoints}
@@ -105,18 +100,19 @@ export function SmallTier({ loyalty }: Props) {
         </Stack>
       </Link>
       <Stack direction="row" alignItems="center" sx={{ mb: 4 }}>
-        <Typography flexGrow={1}>Reward</Typography>
-        <Chip
-          label={`${t(
-            'loyalty-program-page.tier.you-earned'
-          )} +${totalPoints}pts`}
-          sx={{
-            backgroundColor: brandColors.green.main,
-            color: '#10041C',
-            fontWeight: 500,
-            width: 'auto',
-          }}
-        />
+        <Typography flexGrow={1}>{t('tier.reward')}</Typography>
+        {gateCompleted ? (
+          <Chip
+            label={`${t('tier.you-earned')} +${gateCompleted?.points}pts`}
+            sx={{
+              backgroundColor: brandColors.green.main,
+              color: '#10041C',
+              fontWeight: 500,
+            }}
+          />
+        ) : (
+          <Chip label={`+${gate?.points}pts`} sx={{ fontWeight: 500 }} />
+        )}
       </Stack>
     </>
   );
