@@ -7,12 +7,12 @@ import { brandColors } from '@gateway/theme';
 
 import { Box, Chip, Stack, Typography, alpha } from '@mui/material';
 
-import Loading from '../../../../components/atoms/loading';
 import { ROUTES } from '../../../../constants/routes';
 import { useActualTier } from '../../../../hooks/use-actual-tier';
 import { useLoyaltyGateCompleted } from '../../../../hooks/use-loyalty-gate-completed';
 import { useLoyaltyGatesCompleted } from '../../../../hooks/use-loyalty-gates-completed';
 import { Gates, Loyalty_Program } from '../../../../services/hasura/types';
+import TierInfo from './TierInfo';
 import { TierRuler } from './TierRuler';
 
 type Props = {
@@ -87,23 +87,11 @@ export function SmallTier({ loyalty, gate }: Props) {
               </Typography>
             </Stack>
           </Stack>
-          <Stack
-            direction="row"
-            alignItems="center"
-            justifyContent="space-between"
-            sx={{ mb: 1 }}
-          >
-            <Typography fontSize={12} sx={{ color: brandColors.green.main }}>
-              {!isLoading ? actualTier?.tier : t('tier.loading')}
-            </Typography>
-            <Typography fontSize={12}>
-              {!isLoading ? (
-                `${totalPoints} pts`
-              ) : (
-                <Loading size={12} marginTop={0} />
-              )}
-            </Typography>
-          </Stack>
+          <TierInfo
+            tier={actualTier?.tier}
+            isLoading={isLoading}
+            totalPoints={totalPoints}
+          />
           <TierRuler
             tiers={loyalty.loyalty_tiers}
             totalPoints={totalPoints}
