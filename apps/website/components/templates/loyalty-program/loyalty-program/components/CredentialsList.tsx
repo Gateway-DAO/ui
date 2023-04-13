@@ -38,8 +38,6 @@ export function CredentialsList({ gates, loyalty }: Props) {
     }
   );
 
-  console.log('joao', gatesCompleted?.data);
-
   return (
     <Stack sx={{ mb: { xs: 5, md: 12 } }}>
       <Stack
