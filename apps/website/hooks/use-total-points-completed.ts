@@ -25,6 +25,7 @@ export function useTotalPointsCompleted({ loyaltyProgramId }: Props) {
       }),
     {
       select: (data) => data.gate_progress,
+      enabled: !!me?.id,
     }
   );
 

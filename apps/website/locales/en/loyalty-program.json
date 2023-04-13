@@ -1,6 +1,9 @@
 {
   "loyalty-program-page": {
-    "missions": "Missions",
+    "missions": {
+      "title": "Missions",
+      "message-missions-empty": "Complete a mission to start this passport"
+    },
     "tier": {
       "your-tier": "Your Tier",
       "linked-to-the-loyalty-pass": "Linked to the loyalty pass",
