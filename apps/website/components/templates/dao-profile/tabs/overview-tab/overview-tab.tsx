@@ -164,7 +164,9 @@ export function OverviewTab({
           >
             {gateList}
           </SectionWithSliderResponsive>
-          {loyaltyPrograms && loyaltyPrograms.length > 0 && (
+        </Stack>
+        {loyaltyPrograms && loyaltyPrograms.length > 0 && (
+          <Stack mt={5}>
             <SectionWithSliderResponsive
               title={`${t('dao-profile:overview-tab.loyalty-section.title')}`}
               caption={`${t(
@@ -172,7 +174,7 @@ export function OverviewTab({
               )}`}
               action={
                 loyaltyPrograms.length > 0 && (
-                  <Button onClick={() => setTab(1)}>
+                  <Button onClick={() => setTab(2)}>
                     {t('dao-profile:overview-tab.loyalty-section.action')}
                   </Button>
                 )
@@ -188,8 +190,8 @@ export function OverviewTab({
                 />
               ))}
             </SectionWithSliderResponsive>
-          )}
-        </Stack>
+          </Stack>
+        )}
         {issuedCredentials && issuedCredentials.length > 0 && (
           <Stack mt={5}>
             <Stack
@@ -219,7 +221,7 @@ export function OverviewTab({
                   },
                 }}
               >
-                <Button onClick={() => setTab(2)}>
+                <Button onClick={() => setTab(3)}>
                   {t(
                     'dao-profile:overview-tab.issued-credentials-section.action'
                   )}

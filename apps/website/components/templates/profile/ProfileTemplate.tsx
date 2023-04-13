@@ -137,7 +137,7 @@ export default function ProfileTemplate({ user }: Props) {
         ></AvatarFile>
         <Box>
           <Typography style={{ color: '#fff' }} component="h1" variant="h4">
-            {user.name}
+            {user.name ? user.name : user.username}
           </Typography>
           <Typography
             component="h5"

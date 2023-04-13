@@ -6,7 +6,6 @@ import { TOKENS } from '@gateway/theme';
 
 import { Stack } from '@mui/material';
 
-import { useAuth } from '../../../../../providers/auth';
 import { Loyalty_Program } from '../../../../../services/hasura/types';
 import { ClientNav } from '../../../../organisms/navbar/client-nav';
 import { Tier } from '../../components/Tier';
@@ -17,8 +16,6 @@ type Props = {
 };
 
 export function LoyaltyProgramMainContent({ loyalty }: Props) {
-  const { me } = useAuth();
-
   return (
     <>
       <Stack
@@ -40,7 +37,7 @@ export function LoyaltyProgramMainContent({ loyalty }: Props) {
       </Stack>
       {loyalty?.gates?.length > 0 && (
         <>
-          {me?.id && <Tier loyalty={loyalty} />}
+          <Tier loyalty={loyalty} />
           <CredentialsList gates={loyalty?.gates} loyalty={loyalty} />
         </>
       )}

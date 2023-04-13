@@ -11,6 +11,7 @@ import { useDaoProfile } from './context';
 import { DaoHeader } from './dao-header';
 import { GatesTab, OverviewTab } from './tabs';
 import GridViewTab from './tabs/grid-view-tab';
+import PassesTab from './tabs/passes-tab';
 import StaticGridViewTab from './tabs/static-grid-view-tab';
 
 export function DaoProfileTemplate() {
@@ -78,6 +79,11 @@ export function DaoProfileTemplate() {
       key: 'credentials',
       label: t('dao-profile:earn-tab'),
       section: <GatesTab />,
+    },
+    {
+      key: 'passes',
+      label: t('dao-profile:passes-tab'),
+      section: <PassesTab />,
     },
   ];
 
