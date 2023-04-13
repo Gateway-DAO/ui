@@ -23,7 +23,7 @@ type Props = {
 export function CredentialListItem({ gate, gatesCompleted }: Props) {
   const { gateCompleted } = useLoyaltyGateCompleted({
     gate,
-    gatesCompleted: gatesCompleted?.data,
+    gatesCompleted: gatesCompleted as any,
   });
 
   return (

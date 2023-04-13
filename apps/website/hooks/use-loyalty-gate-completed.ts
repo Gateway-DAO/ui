@@ -15,7 +15,7 @@ export function useLoyaltyGateCompleted({ gatesCompleted, gate }: Props) {
     let gateCompleted: PartialDeep<Gates> = null;
     if (gatesCompleted && gatesCompleted.length > 0) {
       gatesCompleted.find((gateProgress) => {
-        if (gateProgress.gate_id === gate.id) {
+        if (gateProgress?.gate?.id === gate.id) {
           gateProgressCompleted = gateProgress;
           gateCompleted = gate;
         }

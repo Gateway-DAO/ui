@@ -21,6 +21,10 @@ fragment loyalty on loyalty_program {
     tasks {
       id
     }
+    claim_limit
+    holder_count
+    type
+    published
   }
   details
   loyalty_tiers {
@@ -35,5 +39,6 @@ fragment loyalty on loyalty_program {
     name
     logo_url
     slug
+    id
   }
 }

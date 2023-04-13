@@ -27,9 +27,20 @@ query get_gate_progress_completed_by_loyalty_program(
       gate: { loyalty_id: { _eq: $loyaltyProgramId } }
     }
   ) {
-    gate_id
     gate {
+      id
       points
     }
+  }
+  whitelisted_wallets(
+    where: {
+        user: { id: {_eq: $userId}},
+        gate: { loyalty_id: {_eq: $loyaltyProgramId}}
+      }
+    ) {
+      gate {
+        id
+        points
+      }
   }
 }

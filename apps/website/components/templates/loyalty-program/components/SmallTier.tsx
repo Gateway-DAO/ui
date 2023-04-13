@@ -33,7 +33,7 @@ export function SmallTier({ loyalty, gate }: Props) {
 
   const { gateCompleted } = useLoyaltyGateCompleted({
     gate,
-    gatesCompleted: gatesCompleted?.data,
+    gatesCompleted,
   });
 
   return (
