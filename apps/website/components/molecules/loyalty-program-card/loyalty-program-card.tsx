@@ -4,7 +4,7 @@ import type { PartialDeep } from 'type-fest';
 
 import { brandColors } from '@gateway/theme';
 
-import { CardHeader, Box, Stack, Skeleton } from '@mui/material';
+import { CardHeader, Box, Stack, Skeleton, Chip } from '@mui/material';
 import MUICard from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
@@ -83,7 +83,9 @@ export function LoyaltyProgramCard({
             {name}
           </Typography>
         </CardContent>
-        <CategoriesList isGate categories={categories} />
+        <Stack>
+          <CategoriesList isPass categories={categories} />
+        </Stack>
         {me?.id && (
           <Stack m={2}>
             {isLoading ? (
@@ -102,7 +104,10 @@ export function LoyaltyProgramCard({
                   >
                     {!isLoading ? actualTier?.tier : 'Loading..'}
                   </Typography>
-                  <Typography fontSize={12}>
+                  <Typography
+                    fontSize={12}
+                    sx={{ visibility: totalPoints > 0 ? 'default' : 'hidden' }}
+                  >
                     {!isLoading ? (
                       `${totalPoints} pts`
                     ) : (
