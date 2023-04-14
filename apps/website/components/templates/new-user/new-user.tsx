@@ -152,6 +152,7 @@ export function NewUserTemplate() {
           justifyContent: 'center',
           height: '100%',
           background: alpha(theme.palette.common.black, 0.03),
+          borderRight: '1px solid rgba(229, 229, 229, 0.12)',
         }}
       >
         <Box
