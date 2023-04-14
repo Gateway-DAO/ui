@@ -25,6 +25,8 @@ fragment loyalty on loyalty_program {
     holder_count
     type
     published
+    updated_at
+    created_at
   }
   details
   loyalty_tiers {
