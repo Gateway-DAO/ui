@@ -68,11 +68,6 @@ export function CredentialsList({ gates, loyalty }: Props) {
       <Stack direction="column">
         {gates
           .sort((a, b) => {
-            const timeA = new Date(a.updated_at);
-            const timeB = new Date(b.updated_at);
-            return timeB.getTime() - timeA.getTime();
-          })
-          .sort((a, b) => {
             return (
               gateIsCompleted(gatesCompleted, b) -
               gateIsCompleted(gatesCompleted, a)
