@@ -27,6 +27,8 @@ const config = {
     [ROUTES.PROTOCOL_CREDENTIAL]: ['protocol'],
     [ROUTES.PROTOCOL_DATAMODEL]: ['protocol'],
     [ROUTES.PROTOCOL_DATAMODEL_CREDENTIAL_CREATE]: ['protocol'],
+    [ROUTES.LOYALTY_PROGRAM]: ['loyalty-program'],
+    [ROUTES.LOYALTY_PROGRAM_CREDENTIAL]: ['loyalty-program', 'credential'],
   },
   localeDetection: false,
 };

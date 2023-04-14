@@ -1,151 +1,198 @@
 import useTranslation from 'next-translate/useTranslation';
+import { useState } from 'react';
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useMutation } from '@tanstack/react-query';
 import { useSnackbar } from 'notistack';
 import { useForm, FormProvider } from 'react-hook-form';
 
-import { Box, Stack, Typography } from '@mui/material';
+import { theme } from '@gateway/theme';
 
-import { useUploadImage } from '../../../hooks/use-upload-image';
+import { alpha, Box, Stack } from '@mui/material';
+
 import { useAuth } from '../../../providers/auth';
 import { ErrorResponse } from '../../../types/graphql';
+import Loading from '../../atoms/loading';
 import { NavBarAvatar } from '../../organisms/navbar/navbar-avatar';
-import { AvatarUploadCard } from './avatar-upload-card';
-import { Form } from './form';
-import { schema, NewUserSchema, defaultValues } from './schema';
-
-/*
-  TODO: Downsize the image to a max size
-  TODO: Create an api endpoint for photo manipulation
-*/
+import { taskErrorMessages } from '../../organisms/tasks/task-error-messages';
+import { FormSendEmail } from './form-send-email';
+import { FormVerifyToken } from './form-verify-token';
+import {
+  schemaCreateAccount,
+  schemaTokenConfirmation,
+  NewUserSchema,
+  TokenConfirmationSchema,
+  defaultValuesCreateAccount,
+} from './schema';
 
 export function NewUserTemplate() {
   const { t } = useTranslation('dashboard-new-user');
-  const { me, gqlAuthMethods, gqlProtocolAuthMethods, onInvalidateMe } =
-    useAuth();
-  const methods = useForm<NewUserSchema>({
-    resolver: yupResolver(schema),
-    defaultValues: defaultValues(me),
+  const { me, gqlProtocolAuthMethods, onInvalidateMe } = useAuth();
+  const [sentEmail, setSentEmail] = useState(false);
+  const [sendEmailData, setSendEmailData] = useState(null);
+  const [profileCreated, setProfileCreated] = useState(false);
+  const methodsSendEmail = useForm<NewUserSchema>({
+    resolver: yupResolver(schemaCreateAccount),
+    defaultValues: defaultValuesCreateAccount(me),
+  });
+  const methodsConfirmToken = useForm<TokenConfirmationSchema>({
+    resolver: yupResolver(schemaTokenConfirmation),
   });
 
   const { enqueueSnackbar } = useSnackbar();
 
-  const uploadImage = useUploadImage();
-
-  const updateMutation = useMutation(
-    ['updateProfile', me.id],
-    async ({ pfp, ...data }: NewUserSchema) => {
-      let uploadedPicture = null;
-
-      if (pfp) {
-        uploadedPicture = await uploadImage({
-          base64: pfp,
-          name: `${me.id}-pfp`,
-        });
-      }
-
-      await gqlAuthMethods.update_user_profile({
-        ...data,
-        id: me.id,
-        ...(uploadedPicture && { pic_id: uploadedPicture.upload_image.id }),
-      });
-      return gqlProtocolAuthMethods.updateUser({
+  const signupMutation = useMutation(
+    ['signup'],
+    async ({ ...data }: NewUserSchema) => {
+      setSendEmailData(data);
+      return gqlProtocolAuthMethods.signup({
         email: data.email_address,
-        gatewayId: data.username,
+        gateway_id: data.username,
       });
     },
     {
-      onSuccess() {
-        enqueueSnackbar(`Profile created!`);
-        onInvalidateMe();
+      onSuccess(data) {
+        setSentEmail(true);
+        enqueueSnackbar(`${t('form.code-sent-to')} ${data.signup.email}`);
       },
       onError(error: ErrorResponse) {
-        let totalUnmappedErrors = 0;
-        error.response.errors?.forEach(({ message, extensions }) => {
-          if (
-            extensions.code === 'constraint-violation' &&
-            message.includes('users_email_address_uindex')
-          ) {
-            return methods.setError('email_address', {
-              message: 'Email already in use',
+        error.response?.errors?.forEach(({ message }) => {
+          if (message === 'GATEWAY_ID_ALREADY_REGISTERED') {
+            methodsSendEmail.setError('username', {
+              message: taskErrorMessages.GATEWAY_ID_ALREADY_REGISTERED,
             });
-          }
-          if (
-            extensions.code === 'constraint-violation' &&
-            message.includes('user_username_uindex')
-          ) {
-            return methods.setError('username', {
-              message: 'Username already in use',
+          } else if (message === 'EMAIL_ALREADY_REGISTERED') {
+            methodsSendEmail.setError('email_address', {
+              message: taskErrorMessages.EMAIL_ALREADY_REGISTERED,
             });
+          } else {
+            enqueueSnackbar(
+              taskErrorMessages[message] || taskErrorMessages.UNEXPECTED_ERROR,
+              {
+                variant: 'error',
+              }
+            );
           }
-          totalUnmappedErrors++;
         });
-
-        if (totalUnmappedErrors) {
-          enqueueSnackbar(`Unknown server error`, { variant: 'error' });
-        }
       },
     }
   );
 
-  const onSubmit = (data: NewUserSchema) => updateMutation.mutate(data);
+  const signupConfirmationMutation = useMutation(
+    ['signupConfirmation'],
+    async ({ ...data }: TokenConfirmationSchema) => {
+      return gqlProtocolAuthMethods.signupConfirmation({
+        code: parseInt(data.token, 10),
+        gateway_id: sendEmailData.username,
+        email: sendEmailData.email_address,
+        wallet: me?.wallet,
+      });
+    },
+    {
+      onSuccess() {
+        enqueueSnackbar(t('form.profile-created'));
+        setProfileCreated(true);
+        onInvalidateMe();
+      },
+      onError(error: ErrorResponse) {
+        error.response?.errors?.forEach(({ message }) => {
+          if (message === 'INVALID_CODE_VERIFICATION') {
+            methodsConfirmToken.setError('token', {
+              message: taskErrorMessages.INVALID_CODE_VERIFICATION,
+            });
+          } else {
+            if (message === 'MAXIMUM_ATTEMPTS_REACHED') {
+              methodsConfirmToken.setValue('token', '');
+              setSentEmail(false);
+            }
+            enqueueSnackbar(
+              taskErrorMessages[message] || taskErrorMessages.UNEXPECTED_ERROR,
+              {
+                variant: 'error',
+              }
+            );
+          }
+        });
+      },
+    }
+  );
+
+  const onSubmitSendEmail = (data: NewUserSchema) =>
+    signupMutation.mutate(data);
+
+  const onSubmitConfirmToken = (data: TokenConfirmationSchema) =>
+    signupConfirmationMutation.mutate(data);
 
   return (
-    <>
-      <Stack style={{ position: 'absolute', top: '50px', right: '50px' }}>
+    <Stack
+      sx={{
+        backgroundImage: 'url(/images/signup-background.png)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center center',
+        height: '100%',
+      }}
+    >
+      <Stack
+        sx={{
+          position: 'absolute',
+          top: { xs: 10, md: 38 },
+          right: { xs: 20, md: 48 },
+          zIndex: 1,
+        }}
+      >
         <NavBarAvatar hideProfile />
       </Stack>
       <Stack
-        direction="row"
-        justifyContent="space-between"
-        alignItems="stretch"
         gap={2}
         sx={{
+          maxWidth: { xs: '100%', md: '50%', lg: '582px' },
           width: '100%',
-          display: { xs: 'block', md: 'flex' },
-          alignSelf: 'center',
-          maxWidth: (theme) => theme.breakpoints.values.lg,
+          backdropFilter: 'blur(25px)',
+          px: { xs: 2, md: 6 },
+          justifyContent: 'center',
+          height: '100%',
+          background: alpha(theme.palette.common.black, 0.03),
         }}
       >
-        <Stack
-          direction="column"
-          gap={7.5}
-          sx={{ maxWidth: { xs: '100%', md: '50%', lg: '40%' }, width: '100%' }}
+        <Box
+          sx={{
+            position: 'absolute',
+            top: { xs: 20, md: 48 },
+            left: { xs: 20, md: 48 },
+          }}
         >
-          <Typography component="h1" variant="h4">
-            {t('title')}
-          </Typography>
-          <Stack direction="column" gap={4}>
-            <Box>
-              <Typography component="h2" variant="h5">
-                {t('form.title')}
-              </Typography>
-              <Typography component="p" variant="caption">
-                {t('form.caption')}
-              </Typography>
-            </Box>
-            <FormProvider {...methods}>
-              <AvatarUploadCard
-                showUserData={false}
-                sx={{
-                  display: { xs: 'flex', md: 'none' },
-                }}
-              />
-              <Form onSubmit={onSubmit} isLoading={updateMutation.isLoading} />
-            </FormProvider>
-          </Stack>
-        </Stack>
-
-        <FormProvider {...methods}>
-          <AvatarUploadCard
-            sx={{
-              display: { xs: 'none', md: 'flex' },
-              width: 400,
-            }}
+          <img
+            src="/favicon-192.png"
+            alt={t('logo-alternative-text')}
+            width="30"
           />
-        </FormProvider>
+        </Box>
+        {profileCreated ? (
+          <Loading />
+        ) : (
+          <>
+            {!sentEmail ? (
+              <FormProvider {...methodsSendEmail}>
+                <FormSendEmail
+                  onSubmitSendEmail={onSubmitSendEmail}
+                  isLoading={signupMutation.isLoading}
+                />
+              </FormProvider>
+            ) : (
+              <FormProvider {...methodsConfirmToken}>
+                <FormVerifyToken
+                  onSubmitConfirmToken={onSubmitConfirmToken}
+                  isLoadingConfirmToken={signupConfirmationMutation.isLoading}
+                  onSubmitSendEmail={onSubmitSendEmail}
+                  isLoadingSendEmail={signupMutation.isLoading}
+                  sendEmailData={sendEmailData}
+                  onClickEdit={() => setSentEmail(false)}
+                />
+              </FormProvider>
+            )}
+          </>
+        )}
       </Stack>
-    </>
+    </Stack>
   );
 }

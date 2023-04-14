@@ -68,7 +68,9 @@ export default function CredentialProtocolShow({ credential }: Props) {
   const { me } = useAuth();
   const { token } = useAuth();
   const [shareIsOpen, setShareIsOpen] = useState<boolean>(false);
-  console.log(credential);
+
+  let shareStatus = null;
+
   const router = useRouter();
   const isReceivedCredential =
     me && me?.wallet === credential?.recipientUser?.primaryWallet?.address;
@@ -104,6 +106,9 @@ export default function CredentialProtocolShow({ credential }: Props) {
     {
       onSuccess: (data) => {
         setIsOpen(true);
+        setTimeout(() => {
+          shareStatus = 'share';
+        }, 1000);
         setTimeout(() => {
           setIsOpen(false);
           setShareIsOpen(true);
@@ -158,7 +163,7 @@ export default function CredentialProtocolShow({ credential }: Props) {
 
         <MintDialog
           isOpen={mintCredential.isLoading || isOpen}
-          status={mintCredential.status}
+          status={shareStatus || mintCredential.status}
           onClose={() => setIsOpen(false)}
         />
 

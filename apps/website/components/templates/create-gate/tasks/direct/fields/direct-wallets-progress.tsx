@@ -18,7 +18,7 @@ export function DirectWalletsProgress({
   uploadedTime,
 }: Props) {
   const { t } = useTranslation('gate-new');
-  const verified = valid + invalid;
+  const verified = valid && invalid ? valid + invalid : 0;
   const percent = verified / total;
   const progress = Math.floor(percent * 100);
 

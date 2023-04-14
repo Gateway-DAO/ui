@@ -16,8 +16,9 @@ const nextConfig = {
   images: {
     domains: [
       'api.staging.mygateway.xyz',
+      'doepp2nssa64p.cloudfront.net',
+      'ddm747vh67170.cloudfront.net',
       'd14yyawlqn6zgz.cloudfront.net',
-      'd2igf2y4k77tnt.cloudfront.net',
       'api.mygateway.xyz',
       'node.mygateway.xyz',
       'arweave.net',

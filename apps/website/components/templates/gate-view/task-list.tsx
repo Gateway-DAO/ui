@@ -1,13 +1,14 @@
+import { useQueryClient } from '@tanstack/react-query';
 import { PartialDeep } from 'type-fest';
 
 import { TOKENS } from '@gateway/theme';
 
 import { Box, Grid, Stack, Typography } from '@mui/material';
 
+import { query } from '../../../constants/queries';
 import { useAuth } from '../../../providers/auth';
 import { Gates } from '../../../services/hasura/types';
 import CircularProgressWithLabel from '../../atoms/circular-progress-label';
-import { SubmissionDetail } from '../../organisms/gates/view/tasks/content/manual/submission-detail';
 import { Submissions } from '../../organisms/gates/view/tasks/content/manual/submissions';
 import { RecaptchaTask } from '../../organisms/gates/view/tasks/content/recaptcha';
 import { ClientNav } from '../../organisms/navbar/client-nav';
@@ -44,6 +45,16 @@ export function TaskList({
   const isGateAdmin = me?.id === gate.creator.id;
   const taskProgress = (completedTasksCount / totalTasksCount) * 100;
   const isTaskStarted = taskProgress === 0 ? false : true;
+  const queryClient = useQueryClient();
+
+  const refetchTotalPoints = () => {
+    if (gate.loyalty_id) {
+      queryClient.refetchQueries([
+        query.gate_progress_completed_by_loyalty_program,
+        { userId: me?.id, loyaltyProgramId: gate.loyalty_id },
+      ]);
+    }
+  };
 
   return (
     <Grid
@@ -151,7 +162,10 @@ export function TaskList({
             taskNumber={totalTasksCount}
             gateId={gate.id}
             isEnabled={completedTasksCount + 1 === totalTasksCount}
-            onCompleteGate={setOpen}
+            onCompleteGate={() => {
+              setOpen();
+              refetchTotalPoints();
+            }}
           />
         )}
       </Box>
