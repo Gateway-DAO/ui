@@ -19,7 +19,28 @@ query meProtocol {
         name
       }
     }
+    issuedCredentials {
+      dataModel {
+        id
+      }
+      id
+      nft {
+        minted
+      }
+    }
     totalOfIssuedCredentials
     totalOfreceivedCredentials
+  }
+}
+
+query meProtocolCheck {
+  me {
+    id
+
+    issuedCredentials {
+      dataModel {
+        id
+      }
+    }
   }
 }

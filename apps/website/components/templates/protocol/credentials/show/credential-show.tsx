@@ -68,7 +68,7 @@ export default function CredentialProtocolShow({ credential }: Props) {
   const { me } = useAuth();
   const { token } = useAuth();
   const [shareIsOpen, setShareIsOpen] = useState<boolean>(false);
-
+  console.log(credential);
   const router = useRouter();
   const isReceivedCredential =
     me && me?.wallet === credential?.recipientUser?.primaryWallet?.address;

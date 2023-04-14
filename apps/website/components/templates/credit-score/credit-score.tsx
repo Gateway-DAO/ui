@@ -28,7 +28,20 @@ import { ClientNav } from '../../organisms/navbar/client-nav';
 import Image from 'next/image';
 import ArcProgress from 'react-arc-progress';
 import useTranslation from 'next-translate/useTranslation';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { Info, InfoOutlined } from '@mui/icons-material';
+import { TokenFilled } from '../../molecules/mint-card/assets/token-filled';
+import { useState } from 'react';
+import LoadingModal from './LoadingModal';
+import {
+  gatewayProtocolAuthSDK,
+  gatewayProtocolSDK,
+} from 'apps/website/services/gateway-protocol/api';
+import { useSession } from 'next-auth/react';
+import { AvatarFile } from '../../atoms/avatar-file';
+import { MintCredentialMutationVariables } from 'apps/website/services/gateway-protocol/types';
+import { useQueryClient } from '@tanstack/react-query';
+import { LoadingButton } from '../../atoms/loading-button';
 
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
@@ -47,9 +60,10 @@ const Item = styled(Paper)(({ theme }) => ({
 
 export function CreditScoreTemplate() {
   const { t } = useTranslation('credit-score');
-  const { me, gqlAuthMethods } = useAuth();
+  const { me, gqlAuthMethods, onUpdateMe } = useAuth();
   const router = useRouter();
-
+  const [openLoadingModal, setOpenLoadingModal] = useState(false);
+  const queryClient = useQueryClient();
   const { data: credScore, error } = useQuery(
     ['cred-score-single', me?.wallet],
     async () => {
@@ -59,31 +73,106 @@ export function CreditScoreTemplate() {
       return result.get_cred_score;
     }
   );
-
   const isUser = !!me;
   const isCreditScore = !!credScore?.account;
-  
+  console.log(me);
+  const checkIssued = me?.protocol?.issuedCredentials?.find(
+    (something) =>
+      something?.dataModel?.id === '937f9fc8-f3a7-4d28-88bc-826af1237c2c' // TODO: make env var; change on prod
+  );
   const handleNavBack = () => {
-    // If user directly lands to credential page using link
     if (window.history.state.idx === 0) {
       router.replace(ROUTES.CREDIT_SCORE);
     } else {
       router.back();
     }
   };
+  console.log(checkIssued);
+  const issueCredential = async () => {
+    refetch();
+    setOpenLoadingModal(true);
+  };
 
-  const progress = 0.78;
-  const text = '789';
+  const { data: session } = useSession();
+
+  const {
+    data: something,
+    refetch,
+    error: e,
+    isLoading,
+  } = useQuery(
+    ['create-cred', me?.wallet],
+    async () => {
+      const result = await gqlAuthMethods.create_cred({
+        gatewayId: me?.username,
+        score: credScore?.value,
+        bearerToken: session.token,
+      });
+      await router.push(
+        ROUTES.PROTOCOL_CREDENTIAL.replace(
+          '[id]',
+          result.create_cred.credentialId
+        )
+      );
+      await queryClient.invalidateQueries(['user_protocol', me?.id]);
+      return result.create_cred.credentialId;
+    },
+    { enabled: false }
+  );
+
+  // const use
+  const { data: recipentsUsers } = useQuery(
+    ['data-models-find-credit', '937f9fc8-f3a7-4d28-88bc-826af1237c2c'],
+    async () => {
+      const result =
+        await gatewayProtocolSDK.findRecipientsByDataModelCreditScore({
+          dataModelId: '937f9fc8-f3a7-4d28-88bc-826af1237c2c',
+          skip: 0,
+          take: 10,
+        });
+      console.log(result.findRecipientsByDataModel);
+      return result.findRecipientsByDataModel;
+    }
+  );
+
+  const { data: totalRecipents } = useQuery(
+    ['data-models-total-creds', '937f9fc8-f3a7-4d28-88bc-826af1237c2c'],
+    async () => {
+      const s = await gatewayProtocolSDK.getDataModelStats({
+        dataModelId: '937f9fc8-f3a7-4d28-88bc-826af1237c2c',
+      });
+      console.log(s);
+      return s.getTotalofIssuersByDataModel;
+    }
+  );
+
+  const { token } = useAuth();
+
+  const {
+    data: mintData,
+    isLoading: isLoadingMintingCred,
+    mutate,
+    error: somethingError,
+  } = useMutation(
+    ['minting-stuff'],
+    ({ credentialId }: MintCredentialMutationVariables) => {
+      return gatewayProtocolAuthSDK(token).mintCredential({
+        credentialId: credentialId,
+      });
+    },
+    {
+      onSuccess: async (data) => {
+        console.log(data);
+        await queryClient.invalidateQueries(['user_protocol', me?.id]);
+      },
+    }
+  );
+
+  console.log(mintData, somethingError);
+
   const size = 500;
   const fillColor = {
-    gradient: [
-      '#0075FF',
-      '#9A53FF',
-      '#FE02B9',
-      '#5DABFB',
-      '#0075FF',
-      '#9A53FF',
-    ],
+    gradient: ['#9A53FF', '#FE02B9', '#5DABFB', '#0075FF'],
   };
   const customText = [
     {
@@ -178,11 +267,9 @@ export function CreditScoreTemplate() {
                 </Typography>
               </Stack>
             </Link>
-
             <Typography variant="h4" marginBottom={(theme) => theme.spacing(2)}>
               {t('gate.title')}
             </Typography>
-
             <Box marginBottom={(theme) => theme.spacing(2)}>
               <Stack
                 direction={'row'}
@@ -219,42 +306,61 @@ export function CreditScoreTemplate() {
               </Typography>
             )}
 
-            {/* {completedGate &&
-              !!credential &&
-              credential?.credentials_by_pk?.target_id == me?.id &&
-              (credential?.credentials_by_pk?.status == 'minted' ? (
-                <Button
-                  component="a"
-                  variant="outlined"
-                  href={credential.credentials_by_pk.transaction_url}
-                  target="_blank"
-                  startIcon={
-                    <TokenFilled height={20} width={20} color="action" />
-                  }
-                  fullWidth
-                  sx={{
-                    borderColor: '#E5E5E580',
-                    color: 'white',
-                    mb: 2,
-                  }}
-                >
-                  VERIFY MINT TRANSACTION
-                </Button>
-              ) : (
+            {checkIssued?.dataModel?.id ? (
+              <Stack flexDirection="row">
                 <Button
                   variant="contained"
-                  startIcon={
-                    <TokenFilled height={20} width={20} color="action" />
-                  }
                   fullWidth
-                  onClick={() => setMintModal(true)}
+                  onClick={() =>
+                    router.push(
+                      ROUTES.PROTOCOL_CREDENTIAL.replace(
+                        '[id]',
+                        checkIssued?.id
+                      )
+                    )
+                  }
                   sx={{
                     mb: 2,
                   }}
                 >
-                  MINT AS NFT
+                  CHECK CREDENTIAL
                 </Button>
-              ))} */}
+                {!checkIssued?.nft?.minted && (
+                  // <Button
+                  //   variant="contained"
+                  //   startIcon={
+                  //     <TokenFilled height={20} width={20} color="action" />
+                  //   }
+                  //   fullWidth
+                  //   onClick={() => mutate({ credentialId: checkIssued.id })}
+                  //   sx={{
+                  //     mb: 2,
+                  //   }}
+                  // >
+                  //   MINT AS NFT
+                  // </Button>
+                  <LoadingButton
+                    variant="contained"
+                    isLoading={isLoadingMintingCred}
+                    onClick={() => mutate({ credentialId: checkIssued.id })}
+                  >
+                    MINT AS NFT
+                  </LoadingButton>
+                )}
+              </Stack>
+            ) : (
+              <Button
+                variant="contained"
+                fullWidth
+                disabled={!isCreditScore}
+                onClick={() => issueCredential()}
+                sx={{
+                  mb: 2,
+                }}
+              >
+                ISSUE CREDENTIAL
+              </Button>
+            )}
 
             <Box
               component="img"
@@ -266,9 +372,8 @@ export function CreditScoreTemplate() {
                 borderRadius: (theme) => theme.spacing(1),
               }}
             />
-
             <Grid container rowGap={(theme) => theme.spacing(3)}>
-              {/* {gateProps?.holder_count > 0 && (
+              {totalRecipents > 0 && (
                 <>
                   <Grid
                     item
@@ -284,46 +389,47 @@ export function CreditScoreTemplate() {
                   </Grid>
                   <Grid item xs={8} display="flex" alignItems="center">
                     <AvatarGroup>
-                      {gateProps?.holders.map((holder, index) => {
-                        if (index == 3) return null;
-                        return (
-                          <Link
-                            key={holder.id}
-                            passHref
-                            href={`/profile/${holder.username}`}
-                          >
-                            <Tooltip title={holder.name}>
-                              <Box
-                                component="a"
-                                sx={{ display: 'inline-block' }}
-                              >
-                                <AvatarFile
-                                  alt={holder.username}
-                                  file={holder.picture}
-                                  fallback={holder.pfp || '/logo.png'}
-                                  sx={{
-                                    mx: 1,
-                                  }}
-                                />
-                              </Box>
-                            </Tooltip>
-                          </Link>
-                        );
-                      })}
+                      {recipentsUsers?.length > 0 &&
+                        recipentsUsers.map((holder, index) => {
+                          if (index == 3) return null;
+                          return (
+                            <Link
+                              key={holder.id}
+                              passHref
+                              href={`/profile/${holder.gatewayId}`}
+                            >
+                              <Tooltip title={holder.gatewayId}>
+                                <Box
+                                  component="a"
+                                  sx={{ display: 'inline-block' }}
+                                >
+                                  <Avatar
+                                    alt={holder.gatewayId}
+                                    src={holder.gatewayId}
+                                    sx={{
+                                      height: (theme) => theme.spacing(4),
+                                      width: (theme) => theme.spacing(4),
+                                      marginRight: (theme) => theme.spacing(1),
+                                    }}
+                                  />
+                                </Box>
+                              </Tooltip>
+                            </Link>
+                          );
+                        })}
                     </AvatarGroup>
 
-                    {gateProps?.holder_count > 3 ? (
+                    {totalRecipents > 3 ? (
                       <Chip
-                        label={`+ ${gateProps?.holder_count - 3}`}
-                        onClick={() => {
-                          setIsHolderDialog(!isHolderDialog);
-                        }}
+                        label={`+ ${totalRecipents - 3}`}
+                        // onClick={() => {
+                        //   setIsHolderDialog(!isHolderDialog);
+                        // }}
                       />
                     ) : null}
                   </Grid>
                 </>
-              )} */}
-              {/* gateProps?.creator */}
+              )}
               {true && (
                 <>
                   <Grid
@@ -338,12 +444,9 @@ export function CreditScoreTemplate() {
                       {t('about.created-by')}
                     </Typography>
                   </Grid>
-                  {/* <Grid item xs={8}>
-                    <Link
-                      passHref
-                      href={`/profile/${gateProps?.creator.username}`}
-                    >
-                      <Tooltip title={gateProps?.creator.name}>
+                  <Grid item xs={8}>
+                    <Link passHref href={`/profile/Gateway`}>
+                      <Tooltip title={'Gateway'}>
                         <Box
                           component="a"
                           sx={{
@@ -353,19 +456,14 @@ export function CreditScoreTemplate() {
                         >
                           <Chip
                             variant="outlined"
-                            label={gateProps?.creator.username}
-                            avatar={
-                              <Avatar
-                                alt={gateProps?.creator.username}
-                                src={`https://api.staging.mygateway.xyz/storage/file?id=${createdByImage}`}
-                              />
-                            }
+                            label={'Gateway'}
+                            avatar={<Avatar alt={'Gateway'} src={`logo.png`} />}
                             sx={{ cursor: 'pointer' }}
                           />
                         </Box>
                       </Tooltip>
                     </Link>
-                  </Grid> */}
+                  </Grid>
                 </>
               )}
             </Grid>
@@ -452,12 +550,24 @@ export function CreditScoreTemplate() {
                 {isUser && !isCreditScore && (
                   <>
                     <Typography
-                      sx={{ marginTop: '60px', marginLeft: '30px' }}
+                      sx={{ marginTop: '-30px', marginLeft: '30px' }}
+                      align={'center'}
+                      variant="h1"
+                    >
+                      -
+                    </Typography>
+                    <Typography
+                      sx={{ marginTop: '40px', marginLeft: '34px' }}
                       align={'center'}
                       variant="h6"
                     >
                       No Score
                     </Typography>
+                    <Tooltip title={t('no-score.title')}>
+                      <IconButton sx={{ marginLeft: '54px' }}>
+                        <InfoOutlined />
+                      </IconButton>
+                    </Tooltip>
                   </>
                 )}
               </Box>
@@ -576,6 +686,10 @@ export function CreditScoreTemplate() {
           </Stack>
         </Grid>
       </Grid>
+      <LoadingModal
+        openLoadingModal={openLoadingModal}
+        setOpenLoadingModal={setOpenLoadingModal}
+      />
     </>
   );
 }

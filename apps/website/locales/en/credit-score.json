@@ -30,5 +30,8 @@
 
   "start-using": {
     "title": "Start using it"
+  },
+  "no-score": {
+    "title": "Your credit score is based on your history of activity interacting with lending protocols and digital assets. Once you have enough activity, you'll automatically get a score that'll help you manage your on-chain finances."
   }
 }

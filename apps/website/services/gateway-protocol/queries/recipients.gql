@@ -24,3 +24,19 @@ query findRecipientsByDataModel(
     totalOfreceivedCredentials
   }
 }
+
+
+query findRecipientsByDataModelCreditScore(
+  $dataModelId: String!
+  $take: Float!
+  $skip: Float!
+) {
+  findRecipientsByDataModel(
+    dataModelId: $dataModelId
+    take: $take
+    skip: $skip
+  ) {
+    id
+    gatewayId
+  }
+}
