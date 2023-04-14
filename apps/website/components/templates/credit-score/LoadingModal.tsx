@@ -1,12 +1,14 @@
 import { Dispatch, SetStateAction } from 'react';
+
+import { Stack } from '@mui/material';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+
 import Loading from '../../atoms/loading';
-import { Stack } from '@mui/system';
 
 type Props = {
   openLoadingModal: boolean;
