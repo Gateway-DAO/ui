@@ -114,7 +114,7 @@ export function CreditScoreTemplate() {
           result.create_cred.credentialId
         )
       );
-      await queryClient.invalidateQueries(['user_protocol', me?.id]);
+      await queryClient.resetQueries(['user_protocol', me?.id]);
       return result.create_cred.credentialId;
     },
     { enabled: false }
@@ -163,7 +163,7 @@ export function CreditScoreTemplate() {
     {
       onSuccess: async (data) => {
         console.log(data);
-        await queryClient.invalidateQueries(['user_protocol', me?.id]);
+        await queryClient.resetQueries(['user_protocol', me?.id]);
       },
     }
   );
@@ -307,7 +307,7 @@ export function CreditScoreTemplate() {
             )}
 
             {checkIssued?.dataModel?.id ? (
-              <Stack flexDirection="row">
+              <Stack flexDirection="row" gap={2}>
                 <Button
                   variant="contained"
                   fullWidth
@@ -341,8 +341,15 @@ export function CreditScoreTemplate() {
                   // </Button>
                   <LoadingButton
                     variant="contained"
+                    startIcon={
+                      <TokenFilled height={20} width={20} color="action" />
+                    }
+                    fullWidth
                     isLoading={isLoadingMintingCred}
                     onClick={() => mutate({ credentialId: checkIssued.id })}
+                    sx={{
+                      mb: 2,
+                    }}
                   >
                     MINT AS NFT
                   </LoadingButton>
