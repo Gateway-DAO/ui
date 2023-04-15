@@ -59,9 +59,9 @@ query get_home($daos_where: daos_bool_exp = {}) {
       ...file
     }
   }
-  # loyalty_program(limit: 4) {
-  #   ...loyalty
-  # }
+  loyalty_program(limit: 4) {
+    ...loyalty
+  }
 }
 
 query gates_tab {

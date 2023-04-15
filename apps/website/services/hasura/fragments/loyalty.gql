@@ -1,44 +1,44 @@
-# fragment loyalty on loyalty_program {
-#   id
-#   name
-#   description
-#   image
-#   categories
-#   data_model_id
-#   organization_id
-#   categories
-#   details
-#   gates {
-#     id
-#     title
-#     description
-#     image
-#     published
-#     categories
-#     data_model_id
-#     expire_date
-#     points
-#     tasks {
-#       id
-#     }
-#     claim_limit
-#     holder_count
-#     type
-#     published
-#   }
-#   details
-#   loyalty_tiers {
-#     tier
-#     id
-#     image
-#     max_pts
-#     min_pts
-#   }
-#   dao {
-#     background_url
-#     name
-#     logo_url
-#     slug
-#     id
-#   }
-# }
+fragment loyalty on loyalty_program {
+  id
+  name
+  description
+  image
+  categories
+  data_model_id
+  organization_id
+  categories
+  details
+  gates {
+    id
+    title
+    description
+    image
+    published
+    categories
+    data_model_id
+    expire_date
+    points
+    tasks {
+      id
+    }
+    claim_limit
+    holder_count
+    type
+    published
+  }
+  details
+  loyalty_tiers {
+    tier
+    id
+    image
+    max_pts
+    min_pts
+  }
+  dao {
+    background_url
+    name
+    logo_url
+    slug
+    id
+  }
+}
