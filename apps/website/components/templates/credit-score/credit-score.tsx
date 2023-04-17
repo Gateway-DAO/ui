@@ -577,15 +577,6 @@ export function CreditScoreTemplate() {
                 </Typography>
               </Box>
             </Box>
-            <Button
-              sx={{ marginBottom: 4 }}
-              disabled={!isUser}
-              variant="outlined"
-              href="https://app.credprotocol.com/"
-              target="_blank"
-            >
-              {t('about.progress.btn-title')}
-            </Button>
           </Paper>
 
           <Stack spacing={5} mt={3}>
