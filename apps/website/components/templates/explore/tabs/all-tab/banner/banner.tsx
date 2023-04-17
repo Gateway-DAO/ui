@@ -1,8 +1,11 @@
 import useTranslation from 'next-translate/useTranslation';
+import Link from 'next/link';
 
 import { brandColors, theme } from '@gateway/theme';
 
 import { alpha, Box, Button, Stack, Typography } from '@mui/material';
+
+import CredProtocolIcon from './cred-protocol';
 
 export default function Banner(): JSX.Element {
   const { t } = useTranslation('explore');
@@ -33,11 +36,9 @@ export default function Banner(): JSX.Element {
             px: 3,
           }}
         >
-          <img
-            width="58px"
-            src="/images/explore/explore-banner_icon.png"
-            alt={t('common:featured-banner.title')}
-          />
+          <Box mb={2}>
+            <CredProtocolIcon />
+          </Box>
           <Box sx={{ maxWidth: '460px' }}>
             <Typography
               sx={{
@@ -61,26 +62,24 @@ export default function Banner(): JSX.Element {
             >
               {t('common:featured-banner.subtitle')}
             </Typography>
-            <Button
-              variant="contained"
-              sx={{ mt: 4 }}
-              href="https://blb4ytkp5bp.typeform.com/onboardgateway"
-              target="_blank"
-            >
-              {t('common:featured-banner.action')}
-            </Button>
+            <Link href="/creditscore" passHref>
+              <Button variant="contained" sx={{ mt: 4 }}>
+                {t('common:featured-banner.action')}
+              </Button>
+            </Link>
           </Box>
         </Box>
         <Box
           component="img"
           sx={{
-            pr: 4,
+            mr: 12,
+            my: 3,
             maxWidth: '100%',
             [theme.breakpoints.down('md')]: {
               display: 'none',
             },
           }}
-          src="/images/explore/explore-banner_figure.png"
+          src="/images/explore/explore-banner_figure_cred.png"
           alt={t('common:featured-banner.subtitle')}
         />
       </Box>
