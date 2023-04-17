@@ -2,6 +2,7 @@ import Link from 'next/link';
 
 import { PartialDeep } from 'type-fest/source/partial-deep';
 
+import { limitChars } from '@gateway/helpers';
 import { brandColors } from '@gateway/theme';
 
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
@@ -68,9 +69,11 @@ export function CredentialListItem({
           <Typography variant="h6">{gate?.title}</Typography>
           <Typography
             fontSize={12}
-            sx={{ color: alpha(brandColors.white.main, 0.7) }}
+            sx={{
+              color: alpha(brandColors.white.main, 0.7),
+            }}
           >
-            {gate?.description}
+            {limitChars(gate?.description, 90)}
           </Typography>
         </Stack>
         {gate.points && gate.points > 0 && (
