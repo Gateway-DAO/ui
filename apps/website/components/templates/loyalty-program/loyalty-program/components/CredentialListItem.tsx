@@ -1,6 +1,5 @@
 import Link from 'next/link';
 
-import { UseQueryResult } from '@tanstack/react-query';
 import { PartialDeep } from 'type-fest/source/partial-deep';
 
 import { brandColors } from '@gateway/theme';
@@ -12,20 +11,19 @@ import SuccessfullyIcon from '../../../../../components/atoms/icons/successfully
 import SuccessfullyRoundedIcon from '../../../../../components/atoms/icons/successfully-rounded';
 import Loading from '../../../../../components/atoms/loading';
 import { ROUTES } from '../../../../../constants/routes';
-import { useLoyaltyGateCompleted } from '../../../../../hooks/use-loyalty-gate-completed';
-import { Gate_Progress, Gates } from '../../../../../services/hasura/types';
+import { Gates } from '../../../../../services/hasura/types';
 
 type Props = {
   gate: PartialDeep<Gates>;
-  gatesCompleted: UseQueryResult<PartialDeep<Gate_Progress>[]>;
+  gateIsCompleted: boolean;
+  isLoading: boolean;
 };
 
-export function CredentialListItem({ gate, gatesCompleted }: Props) {
-  const { gateCompleted } = useLoyaltyGateCompleted({
-    gate,
-    gatesCompleted: gatesCompleted as any,
-  });
-
+export function CredentialListItem({
+  gate,
+  gateIsCompleted,
+  isLoading,
+}: Props) {
   return (
     <Link
       href={ROUTES.LOYALTY_PROGRAM_CREDENTIAL.replace('[id]', gate.id)}
@@ -43,12 +41,12 @@ export function CredentialListItem({ gate, gatesCompleted }: Props) {
           cursor: 'pointer',
           color: brandColors.white.main,
           textDecoration: 'none',
-          background: !gateCompleted
+          background: !gateIsCompleted
             ? alpha(brandColors.purple.main, 0.1)
             : 'none',
           transition: 'background .3s ease',
           '&:hover': {
-            background: !gateCompleted
+            background: !gateIsCompleted
               ? alpha(brandColors.purple.main, 0.12)
               : alpha(brandColors.purple.main, 0.03),
           },
@@ -90,11 +88,11 @@ export function CredentialListItem({ gate, gatesCompleted }: Props) {
             }}
           />
         )}
-        {gatesCompleted.isLoading ? (
+        {isLoading ? (
           <Loading size={28} marginTop={0} />
         ) : (
           <>
-            {gateCompleted ? (
+            {gateIsCompleted ? (
               <SuccessfullyIcon size="small" sx={{ width: 28, height: 28 }} />
             ) : (
               <SuccessfullyRoundedIcon />

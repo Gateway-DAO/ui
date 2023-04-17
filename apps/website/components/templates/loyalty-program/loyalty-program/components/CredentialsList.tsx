@@ -9,7 +9,11 @@ import { Stack, Typography, alpha } from '@mui/material';
 import { AlertCustom } from '../../../../../components/atoms/alert';
 import { useLoyaltyGatesCompleted } from '../../../../../hooks/use-loyalty-gates-completed';
 import { useAuth } from '../../../../../providers/auth';
-import { Gates, Loyalty_Program } from '../../../../../services/hasura/types';
+import {
+  Gate_Progress,
+  Gates,
+  Loyalty_Program,
+} from '../../../../../services/hasura/types';
 import { CredentialListItem } from './CredentialListItem';
 
 type Props = {
@@ -21,9 +25,20 @@ export function CredentialsList({ gates, loyalty }: Props) {
   const { t } = useTranslation('loyalty-program');
   const { me } = useAuth();
 
-  const { gatesCompleted } = useLoyaltyGatesCompleted({
+  const { gatesCompleted, isLoading } = useLoyaltyGatesCompleted({
     loyaltyProgramId: loyalty.id,
   });
+
+  const gateIsCompleted = (
+    gatesCompleted: PartialDeep<Gate_Progress>[],
+    gate: PartialDeep<Gates>
+  ) => {
+    return gatesCompleted?.find(
+      (gateProgress) => gateProgress.gate.id === gate.id
+    )
+      ? 1
+      : 0;
+  };
 
   return (
     <Stack sx={{ mb: { xs: 5, md: 12 } }}>
@@ -51,13 +66,21 @@ export function CredentialsList({ gates, loyalty }: Props) {
         )}
       </Stack>
       <Stack direction="column">
-        {gates.reverse().map((gate) => (
-          <CredentialListItem
-            key={gate.id}
-            gate={gate}
-            gatesCompleted={gatesCompleted as any}
-          />
-        ))}
+        {gates
+          .sort((a, b) => {
+            return (
+              gateIsCompleted(gatesCompleted, b) -
+              gateIsCompleted(gatesCompleted, a)
+            );
+          })
+          .map((gate) => (
+            <CredentialListItem
+              key={gate.id}
+              gate={gate}
+              gateIsCompleted={!!gateIsCompleted(gatesCompleted, gate)}
+              isLoading={isLoading}
+            />
+          ))}
       </Stack>
     </Stack>
   );
