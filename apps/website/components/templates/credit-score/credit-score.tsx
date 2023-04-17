@@ -604,69 +604,6 @@ export function CreditScoreTemplate() {
                 <Item variant="outlined">{t('utility.label-3')}</Item>
               </Stack>
             </Stack>
-            <Stack spacing={1}>
-              <Typography variant="h6" gutterBottom>
-                {t('start-using.title')}
-              </Typography>
-              <Stack
-                direction={{
-                  lg: 'row',
-                  md: 'column',
-                  sm: 'column',
-                  xs: 'column',
-                }}
-                spacing={3}
-              >
-                <MUILink
-                  href="https://aave.com/"
-                  target="_blank"
-                  style={{ flexGrow: 1 }}
-                >
-                  <Item
-                    elevation={2}
-                    style={{ border: '1px solid rgba(229, 229, 229, 0.12)' }}
-                  >
-                    <Image src="/images/aave.png" width={66} height={20} />
-                  </Item>
-                </MUILink>
-                <MUILink
-                  href="https://uniswap.org/"
-                  target="_blank"
-                  style={{ flexGrow: 1 }}
-                >
-                  <Item
-                    elevation={2}
-                    style={{ border: '1px solid rgba(229, 229, 229, 0.12)' }}
-                  >
-                    <Image src="/images/uniswap.png" width={122} height={32} />
-                  </Item>
-                </MUILink>
-                <MUILink
-                  href="https://dydx.exchange/"
-                  target="_blank"
-                  style={{ flexGrow: 1 }}
-                >
-                  <Item
-                    elevation={2}
-                    style={{ border: '1px solid rgba(229, 229, 229, 0.12)' }}
-                  >
-                    <Image src="/images/dydx.png" width={66} height={20} />
-                  </Item>
-                </MUILink>
-                <MUILink
-                  href="https://teller.org/"
-                  target="_blank"
-                  style={{ flexGrow: 1 }}
-                >
-                  <Item
-                    elevation={2}
-                    style={{ border: '1px solid rgba(229, 229, 229, 0.12)' }}
-                  >
-                    <Image src="/images/teller.png" width={76} height={26} />
-                  </Item>
-                </MUILink>
-              </Stack>
-            </Stack>
           </Stack>
         </Grid>
       </Grid>
