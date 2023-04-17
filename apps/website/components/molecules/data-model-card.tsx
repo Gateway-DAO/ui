@@ -15,6 +15,7 @@ import MUICard from '@mui/material/Card';
 import { ROUTES } from '../../constants/routes'; //[ ] use right path
 import { DataModel } from '../../services/gateway-protocol/types';
 import { CategoriesList } from './categories-list';
+import { AvatarFile } from '../atoms/avatar-file';
 
 export function DataModelCard({
   id,
@@ -27,47 +28,74 @@ export function DataModelCard({
   const url = ROUTES.PROTOCOL_DATAMODEL.replace('[id]', id);
   return (
     <Link passHref href={url}>
-      <MUICard sx={{ position: 'relative', cursor: 'pointer' }}>
-        <CardHeader
-          title={createdBy?.gatewayId}
-          titleTypographyProps={{ fontSize: '14px', fontWeight: 400 }}
-          avatar={
-            <Avatar
-              src="/images/avatar-default.png"
-              sx={{ width: 32, height: 32 }}
-            />
-          }
-        />
-        <CardContent sx={{ py: 1 }}>
-          <Typography gutterBottom variant="h5" sx={{ cursor: 'pointer' }}>
-            {title}
-          </Typography>
-          <Typography
-            height={40}
-            variant="body2"
-            color="text.secondary"
+      <MUICard
+        sx={{
+          position: 'relative',
+          cursor: 'pointer',
+          backgroundColor: '#41216D',
+          ':hover': {
+            backgroundColor: '#492479',
+          },
+        }}
+      >
+        <>
+          <Box
             sx={{
-              display: '-webkit-box',
-              WebkitLineClamp: 2,
-              WebkitBoxOrient: 'vertical',
-              overflow: 'hidden',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              paddingRight: '25px',
+              paddingLeft: '16px',
             }}
           >
-            {description}
-          </Typography>
-        </CardContent>
-        <Box
-          sx={{
-            display: 'flex',
-            py: 1,
-            px: 2,
-            mt: 1,
-          }}
-        >
-          <div style={{ width: '100%', marginTop: '-4px' }}>
-            {tags && tags.length > 0 && <CategoriesList categories={tags} />}
-          </div>
-        </Box>
+            <CardHeader
+              sx={{
+                pt: 2,
+                pb: 1,
+                '.MuiCardHeader-action': {
+                  position: 'absolute',
+                  right: 30,
+                },
+                px: 0,
+              }}
+              avatar={
+                <img
+                  src={'images/image-test-issue.png'}
+                  alt="Professional recommendation"
+                />
+              }
+            />
+          </Box>
+          <CardContent sx={{ py: 1 }}>
+            {
+              <Link passHref href={url}>
+                <Typography
+                  gutterBottom
+                  variant="h5"
+                  sx={{ cursor: 'pointer' }}
+                >
+                  Professional recommendation
+                </Typography>
+              </Link>
+            }
+            <Typography
+              height={40}
+              variant="body2"
+              color="text.secondary"
+              sx={{
+                /* TODO: make line-clamp reusable */
+                display: '-webkit-box',
+                WebkitLineClamp: 2,
+                WebkitBoxOrient: 'vertical',
+                overflow: 'hidden',
+              }}
+            >
+              To be used by issuers indicating the completion of a degree
+              program at a 2 year or 4 year university,
+            </Typography>
+          </CardContent>
+          <CategoriesList showStatus={true} categories={['Work']} />
+        </>
       </MUICard>
     </Link>
   );

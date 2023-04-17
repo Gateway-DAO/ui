@@ -48,8 +48,8 @@ export function ExploreTemplate({
         section: <GatesTab />,
       },
       {
-        key: 'data-models',
-        label: t('common:tabs.data-models'),
+        key: 'issue',
+        label: t('common:tabs.issue'),
         section: <DataModelsTab />,
       },
       {
