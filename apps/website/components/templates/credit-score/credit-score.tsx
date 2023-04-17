@@ -1,3 +1,18 @@
+import { useSession } from 'next-auth/react';
+import useTranslation from 'next-translate/useTranslation';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
+
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
+import ArcProgress from 'react-arc-progress';
+
+import { TOKENS } from '@gateway/theme';
+
+import { InfoOutlined } from '@mui/icons-material';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import {
   Avatar,
   AvatarGroup,
@@ -14,34 +29,20 @@ import {
   styled,
 } from '@mui/material';
 import { Link as MUILink } from '@mui/material';
-import { ReadMore } from '../../atoms/read-more-less';
-
-import { useRouter } from 'next/router';
-import { useAuth } from '../../../providers/auth';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 import { ROUTES } from '../../../constants/routes';
-import Link from 'next/link';
-import { TOKENS } from '@gateway/theme';
-import { ShareButton } from '../../atoms/share-button';
-import { ClientNav } from '../../organisms/navbar/client-nav';
-import Image from 'next/image';
-import ArcProgress from 'react-arc-progress';
-import useTranslation from 'next-translate/useTranslation';
-import { useMutation, useQuery } from '@tanstack/react-query';
-import { Info, InfoOutlined } from '@mui/icons-material';
-import { TokenFilled } from '../../molecules/mint-card/assets/token-filled';
-import { useState } from 'react';
-import LoadingModal from './LoadingModal';
+import { useAuth } from '../../../providers/auth';
 import {
   gatewayProtocolAuthSDK,
   gatewayProtocolSDK,
-} from 'apps/website/services/gateway-protocol/api';
-import { useSession } from 'next-auth/react';
-import { AvatarFile } from '../../atoms/avatar-file';
-import { MintCredentialMutationVariables } from 'apps/website/services/gateway-protocol/types';
-import { useQueryClient } from '@tanstack/react-query';
+} from '../../../services/gateway-protocol/api';
+import { MintCredentialMutationVariables } from '../../../services/gateway-protocol/types';
 import { LoadingButton } from '../../atoms/loading-button';
+import { ReadMore } from '../../atoms/read-more-less';
+import { ShareButton } from '../../atoms/share-button';
+import { TokenFilled } from '../../molecules/mint-card/assets/token-filled';
+import { ClientNav } from '../../organisms/navbar/client-nav';
+import LoadingModal from './LoadingModal';
 
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
@@ -73,9 +74,10 @@ export function CreditScoreTemplate() {
       return result.get_cred_score;
     }
   );
+
   const isUser = !!me;
   const isCreditScore = !!credScore?.account;
-  console.log(me);
+
   const checkIssued = me?.protocol?.issuedCredentials?.find(
     (something) =>
       something?.dataModel?.id === '937f9fc8-f3a7-4d28-88bc-826af1237c2c' // TODO: make env var; change on prod
