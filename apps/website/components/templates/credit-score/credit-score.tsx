@@ -87,7 +87,7 @@ export function CreditScoreTemplate() {
 
   const DATA_MODEL_ID = process.env.NEXT_PUBLIC_CRED_PROTOCOL_DM_ID;
 
-  const { me, gqlAuthMethods } = useAuth();
+  const { me, gqlAuthMethods, token } = useAuth();
   const router = useRouter();
   const [openLoadingModal, setOpenLoadingModal] = useState(false);
   const [isHolderDialog, setIsHolderDialog] = useState(false);
@@ -100,15 +100,15 @@ export function CreditScoreTemplate() {
         address: me?.wallet,
       });
       return result.get_cred_score;
+    },
+    {
+      enabled: !!me?.wallet,
     }
   );
 
-  // we need this formula to show the value correctly in arc other wise the values displayed where not correct
-  // copied from stackoverflow!
   const scale = (1000 - 0) / (1000 - 300);
   const creditScore = 0 + (credScore?.value - 300) * scale;
 
-  const isUser = !!me;
   const isCreditScore = !!credScore?.account;
   const checkIfUserHasCredential = me?.protocol?.receivedCredentials?.find(
     (something) => something?.dataModel?.id === DATA_MODEL_ID
@@ -127,8 +127,6 @@ export function CreditScoreTemplate() {
     setOpenLoadingModal(true);
   };
 
-  const { token } = useAuth();
-
   const { refetch, isFetching: createCredentialLoading } = useQuery(
     ['cred-api-create-credential', me?.wallet],
     async () => {
@@ -143,10 +141,12 @@ export function CreditScoreTemplate() {
           result.create_cred.credentialId
         )
       );
-      await queryClient.resetQueries(['user_protocol', me?.id]);
       return result.create_cred.credentialId;
     },
-    { enabled: false }
+    {
+      enabled: false,
+      onSuccess: () => queryClient.resetQueries(['user_protocol', me?.id]),
+    }
   );
 
   const { data: recipientsUsers } = useQuery(
@@ -180,9 +180,7 @@ export function CreditScoreTemplate() {
       });
     },
     {
-      onSuccess: async (_) => {
-        await queryClient.resetQueries(['user_protocol', me?.id]);
-      },
+      onSuccess: () => queryClient.resetQueries(['user_protocol', me?.id]),
     }
   );
 
@@ -433,8 +431,14 @@ export function CreditScoreTemplate() {
                     </Typography>
                   </Grid>
                   <Grid item xs={8}>
-                    <Link passHref href={`/dao/gateway`}>
-                      <Tooltip title={'Gateway'}>
+                    <Link
+                      passHref
+                      href={ROUTES.DAO_PROFILE.replace(
+                        '[slug]',
+                        'cred-protocol'
+                      )}
+                    >
+                      <Tooltip title={'Cred Protocol'}>
                         <Box
                           component="a"
                           sx={{
@@ -444,8 +448,13 @@ export function CreditScoreTemplate() {
                         >
                           <Chip
                             variant="outlined"
-                            label={'Gateway'}
-                            avatar={<Avatar alt={'Gateway'} src={`logo.png`} />}
+                            label={'Cred Protocol'}
+                            avatar={
+                              <Avatar
+                                alt={'Cred Protocol'}
+                                src={`https://pbs.twimg.com/profile_images/1425122906044964864/Xrgs0ACt_400x400.jpg`}
+                              />
+                            }
                             sx={{ cursor: 'pointer' }}
                           />
                         </Box>
@@ -503,17 +512,17 @@ export function CreditScoreTemplate() {
             <Box position={'relative'}>
               <ArcProgress
                 thickness={20}
-                progress={isUser && isCreditScore ? creditScore / 1000 : 0}
+                progress={!!me && isCreditScore ? creditScore / 1000 : 0}
                 fillThickness={35}
                 emptyColor="#FFFFFF26"
                 size={size}
-                fillColor={isUser ? fillColor : '#312938'}
+                fillColor={me ? fillColor : '#312938'}
                 customText={customText}
                 arcStart={140}
                 arcEnd={400}
               />
               <Box position={'absolute'} top={160} left={170}>
-                {isUser && isCreditScore && (
+                {!!me && isCreditScore && (
                   <>
                     <Typography align={'center'} variant="h1">
                       {credScore?.value}
@@ -523,7 +532,7 @@ export function CreditScoreTemplate() {
                     </Typography>
                   </>
                 )}
-                {!isUser && (
+                {!me && (
                   <>
                     <Typography
                       sx={{ marginTop: '60px' }}
@@ -534,7 +543,7 @@ export function CreditScoreTemplate() {
                     </Typography>
                   </>
                 )}
-                {isUser && !isCreditScore && (
+                {!!me && !isCreditScore && (
                   <>
                     <Typography
                       sx={{ marginTop: '-30px', marginLeft: '30px' }}
