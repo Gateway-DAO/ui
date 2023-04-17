@@ -3,6 +3,7 @@ import useTranslation from 'next-translate/useTranslation';
 import { PartialDeep } from 'type-fest';
 
 import { Button, Divider, Stack } from '@mui/material';
+import { brandColors, theme } from '@gateway/theme';
 
 import { ROUTES } from '../../../../../constants/routes';
 import { DataModel } from '../../../../../services/gateway-protocol/types';
@@ -17,6 +18,8 @@ import {
 } from '../../../../molecules/sections';
 import { ExploreProps } from '../../types';
 import Banner from './banner/banner';
+import { CardEarnCredential } from './banner/card-earn-credential';
+import { CardCreditScore } from './banner/card-credit-score';
 
 type Props = {
   setActiveTab: (tab: number) => void;
@@ -43,6 +46,22 @@ export function AllTab({
       }}
     >
       <Banner />
+      <Stack
+        flexDirection={'row'}
+        // alignItems={'stretch'}
+        justifyContent={'space-evenly'}
+        // gap={'100px'}
+        sx={{
+          paddingBottom: 4,
+          [theme.breakpoints.down('md')]: {
+            flexDirection: 'column',
+            gap: '20px',
+          },
+        }}
+      >
+        <CardCreditScore />
+        <CardEarnCredential />
+      </Stack>
       <Stack
         direction="column"
         divider={<Divider />}
@@ -122,7 +141,7 @@ export function AllTab({
             <DaoCard key={dao.id} {...dao} />
           ))}
         </SectionWithSliderResponsive>
-        <SectionWithGrid
+        {/* <SectionWithGrid
           title={t('featured-people.title')}
           caption={t('featured-people.caption')}
           action={null}
@@ -130,7 +149,7 @@ export function AllTab({
           {people.map((person) => (
             <PersonCard key={person.id} user={person} />
           ))}
-        </SectionWithGrid>
+        </SectionWithGrid> */}
       </Stack>
     </Stack>
   );

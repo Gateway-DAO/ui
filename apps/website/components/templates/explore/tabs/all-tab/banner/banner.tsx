@@ -3,6 +3,8 @@ import useTranslation from 'next-translate/useTranslation';
 import { brandColors, theme } from '@gateway/theme';
 
 import { alpha, Box, Button, Stack, Typography } from '@mui/material';
+import { ResponsiveImage } from 'apps/website/components/templates/landing/styles';
+import { ROUTES } from 'apps/website/constants/routes';
 
 export default function Banner(): JSX.Element {
   const { t } = useTranslation('explore');
@@ -23,67 +25,81 @@ export default function Banner(): JSX.Element {
           alignItems: 'center',
         }}
       >
-        <Box
+        <Stack
+          flexDirection="row"
+          justifyContent={''}
           sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'space-between',
-            height: '100%',
-            py: 3,
-            px: 3,
-          }}
-        >
-          <img
-            width="58px"
-            src="/images/explore/explore-banner_icon.png"
-            alt={t('common:featured-banner.title')}
-          />
-          <Box sx={{ maxWidth: '460px' }}>
-            <Typography
-              sx={{
-                fontSize: '34px',
-                fontWeight: 700,
-                lineHeight: '123.5%',
-                letterSpacing: '0.25px',
-                mb: 2,
-              }}
-            >
-              {t('common:featured-banner.title')}
-            </Typography>
-            <Typography
-              sx={{
-                fontSize: '16px',
-                fontWeight: 400,
-                lineHeight: '150%',
-                letterSpacing: '0.15px',
-                color: alpha(brandColors.white.main, 0.7),
-              }}
-            >
-              {t('common:featured-banner.subtitle')}
-            </Typography>
-            <Button
-              variant="contained"
-              sx={{ mt: 4 }}
-              href="https://blb4ytkp5bp.typeform.com/onboardgateway"
-              target="_blank"
-            >
-              {t('common:featured-banner.action')}
-            </Button>
-          </Box>
-        </Box>
-        <Box
-          component="img"
-          sx={{
-            pr: 4,
-            maxWidth: '100%',
             [theme.breakpoints.down('md')]: {
-              display: 'none',
+              flexDirection: 'column',
             },
           }}
-          src="/images/explore/explore-banner_figure.png"
-          alt={t('common:featured-banner.subtitle')}
-        />
+        >
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: '',
+              alignItems: '',
+              rowGap: '150px',
+              height: '100%',
+              py: 3,
+              px: 3,
+            }}
+          >
+            <Typography>Issue Credentials</Typography>
+            <Box sx={{ maxWidth: '460px' }}>
+              <Typography
+                sx={{
+                  fontSize: '34px',
+                  fontWeight: 700,
+                  lineHeight: '123.5%',
+                  letterSpacing: '0.25px',
+                  mb: 2,
+                }}
+              >
+                {t('common:featured-banner.title')}
+              </Typography>
+              <Typography
+                sx={{
+                  fontSize: '16px',
+                  fontWeight: 400,
+                  lineHeight: '150%',
+                  letterSpacing: '0.15px',
+                  color: alpha(brandColors.white.main, 0.7),
+                }}
+              >
+                {t('common:featured-banner.subtitle')}
+              </Typography>
+              <Button
+                variant="contained"
+                sx={{ mt: 4 }}
+                href={ROUTES.PROTOCOL_DATAMODEL.replace(
+                  '[id]',
+                  '1f1bff45-6ffb-48c1-ab6e-06f19cb7a744'
+                )}
+              >
+                {t('common:featured-banner.action')}
+              </Button>
+            </Box>
+          </Box>
+          <Box
+            component="img"
+            sx={{
+              // pr: 10,
+              ml: 45,
+              maxWidth: '459.22px',
+              [theme.breakpoints.down('md')]: {
+                maxWidth: '459.22px',
+                ml: 0,
+              },
+            }}
+            src="/images/issue-credential-model.png"
+            alt={t('common:featured-banner.subtitle')}
+          />
+        </Stack>
       </Box>
     </Stack>
   );
 }
+// for the half banner use organization card
+// for the issuer creds use normal card without borders and stuff
