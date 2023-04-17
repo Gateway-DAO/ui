@@ -61,11 +61,11 @@ const Item = styled(Paper)(({ theme }) => ({
 
 export function CreditScoreTemplate() {
   const { t } = useTranslation('credit-score');
-  const { me, gqlAuthMethods, onUpdateMe } = useAuth();
+  const { me, gqlAuthMethods } = useAuth();
   const router = useRouter();
   const [openLoadingModal, setOpenLoadingModal] = useState(false);
   const queryClient = useQueryClient();
-  const { data: credScore, error } = useQuery(
+  const { data: credScore } = useQuery(
     ['cred-score-single', me?.wallet],
     async () => {
       const result = await gqlAuthMethods.get_cred_score({
@@ -80,7 +80,7 @@ export function CreditScoreTemplate() {
 
   const checkIssued = me?.protocol?.issuedCredentials?.find(
     (something) =>
-      something?.dataModel?.id === '937f9fc8-f3a7-4d28-88bc-826af1237c2c' // TODO: make env var; change on prod
+      something?.dataModel?.id === process.env.NEXT_PUBLIC_CRED_PROTOCOL_DM_ID
   );
   const handleNavBack = () => {
     if (window.history.state.idx === 0) {
@@ -124,11 +124,11 @@ export function CreditScoreTemplate() {
 
   // const use
   const { data: recipentsUsers } = useQuery(
-    ['data-models-find-credit', '937f9fc8-f3a7-4d28-88bc-826af1237c2c'],
+    ['data-models-find-credit', process.env.NEXT_PUBLIC_CRED_PROTOCOL_DM_ID],
     async () => {
       const result =
         await gatewayProtocolSDK.findRecipientsByDataModelCreditScore({
-          dataModelId: '937f9fc8-f3a7-4d28-88bc-826af1237c2c',
+          dataModelId: process.env.NEXT_PUBLIC_CRED_PROTOCOL_DM_ID,
           skip: 0,
           take: 10,
         });
@@ -138,10 +138,10 @@ export function CreditScoreTemplate() {
   );
 
   const { data: totalRecipents } = useQuery(
-    ['data-models-total-creds', '937f9fc8-f3a7-4d28-88bc-826af1237c2c'],
+    ['data-models-total-creds', process.env.NEXT_PUBLIC_CRED_PROTOCOL_DM_ID],
     async () => {
       const s = await gatewayProtocolSDK.getDataModelStats({
-        dataModelId: '937f9fc8-f3a7-4d28-88bc-826af1237c2c',
+        dataModelId: process.env.NEXT_PUBLIC_CRED_PROTOCOL_DM_ID,
       });
       console.log(s);
       return s.getTotalofIssuersByDataModel;
