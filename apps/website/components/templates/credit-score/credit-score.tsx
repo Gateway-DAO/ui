@@ -89,7 +89,7 @@ export function CreditScoreTemplate() {
       router.back();
     }
   };
-  console.log(checkIssued);
+
   const issueCredential = async () => {
     refetch();
     setOpenLoadingModal(true);
@@ -132,7 +132,7 @@ export function CreditScoreTemplate() {
           skip: 0,
           take: 10,
         });
-      console.log(result.findRecipientsByDataModel);
+
       return result.findRecipientsByDataModel;
     }
   );
@@ -143,7 +143,7 @@ export function CreditScoreTemplate() {
       const s = await gatewayProtocolSDK.getDataModelStats({
         dataModelId: process.env.NEXT_PUBLIC_CRED_PROTOCOL_DM_ID,
       });
-      console.log(s);
+
       return s.getTotalofIssuersByDataModel;
     }
   );
@@ -164,13 +164,10 @@ export function CreditScoreTemplate() {
     },
     {
       onSuccess: async (data) => {
-        console.log(data);
         await queryClient.resetQueries(['user_protocol', me?.id]);
       },
     }
   );
-
-  console.log(mintData, somethingError);
 
   const size = 500;
   const fillColor = {
@@ -328,19 +325,6 @@ export function CreditScoreTemplate() {
                   CHECK CREDENTIAL
                 </Button>
                 {!checkIssued?.nft?.minted && (
-                  // <Button
-                  //   variant="contained"
-                  //   startIcon={
-                  //     <TokenFilled height={20} width={20} color="action" />
-                  //   }
-                  //   fullWidth
-                  //   onClick={() => mutate({ credentialId: checkIssued.id })}
-                  //   sx={{
-                  //     mb: 2,
-                  //   }}
-                  // >
-                  //   MINT AS NFT
-                  // </Button>
                   <LoadingButton
                     variant="contained"
                     startIcon={
