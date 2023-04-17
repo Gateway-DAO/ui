@@ -26,6 +26,7 @@ fragment dao_profile on daos {
     categories
     image
     published
+    loyalty_id
   }
   followers_aggregate(where: { status: { _eq: "following" } }) {
     aggregate {
@@ -106,6 +107,7 @@ query dao_gates_tab($id: uuid!) {
       categories
       image
       published
+      loyalty_id
       dao {
         id
       }
