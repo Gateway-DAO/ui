@@ -56,14 +56,14 @@ export function MintDialog({ isOpen, status, onClose }: MintDialogProps) {
           {status === 'share' && (
             <IosShare
               color="secondary"
-              sx={{
+              sx={(theme) => ({
                 height: 40,
                 width: 40,
                 m: 2,
                 p: 1,
-                bgcolor: 'primary.light',
+                bgcolor: theme.palette.primary.main,
                 borderRadius: '50%',
-              }}
+              })}
             />
           )}
 
