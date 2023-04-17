@@ -23,13 +23,9 @@
 
   "utility": {
     "title": "Utility & Benefits",
-    "label-1": "Rates as low as & 2% aa at AAVE",
-    "label-2": "Early Access to Financial Events",
-    "label-3": " Monthly Personal Financial Report"
-  },
-
-  "start-using": {
-    "title": "Start using it"
+    "label-1": "Improved Lending Rates on Protocols",
+    "label-2": "Early Access to DeFi Events and Projects",
+    "label-3": "Uncollateralized Lending Opportunities"
   },
   "no-score": {
     "title": "Your credit score is based on your history of activity interacting with lending protocols and digital assets. Once you have enough activity, you'll automatically get a score that'll help you manage your on-chain finances."
