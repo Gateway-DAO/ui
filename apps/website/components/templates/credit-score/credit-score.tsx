@@ -589,6 +589,21 @@ export function CreditScoreTemplate() {
               </Typography>
               <Typography>{t('details.description')}</Typography>
             </Stack>
+
+            <Stack spacing={1}>
+              <Typography variant="h6" gutterBottom>
+                {t('how.title')}
+              </Typography>
+              <Typography>{t('how.description')}</Typography>
+            </Stack>
+
+            <Stack spacing={1}>
+              <Typography variant="h6" gutterBottom>
+                {t('why.title')}
+              </Typography>
+              <Typography>{t('why.description')}</Typography>
+            </Stack>
+
             <Stack spacing={1}>
               <Typography variant="h6" gutterBottom>
                 {t('utility.title')}

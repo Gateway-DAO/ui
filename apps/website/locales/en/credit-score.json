@@ -20,9 +20,16 @@
     "title": "Details",
     "description": "A credit score is a numerical representation of a person's creditworthiness and is used by lenders to evaluate their ability to repay loans. Maintaining a good credit score is essential as it can lead to a number of benefits. First and foremost, having a good credit score makes it easier to obtain loans, credit cards, and other financial products with favourable terms and lower interest rates."
   },
-
+  "how": {
+    "title": "Here's how!",
+    "description": "Gateway issues each of our community members a Credit Score Credential by calling the Cred Protocol API. Cred’s API is a powerful tool that can help aggregate and assess a wallet’s credit history. From total holdings, to current and outstanding debt/collateral positions. Gateway's credential data is based off of the “Summary” function of Cred's API."
+  },
+  "why": {
+    "title": "Why?",
+    "description": "In the future credentials will be used to empower your DeFi experience."
+  },
   "utility": {
-    "title": "Utility & Benefits",
+    "title": "This inclides:",
     "label-1": "Improved Lending Rates on Protocols",
     "label-2": "Early Access to DeFi Events and Projects",
     "label-3": "Uncollateralized Lending Opportunities"
