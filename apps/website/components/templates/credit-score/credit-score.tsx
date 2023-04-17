@@ -110,7 +110,7 @@ export function CreditScoreTemplate() {
 
   const isUser = !!me;
   const isCreditScore = !!credScore?.account;
-  const checkIfUserHasCredential = me?.protocol?.issuedCredentials?.find(
+  const checkIfUserHasCredential = me?.protocol?.receivedCredentials?.find(
     (something) => something?.dataModel?.id === DATA_MODEL_ID
   );
 

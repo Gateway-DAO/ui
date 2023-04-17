@@ -28,6 +28,15 @@ query meProtocol {
         minted
       }
     }
+    receivedCredentials {
+      dataModel {
+        id
+      }
+      id
+      nft {
+        minted
+      }
+    }
     totalOfIssuedCredentials
     totalOfreceivedCredentials
   }
