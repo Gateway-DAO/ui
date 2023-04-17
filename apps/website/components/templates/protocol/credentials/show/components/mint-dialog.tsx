@@ -13,9 +13,11 @@ import {
 
 import { AnimatedMessage } from '../../../../../atoms/animated-message';
 
+export type DialogStatuses = 'loading' | 'error' | 'success' | 'idle' | 'share';
+
 type MintDialogProps = {
   isOpen: boolean;
-  status: 'loading' | 'error' | 'success' | 'idle' | 'share';
+  status: DialogStatuses;
   onClose: any;
 };
 
