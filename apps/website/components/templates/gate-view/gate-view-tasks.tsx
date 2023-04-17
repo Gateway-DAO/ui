@@ -5,11 +5,7 @@ import { PartialDeep } from 'type-fest';
 
 import { useAuth } from '../../../providers/auth';
 import { gqlAnonMethods } from '../../../services/hasura/api';
-import {
-  CredentialQuery,
-  Gates,
-  Scalars,
-} from '../../../services/hasura/types';
+import { CredentialQuery, Gates } from '../../../services/hasura/types';
 import GateCompletedModal from '../../organisms/gates/view/modals/gate-completed';
 import { DirectHoldersList } from './direct-holders-list/direct-holders-list';
 import { DirectHoldersHeader } from './direct-holders-list/header';
@@ -18,23 +14,25 @@ import { TaskList } from './task-list';
 
 type GateViewTasksProps = {
   gateProps: PartialDeep<Gates>;
-  isAdmin: boolean;
   completedGate: boolean;
   credential: CredentialQuery;
-  published: Scalars['gate_state'];
   completedTasksCount: number;
 };
 
 export function GateViewTasks({
   gateProps,
-  isAdmin,
   completedGate,
   credential,
-  published,
   completedTasksCount,
 }: GateViewTasksProps) {
   const { me, gqlAuthMethods } = useAuth();
   const [open, setOpen] = useState(false);
+
+  const isAdmin =
+    me?.permissions?.filter(
+      (permission) =>
+        permission.dao_id === gateProps?.dao?.id && permission.dao?.is_admin
+    ).length > 0;
 
   const gateProgress = useQuery(['gate_progress', gateProps?.id, me?.id], () =>
     gqlAuthMethods.GateProgress({
@@ -87,29 +85,31 @@ export function GateViewTasks({
         gate={gateProps}
         credential={credential?.credentials_by_pk}
       />
-      {published !== 'not_published' && gateProps.type === 'direct' && (
-        <DirectHoldersList
-          gate={gateProps}
-          isLoading={directCredentialInfo.isLoading}
-          totalHolders={
-            directCredentialInfo.data?.whitelisted_wallets_aggregate?.aggregate
-              .count
-          }
-          header={
-            <DirectHoldersHeader
-              hasCredential={completedGate}
-              totalHolders={
-                directCredentialInfo.data?.whitelisted_wallets_aggregate
-                  ?.aggregate.count
-              }
-              completedAt={credential?.credentials_by_pk?.created_at}
-            />
-          }
-        />
-      )}
-      {published === 'not_published' && gateProps.type === 'direct' && (
-        <DraftDirectHoldersList gate={gateProps} />
-      )}
+      {gateProps.published !== 'not_published' &&
+        gateProps.type === 'direct' && (
+          <DirectHoldersList
+            gate={gateProps}
+            isLoading={directCredentialInfo.isLoading}
+            totalHolders={
+              directCredentialInfo.data?.whitelisted_wallets_aggregate
+                ?.aggregate.count
+            }
+            header={
+              <DirectHoldersHeader
+                hasCredential={completedGate}
+                totalHolders={
+                  directCredentialInfo.data?.whitelisted_wallets_aggregate
+                    ?.aggregate.count
+                }
+                completedAt={credential?.credentials_by_pk?.created_at}
+              />
+            }
+          />
+        )}
+      {gateProps.published === 'not_published' &&
+        gateProps.type === 'direct' && (
+          <DraftDirectHoldersList gate={gateProps} />
+        )}
       {gateProps.type === 'task_based' && (
         <TaskList
           gate={gateProps}
@@ -117,7 +117,6 @@ export function GateViewTasks({
           completedTasksCount={completedTasksCount}
           formattedDate={formattedDate}
           isAdmin={isAdmin}
-          published={published}
           setOpen={() => {
             gateProgress.remove();
             setOpen(true);

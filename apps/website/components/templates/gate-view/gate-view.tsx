@@ -31,15 +31,8 @@ type GateViewProps = {
 export function GateViewTemplate({ gateProps }: GateViewProps) {
   const [isHolderDialog, setIsHolderDialog] = useState(false);
   const [isMintDialog, setMintModal] = useState(false);
-  const [published, setPublished] = useState(gateProps?.published);
   const { me, gqlAuthMethods } = useAuth();
   const gateStatus = useGateStatus(gateProps);
-
-  const isAdmin =
-    me?.permissions?.filter(
-      (permission) =>
-        permission.dao_id === gateProps?.dao?.id && permission.dao?.is_admin
-    ).length > 0;
 
   const credential_id = me?.credentials?.find(
     (cred) => cred?.gate_id === gateProps?.id
@@ -81,12 +74,9 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
         setOpen={setMintModal}
       />
       <GateViewSidebar
-        published={published}
-        setPublished={setPublished}
         completedGate={gateStatus.isCompleted}
         credential={credential}
         gateProps={gateProps}
-        isAdmin={isAdmin}
         isLimitExceeded={isLimitExceeded}
         setMintModal={setMintModal}
       />
@@ -95,8 +85,6 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
         completedGate={gateStatus.isCompleted}
         credential={credential}
         gateProps={gateProps}
-        isAdmin={isAdmin}
-        published={published}
         completedTasksCount={gateStatus.completedTasksCount}
       />
     </Grid>
