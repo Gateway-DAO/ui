@@ -12,13 +12,9 @@ import Loading from '../../atoms/loading';
 
 type Props = {
   openLoadingModal: boolean;
-  setOpenLoadingModal: Dispatch<SetStateAction<boolean>>;
 };
 
-export default function LoadingModal({
-  openLoadingModal,
-  setOpenLoadingModal,
-}: Props) {
+export default function LoadingModal({ openLoadingModal }: Props) {
   return (
     <div>
       <Dialog

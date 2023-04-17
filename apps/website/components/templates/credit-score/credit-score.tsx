@@ -41,6 +41,7 @@ import { LoadingButton } from '../../atoms/loading-button';
 import { ReadMore } from '../../atoms/read-more-less';
 import { ShareButton } from '../../atoms/share-button';
 import { TokenFilled } from '../../molecules/mint-card/assets/token-filled';
+import { HolderDialog } from '../../organisms/holder-dialog';
 import { ClientNav } from '../../organisms/navbar/client-nav';
 import LoadingModal from './LoadingModal';
 
@@ -60,115 +61,6 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 export function CreditScoreTemplate() {
-  const { t } = useTranslation('credit-score');
-  const { me, gqlAuthMethods } = useAuth();
-  const router = useRouter();
-  const [openLoadingModal, setOpenLoadingModal] = useState(false);
-  const queryClient = useQueryClient();
-  const { data: credScore } = useQuery(
-    ['cred-score-single', me?.wallet],
-    async () => {
-      const result = await gqlAuthMethods.get_cred_score({
-        address: me?.wallet,
-      });
-      return result.get_cred_score;
-    }
-  );
-
-  const isUser = !!me;
-  const isCreditScore = !!credScore?.account;
-
-  const checkIssued = me?.protocol?.issuedCredentials?.find(
-    (something) =>
-      something?.dataModel?.id === process.env.NEXT_PUBLIC_CRED_PROTOCOL_DM_ID
-  );
-  const handleNavBack = () => {
-    if (window.history.state.idx === 0) {
-      router.replace(ROUTES.CREDIT_SCORE);
-    } else {
-      router.back();
-    }
-  };
-
-  const issueCredential = async () => {
-    refetch();
-    setOpenLoadingModal(true);
-  };
-
-  const { data: session } = useSession();
-
-  const {
-    data: something,
-    refetch,
-    error: e,
-    isLoading,
-  } = useQuery(
-    ['create-cred', me?.wallet],
-    async () => {
-      const result = await gqlAuthMethods.create_cred({
-        gatewayId: me?.username,
-        score: credScore?.value,
-        bearerToken: session.token,
-      });
-      await router.push(
-        ROUTES.PROTOCOL_CREDENTIAL.replace(
-          '[id]',
-          result.create_cred.credentialId
-        )
-      );
-      await queryClient.resetQueries(['user_protocol', me?.id]);
-      return result.create_cred.credentialId;
-    },
-    { enabled: false }
-  );
-
-  // const use
-  const { data: recipentsUsers } = useQuery(
-    ['data-models-find-credit', process.env.NEXT_PUBLIC_CRED_PROTOCOL_DM_ID],
-    async () => {
-      const result =
-        await gatewayProtocolSDK.findRecipientsByDataModelCreditScore({
-          dataModelId: process.env.NEXT_PUBLIC_CRED_PROTOCOL_DM_ID,
-          skip: 0,
-          take: 10,
-        });
-
-      return result.findRecipientsByDataModel;
-    }
-  );
-
-  const { data: totalRecipents } = useQuery(
-    ['data-models-total-creds', process.env.NEXT_PUBLIC_CRED_PROTOCOL_DM_ID],
-    async () => {
-      const s = await gatewayProtocolSDK.getDataModelStats({
-        dataModelId: process.env.NEXT_PUBLIC_CRED_PROTOCOL_DM_ID,
-      });
-
-      return s.getTotalofIssuersByDataModel;
-    }
-  );
-
-  const { token } = useAuth();
-
-  const {
-    data: mintData,
-    isLoading: isLoadingMintingCred,
-    mutate,
-    error: somethingError,
-  } = useMutation(
-    ['minting-stuff'],
-    ({ credentialId }: MintCredentialMutationVariables) => {
-      return gatewayProtocolAuthSDK(token).mintCredential({
-        credentialId: credentialId,
-      });
-    },
-    {
-      onSuccess: async (data) => {
-        await queryClient.resetQueries(['user_protocol', me?.id]);
-      },
-    }
-  );
-
   const size = 500;
   const fillColor = {
     gradient: ['#9A53FF', '#FE02B9', '#5DABFB', '#0075FF'],
@@ -191,6 +83,108 @@ export function CreditScoreTemplate() {
       y: 422,
     },
   ];
+  const { t } = useTranslation('credit-score');
+
+  const DATA_MODEL_ID = process.env.NEXT_PUBLIC_CRED_PROTOCOL_DM_ID;
+
+  const { me, gqlAuthMethods } = useAuth();
+  const router = useRouter();
+  const [openLoadingModal, setOpenLoadingModal] = useState(false);
+  const [isHolderDialog, setIsHolderDialog] = useState(false);
+  const queryClient = useQueryClient();
+
+  const { data: credScore } = useQuery(
+    ['cred-api-score-single', me?.wallet],
+    async () => {
+      const result = await gqlAuthMethods.get_cred_score({
+        address: me?.wallet,
+      });
+      return result.get_cred_score;
+    }
+  );
+
+  // we need this formula to show the value correctly in arc other wise the values displayed where not correct
+  // copied from stackoverflow!
+  const scale = (1000 - 0) / (1000 - 300);
+  const creditScore = 0 + (credScore?.value - 300) * scale;
+
+  const isUser = !!me;
+  const isCreditScore = !!credScore?.account;
+  const checkIfUserHasCredential = me?.protocol?.issuedCredentials?.find(
+    (something) => something?.dataModel?.id === DATA_MODEL_ID
+  );
+
+  const handleNavBack = () => {
+    if (window.history.state.idx === 0) {
+      router.replace(ROUTES.CREDIT_SCORE);
+    } else {
+      router.back();
+    }
+  };
+
+  const issueCredential = async () => {
+    refetch();
+    setOpenLoadingModal(true);
+  };
+
+  const { token } = useAuth();
+
+  const { refetch, isFetching: createCredentialLoading } = useQuery(
+    ['cred-api-create-credential', me?.wallet],
+    async () => {
+      const result = await gqlAuthMethods.create_cred({
+        gatewayId: me?.username,
+        score: credScore?.value,
+        bearerToken: token,
+      });
+      await router.push(
+        ROUTES.PROTOCOL_CREDENTIAL.replace(
+          '[id]',
+          result.create_cred.credentialId
+        )
+      );
+      await queryClient.resetQueries(['user_protocol', me?.id]);
+      return result.create_cred.credentialId;
+    },
+    { enabled: false }
+  );
+
+  const { data: recipientsUsers } = useQuery(
+    ['cred-api-find-recipient-user', DATA_MODEL_ID],
+    async () => {
+      const result =
+        await gatewayProtocolSDK.findRecipientsByDataModelCreditScore({
+          dataModelId: DATA_MODEL_ID,
+          skip: 0,
+          take: 10,
+        });
+      return result.findRecipientsByDataModel;
+    }
+  );
+
+  const { data: totalRecipientUsersCount } = useQuery(
+    ['cred-api-find-total-users', DATA_MODEL_ID],
+    async () => {
+      const s = await gatewayProtocolSDK.getDataModelStats({
+        dataModelId: DATA_MODEL_ID,
+      });
+      return s.getTotalofIssuersByDataModel;
+    }
+  );
+
+  const { isLoading: isLoadingMintingCred, mutate } = useMutation(
+    ['cred-api-mint-credential'],
+    ({ credentialId }: MintCredentialMutationVariables) => {
+      return gatewayProtocolAuthSDK(token).mintCredential({
+        credentialId: credentialId,
+      });
+    },
+    {
+      onSuccess: async (_) => {
+        await queryClient.resetQueries(['user_protocol', me?.id]);
+      },
+    }
+  );
 
   return (
     <>
@@ -224,7 +218,6 @@ export function CreditScoreTemplate() {
               </Avatar>
             </IconButton>
           </Stack>
-          {/* DAO info */}
           <Box
             sx={(theme) => ({
               padding: {
@@ -305,7 +298,7 @@ export function CreditScoreTemplate() {
               </Typography>
             )}
 
-            {checkIssued?.dataModel?.id ? (
+            {checkIfUserHasCredential?.dataModel?.id ? (
               <Stack flexDirection="row" gap={2}>
                 <Button
                   variant="contained"
@@ -314,7 +307,7 @@ export function CreditScoreTemplate() {
                     router.push(
                       ROUTES.PROTOCOL_CREDENTIAL.replace(
                         '[id]',
-                        checkIssued?.id
+                        checkIfUserHasCredential?.id
                       )
                     )
                   }
@@ -324,15 +317,17 @@ export function CreditScoreTemplate() {
                 >
                   CHECK CREDENTIAL
                 </Button>
-                {!checkIssued?.nft?.minted && (
+                {!checkIfUserHasCredential?.nft?.minted && (
                   <LoadingButton
-                    variant="contained"
+                    variant="outlined"
                     startIcon={
                       <TokenFilled height={20} width={20} color="action" />
                     }
                     fullWidth
                     isLoading={isLoadingMintingCred}
-                    onClick={() => mutate({ credentialId: checkIssued.id })}
+                    onClick={() =>
+                      mutate({ credentialId: checkIfUserHasCredential.id })
+                    }
                     sx={{
                       mb: 2,
                     }}
@@ -346,7 +341,7 @@ export function CreditScoreTemplate() {
                 variant="contained"
                 fullWidth
                 disabled={!isCreditScore}
-                onClick={() => issueCredential()}
+                onClick={() => refetch()}
                 sx={{
                   mb: 2,
                 }}
@@ -366,7 +361,7 @@ export function CreditScoreTemplate() {
               }}
             />
             <Grid container rowGap={(theme) => theme.spacing(3)}>
-              {totalRecipents > 0 && (
+              {totalRecipientUsersCount > 0 && (
                 <>
                   <Grid
                     item
@@ -382,8 +377,8 @@ export function CreditScoreTemplate() {
                   </Grid>
                   <Grid item xs={8} display="flex" alignItems="center">
                     <AvatarGroup>
-                      {recipentsUsers?.length > 0 &&
-                        recipentsUsers.map((holder, index) => {
+                      {recipientsUsers?.length > 0 &&
+                        recipientsUsers.map((holder, index) => {
                           if (index == 3) return null;
                           return (
                             <Link
@@ -412,12 +407,12 @@ export function CreditScoreTemplate() {
                         })}
                     </AvatarGroup>
 
-                    {totalRecipents > 3 ? (
+                    {totalRecipientUsersCount > 3 ? (
                       <Chip
-                        label={`+ ${totalRecipents - 3}`}
-                        // onClick={() => {
-                        //   setIsHolderDialog(!isHolderDialog);
-                        // }}
+                        label={`+ ${totalRecipientUsersCount - 3}`}
+                        onClick={() => {
+                          setIsHolderDialog(!isHolderDialog);
+                        }}
                       />
                     ) : null}
                   </Grid>
@@ -438,7 +433,7 @@ export function CreditScoreTemplate() {
                     </Typography>
                   </Grid>
                   <Grid item xs={8}>
-                    <Link passHref href={`/profile/Gateway`}>
+                    <Link passHref href={`/dao/gateway`}>
                       <Tooltip title={'Gateway'}>
                         <Box
                           component="a"
@@ -508,8 +503,7 @@ export function CreditScoreTemplate() {
             <Box position={'relative'}>
               <ArcProgress
                 thickness={20}
-                progress={isUser && isCreditScore ? credScore?.value / 1000 : 0}
-                // text={text}
+                progress={isUser && isCreditScore ? creditScore / 1000 : 0}
                 fillThickness={35}
                 emptyColor="#FFFFFF26"
                 size={size}
@@ -607,9 +601,11 @@ export function CreditScoreTemplate() {
           </Stack>
         </Grid>
       </Grid>
-      <LoadingModal
-        openLoadingModal={openLoadingModal}
-        setOpenLoadingModal={setOpenLoadingModal}
+      <LoadingModal openLoadingModal={createCredentialLoading} />
+      <HolderDialog
+        isHolderDialog={isHolderDialog}
+        credentialId="937f9fc8-f3a7-4d28-88bc-826af1237c2c"
+        setIsHolderDialog={setIsHolderDialog}
       />
     </>
   );
