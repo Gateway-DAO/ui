@@ -18,6 +18,7 @@ type Props = InferGetServerSidePropsType<typeof getServerSideProps>;
 
 export default function DaoProfilePage({
   daoProps,
+  loyaltyPrograms,
   issuedCredentials,
   stats,
 }: Props) {
@@ -60,6 +61,7 @@ export default function DaoProfilePage({
           onRefetchFollowers={refreshData}
           issuedCredentials={issuedCredentials}
           stats={stats}
+          loyaltyPrograms={loyaltyPrograms}
         >
           <DaoProfileTemplate />
         </DaoProfileProvider>
@@ -72,8 +74,11 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const slug = ctx.query.slug as string;
 
   const { daos } = await gqlAnonMethods.dao_profile_by_slug({ slug });
-  const hasProtocolOrg = !!daos[0].protocolOrganization;
-  const protocolOrgId = hasProtocolOrg ? daos[0].protocolOrganization.id : null;
+  const currentDao = daos[0];
+  const hasProtocolOrg = !!currentDao.protocolOrganization;
+  const protocolOrgId = hasProtocolOrg
+    ? currentDao.protocolOrganization.id
+    : null;
   const credentials = hasProtocolOrg
     ? await gatewayProtocolSDK.findCredentialsByIssuerOrganization({
         issuerOrganizationId: protocolOrgId,
@@ -87,9 +92,15 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
       })
     : null;
 
+  const { loyalty_program: loyaltyPrograms } =
+    await gqlAnonMethods.loyalty_programs_by_organization_id({
+      id: currentDao.id,
+    });
+
   return {
     props: {
-      daoProps: daos[0],
+      daoProps: currentDao,
+      loyaltyPrograms,
       issuedCredentials: credentials
         ? (credentials.findCredentialsByIssuerOrganization as PartialDeep<Credential>[])
         : null,

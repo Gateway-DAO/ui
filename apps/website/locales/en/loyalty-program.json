@@ -1,0 +1,18 @@
+{
+  "missions": {
+    "title": "Missions",
+    "message-missions-empty": "Complete a mission to start this passport"
+  },
+  "tier": {
+    "your-tier": "Your Tier",
+    "linked-to-the-loyalty-pass": "Linked to the loyalty pass",
+    "you-earned": "You earned",
+    "reward": "Reward",
+    "loading": "Loading.."
+  },
+  "sidebar": {
+    "display-credential": "See credential",
+    "mint-nft": "Mint as NFT",
+    "data-model-id": "Data model ID"
+  }
+}

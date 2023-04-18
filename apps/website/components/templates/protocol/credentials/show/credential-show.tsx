@@ -26,7 +26,7 @@ import Activities from './components/activities';
 import CredentialTitleAndImage from './components/credential-title-and-image';
 import DataTable from './components/data-table';
 import { InvalidStatusBox } from './components/invalid-status-box';
-import { MintDialog } from './components/mint-dialog';
+import { DialogStatuses, MintDialog } from './components/mint-dialog';
 import MintNFTCard, { MintedChain } from './components/mint-nft-card';
 import { RevokeCredential } from './components/revoke-credential';
 
@@ -68,6 +68,7 @@ export default function CredentialProtocolShow({ credential }: Props) {
   const { me } = useAuth();
   const { token } = useAuth();
   const [shareIsOpen, setShareIsOpen] = useState<boolean>(false);
+  const [shareStatus, setShareStatus] = useState<DialogStatuses>(null);
 
   const router = useRouter();
   const isReceivedCredential =
@@ -105,9 +106,12 @@ export default function CredentialProtocolShow({ credential }: Props) {
       onSuccess: (data) => {
         setIsOpen(true);
         setTimeout(() => {
+          setShareStatus('share');
+        }, 1000);
+        setTimeout(() => {
           setIsOpen(false);
           setShareIsOpen(true);
-        }, 2500);
+        }, 3500);
         setMintData([
           {
             chain: credential?.recipientUser?.primaryWallet?.chain,
@@ -158,7 +162,7 @@ export default function CredentialProtocolShow({ credential }: Props) {
 
         <MintDialog
           isOpen={mintCredential.isLoading || isOpen}
-          status={mintCredential.status}
+          status={shareStatus || mintCredential.status}
           onClose={() => setIsOpen(false)}
         />
 

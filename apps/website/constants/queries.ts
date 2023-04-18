@@ -8,4 +8,8 @@ export const query = {
   mintCredential: 'mint_credential',
   credentialsIssuedByOrg: 'credentials_issued_by_organization',
   credentialsReceivedByOrg: 'credentials_received_by_organization',
+  gate_progress_completed_by_loyalty_program:
+    'gate_progress_completed_by_loyalty_program',
+  passes: 'passes', //loyalty programs
+  direct_credentialholders: 'direct-credential-holders',
 };

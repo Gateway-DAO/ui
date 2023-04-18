@@ -17,9 +17,14 @@ import {
 } from '@mui/material';
 
 import { ROUTES } from '../../../../../constants/routes';
-import { Gates, Users } from '../../../../../services/hasura/types';
+import {
+  Gates,
+  Loyalty_Program,
+  Users,
+} from '../../../../../services/hasura/types';
 import { EmptyCard } from '../../../../atoms/empty-card';
 import { GatesCard } from '../../../../molecules/gates-card';
+import { LoyaltyProgramCard } from '../../../../molecules/loyalty-program-card/loyalty-program-card';
 import { SectionWithSliderResponsive } from '../../../../molecules/sections';
 import DataGrid, {
   IColumnGrid,
@@ -31,9 +36,15 @@ type Props = {
   people: PartialDeep<Users>[];
   credentials: PartialDeep<Gates>[];
   setTab: (tab: number) => void;
+  loyaltyPrograms: PartialDeep<Loyalty_Program>[];
 };
 
-export function OverviewTab({ people, setTab, credentials }: Props) {
+export function OverviewTab({
+  people,
+  setTab,
+  credentials,
+  loyaltyPrograms,
+}: Props) {
   const { t } = useTranslation();
   const { dao, isAdmin, issuedCredentials, stats } = useDaoProfile();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
@@ -154,6 +165,33 @@ export function OverviewTab({ people, setTab, credentials }: Props) {
             {gateList}
           </SectionWithSliderResponsive>
         </Stack>
+        {loyaltyPrograms && loyaltyPrograms.length > 0 && (
+          <Stack mt={5}>
+            <SectionWithSliderResponsive
+              title={`${t('dao-profile:overview-tab.loyalty-section.title')}`}
+              caption={`${t(
+                'dao-profile:overview-tab.loyalty-section.caption'
+              )}`}
+              action={
+                loyaltyPrograms.length > 0 && (
+                  <Button onClick={() => setTab(2)}>
+                    {t('dao-profile:overview-tab.loyalty-section.action')}
+                  </Button>
+                )
+              }
+              itemWidth={(theme) => theme.spacing(37.75)}
+              gridSize={{ lg: 4 }}
+            >
+              {loyaltyPrograms.map((program) => (
+                <LoyaltyProgramCard
+                  href={ROUTES.LOYALTY_PROGRAM.replace('[id]', program.id)}
+                  {...program}
+                  key={program.id}
+                />
+              ))}
+            </SectionWithSliderResponsive>
+          </Stack>
+        )}
         {issuedCredentials && issuedCredentials.length > 0 && (
           <Stack mt={5}>
             <Stack
@@ -183,7 +221,7 @@ export function OverviewTab({ people, setTab, credentials }: Props) {
                   },
                 }}
               >
-                <Button onClick={() => setTab(2)}>
+                <Button onClick={() => setTab(3)}>
                   {t(
                     'dao-profile:overview-tab.issued-credentials-section.action'
                   )}

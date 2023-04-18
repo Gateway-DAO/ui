@@ -65,11 +65,10 @@ export function FormVerifyToken({
       </Box>
       <TextField
         required
-        label={t('form.fields.token')}
+        label={t('form.fields.code')}
         id="token"
         type="text"
         inputMode="numeric"
-        inputProps={{ pattern: '\\d{6,6}', maxLength: 6 }}
         {...register('token')}
         error={!!errors.token}
         helperText={errors.token?.message}
@@ -78,7 +77,7 @@ export function FormVerifyToken({
         <LoadingButton
           variant="contained"
           type="submit"
-          sx={{ mt: 2 }}
+          sx={{ mt: 2, height: 48 }}
           isLoading={isLoadingConfirmToken}
         >
           {t('form.verify-token-action')}
@@ -86,7 +85,7 @@ export function FormVerifyToken({
         <LoadingButton
           variant="outlined"
           type="button"
-          sx={{ mt: 2 }}
+          sx={{ mt: 2, height: 48 }}
           isLoading={isLoadingSendEmail}
           onClick={() => sendEmailAgain()}
           disabled={countdown?.counting}

@@ -38,6 +38,7 @@ export function GatesCard({
   categories,
   dao,
   id,
+  loyalty_id,
   published: publishedProps,
   showStatus,
   showOptions,
@@ -129,9 +130,13 @@ export function GatesCard({
       }
     );
 
+  const routeByCredentialType = loyalty_id
+    ? ROUTES.LOYALTY_PROGRAM_CREDENTIAL.replace('[id]', id)
+    : ROUTES.GATE_PROFILE.replace('[id]', id);
+
   const url = useMemo(
-    () => href || ROUTES.GATE_PROFILE.replace('[id]', id),
-    [id, href]
+    () => href || routeByCredentialType,
+    [id, href, loyalty_id]
   );
 
   const actionChildren = (

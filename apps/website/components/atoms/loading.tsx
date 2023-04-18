@@ -2,9 +2,15 @@ import { Box, CircularProgress } from '@mui/material';
 
 type Props = {
   margin?: number;
+  marginTop?: number;
+  size?: number;
 };
 
-export default function Loading({ margin }: Props): JSX.Element {
+export default function Loading({
+  margin,
+  marginTop = 2,
+  size = 40,
+}: Props): JSX.Element {
   return (
     <Box
       key="loading"
@@ -14,7 +20,10 @@ export default function Loading({ margin }: Props): JSX.Element {
         justifyContent: 'center',
       }}
     >
-      <CircularProgress sx={{ mt: 2, margin: margin ? margin : null }} />
+      <CircularProgress
+        size={size}
+        sx={{ marginTop, margin: margin ? margin : null }}
+      />
     </Box>
   );
 }
