@@ -31,6 +31,12 @@ import GateMintButton from '../../molecules/gate-mint-button';
 import { TokenFilled } from '../../molecules/mint-card/assets/token-filled';
 import { MintDialogProps } from '../../molecules/mint-dialog';
 import { OptionsCredential } from '../../molecules/options-credential';
+import type { Props as HolderDialogProps } from '../../organisms/holder-dialog';
+
+const HolderDialog: ComponentType<HolderDialogProps> = dynamic(
+  () => import('../../organisms/holder-dialog').then((mod) => mod.HolderDialog),
+  { ssr: false }
+);
 
 const GateStateChip = dynamic(() => import('../../atoms/gate-state-chip'), {
   ssr: false,
@@ -57,6 +63,14 @@ export function GateViewSidebar({
   const [isMintDialog, setMintModal] = useState(false);
   const [isHolderDialog, setIsHolderDialog] = useState(false);
   const isAdmin = isDaoAdmin({ me, gate: gateProps });
+
+  <HolderDialog
+    {...{
+      isHolderDialog,
+      setIsHolderDialog,
+      credentialId: gateProps?.id,
+    }}
+  />;
 
   const handleNavBack = () => {
     // If user directly lands to credential page using link
