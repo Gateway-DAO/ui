@@ -3,6 +3,7 @@ import Link from 'next/link';
 
 import { PartialDeep } from 'type-fest/source/partial-deep';
 
+import { limitChars } from '@gateway/helpers';
 import { brandColors } from '@gateway/theme';
 
 import { Box, Chip, Stack, Typography, alpha } from '@mui/material';
@@ -59,7 +60,7 @@ export function SmallTier({ loyalty, gate }: Props) {
               'linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.05) 100%), #10041C',
           }}
         >
-          <Stack direction="row" gap={3} sx={{ mb: 3 }}>
+          <Stack direction="row" gap={3} sx={{ mb: 3 }} alignItems="center">
             <Box
               sx={{
                 width: 72,
@@ -73,6 +74,9 @@ export function SmallTier({ loyalty, gate }: Props) {
                 src={loyalty.image}
                 alt={loyalty.name}
                 width="100%"
+                sx={{
+                  borderRadius: '50% 50% 0 0',
+                }}
               />
             </Box>
             <Stack>
@@ -83,7 +87,7 @@ export function SmallTier({ loyalty, gate }: Props) {
                 fontSize={12}
                 sx={{ color: alpha(brandColors.white.main, 0.7) }}
               >
-                {loyalty.description}
+                {limitChars(loyalty.description, 35)}
               </Typography>
             </Stack>
           </Stack>
