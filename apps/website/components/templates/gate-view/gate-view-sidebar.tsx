@@ -24,6 +24,7 @@ import {
 import { ROUTES } from '../../../constants/routes';
 import { useAuth } from '../../../providers/auth';
 import { CredentialQuery, Gates } from '../../../services/hasura/types';
+import { isDaoAdmin } from '../../../utils/is-dao-admin';
 import { AvatarFile } from '../../atoms/avatar-file';
 import { ReadMore } from '../../atoms/read-more-less';
 import { ShareButton } from '../../atoms/share-button';
@@ -62,11 +63,7 @@ export function GateViewSidebar({
     }
   };
 
-  const isAdmin =
-    me?.permissions?.filter(
-      (permission) =>
-        permission.dao_id === gateProps?.dao?.id && permission.dao?.is_admin
-    ).length > 0;
+  const isAdmin = isDaoAdmin({ me, gate: gateProps });
 
   const dateFormatAccordingToTimeZone = new Intl.DateTimeFormat('en-US', {
     timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,

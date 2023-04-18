@@ -6,6 +6,7 @@ import { PartialDeep } from 'type-fest';
 import { useAuth } from '../../../providers/auth';
 import { gqlAnonMethods } from '../../../services/hasura/api';
 import { CredentialQuery, Gates } from '../../../services/hasura/types';
+import { isDaoAdmin } from '../../../utils/is-dao-admin';
 import GateCompletedModal from '../../organisms/gates/view/modals/gate-completed';
 import { DirectHoldersList } from './direct-holders-list/direct-holders-list';
 import { DirectHoldersHeader } from './direct-holders-list/header';
@@ -27,12 +28,7 @@ export function GateViewTasks({
 }: GateViewTasksProps) {
   const { me, gqlAuthMethods } = useAuth();
   const [open, setOpen] = useState(false);
-
-  const isAdmin =
-    me?.permissions?.filter(
-      (permission) =>
-        permission.dao_id === gateProps?.dao?.id && permission.dao?.is_admin
-    ).length > 0;
+  const isAdmin = isDaoAdmin({ me, gate: gateProps });
 
   const gateProgress = useQuery(['gate_progress', gateProps?.id, me?.id], () =>
     gqlAuthMethods.GateProgress({
