@@ -73,8 +73,9 @@ export default function Banner(): JSX.Element {
           component="img"
           sx={{
             mr: 12,
-            my: 3,
+            my: 2,
             maxWidth: '100%',
+            height: '80%',
             [theme.breakpoints.down('md')]: {
               display: 'none',
             },

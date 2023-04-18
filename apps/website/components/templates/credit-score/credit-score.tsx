@@ -135,12 +135,14 @@ export function CreditScoreTemplate() {
         score: credScore?.value,
         bearerToken: token,
       });
+
       await router.push(
         ROUTES.PROTOCOL_CREDENTIAL.replace(
           '[id]',
           result.create_cred.credentialId
         )
       );
+
       return result.create_cred.credentialId;
     },
     {
@@ -350,7 +352,7 @@ export function CreditScoreTemplate() {
 
             <Box
               component="img"
-              src={'/creditscore.png'}
+              src={'/images/cred-protocol-page.png'}
               alt={'credit score' + ' image'}
               marginBottom={(theme) => theme.spacing(4)}
               sx={{
@@ -391,7 +393,7 @@ export function CreditScoreTemplate() {
                                 >
                                   <Avatar
                                     alt={holder.gatewayId}
-                                    src={holder.gatewayId}
+                                    src={holder.gatewayId || '/logo.png'}
                                     sx={{
                                       height: (theme) => theme.spacing(4),
                                       width: (theme) => theme.spacing(4),
@@ -582,7 +584,7 @@ export function CreditScoreTemplate() {
             </Box>
           </Paper>
 
-          <Stack spacing={5} mt={3}>
+          <Stack spacing={5} my={3}>
             <Stack spacing={1}>
               <Typography variant="h6" gutterBottom>
                 {t('details.title')}
