@@ -7,5 +7,11 @@
     "reject": "rejected a link on",
     "approve": "approved a link on",
     "send_link": "submitted a link on"
+  },
+  "protocol_credential": {
+    "credential_updated": "updated the credential",
+    "credential_received": "sent you the credential",
+    "credential_revoked": "revoked the credential",
+    "credential_suspended": "suspended the credential"
   }
 }
