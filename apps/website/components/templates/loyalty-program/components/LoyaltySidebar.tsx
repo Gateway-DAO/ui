@@ -178,7 +178,7 @@ export function LoyaltySidebar({
               credential={credential}
               completedGate={completedGate}
               setMintModal={setMintModal}
-              gateIsPublished={gate.published === 'published'}
+              gateIsPublished={gate?.published === 'published'}
             />
           </Stack>
 
