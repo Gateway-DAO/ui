@@ -20,6 +20,7 @@ import {
 import { ROUTES } from '../../../../constants/routes';
 import { useAuth } from '../../../../providers/auth';
 import { Gates, Loyalty_Program } from '../../../../services/hasura/types';
+import { isDaoAdmin } from '../../../../utils/is-dao-admin';
 import { AvatarFile } from '../../../atoms/avatar-file';
 import ExternalLink from '../../../atoms/external-link';
 import GateStateChip from '../../../atoms/gate-state-chip';
@@ -45,11 +46,7 @@ export function LoyaltySidebar({ gate, loyalty }: LoyaltySidebarProps) {
     image: gate?.image || loyalty.image,
   };
 
-  const isAdmin =
-    me?.permissions?.filter(
-      (permission) =>
-        permission.dao_id === gate?.dao?.id && permission.dao?.is_admin
-    ).length > 0;
+  const isAdmin = isDaoAdmin({ me, gate });
 
   return (
     <Grid item>

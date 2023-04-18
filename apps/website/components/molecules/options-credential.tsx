@@ -11,6 +11,7 @@ import { ROUTES } from '../../constants/routes';
 import { useAuth } from '../../providers/auth';
 import { Gates } from '../../services/hasura/types';
 import { queryClient } from '../../services/query-client';
+import { isDaoAdmin } from '../../utils/is-dao-admin';
 import MorePopover from '../atoms/more-popover';
 import ConfirmDialog from '../organisms/confirm-dialog/confirm-dialog';
 
@@ -25,11 +26,7 @@ export function OptionsCredential({ gate }: Props) {
   const { enqueueSnackbar } = useSnackbar();
   const router = useRouter();
 
-  const isAdmin =
-    me?.permissions?.filter(
-      (permission) =>
-        permission.dao_id === gate?.dao?.id && permission.dao?.is_admin
-    ).length > 0;
+  const isAdmin = isDaoAdmin({ me, gate });
 
   const onSuccess = async () => {
     enqueueSnackbar(
