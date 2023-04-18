@@ -3,11 +3,11 @@ import useTranslation from 'next-translate/useTranslation';
 
 import { useQuery } from '@tanstack/react-query';
 
-import { HeadContainer } from '../components/molecules/head-container';
-import { DashboardTemplate } from '../components/templates/dashboard';
-import { ExploreTemplate } from '../components/templates/explore';
-import { gatewayProtocolSDK } from '../services/gateway-protocol/api';
-import { gqlAnonMethods } from '../services/hasura/api';
+import { HeadContainer } from '../../components/molecules/head-container';
+import { DashboardTemplate } from '../../components/templates/dashboard';
+import { ExploreTemplate } from '../../components/templates/explore';
+import { gatewayProtocolSDK } from '../../services/gateway-protocol/api';
+import { gqlAnonMethods } from '../../services/hasura/api';
 
 /** TODO: Prevent template remount when navigating between dashboard pages
  * https://nextjs.org/docs/basic-features/layouts

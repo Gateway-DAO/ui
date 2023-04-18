@@ -11,7 +11,7 @@ import { TableView } from './gates-tab/table-view';
 export default function PassesTab(): JSX.Element {
   const { loyaltyPrograms } = useDaoProfile();
   const { view } = useViewMode();
-
+  console.log(loyaltyPrograms);
   return (
     <Box sx={{ py: 4 }}>
       {!!loyaltyPrograms && loyaltyPrograms.length > 0 && (

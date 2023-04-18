@@ -17,6 +17,7 @@ import { GatesTab } from './tabs/gates-tab';
 import PassesTab from './tabs/passes-tab';
 import { PeopleTab } from './tabs/people-tab';
 import { ExploreProps } from './types';
+import { useRouter } from 'next/router';
 
 type TemplateProps = {
   title: string;
@@ -33,39 +34,46 @@ export function ExploreTemplate({
 }: TemplateProps) {
   const { t } = useTranslation('explore');
   const { activeTab, handleTabChange, setTab } = useTab();
-
-  const tabs = useMemo(
-    () => [
-      {
-        key: 'all',
-        label: t('common:tabs.all'),
-        section: (
-          <AllTab setActiveTab={setTab} {...data} dataModels={dataModels} />
-        ),
-      },
-      {
-        key: 'credentials',
-        label: t('common:tabs.earn'),
-        section: <GatesTab />,
-      },
-      {
-        key: 'passes',
-        label: t('passes-tab'),
-        section: <PassesTab />,
-      },
-      {
-        key: 'data-models',
-        label: t('common:tabs.data-models'),
-        section: <DataModelsTab />,
-      },
-      {
-        key: 'organizations',
-        label: t('common:tabs.organizations'),
-        section: <DaosTab />,
-      },
-    ],
-    []
-  );
+  const router = useRouter();
+  // console.log(router.query);
+  let _selectedTab = router.pathname;
+  console.log(_selectedTab.slice(_selectedTab.lastIndexOf('/')).slice(1));
+  _selectedTab = _selectedTab.slice(_selectedTab.lastIndexOf('/')).slice(1);
+  // const _selectedTab = (router.query.tab as string) ?? 'all';
+  const tabs = ['all', 'earn', 'passes', 'data-models', 'organizations'];
+  const selectedIndex = tabs.indexOf(_selectedTab) ?? 0;
+  // const tabs = useMemo(
+  //   () => [
+  //     {
+  //       key: 'home/all',
+  //       label: t('common:tabs.all'),
+  //       section: (
+  //         <AllTab setActiveTab={setTab} {...data} dataModels={dataModels} />
+  //       ),
+  //     },
+  //     {
+  //       key: 'home/credentials',
+  //       label: t('common:tabs.earn'),
+  //       section: <GatesTab />,
+  //     },
+  //     {
+  //       key: 'home/passes',
+  //       label: t('passes-tab'),
+  //       section: <PassesTab />,
+  //     },
+  //     {
+  //       key: 'home/data-models',
+  //       label: t('common:tabs.data-models'),
+  //       section: <DataModelsTab />,
+  //     },
+  //     {
+  //       key: 'home/organizations',
+  //       label: t('common:tabs.organizations'),
+  //       section: <DaosTab />,
+  //     },
+  //   ],
+  //   []
+  // );
 
   return (
     <>
@@ -91,8 +99,11 @@ export function ExploreTemplate({
           }}
         >
           <Tabs
-            value={activeTab}
-            onChange={handleTabChange}
+            value={selectedIndex}
+            onChange={(_, index) => {
+              const tab = tabs.at(index);
+              router.replace(`/home/${tab}`, undefined, { shallow: true });
+            }}
             aria-label="basic tabs example"
             variant="scrollable"
             scrollButtons
@@ -106,10 +117,11 @@ export function ExploreTemplate({
               },
             })}
           >
-            {tabs.map(({ key, label }, index) => (
+            {tabs.map((value, index) => (
               <Tab
-                key={key}
-                label={label}
+                key={index}
+                label={value}
+                // onClick={() => router.push(`/home/${value}`)}
                 sx={(theme) => ({
                   px: 0,
                   mr: theme.spacing(3),
@@ -120,7 +132,7 @@ export function ExploreTemplate({
             ))}
           </Tabs>
         </Box>
-        {tabs.map(({ key, section }, index) => (
+        {/* {tabs.map(({ key, section }, index) => (
           <TabPanel
             key={key}
             tabsId="explore"
@@ -130,7 +142,7 @@ export function ExploreTemplate({
           >
             {activeTab === index && section}
           </TabPanel>
-        ))}
+        ))} */}
       </Box>
     </>
   );
