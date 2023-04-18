@@ -18,10 +18,15 @@ import {
 } from '@mui/material';
 
 import { ROUTES } from '../../../../constants/routes';
+import { useAuth } from '../../../../providers/auth';
 import { Gates, Loyalty_Program } from '../../../../services/hasura/types';
+import { isDaoAdmin } from '../../../../utils/is-dao-admin';
 import { AvatarFile } from '../../../atoms/avatar-file';
 import ExternalLink from '../../../atoms/external-link';
+import GateStateChip from '../../../atoms/gate-state-chip';
+import { ShareButton } from '../../../atoms/share-button';
 import { TokenFilled } from '../../../molecules/mint-card/assets/token-filled';
+import { OptionsCredential } from '../../../molecules/options-credential';
 import { SmallTier } from './SmallTier';
 
 type LoyaltySidebarProps = {
@@ -31,6 +36,7 @@ type LoyaltySidebarProps = {
 
 export function LoyaltySidebar({ gate, loyalty }: LoyaltySidebarProps) {
   const { t } = useTranslation('loyalty-program');
+  const { me } = useAuth();
   const router = useRouter();
 
   const texts = {
@@ -39,6 +45,9 @@ export function LoyaltySidebar({ gate, loyalty }: LoyaltySidebarProps) {
     description: gate?.description || loyalty.description,
     image: gate?.image || loyalty.image,
   };
+
+  const isAdmin = isDaoAdmin({ me, gate });
+
   return (
     <Grid item>
       <Box
@@ -94,6 +103,7 @@ export function LoyaltySidebar({ gate, loyalty }: LoyaltySidebarProps) {
             sx={{ alignItems: 'flex-start', justifyContent: 'space-between' }}
           >
             <Box>
+              {isAdmin && <GateStateChip published={gate.published} />}
               {texts?.categories.map((category, idx) => (
                 <Chip
                   key={'category-' + (idx + 1)}
@@ -105,10 +115,11 @@ export function LoyaltySidebar({ gate, loyalty }: LoyaltySidebarProps) {
                 />
               ))}
             </Box>
-            {/*TODO: use share dialog*/}
-            {/* <Stack flexDirection="row" gap={1}>
-              <ShareButton title={`${texts?.title} @Gateway`} />
-            </Stack> */}
+            <Stack flexDirection="row" gap={1}>
+              {/*TODO: use share dialog*/}
+              {/* <ShareButton title={`${texts?.title} @Gateway`} /> */}
+              {gate && <OptionsCredential gate={gate} />}
+            </Stack>
           </Stack>
         </Box>
 
@@ -130,6 +141,7 @@ export function LoyaltySidebar({ gate, loyalty }: LoyaltySidebarProps) {
             variant="outlined"
             disabled
             fullWidth
+            size="large"
             sx={{
               mb: 2,
             }}
@@ -138,6 +150,7 @@ export function LoyaltySidebar({ gate, loyalty }: LoyaltySidebarProps) {
           </Button>
           <Button
             variant="contained"
+            size="large"
             disabled
             startIcon={<TokenFilled height={20} width={20} color="action" />}
             fullWidth
@@ -156,7 +169,9 @@ export function LoyaltySidebar({ gate, loyalty }: LoyaltySidebarProps) {
           marginBottom={(theme) => theme.spacing(4)}
           sx={{
             width: '100%',
-            borderRadius: (theme) => theme.spacing(1),
+            borderRadius: gate?.image
+              ? (theme) => theme.spacing(1)
+              : '50% 50% 0 0',
           }}
         />
         {gate && <SmallTier loyalty={loyalty} gate={gate} />}

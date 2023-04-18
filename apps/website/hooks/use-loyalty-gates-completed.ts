@@ -34,9 +34,13 @@ export function useLoyaltyGatesCompleted({ loyaltyProgramId }: Props) {
     let pts = 0;
     if (gatesCompleted?.data?.gate_progress) {
       gatesCompleted.data.gate_progress.map((gateProgress) => {
-        if (gateProgress?.gate?.points > 0) {
+        if (
+          gateProgress?.gate?.points > 0 &&
+          gateProgress?.gate?.published === 'published'
+        ) {
           pts += gateProgress.gate.points;
         }
+        console.log(gateProgress.gate);
       });
     }
     if (gatesCompleted?.data?.whitelisted_wallets) {

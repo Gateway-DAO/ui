@@ -29,19 +29,11 @@ export function LoyaltyProgramCredentialTasks({ gate }: Props) {
     }
   );
 
-  const isAdmin =
-    me?.permissions?.filter(
-      (permission) =>
-        permission.dao_id === gate?.dao?.id && permission.dao?.is_admin
-    ).length > 0;
-
   return (
     <GateViewTasks
       completedGate={gateStatus.isCompleted}
       credential={credential}
       gateProps={gate}
-      isAdmin={isAdmin}
-      published={gate.published}
       completedTasksCount={gateStatus.completedTasksCount}
     />
   );
