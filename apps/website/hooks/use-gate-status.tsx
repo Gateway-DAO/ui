@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { PartialDeep } from 'type-fest';
 
+import { query } from '../constants/queries';
 import { useAuth } from '../providers/auth';
 import { gqlAnonMethods } from '../services/hasura/api';
 import { Gates } from '../services/hasura/types';
@@ -18,7 +19,7 @@ export function useGateStatus(gate: PartialDeep<Gates>) {
   const router = useRouter();
 
   const directCredentialInfo = useQuery(
-    ['direct-credential-info', me?.wallet, gate.id],
+    [query.direct_credential_info, me?.wallet, gate.id],
     () =>
       gqlAnonMethods.direct_credential_info({
         gate_id: gate.id,

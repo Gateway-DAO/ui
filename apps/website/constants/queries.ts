@@ -14,4 +14,6 @@ export const query = {
   direct_credentialholders: 'direct-credential-holders',
   publish_gate: 'publishGate',
   delete_gate: 'deleteGate',
+  direct_credential_info: 'direct-credential-info',
+  gate: 'gate',
 };

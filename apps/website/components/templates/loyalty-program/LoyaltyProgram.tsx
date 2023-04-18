@@ -6,16 +6,18 @@ import { TOKENS } from '@gateway/theme';
 
 import { Stack } from '@mui/material';
 
-import { Loyalty_Program } from '../../../../../services/hasura/types';
-import { ClientNav } from '../../../../organisms/navbar/client-nav';
-import { Tier } from '../../components/Tier';
-import { CredentialsList } from './CredentialsList';
+import { Loyalty_Program } from '../../../services/hasura/types';
+import { ClientNav } from '../../organisms/navbar/client-nav';
+import LoyaltyProgramTemplate from './LoyaltyProgramTemplate';
+import { CredentialsList } from './components/CredentialsList';
+import { LoyaltySidebar } from './components/LoyaltySidebar';
+import { Tier } from './components/Tier';
 
 type Props = {
   loyalty: PartialDeep<Loyalty_Program>;
 };
 
-export function LoyaltyProgramMainContent({ loyalty }: Props) {
+function MainContent({ loyalty }: Props) {
   return (
     <>
       <Stack
@@ -47,5 +49,14 @@ export function LoyaltyProgramMainContent({ loyalty }: Props) {
         </ReactMarkdown>
       </Stack>
     </>
+  );
+}
+
+export function LoyaltyProgram({ loyalty }: Props) {
+  return (
+    <LoyaltyProgramTemplate
+      sidebar={<LoyaltySidebar loyalty={loyalty} />}
+      mainContent={<MainContent loyalty={loyalty} />}
+    />
   );
 }
