@@ -144,6 +144,7 @@ export function LoyaltySidebar({ gate, loyalty }: LoyaltySidebarProps) {
             variant="outlined"
             disabled
             fullWidth
+            size="large"
             sx={{
               mb: 2,
             }}
@@ -152,6 +153,7 @@ export function LoyaltySidebar({ gate, loyalty }: LoyaltySidebarProps) {
           </Button>
           <Button
             variant="contained"
+            size="large"
             disabled
             startIcon={<TokenFilled height={20} width={20} color="action" />}
             fullWidth
@@ -170,7 +172,9 @@ export function LoyaltySidebar({ gate, loyalty }: LoyaltySidebarProps) {
           marginBottom={(theme) => theme.spacing(4)}
           sx={{
             width: '100%',
-            borderRadius: (theme) => theme.spacing(1),
+            borderRadius: gate?.image
+              ? (theme) => theme.spacing(1)
+              : '50% 50% 0 0',
           }}
         />
         {gate && <SmallTier loyalty={loyalty} gate={gate} />}
