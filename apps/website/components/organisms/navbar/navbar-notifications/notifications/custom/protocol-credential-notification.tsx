@@ -99,7 +99,7 @@ export function ProtocolCredentialNotification({ data, timestamp }: Props) {
             </Typography>
           </Link>{' '}
           <Typography component="span" color="text.secondary">
-            {t(`protocol_credential.${data.event_type}`)}
+            {t(`protocol_credential.${data.event_type}`)}{' '}
           </Typography>
           <Link passHref href={credentialUrl}>
             <Typography
@@ -109,7 +109,6 @@ export function ProtocolCredentialNotification({ data, timestamp }: Props) {
               sx={{ textDecoration: 'none' }}
             >
               <Typography component="span" sx={{ textDecoration: 'underline' }}>
-                {' '}
                 {data.credential_name}
               </Typography>
             </Typography>
