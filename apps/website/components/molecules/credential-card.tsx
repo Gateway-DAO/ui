@@ -63,6 +63,7 @@ export default function CredentialCard({
         <CardHeader
           title={
             issuerOrganization?.hasuraOrganization?.name ||
+            issuerOrganization?.gatewayId ||
             issuerUser?.gatewayUser?.name ||
             issuerUser?.gatewayId ||
             limitCharsCentered(recipientUser?.gatewayUser?.wallet, 6)
