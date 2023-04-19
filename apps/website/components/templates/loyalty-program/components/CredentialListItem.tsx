@@ -1,31 +1,30 @@
 import Link from 'next/link';
 
-import { UseQueryResult } from '@tanstack/react-query';
 import { PartialDeep } from 'type-fest/source/partial-deep';
 
+import { limitChars } from '@gateway/helpers';
 import { brandColors } from '@gateway/theme';
 
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import { Chip, Stack, Typography, alpha } from '@mui/material';
 
-import SuccessfullyIcon from '../../../../../components/atoms/icons/successfully-icon';
-import SuccessfullyRoundedIcon from '../../../../../components/atoms/icons/successfully-rounded';
-import Loading from '../../../../../components/atoms/loading';
-import { ROUTES } from '../../../../../constants/routes';
-import { useLoyaltyGateCompleted } from '../../../../../hooks/use-loyalty-gate-completed';
-import { Gate_Progress, Gates } from '../../../../../services/hasura/types';
+import { ROUTES } from '../../../../constants/routes';
+import { Gates } from '../../../../services/hasura/types';
+import SuccessfullyIcon from '../../../atoms/icons/successfully-icon';
+import SuccessfullyRoundedIcon from '../../../atoms/icons/successfully-rounded';
+import Loading from '../../../atoms/loading';
 
 type Props = {
   gate: PartialDeep<Gates>;
-  gatesCompleted: UseQueryResult<PartialDeep<Gate_Progress>[]>;
+  gateIsCompleted: boolean;
+  isLoading: boolean;
 };
 
-export function CredentialListItem({ gate, gatesCompleted }: Props) {
-  const { gateCompleted } = useLoyaltyGateCompleted({
-    gate,
-    gatesCompleted: gatesCompleted as any,
-  });
-
+export function CredentialListItem({
+  gate,
+  gateIsCompleted,
+  isLoading,
+}: Props) {
   return (
     <Link
       href={ROUTES.LOYALTY_PROGRAM_CREDENTIAL.replace('[id]', gate.id)}
@@ -43,12 +42,12 @@ export function CredentialListItem({ gate, gatesCompleted }: Props) {
           cursor: 'pointer',
           color: brandColors.white.main,
           textDecoration: 'none',
-          background: !gateCompleted
+          background: !gateIsCompleted
             ? alpha(brandColors.purple.main, 0.1)
             : 'none',
           transition: 'background .3s ease',
           '&:hover': {
-            background: !gateCompleted
+            background: !gateIsCompleted
               ? alpha(brandColors.purple.main, 0.12)
               : alpha(brandColors.purple.main, 0.03),
           },
@@ -70,9 +69,11 @@ export function CredentialListItem({ gate, gatesCompleted }: Props) {
           <Typography variant="h6">{gate?.title}</Typography>
           <Typography
             fontSize={12}
-            sx={{ color: alpha(brandColors.white.main, 0.7) }}
+            sx={{
+              color: alpha(brandColors.white.main, 0.7),
+            }}
           >
-            {gate?.description}
+            {limitChars(gate?.description, 90)}
           </Typography>
         </Stack>
         {gate.points && gate.points > 0 && (
@@ -90,11 +91,11 @@ export function CredentialListItem({ gate, gatesCompleted }: Props) {
             }}
           />
         )}
-        {gatesCompleted.isLoading ? (
+        {isLoading ? (
           <Loading size={28} marginTop={0} />
         ) : (
           <>
-            {gateCompleted ? (
+            {gateIsCompleted ? (
               <SuccessfullyIcon size="small" sx={{ width: 28, height: 28 }} />
             ) : (
               <SuccessfullyRoundedIcon />

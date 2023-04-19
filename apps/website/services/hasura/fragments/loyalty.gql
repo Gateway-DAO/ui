@@ -8,7 +8,7 @@ fragment loyalty on loyalty_program {
   organization_id
   categories
   details
-  gates {
+  gates(order_by: {updated_at: desc}) {
     id
     title
     description
@@ -25,6 +25,8 @@ fragment loyalty on loyalty_program {
     holder_count
     type
     published
+    updated_at
+    created_at
   }
   details
   loyalty_tiers {

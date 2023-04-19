@@ -88,6 +88,7 @@
     "reaptcha": "^1.12.1",
     "regenerator-runtime": "0.13.7",
     "remark-gfm": "^3.0.1",
+    "sharp": "^0.32.0",
     "socket.io-client": "^4.5.3",
     "swiper": "^8.1.4",
     "tslib": "^2.0.0",

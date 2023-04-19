@@ -30,6 +30,7 @@ query get_gate_progress_completed_by_loyalty_program(
     gate {
       id
       points
+      published
     }
   }
   whitelisted_wallets(
@@ -41,6 +42,7 @@ query get_gate_progress_completed_by_loyalty_program(
       gate {
         id
         points
+        published
       }
   }
 }

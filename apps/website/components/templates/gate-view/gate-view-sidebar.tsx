@@ -1,12 +1,9 @@
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { ComponentType, useState } from 'react';
 
-import { useMutation } from '@tanstack/react-query';
-import { useSnackbar } from 'notistack';
 import { PartialDeep } from 'type-fest/source/partial-deep';
-import { v4 as uuidv4 } from 'uuid';
 
 import { TOKENS } from '@gateway/theme';
 
@@ -21,55 +18,59 @@ import {
   Tooltip,
   IconButton,
   Avatar,
-  Button,
 } from '@mui/material';
 
 import { ROUTES } from '../../../constants/routes';
 import { useAuth } from '../../../providers/auth';
-import {
-  CredentialQuery,
-  Gates,
-  Scalars,
-} from '../../../services/hasura/types';
-import { queryClient } from '../../../services/query-client';
+import { CredentialQuery, Gates } from '../../../services/hasura/types';
+import { isDaoAdmin } from '../../../utils/is-dao-admin';
 import { AvatarFile } from '../../atoms/avatar-file';
-import MorePopover from '../../atoms/more-popover';
 import { ReadMore } from '../../atoms/read-more-less';
 import { ShareButton } from '../../atoms/share-button';
+import GateMintButton from '../../molecules/gate-mint-button';
 import { TokenFilled } from '../../molecules/mint-card/assets/token-filled';
-import ConfirmDialog from '../../organisms/confirm-dialog/confirm-dialog';
+import { MintDialogProps } from '../../molecules/mint-dialog';
+import { OptionsCredential } from '../../molecules/options-credential';
+import type { Props as HolderDialogProps } from '../../organisms/holder-dialog';
+
+const HolderDialog: ComponentType<HolderDialogProps> = dynamic(
+  () => import('../../organisms/holder-dialog').then((mod) => mod.HolderDialog),
+  { ssr: false }
+);
 
 const GateStateChip = dynamic(() => import('../../atoms/gate-state-chip'), {
   ssr: false,
 });
 
+const MintDialog: ComponentType<MintDialogProps> = dynamic(
+  () => import('../../molecules/mint-dialog').then((mod) => mod.MintDialog),
+  { ssr: false }
+);
+
 type GateViewSidebarProps = {
   gateProps: PartialDeep<Gates>;
-  isAdmin: boolean;
   completedGate: boolean;
-  isLimitExceeded: boolean;
   credential: CredentialQuery;
-  setMintModal: (value: boolean) => void;
-  setPublished: (value: string) => void;
-  published: Scalars['gate_state'];
 };
 
 export function GateViewSidebar({
   gateProps,
-  isAdmin,
   completedGate,
-  isLimitExceeded,
   credential,
-  setMintModal,
-  setPublished,
-  published,
 }: GateViewSidebarProps) {
   const router = useRouter();
-  const { me, gqlAuthMethods } = useAuth();
-  const [confirmDelete, setConfirmDelete] = useState(false);
-  const [confirmToggleState, setConfirmToggleState] = useState(false);
+  const { me } = useAuth();
+  const [isMintDialog, setMintModal] = useState(false);
   const [isHolderDialog, setIsHolderDialog] = useState(false);
-  const { enqueueSnackbar } = useSnackbar();
+  const isAdmin = isDaoAdmin({ me, gate: gateProps });
+
+  <HolderDialog
+    {...{
+      isHolderDialog,
+      setIsHolderDialog,
+      credentialId: gateProps?.id,
+    }}
+  />;
 
   const handleNavBack = () => {
     // If user directly lands to credential page using link
@@ -80,29 +81,9 @@ export function GateViewSidebar({
     }
   };
 
-  const gateOptions = [
-    {
-      text:
-        published === 'not_published' || published === 'paused'
-          ? 'Publish'
-          : 'Unpublish',
-      action: () => setConfirmToggleState(true),
-      hidden: false,
-    },
-    {
-      text: 'Edit',
-      action: () =>
-        router.push(
-          `${ROUTES.GATE_NEW}?dao=${gateProps?.dao.id}&gate=${gateProps?.id}`
-        ),
-      hidden: published === 'published' || published === 'paused',
-    },
-    {
-      text: 'Delete',
-      action: () => setConfirmDelete(true),
-      hidden: false,
-    },
-  ];
+  const isLimitExceeded = gateProps?.claim_limit
+    ? gateProps?.claim_limit <= gateProps?.holder_count
+    : false;
 
   const dateFormatAccordingToTimeZone = new Intl.DateTimeFormat('en-US', {
     timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
@@ -130,85 +111,13 @@ export function GateViewSidebar({
       ? gateProps?.creator.pfp
       : gateProps?.creator.picture.id;
 
-  const { mutate: deleteGateMutation } = useMutation(
-    ['deleteGate'],
-    gqlAuthMethods.deleteGate
-  );
-
-  const deleteGate = () =>
-    deleteGateMutation(
-      { gate_id: gateProps?.id },
-      {
-        onSuccess() {
-          enqueueSnackbar(`Credential deleted!`);
-          router.push(
-            ROUTES.DAO_PROFILE.replace('[slug]', gateProps?.dao.slug)
-          );
-        },
-        onError(error) {
-          console.log(error);
-        },
-      }
-    );
-
-  const { mutate: publishGate } = useMutation(
-    ['publishGate'],
-    () =>
-      gqlAuthMethods.publish_gate({
-        gate_id: gateProps.id,
-      }),
-    {
-      onSuccess: async (data) => {
-        setPublished(data.publish_gate.published);
-
-        enqueueSnackbar(
-          `Credential ${
-            published === 'not_published' || published === 'paused'
-              ? 'published!'
-              : 'unpublished!'
-          }`
-        );
-
-        await queryClient.refetchQueries(['gate', gateProps?.id]);
-        await queryClient.refetchQueries(['dao-gates', gateProps?.dao_id]);
-      },
-    }
-  );
-
-  const { mutate: toggleGateStateMutation } = useMutation(
-    ['toggleGateState'],
-    gqlAuthMethods.toggle_gate_state
-  );
-
-  const toggleGateState = () =>
-    toggleGateStateMutation(
-      {
-        gate_id: gateProps?.id,
-        state: published === 'published' ? 'paused' : 'published',
-      },
-      {
-        onSuccess: async (data) => {
-          setPublished(data.update_gates_by_pk.published);
-
-          enqueueSnackbar(
-            `Credential ${
-              published === 'not_published' || published === 'paused'
-                ? 'published!'
-                : 'unpublished!'
-            }`
-          );
-
-          await queryClient.refetchQueries(['gate', gateProps?.id]);
-          await queryClient.refetchQueries(['dao-gates', gateProps?.dao_id]);
-        },
-        onError() {
-          enqueueSnackbar(`An error occured, couldn't toggle gate state.`);
-        },
-      }
-    );
-
   return (
     <>
+      <MintDialog
+        credential={credential?.credentials_by_pk}
+        isOpen={isMintDialog}
+        setOpen={setMintModal}
+      />
       <Grid item xs={12} md={5}>
         <Stack
           direction="row"
@@ -286,7 +195,7 @@ export function GateViewSidebar({
               sx={{ alignItems: 'flex-start', justifyContent: 'space-between' }}
             >
               <Box>
-                {isAdmin && <GateStateChip published={published} />}
+                {isAdmin && <GateStateChip published={gateProps.published} />}
                 {gateProps?.categories.map((category, idx) => (
                   <Chip
                     key={'category-' + (idx + 1)}
@@ -300,13 +209,7 @@ export function GateViewSidebar({
               </Box>
               <Stack flexDirection="row" gap={1}>
                 <ShareButton title={`${gateProps?.title} @ Gateway`} />
-                {isAdmin && (
-                  <MorePopover
-                    options={gateOptions}
-                    withBackground
-                    key={uuidv4()}
-                  />
-                )}
+                <OptionsCredential gate={gateProps} />
               </Stack>
             </Stack>
           </Box>
@@ -323,42 +226,12 @@ export function GateViewSidebar({
             </Typography>
           )}
 
-          {completedGate &&
-            !!credential &&
-            credential?.credentials_by_pk?.target_id == me?.id &&
-            (credential?.credentials_by_pk?.status == 'minted' ? (
-              <Button
-                component="a"
-                variant="outlined"
-                href={credential.credentials_by_pk.transaction_url}
-                target="_blank"
-                startIcon={
-                  <TokenFilled height={20} width={20} color="action" />
-                }
-                fullWidth
-                sx={{
-                  borderColor: '#E5E5E580',
-                  color: 'white',
-                  mb: 2,
-                }}
-              >
-                VERIFY MINT TRANSACTION
-              </Button>
-            ) : (
-              <Button
-                variant="contained"
-                startIcon={
-                  <TokenFilled height={20} width={20} color="action" />
-                }
-                fullWidth
-                onClick={() => setMintModal(true)}
-                sx={{
-                  mb: 2,
-                }}
-              >
-                MINT AS NFT
-              </Button>
-            ))}
+          <GateMintButton
+            credential={credential}
+            completedGate={completedGate}
+            setMintModal={setMintModal}
+            gateIsPublished={gateProps.published === 'published'}
+          />
 
           <Box
             component="img"
@@ -560,39 +433,6 @@ export function GateViewSidebar({
           </Grid>
         </Box>
       </Grid>
-      <ConfirmDialog
-        title="Are you sure you want to delete this credential?"
-        open={confirmDelete}
-        positiveAnswer="Delete"
-        negativeAnswer="Cancel"
-        setOpen={setConfirmDelete}
-        onConfirm={deleteGate}
-      >
-        If you delete this credential, you will not be able to access it and
-        this action cannot be undone.
-      </ConfirmDialog>
-      <ConfirmDialog
-        title={
-          published === 'published'
-            ? 'Are you sure to unpublish this credential?'
-            : 'Are you sure you want to publish this credential?'
-        }
-        open={confirmToggleState}
-        positiveAnswer={`${
-          published === 'published' ? 'Unpublish' : 'Publish'
-        }`}
-        negativeAnswer="Cancel"
-        setOpen={setConfirmToggleState}
-        onConfirm={
-          gateProps?.published === 'not_published'
-            ? publishGate
-            : toggleGateState
-        }
-      >
-        {published === 'published'
-          ? 'If you unpublish this credential, users will not be able to see it anymore.'
-          : 'Publishing this credential will make it accessible by all users.'}
-      </ConfirmDialog>
     </>
   );
 }

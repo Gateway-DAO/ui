@@ -24,6 +24,7 @@ import {
   CreateGateData,
   GithubContributeDataError,
 } from '../../../templates/create-gate/schema';
+import TextFieldWithEmoji from '../../form/TextFieldWithEmoji/TextFieldWithEmoji';
 
 type GithubPRTaskProps = {
   dragAndDrop: boolean;
@@ -81,7 +82,7 @@ export default function GithubPRTask({
 
     return data.json();
   };
-
+  const formValues = getValues();
   const { data: githubData, mutate: mutateGithubData } = useMutation(
     ['github-data', repository_url],
     (repository_url) => fetchRepositoryData(repository_url)
@@ -145,7 +146,7 @@ export default function GithubPRTask({
             <TextField
               variant="standard"
               sx={{
-                minWidth: { md: '400px', xs: '110%', lg:'500px' },
+                minWidth: { md: '400px', xs: '110%', lg: '500px' },
                 maxWidth: { xs: '100%', md: '110%' },
               }}
               InputProps={{
@@ -224,21 +225,12 @@ export default function GithubPRTask({
         )}
       </Stack>
       <FormControl style={!taskVisible ? {} : { display: 'none' }}>
-        <TextField
-          required
-          multiline
-          minRows={3}
-          label="Task Description"
-          id="task-description"
-          {...register(`tasks.${taskId}.description`)}
-          error={!!errors.tasks?.[taskId]?.description}
-          helperText={errors.tasks?.[taskId]?.description?.message}
-          sx={{
-            marginBottom: '60px',
-            '& fieldset legend span': {
-              marginRight: '10px',
-            },
-          }}
+        <TextFieldWithEmoji
+          errors={errors}
+          formValues={formValues}
+          register={register}
+          setValue={setValue}
+          taskId={taskId}
         />
         <Typography variant="body1" sx={{ paddingBottom: 2 }}>
           {t('tasks.github_prs.amount_description')}

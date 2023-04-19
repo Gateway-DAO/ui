@@ -26,7 +26,9 @@ const QuizContent = ({
   isAdmin,
   attemptCount,
 }) => {
+  const isAttemptLocked = !!data.attempt_limit;
   const isInitialAttempt = !attemptCount;
+
   const attemptLimit = isInitialAttempt
     ? data.attempt_limit
     : attemptCount > data.attempt_limit
@@ -168,7 +170,7 @@ const QuizContent = ({
       })}
       {!readOnly && !completed && (
         <>
-          {data.attempt_limit !== null && (
+          {isAttemptLocked && (
             <Stack direction="row" justifyContent="space-between">
               <InfoOutlinedIcon
                 color={attemptLimit === 0 ? 'error' : 'inherit'}
@@ -198,7 +200,7 @@ const QuizContent = ({
             onClick={() =>
               !spammers ? completeTask({ questions: answers }) : null
             }
-            disabled={attemptLimit === 0}
+            disabled={isAttemptLocked && attemptLimit === 0}
             isLoading={isLoading}
           >
             Submit

@@ -23,6 +23,8 @@ const nextConfig = {
       'node.mygateway.xyz',
       'arweave.net',
       'localhost',
+      'cdn.mygateway.xyz',
+      'staging.cdn.mygateway.xyz',
     ],
   },
   compiler: {
