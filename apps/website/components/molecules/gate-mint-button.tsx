@@ -11,14 +11,12 @@ type Props = {
   credential: CredentialQuery;
   completedGate: React.ReactNode;
   setMintModal: (value: boolean) => void;
-  gateIsPublished: boolean;
 };
 
 export default function GateMintButton({
   credential,
   completedGate,
   setMintModal,
-  gateIsPublished,
 }: Props) {
   const { me } = useAuth();
   const { t } = useTranslation('credential');
@@ -37,7 +35,6 @@ export default function GateMintButton({
             target="_blank"
             startIcon={<TokenFilled height={20} width={20} color="action" />}
             fullWidth
-            disabled={!gateIsPublished}
             sx={{
               borderColor: '#E5E5E580',
               color: 'white',
@@ -53,7 +50,6 @@ export default function GateMintButton({
             startIcon={<TokenFilled height={20} width={20} color="action" />}
             fullWidth
             onClick={() => setMintModal(true)}
-            disabled={!gateIsPublished}
             sx={{
               mb: 2,
             }}
