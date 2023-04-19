@@ -48,7 +48,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const credential = await gatewayProtocolSDK.credential({
     id: ctx.query.id as string,
   });
-  
+
   const credentialData = credential.credential;
 
   const urlParams = getCredentialImageURLParams(credentialData);
