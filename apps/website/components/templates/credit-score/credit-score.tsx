@@ -229,7 +229,7 @@ export function CreditScoreTemplate() {
           >
             <Link
               passHref
-              href={ROUTES.DAO_PROFILE.replace('[slug]', 'gateway')}
+              href={ROUTES.DAO_PROFILE.replace('[slug]', 'cred-protocol')}
             >
               <Stack
                 direction="row"
@@ -244,8 +244,8 @@ export function CreditScoreTemplate() {
                 })}
               >
                 <Avatar
-                  alt="Gateway"
-                  src="/logo.png"
+                  alt="Cred Protocol"
+                  src="https://pbs.twimg.com/profile_images/1425122906044964864/Xrgs0ACt_400x400.jpg"
                   sx={{
                     height: (theme) => theme.spacing(3),
                     width: (theme) => theme.spacing(3),
