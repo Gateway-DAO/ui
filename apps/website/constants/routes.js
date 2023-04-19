@@ -1,6 +1,10 @@
 const ROUTES = {
   LANDING: '/',
   EXPLORE: '/explore',
+  EXPLORE_EARN: '/explore/earn',
+  EXPLORE_PASSES: '/explore/passes',
+  EXPLORE_ISSUE: '/explore/issue',
+  EXPLORE_ORGANIZATIONS: '/explore/organizations',
   SEARCH: '/search/[key]',
   NEW_USER: '/new-user',
   CREDENTIALS: '/credentials',
