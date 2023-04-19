@@ -1,9 +1,8 @@
+import useTranslation from 'next-translate/useTranslation';
 import { Dispatch, SetStateAction } from 'react';
 
-import { Stack } from '@mui/material';
-import Button from '@mui/material/Button';
+import { CircularProgress, Stack, Typography } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -15,29 +14,30 @@ type Props = {
 };
 
 export default function LoadingModal({ openLoadingModal }: Props) {
+  const { t } = useTranslation('credit-score');
+
   return (
     <div>
       <Dialog
         open={openLoadingModal}
         onClose={() => {}}
-        sx={{ '& .MuiDialog-paper': { width: 400, height: 200 } }}
+        sx={{
+          '& .MuiDialog-paper': { width: 400, display: 'flex' },
+        }}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <Stack flexDirection={'column'} alignItems={'start'}>
-          <DialogTitle id="alert-dialog-title">
-            <Loading />
-          </DialogTitle>
-          <DialogContent>
-            {'Your credential is being issued'}
-            <DialogContentText
-              id="alert-dialog-description"
-              sx={{ marginTop: '30px' }}
-            >
-              It only takes a few seconds.
-            </DialogContentText>
-          </DialogContent>
-        </Stack>
+        <DialogTitle id="alert-dialog-title">
+          <CircularProgress />
+          <Typography variant="h6" mt={3}>
+            {t('modal.title')}
+          </Typography>
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            {t('modal.description')}
+          </DialogContentText>
+        </DialogContent>
       </Dialog>
     </div>
   );
