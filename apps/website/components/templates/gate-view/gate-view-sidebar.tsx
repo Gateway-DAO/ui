@@ -28,7 +28,6 @@ import { AvatarFile } from '../../atoms/avatar-file';
 import { ReadMore } from '../../atoms/read-more-less';
 import { ShareButton } from '../../atoms/share-button';
 import GateMintButton from '../../molecules/gate-mint-button';
-import { TokenFilled } from '../../molecules/mint-card/assets/token-filled';
 import { MintDialogProps } from '../../molecules/mint-dialog';
 import { OptionsCredential } from '../../molecules/options-credential';
 import type { Props as HolderDialogProps } from '../../organisms/holder-dialog';
@@ -230,7 +229,6 @@ export function GateViewSidebar({
             credential={credential}
             completedGate={completedGate}
             setMintModal={setMintModal}
-            gateIsPublished={gateProps.published === 'published'}
           />
 
           <Box
