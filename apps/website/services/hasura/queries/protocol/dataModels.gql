@@ -18,3 +18,19 @@ query dataModels($take: Int!, $skip: Int!) {
     }
   }
 }
+
+query findRecipientsByDataModel($dataModelId: uuid!, $take: Int!, $skip: Int!) {
+  protocol_user(where: {credentials: {dataModelId: {_eq: $dataModelId}}}, limit: $take, offset: $skip) {
+    id
+    gatewayId
+    gatewayUser {
+      name
+      pfp
+      picture {
+        id
+        s3_key
+        blur
+      }
+    }
+  }
+}

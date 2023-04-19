@@ -1,6 +1,4 @@
-import { useSession } from 'next-auth/react';
 import useTranslation from 'next-translate/useTranslation';
-import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
@@ -37,6 +35,7 @@ import {
   gatewayProtocolSDK,
 } from '../../../services/gateway-protocol/api';
 import { MintCredentialMutationVariables } from '../../../services/gateway-protocol/types';
+import { gqlAnonMethods } from '../../../services/hasura/api';
 import { AvatarFile } from '../../atoms/avatar-file';
 import { LoadingButton } from '../../atoms/loading-button';
 import { ReadMore } from '../../atoms/read-more-less';
@@ -156,13 +155,12 @@ export function CreditScoreTemplate() {
   const { data: recipientsUsers } = useQuery(
     ['cred-api-find-recipient-user', DATA_MODEL_ID],
     async () => {
-      const result =
-        await gatewayProtocolSDK.findRecipientsByDataModelCreditScore({
-          dataModelId: DATA_MODEL_ID,
-          skip: 0,
-          take: 10,
-        });
-      return result.findRecipientsByDataModel;
+      const result = await gqlAnonMethods.findRecipientsByDataModel({
+        dataModelId: DATA_MODEL_ID,
+        skip: 0,
+        take: 10,
+      });
+      return result.protocol_user;
     }
   );
 
@@ -402,8 +400,10 @@ export function CreditScoreTemplate() {
                               >
                                 <AvatarFile
                                   alt={holder.gatewayId}
-                                  file={holder?.picture}
-                                  fallback={holder?.pfp || '/avatar.png'}
+                                  file={holder?.gatewayUser?.picture}
+                                  fallback={
+                                    holder?.gatewayUser?.pfp || '/avatar.png'
+                                  }
                                 />
                               </Box>
                             </Tooltip>
