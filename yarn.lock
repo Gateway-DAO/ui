@@ -9189,6 +9189,11 @@ aproba@^1.0.3, aproba@^1.1.1:
   resolved "https://registry.yarnpkg.com/aproba/-/aproba-2.0.0.tgz#52520b8ae5b569215b354efc0caa3fe1e45a8adc"
   integrity sha512-lYe4Gx7QT+MKGbDsA+Z+he/Wtef0BiwDOlK/XkBrdfsh9J/jPPXbX0tE9x9cl27Tmu5gg3QUbUrQYa/y+KOHPQ==
 
+arc-progress@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/arc-progress/-/arc-progress-1.0.0.tgz#74c0f03537d62a35ece8112cb36ebfad5ccecada"
+  integrity sha512-no9y8iIxzVqhlrbe8ZayN9cLtasNX4uL0Wh3Xt2nzyOoexjDNE79INkk5yGEsVPMP3wvNC0VOwT25JBl/sI7zg==
+
 arch@^2.2.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/arch/-/arch-2.2.0.tgz#1bc47818f305764f23ab3306b0bfc086c5a29d11"
@@ -21057,6 +21062,10 @@ raw-loader@^4.0.2:
     loader-utils "^2.0.0"
     schema-utils "^3.0.0"
 
+react-arc-progress@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/react-arc-progress/-/react-arc-progress-1.0.2.tgz#6dd1c8e21e92b9631c04be42ae50b39cf3bd5c48"
+  integrity sha512-UEfAOi6jOA+cn2oNsWu3XMVREuYDi3wiKUtLdNYBT24gQ8PQBkWlH2ZQ3hQQUCafcu1edgiO/IDlxwvwfbJX8A==
 rc@^1.2.7:
   version "1.2.8"
   resolved "https://registry.yarnpkg.com/rc/-/rc-1.2.8.tgz#cd924bf5200a075b83c188cd6b9e211b7fc0d3ed"

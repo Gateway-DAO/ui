@@ -13,6 +13,7 @@ const config = {
     [ROUTES.GATE_NEW]: ['gate-new'],
     [ROUTES.GATE_PROFILE]: ['gate-new', 'gate-profile', 'credential'],
     [ROUTES.LANDING]: ['index'],
+    [ROUTES.CREDIT_SCORE]: ['credit-score'],
     [ROUTES.MY_PROFILE]: ['user-profile'],
     [ROUTES.NEW_USER]: ['dashboard-new-user'],
     [ROUTES.PROFILE_EDIT]: ['profile-edit'],
