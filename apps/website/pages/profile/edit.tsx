@@ -20,7 +20,7 @@ export default function EditProfilePage() {
 
       const uploadPicture = async () => {
         if (me.picture?.id) {
-          const oldLogo = generateImageUrl(me.picture.id);
+          const oldLogo = generateImageUrl(me.picture.s3_key);
 
           if (picture64 === oldLogo) return me.picture.id;
         }
@@ -35,7 +35,7 @@ export default function EditProfilePage() {
 
       const uploadCover = async () => {
         if (me.cover?.id) {
-          const oldBackground = generateImageUrl(me.cover.id);
+          const oldBackground = generateImageUrl(me.cover.s3_key);
           if (cover64 === oldBackground) return me.cover.id;
         }
 
