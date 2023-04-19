@@ -20,8 +20,10 @@ import {
   Credential,
   CredentialStatus,
 } from '../../services/gateway-protocol/types';
+import { Protocol_Credential } from '../../services/hasura/types';
+import { AvatarFile } from '../atoms/avatar-file';
 
-type Props = PartialDeep<Credential> & {
+type Props = PartialDeep<Protocol_Credential> & {
   isRecipient?: boolean;
 };
 
@@ -50,6 +52,7 @@ export default function CredentialCard({
   description,
   issuerUser,
   recipientUser,
+  issuerOrganization,
   isRecipient,
 }: Props): JSX.Element {
   const url = ROUTES.PROTOCOL_CREDENTIAL.replace('[id]', id);
@@ -59,14 +62,23 @@ export default function CredentialCard({
       <MUICard sx={{ position: 'relative', cursor: 'pointer' }}>
         <CardHeader
           title={
-            isRecipient
-              ? issuerUser.gatewayId
-              : limitCharsCentered(recipientUser?.primaryWallet?.address, 6)
+            issuerOrganization?.hasuraOrganization?.name ||
+            issuerUser?.gatewayUser?.name ||
+            issuerUser?.gatewayId ||
+            limitCharsCentered(recipientUser?.gatewayUser?.wallet, 6)
           }
           titleTypographyProps={{ fontSize: '14px', fontWeight: 400 }}
           avatar={
-            <Avatar
-              src="/images/avatar-default.png"
+            <AvatarFile
+              file={
+                issuerOrganization
+                  ? issuerOrganization.hasuraOrganization?.logo
+                  : issuerUser?.gatewayUser?.picture
+              }
+              fallback={
+                issuerOrganization?.hasuraOrganization?.logo_url ||
+                '/images/avatar.png'
+              }
               sx={{ width: 32, height: 32 }}
             />
           }
@@ -91,10 +103,14 @@ export default function CredentialCard({
           <Box sx={{ mt: 5 }}>
             <Chip
               variant="outlined"
-              label={status}
+              label={status[0].toUpperCase() + status.toLowerCase().slice(1)}
               sx={{
-                color: setColorStatus(status),
-                borderColor: setColorStatus(status),
+                color: setColorStatus(
+                  status[0].toUpperCase() + status.toLowerCase().slice(1)
+                ),
+                borderColor: setColorStatus(
+                  status[0].toUpperCase() + status.toLowerCase().slice(1)
+                ),
               }}
             />
           </Box>
