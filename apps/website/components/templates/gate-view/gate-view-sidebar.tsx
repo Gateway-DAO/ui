@@ -1,7 +1,7 @@
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { ComponentType, useState } from 'react';
 
 import { PartialDeep } from 'type-fest/source/partial-deep';
 
@@ -18,7 +18,6 @@ import {
   Tooltip,
   IconButton,
   Avatar,
-  Button,
 } from '@mui/material';
 
 import { ROUTES } from '../../../constants/routes';
@@ -28,31 +27,50 @@ import { isDaoAdmin } from '../../../utils/is-dao-admin';
 import { AvatarFile } from '../../atoms/avatar-file';
 import { ReadMore } from '../../atoms/read-more-less';
 import { ShareButton } from '../../atoms/share-button';
+import GateMintButton from '../../molecules/gate-mint-button';
 import { TokenFilled } from '../../molecules/mint-card/assets/token-filled';
+import { MintDialogProps } from '../../molecules/mint-dialog';
 import { OptionsCredential } from '../../molecules/options-credential';
+import type { Props as HolderDialogProps } from '../../organisms/holder-dialog';
+
+const HolderDialog: ComponentType<HolderDialogProps> = dynamic(
+  () => import('../../organisms/holder-dialog').then((mod) => mod.HolderDialog),
+  { ssr: false }
+);
 
 const GateStateChip = dynamic(() => import('../../atoms/gate-state-chip'), {
   ssr: false,
 });
 
+const MintDialog: ComponentType<MintDialogProps> = dynamic(
+  () => import('../../molecules/mint-dialog').then((mod) => mod.MintDialog),
+  { ssr: false }
+);
+
 type GateViewSidebarProps = {
   gateProps: PartialDeep<Gates>;
   completedGate: boolean;
-  isLimitExceeded: boolean;
   credential: CredentialQuery;
-  setMintModal: (value: boolean) => void;
 };
 
 export function GateViewSidebar({
   gateProps,
   completedGate,
-  isLimitExceeded,
   credential,
-  setMintModal,
 }: GateViewSidebarProps) {
   const router = useRouter();
   const { me } = useAuth();
+  const [isMintDialog, setMintModal] = useState(false);
   const [isHolderDialog, setIsHolderDialog] = useState(false);
+  const isAdmin = isDaoAdmin({ me, gate: gateProps });
+
+  <HolderDialog
+    {...{
+      isHolderDialog,
+      setIsHolderDialog,
+      credentialId: gateProps?.id,
+    }}
+  />;
 
   const handleNavBack = () => {
     // If user directly lands to credential page using link
@@ -63,7 +81,9 @@ export function GateViewSidebar({
     }
   };
 
-  const isAdmin = isDaoAdmin({ me, gate: gateProps });
+  const isLimitExceeded = gateProps?.claim_limit
+    ? gateProps?.claim_limit <= gateProps?.holder_count
+    : false;
 
   const dateFormatAccordingToTimeZone = new Intl.DateTimeFormat('en-US', {
     timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
@@ -93,6 +113,11 @@ export function GateViewSidebar({
 
   return (
     <>
+      <MintDialog
+        credential={credential?.credentials_by_pk}
+        isOpen={isMintDialog}
+        setOpen={setMintModal}
+      />
       <Grid item xs={12} md={5}>
         <Stack
           direction="row"
@@ -201,42 +226,12 @@ export function GateViewSidebar({
             </Typography>
           )}
 
-          {completedGate &&
-            !!credential &&
-            credential?.credentials_by_pk?.target_id == me?.id &&
-            (credential?.credentials_by_pk?.status == 'minted' ? (
-              <Button
-                component="a"
-                variant="outlined"
-                href={credential.credentials_by_pk.transaction_url}
-                target="_blank"
-                startIcon={
-                  <TokenFilled height={20} width={20} color="action" />
-                }
-                fullWidth
-                sx={{
-                  borderColor: '#E5E5E580',
-                  color: 'white',
-                  mb: 2,
-                }}
-              >
-                VERIFY MINT TRANSACTION
-              </Button>
-            ) : (
-              <Button
-                variant="contained"
-                startIcon={
-                  <TokenFilled height={20} width={20} color="action" />
-                }
-                fullWidth
-                onClick={() => setMintModal(true)}
-                sx={{
-                  mb: 2,
-                }}
-              >
-                MINT AS NFT
-              </Button>
-            ))}
+          <GateMintButton
+            credential={credential}
+            completedGate={completedGate}
+            setMintModal={setMintModal}
+            gateIsPublished={gateProps.published === 'published'}
+          />
 
           <Box
             component="img"

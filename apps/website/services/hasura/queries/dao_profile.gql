@@ -235,3 +235,22 @@ mutation dao_set_user_member(
     affected_rows
   }
 }
+
+
+query dao_info_by_id($id: uuid!) {
+  daos_by_pk(id: $id) {
+    id
+    name
+    slug
+    background {
+      id
+      blur
+    }
+    logo {
+      id
+      blur
+    }
+    logo_url
+    background_url
+  }
+}
