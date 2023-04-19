@@ -143,11 +143,12 @@ export function CreditScoreTemplate() {
         )
       );
 
+      await queryClient.resetQueries(['user_protocol', me?.id]);
+
       return result.create_cred.credentialId;
     },
     {
       enabled: false,
-      onSuccess: () => queryClient.resetQueries(['user_protocol', me?.id]),
     }
   );
 
