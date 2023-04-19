@@ -246,7 +246,7 @@ export function CreditScoreTemplate() {
               >
                 <Avatar
                   alt="Cred Protocol"
-                  src="https://pbs.twimg.com/profile_images/1425122906044964864/Xrgs0ACt_400x400.jpg"
+                  src="/images/cred_protocol_logo.jpg"
                   sx={{
                     height: (theme) => theme.spacing(3),
                     width: (theme) => theme.spacing(3),
