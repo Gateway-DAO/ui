@@ -38,8 +38,6 @@ export default function Explore({
   exploreProps,
   dataModels,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
-  const { t } = useTranslation('explore');
-
   const HARDCODED_DAOS = ['goldfinch', 'cyberconnect', 'lifi'];
 
   const { data } = useQuery(
@@ -68,12 +66,7 @@ export default function Explore({
           },
         }}
       >
-        <ExploreTemplate
-          title={t('title')}
-          subtitle={t('subtitle')}
-          data={data}
-          dataModels={dataModels}
-        />
+        <ExploreTemplate />
         <PassesTab />
       </DashboardTemplate>
     </>

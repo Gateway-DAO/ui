@@ -5,7 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 
 import { HeadContainer } from '../../components/molecules/head-container';
 import { DashboardTemplate } from '../../components/templates/dashboard';
-import { ExploreTemplate } from '../../components/templates/explore';
+import { AllTab, ExploreTemplate } from '../../components/templates/explore';
 import { gatewayProtocolSDK } from '../../services/gateway-protocol/api';
 import { gqlAnonMethods } from '../../services/hasura/api';
 
@@ -37,8 +37,6 @@ export default function Explore({
   exploreProps,
   dataModels,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
-  const { t } = useTranslation('explore');
-
   const HARDCODED_DAOS = ['goldfinch', 'cyberconnect', 'lifi'];
 
   const { data } = useQuery(
@@ -67,12 +65,8 @@ export default function Explore({
           },
         }}
       >
-        <ExploreTemplate
-          title={t('title')}
-          subtitle={t('subtitle')}
-          data={data}
-          dataModels={dataModels}
-        />
+        <ExploreTemplate />
+        <AllTab {...data} dataModels={dataModels} />
       </DashboardTemplate>
     </>
   );

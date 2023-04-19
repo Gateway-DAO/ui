@@ -50,13 +50,13 @@ export default function CardUserCell({
           },
         }}
       >
-        <AvatarFile
+        {/* <AvatarFile
           file={picture}
           fallback="/avatar.png"
           sx={{ ml: alignRight ? 0 : 2, mr: alignRight ? 2 : 0 }}
         >
           {name}
-        </AvatarFile>
+        </AvatarFile> */}
         <CardCell label={label} margin={false} alignRight={alignRight}>
           {hasLink ? (
             <Stack

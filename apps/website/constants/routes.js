@@ -1,6 +1,6 @@
 const ROUTES = {
   LANDING: '/',
-  EXPLORE: '/home',
+  EXPLORE: '/explore',
   SEARCH: '/search/[key]',
   NEW_USER: '/new-user',
   CREDENTIALS: '/credentials',

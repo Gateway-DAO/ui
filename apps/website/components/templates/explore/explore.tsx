@@ -1,86 +1,33 @@
 import useTranslation from 'next-translate/useTranslation';
-import { useMemo } from 'react';
 
-import { PartialDeep } from 'type-fest';
 
 import { TOKENS } from '@gateway/theme';
 
 import { Box, Tabs, Tab, Typography } from '@mui/material';
 
-import { DataModel } from '../../../services/gateway-protocol/types';
 import { a11yTabProps, TabPanel, useTab } from '../../atoms/tabs';
 import { Navbar } from '../../organisms/navbar';
-import { AllTab } from './tabs/all-tab';
-import { DaosTab } from './tabs/daos-tab';
-import DataModelsTab from './tabs/data-models-tab/data-models-tab';
-import { GatesTab } from './tabs/gates-tab';
-import PassesTab from './tabs/passes-tab';
-import { PeopleTab } from './tabs/people-tab';
-import { ExploreProps } from './types';
+
 import { useRouter } from 'next/router';
 
-type TemplateProps = {
-  title: string;
-  subtitle: string;
-  data: ExploreProps;
-  dataModels: PartialDeep<DataModel>[];
-};
-
-export function ExploreTemplate({
-  title,
-  subtitle,
-  data,
-  dataModels,
-}: TemplateProps) {
+export function ExploreTemplate() {
   const { t } = useTranslation('explore');
-  const { activeTab, handleTabChange, setTab } = useTab();
   const router = useRouter();
-  // console.log(router.query);
   let _selectedTab = router.pathname;
-  console.log(_selectedTab.slice(_selectedTab.lastIndexOf('/')).slice(1));
   _selectedTab = _selectedTab.slice(_selectedTab.lastIndexOf('/')).slice(1);
-  // const _selectedTab = (router.query.tab as string) ?? 'all';
-  const tabs = ['all', 'earn', 'passes', 'data-models', 'organizations'];
-  const selectedIndex = tabs.indexOf(_selectedTab) ?? 0;
-  // const tabs = useMemo(
-  //   () => [
-  //     {
-  //       key: 'home/all',
-  //       label: t('common:tabs.all'),
-  //       section: (
-  //         <AllTab setActiveTab={setTab} {...data} dataModels={dataModels} />
-  //       ),
-  //     },
-  //     {
-  //       key: 'home/credentials',
-  //       label: t('common:tabs.earn'),
-  //       section: <GatesTab />,
-  //     },
-  //     {
-  //       key: 'home/passes',
-  //       label: t('passes-tab'),
-  //       section: <PassesTab />,
-  //     },
-  //     {
-  //       key: 'home/data-models',
-  //       label: t('common:tabs.data-models'),
-  //       section: <DataModelsTab />,
-  //     },
-  //     {
-  //       key: 'home/organizations',
-  //       label: t('common:tabs.organizations'),
-  //       section: <DaosTab />,
-  //     },
-  //   ],
-  //   []
-  // );
+  const routesForTabs = ['', 'earn', 'passes', 'issue', 'organizations'];
+  const tabs = ['all', 'earn', 'passes', 'issue', 'organizations'];
 
+  const selectedIndex =
+    routesForTabs.indexOf(_selectedTab) === -1
+      ? 0
+      : routesForTabs.indexOf(_selectedTab);
   return (
     <>
       <Navbar />
       <Box pt={6}>
         <Typography variant="h4" whiteSpace="pre-line" px={TOKENS.CONTAINER_PX}>
-          {title}
+          {t('title')}
         </Typography>
         <Typography
           variant="body1"
@@ -88,7 +35,7 @@ export function ExploreTemplate({
           px={TOKENS.CONTAINER_PX}
           color="text.secondary"
         >
-          {subtitle}
+          {t('subtitle')}
         </Typography>
       </Box>
       <Box sx={{ mt: 5 }}>
@@ -101,8 +48,15 @@ export function ExploreTemplate({
           <Tabs
             value={selectedIndex}
             onChange={(_, index) => {
-              const tab = tabs.at(index);
-              router.replace(`/home/${tab}`, undefined, { shallow: true });
+              const tab = routesForTabs.at(index);
+              if (tab === '') {
+                router.replace(`/explore`, undefined, {
+                  shallow: true,
+                });
+              } else
+                router.replace(`/explore/${tab}`, undefined, {
+                  shallow: true,
+                });
             }}
             aria-label="basic tabs example"
             variant="scrollable"
@@ -121,7 +75,6 @@ export function ExploreTemplate({
               <Tab
                 key={index}
                 label={value}
-                // onClick={() => router.push(`/home/${value}`)}
                 sx={(theme) => ({
                   px: 0,
                   mr: theme.spacing(3),
@@ -132,17 +85,6 @@ export function ExploreTemplate({
             ))}
           </Tabs>
         </Box>
-        {/* {tabs.map(({ key, section }, index) => (
-          <TabPanel
-            key={key}
-            tabsId="explore"
-            index={index}
-            active={index === activeTab}
-            hidden={index !== activeTab}
-          >
-            {activeTab === index && section}
-          </TabPanel>
-        ))} */}
       </Box>
     </>
   );

@@ -14,6 +14,7 @@ import {
 import { useTab, TabPanel } from '../../../../../atoms/tabs';
 import { IColumnGrid } from '../../../../../organisms/data-grid/data-grid';
 import { PlaygroundTab } from './playground-tab';
+import { useRouter } from 'next/router';
 
 const OverviewTab = dynamic(() => import('./overview-tab'), { ssr: false });
 const GridViewTab = dynamic(() => import('./grid-view-tab'), { ssr: false });
@@ -24,8 +25,29 @@ type Props = {
 };
 
 export default function DataModelTabs({ dataModel, stats }: Props) {
-  const { activeTab, handleTabChange, setTab } = useTab();
   const { t } = useTranslation('protocol');
+  const router = useRouter();
+  let _selectedTab = router.pathname;
+  _selectedTab = _selectedTab.slice(_selectedTab.lastIndexOf('/')).slice(1);
+  const routesForTabs = [
+    '',
+    'issuers',
+    'recipients',
+    'credentials',
+    'playground',
+  ];
+  const tabs = [
+    'overview',
+    'issuers',
+    'recipients',
+    'credentials',
+    'playground',
+  ];
+
+  const selectedIndex =
+    routesForTabs.indexOf(_selectedTab) === -1
+      ? 0
+      : routesForTabs.indexOf(_selectedTab);
 
   const credentialGridColumns: IColumnGrid[] = [
     {
@@ -90,61 +112,61 @@ export default function DataModelTabs({ dataModel, stats }: Props) {
     // },
   ];
 
-  const tabs = [
-    {
-      key: 'overview',
-      label: t('common:tabs.overview'),
-      section: <OverviewTab dataModel={dataModel} stats={stats} />,
-    },
-    {
-      key: 'issuers',
-      label: t('common:tabs.issuers'),
-      noPadding: true,
-      section: (
-        <GridViewTab
-          dataModel={dataModel}
-          columns={issuersGridColumns}
-          queryString={query.issuersByDataModel}
-          queryFnName="findIssuersByDataModel"
-          pageSize={10}
-        />
-      ),
-    },
-    {
-      key: 'recipients',
-      label: t('common:tabs.recipients'),
-      noPadding: true,
-      section: (
-        <GridViewTab
-          dataModel={dataModel}
-          columns={recipientsGridColumns}
-          queryString={query.recipientsByDataModel}
-          queryFnName={'findRecipientsByDataModel'}
-          pageSize={10}
-        />
-      ),
-    },
-    {
-      key: 'credentials',
-      noPadding: true,
-      label: t('data-model.credentials'),
-      section: (
-        <GridViewTab
-          dataModel={dataModel}
-          columns={credentialGridColumns}
-          queryString={query.credentialsByDataModel}
-          queryFnName={'findCredentialsByDataModel'}
-          pageSize={10}
-        />
-      ),
-    },
-    {
-      key: 'playground',
-      noPadding: true,
-      label: t('common:tabs.playground'),
-      section: <PlaygroundTab />,
-    },
-  ];
+  // const tabs = [
+  //   {
+  //     key: 'overview',
+  //     label: t('common:tabs.overview'),
+  //     section: <OverviewTab dataModel={dataModel} stats={stats} />,
+  //   },
+  //   {
+  //     key: 'issuers',
+  //     label: t('common:tabs.issuers'),
+  //     noPadding: true,
+  //     section: (
+  //       <GridViewTab
+  //         dataModel={dataModel}
+  //         columns={issuersGridColumns}
+  //         queryString={query.issuersByDataModel}
+  //         queryFnName="findIssuersByDataModel"
+  //         pageSize={10}
+  //       />
+  //     ),
+  //   },
+  //   {
+  //     key: 'recipients',
+  //     label: t('common:tabs.recipients'),
+  //     noPadding: true,
+  //     section: (
+  //       <GridViewTab
+  //         dataModel={dataModel}
+  //         columns={recipientsGridColumns}
+  //         queryString={query.recipientsByDataModel}
+  //         queryFnName={'findRecipientsByDataModel'}
+  //         pageSize={10}
+  //       />
+  //     ),
+  //   },
+  //   {
+  //     key: 'credentials',
+  //     noPadding: true,
+  //     label: t('data-model.credentials'),
+  //     section: (
+  //       <GridViewTab
+  //         dataModel={dataModel}
+  //         columns={credentialGridColumns}
+  //         queryString={query.credentialsByDataModel}
+  //         queryFnName={'findCredentialsByDataModel'}
+  //         pageSize={10}
+  //       />
+  //     ),
+  //   },
+  //   {
+  //     key: 'playground',
+  //     noPadding: true,
+  //     label: t('common:tabs.playground'),
+  //     section: <PlaygroundTab />,
+  //   },
+  // ];
 
   return (
     <>
@@ -157,8 +179,18 @@ export default function DataModelTabs({ dataModel, stats }: Props) {
         }}
       >
         <Tabs
-          value={activeTab}
-          onChange={handleTabChange}
+          value={selectedIndex}
+          onChange={(_, index) => {
+            const tab = routesForTabs.at(index);
+            if (tab === '') {
+              router.replace(`/explore`, undefined, {
+                shallow: true,
+              });
+            } else
+              router.replace(`/explore/${tab}`, undefined, {
+                shallow: true,
+              });
+          }}
           sx={{
             mb: '-1px',
             '& > div': {
@@ -170,10 +202,10 @@ export default function DataModelTabs({ dataModel, stats }: Props) {
             },
           }}
         >
-          {tabs.map(({ key, label }) => (
+          {tabs.map((value, index) => (
             <Tab
-              key={key}
-              label={label}
+              key={index}
+              label={value}
               sx={(theme) => ({
                 fontWeight: 700,
                 px: 0,
@@ -184,20 +216,6 @@ export default function DataModelTabs({ dataModel, stats }: Props) {
           ))}
         </Tabs>
       </Box>
-      {tabs.map(({ key, noPadding, section }, index) => (
-        <TabPanel
-          key={key}
-          tabsId="protocol"
-          index={index}
-          active={index === activeTab}
-          sx={{
-            py: noPadding ? 0 : 3,
-            px: noPadding ? 0 : { xs: 0, md: 4, lg: 6 },
-          }}
-        >
-          {section}
-        </TabPanel>
-      ))}
     </>
   );
 }

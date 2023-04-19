@@ -5,10 +5,14 @@ import { useQuery } from '@tanstack/react-query';
 
 import { HeadContainer } from '../../components/molecules/head-container';
 import { DashboardTemplate } from '../../components/templates/dashboard';
-import { ExploreTemplate } from '../../components/templates/explore';
+import {
+  AllTab,
+  DaosTab,
+  ExploreTemplate,
+  GatesTab,
+} from '../../components/templates/explore';
 import { gatewayProtocolSDK } from '../../services/gateway-protocol/api';
 import { gqlAnonMethods } from '../../services/hasura/api';
-import DataModelsTab from 'apps/website/components/templates/explore/tabs/data-models-tab/data-models-tab';
 
 /** TODO: Prevent template remount when navigating between dashboard pages
  * https://nextjs.org/docs/basic-features/layouts
@@ -34,12 +38,10 @@ export const getStaticProps = async () => {
   };
 };
 
-export default function DataModels({
+export default function Earn({
   exploreProps,
   dataModels,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
-  const { t } = useTranslation('explore');
-
   const HARDCODED_DAOS = ['goldfinch', 'cyberconnect', 'lifi'];
 
   const { data } = useQuery(
@@ -68,13 +70,8 @@ export default function DataModels({
           },
         }}
       >
-        <ExploreTemplate
-          title={t('title')}
-          subtitle={t('subtitle')}
-          data={data}
-          dataModels={dataModels}
-        />
-        <DataModelsTab />
+        <ExploreTemplate />
+        <DaosTab />
       </DashboardTemplate>
     </>
   );
