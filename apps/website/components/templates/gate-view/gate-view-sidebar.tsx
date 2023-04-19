@@ -230,7 +230,6 @@ export function GateViewSidebar({
             credential={credential}
             completedGate={completedGate}
             setMintModal={setMintModal}
-            gateIsPublished={gateProps.published === 'published'}
           />
 
           <Box
