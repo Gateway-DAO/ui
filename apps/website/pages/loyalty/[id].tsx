@@ -2,7 +2,7 @@ import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
 
 import { HeadContainer } from '../../components/molecules/head-container';
 import { DashboardTemplate } from '../../components/templates/dashboard';
-import { LoyaltyProgram } from '../../components/templates/loyalty-program/loyalty-program/LoyaltyProgram';
+import { LoyaltyProgram } from '../../components/templates/loyalty-program/LoyaltyProgram';
 import { gqlAnonMethods } from '../../services/hasura/api';
 
 type Props = InferGetServerSidePropsType<typeof getServerSideProps>;

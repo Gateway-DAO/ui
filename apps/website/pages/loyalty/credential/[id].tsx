@@ -1,4 +1,3 @@
-import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
 import { useRouter } from 'next/router';
 
 import { QueryClient, dehydrate, useQuery } from '@tanstack/react-query';
@@ -6,7 +5,8 @@ import jwt from 'jsonwebtoken';
 
 import { HeadContainer } from '../../../components/molecules/head-container';
 import { DashboardTemplate } from '../../../components/templates/dashboard';
-import { LoyaltyProgramCredential } from '../../../components/templates/loyalty-program/credential/LoyaltyProgramCredential';
+import { LoyaltyProgramCredential } from '../../../components/templates/loyalty-program/LoyaltyProgramCredential';
+import { query } from '../../../constants/queries';
 import { ROUTES } from '../../../constants/routes';
 import { useAuth } from '../../../providers/auth';
 import { gqlAnonMethods, gqlMethods } from '../../../services/hasura/api';
@@ -27,7 +27,7 @@ export default function LoyaltyCredentialPage({ loyalty }) {
   const { gqlAuthMethods, authenticated } = useAuth();
 
   const { data: gatesData } = useQuery(
-    ['gate', id],
+    [query.gate, id],
     () =>
       gqlAuthMethods.gate({
         id,
@@ -83,7 +83,7 @@ export const getServerSideProps = async ({ req, res, params }) => {
     return unaccesible;
   }
 
-  await queryClient.prefetchQuery(['gate', id], () => gate);
+  await queryClient.prefetchQuery([query.gate, id], () => gate);
 
   const { loyalty_program_by_pk } = await gqlAnonMethods.loyalty_program({
     id: gate.gates_by_pk?.loyalty_id,
