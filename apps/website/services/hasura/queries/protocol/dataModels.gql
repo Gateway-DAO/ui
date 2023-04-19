@@ -1,0 +1,20 @@
+query dataModels($take: Int!, $skip: Int!) {
+  protocol_data_model(limit: $take, offset: $skip) {
+    id
+    title
+    tags
+    version
+    description
+    createdBy {
+      gatewayUser {
+        name
+        picture {
+          id
+          s3_key
+          blur
+        }
+      }
+      gatewayId
+    }
+  }
+}
