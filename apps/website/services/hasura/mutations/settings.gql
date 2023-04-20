@@ -1,0 +1,3 @@
+mutation notifications_settings_toggle_email($input: ChangeNotificationSettings!) {
+  change_notification_settings(input: $input)
+}

@@ -6,6 +6,7 @@ import '@fontsource/plus-jakarta-sans/800.css';
 import '@fontsource/fira-code';
 
 import pallete from './palette';
+
 export const fonts = {
   PLUS_JAKARTA_SANS: 'Plus Jakarta Sans',
   FIRA_CODE: 'Fira Code',

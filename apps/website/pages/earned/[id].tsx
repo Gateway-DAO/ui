@@ -2,6 +2,7 @@ import { GetStaticPaths, InferGetStaticPropsType } from 'next';
 import { useRouter } from 'next/router';
 
 import { dehydrate, QueryClient, useQuery } from '@tanstack/react-query';
+import { HeadContainer } from 'apps/website/components/molecules/head-container';
 import { useToggle } from 'react-use';
 
 import { MintModal } from '../../components/organisms/mint-modal';
@@ -28,25 +29,28 @@ export default function CredentialPage() {
   if (!data) return null;
 
   return (
-    <DashboardTemplate
-      containerProps={{
-        sx: {
-          overflow: 'hidden',
-          pt: 2,
-        },
-      }}
-    >
-      <Navbar isInternalPage={true} />
-      <CredentialTemplate
-        credential={data.credentials_by_pk}
-        openModal={open}
-      />
-      <MintModal
-        isOpen={isOpen}
-        onClose={open}
-        onSuccess={() => console.log('Yey')}
-      />
-    </DashboardTemplate>
+    <>
+      <HeadContainer ogImage="default" />
+      <DashboardTemplate
+        containerProps={{
+          sx: {
+            overflow: 'hidden',
+            pt: 2,
+          },
+        }}
+      >
+        <Navbar isInternalPage={true} />
+        <CredentialTemplate
+          credential={data.credentials_by_pk}
+          openModal={open}
+        />
+        <MintModal
+          isOpen={isOpen}
+          onClose={open}
+          onSuccess={() => console.log('Yey')}
+        />
+      </DashboardTemplate>
+    </>
   );
 }
 

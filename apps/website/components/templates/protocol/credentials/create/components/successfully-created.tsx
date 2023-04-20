@@ -14,9 +14,9 @@ import {
   Typography,
 } from '@mui/material';
 
+import SuccessfullyIcon from '../../../../../../components/atoms/icons/successfully-icon';
 import { ROUTES } from '../../../../../../constants/routes';
 import { gatewayProtocolSDK } from '../../../../../../services/gateway-protocol/api';
-import { useCreateQrCode } from '../../../../../../utils/qr-code/qr-code';
 import CredentialCardInfo from '../../../components/credential-card-info';
 
 type Props = {
@@ -38,10 +38,6 @@ export default function SuccessfullyCreated({ credentialId }: Props) {
       refetchOnWindowFocus: false,
     }
   );
-  const credentialRoute = `${
-    window?.location?.origin
-  }${ROUTES.PROTOCOL_CREDENTIAL.replace('[id]', credentialId)}`;
-  const qrCode = useCreateQrCode(credentialRoute);
 
   return (
     <Stack>
@@ -59,19 +55,7 @@ export default function SuccessfullyCreated({ credentialId }: Props) {
       ) : (
         <>
           <Box sx={{ position: 'absolute', top: { xs: '24px', md: '48px' } }}>
-            <svg
-              width="40"
-              height="40"
-              viewBox="0 0 40 40"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <rect width="40" height="40" rx="20" fill="#6DFFB9" />
-              <path
-                d="M16.7951 23.8769L12.6251 19.7069L11.2051 21.1169L16.7951 26.7069L28.7951 14.7069L27.3851 13.2969L16.7951 23.8769Z"
-                fill="#2D2237"
-              />
-            </svg>
+            <SuccessfullyIcon />
           </Box>
           <Typography variant="h5" sx={{ mb: 3, maxWidth: 270 }}>
             {t('data-model.successfully-title')}
@@ -94,7 +78,10 @@ export default function SuccessfullyCreated({ credentialId }: Props) {
                 }}
               >
                 <img
-                  src={credential?.data?.image ?? qrCode}
+                  src={
+                    credential?.data?.image ??
+                    `${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/${credential?.data?.qrCode}`
+                  }
                   alt={credential?.data?.title}
                   width="100%"
                 />

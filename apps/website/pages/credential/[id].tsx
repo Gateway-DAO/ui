@@ -10,6 +10,7 @@ import { HeadContainer } from '../../components/molecules/head-container';
 import { Navbar } from '../../components/organisms/navbar';
 import { DashboardTemplate } from '../../components/templates/dashboard';
 import { GateViewTemplate } from '../../components/templates/gate-view';
+import { query } from '../../constants/queries';
 import { ROUTES } from '../../constants/routes';
 import { useAuth } from '../../providers/auth';
 import { gqlAnonMethods, gqlMethods } from '../../services/hasura/api';
@@ -48,7 +49,7 @@ export async function getServerSideProps({ req, res, params }) {
     return unaccesible;
   }
 
-  await queryClient.prefetchQuery(['gate', id], () => gate);
+  await queryClient.prefetchQuery([query.gate, id], () => gate);
 
   return {
     props: {
@@ -65,7 +66,7 @@ export default function GateProfilePage() {
   const { gqlAuthMethods, authenticated } = useAuth();
 
   const { data: gatesData } = useQuery(
-    ['gate', id],
+    [query.gate, id],
     () =>
       gqlAuthMethods.gate({
         id,

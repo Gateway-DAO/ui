@@ -77,30 +77,59 @@ const defineCols = (columns: IColumnGrid[]) => {
       field: 'credential_id',
       column_name: 'credential_id',
       cell: (params) => (
-        <Box sx={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-          <Box>
-            <Typography
+        <Link
+          sx={{
+            all: 'unset',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+          }}
+          href={`${ROUTES.PROTOCOL_CREDENTIAL.replace('[id]', params.id)}`}
+        >
+          <Box sx={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+            <Box
               sx={{
-                fontWeight: 400,
-                fontSize: '14px',
-                letterSpacing: '0.17px',
-                color: alpha(brandColors.white.main, 0.7),
+                borderRadius: '8px',
+                overflow: 'hidden',
+                height: '56px',
+                width: '56px',
               }}
             >
-              ID {limitCharsCentered(params.id, 6)}
-            </Typography>
-            <Typography
-              sx={{
-                fontWeight: 400,
-                fontSize: '16px',
-                letterSpacing: '0.15px',
-                color: brandColors.white.main,
-              }}
-            >
-              {params.title}
-            </Typography>
+              <Image
+                alt={`${params.title}`}
+                width={56}
+                height={56}
+                src={`${
+                  params.image
+                    ? params.image
+                    : process.env.NEXT_PUBLIC_CLOUDFRONT_URL
+                }/${params?.qrCode}`}
+              />
+            </Box>
+            <Box>
+              <Typography
+                sx={{
+                  fontWeight: 400,
+                  fontSize: '14px',
+                  letterSpacing: '0.17px',
+                  color: alpha(brandColors.white.main, 0.7),
+                }}
+              >
+                ID {limitCharsCentered(params.id, 6)}
+              </Typography>
+              <Typography
+                sx={{
+                  fontWeight: 400,
+                  fontSize: '16px',
+                  letterSpacing: '0.15px',
+                  color: brandColors.white.main,
+                }}
+              >
+                {params.title}
+              </Typography>
+            </Box>
           </Box>
-        </Box>
+        </Link>
       ),
     },
     {

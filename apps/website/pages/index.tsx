@@ -1,8 +1,10 @@
 import useTranslation from 'next-translate/useTranslation';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 import { Button } from '@mui/material';
 
+import { HeadContainer } from '../components/molecules/head-container';
 import { LandingTemplate } from '../components/templates/landing';
 import { FeaturedProps } from '../components/templates/landing/featured/types';
 import { FooterProps } from '../components/templates/landing/footer/types';
@@ -10,21 +12,19 @@ import { InvestorProps } from '../components/templates/landing/investors/types';
 import { MenuListItem } from '../components/templates/landing/menu/types';
 import { ProductShowProps } from '../components/templates/landing/product-show/types';
 import { ScheduleDemoProps } from '../components/templates/landing/schedule-demo/types';
-import { useAuth } from '../providers/auth';
-import { useRouter } from 'next/router';
 import { ROUTES } from '../constants/routes';
+import { useAuth } from '../providers/auth';
 
 export default function Index() {
-  const router = useRouter()
+  const router = useRouter();
   const { onOpenLogin, authenticated } = useAuth();
   const handleLogin = () => {
-    if(authenticated){
+    if (authenticated) {
       router.push(ROUTES.EXPLORE);
+    } else {
+      onOpenLogin();
     }
-    else{
-      onOpenLogin()
-    }
-  }
+  };
 
   const { t } = useTranslation('index');
   const menuList = t('menu', null, { returnObjects: true }) as MenuListItem[];
@@ -52,6 +52,7 @@ export default function Index() {
 
   return (
     <>
+      <HeadContainer ogImage="default" />
       <LandingTemplate
         signUpButton={
           <Button

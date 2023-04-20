@@ -15,7 +15,6 @@ import {
 import ModalTabs from '../../../../../../components/molecules/modal/modal-tabs';
 import { Credential } from '../../../../../../services/gateway-protocol/types';
 import InfoTitle from '../../../components/info-title';
-import { useProtocolTemplateContext } from '../../../context';
 
 type Props = {
   credential: PartialDeep<Credential>;
@@ -24,7 +23,6 @@ type Props = {
 export default function CredentialTitleAndImage({ credential }: Props) {
   const { t } = useTranslation('protocol');
   const [QRCodeIsOpen, setQRCodeIsOpen] = useState<boolean>(false);
-  const { qrCode } = useProtocolTemplateContext();
 
   const setTabSection = (
     imageUrl: string,
@@ -49,7 +47,10 @@ export default function CredentialTitleAndImage({ credential }: Props) {
     {
       key: 'qr-code',
       label: t('credential.qr-code'),
-      section: setTabSection(qrCode, true),
+      section: setTabSection(
+        `${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/${credential?.qrCode}`,
+        true
+      ),
     },
   ];
 
@@ -58,7 +59,7 @@ export default function CredentialTitleAndImage({ credential }: Props) {
       <Stack direction="row" gap={3} sx={{ mb: 3 }}>
         <IconButton
           onClick={() => setQRCodeIsOpen(true)}
-          disabled={!credential?.image && !qrCode}
+          disabled={!credential?.image && !credential?.qrCode}
           sx={{
             width: 80,
             height: 80,
@@ -70,9 +71,12 @@ export default function CredentialTitleAndImage({ credential }: Props) {
             overflow: 'hidden',
           }}
         >
-          {credential?.image || qrCode ? (
+          {credential?.image || credential?.qrCode ? (
             <img
-              src={credential?.image ?? qrCode}
+              src={
+                credential?.image ??
+                `${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/${credential?.qrCode}`
+              }
               alt={credential.title}
               width="100%"
               style={{ objectFit: 'cover' }}

@@ -70,6 +70,9 @@ query gate($id: uuid!) {
       id
       metadata
     }
+
+    loyalty_id
+    points
   }
 }
 

@@ -13,6 +13,7 @@ const config = {
     [ROUTES.GATE_NEW]: ['gate-new'],
     [ROUTES.GATE_PROFILE]: ['gate-new', 'gate-profile', 'credential'],
     [ROUTES.LANDING]: ['index'],
+    [ROUTES.CREDIT_SCORE]: ['credit-score'],
     [ROUTES.MY_PROFILE]: ['user-profile'],
     [ROUTES.NEW_USER]: ['dashboard-new-user'],
     [ROUTES.PROFILE_EDIT]: ['profile-edit'],
@@ -27,6 +28,12 @@ const config = {
     [ROUTES.PROTOCOL_CREDENTIAL]: ['protocol'],
     [ROUTES.PROTOCOL_DATAMODEL]: ['protocol'],
     [ROUTES.PROTOCOL_DATAMODEL_CREDENTIAL_CREATE]: ['protocol'],
+    [ROUTES.LOYALTY_PROGRAM]: ['loyalty-program'],
+    [ROUTES.LOYALTY_PROGRAM_CREDENTIAL]: [
+      'loyalty-program',
+      'credential',
+      'gate-new',
+    ],
   },
   localeDetection: false,
 };

@@ -6,13 +6,18 @@ import {
   Credential,
   GetDaoStatsQuery,
 } from '../../../services/gateway-protocol/types';
-import { Daos, Dao_Gates_TabQuery } from '../../../services/hasura/types';
+import {
+  Daos,
+  Dao_Gates_TabQuery,
+  Loyalty_Program,
+} from '../../../services/hasura/types';
 
 type DaoProfileContextProps = {
   isAdmin: boolean;
   dao: PartialDeep<Daos>;
   followersCount: number;
   credentials?: Dao_Gates_TabQuery;
+  loyaltyPrograms?: PartialDeep<Loyalty_Program>[];
   onRefetchFollowers: () => void;
   issuedCredentials?: PartialDeep<Credential>[];
   stats?: GetDaoStatsQuery;
@@ -21,6 +26,7 @@ type DaoProfileContextProps = {
 export const DaoProfileContext = createContext<DaoProfileContextProps>({
   dao: {},
   followersCount: 0,
+  loyaltyPrograms: [],
   isAdmin: false,
   onRefetchFollowers: () => {},
 });

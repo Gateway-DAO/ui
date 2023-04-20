@@ -8,18 +8,17 @@ import { TOKENS } from '@gateway/theme';
 import { Box, Stack } from '@mui/material';
 
 import { query } from '../../../../constants/queries';
-import { gatewayProtocolSDK } from '../../../../services/gateway-protocol/api';
+import { gqlAnonMethods } from '../../../../services/hasura/api';
 import { Users } from '../../../../services/hasura/types';
-import { SessionUser } from '../../../../types/user';
 import Loading from '../../../atoms/loading';
 import CredentialCard from '../../../molecules/credential-card';
 
 type Props = {
-  user: PartialDeep<Users> | SessionUser;
+  user: PartialDeep<Users>;
 };
 
 export default function ReceivedTab({ user }: Props): JSX.Element {
-  const internalPageSize = 10;
+  const internalPageSize = 16;
   const {
     data: credentials,
     fetchNextPage,
@@ -28,15 +27,16 @@ export default function ReceivedTab({ user }: Props): JSX.Element {
   } = useInfiniteQuery(
     [
       query.credentialsByRecipientUser,
-      (user as SessionUser).protocol?.id || user.id,
+      (user as PartialDeep<Users>).protocolUser?.id,
     ],
     async ({ pageParam }) => {
-      const result = await gatewayProtocolSDK.findCredentialsByRecipientUser({
-        recipientUserId: (user as SessionUser).protocol?.id || user.id,
+      const result = await gqlAnonMethods.findCredentialsByRecipientUser({
+        recipientUserId: (user as PartialDeep<Users>).protocolUser?.id,
         take: internalPageSize,
         skip: pageParam || 0,
       } as any);
-      return result.findCredentialsByRecipientUser;
+
+      return result.protocol_credential;
     }
   );
   useEffect(() => {

@@ -1,12 +1,18 @@
 {
   "edit": "Edit DAO",
   "earn-tab": "Earn",
+  "passes-tab": "Passes",
   "overview-tab": {
     "credentials_stats_card": "Credentials to earn",
     "protocol_credentials_stats_card": "Issued credentials",
     "credentials-section": {
       "title": "Earn credentials",
       "caption": "People are really into these credentials. We thought you would too.",
+      "action": "View more"
+    },
+    "loyalty-section": {
+      "title": "Passes",
+      "caption": "Unlock new milestones with every earned credential",
       "action": "View more"
     },
     "issued-credentials-section": {

@@ -1,11 +1,16 @@
 query get_home($daos_where: daos_bool_exp = {}) {
-  gates(where: { published: { _eq: "published" } }, limit: 4, order_by: { published_at: desc, updated_at: desc }) {
+  gates(
+    where: { published: { _eq: "published" } }
+    limit: 4
+    order_by: { published_at: desc, updated_at: desc }
+  ) {
     id
     title
     description
     categories
     image
     published
+    loyalty_id
     dao {
       id
       logo_url
@@ -55,6 +60,9 @@ query get_home($daos_where: daos_bool_exp = {}) {
       ...file
     }
   }
+  loyalty_program(limit: 4) {
+    ...loyalty
+  }
 }
 
 query gates_tab {
@@ -65,6 +73,7 @@ query gates_tab {
     categories
     image
     published
+    loyalty_id
     dao {
       id
       logo_url

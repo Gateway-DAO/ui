@@ -11,11 +11,17 @@ import { useDaoProfile } from './context';
 import { DaoHeader } from './dao-header';
 import { GatesTab, OverviewTab } from './tabs';
 import GridViewTab from './tabs/grid-view-tab';
+import PassesTab from './tabs/passes-tab';
 import StaticGridViewTab from './tabs/static-grid-view-tab';
 
 export function DaoProfileTemplate() {
-  const { dao, onRefetchFollowers, followersCount, credentials } =
-    useDaoProfile();
+  const {
+    dao,
+    onRefetchFollowers,
+    followersCount,
+    credentials,
+    loyaltyPrograms,
+  } = useDaoProfile();
   const { t } = useTranslation();
   const { activeTab, handleTabChange, setTab } = useTab();
 
@@ -65,6 +71,7 @@ export function DaoProfileTemplate() {
           people={people}
           setTab={setTab}
           credentials={credentials?.daos_by_pk.gates}
+          loyaltyPrograms={loyaltyPrograms}
         />
       ),
     },
@@ -72,6 +79,11 @@ export function DaoProfileTemplate() {
       key: 'credentials',
       label: t('dao-profile:earn-tab'),
       section: <GatesTab />,
+    },
+    {
+      key: 'passes',
+      label: t('dao-profile:passes-tab'),
+      section: <PassesTab />,
     },
   ];
 

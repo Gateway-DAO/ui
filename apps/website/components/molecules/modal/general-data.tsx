@@ -10,12 +10,18 @@ export default function GeneralData({
   handleClose,
   children,
   swipeableDrawer = false,
+  fullWidth,
 }: ModalContentProps) {
   const { t } = useTranslation('protocol');
   const isMobile = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
 
   return (
-    <Box sx={{ width: { xs: '250px', md: '396px' }, margin: 'auto' }}>
+    <Box
+      sx={{
+        ...(!fullWidth && { width: { xs: '250px', md: '396px' } }),
+        margin: 'auto',
+      }}
+    >
       <Box
         sx={{
           textAlign: 'center',
