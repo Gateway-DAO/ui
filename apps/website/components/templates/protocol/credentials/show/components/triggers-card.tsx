@@ -6,7 +6,7 @@ import { PartialDeep } from 'type-fest/source/partial-deep';
 import { brandColors } from '@gateway/theme';
 
 import RefreshIcon from '@mui/icons-material/Refresh';
-import { alpha, Box, Paper, Stack, SxProps, Typography } from '@mui/material';
+import { alpha, Paper, Stack, SxProps, Typography } from '@mui/material';
 
 import { Credential } from '../../../../../../services/gateway-protocol/types';
 
@@ -53,9 +53,9 @@ export default function TriggersCard({ credential }: Props) {
   const { t } = useTranslation('protocol');
 
   const triggersKey = {
-    revokedConditions: 'revokedConditions',
-    suspendedConditions: 'suspendedConditions',
-    updatedConditions: 'updatedConditions',
+    revocationConditions: 'revocationConditions',
+    suspensionConditions: 'suspensionConditions',
+    updateConditions: 'updateConditions',
   };
 
   const iconSx: SxProps = {
@@ -64,21 +64,19 @@ export default function TriggersCard({ credential }: Props) {
   };
 
   const triggersData = {
-    [triggersKey.revokedConditions]: {
+    [triggersKey.revocationConditions]: {
       name: t('credential.triggers.revoke-if'),
       icon: <RefreshIcon sx={iconSx} />,
     },
-    [triggersKey.suspendedConditions]: {
+    [triggersKey.suspensionConditions]: {
       name: t('credential.triggers.suspend-if'),
       icon: <RefreshIcon sx={iconSx} />,
     },
-    [triggersKey.updatedConditions]: {
+    [triggersKey.updateConditions]: {
       name: t('credential.triggers.update-if'),
       icon: <RefreshIcon sx={iconSx} />,
     },
   };
-
-  console.log(credential);
 
   return (
     <Paper
@@ -90,40 +88,43 @@ export default function TriggersCard({ credential }: Props) {
         mb: 3,
         overflow: 'hidden',
         boxShadow: 'none',
+        py: { xs: 2, md: 2 },
+        px: { xs: 3, md: 2 },
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 1,
       }}
     >
-      <Box
+      <Typography
         sx={{
-          py: { xs: 2, md: 2 },
-          px: { xs: 3, md: 2 },
-          display: 'flex',
-          flexDirection: 'column',
-          gap: 3,
+          fontWeight: 600,
+          fontSize: '14px',
+          color: alpha(brandColors.white.main, 0.7),
+          letterSpacing: '0.1px',
+          mb: 2,
         }}
       >
-        <Typography
-          sx={{
-            fontWeight: 600,
-            fontSize: '14px',
-            color: alpha(brandColors.white.main, 0.7),
-            letterSpacing: '0.1px',
-          }}
-        >
-          {t('credential.triggers.title')}
-        </Typography>
-      </Box>
-      {credential.revokedConditions && (
+        {t('credential.triggers.title')}
+      </Typography>
+      {credential.revocationConditions && (
         <Trigger
-          name={triggersData[triggersKey.revokedConditions].name}
-          icon={triggersData[triggersKey.revokedConditions].icon}
-          value={credential.revokedConditions}
+          name={triggersData[triggersKey.revocationConditions].name}
+          icon={triggersData[triggersKey.revocationConditions].icon}
+          value={credential.revocationConditions}
         />
       )}
-      {credential.suspendedConditions && (
+      {credential.suspensionConditions && (
         <Trigger
-          name={triggersData[triggersKey.suspendedConditions].name}
-          icon={triggersData[triggersKey.suspendedConditions].icon}
-          value={credential.suspendedConditions}
+          name={triggersData[triggersKey.suspensionConditions].name}
+          icon={triggersData[triggersKey.suspensionConditions].icon}
+          value={credential.suspensionConditions}
+        />
+      )}
+      {credential.updateConditions && (
+        <Trigger
+          name={triggersData[triggersKey.updateConditions].name}
+          icon={triggersData[triggersKey.updateConditions].icon}
+          value={credential.updateConditions}
         />
       )}
     </Paper>

@@ -138,6 +138,12 @@ export default function CredentialProtocolShow({ credential }: Props) {
         <Typography sx={{ mb: 3 }}>{credential?.description}</Typography>
         <CredentialCardInfo credential={credential} />
 
+        {(credential.revocationConditions ||
+          credential.suspensionConditions ||
+          credential.updateConditions) && (
+          <TriggersCard credential={credential} />
+        )}
+
         {isReceivedCredential && isAllowedToMint && (
           <MintNFTCard
             title={t('credential.mint-card.title')}
@@ -151,10 +157,6 @@ export default function CredentialProtocolShow({ credential }: Props) {
             }
             chain={credential?.recipientUser?.primaryWallet?.chain}
           />
-        )}
-
-        {(credential.revokedConditions || credential.suspendedConditions) && (
-          <TriggersCard credential={credential} />
         )}
 
         {!isReceivedCredential && mintData && (
