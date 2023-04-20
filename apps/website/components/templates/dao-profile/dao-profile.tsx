@@ -63,60 +63,6 @@ export function DaoProfileTemplate() {
     },
   ];
 
-  // const defaultTabs = [
-  //   {
-  //     key: 'overview',
-  //     label: t('common:tabs.overview'),
-  //     section: (
-  //       <OverviewTab
-  //         people={people}
-  //         setTab={setTab}
-  //         credentials={credentials?.daos_by_pk.gates}
-  //         loyaltyPrograms={loyaltyPrograms}
-  //       />
-  //     ),
-  //   },
-  //   {
-  //     key: 'credentials',
-  //     label: t('dao-profile:earn-tab'),
-  //     section: <GatesTab />,
-  //   },
-  // ];
-
-  // const passTab = [
-  //   {
-  //     key: 'passes',
-  //     label: t('dao-profile:passes-tab'),
-  //     section: <PassesTab />,
-  //   },
-  // ];
-
-  // const protocolTabs = [
-  //   {
-  //     key: 'credentials-issued',
-  //     label: t('common:tabs.issued'),
-  //     section: (
-  //       <GridViewTab
-  //         columns={issuedColumns}
-  //         queryString={query.credentialsIssuedByOrg}
-  //         queryFnName="findCredentialsByIssuerOrganization"
-  //         parameterName="issuerOrganizationId"
-  //         pageSize={20}
-  //       />
-  //     ),
-  //   },
-  //   {
-  //     key: 'credentials-signers',
-  //     label: t('dao-profile:signers-tab.title'),
-  //     section: (
-  //       <StaticGridViewTab
-  //         columns={signersColumns}
-  //         data={dao.protocolOrganization?.organization_accesses}
-  //       />
-  //     ),
-  //   },
-  // ];
-
   const tabs = useMemo(() => {
     const dApptabs = [
       {
@@ -171,13 +117,6 @@ export function DaoProfileTemplate() {
     }
     return hasProtocolOrganization ? dApptabs.concat(protocolTabs) : dApptabs;
   }, [hasProtocolOrganization, loyaltyPrograms]);
-
-  // const dApptabs =
-  //   loyaltyPrograms.length > 0 ? defaultTabs.concat(passTab) : defaultTabs;
-
-  // const tabs = hasProtocolOrganization
-  //   ? dApptabs.concat(protocolTabs)
-  //   : dApptabs;
 
   return (
     <>
