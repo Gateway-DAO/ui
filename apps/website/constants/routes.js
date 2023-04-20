@@ -15,6 +15,7 @@ const ROUTES = {
   SETTINGS_PUBLIC_PROFILE: '/settings/public-profile',
   SETTINGS_ACCOUNT_MANAGEMENT: '/settings/account-management',
   SETTINGS_CONNECTED_ACCOUNTS: '/settings/connected-accounts',
+  SETTINGS_DEVELOPER_PORTAL: '/settings/developer-portal',
   SETTINGS_NOTIFICATIONS: '/settings/notifications',
   DAO_EDIT: '/dao/[slug]/edit',
   DAO_NEW: '/dao/new',
