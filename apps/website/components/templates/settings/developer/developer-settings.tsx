@@ -1,32 +1,30 @@
 import useTranslation from 'next-translate/useTranslation';
 
-import { brandColors, theme } from '@gateway/theme';
+import { theme } from '@gateway/theme';
 
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  Link,
-  Stack,
-  Typography,
-} from '@mui/material';
+import { Card, CardContent, Stack, Typography } from '@mui/material';
+
+import { useAuth } from '../../../../providers/auth';
 
 const DeveloperPortalSettings = () => {
   const { t } = useTranslation('settings');
+  const { token } = useAuth();
 
   return (
-    <Stack width="100%">
-      <Stack sx={{ width: '100%', mb: 4 }}>
+    <Stack>
+      <Stack mb={4}>
         <Typography variant="h6">{t('nav.developer-portal-title')}</Typography>
         <Typography variant="caption">
           {t('nav.developer-portal-description')}
         </Typography>
       </Stack>
-      <Stack width="100%">
+      <Stack mb={2}>
         <Card>
           <CardContent>
             <Stack>
-              <Typography variant="body1">API Key</Typography>
+              <Typography variant="body1" mb={1}>
+                API Key
+              </Typography>
             </Stack>
             <Typography
               variant="body1"
@@ -38,18 +36,23 @@ const DeveloperPortalSettings = () => {
           </CardContent>
         </Card>
       </Stack>
-      <Stack width="100%">
+      <Stack>
         <Card>
           <CardContent>
             <Stack>
-              <Typography variant="body1">Bearer</Typography>
+              <Typography variant="body1" mb={1}>
+                Bearer
+              </Typography>
             </Stack>
             <Typography
               variant="body1"
               color={theme.palette.secondary.dark}
               fontFamily="Fira Code"
+              sx={{
+                wordBreak: 'break-word',
+              }}
             >
-              {process.env.NEXT_PUBLIC_PROTOCOL_API_KEY}
+              {`Bearer ${token}`}
             </Typography>
           </CardContent>
         </Card>
