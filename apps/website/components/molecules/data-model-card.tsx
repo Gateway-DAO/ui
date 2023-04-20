@@ -6,14 +6,14 @@ import {
   Avatar,
   CardContent,
   CardHeader,
-  Chip,
   Typography,
   Box,
 } from '@mui/material';
 import MUICard from '@mui/material/Card';
 
-import { ROUTES } from '../../constants/routes'; //[ ] use right path
-import { DataModel } from '../../services/gateway-protocol/types';
+import { ROUTES } from '../../constants/routes';
+import { Protocol_Data_Model } from '../../services/hasura/types';
+import { AvatarFile } from '../atoms/avatar-file';
 import { CategoriesList } from './categories-list';
 
 export function DataModelCard({
@@ -23,51 +23,64 @@ export function DataModelCard({
   tags,
   version,
   createdBy,
-}: PartialDeep<DataModel>): JSX.Element {
+}: PartialDeep<Protocol_Data_Model>): JSX.Element {
   const url = ROUTES.PROTOCOL_DATAMODEL.replace('[id]', id);
   return (
     <Link passHref href={url}>
-      <MUICard sx={{ position: 'relative', cursor: 'pointer' }}>
+      <MUICard
+        sx={{
+          position: 'relative',
+          cursor: 'pointer',
+          display: 'flex',
+          flexDirection: 'column',
+          height: '100%',
+        }}
+      >
         <CardHeader
-          title={createdBy?.gatewayId}
+          title={createdBy.gatewayUser?.name || createdBy?.gatewayId}
           titleTypographyProps={{ fontSize: '14px', fontWeight: 400 }}
           avatar={
-            <Avatar
-              src="/images/avatar-default.png"
+            <AvatarFile
+              file={createdBy.gatewayUser?.picture}
+              fallback={'/images/avatar.png'}
               sx={{ width: 32, height: 32 }}
             />
           }
         />
-        <CardContent sx={{ py: 1 }}>
-          <Typography gutterBottom variant="h5" sx={{ cursor: 'pointer' }}>
-            {title}
-          </Typography>
-          <Typography
-            height={40}
-            variant="body2"
-            color="text.secondary"
-            sx={{
-              display: '-webkit-box',
-              WebkitLineClamp: 2,
-              WebkitBoxOrient: 'vertical',
-              overflow: 'hidden',
-            }}
-          >
-            {description}
-          </Typography>
-        </CardContent>
-        <Box
+        <CardContent
           sx={{
-            display: 'flex',
             py: 1,
-            px: 2,
-            mt: 1,
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-between',
+            flexGrow: 1,
           }}
         >
-          <div style={{ width: '100%', marginTop: '-4px' }}>
-            {tags && tags.length > 0 && <CategoriesList categories={tags} />}
-          </div>
-        </Box>
+          <Box flexGrow={1}>
+            <Typography gutterBottom variant="h5" sx={{ cursor: 'pointer' }}>
+              {title}
+            </Typography>
+            <Typography
+              height={40}
+              variant="body2"
+              color="text.secondary"
+              sx={{
+                display: '-webkit-box',
+                WebkitLineClamp: 2,
+                WebkitBoxOrient: 'vertical',
+                overflow: 'hidden',
+              }}
+            >
+              {description}
+            </Typography>
+          </Box>
+
+          <Box mt={2}>
+            {tags && tags.length > 0 && (
+              <CategoriesList categories={tags as unknown as string[]} />
+            )}
+          </Box>
+        </CardContent>
       </MUICard>
     </Link>
   );

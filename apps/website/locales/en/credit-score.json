@@ -1,7 +1,7 @@
 {
   "gate": {
     "description": "A credit score is a numerical representation of a person's creditworthiness and is used by lenders to evaluate their ability to repay loans. Maintaining a good credit score is essential as it can lead to a number of benefits. First and foremost, having a good credit score makes it easier to obtain loans, credit cards, and other financial products with favourable terms and lower interest rates.",
-    "organization": "Gateway",
+    "organization": "Cred Protocol",
     "title": "Credit Score",
     "label": "Credit Score",
     "share-title": "Check your Credit Score @ Gateway"
@@ -29,7 +29,7 @@
     "description": "In the future credentials will be used to empower your DeFi experience."
   },
   "utility": {
-    "title": "This inclides:",
+    "title": "This includes:",
     "label-1": "Improved Lending Rates on Protocols",
     "label-2": "Early Access to DeFi Events and Projects",
     "label-3": "Uncollateralized Lending Opportunities"

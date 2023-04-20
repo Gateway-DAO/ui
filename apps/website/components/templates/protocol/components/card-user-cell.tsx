@@ -14,6 +14,7 @@ type Props = {
   label: string;
   name: string;
   picture: PartialDeep<Files>;
+  fallback?: string;
   href: string;
   hasLink?: boolean;
   alignRight?: boolean;
@@ -24,6 +25,7 @@ export default function CardUserCell({
   label,
   name,
   picture,
+  fallback,
   href,
   alignRight = false,
   hasLink = false,
@@ -52,7 +54,7 @@ export default function CardUserCell({
       >
         <AvatarFile
           file={picture}
-          fallback="/avatar.png"
+          fallback={fallback || '/avatar.png'}
           sx={{ ml: alignRight ? 0 : 2, mr: alignRight ? 2 : 0 }}
         >
           {name}

@@ -11,6 +11,7 @@ import {
   ChevronRight,
   Hub,
   Notifications,
+  Code,
 } from '@mui/icons-material';
 import {
   Box,
@@ -76,6 +77,13 @@ export function NavBarSettings() {
       description: t('nav.notifications-description'),
       icon: <Notifications {...iconAttr} />,
       href: ROUTES.SETTINGS_NOTIFICATIONS,
+    },
+    {
+      key: 'developer-portal',
+      title: t('nav.developer-portal-title'),
+      description: t('nav.developer-portal-description'),
+      icon: <Code {...iconAttr} />,
+      href: ROUTES.SETTINGS_DEVELOPER_PORTAL,
     },
   ];
 
