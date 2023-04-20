@@ -1,34 +1,18 @@
-import useTranslation from 'next-translate/useTranslation';
-import dynamic from 'next/dynamic';
-
-import { DateTime } from 'luxon';
 import { PartialDeep } from 'type-fest/source/partial-deep';
 
 import { Box, Tab, Tabs } from '@mui/material';
 
-import { query } from '../../../../../../constants/queries';
 import {
   DataModel,
   GetDataModelStatsQuery,
 } from '../../../../../../services/gateway-protocol/types';
-import { useTab, TabPanel } from '../../../../../atoms/tabs';
-import { IColumnGrid } from '../../../../../organisms/data-grid/data-grid';
-import { PlaygroundTab } from './playground-tab';
 import { useRouter } from 'next/router';
 
-const OverviewTab = dynamic(() => import('./overview-tab'), { ssr: false });
-const GridViewTab = dynamic(() => import('./grid-view-tab'), { ssr: false });
-
-type Props = {
-  dataModel: PartialDeep<DataModel>;
-  stats: GetDataModelStatsQuery;
-};
-
-export default function DataModelTabs({ dataModel, stats }: Props) {
-  const { t } = useTranslation('protocol');
+export default function DataModelTabs() {
   const router = useRouter();
-  let _selectedTab = router.pathname;
+  let _selectedTab = router.asPath;
   _selectedTab = _selectedTab.slice(_selectedTab.lastIndexOf('/')).slice(1);
+
   const routesForTabs = [
     '',
     'issuers',
@@ -49,125 +33,13 @@ export default function DataModelTabs({ dataModel, stats }: Props) {
       ? 0
       : routesForTabs.indexOf(_selectedTab);
 
-  const credentialGridColumns: IColumnGrid[] = [
-    {
-      column_name: 'credential_id',
-      header_name: `${t('data-model.credentials-table.credential_id')}`,
-    },
-    {
-      column_name: 'category',
-      header_name: `${t('data-model.credentials-table.category')}`,
-    },
-    {
-      column_name: 'issuer_id',
-      header_name: `${t('data-model.credentials-table.issuer_id')}`,
-    },
-    {
-      column_name: 'recipient_id',
-      header_name: `${t('data-model.credentials-table.recipient_id')}`,
-    },
-    {
-      column_name: 'issuance_date',
-      header_name: `${t('data-model.credentials-table.issuance_date')}`,
-    },
-    {
-      column_name: 'status',
-      header_name: `${t('data-model.credentials-table.status')}`,
-    },
-    // {
-    //   column_name: 'minted',
-    //   header_name: `${t('data-model.credentials-table.minted')}`,
-    // },
-  ];
-
-  const issuersGridColumns: IColumnGrid[] = [
-    {
-      column_name: 'issuer_id_issuers',
-      header_name: `${t('data-model.issuers-table.issuer_id')}`,
-    },
-    {
-      column_name: 'issuance_date',
-      header_name: `${t('data-model.issuers-table.started')}`,
-      valueGetter: (params) =>
-        DateTime.fromISO(params.createdAt).toFormat('MM/dd, yyyy'),
-    },
-    {
-      column_name: 'default',
-      header_name: `${t('data-model.issuers-table.issued')}`,
-      field: 'totalOfIssuedCredentials',
-    },
-  ];
-
-  const recipientsGridColumns: IColumnGrid[] = [
-    { column_name: 'recipient_id_issuers', header_name: 'Recipient ID' },
-    {
-      column_name: 'default',
-      header_name: 'Received Credentials',
-      field: 'totalOfreceivedCredentials',
-    },
-    // {
-    //   column_name: 'default',
-    //   header_name: 'Minted',
-    //   field: 'id',
-    // },
-  ];
-
-  // const tabs = [
-  //   {
-  //     key: 'overview',
-  //     label: t('common:tabs.overview'),
-  //     section: <OverviewTab dataModel={dataModel} stats={stats} />,
-  //   },
-  //   {
-  //     key: 'issuers',
-  //     label: t('common:tabs.issuers'),
-  //     noPadding: true,
-  //     section: (
-  //       <GridViewTab
-  //         dataModel={dataModel}
-  //         columns={issuersGridColumns}
-  //         queryString={query.issuersByDataModel}
-  //         queryFnName="findIssuersByDataModel"
-  //         pageSize={10}
-  //       />
-  //     ),
-  //   },
-  //   {
-  //     key: 'recipients',
-  //     label: t('common:tabs.recipients'),
-  //     noPadding: true,
-  //     section: (
-  //       <GridViewTab
-  //         dataModel={dataModel}
-  //         columns={recipientsGridColumns}
-  //         queryString={query.recipientsByDataModel}
-  //         queryFnName={'findRecipientsByDataModel'}
-  //         pageSize={10}
-  //       />
-  //     ),
-  //   },
-  //   {
-  //     key: 'credentials',
-  //     noPadding: true,
-  //     label: t('data-model.credentials'),
-  //     section: (
-  //       <GridViewTab
-  //         dataModel={dataModel}
-  //         columns={credentialGridColumns}
-  //         queryString={query.credentialsByDataModel}
-  //         queryFnName={'findCredentialsByDataModel'}
-  //         pageSize={10}
-  //       />
-  //     ),
-  //   },
-  //   {
-  //     key: 'playground',
-  //     noPadding: true,
-  //     label: t('common:tabs.playground'),
-  //     section: <PlaygroundTab />,
-  //   },
-  // ];
-
+  const modelId =
+    selectedIndex === 0
+      ? _selectedTab
+      : router.asPath.slice(
+          router.asPath.indexOf('model/') + 6,
+          router.asPath.lastIndexOf('/')
+        );
   return (
     <>
       <Box
@@ -183,11 +55,11 @@ export default function DataModelTabs({ dataModel, stats }: Props) {
           onChange={(_, index) => {
             const tab = routesForTabs.at(index);
             if (tab === '') {
-              router.replace(`/explore`, undefined, {
+              router.replace(`/model/${modelId}`, undefined, {
                 shallow: true,
               });
             } else
-              router.replace(`/explore/${tab}`, undefined, {
+              router.replace(`/model/${modelId}/${tab}`, undefined, {
                 shallow: true,
               });
           }}

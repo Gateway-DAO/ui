@@ -90,7 +90,7 @@ export default function DataModelShow({
           onClickIssueCredential={setOpenCreateCredential}
         />
       </Stack>
-      <DataModelTabs dataModel={dataModel} stats={stats} />
+      <DataModelTabs />
 
       {me?.id && (
         <>

@@ -21,7 +21,7 @@ const ROUTES = {
   GATE_PROFILE: '/credential/[id]',
   GATE_NEW: '/credential/new',
   PROTOCOL_CREDENTIAL: '/protocol/credentials/[id]/show',
-  PROTOCOL_DATAMODEL: '/protocol/data-models/[id]/show',
+  PROTOCOL_DATAMODEL: '/model/[id]',
   PROTOCOL_DATAMODEL_CREDENTIAL_CREATE:
     '/protocol/data-models/[id]/credentials/create',
   LOYALTY_PROGRAM: '/loyalty/[id]',

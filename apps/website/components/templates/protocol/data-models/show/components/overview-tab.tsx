@@ -25,7 +25,14 @@ export default function OverviewTab({ dataModel, stats }: Props) {
   const isMobile = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
 
   return (
-    <Stack sx={{ maxWidth: '726px', pt: 2 }}>
+    <Stack
+      sx={{
+        maxWidth: '726px',
+        pt: 2,
+        py: 3,
+        px: { xs: 0, md: 4, lg: 6 },
+      }}
+    >
       <OverviewCardInfo dataModel={dataModel} />
       <Stack direction="row" justifyContent="flex-end" sx={{ mb: 2 }}>
         <ExternalLink
