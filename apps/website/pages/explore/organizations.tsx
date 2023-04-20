@@ -1,26 +1,20 @@
+import useTranslation from 'next-translate/useTranslation';
+
 import { HeadContainer } from '../../components/molecules/head-container';
-import { DashboardTemplate } from '../../components/templates/dashboard';
-import { DaosTab, ExploreTemplate } from '../../components/templates/explore';
+import { DaosTab, ExploreLayout } from '../../components/templates/explore';
 
-/** TODO: Prevent template remount when navigating between dashboard pages
- * https://nextjs.org/docs/basic-features/layouts
- * */
+export default function Organizations() {
+  const { t } = useTranslation('explore');
 
-export default function Earn() {
   return (
     <>
-      <HeadContainer />
-      <DashboardTemplate
-        containerProps={{
-          sx: {
-            pt: 2,
-            overflow: 'hidden',
-          },
-        }}
-      >
-        <ExploreTemplate />
-        <DaosTab />
-      </DashboardTemplate>
+      <HeadContainer
+        title={t('meta-data.organizations-title')}
+        description={t('meta-data.organizations-description')}
+      />
+      <DaosTab />
     </>
   );
 }
+
+Organizations.PageLayout = ExploreLayout;

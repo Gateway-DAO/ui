@@ -1,22 +1,20 @@
+import useTranslation from 'next-translate/useTranslation';
+
 import { HeadContainer } from '../../components/molecules/head-container';
-import { DashboardTemplate } from '../../components/templates/dashboard';
-import { ExploreTemplate, GatesTab } from '../../components/templates/explore';
+import { GatesTab, ExploreLayout } from '../../components/templates/explore';
 
 export default function Earn() {
+  const { t } = useTranslation('explore');
+
   return (
     <>
-      <HeadContainer />
-      <DashboardTemplate
-        containerProps={{
-          sx: {
-            pt: 2,
-            overflow: 'hidden',
-          },
-        }}
-      >
-        <ExploreTemplate />
-        <GatesTab />
-      </DashboardTemplate>
+      <HeadContainer
+        title={t('meta-data.earn-title')}
+        description={t('meta-data.earn-description')}
+      />
+      <GatesTab />
     </>
   );
 }
+
+Earn.PageLayout = ExploreLayout;

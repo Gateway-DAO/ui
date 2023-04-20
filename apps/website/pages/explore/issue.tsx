@@ -1,27 +1,23 @@
+import useTranslation from 'next-translate/useTranslation';
+
 import { HeadContainer } from '../../components/molecules/head-container';
-import { DashboardTemplate } from '../../components/templates/dashboard';
-import { ExploreTemplate } from '../../components/templates/explore';
-import DataModelsTab from 'apps/website/components/templates/explore/tabs/data-models-tab/data-models-tab';
+import {
+  ExploreLayout,
+  DataModelsTab,
+} from '../../components/templates/explore';
 
-/** TODO: Prevent template remount when navigating between dashboard pages
- * https://nextjs.org/docs/basic-features/layouts
- * */
+export default function Earn() {
+  const { t } = useTranslation('explore');
 
-export default function IssueDataModels() {
   return (
     <>
-      <HeadContainer />
-      <DashboardTemplate
-        containerProps={{
-          sx: {
-            pt: 2,
-            overflow: 'hidden',
-          },
-        }}
-      >
-        <ExploreTemplate />
-        <DataModelsTab />
-      </DashboardTemplate>
+      <HeadContainer
+        title={t('meta-data.issue-title')}
+        description={t('meta-data.issue-description')}
+      />
+      <DataModelsTab />
     </>
   );
 }
+
+Earn.PageLayout = ExploreLayout;

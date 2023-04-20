@@ -1,29 +1,53 @@
 import useTranslation from 'next-translate/useTranslation';
+import { useRouter } from 'next/router';
 
+import { useQuery } from '@tanstack/react-query';
 
 import { TOKENS } from '@gateway/theme';
 
-import { Box, Tabs, Tab, Typography } from '@mui/material';
+import { Box, Tabs, Typography, Tab } from '@mui/material';
 
-import { a11yTabProps, TabPanel, useTab } from '../../atoms/tabs';
+import { query } from '../../../constants/queries';
+import { gqlAnonMethods } from '../../../services/hasura/api';
+import { a11yTabProps, TabPanel } from '../../atoms/tabs';
 import { Navbar } from '../../organisms/navbar';
+import { DashboardTemplate } from '../dashboard';
 
-import { useRouter } from 'next/router';
-
-export function ExploreTemplate() {
+export function ExploreLayout({ children }) {
   const { t } = useTranslation('explore');
+
   const router = useRouter();
   let _selectedTab = router.pathname;
   _selectedTab = _selectedTab.slice(_selectedTab.lastIndexOf('/')).slice(1);
-  const routesForTabs = ['', 'earn', 'passes', 'issue', 'organizations'];
-  const tabs = ['all', 'earn', 'passes', 'issue', 'organizations'];
+  const routesForTabs = ['', 'earn', 'issue', 'organizations'];
+  const tabs = ['all', 'earn', 'issue', 'organizations'];
+
+  const { data: passes } = useQuery([query.passes, 'only-one'], async () => {
+    return (await gqlAnonMethods.loyalty_programs({ take: 1, skip: 0 }))
+      .loyalty_program;
+  });
+
+  if (passes && passes.length > 0) {
+    routesForTabs.splice(2, 0, 'passes');
+    routesForTabs.join();
+    tabs.splice(2, 0, 'passes');
+    tabs.join();
+  }
 
   const selectedIndex =
     routesForTabs.indexOf(_selectedTab) === -1
       ? 0
       : routesForTabs.indexOf(_selectedTab);
+
   return (
-    <>
+    <DashboardTemplate
+      containerProps={{
+        sx: {
+          pt: 2,
+          overflow: 'hidden',
+        },
+      }}
+    >
       <Navbar />
       <Box pt={6}>
         <Typography variant="h4" whiteSpace="pre-line" px={TOKENS.CONTAINER_PX}>
@@ -85,7 +109,10 @@ export function ExploreTemplate() {
             ))}
           </Tabs>
         </Box>
+        <TabPanel tabsId={''} index={0} active>
+          {children}
+        </TabPanel>
       </Box>
-    </>
+    </DashboardTemplate>
   );
 }

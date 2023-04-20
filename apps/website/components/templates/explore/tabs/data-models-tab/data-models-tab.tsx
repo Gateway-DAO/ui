@@ -11,7 +11,7 @@ import { query } from '../../../../../constants/queries';
 import { gatewayProtocolSDK } from '../../../../../services/gateway-protocol/api';
 import { DataModelCard } from '../../../../molecules/data-model-card';
 
-export default function DataModelsTab(): JSX.Element {
+export function DataModelsTab(): JSX.Element {
   const internalPageSize = 10;
   const {
     data: dataModels,
