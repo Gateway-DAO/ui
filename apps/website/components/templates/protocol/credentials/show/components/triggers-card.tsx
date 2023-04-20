@@ -5,6 +5,7 @@ import { PartialDeep } from 'type-fest/source/partial-deep';
 
 import { brandColors } from '@gateway/theme';
 
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import { alpha, Paper, Stack, SxProps, Typography } from '@mui/material';
 
@@ -66,11 +67,11 @@ export default function TriggersCard({ credential }: Props) {
   const triggersData = {
     [triggersKey.revocationConditions]: {
       name: t('credential.triggers.revoke-if'),
-      icon: <RefreshIcon sx={iconSx} />,
+      icon: <HighlightOffIcon sx={iconSx} />,
     },
     [triggersKey.suspensionConditions]: {
       name: t('credential.triggers.suspend-if'),
-      icon: <RefreshIcon sx={iconSx} />,
+      icon: <HighlightOffIcon sx={iconSx} />,
     },
     [triggersKey.updateConditions]: {
       name: t('credential.triggers.update-if'),
