@@ -73,7 +73,6 @@ export default function CardUsers({
   const issuerName =
     organization?.data?.name ??
     issuerOrganization?.gatewayId ??
-    issuerOrganization?.address ??
     issuer?.data?.username ??
     issuerCredential?.gatewayId ??
     issuerCredential.primaryWallet.address;
