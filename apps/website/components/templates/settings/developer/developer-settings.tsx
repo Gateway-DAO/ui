@@ -1,5 +1,8 @@
 import useTranslation from 'next-translate/useTranslation';
 
+import { useSnackbar } from 'notistack';
+import { useCopyToClipboard } from 'react-use';
+
 import { theme } from '@gateway/theme';
 
 import { ContentCopy } from '@mui/icons-material';
@@ -10,6 +13,14 @@ import { useAuth } from '../../../../providers/auth';
 const DeveloperPortalSettings = () => {
   const { t } = useTranslation('settings');
   const { token } = useAuth();
+
+  const [state, copyToClipboard] = useCopyToClipboard();
+  const { enqueueSnackbar } = useSnackbar();
+
+  const copy = (value: string) => {
+    copyToClipboard(value);
+    enqueueSnackbar(`Copied!`);
+  };
 
   return (
     <Stack>
@@ -33,6 +44,7 @@ const DeveloperPortalSettings = () => {
                 variant="outlined"
                 startIcon={<ContentCopy />}
                 size="small"
+                onClick={() => copy(process.env.NEXT_PUBLIC_PROTOCOL_API_KEY)}
               >
                 Copy
               </Button>
@@ -61,6 +73,7 @@ const DeveloperPortalSettings = () => {
                 variant="outlined"
                 startIcon={<ContentCopy />}
                 size="small"
+                onClick={() => copy(`Bearer ${token}`)}
               >
                 Copy
               </Button>
