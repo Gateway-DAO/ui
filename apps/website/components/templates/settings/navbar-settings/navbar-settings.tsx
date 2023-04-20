@@ -10,6 +10,7 @@ import {
   ManageAccounts,
   ChevronRight,
   Hub,
+  Code,
 } from '@mui/icons-material';
 import {
   Box,
@@ -68,6 +69,13 @@ export function NavBarSettings() {
       description: t('nav.connected-accounts-description'),
       icon: <Hub {...iconAttr} />,
       href: ROUTES.SETTINGS_CONNECTED_ACCOUNTS,
+    },
+    {
+      key: 'developer-portal',
+      title: t('nav.developer-portal-title'),
+      description: t('nav.developer-portal-description'),
+      icon: <Code {...iconAttr} />,
+      href: ROUTES.SETTINGS_DEVELOPER_PORTAL,
     },
     // {
     //   key: 'notifications',

@@ -94,7 +94,7 @@ export default function SettingsTemplate({ children }: Props) {
               >
                 {t('settings-title')}
               </Typography>
-              <NavBarSettings></NavBarSettings>
+              <NavBarSettings />
             </>
           )}
         </Grid>
