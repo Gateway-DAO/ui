@@ -44,7 +44,7 @@ const DeveloperPortalSettings = () => {
                 variant="outlined"
                 startIcon={<ContentCopy />}
                 size="small"
-                onClick={() => copy(process.env.NEXT_PUBLIC_PROTOCOL_API_KEY)}
+                onClick={() => copy(process.env.NEXT_PUBLIC_PLAYGROUND_API_KEY)}
               >
                 Copy
               </Button>
@@ -54,7 +54,7 @@ const DeveloperPortalSettings = () => {
               color={theme.palette.secondary.dark}
               fontFamily="Fira Code"
             >
-              {process.env.NEXT_PUBLIC_PROTOCOL_API_KEY}
+              {process.env.NEXT_PUBLIC_PLAYGROUND_API_KEY}
             </Typography>
           </CardContent>
         </Card>
