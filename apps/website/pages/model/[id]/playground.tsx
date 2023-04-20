@@ -1,17 +1,18 @@
 import { InferGetServerSidePropsType, GetServerSidePropsContext } from 'next';
 import dynamic from 'next/dynamic';
-
-import { HeadContainer } from '../../components/molecules/head-container';
-import { DashboardTemplate } from '../../components/templates/dashboard';
+import { HeadContainer } from '../../../components/molecules/head-container';
+import { DashboardTemplate } from '../../../components/templates/dashboard';
 import {
   ProtocolTemplate,
   DataModelShow,
-} from '../../components/templates/protocol';
-import { gatewayProtocolSDK } from '../../services/gateway-protocol/api';
-const OverviewTab = dynamic(
+} from '../../../components/templates/protocol';
+import { gatewayProtocolSDK } from '../../../services/gateway-protocol/api';
+
+import { PlaygroundTab } from 'apps/website/components/templates/protocol/data-models/show/components/playground-tab';
+const GridViewTab = dynamic(
   () =>
     import(
-      '../../components/templates/protocol/data-models/show/components/overview-tab'
+      '../../../components/templates/protocol/data-models/show/components/grid-view-tab'
     ),
   { ssr: false }
 );
@@ -32,7 +33,7 @@ export default function ProtocolDataModel({ dataModel, stats }: Props) {
       >
         <ProtocolTemplate>
           <DataModelShow dataModel={dataModel} stats={stats} />
-          <OverviewTab dataModel={dataModel} stats={stats} />
+          <PlaygroundTab />
         </ProtocolTemplate>
       </DashboardTemplate>
     </>

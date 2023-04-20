@@ -1,5 +1,3 @@
-import useTranslation from 'next-translate/useTranslation';
-
 import { HeadContainer } from '../../components/molecules/head-container';
 import { DashboardTemplate } from '../../components/templates/dashboard';
 import { ExploreTemplate, GatesTab } from '../../components/templates/explore';
