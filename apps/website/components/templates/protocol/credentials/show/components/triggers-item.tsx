@@ -20,19 +20,21 @@ export default function TriggersItem({
       direction="row"
       justifyContent="space-between"
       gap={1}
-      sx={{ p: { xs: 3, md: 2 } }}
+      sx={{ p: { xs: 3, md: 2 }, flexDirection: { md: 'row', xs: 'column' } }}
     >
-      {icon}
-      <Typography
-        sx={{
-          fontWeight: 400,
-          fontSize: 14,
-          color: alpha(brandColors.white.main, 0.7),
-          flexGrow: 1,
-        }}
-      >
-        {name}
-      </Typography>
+      <Stack flexGrow={1} flexDirection="row" gap={1}>
+        {icon}
+        <Typography
+          sx={{
+            fontWeight: 400,
+            fontSize: 14,
+            color: alpha(brandColors.white.main, 0.7),
+            flexGrow: 1,
+          }}
+        >
+          {name}
+        </Typography>
+      </Stack>
       <SeeMore text={value} length={45} />
     </Stack>
   );

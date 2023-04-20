@@ -23,8 +23,8 @@ export function SeeMore({ text, length, sxProps }: Props) {
         fontWeight: 400,
         fontSize: 14,
         color: brandColors.white.main,
-        maxWidth: 250,
-        textAlign: 'right',
+        maxWidth: { md: 250, xs: '100%' },
+        textAlign: { md: 'right', xs: 'left' },
         ...sxProps,
       }}
     >

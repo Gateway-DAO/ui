@@ -74,6 +74,7 @@ export default function TriggersCard({ credential }: Props) {
           letterSpacing: '0.1px',
           my: { xs: 2, md: 2 },
           mx: { xs: 3, md: 2 },
+          mb: { xs: 0 },
         }}
       >
         {t('credential.triggers.title')}
