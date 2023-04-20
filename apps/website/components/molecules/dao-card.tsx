@@ -100,7 +100,7 @@ export function DaoCard({
             subheader={getFollowersAndGatesNumber()}
             titleTypographyProps={{ variant: 'h6' }}
           />
-          <CardContent sx={{ py: 1 }}>
+          <CardContent sx={{ py: 1, mb: 1 }}>
             <Typography
               variant="body2"
               color="text.secondary"
@@ -110,13 +110,14 @@ export function DaoCard({
                 WebkitBoxOrient: 'vertical',
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
+                mb: 2,
               }}
             >
               {/* TODO: add line clamp */}
               {description}
             </Typography>
+            <CategoriesList categories={categories} />
           </CardContent>
-          <CategoriesList categories={categories} />
         </CardActionArea>
       </Link>
 
