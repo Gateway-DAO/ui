@@ -1,6 +1,4 @@
-import { useSession } from 'next-auth/react';
 import useTranslation from 'next-translate/useTranslation';
-import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
@@ -37,6 +35,8 @@ import {
   gatewayProtocolSDK,
 } from '../../../services/gateway-protocol/api';
 import { MintCredentialMutationVariables } from '../../../services/gateway-protocol/types';
+import { gqlAnonMethods } from '../../../services/hasura/api';
+import { AvatarFile } from '../../atoms/avatar-file';
 import { LoadingButton } from '../../atoms/loading-button';
 import { ReadMore } from '../../atoms/read-more-less';
 import { ShareButton } from '../../atoms/share-button';
@@ -155,13 +155,12 @@ export function CreditScoreTemplate() {
   const { data: recipientsUsers } = useQuery(
     ['cred-api-find-recipient-user', DATA_MODEL_ID],
     async () => {
-      const result =
-        await gatewayProtocolSDK.findRecipientsByDataModelCreditScore({
-          dataModelId: DATA_MODEL_ID,
-          skip: 0,
-          take: 10,
-        });
-      return result.findRecipientsByDataModel;
+      const result = await gqlAnonMethods.findRecipientsByDataModel({
+        dataModelId: DATA_MODEL_ID,
+        skip: 0,
+        take: 10,
+      });
+      return result.protocol_user;
     }
   );
 
@@ -171,7 +170,7 @@ export function CreditScoreTemplate() {
       const s = await gatewayProtocolSDK.getDataModelStats({
         dataModelId: DATA_MODEL_ID,
       });
-      return s.getTotalofIssuersByDataModel;
+      return s.getTotalCredentialsByDataModelGroupByRecipient;
     }
   );
 
@@ -229,7 +228,7 @@ export function CreditScoreTemplate() {
           >
             <Link
               passHref
-              href={ROUTES.DAO_PROFILE.replace('[slug]', 'gateway')}
+              href={ROUTES.DAO_PROFILE.replace('[slug]', 'cred-protocol')}
             >
               <Stack
                 direction="row"
@@ -244,8 +243,8 @@ export function CreditScoreTemplate() {
                 })}
               >
                 <Avatar
-                  alt="Gateway"
-                  src="/logo.png"
+                  alt="Cred Protocol"
+                  src="/images/cred_protocol_logo.jpg"
                   sx={{
                     height: (theme) => theme.spacing(3),
                     width: (theme) => theme.spacing(3),
@@ -377,44 +376,44 @@ export function CreditScoreTemplate() {
                     </Typography>
                   </Grid>
                   <Grid item xs={8} display="flex" alignItems="center">
-                    <AvatarGroup>
-                      {recipientsUsers?.length > 0 &&
-                        recipientsUsers.map((holder, index) => {
-                          if (index == 3) return null;
-                          return (
-                            <Link
-                              key={holder.id}
-                              passHref
-                              href={`/profile/${holder.gatewayId}`}
-                            >
-                              <Tooltip title={holder.gatewayId}>
-                                <Box
-                                  component="a"
-                                  sx={{ display: 'inline-block' }}
-                                >
-                                  <Avatar
-                                    alt={holder.gatewayId}
-                                    src={holder.gatewayId || '/logo.png'}
-                                    sx={{
-                                      height: (theme) => theme.spacing(4),
-                                      width: (theme) => theme.spacing(4),
-                                      marginRight: (theme) => theme.spacing(1),
-                                    }}
-                                  />
-                                </Box>
-                              </Tooltip>
-                            </Link>
-                          );
-                        })}
+                    <AvatarGroup
+                      total={
+                        recipientsUsers?.length >= 3
+                          ? 3
+                          : recipientsUsers?.length
+                      }
+                      sx={{
+                        justifyContent: 'flex-end',
+                      }}
+                    >
+                      {recipientsUsers?.map((holder) => {
+                        return (
+                          <Link
+                            key={holder.id}
+                            passHref
+                            href={`/profile/${holder.gatewayId}`}
+                          >
+                            <Tooltip title={holder.gatewayId}>
+                              <Box
+                                component="a"
+                                sx={{ display: 'inline-block' }}
+                              >
+                                <AvatarFile
+                                  alt={holder.gatewayId}
+                                  file={holder?.gatewayUser?.picture}
+                                  fallback={
+                                    holder?.gatewayUser?.pfp || '/avatar.png'
+                                  }
+                                />
+                              </Box>
+                            </Tooltip>
+                          </Link>
+                        );
+                      })}
                     </AvatarGroup>
 
                     {totalRecipientUsersCount > 3 ? (
-                      <Chip
-                        label={`+ ${totalRecipientUsersCount - 3}`}
-                        onClick={() => {
-                          setIsHolderDialog(!isHolderDialog);
-                        }}
-                      />
+                      <Chip label={`+ ${totalRecipientUsersCount - 3}`} />
                     ) : null}
                   </Grid>
                 </>

@@ -8,7 +8,7 @@ import { TOKENS } from '@gateway/theme';
 import { Box, Stack } from '@mui/material';
 
 import { query } from '../../../../constants/queries';
-import { gatewayProtocolSDK } from '../../../../services/gateway-protocol/api';
+import { gqlAnonMethods } from '../../../../services/hasura/api';
 import { Users } from '../../../../services/hasura/types';
 import { SessionUser } from '../../../../types/user';
 import Loading from '../../../atoms/loading';
@@ -19,7 +19,7 @@ type Props = {
 };
 
 export default function IssuedTab({ user }: Props): JSX.Element {
-  const internalPageSize = 10;
+  const internalPageSize = 16;
 
   const {
     data: credentials,
@@ -32,12 +32,12 @@ export default function IssuedTab({ user }: Props): JSX.Element {
       (user as PartialDeep<Users>).protocolUser?.id,
     ],
     async ({ pageParam }) => {
-      const result = await gatewayProtocolSDK.findCredentialsByIssuerUser({
+      const result = await gqlAnonMethods.findCredentialsByIssuerUser({
         issuerUserId: (user as PartialDeep<Users>).protocolUser?.id,
         take: internalPageSize,
         skip: pageParam || 0,
       } as any);
-      return result.findCredentialsByIssuerUser;
+      return result.protocol_credential;
     }
   );
 
