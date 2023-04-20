@@ -2,7 +2,8 @@ import useTranslation from 'next-translate/useTranslation';
 
 import { theme } from '@gateway/theme';
 
-import { Card, CardContent, Stack, Typography } from '@mui/material';
+import { ContentCopy } from '@mui/icons-material';
+import { Button, Card, CardContent, Stack, Typography } from '@mui/material';
 
 import { useAuth } from '../../../../providers/auth';
 
@@ -21,10 +22,20 @@ const DeveloperPortalSettings = () => {
       <Stack mb={2}>
         <Card>
           <CardContent>
-            <Stack>
-              <Typography variant="body1" mb={1}>
-                API Key
-              </Typography>
+            <Stack
+              direction="row"
+              justifyContent="space-between"
+              alignItems="center"
+              mb={1}
+            >
+              <Typography variant="body1">API Key</Typography>
+              <Button
+                variant="outlined"
+                startIcon={<ContentCopy />}
+                size="small"
+              >
+                Copy
+              </Button>
             </Stack>
             <Typography
               variant="body1"
@@ -39,10 +50,20 @@ const DeveloperPortalSettings = () => {
       <Stack>
         <Card>
           <CardContent>
-            <Stack>
-              <Typography variant="body1" mb={1}>
-                Bearer
-              </Typography>
+            <Stack
+              direction="row"
+              justifyContent="space-between"
+              alignItems="center"
+              mb={1}
+            >
+              <Typography variant="body1">Bearer</Typography>
+              <Button
+                variant="outlined"
+                startIcon={<ContentCopy />}
+                size="small"
+              >
+                Copy
+              </Button>
             </Stack>
             <Typography
               variant="body1"
