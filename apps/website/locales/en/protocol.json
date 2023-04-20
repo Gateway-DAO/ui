@@ -31,6 +31,7 @@
     "revoke-error-message": "There was a problem performing the revoke. Try again later.",
     "image": "Image",
     "qr-code": "QR Code",
+    "share-dialog-title": "Share credential",
     "actions": {
       "revoke": "Revoke",
       "cancel": "Cancel"
@@ -44,6 +45,7 @@
       "chain-action-coming": "Coming soon",
       "chain-coming-message": "Multi-chain wallets is coming soon",
       "feedback-minting": "Minting credential",
+      "feedback-share": "Share your credential now!",
       "feedback-successful": "Credential successfully minted as NFT",
       "feedback-failed": "Something went wrong on minting"
     }

@@ -4,10 +4,12 @@ import { PartialDeep } from 'type-fest';
 
 import { Button, Divider, Stack } from '@mui/material';
 
-import { DataModel } from '../../../../../services/gateway-protocol/types';
+import { ROUTES } from '../../../../../constants/routes';
+import { Protocol_Data_Model } from '../../../../../services/hasura/types';
 import { DaoCard } from '../../../../molecules/dao-card';
 import { DataModelCard } from '../../../../molecules/data-model-card';
 import { GatesCard } from '../../../../molecules/gates-card';
+import { LoyaltyProgramCard } from '../../../../molecules/loyalty-program-card/loyalty-program-card';
 import { PersonCard } from '../../../../molecules/person-card';
 import {
   SectionWithSliderResponsive,
@@ -18,7 +20,7 @@ import Banner from './banner/banner';
 
 type Props = {
   setActiveTab: (tab: number) => void;
-  dataModels: PartialDeep<DataModel>[];
+  dataModels: PartialDeep<Protocol_Data_Model>[];
 } & ExploreProps;
 
 export function AllTab({
@@ -26,6 +28,7 @@ export function AllTab({
   gates,
   people,
   dataModels,
+  loyalty_program: passes,
   setActiveTab,
 }: Props) {
   const { t } = useTranslation('explore');
@@ -66,11 +69,34 @@ export function AllTab({
               <GatesCard key={gate.id} {...gate} />
             ))}
         </SectionWithSliderResponsive>
+        {passes && passes.length > 0 && (
+          <SectionWithSliderResponsive
+            title={`${t('featured-passes.title')}`}
+            caption={`${t('featured-passes.caption')}`}
+            action={
+              passes.length > 0 && (
+                <Button onClick={() => setActiveTab(2)}>
+                  {t('featured-passes.see-more')}
+                </Button>
+              )
+            }
+            itemWidth={(theme) => theme.spacing(37.75)}
+            gridSize={{ lg: 4 }}
+          >
+            {passes.map((pass) => (
+              <LoyaltyProgramCard
+                href={ROUTES.LOYALTY_PROGRAM.replace('[id]', pass.id)}
+                {...pass}
+                key={pass.id}
+              />
+            ))}
+          </SectionWithSliderResponsive>
+        )}
         <SectionWithSliderResponsive
           title={t('featured-data-models.title')}
           caption={t('featured-data-models.caption')}
           action={
-            <Button onClick={() => setActiveTab(2)}>
+            <Button onClick={() => setActiveTab(3)}>
               {t('featured-data-models.see-more')}
             </Button>
           }
@@ -86,7 +112,7 @@ export function AllTab({
           title={t('featured-organizations.title')}
           caption={t('featured-organizations.caption')}
           action={
-            <Button onClick={() => setActiveTab(2)}>
+            <Button onClick={() => setActiveTab(4)}>
               {t('featured-organizations.see-more')}
             </Button>
           }
@@ -99,9 +125,7 @@ export function AllTab({
         <SectionWithGrid
           title={t('featured-people.title')}
           caption={t('featured-people.caption')}
-          action={
-           null
-          }
+          action={null}
         >
           {people.map((person) => (
             <PersonCard key={person.id} user={person} />

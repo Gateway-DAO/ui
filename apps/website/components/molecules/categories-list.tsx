@@ -12,6 +12,7 @@ type CategoriesListProps = {
   showStatus?: boolean;
   published?: string;
   listMode?: boolean;
+  isPass?: boolean;
 };
 
 export function CategoriesList({
@@ -20,6 +21,7 @@ export function CategoriesList({
   showStatus,
   published,
   listMode,
+  isPass,
   ...props
 }: CategoriesListProps): JSX.Element {
   const refs = useRef<HTMLDivElement[]>([]);
@@ -50,7 +52,7 @@ export function CategoriesList({
       setItemsPopover([...itemsPopover, ...arr]);
     }
   }, [intersection]);
-  
+
   return (
     <>
       <Stack
@@ -60,12 +62,16 @@ export function CategoriesList({
         justifyContent={'space-between'}
         ref={parentRef}
       >
-        <Stack
-          direction="row"
-          pt={1}
-          spacing={listMode ? 0 : 1}
-          {...props}
-        >
+        <Stack direction="row" pt={1} spacing={listMode ? 0 : 1} {...props}>
+          {isPass && (
+            <Chip
+              aria-hidden={false}
+              label="Pass"
+              size="small"
+              sx={{ mr: listMode ? '10px' : 'none' }}
+              color="secondary"
+            />
+          )}
           {categories?.map((category, index) => {
             const formattedLabel =
               category.charAt(0).toUpperCase() + category.slice(1);
@@ -83,7 +89,7 @@ export function CategoriesList({
         </Stack>
 
         {itemsPopover.length > 0 && (
-          <Stack  mt={1}>
+          <Stack mt={1}>
             <Chip
               size="small"
               aria-owns={open ? 'mouse-over-popover' : undefined}
@@ -121,9 +127,11 @@ export function CategoriesList({
           </List>
         </Popover>
       </Stack>
-      <Stack direction="row" spacing={1} px={2} pt={1} pb={2} {...props}>
-        {isGate && showStatus && <GateStateChip published={published} small />}
-      </Stack>
+      {isGate && (
+        <Stack direction="row" spacing={1} px={2} pt={1} pb={2} {...props}>
+          {showStatus && <GateStateChip published={published} small />}
+        </Stack>
+      )}
     </>
   );
 }

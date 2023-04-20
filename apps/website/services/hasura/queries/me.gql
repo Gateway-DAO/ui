@@ -94,3 +94,14 @@ query me_task_progresses {
     }
   }
 }
+
+query me_notification_settings {
+  me {
+    notification_settings {
+      dapp_enabled
+      dapp_optout
+      email_enabled
+      email_optout
+    }
+  }
+}

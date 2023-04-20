@@ -9,3 +9,4 @@ query user_from_wallet($wallet: String!) {
     }
   }
 }
+

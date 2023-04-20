@@ -73,7 +73,6 @@ export default function CardUsers({
   const issuerName =
     organization?.data?.name ??
     issuerOrganization?.gatewayId ??
-    issuerOrganization?.address ??
     issuer?.data?.username ??
     issuerCredential?.gatewayId ??
     issuerCredential.primaryWallet.address;
@@ -106,6 +105,7 @@ export default function CardUsers({
         <CardUserCell
           label={t('credential.issuer-id')}
           picture={showPicture()}
+          fallback={organization?.data?.logo_url}
           name={limitCharsCentered(issuerName, 20)}
           href={
             organization?.data?.slug

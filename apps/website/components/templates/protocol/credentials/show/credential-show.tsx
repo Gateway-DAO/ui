@@ -18,13 +18,15 @@ import {
   MintCredentialMutationVariables,
 } from '../../../../../services/gateway-protocol/types';
 import ExternalLink from '../../../../atoms/external-link';
+import ShareOn from '../../../../atoms/share-on';
+import ModalContent from '../../../../molecules/modal/modal-basic';
 import CredentialCardInfo from '../../components/credential-card-info';
 import Tags from '../../components/tags';
 import Activities from './components/activities';
 import CredentialTitleAndImage from './components/credential-title-and-image';
 import DataTable from './components/data-table';
 import { InvalidStatusBox } from './components/invalid-status-box';
-import { MintDialog } from './components/mint-dialog';
+import { DialogStatuses, MintDialog } from './components/mint-dialog';
 import MintNFTCard, { MintedChain } from './components/mint-nft-card';
 import { RevokeCredential } from './components/revoke-credential';
 
@@ -32,10 +34,41 @@ type Props = {
   credential: PartialDeep<Credential>;
 };
 
+type ModalProps = {
+  open: boolean;
+  handleClose: () => void;
+  handleOpen: () => void;
+  credential: PartialDeep<Credential>;
+  title: string;
+};
+
+const ModalShareCredential = ({
+  open,
+  handleClose,
+  handleOpen,
+  credential,
+  title,
+}: ModalProps): JSX.Element => {
+  return (
+    <ModalContent
+      open={open}
+      title={title}
+      handleClose={handleClose}
+      handleOpen={handleOpen}
+      swipeableDrawer={true}
+      fullWidth
+    >
+      <ShareOn isCredential credential={credential} />
+    </ModalContent>
+  );
+};
+
 export default function CredentialProtocolShow({ credential }: Props) {
   const { t } = useTranslation('protocol');
   const { me } = useAuth();
   const { token } = useAuth();
+  const [shareIsOpen, setShareIsOpen] = useState<boolean>(false);
+  const [shareStatus, setShareStatus] = useState<DialogStatuses>(null);
 
   const router = useRouter();
   const isReceivedCredential =
@@ -73,8 +106,12 @@ export default function CredentialProtocolShow({ credential }: Props) {
       onSuccess: (data) => {
         setIsOpen(true);
         setTimeout(() => {
+          setShareStatus('share');
+        }, 1000);
+        setTimeout(() => {
           setIsOpen(false);
-        }, 2500);
+          setShareIsOpen(true);
+        }, 3500);
         setMintData([
           {
             chain: credential?.recipientUser?.primaryWallet?.chain,
@@ -125,8 +162,16 @@ export default function CredentialProtocolShow({ credential }: Props) {
 
         <MintDialog
           isOpen={mintCredential.isLoading || isOpen}
-          status={mintCredential.status}
+          status={shareStatus || mintCredential.status}
           onClose={() => setIsOpen(false)}
+        />
+
+        <ModalShareCredential
+          credential={credential}
+          handleClose={() => setShareIsOpen(false)}
+          handleOpen={() => setShareIsOpen(true)}
+          open={shareIsOpen}
+          title={t('credential.share-dialog-title')}
         />
 
         <RevokeCredential credential={credential} />

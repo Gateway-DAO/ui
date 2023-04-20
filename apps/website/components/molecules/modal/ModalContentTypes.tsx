@@ -20,6 +20,7 @@ export type ModalContentProps = {
   imageUrl?: string;
   enableDownloadImage?: boolean;
   modalType: string;
+  fullWidth?: boolean;
 };
 
 export const modalContentTypes: ModalContentTypes = {

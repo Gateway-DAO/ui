@@ -5,6 +5,7 @@
     "helpers": "libs/helpers",
     "storybook": "libs/storybook",
     "theme": "libs/theme",
+    "theme-react": "libs/theme-react",
     "ui": "libs/ui",
     "website": "apps/website"
   }

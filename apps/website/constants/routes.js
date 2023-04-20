@@ -4,6 +4,7 @@ const ROUTES = {
   SEARCH: '/search/[key]',
   NEW_USER: '/new-user',
   CREDENTIALS: '/credentials',
+  CREDIT_SCORE: '/creditscore',
   CREDENTIALS_NEW: '/credentials/new',
   EARNED: '/earned/[id]',
   DAO_PROFILE: '/dao/[slug]',
@@ -24,6 +25,8 @@ const ROUTES = {
   PROTOCOL_DATAMODEL: '/protocol/data-models/[id]/show',
   PROTOCOL_DATAMODEL_CREDENTIAL_CREATE:
     '/protocol/data-models/[id]/credentials/create',
+  LOYALTY_PROGRAM: '/loyalty/[id]',
+  LOYALTY_PROGRAM_CREDENTIAL: '/loyalty/credential/[id]',
 };
 
 module.exports = {

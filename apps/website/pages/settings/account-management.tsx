@@ -9,7 +9,7 @@ export default function AccountManagementSettingsPage() {
 
   return me?.id ? (
     <>
-      <HeadContainer title="My settings" />
+      <HeadContainer title="My settings" ogImage="default" />
       <DashboardTemplate
         containerProps={{
           sx: {

@@ -26,6 +26,13 @@ fragment experience on experiences {
   visible
 }
 
+fragment protocol_user on users {
+  protocolUser {
+    id
+    gatewayId
+  }
+}
+
 fragment public_user on users {
   id
   name
@@ -62,6 +69,8 @@ fragment public_user on users {
   experiences {
     ...experience
   }
+
+  ...protocol_user
 }
 
 fragment current_user on users {
@@ -82,16 +91,4 @@ fragment current_user on users {
       }
     }
   }
-
-  # credentials {
-  #   dao {
-  #     name
-  #   }
-  # }
-  # gate_progresses {
-  #   gate {
-  #     id
-  #   }
-  #   status
-  # }
 }

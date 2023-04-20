@@ -1,39 +1,25 @@
 import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
-import { useMemo } from 'react';
 
 import { useQuery } from '@tanstack/react-query';
 import { getTimeZones } from '@vvo/tzdb';
 import { DateTime } from 'luxon';
 import { PartialDeep } from 'type-fest';
 
-import { TOKENS } from '@gateway/theme';
-
-import EditIcon from '@mui/icons-material/Edit';
-import {
-  Box,
-  Typography,
-  Tabs,
-  Tab,
-  Stack,
-  Chip,
-  Divider,
-  Button,
-} from '@mui/material';
+import { Typography, Stack, Divider, Button } from '@mui/material';
 
 import { query } from '../../../../constants/queries';
 import { ROUTES } from '../../../../constants/routes';
-import { useViewMode, ViewMode } from '../../../../hooks/use-view-modes';
+import { useViewMode } from '../../../../hooks/use-view-modes';
 import { useAuth } from '../../../../providers/auth';
 import { gatewayProtocolSDK } from '../../../../services/gateway-protocol/api';
+import { gqlAnonMethods } from '../../../../services/hasura/api';
 import { Users } from '../../../../services/hasura/types';
 import { SessionUser } from '../../../../types/user';
 import CredentialCard from '../../..//molecules/credential-card';
-import Loading from '../../../atoms/loading';
-import { a11yTabProps, TabPanel, useTab } from '../../../atoms/tabs';
+import { useTab } from '../../../atoms/tabs';
 import NewElementCard from '../../../molecules/new-element-card';
 import { SectionWithSliderResponsive } from '../../../molecules/sections';
-import { ExperienceAccordion } from './experience';
 import { ReceivedTab } from './recommendations/ReceivedTab';
 
 type Props = {
@@ -43,12 +29,8 @@ type Props = {
 };
 
 export function OverviewTab({ user, isPrivateProfile, setActiveTab }: Props) {
-  const { view, toggleView } = useViewMode();
   const { t } = useTranslation();
-  const { activeTab, handleTabChange, setTab } = useTab();
-  const router = useRouter();
   const { me } = useAuth();
-  const canEdit = user === me;
 
   const TZ = getTimeZones();
 
@@ -76,24 +58,24 @@ export function OverviewTab({ user, isPrivateProfile, setActiveTab }: Props) {
   const receivedCredentials = useQuery(
     [`${query.credentialsByRecipientUser}_home`, user.id],
     async () => {
-      const result = await gatewayProtocolSDK.findCredentialsByRecipientUser({
+      const result = await gqlAnonMethods.findCredentialsByRecipientUser({
         recipientUserId: (user as SessionUser).protocol?.id || user.id,
         skip: 0,
         take: 3,
       });
-      return result.findCredentialsByRecipientUser;
+      return result.protocol_credential;
     }
   );
 
   const issuedCredentials = useQuery(
     [`${query.credentialsByIssuerUser}_home`, user.id],
     async () => {
-      const result = await gatewayProtocolSDK.findCredentialsByIssuerUser({
+      const result = await gqlAnonMethods.findCredentialsByIssuerUser({
         issuerUserId: (user as SessionUser).protocol?.id || user.id,
         skip: 0,
         take: 3,
       });
-      return result.findCredentialsByIssuerUser;
+      return result.protocol_credential;
     }
   );
   return (

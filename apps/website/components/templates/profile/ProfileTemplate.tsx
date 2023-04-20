@@ -3,16 +3,17 @@ import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import { useMemo } from 'react';
 
-import { useQueryClient } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { PartialDeep } from 'type-fest';
 
 import { TOKENS } from '@gateway/theme';
 
-import { Box, Stack, Typography, Tabs, Tab } from '@mui/material';
+import { Box, Stack, Typography, Tabs, Tab, Chip } from '@mui/material';
 
 import { a11yTabProps, TabPanel, useTab } from '../../../components/atoms/tabs';
 import { Navbar } from '../../../components/organisms/navbar/navbar';
 import { generateImageUrl } from '../../../hooks/use-file';
+import { gatewayProtocolSDK } from '../../../services/gateway-protocol/api';
 import { Users } from '../../../services/hasura/types';
 import { SessionUser } from '../../../types/user';
 import { AvatarFile } from '../../atoms/avatar-file';
@@ -55,25 +56,38 @@ export default function ProfileTemplate({ user }: Props) {
   const { t } = useTranslation('user-profile');
   const { activeTab, handleTabChange } = useTab();
 
+  const { data: credentialCount } = useQuery(
+    ['credentialCount', user.protocolUser.id],
+    () =>
+      gatewayProtocolSDK.getUserCredentialCount({
+        userId: user.protocolUser.id,
+      })
+  );
+
   const tabs = useMemo(
     () => [
       {
         key: 'received',
         label: t('common:tabs.received'),
+        count: credentialCount?.totalReceived,
         section: <ReceivedTab user={user} />,
       },
       {
         key: 'issued',
         label: t('common:tabs.issued'),
+        count: credentialCount?.totalIssued,
         section: <IssuedTab user={user} />,
       },
       {
         key: 'earned',
         label: t('common:tabs.earned'),
+        count: user.experiences
+          .map((exp) => exp.credentials.length)
+          .reduce((acc, cur) => (acc += cur), 0),
         section: <Earned user={user} />,
       },
     ],
-    []
+    [credentialCount]
   );
   return (
     <>
@@ -123,7 +137,7 @@ export default function ProfileTemplate({ user }: Props) {
         ></AvatarFile>
         <Box>
           <Typography style={{ color: '#fff' }} component="h1" variant="h4">
-            {user.name}
+            {user.name ? user.name : user.username}
           </Typography>
           <Typography
             component="h5"
@@ -208,16 +222,21 @@ export default function ProfileTemplate({ user }: Props) {
             mb: '-1px',
           }}
         >
-          {tabs.map(({ key, label }, index) => (
+          {tabs.map(({ key, label, count }, index) => (
             <Tab
+              key={key}
+              label={label}
               sx={(theme) => ({
-                fontSize: '12px',
                 fontWeight: 700,
                 px: 0,
                 mr: theme.spacing(3),
               })}
-              key={key}
-              label={label}
+              {...(count
+                ? {
+                    icon: <Chip label={count} size="small" />,
+                    iconPosition: 'end',
+                  }
+                : {})}
               {...a11yTabProps('dao', index)}
             />
           ))}

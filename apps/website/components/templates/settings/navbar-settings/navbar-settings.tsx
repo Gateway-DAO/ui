@@ -10,6 +10,7 @@ import {
   ManageAccounts,
   ChevronRight,
   Hub,
+  Notifications,
   Code,
 } from '@mui/icons-material';
 import {
@@ -71,19 +72,19 @@ export function NavBarSettings() {
       href: ROUTES.SETTINGS_CONNECTED_ACCOUNTS,
     },
     {
+      key: 'notifications',
+      title: t('nav.notifications-title'),
+      description: t('nav.notifications-description'),
+      icon: <Notifications {...iconAttr} />,
+      href: ROUTES.SETTINGS_NOTIFICATIONS,
+    },
+    {
       key: 'developer-portal',
       title: t('nav.developer-portal-title'),
       description: t('nav.developer-portal-description'),
       icon: <Code {...iconAttr} />,
       href: ROUTES.SETTINGS_DEVELOPER_PORTAL,
     },
-    // {
-    //   key: 'notifications',
-    //   title: t('nav.notifications-title'),
-    //   description: t('nav.notifications-description'),
-    //   icon: <Notifications {...iconAttr} />,
-    //   href: ROUTES.SETTINGS_NOTIFICATIONS,
-    // },
   ];
 
   return (
