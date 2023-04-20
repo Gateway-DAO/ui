@@ -1,5 +1,4 @@
 import useTranslation from 'next-translate/useTranslation';
-import { ReactNode } from 'react';
 
 import { PartialDeep } from 'type-fest/source/partial-deep';
 
@@ -7,48 +6,21 @@ import { brandColors } from '@gateway/theme';
 
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import RefreshIcon from '@mui/icons-material/Refresh';
-import { alpha, Paper, Stack, SxProps, Typography } from '@mui/material';
+import {
+  alpha,
+  Divider,
+  Paper,
+  Stack,
+  SxProps,
+  Typography,
+} from '@mui/material';
 
 import { Credential } from '../../../../../../services/gateway-protocol/types';
+import TriggersItem from './triggers-item';
 
 type Props = {
   credential: PartialDeep<Credential>;
 };
-
-function Trigger({
-  name,
-  value,
-  icon,
-}: {
-  name: string;
-  value: string;
-  icon: ReactNode;
-}) {
-  return (
-    <Stack direction="row" justifyContent="space-between" gap={1}>
-      {icon}
-      <Typography
-        sx={{
-          fontWeight: 400,
-          fontSize: 14,
-          color: alpha(brandColors.white.main, 0.7),
-          flexGrow: 1,
-        }}
-      >
-        {name}
-      </Typography>
-      <Typography
-        sx={{
-          fontWeight: 400,
-          fontSize: 14,
-          color: brandColors.white.main,
-        }}
-      >
-        {value}
-      </Typography>
-    </Stack>
-  );
-}
 
 export default function TriggersCard({ credential }: Props) {
   const { t } = useTranslation('protocol');
@@ -89,8 +61,6 @@ export default function TriggersCard({ credential }: Props) {
         mb: 3,
         overflow: 'hidden',
         boxShadow: 'none',
-        py: { xs: 2, md: 2 },
-        px: { xs: 3, md: 2 },
         display: 'flex',
         flexDirection: 'column',
         gap: 1,
@@ -102,32 +72,35 @@ export default function TriggersCard({ credential }: Props) {
           fontSize: '14px',
           color: alpha(brandColors.white.main, 0.7),
           letterSpacing: '0.1px',
-          mb: 2,
+          my: { xs: 2, md: 2 },
+          mx: { xs: 3, md: 2 },
         }}
       >
         {t('credential.triggers.title')}
       </Typography>
-      {credential.revocationConditions && (
-        <Trigger
-          name={triggersData[triggersKey.revocationConditions].name}
-          icon={triggersData[triggersKey.revocationConditions].icon}
-          value={credential.revocationConditions}
-        />
-      )}
-      {credential.suspensionConditions && (
-        <Trigger
-          name={triggersData[triggersKey.suspensionConditions].name}
-          icon={triggersData[triggersKey.suspensionConditions].icon}
-          value={credential.suspensionConditions}
-        />
-      )}
-      {credential.updateConditions && (
-        <Trigger
-          name={triggersData[triggersKey.updateConditions].name}
-          icon={triggersData[triggersKey.updateConditions].icon}
-          value={credential.updateConditions}
-        />
-      )}
+      <Stack divider={<Divider />}>
+        {credential.revocationConditions && (
+          <TriggersItem
+            name={triggersData[triggersKey.revocationConditions].name}
+            icon={triggersData[triggersKey.revocationConditions].icon}
+            value={credential.revocationConditions}
+          />
+        )}
+        {credential.suspensionConditions && (
+          <TriggersItem
+            name={triggersData[triggersKey.suspensionConditions].name}
+            icon={triggersData[triggersKey.suspensionConditions].icon}
+            value={credential.suspensionConditions}
+          />
+        )}
+        {credential.updateConditions && (
+          <TriggersItem
+            name={triggersData[triggersKey.updateConditions].name}
+            icon={triggersData[triggersKey.updateConditions].icon}
+            value={credential.updateConditions}
+          />
+        )}
+      </Stack>
     </Paper>
   );
 }
