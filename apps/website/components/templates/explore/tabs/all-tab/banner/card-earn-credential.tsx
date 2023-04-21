@@ -16,7 +16,7 @@ export function CardEarnCredential(): JSX.Element {
   return (
     <MUICard
       sx={{
-        width: '620px',
+        width: '700px',
         display: 'flex',
         justifyContent: 'space-between',
         borderRadius: '16px',
@@ -41,7 +41,7 @@ export function CardEarnCredential(): JSX.Element {
         >
          Execute tasks and earn credentials
         </Typography>
-        <Button variant="outlined" sx={{ marginTop: '95px' }}>
+        <Button variant="outlined" sx={{ marginTop: '120px' }}>
           START NOW
         </Button>
       </CardContent>

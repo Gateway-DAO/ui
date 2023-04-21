@@ -17,7 +17,7 @@ export function CardCreditScore(): JSX.Element {
   return (
     <MUICard
       sx={{
-        width: '620px',
+        width: '700px',
         display: 'flex',
         justifyContent: 'space-between',
         borderRadius: '16px',
@@ -52,7 +52,7 @@ export function CardCreditScore(): JSX.Element {
         >
           Discover your credit score now
         </Typography>
-        <Button variant="outlined" sx={{ marginTop: '20px' }}>
+        <Button variant="outlined" sx={{ marginTop: '90px' }}>
           ISSUE NOW
         </Button>
       </CardContent>
