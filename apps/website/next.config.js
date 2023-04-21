@@ -22,6 +22,7 @@ const nextConfig = {
       'node.mygateway.xyz',
       'arweave.net',
       'localhost',
+      'doepp2nssa64p.cloudfront.net',
     ],
   },
   compiler: {

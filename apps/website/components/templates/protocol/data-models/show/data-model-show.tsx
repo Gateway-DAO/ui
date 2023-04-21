@@ -21,7 +21,10 @@ import InfoTitle from '../../components/info-title';
 import Tags from '../../components/tags';
 import CredentialProtocolCreate from '../../credentials/create/credential-create';
 import DataModelTabs from './components/data-model-tabs';
-import IssueCredentialButton from './components/issue-credential-button';
+
+import { gqlAnonMethods } from 'apps/website/services/hasura/api';
+import { useQuery } from '@tanstack/react-query';
+import { AvatarFile } from 'apps/website/components/atoms/avatar-file';
 
 type Props = {
   dataModel: PartialDeep<DataModel>;
@@ -73,62 +76,75 @@ export default function DataModelShow({
     }
   }, [me]);
 
+  let mockDataModel: any = dataModel;
+  mockDataModel
+    ? (mockDataModel.createdBy = {
+        id: '63bc7fc62e7bd8b316b77133',
+        slug: 'gateway',
+      })
+    : (mockDataModel = null);
+  // MOCK - END
+
+  const creator = useQuery(
+    ['issuer', mockDataModel?.id],
+    () =>
+      gqlAnonMethods.dao_profile_by_slug({
+        slug: 'gateway',
+      }),
+    {
+      select: (data) => data.daos?.[0],
+      refetchOnMount: false,
+      refetchOnWindowFocus: false,
+    }
+  );
+  console.log(dataModel, stats);
   return (
     <>
       <Stack sx={{ px: { xs: 0, md: 4, lg: 6 } }}>
-        <InfoTitle
-          title={dataModel?.title}
-          labelId={t('data-model.data-model-id')}
-          id={dataModel?.id}
-          copySucessMessage={t('data-model.copy-id')}
-          badgeTooltip={t('data-model.verified-description')}
-        />
-        <Tags tags={dataModel?.tags} />
+        <Stack
+          sx={{
+            flexDirection: false ? 'row-reverse' : 'row',
+            alignItems: 'center',
+            flexBasis: '100%',
+            cursor: false ? 'pointer' : 'default',
+            borderRadius: true
+              ? '16px 16px 0 0'
+              : false
+              ? '0 16px 0 0'
+              : '16px 0 0 0',
+            transition: 'background .3s ease',
+            '&:hover': {
+              background: false
+                ? alpha(brandColors.white.main, 0.05)
+                : 'inherit',
+            },
+          }}
+        >
+          <AvatarFile
+            file={creator?.data?.logo}
+            fallback="/avatar.png"
+            sx={{ ml: true ? 0 : 2, mr: true ? 2 : 0 }}
+          >
+            {dataModel.title}
+          </AvatarFile>
+          <div>
+            <InfoTitle
+              title={dataModel?.title}
+              labelId={t('data-model.data-model-id')}
+              id={dataModel?.id}
+              copySucessMessage={t('data-model.copy-id')}
+              badgeTooltip={t('data-model.verified-description')}
+            />
+            <Tags tags={dataModel?.tags} />
+          </div>
+        </Stack>
+
         <Typography sx={{ mb: 3 }}>{dataModel?.description}</Typography>
-        <IssueCredentialButton
-          hasAnAccountAvailableToIssue={hasAnAccountAvailableToIssue}
-          onClickIssueCredential={setOpenCreateCredential}
-        />
+        
       </Stack>
       <DataModelTabs dataModel={dataModel} stats={stats} />
 
-      {me?.id && (
-        <>
-          <ModalRight
-            open={openCreateCredential}
-            handleClose={() => setConfirmDiscardChanges(true)}
-          >
-            <Stack
-              sx={{
-                pt: { xs: 3, md: 6 },
-                pb: { xs: 2, md: 3 },
-                flexDirection: 'row',
-                justifyContent: 'flex-end',
-                width: '100%',
-              }}
-            >
-              <IconButton
-                aria-label="close"
-                sx={{ background: alpha(brandColors.white.main, 0.16) }}
-                onClick={() => setConfirmDiscardChanges(true)}
-              >
-                <CloseIcon />
-              </IconButton>
-            </Stack>
-            <CredentialProtocolCreate dataModel={dataModel} />
-          </ModalRight>
-          <ConfirmDialog
-            title={t('data-model.issue-credential.dialog-title')}
-            open={confirmDiscardChanges}
-            positiveAnswer={t('data-model.issue-credential.dialog-positive')}
-            negativeAnswer={t('data-model.issue-credential.dialog-negative')}
-            setOpen={setConfirmDiscardChanges}
-            onConfirm={setOpenCreateCredential}
-          >
-            {t('data-model.issue-credential.dialog-text')}
-          </ConfirmDialog>
-        </>
-      )}
+      
     </>
   );
 }

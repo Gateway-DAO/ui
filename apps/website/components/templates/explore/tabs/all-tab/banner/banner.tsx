@@ -10,7 +10,7 @@ export default function Banner(): JSX.Element {
   const { t } = useTranslation('explore');
 
   return (
-    <Stack sx={{ py: 4, px: 5 }}>
+    <Stack sx={{ paddingTop: 4, px: 5 }}>
       <Box
         sx={{
           borderRadius: '15px',
@@ -87,11 +87,13 @@ export default function Banner(): JSX.Element {
             sx={{
               // pr: 10,
               ml: 45,
-              maxWidth: '459.22px',
+              mr: 10,
+              maxHeigh: '541.02px',
               [theme.breakpoints.down('md')]: {
                 maxWidth: '459.22px',
                 ml: 0,
               },
+              // overflow: 'visible',
             }}
             src="/images/issue-credential-model.png"
             alt={t('common:featured-banner.subtitle')}
@@ -101,5 +103,3 @@ export default function Banner(): JSX.Element {
     </Stack>
   );
 }
-// for the half banner use organization card
-// for the issuer creds use normal card without borders and stuff

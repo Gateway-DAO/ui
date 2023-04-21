@@ -23,11 +23,13 @@ export default function IssueCredentialButton({
           variant="contained"
           disabled={true}
           sx={{
-            width: '120px',
+            // width: '120px',
             display: 'flex',
             textTransform: 'uppercase',
             gap: 1,
             px: 1,
+            my: 2,
+            py: 1,
           }}
         >
           <LockIcon
@@ -38,7 +40,7 @@ export default function IssueCredentialButton({
       ) : (
         <Button
           variant="contained"
-          sx={{ width: '180px' }}
+          sx={{ my: 2, py: 1 }}
           onClick={() => {
             onClickIssueCredential();
           }}
