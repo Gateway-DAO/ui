@@ -46,8 +46,7 @@ export function AllTab({
       <Stack
         flexDirection={'row'}
         // alignItems={'flex-start'}
-        justifyContent={'space-evenly'}
-        // gap={'100px'}
+        justifyContent={'space-around'}
         sx={{
           paddingBottom: 4,
           mt: -8,

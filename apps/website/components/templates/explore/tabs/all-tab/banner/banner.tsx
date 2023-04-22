@@ -10,10 +10,9 @@ export default function Banner(): JSX.Element {
   const { t } = useTranslation('explore');
 
   return (
-    <Stack sx={{ paddingTop: 4, px: 5 }}>
+    <Stack sx={{}}>
       <Box
         sx={{
-          borderRadius: '15px',
           backgroundImage:
             "url('/images/explore/explore-banner_background.png')",
           backgroundRepeat: 'no-repeat',
@@ -43,7 +42,11 @@ export default function Banner(): JSX.Element {
               rowGap: '150px',
               height: '100%',
               py: 3,
-              px: 3,
+              px: 5,
+              [theme.breakpoints.down('md')]: {
+                px: 1,
+                flexDirection: 'column',
+              },
             }}
           >
             <Typography>Issue Credentials</Typography>
