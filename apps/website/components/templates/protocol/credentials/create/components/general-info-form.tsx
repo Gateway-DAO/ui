@@ -63,7 +63,7 @@ export default function GeneralInfoForm() {
           error={!!errors.title}
           helperText={errors.title?.message}
         />
-        <TextField
+        {/* <TextField
           multiline
           rows={2}
           InputProps={{
@@ -79,8 +79,8 @@ export default function GeneralInfoForm() {
           {...register(`description`)}
           error={!!errors.description}
           helperText={errors.description?.message}
-        />
-        <CategoriesInput
+        /> */}
+        {/* <CategoriesInput
           variant="outlined"
           label={t('data-model.issue-credential.categories-label')}
           id="categories"
@@ -99,8 +99,8 @@ export default function GeneralInfoForm() {
           set={(tags: string[]) => {
             setValue('tags', tags);
           }}
-        />
-        <Stack>
+        /> */}
+        {/* <Stack>
           <Typography variant="body1">
             {t('data-model.issue-credential.expire-date-title')}
           </Typography>
@@ -171,7 +171,7 @@ export default function GeneralInfoForm() {
               </LocalizationProvider>
             </Stack>
           </Stack>
-        </Stack>
+        </Stack> */}
       </Stack>
     </Stack>
   );

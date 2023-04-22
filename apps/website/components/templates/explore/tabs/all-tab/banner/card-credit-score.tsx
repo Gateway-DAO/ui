@@ -7,6 +7,7 @@ import {
   Box,
   CardActions,
   Button,
+  Stack,
 } from '@mui/material';
 import MUICard from '@mui/material/Card';
 import { ROUTES } from 'apps/website/constants/routes';
@@ -17,45 +18,56 @@ export function CardCreditScore(): JSX.Element {
   return (
     <MUICard
       sx={{
-        width: '700px',
+        width: '650px',
         display: 'flex',
         justifyContent: 'space-between',
         borderRadius: '16px',
         [theme.breakpoints.down('md')]: {
-          width: '343px',
+          width: '390px',
           display: 'flex',
         },
       }}
     >
-      <CardContent sx={{ py: '10px', marginY: '20px' }}>
-        <Typography gutterBottom variant="h5" sx={{ cursor: 'pointer' }}>
-          Your new DeFi Credit
-        </Typography>
-        <Typography
-          gutterBottom
-          variant="h5"
-          sx={{ cursor: 'pointer', lineHeight: '160%' }}
+      <Stack
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-between',
+        }}
+      >
+        <CardContent sx={{ py: '10px', marginY: '20px' }}>
+          <Typography gutterBottom variant="h5" sx={{ cursor: 'pointer' }}>
+            Your new DeFi Credit
+          </Typography>
+          <Typography
+            gutterBottom
+            variant="h5"
+            sx={{ cursor: 'pointer', lineHeight: '160%' }}
+          >
+            Score has arrived
+          </Typography>
+          <Typography
+            height={40}
+            variant="body2"
+            color="text.secondary"
+            sx={{
+              display: '-webkit-box',
+              WebkitLineClamp: 2,
+              WebkitBoxOrient: 'vertical',
+              overflow: 'hidden',
+              lineHeight: '166%',
+            }}
+          >
+            Discover your credit score now
+          </Typography>
+        </CardContent>
+        <Button
+          variant="outlined"
+          sx={{ marginBottom: '20px', width: '106px', marginLeft: '20px' }}
         >
-          Score has arrived
-        </Typography>
-        <Typography
-          height={40}
-          variant="body2"
-          color="text.secondary"
-          sx={{
-            display: '-webkit-box',
-            WebkitLineClamp: 2,
-            WebkitBoxOrient: 'vertical',
-            overflow: 'hidden',
-            lineHeight: '166%',
-          }}
-        >
-          Discover your credit score now
-        </Typography>
-        <Button variant="outlined" sx={{ marginTop: '90px' }}>
           ISSUE NOW
         </Button>
-      </CardContent>
+      </Stack>
 
       <Box
         sx={{
