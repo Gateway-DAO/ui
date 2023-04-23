@@ -4,7 +4,14 @@ import { useFormContext } from 'react-hook-form';
 
 import { brandColors } from '@gateway/theme';
 
-import { alpha, Stack, TextField, Typography } from '@mui/material';
+import {
+  alpha,
+  Autocomplete,
+  Chip,
+  Stack,
+  TextField,
+  Typography,
+} from '@mui/material';
 
 import { CreateCredentialInput } from '../../../../../../services/gateway-protocol/types';
 
@@ -12,6 +19,8 @@ export default function RecipientForm() {
   const {
     register,
     formState: { errors },
+    getValues,
+    setValue,
   } = useFormContext<CreateCredentialInput>();
   const { t } = useTranslation('protocol');
 
@@ -35,6 +44,16 @@ export default function RecipientForm() {
                 borderBottom: '2px solid #9A53FF',
               },
             },
+            startAdornment:
+              getValues('recipientUserGatewayIdOrWallet')?.length > 0 ? (
+                <Chip
+                  key={getValues('recipientUserGatewayIdOrWallet')}
+                  tabIndex={-1}
+                  label={getValues('recipientUserGatewayIdOrWallet')}
+                />
+              ) : (
+                <></>
+              ),
           }}
           label={t('data-model.issue-credential.recipient-label')}
           id="recipient-id"
