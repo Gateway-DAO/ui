@@ -45,8 +45,14 @@ export default function GeneralInfoForm() {
       >
         {t('data-model.issue-credential.group-general-description')}
       </Typography>
-      <ImageField />
-      <Stack gap={3}>
+      <Stack
+        sx={{
+          display: 'flex',
+          flexDirection: false ? 'row-reverse' : 'row',
+          justifyContent: 'space-between',
+        }}
+      >
+        <ImageField />
         <TextField
           autoFocus
           InputProps={{
@@ -63,115 +69,6 @@ export default function GeneralInfoForm() {
           error={!!errors.title}
           helperText={errors.title?.message}
         />
-        {/* <TextField
-          multiline
-          rows={2}
-          InputProps={{
-            disableUnderline: true,
-            sx: {
-              '&.Mui-focused': {
-                borderBottom: '2px solid #9A53FF',
-              },
-            },
-          }}
-          label={t('data-model.issue-credential.description-label')}
-          id="description"
-          {...register(`description`)}
-          error={!!errors.description}
-          helperText={errors.description?.message}
-        /> */}
-        {/* <CategoriesInput
-          variant="outlined"
-          label={t('data-model.issue-credential.categories-label')}
-          id="categories"
-          name="categories"
-          error={!!errors.tags}
-          {...register('tags')}
-          categories={CATEGORIES}
-          helperText={(errors.tags as any)?.message?.toString()}
-          sx={{
-            width: '100%',
-            '& div fieldset legend span': {
-              marginRight: '10px',
-            },
-            maxWidth: '400px',
-          }}
-          set={(tags: string[]) => {
-            setValue('tags', tags);
-          }}
-        /> */}
-        {/* <Stack>
-          <Typography variant="body1">
-            {t('data-model.issue-credential.expire-date-title')}
-          </Typography>
-          <Typography variant="body2" color="text.secondary" marginBottom={2}>
-            {t('data-model.issue-credential.expire-date-description')}
-          </Typography>
-          <Stack sx={{ maxWidth: '400px' }}>
-            <LocalizationProvider dateAdapter={AdapterLuxon}>
-              <Controller
-                control={control}
-                name="expirationDate"
-                defaultValue={null}
-                render={({ field }) => (
-                  <>
-                    <MobileDatePicker
-                      label={t('data-model.issue-credential.expire-date-label')}
-                      inputFormat="MM/dd/yyyy"
-                      disablePast
-                      value={field.value ? DateTime.fromISO(field.value) : null}
-                      onChange={(date: DateTime) => {
-                        field.onChange(date?.toISO());
-                      }}
-                      renderInput={(params) => (
-                        <TextField
-                          helperText={t('data-model.issue-credential.optional')}
-                          {...params}
-                        />
-                      )}
-                    />
-                  </>
-                )}
-              />
-            </LocalizationProvider>
-            <Stack sx={{ marginTop: '13px', width: '250px' }}>
-              <LocalizationProvider dateAdapter={AdapterLuxon}>
-                <Controller
-                  control={control}
-                  name="expirationDate"
-                  defaultValue={null}
-                  render={({ field }) => (
-                    <>
-                      <TimePicker
-                        label="Add expire time"
-                        value={
-                          field.value ? DateTime.fromISO(field.value) : null
-                        }
-                        minTime={
-                          isToday(getValues().expirationDate)
-                            ? DateTime.now()
-                            : null
-                        }
-                        onChange={(newValue) => {
-                          field.onChange(newValue?.toISO());
-                        }}
-                        renderInput={(params) => (
-                          <TextField
-                            {...params}
-                            inputProps={{
-                              ...params.inputProps,
-                              placeholder: 'hh:mm am/pm',
-                            }}
-                          />
-                        )}
-                      />
-                    </>
-                  )}
-                />
-              </LocalizationProvider>
-            </Stack>
-          </Stack>
-        </Stack> */}
       </Stack>
     </Stack>
   );
