@@ -60,7 +60,7 @@ export function DataModelCard({
                 backgroundColor: '#9A53FF',
                 px: 0,
                 filter: 'grayscale(1)',
-                'mix-blend-mode': 'hard-light',
+                mixBlendMode: 'hard-light',
                 ':hover': {
                   filter: 'none',
                   // 'mix-blend-mode': 'hard-light',
