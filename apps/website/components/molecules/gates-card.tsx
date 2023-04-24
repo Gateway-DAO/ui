@@ -206,6 +206,7 @@ export function GatesCard({
             WebkitLineClamp: 2,
             WebkitBoxOrient: 'vertical',
             overflow: 'hidden',
+            mb: 1,
           }}
         >
           {description}
