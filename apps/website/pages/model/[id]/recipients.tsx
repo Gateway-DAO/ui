@@ -10,6 +10,7 @@ import { gatewayProtocolSDK } from '../../../services/gateway-protocol/api';
 import { query } from 'apps/website/constants/queries';
 import useTranslation from 'next-translate/useTranslation';
 import { IColumnGrid } from 'apps/website/components/organisms/data-grid/data-grid';
+import { DataModelsTab } from 'apps/website/components/templates/explore';
 const GridViewTab = dynamic(
   () =>
     import(
@@ -20,7 +21,10 @@ const GridViewTab = dynamic(
 
 type Props = InferGetServerSidePropsType<typeof getServerSideProps>;
 
-export default function ProtocolDataModel({ dataModel, stats }: Props) {
+export default function ProtocolDataModelRecipients({
+  dataModel,
+  stats,
+}: Props) {
   const { t } = useTranslation('protocol');
   const recipientsGridColumns: IColumnGrid[] = [
     { column_name: 'recipient_id_issuers', header_name: 'Recipient ID' },
@@ -78,3 +82,4 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     },
   };
 };
+ProtocolDataModelRecipients.PageLayout = DataModelsTab;

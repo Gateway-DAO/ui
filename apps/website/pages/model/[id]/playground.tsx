@@ -9,6 +9,7 @@ import {
 import { gatewayProtocolSDK } from '../../../services/gateway-protocol/api';
 
 import { PlaygroundTab } from 'apps/website/components/templates/protocol/data-models/show/components/playground-tab';
+import { DataModelsTab } from 'apps/website/components/templates/explore';
 const GridViewTab = dynamic(
   () =>
     import(
@@ -19,7 +20,10 @@ const GridViewTab = dynamic(
 
 type Props = InferGetServerSidePropsType<typeof getServerSideProps>;
 
-export default function ProtocolDataModel({ dataModel, stats }: Props) {
+export default function ProtocolDataModelPlayground({
+  dataModel,
+  stats,
+}: Props) {
   return (
     <>
       <HeadContainer title={`${dataModel.title} Data Model`} />
@@ -32,7 +36,6 @@ export default function ProtocolDataModel({ dataModel, stats }: Props) {
         }}
       >
         <ProtocolTemplate>
-          <DataModelShow dataModel={dataModel} stats={stats} />
           <PlaygroundTab />
         </ProtocolTemplate>
       </DashboardTemplate>
@@ -56,3 +59,4 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     },
   };
 };
+ProtocolDataModelPlayground.PageLayout = DataModelsTab;

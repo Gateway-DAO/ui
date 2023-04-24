@@ -7,8 +7,13 @@ import {
   GetDataModelStatsQuery,
 } from '../../../../../../services/gateway-protocol/types';
 import { useRouter } from 'next/router';
+import DataModelShow from '../data-model-show';
+import { useQuery } from '@tanstack/react-query';
+import { gatewayProtocolSDK } from 'apps/website/services/gateway-protocol/api';
+import useTranslation from 'next-translate/useTranslation';
+import { TabPanel } from 'apps/website/components/atoms/tabs';
 
-export default function DataModelTabs() {
+export default function DataModelTabs({ children }) {
   const router = useRouter();
   let _selectedTab = router.asPath;
   _selectedTab = _selectedTab.slice(_selectedTab.lastIndexOf('/')).slice(1);
@@ -27,6 +32,21 @@ export default function DataModelTabs() {
     'credentials',
     'playground',
   ];
+  const { t } = useTranslation('protocol');
+
+  const { data: dataModel } = useQuery(['testing'], async () => {
+    const dataModel = await gatewayProtocolSDK.dataModel({
+      id: '1f1bff45-6ffb-48c1-ab6e-06f19cb7a744',
+    });
+    return dataModel?.dataModel;
+  });
+
+  const { data: stats } = useQuery(['stats-testing'], async () => {
+    const stats = await gatewayProtocolSDK.getDataModelStats({
+      dataModelId: '1f1bff45-6ffb-48c1-ab6e-06f19cb7a744',
+    });
+    return stats;
+  });
 
   const selectedIndex =
     routesForTabs.indexOf(_selectedTab) === -1
@@ -42,6 +62,17 @@ export default function DataModelTabs() {
         );
   return (
     <>
+      <DataModelShow
+        dataModel={dataModel}
+        stats={stats}
+        dataModelIdLabel={t('data-model.data-model-id')}
+        copySucessMessage={t('data-model.copy-id')}
+        badgeTooltip={t('data-model.verified-description')}
+        dialogAnswer={t('data-model.issue-credential.dialog-text')}
+        negativeAnswer={t('data-model.issue-credential.dialog-negative')}
+        positiveAnswer={t('data-model.issue-credential.dialog-positive')}
+        title={t('data-model.issue-credential.dialog-title')}
+      />
       <Box
         sx={{
           borderBottom: 1,
@@ -87,6 +118,9 @@ export default function DataModelTabs() {
             />
           ))}
         </Tabs>
+        <TabPanel tabsId={''} index={0} active>
+          {children}
+        </TabPanel>
       </Box>
     </>
   );

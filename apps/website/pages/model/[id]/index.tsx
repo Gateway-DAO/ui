@@ -8,6 +8,7 @@ import {
   DataModelShow,
 } from '../../../components/templates/protocol';
 import { gatewayProtocolSDK } from '../../../services/gateway-protocol/api';
+import DataModelTabs from 'apps/website/components/templates/protocol/data-models/show/components/data-model-tabs';
 const OverviewTab = dynamic(
   () =>
     import(
@@ -31,7 +32,6 @@ export default function ProtocolDataModel({ dataModel, stats }: Props) {
         }}
       >
         <ProtocolTemplate>
-          <DataModelShow dataModel={dataModel} stats={stats} />
           <OverviewTab dataModel={dataModel} stats={stats} />
         </ProtocolTemplate>
       </DashboardTemplate>
@@ -55,3 +55,4 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     },
   };
 };
+ProtocolDataModel.PageLayout = DataModelTabs;

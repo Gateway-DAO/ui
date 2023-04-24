@@ -27,14 +27,27 @@ type Props = {
   dataModel: PartialDeep<DataModel>;
   stats: GetDataModelStatsQuery;
   isCredentialCreate?: boolean;
+  dataModelIdLabel: string;
+  copySucessMessage: string;
+  badgeTooltip: string;
+  title: string;
+  positiveAnswer: string;
+  negativeAnswer: string;
+  dialogAnswer: string;
 };
 
 export default function DataModelShow({
   dataModel,
   stats,
   isCredentialCreate = false,
+  dataModelIdLabel,
+  copySucessMessage,
+  badgeTooltip,
+  title,
+  positiveAnswer,
+  negativeAnswer,
+  dialogAnswer,
 }: Props) {
-  const { t } = useTranslation('protocol');
   const { me } = useAuth();
   const [openCreateCredential, setOpenCreateCredential] = useToggle(false);
   const [confirmDiscardChanges, setConfirmDiscardChanges] = useState(false);
@@ -78,10 +91,10 @@ export default function DataModelShow({
       <Stack sx={{ px: { xs: 0, md: 4, lg: 6 } }}>
         <InfoTitle
           title={dataModel?.title}
-          labelId={t('data-model.data-model-id')}
+          labelId={dataModelIdLabel}
           id={dataModel?.id}
-          copySucessMessage={t('data-model.copy-id')}
-          badgeTooltip={t('data-model.verified-description')}
+          copySucessMessage={copySucessMessage}
+          badgeTooltip={badgeTooltip}
         />
         <Tags tags={dataModel?.tags} />
         <Typography sx={{ mb: 3 }}>{dataModel?.description}</Typography>
@@ -90,7 +103,6 @@ export default function DataModelShow({
           onClickIssueCredential={setOpenCreateCredential}
         />
       </Stack>
-      <DataModelTabs />
 
       {me?.id && (
         <>
@@ -118,14 +130,14 @@ export default function DataModelShow({
             <CredentialProtocolCreate dataModel={dataModel} />
           </ModalRight>
           <ConfirmDialog
-            title={t('data-model.issue-credential.dialog-title')}
+            title={title}
             open={confirmDiscardChanges}
-            positiveAnswer={t('data-model.issue-credential.dialog-positive')}
-            negativeAnswer={t('data-model.issue-credential.dialog-negative')}
+            positiveAnswer={positiveAnswer}
+            negativeAnswer={negativeAnswer}
             setOpen={setConfirmDiscardChanges}
             onConfirm={setOpenCreateCredential}
           >
-            {t('data-model.issue-credential.dialog-text')}
+            {dialogAnswer}
           </ConfirmDialog>
         </>
       )}

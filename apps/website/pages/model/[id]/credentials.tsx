@@ -10,6 +10,7 @@ import { gatewayProtocolSDK } from '../../../services/gateway-protocol/api';
 import { query } from 'apps/website/constants/queries';
 import useTranslation from 'next-translate/useTranslation';
 import { IColumnGrid } from 'apps/website/components/organisms/data-grid/data-grid';
+import DataModelTabs from 'apps/website/components/templates/protocol/data-models/show/components/data-model-tabs';
 const GridViewTab = dynamic(
   () =>
     import(
@@ -20,7 +21,10 @@ const GridViewTab = dynamic(
 
 type Props = InferGetServerSidePropsType<typeof getServerSideProps>;
 
-export default function ProtocolDataModel({ dataModel, stats }: Props) {
+export default function ProtocolDataModelCredentials({
+  dataModel,
+  stats,
+}: Props) {
   const { t } = useTranslation('protocol');
   const credentialGridColumns: IColumnGrid[] = [
     {
@@ -65,7 +69,6 @@ export default function ProtocolDataModel({ dataModel, stats }: Props) {
         }}
       >
         <ProtocolTemplate>
-          <DataModelShow dataModel={dataModel} stats={stats} />
           <GridViewTab
             dataModel={dataModel}
             columns={credentialGridColumns}
@@ -95,3 +98,4 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     },
   };
 };
+ProtocolDataModelCredentials.PageLayout = DataModelTabs;
