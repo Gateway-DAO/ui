@@ -13,7 +13,6 @@ import MUICard from '@mui/material/Card';
 
 import { ROUTES } from '../../constants/routes';
 import { Protocol_Data_Model } from '../../services/hasura/types';
-import { AvatarFile } from '../atoms/avatar-file';
 import { CategoriesList } from './categories-list';
 import { AvatarFile } from '../atoms/avatar-file';
 
