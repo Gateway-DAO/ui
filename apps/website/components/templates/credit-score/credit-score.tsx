@@ -346,7 +346,7 @@ export function CreditScoreTemplate() {
                   mb: 2,
                 }}
               >
-                ISSUE CREDENTIAL
+                CLAIM CREDENTIAL
               </Button>
             )}
 
