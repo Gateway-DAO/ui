@@ -1,14 +1,8 @@
 import { InferGetServerSidePropsType, GetServerSidePropsContext } from 'next';
 import dynamic from 'next/dynamic';
 
-import { HeadContainer } from '../../../components/molecules/head-container';
-import { DashboardTemplate } from '../../../components/templates/dashboard';
-import {
-  ProtocolTemplate,
-  DataModelShow,
-} from '../../../components/templates/protocol';
+import { DataModelLayout } from '../../../components/templates/protocol/data-models/show/layout';
 import { gatewayProtocolSDK } from '../../../services/gateway-protocol/api';
-import DataModelTabs from 'apps/website/components/templates/protocol/data-models/show/components/data-model-tabs';
 const OverviewTab = dynamic(
   () =>
     import(
@@ -20,23 +14,7 @@ const OverviewTab = dynamic(
 type Props = InferGetServerSidePropsType<typeof getServerSideProps>;
 
 export default function ProtocolDataModel({ dataModel, stats }: Props) {
-  return (
-    <>
-      <HeadContainer title={`${dataModel.title} Data Model`} />
-      <DashboardTemplate
-        containerProps={{
-          sx: {
-            overflow: '',
-          },
-          height: '100%',
-        }}
-      >
-        <ProtocolTemplate>
-          <OverviewTab dataModel={dataModel} stats={stats} />
-        </ProtocolTemplate>
-      </DashboardTemplate>
-    </>
-  );
+  return <OverviewTab dataModel={dataModel} stats={stats} />;
 }
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
@@ -55,4 +33,4 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     },
   };
 };
-ProtocolDataModel.PageLayout = DataModelTabs;
+ProtocolDataModel.PageLayout = DataModelLayout;

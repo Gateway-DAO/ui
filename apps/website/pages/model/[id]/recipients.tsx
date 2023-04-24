@@ -1,16 +1,11 @@
-import { InferGetServerSidePropsType, GetServerSidePropsContext } from 'next';
 import dynamic from 'next/dynamic';
-import { HeadContainer } from '../../../components/molecules/head-container';
-import { DashboardTemplate } from '../../../components/templates/dashboard';
-import {
-  ProtocolTemplate,
-  DataModelShow,
-} from '../../../components/templates/protocol';
-import { gatewayProtocolSDK } from '../../../services/gateway-protocol/api';
-import { query } from 'apps/website/constants/queries';
-import useTranslation from 'next-translate/useTranslation';
-import { IColumnGrid } from 'apps/website/components/organisms/data-grid/data-grid';
-import { DataModelsTab } from 'apps/website/components/templates/explore';
+import { useRouter } from 'next/router';
+
+import { IColumnGrid } from '../../../components/organisms/data-grid/data-grid';
+import { DataModelsTab } from '../../../components/templates/explore';
+import { DataModelLayout } from '../../../components/templates/protocol/data-models/show/layout';
+import { query } from '../../../constants/queries';
+
 const GridViewTab = dynamic(
   () =>
     import(
@@ -19,13 +14,11 @@ const GridViewTab = dynamic(
   { ssr: false }
 );
 
-type Props = InferGetServerSidePropsType<typeof getServerSideProps>;
+export default function ProtocolDataModelRecipients() {
+  // const { t } = useTranslation('protocol');
+  const router = useRouter();
 
-export default function ProtocolDataModelRecipients({
-  dataModel,
-  stats,
-}: Props) {
-  const { t } = useTranslation('protocol');
+  const { id: dataModelId } = router.query;
   const recipientsGridColumns: IColumnGrid[] = [
     { column_name: 'recipient_id_issuers', header_name: 'Recipient ID' },
     {
@@ -41,45 +34,14 @@ export default function ProtocolDataModelRecipients({
   ];
 
   return (
-    <>
-      <HeadContainer title={`${dataModel.title} Data Model`} />
-      <DashboardTemplate
-        containerProps={{
-          sx: {
-            overflow: '',
-          },
-          height: '100%',
-        }}
-      >
-        <ProtocolTemplate>
-          <DataModelShow dataModel={dataModel} stats={stats} />
-          <GridViewTab
-            dataModel={dataModel}
-            columns={recipientsGridColumns}
-            queryString={query.recipientsByDataModel}
-            queryFnName={'findRecipientsByDataModel'}
-            pageSize={10}
-          />
-        </ProtocolTemplate>
-      </DashboardTemplate>
-    </>
+    <GridViewTab
+      dataModelId={dataModelId as string}
+      columns={recipientsGridColumns}
+      queryString={query.recipientsByDataModel}
+      queryFnName="findRecipientsByDataModel"
+      pageSize={10}
+    />
   );
 }
 
-export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-  const dataModel = await gatewayProtocolSDK.dataModel({
-    id: ctx.query.id as string,
-  });
-
-  const stats = await gatewayProtocolSDK.getDataModelStats({
-    dataModelId: ctx.query.id as string,
-  });
-
-  return {
-    props: {
-      dataModel: dataModel?.dataModel,
-      stats,
-    },
-  };
-};
-ProtocolDataModelRecipients.PageLayout = DataModelsTab;
+ProtocolDataModelRecipients.PageLayout = DataModelLayout;

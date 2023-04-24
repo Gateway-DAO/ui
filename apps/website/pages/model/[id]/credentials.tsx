@@ -1,16 +1,11 @@
-import { InferGetServerSidePropsType, GetServerSidePropsContext } from 'next';
-import dynamic from 'next/dynamic';
-import { HeadContainer } from '../../../components/molecules/head-container';
-import { DashboardTemplate } from '../../../components/templates/dashboard';
-import {
-  ProtocolTemplate,
-  DataModelShow,
-} from '../../../components/templates/protocol';
-import { gatewayProtocolSDK } from '../../../services/gateway-protocol/api';
-import { query } from 'apps/website/constants/queries';
 import useTranslation from 'next-translate/useTranslation';
-import { IColumnGrid } from 'apps/website/components/organisms/data-grid/data-grid';
-import DataModelTabs from 'apps/website/components/templates/protocol/data-models/show/components/data-model-tabs';
+import dynamic from 'next/dynamic';
+import { useRouter } from 'next/router';
+
+import { IColumnGrid } from '../../../components/organisms/data-grid/data-grid';
+import { DataModelLayout } from '../../../components/templates/protocol/data-models/show/layout';
+import { query } from '../../../constants/queries';
+
 const GridViewTab = dynamic(
   () =>
     import(
@@ -19,13 +14,13 @@ const GridViewTab = dynamic(
   { ssr: false }
 );
 
-type Props = InferGetServerSidePropsType<typeof getServerSideProps>;
-
-export default function ProtocolDataModelCredentials({
-  dataModel,
-  stats,
-}: Props) {
+export default function ProtocolDataModelCredentials() {
   const { t } = useTranslation('protocol');
+
+  const router = useRouter();
+
+  const { id: dataModelId } = router.query;
+
   const credentialGridColumns: IColumnGrid[] = [
     {
       column_name: 'credential_id',
@@ -58,44 +53,14 @@ export default function ProtocolDataModelCredentials({
   ];
 
   return (
-    <>
-      <HeadContainer title={`${dataModel.title} Data Model`} />
-      <DashboardTemplate
-        containerProps={{
-          sx: {
-            overflow: '',
-          },
-          height: '100%',
-        }}
-      >
-        <ProtocolTemplate>
-          <GridViewTab
-            dataModel={dataModel}
-            columns={credentialGridColumns}
-            queryString={query.credentialsByDataModel}
-            queryFnName={'findCredentialsByDataModel'}
-            pageSize={10}
-          />
-        </ProtocolTemplate>
-      </DashboardTemplate>
-    </>
+    <GridViewTab
+      dataModelId={dataModelId as string}
+      columns={credentialGridColumns}
+      queryString={query.credentialsByDataModel}
+      queryFnName={'findCredentialsByDataModel'}
+      pageSize={10}
+    />
   );
 }
 
-export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-  const dataModel = await gatewayProtocolSDK.dataModel({
-    id: ctx.query.id as string,
-  });
-
-  const stats = await gatewayProtocolSDK.getDataModelStats({
-    dataModelId: ctx.query.id as string,
-  });
-
-  return {
-    props: {
-      dataModel: dataModel?.dataModel,
-      stats,
-    },
-  };
-};
-ProtocolDataModelCredentials.PageLayout = DataModelTabs;
+ProtocolDataModelCredentials.PageLayout = DataModelLayout;
