@@ -7,7 +7,7 @@ import { Controller, useFormContext } from 'react-hook-form';
 import { isToday } from '@gateway/helpers';
 import { brandColors } from '@gateway/theme';
 
-import { alpha, Stack, TextField, Typography } from '@mui/material';
+import { alpha, Box, Stack, TextField, Typography } from '@mui/material';
 import { MobileDatePicker, TimePicker } from '@mui/x-date-pickers';
 import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -49,26 +49,29 @@ export default function GeneralInfoForm() {
         sx={{
           display: 'flex',
           flexDirection: false ? 'row-reverse' : 'row',
-          justifyContent: 'space-between',
+          justifyContent: '',
+          gap: '45px',
         }}
       >
         <ImageField />
-        <TextField
-          autoFocus
-          InputProps={{
-            disableUnderline: true,
-            sx: {
-              '&.Mui-focused': {
-                borderBottom: '2px solid #9A53FF',
+        <Box sx={{ mt: 5 }}>
+          <TextField
+            autoFocus
+            InputProps={{
+              disableUnderline: true,
+              sx: {
+                '&.Mui-focused': {
+                  borderBottom: '2px solid #9A53FF',
+                },
               },
-            },
-          }}
-          label={t('data-model.issue-credential.title-label')}
-          id="title"
-          {...register(`title`)}
-          error={!!errors.title}
-          helperText={errors.title?.message}
-        />
+            }}
+            label={t('data-model.issue-credential.title-label')}
+            id="title"
+            {...register(`title`)}
+            error={!!errors.title}
+            helperText={errors.title?.message}
+          />
+        </Box>
       </Stack>
     </Stack>
   );

@@ -31,8 +31,8 @@ export function ImageField() {
           width: '100%',
         }}
       >
-        <Box sx={{ aspectRatio: 1, paddingTop: '100%', position: 'relative' }}>
-          <Box sx={{ position: 'absolute', inset: 0 }}>
+        <Box sx={{ height: 140, width: 140 }}>
+          <Box sx={{ height: 140, width: 140 }}>
             <ImageDropField
               withCrop
               control={control}
