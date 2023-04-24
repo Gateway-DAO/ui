@@ -1,0 +1,10 @@
+query get_cred_score($address: String!) {
+  get_cred_score(address: $address) {
+    account
+    creation_date_utc
+    decile
+    model_version
+    value
+    value_rating
+  }
+}

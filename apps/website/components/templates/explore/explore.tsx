@@ -7,7 +7,7 @@ import { TOKENS } from '@gateway/theme';
 
 import { Box, Tabs, Tab, Typography } from '@mui/material';
 
-import { DataModel } from '../../../services/gateway-protocol/types';
+import { Protocol_Data_Model } from '../../../services/hasura/types';
 import { a11yTabProps, TabPanel, useTab } from '../../atoms/tabs';
 import { Navbar } from '../../organisms/navbar';
 import { AllTab } from './tabs/all-tab';
@@ -15,14 +15,13 @@ import { DaosTab } from './tabs/daos-tab';
 import DataModelsTab from './tabs/data-models-tab/data-models-tab';
 import { GatesTab } from './tabs/gates-tab';
 import PassesTab from './tabs/passes-tab';
-import { PeopleTab } from './tabs/people-tab';
 import { ExploreProps } from './types';
 
 type TemplateProps = {
   title: string;
   subtitle: string;
   data: ExploreProps;
-  dataModels: PartialDeep<DataModel>[];
+  dataModels: PartialDeep<Protocol_Data_Model>[];
 };
 
 export function ExploreTemplate({

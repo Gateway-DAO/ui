@@ -6,7 +6,7 @@ import { Button, Divider, Stack } from '@mui/material';
 import { brandColors, theme } from '@gateway/theme';
 
 import { ROUTES } from '../../../../../constants/routes';
-import { DataModel } from '../../../../../services/gateway-protocol/types';
+import { Protocol_Data_Model } from '../../../../../services/hasura/types';
 import { DaoCard } from '../../../../molecules/dao-card';
 import { DataModelCard } from '../../../../molecules/data-model-card';
 import { GatesCard } from '../../../../molecules/gates-card';
@@ -23,7 +23,7 @@ import { CardCreditScore } from './banner/card-credit-score';
 
 type Props = {
   setActiveTab: (tab: number) => void;
-  dataModels: PartialDeep<DataModel>[];
+  dataModels: PartialDeep<Protocol_Data_Model>[];
 } & ExploreProps;
 
 export function AllTab({

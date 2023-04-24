@@ -26,7 +26,7 @@ export default function CredentialCardInfo({
 }: Props) {
   const { t } = useTranslation('protocol');
   const isMobile = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
-  
+
   return (
     <Paper
       elevation={elevation}

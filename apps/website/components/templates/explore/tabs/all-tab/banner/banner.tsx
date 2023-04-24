@@ -1,4 +1,5 @@
 import useTranslation from 'next-translate/useTranslation';
+import Link from 'next/link';
 
 import { brandColors, theme } from '@gateway/theme';
 

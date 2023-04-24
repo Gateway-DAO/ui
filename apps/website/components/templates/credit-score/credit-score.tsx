@@ -1,3 +1,16 @@
+import useTranslation from 'next-translate/useTranslation';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
+
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
+import ArcProgress from 'react-arc-progress';
+
+import { TOKENS } from '@gateway/theme';
+
+import { InfoOutlined } from '@mui/icons-material';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import {
   Avatar,
   AvatarGroup,
@@ -14,20 +27,23 @@ import {
   styled,
 } from '@mui/material';
 import { Link as MUILink } from '@mui/material';
-import { ReadMore } from '../../atoms/read-more-less';
-
-import { useRouter } from 'next/router';
-import { useAuth } from '../../../providers/auth';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 import { ROUTES } from '../../../constants/routes';
-import Link from 'next/link';
-import { TOKENS } from '@gateway/theme';
+import { useAuth } from '../../../providers/auth';
+import {
+  gatewayProtocolAuthSDK,
+  gatewayProtocolSDK,
+} from '../../../services/gateway-protocol/api';
+import { MintCredentialMutationVariables } from '../../../services/gateway-protocol/types';
+import { gqlAnonMethods } from '../../../services/hasura/api';
+import { AvatarFile } from '../../atoms/avatar-file';
+import { LoadingButton } from '../../atoms/loading-button';
+import { ReadMore } from '../../atoms/read-more-less';
 import { ShareButton } from '../../atoms/share-button';
+import { TokenFilled } from '../../molecules/mint-card/assets/token-filled';
+import { HolderDialog } from '../../organisms/holder-dialog';
 import { ClientNav } from '../../organisms/navbar/client-nav';
-import Image from 'next/image';
-import ArcProgress from 'react-arc-progress';
-import useTranslation from 'next-translate/useTranslation';
+import LoadingModal from './LoadingModal';
 
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
@@ -45,31 +61,9 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 export function CreditScoreTemplate() {
-  const { t } = useTranslation('credit-score');
-  const { me, gqlAuthMethods } = useAuth();
-  const router = useRouter();
-
-  const handleNavBack = () => {
-    // If user directly lands to credential page using link
-    if (window.history.state.idx === 0) {
-      router.replace(ROUTES.CREDIT_SCORE);
-    } else {
-      router.back();
-    }
-  };
-
-  const progress = 0.78;
-  const text = '789';
   const size = 500;
   const fillColor = {
-    gradient: [
-      '#0075FF',
-      '#9A53FF',
-      '#FE02B9',
-      '#5DABFB',
-      '#0075FF',
-      '#9A53FF',
-    ],
+    gradient: ['#9A53FF', '#FE02B9', '#5DABFB', '#0075FF'],
   };
   const customText = [
     {
@@ -89,6 +83,109 @@ export function CreditScoreTemplate() {
       y: 422,
     },
   ];
+  const { t } = useTranslation('credit-score');
+
+  const DATA_MODEL_ID = process.env.NEXT_PUBLIC_CRED_PROTOCOL_DM_ID;
+
+  const { me, gqlAuthMethods, token } = useAuth();
+  const router = useRouter();
+  const [openLoadingModal, setOpenLoadingModal] = useState(false);
+  const [isHolderDialog, setIsHolderDialog] = useState(false);
+  const queryClient = useQueryClient();
+
+  const { data: credScore } = useQuery(
+    ['cred-api-score-single', me?.wallet],
+    async () => {
+      const result = await gqlAuthMethods.get_cred_score({
+        address: me?.wallet,
+      });
+      return result.get_cred_score;
+    },
+    {
+      enabled: !!me?.wallet,
+    }
+  );
+
+  const scale = (1000 - 0) / (1000 - 300);
+  const creditScore = 0 + (credScore?.value - 300) * scale;
+
+  const isCreditScore = !!credScore?.account;
+  const checkIfUserHasCredential = me?.protocol?.receivedCredentials?.find(
+    (something) => something?.dataModel?.id === DATA_MODEL_ID
+  );
+
+  const handleNavBack = () => {
+    if (window.history.state.idx === 0) {
+      router.replace(ROUTES.CREDIT_SCORE);
+    } else {
+      router.back();
+    }
+  };
+
+  const issueCredential = async () => {
+    refetch();
+    setOpenLoadingModal(true);
+  };
+
+  const { refetch, isFetching: createCredentialLoading } = useQuery(
+    ['cred-api-create-credential', me?.wallet],
+    async () => {
+      const result = await gqlAuthMethods.create_cred({
+        gatewayId: me?.username,
+        score: credScore?.value,
+        bearerToken: token,
+      });
+
+      await router.push(
+        ROUTES.PROTOCOL_CREDENTIAL.replace(
+          '[id]',
+          result.create_cred.credentialId
+        )
+      );
+
+      await queryClient.resetQueries(['user_protocol', me?.id]);
+
+      return result.create_cred.credentialId;
+    },
+    {
+      enabled: false,
+    }
+  );
+
+  const { data: recipientsUsers } = useQuery(
+    ['cred-api-find-recipient-user', DATA_MODEL_ID],
+    async () => {
+      const result = await gqlAnonMethods.findRecipientsByDataModel({
+        dataModelId: DATA_MODEL_ID,
+        skip: 0,
+        take: 10,
+      });
+      return result.protocol_user;
+    }
+  );
+
+  const { data: totalRecipientUsersCount } = useQuery(
+    ['cred-api-find-total-users', DATA_MODEL_ID],
+    async () => {
+      const s = await gatewayProtocolSDK.getDataModelStats({
+        dataModelId: DATA_MODEL_ID,
+      });
+      return s.getTotalCredentialsByDataModelGroupByRecipient;
+    }
+  );
+
+  const { isLoading: isLoadingMintingCred, mutate } = useMutation(
+    ['cred-api-mint-credential'],
+    ({ credentialId }: MintCredentialMutationVariables) => {
+      return gatewayProtocolAuthSDK(token).mintCredential({
+        credentialId: credentialId,
+      });
+    },
+    {
+      onSuccess: () => queryClient.resetQueries(['user_protocol', me?.id]),
+    }
+  );
+
   return (
     <>
       <Grid
@@ -121,7 +218,6 @@ export function CreditScoreTemplate() {
               </Avatar>
             </IconButton>
           </Stack>
-          {/* DAO info */}
           <Box
             sx={(theme) => ({
               padding: {
@@ -132,7 +228,7 @@ export function CreditScoreTemplate() {
           >
             <Link
               passHref
-              href={ROUTES.DAO_PROFILE.replace('[slug]', 'gateway')}
+              href={ROUTES.DAO_PROFILE.replace('[slug]', 'cred-protocol')}
             >
               <Stack
                 direction="row"
@@ -147,8 +243,8 @@ export function CreditScoreTemplate() {
                 })}
               >
                 <Avatar
-                  alt="Gateway"
-                  src="/logo.png"
+                  alt="Cred Protocol"
+                  src="/images/cred_protocol_logo.jpg"
                   sx={{
                     height: (theme) => theme.spacing(3),
                     width: (theme) => theme.spacing(3),
@@ -163,11 +259,9 @@ export function CreditScoreTemplate() {
                 </Typography>
               </Stack>
             </Link>
-
             <Typography variant="h4" marginBottom={(theme) => theme.spacing(2)}>
               {t('gate.title')}
             </Typography>
-
             <Box marginBottom={(theme) => theme.spacing(2)}>
               <Stack
                 direction={'row'}
@@ -204,46 +298,61 @@ export function CreditScoreTemplate() {
               </Typography>
             )}
 
-            {/* {completedGate &&
-              !!credential &&
-              credential?.credentials_by_pk?.target_id == me?.id &&
-              (credential?.credentials_by_pk?.status == 'minted' ? (
-                <Button
-                  component="a"
-                  variant="outlined"
-                  href={credential.credentials_by_pk.transaction_url}
-                  target="_blank"
-                  startIcon={
-                    <TokenFilled height={20} width={20} color="action" />
-                  }
-                  fullWidth
-                  sx={{
-                    borderColor: '#E5E5E580',
-                    color: 'white',
-                    mb: 2,
-                  }}
-                >
-                  VERIFY MINT TRANSACTION
-                </Button>
-              ) : (
+            {checkIfUserHasCredential?.dataModel?.id ? (
+              <Stack flexDirection="row" gap={2}>
                 <Button
                   variant="contained"
-                  startIcon={
-                    <TokenFilled height={20} width={20} color="action" />
-                  }
                   fullWidth
-                  onClick={() => setMintModal(true)}
+                  onClick={() =>
+                    router.push(
+                      ROUTES.PROTOCOL_CREDENTIAL.replace(
+                        '[id]',
+                        checkIfUserHasCredential?.id
+                      )
+                    )
+                  }
                   sx={{
                     mb: 2,
                   }}
                 >
-                  MINT AS NFT
+                  CHECK CREDENTIAL
                 </Button>
-              ))} */}
+                {!checkIfUserHasCredential?.nft?.minted && (
+                  <LoadingButton
+                    variant="outlined"
+                    startIcon={
+                      <TokenFilled height={20} width={20} color="action" />
+                    }
+                    fullWidth
+                    isLoading={isLoadingMintingCred}
+                    onClick={() =>
+                      mutate({ credentialId: checkIfUserHasCredential.id })
+                    }
+                    sx={{
+                      mb: 2,
+                    }}
+                  >
+                    MINT AS NFT
+                  </LoadingButton>
+                )}
+              </Stack>
+            ) : (
+              <Button
+                variant="contained"
+                fullWidth
+                disabled={!isCreditScore}
+                onClick={() => refetch()}
+                sx={{
+                  mb: 2,
+                }}
+              >
+                ISSUE CREDENTIAL
+              </Button>
+            )}
 
             <Box
               component="img"
-              src={'/creditscore.png'}
+              src={'/images/cred-protocol-page.png'}
               alt={'credit score' + ' image'}
               marginBottom={(theme) => theme.spacing(4)}
               sx={{
@@ -251,9 +360,8 @@ export function CreditScoreTemplate() {
                 borderRadius: (theme) => theme.spacing(1),
               }}
             />
-
             <Grid container rowGap={(theme) => theme.spacing(3)}>
-              {/* {gateProps?.holder_count > 0 && (
+              {totalRecipientUsersCount > 0 && (
                 <>
                   <Grid
                     item
@@ -268,27 +376,34 @@ export function CreditScoreTemplate() {
                     </Typography>
                   </Grid>
                   <Grid item xs={8} display="flex" alignItems="center">
-                    <AvatarGroup>
-                      {gateProps?.holders.map((holder, index) => {
-                        if (index == 3) return null;
+                    <AvatarGroup
+                      total={
+                        recipientsUsers?.length >= 3
+                          ? 3
+                          : recipientsUsers?.length
+                      }
+                      sx={{
+                        justifyContent: 'flex-end',
+                      }}
+                    >
+                      {recipientsUsers?.map((holder) => {
                         return (
                           <Link
                             key={holder.id}
                             passHref
-                            href={`/profile/${holder.username}`}
+                            href={`/profile/${holder.gatewayId}`}
                           >
-                            <Tooltip title={holder.name}>
+                            <Tooltip title={holder.gatewayId}>
                               <Box
                                 component="a"
                                 sx={{ display: 'inline-block' }}
                               >
                                 <AvatarFile
-                                  alt={holder.username}
-                                  file={holder.picture}
-                                  fallback={holder.pfp || '/logo.png'}
-                                  sx={{
-                                    mx: 1,
-                                  }}
+                                  alt={holder.gatewayId}
+                                  file={holder?.gatewayUser?.picture}
+                                  fallback={
+                                    holder?.gatewayUser?.pfp || '/avatar.png'
+                                  }
                                 />
                               </Box>
                             </Tooltip>
@@ -297,18 +412,12 @@ export function CreditScoreTemplate() {
                       })}
                     </AvatarGroup>
 
-                    {gateProps?.holder_count > 3 ? (
-                      <Chip
-                        label={`+ ${gateProps?.holder_count - 3}`}
-                        onClick={() => {
-                          setIsHolderDialog(!isHolderDialog);
-                        }}
-                      />
+                    {totalRecipientUsersCount > 3 ? (
+                      <Chip label={`+ ${totalRecipientUsersCount - 3}`} />
                     ) : null}
                   </Grid>
                 </>
-              )} */}
-              {/* gateProps?.creator */}
+              )}
               {true && (
                 <>
                   <Grid
@@ -323,12 +432,15 @@ export function CreditScoreTemplate() {
                       {t('about.created-by')}
                     </Typography>
                   </Grid>
-                  {/* <Grid item xs={8}>
+                  <Grid item xs={8}>
                     <Link
                       passHref
-                      href={`/profile/${gateProps?.creator.username}`}
+                      href={ROUTES.DAO_PROFILE.replace(
+                        '[slug]',
+                        'cred-protocol'
+                      )}
                     >
-                      <Tooltip title={gateProps?.creator.name}>
+                      <Tooltip title={'Cred Protocol'}>
                         <Box
                           component="a"
                           sx={{
@@ -338,11 +450,11 @@ export function CreditScoreTemplate() {
                         >
                           <Chip
                             variant="outlined"
-                            label={gateProps?.creator.username}
+                            label={'Cred Protocol'}
                             avatar={
                               <Avatar
-                                alt={gateProps?.creator.username}
-                                src={`https://api.staging.mygateway.xyz/storage/file?id=${createdByImage}`}
+                                alt={'Cred Protocol'}
+                                src={`https://pbs.twimg.com/profile_images/1425122906044964864/Xrgs0ACt_400x400.jpg`}
                               />
                             }
                             sx={{ cursor: 'pointer' }}
@@ -350,7 +462,7 @@ export function CreditScoreTemplate() {
                         </Box>
                       </Tooltip>
                     </Link>
-                  </Grid> */}
+                  </Grid>
                 </>
               )}
             </Grid>
@@ -402,23 +514,60 @@ export function CreditScoreTemplate() {
             <Box position={'relative'}>
               <ArcProgress
                 thickness={20}
-                progress={progress}
-                // text={text}
+                progress={!!me && isCreditScore ? creditScore / 1000 : 0}
                 fillThickness={35}
                 emptyColor="#FFFFFF26"
                 size={size}
-                fillColor={fillColor}
+                fillColor={me ? fillColor : '#312938'}
                 customText={customText}
                 arcStart={140}
                 arcEnd={400}
               />
               <Box position={'absolute'} top={160} left={170}>
-                <Typography align={'center'} variant="h1">
-                  789
-                </Typography>
-                <Typography align={'center'} variant="h6">
-                  Excellent
-                </Typography>
+                {!!me && isCreditScore && (
+                  <>
+                    <Typography align={'center'} variant="h1">
+                      {credScore?.value}
+                    </Typography>
+                    <Typography align={'center'} variant="h6">
+                      {credScore?.value_rating}
+                    </Typography>
+                  </>
+                )}
+                {!me && (
+                  <>
+                    <Typography
+                      sx={{ marginTop: '60px' }}
+                      align={'center'}
+                      variant="body1"
+                    >
+                      Connect your wallet
+                    </Typography>
+                  </>
+                )}
+                {!!me && !isCreditScore && (
+                  <>
+                    <Typography
+                      sx={{ marginTop: '-30px', marginLeft: '30px' }}
+                      align={'center'}
+                      variant="h1"
+                    >
+                      -
+                    </Typography>
+                    <Typography
+                      sx={{ marginTop: '40px', marginLeft: '34px' }}
+                      align={'center'}
+                      variant="h6"
+                    >
+                      No Score
+                    </Typography>
+                    <Tooltip title={t('no-score.title')}>
+                      <IconButton sx={{ marginLeft: '54px' }}>
+                        <InfoOutlined />
+                      </IconButton>
+                    </Tooltip>
+                  </>
+                )}
               </Box>
               <Box position={'absolute'} bottom={35} left={198}>
                 <Typography align={'center'} variant="body1">
@@ -433,23 +582,30 @@ export function CreditScoreTemplate() {
                 </Typography>
               </Box>
             </Box>
-            <Button
-              sx={{ marginBottom: 4 }}
-              variant="outlined"
-              href="https://app.credprotocol.com/"
-              target="_blank"
-            >
-              {t('about.progress.btn-title')}
-            </Button>
           </Paper>
 
-          <Stack spacing={5} mt={3}>
+          <Stack spacing={5} my={3}>
             <Stack spacing={1}>
               <Typography variant="h6" gutterBottom>
                 {t('details.title')}
               </Typography>
               <Typography>{t('details.description')}</Typography>
             </Stack>
+
+            <Stack spacing={1}>
+              <Typography variant="h6" gutterBottom>
+                {t('how.title')}
+              </Typography>
+              <Typography>{t('how.description')}</Typography>
+            </Stack>
+
+            <Stack spacing={1}>
+              <Typography variant="h6" gutterBottom>
+                {t('why.title')}
+              </Typography>
+              <Typography>{t('why.description')}</Typography>
+            </Stack>
+
             <Stack spacing={1}>
               <Typography variant="h6" gutterBottom>
                 {t('utility.title')}
@@ -468,72 +624,15 @@ export function CreditScoreTemplate() {
                 <Item variant="outlined">{t('utility.label-3')}</Item>
               </Stack>
             </Stack>
-            <Stack spacing={1}>
-              <Typography variant="h6" gutterBottom>
-                {t('start-using.title')}
-              </Typography>
-              <Stack
-                direction={{
-                  lg: 'row',
-                  md: 'column',
-                  sm: 'column',
-                  xs: 'column',
-                }}
-                spacing={3}
-              >
-                <MUILink
-                  href="https://aave.com/"
-                  target="_blank"
-                  style={{ flexGrow: 1 }}
-                >
-                  <Item
-                    elevation={2}
-                    style={{ border: '1px solid rgba(229, 229, 229, 0.12)' }}
-                  >
-                    <Image src="/images/aave.png" width={66} height={20} />
-                  </Item>
-                </MUILink>
-                <MUILink
-                  href="https://uniswap.org/"
-                  target="_blank"
-                  style={{ flexGrow: 1 }}
-                >
-                  <Item
-                    elevation={2}
-                    style={{ border: '1px solid rgba(229, 229, 229, 0.12)' }}
-                  >
-                    <Image src="/images/uniswap.png" width={122} height={32} />
-                  </Item>
-                </MUILink>
-                <MUILink
-                  href="https://dydx.exchange/"
-                  target="_blank"
-                  style={{ flexGrow: 1 }}
-                >
-                  <Item
-                    elevation={2}
-                    style={{ border: '1px solid rgba(229, 229, 229, 0.12)' }}
-                  >
-                    <Image src="/images/dydx.png" width={66} height={20} />
-                  </Item>
-                </MUILink>
-                <MUILink
-                  href="https://teller.org/"
-                  target="_blank"
-                  style={{ flexGrow: 1 }}
-                >
-                  <Item
-                    elevation={2}
-                    style={{ border: '1px solid rgba(229, 229, 229, 0.12)' }}
-                  >
-                    <Image src="/images/teller.png" width={76} height={26} />
-                  </Item>
-                </MUILink>
-              </Stack>
-            </Stack>
           </Stack>
         </Grid>
       </Grid>
+      <LoadingModal openLoadingModal={createCredentialLoading} />
+      <HolderDialog
+        isHolderDialog={isHolderDialog}
+        credentialId="937f9fc8-f3a7-4d28-88bc-826af1237c2c"
+        setIsHolderDialog={setIsHolderDialog}
+      />
     </>
   );
 }

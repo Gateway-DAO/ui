@@ -1,4 +1,4 @@
-import { PartialObjectDeep } from 'type-fest/source/partial-deep';
+import { PartialDeep, PartialObjectDeep } from 'type-fest/source/partial-deep';
 
 import { Paper, Stack, Typography } from '@mui/material';
 
@@ -7,7 +7,7 @@ import { Files } from '../../../../../../../../services/hasura/types';
 
 type commentCardProps = {
   fullname?: string;
-  avatarFile?: PartialObjectDeep<Files>;
+  avatarFile?: PartialDeep<Files>;
   username?: string;
   comment: string;
   elevation?: number;

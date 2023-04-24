@@ -36,11 +36,21 @@ export default function ShareOn({ isCredential, credential }: Props) {
   if (isReceivedCredential) {
     tweetText = t('social.share-twitter-recipient')
       .replace('[title]', credential.title)
-      .replace('[issuer]', credential.issuerUser?.gatewayId);
+      .replace(
+        '[issuer]',
+        credential.issuerOrganization?.name ||
+          credential.issuerOrganization?.gatewayId ||
+          credential.issuerUser?.gatewayId
+      );
   } else if (isCredential) {
     tweetText = t('social.share-anonymous')
       .replace('[title]', credential.title)
-      .replace('[issuer]', credential.issuerUser?.gatewayId)
+      .replace(
+        '[issuer]',
+        credential.issuerOrganization?.name ||
+          credential.issuerOrganization?.gatewayId ||
+          credential.issuerUser?.gatewayId
+      )
       .replace('[recipient]', credential.recipientUser?.gatewayId);
   }
 
