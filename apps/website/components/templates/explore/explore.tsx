@@ -33,8 +33,39 @@ export function ExploreTemplate({
   const { t } = useTranslation('explore');
   const { activeTab, handleTabChange, setTab } = useTab();
 
-  const tabs = useMemo(
-    () => [
+  const tabs = useMemo(() => {
+    if (data?.loyalty_program && data?.loyalty_program.length > 0) {
+      return [
+        {
+          key: 'all',
+          label: t('common:tabs.all'),
+          section: (
+            <AllTab setActiveTab={setTab} {...data} dataModels={dataModels} />
+          ),
+        },
+        {
+          key: 'credentials',
+          label: t('common:tabs.earn'),
+          section: <GatesTab />,
+        },
+        {
+          key: 'passes',
+          label: t('passes-tab'),
+          section: <PassesTab />,
+        },
+        {
+          key: 'data-models',
+          label: t('common:tabs.data-models'),
+          section: <DataModelsTab />,
+        },
+        {
+          key: 'organizations',
+          label: t('common:tabs.organizations'),
+          section: <DaosTab />,
+        },
+      ];
+    }
+    return [
       {
         key: 'all',
         label: t('common:tabs.all'),
@@ -48,11 +79,6 @@ export function ExploreTemplate({
         section: <GatesTab />,
       },
       {
-        key: 'passes',
-        label: t('passes-tab'),
-        section: <PassesTab />,
-      },
-      {
         key: 'data-models',
         label: t('common:tabs.data-models'),
         section: <DataModelsTab />,
@@ -62,9 +88,8 @@ export function ExploreTemplate({
         label: t('common:tabs.organizations'),
         section: <DaosTab />,
       },
-    ],
-    []
-  );
+    ];
+  }, [data.loyalty_program]);
 
   return (
     <>
