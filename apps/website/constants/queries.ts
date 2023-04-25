@@ -16,4 +16,6 @@ export const query = {
   delete_gate: 'deleteGate',
   direct_credential_info: 'direct-credential-info',
   gate: 'gate',
+  create_code_change_email: 'create_code',
+  confirm_token_change_email: 'confirm_token_change_email',
 };
