@@ -63,6 +63,7 @@ export default function GeneralInfoForm() {
                 '&.Mui-focused': {
                   borderBottom: '2px solid #9A53FF',
                 },
+                width: '100%',
               },
             }}
             label={t('data-model.issue-credential.title-label')}

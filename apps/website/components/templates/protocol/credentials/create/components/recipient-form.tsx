@@ -21,6 +21,7 @@ export default function RecipientForm() {
     formState: { errors },
     getValues,
     setValue,
+    watch,
   } = useFormContext<CreateCredentialInput>();
   const { t } = useTranslation('protocol');
 
@@ -45,11 +46,11 @@ export default function RecipientForm() {
               },
             },
             startAdornment:
-              getValues('recipientUserGatewayIdOrWallet')?.length > 0 ? (
+              watch('recipientUserGatewayIdOrWallet')?.length > 0 ? (
                 <Chip
-                  key={getValues('recipientUserGatewayIdOrWallet')}
+                  key={watch('recipientUserGatewayIdOrWallet')}
                   tabIndex={-1}
-                  label={getValues('recipientUserGatewayIdOrWallet')}
+                  label={watch('recipientUserGatewayIdOrWallet')}
                 />
               ) : (
                 <></>

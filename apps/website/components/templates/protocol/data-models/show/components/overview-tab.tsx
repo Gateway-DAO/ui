@@ -35,7 +35,7 @@ import CloseIcon from '@mui/icons-material/Close';
 type Props = {
   dataModel: PartialDeep<DataModel>;
   stats: GetDataModelStatsQuery;
-  isCredentialCreate: boolean;
+  isCredentialCreate?: boolean;
 };
 
 export default function OverviewTab({
