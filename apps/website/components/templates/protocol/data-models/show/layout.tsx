@@ -1,12 +1,14 @@
 import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 
 import { useQuery } from '@tanstack/react-query';
+import { useToggle } from 'react-use';
 
-import { theme, TOKENS } from '@gateway/theme';
+import { brandColors, theme, TOKENS } from '@gateway/theme';
 
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import CloseIcon from '@mui/icons-material/Close';
 import {
   Avatar,
   Box,
@@ -17,15 +19,18 @@ import {
   Tab,
   Tabs,
   Skeleton,
+  alpha,
 } from '@mui/material';
 
+import { CredentialProtocolCreate } from '../..';
 import { query } from '../../../../../constants/queries';
-import { ROUTES } from '../../../../../constants/routes';
 import { useAuth } from '../../../../../providers/auth';
 import { gatewayProtocolSDK } from '../../../../../services/gateway-protocol/api';
 import { PermissionType } from '../../../../../services/gateway-protocol/types';
 import { TabPanel } from '../../../../atoms/tabs';
 import { HeadContainer } from '../../../../molecules/head-container';
+import ModalRight from '../../../../molecules/modal-right';
+import ConfirmDialog from '../../../../organisms/confirm-dialog/confirm-dialog';
 import { ClientNav } from '../../../../organisms/navbar/client-nav';
 import { DashboardTemplate } from '../../../dashboard';
 import FloatingCta from '../../components/floating-cta';
@@ -39,13 +44,16 @@ export function DataModelLayout({ children }) {
   const router = useRouter();
   const { id: dataModelId } = router.query;
 
-  const setOpenCreateCredential = () => {
-    router.push(
-      ROUTES.PROTOCOL_DATAMODEL_CREDENTIAL_CREATE.replace(
-        '[id]',
-        dataModelId as string
-      )
-    );
+  const [confirmDiscardChanges, setConfirmDiscardChanges] = useState(false);
+  const [openCreateCredential, setOpenCreateCredential] = useToggle(false);
+
+  const toggleModal = () => {
+    if (openCreateCredential) {
+      router.back();
+    } else {
+      router.push('#issue-credential');
+    }
+    setOpenCreateCredential();
   };
 
   let _selectedTab = router.asPath;
@@ -168,7 +176,7 @@ export function DataModelLayout({ children }) {
             </Typography>
             <IssueCredentialButton
               hasAnAccountAvailableToIssue={hasAnAccountAvailableToIssue}
-              onClickIssueCredential={setOpenCreateCredential}
+              onClickIssueCredential={toggleModal}
             />
           </Stack>
         </Stack>
@@ -224,6 +232,43 @@ export function DataModelLayout({ children }) {
         </Box>
         <FloatingCta credential={{}} />
       </DashboardTemplate>
+      {me?.id && (
+        <>
+          <ModalRight
+            open={openCreateCredential}
+            handleClose={() => setConfirmDiscardChanges(true)}
+          >
+            <Stack
+              sx={{
+                pt: { xs: 3, md: 6 },
+                pb: { xs: 2, md: 3 },
+                flexDirection: 'row',
+                justifyContent: 'flex-end',
+                width: '100%',
+              }}
+            >
+              <IconButton
+                aria-label="close"
+                sx={{ background: alpha(brandColors.white.main, 0.16) }}
+                onClick={() => setConfirmDiscardChanges(true)}
+              >
+                <CloseIcon />
+              </IconButton>
+            </Stack>
+            <CredentialProtocolCreate dataModel={dataModel} />
+          </ModalRight>
+          <ConfirmDialog
+            open={confirmDiscardChanges}
+            negativeAnswer={t('data-model.issue-credential.dialog-negative')}
+            positiveAnswer={t('data-model.issue-credential.dialog-positive')}
+            title={t('data-model.issue-credential.dialog-title')}
+            setOpen={setConfirmDiscardChanges}
+            onConfirm={toggleModal}
+          >
+            {t('data-model.issue-credential.dialog-text')}
+          </ConfirmDialog>
+        </>
+      )}
     </>
   );
 }
