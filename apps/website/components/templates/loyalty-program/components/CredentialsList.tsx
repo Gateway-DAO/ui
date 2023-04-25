@@ -10,7 +10,7 @@ import { AlertCustom } from '../../../../components/atoms/alert';
 import { useLoyaltyGatesCompleted } from '../../../../hooks/use-loyalty-gates-completed';
 import { useAuth } from '../../../../providers/auth';
 import {
-  Gate_Progress,
+  Credentials,
   Gates,
   Loyalty_Program,
 } from '../../../../services/hasura/types';
@@ -30,7 +30,7 @@ export function CredentialsList({ gates, loyalty }: Props) {
   });
 
   const gateIsCompleted = (
-    gatesCompleted: PartialDeep<Gate_Progress>[],
+    gatesCompleted: PartialDeep<Credentials>[],
     gate: PartialDeep<Gates>
   ) => {
     return gatesCompleted?.find(

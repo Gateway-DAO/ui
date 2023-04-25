@@ -22,7 +22,6 @@ type Props = {
 };
 
 export function ProtocolCredentialNotification({ data, timestamp }: Props) {
-  console.log(data, timestamp);
   const { gqlAuthMethods } = useAuth();
   const { t } = useTranslation('notifications');
 
