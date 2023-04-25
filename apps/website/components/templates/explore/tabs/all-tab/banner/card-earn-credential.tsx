@@ -11,10 +11,70 @@ import {
 } from '@mui/material';
 import MUICard from '@mui/material/Card';
 import { ROUTES } from 'apps/website/constants/routes';
+import { useMediaQuery, useTheme } from '@mui/material';
 
 export function CardEarnCredential(): JSX.Element {
-  const url = ROUTES.PROTOCOL_DATAMODEL.replace('[id]', 's');
-  return (
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
+  return isMobile ? (
+    <MUICard
+      sx={{
+        width: '350px',
+        display: 'flex',
+        justifyContent: 'space-between',
+        borderRadius: '16px',
+        ml: '18px',
+      }}
+    >
+      <Stack
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-between',
+        }}
+      >
+        <CardContent sx={{}}>
+          <Typography gutterBottom variant="body2" sx={{ cursor: 'pointer' }}>
+            Earn credentials
+          </Typography>
+
+          <Typography
+            variant="body1"
+            color="text.secondary"
+            sx={{
+              display: '-webkit-box',
+              WebkitLineClamp: 2,
+              WebkitBoxOrient: 'vertical',
+              overflow: 'hidden',
+              lineHeight: '166%',
+            }}
+          >
+            Execute tasks and earn credentials
+          </Typography>
+        </CardContent>
+        <Button
+          variant="outlined"
+          sx={{ marginBottom: '20px', width: '106px', marginLeft: '20px' }}
+        >
+          START NOW
+        </Button>
+      </Stack>
+
+      <Box
+        sx={{
+          marginTop: '20px',
+          marginRight: '-30px',
+        }}
+      >
+        <img
+          src={'/images/earn-credentials.png'}
+          alt={'Credit score image'}
+          width={'140px'}
+          height={'188px'}
+        />
+      </Box>
+    </MUICard>
+  ) : (
     <MUICard
       sx={{
         width: '650px',

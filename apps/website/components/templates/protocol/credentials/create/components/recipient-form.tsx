@@ -45,16 +45,6 @@ export default function RecipientForm() {
                 borderBottom: '2px solid #9A53FF',
               },
             },
-            startAdornment:
-              watch('recipientUserGatewayIdOrWallet')?.length > 0 ? (
-                <Chip
-                  key={watch('recipientUserGatewayIdOrWallet')}
-                  tabIndex={-1}
-                  label={watch('recipientUserGatewayIdOrWallet')}
-                />
-              ) : (
-                <></>
-              ),
           }}
           label={t('data-model.issue-credential.recipient-label')}
           id="recipient-id"

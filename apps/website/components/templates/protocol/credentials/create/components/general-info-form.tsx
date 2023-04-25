@@ -54,16 +54,18 @@ export default function GeneralInfoForm() {
         }}
       >
         <ImageField />
-        <Box sx={{ mt: 5 }}>
+        <Box sx={{ mt: 5, width: '100%' }}>
           <TextField
             autoFocus
+            sx={{
+              width: '100%',
+            }}
             InputProps={{
               disableUnderline: true,
               sx: {
                 '&.Mui-focused': {
                   borderBottom: '2px solid #9A53FF',
                 },
-                width: '100%',
               },
             }}
             label={t('data-model.issue-credential.title-label')}

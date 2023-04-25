@@ -51,11 +51,12 @@ export function AllTab({
         // alignItems={'flex-start'}
         justifyContent={'space-around'}
         sx={{
+          mx: -2,
           paddingBottom: 4,
           mt: -8,
           [theme.breakpoints.down('md')]: {
             flexDirection: 'column',
-            gap: '20px',
+            rowGap: '20px',
           },
         }}
       >
