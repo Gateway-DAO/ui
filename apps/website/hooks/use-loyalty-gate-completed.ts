@@ -2,16 +2,16 @@ import { useMemo } from 'react';
 
 import { PartialDeep } from 'type-fest/source/partial-deep';
 
-import { Gate_Progress, Gates } from '../services/hasura/types';
+import { Credentials, Gates } from '../services/hasura/types';
 
 type Props = {
   gate: PartialDeep<Gates>;
-  gatesCompleted: PartialDeep<Gate_Progress>[];
+  gatesCompleted: PartialDeep<Credentials>[];
 };
 
 export function useLoyaltyGateCompleted({ gatesCompleted, gate }: Props) {
   const gateCompletedMemo = useMemo(() => {
-    let gateProgressCompleted: PartialDeep<Gate_Progress> = null;
+    let gateProgressCompleted: PartialDeep<Credentials> = null;
     let gateCompleted: PartialDeep<Gates> = null;
     if (gatesCompleted && gatesCompleted.length > 0) {
       gatesCompleted.find((gateProgress) => {
