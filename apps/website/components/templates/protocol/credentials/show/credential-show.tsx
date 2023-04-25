@@ -29,6 +29,7 @@ import { InvalidStatusBox } from './components/invalid-status-box';
 import { DialogStatuses, MintDialog } from './components/mint-dialog';
 import MintNFTCard, { MintedChain } from './components/mint-nft-card';
 import { RevokeCredential } from './components/revoke-credential';
+import TriggersCard from './components/triggers-card';
 
 type Props = {
   credential: PartialDeep<Credential>;
@@ -136,6 +137,12 @@ export default function CredentialProtocolShow({ credential }: Props) {
         <Tags tags={credential?.dataModel?.tags} />
         <Typography sx={{ mb: 3 }}>{credential?.description}</Typography>
         <CredentialCardInfo credential={credential} />
+
+        {(credential.revocationConditions ||
+          credential.suspensionConditions ||
+          credential.updateConditions) && (
+          <TriggersCard credential={credential} />
+        )}
 
         {isReceivedCredential && isAllowedToMint && (
           <MintNFTCard
