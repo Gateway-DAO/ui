@@ -56,7 +56,7 @@ export function AllTab({
           title={t('featured-credentials.title')}
           caption={t('featured-credentials.caption')}
           action={
-            <Button onClick={() => router.push('home/all')}>
+            <Button onClick={() => router.push(ROUTES.EXPLORE_EARN)}>
               {t('featured-credentials.see-more')}
             </Button>
           }
@@ -75,7 +75,7 @@ export function AllTab({
             caption={`${t('featured-passes.caption')}`}
             action={
               passes.length > 0 && (
-                <Button onClick={() => router.push('home/all')}>
+                <Button onClick={() => router.push(ROUTES.EXPLORE_PASSES)}>
                   {t('featured-passes.see-more')}
                 </Button>
               )
@@ -96,7 +96,7 @@ export function AllTab({
           title={t('featured-data-models.title')}
           caption={t('featured-data-models.caption')}
           action={
-            <Button onClick={() => router.push('home/all')}>
+            <Button onClick={() => router.push(ROUTES.EXPLORE_ISSUE)}>
               {t('featured-data-models.see-more')}
             </Button>
           }
@@ -112,7 +112,7 @@ export function AllTab({
           title={t('featured-organizations.title')}
           caption={t('featured-organizations.caption')}
           action={
-            <Button onClick={() => router.push('home/all')}>
+            <Button onClick={() => router.push(ROUTES.EXPLORE_ORGANIZATIONS)}>
               {t('featured-organizations.see-more')}
             </Button>
           }
