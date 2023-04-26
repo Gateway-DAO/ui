@@ -19,7 +19,6 @@ export function CardEarnCredential(): JSX.Element {
   return isMobile ? (
     <MUICard
       sx={{
-        width: '350px',
         display: 'flex',
         justifyContent: 'space-between',
         borderRadius: '16px',
@@ -34,7 +33,12 @@ export function CardEarnCredential(): JSX.Element {
         }}
       >
         <CardContent sx={{}}>
-          <Typography gutterBottom variant="body2" sx={{ cursor: 'pointer' }}>
+          <Typography
+            gutterBottom
+            sx={{ cursor: 'pointer' }}
+            variant="subtitle1"
+            color={'white'}
+          >
             Earn credentials
           </Typography>
 
@@ -54,7 +58,7 @@ export function CardEarnCredential(): JSX.Element {
         </CardContent>
         <Button
           variant="outlined"
-          sx={{ marginBottom: '20px', width: '106px', marginLeft: '20px' }}
+          sx={{ marginBottom: '20px', width: '106px', ml: 1 }}
         >
           START NOW
         </Button>
@@ -77,7 +81,7 @@ export function CardEarnCredential(): JSX.Element {
   ) : (
     <MUICard
       sx={{
-        width: '650px',
+        width: '49%',
         display: 'flex',
         justifyContent: 'space-between',
         borderRadius: '16px',

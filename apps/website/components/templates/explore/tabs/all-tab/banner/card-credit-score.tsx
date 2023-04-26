@@ -20,7 +20,6 @@ export function CardCreditScore(): JSX.Element {
   return isMobile ? (
     <MUICard
       sx={{
-        width: '350px',
         display: 'flex',
         justifyContent: 'space-between',
         borderRadius: '16px',
@@ -35,13 +34,19 @@ export function CardCreditScore(): JSX.Element {
         }}
       >
         <CardContent sx={{}}>
-          <Typography gutterBottom variant="body2" sx={{ cursor: 'pointer' }}>
+          <Typography
+            gutterBottom
+            variant="subtitle1"
+            sx={{ cursor: 'pointer' }}
+            color={'white'}
+          >
             Your new DeFi Credit
           </Typography>
           <Typography
             gutterBottom
-            variant="body1"
             sx={{ cursor: 'pointer', lineHeight: '160%' }}
+            variant="subtitle1"
+            color={'white'}
           >
             Score has arrived
           </Typography>
@@ -84,7 +89,7 @@ export function CardCreditScore(): JSX.Element {
   ) : (
     <MUICard
       sx={{
-        width: '650px',
+        width: '49%',
         display: 'flex',
         justifyContent: 'space-between',
         borderRadius: '16px',

@@ -48,12 +48,12 @@ export function AllTab({
       <Banner />
       <Stack
         flexDirection={'row'}
-        // alignItems={'flex-start'}
-        justifyContent={'space-around'}
+        justifyContent={'space-between'}
         sx={{
-          mx: -2,
+          ml: { md: 4, xs: 0 },
+          mr: { md: 5, xs: 2 },
           paddingBottom: 4,
-          mt: -8,
+          mt: '-2.5%',
           [theme.breakpoints.down('md')]: {
             flexDirection: 'column',
             rowGap: '20px',
