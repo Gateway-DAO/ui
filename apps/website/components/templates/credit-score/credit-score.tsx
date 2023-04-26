@@ -510,6 +510,7 @@ export function CreditScoreTemplate() {
             alignItems={'center'}
             justifyContent={'center'}
             borderRadius={3}
+            width={'100%'}
           >
             <Box position={'relative'}>
               <ArcProgress
