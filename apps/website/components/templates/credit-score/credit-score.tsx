@@ -25,8 +25,6 @@ import {
   Tooltip,
   Typography,
   styled,
-  useMediaQuery,
-  useTheme,
 } from '@mui/material';
 import { Link as MUILink } from '@mui/material';
 
@@ -63,49 +61,28 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 export function CreditScoreTemplate() {
-  const theme = useTheme();
-  const isMobile =  useMediaQuery(theme.breakpoints.down('md'));
-  const size = isMobile ? 350 : 500;
+  const size = 500;
   const fillColor = {
     gradient: ['#9A53FF', '#FE02B9', '#5DABFB', '#0075FF'],
   };
-  const customText = isMobile
-    ? [
-        {
-          text: '300',
-          font: 'Plus Jakarta Sans',
-          size: '16px',
-          color: '#FFFFFFB2',
-          x: 80,
-          y: 330,
-        },
-        {
-          text: '1000',
-          font: 'Plus Jakarta Sans',
-          size: '16px',
-          color: '#FFFFFFB2',
-          x: 310,
-          y: 330,
-        },
-      ]
-    : [
-        {
-          text: '300',
-          font: 'Plus Jakarta Sans',
-          size: '16px',
-          color: '#FFFFFFB2',
-          x: 50,
-          y: 422,
-        },
-        {
-          text: '1000',
-          font: 'Plus Jakarta Sans',
-          size: '16px',
-          color: '#FFFFFFB2',
-          x: 420,
-          y: 422,
-        },
-      ];
+  const customText = [
+    {
+      text: '300',
+      font: 'Plus Jakarta Sans',
+      size: '16px',
+      color: '#FFFFFFB2',
+      x: 50,
+      y: 422,
+    },
+    {
+      text: '1000',
+      font: 'Plus Jakarta Sans',
+      size: '16px',
+      color: '#FFFFFFB2',
+      x: 420,
+      y: 422,
+    },
+  ];
   const { t } = useTranslation('credit-score');
 
   const DATA_MODEL_ID = process.env.NEXT_PUBLIC_CRED_PROTOCOL_DM_ID;
@@ -538,7 +515,7 @@ export function CreditScoreTemplate() {
               <ArcProgress
                 thickness={20}
                 progress={!!me && isCreditScore ? creditScore / 1000 : 0}
-                fillThickness={isMobile ? 25 : 35}
+                fillThickness={35}
                 emptyColor="#FFFFFF26"
                 size={size}
                 fillColor={me ? fillColor : '#312938'}
@@ -546,11 +523,7 @@ export function CreditScoreTemplate() {
                 arcStart={140}
                 arcEnd={400}
               />
-              <Box
-                position={'absolute'}
-                top={isMobile ? 130 : 160}
-                left={isMobile ? 110 : 170}
-              >
+              <Box position={'absolute'} top={160} left={170}>
                 {!!me && isCreditScore && (
                   <>
                     <Typography align={'center'} variant="h1">
@@ -596,11 +569,7 @@ export function CreditScoreTemplate() {
                   </>
                 )}
               </Box>
-              <Box
-                position={'absolute'}
-                bottom={isMobile ? 10 : 35}
-                left={isMobile ? 140 : 198}
-              >
+              <Box position={'absolute'} bottom={35} left={198}>
                 <Typography align={'center'} variant="body1">
                   {t('about.progress.powered-by')}
                   <MUILink
