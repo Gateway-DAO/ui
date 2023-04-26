@@ -10,6 +10,7 @@ query get_home($daos_where: daos_bool_exp = {}) {
     categories
     image
     published
+    loyalty_id
     dao {
       id
       logo_url

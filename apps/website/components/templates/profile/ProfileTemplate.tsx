@@ -109,7 +109,7 @@ export default function ProfileTemplate({ user }: Props) {
         <Navbar sx={{ zIndex: 1 }} />
         {user.cover?.id && user.cover?.blur ? (
           <Image
-            src={generateImageUrl(user.cover.id)}
+            src={generateImageUrl(user.cover.s3_key)}
             blurDataURL={user.cover.blur}
             placeholder="blur"
             layout="fill"

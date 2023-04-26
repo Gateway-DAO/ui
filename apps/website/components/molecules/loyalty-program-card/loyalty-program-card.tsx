@@ -2,9 +2,7 @@ import Link from 'next/link';
 
 import type { PartialDeep } from 'type-fest';
 
-import { brandColors } from '@gateway/theme';
-
-import { CardHeader, Box, Stack, Skeleton, Chip } from '@mui/material';
+import { CardHeader, Box, Stack, Skeleton } from '@mui/material';
 import MUICard from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
@@ -15,7 +13,6 @@ import { useLoyaltyGatesCompleted } from '../../../hooks/use-loyalty-gates-compl
 import { useAuth } from '../../../providers/auth';
 import { Loyalty_Program } from '../../../services/hasura/types';
 import { AvatarFile } from '../../atoms/avatar-file';
-import Loading from '../../atoms/loading';
 import TierInfo from '../../templates/loyalty-program/components/TierInfo';
 import { TierRuler } from '../../templates/loyalty-program/components/TierRuler';
 import { CategoriesList } from '../categories-list';

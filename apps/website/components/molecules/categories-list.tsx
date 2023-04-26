@@ -62,13 +62,7 @@ export function CategoriesList({
         justifyContent={'space-between'}
         ref={parentRef}
       >
-        <Stack
-          direction="row"
-          pt={1}
-          spacing={listMode ? 0 : 1}
-          px={listMode ? 0 : 2}
-          {...props}
-        >
+        <Stack direction="row" pt={1} spacing={listMode ? 0 : 1} {...props}>
           {isPass && (
             <Chip
               aria-hidden={false}
@@ -88,14 +82,14 @@ export function CategoriesList({
                 key={category + index}
                 label={formattedLabel}
                 size="small"
-                sx={{ mr: listMode ? '10px' : 'none' }}
+                sx={{ mr: listMode ? 'none' : 'none' }}
               />
             );
           })}
         </Stack>
 
         {itemsPopover.length > 0 && (
-          <Stack mr={2} mt={1}>
+          <Stack mt={1}>
             <Chip
               size="small"
               aria-owns={open ? 'mouse-over-popover' : undefined}
@@ -133,9 +127,11 @@ export function CategoriesList({
           </List>
         </Popover>
       </Stack>
-      <Stack direction="row" spacing={1} px={2} pt={1} pb={2} {...props}>
-        {isGate && showStatus && <GateStateChip published={published} small />}
-      </Stack>
+      {isGate && (
+        <Stack direction="row" spacing={1} px={2} pt={1} pb={2} {...props}>
+          {showStatus && <GateStateChip published={published} small />}
+        </Stack>
+      )}
     </>
   );
 }

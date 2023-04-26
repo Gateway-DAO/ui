@@ -8,7 +8,9 @@
     "connected-accounts-title": "Connected accounts",
     "connected-accounts-description": "These are the accounts you connected to your Gateway account",
     "notifications-title": "Notifications",
-    "notifications-description": "Select the sort of notifications you get about"
+    "notifications-description": "Select the sort of notifications you get about",
+    "developer-portal-title": "Developer Portal",
+    "developer-portal-description": "Here's all the info needed to connect to our API."
   },
   "profile": {
     "description": "Information provided will be displayed on your Gateway profile.",
@@ -57,7 +59,7 @@
     "code-placeholder": "Code",
     "code-action": "Verify",
     "code-send-again": "send code again",
-    "email-sent": "Confirmation code sent to your email",
+    "email-sent": "Code sent to",
     "email-verified": "Email successfully verified",
     "email-error-sending": "There was an error sending the code",
     "email-error-validating": "There was an error validating the code"
@@ -119,5 +121,8 @@
         "description": "User accepts your friend request"
       }
     }
+  },
+  "developer-portal": {
+
   }
 }

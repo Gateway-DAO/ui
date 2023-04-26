@@ -20,7 +20,6 @@ type Props = {
   completedAt?: string;
   completedTasksCount: number;
   formattedDate: string;
-  published: string;
   isCredentialExpired: boolean;
   setOpen: () => void;
 };
@@ -31,7 +30,6 @@ export function TaskList({
   completedAt,
   completedTasksCount,
   formattedDate,
-  published,
   isCredentialExpired,
   setOpen,
 }: Props) {
@@ -153,7 +151,7 @@ export function TaskList({
               task={task}
               idx={idx + 1}
               isDefaultOpen={completedTasksCount === idx}
-              readOnly={published !== 'published' || isCredentialExpired}
+              readOnly={gate.published !== 'published' || isCredentialExpired}
               isAdmin={isAdmin}
             />
           ))}

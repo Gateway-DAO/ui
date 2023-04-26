@@ -6,14 +6,14 @@ import { TOKENS, brandColors } from '@gateway/theme';
 
 import { Stack, Typography, alpha } from '@mui/material';
 
-import { AlertCustom } from '../../../../../components/atoms/alert';
-import { useLoyaltyGatesCompleted } from '../../../../../hooks/use-loyalty-gates-completed';
-import { useAuth } from '../../../../../providers/auth';
+import { AlertCustom } from '../../../../components/atoms/alert';
+import { useLoyaltyGatesCompleted } from '../../../../hooks/use-loyalty-gates-completed';
+import { useAuth } from '../../../../providers/auth';
 import {
-  Gate_Progress,
+  Credentials,
   Gates,
   Loyalty_Program,
-} from '../../../../../services/hasura/types';
+} from '../../../../services/hasura/types';
 import { CredentialListItem } from './CredentialListItem';
 
 type Props = {
@@ -30,7 +30,7 @@ export function CredentialsList({ gates, loyalty }: Props) {
   });
 
   const gateIsCompleted = (
-    gatesCompleted: PartialDeep<Gate_Progress>[],
+    gatesCompleted: PartialDeep<Credentials>[],
     gate: PartialDeep<Gates>
   ) => {
     return gatesCompleted?.find(

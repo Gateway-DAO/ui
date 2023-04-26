@@ -17,6 +17,7 @@ import objectToParams from '../../utils/map-object';
 type Props = {
   title?: string;
   url?: string;
+  description?: string;
   menu: {
     element: HTMLElement;
     isOpen: boolean;
@@ -29,11 +30,12 @@ type Props = {
 type SocialProps = {
   title?: string;
   url?: string;
+  description?: string;
 };
 
 const tweetLink = (props: SocialProps) =>
   `https://twitter.com/intent/tweet${objectToParams({
-    text: props.title,
+    text: props.description,
     url: props.url,
   })}`;
 
@@ -47,13 +49,15 @@ const facebookLink = (props: SocialProps) =>
   })}`;
 
 export function ShareButtonFn({
-  title = 'Gateway',
+  title = 'Gateway_xyz',
   url = typeof window !== 'undefined' ? window.location.href : '',
   menu,
+  description = 'Got my hands on credential',
 }: Props) {
   const { enqueueSnackbar } = useSnackbar();
   const [state, copyToClipboard] = useCopyToClipboard();
-  const data = { title, url };
+  const data = { title, url, description };
+
   const { t } = useTranslation('common');
   const onShare = () => {
     try {

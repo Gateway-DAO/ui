@@ -10,7 +10,7 @@ export function ListView(data: PartialDeep<CredentialData>) {
   const items = useMemo(() => {
     let list = [];
     if (data?.value?.indexOf(',') > -1) {
-      list = data?.value.split(', ');
+      list = data?.value.split(',');
     } else if (data?.value !== '') {
       list.push(data.value);
     }

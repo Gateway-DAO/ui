@@ -46,9 +46,9 @@
     "playground": "Playground"
   },
   "featured-banner": {
-    "title": "Create a profile for your organization",
-    "subtitle": "A space for your organization issue, manage and consume verifiable credentials.",
-    "action": "Create now"
+    "title": "Earn Your Credit Score Credential now!",
+    "subtitle": "Only available for EVM wallets.",
+    "action": "Start now"
   },
   "featured-credentials": {
     "title": "Featured Credentials",
@@ -105,7 +105,7 @@
     "share-on": "Share on",
     "share-title": "See my credential",
     "share-anonymous": "[title] issued by [issuer] to [recipient] via @Gateway_xyz\n\n",
-    "share-twitter-recipient": "🎉 Just got my hands on the [title] issued by from [issuer] via @Gateway_xyz\n\n",
+    "share-twitter-recipient": "🎉 Just received my official [title] issued by [issuer] via @gateway_xyz 🎉\n\n",
     "email": "E-mail",
     "linkedin": "LinkedIn",
     "reddit": "Reddit",

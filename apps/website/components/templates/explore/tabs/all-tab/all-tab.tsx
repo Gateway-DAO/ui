@@ -5,7 +5,7 @@ import { PartialDeep } from 'type-fest';
 import { Button, Divider, Stack } from '@mui/material';
 
 import { ROUTES } from '../../../../../constants/routes';
-import { DataModel } from '../../../../../services/gateway-protocol/types';
+import { Protocol_Data_Model } from '../../../../../services/hasura/types';
 import { DaoCard } from '../../../../molecules/dao-card';
 import { DataModelCard } from '../../../../molecules/data-model-card';
 import { GatesCard } from '../../../../molecules/gates-card';
@@ -20,7 +20,8 @@ import Banner from './banner/banner';
 import { useRouter } from 'next/router';
 
 type Props = {
-  dataModels: PartialDeep<DataModel>[];
+  setActiveTab: (tab: number) => void;
+  dataModels: PartialDeep<Protocol_Data_Model>[];
 } & ExploreProps;
 
 export function AllTab({

@@ -5,7 +5,7 @@ import { PartialDeep } from 'type-fest/source/partial-deep';
 
 import { query } from '../constants/queries';
 import { useAuth } from '../providers/auth';
-import { Gate_Progress, Scalars } from '../services/hasura/types';
+import { Credentials, Scalars } from '../services/hasura/types';
 
 type Props = {
   loyaltyProgramId: Scalars['uuid'];
@@ -32,10 +32,13 @@ export function useLoyaltyGatesCompleted({ loyaltyProgramId }: Props) {
 
   const totalPoints = useMemo(() => {
     let pts = 0;
-    if (gatesCompleted?.data?.gate_progress) {
-      gatesCompleted.data.gate_progress.map((gateProgress) => {
-        if (gateProgress?.gate?.points > 0) {
-          pts += gateProgress.gate.points;
+    if (gatesCompleted?.data?.credentials) {
+      gatesCompleted.data.credentials.map((credential) => {
+        if (
+          credential?.gate?.points > 0 &&
+          credential?.gate?.published === 'published'
+        ) {
+          pts += credential.gate.points;
         }
       });
     }
@@ -53,8 +56,8 @@ export function useLoyaltyGatesCompleted({ loyaltyProgramId }: Props) {
     totalPoints,
     isLoading: me?.id && gatesCompleted.isLoading,
     gatesCompleted: [
-      ...(gatesCompleted?.data?.gate_progress || []),
+      ...(gatesCompleted?.data?.credentials || []),
       ...(gatesCompleted?.data?.whitelisted_wallets || []),
-    ] as PartialDeep<Gate_Progress>[],
+    ] as PartialDeep<Credentials>[],
   };
 }

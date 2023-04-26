@@ -13,4 +13,10 @@ export const query = {
     'gate_progress_completed_by_loyalty_program',
   passes: 'passes', //loyalty programs
   direct_credentialholders: 'direct-credential-holders',
+  publish_gate: 'publishGate',
+  delete_gate: 'deleteGate',
+  direct_credential_info: 'direct-credential-info',
+  gate: 'gate',
+  create_code_change_email: 'create_code',
+  confirm_token_change_email: 'confirm_token_change_email',
 };

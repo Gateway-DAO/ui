@@ -2,16 +2,17 @@ import Link from 'next/link';
 
 import { PartialDeep } from 'type-fest/source/partial-deep';
 
+import { limitChars } from '@gateway/helpers';
 import { brandColors } from '@gateway/theme';
 
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import { Chip, Stack, Typography, alpha } from '@mui/material';
 
-import SuccessfullyIcon from '../../../../../components/atoms/icons/successfully-icon';
-import SuccessfullyRoundedIcon from '../../../../../components/atoms/icons/successfully-rounded';
-import Loading from '../../../../../components/atoms/loading';
-import { ROUTES } from '../../../../../constants/routes';
-import { Gates } from '../../../../../services/hasura/types';
+import { ROUTES } from '../../../../constants/routes';
+import { Gates } from '../../../../services/hasura/types';
+import SuccessfullyIcon from '../../../atoms/icons/successfully-icon';
+import SuccessfullyRoundedIcon from '../../../atoms/icons/successfully-rounded';
+import Loading from '../../../atoms/loading';
 
 type Props = {
   gate: PartialDeep<Gates>;
@@ -68,9 +69,11 @@ export function CredentialListItem({
           <Typography variant="h6">{gate?.title}</Typography>
           <Typography
             fontSize={12}
-            sx={{ color: alpha(brandColors.white.main, 0.7) }}
+            sx={{
+              color: alpha(brandColors.white.main, 0.7),
+            }}
           >
-            {gate?.description}
+            {limitChars(gate?.description, 90)}
           </Typography>
         </Stack>
         {gate.points && gate.points > 0 && (

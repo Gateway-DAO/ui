@@ -26,11 +26,10 @@ export const defaultValues = (
     description,
     categories,
     socials: socials.map(({ network, url }) => ({ network, url })),
-    background: generateImageUrl(background?.id),
-    logo: generateImageUrl(logo?.id),
+    background: generateImageUrl(background?.s3_key),
+    logo: generateImageUrl(logo?.s3_key),
   };
 };
-
 
 export const schema: SchemaOf<NewDAOSchema> = object({
   name: string()

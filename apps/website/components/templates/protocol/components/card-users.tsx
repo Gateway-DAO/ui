@@ -105,6 +105,7 @@ export default function CardUsers({
         <CardUserCell
           label={t('credential.issuer-id')}
           picture={showPicture()}
+          fallback={organization?.data?.logo_url}
           name={limitCharsCentered(issuerName, 20)}
           href={
             organization?.data?.slug
