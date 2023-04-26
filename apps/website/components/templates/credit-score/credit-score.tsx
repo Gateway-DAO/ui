@@ -64,8 +64,8 @@ const Item = styled(Paper)(({ theme }) => ({
 
 export function CreditScoreTemplate() {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
-  const size = isMobile ? 380 : 500;
+  const isMobile =  useMediaQuery(theme.breakpoints.down('md'));
+  const size = isMobile ? 350 : 500;
   const fillColor = {
     gradient: ['#9A53FF', '#FE02B9', '#5DABFB', '#0075FF'],
   };
