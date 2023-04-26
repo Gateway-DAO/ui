@@ -16,7 +16,7 @@ import { brandColors, theme } from '@gateway/theme';
 
 export function CardCreditScore(): JSX.Element {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   return isMobile ? (
     <MUICard
       sx={{
