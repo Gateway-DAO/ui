@@ -58,11 +58,15 @@ export function DataModelCard({
                 },
                 backgroundColor: '#9A53FF',
                 px: 0,
-                filter: 'grayscale(1)',
-                mixBlendMode: 'hard-light',
+                img: {
+                  filter: 'grayscale(1)',
+                  mixBlendMode: 'hard-light',
+                },
                 ':hover': {
-                  filter: 'none',
-                  // 'mix-blend-mode': 'hard-light',
+                  img: {
+                    filter: 'none',
+                    mixBlendMode: 'unset',
+                  },
                 },
               }}
               avatar={
@@ -71,6 +75,7 @@ export function DataModelCard({
                     'https://user-images.githubusercontent.com/63333707/234028818-2faa0548-20ed-483d-93b6-6e09d1308da9.png'
                   }
                   alt="Professional recommendation"
+                  height={'302px'}
                 />
               }
             />

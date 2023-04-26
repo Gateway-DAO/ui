@@ -142,15 +142,7 @@ export function AllTab({
             <DaoCard key={dao.id} {...dao} />
           ))}
         </SectionWithSliderResponsive>
-        {/* <SectionWithGrid
-          title={t('featured-people.title')}
-          caption={t('featured-people.caption')}
-          action={null}
-        >
-          {people.map((person) => (
-            <PersonCard key={person.id} user={person} />
-          ))}
-        </SectionWithGrid> */}
+        
       </Stack>
     </Stack>
   );

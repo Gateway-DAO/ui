@@ -8,10 +8,12 @@ import {
   alpha,
   Autocomplete,
   Chip,
+  InputAdornment,
   Stack,
   TextField,
   Typography,
 } from '@mui/material';
+import SearchIcon from '@mui/icons-material/Search';
 
 import { CreateCredentialInput } from '../../../../../../services/gateway-protocol/types';
 
@@ -52,6 +54,7 @@ export default function RecipientForm() {
           error={!!errors.recipientUserGatewayIdOrWallet}
           helperText={errors.recipientUserGatewayIdOrWallet?.message}
         />
+        
       </Stack>
     </Stack>
   );

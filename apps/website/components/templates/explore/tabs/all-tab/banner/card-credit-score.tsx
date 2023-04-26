@@ -24,7 +24,7 @@ export function CardCreditScore(): JSX.Element {
         display: 'flex',
         justifyContent: 'space-between',
         borderRadius: '16px',
-        ml: '18px',
+        ml: '25px',
       }}
     >
       <Stack

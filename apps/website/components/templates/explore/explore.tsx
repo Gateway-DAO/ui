@@ -32,7 +32,7 @@ export function ExploreTemplate({
 }: TemplateProps) {
   const { t } = useTranslation('explore');
   const { activeTab, handleTabChange, setTab } = useTab();
-
+  console.log(dataModels)
   const tabs = useMemo(
     () => [
       {
