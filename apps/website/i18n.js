@@ -33,6 +33,7 @@ const config = {
       'loyalty-program',
       'credential',
       'gate-new',
+      'gate-profile',
     ],
   },
   localeDetection: false,
