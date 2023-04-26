@@ -5,7 +5,10 @@ import { useState } from 'react';
 
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useQueryClient } from '@tanstack/react-query';
-import ArcProgress from 'react-arc-progress';
+import dynamic from 'next/dynamic';
+const ArcProgress = dynamic(() => import('react-arc-progress'), {
+  ssr: false,
+});
 
 import { TOKENS } from '@gateway/theme';
 
@@ -510,7 +513,6 @@ export function CreditScoreTemplate() {
             alignItems={'center'}
             justifyContent={'center'}
             borderRadius={3}
-            width={'100%'}
           >
             <Box position={'relative'}>
               <ArcProgress
