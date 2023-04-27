@@ -123,7 +123,7 @@ export default function GateProfilePage() {
         </Box>
         <GateViewTemplate
           gateProps={gatesData.gates_by_pk}
-          credentialProtocolId={earnedCredential?.id}
+          credentialProtocol={earnedCredential}
         />
       </DashboardTemplate>
     </>

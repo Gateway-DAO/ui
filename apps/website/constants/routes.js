@@ -1,6 +1,10 @@
 const ROUTES = {
   LANDING: '/',
-  EXPLORE: '/home',
+  EXPLORE: '/explore',
+  EXPLORE_EARN: '/explore/earn',
+  EXPLORE_PASSES: '/explore/passes',
+  EXPLORE_ISSUE: '/explore/issue',
+  EXPLORE_ORGANIZATIONS: '/explore/organizations',
   SEARCH: '/search/[key]',
   NEW_USER: '/new-user',
   CREDENTIALS: '/credentials',
@@ -22,9 +26,12 @@ const ROUTES = {
   GATE_PROFILE: '/credential/[id]',
   GATE_NEW: '/credential/new',
   PROTOCOL_CREDENTIAL: '/protocol/credentials/[id]/show',
-  PROTOCOL_DATAMODEL: '/protocol/data-models/[id]/show',
-  PROTOCOL_DATAMODEL_CREDENTIAL_CREATE:
-    '/protocol/data-models/[id]/credentials/create',
+  PROTOCOL_DATAMODEL: '/model/[id]',
+  PROTOCOL_DATAMODEL_ISSUERS: '/model/[id]/issuers',
+  PROTOCOL_DATAMODEL_RECIPIENTS: '/model/[id]/recipients',
+  PROTOCOL_DATAMODEL_CREDENTIALS: '/model/[id]/credentials',
+  PROTOCOL_DATAMODEL_PLAYGROUND: '/model/[id]/playground',
+  PROTOCOL_DATAMODEL_CREDENTIAL_CREATE: '/model/[id]/credentials/create',
   LOYALTY_PROGRAM: '/loyalty/[id]',
   LOYALTY_PROGRAM_CREDENTIAL: '/loyalty/credential/[id]',
 };

@@ -1,33 +1,24 @@
 import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
 
-import { useMutation } from '@tanstack/react-query';
 import { PartialDeep } from 'type-fest';
 
 import { Divider, Stack, SxProps, Typography } from '@mui/material';
 import { Theme } from '@mui/material/styles/createTheme';
 
-import { query } from '../../../../../constants/queries';
 import { ROUTES } from '../../../../../constants/routes';
-import { useAuth } from '../../../../../providers/auth';
-import { gatewayProtocolAuthSDK } from '../../../../../services/gateway-protocol/api';
-import {
-  Chain,
-  Credential,
-  MintCredentialMutationVariables,
-} from '../../../../../services/gateway-protocol/types';
+import { useMintData } from '../../../../../hooks/use-mint-data';
+import { Credential } from '../../../../../services/gateway-protocol/types';
 import ExternalLink from '../../../../atoms/external-link';
-import ShareOn from '../../../../atoms/share-on';
-import ModalContent from '../../../../molecules/modal/modal-basic';
+import { MintDialogProtocol } from '../../../../molecules/mint-dialog-protocol';
+import ModalShareCredential from '../../../../molecules/modal/modal-share-credential';
 import CredentialCardInfo from '../../components/credential-card-info';
 import Tags from '../../components/tags';
 import Activities from './components/activities';
 import CredentialTitleAndImage from './components/credential-title-and-image';
 import DataTable from './components/data-table';
 import { InvalidStatusBox } from './components/invalid-status-box';
-import { DialogStatuses, MintDialog } from './components/mint-dialog';
-import MintNFTCard, { MintedChain } from './components/mint-nft-card';
+import MintNFTCard from './components/mint-nft-card';
 import { RevokeCredential } from './components/revoke-credential';
 import TriggersCard from './components/triggers-card';
 
@@ -35,93 +26,20 @@ type Props = {
   credential: PartialDeep<Credential>;
 };
 
-type ModalProps = {
-  open: boolean;
-  handleClose: () => void;
-  handleOpen: () => void;
-  credential: PartialDeep<Credential>;
-  title: string;
-};
-
-const ModalShareCredential = ({
-  open,
-  handleClose,
-  handleOpen,
-  credential,
-  title,
-}: ModalProps): JSX.Element => {
-  return (
-    <ModalContent
-      open={open}
-      title={title}
-      handleClose={handleClose}
-      handleOpen={handleOpen}
-      swipeableDrawer={true}
-      fullWidth
-    >
-      <ShareOn isCredential credential={credential} />
-    </ModalContent>
-  );
-};
-
 export default function CredentialProtocolShow({ credential }: Props) {
   const { t } = useTranslation('protocol');
-  const { me } = useAuth();
-  const { token } = useAuth();
-  const [shareIsOpen, setShareIsOpen] = useState<boolean>(false);
-  const [shareStatus, setShareStatus] = useState<DialogStatuses>(null);
-
   const router = useRouter();
-  const isReceivedCredential =
-    me && me?.wallet === credential?.recipientUser?.primaryWallet?.address;
-
-  const isAllowedToMint = credential.nft !== null;
-
-  // TODO: Remove this method
-  const changeChainName = (chain): Chain => {
-    if (chain === 'ethereum') return Chain.Evm;
-    return chain;
-  };
-
-  const initialMintData: MintedChain[] | null =
-    credential.nft && credential.nft.minted
-      ? [
-          {
-            chain: changeChainName(credential.nft.chain) as Chain,
-            transaction: credential.nft.txHash,
-          },
-        ]
-      : null;
-
-  const [mintData, setMintData] = useState(initialMintData);
-  const [isOpen, setIsOpen] = useState(false);
-
-  const mintCredential = useMutation(
-    [query.mintCredential],
-    ({ credentialId }: MintCredentialMutationVariables) => {
-      return gatewayProtocolAuthSDK(token).mintCredential({
-        credentialId: credentialId,
-      });
-    },
-    {
-      onSuccess: (data) => {
-        setIsOpen(true);
-        setTimeout(() => {
-          setShareStatus('share');
-        }, 1000);
-        setTimeout(() => {
-          setIsOpen(false);
-          setShareIsOpen(true);
-        }, 3500);
-        setMintData([
-          {
-            chain: credential?.recipientUser?.primaryWallet?.chain,
-            transaction: data.mintCredential.txHash,
-          },
-        ]);
-      },
-    }
-  );
+  const {
+    isOpen,
+    setIsOpen,
+    shareIsOpen,
+    setShareIsOpen,
+    shareStatus,
+    isAllowedToMint,
+    isReceivedCredential,
+    mintData,
+    mintCredential,
+  } = useMintData({ credential });
 
   const boxStyles: SxProps<Theme> = {
     maxWidth: '564px',
@@ -167,7 +85,7 @@ export default function CredentialProtocolShow({ credential }: Props) {
           />
         )}
 
-        <MintDialog
+        <MintDialogProtocol
           isOpen={mintCredential.isLoading || isOpen}
           status={shareStatus || mintCredential.status}
           onClose={() => setIsOpen(false)}

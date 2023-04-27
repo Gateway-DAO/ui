@@ -1,7 +1,5 @@
 import useTranslation from 'next-translate/useTranslation';
 
-import { brandColors } from '@gateway/theme';
-
 import { Check, Close, IosShare } from '@mui/icons-material';
 import {
   Box,
@@ -11,7 +9,7 @@ import {
   DialogTitle,
 } from '@mui/material';
 
-import { AnimatedMessage } from '../../../../../atoms/animated-message';
+import { AnimatedMessage } from '../atoms/animated-message';
 
 export type DialogStatuses = 'loading' | 'error' | 'success' | 'idle' | 'share';
 
@@ -21,7 +19,11 @@ type MintDialogProps = {
   onClose: any;
 };
 
-export function MintDialog({ isOpen, status, onClose }: MintDialogProps) {
+export function MintDialogProtocol({
+  isOpen,
+  status,
+  onClose,
+}: MintDialogProps) {
   const { t } = useTranslation('protocol');
 
   return (
@@ -39,7 +41,7 @@ export function MintDialog({ isOpen, status, onClose }: MintDialogProps) {
             justifyContent: 'center',
           }}
         >
-          {status === 'loading' && (
+          {(status === 'loading' || status === 'idle') && (
             <CircularProgress
               color="secondary"
               sx={{
@@ -95,7 +97,7 @@ export function MintDialog({ isOpen, status, onClose }: MintDialogProps) {
           )}
 
           <Box sx={{ width: 200, position: 'relative' }}>
-            {status === 'loading' && (
+            {(status === 'loading' || status === 'idle') && (
               <AnimatedMessage key="account">
                 {t('credential.mint-card.feedback-minting')}
               </AnimatedMessage>
