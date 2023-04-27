@@ -48,6 +48,12 @@
       "feedback-share": "Share your credential now!",
       "feedback-successful": "Credential successfully minted as NFT",
       "feedback-failed": "Something went wrong on minting"
+    },
+    "triggers": {
+      "title": "Triggers",
+      "update-if": "Update if",
+      "revoke-if": "Revoke if",
+      "suspend-if": "Suspend if"
     }
   },
   "data-model": {

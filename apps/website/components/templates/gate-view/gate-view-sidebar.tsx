@@ -1,3 +1,4 @@
+import useTranslation from 'next-translate/useTranslation';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -18,6 +19,7 @@ import {
   Tooltip,
   IconButton,
   Avatar,
+  Button,
 } from '@mui/material';
 
 import { ROUTES } from '../../../constants/routes';
@@ -50,15 +52,18 @@ type GateViewSidebarProps = {
   gateProps: PartialDeep<Gates>;
   completedGate: boolean;
   credential: CredentialQuery;
+  credentialProtocolId?: string;
 };
 
 export function GateViewSidebar({
   gateProps,
   completedGate,
   credential,
+  credentialProtocolId,
 }: GateViewSidebarProps) {
   const router = useRouter();
   const { me } = useAuth();
+  const { t } = useTranslation('gate-profile');
   const [isMintDialog, setMintModal] = useState(false);
   const [isHolderDialog, setIsHolderDialog] = useState(false);
   const isAdmin = isDaoAdmin({ me, gate: gateProps });
@@ -225,11 +230,30 @@ export function GateViewSidebar({
             </Typography>
           )}
 
-          <GateMintButton
-            credential={credential}
-            completedGate={completedGate}
-            setMintModal={setMintModal}
-          />
+          <Stack direction="row" gap={1} sx={{ mb: 2 }}>
+            <Button
+              variant="outlined"
+              disabled={!credentialProtocolId}
+              fullWidth
+              size="large"
+              sx={{
+                mb: 2,
+              }}
+              onClick={() =>
+                router.push({
+                  host: ROUTES.PROTOCOL_CREDENTIAL,
+                  query: { id: credentialProtocolId },
+                })
+              }
+            >
+              {t('sidebar.see_credential')}
+            </Button>
+            <GateMintButton
+              credential={credential}
+              completedGate={completedGate}
+              setMintModal={setMintModal}
+            />
+          </Stack>
 
           <Box
             component="img"
@@ -311,7 +335,7 @@ export function GateViewSidebar({
                     variant="body2"
                     color={(theme) => theme.palette.text.secondary}
                   >
-                    Claimed
+                    {t('sidebar.claimed')}
                   </Typography>
                 </Grid>
                 <Grid item xs={8}>
@@ -346,7 +370,7 @@ export function GateViewSidebar({
                     variant="body2"
                     color={(theme) => theme.palette.text.secondary}
                   >
-                    Holders
+                    {t('sidebar.holders')}
                   </Typography>
                 </Grid>
                 <Grid item xs={8} display="flex" alignItems="center">
@@ -398,7 +422,7 @@ export function GateViewSidebar({
                     variant="body2"
                     color={(theme) => theme.palette.text.secondary}
                   >
-                    Created By
+                    {t('sidebar.created_by')}
                   </Typography>
                 </Grid>
                 <Grid item xs={8}>
