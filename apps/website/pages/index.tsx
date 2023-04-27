@@ -72,7 +72,7 @@ export default function Index() {
         scheduleDemoContent={scheduleDemoContent}
         footerContent={footerContent}
         connectButton={
-          <Link passHref href="/home">
+          <Link passHref href="/explore">
             <Button
               variant="outlined"
               size="large"

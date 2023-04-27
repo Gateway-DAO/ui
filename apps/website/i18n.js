@@ -10,6 +10,10 @@ const config = {
     [ROUTES.DAO_NEW]: ['dao-new'],
     [ROUTES.DAO_PROFILE]: ['dao-profile'],
     [ROUTES.EXPLORE]: ['explore'],
+    [ROUTES.EXPLORE_EARN]: ['explore'],
+    [ROUTES.EXPLORE_ISSUE]: ['explore'],
+    [ROUTES.EXPLORE_PASSES]: ['explore'],
+    [ROUTES.EXPLORE_ORGANIZATIONS]: ['explore'],
     [ROUTES.GATE_NEW]: ['gate-new'],
     [ROUTES.GATE_PROFILE]: [
       'gate-new',
@@ -33,6 +37,10 @@ const config = {
     [ROUTES.PROTOCOL_CREDENTIAL]: ['protocol'],
     [ROUTES.PROTOCOL_DATAMODEL]: ['protocol'],
     [ROUTES.PROTOCOL_DATAMODEL_CREDENTIAL_CREATE]: ['protocol'],
+    [ROUTES.PROTOCOL_DATAMODEL_ISSUERS]: ['protocol'],
+    [ROUTES.PROTOCOL_DATAMODEL_CREDENTIALS]: ['protocol'],
+    [ROUTES.PROTOCOL_DATAMODEL_RECIPIENTS]: ['protocol'],
+    [ROUTES.PROTOCOL_DATAMODEL_PLAYGROUND]: ['protocol'],
     [ROUTES.LOYALTY_PROGRAM]: [
       'loyalty-program',
       'credential',

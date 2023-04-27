@@ -3,10 +3,10 @@ import useTranslation from 'next-translate/useTranslation';
 
 import { useQuery } from '@tanstack/react-query';
 
-import { HeadContainer } from '../components/molecules/head-container';
-import { DashboardTemplate } from '../components/templates/dashboard';
-import { ExploreTemplate } from '../components/templates/explore';
-import { gqlAnonMethods } from '../services/hasura/api';
+import { HeadContainer } from '../../components/molecules/head-container';
+import { AllTab, ExploreLayout } from '../../components/templates/explore';
+import { gatewayProtocolSDK } from '../../services/gateway-protocol/api';
+import { gqlAnonMethods } from '../../services/hasura/api';
 
 /** TODO: Prevent template remount when navigating between dashboard pages
  * https://nextjs.org/docs/basic-features/layouts
@@ -57,22 +57,13 @@ export default function Explore({
 
   return (
     <>
-      <HeadContainer />
-      <DashboardTemplate
-        containerProps={{
-          sx: {
-            pt: 2,
-            overflow: 'hidden',
-          },
-        }}
-      >
-        <ExploreTemplate
-          title={t('title')}
-          subtitle={t('subtitle')}
-          data={data}
-          dataModels={dataModels}
-        />
-      </DashboardTemplate>
+      <HeadContainer
+        title={t('meta-data.all-title')}
+        description={t('meta-data.all-description')}
+      />
+      <AllTab {...data} dataModels={dataModels} />
     </>
   );
 }
+
+Explore.PageLayout = ExploreLayout;
