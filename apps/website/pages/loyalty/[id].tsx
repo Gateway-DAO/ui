@@ -50,7 +50,7 @@ export default function LoyaltyPage({ loyalty }: Props) {
       >
         <LoyaltyProgram
           loyalty={loyalty}
-          credentialProtocolId={earnedCredentials?.[0]?.id}
+          credentialProtocol={earnedCredentials?.[0]}
         />
       </DashboardTemplate>
     </>

@@ -52,14 +52,14 @@ type GateViewSidebarProps = {
   gateProps: PartialDeep<Gates>;
   completedGate: boolean;
   credential: CredentialQuery;
-  credentialProtocolId?: string;
+  credentialProtocol?: PartialDeep<Credential>;
 };
 
 export function GateViewSidebar({
   gateProps,
   completedGate,
   credential,
-  credentialProtocolId,
+  credentialProtocol,
 }: GateViewSidebarProps) {
   const router = useRouter();
   const { me } = useAuth();
@@ -114,6 +114,8 @@ export function GateViewSidebar({
     gateProps?.creator?.picture === null
       ? gateProps?.creator.pfp
       : gateProps?.creator.picture.id;
+
+  console.log();
 
   return (
     <>
@@ -233,7 +235,7 @@ export function GateViewSidebar({
           <Stack direction="row" gap={1} sx={{ mb: 2 }}>
             <Button
               variant="outlined"
-              disabled={!credentialProtocolId}
+              disabled={!credentialProtocol?.id}
               fullWidth
               size="large"
               sx={{
@@ -242,7 +244,7 @@ export function GateViewSidebar({
               onClick={() =>
                 router.push({
                   host: ROUTES.PROTOCOL_CREDENTIAL,
-                  query: { id: credentialProtocolId },
+                  query: { id: credentialProtocol?.id },
                 })
               }
             >

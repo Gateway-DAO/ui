@@ -30,9 +30,7 @@ import { isDaoAdmin } from '../../../../utils/is-dao-admin';
 import { AvatarFile } from '../../../atoms/avatar-file';
 import ExternalLink from '../../../atoms/external-link';
 import GateStateChip from '../../../atoms/gate-state-chip';
-import { ShareButton } from '../../../atoms/share-button';
 import GateMintButton from '../../../molecules/gate-mint-button';
-import { TokenFilled } from '../../../molecules/mint-card/assets/token-filled';
 import { MintDialogProps } from '../../../molecules/mint-dialog';
 import { OptionsCredential } from '../../../molecules/options-credential';
 import { SmallTier } from './SmallTier';
@@ -47,7 +45,7 @@ type LoyaltySidebarProps = {
   gate?: PartialDeep<Gates>;
   credential?: CredentialQuery;
   completedGate?: boolean;
-  credentialProtocolId?: string;
+  credentialProtocol?: PartialDeep<Credential>;
 };
 
 export function LoyaltySidebar({
@@ -55,7 +53,7 @@ export function LoyaltySidebar({
   loyalty,
   credential,
   completedGate,
-  credentialProtocolId,
+  credentialProtocol,
 }: LoyaltySidebarProps) {
   const { t } = useTranslation('loyalty-program');
   const { me } = useAuth();
@@ -167,7 +165,7 @@ export function LoyaltySidebar({
           <Stack direction="row" gap={2} mb={2}>
             <Button
               variant="outlined"
-              disabled={!credentialProtocolId}
+              disabled={!credentialProtocol?.id}
               fullWidth
               size="large"
               sx={{
@@ -176,7 +174,7 @@ export function LoyaltySidebar({
               onClick={() =>
                 router.push({
                   host: ROUTES.PROTOCOL_CREDENTIAL,
-                  query: { id: credentialProtocolId },
+                  query: { id: credentialProtocol?.id },
                 })
               }
             >

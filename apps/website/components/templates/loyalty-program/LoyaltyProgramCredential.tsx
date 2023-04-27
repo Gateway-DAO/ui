@@ -10,13 +10,13 @@ import { LoyaltySidebar } from './components/LoyaltySidebar';
 type Props = {
   loyalty: PartialDeep<Loyalty_Program>;
   gate: PartialDeep<Gates>;
-  credentialProtocolId?: string;
+  credentialProtocol?: PartialDeep<Credential>;
 };
 
 export function LoyaltyProgramCredential({
   gate,
   loyalty,
-  credentialProtocolId,
+  credentialProtocol,
 }: Props) {
   const credential = useCredentialByGateId({ gateId: gate?.id });
   const gateStatus = useGateStatus(gate);
@@ -29,7 +29,7 @@ export function LoyaltyProgramCredential({
           loyalty={loyalty}
           credential={credential}
           completedGate={gateStatus.isCompleted}
-          credentialProtocolId={credentialProtocolId}
+          credentialProtocol={credentialProtocol}
         />
       }
       mainContent={
