@@ -2,7 +2,7 @@ import useTranslation from 'next-translate/useTranslation';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { ComponentType, useState } from 'react';
+import { ComponentType, useMemo, useState } from 'react';
 
 import { PartialDeep } from 'type-fest/source/partial-deep';
 
@@ -23,14 +23,16 @@ import {
 } from '@mui/material';
 
 import { ROUTES } from '../../../constants/routes';
+import { useMintData } from '../../../hooks/use-mint-data';
 import { useAuth } from '../../../providers/auth';
-import { CredentialQuery, Gates } from '../../../services/hasura/types';
+import { Gates } from '../../../services/hasura/types';
 import { isDaoAdmin } from '../../../utils/is-dao-admin';
 import { AvatarFile } from '../../atoms/avatar-file';
 import { ReadMore } from '../../atoms/read-more-less';
 import { ShareButton } from '../../atoms/share-button';
 import GateMintButton from '../../molecules/gate-mint-button';
-import { MintDialogProps } from '../../molecules/mint-dialog';
+import { MintDialogProtocol } from '../../molecules/mint-dialog-protocol';
+import ModalShareCredential from '../../molecules/modal/modal-share-credential';
 import { OptionsCredential } from '../../molecules/options-credential';
 import type { Props as HolderDialogProps } from '../../organisms/holder-dialog';
 
@@ -43,30 +45,37 @@ const GateStateChip = dynamic(() => import('../../atoms/gate-state-chip'), {
   ssr: false,
 });
 
-const MintDialog: ComponentType<MintDialogProps> = dynamic(
-  () => import('../../molecules/mint-dialog').then((mod) => mod.MintDialog),
-  { ssr: false }
-);
-
 type GateViewSidebarProps = {
   gateProps: PartialDeep<Gates>;
-  completedGate: boolean;
-  credential: CredentialQuery;
   credentialProtocol?: PartialDeep<Credential>;
 };
 
 export function GateViewSidebar({
   gateProps,
-  completedGate,
-  credential,
   credentialProtocol,
 }: GateViewSidebarProps) {
   const router = useRouter();
   const { me } = useAuth();
   const { t } = useTranslation('gate-profile');
-  const [isMintDialog, setMintModal] = useState(false);
   const [isHolderDialog, setIsHolderDialog] = useState(false);
   const isAdmin = isDaoAdmin({ me, gate: gateProps });
+
+  const {
+    isOpen,
+    setIsOpen,
+    shareStatus,
+    shareIsOpen,
+    setShareIsOpen,
+    isAllowedToMint,
+    isReceivedCredential,
+    mintData,
+    mintCredential,
+  } = useMintData({ credential: credentialProtocol });
+
+  const showMintButton = useMemo(
+    () => !!credentialProtocol && isReceivedCredential && isAllowedToMint,
+    [credentialProtocol, isAllowedToMint, isReceivedCredential]
+  );
 
   <HolderDialog
     {...{
@@ -115,14 +124,19 @@ export function GateViewSidebar({
       ? gateProps?.creator.pfp
       : gateProps?.creator.picture.id;
 
-  console.log();
-
   return (
     <>
-      <MintDialog
-        credential={credential?.credentials_by_pk}
-        isOpen={isMintDialog}
-        setOpen={setMintModal}
+      <MintDialogProtocol
+        isOpen={mintCredential.isLoading || isOpen}
+        status={shareStatus || mintCredential.status}
+        onClose={() => setIsOpen(false)}
+      />
+      <ModalShareCredential
+        credential={credentialProtocol}
+        handleClose={() => setShareIsOpen(false)}
+        handleOpen={() => setShareIsOpen(true)}
+        open={shareIsOpen}
+        title={t('credential.share-dialog-title')}
       />
       <Grid item xs={12} md={5}>
         <Stack
@@ -251,9 +265,12 @@ export function GateViewSidebar({
               {t('sidebar.see_credential')}
             </Button>
             <GateMintButton
-              credential={credential}
-              completedGate={completedGate}
-              setMintModal={setMintModal}
+              setMintModal={() => {
+                setIsOpen(true);
+                mintCredential.mutate({ credentialId: credentialProtocol?.id });
+              }}
+              showButton={showMintButton}
+              mintData={mintData}
             />
           </Stack>
 

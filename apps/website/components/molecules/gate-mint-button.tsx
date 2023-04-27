@@ -1,37 +1,43 @@
 import useTranslation from 'next-translate/useTranslation';
-import * as React from 'react';
 
 import { Button } from '@mui/material';
 
-import { useAuth } from '../../providers/auth';
-import { CredentialQuery } from '../../services/hasura/types';
+import { getExplorer } from '../../utils/web3';
+import { MintedChain } from '../templates/protocol/credentials/show/components/mint-nft-card';
 import { TokenFilled } from './mint-card/assets/token-filled';
 
 type Props = {
-  credential: CredentialQuery;
-  completedGate: React.ReactNode;
   setMintModal: (value: boolean) => void;
+  showButton: boolean;
+  mintData: MintedChain[];
 };
 
 export default function GateMintButton({
-  credential,
-  completedGate,
   setMintModal,
+  showButton,
+  mintData,
 }: Props) {
-  const { me } = useAuth();
   const { t } = useTranslation('credential');
 
   return (
     <>
-      {completedGate &&
-        !!credential &&
-        credential?.credentials_by_pk?.target_id == me?.id &&
-        (credential?.credentials_by_pk?.status == 'minted' ? (
+      {showButton &&
+        (mintData ? (
           <Button
             component="a"
             variant="outlined"
             size="large"
-            href={credential.credentials_by_pk.transaction_url}
+            href={`${
+              getExplorer(
+                process.env.NEXT_PUBLIC_PROTOCOL_ENV === 'production' // TODO: Update this validation
+                  ? 137
+                  : 80001
+              ) +
+              '/tx/' +
+              mintData
+                .filter((data) => data.chain === 'EVM')
+                .map((data) => data.transaction)
+            }`}
             target="_blank"
             startIcon={<TokenFilled height={20} width={20} color="action" />}
             fullWidth
