@@ -16,6 +16,7 @@ import { gatewayProtocolAuthSDK } from '../../../../../services/gateway-protocol
 import {
   CreateCredentialMutationVariables,
   CreateCredentialInput,
+  PermissionType,
 } from '../../../../../services/gateway-protocol/types';
 import { DataModel } from '../../../../../services/gateway-protocol/types';
 import { claimFields } from './components/ClaimTypes';
@@ -38,6 +39,7 @@ export default function CredentialCreateForm({
   const { gqlAuthMethods, token } = useAuth();
   const { enqueueSnackbar } = useSnackbar();
   const { t } = useTranslation('protocol');
+  const isP2PDataModel = dataModel.permissioning === PermissionType.All;
   const [credentialCreated, setCredentialCreated] = useState<string>(null);
 
   const methods = useForm({
@@ -184,7 +186,7 @@ export default function CredentialCreateForm({
             divider={<Divider sx={{ mb: 2, mt: 2, mx: { xs: -3, md: -6 } }} />}
             gap={3}
           >
-            {/* <IssueByForm dataModel={dataModel} /> */}
+            {!isP2PDataModel && <IssueByForm dataModel={dataModel} />}
             <GeneralInfoForm />
             <ClaimForm dataModel={dataModel} />
             <RecipientForm />

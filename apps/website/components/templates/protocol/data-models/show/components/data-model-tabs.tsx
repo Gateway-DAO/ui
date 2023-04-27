@@ -14,6 +14,7 @@ import {
 import { useTab, TabPanel } from '../../../../../atoms/tabs';
 import { IColumnGrid } from '../../../../../organisms/data-grid/data-grid';
 import { PlaygroundTab } from './playground-tab';
+import { GetDmStatsUntilDayBeforeQuery } from 'apps/website/services/hasura/types';
 
 const OverviewTab = dynamic(() => import('./overview-tab'), { ssr: false });
 const GridViewTab = dynamic(() => import('./grid-view-tab'), { ssr: false });
@@ -21,9 +22,10 @@ const GridViewTab = dynamic(() => import('./grid-view-tab'), { ssr: false });
 type Props = {
   dataModel: PartialDeep<DataModel>;
   stats: GetDataModelStatsQuery;
+  statsUntilYesterday: GetDmStatsUntilDayBeforeQuery;
 };
 
-export default function DataModelTabs({ dataModel, stats }: Props) {
+export default function DataModelTabs({ dataModel, stats, statsUntilYesterday }: Props) {
   const { activeTab, handleTabChange, setTab } = useTab();
   const { t } = useTranslation('protocol');
 
@@ -94,7 +96,13 @@ export default function DataModelTabs({ dataModel, stats }: Props) {
     {
       key: 'overview',
       label: t('common:tabs.overview'),
-      section: <OverviewTab dataModel={dataModel} stats={stats} />,
+      section: (
+        <OverviewTab
+          dataModel={dataModel}
+          stats={stats}
+          statsUntilYesterday={statsUntilYesterday}
+        />
+      ),
     },
     {
       key: 'issuers',

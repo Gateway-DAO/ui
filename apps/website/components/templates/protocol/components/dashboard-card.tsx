@@ -8,7 +8,7 @@ import { Stack, Paper, Typography, alpha, Chip } from '@mui/material';
 type Props = {
   label: string;
   value: number;
-  caption?: string;
+  caption: string;
   indicator?: number;
 };
 

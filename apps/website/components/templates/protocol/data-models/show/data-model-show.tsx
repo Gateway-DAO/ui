@@ -25,20 +25,26 @@ import DataModelTabs from './components/data-model-tabs';
 import { gqlAnonMethods } from 'apps/website/services/hasura/api';
 import { useQuery } from '@tanstack/react-query';
 import { AvatarFile } from 'apps/website/components/atoms/avatar-file';
+import { GetDmStatsUntilDayBeforeQuery } from 'apps/website/services/hasura/types';
+import IssueCredentialButton from './components/issue-credential-button';
 
 type Props = {
   dataModel: PartialDeep<DataModel>;
   stats: GetDataModelStatsQuery;
   isCredentialCreate?: boolean;
+  statsUntilYesterday: GetDmStatsUntilDayBeforeQuery;
 };
 
 export default function DataModelShow({
   dataModel,
   stats,
   isCredentialCreate = false,
+  statsUntilYesterday,
 }: Props) {
   const { t } = useTranslation('protocol');
   const { me } = useAuth();
+  const isP2PDataModel = dataModel.permissioning === PermissionType.All;
+  console.log(isP2PDataModel);
   const [openCreateCredential, setOpenCreateCredential] = useToggle(false);
   const [confirmDiscardChanges, setConfirmDiscardChanges] = useState(false);
 
@@ -97,37 +103,54 @@ export default function DataModelShow({
       refetchOnWindowFocus: false,
     }
   );
-  console.log(dataModel, stats);
+
   return (
     <>
       <Stack sx={{ px: { xs: 0, md: 4, lg: 6 } }}>
-        <Stack
-          sx={{
-            flexDirection: false ? 'row-reverse' : 'row',
-            alignItems: 'center',
-            flexBasis: '100%',
-            cursor: false ? 'pointer' : 'default',
-            borderRadius: true
-              ? '16px 16px 0 0'
-              : false
-              ? '0 16px 0 0'
-              : '16px 0 0 0',
-            transition: 'background .3s ease',
-            '&:hover': {
-              background: false
-                ? alpha(brandColors.white.main, 0.05)
-                : 'inherit',
-            },
-          }}
-        >
-          <AvatarFile
-            file={creator?.data?.logo}
-            fallback="/avatar.png"
-            sx={{ ml: true ? 0 : 2, mr: true ? 2 : 0 }}
-          >
-            {dataModel.title}
-          </AvatarFile>
-          <div>
+        {isP2PDataModel && (
+          <>
+            <Stack
+              sx={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                flexBasis: '100%',
+                cursor: false ? 'pointer' : 'default',
+                borderRadius: true
+                  ? '16px 16px 0 0'
+                  : false
+                  ? '0 16px 0 0'
+                  : '16px 0 0 0',
+                transition: 'background .3s ease',
+                '&:hover': {
+                  background: false
+                    ? alpha(brandColors.white.main, 0.05)
+                    : 'inherit',
+                },
+              }}
+            >
+              <AvatarFile
+                file={creator?.data?.logo}
+                fallback="/avatar.png"
+                sx={{ mr: 2 }}
+              >
+                {dataModel.title}
+              </AvatarFile>
+              <div>
+                <InfoTitle
+                  title={dataModel?.title}
+                  labelId={t('data-model.data-model-id')}
+                  id={dataModel?.id}
+                  copySucessMessage={t('data-model.copy-id')}
+                  badgeTooltip={t('data-model.verified-description')}
+                />
+                <Tags tags={dataModel?.tags} />
+              </div>
+            </Stack>
+            <Typography sx={{ mb: 3 }}>{dataModel?.description}</Typography>
+          </>
+        )}
+        {!isP2PDataModel && (
+          <>
             <InfoTitle
               title={dataModel?.title}
               labelId={t('data-model.data-model-id')}
@@ -136,15 +159,19 @@ export default function DataModelShow({
               badgeTooltip={t('data-model.verified-description')}
             />
             <Tags tags={dataModel?.tags} />
-          </div>
-        </Stack>
-
-        <Typography sx={{ mb: 3 }}>{dataModel?.description}</Typography>
-        
+            <Typography sx={{ mb: 3 }}>{dataModel?.description}</Typography>
+            <IssueCredentialButton
+              hasAnAccountAvailableToIssue={hasAnAccountAvailableToIssue}
+              onClickIssueCredential={setOpenCreateCredential}
+            />
+          </>
+        )}
       </Stack>
-      <DataModelTabs dataModel={dataModel} stats={stats} />
-
-      
+      <DataModelTabs
+        dataModel={dataModel}
+        stats={stats}
+        statsUntilYesterday={statsUntilYesterday}
+      />
     </>
   );
 }

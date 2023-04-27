@@ -14,7 +14,6 @@ import {
 import ModalRight from '../../../../../molecules/modal-right';
 import ConfirmDialog from '../../../../../../components/organisms/confirm-dialog/confirm-dialog';
 
-
 import { brandColors } from '@gateway/theme';
 import CredentialProtocolCreate from '../../../credentials/create/credential-create';
 import {
@@ -31,20 +30,41 @@ import { useAuth } from '../../../../../../providers/auth';
 import { useToggle } from 'react-use';
 import { useEffect, useMemo, useState } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
+import { GetDmStatsUntilDayBeforeQuery } from 'apps/website/services/hasura/types';
 
 type Props = {
   dataModel: PartialDeep<DataModel>;
   stats: GetDataModelStatsQuery;
   isCredentialCreate?: boolean;
+  statsUntilYesterday: GetDmStatsUntilDayBeforeQuery;
 };
 
 export default function OverviewTab({
   dataModel,
   stats,
   isCredentialCreate = false,
+  statsUntilYesterday,
 }: Props) {
   const { t } = useTranslation('protocol');
+  const isP2PDataModel = dataModel.permissioning === PermissionType.All;
   const isMobile = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
+  const s =
+    stats?.getTotalCredentialsByDataModel -
+    statsUntilYesterday?.credential_count?.aggregate?.count;
+  console.log(statsUntilYesterday?.credential_count?.aggregate?.count);
+  console.log(
+    stats?.getTotalCredentialsByDataModel -
+      statsUntilYesterday?.credential_count?.aggregate?.count
+  );
+  console.log(((stats?.getTotalCredentialsByDataModel - s) / s) * 100);
+
+  const findGrowth = (finalValue: number, startingValue: number) =>
+    ((finalValue - startingValue) / startingValue) * 100;
+
+  const differenceInValues = (finalValue: number, startingValue: number) =>
+    finalValue - startingValue;
+
+  const isGrowth = (startingValue: number) => startingValue === 0;
 
   const { me } = useAuth();
   const [openCreateCredential, setOpenCreateCredential] = useToggle(false);
@@ -87,26 +107,31 @@ export default function OverviewTab({
   return (
     <>
       <Stack sx={{ maxWidth: '726px', pt: 2 }}>
-        <Typography
-          variant="h6"
-          sx={{ fontSize: { xs: '20px', md: '32px' }, my: 2 }}
-        >
-          Celebrate the addition of a new team member to an organization
-        </Typography>
-        <Typography sx={{ mb: 3 }}>
-          This credential recognizes the recipient's contribution to the team
-          and their potential to make a positive impact on the organization. It
-          highlights their skills, experience, and enthusiasm for the role, and
-          demonstrates the organization's commitment to fostering a culture of
-          recognition and appreciation. Achieving this credential is a
-          meaningful accomplishment for any new team member and can serve as a
-          source of motivation and validation as they embark on their journey
-          with the organization.
-        </Typography>
-        <IssueCredentialButton
-          hasAnAccountAvailableToIssue={hasAnAccountAvailableToIssue}
-          onClickIssueCredential={setOpenCreateCredential}
-        />
+        {isP2PDataModel && (
+          <>
+            <Typography
+              variant="h6"
+              sx={{ fontSize: { xs: '20px', md: '32px' }, my: 2 }}
+            >
+              Celebrate the addition of a new team member to an organization
+            </Typography>
+            <Typography sx={{ mb: 3 }}>
+              This credential recognizes the recipient's contribution to the
+              team and their potential to make a positive impact on the
+              organization. It highlights their skills, experience, and
+              enthusiasm for the role, and demonstrates the organization's
+              commitment to fostering a culture of recognition and appreciation.
+              Achieving this credential is a meaningful accomplishment for any
+              new team member and can serve as a source of motivation and
+              validation as they embark on their journey with the organization.
+            </Typography>
+            <IssueCredentialButton
+              hasAnAccountAvailableToIssue={hasAnAccountAvailableToIssue}
+              onClickIssueCredential={setOpenCreateCredential}
+            />
+          </>
+        )}
+
         <OverviewCardInfo dataModel={dataModel} />
         <Stack direction="row" justifyContent="flex-end" sx={{ mb: 2 }}>
           <ExternalLink
@@ -124,14 +149,26 @@ export default function OverviewTab({
           <DashboardCard
             label={t('data-model.issuers')}
             value={stats?.getTotalofIssuersByDataModel}
+            caption={`from ${
+              stats?.getTotalofIssuersByDataModel -
+              statsUntilYesterday?.credential_count?.aggregate?.count
+            } (in 1 day)`}
           />
           <DashboardCard
             label={t('data-model.issued-credentials')}
             value={stats?.getTotalCredentialsByDataModel}
+            caption={`from ${
+              stats?.getTotalCredentialsByDataModel -
+              statsUntilYesterday?.credential_count?.aggregate?.count
+            } (in 1 day)`}
           />
           <DashboardCard
             label={t('data-model.recipients')}
             value={stats?.getTotalCredentialsByDataModelGroupByRecipient}
+            caption={`from ${
+              stats?.getTotalCredentialsByDataModelGroupByRecipient -
+              statsUntilYesterday?.credential_count?.aggregate?.count
+            } (in 1 day)`}
           />
         </Stack>
         <TableSchema
