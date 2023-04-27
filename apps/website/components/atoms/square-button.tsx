@@ -25,7 +25,7 @@ export default function SquareButton({
         background: 'rgba(229, 229, 229, 0.08)',
         textDecoration: 'none',
         textAlign: 'center',
-        width: fullWidth ? '100%' : '80px',
+        width: fullWidth ? '100%' : { xs: '100%', sm: '80px' },
         height: fullWidth ? { xs: '56px', sm: '80px' } : '80px',
         display: 'flex',
         justifyContent: fullWidth ? { xs: 'start', sm: 'center' } : 'center',

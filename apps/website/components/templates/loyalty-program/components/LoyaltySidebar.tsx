@@ -3,17 +3,20 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useMemo } from 'react';
 
+import { useToggle } from 'react-use';
 import { PartialDeep } from 'type-fest/source/partial-deep';
 
 import { limitCharsCentered } from '@gateway/helpers';
 
-import { ReadMore } from '@mui/icons-material';
+import { IosShare, ReadMore } from '@mui/icons-material';
 import {
+  Avatar,
   Box,
   Button,
   Chip,
   Divider,
   Grid,
+  IconButton,
   Stack,
   Typography,
 } from '@mui/material';
@@ -26,8 +29,10 @@ import { isDaoAdmin } from '../../../../utils/is-dao-admin';
 import { AvatarFile } from '../../../atoms/avatar-file';
 import ExternalLink from '../../../atoms/external-link';
 import GateStateChip from '../../../atoms/gate-state-chip';
+import ShareOn from '../../../atoms/share-on';
 import GateMintButton from '../../../molecules/gate-mint-button';
 import { MintDialogProtocol } from '../../../molecules/mint-dialog-protocol';
+import ModalContent from '../../../molecules/modal/modal-basic';
 import ModalShareCredential from '../../../molecules/modal/modal-share-credential';
 import { OptionsCredential } from '../../../molecules/options-credential';
 import { SmallTier } from './SmallTier';
@@ -64,6 +69,7 @@ export function LoyaltySidebar({
     () => !!credentialProtocol && isReceivedCredential && isAllowedToMint,
     [credentialProtocol, isAllowedToMint, isReceivedCredential]
   );
+  const [shareLoyaltyIsOpen, setShareLoyaltyIsOpen] = useToggle(false);
 
   const texts = {
     title: gate?.title || loyalty.name,
@@ -155,8 +161,22 @@ export function LoyaltySidebar({
                 ))}
               </Box>
               <Stack flexDirection="row" gap={1}>
-                {/*TODO: use share dialog*/}
-                {/* <ShareButton title={`${texts?.title} @Gateway`} /> */}
+                <IconButton
+                  sx={{
+                    p: 0,
+                  }}
+                  onClick={setShareLoyaltyIsOpen}
+                  key="share"
+                >
+                  <Avatar sx={{ height: '30px', width: '31px' }}>
+                    <IosShare
+                      sx={{
+                        mt: -0.25,
+                        height: '20px',
+                      }}
+                    />
+                  </Avatar>
+                </IconButton>
                 {gate && <OptionsCredential gate={gate} />}
               </Stack>
             </Stack>
@@ -248,6 +268,16 @@ export function LoyaltySidebar({
           </Grid>
         </Box>
       </Grid>
+      <ModalContent
+        open={shareLoyaltyIsOpen}
+        title={t('common:social.share-on')}
+        handleClose={() => setShareLoyaltyIsOpen(false)}
+        handleOpen={() => setShareLoyaltyIsOpen(true)}
+        swipeableDrawer={true}
+        fullWidth
+      >
+        <ShareOn />
+      </ModalContent>
     </>
   );
 }
