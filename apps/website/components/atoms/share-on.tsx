@@ -31,7 +31,7 @@ export default function ShareOn({ isCredential, credential }: Props) {
   const isReceivedCredential =
     me && me?.wallet === credential?.recipientUser?.primaryWallet?.address;
 
-  let tweetText = t('social.share-title');
+  let tweetText;
 
   if (isReceivedCredential) {
     tweetText = t('social.share-twitter-recipient')
@@ -77,7 +77,7 @@ export default function ShareOn({ isCredential, credential }: Props) {
   };
 
   return (
-    <Stack sx={{ textAlign: 'left' }}>
+    <Stack sx={{ textAlign: 'left', width: { xs: '100%', sm: 'auto' } }}>
       <Typography fontWeight={700} sx={{ mb: 2 }}>
         {t('social.share-on')}
       </Typography>
@@ -101,7 +101,7 @@ export default function ShareOn({ isCredential, credential }: Props) {
         justifyContent="space-between"
       >
         <SquareButton
-          fullWidth
+          fullWidth={isCredential}
           label={t('social.twitter')}
           clickHandler={() => {
             window.open(tweetLink);
@@ -111,7 +111,7 @@ export default function ShareOn({ isCredential, credential }: Props) {
           <Twitter color="secondary" />
         </SquareButton>
         <SquareButton
-          fullWidth
+          fullWidth={isCredential}
           label={t('social.linkedin')}
           clickHandler={() => {
             window.open(linkedinLink);
@@ -120,20 +120,22 @@ export default function ShareOn({ isCredential, credential }: Props) {
         >
           <LinkedIn color="secondary" />
         </SquareButton>
+        {isCredential && (
+          <SquareButton
+            fullWidth
+            label={t('social.download-image')}
+            clickHandler={(e) => {
+              window.open(imageURL);
+              enqueueSnackbar(t('social.download-image-feedback'));
+              sendClickToGA('download-image', isCredential);
+              e.preventDefault();
+            }}
+          >
+            <Download color="secondary" />
+          </SquareButton>
+        )}
         <SquareButton
-          fullWidth
-          label={t('social.download-image')}
-          clickHandler={(e) => {
-            window.open(imageURL);
-            enqueueSnackbar(t('social.download-image-feedback'));
-            sendClickToGA('download-image', isCredential);
-            e.preventDefault();
-          }}
-        >
-          <Download color="secondary" />
-        </SquareButton>
-        <SquareButton
-          fullWidth
+          fullWidth={isCredential}
           label={t('social.copy-link')}
           clickHandler={() => {
             navigator.clipboard.writeText(window.location.href);
