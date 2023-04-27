@@ -11,7 +11,7 @@ import { query } from '../../../../../constants/queries';
 import { gqlAnonMethods } from '../../../../../services/hasura/api';
 import { DataModelCard } from '../../../../molecules/data-model-card';
 
-export default function DataModelsTab(): JSX.Element {
+export function DataModelsTab(): JSX.Element {
   const internalPageSize = 16;
   const {
     data: dataModels,
