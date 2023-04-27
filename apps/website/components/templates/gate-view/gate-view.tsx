@@ -10,9 +10,13 @@ import { GateViewTasks } from './gate-view-tasks';
 
 type GateViewProps = {
   gateProps: PartialDeep<Gates>;
+  credentialProtocolId?: string;
 };
 
-export function GateViewTemplate({ gateProps }: GateViewProps) {
+export function GateViewTemplate({
+  gateProps,
+  credentialProtocolId,
+}: GateViewProps) {
   const gateStatus = useGateStatus(gateProps);
   const credential = useCredentialByGateId({ gateId: gateProps?.id });
 
@@ -28,6 +32,7 @@ export function GateViewTemplate({ gateProps }: GateViewProps) {
         completedGate={gateStatus.isCompleted}
         credential={credential}
         gateProps={gateProps}
+        credentialProtocolId={credentialProtocolId}
       />
       <Divider orientation="vertical" flexItem />
       <GateViewTasks
