@@ -20,7 +20,6 @@ import Banner from './banner/banner';
 import { useRouter } from 'next/router';
 
 type Props = {
-  setActiveTab: (tab: number) => void;
   dataModels: PartialDeep<Protocol_Data_Model>[];
 } & ExploreProps;
 

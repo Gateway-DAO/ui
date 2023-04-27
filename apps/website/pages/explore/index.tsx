@@ -21,12 +21,12 @@ export const getStaticProps = async () => {
     },
   });
 
-  const dataModels = await gatewayProtocolSDK.dataModels({ skip: 0, take: 4 });
+  const dataModels = await gqlAnonMethods.dataModels({ skip: 0, take: 4 });
 
   return {
     props: {
       exploreProps,
-      dataModels: dataModels.dataModels,
+      dataModels: dataModels.protocol_data_model,
     },
     revalidate: 10,
   };
