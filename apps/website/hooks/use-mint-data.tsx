@@ -13,6 +13,7 @@ import {
   Credential,
   MintCredentialMutationVariables,
 } from '../services/gateway-protocol/types';
+import { queryClient } from '../services/query-client';
 
 type Props = {
   credential: PartialDeep<Credential>;
@@ -69,6 +70,10 @@ export function useMintData({ credential }: Props) {
             chain: credential?.recipientUser?.primaryWallet?.chain,
             transaction: data.mintCredential.txHash,
           },
+        ]);
+        queryClient.refetchQueries([
+          query.earned_credentials_by_gateway_id_by_data_model_id,
+          { gatewayId: me?.username, dataModelId: credential?.dataModel?.id },
         ]);
       },
     }
