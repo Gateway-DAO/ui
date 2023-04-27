@@ -82,7 +82,7 @@ export function CategoriesList({
                 key={category + index}
                 label={formattedLabel}
                 size="small"
-                sx={{ mr: listMode ? 'none' : 'none' }}
+                sx={{ mr: 'none' }}
               />
             );
           })}
