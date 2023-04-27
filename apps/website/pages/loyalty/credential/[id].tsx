@@ -37,7 +37,7 @@ export default function LoyaltyCredentialPage({ loyalty }) {
     { enabled: authenticated }
   );
 
-  const { data: earnedCredentials } = useQuery(
+  const { data: earnedCredential } = useQuery(
     [
       query.earned_credentials_by_gateway_id_by_data_model_id,
       {
@@ -53,7 +53,9 @@ export default function LoyaltyCredentialPage({ loyalty }) {
     {
       enabled: !!me?.id,
       select: ({ earnedCredentialsByGatewayIdByDataModel }) =>
-        earnedCredentialsByGatewayIdByDataModel,
+        earnedCredentialsByGatewayIdByDataModel.find(
+          (ec) => ec.title === gatesData?.gates_by_pk?.title
+        ),
     }
   );
 
@@ -73,7 +75,7 @@ export default function LoyaltyCredentialPage({ loyalty }) {
         <LoyaltyProgramCredential
           gate={gatesData.gates_by_pk}
           loyalty={loyalty}
-          credentialProtocolId={earnedCredentials?.[0]?.id}
+          credentialProtocolId={earnedCredential?.id}
         />
       </DashboardTemplate>
     </>
