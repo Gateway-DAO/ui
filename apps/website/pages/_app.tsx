@@ -21,11 +21,14 @@ import '../styles/next.css';
 import { SessionProvider } from 'next-auth/react';
 
 type AppProps = NextAppProps & {
-  Component: NextAppProps['Component'] & { auth?: boolean };
+  Component: NextAppProps['Component'] & { auth?: boolean } & {
+    PageLayout?: React.ComponentType;
+  };
 };
 
 function CustomApp({ Component, pageProps }: AppProps) {
   usePersistLocale();
+  const LayoutComponent = Component.PageLayout || EmptyLayout;
 
   return (
     <>
@@ -44,7 +47,9 @@ function CustomApp({ Component, pageProps }: AppProps) {
                   <AuthProvider isAuthPage={Component.auth}>
                     <BiconomyProvider>
                       <NavStateProvider>
-                        <Component {...pageProps} />
+                        <LayoutComponent>
+                          <Component {...pageProps} />
+                        </LayoutComponent>
                       </NavStateProvider>
                     </BiconomyProvider>
                   </AuthProvider>
@@ -109,5 +114,7 @@ function CustomApp({ Component, pageProps }: AppProps) {
     </>
   );
 }
+
+const EmptyLayout = ({ children }) => <>{children}</>;
 
 export default CustomApp;

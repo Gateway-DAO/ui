@@ -9,6 +9,7 @@ import {
   alpha,
   Tooltip,
   ClickAwayListener,
+  Skeleton,
 } from '@mui/material';
 
 import CopyPaste from './copy-paste';
@@ -19,6 +20,7 @@ type Props = {
   id: string;
   copySucessMessage: string;
   badgeTooltip?: string;
+  isLoading?: boolean;
 };
 
 export default function InfoTitle({
@@ -27,6 +29,7 @@ export default function InfoTitle({
   id,
   copySucessMessage,
   badgeTooltip,
+  isLoading,
 }: Props) {
   const [open, setOpen] = useState(false);
 
@@ -51,7 +54,7 @@ export default function InfoTitle({
       </Stack>
       <Stack direction="row" alignItems="center" gap={1}>
         <Typography variant="h4" sx={{ fontSize: { xs: '20px', md: '34px' } }}>
-          {title}
+          {isLoading ? <Skeleton width={300} /> : title}
         </Typography>
         {badgeTooltip && (
           <ClickAwayListener onClickAway={handleTooltipClose}>

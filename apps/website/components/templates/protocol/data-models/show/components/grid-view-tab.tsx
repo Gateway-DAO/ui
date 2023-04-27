@@ -15,7 +15,7 @@ import Loading from '../../../../../atoms/loading';
 import DataGrid from '../../../../../organisms/data-grid/data-grid';
 
 type Props = {
-  dataModel: PartialDeep<DataModel>;
+  dataModelId: string;
   columns: any[]; //[ ] add interface/type
   queryString: string;
   queryFnName: keyof GatewayProtocolSDKTypes;
@@ -23,7 +23,7 @@ type Props = {
 };
 
 export default function GridViewTab({
-  dataModel,
+  dataModelId,
   columns,
   queryString,
   queryFnName,
@@ -37,10 +37,10 @@ export default function GridViewTab({
     isFetchingNextPage,
     fetchNextPage,
   } = useInfiniteQuery(
-    [queryString, dataModel.id],
+    [queryString, dataModelId],
     async ({ pageParam }) => {
       const result = await gatewayProtocolSDK[queryFnName]({
-        dataModelId: dataModel.id,
+        dataModelId: dataModelId,
         take: internalPageSize,
         skip: pageParam || 0,
       } as any); //[ ] add interface/type

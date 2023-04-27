@@ -14,6 +14,7 @@ import { SpeedDial, SpeedDialAction } from '@mui/material';
 import { Box } from '@mui/system';
 
 import { Credential } from '../../../../services/gateway-protocol/types';
+import { useCreateQrCode } from '../../../../utils/qr-code/qr-code';
 import ShareOn from '../../../atoms/share-on';
 import ModalContent from '../../../molecules/modal/modal-basic';
 import { taskErrorMessages } from '../../../organisms/tasks/task-error-messages';
@@ -33,7 +34,8 @@ export default function FloatingCta({
   const handleClose = () => setOpen(false);
   const [shareIsOpen, setShareIsOpen] = useState<boolean>(false);
   const [qrCodeIsOpen, setQrCodeIsOpen] = useState<boolean>(false);
-  const { qrCode } = useProtocolTemplateContext();
+  // const { qrCode } = useProtocolTemplateContext();
+  const qrCode = useCreateQrCode();
 
   useEffect(() => {
     function handleScroll() {

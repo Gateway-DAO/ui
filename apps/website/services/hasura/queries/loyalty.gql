@@ -1,5 +1,5 @@
-query loyalty_programs {
-  loyalty_program {
+query loyalty_programs($take: Int!, $skip: Int!) {
+  loyalty_program(limit: $take, offset: $skip) {
     ...loyalty
   }
 }
