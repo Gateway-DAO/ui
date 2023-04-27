@@ -15,6 +15,7 @@ import { Tier } from './components/Tier';
 
 type Props = {
   loyalty: PartialDeep<Loyalty_Program>;
+  credentialProtocolId?: string;
 };
 
 function MainContent({ loyalty }: Props) {
@@ -52,10 +53,15 @@ function MainContent({ loyalty }: Props) {
   );
 }
 
-export function LoyaltyProgram({ loyalty }: Props) {
+export function LoyaltyProgram({ loyalty, credentialProtocolId }: Props) {
   return (
     <LoyaltyProgramTemplate
-      sidebar={<LoyaltySidebar loyalty={loyalty} />}
+      sidebar={
+        <LoyaltySidebar
+          loyalty={loyalty}
+          credentialProtocolId={credentialProtocolId}
+        />
+      }
       mainContent={<MainContent loyalty={loyalty} />}
     />
   );

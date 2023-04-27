@@ -9,6 +9,7 @@ import { LoyaltyProgramCredential } from '../../../components/templates/loyalty-
 import { query } from '../../../constants/queries';
 import { ROUTES } from '../../../constants/routes';
 import { useAuth } from '../../../providers/auth';
+import { gatewayProtocolAuthSDK } from '../../../services/gateway-protocol/api';
 import { gqlAnonMethods, gqlMethods } from '../../../services/hasura/api';
 import { getServerSession } from '../../../services/next-auth';
 
@@ -21,6 +22,7 @@ const unaccesible = {
 
 export default function LoyaltyCredentialPage({ loyalty }) {
   const router = useRouter();
+  const { me, token } = useAuth();
 
   const id = router.query.id as string;
 
@@ -33,6 +35,26 @@ export default function LoyaltyCredentialPage({ loyalty }) {
         id,
       }),
     { enabled: authenticated }
+  );
+
+  const { data: earnedCredentials } = useQuery(
+    [
+      query.earned_credentials_by_gateway_id_by_data_model_id,
+      {
+        gatewayId: me?.username,
+        dataModelId: gatesData?.gates_by_pk?.data_model_id,
+      },
+    ],
+    () =>
+      gatewayProtocolAuthSDK(token).earnedCredentialsByGatewayIdByDataModel({
+        gatewayId: me?.username,
+        dataModelId: gatesData?.gates_by_pk?.data_model_id,
+      }),
+    {
+      enabled: !!me?.id,
+      select: ({ earnedCredentialsByGatewayIdByDataModel }) =>
+        earnedCredentialsByGatewayIdByDataModel,
+    }
   );
 
   return (
@@ -51,6 +73,7 @@ export default function LoyaltyCredentialPage({ loyalty }) {
         <LoyaltyProgramCredential
           gate={gatesData.gates_by_pk}
           loyalty={loyalty}
+          credentialProtocolId={earnedCredentials?.[0]?.id}
         />
       </DashboardTemplate>
     </>

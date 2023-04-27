@@ -59,7 +59,7 @@
     "code-placeholder": "Code",
     "code-action": "Verify",
     "code-send-again": "send code again",
-    "email-sent": "Confirmation code sent to your email",
+    "email-sent": "Code sent to",
     "email-verified": "Email successfully verified",
     "email-error-sending": "There was an error sending the code",
     "email-error-validating": "There was an error validating the code"
