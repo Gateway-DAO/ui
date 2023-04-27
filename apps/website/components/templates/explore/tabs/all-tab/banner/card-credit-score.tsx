@@ -67,6 +67,7 @@ export function CardCreditScore(): JSX.Element {
         <Button
           variant="outlined"
           sx={{ marginBottom: '20px', width: '106px', marginLeft: '10px' }}
+          href={ROUTES.CREDIT_SCORE}
         >
           ISSUE NOW
         </Button>

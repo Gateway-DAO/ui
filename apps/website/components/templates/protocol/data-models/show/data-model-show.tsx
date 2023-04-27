@@ -27,6 +27,7 @@ import { useQuery } from '@tanstack/react-query';
 import { AvatarFile } from 'apps/website/components/atoms/avatar-file';
 import { GetDmStatsUntilDayBeforeQuery } from 'apps/website/services/hasura/types';
 import IssueCredentialButton from './components/issue-credential-button';
+import { Box } from '@mui/system';
 
 type Props = {
   dataModel: PartialDeep<DataModel>;
@@ -104,7 +105,6 @@ export default function DataModelShow({
     }
   );
 
-  
   return (
     <>
       <Stack sx={{ px: { xs: 0, md: 4, lg: 6 } }}>
@@ -161,10 +161,12 @@ export default function DataModelShow({
             />
             <Tags tags={dataModel?.tags} />
             <Typography sx={{ mb: 3 }}>{dataModel?.description}</Typography>
-            <IssueCredentialButton
-              hasAnAccountAvailableToIssue={hasAnAccountAvailableToIssue}
-              onClickIssueCredential={setOpenCreateCredential}
-            />
+            <Box>
+              <IssueCredentialButton
+                hasAnAccountAvailableToIssue={hasAnAccountAvailableToIssue}
+                onClickIssueCredential={setOpenCreateCredential}
+              />
+            </Box>
           </>
         )}
       </Stack>
@@ -173,6 +175,43 @@ export default function DataModelShow({
         stats={stats}
         statsUntilYesterday={statsUntilYesterday}
       />
+      {me?.id && (
+        <>
+          <ModalRight
+            open={openCreateCredential}
+            handleClose={() => setConfirmDiscardChanges(true)}
+          >
+            <Stack
+              sx={{
+                pt: { xs: 3, md: 6 },
+                pb: { xs: 2, md: 3 },
+                flexDirection: 'row',
+                justifyContent: 'flex-end',
+                width: '100%',
+              }}
+            >
+              <IconButton
+                aria-label="close"
+                sx={{ background: alpha(brandColors.white.main, 0.16) }}
+                onClick={() => setConfirmDiscardChanges(true)}
+              >
+                <CloseIcon />
+              </IconButton>
+            </Stack>
+            <CredentialProtocolCreate dataModel={dataModel} />
+          </ModalRight>
+          <ConfirmDialog
+            title={t('data-model.issue-credential.dialog-title')}
+            open={confirmDiscardChanges}
+            positiveAnswer={t('data-model.issue-credential.dialog-positive')}
+            negativeAnswer={t('data-model.issue-credential.dialog-negative')}
+            setOpen={setConfirmDiscardChanges}
+            onConfirm={setOpenCreateCredential}
+          >
+            {t('data-model.issue-credential.dialog-text')}
+          </ConfirmDialog>
+        </>
+      )}
     </>
   );
 }

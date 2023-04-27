@@ -5,6 +5,7 @@ query dataModels($take: Int!, $skip: Int!) {
     tags
     version
     description
+    permissioning
     createdBy {
       gatewayUser {
         name
@@ -30,6 +31,7 @@ query dataModelsP2P($take: Int!, $skip: Int!) {
     tags
     version
     description
+    permissioning
     createdBy {
       gatewayUser {
         name

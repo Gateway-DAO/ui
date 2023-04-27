@@ -58,6 +58,7 @@ export default function Banner(): JSX.Element {
                 // pr: 10,
                 [theme.breakpoints.down('md')]: {
                   maxHeight: '340.38px',
+                  width: '352.53px',
                   ml: 8,
                 },
                 // overflow: 'visible',
@@ -94,10 +95,10 @@ export default function Banner(): JSX.Element {
             <Button
               variant="contained"
               sx={{ mt: 4 }}
-              href={ROUTES.PROTOCOL_DATAMODEL.replace(
-                '[id]',
-                '1f1bff45-6ffb-48c1-ab6e-06f19cb7a744'
-              )}
+              // href={ROUTES.PROTOCOL_DATAMODEL.replace(
+              //   '[id]',
+              //   '1f1bff45-6ffb-48c1-ab6e-06f19cb7a744'
+              // )}
             >
               {t('common:featured-banner.action')}
             </Button>

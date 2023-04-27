@@ -28,7 +28,7 @@ export function DataModelCard({
 }: PartialDeep<Protocol_Data_Model>): JSX.Element {
   const url = ROUTES.PROTOCOL_DATAMODEL.replace('[id]', id);
   console.log(permissioning);
-  return permissioning === PermissionType.All ? (
+  return permissioning !== PermissionType.All ? (
     <Link passHref href={url}>
       <MUICard
         sx={{
@@ -95,6 +95,10 @@ export function DataModelCard({
           backgroundColor: 'rgba(154, 83, 255, 0.08)',
           ':hover': {
             backgroundColor: 'rgba(154, 83, 255, 0.16)',
+            img: {
+              filter: 'none',
+              mixBlendMode: 'unset',
+            },
           },
           border: '1px solid rgba(154, 83, 255, 0.3);',
         }}
@@ -134,7 +138,7 @@ export function DataModelCard({
                   src={
                     'https://user-images.githubusercontent.com/63333707/234028818-2faa0548-20ed-483d-93b6-6e09d1308da9.png'
                   }
-                  alt="Professional recommendation"
+                  alt={title}
                   height={'302px'}
                 />
               }
@@ -166,7 +170,7 @@ export function DataModelCard({
               {description},
             </Typography>
           </CardContent>
-          <Box mt={2}>
+          <Box mt={2} px={1}>
             {tags && tags.length > 0 && (
               <CategoriesList categories={tags as unknown as string[]} />
             )}

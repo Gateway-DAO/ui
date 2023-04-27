@@ -58,6 +58,7 @@ export function CardEarnCredential(): JSX.Element {
         </CardContent>
         <Button
           variant="outlined"
+          // href={ROUTES.EARN}
           sx={{ marginBottom: '20px', width: '106px', ml: 1 }}
         >
           START NOW
