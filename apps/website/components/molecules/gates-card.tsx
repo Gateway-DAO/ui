@@ -188,7 +188,7 @@ export function GatesCard({
           }
         />
       </Box>
-      <CardContent sx={{ py: 1 }}>
+      <CardContent sx={{ py: 1, mb: 1 }}>
         {hasDao && (
           <Link passHref href={url}>
             <Typography gutterBottom variant="h5" sx={{ cursor: 'pointer' }}>
@@ -206,17 +206,18 @@ export function GatesCard({
             WebkitLineClamp: 2,
             WebkitBoxOrient: 'vertical',
             overflow: 'hidden',
+            mb: 1,
           }}
         >
           {description}
         </Typography>
+        <CategoriesList
+          isGate
+          showStatus={showStatus}
+          published={published}
+          categories={categories}
+        />
       </CardContent>
-      <CategoriesList
-        isGate
-        showStatus={showStatus}
-        published={published}
-        categories={categories}
-      />
     </>
   );
 

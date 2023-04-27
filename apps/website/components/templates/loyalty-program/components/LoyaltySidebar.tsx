@@ -47,6 +47,7 @@ type LoyaltySidebarProps = {
   gate?: PartialDeep<Gates>;
   credential?: CredentialQuery;
   completedGate?: boolean;
+  credentialProtocolId?: string;
 };
 
 export function LoyaltySidebar({
@@ -54,6 +55,7 @@ export function LoyaltySidebar({
   loyalty,
   credential,
   completedGate,
+  credentialProtocolId,
 }: LoyaltySidebarProps) {
   const { t } = useTranslation('loyalty-program');
   const { me } = useAuth();
@@ -165,12 +167,18 @@ export function LoyaltySidebar({
           <Stack direction="row" gap={2} mb={2}>
             <Button
               variant="outlined"
-              disabled
+              disabled={!credentialProtocolId}
               fullWidth
               size="large"
               sx={{
                 mb: 2,
               }}
+              onClick={() =>
+                router.push({
+                  host: ROUTES.PROTOCOL_CREDENTIAL,
+                  query: { id: credentialProtocolId },
+                })
+              }
             >
               {t('sidebar.display-credential')}
             </Button>
