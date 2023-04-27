@@ -3,23 +3,23 @@
   "passes-tab": "Passes",
   "subtitle": "Discover Credentials, Organizations, and People",
   "featured-credentials": {
-    "title": "Featured Credentials",
+    "title": "Earn credentials",
     "caption": "People are really into these credentials. We thought you would too.",
     "see-more": "View more credentials"
   },
   "featured-organizations": {
     "title": "Recommended Organizations",
-    "caption": "These are the most active communities in Web3.",
+    "caption": "These organizations are shinning. You should check them out.",
     "see-more": "View more organizations"
   },
   "featured-passes": {
     "title": "Passes",
-    "caption": "Unlock new milestones with every earned credential",
+    "caption": "Unlock new milestones with every earned credential.",
     "see-more": "View more passes"
   },
   "featured-data-models": {
-    "title": "Data models",
-    "caption": "Use these templates to begin issuing credentials seamlessly!",
+    "title": "Issue credentials",
+    "caption": "Select one of the templates, set up the claims, and you are ready to issue a credential for anyone.",
     "see-more": "View more"
   },
   "featured-people": {

@@ -115,12 +115,8 @@ export function DataModelCard({
           >
             <CardHeader
               sx={{
-                pt: 2,
                 pb: 1,
-                '.MuiCardHeader-action': {
-                  position: 'absolute',
-                  right: 30,
-                },
+                '.MuiCardHeader-action': {},
                 px: 0,
                 img: {
                   filter: 'grayscale(1)',
@@ -145,17 +141,11 @@ export function DataModelCard({
             />
           </Box>
           <CardContent sx={{ py: 1 }}>
-            {
-              <Link passHref href={url}>
-                <Typography
-                  gutterBottom
-                  variant="h5"
-                  sx={{ cursor: 'pointer' }}
-                >
-                  {title}
-                </Typography>
-              </Link>
-            }
+            <Link passHref href={url}>
+              <Typography gutterBottom variant="h5" sx={{ cursor: 'pointer' }}>
+                {title}
+              </Typography>
+            </Link>
             <Typography
               height={40}
               variant="body2"
