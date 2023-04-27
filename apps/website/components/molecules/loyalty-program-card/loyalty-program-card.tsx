@@ -80,10 +80,10 @@ export function LoyaltyProgramCard({
           <Typography gutterBottom variant="h5" sx={{ cursor: 'pointer' }}>
             {name}
           </Typography>
+          <Stack>
+            <CategoriesList isPass categories={categories} />
+          </Stack>
         </CardContent>
-        <Stack>
-          <CategoriesList isPass categories={categories} />
-        </Stack>
         {me?.id && (
           <Stack m={2}>
             {isLoading ? (

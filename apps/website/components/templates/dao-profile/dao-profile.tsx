@@ -1,4 +1,5 @@
 import useTranslation from 'next-translate/useTranslation';
+import { useMemo } from 'react';
 
 import { TOKENS } from '@gateway/theme';
 
@@ -62,60 +63,60 @@ export function DaoProfileTemplate() {
     },
   ];
 
-  const dApptabs = [
-    {
-      key: 'overview',
-      label: t('common:tabs.overview'),
-      section: (
-        <OverviewTab
-          people={people}
-          setTab={setTab}
-          credentials={credentials?.daos_by_pk.gates}
-          loyaltyPrograms={loyaltyPrograms}
-        />
-      ),
-    },
-    {
-      key: 'credentials',
-      label: t('dao-profile:earn-tab'),
-      section: <GatesTab />,
-    },
-    {
-      key: 'passes',
-      label: t('dao-profile:passes-tab'),
-      section: <PassesTab />,
-    },
-  ];
-
-  const protocolTabs = [
-    {
-      key: 'credentials-issued',
-      label: t('common:tabs.issued'),
-      section: (
-        <GridViewTab
-          columns={issuedColumns}
-          queryString={query.credentialsIssuedByOrg}
-          queryFnName="findCredentialsByIssuerOrganization"
-          parameterName="issuerOrganizationId"
-          pageSize={20}
-        />
-      ),
-    },
-    {
-      key: 'credentials-signers',
-      label: t('dao-profile:signers-tab.title'),
-      section: (
-        <StaticGridViewTab
-          columns={signersColumns}
-          data={dao.protocolOrganization?.organization_accesses}
-        />
-      ),
-    },
-  ];
-
-  const tabs = hasProtocolOrganization
-    ? dApptabs.concat(protocolTabs)
-    : dApptabs;
+  const tabs = useMemo(() => {
+    const dApptabs = [
+      {
+        key: 'overview',
+        label: t('common:tabs.overview'),
+        section: (
+          <OverviewTab
+            people={people}
+            setTab={setTab}
+            credentials={credentials?.daos_by_pk.gates}
+            loyaltyPrograms={loyaltyPrograms}
+          />
+        ),
+      },
+      {
+        key: 'credentials',
+        label: t('dao-profile:earn-tab'),
+        section: <GatesTab />,
+      },
+    ];
+    const protocolTabs = [
+      {
+        key: 'credentials-issued',
+        label: t('common:tabs.issued'),
+        section: (
+          <GridViewTab
+            columns={issuedColumns}
+            queryString={query.credentialsIssuedByOrg}
+            queryFnName="findCredentialsByIssuerOrganization"
+            parameterName="issuerOrganizationId"
+            pageSize={20}
+          />
+        ),
+      },
+      {
+        key: 'credentials-signers',
+        label: t('dao-profile:signers-tab.title'),
+        section: (
+          <StaticGridViewTab
+            columns={signersColumns}
+            data={dao.protocolOrganization?.organization_accesses}
+          />
+        ),
+      },
+    ];
+    if (loyaltyPrograms && loyaltyPrograms.length > 0) {
+      dApptabs.push({
+        key: 'passes',
+        label: t('dao-profile:passes-tab'),
+        section: <PassesTab />,
+      });
+    }
+    return hasProtocolOrganization ? dApptabs.concat(protocolTabs) : dApptabs;
+  }, [hasProtocolOrganization, loyaltyPrograms]);
 
   return (
     <>
