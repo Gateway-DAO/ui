@@ -207,7 +207,10 @@ export default function CredentialCreateForm({
             gap={3}
           >
             {!isP2PDataModel && <IssueByForm dataModel={dataModel} />}
-            <GeneralInfoForm />
+            <GeneralInfoForm
+              title={dataModel?.title}
+              isP2PDataModel={isP2PDataModel}
+            />
             <ClaimForm dataModel={dataModel} />
             <RecipientForm />
           </Stack>
