@@ -75,7 +75,7 @@ export default function LoyaltyCredentialPage({ loyalty }) {
         <LoyaltyProgramCredential
           gate={gatesData.gates_by_pk}
           loyalty={loyalty}
-          credentialProtocolId={earnedCredential?.id}
+          credentialProtocol={earnedCredential}
         />
       </DashboardTemplate>
     </>
