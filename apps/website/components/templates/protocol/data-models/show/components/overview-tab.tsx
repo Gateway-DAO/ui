@@ -36,7 +36,7 @@ type Props = {
   dataModel: PartialDeep<DataModel>;
   stats: GetDataModelStatsQuery;
   isCredentialCreate?: boolean;
-  statsUntilYesterday: GetDmStatsUntilDayBeforeQuery;
+  statsUntilYesterday?: GetDmStatsUntilDayBeforeQuery;
 };
 
 export default function OverviewTab({

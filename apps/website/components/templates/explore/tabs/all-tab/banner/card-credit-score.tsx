@@ -14,9 +14,11 @@ import { useMediaQuery, useTheme } from '@mui/material';
 import { ROUTES } from 'apps/website/constants/routes';
 import { brandColors, theme } from '@gateway/theme';
 import Image from 'next/image';
+import useTranslation from 'next-translate/useTranslation';
 
 export function CardCreditScore(): JSX.Element {
   const theme = useTheme();
+  const { t } = useTranslation('explore');
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   return isMobile ? (
     <MUICard
@@ -41,7 +43,7 @@ export function CardCreditScore(): JSX.Element {
             sx={{ cursor: 'pointer' }}
             color={'white'}
           >
-            Your new DeFi Credit
+            {t('explore:credit-score-banner.title')}
           </Typography>
           <Typography
             gutterBottom
@@ -49,7 +51,7 @@ export function CardCreditScore(): JSX.Element {
             variant="subtitle1"
             color={'white'}
           >
-            Score has arrived
+            {t('explore:credit-score-banner.subtitle')}
           </Typography>
           <Typography
             height={40}
@@ -62,7 +64,7 @@ export function CardCreditScore(): JSX.Element {
               overflow: 'hidden',
             }}
           >
-            Discover your credit score now
+            {t('explore:credit-score-banner.description')}
           </Typography>
         </CardContent>
         <Button
@@ -70,7 +72,7 @@ export function CardCreditScore(): JSX.Element {
           sx={{ marginBottom: '20px', width: '106px', marginLeft: '10px' }}
           href={ROUTES.CREDIT_SCORE}
         >
-          ISSUE NOW
+          {t('explore:credit-score-banner.cta')}
         </Button>
       </Stack>
 
@@ -106,14 +108,14 @@ export function CardCreditScore(): JSX.Element {
       >
         <CardContent sx={{ py: '10px', marginY: '20px' }}>
           <Typography gutterBottom variant="h5" sx={{ cursor: 'pointer' }}>
-            Your new DeFi Credit
+            {t('explore:credit-score-banner.title')}
           </Typography>
           <Typography
             gutterBottom
             variant="h5"
             sx={{ cursor: 'pointer', lineHeight: '160%' }}
           >
-            Score has arrived
+            {t('explore:credit-score-banner.subtitle')}
           </Typography>
           <Typography
             height={40}
@@ -127,14 +129,15 @@ export function CardCreditScore(): JSX.Element {
               lineHeight: '166%',
             }}
           >
-            Discover your credit score now
+            {t('explore:credit-score-banner.description')}
           </Typography>
         </CardContent>
         <Button
           variant="outlined"
+          href={ROUTES.CREDIT_SCORE}
           sx={{ marginBottom: '20px', width: '106px', marginLeft: '20px' }}
         >
-          ISSUE NOW
+          {t('explore:credit-score-banner.cta')}
         </Button>
       </Stack>
 

@@ -27,6 +27,17 @@
     "caption": "Follow the most prominent professionals in Web3.",
     "see-more": "View more people"
   },
+  "credit-score-banner": {
+    "title": "Your new DeFi Credit",
+    "subtitle": "Score has arrived",
+    "description": "Discover your credit score now",
+    "cta": "ISSUE NOW"
+  },
+  "earn-credentials-banner": {
+    "title": "Earn credentials",
+    "description": " Execute tasks and earn credentials",
+    "cta": "START NOW"
+  },
   "meta-data": {
     "all-title": "Explore",
     "all-description": "Earn, issue credentials, and stay connected",

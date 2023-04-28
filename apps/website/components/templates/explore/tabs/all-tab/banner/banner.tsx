@@ -95,10 +95,7 @@ export default function Banner(): JSX.Element {
             <Button
               variant="contained"
               sx={{ mt: 4 }}
-              // href={ROUTES.PROTOCOL_DATAMODEL.replace(
-              //   '[id]',
-              //   '1f1bff45-6ffb-48c1-ab6e-06f19cb7a744'
-              // )}
+              href={ROUTES.EXPLORE_ISSUE}
             >
               {t('common:featured-banner.action')}
             </Button>
@@ -173,10 +170,7 @@ export default function Banner(): JSX.Element {
               <Button
                 variant="contained"
                 sx={{ mt: 4 }}
-                href={ROUTES.PROTOCOL_DATAMODEL.replace(
-                  '[id]',
-                  '1f1bff45-6ffb-48c1-ab6e-06f19cb7a744'
-                )}
+                href={ROUTES.EXPLORE_ISSUE}
               >
                 {t('common:featured-banner.action')}
               </Button>

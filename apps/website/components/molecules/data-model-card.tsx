@@ -28,7 +28,76 @@ export function DataModelCard({
 }: PartialDeep<Protocol_Data_Model>): JSX.Element {
   const url = ROUTES.PROTOCOL_DATAMODEL.replace('[id]', id);
   console.log(permissioning);
-  return permissioning !== PermissionType.All ? (
+  console.log(permissioning !== PermissionType.All);
+  return permissioning === PermissionType.All ? (
+    <Link passHref href={url}>
+      <MUICard
+        sx={{
+          position: 'relative',
+          cursor: 'pointer',
+          backgroundColor: 'rgba(154, 83, 255, 0.08)',
+          ':hover': {
+            backgroundColor: 'rgba(154, 83, 255, 0.16)',
+            img: {
+              filter: 'none',
+              mixBlendMode: 'unset',
+            },
+          },
+          border: '1px solid rgba(154, 83, 255, 0.3);',
+        }}
+      >
+        <CardHeader
+          sx={{
+            pb: 1,
+            '.MuiCardHeader-avatar': { width: '100%', mt: -2 },
+            px: 0,
+
+            img: {
+              filter: 'grayscale(1)',
+              mixBlendMode: 'hard-light',
+            },
+            ':hover': {
+              img: {
+                filter: 'none',
+                mixBlendMode: 'unset',
+              },
+            },
+          }}
+          avatar={
+            <img
+              width={'100%'}
+              src={
+                'https://user-images.githubusercontent.com/63333707/234028818-2faa0548-20ed-483d-93b6-6e09d1308da9.png'
+              }
+              alt={title}
+              height={'302px'}
+            />
+          }
+        />
+        <CardContent sx={{ py: 1, mb: 1 }}>
+          <Typography gutterBottom variant="h5" sx={{ cursor: 'pointer' }}>
+            {title}
+          </Typography>
+          <Typography
+            height={40}
+            variant="body2"
+            color="text.secondary"
+            sx={{
+              /* TODO: make line-clamp reusable */
+              display: '-webkit-box',
+              WebkitLineClamp: 2,
+              WebkitBoxOrient: 'vertical',
+              overflow: 'hidden',
+              mb: 1,
+            }}
+          >
+            {description}
+          </Typography>
+          <CategoriesList categories={tags as unknown as string[]} />
+        </CardContent>
+      </MUICard>
+    </Link>
+  ) : (
     <Link passHref href={url}>
       <MUICard
         sx={{
@@ -84,88 +153,6 @@ export function DataModelCard({
             )}
           </Box>
         </CardContent>
-      </MUICard>
-    </Link>
-  ) : (
-    <Link passHref href={url}>
-      <MUICard
-        sx={{
-          position: 'relative',
-          cursor: 'pointer',
-          backgroundColor: 'rgba(154, 83, 255, 0.08)',
-          ':hover': {
-            backgroundColor: 'rgba(154, 83, 255, 0.16)',
-            img: {
-              filter: 'none',
-              mixBlendMode: 'unset',
-            },
-          },
-          border: '1px solid rgba(154, 83, 255, 0.3);',
-        }}
-      >
-        <>
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              paddingRight: '25px',
-              paddingLeft: '16px',
-            }}
-          >
-            <CardHeader
-              sx={{
-                pb: 1,
-                '.MuiCardHeader-action': {},
-                px: 0,
-                img: {
-                  filter: 'grayscale(1)',
-                  mixBlendMode: 'hard-light',
-                },
-                ':hover': {
-                  img: {
-                    filter: 'none',
-                    mixBlendMode: 'unset',
-                  },
-                },
-              }}
-              avatar={
-                <img
-                  src={
-                    'https://user-images.githubusercontent.com/63333707/234028818-2faa0548-20ed-483d-93b6-6e09d1308da9.png'
-                  }
-                  alt={title}
-                  height={'302px'}
-                />
-              }
-            />
-          </Box>
-          <CardContent sx={{ py: 1 }}>
-            <Link passHref href={url}>
-              <Typography gutterBottom variant="h5" sx={{ cursor: 'pointer' }}>
-                {title}
-              </Typography>
-            </Link>
-            <Typography
-              height={40}
-              variant="body2"
-              color="text.secondary"
-              sx={{
-                display: '-webkit-box',
-                WebkitLineClamp: 2,
-                WebkitBoxOrient: 'vertical',
-                overflow: 'hidden',
-              }}
-            >
-              {description},
-            </Typography>
-          </CardContent>
-          <Box mt={2} px={1}>
-            {tags && tags.length > 0 && (
-              <CategoriesList categories={tags as unknown as string[]} />
-            )}
-          </Box>
-        </>
       </MUICard>
     </Link>
   );
