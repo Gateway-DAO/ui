@@ -53,7 +53,6 @@ export default function OverviewTab({
   const isMobile = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
 
   const calculateGrowth = (finalValue: number, startingNumber: number) => {
-    console.log(((finalValue - startingNumber) / startingNumber).toFixed(3));
     if (startingNumber > 0)
       return parseFloat(
         ((finalValue - startingNumber) / startingNumber).toFixed(2)
