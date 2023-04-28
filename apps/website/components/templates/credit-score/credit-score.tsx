@@ -25,6 +25,8 @@ import {
   Tooltip,
   Typography,
   styled,
+  useMediaQuery,
+  useTheme,
 } from '@mui/material';
 import { Link as MUILink } from '@mui/material';
 
@@ -61,28 +63,48 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 export function CreditScoreTemplate() {
-  const size = 500;
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
   const fillColor = {
     gradient: ['#9A53FF', '#FE02B9', '#5DABFB', '#0075FF'],
   };
-  const customText = [
-    {
-      text: '300',
-      font: 'Plus Jakarta Sans',
-      size: '16px',
-      color: '#FFFFFFB2',
-      x: 50,
-      y: 422,
-    },
-    {
-      text: '1000',
-      font: 'Plus Jakarta Sans',
-      size: '16px',
-      color: '#FFFFFFB2',
-      x: 420,
-      y: 422,
-    },
-  ];
+  const customText = isMobile
+    ? [
+        {
+          text: '300',
+          font: 'Plus Jakarta Sans',
+          size: '16px',
+          color: '#FFFFFFB2',
+          x: 50,
+          y: 262,
+        },
+        {
+          text: '1000',
+          font: 'Plus Jakarta Sans',
+          size: '16px',
+          color: '#FFFFFFB2',
+          x: 260,
+          y: 262,
+        },
+      ]
+    : [
+        {
+          text: '300',
+          font: 'Plus Jakarta Sans',
+          size: '16px',
+          color: '#FFFFFFB2',
+          x: 50,
+          y: 422,
+        },
+        {
+          text: '1000',
+          font: 'Plus Jakarta Sans',
+          size: '16px',
+          color: '#FFFFFFB2',
+          x: 420,
+          y: 422,
+        },
+      ];
   const { t } = useTranslation('credit-score');
 
   const DATA_MODEL_ID = process.env.NEXT_PUBLIC_CRED_PROTOCOL_DM_ID;
@@ -510,26 +532,43 @@ export function CreditScoreTemplate() {
             alignItems={'center'}
             justifyContent={'center'}
             borderRadius={3}
+            alignContent={'center'}
           >
             <Box position={'relative'}>
               <ArcProgress
-                thickness={20}
+                style={
+                  isMobile
+                    ? {
+                        width: '300px',
+                        height: '300px',
+                      }
+                    : null
+                }
+                thickness={isMobile ? 10 : 20}
                 progress={!!me && isCreditScore ? creditScore / 1000 : 0}
-                fillThickness={35}
+                fillThickness={isMobile ? 20 : 35}
                 emptyColor="#FFFFFF26"
-                size={size}
+                size={isMobile ? 300 : 500}
                 fillColor={me ? fillColor : '#312938'}
                 customText={customText}
                 arcStart={140}
                 arcEnd={400}
               />
-              <Box position={'absolute'} top={160} left={170}>
+              <Box
+                position={'absolute'}
+                top={isMobile ? 100 : 170}
+                left={isMobile ? 100 : 160}
+                width={'40%'}
+              >
                 {!!me && isCreditScore && (
                   <>
-                    <Typography align={'center'} variant="h1">
+                    <Typography
+                      align={'center'}
+                      variant={isMobile ? 'h2' : 'h1'}
+                    >
                       {credScore?.value}
                     </Typography>
-                    <Typography align={'center'} variant="h6">
+                    <Typography align={'center'} variant={'h6'}>
                       {credScore?.value_rating}
                     </Typography>
                   </>
@@ -537,9 +576,9 @@ export function CreditScoreTemplate() {
                 {!me && (
                   <>
                     <Typography
-                      sx={{ marginTop: '60px' }}
-                      align={'center'}
-                      variant="body1"
+                      sx={{ marginTop: isMobile ? '30px' : '60px' }}
+                      textAlign={'center'}
+                      variant="h6"
                     >
                       Connect your wallet
                     </Typography>
@@ -548,36 +587,48 @@ export function CreditScoreTemplate() {
                 {!!me && !isCreditScore && (
                   <>
                     <Typography
-                      sx={{ marginTop: '-30px', marginLeft: '30px' }}
-                      align={'center'}
+                      sx={{
+                        marginTop: '-30px',
+                        marginLeft: isMobile ? '-10px' : '0px',
+                      }}
+                      textAlign={'center'}
                       variant="h1"
                     >
                       -
                     </Typography>
                     <Typography
-                      sx={{ marginTop: '40px', marginLeft: '34px' }}
-                      align={'center'}
+                      sx={{ marginTop: '-10px' }}
                       variant="h6"
+                      textAlign={'center'}
                     >
                       No Score
                     </Typography>
                     <Tooltip title={t('no-score.title')}>
-                      <IconButton sx={{ marginLeft: '54px' }}>
+                      <IconButton sx={{ marginX: isMobile ? '30%' : '40%' }}>
                         <InfoOutlined />
                       </IconButton>
                     </Tooltip>
                   </>
                 )}
               </Box>
-              <Box position={'absolute'} bottom={35} left={198}>
-                <Typography align={'center'} variant="body1">
+              <Box
+                position={'absolute'}
+                bottom={isMobile ? 5 : 35}
+                left={isMobile ? 110 : 198}
+              >
+                <Typography
+                  align={'center'}
+                  variant={isMobile ? 'body2' : 'body1'}
+                >
                   {t('about.progress.powered-by')}
                   <MUILink
                     href="https://www.credprotocol.com/"
                     target="_blank"
                     underline="none"
                   >
-                    <Typography>{t('about.progress.cred-protocol')}</Typography>
+                    <Typography variant={isMobile ? 'body2' : 'inherit'}>
+                      {t('about.progress.cred-protocol')}
+                    </Typography>
                   </MUILink>
                 </Typography>
               </Box>
