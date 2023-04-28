@@ -4,7 +4,16 @@ import { useFormContext } from 'react-hook-form';
 
 import { brandColors } from '@gateway/theme';
 
-import { alpha, Stack, TextField, Typography } from '@mui/material';
+import {
+  alpha,
+  Autocomplete,
+  Chip,
+  InputAdornment,
+  Stack,
+  TextField,
+  Typography,
+} from '@mui/material';
+import SearchIcon from '@mui/icons-material/Search';
 
 import { CreateCredentialInput } from '../../../../../../services/gateway-protocol/types';
 
@@ -12,6 +21,9 @@ export default function RecipientForm() {
   const {
     register,
     formState: { errors },
+    getValues,
+    setValue,
+    watch,
   } = useFormContext<CreateCredentialInput>();
   const { t } = useTranslation('protocol');
 
@@ -42,6 +54,7 @@ export default function RecipientForm() {
           error={!!errors.recipientUserGatewayIdOrWallet}
           helperText={errors.recipientUserGatewayIdOrWallet?.message}
         />
+        
       </Stack>
     </Stack>
   );

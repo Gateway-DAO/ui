@@ -38,15 +38,6 @@ export default function ClaimForm({ dataModel }: Props) {
 
   return (
     <Stack>
-      <Typography fontWeight={600}>
-        {t('data-model.issue-credential.group-claim-title')}
-      </Typography>
-      <Typography
-        fontSize={14}
-        sx={{ color: alpha(brandColors.white.main, 0.7), mb: 3 }}
-      >
-        {t('data-model.issue-credential.group-claim-description')}
-      </Typography>
       {fields && (
         <Stack gap={2}>
           {Object.keys(fields)?.map((item, index) => {

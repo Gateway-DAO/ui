@@ -16,6 +16,7 @@ import { gatewayProtocolAuthSDK } from '../../../../../services/gateway-protocol
 import {
   CreateCredentialMutationVariables,
   CreateCredentialInput,
+  PermissionType,
 } from '../../../../../services/gateway-protocol/types';
 import { DataModel } from '../../../../../services/gateway-protocol/types';
 import { claimFields } from './components/ClaimTypes';
@@ -25,7 +26,7 @@ import GeneralInfoForm from './components/general-info-form';
 import IssueByForm from './components/issue-by-form';
 import RecipientForm from './components/recipient-form';
 import SuccessfullyCreated from './components/successfully-created';
-import { createCredentialSchema } from './schema';
+import { createCredentialSchema, createCredentialSchemaP2P } from './schema';
 
 type CreateCredentialProps = {
   dataModel: PartialDeep<DataModel>;
@@ -38,16 +39,34 @@ export default function CredentialCreateForm({
   const { gqlAuthMethods, token } = useAuth();
   const { enqueueSnackbar } = useSnackbar();
   const { t } = useTranslation('protocol');
+  const isP2PDataModel = dataModel.permissioning === PermissionType.All;
   const [credentialCreated, setCredentialCreated] = useState<string>(null);
 
   const methods = useForm({
     resolver: async (values, _, options) => {
       const { claim, ...rawData } = values;
-      const zodResult = await zodResolver(createCredentialSchema)(
-        rawData,
-        _,
-        options as any
-      );
+      let zodResult;
+      if (isP2PDataModel) {
+        zodResult = await zodResolver(createCredentialSchemaP2P)(
+          rawData,
+          _,
+          options as any
+        );
+        zodResult.values = {
+          ...zodResult.values,
+          description: dataModel.description,
+          tags: [],
+          dataModelId: dataModel.id,
+          recipientUserGatewayIdOrWallet:
+            rawData.recipientUserGatewayIdOrWallet,
+        };
+      } else {
+        zodResult = await zodResolver(createCredentialSchema)(
+          rawData,
+          _,
+          options as any
+        );
+      }
       const claimResult = await ajvResolver(dataModel?.schema, {
         formats: fullFormats,
       })(claim, _, options as any);
@@ -150,13 +169,17 @@ export default function CredentialCreateForm({
 
   const handleFields = async (data): Promise<any> => {
     await handleClaimFields(data).then((res) => (data = res));
-    await uploadCredentialImage(data?.image).then((res) => (data.image = res));
+    if (data?.image === undefined) {
+      data.image = dataModel?.image;
+    } else
+      await uploadCredentialImage(data?.image).then(
+        (res) => (data.image = res)
+      );
     return data;
   };
 
   const handleMutation = async (data: CreateCredentialInput | any) => {
     if (!(await methods.trigger())) return;
-
     try {
       data = await handleFields(data);
       await createCredential
@@ -184,8 +207,11 @@ export default function CredentialCreateForm({
             divider={<Divider sx={{ mb: 2, mt: 2, mx: { xs: -3, md: -6 } }} />}
             gap={3}
           >
-            <IssueByForm dataModel={dataModel} />
-            <GeneralInfoForm />
+            {!isP2PDataModel && <IssueByForm dataModel={dataModel} />}
+            <GeneralInfoForm
+              title={dataModel?.title}
+              isP2PDataModel={isP2PDataModel}
+            />
             <ClaimForm dataModel={dataModel} />
             <RecipientForm />
           </Stack>
