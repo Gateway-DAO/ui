@@ -147,7 +147,7 @@ export function CardCreditScore(): JSX.Element {
         <Image
           src={'/images/credit-score.png'}
           alt={'Credit score image'}
-          width={'191px'}
+          width={'200px'}
           height={'180px'}
           layout="fixed"
         />
