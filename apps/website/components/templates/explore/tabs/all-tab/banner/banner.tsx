@@ -139,7 +139,7 @@ export default function Banner(): JSX.Element {
               rowGap: '150px',
               height: '100%',
               py: 3,
-              px: 5,
+              px: 6,
               [theme.breakpoints.down('md')]: {
                 px: 1,
                 flexDirection: 'column',

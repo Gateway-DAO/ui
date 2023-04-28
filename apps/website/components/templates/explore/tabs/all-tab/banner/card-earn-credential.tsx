@@ -12,6 +12,7 @@ import {
 import MUICard from '@mui/material/Card';
 import { ROUTES } from 'apps/website/constants/routes';
 import { useMediaQuery, useTheme } from '@mui/material';
+import Image from 'next/image';
 
 export function CardEarnCredential(): JSX.Element {
   const theme = useTheme();
@@ -82,7 +83,7 @@ export function CardEarnCredential(): JSX.Element {
   ) : (
     <MUICard
       sx={{
-        width: '49%',
+        width: '49.6%',
         display: 'flex',
         justifyContent: 'space-between',
         borderRadius: '16px',
@@ -129,10 +130,12 @@ export function CardEarnCredential(): JSX.Element {
           marginRight: '10px',
         }}
       >
-        <img
+        <Image
           src={'/images/earn-credentials.png'}
           alt={'Credit score image'}
-          width={'310px'}
+          width={'252px'}
+          height={'206px'}
+          layout="fixed"
         />
       </Box>
     </MUICard>

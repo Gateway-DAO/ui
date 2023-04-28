@@ -13,6 +13,7 @@ import MUICard from '@mui/material/Card';
 import { useMediaQuery, useTheme } from '@mui/material';
 import { ROUTES } from 'apps/website/constants/routes';
 import { brandColors, theme } from '@gateway/theme';
+import Image from 'next/image';
 
 export function CardCreditScore(): JSX.Element {
   const theme = useTheme();
@@ -90,7 +91,7 @@ export function CardCreditScore(): JSX.Element {
   ) : (
     <MUICard
       sx={{
-        width: '49%',
+        width: '49.6%',
         display: 'flex',
         justifyContent: 'space-between',
         borderRadius: '16px',
@@ -143,10 +144,12 @@ export function CardCreditScore(): JSX.Element {
           marginRight: '10px',
         }}
       >
-        <img
+        <Image
           src={'/images/credit-score.png'}
           alt={'Credit score image'}
-          width={'169.18px'}
+          width={'191px'}
+          height={'180px'}
+          layout="fixed"
         />
       </Box>
     </MUICard>

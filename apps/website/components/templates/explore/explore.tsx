@@ -97,6 +97,7 @@ export function ExploreTemplate({
             allowScrollButtonsMobile
             sx={(theme) => ({
               mb: '-1px',
+              mx: 1,
               [theme.breakpoints.down('md')]: {
                 '.MuiTabs-scrollButtons.Mui-disabled': {
                   opacity: 0.3,
