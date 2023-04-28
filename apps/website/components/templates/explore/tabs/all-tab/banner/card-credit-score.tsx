@@ -1,18 +1,7 @@
-import {
-  Avatar,
-  CardContent,
-  CardHeader,
-  Chip,
-  Typography,
-  Box,
-  CardActions,
-  Button,
-  Stack,
-} from '@mui/material';
+import { CardContent, Typography, Box, Button, Stack } from '@mui/material';
 import MUICard from '@mui/material/Card';
 import { useMediaQuery, useTheme } from '@mui/material';
 import { ROUTES } from 'apps/website/constants/routes';
-import { brandColors, theme } from '@gateway/theme';
 import Image from 'next/image';
 import useTranslation from 'next-translate/useTranslation';
 

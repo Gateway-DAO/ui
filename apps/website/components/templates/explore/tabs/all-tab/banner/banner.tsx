@@ -1,11 +1,9 @@
 import useTranslation from 'next-translate/useTranslation';
-import Link from 'next/link';
 import { useMediaQuery, useTheme } from '@mui/material';
 
 import { brandColors, theme } from '@gateway/theme';
 
 import { alpha, Box, Button, Stack, Typography } from '@mui/material';
-import { ResponsiveImage } from 'apps/website/components/templates/landing/styles';
 import { ROUTES } from 'apps/website/constants/routes';
 
 export default function Banner(): JSX.Element {
@@ -179,7 +177,6 @@ export default function Banner(): JSX.Element {
           <Box
             component="img"
             sx={{
-              // pr: 10,
               ml: 45,
               mr: 10,
               maxHeigh: '541.02px',
@@ -187,7 +184,6 @@ export default function Banner(): JSX.Element {
                 maxWidth: '459.22px',
                 ml: 0,
               },
-              // overflow: 'visible',
             }}
             src="/images/issue-credential-model.png"
             alt={t('common:featured-banner.subtitle')}

@@ -60,14 +60,6 @@ export default function OverviewTab({
   );
   console.log(((stats?.getTotalCredentialsByDataModel - s) / s) * 100);
 
-  const findGrowth = (finalValue: number, startingValue: number) =>
-    ((finalValue - startingValue) / startingValue) * 100;
-
-  const differenceInValues = (finalValue: number, startingValue: number) =>
-    finalValue - startingValue;
-
-  const isGrowth = (startingValue: number) => startingValue === 0;
-
   const { me } = useAuth();
   const [openCreateCredential, setOpenCreateCredential] = useToggle(false);
   const [confirmDiscardChanges, setConfirmDiscardChanges] = useState(false);

@@ -195,7 +195,6 @@ export function DataModelLayout({ children }) {
                     flexDirection: 'row',
                     alignItems: 'center',
                     flexBasis: '100%',
-                    cursor: false ? 'pointer' : 'default',
                     borderRadius: true
                       ? '16px 16px 0 0'
                       : false
@@ -203,9 +202,7 @@ export function DataModelLayout({ children }) {
                       : '16px 0 0 0',
                     transition: 'background .3s ease',
                     '&:hover': {
-                      background: false
-                        ? alpha(brandColors.white.main, 0.05)
-                        : 'inherit',
+                      background: 'inherit',
                     },
                   }}
                 >

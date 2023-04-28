@@ -1,14 +1,4 @@
-import {
-  Avatar,
-  CardContent,
-  CardHeader,
-  Chip,
-  Typography,
-  Box,
-  CardActions,
-  Button,
-  Stack,
-} from '@mui/material';
+import { CardContent, Typography, Box, Button, Stack } from '@mui/material';
 import MUICard from '@mui/material/Card';
 import { ROUTES } from 'apps/website/constants/routes';
 import { useMediaQuery, useTheme } from '@mui/material';
@@ -16,8 +6,8 @@ import Image from 'next/image';
 import useTranslation from 'next-translate/useTranslation';
 
 export function CardEarnCredential(): JSX.Element {
-  const theme = useTheme();
   const { t } = useTranslation('explore');
+  const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
   return isMobile ? (
     <MUICard

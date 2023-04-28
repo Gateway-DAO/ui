@@ -27,7 +27,6 @@ import IssueByForm from './components/issue-by-form';
 import RecipientForm from './components/recipient-form';
 import SuccessfullyCreated from './components/successfully-created';
 import { createCredentialSchema, createCredentialSchemaP2P } from './schema';
-import DataModels from '../../../explore/tabs/data-models-tab/data-models';
 
 type CreateCredentialProps = {
   dataModel: PartialDeep<DataModel>;
@@ -47,7 +46,6 @@ export default function CredentialCreateForm({
     resolver: async (values, _, options) => {
       const { claim, ...rawData } = values;
       let zodResult;
-      console.log(rawData);
       if (isP2PDataModel) {
         zodResult = await zodResolver(createCredentialSchemaP2P)(
           rawData,
@@ -62,7 +60,6 @@ export default function CredentialCreateForm({
           recipientUserGatewayIdOrWallet:
             rawData.recipientUserGatewayIdOrWallet,
         };
-        console.log(zodResult);
       } else {
         zodResult = await zodResolver(createCredentialSchema)(
           rawData,
@@ -178,7 +175,6 @@ export default function CredentialCreateForm({
 
   const handleMutation = async (data: CreateCredentialInput | any) => {
     if (!(await methods.trigger())) return;
-    console.log(data);
     try {
       data = await handleFields(data);
       await createCredential
