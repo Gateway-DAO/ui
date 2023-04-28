@@ -31,6 +31,7 @@ import { useToggle } from 'react-use';
 import { useEffect, useMemo, useState } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
 import { GetDmStatsUntilDayBeforeQuery } from 'apps/website/services/hasura/types';
+import { useRouter } from 'next/router';
 
 type Props = {
   dataModel: PartialDeep<DataModel>;
@@ -46,6 +47,7 @@ export default function OverviewTab({
   statsUntilYesterday,
 }: Props) {
   const { t } = useTranslation('protocol');
+  const router = useRouter();
   const isP2PDataModel = dataModel.permissioning === PermissionType.All;
   const isMobile = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
   const s =
@@ -69,6 +71,15 @@ export default function OverviewTab({
   const { me } = useAuth();
   const [openCreateCredential, setOpenCreateCredential] = useToggle(false);
   const [confirmDiscardChanges, setConfirmDiscardChanges] = useState(false);
+
+  const toggleModal = () => {
+    if (openCreateCredential) {
+      router.back();
+    } else {
+      router.push('#issue-credential');
+    }
+    setOpenCreateCredential();
+  };
 
   const hasAnAccountAvailableToIssue = useMemo(() => {
     if (!me?.id) return;
@@ -107,13 +118,13 @@ export default function OverviewTab({
   return (
     <>
       <Stack
-      sx={{
-        maxWidth: '726px',
-        pt: 2,
-        py: 3,
-        px: { xs: 0, md: 4, lg: 6 },
-      }}
-    >
+        sx={{
+          maxWidth: '726px',
+          pt: 2,
+          py: 3,
+          px: { xs: 0, md: 4, lg: 6 },
+        }}
+      >
         {isP2PDataModel && (
           <>
             <Typography
@@ -134,7 +145,7 @@ export default function OverviewTab({
             </Typography>
             <IssueCredentialButton
               hasAnAccountAvailableToIssue={hasAnAccountAvailableToIssue}
-              onClickIssueCredential={setOpenCreateCredential}
+              onClickIssueCredential={toggleModal}
             />
           </>
         )}
@@ -216,7 +227,7 @@ export default function OverviewTab({
             positiveAnswer={t('data-model.issue-credential.dialog-positive')}
             negativeAnswer={t('data-model.issue-credential.dialog-negative')}
             setOpen={setConfirmDiscardChanges}
-            onConfirm={setOpenCreateCredential}
+            onConfirm={toggleModal}
           >
             {t('data-model.issue-credential.dialog-text')}
           </ConfirmDialog>

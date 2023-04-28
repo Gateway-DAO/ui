@@ -80,7 +80,7 @@ export default function GeneralInfoForm({ title, isP2PDataModel }: PropTypes) {
             helperText={errors.title?.message}
           />
           {!isP2PDataModel && (
-            <Stack gap={3}>
+            <Stack gap={3} mt={3}>
               <TextField
                 multiline
                 rows={2}
@@ -90,7 +90,6 @@ export default function GeneralInfoForm({ title, isP2PDataModel }: PropTypes) {
                     '&.Mui-focused': {
                       borderBottom: '2px solid #9A53FF',
                     },
-                    mt: 2,
                   },
                 }}
                 label={t('data-model.issue-credential.description-label')}

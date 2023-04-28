@@ -10,6 +10,7 @@ import Loading from '../../../../../components/atoms/loading';
 import { query } from '../../../../../constants/queries';
 import { gqlAnonMethods } from '../../../../../services/hasura/api';
 import { DataModelCard } from '../../../../molecules/data-model-card';
+import useTranslation from 'next-translate/useTranslation';
 
 export default function DataModels(): JSX.Element {
   const internalPageSize = 16;
@@ -54,7 +55,7 @@ export default function DataModels(): JSX.Element {
       document.removeEventListener('scroll', onScroll);
     };
   }, []);
-
+  const { t } = useTranslation();
   return (
     <Box sx={{ py: 4 }}>
       {isLoading ? (
@@ -69,9 +70,12 @@ export default function DataModels(): JSX.Element {
             mb={4}
           >
             <Box>
-              <Typography variant="h6">Data models</Typography>
+              <Typography variant="h6">
+                {' '}
+                {t('explore:data-models.title')}
+              </Typography>
               <Typography variant="caption">
-                Use these templates to begin issuing credentials seamlessly!
+                {t('explore:data-models.description')}
               </Typography>
             </Box>
           </Stack>

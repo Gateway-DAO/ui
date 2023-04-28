@@ -10,6 +10,7 @@ import Loading from '../../../../../components/atoms/loading';
 import { query } from '../../../../../constants/queries';
 import { gqlAnonMethods } from '../../../../../services/hasura/api';
 import { DataModelCard } from '../../../../molecules/data-model-card';
+import useTranslation from 'next-translate/useTranslation';
 
 export default function DataModelsP2P(): JSX.Element {
   const { data: dataModels, isLoading } = useQuery(
@@ -22,7 +23,7 @@ export default function DataModelsP2P(): JSX.Element {
       return result.protocol_data_model;
     }
   );
-
+  const { t } = useTranslation('explore');
   return (
     <Box sx={{ py: 4 }}>
       {isLoading ? (
@@ -37,10 +38,11 @@ export default function DataModelsP2P(): JSX.Element {
             mb={4}
           >
             <Box>
-              <Typography variant="h6">Issue credentials</Typography>
+              <Typography variant="h6">
+                {t('explore:data-models-p2p.title')}
+              </Typography>
               <Typography variant="caption">
-                Select one of the templates, set up the claims, and you are
-                ready to issue a credential for anyone.
+                {t('explore:data-models-p2p.description')}
               </Typography>
             </Box>
           </Stack>
