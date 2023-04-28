@@ -169,7 +169,12 @@ export default function CredentialCreateForm({
 
   const handleFields = async (data): Promise<any> => {
     await handleClaimFields(data).then((res) => (data = res));
-    await uploadCredentialImage(data?.image).then((res) => (data.image = res));
+    if (data?.image === undefined) {
+      data.image = dataModel?.image;
+    } else
+      await uploadCredentialImage(data?.image).then(
+        (res) => (data.image = res)
+      );
     return data;
   };
 

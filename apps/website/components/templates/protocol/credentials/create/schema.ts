@@ -34,6 +34,7 @@ export const createCredentialSchemaP2P = z.object({
   title: z
     .string({ required_error: 'Title is required' })
     .min(2, 'The title must contain at least 2 character(s)'),
+  image: z.string().nullish(),
 });
 
 export const createDataModelSchema = z.object({

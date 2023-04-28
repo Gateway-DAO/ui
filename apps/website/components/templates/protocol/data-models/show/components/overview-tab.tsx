@@ -51,7 +51,6 @@ export default function OverviewTab({
   const router = useRouter();
   const isP2PDataModel = dataModel.permissioning === PermissionType.All;
   const isMobile = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
-
   const calculateGrowth = (finalValue: number, startingNumber: number) => {
     if (startingNumber > 0)
       return parseFloat(
@@ -122,18 +121,9 @@ export default function OverviewTab({
               variant="h6"
               sx={{ fontSize: { xs: '20px', md: '32px' }, my: 2 }}
             >
-              Celebrate the addition of a new team member to an organization
+              {dataModel?.info}
             </Typography>
-            <Typography sx={{ mb: 3 }}>
-              This credential recognizes the recipient's contribution to the
-              team and their potential to make a positive impact on the
-              organization. It highlights their skills, experience, and
-              enthusiasm for the role, and demonstrates the organization's
-              commitment to fostering a culture of recognition and appreciation.
-              Achieving this credential is a meaningful accomplishment for any
-              new team member and can serve as a source of motivation and
-              validation as they embark on their journey with the organization.
-            </Typography>
+            <Typography sx={{ mb: 3 }}>{dataModel?.info}</Typography>
             <IssueCredentialButton
               hasAnAccountAvailableToIssue={hasAnAccountAvailableToIssue}
               onClickIssueCredential={toggleModal}

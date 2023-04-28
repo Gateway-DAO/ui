@@ -38,7 +38,6 @@ export default function GeneralInfoForm({ title, isP2PDataModel }: PropTypes) {
   } = useFormContext<CreateCredentialInput>();
 
   const { t } = useTranslation('protocol');
-
   return (
     <Stack>
       <Typography fontWeight={600}>

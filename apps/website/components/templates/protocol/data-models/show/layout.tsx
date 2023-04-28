@@ -206,13 +206,14 @@ export function DataModelLayout({ children }) {
                     },
                   }}
                 >
-                  <AvatarFile
-                    file={creator?.data?.logo}
-                    fallback="/avatar.png"
-                    sx={{ mr: 2 }}
-                  >
-                    {dataModel?.title}
-                  </AvatarFile>
+                  <Box sx={{ mr: 2 }}>
+                    <img
+                      src={dataModel?.image}
+                      alt={dataModel?.title}
+                      height={'100px'}
+                      width={'90px'}
+                    />
+                  </Box>
                   <div>
                     <InfoTitle
                       title={dataModel?.title}
