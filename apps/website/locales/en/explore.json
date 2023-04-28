@@ -26,5 +26,17 @@
     "title": "Featured people",
     "caption": "Follow the most prominent professionals in Web3.",
     "see-more": "View more people"
+  },
+  "meta-data": {
+    "all-title": "Explore",
+    "all-description": "Earn, issue credentials, and stay connected",
+    "earn-title": "Earn Credentials",
+    "earn-description": "Earn verifiable credentials",
+    "issue-title": "Issue Credentials",
+    "issue-description": "Issue credentials to everyone",
+    "passes-title": "Passes",
+    "passes-description": "Unlock new milestones with every earned credential",
+    "organizations-title": "Organizations",
+    "organizations-description": "Find the organizations that are issuing the best credentials"
   }
 }

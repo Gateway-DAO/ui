@@ -1,4 +1,3 @@
-import Head from 'next/head';
 import { useRouter } from 'next/router';
 
 import { dehydrate, QueryClient, useQuery } from '@tanstack/react-query';
@@ -13,6 +12,7 @@ import { GateViewTemplate } from '../../components/templates/gate-view';
 import { query } from '../../constants/queries';
 import { ROUTES } from '../../constants/routes';
 import { useAuth } from '../../providers/auth';
+import { gatewayProtocolAuthSDK } from '../../services/gateway-protocol/api';
 import { gqlAnonMethods, gqlMethods } from '../../services/hasura/api';
 import { getServerSession } from '../../services/next-auth';
 
@@ -60,7 +60,7 @@ export async function getServerSideProps({ req, res, params }) {
 
 export default function GateProfilePage() {
   const router = useRouter();
-
+  const { me, token } = useAuth();
   const id = router.query.id as string;
 
   const { gqlAuthMethods, authenticated } = useAuth();
@@ -73,6 +73,29 @@ export default function GateProfilePage() {
       }),
     { enabled: authenticated }
   );
+
+  const { data: earnedCredential } = useQuery(
+    [
+      query.earned_credentials_by_gateway_id_by_data_model_id,
+      {
+        gatewayId: me?.username,
+        dataModelId: gatesData?.gates_by_pk?.data_model_id,
+      },
+    ],
+    () =>
+      gatewayProtocolAuthSDK(token).earnedCredentialsByGatewayIdByDataModel({
+        gatewayId: me?.username,
+        dataModelId: gatesData?.gates_by_pk?.data_model_id,
+      }),
+    {
+      enabled: !!me?.id,
+      select: ({ earnedCredentialsByGatewayIdByDataModel }) =>
+        earnedCredentialsByGatewayIdByDataModel.find(
+          (ec) => ec.title === gatesData?.gates_by_pk?.title
+        ),
+    }
+  );
+
   return (
     <>
       <HeadContainer title={`${gatesData.gates_by_pk?.title} Credential`} />
@@ -98,7 +121,10 @@ export default function GateProfilePage() {
         >
           <Navbar isInternalPage={true} />
         </Box>
-        <GateViewTemplate gateProps={gatesData.gates_by_pk} />
+        <GateViewTemplate
+          gateProps={gatesData.gates_by_pk}
+          credentialProtocol={earnedCredential}
+        />
       </DashboardTemplate>
     </>
   );

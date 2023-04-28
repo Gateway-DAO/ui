@@ -1,67 +1,75 @@
 import useTranslation from 'next-translate/useTranslation';
-import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { ComponentType, useState } from 'react';
+import { useMemo } from 'react';
 
+import { useToggle } from 'react-use';
 import { PartialDeep } from 'type-fest/source/partial-deep';
 
 import { limitCharsCentered } from '@gateway/helpers';
 
-import { ReadMore } from '@mui/icons-material';
+import { IosShare, ReadMore } from '@mui/icons-material';
 import {
+  Avatar,
   Box,
   Button,
   Chip,
   Divider,
   Grid,
+  IconButton,
   Stack,
   Typography,
 } from '@mui/material';
 
 import { ROUTES } from '../../../../constants/routes';
+import { useMintData } from '../../../../hooks/use-mint-data';
 import { useAuth } from '../../../../providers/auth';
-import {
-  CredentialQuery,
-  Gates,
-  Loyalty_Program,
-} from '../../../../services/hasura/types';
+import { Gates, Loyalty_Program } from '../../../../services/hasura/types';
 import { isDaoAdmin } from '../../../../utils/is-dao-admin';
 import { AvatarFile } from '../../../atoms/avatar-file';
 import ExternalLink from '../../../atoms/external-link';
 import GateStateChip from '../../../atoms/gate-state-chip';
-import { ShareButton } from '../../../atoms/share-button';
+import ShareOn from '../../../atoms/share-on';
 import GateMintButton from '../../../molecules/gate-mint-button';
-import { TokenFilled } from '../../../molecules/mint-card/assets/token-filled';
-import { MintDialogProps } from '../../../molecules/mint-dialog';
+import { MintDialogProtocol } from '../../../molecules/mint-dialog-protocol';
+import ModalContent from '../../../molecules/modal/modal-basic';
+import ModalShareCredential from '../../../molecules/modal/modal-share-credential';
 import { OptionsCredential } from '../../../molecules/options-credential';
 import { SmallTier } from './SmallTier';
-
-const MintDialog: ComponentType<MintDialogProps> = dynamic(
-  () => import('../../../molecules/mint-dialog').then((mod) => mod.MintDialog),
-  { ssr: false }
-);
 
 type LoyaltySidebarProps = {
   loyalty: PartialDeep<Loyalty_Program>;
   gate?: PartialDeep<Gates>;
-  credential?: CredentialQuery;
-  completedGate?: boolean;
-  credentialProtocolId?: string;
+  credentialProtocol?: PartialDeep<Credential>;
 };
 
 export function LoyaltySidebar({
   gate,
   loyalty,
-  credential,
-  completedGate,
-  credentialProtocolId,
+  credentialProtocol,
 }: LoyaltySidebarProps) {
-  const { t } = useTranslation('loyalty-program');
+  const { t } = useTranslation();
   const { me } = useAuth();
   const router = useRouter();
   const isAdmin = isDaoAdmin({ me, gate });
-  const [isMintDialog, setMintModal] = useState(false);
+
+  const {
+    isOpen,
+    setIsOpen,
+    shareStatus,
+    shareIsOpen,
+    setShareIsOpen,
+    isAllowedToMint,
+    isReceivedCredential,
+    mintData,
+    mintCredential,
+  } = useMintData({ credential: credentialProtocol });
+
+  const showMintButton = useMemo(
+    () => !!credentialProtocol && isReceivedCredential && isAllowedToMint,
+    [credentialProtocol, isAllowedToMint, isReceivedCredential]
+  );
+  const [shareLoyaltyIsOpen, setShareLoyaltyIsOpen] = useToggle(false);
 
   const texts = {
     title: gate?.title || loyalty.name,
@@ -72,11 +80,20 @@ export function LoyaltySidebar({
 
   return (
     <>
-      <MintDialog
-        credential={credential?.credentials_by_pk}
-        isOpen={isMintDialog}
-        setOpen={setMintModal}
+      <MintDialogProtocol
+        isOpen={mintCredential.isLoading || isOpen}
+        status={shareStatus || mintCredential.status}
+        onClose={() => setIsOpen(false)}
       />
+
+      <ModalShareCredential
+        credential={credentialProtocol}
+        handleClose={() => setShareIsOpen(false)}
+        handleOpen={() => setShareIsOpen(true)}
+        open={shareIsOpen}
+        title={t('credential:share-dialog-title')}
+      />
+
       <Grid item>
         <Box
           sx={(theme) => ({
@@ -144,8 +161,22 @@ export function LoyaltySidebar({
                 ))}
               </Box>
               <Stack flexDirection="row" gap={1}>
-                {/*TODO: use share dialog*/}
-                {/* <ShareButton title={`${texts?.title} @Gateway`} /> */}
+                <IconButton
+                  sx={{
+                    p: 0,
+                  }}
+                  onClick={setShareLoyaltyIsOpen}
+                  key="share"
+                >
+                  <Avatar sx={{ height: '30px', width: '31px' }}>
+                    <IosShare
+                      sx={{
+                        mt: -0.25,
+                        height: '20px',
+                      }}
+                    />
+                  </Avatar>
+                </IconButton>
                 {gate && <OptionsCredential gate={gate} />}
               </Stack>
             </Stack>
@@ -167,7 +198,7 @@ export function LoyaltySidebar({
           <Stack direction="row" gap={2} mb={2}>
             <Button
               variant="outlined"
-              disabled={!credentialProtocolId}
+              disabled={!credentialProtocol?.id}
               fullWidth
               size="large"
               sx={{
@@ -176,16 +207,19 @@ export function LoyaltySidebar({
               onClick={() =>
                 router.push({
                   host: ROUTES.PROTOCOL_CREDENTIAL,
-                  query: { id: credentialProtocolId },
+                  query: { id: credentialProtocol?.id },
                 })
               }
             >
-              {t('sidebar.display-credential')}
+              {t('loyalty-program:sidebar.display-credential')}
             </Button>
             <GateMintButton
-              credential={credential}
-              completedGate={completedGate}
-              setMintModal={setMintModal}
+              setMintModal={() => {
+                setIsOpen(true);
+                mintCredential.mutate({ credentialId: credentialProtocol?.id });
+              }}
+              showButton={showMintButton}
+              mintData={mintData}
             />
           </Stack>
 
@@ -218,7 +252,7 @@ export function LoyaltySidebar({
                 variant="body2"
                 color={(theme) => theme.palette.text.secondary}
               >
-                {t('sidebar.data-model-id')}
+                {t('loyalty-program:sidebar.data-model-id')}
               </Typography>
               <ExternalLink
                 text={limitCharsCentered(loyalty.data_model_id, 6)}
@@ -234,6 +268,16 @@ export function LoyaltySidebar({
           </Grid>
         </Box>
       </Grid>
+      <ModalContent
+        open={shareLoyaltyIsOpen}
+        title={t('common:social.share-on')}
+        handleClose={() => setShareLoyaltyIsOpen(false)}
+        handleOpen={() => setShareLoyaltyIsOpen(true)}
+        swipeableDrawer={true}
+        fullWidth
+      >
+        <ShareOn />
+      </ModalContent>
     </>
   );
 }

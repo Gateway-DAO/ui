@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { PartialDeep } from 'type-fest';
 
+import { useGateStatus } from '../../../hooks/use-gate-status';
 import { useAuth } from '../../../providers/auth';
 import { gqlAnonMethods } from '../../../services/hasura/api';
 import { CredentialQuery, Gates } from '../../../services/hasura/types';
@@ -15,20 +16,14 @@ import { TaskList } from './task-list';
 
 type GateViewTasksProps = {
   gateProps: PartialDeep<Gates>;
-  completedGate: boolean;
   credential: CredentialQuery;
-  completedTasksCount: number;
 };
 
-export function GateViewTasks({
-  gateProps,
-  completedGate,
-  credential,
-  completedTasksCount,
-}: GateViewTasksProps) {
+export function GateViewTasks({ gateProps, credential }: GateViewTasksProps) {
   const { me, gqlAuthMethods } = useAuth();
   const [open, setOpen] = useState(false);
   const isAdmin = isDaoAdmin({ me, gate: gateProps });
+  const gateStatus = useGateStatus(gateProps);
 
   const gateProgress = useQuery(['gate_progress', gateProps?.id, me?.id], () =>
     gqlAuthMethods.GateProgress({
@@ -92,7 +87,7 @@ export function GateViewTasks({
             }
             header={
               <DirectHoldersHeader
-                hasCredential={completedGate}
+                hasCredential={gateStatus?.isCompleted}
                 totalHolders={
                   directCredentialInfo.data?.whitelisted_wallets_aggregate
                     ?.aggregate.count
@@ -110,7 +105,7 @@ export function GateViewTasks({
         <TaskList
           gate={gateProps}
           completedAt={completedAt}
-          completedTasksCount={completedTasksCount}
+          completedTasksCount={gateStatus?.completedTasksCount}
           formattedDate={formattedDate}
           isAdmin={isAdmin}
           setOpen={() => {

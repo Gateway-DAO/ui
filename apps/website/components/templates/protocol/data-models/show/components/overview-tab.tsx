@@ -106,7 +106,14 @@ export default function OverviewTab({
 
   return (
     <>
-      <Stack sx={{ maxWidth: '726px', pt: 2 }}>
+      <Stack
+      sx={{
+        maxWidth: '726px',
+        pt: 2,
+        py: 3,
+        px: { xs: 0, md: 4, lg: 6 },
+      }}
+    >
         {isP2PDataModel && (
           <>
             <Typography
