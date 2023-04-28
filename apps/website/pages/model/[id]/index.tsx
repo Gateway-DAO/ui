@@ -3,6 +3,7 @@ import dynamic from 'next/dynamic';
 
 import { DataModelLayout } from '../../../components/templates/protocol/data-models/show/layout';
 import { gatewayProtocolSDK } from '../../../services/gateway-protocol/api';
+import { gqlAnonMethods } from 'apps/website/services/hasura/api';
 const OverviewTab = dynamic(
   () =>
     import(
@@ -13,8 +14,18 @@ const OverviewTab = dynamic(
 
 type Props = InferGetServerSidePropsType<typeof getServerSideProps>;
 
-export default function ProtocolDataModel({ dataModel, stats }: Props) {
-  return <OverviewTab dataModel={dataModel} stats={stats} />;
+export default function ProtocolDataModel({
+  dataModel,
+  stats,
+  dataModelStatsUntilDayBefore,
+}: Props) {
+  return (
+    <OverviewTab
+      dataModel={dataModel}
+      stats={stats}
+      statsUntilYesterday={dataModelStatsUntilDayBefore}
+    />
+  );
 }
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
@@ -26,10 +37,21 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     dataModelId: ctx.query.id as string,
   });
 
+  const now = new Date();
+  const yesterday = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+  const isoYesterday = yesterday.toISOString();
+
+  const dataModelStatsUntilDayBefore =
+    await gqlAnonMethods.getDMStatsUntilDayBefore({
+      dataModelId: ctx.query.id as string,
+      date: isoYesterday,
+    });
+
   return {
     props: {
       dataModel: dataModel?.dataModel,
       stats,
+      dataModelStatsUntilDayBefore,
     },
   };
 };

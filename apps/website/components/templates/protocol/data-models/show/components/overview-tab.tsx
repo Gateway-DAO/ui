@@ -32,6 +32,7 @@ import { useEffect, useMemo, useState } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
 import { GetDmStatsUntilDayBeforeQuery } from 'apps/website/services/hasura/types';
 import { useRouter } from 'next/router';
+import { stat } from 'fs';
 
 type Props = {
   dataModel: PartialDeep<DataModel>;
@@ -50,15 +51,14 @@ export default function OverviewTab({
   const router = useRouter();
   const isP2PDataModel = dataModel.permissioning === PermissionType.All;
   const isMobile = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
-  const s =
-    stats?.getTotalCredentialsByDataModel -
-    statsUntilYesterday?.credential_count?.aggregate?.count;
-  console.log(statsUntilYesterday?.credential_count?.aggregate?.count);
-  console.log(
-    stats?.getTotalCredentialsByDataModel -
-      statsUntilYesterday?.credential_count?.aggregate?.count
-  );
-  console.log(((stats?.getTotalCredentialsByDataModel - s) / s) * 100);
+
+  const calculateGrowth = (finalValue: number, startingNumber: number) => {
+    console.log(((finalValue - startingNumber) / startingNumber).toFixed(3));
+    if (startingNumber > 0)
+      return parseFloat(
+        ((finalValue - startingNumber) / startingNumber).toFixed(2)
+      );
+  };
 
   const { me } = useAuth();
   const [openCreateCredential, setOpenCreateCredential] = useToggle(false);
@@ -161,8 +161,12 @@ export default function OverviewTab({
             value={stats?.getTotalofIssuersByDataModel}
             caption={`from ${
               stats?.getTotalofIssuersByDataModel -
-              statsUntilYesterday?.credential_count?.aggregate?.count
+              statsUntilYesterday?.issuer_count?.aggregate?.count
             } (in 1 day)`}
+            indicator={calculateGrowth(
+              stats?.getTotalofIssuersByDataModel,
+              statsUntilYesterday?.issuer_count?.aggregate?.count
+            )}
           />
           <DashboardCard
             label={t('data-model.issued-credentials')}
@@ -171,14 +175,22 @@ export default function OverviewTab({
               stats?.getTotalCredentialsByDataModel -
               statsUntilYesterday?.credential_count?.aggregate?.count
             } (in 1 day)`}
+            indicator={calculateGrowth(
+              stats?.getTotalCredentialsByDataModel,
+              statsUntilYesterday?.credential_count?.aggregate?.count
+            )}
           />
           <DashboardCard
             label={t('data-model.recipients')}
             value={stats?.getTotalCredentialsByDataModelGroupByRecipient}
             caption={`from ${
               stats?.getTotalCredentialsByDataModelGroupByRecipient -
-              statsUntilYesterday?.credential_count?.aggregate?.count
+              statsUntilYesterday?.recipient_count?.aggregate?.count
             } (in 1 day)`}
+            indicator={calculateGrowth(
+              stats?.getTotalCredentialsByDataModelGroupByRecipient,
+              statsUntilYesterday?.recipient_count?.aggregate?.count
+            )}
           />
         </Stack>
         <TableSchema
