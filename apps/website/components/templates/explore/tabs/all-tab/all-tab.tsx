@@ -57,6 +57,7 @@ export function AllTab({
           [theme.breakpoints.down('md')]: {
             flexDirection: 'column',
             rowGap: '20px',
+            ml: 2,
           },
         }}
       >
@@ -142,7 +143,6 @@ export function AllTab({
             <DaoCard key={dao.id} {...dao} />
           ))}
         </SectionWithSliderResponsive>
-
       </Stack>
     </Stack>
   );
