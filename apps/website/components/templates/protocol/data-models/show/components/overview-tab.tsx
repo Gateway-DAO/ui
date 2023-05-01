@@ -10,6 +10,7 @@ import {
   useMediaQuery,
   IconButton,
   alpha,
+  Box,
 } from '@mui/material';
 import ModalRight from '../../../../../molecules/modal-right';
 import ConfirmDialog from '../../../../../../components/organisms/confirm-dialog/confirm-dialog';
@@ -118,8 +119,14 @@ export default function OverviewTab({
         {isP2PDataModel && (
           <>
             <Typography
-              variant="h6"
-              sx={{ fontSize: { xs: '20px', md: '32px' }, my: 2 }}
+              sx={{
+                fontStyle: 'normal',
+                fontWeight: 700,
+                fontSize: '20px',
+                lineHeight: '32px',
+                letterSpacing: '0.15px',
+                my: 2,
+              }}
             >
               {dataModel?.info}
             </Typography>
@@ -128,6 +135,7 @@ export default function OverviewTab({
               hasAnAccountAvailableToIssue={hasAnAccountAvailableToIssue}
               onClickIssueCredential={toggleModal}
             />
+            <Box sx={{ mb: '32px' }}></Box>
           </>
         )}
 
