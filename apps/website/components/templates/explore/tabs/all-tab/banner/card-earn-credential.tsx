@@ -78,7 +78,7 @@ export function CardEarnCredential(): JSX.Element {
       >
         <Image
           src={'/images/earn-credentials.png'}
-          alt="Credit score image"
+          alt={t('explore:earn-credentials-banner.img-alt')}
           layout="fixed"
           width={isMobile ? '193px' : '224.71px'}
           height={isMobile ? '168.53px' : '196.21px'}

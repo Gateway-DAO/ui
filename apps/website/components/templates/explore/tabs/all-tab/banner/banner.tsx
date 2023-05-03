@@ -17,7 +17,7 @@ export default function Banner(): JSX.Element {
         mt={5}
         ml={5}
       >
-        Issue Credentials
+        {t('common:featured-banner.tooltip-text')}
       </Typography>
       <Stack
         component={'image'}
