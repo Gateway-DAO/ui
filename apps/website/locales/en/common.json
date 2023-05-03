@@ -46,6 +46,7 @@
     "playground": "Playground"
   },
   "featured-banner": {
+    "tooltip-text" : "Issue Credentials",
     "title": "Issue credentials for your peers now",
     "subtitle": "Giving credentials is a great way to recognize and reward your peers or community",
     "action": "START NOW"

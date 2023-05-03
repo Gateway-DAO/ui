@@ -31,11 +31,13 @@
     "title": "Your new DeFi Credit",
     "subtitle": "Score has arrived",
     "description": "Discover your credit score now",
+    "img-alt": "Credit score image",
     "cta": "ISSUE NOW"
   },
   "earn-credentials-banner": {
     "title": "Earn credentials",
     "description": " Execute tasks and earn credentials",
+    "img-alt": "earn credential image",
     "cta": "START NOW"
   },
   "data-models-p2p": {
