@@ -211,7 +211,7 @@ export function DataModelLayout({ children }) {
                       src={dataModel?.image}
                       alt={dataModel?.title}
                       height={'100px'}
-                      width={'90px'}
+                      width={'100px'}
                     />
                   </Box>
                   <div>

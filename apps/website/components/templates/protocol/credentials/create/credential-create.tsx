@@ -211,6 +211,7 @@ export default function CredentialCreateForm({
             <GeneralInfoForm
               title={dataModel?.title}
               isP2PDataModel={isP2PDataModel}
+              image={dataModel?.image}
             />
             <ClaimForm dataModel={dataModel} />
             <RecipientForm />

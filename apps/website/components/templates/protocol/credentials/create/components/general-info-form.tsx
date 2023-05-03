@@ -26,9 +26,14 @@ const CategoriesInput = dynamic(
 type PropTypes = {
   title: string;
   isP2PDataModel: boolean;
+  image: string;
 };
 
-export default function GeneralInfoForm({ title, isP2PDataModel }: PropTypes) {
+export default function GeneralInfoForm({
+  title,
+  isP2PDataModel,
+  image,
+}: PropTypes) {
   const {
     register,
     setValue,
@@ -36,7 +41,9 @@ export default function GeneralInfoForm({ title, isP2PDataModel }: PropTypes) {
     formState: { errors },
     getValues,
   } = useFormContext<CreateCredentialInput>();
-
+  if (isP2PDataModel) {
+    setValue('image', image);
+  }
   const { t } = useTranslation('protocol');
   return (
     <Stack>
