@@ -61,7 +61,7 @@ export function CardEarnCredential(): JSX.Element {
           <Button
             variant="outlined"
             href={ROUTES.EXPLORE_EARN}
-            sx={{ marginBottom: 2.5, ml: 1 }}
+            sx={{ marginBottom: 1, ml: 1 }}
           >
             {t('explore:earn-credentials-banner.cta')}
           </Button>
@@ -73,8 +73,8 @@ export function CardEarnCredential(): JSX.Element {
         alignItems={'center'}
         height={'100%'}
         position={'relative'}
-        top={isMobile ? 6 : 0}
-        right={isMobile ? '-60px' : 0}
+        top={{ xs: 6, md: 0 }}
+        right={{ xs: '-60px', md: 0 }}
       >
         <Image
           src={'/images/earn-credentials.png'}

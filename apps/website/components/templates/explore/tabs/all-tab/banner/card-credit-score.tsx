@@ -68,9 +68,9 @@ export function CardCreditScore(): JSX.Element {
         </CardContent>
         <CardActions>
           <Button
+            href={ROUTES.CREDIT_SCORE}
             variant="outlined"
             sx={{ marginBottom: 1, ml: 1 }}
-            href={ROUTES.CREDIT_SCORE}
           >
             {t('explore:credit-score-banner.cta')}
           </Button>
@@ -82,8 +82,8 @@ export function CardCreditScore(): JSX.Element {
         alignItems={'center'}
         height={'100%'}
         position={'relative'}
-        top={isMobile ? 16 : 0}
-        right={isMobile ? '-20px' : 0}
+        top={{ xs: 16, md: 0 }}
+        right={{ xs: '-20px', md: 0 }}
       >
         <Image
           src={'/images/credit-score.png'}

@@ -34,11 +34,11 @@ export default function Banner(): JSX.Element {
           alignSelf={{ md: 'self-end' }}
           direction={'column'}
           height={'100%'}
-          marginBottom={isMobile ? 10 : 14}
+          marginBottom={{ xs: 10, md: 14 }}
         >
           <Stack
-            maxWidth={isMobile ? '100%' : 402}
-            marginTop={isMobile ? -4 : 0}
+            maxWidth={{ xs: '100%', md: 402 }}
+            marginTop={{ xs: -4, md: 0 }}
           >
             <Typography variant="h4" gutterBottom>
               {t('common:featured-banner.title')}

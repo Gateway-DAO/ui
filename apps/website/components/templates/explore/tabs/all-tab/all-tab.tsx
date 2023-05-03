@@ -50,8 +50,8 @@ export function AllTab({
         flexDirection={'row'}
         justifyContent={'space-between'}
         sx={{
-          ml: { md: 6, xs: 0 },
-          mr: { md: 6, xs: 2 },
+          ml: { md: 5, xs: 0 },
+          mr: { md: 5, xs: 2 },
           paddingBottom: 4,
           mt: '-2.5%',
           [theme.breakpoints.down('md')]: {
