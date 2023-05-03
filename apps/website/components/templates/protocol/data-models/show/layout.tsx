@@ -208,7 +208,11 @@ export function DataModelLayout({ children }) {
                 >
                   <Box sx={{ mr: 2, img: { borderRadius: '16px' } }}>
                     <img
-                      src={dataModel?.image}
+                      src={
+                        dataModel?.image === null
+                          ? '/logo.png'
+                          : dataModel?.image
+                      }
                       alt={dataModel?.title}
                       height={'100px'}
                       width={'100px'}

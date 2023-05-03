@@ -41,7 +41,7 @@ export default function GeneralInfoForm({
     formState: { errors },
     getValues,
   } = useFormContext<CreateCredentialInput>();
-  if (isP2PDataModel) {
+  if (isP2PDataModel && image !== null) {
     setValue('image', image);
   }
   const { t } = useTranslation('protocol');
