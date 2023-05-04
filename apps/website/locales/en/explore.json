@@ -3,29 +3,50 @@
   "passes-tab": "Passes",
   "subtitle": "Discover Credentials, Organizations, and People",
   "featured-credentials": {
-    "title": "Featured Credentials",
+    "title": "Earn credentials",
     "caption": "People are really into these credentials. We thought you would too.",
     "see-more": "View more credentials"
   },
   "featured-organizations": {
     "title": "Recommended Organizations",
-    "caption": "These are the most active communities in Web3.",
+    "caption": "These organizations are shinning. You should check them out.",
     "see-more": "View more organizations"
   },
   "featured-passes": {
     "title": "Passes",
-    "caption": "Unlock new milestones with every earned credential",
+    "caption": "Unlock new milestones with every earned credential.",
     "see-more": "View more passes"
   },
   "featured-data-models": {
-    "title": "Data models",
-    "caption": "Use these templates to begin issuing credentials seamlessly!",
+    "title": "Issue credentials",
+    "caption": "Select one of the templates, set up the claims, and you are ready to issue a credential for anyone.",
     "see-more": "View more"
   },
   "featured-people": {
     "title": "Featured people",
     "caption": "Follow the most prominent professionals in Web3.",
     "see-more": "View more people"
+  },
+  "credit-score-banner": {
+    "title": "Your new DeFi Credit",
+    "subtitle": "Score has arrived",
+    "description": "Discover your credit score now",
+    "img-alt": "Credit score image",
+    "cta": "ISSUE NOW"
+  },
+  "earn-credentials-banner": {
+    "title": "Earn credentials",
+    "description": " Execute tasks and earn credentials",
+    "img-alt": "earn credential image",
+    "cta": "START NOW"
+  },
+  "data-models-p2p": {
+    "title": "Issue credentials",
+    "description": "Select one of the templates, set up the claims, and you are ready to issue a credential for anyone."
+  },
+  "data-models": {
+    "title": "Data models",
+    "description": "Use these templates to begin issuing credentials seamlessly!"
   },
   "meta-data": {
     "all-title": "Explore",

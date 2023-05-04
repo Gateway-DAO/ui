@@ -12,7 +12,6 @@ import { GateViewTemplate } from '../../components/templates/gate-view';
 import { query } from '../../constants/queries';
 import { ROUTES } from '../../constants/routes';
 import { useAuth } from '../../providers/auth';
-import { gatewayProtocolAuthSDK } from '../../services/gateway-protocol/api';
 import { gqlAnonMethods, gqlMethods } from '../../services/hasura/api';
 import { getServerSession } from '../../services/next-auth';
 
@@ -60,45 +59,44 @@ export async function getServerSideProps({ req, res, params }) {
 
 export default function GateProfilePage() {
   const router = useRouter();
-  const { me, token } = useAuth();
   const id = router.query.id as string;
 
-  const { gqlAuthMethods, authenticated } = useAuth();
+  const { me, gqlAuthMethods, authenticated } = useAuth();
 
-  const { data: gatesData } = useQuery(
+  const { data: gate } = useQuery(
     [query.gate, id],
     () =>
       gqlAuthMethods.gate({
         id,
       }),
-    { enabled: authenticated }
+    { enabled: authenticated, select: ({ gates_by_pk }) => gates_by_pk }
   );
 
-  const { data: earnedCredential } = useQuery(
+  const { data: protocolCredential } = useQuery(
     [
-      query.earned_credentials_by_gateway_id_by_data_model_id,
+      query.protocol_credential_by_loyalty_id_by_gate_id,
       {
-        gatewayId: me?.username,
-        dataModelId: gatesData?.gates_by_pk?.data_model_id,
+        user_id: me?.id,
+        loyalty_id: gate?.loyalty_id,
+        gate_id: gate?.id,
       },
     ],
     () =>
-      gatewayProtocolAuthSDK(token).earnedCredentialsByGatewayIdByDataModel({
-        gatewayId: me?.username,
-        dataModelId: gatesData?.gates_by_pk?.data_model_id,
+      gqlAuthMethods.protocol_credential_by_loyalty_id_by_gate_id({
+        user_id: me?.id,
+        loyalty_id: gate?.loyalty_id,
+        gate_id: gate?.id,
       }),
     {
       enabled: !!me?.id,
-      select: ({ earnedCredentialsByGatewayIdByDataModel }) =>
-        earnedCredentialsByGatewayIdByDataModel.find(
-          (ec) => ec.title === gatesData?.gates_by_pk?.title
-        ),
+      select: ({ loyalty_protocol_credential }) =>
+        loyalty_protocol_credential.credential,
     }
   );
 
   return (
     <>
-      <HeadContainer title={`${gatesData.gates_by_pk?.title} Credential`} />
+      <HeadContainer title={`${gate?.title} Credential`} />
       <DashboardTemplate
         containerProps={{
           sx: {
@@ -108,7 +106,7 @@ export default function GateProfilePage() {
               md: 'flex',
             },
           },
-          height: gatesData.gates_by_pk?.type === 'direct' ? '100%' : undefined,
+          height: gate?.type === 'direct' ? '100%' : undefined,
         }}
       >
         <Box
@@ -122,8 +120,8 @@ export default function GateProfilePage() {
           <Navbar isInternalPage={true} />
         </Box>
         <GateViewTemplate
-          gateProps={gatesData.gates_by_pk}
-          credentialProtocol={earnedCredential}
+          gateProps={gate}
+          protocolCredential={protocolCredential}
         />
       </DashboardTemplate>
     </>

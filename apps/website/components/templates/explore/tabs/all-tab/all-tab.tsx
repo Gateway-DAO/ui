@@ -3,6 +3,7 @@ import useTranslation from 'next-translate/useTranslation';
 import { PartialDeep } from 'type-fest';
 
 import { Button, Divider, Stack } from '@mui/material';
+import { brandColors, theme } from '@gateway/theme';
 
 import { ROUTES } from '../../../../../constants/routes';
 import { Protocol_Data_Model } from '../../../../../services/hasura/types';
@@ -18,6 +19,8 @@ import {
 import { ExploreProps } from '../../types';
 import Banner from './banner/banner';
 import { useRouter } from 'next/router';
+import { CardEarnCredential } from './banner/card-earn-credential';
+import { CardCreditScore } from './banner/card-credit-score';
 
 type Props = {
   dataModels: PartialDeep<Protocol_Data_Model>[];
@@ -43,6 +46,24 @@ export function AllTab({
       }}
     >
       <Banner />
+      <Stack
+        flexDirection={'row'}
+        justifyContent={'space-between'}
+        sx={{
+          ml: { md: 5, xs: 0 },
+          mr: { md: 5, xs: 2 },
+          paddingBottom: 4,
+          mt: '-2.5%',
+          [theme.breakpoints.down('md')]: {
+            flexDirection: 'column',
+            rowGap: '20px',
+            ml: 2,
+          },
+        }}
+      >
+        <CardCreditScore />
+        <CardEarnCredential />
+      </Stack>
       <Stack
         direction="column"
         divider={<Divider />}
@@ -122,15 +143,6 @@ export function AllTab({
             <DaoCard key={dao.id} {...dao} />
           ))}
         </SectionWithSliderResponsive>
-        <SectionWithGrid
-          title={t('featured-people.title')}
-          caption={t('featured-people.caption')}
-          action={null}
-        >
-          {people.map((person) => (
-            <PersonCard key={person.id} user={person} />
-          ))}
-        </SectionWithGrid>
       </Stack>
     </Stack>
   );

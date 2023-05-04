@@ -35,7 +35,7 @@
     "credentials": "Credentials",
     "earn": "Earn",
     "earned": "Earned",
-    "data-models": "Data models",
+    "issue": "issue",
     "daos": "DAOs",
     "organizations": "Organizations",
     "people": "People",
@@ -46,9 +46,10 @@
     "playground": "Playground"
   },
   "featured-banner": {
-    "title": "Earn Your Credit Score Credential now!",
-    "subtitle": "Only available for EVM wallets.",
-    "action": "Start now"
+    "tooltip-text" : "Issue Credentials",
+    "title": "Issue credentials for your peers now",
+    "subtitle": "Giving credentials is a great way to recognize and reward your peers or community",
+    "action": "START NOW"
   },
   "featured-credentials": {
     "title": "Featured Credentials",

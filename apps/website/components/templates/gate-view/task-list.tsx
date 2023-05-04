@@ -49,11 +49,15 @@ export function TaskList({
     if (gate.loyalty_id) {
       queryClient.refetchQueries([
         query.gate_progress_completed_by_loyalty_program,
-        { userId: me?.id, loyaltyProgramId: gate.loyalty_id },
+        { userId: me?.id, loyaltyProgramId: gate?.loyalty_id },
       ]);
       queryClient.refetchQueries([
-        query.earned_credentials_by_gateway_id_by_data_model_id,
-        { gatewayId: me?.username, dataModelId: gate.data_model_id },
+        query.protocol_credential_by_loyalty_id_by_gate_id,
+        {
+          user_id: me?.id,
+          loyalty_id: gate?.loyalty_id,
+          gate_id: gate?.id,
+        },
       ]);
     }
   };

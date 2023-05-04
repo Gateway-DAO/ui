@@ -1,89 +1,71 @@
 import useTranslation from 'next-translate/useTranslation';
-import Link from 'next/link';
+import { useMediaQuery, useTheme } from '@mui/material';
 
-import { brandColors, theme } from '@gateway/theme';
-
-import { alpha, Box, Button, Stack, Typography } from '@mui/material';
-
-import CredProtocolIcon from './cred-protocol';
+import { Box, Button, Stack, Typography } from '@mui/material';
+import { ROUTES } from 'apps/website/constants/routes';
 
 export default function Banner(): JSX.Element {
   const { t } = useTranslation('explore');
-
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
   return (
-    <Stack sx={{ py: 4, px: 5 }}>
-      <Box
+    <Box>
+      <Typography
+        variant="body1"
+        color={'text.secondary'}
+        position={'absolute'}
+        mt={5}
+        ml={5}
+      >
+        {t('common:featured-banner.tooltip-text')}
+      </Typography>
+      <Stack
+        component={'image'}
+        direction={isMobile ? 'column-reverse' : 'row'}
+        justifyContent={'space-between'}
         sx={{
-          borderRadius: '15px',
           backgroundImage:
             "url('/images/explore/explore-banner_background.png')",
-          backgroundRepeat: 'no-repeat',
           backgroundSize: 'cover',
-          backgroundPosition: 'left top',
-          display: 'grid',
-          gridTemplateColumns: '1fr auto',
-          justifyContent: 'space-between',
-          alignItems: 'center',
+          px: isMobile ? 2 : 5,
         }}
       >
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'space-between',
-            height: '100%',
-            py: 3,
-            px: 3,
-          }}
+        <Stack
+          alignSelf={{ md: 'self-end' }}
+          direction={'column'}
+          height={'100%'}
+          marginBottom={{ xs: 10, md: 14 }}
         >
-          <Box mb={2}>
-            <CredProtocolIcon />
-          </Box>
-          <Box sx={{ maxWidth: '460px' }}>
-            <Typography
-              sx={{
-                fontSize: '34px',
-                fontWeight: 700,
-                lineHeight: '123.5%',
-                letterSpacing: '0.25px',
-                mb: 2,
-              }}
-            >
+          <Stack
+            maxWidth={{ xs: '100%', md: 402 }}
+            marginTop={{ xs: -4, md: 0 }}
+          >
+            <Typography variant="h4" gutterBottom>
               {t('common:featured-banner.title')}
             </Typography>
-            <Typography
-              sx={{
-                fontSize: '16px',
-                fontWeight: 400,
-                lineHeight: '150%',
-                letterSpacing: '0.15px',
-                color: alpha(brandColors.white.main, 0.7),
-              }}
-            >
+            <Typography variant="body1" color={'text.secondary'} gutterBottom>
               {t('common:featured-banner.subtitle')}
             </Typography>
-            <Link href="/creditscore" passHref>
-              <Button variant="contained" sx={{ mt: 4 }}>
+            <div>
+              <Button
+                variant="contained"
+                sx={{ mt: 4 }}
+                href={ROUTES.EXPLORE_ISSUE}
+              >
                 {t('common:featured-banner.action')}
               </Button>
-            </Link>
-          </Box>
-        </Box>
+            </div>
+          </Stack>
+        </Stack>
         <Box
           component="img"
-          sx={{
-            mr: 12,
-            my: 2,
-            maxWidth: '100%',
-            height: '80%',
-            [theme.breakpoints.down('md')]: {
-              display: 'none',
-            },
-          }}
-          src="/images/explore/explore-banner_figure_cred.png"
+          alignSelf={'self-start'}
+          height={{ xs: 466, md: '100%' }}
+          marginTop={{ xs: 9, md: 0 }}
+          src="/images/issue-credential-model.png"
           alt={t('common:featured-banner.subtitle')}
         />
-      </Box>
-    </Stack>
+      </Stack>
+    </Box>
   );
 }

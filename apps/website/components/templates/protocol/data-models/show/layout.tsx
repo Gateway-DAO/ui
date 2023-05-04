@@ -37,6 +37,8 @@ import FloatingCta from '../../components/floating-cta';
 import InfoTitle from '../../components/info-title';
 import Tags from '../../components/tags';
 import IssueCredentialButton from './components/issue-credential-button';
+import { AvatarFile } from 'apps/website/components/atoms/avatar-file';
+import { gqlAnonMethods } from 'apps/website/services/hasura/api';
 
 export function DataModelLayout({ children }) {
   const { t } = useTranslation('protocol');
@@ -89,6 +91,8 @@ export function DataModelLayout({ children }) {
     }
   );
 
+  const isP2PDataModel = dataModel?.permissioning === PermissionType.All;
+
   const hasAnAccountAvailableToIssue = useMemo(() => {
     if (!me?.id) return;
     const organizationsId = me?.protocol?.accesses?.map(
@@ -116,6 +120,28 @@ export function DataModelLayout({ children }) {
         return true;
     }
   }, [me]);
+
+  let mockDataModel: any = dataModel;
+  mockDataModel
+    ? (mockDataModel.createdBy = {
+        id: '63bc7fc62e7bd8b316b77133',
+        slug: 'gateway',
+      })
+    : (mockDataModel = null);
+  // MOCK - END
+
+  const creator = useQuery(
+    ['issuer', mockDataModel?.id],
+    () =>
+      gqlAnonMethods.dao_profile_by_slug({
+        slug: 'gateway',
+      }),
+    {
+      select: (data) => data.daos?.[0],
+      refetchOnMount: false,
+      refetchOnWindowFocus: false,
+    }
+  );
 
   return (
     <>
@@ -162,22 +188,73 @@ export function DataModelLayout({ children }) {
           }}
         >
           <Stack sx={{ px: { xs: 0, md: 4, lg: 6 } }}>
-            <InfoTitle
-              title={dataModel?.title}
-              labelId={t('data-model.data-model-id')}
-              id={dataModel?.id}
-              copySucessMessage={t('data-model.copy-id')}
-              badgeTooltip={t('data-model.verified-description')}
-              isLoading={isLoading}
-            />
-            <Tags tags={dataModel?.tags} />
-            <Typography sx={{ mb: 3 }}>
-              {isLoading ? <Skeleton width={400} /> : dataModel?.description}
-            </Typography>
-            <IssueCredentialButton
-              hasAnAccountAvailableToIssue={hasAnAccountAvailableToIssue}
-              onClickIssueCredential={toggleModal}
-            />
+            {isP2PDataModel && (
+              <>
+                <Stack
+                  sx={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    flexBasis: '100%',
+                    borderRadius: true
+                      ? '16px 16px 0 0'
+                      : false
+                      ? '0 16px 0 0'
+                      : '16px 0 0 0',
+                    transition: 'background .3s ease',
+                    '&:hover': {
+                      background: 'inherit',
+                    },
+                  }}
+                >
+                  <Box sx={{ mr: 2 }}>
+                    <img
+                      src={dataModel?.image}
+                      alt={dataModel?.title}
+                      height={'100px'}
+                      width={'90px'}
+                    />
+                  </Box>
+                  <div>
+                    <InfoTitle
+                      title={dataModel?.title}
+                      labelId={t('data-model.data-model-id')}
+                      id={dataModel?.id}
+                      copySucessMessage={t('data-model.copy-id')}
+                      badgeTooltip={t('data-model.verified-description')}
+                    />
+                    <Tags tags={dataModel?.tags} />
+                  </div>
+                </Stack>
+                <Typography sx={{ mb: 3 }}>{dataModel?.description}</Typography>
+              </>
+            )}
+
+            {!isP2PDataModel && (
+              <>
+                <InfoTitle
+                  title={dataModel?.title}
+                  labelId={t('data-model.data-model-id')}
+                  id={dataModel?.id}
+                  copySucessMessage={t('data-model.copy-id')}
+                  badgeTooltip={t('data-model.verified-description')}
+                  isLoading={isLoading}
+                />
+                <Tags tags={dataModel?.tags} />
+                <Typography sx={{ mb: 3 }}>
+                  {isLoading ? (
+                    <Skeleton width={400} />
+                  ) : (
+                    dataModel?.description
+                  )}
+                </Typography>
+                <Box>
+                  <IssueCredentialButton
+                    hasAnAccountAvailableToIssue={hasAnAccountAvailableToIssue}
+                    onClickIssueCredential={toggleModal}
+                  />
+                </Box>
+              </>
+            )}
           </Stack>
         </Stack>
         <Box mt={4}>

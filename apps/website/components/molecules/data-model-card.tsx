@@ -13,8 +13,9 @@ import MUICard from '@mui/material/Card';
 
 import { ROUTES } from '../../constants/routes';
 import { Protocol_Data_Model } from '../../services/hasura/types';
-import { AvatarFile } from '../atoms/avatar-file';
 import { CategoriesList } from './categories-list';
+import { AvatarFile } from '../atoms/avatar-file';
+import { PermissionType } from 'apps/website/services/gateway-protocol/types';
 
 export function DataModelCard({
   id,
@@ -23,9 +24,78 @@ export function DataModelCard({
   tags,
   version,
   createdBy,
+  permissioning,
 }: PartialDeep<Protocol_Data_Model>): JSX.Element {
   const url = ROUTES.PROTOCOL_DATAMODEL.replace('[id]', id);
-  return (
+  return permissioning === PermissionType.All ? (
+    <Link passHref href={url}>
+      <MUICard
+        sx={{
+          position: 'relative',
+          cursor: 'pointer',
+          backgroundColor: 'rgba(154, 83, 255, 0.08)',
+          ':hover': {
+            backgroundColor: 'rgba(154, 83, 255, 0.16)',
+            img: {
+              filter: 'none',
+              mixBlendMode: 'unset',
+            },
+          },
+          border: '1px solid rgba(154, 83, 255, 0.3);',
+        }}
+      >
+        <CardHeader
+          sx={{
+            pb: 1,
+            '.MuiCardHeader-avatar': { width: '100%', mt: -2, mb: -1 },
+            px: 0,
+            backgroundColor: '#9A53FF',
+            img: {
+              filter: 'grayscale(1)',
+              mixBlendMode: 'hard-light',
+            },
+            ':hover': {
+              img: {
+                filter: 'none',
+                mixBlendMode: 'unset',
+              },
+            },
+          }}
+          avatar={
+            <img
+              width={'100%'}
+              src={
+                'https://user-images.githubusercontent.com/63333707/234028818-2faa0548-20ed-483d-93b6-6e09d1308da9.png'
+              }
+              alt={title}
+              height={'302px'}
+            />
+          }
+        />
+        <CardContent sx={{ py: 1, mb: 1 }}>
+          <Typography gutterBottom variant="h5" sx={{ cursor: 'pointer' }}>
+            {title}
+          </Typography>
+          <Typography
+            height={40}
+            variant="body2"
+            color="text.secondary"
+            sx={{
+              /* TODO: make line-clamp reusable */
+              display: '-webkit-box',
+              WebkitLineClamp: 2,
+              WebkitBoxOrient: 'vertical',
+              overflow: 'hidden',
+              mb: 1,
+            }}
+          >
+            {description}
+          </Typography>
+          <CategoriesList categories={tags as unknown as string[]} />
+        </CardContent>
+      </MUICard>
+    </Link>
+  ) : (
     <Link passHref href={url}>
       <MUICard
         sx={{

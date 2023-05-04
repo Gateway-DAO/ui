@@ -17,6 +17,8 @@ query dataModel($id: String!) {
       id
     }
     permissioning
+    info
+    image
   }
 }
 
