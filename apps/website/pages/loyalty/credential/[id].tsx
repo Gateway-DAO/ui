@@ -52,12 +52,6 @@ export default function LoyaltyCredentialPage({ loyalty }) {
       }),
     {
       enabled: !!me?.id,
-      onError: (e) => {
-        console.log('error', e);
-      },
-      onSuccess: (data) => {
-        console.log('foi', data);
-      },
     }
   );
 
