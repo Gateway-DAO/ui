@@ -40,13 +40,13 @@ import { SmallTier } from './SmallTier';
 type LoyaltySidebarProps = {
   loyalty: PartialDeep<Loyalty_Program>;
   gate?: PartialDeep<Gates>;
-  credentialProtocol?: PartialDeep<Credential>;
+  protocolCredential?: PartialDeep<Credential>;
 };
 
 export function LoyaltySidebar({
   gate,
   loyalty,
-  credentialProtocol,
+  protocolCredential,
 }: LoyaltySidebarProps) {
   const { t } = useTranslation();
   const { me } = useAuth();
@@ -63,11 +63,15 @@ export function LoyaltySidebar({
     isReceivedCredential,
     mintData,
     mintCredential,
-  } = useMintData({ credential: credentialProtocol });
+  } = useMintData({
+    credential: protocolCredential,
+    loyaltyProgramId: gate?.loyalty_id,
+    gateId: gate?.id,
+  });
 
   const showMintButton = useMemo(
-    () => !!credentialProtocol && isReceivedCredential && isAllowedToMint,
-    [credentialProtocol, isAllowedToMint, isReceivedCredential]
+    () => !!protocolCredential && isReceivedCredential && isAllowedToMint,
+    [protocolCredential, isAllowedToMint, isReceivedCredential]
   );
   const [shareLoyaltyIsOpen, setShareLoyaltyIsOpen] = useToggle(false);
 
@@ -87,7 +91,7 @@ export function LoyaltySidebar({
       />
 
       <ModalShareCredential
-        credential={credentialProtocol}
+        credential={protocolCredential}
         handleClose={() => setShareIsOpen(false)}
         handleOpen={() => setShareIsOpen(true)}
         open={shareIsOpen}
@@ -198,7 +202,7 @@ export function LoyaltySidebar({
           <Stack direction="row" gap={2} mb={2}>
             <Button
               variant="outlined"
-              disabled={!credentialProtocol?.id}
+              disabled={!protocolCredential?.id}
               fullWidth
               size="large"
               sx={{
@@ -207,7 +211,7 @@ export function LoyaltySidebar({
               onClick={() =>
                 router.push({
                   host: ROUTES.PROTOCOL_CREDENTIAL,
-                  query: { id: credentialProtocol?.id },
+                  query: { id: protocolCredential?.id },
                 })
               }
             >
@@ -216,7 +220,7 @@ export function LoyaltySidebar({
             <GateMintButton
               setMintModal={() => {
                 setIsOpen(true);
-                mintCredential.mutate({ credentialId: credentialProtocol?.id });
+                mintCredential.mutate({ credentialId: protocolCredential?.id });
               }}
               showButton={showMintButton}
               mintData={mintData}

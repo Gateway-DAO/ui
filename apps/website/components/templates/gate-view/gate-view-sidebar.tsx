@@ -47,12 +47,12 @@ const GateStateChip = dynamic(() => import('../../atoms/gate-state-chip'), {
 
 type GateViewSidebarProps = {
   gateProps: PartialDeep<Gates>;
-  credentialProtocol?: PartialDeep<Credential>;
+  protocolCredential?: PartialDeep<Credential>;
 };
 
 export function GateViewSidebar({
   gateProps,
-  credentialProtocol,
+  protocolCredential,
 }: GateViewSidebarProps) {
   const router = useRouter();
   const { me } = useAuth();
@@ -70,11 +70,15 @@ export function GateViewSidebar({
     isReceivedCredential,
     mintData,
     mintCredential,
-  } = useMintData({ credential: credentialProtocol });
+  } = useMintData({
+    credential: protocolCredential,
+    loyaltyProgramId: gateProps?.loyalty_id,
+    gateId: gateProps?.id,
+  });
 
   const showMintButton = useMemo(
-    () => !!credentialProtocol && isReceivedCredential && isAllowedToMint,
-    [credentialProtocol, isAllowedToMint, isReceivedCredential]
+    () => !!protocolCredential && isReceivedCredential && isAllowedToMint,
+    [protocolCredential, isAllowedToMint, isReceivedCredential]
   );
 
   <HolderDialog
@@ -132,7 +136,7 @@ export function GateViewSidebar({
         onClose={() => setIsOpen(false)}
       />
       <ModalShareCredential
-        credential={credentialProtocol}
+        credential={protocolCredential}
         handleClose={() => setShareIsOpen(false)}
         handleOpen={() => setShareIsOpen(true)}
         open={shareIsOpen}
@@ -249,7 +253,7 @@ export function GateViewSidebar({
           <Stack direction="row" gap={1} sx={{ mb: 2 }}>
             <Button
               variant="outlined"
-              disabled={!credentialProtocol?.id}
+              disabled={!protocolCredential?.id}
               fullWidth
               size="large"
               sx={{
@@ -258,7 +262,7 @@ export function GateViewSidebar({
               onClick={() =>
                 router.push({
                   host: ROUTES.PROTOCOL_CREDENTIAL,
-                  query: { id: credentialProtocol?.id },
+                  query: { id: protocolCredential?.id },
                 })
               }
             >
@@ -267,7 +271,7 @@ export function GateViewSidebar({
             <GateMintButton
               setMintModal={() => {
                 setIsOpen(true);
-                mintCredential.mutate({ credentialId: credentialProtocol?.id });
+                mintCredential.mutate({ credentialId: protocolCredential?.id });
               }}
               showButton={showMintButton}
               mintData={mintData}

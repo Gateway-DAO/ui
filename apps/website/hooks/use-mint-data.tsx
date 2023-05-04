@@ -13,13 +13,16 @@ import {
   Credential,
   MintCredentialMutationVariables,
 } from '../services/gateway-protocol/types';
+import { Scalars } from '../services/hasura/types';
 import { queryClient } from '../services/query-client';
 
 type Props = {
   credential: PartialDeep<Credential>;
+  loyaltyProgramId?: Scalars['uuid'];
+  gateId?: Scalars['uuid'];
 };
 
-export function useMintData({ credential }: Props) {
+export function useMintData({ credential, loyaltyProgramId, gateId }: Props) {
   const { me, token } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const [shareIsOpen, setShareIsOpen] = useState<boolean>(false);
@@ -71,10 +74,16 @@ export function useMintData({ credential }: Props) {
             transaction: data.mintCredential.txHash,
           },
         ]);
-        queryClient.refetchQueries([
-          query.earned_credentials_by_gateway_id_by_data_model_id,
-          { gatewayId: me?.username, dataModelId: credential?.dataModel?.id },
-        ]);
+        if (loyaltyProgramId) {
+          queryClient.refetchQueries([
+            query.protocol_credential_by_loyalty_id_by_gate_id,
+            {
+              user_id: me?.id,
+              loyalty_id: loyaltyProgramId,
+              gate_id: gateId,
+            },
+          ]);
+        }
       },
     }
   );
