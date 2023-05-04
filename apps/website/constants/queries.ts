@@ -19,6 +19,6 @@ export const query = {
   gate: 'gate',
   create_code_change_email: 'create_code',
   confirm_token_change_email: 'confirm_token_change_email',
-  earned_credentials_by_gateway_id_by_data_model_id:
-    'earned_credentials_by_gateway_id_by_data_model_id',
+  protocol_credential_by_loyalty_id_by_gate_id:
+    'protocol_credential_by_loyalty_id_by_gate_id',
 };
