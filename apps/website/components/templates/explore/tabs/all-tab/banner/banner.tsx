@@ -1,170 +1,52 @@
 import useTranslation from 'next-translate/useTranslation';
 import { useMediaQuery, useTheme } from '@mui/material';
 
-import { brandColors, theme } from '@gateway/theme';
-
-import { alpha, Box, Button, Stack, Typography } from '@mui/material';
+import { Box, Button, Stack, Typography } from '@mui/material';
 import { ROUTES } from 'apps/website/constants/routes';
 
 export default function Banner(): JSX.Element {
   const { t } = useTranslation('explore');
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
-
-  return isMobile ? (
-    <Stack sx={{}}>
-      <Box
+  return (
+    <Box>
+      <Typography
+        variant="body1"
+        color={'text.secondary'}
+        position={'absolute'}
+        mt={5}
+        ml={5}
+      >
+        {t('common:featured-banner.tooltip-text')}
+      </Typography>
+      <Stack
+        component={'image'}
+        direction={isMobile ? 'column-reverse' : 'row'}
+        justifyContent={'space-between'}
         sx={{
           backgroundImage:
             "url('/images/explore/explore-banner_background.png')",
-          backgroundRepeat: 'no-repeat',
           backgroundSize: 'cover',
-          backgroundPosition: 'left top',
-          display: 'grid',
-          gridTemplateColumns: '1fr auto',
-          justifyContent: 'space-between',
-          alignItems: 'center',
+          px: isMobile ? 2 : 5,
         }}
       >
         <Stack
-          flexDirection="row"
-          justifyContent={''}
-          sx={{
-            [theme.breakpoints.down('md')]: {
-              flexDirection: 'column',
-            },
-          }}
+          alignSelf={{ md: 'self-end' }}
+          direction={'column'}
+          height={'100%'}
+          marginBottom={{ xs: 10, md: 14 }}
         >
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: '',
-              alignItems: '',
-              height: '100%',
-              py: 3,
-              px: 5,
-              [theme.breakpoints.down('md')]: {
-                flexDirection: 'column',
-              },
-            }}
+          <Stack
+            maxWidth={{ xs: '100%', md: 402 }}
+            marginTop={{ xs: -4, md: 0 }}
           >
-            <Typography>Issue Credentials</Typography>
-            <Box
-              component="img"
-              sx={{
-                // pr: 10,
-                [theme.breakpoints.down('md')]: {
-                  maxHeight: '340.38px',
-                  width: '352.53px',
-                  ml: 8,
-                },
-                // overflow: 'visible',
-              }}
-              src="/images/issue-credential-model.png"
-              alt={t('common:featured-banner.subtitle')}
-            />
-          </Box>
-
-          <Box sx={{ maxWidth: '460px', px: 3, mt: -9, mb: 15 }}>
-            <Typography
-              sx={{
-                fontSize: '34px',
-                fontWeight: 700,
-                lineHeight: '123.5%',
-                letterSpacing: '0.25px',
-                mb: 2,
-              }}
-            >
+            <Typography variant="h4" gutterBottom>
               {t('common:featured-banner.title')}
             </Typography>
-            <Typography
-              sx={{
-                fontSize: '16px',
-                fontWeight: 400,
-                lineHeight: '150%',
-                letterSpacing: '0.15px',
-                maxWidth: '375px',
-                color: alpha(brandColors.white.main, 0.7),
-              }}
-            >
+            <Typography variant="body1" color={'text.secondary'} gutterBottom>
               {t('common:featured-banner.subtitle')}
             </Typography>
-            <Button
-              variant="contained"
-              sx={{ mt: 4 }}
-              href={ROUTES.EXPLORE_ISSUE}
-            >
-              {t('common:featured-banner.action')}
-            </Button>
-          </Box>
-        </Stack>
-      </Box>
-    </Stack>
-  ) : (
-    <Stack sx={{}}>
-      <Box
-        sx={{
-          backgroundImage:
-            "url('/images/explore/explore-banner_background.png')",
-          backgroundRepeat: 'no-repeat',
-          backgroundSize: 'cover',
-          backgroundPosition: 'left top',
-          display: 'grid',
-          gridTemplateColumns: '1fr auto',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-        }}
-      >
-        <Stack
-          flexDirection="row"
-          justifyContent={''}
-          sx={{
-            [theme.breakpoints.down('md')]: {
-              flexDirection: 'column',
-            },
-          }}
-        >
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: '',
-              alignItems: '',
-              rowGap: '150px',
-              height: '100%',
-              py: 3,
-              px: 6,
-              [theme.breakpoints.down('md')]: {
-                px: 1,
-                flexDirection: 'column',
-              },
-            }}
-          >
-            <Typography>Issue Credentials</Typography>
-            <Box sx={{ maxWidth: '460px' }}>
-              <Typography
-                sx={{
-                  fontSize: '34px',
-                  fontWeight: 700,
-                  lineHeight: '123.5%',
-                  letterSpacing: '0.25px',
-                  mb: 2,
-                }}
-              >
-                {t('common:featured-banner.title')}
-              </Typography>
-              <Typography
-                sx={{
-                  fontSize: '16px',
-                  fontWeight: 400,
-                  lineHeight: '150%',
-                  letterSpacing: '0.15px',
-                  color: alpha(brandColors.white.main, 0.7),
-                }}
-              >
-                {t('common:featured-banner.subtitle')}
-              </Typography>
+            <div>
               <Button
                 variant="contained"
                 sx={{ mt: 4 }}
@@ -172,24 +54,18 @@ export default function Banner(): JSX.Element {
               >
                 {t('common:featured-banner.action')}
               </Button>
-            </Box>
-          </Box>
-          <Box
-            component="img"
-            sx={{
-              ml: 45,
-              mr: 10,
-              maxHeigh: '541.02px',
-              [theme.breakpoints.down('md')]: {
-                maxWidth: '459.22px',
-                ml: 0,
-              },
-            }}
-            src="/images/issue-credential-model.png"
-            alt={t('common:featured-banner.subtitle')}
-          />
+            </div>
+          </Stack>
         </Stack>
-      </Box>
-    </Stack>
+        <Box
+          component="img"
+          alignSelf={'self-start'}
+          height={{ xs: 466, md: '100%' }}
+          marginTop={{ xs: 9, md: 0 }}
+          src="/images/issue-credential-model.png"
+          alt={t('common:featured-banner.subtitle')}
+        />
+      </Stack>
+    </Box>
   );
 }

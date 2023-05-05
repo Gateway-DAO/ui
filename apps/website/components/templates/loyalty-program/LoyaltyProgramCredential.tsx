@@ -9,13 +9,13 @@ import { LoyaltySidebar } from './components/LoyaltySidebar';
 type Props = {
   loyalty: PartialDeep<Loyalty_Program>;
   gate: PartialDeep<Gates>;
-  credentialProtocol?: PartialDeep<Credential>;
+  protocolCredential?: PartialDeep<Credential>;
 };
 
 export function LoyaltyProgramCredential({
   gate,
   loyalty,
-  credentialProtocol,
+  protocolCredential,
 }: Props) {
   const credential = useCredentialByGateId({ gateId: gate?.id });
 
@@ -25,7 +25,7 @@ export function LoyaltyProgramCredential({
         <LoyaltySidebar
           gate={gate}
           loyalty={loyalty}
-          credentialProtocol={credentialProtocol}
+          protocolCredential={protocolCredential}
         />
       }
       mainContent={<GateViewTasks gateProps={gate} credential={credential} />}

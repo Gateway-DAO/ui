@@ -7,31 +7,32 @@ import { DashboardTemplate } from '../../components/templates/dashboard';
 import { LoyaltyProgram } from '../../components/templates/loyalty-program/LoyaltyProgram';
 import { query } from '../../constants/queries';
 import { useAuth } from '../../providers/auth';
-import { gatewayProtocolAuthSDK } from '../../services/gateway-protocol/api';
 import { gqlAnonMethods } from '../../services/hasura/api';
 
 type Props = InferGetServerSidePropsType<typeof getServerSideProps>;
 
 export default function LoyaltyPage({ loyalty }: Props) {
-  const { me, token } = useAuth();
+  const { me, gqlAuthMethods } = useAuth();
 
-  const { data: earnedCredentials } = useQuery(
+  const { data: protocolCredential } = useQuery(
     [
-      query.earned_credentials_by_gateway_id_by_data_model_id,
+      query.protocol_credential_by_loyalty_id_by_gate_id,
       {
-        gatewayId: me?.username,
-        dataModelId: loyalty.data_model_id,
+        user_id: me?.id,
+        loyalty_id: loyalty?.id,
+        gate_id: null,
       },
     ],
     () =>
-      gatewayProtocolAuthSDK(token).earnedCredentialsByGatewayIdByDataModel({
-        gatewayId: me.username,
-        dataModelId: loyalty.data_model_id,
+      gqlAuthMethods.protocol_credential_by_loyalty_id_by_gate_id({
+        user_id: me?.id,
+        loyalty_id: loyalty?.id,
+        gate_id: null,
       }),
     {
       enabled: !!me?.id,
-      select: ({ earnedCredentialsByGatewayIdByDataModel }) =>
-        earnedCredentialsByGatewayIdByDataModel,
+      select: ({ loyalty_protocol_credential }) =>
+        loyalty_protocol_credential.credential,
     }
   );
 
@@ -50,7 +51,7 @@ export default function LoyaltyPage({ loyalty }: Props) {
       >
         <LoyaltyProgram
           loyalty={loyalty}
-          credentialProtocol={earnedCredentials?.[0]}
+          protocolCredential={protocolCredential}
         />
       </DashboardTemplate>
     </>
