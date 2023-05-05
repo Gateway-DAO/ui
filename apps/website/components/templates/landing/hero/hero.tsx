@@ -163,7 +163,6 @@ export const Hero = forwardRef<
         >
           <HeroBackground
             src={BackgroundImage}
-            layout="responsive"
             alt="Gateway's background with people joining the network"
           />
         </MotionBox>
