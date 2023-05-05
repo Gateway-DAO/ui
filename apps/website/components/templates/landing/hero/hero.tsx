@@ -55,7 +55,7 @@ export const Hero = forwardRef<
             zIndex: 2,
             paddingTop: theme.spacing(36),
             [theme.breakpoints.down('sm')]: {
-              paddingTop: theme.spacing(17),
+              paddingTop: theme.spacing(20),
             },
           })}
           initial={{ translateY: 20, opacity: 0 }}
@@ -112,7 +112,7 @@ export const Hero = forwardRef<
           </Typography>
           {enterButton}
 
-          <Button
+          {/* <Button
             variant="outlined"
             component="a"
             href="#credential-model"
@@ -137,7 +137,7 @@ export const Hero = forwardRef<
             <Box component="i" sx={{ display: 'none' }}>
               Users
             </Box>
-          </Button>
+          </Button> */}
         </MotionBox>
         <MotionBox
           initial={{ scale: 1.2, opacity: 0 }}
@@ -148,16 +148,16 @@ export const Hero = forwardRef<
             opacity: { duration: 0.5 },
           }}
           sx={(theme) => ({
-            width: '100%',
             height: '100%',
+            width: 'auto',
             position: 'absolute',
             bottom: '0',
             right: `-${DEFAULT_PADDINGX}`,
-            overflow: 'hidden',
+
             [theme.breakpoints.down('sm')]: {
-              left: '-20px',
-              right: '-20px',
-              width: '100vw',
+              position: 'relative',
+              zIndex: 1,
+              top: -45,
             },
           })}
         >
@@ -168,26 +168,6 @@ export const Hero = forwardRef<
           />
         </MotionBox>
       </Stack>
-
-      <Box
-        sx={(theme) => ({
-          [theme.breakpoints.down('sm')]: {
-            height: '30%',
-            width: '100%',
-            position: 'absolute',
-            zIndex: 0,
-            bottom: 0,
-            left: 0,
-            background:
-              'linear-gradient(0deg, rgba(0, 0, 0, 0.64) 0%, rgba(0, 0, 0, 0) 100%)',
-            [theme.breakpoints.down('sm')]: {
-              left: '-20px',
-              width: '100vw',
-              overflow: 'hidden',
-            },
-          },
-        })}
-      ></Box>
     </Box>
   );
 });
