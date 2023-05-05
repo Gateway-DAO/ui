@@ -19,7 +19,7 @@ type Props = {
   hasLink?: boolean;
   alignRight?: boolean;
   unique?: boolean;
-  id: string;
+  id?: string;
 };
 
 export default function CardUserCell({
