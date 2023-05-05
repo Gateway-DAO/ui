@@ -25,6 +25,7 @@ export function CardEarnCredential(): JSX.Element {
         width: '100%',
         padding: 0.5,
       }}
+      id="explore-banner-secondary-2"
     >
       <Stack
         sx={{

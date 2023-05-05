@@ -27,6 +27,7 @@ export function CardCreditScore(): JSX.Element {
         marginRight: 2,
         p: 0.5,
       }}
+      id="explore-banner-secondary-1"
     >
       <Stack
         sx={{

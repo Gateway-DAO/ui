@@ -19,6 +19,7 @@ type Props = {
   hasLink?: boolean;
   alignRight?: boolean;
   unique?: boolean;
+  id: string;
 };
 
 export default function CardUserCell({
@@ -30,6 +31,7 @@ export default function CardUserCell({
   alignRight = false,
   hasLink = false,
   unique = false,
+  id,
 }: Props) {
   function UserCell({ href = '' }) {
     return (
@@ -51,6 +53,7 @@ export default function CardUserCell({
               : 'inherit',
           },
         }}
+        id={id}
       >
         <AvatarFile
           file={picture}

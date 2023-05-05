@@ -61,9 +61,15 @@ export default function FloatingCta({
     {
       icon: <IosShareIcon />,
       name: 'Share',
+      id: 'datamodel-fab-share',
       action: () => setShareIsOpen(true),
     },
-    { icon: <LinkIcon />, name: 'Copy', action: () => copyUrl() },
+    {
+      icon: <LinkIcon />,
+      name: 'Copy',
+      id: 'datamodel-fab-copylink',
+      action: () => copyUrl(),
+    },
   ];
 
   return (
@@ -84,6 +90,7 @@ export default function FloatingCta({
           ariaLabel="sharing options"
           sx={{ position: 'absolute', bottom: 16, right: 16 }}
           icon={open ? <QrCodeIcon /> : <MoreHorizIcon />}
+          
           FabProps={{
             sx: {
               color: open ? 'white' : brandColors.purple.main,
@@ -113,6 +120,7 @@ export default function FloatingCta({
                   },
                 },
               }}
+              id={fab.id}
               key={fab.name}
               icon={fab.icon}
               onClick={fab.action}

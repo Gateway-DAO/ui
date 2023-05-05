@@ -80,7 +80,7 @@ export default function GeneralInfoForm({
             }}
             defaultValue={title}
             label={t('data-model.issue-credential.title-label')}
-            id="title"
+            id="issuanceflow-textfield-title"
             {...register(`title`)}
             error={!!errors.title}
             helperText={errors.title?.message}

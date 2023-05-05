@@ -17,6 +17,7 @@ export default function ClaimFormText({
   return (
     <TextField
       type={type}
+      id="issuanceflow-textfield-claim"
       inputProps={
         type == 'number'
           ? {
