@@ -1,5 +1,6 @@
 import { useMemo, useRef, useState, useEffect } from 'react';
 
+import { EmojiStyle } from 'emoji-picker-react';
 import { useFormContext } from 'react-hook-form';
 
 import { InputAdornment, Stack, TextField } from '@mui/material';
@@ -8,10 +9,12 @@ import { CATEGORIES } from '../../../constants/gate';
 import { useAuth } from '../../../providers/auth';
 import CategoriesInput from '../../molecules/categories-input';
 import CreatedByInput from '../../molecules/creators-input';
+import {
+  EmojiPicker,
+  EmojiPickerProps,
+} from '../../molecules/form/emoji-picker';
 import SkillsInput from '../../molecules/skills-input';
 import { CreateGateData } from './schema';
-import { EmojiPicker, EmojiPickerProps } from '../../molecules/form/emoji-picker';
-import { EmojiStyle } from 'emoji-picker-react';
 
 export function GateDetailsForm() {
   const {
@@ -30,26 +33,26 @@ export function GateDetailsForm() {
     formValues.description ? formValues.description : ''
   );
 
-   useEffect(() => {
-     if (
-       descriptionRef?.current?.selectionStart > 0 &&
-       descriptionRef?.current?.selectionStart < description.length
-     ) {
-       const firstPart = description.substring(
-         0,
-         descriptionRef?.current?.selectionStart
-       );
-       const secondPart = description.substring(
-         descriptionRef?.current?.selectionStart,
-         description.length
-       );
-       setDescription(firstPart + emoji + secondPart);
-       setValue(`description`, firstPart + emoji + secondPart);
-     } else {
-       setDescription(description + emoji);
-       setValue(`description`, description + emoji);
-     }
-   }, [emoji]);
+  useEffect(() => {
+    if (
+      descriptionRef?.current?.selectionStart > 0 &&
+      descriptionRef?.current?.selectionStart < description.length
+    ) {
+      const firstPart = description.substring(
+        0,
+        descriptionRef?.current?.selectionStart
+      );
+      const secondPart = description.substring(
+        descriptionRef?.current?.selectionStart,
+        description.length
+      );
+      setDescription(firstPart + emoji + secondPart);
+      setValue(`description`, firstPart + emoji + secondPart);
+    } else {
+      setDescription(description + emoji);
+      setValue(`description`, description + emoji);
+    }
+  }, [emoji]);
 
   const emojiProps: EmojiPickerProps = {
     onEmoji: setEmoji,
@@ -66,7 +69,6 @@ export function GateDetailsForm() {
     },
     iconColor: '#9B96A0',
   };
-
 
   return (
     <Stack direction="column" gap={2}>
@@ -119,6 +121,7 @@ export function GateDetailsForm() {
         }}
         onChange={(event) => {
           setDescription(event.target.value);
+          setValue('description', event.target.value);
         }}
         InputProps={{
           endAdornment: (
