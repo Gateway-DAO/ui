@@ -22,7 +22,7 @@ export function CardCreditScore(): JSX.Element {
       sx={{
         display: 'flex',
         justifyContent: 'space-between',
-        borderRadius: 3,
+        borderRadius: 2,
         width: '100%',
         marginRight: 2,
         p: 0.5,

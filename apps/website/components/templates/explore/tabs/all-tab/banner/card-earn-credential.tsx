@@ -21,7 +21,7 @@ export function CardEarnCredential(): JSX.Element {
       sx={{
         display: 'flex',
         justifyContent: 'space-between',
-        borderRadius: 3,
+        borderRadius: 2,
         width: '100%',
         padding: 0.5,
       }}
