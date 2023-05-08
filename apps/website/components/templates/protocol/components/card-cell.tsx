@@ -1,9 +1,10 @@
 import { ReactNode } from 'react';
 
+import { useTheme } from '@emotion/react';
+
 import { brandColors } from '@gateway/theme';
 
 import { Stack, Typography, alpha } from '@mui/material';
-import { useTheme } from '@emotion/react';
 
 type Props = {
   label: string;
