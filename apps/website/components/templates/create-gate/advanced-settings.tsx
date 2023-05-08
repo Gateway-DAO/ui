@@ -24,6 +24,7 @@ import { DesktopDatePicker, MobileDatePicker } from '@mui/x-date-pickers';
 import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 
+import { useAuth } from '../../../providers/auth';
 import { CreateGateData } from './schema';
 
 const StyledToggleButton = styled(ToggleButton)(({ theme }) => ({
@@ -59,11 +60,11 @@ const claimLimitValues = [
 
 export function AdvancedSetting() {
   const [collapse, setCollapse] = useState(false);
+  const { me } = useAuth();
   const {
     formState: { errors },
-    setValue,
+    register,
     control,
-    getValues,
   } = useFormContext<CreateGateData>();
 
   return (
@@ -245,6 +246,53 @@ export function AdvancedSetting() {
               }}
             />
           </div>
+          {(me?.username === 'joao_gateway' ||
+            me?.username === 'devfelizardo') && (
+            <Stack sx={{ width: '100%' }} gap={2}>
+              <Typography gutterBottom variant="body1" sx={{ mb: 1 }}>
+                Loyalty Program
+              </Typography>
+              <TextField
+                label="Loyalty Program ID"
+                id="loyalty_id"
+                {...register('loyalty_id')}
+                error={!!errors.loyalty_id}
+                helperText={errors.loyalty_id?.message}
+                sx={{
+                  '& div fieldset legend span': {
+                    marginRight: 0.5,
+                  },
+                }}
+              />
+              <TextField
+                label="Data Model ID"
+                id="data_model_id"
+                {...register('data_model_id')}
+                defaultValue="4fcb512e-5b40-465d-8e9e-a38343600aa0"
+                error={!!errors.data_model_id}
+                helperText={errors.data_model_id?.message}
+                sx={{
+                  '& div fieldset legend span': {
+                    marginRight: 0.5,
+                  },
+                }}
+              />
+              <TextField
+                label="Points"
+                id="points"
+                {...register('points', {
+                  valueAsNumber: true,
+                })}
+                error={!!errors.points}
+                helperText={errors.points?.message}
+                sx={{
+                  '& div fieldset legend span': {
+                    marginRight: 0.5,
+                  },
+                }}
+              />
+            </Stack>
+          )}
         </Stack>
       </Collapse>
     </section>
