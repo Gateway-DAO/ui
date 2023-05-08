@@ -68,12 +68,12 @@ export function DataModelCard({
                 'https://user-images.githubusercontent.com/63333707/234028818-2faa0548-20ed-483d-93b6-6e09d1308da9.png'
               }
               alt={title}
-              height={'302px'}
+              height={'auto'}
             />
           }
         />
         <CardContent sx={{ py: 1, mb: 1 }}>
-          <Typography gutterBottom variant="h5" sx={{ cursor: 'pointer' }}>
+          <Typography gutterBottom variant="h5" sx={{ cursor: 'pointer' , color : '#9A53FF' }}>
             {title}
           </Typography>
           <Typography
