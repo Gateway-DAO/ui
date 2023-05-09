@@ -2,11 +2,11 @@ import { useState, ChangeEvent } from 'react';
 
 import { DateTime } from 'luxon';
 import { Controller, useFormContext } from 'react-hook-form';
+import { useLocalStorage } from 'react-use';
 
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import EditIcon from '@mui/icons-material/Edit';
 import {
-  Box,
   Button,
   Collapse,
   Stack,
@@ -20,11 +20,9 @@ import {
 import OutlinedInput from '@mui/material/OutlinedInput';
 import { styled } from '@mui/material/styles';
 import { DatePicker, TimePicker } from '@mui/x-date-pickers';
-import { DesktopDatePicker, MobileDatePicker } from '@mui/x-date-pickers';
 import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 
-import { useAuth } from '../../../providers/auth';
 import { CreateGateData } from './schema';
 
 const StyledToggleButton = styled(ToggleButton)(({ theme }) => ({
@@ -60,12 +58,14 @@ const claimLimitValues = [
 
 export function AdvancedSetting() {
   const [collapse, setCollapse] = useState(false);
-  const { me } = useAuth();
   const {
     formState: { errors },
     register,
     control,
   } = useFormContext<CreateGateData>();
+  const [hiddenDevFields] = useLocalStorage('devmode');
+
+  console.log(hiddenDevFields);
 
   return (
     <section>
@@ -246,8 +246,7 @@ export function AdvancedSetting() {
               }}
             />
           </div>
-          {(me?.username === 'joao_gateway' ||
-            me?.username === 'devfelizardo') && (
+          {hiddenDevFields && (
             <Stack sx={{ width: '100%' }} gap={2}>
               <Typography gutterBottom variant="body1" sx={{ mb: 1 }}>
                 Loyalty Program
