@@ -10,6 +10,9 @@ mutation create_gate_tasks_based(
   $claim_limit: Int
   $expire_date: timestamptz
   $tasks: [tasks_insert_input!] = []
+  $data_model_id: uuid
+  $loyalty_id: uuid
+  $points: Int
 ) {
   insert_gates_one(
     object: {
@@ -20,6 +23,9 @@ mutation create_gate_tasks_based(
       categories: $categories
       description: $description
       claim_limit: $claim_limit
+      data_model_id: $data_model_id
+      loyalty_id: $loyalty_id
+      points: $points
       expire_date: $expire_date
       permissions: {
         data: $permissions
@@ -49,6 +55,9 @@ mutation create_gate_tasks_based(
         published
         expire_date
         claim_limit
+        data_model_id
+        loyalty_id
+        points
       ]
     }
   ) {
@@ -71,6 +80,9 @@ mutation create_gate_direct(
   $expire_date: timestamptz
   $image: String!,
   $whitelisted_wallets_file: uuid!
+  $data_model_id: uuid
+  $loyalty_id: uuid
+  $points: Int
   ) {
 
   insert_gates_one(
@@ -83,6 +95,9 @@ mutation create_gate_direct(
       description: $description
       claim_limit: $claim_limit
       expire_date: $expire_date
+      data_model_id: $data_model_id
+      loyalty_id: $loyalty_id
+      points: $points
       permissions: {
         data: $permissions
         on_conflict: {
@@ -106,6 +121,9 @@ mutation create_gate_direct(
         whitelisted_wallets_file_id
         expire_date
         claim_limit
+        data_model_id
+        loyalty_id
+        points
       ]
     }
   ) {
