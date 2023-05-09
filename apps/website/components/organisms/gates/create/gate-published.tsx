@@ -146,7 +146,11 @@ export default function GatePublishedModal({
             })}
           >
             <GatesCard
-              href={ROUTES.GATE_PROFILE.replace('[id]', gate.id)}
+              href={
+                gate.loyalty_id
+                  ? ROUTES.LOYALTY_PROGRAM_CREDENTIAL.replace('[id]', gate.id)
+                  : ROUTES.GATE_PROFILE.replace('[id]', gate.id)
+              }
               {...gate}
             />
           </Box>
