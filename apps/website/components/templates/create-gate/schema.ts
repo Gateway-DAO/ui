@@ -1,12 +1,7 @@
 import { FieldError } from 'react-hook-form';
-import { PartialDeep } from 'type-fest';
 import { z } from 'zod';
 
-import {
-  Files,
-  Gates,
-  Whitelisted_Wallets,
-} from '../../../services/hasura/types';
+import { Files, Gates } from '../../../services/hasura/types';
 
 // Creator
 export type Creator = {
@@ -20,6 +15,9 @@ export type CreateGateData = {
   categories: string[];
   expire_date?: string;
   claim_limit?: number;
+  data_model_id?: string;
+  loyalty_id?: string;
+  points?: number;
 } & Required<Pick<Gates, 'title' | 'categories' | 'image' | 'description'>> &
   Required<{ creator: Pick<Gates['creator'], 'id' | 'name'> }> & {
     type: 'task_based' | 'direct';
@@ -646,6 +644,13 @@ const gateBase = z.object({
     .int({ message: `please enter a valid value , don't use decimal value` })
     .nullish(),
   expire_date: z.string().nullish(),
+  data_model_id: z.string().nullish(),
+  loyalty_id: z.string().nullish(),
+  points: z
+    .number()
+    .positive({ message: 'please enter a valid value' })
+    .int({ message: `please enter a valid value , don't use decimal value` })
+    .nullish(),
 });
 
 const taskGate = gateBase.augment({

@@ -146,7 +146,11 @@ export default function GatePublishedModal({
             })}
           >
             <GatesCard
-              href={ROUTES.GATE_PROFILE.replace('[id]', gate.id)}
+              href={
+                gate.loyalty_id
+                  ? ROUTES.LOYALTY_PROGRAM_CREDENTIAL.replace('[id]', gate.id)
+                  : ROUTES.GATE_PROFILE.replace('[id]', gate.id)
+              }
               {...gate}
             />
           </Box>
@@ -155,7 +159,14 @@ export default function GatePublishedModal({
             justifyContent="center"
             sx={{ mt: { xs: 6, md: 2 } }}
           >
-            <Link href={ROUTES.GATE_PROFILE.replace('[id]', gate.id)} passHref>
+            <Link
+              href={
+                gate.loyalty_id
+                  ? ROUTES.LOYALTY_PROGRAM_CREDENTIAL.replace('[id]', gate.id)
+                  : ROUTES.GATE_PROFILE.replace('[id]', gate.id)
+              }
+              passHref
+            >
               <Button variant="outlined" component="a" size="medium">
                 Check Credential
               </Button>

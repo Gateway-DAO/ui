@@ -2,11 +2,11 @@ import { useState, ChangeEvent } from 'react';
 
 import { DateTime } from 'luxon';
 import { Controller, useFormContext } from 'react-hook-form';
+import { useLocalStorage } from 'react-use';
 
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import EditIcon from '@mui/icons-material/Edit';
 import {
-  Box,
   Button,
   Collapse,
   Stack,
@@ -20,7 +20,6 @@ import {
 import OutlinedInput from '@mui/material/OutlinedInput';
 import { styled } from '@mui/material/styles';
 import { DatePicker, TimePicker } from '@mui/x-date-pickers';
-import { DesktopDatePicker, MobileDatePicker } from '@mui/x-date-pickers';
 import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 
@@ -61,10 +60,12 @@ export function AdvancedSetting() {
   const [collapse, setCollapse] = useState(false);
   const {
     formState: { errors },
-    setValue,
+    register,
     control,
-    getValues,
   } = useFormContext<CreateGateData>();
+  const [hiddenDevFields] = useLocalStorage('devmode');
+
+  console.log(hiddenDevFields);
 
   return (
     <section>
@@ -245,6 +246,52 @@ export function AdvancedSetting() {
               }}
             />
           </div>
+          {hiddenDevFields && (
+            <Stack sx={{ width: '100%' }} gap={2}>
+              <Typography gutterBottom variant="body1" sx={{ mb: 1 }}>
+                Loyalty Program
+              </Typography>
+              <TextField
+                label="Loyalty Program ID"
+                id="loyalty_id"
+                {...register('loyalty_id')}
+                error={!!errors.loyalty_id}
+                helperText={errors.loyalty_id?.message}
+                sx={{
+                  '& div fieldset legend span': {
+                    marginRight: 0.5,
+                  },
+                }}
+              />
+              <TextField
+                label="Data Model ID"
+                id="data_model_id"
+                {...register('data_model_id')}
+                defaultValue="4fcb512e-5b40-465d-8e9e-a38343600aa0"
+                error={!!errors.data_model_id}
+                helperText={errors.data_model_id?.message}
+                sx={{
+                  '& div fieldset legend span': {
+                    marginRight: 0.5,
+                  },
+                }}
+              />
+              <TextField
+                label="Points"
+                id="points"
+                {...register('points', {
+                  valueAsNumber: true,
+                })}
+                error={!!errors.points}
+                helperText={errors.points?.message}
+                sx={{
+                  '& div fieldset legend span': {
+                    marginRight: 0.5,
+                  },
+                }}
+              />
+            </Stack>
+          )}
         </Stack>
       </Collapse>
     </section>

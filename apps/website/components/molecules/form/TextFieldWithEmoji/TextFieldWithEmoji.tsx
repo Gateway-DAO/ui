@@ -1,7 +1,10 @@
-import { EmojiStyle } from 'emoji-picker-react';
-import { EmojiPicker, EmojiPickerProps } from '../emoji-picker/emoji-picker';
 import { useEffect, useRef, useState } from 'react';
+
+import { EmojiStyle } from 'emoji-picker-react';
+
 import { InputAdornment, TextField } from '@mui/material';
+
+import { EmojiPicker, EmojiPickerProps } from '../emoji-picker/emoji-picker';
 
 export default function TextFieldWithEmoji({
   formValues,
@@ -78,6 +81,7 @@ export default function TextFieldWithEmoji({
         '& fieldset legend span': {
           marginRight: '10px',
         },
+        mb: 2,
       }}
       onChange={(event) => {
         setDescription(event.target.value);
