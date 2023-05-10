@@ -34,15 +34,13 @@ query get_gate_progress_completed_by_loyalty_program(
   }
 }
 
-query protocol_credential_by_loyalty_id_by_gate_id(
+query get_protocol_by_loyalty_id(
   $user_id: String!
   $loyalty_id: String!
-  $gate_id: String
 ) {
-  loyalty_protocol_credential(
+  get_protocol_by_loyalty_id(
     user_id: $user_id
     loyalty_id: $loyalty_id
-    gate_id: $gate_id
   ) {
     credential
   }

@@ -37,21 +37,21 @@ export default function LoyaltyCredentialPage({ loyalty }) {
 
   const { data: protocolCredential } = useQuery(
     [
-      query.protocol_credential_by_loyalty_id_by_gate_id,
+      query.protocol_credential_by_gate_id,
       {
         user_id: me?.id,
-        loyalty_id: loyalty?.id,
         gate_id: gate?.id,
       },
     ],
     () =>
-      gqlAuthMethods.protocol_credential_by_loyalty_id_by_gate_id({
+      gqlAuthMethods.get_protocol_by_gate_id({
         user_id: me?.id,
-        loyalty_id: loyalty?.id,
         gate_id: gate?.id,
       }),
     {
-      enabled: !!me?.id,
+      enabled: authenticated && !!gate,
+      select: ({ get_protocol_by_gate_id }) =>
+        get_protocol_by_gate_id.credential,
     }
   );
 
@@ -71,9 +71,7 @@ export default function LoyaltyCredentialPage({ loyalty }) {
         <LoyaltyProgramCredential
           gate={gate}
           loyalty={loyalty}
-          protocolCredential={
-            protocolCredential?.loyalty_protocol_credential?.credential
-          }
+          protocolCredential={protocolCredential}
         />
       </DashboardTemplate>
     </>
