@@ -66,20 +66,14 @@ export function GateViewSidebar({
     shareStatus,
     shareIsOpen,
     setShareIsOpen,
-    isAllowedToMint,
-    isReceivedCredential,
-    mintData,
     mintCredential,
+    mintData,
+    showMintButton,
   } = useMintData({
     credential: protocolCredential,
     loyaltyProgramId: gateProps?.loyalty_id,
     gateId: gateProps?.id,
   });
-
-  const showMintButton = useMemo(
-    () => !!protocolCredential && isReceivedCredential && isAllowedToMint,
-    [protocolCredential, isAllowedToMint, isReceivedCredential]
-  );
 
   <HolderDialog
     {...{
@@ -274,7 +268,6 @@ export function GateViewSidebar({
                 mintCredential.mutate({ credentialId: protocolCredential?.id });
               }}
               showButton={showMintButton}
-              mintData={mintData}
             />
           </Stack>
 

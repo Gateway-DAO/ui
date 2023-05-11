@@ -1,6 +1,5 @@
 import { PartialDeep } from 'type-fest/source/partial-deep';
 
-import { useCredentialByGateId } from '../../../hooks/use-credential-by-gate-id';
 import { Gates, Loyalty_Program } from '../../../services/hasura/types';
 import { GateViewTasks } from '../gate-view/gate-view-tasks';
 import LoyaltyProgramTemplate from './LoyaltyProgramTemplate';
@@ -17,8 +16,6 @@ export function LoyaltyProgramCredential({
   loyalty,
   protocolCredential,
 }: Props) {
-  const credential = useCredentialByGateId({ gateId: gate?.id });
-
   return (
     <LoyaltyProgramTemplate
       sidebar={
@@ -28,7 +25,12 @@ export function LoyaltyProgramCredential({
           protocolCredential={protocolCredential}
         />
       }
-      mainContent={<GateViewTasks gateProps={gate} credential={credential} />}
+      mainContent={
+        <GateViewTasks
+          gateProps={gate}
+          protocolCredential={protocolCredential}
+        />
+      }
     />
   );
 }

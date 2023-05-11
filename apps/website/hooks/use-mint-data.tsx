@@ -94,15 +94,25 @@ export function useMintData({ credential, loyaltyProgramId, gateId }: Props) {
     }
   );
 
+  const showMintButton = useMemo(
+    () =>
+      !credential?.nft?.minted &&
+      isReceivedCredential &&
+      isAllowedToMint &&
+      !mintData,
+    [credential?.nft, isAllowedToMint, isReceivedCredential, mintData]
+  );
+
   return {
     isOpen,
     setIsOpen,
     shareIsOpen,
     setShareIsOpen,
     shareStatus,
-    isAllowedToMint,
-    isReceivedCredential,
-    mintData,
     mintCredential,
+    mintData,
+    showMintButton,
+    isReceivedCredential,
+    isAllowedToMint,
   };
 }

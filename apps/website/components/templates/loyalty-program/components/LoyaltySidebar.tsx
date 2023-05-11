@@ -59,20 +59,15 @@ export function LoyaltySidebar({
     shareStatus,
     shareIsOpen,
     setShareIsOpen,
-    isAllowedToMint,
-    isReceivedCredential,
-    mintData,
     mintCredential,
+    mintData,
+    showMintButton,
   } = useMintData({
     credential: protocolCredential,
     loyaltyProgramId: gate?.loyalty_id,
     gateId: gate?.id,
   });
 
-  const showMintButton = useMemo(
-    () => !!protocolCredential && isReceivedCredential && isAllowedToMint,
-    [protocolCredential, isAllowedToMint, isReceivedCredential]
-  );
   const [shareLoyaltyIsOpen, setShareLoyaltyIsOpen] = useToggle(false);
 
   const texts = {
@@ -223,7 +218,6 @@ export function LoyaltySidebar({
                 mintCredential.mutate({ credentialId: protocolCredential?.id });
               }}
               showButton={showMintButton}
-              mintData={mintData}
             />
           </Stack>
 
