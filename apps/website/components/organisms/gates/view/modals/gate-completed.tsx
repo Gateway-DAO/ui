@@ -1,7 +1,13 @@
+import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
+import { ComponentType } from 'react';
+
+import { PartialDeep } from 'type-fest';
+
 import { useMenu } from '@gateway/ui';
 
 import CloseIcon from '@mui/icons-material/Close';
+import IosShareIcon from '@mui/icons-material/IosShare';
 import {
   Avatar,
   Button,
@@ -13,16 +19,13 @@ import {
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Typography from '@mui/material/Typography';
-import IosShareIcon from '@mui/icons-material/IosShare';
-import { TokenFilled } from '../../../../molecules/mint-card/assets/token-filled';
-import { GatesCard } from '../../../../molecules/gates-card';
-import { ShareButtonFn } from '../../../../atoms/share-btn-fn';
-import { MintDialogProps } from '../../../../molecules/mint-dialog';
-import { ComponentType } from 'react';
-import dynamic from 'next/dynamic';
-import { PartialDeep } from 'type-fest';
+
 import { useAuth } from '../../../../../providers/auth';
 import { Credentials, Gates } from '../../../../../services/hasura/types';
+import { ShareButtonFn } from '../../../../atoms/share-btn-fn';
+import { GatesCard } from '../../../../molecules/gates-card';
+import { TokenFilled } from '../../../../molecules/mint-card/assets/token-filled';
+import { MintDialogProps } from '../../../../molecules/mint-dialog';
 
 const MintDialog: ComponentType<MintDialogProps> = dynamic(
   () =>
@@ -177,6 +180,7 @@ export default function GateCompletedModal({
               height: { xs: theme.spacing(45.49), md: theme.spacing(59.78) },
               width: { xs: theme.spacing(28.75), md: theme.spacing(37.75) },
               marginY: (theme) => theme.spacing(5),
+              mb: 3,
             })}
           >
             <GatesCard onClick={handleClose} {...gate} />
