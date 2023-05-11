@@ -152,3 +152,16 @@ query GateProgress($gateID: uuid!, $userID: uuid!) {
     created_at
   }
 }
+
+query get_protocol_by_gate_id(
+  $user_id: String!
+  $gate_id: String!
+) {
+  get_protocol_by_gate_id(
+    user_id: $user_id
+    gate_id: $gate_id
+  ) {
+    credential
+  }
+}
+
