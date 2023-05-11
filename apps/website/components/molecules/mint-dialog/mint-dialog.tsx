@@ -5,7 +5,6 @@ import { PartialDeep } from 'type-fest';
 import { Dialog, DialogTitle, SxProps } from '@mui/material';
 
 import { useCredential } from '../../../hooks/use-credential';
-import { useBiconomy } from '../../../providers/biconomy';
 import { Credentials } from '../../../services/hasura/types';
 import { MintSelect } from './screen/mint-select';
 import { Minting } from './screen/minting';

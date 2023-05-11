@@ -35,10 +35,11 @@ export default function CredentialProtocolShow({ credential }: Props) {
     shareIsOpen,
     setShareIsOpen,
     shareStatus,
-    isAllowedToMint,
-    isReceivedCredential,
-    mintData,
     mintCredential,
+    mintData,
+    showMintButton,
+    isReceivedCredential,
+    isAllowedToMint,
   } = useMintData({ credential });
 
   const boxStyles: SxProps<Theme> = {
