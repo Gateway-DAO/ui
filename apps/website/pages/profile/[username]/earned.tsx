@@ -5,7 +5,7 @@ import { dehydrate, QueryClient, useQuery } from '@tanstack/react-query';
 import { useAuth } from '../../../providers/auth';
 import { gqlAnonMethods } from '../../../services/hasura/api';
 import { Earned } from 'apps/website/components/templates/profile/tabs/Earned';
-import { ProfileTemplateLayout } from 'apps/website/components/templates/profile/ProfileTemplateLayout';
+import { ProfileTemplateLayout } from 'apps/website/components/templates/profile';
 
 export default function EarnedProfile() {
   const router = useRouter();

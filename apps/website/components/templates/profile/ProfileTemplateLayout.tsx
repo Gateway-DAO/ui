@@ -19,7 +19,7 @@ import { useAuth } from 'apps/website/providers/auth';
 import { HeadContainer } from '../../molecules/head-container';
 import DashboardTemplate from '../dashboard/dashboard';
 
-export function ProfileTemplateLayout({ children }) {
+export default function ProfileTemplateLayout({ children }) {
   const router = useRouter();
   const { me, gqlAuthMethods } = useAuth();
   const { username } = router.query;
