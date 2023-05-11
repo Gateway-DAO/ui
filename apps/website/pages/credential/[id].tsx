@@ -74,23 +74,21 @@ export default function GateProfilePage() {
 
   const { data: protocolCredential } = useQuery(
     [
-      query.protocol_credential_by_loyalty_id_by_gate_id,
+      query.protocol_credential_by_gate_id,
       {
         user_id: me?.id,
-        loyalty_id: gate?.loyalty_id,
         gate_id: gate?.id,
       },
     ],
     () =>
-      gqlAuthMethods.protocol_credential_by_loyalty_id_by_gate_id({
+      gqlAuthMethods.get_protocol_by_gate_id({
         user_id: me?.id,
-        loyalty_id: gate?.loyalty_id,
         gate_id: gate?.id,
       }),
     {
-      enabled: !!me?.id,
-      select: ({ loyalty_protocol_credential }) =>
-        loyalty_protocol_credential.credential,
+      enabled: authenticated && !!gate,
+      select: ({ get_protocol_by_gate_id }) =>
+        get_protocol_by_gate_id.credential,
     }
   );
 

@@ -12,27 +12,25 @@ import { gqlAnonMethods } from '../../services/hasura/api';
 type Props = InferGetServerSidePropsType<typeof getServerSideProps>;
 
 export default function LoyaltyPage({ loyalty }: Props) {
-  const { me, gqlAuthMethods } = useAuth();
+  const { me, gqlAuthMethods, authenticated } = useAuth();
 
   const { data: protocolCredential } = useQuery(
     [
-      query.protocol_credential_by_loyalty_id_by_gate_id,
+      query.protocol_credential_by_loyalty_id,
       {
         user_id: me?.id,
         loyalty_id: loyalty?.id,
-        gate_id: null,
       },
     ],
     () =>
-      gqlAuthMethods.protocol_credential_by_loyalty_id_by_gate_id({
+      gqlAuthMethods.get_protocol_by_loyalty_id({
         user_id: me?.id,
         loyalty_id: loyalty?.id,
-        gate_id: null,
       }),
     {
-      enabled: !!me?.id,
-      select: ({ loyalty_protocol_credential }) =>
-        loyalty_protocol_credential.credential,
+      enabled: authenticated,
+      select: ({ get_protocol_by_loyalty_id }) =>
+        get_protocol_by_loyalty_id.credential,
     }
   );
 

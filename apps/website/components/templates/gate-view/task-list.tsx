@@ -52,10 +52,16 @@ export function TaskList({
         { userId: me?.id, loyaltyProgramId: gate?.loyalty_id },
       ]);
       queryClient.refetchQueries([
-        query.protocol_credential_by_loyalty_id_by_gate_id,
+        query.protocol_credential_by_loyalty_id,
         {
           user_id: me?.id,
           loyalty_id: gate?.loyalty_id,
+        },
+      ]);
+      queryClient.refetchQueries([
+        query.protocol_credential_by_gate_id,
+        {
+          user_id: me?.id,
           gate_id: gate?.id,
         },
       ]);
