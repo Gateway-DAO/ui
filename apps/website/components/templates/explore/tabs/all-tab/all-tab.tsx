@@ -139,6 +139,7 @@ export function AllTab({
           }
           itemWidth={(theme) => theme.spacing(41)}
         >
+          
           {daos.map((dao) => (
             <DaoCard key={dao.id} {...dao} />
           ))}

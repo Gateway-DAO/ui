@@ -1,7 +1,8 @@
 import React, { forwardRef } from 'react';
 
-import { TOKENS } from '@gateway/theme';
+
 import { MotionBox } from '@gateway/ui';
+import { useMediaQuery, useTheme } from '@mui/material';
 
 import { ArrowDownward } from '@mui/icons-material';
 import {
@@ -26,13 +27,16 @@ export const Hero = forwardRef<
   { enterButton, title, subtitle, titleDescription }: HeroProps,
   ref
 ): JSX.Element {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
+
   return (
     <Box
       ref={ref}
       component="section"
       sx={(theme) => ({
         width: '100%',
-        height: '100vh',
+        height: { sm: '100vh', xs: '100%' },
         position: 'relative',
         borderBottom: '1px solid rgba(229, 229, 229, 0.12)',
       })}
@@ -55,7 +59,7 @@ export const Hero = forwardRef<
             zIndex: 2,
             paddingTop: theme.spacing(36),
             [theme.breakpoints.down('sm')]: {
-              paddingTop: theme.spacing(17),
+              paddingTop: theme.spacing(20),
             },
           })}
           initial={{ translateY: 20, opacity: 0 }}
@@ -111,7 +115,16 @@ export const Hero = forwardRef<
             {titleDescription}
           </Typography>
           {enterButton}
-
+        </MotionBox>
+        <Box
+          sx={
+            isMobile && {
+              position: 'absolute',
+              bottom: 0,
+              zIndex: 2,
+            }
+          }
+        >
           <Button
             variant="outlined"
             component="a"
@@ -138,7 +151,7 @@ export const Hero = forwardRef<
               Users
             </Box>
           </Button>
-        </MotionBox>
+        </Box>
         <MotionBox
           initial={{ scale: 1.2, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
@@ -147,47 +160,33 @@ export const Hero = forwardRef<
             duration: 1,
             opacity: { duration: 0.5 },
           }}
+          style={
+            isMobile && {
+              height: 'auto',
+              width: '140%',
+              top: -20,
+            }
+          }
           sx={(theme) => ({
-            width: '100%',
-            height: '100%',
+            width: 'auto',
             position: 'absolute',
             bottom: '0',
             right: `-${DEFAULT_PADDINGX}`,
-            overflow: 'hidden',
+
             [theme.breakpoints.down('sm')]: {
-              left: '-20px',
-              right: '-20px',
-              width: '100vw',
+              position: 'relative',
+              backgroundRepeat: 'no-repeat',
+              backgroundSize: 'cover',
+              left: `-${DEFAULT_PADDINGX}`,
             },
           })}
         >
           <HeroBackground
             src={BackgroundImage}
-            layout="responsive"
             alt="Gateway's background with people joining the network"
           />
         </MotionBox>
       </Stack>
-
-      <Box
-        sx={(theme) => ({
-          [theme.breakpoints.down('sm')]: {
-            height: '30%',
-            width: '100%',
-            position: 'absolute',
-            zIndex: 0,
-            bottom: 0,
-            left: 0,
-            background:
-              'linear-gradient(0deg, rgba(0, 0, 0, 0.64) 0%, rgba(0, 0, 0, 0) 100%)',
-            [theme.breakpoints.down('sm')]: {
-              left: '-20px',
-              width: '100vw',
-              overflow: 'hidden',
-            },
-          },
-        })}
-      ></Box>
     </Box>
   );
 });
