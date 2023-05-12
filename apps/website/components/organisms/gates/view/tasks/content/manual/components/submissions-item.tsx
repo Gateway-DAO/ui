@@ -33,20 +33,21 @@ export function SubmissionsItem({ progress, onSelect }: SubmissionsItemProps) {
 
   const { gqlAuthMethods } = useAuth();
   const progressEvent = useQuery(
-    ['progress-event', progress.id],
-    () => gqlAuthMethods.manual_tasks_status({ task_progress_id: progress.id }),
+    ['progress-event', progress?.id],
+    () =>
+      gqlAuthMethods.manual_tasks_status({ task_progress_id: progress?.id }),
     {
-      select: (data) => data.manual_task_events?.[0],
+      select: (data) => data?.manual_task_events?.[0],
     }
   );
 
-  const issuer = progressEvent.data?.issuer;
-  const event_type = progressEvent.data?.event_type;
+  const issuer = progressEvent?.data?.issuer;
+  const event_type = progressEvent?.data?.event_type;
 
   const datetimeString = useMemo(() => {
-    if (!progressEvent.data?.updated_at) return '';
-    return ISOToString(progressEvent.data.updated_at, lang);
-  }, [progressEvent.data?.updated_at, lang]);
+    if (!progressEvent?.data?.updated_at) return '';
+    return ISOToString(progressEvent?.data.updated_at, lang);
+  }, [progressEvent?.data?.updated_at, lang]);
 
   return (
     <Stack
@@ -63,10 +64,10 @@ export function SubmissionsItem({ progress, onSelect }: SubmissionsItemProps) {
         },
         textAlign: 'left',
       }}
-      onClick={() => onSelect(progress.id)}
+      onClick={() => onSelect(progress?.id)}
     >
       <AvatarFile
-        file={progress.user.picture}
+        file={progress?.user?.picture}
         fallback="/avatar.png"
       ></AvatarFile>
       {!!(issuer && event_type) && (
@@ -79,7 +80,7 @@ export function SubmissionsItem({ progress, onSelect }: SubmissionsItemProps) {
                 alignItems: 'baseline',
               }}
             >
-              <Typography>{`@${progress.user.username}`}</Typography>
+              <Typography>{`@${progress?.user?.username}`}</Typography>
               <Typography
                 fontSize={14}
                 sx={{
@@ -97,11 +98,11 @@ export function SubmissionsItem({ progress, onSelect }: SubmissionsItemProps) {
             >
               {event_type === 'send_link' && t('submissions.submitted_link')}
               {event_type === 'comment' &&
-                `@${issuer.username} ${t('submissions.sent_comment')}`}
+                `@${issuer?.username} ${t('submissions.sent_comment')}`}
               {event_type === 'reject' &&
-                `@${issuer.username} ${t('submissions.denied_submission')}`}
+                `@${issuer?.username} ${t('submissions.denied_submission')}`}
               {event_type === 'approve' &&
-                `@${issuer.username} ${t('submissions.approved_submission')}`}
+                `@${issuer?.username} ${t('submissions.approved_submission')}`}
             </Typography>
           </Stack>
           <Stack direction="row" gap={0.5} alignItems="center">

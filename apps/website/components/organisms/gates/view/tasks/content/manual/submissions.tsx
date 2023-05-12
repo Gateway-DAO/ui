@@ -11,7 +11,6 @@ import { Stack, useMediaQuery } from '@mui/material';
 import { taskErrorMessages } from '../../../../../../../components/organisms/tasks/task-error-messages';
 import { useAuth } from '../../../../../../../providers/auth';
 import {
-  Tasks,
   Gates,
   Task_Progress,
 } from '../../../../../../../services/hasura/types';
@@ -24,10 +23,9 @@ import { SubmissionDetail } from './submission-detail';
 
 type Props = {
   gate: PartialDeep<Gates>;
-  task: PartialDeep<Tasks>;
 };
 
-export function Submissions({ gate, task }: Props) {
+export function Submissions({ gate }: Props) {
   const { me, gqlAuthMethods } = useAuth();
   const { t } = useTranslation('gate-profile');
   const [expanded, toggleExpanded] = useToggle(false);
@@ -39,8 +37,8 @@ export function Submissions({ gate, task }: Props) {
   const queryClient = useQueryClient();
 
   const manualTasksSubmissions = useQuery(
-    ['admin-manual-task-submissions', gate.id, me.id],
-    () => gqlAuthMethods.manual_tasks_progress({ gate_id: gate.id }),
+    ['admin-manual-task-submissions', gate?.id, me?.id],
+    () => gqlAuthMethods.manual_tasks_progress({ gate_id: gate?.id }),
     {
       refetchInterval: 3000,
     }
@@ -66,15 +64,15 @@ export function Submissions({ gate, task }: Props) {
     sent: PartialDeep<Task_Progress>[];
   } = useMemo(
     () =>
-      manualTasksSubmissions.data?.task_progress.reduce(
+      manualTasksSubmissions?.data?.task_progress?.reduce(
         (acc, task_progress) => {
           if (
-            task_progress.completed === 'in_review' ||
-            task_progress.completed === 'not_done'
+            task_progress?.completed === 'in_review' ||
+            task_progress?.completed === 'not_done'
           ) {
-            acc.pending.push(task_progress);
+            acc?.pending?.push(task_progress);
           } else {
-            acc.sent.push(task_progress);
+            acc?.sent?.push(task_progress);
           }
           return acc;
         },
@@ -86,34 +84,35 @@ export function Submissions({ gate, task }: Props) {
         pending: [],
         sent: [],
       },
-    [manualTasksSubmissions.data?.task_progress]
+    [manualTasksSubmissions?.data?.task_progress]
   );
 
-  const tasksInReview = tasksSubmissions.pending.filter(
-    (task_progress) => task_progress.completed === 'in_review'
+  const tasksInReview = tasksSubmissions?.pending?.filter(
+    (task_progress) => task_progress?.completed === 'in_review'
   );
 
   const amount =
-    (tasksSubmissions.pending.length ?? 0) +
-    (tasksSubmissions.sent.length ?? 0);
+    (tasksSubmissions?.pending?.length ?? 0) +
+    (tasksSubmissions?.sent?.length ?? 0);
 
-  const detailedTaskProgress = manualTasksSubmissions.data?.task_progress.find(
-    (task_progress) => task_progress.id === detailedTaskProgressId
-  );
+  const detailedTaskProgress =
+    manualTasksSubmissions?.data?.task_progress?.find(
+      (task_progress) => task_progress?.id === detailedTaskProgressId
+    );
 
   const modifyTask = useMutation(
     [
       'completeTask',
-      { gateId: gate.id, taskId: detailedTaskProgress?.task_id },
+      { gateId: gate?.id, taskId: detailedTaskProgress?.task_id },
     ],
     gqlAuthMethods.complete_task,
     {
       onSuccess: () => {
-        queryClient.resetQueries(['gate', gate.id]);
+        queryClient.resetQueries(['gate', gate?.id]);
         queryClient.resetQueries(['user_task_progresses', me?.id]);
         queryClient.refetchQueries([
           'admin-manual-task-submissions',
-          gate.id,
+          gate?.id,
           me?.id,
         ]);
         queryClient.resetQueries([
@@ -122,9 +121,9 @@ export function Submissions({ gate, task }: Props) {
         ]);
       },
       onError(error: any) {
-        if (error?.response?.errors[0]?.message) {
+        if (error?.response?.errors?.[0]?.message) {
           snackbar.enqueueSnackbar(
-            taskErrorMessages[error?.response?.errors[0]?.message] ||
+            taskErrorMessages[error?.response?.errors?.[0]?.message] ||
               taskErrorMessages['UNEXPECTED_ERROR'],
             {
               variant: 'error',
@@ -137,9 +136,9 @@ export function Submissions({ gate, task }: Props) {
 
   const onSubmitEvent = async (event_type: ManualTaskEventType, data?: any) => {
     return modifyTask.mutateAsync({
-      task_id: detailedTaskProgress.task_id,
+      task_id: detailedTaskProgress?.task_id,
       info: {
-        task_progress_id: detailedTaskProgress.id,
+        task_progress_id: detailedTaskProgress?.id,
         event_type,
         data,
       },
@@ -172,15 +171,15 @@ export function Submissions({ gate, task }: Props) {
         {detailedTaskProgress ? (
           <SubmissionsDetailHeader
             progress={detailedTaskProgress}
-            user={detailedTaskProgress.user}
+            user={detailedTaskProgress?.user}
             latestSubmitEvent={modifyTask.variables?.info?.event_type}
-            isSubmitEventLoading={modifyTask.isLoading}
+            isSubmitEventLoading={modifyTask?.isLoading}
             onBack={() => setDetailedTaskProgressId(undefined)}
             onSubmitEvent={onSubmitEvent}
           />
         ) : (
           <SubmissionsHeader
-            isLoading={manualTasksSubmissions.isLoading}
+            isLoading={manualTasksSubmissions?.isLoading}
             amount={amount}
             amountNew={tasksInReview?.length ?? 0}
           />
@@ -200,23 +199,23 @@ export function Submissions({ gate, task }: Props) {
           <SubmissionDetail
             progress={detailedTaskProgress}
             gate={gate}
-            latestSubmitEvent={modifyTask.variables?.info?.event_type}
+            latestSubmitEvent={modifyTask?.variables?.info?.event_type}
             onSubmitEvent={onSubmitEvent}
-            isSubmitEventLoading={modifyTask.isLoading}
+            isSubmitEventLoading={modifyTask?.isLoading}
           />
         ) : (
           <Stack sx={{ overflow: 'auto', maxHeight: '100%' }}>
-            {tasksSubmissions.pending?.length > 0 && (
+            {tasksSubmissions?.pending?.length > 0 && (
               <SubmissionsList
                 title={t('submissions.pending_feedback')}
-                list={tasksSubmissions.pending}
+                list={tasksSubmissions?.pending}
                 onSelect={setDetailedTaskProgressId}
               />
             )}
-            {tasksSubmissions.sent?.length > 0 && (
+            {tasksSubmissions?.sent?.length > 0 && (
               <SubmissionsList
                 title={t('submissions.feeback_sent')}
-                list={tasksSubmissions.sent}
+                list={tasksSubmissions?.sent}
                 onSelect={setDetailedTaskProgressId}
               />
             )}
