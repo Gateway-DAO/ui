@@ -57,6 +57,7 @@ export default function CredentialCreateContainer({
             borderRadius: '20px',
             mt: 3,
           })}
+          id="issuanceflow-button-issue"
         >
           {t('data-model.actions.issue-credential')}
         </LoadingButton>

@@ -1,4 +1,6 @@
-import { useQueryClient } from '@tanstack/react-query';
+import { useState } from 'react';
+
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { PartialDeep } from 'type-fest';
 
 import { TOKENS } from '@gateway/theme';
@@ -33,7 +35,7 @@ export function TaskList({
   isCredentialExpired,
   setOpen,
 }: Props) {
-  const { me } = useAuth();
+  const { me, gqlAuthMethods } = useAuth();
   const completedGate = !!completedAt;
   const totalTasksCount = completedGate
     ? gate.tasks.length
@@ -44,6 +46,27 @@ export function TaskList({
   const taskProgress = (completedTasksCount / totalTasksCount) * 100;
   const isTaskStarted = taskProgress === 0 ? false : true;
   const queryClient = useQueryClient();
+  const [gateFinished, setGateFinished] = useState(false);
+
+  const { data } = useQuery(
+    [
+      query.protocol_credential_by_gate_id,
+      {
+        user_id: me?.id,
+        gate_id: gate?.id,
+      },
+    ],
+    () =>
+      gqlAuthMethods.get_protocol_by_gate_id({
+        user_id: me?.id,
+        gate_id: gate?.id,
+      }),
+    {
+      enabled: gateFinished,
+      select: ({ get_protocol_by_gate_id }) =>
+        get_protocol_by_gate_id.credential,
+    }
+  );
 
   const refetchTotalPoints = () => {
     if (gate.loyalty_id) {
@@ -52,11 +75,10 @@ export function TaskList({
         { userId: me?.id, loyaltyProgramId: gate?.loyalty_id },
       ]);
       queryClient.refetchQueries([
-        query.protocol_credential_by_loyalty_id_by_gate_id,
+        query.protocol_credential_by_loyalty_id,
         {
           user_id: me?.id,
           loyalty_id: gate?.loyalty_id,
-          gate_id: gate?.id,
         },
       ]);
     }
@@ -170,6 +192,7 @@ export function TaskList({
             isEnabled={completedTasksCount + 1 === totalTasksCount}
             onCompleteGate={() => {
               setOpen();
+              setGateFinished(true);
               refetchTotalPoints();
             }}
           />

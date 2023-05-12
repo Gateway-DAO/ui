@@ -3,10 +3,11 @@ import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { PartialDeep } from 'type-fest';
 
+import { useCredentialByGateId } from '../../../hooks/use-credential-by-gate-id';
 import { useGateStatus } from '../../../hooks/use-gate-status';
 import { useAuth } from '../../../providers/auth';
 import { gqlAnonMethods } from '../../../services/hasura/api';
-import { CredentialQuery, Gates } from '../../../services/hasura/types';
+import { Gates } from '../../../services/hasura/types';
 import { isDaoAdmin } from '../../../utils/is-dao-admin';
 import GateCompletedModal from '../../organisms/gates/view/modals/gate-completed';
 import { DirectHoldersList } from './direct-holders-list/direct-holders-list';
@@ -16,14 +17,19 @@ import { TaskList } from './task-list';
 
 type GateViewTasksProps = {
   gateProps: PartialDeep<Gates>;
-  credential: CredentialQuery;
+  protocolCredential: PartialDeep<Credential>;
 };
 
-export function GateViewTasks({ gateProps, credential }: GateViewTasksProps) {
+export function GateViewTasks({
+  gateProps,
+  protocolCredential,
+}: GateViewTasksProps) {
   const { me, gqlAuthMethods } = useAuth();
   const [open, setOpen] = useState(false);
   const isAdmin = isDaoAdmin({ me, gate: gateProps });
   const gateStatus = useGateStatus(gateProps);
+
+  const credential = useCredentialByGateId({ gateId: gateProps?.id });
 
   const gateProgress = useQuery(['gate_progress', gateProps?.id, me?.id], () =>
     gqlAuthMethods.GateProgress({
@@ -74,7 +80,7 @@ export function GateViewTasks({ gateProps, credential }: GateViewTasksProps) {
         open={open}
         handleClose={handleClose}
         gate={gateProps}
-        credential={credential?.credentials_by_pk}
+        protocolCredential={protocolCredential}
       />
       {gateProps.published !== 'not_published' &&
         gateProps.type === 'direct' && (

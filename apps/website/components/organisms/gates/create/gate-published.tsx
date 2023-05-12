@@ -157,7 +157,7 @@ export default function GatePublishedModal({
           <Stack
             direction="row"
             justifyContent="center"
-            sx={{ mt: { xs: 6, md: 2 } }}
+            sx={{ mt: { xs: 6, md: 2 }, mb: 3 }}
           >
             <Link
               href={

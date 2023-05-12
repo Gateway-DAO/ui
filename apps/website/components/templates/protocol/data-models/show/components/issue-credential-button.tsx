@@ -44,6 +44,7 @@ export default function IssueCredentialButton({
           onClick={() => {
             onClickIssueCredential();
           }}
+          id="datamodel-button-issue"
         >
           {t('data-model.issue-credential-button')}
         </Button>

@@ -39,6 +39,7 @@ export default function Banner(): JSX.Element {
           <Stack
             maxWidth={{ xs: '100%', md: 402 }}
             marginTop={{ xs: -4, md: 0 }}
+            zIndex={2}
           >
             <Typography variant="h4" gutterBottom>
               {t('common:featured-banner.title')}
@@ -51,6 +52,7 @@ export default function Banner(): JSX.Element {
                 variant="contained"
                 sx={{ mt: 4 }}
                 href={ROUTES.EXPLORE_ISSUE}
+                id="explore-banner-primary"
               >
                 {t('common:featured-banner.action')}
               </Button>
@@ -60,7 +62,7 @@ export default function Banner(): JSX.Element {
         <Box
           component="img"
           alignSelf={'self-start'}
-          height={{ xs: 466, md: '100%' }}
+          height={{ xs: 440, md: '100%' }}
           marginTop={{ xs: 9, md: 0 }}
           src="/images/issue-credential-model.png"
           alt={t('common:featured-banner.subtitle')}

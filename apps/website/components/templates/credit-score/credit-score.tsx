@@ -28,6 +28,7 @@ import {
   Tooltip,
   Typography,
   styled,
+  useMediaQuery,
 } from '@mui/material';
 import { Link as MUILink } from '@mui/material';
 
@@ -47,6 +48,7 @@ import { TokenFilled } from '../../molecules/mint-card/assets/token-filled';
 import { HolderDialog } from '../../organisms/holder-dialog';
 import { ClientNav } from '../../organisms/navbar/client-nav';
 import LoadingModal from './LoadingModal';
+import { theme } from '@gateway/theme';
 
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
@@ -64,7 +66,8 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 export function CreditScoreTemplate() {
-  const size = 500;
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
+  const size = isMobile ? 325 : 500;
   const fillColor = {
     gradient: ['#9A53FF', '#FE02B9', '#5DABFB', '#0075FF'],
   };
@@ -516,9 +519,9 @@ export function CreditScoreTemplate() {
           >
             <Box position={'relative'}>
               <ArcProgress
-                thickness={20}
+                thickness={isMobile ? 15 : 20}
                 progress={!!me && isCreditScore ? creditScore / 1000 : 0}
-                fillThickness={35}
+                fillThickness={isMobile ? 30 : 35}
                 emptyColor="#FFFFFF26"
                 size={size}
                 fillColor={me ? fillColor : '#312938'}
@@ -526,7 +529,11 @@ export function CreditScoreTemplate() {
                 arcStart={140}
                 arcEnd={400}
               />
-              <Box position={'absolute'} top={160} left={170}>
+              <Box
+                position={'absolute'}
+                top={{ xs: 90, md: 160 }}
+                left={{ xs: 75, md: 170 }}
+              >
                 {!!me && isCreditScore && (
                   <>
                     <Typography align={'center'} variant="h1">
@@ -543,6 +550,7 @@ export function CreditScoreTemplate() {
                       sx={{ marginTop: '60px' }}
                       align={'center'}
                       variant="body1"
+                      marginLeft={{ xs: 2, md: 1 }}
                     >
                       Connect your wallet
                     </Typography>
@@ -551,28 +559,41 @@ export function CreditScoreTemplate() {
                 {!!me && !isCreditScore && (
                   <>
                     <Typography
-                      sx={{ marginTop: '-30px', marginLeft: '30px' }}
+                      sx={{
+                        marginTop: '-30px',
+                        marginLeft: { xs: '35%', md: '30px' },
+                      }}
                       align={'center'}
                       variant="h1"
                     >
                       -
                     </Typography>
                     <Typography
-                      sx={{ marginTop: '40px', marginLeft: '34px' }}
+                      sx={{
+                        marginTop: { xs: '0px', md: '40px' },
+                        marginLeft: { xs: '42px', md: '34px' },
+                      }}
                       align={'center'}
+                      textAlign={'center'}
                       variant="h6"
                     >
                       No Score
                     </Typography>
                     <Tooltip title={t('no-score.title')}>
-                      <IconButton sx={{ marginLeft: '54px' }}>
+                      <IconButton
+                        sx={{ marginLeft: { xs: '50%', md: '54px' } }}
+                      >
                         <InfoOutlined />
                       </IconButton>
                     </Tooltip>
                   </>
                 )}
               </Box>
-              <Box position={'absolute'} bottom={35} left={198}>
+              <Box
+                position={'absolute'}
+                bottom={{ xs: 20, md: 35 }}
+                left={{ xs: 110, md: 198 }}
+              >
                 <Typography align={'center'} variant="body1">
                   {t('about.progress.powered-by')}
                   <MUILink

@@ -7,9 +7,15 @@ type Props = {
   text: string;
   handleClick: (e) => void;
   sxProps?: SxProps<Theme>;
+  id?: string;
 };
 
-export default function ExternalLink({ text, handleClick, sxProps }: Props) {
+export default function ExternalLink({
+  text,
+  handleClick,
+  sxProps,
+  id,
+}: Props) {
   return (
     <Link
       component={Stack}
@@ -23,6 +29,7 @@ export default function ExternalLink({ text, handleClick, sxProps }: Props) {
         zIndex: 1,
         ...sxProps,
       }}
+      id={id}
       onClick={handleClick}
     >
       <Typography

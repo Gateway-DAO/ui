@@ -26,9 +26,14 @@ const CategoriesInput = dynamic(
 type PropTypes = {
   title: string;
   isP2PDataModel: boolean;
+  image: string;
 };
 
-export default function GeneralInfoForm({ title, isP2PDataModel }: PropTypes) {
+export default function GeneralInfoForm({
+  title,
+  isP2PDataModel,
+  image,
+}: PropTypes) {
   const {
     register,
     setValue,
@@ -36,7 +41,9 @@ export default function GeneralInfoForm({ title, isP2PDataModel }: PropTypes) {
     formState: { errors },
     getValues,
   } = useFormContext<CreateCredentialInput>();
-
+  if (isP2PDataModel && image !== null) {
+    setValue('image', image);
+  }
   const { t } = useTranslation('protocol');
   return (
     <Stack>
@@ -73,7 +80,7 @@ export default function GeneralInfoForm({ title, isP2PDataModel }: PropTypes) {
             }}
             defaultValue={title}
             label={t('data-model.issue-credential.title-label')}
-            id="title"
+            id="issuanceflow-textfield-title"
             {...register(`title`)}
             error={!!errors.title}
             helperText={errors.title?.message}

@@ -74,18 +74,33 @@ export function useMintData({ credential, loyaltyProgramId, gateId }: Props) {
             transaction: data.mintCredential.txHash,
           },
         ]);
+        queryClient.refetchQueries([
+          query.protocol_credential_by_gate_id,
+          {
+            user_id: me?.id,
+            gate_id: gateId,
+          },
+        ]);
         if (loyaltyProgramId) {
           queryClient.refetchQueries([
-            query.protocol_credential_by_loyalty_id_by_gate_id,
+            query.protocol_credential_by_loyalty_id,
             {
               user_id: me?.id,
               loyalty_id: loyaltyProgramId,
-              gate_id: gateId,
             },
           ]);
         }
       },
     }
+  );
+
+  const showMintButton = useMemo(
+    () =>
+      !credential?.nft?.minted &&
+      isReceivedCredential &&
+      isAllowedToMint &&
+      !mintData,
+    [credential?.nft, isAllowedToMint, isReceivedCredential, mintData]
   );
 
   return {
@@ -94,9 +109,10 @@ export function useMintData({ credential, loyaltyProgramId, gateId }: Props) {
     shareIsOpen,
     setShareIsOpen,
     shareStatus,
-    isAllowedToMint,
-    isReceivedCredential,
-    mintData,
     mintCredential,
+    mintData,
+    showMintButton,
+    isReceivedCredential,
+    isAllowedToMint,
   };
 }
