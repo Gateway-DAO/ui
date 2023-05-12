@@ -17,6 +17,7 @@ export default function ClaimFormText({
   return (
     <TextField
       type={type}
+      id="issuanceflow-textfield-claim"
       inputProps={
         type == 'number'
           ? {
@@ -37,7 +38,6 @@ export default function ClaimFormText({
       {...(type === 'number' && { inputProps: { step: 0.1 } })}
       sx={{ width: '100%' }}
       label={label}
-      id={`data-model-field-${fieldName}`}
       {...register(`claim.${fieldName}`, {
         valueAsNumber: type === 'number',
       })}

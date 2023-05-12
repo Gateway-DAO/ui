@@ -119,6 +119,7 @@ export default function CredentialProtocolShow({ credential }: Props) {
         <Stack direction="row" justifyContent="flex-end" sx={{ mb: 2 }}>
           <ExternalLink
             text={t('credential.storage-id')}
+            id="credential-textlink-ink-storageid"
             handleClick={(e) => {
               e.preventDefault();
               if (credential?.arweaveInfo?.url)

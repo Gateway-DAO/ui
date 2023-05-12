@@ -52,6 +52,7 @@ export default function Activities({ activities }: Props) {
       {activities?.length > 0 && (
         <Stack sx={{ mt: '-24px' }}>
           <Accordion
+            id="credential-button-activity"
             expanded={expanded}
             onChange={handleChange()}
             sx={{

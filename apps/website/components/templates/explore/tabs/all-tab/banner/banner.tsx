@@ -52,6 +52,7 @@ export default function Banner(): JSX.Element {
                 variant="contained"
                 sx={{ mt: 4 }}
                 href={ROUTES.EXPLORE_ISSUE}
+                id="explore-banner-primary"
               >
                 {t('common:featured-banner.action')}
               </Button>

@@ -23,6 +23,7 @@ export function CardEarnCredential(): JSX.Element {
         borderRadius: 2,
         width: '100%',
       }}
+      id="explore-banner-secondary-2"
     >
       <Link passHref href={ROUTES.EXPLORE_EARN}>
         <CardActionArea

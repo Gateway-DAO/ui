@@ -26,6 +26,7 @@ export function CardCreditScore(): JSX.Element {
         marginRight: 2,
         borderRadius: 2,
       }}
+      id="explore-banner-secondary-1"
     >
       <Link passHref href={ROUTES.CREDIT_SCORE}>
         <CardActionArea
