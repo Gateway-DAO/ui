@@ -1,4 +1,4 @@
-import { PartialDeep, PartialObjectDeep } from 'type-fest/source/partial-deep';
+import { PartialDeep } from 'type-fest/source/partial-deep';
 
 import { Paper, Stack, Typography } from '@mui/material';
 

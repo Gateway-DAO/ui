@@ -48,10 +48,10 @@ export function SubmissionDetail({
   const queryClient = useQueryClient();
 
   const manualTaskEvents = useQuery(
-    ['manual-task-events', progress.id],
+    ['manual-task-events', progress?.id],
     () =>
       gqlAuthMethods.manual_task_events({
-        task_progress_id: progress.id,
+        task_progress_id: progress?.id,
       }),
     {
       onSuccess() {
@@ -75,11 +75,11 @@ export function SubmissionDetail({
   );
 
   const onSubmit = handleSubmit(async (data) => {
-    if (manualTaskEvents.isLoading) return;
+    if (manualTaskEvents?.isLoading) return;
     onSubmitEvent('comment', data)
       .then(() => setValue('comment', ''))
       .catch((error) => {
-        if (error?.response?.errors[0]?.message) {
+        if (error?.response?.errors?.[0]?.message) {
           enqueueSnackbar(
             taskErrorMessages[error?.response?.errors[0]?.message] ||
               taskErrorMessages['UNEXPECTED_ERROR'],
@@ -93,7 +93,7 @@ export function SubmissionDetail({
 
   return (
     <>
-      {manualTaskEvents.isLoading ? (
+      {manualTaskEvents?.isLoading ? (
         <CircularProgress sx={{ alignSelf: 'center', my: 10 }} />
       ) : (
         <Stack
@@ -105,10 +105,10 @@ export function SubmissionDetail({
           }}
         >
           <InterationList
-            list={manualTaskEvents.data.manual_task_events}
+            list={manualTaskEvents?.data?.manual_task_events}
             elevation={20}
             gate={gate}
-            status={progress.completed}
+            status={progress?.completed}
           />
         </Stack>
       )}
@@ -133,7 +133,7 @@ export function SubmissionDetail({
             variant="contained"
             sx={{ textTransform: 'capitalize' }}
             isLoading={isSubmitEventLoading && latestSubmitEvent === 'comment'}
-            disabled={isSubmitEventLoading || manualTaskEvents.isLoading}
+            disabled={isSubmitEventLoading || manualTaskEvents?.isLoading}
           >
             {t('common:actions.submit')}
           </LoadingButton>

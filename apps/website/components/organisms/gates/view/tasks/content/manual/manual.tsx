@@ -30,11 +30,11 @@ const ManualContent = ({
 }: TaskProps) => {
   const { t } = useTranslation('gate-profile');
   const { me, gqlAuthMethods } = useAuth();
-  const formattedDate = new Date(updatedAt.toLocaleString()).toLocaleString();
+  const formattedDate = new Date(updatedAt?.toLocaleString())?.toLocaleString();
   const [link, setLink] = useState<string>();
   const [comment, setComment] = useState<string>();
   const currentTaskProgress = me?.task_progresses?.find(
-    (tp) => tp.task_id === task.id
+    (tp) => tp?.task_id === task?.id
   );
 
   const queryClient = useQueryClient();
@@ -61,7 +61,7 @@ const ManualContent = ({
       },
       refetchInterval(data) {
         if (
-          data?.manual_task_events.some(
+          data?.manual_task_events?.some(
             ({ event_type }) =>
               event_type === 'approve' || event_type === 'reject'
           )
@@ -71,9 +71,9 @@ const ManualContent = ({
         return 2000;
       },
       onError(error: any) {
-        if (error?.response?.errors[0]?.message) {
+        if (error?.response?.errors?.[0]?.message) {
           enqueueSnackbar(
-            taskErrorMessages[error?.response?.errors[0]?.message] ||
+            taskErrorMessages[error?.response?.errors?.[0]?.message] ||
               taskErrorMessages['UNEXPECTED_ERROR'],
             {
               variant: 'error',
@@ -91,14 +91,14 @@ const ManualContent = ({
     await completeTask({
       event_type: 'send_link',
       data: {
-        link: linkPreview.data?.link_preview,
+        link: linkPreview?.data?.link_preview,
         task_progress_id: currentTaskProgress?.id,
       },
     });
     manualTaskEvents.remove();
     queryClient.removeQueries([
       'admin-manual-task-submissions',
-      gate.id,
+      gate?.id,
       me?.id,
     ]);
     setLink('');
@@ -115,7 +115,7 @@ const ManualContent = ({
     manualTaskEvents.remove();
     queryClient.removeQueries([
       'admin-manual-task-submissions',
-      gate.id,
+      gate?.id,
       me?.id,
     ]);
     setComment('');
@@ -131,7 +131,7 @@ const ManualContent = ({
         <>
           {!completed && (
             <Stack sx={{ width: '100%', mb: 5 }}>
-              {task.task_data?.event_type === 'send_link' && (
+              {task?.task_data?.event_type === 'send_link' && (
                 <>
                   <Stack
                     direction="row"
@@ -145,10 +145,11 @@ const ManualContent = ({
                       id="submit-link-address"
                       sx={{ flexGrow: 1 }}
                       value={link}
-                      onChange={(e) => setLink(e.target.value)}
-                      error={!!linkPreview.error && !linkPreview.isFetching}
+                      onChange={(e) => setLink(e?.target?.value)}
+                      error={!!linkPreview?.error && !linkPreview?.isFetching}
                       helperText={
-                        (linkPreview.error as any)?.response?.errors[0]?.message
+                        (linkPreview?.error as any)?.response?.errors?.[0]
+                          ?.message
                       }
                     />
                     <LoadingButton
@@ -156,17 +157,17 @@ const ManualContent = ({
                       variant="contained"
                       onClick={onSubmitLink}
                       isLoading={isLoading}
-                      disabled={!linkPreview.data?.link_preview}
+                      disabled={!linkPreview?.data?.link_preview}
                     >
                       {t('tasks.manual.action')}
                     </LoadingButton>
                   </Stack>
-                  {linkPreview.data?.link_preview && (
+                  {linkPreview?.data?.link_preview && (
                     <LinkPreviewCard {...linkPreview.data.link_preview} />
                   )}
                 </>
               )}
-              {task.task_data?.event_type === 'comment' && (
+              {task?.task_data?.event_type === 'comment' && (
                 <>
                   <Stack
                     direction="row"
@@ -180,7 +181,7 @@ const ManualContent = ({
                       id="submit-comment"
                       sx={{ flexGrow: 1 }}
                       value={comment}
-                      onChange={(e) => setComment(e.target.value)}
+                      onChange={(e) => setComment(e?.target?.value)}
                       multiline
                     />
                   </Stack>
@@ -201,18 +202,18 @@ const ManualContent = ({
             </Stack>
           )}
 
-          {isManualTaskEventsEnabled && manualTaskEvents.isLoading && (
+          {isManualTaskEventsEnabled && manualTaskEvents?.isLoading && (
             <CircularProgress />
           )}
           {isManualTaskEventsEnabled &&
-            !manualTaskEvents.isLoading &&
-            manualTaskEvents.data?.manual_task_events?.length > 0 && (
+            !manualTaskEvents?.isLoading &&
+            manualTaskEvents?.data?.manual_task_events?.length > 0 && (
               <>
                 <Divider sx={{ width: '100%', mb: 5 }} />
                 <InterationList
-                  list={manualTaskEvents.data?.manual_task_events ?? []}
+                  list={manualTaskEvents?.data?.manual_task_events ?? []}
                   gate={gate}
-                  status={currentTaskProgress.completed}
+                  status={currentTaskProgress?.completed}
                 />
               </>
             )}
