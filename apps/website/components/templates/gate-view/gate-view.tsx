@@ -31,7 +31,11 @@ export function GateViewTemplate({
         protocolCredential={protocolCredential}
       />
       <Divider orientation="vertical" flexItem />
-      <GateViewTasks credential={credential} gateProps={gateProps} />
+      <GateViewTasks
+        credential={credential}
+        gateProps={gateProps}
+        protocolCredential={protocolCredential}
+      />
     </Grid>
   );
 }

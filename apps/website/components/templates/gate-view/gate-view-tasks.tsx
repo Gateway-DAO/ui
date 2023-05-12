@@ -17,9 +17,14 @@ import { TaskList } from './task-list';
 type GateViewTasksProps = {
   gateProps: PartialDeep<Gates>;
   credential: CredentialQuery;
+  protocolCredential?: PartialDeep<Credential>;
 };
 
-export function GateViewTasks({ gateProps, credential }: GateViewTasksProps) {
+export function GateViewTasks({
+  gateProps,
+  credential,
+  protocolCredential,
+}: GateViewTasksProps) {
   const { me, gqlAuthMethods } = useAuth();
   const [open, setOpen] = useState(false);
   const isAdmin = isDaoAdmin({ me, gate: gateProps });
@@ -31,7 +36,6 @@ export function GateViewTasks({ gateProps, credential }: GateViewTasksProps) {
       userID: me?.id,
     })
   );
-
   const completedAt = gateProgress.data?.credentials?.[0]?.created_at;
 
   const formattedDate = new Date(completedAt?.toLocaleString()).toLocaleString(
@@ -75,6 +79,7 @@ export function GateViewTasks({ gateProps, credential }: GateViewTasksProps) {
         handleClose={handleClose}
         gate={gateProps}
         credential={credential?.credentials_by_pk}
+        protocolCredential={protocolCredential}
       />
       {gateProps.published !== 'not_published' &&
         gateProps.type === 'direct' && (

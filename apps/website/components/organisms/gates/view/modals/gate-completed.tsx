@@ -1,43 +1,31 @@
-import dynamic from 'next/dynamic';
-import { useEffect, useState } from 'react';
-import { ComponentType } from 'react';
+import useTranslation from 'next-translate/useTranslation';
 
+import { useQueryClient } from '@tanstack/react-query';
+import { useToggle } from 'react-use';
 import { PartialDeep } from 'type-fest';
-
-import { useMenu } from '@gateway/ui';
 
 import CloseIcon from '@mui/icons-material/Close';
 import IosShareIcon from '@mui/icons-material/IosShare';
-import {
-  Avatar,
-  Button,
-  Dialog,
-  IconButton,
-  Stack,
-  SxProps,
-} from '@mui/material';
+import { Avatar, Button, Dialog, IconButton, Stack } from '@mui/material';
 import Box from '@mui/material/Box';
-import Modal from '@mui/material/Modal';
 import Typography from '@mui/material/Typography';
 
+import { query } from '../../../../../constants/queries';
+import { useMintData } from '../../../../../hooks/use-mint-data';
 import { useAuth } from '../../../../../providers/auth';
+import { Credential } from '../../../../../services/gateway-protocol/types';
 import { Credentials, Gates } from '../../../../../services/hasura/types';
-import { ShareButtonFn } from '../../../../atoms/share-btn-fn';
+import GateMintButton from '../../../../molecules/gate-mint-button';
 import { GatesCard } from '../../../../molecules/gates-card';
-import { TokenFilled } from '../../../../molecules/mint-card/assets/token-filled';
-import { MintDialogProps } from '../../../../molecules/mint-dialog';
-
-const MintDialog: ComponentType<MintDialogProps> = dynamic(
-  () =>
-    import('../../../../molecules/mint-dialog').then((mod) => mod.MintDialog),
-  { ssr: false }
-);
+import { MintDialogProtocol } from '../../../../molecules/mint-dialog-protocol';
+import ModalShareCredential from '../../../../molecules/modal/modal-share-credential';
 
 type Props = {
   open: boolean;
   gate: PartialDeep<Gates>;
   credential: PartialDeep<Credentials>;
   handleClose: () => void;
+  protocolCredential?: PartialDeep<Credential>;
 };
 
 export default function GateCompletedModal({
@@ -45,16 +33,46 @@ export default function GateCompletedModal({
   open,
   handleClose,
   credential,
+  protocolCredential,
 }: Props) {
-  const menu = useMenu();
-  const [isMintDialog, setMintModal] = useState(false);
+  const { t } = useTranslation();
+
   const { me } = useAuth();
+  const queryClient = useQueryClient();
+
+  const [shareCredentialIsOpen, setShareCredentialIsOpen] = useToggle(false);
+
+  const refetchProtocolCredential = () => {
+    if (mintCredential.isSuccess) {
+      queryClient.refetchQueries([
+        query.protocol_credential_by_gate_id,
+        {
+          user_id: me?.id,
+          gate_id: gate?.id,
+        },
+      ]);
+    }
+  };
+
+  const {
+    isOpen: mintDialogIsOpen,
+    setIsOpen: setMintDialogIsOpen,
+    shareStatus,
+    mintData,
+    mintCredential,
+  } = useMintData({
+    credential: protocolCredential,
+    gateId: gate?.id,
+  });
 
   return (
     <Dialog
       open={open}
       fullScreen={true}
-      onClose={handleClose}
+      onClose={() => {
+        refetchProtocolCredential();
+        handleClose();
+      }}
       sx={{
         '& .MuiPaper-root': {
           bgcolor: 'background.paper',
@@ -76,10 +94,19 @@ export default function GateCompletedModal({
           display: 'flex',
         }}
       >
-        <MintDialog
-          isOpen={isMintDialog}
-          setOpen={setMintModal}
-          credential={credential}
+        <MintDialogProtocol
+          isOpen={mintCredential.isLoading || mintDialogIsOpen}
+          status={shareStatus || mintCredential.status}
+          onClose={() => setMintDialogIsOpen(false)}
+        />
+        <ModalShareCredential
+          credential={protocolCredential}
+          handleClose={() => {
+            setShareCredentialIsOpen();
+          }}
+          handleOpen={() => setShareCredentialIsOpen()}
+          open={shareCredentialIsOpen}
+          title={t('credential:share-dialog-title')}
         />
         <Stack justifyContent="space-between" direction="row">
           <Avatar
@@ -88,7 +115,12 @@ export default function GateCompletedModal({
             sizes={'40px'}
           />
           <Avatar>
-            <IconButton onClick={handleClose}>
+            <IconButton
+              onClick={() => {
+                refetchProtocolCredential();
+                handleClose();
+              }}
+            >
               <CloseIcon />
             </IconButton>
           </Avatar>
@@ -135,43 +167,33 @@ export default function GateCompletedModal({
               from <span style={{ color: '#D083FF' }}>{gate.dao.name}</span>.
             </Typography>
             <Stack
+              gap={2}
+              mt={2}
               direction={{ xs: 'column', md: 'row' }}
-              alignSelf={'center'}
-              columnGap={2}
-              rowGap={{ xs: 2, md: 0 }}
+              mx={{ xs: 4 }}
             >
               <Button
                 variant="outlined"
+                fullWidth
                 size="large"
-                onClick={menu.onOpen}
+                sx={{
+                  mb: 2,
+                }}
+                onClick={setShareCredentialIsOpen}
+                disabled={!protocolCredential}
                 startIcon={<IosShareIcon />}
               >
                 share
               </Button>
-              <>
-                {!!credential &&
-                credential.target_id == me?.id &&
-                credential?.status == 'minted' ? (
-                  handleClose()
-                ) : (
-                  <Button
-                    variant="contained"
-                    size="large"
-                    sx={{
-                      paddingX: 6,
-                    }}
-                    onClick={() => setMintModal(true)}
-                    startIcon={
-                      <TokenFilled height={20} width={20} color="action" />
-                    }
-                  >
-                    Mint as NFT
-                  </Button>
-                )}
-              </>
-              <ShareButtonFn
-                menu={menu}
-                title={`congralaution !! you have completed ${gate.title} Credential`}
+              <GateMintButton
+                setMintModal={() => {
+                  setMintDialogIsOpen(true);
+                  mintCredential.mutate({
+                    credentialId: protocolCredential?.id,
+                  });
+                }}
+                showButton={!!protocolCredential}
+                mintData={mintData}
               />
             </Stack>
           </Stack>
