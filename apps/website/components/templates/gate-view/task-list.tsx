@@ -198,9 +198,7 @@ export function TaskList({
           />
         )}
       </Box>
-      {isGateAdmin && !!manualTask && (
-        <Submissions gate={gate} task={manualTask} />
-      )}
+      {isGateAdmin && !!manualTask && <Submissions gate={gate} />}
     </Grid>
   );
 }

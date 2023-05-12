@@ -43,7 +43,7 @@ const TaskInteration = ({
       <Stack direction="row" gap={0.5} sx={{ marginTop: -0.5 }}>
         <Link
           passHref
-          href={ROUTES.PROFILE.replace('[username]', issuer.username)}
+          href={ROUTES.PROFILE.replace('[username]', issuer?.username)}
         >
           <Typography
             fontSize={14}
@@ -54,7 +54,7 @@ const TaskInteration = ({
               textDecoration: 'none',
               '&:hover': { textDecoration: 'underline' },
             }}
-          >{`@${issuer.username}`}</Typography>
+          >{`@${issuer?.username}`}</Typography>
         </Link>
         <Typography
           fontSize={14}
@@ -74,15 +74,18 @@ const TaskInteration = ({
       </Stack>
       {event_type === 'comment' && (
         <CommentCard
-          fullname={issuer.name}
-          avatarFile={issuer.picture}
-          username={issuer.username}
-          comment={data.comment}
+          fullname={issuer?.name}
+          avatarFile={issuer?.picture}
+          username={issuer?.username}
+          comment={data?.comment}
           elevation={elevation}
         ></CommentCard>
       )}
       {event_type === 'send_link' && (
-        <LinkPreviewCard {...data.link} elevation={elevation}></LinkPreviewCard>
+        <LinkPreviewCard
+          {...data?.link}
+          elevation={elevation}
+        ></LinkPreviewCard>
       )}
     </Stack>
   );

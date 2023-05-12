@@ -26,7 +26,7 @@ export const InterationList = ({
   return (
     <Stack sx={{ width: '100%' }}>
       {list?.length > 0 && status === 'in_review' && (
-        <SubmissionWaiting username={gate.creator.username} />
+        <SubmissionWaiting username={gate?.creator?.username} />
       )}
       {list.map((event, index) => (
         <TaskInteration
