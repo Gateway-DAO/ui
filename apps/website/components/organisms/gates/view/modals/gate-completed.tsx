@@ -1,6 +1,7 @@
 import useTranslation from 'next-translate/useTranslation';
 import { useMemo } from 'react';
 
+import { useQueryClient } from '@tanstack/react-query';
 import { PartialDeep } from 'type-fest';
 
 import { useMenu } from '@gateway/ui';
@@ -11,7 +12,9 @@ import { Avatar, Button, Dialog, IconButton, Stack } from '@mui/material';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
+import { query } from '../../../../../constants/queries';
 import { useMintData } from '../../../../../hooks/use-mint-data';
+import { useAuth } from '../../../../../providers/auth';
 import { Gates } from '../../../../../services/hasura/types';
 import { ShareButtonFn } from '../../../../atoms/share-btn-fn';
 import GateMintButton from '../../../../molecules/gate-mint-button';
@@ -33,7 +36,9 @@ export default function GateCompletedModal({
   protocolCredential,
 }: Props) {
   const menu = useMenu();
+  const queryClient = useQueryClient();
   const { t } = useTranslation('credential');
+  const { me } = useAuth();
   const {
     isOpen,
     setIsOpen,
@@ -41,7 +46,6 @@ export default function GateCompletedModal({
     shareIsOpen,
     setShareIsOpen,
     mintCredential,
-    mintData,
     showMintButton,
   } = useMintData({
     credential: protocolCredential,
@@ -49,11 +53,26 @@ export default function GateCompletedModal({
     gateId: gate?.id,
   });
 
+  const refetchProtocolCredential = () => {
+    if (mintCredential.isSuccess) {
+      queryClient.refetchQueries([
+        query.protocol_credential_by_gate_id,
+        {
+          user_id: me?.id,
+          gate_id: gate?.id,
+        },
+      ]);
+    }
+  };
+
   return (
     <Dialog
       open={open}
       fullScreen={true}
-      onClose={handleClose}
+      onClose={() => {
+        refetchProtocolCredential();
+        handleClose();
+      }}
       sx={{
         '& .MuiPaper-root': {
           bgcolor: 'background.paper',
@@ -94,7 +113,12 @@ export default function GateCompletedModal({
             sizes={'40px'}
           />
           <Avatar>
-            <IconButton onClick={handleClose}>
+            <IconButton
+              onClick={() => {
+                refetchProtocolCredential();
+                handleClose();
+              }}
+            >
               <CloseIcon />
             </IconButton>
           </Avatar>
@@ -151,7 +175,7 @@ export default function GateCompletedModal({
               <Button
                 variant="outlined"
                 size="large"
-                onClick={menu.onOpen}
+                onClick={() => setShareIsOpen(true)}
                 startIcon={<IosShareIcon />}
                 sx={{
                   mb: 2,
