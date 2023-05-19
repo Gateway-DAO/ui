@@ -2,7 +2,7 @@ import {
   MetamaskIcon,
   CoinbaseWalletIcon,
   WalletConnectIcon,
-} from '@/components/atoms/icon';
+} from '@/components/atoms/icons';
 
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 
