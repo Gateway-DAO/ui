@@ -3,7 +3,7 @@ import useTranslation from 'next-translate/useTranslation';
 import { PartialDeep } from 'type-fest';
 
 import { Button, Divider, Stack } from '@mui/material';
-import { brandColors, theme } from '@gateway/theme';
+import { brandColors, theme } from 'apps/website/theme';
 
 import { ROUTES } from '../../../../../constants/routes';
 import { Protocol_Data_Model } from '../../../../../services/hasura/types';
@@ -151,7 +151,7 @@ export function AllTab({
           }
           itemWidth={(theme) => theme.spacing(41)}
         >
-          
+
           {daos.map((dao) => (
             <DaoCard key={dao.id} {...dao} />
           ))}

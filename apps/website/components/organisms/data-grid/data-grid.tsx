@@ -5,7 +5,7 @@ import { ReactNode } from 'react';
 import { DateTime } from 'luxon';
 
 import { limitCharsCentered } from '@gateway/helpers';
-import { brandColors, TOKENS } from '@gateway/theme';
+import { brandColors, TOKENS } from 'apps/website/theme';
 
 import { Typography, Chip, Avatar, Link } from '@mui/material';
 import { alpha, Stack, Box } from '@mui/material';

@@ -1,6 +1,6 @@
 import { PartialDeep } from 'type-fest';
 
-import { brandColors } from '@gateway/theme';
+import { brandColors } from 'apps/website/theme';
 
 import { Stack, Typography, alpha, Divider } from '@mui/material';
 

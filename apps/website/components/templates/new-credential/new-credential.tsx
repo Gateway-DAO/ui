@@ -1,7 +1,7 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
 
-import { TOKENS } from '@gateway/theme';
+import { TOKENS } from 'apps/website/theme';
 
 import { Box, Stack, Typography } from '@mui/material';
 

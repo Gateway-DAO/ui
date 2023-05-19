@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { PartialDeep } from 'type-fest/source/partial-deep';
 
 import { timestampToString } from '@gateway/helpers';
-import { brandColors } from '@gateway/theme';
+import { brandColors } from 'apps/website/theme';
 
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';

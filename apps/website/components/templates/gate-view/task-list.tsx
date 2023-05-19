@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { PartialDeep } from 'type-fest';
 
-import { TOKENS } from '@gateway/theme';
+import { TOKENS } from 'apps/website/theme';
 
 import { Box, Grid, Stack, Typography } from '@mui/material';
 

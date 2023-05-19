@@ -1,10 +1,10 @@
 import useTranslation from 'next-translate/useTranslation';
 
 import { useQuery } from '@tanstack/react-query';
+import { theme } from 'apps/website/theme';
 import { PartialDeep } from 'type-fest';
 
 import { limitCharsCentered } from '@gateway/helpers';
-import { theme } from '@gateway/theme';
 
 import { Stack, Box, useMediaQuery } from '@mui/material';
 

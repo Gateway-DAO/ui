@@ -5,7 +5,7 @@ import { useMenu } from 'apps/website/hooks/use-menu';
 import { useSnackbar } from 'notistack';
 import { useCopyToClipboard } from 'react-use';
 
-import { theme } from '@gateway/theme';
+import { theme } from 'apps/website/theme';
 
 import { ArrowDropDown } from '@mui/icons-material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';

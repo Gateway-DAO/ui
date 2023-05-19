@@ -2,7 +2,7 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { PartialDeep } from 'type-fest/source/partial-deep';
 
-import { TOKENS } from '@gateway/theme';
+import { TOKENS } from 'apps/website/theme';
 
 import { Stack } from '@mui/material';
 

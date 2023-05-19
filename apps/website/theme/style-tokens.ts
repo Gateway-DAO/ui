@@ -1,4 +1,4 @@
-import { BreakpointsValue } from '../types';
+import { BreakpointsValue } from './types';
 
 /**
  * Reusable style tokens for responsiveness acorss the website.

@@ -5,7 +5,7 @@ import { DateTime } from 'luxon';
 import { Controller, useFormContext } from 'react-hook-form';
 
 import { isToday } from '@gateway/helpers';
-import { brandColors } from '@gateway/theme';
+import { brandColors } from 'apps/website/theme';
 
 import { alpha, Box, Stack, TextField, Typography } from '@mui/material';
 import { MobileDatePicker, TimePicker } from '@mui/x-date-pickers';

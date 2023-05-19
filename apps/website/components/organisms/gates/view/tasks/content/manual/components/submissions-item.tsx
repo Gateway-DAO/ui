@@ -5,7 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import { PartialDeep } from 'type-fest';
 
 import { ISOToString } from '@gateway/helpers';
-import { brandColors, theme } from '@gateway/theme';
+import { brandColors, theme } from 'apps/website/theme';
 
 import CancelIcon from '@mui/icons-material/Cancel';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';

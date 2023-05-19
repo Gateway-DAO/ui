@@ -6,7 +6,7 @@ import { useMemo } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { PartialDeep } from 'type-fest';
 
-import { TOKENS } from '@gateway/theme';
+import { TOKENS } from 'apps/website/theme';
 
 import { Box, Stack, Typography, Tabs, Tab, Chip } from '@mui/material';
 

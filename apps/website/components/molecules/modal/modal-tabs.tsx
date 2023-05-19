@@ -1,4 +1,4 @@
-import { theme } from '@gateway/theme';
+import { theme } from 'apps/website/theme';
 
 import { useMediaQuery } from '@mui/material';
 

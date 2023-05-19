@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 
-import { brandColors } from '@gateway/theme';
+import { brandColors } from 'apps/website/theme';
 
 import { Tabs, Tab, alpha } from '@mui/material';
 

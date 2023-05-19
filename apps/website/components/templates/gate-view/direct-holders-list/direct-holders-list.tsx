@@ -7,7 +7,7 @@ import { Virtuoso } from 'react-virtuoso';
 import { PartialDeep } from 'type-fest';
 
 import { GateFilled } from '@gateway/assets';
-import { TOKENS } from '@gateway/theme';
+import { TOKENS } from 'apps/website/theme';
 
 import SearchIcon from '@mui/icons-material/Search';
 import {

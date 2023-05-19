@@ -2,7 +2,7 @@ import Link from 'next/link';
 import React from 'react';
 
 import { DiscordIcon } from '@gateway/assets';
-import { TOKENS } from '@gateway/theme';
+import { TOKENS } from 'apps/website/theme';
 
 import { Box, Button, Stack, Typography } from '@mui/material';
 

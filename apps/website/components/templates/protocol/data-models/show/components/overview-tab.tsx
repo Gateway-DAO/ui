@@ -1,9 +1,15 @@
 import useTranslation from 'next-translate/useTranslation';
+import { useRouter } from 'next/router';
+import { useEffect, useMemo, useState } from 'react';
 
+import { GetDmStatsUntilDayBeforeQuery } from 'apps/website/services/hasura/types';
+import { theme } from 'apps/website/theme';
+import { brandColors } from 'apps/website/theme';
+import { stat } from 'fs';
+import { useToggle } from 'react-use';
 import { PartialDeep } from 'type-fest/source/partial-deep';
 
-import { theme } from '@gateway/theme';
-
+import CloseIcon from '@mui/icons-material/Close';
 import {
   Stack,
   Typography,
@@ -12,28 +18,22 @@ import {
   alpha,
   Box,
 } from '@mui/material';
-import ModalRight from '../../../../../molecules/modal-right';
-import ConfirmDialog from '../../../../../../components/organisms/confirm-dialog/confirm-dialog';
 
-import { brandColors } from '@gateway/theme';
-import CredentialProtocolCreate from '../../../credentials/create/credential-create';
+import ConfirmDialog from '../../../../../../components/organisms/confirm-dialog/confirm-dialog';
+import { useAuth } from '../../../../../../providers/auth';
 import {
   DataModel,
   GetDataModelStatsQuery,
   PermissionType,
 } from '../../../../../../services/gateway-protocol/types';
 import ExternalLink from '../../../../../atoms/external-link';
+import ModalRight from '../../../../../molecules/modal-right';
+
 import DashboardCard from '../../../components/dashboard-card';
+import CredentialProtocolCreate from '../../../credentials/create/credential-create';
+import IssueCredentialButton from '../components/issue-credential-button';
 import OverviewCardInfo from './overview-card-info';
 import TableSchema from './table-schema';
-import IssueCredentialButton from '../components/issue-credential-button';
-import { useAuth } from '../../../../../../providers/auth';
-import { useToggle } from 'react-use';
-import { useEffect, useMemo, useState } from 'react';
-import CloseIcon from '@mui/icons-material/Close';
-import { GetDmStatsUntilDayBeforeQuery } from 'apps/website/services/hasura/types';
-import { useRouter } from 'next/router';
-import { stat } from 'fs';
 
 type Props = {
   dataModel: PartialDeep<DataModel>;

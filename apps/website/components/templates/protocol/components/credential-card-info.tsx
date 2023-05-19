@@ -1,9 +1,8 @@
 import useTranslation from 'next-translate/useTranslation';
 
+import { theme } from 'apps/website/theme';
 import { DateTime } from 'luxon';
 import { PartialDeep } from 'type-fest';
-
-import { theme } from '@gateway/theme';
 
 import { Stack, Paper, Box, Divider, Chip, useMediaQuery } from '@mui/material';
 

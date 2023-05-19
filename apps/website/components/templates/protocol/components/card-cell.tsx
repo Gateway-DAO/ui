@@ -1,8 +1,7 @@
 import { ReactNode } from 'react';
 
 import { useTheme } from '@emotion/react';
-
-import { brandColors } from '@gateway/theme';
+import { brandColors } from 'apps/website/theme';
 
 import { Stack, Typography, alpha } from '@mui/material';
 

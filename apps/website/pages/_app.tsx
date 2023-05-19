@@ -5,8 +5,7 @@ import NextNProgress from 'nextjs-progressbar';
 
 import { Hydrate, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-
-import { ThemeProvider } from '@gateway/theme-react';
+import { ThemeProvider } from 'apps/website/theme';
 
 import Notistack from '../components/atoms/notistack';
 import { NavStateProvider } from '../hooks/use-nav';

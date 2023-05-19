@@ -1,6 +1,6 @@
 import React, { forwardRef, useRef } from 'react';
 
-import { TOKENS } from '@gateway/theme';
+import { TOKENS } from 'apps/website/theme';
 import { MotionBox } from 'apps/website/components/atoms/motion-components';
 
 import {

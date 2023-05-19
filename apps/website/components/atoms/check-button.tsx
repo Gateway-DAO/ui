@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { brandColors } from '@gateway/theme';
+import { brandColors } from 'apps/website/theme';
 
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { ButtonProps, CircularProgress, IconButton } from '@mui/material';

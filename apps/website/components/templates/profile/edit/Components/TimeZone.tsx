@@ -1,7 +1,7 @@
 import { getTimeZones } from '@vvo/tzdb';
 import { useFormContext } from 'react-hook-form';
 
-import { TOKENS } from '@gateway/theme';
+import { TOKENS } from 'apps/website/theme';
 
 import {
   Grid,

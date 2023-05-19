@@ -2,7 +2,7 @@ import useTranslation from 'next-translate/useTranslation';
 
 import { useFormContext } from 'react-hook-form';
 
-import { theme } from '@gateway/theme';
+import { theme } from 'apps/website/theme';
 
 import { alpha, Box, Card, Stack } from '@mui/material';
 

@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 
-import { TOKENS } from '@gateway/theme';
+import { TOKENS } from 'apps/website/theme';
 
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import {

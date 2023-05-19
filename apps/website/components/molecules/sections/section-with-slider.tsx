@@ -4,7 +4,7 @@ import { useBreakpointValue } from 'apps/website/hooks/use-breakpoint';
 import { A11y } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
-import { GatewayTheme, TOKENS } from '@gateway/theme';
+import { GatewayTheme, TOKENS } from 'apps/website/theme';
 
 import { Box, Stack, Typography, useTheme } from '@mui/material';
 import { SystemCssProperties } from '@mui/system';

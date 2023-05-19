@@ -2,7 +2,7 @@ import { ReactNode, useEffect, useRef, useState } from 'react';
 
 import { useIntersection } from 'react-use';
 
-import { theme } from '@gateway/theme';
+import { theme } from 'apps/website/theme';
 
 import { Box } from '@mui/material';
 

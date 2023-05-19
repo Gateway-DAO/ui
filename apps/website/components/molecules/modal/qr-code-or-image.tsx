@@ -1,6 +1,6 @@
 import useTranslation from 'next-translate/useTranslation';
 
-import { theme } from '@gateway/theme';
+import { theme } from 'apps/website/theme';
 
 import { Stack, Button, Box, useMediaQuery } from '@mui/material';
 

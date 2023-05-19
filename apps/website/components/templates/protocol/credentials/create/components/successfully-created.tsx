@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 
 import { useQuery } from '@tanstack/react-query';
 
-import { brandColors } from '@gateway/theme';
+import { brandColors } from 'apps/website/theme';
 
 import {
   alpha,

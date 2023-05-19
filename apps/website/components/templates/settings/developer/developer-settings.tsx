@@ -1,9 +1,8 @@
 import useTranslation from 'next-translate/useTranslation';
 
+import { theme } from 'apps/website/theme';
 import { useSnackbar } from 'notistack';
 import { useCopyToClipboard } from 'react-use';
-
-import { theme } from '@gateway/theme';
 
 import { ContentCopy } from '@mui/icons-material';
 import { Button, Card, CardContent, Stack, Typography } from '@mui/material';

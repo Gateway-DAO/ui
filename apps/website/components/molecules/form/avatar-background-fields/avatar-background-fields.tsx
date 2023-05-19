@@ -1,6 +1,6 @@
 import { Control, FieldValues, Path, useFormContext } from 'react-hook-form';
 
-import { TOKENS } from '@gateway/theme';
+import { TOKENS } from 'apps/website/theme';
 
 import { Box } from '@mui/material';
 

@@ -1,19 +1,22 @@
 import useTranslation from 'next-translate/useTranslation';
-import { HeadContainer } from '../components/molecules/head-container';
-import { FooterProps } from '../components/templates/landing/footer/types';
-import { Footer } from '../components/templates/landing/footer';
-import { MenuListItem } from '../components/templates/landing/menu/types';
-import { Menu } from '../components/templates/landing/menu/menu';
-import { Box, Button } from '@mui/material';
-import { ReactNode, useEffect, useRef, useState } from 'react';
-import { useRouter } from 'next/router';
-import { useAuth } from '../providers/auth';
-import { ROUTES } from '../constants/routes';
-import { useIntersection } from 'react-use';
-import { theme } from '@gateway/theme';
 import Link from 'next/link';
-import { DEFAULT_PADDINGX } from '../components/templates/landing/styles';
+import { useRouter } from 'next/router';
+import { ReactNode, useEffect, useRef, useState } from 'react';
+
+import { theme } from 'apps/website/theme';
+import { useIntersection } from 'react-use';
+
+import { Box, Button } from '@mui/material';
+
+import { HeadContainer } from '../components/molecules/head-container';
 import TermsOfService from '../components/molecules/terms-of-service';
+import { Footer } from '../components/templates/landing/footer';
+import { FooterProps } from '../components/templates/landing/footer/types';
+import { Menu } from '../components/templates/landing/menu/menu';
+import { MenuListItem } from '../components/templates/landing/menu/types';
+import { DEFAULT_PADDINGX } from '../components/templates/landing/styles';
+import { ROUTES } from '../constants/routes';
+import { useAuth } from '../providers/auth';
 
 export default function Terms() {
   const { t } = useTranslation('index');
@@ -69,7 +72,6 @@ export default function Terms() {
       <HeadContainer ogImage="default" />
       <Menu {...menuProps} activeMenu={activeArea} />
       <Box
-        
         sx={(theme) => ({
           px: DEFAULT_PADDINGX,
           width: '100%',

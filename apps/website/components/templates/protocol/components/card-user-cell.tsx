@@ -1,8 +1,7 @@
 import Link from 'next/link';
 
+import { brandColors } from 'apps/website/theme';
 import { PartialDeep } from 'type-fest/source/partial-deep';
-
-import { brandColors } from '@gateway/theme';
 
 import { alpha, Stack, Typography } from '@mui/material';
 

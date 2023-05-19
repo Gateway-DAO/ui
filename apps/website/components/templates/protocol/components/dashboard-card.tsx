@@ -1,6 +1,6 @@
 import useTranslation from 'next-translate/useTranslation';
 
-import { brandColors } from '@gateway/theme';
+import { brandColors } from 'apps/website/theme';
 
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import { Stack, Paper, Typography, alpha, Chip } from '@mui/material';

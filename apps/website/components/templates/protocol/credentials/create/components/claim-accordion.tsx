@@ -2,7 +2,7 @@ import { ReactNode } from 'react';
 
 import { useToggle } from 'react-use';
 
-import { brandColors } from '@gateway/theme';
+import { brandColors } from 'apps/website/theme';
 
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import {

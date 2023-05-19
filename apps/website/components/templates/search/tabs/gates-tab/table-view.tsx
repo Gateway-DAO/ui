@@ -1,6 +1,6 @@
 import { PartialDeep } from 'type-fest';
 
-import { TOKENS } from '@gateway/theme';
+import { TOKENS } from 'apps/website/theme';
 
 import { Avatar, Box, Chip, Stack, Typography } from '@mui/material';
 import Table from '@mui/material/Table';

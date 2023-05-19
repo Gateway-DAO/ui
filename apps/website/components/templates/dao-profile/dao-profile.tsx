@@ -1,7 +1,7 @@
 import useTranslation from 'next-translate/useTranslation';
 import { useMemo } from 'react';
 
-import { TOKENS } from '@gateway/theme';
+import { TOKENS } from 'apps/website/theme';
 
 import { Box, Tabs, Tab } from '@mui/material';
 

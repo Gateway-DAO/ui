@@ -1,7 +1,7 @@
+import { brandColors } from 'apps/website/theme';
 import { useSnackbar } from 'notistack';
 
 import { limitCharsCentered } from '@gateway/helpers';
-import { brandColors } from '@gateway/theme';
 
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { alpha, Button, Stack, Typography } from '@mui/material';

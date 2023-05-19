@@ -1,10 +1,9 @@
 import useTranslation from 'next-translate/useTranslation';
 
 import { useQuery } from '@tanstack/react-query';
+import { theme } from 'apps/website/theme';
 import { DateTime } from 'luxon';
 import { PartialDeep } from 'type-fest';
-
-import { theme } from '@gateway/theme';
 
 import { Stack, Paper, Box, Divider, useMediaQuery } from '@mui/material';
 

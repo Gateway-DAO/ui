@@ -3,7 +3,7 @@ import { ReactElement, useEffect } from 'react';
 
 import { useFormContext } from 'react-hook-form';
 
-import { GatewaySxProps } from '@gateway/theme';
+import { GatewaySxProps } from 'apps/website/theme';
 
 import { Box, Card, useTheme } from '@mui/material';
 

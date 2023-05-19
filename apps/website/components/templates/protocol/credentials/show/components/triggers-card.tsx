@@ -1,8 +1,7 @@
 import useTranslation from 'next-translate/useTranslation';
 
+import { brandColors } from 'apps/website/theme';
 import { PartialDeep } from 'type-fest/source/partial-deep';
-
-import { brandColors } from '@gateway/theme';
 
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import RefreshIcon from '@mui/icons-material/Refresh';

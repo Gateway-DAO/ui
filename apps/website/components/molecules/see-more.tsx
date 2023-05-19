@@ -3,7 +3,7 @@ import useTranslation from 'next-translate/useTranslation';
 import { useToggle } from 'react-use';
 
 import { limitChars } from '@gateway/helpers';
-import { brandColors } from '@gateway/theme';
+import { brandColors } from 'apps/website/theme';
 
 import { Link, SxProps, Typography } from '@mui/material';
 

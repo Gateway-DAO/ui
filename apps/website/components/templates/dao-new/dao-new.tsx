@@ -5,7 +5,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
 import { PartialDeep } from 'type-fest';
 
-import { TOKENS } from '@gateway/theme';
+import { TOKENS } from 'apps/website/theme';
 
 import { ArrowBack } from '@mui/icons-material';
 import { Avatar, Box, IconButton, Stack, Typography } from '@mui/material';

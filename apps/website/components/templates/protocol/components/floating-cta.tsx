@@ -1,10 +1,9 @@
 import useTranslation from 'next-translate/useTranslation';
 import { useEffect, useState } from 'react';
 
+import { brandColors } from 'apps/website/theme';
 import { useSnackbar } from 'notistack';
 import { PartialDeep } from 'type-fest';
-
-import { brandColors } from '@gateway/theme';
 
 import IosShareIcon from '@mui/icons-material/IosShare';
 import LinkIcon from '@mui/icons-material/Link';
@@ -90,7 +89,6 @@ export default function FloatingCta({
           ariaLabel="sharing options"
           sx={{ position: 'absolute', bottom: 16, right: 16 }}
           icon={open ? <QrCodeIcon /> : <MoreHorizIcon />}
-          
           FabProps={{
             sx: {
               color: open ? 'white' : brandColors.purple.main,

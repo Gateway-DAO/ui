@@ -1,5 +1,5 @@
 import { limitChars } from '@gateway/helpers';
-import { brandColors } from '@gateway/theme';
+import { brandColors } from 'apps/website/theme';
 
 import DescriptionIcon from '@mui/icons-material/Description';
 import {

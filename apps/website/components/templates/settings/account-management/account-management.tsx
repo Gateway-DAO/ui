@@ -1,6 +1,6 @@
 import useTranslation from 'next-translate/useTranslation';
 
-import { brandColors } from '@gateway/theme';
+import { brandColors } from 'apps/website/theme';
 
 import { Link, Stack, Typography } from '@mui/material';
 

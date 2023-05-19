@@ -1,9 +1,9 @@
 import useTranslation from 'next-translate/useTranslation';
 
+import { brandColors } from 'apps/website/theme';
 import { PartialDeep } from 'type-fest/source/partial-deep';
 
 import { limitCharsCentered } from '@gateway/helpers';
-import { brandColors } from '@gateway/theme';
 
 import { Stack } from '@mui/material';
 

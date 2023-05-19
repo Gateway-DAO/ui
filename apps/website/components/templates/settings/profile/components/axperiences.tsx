@@ -1,8 +1,7 @@
 import { useState } from 'react';
 
+import { TOKENS } from 'apps/website/theme';
 import { useFieldArray, useFormContext } from 'react-hook-form';
-
-import { TOKENS } from '@gateway/theme';
 
 import { Avatar, Grid, Stack, Typography } from '@mui/material';
 

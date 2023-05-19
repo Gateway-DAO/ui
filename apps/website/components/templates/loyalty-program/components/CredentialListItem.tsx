@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { PartialDeep } from 'type-fest/source/partial-deep';
 
 import { limitChars } from '@gateway/helpers';
-import { brandColors } from '@gateway/theme';
+import { brandColors } from 'apps/website/theme';
 
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import { Chip, Stack, Typography, alpha } from '@mui/material';

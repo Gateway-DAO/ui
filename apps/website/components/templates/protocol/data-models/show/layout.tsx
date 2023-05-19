@@ -3,9 +3,10 @@ import { useRouter } from 'next/router';
 import { useMemo, useState } from 'react';
 
 import { useQuery } from '@tanstack/react-query';
+import { AvatarFile } from 'apps/website/components/atoms/avatar-file';
+import { gqlAnonMethods } from 'apps/website/services/hasura/api';
+import { brandColors, theme, TOKENS } from 'apps/website/theme';
 import { useToggle } from 'react-use';
-
-import { brandColors, theme, TOKENS } from '@gateway/theme';
 
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CloseIcon from '@mui/icons-material/Close';
@@ -37,8 +38,6 @@ import FloatingCta from '../../components/floating-cta';
 import InfoTitle from '../../components/info-title';
 import Tags from '../../components/tags';
 import IssueCredentialButton from './components/issue-credential-button';
-import { AvatarFile } from 'apps/website/components/atoms/avatar-file';
-import { gqlAnonMethods } from 'apps/website/services/hasura/api';
 
 export function DataModelLayout({ children }) {
   const { t } = useTranslation('protocol');
