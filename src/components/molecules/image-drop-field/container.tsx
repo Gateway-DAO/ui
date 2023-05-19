@@ -5,7 +5,7 @@ import { DropAreaBond } from 'react-use/lib/useDrop';
 
 import { Box } from '@mui/material';
 
-import { CreateGateData } from '../../templates/create-gate/schema';
+import { CreateGateData } from '@/components/templates/create-gate/schema';
 type Props = {
   hasImage?: boolean;
   isOver?: boolean;

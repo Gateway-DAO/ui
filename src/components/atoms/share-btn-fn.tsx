@@ -12,7 +12,7 @@ import {
 } from '@mui/icons-material';
 import { ListItemIcon, ListItemText, Menu, MenuItem } from '@mui/material';
 
-import objectToParams from '../../utils/map-object';
+import objectToParams from '@/utils/map-object';
 
 type Props = {
   title?: string;

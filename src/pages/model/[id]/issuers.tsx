@@ -4,13 +4,13 @@ import { useRouter } from 'next/router';
 
 import { DateTime } from 'luxon';
 
-import { IColumnGrid } from '../../../components/organisms/data-grid/data-grid';
-import { DataModelLayout } from '../../../components/templates/protocol/data-models/show/layout';
+import { IColumnGrid } from '@/components/organisms/data-grid/data-grid';
+import { DataModelLayout } from '@/components/templates/protocol/data-models/show/layout';
 import { query } from '@/constants/queries';
 const GridViewTab = dynamic(
   () =>
     import(
-      '../../../components/templates/protocol/data-models/show/components/grid-view-tab'
+      '@/components/templates/protocol/data-models/show/components/grid-view-tab'
     ),
   { ssr: false }
 );

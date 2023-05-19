@@ -7,8 +7,8 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { Avatar, Box, IconButton, Stack, useMediaQuery } from '@mui/material';
 
 import { Credential } from '@/services/gateway-protocol/types';
-import { useCreateQrCode } from '../../../utils/qr-code/qr-code';
-import { ClientNav } from '../../organisms/navbar/client-nav';
+import { useCreateQrCode } from '@/utils/qr-code/qr-code';
+import { ClientNav } from '@/components/organisms/navbar/client-nav';
 import FloatingCta from './components/floating-cta';
 import { ProtocolTemplateContext } from './context';
 

@@ -27,11 +27,11 @@ import {
 } from '@mui/material';
 
 import { TaskIcon } from '@/components/atoms/task-icon';
-import { QuestionCreator } from '../../../organisms/question-creator/question-creator';
+import { QuestionCreator } from '@/components/organisms/question-creator/question-creator';
 import {
   CreateGateData,
   QuizTaskDataError,
-} from '../../../templates/create-gate/schema';
+} from '@/components/templates/create-gate/schema';
 import TextFieldWithEmoji from '../../form/TextFieldWithEmoji/TextFieldWithEmoji';
 
 // Time Period (minutes)

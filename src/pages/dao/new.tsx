@@ -5,7 +5,7 @@ import { useMutation } from '@tanstack/react-query';
 import {
   NewDAOTemplate,
   NewDAOSchema,
-} from '../../components/templates/dao-new';
+} from '@/components/templates/dao-new';
 import { ROUTES } from '@/constants/routes';
 import { useUploadImage } from '@/hooks/use-upload-image';
 import { useAuth } from '@/providers/auth';

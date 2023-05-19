@@ -8,24 +8,24 @@ import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
 import { Box, Button, Stack, Typography } from '@mui/material';
 
-import AddTaskCard from '../../molecules/add-task/add-task-card';
-import FileLinkTask from '../../molecules/add-task/file-link-task/file-link-task';
-import GithubContributeTask from '../../molecules/add-task/github/contribute-task';
-import GithubPRTask from '../../molecules/add-task/github/pr-task';
-import HoldNFTTask from '../../molecules/add-task/hold-nft-task/hold-nft-task';
-import HoldTokenTask from '../../molecules/add-task/hold-token-task/hold-token-task';
-import { ManualTask } from '../../molecules/add-task/manual/manual-task';
+import AddTaskCard from '@/components/molecules/add-task/add-task-card';
+import FileLinkTask from '@/components/molecules/add-task/file-link-task/file-link-task';
+import GithubContributeTask from '@/components/molecules/add-task/github/contribute-task';
+import GithubPRTask from '@/components/molecules/add-task/github/pr-task';
+import HoldNFTTask from '@/components/molecules/add-task/hold-nft-task/hold-nft-task';
+import HoldTokenTask from '@/components/molecules/add-task/hold-token-task/hold-token-task';
+import { ManualTask } from '@/components/molecules/add-task/manual/manual-task';
 import {
   QuizTask,
   createQuestion,
-} from '../../molecules/add-task/quiz-task/quiz-task';
-import SnapshotTask from '../../molecules/add-task/snapshot-task/snapshot-task';
-import { FollowProfile } from '../../molecules/add-task/twitter-follow-profile/twitter-follow-profile';
-import TwitterLikeTask from '../../molecules/add-task/twitter-like/twitter-like';
-import TwitterRetweetTask from '../../molecules/add-task/twitter-retweet/twitter-retweet';
-import TwitterTweetTask from '../../molecules/add-task/twitter-tweet/twitter-tweet';
-import VerificationCodeTask from '../../molecules/add-task/verification-task/verification-task';
-import { CreateGateData, Task } from '../../templates/create-gate/schema';
+} from '@/components/molecules/add-task/quiz-task/quiz-task';
+import SnapshotTask from '@/components/molecules/add-task/snapshot-task/snapshot-task';
+import { FollowProfile } from '@/components/molecules/add-task/twitter-follow-profile/twitter-follow-profile';
+import TwitterLikeTask from '@/components/molecules/add-task/twitter-like/twitter-like';
+import TwitterRetweetTask from '@/components/molecules/add-task/twitter-retweet/twitter-retweet';
+import TwitterTweetTask from '@/components/molecules/add-task/twitter-tweet/twitter-tweet';
+import VerificationCodeTask from '@/components/molecules/add-task/verification-task/verification-task';
+import { CreateGateData, Task } from '@/components/templates/create-gate/schema';
 
 const TaskComponents = {
   meeting_code: VerificationCodeTask,

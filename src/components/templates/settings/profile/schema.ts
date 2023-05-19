@@ -10,7 +10,7 @@ import {
   Users,
   User_Socials,
 } from '@/services/hasura/types';
-import { SessionUser } from '../../../../types/user';
+import { SessionUser } from '@/types/user';
 
 export type EditUserSchema = Required<
   PartialDeep<

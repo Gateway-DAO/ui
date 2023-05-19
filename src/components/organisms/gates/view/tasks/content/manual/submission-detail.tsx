@@ -7,14 +7,14 @@ import { PartialDeep } from 'type-fest';
 
 import { CircularProgress, Divider, Stack, TextField } from '@mui/material';
 
-import { taskErrorMessages } from '../../../../../../../components/organisms/tasks/task-error-messages';
+import { taskErrorMessages } from '@/components/organisms/tasks/task-error-messages';
 import { useAuth } from '@/providers/auth';
 import {
   Task_Progress,
   Gates,
   Complete_TaskMutation,
 } from '@/services/hasura/types';
-import { ManualTaskEventType } from '../../../../../../../types/tasks';
+import { ManualTaskEventType } from '@/types/tasks';
 import { LoadingButton } from '@/components/atoms/loading-button';
 import { InterationList } from './components/interation-list';
 

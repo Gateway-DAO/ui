@@ -2,9 +2,9 @@ import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
 
 import { useQuery } from '@tanstack/react-query';
 
-import { HeadContainer } from '../../components/molecules/head-container';
-import { DashboardTemplate } from '../../components/templates/dashboard';
-import { LoyaltyProgram } from '../../components/templates/loyalty-program/LoyaltyProgram';
+import { HeadContainer } from '@/components/molecules/head-container';
+import { DashboardTemplate } from '@/components/templates/dashboard';
+import { LoyaltyProgram } from '@/components/templates/loyalty-program/LoyaltyProgram';
 import { query } from '@/constants/queries';
 import { useAuth } from '@/providers/auth';
 import { gqlAnonMethods } from '@/services/hasura/api';

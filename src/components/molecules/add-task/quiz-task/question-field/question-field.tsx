@@ -12,7 +12,7 @@ import {
 import {
   CreateGateData,
   QuizTaskDataError,
-} from '../../../../templates/create-gate/schema';
+} from '@/components/templates/create-gate/schema';
 
 export function QuestionField({
   questionIndex,

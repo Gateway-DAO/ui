@@ -11,9 +11,9 @@ import { ROUTES } from '@/constants/routes';
 import { useAuth } from '@/providers/auth';
 import { Gates } from '@/services/hasura/types';
 import { queryClient } from '@/services/query-client';
-import { isDaoAdmin } from '../../utils/is-dao-admin';
+import { isDaoAdmin } from '@/utils/is-dao-admin';
 import MorePopover from '@/components/atoms/more-popover';
-import ConfirmDialog from '../organisms/confirm-dialog/confirm-dialog';
+import ConfirmDialog from '@/components/organisms/confirm-dialog/confirm-dialog';
 
 type Props = {
   gate: PartialDeep<Gates>;

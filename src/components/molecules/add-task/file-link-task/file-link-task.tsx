@@ -21,7 +21,7 @@ import { TaskIcon } from '@/components/atoms/task-icon';
 import {
   CreateGateData,
   FileTaskDataError,
-} from '../../../templates/create-gate/schema';
+} from '@/components/templates/create-gate/schema';
 import TextFieldWithEmoji from '../../form/TextFieldWithEmoji/TextFieldWithEmoji';
 
 const FileLinkTask = ({ dragAndDrop, taskId, deleteTask }) => {

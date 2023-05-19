@@ -7,7 +7,7 @@ import { Box, Tabs, Tab } from '@mui/material';
 
 import { query } from '@/constants/queries';
 import { a11yTabProps, TabPanel, useTab } from '@/components/atoms/tabs';
-import { IColumnGrid } from '../../organisms/data-grid/data-grid';
+import { IColumnGrid } from '@/components/organisms/data-grid/data-grid';
 import { useDaoProfile } from './context';
 import { DaoHeader } from './dao-header';
 import { GatesTab, OverviewTab } from './tabs';

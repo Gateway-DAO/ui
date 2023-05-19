@@ -1,6 +1,6 @@
-import { HeadContainer } from '../../components/molecules/head-container';
-import { DashboardTemplate } from '../../components/templates/dashboard';
-import { PrivateProfileTemplate } from '../../components/templates/profile';
+import { HeadContainer } from '@/components/molecules/head-container';
+import { DashboardTemplate } from '@/components/templates/dashboard';
+import { PrivateProfileTemplate } from '@/components/templates/profile';
 import { useAuth } from '@/providers/auth';
 
 // TODO: make the behavior of this page better

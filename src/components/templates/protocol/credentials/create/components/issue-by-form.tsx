@@ -26,7 +26,7 @@ import {
   PermissionType,
 } from '@/services/gateway-protocol/types';
 import { AvatarFile } from '@/components/atoms/avatar-file';
-import { taskErrorMessages } from '../../../../../organisms/tasks/task-error-messages';
+import { taskErrorMessages } from '@/components/organisms/tasks/task-error-messages';
 
 type Props = {
   dataModel: PartialDeep<DataModel>;

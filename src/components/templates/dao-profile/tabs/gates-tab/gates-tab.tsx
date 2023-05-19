@@ -13,8 +13,8 @@ import { usePropertyFilter } from '@/hooks/use-property-filter';
 import { useViewMode, ViewMode } from '@/hooks/use-view-modes';
 import { useAuth } from '@/providers/auth';
 import { EmptyCard } from '@/components/atoms/empty-card';
-import { ChipDropdown } from '../../../../molecules/chip-dropdown';
-import { GatesCard } from '../../../../molecules/gates-card';
+import { ChipDropdown } from '@/components/molecules/chip-dropdown';
+import { GatesCard } from '@/components/molecules/gates-card';
 import { useDaoProfile } from '../../context';
 import { TableView } from './table-view';
 

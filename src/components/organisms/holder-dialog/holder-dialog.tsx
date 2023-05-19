@@ -21,7 +21,7 @@ import {
 
 import { useAuth } from '@/providers/auth';
 import { CenteredLoader } from '@/components/atoms/centered-loader';
-import { UserListItem } from '../../molecules/user-list-item';
+import { UserListItem } from '@/components/molecules/user-list-item';
 
 export type Props = {
   isHolderDialog: boolean;

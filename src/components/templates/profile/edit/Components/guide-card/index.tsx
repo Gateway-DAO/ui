@@ -17,7 +17,7 @@ import { ROUTES } from '@/constants/routes';
 import Link from 'next/link';
 
 import { useAuth } from '@/providers/auth';
-import { SessionUser } from '../../../../../../types/user';
+import { SessionUser } from '@/types/user';
 
 const guideDetails = (user: SessionUser) => [
   {

@@ -9,7 +9,7 @@ import { PartialDeep } from 'type-fest/source/partial-deep';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { Button, CircularProgress } from '@mui/material';
 
-import ConfirmDialog from '../../../../../../components/organisms/confirm-dialog/confirm-dialog';
+import ConfirmDialog from '@/components/organisms/confirm-dialog/confirm-dialog';
 import { ROUTES } from '@/constants/routes';
 import { useAuth } from '@/providers/auth';
 import {

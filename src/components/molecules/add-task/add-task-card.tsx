@@ -2,7 +2,7 @@ import AddIcon from '@mui/icons-material/Add';
 import { Grid, IconButton, Paper, Stack, Typography } from '@mui/material';
 import { Box } from '@mui/material';
 
-import { TaskType } from '../../../types/tasks';
+import { TaskType } from '@/types/tasks';
 import AddTaskButton from './add-task-button';
 
 type taskStructure = {

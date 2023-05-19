@@ -7,15 +7,15 @@ import { brandColors, theme } from '@/theme';
 
 import { ROUTES } from '@/constants/routes';
 import { Protocol_Data_Model } from '@/services/hasura/types';
-import { DaoCard } from '../../../../molecules/dao-card';
-import { DataModelCard } from '../../../../molecules/data-model-card';
-import { GatesCard } from '../../../../molecules/gates-card';
-import { LoyaltyProgramCard } from '../../../../molecules/loyalty-program-card/loyalty-program-card';
-import { PersonCard } from '../../../../molecules/person-card';
+import { DaoCard } from '@/components/molecules/dao-card';
+import { DataModelCard } from '@/components/molecules/data-model-card';
+import { GatesCard } from '@/components/molecules/gates-card';
+import { LoyaltyProgramCard } from '@/components/molecules/loyalty-program-card/loyalty-program-card';
+import { PersonCard } from '@/components/molecules/person-card';
 import {
   SectionWithSliderResponsive,
   SectionWithGrid,
-} from '../../../../molecules/sections';
+} from '@/components/molecules/sections';
 import { ExploreProps } from '../../types';
 import Banner from './banner/banner';
 import { useRouter } from 'next/router';

@@ -7,12 +7,12 @@ import { Cancel, CheckCircle } from '@mui/icons-material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { IconButton, Stack, Typography } from '@mui/material';
 
-import ConfirmDialog from '../../../../../../../../components/organisms/confirm-dialog/confirm-dialog';
+import ConfirmDialog from '@/components/organisms/confirm-dialog/confirm-dialog';
 import {
   Users,
   Task_Progress,
 } from '@/services/hasura/types';
-import { ManualTaskEventType } from '../../../../../../../../types/tasks';
+import { ManualTaskEventType } from '@/types/tasks';
 import { AvatarFile } from '@/components/atoms/avatar-file';
 import { LoadingButton } from '@/components/atoms/loading-button';
 

@@ -15,7 +15,7 @@ import { SvgIcon, SvgIconProps } from '@mui/material';
 import { SxProps } from '@mui/material';
 import Box from '@mui/material/Box';
 
-import { TaskType } from '../../../types/tasks';
+import { TaskType } from '@/types/tasks';
 
 const iconBgColor: Record<TaskType, string> = {
   self_verify: '#9A53FF',

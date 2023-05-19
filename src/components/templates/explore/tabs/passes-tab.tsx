@@ -10,7 +10,7 @@ import { query } from '@/constants/queries';
 import { ROUTES } from '@/constants/routes';
 import { gqlAnonMethods } from '@/services/hasura/api';
 import Loading from '@/components/atoms/loading';
-import { LoyaltyProgramCard } from '../../../molecules/loyalty-program-card/loyalty-program-card';
+import { LoyaltyProgramCard } from '@/components/molecules/loyalty-program-card/loyalty-program-card';
 
 export function PassesTab(): JSX.Element {
   const internalPageSize = 10;

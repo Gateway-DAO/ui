@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 
 import { useQuery } from '@tanstack/react-query';
 
-import { CreateGateTemplate } from '../../components/templates/create-gate';
+import { CreateGateTemplate } from '@/components/templates/create-gate';
 import { ROUTES } from '@/constants/routes';
 import { useAuth } from '@/providers/auth';
 import { gqlAnonMethods } from '@/services/hasura/api';

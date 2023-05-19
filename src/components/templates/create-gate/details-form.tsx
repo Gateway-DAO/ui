@@ -7,13 +7,13 @@ import { InputAdornment, Stack, TextField } from '@mui/material';
 
 import { CATEGORIES } from '@/constants/gate';
 import { useAuth } from '@/providers/auth';
-import CategoriesInput from '../../molecules/categories-input';
-import CreatedByInput from '../../molecules/creators-input';
+import CategoriesInput from '@/components/molecules/categories-input';
+import CreatedByInput from '@/components/molecules/creators-input';
 import {
   EmojiPicker,
   EmojiPickerProps,
-} from '../../molecules/form/emoji-picker';
-import SkillsInput from '../../molecules/skills-input';
+} from '@/components/molecules/form/emoji-picker';
+import SkillsInput from '@/components/molecules/skills-input';
 import { CreateGateData } from './schema';
 
 export function GateDetailsForm() {

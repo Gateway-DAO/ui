@@ -9,10 +9,10 @@ import { FormProvider, useForm } from 'react-hook-form';
 
 import { Stack } from '@mui/material';
 
-import { taskErrorMessages } from '../../../../../components/organisms/tasks/task-error-messages';
+import { taskErrorMessages } from '@/components/organisms/tasks/task-error-messages';
 import { query } from '@/constants/queries';
 import { useAuth } from '@/providers/auth';
-import { ErrorResponse } from '../../../../../types/graphql';
+import { ErrorResponse } from '@/types/graphql';
 import {
   SendEmailSchema,
   TokenConfirmationSchema,

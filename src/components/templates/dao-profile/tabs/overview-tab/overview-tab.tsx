@@ -23,12 +23,12 @@ import {
   Users,
 } from '@/services/hasura/types';
 import { EmptyCard } from '@/components/atoms/empty-card';
-import { GatesCard } from '../../../../molecules/gates-card';
-import { LoyaltyProgramCard } from '../../../../molecules/loyalty-program-card/loyalty-program-card';
-import { SectionWithSliderResponsive } from '../../../../molecules/sections';
+import { GatesCard } from '@/components/molecules/gates-card';
+import { LoyaltyProgramCard } from '@/components/molecules/loyalty-program-card/loyalty-program-card';
+import { SectionWithSliderResponsive } from '@/components/molecules/sections';
 import DataGrid, {
   IColumnGrid,
-} from '../../../../organisms/data-grid/data-grid';
+} from '@/components/organisms/data-grid/data-grid';
 import DashboardCard from '../../../protocol/components/dashboard-card';
 import { useDaoProfile } from '../../context';
 

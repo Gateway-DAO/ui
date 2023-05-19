@@ -19,7 +19,7 @@ import {
   Box,
 } from '@mui/material';
 
-import ConfirmDialog from '../../../../../../components/organisms/confirm-dialog/confirm-dialog';
+import ConfirmDialog from '@/components/organisms/confirm-dialog/confirm-dialog';
 import { useAuth } from '@/providers/auth';
 import {
   DataModel,
@@ -27,7 +27,7 @@ import {
   PermissionType,
 } from '@/services/gateway-protocol/types';
 import ExternalLink from '@/components/atoms/external-link';
-import ModalRight from '../../../../../molecules/modal-right';
+import ModalRight from '@/components/molecules/modal-right';
 
 import DashboardCard from '../../../components/dashboard-card';
 import CredentialProtocolCreate from '../../../credentials/create/credential-create';

@@ -2,7 +2,7 @@ import useTranslation from 'next-translate/useTranslation';
 
 import { Box, Button, Stack, Typography } from '@mui/material';
 
-import { ConnectionHandlerTwitter } from '../../templates/settings/connected-accounts/connectors/twitter-connection';
+import { ConnectionHandlerTwitter } from '@/components/templates/settings/connected-accounts/connectors/twitter-connection';
 
 type TwitterCardConnectionProps = {
   width?: string;

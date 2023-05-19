@@ -19,7 +19,7 @@ import {
 } from '@mui/material';
 
 import { CircleWithNumber } from '@/components/atoms/circle-with-number';
-import { CreateGateData } from '../../../templates/create-gate/schema';
+import { CreateGateData } from '@/components/templates/create-gate/schema';
 import TextFieldWithEmoji from '../../form/TextFieldWithEmoji/TextFieldWithEmoji';
 
 export const ManualTask = ({ dragAndDrop, taskId, deleteTask }) => {

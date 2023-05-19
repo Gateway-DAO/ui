@@ -6,7 +6,7 @@ import { theme } from '@/theme';
 
 import { alpha, Box, Card, Stack } from '@mui/material';
 
-import { ImageDropField } from '../../../../../molecules/image-drop-field';
+import { ImageDropField } from '@/components/molecules/image-drop-field';
 
 export function ImageField() {
   const { control } = useFormContext();

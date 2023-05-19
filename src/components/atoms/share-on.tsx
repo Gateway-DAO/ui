@@ -8,8 +8,8 @@ import { Stack, Typography, Box } from '@mui/material';
 
 import { useAuth } from '@/providers/auth';
 import { Credential } from '@/services/gateway-protocol/types';
-import { getCredentialImageURLParams } from '../../utils/credential/build-image-url-params';
-import objectToParams from '../../utils/map-object';
+import { getCredentialImageURLParams } from '@/utils/credential/build-image-url-params';
+import objectToParams from '@/utils/map-object';
 import SquareButton from './square-button';
 
 declare global {

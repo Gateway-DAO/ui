@@ -13,7 +13,7 @@ import {
 } from '@mui/material';
 
 import { Users } from '@/services/hasura/types';
-import { UserListItem } from '../../../molecules/user-list-item';
+import { UserListItem } from '@/components/molecules/user-list-item';
 
 type Props = {
   users: PartialDeep<Users>[];

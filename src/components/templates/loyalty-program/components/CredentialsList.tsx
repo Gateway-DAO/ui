@@ -6,7 +6,7 @@ import { TOKENS, brandColors } from '@/theme';
 
 import { Stack, Typography, alpha } from '@mui/material';
 
-import { AlertCustom } from '../../../../components/atoms/alert';
+import { AlertCustom } from '@/components/atoms/alert';
 import { useLoyaltyGatesCompleted } from '@/hooks/use-loyalty-gates-completed';
 import { useAuth } from '@/providers/auth';
 import {

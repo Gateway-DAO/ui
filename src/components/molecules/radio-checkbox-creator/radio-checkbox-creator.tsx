@@ -5,7 +5,7 @@ import { useFieldArray, useFormContext } from 'react-hook-form';
 
 import { Button, Stack } from '@mui/material';
 
-import { CreateGateData, Option } from '../../templates/create-gate/schema';
+import { CreateGateData, Option } from '@/components/templates/create-gate/schema';
 import { OptionField } from './option-field/option-field';
 
 export function RadioCheckBoxCreator({

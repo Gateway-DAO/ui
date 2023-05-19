@@ -7,7 +7,7 @@ import { GatewaySxProps } from '@/theme';
 
 import { Box, Card, useTheme } from '@mui/material';
 
-import { ImageDropField } from '../../../molecules/image-drop-field';
+import { ImageDropField } from '@/components/molecules/image-drop-field';
 import { CreateGateData } from '../schema';
 import { GateData } from './gate-data';
 

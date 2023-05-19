@@ -4,14 +4,14 @@ import { useRouter } from 'next/router';
 
 import { Button } from '@mui/material';
 
-import { HeadContainer } from '../components/molecules/head-container';
-import { LandingTemplate } from '../components/templates/landing';
-import { FeaturedProps } from '../components/templates/landing/featured/types';
-import { FooterProps } from '../components/templates/landing/footer/types';
-import { InvestorProps } from '../components/templates/landing/investors/types';
-import { MenuListItem } from '../components/templates/landing/menu/types';
-import { ProductShowProps } from '../components/templates/landing/product-show/types';
-import { ScheduleDemoProps } from '../components/templates/landing/schedule-demo/types';
+import { HeadContainer } from '@/components/molecules/head-container';
+import { LandingTemplate } from '@/components/templates/landing';
+import { FeaturedProps } from '@/components/templates/landing/featured/types';
+import { FooterProps } from '@/components/templates/landing/footer/types';
+import { InvestorProps } from '@/components/templates/landing/investors/types';
+import { MenuListItem } from '@/components/templates/landing/menu/types';
+import { ProductShowProps } from '@/components/templates/landing/product-show/types';
+import { ScheduleDemoProps } from '@/components/templates/landing/schedule-demo/types';
 import { ROUTES } from '@/constants/routes';
 import { useAuth } from '@/providers/auth';
 

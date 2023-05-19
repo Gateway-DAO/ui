@@ -1,4 +1,4 @@
-import { emitMessage } from '../../../utils/sqs';
+import { emitMessage } from '@/utils/sqs';
 
 export default async function handler(req, res) {
   const { queueUrl, body } = req.body;

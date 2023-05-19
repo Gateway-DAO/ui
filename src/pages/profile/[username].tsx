@@ -2,12 +2,12 @@ import { useRouter } from 'next/router';
 
 import { dehydrate, QueryClient, useQuery } from '@tanstack/react-query';
 
-import { HeadContainer } from '../../components/molecules/head-container';
-import { DashboardTemplate } from '../../components/templates/dashboard';
+import { HeadContainer } from '@/components/molecules/head-container';
+import { DashboardTemplate } from '@/components/templates/dashboard';
 import {
   ProfileTemplate,
   PrivateProfileTemplate,
-} from '../../components/templates/profile';
+} from '@/components/templates/profile';
 import { useAuth } from '@/providers/auth';
 import { gqlAnonMethods } from '@/services/hasura/api';
 

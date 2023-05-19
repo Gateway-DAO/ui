@@ -6,7 +6,7 @@ import { TOKENS, brandColors } from '@/theme';
 
 import { Chip, Stack, Typography, alpha } from '@mui/material';
 
-import Loading from '../../../../components/atoms/loading';
+import Loading from '@/components/atoms/loading';
 import { useActualTier } from '@/hooks/use-actual-tier';
 import { useLoyaltyGatesCompleted } from '@/hooks/use-loyalty-gates-completed';
 import { useAuth } from '@/providers/auth';

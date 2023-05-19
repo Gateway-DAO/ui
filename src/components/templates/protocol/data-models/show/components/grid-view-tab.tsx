@@ -12,7 +12,7 @@ import {
 } from '@/services/gateway-protocol/api';
 import { DataModel } from '@/services/gateway-protocol/types';
 import Loading from '@/components/atoms/loading';
-import DataGrid from '../../../../../organisms/data-grid/data-grid';
+import DataGrid from '@/components/organisms/data-grid/data-grid';
 
 type Props = {
   dataModelId: string;

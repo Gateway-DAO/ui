@@ -1,13 +1,13 @@
 import { InferGetServerSidePropsType, GetServerSidePropsContext } from 'next';
 
-import { HeadContainer } from '../../../../components/molecules/head-container';
-import { DashboardTemplate } from '../../../../components/templates/dashboard';
+import { HeadContainer } from '@/components/molecules/head-container';
+import { DashboardTemplate } from '@/components/templates/dashboard';
 import {
   CredentialProtocolShow,
   ProtocolTemplate,
-} from '../../../../components/templates/protocol';
+} from '@/components/templates/protocol';
 import { gatewayProtocolSDK } from '@/services/gateway-protocol/api';
-import { getCredentialImageURLParams } from '../../../../utils/credential/build-image-url-params';
+import { getCredentialImageURLParams } from '@/utils/credential/build-image-url-params';
 
 type Props = InferGetServerSidePropsType<typeof getServerSideProps>;
 

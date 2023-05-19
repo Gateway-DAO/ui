@@ -1,9 +1,9 @@
 import { Box } from '@mui/material';
 
-import { HeadContainer } from '../../components/molecules/head-container';
-import { Navbar } from '../../components/organisms/navbar';
-import { CreditScoreTemplate } from '../../components/templates/credit-score';
-import { DashboardTemplate } from '../../components/templates/dashboard';
+import { HeadContainer } from '@/components/molecules/head-container';
+import { Navbar } from '@/components/organisms/navbar';
+import { CreditScoreTemplate } from '@/components/templates/credit-score';
+import { DashboardTemplate } from '@/components/templates/dashboard';
 
 export default function CreditScore() {
   return (

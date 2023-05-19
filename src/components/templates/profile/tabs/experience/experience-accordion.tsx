@@ -9,9 +9,9 @@ import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 
-import { AvatarFile } from '../../../../../components/atoms/avatar-file';
+import { AvatarFile } from '@/components/atoms/avatar-file';
 import { Experiences } from '@/services/hasura/types';
-import { MintCard } from '../../../../molecules/mint-card';
+import { MintCard } from '@/components/molecules/mint-card';
 
 type Props = {
   experience: PartialDeep<Experiences>;

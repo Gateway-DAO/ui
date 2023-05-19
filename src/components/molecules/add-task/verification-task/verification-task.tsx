@@ -17,7 +17,7 @@ import { TaskIcon } from '@/components/atoms/task-icon';
 import {
   CreateGateData,
   VerificationCodeDataError,
-} from '../../../templates/create-gate/schema';
+} from '@/components/templates/create-gate/schema';
 import TextFieldWithEmoji from '../../form/TextFieldWithEmoji/TextFieldWithEmoji';
 
 const VerificationCodeTask = ({ dragAndDrop, taskId, deleteTask }) => {

@@ -18,7 +18,7 @@ import {
 
 import { ROUTES } from '@/constants/routes';
 import { useWindowSize } from '@/hooks/use-window-size';
-import { ClientNav } from '../../organisms/navbar/client-nav';
+import { ClientNav } from '@/components/organisms/navbar/client-nav';
 import { NavBarSettings } from './navbar-settings';
 
 type Props = {

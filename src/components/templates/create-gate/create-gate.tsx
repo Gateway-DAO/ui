@@ -15,10 +15,10 @@ import {
   Create_Gate_DirectMutationVariables,
   Create_Gate_Tasks_BasedMutationVariables,
 } from '@/services/hasura/types';
-import ConfirmDialog from '../../organisms/confirm-dialog/confirm-dialog';
-import GatePublishedModal from '../../organisms/gates/create/gate-published';
-import { PublishNavbar } from '../../organisms/publish-navbar/publish-navbar';
-import TaskArea from '../../organisms/tasks-area/tasks-area';
+import ConfirmDialog from '@/components/organisms/confirm-dialog/confirm-dialog';
+import GatePublishedModal from '@/components/organisms/gates/create/gate-published';
+import { PublishNavbar } from '@/components/organisms/publish-navbar/publish-navbar';
+import TaskArea from '@/components/organisms/tasks-area/tasks-area';
 import { AdvancedSetting } from './advanced-settings';
 import { GateDetailsForm } from './details-form';
 import { GateImageCard } from './gate-image-card/gate-image-card';

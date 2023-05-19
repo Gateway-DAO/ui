@@ -10,9 +10,9 @@ import { Box, Stack } from '@mui/material';
 import { query } from '@/constants/queries';
 import { gqlAnonMethods } from '@/services/hasura/api';
 import { Users } from '@/services/hasura/types';
-import { SessionUser } from '../../../../types/user';
+import { SessionUser } from '@/types/user';
 import Loading from '@/components/atoms/loading';
-import CredentialCard from '../../../molecules/credential-card';
+import CredentialCard from '@/components/molecules/credential-card';
 
 type Props = {
   user: PartialDeep<Users> | SessionUser;

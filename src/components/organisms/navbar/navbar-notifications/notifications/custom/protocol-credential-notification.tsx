@@ -7,7 +7,7 @@ import { Box, CircularProgress, Stack, Typography } from '@mui/material';
 
 import { ROUTES } from '@/constants/routes';
 import { useAuth } from '@/providers/auth';
-import { useTimeAgo } from '../../../../../../utils/time';
+import { useTimeAgo } from '@/utils/time';
 import { AvatarFile } from '@/components/atoms/avatar-file';
 
 type Props = {

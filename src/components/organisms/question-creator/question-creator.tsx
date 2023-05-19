@@ -5,9 +5,9 @@ import CloseIcon from '@mui/icons-material/Close';
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
 import { Divider, IconButton, Stack } from '@mui/material';
 
-import { QuestionField } from '../../molecules/add-task/quiz-task/question-field/question-field';
-import { RadioCheckBoxCreator } from '../../molecules/radio-checkbox-creator/radio-checkbox-creator';
-import { CreateGateData, Question } from '../../templates/create-gate/schema';
+import { QuestionField } from '@/components/molecules/add-task/quiz-task/question-field/question-field';
+import { RadioCheckBoxCreator } from '@/components/molecules/radio-checkbox-creator/radio-checkbox-creator';
+import { CreateGateData, Question } from '@/components/templates/create-gate/schema';
 
 export function QuestionCreator({
   questions,

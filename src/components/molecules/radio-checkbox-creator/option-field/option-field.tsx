@@ -11,7 +11,7 @@ import { Stack, TextField } from '@mui/material';
 import {
   CreateGateData,
   QuizTaskDataError,
-} from '../../../templates/create-gate/schema';
+} from '@/components/templates/create-gate/schema';
 
 type Props = {
   taskId: number;

@@ -31,7 +31,7 @@ import { AvatarFile } from '@/components/atoms/avatar-file';
 import CircularProgressWithLabel from '@/components/atoms/circular-progress-label';
 import { Props as MintCredentialButtonProps } from '@/components/atoms/mint-button';
 import { ReadMore } from '@/components/atoms/read-more-less';
-import { Task, TaskGroup } from '../../organisms/tasks';
+import { Task, TaskGroup } from '@/components/organisms/tasks';
 
 const MintCredentialButton: ComponentType<MintCredentialButtonProps> = dynamic(
   () =>

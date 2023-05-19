@@ -10,7 +10,7 @@ import { Box, Tabs, Typography, Tab } from '@mui/material';
 import { query } from '@/constants/queries';
 import { gqlAnonMethods } from '@/services/hasura/api';
 import { a11yTabProps, TabPanel } from '@/components/atoms/tabs';
-import { Navbar } from '../../organisms/navbar';
+import { Navbar } from '@/components/organisms/navbar';
 import { DashboardTemplate } from '../dashboard';
 
 export function ExploreLayout({ children }) {

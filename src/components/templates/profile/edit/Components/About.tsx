@@ -18,8 +18,8 @@ import {
   TextField,
 } from '@mui/material';
 
-import { AvatarBackgroundFields } from '../../../../../components/molecules/form/avatar-background-fields';
-import { SocialLinks } from '../../../../../components/molecules/form/social-links';
+import { AvatarBackgroundFields } from '@/components/molecules/form/avatar-background-fields';
+import { SocialLinks } from '@/components/molecules/form/social-links';
 import { EditUserSchema } from '../schema';
 import { Form } from './AboutComponents/Form';
 

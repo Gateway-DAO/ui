@@ -10,7 +10,7 @@ import {
   GatewayProtocolSDKTypes,
 } from '@/services/gateway-protocol/api';
 import Loading from '@/components/atoms/loading';
-import DataGrid from '../../../organisms/data-grid/data-grid';
+import DataGrid from '@/components/organisms/data-grid/data-grid';
 import { useDaoProfile } from '../context';
 
 type Props = {

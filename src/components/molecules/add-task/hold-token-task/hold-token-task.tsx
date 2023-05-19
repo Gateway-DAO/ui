@@ -20,7 +20,7 @@ import { TaskIcon } from '@/components/atoms/task-icon';
 import {
   CreateGateData,
   HoldTokenDataError,
-} from '../../../templates/create-gate/schema';
+} from '@/components/templates/create-gate/schema';
 import { mockChains } from './__mock__';
 import TextFieldWithEmoji from '../../form/TextFieldWithEmoji/TextFieldWithEmoji';
 

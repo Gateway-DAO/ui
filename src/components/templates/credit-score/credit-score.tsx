@@ -44,9 +44,9 @@ import { AvatarFile } from '@/components/atoms/avatar-file';
 import { LoadingButton } from '@/components/atoms/loading-button';
 import { ReadMore } from '@/components/atoms/read-more-less';
 import { ShareButton } from '@/components/atoms/share-button';
-import { TokenFilled } from '../../molecules/mint-card/assets/token-filled';
-import { HolderDialog } from '../../organisms/holder-dialog';
-import { ClientNav } from '../../organisms/navbar/client-nav';
+import { TokenFilled } from '@/components/molecules/mint-card/assets/token-filled';
+import { HolderDialog } from '@/components/organisms/holder-dialog';
+import { ClientNav } from '@/components/organisms/navbar/client-nav';
 import LoadingModal from './LoadingModal';
 import { theme } from '@/theme';
 

@@ -26,7 +26,7 @@ import {
   CreateGateData,
   TwitterFollowData,
   TwitterFollowDataError,
-} from '../../../templates/create-gate/schema';
+} from '@/components/templates/create-gate/schema';
 import TextFieldWithEmoji from '../../form/TextFieldWithEmoji/TextFieldWithEmoji';
 
 export const numberFormat = (value: number) => {

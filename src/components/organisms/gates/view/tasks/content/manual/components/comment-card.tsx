@@ -2,7 +2,7 @@ import { PartialDeep } from 'type-fest/source/partial-deep';
 
 import { Paper, Stack, Typography } from '@mui/material';
 
-import { AvatarFile } from '../../../../../../../../components/atoms/avatar-file';
+import { AvatarFile } from '@/components/atoms/avatar-file';
 import { Files } from '@/services/hasura/types';
 
 type commentCardProps = {

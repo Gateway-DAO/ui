@@ -11,7 +11,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 
 import { ROUTES } from '@/constants/routes';
-import { badgeProps } from '../../../../../utils/badge-props';
+import { badgeProps } from '@/utils/badge-props';
 import { ExploreProps } from '../../types';
 
 // TODO: make it generic

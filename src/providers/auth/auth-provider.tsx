@@ -9,8 +9,8 @@ import {
   useState,
 } from 'react';
 
-import { AuthConnectingModal } from '../../components/organisms/auth-connecting-modal';
-import { AuthModal } from '../../components/organisms/auth-modal';
+import { AuthConnectingModal } from '@/components/organisms/auth-connecting-modal';
+import { AuthModal } from '@/components/organisms/auth-modal';
 import { gatewayProtocolAuthSDK } from '@/services/gateway-protocol/api';
 import {
   gqlMethodsWithRefresh,

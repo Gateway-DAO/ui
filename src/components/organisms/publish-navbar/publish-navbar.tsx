@@ -6,7 +6,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { AppBar, Toolbar, Avatar, IconButton, Box } from '@mui/material';
 
 import { LoadingButton } from '@/components/atoms/loading-button';
-import { CreateGateData } from '../../templates/create-gate/schema';
+import { CreateGateData } from '@/components/templates/create-gate/schema';
 
 type Props = {
   isLoading: boolean;

@@ -13,14 +13,14 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 
-import { useAuth } from '../../../website/providers/auth';
+import { useAuth } from '@/providers/auth';
 import { ROUTES } from '@/constants/routes';
 import { Gates } from '@/services/hasura/types';
-import { badgeProps } from '../../utils/badge-props';
+import { badgeProps } from '@/utils/badge-props';
 import { AvatarFile } from '@/components/atoms/avatar-file';
 import MorePopover from '@/components/atoms/more-popover';
-import ConfirmDialog from '../organisms/confirm-dialog/confirm-dialog';
-import { useDaoProfile } from '../templates/dao-profile';
+import ConfirmDialog from '@/components/organisms/confirm-dialog/confirm-dialog';
+import { useDaoProfile } from '@/components/templates/dao-profile';
 import { CategoriesList } from './categories-list';
 
 /* TODO: Arias and Labels */

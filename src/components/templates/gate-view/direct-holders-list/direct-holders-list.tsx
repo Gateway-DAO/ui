@@ -24,8 +24,8 @@ import { useAuth } from '@/providers/auth';
 import { gqlAnonMethods } from '@/services/hasura/api';
 import { Gates } from '@/services/hasura/types';
 import { CenteredLoader } from '@/components/atoms/centered-loader';
-import { UserListItem } from '../../../molecules/user-list-item';
-import { ClientNav } from '../../../organisms/navbar/client-nav';
+import { UserListItem } from '@/components/molecules/user-list-item';
+import { ClientNav } from '@/components/organisms/navbar/client-nav';
 
 type Props = {
   gate: PartialDeep<Gates>;

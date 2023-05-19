@@ -2,7 +2,7 @@ import useTranslation from 'next-translate/useTranslation';
 
 import { Stack } from '@mui/material';
 
-import DataGrid from '../../../organisms/data-grid/data-grid';
+import DataGrid from '@/components/organisms/data-grid/data-grid';
 import { useDaoProfile } from '../context';
 
 type Props = {

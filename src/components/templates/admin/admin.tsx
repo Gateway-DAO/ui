@@ -15,7 +15,7 @@ import {
 } from '@mui/material';
 
 import { useAuth } from '@/providers/auth';
-import { Navbar } from '../../organisms/navbar';
+import { Navbar } from '@/components/organisms/navbar';
 
 export function AdminTemplate({ data }) {
   const { me } = useAuth();

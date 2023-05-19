@@ -16,10 +16,10 @@ import { useMintData } from '@/hooks/use-mint-data';
 import { useAuth } from '@/providers/auth';
 import { Gates } from '@/services/hasura/types';
 import { ShareButtonFn } from '@/components/atoms/share-btn-fn';
-import GateMintButton from '../../../../molecules/gate-mint-button';
-import { GatesCard } from '../../../../molecules/gates-card';
-import { MintDialogProtocol } from '../../../../molecules/mint-dialog-protocol';
-import ModalShareCredential from '../../../../molecules/modal/modal-share-credential';
+import GateMintButton from '@/components/molecules/gate-mint-button';
+import { GatesCard } from '@/components/molecules/gates-card';
+import { MintDialogProtocol } from '@/components/molecules/mint-dialog-protocol';
+import ModalShareCredential from '@/components/molecules/modal/modal-share-credential';
 
 type Props = {
   open: boolean;

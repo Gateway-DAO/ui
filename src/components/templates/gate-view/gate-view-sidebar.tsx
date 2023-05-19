@@ -26,18 +26,18 @@ import { ROUTES } from '@/constants/routes';
 import { useMintData } from '@/hooks/use-mint-data';
 import { useAuth } from '@/providers/auth';
 import { Gates } from '@/services/hasura/types';
-import { isDaoAdmin } from '../../../utils/is-dao-admin';
+import { isDaoAdmin } from '@/utils/is-dao-admin';
 import { AvatarFile } from '@/components/atoms/avatar-file';
 import { ReadMore } from '@/components/atoms/read-more-less';
 import { ShareButton } from '@/components/atoms/share-button';
-import GateMintButton from '../../molecules/gate-mint-button';
-import { MintDialogProtocol } from '../../molecules/mint-dialog-protocol';
-import ModalShareCredential from '../../molecules/modal/modal-share-credential';
-import { OptionsCredential } from '../../molecules/options-credential';
-import type { Props as HolderDialogProps } from '../../organisms/holder-dialog';
+import GateMintButton from '@/components/molecules/gate-mint-button';
+import { MintDialogProtocol } from '@/components/molecules/mint-dialog-protocol';
+import ModalShareCredential from '@/components/molecules/modal/modal-share-credential';
+import { OptionsCredential } from '@/components/molecules/options-credential';
+import type { Props as HolderDialogProps } from '@/components/organisms/holder-dialog';
 
 const HolderDialog: ComponentType<HolderDialogProps> = dynamic(
-  () => import('../../organisms/holder-dialog').then((mod) => mod.HolderDialog),
+  () => import('@/components/organisms/holder-dialog').then((mod) => mod.HolderDialog),
   { ssr: false }
 );
 

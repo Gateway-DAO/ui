@@ -24,7 +24,7 @@ import { TaskIcon } from '@/components/atoms/task-icon';
 import {
   CreateGateData,
   SnapshotDataError,
-} from '../../../templates/create-gate/schema';
+} from '@/components/templates/create-gate/schema';
 import TextFieldWithEmoji from '../../form/TextFieldWithEmoji/TextFieldWithEmoji';
 
 const SnapshotTask = ({ dragAndDrop, taskId, deleteTask }) => {

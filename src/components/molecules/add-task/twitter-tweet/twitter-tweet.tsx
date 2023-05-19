@@ -15,11 +15,11 @@ import {
   Typography,
 } from '@mui/material';
 
-import { TaskIcon } from '../../../../components/atoms/task-icon';
+import { TaskIcon } from '@/components/atoms/task-icon';
 import {
   CreateGateData,
   TwitterTweetDataError,
-} from '../../../templates/create-gate/schema';
+} from '@/components/templates/create-gate/schema';
 import { EmojiPicker, EmojiPickerProps } from '../../form/emoji-picker';
 import TextFieldWithEmoji from '../../form/TextFieldWithEmoji/TextFieldWithEmoji';
 

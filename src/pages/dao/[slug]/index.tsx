@@ -4,12 +4,12 @@ import { useRouter } from 'next/router';
 import { useQuery } from '@tanstack/react-query';
 import { PartialDeep } from 'type-fest';
 
-import { HeadContainer } from '../../../components/molecules/head-container';
+import { HeadContainer } from '@/components/molecules/head-container';
 import {
   DaoProfileTemplate,
   DaoProfileProvider,
-} from '../../../components/templates/dao-profile';
-import { DashboardTemplate } from '../../../components/templates/dashboard';
+} from '@/components/templates/dao-profile';
+import { DashboardTemplate } from '@/components/templates/dashboard';
 import { useAuth } from '@/providers/auth';
 import { gatewayProtocolSDK } from '@/services/gateway-protocol/api';
 import { gqlAnonMethods } from '@/services/hasura/api';

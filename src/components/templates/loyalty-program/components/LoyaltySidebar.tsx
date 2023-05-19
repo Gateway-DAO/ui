@@ -24,16 +24,16 @@ import { ROUTES } from '@/constants/routes';
 import { useMintData } from '@/hooks/use-mint-data';
 import { useAuth } from '@/providers/auth';
 import { Gates, Loyalty_Program } from '@/services/hasura/types';
-import { isDaoAdmin } from '../../../../utils/is-dao-admin';
+import { isDaoAdmin } from '@/utils/is-dao-admin';
 import { AvatarFile } from '@/components/atoms/avatar-file';
 import ExternalLink from '@/components/atoms/external-link';
 import GateStateChip from '@/components/atoms/gate-state-chip';
 import ShareOn from '@/components/atoms/share-on';
-import GateMintButton from '../../../molecules/gate-mint-button';
-import { MintDialogProtocol } from '../../../molecules/mint-dialog-protocol';
-import ModalContent from '../../../molecules/modal/modal-basic';
-import ModalShareCredential from '../../../molecules/modal/modal-share-credential';
-import { OptionsCredential } from '../../../molecules/options-credential';
+import GateMintButton from '@/components/molecules/gate-mint-button';
+import { MintDialogProtocol } from '@/components/molecules/mint-dialog-protocol';
+import ModalContent from '@/components/molecules/modal/modal-basic';
+import ModalShareCredential from '@/components/molecules/modal/modal-share-credential';
+import { OptionsCredential } from '@/components/molecules/options-credential';
 import { SmallTier } from './SmallTier';
 
 type LoyaltySidebarProps = {

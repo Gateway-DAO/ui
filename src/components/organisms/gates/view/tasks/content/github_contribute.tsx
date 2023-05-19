@@ -6,10 +6,10 @@ import { useLocalStorage } from 'react-use';
 
 import { Stack, Typography } from '@mui/material';
 
-import { LoadingButton } from '../../../../../../components/atoms/loading-button';
-import GithubConnectionCard from '../../../../../../components/organisms/tasks/github-connection-card';
-import GithubDataCard from '../../../../../../components/organisms/tasks/github-data-card';
-import { GithubContributeData } from '../../../../../../components/templates/create-gate/schema';
+import { LoadingButton } from '@/components/atoms/loading-button';
+import GithubConnectionCard from '@/components/organisms/tasks/github-connection-card';
+import GithubDataCard from '@/components/organisms/tasks/github-data-card';
+import { GithubContributeData } from '@/components/templates/create-gate/schema';
 
 type completeTaskData = {
   githubAccessToken: string;

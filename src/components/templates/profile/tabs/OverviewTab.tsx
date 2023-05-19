@@ -15,11 +15,11 @@ import { useAuth } from '@/providers/auth';
 import { gatewayProtocolSDK } from '@/services/gateway-protocol/api';
 import { gqlAnonMethods } from '@/services/hasura/api';
 import { Users } from '@/services/hasura/types';
-import { SessionUser } from '../../../../types/user';
+import { SessionUser } from '@/types/user';
 import CredentialCard from '../../..//molecules/credential-card';
 import { useTab } from '@/components/atoms/tabs';
-import NewElementCard from '../../../molecules/new-element-card';
-import { SectionWithSliderResponsive } from '../../../molecules/sections';
+import NewElementCard from '@/components/molecules/new-element-card';
+import { SectionWithSliderResponsive } from '@/components/molecules/sections';
 import { ReceivedTab } from './recommendations/ReceivedTab';
 
 type Props = {

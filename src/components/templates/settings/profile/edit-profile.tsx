@@ -9,7 +9,7 @@ import { Stack, Typography, Divider, SxProps, Theme } from '@mui/material';
 
 import { useAuth } from '@/providers/auth';
 import { LoadingButton } from '@/components/atoms/loading-button';
-import { Accordion } from '../../../molecules/accordion';
+import { Accordion } from '@/components/molecules/accordion';
 import { About } from './components/about';
 import { Languages } from './components/languages';
 import { Skills } from './components/skills';

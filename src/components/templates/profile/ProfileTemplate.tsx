@@ -10,14 +10,14 @@ import { TOKENS } from '@/theme';
 
 import { Box, Stack, Typography, Tabs, Tab, Chip } from '@mui/material';
 
-import { a11yTabProps, TabPanel, useTab } from '../../../components/atoms/tabs';
-import { Navbar } from '../../../components/organisms/navbar/navbar';
+import { a11yTabProps, TabPanel, useTab } from '@/components/atoms/tabs';
+import { Navbar } from '@/components/organisms/navbar/navbar';
 import { generateImageUrl } from '@/hooks/use-file';
 import { gatewayProtocolSDK } from '@/services/gateway-protocol/api';
 import { Users } from '@/services/hasura/types';
-import { SessionUser } from '../../../types/user';
+import { SessionUser } from '@/types/user';
 import { AvatarFile } from '@/components/atoms/avatar-file';
-import { SocialButtons } from '../../organisms/social-buttons';
+import { SocialButtons } from '@/components/organisms/social-buttons';
 import { ReceivedTab, IssuedTab } from './tabs';
 import { Earned } from './tabs/Earned';
 

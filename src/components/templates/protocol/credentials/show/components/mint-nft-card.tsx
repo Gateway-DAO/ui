@@ -14,7 +14,7 @@ import {
 } from '@mui/material';
 
 import { Chain } from '@/services/gateway-protocol/types';
-import { getExplorer, getSolanaExplorer } from '../../../../../../utils/web3';
+import { getExplorer, getSolanaExplorer } from '@/utils/web3';
 import {
   PolygonIcon,
   EthereumIcon,

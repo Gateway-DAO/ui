@@ -11,10 +11,10 @@ import { query } from '@/constants/queries';
 import { useAuth } from '@/providers/auth';
 import { Gates } from '@/services/hasura/types';
 import CircularProgressWithLabel from '@/components/atoms/circular-progress-label';
-import { Submissions } from '../../organisms/gates/view/tasks/content/manual/submissions';
-import { RecaptchaTask } from '../../organisms/gates/view/tasks/content/recaptcha';
-import { ClientNav } from '../../organisms/navbar/client-nav';
-import { Task } from '../../organisms/tasks';
+import { Submissions } from '@/components/organisms/gates/view/tasks/content/manual/submissions';
+import { RecaptchaTask } from '@/components/organisms/gates/view/tasks/content/recaptcha';
+import { ClientNav } from '@/components/organisms/navbar/client-nav';
+import { Task } from '@/components/organisms/tasks';
 
 type Props = {
   gate: PartialDeep<Gates>;

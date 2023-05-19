@@ -11,7 +11,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 
 import { Gates } from '@/services/hasura/types';
-import { badgeProps } from '../../../../../utils/badge-props';
+import { badgeProps } from '@/utils/badge-props';
 
 type Props = {
   gates: PartialDeep<Gates>[];

@@ -10,7 +10,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 
 import { Gates, Loyalty_Program } from '@/services/hasura/types';
-import GateRow from '../../../../molecules/gate-row';
+import GateRow from '@/components/molecules/gate-row';
 
 // TODO: make it generic
 // TODO: Fix Gate name column width

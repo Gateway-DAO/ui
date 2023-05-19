@@ -9,8 +9,8 @@ import { categoriesMap } from '@/constants/dao';
 import { usePropertyFilter } from '@/hooks/use-property-filter';
 import { useViewMode, ViewMode } from '@/hooks/use-view-modes';
 import { gqlAnonMethods } from '@/services/hasura/api';
-import { ChipDropdown } from '../../../../molecules/chip-dropdown';
-import { DaoCard } from '../../../../molecules/dao-card';
+import { ChipDropdown } from '@/components/molecules/chip-dropdown';
+import { DaoCard } from '@/components/molecules/dao-card';
 import { TableView } from './table-view';
 
 export function DaosTab() {

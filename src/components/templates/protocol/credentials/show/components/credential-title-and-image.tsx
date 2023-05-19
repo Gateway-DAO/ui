@@ -11,8 +11,8 @@ import {
   ModalTabProps,
   modalContentTypes,
   ModalContentProps,
-} from '../../../../../../components/molecules/modal/ModalContentTypes';
-import ModalTabs from '../../../../../../components/molecules/modal/modal-tabs';
+} from '@/components/molecules/modal/ModalContentTypes';
+import ModalTabs from '@/components/molecules/modal/modal-tabs';
 import { Credential } from '@/services/gateway-protocol/types';
 import InfoTitle from '../../../components/info-title';
 

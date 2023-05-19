@@ -14,7 +14,7 @@ import {
   Typography,
 } from '@mui/material';
 
-import { LoadingButton } from '../../../../../../components/atoms/loading-button';
+import { LoadingButton } from '@/components/atoms/loading-button';
 
 const QuizContent = ({
   data,

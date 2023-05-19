@@ -1,13 +1,13 @@
 import { InferGetServerSidePropsType, GetServerSidePropsContext } from 'next';
 import dynamic from 'next/dynamic';
 
-import { DataModelLayout } from '../../../components/templates/protocol/data-models/show/layout';
+import { DataModelLayout } from '@/components/templates/protocol/data-models/show/layout';
 import { gatewayProtocolSDK } from '@/services/gateway-protocol/api';
 import { gqlAnonMethods } from '@/services/hasura/api';
 const OverviewTab = dynamic(
   () =>
     import(
-      '../../../components/templates/protocol/data-models/show/components/overview-tab'
+      '@/components/templates/protocol/data-models/show/components/overview-tab'
     ),
   { ssr: false }
 );

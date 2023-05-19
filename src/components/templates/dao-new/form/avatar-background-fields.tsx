@@ -4,7 +4,7 @@ import { TOKENS } from '@/theme';
 
 import { Box } from '@mui/material';
 
-import { ImageDropField } from '../../../molecules/image-drop-field';
+import { ImageDropField } from '@/components/molecules/image-drop-field';
 import { NewDAOSchema } from '../schema';
 
 export function AvatarBackgroundFields() {

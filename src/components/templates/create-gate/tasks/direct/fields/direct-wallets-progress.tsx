@@ -4,7 +4,7 @@ import { useMemo } from 'react';
 import { Box, CircularProgress, Stack, Typography } from '@mui/material';
 
 import { VerifyCsvProgressOutput } from '@/services/hasura/types';
-import { useRemainingTime } from '../utils';
+import { useRemainingTime } from '@/utils';
 
 type Props = VerifyCsvProgressOutput & {
   isLoading?: boolean;

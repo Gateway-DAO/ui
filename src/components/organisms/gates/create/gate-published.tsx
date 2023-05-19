@@ -21,7 +21,7 @@ import Typography from '@mui/material/Typography';
 import { ROUTES } from '@/constants/routes';
 import { useAuth } from '@/providers/auth';
 import { GateQuery, Gates } from '@/services/hasura/types';
-import { GatesCard } from '../../../molecules/gates-card';
+import { GatesCard } from '@/components/molecules/gates-card';
 
 type GatePublishedModalProps = {
   gate?: PartialDeep<Gates>;

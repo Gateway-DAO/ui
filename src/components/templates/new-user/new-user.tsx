@@ -11,10 +11,10 @@ import { theme } from '@/theme';
 import { alpha, Box, Stack } from '@mui/material';
 
 import { useAuth } from '@/providers/auth';
-import { ErrorResponse } from '../../../types/graphql';
+import { ErrorResponse } from '@/types/graphql';
 import Loading from '@/components/atoms/loading';
-import { NavBarAvatar } from '../../organisms/navbar/navbar-avatar';
-import { taskErrorMessages } from '../../organisms/tasks/task-error-messages';
+import { NavBarAvatar } from '@/components/organisms/navbar/navbar-avatar';
+import { taskErrorMessages } from '@/components/organisms/tasks/task-error-messages';
 import { FormSendEmail } from './form-send-email';
 import { FormVerifyToken } from './form-verify-token';
 import {

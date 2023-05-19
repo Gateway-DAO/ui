@@ -4,8 +4,8 @@ import { useFormContext } from 'react-hook-form';
 
 import { Stack, Typography } from '@mui/material';
 
-import { AvatarBackgroundFields } from '../../../../molecules/form/avatar-background-fields';
-import { SocialLinks } from '../../../../molecules/form/social-links';
+import { AvatarBackgroundFields } from '@/components/molecules/form/avatar-background-fields';
+import { SocialLinks } from '@/components/molecules/form/social-links';
 import { EditUserSchema } from '../schema';
 import { Form } from './aboutComponents/form';
 

@@ -15,7 +15,7 @@ import {
 } from '@mui/material';
 
 import { useWindowSize } from '@/hooks/use-window-size';
-import { ClientNav } from '../../organisms/navbar/client-nav';
+import { ClientNav } from '@/components/organisms/navbar/client-nav';
 type Props = {
   sidebar: React.ReactNode;
   mainContent: React.ReactNode;

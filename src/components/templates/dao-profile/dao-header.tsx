@@ -21,8 +21,8 @@ import { AvatarFile } from '@/components/atoms/avatar-file';
 import { FollowButtonDAO } from '@/components/atoms/follow-button-dao';
 import { ReadMore } from '@/components/atoms/read-more-less';
 import { ShareButton } from '@/components/atoms/share-button';
-import { Navbar } from '../../organisms/navbar/navbar';
-import { SocialButtons } from '../../organisms/social-buttons';
+import { Navbar } from '@/components/organisms/navbar/navbar';
+import { SocialButtons } from '@/components/organisms/social-buttons';
 import { useDaoProfile } from './context';
 
 type Props = {

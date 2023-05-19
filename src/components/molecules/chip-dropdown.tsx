@@ -69,7 +69,7 @@ export function ChipDropdown<T = string>({
             >
               {selected.length}
             </Avatar>
-          ) : null
+          ) : undefined
         }
         deleteIcon={isOpen ? <ArrowDropUp /> : <ArrowDropDown />}
         onClick={toggleOpen}

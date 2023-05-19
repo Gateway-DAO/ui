@@ -8,13 +8,13 @@ import { useIntersection } from 'react-use';
 
 import { Box, Button } from '@mui/material';
 
-import { HeadContainer } from '../components/molecules/head-container';
-import TermsOfService from '../components/molecules/terms-of-service';
-import { Footer } from '../components/templates/landing/footer';
-import { FooterProps } from '../components/templates/landing/footer/types';
-import { Menu } from '../components/templates/landing/menu/menu';
-import { MenuListItem } from '../components/templates/landing/menu/types';
-import { DEFAULT_PADDINGX } from '../components/templates/landing/styles';
+import { HeadContainer } from '@/components/molecules/head-container';
+import TermsOfService from '@/components/molecules/terms-of-service';
+import { Footer } from '@/components/templates/landing/footer';
+import { FooterProps } from '@/components/templates/landing/footer/types';
+import { Menu } from '@/components/templates/landing/menu/menu';
+import { MenuListItem } from '@/components/templates/landing/menu/types';
+import { DEFAULT_PADDINGX } from '@/components/templates/landing/styles';
 import { ROUTES } from '@/constants/routes';
 import { useAuth } from '@/providers/auth';
 

@@ -16,7 +16,7 @@ import {
 } from '@mui/material';
 
 import { VerifyCsvProgressOutput } from '@/services/hasura/types';
-import { UserListItem } from '../../../../molecules/user-list-item';
+import { UserListItem } from '@/components/molecules/user-list-item';
 import { ValidatedWallet } from './types';
 
 export function DirectWalletsList({

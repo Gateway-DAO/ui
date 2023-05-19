@@ -1,15 +1,15 @@
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 
-import { IColumnGrid } from '../../../components/organisms/data-grid/data-grid';
-import { DataModelsTab } from '../../../components/templates/explore';
-import { DataModelLayout } from '../../../components/templates/protocol/data-models/show/layout';
+import { IColumnGrid } from '@/components/organisms/data-grid/data-grid';
+import { DataModelsTab } from '@/components/templates/explore';
+import { DataModelLayout } from '@/components/templates/protocol/data-models/show/layout';
 import { query } from '@/constants/queries';
 
 const GridViewTab = dynamic(
   () =>
     import(
-      '../../../components/templates/protocol/data-models/show/components/grid-view-tab'
+      '@/components/templates/protocol/data-models/show/components/grid-view-tab'
     ),
   { ssr: false }
 );

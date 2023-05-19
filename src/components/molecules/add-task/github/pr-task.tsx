@@ -19,11 +19,11 @@ import {
 } from '@mui/material';
 
 import { TaskIcon } from '@/components/atoms/task-icon';
-import GithubDataCard from '../../../organisms/tasks/github-data-card';
+import GithubDataCard from '@/components/organisms/tasks/github-data-card';
 import {
   CreateGateData,
   GithubContributeDataError,
-} from '../../../templates/create-gate/schema';
+} from '@/components/templates/create-gate/schema';
 import TextFieldWithEmoji from '../../form/TextFieldWithEmoji/TextFieldWithEmoji';
 
 type GithubPRTaskProps = {

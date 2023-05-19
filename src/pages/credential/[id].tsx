@@ -5,10 +5,10 @@ import jwt from 'jsonwebtoken';
 
 import { Box } from '@mui/material';
 
-import { HeadContainer } from '../../components/molecules/head-container';
-import { Navbar } from '../../components/organisms/navbar';
-import { DashboardTemplate } from '../../components/templates/dashboard';
-import { GateViewTemplate } from '../../components/templates/gate-view';
+import { HeadContainer } from '@/components/molecules/head-container';
+import { Navbar } from '@/components/organisms/navbar';
+import { DashboardTemplate } from '@/components/templates/dashboard';
+import { GateViewTemplate } from '@/components/templates/gate-view';
 import { query } from '@/constants/queries';
 import { ROUTES } from '@/constants/routes';
 import { useAuth } from '@/providers/auth';

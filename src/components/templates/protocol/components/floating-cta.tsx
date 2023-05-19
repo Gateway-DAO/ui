@@ -13,10 +13,10 @@ import { SpeedDial, SpeedDialAction } from '@mui/material';
 import { Box } from '@mui/system';
 
 import { Credential } from '@/services/gateway-protocol/types';
-import { useCreateQrCode } from '../../../../utils/qr-code/qr-code';
+import { useCreateQrCode } from '@/utils/qr-code/qr-code';
 import ShareOn from '@/components/atoms/share-on';
-import ModalContent from '../../../molecules/modal/modal-basic';
-import { taskErrorMessages } from '../../../organisms/tasks/task-error-messages';
+import ModalContent from '@/components/molecules/modal/modal-basic';
+import { taskErrorMessages } from '@/components/organisms/tasks/task-error-messages';
 import { useProtocolTemplateContext } from '../context';
 
 export default function FloatingCta({
