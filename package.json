@@ -6,6 +6,7 @@
     "dev": "next dev",
     "start": "next start --prod",
     "serve": "next start",
+    "lint": "next lint",
     "test": "jest --watch",
     "build": "next build --verbose",
     "generate:prisma": "node tools/scripts/create-prisma.js && prisma db pull && prisma generate",

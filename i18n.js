@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-const { ROUTES } = require('./constants/routes');
+const { ROUTES } = require('./src/constants/routes');
 
 const config = {
   locales: ['en'],
