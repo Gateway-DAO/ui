@@ -5,8 +5,8 @@ import { TOKENS } from '@/theme';
 import { ViewModule, ViewList } from '@mui/icons-material';
 import { Box, CircularProgress, IconButton, Stack } from '@mui/material';
 
-import { usePropertyFilter } from '../../../../../hooks/use-property-filter';
-import { useViewMode, ViewMode } from '../../../../../hooks/use-view-modes';
+import { usePropertyFilter } from '@/hooks/use-property-filter';
+import { useViewMode, ViewMode } from '@/hooks/use-view-modes';
 import { useAuth } from '../../../../../providers/auth';
 import { ChipDropdown } from '../../../../molecules/chip-dropdown';
 import { GatesCard } from '../../../../molecules/gates-card';

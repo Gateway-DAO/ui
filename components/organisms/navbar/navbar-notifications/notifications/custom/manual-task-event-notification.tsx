@@ -5,7 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 
 import { Box, CircularProgress, Stack, Typography } from '@mui/material';
 
-import { ROUTES } from '../../../../../../constants/routes';
+import { ROUTES } from '@/constants/routes';
 import { useAuth } from '../../../../../../providers/auth';
 import { ManualTaskEventType } from '../../../../../../types/tasks';
 import { useTimeAgo } from '../../../../../../utils/time';

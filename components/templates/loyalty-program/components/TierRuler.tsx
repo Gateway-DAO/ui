@@ -4,7 +4,7 @@ import { brandColors } from '@/theme';
 
 import { Box, Stack, Typography, alpha } from '@mui/material';
 
-import { Loyalty_Tier } from '../../../../services/hasura/types';
+import { Loyalty_Tier } from '@/services/hasura/types';
 
 type Props = {
   tiers: PartialDeep<Loyalty_Tier>[];

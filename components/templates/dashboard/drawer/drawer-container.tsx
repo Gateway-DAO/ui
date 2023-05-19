@@ -2,7 +2,7 @@ import { PropsWithChildren } from 'react';
 
 import Box from '@mui/material/Box';
 
-import { useNav } from '../../../../hooks/use-nav';
+import { useNav } from '@/hooks/use-nav';
 
 export function DrawerContainer({ children }: PropsWithChildren<unknown>) {
   const { isOpen } = useNav();

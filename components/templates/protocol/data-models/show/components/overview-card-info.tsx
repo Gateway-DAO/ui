@@ -7,9 +7,9 @@ import { PartialDeep } from 'type-fest';
 
 import { Stack, Paper, Box, Divider, useMediaQuery } from '@mui/material';
 
-import { ROUTES } from '../../../../../../constants/routes';
-import { DataModel } from '../../../../../../services/gateway-protocol/types';
-import { gqlAnonMethods } from '../../../../../../services/hasura/api';
+import { ROUTES } from '@/constants/routes';
+import { DataModel } from '@/services/gateway-protocol/types';
+import { gqlAnonMethods } from '@/services/hasura/api';
 import CardCell from '../../../components/card-cell';
 import CardUserCell from '../../../components/card-user-cell';
 

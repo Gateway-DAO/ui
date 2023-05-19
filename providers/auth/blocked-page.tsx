@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { ConnectButtonRendererProps } from '@rainbow-me/rainbowkit/dist/components/ConnectButton/ConnectButtonRenderer';
 
-import { ROUTES } from '../../constants/routes';
+import { ROUTES } from '@/constants/routes';
 
 /**
  * Handles the blocked page logic:

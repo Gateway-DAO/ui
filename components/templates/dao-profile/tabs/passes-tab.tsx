@@ -6,9 +6,9 @@ import { TOKENS } from '@/theme';
 
 import { Box, CircularProgress } from '@mui/material';
 
-import { query } from '../../../../constants/queries';
-import { ROUTES } from '../../../../constants/routes';
-import { gqlAnonMethods } from '../../../../services/hasura/api';
+import { query } from '@/constants/queries';
+import { ROUTES } from '@/constants/routes';
+import { gqlAnonMethods } from '@/services/hasura/api';
 import Loading from '../../../atoms/loading';
 import { LoyaltyProgramCard } from '../../../molecules/loyalty-program-card/loyalty-program-card';
 

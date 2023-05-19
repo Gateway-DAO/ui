@@ -6,11 +6,11 @@ import jwt from 'jsonwebtoken';
 import { HeadContainer } from '../../../components/molecules/head-container';
 import { DashboardTemplate } from '../../../components/templates/dashboard';
 import { LoyaltyProgramCredential } from '../../../components/templates/loyalty-program/LoyaltyProgramCredential';
-import { query } from '../../../constants/queries';
-import { ROUTES } from '../../../constants/routes';
+import { query } from '@/constants/queries';
+import { ROUTES } from '@/constants/routes';
 import { useAuth } from '../../../providers/auth';
-import { gqlAnonMethods, gqlMethods } from '../../../services/hasura/api';
-import { getServerSession } from '../../../services/next-auth';
+import { gqlAnonMethods, gqlMethods } from '@/services/hasura/api';
+import { getServerSession } from '@/services/next-auth';
 
 const unaccesible = {
   redirect: {

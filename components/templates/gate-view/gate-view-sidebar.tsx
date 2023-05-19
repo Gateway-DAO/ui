@@ -22,10 +22,10 @@ import {
   Button,
 } from '@mui/material';
 
-import { ROUTES } from '../../../constants/routes';
-import { useMintData } from '../../../hooks/use-mint-data';
+import { ROUTES } from '@/constants/routes';
+import { useMintData } from '@/hooks/use-mint-data';
 import { useAuth } from '../../../providers/auth';
-import { Gates } from '../../../services/hasura/types';
+import { Gates } from '@/services/hasura/types';
 import { isDaoAdmin } from '../../../utils/is-dao-admin';
 import { AvatarFile } from '../../atoms/avatar-file';
 import { ReadMore } from '../../atoms/read-more-less';

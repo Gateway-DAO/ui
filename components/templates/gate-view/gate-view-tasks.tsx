@@ -3,11 +3,11 @@ import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { PartialDeep } from 'type-fest';
 
-import { useCredentialByGateId } from '../../../hooks/use-credential-by-gate-id';
-import { useGateStatus } from '../../../hooks/use-gate-status';
+import { useCredentialByGateId } from '@/hooks/use-credential-by-gate-id';
+import { useGateStatus } from '@/hooks/use-gate-status';
 import { useAuth } from '../../../providers/auth';
-import { gqlAnonMethods } from '../../../services/hasura/api';
-import { Gates } from '../../../services/hasura/types';
+import { gqlAnonMethods } from '@/services/hasura/api';
+import { Gates } from '@/services/hasura/types';
 import { isDaoAdmin } from '../../../utils/is-dao-admin';
 import GateCompletedModal from '../../organisms/gates/view/modals/gate-completed';
 import { DirectHoldersList } from './direct-holders-list/direct-holders-list';

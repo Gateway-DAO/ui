@@ -6,8 +6,8 @@ import { PartialDeep } from 'type-fest/source/partial-deep';
 
 import { Stack } from '@mui/material';
 
-import { ROUTES } from '../../../../constants/routes';
-import { User } from '../../../../services/gateway-protocol/types';
+import { ROUTES } from '@/constants/routes';
+import { User } from '@/services/gateway-protocol/types';
 import CardCell from './card-cell';
 
 type Props = {

@@ -9,7 +9,7 @@ import ExploreIcon from '@mui/icons-material/Explore';
 import { Avatar, ListItemButton } from '@mui/material';
 import ListItemIcon from '@mui/material/ListItemIcon';
 
-import { ROUTES } from '../../../../constants/routes';
+import { ROUTES } from '@/constants/routes';
 import { useAuth } from '../../../../providers/auth';
 import { AdminBadge } from '../../../atoms/admin-badge';
 import { AvatarFile } from '../../../atoms/avatar-file';

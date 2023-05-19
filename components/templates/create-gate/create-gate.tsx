@@ -9,12 +9,12 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { Box, Divider, Stack, Typography } from '@mui/material';
 
-import { ROUTES } from '../../../constants/routes';
+import { ROUTES } from '@/constants/routes';
 import { useAuth } from '../../../providers/auth';
 import {
   Create_Gate_DirectMutationVariables,
   Create_Gate_Tasks_BasedMutationVariables,
-} from '../../../services/hasura/types';
+} from '@/services/hasura/types';
 import ConfirmDialog from '../../organisms/confirm-dialog/confirm-dialog';
 import GatePublishedModal from '../../organisms/gates/create/gate-published';
 import { PublishNavbar } from '../../organisms/publish-navbar/publish-navbar';

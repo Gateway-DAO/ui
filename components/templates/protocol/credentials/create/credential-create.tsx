@@ -12,13 +12,13 @@ import { PartialDeep } from 'type-fest/source/partial-deep';
 import { Divider, Stack } from '@mui/material';
 
 import { useAuth } from '../../../../../providers/auth';
-import { gatewayProtocolAuthSDK } from '../../../../../services/gateway-protocol/api';
+import { gatewayProtocolAuthSDK } from '@/services/gateway-protocol/api';
 import {
   CreateCredentialMutationVariables,
   CreateCredentialInput,
   PermissionType,
-} from '../../../../../services/gateway-protocol/types';
-import { DataModel } from '../../../../../services/gateway-protocol/types';
+} from '@/services/gateway-protocol/types';
+import { DataModel } from '@/services/gateway-protocol/types';
 import { claimFields } from './components/ClaimTypes';
 import ClaimForm from './components/claim-form';
 import CredentialCreateContainer from './components/credential-create-container';

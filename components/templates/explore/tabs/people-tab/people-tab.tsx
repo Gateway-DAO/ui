@@ -15,7 +15,7 @@ import {
   TableRow,
 } from '@mui/material';
 
-import { gqlAnonMethods } from '../../../../../services/hasura/api';
+import { gqlAnonMethods } from '@/services/hasura/api';
 import { CenteredLoader } from '../../../../atoms/centered-loader';
 import { UserCell } from './user-cell';
 

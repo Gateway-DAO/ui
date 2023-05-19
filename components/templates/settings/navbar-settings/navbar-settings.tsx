@@ -24,7 +24,7 @@ import {
 import { OverrideProps } from '@mui/material/OverridableComponent';
 import Typography from '@mui/material/Typography';
 
-import { ROUTES } from '../../../../constants/routes';
+import { ROUTES } from '@/constants/routes';
 
 type MenuSettingsItem = {
   key: string;

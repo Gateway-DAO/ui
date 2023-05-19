@@ -7,9 +7,9 @@ import { TOKENS } from '@/theme';
 
 import { Box, Stack } from '@mui/material';
 
-import { query } from '../../../../constants/queries';
-import { gqlAnonMethods } from '../../../../services/hasura/api';
-import { Users } from '../../../../services/hasura/types';
+import { query } from '@/constants/queries';
+import { gqlAnonMethods } from '@/services/hasura/api';
+import { Users } from '@/services/hasura/types';
 import { SessionUser } from '../../../../types/user';
 import Loading from '../../../atoms/loading';
 import CredentialCard from '../../../molecules/credential-card';

@@ -1,7 +1,7 @@
 import { DateTime } from 'luxon';
 import { PartialDeep } from 'type-fest';
 
-import { Credential } from '../../services/gateway-protocol/types';
+import { Credential } from '@/services/gateway-protocol/types';
 
 export const getCredentialImageURLParams = (
   credential: PartialDeep<Credential>

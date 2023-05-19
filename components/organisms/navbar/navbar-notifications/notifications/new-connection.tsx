@@ -5,8 +5,8 @@ import { PartialDeep } from 'type-fest';
 
 import { Box, Button, Stack, Typography } from '@mui/material';
 
-import { ROUTES } from '../../../../../constants/routes';
-import { Users } from '../../../../../services/hasura/types';
+import { ROUTES } from '@/constants/routes';
+import { Users } from '@/services/hasura/types';
 import { useTimeAgo } from '../../../../../utils/time';
 import { AvatarFile } from '../../../../atoms/avatar-file';
 

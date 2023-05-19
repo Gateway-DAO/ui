@@ -7,8 +7,8 @@ import { TOKENS } from '@/theme';
 import { Box, Stack, Typography } from '@mui/material';
 
 import Loading from '../../../../../components/atoms/loading';
-import { query } from '../../../../../constants/queries';
-import { gqlAnonMethods } from '../../../../../services/hasura/api';
+import { query } from '@/constants/queries';
+import { gqlAnonMethods } from '@/services/hasura/api';
 import { DataModelCard } from '../../../../molecules/data-model-card';
 import useTranslation from 'next-translate/useTranslation';
 

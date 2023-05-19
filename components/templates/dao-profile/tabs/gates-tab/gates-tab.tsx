@@ -8,9 +8,9 @@ import { ViewModule, ViewList, Add } from '@mui/icons-material';
 import { Box, Button, IconButton, Stack } from '@mui/material';
 import MUICard from '@mui/material/Card';
 
-import { ROUTES } from '../../../../../constants/routes';
-import { usePropertyFilter } from '../../../../../hooks/use-property-filter';
-import { useViewMode, ViewMode } from '../../../../../hooks/use-view-modes';
+import { ROUTES } from '@/constants/routes';
+import { usePropertyFilter } from '@/hooks/use-property-filter';
+import { useViewMode, ViewMode } from '@/hooks/use-view-modes';
 import { useAuth } from '../../../../../providers/auth';
 import { EmptyCard } from '../../../../atoms/empty-card';
 import { ChipDropdown } from '../../../../molecules/chip-dropdown';

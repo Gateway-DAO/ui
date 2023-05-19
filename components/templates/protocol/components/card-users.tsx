@@ -7,12 +7,12 @@ import { PartialDeep } from 'type-fest';
 
 import { Stack, Box, useMediaQuery } from '@mui/material';
 
-import { ROUTES } from '../../../../constants/routes';
+import { ROUTES } from '@/constants/routes';
 import {
   Organization,
   User,
-} from '../../../../services/gateway-protocol/types';
-import { gqlAnonMethods } from '../../../../services/hasura/api';
+} from '@/services/gateway-protocol/types';
+import { gqlAnonMethods } from '@/services/hasura/api';
 import Loading from '../../../atoms/loading';
 import CardUserCell from './card-user-cell';
 

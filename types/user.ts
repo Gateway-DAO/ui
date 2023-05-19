@@ -1,7 +1,7 @@
 import { PartialDeep } from 'type-fest';
 
-import { MeProtocolQuery } from '../services/gateway-protocol/types';
-import { LoginMutation, MeQuery } from '../services/hasura/types';
+import { MeProtocolQuery } from '@/services/gateway-protocol/types';
+import { LoginMutation, MeQuery } from '@/services/hasura/types';
 
 export type SessionToken = Omit<
   LoginMutation['protocol']['login'],

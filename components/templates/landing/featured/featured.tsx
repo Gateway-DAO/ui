@@ -13,7 +13,7 @@ import {
 } from '@mui/material';
 import { OverridableComponent } from '@mui/material/OverridableComponent';
 
-import { useActiveScroll } from '../../../../hooks/use-active-scroll';
+import { useActiveScroll } from '@/hooks/use-active-scroll';
 import { LandingTitleLimiter, ResponsiveImage } from '../styles';
 import Title from '../title';
 import { FeaturedProps } from './types';

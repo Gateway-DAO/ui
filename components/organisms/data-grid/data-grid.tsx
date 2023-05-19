@@ -9,8 +9,8 @@ import { DateTime } from 'luxon';
 import { Typography, Chip, Avatar, Link } from '@mui/material';
 import { alpha, Stack, Box } from '@mui/material';
 
-import { ROUTES } from '../../../constants/routes';
-import { CredentialStatus } from '../../../services/gateway-protocol/types';
+import { ROUTES } from '@/constants/routes';
+import { CredentialStatus } from '@/services/gateway-protocol/types';
 import NetworkTransactionLink from '../../atoms/network-transaction-link';
 import { CategoriesList } from '../../molecules/categories-list';
 

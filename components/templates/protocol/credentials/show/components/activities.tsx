@@ -18,7 +18,7 @@ import {
   Divider,
 } from '@mui/material';
 
-import { Activity } from '../../../../../../services/gateway-protocol/types';
+import { Activity } from '@/services/gateway-protocol/types';
 import { getExplorer } from '../../../../../../utils/web3';
 
 type Props = {

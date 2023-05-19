@@ -4,7 +4,7 @@ import { PartialDeep } from 'type-fest/source/partial-deep';
 
 import { Stack, Paper, Typography, Divider } from '@mui/material';
 
-import { CredentialData } from '../../../../../../services/gateway-protocol/types';
+import { CredentialData } from '@/services/gateway-protocol/types';
 import CardCell from '../../../components/card-cell';
 import { claimFields, getClaimType } from '../../create/components/ClaimTypes';
 import { ImageView } from './image-view';

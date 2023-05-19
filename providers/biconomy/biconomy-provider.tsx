@@ -12,8 +12,8 @@ import {
   useWaitForTransaction,
 } from 'wagmi';
 
-import { CREDENTIAL_ABI } from '../../constants/web3';
-import { Credentials } from '../../services/hasura/types';
+import { CREDENTIAL_ABI } from '@/constants/web3';
+import { Credentials } from '@/services/hasura/types';
 import { getExplorer } from '../../utils/web3';
 import { useAuth } from '../auth';
 import { BiconomyContext, MintResponse } from './context';

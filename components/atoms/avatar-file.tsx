@@ -2,8 +2,8 @@ import { PartialDeep } from 'type-fest';
 
 import { Avatar, AvatarProps } from '@mui/material';
 
-import { useFile } from '../../hooks/use-file';
-import { Files } from '../../services/hasura/types';
+import { useFile } from '@/hooks/use-file';
+import { Files } from '@/services/hasura/types';
 
 type AvatarFileProps<
   Component extends React.ElementType = 'div',

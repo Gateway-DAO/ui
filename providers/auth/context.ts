@@ -4,8 +4,8 @@ import { createContext, useContext } from 'react';
 import {
   GatewayProtocolSDKTypes,
   gatewayProtocolSDK,
-} from '../../services/gateway-protocol/api';
-import { GqlMethods, gqlAnonMethods } from '../../services/hasura/api';
+} from '@/services/gateway-protocol/api';
+import { GqlMethods, gqlAnonMethods } from '@/services/hasura/api';
 import { SessionUser } from '../../types/user';
 
 type Context = {

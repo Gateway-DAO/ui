@@ -14,8 +14,8 @@ import {
 } from '@mui/material';
 
 import { SuccessfullyIcon } from '../../../../../../components/atoms/icons';
-import { ROUTES } from '../../../../../../constants/routes';
-import { gatewayProtocolSDK } from '../../../../../../services/gateway-protocol/api';
+import { ROUTES } from '@/constants/routes';
+import { gatewayProtocolSDK } from '@/services/gateway-protocol/api';
 import CredentialCardInfo from '../../../components/credential-card-info';
 
 type Props = {

@@ -1,4 +1,4 @@
-import { Notification_Type } from '../../../../services/hasura/types';
+import { Notification_Type } from '@/services/hasura/types';
 
 export const EmailNotifications: Notification_Type[] = [
   'credential_published',

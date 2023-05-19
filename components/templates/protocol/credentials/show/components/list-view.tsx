@@ -4,7 +4,7 @@ import { PartialDeep } from 'type-fest/source/partial-deep';
 
 import { List, ListItem } from '@mui/material';
 
-import { CredentialData } from '../../../../../../services/gateway-protocol/types';
+import { CredentialData } from '@/services/gateway-protocol/types';
 
 export function ListView(data: PartialDeep<CredentialData>) {
   const items = useMemo(() => {

@@ -22,8 +22,8 @@ import MenuItem from '@mui/material/MenuItem';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 
-import { ROUTES } from '../../../constants/routes';
-import { useConnectedWallet } from '../../../hooks/wallet/use-connected-wallet';
+import { ROUTES } from '@/constants/routes';
+import { useConnectedWallet } from '@/hooks/wallet/use-connected-wallet';
 import { useAuth } from '../../../providers/auth';
 import { AvatarFile } from '../../atoms/avatar-file';
 

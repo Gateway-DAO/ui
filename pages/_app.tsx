@@ -8,12 +8,12 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { ThemeProvider } from '@/theme';
 
 import Notistack from '../components/atoms/notistack';
-import { NavStateProvider } from '../hooks/use-nav';
-import { usePersistLocale } from '../hooks/usePersistLocale';
+import { NavStateProvider } from '@/hooks/use-nav';
+import { usePersistLocale } from '@/hooks/usePersistLocale';
 import { AuthProvider } from '../providers/auth';
 import { BiconomyProvider } from '../providers/biconomy';
 import { WalletProvider } from '../providers/wallet/wallet-provider';
-import { queryClient } from '../services/query-client';
+import { queryClient } from '@/services/query-client';
 
 import '../components/atoms/global-dependencies';
 import '../styles/next.css';

@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 import { Box, Stack, Typography } from '@mui/material';
 
-import { ROUTES } from '../../../../../../constants/routes';
+import { ROUTES } from '@/constants/routes';
 import { useTimeAgo } from '../../../../../../utils/time';
 import { AvatarFile } from '../../../../../atoms/avatar-file';
 

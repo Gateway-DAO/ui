@@ -11,8 +11,8 @@ import {
 } from '../../../components/templates/dao-profile';
 import { DashboardTemplate } from '../../../components/templates/dashboard';
 import { useAuth } from '../../../providers/auth';
-import { gatewayProtocolSDK } from '../../../services/gateway-protocol/api';
-import { gqlAnonMethods } from '../../../services/hasura/api';
+import { gatewayProtocolSDK } from '@/services/gateway-protocol/api';
+import { gqlAnonMethods } from '@/services/hasura/api';
 
 type Props = InferGetServerSidePropsType<typeof getServerSideProps>;
 

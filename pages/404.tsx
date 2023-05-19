@@ -5,7 +5,7 @@ import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import Image from 'next/image';
 
-import { ROUTES } from '../constants/routes';
+import { ROUTES } from '@/constants/routes';
 import { Button } from '@mui/material';
 
 export default function Error404() {

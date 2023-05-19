@@ -2,14 +2,14 @@ import normalizeUrl from 'normalize-url';
 import { PartialDeep } from 'type-fest';
 import { object, string, SchemaOf, array, StringSchema, bool } from 'yup';
 
-import { Network } from '../../../../constants/dao';
-import { URL, DISCORD_USER, URL_PROTOCOL } from '../../../../constants/forms';
-import { generateImageUrl } from '../../../../hooks/use-file';
+import { Network } from '@/constants/dao';
+import { URL, DISCORD_USER, URL_PROTOCOL } from '@/constants/forms';
+import { generateImageUrl } from '@/hooks/use-file';
 import {
   Experiences,
   Users,
   User_Socials,
-} from '../../../../services/hasura/types';
+} from '@/services/hasura/types';
 import { SessionUser } from '../../../../types/user';
 
 export type EditUserSchema = Required<

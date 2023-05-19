@@ -11,7 +11,7 @@ import {
   List,
 } from '@mui/material';
 
-import { gqlAnonMethods } from '../../../../services/hasura/api';
+import { gqlAnonMethods } from '@/services/hasura/api';
 import { UsersList } from './users';
 
 type Props = {

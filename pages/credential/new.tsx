@@ -5,10 +5,10 @@ import { useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 
 import { CreateGateTemplate } from '../../components/templates/create-gate';
-import { ROUTES } from '../../constants/routes';
+import { ROUTES } from '@/constants/routes';
 import { useAuth } from '../../providers/auth';
-import { gqlAnonMethods } from '../../services/hasura/api';
-import { Get_Create_GateQuery } from '../../services/hasura/types';
+import { gqlAnonMethods } from '@/services/hasura/api';
+import { Get_Create_GateQuery } from '@/services/hasura/types';
 
 type CreateGateProps = {
   id: string | null;

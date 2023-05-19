@@ -6,8 +6,8 @@ import { useCopyToClipboard } from 'react-use';
 
 import { IconButton, Avatar, Tooltip } from '@mui/material';
 
-import { Network, networkValueLabelMap } from '../../../constants/dao';
-import { User_Socials } from '../../../services/hasura/types';
+import { Network, networkValueLabelMap } from '@/constants/dao';
+import { User_Socials } from '@/services/hasura/types';
 import { SocialIcon } from '../../atoms/social-icon';
 
 type Props = Pick<User_Socials, 'url'> & {

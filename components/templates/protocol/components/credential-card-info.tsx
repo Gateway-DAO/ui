@@ -9,7 +9,7 @@ import { Stack, Paper, Box, Divider, Chip, useMediaQuery } from '@mui/material';
 import {
   Credential,
   CredentialStatus,
-} from '../../../../services/gateway-protocol/types';
+} from '@/services/gateway-protocol/types';
 import AuthenticatedBy from './authenticated-by';
 import CardCell from './card-cell';
 import CardUsers from './card-users';

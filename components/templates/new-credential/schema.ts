@@ -1,6 +1,6 @@
 import { object, string, SchemaOf, array } from 'yup';
 
-import { Credentials } from '../../../services/hasura/types';
+import { Credentials } from '@/services/hasura/types';
 
 export type NewCredentialSchema = Pick<Credentials, 'name' | 'description'> & {
   category: string;

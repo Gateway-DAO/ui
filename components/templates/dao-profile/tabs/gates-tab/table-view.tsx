@@ -9,7 +9,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 
-import { Gates, Loyalty_Program } from '../../../../../services/hasura/types';
+import { Gates, Loyalty_Program } from '@/services/hasura/types';
 import GateRow from '../../../../molecules/gate-row';
 
 // TODO: make it generic

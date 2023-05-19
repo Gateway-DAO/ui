@@ -11,8 +11,8 @@ import { MobileDatePicker, TimePicker } from '@mui/x-date-pickers';
 import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 
-import { CATEGORIES } from '../../../../../../constants/gate';
-import { CreateCredentialInput } from '../../../../../../services/gateway-protocol/types';
+import { CATEGORIES } from '@/constants/gate';
+import { CreateCredentialInput } from '@/services/gateway-protocol/types';
 import { ImageField } from './image-field';
 
 const CategoriesInput = dynamic(

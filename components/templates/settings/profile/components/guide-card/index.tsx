@@ -12,7 +12,7 @@ import '@fontsource/plus-jakarta-sans/700.css';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 
-import { ROUTES } from '../../../../../../constants/routes';
+import { ROUTES } from '@/constants/routes';
 
 import Link from 'next/link';
 

@@ -7,7 +7,7 @@ import { brandColors } from '@/theme';
 
 import { alpha, Typography, Stack } from '@mui/material';
 
-import { DataModel } from '../../../../../../services/gateway-protocol/types';
+import { DataModel } from '@/services/gateway-protocol/types';
 import { ClaimFieldProps, claimFields, getClaimType } from './ClaimTypes';
 import ClaimAccordion from './claim-accordion';
 import ClaimFormArray from './claim-form-array';

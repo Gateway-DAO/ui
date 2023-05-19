@@ -5,7 +5,7 @@ import {
   Gates,
   Loyalty_Program,
   Users,
-} from '../../../services/hasura/types';
+} from '@/services/hasura/types';
 
 export type ExploreProps = {
   daos: PartialDeep<Daos>[];

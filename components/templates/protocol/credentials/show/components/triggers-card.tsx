@@ -14,7 +14,7 @@ import {
   Typography,
 } from '@mui/material';
 
-import { Credential } from '../../../../../../services/gateway-protocol/types';
+import { Credential } from '@/services/gateway-protocol/types';
 import TriggersItem from './triggers-item';
 
 type Props = {

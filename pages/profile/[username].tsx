@@ -9,7 +9,7 @@ import {
   PrivateProfileTemplate,
 } from '../../components/templates/profile';
 import { useAuth } from '../../providers/auth';
-import { gqlAnonMethods } from '../../services/hasura/api';
+import { gqlAnonMethods } from '@/services/hasura/api';
 
 export default function Profile() {
   const router = useRouter();

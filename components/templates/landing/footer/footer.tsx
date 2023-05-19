@@ -21,7 +21,7 @@ import {
   Typography,
 } from '@mui/material';
 
-import { gqlAnonMethods } from '../../../../services/hasura/api';
+import { gqlAnonMethods } from '@/services/hasura/api';
 import { LoadingButton } from '../../../atoms/loading-button';
 import { IconContainer } from './styles';
 import { FooterProps, subscribeToNewsletterSchema } from './types';

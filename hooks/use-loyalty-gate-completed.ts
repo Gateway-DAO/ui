@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 
 import { PartialDeep } from 'type-fest/source/partial-deep';
 
-import { Credentials, Gates } from '../services/hasura/types';
+import { Credentials, Gates } from '@/services/hasura/types';
 
 type Props = {
   gate: PartialDeep<Gates>;

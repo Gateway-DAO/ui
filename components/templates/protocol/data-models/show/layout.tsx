@@ -24,10 +24,10 @@ import {
 } from '@mui/material';
 
 import { CredentialProtocolCreate } from '../..';
-import { query } from '../../../../../constants/queries';
+import { query } from '@/constants/queries';
 import { useAuth } from '../../../../../providers/auth';
-import { gatewayProtocolSDK } from '../../../../../services/gateway-protocol/api';
-import { PermissionType } from '../../../../../services/gateway-protocol/types';
+import { gatewayProtocolSDK } from '@/services/gateway-protocol/api';
+import { PermissionType } from '@/services/gateway-protocol/types';
 import { TabPanel } from '../../../../atoms/tabs';
 import { HeadContainer } from '../../../../molecules/head-container';
 import ModalRight from '../../../../molecules/modal-right';

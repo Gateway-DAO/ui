@@ -7,9 +7,9 @@ import { DashboardTemplate } from '../../components/templates/dashboard';
 import { SettingsTemplate } from '../../components/templates/settings';
 import { EditProfileSettings } from '../../components/templates/settings';
 import { EditUserSchema } from '../../components/templates/settings/profile/schema';
-import { ROUTES } from '../../constants/routes';
-import { generateImageUrl } from '../../hooks/use-file';
-import { useUploadImage } from '../../hooks/use-upload-image';
+import { ROUTES } from '@/constants/routes';
+import { generateImageUrl } from '@/hooks/use-file';
+import { useUploadImage } from '@/hooks/use-upload-image';
 import { useAuth } from '../../providers/auth';
 
 export default function PublicProfileSettingsPage() {

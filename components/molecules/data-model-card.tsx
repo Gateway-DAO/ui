@@ -11,8 +11,8 @@ import {
 } from '@mui/material';
 import MUICard from '@mui/material/Card';
 
-import { ROUTES } from '../../constants/routes';
-import { Protocol_Data_Model } from '../../services/hasura/types';
+import { ROUTES } from '@/constants/routes';
+import { Protocol_Data_Model } from '@/services/hasura/types';
 import { CategoriesList } from './categories-list';
 import { AvatarFile } from '../atoms/avatar-file';
 import { PermissionType } from '@/services/gateway-protocol/types';

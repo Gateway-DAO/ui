@@ -6,7 +6,7 @@ import {
   Gates,
   Manual_Task_Events,
   Scalars,
-} from '../../../../../../../../services/hasura/types';
+} from '@/services/hasura/types';
 import { SubmissionWaiting } from './submissions-waiting';
 import TaskInteration from './task-interation';
 

@@ -5,16 +5,16 @@ import { PartialDeep } from 'type-fest/source/partial-deep';
 
 import { DialogStatuses } from '../components/molecules/mint-dialog-protocol';
 import { MintedChain } from '../components/templates/protocol/credentials/show/components/mint-nft-card';
-import { query } from '../constants/queries';
+import { query } from '@/constants/queries';
 import { useAuth } from '../providers/auth';
-import { gatewayProtocolAuthSDK } from '../services/gateway-protocol/api';
+import { gatewayProtocolAuthSDK } from '@/services/gateway-protocol/api';
 import {
   Chain,
   Credential,
   MintCredentialMutationVariables,
-} from '../services/gateway-protocol/types';
-import { Scalars } from '../services/hasura/types';
-import { queryClient } from '../services/query-client';
+} from '@/services/gateway-protocol/types';
+import { Scalars } from '@/services/hasura/types';
+import { queryClient } from '@/services/query-client';
 
 type Props = {
   credential: PartialDeep<Credential>;

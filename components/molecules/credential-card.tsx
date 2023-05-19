@@ -14,12 +14,12 @@ import {
 } from '@mui/material';
 import MUICard from '@mui/material/Card';
 
-import { ROUTES } from '../../constants/routes';
+import { ROUTES } from '@/constants/routes';
 import {
   Credential,
   CredentialStatus,
-} from '../../services/gateway-protocol/types';
-import { Protocol_Credential } from '../../services/hasura/types';
+} from '@/services/gateway-protocol/types';
+import { Protocol_Credential } from '@/services/hasura/types';
 import { AvatarFile } from '../atoms/avatar-file';
 
 type Props = PartialDeep<Protocol_Credential> & {

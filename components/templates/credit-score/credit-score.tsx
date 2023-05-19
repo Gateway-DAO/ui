@@ -32,14 +32,14 @@ import {
 } from '@mui/material';
 import { Link as MUILink } from '@mui/material';
 
-import { ROUTES } from '../../../constants/routes';
+import { ROUTES } from '@/constants/routes';
 import { useAuth } from '../../../providers/auth';
 import {
   gatewayProtocolAuthSDK,
   gatewayProtocolSDK,
-} from '../../../services/gateway-protocol/api';
-import { MintCredentialMutationVariables } from '../../../services/gateway-protocol/types';
-import { gqlAnonMethods } from '../../../services/hasura/api';
+} from '@/services/gateway-protocol/api';
+import { MintCredentialMutationVariables } from '@/services/gateway-protocol/types';
+import { gqlAnonMethods } from '@/services/hasura/api';
 import { AvatarFile } from '../../atoms/avatar-file';
 import { LoadingButton } from '../../atoms/loading-button';
 import { ReadMore } from '../../atoms/read-more-less';

@@ -5,8 +5,8 @@ import { PartialDeep } from 'type-fest';
 import { Button, Divider, Stack } from '@mui/material';
 import { brandColors, theme } from '@/theme';
 
-import { ROUTES } from '../../../../../constants/routes';
-import { Protocol_Data_Model } from '../../../../../services/hasura/types';
+import { ROUTES } from '@/constants/routes';
+import { Protocol_Data_Model } from '@/services/hasura/types';
 import { DaoCard } from '../../../../molecules/dao-card';
 import { DataModelCard } from '../../../../molecules/data-model-card';
 import { GatesCard } from '../../../../molecules/gates-card';

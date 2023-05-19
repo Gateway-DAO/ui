@@ -2,7 +2,7 @@ import { PartialDeep } from 'type-fest';
 
 import { Grid, Divider } from '@mui/material';
 
-import { Gates } from '../../../services/hasura/types';
+import { Gates } from '@/services/hasura/types';
 import { GateViewSidebar } from './gate-view-sidebar';
 import { GateViewTasks } from './gate-view-tasks';
 

@@ -8,13 +8,13 @@ import { PartialDeep } from 'type-fest';
 
 import { Typography, Stack, Divider, Button } from '@mui/material';
 
-import { query } from '../../../../constants/queries';
-import { ROUTES } from '../../../../constants/routes';
-import { useViewMode } from '../../../../hooks/use-view-modes';
+import { query } from '@/constants/queries';
+import { ROUTES } from '@/constants/routes';
+import { useViewMode } from '@/hooks/use-view-modes';
 import { useAuth } from '../../../../providers/auth';
-import { gatewayProtocolSDK } from '../../../../services/gateway-protocol/api';
-import { gqlAnonMethods } from '../../../../services/hasura/api';
-import { Users } from '../../../../services/hasura/types';
+import { gatewayProtocolSDK } from '@/services/gateway-protocol/api';
+import { gqlAnonMethods } from '@/services/hasura/api';
+import { Users } from '@/services/hasura/types';
 import { SessionUser } from '../../../../types/user';
 import CredentialCard from '../../..//molecules/credential-card';
 import { useTab } from '../../../atoms/tabs';

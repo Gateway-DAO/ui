@@ -1,7 +1,7 @@
 import { FieldError } from 'react-hook-form';
 import { z } from 'zod';
 
-import { Files, Gates } from '../../../services/hasura/types';
+import { Files, Gates } from '@/services/hasura/types';
 
 // Creator
 export type Creator = {

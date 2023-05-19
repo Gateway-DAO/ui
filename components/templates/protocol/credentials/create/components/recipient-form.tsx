@@ -15,7 +15,7 @@ import {
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 
-import { CreateCredentialInput } from '../../../../../../services/gateway-protocol/types';
+import { CreateCredentialInput } from '@/services/gateway-protocol/types';
 
 export default function RecipientForm() {
   const {

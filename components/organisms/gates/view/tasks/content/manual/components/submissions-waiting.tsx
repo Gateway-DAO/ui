@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 import { Stack, Typography } from '@mui/material';
 
-import { ROUTES } from '../../../../../../../../constants/routes';
+import { ROUTES } from '@/constants/routes';
 import Bullet from './bullet';
 
 export function SubmissionWaiting({ username }: { username: string }) {

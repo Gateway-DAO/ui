@@ -3,7 +3,7 @@ import { PartialDeep } from 'type-fest/source/partial-deep';
 
 import { Stack, Paper, Typography, alpha, Divider } from '@mui/material';
 
-import { CredentialData } from '../../../../../../services/gateway-protocol/types';
+import { CredentialData } from '@/services/gateway-protocol/types';
 import CardCell from '../../../components/card-cell';
 import ChipInputType from '../../../components/chip-input-type';
 import { getClaimType } from '../../../credentials/create/components/ClaimTypes';

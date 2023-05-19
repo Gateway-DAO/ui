@@ -8,10 +8,10 @@ import { TOKENS } from '@/theme';
 import { ViewModule, ViewList } from '@mui/icons-material';
 import { Box, IconButton, Stack, Typography, Chip } from '@mui/material';
 
-import { categories, categoriesMap } from '../../../../../constants/dao';
-import { usePropertyFilter } from '../../../../../hooks/use-property-filter';
-import { useViewMode, ViewMode } from '../../../../../hooks/use-view-modes';
-import { Daos } from '../../../../../services/hasura/types';
+import { categories, categoriesMap } from '@/constants/dao';
+import { usePropertyFilter } from '@/hooks/use-property-filter';
+import { useViewMode, ViewMode } from '@/hooks/use-view-modes';
+import { Daos } from '@/services/hasura/types';
 import { ChipDropdown } from '../../../../molecules/chip-dropdown';
 import { DaoCard } from '../../../../molecules/dao-card';
 import { TableView } from './table-view';

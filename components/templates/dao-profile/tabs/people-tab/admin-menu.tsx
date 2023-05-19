@@ -13,7 +13,7 @@ import {
 } from '@mui/material';
 
 import { useAuth } from '../../../../../providers/auth';
-import { Users } from '../../../../../services/hasura/types';
+import { Users } from '@/services/hasura/types';
 import { useDaoProfile } from '../../context';
 
 type Props = {

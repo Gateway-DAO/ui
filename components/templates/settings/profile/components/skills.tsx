@@ -4,7 +4,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import { Stack, TextField } from '@mui/material';
 import Autocomplete, { autocompleteClasses } from '@mui/material/Autocomplete';
 
-import { SKILLS } from '../../../../../constants/skills';
+import { SKILLS } from '@/constants/skills';
 
 export function Skills() {
   const skills = SKILLS.HARD.concat(SKILLS.SOFT);

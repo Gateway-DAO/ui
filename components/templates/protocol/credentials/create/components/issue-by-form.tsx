@@ -18,13 +18,13 @@ import {
   Typography,
 } from '@mui/material';
 
-import { ROUTES } from '../../../../../../constants/routes';
+import { ROUTES } from '@/constants/routes';
 import { useAuth } from '../../../../../../providers/auth';
 import {
   CreateCredentialInput,
   DataModel,
   PermissionType,
-} from '../../../../../../services/gateway-protocol/types';
+} from '@/services/gateway-protocol/types';
 import { AvatarFile } from '../../../../../atoms/avatar-file';
 import { taskErrorMessages } from '../../../../../organisms/tasks/task-error-messages';
 

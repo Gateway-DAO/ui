@@ -25,7 +25,7 @@ import {
   DataModel,
   GetDataModelStatsQuery,
   PermissionType,
-} from '../../../../../../services/gateway-protocol/types';
+} from '@/services/gateway-protocol/types';
 import ExternalLink from '../../../../../atoms/external-link';
 import ModalRight from '../../../../../molecules/modal-right';
 

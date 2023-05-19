@@ -7,8 +7,8 @@ import { TOKENS } from '@/theme';
 
 import { Box, Tabs, Typography, Tab } from '@mui/material';
 
-import { query } from '../../../constants/queries';
-import { gqlAnonMethods } from '../../../services/hasura/api';
+import { query } from '@/constants/queries';
+import { gqlAnonMethods } from '@/services/hasura/api';
 import { a11yTabProps, TabPanel } from '../../atoms/tabs';
 import { Navbar } from '../../organisms/navbar';
 import { DashboardTemplate } from '../dashboard';

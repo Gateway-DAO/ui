@@ -9,7 +9,7 @@ import ListItemText from '@mui/material/ListItemText';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
-import { useConnectedWallet } from '../../../../hooks/wallet/use-connected-wallet';
+import { useConnectedWallet } from '@/hooks/wallet/use-connected-wallet';
 import { GatewayGrayIcon } from '../assets/gateway-gray';
 import { Subjects } from '../mint-card';
 

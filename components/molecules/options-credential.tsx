@@ -6,11 +6,11 @@ import { useSnackbar } from 'notistack';
 import { PartialDeep } from 'type-fest/source/partial-deep';
 import { v4 as uuidv4 } from 'uuid';
 
-import { query } from '../../constants/queries';
-import { ROUTES } from '../../constants/routes';
+import { query } from '@/constants/queries';
+import { ROUTES } from '@/constants/routes';
 import { useAuth } from '../../providers/auth';
-import { Gates } from '../../services/hasura/types';
-import { queryClient } from '../../services/query-client';
+import { Gates } from '@/services/hasura/types';
+import { queryClient } from '@/services/query-client';
 import { isDaoAdmin } from '../../utils/is-dao-admin';
 import MorePopover from '../atoms/more-popover';
 import ConfirmDialog from '../organisms/confirm-dialog/confirm-dialog';

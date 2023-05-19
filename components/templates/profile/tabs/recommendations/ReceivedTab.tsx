@@ -6,7 +6,7 @@ import { AutoAwesomeMosaic, ViewList } from '@mui/icons-material';
 import { Box, Typography, Stack } from '@mui/material';
 import Chip from '@mui/material/Chip';
 
-import { useViewMode, ViewMode } from '../../../../../hooks/use-view-modes';
+import { useViewMode, ViewMode } from '@/hooks/use-view-modes';
 
 export function ReceivedTab() {
   const { view, toggleView } = useViewMode();

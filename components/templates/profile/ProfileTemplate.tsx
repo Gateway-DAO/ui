@@ -12,9 +12,9 @@ import { Box, Stack, Typography, Tabs, Tab, Chip } from '@mui/material';
 
 import { a11yTabProps, TabPanel, useTab } from '../../../components/atoms/tabs';
 import { Navbar } from '../../../components/organisms/navbar/navbar';
-import { generateImageUrl } from '../../../hooks/use-file';
-import { gatewayProtocolSDK } from '../../../services/gateway-protocol/api';
-import { Users } from '../../../services/hasura/types';
+import { generateImageUrl } from '@/hooks/use-file';
+import { gatewayProtocolSDK } from '@/services/gateway-protocol/api';
+import { Users } from '@/services/hasura/types';
 import { SessionUser } from '../../../types/user';
 import { AvatarFile } from '../../atoms/avatar-file';
 import { SocialButtons } from '../../organisms/social-buttons';

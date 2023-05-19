@@ -2,7 +2,7 @@ import { useMutation } from '@tanstack/react-query';
 import { paramCase } from 'change-case';
 
 import { useAuth } from '../providers/auth';
-import { Upload_ImageMutationVariables } from '../services/hasura/types';
+import { Upload_ImageMutationVariables } from '@/services/hasura/types';
 
 export function useUploadImage() {
   const { gqlAuthMethods } = useAuth();

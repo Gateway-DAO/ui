@@ -11,11 +11,11 @@ import {
 
 import { AuthConnectingModal } from '../../components/organisms/auth-connecting-modal';
 import { AuthModal } from '../../components/organisms/auth-modal';
-import { gatewayProtocolAuthSDK } from '../../services/gateway-protocol/api';
+import { gatewayProtocolAuthSDK } from '@/services/gateway-protocol/api';
 import {
   gqlMethodsWithRefresh,
   gqlUserHeader,
-} from '../../services/hasura/api';
+} from '@/services/hasura/api';
 import { BlockedPage } from './blocked-page';
 import { AuthContext } from './context';
 import { useAuthLogin, useInitUser } from './hooks';

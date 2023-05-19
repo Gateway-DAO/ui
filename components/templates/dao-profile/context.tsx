@@ -5,12 +5,12 @@ import { PartialDeep } from 'type-fest';
 import {
   Credential,
   GetDaoStatsQuery,
-} from '../../../services/gateway-protocol/types';
+} from '@/services/gateway-protocol/types';
 import {
   Daos,
   Dao_Gates_TabQuery,
   Loyalty_Program,
-} from '../../../services/hasura/types';
+} from '@/services/hasura/types';
 
 type DaoProfileContextProps = {
   isAdmin: boolean;

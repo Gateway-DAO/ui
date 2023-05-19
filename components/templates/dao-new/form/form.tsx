@@ -5,7 +5,7 @@ import { useFormContext, Controller } from 'react-hook-form';
 import { Stack, TextField, Typography } from '@mui/material';
 import Autocomplete from '@mui/material/Autocomplete';
 
-import { categoriesDropdown } from '../../../../constants/dao';
+import { categoriesDropdown } from '@/constants/dao';
 import { SocialLinks } from '../../../molecules/form/social-links';
 import { NewDAOSchema } from '../schema';
 import { AvatarBackgroundFields } from './avatar-background-fields';

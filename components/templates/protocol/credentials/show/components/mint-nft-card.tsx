@@ -13,7 +13,7 @@ import {
   Typography,
 } from '@mui/material';
 
-import { Chain } from '../../../../../../services/gateway-protocol/types';
+import { Chain } from '@/services/gateway-protocol/types';
 import { getExplorer, getSolanaExplorer } from '../../../../../../utils/web3';
 import {
   PolygonIcon,

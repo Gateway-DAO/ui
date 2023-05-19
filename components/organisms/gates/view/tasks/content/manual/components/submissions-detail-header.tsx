@@ -11,7 +11,7 @@ import ConfirmDialog from '../../../../../../../../components/organisms/confirm-
 import {
   Users,
   Task_Progress,
-} from '../../../../../../../../services/hasura/types';
+} from '@/services/hasura/types';
 import { ManualTaskEventType } from '../../../../../../../../types/tasks';
 import { AvatarFile } from '../../../../../../../atoms/avatar-file';
 import { LoadingButton } from '../../../../../../../atoms/loading-button';

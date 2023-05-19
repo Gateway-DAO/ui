@@ -16,7 +16,7 @@ import {
   Typography,
 } from '@mui/material';
 
-import { useConnectedWallet } from '../../../../hooks/wallet/use-connected-wallet';
+import { useConnectedWallet } from '@/hooks/wallet/use-connected-wallet';
 
 const NetworksDetails = [
   {

@@ -12,7 +12,7 @@ import QrCodeIcon from '@mui/icons-material/QrCode';
 import { SpeedDial, SpeedDialAction } from '@mui/material';
 import { Box } from '@mui/system';
 
-import { Credential } from '../../../../services/gateway-protocol/types';
+import { Credential } from '@/services/gateway-protocol/types';
 import { useCreateQrCode } from '../../../../utils/qr-code/qr-code';
 import ShareOn from '../../../atoms/share-on';
 import ModalContent from '../../../molecules/modal/modal-basic';

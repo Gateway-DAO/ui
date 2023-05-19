@@ -5,7 +5,7 @@ import { PartialDeep } from 'type-fest/source/partial-deep';
 
 import { alpha, Stack, Typography } from '@mui/material';
 
-import { Files } from '../../../../services/hasura/types';
+import { Files } from '@/services/hasura/types';
 import { AvatarFile } from '../../../atoms/avatar-file';
 import CardCell from './card-cell';
 

@@ -25,9 +25,9 @@ import CardMedia from '@mui/material/CardMedia';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 
-import { ROUTES } from '../../../../constants/routes';
+import { ROUTES } from '@/constants/routes';
 import { useAuth } from '../../../../providers/auth';
-import { Credentials } from '../../../../services/hasura/types';
+import { Credentials } from '@/services/hasura/types';
 import { CategoriesList } from '../../categories-list';
 import { TokenFilled } from '../assets/token-filled';
 import { Subjects } from '../index';

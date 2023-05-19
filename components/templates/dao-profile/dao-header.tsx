@@ -14,9 +14,9 @@ import {
   Tooltip,
 } from '@mui/material';
 
-import { categoriesMap } from '../../../constants/dao';
-import { ROUTES } from '../../../constants/routes';
-import { useFile } from '../../../hooks/use-file';
+import { categoriesMap } from '@/constants/dao';
+import { ROUTES } from '@/constants/routes';
+import { useFile } from '@/hooks/use-file';
 import { AvatarFile } from '../../atoms/avatar-file';
 import { FollowButtonDAO } from '../../atoms/follow-button-dao';
 import { ReadMore } from '../../atoms/read-more-less';

@@ -5,7 +5,7 @@ import { useFormContext } from 'react-hook-form';
 
 import { InputAdornment, Stack, TextField } from '@mui/material';
 
-import { CATEGORIES } from '../../../constants/gate';
+import { CATEGORIES } from '@/constants/gate';
 import { useAuth } from '../../../providers/auth';
 import CategoriesInput from '../../molecules/categories-input';
 import CreatedByInput from '../../molecules/creators-input';

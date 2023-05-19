@@ -7,8 +7,8 @@ import { PartialDeep } from 'type-fest/source/partial-deep';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import { Chip, Stack, Typography, alpha } from '@mui/material';
 
-import { ROUTES } from '../../../../constants/routes';
-import { Gates } from '../../../../services/hasura/types';
+import { ROUTES } from '@/constants/routes';
+import { Gates } from '@/services/hasura/types';
 import {
   SuccessfullyIcon,
   SuccessfullyRoundedIcon,

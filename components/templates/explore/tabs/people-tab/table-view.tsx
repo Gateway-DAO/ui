@@ -11,7 +11,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 
-import { ROUTES } from '../../../../../constants/routes';
+import { ROUTES } from '@/constants/routes';
 import { useAuth } from '../../../../../providers/auth';
 import { AvatarFile } from '../../../../atoms/avatar-file';
 import { ExploreProps } from '../../types';

@@ -11,8 +11,8 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 
-import { categoriesMap } from '../../../../../constants/dao';
-import { ROUTES } from '../../../../../constants/routes';
+import { categoriesMap } from '@/constants/dao';
+import { ROUTES } from '@/constants/routes';
 import { useAuth } from '../../../../../providers/auth';
 import { AvatarFile } from '../../../../atoms/avatar-file';
 import { FollowButtonDAO } from '../../../../atoms/follow-button-dao';

@@ -6,7 +6,7 @@ import { TOKENS } from '@/theme';
 
 import { Stack } from '@mui/material';
 
-import { Loyalty_Program } from '../../../services/hasura/types';
+import { Loyalty_Program } from '@/services/hasura/types';
 import { ClientNav } from '../../organisms/navbar/client-nav';
 import LoyaltyProgramTemplate from './LoyaltyProgramTemplate';
 import { CredentialsList } from './components/CredentialsList';

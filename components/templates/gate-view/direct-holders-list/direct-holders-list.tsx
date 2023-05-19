@@ -19,10 +19,10 @@ import {
   Typography,
 } from '@mui/material';
 
-import { query } from '../../../../constants/queries';
+import { query } from '@/constants/queries';
 import { useAuth } from '../../../../providers/auth';
-import { gqlAnonMethods } from '../../../../services/hasura/api';
-import { Gates } from '../../../../services/hasura/types';
+import { gqlAnonMethods } from '@/services/hasura/api';
+import { Gates } from '@/services/hasura/types';
 import { CenteredLoader } from '../../../atoms/centered-loader';
 import { UserListItem } from '../../../molecules/user-list-item';
 import { ClientNav } from '../../../organisms/navbar/client-nav';

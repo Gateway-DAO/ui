@@ -21,7 +21,7 @@ import {
 } from '@mui/material';
 
 import { useAuth } from '../../../../providers/auth';
-import { ChangeNotificationSettings } from '../../../../services/hasura/types';
+import { ChangeNotificationSettings } from '@/services/hasura/types';
 import { DappNotifications, EmailNotifications } from './config';
 
 function NotificationsSettings() {

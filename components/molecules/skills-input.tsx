@@ -3,7 +3,7 @@ import { FieldErrors } from 'react-hook-form';
 import { Search } from '@mui/icons-material';
 import { Chip, TextField, Autocomplete, TextFieldProps } from '@mui/material';
 
-import { SKILLS } from '../../constants/skills';
+import { SKILLS } from '@/constants/skills';
 
 type SkillsInputProps = {
   set: (categories: string[]) => void;

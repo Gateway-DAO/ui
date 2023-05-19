@@ -16,7 +16,7 @@ import {
   Typography,
 } from '@mui/material';
 
-import { networks, networksLabels, Network } from '../../../../constants/dao';
+import { networks, networksLabels, Network } from '@/constants/dao';
 
 export type SocialLinkField<TFieldValues extends FieldValues = FieldValues> = {
   name: string;

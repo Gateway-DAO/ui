@@ -6,8 +6,8 @@ import { PartialDeep } from 'type-fest';
 
 import { Stack, Typography } from '@mui/material';
 
-import { ROUTES } from '../../../../../../../../constants/routes';
-import { Manual_Task_Events } from '../../../../../../../../services/hasura/types';
+import { ROUTES } from '@/constants/routes';
+import { Manual_Task_Events } from '@/services/hasura/types';
 import Bullet from './bullet';
 import CommentCard from './comment-card';
 import LinkPreviewCard from './link-preview-card';

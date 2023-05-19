@@ -9,7 +9,7 @@ import { Alert, AlertTitle } from '@mui/material';
 import {
   Credential,
   CredentialStatus,
-} from '../../../../../../services/gateway-protocol/types';
+} from '@/services/gateway-protocol/types';
 
 type Props = {
   credential: PartialDeep<Credential>;

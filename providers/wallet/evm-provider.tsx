@@ -8,7 +8,7 @@ import {
 import { brandColors } from '@/theme';
 import { WagmiConfig } from 'wagmi';
 
-import { chains, web3client } from '../../services/web3/client';
+import { chains, web3client } from '@/services/web3/client';
 
 const darkTheme = DarkTheme({
   overlayBlur: 'small',

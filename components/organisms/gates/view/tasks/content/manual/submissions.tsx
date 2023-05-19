@@ -13,7 +13,7 @@ import { useAuth } from '../../../../../../../providers/auth';
 import {
   Gates,
   Task_Progress,
-} from '../../../../../../../services/hasura/types';
+} from '@/services/hasura/types';
 import { ManualTaskEventType } from '../../../../../../../types/tasks';
 import { Accordion } from './components/accordion';
 import { SubmissionsDetailHeader } from './components/submissions-detail-header';
