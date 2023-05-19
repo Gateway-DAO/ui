@@ -1,6 +1,6 @@
 import useTranslation from 'next-translate/useTranslation';
 
-import { useMenu } from 'apps/website/hooks/use-menu';
+import { useMenu } from '@/hooks/use-menu';
 
 import { Edit } from '@mui/icons-material';
 import { Photo, RemoveCircle, Token } from '@mui/icons-material';

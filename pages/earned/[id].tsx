@@ -2,7 +2,7 @@ import { GetStaticPaths, InferGetStaticPropsType } from 'next';
 import { useRouter } from 'next/router';
 
 import { dehydrate, QueryClient, useQuery } from '@tanstack/react-query';
-import { HeadContainer } from 'apps/website/components/molecules/head-container';
+import { HeadContainer } from '@/components/molecules/head-container';
 import { useToggle } from 'react-use';
 
 import { MintModal } from '../../components/organisms/mint-modal';

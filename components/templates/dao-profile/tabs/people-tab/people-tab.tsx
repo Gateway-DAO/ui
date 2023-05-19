@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useWindowVirtualizer } from '@tanstack/react-virtual';
 
-import { TOKENS } from 'apps/website/theme';
+import { TOKENS } from '@/theme';
 
 import { Box, Table, TableBody, TableContainer } from '@mui/material';
 

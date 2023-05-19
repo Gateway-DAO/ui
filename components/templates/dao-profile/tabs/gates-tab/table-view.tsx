@@ -1,6 +1,6 @@
 import { PartialDeep } from 'type-fest';
 
-import { TOKENS } from 'apps/website/theme';
+import { TOKENS } from '@/theme';
 
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';

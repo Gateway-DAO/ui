@@ -7,7 +7,7 @@ import {
   CardActionArea,
 } from '@mui/material';
 import MUICard from '@mui/material/Card';
-import { ROUTES } from 'apps/website/constants/routes';
+import { ROUTES } from '@/constants/routes';
 import { useMediaQuery, useTheme } from '@mui/material';
 import Image from 'next/image';
 import useTranslation from 'next-translate/useTranslation';

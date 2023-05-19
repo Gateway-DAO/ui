@@ -2,7 +2,7 @@ import useTranslation from 'next-translate/useTranslation';
 
 import { PartialDeep } from 'type-fest/source/partial-deep';
 
-import { brandColors } from 'apps/website/theme';
+import { brandColors } from '@/theme';
 
 import { Alert, AlertTitle } from '@mui/material';
 

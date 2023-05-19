@@ -2,7 +2,7 @@ import useTranslation from 'next-translate/useTranslation';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 
-import { TOKENS } from 'apps/website/theme';
+import { TOKENS } from '@/theme';
 
 import EditIcon from '@mui/icons-material/Edit';
 import { Box, Stack, Typography, Tabs, Tab, Chip } from '@mui/material';

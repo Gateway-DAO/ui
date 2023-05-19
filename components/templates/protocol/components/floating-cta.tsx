@@ -1,7 +1,7 @@
 import useTranslation from 'next-translate/useTranslation';
 import { useEffect, useState } from 'react';
 
-import { brandColors } from 'apps/website/theme';
+import { brandColors } from '@/theme';
 import { useSnackbar } from 'notistack';
 import { PartialDeep } from 'type-fest';
 

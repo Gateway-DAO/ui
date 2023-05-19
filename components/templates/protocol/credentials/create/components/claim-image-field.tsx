@@ -1,6 +1,6 @@
 import { useFormContext } from 'react-hook-form';
 
-import { theme } from 'apps/website/theme';
+import { theme } from '@/theme';
 
 import { alpha, Box, Card, Stack } from '@mui/material';
 

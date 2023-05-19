@@ -1,6 +1,6 @@
 import useTranslation from 'next-translate/useTranslation';
 
-import { brandColors } from 'apps/website/theme';
+import { brandColors } from '@/theme';
 
 import LockIcon from '@mui/icons-material/Lock';
 import { alpha, Button } from '@mui/material';

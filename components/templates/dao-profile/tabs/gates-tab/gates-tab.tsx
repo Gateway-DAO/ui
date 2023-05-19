@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 import { useQuery } from '@tanstack/react-query';
 
-import { TOKENS } from 'apps/website/theme';
+import { TOKENS } from '@/theme';
 
 import { ViewModule, ViewList, Add } from '@mui/icons-material';
 import { Box, Button, IconButton, Stack } from '@mui/material';

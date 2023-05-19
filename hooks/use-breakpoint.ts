@@ -1,4 +1,4 @@
-import { BreakpointsValue, theme } from 'apps/website/theme';
+import { BreakpointsValue, theme } from '@/theme';
 import useBreakpointHook from 'use-breakpoint';
 
 import { useTheme } from '@mui/material';

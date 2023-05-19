@@ -1,4 +1,4 @@
-import { brandColors } from 'apps/website/theme';
+import { brandColors } from '@/theme';
 
 import LaunchIcon from '@mui/icons-material/Launch';
 import { Stack, Link, Typography, alpha, SxProps, Theme } from '@mui/material';

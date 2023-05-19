@@ -2,8 +2,8 @@ import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
-import { brandColors } from 'apps/website/theme';
-import { timestampToString } from 'apps/website/utils/date';
+import { brandColors } from '@/theme';
+import { timestampToString } from '@/utils/date';
 import { PartialDeep } from 'type-fest/source/partial-deep';
 
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';

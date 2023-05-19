@@ -10,7 +10,7 @@ import {
 } from '@mui/material';
 import MUICard from '@mui/material/Card';
 import { useTheme } from '@mui/material';
-import { ROUTES } from 'apps/website/constants/routes';
+import { ROUTES } from '@/constants/routes';
 import Image from 'next/image';
 import useTranslation from 'next-translate/useTranslation';
 import Link from 'next/link';

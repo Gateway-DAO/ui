@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import { useFieldArray, useFormContext } from 'react-hook-form';
 
-import { TOKENS } from 'apps/website/theme';
+import { TOKENS } from '@/theme';
 
 import { Avatar, Grid, Stack, Typography } from '@mui/material';
 

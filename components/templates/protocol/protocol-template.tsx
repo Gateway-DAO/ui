@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 
-import { theme, TOKENS } from 'apps/website/theme';
+import { theme, TOKENS } from '@/theme';
 import { PartialDeep } from 'type-fest';
 
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';

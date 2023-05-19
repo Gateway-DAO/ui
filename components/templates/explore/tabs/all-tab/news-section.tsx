@@ -1,6 +1,6 @@
 import { PropsWithChildren } from 'react';
 
-import { TOKENS } from 'apps/website/theme';
+import { TOKENS } from '@/theme';
 
 import { Box } from '@mui/material';
 

@@ -1,4 +1,4 @@
-import { useMenu } from 'apps/website/hooks/use-menu';
+import { useMenu } from '@/hooks/use-menu';
 
 import { IosShare } from '@mui/icons-material';
 import { Avatar, IconButton, Stack } from '@mui/material';

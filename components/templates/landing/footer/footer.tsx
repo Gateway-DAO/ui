@@ -7,7 +7,7 @@ import {
   GatewayIcon,
   DiscordIcon,
   SubstackIcon,
-} from 'apps/website/components/atoms/icon';
+} from '@/components/atoms/icon';
 import { useForm } from 'react-hook-form';
 import { FaMedium } from 'react-icons/fa';
 

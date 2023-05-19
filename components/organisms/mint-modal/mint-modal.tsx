@@ -3,7 +3,7 @@ import { useState } from 'react';
 import {
   PolygonCircleIcon,
   AvalancheIcon,
-} from 'apps/website/components/atoms/icons';
+} from '@/components/atoms/icons';
 
 import { Dialog } from '@mui/material';
 

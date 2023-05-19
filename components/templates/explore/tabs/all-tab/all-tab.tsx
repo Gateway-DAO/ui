@@ -3,7 +3,7 @@ import useTranslation from 'next-translate/useTranslation';
 import { PartialDeep } from 'type-fest';
 
 import { Button, Divider, Stack } from '@mui/material';
-import { brandColors, theme } from 'apps/website/theme';
+import { brandColors, theme } from '@/theme';
 
 import { ROUTES } from '../../../../../constants/routes';
 import { Protocol_Data_Model } from '../../../../../services/hasura/types';

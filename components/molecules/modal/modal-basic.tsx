@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 
-import { theme } from 'apps/website/theme';
+import { theme } from '@/theme';
 
 import { useMediaQuery } from '@mui/material';
 

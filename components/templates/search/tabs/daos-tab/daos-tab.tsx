@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 
 import { PartialDeep } from 'type-fest';
 
-import { TOKENS } from 'apps/website/theme';
+import { TOKENS } from '@/theme';
 
 import { ViewModule, ViewList } from '@mui/icons-material';
 import { Box, IconButton, Stack, Typography, Chip } from '@mui/material';

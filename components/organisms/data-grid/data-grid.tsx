@@ -2,8 +2,8 @@ import useTranslation from 'next-translate/useTranslation';
 import Image from 'next/image';
 import { ReactNode } from 'react';
 
-import { brandColors, TOKENS } from 'apps/website/theme';
-import { limitCharsCentered } from 'apps/website/utils/string';
+import { brandColors, TOKENS } from '@/theme';
+import { limitCharsCentered } from '@/utils/string';
 import { DateTime } from 'luxon';
 
 import { Typography, Chip, Avatar, Link } from '@mui/material';

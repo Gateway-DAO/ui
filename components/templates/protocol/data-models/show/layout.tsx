@@ -3,9 +3,9 @@ import { useRouter } from 'next/router';
 import { useMemo, useState } from 'react';
 
 import { useQuery } from '@tanstack/react-query';
-import { AvatarFile } from 'apps/website/components/atoms/avatar-file';
-import { gqlAnonMethods } from 'apps/website/services/hasura/api';
-import { brandColors, theme, TOKENS } from 'apps/website/theme';
+import { AvatarFile } from '@/components/atoms/avatar-file';
+import { gqlAnonMethods } from '@/services/hasura/api';
+import { brandColors, theme, TOKENS } from '@/theme';
 import { useToggle } from 'react-use';
 
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';

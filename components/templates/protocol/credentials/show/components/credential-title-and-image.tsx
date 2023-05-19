@@ -3,7 +3,7 @@ import { useState } from 'react';
 
 import { PartialDeep } from 'type-fest';
 
-import { brandColors } from 'apps/website/theme';
+import { brandColors } from '@/theme';
 
 import { Stack, IconButton, CircularProgress } from '@mui/material';
 

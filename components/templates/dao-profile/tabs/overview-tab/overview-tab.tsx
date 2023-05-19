@@ -5,7 +5,7 @@ import React, { useMemo } from 'react';
 import { PartialDeep } from 'type-fest';
 import { v4 as uuid } from 'uuid';
 
-import { theme, TOKENS } from 'apps/website/theme';
+import { theme, TOKENS } from '@/theme';
 
 import {
   Box,

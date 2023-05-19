@@ -1,10 +1,10 @@
 import { PropsWithChildren, ReactNode, useMemo } from 'react';
 
-import { useBreakpointValue } from 'apps/website/hooks/use-breakpoint';
+import { useBreakpointValue } from '@/hooks/use-breakpoint';
 import { A11y } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
-import { GatewayTheme, TOKENS } from 'apps/website/theme';
+import { GatewayTheme, TOKENS } from '@/theme';
 
 import { Box, Stack, Typography, useTheme } from '@mui/material';
 import { SystemCssProperties } from '@mui/system';

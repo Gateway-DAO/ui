@@ -3,7 +3,7 @@ import { useState } from 'react';
 
 import { useFormContext } from 'react-hook-form';
 
-import { TOKENS } from 'apps/website/theme';
+import { TOKENS } from '@/theme';
 
 import EditIcon from '@mui/icons-material/Edit';
 import {

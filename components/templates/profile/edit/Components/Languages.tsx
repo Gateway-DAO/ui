@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import { useFormContext } from 'react-hook-form';
 
-import { TOKENS } from 'apps/website/theme';
+import { TOKENS } from '@/theme';
 
 import SearchIcon from '@mui/icons-material/Search';
 import {

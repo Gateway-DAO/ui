@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 
 import { useInfiniteQuery } from '@tanstack/react-query';
 
-import { TOKENS } from 'apps/website/theme';
+import { TOKENS } from '@/theme';
 
 import { Box, Stack, Typography } from '@mui/material';
 

@@ -2,8 +2,8 @@ import useTranslation from 'next-translate/useTranslation';
 import { ChangeEvent, ReactNode, useState } from 'react';
 
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { GateFilledIcon } from 'apps/website/components/atoms/icon';
-import { TOKENS } from 'apps/website/theme';
+import { GateFilledIcon } from '@/components/atoms/icon';
+import { TOKENS } from '@/theme';
 import { useWindowSize } from 'react-use';
 import { Virtuoso } from 'react-virtuoso';
 import { PartialDeep } from 'type-fest';

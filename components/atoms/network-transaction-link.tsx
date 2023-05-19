@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { ReactNode } from 'react';
 
-import { brandColors } from 'apps/website/theme';
+import { brandColors } from '@/theme';
 
 import { alpha, Box } from '@mui/material';
 

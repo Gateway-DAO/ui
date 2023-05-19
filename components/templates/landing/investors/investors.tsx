@@ -2,7 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React, { forwardRef } from 'react';
 
-import { TOKENS } from 'apps/website/theme';
+import { TOKENS } from '@/theme';
 
 import { Box, BoxTypeMap, List, ListItem, Typography } from '@mui/material';
 import { OverridableComponent } from '@mui/material/OverridableComponent';

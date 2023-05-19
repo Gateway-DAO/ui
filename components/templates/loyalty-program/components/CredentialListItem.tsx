@@ -1,7 +1,7 @@
 import Link from 'next/link';
 
-import { brandColors } from 'apps/website/theme';
-import { limitChars } from 'apps/website/utils/string';
+import { brandColors } from '@/theme';
+import { limitChars } from '@/utils/string';
 import { PartialDeep } from 'type-fest/source/partial-deep';
 
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';

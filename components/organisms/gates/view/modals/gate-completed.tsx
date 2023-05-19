@@ -2,7 +2,7 @@ import useTranslation from 'next-translate/useTranslation';
 import { useMemo } from 'react';
 
 import { useQueryClient } from '@tanstack/react-query';
-import { useMenu } from 'apps/website/hooks/use-menu';
+import { useMenu } from '@/hooks/use-menu';
 import { PartialDeep } from 'type-fest';
 
 import CloseIcon from '@mui/icons-material/Close';

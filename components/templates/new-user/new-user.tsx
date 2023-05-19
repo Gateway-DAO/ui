@@ -6,7 +6,7 @@ import { useMutation } from '@tanstack/react-query';
 import { useSnackbar } from 'notistack';
 import { useForm, FormProvider } from 'react-hook-form';
 
-import { theme } from 'apps/website/theme';
+import { theme } from '@/theme';
 
 import { alpha, Box, Stack } from '@mui/material';
 

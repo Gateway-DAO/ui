@@ -1,4 +1,4 @@
-import { brandColors, theme } from 'apps/website/theme';
+import { brandColors, theme } from '@/theme';
 
 import { Box, Paper } from '@mui/material';
 

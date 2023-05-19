@@ -1,6 +1,6 @@
 import useTranslation from 'next-translate/useTranslation';
 
-import { theme } from 'apps/website/theme';
+import { theme } from '@/theme';
 import { useSnackbar } from 'notistack';
 import { useCopyToClipboard } from 'react-use';
 

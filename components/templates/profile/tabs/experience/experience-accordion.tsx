@@ -1,7 +1,7 @@
 import { DateTime } from 'luxon';
 import { PartialDeep } from 'type-fest';
 
-import { theme, TOKENS } from 'apps/website/theme';
+import { theme, TOKENS } from '@/theme';
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Stack, Typography, Divider, Box, Avatar } from '@mui/material';

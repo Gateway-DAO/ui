@@ -2,9 +2,9 @@ import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
 import { useEffect, useMemo, useState } from 'react';
 
-import { GetDmStatsUntilDayBeforeQuery } from 'apps/website/services/hasura/types';
-import { theme } from 'apps/website/theme';
-import { brandColors } from 'apps/website/theme';
+import { GetDmStatsUntilDayBeforeQuery } from '@/services/hasura/types';
+import { theme } from '@/theme';
+import { brandColors } from '@/theme';
 import { stat } from 'fs';
 import { useToggle } from 'react-use';
 import { PartialDeep } from 'type-fest/source/partial-deep';

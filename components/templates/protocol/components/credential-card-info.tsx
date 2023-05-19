@@ -1,6 +1,6 @@
 import useTranslation from 'next-translate/useTranslation';
 
-import { theme } from 'apps/website/theme';
+import { theme } from '@/theme';
 import { DateTime } from 'luxon';
 import { PartialDeep } from 'type-fest';
 

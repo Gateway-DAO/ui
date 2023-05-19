@@ -3,7 +3,7 @@ import React from 'react';
 
 import { SnackbarProvider } from 'notistack';
 
-import { brandColors } from 'apps/website/theme';
+import { brandColors } from '@/theme';
 
 const Notistack = (props) => {
   const notistackRef = React.useRef<SnackbarProvider>();

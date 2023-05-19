@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-import { brandColors } from 'apps/website/theme';
+import { brandColors } from '@/theme';
 
 import { alpha, Box, Typography } from '@mui/material';
 

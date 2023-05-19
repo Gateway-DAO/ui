@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-import { MotionAvatar } from 'apps/website/components/atoms/motion-components';
+import { MotionAvatar } from '@/components/atoms/motion-components';
 import { usePresence } from 'framer-motion';
 import { PartialDeep } from 'type-fest';
 

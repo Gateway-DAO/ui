@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 
-import { TOKENS } from 'apps/website/theme';
+import { TOKENS } from '@/theme';
 
 import { ViewModule, ViewList } from '@mui/icons-material';
 import { Box, CircularProgress, IconButton, Stack } from '@mui/material';

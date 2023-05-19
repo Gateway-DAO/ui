@@ -1,6 +1,6 @@
 import React, { forwardRef } from 'react';
 
-import { TOKENS } from 'apps/website/theme';
+import { TOKENS } from '@/theme';
 
 import {
   Avatar,

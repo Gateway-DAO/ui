@@ -2,7 +2,7 @@ import useTranslation from 'next-translate/useTranslation';
 
 import { useFormContext } from 'react-hook-form';
 
-import { brandColors } from 'apps/website/theme';
+import { brandColors } from '@/theme';
 
 import {
   alpha,

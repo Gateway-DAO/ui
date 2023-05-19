@@ -1,5 +1,5 @@
-import { DiscordIcon } from 'apps/website/components/atoms/icon';
-import { TOKENS } from 'apps/website/theme';
+import { DiscordIcon } from '@/components/atoms/icon';
+import { TOKENS } from '@/theme';
 
 import { Box, Button, Stack, Typography } from '@mui/material';
 

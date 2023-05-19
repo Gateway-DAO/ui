@@ -1,8 +1,8 @@
 import useTranslation from 'next-translate/useTranslation';
 import dynamic from 'next/dynamic';
 
-import { brandColors } from 'apps/website/theme';
-import { isToday } from 'apps/website/utils/date';
+import { brandColors } from '@/theme';
+import { isToday } from '@/utils/date';
 import { DateTime } from 'luxon';
 import { Controller, useFormContext } from 'react-hook-form';
 

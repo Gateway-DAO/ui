@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 
-import { brandColors } from 'apps/website/theme';
+import { brandColors } from '@/theme';
 
 import { IconButton } from '@mui/material';
 

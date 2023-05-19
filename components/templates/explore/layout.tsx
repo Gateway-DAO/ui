@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 
 import { useQuery } from '@tanstack/react-query';
 
-import { TOKENS } from 'apps/website/theme';
+import { TOKENS } from '@/theme';
 
 import { Box, Tabs, Typography, Tab } from '@mui/material';
 

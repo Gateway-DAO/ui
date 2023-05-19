@@ -1,5 +1,5 @@
-import { brandColors } from 'apps/website/theme';
-import { limitCharsCentered } from 'apps/website/utils/string';
+import { brandColors } from '@/theme';
+import { limitCharsCentered } from '@/utils/string';
 import { useSnackbar } from 'notistack';
 
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';

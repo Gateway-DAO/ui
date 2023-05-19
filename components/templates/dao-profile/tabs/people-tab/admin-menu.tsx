@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
-import { useMenu } from 'apps/website/hooks/use-menu';
+import { useMenu } from '@/hooks/use-menu';
 import { PartialDeep } from 'type-fest';
 
 import { MoreVert } from '@mui/icons-material';

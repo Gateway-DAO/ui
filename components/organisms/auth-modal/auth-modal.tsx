@@ -2,7 +2,7 @@ import useTranslation from 'next-translate/useTranslation';
 
 import { useConnectModal } from '@rainbow-me/rainbowkit';
 import { useWalletModal } from '@solana/wallet-adapter-react-ui';
-import { SolanaColorIcon } from 'apps/website/components/atoms/icons';
+import { SolanaColorIcon } from '@/components/atoms/icons';
 import { FaEthereum } from 'react-icons/fa';
 
 import {

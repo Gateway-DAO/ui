@@ -1,7 +1,7 @@
 import useTranslation from 'next-translate/useTranslation';
 import Link from 'next/link';
 
-import { TOKENS } from 'apps/website/theme';
+import { TOKENS } from '@/theme';
 
 import { Avatar, Box, Button, Chip, Stack, Typography } from '@mui/material';
 import Table from '@mui/material/Table';

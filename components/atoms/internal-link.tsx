@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 
-import { brandColors } from 'apps/website/theme';
+import { brandColors } from '@/theme';
 
 import LaunchIcon from '@mui/icons-material/Launch';
 import { Stack, Link, Typography, alpha } from '@mui/material';

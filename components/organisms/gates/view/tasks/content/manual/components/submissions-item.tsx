@@ -2,8 +2,8 @@ import useTranslation from 'next-translate/useTranslation';
 import { useMemo } from 'react';
 
 import { useQuery } from '@tanstack/react-query';
-import { brandColors, theme } from 'apps/website/theme';
-import { ISOToString } from 'apps/website/utils/date';
+import { brandColors, theme } from '@/theme';
+import { ISOToString } from '@/utils/date';
 import { PartialDeep } from 'type-fest';
 
 import CancelIcon from '@mui/icons-material/Cancel';

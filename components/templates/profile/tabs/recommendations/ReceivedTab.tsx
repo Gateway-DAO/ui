@@ -1,6 +1,6 @@
 import { PartialDeep } from 'type-fest';
 
-import { TOKENS } from 'apps/website/theme';
+import { TOKENS } from '@/theme';
 
 import { AutoAwesomeMosaic, ViewList } from '@mui/icons-material';
 import { Box, Typography, Stack } from '@mui/material';

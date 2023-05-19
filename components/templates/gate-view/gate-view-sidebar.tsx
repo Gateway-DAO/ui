@@ -6,7 +6,7 @@ import { ComponentType, useMemo, useState } from 'react';
 
 import { PartialDeep } from 'type-fest/source/partial-deep';
 
-import { TOKENS } from 'apps/website/theme';
+import { TOKENS } from '@/theme';
 
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import {

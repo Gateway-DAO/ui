@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { useConnect } from 'wagmi';
 
-import { theme } from 'apps/website/theme';
+import { theme } from '@/theme';
 
 import { ChevronRight } from '@mui/icons-material';
 import {

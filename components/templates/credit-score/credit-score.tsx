@@ -10,7 +10,7 @@ const ArcProgress = dynamic(() => import('react-arc-progress'), {
   ssr: false,
 });
 
-import { TOKENS } from 'apps/website/theme';
+import { TOKENS } from '@/theme';
 
 import { InfoOutlined } from '@mui/icons-material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -48,7 +48,7 @@ import { TokenFilled } from '../../molecules/mint-card/assets/token-filled';
 import { HolderDialog } from '../../organisms/holder-dialog';
 import { ClientNav } from '../../organisms/navbar/client-nav';
 import LoadingModal from './LoadingModal';
-import { theme } from 'apps/website/theme';
+import { theme } from '@/theme';
 
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,

@@ -1,4 +1,4 @@
-import { BreakpointsValue, theme } from 'apps/website/theme';
+import { BreakpointsValue, theme } from '@/theme';
 
 import { Breakpoint } from '@mui/system';
 

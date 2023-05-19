@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { TOKENS } from 'apps/website/theme';
+import { TOKENS } from '@/theme';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 
 import { Avatar, Grid, Stack, Typography } from '@mui/material';

@@ -1,4 +1,4 @@
-import { GatewayTheme } from 'apps/website/theme';
+import { GatewayTheme } from '@/theme';
 
 import { alpha } from '@mui/material';
 

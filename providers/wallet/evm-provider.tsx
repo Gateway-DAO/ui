@@ -5,7 +5,7 @@ import {
   darkTheme as DarkTheme,
   Theme,
 } from '@rainbow-me/rainbowkit';
-import { brandColors } from 'apps/website/theme';
+import { brandColors } from '@/theme';
 import { WagmiConfig } from 'wagmi';
 
 import { chains, web3client } from '../../services/web3/client';

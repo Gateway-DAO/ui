@@ -1,7 +1,7 @@
 import React, { forwardRef } from 'react';
 
 
-import { MotionBox } from 'apps/website/components/atoms/motion-components';
+import { MotionBox } from '@/components/atoms/motion-components';
 import { useMediaQuery, useTheme } from '@mui/material';
 
 import { ArrowDownward } from '@mui/icons-material';

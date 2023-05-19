@@ -1,7 +1,7 @@
 import useTranslation from 'next-translate/useTranslation';
 import Link from 'next/link';
 
-import { ISOToString } from 'apps/website/utils/date';
+import { ISOToString } from '@/utils/date';
 import { PartialDeep } from 'type-fest';
 
 import { Stack, Typography } from '@mui/material';

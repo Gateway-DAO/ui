@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { useMenu } from 'apps/website/hooks/use-menu';
+import { useMenu } from '@/hooks/use-menu';
 
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { Card, CardHeader } from '@mui/material';

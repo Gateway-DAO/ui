@@ -1,4 +1,4 @@
-import { limitChars, showIfNotEmpty } from 'apps/website/utils/string';
+import { limitChars, showIfNotEmpty } from '@/utils/string';
 import { useFormContext } from 'react-hook-form';
 
 import { CardHeader, Chip, Stack } from '@mui/material';

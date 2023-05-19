@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
-import { GatewayIcon } from 'apps/website/components/atoms/icon';
-import { MotionBox } from 'apps/website/components/atoms/motion-components';
+import { GatewayIcon } from '@/components/atoms/icon';
+import { MotionBox } from '@/components/atoms/motion-components';
 
 import CloseIcon from '@mui/icons-material/Close';
 import MenuIcon from '@mui/icons-material/Menu';

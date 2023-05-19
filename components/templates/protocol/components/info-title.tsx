@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { brandColors } from 'apps/website/theme';
+import { brandColors } from '@/theme';
 
 import VerifiedIcon from '@mui/icons-material/Verified';
 import {

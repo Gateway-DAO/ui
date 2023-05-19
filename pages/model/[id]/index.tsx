@@ -3,7 +3,7 @@ import dynamic from 'next/dynamic';
 
 import { DataModelLayout } from '../../../components/templates/protocol/data-models/show/layout';
 import { gatewayProtocolSDK } from '../../../services/gateway-protocol/api';
-import { gqlAnonMethods } from 'apps/website/services/hasura/api';
+import { gqlAnonMethods } from '@/services/hasura/api';
 const OverviewTab = dynamic(
   () =>
     import(

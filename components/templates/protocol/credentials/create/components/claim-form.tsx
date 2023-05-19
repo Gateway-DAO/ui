@@ -3,7 +3,7 @@ import { useMemo } from 'react';
 
 import { PartialDeep } from 'type-fest/source/partial-deep';
 
-import { brandColors } from 'apps/website/theme';
+import { brandColors } from '@/theme';
 
 import { alpha, Typography, Stack } from '@mui/material';
 

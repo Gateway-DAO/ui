@@ -1,8 +1,8 @@
 import useTranslation from 'next-translate/useTranslation';
 
 import { useQuery } from '@tanstack/react-query';
-import { theme } from 'apps/website/theme';
-import { limitCharsCentered } from 'apps/website/utils/string';
+import { theme } from '@/theme';
+import { limitCharsCentered } from '@/utils/string';
 import { PartialDeep } from 'type-fest';
 
 import { Stack, Box, useMediaQuery } from '@mui/material';
