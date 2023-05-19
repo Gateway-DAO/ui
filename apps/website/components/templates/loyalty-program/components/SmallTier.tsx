@@ -1,10 +1,9 @@
 import useTranslation from 'next-translate/useTranslation';
 import Link from 'next/link';
 
-import { PartialDeep } from 'type-fest/source/partial-deep';
-
-import { limitChars } from '@gateway/helpers';
 import { brandColors } from 'apps/website/theme';
+import { limitChars } from 'apps/website/utils/string';
+import { PartialDeep } from 'type-fest/source/partial-deep';
 
 import { Box, Chip, Stack, Typography, alpha } from '@mui/material';
 

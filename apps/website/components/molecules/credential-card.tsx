@@ -1,9 +1,8 @@
 import Link from 'next/link';
 
-import { PartialDeep } from 'type-fest';
-
-import { limitCharsCentered } from '@gateway/helpers';
 import { brandColors } from 'apps/website/theme';
+import { limitCharsCentered } from 'apps/website/utils/string';
+import { PartialDeep } from 'type-fest';
 
 import {
   Avatar,

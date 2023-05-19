@@ -2,10 +2,9 @@ import useTranslation from 'next-translate/useTranslation';
 import Image from 'next/image';
 import { ReactNode } from 'react';
 
-import { DateTime } from 'luxon';
-
-import { limitCharsCentered } from '@gateway/helpers';
 import { brandColors, TOKENS } from 'apps/website/theme';
+import { limitCharsCentered } from 'apps/website/utils/string';
+import { DateTime } from 'luxon';
 
 import { Typography, Chip, Avatar, Link } from '@mui/material';
 import { alpha, Stack, Box } from '@mui/material';

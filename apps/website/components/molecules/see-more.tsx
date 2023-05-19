@@ -1,9 +1,8 @@
 import useTranslation from 'next-translate/useTranslation';
 
-import { useToggle } from 'react-use';
-
-import { limitChars } from '@gateway/helpers';
 import { brandColors } from 'apps/website/theme';
+import { limitChars } from 'apps/website/utils/string';
+import { useToggle } from 'react-use';
 
 import { Link, SxProps, Typography } from '@mui/material';
 

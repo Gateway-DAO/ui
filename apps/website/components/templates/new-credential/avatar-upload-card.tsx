@@ -1,8 +1,7 @@
 import { useMemo } from 'react';
 
+import { showIfNotEmpty } from 'apps/website/utils/string';
 import { useFormContext } from 'react-hook-form';
-
-import { showIfNotEmpty } from '@gateway/helpers';
 
 import { Card, CardActions, CardHeader, CardMedia, Chip } from '@mui/material';
 

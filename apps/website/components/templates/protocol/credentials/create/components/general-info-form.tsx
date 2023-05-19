@@ -1,11 +1,10 @@
 import useTranslation from 'next-translate/useTranslation';
 import dynamic from 'next/dynamic';
 
+import { brandColors } from 'apps/website/theme';
+import { isToday } from 'apps/website/utils/date';
 import { DateTime } from 'luxon';
 import { Controller, useFormContext } from 'react-hook-form';
-
-import { isToday } from '@gateway/helpers';
-import { brandColors } from 'apps/website/theme';
 
 import { alpha, Box, Stack, TextField, Typography } from '@mui/material';
 import { MobileDatePicker, TimePicker } from '@mui/x-date-pickers';

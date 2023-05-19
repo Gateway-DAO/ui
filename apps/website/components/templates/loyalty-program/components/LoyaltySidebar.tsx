@@ -3,10 +3,9 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useMemo } from 'react';
 
+import { limitCharsCentered } from 'apps/website/utils/string';
 import { useToggle } from 'react-use';
 import { PartialDeep } from 'type-fest/source/partial-deep';
-
-import { limitCharsCentered } from '@gateway/helpers';
 
 import { IosShare, ReadMore } from '@mui/icons-material';
 import {

@@ -1,8 +1,7 @@
 import useTranslation from 'next-translate/useTranslation';
 
 import { brandColors } from 'apps/website/theme';
-
-import { limitCharsCentered } from '@gateway/helpers';
+import { limitCharsCentered } from 'apps/website/utils/string';
 
 import {
   alpha,
