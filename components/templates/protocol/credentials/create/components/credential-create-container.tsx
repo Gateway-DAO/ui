@@ -5,7 +5,7 @@ import { FormProvider, UseFormReturn } from 'react-hook-form';
 
 import { Box, CircularProgress, Stack, Typography } from '@mui/material';
 
-import { LoadingButton } from '../../../../../atoms/loading-button';
+import { LoadingButton } from '@/components/atoms/loading-button';
 
 type CreateCredentialProps = {
   methods: UseFormReturn<any>;

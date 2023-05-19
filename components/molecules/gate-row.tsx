@@ -18,8 +18,8 @@ import {
 } from '@mui/material';
 
 import { Gates } from '@/services/hasura/types';
-import GateStateChip from '../atoms/gate-state-chip';
-import MorePopover from '../atoms/more-popover';
+import GateStateChip from '@/components/atoms/gate-state-chip';
+import MorePopover from '@/components/atoms/more-popover';
 import ConfirmDialog from '../organisms/confirm-dialog/confirm-dialog';
 import { ROUTES } from './../../constants/routes';
 import { useAuth } from './../../providers/auth';

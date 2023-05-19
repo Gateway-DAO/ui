@@ -27,15 +27,15 @@ import {
 import { ROUTES } from '@/constants/routes';
 import { useAuth } from '@/providers/auth';
 import { Credentials } from '@/services/hasura/types';
-import { AvatarFile } from '../../atoms/avatar-file';
-import CircularProgressWithLabel from '../../atoms/circular-progress-label';
-import { Props as MintCredentialButtonProps } from '../../atoms/mint-button';
-import { ReadMore } from '../../atoms/read-more-less';
+import { AvatarFile } from '@/components/atoms/avatar-file';
+import CircularProgressWithLabel from '@/components/atoms/circular-progress-label';
+import { Props as MintCredentialButtonProps } from '@/components/atoms/mint-button';
+import { ReadMore } from '@/components/atoms/read-more-less';
 import { Task, TaskGroup } from '../../organisms/tasks';
 
 const MintCredentialButton: ComponentType<MintCredentialButtonProps> = dynamic(
   () =>
-    import('../../atoms/mint-button').then((mod) => mod.MintCredentialButton),
+    import('@/components/atoms/mint-button').then((mod) => mod.MintCredentialButton),
   {
     ssr: false,
   }

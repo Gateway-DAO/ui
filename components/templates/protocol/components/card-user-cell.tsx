@@ -6,7 +6,7 @@ import { PartialDeep } from 'type-fest/source/partial-deep';
 import { alpha, Stack, Typography } from '@mui/material';
 
 import { Files } from '@/services/hasura/types';
-import { AvatarFile } from '../../../atoms/avatar-file';
+import { AvatarFile } from '@/components/atoms/avatar-file';
 import CardCell from './card-cell';
 
 type Props = {

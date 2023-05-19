@@ -19,7 +19,7 @@ import { Users } from '@/services/hasura/types';
 
 const FollowButtonUser = dynamic<any>(
   () =>
-    import('../../../../atoms/follow-button-user').then(
+    import('@/components/atoms/follow-button-user').then(
       (mod) => mod.FollowButtonUser
     ),
   {

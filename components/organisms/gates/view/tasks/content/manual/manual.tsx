@@ -15,7 +15,7 @@ import {
 
 import { taskErrorMessages } from '../../../../../../../components/organisms/tasks/task-error-messages';
 import { useAuth } from '@/providers/auth';
-import { LoadingButton } from '../../../../../../atoms/loading-button';
+import { LoadingButton } from '@/components/atoms/loading-button';
 import { TaskProps } from '../types';
 import { InterationList } from './components/interation-list';
 import LinkPreviewCard from './components/link-preview-card';

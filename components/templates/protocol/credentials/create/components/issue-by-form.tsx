@@ -25,7 +25,7 @@ import {
   DataModel,
   PermissionType,
 } from '@/services/gateway-protocol/types';
-import { AvatarFile } from '../../../../../atoms/avatar-file';
+import { AvatarFile } from '@/components/atoms/avatar-file';
 import { taskErrorMessages } from '../../../../../organisms/tasks/task-error-messages';
 
 type Props = {

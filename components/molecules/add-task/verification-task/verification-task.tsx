@@ -13,7 +13,7 @@ import {
   Typography,
 } from '@mui/material';
 
-import { TaskIcon } from '../../../atoms/task-icon';
+import { TaskIcon } from '@/components/atoms/task-icon';
 import {
   CreateGateData,
   VerificationCodeDataError,

@@ -17,8 +17,8 @@ import {
 } from '@mui/material';
 
 import { useAuth } from '@/providers/auth';
-import { LoadingButton } from '../../../../../atoms/loading-button';
-import { TaskIcon } from '../../../../../atoms/task-icon';
+import { LoadingButton } from '@/components/atoms/loading-button';
+import { TaskIcon } from '@/components/atoms/task-icon';
 
 type Props = {
   taskNumber: number;

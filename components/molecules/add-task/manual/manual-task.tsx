@@ -18,7 +18,7 @@ import {
   Typography,
 } from '@mui/material';
 
-import { CircleWithNumber } from '../../../atoms/circle-with-number';
+import { CircleWithNumber } from '@/components/atoms/circle-with-number';
 import { CreateGateData } from '../../../templates/create-gate/schema';
 import TextFieldWithEmoji from '../../form/TextFieldWithEmoji/TextFieldWithEmoji';
 

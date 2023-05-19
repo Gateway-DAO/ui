@@ -16,7 +16,7 @@ import { generateImageUrl } from '@/hooks/use-file';
 import { gatewayProtocolSDK } from '@/services/gateway-protocol/api';
 import { Users } from '@/services/hasura/types';
 import { SessionUser } from '../../../types/user';
-import { AvatarFile } from '../../atoms/avatar-file';
+import { AvatarFile } from '@/components/atoms/avatar-file';
 import { SocialButtons } from '../../organisms/social-buttons';
 import { ReceivedTab, IssuedTab } from './tabs';
 import { Earned } from './tabs/Earned';
@@ -33,7 +33,7 @@ import { Earned } from './tabs/Earned';
 
 // const FollowButtonUser = dynamic<any>(
 //   () =>
-//     import('../../atoms/follow-button-user').then(
+//     import('@/components/atoms/follow-button-user').then(
 //       (mod) => mod.FollowButtonUser
 //     ),
 //   {

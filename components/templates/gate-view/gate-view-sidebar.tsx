@@ -27,9 +27,9 @@ import { useMintData } from '@/hooks/use-mint-data';
 import { useAuth } from '@/providers/auth';
 import { Gates } from '@/services/hasura/types';
 import { isDaoAdmin } from '../../../utils/is-dao-admin';
-import { AvatarFile } from '../../atoms/avatar-file';
-import { ReadMore } from '../../atoms/read-more-less';
-import { ShareButton } from '../../atoms/share-button';
+import { AvatarFile } from '@/components/atoms/avatar-file';
+import { ReadMore } from '@/components/atoms/read-more-less';
+import { ShareButton } from '@/components/atoms/share-button';
 import GateMintButton from '../../molecules/gate-mint-button';
 import { MintDialogProtocol } from '../../molecules/mint-dialog-protocol';
 import ModalShareCredential from '../../molecules/modal/modal-share-credential';
@@ -41,7 +41,7 @@ const HolderDialog: ComponentType<HolderDialogProps> = dynamic(
   { ssr: false }
 );
 
-const GateStateChip = dynamic(() => import('../../atoms/gate-state-chip'), {
+const GateStateChip = dynamic(() => import('@/components/atoms/gate-state-chip'), {
   ssr: false,
 });
 

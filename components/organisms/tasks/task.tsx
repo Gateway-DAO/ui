@@ -20,7 +20,7 @@ import { useAuth } from '@/providers/auth';
 import { Tasks, Gates } from '@/services/hasura/types';
 import { queryClient } from '@/services/query-client';
 import { getMapValueFromObject } from '../../../utils/map-object';
-import { TaskIcon } from '../../atoms/task-icon';
+import { TaskIcon } from '@/components/atoms/task-icon';
 import GithubContributeContent from '../gates/view/tasks/content/github_contribute';
 import GithubPRContent from '../gates/view/tasks/content/github_prs';
 import ManualContent from '../gates/view/tasks/content/manual/manual';

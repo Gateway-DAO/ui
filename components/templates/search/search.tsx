@@ -16,7 +16,7 @@ import {
 } from '@mui/material';
 
 import { SearchQuery } from '@/services/hasura/types';
-import { a11yTabProps, TabPanel, useTab } from '../../atoms/tabs';
+import { a11yTabProps, TabPanel, useTab } from '@/components/atoms/tabs';
 import { Navbar } from '../../organisms/navbar';
 import { useAuth } from './../../../providers/auth';
 import { DaosTab } from './tabs/daos-tab';

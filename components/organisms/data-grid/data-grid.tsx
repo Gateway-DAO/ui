@@ -11,7 +11,7 @@ import { alpha, Stack, Box } from '@mui/material';
 
 import { ROUTES } from '@/constants/routes';
 import { CredentialStatus } from '@/services/gateway-protocol/types';
-import NetworkTransactionLink from '../../atoms/network-transaction-link';
+import NetworkTransactionLink from '@/components/atoms/network-transaction-link';
 import { CategoriesList } from '../../molecules/categories-list';
 
 export interface IColumnGrid {

@@ -9,7 +9,7 @@ import { Theme } from '@mui/material/styles/createTheme';
 import { ROUTES } from '@/constants/routes';
 import { useMintData } from '@/hooks/use-mint-data';
 import { Credential } from '@/services/gateway-protocol/types';
-import ExternalLink from '../../../../atoms/external-link';
+import ExternalLink from '@/components/atoms/external-link';
 import { MintDialogProtocol } from '../../../../molecules/mint-dialog-protocol';
 import ModalShareCredential from '../../../../molecules/modal/modal-share-credential';
 import CredentialCardInfo from '../../components/credential-card-info';

@@ -13,7 +13,7 @@ import {
   User,
 } from '@/services/gateway-protocol/types';
 import { gqlAnonMethods } from '@/services/hasura/api';
-import Loading from '../../../atoms/loading';
+import Loading from '@/components/atoms/loading';
 import CardUserCell from './card-user-cell';
 
 type Props = {

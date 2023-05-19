@@ -20,7 +20,7 @@ import {
   CredentialStatus,
 } from '@/services/gateway-protocol/types';
 import { Protocol_Credential } from '@/services/hasura/types';
-import { AvatarFile } from '../atoms/avatar-file';
+import { AvatarFile } from '@/components/atoms/avatar-file';
 
 type Props = PartialDeep<Protocol_Credential> & {
   isRecipient?: boolean;

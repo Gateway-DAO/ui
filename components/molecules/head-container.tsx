@@ -2,7 +2,7 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 
 import { BASE_URL } from '@/constants/config';
-import { SEOFavicon, SEOSocial } from '../atoms/seo';
+import { SEOFavicon, SEOSocial } from '@/components/atoms/seo';
 
 type HeadContainerProps = {
   title?: string;

@@ -15,7 +15,7 @@ import {
   Complete_TaskMutation,
 } from '@/services/hasura/types';
 import { ManualTaskEventType } from '../../../../../../../types/tasks';
-import { LoadingButton } from '../../../../../../atoms/loading-button';
+import { LoadingButton } from '@/components/atoms/loading-button';
 import { InterationList } from './components/interation-list';
 
 export type SubmissionDetailProps = {

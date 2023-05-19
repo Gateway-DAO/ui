@@ -4,7 +4,7 @@ import { brandColors } from '@/theme';
 
 import { Stack, Typography } from '@mui/material';
 
-import Loading from '../../../atoms/loading';
+import Loading from '@/components/atoms/loading';
 
 type Props = {
   isLoading?: boolean;

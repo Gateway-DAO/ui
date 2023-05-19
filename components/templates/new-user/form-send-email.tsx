@@ -4,7 +4,7 @@ import { useFormContext } from 'react-hook-form';
 
 import { Box, Stack, TextField, Typography } from '@mui/material';
 
-import { LoadingButton } from '../../atoms/loading-button';
+import { LoadingButton } from '@/components/atoms/loading-button';
 import { NewUserSchema } from './schema';
 
 type Props = {

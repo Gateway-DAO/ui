@@ -7,7 +7,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
-import Loading from '../../atoms/loading';
+import Loading from '@/components/atoms/loading';
 
 type Props = {
   openLoadingModal: boolean;

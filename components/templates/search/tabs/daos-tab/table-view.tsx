@@ -13,7 +13,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 
 import { Daos } from '@/services/hasura/types';
-import { FollowButtonDAO } from '../../../../atoms/follow-button-dao';
+import { FollowButtonDAO } from '@/components/atoms/follow-button-dao';
 
 type Props = {
   daos: PartialDeep<Daos>[];

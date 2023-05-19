@@ -5,7 +5,7 @@ import { useLocalStorage } from 'react-use';
 
 import { Paper, Stack, Typography } from '@mui/material';
 
-import { CheckedButton } from '../../../../atoms/check-button';
+import { CheckedButton } from '@/components/atoms/check-button';
 
 export type AccountHandlerConnection = {
   isConnected: boolean;

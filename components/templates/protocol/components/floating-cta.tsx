@@ -14,7 +14,7 @@ import { Box } from '@mui/system';
 
 import { Credential } from '@/services/gateway-protocol/types';
 import { useCreateQrCode } from '../../../../utils/qr-code/qr-code';
-import ShareOn from '../../../atoms/share-on';
+import ShareOn from '@/components/atoms/share-on';
 import ModalContent from '../../../molecules/modal/modal-basic';
 import { taskErrorMessages } from '../../../organisms/tasks/task-error-messages';
 import { useProtocolTemplateContext } from '../context';

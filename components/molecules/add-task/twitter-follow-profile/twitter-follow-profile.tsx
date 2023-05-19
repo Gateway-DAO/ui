@@ -20,8 +20,8 @@ import {
 } from '@mui/material';
 
 import { useAuth } from '@/providers/auth';
-import { CircleWithNumber } from '../../../atoms/circle-with-number';
-import { TaskIcon } from '../../../atoms/task-icon';
+import { CircleWithNumber } from '@/components/atoms/circle-with-number';
+import { TaskIcon } from '@/components/atoms/task-icon';
 import {
   CreateGateData,
   TwitterFollowData,

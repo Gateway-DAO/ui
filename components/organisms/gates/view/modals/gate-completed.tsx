@@ -15,7 +15,7 @@ import { query } from '@/constants/queries';
 import { useMintData } from '@/hooks/use-mint-data';
 import { useAuth } from '@/providers/auth';
 import { Gates } from '@/services/hasura/types';
-import { ShareButtonFn } from '../../../../atoms/share-btn-fn';
+import { ShareButtonFn } from '@/components/atoms/share-btn-fn';
 import GateMintButton from '../../../../molecules/gate-mint-button';
 import { GatesCard } from '../../../../molecules/gates-card';
 import { MintDialogProtocol } from '../../../../molecules/mint-dialog-protocol';

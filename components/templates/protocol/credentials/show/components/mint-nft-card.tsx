@@ -19,7 +19,7 @@ import {
   PolygonIcon,
   EthereumIcon,
   SolanaIcon,
-} from '../../../../../atoms/icons';
+} from '@/components/atoms/icons';
 
 type Chains = 'Solana' | 'Ethereum' | 'Polygon'; // TODO: Remove
 

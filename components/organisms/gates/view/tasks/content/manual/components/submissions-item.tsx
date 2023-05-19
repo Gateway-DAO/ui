@@ -19,7 +19,7 @@ import {
 
 import { useAuth } from '@/providers/auth';
 import { Task_Progress } from '@/services/hasura/types';
-import { AvatarFile } from '../../../../../../../atoms/avatar-file';
+import { AvatarFile } from '@/components/atoms/avatar-file';
 
 export type SubmissionsItemProps = {
   progress: PartialDeep<Task_Progress>;

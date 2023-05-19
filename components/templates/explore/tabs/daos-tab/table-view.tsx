@@ -14,8 +14,8 @@ import TableRow from '@mui/material/TableRow';
 import { categoriesMap } from '@/constants/dao';
 import { ROUTES } from '@/constants/routes';
 import { useAuth } from '@/providers/auth';
-import { AvatarFile } from '../../../../atoms/avatar-file';
-import { FollowButtonDAO } from '../../../../atoms/follow-button-dao';
+import { AvatarFile } from '@/components/atoms/avatar-file';
+import { FollowButtonDAO } from '@/components/atoms/follow-button-dao';
 import { ExploreProps } from '../../types';
 
 // TODO: make it generic

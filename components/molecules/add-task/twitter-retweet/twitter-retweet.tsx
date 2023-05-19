@@ -19,7 +19,7 @@ import {
 } from '@mui/material';
 
 import { useAuth } from '@/providers/auth';
-import { TaskIcon } from '../../../atoms/task-icon';
+import { TaskIcon } from '@/components/atoms/task-icon';
 import {
   CreateGateData,
   TwitterRetweetDataError,

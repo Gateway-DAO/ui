@@ -16,7 +16,7 @@ import {
 } from '@mui/material';
 
 import { gqlAnonMethods } from '@/services/hasura/api';
-import { CenteredLoader } from '../../../../atoms/centered-loader';
+import { CenteredLoader } from '@/components/atoms/centered-loader';
 import { UserCell } from './user-cell';
 
 const offset = 0;

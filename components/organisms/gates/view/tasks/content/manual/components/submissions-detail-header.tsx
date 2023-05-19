@@ -13,8 +13,8 @@ import {
   Task_Progress,
 } from '@/services/hasura/types';
 import { ManualTaskEventType } from '../../../../../../../../types/tasks';
-import { AvatarFile } from '../../../../../../../atoms/avatar-file';
-import { LoadingButton } from '../../../../../../../atoms/loading-button';
+import { AvatarFile } from '@/components/atoms/avatar-file';
+import { LoadingButton } from '@/components/atoms/loading-button';
 
 type Props = {
   progress: PartialDeep<Task_Progress>;

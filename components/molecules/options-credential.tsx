@@ -12,7 +12,7 @@ import { useAuth } from '@/providers/auth';
 import { Gates } from '@/services/hasura/types';
 import { queryClient } from '@/services/query-client';
 import { isDaoAdmin } from '../../utils/is-dao-admin';
-import MorePopover from '../atoms/more-popover';
+import MorePopover from '@/components/atoms/more-popover';
 import ConfirmDialog from '../organisms/confirm-dialog/confirm-dialog';
 
 type Props = {

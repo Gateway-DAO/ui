@@ -22,7 +22,7 @@ import {
   Loyalty_Program,
   Users,
 } from '@/services/hasura/types';
-import { EmptyCard } from '../../../../atoms/empty-card';
+import { EmptyCard } from '@/components/atoms/empty-card';
 import { GatesCard } from '../../../../molecules/gates-card';
 import { LoyaltyProgramCard } from '../../../../molecules/loyalty-program-card/loyalty-program-card';
 import { SectionWithSliderResponsive } from '../../../../molecules/sections';

@@ -11,8 +11,8 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 
 import { ROUTES } from '@/constants/routes';
 import { useAuth } from '@/providers/auth';
-import { AdminBadge } from '../../../atoms/admin-badge';
-import { AvatarFile } from '../../../atoms/avatar-file';
+import { AdminBadge } from '@/components/atoms/admin-badge';
+import { AvatarFile } from '@/components/atoms/avatar-file';
 import { DashboardTemplateProps } from '../types';
 import { DaosList } from './daos-list';
 import { DrawerContainer } from './drawer-container';

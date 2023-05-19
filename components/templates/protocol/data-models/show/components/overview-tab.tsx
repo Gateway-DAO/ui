@@ -26,7 +26,7 @@ import {
   GetDataModelStatsQuery,
   PermissionType,
 } from '@/services/gateway-protocol/types';
-import ExternalLink from '../../../../../atoms/external-link';
+import ExternalLink from '@/components/atoms/external-link';
 import ModalRight from '../../../../../molecules/modal-right';
 
 import DashboardCard from '../../../components/dashboard-card';

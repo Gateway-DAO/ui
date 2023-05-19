@@ -12,8 +12,8 @@ import { Gates } from '@/services/hasura/types';
 import {
   SuccessfullyIcon,
   SuccessfullyRoundedIcon,
-} from '../../../atoms/icons';
-import Loading from '../../../atoms/loading';
+} from '@/components/atoms/icons';
+import Loading from '@/components/atoms/loading';
 
 type Props = {
   gate: PartialDeep<Gates>;

@@ -6,7 +6,7 @@ import { useToggle } from 'react-use';
 import { Stack, TextField, Typography } from '@mui/material';
 
 import { useCountdown } from '@/hooks/use-countdown';
-import { LoadingButton } from '../../../../atoms/loading-button';
+import { LoadingButton } from '@/components/atoms/loading-button';
 import { TokenConfirmationSchema, SendEmailSchema } from '../schema';
 
 type Props = {

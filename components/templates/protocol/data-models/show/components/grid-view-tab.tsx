@@ -11,7 +11,7 @@ import {
   GatewayProtocolSDKTypes,
 } from '@/services/gateway-protocol/api';
 import { DataModel } from '@/services/gateway-protocol/types';
-import Loading from '../../../../../atoms/loading';
+import Loading from '@/components/atoms/loading';
 import DataGrid from '../../../../../organisms/data-grid/data-grid';
 
 type Props = {

@@ -12,7 +12,7 @@ import { Navbar } from '../../../components/organisms/navbar/navbar';
 import { ROUTES } from '@/constants/routes';
 import { generateImageUrl } from '@/hooks/use-file';
 import { useAuth } from '@/providers/auth';
-import { AvatarFile } from '../../atoms/avatar-file';
+import { AvatarFile } from '@/components/atoms/avatar-file';
 import { SocialButtons } from '../../organisms/social-buttons';
 import { IssuedTab, ReceivedTab } from './tabs';
 import { Earned } from './tabs/Earned';

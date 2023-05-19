@@ -28,7 +28,7 @@ import { query } from '@/constants/queries';
 import { useAuth } from '@/providers/auth';
 import { gatewayProtocolSDK } from '@/services/gateway-protocol/api';
 import { PermissionType } from '@/services/gateway-protocol/types';
-import { TabPanel } from '../../../../atoms/tabs';
+import { TabPanel } from '@/components/atoms/tabs';
 import { HeadContainer } from '../../../../molecules/head-container';
 import ModalRight from '../../../../molecules/modal-right';
 import ConfirmDialog from '../../../../organisms/confirm-dialog/confirm-dialog';

@@ -9,7 +9,7 @@ import {
   DialogTitle,
 } from '@mui/material';
 
-import { AnimatedMessage } from '../atoms/animated-message';
+import { AnimatedMessage } from '@/components/atoms/animated-message';
 
 export type DialogStatuses = 'loading' | 'error' | 'success' | 'idle' | 'share';
 

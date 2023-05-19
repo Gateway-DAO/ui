@@ -11,7 +11,7 @@ import { ArrowBack } from '@mui/icons-material';
 import { Avatar, Box, IconButton, Stack, Typography } from '@mui/material';
 
 import { Daos } from '@/services/hasura/types';
-import { LoadingButton } from '../../atoms/loading-button';
+import { LoadingButton } from '@/components/atoms/loading-button';
 import { AboutForm } from './form/form';
 import { schema, NewDAOSchema, defaultValues } from './schema';
 

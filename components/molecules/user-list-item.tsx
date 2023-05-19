@@ -17,11 +17,11 @@ import {
 import { ROUTES } from '@/constants/routes';
 import { useAuth } from '@/providers/auth';
 import { Users } from '@/services/hasura/types';
-import { AvatarFile } from '../atoms/avatar-file';
+import { AvatarFile } from '@/components/atoms/avatar-file';
 
 const FollowButtonUser = dynamic<any>(
   () =>
-    import('../atoms/follow-button-user').then((mod) => mod.FollowButtonUser),
+    import('@/components/atoms/follow-button-user').then((mod) => mod.FollowButtonUser),
   {
     ssr: false,
   }

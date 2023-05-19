@@ -40,10 +40,10 @@ import {
 } from '@/services/gateway-protocol/api';
 import { MintCredentialMutationVariables } from '@/services/gateway-protocol/types';
 import { gqlAnonMethods } from '@/services/hasura/api';
-import { AvatarFile } from '../../atoms/avatar-file';
-import { LoadingButton } from '../../atoms/loading-button';
-import { ReadMore } from '../../atoms/read-more-less';
-import { ShareButton } from '../../atoms/share-button';
+import { AvatarFile } from '@/components/atoms/avatar-file';
+import { LoadingButton } from '@/components/atoms/loading-button';
+import { ReadMore } from '@/components/atoms/read-more-less';
+import { ShareButton } from '@/components/atoms/share-button';
 import { TokenFilled } from '../../molecules/mint-card/assets/token-filled';
 import { HolderDialog } from '../../organisms/holder-dialog';
 import { ClientNav } from '../../organisms/navbar/client-nav';
