@@ -1,6 +1,12 @@
 import useTranslation from 'next-translate/useTranslation';
 import { useEffect, useState } from 'react';
 
+import { TaskIcon } from '@/components/atoms/task-icon';
+import GithubDataCard from '@/components/organisms/tasks/github-data-card';
+import {
+  CreateGateData,
+  GithubContributeDataError,
+} from '@/components/templates/create-gate/schema';
 import { useMutation } from '@tanstack/react-query';
 import { useFormContext } from 'react-hook-form';
 
@@ -18,12 +24,6 @@ import {
   Typography,
 } from '@mui/material';
 
-import { TaskIcon } from '@/components/atoms/task-icon';
-import GithubDataCard from '@/components/organisms/tasks/github-data-card';
-import {
-  CreateGateData,
-  GithubContributeDataError,
-} from '@/components/templates/create-gate/schema';
 import TextFieldWithEmoji from '../../form/TextFieldWithEmoji/TextFieldWithEmoji';
 
 type GithubPRTaskProps = {

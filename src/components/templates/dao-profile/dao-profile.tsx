@@ -1,13 +1,13 @@
 import useTranslation from 'next-translate/useTranslation';
 import { useMemo } from 'react';
 
+import { a11yTabProps, TabPanel, useTab } from '@/components/atoms/tabs';
+import { IColumnGrid } from '@/components/organisms/data-grid/data-grid';
+import { query } from '@/constants/queries';
 import { TOKENS } from '@/theme';
 
 import { Box, Tabs, Tab } from '@mui/material';
 
-import { query } from '@/constants/queries';
-import { a11yTabProps, TabPanel, useTab } from '@/components/atoms/tabs';
-import { IColumnGrid } from '@/components/organisms/data-grid/data-grid';
 import { useDaoProfile } from './context';
 import { DaoHeader } from './dao-header';
 import { GatesTab, OverviewTab } from './tabs';

@@ -1,8 +1,7 @@
+import { Scalars } from '@/services/gateway-protocol/types';
 import { Maybe } from 'graphql/jsutils/Maybe';
 
 import { Chip, Stack } from '@mui/material';
-
-import { Scalars } from '@/services/gateway-protocol/types';
 
 type Props = {
   tags: Maybe<Array<Scalars['String']>>;

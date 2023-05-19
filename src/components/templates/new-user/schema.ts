@@ -1,7 +1,6 @@
+import { Users } from '@/services/hasura/types';
 import { PartialDeep } from 'type-fest';
 import { object, string, SchemaOf } from 'yup';
-
-import { Users } from '@/services/hasura/types';
 
 export type NewUserSchema = Required<Pick<Users, 'username' | 'email_address'>>;
 export type TokenConfirmationSchema = Required<Pick<any, 'token'>>;

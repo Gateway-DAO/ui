@@ -1,6 +1,6 @@
+import { Gates, Loyalty_Program } from '@/services/hasura/types';
 import { PartialDeep } from 'type-fest/source/partial-deep';
 
-import { Gates, Loyalty_Program } from '@/services/hasura/types';
 import { GateViewTasks } from '../gate-view/gate-view-tasks';
 import LoyaltyProgramTemplate from './LoyaltyProgramTemplate';
 import { LoyaltySidebar } from './components/LoyaltySidebar';

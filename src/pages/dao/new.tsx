@@ -1,14 +1,10 @@
 import { useRouter } from 'next/router';
 
-import { useMutation } from '@tanstack/react-query';
-
-import {
-  NewDAOTemplate,
-  NewDAOSchema,
-} from '@/components/templates/dao-new';
+import { NewDAOTemplate, NewDAOSchema } from '@/components/templates/dao-new';
 import { ROUTES } from '@/constants/routes';
 import { useUploadImage } from '@/hooks/use-upload-image';
 import { useAuth } from '@/providers/auth';
+import { useMutation } from '@tanstack/react-query';
 
 export default function CreateDAO() {
   const uploadImage = useUploadImage();
@@ -41,17 +37,18 @@ export default function CreateDAO() {
         background_id: bg.upload_image.id,
         socials: socials as any,
       });
-    }, {
-     async onSuccess(data) {
+    },
+    {
+      async onSuccess(data) {
         const dao = data.insert_daos_one;
         const followingDaoObject = { dao_id: dao.id, dao };
-         onUpdateMe((oldMe) => ({
+        onUpdateMe((oldMe) => ({
           ...oldMe,
           following_dao: oldMe.following_dao
             ? [...oldMe.following_dao, followingDaoObject]
             : [followingDaoObject],
         }));
-       await router.replace(
+        await router.replace(
           ROUTES.DAO_PROFILE.replace('[slug]', data.insert_daos_one.slug)
         );
       },

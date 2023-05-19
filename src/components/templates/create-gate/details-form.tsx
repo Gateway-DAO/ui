@@ -1,12 +1,5 @@
 import { useMemo, useRef, useState, useEffect } from 'react';
 
-import { EmojiStyle } from 'emoji-picker-react';
-import { useFormContext } from 'react-hook-form';
-
-import { InputAdornment, Stack, TextField } from '@mui/material';
-
-import { CATEGORIES } from '@/constants/gate';
-import { useAuth } from '@/providers/auth';
 import CategoriesInput from '@/components/molecules/categories-input';
 import CreatedByInput from '@/components/molecules/creators-input';
 import {
@@ -14,6 +7,13 @@ import {
   EmojiPickerProps,
 } from '@/components/molecules/form/emoji-picker';
 import SkillsInput from '@/components/molecules/skills-input';
+import { CATEGORIES } from '@/constants/gate';
+import { useAuth } from '@/providers/auth';
+import { EmojiStyle } from 'emoji-picker-react';
+import { useFormContext } from 'react-hook-form';
+
+import { InputAdornment, Stack, TextField } from '@mui/material';
+
 import { CreateGateData } from './schema';
 
 export function GateDetailsForm() {

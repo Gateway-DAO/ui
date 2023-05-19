@@ -1,11 +1,14 @@
 import Link from 'next/link';
 import { useEffect } from 'react';
 
+import { AvatarFile } from '@/components/atoms/avatar-file';
+import { ROUTES } from '@/constants/routes';
 import { useMenu } from '@/hooks/use-menu';
+import { useConnectedWallet } from '@/hooks/wallet/use-connected-wallet';
+import { useAuth } from '@/providers/auth';
+import { theme } from '@/theme';
 import { useSnackbar } from 'notistack';
 import { useCopyToClipboard } from 'react-use';
-
-import { theme } from '@/theme';
 
 import { ArrowDropDown } from '@mui/icons-material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
@@ -21,11 +24,6 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
-
-import { ROUTES } from '@/constants/routes';
-import { useConnectedWallet } from '@/hooks/wallet/use-connected-wallet';
-import { useAuth } from '@/providers/auth';
-import { AvatarFile } from '@/components/atoms/avatar-file';
 
 /* TODO: Refactor */
 

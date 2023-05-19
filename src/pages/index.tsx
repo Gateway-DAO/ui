@@ -2,8 +2,6 @@ import useTranslation from 'next-translate/useTranslation';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
-import { Button } from '@mui/material';
-
 import { HeadContainer } from '@/components/molecules/head-container';
 import { LandingTemplate } from '@/components/templates/landing';
 import { FeaturedProps } from '@/components/templates/landing/featured/types';
@@ -14,6 +12,8 @@ import { ProductShowProps } from '@/components/templates/landing/product-show/ty
 import { ScheduleDemoProps } from '@/components/templates/landing/schedule-demo/types';
 import { ROUTES } from '@/constants/routes';
 import { useAuth } from '@/providers/auth';
+
+import { Button } from '@mui/material';
 
 export default function Index() {
   const router = useRouter();

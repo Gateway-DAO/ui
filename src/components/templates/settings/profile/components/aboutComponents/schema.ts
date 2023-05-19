@@ -1,6 +1,5 @@
-import { object, string, SchemaOf } from 'yup';
-
 import { Users } from '@/services/hasura/types';
+import { object, string, SchemaOf } from 'yup';
 
 export type ProfileSchema = Pick<Users, 'name' | 'username'>;
 

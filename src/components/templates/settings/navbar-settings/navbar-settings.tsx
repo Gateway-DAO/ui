@@ -2,6 +2,7 @@ import useTranslation from 'next-translate/useTranslation';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
+import { ROUTES } from '@/constants/routes';
 import { EmotionJSX } from '@emotion/react/types/jsx-namespace';
 import clsx from 'clsx';
 
@@ -23,8 +24,6 @@ import {
 } from '@mui/material';
 import { OverrideProps } from '@mui/material/OverridableComponent';
 import Typography from '@mui/material/Typography';
-
-import { ROUTES } from '@/constants/routes';
 
 type MenuSettingsItem = {
   key: string;

@@ -1,17 +1,15 @@
 import { useEffect } from 'react';
 
-import { useInfiniteQuery } from '@tanstack/react-query';
-import { PartialDeep } from 'type-fest';
-
-import { TOKENS } from '@/theme';
-
-import { Box, Stack } from '@mui/material';
-
+import Loading from '@/components/atoms/loading';
+import CredentialCard from '@/components/molecules/credential-card';
 import { query } from '@/constants/queries';
 import { gqlAnonMethods } from '@/services/hasura/api';
 import { Users } from '@/services/hasura/types';
-import Loading from '@/components/atoms/loading';
-import CredentialCard from '@/components/molecules/credential-card';
+import { TOKENS } from '@/theme';
+import { useInfiniteQuery } from '@tanstack/react-query';
+import { PartialDeep } from 'type-fest';
+
+import { Box, Stack } from '@mui/material';
 
 type Props = {
   user: PartialDeep<Users>;

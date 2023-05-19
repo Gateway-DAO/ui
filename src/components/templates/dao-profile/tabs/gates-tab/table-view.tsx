@@ -1,6 +1,7 @@
-import { PartialDeep } from 'type-fest';
-
+import GateRow from '@/components/molecules/gate-row';
+import { Gates, Loyalty_Program } from '@/services/hasura/types';
 import { TOKENS } from '@/theme';
+import { PartialDeep } from 'type-fest';
 
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -8,9 +9,6 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-
-import { Gates, Loyalty_Program } from '@/services/hasura/types';
-import GateRow from '@/components/molecules/gate-row';
 
 // TODO: make it generic
 // TODO: Fix Gate name column width

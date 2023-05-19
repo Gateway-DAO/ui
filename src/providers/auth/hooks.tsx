@@ -4,6 +4,10 @@ import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
+import { ROUTES } from '@/constants/routes';
+import { gatewayProtocolAuthSDK } from '@/services/gateway-protocol/api';
+import { gqlAnonMethods, gqlMethods } from '@/services/hasura/api';
+import { Protocol_Api_Chain } from '@/services/hasura/types';
 import { useWallet } from '@solana/wallet-adapter-react';
 import {
   useMutation,
@@ -16,10 +20,6 @@ import { useSnackbar } from 'notistack';
 import { PartialDeep } from 'type-fest';
 import { useAccount, useDisconnect, useSignMessage } from 'wagmi';
 
-import { ROUTES } from '@/constants/routes';
-import { gatewayProtocolAuthSDK } from '@/services/gateway-protocol/api';
-import { gqlAnonMethods, gqlMethods } from '@/services/hasura/api';
-import { Protocol_Api_Chain } from '@/services/hasura/types';
 import { ErrorResponse } from '../../types/graphql';
 import { SessionUser } from '../../types/user';
 import { AuthStep } from './types';

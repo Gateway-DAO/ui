@@ -1,19 +1,36 @@
 import useTranslation from 'next-translate/useTranslation';
+import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
-import { useMutation, useQuery } from '@tanstack/react-query';
-import { useQueryClient } from '@tanstack/react-query';
-import dynamic from 'next/dynamic';
 const ArcProgress = dynamic(() => import('react-arc-progress'), {
   ssr: false,
 });
 
+import { AvatarFile } from '@/components/atoms/avatar-file';
+import { LoadingButton } from '@/components/atoms/loading-button';
+import { ReadMore } from '@/components/atoms/read-more-less';
+import { ShareButton } from '@/components/atoms/share-button';
+import { TokenFilled } from '@/components/molecules/mint-card/assets/token-filled';
+import { HolderDialog } from '@/components/organisms/holder-dialog';
+import { ClientNav } from '@/components/organisms/navbar/client-nav';
+import { ROUTES } from '@/constants/routes';
+import { useAuth } from '@/providers/auth';
+import {
+  gatewayProtocolAuthSDK,
+  gatewayProtocolSDK,
+} from '@/services/gateway-protocol/api';
+import { MintCredentialMutationVariables } from '@/services/gateway-protocol/types';
+import { gqlAnonMethods } from '@/services/hasura/api';
 import { TOKENS } from '@/theme';
+import { theme } from '@/theme';
+import { useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 
 import { InfoOutlined } from '@mui/icons-material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { Link as MUILink } from '@mui/material';
 import {
   Avatar,
   AvatarGroup,
@@ -30,25 +47,8 @@ import {
   styled,
   useMediaQuery,
 } from '@mui/material';
-import { Link as MUILink } from '@mui/material';
 
-import { ROUTES } from '@/constants/routes';
-import { useAuth } from '@/providers/auth';
-import {
-  gatewayProtocolAuthSDK,
-  gatewayProtocolSDK,
-} from '@/services/gateway-protocol/api';
-import { MintCredentialMutationVariables } from '@/services/gateway-protocol/types';
-import { gqlAnonMethods } from '@/services/hasura/api';
-import { AvatarFile } from '@/components/atoms/avatar-file';
-import { LoadingButton } from '@/components/atoms/loading-button';
-import { ReadMore } from '@/components/atoms/read-more-less';
-import { ShareButton } from '@/components/atoms/share-button';
-import { TokenFilled } from '@/components/molecules/mint-card/assets/token-filled';
-import { HolderDialog } from '@/components/organisms/holder-dialog';
-import { ClientNav } from '@/components/organisms/navbar/client-nav';
 import LoadingModal from './LoadingModal';
-import { theme } from '@/theme';
 
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,

@@ -1,6 +1,8 @@
 import useTranslation from 'next-translate/useTranslation';
 import { useState } from 'react';
 
+import { LoadingButton } from '@/components/atoms/loading-button';
+
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import {
   Checkbox,
@@ -13,8 +15,6 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-
-import { LoadingButton } from '@/components/atoms/loading-button';
 
 const QuizContent = ({
   data,

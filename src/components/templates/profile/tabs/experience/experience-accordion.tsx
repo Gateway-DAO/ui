@@ -1,17 +1,15 @@
+import { AvatarFile } from '@/components/atoms/avatar-file';
+import { MintCard } from '@/components/molecules/mint-card';
+import { Experiences } from '@/services/hasura/types';
+import { theme, TOKENS } from '@/theme';
 import { DateTime } from 'luxon';
 import { PartialDeep } from 'type-fest';
-
-import { theme, TOKENS } from '@/theme';
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Stack, Typography, Divider, Box, Avatar } from '@mui/material';
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
-
-import { AvatarFile } from '@/components/atoms/avatar-file';
-import { Experiences } from '@/services/hasura/types';
-import { MintCard } from '@/components/molecules/mint-card';
 
 type Props = {
   experience: PartialDeep<Experiences>;

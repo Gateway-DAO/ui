@@ -1,13 +1,12 @@
 import useTranslation from 'next-translate/useTranslation';
 
-import { PartialDeep } from 'type-fest/source/partial-deep';
-
+import { Users } from '@/services/hasura/types';
 import { brandColors, TOKENS } from '@/theme';
+import { SessionUser } from '@/types/user';
+import { PartialDeep } from 'type-fest/source/partial-deep';
 
 import { alpha, Box, Stack, Typography } from '@mui/material';
 
-import { Users } from '@/services/hasura/types';
-import { SessionUser } from '@/types/user';
 import { ExperienceAccordion } from './experience';
 
 type Props = {

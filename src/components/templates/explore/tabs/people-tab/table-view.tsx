@@ -1,6 +1,9 @@
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 
+import { AvatarFile } from '@/components/atoms/avatar-file';
+import { ROUTES } from '@/constants/routes';
+import { useAuth } from '@/providers/auth';
 import { TOKENS } from '@/theme';
 
 import { Box, Stack, Typography } from '@mui/material';
@@ -11,9 +14,6 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 
-import { ROUTES } from '@/constants/routes';
-import { useAuth } from '@/providers/auth';
-import { AvatarFile } from '@/components/atoms/avatar-file';
 import { ExploreProps } from '../../types';
 
 const FollowButtonUser = dynamic<any>(

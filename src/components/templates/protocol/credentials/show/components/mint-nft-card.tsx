@@ -1,7 +1,14 @@
 import useTranslation from 'next-translate/useTranslation';
 
+import {
+  PolygonIcon,
+  EthereumIcon,
+  SolanaIcon,
+} from '@/components/atoms/icons';
+import { Chain } from '@/services/gateway-protocol/types';
 import { brandColors } from '@/theme';
 import { limitCharsCentered } from '@/utils/string';
+import { getExplorer, getSolanaExplorer } from '@/utils/web3';
 
 import {
   alpha,
@@ -12,14 +19,6 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-
-import { Chain } from '@/services/gateway-protocol/types';
-import { getExplorer, getSolanaExplorer } from '@/utils/web3';
-import {
-  PolygonIcon,
-  EthereumIcon,
-  SolanaIcon,
-} from '@/components/atoms/icons';
 
 type Chains = 'Solana' | 'Ethereum' | 'Polygon'; // TODO: Remove
 

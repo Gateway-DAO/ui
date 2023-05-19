@@ -1,7 +1,5 @@
 import { useRouter } from 'next/router';
 
-import { useMutation } from '@tanstack/react-query';
-
 import { HeadContainer } from '@/components/molecules/head-container';
 import { DashboardTemplate } from '@/components/templates/dashboard';
 import { SettingsTemplate } from '@/components/templates/settings';
@@ -11,6 +9,7 @@ import { ROUTES } from '@/constants/routes';
 import { generateImageUrl } from '@/hooks/use-file';
 import { useUploadImage } from '@/hooks/use-upload-image';
 import { useAuth } from '@/providers/auth';
+import { useMutation } from '@tanstack/react-query';
 
 export default function PublicProfileSettingsPage() {
   const uploadImage = useUploadImage();

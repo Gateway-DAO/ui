@@ -2,6 +2,15 @@ import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
 import { useEffect, useMemo, useState } from 'react';
 
+import ExternalLink from '@/components/atoms/external-link';
+import ModalRight from '@/components/molecules/modal-right';
+import ConfirmDialog from '@/components/organisms/confirm-dialog/confirm-dialog';
+import { useAuth } from '@/providers/auth';
+import {
+  DataModel,
+  GetDataModelStatsQuery,
+  PermissionType,
+} from '@/services/gateway-protocol/types';
 import { GetDmStatsUntilDayBeforeQuery } from '@/services/hasura/types';
 import { theme } from '@/theme';
 import { brandColors } from '@/theme';
@@ -18,16 +27,6 @@ import {
   alpha,
   Box,
 } from '@mui/material';
-
-import ConfirmDialog from '@/components/organisms/confirm-dialog/confirm-dialog';
-import { useAuth } from '@/providers/auth';
-import {
-  DataModel,
-  GetDataModelStatsQuery,
-  PermissionType,
-} from '@/services/gateway-protocol/types';
-import ExternalLink from '@/components/atoms/external-link';
-import ModalRight from '@/components/molecules/modal-right';
 
 import DashboardCard from '../../../components/dashboard-card';
 import CredentialProtocolCreate from '../../../credentials/create/credential-create';

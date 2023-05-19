@@ -1,8 +1,8 @@
 import useTranslation from 'next-translate/useTranslation';
 
+import { SolanaColorIcon } from '@/components/atoms/icons';
 import { useConnectModal } from '@rainbow-me/rainbowkit';
 import { useWalletModal } from '@solana/wallet-adapter-react-ui';
-import { SolanaColorIcon } from '@/components/atoms/icons';
 import { FaEthereum } from 'react-icons/fa';
 
 import {

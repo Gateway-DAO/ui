@@ -4,9 +4,21 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { ComponentType, useMemo, useState } from 'react';
 
-import { PartialDeep } from 'type-fest/source/partial-deep';
-
+import { AvatarFile } from '@/components/atoms/avatar-file';
+import { ReadMore } from '@/components/atoms/read-more-less';
+import { ShareButton } from '@/components/atoms/share-button';
+import GateMintButton from '@/components/molecules/gate-mint-button';
+import { MintDialogProtocol } from '@/components/molecules/mint-dialog-protocol';
+import ModalShareCredential from '@/components/molecules/modal/modal-share-credential';
+import { OptionsCredential } from '@/components/molecules/options-credential';
+import type { Props as HolderDialogProps } from '@/components/organisms/holder-dialog';
+import { ROUTES } from '@/constants/routes';
+import { useMintData } from '@/hooks/use-mint-data';
+import { useAuth } from '@/providers/auth';
+import { Gates } from '@/services/hasura/types';
 import { TOKENS } from '@/theme';
+import { isDaoAdmin } from '@/utils/is-dao-admin';
+import { PartialDeep } from 'type-fest/source/partial-deep';
 
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import {
@@ -22,28 +34,20 @@ import {
   Button,
 } from '@mui/material';
 
-import { ROUTES } from '@/constants/routes';
-import { useMintData } from '@/hooks/use-mint-data';
-import { useAuth } from '@/providers/auth';
-import { Gates } from '@/services/hasura/types';
-import { isDaoAdmin } from '@/utils/is-dao-admin';
-import { AvatarFile } from '@/components/atoms/avatar-file';
-import { ReadMore } from '@/components/atoms/read-more-less';
-import { ShareButton } from '@/components/atoms/share-button';
-import GateMintButton from '@/components/molecules/gate-mint-button';
-import { MintDialogProtocol } from '@/components/molecules/mint-dialog-protocol';
-import ModalShareCredential from '@/components/molecules/modal/modal-share-credential';
-import { OptionsCredential } from '@/components/molecules/options-credential';
-import type { Props as HolderDialogProps } from '@/components/organisms/holder-dialog';
-
 const HolderDialog: ComponentType<HolderDialogProps> = dynamic(
-  () => import('@/components/organisms/holder-dialog').then((mod) => mod.HolderDialog),
+  () =>
+    import('@/components/organisms/holder-dialog').then(
+      (mod) => mod.HolderDialog
+    ),
   { ssr: false }
 );
 
-const GateStateChip = dynamic(() => import('@/components/atoms/gate-state-chip'), {
-  ssr: false,
-});
+const GateStateChip = dynamic(
+  () => import('@/components/atoms/gate-state-chip'),
+  {
+    ssr: false,
+  }
+);
 
 type GateViewSidebarProps = {
   gateProps: PartialDeep<Gates>;

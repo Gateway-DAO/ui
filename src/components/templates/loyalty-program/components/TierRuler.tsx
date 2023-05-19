@@ -1,10 +1,8 @@
+import { Loyalty_Tier } from '@/services/hasura/types';
+import { brandColors } from '@/theme';
 import { PartialDeep } from 'type-fest/source/partial-deep';
 
-import { brandColors } from '@/theme';
-
 import { Box, Stack, Typography, alpha } from '@mui/material';
-
-import { Loyalty_Tier } from '@/services/hasura/types';
 
 type Props = {
   tiers: PartialDeep<Loyalty_Tier>[];

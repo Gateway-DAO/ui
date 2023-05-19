@@ -1,5 +1,7 @@
 import useTranslation from 'next-translate/useTranslation';
 
+import { AnimatedMessage } from '@/components/atoms/animated-message';
+
 import { Check, Close, IosShare } from '@mui/icons-material';
 import {
   Box,
@@ -8,8 +10,6 @@ import {
   DialogContent,
   DialogTitle,
 } from '@mui/material';
-
-import { AnimatedMessage } from '@/components/atoms/animated-message';
 
 export type DialogStatuses = 'loading' | 'error' | 'success' | 'idle' | 'share';
 

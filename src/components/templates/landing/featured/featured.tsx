@@ -1,7 +1,8 @@
 import React, { forwardRef, useRef } from 'react';
 
-import { TOKENS } from '@/theme';
 import { MotionBox } from '@/components/atoms/motion-components';
+import { useActiveScroll } from '@/hooks/use-active-scroll';
+import { TOKENS } from '@/theme';
 
 import {
   Box,
@@ -13,7 +14,6 @@ import {
 } from '@mui/material';
 import { OverridableComponent } from '@mui/material/OverridableComponent';
 
-import { useActiveScroll } from '@/hooks/use-active-scroll';
 import { LandingTitleLimiter, ResponsiveImage } from '../styles';
 import Title from '../title';
 import { FeaturedProps } from './types';

@@ -1,9 +1,8 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import React from 'react';
 
-import { SnackbarProvider } from 'notistack';
-
 import { brandColors } from '@/theme';
+import { SnackbarProvider } from 'notistack';
 
 const Notistack = (props) => {
   const notistackRef = React.useRef<SnackbarProvider>();

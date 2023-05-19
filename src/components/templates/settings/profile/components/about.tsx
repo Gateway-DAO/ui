@@ -1,11 +1,11 @@
 import useTranslation from 'next-translate/useTranslation';
 
+import { AvatarBackgroundFields } from '@/components/molecules/form/avatar-background-fields';
+import { SocialLinks } from '@/components/molecules/form/social-links';
 import { useFormContext } from 'react-hook-form';
 
 import { Stack, Typography } from '@mui/material';
 
-import { AvatarBackgroundFields } from '@/components/molecules/form/avatar-background-fields';
-import { SocialLinks } from '@/components/molecules/form/social-links';
 import { EditUserSchema } from '../schema';
 import { Form } from './aboutComponents/form';
 

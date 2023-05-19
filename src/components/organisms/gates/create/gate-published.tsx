@@ -3,6 +3,10 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
+import { GatesCard } from '@/components/molecules/gates-card';
+import { ROUTES } from '@/constants/routes';
+import { useAuth } from '@/providers/auth';
+import { GateQuery, Gates } from '@/services/hasura/types';
 import { useQuery } from '@tanstack/react-query';
 import { PartialDeep } from 'type-fest';
 
@@ -17,11 +21,6 @@ import {
 } from '@mui/material';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-
-import { ROUTES } from '@/constants/routes';
-import { useAuth } from '@/providers/auth';
-import { GateQuery, Gates } from '@/services/hasura/types';
-import { GatesCard } from '@/components/molecules/gates-card';
 
 type GatePublishedModalProps = {
   gate?: PartialDeep<Gates>;

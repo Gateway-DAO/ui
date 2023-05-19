@@ -1,16 +1,15 @@
 import { GetStaticPaths, InferGetStaticPropsType } from 'next';
 import { useRouter } from 'next/router';
 
-import { dehydrate, QueryClient, useQuery } from '@tanstack/react-query';
 import { HeadContainer } from '@/components/molecules/head-container';
-import { useToggle } from 'react-use';
-
 import { MintModal } from '@/components/organisms/mint-modal';
 import { Navbar } from '@/components/organisms/navbar';
 import { CredentialTemplate } from '@/components/templates/credential';
 import { DashboardTemplate } from '@/components/templates/dashboard';
 import { useAuth } from '@/providers/auth';
 import { gqlAnonMethods } from '@/services/hasura/api';
+import { dehydrate, QueryClient, useQuery } from '@tanstack/react-query';
+import { useToggle } from 'react-use';
 
 export default function CredentialPage() {
   const { gqlAuthMethods } = useAuth();

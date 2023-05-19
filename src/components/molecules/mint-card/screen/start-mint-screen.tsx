@@ -1,3 +1,5 @@
+import { useConnectedWallet } from '@/hooks/wallet/use-connected-wallet';
+
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { Avatar, Badge, ListItemAvatar, ListItemButton } from '@mui/material';
 import Box from '@mui/material/Box';
@@ -9,7 +11,6 @@ import ListItemText from '@mui/material/ListItemText';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
-import { useConnectedWallet } from '@/hooks/wallet/use-connected-wallet';
 import { GatewayGrayIcon } from '../assets/gateway-gray';
 import { Subjects } from '../mint-card';
 

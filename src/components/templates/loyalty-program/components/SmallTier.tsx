@@ -1,17 +1,17 @@
 import useTranslation from 'next-translate/useTranslation';
 import Link from 'next/link';
 
+import { ROUTES } from '@/constants/routes';
+import { useActualTier } from '@/hooks/use-actual-tier';
+import { useLoyaltyGateCompleted } from '@/hooks/use-loyalty-gate-completed';
+import { useLoyaltyGatesCompleted } from '@/hooks/use-loyalty-gates-completed';
+import { Gates, Loyalty_Program } from '@/services/hasura/types';
 import { brandColors } from '@/theme';
 import { limitChars } from '@/utils/string';
 import { PartialDeep } from 'type-fest/source/partial-deep';
 
 import { Box, Chip, Stack, Typography, alpha } from '@mui/material';
 
-import { ROUTES } from '@/constants/routes';
-import { useActualTier } from '@/hooks/use-actual-tier';
-import { useLoyaltyGateCompleted } from '@/hooks/use-loyalty-gate-completed';
-import { useLoyaltyGatesCompleted } from '@/hooks/use-loyalty-gates-completed';
-import { Gates, Loyalty_Program } from '@/services/hasura/types';
 import TierInfo from './TierInfo';
 import { TierRuler } from './TierRuler';
 

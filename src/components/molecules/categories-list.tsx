@@ -1,10 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 
+import GateStateChip from '@/components/atoms/gate-state-chip';
 import { useIntersection } from 'react-use';
 
 import { Chip, List, ListItem, Popover, Stack } from '@mui/material';
-
-import GateStateChip from '@/components/atoms/gate-state-chip';
 
 type CategoriesListProps = {
   categories: string[];

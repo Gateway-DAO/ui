@@ -1,5 +1,6 @@
-import { useQuery } from '@tanstack/react-query';
 import { useMenu } from '@/hooks/use-menu';
+import { useAuth } from '@/providers/auth';
+import { useQuery } from '@tanstack/react-query';
 
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { Card, CardHeader } from '@mui/material';
@@ -9,7 +10,6 @@ import IconButton from '@mui/material/IconButton';
 import Popover from '@mui/material/Popover';
 import Tooltip from '@mui/material/Tooltip';
 
-import { useAuth } from '@/providers/auth';
 import { NotificationList } from './list';
 
 export function NavBarNotifications() {

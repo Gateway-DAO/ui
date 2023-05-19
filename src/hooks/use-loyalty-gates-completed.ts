@@ -1,10 +1,9 @@
 import { useMemo } from 'react';
 
-import { useQuery } from '@tanstack/react-query';
-
 import { query } from '@/constants/queries';
 import { useAuth } from '@/providers/auth';
 import { Scalars } from '@/services/hasura/types';
+import { useQuery } from '@tanstack/react-query';
 
 type Props = {
   loyaltyProgramId: Scalars['uuid'];

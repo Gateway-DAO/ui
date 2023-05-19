@@ -1,8 +1,9 @@
 import useTranslation from 'next-translate/useTranslation';
 
-import { PartialDeep } from 'type-fest';
-
+import { FollowButtonDAO } from '@/components/atoms/follow-button-dao';
+import { Daos } from '@/services/hasura/types';
 import { TOKENS } from '@/theme';
+import { PartialDeep } from 'type-fest';
 
 import { Avatar, Box, Chip, Stack, Typography } from '@mui/material';
 import Table from '@mui/material/Table';
@@ -11,9 +12,6 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-
-import { Daos } from '@/services/hasura/types';
-import { FollowButtonDAO } from '@/components/atoms/follow-button-dao';
 
 type Props = {
   daos: PartialDeep<Daos>[];

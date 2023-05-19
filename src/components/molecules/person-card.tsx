@@ -1,20 +1,21 @@
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 
+import { AdminBadge } from '@/components/atoms/admin-badge';
+import { AvatarFile } from '@/components/atoms/avatar-file';
+import { ROUTES } from '@/constants/routes';
+import { useAuth } from '@/providers/auth';
+import { Users } from '@/services/hasura/types';
 import type { PartialDeep } from 'type-fest';
 
 import { Box, CardActionArea, CardHeader } from '@mui/material';
 import MUICard from '@mui/material/Card';
 
-import { ROUTES } from '@/constants/routes';
-import { useAuth } from '@/providers/auth';
-import { Users } from '@/services/hasura/types';
-import { AdminBadge } from '@/components/atoms/admin-badge';
-import { AvatarFile } from '@/components/atoms/avatar-file';
-
 const FollowButtonUser = dynamic<any>(
   () =>
-    import('@/components/atoms/follow-button-user').then((mod) => mod.FollowButtonUser),
+    import('@/components/atoms/follow-button-user').then(
+      (mod) => mod.FollowButtonUser
+    ),
   {
     ssr: false,
   }

@@ -1,14 +1,13 @@
 import useTranslation from 'next-translate/useTranslation';
 import Link from 'next/link';
 
-import { useQuery } from '@tanstack/react-query';
-
-import { Box, CircularProgress, Stack, Typography } from '@mui/material';
-
+import { AvatarFile } from '@/components/atoms/avatar-file';
 import { ROUTES } from '@/constants/routes';
 import { useAuth } from '@/providers/auth';
 import { useTimeAgo } from '@/utils/time';
-import { AvatarFile } from '@/components/atoms/avatar-file';
+import { useQuery } from '@tanstack/react-query';
+
+import { Box, CircularProgress, Stack, Typography } from '@mui/material';
 
 type Props = {
   data: {

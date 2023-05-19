@@ -3,21 +3,20 @@ import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import { useMemo } from 'react';
 
-import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { PartialDeep } from 'type-fest';
-
-import { TOKENS } from '@/theme';
-
-import { Box, Stack, Typography, Tabs, Tab, Chip } from '@mui/material';
-
+import { AvatarFile } from '@/components/atoms/avatar-file';
 import { a11yTabProps, TabPanel, useTab } from '@/components/atoms/tabs';
 import { Navbar } from '@/components/organisms/navbar/navbar';
+import { SocialButtons } from '@/components/organisms/social-buttons';
 import { generateImageUrl } from '@/hooks/use-file';
 import { gatewayProtocolSDK } from '@/services/gateway-protocol/api';
 import { Users } from '@/services/hasura/types';
+import { TOKENS } from '@/theme';
 import { SessionUser } from '@/types/user';
-import { AvatarFile } from '@/components/atoms/avatar-file';
-import { SocialButtons } from '@/components/organisms/social-buttons';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { PartialDeep } from 'type-fest';
+
+import { Box, Stack, Typography, Tabs, Tab, Chip } from '@mui/material';
+
 import { ReceivedTab, IssuedTab } from './tabs';
 import { Earned } from './tabs/Earned';
 

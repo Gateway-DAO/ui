@@ -1,5 +1,9 @@
 import { useEffect, useState } from 'react';
 
+import { CREDENTIAL_ABI } from '@/constants/web3';
+import { useAuth } from '@/providers/auth';
+import { Credentials } from '@/services/hasura/types';
+import { getExplorer } from '@/utils/web3';
 import { useConnectModal } from '@rainbow-me/rainbowkit';
 import { useMutation } from '@tanstack/react-query';
 import { useQueryClient } from '@tanstack/react-query';
@@ -12,11 +16,6 @@ import {
   useSwitchNetwork,
   useWaitForTransaction,
 } from 'wagmi';
-
-import { CREDENTIAL_ABI } from '@/constants/web3';
-import { useAuth } from '@/providers/auth';
-import { Credentials } from '@/services/hasura/types';
-import { getExplorer } from '@/utils/web3';
 
 type Status = 'idle' | 'asking_signature' | 'minting' | 'minted' | 'error';
 

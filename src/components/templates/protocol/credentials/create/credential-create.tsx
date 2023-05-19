@@ -1,6 +1,14 @@
 import useTranslation from 'next-translate/useTranslation';
 import { useState } from 'react';
 
+import { useAuth } from '@/providers/auth';
+import { gatewayProtocolAuthSDK } from '@/services/gateway-protocol/api';
+import {
+  CreateCredentialMutationVariables,
+  CreateCredentialInput,
+  PermissionType,
+} from '@/services/gateway-protocol/types';
+import { DataModel } from '@/services/gateway-protocol/types';
 import { ajvResolver } from '@hookform/resolvers/ajv';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
@@ -11,14 +19,6 @@ import { PartialDeep } from 'type-fest/source/partial-deep';
 
 import { Divider, Stack } from '@mui/material';
 
-import { useAuth } from '@/providers/auth';
-import { gatewayProtocolAuthSDK } from '@/services/gateway-protocol/api';
-import {
-  CreateCredentialMutationVariables,
-  CreateCredentialInput,
-  PermissionType,
-} from '@/services/gateway-protocol/types';
-import { DataModel } from '@/services/gateway-protocol/types';
 import { claimFields } from './components/ClaimTypes';
 import ClaimForm from './components/claim-form';
 import CredentialCreateContainer from './components/credential-create-container';

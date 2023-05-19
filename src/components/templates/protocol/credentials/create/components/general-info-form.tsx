@@ -1,6 +1,8 @@
 import useTranslation from 'next-translate/useTranslation';
 import dynamic from 'next/dynamic';
 
+import { CATEGORIES } from '@/constants/gate';
+import { CreateCredentialInput } from '@/services/gateway-protocol/types';
 import { brandColors } from '@/theme';
 import { isToday } from '@/utils/date';
 import { DateTime } from 'luxon';
@@ -11,8 +13,6 @@ import { MobileDatePicker, TimePicker } from '@mui/x-date-pickers';
 import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 
-import { CATEGORIES } from '@/constants/gate';
-import { CreateCredentialInput } from '@/services/gateway-protocol/types';
 import { ImageField } from './image-field';
 
 const CategoriesInput = dynamic(

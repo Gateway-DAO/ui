@@ -1,3 +1,7 @@
+import {
+  CreateGateData,
+  QuizTaskDataError,
+} from '@/components/templates/create-gate/schema';
 import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
 
 import {
@@ -8,11 +12,6 @@ import {
   Stack,
   TextField,
 } from '@mui/material';
-
-import {
-  CreateGateData,
-  QuizTaskDataError,
-} from '@/components/templates/create-gate/schema';
 
 export function QuestionField({
   questionIndex,

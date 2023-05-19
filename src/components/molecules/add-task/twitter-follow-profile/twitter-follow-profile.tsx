@@ -1,5 +1,13 @@
 import { useCallback, useEffect, useState } from 'react';
 
+import { CircleWithNumber } from '@/components/atoms/circle-with-number';
+import { TaskIcon } from '@/components/atoms/task-icon';
+import {
+  CreateGateData,
+  TwitterFollowData,
+  TwitterFollowDataError,
+} from '@/components/templates/create-gate/schema';
+import { useAuth } from '@/providers/auth';
 import { useMutation } from '@tanstack/react-query';
 import debounce from 'lodash/debounce';
 import { useFormContext } from 'react-hook-form';
@@ -19,14 +27,6 @@ import {
   Typography,
 } from '@mui/material';
 
-import { useAuth } from '@/providers/auth';
-import { CircleWithNumber } from '@/components/atoms/circle-with-number';
-import { TaskIcon } from '@/components/atoms/task-icon';
-import {
-  CreateGateData,
-  TwitterFollowData,
-  TwitterFollowDataError,
-} from '@/components/templates/create-gate/schema';
 import TextFieldWithEmoji from '../../form/TextFieldWithEmoji/TextFieldWithEmoji';
 
 export const numberFormat = (value: number) => {

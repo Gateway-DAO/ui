@@ -1,5 +1,9 @@
 import Link from 'next/link';
 
+import { AvatarFile } from '@/components/atoms/avatar-file';
+import { ROUTES } from '@/constants/routes';
+import { PermissionType } from '@/services/gateway-protocol/types';
+import { Protocol_Data_Model } from '@/services/hasura/types';
 import { PartialDeep } from 'type-fest';
 
 import {
@@ -11,11 +15,7 @@ import {
 } from '@mui/material';
 import MUICard from '@mui/material/Card';
 
-import { ROUTES } from '@/constants/routes';
-import { Protocol_Data_Model } from '@/services/hasura/types';
 import { CategoriesList } from './categories-list';
-import { AvatarFile } from '@/components/atoms/avatar-file';
-import { PermissionType } from '@/services/gateway-protocol/types';
 
 export function DataModelCard({
   id,
@@ -73,7 +73,11 @@ export function DataModelCard({
           }
         />
         <CardContent sx={{ py: 1, mb: 1 }}>
-          <Typography gutterBottom variant="h5" sx={{ cursor: 'pointer' , color : '#9A53FF' }}>
+          <Typography
+            gutterBottom
+            variant="h5"
+            sx={{ cursor: 'pointer', color: '#9A53FF' }}
+          >
             {title}
           </Typography>
           <Typography

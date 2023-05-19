@@ -1,17 +1,13 @@
 import { useRouter } from 'next/router';
 
-import { useMutation } from '@tanstack/react-query';
-
-import {
-  NewDAOTemplate,
-  NewDAOSchema,
-} from '@/components/templates/dao-new';
+import { NewDAOTemplate, NewDAOSchema } from '@/components/templates/dao-new';
 import { ROUTES } from '@/constants/routes';
 import { generateImageUrl } from '@/hooks/use-file';
 import { useUploadImage } from '@/hooks/use-upload-image';
 import { useAuth } from '@/providers/auth';
 import { gqlAnonMethods } from '@/services/hasura/api';
 import { Dao_Profile_By_SlugQuery } from '@/services/hasura/types';
+import { useMutation } from '@tanstack/react-query';
 
 export default function DaoProfilePage({
   daoProps,

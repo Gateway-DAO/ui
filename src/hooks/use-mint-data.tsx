@@ -1,8 +1,5 @@
 import { useMemo, useState } from 'react';
 
-import { useMutation } from '@tanstack/react-query';
-import { PartialDeep } from 'type-fest/source/partial-deep';
-
 import { DialogStatuses } from '@/components/molecules/mint-dialog-protocol';
 import { MintedChain } from '@/components/templates/protocol/credentials/show/components/mint-nft-card';
 import { query } from '@/constants/queries';
@@ -15,6 +12,8 @@ import {
 } from '@/services/gateway-protocol/types';
 import { Scalars } from '@/services/hasura/types';
 import { queryClient } from '@/services/query-client';
+import { useMutation } from '@tanstack/react-query';
+import { PartialDeep } from 'type-fest/source/partial-deep';
 
 type Props = {
   credential: PartialDeep<Credential>;

@@ -6,6 +6,7 @@ import {
   gatewayProtocolSDK,
 } from '@/services/gateway-protocol/api';
 import { GqlMethods, gqlAnonMethods } from '@/services/hasura/api';
+
 import { SessionUser } from '../../types/user';
 
 type Context = {

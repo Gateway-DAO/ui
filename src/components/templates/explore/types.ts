@@ -1,11 +1,5 @@
+import { Daos, Gates, Loyalty_Program, Users } from '@/services/hasura/types';
 import { PartialDeep } from 'type-fest';
-
-import {
-  Daos,
-  Gates,
-  Loyalty_Program,
-  Users,
-} from '@/services/hasura/types';
 
 export type ExploreProps = {
   daos: PartialDeep<Daos>[];

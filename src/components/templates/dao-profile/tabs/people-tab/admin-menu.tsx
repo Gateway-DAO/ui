@@ -1,5 +1,7 @@
-import { useMutation } from '@tanstack/react-query';
 import { useMenu } from '@/hooks/use-menu';
+import { useAuth } from '@/providers/auth';
+import { Users } from '@/services/hasura/types';
+import { useMutation } from '@tanstack/react-query';
 import { PartialDeep } from 'type-fest';
 
 import { MoreVert } from '@mui/icons-material';
@@ -12,8 +14,6 @@ import {
   MenuItem,
 } from '@mui/material';
 
-import { useAuth } from '@/providers/auth';
-import { Users } from '@/services/hasura/types';
 import { useDaoProfile } from '../../context';
 
 type Props = {

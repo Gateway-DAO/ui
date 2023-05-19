@@ -1,12 +1,8 @@
+import { Gates, Manual_Task_Events, Scalars } from '@/services/hasura/types';
 import { PartialDeep } from 'type-fest';
 
 import { Stack } from '@mui/material';
 
-import {
-  Gates,
-  Manual_Task_Events,
-  Scalars,
-} from '@/services/hasura/types';
 import { SubmissionWaiting } from './submissions-waiting';
 import TaskInteration from './task-interation';
 

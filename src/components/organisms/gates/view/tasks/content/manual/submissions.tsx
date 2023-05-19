@@ -1,6 +1,10 @@
 import useTranslation from 'next-translate/useTranslation';
 import { useMemo, useState } from 'react';
 
+import { taskErrorMessages } from '@/components/organisms/tasks/task-error-messages';
+import { useAuth } from '@/providers/auth';
+import { Gates, Task_Progress } from '@/services/hasura/types';
+import { ManualTaskEventType } from '@/types/tasks';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useSnackbar } from 'notistack';
 import { useToggle } from 'react-use';
@@ -8,13 +12,6 @@ import { PartialDeep } from 'type-fest';
 
 import { Stack, useMediaQuery } from '@mui/material';
 
-import { taskErrorMessages } from '@/components/organisms/tasks/task-error-messages';
-import { useAuth } from '@/providers/auth';
-import {
-  Gates,
-  Task_Progress,
-} from '@/services/hasura/types';
-import { ManualTaskEventType } from '@/types/tasks';
 import { Accordion } from './components/accordion';
 import { SubmissionsDetailHeader } from './components/submissions-detail-header';
 import { SubmissionsHeader } from './components/submissions-header';

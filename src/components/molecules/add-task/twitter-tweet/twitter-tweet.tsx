@@ -1,5 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 
+import { TaskIcon } from '@/components/atoms/task-icon';
+import {
+  CreateGateData,
+  TwitterTweetDataError,
+} from '@/components/templates/create-gate/schema';
 import { EmojiStyle } from 'emoji-picker-react';
 import { useFormContext } from 'react-hook-form';
 
@@ -15,13 +20,8 @@ import {
   Typography,
 } from '@mui/material';
 
-import { TaskIcon } from '@/components/atoms/task-icon';
-import {
-  CreateGateData,
-  TwitterTweetDataError,
-} from '@/components/templates/create-gate/schema';
-import { EmojiPicker, EmojiPickerProps } from '../../form/emoji-picker';
 import TextFieldWithEmoji from '../../form/TextFieldWithEmoji/TextFieldWithEmoji';
+import { EmojiPicker, EmojiPickerProps } from '../../form/emoji-picker';
 
 const TwitterTweetTask = ({ dragAndDrop, taskId, deleteTask }) => {
   const {

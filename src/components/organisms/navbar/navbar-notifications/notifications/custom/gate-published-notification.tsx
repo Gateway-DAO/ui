@@ -1,10 +1,10 @@
 import Link from 'next/link';
 
-import { Box, Stack, Typography } from '@mui/material';
-
+import { AvatarFile } from '@/components/atoms/avatar-file';
 import { ROUTES } from '@/constants/routes';
 import { useTimeAgo } from '@/utils/time';
-import { AvatarFile } from '@/components/atoms/avatar-file';
+
+import { Box, Stack, Typography } from '@mui/material';
 
 type DataProps = {
   dao_name?: string;

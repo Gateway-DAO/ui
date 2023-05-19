@@ -1,12 +1,13 @@
 import useTranslation from 'next-translate/useTranslation';
-import Link from 'next/link';
-import Box from '@mui/material/Box';
-import Avatar from '@mui/material/Avatar';
-import Typography from '@mui/material/Typography';
 import Image from 'next/image';
+import Link from 'next/link';
 
 import { ROUTES } from '@/constants/routes';
+
 import { Button } from '@mui/material';
+import Avatar from '@mui/material/Avatar';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
 
 export default function Error404() {
   const { t } = useTranslation('404');

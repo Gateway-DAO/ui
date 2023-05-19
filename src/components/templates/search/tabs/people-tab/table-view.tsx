@@ -1,9 +1,11 @@
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 
-import { PartialDeep } from 'type-fest';
-
+import { AvatarFile } from '@/components/atoms/avatar-file';
+import { ROUTES } from '@/constants/routes';
+import { Users } from '@/services/hasura/types';
 import { TOKENS } from '@/theme';
+import { PartialDeep } from 'type-fest';
 
 import { Avatar, Box, Stack, Typography } from '@mui/material';
 import Table from '@mui/material/Table';
@@ -12,10 +14,6 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-
-import { AvatarFile } from '@/components/atoms/avatar-file';
-import { ROUTES } from '@/constants/routes';
-import { Users } from '@/services/hasura/types';
 
 const FollowButtonUser = dynamic<any>(
   () =>

@@ -1,5 +1,6 @@
 import useTranslation from 'next-translate/useTranslation';
 
+import { gqlAnonMethods } from '@/services/hasura/api';
 import { useQuery } from '@tanstack/react-query';
 
 import {
@@ -11,7 +12,6 @@ import {
   List,
 } from '@mui/material';
 
-import { gqlAnonMethods } from '@/services/hasura/api';
 import { UsersList } from './users';
 
 type Props = {

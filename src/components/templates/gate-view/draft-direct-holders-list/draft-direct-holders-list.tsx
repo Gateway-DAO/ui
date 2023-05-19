@@ -1,13 +1,12 @@
+import { ClientNav } from '@/components/organisms/navbar/client-nav';
+import { useAuth } from '@/providers/auth';
+import { Gates } from '@/services/hasura/types';
+import { TOKENS } from '@/theme';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { PartialDeep } from 'type-fest';
 
-import { TOKENS } from '@/theme';
-
 import { Box, CircularProgress, Grid, Stack } from '@mui/material';
 
-import { useAuth } from '@/providers/auth';
-import { Gates } from '@/services/hasura/types';
-import { ClientNav } from '@/components/organisms/navbar/client-nav';
 import {
   DirectWalletsHeader,
   DirectWalletsVerifyingHeader,

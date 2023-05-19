@@ -1,8 +1,8 @@
 import { useState } from 'react';
 
-import { useFormContext, useFieldArray } from 'react-hook-form';
-
+import { SKILLS } from '@/constants/skills';
 import { TOKENS } from '@/theme';
+import { useFormContext, useFieldArray } from 'react-hook-form';
 
 import SearchIcon from '@mui/icons-material/Search';
 import {
@@ -14,8 +14,6 @@ import {
   TextField,
 } from '@mui/material';
 import Autocomplete, { autocompleteClasses } from '@mui/material/Autocomplete';
-
-import { SKILLS } from '@/constants/skills';
 
 export function Skills() {
   const skills = SKILLS.HARD.concat(SKILLS.SOFT);

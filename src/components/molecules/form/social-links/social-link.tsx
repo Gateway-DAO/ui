@@ -1,6 +1,7 @@
 import useTranslation from 'next-translate/useTranslation';
 import { useMemo, HTMLInputTypeAttribute } from 'react';
 
+import { networks, networksLabels, Network } from '@/constants/dao';
 import { Control, FieldValues, useController } from 'react-hook-form';
 
 import { Delete } from '@mui/icons-material';
@@ -15,8 +16,6 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-
-import { networks, networksLabels, Network } from '@/constants/dao';
 
 export type SocialLinkField<TFieldValues extends FieldValues = FieldValues> = {
   name: string;

@@ -9,5 +9,5 @@ export const HeroBackground = styled(Image)`
 
   @media screen and (max-width: 768px) {
     transform: scale(1.2);
-   }
+  }
 `;

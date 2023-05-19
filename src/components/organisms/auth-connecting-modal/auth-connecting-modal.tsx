@@ -1,5 +1,7 @@
 import useTranslation from 'next-translate/useTranslation';
 
+import { useConnectedWallet } from '@/hooks/wallet/use-connected-wallet';
+import { AuthStep, AuthStepError } from '@/providers/auth/types';
 import { AnimatePresence } from 'framer-motion';
 
 import { Close } from '@mui/icons-material';
@@ -14,8 +16,6 @@ import {
   DialogTitle,
 } from '@mui/material';
 
-import { useConnectedWallet } from '@/hooks/wallet/use-connected-wallet';
-import { AuthStep, AuthStepError } from '@/providers/auth/types';
 import { AnimatedMessage } from './animated-message';
 
 type Props = {

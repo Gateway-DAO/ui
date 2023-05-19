@@ -1,13 +1,12 @@
 import useTranslation from 'next-translate/useTranslation';
 import { ReactElement, useEffect } from 'react';
 
-import { useFormContext } from 'react-hook-form';
-
+import { ImageDropField } from '@/components/molecules/image-drop-field';
 import { GatewaySxProps } from '@/theme';
+import { useFormContext } from 'react-hook-form';
 
 import { Box, Card, useTheme } from '@mui/material';
 
-import { ImageDropField } from '@/components/molecules/image-drop-field';
 import { CreateGateData } from '../schema';
 import { GateData } from './gate-data';
 

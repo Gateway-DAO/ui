@@ -1,5 +1,10 @@
 import { useEffect, useState, useRef } from 'react';
 
+import { TaskIcon } from '@/components/atoms/task-icon';
+import {
+  CreateGateData,
+  SnapshotDataError,
+} from '@/components/templates/create-gate/schema';
 import normalizeUrl from 'normalize-url';
 import { Controller, useFormContext } from 'react-hook-form';
 import { setErrorMap } from 'zod';
@@ -20,11 +25,6 @@ import {
   Radio,
 } from '@mui/material';
 
-import { TaskIcon } from '@/components/atoms/task-icon';
-import {
-  CreateGateData,
-  SnapshotDataError,
-} from '@/components/templates/create-gate/schema';
 import TextFieldWithEmoji from '../../form/TextFieldWithEmoji/TextFieldWithEmoji';
 
 const SnapshotTask = ({ dragAndDrop, taskId, deleteTask }) => {

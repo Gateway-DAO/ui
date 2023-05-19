@@ -1,11 +1,11 @@
 import { PropsWithChildren } from 'react';
 
+import { CreateGateData } from '@/components/templates/create-gate/schema';
 import { useFormContext } from 'react-hook-form';
 import { DropAreaBond } from 'react-use/lib/useDrop';
 
 import { Box } from '@mui/material';
 
-import { CreateGateData } from '@/components/templates/create-gate/schema';
 type Props = {
   hasImage?: boolean;
   isOver?: boolean;

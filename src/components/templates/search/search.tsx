@@ -1,9 +1,11 @@
 import useTranslation from 'next-translate/useTranslation';
 import { useMemo } from 'react';
 
-import { useQuery } from '@tanstack/react-query';
-
+import { a11yTabProps, TabPanel, useTab } from '@/components/atoms/tabs';
+import { Navbar } from '@/components/organisms/navbar';
+import { SearchQuery } from '@/services/hasura/types';
 import { TOKENS } from '@/theme';
+import { useQuery } from '@tanstack/react-query';
 
 import {
   Box,
@@ -15,9 +17,6 @@ import {
   Chip,
 } from '@mui/material';
 
-import { SearchQuery } from '@/services/hasura/types';
-import { a11yTabProps, TabPanel, useTab } from '@/components/atoms/tabs';
-import { Navbar } from '@/components/organisms/navbar';
 import { useAuth } from './../../../providers/auth';
 import { DaosTab } from './tabs/daos-tab';
 import { GatesTab } from './tabs/gates-tab';

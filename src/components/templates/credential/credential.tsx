@@ -2,6 +2,14 @@ import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { ComponentType, useState } from 'react';
 
+import { AvatarFile } from '@/components/atoms/avatar-file';
+import CircularProgressWithLabel from '@/components/atoms/circular-progress-label';
+import { Props as MintCredentialButtonProps } from '@/components/atoms/mint-button';
+import { ReadMore } from '@/components/atoms/read-more-less';
+import { Task, TaskGroup } from '@/components/organisms/tasks';
+import { ROUTES } from '@/constants/routes';
+import { useAuth } from '@/providers/auth';
+import { Credentials } from '@/services/hasura/types';
 import { PartialDeep } from 'type-fest';
 
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
@@ -24,18 +32,11 @@ import {
   Avatar,
 } from '@mui/material';
 
-import { ROUTES } from '@/constants/routes';
-import { useAuth } from '@/providers/auth';
-import { Credentials } from '@/services/hasura/types';
-import { AvatarFile } from '@/components/atoms/avatar-file';
-import CircularProgressWithLabel from '@/components/atoms/circular-progress-label';
-import { Props as MintCredentialButtonProps } from '@/components/atoms/mint-button';
-import { ReadMore } from '@/components/atoms/read-more-less';
-import { Task, TaskGroup } from '@/components/organisms/tasks';
-
 const MintCredentialButton: ComponentType<MintCredentialButtonProps> = dynamic(
   () =>
-    import('@/components/atoms/mint-button').then((mod) => mod.MintCredentialButton),
+    import('@/components/atoms/mint-button').then(
+      (mod) => mod.MintCredentialButton
+    ),
   {
     ssr: false,
   }

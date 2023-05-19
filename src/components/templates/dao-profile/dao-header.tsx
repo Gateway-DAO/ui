@@ -2,6 +2,15 @@ import useTranslation from 'next-translate/useTranslation';
 import Image from 'next/image';
 import Link from 'next/link';
 
+import { AvatarFile } from '@/components/atoms/avatar-file';
+import { FollowButtonDAO } from '@/components/atoms/follow-button-dao';
+import { ReadMore } from '@/components/atoms/read-more-less';
+import { ShareButton } from '@/components/atoms/share-button';
+import { Navbar } from '@/components/organisms/navbar/navbar';
+import { SocialButtons } from '@/components/organisms/social-buttons';
+import { categoriesMap } from '@/constants/dao';
+import { ROUTES } from '@/constants/routes';
+import { useFile } from '@/hooks/use-file';
 import { TOKENS } from '@/theme';
 
 import { Edit } from '@mui/icons-material';
@@ -14,15 +23,6 @@ import {
   Tooltip,
 } from '@mui/material';
 
-import { categoriesMap } from '@/constants/dao';
-import { ROUTES } from '@/constants/routes';
-import { useFile } from '@/hooks/use-file';
-import { AvatarFile } from '@/components/atoms/avatar-file';
-import { FollowButtonDAO } from '@/components/atoms/follow-button-dao';
-import { ReadMore } from '@/components/atoms/read-more-less';
-import { ShareButton } from '@/components/atoms/share-button';
-import { Navbar } from '@/components/organisms/navbar/navbar';
-import { SocialButtons } from '@/components/organisms/social-buttons';
 import { useDaoProfile } from './context';
 
 type Props = {

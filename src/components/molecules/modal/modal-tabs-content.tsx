@@ -1,10 +1,10 @@
 import { useMemo } from 'react';
 
+import { TabPanel, useTab } from '@/components/atoms/tabs';
 import { brandColors } from '@/theme';
 
 import { Tabs, Tab, alpha } from '@mui/material';
 
-import { TabPanel, useTab } from '@/components/atoms/tabs';
 import { ModalTabProps, ModalContentView } from './ModalContentTypes';
 
 type Props = {

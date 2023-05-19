@@ -1,15 +1,13 @@
 import useTranslation from 'next-translate/useTranslation';
 
-import { PartialDeep } from 'type-fest/source/partial-deep';
-
-import { brandColors } from '@/theme';
-
-import { Alert, AlertTitle } from '@mui/material';
-
 import {
   Credential,
   CredentialStatus,
 } from '@/services/gateway-protocol/types';
+import { brandColors } from '@/theme';
+import { PartialDeep } from 'type-fest/source/partial-deep';
+
+import { Alert, AlertTitle } from '@mui/material';
 
 type Props = {
   credential: PartialDeep<Credential>;

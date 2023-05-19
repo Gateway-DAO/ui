@@ -1,6 +1,9 @@
 import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
 
+import { ClientNav } from '@/components/organisms/navbar/client-nav';
+import { ROUTES } from '@/constants/routes';
+import { useWindowSize } from '@/hooks/use-window-size';
 import { TOKENS } from '@/theme';
 
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -16,9 +19,6 @@ import {
   useTheme,
 } from '@mui/material';
 
-import { ROUTES } from '@/constants/routes';
-import { useWindowSize } from '@/hooks/use-window-size';
-import { ClientNav } from '@/components/organisms/navbar/client-nav';
 import { NavBarSettings } from './navbar-settings';
 
 type Props = {

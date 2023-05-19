@@ -2,11 +2,10 @@ import useTranslation from 'next-translate/useTranslation';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 
-import { DateTime } from 'luxon';
-
 import { IColumnGrid } from '@/components/organisms/data-grid/data-grid';
 import { DataModelLayout } from '@/components/templates/protocol/data-models/show/layout';
 import { query } from '@/constants/queries';
+import { DateTime } from 'luxon';
 const GridViewTab = dynamic(
   () =>
     import(

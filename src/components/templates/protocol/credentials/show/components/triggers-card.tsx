@@ -1,5 +1,6 @@
 import useTranslation from 'next-translate/useTranslation';
 
+import { Credential } from '@/services/gateway-protocol/types';
 import { brandColors } from '@/theme';
 import { PartialDeep } from 'type-fest/source/partial-deep';
 
@@ -14,7 +15,6 @@ import {
   Typography,
 } from '@mui/material';
 
-import { Credential } from '@/services/gateway-protocol/types';
 import TriggersItem from './triggers-item';
 
 type Props = {

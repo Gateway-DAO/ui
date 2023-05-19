@@ -1,12 +1,10 @@
 import useTranslation from 'next-translate/useTranslation';
 
+import { ImageDropField } from '@/components/molecules/image-drop-field';
+import { theme } from '@/theme';
 import { useFormContext } from 'react-hook-form';
 
-import { theme } from '@/theme';
-
 import { alpha, Box, Card, Stack } from '@mui/material';
-
-import { ImageDropField } from '@/components/molecules/image-drop-field';
 
 export function ImageField() {
   const { control } = useFormContext();

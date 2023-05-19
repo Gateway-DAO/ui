@@ -1,10 +1,10 @@
 import useTranslation from 'next-translate/useTranslation';
 
+import { LoadingButton } from '@/components/atoms/loading-button';
 import { useFormContext } from 'react-hook-form';
 
 import { Stack, TextField } from '@mui/material';
 
-import { LoadingButton } from '@/components/atoms/loading-button';
 import { SendEmailSchema } from '../schema';
 
 type Props = {

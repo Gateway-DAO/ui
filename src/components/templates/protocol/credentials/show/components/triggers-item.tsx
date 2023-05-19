@@ -1,10 +1,9 @@
 import { ReactNode } from 'react';
 
+import { SeeMore } from '@/components/molecules/see-more';
 import { brandColors } from '@/theme';
 
 import { alpha, Stack, Typography } from '@mui/material';
-
-import { SeeMore } from '@/components/molecules/see-more';
 
 export default function TriggersItem({
   name,

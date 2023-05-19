@@ -2,10 +2,18 @@ import useTranslation from 'next-translate/useTranslation';
 import Link from 'next/link';
 import React, { useMemo } from 'react';
 
+import { EmptyCard } from '@/components/atoms/empty-card';
+import { GatesCard } from '@/components/molecules/gates-card';
+import { LoyaltyProgramCard } from '@/components/molecules/loyalty-program-card/loyalty-program-card';
+import { SectionWithSliderResponsive } from '@/components/molecules/sections';
+import DataGrid, {
+  IColumnGrid,
+} from '@/components/organisms/data-grid/data-grid';
+import { ROUTES } from '@/constants/routes';
+import { Gates, Loyalty_Program, Users } from '@/services/hasura/types';
+import { theme, TOKENS } from '@/theme';
 import { PartialDeep } from 'type-fest';
 import { v4 as uuid } from 'uuid';
-
-import { theme, TOKENS } from '@/theme';
 
 import {
   Box,
@@ -16,19 +24,6 @@ import {
   useMediaQuery,
 } from '@mui/material';
 
-import { ROUTES } from '@/constants/routes';
-import {
-  Gates,
-  Loyalty_Program,
-  Users,
-} from '@/services/hasura/types';
-import { EmptyCard } from '@/components/atoms/empty-card';
-import { GatesCard } from '@/components/molecules/gates-card';
-import { LoyaltyProgramCard } from '@/components/molecules/loyalty-program-card/loyalty-program-card';
-import { SectionWithSliderResponsive } from '@/components/molecules/sections';
-import DataGrid, {
-  IColumnGrid,
-} from '@/components/organisms/data-grid/data-grid';
 import DashboardCard from '../../../protocol/components/dashboard-card';
 import { useDaoProfile } from '../../context';
 

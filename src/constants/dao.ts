@@ -56,9 +56,9 @@ export const networksLabels = [
 
 export const networks = networksLabels.map((network) =>
   network.toLowerCase()
-) as Lowercase<typeof networksLabels[number]>[];
+) as Lowercase<(typeof networksLabels)[number]>[];
 
-export type Network = typeof networks[number];
+export type Network = (typeof networks)[number];
 
 /* Record of network values to labels */
 export const networkValueLabelMap = networksLabels.reduce(
@@ -66,5 +66,5 @@ export const networkValueLabelMap = networksLabels.reduce(
     ...acc,
     [networks[index]]: network,
   }),
-  {} as Record<Network, typeof networksLabels[number]>
+  {} as Record<Network, (typeof networksLabels)[number]>
 );

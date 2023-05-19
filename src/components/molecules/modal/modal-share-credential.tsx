@@ -1,6 +1,6 @@
+import ShareOn from '@/components/atoms/share-on';
 import { PartialDeep } from 'type-fest/source/partial-deep';
 
-import ShareOn from '@/components/atoms/share-on';
 import ModalContent from './modal-basic';
 
 type ModalProps = {

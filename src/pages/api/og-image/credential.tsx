@@ -1,8 +1,8 @@
+// eslint-disable-next-line @next/next/no-server-import-in-page
 import { NextRequest } from 'next/server';
 
-import { ImageResponse } from '@vercel/og';
-
 import OgImage from '@/components/templates/og-image/og-image';
+import { ImageResponse } from '@vercel/og';
 
 export const config = {
   runtime: 'experimental-edge',

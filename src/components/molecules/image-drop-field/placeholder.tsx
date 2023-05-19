@@ -1,5 +1,5 @@
-import { ReactNode } from 'react';
 import useTranslation from 'next-translate/useTranslation';
+import { ReactNode } from 'react';
 
 import { UploadFileOutlined } from '@mui/icons-material';
 import { Avatar, Box, Typography } from '@mui/material';

@@ -3,6 +3,14 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useMemo, useState } from 'react';
 
+import { AvatarFile } from '@/components/atoms/avatar-file';
+import MorePopover from '@/components/atoms/more-popover';
+import ConfirmDialog from '@/components/organisms/confirm-dialog/confirm-dialog';
+import { useDaoProfile } from '@/components/templates/dao-profile';
+import { ROUTES } from '@/constants/routes';
+import { useAuth } from '@/providers/auth';
+import { Gates } from '@/services/hasura/types';
+import { badgeProps } from '@/utils/badge-props';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useSnackbar } from 'notistack';
 import type { PartialDeep } from 'type-fest';
@@ -13,14 +21,6 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 
-import { useAuth } from '@/providers/auth';
-import { ROUTES } from '@/constants/routes';
-import { Gates } from '@/services/hasura/types';
-import { badgeProps } from '@/utils/badge-props';
-import { AvatarFile } from '@/components/atoms/avatar-file';
-import MorePopover from '@/components/atoms/more-popover';
-import ConfirmDialog from '@/components/organisms/confirm-dialog/confirm-dialog';
-import { useDaoProfile } from '@/components/templates/dao-profile';
 import { CategoriesList } from './categories-list';
 
 /* TODO: Arias and Labels */

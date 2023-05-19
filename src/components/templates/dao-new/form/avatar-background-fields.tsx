@@ -1,10 +1,9 @@
-import { useFormContext } from 'react-hook-form';
-
+import { ImageDropField } from '@/components/molecules/image-drop-field';
 import { TOKENS } from '@/theme';
+import { useFormContext } from 'react-hook-form';
 
 import { Box } from '@mui/material';
 
-import { ImageDropField } from '@/components/molecules/image-drop-field';
 import { NewDAOSchema } from '../schema';
 
 export function AvatarBackgroundFields() {

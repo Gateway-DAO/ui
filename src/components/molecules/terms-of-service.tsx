@@ -1,5 +1,6 @@
-import { Box, Typography, Link } from '@mui/material';
 import useTranslation from 'next-translate/useTranslation';
+
+import { Box, Typography, Link } from '@mui/material';
 
 type termsType = {
   title: string;
@@ -20,7 +21,7 @@ export default function TermsOfService() {
         {t('subTitle')}
       </Typography>
       {terms.map((section, index) => (
-        <Box>
+        <Box key={section.id}>
           <Typography
             component={Link}
             href={`/terms#${section.id}`}
@@ -31,12 +32,14 @@ export default function TermsOfService() {
         </Box>
       ))}
       {terms.map((section, index) => (
-        <Box id={section.id}>
+        <Box id={section.id} key={section.id}>
           <Typography sx={{ my: 5 }}>
             {index + 1}. {section.title}
           </Typography>
           {section.descriptions.map((description) => (
-            <Typography sx={{ my: 1.5 }}>{description}</Typography>
+            <Typography key={description} sx={{ my: 1.5 }}>
+              {description}
+            </Typography>
           ))}
         </Box>
       ))}

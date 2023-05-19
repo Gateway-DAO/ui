@@ -1,7 +1,6 @@
+import { Files } from '@/services/hasura/types';
 import { decodeBlurHash } from 'fast-blurhash';
 import { PartialDeep } from 'type-fest';
-
-import { Files } from '@/services/hasura/types';
 
 export const generateImageUrl = (s3_key?: string) =>
   s3_key ? `${process.env.NEXT_PUBLIC_CDN_ENDPOINT}/${s3_key}` : undefined;

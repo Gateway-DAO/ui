@@ -1,7 +1,5 @@
 import { useRouter } from 'next/router';
 
-import { dehydrate, QueryClient, useQuery } from '@tanstack/react-query';
-
 import { HeadContainer } from '@/components/molecules/head-container';
 import { DashboardTemplate } from '@/components/templates/dashboard';
 import {
@@ -10,6 +8,7 @@ import {
 } from '@/components/templates/profile';
 import { useAuth } from '@/providers/auth';
 import { gqlAnonMethods } from '@/services/hasura/api';
+import { dehydrate, QueryClient, useQuery } from '@tanstack/react-query';
 
 export default function Profile() {
   const router = useRouter();

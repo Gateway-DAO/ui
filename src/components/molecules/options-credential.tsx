@@ -1,19 +1,18 @@
 import { useRouter } from 'next/router';
 import { useMemo, useState } from 'react';
 
-import { useMutation } from '@tanstack/react-query';
-import { useSnackbar } from 'notistack';
-import { PartialDeep } from 'type-fest/source/partial-deep';
-import { v4 as uuidv4 } from 'uuid';
-
+import MorePopover from '@/components/atoms/more-popover';
+import ConfirmDialog from '@/components/organisms/confirm-dialog/confirm-dialog';
 import { query } from '@/constants/queries';
 import { ROUTES } from '@/constants/routes';
 import { useAuth } from '@/providers/auth';
 import { Gates } from '@/services/hasura/types';
 import { queryClient } from '@/services/query-client';
 import { isDaoAdmin } from '@/utils/is-dao-admin';
-import MorePopover from '@/components/atoms/more-popover';
-import ConfirmDialog from '@/components/organisms/confirm-dialog/confirm-dialog';
+import { useMutation } from '@tanstack/react-query';
+import { useSnackbar } from 'notistack';
+import { PartialDeep } from 'type-fest/source/partial-deep';
+import { v4 as uuidv4 } from 'uuid';
 
 type Props = {
   gate: PartialDeep<Gates>;

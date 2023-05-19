@@ -1,5 +1,14 @@
+import '@fontsource/plus-jakarta-sans/700.css';
+
+import Link from 'next/link';
 import { useState } from 'react';
 
+import { ROUTES } from '@/constants/routes';
+import { useAuth } from '@/providers/auth';
+import { SessionUser } from '@/types/user';
+
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import {
   Box,
   Button,
@@ -8,16 +17,6 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import '@fontsource/plus-jakarta-sans/700.css';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-
-import { ROUTES } from '@/constants/routes';
-
-import Link from 'next/link';
-
-import { useAuth } from '@/providers/auth';
-import { SessionUser } from '@/types/user';
 
 const guideDetails = (user: SessionUser) => [
   {
@@ -133,7 +132,7 @@ export function GuideCard({ setShowCard }) {
               color="secondary"
               component="a"
             >
-              LET'S DO IT
+              {`LET'S DO IT`}
             </Button>
           </Link>
           <Button

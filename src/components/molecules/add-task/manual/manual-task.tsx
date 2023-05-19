@@ -1,6 +1,8 @@
 import useTranslation from 'next-translate/useTranslation';
 import { useEffect, useState } from 'react';
 
+import { CircleWithNumber } from '@/components/atoms/circle-with-number';
+import { CreateGateData } from '@/components/templates/create-gate/schema';
 import { Controller, useFormContext } from 'react-hook-form';
 
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
@@ -18,8 +20,6 @@ import {
   Typography,
 } from '@mui/material';
 
-import { CircleWithNumber } from '@/components/atoms/circle-with-number';
-import { CreateGateData } from '@/components/templates/create-gate/schema';
 import TextFieldWithEmoji from '../../form/TextFieldWithEmoji/TextFieldWithEmoji';
 
 export const ManualTask = ({ dragAndDrop, taskId, deleteTask }) => {

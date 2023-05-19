@@ -1,17 +1,17 @@
 import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
 
+import ExternalLink from '@/components/atoms/external-link';
+import { MintDialogProtocol } from '@/components/molecules/mint-dialog-protocol';
+import ModalShareCredential from '@/components/molecules/modal/modal-share-credential';
+import { ROUTES } from '@/constants/routes';
+import { useMintData } from '@/hooks/use-mint-data';
+import { Credential } from '@/services/gateway-protocol/types';
 import { PartialDeep } from 'type-fest';
 
 import { Divider, Stack, SxProps, Typography } from '@mui/material';
 import { Theme } from '@mui/material/styles/createTheme';
 
-import { ROUTES } from '@/constants/routes';
-import { useMintData } from '@/hooks/use-mint-data';
-import { Credential } from '@/services/gateway-protocol/types';
-import ExternalLink from '@/components/atoms/external-link';
-import { MintDialogProtocol } from '@/components/molecules/mint-dialog-protocol';
-import ModalShareCredential from '@/components/molecules/modal/modal-share-credential';
 import CredentialCardInfo from '../../components/credential-card-info';
 import Tags from '../../components/tags';
 import Activities from './components/activities';

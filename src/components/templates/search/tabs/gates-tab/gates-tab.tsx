@@ -1,19 +1,18 @@
 import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
 
-import { PartialDeep } from 'type-fest';
-
-import { TOKENS } from '@/theme';
-
-import { ViewModule, ViewList } from '@mui/icons-material';
-import { Box, Chip, IconButton, Stack, Typography } from '@mui/material';
-
+import { ChipDropdown } from '@/components/molecules/chip-dropdown';
+import { GatesCard } from '@/components/molecules/gates-card';
 import { CATEGORIES } from '@/constants/gate';
 import { usePropertyFilter } from '@/hooks/use-property-filter';
 import { useViewMode, ViewMode } from '@/hooks/use-view-modes';
 import { Gates } from '@/services/hasura/types';
-import { ChipDropdown } from '@/components/molecules/chip-dropdown';
-import { GatesCard } from '@/components/molecules/gates-card';
+import { TOKENS } from '@/theme';
+import { PartialDeep } from 'type-fest';
+
+import { ViewModule, ViewList } from '@mui/icons-material';
+import { Box, Chip, IconButton, Stack, Typography } from '@mui/material';
+
 import { TableView } from './table-view';
 
 interface GatesTabProps {

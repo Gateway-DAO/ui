@@ -2,10 +2,19 @@ import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
 import { useMemo, useState } from 'react';
 
-import { useQuery } from '@tanstack/react-query';
 import { AvatarFile } from '@/components/atoms/avatar-file';
+import { TabPanel } from '@/components/atoms/tabs';
+import { HeadContainer } from '@/components/molecules/head-container';
+import ModalRight from '@/components/molecules/modal-right';
+import ConfirmDialog from '@/components/organisms/confirm-dialog/confirm-dialog';
+import { ClientNav } from '@/components/organisms/navbar/client-nav';
+import { query } from '@/constants/queries';
+import { useAuth } from '@/providers/auth';
+import { gatewayProtocolSDK } from '@/services/gateway-protocol/api';
+import { PermissionType } from '@/services/gateway-protocol/types';
 import { gqlAnonMethods } from '@/services/hasura/api';
 import { brandColors, theme, TOKENS } from '@/theme';
+import { useQuery } from '@tanstack/react-query';
 import { useToggle } from 'react-use';
 
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -24,15 +33,6 @@ import {
 } from '@mui/material';
 
 import { CredentialProtocolCreate } from '../..';
-import { query } from '@/constants/queries';
-import { useAuth } from '@/providers/auth';
-import { gatewayProtocolSDK } from '@/services/gateway-protocol/api';
-import { PermissionType } from '@/services/gateway-protocol/types';
-import { TabPanel } from '@/components/atoms/tabs';
-import { HeadContainer } from '@/components/molecules/head-container';
-import ModalRight from '@/components/molecules/modal-right';
-import ConfirmDialog from '@/components/organisms/confirm-dialog/confirm-dialog';
-import { ClientNav } from '@/components/organisms/navbar/client-nav';
 import { DashboardTemplate } from '../../../dashboard';
 import FloatingCta from '../../components/floating-cta';
 import InfoTitle from '../../components/info-title';
@@ -194,11 +194,7 @@ export function DataModelLayout({ children }) {
                     flexDirection: 'row',
                     alignItems: 'center',
                     flexBasis: '100%',
-                    borderRadius: true
-                      ? '16px 16px 0 0'
-                      : false
-                      ? '0 16px 0 0'
-                      : '16px 0 0 0',
+                    borderRadius: '16px 16px 0 0',
                     transition: 'background .3s ease',
                     '&:hover': {
                       background: 'inherit',

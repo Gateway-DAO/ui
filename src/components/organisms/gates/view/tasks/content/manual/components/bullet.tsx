@@ -1,8 +1,7 @@
+import { Manual_Task_Events } from '@/services/hasura/types';
 import { brandColors, theme } from '@/theme';
 
 import { Box, Paper } from '@mui/material';
-
-import { Manual_Task_Events } from '@/services/hasura/types';
 
 const Bullet = ({
   event_type: type,

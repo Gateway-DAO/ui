@@ -1,5 +1,7 @@
 import { useState } from 'react';
 
+import { AvatarFile } from '@/components/atoms/avatar-file';
+import { Experiences } from '@/services/hasura/types';
 import { PartialDeep } from 'type-fest';
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -27,8 +29,6 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 
-import { Experiences } from '@/services/hasura/types';
-import { AvatarFile } from '@/components/atoms/avatar-file';
 import ExperienceCredential from './experience-credential';
 
 type Props = {

@@ -1,8 +1,11 @@
 import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
 
-import { useQuery } from '@tanstack/react-query';
+import { SuccessfullyIcon } from '@/components/atoms/icons';
+import { ROUTES } from '@/constants/routes';
+import { gatewayProtocolSDK } from '@/services/gateway-protocol/api';
 import { brandColors } from '@/theme';
+import { useQuery } from '@tanstack/react-query';
 
 import {
   alpha,
@@ -13,9 +16,6 @@ import {
   Typography,
 } from '@mui/material';
 
-import { SuccessfullyIcon } from '@/components/atoms/icons';
-import { ROUTES } from '@/constants/routes';
-import { gatewayProtocolSDK } from '@/services/gateway-protocol/api';
 import CredentialCardInfo from '../../../components/credential-card-info';
 
 type Props = {

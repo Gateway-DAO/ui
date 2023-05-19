@@ -1,5 +1,7 @@
 import useTranslation from 'next-translate/useTranslation';
 
+import { useAuth } from '@/providers/auth';
+import { ChangeNotificationSettings } from '@/services/hasura/types';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { ExpandMore } from '@mui/icons-material';
@@ -20,8 +22,6 @@ import {
   Typography,
 } from '@mui/material';
 
-import { useAuth } from '@/providers/auth';
-import { ChangeNotificationSettings } from '@/services/hasura/types';
 import { DappNotifications, EmailNotifications } from './config';
 
 function NotificationsSettings() {

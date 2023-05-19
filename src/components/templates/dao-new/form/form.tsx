@@ -1,12 +1,12 @@
 import useTranslation from 'next-translate/useTranslation';
 
+import { SocialLinks } from '@/components/molecules/form/social-links';
+import { categoriesDropdown } from '@/constants/dao';
 import { useFormContext, Controller } from 'react-hook-form';
 
 import { Stack, TextField, Typography } from '@mui/material';
 import Autocomplete from '@mui/material/Autocomplete';
 
-import { categoriesDropdown } from '@/constants/dao';
-import { SocialLinks } from '@/components/molecules/form/social-links';
 import { NewDAOSchema } from '../schema';
 import { AvatarBackgroundFields } from './avatar-background-fields';
 

@@ -1,13 +1,12 @@
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
-import { useQuery } from '@tanstack/react-query';
-import { PartialDeep } from 'type-fest';
-
 import { query } from '@/constants/queries';
 import { useAuth } from '@/providers/auth';
 import { gqlAnonMethods } from '@/services/hasura/api';
 import { Gates } from '@/services/hasura/types';
+import { useQuery } from '@tanstack/react-query';
+import { PartialDeep } from 'type-fest';
 
 export function useGateStatus(gate: PartialDeep<Gates>) {
   const [gateStatus, setGateCompleted] = useState({

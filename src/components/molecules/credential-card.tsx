@@ -1,5 +1,12 @@
 import Link from 'next/link';
 
+import { AvatarFile } from '@/components/atoms/avatar-file';
+import { ROUTES } from '@/constants/routes';
+import {
+  Credential,
+  CredentialStatus,
+} from '@/services/gateway-protocol/types';
+import { Protocol_Credential } from '@/services/hasura/types';
 import { brandColors } from '@/theme';
 import { limitCharsCentered } from '@/utils/string';
 import { PartialDeep } from 'type-fest';
@@ -13,14 +20,6 @@ import {
   Typography,
 } from '@mui/material';
 import MUICard from '@mui/material/Card';
-
-import { ROUTES } from '@/constants/routes';
-import {
-  Credential,
-  CredentialStatus,
-} from '@/services/gateway-protocol/types';
-import { Protocol_Credential } from '@/services/hasura/types';
-import { AvatarFile } from '@/components/atoms/avatar-file';
 
 type Props = PartialDeep<Protocol_Credential> & {
   isRecipient?: boolean;

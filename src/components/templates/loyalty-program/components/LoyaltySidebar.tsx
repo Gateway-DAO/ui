@@ -3,6 +3,20 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useMemo } from 'react';
 
+import { AvatarFile } from '@/components/atoms/avatar-file';
+import ExternalLink from '@/components/atoms/external-link';
+import GateStateChip from '@/components/atoms/gate-state-chip';
+import ShareOn from '@/components/atoms/share-on';
+import GateMintButton from '@/components/molecules/gate-mint-button';
+import { MintDialogProtocol } from '@/components/molecules/mint-dialog-protocol';
+import ModalContent from '@/components/molecules/modal/modal-basic';
+import ModalShareCredential from '@/components/molecules/modal/modal-share-credential';
+import { OptionsCredential } from '@/components/molecules/options-credential';
+import { ROUTES } from '@/constants/routes';
+import { useMintData } from '@/hooks/use-mint-data';
+import { useAuth } from '@/providers/auth';
+import { Gates, Loyalty_Program } from '@/services/hasura/types';
+import { isDaoAdmin } from '@/utils/is-dao-admin';
 import { limitCharsCentered } from '@/utils/string';
 import { useToggle } from 'react-use';
 import { PartialDeep } from 'type-fest/source/partial-deep';
@@ -20,20 +34,6 @@ import {
   Typography,
 } from '@mui/material';
 
-import { ROUTES } from '@/constants/routes';
-import { useMintData } from '@/hooks/use-mint-data';
-import { useAuth } from '@/providers/auth';
-import { Gates, Loyalty_Program } from '@/services/hasura/types';
-import { isDaoAdmin } from '@/utils/is-dao-admin';
-import { AvatarFile } from '@/components/atoms/avatar-file';
-import ExternalLink from '@/components/atoms/external-link';
-import GateStateChip from '@/components/atoms/gate-state-chip';
-import ShareOn from '@/components/atoms/share-on';
-import GateMintButton from '@/components/molecules/gate-mint-button';
-import { MintDialogProtocol } from '@/components/molecules/mint-dialog-protocol';
-import ModalContent from '@/components/molecules/modal/modal-basic';
-import ModalShareCredential from '@/components/molecules/modal/modal-share-credential';
-import { OptionsCredential } from '@/components/molecules/options-credential';
 import { SmallTier } from './SmallTier';
 
 type LoyaltySidebarProps = {

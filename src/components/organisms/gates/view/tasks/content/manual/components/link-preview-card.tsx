@@ -1,3 +1,4 @@
+import { LinkPreviewOutput } from '@/services/hasura/types';
 import { brandColors } from '@/theme';
 import { limitChars } from '@/utils/string';
 
@@ -9,8 +10,6 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-
-import { LinkPreviewOutput } from '@/services/hasura/types';
 
 type LinkPreviewCardProps = LinkPreviewOutput & {
   elevation?: number;

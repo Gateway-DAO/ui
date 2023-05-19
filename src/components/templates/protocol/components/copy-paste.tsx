@@ -1,11 +1,10 @@
+import { taskErrorMessages } from '@/components/organisms/tasks/task-error-messages';
 import { brandColors } from '@/theme';
 import { limitCharsCentered } from '@/utils/string';
 import { useSnackbar } from 'notistack';
 
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { alpha, Button, Stack, Typography } from '@mui/material';
-
-import { taskErrorMessages } from '@/components/organisms/tasks/task-error-messages';
 
 type Props = {
   text: string;

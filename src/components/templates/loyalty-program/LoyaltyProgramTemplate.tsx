@@ -1,5 +1,7 @@
 import { useRouter } from 'next/router';
 
+import { ClientNav } from '@/components/organisms/navbar/client-nav';
+import { useWindowSize } from '@/hooks/use-window-size';
 import { TOKENS } from '@/theme';
 
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -14,8 +16,6 @@ import {
   Stack,
 } from '@mui/material';
 
-import { useWindowSize } from '@/hooks/use-window-size';
-import { ClientNav } from '@/components/organisms/navbar/client-nav';
 type Props = {
   sidebar: React.ReactNode;
   mainContent: React.ReactNode;

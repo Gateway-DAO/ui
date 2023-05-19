@@ -1,6 +1,7 @@
 import useTranslation from 'next-translate/useTranslation';
 import { useEffect } from 'react';
 
+import objectToParams from '@/utils/map-object';
 import { useSnackbar } from 'notistack';
 import { useCopyToClipboard } from 'react-use';
 
@@ -11,8 +12,6 @@ import {
   Link as LinkIcon,
 } from '@mui/icons-material';
 import { ListItemIcon, ListItemText, Menu, MenuItem } from '@mui/material';
-
-import objectToParams from '@/utils/map-object';
 
 type Props = {
   title?: string;

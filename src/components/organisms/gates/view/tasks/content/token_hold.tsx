@@ -1,6 +1,6 @@
-import { Stack, Typography } from '@mui/material';
-
 import { LoadingButton } from '@/components/atoms/loading-button';
+
+import { Stack, Typography } from '@mui/material';
 
 const chains = {
   1: 'Ethereum',

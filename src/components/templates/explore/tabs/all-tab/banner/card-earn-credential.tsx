@@ -1,3 +1,9 @@
+import useTranslation from 'next-translate/useTranslation';
+import Image from 'next/image';
+import Link from 'next/link';
+
+import { ROUTES } from '@/constants/routes';
+
 import {
   CardContent,
   Typography,
@@ -6,12 +12,8 @@ import {
   Stack,
   CardActionArea,
 } from '@mui/material';
-import MUICard from '@mui/material/Card';
-import { ROUTES } from '@/constants/routes';
 import { useMediaQuery, useTheme } from '@mui/material';
-import Image from 'next/image';
-import useTranslation from 'next-translate/useTranslation';
-import Link from 'next/link';
+import MUICard from '@mui/material/Card';
 
 export function CardEarnCredential(): JSX.Element {
   const { t } = useTranslation('explore');

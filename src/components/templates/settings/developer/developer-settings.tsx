@@ -1,13 +1,12 @@
 import useTranslation from 'next-translate/useTranslation';
 
+import { useAuth } from '@/providers/auth';
 import { theme } from '@/theme';
 import { useSnackbar } from 'notistack';
 import { useCopyToClipboard } from 'react-use';
 
 import { ContentCopy } from '@mui/icons-material';
 import { Button, Card, CardContent, Stack, Typography } from '@mui/material';
-
-import { useAuth } from '@/providers/auth';
 
 const DeveloperPortalSettings = () => {
   const { t } = useTranslation('settings');

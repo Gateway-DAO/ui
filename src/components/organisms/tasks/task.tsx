@@ -1,5 +1,10 @@
 import { useEffect, useState } from 'react';
 
+import { TaskIcon } from '@/components/atoms/task-icon';
+import { useAuth } from '@/providers/auth';
+import { Tasks, Gates } from '@/services/hasura/types';
+import { queryClient } from '@/services/query-client';
+import { getMapValueFromObject } from '@/utils/map-object';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useToggle } from 'react-use';
 import { PartialDeep } from 'type-fest';
@@ -16,11 +21,6 @@ import {
   Collapse,
 } from '@mui/material';
 
-import { useAuth } from '@/providers/auth';
-import { Tasks, Gates } from '@/services/hasura/types';
-import { queryClient } from '@/services/query-client';
-import { getMapValueFromObject } from '@/utils/map-object';
-import { TaskIcon } from '@/components/atoms/task-icon';
 import GithubContributeContent from '../gates/view/tasks/content/github_contribute';
 import GithubPRContent from '../gates/view/tasks/content/github_prs';
 import ManualContent from '../gates/view/tasks/content/manual/manual';

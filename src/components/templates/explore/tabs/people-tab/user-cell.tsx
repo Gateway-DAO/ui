@@ -1,15 +1,14 @@
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 
+import { AvatarFile } from '@/components/atoms/avatar-file';
+import { ROUTES } from '@/constants/routes';
+import { useAuth } from '@/providers/auth';
+import { Users } from '@/services/hasura/types';
 import { PartialDeep } from 'type-fest';
 
 import { Typography, TableRow, TableCell, Stack } from '@mui/material';
 import { Box } from '@mui/system';
-
-import { ROUTES } from '@/constants/routes';
-import { useAuth } from '@/providers/auth';
-import { Users } from '@/services/hasura/types';
-import { AvatarFile } from '@/components/atoms/avatar-file';
 
 const FollowButtonUser = dynamic<any>(
   () =>

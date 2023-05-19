@@ -1,6 +1,12 @@
 import useTranslation from 'next-translate/useTranslation';
 import { ChangeEvent, useEffect, useState } from 'react';
 
+import { TaskIcon } from '@/components/atoms/task-icon';
+import { QuestionCreator } from '@/components/organisms/question-creator/question-creator';
+import {
+  CreateGateData,
+  QuizTaskDataError,
+} from '@/components/templates/create-gate/schema';
 import { useSnackbar } from 'notistack';
 import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
 
@@ -26,12 +32,6 @@ import {
   useTheme,
 } from '@mui/material';
 
-import { TaskIcon } from '@/components/atoms/task-icon';
-import { QuestionCreator } from '@/components/organisms/question-creator/question-creator';
-import {
-  CreateGateData,
-  QuizTaskDataError,
-} from '@/components/templates/create-gate/schema';
 import TextFieldWithEmoji from '../../form/TextFieldWithEmoji/TextFieldWithEmoji';
 
 // Time Period (minutes)

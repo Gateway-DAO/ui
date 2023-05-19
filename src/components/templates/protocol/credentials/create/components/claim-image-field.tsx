@@ -1,10 +1,9 @@
-import { useFormContext } from 'react-hook-form';
-
+import { ImageDropField } from '@/components/molecules/image-drop-field';
 import { theme } from '@/theme';
+import { useFormContext } from 'react-hook-form';
 
 import { alpha, Box, Card, Stack } from '@mui/material';
 
-import { ImageDropField } from '@/components/molecules/image-drop-field';
 import { ClaimFieldProps } from './ClaimTypes';
 
 export function ClaimImageField({ fieldName, label }: ClaimFieldProps) {

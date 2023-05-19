@@ -1,6 +1,6 @@
+import { useAuth } from '@/providers/auth';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { useAuth } from '@/providers/auth';
 import { useProtected } from './use-protected';
 
 export type UseFollowProps = {

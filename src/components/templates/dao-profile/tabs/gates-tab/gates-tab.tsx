@@ -1,20 +1,19 @@
 import Link from 'next/link';
 
-import { useQuery } from '@tanstack/react-query';
-
+import { EmptyCard } from '@/components/atoms/empty-card';
+import { ChipDropdown } from '@/components/molecules/chip-dropdown';
+import { GatesCard } from '@/components/molecules/gates-card';
+import { ROUTES } from '@/constants/routes';
+import { usePropertyFilter } from '@/hooks/use-property-filter';
+import { useViewMode, ViewMode } from '@/hooks/use-view-modes';
+import { useAuth } from '@/providers/auth';
 import { TOKENS } from '@/theme';
+import { useQuery } from '@tanstack/react-query';
 
 import { ViewModule, ViewList, Add } from '@mui/icons-material';
 import { Box, Button, IconButton, Stack } from '@mui/material';
 import MUICard from '@mui/material/Card';
 
-import { ROUTES } from '@/constants/routes';
-import { usePropertyFilter } from '@/hooks/use-property-filter';
-import { useViewMode, ViewMode } from '@/hooks/use-view-modes';
-import { useAuth } from '@/providers/auth';
-import { EmptyCard } from '@/components/atoms/empty-card';
-import { ChipDropdown } from '@/components/molecules/chip-dropdown';
-import { GatesCard } from '@/components/molecules/gates-card';
 import { useDaoProfile } from '../../context';
 import { TableView } from './table-view';
 

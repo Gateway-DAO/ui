@@ -2,10 +2,9 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
+import { ROUTES } from '@/constants/routes';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { ConnectButtonRendererProps } from '@rainbow-me/rainbowkit/dist/components/ConnectButton/ConnectButtonRenderer';
-
-import { ROUTES } from '@/constants/routes';
 
 /**
  * Handles the blocked page logic:

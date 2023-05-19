@@ -1,8 +1,17 @@
 import useTranslation from 'next-translate/useTranslation';
 import { useMemo } from 'react';
 
-import { useQueryClient } from '@tanstack/react-query';
+import { ShareButtonFn } from '@/components/atoms/share-btn-fn';
+import GateMintButton from '@/components/molecules/gate-mint-button';
+import { GatesCard } from '@/components/molecules/gates-card';
+import { MintDialogProtocol } from '@/components/molecules/mint-dialog-protocol';
+import ModalShareCredential from '@/components/molecules/modal/modal-share-credential';
+import { query } from '@/constants/queries';
 import { useMenu } from '@/hooks/use-menu';
+import { useMintData } from '@/hooks/use-mint-data';
+import { useAuth } from '@/providers/auth';
+import { Gates } from '@/services/hasura/types';
+import { useQueryClient } from '@tanstack/react-query';
 import { PartialDeep } from 'type-fest';
 
 import CloseIcon from '@mui/icons-material/Close';
@@ -10,16 +19,6 @@ import IosShareIcon from '@mui/icons-material/IosShare';
 import { Avatar, Button, Dialog, IconButton, Stack } from '@mui/material';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-
-import { query } from '@/constants/queries';
-import { useMintData } from '@/hooks/use-mint-data';
-import { useAuth } from '@/providers/auth';
-import { Gates } from '@/services/hasura/types';
-import { ShareButtonFn } from '@/components/atoms/share-btn-fn';
-import GateMintButton from '@/components/molecules/gate-mint-button';
-import { GatesCard } from '@/components/molecules/gates-card';
-import { MintDialogProtocol } from '@/components/molecules/mint-dialog-protocol';
-import ModalShareCredential from '@/components/molecules/modal/modal-share-credential';
 
 type Props = {
   open: boolean;

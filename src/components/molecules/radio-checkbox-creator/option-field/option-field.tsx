@@ -1,5 +1,9 @@
 import { useEffect, useState } from 'react';
 
+import {
+  CreateGateData,
+  QuizTaskDataError,
+} from '@/components/templates/create-gate/schema';
 import { useSnackbar } from 'notistack';
 import { Controller, useFormContext } from 'react-hook-form';
 
@@ -7,11 +11,6 @@ import { CircleOutlined, SquareOutlined } from '@mui/icons-material';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CloseIcon from '@mui/icons-material/Close';
 import { Stack, TextField } from '@mui/material';
-
-import {
-  CreateGateData,
-  QuizTaskDataError,
-} from '@/components/templates/create-gate/schema';
 
 type Props = {
   taskId: number;

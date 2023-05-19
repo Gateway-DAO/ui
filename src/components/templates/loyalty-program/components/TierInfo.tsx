@@ -1,10 +1,9 @@
 import useTranslation from 'next-translate/useTranslation';
 
+import Loading from '@/components/atoms/loading';
 import { brandColors } from '@/theme';
 
 import { Stack, Typography } from '@mui/material';
-
-import Loading from '@/components/atoms/loading';
 
 type Props = {
   isLoading?: boolean;

@@ -1,19 +1,20 @@
+import useTranslation from 'next-translate/useTranslation';
+import Image from 'next/image';
+import Link from 'next/link';
+
+import { ROUTES } from '@/constants/routes';
+
 import {
   CardContent,
   Typography,
   Box,
-
   Button,
   Stack,
   useMediaQuery,
   CardActionArea,
 } from '@mui/material';
-import MUICard from '@mui/material/Card';
 import { useTheme } from '@mui/material';
-import { ROUTES } from '@/constants/routes';
-import Image from 'next/image';
-import useTranslation from 'next-translate/useTranslation';
-import Link from 'next/link';
+import MUICard from '@mui/material/Card';
 
 export function CardCreditScore(): JSX.Element {
   const theme = useTheme();

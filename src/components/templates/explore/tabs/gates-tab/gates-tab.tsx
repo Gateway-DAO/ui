@@ -1,15 +1,14 @@
-import { useQuery } from '@tanstack/react-query';
-
+import { ChipDropdown } from '@/components/molecules/chip-dropdown';
+import { GatesCard } from '@/components/molecules/gates-card';
+import { usePropertyFilter } from '@/hooks/use-property-filter';
+import { useViewMode, ViewMode } from '@/hooks/use-view-modes';
+import { useAuth } from '@/providers/auth';
 import { TOKENS } from '@/theme';
+import { useQuery } from '@tanstack/react-query';
 
 import { ViewModule, ViewList } from '@mui/icons-material';
 import { Box, CircularProgress, IconButton, Stack } from '@mui/material';
 
-import { usePropertyFilter } from '@/hooks/use-property-filter';
-import { useViewMode, ViewMode } from '@/hooks/use-view-modes';
-import { useAuth } from '@/providers/auth';
-import { ChipDropdown } from '@/components/molecules/chip-dropdown';
-import { GatesCard } from '@/components/molecules/gates-card';
 import { TableView } from './table-view';
 
 export function GatesTab() {

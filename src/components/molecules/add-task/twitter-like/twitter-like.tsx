@@ -1,5 +1,11 @@
 import { useCallback, useEffect, useState } from 'react';
 
+import { TaskIcon } from '@/components/atoms/task-icon';
+import {
+  CreateGateData,
+  TwitterLikeDataError,
+} from '@/components/templates/create-gate/schema';
+import { useAuth } from '@/providers/auth';
 import { useMutation } from '@tanstack/react-query';
 import { useFormContext } from 'react-hook-form';
 import { TwitterTweetEmbed } from 'react-twitter-embed';
@@ -18,12 +24,6 @@ import {
   Typography,
 } from '@mui/material';
 
-import { useAuth } from '@/providers/auth';
-import { TaskIcon } from '@/components/atoms/task-icon';
-import {
-  CreateGateData,
-  TwitterLikeDataError,
-} from '@/components/templates/create-gate/schema';
 import TextFieldWithEmoji from '../../form/TextFieldWithEmoji/TextFieldWithEmoji';
 
 const TwitterLikeTask = ({ dragAndDrop, taskId, deleteTask }) => {

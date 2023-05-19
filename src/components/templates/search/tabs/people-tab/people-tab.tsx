@@ -1,12 +1,11 @@
 import useTranslation from 'next-translate/useTranslation';
 
-import { PartialDeep } from 'type-fest';
-
+import { Users } from '@/services/hasura/types';
 import { TOKENS } from '@/theme';
+import { PartialDeep } from 'type-fest';
 
 import { Box, Typography, Stack } from '@mui/material';
 
-import { Users } from '@/services/hasura/types';
 import { TableView } from './table-view';
 
 interface PeopleTabProps {

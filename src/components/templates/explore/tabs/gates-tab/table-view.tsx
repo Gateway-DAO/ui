@@ -1,6 +1,8 @@
 import Link from 'next/link';
 
+import { ROUTES } from '@/constants/routes';
 import { TOKENS } from '@/theme';
+import { badgeProps } from '@/utils/badge-props';
 
 import { Avatar, Box, Chip, Stack, Typography } from '@mui/material';
 import Table from '@mui/material/Table';
@@ -10,8 +12,6 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 
-import { ROUTES } from '@/constants/routes';
-import { badgeProps } from '@/utils/badge-props';
 import { ExploreProps } from '../../types';
 
 // TODO: make it generic

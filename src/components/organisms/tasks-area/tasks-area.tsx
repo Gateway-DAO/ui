@@ -1,13 +1,5 @@
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-import { useFieldArray, useFormContext } from 'react-hook-form';
-
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
-import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
-import { Box, Button, Stack, Typography } from '@mui/material';
-
 import AddTaskCard from '@/components/molecules/add-task/add-task-card';
 import FileLinkTask from '@/components/molecules/add-task/file-link-task/file-link-task';
 import GithubContributeTask from '@/components/molecules/add-task/github/contribute-task';
@@ -25,7 +17,17 @@ import TwitterLikeTask from '@/components/molecules/add-task/twitter-like/twitte
 import TwitterRetweetTask from '@/components/molecules/add-task/twitter-retweet/twitter-retweet';
 import TwitterTweetTask from '@/components/molecules/add-task/twitter-tweet/twitter-tweet';
 import VerificationCodeTask from '@/components/molecules/add-task/verification-task/verification-task';
-import { CreateGateData, Task } from '@/components/templates/create-gate/schema';
+import {
+  CreateGateData,
+  Task,
+} from '@/components/templates/create-gate/schema';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import { useFieldArray, useFormContext } from 'react-hook-form';
+
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
+import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
+import { Box, Button, Stack, Typography } from '@mui/material';
 
 const TaskComponents = {
   meeting_code: VerificationCodeTask,

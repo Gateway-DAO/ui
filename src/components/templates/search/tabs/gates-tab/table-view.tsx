@@ -1,6 +1,7 @@
-import { PartialDeep } from 'type-fest';
-
+import { Gates } from '@/services/hasura/types';
 import { TOKENS } from '@/theme';
+import { badgeProps } from '@/utils/badge-props';
+import { PartialDeep } from 'type-fest';
 
 import { Avatar, Box, Chip, Stack, Typography } from '@mui/material';
 import Table from '@mui/material/Table';
@@ -9,9 +10,6 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-
-import { Gates } from '@/services/hasura/types';
-import { badgeProps } from '@/utils/badge-props';
 
 type Props = {
   gates: PartialDeep<Gates>[];

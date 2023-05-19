@@ -2,8 +2,10 @@ import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
+import { Activity } from '@/services/gateway-protocol/types';
 import { brandColors } from '@/theme';
 import { timestampToString } from '@/utils/date';
+import { getExplorer } from '@/utils/web3';
 import { PartialDeep } from 'type-fest/source/partial-deep';
 
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
@@ -17,9 +19,6 @@ import {
   alpha,
   Divider,
 } from '@mui/material';
-
-import { Activity } from '@/services/gateway-protocol/types';
-import { getExplorer } from '@/utils/web3';
 
 type Props = {
   activities: PartialDeep<Activity>[];

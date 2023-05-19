@@ -1,17 +1,16 @@
 import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
 
+import { LoadingButton } from '@/components/atoms/loading-button';
+import { Daos } from '@/services/hasura/types';
+import { TOKENS } from '@/theme';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
 import { PartialDeep } from 'type-fest';
 
-import { TOKENS } from '@/theme';
-
 import { ArrowBack } from '@mui/icons-material';
 import { Avatar, Box, IconButton, Stack, Typography } from '@mui/material';
 
-import { Daos } from '@/services/hasura/types';
-import { LoadingButton } from '@/components/atoms/loading-button';
 import { AboutForm } from './form/form';
 import { schema, NewDAOSchema, defaultValues } from './schema';
 

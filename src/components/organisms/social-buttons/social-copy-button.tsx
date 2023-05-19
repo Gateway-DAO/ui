@@ -1,14 +1,13 @@
 import Link from 'next/link';
 import { useEffect, useMemo } from 'react';
 
+import { SocialIcon } from '@/components/atoms/social-icon';
+import { Network, networkValueLabelMap } from '@/constants/dao';
+import { User_Socials } from '@/services/hasura/types';
 import { useSnackbar } from 'notistack';
 import { useCopyToClipboard } from 'react-use';
 
 import { IconButton, Avatar, Tooltip } from '@mui/material';
-
-import { Network, networkValueLabelMap } from '@/constants/dao';
-import { User_Socials } from '@/services/hasura/types';
-import { SocialIcon } from '@/components/atoms/social-icon';
 
 type Props = Pick<User_Socials, 'url'> & {
   network: Network;

@@ -1,9 +1,6 @@
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
 import { useRouter } from 'next/router';
 
-import { useQuery } from '@tanstack/react-query';
-import { PartialDeep } from 'type-fest';
-
 import { HeadContainer } from '@/components/molecules/head-container';
 import {
   DaoProfileTemplate,
@@ -13,6 +10,8 @@ import { DashboardTemplate } from '@/components/templates/dashboard';
 import { useAuth } from '@/providers/auth';
 import { gatewayProtocolSDK } from '@/services/gateway-protocol/api';
 import { gqlAnonMethods } from '@/services/hasura/api';
+import { useQuery } from '@tanstack/react-query';
+import { PartialDeep } from 'type-fest';
 
 type Props = InferGetServerSidePropsType<typeof getServerSideProps>;
 

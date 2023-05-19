@@ -1,19 +1,18 @@
 import Link from 'next/link';
 
+import {
+  SuccessfullyIcon,
+  SuccessfullyRoundedIcon,
+} from '@/components/atoms/icons';
+import Loading from '@/components/atoms/loading';
+import { ROUTES } from '@/constants/routes';
+import { Gates } from '@/services/hasura/types';
 import { brandColors } from '@/theme';
 import { limitChars } from '@/utils/string';
 import { PartialDeep } from 'type-fest/source/partial-deep';
 
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import { Chip, Stack, Typography, alpha } from '@mui/material';
-
-import { ROUTES } from '@/constants/routes';
-import { Gates } from '@/services/hasura/types';
-import {
-  SuccessfullyIcon,
-  SuccessfullyRoundedIcon,
-} from '@/components/atoms/icons';
-import Loading from '@/components/atoms/loading';
 
 type Props = {
   gate: PartialDeep<Gates>;

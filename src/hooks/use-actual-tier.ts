@@ -1,8 +1,7 @@
 import { useMemo } from 'react';
 
-import { PartialDeep } from 'type-fest/source/partial-deep';
-
 import { Loyalty_Tier } from '@/services/hasura/types';
+import { PartialDeep } from 'type-fest/source/partial-deep';
 
 type Props = {
   tiers: PartialDeep<Loyalty_Tier>[];

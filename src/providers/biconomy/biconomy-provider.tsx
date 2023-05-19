@@ -1,5 +1,8 @@
 import { useRef, useState } from 'react';
 
+import { CREDENTIAL_ABI } from '@/constants/web3';
+import { Credentials } from '@/services/hasura/types';
+import { getExplorer } from '@/utils/web3';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { BigNumber } from 'ethers';
 import { useSnackbar } from 'notistack';
@@ -12,9 +15,6 @@ import {
   useWaitForTransaction,
 } from 'wagmi';
 
-import { CREDENTIAL_ABI } from '@/constants/web3';
-import { Credentials } from '@/services/hasura/types';
-import { getExplorer } from '@/utils/web3';
 import { useAuth } from '../auth';
 import { BiconomyContext, MintResponse } from './context';
 

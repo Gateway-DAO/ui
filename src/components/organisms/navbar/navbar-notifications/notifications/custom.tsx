@@ -1,8 +1,9 @@
 import { useState } from 'react';
 
+import { useAuth } from '@/providers/auth';
+
 import { Box, Stack, Typography } from '@mui/material';
 
-import { useAuth } from '@/providers/auth';
 import { GatePublishedNotification } from './custom/gate-published-notification';
 import { ManualTaskEventNotification } from './custom/manual-task-event-notification';
 import { ProtocolCredentialNotification } from './custom/protocol-credential-notification';

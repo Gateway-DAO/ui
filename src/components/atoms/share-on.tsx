@@ -1,15 +1,15 @@
 import useTranslation from 'next-translate/useTranslation';
 
+import { useAuth } from '@/providers/auth';
+import { Credential } from '@/services/gateway-protocol/types';
+import { getCredentialImageURLParams } from '@/utils/credential/build-image-url-params';
+import objectToParams from '@/utils/map-object';
 import { useSnackbar } from 'notistack';
 import { PartialDeep } from 'type-fest';
 
 import { LinkedIn, Twitter, Download, Link } from '@mui/icons-material';
 import { Stack, Typography, Box } from '@mui/material';
 
-import { useAuth } from '@/providers/auth';
-import { Credential } from '@/services/gateway-protocol/types';
-import { getCredentialImageURLParams } from '@/utils/credential/build-image-url-params';
-import objectToParams from '@/utils/map-object';
 import SquareButton from './square-button';
 
 declare global {

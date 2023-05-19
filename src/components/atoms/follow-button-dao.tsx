@@ -1,8 +1,9 @@
 import useTranslation from 'next-translate/useTranslation';
 
+import { useFollowDAO, UseFollowProps } from '@/hooks/use-follow';
+
 import { ButtonProps } from '@mui/material';
 
-import { useFollowDAO, UseFollowProps } from '@/hooks/use-follow';
 import { LoadingButton } from './loading-button';
 
 type Props = {

@@ -1,5 +1,10 @@
 import { useEffect, useState } from 'react';
 
+import { TaskIcon } from '@/components/atoms/task-icon';
+import {
+  CreateGateData,
+  VerificationCodeDataError,
+} from '@/components/templates/create-gate/schema';
 import { useFormContext } from 'react-hook-form';
 
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
@@ -13,11 +18,6 @@ import {
   Typography,
 } from '@mui/material';
 
-import { TaskIcon } from '@/components/atoms/task-icon';
-import {
-  CreateGateData,
-  VerificationCodeDataError,
-} from '@/components/templates/create-gate/schema';
 import TextFieldWithEmoji from '../../form/TextFieldWithEmoji/TextFieldWithEmoji';
 
 const VerificationCodeTask = ({ dragAndDrop, taskId, deleteTask }) => {

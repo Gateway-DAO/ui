@@ -1,16 +1,15 @@
 import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
 
-import { useQuery } from '@tanstack/react-query';
-
+import { a11yTabProps, TabPanel } from '@/components/atoms/tabs';
+import { Navbar } from '@/components/organisms/navbar';
+import { query } from '@/constants/queries';
+import { gqlAnonMethods } from '@/services/hasura/api';
 import { TOKENS } from '@/theme';
+import { useQuery } from '@tanstack/react-query';
 
 import { Box, Tabs, Typography, Tab } from '@mui/material';
 
-import { query } from '@/constants/queries';
-import { gqlAnonMethods } from '@/services/hasura/api';
-import { a11yTabProps, TabPanel } from '@/components/atoms/tabs';
-import { Navbar } from '@/components/organisms/navbar';
 import { DashboardTemplate } from '../dashboard';
 
 export function ExploreLayout({ children }) {

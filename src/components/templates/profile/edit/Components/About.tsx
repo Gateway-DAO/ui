@@ -1,9 +1,10 @@
 import useTranslation from 'next-translate/useTranslation';
 import { useState } from 'react';
 
-import { useFormContext } from 'react-hook-form';
-
+import { AvatarBackgroundFields } from '@/components/molecules/form/avatar-background-fields';
+import { SocialLinks } from '@/components/molecules/form/social-links';
 import { TOKENS } from '@/theme';
+import { useFormContext } from 'react-hook-form';
 
 import EditIcon from '@mui/icons-material/Edit';
 import {
@@ -18,8 +19,6 @@ import {
   TextField,
 } from '@mui/material';
 
-import { AvatarBackgroundFields } from '@/components/molecules/form/avatar-background-fields';
-import { SocialLinks } from '@/components/molecules/form/social-links';
 import { EditUserSchema } from '../schema';
 import { Form } from './AboutComponents/Form';
 

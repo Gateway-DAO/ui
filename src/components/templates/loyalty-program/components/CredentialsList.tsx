@@ -1,19 +1,14 @@
 import useTranslation from 'next-translate/useTranslation';
 
-import { PartialDeep } from 'type-fest/source/partial-deep';
-
-import { TOKENS, brandColors } from '@/theme';
-
-import { Stack, Typography, alpha } from '@mui/material';
-
 import { AlertCustom } from '@/components/atoms/alert';
 import { useLoyaltyGatesCompleted } from '@/hooks/use-loyalty-gates-completed';
 import { useAuth } from '@/providers/auth';
-import {
-  Credentials,
-  Gates,
-  Loyalty_Program,
-} from '@/services/hasura/types';
+import { Credentials, Gates, Loyalty_Program } from '@/services/hasura/types';
+import { TOKENS, brandColors } from '@/theme';
+import { PartialDeep } from 'type-fest/source/partial-deep';
+
+import { Stack, Typography, alpha } from '@mui/material';
+
 import { CredentialListItem } from './CredentialListItem';
 
 type Props = {

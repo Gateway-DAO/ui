@@ -1,9 +1,6 @@
 import { useState } from 'react';
 
-import {
-  PolygonCircleIcon,
-  AvalancheIcon,
-} from '@/components/atoms/icons';
+import { PolygonCircleIcon, AvalancheIcon } from '@/components/atoms/icons';
 
 import { Dialog } from '@mui/material';
 

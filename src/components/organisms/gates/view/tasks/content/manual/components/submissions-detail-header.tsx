@@ -1,20 +1,16 @@
 import useTranslation from 'next-translate/useTranslation';
 import { useState } from 'react';
 
+import { AvatarFile } from '@/components/atoms/avatar-file';
+import { LoadingButton } from '@/components/atoms/loading-button';
+import ConfirmDialog from '@/components/organisms/confirm-dialog/confirm-dialog';
+import { Users, Task_Progress } from '@/services/hasura/types';
+import { ManualTaskEventType } from '@/types/tasks';
 import { PartialDeep } from 'type-fest';
 
 import { Cancel, CheckCircle } from '@mui/icons-material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { IconButton, Stack, Typography } from '@mui/material';
-
-import ConfirmDialog from '@/components/organisms/confirm-dialog/confirm-dialog';
-import {
-  Users,
-  Task_Progress,
-} from '@/services/hasura/types';
-import { ManualTaskEventType } from '@/types/tasks';
-import { AvatarFile } from '@/components/atoms/avatar-file';
-import { LoadingButton } from '@/components/atoms/loading-button';
 
 type Props = {
   progress: PartialDeep<Task_Progress>;

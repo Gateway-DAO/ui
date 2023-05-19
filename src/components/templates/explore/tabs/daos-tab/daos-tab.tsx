@@ -1,16 +1,15 @@
-import { useQuery } from '@tanstack/react-query';
-
-import { TOKENS } from '@/theme';
-
-import { ViewModule, ViewList } from '@mui/icons-material';
-import { Box, CircularProgress, IconButton, Stack } from '@mui/material';
-
+import { ChipDropdown } from '@/components/molecules/chip-dropdown';
+import { DaoCard } from '@/components/molecules/dao-card';
 import { categoriesMap } from '@/constants/dao';
 import { usePropertyFilter } from '@/hooks/use-property-filter';
 import { useViewMode, ViewMode } from '@/hooks/use-view-modes';
 import { gqlAnonMethods } from '@/services/hasura/api';
-import { ChipDropdown } from '@/components/molecules/chip-dropdown';
-import { DaoCard } from '@/components/molecules/dao-card';
+import { TOKENS } from '@/theme';
+import { useQuery } from '@tanstack/react-query';
+
+import { ViewModule, ViewList } from '@mui/icons-material';
+import { Box, CircularProgress, IconButton, Stack } from '@mui/material';
+
 import { TableView } from './table-view';
 
 export function DaosTab() {

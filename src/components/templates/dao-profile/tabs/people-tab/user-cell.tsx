@@ -1,17 +1,17 @@
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 
+import { AdminBadge } from '@/components/atoms/admin-badge';
+import { AvatarFile } from '@/components/atoms/avatar-file';
+import { ROUTES } from '@/constants/routes';
+import { useAuth } from '@/providers/auth';
+import { Users } from '@/services/hasura/types';
 import { PartialDeep } from 'type-fest';
 
 import { Box, Stack, Typography } from '@mui/material';
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
 
-import { ROUTES } from '@/constants/routes';
-import { useAuth } from '@/providers/auth';
-import { Users } from '@/services/hasura/types';
-import { AdminBadge } from '@/components/atoms/admin-badge';
-import { AvatarFile } from '@/components/atoms/avatar-file';
 import { useDaoProfile } from '../../context';
 import { AdminMenu } from './admin-menu';
 

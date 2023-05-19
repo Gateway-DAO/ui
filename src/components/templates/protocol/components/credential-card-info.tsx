@@ -1,15 +1,15 @@
 import useTranslation from 'next-translate/useTranslation';
 
+import {
+  Credential,
+  CredentialStatus,
+} from '@/services/gateway-protocol/types';
 import { theme } from '@/theme';
 import { DateTime } from 'luxon';
 import { PartialDeep } from 'type-fest';
 
 import { Stack, Paper, Box, Divider, Chip, useMediaQuery } from '@mui/material';
 
-import {
-  Credential,
-  CredentialStatus,
-} from '@/services/gateway-protocol/types';
 import AuthenticatedBy from './authenticated-by';
 import CardCell from './card-cell';
 import CardUsers from './card-users';

@@ -1,9 +1,10 @@
 import useTranslation from 'next-translate/useTranslation';
 
+import { CreateCredentialInput } from '@/services/gateway-protocol/types';
+import { brandColors } from '@/theme';
 import { useFormContext } from 'react-hook-form';
 
-import { brandColors } from '@/theme';
-
+import SearchIcon from '@mui/icons-material/Search';
 import {
   alpha,
   Autocomplete,
@@ -13,9 +14,6 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import SearchIcon from '@mui/icons-material/Search';
-
-import { CreateCredentialInput } from '@/services/gateway-protocol/types';
 
 export default function RecipientForm() {
   const {

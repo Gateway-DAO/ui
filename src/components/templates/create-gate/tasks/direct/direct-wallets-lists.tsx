@@ -1,5 +1,7 @@
 import { ChangeEvent, PropsWithChildren, useMemo, useState } from 'react';
 
+import { UserListItem } from '@/components/molecules/user-list-item';
+import { VerifyCsvProgressOutput } from '@/services/hasura/types';
 import { Virtuoso, VirtuosoProps } from 'react-virtuoso';
 
 import SearchIcon from '@mui/icons-material/Search';
@@ -15,8 +17,6 @@ import {
   BoxProps,
 } from '@mui/material';
 
-import { VerifyCsvProgressOutput } from '@/services/hasura/types';
-import { UserListItem } from '@/components/molecules/user-list-item';
 import { ValidatedWallet } from './types';
 
 export function DirectWalletsList({

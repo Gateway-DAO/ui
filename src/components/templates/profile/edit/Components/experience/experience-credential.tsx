@@ -1,5 +1,6 @@
 import { useState } from 'react';
 
+import { Credentials } from '@/services/hasura/types';
 import { PartialDeep } from 'type-fest';
 
 import Visibility from '@mui/icons-material/Visibility';
@@ -12,8 +13,6 @@ import {
   Avatar,
   Chip,
 } from '@mui/material';
-
-import { Credentials } from '@/services/hasura/types';
 
 type Props = {
   credential: PartialDeep<Credentials>;

@@ -1,11 +1,11 @@
 import { PropsWithChildren } from 'react';
 
 import { MotionBox } from '@/components/atoms/motion-components';
+import { useNav } from '@/hooks/use-nav';
+import { useWindowSize } from '@/hooks/use-window-size';
 
 import Box from '@mui/material/Box';
 
-import { useNav } from '@/hooks/use-nav';
-import { useWindowSize } from '@/hooks/use-window-size';
 import { Drawer } from './drawer';
 import { withGradientAfter } from './styles';
 import { DashboardTemplateProps } from './types';

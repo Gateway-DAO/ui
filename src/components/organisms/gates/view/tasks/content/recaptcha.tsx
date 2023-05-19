@@ -1,5 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 
+import { LoadingButton } from '@/components/atoms/loading-button';
+import { TaskIcon } from '@/components/atoms/task-icon';
+import { useAuth } from '@/providers/auth';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useSnackbar } from 'notistack';
 import { useToggle } from 'react-use';
@@ -15,10 +18,6 @@ import {
   IconButton,
   Collapse,
 } from '@mui/material';
-
-import { useAuth } from '@/providers/auth';
-import { LoadingButton } from '@/components/atoms/loading-button';
-import { TaskIcon } from '@/components/atoms/task-icon';
 
 type Props = {
   taskNumber: number;

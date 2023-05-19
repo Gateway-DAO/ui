@@ -1,9 +1,16 @@
 import useTranslation from 'next-translate/useTranslation';
 import { ChangeEvent, ReactNode, useState } from 'react';
 
-import { useInfiniteQuery } from '@tanstack/react-query';
+import { CenteredLoader } from '@/components/atoms/centered-loader';
 import { GateFilledIcon } from '@/components/atoms/icon';
+import { UserListItem } from '@/components/molecules/user-list-item';
+import { ClientNav } from '@/components/organisms/navbar/client-nav';
+import { query } from '@/constants/queries';
+import { useAuth } from '@/providers/auth';
+import { gqlAnonMethods } from '@/services/hasura/api';
+import { Gates } from '@/services/hasura/types';
 import { TOKENS } from '@/theme';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import { useWindowSize } from 'react-use';
 import { Virtuoso } from 'react-virtuoso';
 import { PartialDeep } from 'type-fest';
@@ -18,14 +25,6 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-
-import { query } from '@/constants/queries';
-import { useAuth } from '@/providers/auth';
-import { gqlAnonMethods } from '@/services/hasura/api';
-import { Gates } from '@/services/hasura/types';
-import { CenteredLoader } from '@/components/atoms/centered-loader';
-import { UserListItem } from '@/components/molecules/user-list-item';
-import { ClientNav } from '@/components/organisms/navbar/client-nav';
 
 type Props = {
   gate: PartialDeep<Gates>;

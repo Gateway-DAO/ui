@@ -1,13 +1,12 @@
+import { ClientNav } from '@/components/organisms/navbar/client-nav';
+import { Loyalty_Program } from '@/services/hasura/types';
+import { TOKENS } from '@/theme';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { PartialDeep } from 'type-fest/source/partial-deep';
 
-import { TOKENS } from '@/theme';
-
 import { Stack } from '@mui/material';
 
-import { Loyalty_Program } from '@/services/hasura/types';
-import { ClientNav } from '@/components/organisms/navbar/client-nav';
 import LoyaltyProgramTemplate from './LoyaltyProgramTemplate';
 import { CredentialsList } from './components/CredentialsList';
 import { LoyaltySidebar } from './components/LoyaltySidebar';

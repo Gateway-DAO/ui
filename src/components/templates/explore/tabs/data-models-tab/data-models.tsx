@@ -1,16 +1,14 @@
+import useTranslation from 'next-translate/useTranslation';
 import { useEffect } from 'react';
 
-import { useInfiniteQuery } from '@tanstack/react-query';
-
-import { TOKENS } from '@/theme';
-
-import { Box, Stack, Typography } from '@mui/material';
-
 import Loading from '@/components/atoms/loading';
+import { DataModelCard } from '@/components/molecules/data-model-card';
 import { query } from '@/constants/queries';
 import { gqlAnonMethods } from '@/services/hasura/api';
-import { DataModelCard } from '@/components/molecules/data-model-card';
-import useTranslation from 'next-translate/useTranslation';
+import { TOKENS } from '@/theme';
+import { useInfiniteQuery } from '@tanstack/react-query';
+
+import { Box, Stack, Typography } from '@mui/material';
 
 export default function DataModels(): JSX.Element {
   const internalPageSize = 16;

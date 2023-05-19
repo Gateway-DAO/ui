@@ -1,11 +1,10 @@
-import normalizeUrl from 'normalize-url';
-import { PartialDeep } from 'type-fest';
-import { object, string, SchemaOf, array, StringSchema } from 'yup';
-
 import { Network } from '@/constants/dao';
 import { URL, URL_PROTOCOL } from '@/constants/forms';
 import { generateImageUrl } from '@/hooks/use-file';
 import { Daos, Dao_Socials } from '@/services/hasura/types';
+import normalizeUrl from 'normalize-url';
+import { PartialDeep } from 'type-fest';
+import { object, string, SchemaOf, array, StringSchema } from 'yup';
 
 export type NewDAOSchema = Required<
   PartialDeep<Pick<Daos, 'name' | 'description' | 'categories'>>

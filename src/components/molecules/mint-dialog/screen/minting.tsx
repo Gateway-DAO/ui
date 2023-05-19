@@ -1,7 +1,8 @@
+import { AnimatedMessage } from '@/components/atoms/animated-message';
+import { AnimatePresence } from 'framer-motion';
+
 import { Check, Close } from '@mui/icons-material';
 import { Box, Button, CircularProgress, DialogContent } from '@mui/material';
-import { AnimatePresence } from 'framer-motion';
-import { AnimatedMessage } from '@/components/atoms/animated-message';
 
 export function Minting({ screen, setScreen, setOpen, mint }) {
   return (

@@ -1,12 +1,6 @@
 import useTranslation from 'next-translate/useTranslation';
 import { useState } from 'react';
 
-import { PartialDeep } from 'type-fest';
-
-import { brandColors } from '@/theme';
-
-import { Stack, IconButton, CircularProgress } from '@mui/material';
-
 import {
   ModalTabProps,
   modalContentTypes,
@@ -14,6 +8,11 @@ import {
 } from '@/components/molecules/modal/ModalContentTypes';
 import ModalTabs from '@/components/molecules/modal/modal-tabs';
 import { Credential } from '@/services/gateway-protocol/types';
+import { brandColors } from '@/theme';
+import { PartialDeep } from 'type-fest';
+
+import { Stack, IconButton, CircularProgress } from '@mui/material';
+
 import InfoTitle from '../../../components/info-title';
 
 type Props = {

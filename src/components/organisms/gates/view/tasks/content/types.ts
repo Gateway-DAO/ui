@@ -1,9 +1,6 @@
+import { Gates, Tasks } from '@/services/hasura/types';
 import { PartialDeep } from 'type-fest';
 
-import {
-  Gates,
-  Tasks,
-} from '@/services/hasura/types';
 export type TaskProps<T = any> = {
   task?: PartialDeep<Tasks>;
   gate: PartialDeep<Gates>;

@@ -1,16 +1,16 @@
 import useTranslation from 'next-translate/useTranslation';
 import { useEffect } from 'react';
 
-import { useInfiniteQuery } from '@tanstack/react-query';
-
-import { Stack } from '@mui/material';
-
+import Loading from '@/components/atoms/loading';
+import DataGrid from '@/components/organisms/data-grid/data-grid';
 import {
   gatewayProtocolSDK,
   GatewayProtocolSDKTypes,
 } from '@/services/gateway-protocol/api';
-import Loading from '@/components/atoms/loading';
-import DataGrid from '@/components/organisms/data-grid/data-grid';
+import { useInfiniteQuery } from '@tanstack/react-query';
+
+import { Stack } from '@mui/material';
+
 import { useDaoProfile } from '../context';
 
 type Props = {

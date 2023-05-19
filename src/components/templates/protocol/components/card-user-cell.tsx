@@ -1,12 +1,12 @@
 import Link from 'next/link';
 
+import { AvatarFile } from '@/components/atoms/avatar-file';
+import { Files } from '@/services/hasura/types';
 import { brandColors } from '@/theme';
 import { PartialDeep } from 'type-fest/source/partial-deep';
 
 import { alpha, Stack, Typography } from '@mui/material';
 
-import { Files } from '@/services/hasura/types';
-import { AvatarFile } from '@/components/atoms/avatar-file';
 import CardCell from './card-cell';
 
 type Props = {

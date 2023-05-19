@@ -1,6 +1,8 @@
 import useTranslation from 'next-translate/useTranslation';
 import { ChangeEvent, Fragment, useMemo, useState } from 'react';
 
+import { UserListItem } from '@/components/molecules/user-list-item';
+import { Users } from '@/services/hasura/types';
 import { PartialDeep } from 'type-fest';
 
 import SearchIcon from '@mui/icons-material/Search';
@@ -11,9 +13,6 @@ import {
   InputAdornment,
   Typography,
 } from '@mui/material';
-
-import { Users } from '@/services/hasura/types';
-import { UserListItem } from '@/components/molecules/user-list-item';
 
 type Props = {
   users: PartialDeep<Users>[];

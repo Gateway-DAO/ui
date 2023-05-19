@@ -1,18 +1,17 @@
 import useTranslation from 'next-translate/useTranslation';
 import { useEffect } from 'react';
 
-import { useInfiniteQuery } from '@tanstack/react-query';
-import { PartialDeep } from 'type-fest/source/partial-deep';
-
-import { Stack } from '@mui/material';
-
+import Loading from '@/components/atoms/loading';
+import DataGrid from '@/components/organisms/data-grid/data-grid';
 import {
   gatewayProtocolSDK,
   GatewayProtocolSDKTypes,
 } from '@/services/gateway-protocol/api';
 import { DataModel } from '@/services/gateway-protocol/types';
-import Loading from '@/components/atoms/loading';
-import DataGrid from '@/components/organisms/data-grid/data-grid';
+import { useInfiniteQuery } from '@tanstack/react-query';
+import { PartialDeep } from 'type-fest/source/partial-deep';
+
+import { Stack } from '@mui/material';
 
 type Props = {
   dataModelId: string;

@@ -1,14 +1,13 @@
 import { PropsWithChildren } from 'react';
 
+import { chains, web3client } from '@/services/web3/client';
+import { brandColors } from '@/theme';
 import {
   RainbowKitProvider,
   darkTheme as DarkTheme,
   Theme,
 } from '@rainbow-me/rainbowkit';
-import { brandColors } from '@/theme';
 import { WagmiConfig } from 'wagmi';
-
-import { chains, web3client } from '@/services/web3/client';
 
 const darkTheme = DarkTheme({
   overlayBlur: 'small',

@@ -1,3 +1,5 @@
+import { useAuth } from '@/providers/auth';
+import { Files } from '@/services/hasura/types';
 import { useMutation, useInfiniteQuery } from '@tanstack/react-query';
 import { useSnackbar } from 'notistack';
 import { useController } from 'react-hook-form';
@@ -5,8 +7,6 @@ import { useDropArea } from 'react-use';
 
 import { Paper } from '@mui/material';
 
-import { useAuth } from '@/providers/auth';
-import { Files } from '@/services/hasura/types';
 import { CreateGateData } from '../../schema';
 import {
   DirectWalletsEmptyHeader,

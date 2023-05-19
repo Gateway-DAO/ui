@@ -1,10 +1,9 @@
 import useTranslation from 'next-translate/useTranslation';
 import { useEffect } from 'react';
 
+import { theme } from '@/theme';
 import { v4 as uuidv4 } from 'uuid';
 import { useConnect } from 'wagmi';
-
-import { theme } from '@/theme';
 
 import { ChevronRight } from '@mui/icons-material';
 import {

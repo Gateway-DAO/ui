@@ -1,13 +1,15 @@
 import Link from 'next/link';
 import React from 'react';
 
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useMutation } from '@tanstack/react-query';
 import {
   GatewayIcon,
   DiscordIcon,
   SubstackIcon,
 } from '@/components/atoms/icon';
+import { LoadingButton } from '@/components/atoms/loading-button';
+import { gqlAnonMethods } from '@/services/hasura/api';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { FaMedium } from 'react-icons/fa';
 
@@ -21,8 +23,6 @@ import {
   Typography,
 } from '@mui/material';
 
-import { gqlAnonMethods } from '@/services/hasura/api';
-import { LoadingButton } from '@/components/atoms/loading-button';
 import { IconContainer } from './styles';
 import { FooterProps, subscribeToNewsletterSchema } from './types';
 

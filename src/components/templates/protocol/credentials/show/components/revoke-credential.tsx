@@ -2,13 +2,6 @@ import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
-import { useMutation } from '@tanstack/react-query';
-import { useSnackbar } from 'notistack';
-import { PartialDeep } from 'type-fest/source/partial-deep';
-
-import CancelIcon from '@mui/icons-material/Cancel';
-import { Button, CircularProgress } from '@mui/material';
-
 import ConfirmDialog from '@/components/organisms/confirm-dialog/confirm-dialog';
 import { ROUTES } from '@/constants/routes';
 import { useAuth } from '@/providers/auth';
@@ -17,6 +10,12 @@ import {
   CredentialStatus,
   RevokeCredentialMutationVariables,
 } from '@/services/gateway-protocol/types';
+import { useMutation } from '@tanstack/react-query';
+import { useSnackbar } from 'notistack';
+import { PartialDeep } from 'type-fest/source/partial-deep';
+
+import CancelIcon from '@mui/icons-material/Cancel';
+import { Button, CircularProgress } from '@mui/material';
 
 type Props = {
   credential: PartialDeep<Credential>;

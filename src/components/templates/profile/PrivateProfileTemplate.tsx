@@ -2,18 +2,18 @@ import useTranslation from 'next-translate/useTranslation';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 
+import { AvatarFile } from '@/components/atoms/avatar-file';
+import { a11yTabProps, TabPanel, useTab } from '@/components/atoms/tabs';
+import { Navbar } from '@/components/organisms/navbar/navbar';
+import { SocialButtons } from '@/components/organisms/social-buttons';
+import { ROUTES } from '@/constants/routes';
+import { generateImageUrl } from '@/hooks/use-file';
+import { useAuth } from '@/providers/auth';
 import { TOKENS } from '@/theme';
 
 import EditIcon from '@mui/icons-material/Edit';
 import { Box, Stack, Typography, Tabs, Tab, Chip } from '@mui/material';
 
-import { a11yTabProps, TabPanel, useTab } from '@/components/atoms/tabs';
-import { Navbar } from '@/components/organisms/navbar/navbar';
-import { ROUTES } from '@/constants/routes';
-import { generateImageUrl } from '@/hooks/use-file';
-import { useAuth } from '@/providers/auth';
-import { AvatarFile } from '@/components/atoms/avatar-file';
-import { SocialButtons } from '@/components/organisms/social-buttons';
 import { IssuedTab, ReceivedTab } from './tabs';
 import { Earned } from './tabs/Earned';
 

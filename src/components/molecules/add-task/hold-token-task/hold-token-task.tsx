@@ -1,5 +1,10 @@
 import { useEffect, useState } from 'react';
 
+import { TaskIcon } from '@/components/atoms/task-icon';
+import {
+  CreateGateData,
+  HoldTokenDataError,
+} from '@/components/templates/create-gate/schema';
 import { useFormContext } from 'react-hook-form';
 
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
@@ -16,13 +21,8 @@ import {
   Typography,
 } from '@mui/material';
 
-import { TaskIcon } from '@/components/atoms/task-icon';
-import {
-  CreateGateData,
-  HoldTokenDataError,
-} from '@/components/templates/create-gate/schema';
-import { mockChains } from './__mock__';
 import TextFieldWithEmoji from '../../form/TextFieldWithEmoji/TextFieldWithEmoji';
+import { mockChains } from './__mock__';
 
 const HoldTokenTask = ({ dragAndDrop, taskId, deleteTask }) => {
   const {

@@ -2,17 +2,17 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useMemo } from 'react';
 
+import { AdminBadge } from '@/components/atoms/admin-badge';
+import { AvatarFile } from '@/components/atoms/avatar-file';
 import { GatewayIcon } from '@/components/atoms/icons';
+import { ROUTES } from '@/constants/routes';
+import { useAuth } from '@/providers/auth';
 import clsx from 'clsx';
 
 import ExploreIcon from '@mui/icons-material/Explore';
 import { Avatar, ListItemButton } from '@mui/material';
 import ListItemIcon from '@mui/material/ListItemIcon';
 
-import { ROUTES } from '@/constants/routes';
-import { useAuth } from '@/providers/auth';
-import { AdminBadge } from '@/components/atoms/admin-badge';
-import { AvatarFile } from '@/components/atoms/avatar-file';
 import { DashboardTemplateProps } from '../types';
 import { DaosList } from './daos-list';
 import { DrawerContainer } from './drawer-container';

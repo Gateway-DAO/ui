@@ -1,13 +1,12 @@
 import { useRouter } from 'next/router';
 
-import { useMutation } from '@tanstack/react-query';
-
 import { EditProfileTemplate } from '@/components/templates/profile/edit';
 import { EditUserSchema } from '@/components/templates/profile/edit/schema';
 import { ROUTES } from '@/constants/routes';
 import { generateImageUrl } from '@/hooks/use-file';
 import { useUploadImage } from '@/hooks/use-upload-image';
 import { useAuth } from '@/providers/auth';
+import { useMutation } from '@tanstack/react-query';
 
 export default function EditProfilePage() {
   const uploadImage = useUploadImage();

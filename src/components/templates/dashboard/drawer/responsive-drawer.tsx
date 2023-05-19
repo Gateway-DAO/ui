@@ -1,9 +1,9 @@
 import { PropsWithChildren } from 'react';
 
+import { useNav } from '@/hooks/use-nav';
+
 import { Hidden, useMediaQuery, useTheme } from '@mui/material';
 import Drawer, { DrawerProps } from '@mui/material/Drawer';
-
-import { useNav } from '@/hooks/use-nav';
 
 export const ResponsiveDrawer = ({ children }: PropsWithChildren<unknown>) => {
   const { isOpen, onClose } = useNav();

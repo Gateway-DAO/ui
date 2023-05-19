@@ -1,8 +1,8 @@
+import { TaskIcon } from '@/components/atoms/task-icon';
+import { TaskType } from '@/types/tasks';
+
 import { Stack, Box } from '@mui/material';
 import Typography from '@mui/material/Typography';
-
-import { TaskType } from '@/types/tasks';
-import { TaskIcon } from '@/components/atoms/task-icon';
 
 type AddTaskButtonProps = {
   type: TaskType;

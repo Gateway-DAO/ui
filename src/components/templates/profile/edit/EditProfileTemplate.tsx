@@ -1,9 +1,10 @@
 import { useRouter } from 'next/router';
 
+import { LoadingButton } from '@/components/atoms/loading-button';
+import { useAuth } from '@/providers/auth';
+import { TOKENS } from '@/theme';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FormProvider, useForm } from 'react-hook-form';
-
-import { TOKENS } from '@/theme';
 
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import {
@@ -16,8 +17,6 @@ import {
   IconButton,
 } from '@mui/material';
 
-import { useAuth } from '@/providers/auth';
-import { LoadingButton } from '@/components/atoms/loading-button';
 import { About } from '../../profile/edit/Components/About';
 import { Experiences } from '../../profile/edit/Components/Experiences';
 import { Languages } from '../../profile/edit/Components/Languages';

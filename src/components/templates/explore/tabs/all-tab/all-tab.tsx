@@ -1,12 +1,6 @@
 import useTranslation from 'next-translate/useTranslation';
+import { useRouter } from 'next/router';
 
-import { PartialDeep } from 'type-fest';
-
-import { Button, Divider, Stack } from '@mui/material';
-import { brandColors, theme } from '@/theme';
-
-import { ROUTES } from '@/constants/routes';
-import { Protocol_Data_Model } from '@/services/hasura/types';
 import { DaoCard } from '@/components/molecules/dao-card';
 import { DataModelCard } from '@/components/molecules/data-model-card';
 import { GatesCard } from '@/components/molecules/gates-card';
@@ -16,11 +10,17 @@ import {
   SectionWithSliderResponsive,
   SectionWithGrid,
 } from '@/components/molecules/sections';
+import { ROUTES } from '@/constants/routes';
+import { Protocol_Data_Model } from '@/services/hasura/types';
+import { brandColors, theme } from '@/theme';
+import { PartialDeep } from 'type-fest';
+
+import { Button, Divider, Stack } from '@mui/material';
+
 import { ExploreProps } from '../../types';
 import Banner from './banner/banner';
-import { useRouter } from 'next/router';
-import { CardEarnCredential } from './banner/card-earn-credential';
 import { CardCreditScore } from './banner/card-credit-score';
+import { CardEarnCredential } from './banner/card-earn-credential';
 
 type Props = {
   dataModels: PartialDeep<Protocol_Data_Model>[];
@@ -151,7 +151,6 @@ export function AllTab({
           }
           itemWidth={(theme) => theme.spacing(41)}
         >
-
           {daos.map((dao) => (
             <DaoCard key={dao.id} {...dao} />
           ))}

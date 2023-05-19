@@ -1,13 +1,12 @@
 import useTranslation from 'next-translate/useTranslation';
 import { useMemo } from 'react';
 
-import { PartialDeep } from 'type-fest/source/partial-deep';
-
+import { DataModel } from '@/services/gateway-protocol/types';
 import { brandColors } from '@/theme';
+import { PartialDeep } from 'type-fest/source/partial-deep';
 
 import { alpha, Typography, Stack } from '@mui/material';
 
-import { DataModel } from '@/services/gateway-protocol/types';
 import { ClaimFieldProps, claimFields, getClaimType } from './ClaimTypes';
 import ClaimAccordion from './claim-accordion';
 import ClaimFormArray from './claim-form-array';

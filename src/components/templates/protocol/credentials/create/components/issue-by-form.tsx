@@ -2,11 +2,19 @@ import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
+import { AvatarFile } from '@/components/atoms/avatar-file';
+import { taskErrorMessages } from '@/components/organisms/tasks/task-error-messages';
+import { ROUTES } from '@/constants/routes';
+import { useAuth } from '@/providers/auth';
+import {
+  CreateCredentialInput,
+  DataModel,
+  PermissionType,
+} from '@/services/gateway-protocol/types';
+import { brandColors } from '@/theme';
 import { useSnackbar } from 'notistack';
 import { useFormContext } from 'react-hook-form';
 import { PartialDeep } from 'type-fest/source/partial-deep';
-
-import { brandColors } from '@/theme';
 
 import {
   alpha,
@@ -17,16 +25,6 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-
-import { ROUTES } from '@/constants/routes';
-import { useAuth } from '@/providers/auth';
-import {
-  CreateCredentialInput,
-  DataModel,
-  PermissionType,
-} from '@/services/gateway-protocol/types';
-import { AvatarFile } from '@/components/atoms/avatar-file';
-import { taskErrorMessages } from '@/components/organisms/tasks/task-error-messages';
 
 type Props = {
   dataModel: PartialDeep<DataModel>;

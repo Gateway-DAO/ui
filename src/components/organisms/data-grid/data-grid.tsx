@@ -2,17 +2,16 @@ import useTranslation from 'next-translate/useTranslation';
 import Image from 'next/image';
 import { ReactNode } from 'react';
 
+import NetworkTransactionLink from '@/components/atoms/network-transaction-link';
+import { CategoriesList } from '@/components/molecules/categories-list';
+import { ROUTES } from '@/constants/routes';
+import { CredentialStatus } from '@/services/gateway-protocol/types';
 import { brandColors, TOKENS } from '@/theme';
 import { limitCharsCentered } from '@/utils/string';
 import { DateTime } from 'luxon';
 
 import { Typography, Chip, Avatar, Link } from '@mui/material';
 import { alpha, Stack, Box } from '@mui/material';
-
-import { ROUTES } from '@/constants/routes';
-import { CredentialStatus } from '@/services/gateway-protocol/types';
-import NetworkTransactionLink from '@/components/atoms/network-transaction-link';
-import { CategoriesList } from '@/components/molecules/categories-list';
 
 export interface IColumnGrid {
   header_name: string;

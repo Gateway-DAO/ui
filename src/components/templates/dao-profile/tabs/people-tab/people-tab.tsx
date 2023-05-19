@@ -1,14 +1,13 @@
 import { useEffect } from 'react';
 
+import { CenteredLoader } from '@/components/atoms/centered-loader';
+import { gqlAnonMethods } from '@/services/hasura/api';
+import { TOKENS } from '@/theme';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useWindowVirtualizer } from '@tanstack/react-virtual';
 
-import { TOKENS } from '@/theme';
-
 import { Box, Table, TableBody, TableContainer } from '@mui/material';
 
-import { CenteredLoader } from '@/components/atoms/centered-loader';
-import { gqlAnonMethods } from '@/services/hasura/api';
 import { useDaoProfile } from '../../context';
 import { UserCell } from './user-cell';
 

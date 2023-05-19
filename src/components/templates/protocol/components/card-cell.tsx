@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 
-import { useTheme } from '@emotion/react';
 import { brandColors } from '@/theme';
+import { useTheme } from '@emotion/react';
 
 import { Stack, Typography, alpha } from '@mui/material';
 

@@ -1,6 +1,6 @@
+import { Gates } from '@/services/hasura/types';
 import { PartialDeep } from 'type-fest';
 
-import { Gates } from '@/services/hasura/types';
 import { SessionUser } from '../types/user';
 
 type Props = {

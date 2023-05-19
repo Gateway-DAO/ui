@@ -1,10 +1,5 @@
 import { useRouter } from 'next/router';
 
-import { dehydrate, QueryClient, useQuery } from '@tanstack/react-query';
-import jwt from 'jsonwebtoken';
-
-import { Box } from '@mui/material';
-
 import { HeadContainer } from '@/components/molecules/head-container';
 import { Navbar } from '@/components/organisms/navbar';
 import { DashboardTemplate } from '@/components/templates/dashboard';
@@ -14,6 +9,10 @@ import { ROUTES } from '@/constants/routes';
 import { useAuth } from '@/providers/auth';
 import { gqlAnonMethods, gqlMethods } from '@/services/hasura/api';
 import { getServerSession } from '@/services/next-auth';
+import { dehydrate, QueryClient, useQuery } from '@tanstack/react-query';
+import jwt from 'jsonwebtoken';
+
+import { Box } from '@mui/material';
 
 const unaccesible = {
   redirect: {

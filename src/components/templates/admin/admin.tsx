@@ -1,5 +1,8 @@
 import Link from 'next/link';
 
+import { Navbar } from '@/components/organisms/navbar';
+import { useAuth } from '@/providers/auth';
+
 import {
   Box,
   Typography,
@@ -13,9 +16,6 @@ import {
   Divider,
   ListItemButton,
 } from '@mui/material';
-
-import { useAuth } from '@/providers/auth';
-import { Navbar } from '@/components/organisms/navbar';
 
 export function AdminTemplate({ data }) {
   const { me } = useAuth();

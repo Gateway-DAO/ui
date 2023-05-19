@@ -1,10 +1,9 @@
-import { PartialDeep } from 'type-fest';
-
+import { Task_Progress } from '@/services/hasura/types';
 import { brandColors } from '@/theme';
+import { PartialDeep } from 'type-fest';
 
 import { Stack, Typography, alpha, Divider } from '@mui/material';
 
-import { Task_Progress } from '@/services/hasura/types';
 import { SubmissionsItem } from './submissions-item';
 export type SubmissionsListProps = {
   title: string;

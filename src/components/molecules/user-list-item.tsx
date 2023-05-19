@@ -2,6 +2,10 @@ import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { ReactNode, useMemo, useState } from 'react';
 
+import { AvatarFile } from '@/components/atoms/avatar-file';
+import { ROUTES } from '@/constants/routes';
+import { useAuth } from '@/providers/auth';
+import { Users } from '@/services/hasura/types';
 import { PartialDeep } from 'type-fest';
 
 import {
@@ -14,14 +18,11 @@ import {
   Avatar,
 } from '@mui/material';
 
-import { ROUTES } from '@/constants/routes';
-import { useAuth } from '@/providers/auth';
-import { Users } from '@/services/hasura/types';
-import { AvatarFile } from '@/components/atoms/avatar-file';
-
 const FollowButtonUser = dynamic<any>(
   () =>
-    import('@/components/atoms/follow-button-user').then((mod) => mod.FollowButtonUser),
+    import('@/components/atoms/follow-button-user').then(
+      (mod) => mod.FollowButtonUser
+    ),
   {
     ssr: false,
   }
@@ -46,7 +47,7 @@ export function UserListItem({
   const { me } = useAuth();
   const url = ROUTES.PROFILE.replace('[username]', user.username);
 
-  const [nameDisplay, setNameDisplay] = useState('')
+  const [nameDisplay, setNameDisplay] = useState('');
 
   const avatarIcon = useMemo(() => {
     if (icon) {
@@ -74,22 +75,20 @@ export function UserListItem({
     );
   }, [hasLink, icon, url, user.picture]);
 
-
   function checkNameSize(name: string) {
     if (name.length > 11) {
-      return name.slice(0, 10) + "...";
+      return name.slice(0, 10) + '...';
     }
     return name;
   }
 
-
   window.addEventListener('resize', () => {
     if (window.screen.width < 376) {
-      setNameDisplay('slice')
+      setNameDisplay('slice');
     } else {
-      setNameDisplay('full')
+      setNameDisplay('full');
     }
-  })
+  });
 
   return (
     <ListItem

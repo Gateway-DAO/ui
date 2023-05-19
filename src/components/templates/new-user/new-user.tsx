@@ -1,20 +1,19 @@
 import useTranslation from 'next-translate/useTranslation';
 import { useState } from 'react';
 
+import Loading from '@/components/atoms/loading';
+import { NavBarAvatar } from '@/components/organisms/navbar/navbar-avatar';
+import { taskErrorMessages } from '@/components/organisms/tasks/task-error-messages';
+import { useAuth } from '@/providers/auth';
+import { theme } from '@/theme';
+import { ErrorResponse } from '@/types/graphql';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useMutation } from '@tanstack/react-query';
 import { useSnackbar } from 'notistack';
 import { useForm, FormProvider } from 'react-hook-form';
 
-import { theme } from '@/theme';
-
 import { alpha, Box, Stack } from '@mui/material';
 
-import { useAuth } from '@/providers/auth';
-import { ErrorResponse } from '@/types/graphql';
-import Loading from '@/components/atoms/loading';
-import { NavBarAvatar } from '@/components/organisms/navbar/navbar-avatar';
-import { taskErrorMessages } from '@/components/organisms/tasks/task-error-messages';
 import { FormSendEmail } from './form-send-email';
 import { FormVerifyToken } from './form-verify-token';
 import {

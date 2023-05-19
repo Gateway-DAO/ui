@@ -1,12 +1,11 @@
 import useTranslation from 'next-translate/useTranslation';
 
+import { LANGUAGES } from '@/constants/user';
 import { useFormContext } from 'react-hook-form';
 
 import SearchIcon from '@mui/icons-material/Search';
 import { Stack, TextField } from '@mui/material';
 import Autocomplete, { autocompleteClasses } from '@mui/material/Autocomplete';
-
-import { LANGUAGES } from '@/constants/user';
 
 export function Languages() {
   const languages = Object.keys(LANGUAGES).map((key) => LANGUAGES[key].name);

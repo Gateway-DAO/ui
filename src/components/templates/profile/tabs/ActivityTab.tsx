@@ -1,13 +1,11 @@
-import { PartialDeep } from 'type-fest';
-
+import { useViewMode, ViewMode } from '@/hooks/use-view-modes';
+import { Gates } from '@/services/hasura/types';
 import { TOKENS } from '@/theme';
+import { PartialDeep } from 'type-fest';
 
 import { AutoAwesomeMosaic, ViewList } from '@mui/icons-material';
 import { Box, Typography, Stack } from '@mui/material';
 import Chip from '@mui/material/Chip';
-
-import { useViewMode, ViewMode } from '@/hooks/use-view-modes';
-import { Gates } from '@/services/hasura/types';
 
 type Props = {
   gates: PartialDeep<Gates>[];

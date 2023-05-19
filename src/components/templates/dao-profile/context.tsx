@@ -1,7 +1,5 @@
 import { createContext, PropsWithChildren, useContext } from 'react';
 
-import { PartialDeep } from 'type-fest';
-
 import {
   Credential,
   GetDaoStatsQuery,
@@ -11,6 +9,7 @@ import {
   Dao_Gates_TabQuery,
   Loyalty_Program,
 } from '@/services/hasura/types';
+import { PartialDeep } from 'type-fest';
 
 type DaoProfileContextProps = {
   isAdmin: boolean;

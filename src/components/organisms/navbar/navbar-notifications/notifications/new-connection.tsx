@@ -1,14 +1,13 @@
 import useTranslation from 'next-translate/useTranslation';
 import Link from 'next/link';
 
-import { PartialDeep } from 'type-fest';
-
-import { Box, Button, Stack, Typography } from '@mui/material';
-
+import { AvatarFile } from '@/components/atoms/avatar-file';
 import { ROUTES } from '@/constants/routes';
 import { Users } from '@/services/hasura/types';
 import { useTimeAgo } from '@/utils/time';
-import { AvatarFile } from '@/components/atoms/avatar-file';
+import { PartialDeep } from 'type-fest';
+
+import { Box, Button, Stack, Typography } from '@mui/material';
 
 type Props = {
   isLast?: boolean;

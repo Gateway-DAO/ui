@@ -1,8 +1,7 @@
 import { ReactNode, useEffect, useRef, useState } from 'react';
 
-import { useIntersection } from 'react-use';
-
 import { theme } from '@/theme';
+import { useIntersection } from 'react-use';
 
 import { Box } from '@mui/material';
 

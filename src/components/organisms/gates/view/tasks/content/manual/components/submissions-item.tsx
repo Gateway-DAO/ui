@@ -1,9 +1,12 @@
 import useTranslation from 'next-translate/useTranslation';
 import { useMemo } from 'react';
 
-import { useQuery } from '@tanstack/react-query';
+import { AvatarFile } from '@/components/atoms/avatar-file';
+import { useAuth } from '@/providers/auth';
+import { Task_Progress } from '@/services/hasura/types';
 import { brandColors, theme } from '@/theme';
 import { ISOToString } from '@/utils/date';
+import { useQuery } from '@tanstack/react-query';
 import { PartialDeep } from 'type-fest';
 
 import CancelIcon from '@mui/icons-material/Cancel';
@@ -16,10 +19,6 @@ import {
   useMediaQuery,
   ButtonBase,
 } from '@mui/material';
-
-import { useAuth } from '@/providers/auth';
-import { Task_Progress } from '@/services/hasura/types';
-import { AvatarFile } from '@/components/atoms/avatar-file';
 
 export type SubmissionsItemProps = {
   progress: PartialDeep<Task_Progress>;
