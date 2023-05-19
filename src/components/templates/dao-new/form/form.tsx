@@ -82,7 +82,7 @@ export function AboutForm({ isEdit }: Props) {
                   {...params}
                   label={t('common:fields.category')}
                   error={!!errors.categories}
-                  helperText={errors.categories?.message}
+                  helperText={errors.categories?.message as string}
                   sx={{
                     '& div fieldset legend span': {
                       marginRight: '10px',

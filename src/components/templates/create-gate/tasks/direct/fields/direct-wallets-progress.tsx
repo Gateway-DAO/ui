@@ -2,9 +2,10 @@ import useTranslation from 'next-translate/useTranslation';
 import { useMemo } from 'react';
 
 import { VerifyCsvProgressOutput } from '@/services/hasura/types';
-import { useRemainingTime } from '@/utils';
 
 import { Box, CircularProgress, Stack, Typography } from '@mui/material';
+
+import { useRemainingTime } from '../utils';
 
 type Props = VerifyCsvProgressOutput & {
   isLoading?: boolean;

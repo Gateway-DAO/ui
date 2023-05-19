@@ -2,15 +2,9 @@ import React, { forwardRef } from 'react';
 
 import { TOKENS } from '@/theme';
 
-import {
-  Avatar,
-  Box,
-  BoxTypeMap,
-  CardMedia,
-  Stack,
-  Typography,
-} from '@mui/material';
+import { Avatar, Box, CardMedia, Stack, Typography } from '@mui/material';
 import { OverridableComponent } from '@mui/material/OverridableComponent';
+import { BoxTypeMap } from '@mui/system';
 
 import {
   DEFAULT_MAX_WIDTH,

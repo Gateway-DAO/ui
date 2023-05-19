@@ -4,15 +4,9 @@ import { MotionBox } from '@/components/atoms/motion-components';
 import { useActiveScroll } from '@/hooks/use-active-scroll';
 import { TOKENS } from '@/theme';
 
-import {
-  Box,
-  BoxTypeMap,
-  Stack,
-  Typography,
-  useMediaQuery,
-  useTheme,
-} from '@mui/material';
+import { Box, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { OverridableComponent } from '@mui/material/OverridableComponent';
+import { BoxTypeMap } from '@mui/system';
 
 import { LandingTitleLimiter, ResponsiveImage } from '../styles';
 import Title from '../title';

@@ -45,7 +45,7 @@ export function Form() {
           id="name"
           {...register('name', { required: true })}
           error={!!errors.name}
-          helperText={errors.name?.message}
+          helperText={errors.name?.message as string}
         />
         <TextField
           sx={{
@@ -66,7 +66,7 @@ export function Form() {
           {...register('username', { required: true })}
           error={!!errors.username}
           helperText={
-            errors.username?.message ??
+            (errors.username?.message as string) ??
             'Valid: lowercase alphanumeric charaters and ._-'
           }
         />
@@ -91,7 +91,7 @@ export function Form() {
           inputProps={{ maxLength: 200 }}
           {...register('bio', { required: true })}
           error={!!errors.bio}
-          helperText={errors.bio?.message}
+          helperText={errors.bio?.message as string}
         />
         <Typography
           sx={{

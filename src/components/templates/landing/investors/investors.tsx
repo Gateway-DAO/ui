@@ -4,8 +4,9 @@ import React, { forwardRef } from 'react';
 
 import { TOKENS } from '@/theme';
 
-import { Box, BoxTypeMap, List, ListItem, Typography } from '@mui/material';
+import { Box, List, ListItem, Typography } from '@mui/material';
 import { OverridableComponent } from '@mui/material/OverridableComponent';
+import { BoxTypeMap } from '@mui/system';
 
 import { Investor, InvestorProps } from './types';
 

@@ -4,15 +4,9 @@ import { MotionBox } from '@/components/atoms/motion-components';
 
 import { ArrowDownward } from '@mui/icons-material';
 import { useMediaQuery, useTheme } from '@mui/material';
-import {
-  Box,
-  BoxTypeMap,
-  Button,
-  Hidden,
-  Stack,
-  Typography,
-} from '@mui/material';
+import { Box, Button, Hidden, Stack, Typography } from '@mui/material';
 import { OverridableComponent } from '@mui/material/OverridableComponent';
+import { BoxTypeMap } from '@mui/system';
 
 import BackgroundImage from '../../../../../public/images/hero-background.png';
 import { DEFAULT_MAX_WIDTH, DEFAULT_PADDINGX } from '../styles';

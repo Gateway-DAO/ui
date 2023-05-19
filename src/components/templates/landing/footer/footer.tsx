@@ -5,7 +5,7 @@ import {
   GatewayIcon,
   DiscordIcon,
   SubstackIcon,
-} from '@/components/atoms/icon';
+} from '@/components/atoms/icons';
 import { LoadingButton } from '@/components/atoms/loading-button';
 import { gqlAnonMethods } from '@/services/hasura/api';
 import { zodResolver } from '@hookform/resolvers/zod';

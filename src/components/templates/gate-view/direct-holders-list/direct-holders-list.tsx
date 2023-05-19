@@ -2,7 +2,7 @@ import useTranslation from 'next-translate/useTranslation';
 import { ChangeEvent, ReactNode, useState } from 'react';
 
 import { CenteredLoader } from '@/components/atoms/centered-loader';
-import { GateFilledIcon } from '@/components/atoms/icon';
+import { GateFilledIcon } from '@/components/atoms/icons';
 import { UserListItem } from '@/components/molecules/user-list-item';
 import { ClientNav } from '@/components/organisms/navbar/client-nav';
 import { query } from '@/constants/queries';

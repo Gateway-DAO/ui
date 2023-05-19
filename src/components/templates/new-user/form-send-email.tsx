@@ -60,7 +60,8 @@ export function FormSendEmail({ onSubmitSendEmail, isLoading }: Props) {
         {...register('email_address')}
         error={!!errors.email_address}
         helperText={
-          errors.email_address?.message ?? t('form.fields.e-mail-helper-text')
+          (errors.email_address?.message as string) ??
+          t('form.fields.e-mail-helper-text')
         }
       />
       <LoadingButton

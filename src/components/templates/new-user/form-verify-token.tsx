@@ -71,7 +71,7 @@ export function FormVerifyToken({
         inputMode="numeric"
         {...register('token')}
         error={!!errors.token}
-        helperText={errors.token?.message}
+        helperText={errors.token?.message as string as string}
       />
       <Stack direction="row" gap={1}>
         <LoadingButton
