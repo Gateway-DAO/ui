@@ -4,7 +4,7 @@ type Props = {
   sx?: SxProps;
 };
 
-export default function SuccessfullyRoundedIcon({ sx }: Props) {
+export function SuccessfullyRoundedIcon({ sx }: Props) {
   return (
     <Box sx={{ width: '28px', height: '28px', ...sx }}>
       <svg

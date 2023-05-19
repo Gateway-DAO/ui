@@ -1,6 +1,6 @@
 import { SvgIcon, SvgIconProps } from '@mui/material';
 
-export default function PolygonIcon(props: SvgIconProps) {
+export function PolygonIcon(props: SvgIconProps) {
   return (
     <SvgIcon
       width="20"

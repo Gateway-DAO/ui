@@ -1,6 +1,6 @@
 import SvgIcon, { SvgIconProps } from '@mui/material/SvgIcon';
 
-export function GateFilled(props: SvgIconProps) {
+export function GateFilledIcon(props: SvgIconProps) {
   return (
     <SvgIcon viewBox="0 0 24 24" {...props}>
       <path

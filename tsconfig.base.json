@@ -15,7 +15,6 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@gateway/assets": ["libs/assets/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

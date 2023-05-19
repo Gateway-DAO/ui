@@ -1,6 +1,6 @@
 import { SvgIcon, SvgIconProps } from '@mui/material';
 
-export default function EthereumIcon(props: SvgIconProps) {
+export function EthereumIcon(props: SvgIconProps) {
   return (
     <SvgIcon
       width="20"

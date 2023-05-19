@@ -5,7 +5,7 @@ type Props = {
   sx?: SxProps;
 };
 
-export default function SuccessfullyIcon({ size = 'large', sx }: Props) {
+export function SuccessfullyIcon({ size = 'large', sx }: Props) {
   return (
     <Box sx={{ width: '40px', height: '40px', ...sx }}>
       {size === 'large' && (

@@ -2,9 +2,8 @@ import useTranslation from 'next-translate/useTranslation';
 
 import { useConnectModal } from '@rainbow-me/rainbowkit';
 import { useWalletModal } from '@solana/wallet-adapter-react-ui';
+import { SolanaColorIcon } from 'apps/website/components/atoms/icons';
 import { FaEthereum } from 'react-icons/fa';
-
-import { SolanaIcon } from '@gateway/assets';
 
 import {
   Button,
@@ -56,7 +55,7 @@ export function AuthModal({ isOpen, close }: Props) {
             />
             <ProviderButton
               label="Solana"
-              icon={<SolanaIcon fontSize="medium" />}
+              icon={<SolanaColorIcon fontSize="medium" />}
               onClick={() => connectWrapper(() => setVisible(true))}
             />
           </Stack>

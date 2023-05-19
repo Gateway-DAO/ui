@@ -2,7 +2,6 @@ import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
 
 import { useQuery } from '@tanstack/react-query';
-
 import { brandColors } from 'apps/website/theme';
 
 import {
@@ -14,7 +13,7 @@ import {
   Typography,
 } from '@mui/material';
 
-import SuccessfullyIcon from '../../../../../../components/atoms/icons/successfully-icon';
+import { SuccessfullyIcon } from '../../../../../../components/atoms/icons';
 import { ROUTES } from '../../../../../../constants/routes';
 import { gatewayProtocolSDK } from '../../../../../../services/gateway-protocol/api';
 import CredentialCardInfo from '../../../components/credential-card-info';

@@ -1,5 +1,16 @@
-import EthereumIcon from './ethereum-icon';
-import PolygonIcon from './polygon-icon';
-import SolanaIcon from './solana-icon';
-
-export { PolygonIcon, EthereumIcon, SolanaIcon };
+export { AvalancheIcon } from './avalanche';
+export { CoinbaseWalletIcon } from './coinbase-wallet';
+export { DiscordIcon } from './discord';
+export { EthereumIcon } from './ethereum';
+export { GateFilledIcon } from './gate-filled';
+export { GateIcon } from './gate';
+export { GatewayIcon } from './gateway';
+export { MetamaskIcon } from './metamask';
+export { PolygonCircleIcon } from './polygon-circle';
+export { PolygonIcon } from './polygon';
+export { SolanaColorIcon } from './solana-color';
+export { SolanaIcon } from './solana';
+export { SubstackIcon } from './substack';
+export { SuccessfullyIcon } from './successfully-icon';
+export { SuccessfullyRoundedIcon } from './successfully-rounded';
+export { WalletConnectIcon } from './walletconnect';

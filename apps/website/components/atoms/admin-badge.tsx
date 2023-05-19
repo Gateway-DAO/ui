@@ -1,6 +1,6 @@
 import { PropsWithChildren } from 'react';
 
-import { CrownIcon } from '@gateway/assets';
+import { CrownIcon } from 'apps/website/components/atoms/icons';
 
 import { Badge } from '@mui/material';
 

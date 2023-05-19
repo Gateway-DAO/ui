@@ -3,10 +3,13 @@ import React from 'react';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
+import {
+  GatewayIcon,
+  DiscordIcon,
+  SubstackIcon,
+} from 'apps/website/components/atoms/icon';
 import { useForm } from 'react-hook-form';
 import { FaMedium } from 'react-icons/fa';
-
-import { GatewayIcon, DiscordIcon, SubstackIcon } from '@gateway/assets';
 
 import { GitHub, LinkedIn, Twitter } from '@mui/icons-material';
 import {

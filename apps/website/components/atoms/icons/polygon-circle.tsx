@@ -1,6 +1,6 @@
 import { SvgIcon, SvgIconProps } from '@mui/material';
 
-export function PolygonIcon(props: SvgIconProps) {
+export function PolygonCircleIcon(props: SvgIconProps) {
   return (
     <SvgIcon
       xmlns="http://www.w3.org/2000/svg"

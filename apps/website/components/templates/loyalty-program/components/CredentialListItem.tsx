@@ -9,8 +9,10 @@ import { Chip, Stack, Typography, alpha } from '@mui/material';
 
 import { ROUTES } from '../../../../constants/routes';
 import { Gates } from '../../../../services/hasura/types';
-import SuccessfullyIcon from '../../../atoms/icons/successfully-icon';
-import SuccessfullyRoundedIcon from '../../../atoms/icons/successfully-rounded';
+import {
+  SuccessfullyIcon,
+  SuccessfullyRoundedIcon,
+} from '../../../atoms/icons';
 import Loading from '../../../atoms/loading';
 
 type Props = {

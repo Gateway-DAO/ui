@@ -1,7 +1,4 @@
-import Link from 'next/link';
-import React from 'react';
-
-import { DiscordIcon } from '@gateway/assets';
+import { DiscordIcon } from 'apps/website/components/atoms/icon';
 import { TOKENS } from 'apps/website/theme';
 
 import { Box, Button, Stack, Typography } from '@mui/material';

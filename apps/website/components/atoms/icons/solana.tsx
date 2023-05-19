@@ -1,6 +1,6 @@
 import { SvgIcon, SvgIconProps } from '@mui/material';
 
-export default function SolanaIcon(props: SvgIconProps) {
+export function SolanaIcon(props: SvgIconProps) {
   return (
     <SvgIcon
       width="20"

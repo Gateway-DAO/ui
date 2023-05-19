@@ -2,9 +2,8 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useMemo } from 'react';
 
+import { GatewayIcon } from 'apps/website/components/atoms/icons';
 import clsx from 'clsx';
-
-import { GatewayIcon } from '@gateway/assets';
 
 import ExploreIcon from '@mui/icons-material/Explore';
 import { Avatar, ListItemButton } from '@mui/material';

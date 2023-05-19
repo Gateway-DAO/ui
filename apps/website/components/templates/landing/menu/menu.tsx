@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { GatewayIcon } from '@gateway/assets';
+import { GatewayIcon } from 'apps/website/components/atoms/icon';
 import { MotionBox } from 'apps/website/components/atoms/motion-components';
 
 import CloseIcon from '@mui/icons-material/Close';

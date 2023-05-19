@@ -2,12 +2,11 @@ import useTranslation from 'next-translate/useTranslation';
 import { ChangeEvent, ReactNode, useState } from 'react';
 
 import { useInfiniteQuery } from '@tanstack/react-query';
+import { GateFilledIcon } from 'apps/website/components/atoms/icon';
+import { TOKENS } from 'apps/website/theme';
 import { useWindowSize } from 'react-use';
 import { Virtuoso } from 'react-virtuoso';
 import { PartialDeep } from 'type-fest';
-
-import { GateFilled } from '@gateway/assets';
-import { TOKENS } from 'apps/website/theme';
 
 import SearchIcon from '@mui/icons-material/Search';
 import {
@@ -172,7 +171,7 @@ export function DirectHoldersList({
                 background: '#9a53ff36',
               }}
             >
-              <GateFilled />
+              <GateFilledIcon />
             </Box>
 
             <Typography variant="h6" textAlign={'center'} height={64} mt={2}>

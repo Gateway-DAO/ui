@@ -1,6 +1,9 @@
 import { useState } from 'react';
 
-import { PolygonIcon, AvalancheIcon } from '@gateway/assets';
+import {
+  PolygonCircleIcon,
+  AvalancheIcon,
+} from 'apps/website/components/atoms/icons';
 
 import { Dialog } from '@mui/material';
 
@@ -8,7 +11,7 @@ import { MintSelect } from './mint-select';
 
 export const networks = {
   polygon: {
-    svg: <PolygonIcon />,
+    svg: <PolygonCircleIcon />,
     png: '/images/polygon.png',
     name: 'Polygon',
   },

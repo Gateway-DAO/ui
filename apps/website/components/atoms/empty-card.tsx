@@ -1,6 +1,6 @@
 import { ReactNode, useMemo } from 'react';
 
-import { GateIcon } from '@gateway/assets';
+import { GateIcon } from 'apps/website/components/atoms/icons';
 
 import { Avatar, Box, type BoxProps, Stack, Typography } from '@mui/material';
 
