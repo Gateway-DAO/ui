@@ -7,7 +7,7 @@ import { Box, CardActionArea, CardHeader } from '@mui/material';
 import MUICard from '@mui/material/Card';
 
 import { ROUTES } from '@/constants/routes';
-import { useAuth } from '../../providers/auth';
+import { useAuth } from '@/providers/auth';
 import { Users } from '@/services/hasura/types';
 import { AdminBadge } from '../atoms/admin-badge';
 import { AvatarFile } from '../atoms/avatar-file';

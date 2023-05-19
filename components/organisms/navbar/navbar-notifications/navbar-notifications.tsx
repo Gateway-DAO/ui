@@ -9,7 +9,7 @@ import IconButton from '@mui/material/IconButton';
 import Popover from '@mui/material/Popover';
 import Tooltip from '@mui/material/Tooltip';
 
-import { useAuth } from '../../../../providers/auth';
+import { useAuth } from '@/providers/auth';
 import { NotificationList } from './list';
 
 export function NavBarNotifications() {

@@ -20,7 +20,7 @@ import {
 } from '@mui/material';
 
 import { query } from '@/constants/queries';
-import { useAuth } from '../../../../providers/auth';
+import { useAuth } from '@/providers/auth';
 import { gqlAnonMethods } from '@/services/hasura/api';
 import { Gates } from '@/services/hasura/types';
 import { CenteredLoader } from '../../../atoms/centered-loader';

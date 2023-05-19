@@ -10,7 +10,7 @@ import Typography from '@mui/material/Typography';
 
 import { useActualTier } from '@/hooks/use-actual-tier';
 import { useLoyaltyGatesCompleted } from '@/hooks/use-loyalty-gates-completed';
-import { useAuth } from '../../../providers/auth';
+import { useAuth } from '@/providers/auth';
 import { Loyalty_Program } from '@/services/hasura/types';
 import { AvatarFile } from '../../atoms/avatar-file';
 import TierInfo from '../../templates/loyalty-program/components/TierInfo';

@@ -5,7 +5,7 @@ import { PartialDeep } from 'type-fest';
 
 import { useCredentialByGateId } from '@/hooks/use-credential-by-gate-id';
 import { useGateStatus } from '@/hooks/use-gate-status';
-import { useAuth } from '../../../providers/auth';
+import { useAuth } from '@/providers/auth';
 import { gqlAnonMethods } from '@/services/hasura/api';
 import { Gates } from '@/services/hasura/types';
 import { isDaoAdmin } from '../../../utils/is-dao-admin';

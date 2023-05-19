@@ -16,7 +16,7 @@ import {
   Collapse,
 } from '@mui/material';
 
-import { useAuth } from '../../../../../../providers/auth';
+import { useAuth } from '@/providers/auth';
 import { LoadingButton } from '../../../../../atoms/loading-button';
 import { TaskIcon } from '../../../../../atoms/task-icon';
 

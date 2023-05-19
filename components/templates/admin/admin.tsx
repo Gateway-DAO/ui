@@ -14,7 +14,7 @@ import {
   ListItemButton,
 } from '@mui/material';
 
-import { useAuth } from '../../../providers/auth';
+import { useAuth } from '@/providers/auth';
 import { Navbar } from '../../organisms/navbar';
 
 export function AdminTemplate({ data }) {

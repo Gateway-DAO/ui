@@ -6,7 +6,7 @@ import { useQuery } from '@tanstack/react-query';
 import { Box, CircularProgress, Stack, Typography } from '@mui/material';
 
 import { ROUTES } from '@/constants/routes';
-import { useAuth } from '../../../../../../providers/auth';
+import { useAuth } from '@/providers/auth';
 import { useTimeAgo } from '../../../../../../utils/time';
 import { AvatarFile } from '../../../../../atoms/avatar-file';
 

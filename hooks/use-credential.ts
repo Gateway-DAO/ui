@@ -14,7 +14,7 @@ import {
 } from 'wagmi';
 
 import { CREDENTIAL_ABI } from '@/constants/web3';
-import { useAuth } from '../providers/auth';
+import { useAuth } from '@/providers/auth';
 import { Credentials } from '@/services/hasura/types';
 import { getExplorer } from '../utils/web3';
 

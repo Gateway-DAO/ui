@@ -15,7 +15,7 @@ import { Box } from '@mui/system';
 import { categoriesMap } from '@/constants/dao';
 import { ROUTES } from '@/constants/routes';
 import { useFile } from '@/hooks/use-file';
-import { useAuth } from '../../providers/auth';
+import { useAuth } from '@/providers/auth';
 import { Daos } from '@/services/hasura/types';
 import { AvatarFile } from '../atoms/avatar-file';
 import { FollowButtonDAO } from '../atoms/follow-button-dao';

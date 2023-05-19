@@ -11,7 +11,7 @@ import { PartialDeep } from 'type-fest/source/partial-deep';
 
 import { Divider, Stack } from '@mui/material';
 
-import { useAuth } from '../../../../../providers/auth';
+import { useAuth } from '@/providers/auth';
 import { gatewayProtocolAuthSDK } from '@/services/gateway-protocol/api';
 import {
   CreateCredentialMutationVariables,

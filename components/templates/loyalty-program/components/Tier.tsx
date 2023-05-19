@@ -9,7 +9,7 @@ import { Chip, Stack, Typography, alpha } from '@mui/material';
 import Loading from '../../../../components/atoms/loading';
 import { useActualTier } from '@/hooks/use-actual-tier';
 import { useLoyaltyGatesCompleted } from '@/hooks/use-loyalty-gates-completed';
-import { useAuth } from '../../../../providers/auth';
+import { useAuth } from '@/providers/auth';
 import { Loyalty_Program } from '@/services/hasura/types';
 import { TierRuler } from './TierRuler';
 

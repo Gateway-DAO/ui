@@ -6,7 +6,7 @@ import { Box, Button, SxProps } from '@mui/material';
 import Card from '@mui/material/Card';
 
 import { useCredential } from '@/hooks/use-credential';
-import { useBiconomy } from '../../../providers/biconomy';
+import { useBiconomy } from '@/providers/biconomy';
 import { Credentials } from '@/services/hasura/types';
 import { processScreen } from './process';
 

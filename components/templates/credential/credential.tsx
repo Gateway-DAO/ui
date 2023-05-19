@@ -25,7 +25,7 @@ import {
 } from '@mui/material';
 
 import { ROUTES } from '@/constants/routes';
-import { useAuth } from '../../../providers/auth';
+import { useAuth } from '@/providers/auth';
 import { Credentials } from '@/services/hasura/types';
 import { AvatarFile } from '../../atoms/avatar-file';
 import CircularProgressWithLabel from '../../atoms/circular-progress-label';

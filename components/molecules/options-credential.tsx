@@ -8,7 +8,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { query } from '@/constants/queries';
 import { ROUTES } from '@/constants/routes';
-import { useAuth } from '../../providers/auth';
+import { useAuth } from '@/providers/auth';
 import { Gates } from '@/services/hasura/types';
 import { queryClient } from '@/services/query-client';
 import { isDaoAdmin } from '../../utils/is-dao-admin';

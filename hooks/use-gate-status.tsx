@@ -5,7 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import { PartialDeep } from 'type-fest';
 
 import { query } from '@/constants/queries';
-import { useAuth } from '../providers/auth';
+import { useAuth } from '@/providers/auth';
 import { gqlAnonMethods } from '@/services/hasura/api';
 import { Gates } from '@/services/hasura/types';
 

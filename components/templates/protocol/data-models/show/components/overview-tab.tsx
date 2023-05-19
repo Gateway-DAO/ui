@@ -20,7 +20,7 @@ import {
 } from '@mui/material';
 
 import ConfirmDialog from '../../../../../../components/organisms/confirm-dialog/confirm-dialog';
-import { useAuth } from '../../../../../../providers/auth';
+import { useAuth } from '@/providers/auth';
 import {
   DataModel,
   GetDataModelStatsQuery,

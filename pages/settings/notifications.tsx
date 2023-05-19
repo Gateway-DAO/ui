@@ -1,7 +1,7 @@
 import { DashboardTemplate } from '../../components/templates/dashboard';
 import { SettingsTemplate } from '../../components/templates/settings';
 import { NotificationsSettings } from '../../components/templates/settings';
-import { useAuth } from '../../providers/auth';
+import { useAuth } from '@/providers/auth';
 
 export default function NotificationsSettingsPage() {
   const { me } = useAuth();

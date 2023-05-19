@@ -10,7 +10,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { Box, Divider, Stack, Typography } from '@mui/material';
 
 import { ROUTES } from '@/constants/routes';
-import { useAuth } from '../../../providers/auth';
+import { useAuth } from '@/providers/auth';
 import {
   Create_Gate_DirectMutationVariables,
   Create_Gate_Tasks_BasedMutationVariables,

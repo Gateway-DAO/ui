@@ -3,7 +3,7 @@ import { useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
 
 import { query } from '@/constants/queries';
-import { useAuth } from '../providers/auth';
+import { useAuth } from '@/providers/auth';
 import { Scalars } from '@/services/hasura/types';
 
 type Props = {

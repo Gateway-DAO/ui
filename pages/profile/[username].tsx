@@ -8,7 +8,7 @@ import {
   ProfileTemplate,
   PrivateProfileTemplate,
 } from '../../components/templates/profile';
-import { useAuth } from '../../providers/auth';
+import { useAuth } from '@/providers/auth';
 import { gqlAnonMethods } from '@/services/hasura/api';
 
 export default function Profile() {

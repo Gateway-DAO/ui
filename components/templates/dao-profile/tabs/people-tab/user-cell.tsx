@@ -8,7 +8,7 @@ import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
 
 import { ROUTES } from '@/constants/routes';
-import { useAuth } from '../../../../../providers/auth';
+import { useAuth } from '@/providers/auth';
 import { Users } from '@/services/hasura/types';
 import { AdminBadge } from '../../../../atoms/admin-badge';
 import { AvatarFile } from '../../../../atoms/avatar-file';

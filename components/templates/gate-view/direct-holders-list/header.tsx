@@ -4,7 +4,7 @@ import { DateTime } from 'luxon';
 
 import { Alert, Box, Button, Stack, Typography } from '@mui/material';
 
-import { useAuth } from '../../../../providers/auth';
+import { useAuth } from '@/providers/auth';
 
 type Props = {
   isLoading?: boolean;

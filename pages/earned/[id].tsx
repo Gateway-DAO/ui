@@ -9,7 +9,7 @@ import { MintModal } from '../../components/organisms/mint-modal';
 import { Navbar } from '../../components/organisms/navbar';
 import { CredentialTemplate } from '../../components/templates/credential';
 import { DashboardTemplate } from '../../components/templates/dashboard';
-import { useAuth } from '../../providers/auth';
+import { useAuth } from '@/providers/auth';
 import { gqlAnonMethods } from '@/services/hasura/api';
 
 export default function CredentialPage() {

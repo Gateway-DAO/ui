@@ -11,7 +11,7 @@ import { Button, CircularProgress } from '@mui/material';
 
 import ConfirmDialog from '../../../../../../components/organisms/confirm-dialog/confirm-dialog';
 import { ROUTES } from '@/constants/routes';
-import { useAuth } from '../../../../../../providers/auth';
+import { useAuth } from '@/providers/auth';
 import {
   Credential,
   CredentialStatus,

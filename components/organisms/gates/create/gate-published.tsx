@@ -19,7 +19,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
 import { ROUTES } from '@/constants/routes';
-import { useAuth } from '../../../../providers/auth';
+import { useAuth } from '@/providers/auth';
 import { GateQuery, Gates } from '@/services/hasura/types';
 import { GatesCard } from '../../../molecules/gates-card';
 

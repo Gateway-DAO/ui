@@ -11,7 +11,7 @@ import MUICard from '@mui/material/Card';
 import { ROUTES } from '@/constants/routes';
 import { usePropertyFilter } from '@/hooks/use-property-filter';
 import { useViewMode, ViewMode } from '@/hooks/use-view-modes';
-import { useAuth } from '../../../../../providers/auth';
+import { useAuth } from '@/providers/auth';
 import { EmptyCard } from '../../../../atoms/empty-card';
 import { ChipDropdown } from '../../../../molecules/chip-dropdown';
 import { GatesCard } from '../../../../molecules/gates-card';

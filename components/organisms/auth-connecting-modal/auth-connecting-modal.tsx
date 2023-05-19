@@ -15,7 +15,7 @@ import {
 } from '@mui/material';
 
 import { useConnectedWallet } from '@/hooks/wallet/use-connected-wallet';
-import { AuthStep, AuthStepError } from '../../../providers/auth/types';
+import { AuthStep, AuthStepError } from '@/providers/auth/types';
 import { AnimatedMessage } from './animated-message';
 
 type Props = {

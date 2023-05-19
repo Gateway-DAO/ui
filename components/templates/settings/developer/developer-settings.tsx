@@ -7,7 +7,7 @@ import { useCopyToClipboard } from 'react-use';
 import { ContentCopy } from '@mui/icons-material';
 import { Button, Card, CardContent, Stack, Typography } from '@mui/material';
 
-import { useAuth } from '../../../../providers/auth';
+import { useAuth } from '@/providers/auth';
 
 const DeveloperPortalSettings = () => {
   const { t } = useTranslation('settings');

@@ -19,7 +19,7 @@ import {
   Typography,
 } from '@mui/material';
 
-import { useAuth } from '../../../providers/auth';
+import { useAuth } from '@/providers/auth';
 import { CenteredLoader } from '../../atoms/centered-loader';
 import { UserListItem } from '../../molecules/user-list-item';
 

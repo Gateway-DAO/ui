@@ -5,7 +5,7 @@ import { useDropArea } from 'react-use';
 
 import { Paper } from '@mui/material';
 
-import { useAuth } from '../../../../../providers/auth';
+import { useAuth } from '@/providers/auth';
 import { Files } from '@/services/hasura/types';
 import { CreateGateData } from '../../schema';
 import {

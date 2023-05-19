@@ -13,7 +13,7 @@ import { MenuListItem } from '../components/templates/landing/menu/types';
 import { ProductShowProps } from '../components/templates/landing/product-show/types';
 import { ScheduleDemoProps } from '../components/templates/landing/schedule-demo/types';
 import { ROUTES } from '@/constants/routes';
-import { useAuth } from '../providers/auth';
+import { useAuth } from '@/providers/auth';
 
 export default function Index() {
   const router = useRouter();

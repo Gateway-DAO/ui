@@ -18,7 +18,7 @@ import {
   Typography,
 } from '@mui/material';
 
-import { useAuth } from '../../../../providers/auth';
+import { useAuth } from '@/providers/auth';
 import { TaskIcon } from '../../../atoms/task-icon';
 import {
   CreateGateData,

@@ -22,7 +22,7 @@ import {
 
 import { ROUTES } from '@/constants/routes';
 import { useMintData } from '@/hooks/use-mint-data';
-import { useAuth } from '../../../../providers/auth';
+import { useAuth } from '@/providers/auth';
 import { Gates, Loyalty_Program } from '@/services/hasura/types';
 import { isDaoAdmin } from '../../../../utils/is-dao-admin';
 import { AvatarFile } from '../../../atoms/avatar-file';

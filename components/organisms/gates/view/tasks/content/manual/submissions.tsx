@@ -9,7 +9,7 @@ import { PartialDeep } from 'type-fest';
 import { Stack, useMediaQuery } from '@mui/material';
 
 import { taskErrorMessages } from '../../../../../../../components/organisms/tasks/task-error-messages';
-import { useAuth } from '../../../../../../../providers/auth';
+import { useAuth } from '@/providers/auth';
 import {
   Gates,
   Task_Progress,

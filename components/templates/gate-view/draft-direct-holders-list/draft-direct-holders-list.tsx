@@ -5,7 +5,7 @@ import { TOKENS } from '@/theme';
 
 import { Box, CircularProgress, Grid, Stack } from '@mui/material';
 
-import { useAuth } from '../../../../providers/auth';
+import { useAuth } from '@/providers/auth';
 import { Gates } from '@/services/hasura/types';
 import { ClientNav } from '../../../organisms/navbar/client-nav';
 import {

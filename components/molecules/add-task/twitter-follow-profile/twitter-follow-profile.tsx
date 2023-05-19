@@ -19,7 +19,7 @@ import {
   Typography,
 } from '@mui/material';
 
-import { useAuth } from '../../../../providers/auth';
+import { useAuth } from '@/providers/auth';
 import { CircleWithNumber } from '../../../atoms/circle-with-number';
 import { TaskIcon } from '../../../atoms/task-icon';
 import {

@@ -16,7 +16,7 @@ import {
   Collapse,
 } from '@mui/material';
 
-import { useAuth } from '../../../providers/auth';
+import { useAuth } from '@/providers/auth';
 import { Tasks, Gates } from '@/services/hasura/types';
 import { queryClient } from '@/services/query-client';
 import { getMapValueFromObject } from '../../../utils/map-object';

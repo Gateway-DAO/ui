@@ -11,7 +11,7 @@ import { Typography, Stack, Divider, Button } from '@mui/material';
 import { query } from '@/constants/queries';
 import { ROUTES } from '@/constants/routes';
 import { useViewMode } from '@/hooks/use-view-modes';
-import { useAuth } from '../../../../providers/auth';
+import { useAuth } from '@/providers/auth';
 import { gatewayProtocolSDK } from '@/services/gateway-protocol/api';
 import { gqlAnonMethods } from '@/services/hasura/api';
 import { Users } from '@/services/hasura/types';

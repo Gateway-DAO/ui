@@ -8,7 +8,7 @@ import { TOKENS } from '@/theme';
 import { Box, Grid, Stack, Typography } from '@mui/material';
 
 import { query } from '@/constants/queries';
-import { useAuth } from '../../../providers/auth';
+import { useAuth } from '@/providers/auth';
 import { Gates } from '@/services/hasura/types';
 import CircularProgressWithLabel from '../../atoms/circular-progress-label';
 import { Submissions } from '../../organisms/gates/view/tasks/content/manual/submissions';

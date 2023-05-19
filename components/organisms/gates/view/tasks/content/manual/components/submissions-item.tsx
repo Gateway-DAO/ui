@@ -17,7 +17,7 @@ import {
   ButtonBase,
 } from '@mui/material';
 
-import { useAuth } from '../../../../../../../../providers/auth';
+import { useAuth } from '@/providers/auth';
 import { Task_Progress } from '@/services/hasura/types';
 import { AvatarFile } from '../../../../../../../atoms/avatar-file';
 

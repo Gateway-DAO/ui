@@ -14,7 +14,7 @@ import {
 } from '@mui/material';
 
 import { taskErrorMessages } from '../../../../../../../components/organisms/tasks/task-error-messages';
-import { useAuth } from '../../../../../../../providers/auth';
+import { useAuth } from '@/providers/auth';
 import { LoadingButton } from '../../../../../../atoms/loading-button';
 import { TaskProps } from '../types';
 import { InterationList } from './components/interation-list';

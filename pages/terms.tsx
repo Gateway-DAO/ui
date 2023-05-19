@@ -16,7 +16,7 @@ import { Menu } from '../components/templates/landing/menu/menu';
 import { MenuListItem } from '../components/templates/landing/menu/types';
 import { DEFAULT_PADDINGX } from '../components/templates/landing/styles';
 import { ROUTES } from '@/constants/routes';
-import { useAuth } from '../providers/auth';
+import { useAuth } from '@/providers/auth';
 
 export default function Terms() {
   const { t } = useTranslation('index');

@@ -15,7 +15,7 @@ import {
 } from '@mui/material';
 
 import { ROUTES } from '@/constants/routes';
-import { useAuth } from '../../providers/auth';
+import { useAuth } from '@/providers/auth';
 import { Users } from '@/services/hasura/types';
 import { AvatarFile } from '../atoms/avatar-file';
 

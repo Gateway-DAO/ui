@@ -24,7 +24,7 @@ import Typography from '@mui/material/Typography';
 
 import { ROUTES } from '@/constants/routes';
 import { useConnectedWallet } from '@/hooks/wallet/use-connected-wallet';
-import { useAuth } from '../../../providers/auth';
+import { useAuth } from '@/providers/auth';
 import { AvatarFile } from '../../atoms/avatar-file';
 
 /* TODO: Refactor */

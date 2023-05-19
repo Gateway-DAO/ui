@@ -5,7 +5,7 @@ import { dehydrate, QueryClient, useQuery } from '@tanstack/react-query';
 import { AdminTemplate } from '../components/templates/admin';
 import { DashboardTemplate } from '../components/templates/dashboard';
 import { ROUTES } from '@/constants/routes';
-import { useAuth } from '../providers/auth';
+import { useAuth } from '@/providers/auth';
 import { gqlMethods } from '@/services/hasura/api';
 import { getServerSession } from '@/services/next-auth';
 

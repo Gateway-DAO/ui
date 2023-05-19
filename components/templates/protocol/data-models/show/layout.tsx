@@ -25,7 +25,7 @@ import {
 
 import { CredentialProtocolCreate } from '../..';
 import { query } from '@/constants/queries';
-import { useAuth } from '../../../../../providers/auth';
+import { useAuth } from '@/providers/auth';
 import { gatewayProtocolSDK } from '@/services/gateway-protocol/api';
 import { PermissionType } from '@/services/gateway-protocol/types';
 import { TabPanel } from '../../../../atoms/tabs';

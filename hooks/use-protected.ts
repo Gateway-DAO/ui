@@ -2,7 +2,7 @@ import { useCallback, useEffect } from 'react';
 
 import { useToggle } from 'react-use';
 
-import { useAuth } from '../providers/auth';
+import { useAuth } from '@/providers/auth';
 
 /* PAuthenticated only method execution,  */
 export function useProtected(protectedCallback: (...e: any[]) => void) {

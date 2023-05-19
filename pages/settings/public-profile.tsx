@@ -10,7 +10,7 @@ import { EditUserSchema } from '../../components/templates/settings/profile/sche
 import { ROUTES } from '@/constants/routes';
 import { generateImageUrl } from '@/hooks/use-file';
 import { useUploadImage } from '@/hooks/use-upload-image';
-import { useAuth } from '../../providers/auth';
+import { useAuth } from '@/providers/auth';
 
 export default function PublicProfileSettingsPage() {
   const uploadImage = useUploadImage();

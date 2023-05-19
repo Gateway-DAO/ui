@@ -33,7 +33,7 @@ import {
 import { Link as MUILink } from '@mui/material';
 
 import { ROUTES } from '@/constants/routes';
-import { useAuth } from '../../../providers/auth';
+import { useAuth } from '@/providers/auth';
 import {
   gatewayProtocolAuthSDK,
   gatewayProtocolSDK,

@@ -11,7 +11,7 @@ import { DashboardTemplate } from '../../components/templates/dashboard';
 import { GateViewTemplate } from '../../components/templates/gate-view';
 import { query } from '@/constants/queries';
 import { ROUTES } from '@/constants/routes';
-import { useAuth } from '../../providers/auth';
+import { useAuth } from '@/providers/auth';
 import { gqlAnonMethods, gqlMethods } from '@/services/hasura/api';
 import { getServerSession } from '@/services/next-auth';
 

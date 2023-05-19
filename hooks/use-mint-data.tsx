@@ -6,7 +6,7 @@ import { PartialDeep } from 'type-fest/source/partial-deep';
 import { DialogStatuses } from '../components/molecules/mint-dialog-protocol';
 import { MintedChain } from '../components/templates/protocol/credentials/show/components/mint-nft-card';
 import { query } from '@/constants/queries';
-import { useAuth } from '../providers/auth';
+import { useAuth } from '@/providers/auth';
 import { gatewayProtocolAuthSDK } from '@/services/gateway-protocol/api';
 import {
   Chain,

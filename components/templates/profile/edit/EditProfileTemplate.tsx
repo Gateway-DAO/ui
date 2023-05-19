@@ -16,7 +16,7 @@ import {
   IconButton,
 } from '@mui/material';
 
-import { useAuth } from '../../../../providers/auth';
+import { useAuth } from '@/providers/auth';
 import { LoadingButton } from '../../../atoms/loading-button';
 import { About } from '../../profile/edit/Components/About';
 import { Experiences } from '../../profile/edit/Components/Experiences';

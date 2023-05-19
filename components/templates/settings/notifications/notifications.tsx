@@ -20,7 +20,7 @@ import {
   Typography,
 } from '@mui/material';
 
-import { useAuth } from '../../../../providers/auth';
+import { useAuth } from '@/providers/auth';
 import { ChangeNotificationSettings } from '@/services/hasura/types';
 import { DappNotifications, EmailNotifications } from './config';
 

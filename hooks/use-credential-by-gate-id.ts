@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 
-import { useAuth } from '../providers/auth';
+import { useAuth } from '@/providers/auth';
 
 type Props = {
   gateId: number;
