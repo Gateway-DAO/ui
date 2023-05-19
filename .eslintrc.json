@@ -2,33 +2,25 @@
   "root": true,
   "ignorePatterns": ["**/*"],
   "extends": [
-    "plugin:@nrwl/nx/typescript",
+    "next",
+    "next/core-web-vitals",
     "prettier",
     "plugin:editorconfig/noconflict"
   ],
   "plugins": [
-    "@nrwl/nx",
     "editorconfig",
     "eslint-plugin-import-helpers",
     "prettier"
   ],
+  "env": {
+    "jest": true
+  },
   "overrides": [
     {
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
       "rules": {
-        "@nrwl/nx/enforce-module-boundaries": [
-          "error",
-          {
-            "enforceBuildableLibDependency": false,
-            "allow": [],
-            "depConstraints": [
-              {
-                "sourceTag": "*",
-                "onlyDependOnLibsWithTags": ["*"]
-              }
-            ]
-          }
-        ],
+        "@next/next/no-html-link-for-pages": ["error", "pages"],
+        "@next/next/no-img-element": "off",
         "editorconfig/indent": "off",
         "import-helpers/order-imports": [
           "warn",

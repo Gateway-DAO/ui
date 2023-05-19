@@ -12,7 +12,7 @@ SEO:
   ☐ Add build-public on "dependsOn" property on both "build" and "serve" targets
   ☐ Generate all manifest.json (theme, description) based on a @gateway/assets folder
   ☐ Add everything related to SEO (images, theme, description) inside @gateway/assets @started(22-05-11 11:42)
-  ☐ Redo `apps/website/components/atoms/seo/seo-social.tsx`
+  ☐ Redo `@/components/atoms/seo/seo-social.tsx`
 
 Setup:
   ☐ Remove `experimental: { images: { layoutRaw: true } }` from next.config.js when upgrade to new version of next@

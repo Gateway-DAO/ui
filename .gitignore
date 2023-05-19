@@ -45,3 +45,9 @@ Thumbs.db
 .sentryclirc
 
 prisma/schema.prisma
+services/**/**/types.ts
+services/**/**/validation.ts
+
+# Sentry
+.sentryclirc
+

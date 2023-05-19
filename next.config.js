@@ -1,17 +1,10 @@
 /*eslint-disable @typescript-eslint/no-var-requires*/
 const nextTranslate = require('next-translate');
 
-const withNx = require('@nrwl/next/plugins/with-nx');
-
 /**
- * @type {import('@nrwl/next/plugins/with-nx').WithNxOptions}
+ * @type {import('next').NextConfig}
  **/
 const nextConfig = {
-  nx: {
-    // Set this to true if you would like to to use SVGR
-    // See: https://github.com/gregberge/svgr
-    svgr: false,
-  },
   experimental: { images: { layoutRaw: true }, scrollRestoration: true },
   images: {
     domains: [
@@ -38,4 +31,4 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 });
 
-module.exports = withBundleAnalyzer(nextTranslate(withNx(nextConfig)));
+module.exports = withBundleAnalyzer(nextTranslate(nextConfig));
