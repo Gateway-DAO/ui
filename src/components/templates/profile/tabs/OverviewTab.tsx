@@ -16,7 +16,7 @@ import { gatewayProtocolSDK } from '@/services/gateway-protocol/api';
 import { gqlAnonMethods } from '@/services/hasura/api';
 import { Users } from '@/services/hasura/types';
 import { SessionUser } from '@/types/user';
-import CredentialCard from '../../..//molecules/credential-card';
+import CredentialCard from '@/components/molecules/credential-card';
 import { useTab } from '@/components/atoms/tabs';
 import NewElementCard from '@/components/molecules/new-element-card';
 import { SectionWithSliderResponsive } from '@/components/molecules/sections';

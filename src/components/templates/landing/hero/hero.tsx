@@ -15,7 +15,7 @@ import {
 } from '@mui/material';
 import { OverridableComponent } from '@mui/material/OverridableComponent';
 
-import BackgroundImage from '../../../../public/images/hero-background.png';
+import BackgroundImage from '../../../../../public/images/hero-background.png';
 import { DEFAULT_MAX_WIDTH, DEFAULT_PADDINGX } from '../styles';
 import { HeroBackground } from './styles';
 import { HeroProps } from './types';
