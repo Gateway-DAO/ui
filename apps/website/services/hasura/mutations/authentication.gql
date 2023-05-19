@@ -1,6 +1,6 @@
 mutation get_nonce($wallet: String!, $chain: protocol_api_Chain) {
   protocol {
-    createNonce(input: {
+    createWalletNonce(input: {
       wallet: $wallet,
       chain: $chain
     }) {
@@ -11,7 +11,7 @@ mutation get_nonce($wallet: String!, $chain: protocol_api_Chain) {
 
 mutation login($signature: String!, $wallet: String!) {
   protocol {
-    login(input: {
+    loginWallet(input: {
       signature: $signature
       wallet: $wallet
     }) {

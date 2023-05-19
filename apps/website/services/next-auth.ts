@@ -18,11 +18,11 @@ const callLogin = async (
 
     const { error } = (res as any) ?? {};
 
-    if (error || !res.protocol.login) {
+    if (error || !res.protocol.loginWallet) {
       return null;
     }
 
-    const { __typename, ...token } = res.protocol.login;
+    const { __typename, ...token } = res.protocol.loginWallet;
 
     return token;
   } catch (e) {
