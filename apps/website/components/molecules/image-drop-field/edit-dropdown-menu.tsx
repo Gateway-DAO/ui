@@ -1,5 +1,7 @@
-import { useMenu } from '@gateway/ui';
 import useTranslation from 'next-translate/useTranslation';
+
+import { useMenu } from 'apps/website/hooks/use-menu';
+
 import { Edit } from '@mui/icons-material';
 import { Photo, RemoveCircle, Token } from '@mui/icons-material';
 import {

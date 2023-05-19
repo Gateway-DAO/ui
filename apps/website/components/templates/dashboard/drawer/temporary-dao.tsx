@@ -1,9 +1,8 @@
 import { useEffect } from 'react';
 
+import { MotionAvatar } from 'apps/website/components/atoms/motion-components';
 import { usePresence } from 'framer-motion';
 import { PartialDeep } from 'type-fest';
-
-import { MotionAvatar } from '@gateway/ui';
 
 import { ListItemButton } from '@mui/material';
 import ListItemIcon from '@mui/material/ListItemIcon';

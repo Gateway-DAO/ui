@@ -1,7 +1,7 @@
 import React, { forwardRef, useRef } from 'react';
 
 import { TOKENS } from '@gateway/theme';
-import { MotionBox } from '@gateway/ui';
+import { MotionBox } from 'apps/website/components/atoms/motion-components';
 
 import {
   Box,

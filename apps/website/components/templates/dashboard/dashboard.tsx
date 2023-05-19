@@ -1,6 +1,6 @@
 import { PropsWithChildren } from 'react';
 
-import { MotionBox } from '@gateway/ui';
+import { MotionBox } from 'apps/website/components/atoms/motion-components';
 
 import Box from '@mui/material/Box';
 

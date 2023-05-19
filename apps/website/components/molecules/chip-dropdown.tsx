@@ -1,6 +1,6 @@
 import { MouseEvent } from 'react';
 
-import { useMenu } from '@gateway/ui';
+import { useMenu } from 'apps/website/hooks/use-menu';
 
 import {
   ArrowDropDown,

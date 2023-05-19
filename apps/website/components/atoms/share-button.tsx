@@ -1,9 +1,9 @@
-import { ShareButtonFn } from './share-btn-fn';
-
-import { useMenu } from '@gateway/ui';
+import { useMenu } from 'apps/website/hooks/use-menu';
 
 import { IosShare } from '@mui/icons-material';
 import { Avatar, IconButton, Stack } from '@mui/material';
+
+import { ShareButtonFn } from './share-btn-fn';
 
 type Props = {
   title?: string;

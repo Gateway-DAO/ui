@@ -1,11 +1,11 @@
 import Link from 'next/link';
 import { useEffect } from 'react';
 
+import { useMenu } from 'apps/website/hooks/use-menu';
 import { useSnackbar } from 'notistack';
 import { useCopyToClipboard } from 'react-use';
 
 import { theme } from '@gateway/theme';
-import { useMenu } from '@gateway/ui';
 
 import { ArrowDropDown } from '@mui/icons-material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
