@@ -50,7 +50,7 @@ const config: IGraphQLConfig = {
   extensions: {
     codegen: {
       generates: {
-        './services/hasura/types.ts': {
+        './src/services/hasura/types.ts': {
           ...generateConfig,
           schema: {
             [`${process.env.HASURA_ENDPOINT}`]: {
@@ -59,15 +59,15 @@ const config: IGraphQLConfig = {
               },
             },
           },
-          documents: ['services/hasura/**/*.gql'],
+          documents: ['./src/services/hasura/**/*.gql'],
         },
-        './services/gateway-protocol/types.ts': {
+        './src/services/gateway-protocol/types.ts': {
           ...generateConfig,
           schema: {
             [`${process.env.GATEWAY_PROTOCOL_ENDPOINT}`]: {
             },
           },
-          documents: ['services/gateway-protocol/**/*.gql'],
+          documents: ['./src/services/gateway-protocol/**/*.gql'],
         }
       }
     }
