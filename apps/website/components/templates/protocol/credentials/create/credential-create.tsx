@@ -57,8 +57,7 @@ export default function CredentialCreateForm({
           description: dataModel.description,
           tags: [],
           dataModelId: dataModel.id,
-          recipientUserGatewayIdOrWallet:
-            rawData.recipientUserGatewayIdOrWallet,
+          recipientUserIdentity: rawData.recipientUserIdentity,
         };
       } else {
         zodResult = await zodResolver(createCredentialSchema)(
