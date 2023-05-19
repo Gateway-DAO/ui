@@ -8,7 +8,7 @@
     "serve": "next start",
     "lint": "next lint",
     "test": "jest --watch",
-    "build": "next build --verbose",
+    "build": "next build",
     "generate:prisma": "node tools/scripts/create-prisma.js && prisma db pull && prisma generate",
     "generate:graphql": "graphql-codegen --config .graphqlrc.ts -r dotenv/config"
   },
@@ -67,6 +67,7 @@
     "next-share": "^0.18.1",
     "next-translate": "^1.4.0",
     "nextjs-progressbar": "^0.0.14",
+    "normalize-url": "^8.0.0",
     "notistack": "^2.0.5",
     "qr-code-styling": "^1.6.0-rc.1",
     "react": "18.0.0",
@@ -92,6 +93,7 @@
     "twitter-lite": "^1.1.0",
     "type-fest": "^2.12.2",
     "use-breakpoint": "^3.0.2",
+    "uuid": "^9.0.0",
     "wagmi": "^0.11.6",
     "yup": "^0.32.11",
     "zod": "^3.17.3"
@@ -113,6 +115,7 @@
     "@types/node": "16.11.7",
     "@types/react": "^18.0.9",
     "@types/react-dom": "^18.0.3",
+    "@types/uuid": "^9.0.1",
     "@typescript-eslint/eslint-plugin": "~5.18.0",
     "@typescript-eslint/parser": "~5.18.0",
     "concurrently": "^7.2.0",

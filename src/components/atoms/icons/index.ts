@@ -1,4 +1,5 @@
 export { AvalancheIcon } from './avalanche';
+export { CrownIcon } from './crown';
 export { CoinbaseWalletIcon } from './coinbase-wallet';
 export { DiscordIcon } from './discord';
 export { EthereumIcon } from './ethereum';

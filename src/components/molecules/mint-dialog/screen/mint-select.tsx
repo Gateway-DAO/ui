@@ -1,3 +1,4 @@
+import { useConnectedWallet } from '@/hooks/wallet/use-connected-wallet';
 import { v4 as uuidv4 } from 'uuid';
 
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
@@ -15,8 +16,6 @@ import {
   ListItemText,
   Typography,
 } from '@mui/material';
-
-import { useConnectedWallet } from '@/hooks/wallet/use-connected-wallet';
 
 const NetworksDetails = [
   {

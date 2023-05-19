@@ -1,6 +1,16 @@
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
+import ConfirmDialog from '@/components/organisms/confirm-dialog/confirm-dialog';
+import GatePublishedModal from '@/components/organisms/gates/create/gate-published';
+import { PublishNavbar } from '@/components/organisms/publish-navbar/publish-navbar';
+import TaskArea from '@/components/organisms/tasks-area/tasks-area';
+import { ROUTES } from '@/constants/routes';
+import { useAuth } from '@/providers/auth';
+import {
+  Create_Gate_DirectMutationVariables,
+  Create_Gate_Tasks_BasedMutationVariables,
+} from '@/services/hasura/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { useSnackbar } from 'notistack';
@@ -9,16 +19,6 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { Box, Divider, Stack, Typography } from '@mui/material';
 
-import { ROUTES } from '@/constants/routes';
-import { useAuth } from '@/providers/auth';
-import {
-  Create_Gate_DirectMutationVariables,
-  Create_Gate_Tasks_BasedMutationVariables,
-} from '@/services/hasura/types';
-import ConfirmDialog from '@/components/organisms/confirm-dialog/confirm-dialog';
-import GatePublishedModal from '@/components/organisms/gates/create/gate-published';
-import { PublishNavbar } from '@/components/organisms/publish-navbar/publish-navbar';
-import TaskArea from '@/components/organisms/tasks-area/tasks-area';
 import { AdvancedSetting } from './advanced-settings';
 import { GateDetailsForm } from './details-form';
 import { GateImageCard } from './gate-image-card/gate-image-card';
@@ -94,8 +94,8 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
         taskErrorMessage(errors?.tasks);
       }
 
-      if (Object.values(errors)[0].data?.message) {
-        showErrorMessage(Object.values(errors)[0].data?.message);
+      if ((Object.values(errors)[0] as any).data?.message) {
+        showErrorMessage((Object.values(errors)[0] as any).data?.message);
       }
 
       recursiveErrorMessage(errors);
@@ -399,7 +399,8 @@ export function CreateGateTemplate({ oldData }: CreateGateProps) {
             setOpen={setConfirmPublish}
             onConfirm={methods.handleSubmit(onCreateGate, (errors) => {
               enqueueSnackbar(
-                Object.values(errors)[0]?.data?.message || 'Invalid data'
+                (Object.values(errors)[0] as any)?.data?.message ||
+                  'Invalid data'
               );
             })}
           >

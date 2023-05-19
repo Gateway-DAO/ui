@@ -1,13 +1,15 @@
 {
   "root": true,
-  "ignorePatterns": ["**/*"],
   "extends": [
+    "eslint:recommended",
     "next",
-    //"next/core-web-vitals",
+    "next/core-web-vitals",
+    "plugin:@typescript-eslint/recommended",
     "prettier",
     "plugin:editorconfig/noconflict"
   ],
   "plugins": [
+    "@typescript-eslint",
     "editorconfig",
     "eslint-plugin-import-helpers",
     "prettier"
@@ -38,17 +40,19 @@
           }
         ],
         "sort-imports": "off",
-        "prettier/prettier": "error",
-        "@typescript-eslint/no-unused-vars": [
-          "warn",
-          {
-            "argsIgnorePattern": "^_",
-            "varsIgnorePattern": "^_",
-            "caughtErrorsIgnorePattern": "^_"
-          }
-        ],
-        "@typescript-eslint/no-empty-function": ["warn"]
+        "prettier/prettier": "error"
       }
     }
-  ]
+  ],
+  "rules": {
+    "@typescript-eslint/no-unused-vars": [
+      "warn",
+      {
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^_",
+        "caughtErrorsIgnorePattern": "^_"
+      }
+    ],
+    "@typescript-eslint/no-empty-function": ["warn"]
+  }
 }
