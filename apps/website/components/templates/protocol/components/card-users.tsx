@@ -113,6 +113,7 @@ export default function CardUsers({
               : ROUTES.PROFILE.replace('[username]', issuer?.data?.username)
           }
           hasLink={!!organization.data || !!issuer.data}
+          id="credential-textlink-issuerid"
         />
       )}
       <Box
@@ -143,6 +144,7 @@ export default function CardUsers({
           href={ROUTES.PROFILE.replace('[username]', recipientName)}
           alignRight={!isMobile}
           hasLink={!!recipient.data}
+          id="credential-textlink-recipientid"
         />
       )}
     </Stack>

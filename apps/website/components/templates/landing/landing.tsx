@@ -108,6 +108,7 @@ export function LandingTemplate({
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
+          overflow: 'hidden',
           [theme.breakpoints.down('sm')]: {
             px: '20px',
           },

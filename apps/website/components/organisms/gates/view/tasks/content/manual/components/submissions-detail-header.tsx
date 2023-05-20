@@ -37,7 +37,7 @@ export function SubmissionsDetailHeader({
     Extract<ManualTaskEventType, 'approve' | 'reject'> | undefined
   >();
   const isCompleted =
-    progress.completed === 'reject' || progress.completed === 'done';
+    progress?.completed === 'reject' || progress?.completed === 'done';
   const { t } = useTranslation('gate-profile');
   return (
     <>
@@ -57,10 +57,10 @@ export function SubmissionsDetailHeader({
           >
             <ArrowBackIcon sx={{ fontSize: 20 }} />
           </IconButton>
-          <AvatarFile file={user.picture} fallback="/avatar.png"></AvatarFile>
+          <AvatarFile file={user?.picture} fallback="/avatar.png"></AvatarFile>
           <Typography
             sx={{ flexGrow: 1, ml: 0.5 }}
-          >{`@${user.username}`}</Typography>
+          >{`@${user?.username}`}</Typography>
         </Stack>
         <Stack
           direction="row"
@@ -69,7 +69,9 @@ export function SubmissionsDetailHeader({
           sx={{ mt: { xs: 2, lg: 0 } }}
         >
           <LoadingButton
-            variant={progress.completed === 'reject' ? 'contained' : 'outlined'}
+            variant={
+              progress?.completed === 'reject' ? 'contained' : 'outlined'
+            }
             color="error"
             startIcon={<Cancel />}
             isLoading={isSubmitEventLoading && latestSubmitEvent === 'reject'}
@@ -79,7 +81,7 @@ export function SubmissionsDetailHeader({
             {t('submissions.reject')}
           </LoadingButton>
           <LoadingButton
-            variant={progress.completed === 'done' ? 'contained' : 'outlined'}
+            variant={progress?.completed === 'done' ? 'contained' : 'outlined'}
             color="success"
             startIcon={<CheckCircle />}
             isLoading={isSubmitEventLoading && latestSubmitEvent === 'approve'}

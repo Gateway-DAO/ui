@@ -22,6 +22,7 @@ const config = {
       'protocol',
     ],
     [ROUTES.LANDING]: ['index'],
+    [ROUTES.TERMS]: ['index', 'terms'],
     [ROUTES.CREDIT_SCORE]: ['credit-score'],
     [ROUTES.MY_PROFILE]: ['user-profile'],
     [ROUTES.NEW_USER]: ['dashboard-new-user'],

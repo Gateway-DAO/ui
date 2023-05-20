@@ -1,4 +1,4 @@
-import { Box, Stack, Typography } from '@mui/material';
+import { Box, Divider, Stack, Typography } from '@mui/material';
 
 import DataModelsP2P from './data-models-p2p';
 import DataModels from './data-models';
@@ -16,6 +16,7 @@ export function DataModelsTab(): JSX.Element {
     >
       <>
         <DataModelsP2P />
+        <Divider />
         <DataModels />
       </>
     </Box>

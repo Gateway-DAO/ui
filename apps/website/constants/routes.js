@@ -1,5 +1,6 @@
 const ROUTES = {
   LANDING: '/',
+  TERMS: '/terms',
   EXPLORE: '/explore',
   EXPLORE_EARN: '/explore/earn',
   EXPLORE_PASSES: '/explore/passes',

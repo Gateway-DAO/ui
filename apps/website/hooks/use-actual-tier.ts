@@ -13,7 +13,7 @@ export function useActualTier({ tiers, totalPoints }: Props) {
   const actualTier = useMemo(() => {
     const tiersSorted = tiers?.sort((a, b) => a.min_pts - b.min_pts);
     return tiersSorted?.find((tier) => {
-      if (totalPoints > tier.min_pts && totalPoints <= tier.max_pts) {
+      if (totalPoints >= tier.min_pts && totalPoints <= tier.max_pts) {
         return tier;
       }
     });

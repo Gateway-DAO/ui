@@ -35,10 +35,11 @@ export default function CredentialProtocolShow({ credential }: Props) {
     shareIsOpen,
     setShareIsOpen,
     shareStatus,
-    isAllowedToMint,
-    isReceivedCredential,
-    mintData,
     mintCredential,
+    mintData,
+    showMintButton,
+    isReceivedCredential,
+    isAllowedToMint,
   } = useMintData({ credential });
 
   const boxStyles: SxProps<Theme> = {
@@ -118,6 +119,7 @@ export default function CredentialProtocolShow({ credential }: Props) {
         <Stack direction="row" justifyContent="flex-end" sx={{ mb: 2 }}>
           <ExternalLink
             text={t('credential.storage-id')}
+            id="credential-textlink-ink-storageid"
             handleClick={(e) => {
               e.preventDefault();
               if (credential?.arweaveInfo?.url)

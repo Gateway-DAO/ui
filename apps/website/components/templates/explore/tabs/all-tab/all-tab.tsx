@@ -77,7 +77,10 @@ export function AllTab({
           title={t('featured-credentials.title')}
           caption={t('featured-credentials.caption')}
           action={
-            <Button onClick={() => router.push(ROUTES.EXPLORE_EARN)}>
+            <Button
+              id="explore-earn-button-viewmore"
+              onClick={() => router.push(ROUTES.EXPLORE_EARN)}
+            >
               {t('featured-credentials.see-more')}
             </Button>
           }
@@ -96,7 +99,10 @@ export function AllTab({
             caption={`${t('featured-passes.caption')}`}
             action={
               passes.length > 0 && (
-                <Button onClick={() => router.push(ROUTES.EXPLORE_PASSES)}>
+                <Button
+                  id="explore-pass-button-viewmore"
+                  onClick={() => router.push(ROUTES.EXPLORE_PASSES)}
+                >
                   {t('featured-passes.see-more')}
                 </Button>
               )
@@ -117,7 +123,10 @@ export function AllTab({
           title={t('featured-data-models.title')}
           caption={t('featured-data-models.caption')}
           action={
-            <Button onClick={() => router.push(ROUTES.EXPLORE_ISSUE)}>
+            <Button
+              id="explore-issue-button-viewmore"
+              onClick={() => router.push(ROUTES.EXPLORE_ISSUE)}
+            >
               {t('featured-data-models.see-more')}
             </Button>
           }
@@ -133,12 +142,16 @@ export function AllTab({
           title={t('featured-organizations.title')}
           caption={t('featured-organizations.caption')}
           action={
-            <Button onClick={() => router.push(ROUTES.EXPLORE_ORGANIZATIONS)}>
+            <Button
+              id="explore-org-button-viewmore"
+              onClick={() => router.push(ROUTES.EXPLORE_ORGANIZATIONS)}
+            >
               {t('featured-organizations.see-more')}
             </Button>
           }
           itemWidth={(theme) => theme.spacing(41)}
         >
+          
           {daos.map((dao) => (
             <DaoCard key={dao.id} {...dao} />
           ))}
