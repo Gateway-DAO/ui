@@ -35,6 +35,7 @@ export function OrgSignUpTemplate() {
     0: true,
     1: false,
   });
+
   const formComponents = [
     <StepCreateProfile key={1} />,
     <StepFormName key={2} handleStep={handleStep} />,
@@ -47,6 +48,7 @@ export function OrgSignUpTemplate() {
     <StepFormTwitter key={9} handleStep={handleStep} />,
     <StepFormTelegram key={10} handleStep={handleStep} />,
   ];
+
   const {
     currentComponent: currentStepComponent,
     changeStep,
@@ -129,30 +131,35 @@ export function OrgSignUpTemplate() {
 
             <Stack>
               {currentStepComponent}
-              <Stack>
+              <Stack direction="row" gap={2} mt={3}>
                 {isFirstStep && (
                   <Button variant="contained" fullWidth onClick={handleNext}>
                     {t('step-create-profile.action')}
                   </Button>
                 )}
                 {!isFirstStep && (
-                  <button type="button" onClick={handlePrevious}>
+                  <Button
+                    variant="contained"
+                    fullWidth
+                    onClick={handlePrevious}
+                  >
                     Back
-                  </button>
+                  </Button>
                 )}
                 {!isLastStep && !isFirstStep && (
-                  <button
-                    type="button"
+                  <Button
+                    variant="contained"
+                    fullWidth
                     onClick={handleNext}
                     // disabled={!stepValidity[`${currentStep}`]}
                   >
                     Next
-                  </button>
+                  </Button>
                 )}
                 {isLastStep && (
-                  <button type="submit" disabled={false}>
+                  <Button variant="contained" fullWidth disabled={false}>
                     Enviar
-                  </button>
+                  </Button>
                 )}
               </Stack>
             </Stack>
