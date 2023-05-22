@@ -14,6 +14,7 @@ import { Avatar, Box, Button, IconButton, Stack, alpha } from '@mui/material';
 import { ROUTES } from '../../../../constants/routes';
 import { useMultistepForm } from '../../../../hooks/use-multistep-form';
 import Loading from '../../../atoms/loading';
+import FormStepper from '../../../molecules/form-stepper/form-stepper';
 import StepCreateProfile from './components/step-create-profile';
 
 export function OrgSignUpTemplate() {
@@ -111,10 +112,14 @@ export function OrgSignUpTemplate() {
           <Loading />
         ) : (
           <>
+            <FormStepper
+              currentStep={currentStep}
+              qtdSteps={formComponents.length}
+            />
             <FormProvider {...methods}>
               <form onSubmit={handleSubmit(onSubmit)}>
                 {currentStepComponent}
-                <div>
+                <Stack>
                   {isFirstStep && (
                     <Button variant="contained" fullWidth onClick={handleNext}>
                       {t('step-create-profile.action')}
@@ -139,7 +144,7 @@ export function OrgSignUpTemplate() {
                       Enviar
                     </button>
                   )}
-                </div>
+                </Stack>
               </form>
             </FormProvider>
           </>
