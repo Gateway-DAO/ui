@@ -16,6 +16,15 @@ import { useMultistepForm } from '../../../../hooks/use-multistep-form';
 import Loading from '../../../atoms/loading';
 import FormStepper from '../../../molecules/form-stepper/form-stepper';
 import StepCreateProfile from './components/step-create-profile';
+import StepFormAbout from './components/step-form-about';
+import StepFormCategories from './components/step-form-categories';
+import StepFormEmail from './components/step-form-email';
+import StepFormGatewayId from './components/step-form-gateway-id';
+import StepFormName from './components/step-form-name';
+import StepFormRole from './components/step-form-role';
+import StepFormTelegram from './components/step-form-telegram';
+import StepFormTwitter from './components/step-form-twitter';
+import StepFormWebsite from './components/step-form-website';
 
 export function OrgSignUpTemplate() {
   const { t } = useTranslation('org-signup');
@@ -32,7 +41,18 @@ export function OrgSignUpTemplate() {
     0: true,
     1: false,
   });
-  const formComponents = [<StepCreateProfile key={1} />];
+  const formComponents = [
+    <StepCreateProfile key={1} />,
+    <StepFormName key={2} />,
+    <StepFormGatewayId key={3} />,
+    <StepFormCategories key={4} />,
+    <StepFormAbout key={5} />,
+    <StepFormWebsite key={6} />,
+    <StepFormEmail key={7} />,
+    <StepFormRole key={8} />,
+    <StepFormTwitter key={9} />,
+    <StepFormTelegram key={10} />,
+  ];
   const {
     currentComponent: currentStepComponent,
     changeStep,
