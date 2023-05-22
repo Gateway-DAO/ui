@@ -1,0 +1,10 @@
+{
+  "logo-alternative-text": "Gateway logo",
+  "page-title": "Create organization",
+  "page-description": "Create your organization on Gateway",
+  "step-create-profile": {
+    "title": "Create your organization profile",
+    "description": "Welcome to the organization application form! We're excited to learn more about your organization and help you issue your first credentials.",
+    "action": "Let's get started"
+  }
+}

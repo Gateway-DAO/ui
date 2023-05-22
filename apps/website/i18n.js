@@ -56,6 +56,7 @@ const config = {
       'gate-profile',
       'protocol',
     ],
+    [ROUTES.ORG_SIGNUP]: ['org-signup'],
   },
   localeDetection: false,
 };

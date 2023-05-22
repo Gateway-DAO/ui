@@ -24,6 +24,7 @@ const ROUTES = {
   SETTINGS_NOTIFICATIONS: '/settings/notifications',
   DAO_EDIT: '/dao/[slug]/edit',
   DAO_NEW: '/dao/new',
+  ORG_SIGNUP: '/org/signup',
   GATE_PROFILE: '/credential/[id]',
   GATE_NEW: '/credential/new',
   PROTOCOL_CREDENTIAL: '/protocol/credentials/[id]/show',
