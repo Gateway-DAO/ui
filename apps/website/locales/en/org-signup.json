@@ -22,7 +22,7 @@
   "step-categories": {
     "title": "Which of the categories describe your organization?",
     "description": "Select one or more categories that best define your organization.",
-    "label": "Organization Name",
+    "label": "Categories",
     "action": "Category"
   },
   "step-about": {

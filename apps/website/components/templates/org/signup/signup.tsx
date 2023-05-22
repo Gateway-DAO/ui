@@ -144,7 +144,7 @@ export function OrgSignUpTemplate() {
                   <button
                     type="button"
                     onClick={handleNext}
-                    disabled={!stepValidity[`${currentStep}`]}
+                    // disabled={!stepValidity[`${currentStep}`]}
                   >
                     Next
                   </button>
