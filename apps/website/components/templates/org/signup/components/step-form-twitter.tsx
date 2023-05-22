@@ -2,7 +2,11 @@ import useTranslation from 'next-translate/useTranslation';
 
 import StepFormHeader from './step-form-header';
 
-export default function StepFormTwitter() {
+type Props = {
+  handleStep: (newValue: boolean) => void;
+};
+
+export default function StepFormTwitter({ handleStep }: Props) {
   const { t } = useTranslation('org-signup');
 
   return (

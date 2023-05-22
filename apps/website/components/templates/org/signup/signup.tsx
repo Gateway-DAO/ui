@@ -2,10 +2,6 @@ import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
-import { yupResolver } from '@hookform/resolvers/yup';
-import { FormProvider, useForm } from 'react-hook-form';
-import { SchemaOf, object, string } from 'yup';
-
 import { theme } from '@gateway/theme';
 
 import CloseIcon from '@mui/icons-material/Close';
@@ -30,12 +26,10 @@ export function OrgSignUpTemplate() {
   const { t } = useTranslation('org-signup');
   const [orgCreated, setOrgCreated] = useState(false);
   const router = useRouter();
-  const methods = useForm();
-  //   const methods = useForm<NewOrgSchema>({
-  //     resolver: yupResolver(schemaOrgSignUp),
-  //     mode: 'all',
-  //   });
-  const { handleSubmit, watch, formState } = methods;
+
+  const handleStep = (newValue: boolean) => {
+    setStepValidity((prev) => ({ ...prev, [currentStep]: newValue }));
+  };
 
   const [stepValidity, setStepValidity] = useState({
     0: true,
@@ -43,15 +37,15 @@ export function OrgSignUpTemplate() {
   });
   const formComponents = [
     <StepCreateProfile key={1} />,
-    <StepFormName key={2} />,
-    <StepFormGatewayId key={3} />,
-    <StepFormCategories key={4} />,
-    <StepFormAbout key={5} />,
-    <StepFormWebsite key={6} />,
-    <StepFormEmail key={7} />,
-    <StepFormRole key={8} />,
-    <StepFormTwitter key={9} />,
-    <StepFormTelegram key={10} />,
+    <StepFormName key={2} handleStep={handleStep} />,
+    <StepFormGatewayId key={3} handleStep={handleStep} />,
+    <StepFormCategories key={4} handleStep={handleStep} />,
+    <StepFormAbout key={5} handleStep={handleStep} />,
+    <StepFormWebsite key={6} handleStep={handleStep} />,
+    <StepFormEmail key={7} handleStep={handleStep} />,
+    <StepFormRole key={8} handleStep={handleStep} />,
+    <StepFormTwitter key={9} handleStep={handleStep} />,
+    <StepFormTelegram key={10} handleStep={handleStep} />,
   ];
   const {
     currentComponent: currentStepComponent,
@@ -60,10 +54,6 @@ export function OrgSignUpTemplate() {
     isFirstStep,
     isLastStep,
   } = useMultistepForm(formComponents);
-
-  const onSubmit = (data) => {
-    console.log(data);
-  };
 
   const handleNext = () => {
     changeStep(currentStep + 1);
@@ -136,37 +126,36 @@ export function OrgSignUpTemplate() {
               currentStep={currentStep}
               qtdSteps={formComponents.length}
             />
-            <FormProvider {...methods}>
-              <form onSubmit={handleSubmit(onSubmit)}>
-                {currentStepComponent}
-                <Stack>
-                  {isFirstStep && (
-                    <Button variant="contained" fullWidth onClick={handleNext}>
-                      {t('step-create-profile.action')}
-                    </Button>
-                  )}
-                  {!isFirstStep && (
-                    <button type="button" onClick={handlePrevious}>
-                      Back
-                    </button>
-                  )}
-                  {!isLastStep && !isFirstStep && (
-                    <button
-                      type="button"
-                      onClick={handleNext}
-                      disabled={!stepValidity[`${currentStep}`]}
-                    >
-                      Next
-                    </button>
-                  )}
-                  {isLastStep && (
-                    <button type="submit" disabled={!formState.isValid}>
-                      Enviar
-                    </button>
-                  )}
-                </Stack>
-              </form>
-            </FormProvider>
+
+            <Stack>
+              {currentStepComponent}
+              <Stack>
+                {isFirstStep && (
+                  <Button variant="contained" fullWidth onClick={handleNext}>
+                    {t('step-create-profile.action')}
+                  </Button>
+                )}
+                {!isFirstStep && (
+                  <button type="button" onClick={handlePrevious}>
+                    Back
+                  </button>
+                )}
+                {!isLastStep && !isFirstStep && (
+                  <button
+                    type="button"
+                    onClick={handleNext}
+                    disabled={!stepValidity[`${currentStep}`]}
+                  >
+                    Next
+                  </button>
+                )}
+                {isLastStep && (
+                  <button type="submit" disabled={false}>
+                    Enviar
+                  </button>
+                )}
+              </Stack>
+            </Stack>
           </>
         )}
       </Stack>

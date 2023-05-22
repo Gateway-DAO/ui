@@ -10,47 +10,56 @@
   "step-name": {
     "title": "Name your organization profile",
     "description": "You're free to choose any name you like that is unique to your organization. This name will represent your brand within our platform. We're excited to learn more about your organization and help you issue your first credentials.",
+    "label": "Organization Name",
     "action": "Continue"
   },
   "step-gateway-id": {
     "title": "Create your organization's Gateway ID",
     "description": "Through the ID your organization is recognized and found within the Gateway. Only use lowercase letters, numbers and the symbols  “._-”.",
+    "label": "@ Enter your ID",
     "action": "Continue"
   },
   "step-categories": {
     "title": "Which of the categories describe your organization?",
     "description": "Select one or more categories that best define your organization.",
-    "action": "Continue"
+    "label": "Organization Name",
+    "action": "Category"
   },
   "step-about": {
     "title": "Tell about your organization",
     "description": "Type a brief description about your organization. A good description to have 2-3 sentences",
+    "label": "Description",
     "action": "Continue"
   },
   "step-website": {
     "title": "What's your website?",
     "description": "Please share your company's website with us so we can get a better sense of your web presence and relevance to web3.",
+    "label": "Website",
     "action": "Continue"
   },
   "step-email": {
     "title": "What's your corporate email?",
     "description": "Please share your corporate email (associated with the Company's URL. This will be our best way to connect and follow up on your status.",
+    "label": "Corporate email",
     "action": "Continue"
   },
   "step-role": {
     "title": "What's your role?",
     "description": "To help us better understand your relationship with your company, please select your position from the dropdown menu below.",
+    "label": "Your role",
     "action": "Continue"
   },
   "step-twitter": {
     "title": "What's is organization twitter username?",
     "description": "We're excited to see your organization's social media presence. Please share your Twitter account so we can stay updated on your latest news and updates.",
+    "label": "@ Twitter username",
     "action": "Continue"
   },
   "step-telegram": {
     "title": "Let's stay in touch!",
     "description": "We want to make sure we can reach you if we have any questions or need additional information about your application. Please provide us with your Telegram username.",
-    "action-empty": "skip and finish",
+    "label": "@ Telegram username",
+    "action-empty": "Skip and finish",
     "action": "Finish"
   }
 }
