@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useLocalStorage } from '@solana/wallet-adapter-react';
 import { FormProvider, useForm, Resolver, Path } from 'react-hook-form';
 
 import { TextField } from '@mui/material';
@@ -34,14 +35,24 @@ export default function StepFormFactory<T>({
     mode: 'all',
   });
 
-  const { register, formState } = methods;
+  const { register, formState, watch, setValue, trigger } = methods;
   const { isValid } = formState;
+  const [formValue, updateFormValue] = useLocalStorage('org_creation', null);
+
+  useEffect(() => {
+    if (formValue && formValue[input.name]) {
+      console.log(formValue);
+      setValue(input.name, formValue[input.name]);
+      trigger(input.name);
+    }
+  }, []);
 
   useEffect(() => {
     handleStep(isValid);
   }, [isValid]);
 
   const fieldName = input.name as string;
+  const fieldValue = watch(input.name);
 
   return (
     <FormProvider {...methods}>
@@ -51,10 +62,13 @@ export default function StepFormFactory<T>({
         type={input.type}
         id={`org_${input.name}`}
         {...register(input.name)}
-        name={input.name}
+        name={fieldName}
         error={!!formState?.errors?.[fieldName]}
         helperText={formState?.errors[fieldName]?.message}
         sx={{ mb: 5 }}
+        onBlur={() => {
+          updateFormValue({ ...formValue, [fieldName]: fieldValue });
+        }}
       />
     </FormProvider>
   );
