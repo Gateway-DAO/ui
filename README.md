@@ -1,7 +1,7 @@
 ![Gateway - Web3 Credentialing Protocol](/public/social.png)
 
 <a href="https://github.com/Gateway-DAO/ui/stargazers"><img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/Gateway-DAO/ui?style=flat-square"></a>
-<a href="https://discord.com"><img alt="Discord" src="https://img.shields.io/discord/704680098577514527?style=flat-square&label=discord"></a>
+<a href="https://discord.gg/tgt3KjcHGs"><img alt="Discord" src="https://img.shields.io/discord/898513755456036925?style=flat-square&label=discord"></a>
 
 # 🚪 Gateway dApp - Source code
 
@@ -43,5 +43,5 @@ pnpm dev
 If you want to say thank you and/or support the active development of the `dApp`:
 
 1. Add a [GitHub Star](https://github.com/Gateway-DAO/ui/stargazers) to the project.
-2. Talk to us on our [Discord](https://discord.com)
+2. Talk to us on our [Discord](https://discord.gg/tgt3KjcHGs)
 3. Read more on our [wiki](https://github.com/Gateway-DAO/ui/wiki/Contributing)
