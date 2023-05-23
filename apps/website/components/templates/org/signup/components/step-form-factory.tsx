@@ -6,6 +6,7 @@ import { FormProvider, useForm, Resolver, Path } from 'react-hook-form';
 
 import { TextField } from '@mui/material';
 
+import { localStorageKeys } from '../../../../../constants/local-storage-keys';
 import StepFormHeader from './step-form-header';
 
 type InputProps<T> = {
@@ -21,6 +22,7 @@ type StepFormProps<T> = {
   description: string;
   input: InputProps<T>;
   schema: any;
+  updateFormState: (newValue: any) => void;
 };
 
 export default function StepFormFactory<T>({
@@ -29,6 +31,7 @@ export default function StepFormFactory<T>({
   description,
   schema,
   input,
+  updateFormState,
 }: StepFormProps<T>) {
   const methods = useForm<T>({
     resolver: yupResolver(schema) as Resolver<T, object>,
@@ -37,11 +40,13 @@ export default function StepFormFactory<T>({
 
   const { register, formState, watch, setValue, trigger } = methods;
   const { isValid } = formState;
-  const [formValue, updateFormValue] = useLocalStorage('org_creation', null);
+  const [formValue, updateFormValue] = useLocalStorage(
+    localStorageKeys.org_signup,
+    null
+  );
 
   useEffect(() => {
     if (formValue && formValue[input.name]) {
-      console.log(formValue);
       setValue(input.name, formValue[input.name]);
       trigger(input.name);
     }
@@ -53,6 +58,10 @@ export default function StepFormFactory<T>({
 
   const fieldName = input.name as string;
   const fieldValue = watch(input.name);
+
+  useEffect(() => {
+    updateFormState((prev) => ({ ...prev, [fieldName]: fieldValue }));
+  }, [fieldValue]);
 
   return (
     <FormProvider {...methods}>

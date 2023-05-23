@@ -2,7 +2,7 @@ import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
-import { useWindowSize } from 'react-use';
+import { useLocalStorage, useWindowSize } from 'react-use';
 
 import { brandColors } from '@gateway/theme';
 
@@ -20,11 +20,12 @@ import {
   useTheme,
 } from '@mui/material';
 
+import { localStorageKeys } from '../../../../constants/local-storage-keys';
 import { ROUTES } from '../../../../constants/routes';
 import { useMultistepForm } from '../../../../hooks/use-multistep-form';
 import Loading from '../../../atoms/loading';
 import FormStepper from '../../../molecules/form-stepper/form-stepper';
-import RealTimeView from './components/real-time-view';
+import RealTimeView, { StepNames } from './components/real-time-view';
 import StepCreateProfile from './components/step-create-profile';
 import StepFormFactory from './components/step-form-factory';
 import StepFormTelegram from './components/step-form-telegram';
@@ -45,6 +46,8 @@ export function OrgSignUpTemplate() {
   const { t } = useTranslation('org-signup');
   const [orgCreated, setOrgCreated] = useState(false);
   const router = useRouter();
+  const [formValue] = useLocalStorage(localStorageKeys.org_signup, null);
+  const [fullFormState, setFullFormState] = useState(null);
 
   const handleStep = (newValue: boolean) => {
     setStepValidity((prev) => ({ ...prev, [currentStep]: newValue }));
@@ -63,9 +66,22 @@ export function OrgSignUpTemplate() {
     9: false,
   });
 
+  const formStepNames: StepNames[] = [
+    '',
+    'name',
+    'gatewayId',
+    'categories',
+    'about',
+    'email',
+    'role',
+    'twitter',
+    'telegram',
+  ];
+
   const formComponents = [
     <StepCreateProfile key={1} />,
     <StepFormFactory
+      updateFormState={setFullFormState}
       key={2}
       handleStep={handleStep}
       title={t('step-name.title')}
@@ -79,6 +95,7 @@ export function OrgSignUpTemplate() {
       schema={nameSchema}
     />,
     <StepFormFactory
+      updateFormState={setFullFormState}
       key={3}
       handleStep={handleStep}
       title={t('step-gateway-id.title')}
@@ -92,6 +109,7 @@ export function OrgSignUpTemplate() {
       schema={gatewayIdSchema}
     />,
     <StepFormFactory
+      updateFormState={setFullFormState}
       key={4}
       handleStep={handleStep}
       title={t('step-categories.title')}
@@ -105,6 +123,7 @@ export function OrgSignUpTemplate() {
       schema={categoriesSchema}
     />,
     <StepFormFactory
+      updateFormState={setFullFormState}
       key={5}
       handleStep={handleStep}
       title={t('step-about.title')}
@@ -118,6 +137,7 @@ export function OrgSignUpTemplate() {
       schema={aboutSchema}
     />,
     <StepFormFactory
+      updateFormState={setFullFormState}
       key={6}
       handleStep={handleStep}
       title={t('step-website.title')}
@@ -131,6 +151,7 @@ export function OrgSignUpTemplate() {
       schema={websiteSchema}
     />,
     <StepFormFactory
+      updateFormState={setFullFormState}
       key={7}
       handleStep={handleStep}
       title={t('step-email.title')}
@@ -144,6 +165,7 @@ export function OrgSignUpTemplate() {
       schema={emailSchema}
     />,
     <StepFormFactory
+      updateFormState={setFullFormState}
       key={8}
       handleStep={handleStep}
       title={t('step-role.title')}
@@ -157,6 +179,7 @@ export function OrgSignUpTemplate() {
       schema={roleSchema}
     />,
     <StepFormFactory
+      updateFormState={setFullFormState}
       key={8}
       handleStep={handleStep}
       title={t('step-twitter.title')}
@@ -182,10 +205,12 @@ export function OrgSignUpTemplate() {
 
   const handleNext = () => {
     changeStep(currentStep + 1);
+    router.push({ hash: formStepNames[currentStep + 1] });
   };
 
   const handlePrevious = () => {
     changeStep(currentStep - 1);
+    router.push({ hash: formStepNames[currentStep - 1] });
   };
 
   return (
@@ -317,13 +342,15 @@ export function OrgSignUpTemplate() {
             </IconButton>
           </Avatar>
         </Stack>
-        <RealTimeView
-          step="name"
-          name="Joao"
-          gatewayId="boscocg"
-          categories={['teste', 'brasil']}
-          about="Lorem ipsum dolor sit amet"
-        />
+        {!isFirstStep && (
+          <RealTimeView
+            step={formStepNames[currentStep]}
+            name={fullFormState?.name}
+            gatewayId={fullFormState?.gatewayId}
+            categories={fullFormState?.categories}
+            about={fullFormState?.about}
+          />
+        )}
       </Grid>
     </Grid>
   );
