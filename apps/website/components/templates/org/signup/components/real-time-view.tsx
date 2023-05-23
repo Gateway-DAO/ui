@@ -49,6 +49,9 @@ export default function RealTimeView({
               width: 12,
               height: 12,
               borderRadius: '50%',
+              '&:hover': {
+                background: 'red',
+              },
             }}
           />
           <Box
@@ -57,6 +60,9 @@ export default function RealTimeView({
               width: 12,
               height: 12,
               borderRadius: '50%',
+              '&:hover': {
+                background: 'yellow',
+              },
             }}
           />
           <Box
@@ -65,6 +71,9 @@ export default function RealTimeView({
               width: 12,
               height: 12,
               borderRadius: '50%',
+              '&:hover': {
+                background: 'green',
+              },
             }}
           />
         </Stack>
