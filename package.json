@@ -11,7 +11,7 @@
     "build": "next build",
     "generate": "pnpm generate:prisma && pnpm generate:graphql",
     "generate:prisma": "node tools/scripts/create-prisma.js && prisma db pull && prisma generate",
-    "generate:graphql": "graphql-codegen --config .graphqlrc.ts -r dotenv/config"
+    "generate:graphql": "graphql-codegen --config codegen.ts -r dotenv/config"
   },
   "private": true,
   "dependencies": {
@@ -55,6 +55,7 @@
     "fast-blurhash": "^1.0.1",
     "framer-motion": "^6.3.3",
     "graphql": "^16.4.0",
+    "graphql-config": "^5.0.1",
     "graphql-request": "^4.2.0",
     "graphql-tag": "^2.12.6",
     "ioredis": "^5.2.4",
@@ -103,12 +104,12 @@
   "devDependencies": {
     "@babel/core": "7.12.13",
     "@graphql-codegen/add": "^4.0.1",
-    "@graphql-codegen/cli": "^3.1.0",
+    "@graphql-codegen/cli": "3.3.1",
     "@graphql-codegen/import-types-preset": "^2.2.6",
-    "@graphql-codegen/typescript": "^3.0.1",
-    "@graphql-codegen/typescript-graphql-request": "^4.5.8",
-    "@graphql-codegen/typescript-operations": "^3.0.1",
-    "@graphql-codegen/typescript-resolvers": "^3.1.0",
+    "@graphql-codegen/typescript": "^3.0.4",
+    "@graphql-codegen/typescript-graphql-request": "^4.5.9",
+    "@graphql-codegen/typescript-operations": "^3.0.4",
+    "@graphql-codegen/typescript-resolvers": "^3.2.1",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "13.1.1",
     "@types/jest": "27.4.1",
@@ -126,7 +127,6 @@
     "eslint-plugin-import-helpers": "^1.2.1",
     "eslint-plugin-prettier": "^4.2.1",
     "fs-extra": "^11.1.1",
-    "graphql-config": "^5.0.1",
     "jest": "27.5.1",
     "jest-environment-jsdom": "^29.5.0",
     "prettier": "^2.8.5",
