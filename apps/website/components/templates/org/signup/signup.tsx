@@ -46,7 +46,7 @@ export function OrgSignUpTemplate() {
   const { t } = useTranslation('org-signup');
   const [orgCreated, setOrgCreated] = useState(false);
   const router = useRouter();
-  const [formValue] = useLocalStorage(localStorageKeys.org_signup, null);
+  // const [formValue] = useLocalStorage(localStorageKeys.org_signup, null);
   const [fullFormState, setFullFormState] = useState(null);
 
   const handleStep = (newValue: boolean) => {
@@ -220,8 +220,13 @@ export function OrgSignUpTemplate() {
       sx={{
         flexWrap: 'nowrap',
         flexDirection: { xs: 'column', md: 'row' },
+        backgroundPosition: 'center center',
+        backgroundSize: 'cover',
         minHeight: `${windowSize.height}px`,
         backgroundColor: brandColors.background.dark,
+        backgroundImage: isFirstStep
+          ? 'url(/images/signup-background.png)'
+          : 'none',
       }}
     >
       <Grid
