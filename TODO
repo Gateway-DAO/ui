@@ -4,6 +4,7 @@ General:
   ✔ !important! add `NEXTAUTH_SECRET` to env on vercel dashboard @done(22-05-31 19:18)
   [] - Convert  objects withs rendered (<Fragment /> like this) components to switch (check if they all runs together)
   [] - cleanup/remove MOST useffects!!!
+  [] - Prepare vercel deployment config for new environment
 
 SSR:
   x Add `_middlewares.ts` to parse user-agent
