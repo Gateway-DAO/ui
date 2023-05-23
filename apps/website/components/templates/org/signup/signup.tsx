@@ -99,7 +99,6 @@ export function OrgSignUpTemplate() {
           width: '100%',
           backdropFilter: 'blur(25px)',
           px: { xs: 2, md: 6 },
-          justifyContent: 'center',
           height: '100%',
           background: alpha(theme.palette.common.black, 0.03),
           borderRight: '1px solid rgba(229, 229, 229, 0.12)',
@@ -123,7 +122,7 @@ export function OrgSignUpTemplate() {
         {orgCreated ? (
           <Loading />
         ) : (
-          <>
+          <Stack sx={{ mt: 18 }} gap={5}>
             <FormStepper
               currentStep={currentStep}
               qtdSteps={formComponents.length}
@@ -131,7 +130,7 @@ export function OrgSignUpTemplate() {
 
             <Stack>
               {currentStepComponent}
-              <Stack direction="row" gap={2} mt={3}>
+              <Stack direction="row" gap={2}>
                 {isFirstStep && (
                   <Button variant="contained" fullWidth onClick={handleNext}>
                     {t('step-create-profile.action')}
@@ -163,7 +162,7 @@ export function OrgSignUpTemplate() {
                 )}
               </Stack>
             </Stack>
-          </>
+          </Stack>
         )}
       </Stack>
     </Stack>

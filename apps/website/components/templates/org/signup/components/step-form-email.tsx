@@ -33,6 +33,7 @@ export default function StepFormEmail({ handleStep }: Props) {
         {...register('email')}
         error={!!formState?.errors?.email}
         helperText={formState?.errors.email?.message}
+        sx={{ mb: 5 }}
       />
     </FormProvider>
   );

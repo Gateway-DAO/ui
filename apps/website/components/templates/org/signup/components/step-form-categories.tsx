@@ -33,6 +33,7 @@ export default function StepFormCategories({ handleStep }: Props) {
         {...register('categories')}
         error={!!formState?.errors?.categories}
         helperText={formState?.errors.categories?.message}
+        sx={{ mb: 5 }}
       />
     </FormProvider>
   );

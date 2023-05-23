@@ -33,6 +33,7 @@ export default function StepFormTelegram({ handleStep }: Props) {
         {...register('telegram')}
         error={!!formState?.errors?.telegram}
         helperText={formState?.errors.telegram?.message}
+        sx={{ mb: 5 }}
       />
     </FormProvider>
   );

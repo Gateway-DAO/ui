@@ -33,6 +33,7 @@ export default function StepFormName({ handleStep }: Props) {
         {...register('name')}
         error={!!formState?.errors?.name}
         helperText={formState?.errors.name?.message}
+        sx={{ mb: 5 }}
       />
     </FormProvider>
   );

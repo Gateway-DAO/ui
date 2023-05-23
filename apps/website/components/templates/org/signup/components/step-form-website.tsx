@@ -33,6 +33,7 @@ export default function StepFormWebsite({ handleStep }: Props) {
         {...register('website')}
         error={!!formState?.errors?.website}
         helperText={formState?.errors.website?.message}
+        sx={{ mb: 5 }}
       />
     </FormProvider>
   );

@@ -33,6 +33,7 @@ export default function StepFormGatewayId({ handleStep }: Props) {
         {...register('gatewayId')}
         error={!!formState?.errors?.gatewayId}
         helperText={formState?.errors.gatewayId?.message}
+        sx={{ mb: 5 }}
       />
     </FormProvider>
   );

@@ -33,6 +33,7 @@ export default function StepFormTwitter({ handleStep }: Props) {
         {...register('twitter')}
         error={!!formState?.errors?.twitter}
         helperText={formState?.errors.twitter?.message}
+        sx={{ mb: 5 }}
       />
     </FormProvider>
   );

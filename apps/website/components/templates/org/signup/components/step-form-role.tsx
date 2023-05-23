@@ -33,6 +33,7 @@ export default function StepFormRole({ handleStep }: Props) {
         {...register('role')}
         error={!!formState?.errors?.role}
         helperText={formState?.errors.role?.message}
+        sx={{ mb: 5 }}
       />
     </FormProvider>
   );
