@@ -13,7 +13,7 @@ export type TelegramSchema = Required<Pick<any, 'telegram'>>;
 const gatewayIdRegex = /^(?=[a-z0-9._]{2,20}$)(?!.*[_.]{2})[^_.].*[^_.]$/;
 
 export const nameSchema: SchemaOf<NameSchema> = object({
-  name: string().required('Name is required'),
+  name: string().required('Name is required').min(3),
 });
 
 export const gatewayIdSchema: SchemaOf<GatewayIdSchema> = object({

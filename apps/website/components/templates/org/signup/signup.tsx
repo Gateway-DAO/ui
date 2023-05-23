@@ -2,7 +2,7 @@ import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
-import { useWindowSize } from 'react-use';
+import { useLocalStorage, useWindowSize } from 'react-use';
 
 import { brandColors } from '@gateway/theme';
 
@@ -20,21 +20,24 @@ import {
   useTheme,
 } from '@mui/material';
 
+import { localStorageKeys } from '../../../../constants/local-storage-keys';
 import { ROUTES } from '../../../../constants/routes';
 import { useMultistepForm } from '../../../../hooks/use-multistep-form';
 import Loading from '../../../atoms/loading';
 import FormStepper from '../../../molecules/form-stepper/form-stepper';
-import RealTimeView from './components/real-time-view';
+import RealTimeView, { StepNames } from './components/real-time-view';
 import StepCreateProfile from './components/step-create-profile';
-import StepFormAbout from './components/step-form-about';
-import StepFormCategories from './components/step-form-categories';
-import StepFormEmail from './components/step-form-email';
-import StepFormGatewayId from './components/step-form-gateway-id';
-import StepFormName from './components/step-form-name';
-import StepFormRole from './components/step-form-role';
+import StepFormFactory from './components/step-form-factory';
 import StepFormTelegram from './components/step-form-telegram';
-import StepFormTwitter from './components/step-form-twitter';
-import StepFormWebsite from './components/step-form-website';
+import {
+  aboutSchema,
+  categoriesSchema,
+  emailSchema,
+  gatewayIdSchema,
+  nameSchema,
+  roleSchema,
+  websiteSchema,
+} from './schema';
 
 export function OrgSignUpTemplate() {
   const theme = useTheme();
@@ -43,6 +46,8 @@ export function OrgSignUpTemplate() {
   const { t } = useTranslation('org-signup');
   const [orgCreated, setOrgCreated] = useState(false);
   const router = useRouter();
+  // const [formValue] = useLocalStorage(localStorageKeys.org_signup, null);
+  const [fullFormState, setFullFormState] = useState(null);
 
   const handleStep = (newValue: boolean) => {
     setStepValidity((prev) => ({ ...prev, [currentStep]: newValue }));
@@ -51,18 +56,142 @@ export function OrgSignUpTemplate() {
   const [stepValidity, setStepValidity] = useState({
     0: true,
     1: false,
+    2: false,
+    3: false,
+    4: false,
+    5: false,
+    6: false,
+    7: false,
+    8: false,
+    9: false,
   });
+
+  const formStepNames: StepNames[] = [
+    '',
+    'name',
+    'gatewayId',
+    'categories',
+    'about',
+    'email',
+    'role',
+    'twitter',
+    'telegram',
+  ];
 
   const formComponents = [
     <StepCreateProfile key={1} />,
-    <StepFormName key={2} handleStep={handleStep} />,
-    <StepFormGatewayId key={3} handleStep={handleStep} />,
-    <StepFormCategories key={4} handleStep={handleStep} />,
-    <StepFormAbout key={5} handleStep={handleStep} />,
-    <StepFormWebsite key={6} handleStep={handleStep} />,
-    <StepFormEmail key={7} handleStep={handleStep} />,
-    <StepFormRole key={8} handleStep={handleStep} />,
-    <StepFormTwitter key={9} handleStep={handleStep} />,
+    <StepFormFactory
+      updateFormState={setFullFormState}
+      key={2}
+      handleStep={handleStep}
+      title={t('step-name.title')}
+      description={t('step-name.description')}
+      input={{
+        label: t('step-name.label'),
+        name: 'name',
+        type: 'text',
+        required: true,
+      }}
+      schema={nameSchema}
+    />,
+    <StepFormFactory
+      updateFormState={setFullFormState}
+      key={3}
+      handleStep={handleStep}
+      title={t('step-gateway-id.title')}
+      description={t('step-gateway-id.description')}
+      input={{
+        label: t('step-gateway-id.label'),
+        name: 'gatewayId',
+        type: 'text',
+        required: true,
+      }}
+      schema={gatewayIdSchema}
+    />,
+    <StepFormFactory
+      updateFormState={setFullFormState}
+      key={4}
+      handleStep={handleStep}
+      title={t('step-categories.title')}
+      description={t('step-categories.description')}
+      input={{
+        label: t('step-categories.label'),
+        name: 'categories',
+        type: 'text',
+        required: true,
+      }}
+      schema={categoriesSchema}
+    />,
+    <StepFormFactory
+      updateFormState={setFullFormState}
+      key={5}
+      handleStep={handleStep}
+      title={t('step-about.title')}
+      description={t('step-about.description')}
+      input={{
+        label: t('step-about.label'),
+        name: 'about',
+        type: 'text',
+        required: true,
+      }}
+      schema={aboutSchema}
+    />,
+    <StepFormFactory
+      updateFormState={setFullFormState}
+      key={6}
+      handleStep={handleStep}
+      title={t('step-website.title')}
+      description={t('step-website.description')}
+      input={{
+        label: t('step-website.label'),
+        name: 'website',
+        type: 'text',
+        required: true,
+      }}
+      schema={websiteSchema}
+    />,
+    <StepFormFactory
+      updateFormState={setFullFormState}
+      key={7}
+      handleStep={handleStep}
+      title={t('step-email.title')}
+      description={t('step-email.description')}
+      input={{
+        label: t('step-email.label'),
+        name: 'email',
+        type: 'text',
+        required: true,
+      }}
+      schema={emailSchema}
+    />,
+    <StepFormFactory
+      updateFormState={setFullFormState}
+      key={8}
+      handleStep={handleStep}
+      title={t('step-role.title')}
+      description={t('step-role.description')}
+      input={{
+        label: t('step-role.label'),
+        name: 'role',
+        type: 'text',
+        required: true,
+      }}
+      schema={roleSchema}
+    />,
+    <StepFormFactory
+      updateFormState={setFullFormState}
+      key={8}
+      handleStep={handleStep}
+      title={t('step-twitter.title')}
+      description={t('step-twitter.description')}
+      input={{
+        label: t('step-twitter.label'),
+        name: 'twitter',
+        type: 'text',
+        required: true,
+      }}
+      schema={roleSchema}
+    />,
     <StepFormTelegram key={10} handleStep={handleStep} />,
   ];
 
@@ -76,10 +205,12 @@ export function OrgSignUpTemplate() {
 
   const handleNext = () => {
     changeStep(currentStep + 1);
+    router.push({ hash: formStepNames[currentStep + 1] });
   };
 
   const handlePrevious = () => {
     changeStep(currentStep - 1);
+    router.push({ hash: formStepNames[currentStep - 1] });
   };
 
   return (
@@ -89,8 +220,13 @@ export function OrgSignUpTemplate() {
       sx={{
         flexWrap: 'nowrap',
         flexDirection: { xs: 'column', md: 'row' },
+        backgroundPosition: 'center center',
+        backgroundSize: 'cover',
         minHeight: `${windowSize.height}px`,
         backgroundColor: brandColors.background.dark,
+        backgroundImage: isFirstStep
+          ? 'url(/images/signup-background.png)'
+          : 'none',
       }}
     >
       <Grid
@@ -142,7 +278,7 @@ export function OrgSignUpTemplate() {
 
             <Stack>
               {currentStepComponent}
-              <Stack direction="row" gap={2}>
+              <Stack direction="row" justifyContent="space-between" gap={2}>
                 {isFirstStep && (
                   <Button variant="contained" fullWidth onClick={handleNext}>
                     {t('step-create-profile.action')}
@@ -150,8 +286,8 @@ export function OrgSignUpTemplate() {
                 )}
                 {!isFirstStep && (
                   <Button
-                    variant="contained"
-                    fullWidth
+                    variant="outlined"
+                    size="large"
                     onClick={handlePrevious}
                   >
                     Back
@@ -160,9 +296,9 @@ export function OrgSignUpTemplate() {
                 {!isLastStep && !isFirstStep && (
                   <Button
                     variant="contained"
-                    fullWidth
                     onClick={handleNext}
-                    // disabled={!stepValidity[`${currentStep}`]}
+                    size="large"
+                    disabled={!stepValidity[`${currentStep}`]}
                   >
                     Next
                   </Button>
@@ -211,13 +347,15 @@ export function OrgSignUpTemplate() {
             </IconButton>
           </Avatar>
         </Stack>
-        <RealTimeView
-          step="name"
-          name="Joao"
-          gatewayId="boscocg"
-          categories={['teste', 'brasil']}
-          about="Lorem ipsum dolor sit amet"
-        />
+        {!isFirstStep && (
+          <RealTimeView
+            step={formStepNames[currentStep]}
+            name={fullFormState?.name}
+            gatewayId={fullFormState?.gatewayId}
+            categories={fullFormState?.categories}
+            about={fullFormState?.about}
+          />
+        )}
       </Grid>
     </Grid>
   );

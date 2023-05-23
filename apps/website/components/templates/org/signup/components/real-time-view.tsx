@@ -2,8 +2,19 @@ import { brandColors } from '@gateway/theme';
 
 import { Box, Chip, Stack, Typography, alpha } from '@mui/material';
 
+export type StepNames =
+  | ''
+  | 'name'
+  | 'gatewayId'
+  | 'categories'
+  | 'about'
+  | 'role'
+  | 'twitter'
+  | 'email'
+  | 'telegram';
+
 type Props = {
-  step?: 'name' | 'gatewayId' | 'categories' | 'about';
+  step?: StepNames;
   name?: string;
   gatewayId?: string;
   categories?: string[];
