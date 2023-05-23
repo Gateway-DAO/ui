@@ -155,7 +155,7 @@ export default function RealTimeView({
         )}
 
         <Stack direction="row" gap="6px" sx={{ mb: about ? '18px' : '22px' }}>
-          {categories && categories.length > 0 ? (
+          {categories && categories?.length > 0 ? (
             categories.map((category, index) => (
               <Chip
                 aria-hidden={false}
