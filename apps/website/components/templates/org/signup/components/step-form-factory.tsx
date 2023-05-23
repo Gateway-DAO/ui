@@ -94,7 +94,6 @@ export default function StepFormFactory<T>({
             mb: 5,
           }}
           set={(categories: string[]) => {
-            console.log('set');
             setValue(input.name, categories as any);
             updateFormValue({ ...formValue, [fieldName]: categories });
           }}
