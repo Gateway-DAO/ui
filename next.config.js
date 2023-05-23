@@ -5,7 +5,7 @@ const nextTranslate = require('next-translate');
  * @type {import('next').NextConfig}
  **/
 const nextConfig = {
-  experimental: { images: { layoutRaw: true }, scrollRestoration: true },
+  experimental: { scrollRestoration: true },
   images: {
     domains: [
       'api.staging.mygateway.xyz',
