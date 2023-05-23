@@ -34,6 +34,14 @@ export function OrgSignUpTemplate() {
   const [stepValidity, setStepValidity] = useState({
     0: true,
     1: false,
+    2: false,
+    3: false,
+    4: false,
+    5: false,
+    6: false,
+    7: false,
+    8: false,
+    9: false,
   });
 
   const formComponents = [
@@ -123,6 +131,7 @@ export function OrgSignUpTemplate() {
           <Loading />
         ) : (
           <Stack sx={{ mt: 18 }} gap={5}>
+            <pre>{JSON.stringify(stepValidity, null, 2)}</pre>
             <FormStepper
               currentStep={currentStep}
               qtdSteps={formComponents.length}
@@ -130,7 +139,7 @@ export function OrgSignUpTemplate() {
 
             <Stack>
               {currentStepComponent}
-              <Stack direction="row" gap={2}>
+              <Stack direction="row" justifyContent="space-between" gap={2}>
                 {isFirstStep && (
                   <Button variant="contained" fullWidth onClick={handleNext}>
                     {t('step-create-profile.action')}
@@ -138,8 +147,8 @@ export function OrgSignUpTemplate() {
                 )}
                 {!isFirstStep && (
                   <Button
-                    variant="contained"
-                    fullWidth
+                    variant="outlined"
+                    size="large"
                     onClick={handlePrevious}
                   >
                     Back
@@ -148,9 +157,9 @@ export function OrgSignUpTemplate() {
                 {!isLastStep && !isFirstStep && (
                   <Button
                     variant="contained"
-                    fullWidth
                     onClick={handleNext}
-                    // disabled={!stepValidity[`${currentStep}`]}
+                    size="large"
+                    disabled={!stepValidity[`${currentStep}`]}
                   >
                     Next
                   </Button>

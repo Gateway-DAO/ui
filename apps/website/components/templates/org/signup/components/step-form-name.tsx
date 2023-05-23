@@ -1,4 +1,5 @@
 import useTranslation from 'next-translate/useTranslation';
+import { useEffect } from 'react';
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -19,6 +20,12 @@ export default function StepFormName({ handleStep }: Props) {
   });
   const { t } = useTranslation('org-signup');
   const { register, formState } = methods;
+  const { isValid } = formState;
+
+  useEffect(() => {
+    handleStep(isValid);
+  }, [isValid]);
+
   return (
     <FormProvider {...methods}>
       <StepFormHeader
