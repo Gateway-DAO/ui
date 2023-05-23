@@ -45,7 +45,7 @@ export const ProductShow = forwardRef<
         },
       })}
     >
-      <Stack direction="column" sx={() => ({ width: '100%' })}>
+      <Stack direction="column" sx={{ width: '100%' }}>
         {comingSoon && (
           <Typography
             component="p"

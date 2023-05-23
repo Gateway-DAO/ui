@@ -70,11 +70,11 @@ export function Footer({
   return (
     <Box
       component="footer"
-      sx={() => ({
+      sx={{
         mt: '20px',
         mb: '40px',
         width: '100%',
-      })}
+      }}
     >
       <Box
         sx={(theme) => ({
@@ -121,11 +121,11 @@ export function Footer({
                 Gateway
               </Typography>
               <List
-                sx={() => ({
+                sx={{
                   display: 'flex',
                   justifyContent: 'flex-start',
                   mb: '82px',
-                })}
+                }}
               >
                 <ListItem sx={{ display: 'flex', width: 'auto', p: 0 }}>
                   <Link
@@ -220,12 +220,12 @@ export function Footer({
                   variant="outlined"
                   isLoading={isLoading}
                   type="submit"
-                  sx={() => ({
+                  sx={{
                     height: '42px',
                     display: 'flex',
                     width: '122px',
                     borderRadius: '20px',
-                  })}
+                  }}
                 >
                   {subscribeButton}
                 </LoadingButton>

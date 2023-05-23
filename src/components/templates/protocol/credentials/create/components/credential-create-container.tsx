@@ -50,12 +50,12 @@ export default function CredentialCreateContainer({
           variant="contained"
           isLoading={loading}
           type="submit"
-          sx={() => ({
+          sx={{
             height: '42px',
             display: 'flex',
             borderRadius: '20px',
             mt: 3,
-          })}
+          }}
           id="issuanceflow-button-issue"
         >
           {t('data-model.actions.issue-credential')}

@@ -109,12 +109,12 @@ export function Menu({
                 color="secondary"
                 fontSize="medium"
                 onClick={() => setOpen(false)}
-                sx={() => ({
+                sx={{
                   cursor: 'pointer',
                   position: 'absolute',
                   top: 0,
                   right: 0,
-                })}
+                }}
               />
             )}
             <List

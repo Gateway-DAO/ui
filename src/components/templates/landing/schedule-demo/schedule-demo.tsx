@@ -14,10 +14,10 @@ export function ScheduleDemo({
   return (
     <Box
       component="section"
-      sx={() => ({
+      sx={{
         my: '20px',
         width: '100%',
-      })}
+      }}
     >
       <Box
         sx={(theme) => ({

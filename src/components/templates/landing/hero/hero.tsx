@@ -27,12 +27,12 @@ export const Hero = forwardRef<
     <Box
       ref={ref}
       component="section"
-      sx={(theme) => ({
+      sx={{
         width: '100%',
         height: { sm: '100vh', xs: '100%' },
         position: 'relative',
         borderBottom: '1px solid rgba(229, 229, 229, 0.12)',
-      })}
+      }}
     >
       <Stack
         direction="column"

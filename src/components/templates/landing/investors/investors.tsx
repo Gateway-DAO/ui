@@ -129,13 +129,13 @@ export const Investors = forwardRef<
               <Typography
                 component="span"
                 variant="body1"
-                sx={() => ({
+                sx={{
                   cursor: 'default',
                   opacity: 0.6,
                   '&:hover': {
                     opacity: 1,
                   },
-                })}
+                }}
               >
                 {investor.name}
               </Typography>
