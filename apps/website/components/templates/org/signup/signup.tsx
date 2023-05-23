@@ -2,15 +2,29 @@ import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
-import { theme } from '@gateway/theme';
+import { useWindowSize } from 'react-use';
+
+import { brandColors } from '@gateway/theme';
 
 import CloseIcon from '@mui/icons-material/Close';
-import { Avatar, Box, Button, IconButton, Stack, alpha } from '@mui/material';
+import {
+  Avatar,
+  Box,
+  Button,
+  Divider,
+  Grid,
+  IconButton,
+  Stack,
+  alpha,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
 
 import { ROUTES } from '../../../../constants/routes';
 import { useMultistepForm } from '../../../../hooks/use-multistep-form';
 import Loading from '../../../atoms/loading';
 import FormStepper from '../../../molecules/form-stepper/form-stepper';
+import RealTimeView from './components/real-time-view';
 import StepCreateProfile from './components/step-create-profile';
 import StepFormFactory from './components/step-form-factory';
 import StepFormTelegram from './components/step-form-telegram';
@@ -25,6 +39,9 @@ import {
 } from './schema';
 
 export function OrgSignUpTemplate() {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const windowSize = useWindowSize();
   const { t } = useTranslation('org-signup');
   const [orgCreated, setOrgCreated] = useState(false);
   const router = useRouter();
@@ -172,63 +189,58 @@ export function OrgSignUpTemplate() {
   };
 
   return (
-    <Stack
+    <Grid
+      container
+      height={isMobile ? 'auto' : `100%`}
       sx={{
-        backgroundImage: 'url(/images/signup-background.png)',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center center',
-        height: '100%',
+        flexWrap: 'nowrap',
+        flexDirection: { xs: 'column', md: 'row' },
+        minHeight: `${windowSize.height}px`,
+        backgroundColor: brandColors.background.dark,
       }}
     >
-      <Stack
+      <Grid
+        item
+        xs={12}
+        md={6}
+        lg={4}
         sx={{
-          position: 'absolute',
-          top: { xs: 10, md: 38 },
-          right: { xs: 20, md: 48 },
-          zIndex: 1,
-        }}
-      >
-        <Avatar>
-          <IconButton
-            onClick={() => {
-              router.back();
-            }}
-          >
-            <CloseIcon />
-          </IconButton>
-        </Avatar>
-      </Stack>
-      <Stack
-        gap={2}
-        sx={{
-          maxWidth: { xs: '100%', md: '50%', lg: '582px' },
-          width: '100%',
-          backdropFilter: 'blur(25px)',
+          pt: { xs: 3, md: 6 },
+          pb: { xs: 3, md: 0 },
           px: { xs: 2, md: 6 },
-          height: '100%',
+          flexGrow: 0,
           background: alpha(theme.palette.common.black, 0.03),
-          borderRight: '1px solid rgba(229, 229, 229, 0.12)',
+          backdropFilter: 'blur(25px)',
+          height: '100%',
         }}
       >
-        <Box
-          component="a"
-          href={ROUTES.EXPLORE}
-          sx={{
-            position: 'absolute',
-            top: { xs: 20, md: 48 },
-            left: { xs: 20, md: 48 },
-          }}
+        <Stack
+          direction="row"
+          justifyContent="space-between"
+          sx={{ mb: { xs: 4, md: 9 } }}
         >
-          <img
-            src="/favicon-192.png"
-            alt={t('logo-alternative-text')}
-            width="30"
-          />
-        </Box>
+          <Box component="a" href={ROUTES.EXPLORE}>
+            <img
+              src="/favicon-192.png"
+              alt={t('logo-alternative-text')}
+              width="30"
+            />
+          </Box>
+
+          <Avatar sx={{ display: { md: 'none' } }}>
+            <IconButton
+              onClick={() => {
+                router.back();
+              }}
+            >
+              <CloseIcon />
+            </IconButton>
+          </Avatar>
+        </Stack>
         {orgCreated ? (
           <Loading />
         ) : (
-          <Stack sx={{ mt: 18 }} gap={5}>
+          <Stack gap={5}>
             <FormStepper
               currentStep={currentStep}
               qtdSteps={formComponents.length}
@@ -270,7 +282,49 @@ export function OrgSignUpTemplate() {
             </Stack>
           </Stack>
         )}
-      </Stack>
-    </Stack>
+      </Grid>
+      <Divider orientation={isMobile ? 'horizontal' : 'vertical'} flexItem />
+      <Grid
+        item
+        xs={12}
+        md={6}
+        lg={8}
+        sx={{
+          pt: { xs: 3, md: 6 },
+          flexGrow: 1,
+          height: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+        }}
+      >
+        <Stack
+          justifyContent="end"
+          direction="row"
+          flexGrow={0}
+          sx={{
+            mb: 6,
+            px: { xs: 2, md: 6 },
+            display: { xs: 'none', md: 'flex' },
+          }}
+        >
+          <Avatar>
+            <IconButton
+              onClick={() => {
+                router.back();
+              }}
+            >
+              <CloseIcon />
+            </IconButton>
+          </Avatar>
+        </Stack>
+        <RealTimeView
+          step="name"
+          name="Joao"
+          gatewayId="boscocg"
+          categories={['teste', 'brasil']}
+          about="Lorem ipsum dolor sit amet"
+        />
+      </Grid>
+    </Grid>
   );
 }
