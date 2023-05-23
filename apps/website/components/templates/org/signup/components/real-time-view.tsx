@@ -42,16 +42,34 @@ export default function RealTimeView({
             'linear-gradient(265.82deg, #432F70 0.24%, #23182E 84.35%)',
         }}
       >
-        <Stack direction="row" gap={1} sx={{ mt: '20px', ml: '20px' }}>
+        <Stack
+          direction="row"
+          gap={1}
+          sx={{
+            mt: '20px',
+            ml: '20px',
+            '&:hover': {
+              '& > *:nth-child(1)': {
+                backgroundColor: '#ff5f57',
+                transition: 'all .25s',
+              },
+              '& > *:nth-child(2)': {
+                backgroundColor: '#febc2e',
+                transition: 'all .25s',
+              },
+              '& > *:nth-child(3)': {
+                backgroundColor: '#27c840',
+                transition: 'all .25s',
+              },
+            },
+          }}
+        >
           <Box
             sx={{
               background: alpha(brandColors.white.main, 0.15),
               width: 12,
               height: 12,
               borderRadius: '50%',
-              '&:hover': {
-                background: 'red',
-              },
             }}
           />
           <Box
@@ -60,9 +78,6 @@ export default function RealTimeView({
               width: 12,
               height: 12,
               borderRadius: '50%',
-              '&:hover': {
-                background: 'yellow',
-              },
             }}
           />
           <Box
@@ -71,9 +86,6 @@ export default function RealTimeView({
               width: 12,
               height: 12,
               borderRadius: '50%',
-              '&:hover': {
-                background: 'green',
-              },
             }}
           />
         </Stack>
@@ -104,7 +116,7 @@ export default function RealTimeView({
               width: 121,
               height: 42,
               background: setColor('name'),
-              borderRadius: '100px',
+              borderRadius: 0.5,
               mb: '9px',
             }}
           />
