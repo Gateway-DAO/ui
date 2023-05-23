@@ -5,7 +5,10 @@ import { useState } from 'react';
 import GateStateChip from '@/components/atoms/gate-state-chip';
 import MorePopover from '@/components/atoms/more-popover';
 import ConfirmDialog from '@/components/organisms/confirm-dialog/confirm-dialog';
+import { ROUTES } from '@/constants/routes';
+import { useAuth } from '@/providers/auth';
 import { Gates } from '@/services/hasura/types';
+import { badgeProps } from '@/utils/badge-props';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useSnackbar } from 'notistack';
 import { PartialDeep } from 'type-fest';
@@ -20,10 +23,6 @@ import {
   TableRow,
   Typography,
 } from '@mui/material';
-
-import { ROUTES } from './../../constants/routes';
-import { useAuth } from './../../providers/auth';
-import { badgeProps } from './../../utils/badge-props';
 
 type GateRowProps = {
   isGate?: boolean;
