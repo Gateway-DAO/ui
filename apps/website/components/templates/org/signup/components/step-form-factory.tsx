@@ -70,7 +70,6 @@ export default function StepFormFactory<T>({
 
   useEffect(() => {
     updateFormState((prev) => ({ ...prev, [fieldName]: fieldValue }));
-    console.log('asfa', fieldValue, formValue[input.name]);
   }, [fieldValue]);
 
   return (
