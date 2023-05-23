@@ -55,5 +55,6 @@
       }
     ],
     "@typescript-eslint/no-empty-function": ["warn"]
-  }
+  },
+  "ignorePatterns": ["node_modules", ".next", "out", "public", "coverage", "src/services/**/types.ts"]
 }

@@ -23,16 +23,17 @@ const prismaEnums = Object.keys(prismaEnumsBase)
 
 const config: CodegenConfig = {
   overwrite: true,
-  schema: {
-    [`${process.env.HASURA_ENDPOINT}`]: {
-      headers: {
-        'x-hasura-admin-secret': process.env.HASURA_ADMIN_SECRET as string,
-      },
-    },
-  },
-  documents: 'src/services/hasura/**/*.gql',
+  documents: [],
   generates: {
     './src/services/hasura/types.ts': {
+      schema: {
+        [`${process.env.HASURA_ENDPOINT}`]: {
+          headers: {
+            'x-hasura-admin-secret': process.env.HASURA_ADMIN_SECRET as string,
+          },
+        },
+      },
+      documents: 'src/services/hasura/**/*.gql',
       plugins: [
         {
           add: {
@@ -56,6 +57,29 @@ const config: CodegenConfig = {
           manual_task_event_type: prismaEnums.manual_task_event_type,
           task_type: prismaEnums.task_type,
           key_status: prismaEnums.key_status,
+        },
+        defaultMapper: 'Partial<{T}>',
+        avoidOptionals: {
+          field: true,
+          inputValue: false,
+          object: true,
+          defaultValue: true,
+        },
+        fetcher: 'graphql-request',
+      },
+    },
+    './src/services/gateway-protocol/types.ts': {
+      schema: `${process.env.GATEWAY_PROTOCOL_ENDPOINT}`,
+      documents: 'src/services/gateway-protocol/**/*.gql',
+      plugins: [
+        'typescript',
+        'typescript-operations',
+        'typescript-graphql-request',
+        'typescript-resolvers',
+      ],
+      config: {
+        scalars: {
+          _text: 'string',
         },
         defaultMapper: 'Partial<{T}>',
         avoidOptionals: {
