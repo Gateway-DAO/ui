@@ -17,34 +17,9 @@
   "env": {
     "jest": true
   },
-  "overrides": [
-    {
-      "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
-      "rules": {
-        "@next/next/no-html-link-for-pages": ["error", "pages"],
-        "@next/next/no-img-element": "off",
-        "editorconfig/indent": "off",
-        "import-helpers/order-imports": [
-          "warn",
-          {
-            "newlinesBetween": "always",
-            "groups": [
-              ["/^react$/", "/^react-(native|dom)$/", "/^next/"],
-              "module",
-              "/^@gateway//",
-              "/^@mui//",
-              ["parent", "sibling"],
-              "index"
-            ],
-            "alphabetize": { "order": "asc", "ignoreCase": false }
-          }
-        ],
-        "sort-imports": "off",
-        "prettier/prettier": "error"
-      }
-    }
-  ],
   "rules": {
+    "@next/next/no-html-link-for-pages": ["error", "pages"],
+    "@next/next/no-img-element": "off",
     "@typescript-eslint/no-unused-vars": [
       "warn",
       {
@@ -54,7 +29,25 @@
         "destructuredArrayIgnorePattern": "^_"
       }
     ],
-    "@typescript-eslint/no-empty-function": ["warn"]
+    "@typescript-eslint/no-empty-function": ["warn"],
+    "editorconfig/indent": "off",
+    "import-helpers/order-imports": [
+      "warn",
+      {
+        "newlinesBetween": "always",
+        "groups": [
+          ["/^react$/", "/^react-(native|dom)$/", "/^next/"],
+          "module",
+          "/^@gateway//",
+          "/^@mui//",
+          ["parent", "sibling"],
+          "index"
+        ],
+        "alphabetize": { "order": "asc", "ignoreCase": false }
+      }
+    ],
+    "sort-imports": "off",
+    "prettier/prettier": "error"
   },
   "ignorePatterns": ["node_modules", ".next", "out", "public", "coverage", "src/services/**/types.ts"]
 }
