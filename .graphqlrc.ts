@@ -1,4 +1,4 @@
-import { IGraphQLProjects, IGraphQLConfig } from 'graphql-config';
+import { IGraphQLConfig } from 'graphql-config';
 import * as prismaEnumsBase from "@prisma/client";
 require('dotenv').config();
 
