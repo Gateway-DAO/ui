@@ -1,5 +1,7 @@
 import { object, string, array, SchemaOf } from 'yup';
 
+import { gqlAnonMethods } from '../../../../services/hasura/api';
+
 export type NameSchema = Required<Pick<any, 'name'>>;
 export type GatewayIdSchema = Required<Pick<any, 'gatewayId'>>;
 export type CategoriesSchema = Required<Pick<any, 'categories'>>;
@@ -24,6 +26,15 @@ export const gatewayIdSchema: SchemaOf<GatewayIdSchema> = object({
       name: 'username',
       message: 'Only lowercase letters, numbers and ._-',
       test: (value) => gatewayIdRegex.test(value),
+    })
+    .test('checkGatewayId', 'Gateway ID unanvailable', async (value) => {
+      if (value.length > 2) {
+        const response = await gqlAnonMethods.check_org_by_gateway_id({
+          gatewayId: value,
+        });
+        return response.daos.length === 0;
+      }
+      return true;
     })
     .defined(),
 });

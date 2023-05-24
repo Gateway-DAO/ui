@@ -3,7 +3,13 @@ import { useEffect } from 'react';
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useLocalStorage } from '@solana/wallet-adapter-react';
-import { FormProvider, useForm, Resolver, Path } from 'react-hook-form';
+import {
+  FormProvider,
+  useForm,
+  Resolver,
+  Path,
+  ValidationMode,
+} from 'react-hook-form';
 
 import { TextField } from '@mui/material';
 
@@ -32,6 +38,7 @@ type StepFormProps<T> = {
   input: InputProps<T>;
   schema: any;
   updateFormState: (newValue: any) => void;
+  validationMode?: keyof ValidationMode;
 };
 
 export default function StepFormFactory<T>({
@@ -41,10 +48,11 @@ export default function StepFormFactory<T>({
   schema,
   input,
   updateFormState,
+  validationMode = 'all',
 }: StepFormProps<T>) {
   const methods = useForm<T>({
     resolver: yupResolver(schema) as Resolver<T, object>,
-    mode: 'all',
+    mode: validationMode,
   });
 
   const { register, formState, watch, setValue, trigger } = methods;

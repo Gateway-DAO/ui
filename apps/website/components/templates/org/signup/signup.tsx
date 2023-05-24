@@ -36,6 +36,7 @@ import {
   gatewayIdSchema,
   nameSchema,
   roleSchema,
+  twitterSchema,
   websiteSchema,
 } from './schema';
 
@@ -180,7 +181,7 @@ export function OrgSignUpTemplate() {
     />,
     <StepFormFactory
       updateFormState={setFullFormState}
-      key={8}
+      key={9}
       handleStep={handleStep}
       title={t('step-twitter.title')}
       description={t('step-twitter.description')}
@@ -190,7 +191,7 @@ export function OrgSignUpTemplate() {
         type: 'text',
         required: true,
       }}
-      schema={roleSchema}
+      schema={twitterSchema}
     />,
     <StepFormTelegram key={10} handleStep={handleStep} />,
   ];
