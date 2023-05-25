@@ -4,8 +4,8 @@ import { dehydrate, QueryClient, useQuery } from '@tanstack/react-query';
 
 import { useAuth } from '../../../providers/auth';
 import { gqlAnonMethods } from '../../../services/hasura/api';
-import { IssuedTab } from 'apps/website/components/templates/profile/tabs';
-import { ProfileTemplateLayout } from 'apps/website/components/templates/profile';
+import { IssuedTab } from '../../../components/templates/profile/tabs';
+import { ProfileTemplateLayout } from '../../../components/templates/profile';
 
 export default function IssuedProfile() {
   const router = useRouter();

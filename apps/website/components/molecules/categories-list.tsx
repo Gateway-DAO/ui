@@ -99,7 +99,7 @@ export function CategoriesList({
             />
           </Stack>
         )}
-       
+
         <Popover
           id="mouse-over-popover"
           sx={{
@@ -127,11 +127,11 @@ export function CategoriesList({
           </List>
         </Popover>
       </Stack>
-       {isGate && (
-          <Stack direction="row" spacing={1}  pt={1} pb={2} {...props}>
-            {showStatus && <GateStateChip published={published} small />}
-          </Stack>
-        )}
+      {isGate && (
+        <Stack direction="row" spacing={1} pt={1} pb={2} {...props}>
+          {showStatus && <GateStateChip published={published} small />}
+        </Stack>
+      )}
     </>
   );
 }

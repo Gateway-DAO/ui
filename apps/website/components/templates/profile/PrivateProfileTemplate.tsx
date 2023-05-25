@@ -7,21 +7,17 @@ import { TOKENS } from '@gateway/theme';
 import EditIcon from '@mui/icons-material/Edit';
 import { Box, Stack, Typography, Tabs, Tab, Chip } from '@mui/material';
 
-import { a11yTabProps, TabPanel, useTab } from '../../../components/atoms/tabs';
+import { TabPanel } from '../../../components/atoms/tabs';
 import { Navbar } from '../../../components/organisms/navbar/navbar';
 import { ROUTES } from '../../../constants/routes';
 import { generateImageUrl } from '../../../hooks/use-file';
 import { useAuth } from '../../../providers/auth';
 import { AvatarFile } from '../../atoms/avatar-file';
 import { SocialButtons } from '../../organisms/social-buttons';
-import { IssuedTab, ReceivedTab } from './tabs';
-import { Earned } from './tabs/Earned';
 import { HeadContainer } from '../../molecules/head-container';
 import { DashboardTemplate } from '../dashboard';
 
 export default function PrivateProfileTemplate({ children }) {
-  const { t } = useTranslation();
-  const { activeTab, handleTabChange } = useTab();
   const router = useRouter();
   const { me } = useAuth();
 
@@ -159,16 +155,7 @@ export default function PrivateProfileTemplate({ children }) {
                     'This is your profesional bio. Click the pencil above to edit.'}
                 </Typography>
               </Box>
-              {/* <Box
-              sx={{
-                display: 'flex',
-                flexDirection: 'row',
-                columnGap: '10px',
-                mt: 2,
-              }}
-            >
-              <ConnectionsButton wallet={me.wallet} />
-            </Box> */}
+              
               <Stack
                 direction="row"
                 gap={1}

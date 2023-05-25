@@ -1,7 +1,7 @@
-import { IssuedTab, ReceivedTab } from 'apps/website/components/templates/profile/tabs';
+import { IssuedTab } from '../../components/templates/profile/tabs';
 
 import { useAuth } from '../../providers/auth';
-import { PrivateProfileTemplate } from 'apps/website/components/templates/profile';
+import { PrivateProfileTemplate } from '../../components/templates/profile';
 
 // TODO: make the behavior of this page better
 export default function PrivateIssuedProfile() {

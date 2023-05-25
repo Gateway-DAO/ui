@@ -1,8 +1,7 @@
 import useTranslation from 'next-translate/useTranslation';
-import dynamic from 'next/dynamic';
 import Image from 'next/image';
 
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 
 import { TOKENS } from '@gateway/theme';
 
