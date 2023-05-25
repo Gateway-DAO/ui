@@ -21,7 +21,6 @@ export default function EarnedProfile() {
       username: username as string,
     })
   );
-  console.log(user);
   return (
     <>
       <Earned user={user} />
