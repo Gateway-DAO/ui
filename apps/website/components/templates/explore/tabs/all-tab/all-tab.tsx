@@ -1,9 +1,11 @@
 import useTranslation from 'next-translate/useTranslation';
+import { useRouter } from 'next/router';
 
 import { PartialDeep } from 'type-fest';
 
-import { Button, Divider, Stack } from '@mui/material';
 import { brandColors, theme } from '@gateway/theme';
+
+import { Button, Divider, Stack } from '@mui/material';
 
 import { ROUTES } from '../../../../../constants/routes';
 import { Protocol_Data_Model } from '../../../../../services/hasura/types';
@@ -18,9 +20,8 @@ import {
 } from '../../../../molecules/sections';
 import { ExploreProps } from '../../types';
 import Banner from './banner/banner';
-import { useRouter } from 'next/router';
-import { CardEarnCredential } from './banner/card-earn-credential';
 import { CardCreditScore } from './banner/card-credit-score';
+import { CardEarnCredential } from './banner/card-earn-credential';
 
 type Props = {
   dataModels: PartialDeep<Protocol_Data_Model>[];
@@ -151,7 +152,6 @@ export function AllTab({
           }
           itemWidth={(theme) => theme.spacing(41)}
         >
-          
           {daos.map((dao) => (
             <DaoCard key={dao.id} {...dao} />
           ))}

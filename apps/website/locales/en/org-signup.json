@@ -13,7 +13,7 @@
     "label": "Organization Name",
     "action": "Continue"
   },
-  "step-gateway-id": {
+  "step-gatewayId": {
     "title": "Create your organization's Gateway ID",
     "description": "Through the ID your organization is recognized and found within the Gateway. Only use lowercase letters, numbers and the symbols  “._-”.",
     "label": "@ Enter your ID",

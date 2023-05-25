@@ -1,7 +1,9 @@
 import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
+import { useState } from 'react';
 
 import { useQuery } from '@tanstack/react-query';
+import { useToggle } from 'react-use';
 
 import { TOKENS } from '@gateway/theme';
 
@@ -12,9 +14,11 @@ import { gqlAnonMethods } from '../../../services/hasura/api';
 import { a11yTabProps, TabPanel } from '../../atoms/tabs';
 import { Navbar } from '../../organisms/navbar';
 import { DashboardTemplate } from '../dashboard';
+import OrgSignupDialog from '../org/signup/dialog-structure';
 
 export function ExploreLayout({ children }) {
   const { t } = useTranslation('explore');
+  const [openSignUpOrgDialog, setSignUpOrgDialog] = useState(false);
 
   const router = useRouter();
   let _selectedTab = router.pathname;
@@ -40,79 +44,89 @@ export function ExploreLayout({ children }) {
       : routesForTabs.indexOf(_selectedTab);
 
   return (
-    <DashboardTemplate
-      containerProps={{
-        sx: {
-          pt: 2,
-          overflow: 'hidden',
-        },
-      }}
-    >
-      <Navbar />
-      <Box pt={6}>
-        <Typography variant="h4" whiteSpace="pre-line" px={TOKENS.CONTAINER_PX}>
-          {t('title')}
-        </Typography>
-        <Typography
-          variant="body1"
-          whiteSpace="pre-line"
-          px={TOKENS.CONTAINER_PX}
-          color="text.secondary"
-        >
-          {t('subtitle')}
-        </Typography>
-      </Box>
-      <Box sx={{ mt: 5 }}>
-        <Box
-          sx={{
-            borderBottom: 1,
-            borderColor: 'divider',
-          }}
-        >
-          <Tabs
-            value={selectedIndex}
-            onChange={(_, index) => {
-              const tab = routesForTabs.at(index);
-              if (tab === '') {
-                router.replace(`/explore`, undefined, {
-                  shallow: true,
-                });
-              } else
-                router.replace(`/explore/${tab}`, undefined, {
-                  shallow: true,
-                });
-            }}
-            aria-label="basic tabs example"
-            variant="scrollable"
-            scrollButtons
-            allowScrollButtonsMobile
-            sx={(theme) => ({
-              mb: '-1px',
-              [theme.breakpoints.down('md')]: {
-                '.MuiTabs-scrollButtons.Mui-disabled': {
-                  opacity: 0.3,
-                },
-              },
-            })}
+    <>
+      <OrgSignupDialog
+        open={openSignUpOrgDialog}
+        toggleDialog={setSignUpOrgDialog}
+      />
+      <DashboardTemplate
+        containerProps={{
+          sx: {
+            pt: 2,
+            overflow: 'hidden',
+          },
+        }}
+      >
+        <Navbar />
+        <Box pt={6}>
+          <Typography
+            variant="h4"
+            whiteSpace="pre-line"
+            px={TOKENS.CONTAINER_PX}
           >
-            {tabs.map((value, index) => (
-              <Tab
-                key={index}
-                label={value}
-                sx={(theme) => ({
-                  px: 0,
-                  mr: theme.spacing(3),
-                  fontWeight: 700,
-                })}
-                {...a11yTabProps('explore', index)}
-              />
-            ))}
-          </Tabs>
+            <span onClick={() => setSignUpOrgDialog(true)}>{t('title')}</span>
+          </Typography>
+          <Typography
+            variant="body1"
+            whiteSpace="pre-line"
+            px={TOKENS.CONTAINER_PX}
+            color="text.secondary"
+          >
+            {t('subtitle')}
+          </Typography>
         </Box>
-        <TabPanel tabsId={''} index={0} active>
-          {children}
-        </TabPanel>
-      </Box>
-    </DashboardTemplate>
+        <Box sx={{ mt: 5 }}>
+          <Box
+            sx={{
+              borderBottom: 1,
+              borderColor: 'divider',
+            }}
+          >
+            <Tabs
+              value={selectedIndex}
+              onChange={(_, index) => {
+                const tab = routesForTabs.at(index);
+                if (tab === '') {
+                  router.replace(`/explore`, undefined, {
+                    shallow: true,
+                  });
+                } else
+                  router.replace(`/explore/${tab}`, undefined, {
+                    shallow: true,
+                  });
+              }}
+              aria-label="basic tabs example"
+              variant="scrollable"
+              scrollButtons
+              allowScrollButtonsMobile
+              sx={(theme) => ({
+                mb: '-1px',
+                [theme.breakpoints.down('md')]: {
+                  '.MuiTabs-scrollButtons.Mui-disabled': {
+                    opacity: 0.3,
+                  },
+                },
+              })}
+            >
+              {tabs.map((value, index) => (
+                <Tab
+                  key={index}
+                  label={value}
+                  sx={(theme) => ({
+                    px: 0,
+                    mr: theme.spacing(3),
+                    fontWeight: 700,
+                  })}
+                  {...a11yTabProps('explore', index)}
+                />
+              ))}
+            </Tabs>
+          </Box>
+          <TabPanel tabsId={''} index={0} active>
+            {children}
+          </TabPanel>
+        </Box>
+      </DashboardTemplate>
+    </>
   );
 }

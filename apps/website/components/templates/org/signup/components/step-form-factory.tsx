@@ -1,3 +1,4 @@
+import useTranslation from 'next-translate/useTranslation';
 import dynamic from 'next/dynamic';
 import { useEffect } from 'react';
 
@@ -25,7 +26,6 @@ const CategoriesInput = dynamic(
 );
 
 type InputProps<T> = {
-  label: string;
   required?: boolean;
   name: Path<T>;
   type: string;
@@ -35,8 +35,6 @@ type InputProps<T> = {
 
 type StepFormProps<T> = {
   handleStep: (newValue: boolean) => void;
-  title: string;
-  description: string;
   input: InputProps<T>;
   schema: any;
   updateFormState: (newValue: any) => void;
@@ -45,13 +43,13 @@ type StepFormProps<T> = {
 
 export default function StepFormFactory<T>({
   handleStep,
-  title,
-  description,
   schema,
   input,
   updateFormState,
   validationMode = 'all',
 }: StepFormProps<T>) {
+  const { t } = useTranslation('org-signup');
+
   const methods = useForm<T>({
     resolver: yupResolver(schema) as Resolver<T, object>,
     mode: validationMode,
@@ -84,7 +82,10 @@ export default function StepFormFactory<T>({
 
   return (
     <FormProvider {...methods}>
-      <StepFormHeader title={title} description={description} />
+      <StepFormHeader
+        title={t(`step-${input.name}.title`)}
+        description={t(`step-${input.name}.description`)}
+      />
       {fieldName === 'categories' ? (
         <CategoriesInput
           variant="outlined"
@@ -110,7 +111,7 @@ export default function StepFormFactory<T>({
         />
       ) : (
         <TextField
-          label={input.label}
+          label={t(`step-${input.name}.label`)}
           type={input.type}
           id={`org_${fieldName}`}
           {...register(input.name)}

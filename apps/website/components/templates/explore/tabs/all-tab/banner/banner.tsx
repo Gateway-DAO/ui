@@ -1,8 +1,9 @@
 import useTranslation from 'next-translate/useTranslation';
-import { useMediaQuery, useTheme } from '@mui/material';
 
-import { Box, Button, Stack, Typography } from '@mui/material';
 import { ROUTES } from 'apps/website/constants/routes';
+
+import { useMediaQuery, useTheme } from '@mui/material';
+import { Box, Button, Stack, Typography } from '@mui/material';
 
 export default function Banner(): JSX.Element {
   const { t } = useTranslation('explore');

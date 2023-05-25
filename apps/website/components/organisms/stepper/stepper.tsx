@@ -43,7 +43,7 @@ export default function Stepper() {
       <Divider
         sx={{ height: '30px', width: '2px', ml: 1.5 }}
         orientation="vertical"
-        color={alpha(brandColors.white.main, 0.15)}
+        color="#332b3e"
         flexItem
       />
       <Stack direction="row" alignItems="center" gap={2}>

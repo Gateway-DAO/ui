@@ -1,8 +1,8 @@
 import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-import { useLocalStorage, useWindowSize } from 'react-use';
+import { useWindowSize } from 'react-use';
 
 import { brandColors } from '@gateway/theme';
 
@@ -20,53 +20,27 @@ import {
   useTheme,
 } from '@mui/material';
 
-// import { localStorageKeys } from '../../../../constants/local-storage-keys';
 import { ROUTES } from '../../../../constants/routes';
 import { useMultistepForm } from '../../../../hooks/use-multistep-form';
-import Loading from '../../../atoms/loading';
 import FormStepper from '../../../molecules/form-stepper/form-stepper';
 import RealTimeView, { StepNames } from './components/real-time-view';
-import StepCreateProfile from './components/step-create-profile';
-import StepFormFactory from './components/step-form-factory';
-import StepSuccess from './components/step-success';
-import {
-  aboutSchema,
-  categoriesSchema,
-  emailSchema,
-  gatewayIdSchema,
-  nameSchema,
-  roleSchema,
-  telegramSchema,
-  twitterSchema,
-  websiteSchema,
-} from './schema';
+import { setUpFormComponents } from './components/set-up-form-components';
 
-export function OrgSignUpTemplate() {
+export function OrgSignUpTemplate({
+  closeDialog,
+}: {
+  closeDialog: () => void;
+}) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const windowSize = useWindowSize();
   const { t } = useTranslation('org-signup');
-  const [orgCreated, setOrgCreated] = useState(false);
   const router = useRouter();
-  // const [formValue] = useLocalStorage(localStorageKeys.org_signup, null);
   const [fullFormState, setFullFormState] = useState(null);
 
   const handleStep = (newValue: boolean) => {
     setStepValidity((prev) => ({ ...prev, [currentStep]: newValue }));
   };
-
-  const [stepValidity, setStepValidity] = useState({
-    0: true,
-    1: false,
-    2: false,
-    3: false,
-    4: false,
-    5: false,
-    6: false,
-    7: false,
-    8: false,
-    9: false,
-  });
 
   const formStepControl: { name: StepNames; backgroundImage: boolean }[] = [
     { name: '', backgroundImage: true },
@@ -82,139 +56,11 @@ export function OrgSignUpTemplate() {
     { name: 'success', backgroundImage: true },
   ];
 
-  const formComponents = [
-    <StepCreateProfile key={1} />,
-    <StepFormFactory
-      updateFormState={setFullFormState}
-      key={2}
-      handleStep={handleStep}
-      title={t('step-name.title')}
-      description={t('step-name.description')}
-      input={{
-        label: t('step-name.label'),
-        name: 'name',
-        type: 'text',
-        required: true,
-      }}
-      schema={nameSchema}
-    />,
-    <StepFormFactory
-      updateFormState={setFullFormState}
-      key={3}
-      handleStep={handleStep}
-      title={t('step-gateway-id.title')}
-      description={t('step-gateway-id.description')}
-      input={{
-        label: t('step-gateway-id.label'),
-        name: 'gatewayId',
-        type: 'text',
-        required: true,
-        helperText: `mygateway.xyz/org/${
-          fullFormState?.gatewayId || 'gatewayId'
-        }`,
-      }}
-      schema={gatewayIdSchema}
-    />,
-    <StepFormFactory
-      updateFormState={setFullFormState}
-      key={4}
-      handleStep={handleStep}
-      title={t('step-categories.title')}
-      description={t('step-categories.description')}
-      input={{
-        label: t('step-categories.label'),
-        name: 'categories',
-        type: 'text',
-        required: true,
-      }}
-      schema={categoriesSchema}
-    />,
-    <StepFormFactory
-      updateFormState={setFullFormState}
-      key={5}
-      handleStep={handleStep}
-      title={t('step-about.title')}
-      description={t('step-about.description')}
-      input={{
-        label: t('step-about.label'),
-        name: 'about',
-        type: 'text',
-        required: true,
-        multiline: true,
-      }}
-      schema={aboutSchema}
-    />,
-    <StepFormFactory
-      updateFormState={setFullFormState}
-      key={6}
-      handleStep={handleStep}
-      title={t('step-website.title')}
-      description={t('step-website.description')}
-      input={{
-        label: t('step-website.label'),
-        name: 'website',
-        type: 'text',
-        required: true,
-      }}
-      schema={websiteSchema}
-    />,
-    <StepFormFactory
-      updateFormState={setFullFormState}
-      key={7}
-      handleStep={handleStep}
-      title={t('step-email.title')}
-      description={t('step-email.description')}
-      input={{
-        label: t('step-email.label'),
-        name: 'email',
-        type: 'text',
-        required: true,
-      }}
-      schema={emailSchema}
-    />,
-    <StepFormFactory
-      updateFormState={setFullFormState}
-      key={8}
-      handleStep={handleStep}
-      title={t('step-role.title')}
-      description={t('step-role.description')}
-      input={{
-        label: t('step-role.label'),
-        name: 'role',
-        type: 'text',
-        required: true,
-      }}
-      schema={roleSchema}
-    />,
-    <StepFormFactory
-      updateFormState={setFullFormState}
-      key={9}
-      handleStep={handleStep}
-      title={t('step-twitter.title')}
-      description={t('step-twitter.description')}
-      input={{
-        label: t('step-twitter.label'),
-        name: 'twitter',
-        type: 'text',
-        required: true,
-      }}
-      schema={twitterSchema}
-    />,
-    <StepFormFactory
-      key={10}
-      updateFormState={setFullFormState}
-      handleStep={handleStep}
-      title={t('step-telegram.title')}
-      description={t('step-telegram.description')}
-      input={{
-        label: t('step-telegram.label'),
-        name: 'telegram',
-        type: 'text',
-      }}
-      schema={telegramSchema}
-    />,
-    <StepSuccess key={11} />,
-  ];
+  const formComponents = setUpFormComponents({
+    fullFormState,
+    handleStep: handleStep,
+    updateFormState: setFullFormState,
+  });
 
   const {
     currentComponent: currentStepComponent,
@@ -222,7 +68,12 @@ export function OrgSignUpTemplate() {
     currentStep,
     isFirstStep,
     isLastStep,
+    getInitialStateStepValidity,
   } = useMultistepForm(formComponents);
+
+  const initialStepValidity = getInitialStateStepValidity(true);
+
+  const [stepValidity, setStepValidity] = useState(initialStepValidity);
 
   const handleNext = () => {
     changeStep(currentStep + 1);
@@ -235,7 +86,6 @@ export function OrgSignUpTemplate() {
   };
 
   const handleSubmit = () => {
-    console.table(fullFormState);
     handleNext();
   };
 
@@ -288,68 +138,60 @@ export function OrgSignUpTemplate() {
           <Avatar sx={{ display: { md: 'none' } }}>
             <IconButton
               onClick={() => {
-                router.back();
+                closeDialog();
               }}
             >
               <CloseIcon />
             </IconButton>
           </Avatar>
         </Stack>
-        {orgCreated ? (
-          <Loading />
-        ) : (
-          <Stack gap={5}>
-            {!isLastStep && (
-              <FormStepper
-                currentStep={currentStep}
-                qtdSteps={formComponents.length}
-              />
-            )}
+        <Stack gap={5}>
+          {!isLastStep && (
+            <FormStepper
+              currentStep={currentStep}
+              qtdSteps={formComponents.length}
+            />
+          )}
 
-            <Stack>
-              {currentStepComponent}
-              <Stack direction="row" justifyContent="space-between" gap={2}>
-                {isFirstStep && (
-                  <Button variant="contained" fullWidth onClick={handleNext}>
-                    {t('step-create-profile.action')}
-                  </Button>
-                )}
-                {!isFirstStep && !isLastStep && (
-                  <Button
-                    variant="outlined"
-                    size="large"
-                    onClick={handlePrevious}
-                  >
-                    Back
-                  </Button>
-                )}
-                {!isLastStep &&
-                  !isFirstStep &&
-                  formStepControl[currentStep].name !== 'telegram' && (
-                    <Button
-                      variant="contained"
-                      onClick={handleNext}
-                      size="large"
-                      disabled={!stepValidity[`${currentStep}`]}
-                    >
-                      Next
-                    </Button>
-                  )}
-                {formStepControl[currentStep].name === 'telegram' && (
+          <Stack>
+            {currentStepComponent}
+            <Stack direction="row" justifyContent="space-between" gap={2}>
+              {isFirstStep && (
+                <Button variant="contained" fullWidth onClick={handleNext}>
+                  {t('step-create-profile.action')}
+                </Button>
+              )}
+              {!isFirstStep && !isLastStep && (
+                <Button
+                  variant="outlined"
+                  size="large"
+                  onClick={handlePrevious}
+                >
+                  Back
+                </Button>
+              )}
+              {!isLastStep &&
+                !isFirstStep &&
+                formStepControl[currentStep].name !== 'telegram' && (
                   <Button
                     variant="contained"
+                    onClick={handleNext}
                     size="large"
-                    onClick={handleSubmit}
+                    disabled={!stepValidity[`${currentStep}`]}
                   >
-                    {fullFormState?.telegram?.length > 0
-                      ? 'Finish'
-                      : 'Skip and finish'}
+                    Next
                   </Button>
                 )}
-              </Stack>
+              {formStepControl[currentStep].name === 'telegram' && (
+                <Button variant="contained" size="large" onClick={handleSubmit}>
+                  {fullFormState?.telegram?.length > 0
+                    ? 'Finish'
+                    : 'Skip and finish'}
+                </Button>
+              )}
             </Stack>
           </Stack>
-        )}
+        </Stack>
       </Grid>
       <Divider orientation={isMobile ? 'horizontal' : 'vertical'} flexItem />
       <Grid
@@ -378,7 +220,7 @@ export function OrgSignUpTemplate() {
           <Avatar>
             <IconButton
               onClick={() => {
-                router.back();
+                closeDialog();
               }}
             >
               <CloseIcon />
