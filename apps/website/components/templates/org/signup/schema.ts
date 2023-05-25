@@ -27,7 +27,7 @@ export const gatewayIdSchema: SchemaOf<GatewayIdSchema> = object({
       message: 'Only lowercase letters, numbers and ._-',
       test: (value) => gatewayIdRegex.test(value),
     })
-    .test('checkGatewayId', 'Gateway ID unanvailable', async (value) => {
+    .test('checkGatewayId', 'This ID is already being used', async (value) => {
       if (value.length > 2) {
         const response = await gqlAnonMethods.check_org_by_gateway_id({
           gatewayId: value,
@@ -54,7 +54,7 @@ export const websiteSchema: SchemaOf<WebsiteSchema> = object({
 });
 
 export const emailSchema: SchemaOf<EmailSchema> = object({
-  email: string().email().required('Email is required'),
+  email: string().email('Invalid email address').required('Email is required'),
 });
 
 export const roleSchema: SchemaOf<RoleSchema> = object({

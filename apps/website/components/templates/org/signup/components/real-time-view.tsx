@@ -8,10 +8,12 @@ export type StepNames =
   | 'gatewayId'
   | 'categories'
   | 'about'
+  | 'website'
   | 'role'
   | 'twitter'
   | 'email'
-  | 'telegram';
+  | 'telegram'
+  | 'success';
 
 type Props = {
   step?: StepNames;

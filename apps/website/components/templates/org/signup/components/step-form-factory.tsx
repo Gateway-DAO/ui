@@ -29,6 +29,8 @@ type InputProps<T> = {
   required?: boolean;
   name: Path<T>;
   type: string;
+  helperText?: string;
+  multiline?: boolean;
 };
 
 type StepFormProps<T> = {
@@ -114,7 +116,11 @@ export default function StepFormFactory<T>({
           {...register(input.name)}
           name={fieldName}
           error={!!formState?.errors?.[fieldName]}
-          helperText={formState?.errors[fieldName]?.message}
+          multiline={input.multiline}
+          inputProps={{
+            height: 'auto!important',
+          }}
+          helperText={formState?.errors[fieldName]?.message || input.helperText}
           sx={{ mb: 5 }}
           onBlur={() => {
             updateFormValue({ ...formValue, [fieldName]: fieldValue });

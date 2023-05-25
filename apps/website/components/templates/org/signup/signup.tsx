@@ -20,7 +20,7 @@ import {
   useTheme,
 } from '@mui/material';
 
-import { localStorageKeys } from '../../../../constants/local-storage-keys';
+// import { localStorageKeys } from '../../../../constants/local-storage-keys';
 import { ROUTES } from '../../../../constants/routes';
 import { useMultistepForm } from '../../../../hooks/use-multistep-form';
 import Loading from '../../../atoms/loading';
@@ -28,7 +28,7 @@ import FormStepper from '../../../molecules/form-stepper/form-stepper';
 import RealTimeView, { StepNames } from './components/real-time-view';
 import StepCreateProfile from './components/step-create-profile';
 import StepFormFactory from './components/step-form-factory';
-import StepFormTelegram from './components/step-form-telegram';
+import StepSuccess from './components/step-success';
 import {
   aboutSchema,
   categoriesSchema,
@@ -36,6 +36,7 @@ import {
   gatewayIdSchema,
   nameSchema,
   roleSchema,
+  telegramSchema,
   twitterSchema,
   websiteSchema,
 } from './schema';
@@ -67,16 +68,18 @@ export function OrgSignUpTemplate() {
     9: false,
   });
 
-  const formStepNames: StepNames[] = [
-    '',
-    'name',
-    'gatewayId',
-    'categories',
-    'about',
-    'email',
-    'role',
-    'twitter',
-    'telegram',
+  const formStepControl: { name: StepNames; backgroundImage: boolean }[] = [
+    { name: '', backgroundImage: true },
+    { name: 'name', backgroundImage: false },
+    { name: 'gatewayId', backgroundImage: false },
+    { name: 'categories', backgroundImage: false },
+    { name: 'about', backgroundImage: false },
+    { name: 'website', backgroundImage: true },
+    { name: 'email', backgroundImage: true },
+    { name: 'role', backgroundImage: true },
+    { name: 'twitter', backgroundImage: true },
+    { name: 'telegram', backgroundImage: true },
+    { name: 'success', backgroundImage: true },
   ];
 
   const formComponents = [
@@ -106,6 +109,9 @@ export function OrgSignUpTemplate() {
         name: 'gatewayId',
         type: 'text',
         required: true,
+        helperText: `mygateway.xyz/org/${
+          fullFormState?.gatewayId || 'gatewayId'
+        }`,
       }}
       schema={gatewayIdSchema}
     />,
@@ -134,6 +140,7 @@ export function OrgSignUpTemplate() {
         name: 'about',
         type: 'text',
         required: true,
+        multiline: true,
       }}
       schema={aboutSchema}
     />,
@@ -193,7 +200,20 @@ export function OrgSignUpTemplate() {
       }}
       schema={twitterSchema}
     />,
-    <StepFormTelegram key={10} handleStep={handleStep} />,
+    <StepFormFactory
+      key={10}
+      updateFormState={setFullFormState}
+      handleStep={handleStep}
+      title={t('step-telegram.title')}
+      description={t('step-telegram.description')}
+      input={{
+        label: t('step-telegram.label'),
+        name: 'telegram',
+        type: 'text',
+      }}
+      schema={telegramSchema}
+    />,
+    <StepSuccess key={11} />,
   ];
 
   const {
@@ -206,12 +226,17 @@ export function OrgSignUpTemplate() {
 
   const handleNext = () => {
     changeStep(currentStep + 1);
-    router.push({ hash: formStepNames[currentStep + 1] });
+    router.push({ hash: formStepControl[currentStep + 1].name });
   };
 
   const handlePrevious = () => {
     changeStep(currentStep - 1);
-    router.push({ hash: formStepNames[currentStep - 1] });
+    router.push({ hash: formStepControl[currentStep - 1].name });
+  };
+
+  const handleSubmit = () => {
+    console.table(fullFormState);
+    handleNext();
   };
 
   return (
@@ -225,7 +250,7 @@ export function OrgSignUpTemplate() {
         backgroundSize: 'cover',
         minHeight: `${windowSize.height}px`,
         backgroundColor: brandColors.background.dark,
-        backgroundImage: isFirstStep
+        backgroundImage: formStepControl[currentStep].backgroundImage
           ? 'url(/images/signup-background.png)'
           : 'none',
       }}
@@ -248,15 +273,17 @@ export function OrgSignUpTemplate() {
         <Stack
           direction="row"
           justifyContent="space-between"
-          sx={{ mb: { xs: 4, md: 9 } }}
+          sx={{ mb: { xs: isLastStep ? 0 : 4, md: isLastStep ? 0 : 9 } }}
         >
-          <Box component="a" href={ROUTES.EXPLORE}>
-            <img
-              src="/favicon-192.png"
-              alt={t('logo-alternative-text')}
-              width="30"
-            />
-          </Box>
+          {!isLastStep && (
+            <Box component="a" href={ROUTES.EXPLORE}>
+              <img
+                src="/favicon-192.png"
+                alt={t('logo-alternative-text')}
+                width="30"
+              />
+            </Box>
+          )}
 
           <Avatar sx={{ display: { md: 'none' } }}>
             <IconButton
@@ -272,10 +299,12 @@ export function OrgSignUpTemplate() {
           <Loading />
         ) : (
           <Stack gap={5}>
-            <FormStepper
-              currentStep={currentStep}
-              qtdSteps={formComponents.length}
-            />
+            {!isLastStep && (
+              <FormStepper
+                currentStep={currentStep}
+                qtdSteps={formComponents.length}
+              />
+            )}
 
             <Stack>
               {currentStepComponent}
@@ -285,7 +314,7 @@ export function OrgSignUpTemplate() {
                     {t('step-create-profile.action')}
                   </Button>
                 )}
-                {!isFirstStep && (
+                {!isFirstStep && !isLastStep && (
                   <Button
                     variant="outlined"
                     size="large"
@@ -294,19 +323,27 @@ export function OrgSignUpTemplate() {
                     Back
                   </Button>
                 )}
-                {!isLastStep && !isFirstStep && (
+                {!isLastStep &&
+                  !isFirstStep &&
+                  formStepControl[currentStep].name !== 'telegram' && (
+                    <Button
+                      variant="contained"
+                      onClick={handleNext}
+                      size="large"
+                      disabled={!stepValidity[`${currentStep}`]}
+                    >
+                      Next
+                    </Button>
+                  )}
+                {formStepControl[currentStep].name === 'telegram' && (
                   <Button
                     variant="contained"
-                    onClick={handleNext}
                     size="large"
-                    disabled={!stepValidity[`${currentStep}`]}
+                    onClick={handleSubmit}
                   >
-                    Next
-                  </Button>
-                )}
-                {isLastStep && (
-                  <Button variant="contained" fullWidth disabled={false}>
-                    Enviar
+                    {fullFormState?.telegram?.length > 0
+                      ? 'Finish'
+                      : 'Skip and finish'}
                   </Button>
                 )}
               </Stack>
@@ -348,9 +385,9 @@ export function OrgSignUpTemplate() {
             </IconButton>
           </Avatar>
         </Stack>
-        {!isFirstStep && (
+        {!formStepControl[currentStep].backgroundImage && (
           <RealTimeView
-            step={formStepNames[currentStep]}
+            step={formStepControl[currentStep].name}
             name={fullFormState?.name}
             gatewayId={fullFormState?.gatewayId}
             categories={fullFormState?.categories}
