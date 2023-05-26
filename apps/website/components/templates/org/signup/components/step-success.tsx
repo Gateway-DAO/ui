@@ -1,21 +1,14 @@
 import useTranslation from 'next-translate/useTranslation';
 
-import { useLocalStorage } from 'react-use';
-
 import { Typography, Stack, Box, Button } from '@mui/material';
 
-import { localStorageKeys } from '../../../../../constants/local-storage-keys';
 import { ROUTES } from '../../../../../constants/routes';
 import SuccessfullyIcon from '../../../../atoms/icons/successfully-icon';
 import TextWithParagraphs from '../../../../atoms/text-with-paragraphs/text-with-paragraphs';
 import Stepper from '../../../../organisms/stepper/stepper';
 
-export default function StepSuccess() {
+export default function StepSuccess({ formState }: { formState: any }) {
   const { t } = useTranslation('org-signup');
-  const [formValue, updateFormValue] = useLocalStorage(
-    localStorageKeys.org_signup,
-    null
-  );
 
   return (
     <Stack>
@@ -31,7 +24,7 @@ export default function StepSuccess() {
         <Button
           variant="contained"
           size="large"
-          href={ROUTES.DAO_PROFILE.replace('[slug]', formValue?.slug)}
+          href={ROUTES.DAO_PROFILE.replace('[slug]', formState?.slug)}
         >
           {t('step-success.action')}
         </Button>

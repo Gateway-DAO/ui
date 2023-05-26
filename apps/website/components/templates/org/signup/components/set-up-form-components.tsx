@@ -130,6 +130,6 @@ export const setUpFormComponents = ({
       }}
       schema={telegramSchema}
     />,
-    <StepSuccess key={11} />,
+    <StepSuccess formState={fullFormState} key={11} />,
   ];
 };

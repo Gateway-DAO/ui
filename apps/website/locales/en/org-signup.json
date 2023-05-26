@@ -65,6 +65,9 @@
   "step-success": {
     "title": "Aplication submitted sucessfully",
     "text": "We are reviewing your application.\n\nIn the meantime, you can customize your space, draft credentials, but can not issue them publicly.\n\nThe profile and draft credentials will be deleted if your application is denied. If you have questions, don't hesitate to get in touch with us via email or Discord.",
-    "action": "Go to my profile"
+    "action": "Go to my profile",
+    "stepper-1": "Application",
+    "stepper-2": "Review",
+    "stepper-3": "Feedback"
   }
 }

@@ -40,7 +40,7 @@ export default function RealTimeView({
     <Stack
       sx={{
         backgroud: brandColors.purple.main,
-        pl: { xs: 2, md: 6 },
+        ml: { xs: 2, md: 6 },
         boxShadow:
           '0px 0px 20px rgba(0, 0, 0, 0.15), 0px 25px 30px rgba(0, 0, 0, 0.35)',
         flexGrow: 1,

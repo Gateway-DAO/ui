@@ -65,7 +65,7 @@ export function OrgSignUpTemplate({
     { name: 'success', backgroundImage: true },
   ];
 
-  const [formValueStorage, updateFormValueStorage] = useLocalStorage(
+  const [_, updateFormValueStorage] = useLocalStorage(
     localStorageKeys.org_signup,
     null
   );
@@ -90,7 +90,7 @@ export function OrgSignUpTemplate({
   const [stepValidity, setStepValidity] = useState(initialStepValidity);
 
   const handleNext = () => {
-    changeStep(currentStep + 1);
+    changeStep(currentStep + 10);
     router.push({
       hash: `org-signup_${formStepControl[currentStep + 1].name}`,
     });
@@ -117,10 +117,11 @@ export function OrgSignUpTemplate({
       }),
     {
       onSuccess: (data) => {
-        handleNext();
-        updateFormValueStorage({
+        setFullFormState({
           slug: data.insert_daos_one.slug,
         });
+        handleNext();
+        updateFormValueStorage(null);
       },
       onError: (e: any) => {
         snackbar.enqueueSnackbar(e?.response?.errors?.[0]?.message, {
@@ -204,6 +205,7 @@ export function OrgSignUpTemplate({
                     {t('step-create-profile.action')}
                   </Button>
                 )}
+                {/* [ ] Use translation */}
                 {!isFirstStep && !isLastStep && (
                   <Button
                     variant="outlined"
@@ -213,6 +215,8 @@ export function OrgSignUpTemplate({
                     Back
                   </Button>
                 )}
+                {/* [ ] Use translation */}
+
                 {!isLastStep &&
                   !isFirstStep &&
                   formStepControl[currentStep].name !== 'telegram' && (
@@ -225,6 +229,7 @@ export function OrgSignUpTemplate({
                       Next
                     </Button>
                   )}
+                {/* [ ] Use translation */}
                 {formStepControl[currentStep].name === 'telegram' && (
                   <Button
                     variant="contained"
@@ -240,6 +245,7 @@ export function OrgSignUpTemplate({
             </Stack>
           </Stack>
         </Grid>
+        {/* [ ] Create more components */}
         <Divider orientation={isMobile ? 'horizontal' : 'vertical'} flexItem />
         <Grid
           item
