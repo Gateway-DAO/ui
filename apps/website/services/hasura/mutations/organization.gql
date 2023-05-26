@@ -1,0 +1,41 @@
+mutation create_organization(
+    $name: String!
+    $gatewayId: String!
+    $categories: jsonb
+    $about: String!
+    $website: String!
+    $email: String!
+    $role: String!
+    $twitter: String!
+    $telegram: String!
+    ) {
+    insert_daos_one(
+        object: {
+            name: $name
+            gateway_id: $gatewayId
+            categories: $categories
+            description: $about
+            email: $email
+            role: $role
+            socials: {
+                data: [
+                    {
+                        network: "website"
+                        url: $website
+                    },
+                    {
+                        network: "twitter"
+                        url: $twitter
+                    },
+                    {
+                        network: "telegram"
+                        url: $telegram
+                    }
+                ]
+            }
+        }
+    ) {
+        slug
+        id
+    }
+}
