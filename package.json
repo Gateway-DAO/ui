@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -p 4200",
     "start": "next start --prod",
     "serve": "next start",
     "lint": "next lint",
