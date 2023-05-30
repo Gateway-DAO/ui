@@ -6,10 +6,10 @@ import ConfirmDialog from '@/components/organisms/confirm-dialog/confirm-dialog'
 import { ROUTES } from '@/constants/routes';
 import { useAuth } from '@/providers/auth';
 import {
-  Credential,
-  CredentialStatus,
-  RevokeCredentialMutationVariables,
-} from '@/services/gateway-protocol/types';
+  Protocol_Api_Credential,
+  Protocol_Api_CredentialStatus,
+  ProtocolMutationRevokeCredentialArgs,
+} from '@/services/hasura/types';
 import { useMutation } from '@tanstack/react-query';
 import { useSnackbar } from 'notistack';
 import { PartialDeep } from 'type-fest/source/partial-deep';
@@ -18,25 +18,25 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import { Button, CircularProgress } from '@mui/material';
 
 type Props = {
-  credential: PartialDeep<Credential>;
+  credential: PartialDeep<Protocol_Api_Credential>;
 };
 
 export function RevokeCredential({ credential }: Props) {
   const { t } = useTranslation('protocol');
   const { enqueueSnackbar } = useSnackbar();
   const router = useRouter();
-  const { gqlProtocolAuthMethods, me } = useAuth();
+  const { gqlAuthMethods, me } = useAuth();
   const [confirmRevoke, setConfirmRevoke] = useState(false);
   const revokeCredential = useMutation(
     ['revokeCredential'],
-    ({ id }: RevokeCredentialMutationVariables) => {
-      return gqlProtocolAuthMethods.revokeCredential({ id });
+    ({ id }: ProtocolMutationRevokeCredentialArgs) => {
+      return gqlAuthMethods.protocol_revoke_credential({ id });
     }
   );
 
   return (
     <>
-      {credential.status === CredentialStatus.Valid &&
+      {credential.status === Protocol_Api_CredentialStatus.Valid &&
         me?.wallet === credential?.issuerUser?.primaryWallet?.address && (
           <Button
             variant="outlined"
