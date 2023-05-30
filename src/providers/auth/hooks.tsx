@@ -5,7 +5,6 @@ import { useRouter } from 'next/router';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { ROUTES } from '@/constants/routes';
-import { gatewayProtocolAuthSDK } from '@/services/gateway-protocol/api';
 import { gqlAnonMethods, gqlMethods } from '@/services/hasura/api';
 import { Protocol_Api_Chain } from '@/services/hasura/types';
 import { useWallet } from '@solana/wallet-adapter-react';
@@ -231,10 +230,10 @@ export const useAuthLogin = () => {
       {
         queryKey: ['user_protocol', session?.data?.hasura_id],
         queryFn: async () => {
-          const res = await gatewayProtocolAuthSDK(token).meProtocol();
+          const res = await gqlMethods(token).me_protocol();
           return {
             me: {
-              protocol: res.me,
+              protocol: res.protocol.me,
             },
           };
         },
