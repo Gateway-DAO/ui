@@ -12,7 +12,7 @@ import { gqlAnonMethods } from '../services/hasura/api';
  * https://nextjs.org/docs/basic-features/layouts
  * */
 
-const HARDCODED_DAOS = ['goldfinch', 'cyberconnect', 'lifi'];
+const HARDCODED_DAOS = ['spice-finance', 'altitude', 'lifi'];
 
 export const getStaticProps = async () => {
   const exploreProps = await gqlAnonMethods.get_home({
