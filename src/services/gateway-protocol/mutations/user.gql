@@ -9,35 +9,3 @@ mutation updateUser(
     id
   }
 }
-
-mutation signup(
-  $gateway_id: String!
-  $email: String!
-) {
-  signup(input:{
-    gateway_id: $gateway_id
-    email: $email
-  }) {
-    email
-  }
-}
-
-mutation signupConfirmation(
-  $gateway_id: String!
-  $email: String!
-  $wallet: String!
-  $code: Float!
-) {
-  signupConfirmation(input:{
-    gateway_id: $gateway_id
-    email: $email
-    wallet: $wallet
-    code: $code
-  }) {
-    user {
-      id
-      email
-      gatewayId
-    }
-  }
-}

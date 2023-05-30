@@ -26,7 +26,7 @@ import {
 
 export function NewUserTemplate() {
   const { t } = useTranslation('dashboard-new-user');
-  const { me, gqlProtocolAuthMethods, onInvalidateMe } = useAuth();
+  const { me, gqlAuthMethods, onInvalidateMe } = useAuth();
   const [sentEmail, setSentEmail] = useState(false);
   const [sendEmailData, setSendEmailData] = useState(null);
   const [profileCreated, setProfileCreated] = useState(false);
@@ -44,7 +44,7 @@ export function NewUserTemplate() {
     ['signup'],
     async ({ ...data }: NewUserSchema) => {
       setSendEmailData(data);
-      return gqlProtocolAuthMethods.signup({
+      return gqlAuthMethods.protocol_signup({
         email: data.email_address,
         gateway_id: data.username,
       });
@@ -52,7 +52,9 @@ export function NewUserTemplate() {
     {
       onSuccess(data) {
         setSentEmail(true);
-        enqueueSnackbar(`${t('form.code-sent-to')} ${data.signup.email}`);
+        enqueueSnackbar(
+          `${t('form.code-sent-to')} ${data.protocol.signup.email}`
+        );
       },
       onError(error: ErrorResponse) {
         error.response?.errors?.forEach(({ message }) => {
@@ -80,7 +82,7 @@ export function NewUserTemplate() {
   const signupConfirmationMutation = useMutation(
     ['signupConfirmation'],
     async ({ ...data }: TokenConfirmationSchema) => {
-      return gqlProtocolAuthMethods.signupConfirmation({
+      return gqlAuthMethods.protocol_signup_confirmation({
         code: parseInt(data.token, 10),
         gateway_id: sendEmailData.username,
         email: sendEmailData.email_address,
