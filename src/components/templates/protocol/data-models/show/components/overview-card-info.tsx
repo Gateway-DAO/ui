@@ -1,8 +1,8 @@
 import useTranslation from 'next-translate/useTranslation';
 
 import { ROUTES } from '@/constants/routes';
-import { DataModel } from '@/services/gateway-protocol/types';
 import { gqlAnonMethods } from '@/services/hasura/api';
+import { Protocol_Api_DataModel } from '@/services/hasura/types';
 import { theme } from '@/theme';
 import { useQuery } from '@tanstack/react-query';
 import { DateTime } from 'luxon';
@@ -14,7 +14,7 @@ import CardCell from '../../../components/card-cell';
 import CardUserCell from '../../../components/card-user-cell';
 
 type Props = {
-  dataModel: PartialDeep<DataModel>;
+  dataModel: PartialDeep<Protocol_Api_DataModel>;
 };
 
 export default function OverviewCardInfo({ dataModel }: Props) {
@@ -22,13 +22,11 @@ export default function OverviewCardInfo({ dataModel }: Props) {
   const isMobile = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
 
   // MOCK
-  let mockDataModel: any = dataModel;
-  mockDataModel
-    ? (mockDataModel.createdBy = {
-        id: '63bc7fc62e7bd8b316b77133',
-        slug: 'gateway',
-      })
-    : (mockDataModel = null);
+  const mockDataModel = dataModel ?? null;
+  const mockedCreatedBy = {
+    id: '63bc7fc62e7bd8b316b77133',
+    slug: 'gateway',
+  };
   // MOCK - END
 
   const creator = useQuery(
@@ -58,10 +56,10 @@ export default function OverviewCardInfo({ dataModel }: Props) {
       <CardUserCell
         label={t('data-model.created-by')}
         picture={creator?.data?.logo}
-        name={mockDataModel?.createdBy?.slug}
+        name={mockDataModel ? mockedCreatedBy.slug : null}
         href={ROUTES.DAO_PROFILE.replace(
           '[slug]',
-          mockDataModel?.createdBy?.slug
+          mockDataModel ? mockedCreatedBy.slug : null
         )}
         hasLink={!!creator.data}
         unique={true}

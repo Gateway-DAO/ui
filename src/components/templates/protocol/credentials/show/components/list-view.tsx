@@ -1,11 +1,11 @@
 import { useMemo } from 'react';
 
-import { CredentialData } from '@/services/gateway-protocol/types';
+import { Protocol_Api_CredentialData } from '@/services/hasura/types';
 import { PartialDeep } from 'type-fest/source/partial-deep';
 
 import { List, ListItem } from '@mui/material';
 
-export function ListView(data: PartialDeep<CredentialData>) {
+export function ListView(data: PartialDeep<Protocol_Api_CredentialData>) {
   const items = useMemo(() => {
     let list = [];
     if (data?.value?.indexOf(',') > -1) {

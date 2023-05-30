@@ -6,7 +6,7 @@ import { MintDialogProtocol } from '@/components/molecules/mint-dialog-protocol'
 import ModalShareCredential from '@/components/molecules/modal/modal-share-credential';
 import { ROUTES } from '@/constants/routes';
 import { useMintData } from '@/hooks/use-mint-data';
-import { Credential } from '@/services/gateway-protocol/types';
+import { Protocol_Api_Credential } from '@/services/hasura/types';
 import { PartialDeep } from 'type-fest';
 
 import { Divider, Stack, SxProps, Typography } from '@mui/material';
@@ -23,7 +23,7 @@ import { RevokeCredential } from './components/revoke-credential';
 import TriggersCard from './components/triggers-card';
 
 type Props = {
-  credential: PartialDeep<Credential>;
+  credential: PartialDeep<Protocol_Api_Credential>;
 };
 
 export default function CredentialProtocolShow({ credential }: Props) {

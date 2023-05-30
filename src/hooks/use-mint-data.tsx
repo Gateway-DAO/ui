@@ -5,18 +5,18 @@ import { MintedChain } from '@/components/templates/protocol/credentials/show/co
 import { query } from '@/constants/queries';
 import { useAuth } from '@/providers/auth';
 import { gatewayProtocolAuthSDK } from '@/services/gateway-protocol/api';
+import { MintCredentialMutationVariables } from '@/services/gateway-protocol/types';
 import {
-  Chain,
-  Credential,
-  MintCredentialMutationVariables,
-} from '@/services/gateway-protocol/types';
+  Protocol_Api_Credential,
+  Protocol_Api_Chain,
+} from '@/services/hasura/types';
 import { Scalars } from '@/services/hasura/types';
 import { queryClient } from '@/services/query-client';
 import { useMutation } from '@tanstack/react-query';
 import { PartialDeep } from 'type-fest/source/partial-deep';
 
 type Props = {
-  credential: PartialDeep<Credential>;
+  credential: PartialDeep<Protocol_Api_Credential>;
   loyaltyProgramId?: Scalars['uuid'];
   gateId?: Scalars['uuid'];
 };
@@ -32,8 +32,8 @@ export function useMintData({ credential, loyaltyProgramId, gateId }: Props) {
     [credential?.recipientUser?.primaryWallet?.address, me]
   );
 
-  const changeChainName = (chain): Chain => {
-    if (chain === 'ethereum') return Chain.Evm;
+  const changeChainName = (chain): Protocol_Api_Chain => {
+    if (chain === 'ethereum') return Protocol_Api_Chain.Evm;
     return chain;
   };
 
@@ -41,7 +41,7 @@ export function useMintData({ credential, loyaltyProgramId, gateId }: Props) {
     credential?.nft && credential?.nft?.minted
       ? [
           {
-            chain: changeChainName(credential.nft?.chain) as Chain,
+            chain: changeChainName(credential.nft?.chain) as Protocol_Api_Chain,
             transaction: credential.nft?.txHash,
           },
         ]

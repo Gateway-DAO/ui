@@ -2,23 +2,13 @@ import Link from 'next/link';
 
 import { AvatarFile } from '@/components/atoms/avatar-file';
 import { ROUTES } from '@/constants/routes';
-import {
-  Credential,
-  CredentialStatus,
-} from '@/services/gateway-protocol/types';
+import { Protocol_Api_CredentialStatus } from '@/services/hasura/types';
 import { Protocol_Credential } from '@/services/hasura/types';
 import { brandColors } from '@/theme';
 import { limitCharsCentered } from '@/utils/string';
 import { PartialDeep } from 'type-fest';
 
-import {
-  Avatar,
-  Box,
-  CardContent,
-  CardHeader,
-  Chip,
-  Typography,
-} from '@mui/material';
+import { Box, CardContent, CardHeader, Chip, Typography } from '@mui/material';
 import MUICard from '@mui/material/Card';
 
 type Props = PartialDeep<Protocol_Credential> & {
@@ -27,15 +17,16 @@ type Props = PartialDeep<Protocol_Credential> & {
 
 //[ ] Check with @kbooz how to transform into a helper
 
-const setColorStatus = (status: CredentialStatus): string => {
+const setColorStatus = (status: Protocol_Api_CredentialStatus): string => {
   switch (status) {
-    case CredentialStatus.Valid:
+    case Protocol_Api_CredentialStatus.Valid:
       return brandColors.green.main;
 
-    case CredentialStatus.Revoked || CredentialStatus.Expired:
+    case Protocol_Api_CredentialStatus.Revoked ||
+      Protocol_Api_CredentialStatus.Expired:
       return brandColors.orange.main;
 
-    case CredentialStatus.Invalid:
+    case Protocol_Api_CredentialStatus.Invalid:
       return brandColors.red.main;
 
     default:

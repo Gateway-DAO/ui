@@ -2,17 +2,13 @@ import Link from 'next/link';
 
 import { AvatarFile } from '@/components/atoms/avatar-file';
 import { ROUTES } from '@/constants/routes';
-import { PermissionType } from '@/services/gateway-protocol/types';
-import { Protocol_Data_Model } from '@/services/hasura/types';
+import {
+  Protocol_Data_Model,
+  Protocol_Api_PermissionType,
+} from '@/services/hasura/types';
 import { PartialDeep } from 'type-fest';
 
-import {
-  Avatar,
-  CardContent,
-  CardHeader,
-  Typography,
-  Box,
-} from '@mui/material';
+import { CardContent, CardHeader, Typography, Box } from '@mui/material';
 import MUICard from '@mui/material/Card';
 
 import { CategoriesList } from './categories-list';
@@ -22,12 +18,11 @@ export function DataModelCard({
   title,
   description,
   tags,
-  version,
   createdBy,
   permissioning,
 }: PartialDeep<Protocol_Data_Model>): JSX.Element {
   const url = ROUTES.PROTOCOL_DATAMODEL.replace('[id]', id);
-  return permissioning === PermissionType.All ? (
+  return permissioning === Protocol_Api_PermissionType.All ? (
     <Link passHref href={url}>
       <MUICard
         sx={{

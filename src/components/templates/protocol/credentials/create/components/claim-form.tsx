@@ -1,11 +1,10 @@
 import useTranslation from 'next-translate/useTranslation';
 import { useMemo } from 'react';
 
-import { DataModel } from '@/services/gateway-protocol/types';
-import { brandColors } from '@/theme';
+import { Protocol_Api_DataModel } from '@/services/hasura/types';
 import { PartialDeep } from 'type-fest/source/partial-deep';
 
-import { alpha, Typography, Stack } from '@mui/material';
+import { Stack } from '@mui/material';
 
 import { ClaimFieldProps, claimFields, getClaimType } from './ClaimTypes';
 import ClaimAccordion from './claim-accordion';
@@ -14,7 +13,7 @@ import ClaimFormText from './claim-form-text';
 import { ClaimImageField } from './claim-image-field';
 
 type Props = {
-  dataModel: PartialDeep<DataModel>;
+  dataModel: PartialDeep<Protocol_Api_DataModel>;
 };
 
 function ClaimField(props: ClaimFieldProps) {

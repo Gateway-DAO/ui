@@ -7,9 +7,7 @@ import {
   gatewayProtocolSDK,
   GatewayProtocolSDKTypes,
 } from '@/services/gateway-protocol/api';
-import { DataModel } from '@/services/gateway-protocol/types';
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { PartialDeep } from 'type-fest/source/partial-deep';
 
 import { Stack } from '@mui/material';
 

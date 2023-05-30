@@ -1,4 +1,4 @@
-import { Scalars } from '@/services/gateway-protocol/types';
+import { Scalars } from '@/services/hasura/types';
 import { Maybe } from 'graphql/jsutils/Maybe';
 
 import { Chip, Stack } from '@mui/material';

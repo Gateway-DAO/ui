@@ -1,7 +1,7 @@
 import useTranslation from 'next-translate/useTranslation';
 
 import { useAuth } from '@/providers/auth';
-import { Credential } from '@/services/gateway-protocol/types';
+import { Protocol_Api_Credential } from '@/services/hasura/types';
 import { getCredentialImageURLParams } from '@/utils/credential/build-image-url-params';
 import objectToParams from '@/utils/map-object';
 import { useSnackbar } from 'notistack';
@@ -20,7 +20,7 @@ declare global {
 
 type Props = {
   isCredential?: boolean;
-  credential?: PartialDeep<Credential>;
+  credential?: PartialDeep<Protocol_Api_Credential>;
 };
 
 export default function ShareOn({ isCredential, credential }: Props) {

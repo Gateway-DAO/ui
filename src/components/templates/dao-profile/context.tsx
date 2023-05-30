@@ -1,13 +1,11 @@
 import { createContext, PropsWithChildren, useContext } from 'react';
 
-import {
-  Credential,
-  GetDaoStatsQuery,
-} from '@/services/gateway-protocol/types';
+import { GetDaoStatsQuery } from '@/services/gateway-protocol/types';
 import {
   Daos,
   Dao_Gates_TabQuery,
   Loyalty_Program,
+  Protocol_Api_Credential,
 } from '@/services/hasura/types';
 import { PartialDeep } from 'type-fest';
 
@@ -18,7 +16,7 @@ type DaoProfileContextProps = {
   credentials?: Dao_Gates_TabQuery;
   loyaltyPrograms?: PartialDeep<Loyalty_Program>[];
   onRefetchFollowers: () => void;
-  issuedCredentials?: PartialDeep<Credential>[];
+  issuedCredentials?: PartialDeep<Protocol_Api_Credential>[];
   stats?: GetDaoStatsQuery;
 };
 

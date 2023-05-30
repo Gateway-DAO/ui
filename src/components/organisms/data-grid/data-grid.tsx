@@ -5,7 +5,7 @@ import { ReactNode } from 'react';
 import NetworkTransactionLink from '@/components/atoms/network-transaction-link';
 import { CategoriesList } from '@/components/molecules/categories-list';
 import { ROUTES } from '@/constants/routes';
-import { CredentialStatus } from '@/services/gateway-protocol/types';
+import { Protocol_Api_CredentialStatus } from '@/services/hasura/types';
 import { brandColors, TOKENS } from '@/theme';
 import { limitCharsCentered } from '@/utils/string';
 import { DateTime } from 'luxon';
@@ -53,15 +53,16 @@ type Column = {
 
 //[ ] Check with @kbooz how to transform into a helper
 
-const setColorStatus = (status: CredentialStatus): string => {
+const setColorStatus = (status: Protocol_Api_CredentialStatus): string => {
   switch (status) {
-    case CredentialStatus.Valid:
+    case Protocol_Api_CredentialStatus.Valid:
       return brandColors.green.main;
 
-    case CredentialStatus.Revoked || CredentialStatus.Expired:
+    case Protocol_Api_CredentialStatus.Revoked ||
+      Protocol_Api_CredentialStatus.Expired:
       return brandColors.orange.main;
 
-    case CredentialStatus.Invalid:
+    case Protocol_Api_CredentialStatus.Invalid:
       return brandColors.red.main;
 
     default:

@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import ShareOn from '@/components/atoms/share-on';
 import ModalContent from '@/components/molecules/modal/modal-basic';
 import { taskErrorMessages } from '@/components/organisms/tasks/task-error-messages';
-import { Credential } from '@/services/gateway-protocol/types';
+import { Protocol_Api_Credential } from '@/services/hasura/types';
 import { brandColors } from '@/theme';
 import { useCreateQrCode } from '@/utils/qr-code/qr-code';
 import { useSnackbar } from 'notistack';
@@ -17,14 +17,12 @@ import QrCodeIcon from '@mui/icons-material/QrCode';
 import { SpeedDial, SpeedDialAction } from '@mui/material';
 import { Box } from '@mui/system';
 
-import { useProtocolTemplateContext } from '../context';
-
 export default function FloatingCta({
   isCredential,
   credential,
 }: {
   isCredential?: boolean;
-  credential?: PartialDeep<Credential>;
+  credential?: PartialDeep<Protocol_Api_Credential>;
 }) {
   const { t } = useTranslation('protocol');
   const { enqueueSnackbar } = useSnackbar();

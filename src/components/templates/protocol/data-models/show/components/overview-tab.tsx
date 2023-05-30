@@ -6,15 +6,14 @@ import ExternalLink from '@/components/atoms/external-link';
 import ModalRight from '@/components/molecules/modal-right';
 import ConfirmDialog from '@/components/organisms/confirm-dialog/confirm-dialog';
 import { useAuth } from '@/providers/auth';
+import { GetDataModelStatsQuery } from '@/services/gateway-protocol/types';
 import {
-  DataModel,
-  GetDataModelStatsQuery,
-  PermissionType,
-} from '@/services/gateway-protocol/types';
-import { GetDmStatsUntilDayBeforeQuery } from '@/services/hasura/types';
+  GetDmStatsUntilDayBeforeQuery,
+  Protocol_Api_DataModel,
+  Protocol_Api_PermissionType,
+} from '@/services/hasura/types';
 import { theme } from '@/theme';
 import { brandColors } from '@/theme';
-import { stat } from 'fs';
 import { useToggle } from 'react-use';
 import { PartialDeep } from 'type-fest/source/partial-deep';
 
@@ -35,7 +34,7 @@ import OverviewCardInfo from './overview-card-info';
 import TableSchema from './table-schema';
 
 type Props = {
-  dataModel: PartialDeep<DataModel>;
+  dataModel: PartialDeep<Protocol_Api_DataModel>;
   stats: GetDataModelStatsQuery;
   isCredentialCreate?: boolean;
   statsUntilYesterday?: GetDmStatsUntilDayBeforeQuery;
@@ -49,7 +48,8 @@ export default function OverviewTab({
 }: Props) {
   const { t } = useTranslation('protocol');
   const router = useRouter();
-  const isP2PDataModel = dataModel.permissioning === PermissionType.All;
+  const isP2PDataModel =
+    dataModel.permissioning === Protocol_Api_PermissionType.All;
   const isMobile = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
   const calculateGrowth = (finalValue: number, startingNumber: number) => {
     if (startingNumber > 0)
@@ -84,16 +84,16 @@ export default function OverviewTab({
       .map((availableItem) => availableItem.id);
 
     switch (dataModel?.permissioning) {
-      case PermissionType.SpecificIds:
+      case Protocol_Api_PermissionType.SpecificIds:
         return !!usersIdAndOrganizationsId.find((userOrOrgId) => {
           return (
             availableToIssue.length &&
             availableToIssue?.indexOf(userOrOrgId) > -1
           );
         });
-      case PermissionType.Organizations:
+      case Protocol_Api_PermissionType.Organizations:
         return !!organizationsId.length;
-      case PermissionType.All:
+      case Protocol_Api_PermissionType.All:
       default:
         return true;
     }
