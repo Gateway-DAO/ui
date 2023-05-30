@@ -2,18 +2,18 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 
 import { AvatarFile } from '@/components/atoms/avatar-file';
+import { TabPanel } from '@/components/atoms/tabs';
+import { HeadContainer } from '@/components/molecules/head-container';
+import { Navbar } from '@/components/organisms/navbar/navbar';
 import { SocialButtons } from '@/components/organisms/social-buttons';
 import { ROUTES } from '@/constants/routes';
+import { generateImageUrl } from '@/hooks/use-file';
 import { useAuth } from '@/providers/auth';
 import { TOKENS } from '@/theme';
 
 import EditIcon from '@mui/icons-material/Edit';
 import { Box, Stack, Typography, Tabs, Tab, Chip } from '@mui/material';
 
-import { TabPanel } from '@/components/atoms/tabs';
-import { Navbar } from '@/components/organisms/navbar/navbar';
-import { generateImageUrl } from '@/hooks/use-file';
-import { HeadContainer } from '@/components/molecules/head-container';
 import { DashboardTemplate } from '../dashboard';
 
 export default function PrivateProfileTemplate({ children }) {
@@ -154,7 +154,7 @@ export default function PrivateProfileTemplate({ children }) {
                     'This is your profesional bio. Click the pencil above to edit.'}
                 </Typography>
               </Box>
-              
+
               <Stack
                 direction="row"
                 gap={1}
