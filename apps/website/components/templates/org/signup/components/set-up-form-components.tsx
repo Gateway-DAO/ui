@@ -84,6 +84,7 @@ export const setUpFormComponents = ({
         name: 'website',
         type: 'text',
         required: true,
+        initialValue: 'https://',
       }}
       schema={websiteSchema}
     />,
@@ -117,6 +118,7 @@ export const setUpFormComponents = ({
         name: 'twitter',
         type: 'text',
         required: true,
+        startAdornment: '@',
       }}
       schema={twitterSchema}
     />,
@@ -127,6 +129,7 @@ export const setUpFormComponents = ({
       input={{
         name: 'telegram',
         type: 'text',
+        startAdornment: '@',
       }}
       schema={telegramSchema}
     />,

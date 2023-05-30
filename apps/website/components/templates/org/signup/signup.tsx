@@ -90,7 +90,7 @@ export function OrgSignUpTemplate({
   const [stepValidity, setStepValidity] = useState(initialStepValidity);
 
   const handleNext = () => {
-    changeStep(currentStep + 10);
+    changeStep(currentStep + 1);
     router.push({
       hash: `org-signup_${formStepControl[currentStep + 1].name}`,
     });

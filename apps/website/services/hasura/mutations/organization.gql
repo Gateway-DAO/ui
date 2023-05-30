@@ -17,6 +17,7 @@ mutation create_organization(
             description: $about
             email: $email
             role: $role
+            telegram: $telegram
             socials: {
                 data: [
                     {
@@ -27,10 +28,6 @@ mutation create_organization(
                         network: "twitter"
                         url: $twitter
                     },
-                    {
-                        network: "telegram"
-                        url: $telegram
-                    }
                 ]
             }
         }

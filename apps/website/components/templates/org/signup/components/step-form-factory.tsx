@@ -12,7 +12,7 @@ import {
   ValidationMode,
 } from 'react-hook-form';
 
-import { TextField } from '@mui/material';
+import { InputAdornment, TextField } from '@mui/material';
 
 import { CATEGORIES } from '../../../../../constants/gate';
 import { localStorageKeys } from '../../../../../constants/local-storage-keys';
@@ -31,6 +31,8 @@ type InputProps<T> = {
   type: string;
   helperText?: string;
   multiline?: boolean;
+  initialValue?: any;
+  startAdornment?: string;
 };
 
 type StepFormProps<T> = {
@@ -89,7 +91,7 @@ export default function StepFormFactory<T>({
       {fieldName === 'categories' ? (
         <CategoriesInput
           variant="outlined"
-          label={input.label}
+          label={input.name}
           id={`org_${fieldName}`}
           name={`org_${fieldName}`}
           error={!!formState?.errors?.[fieldName]}
@@ -121,10 +123,25 @@ export default function StepFormFactory<T>({
           inputProps={{
             height: 'auto!important',
           }}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                {input.startAdornment}
+              </InputAdornment>
+            ),
+          }}
           helperText={formState?.errors[fieldName]?.message || input.helperText}
           sx={{ mb: 5 }}
           onBlur={() => {
             updateFormValue({ ...formValue, [fieldName]: fieldValue });
+          }}
+          onFocus={() => {
+            if (
+              (!formValue[fieldName] || formValue[fieldName].length === 0) &&
+              input.initialValue
+            ) {
+              setValue(input.name, input.initialValue);
+            }
           }}
         />
       )}
