@@ -1,62 +1,53 @@
 {
   "root": true,
-  "ignorePatterns": ["**/*"],
   "extends": [
-    "plugin:@nrwl/nx/typescript",
+    "eslint:recommended",
+    "next",
+    "next/core-web-vitals",
+    "plugin:@typescript-eslint/recommended",
     "prettier",
     "plugin:editorconfig/noconflict"
   ],
   "plugins": [
-    "@nrwl/nx",
+    "@typescript-eslint",
     "editorconfig",
     "eslint-plugin-import-helpers",
     "prettier"
   ],
-  "overrides": [
-    {
-      "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
-      "rules": {
-        "@nrwl/nx/enforce-module-boundaries": [
-          "error",
-          {
-            "enforceBuildableLibDependency": false,
-            "allow": [],
-            "depConstraints": [
-              {
-                "sourceTag": "*",
-                "onlyDependOnLibsWithTags": ["*"]
-              }
-            ]
-          }
-        ],
-        "editorconfig/indent": "off",
-        "import-helpers/order-imports": [
-          "warn",
-          {
-            "newlinesBetween": "always",
-            "groups": [
-              ["/^react$/", "/^react-(native|dom)$/", "/^next/"],
-              "module",
-              "/^@gateway//",
-              "/^@mui//",
-              ["parent", "sibling"],
-              "index"
-            ],
-            "alphabetize": { "order": "asc", "ignoreCase": false }
-          }
-        ],
-        "sort-imports": "off",
-        "prettier/prettier": "error",
-        "@typescript-eslint/no-unused-vars": [
-          "warn",
-          {
-            "argsIgnorePattern": "^_",
-            "varsIgnorePattern": "^_",
-            "caughtErrorsIgnorePattern": "^_"
-          }
-        ],
-        "@typescript-eslint/no-empty-function": ["warn"]
+  "env": {
+    "jest": true
+  },
+  "rules": {
+    "@next/next/no-html-link-for-pages": ["error", "pages"],
+    "@next/next/no-img-element": "off",
+    "@typescript-eslint/no-unused-vars": [
+      "warn",
+      {
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^_",
+        "caughtErrorsIgnorePattern": "^_",
+        "destructuredArrayIgnorePattern": "^_"
       }
-    }
-  ]
+    ],
+    "@typescript-eslint/no-empty-function": ["warn"],
+    "editorconfig/indent": "off",
+    "import-helpers/order-imports": [
+      "warn",
+      {
+        "newlinesBetween": "always",
+        "groups": [
+          ["/^react$/", "/^react-(native|dom)$/", "/^next/"],
+          "module",
+          "/^@gateway//",
+          "/^@mui//",
+          ["parent", "sibling"],
+          "index"
+        ],
+        "alphabetize": { "order": "asc", "ignoreCase": false }
+      }
+    ],
+    "sort-imports": "off",
+    "prettier/prettier": "error"
+  },
+  "ignorePatterns": ["node_modules", ".next", "out", "public", "coverage", "src/services/**/types.ts"]
 }
