@@ -52,13 +52,13 @@
   "step-twitter": {
     "title": "What's is organization twitter username?",
     "description": "We're excited to see your organization's social media presence. Please share your Twitter account so we can stay updated on your latest news and updates.",
-    "label": "@ Twitter username",
+    "label": "Twitter username",
     "action": "Continue"
   },
   "step-telegram": {
     "title": "Let's stay in touch!",
     "description": "We want to make sure we can reach you if we have any questions or need additional information about your application. Please provide us with your Telegram username.",
-    "label": "@ Telegram username",
+    "label": "Telegram username",
     "action-empty": "Skip and finish",
     "action": "Finish"
   },

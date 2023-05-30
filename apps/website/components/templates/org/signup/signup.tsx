@@ -62,7 +62,7 @@ export function OrgSignUpTemplate({
     { name: 'role', backgroundImage: true },
     { name: 'twitter', backgroundImage: true },
     { name: 'telegram', backgroundImage: true },
-    { name: 'success', backgroundImage: true },
+    { name: 'success', backgroundImage: false },
   ];
 
   const [_, updateFormValueStorage] = useLocalStorage(
@@ -143,7 +143,7 @@ export function OrgSignUpTemplate({
           backgroundPosition: 'center center',
           backgroundSize: 'cover',
           minHeight: `${windowSize.height}px`,
-          backgroundColor: brandColors.background.dark,
+          backgroundColor: brandColors.background.main,
           backgroundImage: formStepControl[currentStep].backgroundImage
             ? 'url(/images/signup-background.png)'
             : 'none',
@@ -280,15 +280,16 @@ export function OrgSignUpTemplate({
               </IconButton>
             </Avatar>
           </Stack>
-          {!formStepControl[currentStep].backgroundImage && (
-            <RealTimeView
-              step={formStepControl[currentStep].name}
-              name={fullFormState?.name}
-              gatewayId={fullFormState?.gatewayId}
-              categories={fullFormState?.categories}
-              about={fullFormState?.about}
-            />
-          )}
+          {!formStepControl[currentStep].backgroundImage &&
+            formStepControl[currentStep].name !== 'success' && (
+              <RealTimeView
+                step={formStepControl[currentStep].name}
+                name={fullFormState?.name}
+                gatewayId={fullFormState?.gatewayId}
+                categories={fullFormState?.categories}
+                about={fullFormState?.about}
+              />
+            )}
         </Grid>
       </Grid>
     </>
