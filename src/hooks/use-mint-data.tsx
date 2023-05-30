@@ -4,11 +4,10 @@ import { DialogStatuses } from '@/components/molecules/mint-dialog-protocol';
 import { MintedChain } from '@/components/templates/protocol/credentials/show/components/mint-nft-card';
 import { query } from '@/constants/queries';
 import { useAuth } from '@/providers/auth';
-import { gatewayProtocolAuthSDK } from '@/services/gateway-protocol/api';
-import { MintCredentialMutationVariables } from '@/services/gateway-protocol/types';
 import {
   Protocol_Api_Credential,
   Protocol_Api_Chain,
+  Protocol_Mint_CredentialMutationVariables,
 } from '@/services/hasura/types';
 import { Scalars } from '@/services/hasura/types';
 import { queryClient } from '@/services/query-client';
@@ -22,7 +21,7 @@ type Props = {
 };
 
 export function useMintData({ credential, loyaltyProgramId, gateId }: Props) {
-  const { me, token } = useAuth();
+  const { me, gqlAuthMethods } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const [shareIsOpen, setShareIsOpen] = useState<boolean>(false);
   const isAllowedToMint = useMemo(() => credential?.nft !== null, [credential]);
@@ -52,8 +51,8 @@ export function useMintData({ credential, loyaltyProgramId, gateId }: Props) {
 
   const mintCredential = useMutation(
     [query.mintCredential],
-    ({ credentialId }: MintCredentialMutationVariables) => {
-      return gatewayProtocolAuthSDK(token).mintCredential({
+    ({ credentialId }: Protocol_Mint_CredentialMutationVariables) => {
+      return gqlAuthMethods.protocol_mint_credential({
         credentialId: credentialId,
       });
     },
@@ -70,7 +69,7 @@ export function useMintData({ credential, loyaltyProgramId, gateId }: Props) {
         setMintData([
           {
             chain: credential?.recipientUser?.primaryWallet?.chain,
-            transaction: data.mintCredential.txHash,
+            transaction: data.protocol.mintCredential.txHash,
           },
         ]);
         queryClient.refetchQueries([
