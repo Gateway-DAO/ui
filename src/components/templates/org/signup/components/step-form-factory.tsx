@@ -14,7 +14,7 @@ import {
 
 import { InputAdornment, TextField } from '@mui/material';
 
-import { CATEGORIES } from '../../../../../constants/gate';
+import { categories } from '../../../../../constants/dao';
 import { localStorageKeys } from '../../../../../constants/local-storage-keys';
 import StepFormHeader from './step-form-header';
 
@@ -96,7 +96,7 @@ export default function StepFormFactory<T>({
           name={`org_${fieldName}`}
           error={!!formState?.errors?.[fieldName]}
           {...register(input.name)}
-          categories={CATEGORIES}
+          categories={categories}
           helperText={formState?.errors[fieldName]?.message}
           defaultValue={formValue[input.name] ?? []}
           sx={{
@@ -137,8 +137,8 @@ export default function StepFormFactory<T>({
           }}
           onFocus={() => {
             if (
-              (!formValue[fieldName] || formValue[fieldName].length === 0) &&
-              input.initialValue
+              input.initialValue &&
+              (!formValue[fieldName] || formValue[fieldName].length === 0)
             ) {
               setValue(input.name, input.initialValue);
             }
