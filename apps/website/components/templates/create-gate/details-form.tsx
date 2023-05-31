@@ -21,7 +21,7 @@ export function GateDetailsForm() {
     getValues,
   } = useFormContext<CreateGateData>();
   const { me } = useAuth();
-  const creators = useMemo(() => ({ id: me?.id, name: me?.name }), [me]);
+  const creators = useMemo(() => ({ id: me?.id, name: me?.username }), [me]);
   const { categories } = getValues();
   const formValues = getValues();
   const descriptionRef = useRef<HTMLInputElement>(null);
