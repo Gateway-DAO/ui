@@ -187,7 +187,7 @@ export default function ProfileTemplateLayout({ children }) {
                   shallow: true,
                 });
             }}
-            aria-label="basic tabs example"
+            aria-label="profile-tabs"
             sx={{
               mb: '-1px',
             }}
