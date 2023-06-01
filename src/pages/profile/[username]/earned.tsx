@@ -1,11 +1,10 @@
 import { useRouter } from 'next/router';
 
-import { dehydrate, QueryClient, useQuery } from '@tanstack/react-query';
-
+import { Profile } from '@/components/features/profile';
+import { Earned } from '@/components/features/profile/tabs/Earned';
 import { useAuth } from '@/providers/auth';
 import { gqlAnonMethods } from '@/services/hasura/api';
-import { Earned } from '@/components/templates/profile/tabs/Earned';
-import { ProfileTemplateLayout } from '@/components/templates/profile';
+import { dehydrate, QueryClient, useQuery } from '@tanstack/react-query';
 
 export default function EarnedProfile() {
   const router = useRouter();
@@ -53,4 +52,4 @@ export const getServerSideProps = async ({ params }) => {
     },
   };
 };
-EarnedProfile.PageLayout = ProfileTemplateLayout;
+EarnedProfile.PageLayout = Profile;

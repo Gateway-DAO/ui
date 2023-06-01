@@ -1,7 +1,6 @@
-import { IssuedTab } from '@/components/templates/profile/tabs';
-
+import { PrivateProfile } from '@/components/features/profile';
+import { IssuedTab } from '@/components/features/profile/tabs';
 import { useAuth } from '@/providers/auth';
-import { PrivateProfileTemplate } from '@/components/templates/profile';
 
 // TODO: make the behavior of this page better
 export default function PrivateIssuedProfile() {
@@ -15,4 +14,4 @@ export default function PrivateIssuedProfile() {
 }
 
 PrivateIssuedProfile.auth = true;
-PrivateIssuedProfile.PageLayout = PrivateProfileTemplate;
+PrivateIssuedProfile.PageLayout = PrivateProfile;

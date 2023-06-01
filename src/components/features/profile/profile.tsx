@@ -1,25 +1,23 @@
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 
-import { useQuery } from '@tanstack/react-query';
-
+import { AvatarFile } from '@/components/atoms/avatar-file';
+import { TabPanel } from '@/components/atoms/tabs';
+import { HeadContainer } from '@/components/molecules/head-container';
+import { Navbar } from '@/components/organisms/navbar/navbar';
+import { SocialButtons } from '@/components/organisms/social-buttons';
+import DashboardTemplate from '@/components/templates/dashboard/dashboard';
+import { generateImageUrl } from '@/hooks/use-file';
+import { useAuth } from '@/providers/auth';
+import { gatewayProtocolSDK } from '@/services/gateway-protocol/api';
 import { TOKENS } from '@/theme';
+import { useQuery } from '@tanstack/react-query';
 
 import { Box, Stack, Typography, Tabs, Tab, Chip } from '@mui/material';
 
-import { TabPanel } from '@/components/atoms/tabs';
-import { Navbar } from '@/components/organisms/navbar/navbar';
-import { generateImageUrl } from '@/hooks/use-file';
-import { gatewayProtocolSDK } from '@/services/gateway-protocol/api';
-import { AvatarFile } from '@/components/atoms/avatar-file';
-import { SocialButtons } from '@/components/organisms/social-buttons';
-import { useRouter } from 'next/router';
-import { useAuth } from '@/providers/auth';
-import { HeadContainer } from '@/components/molecules/head-container';
-import DashboardTemplate from '@/components/templates/dashboard/dashboard';
-
-export default function ProfileTemplateLayout({ children }) {
+export default function Profile({ children }) {
   const router = useRouter();
-  const { me, gqlAuthMethods } = useAuth();
+  const { gqlAuthMethods } = useAuth();
   const { username } = router.query;
   const {
     data: {

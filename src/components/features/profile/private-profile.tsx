@@ -14,9 +14,9 @@ import { TOKENS } from '@/theme';
 import EditIcon from '@mui/icons-material/Edit';
 import { Box, Stack, Typography, Tabs, Tab, Chip } from '@mui/material';
 
-import { DashboardTemplate } from '../dashboard';
+import { DashboardTemplate } from '../../templates/dashboard';
 
-export default function PrivateProfileTemplate({ children }) {
+export default function PrivateProfile({ children }) {
   const router = useRouter();
   const { me } = useAuth();
 
