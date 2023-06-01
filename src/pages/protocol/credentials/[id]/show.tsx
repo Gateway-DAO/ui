@@ -1,6 +1,6 @@
 import { InferGetServerSidePropsType, GetServerSidePropsContext } from 'next';
 
-import { CredentialProtocolShow } from '@/components/features/protocol';
+import { CredentialProtocolView } from '@/components/features/protocol';
 import Protocol from '@/components/features/protocol/protocol';
 import { HeadContainer } from '@/components/molecules/head-container';
 import { DashboardTemplate } from '@/components/templates/dashboard';
@@ -31,7 +31,7 @@ export default function ProtocolCredential({ credential, ogImage }: Props) {
             }}
           >
             <Protocol credential={credential}>
-              <CredentialProtocolShow credential={credential} />
+              <CredentialProtocolView credential={credential} />
             </Protocol>
           </DashboardTemplate>
         </>
