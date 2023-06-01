@@ -17,7 +17,7 @@ import {
   Chip,
 } from '@mui/material';
 
-import { useAuth } from './../../../providers/auth';
+import { useAuth } from '../../../providers/auth';
 import { DaosTab } from './tabs/daos-tab';
 import { GatesTab } from './tabs/gates-tab';
 import { PeopleTab } from './tabs/people-tab';

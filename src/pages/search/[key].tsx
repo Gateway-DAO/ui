@@ -2,7 +2,7 @@ import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
 
 import { DashboardTemplate } from '@/components/templates/dashboard';
-import { SearchTemplate } from '@/components/templates/search';
+import { SearchTemplate } from '@/components/features/search';
 
 /** TODO: Prevent template remount when navigating between dashboard pages
  * https://nextjs.org/docs/basic-features/layouts
