@@ -30,7 +30,7 @@ import {
 
 import DashboardCard from '../../../components/dashboard-card';
 import CredentialProtocolCreate from '../../../credentials/create/credential-create';
-import IssueCredentialButton from '../components/issue-credential-button';
+import IssueCredentialButton from './issue-credential-button';
 import OverviewCardInfo from './overview-card-info';
 import TableSchema from './table-schema';
 

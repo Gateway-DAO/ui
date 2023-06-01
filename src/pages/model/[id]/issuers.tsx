@@ -3,13 +3,13 @@ import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 
 import { IColumnGrid } from '@/components/organisms/data-grid/data-grid';
-import { DataModelLayout } from '@/components/features/protocol/data-models/show/layout';
+import { DataModelLayout } from '@/components/features/protocol/data-models/view/layout';
 import { query } from '@/constants/queries';
 import { DateTime } from 'luxon';
 const GridViewTab = dynamic(
   () =>
     import(
-      '@/components/features/protocol/data-models/show/components/grid-view-tab'
+      '@/components/features/protocol/data-models/view/components/grid-view-tab'
     ),
   { ssr: false }
 );

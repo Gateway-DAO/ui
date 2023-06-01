@@ -26,7 +26,7 @@ type Props = {
   credential: PartialDeep<Credential>;
 };
 
-export default function CredentialProtocolShow({ credential }: Props) {
+export default function CredentialProtocolView({ credential }: Props) {
   const { t } = useTranslation('protocol');
   const router = useRouter();
   const {
