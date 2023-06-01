@@ -3,7 +3,7 @@ import { useState } from 'react';
 
 import Loading from '@/components/atoms/loading';
 import { NavBarAvatar } from '@/components/organisms/navbar/navbar-avatar';
-import { taskErrorMessages } from '@/components/organisms/tasks/task-error-messages';
+import { errorMessages } from '@/constants/error-messages';
 import { useAuth } from '@/providers/auth';
 import { theme } from '@/theme';
 import { ErrorResponse } from '@/types/graphql';
@@ -58,15 +58,15 @@ export function NewUserTemplate() {
         error.response?.errors?.forEach(({ message }) => {
           if (message === 'GATEWAY_ID_ALREADY_REGISTERED') {
             methodsSendEmail.setError('username', {
-              message: taskErrorMessages.GATEWAY_ID_ALREADY_REGISTERED,
+              message: errorMessages.GATEWAY_ID_ALREADY_REGISTERED,
             });
           } else if (message === 'EMAIL_ALREADY_REGISTERED') {
             methodsSendEmail.setError('email_address', {
-              message: taskErrorMessages.EMAIL_ALREADY_REGISTERED,
+              message: errorMessages.EMAIL_ALREADY_REGISTERED,
             });
           } else {
             enqueueSnackbar(
-              taskErrorMessages[message] || taskErrorMessages.UNEXPECTED_ERROR,
+              errorMessages[message] || errorMessages.UNEXPECTED_ERROR,
               {
                 variant: 'error',
               }
@@ -97,7 +97,7 @@ export function NewUserTemplate() {
         error.response?.errors?.forEach(({ message }) => {
           if (message === 'INVALID_CODE_VERIFICATION') {
             methodsConfirmToken.setError('token', {
-              message: taskErrorMessages.INVALID_CODE_VERIFICATION,
+              message: errorMessages.INVALID_CODE_VERIFICATION,
             });
           } else {
             if (message === 'MAXIMUM_ATTEMPTS_REACHED') {
@@ -105,7 +105,7 @@ export function NewUserTemplate() {
               setSentEmail(false);
             }
             enqueueSnackbar(
-              taskErrorMessages[message] || taskErrorMessages.UNEXPECTED_ERROR,
+              errorMessages[message] || errorMessages.UNEXPECTED_ERROR,
               {
                 variant: 'error',
               }

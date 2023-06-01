@@ -2,8 +2,8 @@ import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
-import { taskErrorMessages } from '@/components/organisms/tasks/task-error-messages';
 import { query } from '@/constants/queries';
+import { errorMessages } from '@/constants/error-messages';
 import { useAuth } from '@/providers/auth';
 import { ErrorResponse } from '@/types/graphql';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -61,11 +61,11 @@ export default function Email() {
         error.response?.errors?.forEach(({ message }) => {
           if (message === 'EMAIL_ALREADY_REGISTERED') {
             methodsSendEmail.setError('email', {
-              message: taskErrorMessages.EMAIL_ALREADY_REGISTERED,
+              message: errorMessages.EMAIL_ALREADY_REGISTERED,
             });
           } else {
             enqueueSnackbar(
-              taskErrorMessages[message] || taskErrorMessages.UNEXPECTED_ERROR,
+              errorMessages[message] || errorMessages.UNEXPECTED_ERROR,
               {
                 variant: 'error',
               }
@@ -104,21 +104,21 @@ export default function Email() {
         error.response?.errors?.forEach(({ message }) => {
           if (message === 'INVALID_CODE_VERIFICATION') {
             methodsConfirmToken.setError('code', {
-              message: taskErrorMessages.INVALID_CODE_VERIFICATION,
+              message: errorMessages.INVALID_CODE_VERIFICATION,
             });
           } else {
             if (message === 'MAXIMUM_ATTEMPTS_REACHED') {
               methodsConfirmToken.setError('code', {
-                message: taskErrorMessages.MAXIMUM_ATTEMPTS_REACHED,
+                message: errorMessages.MAXIMUM_ATTEMPTS_REACHED,
               });
             } else if (message === 'EXPIRED_CODE') {
               methodsConfirmToken.setError('code', {
-                message: taskErrorMessages.EXPIRED_CODE,
+                message: errorMessages.EXPIRED_CODE,
               });
             }
             setSentEmail(false);
             enqueueSnackbar(
-              taskErrorMessages[message] || taskErrorMessages.UNEXPECTED_ERROR,
+              errorMessages[message] || errorMessages.UNEXPECTED_ERROR,
               {
                 variant: 'error',
               }

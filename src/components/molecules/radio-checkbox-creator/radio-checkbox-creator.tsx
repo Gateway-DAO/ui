@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import {
   CreateGateData,
   Option,
-} from '@/components/templates/create-gate/schema';
+} from '@/components/features/gates/create/schema';
 import { useSnackbar } from 'notistack';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 

@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import {
   CreateGateData,
   QuizTaskDataError,
-} from '@/components/templates/create-gate/schema';
+} from '@/components/features/gates/create/schema';
 import { useSnackbar } from 'notistack';
 import { Controller, useFormContext } from 'react-hook-form';
 

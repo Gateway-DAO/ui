@@ -1,4 +1,4 @@
-import { taskErrorMessages } from '@/components/organisms/tasks/task-error-messages';
+import { errorMessages } from '@/constants/error-messages';
 import { brandColors } from '@/theme';
 import { limitCharsCentered } from '@/utils/string';
 import { useSnackbar } from 'notistack';
@@ -20,7 +20,7 @@ export default function CopyPaste({ text, sucessMessage, limit = 6 }: Props) {
       await navigator.clipboard.writeText(text);
       enqueueSnackbar(sucessMessage);
     } catch (err) {
-      enqueueSnackbar(taskErrorMessages['UNEXPECTED_ERROR']);
+      enqueueSnackbar(errorMessages['UNEXPECTED_ERROR']);
     }
   };
 

@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 
 import { LoadingButton } from '@/components/atoms/loading-button';
-import { CreateGateData } from '@/components/templates/create-gate/schema';
+import { CreateGateData } from '@/components/features/gates/create/schema';
 import { useFormContext } from 'react-hook-form';
 
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';

@@ -3,8 +3,8 @@ import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
 import { AvatarFile } from '@/components/atoms/avatar-file';
-import { taskErrorMessages } from '@/components/organisms/tasks/task-error-messages';
 import { ROUTES } from '@/constants/routes';
+import { errorMessages } from '@/constants/error-messages';
 import { useAuth } from '@/providers/auth';
 import {
   CreateCredentialInput,
@@ -82,7 +82,7 @@ export default function IssueByForm({ dataModel }: Props) {
 
   useEffect(() => {
     if (!setDefaultValue()) {
-      enqueueSnackbar(taskErrorMessages.NOT_ALLOWED_TO_CREATE_CREDENTIAL);
+      enqueueSnackbar(errorMessages.NOT_ALLOWED_TO_CREATE_CREDENTIAL);
       router.push({
         pathname: ROUTES.PROTOCOL_DATAMODEL,
         query: {

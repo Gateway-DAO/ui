@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 
 import ShareOn from '@/components/atoms/share-on';
 import ModalContent from '@/components/molecules/modal/modal-basic';
-import { taskErrorMessages } from '@/components/organisms/tasks/task-error-messages';
+import { errorMessages } from '@/constants/error-messages';
 import { Credential } from '@/services/gateway-protocol/types';
 import { brandColors } from '@/theme';
 import { useCreateQrCode } from '@/utils/qr-code/qr-code';
@@ -49,7 +49,7 @@ export default function FloatingCta({
       await navigator.clipboard.writeText(window.location.href);
       enqueueSnackbar(t('credential.copy-link'));
     } catch (err) {
-      enqueueSnackbar(taskErrorMessages['UNEXPECTED_ERROR']);
+      enqueueSnackbar(errorMessages['UNEXPECTED_ERROR']);
     }
   };
 

@@ -6,7 +6,7 @@ import { AvatarFile } from '@/components/atoms/avatar-file';
 import CircularProgressWithLabel from '@/components/atoms/circular-progress-label';
 import { Props as MintCredentialButtonProps } from '@/components/atoms/mint-button';
 import { ReadMore } from '@/components/atoms/read-more-less';
-import { Task, TaskGroup } from '@/components/organisms/tasks';
+import { Task, TaskGroup } from '@/components/features/gates/view/tasks';
 import { ROUTES } from '@/constants/routes';
 import { useAuth } from '@/providers/auth';
 import { Credentials } from '@/services/hasura/types';

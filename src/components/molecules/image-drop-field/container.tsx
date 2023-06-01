@@ -1,6 +1,6 @@
 import { PropsWithChildren } from 'react';
 
-import { CreateGateData } from '@/components/templates/create-gate/schema';
+import { CreateGateData } from '@/components/features/gates/create/schema';
 import { useFormContext } from 'react-hook-form';
 import { DropAreaBond } from 'react-use/lib/useDrop';
 

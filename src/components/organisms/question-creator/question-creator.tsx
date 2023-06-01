@@ -1,9 +1,9 @@
-import { QuestionField } from '@/components/molecules/add-task/quiz-task/question-field/question-field';
-import { RadioCheckBoxCreator } from '@/components/molecules/radio-checkbox-creator/radio-checkbox-creator';
 import {
   CreateGateData,
   Question,
-} from '@/components/templates/create-gate/schema';
+} from '@/components/features/gates/create/schema';
+import { QuestionField } from '@/components/features/gates/create/tasks/quiz-task/question-field/question-field';
+import { RadioCheckBoxCreator } from '@/components/molecules/radio-checkbox-creator/radio-checkbox-creator';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { useFormContext } from 'react-hook-form';
 
