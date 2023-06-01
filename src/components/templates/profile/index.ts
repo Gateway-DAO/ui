@@ -1,4 +1,4 @@
 import PrivateProfileTemplate from './PrivateProfileTemplate';
-import ProfileTemplateLayout from './ProfileTemplateLayout';
+import ProfileTemplateLayout from './profile-template-layout';
 
 export { ProfileTemplateLayout, PrivateProfileTemplate };

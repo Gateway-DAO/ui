@@ -13,7 +13,7 @@ import NumbersIcon from '@mui/icons-material/Numbers';
 import PhotoCameraBackIcon from '@mui/icons-material/PhotoCameraBack';
 import QuizIcon from '@mui/icons-material/Quiz';
 import Twitter from '@mui/icons-material/Twitter';
-import { SvgIcon, SvgIconProps } from '@mui/material';
+import { SvgIcon } from '@mui/material';
 import { SxProps } from '@mui/material';
 import Box from '@mui/material/Box';
 

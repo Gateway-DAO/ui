@@ -6,7 +6,7 @@ import { DateTime } from 'luxon';
 import { PartialDeep } from 'type-fest';
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { Stack, Typography, Divider, Box, Avatar } from '@mui/material';
+import { Stack, Typography, Box } from '@mui/material';
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
@@ -99,7 +99,6 @@ export function ExperienceAccordion({ experience, index }: Props) {
           paddingTop: '30px!important',
         }}
       >
-        {/*/////////    Dropdown   /////////*/}
         <Stack marginBottom="48px" gap={4}>
           <Typography
             sx={{

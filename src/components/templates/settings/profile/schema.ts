@@ -1,11 +1,11 @@
 import { Network } from '@/constants/dao';
 import { URL, DISCORD_USER, URL_PROTOCOL } from '@/constants/forms';
 import { generateImageUrl } from '@/hooks/use-file';
-import { Experiences, Users, User_Socials } from '@/services/hasura/types';
+import { Users, User_Socials } from '@/services/hasura/types';
 import { SessionUser } from '@/types/user';
 import normalizeUrl from 'normalize-url';
 import { PartialDeep } from 'type-fest';
-import { object, string, SchemaOf, array, StringSchema, bool } from 'yup';
+import { object, string, SchemaOf, array, StringSchema } from 'yup';
 
 export type EditUserSchema = Required<
   PartialDeep<
@@ -16,7 +16,6 @@ export type EditUserSchema = Required<
   >
 > & {
   socials: Pick<User_Socials, 'network' | 'url'>[];
-  // experiences: PartialDeep<Experiences>[];
   cover: string;
   picture: string;
 };
@@ -34,7 +33,6 @@ export const defaultValues = (
     languages,
     timezone,
     socials,
-    // experiences,
     cover,
     picture,
   } = user;
@@ -47,7 +45,6 @@ export const defaultValues = (
     languages: languages || [],
     timezone,
     socials: socials?.map(({ network, url }) => ({ network, url })) || [],
-    // experiences: experiences || [],
     cover: generateImageUrl(cover?.s3_key),
     picture: generateImageUrl(picture?.s3_key),
   };
@@ -103,5 +100,4 @@ export const schema: SchemaOf<EditUserSchema> = object({
       })
     )
     .nullable(),
-  // experiences: array().of(mixed<PartialDeep<Experiences>>()).defined(),
 });

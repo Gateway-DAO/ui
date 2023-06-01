@@ -1,6 +1,6 @@
+import { PrivateProfileTemplate } from '@/components/templates/profile';
 import { ReceivedTab } from '@/components/templates/profile/tabs';
 import { useAuth } from '@/providers/auth';
-import { PrivateProfileTemplate } from '@/components/templates/profile';
 
 // TODO: make the behavior of this page better
 export default function PrivateReceivedProfile() {
