@@ -1,8 +1,8 @@
 import Link from 'next/link';
 
 import { AvatarFile } from '@/components/atoms/avatar-file';
-import TierInfo from '@/components/templates/loyalty-program/components/TierInfo';
-import { TierRuler } from '@/components/templates/loyalty-program/components/TierRuler';
+import TierInfo from '@/components/features/loyalty/components/tier-info';
+import { TierRuler } from '@/components/features/loyalty/components/tier-ruler';
 import { useActualTier } from '@/hooks/use-actual-tier';
 import { useLoyaltyGatesCompleted } from '@/hooks/use-loyalty-gates-completed';
 import { useAuth } from '@/providers/auth';

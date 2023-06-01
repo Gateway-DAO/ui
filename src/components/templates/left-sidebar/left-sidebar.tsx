@@ -21,10 +21,7 @@ type Props = {
   mainContent: React.ReactNode;
 };
 
-export default function LoyaltyProgramTemplate({
-  sidebar,
-  mainContent,
-}: Props) {
+export default function LeftSidebarTemplate({ sidebar, mainContent }: Props) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const windowSize = useWindowSize();

@@ -12,8 +12,8 @@ import { PartialDeep } from 'type-fest/source/partial-deep';
 
 import { Box, Chip, Stack, Typography, alpha } from '@mui/material';
 
-import TierInfo from './TierInfo';
-import { TierRuler } from './TierRuler';
+import TierInfo from './tier-info';
+import { TierRuler } from './tier-ruler';
 
 type Props = {
   loyalty: PartialDeep<Loyalty_Program>;

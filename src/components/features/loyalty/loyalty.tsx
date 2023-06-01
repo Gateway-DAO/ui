@@ -1,4 +1,5 @@
 import { ClientNav } from '@/components/organisms/navbar/client-nav';
+import LeftSidebarTemplate from '@/components/templates/left-sidebar/left-sidebar';
 import { Loyalty_Program } from '@/services/hasura/types';
 import { TOKENS } from '@/theme';
 import ReactMarkdown from 'react-markdown';
@@ -7,10 +8,9 @@ import { PartialDeep } from 'type-fest/source/partial-deep';
 
 import { Stack } from '@mui/material';
 
-import LoyaltyProgramTemplate from './LoyaltyProgramTemplate';
-import { CredentialsList } from './components/CredentialsList';
-import { LoyaltySidebar } from './components/LoyaltySidebar';
-import { Tier } from './components/Tier';
+import { CredentialsList } from './components/credentials-list';
+import { LoyaltySidebar } from './components/loyalty-sidebar';
+import { Tier } from './components/tier';
 
 type Props = {
   loyalty: PartialDeep<Loyalty_Program>;
@@ -54,7 +54,7 @@ function MainContent({ loyalty }: Props) {
 
 export function LoyaltyProgram({ loyalty, protocolCredential }: Props) {
   return (
-    <LoyaltyProgramTemplate
+    <LeftSidebarTemplate
       sidebar={
         <LoyaltySidebar
           loyalty={loyalty}

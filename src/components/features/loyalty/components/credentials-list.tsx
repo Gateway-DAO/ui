@@ -9,7 +9,7 @@ import { PartialDeep } from 'type-fest/source/partial-deep';
 
 import { Stack, Typography, alpha } from '@mui/material';
 
-import { CredentialListItem } from './CredentialListItem';
+import { CredentialListItem } from './credential-list-item';
 
 type Props = {
   gates: PartialDeep<Gates>[];

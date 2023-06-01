@@ -1,7 +1,6 @@
 import useTranslation from 'next-translate/useTranslation';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useMemo } from 'react';
 
 import { AvatarFile } from '@/components/atoms/avatar-file';
 import ExternalLink from '@/components/atoms/external-link';
@@ -34,7 +33,7 @@ import {
   Typography,
 } from '@mui/material';
 
-import { SmallTier } from './SmallTier';
+import { SmallTier } from './small-tier';
 
 type LoyaltySidebarProps = {
   loyalty: PartialDeep<Loyalty_Program>;
