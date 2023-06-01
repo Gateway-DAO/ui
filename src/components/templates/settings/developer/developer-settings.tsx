@@ -1,12 +1,15 @@
 import useTranslation from 'next-translate/useTranslation';
 
-import { useAuth } from '@/providers/auth';
-import { theme } from '@/theme';
 import { useSnackbar } from 'notistack';
 import { useCopyToClipboard } from 'react-use';
 
+import { theme } from '@/theme';
+import WarningAmberIcon from '@mui/icons-material/WarningAmber';
+
 import { ContentCopy } from '@mui/icons-material';
 import { Button, Card, CardContent, Stack, Typography } from '@mui/material';
+
+import { useAuth } from '@/providers/auth';
 
 const DeveloperPortalSettings = () => {
   const { t } = useTranslation('settings');
@@ -17,7 +20,7 @@ const DeveloperPortalSettings = () => {
 
   const copy = (value: string) => {
     copyToClipboard(value);
-    enqueueSnackbar(`Copied!`);
+    enqueueSnackbar(`Copied`);
   };
 
   return (
@@ -47,13 +50,28 @@ const DeveloperPortalSettings = () => {
                 Copy
               </Button>
             </Stack>
+
             <Typography
               variant="body1"
               color={theme.palette.secondary.dark}
               fontFamily="Fira Code"
+              gutterBottom
             >
-              {process.env.NEXT_PUBLIC_PLAYGROUND_API_KEY}
+              {`f9p_9z3V3WZfv3IT_fnFTSXBxlAmhhz-`}
             </Typography>
+            <Stack direction={'row'} paddingY={1}>
+              <WarningAmberIcon color="warning" />
+              <Typography
+                variant="body1"
+                marginLeft={2}
+                color={'#FFA726'}
+                alignSelf={'center'}
+              >
+                By sharing your API key, you assume all responsibility for any
+                actions performed using your key, whether authorized or
+                unauthorized. Learn more.
+              </Typography>
+            </Stack>
           </CardContent>
         </Card>
       </Stack>
@@ -66,7 +84,7 @@ const DeveloperPortalSettings = () => {
               alignItems="center"
               mb={1}
             >
-              <Typography variant="body1">Bearer</Typography>
+              <Typography variant="body1">Authentication Token</Typography>
               <Button
                 variant="outlined"
                 startIcon={<ContentCopy />}
@@ -84,7 +102,7 @@ const DeveloperPortalSettings = () => {
                 wordBreak: 'break-word',
               }}
             >
-              {`Bearer ${token}`}
+              {`{"Authorization": "Bearer ${token}"}`}
             </Typography>
           </CardContent>
         </Card>

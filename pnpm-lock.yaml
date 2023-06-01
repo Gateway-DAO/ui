@@ -1,4 +1,8 @@
-lockfileVersion: '6.0'
+lockfileVersion: '6.1'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
 
 dependencies:
   '@corets/use-throttle':
@@ -200,7 +204,7 @@ dependencies:
     specifier: ^7.31.1
     version: 7.43.9(react@18.0.0)
   react-icons:
-    specifier: ^4.4.0
+    specifier: ^4.8.0
     version: 4.8.0(react@18.0.0)
   react-markdown:
     specifier: ^8.0.7

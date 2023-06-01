@@ -1,6 +1,5 @@
 import useTranslation from 'next-translate/useTranslation';
 import { useState } from 'react';
-
 import Loading from '@/components/atoms/loading';
 import { NavBarAvatar } from '@/components/organisms/navbar/navbar-avatar';
 import { taskErrorMessages } from '@/components/organisms/tasks/task-error-messages';
@@ -11,23 +10,27 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useMutation } from '@tanstack/react-query';
 import { useSnackbar } from 'notistack';
 import { useForm, FormProvider } from 'react-hook-form';
+import { alpha, Avatar, Box, Stack } from '@mui/material';
+import { FormSendEmail } from './forms/form-send-email';
+import { FormVerifyToken } from './forms/form-verify-token';
+import CloseIcon from '@mui/icons-material/Close';
 
-import { alpha, Box, Stack } from '@mui/material';
-
-import { FormSendEmail } from './form-send-email';
-import { FormVerifyToken } from './form-verify-token';
 import {
   schemaCreateAccount,
   schemaTokenConfirmation,
   NewUserSchema,
   TokenConfirmationSchema,
   defaultValuesCreateAccount,
-} from './schema';
+} from './utlis/schema';
+import { ConnectMoreAuthDialog } from './utlis/connect-more-auth-dialog';
 
 export function NewUserTemplate() {
   const { t } = useTranslation('dashboard-new-user');
   const { me, gqlProtocolAuthMethods, onInvalidateMe } = useAuth();
   const [sentEmail, setSentEmail] = useState(false);
+
+  const [showConnectMoreAuthDialog, setShowConnectMoreAuthDialog] =
+    useState(true);
   const [sendEmailData, setSendEmailData] = useState(null);
   const [profileCreated, setProfileCreated] = useState(false);
   const methodsSendEmail = useForm<NewUserSchema>({
@@ -90,6 +93,7 @@ export function NewUserTemplate() {
     {
       onSuccess() {
         enqueueSnackbar(t('form.profile-created'));
+        setShowConnectMoreAuthDialog(true);
         setProfileCreated(true);
         onInvalidateMe();
       },
@@ -139,7 +143,9 @@ export function NewUserTemplate() {
           zIndex: 1,
         }}
       >
-        <NavBarAvatar hideProfile />
+        <Avatar sx={{ width: 40, height: 40, alignSelf: 'center' }}>
+          <CloseIcon />
+        </Avatar>
       </Stack>
       <Stack
         gap={2}
@@ -190,6 +196,10 @@ export function NewUserTemplate() {
                 />
               </FormProvider>
             )}
+            <ConnectMoreAuthDialog
+              open={showConnectMoreAuthDialog}
+              setOpen={setShowConnectMoreAuthDialog}
+            />
           </>
         )}
       </Stack>
