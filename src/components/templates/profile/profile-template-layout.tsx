@@ -1,24 +1,42 @@
 import Image from 'next/image';
-import { useRouter } from 'next/router';
 
-import { AvatarFile } from '@/components/atoms/avatar-file';
-import { TabPanel } from '@/components/atoms/tabs';
-import { HeadContainer } from '@/components/molecules/head-container';
-import { Navbar } from '@/components/organisms/navbar/navbar';
-import { SocialButtons } from '@/components/organisms/social-buttons';
-import { ROUTES } from '@/constants/routes';
-import { generateImageUrl } from '@/hooks/use-file';
-import { useAuth } from '@/providers/auth';
+import { useQuery } from '@tanstack/react-query';
+
 import { TOKENS } from '@/theme';
 
-import EditIcon from '@mui/icons-material/Edit';
 import { Box, Stack, Typography, Tabs, Tab, Chip } from '@mui/material';
 
-import { DashboardTemplate } from '../dashboard';
+import { TabPanel } from '@/components/atoms/tabs';
+import { Navbar } from '@/components/organisms/navbar/navbar';
+import { generateImageUrl } from '@/hooks/use-file';
+import { gatewayProtocolSDK } from '@/services/gateway-protocol/api';
+import { AvatarFile } from '@/components/atoms/avatar-file';
+import { SocialButtons } from '@/components/organisms/social-buttons';
+import { useRouter } from 'next/router';
+import { useAuth } from '@/providers/auth';
+import { HeadContainer } from '@/components/molecules/head-container';
+import DashboardTemplate from '@/components/templates/dashboard/dashboard';
 
-export default function PrivateProfileTemplate({ children }) {
+export default function ProfileTemplateLayout({ children }) {
   const router = useRouter();
-  const { me } = useAuth();
+  const { me, gqlAuthMethods } = useAuth();
+  const { username } = router.query;
+  const {
+    data: {
+      users: [user],
+    },
+  } = useQuery(['user', username], () =>
+    gqlAuthMethods.get_user_by_username({
+      username: username as string,
+    })
+  );
+  const { data: credentialCount } = useQuery(
+    ['credentialCount', user.protocolUser.id],
+    () =>
+      gatewayProtocolSDK.getUserCredentialCount({
+        userId: user.protocolUser.id,
+      })
+  );
 
   let _selectedTab = router.asPath;
   _selectedTab = _selectedTab.slice(_selectedTab.lastIndexOf('/')).slice(1);
@@ -27,15 +45,15 @@ export default function PrivateProfileTemplate({ children }) {
   const tabs = [
     {
       label: 'received',
-      count: me.protocol.totalOfreceivedCredentials,
+      count: credentialCount?.totalReceived,
     },
     {
       label: 'issued',
-      count: me.protocol.totalOfIssuedCredentials,
+      count: credentialCount?.totalIssued,
     },
     {
       label: 'earned',
-      count: me.experiences
+      count: user.experiences
         .map((exp) => exp.credentials.length)
         .reduce((acc, cur) => (acc += cur), 0),
     },
@@ -48,7 +66,7 @@ export default function PrivateProfileTemplate({ children }) {
 
   return (
     <>
-      <HeadContainer title="My Profile" ogImage="default" />
+      <HeadContainer title={`${user.name} Profile`} />
       <DashboardTemplate
         containerProps={{
           sx: {
@@ -61,7 +79,7 @@ export default function PrivateProfileTemplate({ children }) {
             height: (theme) => theme.spacing(35),
             pt: 2,
             position: 'relative',
-            ...(!me.cover
+            ...(!user.cover
               ? {
                   background:
                     'linear-gradient(265.82deg, #432F70 0.24%, #23182E 84.35%);',
@@ -72,14 +90,14 @@ export default function PrivateProfileTemplate({ children }) {
           }}
         >
           <Navbar sx={{ zIndex: 1 }} />
-          {me.cover?.id && me.cover?.blur ? (
+          {user.cover?.id && user.cover?.blur ? (
             <Image
-              src={generateImageUrl(me.cover.s3_key)}
-              blurDataURL={me.cover.blur}
+              src={generateImageUrl(user.cover.s3_key)}
+              blurDataURL={user.cover.blur}
               placeholder="blur"
               layout="fill"
               objectFit="cover"
-              alt={me.name}
+              alt={user.name}
             />
           ) : null}
         </Box>
@@ -88,6 +106,7 @@ export default function PrivateProfileTemplate({ children }) {
             marginTop: -13,
           }}
           marginLeft={{ xs: '20px', md: '50px' }}
+          mr={{ xs: '20px', md: '0' }}
         >
           <AvatarFile
             sx={{
@@ -96,78 +115,55 @@ export default function PrivateProfileTemplate({ children }) {
               border: (theme) => `${theme.spacing(0.5)} solid`,
               borderColor: 'background.default',
             }}
-            file={me.picture}
+            file={user.picture}
             fallback={'/avatar.png'}
           ></AvatarFile>
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: { xs: 'column', md: 'row' },
-              justifyContent: 'space-between',
-            }}
-          >
-            <Box>
-              <Typography
-                sx={{ color: '#fff', paddingTop: { xs: '16px', md: '24px' } }}
-                component="h1"
-                variant="h4"
-              >
-                {me.name ? me.name : me.username}
-                <EditIcon
-                  onClick={() => router.push(ROUTES.SETTINGS_PUBLIC_PROFILE)}
-                  sx={{
-                    marginLeft: '15px',
-                    color: 'rgba(255, 255, 255, 0.56)',
-                    cursor: 'pointer',
-                  }}
-                ></EditIcon>
-              </Typography>
-              <Typography
-                component="h5"
-                sx={{
-                  fontSize: '16px',
-                  fontWeight: '400',
-                  color: 'rgba(255, 255, 255, 0.7)',
-                }}
-                variant="h6"
-              >
-                @{me.username}
-              </Typography>
-              <Box
-                sx={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  columnGap: '10px',
-                  mt: 2,
-                }}
-              >
+          <Box>
+            <Typography style={{ color: '#fff' }} component="h1" variant="h4">
+              {user.name ? user.name : user.username}
+            </Typography>
+            <Typography
+              component="h5"
+              style={{
+                fontSize: '16px',
+                fontWeight: '400',
+                color: 'rgba(255, 255, 255, 0.7)',
+              }}
+              variant="h6"
+            >
+              @{user.username}
+            </Typography>
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                columnGap: '10px',
+                mt: 2,
+              }}
+            >
+              {user.bio && (
                 <Typography
                   sx={{
                     fontSize: '16px',
                     fontWeight: '400',
                     color: 'rgba(255, 255, 255, 0.7)',
-                    whiteSpace: 'pre-line',
                   }}
-                  width={{ xs: '100%', md: '100%' }}
                 >
-                  {me.bio ||
-                    'This is your profesional bio. Click the pencil above to edit.'}
+                  {user.bio}
                 </Typography>
-              </Box>
-
-              <Stack
-                direction="row"
-                gap={1}
-                sx={{
-                  mt: 4,
-                }}
-              >
-                <SocialButtons
-                  socials={me.socials || []}
-                  copyNetworks={['discord']}
-                />
-              </Stack>
+              )}
             </Box>
+
+            <Stack direction="column" gap={4} mt={4}>
+              {user?.socials?.length > 0 ? (
+                <Stack direction="row" gap={1}>
+                  <SocialButtons
+                    socials={user.socials}
+                    copyNetworks={['discord']}
+                  />
+                </Stack>
+              ) : undefined}
+            </Stack>
           </Box>
         </Box>
         <Box
@@ -183,15 +179,15 @@ export default function PrivateProfileTemplate({ children }) {
             onChange={(_, index) => {
               const tab = routesForTabs.at(index);
               if (tab === '') {
-                router.replace(`/profile`, undefined, {
+                router.replace(`/profile/${username}`, undefined, {
                   shallow: true,
                 });
               } else
-                router.replace(`/profile/${tab}`, undefined, {
+                router.replace(`/profile/${username}/${tab}`, undefined, {
                   shallow: true,
                 });
             }}
-            aria-label="basic tabs example"
+            aria-label="profile-tabs"
             sx={{
               mb: '-1px',
             }}

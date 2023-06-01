@@ -1,26 +1,18 @@
-import { HeadContainer } from '@/components/molecules/head-container';
-import { DashboardTemplate } from '@/components/templates/dashboard';
-import { PrivateProfileTemplate } from '@/components/templates/profile';
+import { ReceivedTab } from '@/components/templates/profile/tabs';
 import { useAuth } from '@/providers/auth';
+import { PrivateProfileTemplate } from '@/components/templates/profile';
 
 // TODO: make the behavior of this page better
-export default function Profile() {
+export default function PrivateReceivedProfile() {
   const { me } = useAuth();
 
   return me?.id ? (
     <>
-      <HeadContainer title="My Profile" ogImage="default" />
-      <DashboardTemplate
-        containerProps={{
-          sx: {
-            overflow: 'hidden',
-          },
-        }}
-      >
-        <PrivateProfileTemplate />
-      </DashboardTemplate>
+      <ReceivedTab user={me} />
     </>
   ) : null;
 }
 
-Profile.auth = true;
+PrivateReceivedProfile.auth = true;
+
+PrivateReceivedProfile.PageLayout = PrivateProfileTemplate;

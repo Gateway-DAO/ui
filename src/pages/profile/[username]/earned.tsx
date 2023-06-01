@@ -1,16 +1,13 @@
 import { useRouter } from 'next/router';
 
-import { HeadContainer } from '@/components/molecules/head-container';
-import { DashboardTemplate } from '@/components/templates/dashboard';
-import {
-  ProfileTemplate,
-  PrivateProfileTemplate,
-} from '@/components/templates/profile';
-import { useAuth } from '@/providers/auth';
-import { gqlAnonMethods } from '@/services/hasura/api';
 import { dehydrate, QueryClient, useQuery } from '@tanstack/react-query';
 
-export default function Profile() {
+import { useAuth } from '@/providers/auth';
+import { gqlAnonMethods } from '@/services/hasura/api';
+import { Earned } from '@/components/templates/profile/tabs/Earned';
+import { ProfileTemplateLayout } from '@/components/templates/profile';
+
+export default function EarnedProfile() {
   const router = useRouter();
   const { username } = router.query;
   const { me, gqlAuthMethods } = useAuth();
@@ -24,23 +21,9 @@ export default function Profile() {
       username: username as string,
     })
   );
-
   return (
     <>
-      <HeadContainer title={`${user.name} Profile`} />
-      <DashboardTemplate
-        containerProps={{
-          sx: {
-            overflow: 'hidden',
-          },
-        }}
-      >
-        {user.username == me?.username ? (
-          <PrivateProfileTemplate />
-        ) : (
-          <ProfileTemplate user={user} />
-        )}
-      </DashboardTemplate>
+      <Earned user={user} />
     </>
   );
 }
@@ -70,3 +53,4 @@ export const getServerSideProps = async ({ params }) => {
     },
   };
 };
+EarnedProfile.PageLayout = ProfileTemplateLayout;
