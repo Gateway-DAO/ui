@@ -25,7 +25,7 @@ type Props = {
   children?: React.ReactNode;
 };
 
-export default function SettingsTemplate({ children }: Props) {
+export default function Settings({ children }: Props) {
   const router = useRouter();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));

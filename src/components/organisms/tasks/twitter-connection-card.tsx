@@ -1,6 +1,6 @@
 import useTranslation from 'next-translate/useTranslation';
 
-import { ConnectionHandlerTwitter } from '@/components/templates/settings/connected-accounts/connectors/twitter-connection';
+import { ConnectionHandlerTwitter } from '@/components/features/settings/connected-accounts/connectors/twitter-connection';
 
 import { Box, Button, Stack, Typography } from '@mui/material';
 

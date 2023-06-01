@@ -1,12 +1,12 @@
-import SettingsTemplate from './SettingsTemplate';
 import { AccountManagementSettings } from './account-management';
 import { ConnectedAccountsSettings } from './connected-accounts';
 import { DeveloperSettings } from './developer';
 import { NotificationsSettings } from './notifications';
 import { EditProfileSettings } from './profile';
+import Settings from './settings';
 
 export {
-  SettingsTemplate,
+  Settings,
   AccountManagementSettings,
   ConnectedAccountsSettings,
   NotificationsSettings,
