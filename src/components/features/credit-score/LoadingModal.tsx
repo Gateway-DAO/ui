@@ -1,9 +1,6 @@
 import useTranslation from 'next-translate/useTranslation';
-import { Dispatch, SetStateAction } from 'react';
 
-import Loading from '@/components/atoms/loading';
-
-import { CircularProgress, Stack, Typography } from '@mui/material';
+import { CircularProgress, Typography } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';

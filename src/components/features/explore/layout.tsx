@@ -10,7 +10,7 @@ import { useQuery } from '@tanstack/react-query';
 
 import { Box, Tabs, Typography, Tab } from '@mui/material';
 
-import { DashboardTemplate } from '../dashboard';
+import { DashboardTemplate } from '../../templates/dashboard';
 
 export function ExploreLayout({ children }) {
   const { t } = useTranslation('explore');

@@ -1,7 +1,7 @@
 import useTranslation from 'next-translate/useTranslation';
 
 import { HeadContainer } from '@/components/molecules/head-container';
-import { DaosTab, ExploreLayout } from '@/components/templates/explore';
+import { DaosTab, ExploreLayout } from '@/components/features/explore';
 
 export default function Organizations() {
   const { t } = useTranslation('explore');

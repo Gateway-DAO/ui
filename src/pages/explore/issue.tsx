@@ -1,7 +1,7 @@
 import useTranslation from 'next-translate/useTranslation';
 
 import { HeadContainer } from '@/components/molecules/head-container';
-import { ExploreLayout, DataModelsTab } from '@/components/templates/explore';
+import { ExploreLayout, DataModelsTab } from '@/components/features/explore';
 
 export default function Earn() {
   const { t } = useTranslation('explore');
