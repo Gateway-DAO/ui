@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router';
 
+import { ProtocolContext } from '@/components/features/protocol/context';
 import { ClientNav } from '@/components/organisms/navbar/client-nav';
 import { Credential } from '@/services/gateway-protocol/types';
 import { theme, TOKENS } from '@/theme';
@@ -10,14 +11,13 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { Avatar, Box, IconButton, Stack, useMediaQuery } from '@mui/material';
 
 import FloatingCta from './components/floating-cta';
-import { ProtocolTemplateContext } from './context';
 
 type Props = {
   children: React.ReactNode;
   credential?: PartialDeep<Credential>;
 };
 
-export default function ProtocolTemplate({ children, credential }: Props) {
+export default function Protocol({ children, credential }: Props) {
   const router = useRouter();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
   const qrCode = useCreateQrCode();
@@ -25,7 +25,7 @@ export default function ProtocolTemplate({ children, credential }: Props) {
   const isCredential = router.pathname.includes('/credentials/');
 
   return (
-    <ProtocolTemplateContext.Provider value={{ qrCode }}>
+    <ProtocolContext.Provider value={{ qrCode }}>
       <Stack
         direction="row"
         alignItems="center"
@@ -59,6 +59,6 @@ export default function ProtocolTemplate({ children, credential }: Props) {
         {children}
       </Stack>
       <FloatingCta isCredential={isCredential} credential={credential} />
-    </ProtocolTemplateContext.Provider>
+    </ProtocolContext.Provider>
   );
 }

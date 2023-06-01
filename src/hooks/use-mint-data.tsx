@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 
+import { MintedChain } from '@/components/features/protocol/credentials/show/components/mint-nft-card';
 import { DialogStatuses } from '@/components/molecules/mint-dialog-protocol';
-import { MintedChain } from '@/components/templates/protocol/credentials/show/components/mint-nft-card';
 import { query } from '@/constants/queries';
 import { useAuth } from '@/providers/auth';
 import { gatewayProtocolAuthSDK } from '@/services/gateway-protocol/api';

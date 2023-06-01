@@ -17,8 +17,6 @@ import QrCodeIcon from '@mui/icons-material/QrCode';
 import { SpeedDial, SpeedDialAction } from '@mui/material';
 import { Box } from '@mui/system';
 
-import { useProtocolTemplateContext } from '../context';
-
 export default function FloatingCta({
   isCredential,
   credential,
@@ -33,7 +31,6 @@ export default function FloatingCta({
   const handleClose = () => setOpen(false);
   const [shareIsOpen, setShareIsOpen] = useState<boolean>(false);
   const [qrCodeIsOpen, setQrCodeIsOpen] = useState<boolean>(false);
-  // const { qrCode } = useProtocolTemplateContext();
   const qrCode = useCreateQrCode();
 
   useEffect(() => {

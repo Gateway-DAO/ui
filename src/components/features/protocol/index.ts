@@ -1,5 +1,5 @@
 import CredentialProtocolCreate from './credentials/create/credential-create';
 import CredentialProtocolShow from './credentials/show/credential-show';
-import ProtocolTemplate from './protocol-template';
+import Protocol from './protocol';
 
-export { ProtocolTemplate, CredentialProtocolShow, CredentialProtocolCreate };
+export { Protocol, CredentialProtocolShow, CredentialProtocolCreate };

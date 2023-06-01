@@ -2,12 +2,12 @@ import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
 import { useMemo, useState } from 'react';
 
-import { AvatarFile } from '@/components/atoms/avatar-file';
 import { TabPanel } from '@/components/atoms/tabs';
 import { HeadContainer } from '@/components/molecules/head-container';
 import ModalRight from '@/components/molecules/modal-right';
 import ConfirmDialog from '@/components/organisms/confirm-dialog/confirm-dialog';
 import { ClientNav } from '@/components/organisms/navbar/client-nav';
+import { DashboardTemplate } from '@/components/templates/dashboard';
 import { query } from '@/constants/queries';
 import { useAuth } from '@/providers/auth';
 import { gatewayProtocolSDK } from '@/services/gateway-protocol/api';
@@ -33,7 +33,6 @@ import {
 } from '@mui/material';
 
 import { CredentialProtocolCreate } from '../..';
-import { DashboardTemplate } from '../../../dashboard';
 import FloatingCta from '../../components/floating-cta';
 import InfoTitle from '../../components/info-title';
 import Tags from '../../components/tags';
