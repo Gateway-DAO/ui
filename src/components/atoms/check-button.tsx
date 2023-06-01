@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
-
 import { brandColors } from '@/theme';
-
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import { ButtonProps, CircularProgress, IconButton } from '@mui/material';
+import CancelIcon from '@mui/icons-material/Cancel';
+import { Button, ButtonProps, CircularProgress } from '@mui/material';
 
 type Props = {
   isLoading?: boolean;
@@ -40,44 +39,37 @@ export function CheckedButton({
     }
   };
 
+  function ConnectorBtnIcon() {
+    if (isLoading) return <CircularProgress />;
+    if (checked && !isLoading && !(buttonLabel == labelOffHover))
+      return <CheckCircleIcon />;
+    if (buttonLabel == labelOffHover) return <CancelIcon />;
+    return null;
+  }
+
   return (
-    <IconButton
+    <Button
       onClick={() => (clickHandler ? clickHandler() : null)}
       onMouseEnter={() => hoverButtonLabel()}
       onMouseLeave={() => hoverButtonLabel()}
+      startIcon={<ConnectorBtnIcon />}
       sx={(theme) => ({
-        borderRadius: '20px',
-        cursor: 'pointer',
         background: checked
           ? brandColors.green.main
           : brandColors.background.light,
-        fontSize: '11px',
-        textTransform: 'uppercase',
-        fontWeight: theme.typography.fontWeightBold,
         border: checked
           ? '1px solid transparent'
           : `1px solid ${brandColors.purple.main}`,
         color: checked ? '#170627' : brandColors.purple.main,
-        padding: '4px 8px',
-        minHeight: '30px',
-        transition: 'all .3s ease',
         '&:hover': {
-          borderColor: checked
-            ? brandColors.green.dark
-            : brandColors.purple.dark,
+          borderColor: checked ? null : brandColors.purple.dark,
           backgroundColor: checked
-            ? brandColors.green.dark
+            ? brandColors.red.dark
             : brandColors.background.light,
         },
       })}
     >
-      {isLoading && <CircularProgress size="15px" sx={{ mr: 1 }} />}
-      {checked && !isLoading && (
-        <CheckCircleIcon
-          sx={{ fontSize: '15px', display: checked ? 'block' : 'none', mr: 1 }}
-        />
-      )}
       {buttonLabel}
-    </IconButton>
+    </Button>
   );
 }
