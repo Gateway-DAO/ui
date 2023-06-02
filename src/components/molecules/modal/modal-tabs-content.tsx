@@ -12,7 +12,7 @@ type Props = {
 };
 
 export default function ModalTabsContent({ tabs }: Props) {
-  const { activeTab, handleTabChange, setTab } = useTab();
+  const { activeTab, handleTabChange } = useTab();
 
   const modalTabs = useMemo(() => {
     return tabs.filter((tab) => tab?.section?.imageUrl);

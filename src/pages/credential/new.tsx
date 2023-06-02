@@ -2,7 +2,7 @@ import { redirect } from 'next/dist/server/api-utils';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
-import { CreateGateTemplate } from '@/components/templates/create-gate';
+import { CreateGate } from '@/components/features/gates/create';
 import { ROUTES } from '@/constants/routes';
 import { useAuth } from '@/providers/auth';
 import { gqlAnonMethods } from '@/services/hasura/api';
@@ -13,7 +13,7 @@ type CreateGateProps = {
   id: string | null;
   gateProps: Get_Create_GateQuery;
 };
-export default function CreateGate({ id, gateProps }: CreateGateProps) {
+export default function CreateGatePage({ id, gateProps }: CreateGateProps) {
   const router = useRouter();
   const { gqlAuthMethods } = useAuth();
   const { me } = useAuth();
@@ -47,7 +47,7 @@ export default function CreateGate({ id, gateProps }: CreateGateProps) {
   }
 
   return (
-    <CreateGateTemplate
+    <CreateGate
       oldData={{
         ...(oldGateData as any),
         creator: oldGateData?.creator ?? { id: me?.id, name: me?.name },
@@ -81,4 +81,4 @@ export async function getServerSideProps({ res, query }) {
   };
 }
 
-CreateGate.auth = true;
+CreateGatePage.auth = true;

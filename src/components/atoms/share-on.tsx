@@ -10,7 +10,7 @@ import { PartialDeep } from 'type-fest';
 import { LinkedIn, Twitter, Download, Link } from '@mui/icons-material';
 import { Stack, Typography, Box } from '@mui/material';
 
-import SquareButton from './square-button';
+import SquareButton from './buttons/square-button';
 
 declare global {
   interface Window {

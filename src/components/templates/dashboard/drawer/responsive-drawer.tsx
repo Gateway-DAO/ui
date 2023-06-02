@@ -2,7 +2,7 @@ import { PropsWithChildren } from 'react';
 
 import { useNav } from '@/hooks/use-nav';
 
-import { Hidden, useMediaQuery, useTheme } from '@mui/material';
+import { useMediaQuery, useTheme } from '@mui/material';
 import Drawer, { DrawerProps } from '@mui/material/Drawer';
 
 export const ResponsiveDrawer = ({ children }: PropsWithChildren<unknown>) => {

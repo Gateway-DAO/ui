@@ -2,7 +2,6 @@ query dataModels($take: Int!, $skip: Int!) {
   protocol_data_model(
     limit: $take
     offset: $skip
-    where: { permissioning: { _neq: "ALL" } }
     order_by: { createdAt: desc }
   ) {
     id

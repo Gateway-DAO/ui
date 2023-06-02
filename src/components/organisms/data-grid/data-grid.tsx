@@ -1,4 +1,3 @@
-import useTranslation from 'next-translate/useTranslation';
 import Image from 'next/image';
 import { ReactNode } from 'react';
 
@@ -323,7 +322,7 @@ const defineCols = (columns: IColumnGrid[]) => {
     {
       field: 'minted',
       column_name: 'minted',
-      cell: (params) => (
+      cell: () => (
         <Box sx={{ display: 'flex', gap: '5px', alignItems: 'center' }}>
           <NetworkTransactionLink url="#">
             {/* [ ] Remove mock */}
@@ -364,7 +363,6 @@ const defineCols = (columns: IColumnGrid[]) => {
 };
 
 export default function DataGrid({ columns, data }: Props): JSX.Element {
-  const { t } = useTranslation('protocol');
   const gridColumns = defineCols(columns);
 
   return (

@@ -1,6 +1,4 @@
-import { InferGetStaticPropsType } from 'next';
-
-import { AdminTemplate } from '@/components/templates/admin';
+import { AdminArea } from '@/components/organisms/admin';
 import { DashboardTemplate } from '@/components/templates/dashboard';
 import { ROUTES } from '@/constants/routes';
 import { useAuth } from '@/providers/auth';
@@ -74,7 +72,7 @@ export default function Admin() {
         },
       }}
     >
-      <AdminTemplate data={adminData} />
+      <AdminArea data={adminData} />
     </DashboardTemplate>
   );
 }

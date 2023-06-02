@@ -72,7 +72,7 @@ export const useAuthLogin = () => {
   const sign = useSignMessage();
 
   // Solana
-  const { publicKey: solanaAddress, connecting, signMessage } = useWallet();
+  const { publicKey: solanaAddress, signMessage } = useWallet();
 
   const address = EVMaddress || solanaAddress?.toString();
   const chain = useMemo(() => {

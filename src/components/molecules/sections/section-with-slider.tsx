@@ -1,4 +1,4 @@
-import { PropsWithChildren, ReactNode, useMemo } from 'react';
+import { ReactNode, useMemo } from 'react';
 
 import { useBreakpointValue } from '@/hooks/use-breakpoint';
 import { GatewayTheme, TOKENS } from '@/theme';
