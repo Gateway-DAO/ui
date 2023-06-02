@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 
-import { CircleWithNumber } from '@/components/atoms/circle-with-number';
 import { TaskIcon } from '@/components/atoms/icons/task-icon';
 import {
   CreateGateData,

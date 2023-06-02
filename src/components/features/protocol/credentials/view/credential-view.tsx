@@ -2,8 +2,8 @@ import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
 
 import ExternalLink from '@/components/atoms/external-link';
-import { MintDialogProtocol } from '@/components/organisms/mint/mint-modal/mint-dialog-protocol';
 import ModalShareCredential from '@/components/molecules/modal/modal-share-credential';
+import { MintDialogProtocol } from '@/components/organisms/mint/mint-modal/mint-dialog-protocol';
 import { ROUTES } from '@/constants/routes';
 import { useMintData } from '@/hooks/use-mint-data';
 import { Credential } from '@/services/gateway-protocol/types';

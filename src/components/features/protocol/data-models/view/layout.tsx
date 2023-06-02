@@ -4,8 +4,8 @@ import { useMemo, useState } from 'react';
 
 import { TabPanel } from '@/components/atoms/tabs';
 import { HeadContainer } from '@/components/molecules/head-container';
-import ModalRight from '@/components/molecules/modal/modal-right';
 import ConfirmDialog from '@/components/molecules/modal/confirm-dialog';
+import ModalRight from '@/components/molecules/modal/modal-right';
 import { ClientNav } from '@/components/organisms/navbar/client-nav';
 import { DashboardTemplate } from '@/components/templates/dashboard';
 import { query } from '@/constants/queries';

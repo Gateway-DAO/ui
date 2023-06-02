@@ -3,8 +3,8 @@ import { useRouter } from 'next/router';
 import { useEffect, useMemo, useState } from 'react';
 
 import ExternalLink from '@/components/atoms/external-link';
-import ModalRight from '@/components/molecules/modal/modal-right';
 import ConfirmDialog from '@/components/molecules/modal/confirm-dialog';
+import ModalRight from '@/components/molecules/modal/modal-right';
 import { useAuth } from '@/providers/auth';
 import {
   DataModel,

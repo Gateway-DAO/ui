@@ -7,6 +7,7 @@ import {
   GithubContributeDataError,
 } from '@/components/features/gates/create/schema';
 import GithubDataCard from '@/components/features/gates/view/tasks/github/github-data-card';
+import TextFieldWithEmoji from '@/components/molecules/form/TextFieldWithEmoji/TextFieldWithEmoji';
 import { useMutation } from '@tanstack/react-query';
 import { useFormContext } from 'react-hook-form';
 
@@ -23,8 +24,6 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-
-import TextFieldWithEmoji from '@/components/molecules/form/TextFieldWithEmoji/TextFieldWithEmoji';
 
 type GithubPRTaskProps = {
   dragAndDrop: boolean;
