@@ -1,12 +1,5 @@
 /* eslint-disable @typescript-eslint/no-empty-interface */
 import {
-  Theme,
-  ThemeOptions,
-  Palette,
-  PaletteOptions,
-} from '@mui/material/styles';
-
-import {
   ExtraPalette,
   ExtraPaletteOptions,
   ExtraTheme,

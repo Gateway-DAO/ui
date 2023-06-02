@@ -1,15 +1,13 @@
-import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
 
+import { SearchTemplate } from '@/components/features/search';
 import { DashboardTemplate } from '@/components/templates/dashboard';
-import { SearchTemplate } from '@/components/templates/search';
 
 /** TODO: Prevent template remount when navigating between dashboard pages
  * https://nextjs.org/docs/basic-features/layouts
  * */
 
 export default function Search() {
-  const { t } = useTranslation('explore');
   const router = useRouter();
   const { key } = router.query;
 

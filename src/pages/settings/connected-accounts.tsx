@@ -1,7 +1,7 @@
+import { Settings } from '@/components/features/settings';
+import { ConnectedAccountsSettings } from '@/components/features/settings';
 import { HeadContainer } from '@/components/molecules/head-container';
 import { DashboardTemplate } from '@/components/templates/dashboard';
-import { SettingsTemplate } from '@/components/templates/settings';
-import { ConnectedAccountsSettings } from '@/components/templates/settings';
 import { useAuth } from '@/providers/auth';
 
 export default function ConnectedAccountsSettingsPage() {
@@ -18,9 +18,9 @@ export default function ConnectedAccountsSettingsPage() {
           height: '100%',
         }}
       >
-        <SettingsTemplate>
+        <Settings>
           <ConnectedAccountsSettings />
-        </SettingsTemplate>
+        </Settings>
       </DashboardTemplate>
     </>
   ) : null;

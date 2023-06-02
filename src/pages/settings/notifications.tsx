@@ -1,6 +1,6 @@
+import { Settings } from '@/components/features/settings';
+import { NotificationsSettings } from '@/components/features/settings';
 import { DashboardTemplate } from '@/components/templates/dashboard';
-import { SettingsTemplate } from '@/components/templates/settings';
-import { NotificationsSettings } from '@/components/templates/settings';
 import { useAuth } from '@/providers/auth';
 
 export default function NotificationsSettingsPage() {
@@ -15,9 +15,9 @@ export default function NotificationsSettingsPage() {
         height: '100%',
       }}
     >
-      <SettingsTemplate>
+      <Settings>
         <NotificationsSettings />
-      </SettingsTemplate>
+      </Settings>
     </DashboardTemplate>
   ) : null;
 }

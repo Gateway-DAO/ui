@@ -1,8 +1,8 @@
 import { InferGetStaticPropsType } from 'next';
 import useTranslation from 'next-translate/useTranslation';
 
+import { AllTab, ExploreLayout } from '@/components/features/explore';
 import { HeadContainer } from '@/components/molecules/head-container';
-import { AllTab, ExploreLayout } from '@/components/templates/explore';
 import { gqlAnonMethods } from '@/services/hasura/api';
 import { useQuery } from '@tanstack/react-query';
 

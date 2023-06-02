@@ -1,9 +1,9 @@
 import { useRouter } from 'next/router';
 
+import { GateView } from '@/components/features/gates/view';
 import { HeadContainer } from '@/components/molecules/head-container';
 import { Navbar } from '@/components/organisms/navbar';
 import { DashboardTemplate } from '@/components/templates/dashboard';
-import { GateViewTemplate } from '@/components/templates/gate-view';
 import { query } from '@/constants/queries';
 import { ROUTES } from '@/constants/routes';
 import { useAuth } from '@/providers/auth';
@@ -116,10 +116,7 @@ export default function GateProfilePage() {
         >
           <Navbar isInternalPage={true} />
         </Box>
-        <GateViewTemplate
-          gateProps={gate}
-          protocolCredential={protocolCredential}
-        />
+        <GateView gateProps={gate} protocolCredential={protocolCredential} />
       </DashboardTemplate>
     </>
   );

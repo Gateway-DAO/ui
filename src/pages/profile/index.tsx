@@ -1,8 +1,7 @@
-import { ReceivedTab } from '@/components/templates/profile/tabs';
+import { PrivateProfile } from '@/components/features/profile';
+import { ReceivedTab } from '@/components/features/profile/tabs';
 import { useAuth } from '@/providers/auth';
-import { PrivateProfileTemplate } from '@/components/templates/profile';
 
-// TODO: make the behavior of this page better
 export default function PrivateReceivedProfile() {
   const { me } = useAuth();
 
@@ -15,4 +14,4 @@ export default function PrivateReceivedProfile() {
 
 PrivateReceivedProfile.auth = true;
 
-PrivateReceivedProfile.PageLayout = PrivateProfileTemplate;
+PrivateReceivedProfile.PageLayout = PrivateProfile;

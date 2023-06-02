@@ -1,8 +1,7 @@
+import { PrivateProfile } from '@/components/features/profile';
+import { Earned } from '@/components/features/profile/tabs/Earned';
 import { useAuth } from '@/providers/auth';
-import { PrivateProfileTemplate } from '@/components/templates/profile';
-import { Earned } from '@/components/templates/profile/tabs/Earned';
 
-// TODO: make the behavior of this page better
 export default function PrivateEarnedProfile() {
   const { me } = useAuth();
 
@@ -14,4 +13,4 @@ export default function PrivateEarnedProfile() {
 }
 
 PrivateEarnedProfile.auth = true;
-PrivateEarnedProfile.PageLayout = PrivateProfileTemplate;
+PrivateEarnedProfile.PageLayout = PrivateProfile;
