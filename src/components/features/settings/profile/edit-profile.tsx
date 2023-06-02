@@ -2,7 +2,7 @@ import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
-import { LoadingButton } from '@/components/atoms/loading-button';
+import { LoadingButton } from '@/components/atoms/buttons/loading-button';
 import { Accordion } from '@/components/molecules/accordion';
 import { useAuth } from '@/providers/auth';
 import { yupResolver } from '@hookform/resolvers/yup';

@@ -4,24 +4,12 @@ import { CreateCredentialInput } from '@/services/gateway-protocol/types';
 import { brandColors } from '@/theme';
 import { useFormContext } from 'react-hook-form';
 
-import SearchIcon from '@mui/icons-material/Search';
-import {
-  alpha,
-  Autocomplete,
-  Chip,
-  InputAdornment,
-  Stack,
-  TextField,
-  Typography,
-} from '@mui/material';
+import { alpha, Stack, TextField, Typography } from '@mui/material';
 
 export default function RecipientForm() {
   const {
     register,
     formState: { errors },
-    getValues,
-    setValue,
-    watch,
   } = useFormContext<CreateCredentialInput>();
   const { t } = useTranslation('protocol');
 

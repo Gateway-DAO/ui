@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import { useMemo } from 'react';
 
 import { SocialIcon } from '@/components/atoms/social-icon';

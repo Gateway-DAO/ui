@@ -1,6 +1,4 @@
-import { useInfiniteQuery } from '@tanstack/react-query';
-
-import { Box, Divider, Stack, Typography } from '@mui/material';
+import { Box, Divider } from '@mui/material';
 
 import DataModels from './data-models';
 import DataModelsP2P from './data-models-p2p';

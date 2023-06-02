@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { LoadingButton } from '@/components/atoms/loading-button';
+import { LoadingButton } from '@/components/atoms/buttons/loading-button';
 
 import { Stack, TextField, Typography } from '@mui/material';
 
@@ -10,7 +10,6 @@ const MeetingCodeContent = ({
   completeTask,
   readOnly,
   isLoading,
-  isAdmin,
 }) => {
   const [meetingCode, setMeetingCode] = useState('');
   const formattedDate = new Date(updatedAt.toLocaleString()).toLocaleString();

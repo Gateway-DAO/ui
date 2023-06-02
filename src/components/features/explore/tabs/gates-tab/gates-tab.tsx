@@ -1,5 +1,5 @@
-import { ChipDropdown } from '@/components/molecules/chip-dropdown';
-import { GatesCard } from '@/components/molecules/gates-card';
+import { GatesCard } from '@/components/molecules/cards/gates-card';
+import { ChipDropdown } from '@/components/molecules/form/chip-dropdown';
 import { usePropertyFilter } from '@/hooks/use-property-filter';
 import { useViewMode, ViewMode } from '@/hooks/use-view-modes';
 import { useAuth } from '@/providers/auth';

@@ -1,12 +1,10 @@
 import useTranslation from 'next-translate/useTranslation';
-import { useEffect } from 'react';
 
 import Loading from '@/components/atoms/loading';
-import { DataModelCard } from '@/components/molecules/data-model-card';
-import { query } from '@/constants/queries';
+import { DataModelCard } from '@/components/molecules/cards/data-model-card';
 import { gqlAnonMethods } from '@/services/hasura/api';
 import { TOKENS } from '@/theme';
-import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 
 import { Box, Stack, Typography } from '@mui/material';
 

@@ -1,8 +1,8 @@
 import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
 
-import { ChipDropdown } from '@/components/molecules/chip-dropdown';
-import { GatesCard } from '@/components/molecules/gates-card';
+import { GatesCard } from '@/components/molecules/cards/gates-card';
+import { ChipDropdown } from '@/components/molecules/form/chip-dropdown';
 import { CATEGORIES } from '@/constants/gate';
 import { usePropertyFilter } from '@/hooks/use-property-filter';
 import { useViewMode, ViewMode } from '@/hooks/use-view-modes';

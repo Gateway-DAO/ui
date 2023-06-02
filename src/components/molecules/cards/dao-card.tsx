@@ -2,8 +2,7 @@ import Link from 'next/link';
 import { useMemo } from 'react';
 
 import { AvatarFile } from '@/components/atoms/avatar-file';
-import { FollowButtonDAO } from '@/components/atoms/follow-button-dao';
-import { categoriesMap } from '@/constants/dao';
+import { FollowButtonDAO } from '@/components/atoms/buttons/follow-button-dao';
 import { ROUTES } from '@/constants/routes';
 import { useFile } from '@/hooks/use-file';
 import { useAuth } from '@/providers/auth';
@@ -14,12 +13,10 @@ import { CardActionArea, CardHeader, lighten } from '@mui/material';
 import MUICard from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
-import Chip from '@mui/material/Chip';
-import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { Box } from '@mui/system';
 
-import { CategoriesList } from './categories-list';
+import { CategoriesList } from '../categories-list';
 
 /* TODO: Arias and Labels */
 

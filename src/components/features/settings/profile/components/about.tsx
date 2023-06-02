@@ -10,7 +10,7 @@ import { EditUserSchema } from '../schema';
 import { Form } from './aboutComponents/form';
 
 export function About() {
-  const { control, watch } = useFormContext<EditUserSchema>();
+  const { control } = useFormContext<EditUserSchema>();
   const { t } = useTranslation('settings');
 
   return (

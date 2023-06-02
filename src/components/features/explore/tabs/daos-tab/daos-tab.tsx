@@ -1,5 +1,5 @@
-import { ChipDropdown } from '@/components/molecules/chip-dropdown';
-import { DaoCard } from '@/components/molecules/dao-card';
+import { DaoCard } from '@/components/molecules/cards/dao-card';
+import { ChipDropdown } from '@/components/molecules/form/chip-dropdown';
 import { categoriesMap } from '@/constants/dao';
 import { usePropertyFilter } from '@/hooks/use-property-filter';
 import { useViewMode, ViewMode } from '@/hooks/use-view-modes';

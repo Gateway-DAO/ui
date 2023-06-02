@@ -1,7 +1,7 @@
 import useTranslation from 'next-translate/useTranslation';
 import { useState } from 'react';
 
-import { LoadingButton } from '@/components/atoms/loading-button';
+import { LoadingButton } from '@/components/atoms/buttons/loading-button';
 import { errorMessages } from '@/constants/error-messages';
 import { useAuth } from '@/providers/auth';
 import { useThrottle } from '@corets/use-throttle';

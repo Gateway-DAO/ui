@@ -2,10 +2,9 @@ import useTranslation from 'next-translate/useTranslation';
 import { useMemo } from 'react';
 
 import { DataModel } from '@/services/gateway-protocol/types';
-import { brandColors } from '@/theme';
 import { PartialDeep } from 'type-fest/source/partial-deep';
 
-import { alpha, Typography, Stack } from '@mui/material';
+import { Stack } from '@mui/material';
 
 import { ClaimFieldProps, claimFields, getClaimType } from './ClaimTypes';
 import ClaimAccordion from './claim-accordion';

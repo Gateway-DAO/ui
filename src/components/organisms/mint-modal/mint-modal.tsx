@@ -27,11 +27,10 @@ type Props = {
 
 type Steps = 'SELECT_NETWORK' | 'FAQ' | 'ERROR' | 'CONNECTING';
 
-export function MintModal({ isOpen, onSuccess, onClose }: Props) {
+export function MintModal({ isOpen, onClose }: Props) {
   const [step, setStep] = useState<Steps>('SELECT_NETWORK');
   const onBack = () => setStep('SELECT_NETWORK');
   const onConnect = () => setStep('CONNECTING');
-  const onError = () => setStep('ERROR');
 
   const onCloseModal = () => {
     switch (step) {

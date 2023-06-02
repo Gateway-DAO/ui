@@ -21,7 +21,7 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 
-import { CategoriesList } from './categories-list';
+import { CategoriesList } from '../categories-list';
 
 /* TODO: Arias and Labels */
 type GatesCardProps = PartialDeep<Gates> & {

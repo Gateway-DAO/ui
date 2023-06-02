@@ -19,7 +19,7 @@ import {
   MenuItem,
 } from '@mui/material';
 
-import { Option } from '../../types/input';
+import { Option } from '../../../types/input';
 
 type Props<T = string> = {
   label: string;

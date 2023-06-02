@@ -6,7 +6,7 @@ import {
   DiscordIcon,
   SubstackIcon,
 } from '@/components/atoms/icons';
-import { LoadingButton } from '@/components/atoms/loading-button';
+import { LoadingButton } from '@/components/atoms/buttons/loading-button';
 import { gqlAnonMethods } from '@/services/hasura/api';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';

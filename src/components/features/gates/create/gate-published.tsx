@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-import { GatesCard } from '@/components/molecules/gates-card';
+import { GatesCard } from '@/components/molecules/cards/gates-card';
 import { ROUTES } from '@/constants/routes';
 import { useAuth } from '@/providers/auth';
 import { GateQuery, Gates } from '@/services/hasura/types';

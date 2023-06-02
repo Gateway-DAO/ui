@@ -1,8 +1,8 @@
 import Link from 'next/link';
 
 import { EmptyCard } from '@/components/atoms/empty-card';
-import { ChipDropdown } from '@/components/molecules/chip-dropdown';
-import { GatesCard } from '@/components/molecules/gates-card';
+import { ChipDropdown } from '@/components/molecules/form/chip-dropdown';
+import { GatesCard } from '@/components/molecules/cards/gates-card';
 import { ROUTES } from '@/constants/routes';
 import { usePropertyFilter } from '@/hooks/use-property-filter';
 import { useViewMode, ViewMode } from '@/hooks/use-view-modes';

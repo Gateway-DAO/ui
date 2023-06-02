@@ -17,7 +17,7 @@ import { ImageField } from './image-field';
 
 const CategoriesInput = dynamic(
   () => {
-    return import('@/components/molecules/categories-input');
+    return import('@/components/molecules/form/categories-input');
   },
   { ssr: false }
 );

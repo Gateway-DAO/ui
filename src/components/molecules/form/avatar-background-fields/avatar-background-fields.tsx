@@ -3,7 +3,7 @@ import { Control, FieldValues, Path, useFormContext } from 'react-hook-form';
 
 import { Box } from '@mui/material';
 
-import { ImageDropField } from '../../image-drop-field';
+import { ImageDropField } from '../image-drop-field';
 
 type Props<TFormSchema> = {
   control: Control<TFormSchema>;

@@ -1,18 +1,14 @@
 import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
 
-import { DaoCard } from '@/components/molecules/dao-card';
-import { DataModelCard } from '@/components/molecules/data-model-card';
-import { GatesCard } from '@/components/molecules/gates-card';
-import { LoyaltyProgramCard } from '@/components/molecules/loyalty-program-card/loyalty-program-card';
-import { PersonCard } from '@/components/molecules/person-card';
-import {
-  SectionWithSliderResponsive,
-  SectionWithGrid,
-} from '@/components/molecules/sections';
+import { DaoCard } from '@/components/molecules/cards/dao-card';
+import { DataModelCard } from '@/components/molecules/cards/data-model-card';
+import { GatesCard } from '@/components/molecules/cards/gates-card';
+import { LoyaltyProgramCard } from '@/components/molecules/cards/loyalty-program-card';
+import { SectionWithSliderResponsive } from '@/components/molecules/sections';
 import { ROUTES } from '@/constants/routes';
 import { Protocol_Data_Model } from '@/services/hasura/types';
-import { brandColors, theme } from '@/theme';
+import { theme } from '@/theme';
 import { PartialDeep } from 'type-fest';
 
 import { Button, Divider, Stack } from '@mui/material';
@@ -29,7 +25,6 @@ type Props = {
 export function AllTab({
   daos,
   gates,
-  people,
   dataModels,
   loyalty_program: passes,
 }: Props) {

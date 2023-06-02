@@ -3,8 +3,8 @@ import Link from 'next/link';
 import React, { useMemo } from 'react';
 
 import { EmptyCard } from '@/components/atoms/empty-card';
-import { GatesCard } from '@/components/molecules/gates-card';
-import { LoyaltyProgramCard } from '@/components/molecules/loyalty-program-card/loyalty-program-card';
+import { GatesCard } from '@/components/molecules/cards/gates-card';
+import { LoyaltyProgramCard } from '@/components/molecules/cards/loyalty-program-card';
 import { SectionWithSliderResponsive } from '@/components/molecules/sections';
 import DataGrid, {
   IColumnGrid,

@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import { useAuth } from '@/providers/auth';
 
-import { Box, Stack, Typography } from '@mui/material';
+import { Stack } from '@mui/material';
 
 import { GatePublishedNotification } from './custom/gate-published-notification';
 import { ManualTaskEventNotification } from './custom/manual-task-event-notification';

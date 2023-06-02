@@ -1,6 +1,6 @@
 import useTranslation from 'next-translate/useTranslation';
 
-import { LoadingButton } from '@/components/atoms/loading-button';
+import { LoadingButton } from '@/components/atoms/buttons/loading-button';
 import { useFormContext } from 'react-hook-form';
 
 import { Box, Stack, TextField, Typography } from '@mui/material';

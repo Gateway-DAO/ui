@@ -7,7 +7,7 @@ import Autocomplete, { autocompleteClasses } from '@mui/material/Autocomplete';
 
 export function Skills() {
   const skills = SKILLS.HARD.concat(SKILLS.SOFT);
-  const { control, watch, setValue } = useFormContext();
+  const { watch, setValue } = useFormContext();
 
   return (
     <Stack direction="column" sx={{ mb: 3 }}>

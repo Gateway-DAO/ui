@@ -1,7 +1,7 @@
 import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
 
-import { LoadingButton } from '@/components/atoms/loading-button';
+import { LoadingButton } from '@/components/atoms/buttons/loading-button';
 import { Daos } from '@/services/hasura/types';
 import { TOKENS } from '@/theme';
 import { yupResolver } from '@hookform/resolvers/yup';

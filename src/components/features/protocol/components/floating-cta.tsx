@@ -28,7 +28,6 @@ export default function FloatingCta({
   const { enqueueSnackbar } = useSnackbar();
   const [open, setOpen] = useState<boolean>(true);
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
   const [shareIsOpen, setShareIsOpen] = useState<boolean>(false);
   const [qrCodeIsOpen, setQrCodeIsOpen] = useState<boolean>(false);
   const qrCode = useCreateQrCode();

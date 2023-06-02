@@ -4,13 +4,7 @@ import { useLocalStorage } from 'react-use';
 
 import { AccountHandlerConnection } from '../components/accounts-card';
 
-type connectGithubProps = {
-  disconnect?: boolean;
-};
-
-export function ConnectionHandlerGithub(
-  props: connectGithubProps = { disconnect: false }
-): AccountHandlerConnection {
+export function ConnectionHandlerGithub(): AccountHandlerConnection {
   const router = useRouter();
   const [githubAccessToken, setGithubAccessToken, remove] = useLocalStorage(
     'github_access_token',

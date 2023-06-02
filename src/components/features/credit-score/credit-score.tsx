@@ -9,9 +9,9 @@ const ArcProgress = dynamic(() => import('react-arc-progress'), {
 });
 
 import { AvatarFile } from '@/components/atoms/avatar-file';
-import { LoadingButton } from '@/components/atoms/loading-button';
+import { LoadingButton } from '@/components/atoms/buttons/loading-button';
+import { ShareButton } from '@/components/atoms/buttons/share-button';
 import { ReadMore } from '@/components/atoms/read-more-less';
-import { ShareButton } from '@/components/atoms/share-button';
 import { TokenFilled } from '@/components/molecules/mint-card/assets/token-filled';
 import { HolderDialog } from '@/components/organisms/holder-dialog';
 import { ClientNav } from '@/components/organisms/navbar/client-nav';

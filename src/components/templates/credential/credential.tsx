@@ -3,8 +3,8 @@ import Link from 'next/link';
 import { ComponentType, useState } from 'react';
 
 import { AvatarFile } from '@/components/atoms/avatar-file';
+import { Props as MintCredentialButtonProps } from '@/components/atoms/buttons/mint-button';
 import CircularProgressWithLabel from '@/components/atoms/circular-progress-label';
-import { Props as MintCredentialButtonProps } from '@/components/atoms/mint-button';
 import { ReadMore } from '@/components/atoms/read-more-less';
 import { Task, TaskGroup } from '@/components/features/gates/view/tasks';
 import { ROUTES } from '@/constants/routes';
@@ -34,7 +34,7 @@ import {
 
 const MintCredentialButton: ComponentType<MintCredentialButtonProps> = dynamic(
   () =>
-    import('@/components/atoms/mint-button').then(
+    import('@/components/atoms/buttons/mint-button').then(
       (mod) => mod.MintCredentialButton
     ),
   {

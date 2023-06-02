@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 
 import Loading from '@/components/atoms/loading';
-import { LoyaltyProgramCard } from '@/components/molecules/loyalty-program-card/loyalty-program-card';
+import { LoyaltyProgramCard } from '@/components/molecules/cards/loyalty-program-card';
 import { query } from '@/constants/queries';
 import { ROUTES } from '@/constants/routes';
 import { gqlAnonMethods } from '@/services/hasura/api';

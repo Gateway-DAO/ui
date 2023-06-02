@@ -3,8 +3,8 @@ import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
 import { AvatarFile } from '@/components/atoms/avatar-file';
-import { ROUTES } from '@/constants/routes';
 import { errorMessages } from '@/constants/error-messages';
+import { ROUTES } from '@/constants/routes';
 import { useAuth } from '@/providers/auth';
 import {
   CreateCredentialInput,

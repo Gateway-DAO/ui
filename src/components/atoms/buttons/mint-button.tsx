@@ -1,5 +1,5 @@
 import useTranslation from 'next-translate/useTranslation';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import { TokenFilled } from '@/components/molecules/mint-card/assets/token-filled';
 import { useBiconomy } from '@/providers/biconomy';

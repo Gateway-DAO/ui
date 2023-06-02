@@ -2,12 +2,12 @@ import useTranslation from 'next-translate/useTranslation';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { ComponentType, useMemo, useState } from 'react';
+import { ComponentType, useState } from 'react';
 
 import { AvatarFile } from '@/components/atoms/avatar-file';
+import GateMintButton from '@/components/atoms/buttons/gate-mint-button';
+import { ShareButton } from '@/components/atoms/buttons/share-button';
 import { ReadMore } from '@/components/atoms/read-more-less';
-import { ShareButton } from '@/components/atoms/share-button';
-import GateMintButton from '@/components/molecules/gate-mint-button';
 import { MintDialogProtocol } from '@/components/molecules/mint-dialog-protocol';
 import ModalShareCredential from '@/components/molecules/modal/modal-share-credential';
 import { OptionsCredential } from '@/components/molecules/options-credential';

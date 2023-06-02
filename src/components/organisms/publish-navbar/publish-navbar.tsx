@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 
-import { LoadingButton } from '@/components/atoms/loading-button';
+import { LoadingButton } from '@/components/atoms/buttons/loading-button';
 import { CreateGateData } from '@/components/features/gates/create/schema';
 import { useFormContext } from 'react-hook-form';
 

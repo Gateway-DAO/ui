@@ -2,8 +2,8 @@ import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
-import { query } from '@/constants/queries';
 import { errorMessages } from '@/constants/error-messages';
+import { query } from '@/constants/queries';
 import { useAuth } from '@/providers/auth';
 import { ErrorResponse } from '@/types/graphql';
 import { yupResolver } from '@hookform/resolvers/yup';

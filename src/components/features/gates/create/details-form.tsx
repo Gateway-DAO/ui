@@ -1,12 +1,11 @@
 import { useMemo, useRef, useState, useEffect } from 'react';
 
-import CategoriesInput from '@/components/molecules/categories-input';
-import CreatedByInput from '@/components/molecules/creators-input';
+import CategoriesInput from '@/components/molecules/form/categories-input';
+import CreatedByInput from '@/components/molecules/form/creators-input';
 import {
   EmojiPicker,
   EmojiPickerProps,
 } from '@/components/molecules/form/emoji-picker';
-import SkillsInput from '@/components/molecules/skills-input';
 import { CATEGORIES } from '@/constants/gate';
 import { useAuth } from '@/providers/auth';
 import { EmojiStyle } from 'emoji-picker-react';

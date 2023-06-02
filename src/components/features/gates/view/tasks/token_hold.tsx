@@ -1,4 +1,4 @@
-import { LoadingButton } from '@/components/atoms/loading-button';
+import { LoadingButton } from '@/components/atoms/buttons/loading-button';
 
 import { Stack, Typography } from '@mui/material';
 

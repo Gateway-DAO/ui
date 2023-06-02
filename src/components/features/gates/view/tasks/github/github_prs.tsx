@@ -1,6 +1,6 @@
 import useTranslation from 'next-translate/useTranslation';
 
-import { LoadingButton } from '@/components/atoms/loading-button';
+import { LoadingButton } from '@/components/atoms/buttons/loading-button';
 import { GithubPRData } from '@/components/features/gates/create/schema';
 import GithubDataCard from '@/components/features/gates/view/tasks/github/github-data-card';
 import { useQuery } from '@tanstack/react-query';

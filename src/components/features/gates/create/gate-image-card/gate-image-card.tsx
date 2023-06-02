@@ -1,7 +1,7 @@
 import useTranslation from 'next-translate/useTranslation';
 import { ReactElement, useEffect } from 'react';
 
-import { ImageDropField } from '@/components/molecules/image-drop-field';
+import { ImageDropField } from '@/components/molecules/form/image-drop-field';
 import { GatewaySxProps } from '@/theme';
 import { useFormContext } from 'react-hook-form';
 

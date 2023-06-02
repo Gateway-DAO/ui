@@ -3,9 +3,9 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 import { AvatarFile } from '@/components/atoms/avatar-file';
-import { FollowButtonDAO } from '@/components/atoms/follow-button-dao';
+import { FollowButtonDAO } from '@/components/atoms/buttons/follow-button-dao';
+import { ShareButton } from '@/components/atoms/buttons/share-button';
 import { ReadMore } from '@/components/atoms/read-more-less';
-import { ShareButton } from '@/components/atoms/share-button';
 import { Navbar } from '@/components/organisms/navbar/navbar';
 import { SocialButtons } from '@/components/organisms/social-buttons';
 import { categoriesMap } from '@/constants/dao';

@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { Fragment, useState } from 'react';
 
-import { LoadingButton } from '@/components/atoms/loading-button';
+import { LoadingButton } from '@/components/atoms/buttons/loading-button';
 import normalizeUrl from 'normalize-url';
 
 import DescriptionIcon from '@mui/icons-material/Description';

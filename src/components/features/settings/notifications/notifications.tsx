@@ -2,7 +2,7 @@ import useTranslation from 'next-translate/useTranslation';
 
 import { useAuth } from '@/providers/auth';
 import { ChangeNotificationSettings } from '@/services/hasura/types';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 
 import { ExpandMore } from '@mui/icons-material';
 import { RestartAlt } from '@mui/icons-material';

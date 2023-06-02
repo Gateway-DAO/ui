@@ -2,7 +2,7 @@ import useTranslation from 'next-translate/useTranslation';
 import { useState } from 'react';
 
 import { AvatarFile } from '@/components/atoms/avatar-file';
-import { LoadingButton } from '@/components/atoms/loading-button';
+import { LoadingButton } from '@/components/atoms/buttons/loading-button';
 import ConfirmDialog from '@/components/organisms/confirm-dialog/confirm-dialog';
 import { Users, Task_Progress } from '@/services/hasura/types';
 import { ManualTaskEventType } from '@/types/tasks';

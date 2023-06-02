@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 
 import Loading from '@/components/atoms/loading';
-import CredentialCard from '@/components/molecules/credential-card';
+import CredentialCard from '@/components/molecules/cards/credential-card';
 import { query } from '@/constants/queries';
 import { gqlAnonMethods } from '@/services/hasura/api';
 import { Users } from '@/services/hasura/types';

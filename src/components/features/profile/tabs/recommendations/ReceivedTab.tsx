@@ -1,14 +1,8 @@
-import { useViewMode, ViewMode } from '@/hooks/use-view-modes';
 import { TOKENS } from '@/theme';
-import { PartialDeep } from 'type-fest';
 
-import { AutoAwesomeMosaic, ViewList } from '@mui/icons-material';
-import { Box, Typography, Stack } from '@mui/material';
-import Chip from '@mui/material/Chip';
+import { Box, Typography } from '@mui/material';
 
 export function ReceivedTab() {
-  const { view, toggleView } = useViewMode();
-
   return (
     <Box
       sx={{

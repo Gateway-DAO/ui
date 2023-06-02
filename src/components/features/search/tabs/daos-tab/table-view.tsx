@@ -1,6 +1,4 @@
-import useTranslation from 'next-translate/useTranslation';
-
-import { FollowButtonDAO } from '@/components/atoms/follow-button-dao';
+import { FollowButtonDAO } from '@/components/atoms/buttons/follow-button-dao';
 import { Daos } from '@/services/hasura/types';
 import { TOKENS } from '@/theme';
 import { PartialDeep } from 'type-fest';

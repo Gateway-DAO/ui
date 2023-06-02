@@ -6,23 +6,16 @@ import { PermissionType } from '@/services/gateway-protocol/types';
 import { Protocol_Data_Model } from '@/services/hasura/types';
 import { PartialDeep } from 'type-fest';
 
-import {
-  Avatar,
-  CardContent,
-  CardHeader,
-  Typography,
-  Box,
-} from '@mui/material';
+import { CardContent, CardHeader, Typography, Box } from '@mui/material';
 import MUICard from '@mui/material/Card';
 
-import { CategoriesList } from './categories-list';
+import { CategoriesList } from '../categories-list';
 
 export function DataModelCard({
   id,
   title,
   description,
   tags,
-  version,
   createdBy,
   permissioning,
 }: PartialDeep<Protocol_Data_Model>): JSX.Element {

@@ -1,4 +1,4 @@
-import { ImageDropField } from '@/components/molecules/image-drop-field';
+import { ImageDropField } from '@/components/molecules/form/image-drop-field';
 import { theme } from '@/theme';
 import { useFormContext } from 'react-hook-form';
 

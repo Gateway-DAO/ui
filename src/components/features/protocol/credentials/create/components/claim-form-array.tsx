@@ -9,7 +9,6 @@ import { Button, Divider, IconButton, Stack, TextField } from '@mui/material';
 import { ClaimFieldProps } from './ClaimTypes';
 
 export default function ClaimFormArray({
-  type,
   label,
   fieldName,
   subType,
@@ -21,7 +20,7 @@ export default function ClaimFormArray({
     formState: { errors },
     control,
   } = useFormContext();
-  const { fields, append, remove, update, replace } = useFieldArray({
+  const { fields, append, remove } = useFieldArray({
     name: `claim.${fieldName}`,
     control,
   });

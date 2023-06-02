@@ -2,7 +2,7 @@ import useTranslation from 'next-translate/useTranslation';
 
 import { Button } from '@mui/material';
 
-import { TokenFilled } from './mint-card/assets/token-filled';
+import { TokenFilled } from '../../molecules/mint-card/assets/token-filled';
 
 type Props = {
   setMintModal: (value: boolean) => void;

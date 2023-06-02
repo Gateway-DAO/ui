@@ -2,7 +2,7 @@ import useTranslation from 'next-translate/useTranslation';
 import { useEffect } from 'react';
 
 import Loading from '@/components/atoms/loading';
-import { DataModelCard } from '@/components/molecules/data-model-card';
+import { DataModelCard } from '@/components/molecules/cards/data-model-card';
 import { query } from '@/constants/queries';
 import { gqlAnonMethods } from '@/services/hasura/api';
 import { TOKENS } from '@/theme';

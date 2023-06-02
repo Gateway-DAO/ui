@@ -3,10 +3,10 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 
 import { AvatarFile } from '@/components/atoms/avatar-file';
+import GateMintButton from '@/components/atoms/buttons/gate-mint-button';
 import ExternalLink from '@/components/atoms/external-link';
 import GateStateChip from '@/components/atoms/gate-state-chip';
 import ShareOn from '@/components/atoms/share-on';
-import GateMintButton from '@/components/molecules/gate-mint-button';
 import { MintDialogProtocol } from '@/components/molecules/mint-dialog-protocol';
 import ModalContent from '@/components/molecules/modal/modal-basic';
 import ModalShareCredential from '@/components/molecules/modal/modal-share-credential';

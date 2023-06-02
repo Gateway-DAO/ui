@@ -1,6 +1,6 @@
 import useTranslation from 'next-translate/useTranslation';
 
-import { LoadingButton } from '@/components/atoms/loading-button';
+import { LoadingButton } from '@/components/atoms/buttons/loading-button';
 import TwitterConnectionCard from '@/components/features/gates/view/tasks/twitter/twitter-connection-card';
 import { useMutation } from '@tanstack/react-query';
 import { TwitterTweetEmbed } from 'react-twitter-embed';

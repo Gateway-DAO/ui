@@ -1,15 +1,7 @@
 import { useViewMode, ViewMode } from '@/hooks/use-view-modes';
-import { Gates } from '@/services/hasura/types';
 import { TOKENS } from '@/theme';
-import { PartialDeep } from 'type-fest';
 
-import { AutoAwesomeMosaic, ViewList } from '@mui/icons-material';
-import { Box, Typography, Stack } from '@mui/material';
-import Chip from '@mui/material/Chip';
-
-type Props = {
-  gates: PartialDeep<Gates>[];
-};
+import { Box, Typography } from '@mui/material';
 
 export function ActivityTab() {
   const { view, toggleView } = useViewMode();

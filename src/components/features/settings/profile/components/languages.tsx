@@ -9,7 +9,7 @@ import Autocomplete, { autocompleteClasses } from '@mui/material/Autocomplete';
 
 export function Languages() {
   const languages = Object.keys(LANGUAGES).map((key) => LANGUAGES[key].name);
-  const { control, setValue, watch } = useFormContext();
+  const { setValue, watch } = useFormContext();
   const { t } = useTranslation('settings');
 
   return (

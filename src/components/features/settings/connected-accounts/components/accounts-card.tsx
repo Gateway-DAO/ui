@@ -1,7 +1,7 @@
 import useTranslation from 'next-translate/useTranslation';
 import { ReactNode, useEffect, useState } from 'react';
 
-import { CheckedButton } from '@/components/atoms/check-button';
+import { CheckedButton } from '@/components/atoms/buttons/check-button';
 import { useLocalStorage } from 'react-use';
 
 import { Paper, Stack, Typography } from '@mui/material';

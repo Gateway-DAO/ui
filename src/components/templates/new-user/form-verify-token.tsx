@@ -1,6 +1,6 @@
 import useTranslation from 'next-translate/useTranslation';
 
-import { LoadingButton } from '@/components/atoms/loading-button';
+import { LoadingButton } from '@/components/atoms/buttons/loading-button';
 import { useCountdown } from '@/hooks/use-countdown';
 import { useFormContext } from 'react-hook-form';
 import { useToggle } from 'react-use';

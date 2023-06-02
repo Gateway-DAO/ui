@@ -1,26 +1,17 @@
 import useTranslation from 'next-translate/useTranslation';
-import { useRouter } from 'next/router';
 
-import { useTab } from '@/components/atoms/tabs';
-import CredentialCard from '@/components/molecules/credential-card';
-import NewElementCard from '@/components/molecules/new-element-card';
+import CredentialCard from '@/components/molecules/cards/credential-card';
+import NewElementCard from '@/components/molecules/cards/new-element-card';
 import { SectionWithSliderResponsive } from '@/components/molecules/sections';
 import { query } from '@/constants/queries';
 import { ROUTES } from '@/constants/routes';
-import { useViewMode } from '@/hooks/use-view-modes';
-import { useAuth } from '@/providers/auth';
-import { gatewayProtocolSDK } from '@/services/gateway-protocol/api';
 import { gqlAnonMethods } from '@/services/hasura/api';
 import { Users } from '@/services/hasura/types';
 import { SessionUser } from '@/types/user';
 import { useQuery } from '@tanstack/react-query';
-import { getTimeZones } from '@vvo/tzdb';
-import { DateTime } from 'luxon';
 import { PartialDeep } from 'type-fest';
 
 import { Typography, Stack, Divider, Button } from '@mui/material';
-
-import { ReceivedTab } from './recommendations/ReceivedTab';
 
 type Props = {
   user: PartialDeep<Users> | SessionUser;
@@ -30,30 +21,6 @@ type Props = {
 
 export function OverviewTab({ user, isPrivateProfile, setActiveTab }: Props) {
   const { t } = useTranslation();
-  const { me } = useAuth();
-
-  const TZ = getTimeZones();
-
-  const tabs = [
-    {
-      key: 'overview',
-      label: t('Received'),
-      section: <ReceivedTab />,
-    },
-    {
-      key: 'activity',
-      label: t('Given'),
-    },
-  ];
-
-  const timezone = TZ.find((timeZone) => {
-    return (
-      user.timezone === timeZone.name || timeZone.group.includes(user.timezone)
-    );
-  });
-  const hourToTimezone = DateTime.local()
-    .setLocale('en-US')
-    .setZone(user?.timezone);
 
   const receivedCredentials = useQuery(
     [`${query.credentialsByRecipientUser}_home`, user.id],

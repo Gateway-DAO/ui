@@ -1,14 +1,13 @@
-import useTranslation from 'next-translate/useTranslation';
 import Link from 'next/link';
 
 import { AvatarFile } from '@/components/atoms/avatar-file';
-import { FollowButtonDAO } from '@/components/atoms/follow-button-dao';
+import { FollowButtonDAO } from '@/components/atoms/buttons/follow-button-dao';
 import { categoriesMap } from '@/constants/dao';
 import { ROUTES } from '@/constants/routes';
 import { useAuth } from '@/providers/auth';
 import { TOKENS } from '@/theme';
 
-import { Avatar, Box, Button, Chip, Stack, Typography } from '@mui/material';
+import { Box, Chip, Stack, Typography } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';

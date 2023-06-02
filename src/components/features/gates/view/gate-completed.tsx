@@ -1,9 +1,8 @@
 import useTranslation from 'next-translate/useTranslation';
-import { useMemo } from 'react';
 
-import { ShareButtonFn } from '@/components/atoms/share-btn-fn';
-import GateMintButton from '@/components/molecules/gate-mint-button';
-import { GatesCard } from '@/components/molecules/gates-card';
+import GateMintButton from '@/components/atoms/buttons/gate-mint-button';
+import { ShareButtonFn } from '@/components/atoms/buttons/share-btn-fn';
+import { GatesCard } from '@/components/molecules/cards/gates-card';
 import { MintDialogProtocol } from '@/components/molecules/mint-dialog-protocol';
 import ModalShareCredential from '@/components/molecules/modal/modal-share-credential';
 import { query } from '@/constants/queries';

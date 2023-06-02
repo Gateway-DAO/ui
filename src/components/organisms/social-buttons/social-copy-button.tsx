@@ -1,5 +1,4 @@
-import Link from 'next/link';
-import { useEffect, useMemo } from 'react';
+import { useEffect } from 'react';
 
 import { SocialIcon } from '@/components/atoms/social-icon';
 import { Network, networkValueLabelMap } from '@/constants/dao';
