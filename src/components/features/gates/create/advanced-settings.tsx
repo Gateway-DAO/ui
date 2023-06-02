@@ -65,8 +65,6 @@ export function AdvancedSetting() {
   } = useFormContext<CreateGateData>();
   const [hiddenDevFields] = useLocalStorage('devmode');
 
-  console.log(hiddenDevFields);
-
   return (
     <section>
       <Button

@@ -178,7 +178,7 @@ export function CreateGate({ oldData }: CreateGateProps) {
   };
 
   const taskErrorMessage = (data) => {
-    data.forEach((taskData, i) => {
+    data.forEach((taskData) => {
       recursiveErrorMessage(taskData);
       if (taskData?.task_data) {
         recursiveErrorMessage(taskData.task_data);
