@@ -27,7 +27,7 @@ type Props = {
   dao?: PartialDeep<Daos>;
 };
 
-export function NewDAOTemplate({ dao, onSubmit, isLoading }: Props) {
+export function NewDAO({ dao, onSubmit, isLoading }: Props) {
   const { t } = useTranslation(dao ? 'dao-edit' : 'dao-new');
   const methods = useForm<NewDAOSchema>({
     resolver: yupResolver(schema),

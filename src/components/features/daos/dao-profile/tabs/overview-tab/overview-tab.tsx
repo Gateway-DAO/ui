@@ -24,7 +24,7 @@ import {
   useMediaQuery,
 } from '@mui/material';
 
-import DashboardCard from '../../../../features/protocol/components/dashboard-card';
+import DashboardCard from '../../../../protocol/components/dashboard-card';
 import { useDaoProfile } from '../../context';
 
 type Props = {

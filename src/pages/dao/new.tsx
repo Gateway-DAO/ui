@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 
-import { NewDAOTemplate, NewDAOSchema } from '@/components/templates/dao-new';
+import { NewDAO, NewDAOSchema } from '@/components/features/daos/dao-new';
 import { ROUTES } from '@/constants/routes';
 import { useUploadImage } from '@/hooks/use-upload-image';
 import { useAuth } from '@/providers/auth';
@@ -55,7 +55,7 @@ export default function CreateDAO() {
     }
   );
   return (
-    <NewDAOTemplate
+    <NewDAO
       onSubmit={createDAOMutation.mutateAsync}
       isLoading={createDAOMutation.isLoading}
     />

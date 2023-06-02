@@ -15,7 +15,7 @@ import GridViewTab from './tabs/grid-view-tab';
 import PassesTab from './tabs/passes-tab';
 import StaticGridViewTab from './tabs/static-grid-view-tab';
 
-export function DaoProfileTemplate() {
+export function DaoProfile() {
   const {
     dao,
     onRefetchFollowers,

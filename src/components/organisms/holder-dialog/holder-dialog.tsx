@@ -2,7 +2,7 @@ import useTranslation from 'next-translate/useTranslation';
 import { Dispatch, Fragment, SetStateAction, useState } from 'react';
 import { ChangeEvent } from 'react';
 
-import { CenteredLoader } from '@/components/atoms/centered-loader';
+import { CenteredLoader } from '@/components/atoms/loadings/centered-loader';
 import { UserListItem } from '@/components/molecules/user-list-item';
 import { useAuth } from '@/providers/auth';
 import { useInfiniteQuery } from '@tanstack/react-query';

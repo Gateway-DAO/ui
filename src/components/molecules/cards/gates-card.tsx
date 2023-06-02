@@ -6,7 +6,7 @@ import { useMemo, useState } from 'react';
 import { AvatarFile } from '@/components/atoms/avatar-file';
 import MorePopover from '@/components/atoms/more-popover';
 import ConfirmDialog from '@/components/organisms/confirm-dialog/confirm-dialog';
-import { useDaoProfile } from '@/components/templates/dao-profile';
+import { useDaoProfile } from '@/components/features/daos/dao-profile';
 import { ROUTES } from '@/constants/routes';
 import { useAuth } from '@/providers/auth';
 import { Gates } from '@/services/hasura/types';

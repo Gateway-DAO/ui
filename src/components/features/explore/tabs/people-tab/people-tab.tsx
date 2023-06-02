@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-import { CenteredLoader } from '@/components/atoms/centered-loader';
+import { CenteredLoader } from '@/components/atoms/loadings/centered-loader';
 import { gqlAnonMethods } from '@/services/hasura/api';
 import { TOKENS } from '@/theme';
 import { useInfiniteQuery } from '@tanstack/react-query';
