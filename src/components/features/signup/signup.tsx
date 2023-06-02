@@ -24,7 +24,7 @@ import {
   defaultValuesCreateAccount,
 } from './schema';
 
-export function NewUserTemplate() {
+export function Signup() {
   const { t } = useTranslation('dashboard-new-user');
   const { me, gqlProtocolAuthMethods, onInvalidateMe } = useAuth();
   const [sentEmail, setSentEmail] = useState(false);

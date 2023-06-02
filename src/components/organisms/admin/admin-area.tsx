@@ -17,7 +17,7 @@ import {
   ListItemButton,
 } from '@mui/material';
 
-export function AdminTemplate({ data }) {
+export function AdminArea({ data }) {
   const { me } = useAuth();
 
   return (
