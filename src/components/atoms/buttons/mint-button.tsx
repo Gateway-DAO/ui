@@ -1,7 +1,7 @@
 import useTranslation from 'next-translate/useTranslation';
 import { useState } from 'react';
 
-import { TokenFilled } from '@/components/molecules/mint-card/assets/token-filled';
+import { TokenFilled } from '@/components/organisms/mint/mint-card/assets/token-filled';
 import { useBiconomy } from '@/providers/biconomy';
 import { Credentials } from '@/services/hasura/types';
 import { PartialDeep } from 'type-fest';

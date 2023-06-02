@@ -9,7 +9,7 @@ import { useFieldArray, useFormContext } from 'react-hook-form';
 
 import { Button, Stack } from '@mui/material';
 
-import { OptionField } from './option-field/option-field';
+import { OptionField } from './option-field';
 
 export function RadioCheckBoxCreator({
   questionIndex,

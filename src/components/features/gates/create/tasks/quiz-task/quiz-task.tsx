@@ -6,8 +6,8 @@ import {
   CreateGateData,
   QuizTaskDataError,
 } from '@/components/features/gates/create/schema';
+import { QuestionCreator } from '@/components/features/gates/create/tasks/quiz-task/components/question-creator';
 import TextFieldWithEmoji from '@/components/molecules/form/TextFieldWithEmoji/TextFieldWithEmoji';
-import { QuestionCreator } from '@/components/organisms/question-creator/question-creator';
 import { useSnackbar } from 'notistack';
 import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
 

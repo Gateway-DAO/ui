@@ -1,5 +1,5 @@
 import { AvatarFile } from '@/components/atoms/avatar-file';
-import { MintCard } from '@/components/molecules/mint-card';
+import { MintCard } from '@/components/organisms/mint/mint-card';
 import { Experiences } from '@/services/hasura/types';
 import { theme, TOKENS } from '@/theme';
 import { DateTime } from 'luxon';
