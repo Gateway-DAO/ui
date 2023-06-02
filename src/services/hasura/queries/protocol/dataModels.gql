@@ -1,0 +1,106 @@
+query dataModels($take: Int!, $skip: Int!) {
+  protocol_data_model(
+    limit: $take
+    offset: $skip
+    order_by: { createdAt: desc }
+  ) {
+    id
+    title
+    tags
+    version
+    description
+    permissioning
+    createdBy {
+      gatewayUser {
+        name
+        picture {
+          id
+          s3_key
+          blur
+        }
+      }
+      gatewayId
+    }
+  }
+}
+
+query dataModelsP2P($take: Int!, $skip: Int!) {
+  protocol_data_model(
+    where: { permissioning: { _eq: "ALL" } }
+    limit: $take
+    offset: $skip
+    order_by: { createdAt: desc }
+  ) {
+    id
+    title
+    tags
+    version
+    description
+    permissioning
+    createdBy {
+      gatewayUser {
+        name
+        picture {
+          id
+          s3_key
+          blur
+        }
+      }
+      gatewayId
+    }
+  }
+}
+
+query findRecipientsByDataModel($dataModelId: uuid!, $take: Int!, $skip: Int!) {
+  protocol_user(
+    where: { credentials: { dataModelId: { _eq: $dataModelId } } }
+    limit: $take
+    offset: $skip
+  ) {
+    id
+    gatewayId
+    gatewayUser {
+      name
+      pfp
+      picture {
+        id
+        s3_key
+        blur
+      }
+    }
+  }
+}
+
+query getDMStatsUntilDayBefore($date: timestamp!, $dataModelId: uuid!) {
+  credential_count: protocol_credential_aggregate(
+    where: { createdAt: { _lte: $date }, dataModelId: { _eq: $dataModelId } }
+  ) {
+    aggregate {
+      count
+    }
+  }
+  issuer_count: protocol_user_aggregate(
+    where: {
+      credentialsByIssueruserid: {
+        dataModelId: { _eq: $dataModelId }
+        createdAt: { _lte: $date }
+      }
+    }
+  ) {
+    aggregate {
+      count
+    }
+  }
+  recipient_count: protocol_user_aggregate(
+    where: {
+      credentials: {
+        dataModelId: { _eq: $dataModelId }
+        createdAt: { _lte: $date }
+      }
+    }
+  ) {
+    aggregate {
+      count
+    }
+  }
+}
