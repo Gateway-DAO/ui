@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 
-import { NewDAO, NewDAOSchema } from '@/components/features/daos/dao-new';
+import { NewDAO, NewDAOSchema } from '@/components/features/daos/create';
 import { ROUTES } from '@/constants/routes';
 import { generateImageUrl } from '@/hooks/use-file';
 import { useUploadImage } from '@/hooks/use-upload-image';

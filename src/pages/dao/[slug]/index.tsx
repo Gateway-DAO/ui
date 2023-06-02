@@ -5,7 +5,7 @@ import { HeadContainer } from '@/components/molecules/head-container';
 import {
   DaoProfile,
   DaoProfileProvider,
-} from '@/components/features/daos/dao-profile';
+} from '@/components/features/daos/view';
 import { DashboardTemplate } from '@/components/templates/dashboard';
 import { useAuth } from '@/providers/auth';
 import { gatewayProtocolSDK } from '@/services/gateway-protocol/api';
