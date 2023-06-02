@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 
 import { LoadingButton } from '@/components/atoms/buttons/loading-button';
-import { TaskIcon } from '@/components/atoms/task-icon';
+import { TaskIcon } from '@/components/atoms/icons/task-icon';
 import { useAuth } from '@/providers/auth';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useSnackbar } from 'notistack';

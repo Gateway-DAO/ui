@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { TaskIcon } from '@/components/atoms/task-icon';
+import { TaskIcon } from '@/components/atoms/icons/task-icon';
 import { errorMessages } from '@/constants/error-messages';
 import { useAuth } from '@/providers/auth';
 import { Tasks, Gates } from '@/services/hasura/types';

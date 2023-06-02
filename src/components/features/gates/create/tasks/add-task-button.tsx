@@ -1,4 +1,4 @@
-import { TaskIcon } from '@/components/atoms/task-icon';
+import { TaskIcon } from '@/components/atoms/icons/task-icon';
 import { TaskType } from '@/types/tasks';
 
 import { Stack } from '@mui/material';

@@ -1,7 +1,7 @@
 import useTranslation from 'next-translate/useTranslation';
 import { useEffect, useState } from 'react';
 
-import { TaskIcon } from '@/components/atoms/task-icon';
+import { TaskIcon } from '@/components/atoms/icons/task-icon';
 import {
   CreateGateData,
   QuizTaskDataError,
