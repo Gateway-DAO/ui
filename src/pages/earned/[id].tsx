@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 
 import { CredentialTemplate } from '@/components/features/credential';
 import { HeadContainer } from '@/components/molecules/head-container';
-import { MintModal } from '@/components/organisms/mint-modal';
+import { MintModal } from '@/components/organisms/mint/mint-modal';
 import { Navbar } from '@/components/organisms/navbar';
 import { DashboardTemplate } from '@/components/templates/dashboard';
 import { useAuth } from '@/providers/auth';
