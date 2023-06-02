@@ -20,17 +20,6 @@ const AccountManagementSettings = () => {
         </Typography>
         <Typography variant="caption">
           {t('account-management.registered-email-description')}
-          <Link
-            sx={{
-              color: brandColors.purple.main,
-              textDecoration: 'none',
-              cursor: 'pointer',
-            }}
-          >
-            {' '}
-            {t('account-management.here')}
-          </Link>
-          .
         </Typography>
       </Stack>
 
