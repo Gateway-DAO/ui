@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import { useMemo, useState } from 'react';
 
 import MorePopover from '@/components/atoms/more-popover';
-import ConfirmDialog from '@/components/organisms/confirm-dialog/confirm-dialog';
+import ConfirmDialog from '@/components/molecules/modal/confirm-dialog';
 import { query } from '@/constants/queries';
 import { ROUTES } from '@/constants/routes';
 import { useAuth } from '@/providers/auth';

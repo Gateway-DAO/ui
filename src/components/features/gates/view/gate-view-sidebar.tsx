@@ -8,7 +8,7 @@ import { AvatarFile } from '@/components/atoms/avatar-file';
 import GateMintButton from '@/components/atoms/buttons/gate-mint-button';
 import { ShareButton } from '@/components/atoms/buttons/share-button';
 import { ReadMore } from '@/components/atoms/read-more-less';
-import { MintDialogProtocol } from '@/components/molecules/mint-dialog-protocol';
+import { MintDialogProtocol } from '@/components/organisms/mint-modal/mint-dialog-protocol';
 import ModalShareCredential from '@/components/molecules/modal/modal-share-credential';
 import { OptionsCredential } from '@/components/molecules/options-credential';
 import type { Props as HolderDialogProps } from '@/components/organisms/holder-dialog';

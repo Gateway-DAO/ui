@@ -2,7 +2,7 @@ import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
-import ConfirmDialog from '@/components/organisms/confirm-dialog/confirm-dialog';
+import ConfirmDialog from '@/components/molecules/modal/confirm-dialog';
 import { ROUTES } from '@/constants/routes';
 import { useAuth } from '@/providers/auth';
 import {

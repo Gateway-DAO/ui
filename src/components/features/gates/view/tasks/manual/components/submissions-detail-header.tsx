@@ -3,7 +3,7 @@ import { useState } from 'react';
 
 import { AvatarFile } from '@/components/atoms/avatar-file';
 import { LoadingButton } from '@/components/atoms/buttons/loading-button';
-import ConfirmDialog from '@/components/organisms/confirm-dialog/confirm-dialog';
+import ConfirmDialog from '@/components/molecules/modal/confirm-dialog';
 import { Users, Task_Progress } from '@/services/hasura/types';
 import { ManualTaskEventType } from '@/types/tasks';
 import { PartialDeep } from 'type-fest';

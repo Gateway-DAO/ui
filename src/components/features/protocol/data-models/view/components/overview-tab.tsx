@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from 'react';
 
 import ExternalLink from '@/components/atoms/external-link';
 import ModalRight from '@/components/molecules/modal/modal-right';
-import ConfirmDialog from '@/components/organisms/confirm-dialog/confirm-dialog';
+import ConfirmDialog from '@/components/molecules/modal/confirm-dialog';
 import { useAuth } from '@/providers/auth';
 import {
   DataModel,

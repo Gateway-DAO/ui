@@ -3,7 +3,7 @@ import useTranslation from 'next-translate/useTranslation';
 import GateMintButton from '@/components/atoms/buttons/gate-mint-button';
 import { ShareButtonFn } from '@/components/atoms/buttons/share-btn-fn';
 import { GatesCard } from '@/components/molecules/cards/gates-card';
-import { MintDialogProtocol } from '@/components/molecules/mint-dialog-protocol';
+import { MintDialogProtocol } from '@/components/organisms/mint-modal/mint-dialog-protocol';
 import ModalShareCredential from '@/components/molecules/modal/modal-share-credential';
 import { query } from '@/constants/queries';
 import { useMenu } from '@/hooks/use-menu';

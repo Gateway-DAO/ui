@@ -3,7 +3,7 @@ import { useState } from 'react';
 
 import GatePublishedModal from '@/components/features/gates/create/gate-published';
 import TaskArea from '@/components/features/gates/create/tasks/tasks-area';
-import ConfirmDialog from '@/components/organisms/confirm-dialog/confirm-dialog';
+import ConfirmDialog from '@/components/molecules/modal/confirm-dialog';
 import { PublishNavbar } from '@/components/organisms/publish-navbar/publish-navbar';
 import { ROUTES } from '@/constants/routes';
 import { useAuth } from '@/providers/auth';

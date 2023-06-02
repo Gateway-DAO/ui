@@ -7,7 +7,7 @@ import GateMintButton from '@/components/atoms/buttons/gate-mint-button';
 import ExternalLink from '@/components/atoms/external-link';
 import GateStateChip from '@/components/atoms/gate-state-chip';
 import ShareOn from '@/components/atoms/share-on';
-import { MintDialogProtocol } from '@/components/molecules/mint-dialog-protocol';
+import { MintDialogProtocol } from '@/components/organisms/mint-modal/mint-dialog-protocol';
 import ModalContent from '@/components/molecules/modal/modal-basic';
 import ModalShareCredential from '@/components/molecules/modal/modal-share-credential';
 import { OptionsCredential } from '@/components/molecules/options-credential';

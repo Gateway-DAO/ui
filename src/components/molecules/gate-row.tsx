@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 import GateStateChip from '@/components/atoms/gate-state-chip';
 import MorePopover from '@/components/atoms/more-popover';
-import ConfirmDialog from '@/components/organisms/confirm-dialog/confirm-dialog';
+import ConfirmDialog from '@/components/molecules/modal/confirm-dialog';
 import { ROUTES } from '@/constants/routes';
 import { useAuth } from '@/providers/auth';
 import { Gates } from '@/services/hasura/types';
