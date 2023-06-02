@@ -1,7 +1,7 @@
 import useTranslation from 'next-translate/useTranslation';
 import { useEffect } from 'react';
 
-import Loading from '@/components/atoms/loading';
+import Loading from '@/components/atoms/loadings/loading';
 import DataGrid from '@/components/organisms/data-grid/data-grid';
 import {
   gatewayProtocolSDK,

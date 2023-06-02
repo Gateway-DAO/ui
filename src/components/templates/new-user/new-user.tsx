@@ -1,7 +1,7 @@
 import useTranslation from 'next-translate/useTranslation';
 import { useState } from 'react';
 
-import Loading from '@/components/atoms/loading';
+import Loading from '@/components/atoms/loadings/loading';
 import { NavBarAvatar } from '@/components/organisms/navbar/navbar-avatar';
 import { errorMessages } from '@/constants/error-messages';
 import { useAuth } from '@/providers/auth';

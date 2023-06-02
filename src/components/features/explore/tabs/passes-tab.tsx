@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-import Loading from '@/components/atoms/loading';
+import Loading from '@/components/atoms/loadings/loading';
 import { LoyaltyProgramCard } from '@/components/molecules/cards/loyalty-program-card';
 import { query } from '@/constants/queries';
 import { ROUTES } from '@/constants/routes';

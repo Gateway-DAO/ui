@@ -1,6 +1,6 @@
 import useTranslation from 'next-translate/useTranslation';
 
-import Loading from '@/components/atoms/loading';
+import Loading from '@/components/atoms/loadings/loading';
 import { DataModelCard } from '@/components/molecules/cards/data-model-card';
 import { gqlAnonMethods } from '@/services/hasura/api';
 import { TOKENS } from '@/theme';

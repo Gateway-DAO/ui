@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import CircularProgressWithLabel from '@/components/atoms/circular-progress-label';
+import CircularProgressWithLabel from '@/components/atoms/loadings/circular-progress-label';
 import { Task } from '@/components/features/gates/view/tasks';
 import { Submissions } from '@/components/features/gates/view/tasks/manual/submissions';
 import { ClientNav } from '@/components/organisms/navbar/client-nav';

@@ -1,7 +1,7 @@
 import useTranslation from 'next-translate/useTranslation';
 import { useEffect } from 'react';
 
-import Loading from '@/components/atoms/loading';
+import Loading from '@/components/atoms/loadings/loading';
 import { DataModelCard } from '@/components/molecules/cards/data-model-card';
 import { query } from '@/constants/queries';
 import { gqlAnonMethods } from '@/services/hasura/api';

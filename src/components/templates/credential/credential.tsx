@@ -4,7 +4,7 @@ import { ComponentType, useState } from 'react';
 
 import { AvatarFile } from '@/components/atoms/avatar-file';
 import { Props as MintCredentialButtonProps } from '@/components/atoms/buttons/mint-button';
-import CircularProgressWithLabel from '@/components/atoms/circular-progress-label';
+import CircularProgressWithLabel from '@/components/atoms/loadings/circular-progress-label';
 import { ReadMore } from '@/components/atoms/read-more-less';
 import { Task, TaskGroup } from '@/components/features/gates/view/tasks';
 import { ROUTES } from '@/constants/routes';

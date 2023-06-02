@@ -1,6 +1,6 @@
 import useTranslation from 'next-translate/useTranslation';
 
-import Loading from '@/components/atoms/loading';
+import Loading from '@/components/atoms/loadings/loading';
 import { ROUTES } from '@/constants/routes';
 import { Organization, User } from '@/services/gateway-protocol/types';
 import { gqlAnonMethods } from '@/services/hasura/api';

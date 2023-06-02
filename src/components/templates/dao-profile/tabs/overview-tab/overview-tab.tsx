@@ -2,7 +2,7 @@ import useTranslation from 'next-translate/useTranslation';
 import Link from 'next/link';
 import React, { useMemo } from 'react';
 
-import { EmptyCard } from '@/components/atoms/empty-card';
+import { EmptyCard } from '@/components/molecules/cards/empty-card';
 import { GatesCard } from '@/components/molecules/cards/gates-card';
 import { LoyaltyProgramCard } from '@/components/molecules/cards/loyalty-program-card';
 import { SectionWithSliderResponsive } from '@/components/molecules/sections';

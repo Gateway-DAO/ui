@@ -1,6 +1,6 @@
 import useTranslation from 'next-translate/useTranslation';
 
-import Loading from '@/components/atoms/loading';
+import Loading from '@/components/atoms/loadings/loading';
 import { brandColors } from '@/theme';
 
 import { Stack, Typography } from '@mui/material';

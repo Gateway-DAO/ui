@@ -1,6 +1,6 @@
 import useTranslation from 'next-translate/useTranslation';
 
-import Loading from '@/components/atoms/loading';
+import Loading from '@/components/atoms/loadings/loading';
 import { useActualTier } from '@/hooks/use-actual-tier';
 import { useLoyaltyGatesCompleted } from '@/hooks/use-loyalty-gates-completed';
 import { useAuth } from '@/providers/auth';

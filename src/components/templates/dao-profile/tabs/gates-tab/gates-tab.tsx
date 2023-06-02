@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-import { EmptyCard } from '@/components/atoms/empty-card';
+import { EmptyCard } from '@/components/molecules/cards/empty-card';
 import { ChipDropdown } from '@/components/molecules/form/chip-dropdown';
 import { GatesCard } from '@/components/molecules/cards/gates-card';
 import { ROUTES } from '@/constants/routes';
