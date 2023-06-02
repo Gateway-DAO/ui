@@ -8,11 +8,7 @@ import { GatewayGrayIcon } from '../assets/gateway-gray';
 import { Subjects } from '../index';
 import { AnimatedMessage } from '../utlis/animate-message';
 
-export function MintingScreen({
-  mintProcessStatus,
-  setMintProcessStatus,
-  details,
-}) {
+export function MintingScreen({ mintProcessStatus, setMintProcessStatus }) {
   return (
     <>
       <GatewayGrayIcon

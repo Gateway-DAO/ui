@@ -1,14 +1,12 @@
 import Link from 'next/link';
 
 import { EmptyCard } from '@/components/molecules/cards/empty-card';
-import { ChipDropdown } from '@/components/molecules/form/chip-dropdown';
 import { GatesCard } from '@/components/molecules/cards/gates-card';
+import { ChipDropdown } from '@/components/molecules/form/chip-dropdown';
 import { ROUTES } from '@/constants/routes';
 import { usePropertyFilter } from '@/hooks/use-property-filter';
 import { useViewMode, ViewMode } from '@/hooks/use-view-modes';
-import { useAuth } from '@/providers/auth';
 import { TOKENS } from '@/theme';
-import { useQuery } from '@tanstack/react-query';
 
 import { ViewModule, ViewList, Add } from '@mui/icons-material';
 import { Box, Button, IconButton, Stack } from '@mui/material';
@@ -18,7 +16,6 @@ import { useDaoProfile } from '../../context';
 import { TableView } from './table-view';
 
 export function GatesTab() {
-  const { gqlAuthMethods } = useAuth();
   const { dao, isAdmin, credentials: gates } = useDaoProfile();
   const { view, toggleView } = useViewMode();
 

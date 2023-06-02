@@ -1,7 +1,5 @@
 import { Theme } from '@mui/material/styles';
 
-import { white } from '../config/colors';
-
 /**
  * Example of a customized component
  */

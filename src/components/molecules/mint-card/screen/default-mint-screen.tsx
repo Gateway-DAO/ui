@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 import { ROUTES } from '@/constants/routes';
@@ -27,7 +26,6 @@ import CardMedia from '@mui/material/CardMedia';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 
-import { CategoriesList } from '../../categories-list';
 import { TokenFilled } from '../assets/token-filled';
 import { Subjects } from '../index';
 import { Categories } from '../utlis/categories';

@@ -25,7 +25,6 @@ const NFTHoldContent = ({
   completeTask,
   readOnly,
   isLoading,
-  isAdmin,
 }) => {
   const { chain, nft_address } = data;
   const formattedDate = new Date(updatedAt.toLocaleString()).toLocaleString();

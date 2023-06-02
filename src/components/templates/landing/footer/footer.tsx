@@ -1,17 +1,16 @@
 import Link from 'next/link';
 import React from 'react';
 
+import { LoadingButton } from '@/components/atoms/buttons/loading-button';
 import {
   GatewayIcon,
   DiscordIcon,
   SubstackIcon,
 } from '@/components/atoms/icons';
-import { LoadingButton } from '@/components/atoms/buttons/loading-button';
 import { gqlAnonMethods } from '@/services/hasura/api';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
-import { FaMedium } from 'react-icons/fa';
 
 import { GitHub, LinkedIn, Twitter } from '@mui/icons-material';
 import {

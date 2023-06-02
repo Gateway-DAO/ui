@@ -1,9 +1,8 @@
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 
-import { IColumnGrid } from '@/components/organisms/data-grid/data-grid';
-import { DataModelsTab } from '@/components/features/explore';
 import { DataModelLayout } from '@/components/features/protocol/data-models/view/layout';
+import { IColumnGrid } from '@/components/organisms/data-grid/data-grid';
 import { query } from '@/constants/queries';
 
 const GridViewTab = dynamic(

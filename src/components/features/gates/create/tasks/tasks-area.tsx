@@ -82,7 +82,7 @@ type TaskAreaProps = {
 const TaskArea = ({ draftTasks, onDelete }: TaskAreaProps) => {
   const { control, setValue } = useFormContext<CreateGateData>();
 
-  const { fields, append, remove, update, swap } = useFieldArray({
+  const { fields, append, remove, swap } = useFieldArray({
     control,
     name: 'tasks',
   });
@@ -155,14 +155,14 @@ const TaskArea = ({ draftTasks, onDelete }: TaskAreaProps) => {
                   sx={{ mb: 4 }}
                 >
                   <Typography
-                    sx={(theme) => ({
+                    sx={{
                       textTransform: 'uppercase',
                       color: 'rgba(255, 255, 255, 0.56)',
                       fontWeight: 600,
                       fontSize: '12px',
                       marginRight: '12px',
                       letterSpacing: '0.1px',
-                    })}
+                    }}
                   >
                     Reorder
                   </Typography>

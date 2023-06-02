@@ -9,7 +9,7 @@ import { dehydrate, QueryClient, useQuery } from '@tanstack/react-query';
 export default function IssuedProfile() {
   const router = useRouter();
   const { username } = router.query;
-  const { me, gqlAuthMethods } = useAuth();
+  const { gqlAuthMethods } = useAuth();
 
   const {
     data: {

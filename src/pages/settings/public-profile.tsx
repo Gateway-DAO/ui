@@ -1,10 +1,10 @@
 import { useRouter } from 'next/router';
 
-import { HeadContainer } from '@/components/molecules/head-container';
-import { DashboardTemplate } from '@/components/templates/dashboard';
 import { Settings } from '@/components/features/settings';
 import { EditProfileSettings } from '@/components/features/settings';
 import { EditUserSchema } from '@/components/features/settings/profile/schema';
+import { HeadContainer } from '@/components/molecules/head-container';
+import { DashboardTemplate } from '@/components/templates/dashboard';
 import { ROUTES } from '@/constants/routes';
 import { generateImageUrl } from '@/hooks/use-file';
 import { useUploadImage } from '@/hooks/use-upload-image';
@@ -63,12 +63,12 @@ export default function PublicProfileSettingsPage() {
         timezone: userData.timezone || me.timezone,
         pic_id: picture,
         cover_id: cover,
-        socials: socials as any,
+        socials: socials,
         id: me.id,
       });
     },
     {
-      onSuccess(data) {
+      onSuccess() {
         onInvalidateMe();
         router.push(ROUTES.SETTINGS_PUBLIC_PROFILE);
       },

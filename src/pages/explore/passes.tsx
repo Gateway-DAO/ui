@@ -1,7 +1,7 @@
 import useTranslation from 'next-translate/useTranslation';
 
-import { HeadContainer } from '@/components/molecules/head-container';
 import { ExploreLayout, PassesTab } from '@/components/features/explore';
+import { HeadContainer } from '@/components/molecules/head-container';
 
 export default function Passes() {
   const { t } = useTranslation('explore');

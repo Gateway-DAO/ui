@@ -18,7 +18,7 @@ import { ProductShow } from './product-show';
 import { ProductShowProps } from './product-show/types';
 import { ScheduleDemo } from './schedule-demo';
 import { ScheduleDemoProps } from './schedule-demo/types';
-import { DEFAULT_MAX_WIDTH, DEFAULT_PADDINGX } from './styles';
+import { DEFAULT_PADDINGX } from './styles';
 
 type Props = {
   title: string;

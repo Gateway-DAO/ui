@@ -34,12 +34,7 @@ type Props = {
   loyaltyPrograms: PartialDeep<Loyalty_Program>[];
 };
 
-export function OverviewTab({
-  people,
-  setTab,
-  credentials,
-  loyaltyPrograms,
-}: Props) {
+export function OverviewTab({ setTab, credentials, loyaltyPrograms }: Props) {
   const { t } = useTranslation();
   const { dao, isAdmin, issuedCredentials, stats } = useDaoProfile();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });

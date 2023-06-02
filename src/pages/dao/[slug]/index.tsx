@@ -1,11 +1,11 @@
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
 import { useRouter } from 'next/router';
 
-import { HeadContainer } from '@/components/molecules/head-container';
 import {
   DaoProfile,
   DaoProfileProvider,
 } from '@/components/features/daos/view';
+import { HeadContainer } from '@/components/molecules/head-container';
 import { DashboardTemplate } from '@/components/templates/dashboard';
 import { useAuth } from '@/providers/auth';
 import { gatewayProtocolSDK } from '@/services/gateway-protocol/api';

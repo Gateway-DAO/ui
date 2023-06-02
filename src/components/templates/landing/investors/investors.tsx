@@ -1,8 +1,5 @@
 import Image from 'next/image';
-import Link from 'next/link';
 import React, { forwardRef } from 'react';
-
-import { TOKENS } from '@/theme';
 
 import { Box, List, ListItem, Typography } from '@mui/material';
 import { OverridableComponent } from '@mui/material/OverridableComponent';

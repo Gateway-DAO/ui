@@ -1,5 +1,4 @@
 import useTranslation from 'next-translate/useTranslation';
-import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 import { Activity } from '@/services/gateway-protocol/types';

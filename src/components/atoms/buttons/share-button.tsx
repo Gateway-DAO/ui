@@ -1,7 +1,7 @@
 import { useMenu } from '@/hooks/use-menu';
 
 import { IosShare } from '@mui/icons-material';
-import { Avatar, IconButton, Stack } from '@mui/material';
+import { Avatar, IconButton } from '@mui/material';
 
 import { ShareButtonFn } from './share-btn-fn';
 

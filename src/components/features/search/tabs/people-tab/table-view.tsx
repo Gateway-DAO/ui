@@ -7,7 +7,7 @@ import { Users } from '@/services/hasura/types';
 import { TOKENS } from '@/theme';
 import { PartialDeep } from 'type-fest';
 
-import { Avatar, Box, Stack, Typography } from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';

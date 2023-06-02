@@ -1,7 +1,6 @@
 import { ReactNode } from 'react';
 
 import { brandColors } from '@/theme';
-import { useTheme } from '@emotion/react';
 
 import { Stack, Typography, alpha } from '@mui/material';
 
@@ -22,17 +21,16 @@ type TextProps = {
 };
 
 function TextBig({ children, disabled }: TextProps) {
-  const theme = useTheme();
   return (
     <Typography
       fontSize={12}
-      sx={(theme) => ({
+      sx={{
         whiteSpace: 'pre-wrap',
         wordBreak: 'break-word',
         color: disabled
           ? alpha(brandColors.white.main, 0.3)
           : alpha(brandColors.white.main, 0.7),
-      })}
+      }}
     >
       {children}
     </Typography>

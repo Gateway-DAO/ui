@@ -54,7 +54,7 @@ export function AccountsCard({
       component="div"
       id={id}
       elevation={1}
-      sx={(theme) => ({
+      sx={{
         width: {
           sx: '100%',
           md: '355px',
@@ -63,7 +63,7 @@ export function AccountsCard({
         padding: '16px 24px 24px',
         border: '1px solid rgba(229, 229, 229, 0.12)',
         borderRadius: '8px',
-      })}
+      }}
     >
       <Stack
         direction="row"

@@ -1,11 +1,10 @@
 import { useState, useEffect } from 'react';
 
 import { useCredential } from '@/hooks/use-credential';
-import { useBiconomy } from '@/providers/biconomy';
 import { Credentials } from '@/services/hasura/types';
 import { PartialDeep } from 'type-fest';
 
-import { Box, Button, SxProps } from '@mui/material';
+import { SxProps } from '@mui/material';
 import Card from '@mui/material/Card';
 
 import { processScreen } from './process';
@@ -32,14 +31,10 @@ export const MintCard = ({ credential, sx, ...props }: MintCardProps) => {
   const [mintProcessStatus, setMintProcessStatus] = useState<Subjects>(
     Subjects.default
   );
-  const [error, setError] = useState<any | null>(null);
+  const [error] = useState<any | null>(null);
 
   // const { mintCredential: triggerMint, mintStatus } = useBiconomy();
-  const {
-    mintCredential: triggerMint,
-    status,
-    resetStatus,
-  } = useCredential(credential);
+  const { mintCredential: triggerMint, status } = useCredential(credential);
 
   const mint = () => triggerMint(credential);
 

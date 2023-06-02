@@ -71,7 +71,6 @@ export function GateViewSidebar({
     shareIsOpen,
     setShareIsOpen,
     mintCredential,
-    mintData,
     showMintButton,
   } = useMintData({
     credential: protocolCredential,

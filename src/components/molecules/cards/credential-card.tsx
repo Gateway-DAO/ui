@@ -2,23 +2,13 @@ import Link from 'next/link';
 
 import { AvatarFile } from '@/components/atoms/avatar-file';
 import { ROUTES } from '@/constants/routes';
-import {
-  Credential,
-  CredentialStatus,
-} from '@/services/gateway-protocol/types';
+import { CredentialStatus } from '@/services/gateway-protocol/types';
 import { Protocol_Credential } from '@/services/hasura/types';
 import { brandColors } from '@/theme';
 import { limitCharsCentered } from '@/utils/string';
 import { PartialDeep } from 'type-fest';
 
-import {
-  Avatar,
-  Box,
-  CardContent,
-  CardHeader,
-  Chip,
-  Typography,
-} from '@mui/material';
+import { Box, CardContent, CardHeader, Chip, Typography } from '@mui/material';
 import MUICard from '@mui/material/Card';
 
 type Props = PartialDeep<Protocol_Credential> & {
@@ -51,7 +41,6 @@ export default function CredentialCard({
   issuerUser,
   recipientUser,
   issuerOrganization,
-  isRecipient,
 }: Props): JSX.Element {
   const url = ROUTES.PROTOCOL_CREDENTIAL.replace('[id]', id);
 

@@ -95,7 +95,6 @@ export function CreditScoreTemplate() {
 
   const { me, gqlAuthMethods, token } = useAuth();
   const router = useRouter();
-  const [openLoadingModal, setOpenLoadingModal] = useState(false);
   const [isHolderDialog, setIsHolderDialog] = useState(false);
   const queryClient = useQueryClient();
 
@@ -126,11 +125,6 @@ export function CreditScoreTemplate() {
     } else {
       router.back();
     }
-  };
-
-  const issueCredential = async () => {
-    refetch();
-    setOpenLoadingModal(true);
   };
 
   const { refetch, isFetching: createCredentialLoading } = useQuery(

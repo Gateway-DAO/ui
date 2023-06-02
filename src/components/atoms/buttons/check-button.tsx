@@ -21,7 +21,6 @@ export function CheckedButton({
   labelOn,
   labelOff,
   labelOffHover,
-  ...other
 }: Props) {
   const [buttonLabel, setButtonLabel] = useState<string>(
     checked ? labelOn : labelOff

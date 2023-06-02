@@ -2,8 +2,8 @@ import useTranslation from 'next-translate/useTranslation';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 
-import { IColumnGrid } from '@/components/organisms/data-grid/data-grid';
 import { DataModelLayout } from '@/components/features/protocol/data-models/view/layout';
+import { IColumnGrid } from '@/components/organisms/data-grid/data-grid';
 import { query } from '@/constants/queries';
 import { DateTime } from 'luxon';
 const GridViewTab = dynamic(

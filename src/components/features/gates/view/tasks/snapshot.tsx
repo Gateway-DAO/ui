@@ -1,6 +1,6 @@
 import { LoadingButton } from '@/components/atoms/buttons/loading-button';
 
-import { Button, Stack, Typography } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 
 const SnapshotContent = ({
   data,
@@ -9,7 +9,6 @@ const SnapshotContent = ({
   completeTask,
   readOnly,
   isLoading,
-  isAdmin,
 }) => {
   const { proposal_number } = data;
   const formattedDate = new Date(updatedAt.toLocaleString()).toLocaleString();

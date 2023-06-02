@@ -1,10 +1,6 @@
-import useTranslation from 'next-translate/useTranslation';
-
 import DataGrid from '@/components/organisms/data-grid/data-grid';
 
 import { Stack } from '@mui/material';
-
-import { useDaoProfile } from '../context';
 
 type Props = {
   columns: any[]; //[ ] add interface/type
@@ -12,8 +8,6 @@ type Props = {
 };
 
 export default function StaticGridViewTab({ columns, data }: Props) {
-  const { t } = useTranslation('protocol');
-  const { dao } = useDaoProfile();
   const gridData = {
     pages: [data],
   };

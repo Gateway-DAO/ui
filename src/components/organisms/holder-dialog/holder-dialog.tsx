@@ -1,4 +1,3 @@
-import useTranslation from 'next-translate/useTranslation';
 import { Dispatch, Fragment, SetStateAction, useState } from 'react';
 import { ChangeEvent } from 'react';
 
@@ -36,7 +35,6 @@ export function HolderDialog({
   const { gqlAuthMethods } = useAuth();
 
   const [filter, setFilter] = useState('');
-  const { t } = useTranslation('credential');
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setFilter(event.target.value);
   };
@@ -48,7 +46,6 @@ export function HolderDialog({
     isFetchingNextPage,
     fetchNextPage,
     refetch,
-    isFetching,
   } = useInfiniteQuery(
     ['holders_by_gate', credentialId],
     ({ pageParam = 0 }) =>

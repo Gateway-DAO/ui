@@ -18,7 +18,7 @@ export default function DashboardCard({
   caption,
   indicator,
 }: Props) {
-  const { t, lang } = useTranslation('protocol');
+  const { lang } = useTranslation('protocol');
   return (
     <Paper
       elevation={2}

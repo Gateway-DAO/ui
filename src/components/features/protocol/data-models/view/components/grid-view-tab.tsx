@@ -1,4 +1,3 @@
-import useTranslation from 'next-translate/useTranslation';
 import { useEffect } from 'react';
 
 import Loading from '@/components/atoms/loadings/loading';
@@ -26,7 +25,6 @@ export default function GridViewTab({
   queryFnName,
   pageSize,
 }: Props) {
-  const { t } = useTranslation('protocol');
   const internalPageSize = pageSize || 10;
   const {
     data: credentials, //[ ] Rename this data credentials

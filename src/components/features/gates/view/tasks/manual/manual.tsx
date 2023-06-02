@@ -52,7 +52,7 @@ const ManualContent = ({
     ['manual-task-events', currentTaskProgress?.id],
     () =>
       gqlAuthMethods.manual_task_events({
-        task_progress_id: currentTaskProgress!.id,
+        task_progress_id: currentTaskProgress?.id,
       }),
     {
       enabled: isManualTaskEventsEnabled,

@@ -60,13 +60,11 @@ interface Error {
 }
 
 export function Task({
-  idx,
   gate,
   task,
   isDefaultOpen,
   readOnly,
   isAdmin = false,
-  completed: completedProp = false,
 }: Props) {
   const { me, gqlAuthMethods, onOpenLogin } = useAuth();
 
@@ -159,7 +157,7 @@ export function Task({
     ['completeTask', { gateId: task.gate_id, taskId: task.id }],
     gqlAuthMethods.complete_task,
     {
-      onSuccess: (data) => {
+      onSuccess: () => {
         try {
           queryClient.resetQueries(['user_task_progresses', me?.id]);
         } catch (err) {

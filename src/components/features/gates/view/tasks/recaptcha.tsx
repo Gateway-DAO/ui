@@ -25,12 +25,7 @@ type Props = {
   isEnabled: boolean;
   onCompleteGate: () => void;
 };
-export function RecaptchaTask({
-  taskNumber,
-  isEnabled,
-  gateId,
-  onCompleteGate,
-}: Props) {
+export function RecaptchaTask({ isEnabled, gateId, onCompleteGate }: Props) {
   const { me, gqlAuthMethods } = useAuth();
   const [recaptchaResponse, setRecaptchaResponse] = useState<string>();
   const [expanded, toggleExpanded] = useToggle(isEnabled);

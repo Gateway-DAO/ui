@@ -25,7 +25,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 
 import { CreateGateData } from './schema';
 
-const StyledToggleButton = styled(ToggleButton)(({ theme }) => ({
+const StyledToggleButton = styled(ToggleButton)(() => ({
   '&.MuiToggleButton-root': {
     fontWeight: 700,
     minWidth: '64px',

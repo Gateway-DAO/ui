@@ -75,7 +75,7 @@ export default function ClaimFormArray({
             label={label}
             sx={{ width: '100%' }}
             id={`data-model-field-${fieldName}-${index}`}
-            onKeyUp={(e) => checkIfIsEmpty()}
+            onKeyUp={() => checkIfIsEmpty()}
             {...register(`claim.${fieldName}.${index}`, {
               valueAsNumber: subType === 'number',
               required: true,

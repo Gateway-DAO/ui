@@ -1,16 +1,10 @@
-import React, { forwardRef } from 'react';
+import { forwardRef } from 'react';
 
-import { TOKENS } from '@/theme';
-
-import { Avatar, Box, CardMedia, Stack, Typography } from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material';
 import { OverridableComponent } from '@mui/material/OverridableComponent';
 import { BoxTypeMap } from '@mui/system';
 
-import {
-  DEFAULT_MAX_WIDTH,
-  DEFAULT_PADDINGX,
-  ResponsiveImage,
-} from '../styles';
+import { ResponsiveImage } from '../styles';
 import { ProductShowProps } from './types';
 
 export const ProductShow = forwardRef<

@@ -1,4 +1,3 @@
-import useTranslation from 'next-translate/useTranslation';
 import { useEffect } from 'react';
 
 import Loading from '@/components/atoms/loadings/loading';
@@ -28,7 +27,6 @@ export default function GridViewTab({
   pageSize,
   parameterName,
 }: Props) {
-  const { t } = useTranslation('protocol');
   const { dao } = useDaoProfile();
   const internalPageSize = pageSize || 10;
   const {

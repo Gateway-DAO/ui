@@ -1,5 +1,3 @@
-import dynamic from 'next/dynamic';
-
 import { PlaygroundTab } from '@/components/features/protocol/data-models/view/components/playground-tab';
 import { DataModelLayout } from '@/components/features/protocol/data-models/view/layout';
 

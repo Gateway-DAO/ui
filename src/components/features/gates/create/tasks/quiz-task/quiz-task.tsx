@@ -124,7 +124,7 @@ export function QuizTask({
       );
     }
   };
-  const StyledToggleButton = styled(ToggleButton)(({ theme }) => ({
+  const StyledToggleButton = styled(ToggleButton)(() => ({
     '&.MuiToggleButton-root': {
       fontWeight: 700,
       minWidth: '64px',
@@ -502,7 +502,7 @@ export function QuizTask({
                         name={`tasks.${taskId}.task_data.${setting.formName}`}
                         control={control}
                         defaultValue={setting.defaultValue}
-                        render={({ field: { onChange, value, ref } }) => {
+                        render={({ field: { onChange, value } }) => {
                           return (
                             <FormControl>
                               <Stack

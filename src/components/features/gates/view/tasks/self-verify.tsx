@@ -2,7 +2,6 @@ import Link from 'next/link';
 import { Fragment, useState } from 'react';
 
 import { LoadingButton } from '@/components/atoms/buttons/loading-button';
-import normalizeUrl from 'normalize-url';
 
 import DescriptionIcon from '@mui/icons-material/Description';
 import {
@@ -41,7 +40,6 @@ const SelfVerifyContent = ({
   completeTask,
   readOnly,
   isLoading,
-  isAdmin,
 }) => {
   const formattedDate = new Date(updatedAt.toLocaleString()).toLocaleString();
   const [visit, setVisited] = useState<number>(0);

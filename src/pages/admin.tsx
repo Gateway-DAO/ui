@@ -1,5 +1,3 @@
-import { InferGetStaticPropsType } from 'next';
-
 import { AdminArea } from '@/components/organisms/admin';
 import { DashboardTemplate } from '@/components/templates/dashboard';
 import { ROUTES } from '@/constants/routes';

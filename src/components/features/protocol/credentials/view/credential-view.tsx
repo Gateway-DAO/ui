@@ -37,7 +37,6 @@ export default function CredentialProtocolView({ credential }: Props) {
     shareStatus,
     mintCredential,
     mintData,
-    showMintButton,
     isReceivedCredential,
     isAllowedToMint,
   } = useMintData({ credential });

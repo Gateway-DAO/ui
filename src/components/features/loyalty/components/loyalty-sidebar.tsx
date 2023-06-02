@@ -58,7 +58,6 @@ export function LoyaltySidebar({
     shareIsOpen,
     setShareIsOpen,
     mintCredential,
-    mintData,
     showMintButton,
   } = useMintData({
     credential: protocolCredential,
