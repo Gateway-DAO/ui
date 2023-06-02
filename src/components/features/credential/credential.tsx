@@ -47,11 +47,11 @@ type Props = {
   openModal: () => void;
 };
 
-export function CredentialTemplate({ credential, openModal }: Props) {
+export function CredentialTemplate({ credential }: Props) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
-  const { me, gqlAuthMethods } = useAuth();
+  const { me } = useAuth();
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
