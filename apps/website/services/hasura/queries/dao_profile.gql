@@ -97,7 +97,7 @@ query dao_profile_by_slug($slug: String!) {
 
 query dao_gates_tab($id: uuid!) {
   daos_by_pk(id: $id) {
-    gates {
+    gates(order_by: { created_at: desc }) {
       id
       title
       description
@@ -105,6 +105,7 @@ query dao_gates_tab($id: uuid!) {
       image
       published
       loyalty_id
+      created_at
       dao {
         id
       }

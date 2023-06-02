@@ -34,11 +34,10 @@ export default function SuccessfullyCreated({ credentialId }: Props) {
       }),
     {
       select: (data) => data?.credential,
-      refetchOnMount: false,
-      refetchOnWindowFocus: false,
+
     }
   );
-
+    console.log(credential.data)
   return (
     <Stack>
       {credential.isLoading ? (

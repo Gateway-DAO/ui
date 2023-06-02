@@ -12,6 +12,7 @@ import { getCredentialImageURLParams } from '../../../../utils/credential/build-
 type Props = InferGetServerSidePropsType<typeof getServerSideProps>;
 
 export default function ProtocolCredential({ credential, ogImage }: Props) {
+  console.log(credential)
   return (
     <>
       {credential.id && (

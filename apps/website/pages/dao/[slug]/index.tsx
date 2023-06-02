@@ -38,7 +38,6 @@ export default function DaoProfilePage({
     () => gqlAuthMethods.dao_gates_tab({ id: daoProps.id }),
     { enabled: !!daoProps?.id }
   );
-
   return (
     <>
       <HeadContainer

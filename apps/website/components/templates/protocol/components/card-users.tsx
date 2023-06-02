@@ -39,11 +39,9 @@ export default function CardUsers({
       }),
     {
       select: (data) => data.users?.[0],
-      refetchOnMount: false,
-      refetchOnWindowFocus: false,
     }
   );
-
+    console.log(issuer)
   const organization = useQuery(
     ['organization', issuerOrganization?.id],
     () =>
