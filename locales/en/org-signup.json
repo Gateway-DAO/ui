@@ -1,0 +1,73 @@
+{
+  "logo-alternative-text": "Gateway logo",
+  "page-title": "Create organization",
+  "page-description": "Create your organization on Gateway",
+  "step-create-profile": {
+    "title": "Create your organization profile",
+    "description": "Welcome to the organization application form! We're excited to learn more about your organization and help you issue your first credentials.",
+    "action": "Let's get started"
+  },
+  "step-name": {
+    "title": "Name your organization profile",
+    "description": "You're free to choose any name you like that is unique to your organization. This name will represent your brand within our platform. We're excited to learn more about your organization and help you issue your first credentials.",
+    "label": "Organization Name",
+    "action": "Continue"
+  },
+  "step-gatewayId": {
+    "title": "Create your organization's Gateway ID",
+    "description": "Through the ID your organization is recognized and found within the Gateway. Only use lowercase letters, numbers and the symbols  “._-”.",
+    "label": "@ Enter your ID",
+    "action": "Continue"
+  },
+  "step-categories": {
+    "title": "Which of the categories describe your organization?",
+    "description": "Select one or more categories that best define your organization.",
+    "label": "Categories",
+    "action": "Category"
+  },
+  "step-about": {
+    "title": "Tell about your organization",
+    "description": "Type a brief description about your organization. A good description to have 2-3 sentences",
+    "label": "Description",
+    "action": "Continue"
+  },
+  "step-website": {
+    "title": "What's your website?",
+    "description": "Please share your company's website with us so we can get a better sense of your web presence and relevance to web3.",
+    "label": "Website",
+    "action": "Continue"
+  },
+  "step-email": {
+    "title": "What's your corporate email?",
+    "description": "Please share your corporate email (associated with the Company's URL. This will be our best way to connect and follow up on your status.",
+    "label": "Corporate email",
+    "action": "Continue"
+  },
+  "step-role": {
+    "title": "What's your role?",
+    "description": "To help us better understand your relationship with your company, please select your position from the dropdown menu below.",
+    "label": "Your role",
+    "action": "Continue"
+  },
+  "step-twitter": {
+    "title": "What's is organization twitter username?",
+    "description": "We're excited to see your organization's social media presence. Please share your Twitter account so we can stay updated on your latest news and updates.",
+    "label": "Twitter username",
+    "action": "Continue"
+  },
+  "step-telegram": {
+    "title": "Let's stay in touch!",
+    "description": "We want to make sure we can reach you if we have any questions or need additional information about your application. Please provide us with your Telegram username.",
+    "label": "Telegram username",
+    "action-empty": "Skip and finish",
+    "action": "Finish"
+  },
+  "step-success": {
+    "title": "Aplication submitted sucessfully",
+    "text": "We are reviewing your application.\n\nIn the meantime, you can customize your space, draft credentials, but can not issue them publicly.\n\nThe profile and draft credentials will be deleted if your application is denied. If you have questions, don't hesitate to get in touch with us via email or Discord.",
+    "action": "Go to my profile",
+    "stepper-1": "Application",
+    "stepper-2": "Review",
+    "stepper-3": "Feedback"
+  }
+}
