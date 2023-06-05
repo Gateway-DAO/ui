@@ -37,12 +37,12 @@ export function Menu({
         justifyContent="space-between"
         alignItems="center"
         py={4}
-        sx={(theme) => ({
+        sx={{
           position: 'relative',
           maxWidth: DEFAULT_MAX_WIDTH,
           left: '50%',
           transform: 'translate(-50%, 0)',
-        })}
+        }}
       >
         <MotionBox
           sx={(theme) => ({

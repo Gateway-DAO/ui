@@ -1,6 +1,6 @@
 import { useSession } from 'next-auth/react';
 
-import { LoadingButton } from '@/components/atoms/loading-button';
+import { LoadingButton } from '@/components/atoms/buttons/loading-button';
 import { useAuth } from '@/providers/auth';
 
 import { NavBarAvatar } from './navbar-avatar';

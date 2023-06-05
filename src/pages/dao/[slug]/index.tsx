@@ -1,11 +1,11 @@
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
 import { useRouter } from 'next/router';
 
-import { HeadContainer } from '@/components/molecules/head-container';
 import {
-  DaoProfileTemplate,
+  DaoProfile,
   DaoProfileProvider,
-} from '@/components/templates/dao-profile';
+} from '@/components/features/daos/view';
+import { HeadContainer } from '@/components/molecules/head-container';
 import { DashboardTemplate } from '@/components/templates/dashboard';
 import { useAuth } from '@/providers/auth';
 import { gatewayProtocolSDK } from '@/services/gateway-protocol/api';
@@ -62,7 +62,7 @@ export default function DaoProfilePage({
           stats={stats}
           loyaltyPrograms={loyaltyPrograms}
         >
-          <DaoProfileTemplate />
+          <DaoProfile />
         </DaoProfileProvider>
       </DashboardTemplate>
     </>

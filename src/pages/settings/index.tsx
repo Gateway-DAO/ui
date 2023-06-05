@@ -1,9 +1,9 @@
+import { Settings } from '@/components/features/settings';
 import { HeadContainer } from '@/components/molecules/head-container';
 import { DashboardTemplate } from '@/components/templates/dashboard';
-import { SettingsTemplate } from '@/components/templates/settings';
 import { useAuth } from '@/providers/auth';
 
-export default function Settings() {
+export default function SettingsPage() {
   const { me } = useAuth();
 
   return me?.id ? (
@@ -17,10 +17,10 @@ export default function Settings() {
           height: '100%',
         }}
       >
-        <SettingsTemplate />
+        <Settings />
       </DashboardTemplate>
     </>
   ) : null;
 }
 
-Settings.auth = true;
+SettingsPage.auth = true;

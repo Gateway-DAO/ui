@@ -1,7 +1,7 @@
 import React from 'react';
 
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { Avatar, IconButton, Popover, Stack, Typography } from '@mui/material';
+import { Avatar, IconButton, Popover, Typography } from '@mui/material';
 
 type MorePopoverProps = {
   options: {

@@ -1,6 +1,6 @@
+import { CreditScoreTemplate } from '@/components/features/credit-score';
 import { HeadContainer } from '@/components/molecules/head-container';
 import { Navbar } from '@/components/organisms/navbar';
-import { CreditScoreTemplate } from '@/components/templates/credit-score';
 import { DashboardTemplate } from '@/components/templates/dashboard';
 
 import { Box } from '@mui/material';

@@ -2,8 +2,8 @@ import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
+import { Signup } from '@/components/features/signup';
 import { HeadContainer } from '@/components/molecules/head-container';
-import { NewUserTemplate } from '@/components/templates/new-user';
 import { ROUTES } from '@/constants/routes';
 import { useAuth } from '@/providers/auth';
 
@@ -20,7 +20,7 @@ export default function NewUser() {
   return (
     <>
       <HeadContainer title={t('title-send-email')} />
-      <NewUserTemplate />
+      <Signup />
     </>
   );
 }
