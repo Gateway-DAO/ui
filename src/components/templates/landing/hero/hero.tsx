@@ -108,9 +108,9 @@ export const Hero = forwardRef<
           {enterButton}
         </MotionBox>
         <Box
-        position={isMobile ? 'absolute' : 'relative'}
-        bottom={0}
-        zIndex={2}
+          position={isMobile ? 'absolute' : 'relative'}
+          bottom={0}
+          zIndex={2}
         >
           <Button
             variant="outlined"
