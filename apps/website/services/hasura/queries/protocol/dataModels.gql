@@ -20,7 +20,11 @@ query dataModels($take: Int!, $skip: Int!) {
 }
 
 query findRecipientsByDataModel($dataModelId: uuid!, $take: Int!, $skip: Int!) {
-  protocol_user(where: {credentials: {dataModelId: {_eq: $dataModelId}}}, limit: $take, offset: $skip) {
+  protocol_user(
+    where: { credentials: { dataModelId: { _eq: $dataModelId } } }
+    limit: $take
+    offset: $skip
+  ) {
     id
     gatewayId
     gatewayUser {
@@ -31,6 +35,29 @@ query findRecipientsByDataModel($dataModelId: uuid!, $take: Int!, $skip: Int!) {
         s3_key
         blur
       }
+    }
+  }
+}
+
+query findCredentialsByDataModelProtocol(
+  $dataModelId: uuid!
+  $take: Int!
+  $skip: Int!
+) {
+  protocol_data_model_by_pk(id: $dataModelId) {
+    credentials(limit: $take, offset: $skip, order_by: { createdAt: desc }) {
+      id
+      tags
+      status
+      issuerUser {
+        gatewayId
+        id
+      }
+      recipientUser {
+        id
+        gatewayId
+      }
+      status
     }
   }
 }

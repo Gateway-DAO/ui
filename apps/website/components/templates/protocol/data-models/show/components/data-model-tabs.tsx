@@ -133,7 +133,7 @@ export default function DataModelTabs({ dataModel, stats }: Props) {
           dataModel={dataModel}
           columns={credentialGridColumns}
           queryString={query.credentialsByDataModel}
-          queryFnName={'findCredentialsByDataModel'}
+          queryFnName={'findCredentialsByDataModelProtocol'}
           pageSize={10}
         />
       ),

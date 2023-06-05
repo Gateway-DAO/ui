@@ -10,6 +10,7 @@ import {
   gatewayProtocolSDK,
   GatewayProtocolSDKTypes,
 } from '../../../../../../services/gateway-protocol/api';
+import {GqlMethods} from "../../../../../../services/hasura/api"
 import { DataModel } from '../../../../../../services/gateway-protocol/types';
 import Loading from '../../../../../atoms/loading';
 import DataGrid from '../../../../../organisms/data-grid/data-grid';
@@ -18,7 +19,7 @@ type Props = {
   dataModel: PartialDeep<DataModel>;
   columns: any[]; //[ ] add interface/type
   queryString: string;
-  queryFnName: keyof GatewayProtocolSDKTypes;
+  queryFnName: keyof GatewayProtocolSDKTypes | keyof GqlMethods;
   pageSize?: number;
 };
 
@@ -29,6 +30,7 @@ export default function GridViewTab({
   queryFnName,
   pageSize,
 }: Props) {
+  
   const { t } = useTranslation('protocol');
   const internalPageSize = pageSize || 10;
   const {
@@ -53,7 +55,7 @@ export default function GridViewTab({
           : pages.length * internalPageSize,
     }
   );
-
+    console.log(credentials,queryString,dataModel.id)
   useEffect(() => {
     let fetching = false;
     const onScroll = async (event) => {
