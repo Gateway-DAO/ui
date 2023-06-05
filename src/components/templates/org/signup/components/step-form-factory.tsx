@@ -20,7 +20,7 @@ import StepFormHeader from './step-form-header';
 
 const CategoriesInput = dynamic(
   () => {
-    return import('../../../../molecules/categories-input');
+    return import('../../../../molecules/form/categories-input');
   },
   { ssr: false }
 );

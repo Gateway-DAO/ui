@@ -2,6 +2,7 @@ import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
+import Loading from '@/components/atoms/loadings/loading';
 import { brandColors } from '@/theme';
 import { useSnackbar } from 'notistack';
 import { useLocalStorage, useWindowSize } from 'react-use';
@@ -26,7 +27,6 @@ import { mutation } from '../../../../constants/queries';
 import { ROUTES } from '../../../../constants/routes';
 import { useMultistepForm } from '../../../../hooks/use-multistep-form';
 import { useAuth } from '../../../../providers/auth';
-import Loading from '../../../atoms/loading';
 import FormStepper from '../../../molecules/form-stepper/form-stepper';
 import RealTimeView, { StepNames } from './components/real-time-view';
 import { setUpFormComponents } from './components/set-up-form-components';
