@@ -46,7 +46,7 @@ export default function Error404() {
             {t('logo.title')}
           </Typography>
         </Box>
-        <Image src="/404.png" width="469px" height="161px" />
+        <Image src="/404.png" width="469px" height="161px" alt="404 image" />
         <Typography variant="h4" marginTop={3}>
           {t('title')}
         </Typography>

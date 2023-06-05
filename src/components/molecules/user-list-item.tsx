@@ -20,7 +20,7 @@ import {
 
 const FollowButtonUser = dynamic<any>(
   () =>
-    import('@/components/atoms/follow-button-user').then(
+    import('@/components/atoms/buttons/follow-button-user').then(
       (mod) => mod.FollowButtonUser
     ),
   {

@@ -1,7 +1,7 @@
 import useTranslation from 'next-translate/useTranslation';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { ReactNode, useEffect, useRef, useState } from 'react';
+import { ReactNode, useState } from 'react';
 
 import { HeadContainer } from '@/components/molecules/head-container';
 import TermsOfService from '@/components/molecules/terms-of-service';
@@ -12,8 +12,6 @@ import { MenuListItem } from '@/components/templates/landing/menu/types';
 import { DEFAULT_PADDINGX } from '@/components/templates/landing/styles';
 import { ROUTES } from '@/constants/routes';
 import { useAuth } from '@/providers/auth';
-import { theme } from '@/theme';
-import { useIntersection } from 'react-use';
 
 import { Box, Button } from '@mui/material';
 
@@ -30,7 +28,7 @@ export default function Terms() {
   };
 
   const menuList = t('menu', null, { returnObjects: true }) as MenuListItem[];
-  const [activeArea, setActiveArea] = useState('');
+  const [activeArea] = useState('');
 
   const signUpButton: ReactNode = (
     <Button

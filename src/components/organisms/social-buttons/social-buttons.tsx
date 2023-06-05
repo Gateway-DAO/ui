@@ -1,11 +1,9 @@
-import Link from 'next/link';
 import { PropsWithChildren } from 'react';
 
-import { SocialIcon } from '@/components/atoms/social-icon';
 import { Network } from '@/constants/dao';
 import { User_Socials } from '@/services/hasura/types';
 
-import { Stack, SxProps, IconButton, Avatar } from '@mui/material';
+import { Stack, SxProps } from '@mui/material';
 
 import { SocialButton } from './social-button';
 import { SocialCopyButton } from './social-copy-button';

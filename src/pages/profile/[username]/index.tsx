@@ -1,16 +1,15 @@
 import { useRouter } from 'next/router';
 
-import { dehydrate, QueryClient, useQuery } from '@tanstack/react-query';
-
+import { Profile } from '@/components/features/profile';
+import { ReceivedTab } from '@/components/features/profile/tabs';
 import { useAuth } from '@/providers/auth';
 import { gqlAnonMethods } from '@/services/hasura/api';
-import { ReceivedTab } from '@/components/templates/profile/tabs';
-import { ProfileTemplateLayout } from '@/components/templates/profile';
+import { dehydrate, QueryClient, useQuery } from '@tanstack/react-query';
 
 export default function ReceivedProfile() {
   const router = useRouter();
   const { username } = router.query;
-  const { me, gqlAuthMethods } = useAuth();
+  const { gqlAuthMethods } = useAuth();
 
   const {
     data: {
@@ -53,4 +52,4 @@ export const getServerSideProps = async ({ params }) => {
     },
   };
 };
-ReceivedProfile.PageLayout = ProfileTemplateLayout;
+ReceivedProfile.PageLayout = Profile;

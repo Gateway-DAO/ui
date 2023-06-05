@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 
-import { NewDAOTemplate, NewDAOSchema } from '@/components/templates/dao-new';
+import { NewDAO, NewDAOSchema } from '@/components/features/daos/create';
 import { ROUTES } from '@/constants/routes';
 import { generateImageUrl } from '@/hooks/use-file';
 import { useUploadImage } from '@/hooks/use-upload-image';
@@ -85,7 +85,7 @@ export default function DaoProfilePage({
   if (!dao || !isAdmin) return null;
 
   return (
-    <NewDAOTemplate
+    <NewDAO
       dao={dao}
       onSubmit={editDAOMutation.mutateAsync}
       isLoading={editDAOMutation.isLoading}

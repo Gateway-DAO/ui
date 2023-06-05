@@ -1,4 +1,5 @@
 /* eslint-disable @next/next/inline-script-id */
+import { SessionProvider } from 'next-auth/react';
 import { AppProps as NextAppProps } from 'next/app';
 import Script from 'next/script';
 import NextNProgress from 'nextjs-progressbar';
@@ -16,7 +17,6 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 import '@/components/atoms/global-dependencies';
 import '../styles/next.css';
-import { SessionProvider } from 'next-auth/react';
 
 type AppProps = NextAppProps & {
   Component: NextAppProps['Component'] & { auth?: boolean } & {

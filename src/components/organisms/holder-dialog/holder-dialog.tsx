@@ -1,8 +1,7 @@
-import useTranslation from 'next-translate/useTranslation';
-import { Dispatch, Fragment, SetStateAction, useMemo, useState } from 'react';
+import { Dispatch, Fragment, SetStateAction, useState } from 'react';
 import { ChangeEvent } from 'react';
 
-import { CenteredLoader } from '@/components/atoms/centered-loader';
+import { CenteredLoader } from '@/components/atoms/loadings/centered-loader';
 import { UserListItem } from '@/components/molecules/user-list-item';
 import { useAuth } from '@/providers/auth';
 import { useInfiniteQuery } from '@tanstack/react-query';
@@ -36,7 +35,6 @@ export function HolderDialog({
   const { gqlAuthMethods } = useAuth();
 
   const [filter, setFilter] = useState('');
-  const { t } = useTranslation('credential');
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setFilter(event.target.value);
   };
@@ -48,7 +46,6 @@ export function HolderDialog({
     isFetchingNextPage,
     fetchNextPage,
     refetch,
-    isFetching,
   } = useInfiniteQuery(
     ['holders_by_gate', credentialId],
     ({ pageParam = 0 }) =>
