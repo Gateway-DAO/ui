@@ -68,29 +68,6 @@ const config: CodegenConfig = {
         fetcher: 'graphql-request',
       },
     },
-    './src/services/gateway-protocol/types.ts': {
-      schema: `${process.env.GATEWAY_PROTOCOL_ENDPOINT}`,
-      documents: 'src/services/gateway-protocol/**/*.gql',
-      plugins: [
-        'typescript',
-        'typescript-operations',
-        'typescript-graphql-request',
-        'typescript-resolvers',
-      ],
-      config: {
-        scalars: {
-          _text: 'string',
-        },
-        defaultMapper: 'Partial<{T}>',
-        avoidOptionals: {
-          field: true,
-          inputValue: false,
-          object: true,
-          defaultValue: true,
-        },
-        fetcher: 'graphql-request',
-      },
-    },
   },
 };
 
