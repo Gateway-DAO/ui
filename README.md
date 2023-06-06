@@ -52,6 +52,14 @@ For end-2-end tests we are using [Playwrite](https://playwright.dev/) as our tes
 
 ## How to test
 We added the playwright in the dependencies, but you need to install the browsers, this can be achieve running the test command automatically in our `package.json`.
+
+Before testing, you should build your project.
+
+```sh
+pnpm build
+```
+
+After your project builded, just run your tests. Note that this tests runs in a production port, **(3000)**.
 ```sh
 pnpm test:e2e
 ```
