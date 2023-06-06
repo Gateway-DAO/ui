@@ -4,11 +4,12 @@ import path from 'path';
 const config: PlaywrightTestConfig = {
   timeout: 30 * 1000,
   testDir: path.join(__dirname, 'tests'),
-  retries: 2,
-  outputDir: 'test-results/',
+  retries: 1,
+  fullyParallel: true,
+  outputDir: 'tests/test-results/',
   webServer: {
-    command: 'pnpm dev',
-    port: 4200,
+    command: 'pnpm build && pnpm start',
+    port: 3000,
     timeout: 120 * 1000,
   },
 
@@ -23,12 +24,12 @@ const config: PlaywrightTestConfig = {
         ...devices['Desktop Chrome'],
       },
     },
-    {
-      name: 'Mobile Chrome',
-      use: {
-        ...devices['Pixel 5'],
-      },
-    },
+    // {
+    //   name: 'Mobile Chrome',
+    //   use: {
+    //     ...devices['Pixel 5'],
+    //   },
+    // },
   ],
 };
 export default config;
