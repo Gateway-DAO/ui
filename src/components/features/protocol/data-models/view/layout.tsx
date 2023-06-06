@@ -10,7 +10,6 @@ import { ClientNav } from '@/components/organisms/navbar/client-nav';
 import { DashboardTemplate } from '@/components/templates/dashboard';
 import { query } from '@/constants/queries';
 import { useAuth } from '@/providers/auth';
-import { gatewayProtocolSDK } from '@/services/gateway-protocol/api';
 import { gqlAnonMethods } from '@/services/hasura/api';
 import { Protocol_Api_PermissionType } from '@/services/hasura/types';
 import { brandColors, theme, TOKENS } from '@/theme';
@@ -83,9 +82,12 @@ export function DataModelLayout({ children }) {
 
   const { data: dataModel, isLoading } = useQuery(
     [query.dataModel, dataModelId],
-    async () => {
-      return (await gatewayProtocolSDK.dataModel({ id: dataModelId as string }))
-        .dataModel;
+    async () =>
+      gqlAnonMethods.protocol_data_model({ id: dataModelId as string }),
+    {
+      select(data) {
+        return data.protocol.dataModel;
+      },
     }
   );
 
@@ -120,19 +122,6 @@ export function DataModelLayout({ children }) {
     }
   }, [me]);
   // MOCK - END
-
-  const creator = useQuery(
-    ['issuer', dataModel?.id],
-    () =>
-      gqlAnonMethods.dao_profile_by_slug({
-        slug: 'gateway',
-      }),
-    {
-      select: (data) => data.daos?.[0],
-      refetchOnMount: false,
-      refetchOnWindowFocus: false,
-    }
-  );
 
   return (
     <>

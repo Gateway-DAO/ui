@@ -132,7 +132,9 @@ export function OverviewTab({ setTab, credentials, loyaltyPrograms }: Props) {
                   label={`${t(
                     'dao-profile:overview-tab.protocol_credentials_stats_card'
                   )}`}
-                  value={stats?.getTotalodCredentialsIssuedByOrganization}
+                  value={
+                    stats?.protocol?.getTotalodCredentialsIssuedByOrganization
+                  }
                 />
               </Stack>
             </Stack>

@@ -8,7 +8,6 @@ import {
 import { HeadContainer } from '@/components/molecules/head-container';
 import { DashboardTemplate } from '@/components/templates/dashboard';
 import { useAuth } from '@/providers/auth';
-import { gatewayProtocolSDK } from '@/services/gateway-protocol/api';
 import { gqlAnonMethods } from '@/services/hasura/api';
 import { useQuery } from '@tanstack/react-query';
 import { PartialDeep } from 'type-fest';
@@ -86,7 +85,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
       })
     : null;
   const stats = hasProtocolOrg
-    ? await gatewayProtocolSDK.getDaoStats({
+    ? await gqlAnonMethods.protocol_get_dao_stats({
         organizationId: protocolOrgId,
       })
     : null;

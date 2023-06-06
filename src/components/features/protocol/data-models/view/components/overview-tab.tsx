@@ -6,11 +6,11 @@ import ExternalLink from '@/components/atoms/external-link';
 import ConfirmDialog from '@/components/molecules/modal/confirm-dialog';
 import ModalRight from '@/components/molecules/modal/modal-right';
 import { useAuth } from '@/providers/auth';
-import { GetDataModelStatsQuery } from '@/services/gateway-protocol/types';
 import {
   GetDmStatsUntilDayBeforeQuery,
   Protocol_Api_DataModel,
   Protocol_Api_PermissionType,
+  Protocol_Get_Data_Model_StatsQuery,
 } from '@/services/hasura/types';
 import { theme } from '@/theme';
 import { brandColors } from '@/theme';
@@ -35,7 +35,7 @@ import TableSchema from './table-schema';
 
 type Props = {
   dataModel: PartialDeep<Protocol_Api_DataModel>;
-  stats: GetDataModelStatsQuery;
+  stats: Protocol_Get_Data_Model_StatsQuery;
   isCredentialCreate?: boolean;
   statsUntilYesterday?: GetDmStatsUntilDayBeforeQuery;
 };
@@ -154,37 +154,39 @@ export default function OverviewTab({
         >
           <DashboardCard
             label={t('data-model.issuers')}
-            value={stats?.getTotalofIssuersByDataModel}
+            value={stats?.protocol?.getTotalofIssuersByDataModel}
             caption={`from ${
-              stats?.getTotalofIssuersByDataModel -
+              stats?.protocol?.getTotalofIssuersByDataModel -
               statsUntilYesterday?.issuer_count?.aggregate?.count
             } (in 1 day)`}
             indicator={calculateGrowth(
-              stats?.getTotalofIssuersByDataModel,
+              stats?.protocol?.getTotalofIssuersByDataModel,
               statsUntilYesterday?.issuer_count?.aggregate?.count
             )}
           />
           <DashboardCard
             label={t('data-model.issued-credentials')}
-            value={stats?.getTotalCredentialsByDataModel}
+            value={stats?.protocol?.getTotalCredentialsByDataModel}
             caption={`from ${
-              stats?.getTotalCredentialsByDataModel -
+              stats?.protocol?.getTotalCredentialsByDataModel -
               statsUntilYesterday?.credential_count?.aggregate?.count
             } (in 1 day)`}
             indicator={calculateGrowth(
-              stats?.getTotalCredentialsByDataModel,
+              stats?.protocol?.getTotalCredentialsByDataModel,
               statsUntilYesterday?.credential_count?.aggregate?.count
             )}
           />
           <DashboardCard
             label={t('data-model.recipients')}
-            value={stats?.getTotalCredentialsByDataModelGroupByRecipient}
+            value={
+              stats?.protocol?.getTotalCredentialsByDataModelGroupByRecipient
+            }
             caption={`from ${
-              stats?.getTotalCredentialsByDataModelGroupByRecipient -
+              stats?.protocol?.getTotalCredentialsByDataModelGroupByRecipient -
               statsUntilYesterday?.recipient_count?.aggregate?.count
             } (in 1 day)`}
             indicator={calculateGrowth(
-              stats?.getTotalCredentialsByDataModelGroupByRecipient,
+              stats?.protocol?.getTotalCredentialsByDataModelGroupByRecipient,
               statsUntilYesterday?.recipient_count?.aggregate?.count
             )}
           />

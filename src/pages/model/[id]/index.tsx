@@ -2,7 +2,6 @@ import { InferGetServerSidePropsType, GetServerSidePropsContext } from 'next';
 import dynamic from 'next/dynamic';
 
 import { DataModelLayout } from '@/components/features/protocol/data-models/view/layout';
-import { gatewayProtocolSDK } from '@/services/gateway-protocol/api';
 import { gqlAnonMethods } from '@/services/hasura/api';
 const OverviewTab = dynamic(
   () =>
@@ -29,11 +28,11 @@ export default function ProtocolDataModel({
 }
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-  const dataModel = await gatewayProtocolSDK.dataModel({
+  const dataModel = await gqlAnonMethods.protocol_data_model({
     id: ctx.query.id as string,
   });
 
-  const stats = await gatewayProtocolSDK.getDataModelStats({
+  const stats = await gqlAnonMethods.protocol_get_data_model_stats({
     dataModelId: ctx.query.id as string,
   });
 
@@ -49,7 +48,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 
   return {
     props: {
-      dataModel: dataModel?.dataModel,
+      dataModel: dataModel?.protocol?.dataModel,
       stats,
       dataModelStatsUntilDayBefore,
     },
