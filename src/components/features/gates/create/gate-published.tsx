@@ -127,7 +127,6 @@ export default function GatePublishedModal({
           </Box>
           <Box
             sx={(theme) => ({
-              height: { xs: theme.spacing(45.49), md: theme.spacing(59.78) },
               width: { xs: theme.spacing(28.75), md: theme.spacing(37.75) },
               marginY: (theme) => theme.spacing(5),
             })}
@@ -141,11 +140,7 @@ export default function GatePublishedModal({
               {...gate}
             />
           </Box>
-          <Stack
-            direction="row"
-            justifyContent="center"
-            sx={{ mt: { xs: 6, md: 2 }, mb: 3 }}
-          >
+          <Stack direction="row" justifyContent="center" sx={{ mt: 0, mb: 3 }}>
             <Link
               href={
                 gate.loyalty_id
