@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "next dev -p 4200",
-    "start": "next start --prod",
+    "start": "next start",
     "serve": "next start",
     "lint": "next lint",
     "test": "jest --watch",
