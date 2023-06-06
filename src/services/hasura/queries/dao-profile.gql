@@ -153,3 +153,9 @@ query dao_info_by_id($id: uuid!) {
     background_url
   }
 }
+
+query check_org_by_gateway_id($gatewayId: String!) {
+  daos(where: {gateway_id: {_eq: $gatewayId}}) {
+    id
+  }
+}

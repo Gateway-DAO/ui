@@ -27,12 +27,10 @@ export const Hero = forwardRef<
     <Box
       ref={ref}
       component="section"
-      sx={{
-        width: '100%',
-        height: { sm: '100vh', xs: '100%' },
-        position: 'relative',
-        borderBottom: '1px solid rgba(229, 229, 229, 0.12)',
-      }}
+      position="relative"
+      width="100%"
+      height={{ sm: '100vh', xs: '100%' }}
+      borderBottom="1px solid rgba(229, 229, 229, 0.12)"
     >
       <Stack
         direction="column"
@@ -110,13 +108,9 @@ export const Hero = forwardRef<
           {enterButton}
         </MotionBox>
         <Box
-          sx={
-            isMobile && {
-              position: 'absolute',
-              bottom: 0,
-              zIndex: 2,
-            }
-          }
+          position={isMobile ? 'absolute' : 'relative'}
+          bottom={0}
+          zIndex={2}
         >
           <Button
             variant="outlined"
