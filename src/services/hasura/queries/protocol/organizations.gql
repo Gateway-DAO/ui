@@ -1,0 +1,61 @@
+query protocol_organization($id: String!) {
+  protocol {
+    organization(id: $id) {
+      id
+      gatewayId
+      name
+      description
+      issuedCredentials {
+        id
+        expirationDate
+        issuerUser {
+          id
+          gatewayId
+        }
+        createdAt
+        image
+      }
+      receivedCredentials {
+        id
+        expirationDate
+        recipientUser {
+          id
+          gatewayId
+        }
+        createdAt
+        image
+      }
+    }
+  }
+}
+
+query protocol_organization_by_gateway_id($gatewayId: String!) {
+  protocol {
+    organizationByGatewayId(gatewayId: $gatewayId) {
+      id
+      gatewayId
+      name
+      description
+      issuedCredentials {
+        id
+        expirationDate
+        issuerUser {
+          id
+          gatewayId
+        }
+        createdAt
+        image
+      }
+      receivedCredentials {
+        id
+        expirationDate
+        recipientUser {
+          id
+          gatewayId
+        }
+        createdAt
+        image
+      }
+    }
+  }
+}
