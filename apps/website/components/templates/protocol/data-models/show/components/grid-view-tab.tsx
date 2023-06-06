@@ -10,7 +10,10 @@ import {
   gatewayProtocolSDK,
   GatewayProtocolSDKTypes,
 } from '../../../../../../services/gateway-protocol/api';
-import {GqlMethods} from "../../../../../../services/hasura/api"
+import {
+  gqlAnonMethods,
+  GqlMethods,
+} from '../../../../../../services/hasura/api';
 import { DataModel } from '../../../../../../services/gateway-protocol/types';
 import Loading from '../../../../../atoms/loading';
 import DataGrid from '../../../../../organisms/data-grid/data-grid';
@@ -30,7 +33,6 @@ export default function GridViewTab({
   queryFnName,
   pageSize,
 }: Props) {
-  
   const { t } = useTranslation('protocol');
   const internalPageSize = pageSize || 10;
   const {
@@ -41,12 +43,22 @@ export default function GridViewTab({
   } = useInfiniteQuery(
     [queryString, dataModel.id],
     async ({ pageParam }) => {
-      const result = await gatewayProtocolSDK[queryFnName]({
-        dataModelId: dataModel.id,
-        take: internalPageSize,
-        skip: pageParam || 0,
-      } as any); //[ ] add interface/type
-      return result[queryFnName];
+      if (queryFnName.includes('Protocol')) {
+        const result = await gqlAnonMethods.findCredentialsByDataModelProtocol({
+          dataModelId: dataModel.id,
+          take: internalPageSize,
+          skip: pageParam || 0,
+        });
+        console.log(result)
+        return result.protocol_data_model_by_pk.credentials;
+      } else {
+        const result = await gatewayProtocolSDK[queryFnName]({
+          dataModelId: dataModel.id,
+          take: internalPageSize,
+          skip: pageParam || 0,
+        } as any); //[ ] add interface/type
+        return result[queryFnName];
+      }
     },
     {
       getNextPageParam: (lastPage, pages) =>
@@ -55,7 +67,6 @@ export default function GridViewTab({
           : pages.length * internalPageSize,
     }
   );
-    console.log(credentials,queryString,dataModel.id)
   useEffect(() => {
     let fetching = false;
     const onScroll = async (event) => {

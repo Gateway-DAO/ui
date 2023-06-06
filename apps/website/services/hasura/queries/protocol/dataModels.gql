@@ -49,6 +49,9 @@ query findCredentialsByDataModelProtocol(
       id
       tags
       status
+      createdAt
+      title
+      image
       issuerUser {
         gatewayId
         id
