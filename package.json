@@ -51,6 +51,7 @@
     "change-case": "^4.1.2",
     "clsx": "^1.1.1",
     "colord": "^2.9.2",
+    "copy-to-clipboard": "^3.3.3",
     "core-js": "^3.6.5",
     "emoji-picker-react": "4.0.0-rc.25",
     "ethers": "^5.7.0",
@@ -70,6 +71,7 @@
     "next-share": "^0.18.1",
     "next-translate": "^1.4.0",
     "nextjs-progressbar": "^0.0.14",
+    "normalize-url": "^8.0.0",
     "notistack": "^2.0.5",
     "qr-code-styling": "^1.6.0-rc.1",
     "react": "18.0.0",
@@ -97,6 +99,7 @@
     "twitter-lite": "^1.1.0",
     "type-fest": "^2.12.2",
     "use-breakpoint": "^3.0.2",
+    "uuid": "^9.0.0",
     "wagmi": "^0.11.6",
     "yup": "^0.32.11",
     "zod": "^3.17.3"
