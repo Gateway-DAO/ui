@@ -9,7 +9,7 @@
     "storybook": "nx storybook storybook",
     "dev": "nx run website:dev",
     "serve": "nx serve website",
-    "build": "nx build website --verbose",
+    "build": "nx build website --prod",
     "generate": "nx run website:generate",
     "generate:graphql": "nx run website:graphql-generate",
     "nx:upgrade": "nx migrate latest && yarn && nx migrate --run-migrations && rm migrations.json"
