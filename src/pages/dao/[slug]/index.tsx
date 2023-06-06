@@ -79,7 +79,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     ? currentDao.protocolOrganization.id
     : null;
   const credentials = hasProtocolOrg
-    ? await gatewayProtocolSDK.findCredentialsByIssuerOrganization({
+    ? await gqlAnonMethods.protocol_find_credentials_by_issuer_organization({
         issuerOrganizationId: protocolOrgId,
         skip: 0,
         take: 5,
@@ -101,7 +101,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
       daoProps: currentDao,
       loyaltyPrograms,
       issuedCredentials: credentials
-        ? (credentials.findCredentialsByIssuerOrganization as PartialDeep<Credential>[])
+        ? (credentials.protocol_credential as PartialDeep<Credential>[])
         : null,
       stats,
     },

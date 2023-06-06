@@ -28,11 +28,12 @@ export default function ReceivedTab({ user }: Props): JSX.Element {
       (user as PartialDeep<Users>).protocolUser?.id,
     ],
     async ({ pageParam }) => {
-      const result = await gqlAnonMethods.findCredentialsByRecipientUser({
-        recipientUserId: (user as PartialDeep<Users>).protocolUser?.id,
-        take: internalPageSize,
-        skip: pageParam || 0,
-      } as any);
+      const result =
+        await gqlAnonMethods.protocol_find_credentials_by_recipient_user({
+          recipientUserId: (user as PartialDeep<Users>).protocolUser?.id,
+          take: internalPageSize,
+          skip: pageParam || 0,
+        } as any);
 
       return result.protocol_credential;
     }

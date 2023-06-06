@@ -25,11 +25,12 @@ export function OverviewTab({ user, isPrivateProfile, setActiveTab }: Props) {
   const receivedCredentials = useQuery(
     [`${query.credentialsByRecipientUser}_home`, user.id],
     async () => {
-      const result = await gqlAnonMethods.findCredentialsByRecipientUser({
-        recipientUserId: (user as SessionUser).protocol?.id || user.id,
-        skip: 0,
-        take: 3,
-      });
+      const result =
+        await gqlAnonMethods.protocol_find_credentials_by_recipient_user({
+          recipientUserId: (user as SessionUser).protocol?.id || user.id,
+          skip: 0,
+          take: 3,
+        });
       return result.protocol_credential;
     }
   );
@@ -37,11 +38,12 @@ export function OverviewTab({ user, isPrivateProfile, setActiveTab }: Props) {
   const issuedCredentials = useQuery(
     [`${query.credentialsByIssuerUser}_home`, user.id],
     async () => {
-      const result = await gqlAnonMethods.findCredentialsByIssuerUser({
-        issuerUserId: (user as SessionUser).protocol?.id || user.id,
-        skip: 0,
-        take: 3,
-      });
+      const result =
+        await gqlAnonMethods.protocol_find_credentials_by_issuer_user({
+          issuerUserId: (user as SessionUser).protocol?.id || user.id,
+          skip: 0,
+          take: 3,
+        });
       return result.protocol_credential;
     }
   );

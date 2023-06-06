@@ -57,7 +57,7 @@ export default function ProtocolDataModelCredentials() {
       dataModelId={dataModelId as string}
       columns={credentialGridColumns}
       queryString={query.credentialsByDataModel}
-      queryFnName={'findCredentialsByDataModel'}
+      queryFnName="protocol_find_credential_by_data_model"
       pageSize={10}
     />
   );

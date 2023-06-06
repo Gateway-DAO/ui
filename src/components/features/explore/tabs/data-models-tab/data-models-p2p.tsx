@@ -12,7 +12,7 @@ export default function DataModelsP2P(): JSX.Element {
   const { data: dataModels, isLoading } = useQuery(
     ['data-models-p2p'],
     async () => {
-      const result = await gqlAnonMethods.dataModelsP2P({
+      const result = await gqlAnonMethods.protocol_data_models_p2p({
         take: 4,
         skip: 0,
       } as any);

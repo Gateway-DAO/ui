@@ -91,8 +91,6 @@ export function DaoProfile() {
           <GridViewTab
             columns={issuedColumns}
             queryString={query.credentialsIssuedByOrg}
-            queryFnName="findCredentialsByIssuerOrganization"
-            parameterName="issuerOrganizationId"
             pageSize={20}
           />
         ),

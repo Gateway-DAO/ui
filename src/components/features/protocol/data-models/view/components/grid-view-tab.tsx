@@ -2,10 +2,7 @@ import { useEffect } from 'react';
 
 import Loading from '@/components/atoms/loadings/loading';
 import DataGrid from '@/components/organisms/data-grid/data-grid';
-import {
-  gatewayProtocolSDK,
-  GatewayProtocolSDKTypes,
-} from '@/services/gateway-protocol/api';
+import { gqlAnonMethods, GqlProtocolMethods } from '@/services/hasura/api';
 import { useInfiniteQuery } from '@tanstack/react-query';
 
 import { Stack } from '@mui/material';
@@ -14,7 +11,7 @@ type Props = {
   dataModelId: string;
   columns: any[]; //[ ] add interface/type
   queryString: string;
-  queryFnName: keyof GatewayProtocolSDKTypes;
+  queryFnName: keyof GqlProtocolMethods;
   pageSize?: number;
 };
 
@@ -34,7 +31,7 @@ export default function GridViewTab({
   } = useInfiniteQuery(
     [queryString, dataModelId],
     async ({ pageParam }) => {
-      const result = await gatewayProtocolSDK[queryFnName]({
+      const result = await gqlAnonMethods[queryFnName]({
         dataModelId: dataModelId,
         take: internalPageSize,
         skip: pageParam || 0,

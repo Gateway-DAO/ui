@@ -1,4 +1,4 @@
-query dataModels($take: Int!, $skip: Int!) {
+query protocol_data_models($take: Int!, $skip: Int!) {
   protocol_data_model(
     limit: $take
     offset: $skip
@@ -24,7 +24,7 @@ query dataModels($take: Int!, $skip: Int!) {
   }
 }
 
-query dataModelsP2P($take: Int!, $skip: Int!) {
+query protocol_data_models_p2p($take: Int!, $skip: Int!) {
   protocol_data_model(
     where: { permissioning: { _eq: "ALL" } }
     limit: $take

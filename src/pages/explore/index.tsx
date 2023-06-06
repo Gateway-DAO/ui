@@ -19,7 +19,7 @@ export const getStaticProps = async () => {
     },
   });
 
-  const dataModels = await gqlAnonMethods.dataModelsP2P({ skip: 0, take: 4 });
+  const dataModels = await gqlAnonMethods.protocol_data_models_p2p({ skip: 0, take: 4 });
 
   return {
     props: {
