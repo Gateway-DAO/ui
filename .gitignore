@@ -51,4 +51,8 @@ src/services/**/**/validation.ts
 # Sentry
 .sentryclirc
 
+# Tests
+screenshots/
+test-results/
+
 .next
