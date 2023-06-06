@@ -10,7 +10,7 @@ export function ConnectionHandlerGithub(): AccountHandlerConnection {
     'github_access_token',
     ''
   );
-  const [githubRedirectUrl, setGithubRedirectUrl, removeGithubRedirectUrl] =
+  const [_githubRedirectUrl, setGithubRedirectUrl, removeGithubRedirectUrl] =
     useLocalStorage('github_redirect_url');
 
   const client_id = process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID;

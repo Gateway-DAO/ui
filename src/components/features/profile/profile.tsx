@@ -9,7 +9,6 @@ import { SocialButtons } from '@/components/organisms/social-buttons';
 import DashboardTemplate from '@/components/templates/dashboard/dashboard';
 import { generateImageUrl } from '@/hooks/use-file';
 import { useAuth } from '@/providers/auth';
-import { gatewayProtocolSDK } from '@/services/gateway-protocol/api';
 import { gqlAnonMethods } from '@/services/hasura/api';
 import { TOKENS } from '@/theme';
 import { useQuery } from '@tanstack/react-query';
