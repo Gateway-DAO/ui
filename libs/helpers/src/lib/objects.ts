@@ -5,7 +5,7 @@ const validateKey = (value: any): boolean => {
   const isNotEmpty = value?.length && value.length > 0;
   return isNotUndefined && isNotNull && isNotEmpty;
 };
-export const clearObject = <T>(obj: T): Partial<T> => {
+export const clearObject = <T extends object>(obj: T): Partial<T> => {
   const res = Object.keys(obj).reduce((acc, key) => {
     const value = obj[key as keyof T];
     if (validateKey(value)) {
