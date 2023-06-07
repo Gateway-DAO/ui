@@ -42,7 +42,7 @@ export function Signup() {
 
   const signupMutation = useMutation(
     ['signup'],
-    async ({ ...data }: NewUserSchema) => {
+    async (data: NewUserSchema) => {
       setSendEmailData(data);
       return gqlAuthMethods.protocol_signup({
         email: data.email_address,
@@ -81,7 +81,7 @@ export function Signup() {
 
   const signupConfirmationMutation = useMutation(
     ['signupConfirmation'],
-    async ({ ...data }: TokenConfirmationSchema) => {
+    async (data: TokenConfirmationSchema) => {
       return gqlAuthMethods.protocol_signup_confirmation({
         code: parseInt(data.token, 10),
         gateway_id: sendEmailData.username,
