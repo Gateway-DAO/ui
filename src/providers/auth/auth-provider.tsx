@@ -62,8 +62,7 @@ export function AuthProvider({
   const isBlocked = !!isAuthPage && (!me || !token);
 
   const hasuraUserService = useMemo(
-    () =>
-      hasuraApiWithRefresh(session?.token, session?.hasura_id, onInvalidRT),
+    () => hasuraApiWithRefresh(session?.token, session?.hasura_id, onInvalidRT),
     [session]
   );
 

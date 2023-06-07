@@ -51,10 +51,8 @@ export function useMintData({ credential, loyaltyProgramId, gateId }: Props) {
 
   const mintCredential = useMutation(
     [query.mintCredential],
-    ({ credentialId }: Protocol_Mint_CredentialMutationVariables) => {
-      return hasuraUserService.protocol_mint_credential({
-        credentialId: credentialId,
-      });
+    (data: Protocol_Mint_CredentialMutationVariables) => {
+      return hasuraUserService.protocol_mint_credential(data);
     },
     {
       onSuccess: (data) => {

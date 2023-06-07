@@ -72,7 +72,7 @@ export function DaoProfile() {
           <OverviewTab
             people={people}
             setTab={setTab}
-            credentials={credentials?.daos_by_pk.gates}
+            credentials={credentials?.daos_by_pk?.gates}
             loyaltyPrograms={loyaltyPrograms}
           />
         ),
@@ -114,7 +114,11 @@ export function DaoProfile() {
       });
     }
     return hasProtocolOrganization ? dApptabs.concat(protocolTabs) : dApptabs;
-  }, [hasProtocolOrganization, loyaltyPrograms]);
+  }, [
+    hasProtocolOrganization,
+    loyaltyPrograms,
+    credentials?.daos_by_pk?.gates,
+  ]);
 
   return (
     <>

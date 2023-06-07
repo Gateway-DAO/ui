@@ -12,6 +12,12 @@ export type HasuraProtocolApi = {
     : never]: HasuraApi[K];
 };
 
+export type GqlProtocolMethods = {
+  [K in keyof GqlMethods as K extends `protocol_${string}`
+    ? K
+    : never]: GqlMethods[K];
+};
+
 const glqAnonClient = new GraphQLClient(
   process.env.NEXT_PUBLIC_HASURA_ENDPOINT
 );

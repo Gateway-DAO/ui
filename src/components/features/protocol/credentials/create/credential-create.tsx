@@ -95,11 +95,8 @@ export default function CredentialCreateForm({
 
   const createCredential = useMutation(
     ['createCredential'],
-    ({ ...data }: Protocol_Create_CredentialMutationVariables) => {
-      return hasuraUserService.protocol_create_credential({
-        ...data,
-      });
-    }
+    (data: Protocol_Create_CredentialMutationVariables) =>
+      hasuraUserService.protocol_create_credential(data)
   );
 
   const uploadArweave = useMutation(['uploadArweave'], (base64: string) =>

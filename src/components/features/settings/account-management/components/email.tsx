@@ -44,7 +44,7 @@ export default function Email() {
 
   const sendEmailMutation = useMutation(
     [query.create_code_change_email],
-    async ({ ...data }: SendEmailSchema) => {
+    async (data: SendEmailSchema) => {
       setSendEmailData(data);
       return hasuraUserService.create_code({
         user_id: me?.id,
