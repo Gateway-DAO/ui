@@ -8,7 +8,7 @@ import { useMutation } from '@tanstack/react-query';
 
 export default function CreateDAO() {
   const uploadImage = useUploadImage();
-  const { me, gqlAuthMethods, onUpdateMe } = useAuth();
+  const { me, hasuraUserService, onUpdateMe } = useAuth();
   const router = useRouter();
 
   const createDAOMutation = useMutation(
@@ -31,7 +31,7 @@ export default function CreateDAO() {
         }),
       ]);
 
-      return gqlAuthMethods.create_dao({
+      return hasuraUserService.create_dao({
         ...daoData,
         logo_id: logo.upload_image.id,
         background_id: bg.upload_image.id,

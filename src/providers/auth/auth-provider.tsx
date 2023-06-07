@@ -11,7 +11,7 @@ import {
 
 import { AuthConnectingModal } from '@/components/organisms/auth-connecting-modal';
 import { AuthModal } from '@/components/organisms/auth-modal';
-import { gqlMethodsWithRefresh, gqlUserHeader } from '@/services/hasura/api';
+import { hasuraApiWithRefresh, hasuraUserHeader } from '@/services/hasura/api';
 
 import { BlockedPage } from './blocked-page';
 import { AuthContext } from './context';
@@ -61,9 +61,8 @@ export function AuthProvider({
 
   const isBlocked = !!isAuthPage && (!me || !token);
 
-  const gqlAuthMethods = useMemo(
-    () =>
-      gqlMethodsWithRefresh(session?.token, session?.hasura_id, onInvalidRT),
+  const hasuraUserService = useMemo(
+    () => hasuraApiWithRefresh(session?.token, session?.hasura_id, onInvalidRT),
     [session]
   );
 
@@ -75,7 +74,7 @@ export function AuthProvider({
           ...options,
           headers: {
             ...options.headers,
-            ...gqlUserHeader(token, me?.id),
+            ...hasuraUserHeader(token, me?.id),
           },
         }
       );
@@ -95,7 +94,7 @@ export function AuthProvider({
       value={{
         me,
         token,
-        gqlAuthMethods,
+        hasuraUserService,
         fetchAuth,
         onOpenLogin: () => setModalVisible(true),
         onSignOut,

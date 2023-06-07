@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 
 import Loading from '@/components/atoms/loadings/loading';
 import DataGrid from '@/components/organisms/data-grid/data-grid';
-import { gqlAnonMethods } from '@/services/hasura/api';
+import { hasuraPublicService } from '@/services/hasura/api';
 import { useInfiniteQuery } from '@tanstack/react-query';
 
 import { Stack } from '@mui/material';
@@ -27,11 +27,13 @@ export default function GridViewTab({ columns, queryString, pageSize }: Props) {
     [queryString, dao.protocolOrganization?.id],
     async ({ pageParam }) => {
       const result =
-        await gqlAnonMethods.protocol_find_credentials_by_issuer_organization({
-          issuerOrganizationId: dao.protocolOrganization?.id,
-          take: internalPageSize,
-          skip: pageParam || 0,
-        }); //[ ] add interface/type
+        await hasuraPublicService.protocol_find_credentials_by_issuer_organization(
+          {
+            issuerOrganizationId: dao.protocolOrganization?.id,
+            take: internalPageSize,
+            skip: pageParam || 0,
+          }
+        ); //[ ] add interface/type
       return result.protocol_credential;
     },
     {

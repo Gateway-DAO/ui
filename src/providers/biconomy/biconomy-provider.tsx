@@ -135,20 +135,20 @@ export function BiconomyProvider({ children }: ProviderProps) {
   });
 
   // From auth
-  const { me, gqlAuthMethods } = useAuth();
+  const { me, hasuraUserService } = useAuth();
 
   const { enqueueSnackbar } = useSnackbar();
 
   // Mint - backend
   const { mutateAsync: mintGasless } = useMutation(
     (credential: { id: string; uri?: string }) =>
-      gqlAuthMethods.mint_credential({ id: credential.id }),
+      hasuraUserService.mint_credential({ id: credential.id }),
     mintOptions
   );
 
   const { mutateAsync: updateCredential } = useMutation(
     (credential: { id: string; uri?: string; txHash?: string }) =>
-      gqlAuthMethods.update_credential_status({
+      hasuraUserService.update_credential_status({
         id: credential?.id,
         status: 'minted',
         transaction_url: `${getExplorer(

@@ -32,7 +32,7 @@ export function HolderDialog({
   setIsHolderDialog,
   credentialId,
 }: Props) {
-  const { gqlAuthMethods } = useAuth();
+  const { hasuraUserService } = useAuth();
 
   const [filter, setFilter] = useState('');
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -50,12 +50,12 @@ export function HolderDialog({
     ['holders_by_gate', credentialId],
     ({ pageParam = 0 }) =>
       filter?.length
-        ? gqlAuthMethods.holders_by_search({
+        ? hasuraUserService.holders_by_search({
             id: credentialId,
             search: `%${filter}%`,
             offset: pageParam,
           })
-        : gqlAuthMethods.holders_by_gate({
+        : hasuraUserService.holders_by_gate({
             id: credentialId,
             offset: pageParam,
           }),

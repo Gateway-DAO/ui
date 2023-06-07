@@ -4,14 +4,14 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import jwt from 'jsonwebtoken';
 
 import { SessionToken } from '../types/user';
-import { gqlAnonMethods } from './hasura/api';
+import { hasuraPublicService } from './hasura/api';
 
 const callLogin = async (
   signature: string,
   wallet: string
 ): Promise<SessionToken> => {
   try {
-    const res = await gqlAnonMethods.login({
+    const res = await hasuraPublicService.login({
       signature,
       wallet,
     });
@@ -31,7 +31,7 @@ const callLogin = async (
 };
 const callRefresh = async (token: SessionToken): Promise<SessionToken> => {
   try {
-    const res = await gqlAnonMethods.refresh({
+    const res = await hasuraPublicService.refresh({
       refresh_token: token.refresh_token,
     });
 

@@ -1,7 +1,7 @@
 import useTranslation from 'next-translate/useTranslation';
 
 import { ROUTES } from '@/constants/routes';
-import { gqlAnonMethods } from '@/services/hasura/api';
+import { hasuraPublicService } from '@/services/hasura/api';
 import { Protocol_Api_DataModel } from '@/services/hasura/types';
 import { theme } from '@/theme';
 import { useQuery } from '@tanstack/react-query';
@@ -32,7 +32,7 @@ export default function OverviewCardInfo({ dataModel }: Props) {
   const creator = useQuery(
     ['issuer', mockDataModel?.id],
     () =>
-      gqlAnonMethods.dao_profile_by_slug({
+      hasuraPublicService.dao_profile_by_slug({
         slug: 'gateway',
       }),
     {

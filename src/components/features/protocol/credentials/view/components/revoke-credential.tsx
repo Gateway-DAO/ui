@@ -25,12 +25,12 @@ export function RevokeCredential({ credential }: Props) {
   const { t } = useTranslation('protocol');
   const { enqueueSnackbar } = useSnackbar();
   const router = useRouter();
-  const { gqlAuthMethods, me } = useAuth();
+  const { hasuraUserService, me } = useAuth();
   const [confirmRevoke, setConfirmRevoke] = useState(false);
   const revokeCredential = useMutation(
     ['revokeCredential'],
     ({ id }: ProtocolMutationRevokeCredentialArgs) => {
-      return gqlAuthMethods.protocol_revoke_credential({ id });
+      return hasuraUserService.protocol_revoke_credential({ id });
     }
   );
 

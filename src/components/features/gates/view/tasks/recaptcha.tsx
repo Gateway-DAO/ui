@@ -26,7 +26,7 @@ type Props = {
   onCompleteGate: () => void;
 };
 export function RecaptchaTask({ isEnabled, gateId, onCompleteGate }: Props) {
-  const { me, gqlAuthMethods } = useAuth();
+  const { me, hasuraUserService } = useAuth();
   const [recaptchaResponse, setRecaptchaResponse] = useState<string>();
   const [expanded, toggleExpanded] = useToggle(isEnabled);
   const recaptchaRef = useRef<Reaptcha>(null);
@@ -41,7 +41,7 @@ export function RecaptchaTask({ isEnabled, gateId, onCompleteGate }: Props) {
 
   const completeGate = useMutation(
     ['complete-gate', { gateId }],
-    gqlAuthMethods.complete_gate,
+    hasuraUserService.complete_gate,
     {
       onSuccess: () => {
         onCompleteGate();

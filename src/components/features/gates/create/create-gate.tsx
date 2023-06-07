@@ -44,7 +44,7 @@ export function CreateGate({ oldData }: CreateGateProps) {
   });
 
   const router = useRouter();
-  const { gqlAuthMethods } = useAuth();
+  const { hasuraUserService } = useAuth();
 
   const [confirmPublish, setConfirmPublish] = useState(false);
   const [isPublished, setIsPublished] = useState(false);
@@ -54,7 +54,10 @@ export function CreateGate({ oldData }: CreateGateProps) {
 
   const { enqueueSnackbar } = useSnackbar();
 
-  const uploadImage = useMutation(['uploadImage'], gqlAuthMethods.upload_image);
+  const uploadImage = useMutation(
+    ['uploadImage'],
+    hasuraUserService.upload_image
+  );
 
   const createGate = useMutation(
     ['createGate'],
@@ -65,20 +68,23 @@ export function CreateGate({ oldData }: CreateGateProps) {
     }: Create_Gate_Tasks_BasedMutationVariables &
       Create_Gate_DirectMutationVariables) => {
       if (data.type === 'direct') {
-        return gqlAuthMethods.create_gate_direct({
+        return hasuraUserService.create_gate_direct({
           ...data,
           whitelisted_wallets_file,
         });
       }
-      return gqlAuthMethods.create_gate_tasks_based({ ...data, tasks });
+      return hasuraUserService.create_gate_tasks_based({ ...data, tasks });
     }
   );
 
-  const publishGate = useMutation(['publishGate'], gqlAuthMethods.publish_gate);
+  const publishGate = useMutation(
+    ['publishGate'],
+    hasuraUserService.publish_gate
+  );
 
   const deleteTask = useMutation(
     ['deleteTask'],
-    gqlAuthMethods.delete_tasks_by_pk
+    hasuraUserService.delete_tasks_by_pk
   );
 
   const closePublishedModal = () => setIsPublished(false);

@@ -21,7 +21,7 @@ type Props = {
 };
 
 export function useMintData({ credential, loyaltyProgramId, gateId }: Props) {
-  const { me, gqlAuthMethods } = useAuth();
+  const { me, hasuraUserService } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const [shareIsOpen, setShareIsOpen] = useState<boolean>(false);
   const isAllowedToMint = useMemo(() => credential?.nft !== null, [credential]);
@@ -51,10 +51,8 @@ export function useMintData({ credential, loyaltyProgramId, gateId }: Props) {
 
   const mintCredential = useMutation(
     [query.mintCredential],
-    ({ credentialId }: Protocol_Mint_CredentialMutationVariables) => {
-      return gqlAuthMethods.protocol_mint_credential({
-        credentialId: credentialId,
-      });
+    (data: Protocol_Mint_CredentialMutationVariables) => {
+      return hasuraUserService.protocol_mint_credential(data);
     },
     {
       onSuccess: (data) => {

@@ -35,7 +35,7 @@ export default function CredentialCreateForm({
   dataModel,
   oldData,
 }: CreateCredentialProps) {
-  const { gqlAuthMethods, token } = useAuth();
+  const { hasuraUserService, token } = useAuth();
   const { enqueueSnackbar } = useSnackbar();
   const { t } = useTranslation('protocol');
   const isP2PDataModel =
@@ -96,11 +96,11 @@ export default function CredentialCreateForm({
   const createCredential = useMutation(
     ['createCredential'],
     (data: Protocol_Create_CredentialMutationVariables) =>
-      gqlAuthMethods.protocol_create_credential(data)
+      hasuraUserService.protocol_create_credential(data)
   );
 
   const uploadArweave = useMutation(['uploadArweave'], (base64: string) =>
-    gqlAuthMethods.upload_arweave({ base64 })
+    hasuraUserService.upload_arweave({ base64 })
   );
 
   const uploadCredentialImage = async (fieldData): Promise<string> => {

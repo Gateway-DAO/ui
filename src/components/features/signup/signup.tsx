@@ -26,7 +26,7 @@ import {
 
 export function Signup() {
   const { t } = useTranslation('dashboard-new-user');
-  const { me, gqlAuthMethods, onInvalidateMe } = useAuth();
+  const { me, hasuraUserService, onInvalidateMe } = useAuth();
   const [sentEmail, setSentEmail] = useState(false);
   const [sendEmailData, setSendEmailData] = useState(null);
   const [profileCreated, setProfileCreated] = useState(false);
@@ -44,7 +44,7 @@ export function Signup() {
     ['signup'],
     async (data: NewUserSchema) => {
       setSendEmailData(data);
-      return gqlAuthMethods.protocol_signup({
+      return hasuraUserService.protocol_signup({
         email: data.email_address,
         gateway_id: data.username,
       });
@@ -82,7 +82,7 @@ export function Signup() {
   const signupConfirmationMutation = useMutation(
     ['signupConfirmation'],
     async (data: TokenConfirmationSchema) => {
-      return gqlAuthMethods.protocol_signup_confirmation({
+      return hasuraUserService.protocol_signup_confirmation({
         code: parseInt(data.token, 10),
         gateway_id: sendEmailData.username,
         email: sendEmailData.email_address,

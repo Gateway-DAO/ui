@@ -34,7 +34,7 @@ export function TaskList({
   isCredentialExpired,
   setOpen,
 }: Props) {
-  const { me, gqlAuthMethods } = useAuth();
+  const { me, hasuraUserService } = useAuth();
   const completedGate = !!completedAt;
   const totalTasksCount = completedGate
     ? gate.tasks.length
@@ -56,7 +56,7 @@ export function TaskList({
       },
     ],
     () =>
-      gqlAuthMethods.get_protocol_by_gate_id({
+      hasuraUserService.get_protocol_by_gate_id({
         user_id: me?.id,
         gate_id: gate?.id,
       }),

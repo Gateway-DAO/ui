@@ -23,7 +23,7 @@ import SendEmail from './sendEmail';
 import VerifyToken from './verifyToken';
 
 export default function Email() {
-  const { me, gqlAuthMethods, onInvalidateMe, onUpdateMe } = useAuth();
+  const { me, hasuraUserService, onInvalidateMe, onUpdateMe } = useAuth();
   const { t } = useTranslation('settings');
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
@@ -46,7 +46,10 @@ export default function Email() {
     [query.create_code_change_email],
     async (data: SendEmailSchema) => {
       setSendEmailData(data);
-      return gqlAuthMethods.create_code({ user_id: me?.id, email: data.email });
+      return hasuraUserService.create_code({
+        user_id: me?.id,
+        email: data.email,
+      });
     },
     {
       onSuccess() {
@@ -78,8 +81,8 @@ export default function Email() {
 
   const confirmTokenMutation = useMutation(
     [query.confirm_token_change_email],
-    async (data: TokenConfirmationSchema) => {
-      return gqlAuthMethods.verify_code({
+    async ({ ...data }: TokenConfirmationSchema) => {
+      return hasuraUserService.verify_code({
         user_id: me?.id,
         email: methodsSendEmail.getValues().email,
         code: data.code,

@@ -6,7 +6,7 @@ type Props = {
 };
 
 export function useCredentialByGateId({ gateId }: Props) {
-  const { me, gqlAuthMethods } = useAuth();
+  const { me, hasuraUserService } = useAuth();
 
   const credential_id = me?.credentials?.find(
     (cred) => cred?.gate_id === gateId
@@ -15,7 +15,7 @@ export function useCredentialByGateId({ gateId }: Props) {
   const { data: credential } = useQuery(
     ['credential', credential_id],
     () =>
-      gqlAuthMethods.credential({
+      hasuraUserService.credential({
         id: credential_id,
       }),
     {

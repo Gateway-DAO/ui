@@ -1,6 +1,6 @@
 import { object, string, array, SchemaOf } from 'yup';
 
-import { gqlAnonMethods } from '../../../../services/hasura/api';
+import { hasuraPublicService } from '../../../../services/hasura/api';
 
 export type NameSchema = Required<Pick<any, 'name'>>;
 export type GatewayIdSchema = Required<Pick<any, 'gatewayId'>>;
@@ -29,7 +29,7 @@ export const gatewayIdSchema: SchemaOf<GatewayIdSchema> = object({
     })
     .test('checkGatewayId', 'This ID is already being used', async (value) => {
       if (value.length > 2) {
-        const response = await gqlAnonMethods.check_org_by_gateway_id({
+        const response = await hasuraPublicService.check_org_by_gateway_id({
           gatewayId: value,
         });
         return response.daos.length === 0;

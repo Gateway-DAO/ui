@@ -26,7 +26,7 @@ import {
 } from '@mui/material';
 
 const TwitterRetweetTask = ({ dragAndDrop, taskId, deleteTask }) => {
-  const { gqlAuthMethods } = useAuth();
+  const { hasuraUserService } = useAuth();
   const {
     register,
     setValue,
@@ -59,7 +59,7 @@ const TwitterRetweetTask = ({ dragAndDrop, taskId, deleteTask }) => {
     try {
       const tweetLink = getValues(`tasks.${taskId}.task_data.tweet_link`);
       const tweetId = tweetLink.split('/').at(-1);
-      const response = await gqlAuthMethods.twitter_tweet({
+      const response = await hasuraUserService.twitter_tweet({
         id: tweetId,
       });
       return response.get_twitter_tweet;

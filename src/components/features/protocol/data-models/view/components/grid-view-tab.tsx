@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 
 import Loading from '@/components/atoms/loadings/loading';
 import DataGrid from '@/components/organisms/data-grid/data-grid';
-import { gqlAnonMethods, GqlProtocolMethods } from '@/services/hasura/api';
+import { hasuraPublicService, HasuraProtocolApi } from '@/services/hasura/api';
 import { useInfiniteQuery } from '@tanstack/react-query';
 
 import { Stack } from '@mui/material';
@@ -11,7 +11,7 @@ type Props = {
   dataModelId: string;
   columns: any[]; //[ ] add interface/type
   queryString: string;
-  queryFnName: keyof GqlProtocolMethods;
+  queryFnName: keyof HasuraProtocolApi;
   pageSize?: number;
 };
 
@@ -31,7 +31,7 @@ export default function GridViewTab({
   } = useInfiniteQuery(
     [queryString, dataModelId],
     async ({ pageParam }) => {
-      const result = await gqlAnonMethods[queryFnName]({
+      const result = await hasuraPublicService[queryFnName]({
         dataModelId: dataModelId,
         take: internalPageSize,
         skip: pageParam || 0,

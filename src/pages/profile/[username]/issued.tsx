@@ -3,20 +3,20 @@ import { useRouter } from 'next/router';
 import { Profile } from '@/components/features/profile';
 import { IssuedTab } from '@/components/features/profile/tabs';
 import { useAuth } from '@/providers/auth';
-import { gqlAnonMethods } from '@/services/hasura/api';
+import { hasuraPublicService } from '@/services/hasura/api';
 import { dehydrate, QueryClient, useQuery } from '@tanstack/react-query';
 
 export default function IssuedProfile() {
   const router = useRouter();
   const { username } = router.query;
-  const { gqlAuthMethods } = useAuth();
+  const { hasuraUserService } = useAuth();
 
   const {
     data: {
       users: [user],
     },
   } = useQuery(['user', username], () =>
-    gqlAuthMethods.get_user_by_username({
+    hasuraUserService.get_user_by_username({
       username: username as string,
     })
   );
@@ -42,7 +42,7 @@ export const getServerSideProps = async ({ params }) => {
   const queryClient = new QueryClient();
 
   await queryClient.prefetchQuery(['user', username], () =>
-    gqlAnonMethods.get_user_by_username({
+    hasuraPublicService.get_user_by_username({
       username,
     })
   );

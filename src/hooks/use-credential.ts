@@ -26,7 +26,7 @@ export const useCredential = (credential: PartialDeep<Credentials>) => {
   const [status, setStatus] = useState<Status>('idle');
   const [openedModal, setOpenedModal] = useState<boolean>(false);
   const [error, setError] = useState<Error | null>(null);
-  const { me, gqlAuthMethods, onInvalidateMe } = useAuth();
+  const { me, hasuraUserService, onInvalidateMe } = useAuth();
   const { openConnectModal } = useConnectModal();
 
   const resetStatus = () => setStatus('idle');
@@ -80,7 +80,7 @@ export const useCredential = (credential: PartialDeep<Credentials>) => {
 
   const { mutateAsync: updateCredential } = useMutation(
     (txHash: string) =>
-      gqlAuthMethods.update_credential_status({
+      hasuraUserService.update_credential_status({
         id: credential?.id,
         status: 'minted',
         transaction_url: `${getExplorer(
@@ -102,7 +102,7 @@ export const useCredential = (credential: PartialDeep<Credentials>) => {
   // Gasless minting
   const { mutateAsync: mintGasless } = useMutation(
     (credential: { id: string; uri?: string }) =>
-      gqlAuthMethods.mint_credential({ id: credential.id }),
+      hasuraUserService.mint_credential({ id: credential.id }),
     mintOptions
   );
 

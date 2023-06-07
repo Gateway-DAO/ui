@@ -5,7 +5,7 @@ import NewElementCard from '@/components/molecules/cards/new-element-card';
 import { SectionWithSliderResponsive } from '@/components/molecules/sections';
 import { query } from '@/constants/queries';
 import { ROUTES } from '@/constants/routes';
-import { gqlAnonMethods } from '@/services/hasura/api';
+import { hasuraPublicService } from '@/services/hasura/api';
 import { Users } from '@/services/hasura/types';
 import { SessionUser } from '@/types/user';
 import { useQuery } from '@tanstack/react-query';
@@ -26,7 +26,7 @@ export function OverviewTab({ user, isPrivateProfile, setActiveTab }: Props) {
     [`${query.credentialsByRecipientUser}_home`, user.id],
     async () => {
       const result =
-        await gqlAnonMethods.protocol_find_credentials_by_recipient_user({
+        await hasuraPublicService.protocol_find_credentials_by_recipient_user({
           recipientUserId: (user as SessionUser).protocol?.id || user.id,
           skip: 0,
           take: 3,
@@ -39,7 +39,7 @@ export function OverviewTab({ user, isPrivateProfile, setActiveTab }: Props) {
     [`${query.credentialsByIssuerUser}_home`, user.id],
     async () => {
       const result =
-        await gqlAnonMethods.protocol_find_credentials_by_issuer_user({
+        await hasuraPublicService.protocol_find_credentials_by_issuer_user({
           issuerUserId: (user as SessionUser).protocol?.id || user.id,
           skip: 0,
           take: 3,

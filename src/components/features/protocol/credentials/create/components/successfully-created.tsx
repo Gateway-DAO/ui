@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 
 import { SuccessfullyIcon } from '@/components/atoms/icons';
 import { ROUTES } from '@/constants/routes';
-import { gqlAnonMethods } from '@/services/hasura/api';
+import { hasuraPublicService } from '@/services/hasura/api';
 import { brandColors } from '@/theme';
 import { useQuery } from '@tanstack/react-query';
 
@@ -28,7 +28,7 @@ export default function SuccessfullyCreated({ credentialId }: Props) {
   const credential = useQuery(
     ['credential', credentialId],
     () =>
-      gqlAnonMethods.protocol_credential({
+      hasuraPublicService.protocol_credential({
         id: credentialId,
       }),
     {

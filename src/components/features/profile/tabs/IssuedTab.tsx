@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import Loading from '@/components/atoms/loadings/loading';
 import CredentialCard from '@/components/molecules/cards/credential-card';
 import { query } from '@/constants/queries';
-import { gqlAnonMethods } from '@/services/hasura/api';
+import { hasuraPublicService } from '@/services/hasura/api';
 import { Users } from '@/services/hasura/types';
 import { TOKENS } from '@/theme';
 import { SessionUser } from '@/types/user';
@@ -31,7 +31,7 @@ export default function IssuedTab({ user }: Props): JSX.Element {
     ],
     async ({ pageParam }) => {
       const result =
-        await gqlAnonMethods.protocol_find_credentials_by_issuer_user({
+        await hasuraPublicService.protocol_find_credentials_by_issuer_user({
           issuerUserId: (user as PartialDeep<Users>).protocolUser?.id,
           take: internalPageSize,
           skip: pageParam || 0,

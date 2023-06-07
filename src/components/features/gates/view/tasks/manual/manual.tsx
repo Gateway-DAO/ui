@@ -29,7 +29,7 @@ const ManualContent = ({
   isLoading,
 }: TaskProps) => {
   const { t } = useTranslation('gate-profile');
-  const { me, gqlAuthMethods } = useAuth();
+  const { me, hasuraUserService } = useAuth();
   const formattedDate = new Date(updatedAt?.toLocaleString())?.toLocaleString();
   const [link, setLink] = useState<string>();
   const [comment, setComment] = useState<string>();
@@ -44,14 +44,14 @@ const ManualContent = ({
 
   const linkPreview = useQuery(
     ['preview-link', throttledLink],
-    async () => gqlAuthMethods.link_preview({ url: throttledLink }),
+    async () => hasuraUserService.link_preview({ url: throttledLink }),
     { enabled: throttledLink?.length > 5, retry: false }
   );
   const isManualTaskEventsEnabled = !!currentTaskProgress?.id;
   const manualTaskEvents = useQuery(
     ['manual-task-events', currentTaskProgress?.id],
     () =>
-      gqlAuthMethods.manual_task_events({
+      hasuraUserService.manual_task_events({
         task_progress_id: currentTaskProgress?.id,
       }),
     {

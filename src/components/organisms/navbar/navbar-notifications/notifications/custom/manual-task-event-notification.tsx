@@ -22,11 +22,11 @@ type Props = {
 };
 
 export function ManualTaskEventNotification({ data, timestamp }: Props) {
-  const { gqlAuthMethods } = useAuth();
+  const { hasuraUserService } = useAuth();
   const { t } = useTranslation('notifications');
   const userInfo = useQuery(
     ['user', data.issuer_id],
-    () => gqlAuthMethods.user_by_id({ id: data.issuer_id }),
+    () => hasuraUserService.user_by_id({ id: data.issuer_id }),
     {
       select: ({ users_by_pk }) => users_by_pk,
     }
