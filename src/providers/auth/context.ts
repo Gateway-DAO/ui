@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import { createContext, useContext } from 'react';
 
-import { HasuraApi, gqlAnonMethods } from '@/services/hasura/api';
+import { HasuraApi, hasuraPublicService } from '@/services/hasura/api';
 
 import { SessionUser } from '../../types/user';
 
@@ -21,7 +21,7 @@ type Context = {
 };
 
 export const AuthContext = createContext<Context>({
-  gqlAuthMethods: gqlAnonMethods,
+  gqlAuthMethods: hasuraPublicService,
   authenticated: false,
   fetchAuth: fetch,
   onSignOut: () => {},

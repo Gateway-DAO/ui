@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { Profile } from '@/components/features/profile';
 import { IssuedTab } from '@/components/features/profile/tabs';
 import { useAuth } from '@/providers/auth';
-import { gqlAnonMethods } from '@/services/hasura/api';
+import { hasuraPublicService } from '@/services/hasura/api';
 import { dehydrate, QueryClient, useQuery } from '@tanstack/react-query';
 
 export default function IssuedProfile() {
@@ -42,7 +42,7 @@ export const getServerSideProps = async ({ params }) => {
   const queryClient = new QueryClient();
 
   await queryClient.prefetchQuery(['user', username], () =>
-    gqlAnonMethods.get_user_by_username({
+    hasuraPublicService.get_user_by_username({
       username,
     })
   );

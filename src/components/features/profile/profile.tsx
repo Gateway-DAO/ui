@@ -9,7 +9,7 @@ import { SocialButtons } from '@/components/organisms/social-buttons';
 import DashboardTemplate from '@/components/templates/dashboard/dashboard';
 import { generateImageUrl } from '@/hooks/use-file';
 import { useAuth } from '@/providers/auth';
-import { gqlAnonMethods } from '@/services/hasura/api';
+import { hasuraPublicService } from '@/services/hasura/api';
 import { TOKENS } from '@/theme';
 import { useQuery } from '@tanstack/react-query';
 
@@ -31,7 +31,7 @@ export default function Profile({ children }) {
   const { data: credentialCount } = useQuery(
     ['credentialCount', user.protocolUser.id],
     () =>
-      gqlAnonMethods.protocol_user_credential_count({
+      hasuraPublicService.protocol_user_credential_count({
         userId: user.protocolUser.id,
       })
   );

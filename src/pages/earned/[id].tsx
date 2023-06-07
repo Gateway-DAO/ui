@@ -6,7 +6,7 @@ import { MintModal } from '@/components/organisms/mint/mint-modal';
 import { Navbar } from '@/components/organisms/navbar';
 import { DashboardTemplate } from '@/components/templates/dashboard';
 import { useAuth } from '@/providers/auth';
-import { gqlAnonMethods } from '@/services/hasura/api';
+import { hasuraPublicService } from '@/services/hasura/api';
 import { dehydrate, QueryClient, useQuery } from '@tanstack/react-query';
 import { useToggle } from 'react-use';
 
@@ -58,7 +58,7 @@ export const getServerSideProps = async ({ params }) => {
   const queryClient = new QueryClient();
 
   await queryClient.prefetchQuery(['credential', id], () =>
-    gqlAnonMethods.credential({
+    hasuraPublicService.credential({
       id,
     })
   );

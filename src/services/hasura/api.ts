@@ -16,7 +16,7 @@ const glqAnonClient = new GraphQLClient(
   process.env.NEXT_PUBLIC_HASURA_ENDPOINT
 );
 
-export const gqlAnonMethods = getSdk(glqAnonClient);
+export const hasuraPublicService = getSdk(glqAnonClient);
 
 export const gqlUserHeader = (token: string, userId?: string) => ({
   'X-Hasura-Role': 'user',

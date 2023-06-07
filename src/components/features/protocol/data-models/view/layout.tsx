@@ -10,7 +10,7 @@ import { ClientNav } from '@/components/organisms/navbar/client-nav';
 import { DashboardTemplate } from '@/components/templates/dashboard';
 import { query } from '@/constants/queries';
 import { useAuth } from '@/providers/auth';
-import { gqlAnonMethods } from '@/services/hasura/api';
+import { hasuraPublicService } from '@/services/hasura/api';
 import { Protocol_Api_PermissionType } from '@/services/hasura/types';
 import { brandColors, theme, TOKENS } from '@/theme';
 import { useQuery } from '@tanstack/react-query';
@@ -83,7 +83,7 @@ export function DataModelLayout({ children }) {
   const { data: dataModel, isLoading } = useQuery(
     [query.dataModel, dataModelId],
     async () =>
-      gqlAnonMethods.protocol_data_model({ id: dataModelId as string }),
+      hasuraPublicService.protocol_data_model({ id: dataModelId as string }),
     {
       select(data) {
         return data.protocol.dataModel;

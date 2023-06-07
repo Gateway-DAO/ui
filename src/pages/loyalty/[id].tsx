@@ -5,7 +5,7 @@ import { HeadContainer } from '@/components/molecules/head-container';
 import { DashboardTemplate } from '@/components/templates/dashboard';
 import { query } from '@/constants/queries';
 import { useAuth } from '@/providers/auth';
-import { gqlAnonMethods } from '@/services/hasura/api';
+import { hasuraPublicService } from '@/services/hasura/api';
 import { useQuery } from '@tanstack/react-query';
 
 type Props = InferGetServerSidePropsType<typeof getServerSideProps>;
@@ -57,7 +57,7 @@ export default function LoyaltyPage({ loyalty }: Props) {
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const id = ctx.query.id as string;
-  const { loyalty_program_by_pk } = await gqlAnonMethods.loyalty_program({
+  const { loyalty_program_by_pk } = await hasuraPublicService.loyalty_program({
     id,
   });
 

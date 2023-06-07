@@ -8,7 +8,7 @@ import {
 import { HeadContainer } from '@/components/molecules/head-container';
 import { DashboardTemplate } from '@/components/templates/dashboard';
 import { useAuth } from '@/providers/auth';
-import { gqlAnonMethods } from '@/services/hasura/api';
+import { hasuraPublicService } from '@/services/hasura/api';
 import { useQuery } from '@tanstack/react-query';
 import { PartialDeep } from 'type-fest';
 
@@ -71,27 +71,29 @@ export default function DaoProfilePage({
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const slug = ctx.query.slug as string;
 
-  const { daos } = await gqlAnonMethods.dao_profile_by_slug({ slug });
+  const { daos } = await hasuraPublicService.dao_profile_by_slug({ slug });
   const currentDao = daos[0];
   const hasProtocolOrg = !!currentDao.protocolOrganization;
   const protocolOrgId = hasProtocolOrg
     ? currentDao.protocolOrganization.id
     : null;
   const credentials = hasProtocolOrg
-    ? await gqlAnonMethods.protocol_find_credentials_by_issuer_organization({
-        issuerOrganizationId: protocolOrgId,
-        skip: 0,
-        take: 5,
-      })
+    ? await hasuraPublicService.protocol_find_credentials_by_issuer_organization(
+        {
+          issuerOrganizationId: protocolOrgId,
+          skip: 0,
+          take: 5,
+        }
+      )
     : null;
   const stats = hasProtocolOrg
-    ? await gqlAnonMethods.protocol_get_dao_stats({
+    ? await hasuraPublicService.protocol_get_dao_stats({
         organizationId: protocolOrgId,
       })
     : null;
 
   const { loyalty_program: loyaltyPrograms } =
-    await gqlAnonMethods.loyalty_programs_by_organization_id({
+    await hasuraPublicService.loyalty_programs_by_organization_id({
       id: currentDao.id,
     });
 

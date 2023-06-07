@@ -7,7 +7,7 @@ import { Navbar } from '@/components/organisms/navbar';
 import { DashboardTemplate } from '@/components/templates/dashboard';
 import OrgSignupDialog from '@/components/templates/org/signup/dialog-structure';
 import { query } from '@/constants/queries';
-import { gqlAnonMethods } from '@/services/hasura/api';
+import { hasuraPublicService } from '@/services/hasura/api';
 import { TOKENS } from '@/theme';
 import { useQuery } from '@tanstack/react-query';
 import { useToggle } from 'react-use';
@@ -25,7 +25,7 @@ export function ExploreLayout({ children }) {
   const tabs = ['all', 'earn', 'issue', 'organizations'];
 
   const { data: passes } = useQuery([query.passes, 'only-one'], async () => {
-    return (await gqlAnonMethods.loyalty_programs({ take: 1, skip: 0 }))
+    return (await hasuraPublicService.loyalty_programs({ take: 1, skip: 0 }))
       .loyalty_program;
   });
 

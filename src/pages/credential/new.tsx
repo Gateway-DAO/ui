@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 import { CreateGate } from '@/components/features/gates/create';
 import { ROUTES } from '@/constants/routes';
 import { useAuth } from '@/providers/auth';
-import { gqlAnonMethods } from '@/services/hasura/api';
+import { hasuraPublicService } from '@/services/hasura/api';
 import { Get_Create_GateQuery } from '@/services/hasura/types';
 import { useQuery } from '@tanstack/react-query';
 
@@ -60,7 +60,7 @@ export async function getServerSideProps({ res, query }) {
   const { gate: gateId } = query;
   let gateProps = { gates_by_pk: { id: '', published: '' } };
   if (gateId) {
-    gateProps = await gqlAnonMethods.get_create_gate({
+    gateProps = await hasuraPublicService.get_create_gate({
       id: gateId,
     });
   }

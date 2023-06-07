@@ -7,7 +7,7 @@ import {
   DiscordIcon,
   SubstackIcon,
 } from '@/components/atoms/icons';
-import { gqlAnonMethods } from '@/services/hasura/api';
+import { hasuraPublicService } from '@/services/hasura/api';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
@@ -48,7 +48,7 @@ export function Footer({
     isLoading,
   } = useMutation(
     ['subscribeToNewsletter'],
-    gqlAnonMethods.subscribe_to_newsletter
+    hasuraPublicService.subscribe_to_newsletter
   );
 
   const onSubmit = async ({ email }, event) => {

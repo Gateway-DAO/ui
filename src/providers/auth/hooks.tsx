@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { ROUTES } from '@/constants/routes';
-import { gqlAnonMethods, hasuraApi } from '@/services/hasura/api';
+import { hasuraPublicService, hasuraApi } from '@/services/hasura/api';
 import { Protocol_Api_Chain } from '@/services/hasura/types';
 import { useWallet } from '@solana/wallet-adapter-react';
 import {
@@ -97,7 +97,7 @@ export const useAuthLogin = () => {
   const nonce = useQuery(
     [address, 'nonce'],
     () =>
-      gqlAnonMethods.get_nonce({
+      hasuraPublicService.get_nonce({
         wallet: address,
         chain,
       }),

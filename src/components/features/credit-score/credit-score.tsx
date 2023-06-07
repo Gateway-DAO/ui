@@ -17,7 +17,7 @@ import { TokenFilled } from '@/components/organisms/mint/mint-card/assets/token-
 import { ClientNav } from '@/components/organisms/navbar/client-nav';
 import { ROUTES } from '@/constants/routes';
 import { useAuth } from '@/providers/auth';
-import { gqlAnonMethods } from '@/services/hasura/api';
+import { hasuraPublicService } from '@/services/hasura/api';
 import { Protocol_Mint_CredentialMutationVariables } from '@/services/hasura/types';
 import { TOKENS } from '@/theme';
 import { theme } from '@/theme';
@@ -151,7 +151,7 @@ export function CreditScoreTemplate() {
   const { data: recipientsUsers } = useQuery(
     ['cred-api-find-recipient-user', DATA_MODEL_ID],
     () =>
-      gqlAnonMethods.protocol_find_recipients_by_data_model({
+      hasuraPublicService.protocol_find_recipients_by_data_model({
         dataModelId: DATA_MODEL_ID,
         skip: 0,
         take: 10,
@@ -164,7 +164,7 @@ export function CreditScoreTemplate() {
   const { data: totalRecipientUsersCount } = useQuery(
     ['cred-api-find-total-users', DATA_MODEL_ID],
     () =>
-      gqlAnonMethods.protocol_get_data_model_stats({
+      hasuraPublicService.protocol_get_data_model_stats({
         dataModelId: DATA_MODEL_ID,
       }),
     {
