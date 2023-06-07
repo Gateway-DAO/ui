@@ -18,7 +18,7 @@ const glqAnonClient = new GraphQLClient(
 
 export const hasuraPublicService = getSdk(glqAnonClient);
 
-export const gqlUserHeader = (token: string, userId?: string) => ({
+export const hasuraUserHeader = (token: string, userId?: string) => ({
   'X-Hasura-Role': 'user',
   Authorization: `Bearer ${token}`,
   ...(userId && { 'X-Hasura-User-Id': userId }),
@@ -26,7 +26,7 @@ export const gqlUserHeader = (token: string, userId?: string) => ({
 
 const gqlClient = (token?: string, userId?: string) =>
   new GraphQLClient(process.env.NEXT_PUBLIC_HASURA_ENDPOINT, {
-    headers: token ? gqlUserHeader(token, userId) : undefined,
+    headers: token ? hasuraUserHeader(token, userId) : undefined,
   });
 
 export const hasuraApi = (token: string, userId?: string) =>
