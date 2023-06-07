@@ -6,7 +6,7 @@ import { getSdk, SdkFunctionWrapper } from './types';
 
 export type HasuraApi = ReturnType<typeof getSdk>;
 
-export type GqlProtocolMethods = {
+export type HasuraProtocolApi = {
   [K in keyof HasuraApi as K extends `protocol_${string}`
     ? K
     : never]: HasuraApi[K];
