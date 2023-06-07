@@ -34,7 +34,7 @@ export default function GateRow({ isGate, gate, showStatus }: GateRowProps) {
   const { t } = useTranslation('gates-card');
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
-  const { gqlAuthMethods } = useAuth();
+  const { hasuraUserService } = useAuth();
   const queryClient = useQueryClient();
 
   const [published, setPublished] = useState(gate.published);
@@ -43,7 +43,7 @@ export default function GateRow({ isGate, gate, showStatus }: GateRowProps) {
 
   const { mutate: toggleGateStateMutation } = useMutation(
     ['toggleGateState', gate.id],
-    gqlAuthMethods.toggle_gate_state
+    hasuraUserService.toggle_gate_state
   );
 
   const toggleGateState = () =>
@@ -73,7 +73,7 @@ export default function GateRow({ isGate, gate, showStatus }: GateRowProps) {
 
   const { mutate: deleteGateMutation } = useMutation(
     ['deleteGate', gate.id],
-    gqlAuthMethods.deleteGate
+    hasuraUserService.deleteGate
   );
 
   const deleteGate = () =>

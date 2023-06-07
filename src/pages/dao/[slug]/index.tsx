@@ -20,7 +20,7 @@ export default function DaoProfilePage({
   issuedCredentials,
   stats,
 }: Props) {
-  const { me, gqlAuthMethods } = useAuth();
+  const { me, hasuraUserService } = useAuth();
   const router = useRouter();
 
   const refreshData = () => {
@@ -33,7 +33,7 @@ export default function DaoProfilePage({
 
   const credentialsQuery = useQuery(
     ['dao-gates', daoProps?.id],
-    () => gqlAuthMethods.dao_gates_tab({ id: daoProps.id }),
+    () => hasuraUserService.dao_gates_tab({ id: daoProps.id }),
     { enabled: !!daoProps?.id }
   );
 

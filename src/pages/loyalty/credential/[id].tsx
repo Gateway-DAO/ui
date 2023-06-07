@@ -23,12 +23,12 @@ export default function LoyaltyCredentialPage({ loyalty }) {
 
   const id = router.query.id as string;
 
-  const { me, gqlAuthMethods, authenticated } = useAuth();
+  const { me, hasuraUserService, authenticated } = useAuth();
 
   const { data: gate } = useQuery(
     [query.gate, id],
     () =>
-      gqlAuthMethods.gate({
+      hasuraUserService.gate({
         id,
       }),
     { enabled: authenticated, select: ({ gates_by_pk }) => gates_by_pk }
@@ -43,7 +43,7 @@ export default function LoyaltyCredentialPage({ loyalty }) {
       },
     ],
     () =>
-      gqlAuthMethods.get_protocol_by_gate_id({
+      hasuraUserService.get_protocol_by_gate_id({
         user_id: me?.id,
         gate_id: gate?.id,
       }),

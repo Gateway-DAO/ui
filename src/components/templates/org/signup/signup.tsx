@@ -42,7 +42,7 @@ export function OrgSignUpTemplate({
   const { t } = useTranslation('org-signup');
   const router = useRouter();
   const [fullFormState, setFullFormState] = useState(null);
-  const { gqlAuthMethods } = useAuth();
+  const { hasuraUserService } = useAuth();
 
   const handleStep = (newValue: boolean) => {
     setStepValidity((prev) => ({ ...prev, [currentStep]: newValue }));
@@ -111,7 +111,7 @@ export function OrgSignUpTemplate({
   const createOrganization = useMutation(
     [mutation.create_organization],
     () =>
-      gqlAuthMethods.create_organization({
+      hasuraUserService.create_organization({
         ...fullFormState,
       }),
     {

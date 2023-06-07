@@ -19,7 +19,7 @@ type Props = {
 };
 
 export function OptionsCredential({ gate }: Props) {
-  const { me, gqlAuthMethods } = useAuth();
+  const { me, hasuraUserService } = useAuth();
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [confirmToggleState, setConfirmToggleState] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
@@ -73,7 +73,7 @@ export function OptionsCredential({ gate }: Props) {
 
   const { mutate: deleteGateMutation } = useMutation(
     [query.delete_gate],
-    gqlAuthMethods.deleteGate
+    hasuraUserService.deleteGate
   );
 
   const deleteGate = () =>
@@ -93,7 +93,7 @@ export function OptionsCredential({ gate }: Props) {
   const { mutate: publishGate } = useMutation(
     [query.publish_gate],
     () =>
-      gqlAuthMethods.publish_gate({
+      hasuraUserService.publish_gate({
         gate_id: gate.id,
       }),
     {
@@ -103,7 +103,7 @@ export function OptionsCredential({ gate }: Props) {
 
   const { mutate: toggleGateStateMutation } = useMutation(
     ['toggleGateState'],
-    gqlAuthMethods.toggle_gate_state
+    hasuraUserService.toggle_gate_state
   );
 
   const toggleGateState = () =>

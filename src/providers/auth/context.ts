@@ -8,7 +8,7 @@ import { SessionUser } from '../../types/user';
 type Context = {
   me?: SessionUser;
   token?: string;
-  gqlAuthMethods: HasuraApi;
+  hasuraUserService: HasuraApi;
   fetchAuth: (
     url: string,
     options: Parameters<typeof fetch>[1]
@@ -21,7 +21,7 @@ type Context = {
 };
 
 export const AuthContext = createContext<Context>({
-  gqlAuthMethods: hasuraPublicService,
+  hasuraUserService: hasuraPublicService,
   authenticated: false,
   fetchAuth: fetch,
   onSignOut: () => {},

@@ -12,10 +12,10 @@ import { Box, CircularProgress, IconButton, Stack } from '@mui/material';
 import { TableView } from './table-view';
 
 export function GatesTab() {
-  const { gqlAuthMethods } = useAuth();
+  const { hasuraUserService } = useAuth();
   const { view, toggleView } = useViewMode();
   const { data: gates, isLoading } = useQuery(['gates-tab'], async () => {
-    return (await gqlAuthMethods.gates_tab()).gates;
+    return (await hasuraUserService.gates_tab()).gates;
   });
 
   const {

@@ -22,14 +22,14 @@ export default function GatePublishedModal({
   open,
   handleClose,
 }: GatePublishedModalProps) {
-  const { gqlAuthMethods } = useAuth();
+  const { hasuraUserService } = useAuth();
 
   const {
     data: { gates_by_pk: gate },
   } = useQuery(
     ['gate', gateProp?.id],
     () =>
-      gqlAuthMethods.gate({
+      hasuraUserService.gate({
         id: gateProp.id,
       }),
     {

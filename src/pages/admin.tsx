@@ -57,10 +57,10 @@ export async function getServerSideProps({ req, res }) {
 }
 
 export default function Admin() {
-  const { gqlAuthMethods } = useAuth();
+  const { hasuraUserService } = useAuth();
 
   const { data: adminData } = useQuery(['admin-data'], () =>
-    gqlAuthMethods.get_admin_data()
+    hasuraUserService.get_admin_data()
   );
 
   return (

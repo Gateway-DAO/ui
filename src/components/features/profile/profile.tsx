@@ -17,14 +17,14 @@ import { Box, Stack, Typography, Tabs, Tab, Chip } from '@mui/material';
 
 export default function Profile({ children }) {
   const router = useRouter();
-  const { gqlAuthMethods } = useAuth();
+  const { hasuraUserService } = useAuth();
   const { username } = router.query;
   const {
     data: {
       users: [user],
     },
   } = useQuery(['user', username], () =>
-    gqlAuthMethods.get_user_by_username({
+    hasuraUserService.get_user_by_username({
       username: username as string,
     })
   );

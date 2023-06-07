@@ -17,7 +17,7 @@ export default function DaoProfilePage({
   const dao = daoProps?.daos?.[0];
 
   const uploadImage = useUploadImage();
-  const { me, gqlAuthMethods, onUpdateMe } = useAuth();
+  const { me, hasuraUserService, onUpdateMe } = useAuth();
   const router = useRouter();
   const isAdmin =
     me?.following_dao?.find((fdao) => fdao.dao_id === dao?.id)?.dao?.is_admin ??
@@ -58,7 +58,7 @@ export default function DaoProfilePage({
 
       const [logo, bg] = await Promise.all([uploadLogo(), uploadBackground()]);
 
-      return gqlAuthMethods.edit_dao({
+      return hasuraUserService.edit_dao({
         id: dao.id,
         ...daoData,
         logo_id: logo,

@@ -61,7 +61,7 @@ export function AuthProvider({
 
   const isBlocked = !!isAuthPage && (!me || !token);
 
-  const gqlAuthMethods = useMemo(
+  const hasuraUserService = useMemo(
     () =>
       hasuraApiWithRefresh(session?.token, session?.hasura_id, onInvalidRT),
     [session]
@@ -95,7 +95,7 @@ export function AuthProvider({
       value={{
         me,
         token,
-        gqlAuthMethods,
+        hasuraUserService,
         fetchAuth,
         onOpenLogin: () => setModalVisible(true),
         onSignOut,

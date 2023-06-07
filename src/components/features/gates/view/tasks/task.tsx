@@ -66,7 +66,7 @@ export function Task({
   readOnly,
   isAdmin = false,
 }: Props) {
-  const { me, gqlAuthMethods, onOpenLogin } = useAuth();
+  const { me, hasuraUserService, onOpenLogin } = useAuth();
 
   const taskProgress = me?.task_progresses.find(
     (task_progress) => task_progress.task_id === task.id
@@ -147,7 +147,7 @@ export function Task({
 
   const { data: tp, refetch } = useQuery(
     ['findTaskProgressOfAUser', taskProgress?.id],
-    () => gqlAuthMethods.findTaskProgressOfAUser({ id: taskProgress?.id })
+    () => hasuraUserService.findTaskProgressOfAUser({ id: taskProgress?.id })
   );
 
   const taskContent = getTaskContent(task.task_type);
@@ -155,7 +155,7 @@ export function Task({
 
   const { mutateAsync: completeTaskMutation, isLoading } = useMutation(
     ['completeTask', { gateId: task.gate_id, taskId: task.id }],
-    gqlAuthMethods.complete_task,
+    hasuraUserService.complete_task,
     {
       onSuccess: () => {
         try {

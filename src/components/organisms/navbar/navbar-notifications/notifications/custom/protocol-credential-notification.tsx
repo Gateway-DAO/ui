@@ -21,12 +21,12 @@ type Props = {
 };
 
 export function ProtocolCredentialNotification({ data, timestamp }: Props) {
-  const { gqlAuthMethods } = useAuth();
+  const { hasuraUserService } = useAuth();
   const { t } = useTranslation('notifications');
 
   const userInfo = useQuery(
     ['user', data.issuer_user_id],
-    () => gqlAuthMethods.user_by_id({ id: data.issuer_user_id }),
+    () => hasuraUserService.user_by_id({ id: data.issuer_user_id }),
     {
       enabled: !!data.issuer_user_id && !data.issuer_org_id,
       select: ({ users_by_pk }) => ({
@@ -38,7 +38,7 @@ export function ProtocolCredentialNotification({ data, timestamp }: Props) {
 
   const orgInfo = useQuery(
     ['org', data.issuer_org_id],
-    () => gqlAuthMethods.dao_info_by_id({ id: data.issuer_org_id }),
+    () => hasuraUserService.dao_info_by_id({ id: data.issuer_org_id }),
     {
       enabled: !!data.issuer_org_id,
       select: ({ daos_by_pk }) => ({

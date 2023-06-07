@@ -24,7 +24,7 @@ export function GateViewContent({
   gateProps,
   protocolCredential,
 }: GateViewContentProps) {
-  const { me, gqlAuthMethods } = useAuth();
+  const { me, hasuraUserService } = useAuth();
   const [open, setOpen] = useState(false);
   const isAdmin = isDaoAdmin({ me, gate: gateProps });
   const gateStatus = useGateStatus(gateProps);
@@ -32,7 +32,7 @@ export function GateViewContent({
   const credential = useCredentialByGateId({ gateId: gateProps?.id });
 
   const gateProgress = useQuery(['gate_progress', gateProps?.id, me?.id], () =>
-    gqlAuthMethods.GateProgress({
+    hasuraUserService.GateProgress({
       gateID: gateProps?.id,
       userID: me?.id,
     })

@@ -89,7 +89,7 @@ export function CreditScoreTemplate() {
 
   const DATA_MODEL_ID = process.env.NEXT_PUBLIC_CRED_PROTOCOL_DM_ID;
 
-  const { me, gqlAuthMethods, token } = useAuth();
+  const { me, hasuraUserService, token } = useAuth();
   const router = useRouter();
   const [isHolderDialog, setIsHolderDialog] = useState(false);
   const queryClient = useQueryClient();
@@ -97,7 +97,7 @@ export function CreditScoreTemplate() {
   const { data: credScore } = useQuery(
     ['cred-api-score-single', me?.wallet],
     async () => {
-      const result = await gqlAuthMethods.get_cred_score({
+      const result = await hasuraUserService.get_cred_score({
         address: me?.wallet,
       });
       return result.get_cred_score;
@@ -126,7 +126,7 @@ export function CreditScoreTemplate() {
   const { refetch, isFetching: createCredentialLoading } = useQuery(
     ['cred-api-create-credential', me?.wallet],
     async () => {
-      const result = await gqlAuthMethods.create_cred({
+      const result = await hasuraUserService.create_cred({
         gatewayId: me?.username,
         score: credScore?.value,
         bearerToken: token,
@@ -176,7 +176,7 @@ export function CreditScoreTemplate() {
   const { isLoading: isLoadingMintingCred, mutate } = useMutation(
     ['cred-api-mint-credential'],
     ({ credentialId }: Protocol_Mint_CredentialMutationVariables) => {
-      return gqlAuthMethods.protocol_mint_credential({
+      return hasuraUserService.protocol_mint_credential({
         credentialId: credentialId,
       });
     },

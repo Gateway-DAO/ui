@@ -15,13 +15,13 @@ type CreateGateProps = {
 };
 export default function CreateGatePage({ id, gateProps }: CreateGateProps) {
   const router = useRouter();
-  const { gqlAuthMethods } = useAuth();
+  const { hasuraUserService } = useAuth();
   const { me } = useAuth();
 
   const { data: oldGateData } = useQuery(
     ['gate', id],
     () =>
-      gqlAuthMethods.get_create_gate({
+      hasuraUserService.get_create_gate({
         id,
       }),
     {

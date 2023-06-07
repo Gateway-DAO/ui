@@ -36,7 +36,7 @@ export function SubmissionDetail({
   isSubmitEventLoading,
   onSubmitEvent,
 }: SubmissionDetailProps) {
-  const { me, gqlAuthMethods } = useAuth();
+  const { me, hasuraUserService } = useAuth();
   const { t } = useTranslation('gate-profile');
   const { handleSubmit, register, setValue } = useForm({
     defaultValues: {
@@ -50,7 +50,7 @@ export function SubmissionDetail({
   const manualTaskEvents = useQuery(
     ['manual-task-events', progress?.id],
     () =>
-      gqlAuthMethods.manual_task_events({
+      hasuraUserService.manual_task_events({
         task_progress_id: progress?.id,
       }),
     {

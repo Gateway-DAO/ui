@@ -11,7 +11,7 @@ import { useQuery } from '@tanstack/react-query';
 type Props = InferGetServerSidePropsType<typeof getServerSideProps>;
 
 export default function LoyaltyPage({ loyalty }: Props) {
-  const { me, gqlAuthMethods, authenticated } = useAuth();
+  const { me, hasuraUserService, authenticated } = useAuth();
 
   const { data: protocolCredential } = useQuery(
     [
@@ -22,7 +22,7 @@ export default function LoyaltyPage({ loyalty }: Props) {
       },
     ],
     () =>
-      gqlAuthMethods.get_protocol_by_loyalty_id({
+      hasuraUserService.get_protocol_by_loyalty_id({
         user_id: me?.id,
         loyalty_id: loyalty?.id,
       }),
