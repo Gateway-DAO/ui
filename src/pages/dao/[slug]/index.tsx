@@ -8,7 +8,6 @@ import {
 import { HeadContainer } from '@/components/molecules/head-container';
 import { DashboardTemplate } from '@/components/templates/dashboard';
 import { useAuth } from '@/providers/auth';
-import { gatewayProtocolSDK } from '@/services/gateway-protocol/api';
 import { gqlAnonMethods } from '@/services/hasura/api';
 import { useQuery } from '@tanstack/react-query';
 import { PartialDeep } from 'type-fest';
@@ -79,14 +78,14 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     ? currentDao.protocolOrganization.id
     : null;
   const credentials = hasProtocolOrg
-    ? await gatewayProtocolSDK.findCredentialsByIssuerOrganization({
+    ? await gqlAnonMethods.protocol_find_credentials_by_issuer_organization({
         issuerOrganizationId: protocolOrgId,
         skip: 0,
         take: 5,
       })
     : null;
   const stats = hasProtocolOrg
-    ? await gatewayProtocolSDK.getDaoStats({
+    ? await gqlAnonMethods.protocol_get_dao_stats({
         organizationId: protocolOrgId,
       })
     : null;
@@ -101,7 +100,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
       daoProps: currentDao,
       loyaltyPrograms,
       issuedCredentials: credentials
-        ? (credentials.findCredentialsByIssuerOrganization as PartialDeep<Credential>[])
+        ? (credentials.protocol_credential as PartialDeep<Credential>[])
         : null,
       stats,
     },

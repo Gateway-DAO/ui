@@ -11,7 +11,6 @@ import {
 
 import { AuthConnectingModal } from '@/components/organisms/auth-connecting-modal';
 import { AuthModal } from '@/components/organisms/auth-modal';
-import { gatewayProtocolAuthSDK } from '@/services/gateway-protocol/api';
 import { gqlMethodsWithRefresh, gqlUserHeader } from '@/services/hasura/api';
 
 import { BlockedPage } from './blocked-page';
@@ -68,11 +67,6 @@ export function AuthProvider({
     [session]
   );
 
-  const gqlProtocolAuthMethods = useMemo(
-    () => gatewayProtocolAuthSDK(session?.token),
-    [session]
-  );
-
   const fetchAuth = useCallback(
     async (url: string, options: Parameters<typeof fetch>[1]) => {
       const res = await fetch(
@@ -102,7 +96,6 @@ export function AuthProvider({
         me,
         token,
         gqlAuthMethods,
-        gqlProtocolAuthMethods,
         fetchAuth,
         onOpenLogin: () => setModalVisible(true),
         onSignOut,

@@ -1,7 +1,7 @@
 import useTranslation from 'next-translate/useTranslation';
 import { useState } from 'react';
 
-import { Activity } from '@/services/gateway-protocol/types';
+import { Protocol_Api_Activity } from '@/services/hasura/types';
 import { brandColors } from '@/theme';
 import { timestampToString } from '@/utils/date';
 import { getExplorer } from '@/utils/web3';
@@ -20,7 +20,7 @@ import {
 } from '@mui/material';
 
 type Props = {
-  activities: PartialDeep<Activity>[];
+  activities: PartialDeep<Protocol_Api_Activity>[];
 };
 
 const activityText = (type: string) => {

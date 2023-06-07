@@ -1,6 +1,6 @@
 import useTranslation from 'next-translate/useTranslation';
 
-import { CredentialData } from '@/services/gateway-protocol/types';
+import { Protocol_Api_CredentialData } from '@/services/hasura/types';
 import { PartialDeep } from 'type-fest/source/partial-deep';
 
 import { Stack, Paper, Typography, Divider } from '@mui/material';
@@ -13,10 +13,10 @@ import { ListView } from './list-view';
 
 type Props = {
   title: string;
-  data: PartialDeep<CredentialData>[];
+  data: PartialDeep<Protocol_Api_CredentialData>[];
 };
 
-function ClaimView(fieldData: PartialDeep<CredentialData>) {
+function ClaimView(fieldData: PartialDeep<Protocol_Api_CredentialData>) {
   const { t } = useTranslation('protocol');
 
   const type = getClaimType(

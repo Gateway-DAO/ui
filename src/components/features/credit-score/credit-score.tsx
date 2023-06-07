@@ -17,12 +17,8 @@ import { TokenFilled } from '@/components/organisms/mint/mint-card/assets/token-
 import { ClientNav } from '@/components/organisms/navbar/client-nav';
 import { ROUTES } from '@/constants/routes';
 import { useAuth } from '@/providers/auth';
-import {
-  gatewayProtocolAuthSDK,
-  gatewayProtocolSDK,
-} from '@/services/gateway-protocol/api';
-import { MintCredentialMutationVariables } from '@/services/gateway-protocol/types';
 import { gqlAnonMethods } from '@/services/hasura/api';
+import { Protocol_Mint_CredentialMutationVariables } from '@/services/hasura/types';
 import { TOKENS } from '@/theme';
 import { theme } from '@/theme';
 import { useQueryClient } from '@tanstack/react-query';
@@ -154,30 +150,33 @@ export function CreditScoreTemplate() {
 
   const { data: recipientsUsers } = useQuery(
     ['cred-api-find-recipient-user', DATA_MODEL_ID],
-    async () => {
-      const result = await gqlAnonMethods.findRecipientsByDataModel({
+    () =>
+      gqlAnonMethods.protocol_find_recipients_by_data_model({
         dataModelId: DATA_MODEL_ID,
         skip: 0,
         take: 10,
-      });
-      return result.protocol_user;
+      }),
+    {
+      select: (data) => data.protocol_user,
     }
   );
 
   const { data: totalRecipientUsersCount } = useQuery(
     ['cred-api-find-total-users', DATA_MODEL_ID],
-    async () => {
-      const s = await gatewayProtocolSDK.getDataModelStats({
+    () =>
+      gqlAnonMethods.protocol_get_data_model_stats({
         dataModelId: DATA_MODEL_ID,
-      });
-      return s.getTotalCredentialsByDataModelGroupByRecipient;
+      }),
+    {
+      select: (data) =>
+        data.protocol.getTotalCredentialsByDataModelGroupByRecipient,
     }
   );
 
   const { isLoading: isLoadingMintingCred, mutate } = useMutation(
     ['cred-api-mint-credential'],
-    ({ credentialId }: MintCredentialMutationVariables) => {
-      return gatewayProtocolAuthSDK(token).mintCredential({
+    ({ credentialId }: Protocol_Mint_CredentialMutationVariables) => {
+      return gqlAuthMethods.protocol_mint_credential({
         credentialId: credentialId,
       });
     },

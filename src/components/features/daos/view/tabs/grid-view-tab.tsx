@@ -2,10 +2,7 @@ import { useEffect } from 'react';
 
 import Loading from '@/components/atoms/loadings/loading';
 import DataGrid from '@/components/organisms/data-grid/data-grid';
-import {
-  gatewayProtocolSDK,
-  GatewayProtocolSDKTypes,
-} from '@/services/gateway-protocol/api';
+import { gqlAnonMethods } from '@/services/hasura/api';
 import { useInfiniteQuery } from '@tanstack/react-query';
 
 import { Stack } from '@mui/material';
@@ -15,18 +12,10 @@ import { useDaoProfile } from '../context';
 type Props = {
   columns: any[]; //[ ] add interface/type
   queryString: string;
-  queryFnName: keyof GatewayProtocolSDKTypes;
   pageSize?: number;
-  parameterName?: string;
 };
 
-export default function GridViewTab({
-  columns,
-  queryString,
-  queryFnName,
-  pageSize,
-  parameterName,
-}: Props) {
+export default function GridViewTab({ columns, queryString, pageSize }: Props) {
   const { dao } = useDaoProfile();
   const internalPageSize = pageSize || 10;
   const {
@@ -37,15 +26,16 @@ export default function GridViewTab({
   } = useInfiniteQuery(
     [queryString, dao.protocolOrganization?.id],
     async ({ pageParam }) => {
-      const result = await gatewayProtocolSDK[queryFnName]({
-        [parameterName || 'organizationId']: dao.protocolOrganization?.id,
-        take: internalPageSize,
-        skip: pageParam || 0,
-      } as any); //[ ] add interface/type
-      return result[queryFnName];
+      const result =
+        await gqlAnonMethods.protocol_find_credentials_by_issuer_organization({
+          issuerOrganizationId: dao.protocolOrganization?.id,
+          take: internalPageSize,
+          skip: pageParam || 0,
+        }); //[ ] add interface/type
+      return result.protocol_credential;
     },
     {
-      getNextPageParam: (lastPage, pages) =>
+      getNextPageParam: (lastPage = [], pages) =>
         lastPage.length < internalPageSize
           ? undefined
           : pages.length * internalPageSize,
@@ -70,6 +60,7 @@ export default function GridViewTab({
       document.removeEventListener('scroll', onScroll);
     };
   }, []);
+
   return (
     <>
       {isLoading ? (

@@ -1,5 +1,8 @@
-import { MeProtocolQuery } from '@/services/gateway-protocol/types';
-import { LoginMutation, MeQuery } from '@/services/hasura/types';
+import {
+  LoginMutation,
+  MeQuery,
+  Me_ProtocolQuery,
+} from '@/services/hasura/types';
 import { PartialDeep } from 'type-fest';
 
 export type SessionToken = Omit<
@@ -12,5 +15,5 @@ export type SessionUser = PartialDeep<
     __typename?: any;
   }
 > & {
-  protocol?: PartialDeep<MeProtocolQuery['me']>;
+  protocol?: PartialDeep<Me_ProtocolQuery['protocol']['me']>;
 };

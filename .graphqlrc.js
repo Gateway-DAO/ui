@@ -10,10 +10,6 @@ module.exports = {
         },
       },
       documents: 'src/services/hasura/**/*.gql'
-    },
-    protocol: {
-      schema: `${process.env.GATEWAY_PROTOCOL_ENDPOINT}`,
-      documents: 'src/services/gateway-protocol/**/*.gql'
     }
   }
 }

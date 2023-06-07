@@ -1,16 +1,16 @@
 import useTranslation from 'next-translate/useTranslation';
 
 import {
-  Credential,
-  CredentialStatus,
-} from '@/services/gateway-protocol/types';
+  Protocol_Api_Credential,
+  Protocol_Api_CredentialStatus,
+} from '@/services/hasura/types';
 import { brandColors } from '@/theme';
 import { PartialDeep } from 'type-fest/source/partial-deep';
 
 import { Alert, AlertTitle } from '@mui/material';
 
 type Props = {
-  credential: PartialDeep<Credential>;
+  credential: PartialDeep<Protocol_Api_Credential>;
 };
 
 export function InvalidStatusBox({ credential }: Props) {
@@ -18,7 +18,7 @@ export function InvalidStatusBox({ credential }: Props) {
 
   return (
     <>
-      {credential.status === CredentialStatus.Invalid && (
+      {credential.status === Protocol_Api_CredentialStatus.Invalid && (
         <Alert
           variant="outlined"
           severity="error"

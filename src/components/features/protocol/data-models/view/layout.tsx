@@ -10,9 +10,8 @@ import { ClientNav } from '@/components/organisms/navbar/client-nav';
 import { DashboardTemplate } from '@/components/templates/dashboard';
 import { query } from '@/constants/queries';
 import { useAuth } from '@/providers/auth';
-import { gatewayProtocolSDK } from '@/services/gateway-protocol/api';
-import { PermissionType } from '@/services/gateway-protocol/types';
 import { gqlAnonMethods } from '@/services/hasura/api';
+import { Protocol_Api_PermissionType } from '@/services/hasura/types';
 import { brandColors, theme, TOKENS } from '@/theme';
 import { useQuery } from '@tanstack/react-query';
 import { useToggle } from 'react-use';
@@ -83,13 +82,17 @@ export function DataModelLayout({ children }) {
 
   const { data: dataModel, isLoading } = useQuery(
     [query.dataModel, dataModelId],
-    async () => {
-      return (await gatewayProtocolSDK.dataModel({ id: dataModelId as string }))
-        .dataModel;
+    async () =>
+      gqlAnonMethods.protocol_data_model({ id: dataModelId as string }),
+    {
+      select(data) {
+        return data.protocol.dataModel;
+      },
     }
   );
 
-  const isP2PDataModel = dataModel?.permissioning === PermissionType.All;
+  const isP2PDataModel =
+    dataModel?.permissioning === Protocol_Api_PermissionType.All;
 
   const hasAnAccountAvailableToIssue = useMemo(() => {
     if (!me?.id) return;
@@ -104,42 +107,21 @@ export function DataModelLayout({ children }) {
       .map((availableItem) => availableItem.id);
 
     switch (dataModel?.permissioning) {
-      case PermissionType.SpecificIds:
+      case Protocol_Api_PermissionType.SpecificIds:
         return !!usersIdAndOrganizationsId.find((userOrOrgId) => {
           return (
             availableToIssue.length &&
             availableToIssue?.indexOf(userOrOrgId) > -1
           );
         });
-      case PermissionType.Organizations:
+      case Protocol_Api_PermissionType.Organizations:
         return !!organizationsId.length;
-      case PermissionType.All:
+      case Protocol_Api_PermissionType.All:
       default:
         return true;
     }
   }, [me]);
-
-  let mockDataModel: any = dataModel;
-  mockDataModel
-    ? (mockDataModel.createdBy = {
-        id: '63bc7fc62e7bd8b316b77133',
-        slug: 'gateway',
-      })
-    : (mockDataModel = null);
   // MOCK - END
-
-  const creator = useQuery(
-    ['issuer', mockDataModel?.id],
-    () =>
-      gqlAnonMethods.dao_profile_by_slug({
-        slug: 'gateway',
-      }),
-    {
-      select: (data) => data.daos?.[0],
-      refetchOnMount: false,
-      refetchOnWindowFocus: false,
-    }
-  );
 
   return (
     <>

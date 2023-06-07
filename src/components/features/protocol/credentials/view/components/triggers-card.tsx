@@ -1,6 +1,6 @@
 import useTranslation from 'next-translate/useTranslation';
 
-import { Credential } from '@/services/gateway-protocol/types';
+import { Protocol_Api_Credential } from '@/services/hasura/types';
 import { brandColors } from '@/theme';
 import { PartialDeep } from 'type-fest/source/partial-deep';
 
@@ -18,7 +18,7 @@ import {
 import TriggersItem from './triggers-item';
 
 type Props = {
-  credential: PartialDeep<Credential>;
+  credential: PartialDeep<Protocol_Api_Credential>;
 };
 
 export default function TriggersCard({ credential }: Props) {

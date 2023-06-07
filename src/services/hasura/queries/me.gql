@@ -105,3 +105,44 @@ query me_notification_settings {
     }
   }
 }
+
+query me_protocol {
+  protocol {
+    me {
+      id
+      isCompleted
+      primaryWallet {
+        id
+        address
+      }
+      accesses {
+        organization {
+          id
+          gatewayId
+          name
+        }
+      }
+      issuedCredentials {
+        dataModel {
+          id
+        }
+        id
+        nft {
+          minted
+        }
+      }
+      receivedCredentials {
+        dataModel {
+          id
+        }
+        id
+        nft {
+          minted
+        }
+      }
+      totalOfIssuedCredentials
+      totalOfreceivedCredentials
+    }
+  }
+}
+

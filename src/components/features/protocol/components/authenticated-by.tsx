@@ -1,7 +1,7 @@
 import useTranslation from 'next-translate/useTranslation';
 
 import { ROUTES } from '@/constants/routes';
-import { User } from '@/services/gateway-protocol/types';
+import { Protocol_Api_User } from '@/services/hasura/types';
 import { brandColors } from '@/theme';
 import { limitCharsCentered } from '@/utils/string';
 import { PartialDeep } from 'type-fest/source/partial-deep';
@@ -11,7 +11,7 @@ import { Stack } from '@mui/material';
 import CardCell from './card-cell';
 
 type Props = {
-  authenticatedBy: PartialDeep<User>;
+  authenticatedBy: PartialDeep<Protocol_Api_User>;
   hasLink: boolean;
 };
 

@@ -1,9 +1,9 @@
-import { Credential } from '@/services/gateway-protocol/types';
+import { Protocol_Api_Credential } from '@/services/hasura/types';
 import { DateTime } from 'luxon';
 import { PartialDeep } from 'type-fest';
 
 export const getCredentialImageURLParams = (
-  credential: PartialDeep<Credential>
+  credential: PartialDeep<Protocol_Api_Credential>
 ): string => {
   try {
     const issuanceDate = DateTime.fromISO(credential.createdAt).toFormat(

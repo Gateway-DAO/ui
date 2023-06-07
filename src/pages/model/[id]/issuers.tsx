@@ -42,7 +42,7 @@ export default function ProtocolDataModelIssuers() {
       dataModelId={dataModelId as string}
       columns={issuersGridColumns}
       queryString={query.issuersByDataModel}
-      queryFnName="findIssuersByDataModel"
+      queryFnName="protocol_find_issuers_by_data_model"
       pageSize={10}
     />
   );

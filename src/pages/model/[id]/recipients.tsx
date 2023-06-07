@@ -37,7 +37,7 @@ export default function ProtocolDataModelRecipients() {
       dataModelId={dataModelId as string}
       columns={recipientsGridColumns}
       queryString={query.recipientsByDataModel}
-      queryFnName="findRecipientsByDataModel"
+      queryFnName="protocol_find_recipients_by_data_model_api"
       pageSize={10}
     />
   );

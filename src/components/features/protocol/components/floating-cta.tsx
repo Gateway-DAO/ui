@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import ShareOn from '@/components/atoms/share-on';
 import ModalContent from '@/components/molecules/modal/modal-basic';
 import { errorMessages } from '@/constants/error-messages';
-import { Credential } from '@/services/gateway-protocol/types';
+import { Protocol_Api_Credential } from '@/services/hasura/types';
 import { brandColors } from '@/theme';
 import { useCreateQrCode } from '@/utils/qr-code/qr-code';
 import { useSnackbar } from 'notistack';
@@ -22,7 +22,7 @@ export default function FloatingCta({
   credential,
 }: {
   isCredential?: boolean;
-  credential?: PartialDeep<Credential>;
+  credential?: PartialDeep<Protocol_Api_Credential>;
 }) {
   const { t } = useTranslation('protocol');
   const { enqueueSnackbar } = useSnackbar();

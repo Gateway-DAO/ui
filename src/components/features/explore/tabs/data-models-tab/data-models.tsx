@@ -20,7 +20,7 @@ export default function DataModels(): JSX.Element {
   } = useInfiniteQuery(
     [query.dataModels],
     async ({ pageParam }) => {
-      const result = await gqlAnonMethods.dataModels({
+      const result = await gqlAnonMethods.protocol_data_models({
         take: internalPageSize,
         skip: pageParam || 0,
       } as any);

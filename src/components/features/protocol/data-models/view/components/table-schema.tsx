@@ -1,4 +1,4 @@
-import { CredentialData } from '@/services/gateway-protocol/types';
+import { Protocol_Api_CredentialData } from '@/services/hasura/types';
 import { brandColors } from '@/theme';
 import { PartialDeep } from 'type-fest/source/partial-deep';
 
@@ -10,7 +10,7 @@ import { getClaimType } from '../../../credentials/create/components/ClaimTypes'
 
 type Props = {
   title: string;
-  data: PartialDeep<CredentialData>[];
+  data: PartialDeep<Protocol_Api_CredentialData>[];
   subtitle1: string;
   subtitle2: string;
 };

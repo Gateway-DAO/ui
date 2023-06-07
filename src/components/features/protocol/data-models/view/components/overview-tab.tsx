@@ -7,11 +7,11 @@ import ConfirmDialog from '@/components/molecules/modal/confirm-dialog';
 import ModalRight from '@/components/molecules/modal/modal-right';
 import { useAuth } from '@/providers/auth';
 import {
-  DataModel,
-  GetDataModelStatsQuery,
-  PermissionType,
-} from '@/services/gateway-protocol/types';
-import { GetDmStatsUntilDayBeforeQuery } from '@/services/hasura/types';
+  GetDmStatsUntilDayBeforeQuery,
+  Protocol_Api_DataModel,
+  Protocol_Api_PermissionType,
+  Protocol_Get_Data_Model_StatsQuery,
+} from '@/services/hasura/types';
 import { theme } from '@/theme';
 import { brandColors } from '@/theme';
 import { useToggle } from 'react-use';
@@ -34,8 +34,8 @@ import OverviewCardInfo from './overview-card-info';
 import TableSchema from './table-schema';
 
 type Props = {
-  dataModel: PartialDeep<DataModel>;
-  stats: GetDataModelStatsQuery;
+  dataModel: PartialDeep<Protocol_Api_DataModel>;
+  stats: Protocol_Get_Data_Model_StatsQuery;
   isCredentialCreate?: boolean;
   statsUntilYesterday?: GetDmStatsUntilDayBeforeQuery;
 };
@@ -48,7 +48,8 @@ export default function OverviewTab({
 }: Props) {
   const { t } = useTranslation('protocol');
   const router = useRouter();
-  const isP2PDataModel = dataModel.permissioning === PermissionType.All;
+  const isP2PDataModel =
+    dataModel.permissioning === Protocol_Api_PermissionType.All;
   const isMobile = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
   const calculateGrowth = (finalValue: number, startingNumber: number) => {
     if (startingNumber > 0)
@@ -83,16 +84,16 @@ export default function OverviewTab({
       .map((availableItem) => availableItem.id);
 
     switch (dataModel?.permissioning) {
-      case PermissionType.SpecificIds:
+      case Protocol_Api_PermissionType.SpecificIds:
         return !!usersIdAndOrganizationsId.find((userOrOrgId) => {
           return (
             availableToIssue.length &&
             availableToIssue?.indexOf(userOrOrgId) > -1
           );
         });
-      case PermissionType.Organizations:
+      case Protocol_Api_PermissionType.Organizations:
         return !!organizationsId.length;
-      case PermissionType.All:
+      case Protocol_Api_PermissionType.All:
       default:
         return true;
     }
@@ -153,37 +154,39 @@ export default function OverviewTab({
         >
           <DashboardCard
             label={t('data-model.issuers')}
-            value={stats?.getTotalofIssuersByDataModel}
+            value={stats?.protocol?.getTotalofIssuersByDataModel}
             caption={`from ${
-              stats?.getTotalofIssuersByDataModel -
+              stats?.protocol?.getTotalofIssuersByDataModel -
               statsUntilYesterday?.issuer_count?.aggregate?.count
             } (in 1 day)`}
             indicator={calculateGrowth(
-              stats?.getTotalofIssuersByDataModel,
+              stats?.protocol?.getTotalofIssuersByDataModel,
               statsUntilYesterday?.issuer_count?.aggregate?.count
             )}
           />
           <DashboardCard
             label={t('data-model.issued-credentials')}
-            value={stats?.getTotalCredentialsByDataModel}
+            value={stats?.protocol?.getTotalCredentialsByDataModel}
             caption={`from ${
-              stats?.getTotalCredentialsByDataModel -
+              stats?.protocol?.getTotalCredentialsByDataModel -
               statsUntilYesterday?.credential_count?.aggregate?.count
             } (in 1 day)`}
             indicator={calculateGrowth(
-              stats?.getTotalCredentialsByDataModel,
+              stats?.protocol?.getTotalCredentialsByDataModel,
               statsUntilYesterday?.credential_count?.aggregate?.count
             )}
           />
           <DashboardCard
             label={t('data-model.recipients')}
-            value={stats?.getTotalCredentialsByDataModelGroupByRecipient}
+            value={
+              stats?.protocol?.getTotalCredentialsByDataModelGroupByRecipient
+            }
             caption={`from ${
-              stats?.getTotalCredentialsByDataModelGroupByRecipient -
+              stats?.protocol?.getTotalCredentialsByDataModelGroupByRecipient -
               statsUntilYesterday?.recipient_count?.aggregate?.count
             } (in 1 day)`}
             indicator={calculateGrowth(
-              stats?.getTotalCredentialsByDataModelGroupByRecipient,
+              stats?.protocol?.getTotalCredentialsByDataModelGroupByRecipient,
               statsUntilYesterday?.recipient_count?.aggregate?.count
             )}
           />
