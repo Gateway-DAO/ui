@@ -6,7 +6,7 @@ import { DashboardTemplate } from '@/components/templates/dashboard';
 import { query } from '@/constants/queries';
 import { ROUTES } from '@/constants/routes';
 import { useAuth } from '@/providers/auth';
-import { gqlAnonMethods, gqlMethods } from '@/services/hasura/api';
+import { gqlAnonMethods, hasuraApi } from '@/services/hasura/api';
 import { getServerSession } from '@/services/next-auth';
 import { QueryClient, dehydrate, useQuery } from '@tanstack/react-query';
 import jwt from 'jsonwebtoken';
@@ -92,7 +92,7 @@ export const getServerSideProps = async ({ req, res, params }) => {
 
   try {
     gate = await (!!session && !expired
-      ? gqlMethods(session.token, session.hasura_id)
+      ? hasuraApi(session.token, session.hasura_id)
       : gqlAnonMethods
     ).gate({ id });
   } catch (e) {

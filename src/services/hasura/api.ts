@@ -4,12 +4,12 @@ import { GraphQLClient } from 'graphql-request';
 
 import { getSdk, SdkFunctionWrapper } from './types';
 
-export type GqlMethods = ReturnType<typeof getSdk>;
+export type HasuraApi = ReturnType<typeof getSdk>;
 
 export type GqlProtocolMethods = {
-  [K in keyof GqlMethods as K extends `protocol_${string}`
+  [K in keyof HasuraApi as K extends `protocol_${string}`
     ? K
-    : never]: GqlMethods[K];
+    : never]: HasuraApi[K];
 };
 
 const glqAnonClient = new GraphQLClient(
@@ -29,10 +29,10 @@ const gqlClient = (token?: string, userId?: string) =>
     headers: token ? gqlUserHeader(token, userId) : undefined,
   });
 
-export const gqlMethods = (token: string, userId?: string) =>
+export const hasuraApi = (token: string, userId?: string) =>
   getSdk(gqlClient(token, userId));
 
-export const gqlMethodsWithRefresh = (
+export const hasuraApiWithRefresh = (
   token: string,
   userId: string | undefined,
   callback: (session) => void

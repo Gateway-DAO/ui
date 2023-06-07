@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import { createContext, useContext } from 'react';
 
-import { GqlMethods, gqlAnonMethods } from '@/services/hasura/api';
+import { HasuraApi, gqlAnonMethods } from '@/services/hasura/api';
 
 import { SessionUser } from '../../types/user';
 
 type Context = {
   me?: SessionUser;
   token?: string;
-  gqlAuthMethods: GqlMethods;
+  gqlAuthMethods: HasuraApi;
   fetchAuth: (
     url: string,
     options: Parameters<typeof fetch>[1]
