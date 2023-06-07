@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { ReactNode } from 'react';
+import { Fragment, ReactNode } from 'react';
 
 import NetworkTransactionLink from '@/components/atoms/network-transaction-link';
 import { CategoriesList } from '@/components/molecules/categories-list';
@@ -398,8 +398,8 @@ export default function DataGrid({ columns, data }: Props): JSX.Element {
           </Stack>
           {data.pages && data.pages.length > 0 && (
             <>
-              {data.pages.map((page) => (
-                <>
+              {data.pages.map((page, index) => (
+                <Fragment key={`page-${index}`}>
                   {page.map((row, rowIndex) => (
                     <Link
                       sx={{
@@ -471,7 +471,7 @@ export default function DataGrid({ columns, data }: Props): JSX.Element {
                       </Stack>
                     </Link>
                   ))}
-                </>
+                </Fragment>
               ))}
             </>
           )}
