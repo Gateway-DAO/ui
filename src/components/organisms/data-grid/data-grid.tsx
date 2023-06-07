@@ -370,7 +370,7 @@ export default function DataGrid({ columns, data }: Props): JSX.Element {
       {data &&
       data.pages &&
       data.pages.length > 0 &&
-      data.pages[0].length > 0 ? (
+      data.pages[0]?.length > 0 ? (
         <>
           <Stack px={TOKENS.CONTAINER_PX}>
             <Box
