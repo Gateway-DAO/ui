@@ -28,7 +28,7 @@ export default function DataModels(): JSX.Element {
       return result.protocol_data_model;
     },
     {
-      getNextPageParam: (lastPage, pages) =>
+      getNextPageParam: (lastPage = [], pages) =>
         lastPage.length < internalPageSize
           ? undefined
           : pages.length * internalPageSize,
