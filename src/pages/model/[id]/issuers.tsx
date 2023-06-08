@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import { DataModelLayout } from '@/components/features/protocol/data-models/view/layout';
 import { IColumnGrid } from '@/components/organisms/data-grid/data-grid';
 import { query } from '@/constants/queries';
+import { hasuraPublicService } from '@/services/hasura/api';
 import { DateTime } from 'luxon';
 const GridViewTab = dynamic(
   () =>
@@ -42,7 +43,16 @@ export default function ProtocolDataModelIssuers() {
       dataModelId={dataModelId as string}
       columns={issuersGridColumns}
       queryString={query.issuersByDataModel}
-      queryFnName="protocol_find_issuers_by_data_model"
+      queryFn={async ({ pageParam }, pageSize) => {
+        const res =
+          await hasuraPublicService.protocol_find_issuers_by_data_model({
+            dataModelId: dataModelId as string,
+            take: pageSize,
+            skip: pageParam || 0,
+          });
+
+        return res.protocol.findIssuersByDataModel;
+      }}
       pageSize={10}
     />
   );
