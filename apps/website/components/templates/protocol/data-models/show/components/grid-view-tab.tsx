@@ -49,7 +49,6 @@ export default function GridViewTab({
           take: internalPageSize,
           skip: pageParam || 0,
         });
-        console.log(result)
         return result.protocol_data_model_by_pk.credentials;
       } else {
         const result = await gatewayProtocolSDK[queryFnName]({

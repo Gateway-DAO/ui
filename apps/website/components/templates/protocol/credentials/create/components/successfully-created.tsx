@@ -37,7 +37,6 @@ export default function SuccessfullyCreated({ credentialId }: Props) {
 
     }
   );
-    console.log(credential.data)
   return (
     <Stack>
       {credential.isLoading ? (

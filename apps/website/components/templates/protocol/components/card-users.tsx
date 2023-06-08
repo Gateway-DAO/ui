@@ -41,7 +41,6 @@ export default function CardUsers({
       select: (data) => data.users?.[0],
     }
   );
-    console.log(issuer)
   const organization = useQuery(
     ['organization', issuerOrganization?.id],
     () =>
