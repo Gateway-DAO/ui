@@ -128,8 +128,8 @@ export function DirectWallets() {
                   <DirectWalletsProgress
                     total={file?.metadata?.total}
                     isLoading={!progress}
-                    valid={0}
-                    invalid={0}
+                    valid={progress?.valid ?? 0}
+                    invalid={progress?.invalid ?? 0}
                     {...progress}
                   />
                 )}
