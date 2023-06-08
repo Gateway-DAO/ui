@@ -11,7 +11,7 @@ export const CreatedByInput = ({
     <Autocomplete
       multiple
       id="created_by-input"
-      options={creators.map((creator) => creator.name)}
+      options={creators.map((creator) => creator.username)}
       popupIcon={<Search />}
       sx={{
         '&.Mui-focused .MuiButtonBase-root': {
@@ -19,7 +19,7 @@ export const CreatedByInput = ({
         },
       }}
       disabled={disabled}
-      defaultValue={[creators[0].name]}
+      defaultValue={[creators[0].username]}
       renderTags={(value: string[], getTagProps) =>
         value.map((option: string, index: number) => (
           <Chip
