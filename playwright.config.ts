@@ -1,5 +1,9 @@
 import { PlaywrightTestConfig, devices } from '@playwright/test';
+import dotenv from 'dotenv';
 import path from 'path';
+dotenv.config();
+
+const baseURL = process.env.TEST_BASEURL || 'http://localhost:3000';
 
 const config: PlaywrightTestConfig = {
   timeout: 30 * 1000,
@@ -12,8 +16,10 @@ const config: PlaywrightTestConfig = {
     port: 3000,
     timeout: 120 * 1000,
   },
-
+  globalSetup: './tests/config/globalSetup.ts',
   use: {
+    baseURL,
+    storageState: './tests/config/storageState.json',
     trace: 'retry-with-trace',
   },
 

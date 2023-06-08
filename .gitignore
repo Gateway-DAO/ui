@@ -51,8 +51,9 @@ src/services/**/**/validation.ts
 # Sentry
 .sentryclirc
 
-# Tests
+# e2e Tests
 screenshots/
 test-results/
+storageState.json
 
 .next
