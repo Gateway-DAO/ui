@@ -1,0 +1,37 @@
+query Users {
+  users {
+    ...public_user
+    pfp
+  }
+}
+
+query get_user_by_username($username: String!) {
+  users(where: { username: { _eq: $username } }) {
+    ...public_user
+    wallet
+    pfp
+  }
+}
+
+query users_by_wallets($wallets: [String!]!) {
+  users(where: { wallet: { _in: $wallets } }) {
+    id
+    name
+    username
+    wallet
+    picture {
+      ...file
+    }
+  }
+}
+query user_by_id($id: uuid!) {
+  users_by_pk(id: $id) {
+    id
+    name
+    username
+    wallet
+    picture {
+      ...file
+    }
+  }
+}

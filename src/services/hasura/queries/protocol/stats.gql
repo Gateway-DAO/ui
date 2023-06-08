@@ -1,0 +1,14 @@
+query protocol_get_data_model_stats($dataModelId: String!) {
+  protocol {
+    getTotalofIssuersByDataModel(dataModelId: $dataModelId)
+    getTotalCredentialsByDataModelGroupByRecipient(dataModelId: $dataModelId)
+    getTotalCredentialsByDataModel(dataModelId: $dataModelId)
+  }
+}
+
+
+query protocol_get_dao_stats($organizationId: String!) {
+  protocol {
+    getTotalodCredentialsIssuedByOrganization(userId: $organizationId)
+  }
+}

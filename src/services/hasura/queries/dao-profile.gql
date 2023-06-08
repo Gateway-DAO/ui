@@ -1,0 +1,161 @@
+fragment dao_profile on daos {
+  id
+  name
+  description
+  slug
+  background {
+    ...file
+  }
+  logo {
+    ...file
+  }
+  logo_url
+  background_url
+  categories
+  socials {
+    network
+    url
+  }
+  gates(where: { published: { _eq: "published" } }, limit: 3) {
+    id
+    title
+    description
+    categories
+    image
+    published
+    loyalty_id
+  }
+  followers_aggregate(where: { status: { _eq: "following" } }) {
+    aggregate {
+      count
+    }
+  }
+  gates_aggregate {
+    aggregate {
+      count
+    }
+  }
+  protocolOrganization {
+    gatewayId
+    id
+    name
+    organization_accesses {
+      user {
+        gatewayId
+      }
+      role
+    }
+  }
+}
+
+query dao_pages {
+  daos(limit: 10) {
+    id
+    slug
+  }
+}
+
+query dao_profile($id: uuid!) {
+  daos_by_pk(id: $id) {
+    ...dao_profile
+    followers(where: { status: { _eq: "following" } }, limit: 6) {
+      user {
+        id
+        name
+        username
+        pfp
+        picture {
+          ...file
+        }
+        permissions(where: { dao_id: { _eq: $id } }) {
+          permission
+        }
+      }
+    }
+  }
+}
+
+query dao_profile_by_slug($slug: String!) {
+  daos(where: { slug: { _eq: $slug } }) {
+    ...dao_profile
+    followers(where: { status: { _eq: "following" } }, limit: 6) {
+      user {
+        id
+        name
+        username
+        pfp
+        picture {
+          ...file
+        }
+        permissions(where: { dao: { slug: { _eq: $slug } } }) {
+          permission
+        }
+      }
+    }
+  }
+}
+
+query dao_gates_tab($id: uuid!) {
+  daos_by_pk(id: $id) {
+    gates {
+      id
+      title
+      description
+      categories
+      image
+      published
+      loyalty_id
+      dao {
+        id
+      }
+    }
+  }
+}
+
+query dao_profile_people($id: uuid!, $offset: Int!) {
+  daos_by_pk(id: $id) {
+    followers(
+      where: { status: { _eq: "following" } }
+      order_by: { user: { name: asc } }
+      limit: 15
+      offset: $offset
+    ) {
+      user {
+        id
+        name
+        username
+        pfp
+        picture {
+          ...file
+        }
+        permissions(where: { dao_id: { _eq: $id } }) {
+          permission
+        }
+      }
+    }
+  }
+}
+
+query dao_info_by_id($id: uuid!) {
+  daos_by_pk(id: $id) {
+    id
+    name
+    slug
+    background {
+      id
+      blur
+    }
+    logo {
+      id
+      blur
+    }
+    logo_url
+    background_url
+  }
+}
+
+query check_org_by_gateway_id($gatewayId: String!) {
+  daos(where: {gateway_id: {_eq: $gatewayId}}) {
+    id
+  }
+}

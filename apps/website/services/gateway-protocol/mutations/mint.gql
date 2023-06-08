@@ -1,5 +1,0 @@
-mutation mintCredential($credentialId: String!) {
-  mintCredential(credentialId: $credentialId) {
-    txHash
-  }
-}
