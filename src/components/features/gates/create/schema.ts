@@ -5,7 +5,7 @@ import { z } from 'zod';
 // Creator
 export type Creator = {
   id: string;
-  name: string;
+  username?: string;
 };
 
 // Draft Gate
@@ -18,7 +18,7 @@ export type CreateGateData = {
   loyalty_id?: string;
   points?: number;
 } & Required<Pick<Gates, 'title' | 'categories' | 'image' | 'description'>> &
-  Required<{ creator: Pick<Gates['creator'], 'id' | 'name'> }> & {
+  Required<{ creator: Pick<Gates['creator'], 'id'> }> & {
     type: 'task_based' | 'direct';
     whitelisted_wallets_file?: Partial<Files>;
     isFalid?: boolean;
@@ -635,7 +635,7 @@ const gateBase = z.object({
   image: z.string({ required_error: 'Image is required' }).min(2),
   creator: z.object({
     id: z.string(),
-    name: z.string(),
+    username: z.string().optional(),
   }),
   claim_limit: z
     .number()
