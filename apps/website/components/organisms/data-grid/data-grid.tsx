@@ -95,7 +95,7 @@ const defineCols = (columns: IColumnGrid[]) => {
                 width: '56px',
               }}
             >
-              {/* <Image
+              <Image
                 alt={`${params.title}`}
                 width={56}
                 height={56}
@@ -105,7 +105,6 @@ const defineCols = (columns: IColumnGrid[]) => {
                     : process.env.NEXT_PUBLIC_CLOUDFRONT_URL
                 }/${params?.qrCode}`}
               />
-               */}
             </Box>
             <Box>
               <Typography
