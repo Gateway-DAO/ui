@@ -73,7 +73,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 
   const { daos } = await hasuraPublicService.dao_profile_by_slug({ slug });
   const currentDao = daos[0];
-  const hasProtocolOrg = !!currentDao.protocolOrganization;
+  const hasProtocolOrg = !!currentDao?.protocolOrganization;
   const protocolOrgId = hasProtocolOrg
     ? currentDao.protocolOrganization.id
     : null;

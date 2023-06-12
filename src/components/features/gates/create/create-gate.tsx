@@ -262,6 +262,7 @@ export function CreateGate({ oldData }: CreateGateProps) {
         >
           <PublishNavbar
             isLoading={
+              uploadImage.isLoading ||
               createGate.isLoading ||
               publishGate.isLoading ||
               deleteTask.isLoading
