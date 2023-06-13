@@ -2,8 +2,7 @@ import { useEffect } from 'react';
 
 import Loading from '@/components/atoms/loadings/loading';
 import DataGrid from '@/components/organisms/data-grid/data-grid';
-import { hasuraPublicService, HasuraProtocolApi } from '@/services/hasura/api';
-import { useInfiniteQuery } from '@tanstack/react-query';
+import { QueryFunctionContext, useInfiniteQuery } from '@tanstack/react-query';
 
 import { Stack } from '@mui/material';
 
@@ -11,7 +10,11 @@ type Props = {
   dataModelId: string;
   columns: any[]; //[ ] add interface/type
   queryString: string;
-  queryFnName: keyof HasuraProtocolApi;
+  queryFn: (
+    context: QueryFunctionContext<any>,
+    pageSize: number
+  ) => Promise<any[]>;
+  querySelect?: (data: any) => any;
   pageSize?: number;
 };
 
@@ -19,10 +22,9 @@ export default function GridViewTab({
   dataModelId,
   columns,
   queryString,
-  queryFnName,
-  pageSize,
+  queryFn,
+  pageSize = 10,
 }: Props) {
-  const internalPageSize = pageSize || 10;
   const {
     data: credentials, //[ ] Rename this data credentials
     isLoading,
@@ -30,19 +32,10 @@ export default function GridViewTab({
     fetchNextPage,
   } = useInfiniteQuery(
     [queryString, dataModelId],
-    async ({ pageParam }) => {
-      const result = await hasuraPublicService[queryFnName]({
-        dataModelId: dataModelId,
-        take: internalPageSize,
-        skip: pageParam || 0,
-      } as any); //[ ] add interface/type
-      return result[queryFnName];
-    },
+    (options) => queryFn(options, pageSize),
     {
-      getNextPageParam: (lastPage, pages) =>
-        lastPage.length < internalPageSize
-          ? undefined
-          : pages.length * internalPageSize,
+      getNextPageParam: (lastPage: any = [], pages) =>
+        lastPage.length < pageSize ? undefined : pages.length * pageSize,
     }
   );
 
