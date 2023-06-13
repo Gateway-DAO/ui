@@ -26,16 +26,16 @@ import { DappNotifications, EmailNotifications } from './config';
 
 function NotificationsSettings() {
   const { t } = useTranslation('settings');
-  const { me, gqlAuthMethods } = useAuth();
+  const { me, hasuraUserService } = useAuth();
   const settings = useQuery(
     ['notification-settings', me.id],
-    () => gqlAuthMethods.me_notification_settings(),
+    () => hasuraUserService.me_notification_settings(),
     { select: (data) => data.me.notification_settings }
   );
 
   const changeSettings = useMutation(
     (input: ChangeNotificationSettings) =>
-      gqlAuthMethods.notifications_settings_toggle_email({ input }),
+      hasuraUserService.notifications_settings_toggle_email({ input }),
     {
       onSuccess() {
         settings.refetch();

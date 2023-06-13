@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 
 import { ProtocolContext } from '@/components/features/protocol/context';
 import { ClientNav } from '@/components/organisms/navbar/client-nav';
-import { Credential } from '@/services/gateway-protocol/types';
+import { Protocol_Api_Credential } from '@/services/hasura/types';
 import { theme, TOKENS } from '@/theme';
 import { useCreateQrCode } from '@/utils/qr-code/qr-code';
 import { PartialDeep } from 'type-fest';
@@ -14,7 +14,7 @@ import FloatingCta from './components/floating-cta';
 
 type Props = {
   children: React.ReactNode;
-  credential?: PartialDeep<Credential>;
+  credential?: PartialDeep<Protocol_Api_Credential>;
 };
 
 export default function Protocol({ children, credential }: Props) {

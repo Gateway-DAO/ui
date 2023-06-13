@@ -19,13 +19,13 @@ type Props = {
 };
 
 export function DraftDirectHoldersList({ gate }: Props) {
-  const { gqlAuthMethods } = useAuth();
+  const { hasuraUserService } = useAuth();
 
   const file = gate.whitelisted_wallets_file;
 
   const progressReq = useInfiniteQuery(
     ['progress', file?.id],
-    () => gqlAuthMethods.verify_csv_progress({ file_id: file?.id }),
+    () => hasuraUserService.verify_csv_progress({ file_id: file?.id }),
     {
       enabled: !!file?.id,
       keepPreviousData: false,

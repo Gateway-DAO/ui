@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import Loading from '@/components/atoms/loadings/loading';
 import { DataModelCard } from '@/components/molecules/cards/data-model-card';
 import { query } from '@/constants/queries';
-import { gqlAnonMethods } from '@/services/hasura/api';
+import { hasuraPublicService } from '@/services/hasura/api';
 import { TOKENS } from '@/theme';
 import { useInfiniteQuery } from '@tanstack/react-query';
 
@@ -20,7 +20,7 @@ export default function DataModels(): JSX.Element {
   } = useInfiniteQuery(
     [query.dataModels],
     async ({ pageParam }) => {
-      const result = await gqlAnonMethods.dataModels({
+      const result = await hasuraPublicService.protocol_data_models({
         take: internalPageSize,
         skip: pageParam || 0,
       } as any);
@@ -28,7 +28,7 @@ export default function DataModels(): JSX.Element {
       return result.protocol_data_model;
     },
     {
-      getNextPageParam: (lastPage, pages) =>
+      getNextPageParam: (lastPage = [], pages) =>
         lastPage.length < internalPageSize
           ? undefined
           : pages.length * internalPageSize,

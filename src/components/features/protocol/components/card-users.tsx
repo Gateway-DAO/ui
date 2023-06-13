@@ -2,8 +2,11 @@ import useTranslation from 'next-translate/useTranslation';
 
 import Loading from '@/components/atoms/loadings/loading';
 import { ROUTES } from '@/constants/routes';
-import { Organization, User } from '@/services/gateway-protocol/types';
-import { gqlAnonMethods } from '@/services/hasura/api';
+import { hasuraPublicService } from '@/services/hasura/api';
+import {
+  Protocol_Api_Organization,
+  Protocol_Api_User,
+} from '@/services/hasura/types';
 import { theme } from '@/theme';
 import { limitCharsCentered } from '@/utils/string';
 import { useQuery } from '@tanstack/react-query';
@@ -14,9 +17,9 @@ import { Stack, Box, useMediaQuery } from '@mui/material';
 import CardUserCell from './card-user-cell';
 
 type Props = {
-  issuer: PartialDeep<User>;
-  organization?: PartialDeep<Organization>;
-  recipient: PartialDeep<User>;
+  issuer: PartialDeep<Protocol_Api_User>;
+  organization?: PartialDeep<Protocol_Api_Organization>;
+  recipient: PartialDeep<Protocol_Api_User>;
 };
 
 export default function CardUsers({
@@ -30,7 +33,7 @@ export default function CardUsers({
   const issuer = useQuery(
     ['issuer', issuerCredential?.id],
     () =>
-      gqlAnonMethods.user_from_wallet({
+      hasuraPublicService.user_from_wallet({
         wallet: issuerCredential?.primaryWallet?.address,
       }),
     {
@@ -43,7 +46,7 @@ export default function CardUsers({
   const organization = useQuery(
     ['organization', issuerOrganization?.id],
     () =>
-      gqlAnonMethods.dao_profile_by_slug({
+      hasuraPublicService.dao_profile_by_slug({
         slug: issuerOrganization?.gatewayId,
       }),
     {
@@ -56,7 +59,7 @@ export default function CardUsers({
   const recipient = useQuery(
     ['recipient', recipientCredential.gatewayId],
     () =>
-      gqlAnonMethods.user_from_wallet({
+      hasuraPublicService.user_from_wallet({
         wallet: recipientCredential.primaryWallet?.address,
       }),
     {

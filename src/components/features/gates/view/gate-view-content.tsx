@@ -4,7 +4,7 @@ import GateCompletedModal from '@/components/features/gates/view/gate-completed'
 import { useCredentialByGateId } from '@/hooks/use-credential-by-gate-id';
 import { useGateStatus } from '@/hooks/use-gate-status';
 import { useAuth } from '@/providers/auth';
-import { gqlAnonMethods } from '@/services/hasura/api';
+import { hasuraPublicService } from '@/services/hasura/api';
 import { Gates } from '@/services/hasura/types';
 import { isDaoAdmin } from '@/utils/is-dao-admin';
 import { useQuery } from '@tanstack/react-query';
@@ -24,7 +24,7 @@ export function GateViewContent({
   gateProps,
   protocolCredential,
 }: GateViewContentProps) {
-  const { me, gqlAuthMethods } = useAuth();
+  const { me, hasuraUserService } = useAuth();
   const [open, setOpen] = useState(false);
   const isAdmin = isDaoAdmin({ me, gate: gateProps });
   const gateStatus = useGateStatus(gateProps);
@@ -32,7 +32,7 @@ export function GateViewContent({
   const credential = useCredentialByGateId({ gateId: gateProps?.id });
 
   const gateProgress = useQuery(['gate_progress', gateProps?.id, me?.id], () =>
-    gqlAuthMethods.GateProgress({
+    hasuraUserService.GateProgress({
       gateID: gateProps?.id,
       userID: me?.id,
     })
@@ -48,7 +48,7 @@ export function GateViewContent({
   const directCredentialInfo = useQuery(
     ['direct-credential-info', me?.wallet, gateProps.id],
     () =>
-      gqlAnonMethods.direct_credential_info({
+      hasuraPublicService.direct_credential_info({
         gate_id: gateProps.id,
         wallet: me?.wallet ?? '',
       }),

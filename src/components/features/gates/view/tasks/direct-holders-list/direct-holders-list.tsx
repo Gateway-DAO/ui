@@ -7,7 +7,7 @@ import { UserListItem } from '@/components/molecules/user-list-item';
 import { ClientNav } from '@/components/organisms/navbar/client-nav';
 import { query } from '@/constants/queries';
 import { useAuth } from '@/providers/auth';
-import { gqlAnonMethods } from '@/services/hasura/api';
+import { hasuraPublicService } from '@/services/hasura/api';
 import { Gates } from '@/services/hasura/types';
 import { TOKENS } from '@/theme';
 import { useInfiniteQuery } from '@tanstack/react-query';
@@ -49,12 +49,12 @@ export function DirectHoldersList({
       [query.direct_credentialholders, me?.wallet, gate.id, filter],
       ({ pageParam = 0 }) =>
         filter?.length
-          ? gqlAnonMethods.direct_credential_holders_search({
+          ? hasuraPublicService.direct_credential_holders_search({
               gate_id: gate.id,
               offset: pageParam,
               search: `%${filter}%`,
             })
-          : gqlAnonMethods.direct_credential_holders({
+          : hasuraPublicService.direct_credential_holders({
               offset: pageParam,
               gate_id: gate.id,
             }),

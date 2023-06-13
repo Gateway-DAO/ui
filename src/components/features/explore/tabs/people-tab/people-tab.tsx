@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 
 import { CenteredLoader } from '@/components/atoms/loadings/centered-loader';
-import { gqlAnonMethods } from '@/services/hasura/api';
+import { hasuraPublicService } from '@/services/hasura/api';
 import { TOKENS } from '@/theme';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useWindowVirtualizer } from '@tanstack/react-virtual';
@@ -25,7 +25,7 @@ export function PeopleTab() {
     useInfiniteQuery(
       ['people-tab'],
       ({ pageParam = offset }) =>
-        gqlAnonMethods.people_tab({ offset: pageParam }),
+        hasuraPublicService.people_tab({ offset: pageParam }),
       {
         getNextPageParam: (lastPage, pages) => {
           if (lastPage.people.length < 15) return undefined;

@@ -10,7 +10,7 @@ type Props = {
 };
 
 export function useLoyaltyGatesCompleted({ loyaltyProgramId }: Props) {
-  const { me, gqlAuthMethods } = useAuth();
+  const { me, hasuraUserService } = useAuth();
 
   const gatesCompleted = useQuery(
     [
@@ -18,7 +18,7 @@ export function useLoyaltyGatesCompleted({ loyaltyProgramId }: Props) {
       { userId: me?.id, loyaltyProgramId },
     ],
     () =>
-      gqlAuthMethods.get_gate_progress_completed_by_loyalty_program({
+      hasuraUserService.get_gate_progress_completed_by_loyalty_program({
         userId: me?.id,
         loyaltyProgramId: loyaltyProgramId,
       }),

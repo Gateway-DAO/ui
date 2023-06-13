@@ -2,7 +2,7 @@ import useTranslation from 'next-translate/useTranslation';
 
 import Loading from '@/components/atoms/loadings/loading';
 import { DataModelCard } from '@/components/molecules/cards/data-model-card';
-import { gqlAnonMethods } from '@/services/hasura/api';
+import { hasuraPublicService } from '@/services/hasura/api';
 import { TOKENS } from '@/theme';
 import { useQuery } from '@tanstack/react-query';
 
@@ -12,7 +12,7 @@ export default function DataModelsP2P(): JSX.Element {
   const { data: dataModels, isLoading } = useQuery(
     ['data-models-p2p'],
     async () => {
-      const result = await gqlAnonMethods.dataModelsP2P({
+      const result = await hasuraPublicService.protocol_data_models_p2p({
         take: 4,
         skip: 0,
       } as any);

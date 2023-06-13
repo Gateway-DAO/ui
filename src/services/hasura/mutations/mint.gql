@@ -11,3 +11,11 @@ mutation mint_credential($id: uuid!) {
     }
   }
 }
+
+mutation protocol_mint_credential($credentialId: String!) {
+  protocol {
+    mintCredential(credentialId: $credentialId) {
+      txHash
+    }
+  }
+}

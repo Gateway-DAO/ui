@@ -1,9 +1,9 @@
 import useTranslation from 'next-translate/useTranslation';
 
 import {
-  Credential,
-  CredentialStatus,
-} from '@/services/gateway-protocol/types';
+  Protocol_Api_Credential,
+  Protocol_Api_CredentialStatus,
+} from '@/services/hasura/types';
 import { theme } from '@/theme';
 import { DateTime } from 'luxon';
 import { PartialDeep } from 'type-fest';
@@ -15,7 +15,7 @@ import CardCell from './card-cell';
 import CardUsers from './card-users';
 
 type Props = {
-  credential: PartialDeep<Credential>;
+  credential: PartialDeep<Protocol_Api_Credential>;
   elevation?: number;
 };
 
@@ -61,7 +61,7 @@ export default function CredentialCardInfo({
           hasLink={!!credential?.issuerUser.gatewayId}
         />
         <CardCell label={t('credential.status')}>
-          {credential?.status === CredentialStatus.Valid && (
+          {credential?.status === Protocol_Api_CredentialStatus.Valid && (
             <Chip
               label={t('credential.valid')}
               size="small"
@@ -69,7 +69,7 @@ export default function CredentialCardInfo({
               color="success"
             />
           )}
-          {credential?.status === CredentialStatus.Suspended && (
+          {credential?.status === Protocol_Api_CredentialStatus.Suspended && (
             <Chip
               label={t('credential.suspended')}
               size="small"
@@ -77,7 +77,7 @@ export default function CredentialCardInfo({
               color="warning"
             />
           )}
-          {credential?.status === CredentialStatus.Revoked && (
+          {credential?.status === Protocol_Api_CredentialStatus.Revoked && (
             <Chip
               label={t('credential.revoked')}
               size="small"
@@ -85,7 +85,7 @@ export default function CredentialCardInfo({
               color="warning"
             />
           )}
-          {credential?.status === CredentialStatus.Invalid && (
+          {credential?.status === Protocol_Api_CredentialStatus.Invalid && (
             <Chip
               label={t('credential.invalid')}
               size="small"

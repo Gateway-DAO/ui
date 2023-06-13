@@ -29,11 +29,11 @@ export function SubmissionsItem({ progress, onSelect }: SubmissionsItemProps) {
   const { t, lang } = useTranslation('gate-profile');
   const isMobile = useMediaQuery(theme.breakpoints.down('lg'));
 
-  const { gqlAuthMethods } = useAuth();
+  const { hasuraUserService } = useAuth();
   const progressEvent = useQuery(
     ['progress-event', progress?.id],
     () =>
-      gqlAuthMethods.manual_tasks_status({ task_progress_id: progress?.id }),
+      hasuraUserService.manual_tasks_status({ task_progress_id: progress?.id }),
     {
       select: (data) => data?.manual_task_events?.[0],
     }

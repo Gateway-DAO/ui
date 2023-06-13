@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 
-import { DataModel } from '@/services/gateway-protocol/types';
+import { Protocol_Api_DataModel } from '@/services/hasura/types';
 import { PartialDeep } from 'type-fest/source/partial-deep';
 
 import { Stack } from '@mui/material';
@@ -12,7 +12,7 @@ import ClaimFormText from './claim-form-text';
 import { ClaimImageField } from './claim-image-field';
 
 type Props = {
-  dataModel: PartialDeep<DataModel>;
+  dataModel: PartialDeep<Protocol_Api_DataModel>;
 };
 
 function ClaimField(props: ClaimFieldProps) {

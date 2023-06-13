@@ -5,7 +5,7 @@ import { ROUTES } from '@/constants/routes';
 import { generateImageUrl } from '@/hooks/use-file';
 import { useUploadImage } from '@/hooks/use-upload-image';
 import { useAuth } from '@/providers/auth';
-import { gqlAnonMethods } from '@/services/hasura/api';
+import { hasuraPublicService } from '@/services/hasura/api';
 import { Dao_Profile_By_SlugQuery } from '@/services/hasura/types';
 import { useMutation } from '@tanstack/react-query';
 
@@ -17,7 +17,7 @@ export default function DaoProfilePage({
   const dao = daoProps?.daos?.[0];
 
   const uploadImage = useUploadImage();
-  const { me, gqlAuthMethods, onUpdateMe } = useAuth();
+  const { me, hasuraUserService, onUpdateMe } = useAuth();
   const router = useRouter();
   const isAdmin =
     me?.following_dao?.find((fdao) => fdao.dao_id === dao?.id)?.dao?.is_admin ??
@@ -58,7 +58,7 @@ export default function DaoProfilePage({
 
       const [logo, bg] = await Promise.all([uploadLogo(), uploadBackground()]);
 
-      return gqlAuthMethods.edit_dao({
+      return hasuraUserService.edit_dao({
         id: dao.id,
         ...daoData,
         logo_id: logo,
@@ -98,7 +98,7 @@ DaoProfilePage.auth = true;
 export const getServerSideProps = async ({ params }) => {
   const { slug } = params;
 
-  const daoProps = await gqlAnonMethods.dao_profile_by_slug({
+  const daoProps = await hasuraPublicService.dao_profile_by_slug({
     slug,
   });
 

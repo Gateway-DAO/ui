@@ -17,12 +17,8 @@ import { TokenFilled } from '@/components/organisms/mint/mint-card/assets/token-
 import { ClientNav } from '@/components/organisms/navbar/client-nav';
 import { ROUTES } from '@/constants/routes';
 import { useAuth } from '@/providers/auth';
-import {
-  gatewayProtocolAuthSDK,
-  gatewayProtocolSDK,
-} from '@/services/gateway-protocol/api';
-import { MintCredentialMutationVariables } from '@/services/gateway-protocol/types';
-import { gqlAnonMethods } from '@/services/hasura/api';
+import { hasuraPublicService } from '@/services/hasura/api';
+import { Protocol_Mint_CredentialMutationVariables } from '@/services/hasura/types';
 import { TOKENS } from '@/theme';
 import { theme } from '@/theme';
 import { useQueryClient } from '@tanstack/react-query';
@@ -93,7 +89,7 @@ export function CreditScoreTemplate() {
 
   const DATA_MODEL_ID = process.env.NEXT_PUBLIC_CRED_PROTOCOL_DM_ID;
 
-  const { me, gqlAuthMethods, token } = useAuth();
+  const { me, hasuraUserService, token } = useAuth();
   const router = useRouter();
   const [isHolderDialog, setIsHolderDialog] = useState(false);
   const queryClient = useQueryClient();
@@ -101,7 +97,7 @@ export function CreditScoreTemplate() {
   const { data: credScore } = useQuery(
     ['cred-api-score-single', me?.wallet],
     async () => {
-      const result = await gqlAuthMethods.get_cred_score({
+      const result = await hasuraUserService.get_cred_score({
         address: me?.wallet,
       });
       return result.get_cred_score;
@@ -130,7 +126,7 @@ export function CreditScoreTemplate() {
   const { refetch, isFetching: createCredentialLoading } = useQuery(
     ['cred-api-create-credential', me?.wallet],
     async () => {
-      const result = await gqlAuthMethods.create_cred({
+      const result = await hasuraUserService.create_cred({
         gatewayId: me?.username,
         score: credScore?.value,
         bearerToken: token,
@@ -154,30 +150,33 @@ export function CreditScoreTemplate() {
 
   const { data: recipientsUsers } = useQuery(
     ['cred-api-find-recipient-user', DATA_MODEL_ID],
-    async () => {
-      const result = await gqlAnonMethods.findRecipientsByDataModel({
+    () =>
+      hasuraPublicService.protocol_find_recipients_by_data_model({
         dataModelId: DATA_MODEL_ID,
         skip: 0,
         take: 10,
-      });
-      return result.protocol_user;
+      }),
+    {
+      select: (data) => data.protocol_user,
     }
   );
 
   const { data: totalRecipientUsersCount } = useQuery(
     ['cred-api-find-total-users', DATA_MODEL_ID],
-    async () => {
-      const s = await gatewayProtocolSDK.getDataModelStats({
+    () =>
+      hasuraPublicService.protocol_get_data_model_stats({
         dataModelId: DATA_MODEL_ID,
-      });
-      return s.getTotalCredentialsByDataModelGroupByRecipient;
+      }),
+    {
+      select: (data) =>
+        data.protocol.getTotalCredentialsByDataModelGroupByRecipient,
     }
   );
 
   const { isLoading: isLoadingMintingCred, mutate } = useMutation(
     ['cred-api-mint-credential'],
-    ({ credentialId }: MintCredentialMutationVariables) => {
-      return gatewayProtocolAuthSDK(token).mintCredential({
+    ({ credentialId }: Protocol_Mint_CredentialMutationVariables) => {
+      return hasuraUserService.protocol_mint_credential({
         credentialId: credentialId,
       });
     },

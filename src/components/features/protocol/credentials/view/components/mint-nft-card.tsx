@@ -5,7 +5,7 @@ import {
   EthereumIcon,
   SolanaIcon,
 } from '@/components/atoms/icons';
-import { Chain } from '@/services/gateway-protocol/types';
+import { Protocol_Api_Chain } from '@/services/hasura/types';
 import { brandColors } from '@/theme';
 import { limitCharsCentered } from '@/utils/string';
 import { getExplorer, getSolanaExplorer } from '@/utils/web3';
@@ -28,7 +28,7 @@ type ComingSoonType = {
 };
 
 export type MintedChain = {
-  chain: Chain;
+  chain: Protocol_Api_Chain;
   transaction: string;
 };
 
@@ -38,7 +38,7 @@ type Props = {
   comingSoon?: ComingSoonType;
   mintedData?: MintedChain[] | null;
   mintAction?: () => void;
-  chain?: Chain;
+  chain?: Protocol_Api_Chain;
 };
 
 const mintNetworks = {
@@ -59,10 +59,10 @@ const mintNetworks = {
 };
 
 const chains = {
-  [Chain.Sol]: {
+  [Protocol_Api_Chain.Sol]: {
     mintNetworks: [mintNetworks.SOL],
   },
-  [Chain.Evm]: {
+  [Protocol_Api_Chain.Evm]: {
     mintNetworks: [mintNetworks.EVM], // TODO: add mintNetworks.etherium
   },
 };
@@ -122,7 +122,7 @@ function ChainMintedRow({
   chain,
   transaction,
 }: {
-  chain: Chain;
+  chain: Protocol_Api_Chain;
   transaction: string;
 }): JSX.Element {
   return (
@@ -160,7 +160,7 @@ function ChainMintedRow({
           fontWeight="400"
           component="a"
           href={`${
-            chain === Chain.Evm
+            chain === Protocol_Api_Chain.Evm
               ? getExplorer(mintNetworks[chain].id) + '/tx/' + transaction
               : getSolanaExplorer(
                   process.env.NEXT_PUBLIC_SOLANA_CLUSTER,

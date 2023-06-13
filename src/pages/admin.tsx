@@ -2,7 +2,7 @@ import { AdminArea } from '@/components/organisms/admin';
 import { DashboardTemplate } from '@/components/templates/dashboard';
 import { ROUTES } from '@/constants/routes';
 import { useAuth } from '@/providers/auth';
-import { gqlMethods } from '@/services/hasura/api';
+import { hasuraApi } from '@/services/hasura/api';
 import { getServerSession } from '@/services/next-auth';
 import { dehydrate, QueryClient, useQuery } from '@tanstack/react-query';
 
@@ -24,7 +24,7 @@ export async function getServerSideProps({ req, res }) {
     };
   }
 
-  const { me } = await gqlMethods(session.token, session.hasura_id).me();
+  const { me } = await hasuraApi(session.token, session.hasura_id).me();
 
   const isAdmin =
     me?.permissions?.filter(
@@ -46,7 +46,7 @@ export async function getServerSideProps({ req, res }) {
   await queryClient.prefetchQuery(
     ['admin-data'],
     async () =>
-      await gqlMethods(session.token, session.hasura_id).get_admin_data()
+      await hasuraApi(session.token, session.hasura_id).get_admin_data()
   );
 
   return {
@@ -57,10 +57,10 @@ export async function getServerSideProps({ req, res }) {
 }
 
 export default function Admin() {
-  const { gqlAuthMethods } = useAuth();
+  const { hasuraUserService } = useAuth();
 
   const { data: adminData } = useQuery(['admin-data'], () =>
-    gqlAuthMethods.get_admin_data()
+    hasuraUserService.get_admin_data()
   );
 
   return (

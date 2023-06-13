@@ -5,8 +5,7 @@ import { useRouter } from 'next/router';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { ROUTES } from '@/constants/routes';
-import { gatewayProtocolAuthSDK } from '@/services/gateway-protocol/api';
-import { gqlAnonMethods, gqlMethods } from '@/services/hasura/api';
+import { hasuraPublicService, hasuraApi } from '@/services/hasura/api';
 import { Protocol_Api_Chain } from '@/services/hasura/types';
 import { useWallet } from '@solana/wallet-adapter-react';
 import {
@@ -98,7 +97,7 @@ export const useAuthLogin = () => {
   const nonce = useQuery(
     [address, 'nonce'],
     () =>
-      gqlAnonMethods.get_nonce({
+      hasuraPublicService.get_nonce({
         wallet: address,
         chain,
       }),
@@ -210,31 +209,31 @@ export const useAuthLogin = () => {
     queries: [
       {
         queryKey: ['user_info', session?.data?.hasura_id],
-        queryFn: () => gqlMethods(token).me_user_info(),
+        queryFn: () => hasuraApi(token).me_user_info(),
         ...queryDefinitions,
       },
       {
         queryKey: ['user_permissions', session?.data?.hasura_id],
-        queryFn: () => gqlMethods(token).me_permissions(),
+        queryFn: () => hasuraApi(token).me_permissions(),
         ...queryDefinitions,
       },
       {
         queryKey: ['user_following', session?.data?.hasura_id],
-        queryFn: () => gqlMethods(token).me_following(),
+        queryFn: () => hasuraApi(token).me_following(),
         ...queryDefinitions,
       },
       {
         queryKey: ['user_task_progresses', session?.data?.hasura_id],
-        queryFn: () => gqlMethods(token).me_task_progresses(),
+        queryFn: () => hasuraApi(token).me_task_progresses(),
         ...queryDefNoRefetch,
       },
       {
         queryKey: ['user_protocol', session?.data?.hasura_id],
         queryFn: async () => {
-          const res = await gatewayProtocolAuthSDK(token).meProtocol();
+          const res = await hasuraApi(token).me_protocol();
           return {
             me: {
-              protocol: res.me,
+              protocol: res.protocol.me,
             },
           };
         },

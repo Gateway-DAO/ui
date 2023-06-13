@@ -1,6 +1,6 @@
 import useTranslation from 'next-translate/useTranslation';
 
-import { CreateCredentialInput } from '@/services/gateway-protocol/types';
+import { Protocol_Api_CreateCredentialInput } from '@/services/hasura/types';
 import { brandColors } from '@/theme';
 import { useFormContext } from 'react-hook-form';
 
@@ -10,7 +10,7 @@ export default function RecipientForm() {
   const {
     register,
     formState: { errors },
-  } = useFormContext<CreateCredentialInput>();
+  } = useFormContext<Protocol_Api_CreateCredentialInput>();
   const { t } = useTranslation('protocol');
 
   return (

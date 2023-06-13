@@ -22,3 +22,7 @@ export const query = {
   protocol_credential_by_loyalty_id: 'protocol_credential_by_loyalty_id',
   protocol_credential_by_gate_id: 'protocol_credential_by_gate_id',
 };
+
+export const mutation = {
+  create_organization: 'create_organization',
+};

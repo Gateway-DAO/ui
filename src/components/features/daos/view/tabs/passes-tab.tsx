@@ -4,7 +4,7 @@ import Loading from '@/components/atoms/loadings/loading';
 import { LoyaltyProgramCard } from '@/components/molecules/cards/loyalty-program-card';
 import { query } from '@/constants/queries';
 import { ROUTES } from '@/constants/routes';
-import { gqlAnonMethods } from '@/services/hasura/api';
+import { hasuraPublicService } from '@/services/hasura/api';
 import { TOKENS } from '@/theme';
 import { useInfiniteQuery } from '@tanstack/react-query';
 
@@ -21,14 +21,14 @@ export default function PassesTab(): JSX.Element {
   } = useInfiniteQuery(
     [query.passes],
     async ({ pageParam }) => {
-      const result = await gqlAnonMethods.loyalty_programs({
+      const result = await hasuraPublicService.loyalty_programs({
         take: internalPageSize,
         skip: pageParam || 0,
       } as any);
       return result.loyalty_program;
     },
     {
-      getNextPageParam: (lastPage, pages) =>
+      getNextPageParam: (lastPage = [], pages) =>
         lastPage.length < internalPageSize
           ? undefined
           : pages.length * internalPageSize,

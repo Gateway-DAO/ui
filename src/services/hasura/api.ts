@@ -4,15 +4,27 @@ import { GraphQLClient } from 'graphql-request';
 
 import { getSdk, SdkFunctionWrapper } from './types';
 
-export type GqlMethods = ReturnType<typeof getSdk>;
+export type HasuraApi = ReturnType<typeof getSdk>;
+
+export type HasuraProtocolApi = {
+  [K in keyof HasuraApi as K extends `protocol_${string}`
+    ? K
+    : never]: HasuraApi[K];
+};
+
+export type GqlProtocolMethods = {
+  [K in keyof HasuraApi as K extends `protocol_${string}`
+    ? K
+    : never]: HasuraApi[K];
+};
 
 const glqAnonClient = new GraphQLClient(
   process.env.NEXT_PUBLIC_HASURA_ENDPOINT
 );
 
-export const gqlAnonMethods = getSdk(glqAnonClient);
+export const hasuraPublicService = getSdk(glqAnonClient);
 
-export const gqlUserHeader = (token: string, userId?: string) => ({
+export const hasuraUserHeader = (token: string, userId?: string) => ({
   'X-Hasura-Role': 'user',
   Authorization: `Bearer ${token}`,
   ...(userId && { 'X-Hasura-User-Id': userId }),
@@ -20,13 +32,13 @@ export const gqlUserHeader = (token: string, userId?: string) => ({
 
 const gqlClient = (token?: string, userId?: string) =>
   new GraphQLClient(process.env.NEXT_PUBLIC_HASURA_ENDPOINT, {
-    headers: token ? gqlUserHeader(token, userId) : undefined,
+    headers: token ? hasuraUserHeader(token, userId) : undefined,
   });
 
-export const gqlMethods = (token: string, userId?: string) =>
+export const hasuraApi = (token: string, userId?: string) =>
   getSdk(gqlClient(token, userId));
 
-export const gqlMethodsWithRefresh = (
+export const hasuraApiWithRefresh = (
   token: string,
   userId: string | undefined,
   callback: (session) => void

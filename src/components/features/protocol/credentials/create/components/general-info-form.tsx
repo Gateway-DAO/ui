@@ -2,7 +2,7 @@ import useTranslation from 'next-translate/useTranslation';
 import dynamic from 'next/dynamic';
 
 import { CATEGORIES } from '@/constants/gate';
-import { CreateCredentialInput } from '@/services/gateway-protocol/types';
+import { Protocol_Api_CreateCredentialInput } from '@/services/hasura/types';
 import { brandColors } from '@/theme';
 import { isToday } from '@/utils/date';
 import { DateTime } from 'luxon';
@@ -39,7 +39,7 @@ export default function GeneralInfoForm({
     control,
     formState: { errors },
     getValues,
-  } = useFormContext<CreateCredentialInput>();
+  } = useFormContext<Protocol_Api_CreateCredentialInput>();
   if (isP2PDataModel && image !== null) {
     setValue('image', image);
   }

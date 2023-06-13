@@ -3,7 +3,7 @@ import useTranslation from 'next-translate/useTranslation';
 
 import { AllTab, ExploreLayout } from '@/components/features/explore';
 import { HeadContainer } from '@/components/molecules/head-container';
-import { gqlAnonMethods } from '@/services/hasura/api';
+import { hasuraPublicService } from '@/services/hasura/api';
 import { useQuery } from '@tanstack/react-query';
 
 /** TODO: Prevent template remount when navigating between dashboard pages
@@ -13,13 +13,16 @@ import { useQuery } from '@tanstack/react-query';
 const HARDCODED_DAOS = ['goldfinch', 'cyberconnect', 'lifi'];
 
 export const getStaticProps = async () => {
-  const exploreProps = await gqlAnonMethods.get_home({
+  const exploreProps = await hasuraPublicService.get_home({
     daos_where: {
       slug: { _in: HARDCODED_DAOS },
     },
   });
 
-  const dataModels = await gqlAnonMethods.dataModelsP2P({ skip: 0, take: 4 });
+  const dataModels = await hasuraPublicService.protocol_data_models_p2p({
+    skip: 0,
+    take: 4,
+  });
 
   return {
     props: {
@@ -41,7 +44,7 @@ export default function Explore({
   const { data } = useQuery(
     ['explore'],
     () =>
-      gqlAnonMethods.get_home({
+      hasuraPublicService.get_home({
         daos_where: {
           slug: { _in: HARDCODED_DAOS },
         },

@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import { DataModelLayout } from '@/components/features/protocol/data-models/view/layout';
 import { IColumnGrid } from '@/components/organisms/data-grid/data-grid';
 import { query } from '@/constants/queries';
+import { hasuraPublicService } from '@/services/hasura/api';
 
 const GridViewTab = dynamic(
   () =>
@@ -37,7 +38,16 @@ export default function ProtocolDataModelRecipients() {
       dataModelId={dataModelId as string}
       columns={recipientsGridColumns}
       queryString={query.recipientsByDataModel}
-      queryFnName="findRecipientsByDataModel"
+      queryFn={async ({ pageParam }, pageSize) => {
+        const res =
+          await hasuraPublicService.protocol_find_recipients_by_data_model_api({
+            dataModelId: dataModelId as string,
+            take: pageSize,
+            skip: pageParam || 0,
+          });
+
+        return res.protocol.findRecipientsByDataModel;
+      }}
       pageSize={10}
     />
   );

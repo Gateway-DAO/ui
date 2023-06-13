@@ -7,10 +7,10 @@ import { errorMessages } from '@/constants/error-messages';
 import { ROUTES } from '@/constants/routes';
 import { useAuth } from '@/providers/auth';
 import {
-  CreateCredentialInput,
-  DataModel,
-  PermissionType,
-} from '@/services/gateway-protocol/types';
+  Protocol_Api_DataModel,
+  Protocol_Api_PermissionType,
+  Protocol_Api_CreateCredentialInput,
+} from '@/services/hasura/types';
 import { brandColors } from '@/theme';
 import { useSnackbar } from 'notistack';
 import { useFormContext } from 'react-hook-form';
@@ -27,11 +27,12 @@ import {
 } from '@mui/material';
 
 type Props = {
-  dataModel: PartialDeep<DataModel>;
+  dataModel: PartialDeep<Protocol_Api_DataModel>;
 };
 
 export default function IssueByForm({ dataModel }: Props) {
-  const { register, setValue } = useFormContext<CreateCredentialInput>();
+  const { register, setValue } =
+    useFormContext<Protocol_Api_CreateCredentialInput>();
 
   const { t } = useTranslation('protocol');
   const { me } = useAuth();
@@ -44,15 +45,15 @@ export default function IssueByForm({ dataModel }: Props) {
 
   const disableUserToIssueCredential = () => {
     return (
-      dataModel.permissioning === PermissionType.Organizations ||
-      (dataModel.permissioning === PermissionType.SpecificIds &&
+      dataModel.permissioning === Protocol_Api_PermissionType.Organizations ||
+      (dataModel.permissioning === Protocol_Api_PermissionType.SpecificIds &&
         !dataModel?.allowedUsers?.find((user) => user.id === me?.protocol?.id))
     );
   };
 
   const disableOrganizationToIssueCredential = (access) => {
     return (
-      dataModel.permissioning === PermissionType.SpecificIds &&
+      dataModel.permissioning === Protocol_Api_PermissionType.SpecificIds &&
       !dataModel?.allowedOrganizations?.find(
         (org) => org.id === access.organization.id
       )

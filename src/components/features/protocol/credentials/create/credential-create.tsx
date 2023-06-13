@@ -2,13 +2,12 @@ import useTranslation from 'next-translate/useTranslation';
 import { useState } from 'react';
 
 import { useAuth } from '@/providers/auth';
-import { gatewayProtocolAuthSDK } from '@/services/gateway-protocol/api';
 import {
-  CreateCredentialMutationVariables,
-  CreateCredentialInput,
-  PermissionType,
-} from '@/services/gateway-protocol/types';
-import { DataModel } from '@/services/gateway-protocol/types';
+  Protocol_Create_CredentialMutationVariables,
+  Protocol_Api_DataModel,
+  Protocol_Api_PermissionType,
+  Protocol_Api_CreateCredentialInput,
+} from '@/services/hasura/types';
 import { ajvResolver } from '@hookform/resolvers/ajv';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
@@ -29,17 +28,18 @@ import SuccessfullyCreated from './components/successfully-created';
 import { createCredentialSchema, createCredentialSchemaP2P } from './schema';
 
 type CreateCredentialProps = {
-  dataModel: PartialDeep<DataModel>;
-  oldData?: CreateCredentialInput;
+  dataModel: PartialDeep<Protocol_Api_DataModel>;
+  oldData?: Protocol_Api_CreateCredentialInput;
 };
 export default function CredentialCreateForm({
   dataModel,
   oldData,
 }: CreateCredentialProps) {
-  const { gqlAuthMethods, token } = useAuth();
+  const { hasuraUserService, token } = useAuth();
   const { enqueueSnackbar } = useSnackbar();
   const { t } = useTranslation('protocol');
-  const isP2PDataModel = dataModel.permissioning === PermissionType.All;
+  const isP2PDataModel =
+    dataModel.permissioning === Protocol_Api_PermissionType.All;
   const [credentialCreated, setCredentialCreated] = useState<string>(null);
 
   const methods = useForm({
@@ -94,15 +94,12 @@ export default function CredentialCreateForm({
 
   const createCredential = useMutation(
     ['createCredential'],
-    ({ ...data }: CreateCredentialMutationVariables) => {
-      return gatewayProtocolAuthSDK(token).createCredential({
-        ...data,
-      });
-    }
+    (data: Protocol_Create_CredentialMutationVariables) =>
+      hasuraUserService.protocol_create_credential(data)
   );
 
   const uploadArweave = useMutation(['uploadArweave'], (base64: string) =>
-    gqlAuthMethods.upload_arweave({ base64 })
+    hasuraUserService.upload_arweave({ base64 })
   );
 
   const uploadCredentialImage = async (fieldData): Promise<string> => {
@@ -177,16 +174,18 @@ export default function CredentialCreateForm({
     return data;
   };
 
-  const handleMutation = async (data: CreateCredentialInput | any) => {
+  const handleMutation = async (
+    data: Protocol_Api_CreateCredentialInput | any
+  ) => {
     if (!(await methods.trigger())) return;
     try {
       data = await handleFields(data);
-      await createCredential
-        .mutateAsync(data as CreateCredentialMutationVariables)
-        .then((suc) => {
-          setCredentialCreated(suc?.createCredential?.id);
-          methods.reset();
-        });
+      const res = await createCredential.mutateAsync(
+        data as Protocol_Create_CredentialMutationVariables
+      );
+
+      setCredentialCreated(res?.protocol?.createCredential?.id);
+      methods.reset();
     } catch (e) {
       enqueueSnackbar(t('data-model.error-on-create-credential'));
     }

@@ -6,7 +6,7 @@ import { DashboardTemplate } from '@/components/templates/dashboard';
 import { query } from '@/constants/queries';
 import { ROUTES } from '@/constants/routes';
 import { useAuth } from '@/providers/auth';
-import { gqlAnonMethods, gqlMethods } from '@/services/hasura/api';
+import { hasuraPublicService, hasuraApi } from '@/services/hasura/api';
 import { getServerSession } from '@/services/next-auth';
 import { QueryClient, dehydrate, useQuery } from '@tanstack/react-query';
 import jwt from 'jsonwebtoken';
@@ -23,12 +23,12 @@ export default function LoyaltyCredentialPage({ loyalty }) {
 
   const id = router.query.id as string;
 
-  const { me, gqlAuthMethods, authenticated } = useAuth();
+  const { me, hasuraUserService, authenticated } = useAuth();
 
   const { data: gate } = useQuery(
     [query.gate, id],
     () =>
-      gqlAuthMethods.gate({
+      hasuraUserService.gate({
         id,
       }),
     { enabled: authenticated, select: ({ gates_by_pk }) => gates_by_pk }
@@ -43,7 +43,7 @@ export default function LoyaltyCredentialPage({ loyalty }) {
       },
     ],
     () =>
-      gqlAuthMethods.get_protocol_by_gate_id({
+      hasuraUserService.get_protocol_by_gate_id({
         user_id: me?.id,
         gate_id: gate?.id,
       }),
@@ -92,11 +92,11 @@ export const getServerSideProps = async ({ req, res, params }) => {
 
   try {
     gate = await (!!session && !expired
-      ? gqlMethods(session.token, session.hasura_id)
-      : gqlAnonMethods
+      ? hasuraApi(session.token, session.hasura_id)
+      : hasuraPublicService
     ).gate({ id });
   } catch (e) {
-    gate = await gqlAnonMethods.gate({ id });
+    gate = await hasuraPublicService.gate({ id });
   }
 
   if (!gate.gates_by_pk) {
@@ -105,7 +105,7 @@ export const getServerSideProps = async ({ req, res, params }) => {
 
   await queryClient.prefetchQuery([query.gate, id], () => gate);
 
-  const { loyalty_program_by_pk } = await gqlAnonMethods.loyalty_program({
+  const { loyalty_program_by_pk } = await hasuraPublicService.loyalty_program({
     id: gate.gates_by_pk?.loyalty_id,
   });
 

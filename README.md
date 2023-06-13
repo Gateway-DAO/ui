@@ -45,3 +45,21 @@ If you want to say thank you and/or support the active development of the `dApp`
 1. Add a [GitHub Star](https://github.com/Gateway-DAO/ui/stargazers) to the project.
 2. Talk to us on our [Discord](https://discord.gg/tgt3KjcHGs)
 3. Read more on our [wiki](https://github.com/Gateway-DAO/ui/wiki/Contributing)
+
+# ⚗️ Tests
+
+For end-2-end tests we are using [Playwrite](https://playwright.dev/) as our test tool.
+
+## How to test
+We added the playwright in the dependencies, but you need to install the browsers, this can be achieve running the test command automatically in our `package.json`.
+
+Before testing, you should build your project.
+
+```sh
+pnpm build
+```
+
+After your project builded, just run your tests. Note that this tests runs in a production port, **(3000)**.
+```sh
+pnpm test:e2e
+```

@@ -23,7 +23,7 @@ type Props = {
 };
 
 export function Submissions({ gate }: Props) {
-  const { me, gqlAuthMethods } = useAuth();
+  const { me, hasuraUserService } = useAuth();
   const { t } = useTranslation('gate-profile');
   const [expanded, toggleExpanded] = useToggle(false);
   const [detailedTaskProgressId, setDetailedTaskProgressId] =
@@ -35,7 +35,7 @@ export function Submissions({ gate }: Props) {
 
   const manualTasksSubmissions = useQuery(
     ['admin-manual-task-submissions', gate?.id, me?.id],
-    () => gqlAuthMethods.manual_tasks_progress({ gate_id: gate?.id }),
+    () => hasuraUserService.manual_tasks_progress({ gate_id: gate?.id }),
     {
       refetchInterval: 3000,
     }
@@ -102,7 +102,7 @@ export function Submissions({ gate }: Props) {
       'completeTask',
       { gateId: gate?.id, taskId: detailedTaskProgress?.task_id },
     ],
-    gqlAuthMethods.complete_task,
+    hasuraUserService.complete_task,
     {
       onSuccess: () => {
         queryClient.resetQueries(['gate', gate?.id]);

@@ -49,7 +49,7 @@ export function GatesCard({
 
   const { enqueueSnackbar } = useSnackbar();
   const queryClient = useQueryClient();
-  const { gqlAuthMethods } = useAuth();
+  const { hasuraUserService } = useAuth();
   const { isAdmin } = useDaoProfile();
   const router = useRouter();
   const { t } = useTranslation('gates-card');
@@ -81,7 +81,7 @@ export function GatesCard({
 
   const { mutate: toggleGateStateMutation } = useMutation(
     ['toggleGateState', id],
-    gqlAuthMethods.toggle_gate_state
+    hasuraUserService.toggle_gate_state
   );
 
   const toggleGateState = () =>
@@ -111,7 +111,7 @@ export function GatesCard({
 
   const { mutate: deleteGateMutation } = useMutation(
     ['deleteGate', id],
-    gqlAuthMethods.deleteGate
+    hasuraUserService.deleteGate
   );
 
   const deleteGate = () =>
@@ -225,12 +225,12 @@ export function GatesCard({
     <>
       {onClick === undefined ? (
         <MUICard sx={{ position: 'relative' }}>
-          <Link passHref href={url}>
-            <CardActionArea component="a" sx={{ height: '100%' }}>
+          <CardActionArea component="a">
+            <Link passHref href={url}>
               {actionChildren}
-              {contentChildren}
-            </CardActionArea>
-          </Link>
+            </Link>
+          </CardActionArea>
+          {contentChildren}
         </MUICard>
       ) : (
         <MUICard sx={{ position: 'relative' }}>

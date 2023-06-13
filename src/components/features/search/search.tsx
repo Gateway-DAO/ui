@@ -29,12 +29,12 @@ type TemplateProps = {
 export function SearchTemplate({ query }: TemplateProps) {
   const { t } = useTranslation('search');
   const { activeTab, handleTabChange } = useTab();
-  const { gqlAuthMethods } = useAuth();
+  const { hasuraUserService } = useAuth();
 
   const { data, isLoading } = useQuery<SearchQuery>(
     [`search-${query}`],
     async () =>
-      await gqlAuthMethods.search({
+      await hasuraUserService.search({
         query,
       })
   );

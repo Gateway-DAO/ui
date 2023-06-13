@@ -4,25 +4,24 @@ import { MintedChain } from '@/components/features/protocol/credentials/view/com
 import { DialogStatuses } from '@/components/organisms/mint/mint-modal/mint-dialog-protocol';
 import { query } from '@/constants/queries';
 import { useAuth } from '@/providers/auth';
-import { gatewayProtocolAuthSDK } from '@/services/gateway-protocol/api';
 import {
-  Chain,
-  Credential,
-  MintCredentialMutationVariables,
-} from '@/services/gateway-protocol/types';
+  Protocol_Api_Credential,
+  Protocol_Api_Chain,
+  Protocol_Mint_CredentialMutationVariables,
+} from '@/services/hasura/types';
 import { Scalars } from '@/services/hasura/types';
 import { queryClient } from '@/services/query-client';
 import { useMutation } from '@tanstack/react-query';
 import { PartialDeep } from 'type-fest/source/partial-deep';
 
 type Props = {
-  credential: PartialDeep<Credential>;
+  credential: PartialDeep<Protocol_Api_Credential>;
   loyaltyProgramId?: Scalars['uuid'];
   gateId?: Scalars['uuid'];
 };
 
 export function useMintData({ credential, loyaltyProgramId, gateId }: Props) {
-  const { me, token } = useAuth();
+  const { me, hasuraUserService } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const [shareIsOpen, setShareIsOpen] = useState<boolean>(false);
   const isAllowedToMint = useMemo(() => credential?.nft !== null, [credential]);
@@ -32,8 +31,8 @@ export function useMintData({ credential, loyaltyProgramId, gateId }: Props) {
     [credential?.recipientUser?.primaryWallet?.address, me]
   );
 
-  const changeChainName = (chain): Chain => {
-    if (chain === 'ethereum') return Chain.Evm;
+  const changeChainName = (chain): Protocol_Api_Chain => {
+    if (chain === 'ethereum') return Protocol_Api_Chain.Evm;
     return chain;
   };
 
@@ -41,7 +40,7 @@ export function useMintData({ credential, loyaltyProgramId, gateId }: Props) {
     credential?.nft && credential?.nft?.minted
       ? [
           {
-            chain: changeChainName(credential.nft?.chain) as Chain,
+            chain: changeChainName(credential.nft?.chain) as Protocol_Api_Chain,
             transaction: credential.nft?.txHash,
           },
         ]
@@ -52,10 +51,8 @@ export function useMintData({ credential, loyaltyProgramId, gateId }: Props) {
 
   const mintCredential = useMutation(
     [query.mintCredential],
-    ({ credentialId }: MintCredentialMutationVariables) => {
-      return gatewayProtocolAuthSDK(token).mintCredential({
-        credentialId: credentialId,
-      });
+    (data: Protocol_Mint_CredentialMutationVariables) => {
+      return hasuraUserService.protocol_mint_credential(data);
     },
     {
       onSuccess: (data) => {
@@ -70,7 +67,7 @@ export function useMintData({ credential, loyaltyProgramId, gateId }: Props) {
         setMintData([
           {
             chain: credential?.recipientUser?.primaryWallet?.chain,
-            transaction: data.mintCredential.txHash,
+            transaction: data.protocol.mintCredential.txHash,
           },
         ]);
         queryClient.refetchQueries([

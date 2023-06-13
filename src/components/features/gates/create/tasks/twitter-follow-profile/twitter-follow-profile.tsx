@@ -38,7 +38,7 @@ export const numberFormat = (value: number) => {
 };
 
 export const FollowProfile = ({ dragAndDrop, taskId, deleteTask }) => {
-  const { gqlAuthMethods } = useAuth();
+  const { hasuraUserService } = useAuth();
   const {
     register,
     setValue,
@@ -70,7 +70,7 @@ export const FollowProfile = ({ dragAndDrop, taskId, deleteTask }) => {
   } = useMutation(['twitter-data'], async () => {
     try {
       const username = getValues(`tasks.${taskId}.task_data.username`);
-      const response = await gqlAuthMethods.twitter_data({
+      const response = await hasuraUserService.twitter_data({
         userName: username,
       });
       return response.get_twitter_user_data;

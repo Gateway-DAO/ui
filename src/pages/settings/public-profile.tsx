@@ -13,7 +13,7 @@ import { useMutation } from '@tanstack/react-query';
 
 export default function PublicProfileSettingsPage() {
   const uploadImage = useUploadImage();
-  const { me, gqlAuthMethods, onInvalidateMe } = useAuth();
+  const { me, hasuraUserService, onInvalidateMe } = useAuth();
   const router = useRouter();
 
   const editUserMutation = useMutation(
@@ -54,7 +54,7 @@ export default function PublicProfileSettingsPage() {
         cover64 ? uploadCover() : null,
       ]);
 
-      return gqlAuthMethods.edit_user({
+      return hasuraUserService.edit_user({
         name: userData.name || me.name,
         bio: userData.bio || me.bio,
         username: userData.username || me.username,

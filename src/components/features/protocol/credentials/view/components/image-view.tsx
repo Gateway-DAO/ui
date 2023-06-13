@@ -1,9 +1,9 @@
-import { CredentialData } from '@/services/gateway-protocol/types';
+import { Protocol_Api_CredentialData } from '@/services/hasura/types';
 import { PartialDeep } from 'type-fest/source/partial-deep';
 
 import { Stack, alpha } from '@mui/material';
 
-export function ImageView(data: PartialDeep<CredentialData>) {
+export function ImageView(data: PartialDeep<Protocol_Api_CredentialData>) {
   return (
     <Stack
       justifyContent="center"

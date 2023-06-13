@@ -19,7 +19,7 @@ import { DirectWalletsProgress } from './fields/direct-wallets-progress';
 import { DirectWalletsUploading } from './fields/direct-wallets-uploading';
 
 export function DirectWallets() {
-  const { gqlAuthMethods, fetchAuth } = useAuth();
+  const { hasuraUserService, fetchAuth } = useAuth();
   const { enqueueSnackbar } = useSnackbar();
   const { field } = useController<CreateGateData>({
     name: 'whitelisted_wallets_file',
@@ -54,7 +54,7 @@ export function DirectWallets() {
 
   const progressReq = useInfiniteQuery(
     ['progress', file?.id],
-    () => gqlAuthMethods.verify_csv_progress({ file_id: file?.id }),
+    () => hasuraUserService.verify_csv_progress({ file_id: file?.id }),
     {
       enabled: !!file?.id,
       keepPreviousData: false,
@@ -128,8 +128,8 @@ export function DirectWallets() {
                   <DirectWalletsProgress
                     total={file?.metadata?.total}
                     isLoading={!progress}
-                    valid={0}
-                    invalid={0}
+                    valid={progress?.valid ?? 0}
+                    invalid={progress?.invalid ?? 0}
                     {...progress}
                   />
                 )}

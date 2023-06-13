@@ -9,10 +9,10 @@ export type UseFollowProps = {
 };
 
 export const useFollowUser = (cb?: UseFollowProps) => {
-  const { me, gqlAuthMethods, onUpdateMe } = useAuth();
+  const { me, hasuraUserService, onUpdateMe } = useAuth();
 
   const follow = useMutation(
-    (id: string) => gqlAuthMethods.follow_user({ id }),
+    (id: string) => hasuraUserService.follow_user({ id }),
     {
       onSuccess({ follow_user }) {
         onUpdateMe((oldMe) => ({
@@ -27,7 +27,7 @@ export const useFollowUser = (cb?: UseFollowProps) => {
   );
 
   const unfollow = useMutation(
-    (id: string) => gqlAuthMethods.unfollow_user({ id }),
+    (id: string) => hasuraUserService.unfollow_user({ id }),
     {
       onSuccess({ unfollow_user }) {
         onUpdateMe((oldMe) => ({
@@ -71,11 +71,11 @@ export const useFollowUser = (cb?: UseFollowProps) => {
 };
 
 export const useFollowDAO = (cb?: UseFollowProps) => {
-  const { me, gqlAuthMethods } = useAuth();
+  const { me, hasuraUserService } = useAuth();
   const queryClient = useQueryClient();
 
   const follow = useMutation(
-    (id: string) => gqlAuthMethods.follow_dao({ id }),
+    (id: string) => hasuraUserService.follow_dao({ id }),
     {
       async onSuccess({ follow_dao }) {
         await queryClient.resetQueries(['user_following', me?.id]);
@@ -85,7 +85,7 @@ export const useFollowDAO = (cb?: UseFollowProps) => {
   );
 
   const unfollow = useMutation(
-    (id: string) => gqlAuthMethods.unfollow_dao({ id }),
+    (id: string) => hasuraUserService.unfollow_dao({ id }),
     {
       async onSuccess({ unfollow_dao }) {
         await queryClient.resetQueries(['user_following', me?.id]);

@@ -9,7 +9,7 @@ import { SocialButtons } from '@/components/organisms/social-buttons';
 import DashboardTemplate from '@/components/templates/dashboard/dashboard';
 import { generateImageUrl } from '@/hooks/use-file';
 import { useAuth } from '@/providers/auth';
-import { gatewayProtocolSDK } from '@/services/gateway-protocol/api';
+import { hasuraPublicService } from '@/services/hasura/api';
 import { TOKENS } from '@/theme';
 import { useQuery } from '@tanstack/react-query';
 
@@ -17,21 +17,21 @@ import { Box, Stack, Typography, Tabs, Tab, Chip } from '@mui/material';
 
 export default function Profile({ children }) {
   const router = useRouter();
-  const { gqlAuthMethods } = useAuth();
+  const { hasuraUserService } = useAuth();
   const { username } = router.query;
   const {
     data: {
       users: [user],
     },
   } = useQuery(['user', username], () =>
-    gqlAuthMethods.get_user_by_username({
+    hasuraUserService.get_user_by_username({
       username: username as string,
     })
   );
   const { data: credentialCount } = useQuery(
     ['credentialCount', user.protocolUser.id],
     () =>
-      gatewayProtocolSDK.getUserCredentialCount({
+      hasuraPublicService.protocol_user_credential_count({
         userId: user.protocolUser.id,
       })
   );
@@ -43,11 +43,11 @@ export default function Profile({ children }) {
   const tabs = [
     {
       label: 'received',
-      count: credentialCount?.totalReceived,
+      count: credentialCount?.protocol.totalReceived,
     },
     {
       label: 'issued',
-      count: credentialCount?.totalIssued,
+      count: credentialCount?.protocol.totalIssued,
     },
     {
       label: 'earned',
