@@ -12,17 +12,19 @@ import { useMutation } from '@tanstack/react-query';
 import { useSnackbar } from 'notistack';
 import { useForm, FormProvider } from 'react-hook-form';
 
-import { alpha, Box, Stack } from '@mui/material';
+import { alpha, Avatar, Box, Stack } from '@mui/material';
+import { FormSendEmail } from './forms/form-send-email';
+import { FormVerifyToken } from './forms/form-verify-token';
+import CloseIcon from '@mui/icons-material/Close';
 
-import { FormSendEmail } from './form-send-email';
-import { FormVerifyToken } from './form-verify-token';
 import {
   schemaCreateAccount,
   schemaTokenConfirmation,
   NewUserSchema,
   TokenConfirmationSchema,
   defaultValuesCreateAccount,
-} from './schema';
+} from './utlis/schema';
+import { ConnectMoreAuthDialog } from './utlis/connect-more-auth-dialog';
 
 export function Signup() {
   const { t } = useTranslation('dashboard-new-user');
@@ -141,7 +143,9 @@ export function Signup() {
           zIndex: 1,
         }}
       >
-        <NavBarAvatar hideProfile />
+        <Avatar sx={{ width: 40, height: 40, alignSelf: 'center' }}>
+          <CloseIcon />
+        </Avatar>
       </Stack>
       <Stack
         gap={2}
