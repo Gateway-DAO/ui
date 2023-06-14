@@ -28,6 +28,8 @@ import { ConnectMoreAuthDialog } from './utlis/connect-more-auth-dialog';
 
 export function Signup() {
   const { t } = useTranslation('dashboard-new-user');
+  const [showConnectMoreAuthDialog, setShowConnectMoreAuthDialog] =
+    useState(true);
   const { me, hasuraUserService, onInvalidateMe } = useAuth();
   const [sentEmail, setSentEmail] = useState(false);
   const [sendEmailData, setSendEmailData] = useState(null);
@@ -196,6 +198,10 @@ export function Signup() {
                 />
               </FormProvider>
             )}
+            <ConnectMoreAuthDialog
+              open={showConnectMoreAuthDialog}
+              setOpen={setShowConnectMoreAuthDialog}
+            />
           </>
         )}
       </Stack>
