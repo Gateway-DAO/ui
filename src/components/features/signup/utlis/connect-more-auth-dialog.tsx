@@ -13,13 +13,13 @@ import {
 } from '@mui/material';
 import { FaTwitter } from 'react-icons/fa';
 import CloseIcon from '@mui/icons-material/Close';
-import { SocialAuthCard } from '../../../atoms/social-auth-card';
+import { SocialAuthCard } from '@/components/atoms/social-auth-card';
 import { Dispatch, SetStateAction } from 'react';
 import { AiFillGithub } from 'react-icons/ai';
 import useTranslation from 'next-translate/useTranslation';
 import { ConnectionHandlerGithub } from '@/services/social-connectors/github-connection';
 import { ConnectionHandlerTwitter } from '@/services/social-connectors/twitter-connection';
-
+import { useAuth } from '@/providers/auth';
 type Props = {
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
@@ -27,6 +27,8 @@ type Props = {
 
 export function ConnectMoreAuthDialog({ open, setOpen }: Props) {
   const { t } = useTranslation('dashboard-new-user');
+  const { onInvalidateMe } = useAuth();
+
   const githubConnection = ConnectionHandlerGithub();
   const twitterConnection = ConnectionHandlerTwitter();
   return (
@@ -58,7 +60,9 @@ export function ConnectMoreAuthDialog({ open, setOpen }: Props) {
               alignSelf: 'center',
               cursor: 'pointer',
             }}
-            onClick={() => setOpen(false)}
+            onClick={() => {
+              setOpen(false);
+            }}
           >
             <CloseIcon />
           </Avatar>
@@ -130,7 +134,9 @@ export function ConnectMoreAuthDialog({ open, setOpen }: Props) {
             size="large"
             variant="contained"
             sx={{ mt: 4 }}
-            onClick={() => setOpen(false)}
+            onClick={() => {
+              setOpen(false);
+            }}
           >
             Done
           </Button>

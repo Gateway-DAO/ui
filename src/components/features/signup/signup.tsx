@@ -29,7 +29,7 @@ import { ConnectMoreAuthDialog } from './utlis/connect-more-auth-dialog';
 export function Signup() {
   const { t } = useTranslation('dashboard-new-user');
   const [showConnectMoreAuthDialog, setShowConnectMoreAuthDialog] =
-    useState(true);
+    useState(false);
   const { me, hasuraUserService, onInvalidateMe } = useAuth();
   const [sentEmail, setSentEmail] = useState(false);
   const [sendEmailData, setSendEmailData] = useState(null);
@@ -96,8 +96,10 @@ export function Signup() {
     {
       onSuccess() {
         enqueueSnackbar(t('form.profile-created'));
-        setProfileCreated(true);
-        onInvalidateMe();
+        // change the code to make it dynamically: here done this just to show the flow
+        setShowConnectMoreAuthDialog(true);
+        // setProfileCreated(true);
+        // onInvalidateMe();
       },
       onError(error: ErrorResponse) {
         error.response?.errors?.forEach(({ message }) => {
