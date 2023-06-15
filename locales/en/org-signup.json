@@ -4,12 +4,12 @@
   "page-description": "Create your organization on Gateway",
   "step-create-profile": {
     "title": "Create your organization profile",
-    "description": "Welcome to the organization application form! We're excited to learn more about your organization and help you issue your first credentials.",
+    "description": "Welcome to the organization application form!\nWe're excited to learn more about your organization and help you issue your first credentials.",
     "action": "Let's get started"
   },
   "step-name": {
     "title": "Name your organization profile",
-    "description": "You're free to choose any name you like that is unique to your organization. This name will represent your brand within our platform. We're excited to learn more about your organization and help you issue your first credentials.",
+    "description": "You're free to choose any name you like that is unique to your organization. This name will represent your brand within our platform.\nWe're excited to learn more about your organization and help you issue your first credentials.",
     "label": "Organization Name",
     "action": "Continue"
   },
