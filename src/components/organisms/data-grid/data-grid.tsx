@@ -11,6 +11,7 @@ import { DateTime } from 'luxon';
 
 import { Typography, Chip, Avatar, Link } from '@mui/material';
 import { alpha, Stack, Box } from '@mui/material';
+import { GetImage } from './get-image-by-gateway-id';
 
 export interface IColumnGrid {
   header_name: string;
@@ -148,10 +149,8 @@ const defineCols = (columns: IColumnGrid[]) => {
       column_name: 'issuer_id_issuers',
       cell: (params) => (
         <Box sx={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <Avatar
-            alt="Name"
-            src="/images/avatar-default.png"
-            sx={{ width: 24, height: 24 }}
+          <GetImage
+            username={params?.issuedCredentials[0].issuerUser.gatewayId}
           />
           <Box sx={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
             <Typography
@@ -176,10 +175,8 @@ const defineCols = (columns: IColumnGrid[]) => {
       column_name: 'recipient_id_issuers',
       cell: (params) => (
         <Box sx={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <Avatar
-            alt="Name"
-            src="/images/avatar-default.png"
-            sx={{ width: 24, height: 24 }}
+          <GetImage
+            username={params?.receivedCredentials[0]?.recipientUser?.gatewayId}
           />
           <Box sx={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
             <Typography
@@ -204,11 +201,7 @@ const defineCols = (columns: IColumnGrid[]) => {
       column_name: 'issuer_id',
       cell: (params) => (
         <Box sx={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <Avatar
-            alt="Name"
-            src="/images/avatar-default.png"
-            sx={{ width: 24, height: 24 }}
-          />
+          <GetImage username={params?.issuerUser?.gatewayId} />
           <Box sx={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
             <Typography
               sx={{
@@ -232,11 +225,7 @@ const defineCols = (columns: IColumnGrid[]) => {
       column_name: 'recipient_id',
       cell: (params) => (
         <Box sx={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <Avatar
-            alt="Name"
-            src="/images/avatar-default.png"
-            sx={{ width: 24, height: 24 }}
-          />
+          <GetImage username={params.recipientUser.gatewayId} />
           <Box sx={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
             <Typography
               sx={{
@@ -260,11 +249,8 @@ const defineCols = (columns: IColumnGrid[]) => {
       column_name: 'user_id',
       cell: (params) => (
         <Box sx={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <Avatar
-            alt="Name"
-            src="/images/avatar-default.png"
-            sx={{ width: 24, height: 24 }}
-          />
+          <GetImage username={params?.user?.gatewayId} />
+
           <Box sx={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
             <Typography
               sx={{
