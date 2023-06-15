@@ -57,3 +57,4 @@ test-results/
 storageState.json
 
 .next
+.vscode/settings.json
