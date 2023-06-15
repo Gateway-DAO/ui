@@ -3,7 +3,8 @@ import { ChipDropdown } from '@/components/molecules/form/chip-dropdown';
 import { categoriesMap } from '@/constants/dao';
 import { usePropertyFilter } from '@/hooks/use-property-filter';
 import { useViewMode, ViewMode } from '@/hooks/use-view-modes';
-import { hasuraPublicService } from '@/services/hasura/api';
+import { useAuth } from '@/providers/auth';
+import { hasuraApi } from '@/services/hasura/api';
 import { TOKENS } from '@/theme';
 import { useQuery } from '@tanstack/react-query';
 
@@ -14,9 +15,10 @@ import { TableView } from './table-view';
 
 export function DaosTab() {
   const { view, toggleView } = useViewMode();
+  const { token } = useAuth();
   /* TODO: !!!!!!!!!!!! WRITE PAGINATION!!!!!!!!!!!!!! */
-  const { data: daos, isLoading } = useQuery(['daos-tab'], async () => {
-    return (await hasuraPublicService.daos_tab()).daos;
+  const { data: daos, isLoading } = useQuery(['daos_tab'], async () => {
+    return (await hasuraApi(token).daos_tab()).daos;
   });
 
   const {
