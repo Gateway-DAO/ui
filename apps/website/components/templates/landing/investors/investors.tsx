@@ -86,10 +86,9 @@ export const Investors = forwardRef<
                   },
                 })}
               >
-                <Image
+                <img
                   src={investor.logo.url}
                   alt={investor.name}
-                  layout="responsive"
                   width={investor.logo.width}
                   height={investor.logo.height}
                 />
