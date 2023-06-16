@@ -1,5 +1,10 @@
+import useTranslation from 'next-translate/useTranslation';
+import { useState } from 'react';
+
+import { CreateOrgCard } from '@/components/molecules/cards/create-org-card';
 import { DaoCard } from '@/components/molecules/cards/dao-card';
 import { ChipDropdown } from '@/components/molecules/form/chip-dropdown';
+import OrgSignupDialog from '@/components/templates/org/signup/dialog-structure';
 import { categoriesMap } from '@/constants/dao';
 import { usePropertyFilter } from '@/hooks/use-property-filter';
 import { useViewMode, ViewMode } from '@/hooks/use-view-modes';
@@ -14,6 +19,8 @@ import { Box, CircularProgress, IconButton, Stack } from '@mui/material';
 import { TableView } from './table-view';
 
 export function DaosTab() {
+  const { t } = useTranslation('common');
+  const [openSignUpOrgDialog, setSignUpOrgDialog] = useState(false);
   const { view, toggleView } = useViewMode();
   const { token } = useAuth();
   /* TODO: !!!!!!!!!!!! WRITE PAGINATION!!!!!!!!!!!!!! */
@@ -44,27 +51,39 @@ export function DaosTab() {
         </Box>
       ) : (
         <>
-          <Stack
-            direction="row"
-            justifyContent="space-between"
-            sx={{ mb: 4, px: TOKENS.CONTAINER_PX }}
-            key="daos-tab-filters"
-          >
-            <ChipDropdown
-              label="Categories"
-              values={availableFilters}
-              selected={selectedFilters}
-              onToggle={toggleFilter}
-              onClear={onClear}
+          <OrgSignupDialog
+            open={openSignUpOrgDialog}
+            toggleDialog={setSignUpOrgDialog}
+          />
+          <Stack sx={{ px: TOKENS.CONTAINER_PX }}>
+            <CreateOrgCard
+              title={t('org-creation-card.title')}
+              description={t('org-creation-card.description')}
+              buttonLabel={t('org-creation-card.action')}
+              buttonAction={() => setSignUpOrgDialog(true)}
             />
-            <IconButton
-              type="button"
-              onClick={toggleView}
-              color="secondary"
-              aria-label="Toggle View"
+            <Stack
+              direction="row"
+              justifyContent="space-between"
+              key="daos-tab-filters"
+              sx={{ mb: 4 }}
             >
-              {view === ViewMode.grid ? <ViewList /> : <ViewModule />}
-            </IconButton>
+              <ChipDropdown
+                label="Categories"
+                values={availableFilters}
+                selected={selectedFilters}
+                onToggle={toggleFilter}
+                onClear={onClear}
+              />
+              <IconButton
+                type="button"
+                onClick={toggleView}
+                color="secondary"
+                aria-label="Toggle View"
+              >
+                {view === ViewMode.grid ? <ViewList /> : <ViewModule />}
+              </IconButton>
+            </Stack>
           </Stack>
           {view === ViewMode.grid && (
             <Box
