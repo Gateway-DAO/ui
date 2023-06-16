@@ -160,7 +160,7 @@ export function OrgSignUpTemplate({
             px: { xs: 2, md: 6 },
             flexGrow: 0,
             background: alpha(theme.palette.common.black, 0.03),
-            backdropFilter: 'blur(25px)',
+            backdropFilter: { xs: 'blur(85px)', md: 'blur(25px)' },
             height: '100%',
           }}
         >
