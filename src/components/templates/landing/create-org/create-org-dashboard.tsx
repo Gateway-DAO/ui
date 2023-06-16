@@ -56,7 +56,7 @@ export function CreateOrgCardDashboard({
       <Button
         component="span"
         variant="contained"
-        sx={{ flexGrow: 0, maxWidth: { xs: 150, md: '100%' }, minWidth: 130 }}
+        sx={{ flexGrow: 0, width: 180 }}
       >
         {buttonLabel}
       </Button>
