@@ -251,10 +251,10 @@
       }
     ]
   },
-  "scheduleDemoContent": {
-    "title": "See how Gateway can help your DAO",
-    "scheduleButton": "Schedule a Demo",
-    "joinDiscord": "Join our Discord"
+  "orgCreation": {
+    "title": "Create a profile for your organization",
+    "description": "A space for your organization issue, manage, and consume verifiable credentials.",
+    "buttonLabel": "Create now"
   },
   "footerContent": {
     "copyright": "Copyright © 2023 Gateway. All rights reserved.",

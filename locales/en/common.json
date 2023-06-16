@@ -66,6 +66,11 @@
     "caption": "Follow the most prominent professionals in Web3.",
     "see-more": "View more people"
   },
+  "org-creation-card": {
+    "title": "Create an organization profile",
+    "description": "A space for your organization issue, manage, and consume verifiable credentials.",
+    "action": "Create Now"
+  },
   "actions": {
     "accept": "Accept",
     "decline": "Decline",
