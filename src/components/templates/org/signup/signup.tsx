@@ -218,10 +218,9 @@ export function OrgSignUpTemplate({
                     onClick={handlePrevious}
                     sx={{ height: 48 }}
                   >
-                    Back
+                    {t('action-back')}
                   </Button>
                 )}
-                {/* [ ] Use translation */}
 
                 {!isLastStep &&
                   !isFirstStep &&
@@ -233,10 +232,9 @@ export function OrgSignUpTemplate({
                       sx={{ height: 48 }}
                       disabled={!stepValidity[`${currentStep}`]}
                     >
-                      Next
+                      {t('action-next')}
                     </Button>
                   )}
-                {/* [ ] Use translation */}
                 {formStepControl[currentStep].name === 'telegram' && (
                   <Button
                     variant="contained"
