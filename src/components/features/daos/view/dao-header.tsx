@@ -1,18 +1,19 @@
 import useTranslation from 'next-translate/useTranslation';
 import Image from 'next/image';
-import Link from 'next/link';
+// import Link from 'next/link';
 
 import { AvatarFile } from '@/components/atoms/avatar-file';
 import { FollowButtonDAO } from '@/components/atoms/buttons/follow-button-dao';
 import { ShareButton } from '@/components/atoms/buttons/share-button';
 import { ReadMore } from '@/components/atoms/read-more-less';
-import TextWithParagraphs from '@/components/atoms/text-with-paragraphs/text-with-paragraphs';
+// import TextWithParagraphs from '@/components/atoms/text-with-paragraphs/text-with-paragraphs';
 import { SlideUp } from '@/components/atoms/transitions/transitions';
 import { Navbar } from '@/components/organisms/navbar/navbar';
 import { SocialButtons } from '@/components/organisms/social-buttons';
 import Stepper from '@/components/organisms/stepper/stepper';
 import { categoriesMap } from '@/constants/dao';
 import { ROUTES } from '@/constants/routes';
+import { gateway_discord, gateway_support_email } from '@/constants/socials';
 import { useFile } from '@/hooks/use-file';
 import { TOKENS, brandColors } from '@/theme';
 import { useToggle, useWindowSize } from 'react-use';
@@ -28,6 +29,7 @@ import {
   Dialog,
   Paper,
   Button,
+  Link,
 } from '@mui/material';
 
 import { useDaoProfile } from './context';
@@ -86,7 +88,7 @@ const ApprovalDialog = ({
           display={'flex'}
           alignItems={'center'}
           justifyContent={'center'}
-          p={2.5}
+          p={3}
           sx={{
             width: '444px',
             height: '571px',
@@ -98,12 +100,35 @@ const ApprovalDialog = ({
             </Typography>
             <Stepper steps={steps} activeStep={1} />
             <Box mt={3}>
-              <TextWithParagraphs
-                replaces={[
-                  { from: '[email]', to: `<a href="#bora">email</a>` },
-                ]}
-                text={t('step-success.text')}
-              />
+              <Typography variant="body1" mb={1}>
+                We are reviewing your application.
+              </Typography>
+              <Typography variant="body1" mb={1}>
+                In the meantime you can customize your space, draft credentials,
+                but can not issue them publicly.
+              </Typography>
+              <Typography variant="body1" mb={1}>
+                If your application is denied, the profile and all draft
+                credentials will be deleted.
+              </Typography>
+              <Typography variant="body1" mb={1}>
+                If you have questions please reach out to us via{' '}
+                <Link
+                  sx={{ textDecoration: 'none' }}
+                  href={`mailto:${gateway_support_email}`}
+                >
+                  email
+                </Link>{' '}
+                or{' '}
+                <Link
+                  sx={{ textDecoration: 'none' }}
+                  href={gateway_discord}
+                  target="_blank"
+                >
+                  Discord
+                </Link>
+                .
+              </Typography>
             </Box>
             <Box mt={3}>
               <Button
