@@ -26,6 +26,7 @@ export const Investors = forwardRef<
         [theme.breakpoints.down('sm')]: {
           pt: '62px',
         },
+        mb: 3,
       })}
     >
       <Box
@@ -84,10 +85,9 @@ export const Investors = forwardRef<
                   },
                 })}
               >
-                <Image
+                <img
                   src={investor.logo.url}
                   alt={investor.name}
-                  layout="responsive"
                   width={investor.logo.width}
                   height={investor.logo.height}
                 />

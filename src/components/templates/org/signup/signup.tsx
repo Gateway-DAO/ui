@@ -160,7 +160,7 @@ export function OrgSignUpTemplate({
             px: { xs: 2, md: 6 },
             flexGrow: 0,
             background: alpha(theme.palette.common.black, 0.03),
-            backdropFilter: 'blur(25px)',
+            backdropFilter: { xs: 'blur(85px)', md: 'blur(25px)' },
             height: '100%',
           }}
         >
@@ -218,10 +218,9 @@ export function OrgSignUpTemplate({
                     onClick={handlePrevious}
                     sx={{ height: 48 }}
                   >
-                    Back
+                    {t('action-back')}
                   </Button>
                 )}
-                {/* [ ] Use translation */}
 
                 {!isLastStep &&
                   !isFirstStep &&
@@ -233,10 +232,9 @@ export function OrgSignUpTemplate({
                       sx={{ height: 48 }}
                       disabled={!stepValidity[`${currentStep}`]}
                     >
-                      Next
+                      {t('action-next')}
                     </Button>
                   )}
-                {/* [ ] Use translation */}
                 {formStepControl[currentStep].name === 'telegram' && (
                   <Button
                     variant="contained"

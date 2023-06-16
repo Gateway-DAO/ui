@@ -1,3 +1,5 @@
+import { brandColors } from '@/theme';
+
 import WorkspacesIcon from '@mui/icons-material/Workspaces';
 import { Stack } from '@mui/material';
 
@@ -16,7 +18,7 @@ export function AddOrganizationIcon() {
         borderRadius: 40,
       })}
     >
-      <WorkspacesIcon />
+      <WorkspacesIcon sx={{ color: brandColors.white.main }} />
       <CirclePlusIcon sx={{ position: 'absolute', top: 23, left: 23 }} />
     </Stack>
   );

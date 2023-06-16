@@ -4,12 +4,12 @@ import { useRouter } from 'next/router';
 
 import { HeadContainer } from '@/components/molecules/head-container';
 import { LandingTemplate } from '@/components/templates/landing';
+import { OrgCreationProps } from '@/components/templates/landing/create-org/types';
 import { FeaturedProps } from '@/components/templates/landing/featured/types';
 import { FooterProps } from '@/components/templates/landing/footer/types';
 import { InvestorProps } from '@/components/templates/landing/investors/types';
 import { MenuListItem } from '@/components/templates/landing/menu/types';
 import { ProductShowProps } from '@/components/templates/landing/product-show/types';
-import { ScheduleDemoProps } from '@/components/templates/landing/schedule-demo/types';
 import { ROUTES } from '@/constants/routes';
 import { useAuth } from '@/providers/auth';
 
@@ -43,9 +43,9 @@ export default function Index() {
   const investorsContent = t('investorsContent', null, {
     returnObjects: true,
   }) as InvestorProps;
-  const scheduleDemoContent = t('scheduleDemoContent', null, {
+  const orgCreation = t('orgCreation', null, {
     returnObjects: true,
-  }) as ScheduleDemoProps;
+  }) as OrgCreationProps;
   const footerContent = t('footerContent', null, {
     returnObjects: true,
   }) as FooterProps;
@@ -69,7 +69,7 @@ export default function Index() {
         forUsersContent={forUsersContent}
         forOrganizationsContent={forOrganizationsContent}
         investorsContent={investorsContent}
-        scheduleDemoContent={scheduleDemoContent}
+        orgCreation={orgCreation}
         footerContent={footerContent}
         connectButton={
           <Link passHref href="/explore">

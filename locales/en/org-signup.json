@@ -2,6 +2,8 @@
   "logo-alternative-text": "Gateway logo",
   "page-title": "Create organization",
   "page-description": "Create your organization on Gateway",
+  "action-next": "Continue",
+  "action-back": "Back",
   "step-create-profile": {
     "title": "Create your organization profile",
     "description": "Welcome to the organization application form!\nWe're excited to learn more about your organization and help you issue your first credentials.",
@@ -16,7 +18,7 @@
   "step-gatewayId": {
     "title": "Create your organization's Gateway ID",
     "description": "Through the ID your organization is recognized and found within the Gateway. Only use lowercase letters, numbers and the symbols  “._-”.",
-    "label": "@ Enter your ID",
+    "label": "Enter your ID",
     "action": "Continue"
   },
   "step-categories": {
