@@ -29,6 +29,7 @@ export function CreateOrgCard({
         p: 3,
         mb: 4,
         background: 'rgba(154, 83, 255, 0.08)',
+        alignItems: { xs: 'flex-start', md: 'center' },
       }}
     >
       <AddOrganizationIcon />
@@ -43,7 +44,7 @@ export function CreateOrgCard({
       </Stack>
       <Button
         variant="contained"
-        sx={{ flexGrow: 0, maxWidth: { xs: 150, md: '100%' } }}
+        sx={{ flexGrow: 0, maxWidth: { xs: 150, md: '100%' }, minWidth: 130 }}
         onClick={() => buttonAction()}
       >
         {buttonLabel}
