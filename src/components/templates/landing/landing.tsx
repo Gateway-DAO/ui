@@ -1,5 +1,6 @@
 import { ReactNode, useEffect, useRef, useState } from 'react';
 
+import { useAuth } from '@/providers/auth';
 import { theme } from '@/theme';
 import { useIntersection, useToggle } from 'react-use';
 
@@ -58,6 +59,7 @@ export function LandingTemplate({
   const menuProps = { menuList, signUpButton, connectButton };
   const [activeArea, setActiveArea] = useState('');
   const [openSignUpOrgDialog, setSignUpOrgDialog] = useToggle(false);
+  const { me } = useAuth();
 
   const refs = {
     hero: useRef(null),
@@ -144,10 +146,14 @@ export function LandingTemplate({
             ref={refs.investors}
           />
 
-          <CreateOrgCardDashboard
-            {...orgCreation}
-            buttonAction={() => setSignUpOrgDialog(true)}
-          />
+          {/* TODO: Remove auth validation after finish login page */}
+          {me && (
+            <CreateOrgCardDashboard
+              {...orgCreation}
+              buttonAction={() => setSignUpOrgDialog(true)}
+            />
+          )}
+
           <Footer {...footerContent} />
         </Box>
       </Box>
