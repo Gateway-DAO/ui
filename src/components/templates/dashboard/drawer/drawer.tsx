@@ -81,7 +81,7 @@ export function Drawer({ currentDao, showExplore }: Props) {
             </Link>
           )}
           {followingDaos?.map((dao) => {
-            const url = ROUTES.DAO_PROFILE.replace('[slug]', dao.slug);
+            const url = ROUTES.DAO_PROFILE.replace('[slug]', dao?.slug);
             return (
               <Link key={dao.id} passHref href={url}>
                 <ListItemButton
@@ -101,26 +101,29 @@ export function Drawer({ currentDao, showExplore }: Props) {
               </Link>
             );
           })}
-          <Stack
-            sx={{
-              my: 1,
-              px: 2,
-              alignItems: 'center',
-              justifyContent: 'center',
-              height: (theme) => theme.spacing(5),
-              cursor: 'pointer',
-              position: 'relative',
-              background: 'none transparent',
-              border: 0,
-              transition: 'opacity .3s ease',
-              '&:hover': {
-                opacity: 0.8,
-              },
-            }}
-            {...createOrgCardProps}
-          >
-            <AddOrganizationIcon />
-          </Stack>
+          {/* TODO: Remove auth validation after finish login page */}
+          {me && (
+            <Stack
+              sx={{
+                my: 1,
+                px: 2,
+                alignItems: 'center',
+                justifyContent: 'center',
+                height: (theme) => theme.spacing(5),
+                cursor: 'pointer',
+                position: 'relative',
+                background: 'none transparent',
+                border: 0,
+                transition: 'opacity .3s ease',
+                '&:hover': {
+                  opacity: 0.8,
+                },
+              }}
+              {...createOrgCardProps}
+            >
+              <AddOrganizationIcon />
+            </Stack>
+          )}
         </DaosList>
       </ResponsiveDrawer>
     </DrawerContainer>

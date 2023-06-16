@@ -22,7 +22,7 @@ export function DaosTab() {
   const { t } = useTranslation('common');
   const [openSignUpOrgDialog, setSignUpOrgDialog] = useToggle(false);
   const { view, toggleView } = useViewMode();
-  const { token } = useAuth();
+  const { token, me } = useAuth();
   /* TODO: !!!!!!!!!!!! WRITE PAGINATION!!!!!!!!!!!!!! */
   const { data: daos, isLoading } = useQuery(['daos_tab'], async () => {
     return (await hasuraApi(token).daos_tab()).daos;
@@ -56,12 +56,15 @@ export function DaosTab() {
             toggleDialog={setSignUpOrgDialog}
           />
           <Stack sx={{ px: TOKENS.CONTAINER_PX }}>
-            <CreateOrgCard
-              title={t('org-creation-card.title')}
-              description={t('org-creation-card.description')}
-              buttonLabel={t('org-creation-card.action')}
-              buttonAction={() => setSignUpOrgDialog(true)}
-            />
+            {/* TODO: Remove auth validation after finish login page */}
+            {me && (
+              <CreateOrgCard
+                title={t('org-creation-card.title')}
+                description={t('org-creation-card.description')}
+                buttonLabel={t('org-creation-card.action')}
+                buttonAction={() => setSignUpOrgDialog(true)}
+              />
+            )}
             <Stack
               direction="row"
               justifyContent="space-between"
