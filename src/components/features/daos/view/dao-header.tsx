@@ -6,12 +6,16 @@ import { AvatarFile } from '@/components/atoms/avatar-file';
 import { FollowButtonDAO } from '@/components/atoms/buttons/follow-button-dao';
 import { ShareButton } from '@/components/atoms/buttons/share-button';
 import { ReadMore } from '@/components/atoms/read-more-less';
+import TextWithParagraphs from '@/components/atoms/text-with-paragraphs/text-with-paragraphs';
+import { SlideUp } from '@/components/atoms/transitions/transitions';
 import { Navbar } from '@/components/organisms/navbar/navbar';
 import { SocialButtons } from '@/components/organisms/social-buttons';
+import Stepper from '@/components/organisms/stepper/stepper';
 import { categoriesMap } from '@/constants/dao';
 import { ROUTES } from '@/constants/routes';
 import { useFile } from '@/hooks/use-file';
-import { TOKENS } from '@/theme';
+import { TOKENS, brandColors } from '@/theme';
+import { useToggle, useWindowSize } from 'react-use';
 
 import { Edit } from '@mui/icons-material';
 import {
@@ -21,6 +25,9 @@ import {
   Typography,
   IconButton,
   Tooltip,
+  Dialog,
+  Paper,
+  Button,
 } from '@mui/material';
 
 import { useDaoProfile } from './context';
@@ -31,13 +38,102 @@ type Props = {
   onUnfollow: () => void;
 };
 
+const ApprovalDialog = ({
+  open,
+  onClose,
+}: {
+  open: boolean;
+  onClose: any;
+}): JSX.Element => {
+  const windowSize = useWindowSize();
+  const { t } = useTranslation('org-signup');
+
+  const steps = [
+    {
+      title: t('step-success.stepper-1'),
+    },
+    {
+      title: t('step-success.stepper-2'),
+    },
+    {
+      title: t('step-success.stepper-3'),
+    },
+  ];
+
+  return (
+    <Dialog
+      open={open}
+      onClose={onClose}
+      TransitionComponent={SlideUp}
+      fullScreen
+    >
+      <Stack
+        sx={{
+          backgroundColor: brandColors.background.main,
+          height: { xs: 'auto', md: '100%' },
+          flexWrap: 'nowrap',
+          flexDirection: { xs: 'column', md: 'row' },
+          backgroundPosition: 'center center',
+          backgroundSize: 'cover',
+          minHeight: `${windowSize.height}px`,
+        }}
+        justifyContent="center"
+        alignItems="center"
+      >
+        <Paper
+          component={Stack}
+          elevation={3}
+          display={'flex'}
+          alignItems={'center'}
+          justifyContent={'center'}
+          p={2.5}
+          sx={{
+            width: '444px',
+            height: '571px',
+          }}
+        >
+          <Stack textAlign="left" width="100%">
+            <Typography mb={3} variant="h6">
+              Waiting for approval
+            </Typography>
+            <Stepper steps={steps} activeStep={1} />
+            <Box mt={3}>
+              <TextWithParagraphs
+                replaces={[
+                  { from: '[email]', to: `<a href="#bora">email</a>` },
+                ]}
+                text={t('step-success.text')}
+              />
+            </Box>
+            <Box mt={3}>
+              <Button
+                onClick={onClose}
+                variant="outlined"
+                size="large"
+                fullWidth
+              >
+                Close
+              </Button>
+            </Box>
+          </Stack>
+        </Paper>
+      </Stack>
+    </Dialog>
+  );
+};
+
 export function DaoHeader({ followCount, onFollow, onUnfollow }: Props) {
   const { dao, credentials, isAdmin } = useDaoProfile();
   const cover = useFile(dao.background);
   const { t } = useTranslation('dao-profile');
+  const [approvalDialogStatus, toggleApprovalDialogStatus] = useToggle(false);
 
   return (
     <>
+      <ApprovalDialog
+        open={approvalDialogStatus}
+        onClose={toggleApprovalDialogStatus}
+      />
       <Box
         sx={{
           height: (theme) => theme.spacing(35),
@@ -96,18 +192,29 @@ export function DaoHeader({ followCount, onFollow, onUnfollow }: Props) {
               </Link>
             )}
           </Stack>
-          {dao.categories && (
-            <Stack direction="row" gap={1} sx={{ mt: 12 / 8 }}>
-              {dao.categories.map((category) => {
-                const label = categoriesMap.get(category) ?? category;
-                const formattedLabel =
-                  label.charAt(0).toUpperCase() + label.slice(1);
-                return (
-                  <Chip key={category} label={formattedLabel} size="small" />
-                );
-              })}
-            </Stack>
-          )}
+          <Stack direction="row" alignItems="center" gap="8px">
+            {dao.status === 'pending' && (
+              <Chip
+                onClick={() => toggleApprovalDialogStatus()}
+                sx={{ mt: 1.25 }}
+                color="warning"
+                label="Waiting for approval"
+                size="small"
+              />
+            )}
+            {dao.categories && (
+              <Stack direction="row" gap={1} sx={{ mt: 12 / 8 }}>
+                {dao.categories.map((category) => {
+                  const label = categoriesMap.get(category) ?? category;
+                  const formattedLabel =
+                    label.charAt(0).toUpperCase() + label.slice(1);
+                  return (
+                    <Chip key={category} label={formattedLabel} size="small" />
+                  );
+                })}
+              </Stack>
+            )}
+          </Stack>
           <Typography
             variant="body1"
             sx={{
@@ -133,7 +240,7 @@ export function DaoHeader({ followCount, onFollow, onUnfollow }: Props) {
             </Typography>
             <Typography variant="body1">
               {t('common:count.credential', {
-                count: credentials?.daos_by_pk.gates.length ?? 0,
+                count: credentials?.daos_by_pk?.gates.length ?? 0,
               })}
             </Typography>
           </Stack>
