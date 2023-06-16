@@ -1,5 +1,4 @@
 import useTranslation from 'next-translate/useTranslation';
-import { useState } from 'react';
 
 import { CreateOrgCard } from '@/components/molecules/cards/create-org-card';
 import { DaoCard } from '@/components/molecules/cards/dao-card';
@@ -12,6 +11,7 @@ import { useAuth } from '@/providers/auth';
 import { hasuraApi } from '@/services/hasura/api';
 import { TOKENS } from '@/theme';
 import { useQuery } from '@tanstack/react-query';
+import { useToggle } from 'react-use';
 
 import { ViewModule, ViewList } from '@mui/icons-material';
 import { Box, CircularProgress, IconButton, Stack } from '@mui/material';
@@ -20,7 +20,7 @@ import { TableView } from './table-view';
 
 export function DaosTab() {
   const { t } = useTranslation('common');
-  const [openSignUpOrgDialog, setSignUpOrgDialog] = useState(false);
+  const [openSignUpOrgDialog, setSignUpOrgDialog] = useToggle(false);
   const { view, toggleView } = useViewMode();
   const { token } = useAuth();
   /* TODO: !!!!!!!!!!!! WRITE PAGINATION!!!!!!!!!!!!!! */

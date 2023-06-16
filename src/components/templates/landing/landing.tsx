@@ -1,7 +1,7 @@
 import { ReactNode, useEffect, useRef, useState } from 'react';
 
 import { theme } from '@/theme';
-import { useIntersection } from 'react-use';
+import { useIntersection, useToggle } from 'react-use';
 
 import { Box } from '@mui/material';
 
@@ -57,7 +57,7 @@ export function LandingTemplate({
   const heroProps = { title, subtitle, enterButton, titleDescription };
   const menuProps = { menuList, signUpButton, connectButton };
   const [activeArea, setActiveArea] = useState('');
-  const [openSignUpOrgDialog, setSignUpOrgDialog] = useState(false);
+  const [openSignUpOrgDialog, setSignUpOrgDialog] = useToggle(false);
 
   const refs = {
     hero: useRef(null),
