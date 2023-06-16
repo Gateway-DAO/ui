@@ -90,8 +90,14 @@ const ApprovalDialog = ({
           justifyContent={'center'}
           p={3}
           sx={{
-            width: '444px',
-            height: '571px',
+            width: {
+              xs: '100%',
+              sm: '444px',
+            },
+            height: {
+              xs: '100%',
+              sm: '571px',
+            },
           }}
         >
           <Stack textAlign="left" width="100%">
