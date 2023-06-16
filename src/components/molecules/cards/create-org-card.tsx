@@ -20,7 +20,6 @@ export function CreateOrgCard({
   const createOrgCardProps = useCreateOrgCardProps({ action: buttonAction });
   return (
     <Stack
-      component="a"
       gap={3}
       justifyContent="space-between"
       sx={{
