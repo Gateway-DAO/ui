@@ -1,6 +1,8 @@
 import useTranslation from 'next-translate/useTranslation';
 
-import { Typography, Stack, Box, Button } from '@mui/material';
+import { gateway_discord, gateway_support_email } from '@/constants/socials';
+
+import { Typography, Stack, Box, Button, Link } from '@mui/material';
 
 import { ROUTES } from '../../../../../constants/routes';
 import { SuccessfullyIcon } from '../../../../atoms/icons/successfully-icon';
@@ -31,7 +33,35 @@ export default function StepSuccess({ formState }: { formState: any }) {
       <Box mb={5}>
         <Stepper steps={steps} activeStep={1} />
       </Box>
-      <TextWithParagraphs text={t('step-success.text')} />
+      <Typography variant="body1" mb={1}>
+        We are reviewing your application.
+      </Typography>
+      <Typography variant="body1" mb={1}>
+        In the meantime you can customize your space, draft credentials, but can
+        not issue them publicly.
+      </Typography>
+      <Typography variant="body1" mb={1}>
+        If your application is denied, the profile and all draft credentials
+        will be deleted.
+      </Typography>
+      <Typography variant="body1" mb={1}>
+        If you have questions please reach out to us via{' '}
+        <Link
+          sx={{ textDecoration: 'none' }}
+          href={`mailto:${gateway_support_email}`}
+        >
+          email
+        </Link>{' '}
+        or{' '}
+        <Link
+          sx={{ textDecoration: 'none' }}
+          href={gateway_discord}
+          target="_blank"
+        >
+          Discord
+        </Link>
+        .
+      </Typography>
       <Box mt={8}>
         <Button
           variant="contained"
