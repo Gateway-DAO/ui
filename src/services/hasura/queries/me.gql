@@ -22,7 +22,7 @@ query me {
       completed
       updated_at
     }
-    following_dao {
+    following_dao(where: { status: {_eq: "following"}, dao: {id: {_is_null: false}}}) {
       dao_id
       dao {
         id
@@ -67,7 +67,7 @@ query me_following {
     following {
       user_id
     }
-    following_dao(where: { status: { _eq: "following" } }) {
+    following_dao(where: { status: {_eq: "following"}, dao: {id: {_is_null: false}}}) {
       dao_id
       dao {
         id
