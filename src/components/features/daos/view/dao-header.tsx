@@ -6,7 +6,6 @@ import { AvatarFile } from '@/components/atoms/avatar-file';
 import { FollowButtonDAO } from '@/components/atoms/buttons/follow-button-dao';
 import { ShareButton } from '@/components/atoms/buttons/share-button';
 import { ReadMore } from '@/components/atoms/read-more-less';
-// import TextWithParagraphs from '@/components/atoms/text-with-paragraphs/text-with-paragraphs';
 import { SlideUp } from '@/components/atoms/transitions/transitions';
 import { Navbar } from '@/components/organisms/navbar/navbar';
 import { SocialButtons } from '@/components/organisms/social-buttons';

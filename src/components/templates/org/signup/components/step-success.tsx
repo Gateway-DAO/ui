@@ -6,7 +6,6 @@ import { Typography, Stack, Box, Button, Link } from '@mui/material';
 
 import { ROUTES } from '../../../../../constants/routes';
 import { SuccessfullyIcon } from '../../../../atoms/icons/successfully-icon';
-import TextWithParagraphs from '../../../../atoms/text-with-paragraphs/text-with-paragraphs';
 import Stepper from '../../../../organisms/stepper/stepper';
 
 export default function StepSuccess({ formState }: { formState: any }) {
