@@ -1,6 +1,6 @@
 import useTranslation from 'next-translate/useTranslation';
 import Image from 'next/image';
-// import Link from 'next/link';
+import Link from 'next/link';
 
 import { AvatarFile } from '@/components/atoms/avatar-file';
 import { FollowButtonDAO } from '@/components/atoms/buttons/follow-button-dao';
@@ -29,7 +29,7 @@ import {
   Dialog,
   Paper,
   Button,
-  Link,
+  Link as LinkM,
 } from '@mui/material';
 
 import { useDaoProfile } from './context';
@@ -119,20 +119,20 @@ const ApprovalDialog = ({
               </Typography>
               <Typography variant="body1" mb={1}>
                 If you have questions please reach out to us via{' '}
-                <Link
+                <LinkM
                   sx={{ textDecoration: 'none' }}
                   href={`mailto:${gateway_support_email}`}
                 >
                   email
-                </Link>{' '}
+                </LinkM>{' '}
                 or{' '}
-                <Link
+                <LinkM
                   sx={{ textDecoration: 'none' }}
                   href={gateway_discord}
                   target="_blank"
                 >
                   Discord
-                </Link>
+                </LinkM>
                 .
               </Typography>
             </Box>
