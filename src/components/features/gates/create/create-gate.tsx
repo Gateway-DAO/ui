@@ -5,6 +5,7 @@ import GatePublishedModal from '@/components/features/gates/create/gate-publishe
 import TaskArea from '@/components/features/gates/create/tasks/tasks-area';
 import ConfirmDialog from '@/components/molecules/modal/confirm-dialog';
 import { PublishNavbar } from '@/components/organisms/publish-navbar/publish-navbar';
+import { query } from '@/constants/queries';
 import { ROUTES } from '@/constants/routes';
 import { useAuth } from '@/providers/auth';
 import {
@@ -12,7 +13,7 @@ import {
   Create_Gate_Tasks_BasedMutationVariables,
 } from '@/services/hasura/types';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useSnackbar } from 'notistack';
 import { useForm, FormProvider } from 'react-hook-form';
 import { v4 as uuidv4 } from 'uuid';
@@ -239,6 +240,9 @@ export function CreateGate({ oldData }: CreateGateProps) {
     .watch(['title', 'description'])
     .every((value) => !!value);
 
+  const queryClient = useQueryClient();
+  const daoData = queryClient.getQueryData([query.org_pending_gate_creation]);
+
   return (
     <>
       <FormProvider {...methods}>
@@ -267,6 +271,7 @@ export function CreateGate({ oldData }: CreateGateProps) {
               publishGate.isLoading ||
               deleteTask.isLoading
             }
+            publishedDisabled={daoData && daoData.status === 'pending'}
             saveDraft={onSaveDraft}
           />
           <Box

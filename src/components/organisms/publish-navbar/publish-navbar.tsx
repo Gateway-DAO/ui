@@ -9,10 +9,15 @@ import { AppBar, Toolbar, Avatar, IconButton, Box } from '@mui/material';
 
 type Props = {
   isLoading: boolean;
+  publishedDisabled?: boolean;
   saveDraft: (data: CreateGateData) => void;
 };
 
-export const PublishNavbar = ({ isLoading, saveDraft }: Props) => {
+export const PublishNavbar = ({
+  isLoading,
+  saveDraft,
+  publishedDisabled = false,
+}: Props) => {
   const router = useRouter();
   const { getValues } = useFormContext<CreateGateData>();
 
@@ -53,6 +58,7 @@ export const PublishNavbar = ({ isLoading, saveDraft }: Props) => {
               size="large"
               sx={{ marginLeft: 2 }}
               isLoading={isLoading}
+              disabled={publishedDisabled}
             >
               Publish Credential
             </LoadingButton>

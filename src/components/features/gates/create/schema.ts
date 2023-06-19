@@ -11,6 +11,7 @@ export type Creator = {
 // Draft Gate
 export type CreateGateData = {
   id?: string;
+  daoId?: string;
   categories: string[];
   expire_date?: string;
   claim_limit?: number;
