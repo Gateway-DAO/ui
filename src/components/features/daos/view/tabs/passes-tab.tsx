@@ -28,7 +28,7 @@ export default function PassesTab(): JSX.Element {
       return result.loyalty_program;
     },
     {
-      getNextPageParam: (lastPage, pages) =>
+      getNextPageParam: (lastPage = [], pages) =>
         lastPage.length < internalPageSize
           ? undefined
           : pages.length * internalPageSize,

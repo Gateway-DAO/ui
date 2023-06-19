@@ -1,22 +1,18 @@
 import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
 
 import { a11yTabProps, TabPanel } from '@/components/atoms/tabs';
 import { Navbar } from '@/components/organisms/navbar';
 import { DashboardTemplate } from '@/components/templates/dashboard';
-import OrgSignupDialog from '@/components/templates/org/signup/dialog-structure';
 import { query } from '@/constants/queries';
 import { hasuraPublicService } from '@/services/hasura/api';
 import { TOKENS } from '@/theme';
 import { useQuery } from '@tanstack/react-query';
-import { useToggle } from 'react-use';
 
 import { Box, Tabs, Typography, Tab } from '@mui/material';
 
 export function ExploreLayout({ children }) {
   const { t } = useTranslation('explore');
-  const [openSignUpOrgDialog, setSignUpOrgDialog] = useState(false);
 
   const router = useRouter();
   let _selectedTab = router.pathname;
@@ -43,10 +39,6 @@ export function ExploreLayout({ children }) {
 
   return (
     <>
-      <OrgSignupDialog
-        open={openSignUpOrgDialog}
-        toggleDialog={setSignUpOrgDialog}
-      />
       <DashboardTemplate
         containerProps={{
           sx: {
@@ -62,7 +54,7 @@ export function ExploreLayout({ children }) {
             whiteSpace="pre-line"
             px={TOKENS.CONTAINER_PX}
           >
-            <span onClick={() => setSignUpOrgDialog(true)}>{t('title')}</span>
+            {t('title')}
           </Typography>
           <Typography
             variant="body1"

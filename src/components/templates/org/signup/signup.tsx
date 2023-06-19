@@ -18,7 +18,6 @@ import {
   IconButton,
   Stack,
   alpha,
-  useMediaQuery,
   useTheme,
 } from '@mui/material';
 
@@ -37,7 +36,6 @@ export function OrgSignUpTemplate({
   closeDialog: () => void;
 }) {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const windowSize = useWindowSize();
   const { t } = useTranslation('org-signup');
   const router = useRouter();
@@ -135,17 +133,20 @@ export function OrgSignUpTemplate({
       {createOrganization.isLoading && <Loading fullScreen />}
       <Grid
         container
-        height={isMobile ? 'auto' : `100%`}
         sx={{
+          height: { xs: 'auto', md: '100%' },
           flexWrap: 'nowrap',
           flexDirection: { xs: 'column', md: 'row' },
           backgroundPosition: 'center center',
           backgroundSize: 'cover',
           minHeight: `${windowSize.height}px`,
           backgroundColor: brandColors.background.main,
-          backgroundImage: formStepControl[currentStep].backgroundImage
-            ? 'url(/images/signup-background.png)'
-            : 'none',
+          backgroundImage: {
+            xs: 'url(/images/signup-background.png)',
+            md: formStepControl[currentStep].backgroundImage
+              ? 'url(/images/signup-background.png)'
+              : 'none',
+          },
         }}
       >
         <Grid
@@ -159,7 +160,7 @@ export function OrgSignUpTemplate({
             px: { xs: 2, md: 6 },
             flexGrow: 0,
             background: alpha(theme.palette.common.black, 0.03),
-            backdropFilter: 'blur(25px)',
+            backdropFilter: { xs: 'blur(85px)', md: 'blur(25px)' },
             height: '100%',
           }}
         >
@@ -200,7 +201,12 @@ export function OrgSignUpTemplate({
               {currentStepComponent}
               <Stack direction="row" justifyContent="space-between" gap={2}>
                 {isFirstStep && (
-                  <Button variant="contained" fullWidth onClick={handleNext}>
+                  <Button
+                    variant="contained"
+                    fullWidth
+                    onClick={handleNext}
+                    sx={{ height: 48 }}
+                  >
                     {t('step-create-profile.action')}
                   </Button>
                 )}
@@ -210,11 +216,11 @@ export function OrgSignUpTemplate({
                     variant="outlined"
                     size="large"
                     onClick={handlePrevious}
+                    sx={{ height: 48 }}
                   >
-                    Back
+                    {t('action-back')}
                   </Button>
                 )}
-                {/* [ ] Use translation */}
 
                 {!isLastStep &&
                   !isFirstStep &&
@@ -223,17 +229,18 @@ export function OrgSignUpTemplate({
                       variant="contained"
                       onClick={handleNext}
                       size="large"
+                      sx={{ height: 48 }}
                       disabled={!stepValidity[`${currentStep}`]}
                     >
-                      Next
+                      {t('action-next')}
                     </Button>
                   )}
-                {/* [ ] Use translation */}
                 {formStepControl[currentStep].name === 'telegram' && (
                   <Button
                     variant="contained"
                     size="large"
                     onClick={handleSubmit}
+                    sx={{ height: 48 }}
                   >
                     {fullFormState?.telegram?.length > 0
                       ? 'Finish'
@@ -245,7 +252,11 @@ export function OrgSignUpTemplate({
           </Stack>
         </Grid>
         {/* [ ] Create more components */}
-        <Divider orientation={isMobile ? 'horizontal' : 'vertical'} flexItem />
+        <Divider
+          orientation="vertical"
+          sx={{ display: { xs: 'none', md: 'flex' } }}
+          flexItem
+        />
         <Grid
           item
           xs={12}
@@ -255,7 +266,7 @@ export function OrgSignUpTemplate({
             pt: { xs: 3, md: 6 },
             flexGrow: 1,
             height: '100%',
-            display: 'flex',
+            display: { xs: 'none', md: 'flex' },
             flexDirection: 'column',
           }}
         >

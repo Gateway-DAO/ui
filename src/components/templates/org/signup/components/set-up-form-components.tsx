@@ -47,6 +47,7 @@ export const setUpFormComponents = ({
         name: 'gatewayId',
         type: 'text',
         required: true,
+        startAdornment: '@',
         helperText: `mygateway.xyz/org/${
           fullFormState?.gatewayId || 'gatewayId'
         }`,

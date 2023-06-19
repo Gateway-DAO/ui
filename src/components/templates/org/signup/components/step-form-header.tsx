@@ -1,3 +1,5 @@
+import TextWithParagraphs from '@/components/atoms/text-with-paragraphs/text-with-paragraphs';
+
 import { Stack, Typography } from '@mui/material';
 
 type Props = {
@@ -9,7 +11,7 @@ export default function StepFormHeader({ title, description }: Props) {
   return (
     <Stack gap={2} mb={4}>
       <Typography variant="h4">{title}</Typography>
-      <Typography>{description}</Typography>
+      <TextWithParagraphs text={description} />
     </Stack>
   );
 }
