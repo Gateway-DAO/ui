@@ -21,7 +21,7 @@ export const AlertCustom = ({ children, severity, fixed }: Props) => (
         ? brandColors.background.light
         : alpha(brandColors.purple.main, 0.08),
       border: fixed ? 'none' : `1px solid ${brandColors.purple.main}`,
-      color: brandColors.purple.main,
+      color: fixed ? brandColors.white.main : brandColors.purple.main,
       fontSize: 14,
       position: fixed ? 'fixed' : 'initial',
       width: fixed ? '100%' : 'auto',
