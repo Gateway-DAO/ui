@@ -11,6 +11,7 @@ import { useAuth } from '@/providers/auth';
 import {
   Create_Gate_DirectMutationVariables,
   Create_Gate_Tasks_BasedMutationVariables,
+  Daos,
 } from '@/services/hasura/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -241,7 +242,9 @@ export function CreateGate({ oldData }: CreateGateProps) {
     .every((value) => !!value);
 
   const queryClient = useQueryClient();
-  const daoData = queryClient.getQueryData([query.org_pending_gate_creation]);
+  const daoData: Daos = queryClient.getQueryData([
+    query.org_pending_gate_creation,
+  ]);
 
   return (
     <>
