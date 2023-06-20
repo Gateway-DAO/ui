@@ -236,7 +236,7 @@ export function LoyaltySidebar({
         <Box
           sx={(theme) => ({
             padding: {
-              xs: `0 ${theme.spacing(2)}`,
+              xs: `0 ${theme.spacing(2)} ${theme.spacing(2)}`,
               md: `0 ${theme.spacing(7)} ${theme.spacing(7)}`,
             },
           })}

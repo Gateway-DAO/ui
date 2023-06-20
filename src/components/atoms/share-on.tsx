@@ -35,23 +35,23 @@ export default function ShareOn({ isCredential, credential }: Props) {
 
   if (isReceivedCredential) {
     tweetText = t('social.share-twitter-recipient')
-      .replace('[title]', credential.title)
+      .replace('[title]', credential?.title)
       .replace(
         '[issuer]',
-        credential.issuerOrganization?.name ||
-          credential.issuerOrganization?.gatewayId ||
-          credential.issuerUser?.gatewayId
+        credential?.issuerOrganization?.name ||
+          credential?.issuerOrganization?.gatewayId ||
+          credential?.issuerUser?.gatewayId
       );
   } else if (isCredential) {
     tweetText = t('social.share-anonymous')
-      .replace('[title]', credential.title)
+      .replace('[title]', credential?.title)
       .replace(
         '[issuer]',
-        credential.issuerOrganization?.name ||
-          credential.issuerOrganization?.gatewayId ||
-          credential.issuerUser?.gatewayId
+        credential?.issuerOrganization?.name ||
+          credential?.issuerOrganization?.gatewayId ||
+          credential?.issuerUser?.gatewayId
       )
-      .replace('[recipient]', credential.recipientUser?.gatewayId);
+      .replace('[recipient]', credential?.recipientUser?.gatewayId);
   }
 
   const tweetLink = `https://twitter.com/intent/tweet${objectToParams({
@@ -81,7 +81,7 @@ export default function ShareOn({ isCredential, credential }: Props) {
       <Typography fontWeight={700} sx={{ mb: 2 }}>
         {t('social.share-on')}
       </Typography>
-      {isCredential && credential.id && (
+      {isCredential && credential?.id && (
         <Stack mb={3}>
           <Box
             component="img"
@@ -91,7 +91,7 @@ export default function ShareOn({ isCredential, credential }: Props) {
               height: 'auto',
             }}
             src={imageURL}
-            alt={credential.title}
+            alt={credential?.title}
           />
         </Stack>
       )}
