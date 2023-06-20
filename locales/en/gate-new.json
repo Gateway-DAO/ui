@@ -93,5 +93,6 @@
   },
   "notifications": {
     "published": "published a new credential: "
-  }
+  },
+  "pending-org-alert": "You can not publish a credential, because your profile is waiting for approval."
 }
