@@ -8,7 +8,8 @@ import {
 import { HeadContainer } from '@/components/molecules/head-container';
 import { DashboardTemplate } from '@/components/templates/dashboard';
 import { useAuth } from '@/providers/auth';
-import { hasuraPublicService } from '@/services/hasura/api';
+import { hasuraApi, hasuraPublicService } from '@/services/hasura/api';
+import { getServerSession } from '@/services/next-auth';
 import { useQuery } from '@tanstack/react-query';
 import { PartialDeep } from 'type-fest';
 
@@ -71,11 +72,25 @@ export default function DaoProfilePage({
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const slug = ctx.query.slug as string;
 
-  const { daos } = await hasuraPublicService.dao_profile_by_slug({ slug });
+  const session = await getServerSession(ctx.req, ctx.res);
+
+  const { daos } = await hasuraApi(session?.token).dao_profile_by_slug({
+    slug,
+  });
+
   const currentDao = daos[0];
+  if (!currentDao) {
+    return {
+      redirect: {
+        destination: '/explore',
+        permanent: false,
+      },
+    };
+  }
+
   const hasProtocolOrg = !!currentDao?.protocolOrganization;
   const protocolOrgId = hasProtocolOrg
-    ? currentDao.protocolOrganization.id
+    ? currentDao.protocolOrganization?.id
     : null;
   const credentials = hasProtocolOrg
     ? await hasuraPublicService.protocol_find_credentials_by_issuer_organization(

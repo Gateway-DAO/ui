@@ -41,7 +41,7 @@ export function GatesTab() {
 
   return (
     <Box sx={{ py: 4 }}>
-      {!!gates && gates.daos_by_pk.gates.length > 0 && (
+      {!!gates && gates?.daos_by_pk?.gates.length > 0 && (
         <>
           <Stack
             direction="row"
@@ -114,7 +114,7 @@ export function GatesTab() {
         </>
       )}
 
-      {!!gates && !gates.daos_by_pk.gates.length && (
+      {!!gates && !gates?.daos_by_pk?.gates.length && (
         <Stack
           direction="row"
           justifyContent="space-between"

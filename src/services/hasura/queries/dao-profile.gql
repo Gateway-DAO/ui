@@ -16,6 +16,7 @@ fragment dao_profile on daos {
     network
     url
   }
+  status
   gates(where: { published: { _eq: "published" } }, limit: 3) {
     id
     title

@@ -9,10 +9,17 @@ import { AppBar, Toolbar, Avatar, IconButton, Box } from '@mui/material';
 
 type Props = {
   isLoading: boolean;
+  publishedDisabled?: boolean;
   saveDraft: (data: CreateGateData) => void;
+  messageAbove?: boolean;
 };
 
-export const PublishNavbar = ({ isLoading, saveDraft }: Props) => {
+export const PublishNavbar = ({
+  isLoading,
+  saveDraft,
+  publishedDisabled = false,
+  messageAbove,
+}: Props) => {
   const router = useRouter();
   const { getValues } = useFormContext<CreateGateData>();
 
@@ -21,6 +28,7 @@ export const PublishNavbar = ({ isLoading, saveDraft }: Props) => {
       <AppBar
         position="fixed"
         sx={{
+          top: messageAbove ? '50px' : '0px',
           background: 'none',
           padding: { xs: '0 20px 0 10px', md: '20px 90px' },
         }}
@@ -53,6 +61,7 @@ export const PublishNavbar = ({ isLoading, saveDraft }: Props) => {
               size="large"
               sx={{ marginLeft: 2 }}
               isLoading={isLoading}
+              disabled={publishedDisabled}
             >
               Publish Credential
             </LoadingButton>

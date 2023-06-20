@@ -52,6 +52,7 @@ export default function CreateGatePage({ id, gateProps }: CreateGateProps) {
         ...(oldGateData as any),
         creator: oldGateData?.creator ?? { id: me?.id, name: me?.name },
         id,
+        daoId,
       }}
     />
   );
