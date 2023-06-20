@@ -11,12 +11,14 @@ type Props = {
   isLoading: boolean;
   publishedDisabled?: boolean;
   saveDraft: (data: CreateGateData) => void;
+  messageAbove?: boolean;
 };
 
 export const PublishNavbar = ({
   isLoading,
   saveDraft,
   publishedDisabled = false,
+  messageAbove,
 }: Props) => {
   const router = useRouter();
   const { getValues } = useFormContext<CreateGateData>();
@@ -26,6 +28,7 @@ export const PublishNavbar = ({
       <AppBar
         position="fixed"
         sx={{
+          top: messageAbove ? '50px' : '0px',
           background: 'none',
           padding: { xs: '0 20px 0 10px', md: '20px 90px' },
         }}

@@ -1,6 +1,8 @@
+import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
+import { AlertCustom } from '@/components/atoms/alert';
 import GatePublishedModal from '@/components/features/gates/create/gate-published';
 import TaskArea from '@/components/features/gates/create/tasks/tasks-area';
 import ConfirmDialog from '@/components/molecules/modal/confirm-dialog';
@@ -37,6 +39,7 @@ type CreateGateProps = {
 // Delete all tasks and create the new ones.
 
 export function CreateGate({ oldData }: CreateGateProps) {
+  const { t } = useTranslation('gate-new');
   const methods = useForm({
     resolver: zodResolver(createGateSchema),
     mode: 'onBlur',
@@ -248,6 +251,11 @@ export function CreateGate({ oldData }: CreateGateProps) {
 
   return (
     <>
+      {daoData && daoData.status === 'pending' && (
+        <AlertCustom severity="info" fixed>
+          {t('pending-org-alert')}
+        </AlertCustom>
+      )}
       <FormProvider {...methods}>
         <Stack
           component="form"
@@ -276,6 +284,7 @@ export function CreateGate({ oldData }: CreateGateProps) {
             }
             publishedDisabled={daoData && daoData.status === 'pending'}
             saveDraft={onSaveDraft}
+            messageAbove={daoData && daoData.status === 'pending'}
           />
           <Box
             padding={'0 90px'}
