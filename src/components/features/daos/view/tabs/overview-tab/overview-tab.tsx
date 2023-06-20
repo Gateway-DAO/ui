@@ -9,9 +9,11 @@ import { SectionWithSliderResponsive } from '@/components/molecules/sections';
 import DataGrid, {
   IColumnGrid,
 } from '@/components/organisms/data-grid/data-grid';
+import { query } from '@/constants/queries';
 import { ROUTES } from '@/constants/routes';
 import { Gates, Loyalty_Program, Users } from '@/services/hasura/types';
 import { theme, TOKENS } from '@/theme';
+import { useQueryClient } from '@tanstack/react-query';
 import { PartialDeep } from 'type-fest';
 import { v4 as uuid } from 'uuid';
 
@@ -38,6 +40,9 @@ export function OverviewTab({ setTab, credentials, loyaltyPrograms }: Props) {
   const { t } = useTranslation();
   const { dao, isAdmin, issuedCredentials, stats } = useDaoProfile();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
+  const queryClient = useQueryClient();
+
+  queryClient.removeQueries([query.org_pending_gate_creation]);
 
   const columns: IColumnGrid[] = [
     {
@@ -77,6 +82,7 @@ export function OverviewTab({ setTab, credentials, loyaltyPrograms }: Props) {
             <React.Fragment key={uuid()}>
               <Link key="create-credential" passHref href={newGateUrl}>
                 <EmptyCard
+                  onClick={() => setDaoData()}
                   title="Create Credential"
                   subtitle={
                     !gates.length
@@ -95,6 +101,12 @@ export function OverviewTab({ setTab, credentials, loyaltyPrograms }: Props) {
       )),
     ].slice(0, 4);
   }, [gates, isAdmin, newGateUrl]);
+
+  const setDaoData = () => {
+    if (dao.status === 'pending') {
+      queryClient.setQueryData([query.org_pending_gate_creation], dao);
+    }
+  };
 
   return (
     <Stack
