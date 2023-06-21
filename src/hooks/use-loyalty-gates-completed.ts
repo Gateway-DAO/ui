@@ -28,24 +28,26 @@ export function useLoyaltyGatesCompleted({ loyaltyProgramId }: Props) {
     }
   );
 
-  const totalPoints = useMemo(() => {
-    let pts = 0;
-    if (gatesCompleted?.data) {
-      gatesCompleted.data.map((credential) => {
-        if (
-          credential?.gate?.points > 0 &&
-          credential?.gate?.published === 'published'
-        ) {
-          pts += credential.gate.points;
-        }
-      });
+  const loyaltyProgress = useQuery(
+    [
+      query.get_loyalty_progress,
+      { user_id: me?.id, loyalty_id: loyaltyProgramId },
+    ],
+    () =>
+      hasuraUserService.get_loyalty_progress({
+        user_id: me?.id,
+        loyalty_id: loyaltyProgramId,
+      }),
+    {
+      select: (data) => data.loyalty_progress.find((lp) => lp),
+      enabled: !!me?.id,
     }
-    return pts;
-  }, [gatesCompleted]);
+  );
 
   return {
-    totalPoints,
-    isLoading: me?.id && gatesCompleted.isLoading,
+    totalPoints: loyaltyProgress?.data?.points,
+    isLoading:
+      me?.id && (gatesCompleted.isLoading || loyaltyProgress.isLoading),
     gatesCompleted: gatesCompleted?.data,
   };
 }

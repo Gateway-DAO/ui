@@ -22,6 +22,7 @@ export const query = {
   protocol_credential_by_loyalty_id: 'protocol_credential_by_loyalty_id',
   protocol_credential_by_gate_id: 'protocol_credential_by_gate_id',
   org_pending_gate_creation: 'org_pending_gate_creation',
+  get_loyalty_progress: 'get_loyalty_progress',
 };
 
 export const mutation = {

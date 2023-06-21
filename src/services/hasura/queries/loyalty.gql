@@ -45,3 +45,13 @@ query get_protocol_by_loyalty_id(
     credential
   }
 }
+
+query get_loyalty_progress(
+  $user_id: uuid!
+  $loyalty_id: uuid!
+) {
+  loyalty_progress(where: {loyalty_program_id: {_eq: $loyalty_id}, user_id: {_eq: $user_id}}) {
+    protocol_credential_id
+    points
+  }
+}
