@@ -6,7 +6,6 @@ import { AvatarFile } from '@/components/atoms/avatar-file';
 import { FollowButtonDAO } from '@/components/atoms/buttons/follow-button-dao';
 import { ShareButton } from '@/components/atoms/buttons/share-button';
 import { ReadMore } from '@/components/atoms/read-more-less';
-import { SlideUp } from '@/components/atoms/transitions/transitions';
 import { Navbar } from '@/components/organisms/navbar/navbar';
 import { SocialButtons } from '@/components/organisms/social-buttons';
 import Stepper from '@/components/organisms/stepper/stepper';
@@ -62,21 +61,11 @@ const ApprovalDialog = ({
   ];
 
   return (
-    <Dialog
-      open={open}
-      onClose={onClose}
-      TransitionComponent={SlideUp}
-      fullScreen
-    >
+    <Dialog open={open} onClose={onClose}>
       <Stack
         sx={{
-          backgroundColor: brandColors.background.main,
           height: { xs: 'auto', md: '100%' },
-          flexWrap: 'nowrap',
           flexDirection: { xs: 'column', md: 'row' },
-          backgroundPosition: 'center center',
-          backgroundSize: 'cover',
-          minHeight: `${windowSize.height}px`,
         }}
         justifyContent="center"
         alignItems="center"
