@@ -46,7 +46,7 @@ query get_protocol_by_loyalty_id(
   }
 }
 
-query get_loyalty_progress(
+query get_loyalty_progress_by_user_id_by_loyalty(
   $user_id: uuid!
   $loyalty_id: uuid!
 ) {

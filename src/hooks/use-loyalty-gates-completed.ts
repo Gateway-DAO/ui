@@ -1,5 +1,3 @@
-import { useMemo } from 'react';
-
 import { query } from '@/constants/queries';
 import { useAuth } from '@/providers/auth';
 import { Scalars } from '@/services/hasura/types';
@@ -30,11 +28,11 @@ export function useLoyaltyGatesCompleted({ loyaltyProgramId }: Props) {
 
   const loyaltyProgress = useQuery(
     [
-      query.get_loyalty_progress,
+      query.get_loyalty_progress_by_user_id_by_loyalty,
       { user_id: me?.id, loyalty_id: loyaltyProgramId },
     ],
     () =>
-      hasuraUserService.get_loyalty_progress({
+      hasuraUserService.get_loyalty_progress_by_user_id_by_loyalty({
         user_id: me?.id,
         loyalty_id: loyaltyProgramId,
       }),
