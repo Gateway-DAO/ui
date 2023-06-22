@@ -4,7 +4,6 @@ import {
   SuccessfullyIcon,
   SuccessfullyRoundedIcon,
 } from '@/components/atoms/icons';
-import Loading from '@/components/atoms/loadings/loading';
 import { ROUTES } from '@/constants/routes';
 import { Gates } from '@/services/hasura/types';
 import { brandColors } from '@/theme';
