@@ -155,25 +155,35 @@ const ApprovalFlowDialog = ({
   dao_name,
   onClose,
   onConfirm,
+  title,
+  text,
+  cancelText,
+  confirmText,
 }: {
   open: boolean;
   dao_name: string;
   onClose: any;
   onConfirm: any;
+  title: string;
+  text: string;
+  cancelText: string;
+  confirmText: string;
 }): JSX.Element => {
   return (
     <Dialog open={open} onClose={onClose}>
-      <DialogTitle>Approving {dao_name}</DialogTitle>
+      <DialogTitle>
+        {title} {dao_name}
+      </DialogTitle>
       <DialogContent>
         <DialogContentText>
-          Are you sure you want to approve the organization {dao_name}?
+          {text} {dao_name}?
         </DialogContentText>
       </DialogContent>
       <DialogActions>
         <Button autoFocus onClick={onClose}>
-          Cancel
+          {cancelText}
         </Button>
-        <Button onClick={onConfirm}>Approve</Button>
+        <Button onClick={onConfirm}>{confirmText}</Button>
       </DialogActions>
     </Dialog>
   );
@@ -219,6 +229,12 @@ export function DaoHeader({ followCount, onFollow, onUnfollow }: Props) {
         onClose={toggleApprovalFlowDialogStatus}
         onConfirm={() => approveMutate(dao.id)}
         dao_name={dao.name}
+        title={t('waiting-for-approval.approve-flow-dialog.title')}
+        text={t('waiting-for-approval.approve-flow-dialog.text')}
+        cancelText={t('waiting-for-approval.approve-flow-dialog.cancel-action')}
+        confirmText={t(
+          'waiting-for-approval.approve-flow-dialog.confirm-action'
+        )}
       />
       <Box
         sx={{
@@ -281,7 +297,11 @@ export function DaoHeader({ followCount, onFollow, onUnfollow }: Props) {
               me &&
               me.permissions &&
               me.permissions.some((obj) => obj.permission === 'admin') && (
-                <Tooltip title="Approve ORG">
+                <Tooltip
+                  title={t(
+                    'waiting-for-approval.approve-flow-dialog.button-tooltip'
+                  )}
+                >
                   <IconButton onClick={() => toggleApprovalFlowDialogStatus()}>
                     <AssignmentTurnedIn />
                   </IconButton>
