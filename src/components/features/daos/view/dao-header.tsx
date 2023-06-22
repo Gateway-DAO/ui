@@ -1,22 +1,27 @@
 import useTranslation from 'next-translate/useTranslation';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 import { AvatarFile } from '@/components/atoms/avatar-file';
 import { FollowButtonDAO } from '@/components/atoms/buttons/follow-button-dao';
 import { ShareButton } from '@/components/atoms/buttons/share-button';
+import Loading from '@/components/atoms/loadings/loading';
 import { ReadMore } from '@/components/atoms/read-more-less';
 import { Navbar } from '@/components/organisms/navbar/navbar';
 import { SocialButtons } from '@/components/organisms/social-buttons';
 import Stepper from '@/components/organisms/stepper/stepper';
 import { categoriesMap } from '@/constants/dao';
+import { mutation } from '@/constants/queries';
 import { ROUTES } from '@/constants/routes';
 import { gateway_discord, gateway_support_email } from '@/constants/socials';
 import { useFile } from '@/hooks/use-file';
+import { useAuth } from '@/providers/auth';
 import { TOKENS, brandColors } from '@/theme';
+import { useMutation } from '@tanstack/react-query';
 import { useToggle, useWindowSize } from 'react-use';
 
-import { Edit } from '@mui/icons-material';
+import { Approval, AssignmentTurnedIn, Edit } from '@mui/icons-material';
 import {
   Chip,
   Box,
@@ -28,6 +33,10 @@ import {
   Paper,
   Button,
   Link as LinkM,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
 } from '@mui/material';
 
 import { useDaoProfile } from './context';
@@ -141,17 +150,75 @@ const ApprovalDialog = ({
   );
 };
 
+const ApprovalFlowDialog = ({
+  open,
+  dao_name,
+  onClose,
+  onConfirm,
+}: {
+  open: boolean;
+  dao_name: string;
+  onClose: any;
+  onConfirm: any;
+}): JSX.Element => {
+  return (
+    <Dialog open={open} onClose={onClose}>
+      <DialogTitle>Approving {dao_name}</DialogTitle>
+      <DialogContent>
+        <DialogContentText>
+          Are you sure you want to approve the organization {dao_name}?
+        </DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <Button autoFocus onClick={onClose}>
+          Cancel
+        </Button>
+        <Button onClick={onConfirm}>Approve</Button>
+      </DialogActions>
+    </Dialog>
+  );
+};
+
 export function DaoHeader({ followCount, onFollow, onUnfollow }: Props) {
   const { dao, credentials, isAdmin } = useDaoProfile();
+  const { me, hasuraUserService } = useAuth();
+  const router = useRouter();
+
   const cover = useFile(dao.background);
   const { t } = useTranslation('dao-profile');
   const [approvalDialogStatus, toggleApprovalDialogStatus] = useToggle(false);
+  const [approvaFlowlDialogStatus, toggleApprovalFlowDialogStatus] =
+    useToggle(false);
+
+  const { isLoading, mutate: approveMutate } = useMutation(
+    [mutation.approve_organization, dao.id],
+    (daoId: string) => {
+      return hasuraUserService.approve_dao({ id: daoId });
+    },
+    {
+      onSuccess: () => {
+        toggleApprovalFlowDialogStatus();
+        refreshData();
+      },
+    }
+  );
+
+  const refreshData = () => {
+    router.replace(router.asPath);
+  };
 
   return (
     <>
+      {isLoading && <Loading />}
       <ApprovalDialog
         open={approvalDialogStatus}
         onClose={toggleApprovalDialogStatus}
+      />
+      <ApprovalFlowDialog
+        open={approvaFlowlDialogStatus}
+        onClose={toggleApprovalFlowDialogStatus}
+        onConfirm={() => approveMutate(dao.id)}
+        dao_name={dao.name}
       />
       <Box
         sx={{
@@ -210,6 +277,16 @@ export function DaoHeader({ followCount, onFollow, onUnfollow }: Props) {
                 </Tooltip>
               </Link>
             )}
+            {dao.status === 'pending' &&
+              me &&
+              me.permissions &&
+              me.permissions.some((obj) => obj.permission === 'admin') && (
+                <Tooltip title="Approve ORG">
+                  <IconButton onClick={() => toggleApprovalFlowDialogStatus()}>
+                    <AssignmentTurnedIn />
+                  </IconButton>
+                </Tooltip>
+              )}
           </Stack>
           <Stack direction="row" alignItems="center" gap="8px">
             {dao.status === 'pending' && (
