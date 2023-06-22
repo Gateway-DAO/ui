@@ -24,6 +24,15 @@ const nextConfig = {
   compiler: {
     emotion: true,
   },
+  redirects: () => {
+    return [
+      {
+        source: '/dao/:slug*',
+        destination: '/org/:slug*',
+        permanent: true,
+      },
+    ];
+  },
 };
 
 // eslint-disable-next-line import-helpers/order-imports
