@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import { useMemo, useState } from 'react';
 
 import { MintedChain } from '@/components/features/protocol/credentials/view/components/mint-nft-card';
@@ -9,20 +10,17 @@ import {
   Protocol_Api_Chain,
   Protocol_Mint_CredentialMutationVariables,
 } from '@/services/hasura/types';
-import { Scalars } from '@/services/hasura/types';
-import { queryClient } from '@/services/query-client';
 import { useMutation } from '@tanstack/react-query';
 import { PartialDeep } from 'type-fest/source/partial-deep';
 
 type Props = {
   credential: PartialDeep<Protocol_Api_Credential>;
-  loyaltyProgramId?: Scalars['uuid'];
-  gateId?: Scalars['uuid'];
 };
 
-export function useMintData({ credential, loyaltyProgramId, gateId }: Props) {
+export function useMintData({ credential }: Props) {
   const { me, hasuraUserService } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
+  const router = useRouter();
   const [shareIsOpen, setShareIsOpen] = useState<boolean>(false);
   const isAllowedToMint = useMemo(() => credential?.nft !== null, [credential]);
   const isReceivedCredential = useMemo(
@@ -70,22 +68,7 @@ export function useMintData({ credential, loyaltyProgramId, gateId }: Props) {
             transaction: data.protocol.mintCredential.txHash,
           },
         ]);
-        queryClient.refetchQueries([
-          query.protocol_credential_by_gate_id,
-          {
-            user_id: me?.id,
-            gate_id: gateId,
-          },
-        ]);
-        if (loyaltyProgramId) {
-          queryClient.refetchQueries([
-            query.protocol_credential_by_loyalty_id,
-            {
-              user_id: me?.id,
-              loyalty_id: loyaltyProgramId,
-            },
-          ]);
-        }
+        router.replace(router.asPath);
       },
     }
   );

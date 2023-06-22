@@ -1,9 +1,8 @@
 import useTranslation from 'next-translate/useTranslation';
 
 import { AlertCustom } from '@/components/atoms/alert';
-import { useLoyaltyGatesCompleted } from '@/hooks/use-loyalty-gates-completed';
 import { useAuth } from '@/providers/auth';
-import { Credentials, Gates, Loyalty_Program } from '@/services/hasura/types';
+import { Credentials, Gates } from '@/services/hasura/types';
 import { TOKENS, brandColors } from '@/theme';
 import { PartialDeep } from 'type-fest/source/partial-deep';
 
@@ -13,26 +12,18 @@ import { CredentialListItem } from './credential-list-item';
 
 type Props = {
   gates: PartialDeep<Gates>[];
-  loyalty: PartialDeep<Loyalty_Program>;
+  credentialsByLoyalty: PartialDeep<Credentials>[];
 };
 
-export function CredentialsList({ gates, loyalty }: Props) {
+export function CredentialsList({ gates, credentialsByLoyalty }: Props) {
   const { t } = useTranslation('loyalty-program');
   const { me } = useAuth();
 
-  const { gatesCompleted, isLoading } = useLoyaltyGatesCompleted({
-    loyaltyProgramId: loyalty.id,
-  });
-
   const gateIsCompleted = (
-    gatesCompleted: PartialDeep<Credentials>[],
+    credentials: PartialDeep<Credentials>[],
     gate: PartialDeep<Gates>
   ) => {
-    return gatesCompleted?.find(
-      (gateProgress) => gateProgress.gate.id === gate.id
-    )
-      ? 1
-      : 0;
+    return credentials?.find((c) => c?.gate?.id === gate?.id) ? 1 : 0;
   };
 
   return (
@@ -54,7 +45,7 @@ export function CredentialsList({ gates, loyalty }: Props) {
         >
           {t('missions.title')}
         </Typography>
-        {(gatesCompleted?.length === 0 || !me?.id) && (
+        {(credentialsByLoyalty?.length === 0 || !me?.id) && (
           <AlertCustom severity="error">
             {t('missions.message-missions-empty')}
           </AlertCustom>
@@ -64,16 +55,15 @@ export function CredentialsList({ gates, loyalty }: Props) {
         {gates
           .sort((a, b) => {
             return (
-              gateIsCompleted(gatesCompleted, b) -
-              gateIsCompleted(gatesCompleted, a)
+              gateIsCompleted(credentialsByLoyalty, b) -
+              gateIsCompleted(credentialsByLoyalty, a)
             );
           })
           .map((gate) => (
             <CredentialListItem
               key={gate.id}
               gate={gate}
-              gateIsCompleted={!!gateIsCompleted(gatesCompleted, gate)}
-              isLoading={isLoading}
+              gateIsCompleted={!!gateIsCompleted(credentialsByLoyalty, gate)}
             />
           ))}
       </Stack>

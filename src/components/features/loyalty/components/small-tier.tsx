@@ -3,9 +3,7 @@ import Link from 'next/link';
 
 import { ROUTES } from '@/constants/routes';
 import { useActualTier } from '@/hooks/use-actual-tier';
-import { useLoyaltyGateCompleted } from '@/hooks/use-loyalty-gate-completed';
-import { useLoyaltyGatesCompleted } from '@/hooks/use-loyalty-gates-completed';
-import { Gates, Loyalty_Program } from '@/services/hasura/types';
+import { Loyalty_Program, Loyalty_Progress } from '@/services/hasura/types';
 import { brandColors } from '@/theme';
 import { limitChars } from '@/utils/string';
 import { PartialDeep } from 'type-fest/source/partial-deep';
@@ -17,23 +15,22 @@ import { TierRuler } from './tier-ruler';
 
 type Props = {
   loyalty: PartialDeep<Loyalty_Program>;
-  gate?: PartialDeep<Gates>;
+  loyaltyProgress: PartialDeep<Loyalty_Progress>;
+  currentGatePoints: number;
+  gateIsFinished: boolean;
 };
 
-export function SmallTier({ loyalty, gate }: Props) {
+export function SmallTier({
+  loyalty,
+  loyaltyProgress,
+  currentGatePoints,
+  gateIsFinished,
+}: Props) {
   const { t } = useTranslation('loyalty-program');
-  const { totalPoints, isLoading, gatesCompleted } = useLoyaltyGatesCompleted({
-    loyaltyProgramId: loyalty.id,
-  });
 
   const actualTier = useActualTier({
     tiers: loyalty.loyalty_tiers,
-    totalPoints,
-  });
-
-  const { gateCompleted } = useLoyaltyGateCompleted({
-    gate,
-    gatesCompleted,
+    totalPoints: loyaltyProgress?.points,
   });
 
   return (
@@ -92,21 +89,20 @@ export function SmallTier({ loyalty, gate }: Props) {
           </Stack>
           <TierInfo
             tier={actualTier?.tier}
-            isLoading={isLoading}
-            totalPoints={totalPoints}
+            totalPoints={loyaltyProgress?.points}
           />
           <TierRuler
             tiers={loyalty.loyalty_tiers}
-            totalPoints={totalPoints}
+            totalPoints={loyaltyProgress?.points}
             size="small"
           />
         </Stack>
       </Link>
       <Stack direction="row" alignItems="center" sx={{ mb: 4 }}>
         <Typography flexGrow={1}>{t('tier.reward')}</Typography>
-        {gateCompleted ? (
+        {gateIsFinished ? (
           <Chip
-            label={`${t('tier.you-earned')} +${gateCompleted?.points}pts`}
+            label={`${t('tier.you-earned')} +${currentGatePoints}pts`}
             sx={{
               backgroundColor: brandColors.green.main,
               color: '#10041C',
@@ -114,7 +110,7 @@ export function SmallTier({ loyalty, gate }: Props) {
             }}
           />
         ) : (
-          <Chip label={`+${gate?.points}pts`} sx={{ fontWeight: 500 }} />
+          <Chip label={`+${currentGatePoints}pts`} sx={{ fontWeight: 500 }} />
         )}
       </Stack>
     </>

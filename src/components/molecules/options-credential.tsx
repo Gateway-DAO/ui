@@ -38,10 +38,6 @@ export function OptionsCredential({ gate }: Props) {
 
     await queryClient.refetchQueries(['gate', gate?.id]);
     await queryClient.refetchQueries(['dao-gates', gate?.dao_id]);
-    queryClient.refetchQueries([
-      query.gate_progress_completed_by_loyalty_program,
-      { userId: me?.id, loyaltyProgramId: gate.loyalty_id },
-    ]);
     router.replace(router.asPath);
   };
 

@@ -1,4 +1,5 @@
 import useTranslation from 'next-translate/useTranslation';
+import { useRouter } from 'next/router';
 
 import GateMintButton from '@/components/atoms/buttons/gate-mint-button';
 import { ShareButtonFn } from '@/components/atoms/buttons/share-btn-fn';
@@ -33,9 +34,7 @@ export default function GateCompletedModal({
   protocolCredential,
 }: Props) {
   const menu = useMenu();
-  const queryClient = useQueryClient();
   const { t } = useTranslation('credential');
-  const { me } = useAuth();
   const {
     isOpen,
     setIsOpen,
@@ -46,19 +45,13 @@ export default function GateCompletedModal({
     showMintButton,
   } = useMintData({
     credential: protocolCredential,
-    loyaltyProgramId: gate?.loyalty_id,
-    gateId: gate?.id,
   });
+
+  const router = useRouter();
 
   const refetchProtocolCredential = () => {
     if (mintCredential.isSuccess) {
-      queryClient.refetchQueries([
-        query.protocol_credential_by_gate_id,
-        {
-          user_id: me?.id,
-          gate_id: gate?.id,
-        },
-      ]);
+      router.replace(router.asPath);
     }
   };
 
