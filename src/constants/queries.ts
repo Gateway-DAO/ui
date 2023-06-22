@@ -20,6 +20,7 @@ export const query = {
   org_pending_gate_creation: 'org_pending_gate_creation',
   loyalty_progress_by_user_id_by_loyalty:
     'loyalty_progress_by_user_id_by_loyalty',
+  protocol_credential: 'protocol_credential',
 };
 
 export const mutation = {

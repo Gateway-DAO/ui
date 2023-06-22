@@ -6,22 +6,33 @@ import { DialogStatuses } from '@/components/organisms/mint/mint-modal/mint-dial
 import { query } from '@/constants/queries';
 import { useAuth } from '@/providers/auth';
 import {
-  Protocol_Api_Credential,
   Protocol_Api_Chain,
   Protocol_Mint_CredentialMutationVariables,
 } from '@/services/hasura/types';
-import { useMutation } from '@tanstack/react-query';
-import { PartialDeep } from 'type-fest/source/partial-deep';
+import { useMutation, useQuery } from '@tanstack/react-query';
 
 type Props = {
-  credential: PartialDeep<Protocol_Api_Credential>;
+  protocolCredentialId: string;
 };
 
-export function useMintData({ credential }: Props) {
+export function useMintData({ protocolCredentialId }: Props) {
   const { me, hasuraUserService } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
   const [shareIsOpen, setShareIsOpen] = useState<boolean>(false);
+
+  const { data: credential } = useQuery(
+    [query.protocol_credential, protocolCredentialId],
+    () =>
+      hasuraUserService.protocol_credential({
+        id: protocolCredentialId,
+      }),
+    {
+      enabled: !!protocolCredentialId,
+      select: ({ protocol }) => protocol?.credential,
+    }
+  );
+
   const isAllowedToMint = useMemo(() => credential?.nft !== null, [credential]);
   const isReceivedCredential = useMemo(
     () =>
@@ -80,6 +91,14 @@ export function useMintData({ credential }: Props) {
       isAllowedToMint &&
       !mintData,
     [credential?.nft, isAllowedToMint, isReceivedCredential, mintData]
+  );
+
+  console.log(
+    'asdfasdf',
+    !credential?.nft?.minted,
+    isReceivedCredential,
+    isAllowedToMint,
+    !mintData
   );
 
   return {
