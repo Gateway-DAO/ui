@@ -25,4 +25,5 @@ export const query = {
 
 export const mutation = {
   create_organization: 'create_organization',
+  approve_organization: 'approve_organization',
 };
