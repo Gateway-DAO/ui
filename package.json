@@ -8,7 +8,7 @@
     "serve": "next start",
     "lint": "next lint",
     "test": "jest --watch",
-    "test:e2e": "pnpm playwright test",
+    "test:e2e": "pnpm playwright test --ui",
     "build": "next build",
     "generate": "pnpm generate:prisma && pnpm generate:graphql",
     "generate:prisma": "node tools/scripts/create-prisma.js && prisma db pull && prisma generate",
