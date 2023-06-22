@@ -17,11 +17,11 @@ import { ROUTES } from '@/constants/routes';
 import { gateway_discord, gateway_support_email } from '@/constants/socials';
 import { useFile } from '@/hooks/use-file';
 import { useAuth } from '@/providers/auth';
-import { TOKENS, brandColors } from '@/theme';
+import { TOKENS } from '@/theme';
 import { useMutation } from '@tanstack/react-query';
 import { useToggle, useWindowSize } from 'react-use';
 
-import { Approval, AssignmentTurnedIn, Edit } from '@mui/icons-material';
+import { AssignmentTurnedIn, Edit } from '@mui/icons-material';
 import {
   Chip,
   Box,
