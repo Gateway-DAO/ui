@@ -93,14 +93,6 @@ export function useMintData({ protocolCredentialId }: Props) {
     [credential?.nft, isAllowedToMint, isReceivedCredential, mintData]
   );
 
-  console.log(
-    'asdfasdf',
-    !credential?.nft?.minted,
-    isReceivedCredential,
-    isAllowedToMint,
-    !mintData
-  );
-
   return {
     isOpen,
     setIsOpen,
