@@ -6,7 +6,7 @@ import {
 import { PartialDeep } from 'type-fest';
 
 export type SessionToken = Omit<
-  LoginMutation['protocol']['login'],
+  LoginMutation['protocol']['loginWallet'],
   '__typename'
 > & { error?: any };
 
