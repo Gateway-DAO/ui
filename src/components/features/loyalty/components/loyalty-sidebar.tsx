@@ -69,7 +69,7 @@ export function LoyaltySidebar({
     mintCredential,
     showMintButton,
   } = useMintData({
-    protocolCredentialId: protocolCredential?.id,
+    credential: protocolCredential,
   });
 
   const [shareLoyaltyIsOpen, setShareLoyaltyIsOpen] = useToggle(false);
