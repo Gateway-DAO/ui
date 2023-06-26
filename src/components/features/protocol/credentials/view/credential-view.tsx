@@ -40,8 +40,7 @@ export default function CredentialProtocolView({ credential }: Props) {
     isReceivedCredential,
     isAllowedToMint,
   } = useMintData({
-    protocolCredentialId: credential?.id,
-    protocolCredential: credential,
+    credential,
   });
 
   const boxStyles: SxProps<Theme> = {
