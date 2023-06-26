@@ -73,7 +73,7 @@ export function GateViewSidebar({
     mintCredential,
     showMintButton,
   } = useMintData({
-    credential: protocolCredential,
+    protocolCredentialId: protocolCredential?.id,
   });
 
   <HolderDialog

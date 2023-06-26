@@ -10,14 +10,18 @@ import {
   Protocol_Api_Credential,
   Protocol_Mint_CredentialMutationVariables,
 } from '@/services/hasura/types';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { PartialDeep } from 'type-fest/source/partial-deep';
 
 type Props = {
-  credential?: PartialDeep<Protocol_Api_Credential>;
+  protocolCredentialId: string;
+  protocolCredential?: PartialDeep<Protocol_Api_Credential>;
 };
 
-export function useMintData({ credential }: Props) {
+export function useMintData({
+  protocolCredentialId,
+  protocolCredential,
+}: Props) {
   const { me, hasuraUserService } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
@@ -43,6 +47,24 @@ export function useMintData({ credential }: Props) {
     }
     return null;
   };
+
+  const credentialQuery = useQuery(
+    [query.protocol_credential, protocolCredentialId],
+    () =>
+      hasuraUserService.protocol_credential({
+        id: protocolCredentialId,
+      }),
+    {
+      enabled: !!protocolCredentialId && !protocolCredential,
+      select: ({ protocol }) =>
+        protocol?.credential as PartialDeep<Protocol_Api_Credential>,
+    }
+  );
+
+  const credential = useMemo(
+    () => protocolCredential ?? credentialQuery?.data,
+    [protocolCredential, credentialQuery?.data]
+  );
 
   const [mintData, setMintData] = useState(mountMintData(credential));
   const [shareStatus, setShareStatus] = useState<DialogStatuses>(null);

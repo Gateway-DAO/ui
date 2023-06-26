@@ -41,7 +41,7 @@ export default function GateCompletedModal({
     mintCredential,
     showMintButton,
   } = useMintData({
-    credential: protocolCredential,
+    protocolCredentialId: protocolCredential?.id,
   });
 
   const router = useRouter();
