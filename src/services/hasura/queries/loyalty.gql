@@ -16,32 +16,17 @@ query loyalty_programs_by_organization_id($id: uuid!) {
   }
 }
 
-query get_gate_progress_completed_by_loyalty_program(
-  $userId: uuid!
-  $loyaltyProgramId: uuid!
+query get_loyalty_progress_by_user_id_by_loyalty(
+  $user_id: uuid!
+  $loyalty_id: uuid!
 ) {
-  credentials(
-    where: {
-      gate: { loyalty_id: {_eq: $loyaltyProgramId}},
-      target_id: {_eq: $userId}
-    }
-  ) {
-    gate {
+  loyalty_progress(where: {loyalty_program_id: {_eq: $loyalty_id}, user_id: {_eq: $user_id}}) {
+    protocol_credential_id
+    loyalty_program_protocol {
       id
-      points
-      published
+      txHash
+      nftId
     }
-  }
-}
-
-query get_protocol_by_loyalty_id(
-  $user_id: String!
-  $loyalty_id: String!
-) {
-  get_protocol_by_loyalty_id(
-    user_id: $user_id
-    loyalty_id: $loyalty_id
-  ) {
-    credential
+    points
   }
 }

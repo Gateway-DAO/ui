@@ -1,14 +1,9 @@
-import { useRouter } from 'next/router';
-
 import { LoyaltyProgramCredential } from '@/components/features/loyalty/loyalty-credential';
 import { HeadContainer } from '@/components/molecules/head-container';
 import { DashboardTemplate } from '@/components/templates/dashboard';
-import { query } from '@/constants/queries';
 import { ROUTES } from '@/constants/routes';
-import { useAuth } from '@/providers/auth';
 import { hasuraPublicService, hasuraApi } from '@/services/hasura/api';
 import { getServerSession } from '@/services/next-auth';
-import { QueryClient, dehydrate, useQuery } from '@tanstack/react-query';
 import jwt from 'jsonwebtoken';
 
 const unaccesible = {
@@ -18,42 +13,12 @@ const unaccesible = {
   },
 };
 
-export default function LoyaltyCredentialPage({ loyalty }) {
-  const router = useRouter();
-
-  const id = router.query.id as string;
-
-  const { me, hasuraUserService, authenticated } = useAuth();
-
-  const { data: gate } = useQuery(
-    [query.gate, id],
-    () =>
-      hasuraUserService.gate({
-        id,
-      }),
-    { enabled: authenticated, select: ({ gates_by_pk }) => gates_by_pk }
-  );
-
-  const { data: protocolCredential } = useQuery(
-    [
-      query.protocol_credential_by_gate_id,
-      {
-        user_id: me?.id,
-        gate_id: gate?.id,
-      },
-    ],
-    () =>
-      hasuraUserService.get_protocol_by_gate_id({
-        user_id: me?.id,
-        gate_id: gate?.id,
-      }),
-    {
-      enabled: authenticated && !!gate,
-      select: ({ get_protocol_by_gate_id }) =>
-        get_protocol_by_gate_id.credential,
-    }
-  );
-
+export default function LoyaltyCredentialPage({
+  loyalty,
+  loyaltyProgress,
+  credential,
+  gate,
+}) {
   return (
     <>
       <HeadContainer
@@ -68,9 +33,10 @@ export default function LoyaltyCredentialPage({ loyalty }) {
         }}
       >
         <LoyaltyProgramCredential
-          gate={gate}
           loyalty={loyalty}
-          protocolCredential={protocolCredential}
+          gate={gate}
+          credential={credential}
+          loyaltyProgress={loyaltyProgress}
         />
       </DashboardTemplate>
     </>
@@ -79,7 +45,6 @@ export default function LoyaltyCredentialPage({ loyalty }) {
 
 export const getServerSideProps = async ({ req, res, params }) => {
   const { id } = params;
-  const queryClient = new QueryClient();
 
   const session = await getServerSession(req, res);
 
@@ -89,21 +54,37 @@ export const getServerSideProps = async ({ req, res, params }) => {
   expired = !!session && parsedToken.exp < Date.now() / 1000;
 
   let gate;
+  let loyaltyProgress;
+  let credential;
 
   try {
-    gate = await (!!session && !expired
-      ? hasuraApi(session.token, session.hasura_id)
-      : hasuraPublicService
-    ).gate({ id });
-  } catch (e) {
-    gate = await hasuraPublicService.gate({ id });
-  }
+    if (!!session && !expired) {
+      gate = await hasuraApi(session?.token).gate({ id });
 
-  if (!gate.gates_by_pk) {
+      loyaltyProgress = await hasuraApi(
+        session?.token
+      ).get_loyalty_progress_by_user_id_by_loyalty({
+        user_id: session?.hasura_id,
+        loyalty_id: gate?.gates_by_pk?.loyalty_id,
+      });
+
+      credential = await hasuraApi(
+        session?.token
+      ).credential_by_user_id_by_gate_id({
+        user_id: session?.hasura_id,
+        gate_id: id,
+      });
+    }
+    if (!gate) {
+      gate = await hasuraPublicService.gate({ id });
+    }
+  } catch (e) {
     return unaccesible;
   }
 
-  await queryClient.prefetchQuery([query.gate, id], () => gate);
+  if (!gate?.gates_by_pk) {
+    return unaccesible;
+  }
 
   const { loyalty_program_by_pk } = await hasuraPublicService.loyalty_program({
     id: gate.gates_by_pk?.loyalty_id,
@@ -112,7 +93,10 @@ export const getServerSideProps = async ({ req, res, params }) => {
   return {
     props: {
       loyalty: loyalty_program_by_pk,
-      dehydratedState: dehydrate(queryClient),
+      gate: gate?.gates_by_pk,
+      loyaltyProgress:
+        loyaltyProgress?.loyalty_progress?.find((lp) => lp) ?? null,
+      credential: credential?.credentials?.find((c) => c) ?? null,
     },
   };
 };

@@ -4,7 +4,6 @@ import {
   SuccessfullyIcon,
   SuccessfullyRoundedIcon,
 } from '@/components/atoms/icons';
-import Loading from '@/components/atoms/loadings/loading';
 import { ROUTES } from '@/constants/routes';
 import { Gates } from '@/services/hasura/types';
 import { brandColors } from '@/theme';
@@ -17,14 +16,9 @@ import { Chip, Stack, Typography, alpha } from '@mui/material';
 type Props = {
   gate: PartialDeep<Gates>;
   gateIsCompleted: boolean;
-  isLoading: boolean;
 };
 
-export function CredentialListItem({
-  gate,
-  gateIsCompleted,
-  isLoading,
-}: Props) {
+export function CredentialListItem({ gate, gateIsCompleted }: Props) {
   return (
     <Link
       href={ROUTES.LOYALTY_PROGRAM_CREDENTIAL.replace('[id]', gate.id)}
@@ -91,16 +85,10 @@ export function CredentialListItem({
             }}
           />
         )}
-        {isLoading ? (
-          <Loading size={28} marginTop={0} />
+        {gateIsCompleted ? (
+          <SuccessfullyIcon size="small" sx={{ width: 28, height: 28 }} />
         ) : (
-          <>
-            {gateIsCompleted ? (
-              <SuccessfullyIcon size="small" sx={{ width: 28, height: 28 }} />
-            ) : (
-              <SuccessfullyRoundedIcon />
-            )}
-          </>
+          <SuccessfullyRoundedIcon />
         )}
         <KeyboardArrowRightIcon
           sx={{
