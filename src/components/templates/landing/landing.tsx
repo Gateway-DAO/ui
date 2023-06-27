@@ -1,10 +1,14 @@
 import { ReactNode, useEffect, useRef, useState } from 'react';
 
+import { useAuth } from '@/providers/auth';
 import { theme } from '@/theme';
-import { useIntersection } from 'react-use';
+import { useIntersection, useToggle } from 'react-use';
 
 import { Box } from '@mui/material';
 
+import OrgSignupDialog from '../org/signup/dialog-structure';
+import { CreateOrgCardDashboard } from './create-org/create-org-dashboard';
+import { OrgCreationProps } from './create-org/types';
 import { Featured } from './featured';
 import { FeaturedProps } from './featured/types';
 import { Footer } from './footer';
@@ -16,8 +20,6 @@ import { Menu } from './menu/menu';
 import { MenuListItem } from './menu/types';
 import { ProductShow } from './product-show';
 import { ProductShowProps } from './product-show/types';
-import { ScheduleDemo } from './schedule-demo';
-import { ScheduleDemoProps } from './schedule-demo/types';
 import { DEFAULT_PADDINGX } from './styles';
 
 type Props = {
@@ -33,7 +35,7 @@ type Props = {
   theGatewayContent: ProductShowProps;
   buildAppsContent: ProductShowProps;
   investorsContent: InvestorProps;
-  scheduleDemoContent: ScheduleDemoProps;
+  orgCreation: OrgCreationProps;
   footerContent: FooterProps;
 };
 
@@ -50,12 +52,14 @@ export function LandingTemplate({
   theGatewayContent,
   buildAppsContent,
   investorsContent,
-  scheduleDemoContent,
+  orgCreation,
   footerContent,
 }: Props) {
   const heroProps = { title, subtitle, enterButton, titleDescription };
   const menuProps = { menuList, signUpButton, connectButton };
   const [activeArea, setActiveArea] = useState('');
+  const [openSignUpOrgDialog, setSignUpOrgDialog] = useToggle(false);
+  const { me } = useAuth();
 
   const refs = {
     hero: useRef(null),
@@ -96,6 +100,10 @@ export function LandingTemplate({
   }, [organizationIntersection]);
   return (
     <>
+      <OrgSignupDialog
+        open={openSignUpOrgDialog}
+        toggleDialog={setSignUpOrgDialog}
+      />
       <Menu {...menuProps} activeMenu={activeArea} />
       <Box
         component="main"
@@ -137,7 +145,15 @@ export function LandingTemplate({
             id="investors"
             ref={refs.investors}
           />
-          <ScheduleDemo {...scheduleDemoContent} />
+
+          {/* TODO: Remove auth validation after finish login page */}
+          {me && (
+            <CreateOrgCardDashboard
+              {...orgCreation}
+              buttonAction={() => setSignUpOrgDialog(true)}
+            />
+          )}
+
           <Footer {...footerContent} />
         </Box>
       </Box>

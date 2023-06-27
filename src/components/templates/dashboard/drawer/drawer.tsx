@@ -5,14 +5,18 @@ import { useMemo } from 'react';
 import { AdminBadge } from '@/components/atoms/admin-badge';
 import { AvatarFile } from '@/components/atoms/avatar-file';
 import { GatewayIcon } from '@/components/atoms/icons';
+import { AddOrganizationIcon } from '@/components/atoms/icons/add-organization-icon';
 import { ROUTES } from '@/constants/routes';
+import { useCreateOrgCardProps } from '@/hooks/use-create-org-card-props';
 import { useAuth } from '@/providers/auth';
 import clsx from 'clsx';
+import { useToggle } from 'react-use';
 
 import ExploreIcon from '@mui/icons-material/Explore';
-import { Avatar, ListItemButton } from '@mui/material';
+import { Avatar, ListItemButton, Stack } from '@mui/material';
 import ListItemIcon from '@mui/material/ListItemIcon';
 
+import OrgSignupDialog from '../../org/signup/dialog-structure';
 import { DashboardTemplateProps } from '../types';
 import { DaosList } from './daos-list';
 import { DrawerContainer } from './drawer-container';
@@ -25,13 +29,23 @@ export function Drawer({ currentDao, showExplore }: Props) {
 
   const { me } = useAuth();
 
+  const [openSignUpOrgDialog, setSignUpOrgDialog] = useToggle(false);
+
   const followingDaos = useMemo(
     () => me?.following_dao?.map(({ dao }) => dao) ?? [],
     [me?.following_dao]
   );
 
+  const createOrgCardProps = useCreateOrgCardProps({
+    action: setSignUpOrgDialog,
+  });
+
   return (
     <DrawerContainer>
+      <OrgSignupDialog
+        open={openSignUpOrgDialog}
+        toggleDialog={setSignUpOrgDialog}
+      />
       <ResponsiveDrawer>
         <DaosList>
           <ListItemIcon
@@ -67,8 +81,7 @@ export function Drawer({ currentDao, showExplore }: Props) {
             </Link>
           )}
           {followingDaos?.map((dao) => {
-            const url = ROUTES.DAO_PROFILE.replace('[slug]', dao.slug);
-
+            const url = ROUTES.DAO_PROFILE.replace('[slug]', dao?.slug);
             return (
               <Link key={dao.id} passHref href={url}>
                 <ListItemButton
@@ -88,6 +101,29 @@ export function Drawer({ currentDao, showExplore }: Props) {
               </Link>
             );
           })}
+          {/* TODO: Remove auth validation after finish login page */}
+          {me && (
+            <Stack
+              sx={{
+                my: 1,
+                px: 2,
+                alignItems: 'center',
+                justifyContent: 'center',
+                height: (theme) => theme.spacing(5),
+                cursor: 'pointer',
+                position: 'relative',
+                background: 'none transparent',
+                border: 0,
+                transition: 'opacity .3s ease',
+                '&:hover': {
+                  opacity: 0.8,
+                },
+              }}
+              {...createOrgCardProps}
+            >
+              <AddOrganizationIcon />
+            </Stack>
+          )}
         </DaosList>
       </ResponsiveDrawer>
     </DrawerContainer>

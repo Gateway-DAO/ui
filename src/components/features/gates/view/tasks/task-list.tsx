@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRouter } from 'next/router';
 
 import CircularProgressWithLabel from '@/components/atoms/loadings/circular-progress-label';
 import { Task } from '@/components/features/gates/view/tasks';
@@ -8,7 +8,7 @@ import { query } from '@/constants/queries';
 import { useAuth } from '@/providers/auth';
 import { Gates } from '@/services/hasura/types';
 import { TOKENS } from '@/theme';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import { PartialDeep } from 'type-fest';
 
 import { Box, Grid, Stack, Typography } from '@mui/material';
@@ -34,7 +34,7 @@ export function TaskList({
   isCredentialExpired,
   setOpen,
 }: Props) {
-  const { me, hasuraUserService } = useAuth();
+  const { me } = useAuth();
   const completedGate = !!completedAt;
   const totalTasksCount = completedGate
     ? gate.tasks.length
@@ -44,43 +44,10 @@ export function TaskList({
   const isGateAdmin = me?.id === gate.creator.id;
   const taskProgress = (completedTasksCount / totalTasksCount) * 100;
   const isTaskStarted = taskProgress === 0 ? false : true;
-  const queryClient = useQueryClient();
-  const [gateFinished, setGateFinished] = useState(false);
+  const router = useRouter();
 
-  const { data } = useQuery(
-    [
-      query.protocol_credential_by_gate_id,
-      {
-        user_id: me?.id,
-        gate_id: gate?.id,
-      },
-    ],
-    () =>
-      hasuraUserService.get_protocol_by_gate_id({
-        user_id: me?.id,
-        gate_id: gate?.id,
-      }),
-    {
-      enabled: gateFinished,
-      select: ({ get_protocol_by_gate_id }) =>
-        get_protocol_by_gate_id.credential,
-    }
-  );
-
-  const refetchTotalPoints = () => {
-    if (gate.loyalty_id) {
-      queryClient.refetchQueries([
-        query.gate_progress_completed_by_loyalty_program,
-        { userId: me?.id, loyaltyProgramId: gate?.loyalty_id },
-      ]);
-      queryClient.refetchQueries([
-        query.protocol_credential_by_loyalty_id,
-        {
-          user_id: me?.id,
-          loyalty_id: gate?.loyalty_id,
-        },
-      ]);
-    }
+  const refetchLoyaltyProgress = () => {
+    router.replace(router.asPath);
   };
 
   return (
@@ -191,8 +158,7 @@ export function TaskList({
             isEnabled={completedTasksCount + 1 === totalTasksCount}
             onCompleteGate={() => {
               setOpen();
-              setGateFinished(true);
-              refetchTotalPoints();
+              refetchLoyaltyProgress();
             }}
           />
         )}

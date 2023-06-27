@@ -94,3 +94,17 @@ mutation dao_set_user_member(
     affected_rows
   }
 }
+
+mutation approve_dao(
+  $id: uuid!
+) {
+  update_daos_by_pk(
+    _set: {
+      status: "approved"
+    }
+    pk_columns: { id: $id }
+  ) {
+    id
+    status
+  }
+}

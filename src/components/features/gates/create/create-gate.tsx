@@ -1,18 +1,22 @@
+import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
+import { AlertCustom } from '@/components/atoms/alert';
 import GatePublishedModal from '@/components/features/gates/create/gate-published';
 import TaskArea from '@/components/features/gates/create/tasks/tasks-area';
 import ConfirmDialog from '@/components/molecules/modal/confirm-dialog';
 import { PublishNavbar } from '@/components/organisms/publish-navbar/publish-navbar';
+import { query } from '@/constants/queries';
 import { ROUTES } from '@/constants/routes';
 import { useAuth } from '@/providers/auth';
 import {
   Create_Gate_DirectMutationVariables,
   Create_Gate_Tasks_BasedMutationVariables,
+  Daos,
 } from '@/services/hasura/types';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useSnackbar } from 'notistack';
 import { useForm, FormProvider } from 'react-hook-form';
 import { v4 as uuidv4 } from 'uuid';
@@ -35,6 +39,7 @@ type CreateGateProps = {
 // Delete all tasks and create the new ones.
 
 export function CreateGate({ oldData }: CreateGateProps) {
+  const { t } = useTranslation('gate-new');
   const methods = useForm({
     resolver: zodResolver(createGateSchema),
     mode: 'onBlur',
@@ -239,8 +244,18 @@ export function CreateGate({ oldData }: CreateGateProps) {
     .watch(['title', 'description'])
     .every((value) => !!value);
 
+  const queryClient = useQueryClient();
+  const daoData: Daos = queryClient.getQueryData([
+    query.org_pending_gate_creation,
+  ]);
+
   return (
     <>
+      {daoData && daoData.status === 'pending' && (
+        <AlertCustom severity="info" fixed>
+          {t('pending-org-alert')}
+        </AlertCustom>
+      )}
       <FormProvider {...methods}>
         <Stack
           component="form"
@@ -267,7 +282,9 @@ export function CreateGate({ oldData }: CreateGateProps) {
               publishGate.isLoading ||
               deleteTask.isLoading
             }
+            publishedDisabled={daoData && daoData.status === 'pending'}
             saveDraft={onSaveDraft}
+            messageAbove={daoData && daoData.status === 'pending'}
           />
           <Box
             padding={'0 90px'}

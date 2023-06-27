@@ -8,7 +8,7 @@ const config = {
     '*': ['common', 'auth', 'notifications', '404', 'gates-card', 'errors'],
     [ROUTES.DAO_EDIT]: ['dao-edit'],
     [ROUTES.DAO_NEW]: ['dao-new'],
-    [ROUTES.DAO_PROFILE]: ['dao-profile'],
+    [ROUTES.DAO_PROFILE]: ['dao-profile', 'org-signup'],
     [ROUTES.EXPLORE]: ['explore', 'org-signup'],
     [ROUTES.EXPLORE_EARN]: ['explore', 'org-signup'],
     [ROUTES.EXPLORE_ISSUE]: ['explore', 'org-signup'],

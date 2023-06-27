@@ -36,5 +36,14 @@
       "user_id": "User ID",
       "role": "Role"
     }
+  },
+  "waiting-for-approval": {
+    "approve-flow-dialog": {
+      "title": "Approving",
+      "text": "Are you sure you want to approve the organization",
+      "cancel-action": "Cancel",
+      "confirm-action": "Approve",
+      "button-tooltip": "Approve ORG"
+    }
   }
 }

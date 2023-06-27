@@ -14,7 +14,12 @@ import { MintDialogProtocol } from '@/components/organisms/mint/mint-modal/mint-
 import { ROUTES } from '@/constants/routes';
 import { useMintData } from '@/hooks/use-mint-data';
 import { useAuth } from '@/providers/auth';
-import { Gates, Loyalty_Program } from '@/services/hasura/types';
+import {
+  Credentials,
+  Gates,
+  Loyalty_Program,
+  Loyalty_Progress,
+} from '@/services/hasura/types';
 import { isDaoAdmin } from '@/utils/is-dao-admin';
 import { limitCharsCentered } from '@/utils/string';
 import { useToggle } from 'react-use';
@@ -38,13 +43,17 @@ import { SmallTier } from './small-tier';
 type LoyaltySidebarProps = {
   loyalty: PartialDeep<Loyalty_Program>;
   gate?: PartialDeep<Gates>;
-  protocolCredential?: PartialDeep<Credential>;
+  credential?: PartialDeep<Credentials>;
+  protocolCredential: PartialDeep<Credential>;
+  loyaltyProgress: PartialDeep<Loyalty_Progress>;
 };
 
 export function LoyaltySidebar({
+  credential,
   gate,
   loyalty,
   protocolCredential,
+  loyaltyProgress,
 }: LoyaltySidebarProps) {
   const { t } = useTranslation();
   const { me } = useAuth();
@@ -60,18 +69,16 @@ export function LoyaltySidebar({
     mintCredential,
     showMintButton,
   } = useMintData({
-    credential: protocolCredential,
-    loyaltyProgramId: gate?.loyalty_id,
-    gateId: gate?.id,
+    protocolCredentialId: protocolCredential?.id,
   });
 
   const [shareLoyaltyIsOpen, setShareLoyaltyIsOpen] = useToggle(false);
 
   const texts = {
-    title: gate?.title || loyalty.name,
-    categories: gate?.categories || loyalty.categories,
-    description: gate?.description || loyalty.description,
-    image: gate?.image || loyalty.image,
+    title: gate?.title || loyalty?.name,
+    categories: gate?.categories || loyalty?.categories,
+    description: gate?.description || loyalty?.description,
+    image: gate?.image || loyalty?.image,
   };
 
   return (
@@ -144,7 +151,7 @@ export function LoyaltySidebar({
               sx={{ alignItems: 'flex-start', justifyContent: 'space-between' }}
             >
               <Box>
-                {isAdmin && <GateStateChip published={gate.published} />}
+                {isAdmin && <GateStateChip published={gate?.published} />}
                 {texts?.categories.map((category, idx) => (
                   <Chip
                     key={'category-' + (idx + 1)}
@@ -230,13 +237,20 @@ export function LoyaltySidebar({
                 : '50% 50% 0 0',
             }}
           />
-          {gate && <SmallTier loyalty={loyalty} gate={gate} />}
+          {gate && (
+            <SmallTier
+              loyalty={loyalty}
+              loyaltyProgress={loyaltyProgress}
+              currentGatePoints={gate?.points}
+              gateIsFinished={!!credential?.credentials_protocol?.id}
+            />
+          )}
         </Box>
         <Divider sx={{ mb: 4 }} />
         <Box
           sx={(theme) => ({
             padding: {
-              xs: `0 ${theme.spacing(2)}`,
+              xs: `0 ${theme.spacing(2)} ${theme.spacing(2)}`,
               md: `0 ${theme.spacing(7)} ${theme.spacing(7)}`,
             },
           })}
