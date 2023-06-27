@@ -28,6 +28,10 @@ import {
 
 import DashboardCard from '../../../../protocol/components/dashboard-card';
 import { useDaoProfile } from '../../context';
+import { CreateOrgCardDashboard } from '@/components/templates/landing/create-org/create-org-dashboard';
+import { useToggle } from 'react-use';
+import CreateCredentialDialog from './dialog-structure';
+import { CreateOrgCard } from '@/components/molecules/cards/create-org-card';
 
 type Props = {
   people: PartialDeep<Users>[];
@@ -41,6 +45,8 @@ export function OverviewTab({ setTab, credentials, loyaltyPrograms }: Props) {
   const { dao, isAdmin, issuedCredentials, stats } = useDaoProfile();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
   const queryClient = useQueryClient();
+  const [openCredentialCreationDialog, setOpenCredentialCreationDialog] =
+    useToggle(false);
 
   queryClient.removeQueries([query.org_pending_gate_creation]);
 
@@ -151,6 +157,24 @@ export function OverviewTab({ setTab, credentials, loyaltyPrograms }: Props) {
               </Stack>
             </Stack>
           )}
+          <CreateCredentialDialog
+            open={openCredentialCreationDialog}
+            toggleDialog={setOpenCredentialCreationDialog}
+          />
+          {isAdmin && (
+            <>
+              <Stack px={TOKENS.CONTAINER_PX} mt={6}>
+                <CreateOrgCard
+                  title={'Create Credential'}
+                  description={'Start creating quests or issuing credentials'}
+                  buttonLabel={'CREATE NOW'}
+                  buttonAction={() => setOpenCredentialCreationDialog(true)}
+                />
+              </Stack>
+              <Divider sx={{ mt: 3 }} />
+            </>
+          )}
+
           <SectionWithSliderResponsive
             title={`${t('dao-profile:overview-tab.credentials-section.title')}`}
             caption={`${t(
