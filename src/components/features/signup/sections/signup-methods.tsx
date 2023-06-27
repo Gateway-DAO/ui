@@ -1,13 +1,16 @@
-import { Box, Button, Link, Stack, TextField, Typography } from '@mui/material';
 import useTranslation from 'next-translate/useTranslation';
-import { NewUserSchema } from '../utlis/schema';
+import { useContext } from 'react';
+
+import { WalletIconsTransition } from '@/components/atoms/wallet-icons-transition';
 import { useFormContext } from 'react-hook-form';
+import { FaDiscord } from 'react-icons/fa';
+
 import GoogleIcon from '@mui/icons-material/Google';
 import TwitterIcon from '@mui/icons-material/Twitter';
-import { FaDiscord } from 'react-icons/fa';
-import { WalletIconsTransition } from '@/components/atoms/wallet-icons-transition';
+import { Box, Button, Link, Stack, TextField, Typography } from '@mui/material';
+
 import { EmailSignUpProgress } from '../utlis';
-import { useContext } from 'react';
+import { NewUserSchema } from '../utlis/schema';
 
 const orSignUpMethods = [
   {
@@ -92,6 +95,7 @@ export function SignUpMethods() {
         {orSignUpMethods.map((method) => (
           <Button
             id={method.methodName}
+            key={method.methodName}
             variant="outlined"
             size="large"
             color="secondary"
