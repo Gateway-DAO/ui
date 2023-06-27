@@ -12,11 +12,12 @@ import { useMutation } from '@tanstack/react-query';
 import { useSnackbar } from 'notistack';
 import { useForm, FormProvider } from 'react-hook-form';
 
+import CloseIcon from '@mui/icons-material/Close';
 import { alpha, Avatar, Box, Stack } from '@mui/material';
+
 import { FormSendEmail } from './forms/form-send-email';
 import { FormVerifyToken } from './forms/form-verify-token';
-import CloseIcon from '@mui/icons-material/Close';
-
+import { ConnectMoreAuthDialog } from './utlis/connect-more-auth-dialog';
 import {
   schemaCreateAccount,
   schemaTokenConfirmation,
@@ -24,7 +25,6 @@ import {
   TokenConfirmationSchema,
   defaultValuesCreateAccount,
 } from './utlis/schema';
-import { ConnectMoreAuthDialog } from './utlis/connect-more-auth-dialog';
 
 export function Signup() {
   const { t } = useTranslation('dashboard-new-user');
@@ -98,8 +98,6 @@ export function Signup() {
         enqueueSnackbar(t('form.profile-created'));
         // change the code to make it dynamically: here done this just to show the flow
         setShowConnectMoreAuthDialog(true);
-        // setProfileCreated(true);
-        // onInvalidateMe();
       },
       onError(error: ErrorResponse) {
         error.response?.errors?.forEach(({ message }) => {
