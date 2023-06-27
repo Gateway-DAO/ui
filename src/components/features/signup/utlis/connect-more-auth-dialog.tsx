@@ -17,8 +17,8 @@ import { SocialAuthCard } from '@/components/atoms/social-auth-card';
 import { Dispatch, SetStateAction } from 'react';
 import { AiFillGithub } from 'react-icons/ai';
 import useTranslation from 'next-translate/useTranslation';
-import { ConnectionHandlerGithub } from '@/services/social-connectors/github-connection';
-import { ConnectionHandlerTwitter } from '@/services/social-connectors/twitter-connection';
+import { useConnectionHandlerGithub } from '@/services/social-connectors/github-connection';
+import { useConnectionHandlerTwitter } from '@/services/social-connectors/twitter-connection';
 import { useAuth } from '@/providers/auth';
 type Props = {
   open: boolean;
@@ -29,8 +29,8 @@ export function ConnectMoreAuthDialog({ open, setOpen }: Props) {
   const { t } = useTranslation('dashboard-new-user');
   const { onInvalidateMe } = useAuth();
 
-  const githubConnection = ConnectionHandlerGithub();
-  const twitterConnection = ConnectionHandlerTwitter();
+  const githubConnection = useConnectionHandlerGithub();
+  const twitterConnection = useConnectionHandlerTwitter();
   return (
     <Dialog
       open={open}

@@ -1,12 +1,12 @@
 import useTranslation from 'next-translate/useTranslation';
 
-import { ConnectionHandlerGithub } from '@/services/social-connectors/github-connection';
+import { useConnectionHandlerGithub } from '@/services/social-connectors/github-connection';
 
 import { Button, Stack, Typography } from '@mui/material';
 
 export default function GithubConnectionCard() {
   const { t } = useTranslation('gate-profile');
-  const { connect } = ConnectionHandlerGithub();
+  const { connect } = useConnectionHandlerGithub();
 
   return (
     <Stack

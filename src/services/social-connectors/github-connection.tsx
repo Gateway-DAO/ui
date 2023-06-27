@@ -7,7 +7,7 @@ type connectGithubProps = {
   disconnect?: boolean;
 };
 
-export function ConnectionHandlerGithub(
+export function useConnectionHandlerGithub(
   props: connectGithubProps = { disconnect: false }
 ): AccountHandlerConnection {
   const router = useRouter();

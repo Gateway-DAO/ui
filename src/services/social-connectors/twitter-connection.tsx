@@ -8,7 +8,7 @@ type connectTwitterProps = {
   disconnect?: boolean;
 };
 
-export function ConnectionHandlerTwitter(
+export function useConnectionHandlerTwitter(
   props: connectTwitterProps = { disconnect: false }
 ): AccountHandlerConnection {
   const router = useRouter();
