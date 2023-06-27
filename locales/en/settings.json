@@ -4,6 +4,8 @@
     "public-profile-title": "Public profile",
     "public-profile-description": "Edit all info of your profile",
     "account-management-title": "Account management",
+    "account-credential-title": "Your account credential",
+    "account-credential-caption": "This the credential that represents your account.",
     "account-management-description": "Edit your e-mail and wallet settings",
     "connected-accounts-title": "Connected accounts",
     "connected-accounts-description": "These are the accounts you connected to your Gateway account",
@@ -48,6 +50,24 @@
     }
   },
   "account-management": {
+    "gateway-id": "Edit ID",
+    "gateway-id-desc": "This is your Gateway ID. You can edit it once a month.",
+    "gateway-id-helper": "Only lowercase letters, numbers and ._-",
+    "gateway-id-action": "save my id",
+    "gateway-id-cancel": "cancel",
+    "wallet-section-title": "wallet",
+    "wallet-section-desc": "By connecting your wallet, we will only request the access to see address, account balance, activity and suggest transactions to approve.",
+    "wallet-section-btn": "+  add wallet",
+    "other-wallet": {
+      "title": "Other accounts",
+      "desc": "We never share any of your data with third parties, and we only request the access permissions necessary to provide you with the best possible service when you connect your accounts to Gateway. Check our",
+      "tos": " Terms of Service."
+    },
+    "delete-section": {
+      "title": "Delete account",
+      "desc": "Once you delete your account, there is no going back. Please be certain.",
+      "btn": "Delete my account"
+    },
     "registered-email-title": "Registered email",
     "registered-email-description": "Email is mainly used for important updates related to your account.",
     "email-address-label": "E-mail address",
@@ -62,7 +82,8 @@
     "email-sent": "Code sent to",
     "email-verified": "Email successfully verified",
     "email-error-sending": "There was an error sending the code",
-    "email-error-validating": "There was an error validating the code"
+    "email-error-validating": "There was an error validating the code",
+    "username-update": "successfully updated username"
   },
   "notifications": {
     "dapp": {
@@ -122,7 +143,5 @@
       }
     }
   },
-  "developer-portal": {
-
-  }
+  "developer-portal": {}
 }

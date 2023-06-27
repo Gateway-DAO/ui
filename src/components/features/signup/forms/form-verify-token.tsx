@@ -1,14 +1,15 @@
 import useTranslation from 'next-translate/useTranslation';
 
-import { LoadingButton } from '@/components/atoms/buttons/loading-button';
-import { useCountdown } from '@/hooks/use-countdown';
 import { useFormContext } from 'react-hook-form';
 import { useToggle } from 'react-use';
 
 import { Box, Stack, TextField, Typography } from '@mui/material';
 
-import { CardSummary } from './card-summary';
-import { TokenConfirmationSchema, NewUserSchema } from './schema';
+import { useCountdown } from '@/hooks/use-countdown';
+import { LoadingButton } from '../../../atoms/buttons/loading-button';
+import { CardSummary } from '../utlis/card-summary';
+import { Dispatch, SetStateAction } from 'react';
+import { TokenConfirmationSchema, NewUserSchema } from '../utlis/schema';
 
 type Props = {
   onSubmitConfirmToken: (data: TokenConfirmationSchema) => void;
@@ -71,7 +72,7 @@ export function FormVerifyToken({
         inputMode="numeric"
         {...register('token')}
         error={!!errors.token}
-        helperText={errors.token?.message as string as string}
+        helperText={errors.token?.message as string}
       />
       <Stack direction="row" gap={1}>
         <LoadingButton

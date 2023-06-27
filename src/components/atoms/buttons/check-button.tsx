@@ -2,8 +2,9 @@ import { useEffect, useState } from 'react';
 
 import { brandColors } from '@/theme';
 
+import CancelIcon from '@mui/icons-material/Cancel';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import { ButtonProps, CircularProgress, IconButton } from '@mui/material';
+import { Button, ButtonProps, CircularProgress } from '@mui/material';
 
 type Props = {
   isLoading?: boolean;
@@ -14,6 +15,21 @@ type Props = {
   labelOffHover?: string;
 } & ButtonProps;
 
+function ConnectorBtnIcon({
+  isLoading,
+  checked,
+  labelOffHover,
+  buttonLabel,
+}: Pick<Props, 'isLoading' | 'checked' | 'labelOffHover'> & {
+  buttonLabel?: string;
+}) {
+  if (isLoading) return <CircularProgress />;
+  if (checked && !isLoading && !(buttonLabel == labelOffHover))
+    return <CheckCircleIcon />;
+  if (buttonLabel == labelOffHover) return <CancelIcon />;
+  return null;
+}
+
 export function CheckedButton({
   isLoading,
   checked,
@@ -21,6 +37,7 @@ export function CheckedButton({
   labelOn,
   labelOff,
   labelOffHover,
+  ...other
 }: Props) {
   const [buttonLabel, setButtonLabel] = useState<string>(
     checked ? labelOn : labelOff
@@ -40,43 +57,35 @@ export function CheckedButton({
   };
 
   return (
-    <IconButton
+    <Button
       onClick={() => (clickHandler ? clickHandler() : null)}
       onMouseEnter={() => hoverButtonLabel()}
       onMouseLeave={() => hoverButtonLabel()}
-      sx={(theme) => ({
-        borderRadius: '20px',
-        cursor: 'pointer',
+      startIcon={
+        <ConnectorBtnIcon
+          isLoading={isLoading}
+          checked={checked}
+          labelOffHover={labelOffHover}
+          buttonLabel={buttonLabel}
+        />
+      }
+      sx={{
         background: checked
           ? brandColors.green.main
           : brandColors.background.light,
-        fontSize: '11px',
-        textTransform: 'uppercase',
-        fontWeight: theme.typography.fontWeightBold,
         border: checked
           ? '1px solid transparent'
           : `1px solid ${brandColors.purple.main}`,
         color: checked ? '#170627' : brandColors.purple.main,
-        padding: '4px 8px',
-        minHeight: '30px',
-        transition: 'all .3s ease',
         '&:hover': {
-          borderColor: checked
-            ? brandColors.green.dark
-            : brandColors.purple.dark,
+          borderColor: checked ? null : brandColors.purple.dark,
           backgroundColor: checked
-            ? brandColors.green.dark
+            ? brandColors.red.dark
             : brandColors.background.light,
         },
-      })}
+      }}
     >
-      {isLoading && <CircularProgress size="15px" sx={{ mr: 1 }} />}
-      {checked && !isLoading && (
-        <CheckCircleIcon
-          sx={{ fontSize: '15px', display: checked ? 'block' : 'none', mr: 1 }}
-        />
-      )}
       {buttonLabel}
-    </IconButton>
+    </Button>
   );
 }
