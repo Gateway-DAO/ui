@@ -1,39 +1,43 @@
+import { useEffect, useState } from 'react';
+
+import { Protocol_Api_Chain } from '@/services/hasura/types';
 import { FaEthereum } from 'react-icons/fa';
 import { TbCurrencySolana } from 'react-icons/tb';
 
-import { useEffect, useState } from 'react';
-
-const icons = [<FaEthereum />, <TbCurrencySolana />];
-
-enum Network {
-  etherum,
-  solana,
-}
-
-type Props = {
-  network?: Network;
+const icons = {
+  [Protocol_Api_Chain.Evm]: <FaEthereum />,
+  [Protocol_Api_Chain.Sol]: <TbCurrencySolana />,
 };
 
-export function WalletIconsTransition({ network = null }: Props) {
-  const [currentIconIndex, setIconIndex] = useState(0);
+type Props = {
+  network?: Protocol_Api_Chain;
+};
 
-  if (network == Network.etherum) {
-    return icons[0];
-  }
-
-  if (network == Network.solana) {
-    return icons[1];
-  }
+function AnimatedWallet() {
+  const [currentIcon, setCurrentIcon] = useState<Protocol_Api_Chain>(
+    Protocol_Api_Chain.Evm
+  );
 
   useEffect(() => {
     const intervalId = setInterval(() => {
-      setIconIndex(currentIconIndex + 1);
+      setCurrentIcon((icon) =>
+        icon === Protocol_Api_Chain.Evm
+          ? Protocol_Api_Chain.Sol
+          : Protocol_Api_Chain.Evm
+      );
     }, 3000); // 3 second
 
     return () => {
       clearInterval(intervalId);
     };
-  }, [currentIconIndex]);
+  }, []);
+  return icons[currentIcon];
+}
 
-  return icons[currentIconIndex % icons.length];
+export function WalletIconsTransition({ network = null }: Props) {
+  if (!network) {
+    return <AnimatedWallet />;
+  }
+
+  return icons[network];
 }
