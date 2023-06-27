@@ -1,6 +1,16 @@
 import { useEffect, useState } from 'react';
 
-import { Icon, Paper, Stack, SxProps, Theme, Typography } from '@mui/material';
+import { brandColors } from '@/theme';
+
+import {
+  Icon,
+  Paper,
+  Stack,
+  SxProps,
+  Theme,
+  Typography,
+  alpha,
+} from '@mui/material';
 
 import { CheckedButton } from './buttons/check-button';
 
@@ -50,7 +60,7 @@ export function SocialAuthCard({
         borderRadius: 2,
         width: '100%',
         height: 223,
-        borderColor: '#E5E5E51F',
+        borderColor: alpha(brandColors.grays.main, 0.12),
         ...(connectHandler?.isConnected && {
           backgroundColor: '#6DFFB91F',
           borderColor: '#6DFFB94D',
