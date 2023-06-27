@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
+
 import { brandColors } from '@/theme';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+
 import CancelIcon from '@mui/icons-material/Cancel';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { Button, ButtonProps, CircularProgress } from '@mui/material';
 
 type Props = {
@@ -12,6 +14,21 @@ type Props = {
   labelOff?: string;
   labelOffHover?: string;
 } & ButtonProps;
+
+function ConnectorBtnIcon({
+  isLoading,
+  checked,
+  labelOffHover,
+  buttonLabel,
+}: Pick<Props, 'isLoading' | 'checked' | 'labelOffHover'> & {
+  buttonLabel?: string;
+}) {
+  if (isLoading) return <CircularProgress />;
+  if (checked && !isLoading && !(buttonLabel == labelOffHover))
+    return <CheckCircleIcon />;
+  if (buttonLabel == labelOffHover) return <CancelIcon />;
+  return null;
+}
 
 export function CheckedButton({
   isLoading,
@@ -39,21 +56,20 @@ export function CheckedButton({
     }
   };
 
-  function ConnectorBtnIcon() {
-    if (isLoading) return <CircularProgress />;
-    if (checked && !isLoading && !(buttonLabel == labelOffHover))
-      return <CheckCircleIcon />;
-    if (buttonLabel == labelOffHover) return <CancelIcon />;
-    return null;
-  }
-
   return (
     <Button
       onClick={() => (clickHandler ? clickHandler() : null)}
       onMouseEnter={() => hoverButtonLabel()}
       onMouseLeave={() => hoverButtonLabel()}
-      startIcon={<ConnectorBtnIcon />}
-      sx={(theme) => ({
+      startIcon={
+        <ConnectorBtnIcon
+          isLoading={isLoading}
+          checked={checked}
+          labelOffHover={labelOffHover}
+          buttonLabel={buttonLabel}
+        />
+      }
+      sx={{
         background: checked
           ? brandColors.green.main
           : brandColors.background.light,
@@ -67,7 +83,7 @@ export function CheckedButton({
             ? brandColors.red.dark
             : brandColors.background.light,
         },
-      })}
+      }}
     >
       {buttonLabel}
     </Button>
