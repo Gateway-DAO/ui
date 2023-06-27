@@ -1,15 +1,11 @@
 import useTranslation from 'next-translate/useTranslation';
 
-import { brandColors, theme } from '@/theme';
-
-import { Divider, Link, Stack, Typography } from '@mui/material';
-import { CredentialIdentityCard } from './components/credential-identity-card';
-
-import Email from './components/email';
-import { EditId } from './components/sections/edit-id';
 import { LoadingButton } from '@/components/atoms/buttons/loading-button';
 
-import { ConnectionHandlerGithub } from '@/services/social-connectors/github-connection';
+import { Divider, Stack, Typography } from '@mui/material';
+
+import { CredentialIdentityCard } from './components/credential-identity-card';
+import { EditId } from './components/sections/edit-id';
 import { OtherAccount } from './components/sections/other-accounts';
 
 const AccountManagementSettings = () => {

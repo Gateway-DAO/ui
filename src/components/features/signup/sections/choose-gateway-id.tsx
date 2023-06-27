@@ -1,10 +1,13 @@
-import { Box, Button, Link, Stack, TextField, Typography } from '@mui/material';
 import useTranslation from 'next-translate/useTranslation';
-import { NewUserSchema } from '../utlis/schema';
-import { useFormContext } from 'react-hook-form';
-import { LoadingButton } from '@/components/atoms/buttons/loading-button';
 import { useContext } from 'react';
+
+import { LoadingButton } from '@/components/atoms/buttons/loading-button';
+import { useFormContext } from 'react-hook-form';
+
+import { Box, Stack, TextField, Typography } from '@mui/material';
+
 import { EmailSignUpProgress } from '../utlis';
+import { NewUserSchema } from '../utlis/schema';
 
 export function ChooseGatewayId() {
   const { t } = useTranslation('dashboard-new-user');

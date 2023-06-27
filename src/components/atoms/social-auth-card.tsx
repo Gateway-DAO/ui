@@ -1,17 +1,8 @@
-import {
-  Button,
-  Icon,
-  Paper,
-  Stack,
-  SxProps,
-  Theme,
-  Typography,
-} from '@mui/material';
-import useTranslation from 'next-translate/useTranslation';
-import { useLocalStorage } from 'react-use';
 import { useEffect, useState } from 'react';
+
+import { Icon, Paper, Stack, SxProps, Theme, Typography } from '@mui/material';
+
 import { CheckedButton } from './buttons/check-button';
-import { brandColors } from '@/theme';
 
 type Props = {
   icon: JSX.Element;
@@ -35,7 +26,6 @@ export function SocialAuthCard({
   connectHandler,
   sx,
 }: Props) {
-  const { t } = useTranslation('settings');
   const [connectedState, setConnectedState] = useState(false);
 
   useEffect(() => {
