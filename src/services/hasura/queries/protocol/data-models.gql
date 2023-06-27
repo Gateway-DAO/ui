@@ -36,6 +36,19 @@ query protocol_data_models($take: Int!, $skip: Int!) {
     version
     description
     permissioning
+    arweaveInfo
+    createdAt
+    createdBy {
+      gatewayId
+    }
+    allowedUsers {
+      id
+    }
+    allowedOrganizations {
+      id
+    }
+    info
+    image
     createdBy {
       gatewayUser {
         name
