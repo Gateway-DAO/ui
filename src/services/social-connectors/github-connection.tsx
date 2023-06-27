@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 
+import { AccountHandlerConnection } from '@/components/atoms/social-auth-card';
 import { useLocalStorage } from 'react-use';
-import { AccountHandlerConnection } from './types';
 
 type connectGithubProps = {
   disconnect?: boolean;

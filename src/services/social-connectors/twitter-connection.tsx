@@ -1,8 +1,8 @@
 import { useRouter } from 'next/router';
 
+import { AccountHandlerConnection } from '@/components/atoms/social-auth-card';
 import { useMutation } from '@tanstack/react-query';
 import { useLocalStorage } from 'react-use';
-import { AccountHandlerConnection } from './types';
 
 type connectTwitterProps = {
   disconnect?: boolean;
