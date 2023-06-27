@@ -1,29 +1,73 @@
-import { useMemo, useState } from 'react';
+import { useRouter } from 'next/router';
+import { useEffect, useMemo, useState } from 'react';
 
 import { MintedChain } from '@/components/features/protocol/credentials/view/components/mint-nft-card';
 import { DialogStatuses } from '@/components/organisms/mint/mint-modal/mint-dialog-protocol';
 import { query } from '@/constants/queries';
 import { useAuth } from '@/providers/auth';
 import {
-  Protocol_Api_Credential,
   Protocol_Api_Chain,
+  Protocol_Api_Credential,
   Protocol_Mint_CredentialMutationVariables,
 } from '@/services/hasura/types';
-import { Scalars } from '@/services/hasura/types';
-import { queryClient } from '@/services/query-client';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { PartialDeep } from 'type-fest/source/partial-deep';
 
 type Props = {
-  credential: PartialDeep<Protocol_Api_Credential>;
-  loyaltyProgramId?: Scalars['uuid'];
-  gateId?: Scalars['uuid'];
+  protocolCredentialId: string;
+  protocolCredential?: PartialDeep<Protocol_Api_Credential>;
 };
 
-export function useMintData({ credential, loyaltyProgramId, gateId }: Props) {
+export function useMintData({
+  protocolCredentialId,
+  protocolCredential,
+}: Props) {
   const { me, hasuraUserService } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
+  const router = useRouter();
   const [shareIsOpen, setShareIsOpen] = useState<boolean>(false);
+
+  const changeChainName = (chain): Protocol_Api_Chain => {
+    if (chain === 'ethereum') return Protocol_Api_Chain.Evm;
+    return chain;
+  };
+
+  const mountMintData = (
+    credentialData: PartialDeep<Protocol_Api_Credential>
+  ): MintedChain[] | null => {
+    if (credentialData?.nft && credentialData?.nft?.minted) {
+      return [
+        {
+          chain: changeChainName(
+            credentialData?.nft?.chain
+          ) as Protocol_Api_Chain,
+          transaction: credentialData?.nft?.txHash,
+        },
+      ];
+    }
+    return null;
+  };
+
+  const credentialQuery = useQuery(
+    [query.protocol_credential, protocolCredentialId],
+    () =>
+      hasuraUserService.protocol_credential({
+        id: protocolCredentialId,
+      }),
+    {
+      enabled: !!protocolCredentialId && !protocolCredential,
+      select: ({ protocol }) =>
+        protocol?.credential as PartialDeep<Protocol_Api_Credential>,
+    }
+  );
+
+  const credential = useMemo(
+    () => protocolCredential ?? credentialQuery?.data,
+    [protocolCredential, credentialQuery?.data]
+  );
+
+  const [mintData, setMintData] = useState(mountMintData(credential));
+  const [shareStatus, setShareStatus] = useState<DialogStatuses>(null);
   const isAllowedToMint = useMemo(() => credential?.nft !== null, [credential]);
   const isReceivedCredential = useMemo(
     () =>
@@ -31,23 +75,9 @@ export function useMintData({ credential, loyaltyProgramId, gateId }: Props) {
     [credential?.recipientUser?.primaryWallet?.address, me]
   );
 
-  const changeChainName = (chain): Protocol_Api_Chain => {
-    if (chain === 'ethereum') return Protocol_Api_Chain.Evm;
-    return chain;
-  };
-
-  const initialMintData: MintedChain[] | null =
-    credential?.nft && credential?.nft?.minted
-      ? [
-          {
-            chain: changeChainName(credential.nft?.chain) as Protocol_Api_Chain,
-            transaction: credential.nft?.txHash,
-          },
-        ]
-      : null;
-
-  const [shareStatus, setShareStatus] = useState<DialogStatuses>(null);
-  const [mintData, setMintData] = useState(initialMintData);
+  useEffect(() => {
+    setMintData(mountMintData(credential));
+  }, [credential]);
 
   const mintCredential = useMutation(
     [query.mintCredential],
@@ -70,22 +100,7 @@ export function useMintData({ credential, loyaltyProgramId, gateId }: Props) {
             transaction: data.protocol.mintCredential.txHash,
           },
         ]);
-        queryClient.refetchQueries([
-          query.protocol_credential_by_gate_id,
-          {
-            user_id: me?.id,
-            gate_id: gateId,
-          },
-        ]);
-        if (loyaltyProgramId) {
-          queryClient.refetchQueries([
-            query.protocol_credential_by_loyalty_id,
-            {
-              user_id: me?.id,
-              loyalty_id: loyaltyProgramId,
-            },
-          ]);
-        }
+        router.replace(router.asPath);
       },
     }
   );

@@ -1,6 +1,10 @@
 import { ClientNav } from '@/components/organisms/navbar/client-nav';
 import LeftSidebarTemplate from '@/components/templates/left-sidebar/left-sidebar';
-import { Loyalty_Program } from '@/services/hasura/types';
+import {
+  Credentials,
+  Loyalty_Program,
+  Loyalty_Progress,
+} from '@/services/hasura/types';
 import { TOKENS } from '@/theme';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -14,10 +18,15 @@ import { Tier } from './components/tier';
 
 type Props = {
   loyalty: PartialDeep<Loyalty_Program>;
-  protocolCredential?: PartialDeep<Credential>;
+  loyaltyProgress: PartialDeep<Loyalty_Progress>;
+  credentialsByLoyalty?: PartialDeep<Credentials>[];
 };
 
-function MainContent({ loyalty }: Props) {
+function MainContent({
+  loyalty,
+  credentialsByLoyalty,
+  loyaltyProgress,
+}: Props) {
   return (
     <>
       <Stack
@@ -39,8 +48,11 @@ function MainContent({ loyalty }: Props) {
       </Stack>
       {loyalty?.gates?.length > 0 && (
         <>
-          <Tier loyalty={loyalty} />
-          <CredentialsList gates={loyalty?.gates} loyalty={loyalty} />
+          <Tier loyalty={loyalty} loyaltyProgress={loyaltyProgress} />
+          <CredentialsList
+            gates={loyalty?.gates}
+            credentialsByLoyalty={credentialsByLoyalty}
+          />
         </>
       )}
       <Stack sx={{ mx: TOKENS.CONTAINER_PX, mb: { xs: 5, md: 12 } }}>
@@ -52,16 +64,27 @@ function MainContent({ loyalty }: Props) {
   );
 }
 
-export function LoyaltyProgram({ loyalty, protocolCredential }: Props) {
+export function LoyaltyProgram({
+  loyalty,
+  loyaltyProgress,
+  credentialsByLoyalty,
+}: Props) {
   return (
     <LeftSidebarTemplate
       sidebar={
         <LoyaltySidebar
           loyalty={loyalty}
-          protocolCredential={protocolCredential}
+          loyaltyProgress={loyaltyProgress}
+          protocolCredential={loyaltyProgress?.loyalty_program_protocol}
         />
       }
-      mainContent={<MainContent loyalty={loyalty} />}
+      mainContent={
+        <MainContent
+          loyalty={loyalty}
+          loyaltyProgress={loyaltyProgress}
+          credentialsByLoyalty={credentialsByLoyalty}
+        />
+      }
     />
   );
 }

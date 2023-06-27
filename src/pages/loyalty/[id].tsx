@@ -3,36 +3,16 @@ import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
 import { LoyaltyProgram } from '@/components/features/loyalty/loyalty';
 import { HeadContainer } from '@/components/molecules/head-container';
 import { DashboardTemplate } from '@/components/templates/dashboard';
-import { query } from '@/constants/queries';
-import { useAuth } from '@/providers/auth';
-import { hasuraPublicService } from '@/services/hasura/api';
-import { useQuery } from '@tanstack/react-query';
+import { hasuraApi, hasuraPublicService } from '@/services/hasura/api';
+import { getServerSession } from '@/services/next-auth';
 
 type Props = InferGetServerSidePropsType<typeof getServerSideProps>;
 
-export default function LoyaltyPage({ loyalty }: Props) {
-  const { me, hasuraUserService, authenticated } = useAuth();
-
-  const { data: protocolCredential } = useQuery(
-    [
-      query.protocol_credential_by_loyalty_id,
-      {
-        user_id: me?.id,
-        loyalty_id: loyalty?.id,
-      },
-    ],
-    () =>
-      hasuraUserService.get_protocol_by_loyalty_id({
-        user_id: me?.id,
-        loyalty_id: loyalty?.id,
-      }),
-    {
-      enabled: authenticated,
-      select: ({ get_protocol_by_loyalty_id }) =>
-        get_protocol_by_loyalty_id.credential,
-    }
-  );
-
+export default function LoyaltyPage({
+  loyalty,
+  credentialsByLoyalty,
+  loyaltyProgress,
+}: Props) {
   return (
     <>
       <HeadContainer
@@ -48,7 +28,8 @@ export default function LoyaltyPage({ loyalty }: Props) {
       >
         <LoyaltyProgram
           loyalty={loyalty}
-          protocolCredential={protocolCredential}
+          loyaltyProgress={loyaltyProgress}
+          credentialsByLoyalty={credentialsByLoyalty}
         />
       </DashboardTemplate>
     </>
@@ -57,13 +38,36 @@ export default function LoyaltyPage({ loyalty }: Props) {
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const id = ctx.query.id as string;
+  const session = await getServerSession(ctx.req, ctx.res);
+
   const { loyalty_program_by_pk } = await hasuraPublicService.loyalty_program({
     id,
   });
 
+  let loyaltyProgress;
+  let credentials;
+
+  if (session) {
+    credentials = await hasuraApi(
+      session?.token
+    ).credentials_by_user_id_by_loyalty_id({
+      user_id: session?.hasura_id,
+      loyalty_id: id,
+    });
+    loyaltyProgress = await hasuraApi(
+      session?.token
+    ).get_loyalty_progress_by_user_id_by_loyalty({
+      user_id: session?.hasura_id,
+      loyalty_id: id,
+    });
+  }
+
   return {
     props: {
       loyalty: loyalty_program_by_pk,
+      credentialsByLoyalty: credentials?.credentials ?? [],
+      loyaltyProgress:
+        loyaltyProgress?.loyalty_progress?.find((lp) => lp) ?? null,
     },
   };
 };

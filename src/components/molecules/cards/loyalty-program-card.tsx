@@ -3,10 +3,11 @@ import Link from 'next/link';
 import { AvatarFile } from '@/components/atoms/avatar-file';
 import TierInfo from '@/components/features/loyalty/components/tier-info';
 import { TierRuler } from '@/components/features/loyalty/components/tier-ruler';
+import { query } from '@/constants/queries';
 import { useActualTier } from '@/hooks/use-actual-tier';
-import { useLoyaltyGatesCompleted } from '@/hooks/use-loyalty-gates-completed';
 import { useAuth } from '@/providers/auth';
 import { Loyalty_Program } from '@/services/hasura/types';
+import { useQuery } from '@tanstack/react-query';
 import type { PartialDeep } from 'type-fest';
 
 import { CardHeader, Box, Stack, Skeleton } from '@mui/material';
@@ -30,11 +31,28 @@ export function LoyaltyProgramCard({
   loyalty_tiers,
   href,
 }: Props): JSX.Element {
-  const { totalPoints, isLoading } = useLoyaltyGatesCompleted({
-    loyaltyProgramId: id,
+  const { me, hasuraUserService, authenticated } = useAuth();
+
+  const { data: loyaltyProgress, isLoading } = useQuery(
+    [
+      query.loyalty_progress_by_user_id_by_loyalty,
+      { user_id: me?.id, loyalty_id: id },
+    ],
+    () =>
+      hasuraUserService.get_loyalty_progress_by_user_id_by_loyalty({
+        user_id: me?.id,
+        loyalty_id: id,
+      }),
+    {
+      select: (data) => data.loyalty_progress.find((lp) => lp),
+      enabled: authenticated && !!id,
+    }
+  );
+
+  const actualTier = useActualTier({
+    tiers: loyalty_tiers,
+    totalPoints: loyaltyProgress?.points,
   });
-  const actualTier = useActualTier({ tiers: loyalty_tiers, totalPoints });
-  const { me } = useAuth();
 
   return (
     <Link passHref href={href}>
@@ -92,12 +110,11 @@ export function LoyaltyProgramCard({
               <>
                 <TierInfo
                   tier={actualTier?.tier}
-                  totalPoints={totalPoints}
-                  isLoading={isLoading}
+                  totalPoints={loyaltyProgress?.points}
                 />
                 <TierRuler
                   tiers={loyalty_tiers}
-                  totalPoints={totalPoints}
+                  totalPoints={loyaltyProgress?.points}
                   size="small"
                 />
               </>

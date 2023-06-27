@@ -39,7 +39,10 @@ export default function CredentialProtocolView({ credential }: Props) {
     mintData,
     isReceivedCredential,
     isAllowedToMint,
-  } = useMintData({ credential });
+  } = useMintData({
+    protocolCredentialId: credential?.id,
+    protocolCredential: credential,
+  });
 
   const boxStyles: SxProps<Theme> = {
     maxWidth: '564px',

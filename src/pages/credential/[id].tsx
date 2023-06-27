@@ -1,15 +1,10 @@
-import { useRouter } from 'next/router';
-
 import { GateView } from '@/components/features/gates/view';
 import { HeadContainer } from '@/components/molecules/head-container';
 import { Navbar } from '@/components/organisms/navbar';
 import { DashboardTemplate } from '@/components/templates/dashboard';
-import { query } from '@/constants/queries';
 import { ROUTES } from '@/constants/routes';
-import { useAuth } from '@/providers/auth';
 import { hasuraPublicService, hasuraApi } from '@/services/hasura/api';
 import { getServerSession } from '@/services/next-auth';
-import { dehydrate, QueryClient, useQuery } from '@tanstack/react-query';
 import jwt from 'jsonwebtoken';
 
 import { Box } from '@mui/material';
@@ -21,76 +16,7 @@ const unaccesible = {
   },
 };
 
-export async function getServerSideProps({ req, res, params }) {
-  const { id } = params;
-  const queryClient = new QueryClient();
-
-  const session = await getServerSession(req, res);
-
-  let expired = false;
-
-  const parsedToken = jwt.decode(session?.token, { json: true });
-  expired = !!session && parsedToken.exp < Date.now() / 1000;
-
-  let gate;
-
-  try {
-    gate = await (!!session && !expired
-      ? hasuraApi(session.token, session.hasura_id)
-      : hasuraPublicService
-    ).gate({ id });
-  } catch (e) {
-    gate = await hasuraPublicService.gate({ id });
-  }
-
-  if (!gate.gates_by_pk) {
-    return unaccesible;
-  }
-
-  await queryClient.prefetchQuery([query.gate, id], () => gate);
-
-  return {
-    props: {
-      dehydratedState: dehydrate(queryClient),
-    },
-  };
-}
-
-export default function GateProfilePage() {
-  const router = useRouter();
-  const id = router.query.id as string;
-
-  const { me, hasuraUserService, authenticated } = useAuth();
-
-  const { data: gate } = useQuery(
-    [query.gate, id],
-    () =>
-      hasuraUserService.gate({
-        id,
-      }),
-    { enabled: authenticated, select: ({ gates_by_pk }) => gates_by_pk }
-  );
-
-  const { data: protocolCredential } = useQuery(
-    [
-      query.protocol_credential_by_gate_id,
-      {
-        user_id: me?.id,
-        gate_id: gate?.id,
-      },
-    ],
-    () =>
-      hasuraUserService.get_protocol_by_gate_id({
-        user_id: me?.id,
-        gate_id: gate?.id,
-      }),
-    {
-      enabled: authenticated && !!gate,
-      select: ({ get_protocol_by_gate_id }) =>
-        get_protocol_by_gate_id.credential,
-    }
-  );
-
+export default function GateProfilePage({ credential, gate }) {
   return (
     <>
       <HeadContainer title={`${gate?.title} Credential`} />
@@ -116,8 +42,54 @@ export default function GateProfilePage() {
         >
           <Navbar isInternalPage={true} />
         </Box>
-        <GateView gateProps={gate} protocolCredential={protocolCredential} />
+        <GateView
+          gateProps={gate}
+          protocolCredential={credential?.credentials_protocol}
+        />
       </DashboardTemplate>
     </>
   );
+}
+
+export async function getServerSideProps({ req, res, params }) {
+  const { id } = params;
+
+  const session = await getServerSession(req, res);
+
+  let expired = false;
+
+  const parsedToken = jwt.decode(session?.token, { json: true });
+  expired = !!session && parsedToken.exp < Date.now() / 1000;
+
+  let gate;
+  let credential;
+
+  try {
+    if (!!session && !expired) {
+      gate = await hasuraApi(session?.token).gate({ id });
+
+      credential = await hasuraApi(
+        session?.token
+      ).credential_by_user_id_by_gate_id({
+        user_id: session?.hasura_id,
+        gate_id: id,
+      });
+    }
+    if (!gate) {
+      gate = await hasuraPublicService.gate({ id });
+    }
+  } catch (e) {
+    return unaccesible;
+  }
+
+  if (!gate?.gates_by_pk) {
+    return unaccesible;
+  }
+
+  return {
+    props: {
+      gate: gate?.gates_by_pk,
+      credential: credential?.credentials?.find((c) => c) ?? null,
+    },
+  };
 }
