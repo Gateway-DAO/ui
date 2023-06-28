@@ -1,7 +1,8 @@
 import useTranslation from 'next-translate/useTranslation';
-import { useContext } from 'react';
+import { useContext, useMemo } from 'react';
 
 import { WalletIconsTransition } from '@/components/atoms/wallet-icons-transition';
+import { useAuth } from '@/providers/auth';
 import { useFormContext } from 'react-hook-form';
 import { FaDiscord } from 'react-icons/fa';
 
@@ -12,32 +13,10 @@ import { Box, Button, Link, Stack, TextField, Typography } from '@mui/material';
 import { EmailSignUpProgress } from '../utlis';
 import { NewUserSchema } from '../utlis/schema';
 
-const orSignUpMethods = [
-  {
-    methodName: 'Connect Wallet',
-    icon: <WalletIconsTransition />,
-    onClick: () => null,
-  },
-  {
-    methodName: 'Continue with Google',
-    icon: <GoogleIcon />,
-    onClick: () => null,
-  },
-  {
-    methodName: 'Continue with Twitter',
-    icon: <TwitterIcon />,
-    onClick: () => null,
-  },
-  {
-    methodName: 'Continue with Discord',
-    icon: <FaDiscord />,
-    onClick: () => null,
-  },
-];
-
 export function SignUpMethods() {
   const { t } = useTranslation('dashboard-new-user');
   const { setSignUpSteps } = useContext(EmailSignUpProgress);
+  const { onOpenLogin } = useAuth();
   const {
     register,
     formState: { errors },
@@ -48,6 +27,31 @@ export function SignUpMethods() {
     const isValid = await trigger('email_address');
     if (isValid) setSignUpSteps(1);
   }
+
+  const orSignUpMethods = useMemo(() => {
+    return [
+      {
+        methodName: t('form.signup-methods.connect-wallet'),
+        icon: <WalletIconsTransition />,
+        onClick: onOpenLogin,
+      },
+      {
+        methodName: t('form.signup-methods.connect-google'),
+        icon: <GoogleIcon />,
+        onClick: () => null,
+      },
+      {
+        methodName: t('form.signup-methods.connect-twitter'),
+        icon: <TwitterIcon />,
+        onClick: () => null,
+      },
+      {
+        methodName: t('form.signup-methods.connect-discord'),
+        icon: <FaDiscord />,
+        onClick: () => null,
+      },
+    ];
+  }, []);
 
   return (
     <>
@@ -89,7 +93,7 @@ export function SignUpMethods() {
         textTransform={'uppercase'}
         color="text.secondary"
       >
-        or
+        {t('form.signup-methods.or')}
       </Typography>
       <Stack gap={2.5}>
         {orSignUpMethods.map((method) => (
@@ -107,15 +111,16 @@ export function SignUpMethods() {
                 left: '1rem',
               },
             }}
+            onClick={method.onClick}
           >
             {method.methodName}
           </Button>
         ))}
       </Stack>
       <Typography color="text.secondary">
-        By continuing you agree to our{' '}
+        {t('form.signup-methods.terms-info')}{' '}
         <Link href="/terms" underline="none">
-          Terms of Service{' '}
+          {t('form.signup-methods.terms-of-service')}{' '}
         </Link>
       </Typography>
     </>

@@ -30,10 +30,10 @@ export function Signup() {
   const { t } = useTranslation('dashboard-new-user');
   const [showConnectMoreAuthDialog, setShowConnectMoreAuthDialog] =
     useState(false);
-  const { me, hasuraUserService, onInvalidateMe } = useAuth();
+  const { me, hasuraUserService } = useAuth();
   const [sentEmail, setSentEmail] = useState(false);
   const [sendEmailData, setSendEmailData] = useState(null);
-  const [profileCreated, setProfileCreated] = useState(false);
+  const [profileCreated, _setProfileCreated] = useState(false);
   const methodsSendEmail = useForm<NewUserSchema>({
     resolver: yupResolver(schemaCreateAccount),
     defaultValues: defaultValuesCreateAccount(me),

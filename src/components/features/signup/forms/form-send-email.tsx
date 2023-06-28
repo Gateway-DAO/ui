@@ -1,15 +1,13 @@
-import useTranslation from 'next-translate/useTranslation';
+import { useState } from 'react';
 
 import { useFormContext } from 'react-hook-form';
 
 import { Stack } from '@mui/material';
 
-import { NewUserSchema } from '../utlis/schema';
-
-import { SignUpMethods } from '../sections/signup-methods';
 import { ChooseGatewayId } from '../sections/choose-gateway-id';
-import { useState } from 'react';
+import { SignUpMethods } from '../sections/signup-methods';
 import { EmailSignUpProgress } from '../utlis';
+import { NewUserSchema } from '../utlis/schema';
 
 type Props = {
   onSubmitSendEmail: (data: NewUserSchema) => void;
@@ -23,11 +21,7 @@ type Props = {
 export function FormSendEmail({ onSubmitSendEmail, isLoading }: Props) {
   const [signUpSteps, setSignUpSteps] = useState(0);
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useFormContext<NewUserSchema>();
+  const { handleSubmit } = useFormContext<NewUserSchema>();
 
   const signUpProgress = {
     0: <SignUpMethods />,
