@@ -34,11 +34,11 @@ import Tags from '@/components/features/protocol/components/tags';
 export default function CredentialTemplate({
   updateFormState,
   handleStep,
-  input
+  input,
 }: {
   updateFormState: Dispatch<any>;
   handleStep: (value: boolean) => void;
-  input:any
+  input: any;
 }) {
   const categories = [
     { name: 'Featured', selected: true },
@@ -225,7 +225,13 @@ export default function CredentialTemplate({
                               onClick={() => {
                                 setDataModelSelected(model);
                                 handleStep(true);
-                                updateFormState((prev) => ({ ...prev, [input.name]: {preview: true, saveAsDraft: true} }));
+                                updateFormState((prev) => ({
+                                  ...prev,
+                                  [input.name]: {
+                                    preview: true,
+                                    saveAsDraft: true,
+                                  },
+                                }));
                               }}
                             ></Radio>
                           </CardActions>

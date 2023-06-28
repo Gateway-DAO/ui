@@ -78,7 +78,7 @@ export function CreateQuestTemplate({
     isLastStep,
     getInitialStateStepValidity,
   } = useMultistepForm(formComponents);
-  console.log(fullFormState,handleStep)
+  console.log(fullFormState, handleStep);
   const initialStepValidity = getInitialStateStepValidity(false);
 
   const [stepValidity, setStepValidity] = useState(initialStepValidity);

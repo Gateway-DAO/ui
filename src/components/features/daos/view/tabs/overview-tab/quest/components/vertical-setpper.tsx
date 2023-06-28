@@ -7,7 +7,11 @@ import { SuccessfullyIcon } from '@/components/atoms/icons';
 import { ROUTES } from '@/constants/routes';
 import Stepper from '@/components/organisms/stepper/stepper';
 
-export default function VerticalStepper({ activeStep }: { activeStep: number }) {
+export default function VerticalStepper({
+  activeStep,
+}: {
+  activeStep: number;
+}) {
   const { t } = useTranslation('org-signup');
 
   const steps = [
@@ -33,9 +37,6 @@ export default function VerticalStepper({ activeStep }: { activeStep: number }) 
       <Box mb={5}>
         <Stepper steps={steps} activeStep={activeStep} />
       </Box>
-      
-      
-      
     </Stack>
   );
 }

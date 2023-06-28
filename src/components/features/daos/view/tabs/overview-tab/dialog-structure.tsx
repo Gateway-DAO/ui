@@ -63,7 +63,7 @@ export default function CreateCredentialDialog({
         }}
       >
         <>
-          <Stack sx={{ mt: { md: 0 ,lg:8,xs:0} }}>
+          <Stack sx={{ mt: { md: 0, lg: 8, xs: 0 } }}>
             <SectionWithSliderResponsive
               title={'Create Credential'}
               caption={'Select the type that fits your needs'}
