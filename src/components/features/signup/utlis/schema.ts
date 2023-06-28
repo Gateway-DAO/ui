@@ -1,7 +1,5 @@
-import { PartialDeep } from 'type-fest';
-import { object, string, SchemaOf } from 'yup';
-
 import { Users } from '@/services/hasura/types';
+import { object, string, SchemaOf } from 'yup';
 
 export type NewUserSchema = Required<Pick<Users, 'username' | 'email_address'>>;
 export type TokenConfirmationSchema = Required<Pick<any, 'token'>>;
@@ -25,11 +23,3 @@ export const schemaTokenConfirmation: SchemaOf<TokenConfirmationSchema> =
   object({
     token: string().max(6, 'Invalid code'),
   });
-
-export const defaultValuesCreateAccount = ({
-  username,
-  email_address,
-}: PartialDeep<Users>): NewUserSchema => ({
-  username,
-  email_address,
-});

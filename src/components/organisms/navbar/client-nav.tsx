@@ -1,13 +1,17 @@
 import { useSession } from 'next-auth/react';
+import useTranslation from 'next-translate/useTranslation';
+import Link from 'next/link';
 
 import { LoadingButton } from '@/components/atoms/buttons/loading-button';
+import { ROUTES } from '@/constants/routes';
 import { useAuth } from '@/providers/auth';
 
 import { NavBarAvatar } from './navbar-avatar';
 import { NavBarNotifications } from './navbar-notifications/navbar-notifications';
 
 export function ClientNav() {
-  const { onOpenLogin, me } = useAuth();
+  const { t } = useTranslation('common');
+  const { me } = useAuth();
 
   const session = useSession();
 
@@ -21,15 +25,14 @@ export function ClientNav() {
   }
 
   return (
-    <>
+    <Link passHref href={ROUTES.NEW_USER}>
       <LoadingButton
         isLoading={session.status === 'loading'}
         variant="outlined"
         color="secondary"
-        onClick={onOpenLogin}
       >
-        Connect Wallet
+        {t('actions.connect-now')}
       </LoadingButton>
-    </>
+    </Link>
   );
 }
