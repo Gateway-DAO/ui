@@ -54,7 +54,7 @@ export function CreateQuestTemplate({
   const snackbar = useSnackbar();
 
   const formStepControl: {
-    name: String;
+    name: string;
     preview: boolean;
     saveAsDraft: boolean;
   }[] = [
