@@ -91,7 +91,7 @@ export default function DataModels(): JSX.Element {
             {dataModels &&
               dataModels.pages.map((page) => (
                 <>
-                  {page.map((model,index) => (
+                  {page.map((model, index) => (
                     <DataModelCard key={index} {...model} />
                   ))}
                 </>
