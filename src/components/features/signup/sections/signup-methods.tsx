@@ -1,7 +1,9 @@
 import useTranslation from 'next-translate/useTranslation';
-import { useContext, useMemo } from 'react';
+import { useRouter } from 'next/router';
+import { useContext, useEffect, useMemo } from 'react';
 
 import { WalletIconsTransition } from '@/components/atoms/wallet-icons-transition';
+import { ROUTES } from '@/constants/routes';
 import { useAuth } from '@/providers/auth';
 import { useFormContext } from 'react-hook-form';
 import { FaDiscord } from 'react-icons/fa';
@@ -16,7 +18,8 @@ import { NewUserSchema } from '../utlis/schema';
 export function SignUpMethods() {
   const { t } = useTranslation('signin');
   const { setSignUpSteps } = useContext(EmailSignUpProgress);
-  const { onOpenLogin } = useAuth();
+  const { onOpenLogin, me } = useAuth();
+  const router = useRouter();
   const {
     register,
     formState: { errors },
@@ -27,6 +30,12 @@ export function SignUpMethods() {
     const isValid = await trigger('email_address');
     if (isValid) setSignUpSteps(1);
   }
+
+  useEffect(() => {
+    if (me?.init && me?.protocol?.isCompleted) {
+      router.replace((router.query?.redirect as string) ?? ROUTES.EXPLORE);
+    }
+  }, [me?.init, router]);
 
   const orSignUpMethods = useMemo(() => {
     return [
