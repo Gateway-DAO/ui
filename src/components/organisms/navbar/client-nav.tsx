@@ -1,6 +1,7 @@
 import { useSession } from 'next-auth/react';
 import useTranslation from 'next-translate/useTranslation';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 import { LoadingButton } from '@/components/atoms/buttons/loading-button';
 import { ROUTES } from '@/constants/routes';
@@ -12,7 +13,7 @@ import { NavBarNotifications } from './navbar-notifications/navbar-notifications
 export function ClientNav() {
   const { t } = useTranslation('common');
   const { me } = useAuth();
-
+  const router = useRouter();
   const session = useSession();
 
   if (typeof window !== 'undefined' && me) {
@@ -25,7 +26,7 @@ export function ClientNav() {
   }
 
   return (
-    <Link passHref href={ROUTES.SIGNIN}>
+    <Link passHref href={`${ROUTES.SIGNIN}?redirect=${router.route}`}>
       <LoadingButton
         isLoading={session.status === 'loading'}
         variant="outlined"

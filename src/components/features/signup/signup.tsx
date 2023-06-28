@@ -1,4 +1,5 @@
 import useTranslation from 'next-translate/useTranslation';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
@@ -141,22 +142,24 @@ export function Signup() {
         height: '100%',
       }}
     >
-      <Stack
-        sx={{
-          position: 'absolute',
-          top: { xs: 10, md: 38 },
-          right: { xs: 20, md: 48 },
-          zIndex: 1,
-          cursor: 'pointer',
-        }}
-        onClick={() =>
-          router.replace((router.query?.callback as string) ?? ROUTES.EXPLORE)
-        }
+      <Link
+        passHref
+        href={(router?.query?.redirect as string) ?? ROUTES.EXPLORE}
       >
-        <Avatar sx={{ width: 40, height: 40, alignSelf: 'center' }}>
-          <CloseIcon />
-        </Avatar>
-      </Stack>
+        <Stack
+          sx={{
+            position: 'absolute',
+            top: { xs: 10, md: 38 },
+            right: { xs: 20, md: 48 },
+            zIndex: 1,
+            cursor: 'pointer',
+          }}
+        >
+          <Avatar sx={{ width: 40, height: 40, alignSelf: 'center' }}>
+            <CloseIcon />
+          </Avatar>
+        </Stack>
+      </Link>
       <Stack
         gap={2}
         sx={{
