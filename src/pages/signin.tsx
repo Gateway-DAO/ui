@@ -4,7 +4,7 @@ import { Signup } from '@/components/features/signup';
 import { HeadContainer } from '@/components/molecules/head-container';
 
 export default function NewUser() {
-  const { t } = useTranslation('dashboard-new-user');
+  const { t } = useTranslation('signin');
 
   return (
     <>

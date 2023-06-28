@@ -7,7 +7,7 @@ const ROUTES = {
   EXPLORE_ISSUE: '/explore/issue',
   EXPLORE_ORGANIZATIONS: '/explore/organizations',
   SEARCH: '/search/[key]',
-  NEW_USER: '/new-user',
+  SIGNIN: '/signin',
   CREDENTIALS: '/credentials',
   CREDIT_SCORE: '/creditscore',
   CREDENTIALS_NEW: '/credentials/new',

@@ -14,7 +14,7 @@ import { EmailSignUpProgress } from '../utlis';
 import { NewUserSchema } from '../utlis/schema';
 
 export function SignUpMethods() {
-  const { t } = useTranslation('dashboard-new-user');
+  const { t } = useTranslation('signin');
   const { setSignUpSteps } = useContext(EmailSignUpProgress);
   const { onOpenLogin } = useAuth();
   const {

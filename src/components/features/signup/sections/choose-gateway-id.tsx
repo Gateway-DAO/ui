@@ -10,7 +10,7 @@ import { EmailSignUpProgress } from '../utlis';
 import { NewUserSchema } from '../utlis/schema';
 
 export function ChooseGatewayId() {
-  const { t } = useTranslation('dashboard-new-user');
+  const { t } = useTranslation('signin');
   const { setSignUpSteps, isLoading } = useContext(EmailSignUpProgress);
   const {
     register,

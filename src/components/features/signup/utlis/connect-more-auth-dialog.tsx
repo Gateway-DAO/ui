@@ -15,7 +15,7 @@ type Props = {
 };
 
 export function ConnectMoreAuthDialog({ open, setOpen }: Props) {
-  const { t } = useTranslation('dashboard-new-user');
+  const { t } = useTranslation('signin');
 
   const githubConnection = useConnectionHandlerGithub();
   const twitterConnection = useConnectionHandlerTwitter();

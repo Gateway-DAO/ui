@@ -27,7 +27,7 @@ import {
 } from './utlis/schema';
 
 export function Signup() {
-  const { t } = useTranslation('dashboard-new-user');
+  const { t } = useTranslation('signin');
   const [showConnectMoreAuthDialog, setShowConnectMoreAuthDialog] =
     useState(false);
   const router = useRouter();
