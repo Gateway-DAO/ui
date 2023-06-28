@@ -31,22 +31,22 @@ export function SignUpMethods() {
   const orSignUpMethods = useMemo(() => {
     return [
       {
-        methodName: 'Connect Wallet',
+        methodName: t('form.signup-methods.connect-wallet'),
         icon: <WalletIconsTransition />,
         onClick: onOpenLogin,
       },
       {
-        methodName: 'Continue with Google',
+        methodName: t('form.signup-methods.connect-google'),
         icon: <GoogleIcon />,
         onClick: () => null,
       },
       {
-        methodName: 'Continue with Twitter',
+        methodName: t('form.signup-methods.connect-twitter'),
         icon: <TwitterIcon />,
         onClick: () => null,
       },
       {
-        methodName: 'Continue with Discord',
+        methodName: t('form.signup-methods.connect-discord'),
         icon: <FaDiscord />,
         onClick: () => null,
       },
@@ -93,7 +93,7 @@ export function SignUpMethods() {
         textTransform={'uppercase'}
         color="text.secondary"
       >
-        or
+        {t('form.signup-methods.or')}
       </Typography>
       <Stack gap={2.5}>
         {orSignUpMethods.map((method) => (
@@ -118,9 +118,9 @@ export function SignUpMethods() {
         ))}
       </Stack>
       <Typography color="text.secondary">
-        By continuing you agree to our{' '}
+        {t('form.signup-methods.terms-info')}{' '}
         <Link href="/terms" underline="none">
-          Terms of Service{' '}
+          {t('form.signup-methods.terms-of-service')}{' '}
         </Link>
       </Typography>
     </>

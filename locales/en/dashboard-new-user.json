@@ -7,6 +7,13 @@
       "title": "Enter the Gateway",
       "title-send-email": "Email",
       "caption-send-email": "Get started without wallet",
+      "connect-wallet": "Connect Wallet",
+      "connect-google": "Continue with Google",
+      "connect-twitter": "Continue with Twitter",
+      "connect-discord": "Continue with Discord",
+      "terms-info": "By continuing you agree to our",
+      "terms-of-service": "Terms of Service",
+      "or": "or",
       "btn": "continue"
     },
     "gateway-id": {
