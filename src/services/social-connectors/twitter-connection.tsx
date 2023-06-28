@@ -1,9 +1,17 @@
+import { useRouter } from 'next/router';
+
+import { AccountHandlerConnection } from '@/components/atoms/social-auth-card';
 import { useMutation } from '@tanstack/react-query';
 import { useLocalStorage } from 'react-use';
 
-import { AccountHandlerConnection } from '../components/accounts-card';
+type connectTwitterProps = {
+  disconnect?: boolean;
+};
 
-export function ConnectionHandlerTwitter(): AccountHandlerConnection {
+export function useConnectionHandlerTwitter(
+  props: connectTwitterProps = { disconnect: false }
+): AccountHandlerConnection {
+  const router = useRouter();
   const [twitterKeys, setTwitterKeys, remove] = useLocalStorage<any>('twitter');
   const [_redirectURL, setRedirectURL, removeRedirectUrl] = useLocalStorage(
     'redirectURL',

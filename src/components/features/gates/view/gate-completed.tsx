@@ -1,16 +1,14 @@
 import useTranslation from 'next-translate/useTranslation';
+import { useRouter } from 'next/router';
 
 import GateMintButton from '@/components/atoms/buttons/gate-mint-button';
 import { ShareButtonFn } from '@/components/atoms/buttons/share-btn-fn';
 import { GatesCard } from '@/components/molecules/cards/gates-card';
 import ModalShareCredential from '@/components/molecules/modal/modal-share-credential';
 import { MintDialogProtocol } from '@/components/organisms/mint/mint-modal/mint-dialog-protocol';
-import { query } from '@/constants/queries';
 import { useMenu } from '@/hooks/use-menu';
 import { useMintData } from '@/hooks/use-mint-data';
-import { useAuth } from '@/providers/auth';
 import { Gates } from '@/services/hasura/types';
-import { useQueryClient } from '@tanstack/react-query';
 import { PartialDeep } from 'type-fest';
 
 import CloseIcon from '@mui/icons-material/Close';
@@ -33,9 +31,7 @@ export default function GateCompletedModal({
   protocolCredential,
 }: Props) {
   const menu = useMenu();
-  const queryClient = useQueryClient();
   const { t } = useTranslation('credential');
-  const { me } = useAuth();
   const {
     isOpen,
     setIsOpen,
@@ -45,20 +41,14 @@ export default function GateCompletedModal({
     mintCredential,
     showMintButton,
   } = useMintData({
-    credential: protocolCredential,
-    loyaltyProgramId: gate?.loyalty_id,
-    gateId: gate?.id,
+    protocolCredentialId: protocolCredential?.id,
   });
+
+  const router = useRouter();
 
   const refetchProtocolCredential = () => {
     if (mintCredential.isSuccess) {
-      queryClient.refetchQueries([
-        query.protocol_credential_by_gate_id,
-        {
-          user_id: me?.id,
-          gate_id: gate?.id,
-        },
-      ]);
+      router.replace(router.asPath);
     }
   };
 

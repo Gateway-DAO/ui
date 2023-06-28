@@ -36,9 +36,9 @@ export default function RecipientForm() {
           }}
           label={t('data-model.issue-credential.recipient-label')}
           id="issuanceflow-textfield-recipient"
-          {...register(`recipientUserGatewayIdOrWallet`)}
-          error={!!errors.recipientUserGatewayIdOrWallet}
-          helperText={errors.recipientUserGatewayIdOrWallet?.message}
+          {...register(`recipientUserIdentity`)}
+          error={!!errors.recipientUserIdentity}
+          helperText={errors.recipientUserIdentity?.message}
         />
       </Stack>
     </Stack>

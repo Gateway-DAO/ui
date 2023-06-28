@@ -1,4 +1,9 @@
-import { Gates, Loyalty_Program } from '@/services/hasura/types';
+import {
+  Credentials,
+  Gates,
+  Loyalty_Program,
+  Loyalty_Progress,
+} from '@/services/hasura/types';
 import { PartialDeep } from 'type-fest/source/partial-deep';
 
 import LeftSidebarTemplate from '../../templates/left-sidebar/left-sidebar';
@@ -8,27 +13,31 @@ import { LoyaltySidebar } from './components/loyalty-sidebar';
 type Props = {
   loyalty: PartialDeep<Loyalty_Program>;
   gate: PartialDeep<Gates>;
-  protocolCredential?: PartialDeep<Credential>;
+  credential: PartialDeep<Credentials>;
+  loyaltyProgress: PartialDeep<Loyalty_Progress>;
 };
 
 export function LoyaltyProgramCredential({
+  credential,
   gate,
   loyalty,
-  protocolCredential,
+  loyaltyProgress,
 }: Props) {
   return (
     <LeftSidebarTemplate
       sidebar={
         <LoyaltySidebar
+          credential={credential}
           gate={gate}
           loyalty={loyalty}
-          protocolCredential={protocolCredential}
+          loyaltyProgress={loyaltyProgress}
+          protocolCredential={credential?.credentials_protocol}
         />
       }
       mainContent={
         <GateViewContent
           gateProps={gate}
-          protocolCredential={protocolCredential}
+          protocolCredential={credential?.credentials_protocol}
         />
       }
     />

@@ -105,7 +105,7 @@ export const useAuthLogin = () => {
       enabled: !!address && session.status === 'unauthenticated',
       async onSuccess({
         protocol: {
-          createNonce: { message },
+          createWalletNonce: { message },
         },
       }) {
         sendSignature.mutate(message);

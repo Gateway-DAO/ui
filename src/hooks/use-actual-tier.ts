@@ -8,7 +8,7 @@ type Props = {
   totalPoints: number;
 };
 
-export function useActualTier({ tiers, totalPoints }: Props) {
+export function useActualTier({ tiers, totalPoints = 0 }: Props) {
   const actualTier = useMemo(() => {
     const tiersSorted = tiers?.sort((a, b) => a.min_pts - b.min_pts);
     return tiersSorted?.find((tier) => {

@@ -12,20 +12,24 @@ import { useMutation } from '@tanstack/react-query';
 import { useSnackbar } from 'notistack';
 import { useForm, FormProvider } from 'react-hook-form';
 
-import { alpha, Box, Stack } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
+import { alpha, Avatar, Box, Stack } from '@mui/material';
 
-import { FormSendEmail } from './form-send-email';
-import { FormVerifyToken } from './form-verify-token';
+import { FormSendEmail } from './forms/form-send-email';
+import { FormVerifyToken } from './forms/form-verify-token';
+import { ConnectMoreAuthDialog } from './utlis/connect-more-auth-dialog';
 import {
   schemaCreateAccount,
   schemaTokenConfirmation,
   NewUserSchema,
   TokenConfirmationSchema,
   defaultValuesCreateAccount,
-} from './schema';
+} from './utlis/schema';
 
 export function Signup() {
   const { t } = useTranslation('dashboard-new-user');
+  const [showConnectMoreAuthDialog, setShowConnectMoreAuthDialog] =
+    useState(false);
   const { me, hasuraUserService, onInvalidateMe } = useAuth();
   const [sentEmail, setSentEmail] = useState(false);
   const [sendEmailData, setSendEmailData] = useState(null);
@@ -92,8 +96,8 @@ export function Signup() {
     {
       onSuccess() {
         enqueueSnackbar(t('form.profile-created'));
-        setProfileCreated(true);
-        onInvalidateMe();
+        // change the code to make it dynamically: here done this just to show the flow
+        setShowConnectMoreAuthDialog(true);
       },
       onError(error: ErrorResponse) {
         error.response?.errors?.forEach(({ message }) => {
@@ -141,7 +145,9 @@ export function Signup() {
           zIndex: 1,
         }}
       >
-        <NavBarAvatar hideProfile />
+        <Avatar sx={{ width: 40, height: 40, alignSelf: 'center' }}>
+          <CloseIcon />
+        </Avatar>
       </Stack>
       <Stack
         gap={2}
@@ -192,6 +198,10 @@ export function Signup() {
                 />
               </FormProvider>
             )}
+            <ConnectMoreAuthDialog
+              open={showConnectMoreAuthDialog}
+              setOpen={setShowConnectMoreAuthDialog}
+            />
           </>
         )}
       </Stack>

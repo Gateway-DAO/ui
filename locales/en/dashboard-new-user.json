@@ -1,11 +1,20 @@
 {
-  "title-send-email": "You’re a step closer to entering the Gateway",
   "title-verify-token": "Verify your email to create your account",
   "logo-alternative-text": "Gateway logo",
   "profile-created-sucess": "Profile created!",
   "form": {
-    "title-send-email": "Create your personal Gateway ID",
-    "caption-send-email": "Through the ID you are recognized and found within the Gateway",
+    "signup-methods": {
+      "title": "Enter the Gateway",
+      "title-send-email": "Email",
+      "caption-send-email": "Get started without wallet",
+      "btn": "continue"
+    },
+    "gateway-id": {
+      "title": "You’re a step closer to entering the Gateway",
+      "title-send-email": "Create your personal Gateway ID",
+      "caption-send-email": "Through the ID you are recognized and found within the Gateway",
+      "btn": "create id"
+    },
     "title-verify-token": "Paste here the code sent to email address",
     "caption-verify-token": "This code will expire in 30 minutes",
     "fields": {
@@ -20,6 +29,17 @@
     "send-code-again-action": "Send code again",
     "code-sent-to": "Code sent to",
     "profile-created": "Profile created"
+  },
+  "connected-accounts": {
+    "description": "Connect your account to claim credentials with third-party platforms requirements.",
+    "twitter": {
+      "title": "Twitter",
+      "description": "Connect your account to claim credentials with follow profile, retweet and post a tweet requirements."
+    },
+    "github": {
+      "title": "Github",
+      "description": "Connect your account to claim credentials with repository contribution and pull requests requirements."
+    }
   },
   "card-summary-title": "Your account"
 }

@@ -1,40 +1,71 @@
 import useTranslation from 'next-translate/useTranslation';
 
-import { brandColors } from '@/theme';
+import { LoadingButton } from '@/components/atoms/buttons/loading-button';
 
-import { Link, Stack, Typography } from '@mui/material';
+import { Divider, Stack, Typography } from '@mui/material';
 
-import Email from './components/email';
+import { CredentialIdentityCard } from './components/credential-identity-card';
+import { EditId } from './components/sections/edit-id';
+import { OtherAccount } from './components/sections/other-accounts';
 
 const AccountManagementSettings = () => {
   const { t } = useTranslation('settings');
 
   return (
-    <Stack>
-      <Stack sx={{ width: '100%', mb: 4 }}>
-        <Typography variant="h6" sx={{ mb: 7 }}>
-          {t('nav.account-management-title')}
-        </Typography>
-        <Typography variant="subtitle1" sx={{ color: 'white' }}>
-          {t('account-management.registered-email-title')}
-        </Typography>
-        <Typography variant="caption">
-          {t('account-management.registered-email-description')}
-          <Link
-            sx={{
-              color: brandColors.purple.main,
-              textDecoration: 'none',
-              cursor: 'pointer',
-            }}
-          >
+    <Stack width={'100%'} marginBottom={4}>
+      <Typography variant="h6" sx={{ mb: 7 }}>
+        {t('nav.account-management-title')}
+      </Typography>
+      <Stack gap={5}>
+        <div>
+          <Typography variant="subtitle1" color={'white'} gutterBottom>
+            {t('nav.account-credential-title')}
+          </Typography>
+          <Typography variant="caption" gutterBottom>
+            {t('nav.account-credential-caption')}
+          </Typography>
+        </div>
+        <CredentialIdentityCard />
+        <Divider variant="fullWidth" style={{ margin: ' 0 -3.7rem' }} />
+        <EditId />
+        <Divider variant="fullWidth" style={{ margin: ' 0 -3.7rem' }} />
+        <Stack
+          direction={'row'}
+          alignItems={'center'}
+          justifyContent={'space-between'}
+        >
+          <span>
+            <Typography variant="subtitle1" color={'white'} gutterBottom>
+              {t('account-management.wallet-section-title')}
+            </Typography>
+            <Typography variant="caption" gutterBottom>
+              {t('account-management.wallet-section-desc')}
+            </Typography>
+          </span>
+          <LoadingButton variant="text">
             {' '}
-            {t('account-management.here')}
-          </Link>
-          .
-        </Typography>
+            {t('account-management.wallet-section-btn')}
+          </LoadingButton>
+        </Stack>
+        <Divider variant="fullWidth" style={{ margin: ' 0 -3.7rem' }} />
+        <OtherAccount />
+        <Divider variant="fullWidth" style={{ margin: ' 0 -3.7rem' }} />
+        <Stack height={'100%'} gap={4}>
+          <div>
+            <Typography variant="subtitle1" color={'white'} gutterBottom>
+              {t('account-management.delete-section.title')}
+            </Typography>
+            <Typography variant="caption" gutterBottom>
+              {t('account-management.delete-section.desc')}
+            </Typography>
+          </div>
+          <span>
+            <LoadingButton variant="contained" color="error" size="large">
+              {t('account-management.delete-section.btn')}
+            </LoadingButton>
+          </span>
+        </Stack>
       </Stack>
-
-      <Email />
     </Stack>
   );
 };
