@@ -13,7 +13,7 @@ type Props = {
 };
 
 export function CardSummary({ filledData, onClickEdit }: Props) {
-  const { t } = useTranslation('dashboard-new-user');
+  const { t } = useTranslation('signin');
 
   return (
     <Stack

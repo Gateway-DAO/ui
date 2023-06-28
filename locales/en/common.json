@@ -98,7 +98,8 @@
     "see-less": "See less",
     "share-link": "Share link",
     "download": "Download",
-    "reset": "Reset"
+    "reset": "Reset",
+    "connect-now": "Connect now"
   },
   "image-drop-field": {
     "default-label": "Drop to upload your avatar",

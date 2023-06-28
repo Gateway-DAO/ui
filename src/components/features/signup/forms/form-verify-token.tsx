@@ -1,14 +1,14 @@
 import useTranslation from 'next-translate/useTranslation';
+import { Dispatch, SetStateAction } from 'react';
 
+import { useCountdown } from '@/hooks/use-countdown';
 import { useFormContext } from 'react-hook-form';
 import { useToggle } from 'react-use';
 
 import { Box, Stack, TextField, Typography } from '@mui/material';
 
-import { useCountdown } from '@/hooks/use-countdown';
 import { LoadingButton } from '../../../atoms/buttons/loading-button';
 import { CardSummary } from '../utlis/card-summary';
-import { Dispatch, SetStateAction } from 'react';
 import { TokenConfirmationSchema, NewUserSchema } from '../utlis/schema';
 
 type Props = {
@@ -28,7 +28,7 @@ export function FormVerifyToken({
   sendEmailData,
   onClickEdit,
 }: Props) {
-  const { t } = useTranslation('dashboard-new-user');
+  const { t } = useTranslation('signin');
   const {
     register,
     handleSubmit,
