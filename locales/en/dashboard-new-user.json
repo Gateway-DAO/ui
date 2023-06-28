@@ -41,5 +41,14 @@
       "description": "Connect your account to claim credentials with repository contribution and pull requests requirements."
     }
   },
+  "connect-more": {
+    "title": "Connect accounts to make it easier to find you on Gateway and earn credentials",
+    "description": "Connect your social media, wallets, and other platform accounts to Gateway to strengthen your online identity and increase your visibility on the platform.",
+    "terms-data": "We never share any of your data with third parties, and we only request the access permissions necessary to provide you with the best possible service when you connect your accounts to Gateway. Check our",
+    "terms": "Terms",
+    "privacy-policy": "Privacy Policy",
+    "and": "and",
+    "done": "Done"
+  },
   "card-summary-title": "Your account"
 }
