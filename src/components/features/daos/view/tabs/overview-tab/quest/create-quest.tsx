@@ -25,7 +25,6 @@ import FormStepper from '@/components/molecules/form-stepper/form-stepper';
 import RealTimeView, {
   StepNames,
 } from '@/components/templates/org/signup/components/real-time-view';
-import { setUpFormComponents } from '@/components/templates/org/signup/components/set-up-form-components';
 import { localStorageKeys } from '@/constants/local-storage-keys';
 import { mutation } from '@/constants/queries';
 import { ROUTES } from '@/constants/routes';
@@ -34,6 +33,7 @@ import { useAuth } from '@/providers/auth';
 import VerticalStepper from './components/vertical-setpper';
 import Footer from './components/footer';
 import CredentialTemplate from './components/credential-template';
+import { setUpFormComponents } from './set-up-form-components';
 
 export function CreateQuestTemplate({
   closeDialog,
@@ -53,24 +53,16 @@ export function CreateQuestTemplate({
 
   const snackbar = useSnackbar();
 
-  const formStepControl: { name: StepNames; backgroundImage: boolean }[] = [
-    { name: '', backgroundImage: true },
-    { name: 'name', backgroundImage: false },
-    { name: 'gatewayId', backgroundImage: false },
-    { name: 'categories', backgroundImage: false },
-    { name: 'about', backgroundImage: false },
-    { name: 'website', backgroundImage: true },
-    { name: 'email', backgroundImage: true },
-    { name: 'role', backgroundImage: true },
-    { name: 'twitter', backgroundImage: true },
-    { name: 'telegram', backgroundImage: true },
-    { name: 'success', backgroundImage: false },
+  const formStepControl: {
+    name: String;
+    preview: boolean;
+    saveAsDraft: boolean;
+  }[] = [
+    { name: 'template', preview: false, saveAsDraft: false },
+    { name: 'details', preview: false, saveAsDraft: false },
+    { name: 'tasks', preview: true, saveAsDraft: false },
+    { name: 'settings', preview: true, saveAsDraft: false },
   ];
-
-  const [_, updateFormValueStorage] = useLocalStorage(
-    localStorageKeys.org_signup,
-    null
-  );
 
   const formComponents = setUpFormComponents({
     fullFormState,
@@ -86,22 +78,22 @@ export function CreateQuestTemplate({
     isLastStep,
     getInitialStateStepValidity,
   } = useMultistepForm(formComponents);
-
-  const initialStepValidity = getInitialStateStepValidity(true);
+  console.log(fullFormState,handleStep)
+  const initialStepValidity = getInitialStateStepValidity(false);
 
   const [stepValidity, setStepValidity] = useState(initialStepValidity);
 
   const handleNext = () => {
     changeStep(currentStep + 1);
     router.push({
-      hash: `org-signup_${formStepControl[currentStep + 1].name}`,
+      hash: `create-quest_${formStepControl[currentStep + 1].name}`,
     });
   };
 
   const handlePrevious = () => {
     changeStep(currentStep - 1);
     router.push({
-      hash: `org-signup${currentStep - 1 === 0 ? '' : '_'}${
+      hash: `create-quest${currentStep - 1 === 0 ? '' : '_'}${
         formStepControl[currentStep - 1].name
       }`,
     });
@@ -123,7 +115,6 @@ export function CreateQuestTemplate({
           slug: data.insert_daos_one.slug,
         });
         handleNext();
-        updateFormValueStorage(null);
       },
       onError: (e: any) => {
         snackbar.enqueueSnackbar(e?.response?.errors?.[0]?.message, {
@@ -161,12 +152,13 @@ export function CreateQuestTemplate({
             background: alpha(theme.palette.common.black, 0.03),
             backdropFilter: { xs: 'blur(85px)', md: 'blur(25px)' },
             height: '100%',
+            display: { xs: 'none', md: 'flex' },
           }}
         >
           <Stack gap={5}>
             <Stack>
               <Stack direction="row" justifyContent="space-between" gap={2}>
-                <VerticalStepper activeStep={0} />
+                <VerticalStepper activeStep={currentStep} />
               </Stack>
             </Stack>
           </Stack>
@@ -186,7 +178,7 @@ export function CreateQuestTemplate({
             pt: { xs: 3, md: 6 },
             flexGrow: 1,
             height: '100%',
-            display: { xs: 'none', md: 'flex' },
+            display: { md: 'flex' },
             flexDirection: 'column',
           }}
         >
@@ -210,9 +202,9 @@ export function CreateQuestTemplate({
               </IconButton>
             </Avatar>
           </Stack>
-          <Stack direction="column">
-            <CredentialTemplate />
-            <Footer />
+          <Stack direction="column" sx={{}}>
+            {currentStepComponent}
+            <Footer fullFormState={fullFormState} handleNext={handleNext} />
           </Stack>
         </Grid>
       </Grid>
