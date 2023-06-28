@@ -41,12 +41,8 @@ query protocol_data_models($take: Int!, $skip: Int!) {
     createdBy {
       gatewayId
     }
-    allowedUsers {
-      id
-    }
-    allowedOrganizations {
-      id
-    }
+    schema
+    
     info
     image
     createdBy {

@@ -11,11 +11,13 @@ import {
   CardHeader,
   Checkbox,
   Chip,
+  Radio,
+  Skeleton,
   Stack,
   Typography,
 } from '@mui/material';
-import { useInfiniteQuery } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
+import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
+import { Dispatch, useEffect, useState } from 'react';
 import MUICard from '@mui/material/Card';
 import tags from '@/components/features/protocol/components/tags';
 import { CategoriesList } from '@/components/molecules/categories-list';
@@ -26,8 +28,18 @@ import OverviewCardInfo from '@/components/features/protocol/data-models/view/co
 import TableSchema from '@/components/features/protocol/data-models/view/components/table-schema';
 import { Protocol_Api_DataModel } from '@/services/hasura/types';
 import { PartialDeep } from 'type-fest';
+import InfoTitle from '@/components/features/protocol/components/info-title';
+import Tags from '@/components/features/protocol/components/tags';
 
-export default function CredentialTemplate() {
+export default function CredentialTemplate({
+  updateFormState,
+  handleStep,
+  input
+}: {
+  updateFormState: Dispatch<any>;
+  handleStep: (value: boolean) => void;
+  input:any
+}) {
   const categories = [
     { name: 'Featured', selected: true },
     { name: 'Education', selected: false },
@@ -52,7 +64,6 @@ export default function CredentialTemplate() {
         take: internalPageSize,
         skip: pageParam || 0,
       } as any);
-
       return result.protocol_data_model;
     },
     {
@@ -62,9 +73,7 @@ export default function CredentialTemplate() {
           : pages.length * internalPageSize,
     }
   );
-  const [dataModelSelected, setDataModelSelected] = useState<
-    any
-  >();
+  const [dataModelSelected, setDataModelSelected] = useState<any>();
 
   useEffect(() => {
     let fetching = false;
@@ -85,8 +94,55 @@ export default function CredentialTemplate() {
     };
   }, []);
 
+  const {
+    data: dataModelStats,
+    refetch: refetchStats,
+    isFetching: loadingStats,
+  } = useQuery(
+    ['data-model-stats', dataModelSelected?.id],
+    async () => {
+      const result = await hasuraPublicService.protocol_get_data_model_stats({
+        dataModelId: dataModelSelected?.id,
+      });
+      return result;
+    },
+    {
+      enabled: false,
+    }
+  );
+  const now = new Date();
+  const yesterday = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+  const isoYesterday = yesterday.toISOString();
+
+  const {
+    data: dataModelStatsYesterday,
+    refetch: refetchStatsYesterday,
+    isFetching: loadingYesterdayStats,
+  } = useQuery(
+    ['data-model-stats', dataModelSelected?.id],
+    async () => {
+      const result = await hasuraPublicService.getDMStatsUntilDayBefore({
+        dataModelId: dataModelSelected?.id,
+        date: isoYesterday,
+      });
+      return result;
+    },
+    {
+      enabled: false,
+    }
+  );
+
+  console.log(dataModelSelected);
+
+  const calculateGrowth = (finalValue: number, startingNumber: number) => {
+    if (startingNumber > 0)
+      return parseFloat(
+        ((finalValue - startingNumber) / startingNumber).toFixed(2)
+      );
+  };
+
   return (
-    <Stack direction={'column'} mx={7}>
+    <Stack direction={'column'} mx={7} mb={5}>
       <Box>
         <Typography variant="h5">
           Select a credential template to start
@@ -135,10 +191,14 @@ export default function CredentialTemplate() {
                     <>
                       {page.map((model, index) => (
                         <MUICard
+                          key={index}
                           sx={{
                             position: 'relative',
                             cursor: 'pointer',
-                            backgroundColor: 'rgba(154, 83, 255, 0.08)',
+                            backgroundColor:
+                              dataModelSelected?.id === model?.id
+                                ? 'rgba(255, 255, 255, 0.88)'
+                                : 'rgba(154, 83, 255, 0.08)',
                             ':hover': {
                               backgroundColor: 'rgba(154, 83, 255, 0.16)',
                               img: {
@@ -158,11 +218,16 @@ export default function CredentialTemplate() {
                               p: 0,
                             }}
                           >
-                            <Checkbox
+                            <Radio
                               size="small"
                               color="primary"
-                              
-                            ></Checkbox>
+                              checked={dataModelSelected?.id == model.id}
+                              onClick={() => {
+                                setDataModelSelected(model);
+                                handleStep(true);
+                                updateFormState((prev) => ({ ...prev, [input.name]: {preview: true, saveAsDraft: true} }));
+                              }}
+                            ></Radio>
                           </CardActions>
                           <CardHeader
                             sx={{
@@ -201,25 +266,12 @@ export default function CredentialTemplate() {
                             <Typography
                               gutterBottom
                               variant="h5"
+                              mb={5}
                               sx={{ cursor: 'pointer', color: '#9A53FF' }}
                             >
                               {model.title}
                             </Typography>
-                            <Typography
-                              height={40}
-                              variant="body2"
-                              color="text.secondary"
-                              sx={{
-                                /* TODO: make line-clamp reusable */
-                                display: '-webkit-box',
-                                WebkitLineClamp: 2,
-                                WebkitBoxOrient: 'vertical',
-                                overflow: 'hidden',
-                                mb: 1,
-                              }}
-                            >
-                              {model.description}
-                            </Typography>
+
                             <Stack
                               direction={'row'}
                               justifyContent={'space-between'}
@@ -229,11 +281,18 @@ export default function CredentialTemplate() {
                                 label={model.tags[0]}
                                 size="small"
                               />
-                              <Button variant="outlined" onClick={() => {
-                                console.log(model)
-                                setDataModelSelected(model);
-                                setOpenDetialsModal(true)
-                              }}>View Details</Button>
+                              <Button
+                                variant="outlined"
+                                onClick={() => {
+                                  console.log(model);
+                                  setDataModelSelected(model);
+                                  refetchStats();
+                                  refetchStatsYesterday();
+                                  setOpenDetialsModal(true);
+                                }}
+                              >
+                                View Details
+                              </Button>
                             </Stack>
                           </CardContent>
                         </MUICard>
@@ -250,7 +309,23 @@ export default function CredentialTemplate() {
         open={openDetialsModal}
         handleClose={() => setOpenDetialsModal(false)}
       >
-        <>
+        <Stack sx={{ py: TOKENS.CONTAINER_PX }}>
+          <InfoTitle
+            title={dataModelSelected?.title}
+            labelId={'label id'}
+            id={dataModelSelected?.id}
+            copySucessMessage={'copy sucess'}
+            badgeTooltip={'copy'}
+            isLoading={isLoading}
+          />
+          <Tags tags={dataModelSelected?.tags} />
+          <Typography sx={{ mb: 3 }}>
+            {isLoading ? (
+              <Skeleton width={400} />
+            ) : (
+              dataModelSelected?.description
+            )}
+          </Typography>
           <OverviewCardInfo dataModel={dataModelSelected} />
           <Stack direction="row" justifyContent="flex-end" sx={{ mb: 2 }}>
             <ExternalLink
@@ -260,57 +335,65 @@ export default function CredentialTemplate() {
               }}
             />
           </Stack>
-          <Stack
-            gap={2}
-            justifyContent="space-between"
-            sx={{ flexDirection: { xs: 'column', md: 'row' }, mb: 5 }}
-          >
-            {/* <DashboardCard
-            label={t('data-model.issuers')}
-            value={stats?.protocol?.getTotalofIssuersByDataModel}
-            caption={`from ${
-              stats?.protocol?.getTotalofIssuersByDataModel -
-              statsUntilYesterday?.issuer_count?.aggregate?.count
-            } (in 1 day)`}
-            indicator={calculateGrowth(
-              stats?.protocol?.getTotalofIssuersByDataModel,
-              statsUntilYesterday?.issuer_count?.aggregate?.count
-            )}
-          />
-          <DashboardCard
-            label={t('data-model.issued-credentials')}
-            value={stats?.protocol?.getTotalCredentialsByDataModel}
-            caption={`from ${
-              stats?.protocol?.getTotalCredentialsByDataModel -
-              statsUntilYesterday?.credential_count?.aggregate?.count
-            } (in 1 day)`}
-            indicator={calculateGrowth(
-              stats?.protocol?.getTotalCredentialsByDataModel,
-              statsUntilYesterday?.credential_count?.aggregate?.count
-            )}
-          />
-          <DashboardCard
-            label={t('data-model.recipients')}
-            value={
-              stats?.protocol?.getTotalCredentialsByDataModelGroupByRecipient
-            }
-            caption={`from ${
-              stats?.protocol?.getTotalCredentialsByDataModelGroupByRecipient -
-              statsUntilYesterday?.recipient_count?.aggregate?.count
-            } (in 1 day)`}
-            indicator={calculateGrowth(
-              stats?.protocol?.getTotalCredentialsByDataModelGroupByRecipient,
-              statsUntilYesterday?.recipient_count?.aggregate?.count
-            )}
-          /> */}
-          </Stack>
+          {loadingStats && loadingYesterdayStats ? (
+            <Skeleton width={400} />
+          ) : (
+            <Stack
+              gap={2}
+              justifyContent="space-between"
+              sx={{ flexDirection: { xs: 'column', md: 'row' }, mb: 5 }}
+            >
+              <DashboardCard
+                label="data-model.issuers"
+                value={dataModelStats?.protocol?.getTotalofIssuersByDataModel}
+                caption={`from ${
+                  dataModelStats?.protocol?.getTotalofIssuersByDataModel -
+                  dataModelStatsYesterday?.issuer_count?.aggregate?.count
+                } (in 1 day)`}
+                indicator={calculateGrowth(
+                  dataModelStats?.protocol?.getTotalofIssuersByDataModel,
+                  dataModelStatsYesterday?.issuer_count?.aggregate?.count
+                )}
+              />
+              <DashboardCard
+                label="data-model.issued-credentials"
+                value={dataModelStats?.protocol?.getTotalCredentialsByDataModel}
+                caption={`from ${
+                  dataModelStats?.protocol?.getTotalCredentialsByDataModel -
+                  dataModelStatsYesterday?.credential_count?.aggregate?.count
+                } (in 1 day)`}
+                indicator={calculateGrowth(
+                  dataModelStats?.protocol?.getTotalCredentialsByDataModel,
+                  dataModelStatsYesterday?.credential_count?.aggregate?.count
+                )}
+              />
+              <DashboardCard
+                label="data-model.recipients"
+                value={
+                  dataModelStats?.protocol
+                    ?.getTotalCredentialsByDataModelGroupByRecipient
+                }
+                caption={`from ${
+                  dataModelStats?.protocol
+                    ?.getTotalCredentialsByDataModelGroupByRecipient -
+                  dataModelStatsYesterday?.recipient_count?.aggregate?.count
+                } (in 1 day)`}
+                indicator={calculateGrowth(
+                  dataModelStats?.protocol
+                    ?.getTotalCredentialsByDataModelGroupByRecipient,
+                  dataModelStatsYesterday?.recipient_count?.aggregate?.count
+                )}
+              />
+            </Stack>
+          )}
+
           <TableSchema
             title="Claim"
             data={dataModelSelected?.schema?.properties}
             subtitle1="Field"
             subtitle2="Input Type"
           />
-        </>
+        </Stack>
       </ModalRight>
     </Stack>
   );
