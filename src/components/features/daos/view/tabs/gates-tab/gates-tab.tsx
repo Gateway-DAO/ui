@@ -35,7 +35,7 @@ export function GatesTab({
     setOpenCredentialCreationDialog,
   } = useDaoProfile();
 
-  let gates = type == 'direct' ? credentialsDirectType : credentialsTaskType;
+  const gates = type == 'direct' ? credentialsDirectType : credentialsTaskType;
   const { view, toggleView } = useViewMode();
 
   const {
