@@ -31,7 +31,6 @@ import { ROUTES } from '@/constants/routes';
 import { useMultistepForm } from '@/hooks/use-multistep-form';
 import { useAuth } from '@/providers/auth';
 import VerticalStepper from './components/vertical-setpper';
-import Footer from './components/footer';
 import CredentialTemplate from './components/credential-template';
 import { setUpFormComponents } from './set-up-form-components';
 import { LoadingButton } from '@/components/atoms/buttons/loading-button';
@@ -83,7 +82,8 @@ export function CreateQuestTemplate({
   const initialStepValidity = getInitialStateStepValidity(false);
 
   const [stepValidity, setStepValidity] = useState(initialStepValidity);
-  console.log(stepValidity);
+  console.log(stepValidity[`${currentStep}`], currentStep);
+  console.log(formStepControl[currentStep]);
   const handleNext = () => {
     changeStep(currentStep + 1);
     router.push({
@@ -207,15 +207,13 @@ export function CreateQuestTemplate({
             <Stack
               direction={'row'}
               sx={{ mt: 2 }}
-              justifyContent={'space-between'}
+              justifyContent={isFirstStep ? 'end' : 'space-between'}
             >
-              <Button
-                variant="outlined"
-                onClick={() => handlePrevious()}
-                disabled={!fullFormState?.template?.back}
-              >
-                Back
-              </Button>
+              {!isFirstStep && (
+                <Button variant="outlined" onClick={() => handlePrevious()}>
+                  Back
+                </Button>
+              )}
               <Stack direction={'row'} justifyContent={'end'}>
                 <LoadingButton
                   onClick={() => handlePreview()}
@@ -223,7 +221,12 @@ export function CreateQuestTemplate({
                   size="large"
                   isLoading={false}
                   sx={{ marginLeft: 2 }}
-                  disabled={!fullFormState?.template?.preview}
+                  disabled={
+                    !(
+                      formStepControl[currentStep].name === 'tasks' ||
+                      formStepControl[currentStep].name === 'settings'
+                    )
+                  }
                 >
                   Preview
                 </LoadingButton>
@@ -233,18 +236,22 @@ export function CreateQuestTemplate({
                   size="large"
                   sx={{ marginLeft: 2 }}
                   isLoading={false}
-                  disabled={true}
+                  disabled={
+                    !(
+                      formStepControl[currentStep].name === 'tasks' ||
+                      formStepControl[currentStep].name === 'settings'
+                    )
+                  }
                 >
                   Save as Draft
                 </LoadingButton>
                 <LoadingButton
                   type="submit"
-                  form="gate-details-form"
                   variant="contained"
                   size="large"
                   sx={{ marginLeft: 2 }}
                   onClick={() => handleNext()}
-                  disabled={!fullFormState?.template?.continue}
+                  disabled={!stepValidity[`${currentStep}`]}
                 >
                   Continue
                 </LoadingButton>

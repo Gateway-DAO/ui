@@ -13,11 +13,16 @@ type DaoProfileContextProps = {
   isAdmin: boolean;
   dao: PartialDeep<Daos>;
   followersCount: number;
-  credentials?: Dao_Gates_TabQuery;
+  credentialsDirectType?: Dao_Gates_TabQuery;
+  credentialsTaskType?: Dao_Gates_TabQuery;
   loyaltyPrograms?: PartialDeep<Loyalty_Program>[];
   onRefetchFollowers: () => void;
   issuedCredentials?: PartialDeep<Protocol_Api_Credential>[];
   stats?: Protocol_Get_Dao_StatsQuery;
+  openCredentialCreationDialog: boolean;
+  setOpenCredentialCreationDialog: (nextValue?: any) => void;
+  openCreateQuestDialog: boolean;
+  setOpenCreateQuestDialog: (nextValue?: any) => void;
 };
 
 export const DaoProfileContext = createContext<DaoProfileContextProps>({
@@ -26,6 +31,10 @@ export const DaoProfileContext = createContext<DaoProfileContextProps>({
   loyaltyPrograms: [],
   isAdmin: false,
   onRefetchFollowers: () => {},
+  openCredentialCreationDialog: false,
+  openCreateQuestDialog: false,
+  setOpenCredentialCreationDialog: () => {},
+  setOpenCreateQuestDialog: () => {},
 });
 export const useDaoProfile = () => useContext(DaoProfileContext);
 

@@ -36,22 +36,32 @@ import CreateQuestDialog from './quest/dialog-structure';
 
 type Props = {
   people: PartialDeep<Users>[];
-  credentials: PartialDeep<Gates>[];
+  credentialsTaskType: PartialDeep<Gates>[];
+  credentialsDirectType: PartialDeep<Gates>[];
   setTab: (tab: number) => void;
   loyaltyPrograms: PartialDeep<Loyalty_Program>[];
 };
 
-export function OverviewTab({ setTab, credentials, loyaltyPrograms }: Props) {
+export function OverviewTab({
+  setTab,
+  credentialsTaskType,
+  credentialsDirectType,
+  loyaltyPrograms,
+}: Props) {
   const { t } = useTranslation();
-  const { dao, isAdmin, issuedCredentials, stats } = useDaoProfile();
+  const {
+    dao,
+    isAdmin,
+    issuedCredentials,
+    stats,
+    openCreateQuestDialog,
+    openCredentialCreationDialog,
+    setOpenCreateQuestDialog,
+    setOpenCredentialCreationDialog,
+  } = useDaoProfile();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
 
   const queryClient = useQueryClient();
-
-  const [openCredentialCreationDialog, setOpenCredentialCreationDialog] =
-    useToggle(false);
-
-  const [openCreateQuestDialog, setOpenCreateQuestDialog] = useToggle(false);
 
   queryClient.removeQueries([query.org_pending_gate_creation]);
 
@@ -82,36 +92,46 @@ export function OverviewTab({ setTab, credentials, loyaltyPrograms }: Props) {
     ? { pages: [issuedCredentials] }
     : null;
 
-  const gates = credentials ?? [];
+  const gatesTaskType = credentialsTaskType ?? [];
+  const gatesDirectType = credentialsDirectType ?? [];
 
   const newGateUrl = `${ROUTES.GATE_NEW}?dao=${dao?.id}`;
 
-  const gateList = useMemo(() => {
+  // ...(isAdmin
+  //       ? [
+  //           <React.Fragment key={uuid()}>
+  //             <Link key="create-credential" passHref href={newGateUrl}>
+  //               <EmptyCard
+  //                 onClick={() => setDaoData()}
+  //                 title="Create Credential"
+  //                 subtitle={
+  //                   !gates.length
+  //                     ? 'Create your first Credential and help talents find you'
+  //                     : 'Engage with your community'
+  //                 }
+  //                 component="a"
+  //                 sx={{ minHeight: 440 }}
+  //               />
+  //             </Link>
+  //           </React.Fragment>,
+  //         ]
+  //       : []),
+
+  const gateListTaskType = useMemo(() => {
     return [
-      ...(isAdmin
-        ? [
-            <React.Fragment key={uuid()}>
-              <Link key="create-credential" passHref href={newGateUrl}>
-                <EmptyCard
-                  onClick={() => setDaoData()}
-                  title="Create Credential"
-                  subtitle={
-                    !gates.length
-                      ? 'Create your first Credential and help talents find you'
-                      : 'Engage with your community'
-                  }
-                  component="a"
-                  sx={{ minHeight: 440 }}
-                />
-              </Link>
-            </React.Fragment>,
-          ]
-        : []),
-      ...gates.map((gate) => (
+      ...gatesTaskType.map((gate) => (
         <GatesCard {...gate} key={gate.id} showStatus={isAdmin} dao={dao} />
       )),
     ].slice(0, 4);
-  }, [gates, isAdmin, newGateUrl]);
+  }, [gatesTaskType, isAdmin, newGateUrl]);
+
+  const gateListDirectType = useMemo(() => {
+    return [
+      ...gatesDirectType.map((gate) => (
+        <GatesCard {...gate} key={gate.id} showStatus={isAdmin} dao={dao} />
+      )),
+    ].slice(0, 4);
+  }, [gatesDirectType, isAdmin, newGateUrl]);
 
   const setDaoData = () => {
     if (dao.status === 'pending') {
@@ -192,7 +212,7 @@ export function OverviewTab({ setTab, credentials, loyaltyPrograms }: Props) {
               'dao-profile:overview-tab.credentials-section.caption'
             )}`}
             action={
-              gates.length > 0 && (
+              gatesTaskType.length > 0 && (
                 <Button onClick={() => setTab(1)}>
                   {t('dao-profile:overview-tab.credentials-section.action')}
                 </Button>
@@ -201,33 +221,31 @@ export function OverviewTab({ setTab, credentials, loyaltyPrograms }: Props) {
             itemWidth={(theme) => theme.spacing(37.75)}
             gridSize={{ lg: 4 }}
           >
-            {gateList}
+            {gateListTaskType}
           </SectionWithSliderResponsive>
         </Stack>
-        {loyaltyPrograms && loyaltyPrograms.length > 0 && (
+        {credentialsDirectType && credentialsDirectType.length > 0 && (
           <Stack mt={5}>
             <SectionWithSliderResponsive
-              title={`${t('dao-profile:overview-tab.loyalty-section.title')}`}
+              title={`${t(
+                'dao-profile:overview-tab.issued-credentials-section.title'
+              )}`}
               caption={`${t(
-                'dao-profile:overview-tab.loyalty-section.caption'
+                'dao-profile:overview-tab.issued-credentials-section.caption'
               )}`}
               action={
-                loyaltyPrograms.length > 0 && (
+                gatesTaskType.length > 0 && (
                   <Button onClick={() => setTab(2)}>
-                    {t('dao-profile:overview-tab.loyalty-section.action')}
+                    {t(
+                      'dao-profile:overview-tab.issued-credentials-section.action'
+                    )}
                   </Button>
                 )
               }
               itemWidth={(theme) => theme.spacing(37.75)}
               gridSize={{ lg: 4 }}
             >
-              {loyaltyPrograms.map((program) => (
-                <LoyaltyProgramCard
-                  href={ROUTES.LOYALTY_PROGRAM.replace('[id]', program.id)}
-                  {...program}
-                  key={program.id}
-                />
-              ))}
+              {gateListDirectType}
             </SectionWithSliderResponsive>
           </Stack>
         )}

@@ -159,7 +159,7 @@ export default function CredentialTemplate({
               size="small"
               sx={{ mr: 'none' }}
               variant={category.selected ? 'filled' : 'outlined'}
-              color="default"
+              color="primary"
             />
           );
         })}
@@ -199,9 +199,6 @@ export default function CredentialTemplate({
                             updateFormState((prev) => ({
                               ...prev,
                               [input.name]: {
-                                preview: false,
-                                saveAsDraft: false,
-                                continue: true,
                                 dataModel: model,
                               },
                             }));
@@ -300,7 +297,6 @@ export default function CredentialTemplate({
                               <Button
                                 variant="outlined"
                                 onClick={() => {
-                                  console.log(model);
                                   setDataModelSelected(model);
                                   refetchStats();
                                   refetchStatsYesterday();

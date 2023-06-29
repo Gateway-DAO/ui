@@ -15,8 +15,27 @@ import MUICard from '@mui/material/Card';
 import { useDaoProfile } from '../../context';
 import { TableView } from './table-view';
 
-export function GatesTab() {
-  const { dao, isAdmin, credentials: gates } = useDaoProfile();
+export function GatesTab({
+  icon,
+  title,
+  subtitle,
+  type,
+}: {
+  icon: string;
+  title: string;
+  subtitle: string;
+  type: string;
+}) {
+  const {
+    dao,
+    isAdmin,
+    credentialsTaskType,
+    credentialsDirectType,
+    setOpenCreateQuestDialog,
+    setOpenCredentialCreationDialog,
+  } = useDaoProfile();
+
+  let gates = type == 'direct' ? credentialsDirectType : credentialsTaskType;
   const { view, toggleView } = useViewMode();
 
   const {
@@ -26,12 +45,15 @@ export function GatesTab() {
     toggleFilter,
     onClear,
   } = usePropertyFilter(gates?.daos_by_pk?.gates ?? [], 'categories');
-  const newGateUrl = `${ROUTES.GATE_NEW}?dao=${dao?.id}`;
+  const newGateUrl = `${ROUTES.DAO_PROFILE.replace(
+    '[slug]',
+    dao.slug
+  )}#create-quest`;
 
   const newGateCard = (
     <Link key="create-credential" passHref href={newGateUrl}>
       <EmptyCard
-        title="Create Credential"
+        title="Create a"
         subtitle="Create your first Credential and help talents find you"
         component="a"
         sx={{ minHeight: 440, maxWidth: { md: '25%' } }}
@@ -43,36 +65,6 @@ export function GatesTab() {
     <Box sx={{ py: 4 }}>
       {!!gates && gates?.daos_by_pk?.gates.length > 0 && (
         <>
-          <Stack
-            direction="row"
-            justifyContent="space-between"
-            sx={{ mb: 4, px: TOKENS.CONTAINER_PX }}
-          >
-            <Stack alignItems="flex-start" direction="row" gap={1.5}>
-              {isAdmin && (
-                <Link passHref href={newGateUrl}>
-                  <Button variant="contained" startIcon={<Add />} size="small">
-                    Create a Credential
-                  </Button>
-                </Link>
-              )}
-              <ChipDropdown
-                label="Categories"
-                values={availableFilters}
-                selected={selectedFilters}
-                onToggle={toggleFilter}
-                onClear={onClear}
-              />
-            </Stack>
-            <IconButton
-              type="button"
-              onClick={toggleView}
-              color="secondary"
-              aria-label="Toggle View"
-            >
-              {view === ViewMode.grid ? <ViewList /> : <ViewModule />}
-            </IconButton>
-          </Stack>
           {view === ViewMode.grid && (
             <Box
               sx={{
@@ -86,14 +78,23 @@ export function GatesTab() {
             >
               {isAdmin && (
                 <MUICard sx={{ position: 'relative' }}>
-                  <Link key="create-credential" passHref href={newGateUrl}>
+                  <Button
+                    key="create-credential"
+                    sx={{ height: '100%', p: 0 }}
+                    onClick={() =>
+                      type === 'direct'
+                        ? setOpenCredentialCreationDialog(true)
+                        : setOpenCreateQuestDialog(true)
+                    }
+                  >
                     <EmptyCard
-                      title="Create Credential"
-                      subtitle="Engage with your community"
+                      title={title}
+                      subtitle={subtitle}
                       component="a"
+                      icon={icon}
                       sx={{ height: '100%', width: '100%' }}
                     />
-                  </Link>
+                  </Button>
                 </MUICard>
               )}
 
