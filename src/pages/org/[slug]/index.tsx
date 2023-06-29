@@ -38,6 +38,8 @@ export default function DaoProfilePage({
     { enabled: !!daoProps?.id }
   );
 
+  console.log(credentialsQuery.data);
+
   return (
     <>
       <HeadContainer

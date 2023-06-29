@@ -132,8 +132,6 @@ export default function CredentialTemplate({
     }
   );
 
-  console.log(dataModelSelected);
-
   const calculateGrowth = (finalValue: number, startingNumber: number) => {
     if (startingNumber > 0)
       return parseFloat(
@@ -151,7 +149,7 @@ export default function CredentialTemplate({
           Find the template that fit you needs
         </Typography>
       </Box>
-      <Stack direction="row" my={7} spacing={1}>
+      <Stack direction="row" my={4} spacing={1}>
         {categories?.map((category, index) => {
           return (
             <Chip
@@ -160,6 +158,8 @@ export default function CredentialTemplate({
               label={category.name}
               size="small"
               sx={{ mr: 'none' }}
+              variant={category.selected ? 'filled' : 'outlined'}
+              color="default"
             />
           );
         })}
@@ -192,21 +192,41 @@ export default function CredentialTemplate({
                       {page.map((model, index) => (
                         <MUICard
                           key={index}
+                          role="radio"
+                          onClick={() => {
+                            setDataModelSelected(model);
+                            handleStep(true);
+                            updateFormState((prev) => ({
+                              ...prev,
+                              [input.name]: {
+                                preview: false,
+                                saveAsDraft: false,
+                                continue: true,
+                                dataModel: model,
+                              },
+                            }));
+                          }}
                           sx={{
                             position: 'relative',
                             cursor: 'pointer',
                             backgroundColor:
                               dataModelSelected?.id === model?.id
-                                ? 'rgba(255, 255, 255, 0.88)'
-                                : 'rgba(154, 83, 255, 0.08)',
+                                ? 'rgba(154, 83, 255, 0.08)'
+                                : 'rgba(154, 83, 255, 0.05)',
                             ':hover': {
-                              backgroundColor: 'rgba(154, 83, 255, 0.16)',
+                              backgroundColor:
+                                dataModelSelected?.id === model?.id
+                                  ? 'rgba(154, 83, 255, 0.16)'
+                                  : 'rgba(154, 83, 255, 0.05)',
                               img: {
                                 filter: 'none',
                                 mixBlendMode: 'unset',
                               },
                             },
-                            border: '1px solid rgba(154, 83, 255, 0.3);',
+                            border:
+                              dataModelSelected?.id === model?.id
+                                ? '1px solid rgba(154, 83, 255, 0.3)'
+                                : '#9A53FF',
                           }}
                         >
                           <CardActions
@@ -216,23 +236,13 @@ export default function CredentialTemplate({
                               justifyContent: 'flex-start',
                               alignItems: 'flex-start',
                               p: 0,
+                              mx: 0,
                             }}
                           >
                             <Radio
                               size="small"
                               color="primary"
                               checked={dataModelSelected?.id == model.id}
-                              onClick={() => {
-                                setDataModelSelected(model);
-                                handleStep(true);
-                                updateFormState((prev) => ({
-                                  ...prev,
-                                  [input.name]: {
-                                    preview: true,
-                                    saveAsDraft: true,
-                                  },
-                                }));
-                              }}
                             ></Radio>
                           </CardActions>
                           <CardHeader

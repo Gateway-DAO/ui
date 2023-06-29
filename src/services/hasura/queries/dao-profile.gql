@@ -106,6 +106,7 @@ query dao_gates_tab($id: uuid!) {
       image
       published
       loyalty_id
+      type
       dao {
         id
       }
@@ -156,7 +157,7 @@ query dao_info_by_id($id: uuid!) {
 }
 
 query check_org_by_gateway_id($gatewayId: String!) {
-  daos(where: {gateway_id: {_eq: $gatewayId}}) {
+  daos(where: { gateway_id: { _eq: $gatewayId } }) {
     id
   }
 }

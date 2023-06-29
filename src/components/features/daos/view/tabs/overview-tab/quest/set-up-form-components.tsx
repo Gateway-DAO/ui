@@ -1,6 +1,7 @@
 import { Dispatch } from 'react';
 import { CreateQuestTemplate } from './create-quest';
 import CredentialTemplate from './components/credential-template';
+import DetailsTemplate from './components/details-template';
 
 type Props = {
   updateFormState: Dispatch<any>;
@@ -20,11 +21,17 @@ export const setUpFormComponents = ({
       handleStep={handleStep}
       input={{ name: 'template', preview: false, saveAsDraft: false }}
     />,
-    <CredentialTemplate
+    <DetailsTemplate
       updateFormState={updateFormState}
       key={2}
+      fullFormState={fullFormState}
       handleStep={handleStep}
-      input={{ name: 'details', preview: false, saveAsDraft: false }}
+      input={{
+        name: 'details',
+        preview: false,
+        saveAsDraft: false,
+        continue: false,
+      }}
     />,
     <CredentialTemplate
       updateFormState={updateFormState}
