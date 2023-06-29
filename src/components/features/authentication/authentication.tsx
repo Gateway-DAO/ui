@@ -1,36 +1,39 @@
-import { useState } from 'react';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
+
+import { ROUTES } from '@/constants/routes';
+import { useAuth } from '@/providers/auth';
 
 import { ConnectMoreAuthDialog } from './components/connect-more-auth-dialog';
 import { AuthenticationMethods } from './sections/authentication-methods';
 import { ChooseEmail } from './sections/choose-email';
 import { ChooseGatewayId } from './sections/choose-gateway-id';
 import { VerifyToken } from './sections/verify-token';
-import { SignUpContext } from './signup-context';
+import { useSignUpContext } from './signup-context';
 
 export function Authentication() {
-  const [signUpSteps, setSignUpSteps] = useState(0);
-  const [showConnectMoreAuthDialog, setShowConnectMoreAuthDialog] =
-    useState(false);
+  const { step } = useSignUpContext();
+  const { me } = useAuth();
+  const router = useRouter();
 
-  const onSuccess = () => {
-    setShowConnectMoreAuthDialog(true);
-  };
-
-  const signUpProgress = {
-    0: <AuthenticationMethods navigateStep={setSignUpSteps} />,
-    1: <ChooseEmail navigateStep={setSignUpSteps} />,
-    2: <VerifyToken navigateStep={setSignUpSteps} />,
-    3: <ChooseGatewayId navigateStep={setSignUpSteps} onSuccess={onSuccess} />,
-  };
+  useEffect(() => {
+    if (me?.init && me?.protocol?.isCompleted) {
+      router.replace((router.query?.redirect as string) ?? ROUTES.EXPLORE);
+    }
+  }, [me?.init, router]);
 
   return (
     <>
-      <SignUpContext.Provider value={{ setSignUpSteps }}>
-        {signUpProgress[signUpSteps]}
-      </SignUpContext.Provider>
+      {step === 'initial' && <AuthenticationMethods />}
+      {step === 'set-email' && <ChooseEmail />}
+      {step === 'code-verification' && <VerifyToken />}
+      {step === 'set-gatewayid' && <ChooseGatewayId />}
+
       <ConnectMoreAuthDialog
-        open={showConnectMoreAuthDialog}
-        setOpen={setShowConnectMoreAuthDialog}
+        open={step === 'completed'}
+        onClose={() => {
+          console.log('WAWAW');
+        }}
       />
     </>
   );

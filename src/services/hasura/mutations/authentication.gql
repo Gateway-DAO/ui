@@ -9,6 +9,16 @@ mutation get_nonce($wallet: String!, $chain: protocol_api_Chain) {
   }
 }
 
+mutation create_email_nonce($email: String!) {
+  protocol {
+    createEmailNonce(input: {
+      email: $email
+    }) {
+      email
+    }
+  }
+}
+
 mutation login($signature: String!, $wallet: String!) {
   protocol {
     loginWallet(input: {

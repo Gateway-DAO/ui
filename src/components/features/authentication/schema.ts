@@ -8,7 +8,7 @@ export type TokenConfirmationSchema = Required<Pick<any, 'token'>>;
 const usernameRegex = /^(?=[a-z0-9._]{2,20}$)(?!.*[_.]{2})[^_.].*[^_.]$/;
 
 export const schemaEmail: SchemaOf<EmailSchema> = object({
-  email_address: string().min(2).email().defined(),
+  email_address: string().min(2).email().defined().label('Email address'),
 });
 
 export const schemaTokenConfirmation: SchemaOf<TokenConfirmationSchema> =
