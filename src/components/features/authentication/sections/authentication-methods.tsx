@@ -11,7 +11,11 @@ import { AuthenticationOptions } from '../components/authentication-options';
 import { Email } from '../components/email';
 import { TitleSubtitleField } from '../components/title-field';
 
-export function AuthenticationMethods() {
+type Props = {
+  navigateStep: (step: number) => void;
+};
+
+export function AuthenticationMethods({ navigateStep }: Props) {
   const { t } = useTranslation('authentication');
   const { me } = useAuth();
   const router = useRouter();
@@ -31,7 +35,7 @@ export function AuthenticationMethods() {
         title={t('form.signup-methods.title-send-email')}
         subtitle={t('form.signup-methods.caption-send-email')}
       />
-      <Email />
+      <Email navigateStep={navigateStep} />
       <AuthenticationOptions />
     </Stack>
   );

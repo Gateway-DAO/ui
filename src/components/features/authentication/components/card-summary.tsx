@@ -5,10 +5,10 @@ import { brandColors } from '@/theme';
 import EditIcon from '@mui/icons-material/Edit';
 import { alpha, Stack, Typography } from '@mui/material';
 
-import { NewUserSchema } from '../schema';
+import { EmailSchema } from '../schema';
 
 type Props = {
-  filledData: NewUserSchema;
+  filledData: EmailSchema;
   onClickEdit: () => void;
 };
 
@@ -36,7 +36,7 @@ export function CardSummary({ filledData, onClickEdit }: Props) {
           {t('card-summary-title')}
         </Typography>
         <Typography sx={{ color: alpha(brandColors.white.main, 0.7) }}>
-          @{filledData?.username}
+          @{filledData?.id}
         </Typography>
         <Typography sx={{ color: alpha(brandColors.white.main, 0.7) }}>
           {filledData?.email_address}

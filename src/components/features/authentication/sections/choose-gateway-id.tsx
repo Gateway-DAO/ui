@@ -1,25 +1,27 @@
 import useTranslation from 'next-translate/useTranslation';
-import { useContext } from 'react';
 
 import { LoadingButton } from '@/components/atoms/buttons/loading-button';
 import { useFormContext } from 'react-hook-form';
 
 import { Stack, TextField, Typography } from '@mui/material';
 
-import { EmailSignUpProgress } from '../components';
 import { TitleSubtitleField } from '../components/title-field';
-import { NewUserSchema } from '../schema';
+import { GatewayIdSchema } from '../schema';
 
-export function ChooseGatewayId() {
+type Props = {
+  navigateStep: (step: number) => void;
+  onSuccess: (value: boolean) => void;
+};
+
+export function ChooseGatewayId({ navigateStep, onSuccess }: Props) {
   const { t } = useTranslation('authentication');
-  const { setSignUpSteps, isLoading } = useContext(EmailSignUpProgress);
   const {
     register,
     formState: { errors },
-  } = useFormContext<NewUserSchema>();
+  } = useFormContext<GatewayIdSchema>();
 
-  if (errors.email_address?.message) {
-    setSignUpSteps(0);
+  if (errors.username?.message) {
+    navigateStep(0);
   }
 
   return (
@@ -47,10 +49,10 @@ export function ChooseGatewayId() {
           variant="contained"
           type="submit"
           sx={{ mt: 2, height: 48 }}
-          isLoading={isLoading}
+          isLoading={false} // Add isLoading
           onClick={() => {
-            if (errors.email_address?.message) {
-              setSignUpSteps(0);
+            if (errors.username?.message) {
+              navigateStep(0);
             }
           }}
         >
