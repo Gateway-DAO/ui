@@ -96,9 +96,9 @@ query dao_profile_by_slug($slug: String!) {
   }
 }
 
-query dao_gates_tab($id: uuid!) {
+query dao_gates_tab($id: uuid!, $type: gate_type!) {
   daos_by_pk(id: $id) {
-    gates {
+    gates(where: { type: { _eq: $type } }) {
       id
       title
       description

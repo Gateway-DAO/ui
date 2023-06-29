@@ -85,7 +85,6 @@ export function OrgSignUpTemplate({
   const initialStepValidity = getInitialStateStepValidity(true);
 
   const [stepValidity, setStepValidity] = useState(initialStepValidity);
-
   const handleNext = () => {
     changeStep(currentStep + 1);
     router.push({

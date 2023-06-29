@@ -20,8 +20,9 @@ export function DaoProfile() {
     dao,
     onRefetchFollowers,
     followersCount,
-    credentials,
     loyaltyPrograms,
+    credentialsDirectType,
+    credentialsTaskType,
   } = useDaoProfile();
   const { t } = useTranslation();
   const { activeTab, handleTabChange, setTab } = useTab();
@@ -72,15 +73,35 @@ export function DaoProfile() {
           <OverviewTab
             people={people}
             setTab={setTab}
-            credentials={credentials?.daos_by_pk?.gates}
+            credentialsDirectType={credentialsDirectType?.daos_by_pk?.gates}
+            credentialsTaskType={credentialsTaskType?.daos_by_pk?.gates}
             loyaltyPrograms={loyaltyPrograms}
           />
         ),
       },
       {
-        key: 'credentials',
+        key: 'quests',
         label: t('dao-profile:earn-tab'),
-        section: <GatesTab />,
+        section: (
+          <GatesTab
+            subtitle="Ask users to do tasks and earn credentials"
+            icon="gate"
+            type="task_based"
+            title="Create a Quest"
+          />
+        ),
+      },
+      {
+        key: 'quests',
+        label: t('dao-profile:issued-tab.title'),
+        section: (
+          <GatesTab
+            subtitle="Set the recipients and send directly"
+            icon="gate"
+            type="direct"
+            title="Send a Credential"
+          />
+        ),
       },
     ];
     const protocolTabs = [
@@ -117,7 +138,8 @@ export function DaoProfile() {
   }, [
     hasProtocolOrganization,
     loyaltyPrograms,
-    credentials?.daos_by_pk?.gates,
+    credentialsDirectType?.daos_by_pk?.gates,
+    credentialsTaskType?.daos_by_pk?.gates,
   ]);
 
   return (

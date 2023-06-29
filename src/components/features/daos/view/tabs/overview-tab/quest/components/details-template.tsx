@@ -61,7 +61,6 @@ export default function DetailsTemplate({
   input: any;
   fullFormState: any;
 }) {
-  console.log(fullFormState.template.dataModel);
   const { dataModel } = fullFormState.template;
   const { hasuraUserService, token } = useAuth();
   const { enqueueSnackbar } = useSnackbar();
@@ -69,10 +68,11 @@ export default function DetailsTemplate({
   const isP2PDataModel =
     dataModel.permissioning === Protocol_Api_PermissionType.All;
   const [credentialCreated, setCredentialCreated] = useState<string>(null);
- 
+
   const methods = useForm({
     resolver: async (values, _, options) => {
       const { claim, ...rawData } = values;
+      console.log(claim);
       let zodResult;
       if (isP2PDataModel) {
         zodResult = await zodResolver(createCredentialSchemaP2P)(
@@ -111,13 +111,21 @@ export default function DetailsTemplate({
         },
       };
     },
-    mode: 'onBlur',
+    mode: 'all',
     defaultValues: {
       dataModelId: dataModel.id,
       image: '/images/qr-code.png',
       claim: {},
     },
   });
+
+  const { formState } = methods;
+  const { isValid, errors } = formState;
+
+  useEffect(() => {
+    console.log(isValid, errors);
+    handleStep(isValid);
+  }, [isValid]);
 
   const createCredential = useMutation(
     ['createCredential'],
@@ -231,7 +239,7 @@ export default function DetailsTemplate({
         <Stack
           component="form"
           id="create-credential-form"
-          onSubmit={methods.handleSubmit(handleMutation)}
+          // onSubmit={methods.handleSubmit(handleMutation)}
         >
           <Stack sx={{ display: createCredential.isLoading ? 'none' : 'flex' }}>
             <Stack

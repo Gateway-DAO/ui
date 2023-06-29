@@ -1,6 +1,6 @@
 import { ReactNode, useMemo } from 'react';
 
-import { GateIcon } from '@/components/atoms/icons';
+import { QuestIcon } from '@/components/atoms/icons';
 
 import { Avatar, Box, type BoxProps, Stack, Typography } from '@mui/material';
 
@@ -23,7 +23,7 @@ export function EmptyCard({
   const renderIcon = useMemo(() => {
     switch (icon) {
       case 'gate':
-        return <GateIcon />;
+        return <QuestIcon />;
       default:
         return icon;
     }

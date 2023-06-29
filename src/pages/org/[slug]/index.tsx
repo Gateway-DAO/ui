@@ -12,6 +12,7 @@ import { hasuraApi, hasuraPublicService } from '@/services/hasura/api';
 import { getServerSession } from '@/services/next-auth/get-server-session';
 import { useQuery } from '@tanstack/react-query';
 import { PartialDeep } from 'type-fest';
+import { useToggle } from 'react-use';
 
 type Props = InferGetServerSidePropsType<typeof getServerSideProps>;
 
@@ -32,13 +33,27 @@ export default function DaoProfilePage({
     me?.following_dao?.find((fdao) => fdao.dao_id === daoProps?.id)?.dao
       ?.is_admin ?? false;
 
-  const credentialsQuery = useQuery(
-    ['dao-gates', daoProps?.id],
-    () => hasuraUserService.dao_gates_tab({ id: daoProps.id }),
+  // direct
+  const credentialsQueryDirectType = useQuery(
+    ['dao-gates-direct', daoProps?.id],
+    () => hasuraUserService.dao_gates_tab({ id: daoProps.id, type: 'direct' }),
     { enabled: !!daoProps?.id }
   );
 
-  console.log(credentialsQuery.data);
+  const credentialsQueryTaskType = useQuery(
+    ['dao-gates-task-based', daoProps?.id],
+    () =>
+      hasuraUserService.dao_gates_tab({
+        id: daoProps.id,
+        type: 'task_based',
+      }),
+    { enabled: !!daoProps?.id }
+  );
+
+  const [openCredentialCreationDialog, setOpenCredentialCreationDialog] =
+    useToggle(false);
+
+  const [openCreateQuestDialog, setOpenCreateQuestDialog] = useToggle(false);
 
   return (
     <>
@@ -57,8 +72,13 @@ export default function DaoProfilePage({
         <DaoProfileProvider
           dao={daoProps}
           isAdmin={isAdmin}
+          openCredentialCreationDialog={openCredentialCreationDialog}
+          openCreateQuestDialog={openCreateQuestDialog}
+          setOpenCreateQuestDialog={setOpenCreateQuestDialog}
+          setOpenCredentialCreationDialog={setOpenCredentialCreationDialog}
           followersCount={daoProps.followers_aggregate?.aggregate.count}
-          credentials={credentialsQuery.data}
+          credentialsDirectType={credentialsQueryDirectType.data}
+          credentialsTaskType={credentialsQueryTaskType.data}
           onRefetchFollowers={refreshData}
           issuedCredentials={issuedCredentials}
           stats={stats}

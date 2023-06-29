@@ -15,3 +15,4 @@ export { SubstackIcon } from './substack';
 export { SuccessfullyIcon } from './successfully-icon';
 export { SuccessfullyRoundedIcon } from './successfully-rounded';
 export { WalletConnectIcon } from './walletconnect';
+export { QuestIcon } from './quest';
