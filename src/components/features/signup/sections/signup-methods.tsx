@@ -31,22 +31,22 @@ export function SignUpMethods() {
   const orSignUpMethods = useMemo(() => {
     return [
       {
-        methodName: t('form.signup-methods.connect-wallet'),
+        methodName: t('form.authentications.connect-wallet'),
         icon: <WalletIconsTransition />,
         onClick: onOpenLogin,
       },
       {
-        methodName: t('form.signup-methods.connect-google'),
+        methodName: t('form.authentications.connect-google'),
         icon: <GoogleIcon />,
         onClick: () => null,
       },
       {
-        methodName: t('form.signup-methods.connect-twitter'),
+        methodName: t('form.authentications.connect-twitter'),
         icon: <TwitterIcon />,
         onClick: () => null,
       },
       {
-        methodName: t('form.signup-methods.connect-discord'),
+        methodName: t('form.authentications.connect-discord'),
         icon: <FaDiscord />,
         onClick: () => null,
       },
@@ -57,14 +57,14 @@ export function SignUpMethods() {
     <>
       <Stack gap={2} direction={'column'}>
         <Typography component="h1" variant="h4" sx={{ mb: 3 }}>
-          {t('form.signup-methods.title')}
+          {t('form.authentications.title')}
         </Typography>
         <Box>
           <Typography component="h2" variant="h6" fontSize={16}>
-            {t('form.signup-methods.title-send-email')}
+            {t('form.authentications.title-send-email')}
           </Typography>
           <Typography component="p" variant="caption">
-            {t('form.signup-methods.caption-send-email')}
+            {t('form.authentications.caption-send-email')}
           </Typography>
         </Box>
         <TextField
@@ -85,7 +85,7 @@ export function SignUpMethods() {
           sx={{ mt: 2, height: 48 }}
           onClick={onClick}
         >
-          {t('form.signup-methods.btn')}
+          {t('form.authentications.btn')}
         </Button>
       </Stack>
       <Typography
@@ -93,7 +93,7 @@ export function SignUpMethods() {
         textTransform={'uppercase'}
         color="text.secondary"
       >
-        {t('form.signup-methods.or')}
+        {t('form.authentications.or')}
       </Typography>
       <Stack gap={2.5}>
         {orSignUpMethods.map((method) => (
@@ -118,9 +118,9 @@ export function SignUpMethods() {
         ))}
       </Stack>
       <Typography color="text.secondary">
-        {t('form.signup-methods.terms-info')}{' '}
+        {t('form.authentications.terms-info')}{' '}
         <Link href="/terms" underline="none">
-          {t('form.signup-methods.terms-of-service')}{' '}
+          {t('form.authentications.terms-of-service')}{' '}
         </Link>
       </Typography>
     </>

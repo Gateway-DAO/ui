@@ -3,7 +3,7 @@
   "logo-alternative-text": "Gateway logo",
   "profile-created-sucess": "Profile created!",
   "form": {
-    "signup-methods": {
+    "authentications": {
       "title": "Enter the Gateway",
       "title-send-email": "Email",
       "caption-send-email": "Get started without wallet",
