@@ -30,6 +30,7 @@ fragment protocol_user on users {
   protocolUser {
     id
     gatewayId
+    gatewayIdUpdatedAt
   }
 }
 
