@@ -190,7 +190,8 @@ const ApprovalFlowDialog = ({
 };
 
 export function DaoHeader({ followCount, onFollow, onUnfollow }: Props) {
-  const { dao, credentials, isAdmin } = useDaoProfile();
+  const { dao, credentialsDirectType, credentialsTaskType, isAdmin } =
+    useDaoProfile();
   const { me, hasuraUserService } = useAuth();
   const router = useRouter();
 
@@ -356,7 +357,7 @@ export function DaoHeader({ followCount, onFollow, onUnfollow }: Props) {
             </Typography>
             <Typography variant="body1">
               {t('common:count.credential', {
-                count: credentials?.daos_by_pk?.gates.length ?? 0,
+                count: credentialsTaskType?.daos_by_pk?.gates.length ?? 0,
               })}
             </Typography>
           </Stack>
