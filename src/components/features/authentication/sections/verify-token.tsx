@@ -96,7 +96,7 @@ export function VerifyToken({ navigateStep }: Props) {
       onSubmit={methodsConfirmToken?.handleSubmit(onSubmitConfirmToken)}
     >
       <CardSummary
-        onClickEdit={() => console.log('teste')}
+        onClickEdit={() => navigateStep(0)}
         filledData={sendEmailData}
       />
       <Typography component="h1" variant="h4" sx={{ mb: 3 }}>

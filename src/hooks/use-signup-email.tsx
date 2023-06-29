@@ -24,7 +24,6 @@ export function useSignupEmail() {
   const methodsEmail = useForm<EmailSchema>({
     resolver: yupResolver(schemaEmail),
     defaultValues: {
-      id: me?.id ?? '',
       email_address: me?.email_address ?? '',
     },
   });
@@ -34,7 +33,7 @@ export function useSignupEmail() {
     async (data: EmailSchema) => {
       setSendEmailData(data);
       return hasuraUserService.protocol_signup({
-        gateway_id: data.id, // change backend to receive id
+        gateway_id: me?.id, // change backend to receive id
         email: data.email_address,
       });
     },

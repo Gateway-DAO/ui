@@ -1,8 +1,10 @@
 import useTranslation from 'next-translate/useTranslation';
 
-import { useSignupEmail } from '@/hooks/use-signup-email';
+import { useFormContext } from 'react-hook-form';
 
 import { Button, TextField } from '@mui/material';
+
+import { EmailSchema } from '../schema';
 
 type Props = {
   navigateStep: (step: number) => void;
@@ -10,11 +12,14 @@ type Props = {
 
 export function Email({ navigateStep }: Props) {
   const { t } = useTranslation('authentication');
-
-  const { methodsEmail } = useSignupEmail();
+  const {
+    register,
+    formState: { errors },
+    trigger,
+  } = useFormContext<EmailSchema>();
 
   async function onClick(e) {
-    const isValid = await methodsEmail?.formState?.isValid;
+    const isValid = await trigger('email_address');
     if (isValid) navigateStep(1);
   }
 
@@ -25,10 +30,10 @@ export function Email({ navigateStep }: Props) {
         label={t('form.fields.e-mail')}
         type="email"
         id="email_address"
-        {...methodsEmail?.register('email_address')}
-        error={!!methodsEmail?.formState?.errors}
+        {...register('email_address')}
+        error={!!errors.email_address}
         helperText={
-          (methodsEmail?.formState?.errors?.email_address?.message ??
+          (errors.email_address?.message ??
             t('form.fields.e-mail-helper-text')) as string
         }
       />
