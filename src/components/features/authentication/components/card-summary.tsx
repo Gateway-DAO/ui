@@ -5,7 +5,7 @@ import { brandColors } from '@/theme';
 import EditIcon from '@mui/icons-material/Edit';
 import { alpha, Stack, Typography } from '@mui/material';
 
-import { NewUserSchema } from './schema';
+import { NewUserSchema } from '../schema';
 
 type Props = {
   filledData: NewUserSchema;
@@ -13,7 +13,7 @@ type Props = {
 };
 
 export function CardSummary({ filledData, onClickEdit }: Props) {
-  const { t } = useTranslation('signin');
+  const { t } = useTranslation('authentication');
 
   return (
     <Stack

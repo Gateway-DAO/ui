@@ -25,7 +25,7 @@ const config = {
     [ROUTES.TERMS]: ['index', 'terms'],
     [ROUTES.CREDIT_SCORE]: ['credit-score'],
     [ROUTES.MY_PROFILE]: ['user-profile'],
-    [ROUTES.SIGNIN]: ['signin'],
+    [ROUTES.AUTHENTICATION]: ['authentication'],
     [ROUTES.PROFILE_EDIT]: ['profile-edit'],
     [ROUTES.PROFILE]: ['user-profile'],
     [ROUTES.SEARCH]: ['search'],

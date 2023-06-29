@@ -4,13 +4,14 @@ import { useContext } from 'react';
 import { LoadingButton } from '@/components/atoms/buttons/loading-button';
 import { useFormContext } from 'react-hook-form';
 
-import { Box, Stack, TextField, Typography } from '@mui/material';
+import { Stack, TextField, Typography } from '@mui/material';
 
-import { EmailSignUpProgress } from '../utlis';
-import { NewUserSchema } from '../utlis/schema';
+import { EmailSignUpProgress } from '../components';
+import { TitleSubtitleField } from '../components/title-field';
+import { NewUserSchema } from '../schema';
 
 export function ChooseGatewayId() {
-  const { t } = useTranslation('signin');
+  const { t } = useTranslation('authentication');
   const { setSignUpSteps, isLoading } = useContext(EmailSignUpProgress);
   const {
     register,
@@ -27,14 +28,10 @@ export function ChooseGatewayId() {
         <Typography component="h1" variant="h4" sx={{ mb: 3 }}>
           {t('form.gateway-id.title')}
         </Typography>
-        <Box>
-          <Typography component="h2" variant="h6" fontSize={16}>
-            {t('form.gateway-id.title-send-email')}
-          </Typography>
-          <Typography component="p" variant="caption">
-            {t('form.gateway-id.caption-send-email')}
-          </Typography>
-        </Box>
+        <TitleSubtitleField
+          title={t('form.gateway-id.title-send-email')}
+          subtitle={t('form.gateway-id.caption-send-email')}
+        />
         <TextField
           required
           label={t('form.fields.gateway-id')}

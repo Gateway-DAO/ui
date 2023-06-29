@@ -1,41 +1,38 @@
 import useTranslation from 'next-translate/useTranslation';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
 import { useState } from 'react';
 
-import Loading from '@/components/atoms/loadings/loading';
 import { errorMessages } from '@/constants/error-messages';
-import { ROUTES } from '@/constants/routes';
 import { useAuth } from '@/providers/auth';
-import { theme } from '@/theme';
 import { ErrorResponse } from '@/types/graphql';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useMutation } from '@tanstack/react-query';
 import { useSnackbar } from 'notistack';
-import { useForm, FormProvider } from 'react-hook-form';
+import { useForm, useFormContext } from 'react-hook-form';
 
-import CloseIcon from '@mui/icons-material/Close';
-import { alpha, Avatar, Box, Stack } from '@mui/material';
+import { Stack } from '@mui/material';
 
-import { FormSendEmail } from './forms/form-send-email';
-import { FormVerifyToken } from './forms/form-verify-token';
-import { ConnectMoreAuthDialog } from './utlis/connect-more-auth-dialog';
+import { EmailSignUpProgress } from './components';
+import { ConnectMoreAuthDialog } from './components/connect-more-auth-dialog';
 import {
-  schemaCreateAccount,
-  schemaTokenConfirmation,
   NewUserSchema,
   TokenConfirmationSchema,
-} from './utlis/schema';
+  schemaCreateAccount,
+  schemaTokenConfirmation,
+} from './schema';
+import { AuthenticationMethods } from './sections/authentication-methods';
+import { ChooseEmail } from './sections/choose-email';
+import { ChooseGatewayId } from './sections/choose-gateway-id';
 
-export function Signup() {
-  const { t } = useTranslation('signin');
+export function Authentication() {
+  const { me, hasuraUserService } = useAuth();
+  const { t } = useTranslation('authentication');
+  const [signUpSteps, setSignUpSteps] = useState(0);
+  const [sendEmailData, setSendEmailData] = useState(null);
   const [showConnectMoreAuthDialog, setShowConnectMoreAuthDialog] =
     useState(false);
-  const router = useRouter();
-  const { me, hasuraUserService } = useAuth();
-  const [sentEmail, setSentEmail] = useState(false);
-  const [sendEmailData, setSendEmailData] = useState(null);
-  const [profileCreated, _setProfileCreated] = useState(false);
+  const { handleSubmit } = useFormContext<NewUserSchema>();
+  const { enqueueSnackbar } = useSnackbar();
+
   const methodsSendEmail = useForm<NewUserSchema>({
     resolver: yupResolver(schemaCreateAccount),
     defaultValues: {
@@ -47,12 +44,10 @@ export function Signup() {
     resolver: yupResolver(schemaTokenConfirmation),
   });
 
-  const { enqueueSnackbar } = useSnackbar();
-
   const signupMutation = useMutation(
     ['signup'],
     async (data: NewUserSchema) => {
-      setSendEmailData(data);
+      // setSendEmailData(data);
       return hasuraUserService.protocol_signup({
         email: data.email_address,
         gateway_id: data.username,
@@ -60,7 +55,7 @@ export function Signup() {
     },
     {
       onSuccess(data) {
-        setSentEmail(true);
+        // setSentEmail(true);
         enqueueSnackbar(
           `${t('form.code-sent-to')} ${data.protocol.signup.email}`
         );
@@ -113,7 +108,7 @@ export function Signup() {
           } else {
             if (message === 'MAXIMUM_ATTEMPTS_REACHED') {
               methodsConfirmToken.setValue('token', '');
-              setSentEmail(false);
+              // setSentEmail(false);
             }
             enqueueSnackbar(
               errorMessages[message] || errorMessages.UNEXPECTED_ERROR,
@@ -133,89 +128,30 @@ export function Signup() {
   const onSubmitConfirmToken = (data: TokenConfirmationSchema) =>
     signupConfirmationMutation.mutate(data);
 
+  const signUpProgress = {
+    0: <AuthenticationMethods />,
+    1: <ChooseEmail />,
+    2: <ChooseGatewayId />,
+  };
+
   return (
-    <Stack
-      sx={{
-        backgroundImage: 'url(/images/signup-background.png)',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center center',
-        height: '100%',
-      }}
-    >
-      <Link
-        passHref
-        href={(router?.query?.redirect as string) ?? ROUTES.EXPLORE}
-      >
-        <Stack
-          sx={{
-            position: 'absolute',
-            top: { xs: 10, md: 38 },
-            right: { xs: 20, md: 48 },
-            zIndex: 1,
-            cursor: 'pointer',
-          }}
-        >
-          <Avatar sx={{ width: 40, height: 40, alignSelf: 'center' }}>
-            <CloseIcon />
-          </Avatar>
-        </Stack>
-      </Link>
+    <>
       <Stack
+        component="form"
+        direction="column"
         gap={2}
-        sx={{
-          maxWidth: { xs: '100%', md: '50%', lg: '582px' },
-          width: '100%',
-          backdropFilter: 'blur(25px)',
-          px: { xs: 2, md: 6 },
-          justifyContent: 'center',
-          height: '100%',
-          background: alpha(theme.palette.common.black, 0.03),
-          borderRight: '1px solid rgba(229, 229, 229, 0.12)',
-        }}
+        onSubmit={handleSubmit(onSubmitSendEmail)}
       >
-        <Box
-          sx={{
-            position: 'absolute',
-            top: { xs: 20, md: 48 },
-            left: { xs: 20, md: 48 },
-          }}
+        <EmailSignUpProgress.Provider
+          value={{ setSignUpSteps, isLoading: signupMutation.isLoading }}
         >
-          <img
-            src="/favicon-192.png"
-            alt={t('logo-alternative-text')}
-            width="30"
-          />
-        </Box>
-        {profileCreated ? (
-          <Loading />
-        ) : (
-          <>
-            {!sentEmail ? (
-              <FormProvider {...methodsSendEmail}>
-                <FormSendEmail
-                  onSubmitSendEmail={onSubmitSendEmail}
-                  isLoading={signupMutation.isLoading}
-                />
-              </FormProvider>
-            ) : (
-              <FormProvider {...methodsConfirmToken}>
-                <FormVerifyToken
-                  onSubmitConfirmToken={onSubmitConfirmToken}
-                  isLoadingConfirmToken={signupConfirmationMutation.isLoading}
-                  onSubmitSendEmail={onSubmitSendEmail}
-                  isLoadingSendEmail={signupMutation.isLoading}
-                  sendEmailData={sendEmailData}
-                  onClickEdit={() => setSentEmail(false)}
-                />
-              </FormProvider>
-            )}
-            <ConnectMoreAuthDialog
-              open={showConnectMoreAuthDialog}
-              setOpen={setShowConnectMoreAuthDialog}
-            />
-          </>
-        )}
+          {signUpProgress[signUpSteps]}
+        </EmailSignUpProgress.Provider>
       </Stack>
-    </Stack>
+      <ConnectMoreAuthDialog
+        open={showConnectMoreAuthDialog}
+        setOpen={setShowConnectMoreAuthDialog}
+      />
+    </>
   );
 }

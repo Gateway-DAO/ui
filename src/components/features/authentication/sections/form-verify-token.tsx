@@ -1,15 +1,15 @@
 import useTranslation from 'next-translate/useTranslation';
-import { Dispatch, SetStateAction } from 'react';
 
 import { useCountdown } from '@/hooks/use-countdown';
 import { useFormContext } from 'react-hook-form';
 import { useToggle } from 'react-use';
 
-import { Box, Stack, TextField, Typography } from '@mui/material';
+import { Stack, TextField, Typography } from '@mui/material';
 
 import { LoadingButton } from '../../../atoms/buttons/loading-button';
-import { CardSummary } from '../utlis/card-summary';
-import { TokenConfirmationSchema, NewUserSchema } from '../utlis/schema';
+import { CardSummary } from '../components/card-summary';
+import { TitleSubtitleField } from '../components/title-field';
+import { TokenConfirmationSchema, NewUserSchema } from '../schema';
 
 type Props = {
   onSubmitConfirmToken: (data: TokenConfirmationSchema) => void;
@@ -28,7 +28,7 @@ export function FormVerifyToken({
   sendEmailData,
   onClickEdit,
 }: Props) {
-  const { t } = useTranslation('signin');
+  const { t } = useTranslation('authentication');
   const {
     register,
     handleSubmit,
@@ -56,14 +56,10 @@ export function FormVerifyToken({
       <Typography component="h1" variant="h4" sx={{ mb: 3 }}>
         {t('title-verify-token')}
       </Typography>
-      <Box>
-        <Typography component="h2" variant="h6" fontSize={16}>
-          {t('form.title-verify-token')}
-        </Typography>
-        <Typography component="p" variant="caption">
-          {t('form.caption-verify-token')}
-        </Typography>
-      </Box>
+      <TitleSubtitleField
+        title={t('form.title-verify-token')}
+        subtitle={t('form.caption-verify-token')}
+      />
       <TextField
         required
         label={t('form.fields.code')}
