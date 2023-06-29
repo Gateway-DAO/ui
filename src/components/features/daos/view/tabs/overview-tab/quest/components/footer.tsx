@@ -10,18 +10,7 @@ export default function Footer({
   console.log(fullFormState);
   return (
     <>
-      <Divider />
-      <Stack direction={'row'} sx={{ mt: 2 }} justifyContent={'end'}>
-        <Button
-          variant="contained"
-          disabled={!fullFormState?.template?.preview}
-          onClick={() => handleNext()}
-        >
-          Preview
-        </Button>
-        <Button variant="contained">Save as Draft</Button>
-        <Button variant="contained">Contained</Button>
-      </Stack>
+      
     </>
   );
 }

@@ -34,6 +34,7 @@ import VerticalStepper from './components/vertical-setpper';
 import Footer from './components/footer';
 import CredentialTemplate from './components/credential-template';
 import { setUpFormComponents } from './set-up-form-components';
+import { LoadingButton } from '@/components/atoms/buttons/loading-button';
 
 export function CreateQuestTemplate({
   closeDialog,
@@ -57,11 +58,12 @@ export function CreateQuestTemplate({
     name: string;
     preview: boolean;
     saveAsDraft: boolean;
+    continue: boolean;
   }[] = [
-    { name: 'template', preview: false, saveAsDraft: false },
-    { name: 'details', preview: false, saveAsDraft: false },
-    { name: 'tasks', preview: true, saveAsDraft: false },
-    { name: 'settings', preview: true, saveAsDraft: false },
+    { name: 'template', preview: false, saveAsDraft: false, continue: false },
+    { name: 'details', preview: false, saveAsDraft: false, continue: false },
+    { name: 'tasks', preview: true, saveAsDraft: false, continue: false },
+    { name: 'settings', preview: true, saveAsDraft: false, continue: false },
   ];
 
   const formComponents = setUpFormComponents({
@@ -78,11 +80,10 @@ export function CreateQuestTemplate({
     isLastStep,
     getInitialStateStepValidity,
   } = useMultistepForm(formComponents);
-  console.log(fullFormState, handleStep);
   const initialStepValidity = getInitialStateStepValidity(false);
 
   const [stepValidity, setStepValidity] = useState(initialStepValidity);
-
+  console.log(stepValidity);
   const handleNext = () => {
     changeStep(currentStep + 1);
     router.push({
@@ -99,9 +100,9 @@ export function CreateQuestTemplate({
     });
   };
 
-  const handleSubmit = async () => {
-    await createOrganization.mutate();
-  };
+  const handlePreview = async () => {};
+
+  const handleSaveAsDraft = async () => {};
 
   const createOrganization = useMutation(
     [mutation.create_organization],
@@ -175,7 +176,6 @@ export function CreateQuestTemplate({
           md={6}
           lg={8}
           sx={{
-            pt: { xs: 3, md: 6 },
             flexGrow: 1,
             height: '100%',
             display: { md: 'flex' },
@@ -187,12 +187,11 @@ export function CreateQuestTemplate({
             direction="row"
             flexGrow={0}
             sx={{
-              mb: 6,
               px: { xs: 2, md: 6 },
-              display: { xs: 'none', md: 'flex' },
+              display: { md: 'flex' },
             }}
           >
-            <Avatar>
+            <Avatar sx={{ mt: 5 }}>
               <IconButton
                 onClick={() => {
                   closeDialog();
@@ -202,9 +201,55 @@ export function CreateQuestTemplate({
               </IconButton>
             </Avatar>
           </Stack>
-          <Stack direction="column" sx={{}}>
+          <Stack direction="column" sx={{ mt: -5 }}>
             {currentStepComponent}
-            <Footer fullFormState={fullFormState} handleNext={handleNext} />
+            <Divider />
+            <Stack
+              direction={'row'}
+              sx={{ mt: 2 }}
+              justifyContent={'space-between'}
+            >
+              <Button
+                variant="outlined"
+                onClick={() => handlePrevious()}
+                disabled={!fullFormState?.template?.back}
+              >
+                Back
+              </Button>
+              <Stack direction={'row'} justifyContent={'end'}>
+                <LoadingButton
+                  onClick={() => handlePreview()}
+                  variant="outlined"
+                  size="large"
+                  isLoading={false}
+                  sx={{ marginLeft: 2 }}
+                  disabled={!fullFormState?.template?.preview}
+                >
+                  Preview
+                </LoadingButton>
+                <LoadingButton
+                  onClick={() => handleSaveAsDraft()}
+                  variant="outlined"
+                  size="large"
+                  sx={{ marginLeft: 2 }}
+                  isLoading={false}
+                  disabled={true}
+                >
+                  Save as Draft
+                </LoadingButton>
+                <LoadingButton
+                  type="submit"
+                  form="gate-details-form"
+                  variant="contained"
+                  size="large"
+                  sx={{ marginLeft: 2 }}
+                  onClick={() => handleNext()}
+                  disabled={!fullFormState?.template?.continue}
+                >
+                  Continue
+                </LoadingButton>
+              </Stack>
+            </Stack>
           </Stack>
         </Grid>
       </Grid>
