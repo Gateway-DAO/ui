@@ -17,7 +17,7 @@ import {
   Typography,
 } from '@mui/material';
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
-import { Dispatch, useEffect, useState } from 'react';
+import { Dispatch, useEffect, useRef, useState } from 'react';
 import MUICard from '@mui/material/Card';
 import tags from '@/components/features/protocol/components/tags';
 import { CategoriesList } from '@/components/molecules/categories-list';
@@ -74,23 +74,26 @@ export default function CredentialTemplate({
     }
   );
   const [dataModelSelected, setDataModelSelected] = useState<any>();
+  const containerRef = useRef(null);
 
   useEffect(() => {
     let fetching = false;
-    const onScroll = async (event) => {
-      const { scrollHeight, scrollTop, clientHeight } =
-        event.target.scrollingElement;
-
+    const onScroll = async () => {
+      const { scrollHeight, scrollTop, clientHeight } = containerRef.current;
       if (!fetching && scrollHeight - scrollTop <= clientHeight * 1.05) {
         fetching = true;
         await fetchNextPage();
         fetching = false;
       }
     };
-
-    document.addEventListener('scroll', onScroll);
+    const containerElement = containerRef.current;
+    if (containerElement) {
+      containerElement.addEventListener('scroll', onScroll);
+    }
     return () => {
-      document.removeEventListener('scroll', onScroll);
+      if (containerElement) {
+        containerElement.removeEventListener('scroll', onScroll);
+      }
     };
   }, []);
 
@@ -169,9 +172,11 @@ export default function CredentialTemplate({
           display: 'flex',
           flexDirection: 'column',
           overflow: 'auto',
+          height: '400px',
         }}
+        ref={containerRef}
       >
-        <Box>
+        <Box sx={{ height: '400px' }}>
           {isLoading ? (
             <Loading />
           ) : (
@@ -193,6 +198,7 @@ export default function CredentialTemplate({
                         <MUICard
                           key={index}
                           role="radio"
+                          
                           onClick={() => {
                             setDataModelSelected(model);
                             handleStep(true);
