@@ -15,19 +15,23 @@ export function Authentication() {
   const {
     state: { step },
     onNewUser,
+    onGoToSetGatewayId,
   } = useSignUpContext();
   const { me } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
+    console.log(me?.init, me?.protocol?.isCompleted, step);
     if (me) {
       if (me?.init && me?.protocol?.isCompleted) {
         router.replace((router.query?.redirect as string) ?? ROUTES.EXPLORE);
-      } else {
+      } else if (!me?.email_address && step !== 'set-email') {
         onNewUser();
+      } else if (step !== 'set-gatewayid') {
+        onGoToSetGatewayId();
       }
     }
-  }, [me, router]);
+  }, [me?.init, me?.protocol?.isCompleted, step]);
 
   return (
     <>
