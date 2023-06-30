@@ -33,6 +33,20 @@ mutation login($signature: String!, $wallet: String!) {
   }
 }
 
+mutation loginEmail($email: String!, $code: Float!) {
+  protocol {
+    loginEmail(input: {
+      email: $email
+      code: $code
+    }) {
+      token
+      refresh_token
+      hasura_id
+      protocol_id
+    }
+  }
+}
+
 mutation refresh($refresh_token: String!) {
   protocol {
     refreshToken(input: {
