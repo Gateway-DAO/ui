@@ -5,14 +5,12 @@ import { brandColors } from '@/theme';
 import EditIcon from '@mui/icons-material/Edit';
 import { alpha, Stack, Typography } from '@mui/material';
 
-import { EmailSchema } from '../schema';
-
 type Props = {
-  filledData: EmailSchema;
+  email: string;
   onClickEdit: () => void;
 };
 
-export function CardSummary({ filledData, onClickEdit }: Props) {
+export function CardSummary({ email, onClickEdit }: Props) {
   const { t } = useTranslation('authentication');
 
   return (
@@ -36,10 +34,7 @@ export function CardSummary({ filledData, onClickEdit }: Props) {
           {t('card-summary-title')}
         </Typography>
         <Typography sx={{ color: alpha(brandColors.white.main, 0.7) }}>
-          @{filledData?.id}
-        </Typography>
-        <Typography sx={{ color: alpha(brandColors.white.main, 0.7) }}>
-          {filledData?.email_address}
+          {email}
         </Typography>
       </Stack>
       <EditIcon
