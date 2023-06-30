@@ -29,9 +29,9 @@ export default function DaoProfilePage({ org }: { org?: Daos }) {
       } = data;
 
       const uploadLogo = async () => {
-        const oldLogo = generateImageUrl(org.logo?.s3_key);
+        const oldLogo = generateImageUrl(org?.logo?.s3_key);
 
-        if (logo64 === oldLogo) return org.logo.id;
+        if (logo64 === oldLogo) return org?.logo?.id;
         return (
           await uploadImage({
             base64: logo64,
@@ -55,7 +55,7 @@ export default function DaoProfilePage({ org }: { org?: Daos }) {
       const [logo, bg] = await Promise.all([uploadLogo(), uploadBackground()]);
 
       return hasuraUserService.edit_dao({
-        id: org.id,
+        id: org?.id,
         ...daoData,
         logo_id: logo,
         background_id: bg,
@@ -65,11 +65,11 @@ export default function DaoProfilePage({ org }: { org?: Daos }) {
     {
       onSuccess(data) {
         const editedOrg = data.update_daos_by_pk;
-        const followingDaoObject = { dao_id: org.id, dao: editedOrg };
+        const followingDaoObject = { dao_id: org?.id, dao: editedOrg };
         onUpdateMe((oldMe) => ({
           ...oldMe,
           following_dao: oldMe.following_dao?.map((followingDao) => {
-            if (followingDao.dao_id === org.id) return followingDaoObject;
+            if (followingDao.dao_id === org?.id) return followingDaoObject;
             return followingDao;
           }),
         }));

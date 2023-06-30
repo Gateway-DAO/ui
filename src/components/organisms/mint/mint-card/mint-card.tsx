@@ -70,7 +70,6 @@ export const MintCard = ({ credential, sx, ...props }: MintCardProps) => {
         setTimeout(() => {
           props.onMint && props.onMint();
           setMintProcessStatus(Subjects.alreadyMinted);
-          // resetStatus();
         }, 2500);
       }
       status == 'error' && setMintProcessStatus(Subjects.failed);
@@ -98,17 +97,17 @@ export const MintCard = ({ credential, sx, ...props }: MintCardProps) => {
           protocolMintData: mintData?.[0] && {
             chain: mintData?.[0].chain,
             transaction:
-              mintData?.[0].chain === Protocol_Api_Chain.Evm
+              mintData?.[0]?.chain === Protocol_Api_Chain.Evm
                 ? getExplorer(
                     process.env.NEXT_PUBLIC_PROTOCOL_ENV === 'production'
                       ? 137
                       : 80001
                   ) +
                   '/tx/' +
-                  mintData?.[0].transaction
+                  mintData?.[0]?.transaction
                 : getSolanaExplorer(
                     process.env.NEXT_PUBLIC_SOLANA_CLUSTER,
-                    `/tx/${mintData?.[0].transaction}`
+                    `/tx/${mintData?.[0]?.transaction}`
                   ),
           },
         }
