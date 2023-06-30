@@ -78,7 +78,7 @@ const TwitterLikeContent = ({
         >
           <Box sx={{ padding: '0 10px 10px' }}>
             <TwitterTweetEmbed
-              tweetId={tweet_link.split('/').at(-1)}
+              tweetId={tweet_link.match(/status\/(\d+)/)[1]}
               options={{
                 cards: 'hidden',
                 conversation: 'none',
@@ -97,9 +97,9 @@ const TwitterLikeContent = ({
           >
             {twitterKeys && !completed && (
               <Button
-                href={`https://twitter.com/intent/like?tweet_id=${tweet_link
-                  .split('/')
-                  .at(-1)}`}
+                href={`https://twitter.com/intent/like?tweet_id=${
+                  tweet_link.match(/status\/(\d+)/)[1]
+                }`}
                 target="_blank"
                 sx={{
                   background: '#1DA1F2',

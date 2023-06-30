@@ -5,6 +5,15 @@ const KEYS = {
   consumer_secret: process.env.NEXT_PUBLIC_TWITTER_CONSUMER_SECRET,
 };
 
+function replaceTCOLinks(tweetText, urls) {
+  let updatedText = tweetText;
+  urls.forEach((url) => {
+    updatedText = updatedText.replace(url.url, url.expanded_url);
+  });
+
+  return updatedText;
+}
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     res.status(405).send({ message: 'Only POST requests allowed' });
@@ -33,7 +42,12 @@ export default async function handler(req, res) {
     let tweet_posted = false;
     if (response && response.length) {
       response.find((tweet) => {
-        if (tweet.full_text == tweet_text) {
+        const text: string = tweet.full_text;
+        const urls = tweet.entities.urls;
+
+        const expandedText = replaceTCOLinks(text, urls);
+
+        if (expandedText == tweet_text) {
           tweet_posted = true;
         }
       });
