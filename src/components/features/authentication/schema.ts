@@ -2,7 +2,9 @@ import { Users } from '@/services/hasura/types';
 import { object, string, SchemaOf } from 'yup';
 
 export type EmailSchema = Required<Pick<Users, 'email_address'>>;
-export type GatewayIdSchema = Required<Pick<Users, 'username'>>;
+export type GatewayIdSchema = {
+  gatewayId: string;
+};
 export type TokenConfirmationSchema = {
   code: string;
 };
@@ -19,13 +21,14 @@ export const schemaTokenConfirmation: SchemaOf<TokenConfirmationSchema> =
   });
 
 export const schemaGatewayId: SchemaOf<GatewayIdSchema> = object({
-  username: string()
+  gatewayId: string()
     .min(2)
     .max(20)
     .test({
-      name: 'username',
+      name: 'Gateway Id',
       message: 'Only lowercase letters, numbers and ._-',
       test: (value) => usernameRegex.test(value),
     })
-    .defined(),
+    .defined()
+    .label('Gateway Id'),
 });

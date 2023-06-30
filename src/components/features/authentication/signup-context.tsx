@@ -65,7 +65,7 @@ type Context = {
   onReset: () => void;
   onNewUser: () => void;
   onSumbitEmail: (email: string) => void;
-  onSubmitVerificationCode: () => void;
+  onGoToSetGatewayId: () => void;
   onCompleteLogin: () => void;
 };
 
@@ -74,7 +74,7 @@ export const SignUpContext = createContext<Context>({
   onReset: () => {},
   onNewUser: () => {},
   onSumbitEmail: () => {},
-  onSubmitVerificationCode: () => {},
+  onGoToSetGatewayId: () => {},
   onCompleteLogin: () => {},
 });
 
@@ -102,7 +102,7 @@ export function SignUpProvider({ children }: PropsWithChildren<unknown>) {
     });
   };
 
-  const onSubmitVerificationCode = () => {
+  const onGoToSetGatewayId = () => {
     dispatch({
       type: 'SET_GATEWAY_ID',
     });
@@ -121,7 +121,7 @@ export function SignUpProvider({ children }: PropsWithChildren<unknown>) {
         onReset,
         onNewUser,
         onSumbitEmail,
-        onSubmitVerificationCode,
+        onGoToSetGatewayId,
         onCompleteLogin,
       }}
     >

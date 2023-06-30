@@ -14,6 +14,7 @@ mutation create_email_nonce($email: String!) {
     createEmailNonce(input: {
       email: $email
     }) {
+      code
       email
     }
   }
@@ -62,12 +63,10 @@ mutation refresh($refresh_token: String!) {
 
 mutation protocol_signup(
   $gateway_id: String!
-  $email: String!
 ) {
   protocol {
-    signup(input:{
-      gateway_id: $gateway_id
-      email: $email
+    updateUser(input:{
+      gatewayId: $gateway_id
     }) {
       email
     }
