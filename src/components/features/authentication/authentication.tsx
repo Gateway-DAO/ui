@@ -14,15 +14,20 @@ import { useSignUpContext } from './signup-context';
 export function Authentication() {
   const {
     state: { step },
+    onNewUser,
   } = useSignUpContext();
   const { me } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
-    if (me?.init && me?.protocol?.isCompleted) {
-      router.replace((router.query?.redirect as string) ?? ROUTES.EXPLORE);
+    if (me) {
+      if (me?.init && me?.protocol?.isCompleted) {
+        router.replace((router.query?.redirect as string) ?? ROUTES.EXPLORE);
+      } else {
+        onNewUser();
+      }
     }
-  }, [me?.init, router]);
+  }, [me, router]);
 
   return (
     <>
