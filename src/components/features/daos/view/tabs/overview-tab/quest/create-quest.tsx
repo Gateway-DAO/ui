@@ -11,27 +11,19 @@ import { useMutation } from 'wagmi';
 import CloseIcon from '@mui/icons-material/Close';
 import {
   Avatar,
-  Box,
   Button,
   Divider,
   Grid,
   IconButton,
   Stack,
-  Typography,
   alpha,
   useTheme,
 } from '@mui/material';
-import FormStepper from '@/components/molecules/form-stepper/form-stepper';
-import RealTimeView, {
-  StepNames,
-} from '@/components/templates/org/signup/components/real-time-view';
-import { localStorageKeys } from '@/constants/local-storage-keys';
+
 import { mutation } from '@/constants/queries';
-import { ROUTES } from '@/constants/routes';
 import { useMultistepForm } from '@/hooks/use-multistep-form';
 import { useAuth } from '@/providers/auth';
 import VerticalStepper from './components/vertical-setpper';
-import CredentialTemplate from './components/credential-template';
 import { setUpFormComponents } from './set-up-form-components';
 import { LoadingButton } from '@/components/atoms/buttons/loading-button';
 
@@ -82,8 +74,7 @@ export function CreateQuestTemplate({
   const initialStepValidity = getInitialStateStepValidity(false);
 
   const [stepValidity, setStepValidity] = useState(initialStepValidity);
-  console.log(stepValidity[`${currentStep}`], currentStep);
-  console.log(formStepControl[currentStep]);
+
   const handleNext = () => {
     changeStep(currentStep + 1);
     router.push({
@@ -100,9 +91,14 @@ export function CreateQuestTemplate({
     });
   };
 
-  const handlePreview = async () => {};
+  const handlePreview = async () => {
+    console.log(fullFormState, currentStep);
+  };
 
-  const handleSaveAsDraft = async () => {};
+  // MAKE DB CALL
+  const handleSaveAsDraft = async () => {
+    console.log(fullFormState, currentStep);
+  };
 
   const createOrganization = useMutation(
     [mutation.create_organization],

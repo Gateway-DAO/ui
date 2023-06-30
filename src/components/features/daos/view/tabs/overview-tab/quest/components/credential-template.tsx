@@ -1,5 +1,4 @@
 import Loading from '@/components/atoms/loadings/loading';
-import { DataModelCard } from '@/components/molecules/cards/data-model-card';
 import { query } from '@/constants/queries';
 import { hasuraPublicService } from '@/services/hasura/api';
 import { TOKENS } from '@/theme';
@@ -11,25 +10,28 @@ import {
   CardHeader,
   Checkbox,
   Chip,
+  IconButton,
   Radio,
   Skeleton,
   Stack,
   Typography,
+  alpha,
 } from '@mui/material';
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { Dispatch, useEffect, useRef, useState } from 'react';
 import MUICard from '@mui/material/Card';
-import tags from '@/components/features/protocol/components/tags';
-import { CategoriesList } from '@/components/molecules/categories-list';
+
 import ModalRight from '@/components/molecules/modal/modal-right';
 import ExternalLink from '@/components/atoms/external-link';
 import DashboardCard from '@/components/features/protocol/components/dashboard-card';
 import OverviewCardInfo from '@/components/features/protocol/data-models/view/components/overview-card-info';
 import TableSchema from '@/components/features/protocol/data-models/view/components/table-schema';
-import { Protocol_Api_DataModel } from '@/services/hasura/types';
-import { PartialDeep } from 'type-fest';
+
 import InfoTitle from '@/components/features/protocol/components/info-title';
 import Tags from '@/components/features/protocol/components/tags';
+import { useWindowSize } from '@/hooks/use-window-size';
+import CloseIcon from '@mui/icons-material/Close';
+import { brandColors, theme } from '@/theme';
 
 export default function CredentialTemplate({
   updateFormState,
@@ -48,6 +50,7 @@ export default function CredentialTemplate({
     { name: 'Social', selected: false },
     { name: 'Service', selected: false },
   ];
+  const windowSize = useWindowSize();
 
   const [openDetialsModal, setOpenDetialsModal] = useState(false);
 
@@ -172,11 +175,10 @@ export default function CredentialTemplate({
           display: 'flex',
           flexDirection: 'column',
           overflow: 'auto',
-          height: '400px',
         }}
         ref={containerRef}
       >
-        <Box sx={{ height: '400px' }}>
+        <Box sx={{ height: windowSize.height }}>
           {isLoading ? (
             <Loading />
           ) : (
@@ -198,94 +200,90 @@ export default function CredentialTemplate({
                         <MUICard
                           key={index}
                           role="radio"
-                          
-                          onClick={() => {
-                            setDataModelSelected(model);
-                            handleStep(true);
-                            updateFormState((prev) => ({
-                              ...prev,
-                              [input.name]: {
-                                dataModel: model,
-                              },
-                            }));
-                          }}
                           sx={{
                             position: 'relative',
                             cursor: 'pointer',
                             backgroundColor:
                               dataModelSelected?.id === model?.id
-                                ? 'rgba(154, 83, 255, 0.08)'
+                                ? 'rgba(154, 83, 255, 0.16)'
                                 : 'rgba(154, 83, 255, 0.05)',
-                            ':hover': {
-                              backgroundColor:
+                            img: {
+                              filter:
                                 dataModelSelected?.id === model?.id
-                                  ? 'rgba(154, 83, 255, 0.16)'
-                                  : 'rgba(154, 83, 255, 0.05)',
-                              img: {
-                                filter: 'none',
-                                mixBlendMode: 'unset',
-                              },
+                                  ? 'none'
+                                  : '',
+                              mixBlendMode:
+                                dataModelSelected?.id === model?.id
+                                  ? 'unset'
+                                  : '',
                             },
-                            border:
-                              dataModelSelected?.id === model?.id
-                                ? '1px solid rgba(154, 83, 255, 0.3)'
-                                : '#9A53FF',
+
+                            border: '#9A53FF',
                           }}
                         >
                           <CardActions
                             disableSpacing
                             sx={{
                               display: 'flex',
-                              justifyContent: 'flex-start',
                               alignItems: 'flex-start',
                               p: 0,
                               mx: 0,
+                            }}
+                            onClick={() => {
+                              setDataModelSelected(model);
+                              handleStep(true);
+                              updateFormState((prev) => ({
+                                ...prev,
+                                [input.name]: {
+                                  dataModel: model,
+                                },
+                              }));
                             }}
                           >
                             <Radio
                               size="small"
                               color="primary"
+                              sx={{ position: 'absolute', top: 0, left: 0 }}
                               checked={dataModelSelected?.id == model.id}
                             ></Radio>
-                          </CardActions>
-                          <CardHeader
-                            sx={{
-                              pb: 1,
-                              '.MuiCardHeader-avatar': {
+                            <CardHeader
+                              sx={{
                                 width: '100%',
-                                mt: -2,
-                                mb: -1,
-                              },
-                              px: 0,
-                              backgroundColor: '#9A53FF',
-                              img: {
-                                filter: 'grayscale(1)',
-                                mixBlendMode: 'hard-light',
-                              },
-                              ':hover': {
-                                img: {
-                                  filter: 'none',
-                                  mixBlendMode: 'unset',
+                                pb: 1,
+                                '.MuiCardHeader-avatar': {
+                                  width: '100%',
+                                  mt: -2,
+                                  mb: -1,
                                 },
-                              },
-                            }}
-                            avatar={
-                              <img
-                                width={'100%'}
-                                src={
-                                  'https://user-images.githubusercontent.com/63333707/234028818-2faa0548-20ed-483d-93b6-6e09d1308da9.png'
-                                }
-                                alt={model.title}
-                                height={'auto'}
-                              />
-                            }
-                          />
-
+                                px: 0,
+                                backgroundColor: '#9A53FF',
+                                img: {
+                                  filter: 'grayscale(1)',
+                                  mixBlendMode: 'hard-light',
+                                },
+                                ':hover': {
+                                  img: {
+                                    filter: 'none',
+                                    mixBlendMode: 'unset',
+                                  },
+                                },
+                              }}
+                              avatar={
+                                <img
+                                  width={'100%'}
+                                  src={
+                                    'https://user-images.githubusercontent.com/63333707/234028818-2faa0548-20ed-483d-93b6-6e09d1308da9.png'
+                                  }
+                                  alt={model.title}
+                                  height={'auto'}
+                                />
+                              }
+                            />
+                          </CardActions>
                           <CardContent sx={{ py: 1, mb: 1 }}>
                             <Typography
                               gutterBottom
                               variant="h5"
-                              mb={5}
                               sx={{ cursor: 'pointer', color: '#9A53FF' }}
                             >
                               {model.title}
@@ -293,12 +291,14 @@ export default function CredentialTemplate({
 
                             <Stack
                               direction={'row'}
+                              mt={3}
                               justifyContent={'space-between'}
                             >
                               <Chip
                                 aria-hidden={false}
                                 label={model.tags[0]}
                                 size="small"
+                                sx={{ mt: 4.9 }}
                               />
                               <Button
                                 variant="outlined"
@@ -308,6 +308,7 @@ export default function CredentialTemplate({
                                   refetchStatsYesterday();
                                   setOpenDetialsModal(true);
                                 }}
+                                sx={{ mt: 4.2 }}
                               >
                                 View Details
                               </Button>
@@ -327,7 +328,23 @@ export default function CredentialTemplate({
         open={openDetialsModal}
         handleClose={() => setOpenDetialsModal(false)}
       >
-        <Stack sx={{ py: TOKENS.CONTAINER_PX }}>
+        <Stack
+          sx={{
+            pt: { xs: 3, md: 6 },
+            flexDirection: 'row',
+            justifyContent: 'flex-end',
+            width: '100%',
+          }}
+        >
+          <IconButton
+            aria-label="close"
+            sx={{ background: alpha(brandColors.white.main, 0.16) }}
+            onClick={() => setOpenDetialsModal(false)}
+          >
+            <CloseIcon />
+          </IconButton>
+        </Stack>
+        <Stack sx={{ py: TOKENS.CONTAINER_PX, mt: -8 }}>
           <InfoTitle
             title={dataModelSelected?.title}
             labelId={'label id'}
