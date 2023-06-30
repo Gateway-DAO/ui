@@ -7,21 +7,19 @@ import { Stack, TextField, Typography } from '@mui/material';
 
 import { TitleSubtitleField } from '../components/title-field';
 import { GatewayIdSchema } from '../schema';
+import { useSignUpContext } from '../signup-context';
 
-type Props = {
-  navigateStep: (step: number) => void;
-  onSuccess: (value: boolean) => void;
-};
-
-export function ChooseGatewayId({ navigateStep, onSuccess }: Props) {
+export function ChooseGatewayId() {
   const { t } = useTranslation('authentication');
   const {
     register,
     formState: { errors },
   } = useFormContext<GatewayIdSchema>();
 
+  const { setSignUpSteps } = useSignUpContext();
+
   if (errors.username?.message) {
-    navigateStep(0);
+    setSignUpSteps(0);
   }
 
   return (
@@ -52,7 +50,7 @@ export function ChooseGatewayId({ navigateStep, onSuccess }: Props) {
           isLoading={false} // Add isLoading
           onClick={() => {
             if (errors.username?.message) {
-              navigateStep(0);
+              setSignUpSteps(0);
             }
           }}
         >

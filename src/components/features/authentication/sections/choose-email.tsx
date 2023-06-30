@@ -1,7 +1,6 @@
 import useTranslation from 'next-translate/useTranslation';
 import { useEffect } from 'react';
 
-import { useSignupEmail } from '@/hooks/use-signup-email';
 import { useFormContext } from 'react-hook-form';
 
 import { Stack, Typography } from '@mui/material';
@@ -9,20 +8,20 @@ import { Stack, Typography } from '@mui/material';
 import { Email } from '../components/email';
 import { TitleSubtitleField } from '../components/title-field';
 import { EmailSchema } from '../schema';
+import { useSignUpContext } from '../signup-context';
+import { useSignupEmail } from '../use-signup-email';
 
-type Props = {
-  navigateStep: (step: number) => void;
-};
-
-export function ChooseEmail({ navigateStep }: Props) {
+export function ChooseEmail() {
   const { t } = useTranslation('authentication');
 
   const { signupEmailMutation, onSuccessMutation } = useSignupEmail();
 
+  const { setSignUpSteps } = useSignUpContext();
+
   const { handleSubmit } = useFormContext<EmailSchema>();
 
   useEffect(() => {
-    navigateStep(2);
+    setSignUpSteps(2);
   }, [onSuccessMutation]);
 
   const onSubmitEmail = (data: EmailSchema) => signupEmailMutation.mutate(data);
@@ -35,13 +34,13 @@ export function ChooseEmail({ navigateStep }: Props) {
       onSubmit={handleSubmit(onSubmitEmail)}
     >
       <Typography component="h1" variant="h4" sx={{ mb: 3 }}>
-        {t('form.signup-methods.title')}
+        {t('form.authentications.title')}
       </Typography>
       <TitleSubtitleField
-        title={t('form.signup-methods.title-send-email')}
-        subtitle={t('form.signup-methods.caption-send-email')}
+        title={t('form.authentications.title-send-email')}
+        subtitle={t('form.authentications.caption-send-email')}
       />
-      <Email navigateStep={navigateStep} />
+      <Email />
     </Stack>
   );
 }

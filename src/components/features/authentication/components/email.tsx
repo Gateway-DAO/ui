@@ -1,26 +1,25 @@
 import useTranslation from 'next-translate/useTranslation';
 
-import { useFormContext } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 
 import { Button, TextField } from '@mui/material';
 
 import { EmailSchema } from '../schema';
+import { useSignUpContext } from '../signup-context';
 
-type Props = {
-  navigateStep: (step: number) => void;
-};
-
-export function Email({ navigateStep }: Props) {
+export function Email() {
   const { t } = useTranslation('authentication');
   const {
     register,
     formState: { errors },
     trigger,
-  } = useFormContext<EmailSchema>();
+  } = useForm<EmailSchema>();
+
+  const { setSignUpSteps } = useSignUpContext();
 
   async function onClick(e) {
     const isValid = await trigger('email_address');
-    if (isValid) navigateStep(1);
+    if (isValid) setSignUpSteps(1);
   }
 
   return (
@@ -39,7 +38,7 @@ export function Email({ navigateStep }: Props) {
       />
 
       <Button variant="contained" sx={{ mt: 2, height: 48 }} onClick={onClick}>
-        {t('form.signup-methods.btn')}
+        {t('form.authentications.btn')}
       </Button>
     </>
   );

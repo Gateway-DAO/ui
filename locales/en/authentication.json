@@ -1,7 +1,15 @@
 {
-  "title-verify-token": "Verify your email to create your account",
   "logo-alternative-text": "Gateway logo",
   "profile-created-sucess": "Profile created!",
+  "steps": {
+    "choose-auth": {
+    },
+    "verify-token": {
+      "title": "Verify your email to create your account",
+      "description": "Paste here the code sent to email address",
+      "caption": "This code will expire in 30 minutes"
+    }
+  },
   "form": {
     "authentications": {
       "title": "Enter the Gateway",
@@ -22,7 +30,6 @@
       "caption-send-email": "Through the ID you are recognized and found within the Gateway",
       "btn": "create id"
     },
-    "title-verify-token": "Paste here the code sent to email address",
     "caption-verify-token": "This code will expire in 30 minutes",
     "fields": {
       "gateway-id": "Gateway ID",
