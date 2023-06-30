@@ -319,9 +319,9 @@ export function useInitUser(me: PartialDeep<SessionUser>) {
   useEffect(() => {
     if (!me) return;
     // Redirects to New User if authenticated but not registered
-    if (router.pathname !== ROUTES.NEW_USER && me && !me.init) {
+    if (router.pathname !== ROUTES.AUTHENTICATION && me && !me.init) {
       router.replace({
-        pathname: ROUTES.NEW_USER,
+        pathname: ROUTES.AUTHENTICATION,
         query: { callback: router.asPath },
       });
     }
