@@ -83,7 +83,7 @@ export function SignUpProvider({ children }: PropsWithChildren<unknown>) {
 
   const onReset = () => {
     dispatch({
-      type: 'NEW_USER',
+      type: 'RESET',
     });
   };
 
