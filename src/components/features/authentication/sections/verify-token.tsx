@@ -3,7 +3,6 @@ import useTranslation from 'next-translate/useTranslation';
 import { errorMessages } from '@/constants/error-messages';
 import { mutation } from '@/constants/queries';
 import { useCountdown } from '@/hooks/use-countdown';
-import { useSignupEmail } from '@/hooks/use-signup-email';
 import { useAuth } from '@/providers/auth';
 import { ErrorResponse } from '@/types/graphql';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -22,12 +21,10 @@ import {
   EmailSchema,
   schemaTokenConfirmation,
 } from '../schema';
+import { useSignUpContext } from '../signup-context';
+import { useSignupEmail } from '../use-signup-email';
 
-type Props = {
-  navigateStep: (step: number) => void;
-};
-
-export function VerifyToken({ navigateStep }: Props) {
+export function VerifyToken() {
   const { me, hasuraUserService } = useAuth();
   const { t } = useTranslation('authentication');
   const { enqueueSnackbar } = useSnackbar();
@@ -35,6 +32,10 @@ export function VerifyToken({ navigateStep }: Props) {
   const countdown = useCountdown({ time: 30, trigger: startCountdown });
 
   const { signupEmailMutation, sendEmailData } = useSignupEmail();
+  const {
+    state: { email },
+    onReset,
+  } = useSignUpContext();
 
   const onSubmitEmail = (data: EmailSchema) => signupEmailMutation.mutate(data);
 
@@ -60,7 +61,7 @@ export function VerifyToken({ navigateStep }: Props) {
     {
       onSuccess() {
         enqueueSnackbar(t('form.profile-created'));
-        navigateStep(3);
+        setSignUpSteps(3);
       },
       onError(error: ErrorResponse) {
         error.response?.errors?.forEach(({ message }) => {
@@ -71,7 +72,7 @@ export function VerifyToken({ navigateStep }: Props) {
           } else {
             if (message === 'MAXIMUM_ATTEMPTS_REACHED') {
               methodsConfirmToken.setValue('token', '');
-              navigateStep(1);
+              setSignUpSteps(1);
             }
             enqueueSnackbar(
               errorMessages[message] || errorMessages.UNEXPECTED_ERROR,
@@ -95,16 +96,13 @@ export function VerifyToken({ navigateStep }: Props) {
       gap={2}
       onSubmit={methodsConfirmToken?.handleSubmit(onSubmitConfirmToken)}
     >
-      <CardSummary
-        onClickEdit={() => navigateStep(0)}
-        filledData={sendEmailData}
-      />
+      <CardSummary onClickEdit={onReset} email={email} />
       <Typography component="h1" variant="h4" sx={{ mb: 3 }}>
-        {t('title-verify-token')}
+        {t('steps.verify-token.title')}
       </Typography>
       <TitleSubtitleField
-        title={t('form.title-verify-token')}
-        subtitle={t('form.caption-verify-token')}
+        title={t('steps.verify-token.description')}
+        subtitle={t('steps.verify-token.caption')}
       />
       <TextField
         required

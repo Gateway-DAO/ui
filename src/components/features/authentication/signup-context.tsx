@@ -18,7 +18,7 @@ type State = {
 };
 
 type Action = {
-  type: 'NEW_USER' | 'SET_EMAIL' | 'SET_GATEWAY_ID' | 'COMPLETE';
+  type: 'RESET' | 'NEW_USER' | 'SET_EMAIL' | 'SET_GATEWAY_ID' | 'COMPLETE';
   payload?: {
     email?: string;
     exists?: boolean;
@@ -32,6 +32,8 @@ const initialState: State = {
 // Reducer function
 const reducer = (state: State, action: Action): State => {
   switch (action.type) {
+    case 'RESET':
+      return initialState;
     case 'NEW_USER':
       return {
         ...state,
@@ -59,7 +61,8 @@ const reducer = (state: State, action: Action): State => {
 };
 
 type Context = {
-  step: AuthStep;
+  state: State;
+  onReset: () => void;
   onNewUser: () => void;
   onSumbitEmail: (email: string) => void;
   onSubmitVerificationCode: () => void;
@@ -67,7 +70,8 @@ type Context = {
 };
 
 export const SignUpContext = createContext<Context>({
-  step: 'initial',
+  state: initialState,
+  onReset: () => {},
   onNewUser: () => {},
   onSumbitEmail: () => {},
   onSubmitVerificationCode: () => {},
@@ -76,6 +80,12 @@ export const SignUpContext = createContext<Context>({
 
 export function SignUpProvider({ children }: PropsWithChildren<unknown>) {
   const [state, dispatch] = useReducer(reducer, initialState);
+
+  const onReset = () => {
+    dispatch({
+      type: 'NEW_USER',
+    });
+  };
 
   const onNewUser = () => {
     dispatch({
@@ -107,7 +117,8 @@ export function SignUpProvider({ children }: PropsWithChildren<unknown>) {
   return (
     <SignUpContext.Provider
       value={{
-        step: state.step,
+        state,
+        onReset,
         onNewUser,
         onSumbitEmail,
         onSubmitVerificationCode,

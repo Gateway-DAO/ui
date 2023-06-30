@@ -12,7 +12,9 @@ import { VerifyToken } from './sections/verify-token';
 import { useSignUpContext } from './signup-context';
 
 export function Authentication() {
-  const { step } = useSignUpContext();
+  const {
+    state: { step },
+  } = useSignUpContext();
   const { me } = useAuth();
   const router = useRouter();
 
