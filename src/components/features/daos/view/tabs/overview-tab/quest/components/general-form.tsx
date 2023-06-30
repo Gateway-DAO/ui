@@ -2,10 +2,8 @@ import { GateImageCard } from '@/components/features/gates/create/gate-image-car
 import CategoriesInput from '@/components/molecules/form/categories-input';
 import { CATEGORIES } from '@/constants/gate';
 import { Protocol_Api_CreateCredentialInput } from '@/services/hasura/types';
-import { Stack, TextField, Typography } from '@mui/material';
-import { errors } from 'ethers';
+import { Box, Stack, TextField, Typography } from '@mui/material';
 import useTranslation from 'next-translate/useTranslation';
-import React from 'react';
 import { useFormContext } from 'react-hook-form';
 
 export default function GeneralForm({ dataModel }: { dataModel: any }) {
@@ -18,6 +16,7 @@ export default function GeneralForm({ dataModel }: { dataModel: any }) {
   } = useFormContext<Protocol_Api_CreateCredentialInput>();
 
   const { t } = useTranslation('protocol');
+  console.log(t('data-model.issue-credential.title-label'));
   return (
     <Stack
       direction="row"
@@ -30,12 +29,18 @@ export default function GeneralForm({ dataModel }: { dataModel: any }) {
       }}
     >
       <Stack
-        mt={2}
         sx={{
           maxWidth: { xs: '100%', md: '50%', lg: '70%' },
           width: '100%',
+          mr: 3,
+          ml: -1,
         }}
       >
+        <Box>
+          <Typography variant="subtitle1" sx={{ mb: 3, mt: 7 }}>
+            General
+          </Typography>
+        </Box>
         <Stack direction="column">
           <Stack direction="column" gap={2}>
             <TextField
@@ -53,7 +58,7 @@ export default function GeneralForm({ dataModel }: { dataModel: any }) {
             />
             <CategoriesInput
               variant="outlined"
-              label={t('data-model.issue-credential.title-label')}
+              label="category"
               id="categories"
               name="categories"
               error={!!errors.tags}
@@ -65,7 +70,6 @@ export default function GeneralForm({ dataModel }: { dataModel: any }) {
                 '& div fieldset legend span': {
                   marginRight: '10px',
                 },
-                maxWidth: '400px',
               }}
               set={(tags: string[]) => {
                 setValue('tags', tags);
@@ -73,18 +77,20 @@ export default function GeneralForm({ dataModel }: { dataModel: any }) {
             />
             <TextField
               multiline
-              minRows={4}
-              label="Description"
-              id="description"
-              {...register('description')}
-              defaultValue={dataModel?.description}
-              error={!!errors.description}
-              helperText={errors.description?.message}
-              sx={{
-                '& div fieldset legend span': {
-                  marginRight: '12px',
+              rows={5}
+              InputProps={{
+                disableUnderline: true,
+                sx: {
+                  '&.Mui-focused': {
+                    borderBottom: '2px solid #9A53FF',
+                  },
                 },
               }}
+              label="description"
+              id="description"
+              {...register(`description`)}
+              error={!!errors.description}
+              helperText={errors.description?.message}
             />
           </Stack>
         </Stack>
@@ -105,7 +111,7 @@ export default function GeneralForm({ dataModel }: { dataModel: any }) {
         }
         sx={{
           width: 300,
-          marginTop: '15px',
+          marginTop: '55px',
         }}
       />
     </Stack>

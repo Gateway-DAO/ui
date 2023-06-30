@@ -1,20 +1,3 @@
-import useTranslation from 'next-translate/useTranslation';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { useMemo, useState } from 'react';
-
-import { AvatarFile } from '@/components/atoms/avatar-file';
-import MorePopover from '@/components/atoms/more-popover';
-import { useDaoProfile } from '@/components/features/daos/view';
-import ConfirmDialog from '@/components/molecules/modal/confirm-dialog';
-import { ROUTES } from '@/constants/routes';
-import { useAuth } from '@/providers/auth';
-import { Gates } from '@/services/hasura/types';
-import { badgeProps } from '@/utils/badge-props';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useSnackbar } from 'notistack';
-import type { PartialDeep } from 'type-fest';
-
 import {
   CardActionArea,
   CardHeader,
@@ -24,12 +7,9 @@ import {
 } from '@mui/material';
 import MUICard from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
-import { AddOrganizationIcon } from '@/components/atoms/icons/add-organization-icon';
 import Image from 'next/image';
 
-/* TODO: Arias and Labels */
 type InfoCardProps = {
   image: string;
   slug: string;

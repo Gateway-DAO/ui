@@ -2,22 +2,9 @@ import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
-import {
-  Avatar,
-  Box,
-  Button,
-  Dialog,
-  DialogTitle,
-  IconButton,
-  Link,
-  Stack,
-  Typography,
-} from '@mui/material';
+import { Avatar, Dialog, IconButton, Stack } from '@mui/material';
 import { SlideUp } from '@/components/atoms/transitions/transitions';
-import { HeadContainer } from '@/components/molecules/head-container';
-import { OrgSignUpTemplate } from '@/components/templates/org/signup/signup';
-import { GatesCard } from '@/components/molecules/cards/gates-card';
-import { ROUTES } from '@/constants/routes';
+
 import CloseIcon from '@mui/icons-material/Close';
 import { InfoCard } from './info-card';
 import { SectionWithSliderResponsive } from '@/components/molecules/sections';

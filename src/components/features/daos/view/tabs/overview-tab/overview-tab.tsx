@@ -1,10 +1,7 @@
 import useTranslation from 'next-translate/useTranslation';
-import Link from 'next/link';
 import React, { useMemo } from 'react';
 
-import { EmptyCard } from '@/components/molecules/cards/empty-card';
 import { GatesCard } from '@/components/molecules/cards/gates-card';
-import { LoyaltyProgramCard } from '@/components/molecules/cards/loyalty-program-card';
 import { SectionWithSliderResponsive } from '@/components/molecules/sections';
 import DataGrid, {
   IColumnGrid,
@@ -15,7 +12,6 @@ import { Gates, Loyalty_Program, Users } from '@/services/hasura/types';
 import { theme, TOKENS } from '@/theme';
 import { useQueryClient } from '@tanstack/react-query';
 import { PartialDeep } from 'type-fest';
-import { v4 as uuid } from 'uuid';
 
 import {
   Box,

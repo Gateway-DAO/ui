@@ -1,36 +1,13 @@
-import Loading from '@/components/atoms/loadings/loading';
-import { DataModelCard } from '@/components/molecules/cards/data-model-card';
-import { query } from '@/constants/queries';
-import { hasuraPublicService } from '@/services/hasura/api';
-import { TOKENS } from '@/theme';
-import {
-  Box,
-  Divider,
-  Radio,
-  Skeleton,
-  Stack,
-  Typography,
-} from '@mui/material';
-import { alpha, TextField } from '@mui/material';
+import { Box, Divider, Stack, Tooltip, Typography } from '@mui/material';
 import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
 import { Dispatch, useEffect, useState } from 'react';
-import MUICard from '@mui/material/Card';
-import tags from '@/components/features/protocol/components/tags';
-import { CategoriesList } from '@/components/molecules/categories-list';
-import ModalRight from '@/components/molecules/modal/modal-right';
-import ExternalLink from '@/components/atoms/external-link';
-import DashboardCard from '@/components/features/protocol/components/dashboard-card';
-import OverviewCardInfo from '@/components/features/protocol/data-models/view/components/overview-card-info';
-import TableSchema from '@/components/features/protocol/data-models/view/components/table-schema';
 import {
   Protocol_Api_CreateCredentialInput,
-  Protocol_Api_DataModel,
   Protocol_Api_PermissionType,
   Protocol_Create_CredentialMutationVariables,
 } from '@/services/hasura/types';
-import { PartialDeep } from 'type-fest';
-import InfoTitle from '@/components/features/protocol/components/info-title';
-import Tags from '@/components/features/protocol/components/tags';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+
 import { claimFields } from '@/components/features/protocol/credentials/create/components/ClaimTypes';
 import {
   createCredentialSchemaP2P,
@@ -45,9 +22,6 @@ import { useSnackbar } from 'notistack';
 import { FormProvider, useForm, useFormContext } from 'react-hook-form';
 import ClaimForm from '@/components/features/protocol/credentials/create/components/claim-form';
 
-import { GateImageCard } from '@/components/features/gates/create/gate-image-card/gate-image-card';
-import CategoriesInput from '@/components/molecules/form/categories-input';
-import { CATEGORIES } from '@/constants/gate';
 import GeneralForm from './general-form';
 
 export default function DetailsTemplate({
@@ -62,6 +36,7 @@ export default function DetailsTemplate({
   fullFormState: any;
 }) {
   const { dataModel } = fullFormState.template;
+  console.log(dataModel);
   const { hasuraUserService, token } = useAuth();
   const { enqueueSnackbar } = useSnackbar();
   const { t } = useTranslation('protocol');
@@ -72,7 +47,7 @@ export default function DetailsTemplate({
   const methods = useForm({
     resolver: async (values, _, options) => {
       const { claim, ...rawData } = values;
-      console.log(claim);
+      console.log(claim, rawData);
       let zodResult;
       if (isP2PDataModel) {
         zodResult = await zodResolver(createCredentialSchemaP2P)(
@@ -97,7 +72,10 @@ export default function DetailsTemplate({
       const claimResult = await ajvResolver(dataModel?.schema, {
         formats: fullFormats,
       })(claim, _, options as any);
-
+      console.log({
+        ...zodResult.values,
+        claim: claimResult.values,
+      });
       return {
         values: {
           ...zodResult.values,
@@ -244,12 +222,22 @@ export default function DetailsTemplate({
           <Stack sx={{ display: createCredential.isLoading ? 'none' : 'flex' }}>
             <Stack
               divider={
-                <Divider sx={{ mb: 2, mt: 2, mx: { xs: -3, md: -6 } }} />
+                <Divider sx={{ mb: 4, mt: 8, mx: { xs: -3, md: -8 } }} />
               }
               gap={3}
             >
               <GeneralForm dataModel={dataModel} />
-              <ClaimForm dataModel={dataModel} />
+              <Stack sx={{ mt: -4 }}>
+                <Stack direction="row" sx={{ mb: 4 }}>
+                  <Typography variant="subtitle1" sx={{ mr: 1 }}>
+                    Claim
+                  </Typography>
+                  <Tooltip title="A claim refers to a statement or assertion made by the issuer of the credential regarding the recipient's qualifications, achievements, or attributes. It serves as the basis for the credential being issued.">
+                    <InfoOutlinedIcon color={'inherit'} />
+                  </Tooltip>
+                </Stack>
+                <ClaimForm dataModel={dataModel} />
+              </Stack>
             </Stack>
           </Stack>
         </Stack>

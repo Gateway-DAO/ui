@@ -5,7 +5,6 @@ import { useEffect } from 'react';
 import { Dialog } from '@mui/material';
 import { SlideUp } from '@/components/atoms/transitions/transitions';
 import { HeadContainer } from '@/components/molecules/head-container';
-import { OrgSignUpTemplate } from '@/components/templates/org/signup/signup';
 import { CreateQuestTemplate } from './create-quest';
 
 export default function CreateQuestDialog({
