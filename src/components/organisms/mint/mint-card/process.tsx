@@ -11,9 +11,14 @@ export function processScreen(
   mintProcessStatus: Subjects,
   setMintProcessStatus: React.Dispatch<React.SetStateAction<Subjects>>,
   mint: (token_uri?: string) => void,
+  isProtocol = true,
   details: {
     error?: any;
     credential: PartialDeep<Credentials>;
+    protocolMintData?: {
+      chain: string;
+      transaction: string;
+    };
   }
 ) {
   switch (mintProcessStatus) {
@@ -36,7 +41,13 @@ export function processScreen(
     case Subjects.alreadyMinted:
       return (
         <DefaultMintScreen
-          {...{ mintProcessStatus, setMintProcessStatus, mint, details }}
+          {...{
+            mintProcessStatus,
+            setMintProcessStatus,
+            mint,
+            details,
+            isProtocol,
+          }}
         />
       );
   }
