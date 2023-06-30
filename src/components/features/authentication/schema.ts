@@ -3,7 +3,9 @@ import { object, string, SchemaOf } from 'yup';
 
 export type EmailSchema = Required<Pick<Users, 'email_address'>>;
 export type GatewayIdSchema = Required<Pick<Users, 'username'>>;
-export type TokenConfirmationSchema = Required<Pick<any, 'token'>>;
+export type TokenConfirmationSchema = {
+  code: string;
+};
 
 const usernameRegex = /^(?=[a-z0-9._]{2,20}$)(?!.*[_.]{2})[^_.].*[^_.]$/;
 
@@ -13,7 +15,7 @@ export const schemaEmail: SchemaOf<EmailSchema> = object({
 
 export const schemaTokenConfirmation: SchemaOf<TokenConfirmationSchema> =
   object({
-    token: string().max(6, 'Invalid code'),
+    code: string().min(6, 'Invalid code').max(6, 'Invalid code').label('Code'),
   });
 
 export const schemaGatewayId: SchemaOf<GatewayIdSchema> = object({

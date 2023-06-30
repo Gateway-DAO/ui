@@ -159,6 +159,7 @@ export const useAuthLogin = () => {
     ['signIn', address],
     async (signature: string) => {
       const res = await signIn('credentials', {
+        name: 'ethereum',
         redirect: false,
         wallet: address,
         signature,

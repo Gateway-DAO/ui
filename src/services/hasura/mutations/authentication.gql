@@ -19,7 +19,7 @@ mutation create_email_nonce($email: String!) {
   }
 }
 
-mutation login($signature: String!, $wallet: String!) {
+mutation login_wallet($signature: String!, $wallet: String!) {
   protocol {
     loginWallet(input: {
       signature: $signature
@@ -33,7 +33,7 @@ mutation login($signature: String!, $wallet: String!) {
   }
 }
 
-mutation loginEmail($email: String!, $code: Float!) {
+mutation login_email($email: String!, $code: Float!) {
   protocol {
     loginEmail(input: {
       email: $email

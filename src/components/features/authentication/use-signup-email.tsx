@@ -8,6 +8,7 @@ import {
 import { errorMessages } from '@/constants/error-messages';
 import { mutation } from '@/constants/queries';
 import { useAuth } from '@/providers/auth';
+import { hasuraPublicService } from '@/services/hasura/api';
 import { ErrorResponse } from '@/types/graphql';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useMutation } from '@tanstack/react-query';
@@ -69,5 +70,16 @@ export function useSignupEmail() {
     onSuccessMutation,
     setSendEmailData,
     sendEmailData,
+  };
+}
+
+export function useAuthenticationEmail() {
+  const createEmailNonce = useMutation(
+    ['create-email-nonce'],
+    hasuraPublicService.create_email_nonce
+  );
+
+  return {
+    createEmailNonce,
   };
 }

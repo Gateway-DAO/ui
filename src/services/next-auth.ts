@@ -6,12 +6,12 @@ import jwt from 'jsonwebtoken';
 import { SessionToken } from '../types/user';
 import { hasuraPublicService } from './hasura/api';
 
-const callLogin = async (
+const callLoginWallet = async (
   signature: string,
   wallet: string
 ): Promise<SessionToken> => {
   try {
-    const res = await hasuraPublicService.login({
+    const res = await hasuraPublicService.login_wallet({
       signature,
       wallet,
     });
@@ -29,6 +29,31 @@ const callLogin = async (
     throw new Error(e);
   }
 };
+
+const callLoginEmail = async (
+  email: string,
+  code: number
+): Promise<SessionToken> => {
+  try {
+    const res = await hasuraPublicService.login_email({
+      email,
+      code,
+    });
+
+    const { error } = (res as any) ?? {};
+
+    if (error || !res.protocol.loginEmail) {
+      return null;
+    }
+
+    const { __typename, ...token } = res.protocol.loginEmail;
+
+    return token;
+  } catch (e) {
+    throw new Error(e);
+  }
+};
+
 const callRefresh = async (token: SessionToken): Promise<SessionToken> => {
   try {
     const res = await hasuraPublicService.refresh({
@@ -56,6 +81,24 @@ const callRefresh = async (token: SessionToken): Promise<SessionToken> => {
 
 const providers = [
   CredentialsProvider({
+    name: 'email',
+    credentials: {
+      email: {
+        label: 'email',
+        type: 'text',
+        placeholder: 'john@example.com',
+      },
+      code: {
+        label: 'code',
+        type: 'text',
+        placeholder: '1234',
+      },
+    },
+    async authorize(credentials) {
+      return callLoginEmail(credentials.email, parseInt(credentials.code, 10));
+    },
+  }),
+  CredentialsProvider({
     name: 'ethereum',
     credentials: {
       wallet: {
@@ -70,7 +113,7 @@ const providers = [
       },
     },
     async authorize(credentials) {
-      return callLogin(credentials.signature, credentials.wallet);
+      return callLoginWallet(credentials.signature, credentials.wallet);
     },
   }),
 ];
