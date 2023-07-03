@@ -22,15 +22,15 @@ export function Authentication() {
 
   useEffect(() => {
     if (me) {
-      if (me?.init && me?.protocol?.isCompleted) {
+      if (me.email_address && me.username) {
         router.replace((router.query?.redirect as string) ?? ROUTES.EXPLORE);
       } else if (!me?.email_address && step !== 'set-email') {
         onNewUser();
-      } else if (step !== 'set-gatewayid') {
+      } else if (!me?.username && step !== 'set-gatewayid') {
         onGoToSetGatewayId();
       }
     }
-  }, [me?.init, me?.protocol?.isCompleted, step]);
+  }, [me, me?.username, me?.email_address, step]);
 
   return (
     <>
@@ -41,9 +41,7 @@ export function Authentication() {
 
       <ConnectMoreAuthDialog
         open={step === 'completed'}
-        onClose={() => {
-          console.log('WAWAW');
-        }}
+        onClose={(router.query?.redirect as string) ?? ROUTES.EXPLORE}
       />
     </>
   );

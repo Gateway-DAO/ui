@@ -320,11 +320,14 @@ export function useInitUser(me: PartialDeep<SessionUser>) {
   useEffect(() => {
     if (!me) return;
     // Redirects to New User if authenticated but not registered
-    if (router.pathname !== ROUTES.AUTHENTICATION && me && !me.init) {
-      const step: AuthStep = !me.username ? 'set-gatewayid' : 'set-email';
+    if (
+      router.pathname !== ROUTES.AUTHENTICATION &&
+      me &&
+      (!me.username || !me.email_address)
+    ) {
       router.replace({
         pathname: ROUTES.AUTHENTICATION,
-        query: { callback: router.asPath, step },
+        query: { redirect: router.asPath },
       });
     }
   }, [me, router]);

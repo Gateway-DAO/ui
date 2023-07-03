@@ -1,4 +1,3 @@
-import { useRouter } from 'next/router';
 import {
   PropsWithChildren,
   createContext,
@@ -6,20 +5,15 @@ import {
   useReducer,
 } from 'react';
 
+import { useAuth } from '@/providers/auth';
+import { SessionUser } from '@/types/user';
+
 export type AuthStep =
   | 'initial'
   | 'set-email'
   | 'code-verification'
   | 'set-gatewayid'
   | 'completed';
-
-const authSteps: AuthStep[] = [
-  'initial',
-  'set-email',
-  'code-verification',
-  'set-gatewayid',
-  'completed',
-];
 
 type State = {
   step: AuthStep;
@@ -36,6 +30,24 @@ type Action = {
 
 const initialState: State = {
   step: 'initial',
+};
+
+const initializeState = (me: SessionUser): State => {
+  let step = initialState.step;
+  if (me) {
+    if (!me.email_address) {
+      step = 'set-email';
+    } else if (!me.username) {
+      step = 'set-gatewayid';
+    } else {
+      step = 'completed';
+    }
+  }
+
+  return {
+    ...initialState,
+    step,
+  };
 };
 
 // Reducer function
@@ -88,13 +100,9 @@ export const SignUpContext = createContext<Context>({
 });
 
 export function SignUpProvider({ children }: PropsWithChildren<unknown>) {
-  const router = useRouter();
-  const [state, dispatch] = useReducer(reducer, {
-    ...initialState,
-    ...(router.query?.step && authSteps.includes(router.query.step as AuthStep)
-      ? { step: router.query.step as AuthStep }
-      : {}),
-  });
+  const { me } = useAuth();
+
+  const [state, dispatch] = useReducer(reducer, initializeState(me));
 
   const onReset = () => {
     dispatch({

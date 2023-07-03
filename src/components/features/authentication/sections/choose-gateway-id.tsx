@@ -23,21 +23,21 @@ export function ChooseGatewayId() {
     handleSubmit,
   } = useForm<GatewayIdSchema>();
 
-  // const {
-  //   state: { email },
-  // } = useSignUpContext();
+  const { onCompleteLogin } = useSignUpContext();
 
   const sendGatewayId = useMutation(
     ['new-user-gateway-id', me.id],
-    hasuraUserService.protocol_signup
+    hasuraUserService.update_gateway_id
   );
 
   const onSubmit = ({ gatewayId }: GatewayIdSchema) => {
     try {
       sendGatewayId.mutateAsync({
-        gateway_id: gatewayId,
+        id: me.id,
+        gatewayId,
       });
       onInvalidateMe();
+      onCompleteLogin();
     } catch (e) {
       enqueueSnackbar(e.message, {
         variant: 'error',

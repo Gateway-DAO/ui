@@ -1,4 +1,5 @@
 import useTranslation from 'next-translate/useTranslation';
+import NextLink from 'next/link';
 
 import { SocialAuthCard } from '@/components/atoms/social-auth-card';
 import { useConnectionHandlerGithub } from '@/services/social-connectors/github-connection';
@@ -8,9 +9,10 @@ import { FaTwitter } from 'react-icons/fa';
 
 import CloseIcon from '@mui/icons-material/Close';
 import { Avatar, Button, Dialog, Link, Stack, Typography } from '@mui/material';
+
 type Props = {
   open: boolean;
-  onClose: () => void;
+  onClose: string;
 };
 
 export function ConnectMoreAuthDialog({ open, onClose }: Props) {
@@ -40,17 +42,19 @@ export function ConnectMoreAuthDialog({ open, onClose }: Props) {
               alignSelf: 'center',
             }}
           />
-          <Avatar
-            sx={{
-              width: 40,
-              height: 40,
-              alignSelf: 'center',
-              cursor: 'pointer',
-            }}
-            onClick={onClose}
-          >
-            <CloseIcon />
-          </Avatar>
+          <NextLink href={onClose} passHref>
+            <Avatar
+              component="a"
+              sx={{
+                width: 40,
+                height: 40,
+                alignSelf: 'center',
+                cursor: 'pointer',
+              }}
+            >
+              <CloseIcon />
+            </Avatar>
+          </NextLink>
         </Stack>
         <Typography
           variant="h4"
@@ -110,14 +114,16 @@ export function ConnectMoreAuthDialog({ open, onClose }: Props) {
           .
         </Typography>
         <div>
-          <Button
-            size="large"
-            variant="contained"
-            sx={{ mt: 4 }}
-            onClick={onClose}
-          >
-            {t('connect-more.done')}
-          </Button>
+          <NextLink href={onClose} passHref>
+            <Button
+              component="a"
+              size="large"
+              variant="contained"
+              sx={{ mt: 4 }}
+            >
+              {t('connect-more.done')}
+            </Button>
+          </NextLink>
         </div>
       </Stack>
     </Dialog>

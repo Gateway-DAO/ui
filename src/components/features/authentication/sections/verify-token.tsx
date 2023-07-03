@@ -63,9 +63,6 @@ export function VerifyToken() {
         redirect: false,
       }),
     {
-      onSuccess() {
-        enqueueSnackbar(t('form.profile-created'));
-      },
       onError(error: ErrorResponse) {
         error.response?.errors?.forEach(({ message }) => {
           if (message === 'INVALID_CODE_VERIFICATION') {
