@@ -20,7 +20,7 @@ type Props = {
 
 export function AuthenticationTemplate({ children }: Props) {
   const { t } = useTranslation('authentication');
-  const { onSignOut } = useAuth();
+  const { onInvalidateMe, onSignOut } = useAuth();
   const router = useRouter();
   const {
     state: { step },
@@ -62,8 +62,9 @@ export function AuthenticationTemplate({ children }: Props) {
         </Link>
       ) : (
         <Button
-          onClick={() => {
+          onClick={async () => {
             onSignOut();
+            await onInvalidateMe();
             onReset();
           }}
         >
