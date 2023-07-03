@@ -28,7 +28,7 @@ export function ChooseGatewayId() {
   // } = useSignUpContext();
 
   const sendGatewayId = useMutation(
-    ['new-user-gateway-id', me.id],
+    ['new-user-gateway-id', me?.id],
     hasuraUserService.protocol_signup
   );
 
