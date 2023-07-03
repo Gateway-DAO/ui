@@ -7,10 +7,12 @@ import {
   useSignUpContext,
 } from '@/components/features/authentication/signup-context';
 import { ROUTES } from '@/constants/routes';
+import { useAuth } from '@/providers/auth';
 import { theme } from '@/theme';
 
 import CloseIcon from '@mui/icons-material/Close';
-import { alpha, Avatar, Box, Stack } from '@mui/material';
+import LogoutIcon from '@mui/icons-material/Logout';
+import { alpha, Avatar, Box, Button, Stack } from '@mui/material';
 
 type Props = {
   children: React.ReactNode;
@@ -18,9 +20,11 @@ type Props = {
 
 export function AuthenticationTemplate({ children }: Props) {
   const { t } = useTranslation('authentication');
+  const { onSignOut } = useAuth();
   const router = useRouter();
   const {
     state: { step },
+    onReset,
   } = useSignUpContext();
   const canShowClose = (
     ['initial', 'code-verification'] as AuthStep[]
@@ -35,7 +39,7 @@ export function AuthenticationTemplate({ children }: Props) {
         height: '100%',
       }}
     >
-      {canShowClose && (
+      {canShowClose ? (
         <Link
           passHref
           href={(router?.query?.redirect as string) ?? ROUTES.EXPLORE}
@@ -56,6 +60,29 @@ export function AuthenticationTemplate({ children }: Props) {
             <CloseIcon />
           </Avatar>
         </Link>
+      ) : (
+        <Button
+          onClick={() => {
+            onSignOut();
+            onReset();
+          }}
+        >
+          <Avatar
+            component="a"
+            sx={{
+              width: 40,
+              height: 40,
+              alignSelf: 'center',
+              position: 'absolute',
+              top: { xs: 10, md: 38 },
+              right: { xs: 20, md: 48 },
+              zIndex: 1,
+              cursor: 'pointer',
+            }}
+          >
+            <LogoutIcon />
+          </Avatar>
+        </Button>
       )}
       <Stack
         gap={2}
