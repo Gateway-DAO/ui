@@ -277,16 +277,17 @@ export const useAuthLogin = () => {
     cb: (oldMe: PartialDeep<SessionUser>) => PartialDeep<SessionUser>
   ) => queryClient.setQueryData(['me', user[0].data?.id], cb);
 
-  const onInvalidateMe = () => {
-    queryClient.resetQueries(['user_info', session?.data?.hasura_id]);
-    queryClient.resetQueries(['user_permissions', session?.data?.hasura_id]);
-    queryClient.resetQueries(['user_following', session?.data?.hasura_id]);
-    queryClient.resetQueries([
-      'user_task_progresses',
-      session?.data?.hasura_id,
+  const onInvalidateMe = async () =>
+    Promise.all([
+      queryClient.resetQueries(['user_info', session?.data?.hasura_id]),
+      queryClient.resetQueries(['user_permissions', session?.data?.hasura_id]),
+      queryClient.resetQueries(['user_following', session?.data?.hasura_id]),
+      queryClient.resetQueries([
+        'user_task_progresses',
+        session?.data?.hasura_id,
+      ]),
+      queryClient.resetQueries(['user_protocol', session?.data?.hasura_id]),
     ]);
-    queryClient.resetQueries(['user_protocol', session?.data?.hasura_id]);
-  };
 
   const onRetry = () => {
     setError(undefined);

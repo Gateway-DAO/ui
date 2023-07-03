@@ -22,15 +22,16 @@ export function Authentication() {
 
   useEffect(() => {
     if (me) {
-      if (me.email_address && me.username) {
-        router.replace((router.query?.redirect as string) ?? ROUTES.EXPLORE);
-      } else if (!me?.email_address && step !== 'set-email') {
+      if (step === 'completed') {
+        return;
+      }
+      if (!me?.email_address && step !== 'set-email') {
         onNewUser();
       } else if (!me?.username && step !== 'set-gatewayid') {
         onGoToSetGatewayId();
       }
     }
-  }, [me, me?.username, me?.email_address, step]);
+  }, [me?.username, me?.email_address, step]);
 
   return (
     <>

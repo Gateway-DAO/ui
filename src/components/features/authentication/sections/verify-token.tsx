@@ -4,6 +4,7 @@ import useTranslation from 'next-translate/useTranslation';
 import { errorMessages } from '@/constants/error-messages';
 import { mutation } from '@/constants/queries';
 import { useCountdown } from '@/hooks/use-countdown';
+import { hasuraPublicService } from '@/services/hasura/api';
 import { ErrorResponse } from '@/types/graphql';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useMutation } from '@tanstack/react-query';
@@ -18,7 +19,6 @@ import { CardSummary } from '../components/card-summary';
 import { TitleSubtitleField } from '../components/title-field';
 import { TokenConfirmationSchema, schemaTokenConfirmation } from '../schema';
 import { useSignUpContext } from '../signup-context';
-import { useAuthenticationEmail } from '../use-signup-email';
 
 export function VerifyToken() {
   const { t } = useTranslation('authentication');
@@ -35,11 +35,15 @@ export function VerifyToken() {
     resolver: yupResolver(schemaTokenConfirmation),
   });
 
-  const { createEmailNonce } = useAuthenticationEmail();
   const {
     state: { email },
     onReset,
   } = useSignUpContext();
+
+  const createEmailNonce = useMutation(
+    ['create-email-nonce'],
+    hasuraPublicService.create_email_nonce
+  );
 
   const onResendEmail = async () => {
     try {

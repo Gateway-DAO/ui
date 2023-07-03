@@ -25,18 +25,16 @@ export function ChooseGatewayId() {
 
   const { onCompleteLogin } = useSignUpContext();
 
-  const sendGatewayId = useMutation(
-    ['new-user-gateway-id', me.id],
-    hasuraUserService.update_gateway_id
-  );
+  const sendGatewayId = useMutation(hasuraUserService.update_gateway_id);
 
-  const onSubmit = ({ gatewayId }: GatewayIdSchema) => {
+  const onSubmit = async ({ gatewayId }: GatewayIdSchema) => {
     try {
-      sendGatewayId.mutateAsync({
+      const res = await sendGatewayId.mutateAsync({
         id: me.id,
         gatewayId,
       });
-      onInvalidateMe();
+      console.log('despues', res);
+      await onInvalidateMe();
       onCompleteLogin();
     } catch (e) {
       enqueueSnackbar(e.message, {
