@@ -12,16 +12,15 @@ import { VerifyToken } from './sections/verify-token';
 import { useSignUpContext } from './signup-context';
 
 export function Authentication() {
+  const router = useRouter();
+  const { me } = useAuth();
   const {
     state: { step },
     onNewUser,
     onGoToSetGatewayId,
   } = useSignUpContext();
-  const { me } = useAuth();
-  const router = useRouter();
 
   useEffect(() => {
-    console.log(me?.init, me?.protocol?.isCompleted, step);
     if (me) {
       if (me?.init && me?.protocol?.isCompleted) {
         router.replace((router.query?.redirect as string) ?? ROUTES.EXPLORE);
