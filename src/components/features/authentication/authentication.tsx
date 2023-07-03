@@ -23,6 +23,7 @@ export function Authentication() {
 
   useEffect(() => {
     if (me) {
+      console.log(me, step);
       if (step === 'completed') {
         return;
       }
@@ -34,6 +35,9 @@ export function Authentication() {
         onNewUser();
       } else if (!me?.username && step !== 'choose-gatewayid') {
         onGoToSetGatewayId();
+      }
+      if (me?.username && me?.email_address) {
+        router.push((router.query?.redirect as string) ?? ROUTES.EXPLORE);
       }
     }
   }, [me?.username, me?.email_address, step]);
