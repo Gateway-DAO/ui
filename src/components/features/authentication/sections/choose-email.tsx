@@ -1,22 +1,44 @@
 import useTranslation from 'next-translate/useTranslation';
 
-import { useFormContext } from 'react-hook-form';
+import { LoadingButton } from '@/components/atoms/buttons/loading-button';
+import { useAuth } from '@/providers/auth';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useMutation } from '@tanstack/react-query';
+import { useForm } from 'react-hook-form';
 
-import { Stack, Typography } from '@mui/material';
+import { Stack, TextField, Typography } from '@mui/material';
 
-import { Email } from '../components/email';
 import { TitleSubtitleField } from '../components/title-field';
-import { EmailSchema } from '../schema';
-import { useSignupEmail } from '../use-signup-email';
+import { EmailSchema, schemaEmail } from '../schema';
+import { useSignUpContext } from '../signup-context';
 
 export function ChooseEmail() {
   const { t } = useTranslation('authentication');
+  const { hasuraUserService } = useAuth();
+  const { onNewUserSubmitEmail } = useSignUpContext();
 
-  const { signupEmailMutation, onSuccessMutation } = useSignupEmail();
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+    setError,
+  } = useForm<EmailSchema>({
+    resolver: yupResolver(schemaEmail),
+  });
 
-  const { handleSubmit } = useFormContext<EmailSchema>();
+  const addEmail = useMutation(hasuraUserService.protocol_add_email);
 
-  const onSubmitEmail = (data: EmailSchema) => signupEmailMutation.mutate(data);
+  const onSubmitEmail = async (data: EmailSchema) => {
+    try {
+      await addEmail.mutateAsync({ email: data.email_address });
+      onNewUserSubmitEmail(data.email_address);
+    } catch (e) {
+      setError('email_address', {
+        type: 'manual',
+        message: e.message,
+      });
+    }
+  };
 
   return (
     <Stack
@@ -26,13 +48,35 @@ export function ChooseEmail() {
       onSubmit={handleSubmit(onSubmitEmail)}
     >
       <Typography component="h1" variant="h4" sx={{ mb: 3 }}>
-        {t('form.authentications.title')}
+        Connect your email to be notified when you receive a credential
       </Typography>
       <TitleSubtitleField
         title={t('form.authentications.title-send-email')}
-        subtitle={t('form.authentications.caption-send-email')}
+        subtitle={
+          'By email you are notified when you receive a credential and everything related to your account'
+        }
       />
-      <Email />
+      <TextField
+        required
+        label={t('form.fields.e-mail')}
+        type="email"
+        id="email_address"
+        {...register('email_address')}
+        error={!!errors.email_address}
+        helperText={
+          (errors.email_address?.message ??
+            t('form.fields.e-mail-helper-text')) as string
+        }
+      />
+
+      <LoadingButton
+        type="submit"
+        variant="contained"
+        sx={{ mt: 2, height: 48 }}
+        isLoading={addEmail.isLoading}
+      >
+        {t('form.authentications.btn')}
+      </LoadingButton>
     </Stack>
   );
 }

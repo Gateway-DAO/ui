@@ -10,9 +10,10 @@ import { SessionUser } from '@/types/user';
 
 export type AuthStep =
   | 'initial'
-  | 'set-email'
-  | 'code-verification'
-  | 'set-gatewayid'
+  | 'verify-email-login-code'
+  | 'choose-email'
+  | 'verify-email-add-code'
+  | 'choose-gatewayid'
   | 'completed';
 
 type State = {
@@ -21,7 +22,13 @@ type State = {
 };
 
 type Action = {
-  type: 'RESET' | 'NEW_USER' | 'SET_EMAIL' | 'SET_GATEWAY_ID' | 'COMPLETE';
+  type:
+    | 'RESET'
+    | 'NEW_USER'
+    | 'NEW_USER_CODE'
+    | 'SET_EMAIL'
+    | 'SET_GATEWAY_ID'
+    | 'COMPLETE';
   payload?: {
     email?: string;
     exists?: boolean;
@@ -36,9 +43,9 @@ const initializeState = (me: SessionUser): State => {
   let step = initialState.step;
   if (me) {
     if (!me.email_address) {
-      step = 'set-email';
+      step = 'choose-email';
     } else if (!me.username) {
-      step = 'set-gatewayid';
+      step = 'choose-gatewayid';
     } else {
       step = 'completed';
     }
@@ -55,21 +62,27 @@ const reducer = (state: State, action: Action): State => {
   switch (action.type) {
     case 'RESET':
       return initialState;
-    case 'NEW_USER':
-      return {
-        ...state,
-        step: 'set-email',
-      };
     case 'SET_EMAIL':
       return {
         ...state,
-        step: 'code-verification',
+        step: 'verify-email-login-code',
         email: action.payload?.email,
+      };
+    case 'NEW_USER':
+      return {
+        ...state,
+        step: 'choose-email',
+      };
+    case 'NEW_USER_CODE':
+      return {
+        ...state,
+        email: action.payload?.email,
+        step: 'verify-email-add-code',
       };
     case 'SET_GATEWAY_ID':
       return {
         ...state,
-        step: 'set-gatewayid',
+        step: 'choose-gatewayid',
       };
     case 'COMPLETE':
       return {
@@ -85,6 +98,7 @@ type Context = {
   state: State;
   onReset: () => void;
   onNewUser: () => void;
+  onNewUserSubmitEmail: (email: string) => void;
   onSumbitEmail: (email: string) => void;
   onGoToSetGatewayId: () => void;
   onCompleteLogin: () => void;
@@ -94,6 +108,7 @@ export const SignUpContext = createContext<Context>({
   state: initialState,
   onReset: () => {},
   onNewUser: () => {},
+  onNewUserSubmitEmail: () => {},
   onSumbitEmail: () => {},
   onGoToSetGatewayId: () => {},
   onCompleteLogin: () => {},
@@ -113,6 +128,15 @@ export function SignUpProvider({ children }: PropsWithChildren<unknown>) {
   const onNewUser = () => {
     dispatch({
       type: 'NEW_USER',
+    });
+  };
+
+  const onNewUserSubmitEmail = (email: string) => {
+    dispatch({
+      type: 'NEW_USER_CODE',
+      payload: {
+        email,
+      },
     });
   };
 
@@ -143,6 +167,7 @@ export function SignUpProvider({ children }: PropsWithChildren<unknown>) {
         state,
         onReset,
         onNewUser,
+        onNewUserSubmitEmail,
         onSumbitEmail,
         onGoToSetGatewayId,
         onCompleteLogin,

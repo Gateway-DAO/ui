@@ -94,3 +94,25 @@ mutation protocol_signup_confirmation(
     }
   }
 }
+
+mutation protocol_add_email($email: String!) {
+  protocol {
+    addEmail(email: $email) {
+      code
+      email
+    }
+  }
+}
+
+mutation protocol_add_email_confirmation($email: String!, $code: Float!) {
+  protocol {
+    addEmailConfirmation(input: {
+      email: $email
+      code: $code
+    }) {
+      user {
+        id
+      }
+    }
+  }
+}

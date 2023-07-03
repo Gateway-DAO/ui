@@ -4,6 +4,7 @@ import useTranslation from 'next-translate/useTranslation';
 import { errorMessages } from '@/constants/error-messages';
 import { mutation } from '@/constants/queries';
 import { useCountdown } from '@/hooks/use-countdown';
+import { useAuth } from '@/providers/auth';
 import { hasuraPublicService } from '@/services/hasura/api';
 import { ErrorResponse } from '@/types/graphql';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -20,9 +21,10 @@ import { TitleSubtitleField } from '../components/title-field';
 import { TokenConfirmationSchema, schemaTokenConfirmation } from '../schema';
 import { useSignUpContext } from '../signup-context';
 
-export function VerifyToken() {
+export function VerifyEmailAddToken() {
   const { t } = useTranslation('authentication');
   const { enqueueSnackbar } = useSnackbar();
+  const { hasuraUserService, onInvalidateMe } = useAuth();
   const [startCountdown, setStartCountdown] = useToggle(true);
   const countdown = useCountdown({ time: 30, trigger: startCountdown });
   const {
@@ -37,17 +39,17 @@ export function VerifyToken() {
 
   const {
     state: { email },
-    onReset,
+    onNewUser,
   } = useSignUpContext();
 
-  const createEmailNonce = useMutation(
+  const addEmailNonce = useMutation(
     ['create-email-nonce'],
-    hasuraPublicService.create_email_nonce
+    hasuraPublicService.protocol_add_email
   );
 
   const onResendEmail = async () => {
     try {
-      await createEmailNonce.mutateAsync({ email });
+      await addEmailNonce.mutateAsync({ email });
       setStartCountdown();
     } catch (e) {
       enqueueSnackbar(e.message, {
@@ -58,13 +60,10 @@ export function VerifyToken() {
   };
 
   const signupConfirmationMutation = useMutation(
-    [mutation.signup_token_verification],
-    async (data: TokenConfirmationSchema) =>
-      signIn('credentials', {
-        name: 'email',
+    async ({ code }: TokenConfirmationSchema) =>
+      hasuraUserService.protocol_add_email_confirmation({
+        code: parseInt(code, 10),
         email,
-        code: data.code,
-        redirect: false,
       }),
     {
       onError(error: ErrorResponse) {
@@ -76,7 +75,7 @@ export function VerifyToken() {
             setValue('code', '');
           } else {
             if (message === 'MAXIMUM_ATTEMPTS_REACHED') {
-              onReset;
+              onNewUser();
             }
             enqueueSnackbar(
               errorMessages[message] || errorMessages.UNEXPECTED_ERROR,
@@ -90,8 +89,15 @@ export function VerifyToken() {
     }
   );
 
-  const onSubmitConfirmToken = (data: TokenConfirmationSchema) => {
-    signupConfirmationMutation.mutate(data);
+  const onSubmitConfirmToken = async (data: TokenConfirmationSchema) => {
+    try {
+      await signupConfirmationMutation.mutateAsync(data);
+      onInvalidateMe();
+    } catch (e) {
+      enqueueSnackbar(e.message, {
+        variant: 'error',
+      });
+    }
   };
 
   return (
@@ -101,7 +107,7 @@ export function VerifyToken() {
       gap={2}
       onSubmit={handleSubmit(onSubmitConfirmToken)}
     >
-      <CardSummary onClickEdit={onReset} email={email} />
+      <CardSummary onClickEdit={onNewUser} email={email} />
       <Typography component="h1" variant="h4" sx={{ mb: 3 }}>
         {t('steps.verify-token.title')}
       </Typography>
@@ -132,7 +138,7 @@ export function VerifyToken() {
           variant="outlined"
           type="button"
           sx={{ height: 48 }}
-          isLoading={createEmailNonce.isLoading}
+          isLoading={addEmailNonce.isLoading}
           onClick={onResendEmail}
           disabled={countdown?.counting}
         >

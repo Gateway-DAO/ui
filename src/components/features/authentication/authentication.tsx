@@ -8,7 +8,8 @@ import { ConnectMoreAuthDialog } from './components/connect-more-auth-dialog';
 import { AuthenticationMethods } from './sections/authentication-methods';
 import { ChooseEmail } from './sections/choose-email';
 import { ChooseGatewayId } from './sections/choose-gateway-id';
-import { VerifyToken } from './sections/verify-token';
+import { VerifyEmailAddToken } from './sections/verify-email-add-token';
+import { VerifyEmailLoginToken } from './sections/verify-email-login-token';
 import { useSignUpContext } from './signup-context';
 
 export function Authentication() {
@@ -25,9 +26,13 @@ export function Authentication() {
       if (step === 'completed') {
         return;
       }
-      if (!me?.email_address && step !== 'set-email') {
+      if (
+        !me?.email_address &&
+        step !== 'choose-email' &&
+        step !== 'verify-email-add-code'
+      ) {
         onNewUser();
-      } else if (!me?.username && step !== 'set-gatewayid') {
+      } else if (!me?.username && step !== 'choose-gatewayid') {
         onGoToSetGatewayId();
       }
     }
@@ -36,9 +41,10 @@ export function Authentication() {
   return (
     <>
       {step === 'initial' && <AuthenticationMethods />}
-      {step === 'set-email' && <ChooseEmail />}
-      {step === 'code-verification' && <VerifyToken />}
-      {step === 'set-gatewayid' && <ChooseGatewayId />}
+      {step === 'verify-email-login-code' && <VerifyEmailLoginToken />}
+      {step === 'choose-email' && <ChooseEmail />}
+      {step === 'verify-email-add-code' && <VerifyEmailAddToken />}
+      {step === 'choose-gatewayid' && <ChooseGatewayId />}
 
       <ConnectMoreAuthDialog
         open={step === 'completed'}

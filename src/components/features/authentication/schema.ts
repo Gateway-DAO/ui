@@ -8,6 +8,10 @@ export type GatewayIdSchema = {
 export type TokenConfirmationSchema = {
   code: string;
 };
+export type AddEmailConfirmationSchema = {
+  code: string;
+  email: string;
+};
 
 const usernameRegex = /^(?=[a-z0-9._]{2,20}$)(?!.*[_.]{2})[^_.].*[^_.]$/;
 

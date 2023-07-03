@@ -25,8 +25,6 @@ export function ClientNav() {
     );
   }
 
-  console.log(router);
-
   return (
     <Link passHref href={`${ROUTES.AUTHENTICATION}?redirect=${router.asPath}`}>
       <LoadingButton

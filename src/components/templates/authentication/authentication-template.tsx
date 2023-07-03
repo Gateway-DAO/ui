@@ -27,7 +27,7 @@ export function AuthenticationTemplate({ children }: Props) {
     onReset,
   } = useSignUpContext();
   const canShowClose = (
-    ['initial', 'code-verification'] as AuthStep[]
+    ['initial', 'verify-email-login-code'] as AuthStep[]
   ).includes(step);
 
   return (
