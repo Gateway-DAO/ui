@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import {
   PropsWithChildren,
   createContext,
@@ -11,6 +12,14 @@ export type AuthStep =
   | 'code-verification'
   | 'set-gatewayid'
   | 'completed';
+
+const authSteps: AuthStep[] = [
+  'initial',
+  'set-email',
+  'code-verification',
+  'set-gatewayid',
+  'completed',
+];
 
 type State = {
   step: AuthStep;
@@ -79,7 +88,13 @@ export const SignUpContext = createContext<Context>({
 });
 
 export function SignUpProvider({ children }: PropsWithChildren<unknown>) {
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const router = useRouter();
+  const [state, dispatch] = useReducer(reducer, {
+    ...initialState,
+    ...(router.query?.step && authSteps.includes(router.query.step as AuthStep)
+      ? { step: router.query.step as AuthStep }
+      : {}),
+  });
 
   const onReset = () => {
     dispatch({

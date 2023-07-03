@@ -4,6 +4,7 @@ import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
+import type { AuthStep } from '@/components/features/authentication/signup-context';
 import { ROUTES } from '@/constants/routes';
 import { hasuraPublicService, hasuraApi } from '@/services/hasura/api';
 import { Protocol_Api_Chain } from '@/services/hasura/types';
@@ -21,7 +22,7 @@ import { useAccount, useDisconnect, useSignMessage } from 'wagmi';
 
 import { ErrorResponse } from '../../types/graphql';
 import { SessionUser } from '../../types/user';
-import { AuthStep } from './types';
+import type { WalletAuthStep } from './types';
 
 /**
  * Handles Logoff session if there's no wallet connected
@@ -255,7 +256,7 @@ export const useAuthLogin = () => {
     }
   );
 
-  const authStep: AuthStep = useMemo(() => {
+  const walletAuthStep: WalletAuthStep = useMemo(() => {
     if (error) return 'error';
     if (nonce.isFetching) return 'get-nonce';
     if (sendSignature.isLoading) return 'send-signature';
@@ -301,7 +302,7 @@ export const useAuthLogin = () => {
   return {
     me: token ? me.data : undefined,
     error,
-    authStep,
+    walletAuthStep,
     onUpdateMe,
     onSignOut,
     onRetry,
@@ -320,9 +321,10 @@ export function useInitUser(me: PartialDeep<SessionUser>) {
     if (!me) return;
     // Redirects to New User if authenticated but not registered
     if (router.pathname !== ROUTES.AUTHENTICATION && me && !me.init) {
+      const step: AuthStep = !me.username ? 'set-gatewayid' : 'set-email';
       router.replace({
         pathname: ROUTES.AUTHENTICATION,
-        query: { callback: router.asPath },
+        query: { callback: router.asPath, step },
       });
     }
   }, [me, router]);
