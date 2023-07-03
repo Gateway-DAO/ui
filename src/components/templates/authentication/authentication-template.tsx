@@ -2,6 +2,10 @@ import useTranslation from 'next-translate/useTranslation';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
+import {
+  type AuthStep,
+  useSignUpContext,
+} from '@/components/features/authentication/signup-context';
 import { ROUTES } from '@/constants/routes';
 import { theme } from '@/theme';
 
@@ -15,6 +19,12 @@ type Props = {
 export function AuthenticationTemplate({ children }: Props) {
   const { t } = useTranslation('authentication');
   const router = useRouter();
+  const {
+    state: { step },
+  } = useSignUpContext();
+  const canShowClose = (
+    ['initial', 'code-verification'] as AuthStep[]
+  ).includes(step);
 
   return (
     <Stack
@@ -25,24 +35,28 @@ export function AuthenticationTemplate({ children }: Props) {
         height: '100%',
       }}
     >
-      <Link
-        passHref
-        href={(router?.query?.redirect as string) ?? ROUTES.EXPLORE}
-      >
-        <Stack
-          sx={{
-            position: 'absolute',
-            top: { xs: 10, md: 38 },
-            right: { xs: 20, md: 48 },
-            zIndex: 1,
-            cursor: 'pointer',
-          }}
+      {canShowClose && (
+        <Link
+          passHref
+          href={(router?.query?.redirect as string) ?? ROUTES.EXPLORE}
         >
-          <Avatar sx={{ width: 40, height: 40, alignSelf: 'center' }}>
+          <Avatar
+            component="a"
+            sx={{
+              width: 40,
+              height: 40,
+              alignSelf: 'center',
+              position: 'absolute',
+              top: { xs: 10, md: 38 },
+              right: { xs: 20, md: 48 },
+              zIndex: 1,
+              cursor: 'pointer',
+            }}
+          >
             <CloseIcon />
           </Avatar>
-        </Stack>
-      </Link>
+        </Link>
+      )}
       <Stack
         gap={2}
         sx={{

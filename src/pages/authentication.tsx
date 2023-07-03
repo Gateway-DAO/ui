@@ -11,11 +11,11 @@ export default function AuthenticationPage() {
   return (
     <>
       <HeadContainer title={t('form.authentications.title')} />
-      <AuthenticationTemplate>
-        <SignUpProvider>
+      <SignUpProvider>
+        <AuthenticationTemplate>
           <Authentication />
-        </SignUpProvider>
-      </AuthenticationTemplate>
+        </AuthenticationTemplate>
+      </SignUpProvider>
     </>
   );
 }
