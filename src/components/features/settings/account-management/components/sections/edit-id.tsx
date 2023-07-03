@@ -1,13 +1,26 @@
-import { InputAdornment, Stack, TextField, Typography } from '@mui/material';
 import useTranslation from 'next-translate/useTranslation';
+import { useEffect, useState } from 'react';
+
 import { LoadingButton } from '@/components/atoms/buttons/loading-button';
-import { useSnackbar } from 'notistack';
-import { useMutation } from '@tanstack/react-query';
-import { useAuth } from '@/providers/auth';
-import { useForm } from 'react-hook-form';
-import { ErrorResponse } from '@/types/graphql';
 import { errorMessages } from '@/constants/error-messages';
+import { useAuth } from '@/providers/auth';
+import { brandColors } from '@/theme';
+import { ErrorResponse } from '@/types/graphql';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useMutation } from '@tanstack/react-query';
+import { DateTime } from 'luxon';
+import { useSnackbar } from 'notistack';
+import { useForm } from 'react-hook-form';
+
+import { ReportProblemOutlined } from '@mui/icons-material';
+import {
+  InputAdornment,
+  Stack,
+  TextField,
+  Typography,
+  alpha,
+} from '@mui/material';
+
 import {
   GatewayIdSchema,
   defaultValues,
@@ -17,6 +30,8 @@ import {
 export function EditId() {
   const { t } = useTranslation('settings');
   const { me, hasuraUserService, onInvalidateMe } = useAuth();
+  const [updatedRecently, setUpdatedRecently] = useState(false);
+  const [diffDays, setDiffDays] = useState(null);
 
   const {
     register,
@@ -35,10 +50,8 @@ export function EditId() {
 
   const mutation = useMutation(
     ({ username }: UpdateGatewayId) => {
-      return hasuraUserService.update_user_profile({
-        username: username,
-        name: me.name,
-        email_address: me.email_address,
+      return hasuraUserService.update_gateway_id({
+        gatewayId: username,
         id: me.id,
       });
     },
@@ -68,9 +81,23 @@ export function EditId() {
   );
 
   const onupdate = (data) => {
-    console.log(data);
     mutation.mutate(data);
   };
+
+  useEffect(() => {
+    if (me.protocolUser.gatewayIdUpdatedAt) {
+      const now = DateTime.now();
+      const limitDate = now.minus({ days: 30 });
+      const updatedAt = DateTime.fromISO(me.protocolUser?.gatewayIdUpdatedAt);
+      const isAllowedToEdit = updatedAt < limitDate;
+      if (!isAllowedToEdit) {
+        const diffInDays = now.diff(updatedAt, 'days');
+        const limitToUpdate = 30;
+        setDiffDays(limitToUpdate - Math.ceil(diffInDays.toObject().days));
+        setUpdatedRecently(true);
+      }
+    }
+  }, [me]);
 
   return (
     <Stack
@@ -90,17 +117,33 @@ export function EditId() {
           variant="outlined"
           type="username"
           name="username"
+          disabled={updatedRecently}
           {...register('username')}
           InputProps={{
             startAdornment: <InputAdornment position="start">@</InputAdornment>,
           }}
           error={!!errors.username}
           helperText={
-            errors.username?.message ??
-            t('account-management.gateway-id-helper')
+            !updatedRecently
+              ? errors.username?.message ??
+                t('account-management.gateway-id-helper')
+              : ''
           }
         />
       </Stack>
+      {updatedRecently && (
+        <Typography
+          variant="body2"
+          color="#ffdca8"
+          sx={{ display: 'flex', alignItems: 'center', gap: 1, mt: 1 }}
+        >
+          <ReportProblemOutlined />
+          {errorMessages.GATEWAY_ID_UPDATED_RECENTLY.replace(
+            '[days]',
+            diffDays
+          )}
+        </Typography>
+      )}
       {isDirty && isValid && !(getValues().username === me?.username) && (
         <Stack gap={2} direction={'row'} mt={3}>
           <LoadingButton

@@ -47,29 +47,6 @@ export function Form() {
         <TextField
           sx={{
             '& div fieldset legend span': {
-              marginRight: '2px',
-              paddingRight: '0px',
-            },
-            '& label.Mui-focused': {
-              textTransform: 'uppercase',
-            },
-            '& label.MuiFormLabel-filled': {
-              textTransform: 'uppercase',
-            },
-          }}
-          required
-          label={t('profile.username')}
-          id="username"
-          {...register('username', { required: true })}
-          error={!!errors.username}
-          helperText={
-            (errors.username?.message as string) ??
-            t('profile.username-helper-text')
-          }
-        />
-        <TextField
-          sx={{
-            '& div fieldset legend span': {
               marginRight: '4px',
               paddingRight: '4px',
             },
