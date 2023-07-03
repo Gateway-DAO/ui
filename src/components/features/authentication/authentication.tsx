@@ -33,7 +33,11 @@ export function Authentication() {
         step !== 'verify-email-add-code'
       ) {
         onNewUser();
-      } else if (!me?.username && step !== 'choose-gatewayid') {
+      } else if (
+        !me?.username &&
+        step !== 'choose-gatewayid' &&
+        me?.email_address
+      ) {
         onGoToSetGatewayId();
       }
       if (me?.username && me?.email_address) {
