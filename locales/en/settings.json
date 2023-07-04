@@ -1,0 +1,128 @@
+{
+  "settings-title": "Settings",
+  "nav": {
+    "public-profile-title": "Public profile",
+    "public-profile-description": "Edit all info of your profile",
+    "account-management-title": "Account management",
+    "account-management-description": "Edit your e-mail and wallet settings",
+    "connected-accounts-title": "Connected accounts",
+    "connected-accounts-description": "These are the accounts you connected to your Gateway account",
+    "notifications-title": "Notifications",
+    "notifications-description": "Select the sort of notifications you get about",
+    "developer-portal-title": "Developer Portal",
+    "developer-portal-description": "Here's all the info needed to connect to our API."
+  },
+  "profile": {
+    "description": "Information provided will be displayed on your Gateway profile.",
+    "submit": "Save",
+    "social-links-labels": {
+      "discord": "Username"
+    },
+    "avatar-and-cover": "Avatar and cover",
+    "social-links": "Social links",
+    "details": "Details",
+    "username-helper-text": "Valid: lowercase alphanumeric charaters and ._-",
+    "display-name": "Display Name",
+    "username": "Username",
+    "your-bio": "Your Bio",
+    "select-your-time-zone": "Select your time zone",
+    "select-your-languages": "Select your languages",
+    "about": "About",
+    "experience": "Experience",
+    "languages": "Languages",
+    "skills": "Skills",
+    "time-zone": "Time zone"
+  },
+  "connected-accounts": {
+    "description": "Connect your account to claim credentials with third-party platforms requirements.",
+    "connected": "Connected",
+    "connect": "Connect",
+    "disconnect": "Disconnect",
+    "twitter": {
+      "title": "Twitter",
+      "description": "Connect your account to claim credentials with follow profile, retweet and post a tweet requirements."
+    },
+    "github": {
+      "title": "Github",
+      "description": "Connect your account to claim credentials with repository contribution and pull requests requirements."
+    }
+  },
+  "account-management": {
+    "registered-email-title": "Registered email",
+    "registered-email-description": "Email is mainly used for important updates related to your account.",
+    "email-address-label": "E-mail address",
+    "email-address-helper": "To update your email is necessary verify it.",
+    "email-address-action": "send code to verify",
+    "verify-your-email-title": "Verify your email",
+    "verify-your-email-description": "It has been sent a code for your email address. Paste the code here to verify it. This code will expire in 30 minutes.",
+    "here": "here",
+    "code-placeholder": "Code",
+    "code-action": "Verify",
+    "code-send-again": "send code again",
+    "email-sent": "Code sent to",
+    "email-verified": "Email successfully verified",
+    "email-error-sending": "There was an error sending the code",
+    "email-error-validating": "There was an error validating the code"
+  },
+  "notifications": {
+    "dapp": {
+      "title": "On Gateway",
+      "description": "Select which notifications to get directly on Gateway.",
+      "all": "Turn on all notifications on Gateway"
+    },
+    "email": {
+      "title": "By email",
+      "description": "Select which notifications to get by email.",
+      "all": "Turn on all notifications by email"
+    },
+    "types": {
+      "credential_published": {
+        "title": "Credential published",
+        "description": "When a credential of a organization that you follows publishes a credential."
+      },
+      "credential_received": {
+        "title": "Credential received",
+        "description": "When you receive a credential"
+      },
+      "credential_revoked": {
+        "title": "Credential revoked",
+        "description": "When a credential that you own is revoked"
+      },
+      "credential_update": {
+        "title": "Credential update",
+        "description": ""
+      },
+      "manual_task_event_comment": {
+        "title": "Manual task event comment",
+        "description": ""
+      },
+      "manual_task_event_send_link": {
+        "title": "Manual task event send link",
+        "description": ""
+      },
+      "manual_task_event_approve": {
+        "title": "Manual task event approve",
+        "description": ""
+      },
+      "manual_task_event_reject": {
+        "title": "Manual task event reject",
+        "description": ""
+      },
+      "manual_task_event_waiting": {
+        "title": "Manual task event waiting",
+        "description": ""
+      },
+      "friend_request_new": {
+        "title": "Friend request new",
+        "description": "When you receive a new friend request"
+      },
+      "friend_request_accepted": {
+        "title": "Friend request accepted",
+        "description": "User accepts your friend request"
+      }
+    }
+  },
+  "developer-portal": {
+
+  }
+}

@@ -1,0 +1,73 @@
+mutation get_nonce($wallet: String!, $chain: protocol_api_Chain) {
+  protocol {
+    createWalletNonce(input: {
+      wallet: $wallet,
+      chain: $chain
+    }) {
+      message
+    }
+  }
+}
+
+mutation login($signature: String!, $wallet: String!) {
+  protocol {
+    loginWallet(input: {
+      signature: $signature
+      wallet: $wallet
+    }) {
+      token
+      refresh_token
+      hasura_id
+      protocol_id
+    }
+  }
+}
+
+mutation refresh($refresh_token: String!) {
+  protocol {
+    refreshToken(input: {
+      refresh_token: $refresh_token
+    }) {
+      token
+      refresh_token
+      hasura_id
+      protocol_id
+    }
+  }
+}
+
+mutation protocol_signup(
+  $gateway_id: String!
+  $email: String!
+) {
+  protocol {
+    signup(input:{
+      gateway_id: $gateway_id
+      email: $email
+    }) {
+      email
+    }
+  }
+}
+
+mutation protocol_signup_confirmation(
+  $gateway_id: String!
+  $email: String!
+  $wallet: String!
+  $code: Float!
+) {
+  protocol {
+    signupConfirmation(input:{
+      gateway_id: $gateway_id
+      email: $email
+      wallet: $wallet
+      code: $code
+    }) {
+      user {
+        id
+        email
+        gatewayId
+      }
+    }
+  }
+}
