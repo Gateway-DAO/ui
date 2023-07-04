@@ -19,22 +19,26 @@ export function AuthenticationOptions() {
         methodName: t('steps.initial.connect-wallet'),
         icon: <WalletIconsTransition />,
         onClick: onOpenLogin,
+        isVisible: true,
       },
-      // {
-      //   methodName: t('steps.initial.connect-google'),
-      //   icon: <GoogleIcon />,
-      //   onClick: () => null,
-      // },
-      // {
-      //   methodName: t('steps.initial.connect-twitter'),
-      //   icon: <TwitterIcon />,
-      //   onClick: () => null,
-      // },
-      // {
-      //   methodName: t('steps.initial.connect-discord'),
-      //   icon: <FaDiscord />,
-      //   onClick: () => null,
-      // },
+      {
+        methodName: t('steps.initial.connect-google'),
+        icon: <GoogleIcon />,
+        onClick: () => null,
+        isVisible: false,
+      },
+      {
+        methodName: t('steps.initial.connect-twitter'),
+        icon: <TwitterIcon />,
+        onClick: () => null,
+        isVisible: false,
+      },
+      {
+        methodName: t('steps.initial.connect-discord'),
+        icon: <FaDiscord />,
+        onClick: () => null,
+        isVisible: false,
+      },
     ];
   }, []);
 
@@ -49,24 +53,28 @@ export function AuthenticationOptions() {
       </Typography>
       <Stack gap={2.5}>
         {orSignUpMethods.map((method) => (
-          <Button
-            id={method.methodName}
-            key={method.methodName}
-            variant="outlined"
-            size="large"
-            color="secondary"
-            startIcon={method.icon}
-            fullWidth
-            sx={{
-              '& .MuiButton-startIcon	': {
-                position: 'absolute',
-                left: '1rem',
-              },
-            }}
-            onClick={method.onClick}
-          >
-            {method.methodName}
-          </Button>
+          <>
+            {method.isVisible && (
+              <Button
+                id={method.methodName}
+                key={method.methodName}
+                variant="outlined"
+                size="large"
+                color="secondary"
+                startIcon={method.icon}
+                fullWidth
+                sx={{
+                  '& .MuiButton-startIcon	': {
+                    position: 'absolute',
+                    left: '1rem',
+                  },
+                }}
+                onClick={method.onClick}
+              >
+                {method.methodName}
+              </Button>
+            )}
+          </>
         ))}
       </Stack>
       <Typography color="text.secondary">
