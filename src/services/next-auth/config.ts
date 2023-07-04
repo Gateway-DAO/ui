@@ -1,10 +1,10 @@
-import { NextAuthOptions, unstable_getServerSession } from 'next-auth';
+import { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 
 import jwt from 'jsonwebtoken';
 
-import { SessionToken } from '../types/user';
-import { hasuraPublicService } from './hasura/api';
+import { SessionToken } from '../../types/user';
+import { hasuraPublicService } from '../hasura/api';
 
 const callLoginWallet = async (
   signature: string,
@@ -79,43 +79,52 @@ const callRefresh = async (token: SessionToken): Promise<SessionToken> => {
   }
 };
 
-const providers = [
-  CredentialsProvider({
-    name: 'email',
-    credentials: {
-      email: {
-        label: 'email',
-        type: 'text',
-        placeholder: 'john@example.com',
+const providers: NextAuthOptions['providers'] = [
+  {
+    ...CredentialsProvider({
+      name: 'email',
+      credentials: {
+        email: {
+          label: 'email',
+          type: 'text',
+          placeholder: 'john@example.com',
+        },
+        code: {
+          label: 'code',
+          type: 'text',
+          placeholder: '1234',
+        },
       },
-      code: {
-        label: 'code',
-        type: 'text',
-        placeholder: '1234',
+      async authorize(credentials) {
+        return callLoginEmail(
+          credentials.email,
+          parseInt(credentials.code, 10)
+        );
       },
-    },
-    async authorize(credentials) {
-      return callLoginEmail(credentials.email, parseInt(credentials.code, 10));
-    },
-  }),
-  CredentialsProvider({
-    name: 'ethereum',
-    credentials: {
-      wallet: {
-        label: 'wallet',
-        type: 'text',
-        placeholder: '0x0',
+    }),
+    id: 'credential-email',
+  },
+  {
+    ...CredentialsProvider({
+      name: 'ethereum',
+      credentials: {
+        wallet: {
+          label: 'wallet',
+          type: 'text',
+          placeholder: '0x0',
+        },
+        signature: {
+          label: 'signature',
+          type: 'text',
+          placeholder: '0x0',
+        },
       },
-      signature: {
-        label: 'signature',
-        type: 'text',
-        placeholder: '0x0',
+      async authorize(credentials) {
+        return callLoginWallet(credentials.signature, credentials.wallet);
       },
-    },
-    async authorize(credentials) {
-      return callLoginWallet(credentials.signature, credentials.wallet);
-    },
-  }),
+    }),
+    id: 'credential-ethereum',
+  },
 ];
 
 export const nextAuthConfig: NextAuthOptions = {
@@ -147,6 +156,3 @@ export const nextAuthConfig: NextAuthOptions = {
     },
   },
 };
-
-export const getServerSession = (req, res) =>
-  unstable_getServerSession(req, res, nextAuthConfig);
