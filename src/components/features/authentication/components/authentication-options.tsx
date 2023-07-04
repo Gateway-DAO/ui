@@ -1,5 +1,5 @@
 import useTranslation from 'next-translate/useTranslation';
-import { useMemo } from 'react';
+import { Fragment, useMemo } from 'react';
 
 import { WalletIconsTransition } from '@/components/atoms/wallet-icons-transition';
 import { useAuth } from '@/providers/auth';
@@ -16,24 +16,28 @@ export function AuthenticationOptions() {
   const orSignUpMethods = useMemo(() => {
     return [
       {
+        id: 'wallet',
         methodName: t('steps.initial.connect-wallet'),
         icon: <WalletIconsTransition />,
         onClick: onOpenLogin,
         isVisible: true,
       },
       {
+        id: 'google',
         methodName: t('steps.initial.connect-google'),
         icon: <GoogleIcon />,
         onClick: () => null,
         isVisible: false,
       },
       {
+        id: 'twitter',
         methodName: t('steps.initial.connect-twitter'),
         icon: <TwitterIcon />,
         onClick: () => null,
         isVisible: false,
       },
       {
+        id: 'discord',
         methodName: t('steps.initial.connect-discord'),
         icon: <FaDiscord />,
         onClick: () => null,
@@ -52,9 +56,10 @@ export function AuthenticationOptions() {
         {t('steps.initial.or')}
       </Typography>
       <Stack gap={2.5}>
-        {orSignUpMethods.map((method) => (
-          <>
-            {method.isVisible && (
+        {orSignUpMethods
+          .filter((method) => method.isVisible)
+          .map((method) => (
+            <Fragment key={method.id}>
               <Button
                 id={method.methodName}
                 key={method.methodName}
@@ -73,9 +78,8 @@ export function AuthenticationOptions() {
               >
                 {method.methodName}
               </Button>
-            )}
-          </>
-        ))}
+            </Fragment>
+          ))}
       </Stack>
       <Typography color="text.secondary">
         {t('steps.initial.terms-info')}{' '}
