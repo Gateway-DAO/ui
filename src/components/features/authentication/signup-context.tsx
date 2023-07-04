@@ -99,7 +99,7 @@ type Context = {
   onReset: () => void;
   onNewUser: () => void;
   onNewUserSubmitEmail: (email: string) => void;
-  onSumbitEmail: (email: string) => void;
+  onSubmitEmail: (email: string) => void;
   onGoToSetGatewayId: () => void;
   onCompleteLogin: () => void;
 };
@@ -109,7 +109,7 @@ export const SignUpContext = createContext<Context>({
   onReset: () => {},
   onNewUser: () => {},
   onNewUserSubmitEmail: () => {},
-  onSumbitEmail: () => {},
+  onSubmitEmail: () => {},
   onGoToSetGatewayId: () => {},
   onCompleteLogin: () => {},
 });
@@ -140,7 +140,7 @@ export function SignUpProvider({ children }: PropsWithChildren<unknown>) {
     });
   };
 
-  const onSumbitEmail = (email: string) => {
+  const onSubmitEmail = (email: string) => {
     dispatch({
       type: 'SET_EMAIL',
       payload: {
@@ -168,7 +168,7 @@ export function SignUpProvider({ children }: PropsWithChildren<unknown>) {
         onReset,
         onNewUser,
         onNewUserSubmitEmail,
-        onSumbitEmail,
+        onSubmitEmail,
         onGoToSetGatewayId,
         onCompleteLogin,
       }}

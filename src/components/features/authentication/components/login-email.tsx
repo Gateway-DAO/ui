@@ -21,14 +21,14 @@ export function LoginEmail() {
   } = useForm({
     resolver: yupResolver(schemaEmail),
   });
-  const { onSumbitEmail } = useSignUpContext();
+  const { onSubmitEmail } = useSignUpContext();
 
   const createEmailNonce = useMutation(hasuraPublicService.create_email_nonce);
 
   const onSubmit = async (data: EmailSchema) => {
     try {
       await createEmailNonce.mutateAsync({ email: data.email_address });
-      onSumbitEmail(data.email_address);
+      onSubmitEmail(data.email_address);
     } catch (e) {
       setError('email_address', {
         type: 'manual',
