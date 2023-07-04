@@ -34,8 +34,8 @@ export function Authentication() {
         onNewUser();
       } else if (
         !me?.username &&
-        step !== 'choose-gatewayid' &&
-        me?.email_address
+        me?.email_address &&
+        step !== 'choose-gatewayid'
       ) {
         onGoToSetGatewayId();
       }
