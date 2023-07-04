@@ -1,13 +1,18 @@
+import useTranslation from 'next-translate/useTranslation';
+
+import CopyPaste from '@/components/molecules/copy-paste';
+import { limitCharsCentered } from '@/utils/string';
+
 import { Chip, Paper, Stack, Typography } from '@mui/material';
 
 type Props = {
+  id: string;
   username: string;
   status: 'valid' | 'invalid';
-  credentialId: string;
-  qrCode: string;
 };
 
-export function CredentialIdentityCard() {
+export function CredentialIdentityCard({ id, username, status }: Props) {
+  const { t } = useTranslation('settings');
   return (
     <Stack
       component={Paper}
@@ -21,13 +26,19 @@ export function CredentialIdentityCard() {
       }}
     >
       <div>
-        <Typography variant="body2">ID 63a...0b5</Typography>
-        <Typography variant="h6">@harisson</Typography>
+        <Stack direction="row" alignItems="center" gap={1}>
+          ID{' '}
+          <CopyPaste
+            text={limitCharsCentered(id, 6)}
+            sucessMessage={t('account-management.copy-id')}
+          />
+        </Stack>
+        <Typography variant="h6">@{username}</Typography>
       </div>
       <Chip
-        label="valid"
+        label={status}
         size="small"
-        color="success"
+        color={status === 'valid' ? 'success' : 'error'}
         variant="outlined"
         sx={{
           alignSelf: 'center',

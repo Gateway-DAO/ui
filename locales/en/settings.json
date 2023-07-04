@@ -50,6 +50,7 @@
     }
   },
   "account-management": {
+    "copy-id": "ID copied to clipboard",
     "gateway-id": "Edit ID",
     "gateway-id-desc": "This is your Gateway ID. You can edit it once a month.",
     "gateway-id-helper": "Only lowercase letters, numbers and ._-",
