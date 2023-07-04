@@ -5,7 +5,7 @@ import { useFormContext } from 'react-hook-form';
 
 import { Stack, TextField } from '@mui/material';
 
-import { SendEmailSchema } from '../schema';
+import { SendEmailSchema } from './schema';
 
 type Props = {
   onSubmitSendEmail: (data: SendEmailSchema) => void;

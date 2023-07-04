@@ -7,7 +7,7 @@ import { useToggle } from 'react-use';
 
 import { Stack, TextField, Typography } from '@mui/material';
 
-import { TokenConfirmationSchema, SendEmailSchema } from '../schema';
+import { TokenConfirmationSchema, SendEmailSchema } from './schema';
 
 type Props = {
   onSubmitConfirmToken: (data: TokenConfirmationSchema) => void;
