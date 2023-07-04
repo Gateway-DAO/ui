@@ -55,9 +55,12 @@
     "gateway-id-helper": "Only lowercase letters, numbers and ._-",
     "gateway-id-action": "save my id",
     "gateway-id-cancel": "cancel",
-    "wallet-section-title": "wallet",
+    "wallet-section-title": "Wallet",
     "wallet-section-desc": "By connecting your wallet, we will only request the access to see address, account balance, activity and suggest transactions to approve.",
     "wallet-section-btn": "+  add wallet",
+    "email-section-title": "Email",
+    "email-section-desc": "By connecting your email, we will only send notifications by the primary email.",
+    "email-section-btn": "+  add email address",
     "other-wallet": {
       "title": "Other accounts",
       "desc": "We never share any of your data with third parties, and we only request the access permissions necessary to provide you with the best possible service when you connect your accounts to Gateway. Check our",

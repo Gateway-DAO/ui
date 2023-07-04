@@ -18,7 +18,7 @@ import {
   TokenConfirmationSchema,
   schemaSendEmail,
   schemaTokenConfirmation,
-} from '../schema';
+} from './schema';
 import SendEmail from './sendEmail';
 import VerifyToken from './verifyToken';
 

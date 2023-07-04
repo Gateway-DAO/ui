@@ -1,11 +1,12 @@
-import { Link, Stack, Typography } from '@mui/material';
-import { SocialAuthCard } from '@/components/atoms/social-auth-card';
 import useTranslation from 'next-translate/useTranslation';
+
+import { SocialAuthCard } from '@/components/atoms/social-auth-card';
 import { useConnectionHandlerGithub } from '@/services/social-connectors/github-connection';
-import MailIcon from '@mui/icons-material/Mail';
+import { useConnectionHandlerTwitter } from '@/services/social-connectors/twitter-connection';
 import { AiFillGithub } from 'react-icons/ai';
 import { FaTwitter } from 'react-icons/fa';
-import { useConnectionHandlerTwitter } from '@/services/social-connectors/twitter-connection';
+
+import { Link, Stack, Typography } from '@mui/material';
 
 export function OtherAccount() {
   const { t } = useTranslation('settings');
@@ -18,7 +19,7 @@ export function OtherAccount() {
         <Typography variant="subtitle1" color={'white'} gutterBottom>
           {t('account-management.other-wallet.title')}
         </Typography>
-        <Typography variant="caption" gutterBottom>
+        <Typography variant="caption" gutterBottom sx={{ display: 'block' }}>
           {t('account-management.other-wallet.desc')}{' '}
           <Link href="/terms">{t('account-management.other-wallet.tos')}</Link>
         </Typography>
