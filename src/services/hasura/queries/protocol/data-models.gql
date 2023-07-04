@@ -1,0 +1,163 @@
+query protocol_data_model($id: String!) {
+  protocol {
+    dataModel(id: $id) {
+      id
+      description
+      schema
+      tags
+      title
+      arweaveInfo
+      createdAt
+      createdBy {
+        gatewayId
+      }
+      allowedUsers {
+        id
+      }
+      allowedOrganizations {
+        id
+      }
+      permissioning
+      info
+      image
+    }
+  }
+}
+
+query protocol_data_models($take: Int!, $skip: Int!) {
+  protocol_data_model(
+    limit: $take
+    offset: $skip
+    order_by: { createdAt: desc }
+  ) {
+    id
+    title
+    tags
+    version
+    description
+    permissioning
+    createdBy {
+      gatewayUser {
+        name
+        picture {
+          id
+          s3_key
+          blur
+        }
+      }
+      gatewayId
+    }
+  }
+}
+
+query protocol_data_models_p2p($take: Int!, $skip: Int!) {
+  protocol_data_model(
+    where: { permissioning: { _eq: "ALL" } }
+    limit: $take
+    offset: $skip
+    order_by: { createdAt: desc }
+  ) {
+    id
+    title
+    tags
+    version
+    description
+    permissioning
+    createdBy {
+      gatewayUser {
+        name
+        picture {
+          id
+          s3_key
+          blur
+        }
+      }
+      gatewayId
+    }
+  }
+}
+
+query protocol_find_recipients_by_data_model($dataModelId: uuid!, $take: Int!, $skip: Int!) {
+  protocol_user(
+    where: { credentials: { dataModelId: { _eq: $dataModelId } } }
+    limit: $take
+    offset: $skip
+  ) {
+    id
+    gatewayId
+    gatewayUser {
+      name
+      pfp
+      picture {
+        id
+        s3_key
+        blur
+      }
+    }
+  }
+}
+
+# TODO: Refactor this call to use table instead of api call
+query protocol_find_recipients_by_data_model_api(
+  $dataModelId: String!
+  $take: Float!
+  $skip: Float!
+) {
+  protocol {
+    findRecipientsByDataModel(
+      dataModelId: $dataModelId
+      take: $take
+      skip: $skip
+    ) {
+      id
+      createdAt
+      receivedCredentials {
+        id
+        expirationDate
+        recipientUser {
+          id
+          gatewayId
+        }
+        createdAt
+        image
+      }
+      createdAt
+      totalOfreceivedCredentials
+    }
+  }
+}
+
+
+query getDMStatsUntilDayBefore($date: timestamp!, $dataModelId: uuid!) {
+  credential_count: protocol_credential_aggregate(
+    where: { createdAt: { _lte: $date }, dataModelId: { _eq: $dataModelId } }
+  ) {
+    aggregate {
+      count
+    }
+  }
+  issuer_count: protocol_user_aggregate(
+    where: {
+      credentialsByIssueruserid: {
+        dataModelId: { _eq: $dataModelId }
+        createdAt: { _lte: $date }
+      }
+    }
+  ) {
+    aggregate {
+      count
+    }
+  }
+  recipient_count: protocol_user_aggregate(
+    where: {
+      credentials: {
+        dataModelId: { _eq: $dataModelId }
+        createdAt: { _lte: $date }
+      }
+    }
+  ) {
+    aggregate {
+      count
+    }
+  }
+}

@@ -1,0 +1,24 @@
+query protocol_find_issuers_by_data_model(
+  $dataModelId: String!
+  $take: Float!
+  $skip: Float!
+) {
+  protocol {
+
+    findIssuersByDataModel(dataModelId: $dataModelId, take: $take, skip: $skip) {
+      issuedCredentials {
+        id
+        expirationDate
+        issuerUser {
+          id
+          gatewayId
+        }
+        createdAt
+        image
+      }
+      createdAt
+      totalOfIssuedCredentials
+    }
+  }
+
+}

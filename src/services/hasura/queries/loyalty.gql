@@ -1,0 +1,32 @@
+query loyalty_programs($take: Int!, $skip: Int!) {
+  loyalty_program(limit: $take, offset: $skip) {
+    ...loyalty
+  }
+}
+
+query loyalty_program($id: uuid!) {
+  loyalty_program_by_pk(id: $id) {
+    ...loyalty
+  }
+}
+
+query loyalty_programs_by_organization_id($id: uuid!) {
+  loyalty_program(where: { organization_id: { _eq: $id } }) {
+    ...loyalty
+  }
+}
+
+query get_loyalty_progress_by_user_id_by_loyalty(
+  $user_id: uuid!
+  $loyalty_id: uuid!
+) {
+  loyalty_progress(where: {loyalty_program_id: {_eq: $loyalty_id}, user_id: {_eq: $user_id}}) {
+    protocol_credential_id
+    loyalty_program_protocol {
+      id
+      txHash
+      nftId
+    }
+    points
+  }
+}

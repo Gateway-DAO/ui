@@ -1,0 +1,95 @@
+fragment experience on experiences {
+  dao {
+    name
+    slug
+    logo {
+      ...file
+    }
+    logo_url
+  }
+  credentials {
+    id
+    gate_id
+    target_id
+    uri
+    transaction_url
+    name
+    image
+    description
+    categories
+    status
+    protocol_id
+  }
+  start_date
+  end_date
+  working
+  description
+  visible
+}
+
+fragment protocol_user on users {
+  protocolUser {
+    id
+    gatewayId
+  }
+}
+
+fragment public_user on users {
+  id
+  name
+  #pfp
+  username
+  #init
+  about # Soon to be deprecated
+  bio
+  pic_id
+  skills
+  languages
+  timezone
+  wallet
+  following_aggregate {
+    aggregate {
+      count
+    }
+  }
+  credentials {
+    id
+    gate_id
+  }
+  picture {
+    ...file
+  }
+  cover {
+    ...file
+  }
+  socials {
+    network
+    url
+  }
+
+  experiences {
+    ...experience
+  }
+
+  ...protocol_user
+}
+
+fragment current_user on users {
+  ...public_user
+  email_address
+  init
+
+  experiences {
+    ...experience
+    hidden_credentials {
+      credential {
+        gate_id
+        id
+        name
+        image
+        description
+        categories
+      }
+    }
+  }
+}

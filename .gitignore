@@ -45,3 +45,16 @@ Thumbs.db
 .sentryclirc
 
 prisma/schema.prisma
+src/services/**/**/types.ts
+src/services/**/**/validation.ts
+
+# Sentry
+.sentryclirc
+
+# e2e Tests
+screenshots/
+test-results/
+storageState.json
+
+.next
+.vscode/settings.json

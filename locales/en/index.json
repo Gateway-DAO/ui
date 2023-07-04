@@ -1,0 +1,266 @@
+{
+  "menu": [
+    {
+      "text": "Gateway Stack",
+      "href": "#stack"
+    },
+    {
+      "text": "Gateway D-App",
+      "href": "#d-app"
+    },
+    {
+      "text": "Gateway SDK ",
+      "href": "#sdk"
+    },
+    {
+      "text": "Investors",
+      "href": "#investors"
+    },
+    {
+      "text": "Docs",
+      "href": "https://docs.mygateway.xyz/docs/why-do-credentials-matter"
+    }
+  ],
+  "title": "Gateway",
+  "openApp": "Open App",
+  "signUp": "Sign Up",
+  "subtitle": "The Credential Protocol",
+  "titleDescription": "Your home to issue, manage, and consume verifiable credentials.",
+  "enterButtonTitle": "Enter the gateway",
+  "forUsers": {
+    "mainTitle": "Gateway Credential dApp",
+    "secondaryTitle": "Create a Gateway Credential space to drive your community, protocol, or DAO goals! ",
+    "features": [
+      {
+        "title": "Your dedicated Space",
+        "description": "Gateway’s credential space is fully customizable and modular, allowing you to control your Gateway to web3!",
+        "image": {
+          "url": "/images/join-dao-featured-image.png",
+          "width": 423,
+          "height": 403
+        }
+      },
+      {
+        "title": "Issue Credentials",
+        "description": "Gateway issues credentials in a decentralized manner via our protocol and covers gas fees for any NFTs minted!",
+        "image": {
+          "url": "/images/earn-credentials-featured-image.png",
+          "width": 439,
+          "height": 352
+        }
+      },
+      {
+        "title": "Raise Brand Awareness",
+        "description": "Gateway’s Credential space is a tool to drive social presence and promote your product.",
+        "image": {
+          "url": "/images/showcase-featured-image.png",
+          "width": 360,
+          "height": 400
+        }
+      },
+      {
+        "title": "Drive Product Engagement",
+        "description": "Create quizzes, on-chain requirements, governance tasks, and more to engage users.",
+        "image": {
+          "url": "/images/own-network-featured-image.png",
+          "width": 353,
+          "height": 341
+        }
+      }
+    ]
+  },
+  "forOrganizations": {
+    "comingSoon": "Coming Soon",
+    "mainTitle": "Gateway SDK: Native Credential Issuance and Management",
+    "secondaryTitle": "Implement Gateway’s SDK by building credential models, define conditions for issuance, and consumption.",
+    "features": [
+      {
+        "title": "Build Data Models",
+        "description": "Build your own claim structure for data that will be stored in a credential or use existing models.",
+        "image": {
+          "url": "/images/own-spaces-featured-image.png",
+          "width": 466,
+          "height": 421
+        }
+      },
+      {
+        "title": "Set Custom Conditions",
+        "description": "Define when an issuance occurs by selecting a series of parameters that must be met.",
+        "image": {
+          "url": "/images/create-gates-featured-image.png",
+          "width": 577,
+          "height": 477
+        }
+      },
+      {
+        "title": "Create Utility ",
+        "description": "Gateway credentials have endless usage from governance, to loyalty programs, access controls, and more! ",
+        "image": {
+          "url": "/images/issue-credentials-featured-image.png",
+          "width": 539,
+          "height": 426
+        }
+      },
+      {
+        "title": "Simple Management",
+        "description": "Gateway’s credential model allows you to revoke a credential, set expirations, and reissue.",
+        "image": {
+          "url": "/images/find-talent-featured-image.png",
+          "width": 501,
+          "height": 501
+        }
+      }
+    ]
+  },
+  "theGatewayContent": {
+    "title": "The Gateway Credential Model",
+    "features": [
+      {
+        "title": "User Sovereignty",
+        "description": "Gateway’s places your autonomy first. Our credentials are privacy preserving, yet publicly verifiable. We give users control over credential permissions and access."
+      },
+      {
+        "title": "Encrypted",
+        "description": "Gateway’s credential data lives on Arweave, allowing for greater encryption over individual data sets. Allowing for you to gate your digital identity and protect your digital rights."
+      },
+      {
+        "title": "Composable",
+        "description": "Credential existence can be verified on-chain, minted on any chain, while its information remains off-chain. Allowing for greater usage across web3!"
+      }
+    ],
+    "image": {
+      "url": "/images/credential-model.png",
+      "width": 596,
+      "height": 759
+    }
+  },
+  "buildAppsContent": {
+    "title": "The Gateway Standard",
+    "description": "We provide the technology needed to issue, manage, index, and utilize credentials to build a robust digital identity.",
+    "features": [
+      {
+        "title": "Consumption",
+        "description": "Credentials issued via Gateway can be used for governance weighting, community scores, credit scores, access controls, and much more!"
+      },
+      {
+        "title": "Gateway Protocol",
+        "description": "Gateway’s protocol allows organizations to easily manage and issue credentials, while Gateway handles the indexing and curation of data-models."
+      },
+      {
+        "title": "Data-Providers",
+        "description": "Every engine needs it's fuel. Gateway's data partners support an open-source and composable data network, which serves as the basis of Gateway’s credential protocol."
+      }
+    ],
+    "image": {
+      "url": "/images/build-apps-data.png",
+      "width": 685,
+      "height": 1127
+    }
+  },
+  "investorsContent": {
+    "title": "Guardians of the Gateway",
+    "investorsWithLogos": [
+      {
+        "name": "Reciprocal ventures",
+        "url": "#",
+        "logo": {
+          "url": "/images/investors/reciprocal-ventures.png",
+          "width": 213,
+          "height": 20
+        }
+      },
+      {
+        "name": "Hanna Grey",
+        "url": "#",
+        "logo": {
+          "url": "/images/investors/hanna-grey.png",
+          "width": 125,
+          "height": 51
+        }
+      },
+      {
+        "name": "Redbeard ventures",
+        "url": "#",
+        "logo": {
+          "url": "/images/investors/redbeard-ventures.png",
+          "width": 110,
+          "height": 96
+        }
+      },
+      {
+        "name": "Spartan",
+        "url": "#",
+        "logo": {
+          "url": "/images/investors/spartan.png",
+          "width": 186,
+          "height": 104
+        }
+      },
+      {
+        "name": "Figment",
+        "url": "#",
+        "logo": {
+          "url": "/images/investors/figment.png",
+          "width": 111,
+          "height": 37
+        }
+      },
+      {
+        "name": "6th man ventures",
+        "url": "#",
+        "logo": {
+          "url": "/images/investors/6th-man-ventures.png",
+          "width": 109,
+          "height": 53
+        }
+      },
+      {
+        "name": "Visary",
+        "url": "#",
+        "logo": {
+          "url": "/images/investors/visary.png",
+          "width": 164,
+          "height": 96
+        }
+      }
+    ],
+    "investorsonlyNames": [
+      {
+        "name": "Sandeep Nailwal",
+        "url": "#"
+      },
+      {
+        "name": "David Gan",
+        "url": "#"
+      },
+      {
+        "name": "David Sneider and Chris Wiggum",
+        "url": "#"
+      },
+      {
+        "name": "Ryan Selkis",
+        "url": "#"
+      },
+      {
+        "name": "Stepan Simkin",
+        "url": "#"
+      },
+      {
+        "name": "Ryan Li",
+        "url": "#"
+      }
+    ]
+  },
+  "orgCreation": {
+    "title": "Create a profile for your organization",
+    "description": "A space for your organization issue, manage, and consume verifiable credentials.",
+    "buttonLabel": "Create now"
+  },
+  "footerContent": {
+    "copyright": "Copyright © 2023 Gateway. All rights reserved.",
+    "subscribe": "Subscribe to our newsletter",
+    "receiveNews": "Receive news about developments and updates.",
+    "subscribeButton": "Subscribe",
+    "successMessage": "Thank you for subscribing!"
+  }
+}

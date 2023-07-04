@@ -1,0 +1,136 @@
+mutation create_gate_tasks_based(
+  $id: uuid
+  $dao_id: uuid!
+  $title: String!
+  $categories: jsonb
+  $type: gate_type
+  $description: String
+  $permissions: [permissions_insert_input!] = []
+  $image: String!
+  $claim_limit: Int
+  $expire_date: timestamptz
+  $tasks: [tasks_insert_input!] = []
+  $data_model_id: uuid
+  $loyalty_id: uuid
+  $points: Int
+) {
+  insert_gates_one(
+    object: {
+      id: $id
+      dao_id: $dao_id
+      title: $title
+      type: $type
+      categories: $categories
+      description: $description
+      claim_limit: $claim_limit
+      data_model_id: $data_model_id
+      loyalty_id: $loyalty_id
+      points: $points
+      expire_date: $expire_date
+      permissions: {
+        data: $permissions
+        on_conflict: {
+          constraint: permissions_dao_id_user_id_credential_id_key
+          update_columns: [permission]
+        }
+      }
+      image: $image
+      tasks: {
+        data: $tasks
+        on_conflict: {
+          constraint: keys_pk
+          update_columns: [title, description, task_data, task_type, order]
+        }
+      }
+      published: "not_published"
+    }
+    on_conflict: {
+      constraint: gates_pk
+      update_columns: [
+        title
+        type
+        categories
+        description
+        image
+        published
+        expire_date
+        claim_limit
+        data_model_id
+        loyalty_id
+        points
+      ]
+    }
+  ) {
+    id
+    title
+    image
+    published
+  }
+}
+
+mutation create_gate_direct(
+  $id: uuid,
+  $dao_id: uuid!,
+  $title: String!,
+  $categories: jsonb,
+  $type: gate_type,
+  $description: String,
+  $permissions: [permissions_insert_input!] = [],
+  $claim_limit: Int
+  $expire_date: timestamptz
+  $image: String!,
+  $whitelisted_wallets_file: uuid!
+  $data_model_id: uuid
+  $loyalty_id: uuid
+  $points: Int
+  ) {
+
+  insert_gates_one(
+    object: {
+      id: $id
+      dao_id: $dao_id
+      title: $title
+      type: $type
+      categories: $categories
+      description: $description
+      claim_limit: $claim_limit
+      expire_date: $expire_date
+      data_model_id: $data_model_id
+      loyalty_id: $loyalty_id
+      points: $points
+      permissions: {
+        data: $permissions
+        on_conflict: {
+          constraint: permissions_dao_id_user_id_credential_id_key
+          update_columns: [permission]
+        }
+      },
+      image: $image,
+      published: "not_published",
+      whitelisted_wallets_file_id: $whitelisted_wallets_file
+    },
+    on_conflict: {
+      constraint: gates_pk
+      update_columns: [
+        type
+        title
+        categories
+        description
+        image
+        published
+        whitelisted_wallets_file_id
+        expire_date
+        claim_limit
+        data_model_id
+        loyalty_id
+        points
+      ]
+    }
+  ) {
+    id
+    type
+    title
+    image
+    published
+  }
+}

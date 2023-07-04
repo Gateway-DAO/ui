@@ -1,0 +1,21 @@
+mutation mint_credential($id: uuid!) {
+  mint_credential(
+    credential_id: $id
+  ) {
+    status
+    message
+    info {
+      transaction_hash
+      chain_id
+      wallet
+    }
+  }
+}
+
+mutation protocol_mint_credential($credentialId: String!) {
+  protocol {
+    mintCredential(credentialId: $credentialId) {
+      txHash
+    }
+  }
+}
