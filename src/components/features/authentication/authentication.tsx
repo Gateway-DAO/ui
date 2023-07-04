@@ -4,10 +4,10 @@ import { useEffect } from 'react';
 import { ROUTES } from '@/constants/routes';
 import { useAuth } from '@/providers/auth';
 
-import { ConnectMoreAuthDialog } from './components/connect-more-auth-dialog';
-import { AuthenticationMethods } from './sections/authentication-methods';
 import { ChooseEmail } from './sections/choose-email';
 import { ChooseGatewayId } from './sections/choose-gateway-id';
+import { ConnectMoreAuthDialog } from './sections/completed';
+import { AuthenticationInitial } from './sections/initial';
 import { VerifyEmailAddToken } from './sections/verify-email-add-token';
 import { VerifyEmailLoginToken } from './sections/verify-email-login-token';
 import { useSignUpContext } from './signup-context';
@@ -23,7 +23,6 @@ export function Authentication() {
 
   useEffect(() => {
     if (me) {
-      console.log(me, step);
       if (step === 'completed') {
         return;
       }
@@ -48,7 +47,7 @@ export function Authentication() {
 
   return (
     <>
-      {step === 'initial' && <AuthenticationMethods />}
+      {step === 'initial' && <AuthenticationInitial />}
       {step === 'verify-email-login-code' && <VerifyEmailLoginToken />}
       {step === 'choose-email' && <ChooseEmail />}
       {step === 'verify-email-add-code' && <VerifyEmailAddToken />}

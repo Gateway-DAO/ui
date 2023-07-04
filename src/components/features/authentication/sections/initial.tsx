@@ -6,7 +6,7 @@ import { AuthenticationOptions } from '../components/authentication-options';
 import { LoginEmail } from '../components/login-email';
 import { TitleSubtitleField } from '../components/title-field';
 
-export function AuthenticationMethods() {
+export function AuthenticationInitial() {
   const { t } = useTranslation('authentication');
 
   return (
