@@ -20,21 +20,21 @@ export function AuthenticationOptions() {
         icon: <WalletIconsTransition />,
         onClick: onOpenLogin,
       },
-      {
-        methodName: t('steps.initial.connect-google'),
-        icon: <GoogleIcon />,
-        onClick: () => null,
-      },
-      {
-        methodName: t('steps.initial.connect-twitter'),
-        icon: <TwitterIcon />,
-        onClick: () => null,
-      },
-      {
-        methodName: t('steps.initial.connect-discord'),
-        icon: <FaDiscord />,
-        onClick: () => null,
-      },
+      // {
+      //   methodName: t('steps.initial.connect-google'),
+      //   icon: <GoogleIcon />,
+      //   onClick: () => null,
+      // },
+      // {
+      //   methodName: t('steps.initial.connect-twitter'),
+      //   icon: <TwitterIcon />,
+      //   onClick: () => null,
+      // },
+      // {
+      //   methodName: t('steps.initial.connect-discord'),
+      //   icon: <FaDiscord />,
+      //   onClick: () => null,
+      // },
     ];
   }, []);
 
