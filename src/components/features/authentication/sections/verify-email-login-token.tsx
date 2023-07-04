@@ -42,8 +42,7 @@ export function VerifyEmailLoginToken() {
   const signupConfirmationMutation = useMutation(
     [mutation.signup_token_verification],
     async (data: TokenConfirmationSchema) => {
-      const res = await signIn('credentials', {
-        name: 'email',
+      const res = await signIn('credential-email', {
         email,
         code: data.code,
         redirect: false,

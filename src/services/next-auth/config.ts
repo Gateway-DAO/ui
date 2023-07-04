@@ -1,58 +1,11 @@
 import { NextAuthOptions } from 'next-auth';
-import CredentialsProvider from 'next-auth/providers/credentials';
 
 import jwt from 'jsonwebtoken';
 
 import { SessionToken } from '../../types/user';
 import { hasuraPublicService } from '../hasura/api';
-
-const callLoginWallet = async (
-  signature: string,
-  wallet: string
-): Promise<SessionToken> => {
-  try {
-    const res = await hasuraPublicService.login_wallet({
-      signature,
-      wallet,
-    });
-
-    const { error } = (res as any) ?? {};
-
-    if (error || !res.protocol.loginWallet) {
-      return null;
-    }
-
-    const { __typename, ...token } = res.protocol.loginWallet;
-
-    return token;
-  } catch (e) {
-    throw new Error(e);
-  }
-};
-
-const callLoginEmail = async (
-  email: string,
-  code: number
-): Promise<SessionToken> => {
-  try {
-    const res = await hasuraPublicService.login_email({
-      email,
-      code,
-    });
-
-    const { error } = (res as any) ?? {};
-
-    if (error || !res.protocol.loginEmail) {
-      return null;
-    }
-
-    const { __typename, ...token } = res.protocol.loginEmail;
-
-    return token;
-  } catch (e) {
-    throw new Error(e);
-  }
-};
+import credentialEmail from './providers/credential-email';
+import credentialWallet from './providers/credential-wallet';
 
 const callRefresh = async (token: SessionToken): Promise<SessionToken> => {
   try {
@@ -79,56 +32,8 @@ const callRefresh = async (token: SessionToken): Promise<SessionToken> => {
   }
 };
 
-const providers: NextAuthOptions['providers'] = [
-  {
-    ...CredentialsProvider({
-      name: 'email',
-      credentials: {
-        email: {
-          label: 'email',
-          type: 'text',
-          placeholder: 'john@example.com',
-        },
-        code: {
-          label: 'code',
-          type: 'text',
-          placeholder: '1234',
-        },
-      },
-      async authorize(credentials) {
-        return callLoginEmail(
-          credentials.email,
-          parseInt(credentials.code, 10)
-        );
-      },
-    }),
-    id: 'credential-email',
-  },
-  {
-    ...CredentialsProvider({
-      name: 'ethereum',
-      credentials: {
-        wallet: {
-          label: 'wallet',
-          type: 'text',
-          placeholder: '0x0',
-        },
-        signature: {
-          label: 'signature',
-          type: 'text',
-          placeholder: '0x0',
-        },
-      },
-      async authorize(credentials) {
-        return callLoginWallet(credentials.signature, credentials.wallet);
-      },
-    }),
-    id: 'credential-ethereum',
-  },
-];
-
 export const nextAuthConfig: NextAuthOptions = {
-  providers,
+  providers: [credentialEmail, credentialWallet],
   session: {
     strategy: 'jwt',
   },

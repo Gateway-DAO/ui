@@ -159,8 +159,7 @@ export const useAuthLogin = () => {
   const signInMutation = useMutation(
     ['signIn', address],
     async (signature: string) => {
-      const res = await signIn('credentials', {
-        name: 'ethereum',
+      const res = await signIn('credential-wallet', {
         redirect: false,
         wallet: address,
         signature,
