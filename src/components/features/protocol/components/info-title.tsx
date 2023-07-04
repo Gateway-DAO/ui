@@ -1,5 +1,6 @@
 import { useState } from 'react';
 
+import CopyPaste from '@/components/molecules/copy-paste';
 import { brandColors } from '@/theme';
 
 import VerifiedIcon from '@mui/icons-material/Verified';
@@ -11,8 +12,6 @@ import {
   ClickAwayListener,
   Skeleton,
 } from '@mui/material';
-
-import CopyPaste from './copy-paste';
 
 type Props = {
   title: string;
