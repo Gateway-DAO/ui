@@ -23,10 +23,7 @@ export function LoginEmail() {
   });
   const { onSumbitEmail } = useSignUpContext();
 
-  const createEmailNonce = useMutation(
-    ['createEmailNonce'],
-    hasuraPublicService.create_email_nonce
-  );
+  const createEmailNonce = useMutation(hasuraPublicService.create_email_nonce);
 
   const onSubmit = async (data: EmailSchema) => {
     try {
