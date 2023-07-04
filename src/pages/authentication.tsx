@@ -10,7 +10,7 @@ export default function AuthenticationPage() {
 
   return (
     <>
-      <HeadContainer title={t('form.authentications.title')} />
+      <HeadContainer title={t('steps.initial.title')} />
       <SignUpProvider>
         <AuthenticationTemplate>
           <Authentication />

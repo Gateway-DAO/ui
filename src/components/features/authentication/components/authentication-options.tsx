@@ -16,22 +16,22 @@ export function AuthenticationOptions() {
   const orSignUpMethods = useMemo(() => {
     return [
       {
-        methodName: t('form.authentications.connect-wallet'),
+        methodName: t('steps.initial.connect-wallet'),
         icon: <WalletIconsTransition />,
         onClick: onOpenLogin,
       },
       {
-        methodName: t('form.authentications.connect-google'),
+        methodName: t('steps.initial.connect-google'),
         icon: <GoogleIcon />,
         onClick: () => null,
       },
       {
-        methodName: t('form.authentications.connect-twitter'),
+        methodName: t('steps.initial.connect-twitter'),
         icon: <TwitterIcon />,
         onClick: () => null,
       },
       {
-        methodName: t('form.authentications.connect-discord'),
+        methodName: t('steps.initial.connect-discord'),
         icon: <FaDiscord />,
         onClick: () => null,
       },
@@ -45,7 +45,7 @@ export function AuthenticationOptions() {
         textTransform={'uppercase'}
         color="text.secondary"
       >
-        {t('form.authentications.or')}
+        {t('steps.initial.or')}
       </Typography>
       <Stack gap={2.5}>
         {orSignUpMethods.map((method) => (
@@ -70,9 +70,9 @@ export function AuthenticationOptions() {
         ))}
       </Stack>
       <Typography color="text.secondary">
-        {t('form.authentications.terms-info')}{' '}
+        {t('steps.initial.terms-info')}{' '}
         <Link href="/terms" underline="none">
-          {t('form.authentications.terms-of-service')}{' '}
+          {t('steps.initial.terms-of-service')}{' '}
         </Link>
       </Typography>
     </>

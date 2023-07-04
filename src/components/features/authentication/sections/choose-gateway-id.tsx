@@ -1,6 +1,7 @@
 import useTranslation from 'next-translate/useTranslation';
 
 import { LoadingButton } from '@/components/atoms/buttons/loading-button';
+import { errorMessages } from '@/constants/error-messages';
 import { useAuth } from '@/providers/auth';
 import { useMutation } from '@tanstack/react-query';
 import { useSnackbar } from 'notistack';
@@ -21,6 +22,7 @@ export function ChooseGatewayId() {
     register,
     formState: { errors },
     handleSubmit,
+    setError,
   } = useForm<GatewayIdSchema>();
 
   const { onCompleteLogin } = useSignUpContext();
@@ -37,8 +39,22 @@ export function ChooseGatewayId() {
       await onInvalidateMe();
       onCompleteLogin();
     } catch (e) {
-      enqueueSnackbar(e.message, {
-        variant: 'error',
+      (e as any)?.response?.errors?.forEach(({ message }) => {
+        console.log(message);
+        if (message.indexOf(`You don't own the gatewayId`) > -1) {
+          message = 'GATEWAY_ID_ALREADY_REGISTERED';
+          setError('gatewayId', {
+            type: 'manual',
+            message: errorMessages['GATEWAY_ID_ALREADY_REGISTERED'],
+          });
+        } else {
+          enqueueSnackbar(
+            errorMessages[message] || errorMessages.UNEXPECTED_ERROR,
+            {
+              variant: 'error',
+            }
+          );
+        }
       });
     }
   };
@@ -52,21 +68,21 @@ export function ChooseGatewayId() {
         onSubmit={handleSubmit(onSubmit)}
       >
         <Typography component="h1" variant="h4" sx={{ mb: 3 }}>
-          {t('form.gateway-id.title')}
+          {t('steps.choose-gateway-id.title')}
         </Typography>
         <TitleSubtitleField
-          title={t('form.gateway-id.title-send-email')}
-          subtitle={t('form.gateway-id.caption-send-email')}
+          title={t('steps.choose-gateway-id.title-send-email')}
+          subtitle={t('steps.choose-gateway-id.caption-send-email')}
         />
-        {/* TODO: add validation if username exists */}
         <TextField
           required
-          label={t('form.fields.gateway-id')}
+          label={t('steps.choose-gateway-id.label')}
           id="gatewayId"
           {...register('gatewayId')}
           error={!!errors.gatewayId}
           helperText={
-            errors.gatewayId?.message ?? t('form.fields.gateway-id-helper-text')
+            errors.gatewayId?.message ??
+            t('steps.choose-gateway-id.helper-text')
           }
         />
 
@@ -76,7 +92,7 @@ export function ChooseGatewayId() {
           sx={{ mt: 2, height: 48 }}
           isLoading={sendGatewayId.isLoading}
         >
-          {t('form.gateway-id.btn')}
+          {t('steps.choose-gateway-id.btn')}
         </LoadingButton>
       </Stack>
     </>

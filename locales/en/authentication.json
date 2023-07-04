@@ -1,20 +1,10 @@
 {
   "logo-alternative-text": "Gateway logo",
-  "profile-created-sucess": "Profile created!",
   "steps": {
-    "choose-auth": {
-    },
-    "verify-token": {
-      "title": "Verify your email to create your account",
-      "description": "Paste here the code sent to email address",
-      "caption": "This code will expire in 30 minutes"
-    }
-  },
-  "form": {
-    "authentications": {
+    "initial": {
       "title": "Enter the Gateway",
-      "title-send-email": "Email",
-      "caption-send-email": "Get started without wallet",
+      "title-email": "Email",
+      "caption-email": "Get started without wallet",
       "connect-wallet": "Connect Wallet",
       "connect-google": "Continue with Google",
       "connect-twitter": "Continue with Twitter",
@@ -24,25 +14,40 @@
       "or": "or",
       "btn": "continue"
     },
-    "gateway-id": {
+    "choose-email": {
+      "title": "Connect your email to be notified when you receive a credential",
+      "subtitle": "Email",
+      "description": "By email you are notified when you receive a credential and everything related to your account",
+      "label": "E-mail",
+      "helper-text": "You'll be notified when a credential is issued to you by e-mail"
+    },
+    "verify-token": {
+      "title": "Verify your email to create your account",
+      "description": "Paste here the code sent to email address",
+      "caption": "This code will expire in 30 minutes",
+      "label": "Code",
+      "action": "Verify",
+      "send-code-again": "Send code again"
+    },
+    "choose-gateway-id": {
       "title": "You’re a step closer to entering the Gateway",
       "title-send-email": "Create your personal Gateway ID",
       "caption-send-email": "Through the ID you are recognized and found within the Gateway",
-      "btn": "create id"
+      "btn": "create id",
+      "label": "Gateway ID",
+      "helper-text": "Only lowercase letters, numbers and ._-"
     },
-    "caption-verify-token": "This code will expire in 30 minutes",
-    "fields": {
-      "gateway-id": "Gateway ID",
-      "gateway-id-helper-text": "Only lowercase letters, numbers and ._-",
-      "e-mail": "E-mail",
-      "e-mail-helper-text": "You'll be notified when a credential is issued to you by e-mail",
-      "code": "Code"
-    },
-    "send-email-action": "Create account",
-    "verify-token-action": "Verify",
-    "send-code-again-action": "Send code again",
-    "code-sent-to": "Code sent to",
-    "profile-created": "Profile created"
+    "completed": {
+      "connect-more": {
+        "title": "Connect accounts to make it easier to find you on Gateway and earn credentials",
+        "description": "Connect your social media, wallets, and other platform accounts to Gateway to strengthen your online identity and increase your visibility on the platform.",
+        "terms-data": "We never share any of your data with third parties, and we only request the access permissions necessary to provide you with the best possible service when you connect your accounts to Gateway. Check our",
+        "terms": "Terms",
+        "privacy-policy": "Privacy Policy",
+        "and": "and",
+        "done": "Done"
+      }
+    }
   },
   "connected-accounts": {
     "description": "Connect your account to claim credentials with third-party platforms requirements.",
@@ -54,15 +59,6 @@
       "title": "Github",
       "description": "Connect your account to claim credentials with repository contribution and pull requests requirements."
     }
-  },
-  "connect-more": {
-    "title": "Connect accounts to make it easier to find you on Gateway and earn credentials",
-    "description": "Connect your social media, wallets, and other platform accounts to Gateway to strengthen your online identity and increase your visibility on the platform.",
-    "terms-data": "We never share any of your data with third parties, and we only request the access permissions necessary to provide you with the best possible service when you connect your accounts to Gateway. Check our",
-    "terms": "Terms",
-    "privacy-policy": "Privacy Policy",
-    "and": "and",
-    "done": "Done"
   },
   "card-summary-title": "Your account"
 }

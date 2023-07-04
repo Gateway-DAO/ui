@@ -44,14 +44,14 @@ export function LoginEmail() {
     <Stack component="form" gap={2} onSubmit={handleSubmit(onSubmit)}>
       <TextField
         required
-        label={t('form.fields.e-mail')}
+        label={t('steps.choose-email.label')}
         type="email"
         id="email_address"
         {...register('email_address')}
         error={!!errors.email_address}
         helperText={
           (errors.email_address?.message ??
-            t('form.fields.e-mail-helper-text')) as string
+            t('steps.choose-email.helper-text')) as string
         }
       />
 
@@ -61,7 +61,7 @@ export function LoginEmail() {
         sx={{ mt: 2, height: 48 }}
         isLoading={createEmailNonce.isLoading}
       >
-        {t('form.authentications.btn')}
+        {t('steps.initial.btn')}
       </LoadingButton>
     </Stack>
   );

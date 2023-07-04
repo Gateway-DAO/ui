@@ -12,11 +12,11 @@ export function AuthenticationMethods() {
   return (
     <Stack gap={2} direction={'column'}>
       <Typography component="h1" variant="h4" sx={{ mb: 3 }}>
-        {t('form.authentications.title')}
+        {t('steps.initial.title')}
       </Typography>
       <TitleSubtitleField
-        title={t('form.authentications.title-send-email')}
-        subtitle={t('form.authentications.caption-send-email')}
+        title={t('steps.initial.title-email')}
+        subtitle={t('steps.initial.caption-email')}
       />
       <LoginEmail />
       <AuthenticationOptions />

@@ -62,10 +62,10 @@ export function ConnectMoreAuthDialog({ open, onClose }: Props) {
           mt={{ xs: 4, md: 20.75 }}
           gutterBottom
         >
-          {t('connect-more.title')}
+          {t('steps.completed.connect-more.title')}
         </Typography>
         <Typography width={{ xs: '100%', md: '35%' }} variant="body1">
-          {t('connect-more.description')}
+          {t('steps.completed.connect-more.description')}
         </Typography>
         <Stack marginTop={6} direction={{ xs: 'column', md: 'row' }} gap={2}>
           <SocialAuthCard
@@ -101,15 +101,15 @@ export function ConnectMoreAuthDialog({ open, onClose }: Props) {
           mt={4}
           gutterBottom
         >
-          {t('connect-more.terms-data')}
+          {t('steps.completed.connect-more.terms-data')}
           <Link href="/terms" underline="none">
             {' '}
-            {t('connect-more.terms')}
+            {t('steps.completed.connect-more.terms')}
           </Link>{' '}
-          {t('connect-more.and')}{' '}
+          {t('steps.completed.connect-more.and')}{' '}
           <Link href="/terms" underline="none">
             {' '}
-            {t('connect-more.privacy-policy')}{' '}
+            {t('steps.completed.connect-more.privacy-policy')}{' '}
           </Link>
           .
         </Typography>
@@ -121,7 +121,7 @@ export function ConnectMoreAuthDialog({ open, onClose }: Props) {
               variant="contained"
               sx={{ mt: 4 }}
             >
-              {t('connect-more.done')}
+              {t('steps.completed.connect-more.done')}
             </Button>
           </NextLink>
         </div>
