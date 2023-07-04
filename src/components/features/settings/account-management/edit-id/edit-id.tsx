@@ -2,9 +2,9 @@ import useTranslation from 'next-translate/useTranslation';
 import { useEffect, useState } from 'react';
 
 import { LoadingButton } from '@/components/atoms/buttons/loading-button';
+import { TitleSubtitleField } from '@/components/atoms/title-field';
 import { errorMessages } from '@/constants/error-messages';
 import { useAuth } from '@/providers/auth';
-import { brandColors } from '@/theme';
 import { ErrorResponse } from '@/types/graphql';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useMutation } from '@tanstack/react-query';
@@ -13,19 +13,9 @@ import { useSnackbar } from 'notistack';
 import { useForm } from 'react-hook-form';
 
 import { ReportProblemOutlined } from '@mui/icons-material';
-import {
-  InputAdornment,
-  Stack,
-  TextField,
-  Typography,
-  alpha,
-} from '@mui/material';
+import { InputAdornment, Stack, TextField, Typography } from '@mui/material';
 
-import {
-  GatewayIdSchema,
-  defaultValues,
-  UpdateGatewayId,
-} from '../../utlis/schema';
+import { GatewayIdSchema, defaultValues, UpdateGatewayId } from './schema';
 
 export function EditId() {
   const { t } = useTranslation('settings');
@@ -106,12 +96,10 @@ export function EditId() {
       justifyContent="flex-start"
       onSubmit={handleSubmit(onupdate)}
     >
-      <Typography variant="subtitle1" sx={{ color: 'white' }} gutterBottom>
-        {t('account-management.gateway-id')}
-      </Typography>
-      <Typography variant="caption" gutterBottom>
-        {t('account-management.gateway-id-desc')}
-      </Typography>
+      <TitleSubtitleField
+        title={t('account-management.gateway-id')}
+        subtitle={t('account-management.gateway-id-desc')}
+      />
       <Stack spacing={2} mt={3}>
         <TextField
           variant="outlined"

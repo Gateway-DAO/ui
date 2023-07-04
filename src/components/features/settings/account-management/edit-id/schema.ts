@@ -1,7 +1,7 @@
-import { PartialDeep } from 'type-fest';
 import { Users } from '@/services/hasura/types';
-import { object, string, SchemaOf } from 'yup';
 import { SessionUser } from '@/types/user';
+import { PartialDeep } from 'type-fest';
+import { object, string, SchemaOf } from 'yup';
 
 export type UpdateGatewayId = Required<PartialDeep<Pick<Users, 'username'>>>;
 
