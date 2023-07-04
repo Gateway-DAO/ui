@@ -4,7 +4,6 @@ import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
-import type { AuthStep } from '@/components/features/authentication/signup-context';
 import { ROUTES } from '@/constants/routes';
 import { hasuraPublicService, hasuraApi } from '@/services/hasura/api';
 import { Protocol_Api_Chain } from '@/services/hasura/types';
