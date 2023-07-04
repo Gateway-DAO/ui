@@ -11,13 +11,13 @@ mutation edit_user($id: uuid!, $bio: String, $name: String, $pic_id: uuid, $skil
 }
 
 mutation update_gateway_id($id: uuid!, $gatewayId: String) {
-    protocol {
-      updateUser(input: {
-        gatewayId: $gatewayId
-      }) {
-        id
-      }
+  protocol {
+    updateUser(input: {
+      gatewayId: $gatewayId
+    }) {
+      id
     }
+  }
   update_users_by_pk(pk_columns: {id: $id}, _set: { username: $gatewayId}) {
     ...current_user
   }

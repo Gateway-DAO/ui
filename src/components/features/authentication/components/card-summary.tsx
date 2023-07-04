@@ -5,15 +5,13 @@ import { brandColors } from '@/theme';
 import EditIcon from '@mui/icons-material/Edit';
 import { alpha, Stack, Typography } from '@mui/material';
 
-import { NewUserSchema } from './schema';
-
 type Props = {
-  filledData: NewUserSchema;
+  email: string;
   onClickEdit: () => void;
 };
 
-export function CardSummary({ filledData, onClickEdit }: Props) {
-  const { t } = useTranslation('signin');
+export function CardSummary({ email, onClickEdit }: Props) {
+  const { t } = useTranslation('authentication');
 
   return (
     <Stack
@@ -36,10 +34,7 @@ export function CardSummary({ filledData, onClickEdit }: Props) {
           {t('card-summary-title')}
         </Typography>
         <Typography sx={{ color: alpha(brandColors.white.main, 0.7) }}>
-          @{filledData?.username}
-        </Typography>
-        <Typography sx={{ color: alpha(brandColors.white.main, 0.7) }}>
-          {filledData?.email_address}
+          {email}
         </Typography>
       </Stack>
       <EditIcon

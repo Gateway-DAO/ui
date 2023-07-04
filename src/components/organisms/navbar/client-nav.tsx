@@ -26,7 +26,7 @@ export function ClientNav() {
   }
 
   return (
-    <Link passHref href={`${ROUTES.SIGNIN}?redirect=${router.route}`}>
+    <Link passHref href={`${ROUTES.AUTHENTICATION}?redirect=${router.asPath}`}>
       <LoadingButton
         isLoading={session.status === 'loading'}
         variant="outlined"

@@ -1,5 +1,5 @@
 import useTranslation from 'next-translate/useTranslation';
-import { Dispatch, SetStateAction } from 'react';
+import NextLink from 'next/link';
 
 import { SocialAuthCard } from '@/components/atoms/social-auth-card';
 import { useConnectionHandlerGithub } from '@/services/social-connectors/github-connection';
@@ -9,13 +9,14 @@ import { FaTwitter } from 'react-icons/fa';
 
 import CloseIcon from '@mui/icons-material/Close';
 import { Avatar, Button, Dialog, Link, Stack, Typography } from '@mui/material';
+
 type Props = {
   open: boolean;
-  setOpen: Dispatch<SetStateAction<boolean>>;
+  onClose: string;
 };
 
-export function ConnectMoreAuthDialog({ open, setOpen }: Props) {
-  const { t } = useTranslation('signin');
+export function ConnectMoreAuthDialog({ open, onClose }: Props) {
+  const { t } = useTranslation('authentication');
 
   const githubConnection = useConnectionHandlerGithub();
   const twitterConnection = useConnectionHandlerTwitter();
@@ -41,19 +42,19 @@ export function ConnectMoreAuthDialog({ open, setOpen }: Props) {
               alignSelf: 'center',
             }}
           />
-          <Avatar
-            sx={{
-              width: 40,
-              height: 40,
-              alignSelf: 'center',
-              cursor: 'pointer',
-            }}
-            onClick={() => {
-              setOpen(false);
-            }}
-          >
-            <CloseIcon />
-          </Avatar>
+          <NextLink href={onClose} passHref>
+            <Avatar
+              component="a"
+              sx={{
+                width: 40,
+                height: 40,
+                alignSelf: 'center',
+                cursor: 'pointer',
+              }}
+            >
+              <CloseIcon />
+            </Avatar>
+          </NextLink>
         </Stack>
         <Typography
           variant="h4"
@@ -61,10 +62,10 @@ export function ConnectMoreAuthDialog({ open, setOpen }: Props) {
           mt={{ xs: 4, md: 20.75 }}
           gutterBottom
         >
-          {t('connect-more.title')}
+          {t('steps.completed.connect-more.title')}
         </Typography>
         <Typography width={{ xs: '100%', md: '35%' }} variant="body1">
-          {t('connect-more.description')}
+          {t('steps.completed.connect-more.description')}
         </Typography>
         <Stack marginTop={6} direction={{ xs: 'column', md: 'row' }} gap={2}>
           <SocialAuthCard
@@ -100,29 +101,29 @@ export function ConnectMoreAuthDialog({ open, setOpen }: Props) {
           mt={4}
           gutterBottom
         >
-          {t('connect-more.terms-data')}
+          {t('steps.completed.connect-more.terms-data')}
           <Link href="/terms" underline="none">
             {' '}
-            {t('connect-more.terms')}
+            {t('steps.completed.connect-more.terms')}
           </Link>{' '}
-          {t('connect-more.and')}{' '}
+          {t('steps.completed.connect-more.and')}{' '}
           <Link href="/terms" underline="none">
             {' '}
-            {t('connect-more.privacy-policy')}{' '}
+            {t('steps.completed.connect-more.privacy-policy')}{' '}
           </Link>
           .
         </Typography>
         <div>
-          <Button
-            size="large"
-            variant="contained"
-            sx={{ mt: 4 }}
-            onClick={() => {
-              setOpen(false);
-            }}
-          >
-            {t('connect-more.done')}
-          </Button>
+          <NextLink href={onClose} passHref>
+            <Button
+              component="a"
+              size="large"
+              variant="contained"
+              sx={{ mt: 4 }}
+            >
+              {t('steps.completed.connect-more.done')}
+            </Button>
+          </NextLink>
         </div>
       </Stack>
     </Dialog>

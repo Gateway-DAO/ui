@@ -1,34 +1,12 @@
-import { NextAuthOptions, unstable_getServerSession } from 'next-auth';
-import CredentialsProvider from 'next-auth/providers/credentials';
+import { NextAuthOptions } from 'next-auth';
 
 import jwt from 'jsonwebtoken';
 
-import { SessionToken } from '../types/user';
-import { hasuraPublicService } from './hasura/api';
+import { SessionToken } from '../../types/user';
+import { hasuraPublicService } from '../hasura/api';
+import credentialEmail from './providers/credential-email';
+import credentialWallet from './providers/credential-wallet';
 
-const callLogin = async (
-  signature: string,
-  wallet: string
-): Promise<SessionToken> => {
-  try {
-    const res = await hasuraPublicService.login({
-      signature,
-      wallet,
-    });
-
-    const { error } = (res as any) ?? {};
-
-    if (error || !res.protocol.loginWallet) {
-      return null;
-    }
-
-    const { __typename, ...token } = res.protocol.loginWallet;
-
-    return token;
-  } catch (e) {
-    throw new Error(e);
-  }
-};
 const callRefresh = async (token: SessionToken): Promise<SessionToken> => {
   try {
     const res = await hasuraPublicService.refresh({
@@ -54,29 +32,8 @@ const callRefresh = async (token: SessionToken): Promise<SessionToken> => {
   }
 };
 
-const providers = [
-  CredentialsProvider({
-    name: 'ethereum',
-    credentials: {
-      wallet: {
-        label: 'wallet',
-        type: 'text',
-        placeholder: '0x0',
-      },
-      signature: {
-        label: 'signature',
-        type: 'text',
-        placeholder: '0x0',
-      },
-    },
-    async authorize(credentials) {
-      return callLogin(credentials.signature, credentials.wallet);
-    },
-  }),
-];
-
 export const nextAuthConfig: NextAuthOptions = {
-  providers,
+  providers: [credentialEmail, credentialWallet],
   session: {
     strategy: 'jwt',
   },
@@ -104,6 +61,3 @@ export const nextAuthConfig: NextAuthOptions = {
     },
   },
 };
-
-export const getServerSession = (req, res) =>
-  unstable_getServerSession(req, res, nextAuthConfig);
