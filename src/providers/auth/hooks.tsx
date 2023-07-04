@@ -321,7 +321,7 @@ export function useInitUser(me: PartialDeep<SessionUser>) {
     if (router.pathname !== ROUTES.NEW_USER && me && !me.init) {
       router.replace({
         pathname: ROUTES.NEW_USER,
-        query: { callback: router.asPath },
+        query: { redirect: router.asPath },
       });
     }
   }, [me, router]);
