@@ -31,16 +31,15 @@ export function ChooseGatewayId() {
 
   const onSubmit = async ({ gatewayId }: GatewayIdSchema) => {
     try {
-      const res = await sendGatewayId.mutateAsync({
+      await sendGatewayId.mutateAsync({
         id: me.id,
         gatewayId,
       });
-      console.log('despues', res);
       await onInvalidateMe();
       onCompleteLogin();
     } catch (e) {
       (e as any)?.response?.errors?.forEach(({ message }) => {
-        console.log(message);
+        // TODO: Improve error handler
         if (message.indexOf(`You don't own the gatewayId`) > -1) {
           message = 'GATEWAY_ID_ALREADY_REGISTERED';
           setError('gatewayId', {
