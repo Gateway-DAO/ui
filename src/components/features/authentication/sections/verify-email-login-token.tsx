@@ -23,7 +23,7 @@ export function VerifyEmailLoginToken() {
   } = useSignUpContext();
 
   const createEmailNonce = useMutation(
-    ['create-email-nonce'],
+    ['login-email-nonce'],
     hasuraPublicService.create_email_nonce
   );
 

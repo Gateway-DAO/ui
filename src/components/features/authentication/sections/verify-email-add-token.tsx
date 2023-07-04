@@ -22,7 +22,7 @@ export function VerifyEmailAddToken() {
   } = useSignUpContext();
 
   const addEmailNonce = useMutation(
-    ['create-email-nonce'],
+    ['add-email-nonce'],
     hasuraPublicService.protocol_add_email
   );
 
