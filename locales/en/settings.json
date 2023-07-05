@@ -90,7 +90,12 @@
     "email-verified": "Email successfully verified",
     "email-error-sending": "There was an error sending the code",
     "email-error-validating": "There was an error validating the code",
-    "username-update": "successfully updated username"
+    "username-update": "successfully updated username",
+    "modal-delete-email": {
+      "disconnect-my-account": "disconnect my account",
+      "disconnect-account": "Disconnect Account",
+      "checkbox-info": "I acknowledge the account disconnection from my Gateway ID"
+    }
   },
   "notifications": {
     "dapp": {

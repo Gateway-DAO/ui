@@ -31,11 +31,11 @@ const AccountManagementSettings = () => {
   );
 
   const emails = useMemo(() => {
-    return authentications?.filter((a) => a.type === 'EMAIL');
+    return authentications?.filter((a) => a.type === 'EMAIL') ?? [];
   }, [authentications]);
 
   const wallets = useMemo(() => {
-    return authentications?.filter((a) => a.type === 'WALLET');
+    return authentications?.filter((a) => a.type === 'WALLET') ?? [];
   }, [authentications]);
 
   return (
@@ -49,10 +49,10 @@ const AccountManagementSettings = () => {
       >
         {/* <YourAccountCredential /> */}
         <EditId />
-        {emails.length > 0 && (
+        {emails?.length > 0 && (
           <EmailAlias emails={emails} isLoading={isLoading} />
         )}
-        {wallets.length > 0 && (
+        {wallets?.length > 0 && (
           <WalletAlias wallets={wallets} isLoading={isLoading} />
         )}
         <OtherAccount />

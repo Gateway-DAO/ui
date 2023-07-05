@@ -1,23 +1,18 @@
 import useTranslation from 'next-translate/useTranslation';
+import { useState } from 'react';
 
 import { LoadingButton } from '@/components/atoms/buttons/loading-button';
-import Loading from '@/components/atoms/loadings/loading';
-import MorePopover from '@/components/atoms/more-popover';
 import { TitleSubtitleField } from '@/components/atoms/title-field';
-import { mutation } from '@/constants/queries';
+import { ModalRightConfirmation } from '@/components/molecules/modal/modal-right-confirmation';
 import { useAuth } from '@/providers/auth';
-import {
-  Protocol_Remove_EmailMutationVariables,
-  Update_EmailMutationVariables,
-} from '@/services/hasura/types';
 import { queryClient } from '@/services/query-client';
-import { brandColors } from '@/theme';
-import { useMutation } from '@tanstack/react-query';
-import { v4 as uuidv4 } from 'uuid';
 
-import { Chip, Divider, Skeleton, Stack, Typography } from '@mui/material';
+import { Stack } from '@mui/material';
 
-import { AuthenticationsItem } from './email-types';
+import { AuthenticationsItem, Modals } from './../types';
+import AddEmail from './add-email/add-email';
+import { ListEmails } from './components/list-emails';
+import { RemoveEmail } from './components/remove-email';
 
 type Props = {
   emails: AuthenticationsItem[];
@@ -25,79 +20,16 @@ type Props = {
 };
 
 export function EmailAlias({ emails, isLoading }: Props) {
-  const { me, hasuraUserService, onInvalidateMe } = useAuth();
+  const { me } = useAuth();
   const { t } = useTranslation('settings');
+  const [modalRight, setModalRight] = useState<Modals>(null);
 
-  const isPrimary = (item: AuthenticationsItem): boolean => {
-    return item?.data?.email === item?.user?.email;
-  };
-
-  const deleteEmail = useMutation(
-    [mutation.remove_email],
-    ({ email }: Protocol_Remove_EmailMutationVariables) => {
-      return hasuraUserService.protocol_remove_email({
-        email,
-      });
-    },
-    {
-      onSuccess: () =>
-        queryClient.refetchQueries([
-          'authentications_methods_by_user',
-          { id: me?.protocolUser?.id },
-        ]),
-    }
-  );
-
-  const updateEmail = useMutation(
-    [mutation.remove_email],
-    ({
-      id,
-      id_protocol,
-      email,
-      email_protocol,
-    }: Update_EmailMutationVariables) => {
-      return hasuraUserService.update_email({
-        id,
-        id_protocol,
-        email,
-        email_protocol,
-      });
-    },
-    {
-      onSuccess: () => {
-        onInvalidateMe();
-        queryClient.refetchQueries([
-          'authentications_methods_by_user',
-          { id: me?.protocolUser?.id },
-        ]);
-      },
-    }
-  );
-
-  const options = (item: AuthenticationsItem) => {
-    return [
-      {
-        text: t('account-management.set-as-primary'),
-        action: () => {
-          updateEmail.mutateAsync({
-            id: me?.id,
-            id_protocol: me?.protocolUser?.id,
-            email: item?.data?.email,
-            email_protocol: item?.data?.email,
-          });
-        },
-        hidden: isPrimary(item),
-      },
-      {
-        text: t('account-management.disconnect'),
-        action: () => {
-          deleteEmail.mutateAsync({
-            email: item?.data?.email,
-          });
-        },
-        hidden: isPrimary(item),
-      },
-    ];
+  const onSuccessFinishModal = () => {
+    queryClient.refetchQueries([
+      'authentications_methods_by_user',
+      { id: me?.protocolUser?.id },
+    ]),
+      setModalRight(null);
   };
 
   return (
@@ -107,52 +39,33 @@ export function EmailAlias({ emails, isLoading }: Props) {
           title={t('account-management.email-section-title')}
           subtitle={t('account-management.email-section-desc')}
         />
-        <LoadingButton variant="text" sx={{ display: 'none' }}>
+        <LoadingButton
+          variant="text"
+          onClick={() => setModalRight({ type: 'add' })}
+          sx={{ display: 'none' }}
+        >
           {t('account-management.email-section-btn')}
         </LoadingButton>
       </Stack>
-      {isLoading ? (
-        <Skeleton sx={{ height: 30 }} />
-      ) : (
-        <Stack divider={<Divider sx={{ margin: ' 0 -3.7rem' }} />}>
-          {emails.map((item, index) => (
-            <Stack
-              direction="row"
-              alignItems="center"
-              justifyContent="space-between"
-              gap={2}
-              py={2}
-              key={index}
-            >
-              <Typography sx={{ flexGrow: 1 }}>{item?.data?.email}</Typography>
-              {isPrimary(item) && (
-                <Chip
-                  label={t('account-management.primary')}
-                  color="success"
-                  size="small"
-                  sx={{ backgroundColor: brandColors.green.main }}
-                />
-              )}
-              {emails.length > 1 && !isPrimary(item) && (
-                <Stack height={32}>
-                  {(deleteEmail?.isLoading &&
-                    deleteEmail.variables?.email === item.data?.email) ||
-                  (updateEmail?.isLoading &&
-                    updateEmail.variables?.email === item.data?.email) ? (
-                    <Loading size={24} marginTop={0} />
-                  ) : (
-                    <MorePopover
-                      options={options(item)}
-                      withBackground
-                      key={uuidv4()}
-                    />
-                  )}
-                </Stack>
-              )}
-            </Stack>
-          ))}
-        </Stack>
-      )}
+      <ListEmails
+        emails={emails}
+        isLoading={isLoading}
+        onOpenModal={setModalRight}
+      />
+      <ModalRightConfirmation
+        title={t('common:modal-confirm-delete.title')}
+        open={!!modalRight}
+        handleClose={() => setModalRight(null)}
+      >
+        {modalRight?.type === 'remove' && (
+          <RemoveEmail
+            email={modalRight?.email}
+            onSuccess={onSuccessFinishModal}
+            onCancel={() => setModalRight(null)}
+          />
+        )}
+        {modalRight?.type === 'add' && <AddEmail />}
+      </ModalRightConfirmation>
     </Stack>
   );
 }

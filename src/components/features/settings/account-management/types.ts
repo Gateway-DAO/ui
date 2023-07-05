@@ -10,3 +10,8 @@ export type AuthenticationsItem = PartialDeep<{
     email: string;
   };
 }>;
+
+export type Modals = {
+  type: 'remove' | 'add';
+  email?: string;
+};

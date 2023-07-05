@@ -22,7 +22,7 @@ import {
 import SendEmail from './sendEmail';
 import VerifyToken from './verifyToken';
 
-export default function Email() {
+export default function AddEmail() {
   const { me, hasuraUserService, onInvalidateMe, onUpdateMe } = useAuth();
   const { t } = useTranslation('settings');
   const router = useRouter();
