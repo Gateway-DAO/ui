@@ -1,21 +1,140 @@
 import useTranslation from 'next-translate/useTranslation';
 
+import { AlertCustom } from '@/components/atoms/alert';
 import { LoadingButton } from '@/components/atoms/buttons/loading-button';
 import { TitleSubtitleField } from '@/components/atoms/title-field';
+import ModalRight from '@/components/molecules/modal/modal-right';
+import { useAuth } from '@/providers/auth';
+import { brandColors } from '@/theme';
+import { useToggle } from 'react-use';
 
-import { Stack } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
+import {
+  Alert,
+  alpha,
+  Box,
+  Button,
+  Checkbox,
+  Divider,
+  FormControlLabel,
+  IconButton,
+  Stack,
+  TextField,
+  Typography,
+} from '@mui/material';
 
 export function DeleteId() {
   const { t } = useTranslation('settings');
+  const [openModal, toggleModal] = useToggle(false);
+  const { me } = useAuth();
+  const stringValidation = 'delete my gateway id';
 
   return (
     <Stack height={'100%'} gap={4}>
+      <ModalRight open={openModal} handleClose={toggleModal}>
+        <Stack
+          direction="column"
+          divider={<Divider sx={{ margin: ' 0 -3rem' }} />}
+          sx={{
+            section: {
+              py: 4,
+            },
+          }}
+        >
+          <Stack py={6} gap={2}>
+            <Box
+              display="flex"
+              justifyContent="space-between"
+              alignItems="center"
+            >
+              <Typography variant="h6">
+                Are you sure you want delete your account?
+              </Typography>
+              <IconButton
+                aria-label="close"
+                sx={{ background: alpha(brandColors.white.main, 0.16) }}
+                onClick={toggleModal}
+              >
+                <CloseIcon />
+              </IconButton>
+            </Box>
+            <Alert
+              severity="error"
+              color="error"
+              variant="filled"
+              sx={{
+                background: 'transparent',
+                border: `1px solid ${brandColors.red.main}`,
+                color: brandColors.red.main,
+                fontSize: 14,
+                borderRadius: '16px',
+                mt: 5,
+              }}
+            >
+              <Typography variant="body2" color="#ff99ab">
+                This is extremely important
+              </Typography>
+            </Alert>
+            <Typography sx={{ mr: { xs: 0, sm: 25 } }}>
+              Once you delete your account, there is no going back. Please be
+              certain.
+            </Typography>
+          </Stack>
+          <Stack py={6} gap={2}>
+            <Typography fontWeight={600}>
+              Deleting the account, be aware:
+            </Typography>
+            <Stack direction="column" divider={<Divider />} gap={2}>
+              <Typography mt={1}>
+                You won't lost your credentials, they will still be connected to
+                the accounts they were issued for
+              </Typography>
+              <Typography color={brandColors.red.main}>
+                The ID <strong>{me.protocolUser?.gatewayId}</strong> will be
+                deactivated
+              </Typography>
+              <Typography color={brandColors.red.main}>
+                You won't be able undo this action
+              </Typography>
+            </Stack>
+          </Stack>
+          <Stack py={6} gap={4}>
+            <Typography fontWeight={600}>
+              To confirm deletion, type {stringValidation} into the field and
+              mark the checkbox
+            </Typography>
+            <TextField />
+            <FormControlLabel
+              control={<Checkbox />}
+              label="I acknowledge that upon account deletion and Gateway ID deactivation, I won't be able undo these actions"
+            />
+            <Stack
+              py={6}
+              direction="row"
+              gap={1}
+              justifyContent="space-between"
+            >
+              <Button variant="outlined" fullWidth size="large">
+                Cancel
+              </Button>
+              <Button variant="contained" color="error" fullWidth size="large">
+                Delete my Gateway ID
+              </Button>
+            </Stack>
+          </Stack>
+        </Stack>
+      </ModalRight>
       <TitleSubtitleField
         title={t('account-management.delete-section.title')}
         subtitle={t('account-management.delete-section.desc')}
       />
       <span>
-        <LoadingButton variant="contained" color="error" size="large">
+        <LoadingButton
+          onClick={toggleModal}
+          variant="contained"
+          color="error"
+          size="large"
+        >
           {t('account-management.delete-section.btn')}
         </LoadingButton>
       </span>
