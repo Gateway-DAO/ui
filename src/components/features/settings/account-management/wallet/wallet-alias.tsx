@@ -11,26 +11,21 @@ import {
   Update_EmailMutationVariables,
 } from '@/services/hasura/types';
 import { queryClient } from '@/services/query-client';
-import { brandColors } from '@/theme';
 import { useMutation } from '@tanstack/react-query';
 import { v4 as uuidv4 } from 'uuid';
 
-import { Chip, Divider, Skeleton, Stack, Typography } from '@mui/material';
+import { Divider, Skeleton, Stack, Typography } from '@mui/material';
 
-import { AuthenticationsItem } from './email-types';
+import { AuthenticationsItem } from './wallet-types';
 
 type Props = {
-  emails: AuthenticationsItem[];
+  wallets: AuthenticationsItem[];
   isLoading: boolean;
 };
 
-export function EmailAlias({ emails, isLoading }: Props) {
+export function WalletAlias({ wallets, isLoading }: Props) {
   const { me, hasuraUserService, onInvalidateMe } = useAuth();
   const { t } = useTranslation('settings');
-
-  const isPrimary = (item: AuthenticationsItem): boolean => {
-    return item?.data?.email === item?.user?.email;
-  };
 
   const deleteEmail = useMutation(
     [mutation.remove_email],
@@ -86,7 +81,7 @@ export function EmailAlias({ emails, isLoading }: Props) {
             email_protocol: item?.data?.email,
           });
         },
-        hidden: isPrimary(item),
+        hidden: false,
       },
       {
         text: t('account-management.disconnect'),
@@ -95,7 +90,7 @@ export function EmailAlias({ emails, isLoading }: Props) {
             email: item?.data?.email,
           });
         },
-        hidden: isPrimary(item),
+        hidden: false,
       },
     ];
   };
@@ -104,18 +99,18 @@ export function EmailAlias({ emails, isLoading }: Props) {
     <Stack gap={3}>
       <Stack direction="row" alignItems="center" justifyContent="space-between">
         <TitleSubtitleField
-          title={t('account-management.email-section-title')}
-          subtitle={t('account-management.email-section-desc')}
+          title={t('account-management.wallet-section-title')}
+          subtitle={t('account-management.wallet-section-desc')}
         />
         <LoadingButton variant="text" sx={{ display: 'none' }}>
-          {t('account-management.email-section-btn')}
+          {t('account-management.wallet-section-btn')}
         </LoadingButton>
       </Stack>
       {isLoading ? (
         <Skeleton sx={{ height: 30 }} />
       ) : (
         <Stack divider={<Divider sx={{ margin: ' 0 -3.7rem' }} />}>
-          {emails.map((item, index) => (
+          {wallets.map((item, index) => (
             <Stack
               direction="row"
               alignItems="center"
@@ -125,15 +120,7 @@ export function EmailAlias({ emails, isLoading }: Props) {
               key={index}
             >
               <Typography sx={{ flexGrow: 1 }}>{item?.data?.email}</Typography>
-              {isPrimary(item) && (
-                <Chip
-                  label={t('account-management.primary')}
-                  color="success"
-                  size="small"
-                  sx={{ backgroundColor: brandColors.green.main }}
-                />
-              )}
-              {emails.length > 1 && !isPrimary(item) && (
+              {wallets.length > 1 && (
                 <Stack height={32}>
                   {(deleteEmail?.isLoading &&
                     deleteEmail.variables?.email === item.data?.email) ||

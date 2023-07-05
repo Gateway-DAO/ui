@@ -1,4 +1,5 @@
 import useTranslation from 'next-translate/useTranslation';
+import { useMemo } from 'react';
 
 import { query } from '@/constants/queries';
 import { useAuth } from '@/providers/auth';
@@ -10,6 +11,7 @@ import { DeleteId } from './delete-id/delete-id';
 import { EditId } from './edit-id/edit-id';
 import { EmailAlias } from './email/email-alias';
 import { OtherAccount } from './others-accounts/other-accounts';
+import { WalletAlias } from './wallet/wallet-alias';
 import { YourAccountCredential } from './your-account/your-account-credential';
 
 const AccountManagementSettings = () => {
@@ -28,6 +30,14 @@ const AccountManagementSettings = () => {
     }
   );
 
+  const emails = useMemo(() => {
+    return authentications?.filter((a) => a.type === 'EMAIL');
+  }, [authentications]);
+
+  const wallets = useMemo(() => {
+    return authentications?.filter((a) => a.type === 'WALLET');
+  }, [authentications]);
+
   return (
     <Stack width={'100%'} marginBottom={4}>
       <Typography variant="h6" sx={{ mb: 7 }}>
@@ -39,7 +49,13 @@ const AccountManagementSettings = () => {
       >
         <YourAccountCredential />
         <EditId />
-        <EmailAlias authentications={authentications} isLoading={isLoading} />
+        {emails.length > 0 && (
+          <EmailAlias emails={emails} isLoading={isLoading} />
+        )}
+        {wallets.length > 0 && (
+          <WalletAlias wallets={wallets} isLoading={isLoading} />
+        )}
+
         <OtherAccount />
         <DeleteId />
       </Stack>
