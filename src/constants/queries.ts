@@ -30,4 +30,5 @@ export const mutation = {
   signup_email: 'signup_email',
   signup_token_verification: 'signup_token_verification',
   remove_email: 'remove_email',
+  remove_wallet: 'remove_wallet',
 };
