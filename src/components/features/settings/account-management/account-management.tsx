@@ -47,7 +47,7 @@ const AccountManagementSettings = () => {
         gap={5}
         divider={<Divider variant="fullWidth" sx={{ margin: ' 0 -3.7rem' }} />}
       >
-        <YourAccountCredential />
+        {/* <YourAccountCredential /> */}
         <EditId />
         {emails.length > 0 && (
           <EmailAlias emails={emails} isLoading={isLoading} />
@@ -55,7 +55,6 @@ const AccountManagementSettings = () => {
         {wallets.length > 0 && (
           <WalletAlias wallets={wallets} isLoading={isLoading} />
         )}
-
         <OtherAccount />
         <DeleteId />
       </Stack>
