@@ -83,3 +83,11 @@ mutation protocol_add_email_confirmation($email: String!, $code: Float!) {
     }
   }
 }
+
+mutation protocol_remove_email($email: String!) {
+  protocol {
+    removeEmail(email: $email) {
+      email
+    }
+  }
+}

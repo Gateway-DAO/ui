@@ -1,34 +1,101 @@
 import useTranslation from 'next-translate/useTranslation';
 
 import { LoadingButton } from '@/components/atoms/buttons/loading-button';
+import Loading from '@/components/atoms/loadings/loading';
 import MorePopover from '@/components/atoms/more-popover';
 import { TitleSubtitleField } from '@/components/atoms/title-field';
-import { Protocol_Api_AuthType } from '@/services/hasura/types';
+import { mutation } from '@/constants/queries';
+import { useAuth } from '@/providers/auth';
+import {
+  Protocol_Remove_EmailMutationVariables,
+  Update_EmailMutationVariables,
+} from '@/services/hasura/types';
+import { queryClient } from '@/services/query-client';
 import { brandColors } from '@/theme';
-import { PartialDeep } from 'type-fest/source/partial-deep';
+import { useMutation } from '@tanstack/react-query';
 import { v4 as uuidv4 } from 'uuid';
 
 import { Chip, Divider, Skeleton, Stack, Typography } from '@mui/material';
 
+import { AuthenticationsItem } from './email-types';
+
 type Props = {
-  authentications: PartialDeep<{
-    type: Protocol_Api_AuthType;
-    data: {
-      [x: string]: string;
-    };
-  }>[];
+  authentications: AuthenticationsItem[];
   isLoading: boolean;
 };
 
 export function EmailAlias({ authentications, isLoading }: Props) {
+  const { me, hasuraUserService, onInvalidateMe } = useAuth();
   const { t } = useTranslation('settings');
 
-  const options = (email: string) => {
+  const isPrimary = (item: AuthenticationsItem): boolean => {
+    return item?.data?.email === item?.user?.email;
+  };
+
+  const deleteEmail = useMutation(
+    [mutation.remove_email],
+    ({ email }: Protocol_Remove_EmailMutationVariables) => {
+      return hasuraUserService.protocol_remove_email({
+        email,
+      });
+    },
+    {
+      onSuccess: () =>
+        queryClient.refetchQueries([
+          'authentications_methods_by_user',
+          { id: me?.protocolUser?.id },
+        ]),
+    }
+  );
+
+  const updateEmail = useMutation(
+    [mutation.remove_email],
+    ({
+      id,
+      id_protocol,
+      email,
+      email_protocol,
+    }: Update_EmailMutationVariables) => {
+      return hasuraUserService.update_email({
+        id,
+        id_protocol,
+        email,
+        email_protocol,
+      });
+    },
+    {
+      onSuccess: () => {
+        onInvalidateMe();
+        queryClient.refetchQueries([
+          'authentications_methods_by_user',
+          { id: me?.protocolUser?.id },
+        ]);
+      },
+    }
+  );
+
+  const options = (item: AuthenticationsItem) => {
     return [
       {
-        text: 'Disconnect',
-        action: () => console.log('Joao', email),
-        hidden: false,
+        text: t('account-management.set-as-primary'),
+        action: () => {
+          updateEmail.mutateAsync({
+            id: me?.id,
+            id_protocol: me?.protocolUser?.id,
+            email: item?.data?.email,
+            email_protocol: item?.data?.email,
+          });
+        },
+        hidden: isPrimary(item),
+      },
+      {
+        text: t('account-management.disconnect'),
+        action: () => {
+          deleteEmail.mutateAsync({
+            email: item?.data?.email,
+          });
+        },
+        hidden: isPrimary(item),
       },
     ];
   };
@@ -62,18 +129,29 @@ export function EmailAlias({ authentications, isLoading }: Props) {
                 <Typography sx={{ flexGrow: 1 }}>
                   {item?.data?.email}
                 </Typography>
-                <Chip
-                  label="Primary"
-                  color="success"
-                  size="small"
-                  sx={{ backgroundColor: brandColors.green.main }}
-                />
-                {authentications.length > 1 && (
-                  <MorePopover
-                    options={options(item?.data?.email)}
-                    withBackground
-                    key={uuidv4()}
+                {isPrimary(item) && (
+                  <Chip
+                    label={t('account-management.primary')}
+                    color="success"
+                    size="small"
+                    sx={{ backgroundColor: brandColors.green.main }}
                   />
+                )}
+                {authentications.length > 1 && !isPrimary(item) && (
+                  <Stack height={32}>
+                    {(deleteEmail?.isLoading &&
+                      deleteEmail.variables?.email === item.data?.email) ||
+                    (updateEmail?.isLoading &&
+                      updateEmail.variables?.email === item.data?.email) ? (
+                      <Loading size={24} marginTop={0} />
+                    ) : (
+                      <MorePopover
+                        options={options(item)}
+                        withBackground
+                        key={uuidv4()}
+                      />
+                    )}
+                  </Stack>
                 )}
               </Stack>
             ))}

@@ -29,4 +29,5 @@ export const mutation = {
   approve_organization: 'approve_organization',
   signup_email: 'signup_email',
   signup_token_verification: 'signup_token_verification',
+  remove_email: 'remove_email',
 };

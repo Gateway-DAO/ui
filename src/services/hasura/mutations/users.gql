@@ -22,3 +22,12 @@ mutation update_gateway_id($id: uuid!, $gatewayId: String) {
     ...current_user
   }
 }
+
+mutation update_email($id: uuid!, $id_protocol: uuid!, $email: citext!, $email_protocol: String!) {
+  update_protocol_user(where: {id: {_eq: $id_protocol}}, _set: {email: $email_protocol}) {
+    affected_rows
+  }
+  update_users_by_pk(pk_columns: {id: $id}, _set: { email_address: $email}) {
+    ...current_user
+  }
+}
