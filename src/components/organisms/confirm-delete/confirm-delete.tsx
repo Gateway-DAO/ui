@@ -1,6 +1,5 @@
 import useTranslation from 'next-translate/useTranslation';
 
-import { brandColors } from '@/theme';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 
@@ -48,7 +47,7 @@ export function ConfirmDelete({
       onConfirm();
     } else {
       setError('text', {
-        message: 'Something seems to be wrong, please try again',
+        message: t('modal-confirm-delete.error-message'),
       });
     }
   };
