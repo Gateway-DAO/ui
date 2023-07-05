@@ -48,7 +48,7 @@ export function DeleteId() {
               alignItems="center"
             >
               <Typography variant="h6">
-                Are you sure you want delete your account?
+                {t('account-management.delete-section.modal-title')}
               </Typography>
               <IconButton
                 aria-label="close"
@@ -72,41 +72,44 @@ export function DeleteId() {
               }}
             >
               <Typography variant="body2" color="#ff99ab">
-                This is extremely important
+                {t('account-management.delete-section.modal-alert')}
               </Typography>
             </Alert>
             <Typography sx={{ mr: { xs: 0, sm: 25 } }}>
-              Once you delete your account, there is no going back. Please be
-              certain.
+              {t('account-management.delete-section.modal-alert-description')}
             </Typography>
           </Stack>
           <Stack py={6} gap={2}>
             <Typography fontWeight={600}>
-              Deleting the account, be aware:
+              {t('account-management.delete-section.modal-explain-title')}
             </Typography>
             <Stack direction="column" divider={<Divider />} gap={2}>
               <Typography mt={1}>
-                You won't lost your credentials, they will still be connected to
-                the accounts they were issued for
+                {t('account-management.delete-section.modal-explain-topic-1')}
               </Typography>
               <Typography color={brandColors.red.main}>
-                The ID <strong>{me.protocolUser?.gatewayId}</strong> will be
-                deactivated
+                {t('account-management.delete-section.modal-explain-topic-2', {
+                  gatewayID: me.protocolUser?.gatewayId,
+                })}{' '}
+                {t('account-management.delete-section.modal-explain-topic-3')}
               </Typography>
               <Typography color={brandColors.red.main}>
-                You won't be able undo this action
+                {t('account-management.delete-section.modal-explain-topic-4')}
               </Typography>
             </Stack>
           </Stack>
           <Stack py={6} gap={4}>
             <Typography fontWeight={600}>
-              To confirm deletion, type {stringValidation} into the field and
-              mark the checkbox
+              {t('account-management.delete-section.modal-explain-topic-5', {
+                confirmDelete: stringValidation,
+              })}
             </Typography>
             <TextField />
             <FormControlLabel
               control={<Checkbox />}
-              label="I acknowledge that upon account deletion and Gateway ID deactivation, I won't be able undo these actions"
+              label={t(
+                'account-management.delete-section.modal-explain-topic-6'
+              )}
             />
             <Stack
               py={6}
@@ -115,10 +118,10 @@ export function DeleteId() {
               justifyContent="space-between"
             >
               <Button variant="outlined" fullWidth size="large">
-                Cancel
+                {t('account-management.delete-section.modal-cancel')}
               </Button>
               <Button variant="contained" color="error" fullWidth size="large">
-                Delete my Gateway ID
+                {t('account-management.delete-section.modal-delete')}
               </Button>
             </Stack>
           </Stack>
