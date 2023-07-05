@@ -1,4 +1,5 @@
 import useTranslation from 'next-translate/useTranslation';
+import { useState } from 'react';
 
 import { AlertCustom } from '@/components/atoms/alert';
 import { LoadingButton } from '@/components/atoms/buttons/loading-button';
@@ -28,6 +29,7 @@ export function DeleteId() {
   const [openModal, toggleModal] = useToggle(false);
   const { me } = useAuth();
   const stringValidation = 'delete my gateway id';
+  const [inputText, setInputText] = useState('');
 
   return (
     <Stack height={'100%'} gap={4}>
@@ -104,7 +106,12 @@ export function DeleteId() {
                 confirmDelete: stringValidation,
               })}
             </Typography>
-            <TextField />
+            <TextField
+              value={inputText}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                setInputText(event.target.value);
+              }}
+            />
             <FormControlLabel
               control={<Checkbox />}
               label={t(
@@ -120,7 +127,13 @@ export function DeleteId() {
               <Button variant="outlined" fullWidth size="large">
                 {t('account-management.delete-section.modal-cancel')}
               </Button>
-              <Button variant="contained" color="error" fullWidth size="large">
+              <Button
+                disabled={inputText !== stringValidation}
+                variant="contained"
+                color="error"
+                fullWidth
+                size="large"
+              >
                 {t('account-management.delete-section.modal-delete')}
               </Button>
             </Stack>
