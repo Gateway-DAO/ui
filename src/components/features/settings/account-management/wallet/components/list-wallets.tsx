@@ -46,7 +46,11 @@ export function ListWallets({ wallets, isLoading, onOpenModal }: Props) {
       {isLoading ? (
         <Skeleton sx={{ height: 30 }} />
       ) : (
-        <Stack divider={<Divider sx={{ margin: ' 0 -3.7rem' }} />}>
+        <Stack
+          divider={
+            <Divider sx={{ margin: { md: '0 -3rem', xs: '0 -1.5rem' } }} />
+          }
+        >
           {wallets.map((item, index) => (
             <Stack
               direction="row"
