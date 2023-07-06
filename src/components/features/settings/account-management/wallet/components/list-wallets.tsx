@@ -79,7 +79,8 @@ export function ListWallets({ wallets, isLoading, onOpenModal }: Props) {
                 icon={icons[item?.data?.chain]}
                 sx={{ height: 26 }}
               />
-              <Stack height={32} width={40}>
+              {/* TODO: Add this code after remove wallet service is finish */}
+              {/* <Stack height={32} width={40}>
                 {wallets.length > 1 && !item?.data?.primary && (
                   <MorePopover
                     options={options(item)}
@@ -87,7 +88,7 @@ export function ListWallets({ wallets, isLoading, onOpenModal }: Props) {
                     key={uuidv4()}
                   />
                 )}
-              </Stack>
+              </Stack> */}
             </Stack>
           ))}
         </Stack>
