@@ -71,7 +71,7 @@ export function ListWallets({ wallets, isLoading, onOpenModal }: Props) {
                   sx={{ backgroundColor: brandColors.green.main }}
                 />
               )}
-              {wallets.length > 1 && (
+              {wallets.length > 1 && !item?.data?.primary && (
                 <Stack height={32}>
                   <MorePopover
                     options={options(item)}
