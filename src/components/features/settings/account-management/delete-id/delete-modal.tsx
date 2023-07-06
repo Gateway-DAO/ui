@@ -4,6 +4,7 @@ import { useState } from 'react';
 
 import Loading from '@/components/atoms/loadings/loading';
 import ModalRight from '@/components/molecules/modal/modal-right';
+import { ConfirmDelete } from '@/components/organisms/confirm-delete/confirm-delete';
 import { ROUTES } from '@/constants/routes';
 import { useAuth } from '@/providers/auth';
 import { brandColors } from '@/theme';
@@ -131,52 +132,15 @@ export function DeleteModal({
               </Typography>
             </Stack>
           </Stack>
-          <Stack py={6} gap={4}>
-            <Typography fontWeight={600}>
-              {t('account-management.delete-section.modal-explain-topic-5', {
-                confirmDelete: stringValidation,
-              })}
-            </Typography>
-            <TextField
-              value={inputText}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                setInputText(event.target.value);
-              }}
-            />
-            <FormControlLabel
-              control={
-                <Checkbox checked={checkedDelete} onChange={setCheckedDelete} />
-              }
-              label={t(
-                'account-management.delete-section.modal-explain-topic-6'
-              )}
-            />
-            <Stack
-              py={6}
-              direction="row"
-              gap={1}
-              justifyContent="space-between"
-            >
-              <Button
-                variant="outlined"
-                onClick={handleClose}
-                fullWidth
-                size="large"
-              >
-                {t('account-management.delete-section.modal-cancel')}
-              </Button>
-              <Button
-                disabled={inputText !== stringValidation || !checkedDelete}
-                variant="contained"
-                color="error"
-                fullWidth
-                size="large"
-                onClick={() => mutation.mutate()}
-              >
-                {t('account-management.delete-section.modal-delete')}
-              </Button>
-            </Stack>
-          </Stack>
+          <ConfirmDelete
+            textKey={stringValidation}
+            buttonText={t('account-management.delete-section.modal-delete')}
+            checkText={t(
+              'account-management.delete-section.modal-explain-topic-6'
+            )}
+            onCancel={handleClose}
+            onConfirm={() => mutation.mutateAsync()}
+          />
         </Stack>
       </ModalRight>
     </>
