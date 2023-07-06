@@ -24,7 +24,7 @@ type Props = {
   close: () => void;
 };
 
-export function AuthModal({ isOpen, close }: Props) {
+export function WalletConnectModal({ isOpen, close }: Props) {
   // Connectors
   const { setVisible } = useWalletModal();
   const { openConnectModal } = useConnectModal();

@@ -26,7 +26,7 @@ type Props = {
   onCancel?: () => void;
 };
 
-export function AuthConnectingModal({
+export function WalletConnectingModal({
   isOpen,
   step,
   error,

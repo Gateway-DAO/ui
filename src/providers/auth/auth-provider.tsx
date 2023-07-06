@@ -9,8 +9,8 @@ import {
   useState,
 } from 'react';
 
-import { AuthConnectingModal } from '@/components/organisms/auth-connecting-modal';
-import { AuthModal } from '@/components/organisms/auth-modal';
+import { WalletConnectModal } from '@/components/organisms/wallet-connect-modal';
+import { WalletConnectingModal } from '@/components/organisms/wallet-connecting-modal';
 import { hasuraApiWithRefresh, hasuraUserHeader } from '@/services/hasura/api';
 
 import { BlockedPage } from './blocked-page';
@@ -104,8 +104,11 @@ export function AuthProvider({
       }}
     >
       {!isBlocked && children}
-      <AuthModal isOpen={isModalVisible} close={() => setModalVisible(false)} />
-      <AuthConnectingModal
+      <WalletConnectModal
+        isOpen={isModalVisible}
+        close={() => setModalVisible(false)}
+      />
+      <WalletConnectingModal
         step={WalletModalStep}
         error={error}
         isOpen={
