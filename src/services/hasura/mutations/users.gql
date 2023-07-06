@@ -31,3 +31,26 @@ mutation update_email($id: uuid!, $id_protocol: uuid!, $email: citext!, $email_p
     ...current_user
   }
 }
+
+mutation protocol_add_wallet($wallet: String!, $chain: protocol_api_Chain) {
+  protocol {
+    addWallet(input: {
+      wallet: $wallet,
+      chain: $chain
+    }) {
+      message
+    }
+  }
+}
+
+mutation protocol_add_wallet_confirmation($wallet: String!, $chain: protocol_api_Chain, $signature: String!) {
+  protocol {
+    addWalletConfirmation(input: {
+      wallet: $wallet,
+      chain: $chain
+      signature: $signature
+    }) {
+      id
+    }
+  }
+}
