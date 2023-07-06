@@ -24,24 +24,25 @@ import { SessionUser } from '../../types/user';
 import type { WalletAuthStep } from './types';
 
 /**
+ * Handles disconnect wallets
+ */
+export function useDisconnectWallets() {
+  const { disconnectAsync: disconnectEVM } = useDisconnect();
+  const { disconnect: disconnectSolana } = useWallet();
+
+  return async () => Promise.allSettled([disconnectEVM(), disconnectSolana()]);
+}
+
+/**
  * Handles Logoff session if there's no wallet connected
  */
 function useSignOut(cb?: () => void) {
   const session = useSession();
-  const { disconnectAsync: disconnectEVM } = useDisconnect();
   const token = session?.data?.token;
-  const { disconnect: disconnectSolana } = useWallet();
+  const onDisconnect = useDisconnectWallets();
 
   const onSignOut = useCallback(async () => {
-    try {
-      await disconnectEVM();
-      // eslint-disable-next-line no-empty
-    } catch {}
-
-    try {
-      await disconnectSolana();
-      // eslint-disable-next-line no-empty
-    } catch {}
+    await onDisconnect();
 
     try {
       if (token) {
@@ -51,7 +52,7 @@ function useSignOut(cb?: () => void) {
     } catch {}
 
     cb?.();
-  }, [cb, disconnectEVM, disconnectSolana, token]);
+  }, [cb, token]);
 
   return onSignOut;
 }
