@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import {
   PropsWithChildren,
   createContext,
@@ -5,6 +6,7 @@ import {
   useReducer,
 } from 'react';
 
+import { ROUTES } from '@/constants/routes';
 import { useAuth } from '@/providers/auth';
 import { SessionUser } from '@/types/user';
 
@@ -118,6 +120,7 @@ export function SignUpProvider({ children }: PropsWithChildren<unknown>) {
   const { me } = useAuth();
 
   const [state, dispatch] = useReducer(reducer, initializeState(me));
+  const router = useRouter();
 
   const onReset = () => {
     dispatch({
@@ -156,9 +159,11 @@ export function SignUpProvider({ children }: PropsWithChildren<unknown>) {
   };
 
   const onCompleteLogin = () => {
-    dispatch({
-      type: 'COMPLETE',
-    });
+    // Temporarly disabled
+    // dispatch({
+    //   type: 'COMPLETE',
+    // });
+    router.push((router.query?.redirect as string) ?? ROUTES.EXPLORE);
   };
 
   return (
