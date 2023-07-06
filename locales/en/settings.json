@@ -70,7 +70,19 @@
     "delete-section": {
       "title": "Delete account",
       "desc": "Once you delete your account, there is no going back. Please be certain.",
-      "btn": "Delete my account"
+      "btn": "Delete my account",
+      "modal-title": "Are you sure you want delete your account?",
+      "modal-alert": "This is extremely important",
+      "modal-alert-description": "Once you delete your account, there is no going back. Please be certain.",
+      "modal-explain-title": "Deleting the account, be aware:",
+      "modal-explain-topic-1": "You won't lost your credential, they will still be connected to the accounts they were issued for",
+      "modal-explain-topic-2": "The ID",
+      "modal-explain-topic-3": "will be deactivated",
+      "modal-explain-topic-4": "You won't be able undo this action",
+      "modal-explain-topic-5": "To confirm deletion, type \"{{confirmDelete}}\" into the field and mark the checkbox",
+      "modal-explain-topic-6": "I acknowledge that upon account deletion and Gateway ID deactivation, I won't be able undo these actions",
+      "modal-cancel": "Cancel",
+      "modal-delete": "Delete my Gateway ID"
     },
     "registered-email-title": "Registered email",
     "registered-email-description": "Email is mainly used for important updates related to your account.",
