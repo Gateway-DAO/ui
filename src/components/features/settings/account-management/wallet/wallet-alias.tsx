@@ -35,15 +35,15 @@ export function WalletAlias({ wallets, isLoading }: Props) {
     <Stack gap={3}>
       <Stack direction="row" alignItems="center" justifyContent="space-between">
         <TitleSubtitleField
-          title={t('account-management.email-section-title')}
-          subtitle={t('account-management.email-section-desc')}
+          title={t('account-management.wallet-section-title')}
+          subtitle={t('account-management.wallet-section-desc')}
         />
         <LoadingButton
           variant="text"
           onClick={() => setModalRight({ type: 'add' })}
           sx={{ display: 'none' }}
         >
-          {t('account-management.email-section-btn')}
+          {t('account-management.wallet-section-btn')}
         </LoadingButton>
       </Stack>
       <ListWallets
