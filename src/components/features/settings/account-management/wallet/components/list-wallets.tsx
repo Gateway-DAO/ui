@@ -60,29 +60,31 @@ export function ListWallets({ wallets, isLoading, onOpenModal }: Props) {
               <Typography sx={{ flexGrow: 1 }}>
                 {limitCharsCentered(item?.data?.address, 12)}
               </Typography>
+              <Stack width={70}>
+                {item?.data?.primary && (
+                  <Chip
+                    label={t('account-management.primary')}
+                    color="success"
+                    size="small"
+                    sx={{ backgroundColor: brandColors.green.main }}
+                  />
+                )}
+              </Stack>
               <Chip
                 label={item?.data?.chain}
                 size="small"
                 icon={icons[item?.data?.chain]}
                 sx={{ height: 26 }}
               />
-              {item?.data?.primary && (
-                <Chip
-                  label={t('account-management.primary')}
-                  color="success"
-                  size="small"
-                  sx={{ backgroundColor: brandColors.green.main }}
-                />
-              )}
-              {wallets.length > 1 && !item?.data?.primary && (
-                <Stack height={32}>
+              <Stack height={32} width={40}>
+                {wallets.length > 1 && !item?.data?.primary && (
                   <MorePopover
                     options={options(item)}
                     withBackground
                     key={uuidv4()}
                   />
-                </Stack>
-              )}
+                )}
+              </Stack>
             </Stack>
           ))}
         </Stack>

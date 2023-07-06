@@ -103,20 +103,22 @@ export function ListEmails({ emails, isLoading, onOpenModal }: Props) {
                   sx={{ backgroundColor: brandColors.green.main }}
                 />
               )}
-              {emails.length > 1 && !isPrimary(item) && (
-                <Stack height={32}>
-                  {updateEmail?.isLoading &&
-                  updateEmail.variables?.email === item.data?.email ? (
-                    <Loading size={24} marginTop={0} />
-                  ) : (
-                    <MorePopover
-                      options={options(item)}
-                      withBackground
-                      key={uuidv4()}
-                    />
-                  )}
-                </Stack>
-              )}
+              <Stack height={32} width={40}>
+                {emails.length > 1 && !isPrimary(item) && (
+                  <>
+                    {updateEmail?.isLoading &&
+                    updateEmail.variables?.email === item.data?.email ? (
+                      <Loading size={24} marginTop={0} />
+                    ) : (
+                      <MorePopover
+                        options={options(item)}
+                        withBackground
+                        key={uuidv4()}
+                      />
+                    )}
+                  </>
+                )}
+              </Stack>
             </Stack>
           ))}
         </Stack>
