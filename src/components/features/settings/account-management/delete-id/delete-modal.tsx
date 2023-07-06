@@ -44,7 +44,8 @@ export function DeleteModal({
   const mutation = useMutation(
     () => {
       return hasuraUserService.delete_account({
-        id: me.protocolUser?.id,
+        protocolId: me.protocolUser?.id,
+        userId: me.id,
       });
     },
     {

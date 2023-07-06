@@ -31,8 +31,14 @@ mutation update_email($id: uuid!, $id_protocol: uuid!, $email: citext!, $email_p
     ...current_user
   }
 }
-mutation delete_account($id: String!) {
+
+mutation delete_account($protocolId: String!, $userId: uuid!) {
+  update_users_by_pk(pk_columns: {id: $userId}, _set: {
+    username: null, wallet: null, email_address: null, deletedAt: "now()"
+  }) {
+    ...current_user
+  }
   protocol {
-    deleteAccount(id: $id)
+    deleteAccount(id: $protocolId)
   }
 }
