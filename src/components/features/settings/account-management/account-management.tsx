@@ -48,7 +48,7 @@ const AccountManagementSettings = () => {
         divider={
           <Divider
             variant="fullWidth"
-            sx={{ margin: { md: '0 -3rem', xs: '0 -1.5rem' } }}
+            sx={{ margin: { md: '0 -3.7rem', xs: '0 -1.5rem' } }}
           />
         }
       >
