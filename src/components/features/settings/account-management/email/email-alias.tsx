@@ -42,10 +42,13 @@ export function EmailAlias({ emails, isLoading }: Props) {
   return (
     <Stack>
       <Stack
-        direction="row"
-        alignItems="center"
         justifyContent="space-between"
-        sx={{ mb: 3 }}
+        gap={3}
+        sx={{
+          mb: 3,
+          flexDirection: { xs: 'column', md: 'row' },
+          alignItems: { xs: 'flex-start', md: 'center' },
+        }}
       >
         <TitleSubtitleField
           title={t('account-management.email-section-title')}
@@ -53,6 +56,7 @@ export function EmailAlias({ emails, isLoading }: Props) {
         />
         <LoadingButton
           variant="text"
+          sx={{ alignSelf: { xs: 'flex-end', md: 'flex-start' } }}
           onClick={() => setModalRight({ type: 'add' })}
         >
           {t('account-management.email-section-btn')}

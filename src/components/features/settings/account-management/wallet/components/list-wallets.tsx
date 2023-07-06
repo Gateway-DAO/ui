@@ -1,7 +1,6 @@
 import useTranslation from 'next-translate/useTranslation';
 
 import MorePopover from '@/components/atoms/more-popover';
-import { TokenFilled } from '@/components/organisms/mint/mint-card/assets/token-filled';
 import { Protocol_Api_Chain } from '@/services/hasura/types';
 import { brandColors } from '@/theme';
 import { limitCharsCentered } from '@/utils/string';
@@ -32,7 +31,10 @@ export function ListWallets({ wallets, isLoading, onOpenModal }: Props) {
       {
         text: t('account-management.disconnect'),
         action: () => {
-          onOpenModal({ type: 'remove', wallet: item?.data?.wallet });
+          onOpenModal({
+            type: 'remove',
+            wallet: limitCharsCentered(item?.data?.address, 12),
+          });
         },
         hidden: false,
       },
@@ -44,7 +46,11 @@ export function ListWallets({ wallets, isLoading, onOpenModal }: Props) {
       {isLoading ? (
         <Skeleton sx={{ height: 30 }} />
       ) : (
-        <Stack divider={<Divider sx={{ margin: ' 0 -3.7rem' }} />}>
+        <Stack
+          divider={
+            <Divider sx={{ margin: { md: '0 -3.7rem', xs: '0 -1.5rem' } }} />
+          }
+        >
           {wallets.map((item, index) => (
             <Stack
               direction="row"
@@ -57,29 +63,32 @@ export function ListWallets({ wallets, isLoading, onOpenModal }: Props) {
               <Typography sx={{ flexGrow: 1 }}>
                 {limitCharsCentered(item?.data?.address, 12)}
               </Typography>
+              <Stack width={70}>
+                {item?.data?.primary && (
+                  <Chip
+                    label={t('account-management.primary')}
+                    color="success"
+                    size="small"
+                    sx={{ backgroundColor: brandColors.green.main }}
+                  />
+                )}
+              </Stack>
               <Chip
                 label={item?.data?.chain}
                 size="small"
                 icon={icons[item?.data?.chain]}
                 sx={{ height: 26 }}
               />
-              {item?.data?.primary && (
-                <Chip
-                  label={t('account-management.primary')}
-                  color="success"
-                  size="small"
-                  sx={{ backgroundColor: brandColors.green.main }}
-                />
-              )}
-              {wallets.length > 1 && (
-                <Stack height={32}>
+              {/* TODO: Add this code after remove wallet service is finish */}
+              {/* <Stack height={32} width={40}>
+                {wallets.length > 1 && !item?.data?.primary && (
                   <MorePopover
                     options={options(item)}
                     withBackground
                     key={uuidv4()}
                   />
-                </Stack>
-              )}
+                )}
+              </Stack> */}
             </Stack>
           ))}
         </Stack>
