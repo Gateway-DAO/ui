@@ -31,3 +31,8 @@ mutation update_email($id: uuid!, $id_protocol: uuid!, $email: citext!, $email_p
     ...current_user
   }
 }
+mutation delete_account($id: String!) {
+  protocol {
+    deleteAccount(id: $id)
+  }
+}
