@@ -32,7 +32,10 @@ export function ListWallets({ wallets, isLoading, onOpenModal }: Props) {
       {
         text: t('account-management.disconnect'),
         action: () => {
-          onOpenModal({ type: 'remove', wallet: item?.data?.wallet });
+          onOpenModal({
+            type: 'remove',
+            wallet: limitCharsCentered(item?.data?.address, 12),
+          });
         },
         hidden: false,
       },

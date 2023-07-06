@@ -53,7 +53,7 @@ export function RemoveEmail({ email, onSuccess, onCancel }: Props) {
             </Typography>
             <Typography>{t('common:modal-confirm-delete.text3')}</Typography>
           </Stack>
-          <Divider variant="fullWidth" sx={{ margin: ' 0 -3.7rem' }} />
+          <Divider variant="fullWidth" sx={{ margin: ' 0 -3rem' }} />
           <ConfirmDelete
             textKey={t(
               'account-management.modal-delete-email.disconnect-my-account'
