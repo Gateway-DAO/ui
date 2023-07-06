@@ -100,7 +100,7 @@ export function AuthProvider({
         onSignOut,
         onUpdateMe,
         onInvalidateMe,
-        authenticated: !!me && !!session,
+        isAuthenticated: !!me && !!session,
       }}
     >
       {!isBlocked && children}

@@ -31,7 +31,7 @@ export function LoyaltyProgramCard({
   loyalty_tiers,
   href,
 }: Props): JSX.Element {
-  const { me, hasuraUserService, authenticated } = useAuth();
+  const { me, hasuraUserService, isAuthenticated } = useAuth();
 
   const { data: loyaltyProgress, isLoading } = useQuery(
     [
@@ -45,7 +45,7 @@ export function LoyaltyProgramCard({
       }),
     {
       select: (data) => data.loyalty_progress.find((lp) => lp),
-      enabled: authenticated && !!id,
+      enabled: isAuthenticated && !!id,
     }
   );
 
