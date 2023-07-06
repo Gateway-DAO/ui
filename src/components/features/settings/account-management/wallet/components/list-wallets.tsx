@@ -1,7 +1,6 @@
 import useTranslation from 'next-translate/useTranslation';
 
 import MorePopover from '@/components/atoms/more-popover';
-import { TokenFilled } from '@/components/organisms/mint/mint-card/assets/token-filled';
 import { Protocol_Api_Chain } from '@/services/hasura/types';
 import { brandColors } from '@/theme';
 import { limitCharsCentered } from '@/utils/string';
