@@ -77,6 +77,9 @@
     "email-address-label": "E-mail address",
     "email-address-helper": "To update your email is necessary verify it.",
     "email-address-action": "send code to verify",
+    "primary": "Primary",
+    "set-as-primary": "Set as primary",
+    "disconnect": "Disconnect",
     "verify-your-email-title": "Verify your email",
     "verify-your-email-description": "It has been sent a code for your email address. Paste the code here to verify it. This code will expire in 30 minutes.",
     "here": "here",
@@ -87,7 +90,25 @@
     "email-verified": "Email successfully verified",
     "email-error-sending": "There was an error sending the code",
     "email-error-validating": "There was an error validating the code",
-    "username-update": "successfully updated username"
+    "username-update": "successfully updated username",
+    "add-email": {
+      "title": "Connect email",
+      "subtitle": "Email",
+      "description": "Adding another email you increase the chances of receiving credentials",
+      "label": "E-mail address"
+    },
+    "verify-token": {
+      "description1": "Please check",
+      "description2": "for an email from Gateway and enter your code below. This code will expire in 30 minutes.",
+      "card-summary-title": "Code sent to"
+    },
+    "modal-delete-email": {
+      "disconnect-my-account": "disconnect my account",
+      "disconnect-account": "Disconnect Account",
+      "checkbox-info": "I acknowledge the account disconnection from my Gateway ID"
+    },
+    "message-remove-success": "Account has been disconnected",
+    "message-add-success": "Account has been added"
   },
   "notifications": {
     "dapp": {

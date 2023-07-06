@@ -6,81 +6,62 @@ import { TitleSubtitleField } from '@/components/atoms/title-field';
 import { ModalRightConfirmation } from '@/components/molecules/modal/modal-right-confirmation';
 import { useAuth } from '@/providers/auth';
 import { queryClient } from '@/services/query-client';
-import { useSnackbar } from 'notistack';
 
 import { Stack } from '@mui/material';
 
 import { AuthenticationsItem, Modals } from './../types';
-import AddEmail from './add-email/add-email';
-import { ListEmails } from './components/list-emails';
-import { RemoveEmail } from './components/remove-email';
+import { ListWallets } from './components/list-wallets';
+import { RemoveWallet } from './components/remove-wallet';
 
 type Props = {
-  emails: AuthenticationsItem[];
+  wallets: AuthenticationsItem[];
   isLoading: boolean;
 };
 
-export function EmailAlias({ emails, isLoading }: Props) {
+export function WalletAlias({ wallets, isLoading }: Props) {
   const { me } = useAuth();
   const { t } = useTranslation('settings');
-  const { enqueueSnackbar } = useSnackbar();
   const [modalRight, setModalRight] = useState<Modals>(null);
 
   const onSuccessFinishModal = () => {
     queryClient.refetchQueries([
       'authentications_methods_by_user',
       { id: me?.protocolUser?.id },
-    ]);
-    setModalRight(null);
-    enqueueSnackbar(
-      modalRight?.type === 'remove'
-        ? t('account-management.message-remove-success')
-        : t('account-management.message-add-success')
-    );
+    ]),
+      setModalRight(null);
   };
 
   return (
-    <Stack>
-      <Stack
-        direction="row"
-        alignItems="center"
-        justifyContent="space-between"
-        sx={{ mb: 3 }}
-      >
+    <Stack gap={3}>
+      <Stack direction="row" alignItems="center" justifyContent="space-between">
         <TitleSubtitleField
-          title={t('account-management.email-section-title')}
-          subtitle={t('account-management.email-section-desc')}
+          title={t('account-management.wallet-section-title')}
+          subtitle={t('account-management.wallet-section-desc')}
         />
         <LoadingButton
           variant="text"
           onClick={() => setModalRight({ type: 'add' })}
+          sx={{ display: 'none' }}
         >
-          {t('account-management.email-section-btn')}
+          {t('account-management.wallet-section-btn')}
         </LoadingButton>
       </Stack>
-      <ListEmails
-        emails={emails}
+      <ListWallets
+        wallets={wallets}
         isLoading={isLoading}
         onOpenModal={setModalRight}
       />
       <ModalRightConfirmation
-        title={
-          modalRight?.type === 'remove'
-            ? t('common:modal-confirm-delete.title')
-            : t('account-management.add-email.title')
-        }
+        title={t('common:modal-confirm-delete.title')}
         open={!!modalRight}
         handleClose={() => setModalRight(null)}
       >
         {modalRight?.type === 'remove' && (
-          <RemoveEmail
-            email={modalRight?.email}
+          <RemoveWallet
+            wallet={modalRight?.wallet}
             onSuccess={onSuccessFinishModal}
             onCancel={() => setModalRight(null)}
           />
-        )}
-        {modalRight?.type === 'add' && (
-          <AddEmail onSuccess={onSuccessFinishModal} />
         )}
       </ModalRightConfirmation>
     </Stack>

@@ -99,6 +99,7 @@
     "share-link": "Share link",
     "download": "Download",
     "reset": "Reset",
+    "continue": "Continue",
     "connect-now": "Connect now"
   },
   "image-drop-field": {
@@ -136,5 +137,17 @@
       "title": "Earn a credential",
       "description": "Go to explore and try to earn credentials"
     }
+  },
+  "modal-confirm-delete": {
+    "text-confirm1": "To confirm, type",
+    "text-confirm2": "into the field and mark the checkbox",
+    "title": "Are you sure you want to disconnect the account?",
+    "subtitle": "Disconnecting the account, be aware:",
+    "text1": "The credentials will be tied only to the",
+    "text2a": "The credentials issued to",
+    "text2b": "won't be available for your ID",
+    "text2c": "and won't be displayed in your profile",
+    "text3": "You will be able to connect this account again, and then tie the credentials to the your ID",
+    "error-message": "Something seems to be wrong, please try again"
   }
 }

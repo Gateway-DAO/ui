@@ -1,5 +1,6 @@
 import useTranslation from 'next-translate/useTranslation';
 
+import { CardSummary } from '@/components/molecules/card-summary';
 import { CountdownType } from '@/hooks/use-countdown';
 import { useForm } from 'react-hook-form';
 
@@ -7,7 +8,6 @@ import { Stack, TextField, Typography } from '@mui/material';
 
 import { LoadingButton } from '../../../atoms/buttons/loading-button';
 import { TokenConfirmationSchema } from '../schema';
-import { CardSummary } from './card-summary';
 import { TitleSubtitleField } from './title-field';
 
 type Props = {
@@ -43,7 +43,12 @@ export function CodeField({
       gap={2}
       onSubmit={handleSubmit(onSubmitConfirmCode)}
     >
-      <CardSummary onClickEdit={onClickEdit} email={email} />
+      <CardSummary
+        title={t('card-summary-title')}
+        onClickEdit={onClickEdit}
+        email={email}
+        sxProps={{ top: { xs: -30, md: -40, lg: -50 } }}
+      />
       <Typography component="h1" variant="h4" sx={{ mb: 3 }}>
         {t('steps.verify-token.title')}
       </Typography>

@@ -1,4 +1,9 @@
 import useTranslation from 'next-translate/useTranslation';
+import { useMemo } from 'react';
+
+import { query } from '@/constants/queries';
+import { useAuth } from '@/providers/auth';
+import { useQuery } from '@tanstack/react-query';
 
 import { Divider, Stack, Typography } from '@mui/material';
 
@@ -6,10 +11,32 @@ import { DeleteId } from './delete-id/delete-id';
 import { EditId } from './edit-id/edit-id';
 import { EmailAlias } from './email/email-alias';
 import { OtherAccount } from './others-accounts/other-accounts';
+import { WalletAlias } from './wallet/wallet-alias';
 import { YourAccountCredential } from './your-account/your-account-credential';
 
 const AccountManagementSettings = () => {
   const { t } = useTranslation('settings');
+  const { hasuraUserService, me, isAuthenticated } = useAuth();
+
+  const { data: authentications, isLoading } = useQuery(
+    [query.authentications_methods_by_user, { id: me?.protocolUser?.id }],
+    () =>
+      hasuraUserService.authentications_methods_by_user({
+        id: me?.protocolUser?.id,
+      }),
+    {
+      select: (data) => data?.protocol_user_by_pk?.authentications,
+      enabled: isAuthenticated,
+    }
+  );
+
+  const emails = useMemo(() => {
+    return authentications?.filter((a) => a.type === 'EMAIL') ?? [];
+  }, [authentications]);
+
+  const wallets = useMemo(() => {
+    return authentications?.filter((a) => a.type === 'WALLET') ?? [];
+  }, [authentications]);
 
   return (
     <Stack width={'100%'} marginBottom={4}>
@@ -18,13 +45,16 @@ const AccountManagementSettings = () => {
       </Typography>
       <Stack
         gap={5}
-        divider={
-          <Divider variant="fullWidth" style={{ margin: ' 0 -3.7rem' }} />
-        }
+        divider={<Divider variant="fullWidth" sx={{ margin: ' 0 -3.7rem' }} />}
       >
-        <YourAccountCredential />
+        {/* <YourAccountCredential /> */}
         <EditId />
-        <EmailAlias />
+        {emails?.length > 0 && (
+          <EmailAlias emails={emails} isLoading={isLoading} />
+        )}
+        {wallets?.length > 0 && (
+          <WalletAlias wallets={wallets} isLoading={isLoading} />
+        )}
         <OtherAccount />
         <DeleteId />
       </Stack>
