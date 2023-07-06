@@ -64,6 +64,7 @@ type Props = {
   invalidWallets?: number;
   total: number;
   readFiles?: (files: File[] | FileList) => void;
+  setAddRecipient: (nextValue?: any) => void;
 };
 
 export function DirectWalletsHeader({
@@ -71,6 +72,7 @@ export function DirectWalletsHeader({
   invalidWallets = 0,
   total = 0,
   readFiles,
+  setAddRecipient,
 }: Props) {
   const { t } = useTranslation('gate-new');
 
@@ -96,7 +98,7 @@ export function DirectWalletsHeader({
             {invalidWallets} invalid
           </Typography>
         </Box>
-        {readFiles && (
+        {/* {readFiles && (
           <Button
             component="label"
             variant="outlined"
@@ -115,7 +117,10 @@ export function DirectWalletsHeader({
               value={[]}
             />
           </Button>
-        )}
+        )} */}
+        <Button variant="outlined" onClick={setAddRecipient}>
+          Add Recipient
+        </Button>
       </Stack>
     </Stack>
   );

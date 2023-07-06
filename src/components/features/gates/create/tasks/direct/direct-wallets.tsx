@@ -19,6 +19,7 @@ import { DirectWalletsProgress } from './fields/direct-wallets-progress';
 import { DirectWalletsUploading } from './fields/direct-wallets-uploading';
 import ConfirmDialog from '@/components/molecules/modal/confirm-dialog';
 import { useState } from 'react';
+import { AddRecipient } from './add-recipient-dialog';
 
 export function DirectWallets() {
   const { hasuraUserService, fetchAuth } = useAuth();
@@ -28,7 +29,14 @@ export function DirectWallets() {
   });
 
   const [confirmDialgog, setConfirmDialog] = useToggle(false);
-  const [templateConfimration, setTemplateConfirmation] = useToggle(false);
+  const [addRecipient, setAddRecipient] = useToggle(false);
+  const [values, setValues] = useState({
+    addNew: true,
+    type: '',
+    wallet: '',
+    oldType: '',
+    oldWallet: '',
+  });
   const [Files, setFiles] = useState<File>();
 
   const verifyCSV = useMutation<Files, unknown, File>(
@@ -59,6 +67,30 @@ export function DirectWallets() {
 
   const file = field.value;
 
+  const addRecipientMutation = useMutation(
+    ['verify-wallet-single', file?.id],
+    () =>
+      hasuraUserService.verify_single({
+        file_id: file?.id,
+        addNew: values.addNew,
+        type: values.type,
+        wallet: values.wallet,
+        oldType: values.oldType,
+        oldWallet: values.oldWallet,
+      }),
+    {
+      onError(error: any) {
+        enqueueSnackbar(error?.message ?? JSON.stringify(error), {
+          variant: 'error',
+        });
+      },
+    }
+  );
+
+  const handleAddRecipientMutation = () => {
+    addRecipientMutation.mutate();
+  };
+
   const progressReq = useInfiniteQuery(
     ['progress', file?.id],
     () => hasuraUserService.verify_csv_progress({ file_id: file?.id }),
@@ -78,6 +110,7 @@ export function DirectWallets() {
   );
 
   const progress = progressReq.data?.pages?.[0]?.verify_csv_progress;
+  
   const isUploadDisabled = file && progress && !progress.isDone;
 
   const readFiles = (files: File[] | FileList) => {
@@ -133,6 +166,7 @@ export function DirectWallets() {
                     invalidWallets={progress.invalid}
                     readFiles={readFiles}
                     total={file?.metadata?.total}
+                    setAddRecipient={setAddRecipient}
                   />
                 )}
                 {(!progress || (progress && !progress.isDone)) && (
@@ -147,7 +181,13 @@ export function DirectWallets() {
                     />
                   </>
                 )}
-                {progress?.isDone && <DirectWalletsList {...progress} />}
+                {progress?.isDone && (
+                  <DirectWalletsList
+                    {...progress}
+                    setAddRecipient={setAddRecipient}
+                    setValues={setValues}
+                  />
+                )}
               </>
             ) : (
               <>
@@ -167,9 +207,16 @@ export function DirectWallets() {
           negativeAnswer="cancel"
           positiveAnswer="Continue"
           onConfirm={() => {
-            setTemplateConfirmation(true);
             verifyCSV.mutate(Files);
           }}
+        />
+        <AddRecipient
+          toggleDialog={setAddRecipient}
+          open={addRecipient}
+          title="Add"
+          handleAddRecipientMutation={handleAddRecipientMutation}
+          setValues={setValues}
+          values={values}
         />
       </Paper>
     </>

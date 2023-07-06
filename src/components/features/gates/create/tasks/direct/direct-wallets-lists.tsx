@@ -1,7 +1,9 @@
 import {
   ChangeEvent,
+  Dispatch,
   MouseEvent,
   PropsWithChildren,
+  SetStateAction,
   forwardRef,
   useMemo,
   useState,
@@ -39,6 +41,7 @@ import {
   TableBody,
   IconButton,
   Avatar,
+  Button,
 } from '@mui/material';
 import MenuItem from '@mui/material/MenuItem';
 
@@ -55,12 +58,24 @@ export function DirectWalletsList({
   listContainerProps,
   listProps,
   listItemProps,
+  setValues,
+  setAddRecipient,
 }: Required<Pick<VerifyCsvProgressOutput, 'validList' | 'invalidList'>> & {
   searchContainer?: (props: PropsWithChildren<unknown>) => JSX.Element;
   containerProps?: StackProps;
   listContainerProps?: BoxProps;
   listProps?: Partial<VirtuosoProps<any, any>>;
   listItemProps?: Partial<ListItemProps>;
+  setAddRecipient: (nextValue?: any) => void;
+  setValues: Dispatch<
+    SetStateAction<{
+      addNew: boolean;
+      type: string;
+      wallet: string;
+      oldType: string;
+      oldWallet: string;
+    }>
+  >;
 }) {
   const [filter, setFilter] = useState('');
 
@@ -133,7 +148,7 @@ export function DirectWalletsList({
 
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
 
@@ -148,7 +163,7 @@ export function DirectWalletsList({
 
   function fixedHeaderContent() {
     return (
-      <TableRow>
+      <TableRow sx={{ width: '100%' }}>
         {columns.map((column) => (
           <TableCell
             key={column}
@@ -165,20 +180,7 @@ export function DirectWalletsList({
     );
   }
 
-  const VirtuosoTableComponents: TableComponents<Data> = {
-    Scroller: forwardRef<HTMLDivElement>((props, ref) => (
-      <TableContainer component={Paper} {...props} ref={ref} />
-    )),
-    Table: (props) => <Table {...props} sx={{}} />,
-    TableHead,
-    TableRow: ({ ...props }) => <TableRow {...props} />,
-    TableBody: forwardRef<HTMLTableSectionElement>((props, ref) => (
-      <TableBody {...props} ref={ref} />
-    )),
-  };
-
   function rowContent(index: number, row: any) {
-    console.log(row);
     const { wallet, type, invalid } = row;
     return (
       <>
@@ -204,19 +206,42 @@ export function DirectWalletsList({
               <MoreVertIcon />
             </Avatar>
           </IconButton>
-          <Popover
-            id={id}
-            open={open}
-            anchorEl={anchorEl}
-            onClose={handleClose}
-            anchorOrigin={{
-              vertical: 'bottom',
-              horizontal: 'left',
-            }}
-          >
-            <Typography sx={{ p: 2 }}>The content of the Popover.</Typography>
-          </Popover>
         </TableCell>
+        <Popover
+          id="mouse-over-popover"
+          sx={{}}
+          open={open}
+          anchorEl={anchorEl}
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'right',
+          }}
+          transformOrigin={{
+            vertical: 'top',
+            horizontal: 'right',
+          }}
+          onClose={() => setAnchorEl(null)}
+          disableRestoreFocus
+        >
+          <Stack>
+            <Button>Remove</Button>
+            <Button
+              onClick={() => {
+                console.log(wallet);
+                setValues({
+                  addNew: false,
+                  oldType: type,
+                  oldWallet: wallet,
+                  type: '',
+                  wallet: '',
+                });
+                setAddRecipient();
+              }}
+            >
+              Edit
+            </Button>
+          </Stack>
+        </Popover>
       </>
     );
   }
@@ -228,32 +253,21 @@ export function DirectWalletsList({
       ) : (
         searchInput
       )}
-      <Box {...listContainerProps}>
-        {/* <Virtuoso
-          style={{ height: Math.min(400, whitelistedWallets.length * 61) }}
-          data={whitelistedWallets}
-          itemContent={(index, whitelisted) => {
-            return (
-              <>
-                <UserListItemEdit
-                  recipientId={
-                    whitelisted.ens ? whitelisted.ens : whitelisted.wallet
-                  }
-                  invalid={whitelisted.invalid}
-                  {...listItemProps}
-                />
-                {index !== whitelistedWallets.length - 1 && <Divider />}
-              </>
-            );
-          }}
-          {...listProps}
-        /> */}
+      <Box
+        {...listContainerProps}
+        sx={{
+          table: {
+            width: '100%',
+          },
+        }}
+      >
         <TableVirtuoso
           data={whitelistedWallets}
           fixedHeaderContent={fixedHeaderContent}
           itemContent={rowContent}
-          components={VirtuosoTableComponents}
-          style={{ height: Math.min(400, whitelistedWallets.length * 61) }}
+          style={{
+            height: Math.min(400, whitelistedWallets.length * 61),
+          }}
         />
       </Box>
     </Stack>

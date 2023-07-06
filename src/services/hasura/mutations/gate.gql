@@ -27,3 +27,25 @@ mutation deleteGate($gate_id: uuid!) {
     dao_id
   }
 }
+
+mutation verify_single(
+  $file_id: uuid!
+  $type: String!
+  $wallet: String!
+  $addNew: Boolean!
+  $oldWallet: String
+  $oldType: String
+) {
+  verify_single(
+    id: $file_id
+    type: $type
+    wallet: $wallet
+    addNew: $addNew
+    oldWallet: $oldWallet
+    oldType: $oldType
+  ) {
+    validated
+    invalidList
+    validList
+  }
+}
