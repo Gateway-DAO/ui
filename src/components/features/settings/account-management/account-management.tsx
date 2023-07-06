@@ -16,7 +16,7 @@ import { YourAccountCredential } from './your-account/your-account-credential';
 
 const AccountManagementSettings = () => {
   const { t } = useTranslation('settings');
-  const { hasuraUserService, me, authenticated } = useAuth();
+  const { hasuraUserService, me, isAuthenticated } = useAuth();
 
   const { data: authentications, isLoading } = useQuery(
     [query.authentications_methods_by_user, { id: me?.protocolUser?.id }],
@@ -26,7 +26,7 @@ const AccountManagementSettings = () => {
       }),
     {
       select: (data) => data?.protocol_user_by_pk?.authentications,
-      enabled: authenticated,
+      enabled: isAuthenticated,
     }
   );
 
