@@ -1,44 +1,40 @@
-import useTranslation from 'next-translate/useTranslation';
-
 import { brandColors } from '@/theme';
 
 import EditIcon from '@mui/icons-material/Edit';
-import { alpha, Stack, Typography } from '@mui/material';
+import { alpha, Stack, Typography, SxProps, Theme } from '@mui/material';
 
 type Props = {
+  title: string;
   email: string;
-  onClickEdit: () => void;
+  onClickEdit: (value: boolean) => void;
+  sxProps?: SxProps<Theme>;
 };
 
-export function CardSummary({ email, onClickEdit }: Props) {
-  const { t } = useTranslation('authentication');
-
+export function CardSummary({ title, email, onClickEdit, sxProps }: Props) {
   return (
     <Stack
       direction="row"
       justifyContent="space-between"
       gap={1}
       alignItems="center"
-      sx={(theme) => ({
+      sx={{
         width: '100%',
         p: 2,
-        backgroundColor: theme.palette.background.elevated,
+        backgroundColor: brandColors.background.elevated,
         border: '1px solid rgba(229, 229, 229, 0.12)',
         borderRadius: 2,
         position: 'relative',
-        top: { xs: -30, md: -40, lg: -50 },
-      })}
+        ...sxProps,
+      }}
     >
       <Stack direction="column">
-        <Typography sx={{ fontWeight: 700, mb: 1 }}>
-          {t('card-summary-title')}
-        </Typography>
+        <Typography sx={{ fontWeight: 700, mb: 1 }}>{title}</Typography>
         <Typography sx={{ color: alpha(brandColors.white.main, 0.7) }}>
           {email}
         </Typography>
       </Stack>
       <EditIcon
-        onClick={() => onClickEdit()}
+        onClick={() => onClickEdit(false)}
         sx={{
           color: alpha(brandColors.white.main, 0.7),
           cursor: 'pointer',

@@ -7,7 +7,7 @@ type Props = {
 
 export function TitleSubtitleField({ title, subtitle = '' }: Props) {
   return (
-    <Stack gap={0.5}>
+    <Stack gap={0.25}>
       <Typography component="h2" variant="h6" fontSize={16}>
         {title}
       </Typography>

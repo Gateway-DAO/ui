@@ -2,19 +2,20 @@ import useTranslation from 'next-translate/useTranslation';
 
 import { LoadingButton } from '@/components/atoms/buttons/loading-button';
 import { useCountdown } from '@/hooks/use-countdown';
+import { brandColors } from '@/theme';
 import { useFormContext } from 'react-hook-form';
 import { useToggle } from 'react-use';
 
-import { Stack, TextField, Typography } from '@mui/material';
+import { Stack, TextField, Typography, alpha } from '@mui/material';
 
-import { TokenConfirmationSchema, SendEmailSchema } from './schema';
+import { TokenConfirmationSchema, EmailSchema } from './schema';
 
 type Props = {
   onSubmitConfirmToken: (data: TokenConfirmationSchema) => void;
   isLoadingConfirmToken: boolean;
-  onSubmitSendEmail: (data: SendEmailSchema) => void;
+  onSubmitSendEmail: (data: EmailSchema) => void;
   isLoadingSendEmail: boolean;
-  sendEmailData: SendEmailSchema;
+  sendEmailData: EmailSchema;
 };
 
 export default function VerifyToken({
@@ -27,7 +28,7 @@ export default function VerifyToken({
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors },
   } = useFormContext<TokenConfirmationSchema>();
 
   const { t } = useTranslation('settings');
@@ -41,17 +42,20 @@ export default function VerifyToken({
   };
 
   return (
-    <Stack component="form" onSubmit={handleSubmit(onSubmitConfirmToken)}>
-      <Stack sx={{ width: '100%', mb: 4 }}>
-        <Typography fontSize="16px" sx={{ fontWeight: 600 }}>
-          {t('account-management.verify-your-email-title')}
-        </Typography>
-        <Typography variant="body2" fontSize="12px">
-          {t('account-management.verify-your-email-description')}
-        </Typography>
-      </Stack>
+    <Stack
+      component="form"
+      onSubmit={handleSubmit(onSubmitConfirmToken)}
+      gap={3}
+    >
+      <Typography sx={{ color: alpha(brandColors.white.main, 0.7) }}>
+        {t('account-management.verify-token.description1')}{' '}
+        <span style={{ color: brandColors.white.main }}>
+          {sendEmailData?.email_address}
+        </span>{' '}
+        {t('account-management.verify-token.description2')}
+      </Typography>
       <TextField
-        sx={{ width: '315px', mb: 2 }}
+        sx={{ mb: 2 }}
         variant="outlined"
         type="text"
         name="code"
@@ -69,7 +73,6 @@ export default function VerifyToken({
             height: 48,
             mr: 1,
           }}
-          disabled={!isValid}
         >
           {t('account-management.code-action')}
         </LoadingButton>

@@ -1,21 +1,17 @@
+import { Users } from '@/services/hasura/types';
 import { object, string, SchemaOf } from 'yup';
 
-type SendEmail = {
-  email: string;
-};
+export type EmailSchema = Required<Pick<Users, 'email_address'>>;
 
-type ConfirmToken = {
+export type TokenConfirmationSchema = {
   code: string;
 };
 
-export type SendEmailSchema = Required<Pick<SendEmail, 'email'>>;
-export type TokenConfirmationSchema = Required<Pick<ConfirmToken, 'code'>>;
-
-export const schemaSendEmail: SchemaOf<SendEmailSchema> = object({
-  email: string().min(2).email().defined(),
+export const schemaEmail: SchemaOf<EmailSchema> = object({
+  email_address: string().min(2).email().defined().label('Email address'),
 });
 
 export const schemaTokenConfirmation: SchemaOf<TokenConfirmationSchema> =
   object({
-    code: string().required(),
+    code: string().min(6, 'Invalid code').max(6, 'Invalid code').label('Code'),
   });

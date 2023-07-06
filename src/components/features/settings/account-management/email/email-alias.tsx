@@ -6,6 +6,7 @@ import { TitleSubtitleField } from '@/components/atoms/title-field';
 import { ModalRightConfirmation } from '@/components/molecules/modal/modal-right-confirmation';
 import { useAuth } from '@/providers/auth';
 import { queryClient } from '@/services/query-client';
+import { useSnackbar } from 'notistack';
 
 import { Stack } from '@mui/material';
 
@@ -22,19 +23,30 @@ type Props = {
 export function EmailAlias({ emails, isLoading }: Props) {
   const { me } = useAuth();
   const { t } = useTranslation('settings');
+  const { enqueueSnackbar } = useSnackbar();
   const [modalRight, setModalRight] = useState<Modals>(null);
 
   const onSuccessFinishModal = () => {
     queryClient.refetchQueries([
       'authentications_methods_by_user',
       { id: me?.protocolUser?.id },
-    ]),
-      setModalRight(null);
+    ]);
+    setModalRight(null);
+    enqueueSnackbar(
+      modalRight?.type === 'remove'
+        ? t('account-management.message-remove-success')
+        : t('account-management.message-add-success')
+    );
   };
 
   return (
-    <Stack gap={3}>
-      <Stack direction="row" alignItems="center" justifyContent="space-between">
+    <Stack>
+      <Stack
+        direction="row"
+        alignItems="center"
+        justifyContent="space-between"
+        sx={{ mb: 3 }}
+      >
         <TitleSubtitleField
           title={t('account-management.email-section-title')}
           subtitle={t('account-management.email-section-desc')}
@@ -42,7 +54,6 @@ export function EmailAlias({ emails, isLoading }: Props) {
         <LoadingButton
           variant="text"
           onClick={() => setModalRight({ type: 'add' })}
-          sx={{ display: 'none' }}
         >
           {t('account-management.email-section-btn')}
         </LoadingButton>
@@ -53,7 +64,11 @@ export function EmailAlias({ emails, isLoading }: Props) {
         onOpenModal={setModalRight}
       />
       <ModalRightConfirmation
-        title={t('common:modal-confirm-delete.title')}
+        title={
+          modalRight?.type === 'remove'
+            ? t('common:modal-confirm-delete.title')
+            : t('account-management.add-email.title')
+        }
         open={!!modalRight}
         handleClose={() => setModalRight(null)}
       >
@@ -64,7 +79,9 @@ export function EmailAlias({ emails, isLoading }: Props) {
             onCancel={() => setModalRight(null)}
           />
         )}
-        {modalRight?.type === 'add' && <AddEmail />}
+        {modalRight?.type === 'add' && (
+          <AddEmail onSuccess={onSuccessFinishModal} />
+        )}
       </ModalRightConfirmation>
     </Stack>
   );
