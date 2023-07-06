@@ -34,7 +34,7 @@ export function AuthProvider({
     me,
     error,
     onUpdateMe,
-    walletAuthStep,
+    WalletModalStep,
     onRetry,
     onSignOut,
     onInvalidateMe,
@@ -106,13 +106,13 @@ export function AuthProvider({
       {!isBlocked && children}
       <AuthModal isOpen={isModalVisible} close={() => setModalVisible(false)} />
       <AuthConnectingModal
-        step={walletAuthStep}
+        step={WalletModalStep}
         error={error}
         isOpen={
-          walletAuthStep === 'get-nonce' ||
-          walletAuthStep === 'send-signature' ||
-          walletAuthStep === 'get-me' ||
-          walletAuthStep === 'error'
+          WalletModalStep === 'get-nonce' ||
+          WalletModalStep === 'send-signature' ||
+          WalletModalStep === 'get-me' ||
+          WalletModalStep === 'error'
         }
         onRetry={onRetry}
         onCancel={onSignOut}

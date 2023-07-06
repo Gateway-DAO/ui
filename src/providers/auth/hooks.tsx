@@ -21,7 +21,7 @@ import { useAccount, useDisconnect, useSignMessage } from 'wagmi';
 
 import { ErrorResponse } from '../../types/graphql';
 import { SessionUser } from '../../types/user';
-import type { WalletAuthStep } from './types';
+import type { WalletModalStep } from './types';
 
 /**
  * Handles disconnect wallets
@@ -255,7 +255,7 @@ export const useAuthLogin = () => {
     }
   );
 
-  const walletAuthStep: WalletAuthStep = useMemo(() => {
+  const WalletModalStep: WalletModalStep = useMemo(() => {
     if (error) return 'error';
     if (nonce.isFetching) return 'get-nonce';
     if (sendSignature.isLoading) return 'send-signature';
@@ -302,7 +302,7 @@ export const useAuthLogin = () => {
   return {
     me: token ? me.data : undefined,
     error,
-    walletAuthStep,
+    WalletModalStep,
     onUpdateMe,
     onSignOut,
     onRetry,
