@@ -3,7 +3,7 @@ import { Files } from '@/services/hasura/types';
 import { useMutation, useInfiniteQuery } from '@tanstack/react-query';
 import { useSnackbar } from 'notistack';
 import { useController } from 'react-hook-form';
-import { useDropArea } from 'react-use';
+import { useDropArea, useToggle } from 'react-use';
 
 import { Paper } from '@mui/material';
 
@@ -17,6 +17,8 @@ import { DirectWalletsList } from './direct-wallets-lists';
 import { DirectWalletsDropzone } from './fields/direct-wallets-dropzone';
 import { DirectWalletsProgress } from './fields/direct-wallets-progress';
 import { DirectWalletsUploading } from './fields/direct-wallets-uploading';
+import ConfirmDialog from '@/components/molecules/modal/confirm-dialog';
+import { useState } from 'react';
 
 export function DirectWallets() {
   const { hasuraUserService, fetchAuth } = useAuth();
@@ -24,6 +26,10 @@ export function DirectWallets() {
   const { field } = useController<CreateGateData>({
     name: 'whitelisted_wallets_file',
   });
+
+  const [confirmDialgog, setConfirmDialog] = useToggle(false);
+  const [templateConfimration, setTemplateConfirmation] = useToggle(false);
+  const [Files, setFiles] = useState<File>();
 
   const verifyCSV = useMutation<Files, unknown, File>(
     ['verify-csv'],
@@ -42,6 +48,7 @@ export function DirectWallets() {
       onSuccess(data) {
         field.onChange(data);
       },
+
       onError(error: any) {
         enqueueSnackbar(error?.message ?? JSON.stringify(error), {
           variant: 'error',
@@ -75,9 +82,14 @@ export function DirectWallets() {
 
   const readFiles = (files: File[] | FileList) => {
     const file = files[0];
-    if (file && !isUploadDisabled) {
-      verifyCSV.mutate(file);
+    if (file && !isUploadDisabled && file.type === 'text/csv') {
+      setConfirmDialog(true);
+      setFiles(file);
     }
+    if (file.type !== 'text/csv')
+      enqueueSnackbar('Only CSV files allowed', {
+        variant: 'info',
+      });
     if (isUploadDisabled) {
       enqueueSnackbar('Please wait for the current file to finish processing', {
         variant: 'info',
@@ -92,10 +104,8 @@ export function DirectWallets() {
   return (
     <>
       <Paper
-        elevation={1}
         sx={[
           {
-            px: { xs: 2, lg: 6 },
             py: { xs: 3, lg: 6 },
             display: 'flex',
             flexFlow: 'column',
@@ -109,29 +119,33 @@ export function DirectWallets() {
         {...dropBond}
       >
         {verifyCSV.isLoading ? (
-          <DirectWalletsUploading />
+          <>
+            <DirectWalletsEmptyHeader />
+            <DirectWalletsUploading />
+          </>
         ) : (
           <>
             {file ? (
               <>
-                {progress?.isDone ? (
+                {progress?.isDone && (
                   <DirectWalletsHeader
                     validWallets={progress.valid}
                     invalidWallets={progress.invalid}
                     readFiles={readFiles}
-                  />
-                ) : (
-                  <DirectWalletsVerifyingHeader total={file?.metadata?.total} />
-                )}
-                {}
-                {(!progress || (progress && !progress.isDone)) && (
-                  <DirectWalletsProgress
                     total={file?.metadata?.total}
-                    isLoading={!progress}
-                    valid={progress?.valid ?? 0}
-                    invalid={progress?.invalid ?? 0}
-                    {...progress}
                   />
+                )}
+                {(!progress || (progress && !progress.isDone)) && (
+                  <>
+                    <DirectWalletsEmptyHeader />
+                    <DirectWalletsProgress
+                      total={file?.metadata?.total}
+                      isLoading={!progress}
+                      valid={progress?.valid ?? 0}
+                      invalid={progress?.invalid ?? 0}
+                      {...progress}
+                    />
+                  </>
                 )}
                 {progress?.isDone && <DirectWalletsList {...progress} />}
               </>
@@ -145,6 +159,18 @@ export function DirectWallets() {
             )}
           </>
         )}
+        <ConfirmDialog
+          open={confirmDialgog}
+          setOpen={setConfirmDialog}
+          title="Did you use our CSV template to upload your recipients?"
+          children={null}
+          negativeAnswer="cancel"
+          positiveAnswer="Continue"
+          onConfirm={() => {
+            setTemplateConfirmation(true);
+            verifyCSV.mutate(Files);
+          }}
+        />
       </Paper>
     </>
   );

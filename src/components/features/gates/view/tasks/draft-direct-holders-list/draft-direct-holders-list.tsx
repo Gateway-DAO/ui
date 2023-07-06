@@ -62,10 +62,10 @@ export function DraftDirectHoldersList({ gate }: Props) {
               pb: 2,
             }}
           >
-            <DirectWalletsHeader
+            {/* <DirectWalletsHeader
               validWallets={progress.valid}
               invalidWallets={progress.invalid}
-            />
+            /> */}
           </Box>
           <DirectWalletsList
             invalidList={progress.invalidList}

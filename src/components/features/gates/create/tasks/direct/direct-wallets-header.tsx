@@ -21,9 +21,11 @@ export function DirectWalletsEmptyHeader() {
         gap={2}
       >
         <Box>
-          <Typography variant="h6">{t('direct.empty.title')}</Typography>
+          <Typography variant="h6">
+            Upload CSV file containing the recipients
+          </Typography>
           <Typography variant="body1" color="text.secondary">
-            {t('direct.empty.description')}
+            Download the file template, fill it out and upload it here
           </Typography>
         </Box>
       </Stack>
@@ -60,12 +62,14 @@ export function DirectWalletsVerifyingHeader({ total }: { total: number }) {
 type Props = {
   validWallets?: number;
   invalidWallets?: number;
+  total: number;
   readFiles?: (files: File[] | FileList) => void;
 };
 
 export function DirectWalletsHeader({
   validWallets = 0,
   invalidWallets = 0,
+  total = 0,
   readFiles,
 }: Props) {
   const { t } = useTranslation('gate-new');
@@ -85,12 +89,11 @@ export function DirectWalletsHeader({
         gap={2}
       >
         <Box>
-          <Typography variant="h6">
-            {t('direct.result.title.valid', { count: validWallets })}
-            {invalidWallets > 0 &&
-              ` / ${t('direct.result.title.invalid', {
-                count: invalidWallets,
-              })}`}
+          <Typography variant="h6">{total} recipients</Typography>
+          <Typography variant="body2">
+            {validWallets} valid
+            {` / `}
+            {invalidWallets} invalid
           </Typography>
         </Box>
         {readFiles && (

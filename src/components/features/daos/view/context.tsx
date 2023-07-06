@@ -20,9 +20,11 @@ type DaoProfileContextProps = {
   issuedCredentials?: PartialDeep<Protocol_Api_Credential>[];
   stats?: Protocol_Get_Dao_StatsQuery;
   openCredentialCreationDialog: boolean;
+  openSendDirectCredentialDialog: boolean;
   setOpenCredentialCreationDialog: (nextValue?: any) => void;
   openCreateQuestDialog: boolean;
   setOpenCreateQuestDialog: (nextValue?: any) => void;
+  setOpenSendDirectCredentialDialog: (nextValue?: any) => void;
 };
 
 export const DaoProfileContext = createContext<DaoProfileContextProps>({
@@ -33,8 +35,10 @@ export const DaoProfileContext = createContext<DaoProfileContextProps>({
   onRefetchFollowers: () => {},
   openCredentialCreationDialog: false,
   openCreateQuestDialog: false,
+  openSendDirectCredentialDialog: false,
   setOpenCredentialCreationDialog: () => {},
   setOpenCreateQuestDialog: () => {},
+  setOpenSendDirectCredentialDialog: () => {},
 });
 export const useDaoProfile = () => useContext(DaoProfileContext);
 

@@ -55,6 +55,9 @@ export default function DaoProfilePage({
 
   const [openCreateQuestDialog, setOpenCreateQuestDialog] = useToggle(false);
 
+  const [openSendDirectCredentialDialog, setOpenSendDirectCredentialDialog] =
+    useToggle(false);
+
   return (
     <>
       <HeadContainer
@@ -83,6 +86,8 @@ export default function DaoProfilePage({
           issuedCredentials={issuedCredentials}
           stats={stats}
           loyaltyPrograms={loyaltyPrograms}
+          openSendDirectCredentialDialog={openSendDirectCredentialDialog}
+          setOpenSendDirectCredentialDialog={setOpenSendDirectCredentialDialog}
         >
           <DaoProfile />
         </DaoProfileProvider>

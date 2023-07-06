@@ -31,9 +31,9 @@ export function DirectWalletsDropzone({ readFiles }: Props) {
         <Typography component="span" color="text.primary">
           Drop or{' '}
           <Typography component="span" color="primary.main">
-            upload
+            Upload
           </Typography>{' '}
-          your .CSV file
+          your CSV file
         </Typography>
       </Stack>
       <Typography variant="body2" color="text.secondary">

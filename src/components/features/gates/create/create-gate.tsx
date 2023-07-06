@@ -167,6 +167,7 @@ export function CreateGate({ oldData }: CreateGateProps) {
           id: task_id,
           order: index,
         })),
+        claim: {},
         whitelisted_wallets_file: data.whitelisted_wallets_file?.id,
       });
       if (isDraft) {

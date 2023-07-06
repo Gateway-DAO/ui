@@ -29,6 +29,7 @@ import { useToggle } from 'react-use';
 import CreateCredentialDialog from './dialog-structure';
 import { CreateOrgCard } from '@/components/molecules/cards/create-org-card';
 import CreateQuestDialog from './quest/dialog-structure';
+import CreateSendCredentialDialog from './direct-credential/dialog-structure';
 
 type Props = {
   people: PartialDeep<Users>[];
@@ -54,6 +55,8 @@ export function OverviewTab({
     openCredentialCreationDialog,
     setOpenCreateQuestDialog,
     setOpenCredentialCreationDialog,
+    setOpenSendDirectCredentialDialog,
+    openSendDirectCredentialDialog,
   } = useDaoProfile();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
 
@@ -186,6 +189,10 @@ export function OverviewTab({
             open={openCreateQuestDialog}
             toggleDialog={setOpenCreateQuestDialog}
           />
+          <CreateSendCredentialDialog
+            open={openSendDirectCredentialDialog}
+            toggleDialog={setOpenSendDirectCredentialDialog}
+          />
           {isAdmin && (
             <>
               <Stack px={TOKENS.CONTAINER_PX} mt={6}>
@@ -202,6 +209,10 @@ export function OverviewTab({
           <button onClick={() => setOpenCreateQuestDialog(true)}>
             openCreateQuestDialog
           </button>
+          <button onClick={() => setOpenSendDirectCredentialDialog(true)}>
+            openSendDirectCredentialsDialogs
+          </button>
+
           <SectionWithSliderResponsive
             title={`${t('dao-profile:overview-tab.credentials-section.title')}`}
             caption={`${t(
