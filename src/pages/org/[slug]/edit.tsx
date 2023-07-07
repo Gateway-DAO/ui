@@ -8,7 +8,7 @@ import { useUploadImage } from '@/hooks/use-upload-image';
 import { useAuth } from '@/providers/auth';
 import { hasuraApi } from '@/services/hasura/api';
 import { Daos } from '@/services/hasura/types';
-import { getServerSession } from '@/services/next-auth';
+import { getServerSession } from '@/services/next-auth/get-server-session';
 import { useMutation } from '@tanstack/react-query';
 
 export default function DaoProfilePage({ org }: { org?: Daos }) {
