@@ -44,8 +44,13 @@ mutation verify_single(
     oldWallet: $oldWallet
     oldType: $oldType
   ) {
-    validated
-    invalidList
+    isDone
+    id
+    total
+    valid
+    invalid
     validList
+    invalidList
+    uploadedTime
   }
 }

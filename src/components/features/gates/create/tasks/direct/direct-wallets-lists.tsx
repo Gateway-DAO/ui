@@ -82,7 +82,7 @@ export function DirectWalletsList({
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setFilter(event.target.value);
   };
-  console.log(validList, invalidList);
+
   const whitelistedWallets = useMemo(() => {
     const wallets: {
       wallet: string;
@@ -148,7 +148,18 @@ export function DirectWalletsList({
 
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
-  const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
+  const handleClick = (
+    event: MouseEvent<HTMLButtonElement>,
+    wallet: string,
+    type: string
+  ) => {
+    setValues({
+      addNew: false,
+      oldType: type,
+      oldWallet: wallet,
+      type: '',
+      wallet: '',
+    });
     setAnchorEl(event.currentTarget);
   };
 
@@ -200,7 +211,7 @@ export function DirectWalletsList({
             sx={{
               p: 0,
             }}
-            onClick={handleClick}
+            onClick={(e) => handleClick(e, wallet, type)}
           >
             <Avatar sx={{ height: '30px', width: '31px' }}>
               <MoreVertIcon />
@@ -227,14 +238,7 @@ export function DirectWalletsList({
             <Button>Remove</Button>
             <Button
               onClick={() => {
-                console.log(wallet);
-                setValues({
-                  addNew: false,
-                  oldType: type,
-                  oldWallet: wallet,
-                  type: '',
-                  wallet: '',
-                });
+
                 setAddRecipient();
               }}
             >

@@ -44,14 +44,7 @@ export function AddRecipient({
   const router = useRouter();
   const closeDialog = () => {
     toggleDialog(false);
-    router.push({ hash: '' });
   };
-
-  useEffect(() => {
-    if (open) {
-      router.push({ hash: `${title}-recipient` });
-    }
-  }, [open]);
 
   return (
     <Dialog

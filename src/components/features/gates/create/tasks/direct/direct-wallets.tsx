@@ -37,6 +37,7 @@ export function DirectWallets() {
     oldType: '',
     oldWallet: '',
   });
+  const [editRecipient, setEditRecipient] = useToggle(false);
   const [Files, setFiles] = useState<File>();
 
   const verifyCSV = useMutation<Files, unknown, File>(
@@ -79,6 +80,10 @@ export function DirectWallets() {
         oldWallet: values.oldWallet,
       }),
     {
+      onSuccess(data) {
+        setEditRecipient(true);
+      },
+
       onError(error: any) {
         enqueueSnackbar(error?.message ?? JSON.stringify(error), {
           variant: 'error',
@@ -109,8 +114,14 @@ export function DirectWallets() {
     }
   );
 
-  const progress = progressReq.data?.pages?.[0]?.verify_csv_progress;
-  
+  const progress = editRecipient
+    ? addRecipientMutation.data?.verify_single
+    : progressReq.data?.pages?.[0]?.verify_csv_progress;
+
+  console.log(progress, editRecipient);
+
+  const addedRecipientData = addRecipientMutation.data?.verify_single;
+
   const isUploadDisabled = file && progress && !progress.isDone;
 
   const readFiles = (files: File[] | FileList) => {
@@ -151,14 +162,14 @@ export function DirectWallets() {
         ]}
         {...dropBond}
       >
-        {verifyCSV.isLoading ? (
+        {verifyCSV.isLoading || addRecipientMutation.isLoading ? (
           <>
             <DirectWalletsEmptyHeader />
             <DirectWalletsUploading />
           </>
         ) : (
           <>
-            {file ? (
+            {file && progress !== undefined ? (
               <>
                 {progress?.isDone && (
                   <DirectWalletsHeader
@@ -169,6 +180,7 @@ export function DirectWallets() {
                     setAddRecipient={setAddRecipient}
                   />
                 )}
+
                 {(!progress || (progress && !progress.isDone)) && (
                   <>
                     <DirectWalletsEmptyHeader />
