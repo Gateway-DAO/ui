@@ -31,7 +31,7 @@ export function OverviewTab({ user, isPrivateProfile, setActiveTab }: Props) {
           skip: 0,
           take: 3,
         });
-      return result.protocol_credential;
+      return result.protocol.findCredentialsByRecipientUser;
     }
   );
 
@@ -44,7 +44,7 @@ export function OverviewTab({ user, isPrivateProfile, setActiveTab }: Props) {
           skip: 0,
           take: 3,
         });
-      return result.protocol_credential;
+      return result.protocol.findCredentialsByIssuerUser;
     }
   );
   return (
