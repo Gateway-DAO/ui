@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import { Fragment, ReactNode } from 'react';
 
+import { AvatarFile } from '@/components/atoms/avatar-file';
 import NetworkTransactionLink from '@/components/atoms/network-transaction-link';
 import { CategoriesList } from '@/components/molecules/categories-list';
 import { ROUTES } from '@/constants/routes';
@@ -93,7 +94,7 @@ const defineCols = (columns: IColumnGrid[]) => {
                 width: '56px',
               }}
             >
-              <Image
+              <img
                 alt={`${params.title}`}
                 width={56}
                 height={56}
@@ -148,9 +149,10 @@ const defineCols = (columns: IColumnGrid[]) => {
       column_name: 'issuer_id_issuers',
       cell: (params) => (
         <Box sx={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <Avatar
+          <AvatarFile
             alt="Name"
-            src="/images/avatar-default.png"
+            file={params?.issuedCredentials[0].issuerUser.gatewayUser?.picture}
+            fallback="/images/avatar-default.png"
             sx={{ width: 24, height: 24 }}
           />
           <Box sx={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
@@ -176,9 +178,12 @@ const defineCols = (columns: IColumnGrid[]) => {
       column_name: 'recipient_id_issuers',
       cell: (params) => (
         <Box sx={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <Avatar
+          <AvatarFile
             alt="Name"
-            src="/images/avatar-default.png"
+            file={
+              params?.receivedCredentials[0].recipientUser?.gatewayUser?.picture
+            }
+            fallback="/images/avatar-default.png"
             sx={{ width: 24, height: 24 }}
           />
           <Box sx={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
@@ -204,9 +209,10 @@ const defineCols = (columns: IColumnGrid[]) => {
       column_name: 'issuer_id',
       cell: (params) => (
         <Box sx={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <Avatar
+          <AvatarFile
             alt="Name"
-            src="/images/avatar-default.png"
+            file={params.issuerUser.gatewayUser?.picture}
+            fallback="/images/avatar-default.png"
             sx={{ width: 24, height: 24 }}
           />
           <Box sx={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
@@ -232,9 +238,10 @@ const defineCols = (columns: IColumnGrid[]) => {
       column_name: 'recipient_id',
       cell: (params) => (
         <Box sx={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <Avatar
+          <AvatarFile
             alt="Name"
-            src="/images/avatar-default.png"
+            file={params.recipientUser.gatewayUser?.picture}
+            fallback="/images/avatar-default.png"
             sx={{ width: 24, height: 24 }}
           />
           <Box sx={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
@@ -260,9 +267,10 @@ const defineCols = (columns: IColumnGrid[]) => {
       column_name: 'user_id',
       cell: (params) => (
         <Box sx={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <Avatar
+          <AvatarFile
             alt="Name"
-            src="/images/avatar-default.png"
+            file={params?.user?.gatewayUser?.picture}
+            fallback="/images/avatar-default.png"
             sx={{ width: 24, height: 24 }}
           />
           <Box sx={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
