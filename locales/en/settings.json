@@ -3,7 +3,9 @@
   "nav": {
     "public-profile-title": "Public profile",
     "public-profile-description": "Edit all info of your profile",
-    "account-management-title": "Account management",
+    "account-management-title": "Gateway ID",
+    "account-credential-title": "Your account credential",
+    "account-credential-caption": "This the credential that represents your account.",
     "account-management-description": "Edit your e-mail and wallet settings",
     "connected-accounts-title": "Connected accounts",
     "connected-accounts-description": "These are the accounts you connected to your Gateway account",
@@ -48,11 +50,48 @@
     }
   },
   "account-management": {
+    "copy-id": "ID copied to clipboard",
+    "gateway-id": "Edit ID",
+    "gateway-id-desc": "This is your Gateway ID. You can edit it once a month.",
+    "gateway-id-helper": "Only lowercase letters, numbers and ._-",
+    "gateway-id-action": "save my id",
+    "gateway-id-cancel": "cancel",
+    "wallet-section-title": "Wallet",
+    "wallet-section-desc": "By connecting your wallet, we will only request the access to see address, account balance, activity and suggest transactions to approve.",
+    "wallet-section-btn": "+  add wallet",
+    "email-section-title": "Email",
+    "email-section-desc": "By connecting your email, we will only send notifications by the primary email.",
+    "email-section-btn": "+  add email address",
+    "other-wallet": {
+      "title": "Other accounts",
+      "desc": "We never share any of your data with third parties, and we only request the access permissions necessary to provide you with the best possible service when you connect your accounts to Gateway. Check our",
+      "tos": " Terms of Service."
+    },
+    "delete-section": {
+      "title": "Delete account",
+      "desc": "Once you delete your account, there is no going back. Please be certain.",
+      "btn": "Delete my account",
+      "modal-title": "Are you sure you want delete your account?",
+      "modal-alert": "This is extremely important",
+      "modal-alert-description": "Once you delete your account, there is no going back. Please be certain.",
+      "modal-explain-title": "Deleting the account, be aware:",
+      "modal-explain-topic-1": "You won't lost your credential, they will still be connected to the accounts they were issued for",
+      "modal-explain-topic-2": "The ID",
+      "modal-explain-topic-3": "will be deactivated",
+      "modal-explain-topic-4": "You won't be able undo this action",
+      "modal-explain-topic-5": "To confirm deletion, type \"{{confirmDelete}}\" into the field and mark the checkbox",
+      "modal-explain-topic-6": "I acknowledge that upon account deletion and Gateway ID deactivation, I won't be able undo these actions",
+      "modal-cancel": "Cancel",
+      "modal-delete": "Delete my Gateway ID"
+    },
     "registered-email-title": "Registered email",
     "registered-email-description": "Email is mainly used for important updates related to your account.",
     "email-address-label": "E-mail address",
     "email-address-helper": "To update your email is necessary verify it.",
     "email-address-action": "send code to verify",
+    "primary": "Primary",
+    "set-as-primary": "Set as primary",
+    "disconnect": "Disconnect",
     "verify-your-email-title": "Verify your email",
     "verify-your-email-description": "It has been sent a code for your email address. Paste the code here to verify it. This code will expire in 30 minutes.",
     "here": "here",
@@ -62,7 +101,26 @@
     "email-sent": "Code sent to",
     "email-verified": "Email successfully verified",
     "email-error-sending": "There was an error sending the code",
-    "email-error-validating": "There was an error validating the code"
+    "email-error-validating": "There was an error validating the code",
+    "username-update": "successfully updated username",
+    "add-email": {
+      "title": "Connect email",
+      "subtitle": "Email",
+      "description": "Adding another email you increase the chances of receiving credentials",
+      "label": "E-mail address"
+    },
+    "verify-token": {
+      "description1": "Please check",
+      "description2": "for an email from Gateway and enter your code below. This code will expire in 30 minutes.",
+      "card-summary-title": "Code sent to"
+    },
+    "modal-delete-email": {
+      "disconnect-my-account": "disconnect my account",
+      "disconnect-account": "Disconnect Account",
+      "checkbox-info": "I acknowledge the account disconnection from my Gateway ID"
+    },
+    "message-remove-success": "Account has been disconnected",
+    "message-add-success": "Account has been added"
   },
   "notifications": {
     "dapp": {
@@ -122,7 +180,5 @@
       }
     }
   },
-  "developer-portal": {
-
-  }
+  "developer-portal": {}
 }

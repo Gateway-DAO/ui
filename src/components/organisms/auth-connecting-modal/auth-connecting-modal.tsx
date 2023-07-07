@@ -1,7 +1,7 @@
 import useTranslation from 'next-translate/useTranslation';
 
 import { useConnectedWallet } from '@/hooks/wallet/use-connected-wallet';
-import { AuthStep, AuthStepError } from '@/providers/auth/types';
+import { WalletAuthStep, WalletAuthStepError } from '@/providers/auth/types';
 import { AnimatePresence } from 'framer-motion';
 
 import { Close } from '@mui/icons-material';
@@ -19,8 +19,8 @@ import {
 import { AnimatedMessage } from './animated-message';
 
 type Props = {
-  step: AuthStep;
-  error?: AuthStepError;
+  step: WalletAuthStep;
+  error?: WalletAuthStepError;
   isOpen?: boolean;
   onRetry?: () => void;
   onCancel?: () => void;

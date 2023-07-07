@@ -21,7 +21,7 @@ import { useAccount, useDisconnect, useSignMessage } from 'wagmi';
 
 import { ErrorResponse } from '../../types/graphql';
 import { SessionUser } from '../../types/user';
-import { AuthStep } from './types';
+import type { WalletAuthStep } from './types';
 
 /**
  * Handles Logoff session if there's no wallet connected
@@ -158,7 +158,7 @@ export const useAuthLogin = () => {
   const signInMutation = useMutation(
     ['signIn', address],
     async (signature: string) => {
-      const res = await signIn('credentials', {
+      const res = await signIn('credential-wallet', {
         redirect: false,
         wallet: address,
         signature,
@@ -254,7 +254,7 @@ export const useAuthLogin = () => {
     }
   );
 
-  const authStep: AuthStep = useMemo(() => {
+  const walletAuthStep: WalletAuthStep = useMemo(() => {
     if (error) return 'error';
     if (nonce.isFetching) return 'get-nonce';
     if (sendSignature.isLoading) return 'send-signature';
@@ -275,16 +275,17 @@ export const useAuthLogin = () => {
     cb: (oldMe: PartialDeep<SessionUser>) => PartialDeep<SessionUser>
   ) => queryClient.setQueryData(['me', user[0].data?.id], cb);
 
-  const onInvalidateMe = () => {
-    queryClient.resetQueries(['user_info', session?.data?.hasura_id]);
-    queryClient.resetQueries(['user_permissions', session?.data?.hasura_id]);
-    queryClient.resetQueries(['user_following', session?.data?.hasura_id]);
-    queryClient.resetQueries([
-      'user_task_progresses',
-      session?.data?.hasura_id,
+  const onInvalidateMe = async () =>
+    Promise.all([
+      queryClient.resetQueries(['user_info', session?.data?.hasura_id]),
+      queryClient.resetQueries(['user_permissions', session?.data?.hasura_id]),
+      queryClient.resetQueries(['user_following', session?.data?.hasura_id]),
+      queryClient.resetQueries([
+        'user_task_progresses',
+        session?.data?.hasura_id,
+      ]),
+      queryClient.resetQueries(['user_protocol', session?.data?.hasura_id]),
     ]);
-    queryClient.resetQueries(['user_protocol', session?.data?.hasura_id]);
-  };
 
   const onRetry = () => {
     setError(undefined);
@@ -300,7 +301,7 @@ export const useAuthLogin = () => {
   return {
     me: token ? me.data : undefined,
     error,
-    authStep,
+    walletAuthStep,
     onUpdateMe,
     onSignOut,
     onRetry,
@@ -318,10 +319,14 @@ export function useInitUser(me: PartialDeep<SessionUser>) {
   useEffect(() => {
     if (!me) return;
     // Redirects to New User if authenticated but not registered
-    if (router.pathname !== ROUTES.NEW_USER && me && !me.init) {
+    if (
+      router.pathname !== ROUTES.AUTHENTICATION &&
+      me &&
+      (!me.username || !me.email_address)
+    ) {
       router.replace({
-        pathname: ROUTES.NEW_USER,
-        query: { callback: router.asPath },
+        pathname: ROUTES.AUTHENTICATION,
+        query: { redirect: router.asPath },
       });
     }
   }, [me, router]);

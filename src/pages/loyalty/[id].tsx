@@ -4,7 +4,7 @@ import { LoyaltyProgram } from '@/components/features/loyalty/loyalty';
 import { HeadContainer } from '@/components/molecules/head-container';
 import { DashboardTemplate } from '@/components/templates/dashboard';
 import { hasuraApi, hasuraPublicService } from '@/services/hasura/api';
-import { getServerSession } from '@/services/next-auth';
+import { getServerSession } from '@/services/next-auth/get-server-session';
 
 type Props = InferGetServerSidePropsType<typeof getServerSideProps>;
 

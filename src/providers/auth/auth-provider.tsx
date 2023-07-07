@@ -34,7 +34,7 @@ export function AuthProvider({
     me,
     error,
     onUpdateMe,
-    authStep,
+    walletAuthStep,
     onRetry,
     onSignOut,
     onInvalidateMe,
@@ -100,19 +100,19 @@ export function AuthProvider({
         onSignOut,
         onUpdateMe,
         onInvalidateMe,
-        authenticated: !!me && !!session,
+        isAuthenticated: !!me && !!session,
       }}
     >
       {!isBlocked && children}
       <AuthModal isOpen={isModalVisible} close={() => setModalVisible(false)} />
       <AuthConnectingModal
-        step={authStep}
+        step={walletAuthStep}
         error={error}
         isOpen={
-          authStep === 'get-nonce' ||
-          authStep === 'send-signature' ||
-          authStep === 'get-me' ||
-          authStep === 'error'
+          walletAuthStep === 'get-nonce' ||
+          walletAuthStep === 'send-signature' ||
+          walletAuthStep === 'get-me' ||
+          walletAuthStep === 'error'
         }
         onRetry={onRetry}
         onCancel={onSignOut}

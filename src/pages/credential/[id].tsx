@@ -4,7 +4,7 @@ import { Navbar } from '@/components/organisms/navbar';
 import { DashboardTemplate } from '@/components/templates/dashboard';
 import { ROUTES } from '@/constants/routes';
 import { hasuraPublicService, hasuraApi } from '@/services/hasura/api';
-import { getServerSession } from '@/services/next-auth';
+import { getServerSession } from '@/services/next-auth/get-server-session';
 import jwt from 'jsonwebtoken';
 
 import { Box } from '@mui/material';
