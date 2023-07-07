@@ -77,7 +77,11 @@ query protocol_data_models_p2p($take: Int!, $skip: Int!) {
   }
 }
 
-query protocol_find_recipients_by_data_model($dataModelId: uuid!, $take: Int!, $skip: Int!) {
+query protocol_find_recipients_by_data_model(
+  $dataModelId: uuid!
+  $take: Int!
+  $skip: Int!
+) {
   protocol_user(
     where: { credentials: { dataModelId: { _eq: $dataModelId } } }
     limit: $take
@@ -117,6 +121,16 @@ query protocol_find_recipients_by_data_model_api(
         recipientUser {
           id
           gatewayId
+          gatewayUser {
+            name
+            pfp
+            picture {
+              id
+              s3_key
+              blur
+            }
+            pfp
+          }
         }
         createdAt
         image
@@ -126,7 +140,6 @@ query protocol_find_recipients_by_data_model_api(
     }
   }
 }
-
 
 query getDMStatsUntilDayBefore($date: timestamp!, $dataModelId: uuid!) {
   credential_count: protocol_credential_aggregate(

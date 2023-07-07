@@ -36,7 +36,7 @@ export default function IssuedTab({ user }: Props): JSX.Element {
           take: internalPageSize,
           skip: pageParam || 0,
         } as any);
-      return result.protocol_credential;
+      return result.protocol.findCredentialsByIssuerUser;
     }
   );
 
