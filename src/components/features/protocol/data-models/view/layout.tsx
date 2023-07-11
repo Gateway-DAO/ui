@@ -163,7 +163,7 @@ export function DataModelLayout({ children }) {
         <Stack
           sx={{
             py: 2,
-            pb: { md: 1, xs: 27 },
+            pb: { md: 1, xs: 2 },
             px: isMobile ? TOKENS.CONTAINER_PX : 0,
           }}
         >
@@ -239,7 +239,7 @@ export function DataModelLayout({ children }) {
             )}
           </Stack>
         </Stack>
-        <Box mt={4}>
+        <Box mt={2}>
           <Box
             sx={{
               borderBottom: 1,
@@ -268,6 +268,7 @@ export function DataModelLayout({ children }) {
                   '&::-webkit-scrollbar': {
                     display: 'none',
                   },
+                  px: { xs: 2, md: 0 },
                 },
               }}
             >

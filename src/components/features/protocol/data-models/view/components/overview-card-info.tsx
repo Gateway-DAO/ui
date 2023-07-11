@@ -86,6 +86,13 @@ export default function OverviewCardInfo({ dataModel }: Props) {
             DateTime.DATE_FULL
           )}
         </CardCell>
+        <CardCell label={t('data-model.price-for-consumption')}>
+          {`US ${(dataModel?.consumptionPrice ?? 0).toLocaleString('en-US', {
+            style: 'currency',
+            currency: 'USD',
+            currencyDisplay: 'symbol',
+          })}`}
+        </CardCell>
       </Stack>
     </Paper>
   );

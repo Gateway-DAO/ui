@@ -20,6 +20,7 @@ query protocol_data_model($id: String!) {
       permissioning
       info
       image
+      consumptionPrice
     }
   }
 }
@@ -32,6 +33,7 @@ query protocol_data_models($take: Int!, $skip: Int!) {
   ) {
     id
     title
+    consumptionPrice
     tags
     version
     description
@@ -63,6 +65,7 @@ query protocol_data_models_p2p($take: Int!, $skip: Int!) {
     version
     description
     permissioning
+    consumptionPrice
     createdBy {
       gatewayUser {
         name
