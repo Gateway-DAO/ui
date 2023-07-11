@@ -127,12 +127,12 @@ export function CreateQuestTemplate({
       <Grid
         container
         sx={{
-          height: { xs: 'auto', md: '100%' },
+          height: '100%',
           flexWrap: 'nowrap',
           flexDirection: { xs: 'column', md: 'row' },
           backgroundPosition: 'center center',
           backgroundSize: 'cover',
-          minHeight: `${windowSize.height}px`,
+          // minHeight: `100vh`,
           backgroundColor: brandColors.background.main,
         }}
       >
@@ -148,11 +148,11 @@ export function CreateQuestTemplate({
             flexGrow: 0,
             background: alpha(theme.palette.common.black, 0.03),
             backdropFilter: { xs: 'blur(85px)', md: 'blur(25px)' },
-            height: '100%',
+            height: 'inherit',
             display: { xs: 'none', md: 'flex' },
           }}
         >
-          <Stack gap={5}>
+          <Stack gap={5} width={'100%'} height={'100%'}>
             <Stack>
               <Stack direction="row" justifyContent="space-between" gap={2}>
                 <VerticalStepper activeStep={currentStep} />
@@ -161,11 +161,7 @@ export function CreateQuestTemplate({
           </Stack>
         </Grid>
         {/* [ ] Create more components */}
-        <Divider
-          orientation="vertical"
-          sx={{ display: { xs: 'none', md: 'flex' } }}
-          flexItem
-        />
+        <Divider orientation="vertical" variant="fullWidth" />
         <Grid
           item
           xs={12}

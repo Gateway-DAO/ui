@@ -76,6 +76,7 @@ export default function CredentialTemplate({
           : pages.length * internalPageSize,
     }
   );
+
   const [dataModelSelected, setDataModelSelected] = useState<any>();
   const containerRef = useRef(null);
 
