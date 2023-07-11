@@ -30,7 +30,7 @@ export function ListEmails({ emails, isLoading, onOpenModal }: Props) {
   };
 
   const updateEmail = useMutation(
-    [mutation.remove_email],
+    [mutation.update_email],
     ({
       id,
       id_protocol,
