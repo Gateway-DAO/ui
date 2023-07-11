@@ -1,7 +1,7 @@
 import useTranslation from 'next-translate/useTranslation';
+import { useState } from 'react';
 
-import { yupResolver } from '@hookform/resolvers/yup';
-import { useForm } from 'react-hook-form';
+import { useToggle } from 'react-use';
 
 import {
   Button,
@@ -11,8 +11,6 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-
-import { ConfirmDeleteSchema, schemaConfirmDelete } from './schema';
 
 type Props = {
   textKey: string;
@@ -30,30 +28,11 @@ export function ConfirmDelete({
   onCancel,
 }: Props) {
   const { t } = useTranslation('common');
-
-  const {
-    register,
-    formState: { errors, isValid },
-    setError,
-    handleSubmit,
-  } = useForm<ConfirmDeleteSchema>({
-    mode: 'all',
-    resolver: yupResolver(schemaConfirmDelete),
-  });
-
-  const onConfirmDelete = async (data) => {
-    if (!isValid) return;
-    if (data.text === textKey) {
-      onConfirm();
-    } else {
-      setError('text', {
-        message: t('modal-confirm-delete.error-message'),
-      });
-    }
-  };
+  const [inputText, setInputText] = useState('');
+  const [checkedDelete, toggleChecked] = useToggle(false);
 
   return (
-    <Stack pt={6} component="form" onSubmit={handleSubmit(onConfirmDelete)}>
+    <Stack pt={6} component="form" onSubmit={onConfirm}>
       <Typography fontWeight={600} sx={{ mb: 3 }}>
         {`${t('modal-confirm-delete.text-confirm1')} “${textKey}” ${t(
           'modal-confirm-delete.text-confirm2'
@@ -61,28 +40,25 @@ export function ConfirmDelete({
       </Typography>
       <TextField
         type="text"
+        value={inputText}
+        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+          setInputText(event.target.value);
+        }}
         id="confirm-delete"
-        {...register('text')}
-        error={!!errors.text}
-        helperText={errors.text?.message ?? ''}
         sx={{ mb: 3 }}
       />
       <FormControlLabel
         control={<Checkbox />}
         label={checkText}
-        {...register(`checked`)}
+        checked={checkedDelete}
+        onChange={toggleChecked}
       />
-      {!!errors.checked && (
-        <Typography fontSize={12} color="error">
-          {errors.checked?.message}
-        </Typography>
-      )}
       <Stack py={6} direction="row" gap={1} justifyContent="space-between">
         <Button variant="outlined" fullWidth size="large" onClick={onCancel}>
           {t('actions.cancel')}
         </Button>
         <Button
-          disabled={!isValid}
+          disabled={inputText !== textKey || !checkedDelete}
           variant="contained"
           color="error"
           fullWidth
