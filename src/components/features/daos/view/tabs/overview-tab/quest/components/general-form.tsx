@@ -62,6 +62,7 @@ export default function GeneralForm({ dataModel }: { dataModel: any }) {
               id="categories"
               name="categories"
               error={!!errors.tags}
+              defaultValue={dataModel?.tags}
               {...register('tags')}
               categories={CATEGORIES}
               helperText={(errors.tags as any)?.message?.toString()}
@@ -78,6 +79,7 @@ export default function GeneralForm({ dataModel }: { dataModel: any }) {
             <TextField
               multiline
               rows={5}
+              defaultValue={dataModel.description}
               InputProps={{
                 disableUnderline: true,
                 sx: {

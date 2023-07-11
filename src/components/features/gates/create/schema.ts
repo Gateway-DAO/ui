@@ -621,6 +621,11 @@ export const taskManualSchema = z.object({
   task_type: z.literal('manual'),
 });
 
+export const addRecipientDirectCredentialSchema = z.object({
+  type: z.string(),
+  value: z.string().min(2, 'The value must contain at least 2 character(s)'),
+});
+
 const gateBase = z.object({
   title: z
     .string({ required_error: 'Title is required' })

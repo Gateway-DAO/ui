@@ -55,12 +55,13 @@ export default function CreateCredentialDialog({
               title={'Create Credential'}
               caption={'Select the type that fits your needs'}
               action={
-                <IconButton onClick={() => closeDialog()}>
+                <IconButton onClick={() => closeDialog()} sx={{ pt: 0.7 }}>
                   <Avatar>
                     <CloseIcon />
                   </Avatar>
                 </IconButton>
               }
+              actionOnTop={true}
               itemWidth={(theme) => theme.spacing(37.75)}
               gridSize={{ lg: 3 }}
             >

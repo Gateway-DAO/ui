@@ -91,10 +91,6 @@ export function CreateDirectCredentialTemplate({
     });
   };
 
-  const handlePreview = async () => {
-    console.log(fullFormState, currentStep);
-  };
-
   // MAKE DB CALL
   const handleSaveAsDraft = async () => {
     console.log(fullFormState, currentStep);
@@ -212,21 +208,6 @@ export function CreateDirectCredentialTemplate({
               )}
               <Stack direction={'row'} justifyContent={'end'}>
                 <LoadingButton
-                  onClick={() => handlePreview()}
-                  variant="outlined"
-                  size="large"
-                  isLoading={false}
-                  sx={{ marginLeft: 2 }}
-                  disabled={
-                    !(
-                      formStepControl[currentStep].name === 'tasks' ||
-                      formStepControl[currentStep].name === 'settings'
-                    )
-                  }
-                >
-                  Preview
-                </LoadingButton>
-                <LoadingButton
                   onClick={() => handleSaveAsDraft()}
                   variant="outlined"
                   size="large"
@@ -234,7 +215,7 @@ export function CreateDirectCredentialTemplate({
                   isLoading={false}
                   disabled={
                     !(
-                      formStepControl[currentStep].name === 'tasks' ||
+                      formStepControl[currentStep].name === 'recipient' ||
                       formStepControl[currentStep].name === 'settings'
                     )
                   }

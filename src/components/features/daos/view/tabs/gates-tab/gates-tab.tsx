@@ -77,10 +77,15 @@ export function GatesTab({
               }}
             >
               {isAdmin && (
-                <MUICard sx={{ position: 'relative' }}>
+                <MUICard
+                  sx={{
+                    position: 'relative',
+                    minHeight: '506px',
+                  }}
+                >
                   <Button
                     key="create-credential"
-                    sx={{ height: '100%', p: 0 }}
+                    sx={{ p: 0, height: '100%', width: '100%' }}
                     onClick={() =>
                       type === 'direct'
                         ? setOpenCredentialCreationDialog(true)
@@ -128,10 +133,35 @@ export function GatesTab({
                 title="No Credentials yet"
                 subtitle="Follow us and get notificatons when a new Credential is created"
                 disabled
-                sx={{ height: 440, maxWidth: { md: '25%' } }}
+                sx={{ height: '506px', maxWidth: { md: '25%' } }}
               />
             ),
-            isAdmin && newGateCard,
+            isAdmin && (
+              <MUICard
+                sx={{
+                  position: 'relative',
+                  minHeight: '506px',
+                }}
+              >
+                <Button
+                  key="create-credential"
+                  sx={{ p: 0, height: '100%', width: '100%' }}
+                  onClick={() =>
+                    type === 'direct'
+                      ? setOpenCredentialCreationDialog(true)
+                      : setOpenCreateQuestDialog(true)
+                  }
+                >
+                  <EmptyCard
+                    title={title}
+                    subtitle={subtitle}
+                    component="a"
+                    icon={icon}
+                    sx={{ height: '100%', width: '100%' }}
+                  />
+                </Button>
+              </MUICard>
+            ),
           ]}
         </Stack>
       )}

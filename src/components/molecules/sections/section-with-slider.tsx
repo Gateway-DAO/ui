@@ -15,6 +15,7 @@ export type SectionWithSliderProps = {
   children: ReactNode[];
   itemWidth?: SystemCssProperties<GatewayTheme>['width'];
   stretch?: boolean;
+  actionOnTop?: boolean;
 };
 
 export function SectionWithSlider({
@@ -24,6 +25,7 @@ export function SectionWithSlider({
   children,
   itemWidth,
   stretch = true,
+  actionOnTop = false,
 }: SectionWithSliderProps) {
   const theme = useTheme();
   const padding = useBreakpointValue(TOKENS.CONTAINER_PX);
@@ -64,7 +66,7 @@ export function SectionWithSlider({
         <Box
           sx={{
             display: {
-              xs: 'none',
+              xs: actionOnTop ? 'block' : 'none',
               md: 'block',
             },
           }}
@@ -83,18 +85,20 @@ export function SectionWithSlider({
           <SwiperSlide key={index}>{child}</SwiperSlide>
         ))}
       </Swiper>
-      <Box
-        sx={{
-          display: {
-            xs: 'block',
-            md: 'none',
-          },
-          px: TOKENS.CONTAINER_PX,
-          mt: 2,
-        }}
-      >
-        {action}
-      </Box>
+      {!actionOnTop && (
+        <Box
+          sx={{
+            display: {
+              xs: 'block',
+              md: 'none',
+            },
+            px: TOKENS.CONTAINER_PX,
+            mt: 2,
+          }}
+        >
+          {action}
+        </Box>
+      )}
     </Box>
   );
 }

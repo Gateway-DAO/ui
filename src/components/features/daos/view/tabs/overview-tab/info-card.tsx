@@ -1,9 +1,11 @@
+import { theme } from '@/theme';
 import {
   CardActionArea,
   CardHeader,
   Box,
   Divider,
   Button,
+  useMediaQuery,
 } from '@mui/material';
 import MUICard from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -31,6 +33,7 @@ export function InfoCard({
   backgroundColor,
   disabled,
 }: InfoCardProps): JSX.Element {
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
   const contentChildren = (
     <>
       <Box
@@ -43,11 +46,12 @@ export function InfoCard({
         <CardHeader
           sx={{
             background: backgroundColor,
-            width: '56px',
-            height: '56px',
+            width: isMobile ? '18px' : '56px',
+            height: isMobile ? '18px' : '56px',
             borderRadius: '64px',
-            ml: 1,
-            px: 1.4,
+            ml: 2,
+            px: isMobile ? 2 : 1.4,
+            mt: 3,
           }}
           avatar={
             <Image src={image} alt={title} width={'32px'} height={'32px'} />
@@ -58,6 +62,7 @@ export function InfoCard({
             variant="h6"
             sx={{
               fontSize: '20px',
+              mt: 2,
             }}
           >
             {title}
@@ -74,7 +79,7 @@ export function InfoCard({
           <Typography
             variant="body1"
             sx={{
-              mt: '16px',
+              mt: '32px',
               mb: '32px',
               fontSize: '16px',
             }}
@@ -99,7 +104,7 @@ export function InfoCard({
             variant="contained"
             disabled={disabled}
             fullWidth
-            sx={{ height: 48, mt: 10 }}
+            sx={{ height: 48, mt: 8 }}
           >
             {disabled ? 'Coming Soon' : 'Create'}
           </Button>
@@ -118,8 +123,9 @@ export function InfoCard({
             alignItems: 'center',
             justifyContent: 'space-between',
             alignContent: 'flex-start',
-            padding: '32px',
-            width: '450px',
+            padding: '12px',
+            width: isMobile ? '326px' : '450px',
+            height: '553px',
           }}
         >
           {contentChildren}

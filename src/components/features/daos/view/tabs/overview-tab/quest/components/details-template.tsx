@@ -5,6 +5,8 @@ import {
   Protocol_Api_CreateCredentialInput,
   Protocol_Api_PermissionType,
   Protocol_Create_CredentialMutationVariables,
+  Protocol_Data_ModelsQuery,
+  Protocol_Data_ModelQuery,
 } from '@/services/hasura/types';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
@@ -35,6 +37,7 @@ export default function DetailsTemplate({
   input: any;
   fullFormState: any;
 }) {
+  console.log(fullFormState);
   const { dataModel } = fullFormState.template;
   console.log(dataModel);
   const { hasuraUserService, token } = useAuth();
@@ -72,10 +75,7 @@ export default function DetailsTemplate({
       const claimResult = await ajvResolver(dataModel?.schema, {
         formats: fullFormats,
       })(claim, _, options as any);
-      console.log({
-        ...zodResult.values,
-        claim: claimResult.values,
-      });
+
       return {
         values: {
           ...zodResult.values,
@@ -97,12 +97,20 @@ export default function DetailsTemplate({
     },
   });
 
-  const { formState } = methods;
+  const { formState, getValues } = methods;
   const { isValid, errors } = formState;
 
   useEffect(() => {
-    console.log(isValid, errors);
+    console.log(isValid, getValues());
     handleStep(isValid);
+    if (isValid) {
+      updateFormState((prev) => ({
+        ...prev,
+        [input.name]: {
+          updatedDataModel: getValues(),
+        },
+      }));
+    }
   }, [isValid]);
 
   const createCredential = useMutation(

@@ -96,25 +96,6 @@ export function OverviewTab({
 
   const newGateUrl = `${ROUTES.GATE_NEW}?dao=${dao?.id}`;
 
-  // ...(isAdmin
-  //       ? [
-  //           <React.Fragment key={uuid()}>
-  //             <Link key="create-credential" passHref href={newGateUrl}>
-  //               <EmptyCard
-  //                 onClick={() => setDaoData()}
-  //                 title="Create Credential"
-  //                 subtitle={
-  //                   !gates.length
-  //                     ? 'Create your first Credential and help talents find you'
-  //                     : 'Engage with your community'
-  //                 }
-  //                 component="a"
-  //                 sx={{ minHeight: 440 }}
-  //               />
-  //             </Link>
-  //           </React.Fragment>,
-  //         ]
-  //       : []),
 
   const gateListTaskType = useMemo(() => {
     return [

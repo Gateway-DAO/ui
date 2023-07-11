@@ -37,11 +37,14 @@ export default function CredentialTemplate({
   updateFormState,
   handleStep,
   input,
+  fullFormState,
 }: {
   updateFormState: Dispatch<any>;
   handleStep: (value: boolean) => void;
   input: any;
+  fullFormState: any;
 }) {
+  console.log(fullFormState);
   const categories = [
     { name: 'Featured', selected: true },
     { name: 'Education', selected: false },
@@ -76,7 +79,9 @@ export default function CredentialTemplate({
           : pages.length * internalPageSize,
     }
   );
-  const [dataModelSelected, setDataModelSelected] = useState<any>();
+  const [dataModelSelected, setDataModelSelected] = useState<any>(
+    fullFormState?.template?.dataModel
+  );
   const containerRef = useRef(null);
 
   useEffect(() => {
