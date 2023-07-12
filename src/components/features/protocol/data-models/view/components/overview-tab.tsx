@@ -106,30 +106,34 @@ export default function OverviewTab({
   }, [me]);
 
   return (
-    <>
+    <Stack>
       <Stack
         sx={{
           maxWidth: '726px',
-          pt: 2,
-          py: 3,
-          px: { xs: 0, md: 4, lg: 6 },
+          py: { xs: 0, md: 2 },
+          px: { xs: 2, md: 4, lg: 6 },
         }}
       >
         {isP2PDataModel && (
           <>
-            <Typography
-              sx={{
-                fontStyle: 'normal',
-                fontWeight: 700,
-                fontSize: '20px',
-                lineHeight: '32px',
-                letterSpacing: '0.15px',
-                my: 2,
-              }}
-            >
-              {dataModel?.info}
-            </Typography>
-            <Typography sx={{ mb: 3 }}>{dataModel?.info}</Typography>
+            {dataModel?.info && (
+              <>
+                <Typography
+                  sx={{
+                    fontStyle: 'normal',
+                    fontWeight: 700,
+                    fontSize: '20px',
+                    lineHeight: '32px',
+                    letterSpacing: '0.15px',
+                    my: 2,
+                  }}
+                >
+                  {dataModel?.info}
+                </Typography>
+                <Typography sx={{ mb: 3 }}>{dataModel?.info}</Typography>
+              </>
+            )}
+
             <IssueCredentialButton
               hasAnAccountAvailableToIssue={hasAnAccountAvailableToIssue}
               onClickIssueCredential={toggleModal}
@@ -235,6 +239,6 @@ export default function OverviewTab({
           </ConfirmDialog>
         </>
       )}
-    </>
+    </Stack>
   );
 }

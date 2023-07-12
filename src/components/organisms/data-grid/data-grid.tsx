@@ -151,37 +151,8 @@ const defineCols = (columns: IColumnGrid[]) => {
         <Box sx={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <AvatarFile
             alt="Name"
-            file={params?.issuedCredentials[0].issuerUser.gatewayUser?.picture}
-            fallback="/images/avatar-default.png"
-            sx={{ width: 24, height: 24 }}
-          />
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-            <Typography
-              sx={{
-                fontSize: '14px',
-                fontWeight: 400,
-                letterSpacing: '0.17px',
-                maxWidth: '70px',
-                whiteSpace: 'nowrap',
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-              }}
-            >
-              {params?.issuedCredentials[0].issuerUser.gatewayId}
-            </Typography>
-          </Box>
-        </Box>
-      ),
-    },
-    {
-      field: 'recipient_id',
-      column_name: 'recipient_id_issuers',
-      cell: (params) => (
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <AvatarFile
-            alt="Name"
             file={
-              params?.receivedCredentials[0].recipientUser?.gatewayUser?.picture
+              params?.issuedCredentials?.[0]?.issuerUser.gatewayUser?.picture
             }
             fallback="/images/avatar-default.png"
             sx={{ width: 24, height: 24 }}
@@ -198,7 +169,39 @@ const defineCols = (columns: IColumnGrid[]) => {
                 textOverflow: 'ellipsis',
               }}
             >
-              {params?.receivedCredentials[0]?.recipientUser?.gatewayId}
+              {params?.issuedCredentials?.[0]?.issuerUser?.gatewayId}
+            </Typography>
+          </Box>
+        </Box>
+      ),
+    },
+    {
+      field: 'recipient_id',
+      column_name: 'recipient_id_issuers',
+      cell: (params) => (
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <AvatarFile
+            alt="Name"
+            file={
+              params?.receivedCredentials?.[0]?.recipientUser?.gatewayUser
+                ?.picture
+            }
+            fallback="/images/avatar-default.png"
+            sx={{ width: 24, height: 24 }}
+          />
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+            <Typography
+              sx={{
+                fontSize: '14px',
+                fontWeight: 400,
+                letterSpacing: '0.17px',
+                maxWidth: '70px',
+                whiteSpace: 'nowrap',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+              }}
+            >
+              {params?.receivedCredentials?.[0]?.recipientUser?.gatewayId}
             </Typography>
           </Box>
         </Box>
@@ -240,7 +243,7 @@ const defineCols = (columns: IColumnGrid[]) => {
         <Box sx={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <AvatarFile
             alt="Name"
-            file={params.recipientUser.gatewayUser?.picture}
+            file={params?.recipientUser?.gatewayUser?.picture}
             fallback="/images/avatar-default.png"
             sx={{ width: 24, height: 24 }}
           />
@@ -309,7 +312,7 @@ const defineCols = (columns: IColumnGrid[]) => {
       field: 'createdAt',
       column_name: 'issuance_date',
       valueGetter: (params) =>
-        DateTime.fromISO(params.createdAt).toFormat('MMM dd, yyyy'),
+        DateTime.fromISO(params?.createdAt).toFormat('MMM dd, yyyy'),
     },
     {
       field: 'status',
@@ -318,10 +321,10 @@ const defineCols = (columns: IColumnGrid[]) => {
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           <Chip
             variant="outlined"
-            label={params.status}
+            label={params?.status}
             sx={{
-              color: setColorStatus(params.status),
-              borderColor: setColorStatus(params.status),
+              color: setColorStatus(params?.status),
+              borderColor: setColorStatus(params?.status),
             }}
           />
         </Box>
@@ -426,15 +429,15 @@ export default function DataGrid({ columns, data }: Props): JSX.Element {
                         row.issuedCredentials
                           ? ROUTES.PROFILE.replace(
                               '[username]',
-                              page[rowIndex].issuedCredentials[0].issuerUser
-                                .gatewayId
+                              page[rowIndex]?.issuedCredentials?.[0]?.issuerUser
+                                ?.gatewayId
                             )
                           : row.receivedCredentials
                           ? ROUTES.PROFILE.replace(
                               '[username]',
 
-                              page[rowIndex].receivedCredentials[0]
-                                .recipientUser.gatewayId
+                              page[rowIndex]?.receivedCredentials?.[0]
+                                ?.recipientUser?.gatewayId
                             )
                           : ROUTES.PROTOCOL_CREDENTIAL.replace(
                               '[id]',
