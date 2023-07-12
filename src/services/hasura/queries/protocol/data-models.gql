@@ -6,6 +6,7 @@ query protocol_data_model($id: String!) {
       schema
       tags
       title
+      verified
       arweaveInfo
       createdAt
       createdBy {
@@ -33,6 +34,7 @@ query protocol_data_models($take: Int!, $skip: Int!) {
   ) {
     id
     title
+    verified
     consumptionPrice
     tags
     version
@@ -57,12 +59,13 @@ query protocol_data_models_p2p($take: Int!, $skip: Int!) {
     where: { permissioning: { _eq: "ALL" } }
     limit: $take
     offset: $skip
-    order_by: { createdAt: desc }
+    order_by: { createdAt: desc, verified: desc }
   ) {
     id
     title
     tags
     version
+    verified
     description
     permissioning
     consumptionPrice
