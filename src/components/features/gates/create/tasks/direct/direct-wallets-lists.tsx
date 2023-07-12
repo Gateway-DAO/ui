@@ -163,11 +163,11 @@ export function DirectWalletsList({
   const open = Boolean(anchorEl);
   const id = open ? 'simple-popover' : undefined;
 
-  const columns = ['RECIPIENT ID', 'TYPE', 'STATUS'];
+  const columns = ['RECIPIENT ID', 'TYPE', 'STATUS', ''];
 
   function fixedHeaderContent() {
     return (
-      <TableRow sx={{ width: '100%' }}>
+      <TableRow>
         {columns.map((column) => (
           <TableCell
             key={column}
@@ -210,34 +210,34 @@ export function DirectWalletsList({
               <MoreVertIcon />
             </Avatar>
           </IconButton>
+          <Popover
+            id="mouse-over-popover"
+            sx={{}}
+            open={open}
+            anchorEl={anchorEl}
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'right',
+            }}
+            transformOrigin={{
+              vertical: 'top',
+              horizontal: 'right',
+            }}
+            onClose={() => setAnchorEl(null)}
+            disableRestoreFocus
+          >
+            <Stack>
+              <Button>Remove</Button>
+              <Button
+                onClick={() => {
+                  setAddRecipient();
+                }}
+              >
+                Edit
+              </Button>
+            </Stack>
+          </Popover>
         </TableCell>
-        <Popover
-          id="mouse-over-popover"
-          sx={{}}
-          open={open}
-          anchorEl={anchorEl}
-          anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'right',
-          }}
-          transformOrigin={{
-            vertical: 'top',
-            horizontal: 'right',
-          }}
-          onClose={() => setAnchorEl(null)}
-          disableRestoreFocus
-        >
-          <Stack>
-            <Button>Remove</Button>
-            <Button
-              onClick={() => {
-                setAddRecipient();
-              }}
-            >
-              Edit
-            </Button>
-          </Stack>
-        </Popover>
       </>
     );
   }

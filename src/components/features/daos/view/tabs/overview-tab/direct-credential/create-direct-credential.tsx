@@ -39,13 +39,15 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { FormProvider, useForm, useFormContext } from 'react-hook-form';
 import { v4 as uuidv4 } from 'uuid';
 import { z } from 'zod';
-export type testingSchema = z.infer<typeof createGateSchema>;
+import { useDaoProfile } from '../../../context';
+export type CreateGateSchema = z.infer<typeof createGateSchema>;
 
 export function CreateDirectCredentialTemplate({
   closeDialog,
 }: {
   closeDialog: () => void;
 }) {
+  const { dao } = useDaoProfile();
   const theme = useTheme();
   const windowSize = useWindowSize();
   const { t } = useTranslation('org-signup');
@@ -69,7 +71,7 @@ export function CreateDirectCredentialTemplate({
     { name: 'settings', preview: true, saveAsDraft: false, continue: false },
   ];
 
-  const methods = useForm<testingSchema>();
+  const methods = useForm<CreateGateSchema>();
 
   const formComponents = setUpFormComponents({
     fullFormState,
@@ -207,7 +209,7 @@ export function CreateDirectCredentialTemplate({
     return message !== '' ? message : null;
   };
 
-  const handleMutation = async (data: CreateGateData, isDraft: boolean) => {
+  const handleMutation = async (data: any, isDraft: boolean) => {
     const dataIsValid = await checkFormErrors();
 
     if (!dataIsValid) {
@@ -228,11 +230,10 @@ export function CreateDirectCredentialTemplate({
       )?.upload_image.id;
       image_url = `${process.env.NEXT_PUBLIC_NODE_ENDPOINT}/storage/file?id=${image_id}`;
     }
-
     if (data.title) {
       const response = await createGate.mutateAsync({
         id: uuidv4(),
-        dao_id: router.query.dao as string,
+        dao_id: dao.id,
         title: data.title,
         categories: data.categories || [],
         description: data.description,
@@ -249,7 +250,7 @@ export function CreateDirectCredentialTemplate({
           id: task_id,
           order: index,
         })),
-        claim: {},
+        claim: data.claim,
         whitelisted_wallets_file: data.whitelisted_wallets_file?.id,
       });
       if (isDraft) {
@@ -270,7 +271,7 @@ export function CreateDirectCredentialTemplate({
   // MAKE DB CALL
   const handleSaveAsDraft = async () => {
     try {
-      // await handleMutation(draftData, true);
+      await handleMutation(methods.watch(), true);
     } catch (e) {
       enqueueSnackbar("An error occured, couldn't save the draft.");
     }

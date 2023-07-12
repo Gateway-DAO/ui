@@ -1,6 +1,6 @@
 import { Box, Divider, Stack, Tooltip, Typography } from '@mui/material';
 import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
-import { Dispatch, useEffect, useState } from 'react';
+import { Dispatch, useEffect, useMemo, useState } from 'react';
 import {
   Protocol_Api_CreateCredentialInput,
   Protocol_Api_PermissionType,
@@ -26,7 +26,7 @@ import ClaimForm from '@/components/features/protocol/credentials/create/compone
 
 import GeneralForm from './general-form';
 import { createGateSchema } from '@/components/features/gates/create/schema';
-import { testingSchema } from '../../direct-credential/create-direct-credential';
+import { CreateGateSchema } from '../../direct-credential/create-direct-credential';
 import ClaimFormQuest from './ClaimFormQuest';
 
 export default function DetailsTemplate({
@@ -46,12 +46,17 @@ export default function DetailsTemplate({
   const { enqueueSnackbar } = useSnackbar();
   const { t } = useTranslation('protocol');
 
-  const { getValues: getDefaultValues, setValue } =
-    useFormContext<testingSchema>();
+  const {
+    getValues: getDefaultValues,
+    setValue,
+    watch: watchDefaultValues,
+    formState: testFormState,
+  } = useFormContext<CreateGateSchema>();
 
   const gate = getDefaultValues();
-  console.log(gate);
-  const methods = useForm({
+  const watchValues = watchDefaultValues();
+  console.log(watchValues);
+  const methods = useForm<CreateGateSchema>({
     resolver: async (values, _, options) => {
       const { claim, ...rawData } = values;
       let zodResult;
@@ -61,7 +66,6 @@ export default function DetailsTemplate({
         _,
         options as any
       );
-      console.log(zodResult, rawData);
       const claimResult = await ajvResolver(gate?.schema, {
         formats: fullFormats,
       })(claim, _, options as any);
@@ -82,45 +86,41 @@ export default function DetailsTemplate({
     mode: 'all',
     defaultValues: {
       image: '/images/qr-code.png',
-      title: gate?.title,
-      categories: gate?.categories[0],
-      data_model_id: gate?.data_model_id,
-      description: gate?.description,
-      schema: gate?.schema,
-      type: gate?.type,
-      creator: { id: '111', username: gate?.creator.username },
-      claim: gate?.claim,
+      title: watchValues?.title,
+      categories: watchValues?.categories,
+      data_model_id: watchValues?.data_model_id,
+      description: watchValues?.description,
+      schema: watchValues?.schema,
+      type: watchValues?.type,
+      creator: { id: '111', username: watchValues?.creator.username },
+      claim: watchValues?.claim,
     },
   });
 
-  const { formState, getValues } = methods;
-  const { isValid, errors } = formState;
-  console.log(isValid, errors, getValues());
+  const { formState, getValues, watch } = methods;
+  const { isValid, errors, isDirty, touchedFields, dirtyFields } = formState;
+  console.log(errors);
+  console.log(getValues('title'), getValues('description'), getValues('claim'));
   useEffect(() => {
-    console.log(isValid, getValues());
+    console.log('executing');
     handleStep(isValid);
     if (isValid) {
+      console.log('here');
       setValue('title', getValues('title'));
       setValue('description', getValues('description'));
       setValue('image', getValues('image'));
-      // setValue('categories', getValues('categories'));
-      setValue('creator.id', getValues('creator.id'));
-      setValue('schema', getValues('schema'));
+      setValue('categories', getValues('categories'));
       setValue('claim', getValues('claim'));
-      updateFormState((prev) => ({
-        ...prev,
-        [input.name]: {
-          updatedDataModel: getValues(),
-        },
-      }));
+      setValue('type', 'direct');
     }
-  }, [isValid]);
-
-  const createCredential = useMutation(
-    ['createCredential'],
-    (data: Protocol_Create_CredentialMutationVariables) =>
-      hasuraUserService.protocol_create_credential(data)
-  );
+  }, [
+    isValid,
+    getValues('title'),
+    getValues('description'),
+    getValues('claim'),
+    getValues('categories'),
+    getValues('image'),
+  ]);
 
   const uploadArweave = useMutation(['uploadArweave'], (base64: string) =>
     hasuraUserService.upload_arweave({ base64 })
@@ -202,9 +202,7 @@ export default function DetailsTemplate({
                     <InfoOutlinedIcon color={'inherit'} />
                   </Tooltip>
                 </Stack>
-                <ClaimFormQuest
-                  fields={methods.getValues('schema')?.properties}
-                />
+                <ClaimFormQuest fields={methods.watch('schema')?.properties} />
               </Stack>
             </Stack>
           </Stack>

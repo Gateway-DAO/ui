@@ -5,16 +5,15 @@ import { Protocol_Api_CreateCredentialInput } from '@/services/hasura/types';
 import { Box, Stack, TextField, Typography } from '@mui/material';
 import useTranslation from 'next-translate/useTranslation';
 import { useFormContext } from 'react-hook-form';
-import { testingSchema } from '../../direct-credential/create-direct-credential';
+import { CreateGateSchema } from '../../direct-credential/create-direct-credential';
 
 export default function GeneralForm() {
   const {
     register,
-    setValue,
-    control,
     formState: { errors },
     getValues,
-  } = useFormContext<testingSchema>();
+    setValue,
+  } = useFormContext();
 
   const { t } = useTranslation('protocol');
   return (
@@ -73,6 +72,7 @@ export default function GeneralForm() {
                 },
               }}
               set={(tags: string[]) => {
+                console.log(tags)
                 setValue('categories', tags);
               }}
             />

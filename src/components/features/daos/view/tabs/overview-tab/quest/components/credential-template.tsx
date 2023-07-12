@@ -35,7 +35,7 @@ import { brandColors, theme } from '@/theme';
 import { createGateSchema } from '@/components/features/gates/create/schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FormProvider, useForm, useFormContext } from 'react-hook-form';
-import { testingSchema } from '../../direct-credential/create-direct-credential';
+import { CreateGateSchema } from '../../direct-credential/create-direct-credential';
 
 export default function CredentialTemplate({
   updateFormState,
@@ -83,7 +83,7 @@ export default function CredentialTemplate({
     }
   );
 
-  const methods = useFormContext<testingSchema>();
+  const methods = useFormContext<CreateGateSchema>();
   const [dataModelSelected, setDataModelSelected] = useState<any>(
     fullFormState?.template?.dataModel
   );
@@ -154,8 +154,6 @@ export default function CredentialTemplate({
         ((finalValue - startingNumber) / startingNumber).toFixed(2)
       );
   };
-
-  const testingMethod = (model) => {};
 
   return (
     <>
@@ -252,7 +250,7 @@ export default function CredentialTemplate({
                                   model.description
                                 );
                                 methods.setValue('image', model.image);
-                                methods.setValue('categories', [model.tags]);
+                                methods.setValue('categories', model.tags);
                                 methods.setValue(
                                   'creator.id',
                                   model.createdBy.gatewayId

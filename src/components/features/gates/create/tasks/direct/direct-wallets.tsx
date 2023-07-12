@@ -2,7 +2,7 @@ import { useAuth } from '@/providers/auth';
 import { Files } from '@/services/hasura/types';
 import { useMutation, useInfiniteQuery } from '@tanstack/react-query';
 import { useSnackbar } from 'notistack';
-import { useController, useForm, useFormContext } from 'react-hook-form';
+import { FormProvider, useController, useForm, useFormContext } from 'react-hook-form';
 import { useDropArea, useToggle } from 'react-use';
 
 import { Paper } from '@mui/material';
@@ -36,21 +36,13 @@ export function DirectWallets({
 }) {
   const { hasuraUserService, fetchAuth } = useAuth();
   const { enqueueSnackbar } = useSnackbar();
-  const { field } = useController<CreateGateData>({
-    name: 'whitelisted_wallets_file',
-  });
+  const { setValue, watch } = useFormContext<CreateGateData>();
 
-  const { getValues } = useFormContext<AddRecipientDirectCredentialSchema>();
+  const methods = useForm<AddRecipientDirectCredentialSchema>();
 
   const [confirmDialgog, setConfirmDialog] = useToggle(false);
   const [addRecipient, setAddRecipient] = useToggle(false);
-  const [values, setValues] = useState({
-    addNew: true,
-    type: '',
-    wallet: '',
-    oldType: '',
-    oldWallet: '',
-  });
+
   const [editRecipient, setEditRecipient] = useToggle(false);
   const [Files, setFiles] = useState<File>();
 
@@ -69,7 +61,7 @@ export function DirectWallets({
     },
     {
       onSuccess(data) {
-        field.onChange(data);
+        setValue('whitelisted_wallets_file', data);
       },
 
       onError(error: any) {
@@ -80,18 +72,18 @@ export function DirectWallets({
     }
   );
 
-  const file = field.value;
+  const file = watch('whitelisted_wallets_file');
 
   const addRecipientMutation = useMutation(
     ['verify-wallet-single', file?.id],
     () =>
       hasuraUserService.verify_single({
         file_id: file?.id,
-        addNew: getValues('addNew'),
-        type: getValues('type'),
-        wallet: getValues('wallet'),
-        oldType: getValues('oldType'),
-        oldWallet: getValues('oldWallet'),
+        addNew: methods.getValues('addNew'),
+        type: methods.getValues('type'),
+        wallet: methods.getValues('wallet'),
+        oldType: methods.getValues('oldType'),
+        oldWallet: methods.getValues('oldWallet'),
       }),
     {
       onSuccess(data) {
@@ -110,54 +102,54 @@ export function DirectWallets({
     addRecipientMutation.mutate();
   };
 
-  // const progressReq = useInfiniteQuery(
-  //   ['progress', file?.id],
-  //   () => hasuraUserService.verify_csv_progress({ file_id: file?.id }),
-  //   {
-  //     enabled: !!file?.id,
-  //     keepPreviousData: false,
-  //     refetchInterval: (data) =>
-  //       !data?.pages[0].verify_csv_progress.isDone && 1000,
-  //     // retry: 5,
-  //     onError(error: any) {
-  //       enqueueSnackbar(error?.response?.errors?.[0]?.message, {
-  //         variant: 'error',
-  //       });
-  //       field.onChange(undefined);
-  //     },
-  //   }
-  // );
+  const progressReq = useInfiniteQuery(
+    ['progress', file?.id],
+    () => hasuraUserService.verify_csv_progress({ file_id: file?.id }),
+    {
+      enabled: !!file?.id,
+      keepPreviousData: false,
+      refetchInterval: (data) =>
+        !data?.pages[0].verify_csv_progress.isDone && 1000,
+      // retry: 5,
+      onError(error: any) {
+        enqueueSnackbar(error?.response?.errors?.[0]?.message, {
+          variant: 'error',
+        });
+        setValue('whitelisted_wallets_file', undefined);
+      },
+    }
+  );
 
   const progress = editRecipient
     ? addRecipientMutation.data?.verify_single
-    : {
-        id: '52e8e38f-73b8-43b7-bb08-620b71faca58',
-        invalid: 0,
-        invalidList: [
-          '{"wallet":"0xf084430Fc2CfAd8E81716aEdeBBE4458866D239","type":"Wallet"}',
-          '{"wallet":"example.com","type":"Email"}',
-          '{"wallet":"0C8FE70890d445B3099441f5a04dFe9CF1935200e1","type":"Wallet"}',
-          '{"wallet":"s.","type":"ENS"}',
-        ],
-        isDone: true,
-        total: 8,
-        uploadedTime: 1689069424482,
-        validList: [
-          '{"wallet":"sid.eth","ens":null,"type":"ENS"}',
-          '{"wallet":"example@gmail.com","type":"Email"}',
-          '{"wallet":"0xE1c201E8eA40d4fA0df4C142ab1c9D519005FC4E","type":"ENS"}',
-          '{"wallet":"0xB0D1c17591e7f5C17E15CA505F5fE758D6E40B57","type":"Wallet"}',
-        ],
-        valid: 4,
-      };
-  // : progressReq.data?.pages?.[0]?.verify_csv_progress;
+    : // : {
+      //     id: '52e8e38f-73b8-43b7-bb08-620b71faca58',
+      //     invalid: 0,
+      //     invalidList: [
+      //       '{"wallet":"0xf084430Fc2CfAd8E81716aEdeBBE4458866D239","type":"Wallet"}',
+      //       '{"wallet":"example.com","type":"Email"}',
+      //       '{"wallet":"0C8FE70890d445B3099441f5a04dFe9CF1935200e1","type":"Wallet"}',
+      //       '{"wallet":"s.","type":"ENS"}',
+      //     ],
+      //     isDone: true,
+      //     total: 8,
+      //     uploadedTime: 1689069424482,
+      //     validList: [
+      //       '{"wallet":"sid.eth","ens":null,"type":"ENS"}',
+      //       '{"wallet":"example@gmail.com","type":"Email"}',
+      //       '{"wallet":"0xE1c201E8eA40d4fA0df4C142ab1c9D519005FC4E","type":"ENS"}',
+      //       '{"wallet":"0xB0D1c17591e7f5C17E15CA505F5fE758D6E40B57","type":"Wallet"}',
+      //     ],
+      //     valid: 4,
+      //   };
+      progressReq.data?.pages?.[0]?.verify_csv_progress;
 
   const addedRecipientData = addRecipientMutation.data?.verify_single;
 
   const isUploadDisabled = file && progress && !progress.isDone;
 
   useEffect(() => {
-    if (progress.invalid === 0) handleStep(true);
+    if (progress?.invalid === 0) handleStep(true);
   });
 
   const readFiles = (files: File[] | FileList) => {
@@ -182,7 +174,7 @@ export function DirectWallets({
   });
 
   return (
-    <>
+    <FormProvider {...methods}>
       <Paper
         sx={[
           {
@@ -264,6 +256,6 @@ export function DirectWallets({
           handleAddRecipientMutation={handleAddRecipientMutation}
         />
       </Paper>
-    </>
+    </FormProvider>
   );
 }

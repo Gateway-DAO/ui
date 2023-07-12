@@ -9,7 +9,7 @@ import {
   Protocol_Data_ModelQuery,
 } from '@/services/hasura/types';
 import { useFormContext } from 'react-hook-form';
-import { testingSchema } from './create-direct-credential';
+import { CreateGateSchema } from './create-direct-credential';
 
 type Props = {
   updateFormState: Dispatch<any>;
