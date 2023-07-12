@@ -13,7 +13,8 @@ export type AddEmailConfirmationSchema = {
   email: string;
 };
 
-const usernameRegex = /^(?=[a-z0-9._]{2,20}$)(?!.*[_.]{2})[^_.].*[^_.]$/;
+const usernameRegex =
+  /^(?!.*\.\.)(?!.*\.\.$)(?!.*--)(?!.*--$)(?!.*__)(?!.*__$)[a-z0-9._-]{2,19}[a-z0-9]$/;
 
 export const schemaEmail: SchemaOf<EmailSchema> = object({
   email_address: string().min(2).email().defined().label('Email address'),
