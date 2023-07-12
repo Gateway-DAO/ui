@@ -18,6 +18,8 @@ export type CreateGateData = {
   data_model_id?: string;
   loyalty_id?: string;
   points?: number;
+  schema?: any;
+  claim?: any;
 } & Required<Pick<Gates, 'title' | 'categories' | 'image' | 'description'>> &
   Required<{ creator: Pick<Gates['creator'], 'id'> }> & {
     type: 'task_based' | 'direct';
@@ -624,6 +626,9 @@ export const taskManualSchema = z.object({
 export const addRecipientDirectCredentialSchema = z.object({
   type: z.string(),
   value: z.string().min(2, 'The value must contain at least 2 character(s)'),
+  addNew: z.boolean().default(false),
+  oldType: z.string(),
+  oldWallet: z.string(),
 });
 
 const gateBase = z.object({
@@ -649,8 +654,10 @@ const gateBase = z.object({
     .int({ message: `please enter a valid value , don't use decimal value` })
     .nullish(),
   expire_date: z.string().nullish(),
-  data_model_id: z.string().nullish(),
+  data_model_id: z.string(),
   loyalty_id: z.string().nullish(),
+  schema: z.any().nullish(),
+  claim: z.any().nullish(),
   points: z
     .number()
     .positive({ message: 'please enter a valid value' })
@@ -683,9 +690,11 @@ const taskGate = gateBase.augment({
 
 const directGate = gateBase.augment({
   type: z.literal('direct' as GateType),
-  whitelisted_wallets_file: z.object({
-    id: z.string(),
-  }),
+  whitelisted_wallets_file: z
+    .object({
+      id: z.string(),
+    })
+    .nullish(),
 });
 
 export const createGateSchema = z.discriminatedUnion('type', [

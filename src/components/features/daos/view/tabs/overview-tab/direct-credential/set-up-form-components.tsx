@@ -8,18 +8,23 @@ import {
   Protocol_Api_CreateCredentialInput,
   Protocol_Data_ModelQuery,
 } from '@/services/hasura/types';
+import { useFormContext } from 'react-hook-form';
+import { testingSchema } from './create-direct-credential';
 
 type Props = {
   updateFormState: Dispatch<any>;
   handleStep: (value: boolean) => void;
   fullFormState: any;
+  getValues: any;
 };
 
 export const setUpFormComponents = ({
   updateFormState,
   handleStep,
   fullFormState,
+  getValues,
 }: Props): JSX.Element[] => {
+  // const { getValues } = useFormContext<testingSchema>();
   return [
     <CredentialTemplate
       updateFormState={updateFormState}
@@ -28,6 +33,7 @@ export const setUpFormComponents = ({
       fullFormState={fullFormState}
       input={{ name: 'template' }}
     />,
+
     <DetailsTemplate
       updateFormState={updateFormState}
       key={2}

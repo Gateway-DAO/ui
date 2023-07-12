@@ -92,7 +92,7 @@ export function DaoProfile() {
         ),
       },
       {
-        key: 'quests',
+        key: 'send-credentials',
         label: t('dao-profile:issued-tab.title'),
         section: (
           <GatesTab

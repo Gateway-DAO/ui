@@ -49,6 +49,8 @@ import { InvalidatedWallet, ValidatedWallet } from './types';
 import { UserListItemEdit } from '@/components/molecules/user-list-item-edit';
 import { Data } from 'aws-sdk/clients/firehose';
 import { menuItemClasses } from '@mui/material/MenuItem';
+import { useFormContext } from 'react-hook-form';
+import { AddRecipientDirectCredentialSchema } from './direct-wallets';
 
 export function DirectWalletsList({
   invalidList,
@@ -58,7 +60,6 @@ export function DirectWalletsList({
   listContainerProps,
   listProps,
   listItemProps,
-  setValues,
   setAddRecipient,
 }: Required<Pick<VerifyCsvProgressOutput, 'validList' | 'invalidList'>> & {
   searchContainer?: (props: PropsWithChildren<unknown>) => JSX.Element;
@@ -67,15 +68,6 @@ export function DirectWalletsList({
   listProps?: Partial<VirtuosoProps<any, any>>;
   listItemProps?: Partial<ListItemProps>;
   setAddRecipient: (nextValue?: any) => void;
-  setValues: Dispatch<
-    SetStateAction<{
-      addNew: boolean;
-      type: string;
-      wallet: string;
-      oldType: string;
-      oldWallet: string;
-    }>
-  >;
 }) {
   const [filter, setFilter] = useState('');
 
@@ -148,18 +140,19 @@ export function DirectWalletsList({
 
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
+  const { setValue } = useFormContext<AddRecipientDirectCredentialSchema>();
+
   const handleClick = (
     event: MouseEvent<HTMLButtonElement>,
     wallet: string,
     type: string
   ) => {
-    setValues({
-      addNew: false,
-      oldType: type,
-      oldWallet: wallet,
-      type: '',
-      wallet: '',
-    });
+    setValue('addNew', false);
+    setValue('oldType', type);
+    setValue('oldWallet', wallet);
+    setValue('type', type);
+    setValue('wallet', wallet);
+
     setAnchorEl(event.currentTarget);
   };
 
@@ -238,7 +231,6 @@ export function DirectWalletsList({
             <Button>Remove</Button>
             <Button
               onClick={() => {
-
                 setAddRecipient();
               }}
             >

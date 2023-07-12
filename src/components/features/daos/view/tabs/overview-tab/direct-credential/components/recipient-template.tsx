@@ -31,7 +31,7 @@ export default function RecipientTemplate({
       </Box>
       <FormProvider {...methods}>
         <Stack>
-          <DirectWallets />
+          <DirectWallets handleStep={handleStep} />
         </Stack>
       </FormProvider>
     </Stack>

@@ -5,18 +5,18 @@ import { Protocol_Api_CreateCredentialInput } from '@/services/hasura/types';
 import { Box, Stack, TextField, Typography } from '@mui/material';
 import useTranslation from 'next-translate/useTranslation';
 import { useFormContext } from 'react-hook-form';
+import { testingSchema } from '../../direct-credential/create-direct-credential';
 
-export default function GeneralForm({ dataModel }: { dataModel: any }) {
+export default function GeneralForm() {
   const {
     register,
     setValue,
     control,
     formState: { errors },
     getValues,
-  } = useFormContext<Protocol_Api_CreateCredentialInput>();
+  } = useFormContext<testingSchema>();
 
   const { t } = useTranslation('protocol');
-  console.log(t('data-model.issue-credential.title-label'));
   return (
     <Stack
       direction="row"
@@ -46,7 +46,7 @@ export default function GeneralForm({ dataModel }: { dataModel: any }) {
             <TextField
               label="Title"
               id="title"
-              defaultValue={dataModel?.title}
+              defaultValue={getValues('title')}
               {...register('title')}
               error={!!errors.title}
               helperText={errors.title?.message}
@@ -61,11 +61,11 @@ export default function GeneralForm({ dataModel }: { dataModel: any }) {
               label="category"
               id="categories"
               name="categories"
-              error={!!errors.tags}
-              defaultValue={dataModel?.tags}
-              {...register('tags')}
+              error={!!errors.categories}
+              defaultValue={getValues('categories')}
+              {...register('categories')}
               categories={CATEGORIES}
-              helperText={(errors.tags as any)?.message?.toString()}
+              helperText={(errors.categories as any)?.message?.toString()}
               sx={{
                 width: '100%',
                 '& div fieldset legend span': {
@@ -73,13 +73,13 @@ export default function GeneralForm({ dataModel }: { dataModel: any }) {
                 },
               }}
               set={(tags: string[]) => {
-                setValue('tags', tags);
+                setValue('categories', tags);
               }}
             />
             <TextField
               multiline
               rows={5}
-              defaultValue={dataModel.description}
+              defaultValue={getValues('description')}
               InputProps={{
                 disableUnderline: true,
                 sx: {
@@ -99,7 +99,7 @@ export default function GeneralForm({ dataModel }: { dataModel: any }) {
       </Stack>
 
       <GateImageCard
-        draftImage={dataModel?.image}
+        draftImage={getValues('image')}
         label={
           <>
             <Typography textAlign={'center'} paddingX={4}>

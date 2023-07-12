@@ -26,6 +26,20 @@ import { useAuth } from '@/providers/auth';
 import VerticalStepper from './components/vertical-stepper';
 import { setUpFormComponents } from './set-up-form-components';
 import { LoadingButton } from '@/components/atoms/buttons/loading-button';
+import {
+  CreateGateData,
+  createGateSchema,
+} from '@/components/features/gates/create/schema';
+import { ROUTES } from '@/constants/routes';
+import {
+  Create_Gate_Tasks_BasedMutationVariables,
+  Create_Gate_DirectMutationVariables,
+} from '@/services/hasura/types';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { FormProvider, useForm, useFormContext } from 'react-hook-form';
+import { v4 as uuidv4 } from 'uuid';
+import { z } from 'zod';
+export type testingSchema = z.infer<typeof createGateSchema>;
 
 export function CreateDirectCredentialTemplate({
   closeDialog,
@@ -35,9 +49,7 @@ export function CreateDirectCredentialTemplate({
   const theme = useTheme();
   const windowSize = useWindowSize();
   const { t } = useTranslation('org-signup');
-  const router = useRouter();
   const [fullFormState, setFullFormState] = useState(null);
-  const { hasuraUserService } = useAuth();
 
   const handleStep = (newValue: boolean) => {
     setStepValidity((prev) => ({ ...prev, [currentStep]: newValue }));
@@ -57,10 +69,13 @@ export function CreateDirectCredentialTemplate({
     { name: 'settings', preview: true, saveAsDraft: false, continue: false },
   ];
 
+  const methods = useForm<testingSchema>();
+
   const formComponents = setUpFormComponents({
     fullFormState,
     handleStep: handleStep,
     updateFormState: setFullFormState,
+    getValues: undefined,
   });
 
   const {
@@ -91,9 +106,184 @@ export function CreateDirectCredentialTemplate({
     });
   };
 
+  const router = useRouter();
+  const { hasuraUserService } = useAuth();
+
+  const [confirmPublish, setConfirmPublish] = useState(false);
+  const [isPublished, setIsPublished] = useState(false);
+  const [result, setResult] = useState(null);
+
+  const [deletedTasks, setDeletedTasks] = useState<string[]>([]);
+
+  const { enqueueSnackbar } = useSnackbar();
+
+  const uploadImage = useMutation(
+    ['uploadImage'],
+    hasuraUserService.upload_image
+  );
+
+  const createGate = useMutation(
+    ['createGate'],
+    ({
+      whitelisted_wallets_file,
+      tasks,
+      ...data
+    }: Create_Gate_Tasks_BasedMutationVariables &
+      Create_Gate_DirectMutationVariables) => {
+      if (data.type === 'direct') {
+        return hasuraUserService.create_gate_direct({
+          ...data,
+          whitelisted_wallets_file,
+        });
+      }
+      return hasuraUserService.create_gate_tasks_based({ ...data, tasks });
+    }
+  );
+
+  const publishGate = useMutation(
+    ['publishGate'],
+    hasuraUserService.publish_gate
+  );
+
+  const deleteTask = useMutation(
+    ['deleteTask'],
+    hasuraUserService.delete_tasks_by_pk
+  );
+
+  const closePublishedModal = () => setIsPublished(false);
+
+  const checkFormErrors = async () => {
+    const dataIsValid = await methods.trigger();
+
+    if (!dataIsValid) {
+      const errors = methods.formState.errors;
+
+      if ((Object.values(errors)[0] as any).data?.message) {
+        showErrorMessage((Object.values(errors)[0] as any).data?.message);
+      }
+
+      recursiveErrorMessage(errors);
+    }
+
+    return dataIsValid;
+  };
+
+  const showErrorMessage = (message: string) => {
+    enqueueSnackbar(message, { variant: 'error', autoHideDuration: 8000 });
+  };
+
+  const taskErrorMessage = (data) => {
+    data.forEach((taskData) => {
+      recursiveErrorMessage(taskData);
+      if (taskData?.task_data) {
+        recursiveErrorMessage(taskData.task_data);
+      }
+    });
+  };
+
+  const recursiveErrorMessage = (obj) => {
+    for (const prop in obj) {
+      if (obj.hasOwnProperty.call(obj, prop)) {
+        if (obj[prop]?.message) {
+          showErrorMessage(obj[prop]?.message);
+        } else if (obj[prop]?.length) {
+          recursiveErrorMessage(obj[prop][0]);
+        }
+      }
+    }
+  };
+
+  const takeErrorMessage = (obj): string | null => {
+    let message = '';
+    for (const task in obj) {
+      if (obj.hasOwnProperty.call(obj, task)) {
+        if (obj[task]?.message) {
+          message = obj[task]?.message;
+        } else if (obj[task].length) {
+          message = takeErrorMessage(obj[task][0]);
+        }
+      }
+    }
+    return message !== '' ? message : null;
+  };
+
+  const handleMutation = async (data: CreateGateData, isDraft: boolean) => {
+    const dataIsValid = await checkFormErrors();
+
+    if (!dataIsValid) {
+      throw new Error();
+    }
+
+    const permissionsData = [
+      { user_id: data.creator.id, permission: 'gate_editor' },
+    ];
+    let image_url = null;
+
+    if (image_url !== data.image && data.image !== undefined) {
+      const image_id = (
+        await uploadImage.mutateAsync({
+          base64: data.image,
+          name: data.title,
+        })
+      )?.upload_image.id;
+      image_url = `${process.env.NEXT_PUBLIC_NODE_ENDPOINT}/storage/file?id=${image_id}`;
+    }
+
+    if (data.title) {
+      const response = await createGate.mutateAsync({
+        id: uuidv4(),
+        dao_id: router.query.dao as string,
+        title: data.title,
+        categories: data.categories || [],
+        description: data.description,
+        claim_limit: data.claim_limit,
+        loyalty_id: data.loyalty_id ?? null,
+        data_model_id: data.data_model_id ?? null,
+        points: data.points ?? null,
+        expire_date: data.expire_date,
+        permissions: permissionsData,
+        type: data.type,
+        image: image_url,
+        tasks: data.tasks?.map(({ task_id, ...task }, index) => ({
+          ...task,
+          id: task_id,
+          order: index,
+        })),
+        claim: {},
+        whitelisted_wallets_file: data.whitelisted_wallets_file?.id,
+      });
+      if (isDraft) {
+        enqueueSnackbar('Draft saved');
+        router.push(
+          ROUTES.GATE_PROFILE.replace('[id]', response.insert_gates_one.id)
+        );
+        return;
+      }
+      await publishGate.mutateAsync({
+        gate_id: response.insert_gates_one.id,
+      });
+      setResult(response.insert_gates_one);
+      setIsPublished(true);
+    }
+  };
+
   // MAKE DB CALL
   const handleSaveAsDraft = async () => {
-    console.log(fullFormState, currentStep);
+    try {
+      // await handleMutation(draftData, true);
+    } catch (e) {
+      enqueueSnackbar("An error occured, couldn't save the draft.");
+    }
+    console.log(fullFormState, methods.getValues());
+  };
+
+  const publish = async () => {
+    try {
+      // await handleMutation(draftData, true);
+    } catch (e) {
+      enqueueSnackbar("An error occured, couldn't save the draft.");
+    }
+    console.log(fullFormState, methods.getValues());
   };
 
   const createOrganization = useMutation(
@@ -118,7 +308,7 @@ export function CreateDirectCredentialTemplate({
   );
 
   return (
-    <>
+    <FormProvider {...methods}>
       {createOrganization.isLoading && <Loading fullScreen />}
       <Grid
         container
@@ -222,21 +412,36 @@ export function CreateDirectCredentialTemplate({
                 >
                   Save as Draft
                 </LoadingButton>
-                <LoadingButton
-                  type="submit"
-                  variant="contained"
-                  size="large"
-                  sx={{ marginLeft: 2 }}
-                  onClick={() => handleNext()}
-                  disabled={!stepValidity[`${currentStep}`]}
-                >
-                  Continue
-                </LoadingButton>
+                {!isLastStep && (
+                  <LoadingButton
+                    type="submit"
+                    variant="contained"
+                    size="large"
+                    sx={{ marginLeft: 2 }}
+                    onClick={() => handleNext()}
+                    disabled={!stepValidity[`${currentStep}`]}
+                  >
+                    Continue
+                  </LoadingButton>
+                )}
+
+                {isLastStep && (
+                  <LoadingButton
+                    type="submit"
+                    variant="contained"
+                    size="large"
+                    sx={{ marginLeft: 2 }}
+                    onClick={() => publish()}
+                    disabled={!stepValidity[`${currentStep}`]}
+                  >
+                    Save and publish
+                  </LoadingButton>
+                )}
               </Stack>
             </Stack>
           </Stack>
         </Grid>
       </Grid>
-    </>
+    </FormProvider>
   );
 }

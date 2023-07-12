@@ -1,3 +1,4 @@
+import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Box,
   Button,
@@ -5,46 +6,45 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  MenuItem,
+  Select,
   Stack,
   TextField,
   Typography,
 } from '@mui/material';
 import { useRouter } from 'next/router';
 import { Dispatch, SetStateAction, useEffect } from 'react';
+import { useForm, useFormContext } from 'react-hook-form';
+import { addRecipientDirectCredentialSchema } from '../../schema';
+import CategoriesInput from '@/components/molecules/form/categories-input';
+import { AddRecipientDirectCredentialSchema } from './direct-wallets';
 
 export function AddRecipient({
   open,
   toggleDialog,
   title,
   handleAddRecipientMutation,
-  setValues,
-  values,
 }: {
   open: boolean;
   toggleDialog: (value: boolean) => void;
   title: string;
   handleAddRecipientMutation: () => void;
-  setValues: Dispatch<
-    SetStateAction<{
-      addNew: boolean;
-      type: string;
-      wallet: string;
-      oldType: string;
-      oldWallet: string;
-    }>
-  >;
-  values: {
-    addNew: boolean;
-    type: string;
-    wallet: string;
-    oldType: string;
-    oldWallet: string;
-  };
 }) {
   const router = useRouter();
   const closeDialog = () => {
     toggleDialog(false);
   };
+
+  const {
+    register,
+    control,
+    formState: { errors },
+    watch,
+    setValue,
+    getValues,
+  } = useFormContext<AddRecipientDirectCredentialSchema>();
+
+  const TYPE_OF_WALLETS = ['Wallet', 'Email'];
 
   return (
     <Dialog
@@ -57,38 +57,40 @@ export function AddRecipient({
         id="confirm-dialog"
         sx={{ minWidth: { xs: '200px', md: '400px' } }}
       >
-        {title} recipient
+        {!getValues('addNew') ? 'Add' : 'Edit'}recipient
       </DialogTitle>
       <DialogContent>
         <Stack>
           <TextField
-            variant="standard"
-            id="submit-link-title"
-            value={values.type}
-            onChange={(e) =>
-              setValues({
-                addNew: values.addNew,
-                oldType: values.oldType,
-                oldWallet: values.oldWallet,
-                type: e.target.value,
-                wallet: values.wallet,
-              })
-            }
+            label="Value"
+            id="value"
+            {...register('wallet')}
+            error={!!errors.wallet}
+            helperText={errors.wallet?.message}
+            sx={{
+              '& div fieldset legend span': {
+                marginRight: '4px',
+              },
+            }}
           />
-          <TextField
-            variant="standard"
-            id="submit-link-title"
-            value={values.wallet}
-            onChange={(e) =>
-              setValues({
-                addNew: values.addNew,
-                oldType: values.oldType,
-                oldWallet: values.oldWallet,
-                type: values.type,
-                wallet: e.target.value,
-              })
-            }
-          />
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            value={watch('type')}
+            label={'Type'}
+            sx={{
+              '& fieldset legend span': {
+                marginRight: '22px',
+              },
+            }}
+            onChange={(e) => setValue('type', e.target.value)}
+          >
+            {TYPE_OF_WALLETS.map((value) => (
+              <MenuItem key={value} value={value}>
+                {value}
+              </MenuItem>
+            ))}
+          </Select>
         </Stack>
       </DialogContent>
       <DialogActions

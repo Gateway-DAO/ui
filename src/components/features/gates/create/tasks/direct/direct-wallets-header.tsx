@@ -2,6 +2,8 @@ import useTranslation from 'next-translate/useTranslation';
 
 import { UploadFile } from '@mui/icons-material';
 import { Box, Button, Stack, Typography } from '@mui/material';
+import { useFormContext } from 'react-hook-form';
+import { AddRecipientDirectCredentialSchema } from './direct-wallets';
 
 export function DirectWalletsEmptyHeader() {
   const { t } = useTranslation('gate-new');
@@ -75,7 +77,7 @@ export function DirectWalletsHeader({
   setAddRecipient,
 }: Props) {
   const { t } = useTranslation('gate-new');
-
+  const { setValue } = useFormContext<AddRecipientDirectCredentialSchema>();
   return (
     <Stack direction="column" gap={2}>
       <Stack
@@ -118,7 +120,17 @@ export function DirectWalletsHeader({
             />
           </Button>
         )} */}
-        <Button variant="outlined" onClick={setAddRecipient}>
+        <Button
+          variant="outlined"
+          onClick={() => {
+            setValue('addNew', true);
+            setValue('oldType', '');
+            setValue('oldWallet', '');
+            setValue('type', '');
+            setValue('wallet', '');
+            setAddRecipient();
+          }}
+        >
           Add Recipient
         </Button>
       </Stack>

@@ -25,6 +25,9 @@ import { FormProvider, useForm, useFormContext } from 'react-hook-form';
 import ClaimForm from '@/components/features/protocol/credentials/create/components/claim-form';
 
 import GeneralForm from './general-form';
+import { createGateSchema } from '@/components/features/gates/create/schema';
+import { testingSchema } from '../../direct-credential/create-direct-credential';
+import ClaimFormQuest from './ClaimFormQuest';
 
 export default function DetailsTemplate({
   updateFormState,
@@ -37,42 +40,29 @@ export default function DetailsTemplate({
   input: any;
   fullFormState: any;
 }) {
-  console.log(fullFormState);
-  const { dataModel } = fullFormState.template;
-  console.log(dataModel);
+  const dataModel = fullFormState?.template;
+
   const { hasuraUserService, token } = useAuth();
   const { enqueueSnackbar } = useSnackbar();
   const { t } = useTranslation('protocol');
-  const isP2PDataModel =
-    dataModel.permissioning === Protocol_Api_PermissionType.All;
-  const [credentialCreated, setCredentialCreated] = useState<string>(null);
 
+  const { getValues: getDefaultValues, setValue } =
+    useFormContext<testingSchema>();
+
+  const gate = getDefaultValues();
+  console.log(gate);
   const methods = useForm({
     resolver: async (values, _, options) => {
       const { claim, ...rawData } = values;
-      console.log(claim, rawData);
       let zodResult;
-      if (isP2PDataModel) {
-        zodResult = await zodResolver(createCredentialSchemaP2P)(
-          rawData,
-          _,
-          options as any
-        );
-        zodResult.values = {
-          ...zodResult.values,
-          description: dataModel.description,
-          tags: [],
-          dataModelId: dataModel.id,
-          //   recipientUserIdentity: rawData.recipientUserIdentity,
-        };
-      } else {
-        zodResult = await zodResolver(createCredentialSchema)(
-          rawData,
-          _,
-          options as any
-        );
-      }
-      const claimResult = await ajvResolver(dataModel?.schema, {
+
+      zodResult = await zodResolver(createGateSchema)(
+        { ...rawData, type: 'direct' },
+        _,
+        options as any
+      );
+      console.log(zodResult, rawData);
+      const claimResult = await ajvResolver(gate?.schema, {
         formats: fullFormats,
       })(claim, _, options as any);
 
@@ -91,19 +81,32 @@ export default function DetailsTemplate({
     },
     mode: 'all',
     defaultValues: {
-      dataModelId: dataModel.id,
       image: '/images/qr-code.png',
-      claim: {},
+      title: gate?.title,
+      categories: gate?.categories[0],
+      data_model_id: gate?.data_model_id,
+      description: gate?.description,
+      schema: gate?.schema,
+      type: gate?.type,
+      creator: { id: '111', username: gate?.creator.username },
+      claim: gate?.claim,
     },
   });
 
   const { formState, getValues } = methods;
   const { isValid, errors } = formState;
-
+  console.log(isValid, errors, getValues());
   useEffect(() => {
     console.log(isValid, getValues());
     handleStep(isValid);
     if (isValid) {
+      setValue('title', getValues('title'));
+      setValue('description', getValues('description'));
+      setValue('image', getValues('image'));
+      // setValue('categories', getValues('categories'));
+      setValue('creator.id', getValues('creator.id'));
+      setValue('schema', getValues('schema'));
+      setValue('claim', getValues('claim'));
       updateFormState((prev) => ({
         ...prev,
         [input.name]: {
@@ -122,23 +125,6 @@ export default function DetailsTemplate({
   const uploadArweave = useMutation(['uploadArweave'], (base64: string) =>
     hasuraUserService.upload_arweave({ base64 })
   );
-
-  const uploadCredentialImage = async (fieldData): Promise<string> => {
-    if (
-      fieldData &&
-      fieldData.indexOf('https://') === -1 &&
-      fieldData.indexOf('images') === -1
-    ) {
-      try {
-        return await uploadArweave
-          .mutateAsync(fieldData)
-          .then((res) => res.upload_arweave?.url);
-      } catch (e) {
-        enqueueSnackbar(t('data-model.error-on-upload'));
-      }
-    }
-    return;
-  };
 
   const removeEmptyDataFromArrayField = (type: string, fieldData) => {
     if (
@@ -184,34 +170,6 @@ export default function DetailsTemplate({
     return data;
   };
 
-  const handleFields = async (data): Promise<any> => {
-    await handleClaimFields(data).then((res) => (data = res));
-
-    await uploadCredentialImage(data?.image).then((res) => (data.image = res));
-    if (data?.image === undefined) {
-      data = { ...data, image: dataModel?.image };
-    }
-
-    return data;
-  };
-
-  const handleMutation = async (
-    data: Protocol_Api_CreateCredentialInput | any
-  ) => {
-    if (!(await methods.trigger())) return;
-    try {
-      data = await handleFields(data);
-      const res = await createCredential.mutateAsync(
-        data as Protocol_Create_CredentialMutationVariables
-      );
-
-      setCredentialCreated(res?.protocol?.createCredential?.id);
-      methods.reset();
-    } catch (e) {
-      enqueueSnackbar(t('data-model.error-on-create-credential'));
-    }
-  };
-
   return (
     <Stack direction={'column'} mx={7} mb={5}>
       <Box>
@@ -227,14 +185,14 @@ export default function DetailsTemplate({
           id="create-credential-form"
           // onSubmit={methods.handleSubmit(handleMutation)}
         >
-          <Stack sx={{ display: createCredential.isLoading ? 'none' : 'flex' }}>
+          <Stack>
             <Stack
               divider={
                 <Divider sx={{ mb: 4, mt: 8, mx: { xs: -3, md: -8 } }} />
               }
               gap={3}
             >
-              <GeneralForm dataModel={dataModel} />
+              <GeneralForm />
               <Stack sx={{ mt: -4 }}>
                 <Stack direction="row" sx={{ mb: 4 }}>
                   <Typography variant="subtitle1" sx={{ mr: 1 }}>
@@ -244,7 +202,9 @@ export default function DetailsTemplate({
                     <InfoOutlinedIcon color={'inherit'} />
                   </Tooltip>
                 </Stack>
-                <ClaimForm dataModel={dataModel} />
+                <ClaimFormQuest
+                  fields={methods.getValues('schema')?.properties}
+                />
               </Stack>
             </Stack>
           </Stack>
