@@ -199,6 +199,7 @@ export function DataModelLayout({ children }) {
                       title={dataModel?.title}
                       labelId={t('data-model.data-model-id')}
                       id={dataModel?.id}
+                      isVerified={dataModel?.verified}
                       copySucessMessage={t('data-model.copy-id')}
                       badgeTooltip={t('data-model.verified-description')}
                     />
