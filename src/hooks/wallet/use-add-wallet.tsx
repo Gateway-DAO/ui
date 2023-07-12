@@ -8,7 +8,7 @@ import { useMutation } from '@tanstack/react-query';
 
 import { useConnectedWallet } from './use-connected-wallet';
 
-export function useAddWallet() {
+export function useAddWalletModal() {
   const { hasuraUserService } = useAuth();
   const { t } = useTranslation('common');
 
@@ -95,5 +95,6 @@ export function useAddWallet() {
   return {
     step: addWalletStep,
     error,
+    onRequestWalletSignature: createMessage.mutate,
   };
 }

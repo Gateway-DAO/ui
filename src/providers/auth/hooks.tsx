@@ -96,7 +96,7 @@ export const useAuthLogin = () => {
   }>();
 
   const nonce = useQuery(
-    [address, 'nonce'],
+    [session?.data?.protocol_id, 'nonce'],
     () =>
       hasuraPublicService.get_nonce({
         wallet: address,
