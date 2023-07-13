@@ -1,4 +1,4 @@
-export type AuthStep =
+export type WalletAuthStep =
   | 'unauthenticated'
   | 'get-nonce'
   | 'send-signature'
@@ -6,7 +6,7 @@ export type AuthStep =
   | 'error'
   | 'authenticated';
 
-export type AuthStepError = {
+export type WalletAuthStepError = {
   message: any;
   label: string;
 };

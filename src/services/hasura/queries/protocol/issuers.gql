@@ -4,14 +4,25 @@ query protocol_find_issuers_by_data_model(
   $skip: Float!
 ) {
   protocol {
-
-    findIssuersByDataModel(dataModelId: $dataModelId, take: $take, skip: $skip) {
+    findIssuersByDataModel(
+      dataModelId: $dataModelId
+      take: $take
+      skip: $skip
+    ) {
       issuedCredentials {
         id
         expirationDate
         issuerUser {
           id
           gatewayId
+          gatewayUser {
+            picture {
+              id
+              s3_key
+              blur
+            }
+            pfp
+          }
         }
         createdAt
         image
@@ -20,5 +31,4 @@ query protocol_find_issuers_by_data_model(
       totalOfIssuedCredentials
     }
   }
-
 }

@@ -35,7 +35,7 @@ export default function ReceivedTab({ user }: Props): JSX.Element {
           skip: pageParam || 0,
         } as any);
 
-      return result.protocol_credential;
+      return result.protocol.findCredentialsByRecipientUser;
     }
   );
   useEffect(() => {

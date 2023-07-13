@@ -1,5 +1,6 @@
 import { useState } from 'react';
 
+import CopyPaste from '@/components/molecules/copy-paste';
 import { brandColors } from '@/theme';
 
 import VerifiedIcon from '@mui/icons-material/Verified';
@@ -12,8 +13,6 @@ import {
   Skeleton,
 } from '@mui/material';
 
-import CopyPaste from './copy-paste';
-
 type Props = {
   title: string;
   labelId: string;
@@ -21,6 +20,7 @@ type Props = {
   copySucessMessage: string;
   badgeTooltip?: string;
   isLoading?: boolean;
+  isVerified?: boolean;
 };
 
 export default function InfoTitle({
@@ -30,6 +30,7 @@ export default function InfoTitle({
   copySucessMessage,
   badgeTooltip,
   isLoading,
+  isVerified,
 }: Props) {
   const [open, setOpen] = useState(false);
 
@@ -56,7 +57,7 @@ export default function InfoTitle({
         <Typography variant="h4" sx={{ fontSize: { xs: '20px', md: '34px' } }}>
           {isLoading ? <Skeleton width={300} /> : title}
         </Typography>
-        {badgeTooltip && (
+        {badgeTooltip && isVerified && (
           <ClickAwayListener onClickAway={handleTooltipClose}>
             <Tooltip
               title={badgeTooltip}

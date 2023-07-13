@@ -6,7 +6,7 @@ type CountdownProps = {
   trigger: boolean;
 };
 
-type CountdownType = {
+export type CountdownType = {
   time: number;
   counting: boolean;
 };

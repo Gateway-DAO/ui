@@ -21,9 +21,15 @@ export const query = {
   loyalty_progress_by_user_id_by_loyalty:
     'loyalty_progress_by_user_id_by_loyalty',
   protocol_credential: 'protocol_credential',
+  authentications_methods_by_user: 'authentications_methods_by_user',
 };
 
 export const mutation = {
   create_organization: 'create_organization',
   approve_organization: 'approve_organization',
+  signup_email: 'signup_email',
+  signup_token_verification: 'signup_token_verification',
+  update_email: 'update_email',
+  remove_email: 'remove_email',
+  remove_wallet: 'remove_wallet',
 };

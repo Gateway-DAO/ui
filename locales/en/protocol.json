@@ -68,6 +68,7 @@
     "issuers": "Issuers",
     "credentials": "Credentials",
     "issued-credentials": "Issued credentials",
+    "price-for-consumption": "Price for consumption",
     "recipients": "Recipients",
     "issue-credential-title": "Issue Credential",
     "successfully-title": "Credential issued successfully",

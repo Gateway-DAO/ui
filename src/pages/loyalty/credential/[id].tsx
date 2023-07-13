@@ -3,7 +3,7 @@ import { HeadContainer } from '@/components/molecules/head-container';
 import { DashboardTemplate } from '@/components/templates/dashboard';
 import { ROUTES } from '@/constants/routes';
 import { hasuraPublicService, hasuraApi } from '@/services/hasura/api';
-import { getServerSession } from '@/services/next-auth';
+import { getServerSession } from '@/services/next-auth/get-server-session';
 import jwt from 'jsonwebtoken';
 
 const unaccesible = {
