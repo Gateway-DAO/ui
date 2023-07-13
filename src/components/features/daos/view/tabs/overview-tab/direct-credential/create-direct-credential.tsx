@@ -40,6 +40,8 @@ import { FormProvider, useForm, useFormContext } from 'react-hook-form';
 import { v4 as uuidv4 } from 'uuid';
 import { z } from 'zod';
 import { useDaoProfile } from '../../../context';
+import { ajvResolver } from '@hookform/resolvers/ajv';
+import { fullFormats } from 'ajv-formats/dist/formats';
 export type CreateGateSchema = z.infer<typeof createGateSchema>;
 
 export function CreateDirectCredentialTemplate({
@@ -61,17 +63,12 @@ export function CreateDirectCredentialTemplate({
 
   const formStepControl: {
     name: string;
-    preview: boolean;
-    saveAsDraft: boolean;
-    continue: boolean;
   }[] = [
-    { name: 'template', preview: false, saveAsDraft: false, continue: false },
-    { name: 'details', preview: false, saveAsDraft: false, continue: false },
-    { name: 'recipient', preview: true, saveAsDraft: false, continue: false },
-    { name: 'settings', preview: true, saveAsDraft: false, continue: false },
+    { name: 'template' },
+    { name: 'details' },
+    { name: 'recipient' },
+    { name: 'settings' },
   ];
-
-  const methods = useForm<CreateGateSchema>();
 
   const formComponents = setUpFormComponents({
     fullFormState,
@@ -109,13 +106,57 @@ export function CreateDirectCredentialTemplate({
   };
 
   const router = useRouter();
-  const { hasuraUserService } = useAuth();
+  const { hasuraUserService, me } = useAuth();
 
   const [confirmPublish, setConfirmPublish] = useState(false);
   const [isPublished, setIsPublished] = useState(false);
   const [result, setResult] = useState(null);
 
+  const [testing, setTesting] = useState(false);
+
   const [deletedTasks, setDeletedTasks] = useState<string[]>([]);
+
+  const methods = useForm<CreateGateSchema>({
+    resolver: async (values, _, options) => {
+      const { claim, ...rawData } = values;
+      let zodResult;
+      zodResult = await zodResolver(createGateSchema)(
+        { ...rawData, type: 'direct', creator: { id: '111' } },
+        _,
+        options as any
+      );
+      console.log(zodResult);
+      const claimResult = await ajvResolver(values?.schema, {
+        formats: fullFormats,
+      })(claim, _, options as any);
+
+      if (
+        Object.keys({
+          ...zodResult.errors,
+          ...(Object.keys(claimResult.errors).length > 0 && {
+            claim: claimResult.errors,
+          }),
+        }).length === 0 &&
+        formStepControl[currentStep].name === 'details' &&
+        testing === false
+      ) {
+        setTesting(true);
+        handleNext();
+      }
+      return {
+        values: {
+          ...zodResult.values,
+          claim: claimResult.values,
+        },
+        errors: {
+          ...zodResult.errors,
+          ...(Object.keys(claimResult.errors).length > 0 && {
+            claim: claimResult.errors,
+          }),
+        },
+      };
+    },
+  });
 
   const { enqueueSnackbar } = useSnackbar();
 
@@ -216,9 +257,7 @@ export function CreateDirectCredentialTemplate({
       throw new Error();
     }
 
-    const permissionsData = [
-      { user_id: data.creator.id, permission: 'gate_editor' },
-    ];
+    const permissionsData = [{ user_id: me.id, permission: 'gate_editor' }];
     let image_url = null;
 
     if (image_url !== data.image && data.image !== undefined) {
@@ -243,7 +282,7 @@ export function CreateDirectCredentialTemplate({
         points: data.points ?? null,
         expire_date: data.expire_date,
         permissions: permissionsData,
-        type: data.type,
+        type: 'direct',
         image: image_url,
         tasks: data.tasks?.map(({ task_id, ...task }, index) => ({
           ...task,
@@ -275,7 +314,7 @@ export function CreateDirectCredentialTemplate({
     } catch (e) {
       enqueueSnackbar("An error occured, couldn't save the draft.");
     }
-    console.log(fullFormState, methods.getValues());
+    console.log(fullFormState, methods.watch());
   };
 
   const publish = async () => {
@@ -413,19 +452,38 @@ export function CreateDirectCredentialTemplate({
                 >
                   Save as Draft
                 </LoadingButton>
-                {!isLastStep && (
+
+                {formStepControl[currentStep].name === 'details' && (
                   <LoadingButton
-                    type="submit"
+                    onClick={() => {
+                      setTesting(false);
+                      methods.trigger();
+                    }}
                     variant="contained"
                     size="large"
                     sx={{ marginLeft: 2 }}
-                    onClick={() => handleNext()}
-                    disabled={!stepValidity[`${currentStep}`]}
+                    isLoading={false}
+                    disabled={
+                      !(formStepControl[currentStep].name === 'details')
+                    }
                   >
                     Continue
                   </LoadingButton>
                 )}
 
+                {!isLastStep &&
+                  !(formStepControl[currentStep].name === 'details') && (
+                    <LoadingButton
+                      type="submit"
+                      variant="contained"
+                      size="large"
+                      sx={{ marginLeft: 2 }}
+                      onClick={() => handleNext()}
+                      disabled={!stepValidity[`${currentStep}`]}
+                    >
+                      Continue
+                    </LoadingButton>
+                  )}
                 {isLastStep && (
                   <LoadingButton
                     type="submit"

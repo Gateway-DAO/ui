@@ -14,10 +14,14 @@ export default function RecipientTemplate({
   handleStep: (value: boolean) => void;
   input: any;
 }) {
-  const methods = useForm({
-    resolver: zodResolver(createGateSchema),
-    mode: 'onBlur',
-  });
+  // useEffect(() => {
+  //   updateFormState((prev) => ({
+  //     ...prev,
+  //     [input.name]: {
+  //       testing: false,
+  //     },
+  //   }));
+  // }, []);
   return (
     <Stack direction={'column'} mx={7} mb={5}>
       <Box>
@@ -29,11 +33,11 @@ export default function RecipientTemplate({
           Click to enable continue button(page is pending to be made)
         </Button> */}
       </Box>
-      <FormProvider {...methods}>
+      <>
         <Stack>
           <DirectWallets handleStep={handleStep} />
         </Stack>
-      </FormProvider>
+      </>
     </Stack>
   );
 }

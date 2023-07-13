@@ -46,81 +46,49 @@ export default function DetailsTemplate({
   const { enqueueSnackbar } = useSnackbar();
   const { t } = useTranslation('protocol');
 
-  const {
-    getValues: getDefaultValues,
-    setValue,
-    watch: watchDefaultValues,
-    formState: testFormState,
-  } = useFormContext<CreateGateSchema>();
+  const methods = useFormContext<CreateGateSchema>();
 
-  const gate = getDefaultValues();
-  const watchValues = watchDefaultValues();
-  console.log(watchValues);
-  const methods = useForm<CreateGateSchema>({
-    resolver: async (values, _, options) => {
-      const { claim, ...rawData } = values;
-      let zodResult;
+  // const methods = useForm<CreateGateSchema>({
 
-      zodResult = await zodResolver(createGateSchema)(
-        { ...rawData, type: 'direct' },
-        _,
-        options as any
-      );
-      const claimResult = await ajvResolver(gate?.schema, {
-        formats: fullFormats,
-      })(claim, _, options as any);
+  //   mode: 'all',
+  //   defaultValues: {
+  //     image: '/images/qr-code.png',
+  //     title: watchValues?.title,
+  //     categories: watchValues?.categories,
+  //     data_model_id: watchValues?.data_model_id,
+  //     description: watchValues?.description,
+  //     schema: watchValues?.schema,
+  //     type: watchValues?.type,
+  //     creator: { id: '111', username: watchValues?.creator.username },
+  //     claim: watchValues?.claim,
+  //   },
+  // });
 
-      return {
-        values: {
-          ...zodResult.values,
-          claim: claimResult.values,
-        },
-        errors: {
-          ...zodResult.errors,
-          ...(Object.keys(claimResult.errors).length > 0 && {
-            claim: claimResult.errors,
-          }),
-        },
-      };
-    },
-    mode: 'all',
-    defaultValues: {
-      image: '/images/qr-code.png',
-      title: watchValues?.title,
-      categories: watchValues?.categories,
-      data_model_id: watchValues?.data_model_id,
-      description: watchValues?.description,
-      schema: watchValues?.schema,
-      type: watchValues?.type,
-      creator: { id: '111', username: watchValues?.creator.username },
-      claim: watchValues?.claim,
-    },
-  });
-
-  const { formState, getValues, watch } = methods;
+  const { formState, getValues, watch, trigger } = methods;
   const { isValid, errors, isDirty, touchedFields, dirtyFields } = formState;
+
+  // console.log(errors);
+
+  // useEffect(() => {
+  //   console.log('executing');
+  //   handleStep(isValid);
+  //   updateFormState((prev) => ({
+  //     ...prev,
+  //     [input.name]: {
+  //       dataModel: getValues(),
+  //     },
+  //   }));
+  // }, [isValid]);
   console.log(errors);
-  console.log(getValues('title'), getValues('description'), getValues('claim'));
-  useEffect(() => {
-    console.log('executing');
-    handleStep(isValid);
-    if (isValid) {
-      console.log('here');
-      setValue('title', getValues('title'));
-      setValue('description', getValues('description'));
-      setValue('image', getValues('image'));
-      setValue('categories', getValues('categories'));
-      setValue('claim', getValues('claim'));
-      setValue('type', 'direct');
-    }
-  }, [
-    isValid,
-    getValues('title'),
-    getValues('description'),
-    getValues('claim'),
-    getValues('categories'),
-    getValues('image'),
-  ]);
+
+  // const schema = getValues('schema');
+  // const fieldNames = Object.keys(schema.properties).map((key) => `claim.${key}` as keyof CreateGateSchema);
+  // const data = watch(fieldNames);
+
+  // useEffect(() => {
+  //   console.log(data);
+  //   trigger('claim');
+  // }, [data, !isValid]);
 
   const uploadArweave = useMutation(['uploadArweave'], (base64: string) =>
     hasuraUserService.upload_arweave({ base64 })
@@ -179,7 +147,7 @@ export default function DetailsTemplate({
         </Typography>
       </Box>
 
-      <FormProvider {...methods}>
+      <>
         <Stack
           component="form"
           id="create-credential-form"
@@ -202,12 +170,14 @@ export default function DetailsTemplate({
                     <InfoOutlinedIcon color={'inherit'} />
                   </Tooltip>
                 </Stack>
-                <ClaimFormQuest fields={methods.watch('schema')?.properties} />
+                <ClaimFormQuest
+                  fields={methods.getValues('schema')?.properties}
+                />
               </Stack>
             </Stack>
           </Stack>
         </Stack>
-      </FormProvider>
+      </>
     </Stack>
   );
 }

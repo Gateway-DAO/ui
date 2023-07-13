@@ -2,7 +2,12 @@ import { useAuth } from '@/providers/auth';
 import { Files } from '@/services/hasura/types';
 import { useMutation, useInfiniteQuery } from '@tanstack/react-query';
 import { useSnackbar } from 'notistack';
-import { FormProvider, useController, useForm, useFormContext } from 'react-hook-form';
+import {
+  FormProvider,
+  useController,
+  useForm,
+  useFormContext,
+} from 'react-hook-form';
 import { useDropArea, useToggle } from 'react-use';
 
 import { Paper } from '@mui/material';
