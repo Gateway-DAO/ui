@@ -1,4 +1,5 @@
 import useTranslation from 'next-translate/useTranslation';
+import { useEffect } from 'react';
 
 import { gateway_discord, gateway_support_email } from '@/constants/socials';
 
@@ -11,6 +12,15 @@ import Stepper from '../../../../organisms/stepper/stepper';
 export default function StepSuccess({ formState }: { formState: any }) {
   const { t } = useTranslation('org-signup');
 
+  const sendOrgCreatedEvent = () => {
+    if (typeof window.gtag === 'function') {
+      window.gtag('event', 'org_creation', {
+        event_category: 'org_creation',
+        event_label: 'org_creation_success',
+      });
+    }
+  };
+
   const steps = [
     {
       title: t('step-success.stepper-1'),
@@ -22,6 +32,10 @@ export default function StepSuccess({ formState }: { formState: any }) {
       title: t('step-success.stepper-3'),
     },
   ];
+
+  useEffect(() => {
+    sendOrgCreatedEvent();
+  }, []);
 
   return (
     <Stack>
