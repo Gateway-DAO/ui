@@ -17,10 +17,10 @@ import { AuthenticationsItem, Modals } from '../../types';
 type Props = {
   emails: AuthenticationsItem[];
   isLoading: boolean;
-  onOpenModal: (data: Modals) => void;
+  onRemoveEmail: (data: Modals) => void;
 };
 
-export function ListEmails({ emails, isLoading, onOpenModal }: Props) {
+export function ListEmails({ emails, isLoading, onRemoveEmail }: Props) {
   const { me, hasuraUserService, onInvalidateMe } = useAuth();
 
   const { t } = useTranslation('settings');
@@ -72,7 +72,8 @@ export function ListEmails({ emails, isLoading, onOpenModal }: Props) {
       {
         text: t('account-management.disconnect'),
         action: () => {
-          onOpenModal({ type: 'remove', email: item?.data?.email });
+          console.log(item);
+          onRemoveEmail({ type: 'remove', authItem: item });
         },
         hidden: isPrimary(item),
       },

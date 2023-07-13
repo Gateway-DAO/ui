@@ -61,7 +61,7 @@ export function EmailAlias({ emails, isLoading }: Props) {
       <ListEmails
         emails={emails}
         isLoading={isLoading}
-        onOpenModal={setModalRight}
+        onRemoveEmail={setModalRight}
       />
       <ModalRightConfirmation
         title={
@@ -74,7 +74,7 @@ export function EmailAlias({ emails, isLoading }: Props) {
       >
         {modalRight?.type === 'remove' && (
           <RemoveEmail
-            email={modalRight?.email}
+            email={modalRight?.authItem.data?.email}
             onSuccess={onSuccessFinishModal}
             onCancel={() => setModalRight(null)}
           />
