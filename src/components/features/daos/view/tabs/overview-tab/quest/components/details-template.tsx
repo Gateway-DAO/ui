@@ -79,7 +79,6 @@ export default function DetailsTemplate({
   //     },
   //   }));
   // }, [isValid]);
-  console.log(errors);
 
   // const schema = getValues('schema');
   // const fieldNames = Object.keys(schema.properties).map((key) => `claim.${key}` as keyof CreateGateSchema);

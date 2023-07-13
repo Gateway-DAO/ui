@@ -92,14 +92,14 @@ export function CreateDirectCredentialTemplate({
   const handleNext = () => {
     changeStep(currentStep + 1);
     router.push({
-      hash: `create-recipient_${formStepControl[currentStep + 1].name}`,
+      hash: `create-direct-credential_${formStepControl[currentStep + 1].name}`,
     });
   };
 
   const handlePrevious = () => {
     changeStep(currentStep - 1);
     router.push({
-      hash: `create-recipient${currentStep - 1 === 0 ? '' : '_'}${
+      hash: `create-direct-credential${currentStep - 1 === 0 ? '' : '_'}${
         formStepControl[currentStep - 1].name
       }`,
     });
@@ -312,6 +312,7 @@ export function CreateDirectCredentialTemplate({
     try {
       await handleMutation(methods.watch(), true);
     } catch (e) {
+      console.log(e);
       enqueueSnackbar("An error occured, couldn't save the draft.");
     }
     console.log(fullFormState, methods.watch());
