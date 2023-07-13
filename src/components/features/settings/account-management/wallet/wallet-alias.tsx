@@ -12,6 +12,7 @@ import { queryClient } from '@/services/query-client';
 import { Stack } from '@mui/material';
 
 import { AuthenticationsItem, Modals } from './../types';
+import { AddWalletModal } from './components/add-wallet-modal';
 import { ListWallets } from './components/list-wallets';
 import { RemoveWallet } from './components/remove-wallet';
 
@@ -24,6 +25,7 @@ export function WalletAlias({ wallets, isLoading }: Props) {
   const { me } = useAuth();
   const { t } = useTranslation('settings');
   const [modalRight, setModalRight] = useState<Modals>(null);
+  const onCloseModal = () => setModalRight(null);
   const disconnect = useDisconnectWallets();
 
   const onSuccessFinishModal = async () => {
@@ -45,7 +47,6 @@ export function WalletAlias({ wallets, isLoading }: Props) {
         <LoadingButton
           variant="text"
           onClick={() => setModalRight({ type: 'add' })}
-          sx={{ display: 'none' }}
         >
           {t('account-management.wallet-section-btn')}
         </LoadingButton>
@@ -57,18 +58,21 @@ export function WalletAlias({ wallets, isLoading }: Props) {
       />
       <ModalRightConfirmation
         title={t('common:modal-confirm-delete.title')}
-        open={!!modalRight}
-        handleClose={() => setModalRight(null)}
+        open={modalRight?.type === 'remove'}
+        handleClose={onCloseModal}
       >
         {modalRight?.type === 'remove' &&
           modalRight.authItem.type === Protocol_Api_AuthType.Wallet && (
             <RemoveWallet
               item={modalRight?.authItem}
               onSuccess={onSuccessFinishModal}
-              onCancel={() => setModalRight(null)}
+              onCancel={onCloseModal}
             />
           )}
       </ModalRightConfirmation>
+      {modalRight?.type === 'add' && (
+        <AddWalletModal wallets={wallets} onClose={onCloseModal} />
+      )}
     </Stack>
   );
 }
