@@ -49,7 +49,7 @@ export function OptionsCredential({ gate }: Props) {
             ? 'Publish'
             : 'Unpublish',
         action: () => setConfirmToggleState(true),
-        hidden: false,
+        hidden: gate.dao.status !== 'approved',
       },
       {
         text: 'Edit',

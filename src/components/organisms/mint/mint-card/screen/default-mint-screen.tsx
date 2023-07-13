@@ -34,13 +34,21 @@ export const DefaultMintScreen = ({
   mintProcessStatus,
   setMintProcessStatus,
   details,
+  isProtocol,
+  mint,
 }: {
   mintProcessStatus: Subjects;
   setMintProcessStatus: React.Dispatch<React.SetStateAction<Subjects>>;
   details: {
     error?: any;
     credential: PartialDeep<Credentials>;
+    protocolMintData?: {
+      chain: string;
+      transaction: string;
+    };
   };
+  isProtocol?: boolean;
+  mint: () => void;
 }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -107,15 +115,24 @@ export const DefaultMintScreen = ({
               size="small"
               color="primary"
               icon={<TokenFilled height={20} width={20} color="action" />}
-              onClick={() => setMintProcessStatus(Subjects.start)}
+              onClick={() =>
+                isProtocol ? mint() : setMintProcessStatus(Subjects.start)
+              }
             />
           ) : (
             <Tooltip title="Verify NFT mint transaction">
               <Avatar sx={{ height: 24, width: 24 }}>
                 <IconButton
                   onClick={() =>
-                    details.credential.transaction_url &&
-                    window.open(details.credential.transaction_url, '_blank')
+                    (isProtocol
+                      ? details.protocolMintData.transaction
+                      : details.credential.transaction_url) &&
+                    window.open(
+                      isProtocol
+                        ? details.protocolMintData.transaction
+                        : details.credential.transaction_url,
+                      '_blank'
+                    )
                   }
                 >
                   <TokenFilled sx={{ height: 18, width: 18 }} />
@@ -145,10 +162,16 @@ export const DefaultMintScreen = ({
         }}
       >
         <MenuList>
-          {details.credential.status == 'minted' && (
+          {(isProtocol
+            ? !!details.protocolMintData?.transaction
+            : details.credential.status == 'minted') && (
             <MenuItem>
               <a
-                href={details.credential.transaction_url}
+                href={
+                  isProtocol
+                    ? details.protocolMintData.transaction
+                    : details.credential.transaction_url
+                }
                 target="_blank"
                 style={{
                   textDecoration: 'none',
