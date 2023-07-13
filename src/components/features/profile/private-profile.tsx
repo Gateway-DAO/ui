@@ -112,7 +112,7 @@ export default function PrivateProfile({ children }) {
                 component="h1"
                 variant="h4"
               >
-                {me.name ? me.name : me.username}
+                {me.name ? me.name : me.protocolUser?.gatewayId}
                 <EditIcon
                   onClick={() => router.push(ROUTES.SETTINGS_PUBLIC_PROFILE)}
                   sx={{
@@ -131,7 +131,7 @@ export default function PrivateProfile({ children }) {
                 }}
                 variant="h6"
               >
-                @{me.username}
+                @{me.protocolUser?.gatewayId}
               </Typography>
               <Box
                 sx={{
