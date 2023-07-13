@@ -53,7 +53,10 @@ export function EditId() {
 
       onError(error: ErrorResponse) {
         error.response?.errors?.forEach(({ message }) => {
-          if (message.includes('duplicate key value violates')) {
+          if (
+            message.includes('duplicate key value violates') ||
+            message.includes("You don't own the gatewayId")
+          ) {
             setError('gatewayId', {
               message: errorMessages.GATEWAY_ID_ALREADY_REGISTERED,
             });
