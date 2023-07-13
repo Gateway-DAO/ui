@@ -21,6 +21,7 @@ export function useAddWalletModal() {
     // eslint-disable-next-line @typescript-eslint/ban-types
   }>();
 
+  // TODO: Do useQuery before
   const createMessage = useMutation(
     () =>
       hasuraUserService.protocol_add_wallet({

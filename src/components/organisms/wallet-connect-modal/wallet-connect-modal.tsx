@@ -47,7 +47,7 @@ export function WalletConnectModal({
   };
 
   return (
-    <Dialog open={isOpen} onClose={close} maxWidth="xs">
+    <Dialog open={isOpen} onClose={onCancel} maxWidth="xs">
       <DialogTitle sx={{ textAlign: 'left' }}>{title}</DialogTitle>
       <DialogContent>
         <Typography variant="body1">{description}</Typography>
