@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import { Session } from 'next-auth';
 import { useSession, signOut } from 'next-auth/react';
+import useTranslation from 'next-translate/useTranslation';
 import {
   PropsWithChildren,
   useMemo,
@@ -25,6 +26,8 @@ export function AuthProvider({
   isAuthPage,
   children,
 }: PropsWithChildren<Props>) {
+  const { t } = useTranslation('auth');
+
   const { data: session } = useSession();
   const token = session?.token;
 
@@ -105,8 +108,11 @@ export function AuthProvider({
     >
       {!isBlocked && children}
       <WalletConnectModal
+        title={t('select-wallet.title')}
+        description={t('select-wallet.description')}
         isOpen={isModalVisible}
-        close={() => setModalVisible(false)}
+        onCancel={() => setModalVisible(false)}
+        onConnect={() => setModalVisible(false)}
       />
       <WalletConnectingModal
         step={WalletModalStep}
