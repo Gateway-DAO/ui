@@ -17,9 +17,9 @@
     "choose-email": {
       "title": "Connect your email to be notified when you receive a credential",
       "subtitle": "Email",
-      "description": "By email you are notified when you receive a credential and everything related to your account",
+      "description": "By email you are notified when you receive a credential",
       "label": "E-mail",
-      "helper-text": "You'll be notified when a credential is issued to you by e-mail"
+      "helper-text": "You'll receive email updates for your account, including credentials and other relevant information"
     },
     "verify-token": {
       "title": "Verify your email to create your account",
