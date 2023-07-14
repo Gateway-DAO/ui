@@ -21,16 +21,8 @@ export default function OverviewCardInfo({ dataModel }: Props) {
   const { t } = useTranslation('protocol');
   const isMobile = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
 
-  // MOCK
-  const mockDataModel = dataModel ?? null;
-  const mockedCreatedBy = {
-    id: '63bc7fc62e7bd8b316b77133',
-    slug: 'gateway',
-  };
-  // MOCK - END
-
-  const creator = useQuery(
-    ['issuer', mockDataModel?.id],
+  const mockCreator = useQuery(
+    ['issuer', dataModel?.id],
     () =>
       hasuraPublicService.dao_profile_by_slug({
         slug: 'gateway',
@@ -41,6 +33,23 @@ export default function OverviewCardInfo({ dataModel }: Props) {
       refetchOnWindowFocus: false,
     }
   );
+  const getCreatedBy = () => {
+    const { organization, createdBy } = dataModel;
+
+    return {
+      gatewayID: organization ? organization.gatewayId : createdBy.gatewayId,
+      link: organization
+        ? ROUTES.DAO_PROFILE.replace('[slug]', organization.gatewayId)
+        : createdBy
+        ? ROUTES.PROFILE.replace('[username]', createdBy.gatewayId)
+        : undefined,
+      image: {
+        url: organization
+          ? organization.image
+          : createdBy?.gatewayUser?.picture,
+      } as Partial<File>,
+    };
+  };
 
   return (
     <Paper
@@ -55,13 +64,12 @@ export default function OverviewCardInfo({ dataModel }: Props) {
     >
       <CardUserCell
         label={t('data-model.created-by')}
-        picture={creator?.data?.logo}
-        name={mockDataModel ? mockedCreatedBy.slug : null}
-        href={ROUTES.DAO_PROFILE.replace(
-          '[slug]',
-          mockDataModel ? mockedCreatedBy.slug : null
-        )}
-        hasLink={!!creator.data}
+        picture={
+          getCreatedBy()?.image ? getCreatedBy().image : mockCreator.data?.logo
+        }
+        name={getCreatedBy().gatewayID}
+        href={getCreatedBy().link}
+        hasLink={!!getCreatedBy().link}
         unique={true}
       />
       <Stack
