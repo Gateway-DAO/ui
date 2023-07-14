@@ -1,18 +1,32 @@
 import useTranslation from 'next-translate/useTranslation';
 import { useMemo, useState } from 'react';
 
+import {
+  errorMessages,
+  transformErrorMessage,
+} from '@/constants/error-messages';
+import { ConnectedWallet } from '@/hooks/wallet/use-connected-wallet';
 import { useAuth } from '@/providers/auth';
 import { useDisconnectWallets } from '@/providers/auth/hooks';
 import { WalletModalStep } from '@/providers/auth/types';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 
-import { useConnectedWallet } from './use-connected-wallet';
+type UseAddWalletModalProps = {
+  hasWallet: boolean;
+  isAdding: boolean;
+  wallet: ConnectedWallet;
+  onSuccess: () => void;
+};
 
-export function useAddWalletModal() {
+export function useAddWalletModal({
+  hasWallet,
+  isAdding,
+  wallet,
+  onSuccess,
+}: UseAddWalletModalProps) {
   const { hasuraUserService } = useAuth();
   const { t } = useTranslation('common');
 
-  const wallet = useConnectedWallet();
   const onDisconnect = useDisconnectWallets();
 
   const [error, setError] = useState<{
@@ -21,20 +35,21 @@ export function useAddWalletModal() {
     // eslint-disable-next-line @typescript-eslint/ban-types
   }>();
 
-  // TODO: Do useQuery before
-  const createMessage = useMutation(
+  const createMessage = useQuery(
+    ['add-wallet', wallet?.address],
     () =>
       hasuraUserService.protocol_add_wallet({
         wallet: wallet.address,
         chain: wallet.chain,
       }),
     {
+      enabled: !!wallet?.address && !hasWallet && isAdding,
       async onSuccess(signature) {
         sendSignature.mutate(signature.protocol.addWallet.message);
       },
-      onError() {
+      onError(error: Error) {
         setError({
-          message: t('auth:connecting.errors.signature'),
+          message: transformErrorMessage(error),
           label: t('actions.try-again'),
         });
       },
@@ -66,6 +81,7 @@ export function useAddWalletModal() {
       }),
     {
       async onSuccess() {
+        onSuccess();
         onDisconnect();
       },
       onError() {
@@ -80,22 +96,27 @@ export function useAddWalletModal() {
 
   const addWalletStep: WalletModalStep = useMemo(() => {
     if (error) return 'error';
-    if (createMessage.isLoading) return 'get-nonce';
+    if (createMessage.fetchStatus === 'fetching') return 'get-nonce';
     if (sendSignature.isLoading) return 'send-signature';
     if (addWalletMutation.isLoading) return 'add-wallet';
     if (addWalletMutation.isSuccess) return 'authenticated';
     return 'unauthenticated';
   }, [
     error,
-    createMessage.isLoading,
+    createMessage.fetchStatus,
     sendSignature.isLoading,
     addWalletMutation.isLoading,
     addWalletMutation.isSuccess,
   ]);
 
+  const onReset = () => {
+    createMessage.remove();
+    setError(undefined);
+  };
+
   return {
     step: addWalletStep,
     error,
-    onRequestWalletSignature: createMessage.mutate,
+    onReset,
   };
 }
