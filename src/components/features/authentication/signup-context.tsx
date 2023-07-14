@@ -159,11 +159,9 @@ export function SignUpProvider({ children }: PropsWithChildren<unknown>) {
   };
 
   const onCompleteLogin = () => {
-    // Temporarly disabled
     dispatch({
       type: 'COMPLETE',
     });
-    // router.push((router.query?.redirect as string) ?? ROUTES.EXPLORE);
   };
 
   return (
