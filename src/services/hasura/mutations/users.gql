@@ -4,7 +4,6 @@ mutation edit_user(
   $name: String
   $pic_id: uuid
   $skills: jsonb
-  $username: String
   $timezone: String
   $cover_id: uuid
   $languages: jsonb
@@ -20,7 +19,6 @@ mutation edit_user(
       pic_id: $pic_id
       skills: $skills
       timezone: $timezone
-      username: $username
     }
   ) {
     ...current_user

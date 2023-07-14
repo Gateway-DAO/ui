@@ -323,7 +323,7 @@ export function useInitUser(me: PartialDeep<SessionUser>) {
     if (
       router.pathname !== ROUTES.AUTHENTICATION &&
       me &&
-      (!me.username || !me.email_address)
+      (!me.protocolUser?.gatewayId || !me.email_address)
     ) {
       router.replace({
         pathname: ROUTES.AUTHENTICATION,

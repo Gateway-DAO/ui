@@ -46,7 +46,7 @@ const initializeState = (me: SessionUser): State => {
   if (me) {
     if (!me.email_address) {
       step = 'choose-email';
-    } else if (!me.username) {
+    } else if (!me.protocolUser?.gatewayId) {
       step = 'choose-gatewayid';
     } else {
       step = 'completed';
