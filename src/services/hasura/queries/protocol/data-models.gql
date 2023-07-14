@@ -34,7 +34,7 @@ query protocol_data_models($take: Int!, $skip: Int!) {
   protocol_data_model(
     limit: $take
     offset: $skip
-    order_by: { createdAt: desc }
+    order_by: [{ verified: desc }, { createdAt: desc }]
   ) {
     id
     title
@@ -63,7 +63,7 @@ query protocol_data_models_p2p($take: Int!, $skip: Int!) {
     where: { permissioning: { _eq: "ALL" } }
     limit: $take
     offset: $skip
-    order_by: { createdAt: desc, verified: desc }
+    order_by: [{ verified: desc }, { createdAt: desc }]
   ) {
     id
     title

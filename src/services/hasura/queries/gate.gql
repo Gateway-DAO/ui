@@ -49,6 +49,7 @@ query gate($id: uuid!) {
       name
       slug
       logo_url
+      status
       logo {
         ...file
       }
@@ -153,15 +154,8 @@ query GateProgress($gateID: uuid!, $userID: uuid!) {
   }
 }
 
-query get_protocol_by_gate_id(
-  $user_id: String!
-  $gate_id: String!
-) {
-  get_protocol_by_gate_id(
-    user_id: $user_id
-    gate_id: $gate_id
-  ) {
+query get_protocol_by_gate_id($user_id: String!, $gate_id: String!) {
+  get_protocol_by_gate_id(user_id: $user_id, gate_id: $gate_id) {
     credential
   }
 }
-
