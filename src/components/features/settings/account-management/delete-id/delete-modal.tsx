@@ -37,7 +37,7 @@ export function DeleteModal({
     },
     {
       onSuccess: () => {
-        enqueueSnackbar('Account deleted');
+        enqueueSnackbar(t('account-management.delete-section.modal-success'));
         onSignOut();
         router.push(ROUTES.EXPLORE);
       },
