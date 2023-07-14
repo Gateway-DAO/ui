@@ -42,7 +42,8 @@ function useSolanaWallet(): ConnectedWallet {
           icon: <img src={wallet.adapter.icon} alt={wallet.adapter.name} />,
         }
       : undefined,
-    signMessage: (message: string) => signMessage(base58.decode(message)),
+    signMessage: (message: string) =>
+      signMessage(new TextEncoder().encode(message)),
   };
 }
 

@@ -5,7 +5,9 @@ import { transformErrorMessage } from '@/constants/error-messages';
 import { ConnectedWallet } from '@/hooks/wallet/use-connected-wallet';
 import { useAuth } from '@/providers/auth';
 import { WalletModalStep } from '@/providers/auth/types';
+import { Protocol_Api_Chain } from '@/services/hasura/types';
 import { useMutation, useQuery } from '@tanstack/react-query';
+import base58 from 'bs58';
 
 type UseAddWalletModalProps = {
   hasWallet: boolean;
@@ -67,11 +69,14 @@ export function useAddWalletModal({
   );
 
   const addWalletMutation = useMutation(
-    (signature: string) =>
+    (signature: string | Uint8Array) =>
       hasuraUserService.protocol_add_wallet_confirmation({
         wallet: wallet.address,
         chain: wallet.chain,
-        signature,
+        signature:
+          wallet.chain === Protocol_Api_Chain.Sol
+            ? base58.encode(signature as Uint8Array)
+            : (signature as string),
       }),
     {
       async onSuccess() {
