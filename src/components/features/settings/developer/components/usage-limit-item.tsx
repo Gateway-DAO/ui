@@ -64,6 +64,7 @@ export function UsageLimitItem({
             variant="outlined"
             size="small"
             sx={{ height: 24 }}
+            target="_blank"
           >
             {t('developer-portal.usage-limit.request-more')}
           </Button>
