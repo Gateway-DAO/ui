@@ -7,7 +7,7 @@ import { useAccount, useNetwork, useSignMessage } from 'wagmi';
 
 import { icons } from './wallet-icons';
 
-type UseConnectedWallet = Partial<
+export type ConnectedWallet = Partial<
   {
     address: string;
     chainName: string;
@@ -28,7 +28,7 @@ type UseConnectedWallet = Partial<
   )
 >;
 
-function useSolanaWallet(): UseConnectedWallet {
+function useSolanaWallet(): ConnectedWallet {
   const { wallet, publicKey, signMessage } = useWallet();
 
   return {
@@ -46,7 +46,7 @@ function useSolanaWallet(): UseConnectedWallet {
   };
 }
 
-function useEvmWallet(): UseConnectedWallet {
+function useEvmWallet(): ConnectedWallet {
   const { address, connector } = useAccount();
   const { chain } = useNetwork();
   const { signMessageAsync } = useSignMessage();
@@ -66,7 +66,7 @@ function useEvmWallet(): UseConnectedWallet {
   };
 }
 
-export function useConnectedWallet(): null | UseConnectedWallet {
+export function useConnectedWallet(): null | ConnectedWallet {
   const solana = useSolanaWallet();
   const evm = useEvmWallet();
 

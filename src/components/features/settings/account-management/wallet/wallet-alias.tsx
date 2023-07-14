@@ -71,7 +71,11 @@ export function WalletAlias({ wallets, isLoading }: Props) {
           )}
       </ModalRightConfirmation>
       {modalRight?.type === 'add' && (
-        <AddWalletModal wallets={wallets} onClose={onCloseModal} />
+        <AddWalletModal
+          wallets={wallets}
+          onClose={onCloseModal}
+          onSuccess={onSuccessFinishModal}
+        />
       )}
     </Stack>
   );

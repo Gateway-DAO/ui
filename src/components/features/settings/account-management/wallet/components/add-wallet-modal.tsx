@@ -1,37 +1,67 @@
 import { useEffect, useState } from 'react';
 
-import Loading from '@/components/atoms/loadings/loading';
 import { WalletConnectModal } from '@/components/organisms/wallet-connect-modal';
 import { WalletConnectingModal } from '@/components/organisms/wallet-connecting-modal';
-import { useAddWalletModal } from '@/hooks/wallet/use-add-wallet';
 import { useConnectedWallet } from '@/hooks/wallet/use-connected-wallet';
+import { useDisconnectWallets } from '@/providers/auth/hooks';
 import { Protocol_Api_AuthType } from '@/services/hasura/types';
+import { useSnackbar } from 'notistack';
 
 import { AuthenticationsItem } from '../../types';
+import { useAddWalletModal } from '../hooks';
 
 type Props = {
+  onSuccess: () => void;
   onClose: () => void;
   wallets: AuthenticationsItem[];
 };
 
-export function AddWalletModal({ wallets, onClose }: Props) {
+export function AddWalletModal({ wallets, onSuccess, onClose }: Props) {
   const [isAdding, setIsAdding] = useState(false);
-  const { onRequestWalletSignature, step } = useAddWalletModal();
   const wallet = useConnectedWallet();
   const hasWallet = wallets.some(
     (item) =>
       item.type === Protocol_Api_AuthType.Wallet &&
       item.data.address === wallet?.address
   );
+  const { enqueueSnackbar } = useSnackbar();
+  const { error, step, onReset } = useAddWalletModal({
+    wallet,
+    hasWallet,
+    isAdding,
+    onSuccess,
+  });
+  const disconnect = useDisconnectWallets();
 
   const onConnect = () => {
     setIsAdding(true);
-    onRequestWalletSignature();
+  };
+
+  const onCancel = async () => {
+    await disconnect();
+    onReset();
+    onClose();
+  };
+
+  const onRetry = async () => {
+    onReset();
+    setIsAdding(false);
+    await disconnect();
+  };
+
+  const onHasWallet = () => {
+    enqueueSnackbar(
+      'You already have this wallet associated to your GatewayId',
+      { variant: 'error' }
+    );
+    onCancel();
   };
 
   useEffect(() => {
-    if (!isAdding || !wallet || hasWallet) return;
-  }, [isAdding, hasWallet, wallet]);
+    if (isAdding && wallet && hasWallet) {
+      onHasWallet();
+    }
+  }, [wallet, hasWallet, isAdding]);
 
   return (
     <>
@@ -44,15 +74,15 @@ export function AddWalletModal({ wallets, onClose }: Props) {
       />
       <WalletConnectingModal
         step={step}
-        // error={error}
+        error={error}
         isOpen={
           step === 'get-nonce' ||
           step === 'send-signature' ||
           step === 'add-wallet' ||
           step === 'error'
         }
-        // onRetry={onRetry}
-        onCancel={onClose}
+        onRetry={onRetry}
+        onCancel={onCancel}
       />
     </>
   );
