@@ -72,7 +72,6 @@ export function ListEmails({ emails, isLoading, onRemoveEmail }: Props) {
       {
         text: t('account-management.disconnect'),
         action: () => {
-          console.log(item);
           onRemoveEmail({ type: 'remove', authItem: item });
         },
         hidden: isPrimary(item),
