@@ -26,6 +26,7 @@ export function ModalRightConfirmation({
           sx={{
             pt: { xs: 3, md: 6 },
             pb: { xs: 2, md: 3 },
+            px: { xs: 1, md: 0 },
             flexDirection: 'row',
             justifyContent: 'space-between',
             alignItems: 'center',
@@ -43,7 +44,7 @@ export function ModalRightConfirmation({
             <CloseIcon />
           </IconButton>
         </Stack>
-        {children}
+        <Stack sx={{ px: { xs: 1, md: 0 } }}>{children}</Stack>
       </ModalRight>
     </Stack>
   );

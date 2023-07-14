@@ -45,13 +45,18 @@ const AccountManagementSettings = () => {
   }, [authentications]);
 
   return (
-    <Stack width={'100%'} marginBottom={4}>
+    <Stack width={'100%'} marginBottom={4} sx={{ px: { xs: 1, md: 0 } }}>
       <Typography variant="h6" sx={{ mb: 7 }}>
         {t('nav.account-management-title')}
       </Typography>
       <Stack
         gap={5}
-        divider={<Divider variant="fullWidth" sx={{ margin: ' 0 -3.7rem' }} />}
+        divider={
+          <Divider
+            variant="fullWidth"
+            sx={{ margin: { md: '0 -3.7rem', xs: '0 -1.5rem' } }}
+          />
+        }
       >
         {/* <YourAccountCredential /> */}
         <EditId />

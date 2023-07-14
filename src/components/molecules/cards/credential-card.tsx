@@ -3,8 +3,8 @@ import Link from 'next/link';
 import { AvatarFile } from '@/components/atoms/avatar-file';
 import { ROUTES } from '@/constants/routes';
 import {
-  Protocol_Credential,
   Protocol_Api_CredentialStatus,
+  Protocol_Api_Credential,
 } from '@/services/hasura/types';
 import { brandColors } from '@/theme';
 import { limitCharsCentered } from '@/utils/string';
@@ -13,7 +13,7 @@ import { PartialDeep } from 'type-fest';
 import { Box, CardContent, CardHeader, Chip, Typography } from '@mui/material';
 import MUICard from '@mui/material/Card';
 
-type Props = PartialDeep<Protocol_Credential> & {
+type Props = PartialDeep<Protocol_Api_Credential> & {
   isRecipient?: boolean;
 };
 
@@ -97,10 +97,16 @@ export default function CredentialCard({
               label={status[0].toUpperCase() + status.toLowerCase().slice(1)}
               sx={{
                 color: setColorStatus(
-                  status[0].toUpperCase() + status.toLowerCase().slice(1)
+                  (status[0].toUpperCase() +
+                    status
+                      .toLowerCase()
+                      .slice(1)) as Protocol_Api_CredentialStatus
                 ),
                 borderColor: setColorStatus(
-                  status[0].toUpperCase() + status.toLowerCase().slice(1)
+                  (status[0].toUpperCase() +
+                    status
+                      .toLowerCase()
+                      .slice(1)) as Protocol_Api_CredentialStatus
                 ),
               }}
             />

@@ -61,12 +61,12 @@ export default function ProtocolDataModelCredentials() {
       queryFn={async ({ pageParam }, pageSize) => {
         const res =
           await hasuraPublicService.protocol_find_credential_by_data_model({
-            dataModelId: dataModelId,
+            dataModelId: dataModelId as string,
             take: pageSize,
             skip: pageParam || 0,
           });
 
-        return res.protocol_credential;
+        return res.protocol.findCredentialsByDataModel;
       }}
       pageSize={10}
     />

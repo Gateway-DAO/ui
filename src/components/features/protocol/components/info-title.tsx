@@ -20,6 +20,7 @@ type Props = {
   copySucessMessage: string;
   badgeTooltip?: string;
   isLoading?: boolean;
+  isVerified?: boolean;
 };
 
 export default function InfoTitle({
@@ -29,6 +30,7 @@ export default function InfoTitle({
   copySucessMessage,
   badgeTooltip,
   isLoading,
+  isVerified,
 }: Props) {
   const [open, setOpen] = useState(false);
 
@@ -55,7 +57,7 @@ export default function InfoTitle({
         <Typography variant="h4" sx={{ fontSize: { xs: '20px', md: '34px' } }}>
           {isLoading ? <Skeleton width={300} /> : title}
         </Typography>
-        {badgeTooltip && (
+        {badgeTooltip && isVerified && (
           <ClickAwayListener onClickAway={handleTooltipClose}>
             <Tooltip
               title={badgeTooltip}

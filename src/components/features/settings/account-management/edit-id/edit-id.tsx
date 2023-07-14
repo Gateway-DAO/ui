@@ -33,15 +33,15 @@ export function EditId() {
   } = useForm({
     resolver: yupResolver(GatewayIdSchema),
     defaultValues: defaultValues(me),
-    mode: 'onBlur',
+    mode: 'all',
   });
 
   const { enqueueSnackbar } = useSnackbar();
 
   const mutation = useMutation(
-    ({ username }: UpdateGatewayId) => {
+    ({ gatewayId }: UpdateGatewayId) => {
       return hasuraUserService.update_gateway_id({
-        gatewayId: username,
+        gatewayId: gatewayId,
         id: me.id,
       });
     },
@@ -53,8 +53,11 @@ export function EditId() {
 
       onError(error: ErrorResponse) {
         error.response?.errors?.forEach(({ message }) => {
-          if (message.includes('Uniqueness violation')) {
-            setError('username', {
+          if (
+            message.includes('duplicate key value violates') ||
+            message.includes("You don't own the gatewayId")
+          ) {
+            setError('gatewayId', {
               message: errorMessages.GATEWAY_ID_ALREADY_REGISTERED,
             });
           } else {
@@ -104,18 +107,16 @@ export function EditId() {
         <TextField
           variant="outlined"
           type="username"
-          name="username"
+          name="gatewayId"
           disabled={updatedRecently}
-          {...register('username')}
+          {...register('gatewayId')}
           InputProps={{
             startAdornment: <InputAdornment position="start">@</InputAdornment>,
           }}
-          error={!!errors.username}
+          error={!!errors.gatewayId}
           helperText={
-            !updatedRecently
-              ? errors.username?.message ??
-                t('account-management.gateway-id-helper')
-              : ''
+            errors.gatewayId?.message ??
+            t('account-management.gateway-id-helper')
           }
         />
       </Stack>
@@ -132,25 +133,27 @@ export function EditId() {
           )}
         </Typography>
       )}
-      {isDirty && isValid && !(getValues().username === me?.username) && (
-        <Stack gap={2} direction={'row'} mt={3}>
-          <LoadingButton
-            variant="contained"
-            type="submit"
-            size="large"
-            isLoading={mutation.isLoading}
-          >
-            {t('account-management.gateway-id-action')}
-          </LoadingButton>
-          <LoadingButton
-            variant="outlined"
-            size="large"
-            onClick={() => reset()}
-          >
-            {t('account-management.gateway-id-cancel')}
-          </LoadingButton>
-        </Stack>
-      )}
+      {isDirty &&
+        isValid &&
+        !(getValues().gatewayId === me?.protocolUser?.gatewayId) && (
+          <Stack gap={2} direction={'row'} mt={3}>
+            <LoadingButton
+              variant="contained"
+              type="submit"
+              size="large"
+              isLoading={mutation.isLoading}
+            >
+              {t('account-management.gateway-id-action')}
+            </LoadingButton>
+            <LoadingButton
+              variant="outlined"
+              size="large"
+              onClick={() => reset()}
+            >
+              {t('account-management.gateway-id-cancel')}
+            </LoadingButton>
+          </Stack>
+        )}
     </Stack>
   );
 }

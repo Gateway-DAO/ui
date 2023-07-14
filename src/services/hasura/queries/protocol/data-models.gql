@@ -6,6 +6,7 @@ query protocol_data_model($id: String!) {
       schema
       tags
       title
+      verified
       arweaveInfo
       createdAt
       createdBy {
@@ -20,6 +21,7 @@ query protocol_data_model($id: String!) {
       permissioning
       info
       image
+      consumptionPrice
     }
   }
 }
@@ -28,10 +30,12 @@ query protocol_data_models($take: Int!, $skip: Int!) {
   protocol_data_model(
     limit: $take
     offset: $skip
-    order_by: { createdAt: desc }
+    order_by: [{ verified: desc }, { createdAt: desc }]
   ) {
     id
     title
+    verified
+    consumptionPrice
     tags
     version
     description
@@ -55,14 +59,16 @@ query protocol_data_models_p2p($take: Int!, $skip: Int!) {
     where: { permissioning: { _eq: "ALL" } }
     limit: $take
     offset: $skip
-    order_by: { createdAt: desc }
+    order_by: [{ verified: desc }, { createdAt: desc }]
   ) {
     id
     title
     tags
     version
+    verified
     description
     permissioning
+    consumptionPrice
     createdBy {
       gatewayUser {
         name
@@ -77,7 +83,11 @@ query protocol_data_models_p2p($take: Int!, $skip: Int!) {
   }
 }
 
-query protocol_find_recipients_by_data_model($dataModelId: uuid!, $take: Int!, $skip: Int!) {
+query protocol_find_recipients_by_data_model(
+  $dataModelId: uuid!
+  $take: Int!
+  $skip: Int!
+) {
   protocol_user(
     where: { credentials: { dataModelId: { _eq: $dataModelId } } }
     limit: $take
@@ -117,6 +127,16 @@ query protocol_find_recipients_by_data_model_api(
         recipientUser {
           id
           gatewayId
+          gatewayUser {
+            name
+            pfp
+            picture {
+              id
+              s3_key
+              blur
+            }
+            pfp
+          }
         }
         createdAt
         image
@@ -126,7 +146,6 @@ query protocol_find_recipients_by_data_model_api(
     }
   }
 }
-
 
 query getDMStatsUntilDayBefore($date: timestamp!, $dataModelId: uuid!) {
   credential_count: protocol_credential_aggregate(
