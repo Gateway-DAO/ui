@@ -33,11 +33,16 @@ export default function OverviewCardInfo({ dataModel }: Props) {
       refetchOnWindowFocus: false,
     }
   );
+
   const getCreatedBy = () => {
     const { organization, createdBy } = dataModel;
 
     return {
-      gatewayID: organization ? organization.gatewayId : createdBy.gatewayId,
+      gatewayID: organization
+        ? organization.gatewayId
+        : createdBy?.gatewayId
+        ? createdBy.gatewayId
+        : 'N/A',
       link: organization
         ? ROUTES.DAO_PROFILE.replace('[slug]', organization.gatewayId)
         : createdBy
