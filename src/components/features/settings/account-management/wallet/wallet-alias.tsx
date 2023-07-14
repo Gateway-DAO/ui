@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { LoadingButton } from '@/components/atoms/buttons/loading-button';
 import { TitleSubtitleField } from '@/components/atoms/title-field';
 import { ModalRightConfirmation } from '@/components/molecules/modal/modal-right-confirmation';
+import { query } from '@/constants/queries';
 import { useAuth } from '@/providers/auth';
 import { useDisconnectWallets } from '@/providers/auth/hooks';
 import { Protocol_Api_AuthType } from '@/services/hasura/types';
@@ -29,12 +30,12 @@ export function WalletAlias({ wallets, isLoading }: Props) {
   const disconnect = useDisconnectWallets();
 
   const onSuccessFinishModal = async () => {
+    setModalRight(null);
     await disconnect();
     queryClient.refetchQueries([
-      'authentications_methods_by_user',
+      query.authentications_methods_by_user,
       { id: me?.protocolUser?.id },
-    ]),
-      setModalRight(null);
+    ]);
   };
 
   return (

@@ -17,7 +17,11 @@ type Props = {
   onCancel: () => void;
 };
 
-export function RemoveWallet({ item, onSuccess, onCancel }: Props) {
+export function RemoveWallet({
+  item,
+  onSuccess: onSuccessRemoveWallet,
+  onCancel,
+}: Props) {
   const { hasuraUserService, me } = useAuth();
   const { t } = useTranslation('settings');
   const wallet = item.data.address;
@@ -30,7 +34,9 @@ export function RemoveWallet({ item, onSuccess, onCancel }: Props) {
       });
     },
     {
-      onSuccess,
+      onSuccess() {
+        onSuccessRemoveWallet();
+      },
     }
   );
 

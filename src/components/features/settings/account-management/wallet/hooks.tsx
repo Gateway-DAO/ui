@@ -1,13 +1,9 @@
 import useTranslation from 'next-translate/useTranslation';
 import { useMemo, useState } from 'react';
 
-import {
-  errorMessages,
-  transformErrorMessage,
-} from '@/constants/error-messages';
+import { transformErrorMessage } from '@/constants/error-messages';
 import { ConnectedWallet } from '@/hooks/wallet/use-connected-wallet';
 import { useAuth } from '@/providers/auth';
-import { useDisconnectWallets } from '@/providers/auth/hooks';
 import { WalletModalStep } from '@/providers/auth/types';
 import { useMutation, useQuery } from '@tanstack/react-query';
 
@@ -22,12 +18,10 @@ export function useAddWalletModal({
   hasWallet,
   isAdding,
   wallet,
-  onSuccess,
+  onSuccess: onAddWalletSuccess,
 }: UseAddWalletModalProps) {
   const { hasuraUserService } = useAuth();
   const { t } = useTranslation('common');
-
-  const onDisconnect = useDisconnectWallets();
 
   const [error, setError] = useState<{
     message: any;
@@ -81,8 +75,7 @@ export function useAddWalletModal({
       }),
     {
       async onSuccess() {
-        onSuccess();
-        onDisconnect();
+        onAddWalletSuccess();
       },
       onError() {
         setError({
