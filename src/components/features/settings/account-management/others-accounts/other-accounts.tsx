@@ -14,7 +14,7 @@ export function OtherAccount() {
   const twitterConnection = useConnectionHandlerTwitter();
 
   return (
-    <Stack gap={3}>
+    <Stack id="other-accounts" gap={3}>
       <div>
         <Typography variant="subtitle1" color={'white'} gutterBottom>
           {t('account-management.other-wallet.title')}

@@ -40,7 +40,7 @@ export function EmailAlias({ emails, isLoading }: Props) {
   };
 
   return (
-    <Stack>
+    <Stack id="emails">
       <Stack
         justifyContent="space-between"
         gap={3}

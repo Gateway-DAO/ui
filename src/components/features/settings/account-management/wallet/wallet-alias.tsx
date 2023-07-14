@@ -38,7 +38,7 @@ export function WalletAlias({ wallets, isLoading }: Props) {
   };
 
   return (
-    <Stack gap={3}>
+    <Stack id="wallets" gap={3}>
       <Stack direction="row" alignItems="center" justifyContent="space-between">
         <TitleSubtitleField
           title={t('account-management.wallet-section-title')}
