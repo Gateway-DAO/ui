@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { LoadingButton } from '@/components/atoms/buttons/loading-button';
 import { TitleSubtitleField } from '@/components/atoms/title-field';
 import { ModalRightConfirmation } from '@/components/molecules/modal/modal-right-confirmation';
+import { query } from '@/constants/queries';
 import { useAuth } from '@/providers/auth';
 import { queryClient } from '@/services/query-client';
 import { useSnackbar } from 'notistack';
@@ -28,7 +29,7 @@ export function EmailAlias({ emails, isLoading }: Props) {
 
   const onSuccessFinishModal = () => {
     queryClient.refetchQueries([
-      'authentications_methods_by_user',
+      query.authentications_methods_by_user,
       { id: me?.protocolUser?.id },
     ]);
     setModalRight(null);
@@ -40,7 +41,7 @@ export function EmailAlias({ emails, isLoading }: Props) {
   };
 
   return (
-    <Stack>
+    <Stack id="emails">
       <Stack
         justifyContent="space-between"
         gap={3}
@@ -65,7 +66,7 @@ export function EmailAlias({ emails, isLoading }: Props) {
       <ListEmails
         emails={emails}
         isLoading={isLoading}
-        onOpenModal={setModalRight}
+        onRemoveEmail={setModalRight}
       />
       <ModalRightConfirmation
         title={
@@ -78,7 +79,7 @@ export function EmailAlias({ emails, isLoading }: Props) {
       >
         {modalRight?.type === 'remove' && (
           <RemoveEmail
-            email={modalRight?.email}
+            email={modalRight?.authItem.data?.email}
             onSuccess={onSuccessFinishModal}
             onCancel={() => setModalRight(null)}
           />

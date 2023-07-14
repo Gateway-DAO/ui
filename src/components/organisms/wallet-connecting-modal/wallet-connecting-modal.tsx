@@ -1,7 +1,7 @@
 import useTranslation from 'next-translate/useTranslation';
 
 import { useConnectedWallet } from '@/hooks/wallet/use-connected-wallet';
-import { WalletAuthStep, WalletAuthStepError } from '@/providers/auth/types';
+import { WalletModalStep, WalletModalStepError } from '@/providers/auth/types';
 import { AnimatePresence } from 'framer-motion';
 
 import { Close } from '@mui/icons-material';
@@ -19,14 +19,14 @@ import {
 import { AnimatedMessage } from './animated-message';
 
 type Props = {
-  step: WalletAuthStep;
-  error?: WalletAuthStepError;
+  step: WalletModalStep;
+  error?: WalletModalStepError;
   isOpen?: boolean;
   onRetry?: () => void;
   onCancel?: () => void;
 };
 
-export function AuthConnectingModal({
+export function WalletConnectingModal({
   isOpen,
   step,
   error,

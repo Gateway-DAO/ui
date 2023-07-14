@@ -1,4 +1,5 @@
 import { useConnectedWallet } from '@/hooks/wallet/use-connected-wallet';
+import { Protocol_Api_Chain } from '@/services/hasura/types';
 
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { Avatar, Badge, ListItemAvatar, ListItemButton } from '@mui/material';
@@ -16,7 +17,7 @@ import { Subjects } from '../mint-card';
 const NetworksDetails = [
   {
     name: 'Polygon',
-    type: 'evm',
+    chain: Protocol_Api_Chain.Evm,
     costInfo:
       process.env.NEXT_PUBLIC_GASLESS_MINTING === 'true' ? 'Cost free' : '',
     imgSrc: '/images/polygon.png',
@@ -24,7 +25,7 @@ const NetworksDetails = [
   },
   {
     name: 'Solana',
-    type: 'solana',
+    chain: Protocol_Api_Chain.Sol,
     costInfo: 'Coming soon...',
     imgSrc: '/images/solana.webp',
     active: false,
@@ -71,7 +72,7 @@ export const StartMintScreen = ({ setMintProcessStatus, mint }) => {
                   onClick={() => mint()}
                   disabled={
                     !network.active || wallet
-                      ? wallet?.type != network.type
+                      ? wallet?.chain != network.chain
                       : false
                   }
                 >

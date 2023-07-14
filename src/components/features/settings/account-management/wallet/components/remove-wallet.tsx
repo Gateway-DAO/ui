@@ -4,31 +4,39 @@ import Loading from '@/components/atoms/loadings/loading';
 import { ConfirmDelete } from '@/components/organisms/confirm-delete/confirm-delete';
 import { mutation } from '@/constants/queries';
 import { useAuth } from '@/providers/auth';
-import { Protocol_Remove_EmailMutationVariables } from '@/services/hasura/types';
 import { brandColors } from '@/theme';
 import { useMutation } from '@tanstack/react-query';
 
 import { Divider, Stack, Typography } from '@mui/material';
 
+import { AuthenticationsItem } from '../../types';
+
 type Props = {
-  wallet: string;
+  item: AuthenticationsItem;
   onSuccess: () => void;
   onCancel: () => void;
 };
 
-export function RemoveWallet({ wallet, onSuccess, onCancel }: Props) {
+export function RemoveWallet({
+  item,
+  onSuccess: onSuccessRemoveWallet,
+  onCancel,
+}: Props) {
   const { hasuraUserService, me } = useAuth();
   const { t } = useTranslation('settings');
+  const wallet = item.data.address;
 
   const deleteWalletMutation = useMutation(
     [mutation.remove_wallet],
-    ({ email }: Protocol_Remove_EmailMutationVariables) => {
-      return hasuraUserService.protocol_remove_email({
-        email,
+    () => {
+      return hasuraUserService.protocol_remove_auth_method({
+        id: item.id,
       });
     },
     {
-      onSuccess,
+      onSuccess() {
+        onSuccessRemoveWallet();
+      },
     }
   );
 
@@ -66,9 +74,7 @@ export function RemoveWallet({ wallet, onSuccess, onCancel }: Props) {
             )}
             checkText={t('account-management.modal-delete-email.checkbox-info')}
             onCancel={onCancel}
-            onConfirm={() =>
-              deleteWalletMutation.mutateAsync({ email: wallet })
-            }
+            onConfirm={deleteWalletMutation.mutateAsync}
           />
         </Stack>
       )}

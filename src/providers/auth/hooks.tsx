@@ -21,27 +21,28 @@ import { useAccount, useDisconnect, useSignMessage } from 'wagmi';
 
 import { ErrorResponse } from '../../types/graphql';
 import { SessionUser } from '../../types/user';
-import type { WalletAuthStep } from './types';
+import type { WalletModalStep } from './types';
+
+/**
+ * Handles disconnect wallets
+ */
+export function useDisconnectWallets() {
+  const { disconnectAsync: disconnectEVM } = useDisconnect();
+  const { disconnect: disconnectSolana } = useWallet();
+
+  return async () => Promise.allSettled([disconnectEVM(), disconnectSolana()]);
+}
 
 /**
  * Handles Logoff session if there's no wallet connected
  */
 function useSignOut(cb?: () => void) {
   const session = useSession();
-  const { disconnectAsync: disconnectEVM } = useDisconnect();
   const token = session?.data?.token;
-  const { disconnect: disconnectSolana } = useWallet();
+  const onDisconnect = useDisconnectWallets();
 
   const onSignOut = useCallback(async () => {
-    try {
-      await disconnectEVM();
-      // eslint-disable-next-line no-empty
-    } catch {}
-
-    try {
-      await disconnectSolana();
-      // eslint-disable-next-line no-empty
-    } catch {}
+    await onDisconnect();
 
     try {
       if (token) {
@@ -51,7 +52,7 @@ function useSignOut(cb?: () => void) {
     } catch {}
 
     cb?.();
-  }, [cb, disconnectEVM, disconnectSolana, token]);
+  }, [cb, token]);
 
   return onSignOut;
 }
@@ -95,7 +96,7 @@ export const useAuthLogin = () => {
   }>();
 
   const nonce = useQuery(
-    [address, 'nonce'],
+    [session?.data?.protocol_id, 'nonce'],
     () =>
       hasuraPublicService.get_nonce({
         wallet: address,
@@ -254,7 +255,7 @@ export const useAuthLogin = () => {
     }
   );
 
-  const walletAuthStep: WalletAuthStep = useMemo(() => {
+  const WalletModalStep: WalletModalStep = useMemo(() => {
     if (error) return 'error';
     if (nonce.isFetching) return 'get-nonce';
     if (sendSignature.isLoading) return 'send-signature';
@@ -301,7 +302,7 @@ export const useAuthLogin = () => {
   return {
     me: token ? me.data : undefined,
     error,
-    walletAuthStep,
+    WalletModalStep,
     onUpdateMe,
     onSignOut,
     onRetry,

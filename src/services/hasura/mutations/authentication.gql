@@ -91,3 +91,34 @@ mutation protocol_remove_email($email: String!) {
     }
   }
 }
+
+mutation protocol_add_wallet($wallet: String!, $chain: protocol_api_Chain) {
+  protocol {
+    addWallet(input: {
+      wallet: $wallet,
+      chain: $chain
+    }) {
+      message
+    }
+  }
+}
+
+mutation protocol_add_wallet_confirmation($wallet: String!, $chain: protocol_api_Chain, $signature: String!) {
+  protocol {
+    addWalletConfirmation(input: {
+      wallet: $wallet,
+      chain: $chain
+      signature: $signature
+    }) {
+      id
+    }
+  }
+}
+
+mutation protocol_remove_auth_method($id: String!) {
+  protocol {
+    unregisterAuthMethod(input: {
+      id: $id
+    })
+  }
+}
