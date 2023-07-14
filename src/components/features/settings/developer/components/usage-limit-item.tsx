@@ -2,6 +2,7 @@ import useTranslation from 'next-translate/useTranslation';
 import Link from 'next/link';
 import { useMemo } from 'react';
 
+import { gateway_discord } from '@/constants/socials';
 import { brandColors } from '@/theme';
 
 import { Button, Chip, Stack, Typography, alpha } from '@mui/material';
@@ -57,7 +58,7 @@ export function UsageLimitItem({
             }}
           />
         )}
-        <Link href="https://discord.gg/tgt3KjcHGs" target="_blank" passHref>
+        <Link href={gateway_discord} target="_blank" passHref>
           <Button
             component="a"
             variant="outlined"
