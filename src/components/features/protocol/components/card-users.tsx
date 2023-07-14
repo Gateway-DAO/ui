@@ -4,6 +4,7 @@ import Loading from '@/components/atoms/loadings/loading';
 import { ROUTES } from '@/constants/routes';
 import { hasuraPublicService } from '@/services/hasura/api';
 import {
+  Protocol_Api_Auth,
   Protocol_Api_Organization,
   Protocol_Api_User,
 } from '@/services/hasura/types';
@@ -20,12 +21,14 @@ type Props = {
   issuer: PartialDeep<Protocol_Api_User>;
   organization?: PartialDeep<Protocol_Api_Organization>;
   recipient: PartialDeep<Protocol_Api_User>;
+  recipientAuthData?: PartialDeep<Protocol_Api_Auth>;
 };
 
 export default function CardUsers({
   issuer: issuerCredential,
   organization: issuerOrganization,
   recipient: recipientCredential,
+  recipientAuthData,
 }: Props) {
   const { t } = useTranslation('protocol');
   const isMobile = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
@@ -57,10 +60,10 @@ export default function CardUsers({
   );
 
   const recipient = useQuery(
-    ['recipient', recipientCredential.gatewayId],
+    ['recipient', recipientCredential?.gatewayId],
     () =>
       hasuraPublicService.user_from_wallet({
-        wallet: recipientCredential.primaryWallet?.address,
+        wallet: recipientCredential?.primaryWallet?.address,
       }),
     {
       select: (data) => data.users?.[0],
@@ -79,7 +82,7 @@ export default function CardUsers({
   const recipientName =
     recipient?.data?.username ??
     recipientCredential?.gatewayId ??
-    recipientCredential.primaryWallet.address;
+    recipientCredential?.primaryWallet?.address;
 
   const showPicture = () => {
     if (issuerOrganization && organization?.data)
@@ -139,7 +142,10 @@ export default function CardUsers({
         <CardUserCell
           label={t('credential.recipient-id')}
           picture={recipient?.data?.picture}
-          name={limitCharsCentered(recipientName, 20)}
+          name={
+            limitCharsCentered(recipientName, 20) ||
+            limitCharsCentered(recipientAuthData?.id, 8)
+          }
           href={ROUTES.PROFILE.replace('[username]', recipientName)}
           alignRight={!isMobile}
           hasLink={!!recipient.data}
