@@ -51,7 +51,9 @@ export default function OverviewCardInfo({ dataModel }: Props) {
       image: {
         url: organization
           ? organization.image
-          : createdBy?.gatewayUser?.picture,
+          : createdBy
+          ? createdBy?.gatewayUser?.picture
+          : ({ url: `/images/avatar.png` } as Partial<File>),
       } as Partial<File>,
     };
   };
@@ -69,9 +71,7 @@ export default function OverviewCardInfo({ dataModel }: Props) {
     >
       <CardUserCell
         label={t('data-model.created-by')}
-        picture={
-          getCreatedBy()?.image ? getCreatedBy().image : mockCreator.data?.logo
-        }
+        picture={getCreatedBy().image}
         name={getCreatedBy().gatewayID}
         href={getCreatedBy().link}
         hasLink={!!getCreatedBy().link}
