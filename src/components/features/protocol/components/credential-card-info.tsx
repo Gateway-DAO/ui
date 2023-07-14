@@ -43,6 +43,7 @@ export default function CredentialCardInfo({
         issuer={credential?.issuerUser}
         organization={credential?.issuerOrganization}
         recipient={credential?.recipientUser}
+        recipientAuthData={credential?.recipientAuth}
       />
       <Stack
         alignItems="stretch"

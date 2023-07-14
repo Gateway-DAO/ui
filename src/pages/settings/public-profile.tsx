@@ -57,7 +57,6 @@ export default function PublicProfileSettingsPage() {
       return hasuraUserService.edit_user({
         name: userData.name || me.name,
         bio: userData.bio || me.bio,
-        username: userData.username || me.username,
         skills: userData.skills || me.skills,
         languages: userData.languages || me.languages,
         timezone: userData.timezone || me.timezone,

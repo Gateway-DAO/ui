@@ -24,7 +24,7 @@ export function GateDetailsForm() {
   } = useFormContext<CreateGateData>();
   const { me } = useAuth();
   const creators = useMemo(
-    () => ({ id: me?.id, username: me?.username }),
+    () => ({ id: me?.id, username: me?.protocolUser?.gatewayId }),
     [me]
   );
   const { categories } = getValues();
