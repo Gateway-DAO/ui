@@ -19,7 +19,7 @@ const loginWallet = async (
       return null;
     }
 
-    const { __typename, ...token } = res.protocol.loginWallet;
+    const token = res.protocol.loginWallet;
 
     return token;
   } catch (e) {
