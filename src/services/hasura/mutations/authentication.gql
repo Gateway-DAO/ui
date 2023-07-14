@@ -115,11 +115,10 @@ mutation protocol_add_wallet_confirmation($wallet: String!, $chain: protocol_api
   }
 }
 
-mutation protocol_remove_auth_method($id: String!, $type: protocol_api_AuthType!) {
+mutation protocol_remove_auth_method($id: String!) {
   protocol {
     unregisterAuthMethod(input: {
       id: $id
-      type: $type
     })
   }
 }
