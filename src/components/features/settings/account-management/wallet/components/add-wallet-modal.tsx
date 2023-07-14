@@ -63,6 +63,11 @@ export function AddWalletModal({ wallets, onSuccess, onClose }: Props) {
     }
   }, [wallet, hasWallet, isAdding]);
 
+  useEffect(() => {
+    // disconnect on mount
+    disconnect();
+  }, []);
+
   return (
     <>
       <WalletConnectModal
