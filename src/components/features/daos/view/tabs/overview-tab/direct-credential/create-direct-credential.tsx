@@ -257,7 +257,7 @@ export function CreateDirectCredentialTemplate({
       throw new Error();
     }
 
-    const permissionsData = [{ user_id: me.id, permission: 'gate_editor' }];
+    const permissionsData = [{ user_id: me?.id, permission: 'gate_editor' }];
     let image_url = null;
 
     if (image_url !== data.image && data.image !== undefined) {

@@ -4,6 +4,7 @@ import { UploadFile } from '@mui/icons-material';
 import { Box, Button, Stack, Typography } from '@mui/material';
 import { useFormContext } from 'react-hook-form';
 import { AddRecipientDirectCredentialSchema } from './direct-wallets';
+import { Download } from '@mui/icons-material';
 
 export function DirectWalletsEmptyHeader() {
   const { t } = useTranslation('gate-new');
@@ -30,6 +31,9 @@ export function DirectWalletsEmptyHeader() {
             Download the file template, fill it out and upload it here
           </Typography>
         </Box>
+        <Button variant="outlined" href="/example.csv" download={'example'}>
+          <Download color="primary" /> Download CSV template
+        </Button>
       </Stack>
     </Stack>
   );
