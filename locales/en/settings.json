@@ -82,7 +82,8 @@
       "modal-explain-topic-5": "To confirm deletion, type \"{{confirmDelete}}\" into the field and mark the checkbox",
       "modal-explain-topic-6": "I acknowledge that upon account deletion and Gateway ID deactivation, I won't be able undo these actions",
       "modal-cancel": "Cancel",
-      "modal-delete": "Delete my Gateway ID"
+      "modal-delete": "Delete my Gateway ID",
+      "modal-success": "Account deleted"
     },
     "registered-email-title": "Registered email",
     "registered-email-description": "Email is mainly used for important updates related to your account.",
