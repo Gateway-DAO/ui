@@ -27,7 +27,6 @@ export function RemoveWallet({ item, onSuccess, onCancel }: Props) {
     () => {
       return hasuraUserService.protocol_remove_auth_method({
         id: item.id,
-        type: item.type,
       });
     },
     {
