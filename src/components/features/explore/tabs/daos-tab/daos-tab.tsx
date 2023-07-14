@@ -3,7 +3,7 @@ import useTranslation from 'next-translate/useTranslation';
 import { CreateOrgCard } from '@/components/molecules/cards/create-org-card';
 import { DaoCard } from '@/components/molecules/cards/dao-card';
 import { ChipDropdown } from '@/components/molecules/form/chip-dropdown';
-import OrgSignupDialog from '@/components/templates/org/signup/dialog-structure';
+import OrgSignupDialog from '@/components/features/org/signup/dialog-structure';
 import { categoriesMap } from '@/constants/dao';
 import { usePropertyFilter } from '@/hooks/use-property-filter';
 import { useViewMode, ViewMode } from '@/hooks/use-view-modes';
