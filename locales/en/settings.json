@@ -180,5 +180,17 @@
       }
     }
   },
-  "developer-portal": {}
+  "developer-portal": {
+    "copy": "Copy",
+    "copied": "The value was copied to clipboard",
+    "api-key-title": "API Key",
+    "api-key-warning": "By sharing your API key, you assume all responsibility for any actions performed using your key, whether authorized or unauthorized.",
+    "authentication-token-title": "Authentication Token",
+    "usage-limit": {
+      "title": "Usage limit",
+      "out-of": "out of",
+      "reached-the-limit": "Reached the limit",
+      "request-more": "Reques more"
+    }
+  }
 }
