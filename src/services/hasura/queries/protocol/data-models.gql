@@ -9,6 +9,10 @@ query protocol_data_model($id: String!) {
       verified
       arweaveInfo
       createdAt
+      organization {
+        id
+        gatewayId
+      }
       createdBy {
         gatewayId
       }
