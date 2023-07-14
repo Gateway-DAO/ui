@@ -16,7 +16,7 @@ import ExploreIcon from '@mui/icons-material/Explore';
 import { Avatar, ListItemButton, Stack } from '@mui/material';
 import ListItemIcon from '@mui/material/ListItemIcon';
 
-import OrgSignupDialog from '../../org/signup/dialog-structure';
+import OrgSignupDialog from '../../../features/org/signup/dialog-structure';
 import { DashboardTemplateProps } from '../types';
 import { DaosList } from './daos-list';
 import { DrawerContainer } from './drawer-container';
