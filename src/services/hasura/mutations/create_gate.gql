@@ -86,6 +86,7 @@ mutation create_gate_direct(
   $data_model_id: uuid
   $loyalty_id: uuid
   $points: Int
+  $claim: jsonb
 ) {
   insert_gates_one(
     object: {
@@ -110,6 +111,7 @@ mutation create_gate_direct(
       image: $image
       published: "not_published"
       whitelisted_wallets_file_id: $whitelisted_wallets_file
+      claim: $claim
     }
     on_conflict: {
       constraint: gates_pk

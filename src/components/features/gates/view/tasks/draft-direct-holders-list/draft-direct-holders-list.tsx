@@ -67,7 +67,7 @@ export function DraftDirectHoldersList({ gate }: Props) {
               invalidWallets={progress.invalid}
             /> */}
           </Box>
-          <DirectWalletsList
+          {/* <DirectWalletsList
             invalidList={progress.invalidList}
             validList={progress.validList}
             searchContainer={({ children }) => (
@@ -97,7 +97,7 @@ export function DraftDirectHoldersList({ gate }: Props) {
                 px: TOKENS.CONTAINER_PX,
               },
             }}
-          />
+          /> */}
         </>
       ) : (
         <Stack

@@ -1,5 +1,5 @@
 import useTranslation from 'next-translate/useTranslation';
-import { ChangeEvent, ReactNode, useState } from 'react';
+import { ChangeEvent, ReactNode, useState, MouseEvent } from 'react';
 
 import { GateFilledIcon } from '@/components/atoms/icons';
 import { CenteredLoader } from '@/components/atoms/loadings/centered-loader';
@@ -12,19 +12,29 @@ import { Gates } from '@/services/hasura/types';
 import { TOKENS } from '@/theme';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useWindowSize } from 'react-use';
-import { Virtuoso } from 'react-virtuoso';
+import { TableVirtuoso, Virtuoso } from 'react-virtuoso';
 import { PartialDeep } from 'type-fest';
 
 import SearchIcon from '@mui/icons-material/Search';
 import {
+  Avatar,
   Box,
+  Button,
+  Chip,
   Divider,
   Grid,
+  IconButton,
   InputAdornment,
+  Popover,
   Stack,
+  TableCell,
+  TableRow,
   TextField,
   Typography,
 } from '@mui/material';
+import { Email, Delete, Edit } from '@mui/icons-material';
+
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 type Props = {
   gate: PartialDeep<Gates>;
@@ -82,6 +92,107 @@ export function DirectHoldersList({
     );
   }
 
+  // const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+
+  // const handleClick = (
+  //   event: MouseEvent<HTMLButtonElement>,
+  //   wallet: string,
+  //   type: string
+  // ) => {
+  //   setAnchorEl(event.currentTarget);
+  // };
+
+  // const handleClose = () => {
+  //   setAnchorEl(null);
+  // };
+
+  // const open = Boolean(anchorEl);
+  // const id = open ? 'simple-popover' : undefined;
+
+  const columns = ['CREDENTIAL ID', 'RECIPIENT ID', 'ISSUEANCE DATE', ''];
+
+  function fixedHeaderContent() {
+    return (
+      <TableRow>
+        {columns.map((column) => (
+          <TableCell
+            key={column}
+            variant="head"
+            align={'left'}
+            sx={{
+              backgroundColor: 'background.paper',
+            }}
+          >
+            {column}
+          </TableCell>
+        ))}
+      </TableRow>
+    );
+  }
+
+  function rowContent(index: number, row: any) {
+    const { wallet, type, invalid } = row;
+    return (
+      <>
+        <TableCell align={'left'}>{wallet}</TableCell>
+        <TableCell align={'left'}>
+          <Chip
+            variant="filled"
+            color="default"
+            label={type}
+            icon={<Email />}
+          />
+        </TableCell>
+        <TableCell align={'right'}>
+          {invalid ? (
+            <Chip variant="outlined" color="error" label="Invalid" />
+          ) : (
+            <Chip variant="outlined" color="success" label="Valid" />
+          )}
+        </TableCell>
+        <TableCell align={'right'}>
+          <IconButton
+            sx={{
+              p: 0,
+            }}
+            onClick={(e) => {}}
+          >
+            <Avatar sx={{ height: '30px', width: '31px' }}>
+              <MoreVertIcon />
+            </Avatar>
+          </IconButton>
+          {/* <Popover
+            id="mouse-over-popover"
+            sx={{}}
+            open={open}
+            anchorEl={anchorEl}
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'right',
+            }}
+            transformOrigin={{
+              vertical: 'top',
+              horizontal: 'right',
+            }}
+            onClose={() => setAnchorEl(null)}
+            disableRestoreFocus
+          >
+            <Stack>
+              <Button>
+                <Delete color="secondary" sx={{ mr: 2 }} />
+                <Typography variant="subtitle2">Remove</Typography>
+              </Button>
+              <Button onClick={() => {}}>
+                <Edit color="secondary" sx={{ mr: 2.5 }} />{' '}
+                <Typography variant="subtitle2">Edit</Typography>
+              </Button>
+            </Stack>
+          </Popover> */}
+        </TableCell>
+      </>
+    );
+  }
+
   return (
     <Grid display="flex" flexDirection="column" item xs={12} md>
       <Stack
@@ -111,7 +222,7 @@ export function DirectHoldersList({
       >
         {header}
         <TextField
-          label="Search"
+          label="Search by Recipient ID"
           variant="outlined"
           size="small"
           onChange={handleChange}
@@ -182,45 +293,58 @@ export function DirectHoldersList({
         {isLoading ? (
           <CenteredLoader />
         ) : (
-          <Virtuoso
-            style={{ height: windowSize.height }}
-            data={whitelistedWallets}
-            endReached={() => hasNextPage && fetchNextPage()}
-            components={{
-              Footer: () => (isFetchingNextPage ? <CenteredLoader /> : null),
-            }}
-            itemContent={(index, whitelisted) => {
-              const user = whitelisted.user?.[0]?.id
-                ? whitelisted.user[0]
-                : null;
+          <>
+            <Virtuoso
+              style={{ height: windowSize.height }}
+              data={whitelistedWallets}
+              endReached={() => hasNextPage && fetchNextPage()}
+              components={{
+                Footer: () => (isFetchingNextPage ? <CenteredLoader /> : null),
+              }}
+              itemContent={(index, whitelisted) => {
+                const user = whitelisted.user?.[0]?.id
+                  ? whitelisted.user[0]
+                  : null;
 
-              return (
-                <>
-                  <UserListItem
-                    key={user?.id ?? whitelisted.wallet}
-                    user={
-                      user ?? {
-                        name: `${whitelisted.wallet.slice(
-                          0,
-                          6
-                        )}...${whitelisted.wallet.slice(
-                          whitelisted.wallet.length - 4
-                        )}`,
-                        username: whitelisted.wallet,
+                return (
+                  <>
+                    <UserListItem
+                      key={user?.id ?? whitelisted.wallet}
+                      user={
+                        user ?? {
+                          name: `${whitelisted.wallet.slice(
+                            0,
+                            6
+                          )}...${whitelisted.wallet.slice(
+                            whitelisted.wallet.length - 4
+                          )}`,
+                          username: whitelisted.wallet,
+                        }
                       }
-                    }
-                    showFollow={!!user && user.id !== me?.id}
-                    hasLink={!!user}
-                    hasUsernamePrefix={!!user}
-                    sx={{
-                      px: TOKENS.CONTAINER_PX,
-                    }}
-                  />
-                  {index !== whitelistedWallets.length - 1 && <Divider />}
-                </>
-              );
-            }}
-          />
+                      showFollow={!!user && user.id !== me?.id}
+                      hasLink={!!user}
+                      hasUsernamePrefix={!!user}
+                      sx={{
+                        px: TOKENS.CONTAINER_PX,
+                      }}
+                    />
+                    {index !== whitelistedWallets.length - 1 && <Divider />}
+                  </>
+                );
+              }}
+            />
+            <TableVirtuoso
+              data={whitelistedWallets}
+              fixedHeaderContent={fixedHeaderContent}
+              itemContent={rowContent}
+              style={{ height: windowSize.height }}
+              endReached={() => hasNextPage && fetchNextPage()}
+              components={{
+                TableFoot: () =>
+                  isFetchingNextPage ? <CenteredLoader /> : null,
+              }}
+            />
+          </>
         )}
       </Box>
     </Grid>

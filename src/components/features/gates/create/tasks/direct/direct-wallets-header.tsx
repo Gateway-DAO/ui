@@ -4,7 +4,7 @@ import { UploadFile } from '@mui/icons-material';
 import { Box, Button, Stack, Typography } from '@mui/material';
 import { useFormContext } from 'react-hook-form';
 import { AddRecipientDirectCredentialSchema } from './direct-wallets';
-import { Download } from '@mui/icons-material';
+import { Download, PlusOne, Add } from '@mui/icons-material';
 
 export function DirectWalletsEmptyHeader() {
   const { t } = useTranslation('gate-new');
@@ -135,6 +135,7 @@ export function DirectWalletsHeader({
             setAddRecipient();
           }}
         >
+          <Add color="primary" />
           Add Recipient
         </Button>
       </Stack>

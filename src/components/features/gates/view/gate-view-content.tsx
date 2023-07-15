@@ -103,10 +103,12 @@ export function GateViewContent({
             }
           />
         )}
-      {gateProps.published === 'not_published' &&
+      {/* {gateProps.published === 'not_published' &&
         gateProps.type === 'direct' && (
-          <DraftDirectHoldersList gate={gateProps} />
-        )}
+          <>
+            <DraftDirectHoldersList gate={gateProps} />
+          </>
+        )} */}
       {gateProps.type === 'task_based' && (
         <TaskList
           gate={gateProps}

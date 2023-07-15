@@ -4,6 +4,7 @@ import { useAuth } from '@/providers/auth';
 import { DateTime } from 'luxon';
 
 import { Alert, Box, Button, Stack, Typography } from '@mui/material';
+import { Send } from '@mui/icons-material';
 
 type Props = {
   isLoading?: boolean;
@@ -22,14 +23,19 @@ export function DirectHoldersHeader({
 
   return (
     <>
-      <Box sx={{ mb: 3 }}>
-        <Typography variant="h6">
-          {t('direct-credential.holders.title', { count: totalHolders })}
-        </Typography>
-        <Typography variant="caption">
-          {t('direct-credential.holders.description')}
-        </Typography>
-      </Box>
+      <Stack direction="row" justifyContent={'space-between'}>
+        <Box sx={{ mb: 3 }}>
+          <Typography variant="h6">
+            {t('direct-credential.holders.title', { count: totalHolders })}
+          </Typography>
+          <Typography variant="caption">
+            {t('direct-credential.holders.description')}
+          </Typography>
+        </Box>
+        <Button variant="contained" disabled={true} sx={{ m: 2 }}>
+          <Send sx={{ mr: 1.2 }} /> Send More
+        </Button>
+      </Stack>
       {!me && (
         <Stack
           direction="row"

@@ -51,6 +51,7 @@ import { Data } from 'aws-sdk/clients/firehose';
 import { menuItemClasses } from '@mui/material/MenuItem';
 import { useFormContext } from 'react-hook-form';
 import { AddRecipientDirectCredentialSchema } from './direct-wallets';
+import { Download, Edit, Delete, Email, Twitter } from '@mui/icons-material';
 
 export function DirectWalletsList({
   invalidList,
@@ -190,7 +191,12 @@ export function DirectWalletsList({
       <>
         <TableCell align={'left'}>{wallet}</TableCell>
         <TableCell align={'left'}>
-          <Chip variant="outlined" color="info" label={type} />
+          <Chip
+            variant="filled"
+            color="default"
+            label={type}
+            icon={<Email />}
+          />
         </TableCell>
         <TableCell align={'right'}>
           {invalid ? (
@@ -227,13 +233,17 @@ export function DirectWalletsList({
             disableRestoreFocus
           >
             <Stack>
-              <Button>Remove</Button>
+              <Button>
+                <Delete color="secondary" sx={{ mr: 2 }} />
+                <Typography variant="subtitle2">Remove</Typography>
+              </Button>
               <Button
                 onClick={() => {
                   setAddRecipient();
                 }}
               >
-                Edit
+                <Edit color="secondary" sx={{ mr: 2.5 }} />{' '}
+                <Typography variant="subtitle2">Edit</Typography>
               </Button>
             </Stack>
           </Popover>

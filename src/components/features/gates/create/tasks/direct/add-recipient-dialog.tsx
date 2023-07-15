@@ -2,6 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Box,
   Button,
+  Chip,
   Dialog,
   DialogActions,
   DialogContent,
@@ -18,16 +19,15 @@ import { useForm, useFormContext } from 'react-hook-form';
 import { addRecipientDirectCredentialSchema } from '../../schema';
 import CategoriesInput from '@/components/molecules/form/categories-input';
 import { AddRecipientDirectCredentialSchema } from './direct-wallets';
+import { Email } from '@mui/icons-material';
 
 export function AddRecipient({
   open,
   toggleDialog,
-  title,
   handleAddRecipientMutation,
 }: {
   open: boolean;
   toggleDialog: (value: boolean) => void;
-  title: string;
   handleAddRecipientMutation: () => void;
 }) {
   const router = useRouter();
@@ -57,13 +57,38 @@ export function AddRecipient({
         id="confirm-dialog"
         sx={{ minWidth: { xs: '200px', md: '400px' } }}
       >
-        {!getValues('addNew') ? 'Add' : 'Edit'}recipient
+        {getValues('addNew') ? 'Add ' : 'Edit '}recipient
       </DialogTitle>
       <DialogContent>
         <Stack>
+          <Select
+            labelId="type-label"
+            id="type-label"
+            value={watch('type')}
+            label={'Type'}
+            sx={{
+              '& fieldset legend span': {
+                marginRight: '22px',
+              },
+              width: '50%',
+              mt: 0.8,
+            }}
+            onChange={(e) => setValue('type', e.target.value)}
+          >
+            {TYPE_OF_WALLETS.map((value) => (
+              <MenuItem key={value} value={value}>
+                <Chip
+                  variant="filled"
+                  color="default"
+                  label={value}
+                  icon={<Email />}
+                />
+              </MenuItem>
+            ))}
+          </Select>
           <TextField
-            label="Value"
-            id="value"
+            label="ID"
+            id="id"
             {...register('wallet')}
             error={!!errors.wallet}
             helperText={errors.wallet?.message}
@@ -71,26 +96,9 @@ export function AddRecipient({
               '& div fieldset legend span': {
                 marginRight: '4px',
               },
+              mt: 2,
             }}
           />
-          <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            value={watch('type')}
-            label={'Type'}
-            sx={{
-              '& fieldset legend span': {
-                marginRight: '22px',
-              },
-            }}
-            onChange={(e) => setValue('type', e.target.value)}
-          >
-            {TYPE_OF_WALLETS.map((value) => (
-              <MenuItem key={value} value={value}>
-                {value}
-              </MenuItem>
-            ))}
-          </Select>
         </Stack>
       </DialogContent>
       <DialogActions
@@ -115,12 +123,15 @@ export function AddRecipient({
             closeDialog();
             handleAddRecipientMutation();
           }}
+          disabled={
+            getValues('wallet') === '' && getValues('type').length === 0
+          }
           color="primary"
           sx={{
             flexGrow: 1,
           }}
         >
-          Save
+          {getValues('addNew') ? 'Add ' : 'Save '}
         </Button>
       </DialogActions>
     </Dialog>

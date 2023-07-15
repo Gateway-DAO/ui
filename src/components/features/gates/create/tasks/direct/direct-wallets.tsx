@@ -26,7 +26,6 @@ import ConfirmDialog from '@/components/molecules/modal/confirm-dialog';
 import { useEffect, useState } from 'react';
 import { AddRecipient } from './add-recipient-dialog';
 // check the columns and throw error done on backend level
-// add icons for type and popover
 // publish credential
 // rebuild credential page for direct tasks
 // for wallets there is some edge case need to handle
@@ -79,7 +78,6 @@ export function DirectWallets({
       },
 
       onError(error: any) {
-        
         enqueueSnackbar(error?.message ?? JSON.stringify(error), {
           variant: 'error',
         });
@@ -164,7 +162,7 @@ export function DirectWallets({
   const isUploadDisabled = file && progress && !progress.isDone;
 
   useEffect(() => {
-    if (progress?.invalid === 0) handleStep(true);
+    if (progress?.invalid === 0 && progress?.isDone) handleStep(true);
   });
 
   const readFiles = (files: File[] | FileList) => {
@@ -267,7 +265,6 @@ export function DirectWallets({
         <AddRecipient
           toggleDialog={setAddRecipient}
           open={addRecipient}
-          title="Add"
           handleAddRecipientMutation={handleAddRecipientMutation}
         />
       </Paper>
