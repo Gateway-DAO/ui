@@ -33,6 +33,7 @@ export default function CreateQuestDialog({
       open={open}
       TransitionComponent={SlideUp}
       fullScreen
+      scroll="body"
       sx={{ ' .MuiDialog-paper': { backgroundImage: 'none' } }}
     >
       <HeadContainer title={t('page-title')} description={'page-description'} />

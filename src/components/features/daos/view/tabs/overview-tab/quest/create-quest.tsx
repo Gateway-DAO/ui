@@ -26,6 +26,9 @@ import { useAuth } from '@/providers/auth';
 import VerticalStepper from './components/vertical-setpper';
 import { setUpFormComponents } from './set-up-form-components';
 import { LoadingButton } from '@/components/atoms/buttons/loading-button';
+import { FormProvider, useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { createGateSchema } from './schema';
 
 export function CreateQuestTemplate({
   closeDialog,
@@ -33,7 +36,6 @@ export function CreateQuestTemplate({
   closeDialog: () => void;
 }) {
   const theme = useTheme();
-  const windowSize = useWindowSize();
   const { t } = useTranslation('org-signup');
   const router = useRouter();
   const [fullFormState, setFullFormState] = useState(null);
@@ -74,6 +76,15 @@ export function CreateQuestTemplate({
   const initialStepValidity = getInitialStateStepValidity(false);
 
   const [stepValidity, setStepValidity] = useState(initialStepValidity);
+
+  const methods = useForm({
+    resolver: zodResolver(createGateSchema),
+    mode: 'onBlur',
+    defaultValues: {
+      //TODO : get the draft data for draft view view
+      // ...oldData,
+    },
+  });
 
   const handleNext = () => {
     changeStep(currentStep + 1);
@@ -162,95 +173,97 @@ export function CreateQuestTemplate({
         </Grid>
         {/* [ ] Create more components */}
         <Divider orientation="vertical" variant="fullWidth" />
-        <Grid
-          item
-          xs={12}
-          md={6}
-          lg={8}
-          sx={{
-            flexGrow: 1,
-            height: '100%',
-            display: { md: 'flex' },
-            flexDirection: 'column',
-          }}
-        >
-          <Stack
-            justifyContent="end"
-            direction="row"
-            flexGrow={0}
+        <FormProvider {...methods}>
+          <Grid
+            item
+            xs={12}
+            md={6}
+            lg={8}
             sx={{
-              px: { xs: 2, md: 6 },
+              flexGrow: 1,
+              height: '100%',
               display: { md: 'flex' },
+              flexDirection: 'column',
             }}
           >
-            <Avatar sx={{ mt: 5 }}>
-              <IconButton
-                onClick={() => {
-                  closeDialog();
-                }}
-              >
-                <CloseIcon />
-              </IconButton>
-            </Avatar>
-          </Stack>
-          <Stack direction="column" sx={{ mt: -5 }}>
-            {currentStepComponent}
-            <Divider />
             <Stack
-              direction={'row'}
-              sx={{ mt: 2 }}
-              justifyContent={isFirstStep ? 'end' : 'space-between'}
+              justifyContent="end"
+              direction="row"
+              flexGrow={0}
+              sx={{
+                px: { xs: 2, md: 6 },
+                display: { md: 'flex' },
+              }}
             >
-              {!isFirstStep && (
-                <Button variant="outlined" onClick={() => handlePrevious()}>
-                  Back
-                </Button>
-              )}
-              <Stack direction={'row'} justifyContent={'end'}>
-                <LoadingButton
-                  onClick={() => handlePreview()}
-                  variant="outlined"
-                  size="large"
-                  isLoading={false}
-                  sx={{ marginLeft: 2 }}
-                  disabled={
-                    !(
-                      formStepControl[currentStep].name === 'tasks' ||
-                      formStepControl[currentStep].name === 'settings'
-                    )
-                  }
+              <Avatar sx={{ mt: 5 }}>
+                <IconButton
+                  onClick={() => {
+                    closeDialog();
+                  }}
                 >
-                  Preview
-                </LoadingButton>
-                <LoadingButton
-                  onClick={() => handleSaveAsDraft()}
-                  variant="outlined"
-                  size="large"
-                  sx={{ marginLeft: 2 }}
-                  isLoading={false}
-                  disabled={
-                    !(
-                      formStepControl[currentStep].name === 'tasks' ||
-                      formStepControl[currentStep].name === 'settings'
-                    )
-                  }
-                >
-                  Save as Draft
-                </LoadingButton>
-                <LoadingButton
-                  type="submit"
-                  variant="contained"
-                  size="large"
-                  sx={{ marginLeft: 2 }}
-                  onClick={() => handleNext()}
-                  disabled={!stepValidity[`${currentStep}`]}
-                >
-                  Continue
-                </LoadingButton>
+                  <CloseIcon />
+                </IconButton>
+              </Avatar>
+            </Stack>
+            <Stack direction="column" sx={{ mt: -5 }}>
+              {currentStepComponent}
+              <Divider />
+              <Stack
+                direction={'row'}
+                sx={{ mt: 2 }}
+                justifyContent={isFirstStep ? 'end' : 'space-between'}
+              >
+                {!isFirstStep && (
+                  <Button variant="outlined" onClick={() => handlePrevious()}>
+                    Back
+                  </Button>
+                )}
+                <Stack direction={'row'} justifyContent={'end'}>
+                  <LoadingButton
+                    onClick={() => handlePreview()}
+                    variant="outlined"
+                    size="large"
+                    isLoading={false}
+                    sx={{ marginLeft: 2 }}
+                    disabled={
+                      !(
+                        formStepControl[currentStep].name === 'tasks' ||
+                        formStepControl[currentStep].name === 'settings'
+                      )
+                    }
+                  >
+                    Preview
+                  </LoadingButton>
+                  <LoadingButton
+                    onClick={() => handleSaveAsDraft()}
+                    variant="outlined"
+                    size="large"
+                    sx={{ marginLeft: 2 }}
+                    isLoading={false}
+                    disabled={
+                      !(
+                        formStepControl[currentStep].name === 'tasks' ||
+                        formStepControl[currentStep].name === 'settings'
+                      )
+                    }
+                  >
+                    Save as Draft
+                  </LoadingButton>
+                  <LoadingButton
+                    type="submit"
+                    variant="contained"
+                    size="large"
+                    sx={{ marginLeft: 2 }}
+                    onClick={() => handleNext()}
+                    disabled={!stepValidity[`${currentStep}`]}
+                  >
+                    Continue
+                  </LoadingButton>
+                </Stack>
               </Stack>
             </Stack>
-          </Stack>
-        </Grid>
+          </Grid>
+        </FormProvider>
       </Grid>
     </>
   );
