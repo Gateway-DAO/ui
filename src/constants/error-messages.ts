@@ -50,4 +50,11 @@ export const errorMessages = {
   EMAIL_ALREADY_IN_USE: 'E-mail already in use',
   USERNAME_ALREADY_IN_USE: 'Username already in use',
   ERROR_UPDATING_USER: `Error updating user, please, contact Gateway or try again.`,
+  WALLET_ALREADY_ASSOCIATED: `Wallet already associated to another user`,
 };
+
+export const transformErrorMessage = (error: any) =>
+  errorMessages[error?.response?.errors?.[0]?.message] ??
+  error?.response?.errors?.[0]?.error ??
+  error.message ??
+  errorMessages.UNEXPECTED_ERROR;

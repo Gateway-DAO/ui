@@ -1,6 +1,7 @@
 query authentications_methods_by_user($id: uuid!) {
   protocol_user_by_pk(id: $id) {
     authentications {
+      id
       type
       data
       user {

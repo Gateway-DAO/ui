@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 
-import { AccountHandlerConnection } from '@/components/atoms/social-auth-card';
+import { AccountHandlerConnection } from '@/types/account';
 import { useMutation } from '@tanstack/react-query';
 import { useLocalStorage } from 'react-use';
 

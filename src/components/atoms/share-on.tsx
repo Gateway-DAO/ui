@@ -2,7 +2,11 @@ import useTranslation from 'next-translate/useTranslation';
 
 import { useAuth } from '@/providers/auth';
 import { Protocol_Api_Credential } from '@/services/hasura/types';
-import { getCredentialImageURLParams } from '@/utils/credential/build-image-url-params';
+import {
+  getCredentialImageURLParams,
+  issuerName,
+  recipientName,
+} from '@/utils/credential/build-image-url-params';
 import objectToParams from '@/utils/map-object';
 import { useSnackbar } from 'notistack';
 import { PartialDeep } from 'type-fest';
@@ -36,22 +40,12 @@ export default function ShareOn({ isCredential, credential }: Props) {
   if (isReceivedCredential) {
     tweetText = t('social.share-twitter-recipient')
       .replace('[title]', credential?.title)
-      .replace(
-        '[issuer]',
-        credential?.issuerOrganization?.name ||
-          credential?.issuerOrganization?.gatewayId ||
-          credential?.issuerUser?.gatewayId
-      );
+      .replace('[issuer]', issuerName(credential));
   } else if (isCredential) {
     tweetText = t('social.share-anonymous')
       .replace('[title]', credential?.title)
-      .replace(
-        '[issuer]',
-        credential?.issuerOrganization?.name ||
-          credential?.issuerOrganization?.gatewayId ||
-          credential?.issuerUser?.gatewayId
-      )
-      .replace('[recipient]', credential?.recipientUser?.gatewayId);
+      .replace('[issuer]', issuerName(credential))
+      .replace('[recipient]', recipientName(credential));
   }
 
   const tweetLink = `https://twitter.com/intent/tweet${objectToParams({

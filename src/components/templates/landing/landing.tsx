@@ -6,7 +6,7 @@ import { useIntersection, useToggle } from 'react-use';
 
 import { Box } from '@mui/material';
 
-import OrgSignupDialog from '../org/signup/dialog-structure';
+import OrgSignupDialog from '../../features/org/signup/dialog-structure';
 import { CreateOrgCardDashboard } from './create-org/create-org-dashboard';
 import { OrgCreationProps } from './create-org/types';
 import { Featured } from './featured';

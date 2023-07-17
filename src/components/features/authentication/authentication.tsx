@@ -33,17 +33,17 @@ export function Authentication() {
       ) {
         onNewUser();
       } else if (
-        !me?.username &&
+        !me?.protocolUser?.gatewayId &&
         me?.email_address &&
         step !== 'choose-gatewayid'
       ) {
         onGoToSetGatewayId();
       }
-      if (me?.username && me?.email_address) {
+      if (me?.protocolUser?.gatewayId && me?.email_address) {
         router.push((router.query?.redirect as string) ?? ROUTES.EXPLORE);
       }
     }
-  }, [me?.username, me?.email_address, step]);
+  }, [me?.protocolUser?.gatewayId, me?.email_address, step]);
 
   return (
     <>

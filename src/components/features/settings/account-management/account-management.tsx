@@ -3,6 +3,7 @@ import { useMemo } from 'react';
 
 import { query } from '@/constants/queries';
 import { useAuth } from '@/providers/auth';
+import { Protocol_Api_AuthType } from '@/services/hasura/types';
 import { useQuery } from '@tanstack/react-query';
 
 import { Divider, Stack, Typography } from '@mui/material';
@@ -12,7 +13,6 @@ import { EditId } from './edit-id/edit-id';
 import { EmailAlias } from './email/email-alias';
 import { OtherAccount } from './others-accounts/other-accounts';
 import { WalletAlias } from './wallet/wallet-alias';
-import { YourAccountCredential } from './your-account/your-account-credential';
 
 const AccountManagementSettings = () => {
   const { t } = useTranslation('settings');
@@ -31,11 +31,17 @@ const AccountManagementSettings = () => {
   );
 
   const emails = useMemo(() => {
-    return authentications?.filter((a) => a.type === 'EMAIL') ?? [];
+    return (
+      authentications?.filter((a) => a.type === Protocol_Api_AuthType.Email) ??
+      []
+    );
   }, [authentications]);
 
   const wallets = useMemo(() => {
-    return authentications?.filter((a) => a.type === 'WALLET') ?? [];
+    return (
+      authentications?.filter((a) => a.type === Protocol_Api_AuthType.Wallet) ??
+      []
+    );
   }, [authentications]);
 
   return (
