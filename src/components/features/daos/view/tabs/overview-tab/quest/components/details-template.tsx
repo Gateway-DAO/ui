@@ -64,9 +64,6 @@ export default function DetailsTemplate({
   //   },
   // });
 
-  const { formState, getValues, watch, trigger } = methods;
-  const { isValid, errors, isDirty, touchedFields, dirtyFields } = formState;
-
   // console.log(errors);
 
   // useEffect(() => {
@@ -170,7 +167,7 @@ export default function DetailsTemplate({
                   </Tooltip>
                 </Stack>
                 <ClaimFormQuest
-                  fields={methods.getValues('schema')?.properties}
+                  fields={methods?.getValues('schema')?.properties}
                 />
               </Stack>
             </Stack>
