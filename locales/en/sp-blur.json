@@ -1,0 +1,39 @@
+{
+  "gate": {
+    "description": "A credit score is a numerical representation of a person's creditworthiness and is used by lenders to evaluate their ability to repay loans. Maintaining a good credit score is essential as it can lead to a number of benefits. First and foremost, having a good credit score makes it easier to obtain loans, credit cards, and other financial products with favourable terms and lower interest rates.",
+    "organization": "SPICE",
+    "title": "SP-Blur Vault",
+    "label": "Tier Program",
+    "share-title": "Check your SP-Blur Points @ Gateway"
+  },
+  "about": {
+    "title": "SP-Blur Points",
+    "caption": "Your progress and points",
+    "created-by": " Created By"
+  },
+  "details": {
+    "title": "What is this Credential?",
+    "description": "A user-owned attestation to your Spice Finance deposits for their Blur Vault. User's will see their credential update every two weeks, as their rewards increase based on their ETH deposits."
+  },
+  "how": {
+    "title": "How do I earn this credential?",
+    "description": "Go to https://www.spicefi.xyz/vault/0xfC287513E2DD58fbf952eB0ED05D511591a6215B"
+  },
+  "disclaimer": {
+    "title": "Disclaimer",
+    "description": "Gateway is not promoting nor are responsbile for user interactions on the Spice platform. Do you research and participate in the Blur Vault as you learn about the product.\nOnce you begin depositing Ethereum into the Blur vault, credentials are updated every two week. you will receive an email once your credential has been issued and updated."
+  },
+  "utility": {
+    "title": "This includes:",
+    "label-1": "Improved Lending Rates on Protocols",
+    "label-2": "Early Access to DeFi Events and Projects",
+    "label-3": "Uncollateralized Lending Opportunities"
+  },
+  "no-points": {
+    "title": "No Points"
+  },
+  "modal": {
+    "title": "Your credential is being issued",
+    "description": "It only takes a few seconds."
+  }
+}

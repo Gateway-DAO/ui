@@ -32,6 +32,7 @@ const config = {
     [ROUTES.LANDING]: ['index'],
     [ROUTES.TERMS]: ['index', 'terms'],
     [ROUTES.CREDIT_SCORE]: ['credit-score'],
+    [ROUTES.SPBLUR]: ['sp-blur'],
     [ROUTES.MY_PROFILE]: ['user-profile'],
     [ROUTES.AUTHENTICATION]: ['authentication'],
     [ROUTES.PROFILE_EDIT]: ['profile-edit'],

@@ -10,6 +10,7 @@ const ROUTES = {
   AUTHENTICATION: '/authentication',
   CREDENTIALS: '/credentials',
   CREDIT_SCORE: '/creditscore',
+  SPBLUR: '/sp-blur',
   CREDENTIALS_NEW: '/credentials/new',
   EARNED: '/earned/[id]',
   DAO_PROFILE: '/org/[slug]',
