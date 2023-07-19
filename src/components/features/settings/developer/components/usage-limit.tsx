@@ -1,25 +1,31 @@
 import useTranslation from 'next-translate/useTranslation';
 
-import { Card, CardContent, Divider, Stack, Typography } from '@mui/material';
+import { query } from '@/constants/queries';
+import { useAuth } from '@/providers/auth';
+import { useQuery } from '@tanstack/react-query';
+
+import {
+  Card,
+  CardContent,
+  Divider,
+  Skeleton,
+  Stack,
+  Typography,
+} from '@mui/material';
 
 import { UsageLimitItem } from './usage-limit-item';
 
 export function UsageLimit() {
+  const { hasuraUserService } = useAuth();
   const { t } = useTranslation('settings');
 
-  //MOCK
-  const usageLimits = [
+  const limitUsage = useQuery(
+    [query.limit_usage],
+    () => hasuraUserService.limit_usage(),
     {
-      title: 'Issued credentials',
-      initialValue: 1000,
-      limitValue: 1000,
-    },
-    {
-      title: 'Datamodel created',
-      initialValue: 45,
-      limitValue: 200,
-    },
-  ];
+      select: ({ protocol }) => protocol?.getMontlyUserUsage,
+    }
+  );
 
   return (
     <Stack mb={3}>
@@ -28,16 +34,22 @@ export function UsageLimit() {
           <Typography variant="body1" mb={1}>
             {t('developer-portal.usage-limit.title')}
           </Typography>
-          <Stack divider={<Divider sx={{ margin: ' 0 -1rem' }} />}>
-            {usageLimits.map((usageLimitsItem, index) => (
+          {limitUsage?.isLoading ? (
+            <Skeleton />
+          ) : (
+            <Stack divider={<Divider sx={{ margin: ' 0 -1rem' }} />}>
               <UsageLimitItem
-                key={index}
-                title={usageLimitsItem.title}
-                initialValue={usageLimitsItem.initialValue}
-                limitValue={usageLimitsItem.limitValue}
+                title={t('developer-portal.usage-limit.issued-credentials')}
+                usage={limitUsage?.data?.monthlyCredentials}
+                limit={limitUsage?.data?.datamodelsUsageAllowedByMonth}
               />
-            ))}
-          </Stack>
+              <UsageLimitItem
+                title={t('developer-portal.usage-limit.data-model-created')}
+                usage={limitUsage?.data?.monthlyDatamodels}
+                limit={limitUsage?.data?.datamodelsUsageAllowedByMonth}
+              />
+            </Stack>
+          )}
         </CardContent>
       </Card>
     </Stack>
