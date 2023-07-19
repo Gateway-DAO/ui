@@ -255,7 +255,7 @@ export function DirectWallets({
           open={confirmDialgog}
           setOpen={setConfirmDialog}
           title="Did you use our CSV template to upload your recipients?"
-          children={null}
+          children={<></>}
           negativeAnswer="cancel"
           positiveAnswer="Continue"
           onConfirm={() => {

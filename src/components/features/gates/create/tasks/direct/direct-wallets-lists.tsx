@@ -257,11 +257,11 @@ export function DirectWalletsList({
   return (
     <>
       <Stack gap={3} sx={{ height: '100%' }} {...containerProps}>
-        {/* {SearchContainer ? (
+        {SearchContainer ? (
           <SearchContainer>{searchInput}</SearchContainer>
         ) : (
           <>{searchInput}</>
-        )} */}
+        )}
         <Box
           {...listContainerProps}
           sx={{
