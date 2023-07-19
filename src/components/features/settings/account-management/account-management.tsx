@@ -60,12 +60,8 @@ const AccountManagementSettings = () => {
       >
         {/* <YourAccountCredential /> */}
         <EditId />
-        {emails?.length > 0 && (
-          <EmailAlias emails={emails} isLoading={isLoading} />
-        )}
-        {wallets?.length > 0 && (
-          <WalletAlias wallets={wallets} isLoading={isLoading} />
-        )}
+        <EmailAlias emails={emails ?? []} isLoading={isLoading} />
+        <WalletAlias wallets={wallets ?? []} isLoading={isLoading} />
         <OtherAccount />
         <DeleteId />
       </Stack>

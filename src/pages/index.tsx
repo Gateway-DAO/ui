@@ -54,7 +54,7 @@ export default function Index() {
             <Button
               component="a"
               variant="contained"
-              sx={{ height: '56px', marginTop: '38px' }}
+              sx={{ whiteSpace: 'nowrap', height: '56px' }}
               size="large"
             >
               {t('enterButtonTitle')}
