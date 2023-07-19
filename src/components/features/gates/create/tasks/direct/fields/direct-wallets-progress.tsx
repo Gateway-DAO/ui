@@ -84,7 +84,7 @@ export function DirectWalletsProgress({
       </Stack>
       <Box>
         <Typography variant="body2" color="text.secondary">
-          You don't need to wait, you can save as draft and come back later
+          You dont need to wait, you can save as draft and come back later
         </Typography>
       </Box>
     </Stack>
