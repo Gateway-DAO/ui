@@ -9,19 +9,15 @@ import { Button, Chip, Stack, Typography, alpha } from '@mui/material';
 
 type Props = {
   title: string;
-  initialValue: number;
-  limitValue: number;
+  usage: number;
+  limit: number;
 };
 
-export function UsageLimitItem({
-  title,
-  initialValue = 0,
-  limitValue = 0,
-}: Props) {
+export function UsageLimitItem({ title, usage = 0, limit = 0 }: Props) {
   const { t } = useTranslation('settings');
   const reachedTheLimit = useMemo(
-    () => initialValue > 0 && initialValue >= limitValue,
-    [initialValue, limitValue]
+    () => usage > 0 && usage >= limit,
+    [usage, limit]
   );
 
   return (
@@ -29,8 +25,9 @@ export function UsageLimitItem({
       <Stack
         direction="row"
         justifyContent="space-between"
+        alignItems="center"
         gap={2}
-        sx={{ py: 1 }}
+        sx={{ py: 2 }}
       >
         <Stack flexGrow={1}>
           <Typography variant="body1">{title}</Typography>
@@ -42,8 +39,7 @@ export function UsageLimitItem({
                 : alpha(brandColors.white.main, 0.7),
             }}
           >
-            {initialValue} {t('developer-portal.usage-limit.out-of')}{' '}
-            {limitValue}
+            {usage} {t('developer-portal.usage-limit.out-of')} {limit}
           </Typography>
         </Stack>
         {reachedTheLimit && (
