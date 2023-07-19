@@ -186,7 +186,7 @@ export function DirectWalletsList({
   }
 
   function rowContent(index: number, row: any) {
-    const { wallet, type, invalid } = row;
+    const { wallet, type, invalid, duplicate } = row;
     return (
       <>
         <TableCell align={'left'}>{wallet}</TableCell>
@@ -199,8 +199,10 @@ export function DirectWalletsList({
           />
         </TableCell>
         <TableCell align={'right'}>
-          {invalid ? (
-            <Chip variant="outlined" color="error" label="Invalid" />
+          {duplicate ? (
+            <Chip variant="outlined" color="error" label="Duplicate" />
+          ) : invalid ? (
+            <Chip variant="outlined" color="success" label="InValid" />
           ) : (
             <Chip variant="outlined" color="success" label="Valid" />
           )}
@@ -253,29 +255,32 @@ export function DirectWalletsList({
   }
 
   return (
-    <Stack gap={3} sx={{ height: '100%' }} {...containerProps}>
-      {SearchContainer ? (
-        <SearchContainer>{searchInput}</SearchContainer>
-      ) : (
-        searchInput
-      )}
-      <Box
-        {...listContainerProps}
-        sx={{
-          table: {
-            width: '100%',
-          },
-        }}
-      >
-        <TableVirtuoso
-          data={whitelistedWallets}
-          fixedHeaderContent={fixedHeaderContent}
-          itemContent={rowContent}
-          style={{
-            height: Math.min(400, whitelistedWallets.length * 61),
+    <>
+      <Stack gap={3} sx={{ height: '100%' }} {...containerProps}>
+        {SearchContainer ? (
+          <SearchContainer>{searchInput}</SearchContainer>
+        ) : (
+          <>{searchInput}</>
+        )}
+        <Box
+          {...listContainerProps}
+          sx={{
+            table: {
+              width: '100%',
+            },
           }}
-        />
-      </Box>
-    </Stack>
+        >
+          <TableVirtuoso
+            id="table-virtuoso-test"
+            data={whitelistedWallets}
+            fixedHeaderContent={fixedHeaderContent}
+            itemContent={rowContent}
+            style={{
+              height: Math.min(400, whitelistedWallets.length * 61),
+            }}
+          />
+        </Box>
+      </Stack>
+    </>
   );
 }
