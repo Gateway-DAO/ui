@@ -30,8 +30,8 @@ const FollowButtonUser = dynamic<any>(
 );
 
 type Props = {
-  recipientId: String;
-  invalid: Boolean;
+  recipientId: string;
+  invalid: boolean;
 } & ListItemProps;
 
 export function UserListItemEdit({ recipientId, invalid, ...props }: Props) {
@@ -55,9 +55,7 @@ export function UserListItemEdit({ recipientId, invalid, ...props }: Props) {
   return (
     <ListItem
       secondaryAction={
-        true ? (
-          <FollowButtonUser wallet={recipientId} variant="outlined" />
-        ) : undefined
+        <FollowButtonUser wallet={recipientId} variant="outlined" />
       }
       {...props}
     >

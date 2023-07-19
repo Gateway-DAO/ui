@@ -72,7 +72,7 @@ export default function GeneralForm() {
                 },
               }}
               set={(tags: string[]) => {
-                console.log(tags)
+                console.log(tags);
                 setValue('categories', tags);
               }}
             />

@@ -96,7 +96,6 @@ export function OverviewTab({
 
   const newGateUrl = `${ROUTES.GATE_NEW}?dao=${dao?.id}`;
 
-
   const gateListTaskType = useMemo(() => {
     return [
       ...gatesTaskType.map((gate) => (

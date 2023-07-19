@@ -113,8 +113,7 @@ export function CreateQuestTemplate({
   const methods = useForm<CreateGateSchema>({
     resolver: async (values, _, options) => {
       const { claim, ...rawData } = values;
-      let zodResult;
-      zodResult = await zodResolver(createGateSchema)(
+      const zodResult = await zodResolver(createGateSchema)(
         { ...rawData, type: 'direct', creator: { id: '111' } },
         _,
         options as any
@@ -314,7 +313,7 @@ export function CreateQuestTemplate({
 
   const publish = async () => {
     try {
-      // await handleMutation(draftData, true);
+      await handleMutation(methods.watch(), false);
     } catch (e) {
       enqueueSnackbar("An error occured, couldn't save the draft.");
     }
