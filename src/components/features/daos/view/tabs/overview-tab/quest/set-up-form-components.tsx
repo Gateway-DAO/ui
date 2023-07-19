@@ -21,6 +21,7 @@ export const setUpFormComponents = ({
       key={1}
       handleStep={handleStep}
       input={{ name: 'template' }}
+      fullFormState={fullFormState}
     />,
     <DetailsTemplate
       updateFormState={updateFormState}
