@@ -255,13 +255,14 @@ export function DirectWallets({
           open={confirmDialgog}
           setOpen={setConfirmDialog}
           title="Did you use our CSV template to upload your recipients?"
-          children={<div></div>}
           negativeAnswer="cancel"
           positiveAnswer="Continue"
           onConfirm={() => {
             verifyCSV.mutate(Files);
           }}
-        />
+        >
+          {' '}
+        </ConfirmDialog>
         <AddRecipient
           toggleDialog={setAddRecipient}
           open={addRecipient}
