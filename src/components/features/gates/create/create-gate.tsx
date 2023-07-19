@@ -402,7 +402,7 @@ export function CreateGate({ oldData }: CreateGateProps) {
                   ) : (
                     <GateTypeSelector />
                   )}
-                  {gateType === 'direct' && <DirectWallets />}
+                  {/* {gateType === 'direct' && <DirectWallets />} */}
                   {gateType === 'task_based' && (
                     <Stack direction="column" gap={2}>
                       <TaskArea
