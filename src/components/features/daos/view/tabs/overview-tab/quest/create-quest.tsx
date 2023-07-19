@@ -17,6 +17,7 @@ import {
   IconButton,
   Stack,
   alpha,
+  useMediaQuery,
   useTheme,
 } from '@mui/material';
 
@@ -48,7 +49,7 @@ export function CreateQuestTemplate({
   const { dao } = useDaoProfile();
   const theme = useTheme();
   const windowSize = useWindowSize();
-  const { t } = useTranslation('org-signup');
+  const { t } = useTranslation('quest');
   const router = useRouter();
   const [fullFormState, setFullFormState] = useState(null);
   const { hasuraUserService, me } = useAuth();
@@ -359,7 +360,7 @@ export function CreateQuestTemplate({
           item
           xs={10}
           md={6}
-          lg={3}
+          lg={3.5}
           sx={{
             pt: { xs: 3, md: 6 },
             pb: { xs: 3, md: 0 },
@@ -380,21 +381,21 @@ export function CreateQuestTemplate({
           </Stack>
         </Grid>
         {/* [ ] Create more components */}
-        <Divider
-          orientation="vertical"
-          sx={{ display: { xs: 'none', md: 'flex' } }}
-          flexItem
-        />
         <Grid
           item
           xs={12}
           md={6}
-          lg={8}
+          lg={12}
+          px={{ xs: 0, lg: 8 }}
           sx={{
             flexGrow: 1,
             height: '100%',
+            width: '100%',
             display: { md: 'flex' },
             flexDirection: 'column',
+            overflowY: 'auto',
+            overflowX: 'hidden',
+            borderLeft: `1px solid ${theme.palette.divider}`,
           }}
         >
           <Stack
@@ -418,22 +419,30 @@ export function CreateQuestTemplate({
           </Stack>
           <Stack direction="column" sx={{ mt: -5 }}>
             {currentStepComponent}
-            <Divider />
+            <Divider variant="fullWidth" sx={{ mx: '-6%' }} />
             <Stack
-              direction={'row'}
-              sx={{ mt: 2 }}
+              direction={{ xs: 'column', md: 'row' }}
+              sx={{ my: 2, mx: { md: 6, xs: 2 } }}
               justifyContent={isFirstStep ? 'end' : 'space-between'}
+              gap={2}
             >
               {!isFirstStep && (
-                <Button variant="outlined" onClick={() => handlePrevious()}>
-                  Back
+                <Button
+                  sx={{ mx: { xs: 2, md: 0 } }}
+                  variant="outlined"
+                  onClick={() => handlePrevious()}
+                >
+                  {t('create-quest.back')}
                 </Button>
               )}
-              <Stack direction={'row'} justifyContent={'end'}>
+              <Stack
+                direction={{ xs: 'column', md: 'row' }}
+                justifyContent={'end'}
+                gap={2}
+              >
                 <LoadingButton
                   onClick={() => {}}
                   variant="outlined"
-                  size="large"
                   isLoading={false}
                   sx={{ marginLeft: 2 }}
                   disabled={
@@ -443,12 +452,11 @@ export function CreateQuestTemplate({
                     )
                   }
                 >
-                  Preview
+                  {t('create-quest.preview')}
                 </LoadingButton>
                 <LoadingButton
                   onClick={() => handleSaveAsDraft()}
                   variant="outlined"
-                  size="large"
                   sx={{ marginLeft: 2 }}
                   isLoading={false}
                   disabled={
@@ -458,23 +466,23 @@ export function CreateQuestTemplate({
                     )
                   }
                 >
-                  Save as Draft
+                  {t('create-quest.save-as-draft')}
                 </LoadingButton>
                 {formStepControl[currentStep].name === 'details' && (
                   <LoadingButton
                     onClick={() => {
-                      setTesting(false);
-                      methods.trigger();
+                      handleNext();
+                      // setTesting(false);
+                      // methods.trigger();
                     }}
                     variant="contained"
-                    size="large"
                     sx={{ marginLeft: 2 }}
                     isLoading={false}
                     disabled={
                       !(formStepControl[currentStep].name === 'details')
                     }
                   >
-                    Continue
+                    {t('create-quest.continue')}
                   </LoadingButton>
                 )}
                 {!isLastStep &&
@@ -482,12 +490,11 @@ export function CreateQuestTemplate({
                     <LoadingButton
                       type="submit"
                       variant="contained"
-                      size="large"
                       sx={{ marginLeft: 2 }}
                       onClick={() => handleNext()}
-                      disabled={!stepValidity[`${currentStep}`]}
+                      // disabled={!stepValidity[`${currentStep}`]}
                     >
-                      Continue
+                      {t('create-quest.continue')}
                     </LoadingButton>
                   )}
               </Stack>

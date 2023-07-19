@@ -14,7 +14,7 @@ export default function CreateQuestDialog({
   open: boolean;
   toggleDialog: (value: boolean) => void;
 }) {
-  const { t } = useTranslation('org-signup');
+  const { t } = useTranslation('quest');
   const router = useRouter();
 
   const closeDialog = () => {
@@ -35,7 +35,10 @@ export default function CreateQuestDialog({
       fullScreen
       sx={{ ' .MuiDialog-paper': { backgroundImage: 'none' } }}
     >
-      <HeadContainer title={t('page-title')} description={'page-description'} />
+      <HeadContainer
+        title={t('create-quest.create')}
+        description={t('create-quest.create-desc')}
+      />
       <CreateQuestTemplate closeDialog={() => closeDialog()} />
     </Dialog>
   );

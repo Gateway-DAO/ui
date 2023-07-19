@@ -36,6 +36,7 @@ import { createGateSchema } from '@/components/features/gates/create/schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FormProvider, useForm, useFormContext } from 'react-hook-form';
 import { CreateGateSchema } from '../../direct-credential/create-direct-credential';
+import useTranslation from 'next-translate/useTranslation';
 
 export default function CredentialTemplate({
   updateFormState,
@@ -57,6 +58,8 @@ export default function CredentialTemplate({
     { name: 'Service', selected: false },
   ];
   const windowSize = useWindowSize();
+  const { t } = useTranslation('quest');
+  const { t: t2 } = useTranslation('protocol');
 
   const [openDetialsModal, setOpenDetialsModal] = useState(false);
 
@@ -159,14 +162,10 @@ export default function CredentialTemplate({
     <>
       <Stack direction={'column'} mx={7} mb={5}>
         <Box>
-          <Typography variant="h5">
-            Select a credential template to start
-          </Typography>
-          <Typography variant="body2">
-            Find the template that fit you needs
-          </Typography>
+          <Typography variant="h5">{t('create-quest.title')}</Typography>
+          <Typography variant="body2">{t('create-quest.desc')}</Typography>
         </Box>
-        <Stack direction="row" my={4} spacing={1}>
+        <Stack direction="row" my={4} gap={1} flexWrap={'wrap'}>
           {categories?.map((category, index) => {
             return (
               <Chip
@@ -189,7 +188,7 @@ export default function CredentialTemplate({
           }}
           ref={containerRef}
         >
-          <Box sx={{ height: windowSize.height }}>
+          <Box sx={{ height: windowSize.height - 320 }}>
             {isLoading ? (
               <Loading />
             ) : (
@@ -229,7 +228,10 @@ export default function CredentialTemplate({
                                     : '',
                               },
 
-                              border: '#9A53FF',
+                              border:
+                                dataModelSelected?.id === model?.id
+                                  ? '2px solid #9A53FF'
+                                  : '1px solid primary.light',
                             }}
                           >
                             <CardActions
@@ -334,7 +336,7 @@ export default function CredentialTemplate({
                                   }}
                                   sx={{ mt: 4.2 }}
                                 >
-                                  View Details
+                                  {t('template.view-details')}
                                 </Button>
                               </Stack>
                             </CardContent>
@@ -403,7 +405,7 @@ export default function CredentialTemplate({
                 sx={{ flexDirection: { xs: 'column', md: 'row' }, mb: 5 }}
               >
                 <DashboardCard
-                  label="data-model.issuers"
+                  label={t2('data-model.issuers')}
                   value={dataModelStats?.protocol?.getTotalofIssuersByDataModel}
                   caption={`from ${
                     dataModelStats?.protocol?.getTotalofIssuersByDataModel -
@@ -415,7 +417,7 @@ export default function CredentialTemplate({
                   )}
                 />
                 <DashboardCard
-                  label="data-model.issued-credentials"
+                  label={t2('data-model.issued-credentials')}
                   value={
                     dataModelStats?.protocol?.getTotalCredentialsByDataModel
                   }
@@ -429,7 +431,7 @@ export default function CredentialTemplate({
                   )}
                 />
                 <DashboardCard
-                  label="data-model.recipients"
+                  label={t2('data-model.recipients')}
                   value={
                     dataModelStats?.protocol
                       ?.getTotalCredentialsByDataModelGroupByRecipient
@@ -449,7 +451,7 @@ export default function CredentialTemplate({
             )}
 
             <TableSchema
-              title="Claim"
+              title={t('template.claim')}
               data={dataModelSelected?.schema?.properties}
               subtitle1="Field"
               subtitle2="Input Type"
