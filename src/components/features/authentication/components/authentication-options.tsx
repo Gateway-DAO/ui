@@ -82,7 +82,7 @@ export function AuthenticationOptions() {
             </Fragment>
           ))}
       </Stack>
-      <Typography color="text.secondary" variant="body2">
+      <Typography color="text.secondary" variant="caption">
         {t('steps.initial.terms-info')}{' '}
         <Link href="/terms" underline="none">
           {t('steps.initial.terms-of-service')}{' '}
