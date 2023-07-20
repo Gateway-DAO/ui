@@ -29,7 +29,7 @@ export function UsageLimit() {
 
   return (
     <Stack mb={3}>
-      <Card sx={{ pt: 1.5 }}>
+      <Card sx={{ pt: 1 }}>
         <CardContent>
           <Typography variant="body1" mb={1}>
             {t('developer-portal.usage-limit.title')}
