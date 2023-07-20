@@ -191,7 +191,9 @@
       "title": "Usage limit",
       "out-of": "out of",
       "reached-the-limit": "Reached the limit",
-      "request-more": "Reques more"
+      "request-more": "Request more",
+      "issued-credentials": "Issued credentials",
+      "data-model-created": "Data model created"
     }
   }
 }
