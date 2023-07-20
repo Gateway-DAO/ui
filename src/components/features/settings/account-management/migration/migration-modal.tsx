@@ -1,35 +1,68 @@
 import { ArrowDivider } from '@/components/atoms/arrow-divider';
-import { ModalRightConfirmation } from '@/components/molecules/modal/modal-right-confirmation';
 import { ConfirmDelete } from '@/components/organisms/confirm-delete/confirm-delete';
-import { Protocol_Api_Auth, Users } from '@/services/hasura/types';
-import { PartialDeep } from 'type-fest';
+import { useAuth } from '@/providers/auth';
+import { hasuraApi } from '@/services/hasura/api';
+import { Protocol_Api_AuthType } from '@/services/hasura/types';
+import { useQuery } from '@tanstack/react-query';
 
 import { Divider, Stack, Typography } from '@mui/material';
 
 import { UserCard } from './components/user-card';
 
+export type MigrationModalData = {
+  token: string;
+  hasura_id: string;
+  type: Protocol_Api_AuthType;
+  data: any;
+};
+
 type Props = {
-  currentUser: PartialDeep<Users>;
-  oldUser: PartialDeep<Users>;
-  auth: PartialDeep<Protocol_Api_Auth>;
-  isOpen: boolean;
   onClose: () => void;
+  data: MigrationModalData;
 };
 
 export function MigrationModal({
-  isOpen,
   onClose,
-  currentUser,
-  oldUser,
-  auth,
+  data: { token, hasura_id, type: authType, data: authData },
 }: Props) {
-  const isMigrating = true;
+  const { me } = useAuth();
+
+  const { isLoading, data: oldUser } = useQuery(
+    ['migration', hasura_id],
+    () => hasuraApi(token, hasura_id).migration_authentication_user(),
+    {
+      select: (res) => res.me,
+    }
+  );
+
+  if (isLoading) return <>Loading</>;
+  if (!oldUser) return <>User not found</>;
+  const { authentications } = oldUser.protocolUser;
+  const auth = authentications?.find((item) => {
+    if (item.type !== authType) return;
+    switch (authType) {
+      case Protocol_Api_AuthType.Email:
+        return item.data.email === authData;
+      case Protocol_Api_AuthType.Wallet:
+        return item.data.address === authData;
+      default:
+        return false;
+    }
+  });
+
+  if (!auth) return <>Auth not found</>;
+  const remainingAuthenticaiton = authentications.filter(
+    (item) => item.id !== auth.id
+  );
+  const isMigrating = remainingAuthenticaiton.length === 0;
+
   return (
-    <ModalRightConfirmation
-      title="This account is already connected to another Gateway ID, do you want to migrate to this ID?"
-      open={isOpen}
-      handleClose={onClose}
-    >
+    <>
+      {/* // <ModalRightConfirmation
+    //   title="This account is already connected to another Gateway ID, do you want to migrate to this ID?"
+    //   open={isOpen}
+    //   handleClose={onClose}
+    // > */}
       <Stack
         sx={{
           flexDirection: { xs: 'column', md: 'row' },
@@ -44,7 +77,7 @@ export function MigrationModal({
         />
         <ArrowDivider />
         <UserCard
-          user={currentUser}
+          user={me}
           auth={auth}
           variant={isMigrating ? 'sucess' : 'raised'}
         />
@@ -55,7 +88,7 @@ export function MigrationModal({
       </Typography>
       <Stack direction="column" divider={<Divider />}>
         <Typography sx={{ py: 2 }}>
-          {`All credentials addressed to this ID will be migrated to ${currentUser.username}`}
+          {`All credentials addressed to this ID will be migrated to ${me.username}`}
         </Typography>
         {isMigrating
           ? [
@@ -64,7 +97,7 @@ export function MigrationModal({
                 sx={{ py: 2 }}
                 color="error"
               >
-                {`The ID <b>${oldUser.username}</b> will be deactivated`}
+                {`The ID ${oldUser.username} will be deactivated`}
               </Typography>,
               <Typography key="undo" sx={{ py: 2 }} color="error">
                 {"You won't be able undo this action"}
@@ -97,9 +130,10 @@ export function MigrationModal({
               checkText:
                 "I acknowledge that upon account migration, I won't be able undo these actions",
             })}
-        onCancel={() => {}}
+        onCancel={onClose}
         onConfirm={() => {}}
       />
-    </ModalRightConfirmation>
+      {/* </ModalRightConfirmation> */}
+    </>
   );
 }
