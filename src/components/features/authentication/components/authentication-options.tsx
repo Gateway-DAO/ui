@@ -69,6 +69,7 @@ export function AuthenticationOptions() {
                 startIcon={method.icon}
                 fullWidth
                 sx={{
+                  height: 48,
                   '& .MuiButton-startIcon	': {
                     position: 'absolute',
                     left: '1rem',
@@ -81,7 +82,7 @@ export function AuthenticationOptions() {
             </Fragment>
           ))}
       </Stack>
-      <Typography color="text.secondary">
+      <Typography color="text.secondary" variant="body2">
         {t('steps.initial.terms-info')}{' '}
         <Link href="/terms" underline="none">
           {t('steps.initial.terms-of-service')}{' '}
