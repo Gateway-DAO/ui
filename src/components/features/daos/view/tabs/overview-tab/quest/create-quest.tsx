@@ -492,7 +492,7 @@ export function CreateQuestTemplate({
                       variant="contained"
                       sx={{ marginLeft: 2 }}
                       onClick={() => handleNext()}
-                      // disabled={!stepValidity[`${currentStep}`]}
+                      disabled={!stepValidity[`${currentStep}`]}
                     >
                       {t('create-quest.continue')}
                     </LoadingButton>

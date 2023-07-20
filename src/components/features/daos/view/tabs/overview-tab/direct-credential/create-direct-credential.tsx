@@ -52,7 +52,7 @@ export function CreateDirectCredentialTemplate({
   const { dao } = useDaoProfile();
   const theme = useTheme();
   const windowSize = useWindowSize();
-  const { t } = useTranslation('org-signup');
+  const { t } = useTranslation('quest');
   const [fullFormState, setFullFormState] = useState(null);
 
   const handleStep = (newValue: boolean) => {
@@ -113,8 +113,6 @@ export function CreateDirectCredentialTemplate({
   const [result, setResult] = useState(null);
 
   const [testing, setTesting] = useState(false);
-
-  const [deletedTasks, setDeletedTasks] = useState<string[]>([]);
 
   const methods = useForm<CreateGateSchema>({
     resolver: async (values, _, options) => {
@@ -366,7 +364,7 @@ export function CreateDirectCredentialTemplate({
           item
           xs={10}
           md={6}
-          lg={3}
+          lg={3.5}
           sx={{
             pt: { xs: 3, md: 6 },
             pb: { xs: 3, md: 0 },
@@ -386,22 +384,21 @@ export function CreateDirectCredentialTemplate({
             </Stack>
           </Stack>
         </Grid>
-        {/* [ ] Create more components */}
-        <Divider
-          orientation="vertical"
-          sx={{ display: { xs: 'none', md: 'flex' } }}
-          flexItem
-        />
         <Grid
           item
           xs={12}
           md={6}
-          lg={8}
+          lg={12}
+          px={{ xs: 0, lg: 8 }}
           sx={{
             flexGrow: 1,
             height: '100%',
+            width: '100%',
             display: { md: 'flex' },
             flexDirection: 'column',
+            overflowY: 'auto',
+            overflowX: 'hidden',
+            borderLeft: `1px solid ${theme.palette.divider}`,
           }}
         >
           <Stack
@@ -425,18 +422,23 @@ export function CreateDirectCredentialTemplate({
           </Stack>
           <Stack direction="column" sx={{ mt: -5 }}>
             {currentStepComponent}
-            <Divider />
+            <Divider variant="fullWidth" sx={{ mx: '-6%' }} />
             <Stack
-              direction={'row'}
-              sx={{ mt: 2 }}
+              direction={{ xs: 'column', md: 'row' }}
+              sx={{ my: 2, mx: { md: 6, xs: 2 } }}
               justifyContent={isFirstStep ? 'end' : 'space-between'}
+              gap={2}
             >
               {!isFirstStep && (
                 <Button variant="outlined" onClick={() => handlePrevious()}>
-                  Back
+                  {t('create-quest.back')}
                 </Button>
               )}
-              <Stack direction={'row'} justifyContent={'end'}>
+              <Stack
+                direction={{ xs: 'column', md: 'row' }}
+                justifyContent={'end'}
+                gap={2}
+              >
                 <LoadingButton
                   onClick={() => handleSaveAsDraft()}
                   variant="outlined"
@@ -450,7 +452,7 @@ export function CreateDirectCredentialTemplate({
                     )
                   }
                 >
-                  Save as Draft
+                  {t('create-quest.save-as-draft')}
                 </LoadingButton>
 
                 {formStepControl[currentStep].name === 'details' && (
@@ -467,7 +469,7 @@ export function CreateDirectCredentialTemplate({
                       !(formStepControl[currentStep].name === 'details')
                     }
                   >
-                    Continue
+                    {t('create-quest.continue')}
                   </LoadingButton>
                 )}
 
@@ -481,7 +483,7 @@ export function CreateDirectCredentialTemplate({
                       onClick={() => handleNext()}
                       disabled={!stepValidity[`${currentStep}`]}
                     >
-                      Continue
+                      {t('create-quest.continue')}
                     </LoadingButton>
                   )}
                 {isLastStep && (
@@ -493,7 +495,7 @@ export function CreateDirectCredentialTemplate({
                     onClick={() => publish()}
                     disabled={!stepValidity[`${currentStep}`]}
                   >
-                    Save and publish
+                    {t('create-quest.save-and-publish')}
                   </LoadingButton>
                 )}
               </Stack>

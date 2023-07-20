@@ -4,12 +4,7 @@ import RecipientTemplate from './components/recipient-template';
 import OptionalSettingsTemplate from './components/optional-settings-template';
 import CredentialTemplate from '../quest/components/credential-template';
 import DetailsTemplate from '../quest/components/details-template';
-import {
-  Protocol_Api_CreateCredentialInput,
-  Protocol_Data_ModelQuery,
-} from '@/services/hasura/types';
-import { useFormContext } from 'react-hook-form';
-import { CreateGateSchema } from './create-direct-credential';
+
 
 type Props = {
   updateFormState: Dispatch<any>;
