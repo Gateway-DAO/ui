@@ -1,6 +1,7 @@
 import useTranslation from 'next-translate/useTranslation';
 
 import { ROUTES } from '@/constants/routes';
+import { generateImageUrl } from '@/hooks/use-file';
 import { hasuraPublicService } from '@/services/hasura/api';
 import { Protocol_Api_DataModel } from '@/services/hasura/types';
 import { theme } from '@/theme';
@@ -37,6 +38,17 @@ export default function OverviewCardInfo({ dataModel }: Props) {
   const getCreatedBy = () => {
     const { organization, createdBy } = dataModel;
 
+    console.log(organization);
+    console.log(
+      organization
+        ? organization.hasuraOrganization
+          ? generateImageUrl(organization.hasuraOrganization?.logo?.s3_key)
+          : organization?.image
+        : createdBy
+        ? createdBy?.gatewayUser?.picture
+        : ({ url: `/images/avatar.png` } as Partial<File>)
+    );
+
     return {
       gatewayID: organization
         ? organization.gatewayId
@@ -48,13 +60,13 @@ export default function OverviewCardInfo({ dataModel }: Props) {
         : createdBy
         ? ROUTES.PROFILE.replace('[username]', createdBy.gatewayId)
         : undefined,
-      image: {
-        url: organization
-          ? organization.image
-          : createdBy
-          ? createdBy?.gatewayUser?.picture
-          : ({ url: `/images/avatar.png` } as Partial<File>),
-      } as Partial<File>,
+      image: organization
+        ? organization.hasuraOrganization
+          ? organization.hasuraOrganization?.logo
+          : ({ url: organization?.image } as Partial<File>)
+        : createdBy
+        ? createdBy?.gatewayUser?.picture
+        : ({ url: `/images/avatar.png` } as Partial<File>),
     };
   };
 
