@@ -8,7 +8,7 @@ export default function VerticalStepper({
 }: {
   activeStep: number;
 }) {
-  const { t } = useTranslation('org-signup');
+  const { t } = useTranslation('quest');
 
   const steps = [
     {
@@ -28,7 +28,7 @@ export default function VerticalStepper({
   return (
     <Stack>
       <Typography variant="h4" mb={7}>
-        Create a Quest
+        {t('create-quest.create')}
       </Typography>
       <Box mb={5}>
         <Stepper steps={steps} activeStep={activeStep} />

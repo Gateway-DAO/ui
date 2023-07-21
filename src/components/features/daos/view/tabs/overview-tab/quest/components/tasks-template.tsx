@@ -1,13 +1,8 @@
 import { Box, Button, Stack, Typography } from '@mui/material';
 import { Dispatch, useEffect, useRef, useState } from 'react';
-import {
-  FormProvider,
-  useForm,
-  useFormContext,
-  ValidationMode,
-} from 'react-hook-form';
 
 import TaskArea from '@/components/features/gates/create/tasks/tasks-area';
+import useTranslation from 'next-translate/useTranslation';
 
 export default function TasksTemplate({
   updateFormState,
@@ -18,15 +13,17 @@ export default function TasksTemplate({
   handleStep: (value: boolean) => void;
   input: any;
 }) {
+  const { t } = useTranslation('quest');
   const [deletedTasks, setDeletedTasks] = useState<string[]>([]);
 
   return (
-    <Stack direction={'column'} mx={7} mb={5}>
+    <Stack direction={'column'} mx={{ xs: 2, md: 7 }} mb={5}>
       <Box>
-        <Typography variant="h5">Set tasks</Typography>
-        <Typography variant="body2">
-          Add tasks to your quest that users need to accomplish to earn this
-          credential.
+        <Typography variant="h5" gutterBottom>
+          {t('template.tasks.title')}
+        </Typography>
+        <Typography variant="body2" gutterBottom mb={2}>
+          {t('template.tasks.desc')}
         </Typography>
 
         <Stack direction="column" gap={2}>

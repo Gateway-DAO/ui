@@ -1,0 +1,40 @@
+{
+  "create-quest": {
+    "create": "Create a Quest",
+    "preview": "preview",
+    "title": "Select a credential template to start",
+    "desc": " Find the template that fit you needs",
+    "back": "back",
+    "save-as-draft": "save as draft",
+    "save-and-publish": "save and publish",
+    "continue": "continue",
+    "create-desc": "create a quest"
+  },
+
+  "template": {
+    "view-details": "View Details",
+    "detail": "Add details",
+    "detail-desc": " Add the details of the credential",
+    "claim": "claim",
+    "tooltip-title": "A claim refers to a statement or assertion made by the issuer of the credential regarding the recipient's qualifications, achievements, or attributes. It serves as the basis for the credential being issued.",
+    "tasks": {
+      "title": "Set tasks",
+      "desc": "Add tasks to your quest that users need to accomplish to earn this credential."
+    },
+    "optional-setting": {
+      "title": "Optional Settings",
+      "desc": " These fields are not required, but you can set expiration date, time,and limit the number of credentials issued.",
+      "expire-date-and-time": "  Expire date and time",
+      "desc-date-and-time": "Set a expiration date to claim the credential",
+      "amount-limit": "Amount limit",
+      "amount-desc": "Limit amount of people who can claim the credential"
+    }
+  },
+
+  "vertical-steps": {
+    "template": "Template",
+    "details": "Details",
+    "tasks": "Tasks",
+    "optional-setting": "Optional Settings"
+  }
+}

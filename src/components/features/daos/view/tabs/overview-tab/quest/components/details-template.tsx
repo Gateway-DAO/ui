@@ -44,7 +44,7 @@ export default function DetailsTemplate({
 
   const { hasuraUserService, token } = useAuth();
   const { enqueueSnackbar } = useSnackbar();
-  const { t } = useTranslation('protocol');
+  const { t } = useTranslation('quest');
 
   const methods = useFormContext<CreateGateSchema>();
 
@@ -137,10 +137,8 @@ export default function DetailsTemplate({
   return (
     <Stack direction={'column'} mx={7} mb={5}>
       <Box>
-        <Typography variant="h5">Add details</Typography>
-        <Typography variant="body2">
-          Add the details of the credential
-        </Typography>
+        <Typography variant="h5">{t('template.detail')}</Typography>
+        <Typography variant="body2">{t('template.detail-desc')}</Typography>
       </Box>
 
       <>
@@ -150,19 +148,18 @@ export default function DetailsTemplate({
           // onSubmit={methods.handleSubmit(handleMutation)}
         >
           <Stack>
-            <Stack
-              divider={
-                <Divider sx={{ mb: 4, mt: 8, mx: { xs: -3, md: -8 } }} />
-              }
-              gap={3}
-            >
+            <Stack gap={1}>
               <GeneralForm />
-              <Stack sx={{ mt: -4 }}>
-                <Stack direction="row" sx={{ mb: 4 }}>
+              <Divider
+                variant="fullWidth"
+                sx={{ mx: { md: '-14%', xs: '-30%' }, mt: 8 }}
+              />
+              <Stack>
+                <Stack direction="row" sx={{ my: 4 }} alignItems={'center'}>
                   <Typography variant="subtitle1" sx={{ mr: 1 }}>
-                    Claim
+                    {t('template.claim')}
                   </Typography>
-                  <Tooltip title="A claim refers to a statement or assertion made by the issuer of the credential regarding the recipient's qualifications, achievements, or attributes. It serves as the basis for the credential being issued.">
+                  <Tooltip title={t('template.tooltip-title')}>
                     <InfoOutlinedIcon color={'inherit'} />
                   </Tooltip>
                 </Stack>
