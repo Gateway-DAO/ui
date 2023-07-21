@@ -47,11 +47,13 @@ export default function AddEmail({ onSuccess, onMigrate }: Props) {
   };
 
   const addEmail = useMutation(async (data: { email: string }) => {
+    // if user is asking for resubmit a token for a existing email, keep migration
     if (isMigration) return hasuraPublicService.create_email_nonce(data);
     try {
       const res = await hasuraUserService.protocol_add_email(data);
       return res;
     } catch (e) {
+      // if user is submitting a token for an existing email, set to migration
       if (e?.response?.errors?.[0]?.message === 'EMAIL_ALREADY_REGISTERED') {
         setIsMigration(true);
         return hasuraPublicService.create_email_nonce(data);
