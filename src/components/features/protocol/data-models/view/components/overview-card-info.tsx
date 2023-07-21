@@ -1,7 +1,6 @@
 import useTranslation from 'next-translate/useTranslation';
 
 import { ROUTES } from '@/constants/routes';
-import { generateImageUrl } from '@/hooks/use-file';
 import { hasuraPublicService } from '@/services/hasura/api';
 import { Protocol_Api_DataModel } from '@/services/hasura/types';
 import { theme } from '@/theme';
@@ -22,32 +21,8 @@ export default function OverviewCardInfo({ dataModel }: Props) {
   const { t } = useTranslation('protocol');
   const isMobile = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
 
-  const mockCreator = useQuery(
-    ['issuer', dataModel?.id],
-    () =>
-      hasuraPublicService.dao_profile_by_slug({
-        slug: 'gateway',
-      }),
-    {
-      select: (data) => data.daos?.[0],
-      refetchOnMount: false,
-      refetchOnWindowFocus: false,
-    }
-  );
-
   const getCreatedBy = () => {
     const { organization, createdBy } = dataModel;
-
-    console.log(organization);
-    console.log(
-      organization
-        ? organization.hasuraOrganization
-          ? generateImageUrl(organization.hasuraOrganization?.logo?.s3_key)
-          : organization?.image
-        : createdBy
-        ? createdBy?.gatewayUser?.picture
-        : ({ url: `/images/avatar.png` } as Partial<File>)
-    );
 
     return {
       gatewayID: organization
