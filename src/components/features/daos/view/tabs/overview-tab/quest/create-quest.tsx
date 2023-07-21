@@ -486,7 +486,7 @@ export function CreateQuestTemplate({
         </Grid>
       </FormProvider>
       <CredentialPublishedModal
-        open={true}
+        open={isPublished}
         handleClose={closePublishedModal}
         gate={result}
       />
