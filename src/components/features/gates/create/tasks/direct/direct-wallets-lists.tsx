@@ -200,9 +200,9 @@ export function DirectWalletsList({
         </TableCell>
         <TableCell align={'right'}>
           {duplicate ? (
-            <Chip variant="outlined" color="error" label="Duplicate" />
+            <Chip variant="outlined" color="primary" label="Duplicate" />
           ) : invalid ? (
-            <Chip variant="outlined" color="success" label="InValid" />
+            <Chip variant="outlined" color="error" label="InValid" />
           ) : (
             <Chip variant="outlined" color="success" label="Valid" />
           )}
@@ -267,7 +267,9 @@ export function DirectWalletsList({
           sx={{
             table: {
               width: '100%',
+              height: '100%',
             },
+            height: '100%',
           }}
         >
           <TableVirtuoso

@@ -295,8 +295,10 @@ export function CreateQuestTemplate({
       await publishGate.mutateAsync({
         gate_id: response.insert_gates_one.id,
       });
-      setResult(response.insert_gates_one);
-      setIsPublished(true);
+      enqueueSnackbar('Published');
+      router.push(
+        ROUTES.GATE_PROFILE.replace('[id]', response.insert_gates_one.id)
+      );
     }
   };
 
@@ -490,6 +492,18 @@ export function CreateQuestTemplate({
                       Continue
                     </LoadingButton>
                   )}
+                {isLastStep && (
+                  <LoadingButton
+                    type="submit"
+                    variant="contained"
+                    size="large"
+                    sx={{ marginLeft: 2 }}
+                    onClick={() => publish()}
+                    disabled={!stepValidity[`${currentStep}`]}
+                  >
+                    Save and publish
+                  </LoadingButton>
+                )}
               </Stack>
             </Stack>
           </Stack>

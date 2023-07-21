@@ -8,6 +8,7 @@ import { SlideUp } from '@/components/atoms/transitions/transitions';
 import CloseIcon from '@mui/icons-material/Close';
 import { InfoCard } from './info-card';
 import { SectionWithSliderResponsive } from '@/components/molecules/sections';
+import { useDaoProfile } from '../../context';
 
 export default function CreateCredentialDialog({
   open,
@@ -18,7 +19,12 @@ export default function CreateCredentialDialog({
 }) {
   const { t } = useTranslation('org-signup');
   const router = useRouter();
-
+  const {
+    openCreateQuestDialog,
+    setOpenCreateQuestDialog,
+    openSendDirectCredentialDialog,
+    setOpenSendDirectCredentialDialog,
+  } = useDaoProfile();
   const closeDialog = () => {
     toggleDialog(false);
     router.push({ hash: '' });
@@ -78,6 +84,7 @@ export default function CreateCredentialDialog({
                 slug="Allows you to engage and reward users for their efforts through task-based activities."
                 title="Create a Quest"
                 disabled={false}
+                action={setOpenCreateQuestDialog}
               />
               <InfoCard
                 description="Set the recipients and send directly"
@@ -92,6 +99,7 @@ export default function CreateCredentialDialog({
                 slug="A seamless and efficient way to distribute credentials directly to recipients."
                 title="Send a Credential"
                 disabled={false}
+                action={setOpenSendDirectCredentialDialog}
               />
               <InfoCard
                 description="Enhance user engagement"

@@ -104,26 +104,7 @@ export function DirectWalletsHeader({
             {invalidWallets} invalid
           </Typography>
         </Box>
-        {/* {readFiles && (
-          <Button
-            component="label"
-            variant="outlined"
-            startIcon={<UploadFile />}
-          >
-            {t('direct.import-csv')}
-            <input
-              hidden
-              type="file"
-              accept=".csv"
-              onChange={(event) => {
-                if (event.target.files?.length) {
-                  readFiles(event.target.files);
-                }
-              }}
-              value={[]}
-            />
-          </Button>
-        )} */}
+
         <Button
           variant="outlined"
           onClick={() => {

@@ -14,14 +14,6 @@ export default function RecipientTemplate({
   handleStep: (value: boolean) => void;
   input: any;
 }) {
-  // useEffect(() => {
-  //   updateFormState((prev) => ({
-  //     ...prev,
-  //     [input.name]: {
-  //       testing: false,
-  //     },
-  //   }));
-  // }, []);
   return (
     <Stack direction={'column'} mx={7} mb={5}>
       <Box>
@@ -29,9 +21,6 @@ export default function RecipientTemplate({
         <Typography variant="body2">
           Send this credential directly to someone or group of people
         </Typography>
-        {/* <Button onClick={() => handleStep(true)}>
-          Click to enable continue button(page is pending to be made)
-        </Button> */}
       </Box>
       <>
         <Stack>

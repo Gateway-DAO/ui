@@ -30,7 +30,11 @@ export default function TasksTemplate({
         </Typography>
 
         <Stack direction="column" gap={2}>
-          <TaskArea draftTasks={[]} onDelete={setDeletedTasks} />
+          <TaskArea
+            draftTasks={[]}
+            onDelete={setDeletedTasks}
+            handleStep={handleStep}
+          />
         </Stack>
       </Box>
     </Stack>

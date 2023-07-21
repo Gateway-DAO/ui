@@ -77,9 +77,10 @@ const defaultTaskData = (
 type TaskAreaProps = {
   draftTasks: Task[];
   onDelete: Dispatch<SetStateAction<string[]>>;
+  handleStep: (value: boolean) => void;
 };
 
-const TaskArea = ({ draftTasks, onDelete }: TaskAreaProps) => {
+const TaskArea = ({ draftTasks, onDelete, handleStep }: TaskAreaProps) => {
   const { control, setValue } = useFormContext<CreateGateData>();
 
   const { fields, append, remove, swap } = useFieldArray({
@@ -108,6 +109,7 @@ const TaskArea = ({ draftTasks, onDelete }: TaskAreaProps) => {
       ...(defaultTaskData(taskType) as any),
       order: highestOrder + 1,
     });
+    handleStep(true);
   };
 
   const onDragEnd = (result) => {

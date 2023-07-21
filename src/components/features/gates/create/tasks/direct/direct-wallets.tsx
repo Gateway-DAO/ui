@@ -25,15 +25,7 @@ import { DirectWalletsUploading } from './fields/direct-wallets-uploading';
 import ConfirmDialog from '@/components/molecules/modal/confirm-dialog';
 import { useEffect, useState } from 'react';
 import { AddRecipient } from './add-recipient-dialog';
-// check the columns and throw error done on backend level
-// publish credential
-// rebuild credential page for direct tasks
-// for wallets there is some edge case need to handle
-// merge the manish pr and check everything is working and show to designers whole flow
 
-// then start on send more flow
-// remove the current credential issuing flow
-// clean code
 export type AddRecipientDirectCredentialSchema = {
   addNew: boolean;
   type: string;

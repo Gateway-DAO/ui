@@ -94,6 +94,7 @@ export function GateViewContent({
             header={
               <DirectHoldersHeader
                 hasCredential={gateStatus?.isCompleted}
+                gateId={gateProps.id}
                 totalHolders={
                   directCredentialInfo.data?.whitelisted_wallets_aggregate
                     ?.aggregate.count

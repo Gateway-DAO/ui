@@ -46,6 +46,19 @@ type Props = {
   totalHolders: number;
 };
 
+// first deployed vercel
+// finished send more logic with storing files 
+// merged mansish pr and suggested some changes 
+// single end point done some stuff remaining
+
+// send more imporve ui
+// build the issuing credentials and remove you have this credential
+
+// for wallets there is some edge case need to handle
+
+// remove the current credential issuing flow
+// clean code
+
 export function DirectHoldersList({
   gate,
   header,
@@ -59,29 +72,35 @@ export function DirectHoldersList({
   const [nameDisplay, setNameDisplay] = useState('');
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
-  const { data, isLoading, hasNextPage, isFetchingNextPage, fetchNextPage } =
-    useInfiniteQuery(
-      [query.direct_credentialholders, me?.wallet, gate.id, filter],
-      ({ pageParam = 0 }) =>
-        filter?.length
-          ? hasuraPublicService.direct_credential_holders_search({
-              gate_id: gate.id,
-              offset: pageParam,
-              search: `%${filter}%`,
-            })
-          : hasuraPublicService.direct_credential_holders({
-              offset: pageParam,
+  const {
+    data,
+    isLoading,
+    hasNextPage,
+    isFetchingNextPage,
+    fetchNextPage,
+    refetch,
+  } = useInfiniteQuery(
+    [query.direct_credentialholders, me?.wallet, gate.id, filter],
+    ({ pageParam = 0 }) =>
+      filter?.length
+        ? hasuraPublicService.direct_credential_holders_search({
+            gate_id: gate.id,
+            offset: pageParam,
+            search: `%${filter}%`,
+          })
+        : hasuraPublicService.direct_credential_holders({
+            offset: pageParam,
 
-              gate_id: gate.id,
-            }),
-      {
-        enabled: !isLoadingInfo,
-        getNextPageParam: (lastPage, pages) => {
-          if (lastPage.whitelisted_wallets.length < 15) return undefined;
-          return pages.length * 15;
-        },
-      }
-    );
+            gate_id: gate.id,
+          }),
+    {
+      enabled: !isLoadingInfo,
+      getNextPageParam: (lastPage, pages) => {
+        if (lastPage.whitelisted_wallets.length < 15) return undefined;
+        return pages.length * 15;
+      },
+    }
+  );
 
   const whitelistedWallets =
     data?.pages?.flatMap((page) => page.whitelisted_wallets) ?? [];
@@ -118,7 +137,7 @@ export function DirectHoldersList({
           <TableCell
             key={column}
             variant="head"
-            align={'left'}
+            align={'center'}
             sx={{
               backgroundColor: 'background.paper',
             }}
@@ -145,24 +164,32 @@ export function DirectHoldersList({
     }
   });
 
+  const dateFormatAccordingToTimeZone = new Intl.DateTimeFormat('en-US', {
+    timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+    timeZoneName: 'short',
+    hour: '2-digit',
+    minute: '2-digit',
+    day: '2-digit',
+    year: '2-digit',
+    month: '2-digit',
+  });
+
   function rowContent(index: number, row: any) {
-    console.log(row);
-    const { wallet, gate, user } = row;
+    const { wallet, gate, user, created_at } = row;
     return (
       <>
-        <TableCell align={'left'}>
+        <TableCell align={'center'}>
           <Stack direction={'row'} alignItems={'center'}>
             <Avatar>{gate?.image}</Avatar>
             <Stack direction={'column'} sx={{ ml: 1 }}>
               <Typography variant="subtitle1">
-                {' '}
-                {checkNameSize(gate?.id)}{' '}
+                {checkNameSize(gate?.id)}
               </Typography>
               <Typography>{gate?.title}</Typography>
             </Stack>
           </Stack>
         </TableCell>
-        <TableCell align={'left'}>
+        <TableCell align={'center'}>
           <Stack direction={'row'} alignItems={'end'}>
             <AvatarFile
               file={user.picture}
@@ -173,7 +200,9 @@ export function DirectHoldersList({
             {checkNameSize(wallet)}
           </Stack>
         </TableCell>
-        <TableCell align={'center'}>{new Date().toDateString()}</TableCell>
+        <TableCell align={'center'}>
+          {dateFormatAccordingToTimeZone.format(new Date(created_at))}
+        </TableCell>
         <TableCell align={'center'}>
           <IconButton
             sx={{
@@ -214,7 +243,6 @@ export function DirectHoldersList({
       </>
     );
   }
-  console.log(windowSize.height);
   return (
     <Grid display="flex" flexDirection="column" item xs={12} md>
       <Stack

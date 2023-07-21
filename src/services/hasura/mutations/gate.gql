@@ -54,3 +54,28 @@ mutation verify_single(
     uploadedTime
   }
 }
+
+mutation csvSendMore($file_id: uuid!, $gate_id: uuid!) {
+  csv_send_more(file_id: $file_id, gate_id: $gate_id) {
+    send
+  }
+}
+
+mutation verify_send_more_single($id: uuid!, $type: String!, $wallet: String!) {
+  verify_send_more_single(id: $id, type: $type, wallet: $wallet) {
+    duplicate
+    valid
+    wallet
+    type
+  }
+}
+
+mutation send_more_single_send_again(
+  $id: uuid!
+  $type: String!
+  $wallet: String!
+) {
+  send_more_single_send_again(id: $id, type: $type, wallet: $wallet) {
+    send
+  }
+}

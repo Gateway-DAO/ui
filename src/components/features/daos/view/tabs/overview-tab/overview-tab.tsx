@@ -186,12 +186,6 @@ export function OverviewTab({
               <Divider sx={{ mt: 3 }} />
             </>
           )}
-          <button onClick={() => setOpenCreateQuestDialog(true)}>
-            openCreateQuestDialog
-          </button>
-          <button onClick={() => setOpenSendDirectCredentialDialog(true)}>
-            openSendDirectCredentialsDialogs
-          </button>
 
           <SectionWithSliderResponsive
             title={`${t('dao-profile:overview-tab.credentials-section.title')}`}

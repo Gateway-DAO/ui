@@ -21,6 +21,7 @@ type InfoCardProps = {
   options: string[];
   backgroundColor: string;
   disabled: boolean;
+  action?: (nextValue?: any) => void;
 };
 
 export function InfoCard({
@@ -32,6 +33,7 @@ export function InfoCard({
   href,
   backgroundColor,
   disabled,
+  action,
 }: InfoCardProps): JSX.Element {
   const isMobile = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
   const contentChildren = (
@@ -103,6 +105,7 @@ export function InfoCard({
           <Button
             variant="contained"
             disabled={disabled}
+            onClick={() => action(true)}
             fullWidth
             sx={{ height: 48, mt: 8 }}
           >

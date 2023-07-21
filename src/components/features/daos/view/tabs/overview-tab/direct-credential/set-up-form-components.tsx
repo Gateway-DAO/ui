@@ -24,7 +24,6 @@ export const setUpFormComponents = ({
   fullFormState,
   getValues,
 }: Props): JSX.Element[] => {
-  // const { getValues } = useFormContext<testingSchema>();
   return [
     <CredentialTemplate
       updateFormState={updateFormState}

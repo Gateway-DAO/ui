@@ -298,11 +298,14 @@ export function CreateDirectCredentialTemplate({
         );
         return;
       }
+      enqueueSnackbar('Published');
+
       await publishGate.mutateAsync({
         gate_id: response.insert_gates_one.id,
       });
-      setResult(response.insert_gates_one);
-      setIsPublished(true);
+      router.push(
+        ROUTES.GATE_PROFILE.replace('[id]', response.insert_gates_one.id)
+      );
     }
   };
 
