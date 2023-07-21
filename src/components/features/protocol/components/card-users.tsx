@@ -20,6 +20,7 @@ import CardUserCell from './card-user-cell';
 
 type Props = {
   issuer: PartialDeep<Protocol_Api_User>;
+  issuerAuthData?: PartialDeep<Protocol_Api_Auth>;
   organization?: PartialDeep<Protocol_Api_Organization>;
   recipient: PartialDeep<Protocol_Api_User>;
   recipientAuthData?: PartialDeep<Protocol_Api_Auth>;
@@ -27,6 +28,7 @@ type Props = {
 
 export default function CardUsers({
   issuer: issuerCredential,
+  issuerAuthData,
   organization: issuerOrganization,
   recipient: recipientCredential,
   recipientAuthData,
@@ -109,7 +111,10 @@ export default function CardUsers({
           label={t('credential.issuer-id')}
           picture={showPicture()}
           fallback={organization?.data?.logo_url}
-          name={limitCharsCentered(issuerName, 20)}
+          name={
+            limitCharsCentered(issuerName, 20) ||
+            limitCharsCentered(issuerAuthData?.id, 8)
+          }
           href={
             organization?.data?.slug
               ? ROUTES.DAO_PROFILE.replace('[slug]', organization?.data?.slug)

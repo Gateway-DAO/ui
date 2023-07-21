@@ -8,12 +8,7 @@ import { PartialDeep } from 'type-fest';
 import { object, string, SchemaOf, array, StringSchema } from 'yup';
 
 export type EditUserSchema = Required<
-  PartialDeep<
-    Pick<
-      Users,
-      'name' | 'bio' | 'username' | 'skills' | 'languages' | 'timezone'
-    >
-  >
+  PartialDeep<Pick<Users, 'name' | 'bio' | 'skills' | 'languages' | 'timezone'>>
 > & {
   socials: Pick<User_Socials, 'network' | 'url'>[];
   cover: string;
@@ -25,22 +20,12 @@ export const defaultValues = (
 ): EditUserSchema | undefined => {
   if (!user) return undefined;
 
-  const {
-    name,
-    bio,
-    username,
-    skills,
-    languages,
-    timezone,
-    socials,
-    cover,
-    picture,
-  } = user;
+  const { name, bio, skills, languages, timezone, socials, cover, picture } =
+    user;
 
   return {
     name,
     bio,
-    username,
     skills: skills || [],
     languages: languages || [],
     timezone,
@@ -50,21 +35,9 @@ export const defaultValues = (
   };
 };
 
-const usernameRegex = /^(?=[a-z0-9._]{2,20}$)(?!.*[_.]{2})[^_.].*[^_.]$/;
-
 export const schema: SchemaOf<EditUserSchema> = object({
   name: string().required('Name is required'),
   bio: string().nullable(),
-  username: string()
-    .required('Username is required')
-    .min(2)
-    .max(20)
-    .test({
-      name: 'username',
-      message:
-        'Username can only have lowercase alphanumeric charaters and ._-',
-      test: (value) => usernameRegex.test(value),
-    }),
   cover: string().nullable(),
   skills: array().of(string()).default([]).optional(),
   languages: array().of(string()).default([]).optional(),

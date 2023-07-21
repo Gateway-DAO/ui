@@ -41,6 +41,7 @@ export default function CredentialCardInfo({
     >
       <CardUsers
         issuer={credential?.issuerUser}
+        issuerAuthData={credential?.issuerAuth}
         organization={credential?.issuerOrganization}
         recipient={credential?.recipientUser}
         recipientAuthData={credential?.recipientAuth}
