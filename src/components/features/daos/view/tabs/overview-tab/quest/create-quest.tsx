@@ -323,30 +323,9 @@ export function CreateQuestTemplate({
     console.log(fullFormState, methods.getValues());
   };
 
-  const createOrganization = useMutation(
-    [mutation.create_organization],
-    () =>
-      hasuraUserService.create_organization({
-        ...fullFormState,
-      }),
-    {
-      onSuccess: (data) => {
-        setFullFormState({
-          slug: data.insert_daos_one.slug,
-        });
-        handleNext();
-      },
-      onError: (e: any) => {
-        snackbar.enqueueSnackbar(e?.response?.errors?.[0]?.message, {
-          variant: 'error',
-        });
-      },
-    }
-  );
   return (
     <>
       <FormProvider {...methods}>
-        {createOrganization.isLoading && <Loading fullScreen />}
         <Grid
           container
           sx={{
