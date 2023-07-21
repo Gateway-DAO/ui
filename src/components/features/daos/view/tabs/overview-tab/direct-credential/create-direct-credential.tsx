@@ -346,163 +346,165 @@ export function CreateDirectCredentialTemplate({
   );
 
   return (
-    <FormProvider {...methods}>
-      {createOrganization.isLoading && <Loading fullScreen />}
-      <Grid
-        container
-        sx={{
-          height: { xs: 'auto', md: '100%' },
-          flexWrap: 'nowrap',
-          flexDirection: { xs: 'column', md: 'row' },
-          backgroundPosition: 'center center',
-          backgroundSize: 'cover',
-          minHeight: `${windowSize.height}px`,
-          backgroundColor: brandColors.background.main,
-        }}
-      >
+    <>
+      <FormProvider {...methods}>
+        {createOrganization.isLoading && <Loading fullScreen />}
         <Grid
-          item
-          xs={10}
-          md={6}
-          lg={3.5}
+          container
           sx={{
-            pt: { xs: 3, md: 6 },
-            pb: { xs: 3, md: 0 },
-            px: { xs: 2, md: 6 },
-            flexGrow: 0,
-            background: alpha(theme.palette.common.black, 0.03),
-            backdropFilter: { xs: 'blur(85px)', md: 'blur(25px)' },
-            height: '100%',
-            display: { xs: 'none', md: 'flex' },
+            height: { xs: 'auto', md: '100%' },
+            flexWrap: 'nowrap',
+            flexDirection: { xs: 'column', md: 'row' },
+            backgroundPosition: 'center center',
+            backgroundSize: 'cover',
+            minHeight: `${windowSize.height}px`,
+            backgroundColor: brandColors.background.main,
           }}
         >
-          <Stack gap={5}>
-            <Stack>
-              <Stack direction="row" justifyContent="space-between" gap={2}>
-                <VerticalStepper activeStep={currentStep} />
-              </Stack>
-            </Stack>
-          </Stack>
-        </Grid>
-        <Grid
-          item
-          xs={12}
-          md={6}
-          lg={12}
-          px={{ xs: 0, lg: 8 }}
-          sx={{
-            flexGrow: 1,
-            height: '100%',
-            width: '100%',
-            display: { md: 'flex' },
-            flexDirection: 'column',
-            overflowY: 'auto',
-            overflowX: 'hidden',
-            borderLeft: `1px solid ${theme.palette.divider}`,
-          }}
-        >
-          <Stack
-            justifyContent="end"
-            direction="row"
-            flexGrow={0}
+          <Grid
+            item
+            xs={10}
+            md={6}
+            lg={3.5}
             sx={{
+              pt: { xs: 3, md: 6 },
+              pb: { xs: 3, md: 0 },
               px: { xs: 2, md: 6 },
-              display: { md: 'flex' },
+              flexGrow: 0,
+              background: alpha(theme.palette.common.black, 0.03),
+              backdropFilter: { xs: 'blur(85px)', md: 'blur(25px)' },
+              height: '100%',
+              display: { xs: 'none', md: 'flex' },
             }}
           >
-            <Avatar sx={{ mt: 5 }}>
-              <IconButton
-                onClick={() => {
-                  closeDialog();
-                }}
-              >
-                <CloseIcon />
-              </IconButton>
-            </Avatar>
-          </Stack>
-          <Stack direction="column" sx={{ mt: -5 }}>
-            {currentStepComponent}
-            <Divider variant="fullWidth" sx={{ mx: '-6%' }} />
+            <Stack gap={5}>
+              <Stack>
+                <Stack direction="row" justifyContent="space-between" gap={2}>
+                  <VerticalStepper activeStep={currentStep} />
+                </Stack>
+              </Stack>
+            </Stack>
+          </Grid>
+          <Grid
+            item
+            xs={12}
+            md={6}
+            lg={12}
+            px={{ xs: 0, lg: 8 }}
+            sx={{
+              flexGrow: 1,
+              height: '100%',
+              width: '100%',
+              display: { md: 'flex' },
+              flexDirection: 'column',
+              overflowY: 'auto',
+              overflowX: 'hidden',
+              borderLeft: `1px solid ${theme.palette.divider}`,
+            }}
+          >
             <Stack
-              direction={{ xs: 'column', md: 'row' }}
-              sx={{ my: 2, mx: { md: 6, xs: 2 } }}
-              justifyContent={isFirstStep ? 'end' : 'space-between'}
-              gap={2}
+              justifyContent="end"
+              direction="row"
+              flexGrow={0}
+              sx={{
+                px: { xs: 2, md: 6 },
+                display: { md: 'flex' },
+              }}
             >
-              {!isFirstStep && (
-                <Button variant="outlined" onClick={() => handlePrevious()}>
-                  {t('create-quest.back')}
-                </Button>
-              )}
+              <Avatar sx={{ mt: 5 }}>
+                <IconButton
+                  onClick={() => {
+                    closeDialog();
+                  }}
+                >
+                  <CloseIcon />
+                </IconButton>
+              </Avatar>
+            </Stack>
+            <Stack direction="column" sx={{ mt: -5 }}>
+              {currentStepComponent}
+              <Divider variant="fullWidth" sx={{ mx: '-6%' }} />
               <Stack
                 direction={{ xs: 'column', md: 'row' }}
-                justifyContent={'end'}
+                sx={{ my: 2, mx: { md: 6, xs: 2 } }}
+                justifyContent={isFirstStep ? 'end' : 'space-between'}
                 gap={2}
               >
-                <LoadingButton
-                  onClick={() => handleSaveAsDraft()}
-                  variant="outlined"
-                  size="large"
-                  sx={{ marginLeft: 2 }}
-                  isLoading={false}
-                  disabled={
-                    !(
-                      formStepControl[currentStep].name === 'recipient' ||
-                      formStepControl[currentStep].name === 'settings'
-                    )
-                  }
+                {!isFirstStep && (
+                  <Button variant="outlined" onClick={() => handlePrevious()}>
+                    {t('create-quest.back')}
+                  </Button>
+                )}
+                <Stack
+                  direction={{ xs: 'column', md: 'row' }}
+                  justifyContent={'end'}
+                  gap={2}
                 >
-                  {t('create-quest.save-as-draft')}
-                </LoadingButton>
-
-                {formStepControl[currentStep].name === 'details' && (
                   <LoadingButton
-                    onClick={() => {
-                      setTesting(false);
-                      methods.trigger();
-                    }}
-                    variant="contained"
+                    onClick={() => handleSaveAsDraft()}
+                    variant="outlined"
                     size="large"
                     sx={{ marginLeft: 2 }}
                     isLoading={false}
                     disabled={
-                      !(formStepControl[currentStep].name === 'details')
+                      !(
+                        formStepControl[currentStep].name === 'recipient' ||
+                        formStepControl[currentStep].name === 'settings'
+                      )
                     }
                   >
-                    {t('create-quest.continue')}
+                    {t('create-quest.save-as-draft')}
                   </LoadingButton>
-                )}
 
-                {!isLastStep &&
-                  !(formStepControl[currentStep].name === 'details') && (
+                  {formStepControl[currentStep].name === 'details' && (
+                    <LoadingButton
+                      onClick={() => {
+                        setTesting(false);
+                        methods.trigger();
+                      }}
+                      variant="contained"
+                      size="large"
+                      sx={{ marginLeft: 2 }}
+                      isLoading={false}
+                      disabled={
+                        !(formStepControl[currentStep].name === 'details')
+                      }
+                    >
+                      {t('create-quest.continue')}
+                    </LoadingButton>
+                  )}
+
+                  {!isLastStep &&
+                    !(formStepControl[currentStep].name === 'details') && (
+                      <LoadingButton
+                        type="submit"
+                        variant="contained"
+                        size="large"
+                        sx={{ marginLeft: 2 }}
+                        onClick={() => handleNext()}
+                        disabled={!stepValidity[`${currentStep}`]}
+                      >
+                        {t('create-quest.continue')}
+                      </LoadingButton>
+                    )}
+                  {isLastStep && (
                     <LoadingButton
                       type="submit"
                       variant="contained"
                       size="large"
                       sx={{ marginLeft: 2 }}
-                      onClick={() => handleNext()}
+                      onClick={() => publish()}
                       disabled={!stepValidity[`${currentStep}`]}
                     >
-                      {t('create-quest.continue')}
+                      {t('create-quest.save-and-publish')}
                     </LoadingButton>
                   )}
-                {isLastStep && (
-                  <LoadingButton
-                    type="submit"
-                    variant="contained"
-                    size="large"
-                    sx={{ marginLeft: 2 }}
-                    onClick={() => publish()}
-                    disabled={!stepValidity[`${currentStep}`]}
-                  >
-                    {t('create-quest.save-and-publish')}
-                  </LoadingButton>
-                )}
+                </Stack>
               </Stack>
             </Stack>
-          </Stack>
+          </Grid>
         </Grid>
-      </Grid>
-    </FormProvider>
+      </FormProvider>
+    </>
   );
 }

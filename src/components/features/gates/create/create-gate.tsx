@@ -432,11 +432,6 @@ export function CreateGate({ oldData }: CreateGateProps) {
             If you publish this credential, you will no longer be allowed to
             edit it. You can unpublish or delete the credential any time.
           </ConfirmDialog>
-          <GatePublishedModal
-            open={isPublished}
-            handleClose={closePublishedModal}
-            gate={result}
-          />
         </Stack>
       </FormProvider>
     </>
