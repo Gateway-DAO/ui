@@ -7,11 +7,14 @@ import { ModalRightConfirmation } from '@/components/molecules/modal/modal-right
 import { query } from '@/constants/queries';
 import { useAuth } from '@/providers/auth';
 import { useDisconnectWallets } from '@/providers/auth/hooks';
-import { Protocol_Api_AuthType } from '@/services/hasura/types';
 import { queryClient } from '@/services/query-client';
 
 import { Stack } from '@mui/material';
 
+import {
+  MigrationModal,
+  MigrationModalData,
+} from '../migration/migration-modal';
 import { AuthenticationsItem, Modals } from './../types';
 import { AddWalletModal } from './components/add-wallet-modal';
 import { ListWallets } from './components/list-wallets';
@@ -38,6 +41,9 @@ export function WalletAlias({ wallets, isLoading }: Props) {
     ]);
   };
 
+  const onMigration = (migrationData: MigrationModalData) =>
+    setModalRight({ type: 'migrate', migrationData });
+
   return (
     <Stack id="wallets" gap={3}>
       <Stack direction="row" alignItems="center" justifyContent="space-between">
@@ -59,23 +65,29 @@ export function WalletAlias({ wallets, isLoading }: Props) {
       />
       <ModalRightConfirmation
         title={t('common:modal-confirm-delete.title')}
-        open={modalRight?.type === 'remove'}
+        open={modalRight?.type === 'remove' || modalRight?.type === 'migrate'}
         handleClose={onCloseModal}
       >
-        {modalRight?.type === 'remove' &&
-          modalRight.authItem.type === Protocol_Api_AuthType.Wallet && (
-            <RemoveWallet
-              item={modalRight?.authItem}
-              onSuccess={onSuccessFinishModal}
-              onCancel={onCloseModal}
-            />
-          )}
+        {modalRight?.type === 'remove' && (
+          <RemoveWallet
+            item={modalRight?.authItem}
+            onSuccess={onSuccessFinishModal}
+            onCancel={onCloseModal}
+          />
+        )}
+        {modalRight?.type === 'migrate' && (
+          <MigrationModal
+            onClose={onCloseModal}
+            data={modalRight?.migrationData}
+          />
+        )}
       </ModalRightConfirmation>
       {modalRight?.type === 'add' && (
         <AddWalletModal
           wallets={wallets}
           onClose={onCloseModal}
           onSuccess={onSuccessFinishModal}
+          onMigrate={onMigration}
         />
       )}
     </Stack>
