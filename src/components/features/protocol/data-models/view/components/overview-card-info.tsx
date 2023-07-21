@@ -21,19 +21,6 @@ export default function OverviewCardInfo({ dataModel }: Props) {
   const { t } = useTranslation('protocol');
   const isMobile = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
 
-  const mockCreator = useQuery(
-    ['issuer', dataModel?.id],
-    () =>
-      hasuraPublicService.dao_profile_by_slug({
-        slug: 'gateway',
-      }),
-    {
-      select: (data) => data.daos?.[0],
-      refetchOnMount: false,
-      refetchOnWindowFocus: false,
-    }
-  );
-
   const getCreatedBy = () => {
     const { organization, createdBy } = dataModel;
 
@@ -48,13 +35,13 @@ export default function OverviewCardInfo({ dataModel }: Props) {
         : createdBy
         ? ROUTES.PROFILE.replace('[username]', createdBy.gatewayId)
         : undefined,
-      image: {
-        url: organization
-          ? organization.image
-          : createdBy
-          ? createdBy?.gatewayUser?.picture
-          : ({ url: `/images/avatar.png` } as Partial<File>),
-      } as Partial<File>,
+      image: organization
+        ? organization.hasuraOrganization
+          ? organization.hasuraOrganization?.logo
+          : ({ url: organization?.image } as Partial<File>)
+        : createdBy
+        ? createdBy?.gatewayUser?.picture
+        : ({ url: `/images/avatar.png` } as Partial<File>),
     };
   };
 
