@@ -67,8 +67,8 @@ export function ConnectMoreAuthDialog({ open, onClose }: Props) {
         </Typography>
         <Stack marginTop={6} direction={{ xs: 'column', md: 'row' }} gap={2}>
           <SocialAuthCardLink
-            title={t('connected-accounts.github.title')}
-            description={t('connected-accounts.github.description')}
+            title={t('connected-accounts.wallet.title')}
+            description={t('connected-accounts.wallet.description')}
             icon={<WalletIconsTransition />}
             href={`${ROUTES.SETTINGS_ACCOUNT_MANAGEMENT}#wallets`}
           />
