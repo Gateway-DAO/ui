@@ -88,6 +88,7 @@ export function WalletAlias({ wallets, isLoading }: Props) {
         {modalRight?.type === 'migrate' && (
           <MigrationModal
             onClose={onCloseModal}
+            onSuccess={onSuccessFinishModal}
             data={modalRight?.migrationData}
           />
         )}

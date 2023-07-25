@@ -1,5 +1,4 @@
 import Trans from 'next-translate/Trans';
-import TransText from 'next-translate/TransText';
 import useTranslation from 'next-translate/useTranslation';
 
 import { ArrowDivider } from '@/components/atoms/arrow-divider';
@@ -7,7 +6,7 @@ import { ConfirmDelete } from '@/components/organisms/confirm-delete/confirm-del
 import { useAuth } from '@/providers/auth';
 import { hasuraApi } from '@/services/hasura/api';
 import { Protocol_Api_AuthType } from '@/services/hasura/types';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { useSnackbar } from 'notistack';
 
 import { Divider, Stack, Typography } from '@mui/material';
@@ -23,15 +22,17 @@ export type MigrationModalData = {
 };
 
 type Props = {
+  onSuccess: () => void;
   onClose: () => void;
   data: MigrationModalData;
 };
 
 export function MigrationModal({
+  onSuccess,
   onClose,
   data: { token, hasura_id, type: authType, data: authData },
 }: Props) {
-  const { me } = useAuth();
+  const { me, hasuraUserService } = useAuth();
   const { enqueueSnackbar } = useSnackbar();
   const { t } = useTranslation('settings');
 
@@ -42,6 +43,8 @@ export function MigrationModal({
       select: (res) => res.me,
     }
   );
+
+  const migration = useMutation(hasuraUserService.protocol_migrate_auth);
 
   const { authentications } = oldUser?.protocolUser ?? {};
   const auth = authentications?.find((item) => {
@@ -66,6 +69,19 @@ export function MigrationModal({
     authentications?.filter((item) => item.id !== auth.id) ?? [];
   const isMigrating = remainingAuthenticaiton.length === 0;
 
+  const onMigrate = async () => {
+    try {
+      await migration.mutateAsync({
+        authId: auth.id,
+        ownerJwt: token,
+      });
+      enqueueSnackbar(t('settings:account-management.modal-migration.success'));
+      onSuccess();
+    } catch (error) {
+      enqueueSnackbar(error.message, { variant: 'error' });
+    }
+  };
+
   return (
     <>
       <Stack
@@ -79,14 +95,14 @@ export function MigrationModal({
           user={oldUser}
           auth={auth}
           isLoading={isLoading}
-          variant={isMigrating ? 'error' : 'normal'}
+          variant={isLoading ? 'normal' : isMigrating ? 'error' : 'normal'}
         />
         <ArrowDivider />
         <UserCard
           user={me}
           auth={auth}
           isLoadingAuth={isLoading}
-          variant={isMigrating ? 'sucess' : 'raised'}
+          variant={isLoading ? 'normal' : isMigrating ? 'sucess' : 'raised'}
         />
       </Stack>
       <Divider sx={{ my: 4 }} />
@@ -166,7 +182,7 @@ export function MigrationModal({
                   ),
                 })}
             onCancel={onClose}
-            onConfirm={() => {}}
+            onConfirm={onMigrate}
           />
         </>
       )}

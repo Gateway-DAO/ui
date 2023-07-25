@@ -124,6 +124,7 @@
     "message-add-success": "Account has been added",
     "modal-migration": {
       "title": "This account is already connected to another Gateway ID, do you want to migrate to this ID?",
+      "success": "Account migrated",
       "qa": {
         "title": "Migrating the account, be aware:",
         "description": "All credentials addressed to this ID will be migrated to <0>{{username}}</0>",

@@ -106,6 +106,7 @@ export function EmailAlias({ emails, isLoading }: Props) {
         )}
         {modalRight?.type === 'migrate' && (
           <MigrationModal
+            onSuccess={onSuccessFinishModal}
             data={modalRight.migrationData}
             onClose={onCloseModal}
           />
