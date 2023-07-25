@@ -35,7 +35,7 @@ export function EmailAlias({ emails, isLoading }: Props) {
 
   const messages: Record<
     'success' | 'modal-title',
-    Record<Modals['type'], string>
+    Partial<Record<Modals['type'], string>>
   > = {
     success: {
       add: t('account-management.message-add-success'),

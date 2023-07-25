@@ -14,10 +14,14 @@ import CancelCircleIcon from '@mui/icons-material/Cancel';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { Avatar, Chip, Stack, Typography, alpha } from '@mui/material';
 
+import { LoadingAuth, LoadingUser } from '../skeletons';
+
 type Props = {
   user: PartialDeep<Users>;
   auth: PartialDeep<Protocol_Api_Auth>;
   variant?: 'normal' | 'raised' | 'error' | 'sucess';
+  isLoading?: boolean;
+  isLoadingAuth?: boolean;
 };
 
 const themeSx: Record<Exclude<Props['variant'], 'normal'>, GatewaySxProps> = {
@@ -65,13 +69,44 @@ const EmailChip = ({ email }: { email: string }) => (
   />
 );
 
-export function UserCard({ user, auth, variant = 'normal' }: Props) {
-  const info = (
+export function UserCard({
+  user,
+  auth,
+  variant = 'normal',
+  isLoading,
+  isLoadingAuth,
+}: Props) {
+  const info = user ? (
     <Stack direction="row" alignItems="center" gap={1.5}>
       <AvatarFile file={user.picture} />
       <Typography variant="body1">{user.username}</Typography>
     </Stack>
-  );
+  ) : undefined;
+
+  const header =
+    variant === 'error' || variant === 'sucess' ? (
+      <Stack direction="row" alignItems="center" justifyContent="space-between">
+        {info}
+        {variant === 'error' ? (
+          <CancelCircleIcon color="error" />
+        ) : (
+          <CheckCircleIcon color="success" />
+        )}
+      </Stack>
+    ) : (
+      info
+    );
+
+  const chip = auth ? (
+    <>
+      {auth.type === Protocol_Api_AuthType.Email && (
+        <EmailChip {...auth.data} />
+      )}
+      {auth.type === Protocol_Api_AuthType.Wallet && (
+        <WalletChip {...auth.data} />
+      )}
+    </>
+  ) : undefined;
 
   return (
     <Stack
@@ -87,29 +122,9 @@ export function UserCard({ user, auth, variant = 'normal' }: Props) {
         ...themeSx[variant],
       }}
     >
-      {variant === 'error' || variant === 'sucess' ? (
-        <Stack
-          direction="row"
-          alignItems="center"
-          justifyContent="space-between"
-        >
-          {info}
-          {variant === 'error' ? (
-            <CancelCircleIcon color="error" />
-          ) : (
-            <CheckCircleIcon color="success" />
-          )}
-        </Stack>
-      ) : (
-        info
-      )}
+      {isLoading ? <LoadingUser /> : header}
 
-      {auth.type === Protocol_Api_AuthType.Email && (
-        <EmailChip {...auth.data} />
-      )}
-      {auth.type === Protocol_Api_AuthType.Wallet && (
-        <WalletChip {...auth.data} />
-      )}
+      {isLoading || isLoadingAuth ? <LoadingAuth /> : chip}
     </Stack>
   );
 }

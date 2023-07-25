@@ -32,6 +32,16 @@ export function WalletAlias({ wallets, isLoading }: Props) {
   const onCloseModal = () => setModalRight(null);
   const disconnect = useDisconnectWallets();
 
+  const messages: Record<
+    'modal-title',
+    Partial<Record<Modals['type'], string>>
+  > = {
+    'modal-title': {
+      remove: t('common:modal-confirm-delete.title'),
+      migrate: t('account-management.modal-migration.title'),
+    },
+  };
+
   const onSuccessFinishModal = async () => {
     setModalRight(null);
     await disconnect();
@@ -64,7 +74,7 @@ export function WalletAlias({ wallets, isLoading }: Props) {
         onRemoveWallet={setModalRight}
       />
       <ModalRightConfirmation
-        title={t('common:modal-confirm-delete.title')}
+        title={messages['modal-title'][modalRight?.type]}
         open={modalRight?.type === 'remove' || modalRight?.type === 'migrate'}
         handleClose={onCloseModal}
       >
