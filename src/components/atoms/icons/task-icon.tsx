@@ -6,7 +6,6 @@ import { SvgIconComponent } from '@mui/icons-material';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ElectricBoltIcon from '@mui/icons-material/ElectricBolt';
 import GitHubIcon from '@mui/icons-material/GitHub';
-import GridViewOutlinedIcon from '@mui/icons-material/GridViewOutlined';
 import InsertLinkIcon from '@mui/icons-material/InsertLink';
 import KeyIcon from '@mui/icons-material/Key';
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
@@ -17,6 +16,8 @@ import Twitter from '@mui/icons-material/Twitter';
 import { SvgIcon } from '@mui/material';
 import { SxProps } from '@mui/material';
 import Box from '@mui/material/Box';
+
+import { BlockChainIcon } from './blockchain';
 
 const iconBgColor: Record<TaskType, string> = {
   self_verify: '#9A53FF',
@@ -36,7 +37,9 @@ const iconBgColor: Record<TaskType, string> = {
   track_onchain: '#9A53FF',
   contract_interaction: null,
 };
-const typeIcons: Record<TaskType, SvgIconComponent> = {
+const typeIcons: Partial<
+  Record<TaskType, SvgIconComponent | React.FunctionComponent>
+> = {
   self_verify: InsertLinkIcon,
   quiz: QuizIcon,
   token_hold: MonetizationOnIcon,
@@ -52,7 +55,7 @@ const typeIcons: Record<TaskType, SvgIconComponent> = {
   manual: CheckCircleIcon,
   recaptcha: KeyIcon,
   contract_interaction: null,
-  track_onchain: GridViewOutlinedIcon,
+  track_onchain: BlockChainIcon,
 };
 
 export function TaskIcon({ type, sx }: { type: TaskType; sx?: SxProps }) {
