@@ -58,7 +58,10 @@ export function useAddWalletModal({
         const res = await hasuraUserService.protocol_add_wallet(data);
         return res;
       } catch (e) {
-        if (e?.response?.errors?.[0]?.message === 'EMAIL_ALREADY_REGISTERED') {
+        if (
+          e?.response?.errors?.[0]?.message ===
+          'WALLET_ALREADY_REGISTERED_TO_USER'
+        ) {
           setIsMigration(true);
           return hasuraPublicService.get_nonce(data);
         }
