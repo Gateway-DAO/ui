@@ -31,6 +31,7 @@ import QuizContent from './quiz';
 import SelfVerifyContent from './self-verify';
 import SnapshotContent from './snapshot';
 import TokenHoldContent from './token_hold';
+import TrackOnChainContent from './track_onchain';
 import TwitterFollowContent from './twitter/twitter_follow';
 import TwitterLikeContent from './twitter/twitter_like';
 import TwitterRetweetContent from './twitter/twitter_retweet';
@@ -134,6 +135,10 @@ export function Task({
       manual: {
         title: 'Manual Submission',
         body: ManualContent,
+      },
+      track_onchain: {
+        title: 'On-chain Events',
+        body: TrackOnChainContent,
       },
     };
 
@@ -240,9 +245,7 @@ export function Task({
         }
       />
       <Collapse in={expanded} timeout="auto" unmountOnExit>
-        <CardContent
-          sx={{ marginLeft: { xs: '0px', md: '55px', marginTop: '24px' } }}
-        >
+        <CardContent sx={{ ml: { xs: 0, md: 6.875 }, mt: 0 }}>
           <Typography variant="subtitle2" fontSize={16}>
             {task.description}
           </Typography>

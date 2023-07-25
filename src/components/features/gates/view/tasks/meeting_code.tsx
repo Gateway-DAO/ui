@@ -1,3 +1,4 @@
+import useTranslation from 'next-translate/useTranslation';
 import { useState } from 'react';
 
 import { LoadingButton } from '@/components/atoms/buttons/loading-button';
@@ -13,6 +14,7 @@ const MeetingCodeContent = ({
 }) => {
   const [meetingCode, setMeetingCode] = useState('');
   const formattedDate = new Date(updatedAt.toLocaleString()).toLocaleString();
+  const { t } = useTranslation('gate-profile');
 
   return (
     <Stack alignItems="start">
@@ -22,21 +24,21 @@ const MeetingCodeContent = ({
         value={meetingCode}
         disabled={completed}
         onChange={(e) => setMeetingCode(e.target.value)}
-        sx={{ margin: '20px 0' }}
+        sx={{ my: 2.5 }}
       />
       {!readOnly && !completed && (
         <LoadingButton
           variant="contained"
-          sx={{ marginTop: '15px' }}
+          sx={{ mt: 2 }}
           onClick={() => completeTask({ meeting_code: meetingCode })}
           isLoading={isLoading}
         >
-          Submit
+          {t('common:submit')}
         </LoadingButton>
       )}
       {completed && !!updatedAt && (
         <Typography color="#c5ffe3" variant="subtitle2">
-          Task completed at {formattedDate}
+          {t('tasks.completed-date', { date: formattedDate })}
         </Typography>
       )}
     </Stack>

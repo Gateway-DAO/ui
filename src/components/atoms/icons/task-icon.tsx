@@ -6,6 +6,7 @@ import { SvgIconComponent } from '@mui/icons-material';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ElectricBoltIcon from '@mui/icons-material/ElectricBolt';
 import GitHubIcon from '@mui/icons-material/GitHub';
+import GridViewOutlinedIcon from '@mui/icons-material/GridViewOutlined';
 import InsertLinkIcon from '@mui/icons-material/InsertLink';
 import KeyIcon from '@mui/icons-material/Key';
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
@@ -32,6 +33,7 @@ const iconBgColor: Record<TaskType, string> = {
   snapshot: '#F3B04E',
   manual: '#9A53FF',
   recaptcha: '#9A53FF',
+  track_onchain: '#9A53FF',
   contract_interaction: null,
 };
 const typeIcons: Record<TaskType, SvgIconComponent> = {
@@ -50,6 +52,7 @@ const typeIcons: Record<TaskType, SvgIconComponent> = {
   manual: CheckCircleIcon,
   recaptcha: KeyIcon,
   contract_interaction: null,
+  track_onchain: GridViewOutlinedIcon,
 };
 
 export function TaskIcon({ type, sx }: { type: TaskType; sx?: SxProps }) {

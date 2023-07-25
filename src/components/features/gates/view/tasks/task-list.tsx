@@ -1,14 +1,13 @@
+import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
 
 import CircularProgressWithLabel from '@/components/atoms/loadings/circular-progress-label';
 import { Task } from '@/components/features/gates/view/tasks';
 import { Submissions } from '@/components/features/gates/view/tasks/manual/submissions';
 import { ClientNav } from '@/components/organisms/navbar/client-nav';
-import { query } from '@/constants/queries';
 import { useAuth } from '@/providers/auth';
 import { Gates } from '@/services/hasura/types';
 import { TOKENS } from '@/theme';
-import { useQueryClient } from '@tanstack/react-query';
 import { PartialDeep } from 'type-fest';
 
 import { Box, Grid, Stack, Typography } from '@mui/material';
@@ -34,6 +33,7 @@ export function TaskList({
   isCredentialExpired,
   setOpen,
 }: Props) {
+  const { t } = useTranslation('gate-profile');
   const { me } = useAuth();
   const completedGate = !!completedAt;
   const totalTasksCount = completedGate
@@ -80,7 +80,7 @@ export function TaskList({
         direction="row"
         alignItems="center"
         sx={{
-          margin: { xs: '16px 16px 40px 16px', md: '60px' },
+          margin: { xs: '16px 16px 40px 16px', md: 7.5 },
         }}
       >
         <Box display={'flex'}>
@@ -99,10 +99,8 @@ export function TaskList({
               marginLeft: (theme) => theme.spacing(4),
             }}
           >
-            <Typography variant="h6">Tasks</Typography>
-            <Typography variant="caption">
-              Complete the tasks to unlock this credential
-            </Typography>
+            <Typography variant="h6">{t('gate.title')}</Typography>
+            <Typography variant="caption">{t('gate.subtitle')}</Typography>
           </Stack>
         </Box>
       </Stack>
@@ -114,11 +112,11 @@ export function TaskList({
             px: 4,
             border: 1,
             borderRadius: 1,
-            marginBottom: '24px',
+            marginBottom: 3,
           }}
           color={'#c5ffe3'}
         >
-          You have completed this credential at {formattedDate}
+          {t('gate.completed', { date: formattedDate })}
         </Typography>
       ) : isCredentialExpired ? (
         <Typography
@@ -129,11 +127,11 @@ export function TaskList({
             border: 1,
             borderColor: '#FFA726',
             borderRadius: 1,
-            marginBottom: '24px',
+            marginBottom: 3,
           }}
           color={'#FFA726'}
         >
-          This credential is not available
+          {t('gate.credential_isnt_available')}
         </Typography>
       ) : null}
 
