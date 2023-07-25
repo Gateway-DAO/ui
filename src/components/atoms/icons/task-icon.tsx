@@ -17,7 +17,7 @@ import { SvgIcon } from '@mui/material';
 import { SxProps } from '@mui/material';
 import Box from '@mui/material/Box';
 
-const iconBgColor: Record<TaskType, string> = {
+const iconBgColor: Partial<Record<TaskType, string>> = {
   self_verify: '#9A53FF',
   quiz: '#9A53FF',
   token_hold: '#9A53FF',
@@ -34,7 +34,7 @@ const iconBgColor: Record<TaskType, string> = {
   recaptcha: '#9A53FF',
   contract_interaction: null,
 };
-const typeIcons: Record<TaskType, SvgIconComponent> = {
+const typeIcons: Partial<Record<TaskType, SvgIconComponent>> = {
   self_verify: InsertLinkIcon,
   quiz: QuizIcon,
   token_hold: MonetizationOnIcon,

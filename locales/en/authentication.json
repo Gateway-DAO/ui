@@ -58,6 +58,10 @@
     "github": {
       "title": "Github",
       "description": "Connect your account to claim credentials with repository contribution and pull requests requirements."
+    },
+    "wallet": {
+      "title": "Wallet",
+      "description": "Connect your EVM and Solana wallets to claim credentials with on-chain and offline conditions."
     }
   },
   "card-summary-title": "Your account"
