@@ -12,12 +12,16 @@ export default function TextFieldWithEmoji({
   setValue,
   register,
   errors,
+  label,
+  noMb,
 }: {
   formValues: any;
   taskId: number;
   setValue: any;
   register: any;
   errors: any;
+  label?: string;
+  noMb?: boolean;
 }) {
   const descriptionRef = useRef<HTMLInputElement>(null);
   const [emoji, setEmoji] = useState('');
@@ -72,7 +76,7 @@ export default function TextFieldWithEmoji({
       required
       value={description}
       inputRef={descriptionRef}
-      label="Requirement Description"
+      label={label || 'Requirement description'}
       id="quiz-description"
       {...register(`tasks.${taskId}.description`)}
       error={!!errors.tasks?.[taskId]?.description}
@@ -81,7 +85,7 @@ export default function TextFieldWithEmoji({
         '& fieldset legend span': {
           marginRight: '10px',
         },
-        mb: 2,
+        mb: noMb ? 0 : 2,
       }}
       onChange={(event) => {
         setDescription(event.target.value);

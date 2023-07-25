@@ -64,6 +64,11 @@ export type HoldNFTTask = {
   task_data: HoldNFTData;
 };
 
+export type TrackOnChainEventsTask = {
+  task_type: 'track_onchain';
+  task_data: TrackOnChainEventsData;
+};
+
 export type FollowProfileTask = {
   task_type: 'twitter_follow';
   task_data: TwitterFollowData;
@@ -108,6 +113,7 @@ export type Task = {
   | SnapshotTask
   | HoldTokenTask
   | HoldNFTTask
+  | TrackOnChainEventsTask
   | FollowProfileTask
   | TwitterTweetTask
   | TwitterLikeTask
@@ -247,6 +253,11 @@ export type HoldTokenData = {
   chain?: string;
   token_address?: string;
   quantity?: number;
+};
+
+export type TrackOnChainEventsData = {
+  chain?: string;
+  contract_address?: string;
 };
 
 export type HoldTokenDataError = {

@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 
 import { TaskType } from '@/types/tasks';
+import { EmotionJSX } from '@emotion/react/types/jsx-namespace';
 
 import { SvgIconComponent } from '@mui/icons-material';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
@@ -16,6 +17,8 @@ import Twitter from '@mui/icons-material/Twitter';
 import { SvgIcon } from '@mui/material';
 import { SxProps } from '@mui/material';
 import Box from '@mui/material/Box';
+
+import { BlockChainIcon } from './blockchain';
 
 const iconBgColor: Record<TaskType, string> = {
   self_verify: '#9A53FF',
@@ -33,8 +36,9 @@ const iconBgColor: Record<TaskType, string> = {
   manual: '#9A53FF',
   recaptcha: '#9A53FF',
   contract_interaction: null,
+  track_onchain: '#9A53FF',
 };
-const typeIcons: Record<TaskType, SvgIconComponent> = {
+const typeIcons: Record<TaskType, SvgIconComponent | any> = {
   self_verify: InsertLinkIcon,
   quiz: QuizIcon,
   token_hold: MonetizationOnIcon,
@@ -50,6 +54,7 @@ const typeIcons: Record<TaskType, SvgIconComponent> = {
   manual: CheckCircleIcon,
   recaptcha: KeyIcon,
   contract_interaction: null,
+  track_onchain: BlockChainIcon,
 };
 
 export function TaskIcon({ type, sx }: { type: TaskType; sx?: SxProps }) {
