@@ -33,7 +33,7 @@ const MeetingCodeContent = ({
           onClick={() => completeTask({ meeting_code: meetingCode })}
           isLoading={isLoading}
         >
-          {t('common:submit')}
+          {t('common:actions.submit')}
         </LoadingButton>
       )}
       {completed && !!updatedAt && (
