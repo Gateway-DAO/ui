@@ -17,7 +17,9 @@ import { SvgIcon } from '@mui/material';
 import { SxProps } from '@mui/material';
 import Box from '@mui/material/Box';
 
-const iconBgColor: Partial<Record<TaskType, string>> = {
+import { BlockChainIcon } from './blockchain';
+
+const iconBgColor: Record<TaskType, string> = {
   self_verify: '#9A53FF',
   quiz: '#9A53FF',
   token_hold: '#9A53FF',
@@ -33,8 +35,11 @@ const iconBgColor: Partial<Record<TaskType, string>> = {
   manual: '#9A53FF',
   recaptcha: '#9A53FF',
   contract_interaction: null,
+  track_onchain: '#9A53FF',
 };
-const typeIcons: Partial<Record<TaskType, SvgIconComponent>> = {
+const typeIcons: Partial<
+  Record<TaskType, SvgIconComponent | React.FunctionComponent>
+> = {
   self_verify: InsertLinkIcon,
   quiz: QuizIcon,
   token_hold: MonetizationOnIcon,
@@ -50,6 +55,7 @@ const typeIcons: Partial<Record<TaskType, SvgIconComponent>> = {
   manual: CheckCircleIcon,
   recaptcha: KeyIcon,
   contract_interaction: null,
+  track_onchain: BlockChainIcon,
 };
 
 export function TaskIcon({ type, sx }: { type: TaskType; sx?: SxProps }) {
