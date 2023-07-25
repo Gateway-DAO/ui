@@ -41,7 +41,7 @@ export function TaskList({
     : gate.tasks.length + 1;
 
   const manualTask = gate.tasks.find((task) => task.task_type === 'manual');
-  const isGateAdmin = me?.id === gate.creator.id;
+  const isGateAdmin = me?.id === gate?.creator?.id;
   const taskProgress = (completedTasksCount / totalTasksCount) * 100;
   const isTaskStarted = taskProgress === 0 ? false : true;
   const router = useRouter();
