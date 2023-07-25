@@ -48,7 +48,7 @@ const TwitterLikeContent = ({
       <Stack
         width={'100%'}
         sx={{
-          borderRadius: '8px',
+          borderRadius: 1,
           position: 'relative',
           overflow: 'hidden',
           display: 'flex',
@@ -60,9 +60,8 @@ const TwitterLikeContent = ({
           marginBottom={2}
           sx={{
             color: (theme) => theme.palette.grey[500],
-            fontWeight: '400',
-            size: '.875rem',
-            fontFamily: 'sans-serif',
+            fontWeight: 400,
+            fontSize: 14,
           }}
         >
           {t('tasks.twitter_like.description')}
@@ -72,11 +71,11 @@ const TwitterLikeContent = ({
             width: '100%',
             justifyContent: 'flex-start',
             background: (theme) => theme.palette.secondary.light,
-            borderRadius: '8px',
-            maxWidth: '550px',
+            borderRadius: 1,
+            maxWidth: 550,
           }}
         >
-          <Box sx={{ padding: '0 10px 10px' }}>
+          <Box sx={{ pt: 0, px: 1.25, pb: 1.25 }}>
             <TwitterTweetEmbed
               tweetId={tweet_link.split('/').at(-1)}
               options={{
@@ -92,7 +91,9 @@ const TwitterLikeContent = ({
           <Stack
             sx={{
               flexDirection: 'row',
-              padding: '0 12px 14px',
+              pt: 0,
+              px: 1.5,
+              pb: 1.75,
             }}
           >
             {twitterKeys && !completed && (
@@ -104,9 +105,10 @@ const TwitterLikeContent = ({
                 sx={{
                   background: '#1DA1F2',
                   color: (theme) => theme.palette.secondary.light,
-                  fontSize: '0.75rem',
-                  padding: '6px 16px',
-                  lineHeight: '24px',
+                  fontSize: 12,
+                  pt: 0.75,
+                  px: 2,
+                  lineHeight: 2,
                   width: '100%',
                   '&:hover': {
                     background: '#1c95db',
@@ -124,7 +126,7 @@ const TwitterLikeContent = ({
       {!readOnly && !completed && twitterKeys && (
         <LoadingButton
           variant="contained"
-          sx={{ marginTop: '15px' }}
+          sx={{ mt: 2 }}
           onClick={() => checkForLike.mutate()}
           isLoading={isLoading || checkForLike.isLoading}
         >
@@ -134,8 +136,7 @@ const TwitterLikeContent = ({
 
       {completed && updatedAt && (
         <Typography color="#c5ffe3" variant="subtitle2">
-          {t('tasks.completed')}
-          {formattedDate}
+          {t('tasks.completed-date', { date: formattedDate })}
         </Typography>
       )}
     </Stack>

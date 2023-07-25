@@ -6,8 +6,11 @@ import {
   TwitterTweetDataError,
 } from '@/components/features/gates/create/schema';
 import TextFieldWithEmoji from '@/components/molecules/form/TextFieldWithEmoji/TextFieldWithEmoji';
-import { EmojiPickerProps } from '@/components/molecules/form/emoji-picker';
-import EmojiPicker, { EmojiStyle } from 'emoji-picker-react';
+import {
+  EmojiPicker,
+  EmojiPickerProps,
+} from '@/components/molecules/form/emoji-picker';
+import { EmojiStyle } from 'emoji-picker-react';
 import { useFormContext } from 'react-hook-form';
 
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
