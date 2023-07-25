@@ -71,6 +71,7 @@ type Props = {
   total: number;
   readFiles?: (files: File[] | FileList) => void;
   setAddRecipient: (nextValue?: any) => void;
+  skipAddRecipient?: boolean;
 };
 
 export function DirectWalletsHeader({
@@ -79,6 +80,7 @@ export function DirectWalletsHeader({
   total = 0,
   readFiles,
   setAddRecipient,
+  skipAddRecipient,
 }: Props) {
   const { t } = useTranslation('gate-new');
   const { setValue } = useFormContext<AddRecipientDirectCredentialSchema>();
@@ -105,20 +107,22 @@ export function DirectWalletsHeader({
           </Typography>
         </Box>
 
-        <Button
-          variant="outlined"
-          onClick={() => {
-            setValue('addNew', true);
-            setValue('oldType', '');
-            setValue('oldWallet', '');
-            setValue('type', '');
-            setValue('wallet', '');
-            setAddRecipient();
-          }}
-        >
-          <Add color="primary" />
-          Add Recipient
-        </Button>
+        {!skipAddRecipient && (
+          <Button
+            variant="outlined"
+            onClick={() => {
+              setValue('addNew', true);
+              setValue('oldType', '');
+              setValue('oldWallet', '');
+              setValue('type', '');
+              setValue('wallet', '');
+              setAddRecipient();
+            }}
+          >
+            <Add color="primary" />
+            Add Recipient
+          </Button>
+        )}
       </Stack>
     </Stack>
   );

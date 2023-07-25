@@ -12,6 +12,7 @@ import { useRemainingTime } from '../utils';
 
 type Props = (VerifyCsvProgressOutput | VerifySingleOutput) & {
   isLoading?: boolean;
+  skipShowingProgress?: boolean;
 };
 
 export function DirectWalletsProgress({
@@ -20,6 +21,7 @@ export function DirectWalletsProgress({
   valid,
   invalid,
   uploadedTime,
+  skipShowingProgress,
 }: Props) {
   const { t } = useTranslation('gate-new');
   const verified = !isNaN(valid) && !isNaN(invalid) ? valid + invalid : 0;
@@ -58,23 +60,25 @@ export function DirectWalletsProgress({
     >
       <Box sx={{ position: 'relative', display: 'inline-flex' }}>
         <CircularProgress variant="determinate" value={progress} size={56} />
-        <Box
-          sx={{
-            position: 'absolute',
-            inset: 3,
-            background: '#453854',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            borderRadius: '100%',
-          }}
-        >
-          <Typography
-            variant="caption"
-            component="div"
-            color="text.secondary"
-          >{`${progress}%`}</Typography>
-        </Box>
+        {!skipShowingProgress && (
+          <Box
+            sx={{
+              position: 'absolute',
+              inset: 3,
+              background: '#453854',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              borderRadius: '100%',
+            }}
+          >
+            <Typography
+              variant="caption"
+              component="div"
+              color="text.secondary"
+            >{`${progress}%`}</Typography>
+          </Box>
+        )}
       </Box>
       <Stack gap={0.5} alignItems="center">
         <Typography variant="body1">Verifying recipients</Typography>

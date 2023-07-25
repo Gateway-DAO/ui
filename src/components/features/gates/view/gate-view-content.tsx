@@ -99,6 +99,8 @@ export function GateViewContent({
                   directCredentialInfo.data?.whitelisted_wallets_aggregate
                     ?.aggregate.count
                 }
+                isAdmin={isAdmin}
+                directCredentialInfo={directCredentialInfo}
                 completedAt={credential?.credentials_by_pk?.created_at}
               />
             }

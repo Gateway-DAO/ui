@@ -32,7 +32,7 @@ export function GatesTab({
     credentialsTaskType,
     credentialsDirectType,
     setOpenCreateQuestDialog,
-    setOpenCredentialCreationDialog,
+    setOpenSendDirectCredentialDialog,
   } = useDaoProfile();
 
   const gates = type == 'direct' ? credentialsDirectType : credentialsTaskType;
@@ -81,6 +81,7 @@ export function GatesTab({
                   sx={{
                     position: 'relative',
                     minHeight: '506px',
+                    width: '352px',
                   }}
                 >
                   <Button
@@ -88,7 +89,7 @@ export function GatesTab({
                     sx={{ p: 0, height: '100%', width: '100%' }}
                     onClick={() =>
                       type === 'direct'
-                        ? setOpenCredentialCreationDialog(true)
+                        ? setOpenSendDirectCredentialDialog(true)
                         : setOpenCreateQuestDialog(true)
                     }
                   >
@@ -133,7 +134,11 @@ export function GatesTab({
                 title="No Credentials yet"
                 subtitle="Follow us and get notificatons when a new Credential is created"
                 disabled
-                sx={{ height: '506px', maxWidth: { md: '25%' } }}
+                sx={{
+                  height: '506px',
+                  width: '352px',
+                  maxWidth: { md: '25%' },
+                }}
               />
             ),
             isAdmin && (
@@ -141,6 +146,7 @@ export function GatesTab({
                 sx={{
                   position: 'relative',
                   minHeight: '506px',
+                  width: '352px',
                 }}
               >
                 <Button
@@ -148,7 +154,7 @@ export function GatesTab({
                   sx={{ p: 0, height: '100%', width: '100%' }}
                   onClick={() =>
                     type === 'direct'
-                      ? setOpenCredentialCreationDialog(true)
+                      ? setOpenSendDirectCredentialDialog(true)
                       : setOpenCreateQuestDialog(true)
                   }
                 >

@@ -62,6 +62,7 @@ export function DirectWalletsList({
   listProps,
   listItemProps,
   setAddRecipient,
+  skipAddRecipient,
 }: Required<Pick<VerifyCsvProgressOutput, 'validList' | 'invalidList'>> & {
   searchContainer?: (props: PropsWithChildren<unknown>) => JSX.Element;
   containerProps?: StackProps;
@@ -69,6 +70,7 @@ export function DirectWalletsList({
   listProps?: Partial<VirtuosoProps<any, any>>;
   listItemProps?: Partial<ListItemProps>;
   setAddRecipient: (nextValue?: any) => void;
+  skipAddRecipient?: boolean;
 }) {
   const [filter, setFilter] = useState('');
 
@@ -207,49 +209,51 @@ export function DirectWalletsList({
             <Chip variant="outlined" color="success" label="Valid" />
           )}
         </TableCell>
-        <TableCell align={'right'}>
-          <IconButton
-            sx={{
-              p: 0,
-            }}
-            onClick={(e) => handleClick(e, wallet, type)}
-          >
-            <Avatar sx={{ height: '30px', width: '31px' }}>
-              <MoreVertIcon />
-            </Avatar>
-          </IconButton>
-          <Popover
-            id="mouse-over-popover"
-            sx={{}}
-            open={open}
-            anchorEl={anchorEl}
-            anchorOrigin={{
-              vertical: 'bottom',
-              horizontal: 'right',
-            }}
-            transformOrigin={{
-              vertical: 'top',
-              horizontal: 'right',
-            }}
-            onClose={() => setAnchorEl(null)}
-            disableRestoreFocus
-          >
-            <Stack>
-              <Button>
-                <Delete color="secondary" sx={{ mr: 2 }} />
-                <Typography variant="subtitle2">Remove</Typography>
-              </Button>
-              <Button
-                onClick={() => {
-                  setAddRecipient();
-                }}
-              >
-                <Edit color="secondary" sx={{ mr: 2.5 }} />{' '}
-                <Typography variant="subtitle2">Edit</Typography>
-              </Button>
-            </Stack>
-          </Popover>
-        </TableCell>
+        {!skipAddRecipient && (
+          <TableCell align={'right'}>
+            <IconButton
+              sx={{
+                p: 0,
+              }}
+              onClick={(e) => handleClick(e, wallet, type)}
+            >
+              <Avatar sx={{ height: '30px', width: '31px' }}>
+                <MoreVertIcon />
+              </Avatar>
+            </IconButton>
+            <Popover
+              id="mouse-over-popover"
+              sx={{}}
+              open={open}
+              anchorEl={anchorEl}
+              anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'right',
+              }}
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              onClose={() => setAnchorEl(null)}
+              disableRestoreFocus
+            >
+              <Stack>
+                <Button>
+                  <Delete color="secondary" sx={{ mr: 2 }} />
+                  <Typography variant="subtitle2">Remove</Typography>
+                </Button>
+                <Button
+                  onClick={() => {
+                    setAddRecipient();
+                  }}
+                >
+                  <Edit color="secondary" sx={{ mr: 2.5 }} />{' '}
+                  <Typography variant="subtitle2">Edit</Typography>
+                </Button>
+              </Stack>
+            </Popover>
+          </TableCell>
+        )}
       </>
     );
   }

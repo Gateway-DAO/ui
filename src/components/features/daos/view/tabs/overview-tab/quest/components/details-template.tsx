@@ -100,6 +100,7 @@ export default function DetailsTemplate({
     }
     return fieldData;
   };
+  console.log(methods?.getValues());
 
   const uploadClaimImages = async (contentMediaType: string, fieldData) => {
     if (

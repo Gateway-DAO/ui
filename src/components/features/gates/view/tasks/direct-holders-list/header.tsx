@@ -8,30 +8,38 @@ import {
   Box,
   Button,
   CircularProgress,
+  LinearProgress,
   Paper,
   Stack,
   Typography,
 } from '@mui/material';
-import { Send } from '@mui/icons-material';
+
+import { Delete, Send, Check, Close } from '@mui/icons-material';
 import { useDropArea, useToggle } from 'react-use';
 import { SendMore } from './send-more';
 import ModalRight from '@/components/molecules/modal/modal-right';
 import { DirectWallets } from '../../../create/tasks/direct/direct-wallets';
 import { FormProvider, useForm, useFormContext } from 'react-hook-form';
 import { CreateGateData } from '../../../create/schema';
-import { useInfiniteQuery, useMutation } from '@tanstack/react-query';
+import {
+  UseQueryResult,
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+} from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { useSnackbar } from 'notistack';
 import {
   DirectWalletsEmptyHeader,
   DirectWalletsHeader,
 } from '../../../create/tasks/direct/direct-wallets-header';
-import { Files } from '@/services/hasura/types';
+import { Direct_Credential_InfoQuery, Files } from '@/services/hasura/types';
 import { DirectWalletsList } from '../../../create/tasks/direct/direct-wallets-lists';
 import { DirectWalletsDropzone } from '../../../create/tasks/direct/fields/direct-wallets-dropzone';
 import { DirectWalletsProgress } from '../../../create/tasks/direct/fields/direct-wallets-progress';
 import { DirectWalletsUploading } from '../../../create/tasks/direct/fields/direct-wallets-uploading';
 import ConfirmDialog from '@/components/molecules/modal/confirm-dialog';
+import { useLocalStorage } from '@solana/wallet-adapter-react';
 
 type Props = {
   isLoading?: boolean;
@@ -39,6 +47,8 @@ type Props = {
   totalHolders: number;
   completedAt?: string;
   gateId: string;
+  directCredentialInfo: UseQueryResult<Direct_Credential_InfoQuery, unknown>;
+  isAdmin: boolean;
 };
 
 export function DirectHoldersHeader({
@@ -46,10 +56,11 @@ export function DirectHoldersHeader({
   totalHolders,
   completedAt,
   gateId,
+  directCredentialInfo,
+  isAdmin,
 }: Props) {
   console.log(gateId);
 
-  const { me, onOpenLogin } = useAuth();
   const { t } = useTranslation('credential');
   const [openSendMore, setOpenSendMore] = useToggle(false);
   const [uploadFromCsv, setUploadFromCsv] = useToggle(false);
@@ -64,16 +75,10 @@ export function DirectHoldersHeader({
 
   const [duplicateRecipient, setDuplicateRecipient] = useToggle(false);
 
-  // useEffect(() => {
-  //   if (confirmDuplicate) {
-  //     sendMoreMutation.mutateAsync({
-  //       file_id: file.id,
-  //       gate_id: gateId,
-  //     });
-  //   }
-  //   if (confirmDuplicate && !confirmDuplicate) {
-  //   }
-  // }, [duplicateRecipient, confirmDuplicate]);
+  const [verifySingleData, setVerifySingleData] = useState({
+    type: '',
+    wallet: '',
+  });
 
   const verifyCSV = useMutation<Files, unknown, File>(
     ['add-new-csv'],
@@ -139,28 +144,7 @@ export function DirectHoldersHeader({
     }
   );
 
-  const progress =
-    // : {
-    //     id: '52e8e38f-73b8-43b7-bb08-620b71faca58',
-    //     invalid: 0,
-    //     invalidList: [
-    //       '{"wallet":"0xf084430Fc2CfAd8E81716aEdeBBE4458866D239","type":"Wallet"}',
-    //       '{"wallet":"example.com","type":"Email"}',
-    //       '{"wallet":"0C8FE70890d445B3099441f5a04dFe9CF1935200e1","type":"Wallet"}',
-    //       '{"wallet":"s.","type":"ENS"}',
-    //     ],
-    //     isDone: true,
-    //     total: 8,
-    //     uploadedTime: 1689069424482,
-    //     validList: [
-    //       '{"wallet":"sid.eth","ens":null,"type":"ENS"}',
-    //       '{"wallet":"example@gmail.com","type":"Email"}',
-    //       '{"wallet":"0xE1c201E8eA40d4fA0df4C142ab1c9D519005FC4E","type":"ENS"}',
-    //       '{"wallet":"0xB0D1c17591e7f5C17E15CA505F5fE758D6E40B57","type":"Wallet"}',
-    //     ],
-    //     valid: 4,
-    //   };
-    progressReq.data?.pages?.[0]?.verify_csv_progress;
+  const progress = progressReq.data?.pages?.[0]?.verify_csv_progress;
 
   const isUploadDisabled = file && progress && !progress.isDone;
 
@@ -194,14 +178,18 @@ export function DirectHoldersHeader({
       }),
     {
       onSuccess(data) {
-        // if (data.verify_send_more_single.duplicate === true) {
-        //   setDuplicateRecipient(true);
-        // } else {
-        sendMoreSingleSendAgain.mutateAsync({
-          type: data.verify_send_more_single.type,
-          wallet: data.verify_send_more_single.wallet,
-        });
-        // }
+        if (data.verify_send_more_single.duplicate === true) {
+          setDuplicateRecipient(true);
+          setVerifySingleData({
+            type: data.verify_send_more_single.type,
+            wallet: data.verify_send_more_single.wallet,
+          });
+        } else {
+          sendMoreSingleSendAgain.mutateAsync({
+            type: data.verify_send_more_single.type,
+            wallet: data.verify_send_more_single.wallet,
+          });
+        }
       },
 
       onError(error: any) {
@@ -233,6 +221,22 @@ export function DirectHoldersHeader({
     }
   );
 
+  const csvProcessingProgress = useQuery(
+    ['csv-processing-progress', gateId],
+    () => hasuraUserService.csvProcessingProgress({ jobId: gateId }),
+    {
+      enabled: isAdmin,
+    }
+  );
+
+  const handleCloseModalRight = () => {
+    directCredentialInfo.refetch();
+    setValue('whitelisted_wallets_file', null);
+    setUploadFromCsv(false);
+  };
+
+  console.log(csvProcessingProgress?.data);
+
   return (
     <>
       <Stack direction="row" justifyContent={'space-between'}>
@@ -253,57 +257,84 @@ export function DirectHoldersHeader({
           <Send sx={{ mr: 1.2 }} /> Send More
         </Button>
       </Stack>
-      {/* {!me && (
-        <Stack
-          direction="row"
-          py={2}
-          px={4}
-          spacing={4}
-          alignItems="center"
-          justifyContent="space-between"
-          borderRadius={1}
-          sx={{
-            backgroundColor: 'rgba(229, 229, 229, 0.08)',
-            mb: 3.75,
-          }}
-        >
-          <Box>
-            <Typography variant="subtitle1" color="text.primary">
-              {t('direct-credential.eligibility.check.title')}
-            </Typography>
-            <Typography variant="caption">
-              {t('direct-credential.eligibility.check.description')}
-            </Typography>
-          </Box>
-          <Button variant="contained" onClick={onOpenLogin}>
-            {t('common:actions.check')}
-          </Button>
-        </Stack>
-      )}
-      {!!me && hasCredential && (
-        <Alert
-          variant="outlined"
-          severity="success"
-          icon={<></>}
-          sx={{ mb: 3.75 }}
-        >
-          {completedAt
-            ? t('direct-credential.eligibility.has-at', {
-                published: DateTime.fromISO(completedAt).toFormat(`MM/dd/yyyy`),
-              })
-            : t('direct-credential.eligibility.has')}
-        </Alert>
-      )}
-      {!!me && !hasCredential && !!totalHolders && (
-        <Alert
-          variant="outlined"
-          severity="warning"
-          icon={<></>}
-          sx={{ mb: 3.75 }}
-        >
-          {t('direct-credential.eligibility.not')}
-        </Alert>
-      )} */}
+      {isAdmin &&
+        csvProcessingProgress?.data?.csv_processing_progress?.progress ===
+          totalHolders && (
+          <>
+            <Stack
+              direction="row"
+              py={2}
+              px={4}
+              spacing={4}
+              alignItems="center"
+              justifyContent="space-between"
+              borderRadius={1}
+              sx={{
+                backgroundColor: 'rgba(229, 229, 229, 0.08)',
+              }}
+            >
+              <Box>
+                <Typography variant="subtitle1" color="text.primary">
+                  {'Issuing Credentials'}
+                </Typography>
+                <Typography variant="caption">
+                  {'You will be notified when all recipients have received it'}
+                </Typography>
+              </Box>
+              <Typography variant="body2">
+                {csvProcessingProgress?.data?.csv_processing_progress?.progress}
+                {` / `}
+                {totalHolders}
+              </Typography>
+            </Stack>
+            <LinearProgress
+              variant="determinate"
+              value={10}
+              sx={{ mb: 3.75, borderRadius: 1 }}
+            />
+          </>
+        )}
+      {isAdmin &&
+        csvProcessingProgress?.data?.csv_processing_progress?.progress !==
+          totalHolders && (
+          <>
+            <Stack
+              direction="row"
+              py={2}
+              px={4}
+              spacing={4}
+              alignItems="center"
+              justifyContent="space-between"
+              borderRadius={1}
+              sx={{
+                backgroundColor: 'rgba(229, 229, 229, 0.08)',
+              }}
+            >
+              <Stack direction="row" sx={{ ml: -3 }}>
+                <Button>
+                  <Check color="success" />
+                </Button>
+                <Typography
+                  sx={{ mt: 0.7, ml: -1 }}
+                  variant="body1"
+                  color="text.primary"
+                >
+                  {'All recipients recevied it'}
+                </Typography>
+              </Stack>
+              <Button>
+                <Close color="success" />
+              </Button>
+            </Stack>
+            <LinearProgress
+              variant="determinate"
+              color="success"
+              value={100}
+              sx={{ mb: 3.75, borderRadius: 1 }}
+            />
+          </>
+        )}
+
       <SendMore
         open={openSendMore}
         toggleDialog={setOpenSendMore}
@@ -321,13 +352,24 @@ export function DirectHoldersHeader({
         positiveAnswer="Send Again"
         open={duplicateRecipient}
         setOpen={setDuplicateRecipient}
-        onConfirm={() => {}}
+        onConfirm={() => {
+          confirmDuplicate
+            ? sendMoreMutation.mutateAsync({
+                file_id: file.id,
+                gate_id: gateId,
+              })
+            : sendMoreSingleSendAgain.mutateAsync({
+                type: verifySingleData.type,
+                wallet: verifySingleData.wallet,
+              });
+          handleCloseModalRight();
+        }}
         title="This recipient has already received this credential, are you sure you want to send it again?"
       >
         <></>
       </ConfirmDialog>
       <ModalRight
-        handleClose={() => setUploadFromCsv(false)}
+        handleClose={() => handleCloseModalRight()}
         open={uploadFromCsv}
       >
         <FormProvider {...methods}>
@@ -359,24 +401,7 @@ export function DirectHoldersHeader({
               {verifyCSV.isLoading ? (
                 <>
                   <DirectWalletsEmptyHeader />
-                  <Stack
-                    gap={2}
-                    alignItems="center"
-                    sx={{
-                      background: '#261738',
-                      borderRadius: 1,
-                      border: 1,
-                      borderStyle: 'solid',
-                      borderColor: 'primary.main',
-                      p: 3.75,
-                    }}
-                  >
-                    <CircularProgress size={56} />
-
-                    <Stack gap={0.5} alignItems="center">
-                      <Typography variant="body1">Uploading</Typography>
-                    </Stack>
-                  </Stack>
+                  <DirectWalletsUploading />
                 </>
               ) : (
                 <>
@@ -389,6 +414,7 @@ export function DirectHoldersHeader({
                           readFiles={readFiles}
                           total={progress.valid + progress.invalid}
                           setAddRecipient={setAddRecipient}
+                          skipAddRecipient={true}
                         />
                       )}
 
@@ -401,6 +427,7 @@ export function DirectHoldersHeader({
                             valid={progress?.valid ?? 0}
                             invalid={progress?.invalid ?? 0}
                             {...progress}
+                            skipShowingProgress={true}
                           />
                         </>
                       )}
@@ -411,6 +438,7 @@ export function DirectHoldersHeader({
                             containerProps={{
                               height: '100%',
                             }}
+                            skipAddRecipient={true}
                             setAddRecipient={setAddRecipient}
                           />
                         </>
@@ -434,14 +462,15 @@ export function DirectHoldersHeader({
                 variant="contained"
                 sx={{ ml: 15 }}
                 onClick={() => {
-                  // if (confirmDuplicate) {
-                  //   setDuplicateRecipient(true);
-                  // } else {
-                  sendMoreMutation.mutateAsync({
-                    file_id: file.id,
-                    gate_id: gateId,
-                  });
-                  // }
+                  if (confirmDuplicate) {
+                    setDuplicateRecipient(true);
+                  } else {
+                    sendMoreMutation.mutateAsync({
+                      file_id: file.id,
+                      gate_id: gateId,
+                    });
+                    handleCloseModalRight();
+                  }
                 }}
               >
                 Send Credential
