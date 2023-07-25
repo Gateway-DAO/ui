@@ -1,7 +1,6 @@
 import { useMemo } from 'react';
 
 import { TaskType } from '@/types/tasks';
-import { EmotionJSX } from '@emotion/react/types/jsx-namespace';
 
 import { SvgIconComponent } from '@mui/icons-material';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
@@ -38,7 +37,9 @@ const iconBgColor: Record<TaskType, string> = {
   contract_interaction: null,
   track_onchain: '#9A53FF',
 };
-const typeIcons: Record<TaskType, SvgIconComponent | any> = {
+const typeIcons: Partial<
+  Record<TaskType, SvgIconComponent | React.FunctionComponent>
+> = {
   self_verify: InsertLinkIcon,
   quiz: QuizIcon,
   token_hold: MonetizationOnIcon,

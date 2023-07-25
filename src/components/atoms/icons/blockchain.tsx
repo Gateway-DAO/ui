@@ -1,6 +1,6 @@
 import SvgIcon, { SvgIconProps } from '@mui/material/SvgIcon';
 
-export function BlockChainIcon(props: SvgIconProps) {
+export function BlockChainIcon(props: SvgIconProps): JSX.Element {
   return (
     <SvgIcon viewBox="0 0 24 24" {...props}>
       <path
