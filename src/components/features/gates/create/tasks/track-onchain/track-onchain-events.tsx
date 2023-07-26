@@ -47,7 +47,7 @@ const TrackOnChainEventsTask = ({ dragAndDrop, taskId, deleteTask }) => {
   const formValues = getValues();
 
   const chain = watch(`tasks.${taskId}.task_data.chain`, null);
-  const address = watch(`tasks.${taskId}.task_data.contract_address`);
+  const contract_address = watch(`tasks.${taskId}.task_data.contract_address`);
 
   const {
     fields: parameters,
@@ -82,6 +82,19 @@ const TrackOnChainEventsTask = ({ dragAndDrop, taskId, deleteTask }) => {
 
   const [taskVisible, setTaskVisible] = useState(true);
   const [taskIsMoving, setTaskIsMoving] = useState(true);
+
+  const checkContract = async () => {
+    const ABI = await fetch(
+      `/api/track_onchain?chain=${chain}&contract_address=${contract_address}`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+    console.log('%#ˆ$#ˆ$#ˆ', ABI);
+  };
 
   return (
     <Stack
@@ -260,8 +273,9 @@ const TrackOnChainEventsTask = ({ dragAndDrop, taskId, deleteTask }) => {
                 variant="outlined"
                 disabled={
                   !!getFieldState(`tasks.${taskId}.task_data.contract_address`)
-                    .error || !address?.length
+                    .error || !contract_address?.length
                 }
+                onClick={checkContract}
               >
                 {t('tasks.track_onchain.check_contract')}
               </Button>
