@@ -38,26 +38,10 @@ import {
   Stack,
   Tooltip,
   Typography,
-  styled,
   useMediaQuery,
 } from '@mui/material';
 
 import LoadingModal from '../credit-score/LoadingModal';
-
-const Item = styled(Paper)(({ theme }) => ({
-  ...theme.typography.body2,
-  display: 'flex',
-  flexGrow: 1,
-  textAlign: 'center',
-  justifyContent: 'center',
-  alignItems: 'center',
-  boxSizing: 'border-box',
-  color: theme.palette.text.secondary,
-  height: 108,
-  padding: 35,
-  lineHeight: '160%',
-  textTransform: 'uppercase',
-}));
 
 export function SpiceFiTemplate() {
   const isMobile = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
@@ -118,31 +102,6 @@ export function SpiceFiTemplate() {
       router.back();
     }
   };
-
-  const { refetch, isFetching: createCredentialLoading } = useQuery(
-    ['cred-api-create-credential', me?.wallet],
-    async () => {
-      const result = await hasuraUserService.create_cred({
-        gatewayId: me?.protocolUser?.gatewayId,
-        score: credScore?.value,
-        bearerToken: token,
-      });
-
-      await router.push(
-        ROUTES.PROTOCOL_CREDENTIAL.replace(
-          '[id]',
-          result.create_cred.credentialId
-        )
-      );
-
-      await queryClient.resetQueries(['user_protocol', me?.id]);
-
-      return result.create_cred.credentialId;
-    },
-    {
-      enabled: false,
-    }
-  );
 
   const { data: recipientsUsers } = useQuery(
     ['cred-api-find-recipient-user', DATA_MODEL_ID],
@@ -336,12 +295,12 @@ export function SpiceFiTemplate() {
                 variant="contained"
                 fullWidth
                 disabled={!isCreditScore}
-                onClick={() => refetch()}
+                onClick={() => router.push(ROUTES.EXPLORE)}
                 sx={{
                   mb: 2,
                 }}
               >
-                ISSUE CREDENTIAL
+                SEE CREDENTIAL
               </Button>
             )}
 
@@ -598,7 +557,6 @@ export function SpiceFiTemplate() {
           </Stack>
         </Grid>
       </Grid>
-      <LoadingModal openLoadingModal={createCredentialLoading} />
       <HolderDialog
         isHolderDialog={isHolderDialog}
         credentialId="937f9fc8-f3a7-4d28-88bc-826af1237c2c"
