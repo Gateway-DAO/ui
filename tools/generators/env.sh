@@ -11,7 +11,7 @@ function print_help {
 
 # Script Arguments
 # ----------------
-PROJECT="dapp"
+PROJECT="ui"
 REQUIRED_CLI=(
   aws
   jq
