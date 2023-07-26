@@ -221,6 +221,18 @@ export type QuizTaskDataError = {
   }[];
 };
 
+export type TrackOnChainEventsDataError = {
+  id?: FieldError;
+  chain?: FieldError;
+  contract_address?: FieldError;
+  parameters?: {
+    id?: FieldError;
+    type: FieldError;
+    operator: FieldError;
+    value: FieldError;
+  }[];
+};
+
 export type Question = {
   id?: string;
   order: number;
@@ -258,6 +270,14 @@ export type HoldTokenData = {
 export type TrackOnChainEventsData = {
   chain?: string;
   contract_address?: string;
+  parameters: Parameter[];
+};
+
+export type Parameter = {
+  id?: string;
+  type: string;
+  operator: string;
+  value: any;
 };
 
 export type HoldTokenDataError = {
@@ -403,6 +423,15 @@ const holdTokenTaskDataSchema = z.object({
 
 const trackOnChainTaskDataSchema = z.object({
   chain: z.number(),
+  parameters: z.array(
+    z.object({
+      type: z.string(),
+      operator: z
+        .enum(['equal_to', 'not_equal_to', 'greater_than', 'less_than'])
+        .optional(),
+      value: z.any(),
+    })
+  ),
 });
 
 const holdNFTTaskDataSchema = z.object({

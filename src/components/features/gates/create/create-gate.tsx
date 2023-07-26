@@ -290,7 +290,7 @@ export function CreateGate({ oldData }: CreateGateProps) {
             padding={'0 90px'}
             sx={(theme) => ({
               p: '0 90px',
-              [theme.breakpoints.down('sm')]: { p: '0 20px' },
+              [theme.breakpoints.down('sm')]: { p: '0' },
             })}
           >
             <Typography
@@ -366,7 +366,7 @@ export function CreateGate({ oldData }: CreateGateProps) {
                   p: '0 90px',
                   flexDirection: { xs: 'column', md: 'row' },
                   justifyContent: 'space-between',
-                  [theme.breakpoints.down('sm')]: { p: '0 20px' },
+                  [theme.breakpoints.down('sm')]: { p: '0' },
                 })}
               >
                 <Box

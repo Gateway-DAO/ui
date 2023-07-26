@@ -4,16 +4,19 @@ import { useEffect, useMemo, useState } from 'react';
 import { TaskIcon } from '@/components/atoms/icons/task-icon';
 import {
   CreateGateData,
+  Parameter,
   TrackOnChainEventsData,
 } from '@/components/features/gates/create/schema';
 import TextFieldWithEmoji from '@/components/molecules/form/TextFieldWithEmoji/TextFieldWithEmoji';
-import { useFormContext } from 'react-hook-form';
+import { brandColors } from '@/theme';
+import { useFieldArray, useFormContext } from 'react-hook-form';
 
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import {
   Box,
   Button,
+  Divider,
   FormControl,
   IconButton,
   InputLabel,
@@ -22,9 +25,11 @@ import {
   Stack,
   TextField,
   Typography,
+  alpha,
 } from '@mui/material';
 
 import { mockChains } from './__mock__';
+import { Parameters } from './components/parameters';
 
 const TrackOnChainEventsTask = ({ dragAndDrop, taskId, deleteTask }) => {
   const { t } = useTranslation('gate-new');
@@ -34,6 +39,7 @@ const TrackOnChainEventsTask = ({ dragAndDrop, taskId, deleteTask }) => {
     setValue,
     getValues,
     watch,
+    control,
     formState: { errors },
   } = useFormContext<CreateGateData>();
 
@@ -42,6 +48,23 @@ const TrackOnChainEventsTask = ({ dragAndDrop, taskId, deleteTask }) => {
   }, [getValues]);
 
   const chain = watch(`tasks.${taskId}.task_data.chain`, null);
+
+  const {
+    fields: parameters,
+    append,
+    remove,
+    swap,
+    update,
+  } = useFieldArray({
+    name: `tasks.${taskId}.task_data.parameters`,
+    control,
+  });
+
+  const createParameter = (): Parameter => ({
+    type: '',
+    operator: null,
+    value: null,
+  });
 
   useEffect(() => {
     if (formValues.tasks[taskId]?.title === '') {
@@ -54,6 +77,8 @@ const TrackOnChainEventsTask = ({ dragAndDrop, taskId, deleteTask }) => {
     setTaskVisible(dragAndDrop);
     setTaskIsMoving(dragAndDrop);
   }, [dragAndDrop]);
+
+  useEffect(() => append(createParameter()), []);
 
   const [taskVisible, setTaskVisible] = useState(true);
   const [taskIsMoving, setTaskIsMoving] = useState(true);
@@ -81,9 +106,10 @@ const TrackOnChainEventsTask = ({ dragAndDrop, taskId, deleteTask }) => {
         }}
       >
         <Stack
-          direction={'row'}
           alignItems={'center'}
           sx={(theme) => ({
+            flexDirection: { xs: 'column', md: 'row' },
+            alignItems: { xs: 'flex-start', md: 'center' },
             width: '100%',
             mr: '20px',
             [theme.breakpoints.between('md', 'lg')]: {
@@ -96,7 +122,7 @@ const TrackOnChainEventsTask = ({ dragAndDrop, taskId, deleteTask }) => {
         >
           <TaskIcon
             type="track_onchain"
-            sx={{ marginRight: 3, marginLeft: 4 }}
+            sx={{ mr: 3, ml: { xs: 0, md: 4 }, mb: { xs: 2, md: 0 } }}
           />
 
           <Stack>
@@ -231,7 +257,50 @@ const TrackOnChainEventsTask = ({ dragAndDrop, taskId, deleteTask }) => {
             </Stack>
           )}
         </Stack>
+        <Divider
+          sx={(theme) => ({
+            margin: '48px -50px',
+            [theme.breakpoints.down('sm')]: {
+              margin: '24px -20px',
+            },
+          })}
+        />
       </FormControl>
+      {!taskVisible && (
+        <Stack direction="column" alignItems="flex-start">
+          <Stack
+            justifyContent="space-between"
+            direction="row"
+            alignItems="center"
+            sx={{ width: '100%' }}
+          >
+            <Typography
+              sx={{
+                color: alpha(brandColors.white.main, 0.7),
+                fontWeight: 600,
+              }}
+            >
+              {t('tasks.track_onchain.parameters')}
+            </Typography>
+
+            <Button
+              variant="text"
+              sx={{ my: 2, alignSelf: 'flex-end' }}
+              onClick={async () => append(createParameter())}
+            >
+              + {t('tasks.track_onchain.add_parameter')}
+            </Button>
+          </Stack>
+
+          <Parameters
+            parameters={parameters}
+            taskId={taskId}
+            removeParameter={remove}
+            swapParameter={swap}
+            updateParameter={update}
+          />
+        </Stack>
+      )}
     </Stack>
   );
 };
