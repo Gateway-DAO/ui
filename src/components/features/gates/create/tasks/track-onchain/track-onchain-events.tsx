@@ -1,8 +1,11 @@
 import useTranslation from 'next-translate/useTranslation';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import { TaskIcon } from '@/components/atoms/icons/task-icon';
-import { CreateGateData } from '@/components/features/gates/create/schema';
+import {
+  CreateGateData,
+  TrackOnChainEventsData,
+} from '@/components/features/gates/create/schema';
 import TextFieldWithEmoji from '@/components/molecules/form/TextFieldWithEmoji/TextFieldWithEmoji';
 import { useFormContext } from 'react-hook-form';
 
@@ -30,10 +33,15 @@ const TrackOnChainEventsTask = ({ dragAndDrop, taskId, deleteTask }) => {
     register,
     setValue,
     getValues,
+    watch,
     formState: { errors },
   } = useFormContext<CreateGateData>();
 
-  const formValues = getValues();
+  const formValues = useMemo(() => {
+    return getValues();
+  }, [getValues]);
+
+  const chain = watch(`tasks.${taskId}.task_data.chain`, null);
 
   useEffect(() => {
     if (formValues.tasks[taskId]?.title === '') {
@@ -203,23 +211,25 @@ const TrackOnChainEventsTask = ({ dragAndDrop, taskId, deleteTask }) => {
               ))}
             </Select>
           </FormControl>
-          <Stack
-            direction="row"
-            gap={2}
-            justifyContent="center"
-            alignItems="center"
-          >
-            <TextField
-              fullWidth
-              required
-              label={t('tasks.track_onchain.contract_address')}
-              sx={{ flex: 1 }}
-              {...register(`tasks.${taskId}.task_data.contract_address`)}
-            />
-            <Button size="large" variant="outlined">
-              {t('tasks.track_onchain.check_contract')}
-            </Button>
-          </Stack>
+          {chain && (
+            <Stack
+              direction="row"
+              gap={2}
+              justifyContent="center"
+              alignItems="center"
+            >
+              <TextField
+                fullWidth
+                required
+                label={t('tasks.track_onchain.contract_address')}
+                sx={{ flex: 1 }}
+                {...register(`tasks.${taskId}.task_data.contract_address`)}
+              />
+              <Button size="large" variant="outlined">
+                {t('tasks.track_onchain.check_contract')}
+              </Button>
+            </Stack>
+          )}
         </Stack>
       </FormControl>
     </Stack>

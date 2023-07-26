@@ -401,6 +401,10 @@ const holdTokenTaskDataSchema = z.object({
   }),
 });
 
+const trackOnChainTaskDataSchema = z.object({
+  chain: z.number(),
+});
+
 const holdNFTTaskDataSchema = z.object({
   chain: z.number(),
   nft_address: z
@@ -521,6 +525,20 @@ export const taskHoldTokenSchema = z.object({
     .min(2, 'The description must contain at least 2 character(s)'),
   task_type: z.literal('token_hold'),
   task_data: holdTokenTaskDataSchema,
+});
+
+export const taskTrackOnChainSchema = z.object({
+  id: z.string().optional(),
+  task_id: z.string().optional(),
+  order: z.number().optional(),
+  title: z
+    .string()
+    .min(2, 'Hold Token title must contain at least 2 character(s)'),
+  description: z
+    .string()
+    .min(2, 'The description must contain at least 2 character(s)'),
+  task_type: z.literal('track_onchain'),
+  task_data: trackOnChainTaskDataSchema,
 });
 
 export const taskHoldNFTSchema = z.object({
@@ -674,6 +692,7 @@ const taskGate = gateBase.augment({
         taskQuizSchema,
         taskSnapshotSchema,
         taskHoldTokenSchema,
+        taskTrackOnChainSchema,
         taskHoldNFTSchema,
         TwitterFollowProfileSchema,
         taskTwitterTweetSchema,
