@@ -197,7 +197,19 @@ export function DirectWalletsList({
             variant="filled"
             color="default"
             label={type}
-            icon={<Email />}
+            avatar={
+              <Avatar
+                src={
+                  type === 'Email'
+                    ? '/images/mail-filled.svg'
+                    : '/images/ethereum.svg'
+                }
+                sx={{
+                  height: 5,
+                  width: 10,
+                }}
+              />
+            }
           />
         </TableCell>
         <TableCell align={'right'}>

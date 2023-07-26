@@ -482,3 +482,11 @@ export function DirectHoldersHeader({
     </>
   );
 }
+// meeting for the frontend code
+
+// test frontend by using local storage
+// and also for send more list does not updates
+// rename end points
+// push dapp pr
+// clean frontend code
+// add modal by manish

@@ -40,100 +40,9 @@ export default function DetailsTemplate({
   input: any;
   fullFormState: any;
 }) {
-  const dataModel = fullFormState?.template;
-
-  const { hasuraUserService, token } = useAuth();
-  const { enqueueSnackbar } = useSnackbar();
   const { t } = useTranslation('quest');
 
   const methods = useFormContext<CreateGateSchema>();
-
-  // const methods = useForm<CreateGateSchema>({
-
-  //   mode: 'all',
-  //   defaultValues: {
-  //     image: '/images/qr-code.png',
-  //     title: watchValues?.title,
-  //     categories: watchValues?.categories,
-  //     data_model_id: watchValues?.data_model_id,
-  //     description: watchValues?.description,
-  //     schema: watchValues?.schema,
-  //     type: watchValues?.type,
-  //     creator: { id: '111', username: watchValues?.creator.username },
-  //     claim: watchValues?.claim,
-  //   },
-  // });
-
-  // console.log(errors);
-
-  // useEffect(() => {
-  //   console.log('executing');
-  //   handleStep(isValid);
-  //   updateFormState((prev) => ({
-  //     ...prev,
-  //     [input.name]: {
-  //       dataModel: getValues(),
-  //     },
-  //   }));
-  // }, [isValid]);
-
-  // const schema = getValues('schema');
-  // const fieldNames = Object.keys(schema.properties).map((key) => `claim.${key}` as keyof CreateGateSchema);
-  // const data = watch(fieldNames);
-
-  // useEffect(() => {
-  //   console.log(data);
-  //   trigger('claim');
-  // }, [data, !isValid]);
-
-  const uploadArweave = useMutation(['uploadArweave'], (base64: string) =>
-    hasuraUserService.upload_arweave({ base64 })
-  );
-
-  const removeEmptyDataFromArrayField = (type: string, fieldData) => {
-    if (
-      type === claimFields.array &&
-      fieldData.length > 0 &&
-      fieldData[0] === ''
-    ) {
-      fieldData = [];
-    }
-    return fieldData;
-  };
-  console.log(methods?.getValues());
-
-  const uploadClaimImages = async (contentMediaType: string, fieldData) => {
-    if (
-      contentMediaType &&
-      fieldData &&
-      fieldData?.indexOf('https://') === -1
-    ) {
-      try {
-        return await uploadArweave
-          .mutateAsync(fieldData)
-          .then((res) => res.upload_arweave?.url);
-      } catch (e) {
-        enqueueSnackbar(t('data-model.error-on-upload'));
-      }
-    }
-    return fieldData;
-  };
-
-  const handleClaimFields = async (data): Promise<any> => {
-    const claimProps = dataModel?.schema?.properties;
-    if (!Object.keys(claimProps)) return data;
-    for (const item of Object.keys(claimProps)) {
-      data.claim[item] = removeEmptyDataFromArrayField(
-        claimProps[item]?.type,
-        data.claim[item]
-      );
-      await uploadClaimImages(
-        claimProps[item]?.contentMediaType,
-        data.claim[item]
-      ).then((res) => (data.claim[item] = res));
-    }
-    return data;
-  };
 
   return (
     <Stack direction={'column'} mx={7} mb={5}>
@@ -143,11 +52,7 @@ export default function DetailsTemplate({
       </Box>
 
       <>
-        <Stack
-          component="form"
-          id="create-credential-form"
-          // onSubmit={methods.handleSubmit(handleMutation)}
-        >
+        <Stack component="form" id="create-credential-form">
           <Stack>
             <Stack gap={1}>
               <GeneralForm />

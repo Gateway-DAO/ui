@@ -1,5 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
+  Avatar,
   Box,
   Button,
   Chip,
@@ -81,7 +82,19 @@ export function AddRecipient({
                   variant="filled"
                   color="default"
                   label={value}
-                  icon={<Email />}
+                  avatar={
+                    <Avatar
+                      src={
+                        value === 'Email'
+                          ? '/images/mail-filled.svg'
+                          : '/images/ethereum.svg'
+                      }
+                      sx={{
+                        height: 5,
+                        width: 10,
+                      }}
+                    />
+                  }
                 />
               </MenuItem>
             ))}
