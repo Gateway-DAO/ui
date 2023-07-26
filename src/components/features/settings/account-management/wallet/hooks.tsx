@@ -94,9 +94,9 @@ export function useAddWalletModal({
       async onSuccess(signature) {
         addWalletMutation.mutate(signature);
       },
-      onError(e) {
+      onError(error) {
         setError({
-          message: JSON.stringify(e),
+          message: transformErrorMessage(error),
           label: t('actions.try-again'),
         });
       },
