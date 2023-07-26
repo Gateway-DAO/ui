@@ -111,10 +111,15 @@ export function Parameters({
                         key={param.id}
                         value={`${param.name} ${param.type}`}
                       >
-                        <span style={{ marginRight: 6 }}>{param.name}</span>
-                        <span style={{ color: brandColors.purple.main }}>
-                          {param.type}
+                        <span
+                          style={{
+                            marginRight: 6,
+                            color: brandColors.purple.main,
+                          }}
+                        >
+                          {param.name}
                         </span>
+                        <span>{param.type}</span>
                       </MenuItem>
                     ))}
                   </Select>

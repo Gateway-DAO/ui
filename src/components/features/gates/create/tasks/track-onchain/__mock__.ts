@@ -47,3 +47,38 @@ export const mockParamsType = [
     type: 'amount',
   },
 ];
+
+export const mockEvents = [
+  {
+    id: 0,
+    name: 'Borrow',
+  },
+  {
+    id: 1,
+    name: 'Deposit',
+  },
+  {
+    id: 2,
+    name: 'FlashLoan',
+  },
+  {
+    id: 3,
+    name: 'LiquidationCall',
+  },
+  {
+    id: 4,
+    name: 'RebalanceStableBorrowRate',
+  },
+  {
+    id: 5,
+    name: 'Repay',
+  },
+  {
+    id: 6,
+    name: 'ReserveDataUpdated',
+  },
+  {
+    id: 7,
+    name: 'ReserveUsedAsCollateralDisabled',
+  },
+];

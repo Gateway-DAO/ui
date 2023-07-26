@@ -226,6 +226,7 @@ export type TrackOnChainEventsDataError = {
   id?: FieldError;
   chain?: FieldError;
   contract_address?: FieldError;
+  event?: FieldError;
   parameters?: {
     id?: FieldError;
     type: FieldError;
@@ -271,6 +272,7 @@ export type HoldTokenData = {
 export type TrackOnChainEventsData = {
   chain?: string;
   contract_address?: string;
+  event?: string;
   parameters: Parameter[];
 };
 
@@ -429,6 +431,7 @@ const trackOnChainTaskDataSchema = z.object({
       value: z.any(),
     })
   ),
+  event: z.string(),
   contract_address: z
     .string()
     .refine(isAddress, { message: 'This is not a valid contract address' }),

@@ -27,7 +27,7 @@ import {
   alpha,
 } from '@mui/material';
 
-import { mockChains } from './__mock__';
+import { mockChains, mockEvents, mockParamsType } from './__mock__';
 import { Parameters } from './components/parameters';
 
 const TrackOnChainEventsTask = ({ dragAndDrop, taskId, deleteTask }) => {
@@ -226,6 +226,7 @@ const TrackOnChainEventsTask = ({ dragAndDrop, taskId, deleteTask }) => {
               {t('tasks.track_onchain.chain')}
             </InputLabel>
             <Select
+              label={t('tasks.track_onchain.chain')}
               id="chains"
               sx={{ maxWidth: { md: '50%', xs: '100%' } }}
               {...register(`tasks.${taskId}.task_data.chain`, {
@@ -267,6 +268,54 @@ const TrackOnChainEventsTask = ({ dragAndDrop, taskId, deleteTask }) => {
               </Button>
             </Stack>
           )}
+          <Stack>
+            <FormControl>
+              <InputLabel htmlFor="type">
+                {t('tasks.track_onchain.event')}
+              </InputLabel>
+              <Select
+                sx={{ maxWidth: { md: '50%', xs: '100%' } }}
+                label={t('tasks.track_onchain.event')}
+                id="type"
+                {...register(`tasks.${taskId}.task_data.event`)}
+                renderValue={(value) => {
+                  return <>{value}</>;
+                }}
+              >
+                {mockEvents.map((event) => (
+                  <MenuItem key={event.id} value={event.name}>
+                    <Stack sx={{ width: '100%' }}>
+                      <Typography sx={{ display: 'block' }}>
+                        {event.name}
+                      </Typography>
+                      <Stack sx={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+                        {mockParamsType.map((param, index) => (
+                          <Stack
+                            key={param.id}
+                            sx={{ flexDirection: 'row', fontSize: 12 }}
+                          >
+                            <span
+                              style={{
+                                marginRight: 6,
+                                color: brandColors.purple.main,
+                              }}
+                            >
+                              {param.name}
+                            </span>
+                            <span>{param.type}</span>
+                            {mockParamsType.length !== index + 1 && (
+                              <span style={{ marginRight: 6 }}>,</span>
+                            )}
+                          </Stack>
+                        ))}
+                      </Stack>
+                    </Stack>
+                    <Divider sx={{ mx: -3 }} />
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Stack>
         </Stack>
         <Divider
           sx={(theme) => ({
