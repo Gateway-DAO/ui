@@ -1,6 +1,6 @@
 {
   "gate": {
-    "description": "A credit score is a numerical representation of a person's creditworthiness and is used by lenders to evaluate their ability to repay loans. Maintaining a good credit score is essential as it can lead to a number of benefits. First and foremost, having a good credit score makes it easier to obtain loans, credit cards, and other financial products with favourable terms and lower interest rates.",
+    "description": "The SP-BLUR Vault uses ETH deposits to fund P2P NFT-backed loans on Blend, generating ETH yield and farming BLUR Points for depositors. ETH yield is generated continuously while BLUR Point rewards are distributed at the end of the BLUR Season. This vault runs a lending strategy that seeks to maximize both BLUR Point farming efficiency and ETH yield via strategic loan bidding. The SP-BLUR Vault will fund loans across all whitelisted NFT collections on Blend only. Depositors are instantly earning a 1.5X - 2.5X multiplier on BLUR points. The distribution of BLUR Points earned by SP-BLUR vault depositors at the end of the Blur Season will be determined by SP-BLUR points earned. The longer and larger the deposit, the higher the share of BLUR points. Depositors can withdraw at any time.",
     "organization": "SPICE",
     "title": "SP-Blur Vault",
     "label": "Tier Program",
