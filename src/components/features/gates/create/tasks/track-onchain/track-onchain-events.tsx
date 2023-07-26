@@ -36,9 +36,7 @@ const TrackOnChainEventsTask = ({ dragAndDrop, taskId, deleteTask }) => {
     formState: { errors },
   } = useFormContext<CreateGateData>();
 
-  const formValues = useMemo(() => {
-    return getValues();
-  }, [getValues]);
+  const formValues = getValues();
 
   const chain = watch(`tasks.${taskId}.task_data.chain`, null);
   const address = watch(`tasks.${taskId}.task_data.contract_address`);
