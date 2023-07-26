@@ -8,7 +8,9 @@ const chainIds = {
   Arbitrum: 42161,
 };
 
-export const mockChains = ['Ethereum'].map((chain) => ({
-  value: chainIds[chain],
-  label: chain,
-}));
+export const mockChains = ['Polygon', 'Ethereum', 'Arbitrum', 'Optimistic'].map(
+  (chain) => ({
+    value: chainIds[chain],
+    label: chain,
+  })
+);

@@ -1,5 +1,5 @@
 import useTranslation from 'next-translate/useTranslation';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import { TaskIcon } from '@/components/atoms/icons/task-icon';
 import { CreateGateData } from '@/components/features/gates/create/schema';
@@ -30,10 +30,16 @@ const TrackOnChainEventsTask = ({ dragAndDrop, taskId, deleteTask }) => {
     register,
     setValue,
     getValues,
+    getFieldState,
+    watch,
+    resetField,
     formState: { errors },
   } = useFormContext<CreateGateData>();
 
   const formValues = getValues();
+
+  const chain = watch(`tasks.${taskId}.task_data.chain`, null);
+  const address = watch(`tasks.${taskId}.task_data.contract_address`);
 
   useEffect(() => {
     if (formValues.tasks[taskId]?.title === '') {
@@ -194,7 +200,11 @@ const TrackOnChainEventsTask = ({ dragAndDrop, taskId, deleteTask }) => {
             <Select
               id="chains"
               sx={{ maxWidth: { md: '50%', xs: '100%' } }}
-              {...register(`tasks.${taskId}.task_data.chain`)}
+              {...register(`tasks.${taskId}.task_data.chain`, {
+                onChange: () => {
+                  resetField(`tasks.${taskId}.task_data.contract_address`);
+                },
+              })}
             >
               {mockChains.map((chain) => (
                 <MenuItem key={chain.value} value={chain.value}>
@@ -203,23 +213,32 @@ const TrackOnChainEventsTask = ({ dragAndDrop, taskId, deleteTask }) => {
               ))}
             </Select>
           </FormControl>
-          <Stack
-            direction="row"
-            gap={2}
-            justifyContent="center"
-            alignItems="center"
-          >
-            <TextField
-              fullWidth
-              required
-              label={t('tasks.track_onchain.contract_address')}
-              sx={{ flex: 1 }}
-              {...register(`tasks.${taskId}.task_data.contract_address`)}
-            />
-            <Button size="large" variant="outlined">
-              {t('tasks.track_onchain.check_contract')}
-            </Button>
-          </Stack>
+          {chain && (
+            <Stack
+              direction="row"
+              gap={2}
+              justifyContent="center"
+              alignItems="center"
+            >
+              <TextField
+                fullWidth
+                required
+                label={t('tasks.track_onchain.contract_address')}
+                sx={{ flex: 1 }}
+                {...register(`tasks.${taskId}.task_data.contract_address`)}
+              />
+              <Button
+                size="large"
+                variant="outlined"
+                disabled={
+                  !!getFieldState(`tasks.${taskId}.task_data.contract_address`)
+                    .error || !address?.length
+                }
+              >
+                {t('tasks.track_onchain.check_contract')}
+              </Button>
+            </Stack>
+          )}
         </Stack>
       </FormControl>
     </Stack>
