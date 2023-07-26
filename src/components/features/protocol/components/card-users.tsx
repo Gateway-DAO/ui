@@ -1,5 +1,6 @@
 import useTranslation from 'next-translate/useTranslation';
 
+import { ArrowDivider } from '@/components/atoms/arrow-divider';
 import Loading from '@/components/atoms/loadings/loading';
 import { ROUTES } from '@/constants/routes';
 import { hasuraPublicService } from '@/services/hasura/api';
@@ -123,24 +124,7 @@ export default function CardUsers({
           id="credential-textlink-issuerid"
         />
       )}
-      <Box
-        sx={{
-          alignSelf: { md: 'center' },
-          py: { xs: 0, md: 2 },
-          px: { xs: 3, md: 2 },
-          transform: { xs: 'rotate(90deg)', md: 'none' },
-        }}
-      >
-        <svg width="18" height="36" fill="none" viewBox="0 0 18 36">
-          <path
-            stroke="#fff"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeOpacity=".7"
-            d="m.5 1 17 17-17 17"
-          />
-        </svg>
-      </Box>
+      <ArrowDivider />
       {recipient.isLoading ? (
         <Loading margin={1} />
       ) : (

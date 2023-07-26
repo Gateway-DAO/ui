@@ -31,6 +31,10 @@ export function ModalRightConfirmation({
             justifyContent: 'space-between',
             alignItems: 'center',
             width: '100%',
+            gap: {
+              xs: 2,
+              md: 12,
+            },
           }}
         >
           <Typography variant="h6" role="h2">

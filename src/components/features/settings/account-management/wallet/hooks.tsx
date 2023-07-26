@@ -5,14 +5,24 @@ import { transformErrorMessage } from '@/constants/error-messages';
 import { ConnectedWallet } from '@/hooks/wallet/use-connected-wallet';
 import { useAuth } from '@/providers/auth';
 import { WalletModalStep } from '@/providers/auth/types';
-import { Protocol_Api_Chain } from '@/services/hasura/types';
+import { hasuraPublicService } from '@/services/hasura/api';
+import {
+  Get_NonceMutation,
+  Login_WalletMutation,
+  Protocol_Add_WalletMutation,
+  Protocol_Api_AuthType,
+  Protocol_Api_Chain,
+} from '@/services/hasura/types';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import base58 from 'bs58';
+
+import { MigrationModalData } from '../migration/migration-modal';
 
 type UseAddWalletModalProps = {
   hasWallet: boolean;
   isAdding: boolean;
   wallet: ConnectedWallet;
+  onMigrate: (data: MigrationModalData) => void;
   onSuccess: () => void;
 };
 
@@ -21,9 +31,11 @@ export function useAddWalletModal({
   isAdding,
   wallet,
   onSuccess: onAddWalletSuccess,
+  onMigrate,
 }: UseAddWalletModalProps) {
   const { hasuraUserService } = useAuth();
   const { t } = useTranslation('common');
+  const [isMigration, setIsMigration] = useState(false);
 
   const [error, setError] = useState<{
     message: any;
@@ -33,15 +45,38 @@ export function useAddWalletModal({
 
   const createMessage = useQuery(
     ['add-wallet', wallet?.address],
-    () =>
-      hasuraUserService.protocol_add_wallet({
+    async () => {
+      const data = {
         wallet: wallet.address,
         chain: wallet.chain,
-      }),
+      };
+      if (isMigration) {
+        return hasuraPublicService.get_nonce(data);
+      }
+
+      try {
+        const res = await hasuraUserService.protocol_add_wallet(data);
+        return res;
+      } catch (e) {
+        if (e?.response?.errors?.[0]?.message === 'WALLET_ALREADY_REGISTERED') {
+          setIsMigration(true);
+          return hasuraPublicService.get_nonce(data);
+        }
+        throw e;
+      }
+    },
     {
       enabled: !!wallet?.address && !hasWallet && isAdding,
       async onSuccess(signature) {
-        sendSignature.mutate(signature.protocol.addWallet.message);
+        let message: string;
+        if (isMigration) {
+          message = (signature as Get_NonceMutation).protocol.createWalletNonce
+            .message;
+        } else {
+          message = (signature as Protocol_Add_WalletMutation).protocol
+            .addWallet.message;
+        }
+        sendSignature.mutate(message);
       },
       onError(error: Error) {
         setError({
@@ -69,17 +104,37 @@ export function useAddWalletModal({
   );
 
   const addWalletMutation = useMutation(
-    (signature: string | Uint8Array) =>
-      hasuraUserService.protocol_add_wallet_confirmation({
+    async (signature: string | Uint8Array) => {
+      signature =
+        wallet.chain === Protocol_Api_Chain.Sol
+          ? base58.encode(signature as Uint8Array)
+          : (signature as string);
+
+      if (isMigration)
+        return hasuraPublicService.login_wallet({
+          wallet: wallet.address,
+          signature,
+        });
+
+      return hasuraUserService.protocol_add_wallet_confirmation({
         wallet: wallet.address,
         chain: wallet.chain,
-        signature:
-          wallet.chain === Protocol_Api_Chain.Sol
-            ? base58.encode(signature as Uint8Array)
-            : (signature as string),
-      }),
+        signature,
+      });
+    },
     {
-      async onSuccess() {
+      async onSuccess(res) {
+        if (isMigration) {
+          const { hasura_id, token } = (res as Login_WalletMutation).protocol
+            .loginWallet;
+          onMigrate({
+            data: wallet,
+            hasura_id,
+            token,
+            type: Protocol_Api_AuthType.Wallet,
+          });
+          return;
+        }
         onAddWalletSuccess();
       },
       onError() {
@@ -110,6 +165,7 @@ export function useAddWalletModal({
   const onReset = () => {
     createMessage.remove();
     setError(undefined);
+    setIsMigration(false);
   };
 
   return {

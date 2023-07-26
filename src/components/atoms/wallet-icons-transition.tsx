@@ -2,18 +2,19 @@ import { useEffect, useState } from 'react';
 
 import { Protocol_Api_Chain } from '@/services/hasura/types';
 import { FaEthereum } from 'react-icons/fa';
+import { IconBaseProps } from 'react-icons/lib';
 import { TbCurrencySolana } from 'react-icons/tb';
 
 const icons = {
-  [Protocol_Api_Chain.Evm]: <FaEthereum />,
-  [Protocol_Api_Chain.Sol]: <TbCurrencySolana />,
+  [Protocol_Api_Chain.Evm]: FaEthereum,
+  [Protocol_Api_Chain.Sol]: TbCurrencySolana,
 };
 
 type Props = {
   network?: Protocol_Api_Chain;
 };
 
-function AnimatedWallet() {
+function AnimatedWallet(iconProps: IconBaseProps) {
   const [currentIcon, setCurrentIcon] = useState<Protocol_Api_Chain>(
     Protocol_Api_Chain.Evm
   );
@@ -31,13 +32,18 @@ function AnimatedWallet() {
       clearInterval(intervalId);
     };
   }, []);
-  return icons[currentIcon];
+  const Icon = icons[currentIcon];
+  return <Icon {...iconProps} />;
 }
 
-export function WalletIconsTransition({ network = null }: Props) {
+export function WalletIconsTransition({
+  network = null,
+  ...iconProps
+}: Props & IconBaseProps) {
   if (!network) {
-    return <AnimatedWallet />;
+    return <AnimatedWallet {...iconProps} />;
   }
+  const Icon = icons[network];
 
-  return icons[network];
+  return <Icon {...iconProps} />;
 }
