@@ -42,7 +42,7 @@ export function CreateGate({ oldData }: CreateGateProps) {
   const { t } = useTranslation('gate-new');
   const methods = useForm({
     resolver: zodResolver(createGateSchema),
-    mode: 'onBlur',
+    mode: 'all',
     defaultValues: {
       ...oldData,
     },

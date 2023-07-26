@@ -2,10 +2,7 @@ import useTranslation from 'next-translate/useTranslation';
 import { useEffect, useMemo, useState } from 'react';
 
 import { TaskIcon } from '@/components/atoms/icons/task-icon';
-import {
-  CreateGateData,
-  TrackOnChainEventsData,
-} from '@/components/features/gates/create/schema';
+import { CreateGateData } from '@/components/features/gates/create/schema';
 import TextFieldWithEmoji from '@/components/molecules/form/TextFieldWithEmoji/TextFieldWithEmoji';
 import { useFormContext } from 'react-hook-form';
 
@@ -33,7 +30,9 @@ const TrackOnChainEventsTask = ({ dragAndDrop, taskId, deleteTask }) => {
     register,
     setValue,
     getValues,
+    getFieldState,
     watch,
+    resetField,
     formState: { errors },
   } = useFormContext<CreateGateData>();
 
@@ -42,6 +41,7 @@ const TrackOnChainEventsTask = ({ dragAndDrop, taskId, deleteTask }) => {
   }, [getValues]);
 
   const chain = watch(`tasks.${taskId}.task_data.chain`, null);
+  const address = watch(`tasks.${taskId}.task_data.contract_address`);
 
   useEffect(() => {
     if (formValues.tasks[taskId]?.title === '') {
@@ -202,7 +202,11 @@ const TrackOnChainEventsTask = ({ dragAndDrop, taskId, deleteTask }) => {
             <Select
               id="chains"
               sx={{ maxWidth: { md: '50%', xs: '100%' } }}
-              {...register(`tasks.${taskId}.task_data.chain`)}
+              {...register(`tasks.${taskId}.task_data.chain`, {
+                onChange: () => {
+                  resetField(`tasks.${taskId}.task_data.contract_address`);
+                },
+              })}
             >
               {mockChains.map((chain) => (
                 <MenuItem key={chain.value} value={chain.value}>
@@ -225,7 +229,14 @@ const TrackOnChainEventsTask = ({ dragAndDrop, taskId, deleteTask }) => {
                 sx={{ flex: 1 }}
                 {...register(`tasks.${taskId}.task_data.contract_address`)}
               />
-              <Button size="large" variant="outlined">
+              <Button
+                size="large"
+                variant="outlined"
+                disabled={
+                  !!getFieldState(`tasks.${taskId}.task_data.contract_address`)
+                    .error || !address?.length
+                }
+              >
                 {t('tasks.track_onchain.check_contract')}
               </Button>
             </Stack>
