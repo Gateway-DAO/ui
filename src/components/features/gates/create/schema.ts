@@ -1,4 +1,5 @@
 import { Files, Gates } from '@/services/hasura/types';
+import { isAddress } from 'ethers/lib/utils';
 import { FieldError } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -410,11 +411,7 @@ const holdTokenTaskDataSchema = z.object({
   chain: z.number(),
   token_address: z
     .string()
-    .min(2, 'The token address must contain at least 2 character(s)')
-    .length(42, 'The token address must contain exactly 42 character(s)')
-    .refine((val) => val.startsWith('0x'), {
-      message: 'This is not a valid token address',
-    }),
+    .refine(isAddress, { message: 'This is not a valid contract address' }),
   quantity: z.number({
     invalid_type_error: 'Quantity must be a number',
     required_error: "Quantity can't be empty",
@@ -432,6 +429,9 @@ const trackOnChainTaskDataSchema = z.object({
       value: z.any(),
     })
   ),
+  contract_address: z
+    .string()
+    .refine(isAddress, { message: 'This is not a valid contract address' }),
 });
 
 const holdNFTTaskDataSchema = z.object({
