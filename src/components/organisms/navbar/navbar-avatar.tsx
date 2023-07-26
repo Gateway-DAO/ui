@@ -139,7 +139,7 @@ export function NavBarAvatar({ hideProfile }: Props) {
               </AvatarFile>
               <Box>
                 <Typography variant="body2">
-                  {me.name || 'Edit your name'}
+                  {me?.name ?? me.protocolUser?.gatewayId ?? 'Edit your name'}
                 </Typography>
                 <Typography variant="caption">
                   @{me.protocolUser?.gatewayId}
