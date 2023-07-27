@@ -121,8 +121,13 @@ const TrackOnChainEventsTask = ({ dragAndDrop, taskId, deleteTask }) => {
 
   const filteredEvents = useMemo(() => {
     if (contractInfo) {
-      const abi = JSON.parse(contractInfo);
-      return abi.filter((item: EventAbi) => item.type === 'event');
+      try {
+        const abi = JSON.parse(contractInfo);
+        return abi.filter((item: EventAbi) => item.type === 'event');
+      } catch (error) {
+        console.log(error);
+        return [];
+      }
     }
     return [];
   }, [contractInfo]);
@@ -283,6 +288,8 @@ const TrackOnChainEventsTask = ({ dragAndDrop, taskId, deleteTask }) => {
               {...register(`tasks.${taskId}.task_data.chain`, {
                 onChange: () => {
                   resetField(`tasks.${taskId}.task_data.contract_address`);
+                  resetField(`tasks.${taskId}.task_data.event`);
+                  setValue(`tasks.${taskId}.task_data.abi`, null);
                 },
               })}
             >
