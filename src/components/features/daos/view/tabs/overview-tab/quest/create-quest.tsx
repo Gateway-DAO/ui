@@ -1,11 +1,9 @@
 import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-
-import Loading from '@/components/atoms/loadings/loading';
 import { brandColors } from '@/theme';
 import { useSnackbar } from 'notistack';
-import { useLocalStorage, useWindowSize } from 'react-use';
+import { useWindowSize } from 'react-use';
 import { useMutation } from 'wagmi';
 
 import CloseIcon from '@mui/icons-material/Close';
@@ -20,8 +18,6 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-
-import { mutation } from '@/constants/queries';
 import { useMultistepForm } from '@/hooks/use-multistep-form';
 import { useAuth } from '@/providers/auth';
 import VerticalStepper from './components/vertical-setpper';
@@ -89,16 +85,16 @@ export function CreateQuestTemplate({
 
   const [stepValidity, setStepValidity] = useState(initialStepValidity);
 
-  const handleNext = () => {
+  const handleNext = async () => {
     changeStep(currentStep + 1);
-    router.push({
+    await router.push({
       hash: `create-quest_${formStepControl[currentStep + 1].name}`,
     });
   };
 
-  const handlePrevious = () => {
+  const handlePrevious = async () => {
     changeStep(currentStep - 1);
-    router.push({
+    await router.push({
       hash: `create-quest${currentStep - 1 === 0 ? '' : '_'}${
         formStepControl[currentStep - 1].name
       }`,
@@ -456,8 +452,8 @@ export function CreateQuestTemplate({
                     <LoadingButton
                       onClick={() => {
                         handleNext();
-                        // setTesting(false);
-                        // methods.trigger();
+                        setTesting(false);
+                        methods.trigger();
                       }}
                       variant="contained"
                       sx={{ marginLeft: 2 }}

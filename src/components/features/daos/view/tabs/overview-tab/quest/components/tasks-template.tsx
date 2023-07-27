@@ -3,6 +3,8 @@ import { Dispatch, useEffect, useRef, useState } from 'react';
 
 import TaskArea from '@/components/features/gates/create/tasks/tasks-area';
 import useTranslation from 'next-translate/useTranslation';
+import { useFormContext } from 'react-hook-form';
+import { CreateGateData } from '../../schema';
 
 export default function TasksTemplate({
   updateFormState,
@@ -14,6 +16,14 @@ export default function TasksTemplate({
   input: any;
 }) {
   const { t } = useTranslation('quest');
+  const {
+    formState: { errors, isValid },
+  } = useFormContext<CreateGateData>();
+  useEffect(() => {
+    console.log(isValid, errors);
+    handleStep(isValid);
+  }, [isValid]);
+
   const [deletedTasks, setDeletedTasks] = useState<string[]>([]);
 
   return (
