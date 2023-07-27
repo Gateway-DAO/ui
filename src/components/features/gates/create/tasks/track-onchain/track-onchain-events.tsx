@@ -1,15 +1,18 @@
 import useTranslation from 'next-translate/useTranslation';
 import { useEffect, useMemo, useState } from 'react';
 
+import { LoadingButton } from '@/components/atoms/buttons/loading-button';
 import { TaskIcon } from '@/components/atoms/icons/task-icon';
 import {
   CreateGateData,
   Parameter,
 } from '@/components/features/gates/create/schema';
 import TextFieldWithEmoji from '@/components/molecules/form/TextFieldWithEmoji/TextFieldWithEmoji';
+import { query } from '@/constants/queries';
 import { brandColors } from '@/theme';
+import { useQuery } from '@tanstack/react-query';
 import { useFieldArray, useFormContext } from 'react-hook-form';
-import { PartialDeep } from 'type-fest/source/partial-deep';
+import { useToggle } from 'react-use';
 
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -28,7 +31,7 @@ import {
   alpha,
 } from '@mui/material';
 
-import { mockChains, mockEvents } from './__mock__';
+import { mockChains } from './__mock__';
 import { Parameters } from './components/parameters';
 import { EventAbi } from './types';
 
@@ -47,18 +50,11 @@ const TrackOnChainEventsTask = ({ dragAndDrop, taskId, deleteTask }) => {
   } = useFormContext<CreateGateData>();
 
   const formValues = getValues();
-  // TODO: REMOVE
-  const mock: any = mockEvents;
-  const mockEventsFiltered: PartialDeep<EventAbi>[] = mock.filter(
-    (item: EventAbi) => item.type === 'event'
-  );
 
   const chain = watch(`tasks.${taskId}.task_data.chain`, null);
-  const address = watch(`tasks.${taskId}.task_data.contract_address`);
+  const contract_address = watch(`tasks.${taskId}.task_data.contract_address`);
+  const abi = watch(`tasks.${taskId}.task_data.abi`);
   const event = watch(`tasks.${taskId}.task_data.event`);
-  const selectedEvent = useMemo(() => {
-    return mockEventsFiltered.find((eventItem) => eventItem.name === event);
-  }, [event]);
 
   const {
     fields: parameters,
@@ -72,6 +68,7 @@ const TrackOnChainEventsTask = ({ dragAndDrop, taskId, deleteTask }) => {
   const createParameter = (): Parameter => ({
     parameterName: null,
     operator: null,
+    type: null,
     value: null,
   });
 
@@ -87,10 +84,58 @@ const TrackOnChainEventsTask = ({ dragAndDrop, taskId, deleteTask }) => {
     setTaskIsMoving(dragAndDrop);
   }, [dragAndDrop]);
 
-  useEffect(() => append(createParameter()), []);
-
   const [taskVisible, setTaskVisible] = useState(true);
   const [taskIsMoving, setTaskIsMoving] = useState(true);
+  const [getContractInfo, toggleGetContractInfo] = useToggle(false);
+
+  const { data: contractInfo, isFetching: isLoadingContractInfo } = useQuery(
+    [query.web3_contract_information, chain, contract_address],
+    async () => {
+      const res = await fetch(
+        `/api/track_onchain?chain=${chain}&contract_address=${contract_address}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+
+      const result = await res.json();
+      return result.ABI;
+    },
+    {
+      onError: (error) => {
+        console.log(error);
+        toggleGetContractInfo();
+      },
+      onSuccess: (data) => {
+        setValue(`tasks.${taskId}.task_data.abi`, data);
+        toggleGetContractInfo();
+      },
+      enabled: !!getContractInfo && !!contract_address,
+    }
+  );
+
+  const filteredEvents = useMemo(() => {
+    if (contractInfo) {
+      try {
+        const abi = JSON.parse(contractInfo);
+        return abi.filter((item: EventAbi) => item.type === 'event');
+      } catch (error) {
+        console.log(error);
+        return [];
+      }
+    }
+    return [];
+  }, [contractInfo]);
+
+  const selectedEvent = useMemo(() => {
+    if (filteredEvents?.length > 0) {
+      return filteredEvents.find((eventItem) => eventItem.name === event);
+    }
+    return [];
+  }, [filteredEvents, event]);
 
   return (
     <Stack
@@ -241,6 +286,8 @@ const TrackOnChainEventsTask = ({ dragAndDrop, taskId, deleteTask }) => {
               {...register(`tasks.${taskId}.task_data.chain`, {
                 onChange: () => {
                   resetField(`tasks.${taskId}.task_data.contract_address`);
+                  resetField(`tasks.${taskId}.task_data.event`);
+                  setValue(`tasks.${taskId}.task_data.abi`, null);
                 },
               })}
             >
@@ -260,71 +307,81 @@ const TrackOnChainEventsTask = ({ dragAndDrop, taskId, deleteTask }) => {
             >
               <TextField
                 fullWidth
+                disabled={isLoadingContractInfo}
                 required
                 label={t('tasks.track_onchain.contract_address')}
                 sx={{ flex: 1 }}
                 {...register(`tasks.${taskId}.task_data.contract_address`)}
               />
-              <Button
+              <LoadingButton
                 size="large"
                 variant="outlined"
                 disabled={
                   !!getFieldState(`tasks.${taskId}.task_data.contract_address`)
-                    .error || !address?.length
+                    .error || !contract_address?.length
                 }
+                isLoading={isLoadingContractInfo}
+                onClick={() => toggleGetContractInfo(true)}
               >
                 {t('tasks.track_onchain.check_contract')}
-              </Button>
+              </LoadingButton>
             </Stack>
           )}
-          <Stack>
-            <FormControl>
-              <InputLabel htmlFor="type">
-                {t('tasks.track_onchain.event')}
-              </InputLabel>
-              <Select
-                sx={{ maxWidth: { md: '50%', xs: '100%' } }}
-                label={t('tasks.track_onchain.event')}
-                id="type"
-                {...register(`tasks.${taskId}.task_data.event`)}
-                renderValue={(value) => {
-                  return <>{value}</>;
-                }}
-              >
-                {mockEventsFiltered.map((event) => (
-                  <MenuItem key={event?.name} value={event?.name}>
-                    <Stack sx={{ width: '100%' }}>
-                      <Typography sx={{ display: 'block' }}>
-                        {event?.name}
-                      </Typography>
-                      <Stack sx={{ flexDirection: 'row', flexWrap: 'wrap' }}>
-                        {event?.inputs?.map((input, index) => (
-                          <Stack
-                            key={input?.name}
-                            sx={{ flexDirection: 'row', fontSize: 12 }}
-                          >
-                            <span
-                              style={{
-                                marginRight: 6,
-                                color: brandColors.purple.main,
-                              }}
+          {abi && (
+            <Stack>
+              <FormControl>
+                <InputLabel htmlFor="type">
+                  {t('tasks.track_onchain.event')}
+                </InputLabel>
+                <Select
+                  sx={{ maxWidth: { md: '50%', xs: '100%' } }}
+                  label={t('tasks.track_onchain.event')}
+                  id="type"
+                  {...register(`tasks.${taskId}.task_data.event`, {
+                    onChange: () => {
+                      resetField(`tasks.${taskId}.task_data.parameters`);
+                      append(createParameter());
+                    },
+                  })}
+                  renderValue={(value) => {
+                    return <>{value}</>;
+                  }}
+                >
+                  {filteredEvents.map((event) => (
+                    <MenuItem key={event?.name} value={event?.name}>
+                      <Stack sx={{ width: '100%' }}>
+                        <Typography sx={{ display: 'block' }}>
+                          {event?.name}
+                        </Typography>
+                        <Stack sx={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+                          {event?.inputs?.map((input, index) => (
+                            <Stack
+                              key={input?.name}
+                              sx={{ flexDirection: 'row', fontSize: 12 }}
                             >
-                              {input?.name}
-                            </span>
-                            <span>{input?.type}</span>
-                            {event?.inputs?.length !== index + 1 && (
-                              <span style={{ marginRight: 6 }}>,</span>
-                            )}
-                          </Stack>
-                        ))}
+                              <span
+                                style={{
+                                  marginRight: 6,
+                                  color: brandColors.purple.main,
+                                }}
+                              >
+                                {input?.name}
+                              </span>
+                              <span>{input?.type}</span>
+                              {event?.inputs?.length !== index + 1 && (
+                                <span style={{ marginRight: 6 }}>,</span>
+                              )}
+                            </Stack>
+                          ))}
+                        </Stack>
                       </Stack>
-                    </Stack>
-                    <Divider sx={{ mx: -3 }} />
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Stack>
+                      <Divider sx={{ mx: -3 }} />
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Stack>
+          )}
         </Stack>
         {!taskVisible && event && (
           <Divider

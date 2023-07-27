@@ -41,6 +41,7 @@ export function Parameters({
     register,
     watch,
     setValue,
+    resetField,
     formState: { errors },
   } = useFormContext<CreateGateData>();
   const { t } = useTranslation('gate-new');
@@ -56,7 +57,12 @@ export function Parameters({
 
   const typeIsNumber = (index: number): boolean => {
     const type = inputSelected(index)?.type;
-    return type !== 'address' && type !== 'string' && type !== 'bool';
+    return (
+      type !== 'address' &&
+      type !== 'string' &&
+      type !== 'bool' &&
+      type !== 'bytes'
+    );
   };
 
   const getOperators = (isNumber: boolean) => {
@@ -119,7 +125,21 @@ export function Parameters({
                     label={t('tasks.track_onchain.parameter')}
                     id="parameterName"
                     {...register(
-                      `tasks.${taskId}.task_data.parameters.${index}.parameterName`
+                      `tasks.${taskId}.task_data.parameters.${index}.parameterName`,
+                      {
+                        onChange: () => {
+                          setValue(
+                            `tasks.${taskId}.task_data.parameters.${index}.type`,
+                            inputSelected(index)?.type
+                          );
+                          resetField(
+                            `tasks.${taskId}.task_data.parameters.${index}.operator`
+                          );
+                          resetField(
+                            `tasks.${taskId}.task_data.parameters.${index}.value`
+                          );
+                        },
+                      }
                     )}
                   >
                     {inputs?.map((input) => (

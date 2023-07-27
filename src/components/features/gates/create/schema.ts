@@ -230,6 +230,7 @@ export type TrackOnChainEventsDataError = {
   parameters?: {
     id?: FieldError;
     parameterName: FieldError;
+    type: FieldError;
     operator: FieldError;
     value: FieldError;
   }[];
@@ -270,15 +271,17 @@ export type HoldTokenData = {
 };
 
 export type TrackOnChainEventsData = {
-  chain?: string;
-  contract_address?: string;
-  event?: string;
+  chain: string;
+  contract_address: string;
+  abi: string;
+  event: string;
   parameters: Parameter[];
 };
 
 export type Parameter = {
   id?: string;
   parameterName: string;
+  type: string;
   operator: string;
   value: any;
 };
@@ -425,6 +428,7 @@ const trackOnChainTaskDataSchema = z.object({
   parameters: z.array(
     z.object({
       parameterName: z.string(),
+      type: z.string(),
       operator: z
         .enum(['equal_to', 'not_equal_to', 'greater_than', 'less_than'])
         .optional(),
