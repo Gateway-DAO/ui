@@ -72,6 +72,7 @@ const TrackOnChainEventsTask = ({ dragAndDrop, taskId, deleteTask }) => {
   const createParameter = (): Parameter => ({
     parameterName: null,
     operator: null,
+    type: null,
     value: null,
   });
 
@@ -286,7 +287,12 @@ const TrackOnChainEventsTask = ({ dragAndDrop, taskId, deleteTask }) => {
                 sx={{ maxWidth: { md: '50%', xs: '100%' } }}
                 label={t('tasks.track_onchain.event')}
                 id="type"
-                {...register(`tasks.${taskId}.task_data.event`)}
+                {...register(`tasks.${taskId}.task_data.event`, {
+                  onChange: () => {
+                    resetField(`tasks.${taskId}.task_data.parameters`);
+                    append(createParameter());
+                  },
+                })}
                 renderValue={(value) => {
                   return <>{value}</>;
                 }}
