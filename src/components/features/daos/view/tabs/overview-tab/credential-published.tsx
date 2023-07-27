@@ -11,6 +11,7 @@ import { Button, Dialog, Stack, Avatar } from '@mui/material';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { ShareButton } from '@/components/atoms/buttons/share-button';
+import IosShareIcon from '@mui/icons-material/IosShare';
 import ModalShareCredential from '../../../../../molecules/modal/modal-share-credential';
 
 type GatePublishedModalProps = {
@@ -98,7 +99,7 @@ export default function CredentialPublishedModal({
             width: '100%',
           }}
         >
-          <Box>
+          <Box display={'flex'} flexDirection={'column'}>
             <Typography
               id="modal-modal-title"
               variant="h3"
@@ -126,7 +127,25 @@ export default function CredentialPublishedModal({
               <span style={{ color: '#D083FF' }}>{gate.title}</span> Credential
               from <span style={{ color: '#D083FF' }}>{gate.dao?.name}</span>.
             </Typography>
-            <ShareButton />
+            <div
+              style={{
+                alignSelf: 'center',
+                justifySelf: 'center',
+                marginTop: 10,
+              }}
+            >
+              <ShareButton
+                customComponent={
+                  <Button
+                    variant="contained"
+                    sx={{ px: 9 }}
+                    startIcon={<IosShareIcon />}
+                  >
+                    Share
+                  </Button>
+                }
+              />
+            </div>
           </Box>
           <Box
             sx={(theme) => ({

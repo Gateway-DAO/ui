@@ -23,7 +23,7 @@ import { Controller, useFormContext } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import EditIcon from '@mui/icons-material/Edit';
 import { useToggle } from 'react-use';
-import { CreateGateData } from '@/components/features/gates/create/schema';
+import { CreateGateData } from '../../schema';
 import useTranslation from 'next-translate/useTranslation';
 
 const claimLimitValues = [
