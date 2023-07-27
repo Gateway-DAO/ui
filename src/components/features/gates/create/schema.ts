@@ -226,9 +226,10 @@ export type TrackOnChainEventsDataError = {
   id?: FieldError;
   chain?: FieldError;
   contract_address?: FieldError;
+  event?: FieldError;
   parameters?: {
     id?: FieldError;
-    type: FieldError;
+    parameterName: FieldError;
     operator: FieldError;
     value: FieldError;
   }[];
@@ -278,7 +279,7 @@ export type TrackOnChainEventsData = {
 
 export type Parameter = {
   id?: string;
-  type: string;
+  parameterName: string;
   operator: string;
   value: any;
 };
@@ -424,13 +425,14 @@ const trackOnChainTaskDataSchema = z.object({
   chain: z.number(),
   parameters: z.array(
     z.object({
-      type: z.string(),
+      parameterName: z.string(),
       operator: z
         .enum(['equal_to', 'not_equal_to', 'greater_than', 'less_than'])
         .optional(),
       value: z.any(),
     })
   ),
+  event: z.string(),
   contract_address: z
     .string()
     .refine(isAddress, { message: 'This is not a valid contract address' }),
