@@ -15,7 +15,7 @@ type Props = {
   isLoadingConfirmToken: boolean;
   onSubmitSendEmail: (data: EmailSchema) => void;
   isLoadingSendEmail: boolean;
-  sendEmailData: EmailSchema;
+  email: string;
 };
 
 export default function VerifyToken({
@@ -23,7 +23,7 @@ export default function VerifyToken({
   isLoadingConfirmToken,
   onSubmitSendEmail,
   isLoadingSendEmail,
-  sendEmailData,
+  email,
 }: Props) {
   const {
     register,
@@ -37,7 +37,7 @@ export default function VerifyToken({
   const countdown = useCountdown({ time: 30, trigger: startCountdown });
 
   const sendEmailAgain = () => {
-    onSubmitSendEmail(sendEmailData);
+    onSubmitSendEmail({ email_address: email });
     setStartCountdown();
   };
 
@@ -49,9 +49,7 @@ export default function VerifyToken({
     >
       <Typography sx={{ color: alpha(brandColors.white.main, 0.7) }}>
         {t('account-management.verify-token.description1')}{' '}
-        <span style={{ color: brandColors.white.main }}>
-          {sendEmailData?.email_address}
-        </span>{' '}
+        <span style={{ color: brandColors.white.main }}>{email}</span>{' '}
         {t('account-management.verify-token.description2')}
       </Typography>
       <TextField

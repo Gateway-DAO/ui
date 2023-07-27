@@ -10,3 +10,21 @@ query authentications_methods_by_user($id: uuid!) {
     }
   }
 }
+
+
+query migration_authentication_user {
+  me {
+    username
+    picture {
+      ...file
+    }
+    protocolUser {
+      id
+      authentications {
+        id
+        type
+        data
+      }
+    }
+  }
+}

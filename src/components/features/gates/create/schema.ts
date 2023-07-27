@@ -1,4 +1,5 @@
 import { Files, Gates } from '@/services/hasura/types';
+import { isAddress } from 'ethers/lib/utils';
 import { FieldError } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -221,6 +222,19 @@ export type QuizTaskDataError = {
   }[];
 };
 
+export type TrackOnChainEventsDataError = {
+  id?: FieldError;
+  chain?: FieldError;
+  contract_address?: FieldError;
+  event?: FieldError;
+  parameters?: {
+    id?: FieldError;
+    parameterName: FieldError;
+    operator: FieldError;
+    value: FieldError;
+  }[];
+};
+
 export type Question = {
   id?: string;
   order: number;
@@ -256,8 +270,18 @@ export type HoldTokenData = {
 };
 
 export type TrackOnChainEventsData = {
-  chain?: string;
-  contract_address?: string;
+  chain: string;
+  contract_address: string;
+  abi: string;
+  event: string;
+  parameters: Parameter[];
+};
+
+export type Parameter = {
+  id?: string;
+  parameterName: string;
+  operator: string;
+  value: any;
 };
 
 export type HoldTokenDataError = {
@@ -390,15 +414,28 @@ const holdTokenTaskDataSchema = z.object({
   chain: z.number(),
   token_address: z
     .string()
-    .min(2, 'The token address must contain at least 2 character(s)')
-    .length(42, 'The token address must contain exactly 42 character(s)')
-    .refine((val) => val.startsWith('0x'), {
-      message: 'This is not a valid token address',
-    }),
+    .refine(isAddress, { message: 'This is not a valid contract address' }),
   quantity: z.number({
     invalid_type_error: 'Quantity must be a number',
     required_error: "Quantity can't be empty",
   }),
+});
+
+const trackOnChainTaskDataSchema = z.object({
+  chain: z.number(),
+  parameters: z.array(
+    z.object({
+      parameterName: z.string(),
+      operator: z
+        .enum(['equal_to', 'not_equal_to', 'greater_than', 'less_than'])
+        .optional(),
+      value: z.any(),
+    })
+  ),
+  event: z.string(),
+  contract_address: z
+    .string()
+    .refine(isAddress, { message: 'This is not a valid contract address' }),
 });
 
 const holdNFTTaskDataSchema = z.object({
@@ -521,6 +558,20 @@ export const taskHoldTokenSchema = z.object({
     .min(2, 'The description must contain at least 2 character(s)'),
   task_type: z.literal('token_hold'),
   task_data: holdTokenTaskDataSchema,
+});
+
+export const taskTrackOnChainSchema = z.object({
+  id: z.string().optional(),
+  task_id: z.string().optional(),
+  order: z.number().optional(),
+  title: z
+    .string()
+    .min(2, 'Hold Token title must contain at least 2 character(s)'),
+  description: z
+    .string()
+    .min(2, 'The description must contain at least 2 character(s)'),
+  task_type: z.literal('track_onchain'),
+  task_data: trackOnChainTaskDataSchema,
 });
 
 export const taskHoldNFTSchema = z.object({
@@ -674,6 +725,7 @@ const taskGate = gateBase.augment({
         taskQuizSchema,
         taskSnapshotSchema,
         taskHoldTokenSchema,
+        taskTrackOnChainSchema,
         taskHoldNFTSchema,
         TwitterFollowProfileSchema,
         taskTwitterTweetSchema,

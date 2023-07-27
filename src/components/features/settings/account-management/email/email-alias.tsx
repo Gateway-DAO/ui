@@ -11,6 +11,10 @@ import { useSnackbar } from 'notistack';
 
 import { Stack } from '@mui/material';
 
+import {
+  MigrationModal,
+  type MigrationModalData,
+} from '../migration/migration-modal';
 import { AuthenticationsItem, Modals } from './../types';
 import AddEmail from './add-email/add-email';
 import { ListEmails } from './components/list-emails';
@@ -27,17 +31,34 @@ export function EmailAlias({ emails, isLoading }: Props) {
   const { enqueueSnackbar } = useSnackbar();
   const [modalRight, setModalRight] = useState<Modals>(null);
 
+  const onCloseModal = () => setModalRight(null);
+
+  const messages: Record<
+    'success' | 'modal-title',
+    Partial<Record<Modals['type'], string>>
+  > = {
+    success: {
+      add: t('account-management.message-add-success'),
+      remove: t('account-management.message-remove-success'),
+      migrate: t('account-management.message-migrate-success'),
+    },
+    'modal-title': {
+      add: t('account-management.add-email.title'),
+      remove: t('common:modal-confirm-delete.title'),
+      migrate: t('account-management.migrate-email.title'),
+    },
+  };
+
+  const onMigration = (migrationData: MigrationModalData) =>
+    setModalRight({ type: 'migrate', migrationData });
+
   const onSuccessFinishModal = () => {
     queryClient.refetchQueries([
       query.authentications_methods_by_user,
       { id: me?.protocolUser?.id },
     ]);
-    setModalRight(null);
-    enqueueSnackbar(
-      modalRight?.type === 'remove'
-        ? t('account-management.message-remove-success')
-        : t('account-management.message-add-success')
-    );
+    onCloseModal();
+    enqueueSnackbar(messages.success[modalRight?.type]);
   };
 
   return (
@@ -69,23 +90,26 @@ export function EmailAlias({ emails, isLoading }: Props) {
         onRemoveEmail={setModalRight}
       />
       <ModalRightConfirmation
-        title={
-          modalRight?.type === 'remove'
-            ? t('common:modal-confirm-delete.title')
-            : t('account-management.add-email.title')
-        }
+        title={messages['modal-title'][modalRight?.type]}
         open={!!modalRight}
-        handleClose={() => setModalRight(null)}
+        handleClose={onCloseModal}
       >
         {modalRight?.type === 'remove' && (
           <RemoveEmail
             email={modalRight?.authItem.data?.email}
             onSuccess={onSuccessFinishModal}
-            onCancel={() => setModalRight(null)}
+            onCancel={onCloseModal}
           />
         )}
         {modalRight?.type === 'add' && (
-          <AddEmail onSuccess={onSuccessFinishModal} />
+          <AddEmail onSuccess={onSuccessFinishModal} onMigrate={onMigration} />
+        )}
+        {modalRight?.type === 'migrate' && (
+          <MigrationModal
+            onSuccess={onSuccessFinishModal}
+            data={modalRight.migrationData}
+            onClose={onCloseModal}
+          />
         )}
       </ModalRightConfirmation>
     </Stack>

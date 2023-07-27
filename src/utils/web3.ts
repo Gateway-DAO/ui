@@ -34,11 +34,83 @@ export const getExplorer = (chainID: number): string => {
   }
 };
 
+/**
+ * It returns a URL based on the chain ID
+ * @param {number} chainID - The chain ID of the network you want to connect to.
+ * @returns A string
+ */
+export const getExplorerAPI = (chainID: number): string => {
+  switch (chainID) {
+    case 1:
+      return 'https://api.etherscan.io/api';
+    case 3:
+      return 'https://ropsten.etherscan.io';
+    case 4:
+      return 'https://rinkeby.etherscan.io';
+    case 5:
+      return 'https://goerli.etherscan.io';
+    case 6:
+      return 'https://kovan.etherscan.io';
+    case 10:
+      return 'https://api-optimistic.etherscan.io/api';
+    case 56:
+      return 'https://bscscan.com';
+    case 97:
+      return 'https://testnet.bscscan.com';
+    case 137:
+      return 'https://api.polygonscan.com/api';
+    case 42161:
+      return 'https://api.arbiscan.io/api';
+    case 80001:
+      return 'https://mumbai.polygonscan.com';
+    case 421611:
+      return 'https://rinkeby-explorer.arbitrum.io';
+    default:
+      return 'https://api.etherscan.io/api';
+  }
+};
+
 export const getSolanaExplorer = (chainName: string, text: string): string => {
   switch (chainName) {
     case 'devnet':
       return `https://solscan.io${text}?cluster=devnet`;
     default:
       return `https://solscan.io${text}`;
+  }
+};
+
+/**
+ * It returns a URL based on the chain ID
+ * @param {number} chainID - The chain ID of the network you want to connect to.
+ * @returns A string
+ */
+export const getExplorerAPIKey = (chainID: number): string => {
+  switch (chainID) {
+    case 1:
+      return process.env.NEXT_PUBLIC_ETHERSCAN_API_KEY;
+    case 3:
+      return 'https://ropsten.etherscan.io';
+    case 4:
+      return 'https://rinkeby.etherscan.io';
+    case 5:
+      return 'https://goerli.etherscan.io';
+    case 6:
+      return 'https://kovan.etherscan.io';
+    case 10:
+      return process.env.NEXT_PUBLIC_OPTIMISTICSCAN_API_KEY;
+    case 56:
+      return 'https://bscscan.com';
+    case 97:
+      return 'https://testnet.bscscan.com';
+    case 137:
+      return process.env.NEXT_PUBLIC_POLYGONSCAN_API_KEY;
+    case 42161:
+      return process.env.NEXT_PUBLIC_ARBISCAN_API_KEY;
+    case 80001:
+      return 'https://mumbai.polygonscan.com';
+    case 421611:
+      return 'https://rinkeby-explorer.arbitrum.io';
+    default:
+      return process.env.NEXT_PUBLIC_ETHERSCAN_API_KEY;
   }
 };
