@@ -41,8 +41,6 @@ import {
   useMediaQuery,
 } from '@mui/material';
 
-import LoadingModal from '../credit-score/LoadingModal';
-
 export function SpiceFiTemplate() {
   const isMobile = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
   const size = isMobile ? 325 : 500;
@@ -71,29 +69,28 @@ export function SpiceFiTemplate() {
 
   const DATA_MODEL_ID = process.env.NEXT_PUBLIC_SPICE_DM_ID;
 
-  const { me, hasuraUserService, token } = useAuth();
+  const { me, hasuraUserService } = useAuth();
   const router = useRouter();
   const [isHolderDialog, setIsHolderDialog] = useState(false);
   const queryClient = useQueryClient();
 
-  const { data: credScore } = useQuery(
-    ['cred-api-score-single', me?.wallet],
-    async () => {
-      const result = await hasuraUserService.get_cred_score({
-        address: me?.wallet,
-      });
-      return result.get_cred_score;
-    },
+  const { data: credentialData } = useQuery(
+    ['spice-credential', me?.protocol?.id],
+    () =>
+      hasuraUserService.protocol_find_credentials_by_campaign({
+        recipientUserId: me?.protocol?.id,
+        dataModelId: DATA_MODEL_ID,
+        take: 1,
+        skip: 0,
+      }),
     {
-      enabled: !!me?.wallet,
+      enabled: !!me?.protocol?.id,
     }
   );
-  const creditScore = credScore?.value;
 
-  const isCreditScore = !!credScore?.account;
-  const checkIfUserHasCredential = me?.protocol?.receivedCredentials?.find(
-    (something) => something?.dataModel?.id === DATA_MODEL_ID
-  );
+  const credential = credentialData?.protocol_credential[0];
+  const points = credential?.claim?.rewardPoints || 0;
+  const hasPoints = points > 0;
 
   const handleNavBack = () => {
     if (window.history.state.idx === 0) {
@@ -104,7 +101,7 @@ export function SpiceFiTemplate() {
   };
 
   const { data: recipientsUsers } = useQuery(
-    ['cred-api-find-recipient-user', DATA_MODEL_ID],
+    ['sp-blur-find-recipient-users', DATA_MODEL_ID],
     () =>
       hasuraPublicService.protocol_find_recipients_by_data_model({
         dataModelId: DATA_MODEL_ID,
@@ -117,7 +114,7 @@ export function SpiceFiTemplate() {
   );
 
   const { data: totalRecipientUsersCount } = useQuery(
-    ['cred-api-find-total-users', DATA_MODEL_ID],
+    ['sp-blur-find-total-users', DATA_MODEL_ID],
     () =>
       hasuraPublicService.protocol_get_data_model_stats({
         dataModelId: DATA_MODEL_ID,
@@ -129,7 +126,7 @@ export function SpiceFiTemplate() {
   );
 
   const { isLoading: isLoadingMintingCred, mutate } = useMutation(
-    ['cred-api-mint-credential'],
+    ['spice-api-mint-credential'],
     ({ credentialId }: Protocol_Mint_CredentialMutationVariables) => {
       return hasuraUserService.protocol_mint_credential({
         credentialId: credentialId,
@@ -182,7 +179,7 @@ export function SpiceFiTemplate() {
           >
             <Link
               passHref
-              href={ROUTES.DAO_PROFILE.replace('[slug]', 'cred-protocol')}
+              href={ROUTES.DAO_PROFILE.replace('[slug]', 'spice-finance')}
             >
               <Stack
                 direction="row"
@@ -197,7 +194,7 @@ export function SpiceFiTemplate() {
                 })}
               >
                 <Avatar
-                  alt="Cred Protocol"
+                  alt="SpiceFi"
                   src="https://cdn.mygateway.xyz/image/jpeg/4d6997da-cbb4-414a-bc5a-ee9205154aee"
                   sx={{
                     height: (theme) => theme.spacing(3),
@@ -226,7 +223,7 @@ export function SpiceFiTemplate() {
               >
                 <Box>
                   <Chip
-                    key={'creditscore'}
+                    key={'points'}
                     label={t('gate.label')}
                     sx={{
                       marginRight: (theme) => theme.spacing(1),
@@ -252,26 +249,23 @@ export function SpiceFiTemplate() {
               </Typography>
             )}
 
-            {checkIfUserHasCredential?.dataModel?.id ? (
+            {hasPoints ? (
               <Stack flexDirection="row" gap={2}>
                 <Button
                   variant="contained"
                   fullWidth
                   onClick={() =>
                     router.push(
-                      ROUTES.PROTOCOL_CREDENTIAL.replace(
-                        '[id]',
-                        checkIfUserHasCredential?.id
-                      )
+                      ROUTES.PROTOCOL_CREDENTIAL.replace('[id]', credential.id)
                     )
                   }
                   sx={{
                     mb: 2,
                   }}
                 >
-                  CHECK CREDENTIAL
+                  SEE CREDENTIAL
                 </Button>
-                {!checkIfUserHasCredential?.nft?.minted && (
+                {!credential?.nft?.minted && (
                   <LoadingButton
                     variant="outlined"
                     startIcon={
@@ -279,9 +273,7 @@ export function SpiceFiTemplate() {
                     }
                     fullWidth
                     isLoading={isLoadingMintingCred}
-                    onClick={() =>
-                      mutate({ credentialId: checkIfUserHasCredential.id })
-                    }
+                    onClick={() => mutate({ credentialId: credential?.id })}
                     sx={{
                       mb: 2,
                     }}
@@ -294,7 +286,7 @@ export function SpiceFiTemplate() {
               <Button
                 variant="contained"
                 fullWidth
-                disabled={!isCreditScore}
+                disabled={!hasPoints}
                 onClick={() => router.push(ROUTES.EXPLORE)}
                 sx={{
                   mb: 2,
@@ -306,8 +298,8 @@ export function SpiceFiTemplate() {
 
             <Box
               component="img"
-              src={'/images/campaigns/spice/default.png'}
-              alt={'credit score' + ' image'}
+              src={credential?.image ?? '/images/campaigns/spice/default.png'}
+              alt={'spice finance image'}
               marginBottom={(theme) => theme.spacing(4)}
               sx={{
                 width: '100%',
@@ -391,7 +383,7 @@ export function SpiceFiTemplate() {
                       passHref
                       href={ROUTES.DAO_PROFILE.replace(
                         '[slug]',
-                        'cred-protocol'
+                        'spice-finance'
                       )}
                     >
                       <Tooltip title={t('gate.organization')}>
@@ -468,7 +460,9 @@ export function SpiceFiTemplate() {
             <Box position={'relative'}>
               <ArcProgress
                 thickness={isMobile ? 15 : 20}
-                progress={!!me && isCreditScore ? creditScore / 1000 : 0}
+                progress={
+                  !!me && hasPoints ? (points > 36000 ? 1 : points / 36000) : 0
+                }
                 fillThickness={isMobile ? 30 : 35}
                 emptyColor="#FFFFFF26"
                 size={size}
@@ -479,16 +473,21 @@ export function SpiceFiTemplate() {
               />
               <Box
                 position={'absolute'}
-                top={{ xs: 90, md: 160 }}
-                left={{ xs: 75, md: 170 }}
+                top={-30}
+                display="flex"
+                width="100%"
+                height="100%"
+                justifyContent="center"
+                alignItems="center"
+                flexDirection="column"
               >
-                {!!me && isCreditScore && (
+                {!!me && hasPoints && (
                   <>
-                    <Typography align={'center'} variant="h1">
-                      {credScore?.value}
+                    <Typography align={'center'} variant="h2">
+                      {points}
                     </Typography>
                     <Typography align={'center'} variant="h6">
-                      {credScore?.value_rating}
+                      {credential?.title}
                     </Typography>
                   </>
                 )}
@@ -504,7 +503,7 @@ export function SpiceFiTemplate() {
                     </Typography>
                   </>
                 )}
-                {!!me && !isCreditScore && (
+                {!!me && !hasPoints && (
                   <>
                     <Typography
                       sx={{
