@@ -1,5 +1,5 @@
 import useTranslation from 'next-translate/useTranslation';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import { TaskIcon } from '@/components/atoms/icons/task-icon';
 import {
@@ -9,6 +9,7 @@ import {
 import TextFieldWithEmoji from '@/components/molecules/form/TextFieldWithEmoji/TextFieldWithEmoji';
 import { brandColors } from '@/theme';
 import { useFieldArray, useFormContext } from 'react-hook-form';
+import { PartialDeep } from 'type-fest/source/partial-deep';
 
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -27,8 +28,9 @@ import {
   alpha,
 } from '@mui/material';
 
-import { mockChains } from './__mock__';
+import { mockChains, mockEvents } from './__mock__';
 import { Parameters } from './components/parameters';
+import { EventAbi } from './types';
 
 const TrackOnChainEventsTask = ({ dragAndDrop, taskId, deleteTask }) => {
   const { t } = useTranslation('gate-new');
@@ -45,23 +47,30 @@ const TrackOnChainEventsTask = ({ dragAndDrop, taskId, deleteTask }) => {
   } = useFormContext<CreateGateData>();
 
   const formValues = getValues();
+  // TODO: REMOVE
+  const mock: any = mockEvents;
+  const mockEventsFiltered: PartialDeep<EventAbi>[] = mock.filter(
+    (item: EventAbi) => item.type === 'event'
+  );
 
   const chain = watch(`tasks.${taskId}.task_data.chain`, null);
   const address = watch(`tasks.${taskId}.task_data.contract_address`);
+  const event = watch(`tasks.${taskId}.task_data.event`);
+  const selectedEvent = useMemo(() => {
+    return mockEventsFiltered.find((eventItem) => eventItem.name === event);
+  }, [event]);
 
   const {
     fields: parameters,
     append,
     remove,
-    swap,
-    update,
   } = useFieldArray({
     name: `tasks.${taskId}.task_data.parameters`,
     control,
   });
 
   const createParameter = (): Parameter => ({
-    type: '',
+    parameterName: null,
     operator: null,
     value: null,
   });
@@ -226,6 +235,7 @@ const TrackOnChainEventsTask = ({ dragAndDrop, taskId, deleteTask }) => {
               {t('tasks.track_onchain.chain')}
             </InputLabel>
             <Select
+              label={t('tasks.track_onchain.chain')}
               id="chains"
               sx={{ maxWidth: { md: '50%', xs: '100%' } }}
               {...register(`tasks.${taskId}.task_data.chain`, {
@@ -267,17 +277,67 @@ const TrackOnChainEventsTask = ({ dragAndDrop, taskId, deleteTask }) => {
               </Button>
             </Stack>
           )}
+          <Stack>
+            <FormControl>
+              <InputLabel htmlFor="type">
+                {t('tasks.track_onchain.event')}
+              </InputLabel>
+              <Select
+                sx={{ maxWidth: { md: '50%', xs: '100%' } }}
+                label={t('tasks.track_onchain.event')}
+                id="type"
+                {...register(`tasks.${taskId}.task_data.event`)}
+                renderValue={(value) => {
+                  return <>{value}</>;
+                }}
+              >
+                {mockEventsFiltered.map((event) => (
+                  <MenuItem key={event?.name} value={event?.name}>
+                    <Stack sx={{ width: '100%' }}>
+                      <Typography sx={{ display: 'block' }}>
+                        {event?.name}
+                      </Typography>
+                      <Stack sx={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+                        {event?.inputs?.map((input, index) => (
+                          <Stack
+                            key={input?.name}
+                            sx={{ flexDirection: 'row', fontSize: 12 }}
+                          >
+                            <span
+                              style={{
+                                marginRight: 6,
+                                color: brandColors.purple.main,
+                              }}
+                            >
+                              {input?.name}
+                            </span>
+                            <span>{input?.type}</span>
+                            {event?.inputs?.length !== index + 1 && (
+                              <span style={{ marginRight: 6 }}>,</span>
+                            )}
+                          </Stack>
+                        ))}
+                      </Stack>
+                    </Stack>
+                    <Divider sx={{ mx: -3 }} />
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Stack>
         </Stack>
-        <Divider
-          sx={(theme) => ({
-            margin: '48px -50px',
-            [theme.breakpoints.down('sm')]: {
-              margin: '24px -20px',
-            },
-          })}
-        />
+        {!taskVisible && event && (
+          <Divider
+            sx={(theme) => ({
+              margin: '48px -50px',
+              [theme.breakpoints.down('sm')]: {
+                margin: '24px -20px',
+              },
+            })}
+          />
+        )}
       </FormControl>
-      {!taskVisible && (
+      {!taskVisible && event && (
         <Stack direction="column" alignItems="flex-start">
           <Stack
             justifyContent="space-between"
@@ -304,11 +364,10 @@ const TrackOnChainEventsTask = ({ dragAndDrop, taskId, deleteTask }) => {
           </Stack>
 
           <Parameters
+            inputs={selectedEvent?.inputs}
             parameters={parameters}
             taskId={taskId}
             removeParameter={remove}
-            swapParameter={swap}
-            updateParameter={update}
           />
         </Stack>
       )}

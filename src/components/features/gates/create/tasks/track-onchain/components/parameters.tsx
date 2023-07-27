@@ -7,6 +7,7 @@ import {
 } from '@/components/features/gates/create/schema';
 import { brandColors, theme } from '@/theme';
 import { useFormContext } from 'react-hook-form';
+import { PartialDeep } from 'type-fest/source/partial-deep';
 
 import CloseIcon from '@mui/icons-material/Close';
 import {
@@ -21,14 +22,21 @@ import {
   useMediaQuery,
 } from '@mui/material';
 
-import { mockParamsType } from '../__mock__';
+import { InputAbi } from '../types';
+
+type Props = {
+  parameters: any;
+  taskId: number;
+  removeParameter: any;
+  inputs: PartialDeep<InputAbi>[];
+};
 
 export function Parameters({
   parameters,
   taskId,
   removeParameter,
-  ...rest
-}): JSX.Element {
+  inputs,
+}: Props): JSX.Element {
   const {
     register,
     watch,
@@ -38,8 +46,17 @@ export function Parameters({
   const { t } = useTranslation('gate-new');
   const isMobile = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
   const getParametersValues = watch(`tasks.${taskId}.task_data.parameters`);
+
+  const inputSelected = (index: number): PartialDeep<InputAbi> => {
+    return inputs?.find(
+      (inputItem) =>
+        inputItem.name === getParametersValues?.[index].parameterName
+    );
+  };
+
   const typeIsNumber = (index: number): boolean => {
-    return getParametersValues?.[index]?.type?.indexOf('uint') > -1;
+    const type = inputSelected(index)?.type;
+    return type !== 'address' && type !== 'string' && type !== 'bool';
   };
 
   const getOperators = (isNumber: boolean) => {
@@ -76,7 +93,6 @@ export function Parameters({
       sx={{
         width: '100%',
       }}
-      {...rest}
     >
       {parameters.map((parameter: Parameter, index: number) => (
         <>
@@ -96,46 +112,50 @@ export function Parameters({
             >
               <Stack sx={{ width: { xs: '100%', md: 250 } }}>
                 <FormControl>
-                  <InputLabel htmlFor="type">
+                  <InputLabel htmlFor="parameterName">
                     {t('tasks.track_onchain.parameter')}
                   </InputLabel>
                   <Select
                     label={t('tasks.track_onchain.parameter')}
-                    id="type"
+                    id="parameterName"
                     {...register(
-                      `tasks.${taskId}.task_data.parameters.${index}.type`
+                      `tasks.${taskId}.task_data.parameters.${index}.parameterName`
                     )}
                   >
-                    {mockParamsType.map((param) => (
-                      <MenuItem
-                        key={param.id}
-                        value={`${param.name} ${param.type}`}
-                      >
-                        <span style={{ marginRight: 6 }}>{param.name}</span>
-                        <span style={{ color: brandColors.purple.main }}>
-                          {param.type}
+                    {inputs?.map((input) => (
+                      <MenuItem key={input?.name} value={input?.name}>
+                        <span
+                          style={{
+                            marginRight: 6,
+                            color: brandColors.purple.main,
+                          }}
+                        >
+                          {input?.name}
                         </span>
+                        <span>{input?.type}</span>
                       </MenuItem>
                     ))}
                   </Select>
                 </FormControl>
               </Stack>
-              <Stack sx={{ width: { xs: '100%', md: 100 } }}>
-                <FormControl>
-                  <Select
-                    id="type"
-                    {...register(
-                      `tasks.${taskId}.task_data.parameters.${index}.operator`
-                    )}
-                  >
-                    {getOperators(typeIsNumber(index)).map((operator) => (
-                      <MenuItem key={operator.value} value={operator.value}>
-                        {operator.label}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </Stack>
+              {inputSelected(index) && (
+                <Stack sx={{ width: { xs: '100%', md: 100 } }}>
+                  <FormControl>
+                    <Select
+                      id="operator"
+                      {...register(
+                        `tasks.${taskId}.task_data.parameters.${index}.operator`
+                      )}
+                    >
+                      {getOperators(typeIsNumber(index)).map((operator) => (
+                        <MenuItem key={operator.value} value={operator.value}>
+                          {operator.label}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Stack>
+              )}
               <TextField
                 sx={{ flexGrow: 1, width: { xs: '100%', md: 'auto' } }}
                 variant="outlined"

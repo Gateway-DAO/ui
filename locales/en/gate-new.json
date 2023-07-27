@@ -61,6 +61,7 @@
       "chain": "Chain",
       "contract_address": "Contract address",
       "check_contract": "Check contract",
+      "event": "Event",
       "parameters": "Parameters",
       "parameter": "Parameter",
       "add_parameter": "Add parameter",
