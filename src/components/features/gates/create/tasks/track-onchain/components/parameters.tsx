@@ -88,8 +88,6 @@ export function Parameters({
         ];
   };
 
-  console.log(inputs);
-
   return (
     <Stack
       alignItems={'flex-start'}
