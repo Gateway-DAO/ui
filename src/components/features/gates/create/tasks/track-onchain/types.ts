@@ -6,5 +6,5 @@ export type InputAbi = {
 export type EventAbi = {
   inputs: InputAbi[];
   name: string;
-  type: 'function' | 'event';
+  type: 'function' | 'event' | 'constructor';
 };
