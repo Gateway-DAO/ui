@@ -33,7 +33,6 @@ export default function DaoProfilePage({
     me?.following_dao?.find((fdao) => fdao.dao_id === daoProps?.id)?.dao
       ?.is_admin ?? false;
 
-  // direct
   const credentialsQueryDirectType = useQuery(
     ['dao-gates-direct', daoProps?.id],
     () => hasuraUserService.dao_gates_tab({ id: daoProps.id, type: 'direct' }),

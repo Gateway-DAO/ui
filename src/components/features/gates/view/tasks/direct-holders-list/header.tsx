@@ -22,6 +22,10 @@ import { DirectWallets } from '../../../create/tasks/direct/direct-wallets';
 import { FormProvider, useForm, useFormContext } from 'react-hook-form';
 import { CreateGateData } from '../../../create/schema';
 import {
+  InfiniteData,
+  QueryObserverResult,
+  RefetchOptions,
+  RefetchQueryFilters,
   UseQueryResult,
   useInfiniteQuery,
   useMutation,
@@ -33,7 +37,11 @@ import {
   DirectWalletsEmptyHeader,
   DirectWalletsHeader,
 } from '../../../create/tasks/direct/direct-wallets-header';
-import { Direct_Credential_InfoQuery, Files } from '@/services/hasura/types';
+import {
+  Direct_Credential_HoldersQuery,
+  Direct_Credential_InfoQuery,
+  Files,
+} from '@/services/hasura/types';
 import { DirectWalletsList } from '../../../create/tasks/direct/direct-wallets-lists';
 import { DirectWalletsDropzone } from '../../../create/tasks/direct/fields/direct-wallets-dropzone';
 import { DirectWalletsProgress } from '../../../create/tasks/direct/fields/direct-wallets-progress';
@@ -42,25 +50,24 @@ import ConfirmDialog from '@/components/molecules/modal/confirm-dialog';
 import { useLocalStorage } from '@solana/wallet-adapter-react';
 
 type Props = {
-  isLoading?: boolean;
-  hasCredential: boolean;
   totalHolders: number;
-  completedAt?: string;
   gateId: string;
   directCredentialInfo: UseQueryResult<Direct_Credential_InfoQuery, unknown>;
   isAdmin: boolean;
+  refetchWhitelistedWallets: <TPageData>(
+    options?: RefetchOptions & RefetchQueryFilters<TPageData>
+  ) => Promise<
+    QueryObserverResult<InfiniteData<Direct_Credential_HoldersQuery>, unknown>
+  >;
 };
 
 export function DirectHoldersHeader({
-  hasCredential,
   totalHolders,
-  completedAt,
   gateId,
   directCredentialInfo,
   isAdmin,
+  refetchWhitelistedWallets,
 }: Props) {
-  console.log(gateId);
-
   const { t } = useTranslation('credential');
   const [openSendMore, setOpenSendMore] = useToggle(false);
   const [uploadFromCsv, setUploadFromCsv] = useToggle(false);
@@ -80,14 +87,19 @@ export function DirectHoldersHeader({
     wallet: '',
   });
 
+  const [allRecipientsReceviedIt, setAllRecipientsReceviedIt] = useLocalStorage(
+    gateId,
+    null
+  );
+  console.log(allRecipientsReceviedIt);
   const verifyCSV = useMutation<Files, unknown, File>(
-    ['add-new-csv'],
+    ['send-more-multiple-csv'],
     async (file: File) => {
       const formData = new FormData();
       formData.append('csv', file);
       formData.append('gate_id', gateId);
 
-      return fetchAuth(`verify/direct/add-new`, {
+      return fetchAuth(`verify/direct/send-more-multiple`, {
         method: 'POST',
         body: formData,
       });
@@ -230,12 +242,19 @@ export function DirectHoldersHeader({
   );
 
   const handleCloseModalRight = () => {
+    refetchWhitelistedWallets();
     directCredentialInfo.refetch();
     setValue('whitelisted_wallets_file', null);
     setUploadFromCsv(false);
+    csvProcessingProgress.refetch();
   };
 
-  console.log(csvProcessingProgress?.data);
+  const processingCount =
+    csvProcessingProgress?.data?.csv_processing_progress?.progress;
+  const totalProcessingCount =
+    csvProcessingProgress?.data?.csv_processing_progress?.total;
+
+  console.log(processingCount, totalProcessingCount);
 
   return (
     <>
@@ -250,53 +269,51 @@ export function DirectHoldersHeader({
         </Box>
         <Button
           variant="contained"
-          disabled={false}
           onClick={() => setOpenSendMore(true)}
           sx={{ m: 2.5 }}
+          disabled={!(isAdmin && processingCount)}
         >
           <Send sx={{ mr: 1.2 }} /> Send More
         </Button>
       </Stack>
-      {isAdmin &&
-        csvProcessingProgress?.data?.csv_processing_progress?.progress ===
-          totalHolders && (
-          <>
-            <Stack
-              direction="row"
-              py={2}
-              px={4}
-              spacing={4}
-              alignItems="center"
-              justifyContent="space-between"
-              borderRadius={1}
-              sx={{
-                backgroundColor: 'rgba(229, 229, 229, 0.08)',
-              }}
-            >
-              <Box>
-                <Typography variant="subtitle1" color="text.primary">
-                  {'Issuing Credentials'}
-                </Typography>
-                <Typography variant="caption">
-                  {'You will be notified when all recipients have received it'}
-                </Typography>
-              </Box>
-              <Typography variant="body2">
-                {csvProcessingProgress?.data?.csv_processing_progress?.progress}
-                {` / `}
-                {totalHolders}
+      {isAdmin && processingCount !== totalProcessingCount && (
+        <>
+          <Stack
+            direction="row"
+            py={2}
+            px={4}
+            spacing={4}
+            alignItems="center"
+            justifyContent="space-between"
+            borderRadius={1}
+            sx={{
+              backgroundColor: 'rgba(229, 229, 229, 0.08)',
+            }}
+          >
+            <Box>
+              <Typography variant="subtitle1" color="text.primary">
+                {'Issuing Credentials'}
               </Typography>
-            </Stack>
-            <LinearProgress
-              variant="determinate"
-              value={10}
-              sx={{ mb: 3.75, borderRadius: 1 }}
-            />
-          </>
-        )}
+              <Typography variant="caption">
+                {'You will be notified when all recipients have received it'}
+              </Typography>
+            </Box>
+            <Typography variant="body2">
+              {csvProcessingProgress?.data?.csv_processing_progress?.progress}
+              {` / `}
+              {csvProcessingProgress?.data?.csv_processing_progress?.total}
+            </Typography>
+          </Stack>
+          <LinearProgress
+            variant="determinate"
+            value={10}
+            sx={{ mb: 3.75, borderRadius: 1 }}
+          />
+        </>
+      )}
       {isAdmin &&
-        csvProcessingProgress?.data?.csv_processing_progress?.progress !==
-          totalHolders && (
+        processingCount !== totalProcessingCount &&
+        allRecipientsReceviedIt?.gateId === undefined && (
           <>
             <Stack
               direction="row"
@@ -322,7 +339,14 @@ export function DirectHoldersHeader({
                   {'All recipients recevied it'}
                 </Typography>
               </Stack>
-              <Button>
+              <Button
+                onClick={() =>
+                  setAllRecipientsReceviedIt({
+                    ...allRecipientsReceviedIt,
+                    [gateId]: true,
+                  })
+                }
+              >
                 <Close color="success" />
               </Button>
             </Stack>
@@ -362,6 +386,7 @@ export function DirectHoldersHeader({
                 type: verifySingleData.type,
                 wallet: verifySingleData.wallet,
               });
+
           handleCloseModalRight();
         }}
         title="This recipient has already received this credential, are you sure you want to send it again?"
@@ -482,11 +507,12 @@ export function DirectHoldersHeader({
     </>
   );
 }
-// meeting for the frontend code
 
 // test frontend by using local storage
-// and also for send more list does not updates
-// rename end points
+// delete end point and revoke
 // push dapp pr
 // clean frontend code
 // add modal by manish
+
+// cleaning frontend code
+// need to implement revoke and delete if possible

@@ -3,6 +3,11 @@
   "earn-tab": "Quests",
   "passes-tab": "Passes",
   "overview-tab": {
+    "create-credential-section": {
+      "title": "Create Credential",
+      "description": "Start creating quests or issuing credentials",
+      "cta": "CREATE NOW"
+    },
     "credentials_stats_card": "Credentials to earn",
     "protocol_credentials_stats_card": "Issued credentials",
     "credentials-section": {

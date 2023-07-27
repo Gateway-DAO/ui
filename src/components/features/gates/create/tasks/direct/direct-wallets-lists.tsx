@@ -52,6 +52,7 @@ import { menuItemClasses } from '@mui/material/MenuItem';
 import { useFormContext } from 'react-hook-form';
 import { AddRecipientDirectCredentialSchema } from './direct-wallets';
 import { Download, Edit, Delete, Email, Twitter } from '@mui/icons-material';
+import { EthereumIcon } from '@/components/atoms/icons';
 
 export function DirectWalletsList({
   invalidList,
@@ -197,19 +198,7 @@ export function DirectWalletsList({
             variant="filled"
             color="default"
             label={type}
-            avatar={
-              <Avatar
-                src={
-                  type === 'Email'
-                    ? '/images/mail-filled.svg'
-                    : '/images/ethereum.svg'
-                }
-                sx={{
-                  height: 5,
-                  width: 10,
-                }}
-              />
-            }
+            icon={type === 'Email' ? <Email /> : <EthereumIcon />}
           />
         </TableCell>
         <TableCell align={'right'}>
@@ -269,7 +258,9 @@ export function DirectWalletsList({
       </>
     );
   }
-
+  console.log(Math.min(400, whitelistedWallets.length * 61));
+  console.log(whitelistedWallets.length * 61);
+  whitelistedWallets.length <= 5;
   return (
     <>
       <Stack gap={3} sx={{ height: '100%' }} {...containerProps}>
@@ -294,7 +285,10 @@ export function DirectWalletsList({
             fixedHeaderContent={fixedHeaderContent}
             itemContent={rowContent}
             style={{
-              height: Math.min(400, whitelistedWallets.length * 61),
+              height:
+                whitelistedWallets.length <= 3
+                  ? 200
+                  : Math.min(400, whitelistedWallets.length * 61),
             }}
           />
         </Box>

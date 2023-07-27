@@ -1,4 +1,5 @@
 import { AddOrganizationIcon } from '@/components/atoms/icons/add-organization-icon';
+import { GatewayGrayIcon } from '@/components/organisms/mint/mint-card/assets/gateway-gray';
 import { useCreateOrgCardProps } from '@/hooks/use-create-org-card-props';
 import { brandColors } from '@/theme';
 
@@ -9,6 +10,7 @@ type Props = {
   description: string;
   buttonLabel: string;
   buttonAction: () => void;
+  icon?: boolean;
 };
 
 export function CreateOrgCard({
@@ -16,6 +18,7 @@ export function CreateOrgCard({
   description,
   buttonLabel,
   buttonAction,
+  icon,
 }: Props) {
   const createOrgCardProps = useCreateOrgCardProps({ action: buttonAction });
   return (
@@ -38,7 +41,8 @@ export function CreateOrgCard({
       }}
       {...createOrgCardProps}
     >
-      <AddOrganizationIcon />
+      {icon ? <GatewayGrayIcon /> : <AddOrganizationIcon />}
+
       <Stack flexGrow={1}>
         <Typography
           variant="body1"

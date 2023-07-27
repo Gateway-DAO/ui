@@ -8,9 +8,9 @@ import { ClientNav } from '@/components/organisms/navbar/client-nav';
 import { query } from '@/constants/queries';
 import { useAuth } from '@/providers/auth';
 import { hasuraPublicService } from '@/services/hasura/api';
-import { Gates } from '@/services/hasura/types';
+import { Direct_Credential_InfoQuery, Gates } from '@/services/hasura/types';
 import { TOKENS } from '@/theme';
-import { useInfiniteQuery } from '@tanstack/react-query';
+import { UseQueryResult, useInfiniteQuery } from '@tanstack/react-query';
 import { useWindowSize } from 'react-use';
 import { TableVirtuoso, Virtuoso } from 'react-virtuoso';
 import { PartialDeep } from 'type-fest';
@@ -38,39 +38,30 @@ import { Email, Delete, Edit } from '@mui/icons-material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { AvatarFile } from '@/components/atoms/avatar-file';
 import { url } from 'inspector';
+import { DirectHoldersHeader } from './header';
 
 type Props = {
   gate: PartialDeep<Gates>;
-  header: ReactNode;
   isLoading: boolean;
   totalHolders: number;
+  isAdmin: boolean;
+  directCredentialInfo: UseQueryResult<Direct_Credential_InfoQuery, unknown>;
 };
-
-// first deployed vercel
-// finished send more logic with storing files 
-// merged mansish pr and suggested some changes 
-// single end point done some stuff remaining
-
-// send more imporve ui
-// build the issuing credentials and remove you have this credential
-
-// for wallets there is some edge case need to handle
-
-// remove the current credential issuing flow
-// clean code
 
 export function DirectHoldersList({
   gate,
-  header,
   isLoading: isLoadingInfo,
   totalHolders,
+  isAdmin,
+  directCredentialInfo,
 }: Props) {
   const { t } = useTranslation('credential');
-  const [filter, setFilter] = useState('');
-  const { me } = useAuth();
+
   const windowSize = useWindowSize();
   const [nameDisplay, setNameDisplay] = useState('');
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+  const { me, hasuraUserService } = useAuth();
+  const [filter, setFilter] = useState('');
 
   const {
     data,
@@ -78,7 +69,7 @@ export function DirectHoldersList({
     hasNextPage,
     isFetchingNextPage,
     fetchNextPage,
-    refetch,
+    refetch: refetchWhitelistedWallets,
   } = useInfiniteQuery(
     [query.direct_credentialholders, me?.wallet, gate.id, filter],
     ({ pageParam = 0 }) =>
@@ -94,7 +85,7 @@ export function DirectHoldersList({
             gate_id: gate.id,
           }),
     {
-      enabled: !isLoadingInfo,
+      enabled: isLoadingInfo && gate.type === 'direct',
       getNextPageParam: (lastPage, pages) => {
         if (lastPage.whitelisted_wallets.length < 15) return undefined;
         return pages.length * 15;
@@ -270,7 +261,15 @@ export function DirectHoldersList({
           pb: 2,
         }}
       >
-        {header}
+        {
+          <DirectHoldersHeader
+            gateId={gate.id}
+            totalHolders={totalHolders}
+            isAdmin={isAdmin}
+            directCredentialInfo={directCredentialInfo}
+            refetchWhitelistedWallets={refetchWhitelistedWallets}
+          />
+        }
         <TextField
           label="Search by Recipient ID"
           variant="outlined"

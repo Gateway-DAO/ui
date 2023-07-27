@@ -69,11 +69,19 @@ export function EmptyCard({
         textAlign="center"
       >
         <Avatar>{renderIcon}</Avatar>
-        <Typography variant="body1" color="text.primary">
+        <Typography
+          variant="body1"
+          color="text.primary"
+          sx={{ textTransform: 'none' }}
+        >
           {title}
         </Typography>
         {subtitle && (
-          <Typography variant="body2" color="text.secondary">
+          <Typography
+            variant="body2"
+            color="text.secondary"
+            sx={{ textTransform: 'none' }}
+          >
             {subtitle}
           </Typography>
         )}

@@ -162,5 +162,6 @@ query get_protocol_by_gate_id($user_id: String!, $gate_id: String!) {
 query csvProcessingProgress($jobId: uuid!) {
   csv_processing_progress(jobId: $jobId) {
     progress
+    total
   }
 }

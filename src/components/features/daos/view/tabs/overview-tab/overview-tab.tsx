@@ -1,5 +1,5 @@
 import useTranslation from 'next-translate/useTranslation';
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 
 import { GatesCard } from '@/components/molecules/cards/gates-card';
 import { SectionWithSliderResponsive } from '@/components/molecules/sections';
@@ -24,8 +24,6 @@ import {
 
 import DashboardCard from '../../../../protocol/components/dashboard-card';
 import { useDaoProfile } from '../../context';
-import { CreateOrgCardDashboard } from '@/components/templates/landing/create-org/create-org-dashboard';
-import { useToggle } from 'react-use';
 import CreateCredentialDialog from './dialog-structure';
 import { CreateOrgCard } from '@/components/molecules/cards/create-org-card';
 import CreateQuestDialog from './quest/dialog-structure';
@@ -112,12 +110,6 @@ export function OverviewTab({
     ].slice(0, 4);
   }, [gatesDirectType, isAdmin, newGateUrl]);
 
-  const setDaoData = () => {
-    if (dao.status === 'pending') {
-      queryClient.setQueryData([query.org_pending_gate_creation], dao);
-    }
-  };
-
   return (
     <Stack
       direction="column"
@@ -177,9 +169,16 @@ export function OverviewTab({
             <>
               <Stack px={TOKENS.CONTAINER_PX} mt={6}>
                 <CreateOrgCard
-                  title={'Create Credential'}
-                  description={'Start creating quests or issuing credentials'}
-                  buttonLabel={'CREATE NOW'}
+                  icon={true}
+                  title={t(
+                    'dao-profile:overview-tab.create-credential-section.title'
+                  )}
+                  description={t(
+                    'dao-profile:overview-tab.create-credential-section.description'
+                  )}
+                  buttonLabel={t(
+                    'dao-profile:overview-tab.create-credential-section.cta'
+                  )}
                   buttonAction={() => setOpenCredentialCreationDialog(true)}
                 />
               </Stack>

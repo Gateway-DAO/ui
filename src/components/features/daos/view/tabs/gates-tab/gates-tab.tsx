@@ -1,15 +1,10 @@
-import Link from 'next/link';
-
 import { EmptyCard } from '@/components/molecules/cards/empty-card';
 import { GatesCard } from '@/components/molecules/cards/gates-card';
-import { ChipDropdown } from '@/components/molecules/form/chip-dropdown';
-import { ROUTES } from '@/constants/routes';
 import { usePropertyFilter } from '@/hooks/use-property-filter';
 import { useViewMode, ViewMode } from '@/hooks/use-view-modes';
 import { TOKENS } from '@/theme';
 
-import { ViewModule, ViewList, Add } from '@mui/icons-material';
-import { Box, Button, IconButton, Stack } from '@mui/material';
+import { Box, Button, Stack } from '@mui/material';
 import MUICard from '@mui/material/Card';
 
 import { useDaoProfile } from '../../context';
@@ -45,21 +40,6 @@ export function GatesTab({
     toggleFilter,
     onClear,
   } = usePropertyFilter(gates?.daos_by_pk?.gates ?? [], 'categories');
-  const newGateUrl = `${ROUTES.DAO_PROFILE.replace(
-    '[slug]',
-    dao.slug
-  )}#create-quest`;
-
-  const newGateCard = (
-    <Link key="create-credential" passHref href={newGateUrl}>
-      <EmptyCard
-        title="Create a"
-        subtitle="Create your first Credential and help talents find you"
-        component="a"
-        sx={{ minHeight: 440, maxWidth: { md: '25%' } }}
-      />
-    </Link>
-  );
 
   return (
     <Box sx={{ py: 4 }}>
@@ -81,7 +61,6 @@ export function GatesTab({
                   sx={{
                     position: 'relative',
                     minHeight: '506px',
-                    width: '352px',
                   }}
                 >
                   <Button
@@ -136,7 +115,6 @@ export function GatesTab({
                 disabled
                 sx={{
                   height: '506px',
-                  width: '352px',
                   maxWidth: { md: '25%' },
                 }}
               />
@@ -146,7 +124,6 @@ export function GatesTab({
                 sx={{
                   position: 'relative',
                   minHeight: '506px',
-                  width: '352px',
                 }}
               >
                 <Button

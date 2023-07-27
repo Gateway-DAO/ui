@@ -40,8 +40,7 @@ export function SendMore({
   const closeDialog = () => {
     toggleDialog(false);
   };
-  const { enqueueSnackbar } = useSnackbar();
-  const { hasuraUserService, fetchAuth } = useAuth();
+
 
   const methods = useForm<AddRecipientDirectCredentialSchema>();
   const {
@@ -55,7 +54,7 @@ export function SendMore({
 
   const TYPE_OF_WALLETS = ['Wallet', 'Email'];
 
-  console.log(getValues('wallet')?.length);
+
 
   return (
     <FormProvider {...methods}>

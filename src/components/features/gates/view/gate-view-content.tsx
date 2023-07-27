@@ -7,13 +7,14 @@ import { useAuth } from '@/providers/auth';
 import { hasuraPublicService } from '@/services/hasura/api';
 import { Gates } from '@/services/hasura/types';
 import { isDaoAdmin } from '@/utils/is-dao-admin';
-import { useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { PartialDeep } from 'type-fest';
 
 import { DirectHoldersList } from './tasks/direct-holders-list/direct-holders-list';
 import { DirectHoldersHeader } from './tasks/direct-holders-list/header';
 import { DraftDirectHoldersList } from './tasks/draft-direct-holders-list/draft-direct-holders-list';
 import { TaskList } from './tasks/task-list';
+import { query } from '@/constants/queries';
 
 type GateViewContentProps = {
   gateProps: PartialDeep<Gates>;
@@ -91,19 +92,8 @@ export function GateViewContent({
               directCredentialInfo.data?.whitelisted_wallets_aggregate
                 ?.aggregate.count
             }
-            header={
-              <DirectHoldersHeader
-                hasCredential={gateStatus?.isCompleted}
-                gateId={gateProps.id}
-                totalHolders={
-                  directCredentialInfo.data?.whitelisted_wallets_aggregate
-                    ?.aggregate.count
-                }
-                isAdmin={isAdmin}
-                directCredentialInfo={directCredentialInfo}
-                completedAt={credential?.credentials_by_pk?.created_at}
-              />
-            }
+            directCredentialInfo={directCredentialInfo}
+            isAdmin={isAdmin}
           />
         )}
       {/* {gateProps.published === 'not_published' &&
