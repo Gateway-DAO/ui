@@ -82,7 +82,7 @@ export const mockEvents = [
       { name: 'member', type: 'address' },
       { name: 'voteWeight', type: 'uint256' },
       { name: 'canAddProposals', type: 'bool' },
-      { name: name, type: 'string' },
+      { name: 'name', type: 'string' },
       { name: 'memberSince', type: 'uint256' },
     ],
     type: 'function',
