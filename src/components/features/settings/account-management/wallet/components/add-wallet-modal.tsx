@@ -7,16 +7,23 @@ import { useDisconnectWallets } from '@/providers/auth/hooks';
 import { Protocol_Api_AuthType } from '@/services/hasura/types';
 import { useSnackbar } from 'notistack';
 
+import { MigrationModalData } from '../../migration/migration-modal';
 import { AuthenticationsItem } from '../../types';
 import { useAddWalletModal } from '../hooks';
 
 type Props = {
   onSuccess: () => void;
   onClose: () => void;
+  onMigrate: (data: MigrationModalData) => void;
   wallets: AuthenticationsItem[];
 };
 
-export function AddWalletModal({ wallets, onSuccess, onClose }: Props) {
+export function AddWalletModal({
+  wallets,
+  onMigrate,
+  onSuccess,
+  onClose,
+}: Props) {
   const [isAdding, setIsAdding] = useState(false);
   const wallet = useConnectedWallet();
   const hasWallet = wallets.some(
@@ -30,6 +37,7 @@ export function AddWalletModal({ wallets, onSuccess, onClose }: Props) {
     hasWallet,
     isAdding,
     onSuccess,
+    onMigrate,
   });
   const disconnect = useDisconnectWallets();
 

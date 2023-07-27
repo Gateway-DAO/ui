@@ -1,3 +1,5 @@
+import useTranslation from 'next-translate/useTranslation';
+
 import { LoadingButton } from '@/components/atoms/buttons/loading-button';
 
 import { Stack, Typography } from '@mui/material';
@@ -28,34 +30,39 @@ const TokenHoldContent = ({
 }) => {
   const { chain, token_address, quantity } = data;
   const formattedDate = new Date(updatedAt.toLocaleString()).toLocaleString();
+  const { t } = useTranslation('gate-profile');
 
   return (
     <Stack marginTop={5} alignItems="start">
       <Typography variant="subtitle1" fontWeight={'bold'}>
         {chains[chain]}
       </Typography>
-      <Typography variant="caption">Chain</Typography>
+      <Typography variant="caption">{t('tasks.token_hold.chain')}</Typography>
       <Typography variant="subtitle1" fontWeight={'bold'} marginTop={2}>
         {token_address}
       </Typography>
-      <Typography variant="caption">Token address</Typography>
+      <Typography variant="caption">
+        {t('tasks.token_hold.token_address')}
+      </Typography>
       <Typography variant="subtitle1" fontWeight={'bold'} marginTop={2}>
         {quantity}
       </Typography>
-      <Typography variant="caption">Quantity</Typography>
+      <Typography variant="caption">
+        {t('tasks.token_hold.quantity')}
+      </Typography>
       {!readOnly && !completed && (
         <LoadingButton
           variant="contained"
-          sx={{ marginTop: '15px' }}
+          sx={{ mt: 2 }}
           onClick={() => completeTask({})}
           isLoading={isLoading}
         >
-          Check Token
+          {t('common:actions.check-token')}
         </LoadingButton>
       )}
       {completed && updatedAt && (
         <Typography color="#c5ffe3" variant="subtitle2">
-          Task completed at {formattedDate}
+          {t('tasks.completed-date', { date: formattedDate })}
         </Typography>
       )}
     </Stack>

@@ -85,6 +85,7 @@
     "disconnect": "disconnect",
     "cancel": "cancel",
     "submit": "submit",
+    "verify": "verify",
     "got-it": "got it",
     "follow": "Follow",
     "unfollow": "Unfollow",
@@ -93,6 +94,7 @@
     "reject": "Reject",
     "withdraw": "Withdraw invitation",
     "mint": "Mint as NFT",
+    "check-nft": "Check NFT",
     "check-transaction": "Verify Mint Transaction",
     "see-more": "See more",
     "see-less": "See less",
@@ -100,7 +102,11 @@
     "download": "Download",
     "reset": "Reset",
     "continue": "Continue",
-    "connect-now": "Connect now"
+    "connect-now": "Connect now",
+    "done": "Done",
+    "check-snapshot": "Check Snapshot",
+    "check_token": "Check Token",
+    "check_event": "Check Event"
   },
   "image-drop-field": {
     "default-label": "Drop to upload your avatar",

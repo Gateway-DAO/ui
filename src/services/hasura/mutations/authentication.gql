@@ -122,3 +122,12 @@ mutation protocol_remove_auth_method($id: String!) {
     })
   }
 }
+
+mutation protocol_migrate_auth($authId: String!, $ownerJwt: String!) {
+  protocol {
+    migrateAuthMethod(input: {
+      authId: $authId
+      ownerJwt: $ownerJwt
+    })
+  }
+}

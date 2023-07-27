@@ -4,6 +4,7 @@ type CountdownProps = {
   time: number; // Seconds
   interval?: number; // Seconds
   trigger: boolean;
+  disabled?: boolean;
 };
 
 export type CountdownType = {
@@ -15,6 +16,7 @@ export function useCountdown({
   time = 30,
   interval = 1,
   trigger,
+  disabled = false,
 }: CountdownProps) {
   const [countdown, setCountdown] = useState<CountdownType>({
     time,
@@ -28,18 +30,22 @@ export function useCountdown({
   };
 
   useEffect(() => {
-    let timer = time;
-    setCountdown({ time: timer, counting: true });
-    countDownInterval.current = setInterval(() => {
-      timer = timer - 1;
-      if (timer <= 0) {
-        timer = time;
-        reset();
-        setCountdown({ time: timer, counting: false });
-      } else {
-        setCountdown({ time: timer, counting: true });
-      }
-    }, interval * 1000);
+    if (!disabled) {
+      let timer = time;
+      setCountdown({ time: timer, counting: true });
+      countDownInterval.current = setInterval(() => {
+        timer = timer - 1;
+        if (timer <= 0) {
+          timer = time;
+          reset();
+          setCountdown({ time: timer, counting: false });
+        } else {
+          setCountdown({ time: timer, counting: true });
+        }
+      }, interval * 1000);
+    } else {
+      setCountdown({ time: 30, counting: false });
+    }
   }, [trigger]);
 
   return countdown;

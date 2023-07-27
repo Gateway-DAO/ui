@@ -1,3 +1,4 @@
+import useTranslation from 'next-translate/useTranslation';
 import { useEffect, useRef, useState } from 'react';
 
 import { LoadingButton } from '@/components/atoms/buttons/loading-button';
@@ -30,6 +31,7 @@ export function RecaptchaTask({ isEnabled, gateId, onCompleteGate }: Props) {
   const [recaptchaResponse, setRecaptchaResponse] = useState<string>();
   const [expanded, toggleExpanded] = useToggle(isEnabled);
   const recaptchaRef = useRef<Reaptcha>(null);
+  const { t } = useTranslation('gate-profile');
 
   useEffect(() => {
     toggleExpanded(isEnabled);
@@ -83,8 +85,14 @@ export function RecaptchaTask({ isEnabled, gateId, onCompleteGate }: Props) {
             <TaskIcon type="recaptcha" />
           </Avatar>
         }
-        title={<Typography variant="caption">Are you a robot?</Typography>}
-        subheader={<Typography variant="h6">reCaptcha</Typography>}
+        title={
+          <Typography variant="caption">
+            {t('recaptcha.are_you_robot')}
+          </Typography>
+        }
+        subheader={
+          <Typography variant="h6">{t('recaptcha.recaptcha')}</Typography>
+        }
         action={
           <IconButton
             onClick={() => {
@@ -96,7 +104,7 @@ export function RecaptchaTask({ isEnabled, gateId, onCompleteGate }: Props) {
         }
       />
       <Collapse in={expanded} timeout="auto" unmountOnExit>
-        <CardContent sx={{ marginLeft: { xs: '0px', md: '55px' } }}>
+        <CardContent sx={{ marginLeft: { xs: 0, md: 6.875 } }}>
           <Reaptcha
             sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_KEY}
             onVerify={(e) => {
@@ -114,7 +122,7 @@ export function RecaptchaTask({ isEnabled, gateId, onCompleteGate }: Props) {
               completeGate.mutate({ gateId, recaptcha: recaptchaResponse });
             }}
           >
-            Submit
+            {t('common:actions.submit')}
           </LoadingButton>
         </CardContent>
       </Collapse>
