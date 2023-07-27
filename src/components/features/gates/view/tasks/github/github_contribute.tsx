@@ -65,7 +65,7 @@ export default function GithubContributeContent({
 
   return (
     <Stack alignItems="start">
-      <Typography variant="body2" padding={'30px 0'}>
+      <Typography variant="body2" sx={{ py: 4, px: 0 }}>
         {t('tasks.github_contribute.description')}
       </Typography>
       <GithubDataCard data={repository} />
@@ -73,9 +73,7 @@ export default function GithubContributeContent({
         <LoadingButton
           isLoading={isLoading}
           variant="contained"
-          sx={{
-            marginTop: '30px',
-          }}
+          sx={{ mt: 4 }}
           onClick={() =>
             completeTask({
               githubAccessToken,
@@ -84,19 +82,15 @@ export default function GithubContributeContent({
             })
           }
         >
-          Verify
+          {t('common:actions.verify')}
         </LoadingButton>
       )}
       {!completed && !readOnly && !githubAccessToken && (
         <GithubConnectionCard />
       )}
       {completed && !!updatedAt && (
-        <Typography
-          color="#c5ffe3"
-          variant="subtitle2"
-          sx={{ paddingTop: '20px' }}
-        >
-          {t('tasks.completed')} {formattedDate}
+        <Typography color="#c5ffe3" variant="subtitle2" sx={{ pt: 2.5 }}>
+          {t('tasks.completed-date', { date: formattedDate })}
         </Typography>
       )}
     </Stack>

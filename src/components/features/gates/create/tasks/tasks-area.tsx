@@ -21,6 +21,7 @@ import HoldTokenTask from './hold-token-task/hold-token-task';
 import { ManualTask } from './manual/manual-task';
 import { QuizTask, createQuestion } from './quiz-task/quiz-task';
 import SnapshotTask from './snapshot-task/snapshot-task';
+import TrackOnChainEventsTask from './track-onchain/track-onchain-events';
 import { FollowProfile } from './twitter-follow-profile/twitter-follow-profile';
 import TwitterLikeTask from './twitter-like/twitter-like';
 import TwitterRetweetTask from './twitter-retweet/twitter-retweet';
@@ -33,6 +34,7 @@ const TaskComponents = {
   snapshot: SnapshotTask,
   token_hold: HoldTokenTask,
   nft_hold: HoldNFTTask,
+  track_onchain: TrackOnChainEventsTask,
   quiz: QuizTask,
   twitter_follow: FollowProfile,
   twitter_like: TwitterLikeTask,
