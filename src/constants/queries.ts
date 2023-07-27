@@ -23,6 +23,7 @@ export const query = {
   protocol_credential: 'protocol_credential',
   authentications_methods_by_user: 'authentications_methods_by_user',
   limit_usage: 'limit_usage',
+  web3_contract_information: 'get_web3_contract_information',
 };
 
 export const mutation = {

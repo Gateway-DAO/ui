@@ -1,15 +1,18 @@
 import useTranslation from 'next-translate/useTranslation';
 import { useEffect, useMemo, useState } from 'react';
 
+import { LoadingButton } from '@/components/atoms/buttons/loading-button';
 import { TaskIcon } from '@/components/atoms/icons/task-icon';
 import {
   CreateGateData,
   Parameter,
 } from '@/components/features/gates/create/schema';
 import TextFieldWithEmoji from '@/components/molecules/form/TextFieldWithEmoji/TextFieldWithEmoji';
+import { query } from '@/constants/queries';
 import { brandColors } from '@/theme';
+import { useQuery } from '@tanstack/react-query';
 import { useFieldArray, useFormContext } from 'react-hook-form';
-import { PartialDeep } from 'type-fest/source/partial-deep';
+import { useToggle } from 'react-use';
 
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -28,7 +31,7 @@ import {
   alpha,
 } from '@mui/material';
 
-import { mockChains, mockEvents } from './__mock__';
+import { mockChains } from './__mock__';
 import { Parameters } from './components/parameters';
 import { EventAbi } from './types';
 
@@ -47,19 +50,11 @@ const TrackOnChainEventsTask = ({ dragAndDrop, taskId, deleteTask }) => {
   } = useFormContext<CreateGateData>();
 
   const formValues = getValues();
-  // TODO: REMOVE
-  const mock: any = mockEvents;
-  const mockEventsFiltered: PartialDeep<EventAbi>[] = mock.filter(
-    (item: EventAbi) => item.type === 'event'
-  );
 
   const chain = watch(`tasks.${taskId}.task_data.chain`, null);
   const contract_address = watch(`tasks.${taskId}.task_data.contract_address`);
   const abi = watch(`tasks.${taskId}.task_data.abi`);
   const event = watch(`tasks.${taskId}.task_data.event`);
-  const selectedEvent = useMemo(() => {
-    return mockEventsFiltered.find((eventItem) => eventItem.name === event);
-  }, [event]);
 
   const {
     fields: parameters,
@@ -92,24 +87,51 @@ const TrackOnChainEventsTask = ({ dragAndDrop, taskId, deleteTask }) => {
 
   const [taskVisible, setTaskVisible] = useState(true);
   const [taskIsMoving, setTaskIsMoving] = useState(true);
+  const [getContractInfo, toggleGetContractInfo] = useToggle(false);
 
-  const checkContract = async () => {
-    const data = await fetch(
-      `/api/track_onchain?chain=${chain}&contract_address=${contract_address}`,
-      {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
-    );
+  const { data: contractInfo, isFetching: isLoadingContractInfo } = useQuery(
+    [query.web3_contract_information, chain, contract_address],
+    async () => {
+      const res = await fetch(
+        `/api/track_onchain?chain=${chain}&contract_address=${contract_address}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
 
-    const result = await data.json();
-
-    if (result.ABI) {
-      setValue(`tasks.${taskId}.task_data.abi`, result.ABI);
+      const result = await res.json();
+      return result.ABI;
+    },
+    {
+      onError: (error) => {
+        console.log(error);
+        toggleGetContractInfo();
+      },
+      onSuccess: (data) => {
+        setValue(`tasks.${taskId}.task_data.abi`, data);
+        toggleGetContractInfo();
+      },
+      enabled: !!getContractInfo && !!contract_address,
     }
-  };
+  );
+
+  const filteredEvents = useMemo(() => {
+    if (contractInfo) {
+      const abi = JSON.parse(contractInfo);
+      return abi.filter((item: EventAbi) => item.type === 'event');
+    }
+    return [];
+  }, [contractInfo]);
+
+  const selectedEvent = useMemo(() => {
+    if (filteredEvents?.length > 0) {
+      return filteredEvents.find((eventItem) => eventItem.name === event);
+    }
+    return [];
+  }, [filteredEvents, event]);
 
   return (
     <Stack
@@ -279,22 +301,24 @@ const TrackOnChainEventsTask = ({ dragAndDrop, taskId, deleteTask }) => {
             >
               <TextField
                 fullWidth
+                disabled={isLoadingContractInfo}
                 required
                 label={t('tasks.track_onchain.contract_address')}
                 sx={{ flex: 1 }}
                 {...register(`tasks.${taskId}.task_data.contract_address`)}
               />
-              <Button
+              <LoadingButton
                 size="large"
                 variant="outlined"
                 disabled={
                   !!getFieldState(`tasks.${taskId}.task_data.contract_address`)
                     .error || !contract_address?.length
                 }
-                onClick={checkContract}
+                isLoading={isLoadingContractInfo}
+                onClick={() => toggleGetContractInfo(true)}
               >
                 {t('tasks.track_onchain.check_contract')}
-              </Button>
+              </LoadingButton>
             </Stack>
           )}
           {abi && (
@@ -312,7 +336,7 @@ const TrackOnChainEventsTask = ({ dragAndDrop, taskId, deleteTask }) => {
                     return <>{value}</>;
                   }}
                 >
-                  {mockEventsFiltered.map((event) => (
+                  {filteredEvents.map((event) => (
                     <MenuItem key={event?.name} value={event?.name}>
                       <Stack sx={{ width: '100%' }}>
                         <Typography sx={{ display: 'block' }}>
