@@ -2,6 +2,7 @@ import useTranslation from 'next-translate/useTranslation';
 
 import { LoadingButton } from '@/components/atoms/buttons/loading-button';
 import { useCountdown } from '@/hooks/use-countdown';
+import { useAuth } from '@/providers/auth';
 import { useToggle } from 'react-use';
 
 import { Divider, Stack, Typography } from '@mui/material';
@@ -14,9 +15,10 @@ const TrackOnChainContent = ({
   readOnly,
   isLoading,
 }) => {
-  const { chain, wallet } = data;
+  const { chain, contract_address } = data;
   const formattedDate = new Date(updatedAt.toLocaleString()).toLocaleString();
   const { t } = useTranslation('gate-profile');
+  const { me } = useAuth();
   const [startCountdown, setStartCountdown] = useToggle(true);
   const [disableCountdown, setDisableCountdown] = useToggle(true);
   const countdown = useCountdown({
@@ -36,7 +38,7 @@ const TrackOnChainContent = ({
         <Typography variant="caption" fontSize={14}>
           {t('tasks.track_onchain.contract_address')}
         </Typography>
-        <Typography>{wallet}</Typography>
+        <Typography>{contract_address}</Typography>
       </Stack>
       {!readOnly && !completed && (
         <LoadingButton
@@ -45,7 +47,9 @@ const TrackOnChainContent = ({
           onClick={() => {
             setDisableCountdown(false);
             setStartCountdown();
-            completeTask({ chain, wallet });
+            completeTask({
+              wallet: me?.wallet,
+            });
           }}
           isLoading={isLoading}
           disabled={countdown?.counting}
