@@ -57,7 +57,12 @@ export function Parameters({
 
   const typeIsNumber = (index: number): boolean => {
     const type = inputSelected(index)?.type;
-    return type !== 'address' && type !== 'string' && type !== 'bool';
+    return (
+      type !== 'address' &&
+      type !== 'string' &&
+      type !== 'bool' &&
+      type !== 'bytes'
+    );
   };
 
   const getOperators = (isNumber: boolean) => {

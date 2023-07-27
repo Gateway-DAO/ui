@@ -84,8 +84,6 @@ const TrackOnChainEventsTask = ({ dragAndDrop, taskId, deleteTask }) => {
     setTaskIsMoving(dragAndDrop);
   }, [dragAndDrop]);
 
-  useEffect(() => append(createParameter()), []);
-
   const [taskVisible, setTaskVisible] = useState(true);
   const [taskIsMoving, setTaskIsMoving] = useState(true);
   const [getContractInfo, toggleGetContractInfo] = useToggle(false);
