@@ -1,25 +1,14 @@
 import useTranslation from 'next-translate/useTranslation';
 
 import { useAuth } from '@/providers/auth';
-import { DateTime } from 'luxon';
 
-import {
-  Alert,
-  Box,
-  Button,
-  CircularProgress,
-  LinearProgress,
-  Paper,
-  Stack,
-  Typography,
-} from '@mui/material';
+import { Box, Button, LinearProgress, Stack, Typography } from '@mui/material';
 
 import { Delete, Send, Check, Close } from '@mui/icons-material';
 import { useDropArea, useToggle } from 'react-use';
 import { SendMore } from './send-more';
 import ModalRight from '@/components/molecules/modal/modal-right';
-import { DirectWallets } from '../../../create/tasks/direct/direct-wallets';
-import { FormProvider, useForm, useFormContext } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 import { CreateGateData } from '../../../create/schema';
 import {
   InfiniteData,
@@ -510,9 +499,6 @@ export function DirectHoldersHeader({
 
 // test frontend by using local storage
 // delete end point and revoke
-// push dapp pr
-// clean frontend code
 // add modal by manish
 
 // cleaning frontend code
-// need to implement revoke and delete if possible

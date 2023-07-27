@@ -1,9 +1,7 @@
-import { createGateSchema } from '@/components/features/gates/create/schema';
 import { DirectWallets } from '@/components/features/gates/create/tasks/direct/direct-wallets';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Box, Button, Stack, Typography } from '@mui/material';
-import { Dispatch, useEffect, useRef, useState } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
+import { Box, Stack, Typography } from '@mui/material';
+import useTranslation from 'next-translate/useTranslation';
+import { Dispatch } from 'react';
 
 export default function RecipientTemplate({
   updateFormState,
@@ -14,12 +12,13 @@ export default function RecipientTemplate({
   handleStep: (value: boolean) => void;
   input: any;
 }) {
+  const { t } = useTranslation('quest');
   return (
     <Stack direction={'column'} mx={7} mb={5}>
       <Box>
-        <Typography variant="h5">Add recipient</Typography>
+        <Typography variant="h5">{t('recipient-template.title')}</Typography>
         <Typography variant="body2">
-          Send this credential directly to someone or group of people
+          {t('recipient-template.description')}
         </Typography>
       </Box>
       <>

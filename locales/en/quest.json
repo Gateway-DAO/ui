@@ -11,6 +11,11 @@
     "create-desc": "create a quest"
   },
 
+  "recipient-template": {
+    "title": "Add recipient",
+    "description": "Send this credential directly to someone or group of people"
+  },
+
   "template": {
     "view-details": "View Details",
     "detail": "Add details",

@@ -1,28 +1,18 @@
 import {
   ChangeEvent,
-  Dispatch,
   MouseEvent,
   PropsWithChildren,
-  SetStateAction,
-  forwardRef,
   useMemo,
   useState,
 } from 'react';
 
-import { UserListItem } from '@/components/molecules/user-list-item';
 import { VerifyCsvProgressOutput } from '@/services/hasura/types';
-import {
-  TableComponents,
-  TableVirtuoso,
-  Virtuoso,
-  VirtuosoProps,
-} from 'react-virtuoso';
+import { TableVirtuoso, VirtuosoProps } from 'react-virtuoso';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 import SearchIcon from '@mui/icons-material/Search';
 import {
   Stack,
-  Divider,
   InputAdornment,
   TextField,
   Chip,
@@ -34,24 +24,15 @@ import {
   Typography,
   TableRow,
   TableCell,
-  TableContainer,
-  Paper,
-  Table,
-  TableHead,
-  TableBody,
   IconButton,
   Avatar,
   Button,
 } from '@mui/material';
-import MenuItem from '@mui/material/MenuItem';
 
 import { InvalidatedWallet, ValidatedWallet } from './types';
-import { UserListItemEdit } from '@/components/molecules/user-list-item-edit';
-import { Data } from 'aws-sdk/clients/firehose';
-import { menuItemClasses } from '@mui/material/MenuItem';
 import { useFormContext } from 'react-hook-form';
 import { AddRecipientDirectCredentialSchema } from './direct-wallets';
-import { Download, Edit, Delete, Email, Twitter } from '@mui/icons-material';
+import { Edit, Delete, Email } from '@mui/icons-material';
 import { EthereumIcon } from '@/components/atoms/icons';
 
 export function DirectWalletsList({
@@ -165,7 +146,6 @@ export function DirectWalletsList({
   };
 
   const open = Boolean(anchorEl);
-  const id = open ? 'simple-popover' : undefined;
 
   const columns = ['RECIPIENT ID', 'TYPE', 'STATUS', ''];
 
@@ -191,7 +171,7 @@ export function DirectWalletsList({
   function rowContent(index: number, row: any) {
     const { wallet, type, invalid, duplicate } = row;
     return (
-      <>
+      <div key={index}>
         <TableCell align={'left'}>{wallet}</TableCell>
         <TableCell align={'left'}>
           <Chip
@@ -224,7 +204,6 @@ export function DirectWalletsList({
             </IconButton>
             <Popover
               id="mouse-over-popover"
-              sx={{}}
               open={open}
               anchorEl={anchorEl}
               anchorOrigin={{
@@ -255,12 +234,10 @@ export function DirectWalletsList({
             </Popover>
           </TableCell>
         )}
-      </>
+      </div>
     );
   }
-  console.log(Math.min(400, whitelistedWallets.length * 61));
-  console.log(whitelistedWallets.length * 61);
-  whitelistedWallets.length <= 5;
+
   return (
     <>
       <Stack gap={3} sx={{ height: '100%' }} {...containerProps}>

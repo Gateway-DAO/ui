@@ -1,6 +1,5 @@
 import {
   Box,
-  Button,
   Divider,
   FormControl,
   FormHelperText,
@@ -20,7 +19,6 @@ import { LocalizationProvider, TimePicker } from '@mui/x-date-pickers';
 import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon';
 
 import { Controller, useFormContext } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
 import EditIcon from '@mui/icons-material/Edit';
 import { useToggle } from 'react-use';
 import { CreateGateData } from '../../schema';
@@ -65,7 +63,6 @@ export default function OptionalSettingsTemplate({
   const [showClaimLimit, toggleShowClaimLimit] = useToggle(false);
 
   useEffect(() => {
-    console.log(isValid, errors);
     handleStep(isValid);
   }, [isValid]);
 

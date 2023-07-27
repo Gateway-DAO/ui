@@ -1,9 +1,8 @@
 import useTranslation from 'next-translate/useTranslation';
-import { ChangeEvent, ReactNode, useState, MouseEvent, useMemo } from 'react';
+import { ChangeEvent, useState, MouseEvent } from 'react';
 
 import { GateFilledIcon } from '@/components/atoms/icons';
 import { CenteredLoader } from '@/components/atoms/loadings/centered-loader';
-import { UserListItem } from '@/components/molecules/user-list-item';
 import { ClientNav } from '@/components/organisms/navbar/client-nav';
 import { query } from '@/constants/queries';
 import { useAuth } from '@/providers/auth';
@@ -12,7 +11,7 @@ import { Direct_Credential_InfoQuery, Gates } from '@/services/hasura/types';
 import { TOKENS } from '@/theme';
 import { UseQueryResult, useInfiniteQuery } from '@tanstack/react-query';
 import { useWindowSize } from 'react-use';
-import { TableVirtuoso, Virtuoso } from 'react-virtuoso';
+import { TableVirtuoso } from 'react-virtuoso';
 import { PartialDeep } from 'type-fest';
 
 import { Close, Search } from '@mui/icons-material';
@@ -20,12 +19,9 @@ import {
   Avatar,
   Box,
   Button,
-  Chip,
-  Divider,
   Grid,
   IconButton,
   InputAdornment,
-  Link,
   Popover,
   Stack,
   TableCell,
@@ -33,11 +29,9 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { Email, Delete, Edit } from '@mui/icons-material';
 
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { AvatarFile } from '@/components/atoms/avatar-file';
-import { url } from 'inspector';
 import { DirectHoldersHeader } from './header';
 
 type Props = {
@@ -60,7 +54,7 @@ export function DirectHoldersList({
   const windowSize = useWindowSize();
   const [nameDisplay, setNameDisplay] = useState('');
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
-  const { me, hasuraUserService } = useAuth();
+  const { me } = useAuth();
   const [filter, setFilter] = useState('');
 
   const {
@@ -117,7 +111,6 @@ export function DirectHoldersList({
   };
 
   const open = Boolean(anchorEl);
-  const id = open ? 'simple-popover' : undefined;
 
   const columns = ['CREDENTIAL ID', 'RECIPIENT ID', 'ISSUEANCE DATE', ''];
 
@@ -209,7 +202,6 @@ export function DirectHoldersList({
           </IconButton>
           <Popover
             id="mouse-over-popover"
-            sx={{}}
             open={open}
             anchorEl={anchorEl}
             anchorOrigin={{

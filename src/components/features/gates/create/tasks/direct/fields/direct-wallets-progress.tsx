@@ -81,14 +81,16 @@ export function DirectWalletsProgress({
         )}
       </Box>
       <Stack gap={0.5} alignItems="center">
-        <Typography variant="body1">Verifying recipients</Typography>
+        <Typography variant="body1">
+          {t('direct.verifying.progress.title')}
+        </Typography>
         {remainingTime > 0 && (
           <Typography variant="body2">{remainingTimeText}</Typography>
         )}
       </Stack>
       <Box>
         <Typography variant="body2" color="text.secondary">
-          You dont need to wait, you can save as draft and come back later
+          {t('direct.verifying.progress.description')}
         </Typography>
       </Box>
     </Stack>

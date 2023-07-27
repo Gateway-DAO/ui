@@ -1,4 +1,3 @@
-import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Avatar,
   Box,
@@ -15,12 +14,8 @@ import {
   Typography,
 } from '@mui/material';
 import { useRouter } from 'next/router';
-import { Dispatch, SetStateAction, useEffect } from 'react';
-import { useForm, useFormContext } from 'react-hook-form';
-import { addRecipientDirectCredentialSchema } from '../../schema';
-import CategoriesInput from '@/components/molecules/form/categories-input';
+import { useFormContext } from 'react-hook-form';
 import { AddRecipientDirectCredentialSchema } from './direct-wallets';
-import { Email } from '@mui/icons-material';
 
 export function AddRecipient({
   open,

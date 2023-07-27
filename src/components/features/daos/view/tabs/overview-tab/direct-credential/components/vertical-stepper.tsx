@@ -31,7 +31,7 @@ export default function VerticalStepper({
         Send a Credential
       </Typography>
       <Box mb={5}>
-        <Stepper steps={steps} activeStep={activeStep} />
+        <Stepper steps={steps} activeStep={activeStep} behaviour="dynamic" />
       </Box>
     </Stack>
   );

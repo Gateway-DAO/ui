@@ -17,14 +17,10 @@ export default function CreateCredentialDialog({
   open: boolean;
   toggleDialog: (value: boolean) => void;
 }) {
-  const { t } = useTranslation('org-signup');
+  const { t } = useTranslation('dao-profile');
   const router = useRouter();
-  const {
-    openCreateQuestDialog,
-    setOpenCreateQuestDialog,
-    openSendDirectCredentialDialog,
-    setOpenSendDirectCredentialDialog,
-  } = useDaoProfile();
+  const { setOpenCreateQuestDialog, setOpenSendDirectCredentialDialog } =
+    useDaoProfile();
   const closeDialog = () => {
     toggleDialog(false);
     router.push({ hash: '' });
@@ -35,7 +31,7 @@ export default function CreateCredentialDialog({
       router.push({ hash: 'create-credential' });
     }
   }, [open]);
-
+  console.log();
   return (
     <Dialog
       open={open}
@@ -58,8 +54,8 @@ export default function CreateCredentialDialog({
         <>
           <Stack sx={{ mt: { md: 0, lg: 8, xs: 0 } }}>
             <SectionWithSliderResponsive
-              title={'Create Credential'}
-              caption={'Select the type that fits your needs'}
+              title={t('overview-tab.create-credential-modal.title')}
+              caption={t('overview-tab.create-credential-modal.description')}
               action={
                 <IconButton onClick={() => closeDialog()} sx={{ pt: 0.7 }}>
                   <Avatar>
@@ -72,47 +68,68 @@ export default function CreateCredentialDialog({
               gridSize={{ lg: 3 }}
             >
               <InfoCard
-                description="Ask users to do tasks and earn credentials"
-                href="test"
+                description={t(
+                  'overview-tab.create-credential-modal.create-a-quest.description'
+                )}
                 backgroundColor="#9A53FF"
                 image="/images/credential-create-quest.png"
-                options={[
-                  'Enhance user engagement',
-                  'Valid skill and acquisition',
-                  'Build a community',
-                ]}
-                slug="Allows you to engage and reward users for their efforts through task-based activities."
-                title="Create a Quest"
+                options={t(
+                  'overview-tab.create-credential-modal.create-a-quest.options',
+                  null,
+                  {
+                    returnObjects: true,
+                  }
+                )}
+                slug={t(
+                  'overview-tab.create-credential-modal.create-a-quest.long-description'
+                )}
+                title={t(
+                  'overview-tab.create-credential-modal.create-a-quest.title'
+                )}
                 disabled={false}
                 action={setOpenCreateQuestDialog}
               />
               <InfoCard
-                description="Set the recipients and send directly"
-                href="test"
+                description={t(
+                  'overview-tab.create-credential-modal.send-a-credential.description'
+                )}
                 backgroundColor="#0075FF"
                 image="/images/credential-create-direct-credential.png"
-                options={[
-                  'Deliver instantly',
-                  'Personalize the distribution',
-                  'Simply the workflow',
-                ]}
-                slug="A seamless and efficient way to distribute credentials directly to recipients."
-                title="Send a Credential"
+                options={t(
+                  'overview-tab.create-credential-modal.send-a-credential.options',
+                  null,
+                  {
+                    returnObjects: true,
+                  }
+                )}
+                slug={t(
+                  'overview-tab.create-credential-modal.send-a-credential.long-description'
+                )}
+                title={t(
+                  'overview-tab.create-credential-modal.send-a-credential.title'
+                )}
                 disabled={false}
                 action={setOpenSendDirectCredentialDialog}
               />
               <InfoCard
-                description="Enhance user engagement"
-                href="test"
+                description={t(
+                  'overview-tab.create-credential-modal.create-a-loyalty-pass.description'
+                )}
                 backgroundColor="#FE02B9"
                 image="/images/credential-create-loyalty.png"
-                options={[
-                  'Recognize your community',
-                  'Generate social proof',
-                  'Create exclusive benefits',
-                ]}
-                slug="Drive community engagement through the credentials they hold."
-                title="Create a Loyalty Pass"
+                options={t(
+                  'overview-tab.create-credential-modal.create-a-loyalty-pass.options',
+                  null,
+                  {
+                    returnObjects: true,
+                  }
+                )}
+                slug={t(
+                  'overview-tab.create-credential-modal.create-a-loyalty-pass.long-description'
+                )}
+                title={t(
+                  'overview-tab.create-credential-modal.create-a-loyalty-pass.title'
+                )}
                 disabled={true}
               />
             </SectionWithSliderResponsive>

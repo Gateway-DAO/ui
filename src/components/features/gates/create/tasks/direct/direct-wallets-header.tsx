@@ -1,6 +1,5 @@
 import useTranslation from 'next-translate/useTranslation';
 
-import { UploadFile } from '@mui/icons-material';
 import { Box, Button, Stack, Typography } from '@mui/material';
 import { useFormContext } from 'react-hook-form';
 import { AddRecipientDirectCredentialSchema } from './direct-wallets';
@@ -24,11 +23,9 @@ export function DirectWalletsEmptyHeader() {
         gap={2}
       >
         <Box>
-          <Typography variant="h6">
-            Upload CSV file containing the recipients
-          </Typography>
+          <Typography variant="h6">{t('direct.empty.title')}</Typography>
           <Typography variant="body1" color="text.secondary">
-            Download the file template, fill it out and upload it here
+            {t('direct.empty.description')}
           </Typography>
         </Box>
         <Button variant="outlined" href="/example.csv" download={'example'}>
@@ -101,9 +98,9 @@ export function DirectWalletsHeader({
         <Box>
           <Typography variant="h6">{total} recipients</Typography>
           <Typography variant="body2">
-            {validWallets} valid
+            {t('direct.result.title.valid', { count: validWallets })}
             {` / `}
-            {invalidWallets} invalid
+            {t('direct.result.title.invalid', { count: invalidWallets })}
           </Typography>
         </Box>
 
@@ -120,7 +117,7 @@ export function DirectWalletsHeader({
             }}
           >
             <Add color="primary" />
-            Add Recipient
+            {t('direct.result.add')}
           </Button>
         )}
       </Stack>

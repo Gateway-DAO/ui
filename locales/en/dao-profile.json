@@ -24,6 +24,40 @@
       "title": "Last issued credentials",
       "caption": "Check out credentials issued using this template!",
       "action": "View more"
+    },
+    "create-credential-modal": {
+      "title": "Create Credential",
+      "description": "Select the type that fits your needs",
+      "create-a-quest": {
+        "title": "Create a Quest",
+        "description": "Ask users to do tasks and earn credentials",
+        "long-description": "Allows you to engage and reward users for their efforts through task-based activities.",
+        "options": [
+          "Enhance user engagement",
+          "Valid skill and acquisition",
+          "Build a community"
+        ]
+      },
+      "send-a-credential": {
+        "title": "Send a Credential",
+        "description": "Set the recipients and send directly",
+        "long-description": "A seamless and efficient way to distribute credentials directly to recipients.",
+        "options": [
+          "Deliver instantly",
+          "Personalize the distribution",
+          "Simply the workflow"
+        ]
+      },
+      "create-a-loyalty-pass": {
+        "title": "Create a Loyalty Pass",
+        "description": "Enhance user engagement",
+        "long-description": "Drive community engagement through the credentials they hold.",
+        "options": [
+          "Recognize your community",
+          "Generate social proof",
+          "Create exclusive benefits"
+        ]
+      }
     }
   },
   "issued-tab": {

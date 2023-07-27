@@ -5,7 +5,7 @@ import { useState } from 'react';
 import Loading from '@/components/atoms/loadings/loading';
 import { brandColors } from '@/theme';
 import { useSnackbar } from 'notistack';
-import { useLocalStorage, useWindowSize } from 'react-use';
+import { useWindowSize } from 'react-use';
 import { useMutation } from 'wagmi';
 
 import CloseIcon from '@mui/icons-material/Close';
@@ -26,17 +26,14 @@ import { useAuth } from '@/providers/auth';
 import VerticalStepper from './components/vertical-stepper';
 import { setUpFormComponents } from './set-up-form-components';
 import { LoadingButton } from '@/components/atoms/buttons/loading-button';
-import {
-  CreateGateData,
-  createGateSchema,
-} from '@/components/features/gates/create/schema';
+import { createGateSchema } from '@/components/features/gates/create/schema';
 import { ROUTES } from '@/constants/routes';
 import {
   Create_Gate_Tasks_BasedMutationVariables,
   Create_Gate_DirectMutationVariables,
 } from '@/services/hasura/types';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { FormProvider, useForm, useFormContext } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 import { v4 as uuidv4 } from 'uuid';
 import { z } from 'zod';
 import { useDaoProfile } from '../../../context';
@@ -74,7 +71,6 @@ export function CreateDirectCredentialTemplate({
     fullFormState,
     handleStep: handleStep,
     updateFormState: setFullFormState,
-    getValues: undefined,
   });
 
   const {
@@ -89,16 +85,16 @@ export function CreateDirectCredentialTemplate({
 
   const [stepValidity, setStepValidity] = useState(initialStepValidity);
 
-  const handleNext = () => {
+  const handleNext = async () => {
     changeStep(currentStep + 1);
-    router.push({
+    await router.push({
       hash: `create-direct-credential_${formStepControl[currentStep + 1].name}`,
     });
   };
 
-  const handlePrevious = () => {
+  const handlePrevious = async () => {
     changeStep(currentStep - 1);
-    router.push({
+    await router.push({
       hash: `create-direct-credential${currentStep - 1 === 0 ? '' : '_'}${
         formStepControl[currentStep - 1].name
       }`,

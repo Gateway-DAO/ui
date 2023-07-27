@@ -1,12 +1,5 @@
 import { theme } from '@/theme';
-import {
-  CardActionArea,
-  CardHeader,
-  Box,
-  Divider,
-  Button,
-  useMediaQuery,
-} from '@mui/material';
+import { CardHeader, Box, Divider, Button, useMediaQuery } from '@mui/material';
 import MUICard from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
@@ -15,7 +8,6 @@ import Image from 'next/image';
 type InfoCardProps = {
   image: string;
   slug: string;
-  href: string;
   description: string;
   title: string;
   options: string[];
@@ -30,7 +22,6 @@ export function InfoCard({
   description,
   slug,
   options,
-  href,
   backgroundColor,
   disabled,
   action,

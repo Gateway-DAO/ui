@@ -2,12 +2,7 @@ import { useAuth } from '@/providers/auth';
 import { Files } from '@/services/hasura/types';
 import { useMutation, useInfiniteQuery } from '@tanstack/react-query';
 import { useSnackbar } from 'notistack';
-import {
-  FormProvider,
-  useController,
-  useForm,
-  useFormContext,
-} from 'react-hook-form';
+import { FormProvider, useForm, useFormContext } from 'react-hook-form';
 import { useDropArea, useToggle } from 'react-use';
 
 import { Paper } from '@mui/material';
@@ -16,7 +11,6 @@ import { CreateGateData } from '../../schema';
 import {
   DirectWalletsEmptyHeader,
   DirectWalletsHeader,
-  DirectWalletsVerifyingHeader,
 } from './direct-wallets-header';
 import { DirectWalletsList } from './direct-wallets-lists';
 import { DirectWalletsDropzone } from './fields/direct-wallets-dropzone';
@@ -25,6 +19,8 @@ import { DirectWalletsUploading } from './fields/direct-wallets-uploading';
 import ConfirmDialog from '@/components/molecules/modal/confirm-dialog';
 import { useEffect, useState } from 'react';
 import { AddRecipient } from './add-recipient-dialog';
+import { useTransaction } from 'wagmi';
+import useTranslation from 'next-translate/useTranslation';
 
 export type AddRecipientDirectCredentialSchema = {
   addNew: boolean;
@@ -39,6 +35,7 @@ export function DirectWallets({
 }: {
   handleStep: (value: boolean) => void;
 }) {
+  const { t } = useTranslation('gate-new');
   const { hasuraUserService, fetchAuth } = useAuth();
   const { enqueueSnackbar } = useSnackbar();
   const { setValue, watch } = useFormContext<CreateGateData>();
@@ -115,7 +112,6 @@ export function DirectWallets({
       keepPreviousData: false,
       refetchInterval: (data) =>
         !data?.pages[0].verify_csv_progress.isDone && 1000,
-      // retry: 5,
       onError(error: any) {
         enqueueSnackbar(error?.response?.errors?.[0]?.message, {
           variant: 'error',
@@ -128,8 +124,6 @@ export function DirectWallets({
   const progress = editRecipient
     ? addRecipientMutation.data?.verify_single
     : progressReq.data?.pages?.[0]?.verify_csv_progress;
-
-  const addedRecipientData = addRecipientMutation.data?.verify_single;
 
   const isUploadDisabled = file && progress && !progress.isDone;
 
@@ -226,7 +220,7 @@ export function DirectWallets({
         <ConfirmDialog
           open={confirmDialgog}
           setOpen={setConfirmDialog}
-          title="Did you use our CSV template to upload your recipients?"
+          title={t('direct.publish-message')}
           negativeAnswer="cancel"
           positiveAnswer="Continue"
           onConfirm={() => {

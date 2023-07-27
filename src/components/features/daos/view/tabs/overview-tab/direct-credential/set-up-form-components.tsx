@@ -5,21 +5,24 @@ import OptionalSettingsTemplate from './components/optional-settings-template';
 import CredentialTemplate from '../quest/components/credential-template';
 import DetailsTemplate from '../quest/components/details-template';
 
-
 type Props = {
   updateFormState: Dispatch<any>;
   handleStep: (value: boolean) => void;
   fullFormState: any;
-  getValues: any;
 };
 
 export const setUpFormComponents = ({
   updateFormState,
   handleStep,
   fullFormState,
-  getValues,
 }: Props): JSX.Element[] => {
   return [
+    <RecipientTemplate
+      updateFormState={updateFormState}
+      key={3}
+      handleStep={handleStep}
+      input={{ name: 'recipient' }}
+    />,
     <CredentialTemplate
       updateFormState={updateFormState}
       key={1}
@@ -37,12 +40,7 @@ export const setUpFormComponents = ({
         name: 'details',
       }}
     />,
-    <RecipientTemplate
-      updateFormState={updateFormState}
-      key={3}
-      handleStep={handleStep}
-      input={{ name: 'recipient' }}
-    />,
+
     <OptionalSettingsTemplate
       updateFormState={updateFormState}
       key={4}

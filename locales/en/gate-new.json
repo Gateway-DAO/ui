@@ -58,11 +58,12 @@
     }
   },
   "direct": {
-    "import-csv": "Import from a CSV",
-    "label": "Wallet address or ENS name",
+    "publish-message": "Did you use our CSV template to upload your recipients?",
+    "import-csv": "Upload CSV file containing the recipients",
+    "label": "Download the file template, fill it out and upload it here",
     "empty": {
-      "title": "Import .CSV file",
-      "description": "Import the wallet address and/or ens name"
+      "title": "Upload CSV file containing the recipients",
+      "description": "Download the file template, fill it out and upload it here"
     },
     "verifying": {
       "title": "Verifying {{count}} recipients",
@@ -88,7 +89,8 @@
           "one": "1 invalid recipient",
           "other": "{{count}} invalid recipients"
         }
-      }
+      },
+      "add": "Add recipient"
     }
   },
   "notifications": {

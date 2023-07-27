@@ -1,4 +1,3 @@
-import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Box,
   Button,
@@ -14,14 +13,9 @@ import {
   Typography,
 } from '@mui/material';
 import { useRouter } from 'next/router';
-import { Dispatch, SetStateAction, useEffect } from 'react';
 import { FormProvider, useForm, useFormContext } from 'react-hook-form';
-import CategoriesInput from '@/components/molecules/form/categories-input';
 import { Email, UploadFile } from '@mui/icons-material';
 import { AddRecipientDirectCredentialSchema } from '../../../create/tasks/direct/direct-wallets';
-import { useSnackbar } from 'notistack';
-import { useMutation } from '@tanstack/react-query';
-import { useAuth } from '@/providers/auth';
 
 export function SendMore({
   open,
@@ -41,7 +35,6 @@ export function SendMore({
     toggleDialog(false);
   };
 
-
   const methods = useForm<AddRecipientDirectCredentialSchema>();
   const {
     register,
@@ -53,8 +46,6 @@ export function SendMore({
   } = methods;
 
   const TYPE_OF_WALLETS = ['Wallet', 'Email'];
-
-
 
   return (
     <FormProvider {...methods}>

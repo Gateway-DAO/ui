@@ -56,8 +56,6 @@ export function CreateQuestTemplate({
     setStepValidity((prev) => ({ ...prev, [currentStep]: newValue }));
   };
 
-  const snackbar = useSnackbar();
-
   const formStepControl: {
     name: string;
   }[] = [
@@ -101,13 +99,10 @@ export function CreateQuestTemplate({
     });
   };
 
-  const [confirmPublish, setConfirmPublish] = useState(false);
   const [isPublished, setIsPublished] = useState(false);
   const [result, setResult] = useState(null);
 
   const [testing, setTesting] = useState(false);
-
-  const [deletedTasks, setDeletedTasks] = useState<string[]>([]);
 
   const methods = useForm<CreateGateSchema>({
     resolver: async (values, _, options) => {
@@ -117,7 +112,6 @@ export function CreateQuestTemplate({
         _,
         options as any
       );
-      console.log(zodResult);
       const claimResult = await ajvResolver(values?.schema, {
         formats: fullFormats,
       })(claim, _, options as any);
@@ -305,9 +299,7 @@ export function CreateQuestTemplate({
   const handleSaveAsDraft = async () => {
     try {
       await handleMutation(methods.watch(), true);
-      console.log(fullFormState, methods.watch());
     } catch (e) {
-      console.log(e);
       enqueueSnackbar("An error occured, couldn't save the draft.");
     }
   };
@@ -318,7 +310,6 @@ export function CreateQuestTemplate({
     } catch (e) {
       enqueueSnackbar("An error occured, couldn't save the draft.");
     }
-    console.log(fullFormState, methods.getValues());
   };
 
   return (
@@ -451,7 +442,6 @@ export function CreateQuestTemplate({
                   {formStepControl[currentStep].name === 'details' && (
                     <LoadingButton
                       onClick={() => {
-                        handleNext();
                         setTesting(false);
                         methods.trigger();
                       }}
@@ -477,6 +467,18 @@ export function CreateQuestTemplate({
                         {t('create-quest.continue')}
                       </LoadingButton>
                     )}
+                  {isLastStep && (
+                    <LoadingButton
+                      type="submit"
+                      variant="contained"
+                      size="large"
+                      sx={{ marginLeft: 2 }}
+                      onClick={() => publish()}
+                      disabled={!stepValidity[`${currentStep}`]}
+                    >
+                      {t('create-quest.save-and-publish')}
+                    </LoadingButton>
+                  )}
                 </Stack>
               </Stack>
             </Stack>
