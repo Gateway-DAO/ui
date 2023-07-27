@@ -36,7 +36,6 @@ type Props = {
 
 export function UserListItemEdit({ recipientId, invalid, ...props }: Props) {
   const [nameDisplay, setNameDisplay] = useState('');
-  console.log(props);
   function checkNameSize(name: string) {
     if (name.length > 11) {
       return name.slice(0, 10) + '...';

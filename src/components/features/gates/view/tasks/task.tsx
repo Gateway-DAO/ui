@@ -166,7 +166,6 @@ export function Task({
         try {
           queryClient.resetQueries(['user_task_progresses', me?.id]);
         } catch (err) {
-          console.log(err);
         }
       },
     }

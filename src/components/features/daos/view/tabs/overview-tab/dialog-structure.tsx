@@ -31,7 +31,6 @@ export default function CreateCredentialDialog({
       router.push({ hash: 'create-credential' });
     }
   }, [open]);
-  console.log();
   return (
     <Dialog
       open={open}

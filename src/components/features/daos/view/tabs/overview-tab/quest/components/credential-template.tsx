@@ -243,7 +243,6 @@ export default function CredentialTemplate({
                                 mx: 0,
                               }}
                               onClick={() => {
-                                console.log(model);
                                 setDataModelSelected(model);
                                 handleStep(true);
                                 methods.setValue('data_model_id', model.id);
@@ -259,7 +258,6 @@ export default function CredentialTemplate({
                                   model.createdBy.gatewayId
                                 );
                                 methods.setValue('schema', model.schema);
-                                
                               }}
                             >
                               <Radio

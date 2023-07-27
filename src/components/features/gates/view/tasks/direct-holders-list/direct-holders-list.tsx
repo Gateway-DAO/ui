@@ -348,7 +348,6 @@ export function DirectHoldersList({
               itemContent={rowContent}
               style={{ height: windowSize.height }}
               endReached={() => {
-                console.log('reached', hasNextPage);
                 hasNextPage && fetchNextPage();
               }}
               components={{

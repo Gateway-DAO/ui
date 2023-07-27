@@ -179,7 +179,8 @@ export function CreateQuestTemplate({
     hasuraUserService.delete_tasks_by_pk
   );
 
-  const closePublishedModal = () => setIsPublished(false);
+  const closePublishedModal = () =>
+    router.push(ROUTES.GATE_PROFILE.replace('[id]', result.id));
 
   const checkFormErrors = async () => {
     const dataIsValid = await methods.trigger();
@@ -289,9 +290,9 @@ export function CreateQuestTemplate({
         gate_id: response.insert_gates_one.id,
       });
       enqueueSnackbar('Published');
-      router.push(
-        ROUTES.GATE_PROFILE.replace('[id]', response.insert_gates_one.id)
-      );
+      setResult(response.insert_gates_one);
+
+      setIsPublished(true);
     }
   };
 

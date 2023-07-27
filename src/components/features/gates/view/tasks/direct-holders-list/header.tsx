@@ -80,7 +80,6 @@ export function DirectHoldersHeader({
     gateId,
     null
   );
-  console.log(allRecipientsReceviedIt);
   const verifyCSV = useMutation<Files, unknown, File>(
     ['send-more-multiple-csv'],
     async (file: File) => {
@@ -243,8 +242,6 @@ export function DirectHoldersHeader({
   const totalProcessingCount =
     csvProcessingProgress?.data?.csv_processing_progress?.total;
 
-  console.log(processingCount, totalProcessingCount);
-
   return (
     <>
       <Stack direction="row" justifyContent={'space-between'}>
@@ -260,9 +257,10 @@ export function DirectHoldersHeader({
           variant="contained"
           onClick={() => setOpenSendMore(true)}
           sx={{ m: 2.5 }}
-          disabled={!(isAdmin && processingCount)}
+          disabled={!isAdmin}
         >
-          <Send sx={{ mr: 1.2 }} /> Send More
+          <Send sx={{ mr: 1.2 }} />
+          {t('direct-credential.send-more')}
         </Button>
       </Stack>
       {isAdmin && processingCount !== totalProcessingCount && (
@@ -281,10 +279,10 @@ export function DirectHoldersHeader({
           >
             <Box>
               <Typography variant="subtitle1" color="text.primary">
-                {'Issuing Credentials'}
+                {t('direct-credential.progress.title')}
               </Typography>
               <Typography variant="caption">
-                {'You will be notified when all recipients have received it'}
+                {t('direct-credential.progress.description')}
               </Typography>
             </Box>
             <Typography variant="body2">
@@ -301,8 +299,8 @@ export function DirectHoldersHeader({
         </>
       )}
       {isAdmin &&
-        processingCount !== totalProcessingCount &&
-        allRecipientsReceviedIt?.gateId === undefined && (
+        processingCount === totalProcessingCount &&
+        allRecipientsReceviedIt?.gateId === true && (
           <>
             <Stack
               direction="row"
@@ -325,7 +323,7 @@ export function DirectHoldersHeader({
                   variant="body1"
                   color="text.primary"
                 >
-                  {'All recipients recevied it'}
+                  {t('direct-credential.issued.title')}
                 </Typography>
               </Stack>
               <Button
@@ -378,7 +376,7 @@ export function DirectHoldersHeader({
 
           handleCloseModalRight();
         }}
-        title="This recipient has already received this credential, are you sure you want to send it again?"
+        title={t('direct-credential.duplicate-dialog')}
       >
         <></>
       </ConfirmDialog>
@@ -496,9 +494,3 @@ export function DirectHoldersHeader({
     </>
   );
 }
-
-// test frontend by using local storage
-// delete end point and revoke
-// add modal by manish
-
-// cleaning frontend code

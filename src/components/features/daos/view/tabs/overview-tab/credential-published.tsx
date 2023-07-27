@@ -1,5 +1,3 @@
-import Link from 'next/link';
-
 import { GatesCard } from '@/components/molecules/cards/gates-card';
 import { ROUTES } from '@/constants/routes';
 import { useAuth } from '@/providers/auth';
@@ -7,12 +5,12 @@ import { GateQuery, Gates } from '@/services/hasura/types';
 import { useQuery } from '@tanstack/react-query';
 import { PartialDeep } from 'type-fest';
 
-import { Button, Dialog, Stack, Avatar } from '@mui/material';
+import { Button, Dialog, Stack, Avatar, IconButton } from '@mui/material';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { ShareButton } from '@/components/atoms/buttons/share-button';
 import IosShareIcon from '@mui/icons-material/IosShare';
-import ModalShareCredential from '../../../../../molecules/modal/modal-share-credential';
+import CloseIcon from '@mui/icons-material/Close';
 
 type GatePublishedModalProps = {
   gate?: PartialDeep<Gates>;
@@ -79,12 +77,19 @@ export default function CredentialPublishedModal({
           display: 'flex',
         }}
       >
-        <Stack justifyContent="flex-start" direction="row">
+        <Stack justifyContent="space-between" direction="row">
           <Avatar
             src={'/favicon-512.png'}
             alt={'gateway-logo'}
             sizes={'40px'}
           />
+          <>
+            <Avatar>
+              <IconButton onClick={handleClose}>
+                <CloseIcon />
+              </IconButton>
+            </Avatar>
+          </>
         </Stack>
 
         <Stack

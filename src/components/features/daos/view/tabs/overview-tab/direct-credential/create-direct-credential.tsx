@@ -1,6 +1,6 @@
 import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import Loading from '@/components/atoms/loadings/loading';
 import { brandColors } from '@/theme';
@@ -39,6 +39,7 @@ import { z } from 'zod';
 import { useDaoProfile } from '../../../context';
 import { ajvResolver } from '@hookform/resolvers/ajv';
 import { fullFormats } from 'ajv-formats/dist/formats';
+import CredentialPublishedModal from '../credential-published';
 export type CreateGateSchema = z.infer<typeof createGateSchema>;
 
 export function CreateDirectCredentialTemplate({
@@ -104,7 +105,6 @@ export function CreateDirectCredentialTemplate({
   const router = useRouter();
   const { hasuraUserService, me } = useAuth();
 
-  const [confirmPublish, setConfirmPublish] = useState(false);
   const [isPublished, setIsPublished] = useState(false);
   const [result, setResult] = useState(null);
 
@@ -118,7 +118,6 @@ export function CreateDirectCredentialTemplate({
         _,
         options as any
       );
-      console.log(zodResult);
       const claimResult = await ajvResolver(values?.schema, {
         formats: fullFormats,
       })(claim, _, options as any);
@@ -186,7 +185,8 @@ export function CreateDirectCredentialTemplate({
     hasuraUserService.delete_tasks_by_pk
   );
 
-  const closePublishedModal = () => setIsPublished(false);
+  const closePublishedModal = () =>
+    router.push(ROUTES.GATE_PROFILE.replace('[id]', result.id));
 
   const checkFormErrors = async () => {
     const dataIsValid = await methods.trigger();
@@ -297,21 +297,18 @@ export function CreateDirectCredentialTemplate({
       await publishGate.mutateAsync({
         gate_id: response.insert_gates_one.id,
       });
-      router.push(
-        ROUTES.GATE_PROFILE.replace('[id]', response.insert_gates_one.id)
-      );
+      setResult(response.insert_gates_one);
+
+      setIsPublished(true);
     }
   };
 
-  // MAKE DB CALL
   const handleSaveAsDraft = async () => {
     try {
       await handleMutation(methods.watch(), true);
     } catch (e) {
-      console.log(e);
       enqueueSnackbar("An error occured, couldn't save the draft.");
     }
-    console.log(fullFormState, methods.watch());
   };
 
   const publish = async () => {
@@ -320,7 +317,6 @@ export function CreateDirectCredentialTemplate({
     } catch (e) {
       enqueueSnackbar("An error occured, couldn't save the draft.");
     }
-    console.log(fullFormState, methods.getValues());
   };
 
   const createOrganization = useMutation(
@@ -504,6 +500,11 @@ export function CreateDirectCredentialTemplate({
           </Grid>
         </Grid>
       </FormProvider>
+      <CredentialPublishedModal
+        open={isPublished}
+        handleClose={closePublishedModal}
+        gate={result}
+      />
     </>
   );
 }

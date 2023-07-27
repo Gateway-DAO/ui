@@ -20,7 +20,6 @@ export default function TasksTemplate({
     formState: { errors, isValid },
   } = useFormContext<CreateGateData>();
   useEffect(() => {
-    console.log(isValid, errors);
     handleStep(isValid);
   }, [isValid]);
 

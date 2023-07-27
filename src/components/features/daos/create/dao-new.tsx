@@ -42,7 +42,6 @@ export function NewDAO({ dao, onSubmit, isLoading }: Props) {
       direction="column"
       gap={6}
       onSubmit={methods.handleSubmit(onSubmit, (error) => {
-        console.log('Error', error);
       })}
     >
       <Stack

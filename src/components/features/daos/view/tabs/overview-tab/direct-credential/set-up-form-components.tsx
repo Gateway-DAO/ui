@@ -17,12 +17,6 @@ export const setUpFormComponents = ({
   fullFormState,
 }: Props): JSX.Element[] => {
   return [
-    <RecipientTemplate
-      updateFormState={updateFormState}
-      key={3}
-      handleStep={handleStep}
-      input={{ name: 'recipient' }}
-    />,
     <CredentialTemplate
       updateFormState={updateFormState}
       key={1}
@@ -40,7 +34,12 @@ export const setUpFormComponents = ({
         name: 'details',
       }}
     />,
-
+    <RecipientTemplate
+      updateFormState={updateFormState}
+      key={3}
+      handleStep={handleStep}
+      input={{ name: 'recipient' }}
+    />,
     <OptionalSettingsTemplate
       updateFormState={updateFormState}
       key={4}

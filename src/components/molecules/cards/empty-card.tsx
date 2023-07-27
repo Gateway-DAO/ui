@@ -20,7 +20,6 @@ export function EmptyCard({
   disabled,
   ...props
 }: Props) {
-  console.log(title, props);
   const renderIcon = useMemo(() => {
     switch (icon) {
       case 'gate':

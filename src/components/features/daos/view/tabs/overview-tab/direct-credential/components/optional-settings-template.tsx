@@ -38,7 +38,6 @@ export default function OptionalSettingsTemplate({
   const { t } = useTranslation('quest');
 
   useEffect(() => {
-    console.log(isValid, errors);
     handleStep(isValid);
   }, [isValid]);
 

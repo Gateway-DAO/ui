@@ -171,7 +171,7 @@ export function DirectWalletsList({
   function rowContent(index: number, row: any) {
     const { wallet, type, invalid, duplicate } = row;
     return (
-      <div key={index}>
+      <>
         <TableCell align={'left'}>{wallet}</TableCell>
         <TableCell align={'left'}>
           <Chip
@@ -234,7 +234,7 @@ export function DirectWalletsList({
             </Popover>
           </TableCell>
         )}
-      </div>
+      </>
     );
   }
 
