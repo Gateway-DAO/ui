@@ -32,6 +32,7 @@ export default function CreateQuestDialog({
     <Dialog
       open={open}
       TransitionComponent={SlideUp}
+      onClose={closeDialog}
       fullScreen
       sx={{ ' .MuiDialog-paper': { backgroundImage: 'none' } }}
     >

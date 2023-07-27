@@ -1,11 +1,10 @@
 import { GateImageCard } from '@/components/features/gates/create/gate-image-card/gate-image-card';
 import CategoriesInput from '@/components/molecules/form/categories-input';
 import { CATEGORIES } from '@/constants/gate';
-import { Protocol_Api_CreateCredentialInput } from '@/services/hasura/types';
 import { Box, Stack, TextField, Typography } from '@mui/material';
 import useTranslation from 'next-translate/useTranslation';
 import { useFormContext } from 'react-hook-form';
-import { CreateGateSchema } from '../../direct-credential/create-direct-credential';
+import { CreateGateData } from '../../schema';
 
 export default function GeneralForm() {
   const {
@@ -13,7 +12,7 @@ export default function GeneralForm() {
     formState: { errors },
     getValues,
     setValue,
-  } = useFormContext();
+  } = useFormContext<CreateGateData>();
 
   const { t } = useTranslation('protocol');
   return (
