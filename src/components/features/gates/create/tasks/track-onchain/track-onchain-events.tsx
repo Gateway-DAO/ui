@@ -84,7 +84,7 @@ const TrackOnChainEventsTask = ({ dragAndDrop, taskId, deleteTask }) => {
   const [taskIsMoving, setTaskIsMoving] = useState(true);
 
   const checkContract = async () => {
-    const ABI = await fetch(
+    const data = await fetch(
       `/api/track_onchain?chain=${chain}&contract_address=${contract_address}`,
       {
         method: 'GET',
@@ -93,7 +93,14 @@ const TrackOnChainEventsTask = ({ dragAndDrop, taskId, deleteTask }) => {
         },
       }
     );
-    console.log('%#ˆ$#ˆ$#ˆ', ABI);
+
+    const result = await data.json();
+
+    console.log('0000000000000xxxx', result);
+
+    if (result.ABI) {
+      setValue(`tasks.${taskId}.task_data.abi`, result.ABI);
+    }
   };
 
   return (

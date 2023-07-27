@@ -1,11 +1,11 @@
-import { getExplorerAPI } from '@/utils/web3';
+import { getExplorerAPI, getExplorerAPIKey } from '@/utils/web3';
 
 export default async function handler(req, res) {
   try {
     const { chain, contract_address } = req.query;
 
     const apiURL = getExplorerAPI(parseInt(chain));
-    const apiKey = process.env.NEXT_PUBLIC_ETHERSCAN_API_KEY;
+    const apiKey = getExplorerAPIKey(parseInt(chain));
 
     const response = await fetch(
       `${apiURL}?module=contract&action=getabi&address=${contract_address}&apikey=${apiKey}`,
@@ -14,9 +14,9 @@ export default async function handler(req, res) {
       }
     );
 
-    const result = await response.json();
+    const data = await response.json();
 
-    res.status(200).json({ ABI: result });
+    res.status(200).json({ ABI: data.result });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: error });

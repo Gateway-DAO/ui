@@ -269,8 +269,9 @@ export type HoldTokenData = {
 };
 
 export type TrackOnChainEventsData = {
-  chain?: string;
-  contract_address?: string;
+  chain: string;
+  contract_address: string;
+  abi: string;
   parameters: Parameter[];
 };
 
