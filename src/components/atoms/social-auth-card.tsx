@@ -1,8 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import { brandColors } from '@/theme';
+import { AccountHandlerConnection } from '@/types/account';
 
 import {
+  ButtonBase,
   Icon,
   Paper,
   Stack,
@@ -12,7 +14,7 @@ import {
   alpha,
 } from '@mui/material';
 
-import { CheckedButton } from './buttons/check-button';
+import { CheckButton } from './buttons/check-button';
 
 type Props = {
   icon: JSX.Element;
@@ -22,13 +24,6 @@ type Props = {
   sx?: SxProps<Theme>;
 };
 
-export type AccountHandlerConnection = {
-  isConnected: boolean;
-  connect: any;
-  disconnect: any;
-  isLoading: boolean;
-};
-
 export function SocialAuthCard({
   icon,
   title,
@@ -36,30 +31,31 @@ export function SocialAuthCard({
   connectHandler,
   sx,
 }: Props) {
-  const [connectedState, setConnectedState] = useState(false);
-
-  useEffect(() => {
-    setConnectedState(connectHandler?.isConnected);
-  }, [connectHandler?.isConnected]);
+  const [isHover, setIsHover] = useState(false);
+  const onFocus = () => setIsHover(true);
+  const onBlur = () => setIsHover(false);
 
   const connectToggle = () => {
-    if (connectedState) {
-      setConnectedState(true);
-      connectHandler.disconnect();
+    if (connectHandler?.isConnected) {
+      connectHandler?.disconnect();
     } else {
-      setConnectedState(false);
-      connectHandler.connect();
+      connectHandler?.connect();
     }
   };
 
   return (
-    <Paper
+    <ButtonBase
+      component={Paper}
       sx={{
+        alignItems: 'stretch',
+        flexDirection: 'column',
+        justifyContent: 'flex-start',
         border: 1,
         padding: 3.5,
         borderRadius: 2,
         width: '100%',
         height: 223,
+        boxShadow: 'none',
         borderColor: alpha(brandColors.grays.main, 0.12),
         ...(connectHandler?.isConnected && {
           backgroundColor: '#6DFFB91F',
@@ -68,24 +64,29 @@ export function SocialAuthCard({
         ...sx,
       }}
       elevation={3}
+      onClick={connectToggle}
+      onMouseEnter={onFocus}
+      onMouseLeave={onBlur}
+      onFocus={onFocus}
+      onBlur={onBlur}
     >
-      <Stack>
-        <Stack direction={'row'} justifyContent={'space-between'}>
-          <Icon sx={{ height: '100%' }}>{icon}</Icon>
-          <CheckedButton
-            isLoading={connectHandler.isLoading}
-            checked={connectedState}
-            clickHandler={connectToggle}
-            labelOn={'connected'}
-            labelOff={'connect'}
-            labelOffHover={'disconnect'}
-          />
-        </Stack>
-        <Typography variant="subtitle1" color={'white'} gutterBottom>
-          {title}
-        </Typography>
-        <Typography variant="caption">{description}</Typography>
+      <Stack direction={'row'} justifyContent={'space-between'}>
+        <Icon sx={{ height: '100%' }}>{icon}</Icon>
+        <CheckButton
+          component="span"
+          isLoading={connectHandler?.isLoading}
+          isChecked={connectHandler?.isConnected}
+          clickHandler={connectToggle}
+          labelOn={'connected'}
+          labelOff={'connect'}
+          labelOffHover={'disconnect'}
+          isHover={isHover}
+        />
       </Stack>
-    </Paper>
+      <Typography variant="subtitle1" color={'white'} gutterBottom>
+        {title}
+      </Typography>
+      <Typography variant="caption">{description}</Typography>
+    </ButtonBase>
   );
 }

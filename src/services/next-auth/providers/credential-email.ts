@@ -19,7 +19,7 @@ const loginEmail = async (
       return null;
     }
 
-    const { __typename, ...token } = res.protocol.loginEmail;
+    const token = res.protocol.loginEmail;
 
     return token;
   } catch (e) {

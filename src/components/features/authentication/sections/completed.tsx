@@ -1,9 +1,9 @@
 import useTranslation from 'next-translate/useTranslation';
 import NextLink from 'next/link';
 
-import { SocialAuthCard } from '@/components/atoms/social-auth-card';
-import { useConnectionHandlerGithub } from '@/services/social-connectors/github-connection';
-import { useConnectionHandlerTwitter } from '@/services/social-connectors/twitter-connection';
+import { SocialAuthCardLink } from '@/components/atoms/social-auth-card-link';
+import { WalletIconsTransition } from '@/components/atoms/wallet-icons-transition';
+import { ROUTES } from '@/constants/routes';
 import { AiFillGithub } from 'react-icons/ai';
 import { FaTwitter } from 'react-icons/fa';
 
@@ -18,8 +18,6 @@ type Props = {
 export function ConnectMoreAuthDialog({ open, onClose }: Props) {
   const { t } = useTranslation('authentication');
 
-  const githubConnection = useConnectionHandlerGithub();
-  const twitterConnection = useConnectionHandlerTwitter();
   return (
     <Dialog
       open={open}
@@ -68,31 +66,23 @@ export function ConnectMoreAuthDialog({ open, onClose }: Props) {
           {t('steps.completed.connect-more.description')}
         </Typography>
         <Stack marginTop={6} direction={{ xs: 'column', md: 'row' }} gap={2}>
-          <SocialAuthCard
+          <SocialAuthCardLink
+            title={t('connected-accounts.wallet.title')}
+            description={t('connected-accounts.wallet.description')}
+            icon={<WalletIconsTransition />}
+            href={`${ROUTES.SETTINGS_ACCOUNT_MANAGEMENT}#wallets`}
+          />
+          <SocialAuthCardLink
             title={t('connected-accounts.github.title')}
             description={t('connected-accounts.github.description')}
             icon={<AiFillGithub />}
-            connectHandler={githubConnection}
+            href={`${ROUTES.SETTINGS_ACCOUNT_MANAGEMENT}#other-accounts`}
           />
-
-          <SocialAuthCard
+          <SocialAuthCardLink
             title={t('connected-accounts.twitter.title')}
             description={t('connected-accounts.twitter.description')}
             icon={<FaTwitter />}
-            connectHandler={twitterConnection}
-          />
-          <SocialAuthCard
-            title={t('connected-accounts.github.title')}
-            description={t('connected-accounts.github.description')}
-            icon={<AiFillGithub />}
-            connectHandler={githubConnection}
-          />
-
-          <SocialAuthCard
-            title={t('connected-accounts.twitter.title')}
-            description={t('connected-accounts.twitter.description')}
-            icon={<FaTwitter />}
-            connectHandler={twitterConnection}
+            href={`${ROUTES.SETTINGS_ACCOUNT_MANAGEMENT}#other-accounts`}
           />
         </Stack>
         <Typography

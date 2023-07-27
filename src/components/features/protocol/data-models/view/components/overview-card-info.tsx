@@ -21,26 +21,29 @@ export default function OverviewCardInfo({ dataModel }: Props) {
   const { t } = useTranslation('protocol');
   const isMobile = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
 
-  // MOCK
-  const mockDataModel = dataModel ?? null;
-  const mockedCreatedBy = {
-    id: '63bc7fc62e7bd8b316b77133',
-    slug: 'gateway',
-  };
-  // MOCK - END
+  const getCreatedBy = () => {
+    const { organization, createdBy } = dataModel;
 
-  const creator = useQuery(
-    ['issuer', mockDataModel?.id],
-    () =>
-      hasuraPublicService.dao_profile_by_slug({
-        slug: 'gateway',
-      }),
-    {
-      select: (data) => data.daos?.[0],
-      refetchOnMount: false,
-      refetchOnWindowFocus: false,
-    }
-  );
+    return {
+      gatewayID: organization
+        ? organization.gatewayId
+        : createdBy?.gatewayId
+        ? createdBy.gatewayId
+        : 'N/A',
+      link: organization
+        ? ROUTES.DAO_PROFILE.replace('[slug]', organization.gatewayId)
+        : createdBy
+        ? ROUTES.PROFILE.replace('[username]', createdBy.gatewayId)
+        : undefined,
+      image: organization
+        ? organization.hasuraOrganization
+          ? organization.hasuraOrganization?.logo
+          : ({ url: organization?.image } as Partial<File>)
+        : createdBy
+        ? createdBy?.gatewayUser?.picture
+        : ({ url: `/images/avatar.png` } as Partial<File>),
+    };
+  };
 
   return (
     <Paper
@@ -55,13 +58,10 @@ export default function OverviewCardInfo({ dataModel }: Props) {
     >
       <CardUserCell
         label={t('data-model.created-by')}
-        picture={creator?.data?.logo}
-        name={mockDataModel ? mockedCreatedBy.slug : null}
-        href={ROUTES.DAO_PROFILE.replace(
-          '[slug]',
-          mockDataModel ? mockedCreatedBy.slug : null
-        )}
-        hasLink={!!creator.data}
+        picture={getCreatedBy().image}
+        name={getCreatedBy().gatewayID}
+        href={getCreatedBy().link}
+        hasLink={!!getCreatedBy().link}
         unique={true}
       />
       <Stack

@@ -1,4 +1,10 @@
 {
+  "gate": {
+    "title": "Tasks",
+    "subtitle": "Complete the tasks to unlock this credential",
+    "completed": "You have completed this credential at {{date}}",
+    "credential_isnt_available": "This credential is not available"
+  },
   "sidebar": {
     "see_credential": "See Credential",
     "claimed": "Claimed",
@@ -15,6 +21,10 @@
     "connect": "Connect your account",
     "description": "To complete this task, you need to authorize Gateway access your Twitter account.",
     "action": "Connect Twitter"
+  },
+  "recaptcha": {
+    "recaptcha": "reCaptcha",
+    "are_you_robot": "Are you a robot?"
   },
   "tasks": {
     "twitter_tweet": {
@@ -48,8 +58,24 @@
       "label_link": "Submit the link address",
       "label_comment": "Submit the text"
     },
+    "track_onchain": {
+      "chain": "Chain",
+      "contract_address": "Contract Address"
+    },
+    "nft_hold": {
+      "chain": "Chain",
+      "nft_contract_address": "NFT Contract Address"
+    },
+    "token_hold": {
+      "chain": "Chain",
+      "token_address": "Token address",
+      "quantity": "Quantity"
+    },
+    "snapshot": {
+      "specific_proposal_number": "Specific Proposal Number"
+    },
     "check_action": "Verify",
-    "completed": "Task completed at "
+    "completed-date": "Task completed at {{date}}"
   },
   "submissions": {
     "title": "Submissions",

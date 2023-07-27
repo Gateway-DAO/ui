@@ -29,12 +29,18 @@ export type EmojiPickerProps = {
   iconColor: string;
 };
 
-export function EmojiPicker(props: EmojiPickerProps) {
+export function EmojiPicker({
+  onEmoji,
+  emojiStyle,
+  boxSxProps,
+  pickerSxProps,
+  iconColor,
+}: EmojiPickerProps) {
   const [boxEmojiIsVisible, setBoxEmojiIsVisible] = useState(false);
   const wrapperRef = useRef(null);
 
   const onEmojiClick = (emojiObject: { emoji: SetStateAction<string> }) => {
-    props.onEmoji(emojiObject.emoji);
+    onEmoji(emojiObject.emoji);
     setBoxEmojiIsVisible(false);
   };
 
@@ -55,9 +61,9 @@ export function EmojiPicker(props: EmojiPickerProps) {
   useOutsideAlerter(wrapperRef);
 
   return (
-    <Box ref={wrapperRef} sx={props.boxSxProps}>
+    <Box ref={wrapperRef} sx={boxSxProps}>
       <EmojiEmotionsIcon
-        style={{ color: props.iconColor, cursor: 'pointer' }}
+        style={{ color: iconColor, cursor: 'pointer' }}
         onClick={() => {
           boxEmojiIsVisible
             ? setBoxEmojiIsVisible(false)
@@ -65,11 +71,11 @@ export function EmojiPicker(props: EmojiPickerProps) {
         }}
       />
       {boxEmojiIsVisible && (
-        <Box sx={props.pickerSxProps} onClick={(e) => e.preventDefault()}>
+        <Box sx={pickerSxProps} onClick={(e) => e.preventDefault()}>
           <Picker
             onEmojiClick={onEmojiClick}
             theme={Theme.DARK}
-            emojiStyle={props.emojiStyle}
+            emojiStyle={emojiStyle}
             lazyLoadEmojis={true}
           />
         </Box>

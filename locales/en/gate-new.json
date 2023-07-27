@@ -55,6 +55,16 @@
     },
     "manual": {
       "title": "Manual Submission Title"
+    },
+    "track_onchain": {
+      "title": "Track on-chain events",
+      "chain": "Chain",
+      "contract_address": "Contract address",
+      "check_contract": "Check contract",
+      "parameters": "Parameters",
+      "parameter": "Parameter",
+      "add_parameter": "Add parameter",
+      "remove": "Remove"
     }
   },
   "direct": {

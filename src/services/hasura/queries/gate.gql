@@ -49,6 +49,7 @@ query gate($id: uuid!) {
       name
       slug
       logo_url
+      status
       logo {
         ...file
       }

@@ -1,6 +1,5 @@
 import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
 
 import Loading from '@/components/atoms/loadings/loading';
 import ModalRight from '@/components/molecules/modal/modal-right';
@@ -10,21 +9,10 @@ import { useAuth } from '@/providers/auth';
 import { brandColors } from '@/theme';
 import { ErrorResponse } from '@/types/graphql';
 import { useSnackbar } from 'notistack';
-import { useToggle } from 'react-use';
 import { useMutation } from 'wagmi';
 
 import CloseIcon from '@mui/icons-material/Close';
-import {
-  Stack,
-  Divider,
-  Typography,
-  IconButton,
-  Alert,
-  TextField,
-  FormControlLabel,
-  Checkbox,
-  Button,
-} from '@mui/material';
+import { Stack, Divider, Typography, IconButton, Alert } from '@mui/material';
 import { Box, alpha } from '@mui/system';
 
 export function DeleteModal({
@@ -37,8 +25,6 @@ export function DeleteModal({
   const { t } = useTranslation('settings');
   const { me, hasuraUserService, onSignOut } = useAuth();
   const stringValidation = 'delete my gateway id';
-  const [inputText, setInputText] = useState('');
-  const [checkedDelete, setCheckedDelete] = useToggle(false);
   const { enqueueSnackbar } = useSnackbar();
   const router = useRouter();
 
@@ -51,6 +37,7 @@ export function DeleteModal({
     },
     {
       onSuccess: () => {
+        enqueueSnackbar(t('account-management.delete-section.modal-success'));
         onSignOut();
         router.push(ROUTES.EXPLORE);
       },

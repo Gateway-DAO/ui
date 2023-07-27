@@ -1,18 +1,12 @@
-import { Protocol_Api_AuthType } from '@/services/hasura/types';
+import { Protocol_Api_Auth } from '@/services/hasura/types';
 import { PartialDeep } from 'type-fest/source/partial-deep';
 
-export type AuthenticationsItem = PartialDeep<{
-  type: Protocol_Api_AuthType;
-  data: {
-    [x: string]: string;
-  };
-  user: {
-    email: string;
-  };
-}>;
+import { MigrationModalData } from './migration/migration-modal';
+
+export type AuthenticationsItem = PartialDeep<Protocol_Api_Auth>;
 
 export type Modals = {
-  type: 'remove' | 'add';
-  email?: string;
-  wallet?: string;
+  type: 'remove' | 'add' | 'migrate';
+  authItem?: AuthenticationsItem;
+  migrationData?: MigrationModalData;
 };

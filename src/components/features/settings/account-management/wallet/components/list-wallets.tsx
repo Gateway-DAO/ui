@@ -15,10 +15,10 @@ import { AuthenticationsItem, Modals } from '../../types';
 type Props = {
   wallets: AuthenticationsItem[];
   isLoading: boolean;
-  onOpenModal: (data: Modals) => void;
+  onRemoveWallet: (data: Modals) => void;
 };
 
-export function ListWallets({ wallets, isLoading, onOpenModal }: Props) {
+export function ListWallets({ wallets, isLoading, onRemoveWallet }: Props) {
   const { t } = useTranslation('settings');
 
   const icons = {
@@ -26,15 +26,12 @@ export function ListWallets({ wallets, isLoading, onOpenModal }: Props) {
     [Protocol_Api_Chain.Sol]: <TbCurrencySolana size={14} />,
   };
 
-  const options = (item: AuthenticationsItem) => {
+  const options = (authItem: AuthenticationsItem) => {
     return [
       {
         text: t('account-management.disconnect'),
         action: () => {
-          onOpenModal({
-            type: 'remove',
-            wallet: limitCharsCentered(item?.data?.address, 12),
-          });
+          onRemoveWallet({ type: 'remove', authItem });
         },
         hidden: false,
       },
@@ -79,16 +76,17 @@ export function ListWallets({ wallets, isLoading, onOpenModal }: Props) {
                 icon={icons[item?.data?.chain]}
                 sx={{ height: 26 }}
               />
-              {/* TODO: Add this code after remove wallet service is finish */}
-              {/* <Stack height={32} width={40}>
-                {wallets.length > 1 && !item?.data?.primary && (
-                  <MorePopover
-                    options={options(item)}
-                    withBackground
-                    key={uuidv4()}
-                  />
-                )}
-              </Stack> */}
+              {wallets.length > 1 && (
+                <Stack height={32} width={40}>
+                  {!item?.data?.primary && (
+                    <MorePopover
+                      options={options(item)}
+                      withBackground
+                      key={uuidv4()}
+                    />
+                  )}
+                </Stack>
+              )}
             </Stack>
           ))}
         </Stack>

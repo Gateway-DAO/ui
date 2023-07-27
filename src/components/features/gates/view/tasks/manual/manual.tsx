@@ -222,8 +222,7 @@ const ManualContent = ({
 
       {completed && updatedAt && (
         <Typography color="#c5ffe3" variant="subtitle2" sx={{ marginTop: 1 }}>
-          {t('tasks.completed')}
-          {formattedDate}
+          {t('tasks.completed-date', { date: formattedDate })}
         </Typography>
       )}
     </Stack>

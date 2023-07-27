@@ -48,6 +48,11 @@ const AddTaskCard = ({ tasks, addTask }) => {
       description: 'Ask users to put a code',
     },
     {
+      type: 'track_onchain' as TaskType,
+      title: 'Track On-Chain events',
+      description: 'Check on-chain events from users',
+    },
+    {
       type: 'twitter_follow' as TaskType,
       title: 'Follow Profile',
       description: 'Ask users to follow a profile on Twitter',
@@ -124,7 +129,7 @@ const AddTaskCard = ({ tasks, addTask }) => {
         direction={{ xs: 'column', md: 'row' }}
         columns={{ xs: 4, sm: 8, md: 8 }}
       >
-        {Tasks.map((task, index) => (
+        {Tasks.map((task) => (
           <Grid item xs={2} sm={4} md={4} key={task.type}>
             <Paper sx={{ height: '100%' }}>
               <AddTaskButton

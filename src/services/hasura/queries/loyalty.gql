@@ -26,6 +26,46 @@ query get_loyalty_progress_by_user_id_by_loyalty(
       id
       txHash
       nftId
+      title
+      description
+      image
+      expirationDate
+      status
+      tags
+      claim
+      qrCode
+      arweaveInfo
+
+      createdAt
+      updatedAt
+
+      issuerUser {
+        gatewayId
+      }
+
+      issuerOrganization {
+        gatewayId
+        name
+        description
+      }
+
+      recipientUser {
+        gatewayId
+      }
+
+      issuerAuth {
+        user {
+          id
+          gatewayId
+        }
+      }
+
+      recipientAuth {
+        user {
+          id
+          gatewayId
+        }
+      }
     }
     points
   }

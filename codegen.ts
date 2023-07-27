@@ -58,6 +58,7 @@ const config: CodegenConfig = {
           task_type: prismaEnums.task_type,
           key_status: prismaEnums.key_status,
         },
+        skipTypename: true,
         defaultMapper: 'Partial<{T}>',
         avoidOptionals: {
           field: true,

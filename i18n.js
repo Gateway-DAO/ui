@@ -5,7 +5,15 @@ const config = {
   locales: ['en'],
   defaultLocale: 'en',
   pages: {
-    '*': ['common', 'auth', 'notifications', '404', 'gates-card', 'errors'],
+    '*': [
+      'common',
+      'auth',
+      'notifications',
+      '404',
+      'gates-card',
+      'errors',
+      'org-signup',
+    ],
     [ROUTES.DAO_EDIT]: ['dao-edit'],
     [ROUTES.DAO_NEW]: ['dao-new'],
     [ROUTES.DAO_PROFILE]: ['dao-profile', 'org-signup', 'gate-new', 'quest', 'protocol'],

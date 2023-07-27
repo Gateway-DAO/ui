@@ -127,7 +127,7 @@ export function CreditScoreTemplate() {
     ['cred-api-create-credential', me?.wallet],
     async () => {
       const result = await hasuraUserService.create_cred({
-        gatewayId: me?.username,
+        gatewayId: me?.protocolUser?.gatewayId,
         score: credScore?.value,
         bearerToken: token,
       });

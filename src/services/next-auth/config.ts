@@ -19,11 +19,9 @@ const callRefresh = async (token: SessionToken): Promise<SessionToken> => {
       throw error;
     }
 
-    const { __typename, ...newToken } = res.protocol.refreshToken;
+    const newToken = res.protocol.refreshToken;
 
-    return {
-      ...newToken,
-    };
+    return newToken;
   } catch (e) {
     return {
       ...token,

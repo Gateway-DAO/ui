@@ -9,6 +9,18 @@ query protocol_data_model($id: String!) {
       verified
       arweaveInfo
       createdAt
+      organization {
+        id
+        gatewayId
+        image
+        hasuraOrganization {
+          logo {
+            s3_key
+            blur
+            id
+          }
+        }
+      }
       createdBy {
         gatewayId
       }

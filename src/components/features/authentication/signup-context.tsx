@@ -46,7 +46,7 @@ const initializeState = (me: SessionUser): State => {
   if (me) {
     if (!me.email_address) {
       step = 'choose-email';
-    } else if (!me.username) {
+    } else if (!me.protocolUser?.gatewayId) {
       step = 'choose-gatewayid';
     } else {
       step = 'completed';
@@ -159,11 +159,9 @@ export function SignUpProvider({ children }: PropsWithChildren<unknown>) {
   };
 
   const onCompleteLogin = () => {
-    // Temporarly disabled
-    // dispatch({
-    //   type: 'COMPLETE',
-    // });
-    router.push((router.query?.redirect as string) ?? ROUTES.EXPLORE);
+    dispatch({
+      type: 'COMPLETE',
+    });
   };
 
   return (

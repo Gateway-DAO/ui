@@ -63,7 +63,7 @@ export default function IssueByForm({ dataModel }: Props) {
   const users = [
     {
       picture: me?.picture,
-      label: me?.username,
+      label: me?.protocolUser?.gatewayId,
       value: me?.protocol?.id,
       disabled: disableUserToIssueCredential(),
     },

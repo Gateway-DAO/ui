@@ -24,6 +24,7 @@ export function useMintData({
 }: Props) {
   const { me, hasuraUserService } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
+  const [isMinting, setIsMinting] = useState(false);
   const router = useRouter();
   const [shareIsOpen, setShareIsOpen] = useState<boolean>(false);
 
@@ -85,7 +86,11 @@ export function useMintData({
       return hasuraUserService.protocol_mint_credential(data);
     },
     {
+      onMutate: () => {
+        setIsMinting(true);
+      },
       onSuccess: (data) => {
+        setIsMinting(false);
         setIsOpen(true);
         setTimeout(() => {
           setShareStatus('share');
@@ -125,5 +130,7 @@ export function useMintData({
     showMintButton,
     isReceivedCredential,
     isAllowedToMint,
+    isMinting,
+    changeChainName,
   };
 }

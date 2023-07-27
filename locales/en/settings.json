@@ -82,7 +82,8 @@
       "modal-explain-topic-5": "To confirm deletion, type \"{{confirmDelete}}\" into the field and mark the checkbox",
       "modal-explain-topic-6": "I acknowledge that upon account deletion and Gateway ID deactivation, I won't be able undo these actions",
       "modal-cancel": "Cancel",
-      "modal-delete": "Delete my Gateway ID"
+      "modal-delete": "Delete my Gateway ID",
+      "modal-success": "Account deleted"
     },
     "registered-email-title": "Registered email",
     "registered-email-description": "Email is mainly used for important updates related to your account.",
@@ -120,7 +121,29 @@
       "checkbox-info": "I acknowledge the account disconnection from my Gateway ID"
     },
     "message-remove-success": "Account has been disconnected",
-    "message-add-success": "Account has been added"
+    "message-add-success": "Account has been added",
+    "modal-migration": {
+      "title": "This account is already connected to another Gateway ID, do you want to migrate to this ID?",
+      "success": "Account migrated",
+      "qa": {
+        "title": "Migrating the account, be aware:",
+        "description": "All credentials addressed to this ID will be migrated to <0>{{username}}</0>",
+        "user-deactivated": "The ID <0>{{username}}</0> will be deactivated",
+        "user-keep-alive": "The ID <0>{{username}}</0> won't be deactivated",
+        "wont-connect": "You won't be able to connect to {{username}} by this account",
+        "cant-undo": "You won't be able undo this action"
+      },
+      "migrate": {
+        "title": "Migrate and Deactivate",
+        "description": "I acknowledge that upon account migration and Gateway ID deactivation, I won't be able undo these actions",
+        "confirm": "migrate account and deactivate ID"
+      },
+      "migrate-deactivate": {
+        "title": "Migrate",
+        "description": "I acknowledge that upon account migration, I won't be able undo these actions",
+        "confirm": "migrate account"
+      }
+    }
   },
   "notifications": {
     "dapp": {
@@ -180,5 +203,19 @@
       }
     }
   },
-  "developer-portal": {}
+  "developer-portal": {
+    "copy": "Copy",
+    "copied": "The value was copied to clipboard",
+    "api-key-title": "API Key",
+    "api-key-warning": "By sharing your API key, you assume all responsibility for any actions performed using your key, whether authorized or unauthorized.",
+    "authentication-token-title": "Authentication Token",
+    "usage-limit": {
+      "title": "Usage limit",
+      "out-of": "out of",
+      "reached-the-limit": "Reached the limit",
+      "request-more": "Request more",
+      "issued-credentials": "Issued credentials",
+      "data-model-created": "Data model created"
+    }
+  }
 }
