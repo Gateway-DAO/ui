@@ -48,7 +48,7 @@ main() {
 # ----------------
 function generate_env {
   local STAGE=$1
-  echo "Generating .env file"
+  echo -e "\nGenerating .env file"
   aws ssm get-parameter --name "/${PROJECT}/${STAGE}" --with-decryption | jq -r '.Parameter.Value' >.env || exit 1
 }
 
