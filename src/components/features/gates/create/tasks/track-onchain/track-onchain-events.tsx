@@ -106,8 +106,6 @@ const TrackOnChainEventsTask = ({ dragAndDrop, taskId, deleteTask }) => {
 
     const result = await data.json();
 
-    console.log('0000000000000xxxx', result);
-
     if (result.ABI) {
       setValue(`tasks.${taskId}.task_data.abi`, result.ABI);
     }
