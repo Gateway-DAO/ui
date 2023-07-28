@@ -45,7 +45,7 @@ export function EmailAlias({ emails, isLoading }: Props) {
     'modal-title': {
       add: t('account-management.add-email.title'),
       remove: t('common:modal-confirm-delete.title'),
-      migrate: t('account-management.migrate-email.title'),
+      migrate: t('account-management.modal-migration.title'),
     },
   };
 
