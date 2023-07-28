@@ -116,7 +116,6 @@ const TrackOnChainEventsTask = ({ dragAndDrop, taskId, deleteTask }) => {
         toggleGetContractInfo();
       },
       onSuccess: (data) => {
-        debugger;
         if (Object.keys(data).length === 0 && data.constructor === Object) {
           toggleABIWithValidEvent(false);
           toggleDisplayInputABI(true);
@@ -130,7 +129,6 @@ const TrackOnChainEventsTask = ({ dragAndDrop, taskId, deleteTask }) => {
   );
 
   const filteredEvents = useMemo(() => {
-    debugger;
     //verified contract flow
     if (typeof contractInfo === 'string') {
       try {
@@ -358,7 +356,7 @@ const TrackOnChainEventsTask = ({ dragAndDrop, taskId, deleteTask }) => {
               <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
                 <Error color="error" />
                 <Typography variant="body2" color="#eb8e9d">
-                  It seems this contract is not verified, please provide its ABI
+                  {t('tasks.track_onchain.unverified_contract_message')}
                 </Typography>
               </Box>
               <Stack
@@ -372,8 +370,8 @@ const TrackOnChainEventsTask = ({ dragAndDrop, taskId, deleteTask }) => {
                   required
                   multiline
                   sx={{ flex: 1 }}
-                  label="ABI"
-                  helperText="Paste here the ABI of the contract you want to track"
+                  label={t('tasks.track_onchain.abi')}
+                  helperText={t('tasks.track_onchain.abi_helper_text')}
                   {...register(`tasks.${taskId}.task_data.abi`)}
                 />
                 <LoadingButton
@@ -383,7 +381,7 @@ const TrackOnChainEventsTask = ({ dragAndDrop, taskId, deleteTask }) => {
                   disabled={!ABI?.length}
                   onClick={toggleABIWithValidEvent}
                 >
-                  Check ABI
+                  {t('tasks.track_onchain.check_abi')}
                 </LoadingButton>
               </Stack>
             </Stack>
