@@ -16,7 +16,11 @@ export default async function handler(req, res) {
 
     const data = await response.json();
 
-    res.status(200).json({ ABI: data.result });
+    if (data.message === 'NOTOK') {
+      res.status(200).json({ ABI: {} });
+    } else {
+      res.status(200).json({ ABI: data.result });
+    }
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: error });

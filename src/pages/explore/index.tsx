@@ -38,7 +38,6 @@ export default function Explore({
   dataModels,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
   const { t } = useTranslation('explore');
-
   const HARDCODED_DAOS = ['goldfinch', 'cyberconnect', 'lifi'];
 
   const { data } = useQuery(

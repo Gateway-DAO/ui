@@ -14,7 +14,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import { useToggle } from 'react-use';
 
-import { ExpandLess, ExpandMore } from '@mui/icons-material';
+import { Error, ExpandLess, ExpandMore } from '@mui/icons-material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import {
   Box,
@@ -53,8 +53,14 @@ const TrackOnChainEventsTask = ({ dragAndDrop, taskId, deleteTask }) => {
 
   const chain = watch(`tasks.${taskId}.task_data.chain`, null);
   const contract_address = watch(`tasks.${taskId}.task_data.contract_address`);
-  const abi = watch(`tasks.${taskId}.task_data.abi`);
+  const ABI = watch(`tasks.${taskId}.task_data.abi`);
   const event = watch(`tasks.${taskId}.task_data.event`);
+
+  const [taskVisible, setTaskVisible] = useState(true);
+  const [taskIsMoving, setTaskIsMoving] = useState(true);
+  const [getContractInfo, toggleGetContractInfo] = useToggle(false);
+  const [displayInputABI, toggleDisplayInputABI] = useToggle(false);
+  const [ABIWithValidEvent, toggleABIWithValidEvent] = useToggle(true);
 
   const {
     fields: parameters,
@@ -84,11 +90,11 @@ const TrackOnChainEventsTask = ({ dragAndDrop, taskId, deleteTask }) => {
     setTaskIsMoving(dragAndDrop);
   }, [dragAndDrop]);
 
-  const [taskVisible, setTaskVisible] = useState(true);
-  const [taskIsMoving, setTaskIsMoving] = useState(true);
-  const [getContractInfo, toggleGetContractInfo] = useToggle(false);
-
-  const { data: contractInfo, isFetching: isLoadingContractInfo } = useQuery(
+  const {
+    data: contractInfo,
+    isFetching: isLoadingContractInfo,
+    isSuccess,
+  } = useQuery(
     [query.web3_contract_information, chain, contract_address],
     async () => {
       const res = await fetch(
@@ -110,7 +116,13 @@ const TrackOnChainEventsTask = ({ dragAndDrop, taskId, deleteTask }) => {
         toggleGetContractInfo();
       },
       onSuccess: (data) => {
-        setValue(`tasks.${taskId}.task_data.abi`, data);
+        debugger;
+        if (Object.keys(data).length === 0 && data.constructor === Object) {
+          toggleABIWithValidEvent(false);
+          toggleDisplayInputABI(true);
+        } else {
+          setValue(`tasks.${taskId}.task_data.abi`, data);
+        }
         toggleGetContractInfo();
       },
       enabled: !!getContractInfo && !!contract_address,
@@ -118,7 +130,9 @@ const TrackOnChainEventsTask = ({ dragAndDrop, taskId, deleteTask }) => {
   );
 
   const filteredEvents = useMemo(() => {
-    if (contractInfo) {
+    debugger;
+    //verified contract flow
+    if (typeof contractInfo === 'string') {
       try {
         const abi = JSON.parse(contractInfo);
         return abi.filter((item: EventAbi) => item.type === 'event');
@@ -127,8 +141,19 @@ const TrackOnChainEventsTask = ({ dragAndDrop, taskId, deleteTask }) => {
         return [];
       }
     }
+
+    //unverified contract flow
+    if (ABIWithValidEvent && ABI) {
+      try {
+        const abi = JSON.parse(ABI);
+        return abi.filter((item: EventAbi) => item.type === 'event');
+      } catch (error) {
+        console.log(error);
+        return [];
+      }
+    }
     return [];
-  }, [contractInfo]);
+  }, [contractInfo, ABIWithValidEvent]);
 
   const selectedEvent = useMemo(() => {
     if (filteredEvents?.length > 0) {
@@ -288,6 +313,7 @@ const TrackOnChainEventsTask = ({ dragAndDrop, taskId, deleteTask }) => {
                   resetField(`tasks.${taskId}.task_data.contract_address`);
                   resetField(`tasks.${taskId}.task_data.event`);
                   setValue(`tasks.${taskId}.task_data.abi`, null);
+                  toggleDisplayInputABI(false);
                 },
               })}
             >
@@ -327,7 +353,41 @@ const TrackOnChainEventsTask = ({ dragAndDrop, taskId, deleteTask }) => {
               </LoadingButton>
             </Stack>
           )}
-          {abi && (
+          {contract_address && displayInputABI && (
+            <Stack gap={2}>
+              <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
+                <Error color="error" />
+                <Typography variant="body2" color="#eb8e9d">
+                  It seems this contract is not verified, please provide its ABI
+                </Typography>
+              </Box>
+              <Stack
+                direction="row"
+                gap={2}
+                justifyContent="center"
+                alignItems="center"
+              >
+                <TextField
+                  fullWidth
+                  required
+                  multiline
+                  sx={{ flex: 1 }}
+                  label="ABI"
+                  helperText="Paste here the ABI of the contract you want to track"
+                  {...register(`tasks.${taskId}.task_data.abi`)}
+                />
+                <LoadingButton
+                  size="large"
+                  variant="outlined"
+                  disabled={!ABI?.length}
+                  onClick={toggleABIWithValidEvent}
+                >
+                  Check ABI
+                </LoadingButton>
+              </Stack>
+            </Stack>
+          )}
+          {ABI && ABIWithValidEvent && (
             <Stack>
               <FormControl>
                 <InputLabel htmlFor="type">
