@@ -23,7 +23,6 @@ import { useAuth } from '@/providers/auth';
 import VerticalStepper from './components/vertical-setpper';
 import { setUpFormComponents } from './set-up-form-components';
 import { LoadingButton } from '@/components/atoms/buttons/loading-button';
-import { createGateSchema } from '@/components/features/gates/create/schema';
 import { ROUTES } from '@/constants/routes';
 import {
   Create_Gate_Tasks_BasedMutationVariables,
@@ -33,11 +32,10 @@ import { ajvResolver } from '@hookform/resolvers/ajv';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { fullFormats } from 'ajv-formats/dist/formats';
 import { FormProvider, useForm } from 'react-hook-form';
-import { CreateGateSchema } from '../direct-credential/create-direct-credential';
+import { createGateSchema } from '../schema';
 import { v4 as uuidv4 } from 'uuid';
 import { useDaoProfile } from '../../../context';
 import CredentialPublishedModal from '../credential-published';
-import { ShareButton } from '@/components/atoms/buttons/share-button';
 
 export function CreateQuestTemplate({
   closeDialog,
@@ -187,6 +185,11 @@ export function CreateQuestTemplate({
 
     if (!dataIsValid) {
       const errors = methods.formState.errors;
+
+      // Tasks errors
+      if (errors?.tasks?.length) {
+        taskErrorMessage(errors?.tasks);
+      }
 
       if ((Object.values(errors)[0] as any).data?.message) {
         showErrorMessage((Object.values(errors)[0] as any).data?.message);

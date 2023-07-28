@@ -26,7 +26,6 @@ import { useAuth } from '@/providers/auth';
 import VerticalStepper from './components/vertical-stepper';
 import { setUpFormComponents } from './set-up-form-components';
 import { LoadingButton } from '@/components/atoms/buttons/loading-button';
-import { createGateSchema } from '@/components/features/gates/create/schema';
 import { ROUTES } from '@/constants/routes';
 import {
   Create_Gate_Tasks_BasedMutationVariables,
@@ -40,7 +39,7 @@ import { useDaoProfile } from '../../../context';
 import { ajvResolver } from '@hookform/resolvers/ajv';
 import { fullFormats } from 'ajv-formats/dist/formats';
 import CredentialPublishedModal from '../credential-published';
-export type CreateGateSchema = z.infer<typeof createGateSchema>;
+import { createGateSchema } from '../schema';
 
 export function CreateDirectCredentialTemplate({
   closeDialog,
