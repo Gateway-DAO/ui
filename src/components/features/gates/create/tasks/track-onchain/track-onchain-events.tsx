@@ -328,7 +328,7 @@ const TrackOnChainEventsTask = ({ dragAndDrop, taskId, deleteTask }) => {
             <Stack
               direction="row"
               gap={2}
-              justifyContent="center"
+              justifyContent="flex-start"
               alignItems="center"
             >
               <TextField
@@ -364,7 +364,7 @@ const TrackOnChainEventsTask = ({ dragAndDrop, taskId, deleteTask }) => {
               <Stack
                 direction="row"
                 gap={2}
-                justifyContent="center"
+                justifyContent="flex-start"
                 alignItems="center"
               >
                 <TextField
@@ -379,6 +379,7 @@ const TrackOnChainEventsTask = ({ dragAndDrop, taskId, deleteTask }) => {
                 <LoadingButton
                   size="large"
                   variant="outlined"
+                  sx={{ flex: 0.17 }}
                   disabled={!ABI?.length}
                   onClick={toggleABIWithValidEvent}
                 >
