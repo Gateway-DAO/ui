@@ -62,6 +62,8 @@
       "contract_address": "Contract address",
       "check_contract": "Check contract",
       "event": "Event",
+      "event_helper": "Can't find the events you are looking for? ",
+      "event_helper_link": "Add the contract ABI manually",
       "parameters": "Parameters",
       "parameter": "Parameter",
       "add_parameter": "Add parameter",
