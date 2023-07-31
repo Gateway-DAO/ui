@@ -21,8 +21,10 @@ import {
   Button,
   Divider,
   FormControl,
+  FormHelperText,
   IconButton,
   InputLabel,
+  Link,
   MenuItem,
   Select,
   Stack,
@@ -90,11 +92,7 @@ const TrackOnChainEventsTask = ({ dragAndDrop, taskId, deleteTask }) => {
     setTaskIsMoving(dragAndDrop);
   }, [dragAndDrop]);
 
-  const {
-    data: contractInfo,
-    isFetching: isLoadingContractInfo,
-    isSuccess,
-  } = useQuery(
+  const { data: contractInfo, isFetching: isLoadingContractInfo } = useQuery(
     [query.web3_contract_information, chain, contract_address],
     async () => {
       const res = await fetch(
@@ -129,18 +127,6 @@ const TrackOnChainEventsTask = ({ dragAndDrop, taskId, deleteTask }) => {
   );
 
   const filteredEvents = useMemo(() => {
-    //verified contract flow
-    if (typeof contractInfo === 'string') {
-      try {
-        const abi = JSON.parse(contractInfo);
-        return abi.filter((item: EventAbi) => item.type === 'event');
-      } catch (error) {
-        console.log(error);
-        return [];
-      }
-    }
-
-    //unverified contract flow
     if (ABIWithValidEvent && ABI) {
       try {
         const abi = JSON.parse(ABI);
@@ -345,7 +331,13 @@ const TrackOnChainEventsTask = ({ dragAndDrop, taskId, deleteTask }) => {
                     .error || !contract_address?.length
                 }
                 isLoading={isLoadingContractInfo}
-                onClick={() => toggleGetContractInfo(true)}
+                onClick={() => {
+                  toggleDisplayInputABI(false);
+                  resetField(`tasks.${taskId}.task_data.abi`);
+                  resetField(`tasks.${taskId}.task_data.event`);
+                  resetField(`tasks.${taskId}.task_data.parameters`);
+                  toggleGetContractInfo(true);
+                }}
               >
                 {t('tasks.track_onchain.check_contract')}
               </LoadingButton>
@@ -438,6 +430,23 @@ const TrackOnChainEventsTask = ({ dragAndDrop, taskId, deleteTask }) => {
                     </MenuItem>
                   ))}
                 </Select>
+                {!displayInputABI && (
+                  <FormHelperText>
+                    Can't find the events you are looking for?{' '}
+                    <Link
+                      href=""
+                      onClick={(e) => {
+                        e.preventDefault();
+                        toggleDisplayInputABI(true);
+                        resetField(`tasks.${taskId}.task_data.event`);
+                        resetField(`tasks.${taskId}.task_data.parameters`);
+                        toggleABIWithValidEvent(false);
+                      }}
+                    >
+                      Add the contract ABI manually
+                    </Link>
+                  </FormHelperText>
+                )}
               </FormControl>
             </Stack>
           )}
