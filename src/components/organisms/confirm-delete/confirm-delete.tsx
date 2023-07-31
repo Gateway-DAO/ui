@@ -1,5 +1,5 @@
 import useTranslation from 'next-translate/useTranslation';
-import { useState } from 'react';
+import { FormEventHandler, useCallback, useState } from 'react';
 
 import { useToggle } from 'react-use';
 
@@ -30,9 +30,15 @@ export function ConfirmDelete({
   const { t } = useTranslation('common');
   const [inputText, setInputText] = useState('');
   const [checkedDelete, toggleChecked] = useToggle(false);
-
+  const onSubmit: FormEventHandler<HTMLFormElement> = useCallback(
+    (event) => {
+      event.preventDefault();
+      onConfirm();
+    },
+    [onConfirm]
+  );
   return (
-    <Stack pt={6} component="form" onSubmit={onConfirm}>
+    <Stack pt={6} component="form" onSubmit={onSubmit}>
       <Typography fontWeight={600} sx={{ mb: 3 }}>
         {`${t('modal-confirm-delete.text-confirm1')} “${textKey}” ${t(
           'modal-confirm-delete.text-confirm2'
