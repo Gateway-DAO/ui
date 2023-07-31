@@ -51,10 +51,17 @@ export const errorMessages = {
   USERNAME_ALREADY_IN_USE: 'Username already in use',
   ERROR_UPDATING_USER: `Error updating user, please, contact Gateway or try again.`,
   WALLET_ALREADY_ASSOCIATED: `Wallet already associated to another user`,
+  CANNOT_REMOVE_LAST_AUTH_METHOD: `You cannot remove the last authentication method of your account`,
 };
+
+export const transformErrorObject = ({ error, message }: any) =>
+  errorMessages[message] ??
+  errorMessages[error] ??
+  errorMessages.UNEXPECTED_ERROR;
 
 export const transformErrorMessage = (error: any) =>
   errorMessages[error?.response?.errors?.[0]?.message] ??
+  error?.response?.errors?.[0]?.message ??
   error?.response?.errors?.[0]?.error ??
-  error.message ??
+  error?.message ??
   errorMessages.UNEXPECTED_ERROR;

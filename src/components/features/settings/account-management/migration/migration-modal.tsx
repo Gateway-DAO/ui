@@ -3,6 +3,7 @@ import useTranslation from 'next-translate/useTranslation';
 
 import { ArrowDivider } from '@/components/atoms/arrow-divider';
 import { ConfirmDelete } from '@/components/organisms/confirm-delete/confirm-delete';
+import { transformErrorMessage } from '@/constants/error-messages';
 import { useAuth } from '@/providers/auth';
 import { hasuraApi } from '@/services/hasura/api';
 import { Protocol_Api_AuthType } from '@/services/hasura/types';
@@ -78,7 +79,7 @@ export function MigrationModal({
       enqueueSnackbar(t('settings:account-management.modal-migration.success'));
       onSuccess();
     } catch (error) {
-      enqueueSnackbar(error.message, { variant: 'error' });
+      enqueueSnackbar(transformErrorMessage(error), { variant: 'error' });
     }
   };
 
