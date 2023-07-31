@@ -65,7 +65,11 @@
       "parameters": "Parameters",
       "parameter": "Parameter",
       "add_parameter": "Add parameter",
-      "remove": "Remove"
+      "remove": "Remove",
+      "abi": "ABI",
+      "abi_helper_text": "Paste here the ABI of the contract you want to track",
+      "unverified_contract_message": "It seems this contract is not verified, please provide its ABI",
+      "check_abi": "Check ABI"
     }
   },
   "direct": {

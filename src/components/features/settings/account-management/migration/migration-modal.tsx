@@ -131,7 +131,7 @@ export function MigrationModal({
                 <Trans
                   i18nKey="settings:account-management.modal-migration.qa.user-deactivated"
                   components={[<b key="b" />]}
-                  values={{ username: me.username }}
+                  values={{ username: oldUser.username }}
                 />
               </Typography>
             ) : (
@@ -140,14 +140,14 @@ export function MigrationModal({
                   <Trans
                     i18nKey="settings:account-management.modal-migration.qa.user-keep-alive"
                     components={[<b key="b" />]}
-                    values={{ username: me.username }}
+                    values={{ username: oldUser.username }}
                   />
                 </Typography>,
                 <Typography key="wont-connect" sx={{ py: 2 }}>
                   <Trans
                     i18nKey="settings:account-management.modal-migration.qa.wont-connect"
                     components={[<b key="b" />]}
-                    values={{ username: me.username }}
+                    values={{ username: oldUser.username }}
                   />
                 </Typography>,
               ]
