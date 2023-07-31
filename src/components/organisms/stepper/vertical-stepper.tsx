@@ -1,5 +1,3 @@
-import useTranslation from 'next-translate/useTranslation';
-
 import { Typography, Stack, Box } from '@mui/material';
 import Stepper from '@/components/organisms/stepper/stepper';
 
