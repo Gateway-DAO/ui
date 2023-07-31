@@ -32,10 +32,11 @@ import Tags from '@/components/features/protocol/components/tags';
 import { useWindowSize } from '@/hooks/use-window-size';
 import CloseIcon from '@mui/icons-material/Close';
 import { brandColors, theme } from '@/theme';
-import { createGateSchema } from '@/components/features/gates/create/schema';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { FormProvider, useForm, useFormContext } from 'react-hook-form';
-import { CreateGateSchema } from '../../direct-credential/create-direct-credential';
+import { useFormContext } from 'react-hook-form';
+import {
+  CreateGateSchema,
+  createGateSchema,
+} from '@/components/features/gates/create/schema';
 import useTranslation from 'next-translate/useTranslation';
 
 export default function CredentialTemplate({

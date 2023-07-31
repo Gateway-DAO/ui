@@ -760,3 +760,4 @@ export const createGateSchema = z.discriminatedUnion('type', [
   taskGate,
   directGate,
 ]);
+export type CreateGateSchema = z.infer<typeof createGateSchema>;

@@ -23,7 +23,6 @@ import {
 import { mutation } from '@/constants/queries';
 import { useMultistepForm } from '@/hooks/use-multistep-form';
 import { useAuth } from '@/providers/auth';
-import VerticalStepper from './components/vertical-stepper';
 import { setUpFormComponents } from './set-up-form-components';
 import { LoadingButton } from '@/components/atoms/buttons/loading-button';
 import { ROUTES } from '@/constants/routes';
@@ -39,7 +38,11 @@ import { useDaoProfile } from '../../../context';
 import { ajvResolver } from '@hookform/resolvers/ajv';
 import { fullFormats } from 'ajv-formats/dist/formats';
 import CredentialPublishedModal from '../credential-published';
-import { createGateSchema } from '../schema';
+import {
+  CreateGateSchema,
+  createGateSchema,
+} from '@/components/features/gates/create/schema';
+import VerticalStepper from '@/components/organisms/stepper/vertical-stepper';
 
 export function CreateDirectCredentialTemplate({
   closeDialog,
@@ -61,10 +64,25 @@ export function CreateDirectCredentialTemplate({
   const formStepControl: {
     name: string;
   }[] = [
-    { name: 'template' },
-    { name: 'details' },
-    { name: 'recipient' },
-    { name: 'settings' },
+    { name: t('vertical-steps.template') },
+    { name: t('vertical-steps.details') },
+    { name: t('vertical-steps.direct-credential-step') },
+    { name: t('vertical-steps.optional-setting') },
+  ];
+
+  const verticalSteps = [
+    {
+      title: t('vertical-steps.template'),
+    },
+    {
+      title: t('vertical-steps.details'),
+    },
+    {
+      title: t('vertical-steps.direct-credential-step'),
+    },
+    {
+      title: t('vertical-steps.optional-setting'),
+    },
   ];
 
   const formComponents = setUpFormComponents({
@@ -88,16 +106,18 @@ export function CreateDirectCredentialTemplate({
   const handleNext = async () => {
     changeStep(currentStep + 1);
     await router.push({
-      hash: `create-direct-credential_${formStepControl[currentStep + 1].name}`,
+      hash: `create-direct-credential_${formStepControl[
+        currentStep + 1
+      ].name.toLowerCase()}`,
     });
   };
 
   const handlePrevious = async () => {
     changeStep(currentStep - 1);
     await router.push({
-      hash: `create-direct-credential${currentStep - 1 === 0 ? '' : '_'}${
-        formStepControl[currentStep - 1].name
-      }`,
+      hash: `create-direct-credential${
+        currentStep - 1 === 0 ? '' : '_'
+      }${formStepControl[currentStep - 1].name.toLowerCase()}`,
     });
   };
 
@@ -120,7 +140,6 @@ export function CreateDirectCredentialTemplate({
       const claimResult = await ajvResolver(values?.schema, {
         formats: fullFormats,
       })(claim, _, options as any);
-
       if (
         Object.keys({
           ...zodResult.errors,
@@ -128,7 +147,7 @@ export function CreateDirectCredentialTemplate({
             claim: claimResult.errors,
           }),
         }).length === 0 &&
-        formStepControl[currentStep].name === 'details' &&
+        formStepControl[currentStep].name === t('vertical-steps.details') &&
         testing === false
       ) {
         setTesting(true);
@@ -374,7 +393,11 @@ export function CreateDirectCredentialTemplate({
             <Stack gap={5}>
               <Stack>
                 <Stack direction="row" justifyContent="space-between" gap={2}>
-                  <VerticalStepper activeStep={currentStep} />
+                  <VerticalStepper
+                    steps={verticalSteps}
+                    activeStep={currentStep}
+                    title={t('create-direct-credential.create')}
+                  />
                 </Stack>
               </Stack>
             </Stack>
@@ -442,17 +465,21 @@ export function CreateDirectCredentialTemplate({
                     isLoading={false}
                     disabled={
                       !(
-                        formStepControl[currentStep].name === 'recipient' ||
-                        formStepControl[currentStep].name === 'settings'
+                        formStepControl[currentStep].name ===
+                          t('vertical-steps.recipient') ||
+                        formStepControl[currentStep].name ===
+                          t('vertical-steps.optional-setting')
                       )
                     }
                   >
                     {t('create-quest.save-as-draft')}
                   </LoadingButton>
 
-                  {formStepControl[currentStep].name === 'details' && (
+                  {formStepControl[currentStep].name ===
+                    t('vertical-steps.details') && (
                     <LoadingButton
                       onClick={() => {
+                        console.log('here');
                         setTesting(false);
                         methods.trigger();
                       }}
@@ -461,7 +488,10 @@ export function CreateDirectCredentialTemplate({
                       sx={{ marginLeft: 2 }}
                       isLoading={false}
                       disabled={
-                        !(formStepControl[currentStep].name === 'details')
+                        !(
+                          formStepControl[currentStep].name ===
+                          t('vertical-steps.details')
+                        )
                       }
                     >
                       {t('create-quest.continue')}
@@ -469,7 +499,10 @@ export function CreateDirectCredentialTemplate({
                   )}
 
                   {!isLastStep &&
-                    !(formStepControl[currentStep].name === 'details') && (
+                    !(
+                      formStepControl[currentStep].name ===
+                      t('vertical-steps.details')
+                    ) && (
                       <LoadingButton
                         type="submit"
                         variant="contained"

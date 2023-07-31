@@ -24,7 +24,7 @@ const Step = ({
         <Divider
           orientation="vertical"
           color={
-            behaviour == 'dynamic'
+            behaviour === 'dynamic'
               ? activeStep >= index
                 ? brandColors.purple.main
                 : null

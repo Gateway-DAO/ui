@@ -15,6 +15,9 @@
     "title": "Add recipient",
     "description": "Send this credential directly to someone or group of people"
   },
+  "create-direct-credential": {
+    "create": "Send a credential"
+  },
 
   "template": {
     "view-details": "View Details",
@@ -40,6 +43,7 @@
     "template": "Template",
     "details": "Details",
     "tasks": "Tasks",
-    "optional-setting": "Optional Settings"
+    "optional-setting": "Optional Settings",
+    "direct-credential-step": "Recipients"
   }
 }

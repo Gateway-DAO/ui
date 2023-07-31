@@ -3,32 +3,24 @@ import useTranslation from 'next-translate/useTranslation';
 import { Typography, Stack, Box } from '@mui/material';
 import Stepper from '@/components/organisms/stepper/stepper';
 
-export default function VerticalStepper({
-  activeStep,
-}: {
+type Props = {
   activeStep: number;
-}) {
-  const { t } = useTranslation('org-signup');
+  title: string;
+  steps: {
+    title: string;
+  }[];
+};
 
-  const steps = [
-    {
-      title: 'Template',
-    },
-    {
-      title: 'Details',
-    },
-    {
-      title: 'Recipients',
-    },
-    {
-      title: 'Optional Settings',
-    },
-  ];
+export default function VerticalStepper({
+  title,
+  steps,
 
+  activeStep,
+}: Props) {
   return (
     <Stack>
-      <Typography variant="h4" mb={7}>
-        Send a Credential
+      <Typography variant="h4" mb={5}>
+        {title}
       </Typography>
       <Box mb={5}>
         <Stepper steps={steps} activeStep={activeStep} behaviour="dynamic" />

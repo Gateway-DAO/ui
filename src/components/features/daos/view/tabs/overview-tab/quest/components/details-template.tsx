@@ -1,32 +1,16 @@
 import { Box, Divider, Stack, Tooltip, Typography } from '@mui/material';
-import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
 import { Dispatch, useEffect, useMemo, useState } from 'react';
-import {
-  Protocol_Api_CreateCredentialInput,
-  Protocol_Api_PermissionType,
-  Protocol_Create_CredentialMutationVariables,
-  Protocol_Data_ModelsQuery,
-  Protocol_Data_ModelQuery,
-} from '@/services/hasura/types';
+
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
-import { claimFields } from '@/components/features/protocol/credentials/create/components/ClaimTypes';
-import {
-  createCredentialSchemaP2P,
-  createCredentialSchema,
-} from '@/components/features/protocol/credentials/create/schema';
-import { useAuth } from '@/providers/auth';
-import { ajvResolver } from '@hookform/resolvers/ajv';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { fullFormats } from 'ajv-formats/dist/formats';
 import useTranslation from 'next-translate/useTranslation';
-import { useSnackbar } from 'notistack';
-import { FormProvider, useForm, useFormContext } from 'react-hook-form';
-import ClaimForm from '@/components/features/protocol/credentials/create/components/claim-form';
+import { useFormContext } from 'react-hook-form';
 
 import GeneralForm from './general-form';
-import { createGateSchema } from '@/components/features/gates/create/schema';
-import { CreateGateSchema } from '../../direct-credential/create-direct-credential';
+import {
+  CreateGateSchema,
+  createGateSchema,
+} from '@/components/features/gates/create/schema';
 import ClaimFormQuest from './ClaimFormQuest';
 
 export default function DetailsTemplate({
