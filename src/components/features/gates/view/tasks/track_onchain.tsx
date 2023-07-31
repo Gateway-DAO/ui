@@ -3,6 +3,7 @@ import useTranslation from 'next-translate/useTranslation';
 import { LoadingButton } from '@/components/atoms/buttons/loading-button';
 import { useCountdown } from '@/hooks/use-countdown';
 import { useAuth } from '@/providers/auth';
+import { getChainName } from '@/utils/web3';
 import { useToggle } from 'react-use';
 
 import { Divider, Stack, Typography } from '@mui/material';
@@ -33,7 +34,7 @@ const TrackOnChainContent = ({
         <Typography variant="caption" fontSize={14}>
           {t('tasks.track_onchain.chain')}
         </Typography>
-        <Typography>{chain}</Typography>
+        <Typography>{getChainName(chain)}</Typography>
         <Divider sx={{ my: 2 }} />
         <Typography variant="caption" fontSize={14}>
           {t('tasks.track_onchain.contract_address')}

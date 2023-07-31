@@ -114,3 +114,34 @@ export const getExplorerAPIKey = (chainID: number): string => {
       return process.env.NEXT_PUBLIC_ETHERSCAN_API_KEY;
   }
 };
+
+export const getChainName = (chainID: number): string => {
+  switch (chainID) {
+    case 1:
+      return 'Ethereum';
+    case 3:
+      return 'Ropsten';
+    case 4:
+      return 'Rinkeby';
+    case 5:
+      return 'Görli';
+    case 6:
+      return 'Kovan';
+    case 10:
+      return 'Optimistic';
+    case 56:
+      return 'Binance Smart Chain';
+    case 97:
+      return 'Testnet';
+    case 137:
+      return 'Polygon';
+    case 42161:
+      return 'Arbiscan';
+    case 80001:
+      return 'Mumbai';
+    case 421611:
+      return 'Arbitrum';
+    default:
+      return 'Ethereum';
+  }
+};
