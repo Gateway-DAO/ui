@@ -259,7 +259,7 @@ const defineCols = (columns: IColumnGrid[]) => {
                 textOverflow: 'ellipsis',
               }}
             >
-              {params.recipientUser.gatewayId}
+              {params?.recipientUser?.gatewayId}
             </Typography>
           </Box>
         </Box>
