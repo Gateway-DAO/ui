@@ -432,7 +432,7 @@ const TrackOnChainEventsTask = ({ dragAndDrop, taskId, deleteTask }) => {
                 </Select>
                 {!displayInputABI && (
                   <FormHelperText>
-                    Can't find the events you are looking for?{' '}
+                    {t('tasks.track_onchain.event_helper')}
                     <Link
                       href=""
                       onClick={(e) => {
@@ -443,7 +443,7 @@ const TrackOnChainEventsTask = ({ dragAndDrop, taskId, deleteTask }) => {
                         toggleABIWithValidEvent(false);
                       }}
                     >
-                      Add the contract ABI manually
+                      {t('tasks.track_onchain.event_helper_link')}
                     </Link>
                   </FormHelperText>
                 )}
