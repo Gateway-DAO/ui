@@ -312,6 +312,7 @@ const TrackOnChainEventsTask = ({ dragAndDrop, taskId, deleteTask }) => {
                   resetField(`tasks.${taskId}.task_data.event`);
                   setValue(`tasks.${taskId}.task_data.abi`, null);
                   toggleDisplayInputABI(false);
+                  toggleABIWithValidEvent(true);
                 },
               })}
             >
