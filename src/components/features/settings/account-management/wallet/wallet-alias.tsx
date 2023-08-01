@@ -38,7 +38,7 @@ export function WalletAlias({ wallets, isLoading }: Props) {
   > = {
     'modal-title': {
       remove: t('common:modal-confirm-delete.title'),
-      migrate: t('account-management.modal-migration.title'),
+      migrate: t('account-management.modal-migration.success'),
     },
   };
 

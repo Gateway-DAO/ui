@@ -76,7 +76,6 @@ export function MigrationModal({
         authId: auth.id,
         ownerJwt: token,
       });
-      enqueueSnackbar(t('settings:account-management.modal-migration.success'));
       onSuccess();
     } catch (error) {
       enqueueSnackbar(transformErrorMessage(error), { variant: 'error' });
