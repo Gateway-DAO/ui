@@ -224,10 +224,10 @@ export type QuizTaskDataError = {
 
 export type TrackOnChainEventsDataError = {
   id?: FieldError;
-  chain?: FieldError;
-  contract_address?: FieldError;
-  event?: FieldError;
-  parameters?: {
+  chain: FieldError;
+  contract_address: FieldError;
+  event: FieldError;
+  parameters: {
     id?: FieldError;
     parameterName: FieldError;
     type: FieldError;
@@ -425,17 +425,38 @@ const holdTokenTaskDataSchema = z.object({
 
 const trackOnChainTaskDataSchema = z.object({
   chain: z.number(),
-  parameters: z.array(
-    z.object({
-      parameterName: z.string(),
-      type: z.string(),
-      operator: z
-        .enum(['equal_to', 'not_equal_to', 'greater_than', 'less_than'])
-        .optional(),
-      value: z.any(),
+  parameters: z
+    .array(
+      z.object({
+        parameterName: z.string({
+          required_error: 'Please add at least one parameter',
+          invalid_type_error: 'Please add at least one parameter',
+        }),
+        type: z.string({
+          invalid_type_error: 'Please add at least one parameter',
+          required_error: 'Please add at least one parameter',
+        }),
+        operator: z.enum(
+          ['equal_to', 'not_equal_to', 'greater_than', 'less_than'],
+          {
+            required_error: 'Please add at least one parameter',
+            invalid_type_error: 'Please add an operator',
+          }
+        ),
+        value: z.any({
+          invalid_type_error: 'Please add at least one parameter',
+          required_error: 'Please add at least one parameter',
+        }),
+      })
+    )
+    .nonempty({
+      message: 'Please add at least one parameter',
+    }),
+  event: z
+    .string({
+      required_error: 'Event is required',
     })
-  ),
-  event: z.string(),
+    .regex(RegExp(/.+/), { message: 'Event is required' }),
   contract_address: z
     .string()
     .refine(isAddress, { message: 'This is not a valid contract address' }),
