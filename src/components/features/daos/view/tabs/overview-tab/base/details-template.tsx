@@ -1,5 +1,4 @@
 import { Box, Divider, Stack, Tooltip, Typography } from '@mui/material';
-import { Dispatch, useEffect, useMemo, useState } from 'react';
 
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
@@ -11,19 +10,9 @@ import {
   CreateGateSchema,
   createGateSchema,
 } from '@/components/features/gates/create/schema';
-import ClaimFormQuest from './ClaimFormQuest';
+import ClaimFormQuest from '../quest/components/ClaimFormQuest';
 
-export default function DetailsTemplate({
-  updateFormState,
-  handleStep,
-  input,
-  fullFormState,
-}: {
-  updateFormState: Dispatch<any>;
-  handleStep: (value: boolean) => void;
-  input: any;
-  fullFormState: any;
-}) {
+export default function DetailsTemplate({ input }: { input: any }) {
   const { t } = useTranslation('quest');
 
   const methods = useFormContext<CreateGateSchema>();

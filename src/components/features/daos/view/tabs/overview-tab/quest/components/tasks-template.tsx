@@ -7,11 +7,9 @@ import { useFormContext } from 'react-hook-form';
 import { CreateGateData } from '../../schema';
 
 export default function TasksTemplate({
-  updateFormState,
   handleStep,
   input,
 }: {
-  updateFormState: Dispatch<any>;
   handleStep: (value: boolean) => void;
   input: any;
 }) {

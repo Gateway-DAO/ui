@@ -4,7 +4,7 @@ import { CATEGORIES } from '@/constants/gate';
 import { Box, Stack, TextField, Typography } from '@mui/material';
 import useTranslation from 'next-translate/useTranslation';
 import { useFormContext } from 'react-hook-form';
-import { CreateGateData } from '../../schema';
+import { CreateGateData } from '../schema';
 
 export default function GeneralForm() {
   const {
@@ -14,7 +14,6 @@ export default function GeneralForm() {
     setValue,
   } = useFormContext<CreateGateData>();
 
-  const { t } = useTranslation('protocol');
   return (
     <Stack
       direction="row"

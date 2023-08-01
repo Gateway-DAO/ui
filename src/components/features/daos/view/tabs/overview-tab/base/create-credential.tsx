@@ -2,7 +2,6 @@ import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
 import { Dispatch, useState } from 'react';
 
-import Loading from '@/components/atoms/loadings/loading';
 import { brandColors } from '@/theme';
 import { useSnackbar } from 'notistack';
 import { useWindowSize } from 'react-use';
@@ -20,7 +19,6 @@ import {
   useTheme,
 } from '@mui/material';
 
-import { mutation } from '@/constants/queries';
 import { useAuth } from '@/providers/auth';
 import { LoadingButton } from '@/components/atoms/buttons/loading-button';
 import { ROUTES } from '@/constants/routes';
@@ -80,9 +78,6 @@ export function CreateCredentialTemplate({
   const theme = useTheme();
   const windowSize = useWindowSize();
   const { t } = useTranslation('quest');
-  const [fullFormState, setFullFormState] = useState(null);
-  console.log(fullFormState);
-  const snackbar = useSnackbar();
 
   const router = useRouter();
   const { hasuraUserService, me } = useAuth();
