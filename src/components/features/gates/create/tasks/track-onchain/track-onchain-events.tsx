@@ -299,6 +299,7 @@ const TrackOnChainEventsTask = ({ dragAndDrop, taskId, deleteTask }) => {
                 onChange: () => {
                   resetField(`tasks.${taskId}.task_data.contract_address`);
                   resetField(`tasks.${taskId}.task_data.event`);
+                  setDisplayEvent(false);
                   toggleDisplayInputABI(false);
                 },
               })}
