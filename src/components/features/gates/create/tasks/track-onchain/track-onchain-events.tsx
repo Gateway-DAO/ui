@@ -6,6 +6,7 @@ import { TaskIcon } from '@/components/atoms/icons/task-icon';
 import {
   CreateGateData,
   Parameter,
+  TrackOnChainEventsDataError,
 } from '@/components/features/gates/create/schema';
 import TextFieldWithEmoji from '@/components/molecules/form/TextFieldWithEmoji/TextFieldWithEmoji';
 import { query } from '@/constants/queries';
@@ -63,6 +64,7 @@ const TrackOnChainEventsTask = ({ dragAndDrop, taskId, deleteTask }) => {
   const [getContractInfo, toggleGetContractInfo] = useToggle(false);
   const [displayInputABI, toggleDisplayInputABI] = useToggle(false);
   const [ABIWithValidEvent, toggleABIWithValidEvent] = useToggle(true);
+  const [displayEvent, setDisplayEvent] = useState(false);
 
   const {
     fields: parameters,
@@ -119,6 +121,7 @@ const TrackOnChainEventsTask = ({ dragAndDrop, taskId, deleteTask }) => {
           toggleDisplayInputABI(true);
         } else {
           setValue(`tasks.${taskId}.task_data.abi`, data);
+          setDisplayEvent(true);
         }
         toggleGetContractInfo();
       },
@@ -296,7 +299,6 @@ const TrackOnChainEventsTask = ({ dragAndDrop, taskId, deleteTask }) => {
                 onChange: () => {
                   resetField(`tasks.${taskId}.task_data.contract_address`);
                   resetField(`tasks.${taskId}.task_data.event`);
-                  setValue(`tasks.${taskId}.task_data.abi`, null);
                   toggleDisplayInputABI(false);
                 },
               })}
@@ -332,10 +334,11 @@ const TrackOnChainEventsTask = ({ dragAndDrop, taskId, deleteTask }) => {
                 }
                 isLoading={isLoadingContractInfo}
                 onClick={() => {
-                  toggleDisplayInputABI(false);
                   resetField(`tasks.${taskId}.task_data.abi`);
                   resetField(`tasks.${taskId}.task_data.event`);
                   resetField(`tasks.${taskId}.task_data.parameters`);
+                  setDisplayEvent(false);
+                  toggleDisplayInputABI(false);
                   toggleGetContractInfo(true);
                 }}
               >
@@ -371,14 +374,20 @@ const TrackOnChainEventsTask = ({ dragAndDrop, taskId, deleteTask }) => {
                   variant="outlined"
                   sx={{ flex: 0.17 }}
                   disabled={!ABI?.length}
-                  onClick={toggleABIWithValidEvent}
+                  onClick={async () => {
+                    await setDisplayEvent(false);
+                    resetField(`tasks.${taskId}.task_data.event`);
+                    resetField(`tasks.${taskId}.task_data.parameters`);
+                    toggleABIWithValidEvent(true);
+                    setDisplayEvent(true);
+                  }}
                 >
                   {t('tasks.track_onchain.check_abi')}
                 </LoadingButton>
               </Stack>
             </Stack>
           )}
-          {ABI && ABIWithValidEvent && (
+          {ABI && ABIWithValidEvent && displayEvent && (
             <Stack>
               <FormControl>
                 <InputLabel htmlFor="type">
@@ -387,6 +396,12 @@ const TrackOnChainEventsTask = ({ dragAndDrop, taskId, deleteTask }) => {
                 <Select
                   sx={{ maxWidth: { md: '50%', xs: '100%' } }}
                   label={t('tasks.track_onchain.event')}
+                  error={
+                    !!(
+                      errors.tasks?.[taskId]
+                        ?.task_data as TrackOnChainEventsDataError
+                    )?.event
+                  }
                   id="type"
                   {...register(`tasks.${taskId}.task_data.event`, {
                     onChange: () => {
@@ -445,6 +460,19 @@ const TrackOnChainEventsTask = ({ dragAndDrop, taskId, deleteTask }) => {
                     >
                       {t('tasks.track_onchain.event_helper_link')}
                     </Link>
+                  </FormHelperText>
+                )}
+                {!!(
+                  errors.tasks?.[taskId]
+                    ?.task_data as TrackOnChainEventsDataError
+                )?.event && (
+                  <FormHelperText sx={{ color: brandColors.red.light }}>
+                    {
+                      (
+                        errors.tasks?.[taskId]
+                          ?.task_data as TrackOnChainEventsDataError
+                      )?.event?.message
+                    }
                   </FormHelperText>
                 )}
               </FormControl>
