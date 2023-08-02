@@ -46,21 +46,6 @@ import {
 
 import LoadingModal from '../credit-score/LoadingModal';
 
-const Item = styled(Paper)(({ theme }) => ({
-  ...theme.typography.body2,
-  display: 'flex',
-  flexGrow: 1,
-  textAlign: 'center',
-  justifyContent: 'center',
-  alignItems: 'center',
-  boxSizing: 'border-box',
-  color: theme.palette.text.secondary,
-  height: 108,
-  padding: 35,
-  lineHeight: '160%',
-  textTransform: 'uppercase',
-}));
-
 export function AltitudeTemplate() {
   const isMobile = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
   const size = isMobile ? 325 : 500;
@@ -69,7 +54,7 @@ export function AltitudeTemplate() {
   };
   const customText = [
     {
-      text: '300',
+      text: '0',
       font: 'Plus Jakarta Sans',
       size: '16px',
       color: '#FFFFFFB2',
@@ -107,8 +92,7 @@ export function AltitudeTemplate() {
     }
   );
 
-  const scale = (1000 - 0) / (1000 - 300);
-  const creditScore = 0 + (credScore?.value - 300) * scale;
+  const creditScore = credScore?.value;
 
   const isCreditScore = !!credScore?.account;
   const checkIfUserHasCredential = me?.protocol?.receivedCredentials?.find(
@@ -122,31 +106,6 @@ export function AltitudeTemplate() {
       router.back();
     }
   };
-
-  const { refetch, isFetching: createCredentialLoading } = useQuery(
-    ['cred-api-create-credential', me?.wallet],
-    async () => {
-      const result = await hasuraUserService.create_cred({
-        gatewayId: me?.username,
-        score: credScore?.value,
-        bearerToken: token,
-      });
-
-      await router.push(
-        ROUTES.PROTOCOL_CREDENTIAL.replace(
-          '[id]',
-          result.create_cred.credentialId
-        )
-      );
-
-      await queryClient.resetQueries(['user_protocol', me?.id]);
-
-      return result.create_cred.credentialId;
-    },
-    {
-      enabled: false,
-    }
-  );
 
   const { data: recipientsUsers } = useQuery(
     ['cred-api-find-recipient-user', DATA_MODEL_ID],
@@ -340,7 +299,9 @@ export function AltitudeTemplate() {
             {checkIfUserHasCredential?.id ? (
               <Box
                 component="img"
-                src={'https://i.imgur.com/eI4r75V.mp4'}
+                src={
+                  'http://cdn.mygateway.xyz/campaigns/altitude/Copper_Rotation_2.gif'
+                }
                 alt={'credit score' + ' image'}
                 marginBottom={(theme) => theme.spacing(4)}
                 sx={{
@@ -626,7 +587,6 @@ export function AltitudeTemplate() {
           </Stack>
         </Grid>
       </Grid>
-      <LoadingModal openLoadingModal={createCredentialLoading} />
       <HolderDialog
         isHolderDialog={isHolderDialog}
         credentialId="937f9fc8-f3a7-4d28-88bc-826af1237c2c"
