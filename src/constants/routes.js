@@ -10,6 +10,7 @@ const ROUTES = {
   NEW_USER: '/new-user',
   CREDENTIALS: '/credentials',
   CREDIT_SCORE: '/creditscore',
+  ALTITUDE: '/altitude-testnet',
   CREDENTIALS_NEW: '/credentials/new',
   EARNED: '/earned/[id]',
   DAO_PROFILE: '/org/[slug]',
