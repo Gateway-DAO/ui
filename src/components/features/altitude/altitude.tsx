@@ -79,24 +79,21 @@ export function AltitudeTemplate() {
   const [isHolderDialog, setIsHolderDialog] = useState(false);
   const queryClient = useQueryClient();
 
-  const { data: credScore } = useQuery(
-    ['cred-api-score-single', me?.wallet],
+  const { data: credential } = useQuery(
+    ['altitude-testnet-credential', me?.protocol.id],
     async () => {
-      const result = await hasuraUserService.get_cred_score({
-        address: me?.wallet,
-      });
-      return result.get_cred_score;
+      const result =
+        await hasuraUserService.protocol_find_credentials_by_campaign({
+          dataModelId: DATA_MODEL_ID,
+          recipientUserId: me?.protocol.id,
+          take: 1,
+          skip: 0,
+        });
+      return result.protocol_credential?.[0];
     },
     {
-      enabled: !!me?.wallet,
+      enabled: !!me?.protocol.id,
     }
-  );
-
-  const creditScore = credScore?.value;
-
-  const isCreditScore = !!credScore?.account;
-  const checkIfUserHasCredential = me?.protocol?.receivedCredentials?.find(
-    (something) => something?.dataModel?.id === DATA_MODEL_ID
   );
 
   const handleNavBack = () => {
@@ -262,41 +259,35 @@ export function AltitudeTemplate() {
                 fullWidth
                 onClick={() =>
                   router.push(
-                    ROUTES.PROTOCOL_CREDENTIAL.replace(
-                      '[id]',
-                      checkIfUserHasCredential?.id
-                    )
+                    ROUTES.PROTOCOL_CREDENTIAL.replace('[id]', credential?.id)
                   )
                 }
                 sx={{
                   mb: 2,
                 }}
-                disabled={!checkIfUserHasCredential?.id}
+                disabled={!credential?.id}
               >
                 SEE CREDENTIAL
               </Button>
-              {checkIfUserHasCredential?.id &&
-                !checkIfUserHasCredential?.nft?.minted && (
-                  <LoadingButton
-                    variant="outlined"
-                    startIcon={
-                      <TokenFilled height={20} width={20} color="action" />
-                    }
-                    fullWidth
-                    isLoading={isLoadingMintingCred}
-                    onClick={() =>
-                      mutate({ credentialId: checkIfUserHasCredential.id })
-                    }
-                    sx={{
-                      mb: 2,
-                    }}
-                  >
-                    MINT AS NFT
-                  </LoadingButton>
-                )}
+              {credential?.id && !credential?.nft?.minted && (
+                <LoadingButton
+                  variant="outlined"
+                  startIcon={
+                    <TokenFilled height={20} width={20} color="action" />
+                  }
+                  fullWidth
+                  isLoading={isLoadingMintingCred}
+                  onClick={() => mutate({ credentialId: credential.id })}
+                  sx={{
+                    mb: 2,
+                  }}
+                >
+                  MINT AS NFT
+                </LoadingButton>
+              )}
             </Stack>
 
-            {checkIfUserHasCredential?.id ? (
+            {credential?.id ? (
               <Box
                 component="img"
                 src={
@@ -475,7 +466,11 @@ export function AltitudeTemplate() {
             <Box position={'relative'}>
               <ArcProgress
                 thickness={isMobile ? 15 : 20}
-                progress={!!me && isCreditScore ? creditScore / 1000 : 0}
+                progress={
+                  !!me && credential
+                    ? credential?.claim?.transactions / 1000
+                    : 0
+                }
                 fillThickness={isMobile ? 30 : 35}
                 emptyColor="#FFFFFF26"
                 size={size}
@@ -489,13 +484,10 @@ export function AltitudeTemplate() {
                 top={{ xs: 90, md: 160 }}
                 left={{ xs: 75, md: 170 }}
               >
-                {!!me && isCreditScore && (
+                {!!me && credential && (
                   <>
                     <Typography align={'center'} variant="h1">
-                      {credScore?.value}
-                    </Typography>
-                    <Typography align={'center'} variant="h6">
-                      {credScore?.value_rating}
+                      {credential?.claim?.transactions}
                     </Typography>
                   </>
                 )}
@@ -511,7 +503,7 @@ export function AltitudeTemplate() {
                     </Typography>
                   </>
                 )}
-                {!!me && !isCreditScore && (
+                {!!me && !credential && (
                   <>
                     <Typography
                       sx={{
