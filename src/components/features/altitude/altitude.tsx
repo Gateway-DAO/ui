@@ -337,16 +337,30 @@ export function AltitudeTemplate() {
                 )}
             </Stack>
 
-            <Box
-              component="img"
-              src={'/images/cred-protocol-page.png'}
-              alt={'credit score' + ' image'}
-              marginBottom={(theme) => theme.spacing(4)}
-              sx={{
-                width: '100%',
-                borderRadius: (theme) => theme.spacing(1),
-              }}
-            />
+            {checkIfUserHasCredential?.id ? (
+              <Box
+                component="img"
+                src={'https://i.imgur.com/eI4r75V.mp4'}
+                alt={'credit score' + ' image'}
+                marginBottom={(theme) => theme.spacing(4)}
+                sx={{
+                  width: '100%',
+                  borderRadius: (theme) => theme.spacing(1),
+                }}
+              />
+            ) : (
+              <Stack
+                margin={(theme) => theme.spacing(4)}
+                sx={{
+                  width: '100%',
+                  borderRadius: (theme) => theme.spacing(1),
+                }}
+                alignItems="center"
+                justifyContent="center"
+              >
+                <Typography>You did not qualify for this credential</Typography>
+              </Stack>
+            )}
             <Grid container rowGap={(theme) => theme.spacing(3)}>
               {totalRecipientUsersCount > 0 && (
                 <>
