@@ -243,7 +243,7 @@ export function AltitudeTemplate() {
               >
                 <Avatar
                   alt={t('gate.organization')}
-                  src="/images/cred_protocol_logo.jpg"
+                  src="https://cdn.mygateway.xyz/image/jpeg/0769afb0-962e-439f-8b4d-c42335125373"
                   sx={{
                     height: (theme) => theme.spacing(3),
                     width: (theme) => theme.spacing(3),
@@ -297,26 +297,27 @@ export function AltitudeTemplate() {
               </Typography>
             )}
 
-            {checkIfUserHasCredential?.dataModel?.id ? (
-              <Stack flexDirection="row" gap={2}>
-                <Button
-                  variant="contained"
-                  fullWidth
-                  onClick={() =>
-                    router.push(
-                      ROUTES.PROTOCOL_CREDENTIAL.replace(
-                        '[id]',
-                        checkIfUserHasCredential?.id
-                      )
+            <Stack flexDirection="row" gap={2}>
+              <Button
+                variant="contained"
+                fullWidth
+                onClick={() =>
+                  router.push(
+                    ROUTES.PROTOCOL_CREDENTIAL.replace(
+                      '[id]',
+                      checkIfUserHasCredential?.id
                     )
-                  }
-                  sx={{
-                    mb: 2,
-                  }}
-                >
-                  CHECK CREDENTIAL
-                </Button>
-                {!checkIfUserHasCredential?.nft?.minted && (
+                  )
+                }
+                sx={{
+                  mb: 2,
+                }}
+                disabled={!checkIfUserHasCredential?.id}
+              >
+                SEE CREDENTIAL
+              </Button>
+              {checkIfUserHasCredential?.id &&
+                !checkIfUserHasCredential?.nft?.minted && (
                   <LoadingButton
                     variant="outlined"
                     startIcon={
@@ -334,20 +335,7 @@ export function AltitudeTemplate() {
                     MINT AS NFT
                   </LoadingButton>
                 )}
-              </Stack>
-            ) : (
-              <Button
-                variant="contained"
-                fullWidth
-                disabled={!isCreditScore}
-                onClick={() => refetch()}
-                sx={{
-                  mb: 2,
-                }}
-              >
-                ISSUE CREDENTIAL
-              </Button>
-            )}
+            </Stack>
 
             <Box
               component="img"
@@ -450,7 +438,9 @@ export function AltitudeTemplate() {
                             avatar={
                               <Avatar
                                 alt={t('gate.organization')}
-                                src={`https://pbs.twimg.com/profile_images/1425122906044964864/Xrgs0ACt_400x400.jpg`}
+                                src={
+                                  'https://cdn.mygateway.xyz/image/jpeg/0769afb0-962e-439f-8b4d-c42335125373'
+                                }
                               />
                             }
                             sx={{ cursor: 'pointer' }}
@@ -587,7 +577,7 @@ export function AltitudeTemplate() {
                 <Typography align={'center'} variant="body1">
                   {t('about.progress.powered-by')}
                   <MUILink
-                    href="https://www.credprotocol.com/"
+                    href="https://www.altitudedefi.com/"
                     target="_blank"
                     underline="none"
                   >
