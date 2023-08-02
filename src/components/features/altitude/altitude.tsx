@@ -24,7 +24,6 @@ import { theme } from '@/theme';
 import { useQueryClient } from '@tanstack/react-query';
 import { useMutation, useQuery } from '@tanstack/react-query';
 
-import { InfoOutlined } from '@mui/icons-material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { Link as MUILink } from '@mui/material';
 import {
@@ -40,11 +39,8 @@ import {
   Stack,
   Tooltip,
   Typography,
-  styled,
   useMediaQuery,
 } from '@mui/material';
-
-import LoadingModal from '../credit-score/LoadingModal';
 
 export function AltitudeTemplate() {
   const isMobile = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
@@ -72,7 +68,7 @@ export function AltitudeTemplate() {
   ];
   const { t } = useTranslation('altitude');
 
-  const DATA_MODEL_ID = process.env.NEXT_PUBLIC_CRED_PROTOCOL_DM_ID;
+  const DATA_MODEL_ID = process.env.NEXT_PUBLIC_ALTITUDE_DM_ID;
 
   const { me, hasuraUserService, token } = useAuth();
   const router = useRouter();
@@ -290,10 +286,8 @@ export function AltitudeTemplate() {
             {credential?.id ? (
               <Box
                 component="img"
-                src={
-                  'http://cdn.mygateway.xyz/campaigns/altitude/Copper_Rotation_2.gif'
-                }
-                alt={'credit score' + ' image'}
+                src={credential?.image}
+                alt={'altitude image'}
                 marginBottom={(theme) => theme.spacing(4)}
                 sx={{
                   width: '100%',
