@@ -70,8 +70,10 @@
       "remove": "Remove",
       "abi": "ABI",
       "abi_helper_text": "Paste here the ABI of the contract you want to track",
-      "unverified_contract_message": "It seems this contract is not verified, please provide its ABI",
-      "check_abi": "Check ABI"
+      "unverified_contract_message": "It seems this contract is not verified please provide its ABI",
+      "invalid_abi_message": "It seems this contract doesn't have valid events please provide its ABI",
+      "check_abi": "Check ABI",
+      "invalid_abi": "Please, provide an ABI with events"
     }
   },
   "direct": {

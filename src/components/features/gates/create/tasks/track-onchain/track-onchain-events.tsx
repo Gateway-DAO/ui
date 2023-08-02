@@ -12,6 +12,7 @@ import TextFieldWithEmoji from '@/components/molecules/form/TextFieldWithEmoji/T
 import { query } from '@/constants/queries';
 import { brandColors } from '@/theme';
 import { useQuery } from '@tanstack/react-query';
+import { useSnackbar } from 'notistack';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import { useToggle } from 'react-use';
 
@@ -41,6 +42,8 @@ import { EventAbi } from './types';
 const TrackOnChainEventsTask = ({ dragAndDrop, taskId, deleteTask }) => {
   const { t } = useTranslation('gate-new');
 
+  const { enqueueSnackbar } = useSnackbar();
+
   const {
     register,
     setValue,
@@ -65,6 +68,7 @@ const TrackOnChainEventsTask = ({ dragAndDrop, taskId, deleteTask }) => {
   const [displayInputABI, toggleDisplayInputABI] = useToggle(false);
   const [ABIWithValidEvent, toggleABIWithValidEvent] = useToggle(true);
   const [displayEvent, setDisplayEvent] = useState(false);
+  const [ABIErrorMessage, setABIErrorMessage] = useState('');
 
   const {
     fields: parameters,
@@ -116,12 +120,15 @@ const TrackOnChainEventsTask = ({ dragAndDrop, taskId, deleteTask }) => {
         toggleGetContractInfo();
       },
       onSuccess: (data) => {
-        if (Object.keys(data).length === 0 && data.constructor === Object) {
-          toggleABIWithValidEvent(false);
-          toggleDisplayInputABI(true);
-        } else {
+        const validABI = validateABI(data);
+
+        if (validABI) {
           setValue(`tasks.${taskId}.task_data.abi`, data);
           setDisplayEvent(true);
+        } else {
+          resetField(`tasks.${taskId}.task_data.abi`);
+          toggleABIWithValidEvent(false);
+          toggleDisplayInputABI(true);
         }
         toggleGetContractInfo();
       },
@@ -148,6 +155,19 @@ const TrackOnChainEventsTask = ({ dragAndDrop, taskId, deleteTask }) => {
     }
     return [];
   }, [filteredEvents, event]);
+
+  const validateABI = (ABI: string | any): boolean => {
+    if (Object.keys(ABI).length === 0 && ABI.constructor === Object) {
+      setABIErrorMessage(t('tasks.track_onchain.unverified_contract_message'));
+      return false;
+    }
+    const objABI: EventAbi[] = JSON.parse(ABI);
+    if (objABI.findIndex((item) => item.type === 'event') < 0) {
+      setABIErrorMessage(t('tasks.track_onchain.invalid_abi_message'));
+      return false;
+    }
+    return true;
+  };
 
   return (
     <Stack
@@ -353,7 +373,7 @@ const TrackOnChainEventsTask = ({ dragAndDrop, taskId, deleteTask }) => {
               <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
                 <Error color="error" />
                 <Typography variant="body2" color="#eb8e9d">
-                  {t('tasks.track_onchain.unverified_contract_message')}
+                  {ABIErrorMessage}
                 </Typography>
               </Box>
               <Stack
@@ -376,12 +396,19 @@ const TrackOnChainEventsTask = ({ dragAndDrop, taskId, deleteTask }) => {
                   variant="outlined"
                   sx={{ flex: 0.17 }}
                   disabled={!ABI?.length}
-                  onClick={async () => {
-                    await setDisplayEvent(false);
-                    resetField(`tasks.${taskId}.task_data.event`);
-                    resetField(`tasks.${taskId}.task_data.parameters`);
-                    toggleABIWithValidEvent(true);
-                    setDisplayEvent(true);
+                  onClick={() => {
+                    const validABI = validateABI(ABI);
+                    if (validABI) {
+                      setDisplayEvent(false);
+                      resetField(`tasks.${taskId}.task_data.event`);
+                      resetField(`tasks.${taskId}.task_data.parameters`);
+                      toggleABIWithValidEvent(true);
+                      setDisplayEvent(true);
+                    } else {
+                      enqueueSnackbar(t('tasks.track_onchain.invalid_abi'), {
+                        variant: 'error',
+                      });
+                    }
                   }}
                 >
                   {t('tasks.track_onchain.check_abi')}
