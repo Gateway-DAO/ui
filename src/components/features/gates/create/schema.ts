@@ -227,6 +227,7 @@ export type TrackOnChainEventsDataError = {
   chain?: FieldError;
   contract_address?: FieldError;
   event?: FieldError;
+  abi?: FieldError;
   parameters?: {
     id?: FieldError;
     parameterName: FieldError;
@@ -425,6 +426,7 @@ const holdTokenTaskDataSchema = z.object({
 
 const trackOnChainTaskDataSchema = z.object({
   chain: z.number(),
+  abi: z.any(),
   parameters: z.array(
     z.object({
       parameterName: z.string(),
