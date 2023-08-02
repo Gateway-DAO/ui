@@ -1,6 +1,6 @@
 {
   "gate": {
-    "description": "A credit score is a numerical representation of a person's creditworthiness and is used by lenders to evaluate their ability to repay loans. Maintaining a good credit score is essential as it can lead to a number of benefits. First and foremost, having a good credit score makes it easier to obtain loans, credit cards, and other financial products with favourable terms and lower interest rates.",
+    "description": "A credential proving your active participation in Altitude's TestNet launch. Earning a credential shows that you were part of the top 25%, top 10%, or top 2.5% of users!",
     "organization": "Altitude DeFi",
     "title": "Testnet Climber!",
     "label": "Testnet",
@@ -25,9 +25,6 @@
   "why": {
     "title": "Why?",
     "description": "In the Future Credentials will become a part of your DeFi experience on Altitude DeFi."
-  },
-  "no-score": {
-    "title": "Your credit score is based on your history of activity interacting with lending protocols and digital assets. Once you have enough activity, you'll automatically get a score that'll help you manage your on-chain finances."
   },
   "modal": {
     "title": "Your credential is being issued",

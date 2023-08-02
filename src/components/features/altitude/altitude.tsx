@@ -479,10 +479,13 @@ export function AltitudeTemplate() {
                 arcStart={140}
                 arcEnd={400}
               />
-              <Box
+              <Stack
                 position={'absolute'}
-                top={{ xs: 90, md: 160 }}
-                left={{ xs: 75, md: 170 }}
+                top={-35}
+                width={'100%'}
+                height={'100%'}
+                alignItems="center"
+                justifyContent="center"
               >
                 {!!me && credential && (
                   <>
@@ -493,49 +496,26 @@ export function AltitudeTemplate() {
                 )}
                 {!me && (
                   <>
-                    <Typography
-                      sx={{ marginTop: '60px' }}
-                      align={'center'}
-                      variant="body1"
-                      marginLeft={{ xs: 2, md: 1 }}
-                    >
+                    <Typography align={'center'} variant="body1">
                       Connect your wallet
                     </Typography>
                   </>
                 )}
                 {!!me && !credential && (
                   <>
-                    <Typography
-                      sx={{
-                        marginTop: '-30px',
-                        marginLeft: { xs: '35%', md: '30px' },
-                      }}
-                      align={'center'}
-                      variant="h1"
-                    >
+                    <Typography align={'center'} variant="h1">
                       -
                     </Typography>
                     <Typography
-                      sx={{
-                        marginTop: { xs: '0px', md: '40px' },
-                        marginLeft: { xs: '42px', md: '34px' },
-                      }}
                       align={'center'}
                       textAlign={'center'}
                       variant="h6"
                     >
-                      No Score
+                      No Transactions
                     </Typography>
-                    <Tooltip title={t('no-score.title')}>
-                      <IconButton
-                        sx={{ marginLeft: { xs: '50%', md: '54px' } }}
-                      >
-                        <InfoOutlined />
-                      </IconButton>
-                    </Tooltip>
                   </>
                 )}
-              </Box>
+              </Stack>
               <Box
                 position={'absolute'}
                 bottom={{ xs: 20, md: 35 }}
