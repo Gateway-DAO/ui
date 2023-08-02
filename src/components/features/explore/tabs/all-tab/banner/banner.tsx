@@ -11,15 +11,18 @@ export default function Banner(): JSX.Element {
   const isMobile = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
   return (
     <Box>
-      <Typography
-        variant="body1"
-        color={'text.secondary'}
-        position={'absolute'}
-        mt={5}
-        ml={5}
-      >
-        {t('common:featured-banner.tooltip-text')}
-      </Typography>
+      <Stack position={'absolute'} mt={5} ml={5} direction="row">
+        <Box
+          width={{ xs: 15, md: 25 }}
+          component="img"
+          src="/images/campaigns/altitude/altitude_logo.png"
+          alt="altitude logo"
+        ></Box>
+        <Typography variant="body1" ml={1}>
+          Altitude DeFi
+        </Typography>
+      </Stack>
+
       <Stack
         component={'image'}
         direction={isMobile ? 'column-reverse' : 'row'}
@@ -52,7 +55,7 @@ export default function Banner(): JSX.Element {
               <Button
                 variant="contained"
                 sx={{ mt: 4 }}
-                href={ROUTES.EXPLORE_ISSUE}
+                href={ROUTES.ALTITUDE}
                 id="explore-banner-primary"
               >
                 {t('common:featured-banner.action')}
@@ -63,9 +66,11 @@ export default function Banner(): JSX.Element {
         <Box
           component="img"
           alignSelf={'self-start'}
-          height={{ xs: 440, md: '100%' }}
-          marginTop={{ xs: 9, md: 0 }}
-          src="/images/issue-credential-model.png"
+          height={{ xs: 120, md: 350 }}
+          mt={{ xs: 4, md: 5 }}
+          mb={{ xs: 9, md: 10 }}
+          borderRadius={5}
+          src="/images/campaigns/altitude/altitude_marketing_image.png"
           alt={t('common:featured-banner.subtitle')}
         />
       </Stack>
