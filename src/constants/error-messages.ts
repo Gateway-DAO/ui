@@ -52,6 +52,7 @@ export const errorMessages = {
   ERROR_UPDATING_USER: `Error updating user, please, contact Gateway or try again.`,
   WALLET_ALREADY_ASSOCIATED: `Wallet already associated to another user`,
   CANNOT_REMOVE_LAST_AUTH_METHOD: `You cannot remove the last authentication method of your account`,
+  INVALID_CHAIN_EVENTS: `No event found`,
 };
 
 export const transformErrorObject = ({ error, message }: any) =>
