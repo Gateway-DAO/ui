@@ -227,7 +227,7 @@ export function AltitudeTemplate() {
           >
             <Link
               passHref
-              href={ROUTES.DAO_PROFILE.replace('[slug]', 'cred-protocol')}
+              href={ROUTES.DAO_PROFILE.replace('[slug]', 'altitude')}
             >
               <Stack
                 direction="row"
@@ -242,7 +242,7 @@ export function AltitudeTemplate() {
                 })}
               >
                 <Avatar
-                  alt="Cred Protocol"
+                  alt={t('gate.organization')}
                   src="/images/cred_protocol_logo.jpg"
                   sx={{
                     height: (theme) => theme.spacing(3),
@@ -434,12 +434,9 @@ export function AltitudeTemplate() {
                   <Grid item xs={8}>
                     <Link
                       passHref
-                      href={ROUTES.DAO_PROFILE.replace(
-                        '[slug]',
-                        'cred-protocol'
-                      )}
+                      href={ROUTES.DAO_PROFILE.replace('[slug]', 'altitude')}
                     >
-                      <Tooltip title={'Cred Protocol'}>
+                      <Tooltip title={t('gate.organization')}>
                         <Box
                           component="a"
                           sx={{
@@ -449,10 +446,10 @@ export function AltitudeTemplate() {
                         >
                           <Chip
                             variant="outlined"
-                            label={'Cred Protocol'}
+                            label={t('gate.organization')}
                             avatar={
                               <Avatar
-                                alt={'Cred Protocol'}
+                                alt={t('gate.organization')}
                                 src={`https://pbs.twimg.com/profile_images/1425122906044964864/Xrgs0ACt_400x400.jpg`}
                               />
                             }
@@ -594,7 +591,7 @@ export function AltitudeTemplate() {
                     target="_blank"
                     underline="none"
                   >
-                    <Typography>{t('about.progress.cred-protocol')}</Typography>
+                    <Typography>{t('gate.organization')}</Typography>
                   </MUILink>
                 </Typography>
               </Box>
@@ -621,25 +618,6 @@ export function AltitudeTemplate() {
                 {t('why.title')}
               </Typography>
               <Typography>{t('why.description')}</Typography>
-            </Stack>
-
-            <Stack spacing={1}>
-              <Typography variant="h6" gutterBottom>
-                {t('utility.title')}
-              </Typography>
-              <Stack
-                direction={{
-                  lg: 'row',
-                  md: 'column',
-                  sm: 'column',
-                  xs: 'column',
-                }}
-                spacing={3}
-              >
-                <Item variant="outlined">{t('utility.label-1')}</Item>
-                <Item variant="outlined">{t('utility.label-2')}</Item>
-                <Item variant="outlined">{t('utility.label-3')}</Item>
-              </Stack>
             </Stack>
           </Stack>
         </Grid>

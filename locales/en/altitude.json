@@ -1,38 +1,30 @@
 {
   "gate": {
     "description": "A credit score is a numerical representation of a person's creditworthiness and is used by lenders to evaluate their ability to repay loans. Maintaining a good credit score is essential as it can lead to a number of benefits. First and foremost, having a good credit score makes it easier to obtain loans, credit cards, and other financial products with favourable terms and lower interest rates.",
-    "organization": "Cred Protocol",
-    "title": "Credit Score",
-    "label": "Credit Score",
-    "share-title": "Check your Credit Score @ Gateway"
+    "organization": "Altitude DeFi",
+    "title": "Testnet Climber!",
+    "label": "Testnet",
+    "share-title": "Check your Testnet Climber Credential @ Gateway"
   },
   "about": {
-    "title": "Your credit score",
-    "caption": "Issue your credit score credential",
+    "title": "# of Transactions",
+    "caption": "See if you qualify for a top TestNet user Credential!",
     "created-by": " Created By",
     "progress": {
-      "powered-by": "Powered by",
-      "cred-protocol": "Cred Protocol",
-      "btn-title": "get full report"
+      "powered-by": "Powered by"
     }
   },
   "details": {
     "title": "Details",
-    "description": "A credit score is a numerical representation of a person's creditworthiness and is used by lenders to evaluate their ability to repay loans. Maintaining a good credit score is essential as it can lead to a number of benefits. First and foremost, having a good credit score makes it easier to obtain loans, credit cards, and other financial products with favourable terms and lower interest rates."
+    "description": "This credential is issued to all users who have used the Altitude DeFi testnet over the course of the past couple of months. As of July 30th this testnet came to an end. And now it is time to recognize the most consistent and active degens climbing to the top of Altitude DeFi's network."
   },
   "how": {
     "title": "Here's how!",
-    "description": "Gateway issues each of our community members a Credit Score Credential by calling the Cred Protocol API. Cred’s API is a powerful tool that can help aggregate and assess a wallet’s credit history. From total holdings, to current and outstanding debt/collateral positions. Gateway's credential data is based off of the “Summary” function of Cred's API."
+    "description": "Gateway's API is collecting data from Altitude's Testnet, packaging the information into a user-owned, highly portable, and easily verifiable credential. This credential is static and serves as a proof of protocol participation."
   },
   "why": {
     "title": "Why?",
-    "description": "In the future credentials will be used to empower your DeFi experience."
-  },
-  "utility": {
-    "title": "This includes:",
-    "label-1": "Improved Lending Rates on Protocols",
-    "label-2": "Early Access to DeFi Events and Projects",
-    "label-3": "Uncollateralized Lending Opportunities"
+    "description": "In the Future Credentials will become a part of your DeFi experience on Altitude DeFi."
   },
   "no-score": {
     "title": "Your credit score is based on your history of activity interacting with lending protocols and digital assets. Once you have enough activity, you'll automatically get a score that'll help you manage your on-chain finances."
