@@ -40,7 +40,7 @@ export function EmailAlias({ emails, isLoading }: Props) {
     success: {
       add: t('account-management.message-add-success'),
       remove: t('account-management.message-remove-success'),
-      migrate: t('account-management.message-migrate-success'),
+      migrate: t('account-management.modal-migration.success'),
     },
     'modal-title': {
       add: t('account-management.add-email.title'),

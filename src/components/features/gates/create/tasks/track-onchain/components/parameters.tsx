@@ -13,6 +13,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import {
   Button,
   FormControl,
+  FormHelperText,
   IconButton,
   InputLabel,
   MenuItem,
@@ -113,7 +114,7 @@ export function Parameters({
               gap={2}
               sx={{
                 flexDirection: { xs: 'column', md: 'row' },
-                alignItems: { xs: 'flex-start', md: 'center' },
+                alignItems: { xs: 'flex-start', md: 'flex-start' },
               }}
             >
               <Stack sx={{ width: { xs: '100%', md: 250 } }}>
@@ -124,6 +125,12 @@ export function Parameters({
                   <Select
                     label={t('tasks.track_onchain.parameter')}
                     id="parameterName"
+                    error={
+                      !!(
+                        errors.tasks?.[taskId]
+                          ?.task_data as TrackOnChainEventsDataError
+                      )?.parameters?.[index].parameterName
+                    }
                     {...register(
                       `tasks.${taskId}.task_data.parameters.${index}.parameterName`,
                       {
@@ -156,6 +163,19 @@ export function Parameters({
                       </MenuItem>
                     ))}
                   </Select>
+                  {!!(
+                    errors.tasks?.[taskId]
+                      ?.task_data as TrackOnChainEventsDataError
+                  )?.parameters?.[index].parameterName && (
+                    <FormHelperText sx={{ color: brandColors.red.light }}>
+                      {
+                        (
+                          errors.tasks?.[taskId]
+                            ?.task_data as TrackOnChainEventsDataError
+                        )?.parameters?.[index].parameterName?.message
+                      }
+                    </FormHelperText>
+                  )}
                 </FormControl>
               </Stack>
               {inputSelected(index) && (
