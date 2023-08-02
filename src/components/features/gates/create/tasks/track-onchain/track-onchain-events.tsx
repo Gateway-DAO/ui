@@ -396,7 +396,7 @@ const TrackOnChainEventsTask = ({ dragAndDrop, taskId, deleteTask }) => {
                   {t('tasks.track_onchain.event')}
                 </InputLabel>
                 <Select
-                  sx={{ maxWidth: { md: '50%', xs: '100%' } }}
+                  sx={{ maxWidth: { md: '50%', xs: '572px' } }}
                   label={t('tasks.track_onchain.event')}
                   error={
                     !!(
