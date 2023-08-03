@@ -63,3 +63,21 @@ After your project builded, just run your tests. Note that this tests runs in a 
 ```sh
 pnpm test:e2e
 ```
+
+# Development
+
+## Remove lines on PRODUCTION
+
+If you want to remove a number line on production, you can add a comment `#REMOVELINE {number}` to remove a specific number of lines
+
+```ts
+// #REMOVELINE
+const test = ''
+```
+
+```gql
+#REMOVELINE 3
+query {
+  test
+}
+```
