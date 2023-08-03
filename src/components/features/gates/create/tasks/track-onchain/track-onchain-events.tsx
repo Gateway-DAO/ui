@@ -124,6 +124,7 @@ const TrackOnChainEventsTask = ({ dragAndDrop, taskId, deleteTask }) => {
 
         if (validABI) {
           setValue(`tasks.${taskId}.task_data.abi`, data);
+          toggleABIWithValidEvent(true);
           setDisplayEvent(true);
         } else {
           resetField(`tasks.${taskId}.task_data.abi`);
