@@ -21,7 +21,8 @@
     "lint": "next lint",
     "test": "jest --watch",
     "test:e2e": "pnpm playwright test --ui",
-    "build": "sh ./tools/scripts/build.sh",
+    "build": "next build",
+    "preinstall": "sh ./tools/scripts/build.sh",
     "generate": "pnpm generate:prisma && pnpm generate:graphql",
     "generate:prisma": "node tools/scripts/create-prisma.js && prisma db pull && prisma generate",
     "generate:graphql": "graphql-codegen --config codegen.ts -r dotenv/config"

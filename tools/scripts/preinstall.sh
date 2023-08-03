@@ -5,4 +5,3 @@ if [ "$NODE_ENV" = "production" ]; then
   ./tools/scripts/remove-lines.sh
 fi
 
-next build
