@@ -46,10 +46,10 @@
     "playground": "Playground"
   },
   "featured-banner": {
-    "tooltip-text" : "Issue Credentials",
-    "title": "Issue credentials for your peers now",
-    "subtitle": "Giving credentials is a great way to recognize and reward your peers or community",
-    "action": "START NOW"
+    "tooltip-text": "Gateway x Altitude",
+    "title": "Earn your Testnet Degen Credential now!",
+    "subtitle": "Only available to Altitude DeFi users",
+    "action": "CHECK NOW"
   },
   "featured-credentials": {
     "title": "Featured Credentials",
