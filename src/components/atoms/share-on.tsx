@@ -11,6 +11,7 @@ import { LinkedIn, Twitter, Download, Link } from '@mui/icons-material';
 import { Stack, Typography, Box } from '@mui/material';
 
 import SquareButton from './buttons/square-button';
+import { getLoyaltyPassImageURLParams } from '@/utils/loyalty-pass/build-image-url-params';
 
 declare global {
   interface Window {
@@ -27,7 +28,7 @@ export default function ShareOn({ isCredential, credential }: Props) {
   const { t } = useTranslation('common');
   const { me } = useAuth();
   const { enqueueSnackbar } = useSnackbar();
-
+  console.log(isCredential, credential);
   const isReceivedCredential =
     me && me?.wallet === credential?.recipientUser?.primaryWallet?.address;
 
@@ -61,9 +62,20 @@ export default function ShareOn({ isCredential, credential }: Props) {
 
   const linkedinLink = `https://www.linkedin.com/shareArticle?mini=true&url=${window.location.href}&utm_source=linkedin&utm_medium=share_dialog`;
 
-  const imageUrlParams = getCredentialImageURLParams(credential);
-  const imageURL = `${window.location.origin}/api/og-image/credential${imageUrlParams}`;
-
+  // const imageUrlParams = getCredentialImageURLParams(credential);
+  let loyaltyPass = {
+    daoName: 'Jumper excahnge',
+    title: 'Jumper exchange loyalty pass',
+    gatewayId: 'h.st',
+    tier: 'Platinum',
+    qrCode: '99e9810b-90f9-413a-a8c8-efb35af947cc.png',
+    image:
+      'https://api.staging.mygateway.xyz/storage/file?id=730dfc4c-8210-404c-93e6-ecf271871c6b',
+  };
+  const imageUrlParams = getLoyaltyPassImageURLParams(loyaltyPass);
+  // const imageURL = `${window.location.origin}/api/og-image/credential${imageUrlParams}`;
+  const imageURL = `${window.location.origin}/api/og-image/loyalty-pass${imageUrlParams}`;
+  console.log(imageURL);
   const sendClickToGA = (
     label: 'twitter' | 'linkedin' | 'download-image' | 'copy-url',
     isCredential: boolean
