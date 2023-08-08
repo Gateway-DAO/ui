@@ -42,6 +42,12 @@ import {
   useMediaQuery,
 } from '@mui/material';
 
+type AltitudeTx = {
+  _id: string;
+  USER_ADDRESS: string;
+  USER_TOTAL_TRANSACTIONS: number;
+};
+
 export function AltitudeTemplate() {
   const isMobile = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
   const size = isMobile ? 325 : 500;
@@ -74,6 +80,22 @@ export function AltitudeTemplate() {
   const router = useRouter();
   const [isHolderDialog, setIsHolderDialog] = useState(false);
   const queryClient = useQueryClient();
+
+  const { data: altitudeTx } = useQuery(
+    ['altitude-testnet-txs', me?.wallet],
+    async () => {
+      const result: { tx: AltitudeTx } = await fetch(
+        '/api/altitude?wallet=' + me?.wallet
+      ).then((res) => res.json());
+
+      console.log(result.tx);
+
+      return result.tx;
+    },
+    {
+      enabled: !!me?.wallet,
+    }
+  );
 
   const { data: credential } = useQuery(
     ['altitude-testnet-credential', me?.protocol.id],
@@ -461,8 +483,8 @@ export function AltitudeTemplate() {
               <ArcProgress
                 thickness={isMobile ? 15 : 20}
                 progress={
-                  !!me && credential
-                    ? credential?.claim?.transactions / 1000
+                  !!me && altitudeTx
+                    ? altitudeTx?.USER_TOTAL_TRANSACTIONS / 1000
                     : 0
                 }
                 fillThickness={isMobile ? 30 : 35}
@@ -481,10 +503,10 @@ export function AltitudeTemplate() {
                 alignItems="center"
                 justifyContent="center"
               >
-                {!!me && credential && (
+                {!!me && altitudeTx?.USER_TOTAL_TRANSACTIONS && (
                   <>
                     <Typography align={'center'} variant="h1">
-                      {credential?.claim?.transactions}
+                      {altitudeTx?.USER_TOTAL_TRANSACTIONS}
                     </Typography>
                   </>
                 )}
@@ -495,7 +517,7 @@ export function AltitudeTemplate() {
                     </Typography>
                   </>
                 )}
-                {!!me && !credential && (
+                {!!me && !altitudeTx?.USER_TOTAL_TRANSACTIONS && (
                   <>
                     <Typography align={'center'} variant="h1">
                       -

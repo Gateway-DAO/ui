@@ -36,6 +36,12 @@ export default function ReceivedTab({ user }: Props): JSX.Element {
         } as any);
 
       return result.protocol_credential;
+    },
+    {
+      getNextPageParam: (lastPage = [], pages) =>
+        lastPage.length < internalPageSize
+          ? undefined
+          : pages.length * internalPageSize,
     }
   );
   useEffect(() => {

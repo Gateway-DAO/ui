@@ -37,6 +37,12 @@ export default function IssuedTab({ user }: Props): JSX.Element {
           skip: pageParam || 0,
         } as any);
       return result.protocol_credential;
+    },
+    {
+      getNextPageParam: (lastPage = [], pages) =>
+        lastPage.length < internalPageSize
+          ? undefined
+          : pages.length * internalPageSize,
     }
   );
 
