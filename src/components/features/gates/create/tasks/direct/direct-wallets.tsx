@@ -45,8 +45,6 @@ export function DirectWallets({
   const [confirmDialgog, setConfirmDialog] = useToggle(false);
   const [addRecipient, setAddRecipient] = useToggle(false);
 
-  const [editRecipient, setEditRecipient] = useToggle(false);
-  const [deleteRecipient, setDeleteRecipient] = useToggle(false);
   const [Files, setFiles] = useState<File>();
 
   const verifyCSV = useMutation<Files, unknown, File>(
@@ -90,9 +88,6 @@ export function DirectWallets({
     {
       onSuccess(data) {
         progressReq.refetch();
-
-        // setDeleteRecipient(false);
-        // setEditRecipient(true);
       },
 
       onError(error: any) {
@@ -126,11 +121,6 @@ export function DirectWallets({
     {
       onSuccess(data) {
         progressReq.refetch();
-        // enqueueSnackbar('Deleted successfully', {
-        //   variant: 'success',
-        // });
-        // setDeleteRecipient(true);
-        // setEditRecipient(false);
       },
 
       onError(error: any) {
