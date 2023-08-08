@@ -7,9 +7,17 @@ import { ClientNav } from '@/components/organisms/navbar/client-nav';
 import { query } from '@/constants/queries';
 import { useAuth } from '@/providers/auth';
 import { hasuraPublicService } from '@/services/hasura/api';
-import { Direct_Credential_InfoQuery, Gates } from '@/services/hasura/types';
+import {
+  Direct_Credential_InfoQuery,
+  Gates,
+  ProtocolMutationRevokeCredentialArgs,
+} from '@/services/hasura/types';
 import { TOKENS } from '@/theme';
-import { UseQueryResult, useInfiniteQuery } from '@tanstack/react-query';
+import {
+  UseQueryResult,
+  useInfiniteQuery,
+  useMutation,
+} from '@tanstack/react-query';
 import { useWindowSize } from 'react-use';
 import { TableVirtuoso } from 'react-virtuoso';
 import { PartialDeep } from 'type-fest';
@@ -54,7 +62,7 @@ export function DirectHoldersList({
   const windowSize = useWindowSize();
   const [nameDisplay, setNameDisplay] = useState('');
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
-  const { me } = useAuth();
+  const { me, hasuraUserService } = useAuth();
   const [filter, setFilter] = useState('');
 
   const {
@@ -84,6 +92,13 @@ export function DirectHoldersList({
         if (lastPage.whitelisted_wallets.length < 15) return undefined;
         return pages.length * 15;
       },
+    }
+  );
+
+  const revokeCredential = useMutation(
+    ['revokeCredential'],
+    ({ id }: ProtocolMutationRevokeCredentialArgs) => {
+      return hasuraUserService.protocol_revoke_credential({ id });
     }
   );
 

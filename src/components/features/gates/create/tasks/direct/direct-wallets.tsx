@@ -46,6 +46,7 @@ export function DirectWallets({
   const [addRecipient, setAddRecipient] = useToggle(false);
 
   const [editRecipient, setEditRecipient] = useToggle(false);
+  const [deleteRecipient, setDeleteRecipient] = useToggle(false);
   const [Files, setFiles] = useState<File>();
 
   const verifyCSV = useMutation<Files, unknown, File>(
@@ -75,7 +76,6 @@ export function DirectWallets({
   );
 
   const file = watch('whitelisted_wallets_file');
-
   const addRecipientMutation = useMutation(
     ['verify-wallet-single', file?.id],
     () =>
@@ -89,7 +89,10 @@ export function DirectWallets({
       }),
     {
       onSuccess(data) {
-        setEditRecipient(true);
+        progressReq.refetch();
+
+        // setDeleteRecipient(false);
+        // setEditRecipient(true);
       },
 
       onError(error: any) {
@@ -103,6 +106,40 @@ export function DirectWallets({
   const handleAddRecipientMutation = () => {
     addRecipientMutation.mutate();
   };
+
+  const removeRecipientMutation = useMutation(
+    ['csv-delete-single'],
+    ({
+      fileId,
+      type,
+      wallet,
+    }: {
+      fileId: string;
+      type: string;
+      wallet: string;
+    }) =>
+      hasuraUserService.csv_delete_single({
+        id: fileId,
+        type,
+        wallet,
+      }),
+    {
+      onSuccess(data) {
+        progressReq.refetch();
+        // enqueueSnackbar('Deleted successfully', {
+        //   variant: 'success',
+        // });
+        // setDeleteRecipient(true);
+        // setEditRecipient(false);
+      },
+
+      onError(error: any) {
+        enqueueSnackbar(error?.message ?? JSON.stringify(error), {
+          variant: 'error',
+        });
+      },
+    }
+  );
 
   const progressReq = useInfiniteQuery(
     ['progress', file?.id],
@@ -121,14 +158,28 @@ export function DirectWallets({
     }
   );
 
-  const progress = editRecipient
-    ? addRecipientMutation.data?.verify_single
-    : progressReq.data?.pages?.[0]?.verify_csv_progress;
+  const progress = progressReq.data?.pages?.[0]?.verify_csv_progress;
 
   const isUploadDisabled = file && progress && !progress.isDone;
 
+  const handleRemoveRecipientMutation = () => {
+    removeRecipientMutation.mutate({
+      fileId: file?.id,
+      type: methods.getValues('type'),
+      wallet: methods.getValues('wallet'),
+    });
+  };
+
   useEffect(() => {
-    if (progress?.invalid === 0 && progress?.isDone) handleStep(true);
+    if (progress?.valid + progress?.invalid === 0) {
+      setValue('whitelisted_wallets_file', undefined);
+      handleStep(false);
+    } else if (
+      progress?.valid > 0 &&
+      progress?.invalid === 0 &&
+      progress?.isDone
+    )
+      handleStep(true);
   });
 
   const readFiles = (files: File[] | FileList) => {
@@ -202,8 +253,13 @@ export function DirectWallets({
                 )}
                 {progress?.isDone && (
                   <DirectWalletsList
-                    {...progress}
+                    fileId={progress.id}
+                    invalidList={progress.invalidList}
+                    validList={progress.validList}
                     setAddRecipient={setAddRecipient}
+                    handleRemoveRecipientMutation={
+                      handleRemoveRecipientMutation
+                    }
                   />
                 )}
               </>

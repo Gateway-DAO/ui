@@ -44,14 +44,8 @@ mutation verify_single(
     oldWallet: $oldWallet
     oldType: $oldType
   ) {
-    isDone
     id
-    total
-    valid
-    invalid
-    validList
-    invalidList
-    uploadedTime
+    addNew
   }
 }
 
@@ -77,5 +71,12 @@ mutation send_more_single_send_again(
 ) {
   send_more_single_send_again(id: $id, type: $type, wallet: $wallet) {
     send
+  }
+}
+
+mutation csv_delete_single($id: uuid!, $wallet: String!, $type: String!) {
+  csv_delete_single(id: $id, type: $type, wallet: $wallet) {
+    deleted
+    notFound
   }
 }

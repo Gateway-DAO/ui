@@ -34,6 +34,9 @@ import { useFormContext } from 'react-hook-form';
 import { AddRecipientDirectCredentialSchema } from './direct-wallets';
 import { Edit, Delete, Email } from '@mui/icons-material';
 import { EthereumIcon } from '@/components/atoms/icons';
+import { useMutation } from '@tanstack/react-query';
+import { useAuth } from '@/providers/auth';
+import { useSnackbar } from 'notistack';
 
 export function DirectWalletsList({
   invalidList,
@@ -45,6 +48,7 @@ export function DirectWalletsList({
   listItemProps,
   setAddRecipient,
   skipAddRecipient,
+  handleRemoveRecipientMutation,
 }: Required<Pick<VerifyCsvProgressOutput, 'validList' | 'invalidList'>> & {
   searchContainer?: (props: PropsWithChildren<unknown>) => JSX.Element;
   containerProps?: StackProps;
@@ -53,9 +57,10 @@ export function DirectWalletsList({
   listItemProps?: Partial<ListItemProps>;
   setAddRecipient: (nextValue?: any) => void;
   skipAddRecipient?: boolean;
+  handleRemoveRecipientMutation: () => void;
+  fileId: string;
 }) {
   const [filter, setFilter] = useState('');
-
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setFilter(event.target.value);
   };
@@ -220,11 +225,20 @@ export function DirectWalletsList({
               <Stack>
                 <Button>
                   <Delete color="secondary" sx={{ mr: 2 }} />
-                  <Typography variant="subtitle2">Remove</Typography>
+                  <Typography
+                    variant="subtitle2"
+                    onClick={() => {
+                      handleRemoveRecipientMutation();
+                      setAnchorEl(null);
+                    }}
+                  >
+                    Remove
+                  </Typography>
                 </Button>
                 <Button
                   onClick={() => {
                     setAddRecipient();
+                    setAnchorEl(null);
                   }}
                 >
                   <Edit color="secondary" sx={{ mr: 2.5 }} />{' '}

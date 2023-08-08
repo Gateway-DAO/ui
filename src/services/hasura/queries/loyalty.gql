@@ -53,19 +53,19 @@ query get_loyalty_progress_by_user_id_by_loyalty(
         gatewayId
       }
 
-      issuerAuth {
-        user {
-          id
-          gatewayId
-        }
-      }
+      # issuerAuth {
+      #   user {
+      #     id
+      #     gatewayId
+      #   }
+      # }
 
-      recipientAuth {
-        user {
-          id
-          gatewayId
-        }
-      }
+      # recipientAuth {
+      #   user {
+      #     id
+      #     gatewayId
+      #   }
+      # }
     }
     points
   }
