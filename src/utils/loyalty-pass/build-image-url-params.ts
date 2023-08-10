@@ -12,7 +12,7 @@ export const getLoyaltyPassImageURLParams = (
       loyaltyPass.name
     }&gatewayId=${gatewayId.split(' ')[0]}&tier=${actualTier}${
       loyaltyPass.image ? '&image=' + loyaltyPass.image : ''
-    }&qrCode=${qrCode}`;
+    }`;
   } catch (error) {
     return '';
   }
