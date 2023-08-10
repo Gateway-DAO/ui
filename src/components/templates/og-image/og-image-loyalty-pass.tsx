@@ -7,7 +7,6 @@ type Props = {
   qrCode: string;
   image: string;
 };
-// http://localhost:4200/api/og-image/loyalty-pass?daoName=Jumper%20excahnge&title=Jumper%20exchange%20loyalty%20pass&gatewayId=h.st&tier=Platinum&recipient=h.st&image=https://v2.mygateway.xyz/images/campaigns/altitude/altitude_marketing_image.png&qrCode=99e9810b-90f9-413a-a8c8-efb35af947cc.png
 const getBgColour = (tier: string) => {
   if (tier === 'Baby' || tier === 'Bronze') return '#DDA490';
   else if (tier === 'Silver' || tier === 'Platinum') return '#D2D2D2';

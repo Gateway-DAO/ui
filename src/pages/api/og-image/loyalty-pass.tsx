@@ -44,12 +44,7 @@ const handler = async (req: NextRequest) => {
 
   const hasQRCode = searchParams.has('qrCode');
 
-  const qrCode = hasQRCode
-    ? `${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/${searchParams
-        .get('qrCode')
-        ?.slice(0, 100)}`
-    : null;
-
+  const qrCode = hasQRCode ? searchParams.get('qrCode') : null;
   const hasImage = searchParams.has('image');
   const image = hasImage ? searchParams.get('image')?.slice(0, 100) : null;
   return new ImageResponse(

@@ -82,7 +82,6 @@ export default function ShareOn({
     isLoyaltyPass ? 'loyalty-pass' : 'credential'
   }${imageUrlParams}`;
 
-  console.log(imageUrlParams);
   const sendClickToGA = (
     label: 'twitter' | 'linkedin' | 'download-image' | 'copy-url',
     isCredential: boolean

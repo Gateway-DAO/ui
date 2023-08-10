@@ -32,7 +32,7 @@ export function SmallTier({
     tiers: loyalty.loyalty_tiers,
     totalPoints: loyaltyProgress?.points,
   });
-
+  loyaltyProgress = { ...loyaltyProgress, points: 350 };
   return (
     <>
       <Typography
