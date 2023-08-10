@@ -36,38 +36,38 @@ mutation refresh($refresh_token: String!) {
   }
 }
 
-# mutation protocol_signup(
-#   $gateway_id: String!
-#   $email: String!
-# ) {
-#   protocol {
-#     signup(input:{
-#       gateway_id: $gateway_id
-#       email: $email
-#     }) {
-#       email
-#     }
-#   }
-# }
+mutation protocol_signup(
+  $gateway_id: String!
+  $email: String!
+) {
+  protocol {
+    signup(input:{
+      gateway_id: $gateway_id
+      email: $email
+    }) {
+      email
+    }
+  }
+}
 
-# mutation protocol_signup_confirmation(
-#   $gateway_id: String!
-#   $email: String!
-#   $wallet: String!
-#   $code: Float!
-# ) {
-#   protocol {
-#     signupConfirmation(input:{
-#       gateway_id: $gateway_id
-#       email: $email
-#       wallet: $wallet
-#       code: $code
-#     }) {
-#       user {
-#         id
-#         email
-#         gatewayId
-#       }
-#     }
-#   }
-# }
+mutation protocol_signup_confirmation(
+  $gateway_id: String!
+  $email: String!
+  $wallet: String!
+  $code: Float!
+) {
+  protocol {
+    signupConfirmation(input:{
+      gateway_id: $gateway_id
+      email: $email
+      wallet: $wallet
+      code: $code
+    }) {
+      user {
+        id
+        email
+        gatewayId
+      }
+    }
+  }
+}
