@@ -8,200 +8,12 @@ type Props = {
   image: string;
 };
 // http://localhost:4200/api/og-image/loyalty-pass?daoName=Jumper%20excahnge&title=Jumper%20exchange%20loyalty%20pass&gatewayId=h.st&tier=Platinum&recipient=h.st&image=https://v2.mygateway.xyz/images/campaigns/altitude/altitude_marketing_image.png&qrCode=99e9810b-90f9-413a-a8c8-efb35af947cc.png
-const IssuerRecipientBox = ({
-  issuer,
-  recipient,
-  origin,
-}: {
-  issuer: string;
-  recipient: string;
-  origin: string;
-}) => {
-  return (
-    <div
-      style={{
-        display: 'flex',
-        borderRadius: '28px',
-        alignItems: 'center',
-        background: 'rgba(255, 255, 255, 0.05)',
-        border: '2px solid rgba(229, 229, 229, 0.12)',
-        padding: '52px 13px',
-        justifyContent: 'space-between',
-      }}
-    >
-      <div
-        style={{
-          display: 'flex',
-          gap: '23px',
-          alignItems: 'center',
-        }}
-      >
-        <img
-          src={`${origin}/images/avatar-default.png`}
-          width="73px"
-          height="73px"
-          alt="Issuer profile image"
-        />
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <span
-            style={{
-              fontWeight: '400',
-              fontSize: '19.8px',
-              color: 'rgba(255, 255, 255, .7)',
-            }}
-          >
-            Issuer ID
-          </span>
-          <span
-            style={{
-              fontWeight: 400,
-              fontSize: '23.1px',
-              color: '#9A53FF',
-              whiteSpace: 'nowrap',
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-              maxWidth: '185px',
-            }}
-          >
-            {issuer}
-          </span>
-        </div>
-      </div>
-      <img
-        src={`${origin}/images/arrow-transaction.png`}
-        width="28px"
-        height="56px"
-        alt="arrow transaction"
-        style={{
-          margin: '0 15px',
-        }}
-      />
-      <div
-        style={{
-          display: 'flex',
-          gap: '23px',
-          alignItems: 'center',
-        }}
-      >
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'flex-end',
-          }}
-        >
-          <span
-            style={{
-              fontWeight: '400',
-              fontSize: '19.8px',
-              color: 'rgba(255, 255, 255, .7)',
-            }}
-          >
-            Recipient ID
-          </span>
-          <span
-            style={{
-              fontWeight: 400,
-              fontSize: '23.1px',
-              color: '#9A53FF',
-              whiteSpace: 'nowrap',
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-              maxWidth: '185px',
-            }}
-          >
-            {recipient}
-          </span>
-        </div>
-        <img
-          src={`${origin}/images/avatar-default.png`}
-          width="73px"
-          height="73px"
-          alt="Recipient profile image"
-        />
-      </div>
-    </div>
-  );
-};
-
-const ImageQRCodeBox = ({
-  image,
-  qrCode,
-}: {
-  image?: string;
-  qrCode: string;
-}) => {
-  return (
-    <div
-      style={{
-        display: 'flex',
-        width: '100%',
-        paddingRight: '45px',
-        gap: '15px',
-        justifyContent: 'flex-end',
-      }}
-    >
-      {image && (
-        <img
-          src={image}
-          width="185px"
-          height="185px"
-          alt="Credential image"
-          style={{
-            borderRadius: '28px',
-          }}
-        />
-      )}
-      {qrCode && (
-        <img
-          src={qrCode}
-          width="185px"
-          height="185px"
-          alt="QR Code"
-          style={{
-            borderRadius: '28px',
-          }}
-        />
-      )}
-    </div>
-  );
-};
-
-const TextsBox = ({
-  id,
-  title,
-  description,
-}: {
-  id: string;
-  title: string;
-  description: string;
-}) => {
-  return (
-    <div style={{ display: 'flex', flexDirection: 'column' }}>
-      <span style={{ color: 'rgba(255, 255, 255, .7)', fontSize: '19.8px' }}>
-        Credential ID {id}
-      </span>
-      <span
-        style={{
-          fontWeight: '700',
-          fontSize: '48px',
-          letterSpacing: '0.41px',
-        }}
-      >
-        {title}
-      </span>
-      <span
-        style={{
-          marginTop: '25px',
-          fontWeight: '400',
-          fontSize: '26px',
-          letterSpacing: '0.25px',
-        }}
-      >
-        {description}
-      </span>
-    </div>
-  );
+const getBgColour = (tier: string) => {
+  if (tier === 'Baby' || tier === 'Bronze') return '#DDA490';
+  else if (tier === 'Silver' || tier === 'Platinum') return '#D2D2D2';
+  else if (tier === 'Gold') return '#FFAA29';
+  else if (tier.includes('Diamond')) return '#363636';
+  return '#DDA490';
 };
 
 const LeftColumn = ({
@@ -257,10 +69,13 @@ export default function OgImageLoyaltyPass({
   qrCode,
   image,
 }: Props) {
+  console.log(daoName, title, gatewayId, tier, qrCode, image);
+  const hasMoreThan2Words = title.split(' ').length > 2;
+  const words = title.split(' ');
   return (
     <div
       style={{
-        background: '#D2D2D2',
+        background: getBgColour(tier),
         width: '100%',
         height: '100%',
         display: 'flex',
@@ -283,6 +98,7 @@ export default function OgImageLoyaltyPass({
               fontSize: '18px',
               letterSpacing: '0.12px',
               color: '#120E0AB2',
+              right: '20px',
             }}
           >
             {daoName}
@@ -293,20 +109,20 @@ export default function OgImageLoyaltyPass({
             style={{
               background: '#FFFFFF2E',
               borderRadius: '20px',
-              width: '74px',
-              left: '345px',
+              width: gatewayId.length * 16 + 'px',
+              left: '315px',
               display: 'flex',
             }}
           >
             <span
               style={{
                 fontWeight: '400',
-                fontSize: '18px',
+                fontSize: '16px',
                 letterSpacing: '0.078px',
                 lineHeight: '14px',
                 color: '#120E0AB2',
-                marginLeft: '2px',
-                marginRight: '2px',
+
+                padding: '8px',
               }}
             >
               {'@' + gatewayId}
@@ -323,10 +139,8 @@ export default function OgImageLoyaltyPass({
                 position: 'absolute',
                 left: '320px',
                 display: 'flex',
-                borderTopLeftRadius: '300px',
-                borderTopRightRadius: '300px',
-                borderBottomLeftRadius: '5.71px',
-                borderBottomRightRadius: '5.71px',
+
+                borderRadius: '50% 50% 0 0',
               }}
               alt={title}
               width="537px"
@@ -336,16 +150,17 @@ export default function OgImageLoyaltyPass({
               style={{
                 display: 'flex',
                 position: 'absolute',
-                right: '-290px',
+                right: '-305px',
               }}
             >
               <div
                 style={{
                   width: '300px',
-                  height: '80px',
-                  background: '#D2D2D2',
-                  top: '300px',
+                  height: hasMoreThan2Words ? '90px' : '45px',
+                  background: getBgColour(tier),
+                  top: '280px',
                   display: 'flex',
+                  borderRadius: '12px',
                 }}
               >
                 <div
@@ -354,26 +169,30 @@ export default function OgImageLoyaltyPass({
                     fontSize: '34.8px',
                     position: 'absolute',
                     color: '#120E0A',
+                    padding: '8px',
 
                     letterSpacing: '0.179px',
                     lineHeight: '29.29px',
                   }}
                 >
-                  {title.slice(0, 20)}
+                  {words[0] + ' ' + words[1]}
                 </div>
-                <div
-                  style={{
-                    fontWeight: '700',
-                    fontSize: '34.8px',
-                    position: 'absolute',
-                    color: '#120E0A',
-                    letterSpacing: '0.179px',
-                    lineHeight: '29.29px',
-                    marginTop: '40px',
-                  }}
-                >
-                  {title.slice(20, 100)}
-                </div>
+                {hasMoreThan2Words && (
+                  <div
+                    style={{
+                      fontWeight: '700',
+                      fontSize: '34.8px',
+                      position: 'absolute',
+                      color: '#120E0A',
+                      letterSpacing: '0.179px',
+                      lineHeight: '29.29px',
+                      marginTop: '40px',
+                      padding: '8px',
+                    }}
+                  >
+                    {words[2] + ' ' + words[3]}
+                  </div>
+                )}
               </div>
             </div>
           </>
@@ -394,6 +213,7 @@ export default function OgImageLoyaltyPass({
                 width: '100%',
                 gap: '15px',
                 marginTop: '-270px',
+                right: '27px',
               }}
             >
               {qrCode && (
@@ -418,6 +238,7 @@ export default function OgImageLoyaltyPass({
                   position: 'relative',
                   top: '-25px',
                   letterSpacing: '0.121px',
+                  right: '25px',
                 }}
               >
                 Tier
@@ -430,7 +251,7 @@ export default function OgImageLoyaltyPass({
                   position: 'relative',
                   letterSpacing: '0.179px',
                   lineHeight: '29.29px',
-                  right: '27px',
+                  right: '55px',
                 }}
               >
                 {tier}
@@ -439,17 +260,63 @@ export default function OgImageLoyaltyPass({
           </div>
         </LeftColumn>
         <RightColumn mt={485}>
-          <img
-            src={`${origin}/images/powered-by-gate-badge.png`}
+          <div
             style={{
-              position: 'relative',
-              left: '320px',
               display: 'flex',
+              position: 'absolute',
             }}
-            alt="Symbols"
-            width="120px"
-            height="50px"
-          />
+          >
+            <div
+              style={{
+                width: '160px',
+                height: '50px',
+                background: '#120E0A',
+                position: 'relative',
+                left: '280px',
+                display: 'flex',
+                borderRadius: '12px',
+              }}
+            >
+              <div
+                style={{
+                  fontWeight: '400',
+                  fontSize: '12.8px',
+                  position: 'absolute',
+                  color: '#FFFFFF',
+                  letterSpacing: '0.179px',
+                  lineHeight: '7.01px',
+                  marginTop: '9px',
+                  left: '46px',
+                }}
+              >
+                Powered by
+              </div>
+              <div
+                style={{
+                  fontWeight: '700',
+                  fontSize: '20px',
+                  position: 'absolute',
+                  color: '#FFFFFF',
+                  letterSpacing: '0.179px',
+                  lineHeight: '10.29px',
+                  marginTop: '24.6px',
+                  left: '46px',
+                }}
+              >
+                Gateway
+              </div>
+              <img
+                src={`${origin}/logo.png`}
+                style={{
+                  display: 'flex',
+                  borderRadius: '12px',
+                }}
+                alt="Symbols"
+                width="45px"
+                height="45px"
+              />
+            </div>
+          </div>
         </RightColumn>
       </div>
     </div>
