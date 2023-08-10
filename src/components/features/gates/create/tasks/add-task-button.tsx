@@ -17,7 +17,7 @@ const AddTaskButton = ({
   title,
   description,
   addTask,
-  disabled,
+  disabled = false,
 }: AddTaskButtonProps) => {
   return (
     <Stack
@@ -41,7 +41,7 @@ const AddTaskButton = ({
           backgroundColor: !disabled && 'background.paper',
         },
       }}
-      onClick={() => addTask()}
+      onClick={!disabled ? () => addTask() : () => null}
     >
       <TaskIcon type={type} />
       <Stack>
@@ -53,7 +53,9 @@ const AddTaskButton = ({
         >
           {title}
         </Typography>
-        <Typography variant="caption">{description}</Typography>
+        <Typography variant="caption">
+          {!disabled ? description : 'Currently unavailable'}
+        </Typography>
       </Stack>
     </Stack>
   );
