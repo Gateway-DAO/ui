@@ -15,6 +15,7 @@ import { Stack, Typography, Box } from '@mui/material';
 
 import SquareButton from './buttons/square-button';
 import { getLoyaltyPassImageURLParams } from '@/utils/loyalty-pass/build-image-url-params';
+import { useCreateQrCode } from '@/utils/qr-code/qr-code';
 
 declare global {
   interface Window {
@@ -42,7 +43,7 @@ export default function ShareOn({
   const { enqueueSnackbar } = useSnackbar();
   const isReceivedCredential =
     me && me?.wallet === credential?.recipientUser?.primaryWallet?.address;
-
+  const qrCode = useCreateQrCode();
   let tweetText;
 
   if (isReceivedCredential) {
@@ -74,15 +75,14 @@ export default function ShareOn({
   const linkedinLink = `https://www.linkedin.com/shareArticle?mini=true&url=${window.location.href}&utm_source=linkedin&utm_medium=share_dialog`;
 
   const imageUrlParams = isLoyaltyPass
-    ? getLoyaltyPassImageURLParams(loyaltyPass, me.name, actualTier)
+    ? getLoyaltyPassImageURLParams(loyaltyPass, me.name, actualTier, qrCode)
     : getCredentialImageURLParams(credential);
 
   const imageURL = `${window.location.origin}/api/og-image/${
     isLoyaltyPass ? 'loyalty-pass' : 'credential'
   }${imageUrlParams}`;
-  // const imageURL = `${window.location.origin}/api/og-image/credential${imageUrlParams}`;
 
-  console.log(imageURL);
+  console.log(imageUrlParams);
   const sendClickToGA = (
     label: 'twitter' | 'linkedin' | 'download-image' | 'copy-url',
     isCredential: boolean

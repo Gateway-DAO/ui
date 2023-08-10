@@ -41,7 +41,6 @@ export function Tier({ loyalty, loyaltyProgress }: Props) {
     tiers: loyalty.loyalty_tiers,
     totalPoints: loyaltyProgress?.points,
   });
-
   const getBgColour = (tier: string) => {
     if (tier === 'Baby' || tier === 'Bronze') return '#DDA490';
     else if (tier === 'Silver' || tier === 'Platinum') return '#D2D2D2';
