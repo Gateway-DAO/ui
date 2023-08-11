@@ -447,11 +447,9 @@ export function DirectHoldersHeader({
                         <>
                           <DirectWalletsList
                             {...progress}
-                            containerProps={{
-                              height: '100%',
-                            }}
                             skipAddRecipient={true}
                             setAddRecipient={setAddRecipient}
+                            handleRemoveRecipientMutation={() => {}}
                           />
                         </>
                       )}

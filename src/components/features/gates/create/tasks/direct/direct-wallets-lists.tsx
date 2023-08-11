@@ -2,12 +2,13 @@ import {
   ChangeEvent,
   MouseEvent,
   PropsWithChildren,
+  useEffect,
   useMemo,
   useState,
 } from 'react';
 
 import { VerifyCsvProgressOutput } from '@/services/hasura/types';
-import { TableVirtuoso, VirtuosoProps } from 'react-virtuoso';
+import { VirtuosoProps } from 'react-virtuoso';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 import SearchIcon from '@mui/icons-material/Search';
@@ -27,6 +28,10 @@ import {
   IconButton,
   Avatar,
   Button,
+  Table,
+  TableBody,
+  TableContainer,
+  TableHead,
 } from '@mui/material';
 
 import { InvalidatedWallet, ValidatedWallet } from './types';
@@ -34,6 +39,11 @@ import { useFormContext } from 'react-hook-form';
 import { AddRecipientDirectCredentialSchema } from './direct-wallets';
 import { Edit, Delete, Email } from '@mui/icons-material';
 import { EthereumIcon } from '@/components/atoms/icons';
+import { useMutation } from '@tanstack/react-query';
+import { useAuth } from '@/providers/auth';
+import { useSnackbar } from 'notistack';
+import { useWindowVirtualizer } from '@tanstack/react-virtual';
+import { TOKENS } from '@/theme';
 
 export function DirectWalletsList({
   invalidList,
@@ -65,6 +75,8 @@ export function DirectWalletsList({
       wallet: string;
       ens?: string;
       invalid?: boolean;
+      duplicate?: boolean;
+      type: string;
     }[] = [
       ...(invalidList?.reduce((acc, string) => {
         let obj: InvalidatedWallet = JSON.parse(string);
@@ -90,6 +102,14 @@ export function DirectWalletsList({
     ];
     return wallets;
   }, [filter, invalidList, validList]);
+
+  const rowVirtualizer = useWindowVirtualizer({
+    count: whitelistedWallets.length,
+    estimateSize: () => 77.5,
+    overscan: 5,
+  });
+
+  const items = rowVirtualizer.getVirtualItems();
 
   const searchInput = (
     <TextField
@@ -168,75 +188,7 @@ export function DirectWalletsList({
     );
   }
 
-  function rowContent(index: number, row: any) {
-    const { wallet, type, invalid, duplicate } = row;
-    return (
-      <>
-        <TableCell align={'left'}>{wallet}</TableCell>
-        <TableCell align={'left'}>
-          <Chip
-            variant="filled"
-            color="default"
-            label={type}
-            icon={type === 'Email' ? <Email /> : <EthereumIcon />}
-          />
-        </TableCell>
-        <TableCell align={'right'}>
-          {duplicate ? (
-            <Chip variant="outlined" color="primary" label="Duplicate" />
-          ) : invalid ? (
-            <Chip variant="outlined" color="error" label="InValid" />
-          ) : (
-            <Chip variant="outlined" color="success" label="Valid" />
-          )}
-        </TableCell>
-        {!skipAddRecipient && (
-          <TableCell align={'right'}>
-            <IconButton
-              sx={{
-                p: 0,
-              }}
-              onClick={(e) => handleClick(e, wallet, type)}
-            >
-              <Avatar sx={{ height: '30px', width: '31px' }}>
-                <MoreVertIcon />
-              </Avatar>
-            </IconButton>
-            <Popover
-              id="mouse-over-popover"
-              open={open}
-              anchorEl={anchorEl}
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'right',
-              }}
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              onClose={() => setAnchorEl(null)}
-              disableRestoreFocus
-            >
-              <Stack>
-                <Button>
-                  <Delete color="secondary" sx={{ mr: 2 }} />
-                  <Typography variant="subtitle2">Remove</Typography>
-                </Button>
-                <Button
-                  onClick={() => {
-                    setAddRecipient();
-                  }}
-                >
-                  <Edit color="secondary" sx={{ mr: 2.5 }} />{' '}
-                  <Typography variant="subtitle2">Edit</Typography>
-                </Button>
-              </Stack>
-            </Popover>
-          </TableCell>
-        )}
-      </>
-    );
-  }
+  function RowContent(index: number, row: any) {}
 
   return (
     <>
@@ -246,28 +198,138 @@ export function DirectWalletsList({
         ) : (
           <>{searchInput}</>
         )}
-        <Box
-          {...listContainerProps}
-          sx={{
-            table: {
-              width: '100%',
-              height: '100%',
-            },
-            height: '100%',
-          }}
-        >
-          <TableVirtuoso
-            id="table-virtuoso-test"
-            data={whitelistedWallets}
-            fixedHeaderContent={fixedHeaderContent}
-            itemContent={rowContent}
-            style={{
-              height:
-                whitelistedWallets.length <= 3
-                  ? 200
-                  : Math.min(400, whitelistedWallets.length * 61),
+        <Box {...listContainerProps}>
+          <TableContainer
+            sx={{
+              '& .MuiTableCell-root:first-of-type': {
+                pl: TOKENS.CONTAINER_PX,
+              },
+              '& .MuiTableCell-root:last-of-type': {
+                pr: skipAddRecipient ? 0 : 2,
+              },
+              '::-webkit-scrollbar': {
+                display: 'none',
+              },
             }}
-          />
+          >
+            <Table style={{ display: 'block' }} aria-label="sticky table">
+              <TableHead style={{ display: 'table', width: '100%' }}>
+                <TableRow>
+                  {columns.map((column) => (
+                    <TableCell
+                      key={column}
+                      align={'right'}
+                      sx={{
+                        backgroundColor: 'background.paper',
+                      }}
+                    >
+                      {column}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              </TableHead>
+              <TableBody
+                style={{
+                  height: `${rowVirtualizer.getTotalSize()}px`,
+                  width: '100%',
+                  position: 'relative',
+                  display: 'table',
+                }}
+              >
+                {whitelistedWallets.map((row, index) => {
+                  const { wallet, type, invalid, duplicate } = row;
+                  return (
+                    <TableRow>
+                      <TableCell align={'left'}>{wallet}</TableCell>
+                      <TableCell align={'left'}>
+                        <Chip
+                          variant="filled"
+                          color="default"
+                          label={type}
+                          icon={type === 'Email' ? <Email /> : <EthereumIcon />}
+                        />
+                      </TableCell>
+                      <TableCell align={'right'}>
+                        {duplicate ? (
+                          <Chip
+                            variant="outlined"
+                            color="primary"
+                            label="Duplicate"
+                          />
+                        ) : invalid ? (
+                          <Chip
+                            variant="outlined"
+                            color="error"
+                            label="InValid"
+                          />
+                        ) : (
+                          <Chip
+                            variant="outlined"
+                            color="success"
+                            label="Valid"
+                          />
+                        )}
+                      </TableCell>
+                      {!skipAddRecipient && (
+                        <TableCell align={'right'}>
+                          <IconButton
+                            sx={{
+                              p: 0,
+                            }}
+                            onClick={(e) => handleClick(e, wallet, type)}
+                          >
+                            <Avatar sx={{ height: '30px', width: '31px' }}>
+                              <MoreVertIcon />
+                            </Avatar>
+                          </IconButton>
+                          <Popover
+                            id="mouse-over-popover"
+                            open={open}
+                            anchorEl={anchorEl}
+                            anchorOrigin={{
+                              vertical: 'bottom',
+                              horizontal: 'right',
+                            }}
+                            transformOrigin={{
+                              vertical: 'top',
+                              horizontal: 'right',
+                            }}
+                            onClose={() => setAnchorEl(null)}
+                            disableRestoreFocus
+                          >
+                            <Stack>
+                              <Button>
+                                <Delete color="secondary" sx={{ mr: 2 }} />
+                                <Typography
+                                  variant="subtitle2"
+                                  onClick={() => {
+                                    setAnchorEl(null);
+                                  }}
+                                >
+                                  Remove
+                                </Typography>
+                              </Button>
+                              <Button
+                                onClick={() => {
+                                  setAddRecipient();
+                                  setAnchorEl(null);
+                                }}
+                              >
+                                <Edit color="secondary" sx={{ mr: 2.5 }} />{' '}
+                                <Typography variant="subtitle2">
+                                  Edit
+                                </Typography>
+                              </Button>
+                            </Stack>
+                          </Popover>
+                        </TableCell>
+                      )}
+                    </TableRow>
+                  );
+                })}
+              </TableBody>
+            </Table>
+          </TableContainer>
         </Box>
       </Stack>
     </>
