@@ -12,6 +12,10 @@ export const getLoyaltyPassImageURLParams = (
       loyaltyPass.name
     }&gatewayId=${gatewayId.split(' ')[0]}&tier=${actualTier}${
       loyaltyPass.image ? '&image=' + loyaltyPass.image : ''
+    }${
+      loyaltyPass.dao.logo.s3_key
+        ? '&daoLogo=' + loyaltyPass.dao.logo.s3_key
+        : ''
     }`;
   } catch (error) {
     return '';
