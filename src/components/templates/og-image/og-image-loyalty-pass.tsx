@@ -43,7 +43,10 @@ const getBgColour = (tier: string) => {
       bgColor: LOYALTY_PASSES_BG_COLORS.tungsten,
       textColor: LOYALTY_PASSES_TEXT_COLORS.white,
     };
-  return { bgColor: '#B9A1E6', textColor: LOYALTY_PASSES_TEXT_COLORS.black };
+  return {
+    bgColor: LOYALTY_PASSES_BG_COLORS.basic,
+    textColor: LOYALTY_PASSES_TEXT_COLORS.black,
+  };
 };
 
 const LeftColumn = ({
