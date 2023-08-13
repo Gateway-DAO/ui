@@ -25,6 +25,10 @@ import FullscreenOutlinedIcon from '@mui/icons-material/FullscreenOutlined';
 import { TierRuler } from './tier-ruler';
 import { useToggle } from 'react-use';
 import ShareOn from '@/components/atoms/share-on';
+import {
+  LOYALTY_PASSES_BG_COLORS,
+  LOYALTY_PASSES_TEXT_COLORS,
+} from '@/utils/loyalty-pass/colors';
 
 type Props = {
   loyalty: PartialDeep<Loyalty_Program>;
@@ -42,11 +46,37 @@ export function Tier({ loyalty, loyaltyProgress }: Props) {
     totalPoints: loyaltyProgress?.points,
   });
   const getBgColour = (tier: string) => {
-    if (tier === 'Baby' || tier === 'Bronze') return '#DDA490';
-    else if (tier === 'Silver' || tier === 'Platinum') return '#D2D2D2';
-    else if (tier === 'Gold') return '#FFAA29';
-    else if (tier.includes('Diamond')) return '#363636';
-    return '#DDA490';
+    if (tier === 'Basic')
+      return {
+        bgColor: LOYALTY_PASSES_BG_COLORS.basic,
+        textColor: LOYALTY_PASSES_TEXT_COLORS.black,
+      };
+    if (tier === 'Bronze')
+      return {
+        bgColor: LOYALTY_PASSES_BG_COLORS.bronze,
+        textColor: LOYALTY_PASSES_TEXT_COLORS.black,
+      };
+    if (tier === 'Silver')
+      return {
+        bgColor: LOYALTY_PASSES_BG_COLORS.silver,
+        textColor: LOYALTY_PASSES_TEXT_COLORS.black,
+      };
+    if (tier === 'Gold')
+      return {
+        bgColor: LOYALTY_PASSES_BG_COLORS.gold,
+        textColor: LOYALTY_PASSES_TEXT_COLORS.black,
+      };
+    if (tier === 'Platinum')
+      return {
+        bgColor: LOYALTY_PASSES_BG_COLORS.platinum,
+        textColor: LOYALTY_PASSES_TEXT_COLORS.white,
+      };
+    if (tier === 'Tungsten')
+      return {
+        bgColor: LOYALTY_PASSES_BG_COLORS.tungsten,
+        textColor: LOYALTY_PASSES_TEXT_COLORS.white,
+      };
+    return { bgColor: '#B9A1E6', textColor: LOYALTY_PASSES_TEXT_COLORS.black };
   };
 
   return (
@@ -87,7 +117,7 @@ export function Tier({ loyalty, loyaltyProgress }: Props) {
         {me?.id && loyaltyProgress?.points && actualTier?.tier && (
           <MUICard
             sx={{
-              backgroundColor: getBgColour(actualTier?.tier),
+              backgroundColor: getBgColour(actualTier?.tier).bgColor,
               cursor: 'pointer',
             }}
             onClick={setShareLoyaltyIsOpen}

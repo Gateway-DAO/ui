@@ -1,3 +1,8 @@
+import {
+  LOYALTY_PASSES_BG_COLORS,
+  LOYALTY_PASSES_TEXT_COLORS,
+} from '@/utils/loyalty-pass/colors';
+
 type Props = {
   origin: string;
   daoName: string;
@@ -6,12 +11,39 @@ type Props = {
   tier: string;
   image: string;
 };
+
 const getBgColour = (tier: string) => {
-  if (tier === 'Baby' || tier === 'Bronze') return '#DDA490';
-  else if (tier === 'Silver' || tier === 'Platinum') return '#D2D2D2';
-  else if (tier === 'Gold') return '#FFAA29';
-  else if (tier.includes('Diamond')) return '#363636';
-  return '#DDA490';
+  if (tier === 'Basic')
+    return {
+      bgColor: LOYALTY_PASSES_BG_COLORS.basic,
+      textColor: LOYALTY_PASSES_TEXT_COLORS.black,
+    };
+  if (tier === 'Bronze')
+    return {
+      bgColor: LOYALTY_PASSES_BG_COLORS.bronze,
+      textColor: LOYALTY_PASSES_TEXT_COLORS.black,
+    };
+  if (tier === 'Silver')
+    return {
+      bgColor: LOYALTY_PASSES_BG_COLORS.silver,
+      textColor: LOYALTY_PASSES_TEXT_COLORS.black,
+    };
+  if (tier === 'Gold')
+    return {
+      bgColor: LOYALTY_PASSES_BG_COLORS.gold,
+      textColor: LOYALTY_PASSES_TEXT_COLORS.black,
+    };
+  if (tier === 'Platinum')
+    return {
+      bgColor: LOYALTY_PASSES_BG_COLORS.platinum,
+      textColor: LOYALTY_PASSES_TEXT_COLORS.white,
+    };
+  if (tier === 'Tungsten')
+    return {
+      bgColor: LOYALTY_PASSES_BG_COLORS.tungsten,
+      textColor: LOYALTY_PASSES_TEXT_COLORS.white,
+    };
+  return { bgColor: '#B9A1E6', textColor: LOYALTY_PASSES_TEXT_COLORS.black };
 };
 
 const LeftColumn = ({
@@ -68,10 +100,11 @@ export default function OgImageLoyaltyPass({
 }: Props) {
   const words = title.split(' ');
   const hasMoreThan2Words = title.split(' ').length > 2;
+  const { bgColor, textColor } = getBgColour(tier);
   return (
     <div
       style={{
-        background: getBgColour(tier),
+        background: bgColor,
         width: '100%',
         height: '100%',
         display: 'flex',
@@ -93,7 +126,7 @@ export default function OgImageLoyaltyPass({
               fontWeight: '400',
               fontSize: '19px',
               letterSpacing: '0.12px',
-              color: '#120E0AB2',
+              color: textColor,
               right: '20px',
             }}
           >
@@ -105,7 +138,7 @@ export default function OgImageLoyaltyPass({
             style={{
               background: '#FFFFFF2E',
               borderRadius: '20px',
-              width: gatewayId.length * 15 + 'px',
+              width: gatewayId.length * 17 + 'px',
               left: '315px',
               display: 'flex',
             }}
@@ -116,7 +149,7 @@ export default function OgImageLoyaltyPass({
                 fontSize: '20px',
                 letterSpacing: '0.078px',
                 lineHeight: '14px',
-                color: '#120E0AB2',
+                color: textColor,
 
                 padding: '10px',
               }}
@@ -152,8 +185,8 @@ export default function OgImageLoyaltyPass({
               <div
                 style={{
                   width: '444px',
-                  height: hasMoreThan2Words ? '130px' : '60px',
-                  background: getBgColour(tier),
+                  height: hasMoreThan2Words ? '130px' : '80px',
+                  background: bgColor,
                   top: '240px',
                   display: 'flex',
                   borderRadius: '12px',
@@ -164,7 +197,7 @@ export default function OgImageLoyaltyPass({
                     fontWeight: '700',
                     fontSize: '47.8px',
                     position: 'absolute',
-                    color: '#120E0A',
+                    color: textColor,
                     padding: '15px',
                     marginTop: '5px',
                     letterSpacing: '0.179px',
@@ -181,7 +214,7 @@ export default function OgImageLoyaltyPass({
                       fontWeight: '700',
                       fontSize: '47.8px',
                       position: 'absolute',
-                      color: '#120E0A',
+                      color: textColor,
                       letterSpacing: '0.179px',
                       lineHeight: '29.29px',
                       marginTop: '63px',
@@ -212,7 +245,7 @@ export default function OgImageLoyaltyPass({
                 style={{
                   fontWeight: '400',
                   fontSize: '19px',
-                  color: 'rgba(18, 14, 10, 0.70);',
+                  color: textColor,
                   lineHeight: '14.29px',
                   position: 'relative',
                   top: '-25px',
@@ -226,7 +259,7 @@ export default function OgImageLoyaltyPass({
                 style={{
                   fontWeight: '700',
                   fontSize: '47.8px',
-                  color: '#120E0A',
+                  color: textColor,
                   position: 'relative',
                   letterSpacing: '0.179px',
                   lineHeight: '29.29px',
