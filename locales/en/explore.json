@@ -1,11 +1,11 @@
 {
   "title": "Explore",
   "passes-tab": "Passes",
-  "subtitle": "Discover Credentials, Organizations, and People",
+  "subtitle": "Discover PDAs, Organizations, and People",
   "featured-credentials": {
-    "title": "Earn credentials",
-    "caption": "People are really into these credentials. We thought you would too.",
-    "see-more": "View more credentials"
+    "title": "Earn PDAs",
+    "caption": "People are really into these PDAs. We thought you would too.",
+    "see-more": "View more PDAs"
   },
   "featured-organizations": {
     "title": "Recommended Organizations",
@@ -14,12 +14,12 @@
   },
   "featured-passes": {
     "title": "Passes",
-    "caption": "Unlock new milestones with every earned credential.",
+    "caption": "Unlock new milestones with every earned PDA.",
     "see-more": "View more passes"
   },
   "featured-data-models": {
-    "title": "Issue credentials",
-    "caption": "Select one of the templates, set up the claims, and you are ready to issue a credential for anyone.",
+    "title": "Issue PDAs",
+    "caption": "Select one of the templates, set up the claims, and you are ready to issue a PDA for anyone.",
     "see-more": "View more"
   },
   "featured-people": {
@@ -35,29 +35,29 @@
     "cta": "ISSUE NOW"
   },
   "earn-credentials-banner": {
-    "title": "Earn credentials",
-    "description": " Execute tasks and earn credentials",
-    "img-alt": "earn credential image",
+    "title": "Earn PDAs",
+    "description": " Execute tasks and earn PDAs",
+    "img-alt": "earn PDA image",
     "cta": "START NOW"
   },
   "data-models-p2p": {
-    "title": "Issue credentials",
-    "description": "Select one of the templates, set up the claims, and you are ready to issue a credential for anyone."
+    "title": "Issue PDAs",
+    "description": "Select one of the templates, set up the claims, and you are ready to issue a PDA for anyone."
   },
   "data-models": {
     "title": "Data models",
-    "description": "You can also issue own credentials using other models from Gateway Protocol."
+    "description": "You can also issue own PDAs using other models from Gateway Protocol."
   },
   "meta-data": {
     "all-title": "Explore",
-    "all-description": "Earn, issue credentials, and stay connected",
-    "earn-title": "Earn Credentials",
-    "earn-description": "Earn verifiable credentials",
-    "issue-title": "Issue Credentials",
-    "issue-description": "Issue credentials to everyone",
+    "all-description": "Earn, issue PDAs, and stay connected",
+    "earn-title": "Earn PDAs",
+    "earn-description": "Earn verifiable PDAs",
+    "issue-title": "Issue PDAs",
+    "issue-description": "Issue PDAs to everyone",
     "passes-title": "Passes",
-    "passes-description": "Unlock new milestones with every earned credential",
+    "passes-description": "Unlock new milestones with every earned PDA",
     "organizations-title": "Organizations",
-    "organizations-description": "Find the organizations that are issuing the best credentials"
+    "organizations-description": "Find the organizations that are issuing the best PDAs"
   }
 }

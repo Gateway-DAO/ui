@@ -6,12 +6,12 @@
   "action-back": "Back",
   "step-create-profile": {
     "title": "Create your organization profile",
-    "description": "Welcome to the organization application form!\nWe're excited to learn more about your organization and help you issue your first credentials.",
+    "description": "Welcome to the organization application form!\nWe're excited to learn more about your organization and help you issue your first PDAs.",
     "action": "Let's get started"
   },
   "step-name": {
     "title": "Name your organization profile",
-    "description": "You're free to choose any name you like that is unique to your organization. This name will represent your brand within our platform.\nWe're excited to learn more about your organization and help you issue your first credentials.",
+    "description": "You're free to choose any name you like that is unique to your organization. This name will represent your brand within our platform.\nWe're excited to learn more about your organization and help you issue your first PDAs.",
     "label": "Organization Name",
     "action": "Continue"
   },
@@ -66,7 +66,7 @@
   },
   "step-success": {
     "title": "Aplication submitted sucessfully",
-    "text": "We are reviewing your application.<n><n>In the meantime, you can customize your space, draft credentials, but can not issue them publicly.\n\nIf your application is denied, the profile and all draft credentials will be deleted.\n\nIf you have questions, don't hesitate to get in touch with us via [email] or [Discord].",
+    "text": "We are reviewing your application.<n><n>In the meantime, you can customize your space, draft PDAs, but can not issue them publicly.\n\nIf your application is denied, the profile and all draft PDAs will be deleted.\n\nIf you have questions, don't hesitate to get in touch with us via [email] or [Discord].",
     "action": "Go to my profile",
     "stepper-1": "Application",
     "stepper-2": "Review",

@@ -1,14 +1,14 @@
 {
   "gate": {
-    "description": "A credential proving your active participation in Altitude's TestNet launch. Earning a credential shows that you were part of the top 25%, top 10%, or top 2.5% of users!",
+    "description": "A PDA proving your active participation in Altitude's TestNet launch. Earning a credential shows that you were part of the top 25%, top 10%, or top 2.5% of users!",
     "organization": "Altitude DeFi",
     "title": "Testnet Climber!",
     "label": "Testnet",
-    "share-title": "Check your Testnet Climber Credential @ Gateway"
+    "share-title": "Check your Testnet Climber PDA @ Gateway"
   },
   "about": {
     "title": "# of Transactions",
-    "caption": "See if you qualify for a top TestNet user Credential!",
+    "caption": "See if you qualify for a top TestNet user PDA!",
     "created-by": " Created By",
     "progress": {
       "powered-by": "Powered by"
@@ -16,7 +16,7 @@
   },
   "details": {
     "title": "Details",
-    "description": "This credential is issued to all users who have used the Altitude DeFi testnet over the course of the past couple of months. As of July 30th this testnet came to an end. And now it is time to recognize the most consistent and active degens climbing to the top of Altitude DeFi's network."
+    "description": "This PDA is issued to all users who have used the Altitude DeFi testnet over the course of the past couple of months. As of July 30th this testnet came to an end. And now it is time to recognize the most consistent and active degens climbing to the top of Altitude DeFi's network."
   },
   "how": {
     "title": "Here's how!",
@@ -24,10 +24,10 @@
   },
   "why": {
     "title": "Why?",
-    "description": "In the Future Credentials will become a part of your DeFi experience on Altitude DeFi."
+    "description": "In the Future PDAs will become a part of your DeFi experience on Altitude DeFi."
   },
   "modal": {
-    "title": "Your credential is being issued",
+    "title": "Your PDA is being issued",
     "description": "It only takes a few seconds."
   }
 }

@@ -24,16 +24,16 @@
   "title": "Gateway",
   "openApp": "Open App",
   "signUp": "Sign Up",
-  "subtitle": "The Credential Protocol",
-  "titleDescription": "Your home to issue, manage, and consume verifiable credentials.",
+  "subtitle": "The Private Data Asset Network",
+  "titleDescription": "Your home to issue, manage, and consume Private Data Assets (PDAs).",
   "enterButtonTitle": "Enter the gateway",
   "forUsers": {
-    "mainTitle": "Gateway Credential dApp",
-    "secondaryTitle": "Create a Gateway Credential space to drive your community, protocol, or DAO goals! ",
+    "mainTitle": "Gateway Quest Application",
+    "secondaryTitle": "Create a Gateway Quest space to drive your community, protocol, or DAO goals! ",
     "features": [
       {
         "title": "Your dedicated Space",
-        "description": "Gateway’s credential space is fully customizable and modular, allowing you to control your Gateway to web3!",
+        "description": "Gateway’s Quest space is fully customizable and modular, allowing you to control your Gateway to web3!",
         "image": {
           "url": "/images/join-dao-featured-image.png",
           "width": 423,
@@ -41,8 +41,8 @@
         }
       },
       {
-        "title": "Issue Credentials",
-        "description": "Gateway issues credentials in a decentralized manner via our protocol and covers gas fees for any NFTs minted!",
+        "title": "Issue PDAs",
+        "description": "Gateway issues PDAs in a decentralized manner via our protocol and covers gas fees for any NFTs minted!",
         "image": {
           "url": "/images/earn-credentials-featured-image.png",
           "width": 439,
@@ -51,7 +51,7 @@
       },
       {
         "title": "Raise Brand Awareness",
-        "description": "Gateway’s Credential space is a tool to drive social presence and promote your product.",
+        "description": "Gateway’s Quest space is a tool to drive social presence and promote your product.",
         "image": {
           "url": "/images/showcase-featured-image.png",
           "width": 360,
@@ -71,12 +71,12 @@
   },
   "forOrganizations": {
     "comingSoon": "Coming Soon",
-    "mainTitle": "Gateway SDK: Native Credential Issuance and Management",
-    "secondaryTitle": "Implement Gateway’s SDK by building credential models, define conditions for issuance, and consumption.",
+    "mainTitle": "Gateway SDK: Native PDA Issuance and Management",
+    "secondaryTitle": "Implement Gateway’s SDK by building PDA models, define conditions for issuance, and consumption.",
     "features": [
       {
         "title": "Build Data Models",
-        "description": "Build your own claim structure for data that will be stored in a credential or use existing models.",
+        "description": "Build your own claim structure for data that will be stored in a PDA or use existing models.",
         "image": {
           "url": "/images/own-spaces-featured-image.png",
           "width": 466,
@@ -94,7 +94,7 @@
       },
       {
         "title": "Create Utility ",
-        "description": "Gateway credentials have endless usage from governance, to loyalty programs, access controls, and more! ",
+        "description": "Gateway PDAs have endless usage from governance, to loyalty programs, access controls, and more! ",
         "image": {
           "url": "/images/issue-credentials-featured-image.png",
           "width": 539,
@@ -103,7 +103,7 @@
       },
       {
         "title": "Simple Management",
-        "description": "Gateway’s credential model allows you to revoke a credential, set expirations, and reissue.",
+        "description": "Gateway’s PDA model allows you to revoke a PDA, set expirations, and reissue.",
         "image": {
           "url": "/images/find-talent-featured-image.png",
           "width": 501,
@@ -113,19 +113,19 @@
     ]
   },
   "theGatewayContent": {
-    "title": "The Gateway Credential Model",
+    "title": " Why Private Data Assets?",
     "features": [
       {
         "title": "User Sovereignty",
-        "description": "Gateway’s places your autonomy first. Our credentials are privacy preserving, yet publicly verifiable. We give users control over credential permissions and access."
+        "description": "Gateway’s places your autonomy first. Our PDAs are privacy preserving, yet publicly verifiable. We give users control over credential permissions and access."
       },
       {
         "title": "Encrypted",
-        "description": "Gateway’s credential data lives on Arweave, allowing for greater encryption over individual data sets. Allowing for you to gate your digital identity and protect your digital rights."
+        "description": "Gateway’s PDA data lives on Arweave, allowing for greater encryption over individual data sets. Allowing for you to gate your digital identity and protect your digital rights."
       },
       {
         "title": "Composable",
-        "description": "Credential existence can be verified on-chain, minted on any chain, while its information remains off-chain. Allowing for greater usage across web3!"
+        "description": "PDA existence can be verified on-chain, minted on any chain, while its information remains off-chain. Allowing for greater usage across web3!"
       }
     ],
     "image": {
@@ -136,19 +136,19 @@
   },
   "buildAppsContent": {
     "title": "The Gateway Standard",
-    "description": "We provide the technology needed to issue, manage, index, and utilize credentials to build a robust digital identity.",
+    "description": "We provide the technology needed to issue, manage, index, and utilize PDAs to build a robust digital identity.",
     "features": [
       {
         "title": "Consumption",
-        "description": "Credentials issued via Gateway can be used for governance weighting, community scores, credit scores, access controls, and much more!"
+        "description": "PDAs issued via Gateway can be used for governance weighting, community scores, credit scores, access controls, and much more!"
       },
       {
         "title": "Gateway Protocol",
-        "description": "Gateway’s protocol allows organizations to easily manage and issue credentials, while Gateway handles the indexing and curation of data-models."
+        "description": "Gateway’s protocol allows organizations to easily manage and issue PDAs, while Gateway handles the indexing and curation of data-models."
       },
       {
         "title": "Data-Providers",
-        "description": "Every engine needs it's fuel. Gateway's data partners support an open-source and composable data network, which serves as the basis of Gateway’s credential protocol."
+        "description": "Every engine needs it's fuel. Gateway's data partners support an open-source and composable data network, which serves as the basis of Gateway’s PDA protocol."
       }
     ],
     "image": {
@@ -253,7 +253,7 @@
   },
   "orgCreation": {
     "title": "Create a profile for your organization",
-    "description": "A space for your organization issue, manage, and consume verifiable credentials.",
+    "description": "A space for your organization issue, manage, and consume verifiable PDAs.",
     "buttonLabel": "Create now"
   },
   "footerContent": {
