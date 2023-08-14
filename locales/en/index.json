@@ -120,11 +120,11 @@
         "description": "Gateway’s places your autonomy first. Our PDAs are privacy preserving, yet publicly verifiable. We give users control over credential permissions and access."
       },
       {
-        "title": "Encrypted",
+        "title": "Encryption",
         "description": "Gateway’s PDA data lives on Arweave, allowing for greater encryption over individual data sets. Allowing for you to gate your digital identity and protect your digital rights."
       },
       {
-        "title": "Composable",
+        "title": "Composability",
         "description": "PDA existence can be verified on-chain, minted on any chain, while its information remains off-chain. Allowing for greater usage across web3!"
       }
     ],
