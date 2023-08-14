@@ -117,7 +117,7 @@
     "features": [
       {
         "title": "User Sovereignty",
-        "description": "Gateway’s places your autonomy first. Our PDAs are privacy preserving, yet publicly verifiable. We give users control over credential permissions and access."
+        "description": "Gateway’s places your autonomy first. Our PDAs are privacy preserving, yet publicly verifiable. We give users control over PDA permissions and access."
       },
       {
         "title": "Encryption",
@@ -125,7 +125,7 @@
       },
       {
         "title": "Composability",
-        "description": "PDA existence can be verified on-chain, minted on any chain, while its information remains off-chain. Allowing for greater usage across web3!"
+        "description": "PDA existence can be verified on-chain, while its information remains off-chain. Allowing for greater usage across web3!"
       }
     ],
     "image": {
