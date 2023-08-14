@@ -64,6 +64,10 @@ export function CredentialsList({ gates, credentialsByLoyalty }: Props) {
               key={gate.id}
               gate={gate}
               gateIsCompleted={!!gateIsCompleted(credentialsByLoyalty, gate)}
+              points={
+                credentialsByLoyalty.find((c) => c?.gate?.id === gate?.id)
+                  ?.points ?? gate?.points
+              }
             />
           ))}
       </Stack>

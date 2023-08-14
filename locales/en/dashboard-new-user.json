@@ -12,7 +12,7 @@
       "gateway-id": "Gateway ID",
       "gateway-id-helper-text": "Only lowercase letters, numbers and ._-",
       "e-mail": "E-mail",
-      "e-mail-helper-text": "You'll be notified when a credential is issued to you by e-mail",
+      "e-mail-helper-text": "You'll be notified when a PDA is issued to you by e-mail",
       "code": "Code"
     },
     "send-email-action": "Create account",
