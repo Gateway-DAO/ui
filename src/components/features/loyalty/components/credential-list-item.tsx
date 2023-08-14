@@ -16,9 +16,10 @@ import { Chip, Stack, Typography, alpha } from '@mui/material';
 type Props = {
   gate: PartialDeep<Gates>;
   gateIsCompleted: boolean;
+  points?: number;
 };
 
-export function CredentialListItem({ gate, gateIsCompleted }: Props) {
+export function CredentialListItem({ gate, gateIsCompleted, points }: Props) {
   return (
     <Link
       href={ROUTES.LOYALTY_PROGRAM_CREDENTIAL.replace('[id]', gate.id)}
@@ -70,10 +71,10 @@ export function CredentialListItem({ gate, gateIsCompleted }: Props) {
             {limitChars(gate?.description, 90)}
           </Typography>
         </Stack>
-        {gate.points && gate.points > 0 && (
+        {points && points > 0 && (
           <Chip
             variant="filled"
-            label={`+${gate.points} pts`}
+            label={`+${points} pts`}
             size="medium"
             sx={{
               color: brandColors.white.main,
