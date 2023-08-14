@@ -1,34 +1,23 @@
 import useTranslation from 'next-translate/useTranslation';
 
+import ShareOn from '@/components/atoms/share-on';
+import ModalContent from '@/components/molecules/modal/modal-basic';
 import { useActualTier } from '@/hooks/use-actual-tier';
 import { useAuth } from '@/providers/auth';
 import { Loyalty_Program, Loyalty_Progress } from '@/services/hasura/types';
 import { TOKENS, brandColors } from '@/theme';
-import { PartialDeep } from 'type-fest/source/partial-deep';
-
-import ModalContent from '@/components/molecules/modal/modal-basic';
-
-import {
-  Avatar,
-  Box,
-  Button,
-  Chip,
-  Icon,
-  IconButton,
-  Stack,
-  Typography,
-  alpha,
-} from '@mui/material';
-import MUICard from '@mui/material/Card';
-
-import FullscreenOutlinedIcon from '@mui/icons-material/FullscreenOutlined';
-import { TierRuler } from './tier-ruler';
-import { useToggle } from 'react-use';
-import ShareOn from '@/components/atoms/share-on';
 import {
   LOYALTY_PASSES_BG_COLORS,
   LOYALTY_PASSES_TEXT_COLORS,
 } from '@/utils/loyalty-pass/colors';
+import { useToggle } from 'react-use';
+import { PartialDeep } from 'type-fest/source/partial-deep';
+
+import FullscreenOutlinedIcon from '@mui/icons-material/FullscreenOutlined';
+import { Box, IconButton, Stack, Typography, alpha } from '@mui/material';
+import MUICard from '@mui/material/Card';
+
+import { TierRuler } from './tier-ruler';
 
 type Props = {
   loyalty: PartialDeep<Loyalty_Program>;
@@ -46,7 +35,7 @@ export function Tier({ loyalty, loyaltyProgress }: Props) {
     totalPoints: loyaltyProgress?.points,
   });
   const getBgColour = (tier: string) => {
-    if (tier === 'Basic')
+    if (tier === 'Novice')
       return {
         bgColor: LOYALTY_PASSES_BG_COLORS.basic,
         textColor: LOYALTY_PASSES_TEXT_COLORS.black,
