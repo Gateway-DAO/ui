@@ -2,11 +2,11 @@
   "gate_type": {
     "task_based": {
       "title": "Through requirements",
-      "description": "Define the requirements to obtain the credential."
+      "description": "Define the requirements to obtain the PDA."
     },
     "direct": {
-      "title": "Send credential directly",
-      "description": "Send this credential directly to someone or a group of people."
+      "title": "Send PDA directly",
+      "description": "Send this PDA directly to someone or a group of people."
     }
   },
   "gate_type_change_modal": {
@@ -92,7 +92,7 @@
     }
   },
   "notifications": {
-    "published": "published a new credential: "
+    "published": "published a new PDA: "
   },
-  "pending-org-alert": "You can not publish a credential, because your profile is waiting for approval."
+  "pending-org-alert": "You can not publish a PDA, because your profile is waiting for approval."
 }
