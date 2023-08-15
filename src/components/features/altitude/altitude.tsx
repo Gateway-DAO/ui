@@ -285,7 +285,7 @@ export function AltitudeTemplate() {
                 }}
                 disabled={!credential?.id}
               >
-                VIEW PDA
+                VIEW PRIVATE DATA ASSET
               </Button>
               {credential?.id && !credential?.nft?.minted && (
                 <LoadingButton
