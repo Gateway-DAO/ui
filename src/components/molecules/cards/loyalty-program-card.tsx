@@ -51,7 +51,9 @@ export function LoyaltyProgramCard({
 
   const actualTier = useActualTier({
     tiers: loyalty_tiers,
-    totalPoints: loyaltyProgress?.points,
+    totalPoints:
+      loyaltyProgress?.loyalty_program_protocol?.claim?.points ??
+      loyaltyProgress?.points,
   });
 
   return (
@@ -110,11 +112,17 @@ export function LoyaltyProgramCard({
               <>
                 <TierInfo
                   tier={actualTier?.tier}
-                  totalPoints={loyaltyProgress?.points}
+                  totalPoints={
+                    loyaltyProgress?.loyalty_program_protocol?.claim?.points ??
+                    loyaltyProgress?.points
+                  }
                 />
                 <TierRuler
                   tiers={loyalty_tiers}
-                  totalPoints={loyaltyProgress?.points}
+                  totalPoints={
+                    loyaltyProgress?.loyalty_program_protocol?.claim?.points ??
+                    loyaltyProgress?.points
+                  }
                   size="small"
                 />
               </>

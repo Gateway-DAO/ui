@@ -4,7 +4,11 @@ import ShareOn from '@/components/atoms/share-on';
 import ModalContent from '@/components/molecules/modal/modal-basic';
 import { useActualTier } from '@/hooks/use-actual-tier';
 import { useAuth } from '@/providers/auth';
-import { Loyalty_Program, Loyalty_Progress } from '@/services/hasura/types';
+import {
+  Loyalty_Program,
+  Loyalty_Progress,
+  Protocol_Credential,
+} from '@/services/hasura/types';
 import { TOKENS, brandColors } from '@/theme';
 import {
   LOYALTY_PASSES_BG_COLORS,
@@ -22,9 +26,10 @@ import { TierRuler } from './tier-ruler';
 type Props = {
   loyalty: PartialDeep<Loyalty_Program>;
   loyaltyProgress: PartialDeep<Loyalty_Progress>;
+  protocolCredential: PartialDeep<Protocol_Credential>;
 };
 
-export function Tier({ loyalty, loyaltyProgress }: Props) {
+export function Tier({ loyalty, loyaltyProgress, protocolCredential }: Props) {
   const { t } = useTranslation('loyalty-program');
   const { me } = useAuth();
 
@@ -32,7 +37,9 @@ export function Tier({ loyalty, loyaltyProgress }: Props) {
 
   const actualTier = useActualTier({
     tiers: loyalty.loyalty_tiers,
-    totalPoints: loyaltyProgress?.points,
+    totalPoints:
+      loyaltyProgress?.loyalty_program_protocol?.claim?.points ??
+      loyaltyProgress?.points,
   });
   const getBgColour = (tier: string) => {
     if (tier === 'Novice')
@@ -100,13 +107,13 @@ export function Tier({ loyalty, loyaltyProgress }: Props) {
             lineHeight={0.9}
             sx={{ fontSize: { xs: 60, md: 96 } }}
           >
-            {loyaltyProgress?.points ?? 0}
+            {protocolCredential?.claim?.points ?? 0}
           </Typography>
           <Typography sx={{ color: alpha(brandColors.white.main, 0.7) }}>
             pts
           </Typography>
         </Stack>
-        {me?.id && loyaltyProgress?.points && actualTier?.tier && (
+        {me?.id && protocolCredential?.claim?.points && actualTier?.tier && (
           <MUICard
             sx={{
               backgroundColor: getBgColour(actualTier?.tier).bgColor,
@@ -170,7 +177,7 @@ export function Tier({ loyalty, loyaltyProgress }: Props) {
       </Stack>
       <TierRuler
         tiers={loyalty.loyalty_tiers}
-        totalPoints={loyaltyProgress?.points}
+        totalPoints={protocolCredential?.claim?.points}
       />
       <ModalContent
         open={shareLoyaltyIsOpen}

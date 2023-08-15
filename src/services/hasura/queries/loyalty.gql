@@ -20,12 +20,18 @@ query get_loyalty_progress_by_user_id_by_loyalty(
   $user_id: uuid!
   $loyalty_id: uuid!
 ) {
-  loyalty_progress(where: {loyalty_program_id: {_eq: $loyalty_id}, user_id: {_eq: $user_id}}) {
+  loyalty_progress(
+    where: {
+      loyalty_program_id: { _eq: $loyalty_id }
+      user_id: { _eq: $user_id }
+    }
+  ) {
     protocol_credential_id
     loyalty_program_protocol {
       id
       txHash
       nftId
+      claim
     }
     points
   }

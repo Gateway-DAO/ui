@@ -4,6 +4,7 @@ import {
   Credentials,
   Loyalty_Program,
   Loyalty_Progress,
+  Protocol_Credential,
 } from '@/services/hasura/types';
 import { TOKENS } from '@/theme';
 import ReactMarkdown from 'react-markdown';
@@ -20,12 +21,14 @@ type Props = {
   loyalty: PartialDeep<Loyalty_Program>;
   loyaltyProgress: PartialDeep<Loyalty_Progress>;
   credentialsByLoyalty?: PartialDeep<Credentials>[];
+  protocolCredential?: PartialDeep<Protocol_Credential>;
 };
 
 function MainContent({
   loyalty,
   credentialsByLoyalty,
   loyaltyProgress,
+  protocolCredential,
 }: Props) {
   return (
     <>
@@ -48,7 +51,11 @@ function MainContent({
       </Stack>
       {loyalty?.gates?.length > 0 && (
         <>
-          <Tier loyalty={loyalty} loyaltyProgress={loyaltyProgress} />
+          <Tier
+            loyalty={loyalty}
+            loyaltyProgress={loyaltyProgress}
+            protocolCredential={protocolCredential}
+          />
           <CredentialsList
             gates={loyalty?.gates}
             credentialsByLoyalty={credentialsByLoyalty}
@@ -83,6 +90,7 @@ export function LoyaltyProgram({
           loyalty={loyalty}
           loyaltyProgress={loyaltyProgress}
           credentialsByLoyalty={credentialsByLoyalty}
+          protocolCredential={loyaltyProgress?.loyalty_program_protocol}
         />
       }
     />
