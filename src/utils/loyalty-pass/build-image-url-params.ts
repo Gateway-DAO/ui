@@ -5,7 +5,7 @@ export const getLoyaltyPassImageURLParams = (
   loyaltyPass: PartialDeep<Loyalty_Program>,
   gatewayId: string,
   actualTier: string,
-  qrCode: string
+  qrCode?: string
 ): string => {
   try {
     return `?daoName=${loyaltyPass.dao.name}&daoImage=${
