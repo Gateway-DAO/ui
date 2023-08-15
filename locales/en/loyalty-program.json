@@ -11,7 +11,7 @@
     "loading": "Loading.."
   },
   "sidebar": {
-    "display-credential": "View PDA",
+    "display-credential": "View loyalty pass",
     "data-model-id": "Data model ID"
   }
 }
