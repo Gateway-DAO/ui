@@ -63,6 +63,10 @@ export function CredentialsList({ gates, credentialsByLoyalty }: Props) {
             <CredentialListItem
               key={gate.id}
               gate={gate}
+              image={
+                credentialsByLoyalty?.find((c) => c?.gate?.id === gate?.id)
+                  ?.credentials_protocol?.image
+              }
               gateIsCompleted={!!gateIsCompleted(credentialsByLoyalty, gate)}
               points={
                 credentialsByLoyalty.find((c) => c?.gate?.id === gate?.id)

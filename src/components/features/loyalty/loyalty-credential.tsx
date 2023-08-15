@@ -27,11 +27,11 @@ export function LoyaltyProgramCredential({
     <LeftSidebarTemplate
       sidebar={
         <LoyaltySidebar
-          credential={credential}
           gate={gate}
           loyalty={loyalty}
           loyaltyProgress={loyaltyProgress}
           protocolCredential={credential?.credentials_protocol}
+          points={credential?.points}
         />
       }
       mainContent={
