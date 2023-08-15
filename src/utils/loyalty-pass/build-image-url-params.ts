@@ -8,15 +8,17 @@ export const getLoyaltyPassImageURLParams = (
   qrCode: string
 ): string => {
   try {
-    return `?daoName=${loyaltyPass.dao.name}&title=${
-      loyaltyPass.name
-    }&gatewayId=${gatewayId.split(' ')[0]}&tier=${actualTier}${
+    return `?daoName=${loyaltyPass.dao.name}&daoImage=${
+      loyaltyPass.dao.logo_url
+    }&title=${loyaltyPass.name}&gatewayId=${
+      gatewayId.split(' ')[0]
+    }&tier=${actualTier}${
       loyaltyPass.image ? '&image=' + loyaltyPass.image : ''
     }${
       loyaltyPass.dao?.logo?.s3_key
         ? '&daoLogo=' + loyaltyPass.dao.logo.s3_key
         : ''
-    }`;
+    }${qrCode ? ' &qrCode=' + encodeURI(qrCode) : ''}`;
   } catch (error) {
     return '';
   }

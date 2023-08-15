@@ -6,7 +6,9 @@ import {
   Protocol_Api_Credential,
 } from '@/services/hasura/types';
 import { getCredentialImageURLParams } from '@/utils/credential/build-image-url-params';
+import { getLoyaltyPassImageURLParams } from '@/utils/loyalty-pass/build-image-url-params';
 import objectToParams from '@/utils/map-object';
+import { useCreateQrCode } from '@/utils/qr-code/qr-code';
 import { useSnackbar } from 'notistack';
 import { PartialDeep } from 'type-fest';
 
@@ -14,8 +16,6 @@ import { LinkedIn, Twitter, Download, Link } from '@mui/icons-material';
 import { Stack, Typography, Box } from '@mui/material';
 
 import SquareButton from './buttons/square-button';
-import { getLoyaltyPassImageURLParams } from '@/utils/loyalty-pass/build-image-url-params';
-import { useCreateQrCode } from '@/utils/qr-code/qr-code';
 
 declare global {
   interface Window {
