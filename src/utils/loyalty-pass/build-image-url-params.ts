@@ -16,7 +16,7 @@ export const getLoyaltyPassImageURLParams = (
       loyaltyPass.dao?.logo?.s3_key
         ? '&daoLogo=' + loyaltyPass.dao.logo.s3_key
         : ''
-    }`;
+    }${qrCode ? ' &qrCode=' + encodeURI(qrCode) : ''}`;
   } catch (error) {
     return '';
   }
