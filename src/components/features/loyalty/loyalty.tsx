@@ -21,7 +21,7 @@ type Props = {
   loyalty: PartialDeep<Loyalty_Program>;
   loyaltyProgress: PartialDeep<Loyalty_Progress>;
   credentialsByLoyalty?: PartialDeep<Credentials>[];
-  protocolCredential: PartialDeep<Protocol_Credential>;
+  protocolCredential?: PartialDeep<Protocol_Credential>;
 };
 
 function MainContent({
