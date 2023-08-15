@@ -61,6 +61,7 @@ const handler = async (req: NextRequest) => {
         tier={tier}
         daoImage={daoImage}
         image={image}
+        qrCode={qrCode}
       />
     ),
     {

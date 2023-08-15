@@ -11,6 +11,7 @@ type Props = {
   gatewayId: string;
   tier: string;
   image: string;
+  qrCode: string;
 };
 
 const getBgColour = (tier: string) => {
@@ -102,10 +103,12 @@ export default function OgImageLoyaltyPass({
   gatewayId,
   tier,
   image,
+  qrCode
 }: Props) {
   const words = title.split(' ');
   const hasMoreThan2Words = title.split(' ').length > 2;
   const { bgColor, textColor } = getBgColour(tier);
+
   return (
     <div
       style={{
@@ -125,7 +128,19 @@ export default function OgImageLoyaltyPass({
           justifyContent: 'space-between',
         }}
       >
-          <img style={{ marginTop: '20px', marginLeft: '20px'}} src={daoImage} alt={daoName} height="35px" />
+          <div style={{ display: "flex", gap: "11px", justifyContent: "center", flexDirection: "row", alignItems: "center", marginLeft: '20px', marginTop: '20px' }}>
+            <img src={daoImage} alt={daoName} height="35px" style={{ borderRadius: "50%"}} />
+            <span
+            style={{
+              fontWeight: '400',
+              fontSize: '19px',
+              letterSpacing: '0.12px',
+              color: textColor,
+            }}
+          >
+            {daoName}
+          </span>
+          </div>
           <span style={{
             fontWeight: '400',
             background: 'rgba(255, 255, 255, 0.1)',
@@ -319,33 +334,3 @@ export default function OgImageLoyaltyPass({
     </div>
   );
 }
-
-
-    //      <RightColumn sx={{ textAlign: 'left'}} mt={20}>
-    //        <button
-    //         style={{
-    //           background: 'red',
-    //           borderRadius: '20px',
-    //           width: '10px',
-    //           left: '0px',
-    //           display: 'flex',
-    //         }}
-    //       > 
-    //       <span
-    //       style={{
-    //         fontWeight: '400',
-    //         background: 'red',
-    //         fontSize: '20px',
-    //         letterSpacing: '0.078px',
-    //         lineHeight: '14px',
-    //         color: textColor,
-    //         display: 'flex',
-    //         borderRadius: '20px',
-    //         width: '100%',
-    //         padding: '10px',
-    //       }}
-    //     >
-    //       {'@' + gatewayId}
-    //     </span>
-    //    </button> 
-    // </RightColumn>
