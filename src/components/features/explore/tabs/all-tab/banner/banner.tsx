@@ -52,7 +52,10 @@ export default function Banner(): JSX.Element {
               <Button
                 variant="contained"
                 sx={{ mt: 4 }}
-                href={ROUTES.ALTITUDE}
+                href={ROUTES.LOYALTY_PROGRAM.replace(
+                  '[id]',
+                  process.env.NEXT_PUBLIC_LIFI_LOYALTY_PASS
+                )}
                 id="explore-banner-primary"
               >
                 {t('common:featured-banner.action')}
