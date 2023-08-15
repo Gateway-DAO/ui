@@ -1,18 +1,52 @@
+import {
+  LOYALTY_PASSES_BG_COLORS,
+  LOYALTY_PASSES_TEXT_COLORS,
+} from '@/utils/loyalty-pass/colors';
+
 type Props = {
   origin: string;
   daoName: string;
   title: string;
   gatewayId: string;
   tier: string;
-  qrCode: string;
   image: string;
 };
+
 const getBgColour = (tier: string) => {
-  if (tier === 'Baby' || tier === 'Bronze') return '#DDA490';
-  else if (tier === 'Silver' || tier === 'Platinum') return '#D2D2D2';
-  else if (tier === 'Gold') return '#FFAA29';
-  else if (tier.includes('Diamond')) return '#363636';
-  return '#DDA490';
+  if (tier === 'Basic')
+    return {
+      bgColor: LOYALTY_PASSES_BG_COLORS.basic,
+      textColor: LOYALTY_PASSES_TEXT_COLORS.black,
+    };
+  if (tier === 'Bronze')
+    return {
+      bgColor: LOYALTY_PASSES_BG_COLORS.bronze,
+      textColor: LOYALTY_PASSES_TEXT_COLORS.black,
+    };
+  if (tier === 'Silver')
+    return {
+      bgColor: LOYALTY_PASSES_BG_COLORS.silver,
+      textColor: LOYALTY_PASSES_TEXT_COLORS.black,
+    };
+  if (tier === 'Gold')
+    return {
+      bgColor: LOYALTY_PASSES_BG_COLORS.gold,
+      textColor: LOYALTY_PASSES_TEXT_COLORS.black,
+    };
+  if (tier === 'Platinum')
+    return {
+      bgColor: LOYALTY_PASSES_BG_COLORS.platinum,
+      textColor: LOYALTY_PASSES_TEXT_COLORS.white,
+    };
+  if (tier === 'Tungsten')
+    return {
+      bgColor: LOYALTY_PASSES_BG_COLORS.tungsten,
+      textColor: LOYALTY_PASSES_TEXT_COLORS.white,
+    };
+  return {
+    bgColor: LOYALTY_PASSES_BG_COLORS.basic,
+    textColor: LOYALTY_PASSES_TEXT_COLORS.black,
+  };
 };
 
 const LeftColumn = ({
@@ -65,16 +99,15 @@ export default function OgImageLoyaltyPass({
   title,
   gatewayId,
   tier,
-  qrCode,
   image,
 }: Props) {
-  console.log(daoName, title, gatewayId, tier, qrCode, image);
-  const hasMoreThan2Words = title.split(' ').length > 2;
   const words = title.split(' ');
+  const hasMoreThan2Words = title.split(' ').length > 2;
+  const { bgColor, textColor } = getBgColour(tier);
   return (
     <div
       style={{
-        background: getBgColour(tier),
+        background: bgColor,
         width: '100%',
         height: '100%',
         display: 'flex',
@@ -94,9 +127,9 @@ export default function OgImageLoyaltyPass({
           <span
             style={{
               fontWeight: '400',
-              fontSize: '18px',
+              fontSize: '19px',
               letterSpacing: '0.12px',
-              color: '#120E0AB2',
+              color: textColor,
               right: '20px',
             }}
           >
@@ -108,7 +141,7 @@ export default function OgImageLoyaltyPass({
             style={{
               background: '#FFFFFF2E',
               borderRadius: '20px',
-              width: gatewayId.length * 16 + 'px',
+              width: gatewayId.length * 17 + 'px',
               left: '315px',
               display: 'flex',
             }}
@@ -116,12 +149,12 @@ export default function OgImageLoyaltyPass({
             <span
               style={{
                 fontWeight: '400',
-                fontSize: '16px',
+                fontSize: '20px',
                 letterSpacing: '0.078px',
                 lineHeight: '14px',
-                color: '#120E0AB2',
+                color: textColor,
 
-                padding: '8px',
+                padding: '10px',
               }}
             >
               {'@' + gatewayId}
@@ -130,7 +163,7 @@ export default function OgImageLoyaltyPass({
         </RightColumn>
       </div>
       <div style={{ display: 'flex', flexDirection: 'row' }}>
-        <RightColumn mt={25}>
+        <RightColumn mt={1}>
           <>
             <img
               src={image}
@@ -142,22 +175,22 @@ export default function OgImageLoyaltyPass({
                 borderRadius: '50% 50% 0 0',
               }}
               alt={title}
-              width="537px"
-              height="537px"
+              width="556px"
+              height="556px"
             />
             <div
               style={{
                 display: 'flex',
                 position: 'absolute',
-                right: '-305px',
+                right: '-450px',
               }}
             >
               <div
                 style={{
-                  width: '300px',
-                  height: hasMoreThan2Words ? '90px' : '45px',
-                  background: getBgColour(tier),
-                  top: '280px',
+                  width: '444px',
+                  height: hasMoreThan2Words ? '130px' : '80px',
+                  background: bgColor,
+                  top: '240px',
                   display: 'flex',
                   borderRadius: '12px',
                 }}
@@ -165,31 +198,35 @@ export default function OgImageLoyaltyPass({
                 <div
                   style={{
                     fontWeight: '700',
-                    fontSize: '34.8px',
+                    fontSize: '47.8px',
                     position: 'absolute',
-                    color: '#120E0A',
-                    padding: '8px',
-
+                    color: textColor,
+                    padding: '15px',
+                    marginTop: '5px',
                     letterSpacing: '0.179px',
                     lineHeight: '29.29px',
+                    display: 'flex',
                   }}
                 >
-                  {words[0] + ' ' + words[1]}
+                  {words[0] === undefined ? '' : words[0]}{' '}
+                  {words[1] === undefined ? '' : words[1]}
                 </div>
                 {hasMoreThan2Words && (
                   <div
                     style={{
                       fontWeight: '700',
-                      fontSize: '34.8px',
+                      fontSize: '47.8px',
                       position: 'absolute',
-                      color: '#120E0A',
+                      color: textColor,
                       letterSpacing: '0.179px',
                       lineHeight: '29.29px',
-                      marginTop: '40px',
-                      padding: '8px',
+                      marginTop: '63px',
+                      padding: '15px',
+                      display: 'flex',
                     }}
                   >
-                    {words[2] + ' ' + words[3]}
+                    {words[2] === undefined ? '' : words[2]}{' '}
+                    {words[3] === undefined ? '' : words[3]}
                   </div>
                 )}
               </div>
@@ -198,7 +235,7 @@ export default function OgImageLoyaltyPass({
         </RightColumn>
       </div>
       <div style={{ display: 'flex', flexDirection: 'row' }}>
-        <LeftColumn mt={485}>
+        <LeftColumn mt={512}>
           <div
             style={{
               display: 'flex',
@@ -206,38 +243,17 @@ export default function OgImageLoyaltyPass({
               justifyContent: 'space-between',
             }}
           >
-            <div
-              style={{
-                display: 'flex',
-                width: '100%',
-                gap: '15px',
-                marginTop: '-270px',
-                right: '27px',
-              }}
-            >
-              {qrCode && (
-                <img
-                  src={qrCode}
-                  width="170px"
-                  height="170px"
-                  alt="QR Code"
-                  style={{
-                    borderRadius: '28px',
-                  }}
-                />
-              )}
-            </div>
             <div style={{ display: 'flex' }}>
               <div
                 style={{
                   fontWeight: '400',
-                  fontSize: '16px',
-                  color: 'rgba(18, 14, 10, 0.70);',
+                  fontSize: '19px',
+                  color: textColor,
                   lineHeight: '14.29px',
                   position: 'relative',
                   top: '-25px',
                   letterSpacing: '0.121px',
-                  right: '25px',
+                  right: '23px',
                 }}
               >
                 Tier
@@ -245,12 +261,12 @@ export default function OgImageLoyaltyPass({
               <div
                 style={{
                   fontWeight: '700',
-                  fontSize: '34.8px',
-                  color: '#120E0A',
+                  fontSize: '47.8px',
+                  color: textColor,
                   position: 'relative',
                   letterSpacing: '0.179px',
                   lineHeight: '29.29px',
-                  right: '55px',
+                  right: '58px',
                 }}
               >
                 {tier}
@@ -267,8 +283,8 @@ export default function OgImageLoyaltyPass({
           >
             <div
               style={{
-                width: '160px',
-                height: '50px',
+                width: '180px',
+                height: '70px',
                 background: '#120E0A',
                 position: 'relative',
                 left: '280px',
@@ -284,8 +300,8 @@ export default function OgImageLoyaltyPass({
                   color: '#FFFFFF',
                   letterSpacing: '0.179px',
                   lineHeight: '7.01px',
-                  marginTop: '9px',
-                  left: '46px',
+                  marginTop: '19px',
+                  left: '56px',
                 }}
               >
                 Powered by
@@ -293,13 +309,13 @@ export default function OgImageLoyaltyPass({
               <div
                 style={{
                   fontWeight: '700',
-                  fontSize: '20px',
+                  fontSize: '22px',
                   position: 'absolute',
                   color: '#FFFFFF',
                   letterSpacing: '0.179px',
                   lineHeight: '10.29px',
-                  marginTop: '24.6px',
-                  left: '46px',
+                  marginTop: '37px',
+                  left: '56px',
                 }}
               >
                 Gateway
@@ -309,10 +325,12 @@ export default function OgImageLoyaltyPass({
                 style={{
                   display: 'flex',
                   borderRadius: '12px',
+                  marginTop: '7.5px',
+                  left: '4px',
                 }}
                 alt="Symbols"
-                width="45px"
-                height="45px"
+                width="50px"
+                height="50px"
               />
             </div>
           </div>

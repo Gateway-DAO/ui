@@ -1,11 +1,13 @@
 import useTranslation from 'next-translate/useTranslation';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { useMemo } from 'react';
 
 import { AvatarFile } from '@/components/atoms/avatar-file';
 import GateMintButton from '@/components/atoms/buttons/gate-mint-button';
 import ExternalLink from '@/components/atoms/external-link';
 import GateStateChip from '@/components/atoms/gate-state-chip';
+import { ReadMore } from '@/components/atoms/read-more-less';
 import ShareOn from '@/components/atoms/share-on';
 import ModalContent from '@/components/molecules/modal/modal-basic';
 import ModalShareCredential from '@/components/molecules/modal/modal-share-credential';
@@ -25,7 +27,7 @@ import { limitCharsCentered } from '@/utils/string';
 import { useToggle } from 'react-use';
 import { PartialDeep } from 'type-fest/source/partial-deep';
 
-import { IosShare, ReadMore } from '@mui/icons-material';
+import { IosShare } from '@mui/icons-material';
 import {
   Avatar,
   Box,
@@ -43,17 +45,17 @@ import { SmallTier } from './small-tier';
 type LoyaltySidebarProps = {
   loyalty: PartialDeep<Loyalty_Program>;
   gate?: PartialDeep<Gates>;
-  credential?: PartialDeep<Credentials>;
   protocolCredential: PartialDeep<Credential>;
   loyaltyProgress: PartialDeep<Loyalty_Progress>;
+  points?: number;
 };
 
 export function LoyaltySidebar({
-  credential,
   gate,
   loyalty,
   protocolCredential,
   loyaltyProgress,
+  points,
 }: LoyaltySidebarProps) {
   const { t } = useTranslation();
   const { me } = useAuth();
@@ -68,6 +70,7 @@ export function LoyaltySidebar({
     setShareIsOpen,
     mintCredential,
     showMintButton,
+    credential,
   } = useMintData({
     protocolCredentialId: protocolCredential?.id,
   });
@@ -78,8 +81,12 @@ export function LoyaltySidebar({
     title: gate?.title || loyalty?.name,
     categories: gate?.categories || loyalty?.categories,
     description: gate?.description || loyalty?.description,
-    image: gate?.image || loyalty?.image,
   };
+
+  const image = useMemo(
+    () => credential?.image || gate?.image || loyalty?.image,
+    [credential, gate, loyalty]
+  );
 
   return (
     <>
@@ -227,22 +234,20 @@ export function LoyaltySidebar({
 
           <Box
             component="img"
-            src={texts?.image}
+            src={image}
             alt={texts?.title + ' image'}
             marginBottom={(theme) => theme.spacing(4)}
             sx={{
               width: '100%',
-              borderRadius: gate?.image
-                ? (theme) => theme.spacing(1)
-                : '50% 50% 0 0',
+              borderRadius: image ? (theme) => theme.spacing(1) : '50% 50% 0 0',
             }}
           />
           {gate && (
             <SmallTier
               loyalty={loyalty}
               loyaltyProgress={loyaltyProgress}
-              currentGatePoints={gate?.points}
-              gateIsFinished={!!credential?.credentials_protocol?.id}
+              currentGatePoints={points ?? gate?.points}
+              gateIsFinished={!!credential?.id}
             />
           )}
         </Box>

@@ -16,10 +16,16 @@ import { Chip, Stack, Typography, alpha } from '@mui/material';
 type Props = {
   gate: PartialDeep<Gates>;
   gateIsCompleted: boolean;
+  image?: string;
   points?: number;
 };
 
-export function CredentialListItem({ gate, gateIsCompleted, points }: Props) {
+export function CredentialListItem({
+  gate,
+  gateIsCompleted,
+  image,
+  points,
+}: Props) {
   return (
     <Link
       href={ROUTES.LOYALTY_PROGRAM_CREDENTIAL.replace('[id]', gate.id)}
@@ -58,7 +64,7 @@ export function CredentialListItem({ gate, gateIsCompleted, points }: Props) {
             mr: { xs: 1, md: 4 },
           }}
         >
-          <img src={gate?.image} alt={gate?.title} width={56} />
+          <img src={image ?? gate?.image} alt={gate?.title} width={56} />
         </Stack>
         <Stack sx={{ flexGrow: 1 }}>
           <Typography variant="h6">{gate?.title}</Typography>

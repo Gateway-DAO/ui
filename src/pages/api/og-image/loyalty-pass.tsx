@@ -55,7 +55,6 @@ const handler = async (req: NextRequest) => {
         title={title}
         gatewayId={gatewayId}
         tier={tier}
-        qrCode={qrCode}
         image={image}
       />
     ),
