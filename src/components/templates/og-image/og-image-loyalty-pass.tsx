@@ -136,31 +136,21 @@ export default function OgImageLoyaltyPass({
             {daoName}
           </span>
         </LeftColumn>
-        <RightColumn mt={20}>
-          <button
-            style={{
-              background: '#FFFFFF2E',
-              borderRadius: '20px',
-              width: gatewayId.length * 17 + 'px',
-              left: '315px',
-              display: 'flex',
-            }}
-          >
-            <span
-              style={{
-                fontWeight: '400',
-                fontSize: '20px',
-                letterSpacing: '0.078px',
-                lineHeight: '14px',
-                color: textColor,
-
-                padding: '10px',
-              }}
-            >
-              {'@' + gatewayId}
-            </span>
-          </button>
-        </RightColumn>
+          <span style={{
+            fontWeight: '400',
+            background: 'rgba(255, 255, 255, 0.1)',
+            fontSize: '20px',
+            letterSpacing: '0.078px',
+            lineHeight: '14px',
+            color: textColor,
+            display: 'flex',
+            borderRadius: '20px',
+            marginTop: '20px',
+            marginRight: '15px',
+            padding: '8px 22px 12px',
+          }}>
+          {'@' + gatewayId}
+          </span>
       </div>
       <div style={{ display: 'flex', flexDirection: 'row' }}>
         <RightColumn mt={1}>
@@ -339,3 +329,33 @@ export default function OgImageLoyaltyPass({
     </div>
   );
 }
+
+
+    //      <RightColumn sx={{ textAlign: 'left'}} mt={20}>
+    //        <button
+    //         style={{
+    //           background: 'red',
+    //           borderRadius: '20px',
+    //           width: '10px',
+    //           left: '0px',
+    //           display: 'flex',
+    //         }}
+    //       > 
+    //       <span
+    //       style={{
+    //         fontWeight: '400',
+    //         background: 'red',
+    //         fontSize: '20px',
+    //         letterSpacing: '0.078px',
+    //         lineHeight: '14px',
+    //         color: textColor,
+    //         display: 'flex',
+    //         borderRadius: '20px',
+    //         width: '100%',
+    //         padding: '10px',
+    //       }}
+    //     >
+    //       {'@' + gatewayId}
+    //     </span>
+    //    </button> 
+    // </RightColumn>
