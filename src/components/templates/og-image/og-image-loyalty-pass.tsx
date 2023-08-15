@@ -6,6 +6,7 @@ import {
 type Props = {
   origin: string;
   daoName: string;
+  daoImage: string;
   title: string;
   gatewayId: string;
   tier: string;
@@ -96,6 +97,7 @@ const RightColumn = ({
 export default function OgImageLoyaltyPass({
   origin,
   daoName,
+  daoImage,
   title,
   gatewayId,
   tier,
@@ -123,19 +125,7 @@ export default function OgImageLoyaltyPass({
           justifyContent: 'space-between',
         }}
       >
-        <LeftColumn mt={20}>
-          <span
-            style={{
-              fontWeight: '400',
-              fontSize: '19px',
-              letterSpacing: '0.12px',
-              color: textColor,
-              right: '20px',
-            }}
-          >
-            {daoName}
-          </span>
-        </LeftColumn>
+          <img style={{ marginTop: '20px', marginLeft: '20px'}} src={daoImage} alt={daoName} height="35px" />
           <span style={{
             fontWeight: '400',
             background: 'rgba(255, 255, 255, 0.1)',
