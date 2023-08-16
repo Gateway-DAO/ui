@@ -4,8 +4,7 @@ import { PartialDeep } from 'type-fest';
 export const getLoyaltyPassImageURLParams = (
   loyaltyPass: PartialDeep<Loyalty_Program>,
   gatewayId: string,
-  actualTier: string,
-  qrCode?: string
+  actualTier: string
 ): string => {
   try {
     return `?daoName=${loyaltyPass.dao.name}&daoImage=${
@@ -18,7 +17,7 @@ export const getLoyaltyPassImageURLParams = (
       loyaltyPass.dao?.logo?.s3_key
         ? '&daoLogo=' + loyaltyPass.dao.logo.s3_key
         : ''
-    }${qrCode ? ' &qrCode=' + encodeURI(qrCode) : ''}`;
+    }`;
   } catch (error) {
     return '';
   }

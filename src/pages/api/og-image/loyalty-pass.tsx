@@ -46,9 +46,6 @@ const handler = async (req: NextRequest) => {
   const hasTier = searchParams.has('tier');
   const tier = hasTier ? searchParams.get('tier')?.slice(0, 100) : 'tier';
 
-  const hasQRCode = searchParams.has('qrCode');
-
-  const qrCode = hasQRCode ? searchParams.get('qrCode') : null;
   const hasImage = searchParams.has('image');
   const image = hasImage ? searchParams.get('image')?.slice(0, 100) : null;
   return new ImageResponse(
@@ -61,7 +58,6 @@ const handler = async (req: NextRequest) => {
         tier={tier}
         daoImage={daoImage}
         image={image}
-        qrCode={qrCode}
       />
     ),
     {
