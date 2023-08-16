@@ -140,7 +140,7 @@ export default function OgImageLoyaltyPass({
           <img
             src={daoImage}
             alt={daoName}
-            width="auto"
+            width="35px"
             height="35px"
             style={{ borderRadius: '50%' }}
           />
