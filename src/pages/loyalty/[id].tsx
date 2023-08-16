@@ -90,7 +90,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const urlParams = getLoyaltyPassImageURLParams(
     loyalty_program_by_pk,
     me.protocolUser?.gatewayId,
-    loyaltyTier.current.tier
+    loyaltyTier?.current?.tier
   );
   const ogImage = `https://${host}/api/og-image/loyalty-pass${urlParams}`;
 
