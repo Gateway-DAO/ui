@@ -101,7 +101,7 @@ export default function OgImageLoyaltyPass({
   title,
   gatewayId,
   tier,
-  image
+  image,
 }: Props) {
   const words = title.split(' ');
   const hasMoreThan2Words = title.split(' ').length > 2;
@@ -126,9 +126,24 @@ export default function OgImageLoyaltyPass({
           justifyContent: 'space-between',
         }}
       >
-          <div style={{ display: "flex", gap: "11px", justifyContent: "center", flexDirection: "row", alignItems: "center", marginLeft: '20px', marginTop: '20px' }}>
-            <img src={daoImage} alt={daoName} height="35px" style={{ borderRadius: "50%"}} />
-            <span
+        <div
+          style={{
+            display: 'flex',
+            gap: '11px',
+            justifyContent: 'center',
+            flexDirection: 'row',
+            alignItems: 'center',
+            marginLeft: '20px',
+            marginTop: '20px',
+          }}
+        >
+          <img
+            src={daoImage}
+            alt={daoName}
+            height="35px"
+            style={{ borderRadius: '50%' }}
+          />
+          <span
             style={{
               fontWeight: '400',
               fontSize: '19px',
@@ -138,8 +153,9 @@ export default function OgImageLoyaltyPass({
           >
             {daoName}
           </span>
-          </div>
-          <span style={{
+        </div>
+        <span
+          style={{
             fontWeight: '400',
             background: 'rgba(255, 255, 255, 0.1)',
             fontSize: '20px',
@@ -151,9 +167,10 @@ export default function OgImageLoyaltyPass({
             marginTop: '20px',
             marginRight: '15px',
             padding: '8px 22px 12px',
-          }}>
+          }}
+        >
           {'@' + gatewayId}
-          </span>
+        </span>
       </div>
       <div style={{ display: 'flex', flexDirection: 'row' }}>
         <RightColumn mt={1}>
