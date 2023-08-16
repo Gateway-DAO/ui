@@ -4,7 +4,7 @@ import { PartialDeep } from 'type-fest';
 export const getLoyaltyPassImageURLParams = (
   loyaltyPass: PartialDeep<Loyalty_Program>,
   gatewayId: string,
-  actualTier: string
+  actualTier = 'No tier'
 ): string => {
   try {
     return `?daoName=${loyaltyPass.dao.name}&daoImage=${
