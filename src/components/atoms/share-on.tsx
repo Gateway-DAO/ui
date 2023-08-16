@@ -75,7 +75,7 @@ export default function ShareOn({
   const linkedinLink = `https://www.linkedin.com/shareArticle?mini=true&url=${window.location.href}&utm_source=linkedin&utm_medium=share_dialog`;
 
   const imageUrlParams = isLoyaltyPass
-    ? getLoyaltyPassImageURLParams(loyaltyPass, me.name, actualTier, qrCode)
+    ? getLoyaltyPassImageURLParams(loyaltyPass, me.name, actualTier)
     : getCredentialImageURLParams(credential);
 
   const imageURL = `${window.location.origin}/api/og-image/${

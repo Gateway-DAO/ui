@@ -11,7 +11,6 @@ type Props = {
   gatewayId: string;
   tier: string;
   image: string;
-  qrCode: string;
 };
 
 const getBgColour = (tier: string) => {
@@ -102,8 +101,7 @@ export default function OgImageLoyaltyPass({
   title,
   gatewayId,
   tier,
-  image,
-  qrCode
+  image
 }: Props) {
   const words = title.split(' ');
   const hasMoreThan2Words = title.split(' ').length > 2;
