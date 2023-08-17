@@ -86,10 +86,10 @@ export function SmallTier({
               </Typography>
             </Stack>
           </Stack>
-          <TierInfo tier={actualTier?.tier} totalPoints={points} />
+          <TierInfo tier={actualTier?.tier} totalPoints={loyaltyPoints} />
           <TierRuler
             tiers={loyalty.loyalty_tiers}
-            totalPoints={points}
+            totalPoints={loyaltyPoints}
             size="small"
           />
         </Stack>
