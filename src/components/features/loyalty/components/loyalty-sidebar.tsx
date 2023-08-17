@@ -17,10 +17,9 @@ import { ROUTES } from '@/constants/routes';
 import { useMintData } from '@/hooks/use-mint-data';
 import { useAuth } from '@/providers/auth';
 import {
-  Credentials,
   Gates,
   Loyalty_Program,
-  Loyalty_Progress,
+  Protocol_Credential,
 } from '@/services/hasura/types';
 import { isDaoAdmin } from '@/utils/is-dao-admin';
 import { limitCharsCentered } from '@/utils/string';
@@ -45,17 +44,17 @@ import { SmallTier } from './small-tier';
 type LoyaltySidebarProps = {
   loyalty: PartialDeep<Loyalty_Program>;
   gate?: PartialDeep<Gates>;
-  protocolCredential: PartialDeep<Credential>;
-  loyaltyProgress: PartialDeep<Loyalty_Progress>;
-  points?: number;
+  protocolCredential: PartialDeep<Protocol_Credential>;
+  gatePoints?: number;
+  loyaltyPoints: number;
 };
 
 export function LoyaltySidebar({
   gate,
   loyalty,
   protocolCredential,
-  loyaltyProgress,
-  points,
+  gatePoints,
+  loyaltyPoints = 0,
 }: LoyaltySidebarProps) {
   const { t } = useTranslation();
   const { me } = useAuth();
@@ -245,8 +244,8 @@ export function LoyaltySidebar({
           {gate && (
             <SmallTier
               loyalty={loyalty}
-              loyaltyProgress={loyaltyProgress}
-              currentGatePoints={points ?? gate?.points}
+              loyaltyPoints={loyaltyPoints}
+              currentGatePoints={gatePoints ?? gate?.points}
               gateIsFinished={!!credential?.id}
             />
           )}

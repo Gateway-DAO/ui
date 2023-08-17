@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 import { ROUTES } from '@/constants/routes';
 import { useActualTier } from '@/hooks/use-actual-tier';
-import { Loyalty_Program, Loyalty_Progress } from '@/services/hasura/types';
+import { Loyalty_Program } from '@/services/hasura/types';
 import { brandColors } from '@/theme';
 import { limitChars } from '@/utils/string';
 import { PartialDeep } from 'type-fest/source/partial-deep';
@@ -15,14 +15,14 @@ import { TierRuler } from './tier-ruler';
 
 type Props = {
   loyalty: PartialDeep<Loyalty_Program>;
-  loyaltyProgress: PartialDeep<Loyalty_Progress>;
+  loyaltyPoints: number;
   currentGatePoints: number;
   gateIsFinished: boolean;
 };
 
 export function SmallTier({
   loyalty,
-  loyaltyProgress,
+  loyaltyPoints = 0,
   currentGatePoints,
   gateIsFinished,
 }: Props) {
@@ -30,7 +30,7 @@ export function SmallTier({
 
   const actualTier = useActualTier({
     tiers: loyalty.loyalty_tiers,
-    totalPoints: loyaltyProgress?.points,
+    totalPoints: loyaltyPoints,
   });
   return (
     <>
@@ -86,13 +86,10 @@ export function SmallTier({
               </Typography>
             </Stack>
           </Stack>
-          <TierInfo
-            tier={actualTier?.tier}
-            totalPoints={loyaltyProgress?.points}
-          />
+          <TierInfo tier={actualTier?.tier} totalPoints={points} />
           <TierRuler
             tiers={loyalty.loyalty_tiers}
-            totalPoints={loyaltyProgress?.points}
+            totalPoints={points}
             size="small"
           />
         </Stack>
