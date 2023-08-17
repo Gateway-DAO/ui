@@ -52,6 +52,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 
   let loyaltyProgress;
   let credentials;
+  let ogImage;
 
   if (session) {
     credentials = await hasuraApi(
@@ -66,33 +67,33 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
       user_id: session?.hasura_id,
       loyalty_id: id,
     });
-  }
 
-  const tier = (
-    tiers: any[],
-    totalPoints: number
-  ): { current: any; next: any } => {
-    const asc = tiers.sort((a, b) => a.min_pts - b.min_pts);
-    const current = asc.findIndex(
-      (tier, index) =>
-        (totalPoints >= tier.min_pts && totalPoints <= tier.max_pts) ||
-        (totalPoints >= tier.min_pts && index === asc.length - 1)
+    const tier = (
+      tiers: any[],
+      totalPoints: number
+    ): { current: any; next: any } => {
+      const asc = tiers.sort((a, b) => a.min_pts - b.min_pts);
+      const current = asc.findIndex(
+        (tier, index) =>
+          (totalPoints >= tier.min_pts && totalPoints <= tier.max_pts) ||
+          (totalPoints >= tier.min_pts && index === asc.length - 1)
+      );
+      const next = current === asc.length - 1 ? null : asc[current + 1];
+      return { current: asc[current], next: next };
+    };
+
+    const totalPoints =
+      loyaltyProgress?.loyalty_progress?.find((lp) => lp.points) ?? 0;
+
+    const loyaltyTier = tier(loyalty_program_by_pk.loyalty_tiers, totalPoints);
+
+    const urlParams = getLoyaltyPassImageURLParams(
+      loyalty_program_by_pk,
+      me.protocolUser?.gatewayId,
+      loyaltyTier?.current?.tier
     );
-    const next = current === asc.length - 1 ? null : asc[current + 1];
-    return { current: asc[current], next: next };
-  };
-
-  const totalPoints =
-    loyaltyProgress?.loyalty_progress?.find((lp) => lp.points) ?? 0;
-
-  const loyaltyTier = tier(loyalty_program_by_pk.loyalty_tiers, totalPoints);
-
-  const urlParams = getLoyaltyPassImageURLParams(
-    loyalty_program_by_pk,
-    me.protocolUser?.gatewayId,
-    loyaltyTier?.current?.tier
-  );
-  const ogImage = `https://${host}/api/og-image/loyalty-pass${urlParams}`;
+    ogImage = `https://${host}/api/og-image/loyalty-pass${urlParams}`;
+  }
 
   return {
     props: {
