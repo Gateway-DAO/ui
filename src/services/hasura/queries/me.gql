@@ -146,3 +146,10 @@ query me_protocol {
   }
 }
 
+query gatewayId {
+  protocol {
+    me {
+      gatewayId
+    }
+  }
+}
