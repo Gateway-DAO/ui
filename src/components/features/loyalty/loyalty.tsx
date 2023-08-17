@@ -3,7 +3,6 @@ import LeftSidebarTemplate from '@/components/templates/left-sidebar/left-sideba
 import {
   Credentials,
   Loyalty_Program,
-  Loyalty_Progress,
   Protocol_Credential,
 } from '@/services/hasura/types';
 import { TOKENS } from '@/theme';
@@ -17,19 +16,17 @@ import { CredentialsList } from './components/credentials-list';
 import { LoyaltySidebar } from './components/loyalty-sidebar';
 import { Tier } from './components/tier';
 
-type Props = {
+type MainContentProps = {
   loyalty: PartialDeep<Loyalty_Program>;
-  loyaltyProgress: PartialDeep<Loyalty_Progress>;
+  loyaltyPoints: number;
   credentialsByLoyalty?: PartialDeep<Credentials>[];
-  protocolCredential?: PartialDeep<Protocol_Credential>;
 };
 
 function MainContent({
   loyalty,
+  loyaltyPoints = 0,
   credentialsByLoyalty,
-  loyaltyProgress,
-  protocolCredential,
-}: Props) {
+}: MainContentProps) {
   return (
     <>
       <Stack
@@ -51,11 +48,7 @@ function MainContent({
       </Stack>
       {loyalty?.gates?.length > 0 && (
         <>
-          <Tier
-            loyalty={loyalty}
-            loyaltyProgress={loyaltyProgress}
-            protocolCredential={protocolCredential}
-          />
+          <Tier loyalty={loyalty} loyaltyPoints={loyaltyPoints} />
           <CredentialsList
             gates={loyalty?.gates}
             credentialsByLoyalty={credentialsByLoyalty}
@@ -71,26 +64,31 @@ function MainContent({
   );
 }
 
+type LoyaltyProgramProps = {
+  loyalty: PartialDeep<Loyalty_Program>;
+  credentialsByLoyalty?: PartialDeep<Credentials>[];
+  loyaltyCredential?: PartialDeep<Protocol_Credential>;
+};
+
 export function LoyaltyProgram({
   loyalty,
-  loyaltyProgress,
+  loyaltyCredential,
   credentialsByLoyalty,
-}: Props) {
+}: LoyaltyProgramProps) {
   return (
     <LeftSidebarTemplate
       sidebar={
         <LoyaltySidebar
           loyalty={loyalty}
-          loyaltyProgress={loyaltyProgress}
-          protocolCredential={loyaltyProgress?.loyalty_program_protocol}
+          protocolCredential={loyaltyCredential}
+          loyaltyPoints={loyaltyCredential?.claim?.points}
         />
       }
       mainContent={
         <MainContent
           loyalty={loyalty}
-          loyaltyProgress={loyaltyProgress}
           credentialsByLoyalty={credentialsByLoyalty}
-          protocolCredential={loyaltyProgress?.loyalty_program_protocol}
+          loyaltyPoints={loyaltyCredential?.claim?.points}
         />
       }
     />
