@@ -48,7 +48,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     id,
   });
 
-  const { me } = await hasuraApi(session.token, session.hasura_id).me();
+  // const { me } = await hasuraApi(session.token, session.hasura_id).me();
 
   let loyaltyProgress;
   let credentials;
@@ -67,6 +67,10 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
       user_id: session?.hasura_id,
       loyalty_id: id,
     });
+
+    const { gatewayId } = (
+      await hasuraApi(session.token, session.hasura_id).gatewayId()
+    ).protocol?.me;
 
     const tier = (
       tiers: any[],
@@ -89,7 +93,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 
     const urlParams = getLoyaltyPassImageURLParams(
       loyalty_program_by_pk,
-      me.protocolUser?.gatewayId,
+      gatewayId,
       loyaltyTier?.current?.tier
     );
     ogImage = `https://${host}/api/og-image/loyalty-pass${urlParams}`;
@@ -101,7 +105,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
       credentialsByLoyalty: credentials?.credentials ?? [],
       loyaltyProgress:
         loyaltyProgress?.loyalty_progress?.find((lp) => lp) ?? null,
-      ogImage,
+      ogImage: ogImage ?? null,
     },
   };
 };
