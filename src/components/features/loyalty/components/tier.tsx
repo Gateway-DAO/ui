@@ -44,39 +44,41 @@ export function Tier({ loyalty, loyaltyProgress, protocolCredential }: Props) {
   const getBgColour = (tier: string) => {
     if (tier === 'Novice')
       return {
-        bgColor: LOYALTY_PASSES_BG_COLORS.basic,
-        textColor: LOYALTY_PASSES_TEXT_COLORS.black,
+        backgroundColor: LOYALTY_PASSES_BG_COLORS.basic,
+        color: LOYALTY_PASSES_TEXT_COLORS.black,
       };
     if (tier === 'Bronze')
       return {
-        bgColor: LOYALTY_PASSES_BG_COLORS.bronze,
-        textColor: LOYALTY_PASSES_TEXT_COLORS.black,
+        backgroundColor: LOYALTY_PASSES_BG_COLORS.bronze,
+        color: LOYALTY_PASSES_TEXT_COLORS.black,
       };
     if (tier === 'Silver')
       return {
-        bgColor: LOYALTY_PASSES_BG_COLORS.silver,
-        textColor: LOYALTY_PASSES_TEXT_COLORS.black,
+        backgroundColor: LOYALTY_PASSES_BG_COLORS.silver,
+        color: LOYALTY_PASSES_TEXT_COLORS.black,
       };
     if (tier === 'Gold')
       return {
-        bgColor: LOYALTY_PASSES_BG_COLORS.gold,
-        textColor: LOYALTY_PASSES_TEXT_COLORS.black,
+        backgroundColor: LOYALTY_PASSES_BG_COLORS.gold,
+        color: LOYALTY_PASSES_TEXT_COLORS.black,
       };
     if (tier === 'Platinum')
       return {
-        bgColor: LOYALTY_PASSES_BG_COLORS.platinum,
-        textColor: LOYALTY_PASSES_TEXT_COLORS.white,
+        backgroundColor: LOYALTY_PASSES_BG_COLORS.platinum,
+        color: LOYALTY_PASSES_TEXT_COLORS.white,
       };
     if (tier === 'Tungsten')
       return {
-        bgColor: LOYALTY_PASSES_BG_COLORS.tungsten,
-        textColor: LOYALTY_PASSES_TEXT_COLORS.white,
+        backgroundColor: LOYALTY_PASSES_BG_COLORS.tungsten,
+        color: LOYALTY_PASSES_TEXT_COLORS.white,
       };
     return {
-      bgColor: LOYALTY_PASSES_BG_COLORS.basic,
-      textColor: LOYALTY_PASSES_TEXT_COLORS.black,
+      backgroundColor: LOYALTY_PASSES_BG_COLORS.basic,
+      color: LOYALTY_PASSES_TEXT_COLORS.black,
     };
   };
+
+  const tierStyle = getBgColour(actualTier?.tier);
 
   return (
     <Stack
@@ -116,7 +118,7 @@ export function Tier({ loyalty, loyaltyProgress, protocolCredential }: Props) {
         {me?.id && protocolCredential?.claim?.points && actualTier?.tier && (
           <MUICard
             sx={{
-              backgroundColor: getBgColour(actualTier?.tier).bgColor,
+              backgroundColor: tierStyle.backgroundColor,
               cursor: 'pointer',
             }}
             onClick={setShareLoyaltyIsOpen}
@@ -131,16 +133,14 @@ export function Tier({ loyalty, loyaltyProgress, protocolCredential }: Props) {
                 <Stack direction={'row'} alignItems={'center'}>
                   <IconButton>
                     <>
-                      <FullscreenOutlinedIcon
-                        sx={{ background: getBgColour(actualTier?.tier) }}
-                      />
+                      <FullscreenOutlinedIcon sx={tierStyle} />
                     </>
                   </IconButton>
                   <Typography
                     sx={{
                       fontWeight: '700',
                       fontSize: '16px',
-                      color: '#120E0A',
+                      color: tierStyle.color,
                     }}
                   >
                     Expand
@@ -150,7 +150,7 @@ export function Tier({ loyalty, loyaltyProgress, protocolCredential }: Props) {
                   sx={{
                     fontWeight: '700',
                     fontSize: '24px',
-                    color: '#120E0A',
+                    color: tierStyle.color,
                     mb: '20px',
                     ml: '10px',
                   }}

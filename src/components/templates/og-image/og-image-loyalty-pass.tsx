@@ -6,6 +6,7 @@ import {
 type Props = {
   origin: string;
   daoName: string;
+  daoImage: string;
   title: string;
   gatewayId: string;
   tier: string;
@@ -96,6 +97,7 @@ const RightColumn = ({
 export default function OgImageLoyaltyPass({
   origin,
   daoName,
+  daoImage,
   title,
   gatewayId,
   tier,
@@ -104,6 +106,7 @@ export default function OgImageLoyaltyPass({
   const words = title.split(' ');
   const hasMoreThan2Words = title.split(' ').length > 2;
   const { bgColor, textColor } = getBgColour(tier);
+
   return (
     <div
       style={{
@@ -123,44 +126,52 @@ export default function OgImageLoyaltyPass({
           justifyContent: 'space-between',
         }}
       >
-        <LeftColumn mt={20}>
+        <div
+          style={{
+            display: 'flex',
+            gap: '11px',
+            justifyContent: 'center',
+            flexDirection: 'row',
+            alignItems: 'center',
+            marginLeft: '20px',
+            marginTop: '20px',
+          }}
+        >
+          <img
+            src={daoImage}
+            alt={daoName}
+            width="35px"
+            height="35px"
+            style={{ borderRadius: '50%' }}
+          />
           <span
             style={{
               fontWeight: '400',
               fontSize: '19px',
               letterSpacing: '0.12px',
               color: textColor,
-              right: '20px',
             }}
           >
             {daoName}
           </span>
-        </LeftColumn>
-        <RightColumn mt={20}>
-          <button
-            style={{
-              background: '#FFFFFF2E',
-              borderRadius: '20px',
-              width: gatewayId.length * 17 + 'px',
-              left: '315px',
-              display: 'flex',
-            }}
-          >
-            <span
-              style={{
-                fontWeight: '400',
-                fontSize: '20px',
-                letterSpacing: '0.078px',
-                lineHeight: '14px',
-                color: textColor,
-
-                padding: '10px',
-              }}
-            >
-              {'@' + gatewayId}
-            </span>
-          </button>
-        </RightColumn>
+        </div>
+        <span
+          style={{
+            fontWeight: '400',
+            background: 'rgba(255, 255, 255, 0.1)',
+            fontSize: '20px',
+            letterSpacing: '0.078px',
+            lineHeight: '14px',
+            color: textColor,
+            display: 'flex',
+            borderRadius: '20px',
+            marginTop: '20px',
+            marginRight: '15px',
+            padding: '8px 22px 12px',
+          }}
+        >
+          {'@' + gatewayId}
+        </span>
       </div>
       <div style={{ display: 'flex', flexDirection: 'row' }}>
         <RightColumn mt={1}>

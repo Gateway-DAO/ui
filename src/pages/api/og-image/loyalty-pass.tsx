@@ -2,8 +2,8 @@
 import { NextRequest } from 'next/server';
 
 import OgImage from '@/components/templates/og-image/og-image';
-import { ImageResponse } from '@vercel/og';
 import OgImageLoyaltyPass from '@/components/templates/og-image/og-image-loyalty-pass';
+import { ImageResponse } from '@vercel/og';
 
 export const config = {
   runtime: 'experimental-edge',
@@ -28,6 +28,10 @@ const handler = async (req: NextRequest) => {
   const daoName = hasdaoName
     ? searchParams.get('daoName')?.slice(0, 100)
     : 'Dao Name';
+  const hasDaoImage = searchParams.has('daoImage');
+  const daoImage = hasDaoImage
+    ? searchParams.get('daoImage')?.slice(0, 100)
+    : null;
 
   const hasTitle = searchParams.has('title');
   const title = hasTitle
@@ -42,9 +46,6 @@ const handler = async (req: NextRequest) => {
   const hasTier = searchParams.has('tier');
   const tier = hasTier ? searchParams.get('tier')?.slice(0, 100) : 'tier';
 
-  const hasQRCode = searchParams.has('qrCode');
-
-  const qrCode = hasQRCode ? searchParams.get('qrCode') : null;
   const hasImage = searchParams.has('image');
   const image = hasImage ? searchParams.get('image')?.slice(0, 100) : null;
   return new ImageResponse(
@@ -55,6 +56,7 @@ const handler = async (req: NextRequest) => {
         title={title}
         gatewayId={gatewayId}
         tier={tier}
+        daoImage={daoImage}
         image={image}
       />
     ),
