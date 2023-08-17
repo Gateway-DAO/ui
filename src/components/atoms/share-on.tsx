@@ -1,5 +1,6 @@
 import useTranslation from 'next-translate/useTranslation';
 
+import { ROUTES } from '@/constants/routes';
 import { useAuth } from '@/providers/auth';
 import {
   Loyalty_Program,
@@ -8,7 +9,6 @@ import {
 import { getCredentialImageURLParams } from '@/utils/credential/build-image-url-params';
 import { getLoyaltyPassImageURLParams } from '@/utils/loyalty-pass/build-image-url-params';
 import objectToParams from '@/utils/map-object';
-import { useCreateQrCode } from '@/utils/qr-code/qr-code';
 import { useSnackbar } from 'notistack';
 import { PartialDeep } from 'type-fest';
 
@@ -27,6 +27,7 @@ type Props = {
   isCredential?: boolean;
   credential?: PartialDeep<Protocol_Api_Credential>;
   isLoyaltyPass?: boolean;
+  loyaltyCredentialId?: string;
   loyaltyPass?: PartialDeep<Loyalty_Program>;
   actualTier?: string;
 };
@@ -35,6 +36,7 @@ export default function ShareOn({
   isCredential,
   credential,
   isLoyaltyPass,
+  loyaltyCredentialId,
   loyaltyPass,
   actualTier,
 }: Props) {
@@ -43,7 +45,6 @@ export default function ShareOn({
   const { enqueueSnackbar } = useSnackbar();
   const isReceivedCredential =
     me && me?.wallet === credential?.recipientUser?.primaryWallet?.address;
-  const qrCode = useCreateQrCode();
   let tweetText;
 
   if (isReceivedCredential) {
@@ -67,12 +68,22 @@ export default function ShareOn({
       .replace('[recipient]', credential?.recipientUser?.gatewayId);
   }
 
+  const buildUrlToShare = () => {
+    if (isLoyaltyPass && loyaltyCredentialId) {
+      return (
+        window.location.origin +
+        ROUTES.PROTOCOL_CREDENTIAL.replace('[id]', loyaltyCredentialId)
+      );
+    }
+    return window.location.href;
+  };
+
   const tweetLink = `https://twitter.com/intent/tweet${objectToParams({
     text: tweetText,
-    url: window.location.href + '?utm_source=linkedin&utm_medium=share_dialog',
+    url: buildUrlToShare() + '?utm_source=linkedin&utm_medium=share_dialog',
   })}`;
 
-  const linkedinLink = `https://www.linkedin.com/shareArticle?mini=true&url=${window.location.href}&utm_source=linkedin&utm_medium=share_dialog`;
+  const linkedinLink = `https://www.linkedin.com/shareArticle?mini=true&url=${buildUrlToShare()}&utm_source=linkedin&utm_medium=share_dialog`;
 
   const imageUrlParams = isLoyaltyPass
     ? getLoyaltyPassImageURLParams(
