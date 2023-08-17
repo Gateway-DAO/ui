@@ -77,7 +77,7 @@ export default function ShareOn({
   const imageUrlParams = isLoyaltyPass
     ? getLoyaltyPassImageURLParams(
         loyaltyPass,
-        me.protocolUser?.gatewayId,
+        me?.protocolUser?.gatewayId,
         actualTier
       )
     : getCredentialImageURLParams(credential);
