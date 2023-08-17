@@ -71,6 +71,7 @@ export const getServerSideProps = async ({ req, res, params }) => {
       loyaltyProgram = await hasuraApi(session?.token).loyalty_program({
         id: gate?.gates_by_pk?.loyalty_id,
       });
+
       loyaltyCredential = await hasuraApi(session?.token).loyalty_credential({
         user_id: session?.protocol_id,
         dm_id: loyaltyProgram?.loyalty_program_by_pk?.data_model_id,
@@ -94,13 +95,15 @@ export const getServerSideProps = async ({ req, res, params }) => {
     return unaccesible;
   }
 
-  const { loyalty_program_by_pk } = await hasuraPublicService.loyalty_program({
-    id: gate.gates_by_pk?.loyalty_id,
-  });
+  if (!loyaltyProgram) {
+    loyaltyProgram = await hasuraPublicService.loyalty_program({
+      id: gate.gates_by_pk?.loyalty_id,
+    });
+  }
 
   return {
     props: {
-      loyalty: loyalty_program_by_pk,
+      loyalty: loyaltyProgram,
       gate: gate?.gates_by_pk,
       loyaltyCredential:
         loyaltyCredential?.protocol_credential?.find((lc) => lc) ?? null,
