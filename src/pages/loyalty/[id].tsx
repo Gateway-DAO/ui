@@ -48,8 +48,6 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     id,
   });
 
-  // const { me } = await hasuraApi(session.token, session.hasura_id).me();
-
   let loyaltyProgress;
   let credentials;
   let ogImage;
@@ -68,9 +66,9 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
       loyalty_id: id,
     });
 
-    const { gatewayId } = (
-      await hasuraApi(session.token, session.hasura_id).gatewayId()
-    ).protocol?.me;
+    const { gatewayId } =
+      (await hasuraApi(session.token, session.hasura_id).gatewayId())?.protocol
+        ?.me ?? {};
 
     const tier = (
       tiers: any[],
