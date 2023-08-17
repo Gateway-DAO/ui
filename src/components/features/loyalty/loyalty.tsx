@@ -20,12 +20,14 @@ type MainContentProps = {
   loyalty: PartialDeep<Loyalty_Program>;
   loyaltyPoints: number;
   credentialsByLoyalty?: PartialDeep<Credentials>[];
+  protocolCredential?: PartialDeep<Protocol_Credential>;
 };
 
 function MainContent({
   loyalty,
   loyaltyPoints = 0,
   credentialsByLoyalty,
+  protocolCredential,
 }: MainContentProps) {
   return (
     <>
@@ -48,7 +50,11 @@ function MainContent({
       </Stack>
       {loyalty?.gates?.length > 0 && (
         <>
-          <Tier loyalty={loyalty} loyaltyPoints={loyaltyPoints} />
+          <Tier
+            loyalty={loyalty}
+            loyaltyPoints={loyaltyPoints}
+            protocolCredentialId={protocolCredential?.id}
+          />
           <CredentialsList
             gates={loyalty?.gates}
             credentialsByLoyalty={credentialsByLoyalty}
@@ -87,6 +93,7 @@ export function LoyaltyProgram({
       mainContent={
         <MainContent
           loyalty={loyalty}
+          protocolCredential={loyaltyCredential}
           credentialsByLoyalty={credentialsByLoyalty}
           loyaltyPoints={loyaltyCredential?.claim?.points}
         />

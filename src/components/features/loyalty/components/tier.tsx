@@ -22,9 +22,14 @@ import { TierRuler } from './tier-ruler';
 type Props = {
   loyalty: PartialDeep<Loyalty_Program>;
   loyaltyPoints: number;
+  protocolCredentialId?: string;
 };
 
-export function Tier({ loyalty, loyaltyPoints = 0 }: Props) {
+export function Tier({
+  loyalty,
+  loyaltyPoints = 0,
+  protocolCredentialId,
+}: Props) {
   const { t } = useTranslation('loyalty-program');
   const { me } = useAuth();
 
@@ -181,6 +186,7 @@ export function Tier({ loyalty, loyaltyPoints = 0 }: Props) {
           isLoyaltyPass={true}
           loyaltyPass={loyalty}
           actualTier={actualTier?.tier}
+          loyaltyCredentialId={protocolCredentialId}
         />
       </ModalContent>
     </Stack>
