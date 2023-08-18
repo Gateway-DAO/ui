@@ -6,6 +6,7 @@ import { HeadContainer } from '@/components/molecules/head-container';
 import { DashboardTemplate } from '@/components/templates/dashboard';
 import { hasuraPublicService } from '@/services/hasura/api';
 import { getCredentialImageURLParams } from '@/utils/credential/build-image-url-params';
+import { getLoyaltyPassImageURLParams } from '@/utils/loyalty-pass/build-image-url-params';
 
 type Props = InferGetServerSidePropsType<typeof getServerSideProps>;
 
@@ -48,8 +49,36 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   });
 
   const credential = res.protocol.credential;
+  console.log('********', credential);
 
-  const urlParams = getCredentialImageURLParams(credential);
+  const dataModelId = credential?.dataModel?.id;
+
+  const resDatamodel =
+    await hasuraPublicService.loyalty_programs_by_data_model_id({
+      id: dataModelId,
+    });
+
+  console.log('%%%%%%%%%%%%%', resDatamodel);
+
+  let isLoyaltyPDA = false;
+  let filteredLoyalty = {};
+
+  if (resDatamodel.loyalty_program && resDatamodel.loyalty_program.length > 0) {
+    isLoyaltyPDA = true;
+    filteredLoyalty = resDatamodel.loyalty_program[0];
+  }
+
+  // TODO:
+  // [x] FILTER LOYALTIES IN THE RESDATAMODEL BY SOME PROPERTY (MAYBE TITLE)
+  // [x] PASS THE INFORMATION FOR THE GETLOYALTYPASSIMAGEURLPARAMS USING THIS LOYALTY FILTERED
+
+  const urlParams = isLoyaltyPDA
+    ? getLoyaltyPassImageURLParams(
+        filteredLoyalty,
+        credential.recipientUser?.gatewayId,
+        credential?.claim?.points
+      )
+    : getCredentialImageURLParams(credential);
 
   const ogImage = `https://${host}/api/og-image/credential${urlParams}`;
 
