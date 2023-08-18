@@ -66,11 +66,11 @@ export const getServerSideProps = async ({ req, res, params }) => {
 
   try {
     if (!!session && !expired) {
-      gate = await hasuraApi(session?.token).gate({ id });
-
       loyaltyProgram = await hasuraApi(session?.token).loyalty_program({
         id: gate?.gates_by_pk?.loyalty_id,
       });
+
+      gate = await hasuraApi(session?.token).gate({ id });
 
       loyaltyCredential = await hasuraApi(session?.token).loyalty_credential({
         user_id: session?.protocol_id,
@@ -84,6 +84,7 @@ export const getServerSideProps = async ({ req, res, params }) => {
         gate_id: id,
       });
     }
+
     if (!gate) {
       gate = await hasuraPublicService.gate({ id });
     }
@@ -101,9 +102,11 @@ export const getServerSideProps = async ({ req, res, params }) => {
     });
   }
 
+  console.log(loyaltyProgram);
+
   return {
     props: {
-      loyalty: loyaltyProgram,
+      loyalty: loyaltyProgram.loyalty_program_by_pk,
       gate: gate?.gates_by_pk,
       loyaltyCredential:
         loyaltyCredential?.protocol_credential?.find((lc) => lc) ?? null,
