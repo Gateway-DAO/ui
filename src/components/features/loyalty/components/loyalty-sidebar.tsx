@@ -245,7 +245,7 @@ export function LoyaltySidebar({
             <SmallTier
               loyalty={loyalty}
               loyaltyPoints={loyaltyPoints}
-              currentGatePoints={gatePoints ?? gate?.points}
+              currentGatePoints={gatePoints ?? gate?.points ?? 0}
               gateIsFinished={!!credential?.id}
             />
           )}

@@ -106,7 +106,7 @@ export function SmallTier({
             }}
           />
         ) : (
-          <Chip label={`+${currentGatePoints}pts`} sx={{ fontWeight: 500 }} />
+          <Chip label={`+${currentGatePoints} pts`} sx={{ fontWeight: 500 }} />
         )}
       </Stack>
     </>
