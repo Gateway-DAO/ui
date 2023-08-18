@@ -48,6 +48,8 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     id: ctx.query.id as string,
   });
 
+  console.log('RES', res);
+
   const credential = res.protocol.credential;
   console.log('********', credential);
 
@@ -80,7 +82,13 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
       )
     : getCredentialImageURLParams(credential);
 
-  const ogImage = `https://${host}/api/og-image/credential${urlParams}`;
+  const ogImage = `https://${host}/api/og-image/${
+    isLoyaltyPDA ? 'loyalty-pass' : 'credential'
+  }${urlParams}`;
+
+  // const ogImage = `${window.location.origin}/api/og-image/${
+  //   isLoyaltyPDA ? 'loyalty-pass' : 'credential'
+  // }${urlParams}`;
 
   return {
     props: {
