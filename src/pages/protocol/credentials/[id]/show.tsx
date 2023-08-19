@@ -48,10 +48,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     id: ctx.query.id as string,
   });
 
-  console.log('RES', res);
-
   const credential = res.protocol.credential;
-  console.log('********', credential);
 
   const dataModelId = credential?.dataModel?.id;
 
@@ -59,8 +56,6 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     await hasuraPublicService.loyalty_programs_by_data_model_id({
       id: dataModelId,
     });
-
-  console.log('%%%%%%%%%%%%%', resDatamodel);
 
   let isLoyaltyPDA = false;
   let filteredLoyalty = {};
@@ -70,25 +65,17 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     filteredLoyalty = resDatamodel.loyalty_program[0];
   }
 
-  // TODO:
-  // [x] FILTER LOYALTIES IN THE RESDATAMODEL BY SOME PROPERTY (MAYBE TITLE)
-  // [x] PASS THE INFORMATION FOR THE GETLOYALTYPASSIMAGEURLPARAMS USING THIS LOYALTY FILTERED
-
   const urlParams = isLoyaltyPDA
     ? getLoyaltyPassImageURLParams(
         filteredLoyalty,
         credential.recipientUser?.gatewayId,
-        credential?.claim?.points
+        credential?.claim?.tier
       )
     : getCredentialImageURLParams(credential);
 
   const ogImage = `https://${host}/api/og-image/${
     isLoyaltyPDA ? 'loyalty-pass' : 'credential'
   }${urlParams}`;
-
-  // const ogImage = `${window.location.origin}/api/og-image/${
-  //   isLoyaltyPDA ? 'loyalty-pass' : 'credential'
-  // }${urlParams}`;
 
   return {
     props: {
