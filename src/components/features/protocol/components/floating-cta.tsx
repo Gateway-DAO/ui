@@ -140,16 +140,6 @@ export default function FloatingCta({
         actualTier={credential?.claim?.tier ?? null}
         loyaltyCredentialId={credential?.id}
       />
-      {/* <ModalContent
-        open={shareIsOpen}
-        title={t('common:social.share-on')}
-        handleClose={() => setShareIsOpen(false)}
-        handleOpen={() => setShareIsOpen(true)}
-        swipeableDrawer={true}
-        fullWidth
-      >
-        <ShareOn isCredential={isCredential} credential={credential} />
-      </ModalContent> */}
       <ModalContent
         open={qrCodeIsOpen}
         title={t('credential.qrcode')}

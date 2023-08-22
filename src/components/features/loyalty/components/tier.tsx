@@ -185,22 +185,6 @@ export function Tier({
         actualTier={actualTier?.tier}
         loyaltyCredentialId={protocolCredentialId}
       />
-
-      {/* <ModalContent
-        open={shareLoyaltyIsOpen}
-        title={t('common:social.share-on')}
-        handleClose={() => setShareLoyaltyIsOpen(false)}
-        handleOpen={() => setShareLoyaltyIsOpen(true)}
-        swipeableDrawer={true}
-        fullWidth
-      >
-        <ShareOn
-          isLoyaltyPass={true}
-          loyaltyPass={loyalty}
-          actualTier={actualTier?.tier}
-          loyaltyCredentialId={protocolCredentialId}
-        />
-      </ModalContent> */}
     </Stack>
   );
 }
