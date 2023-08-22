@@ -6,7 +6,10 @@ import ModalShareCredential from '@/components/molecules/modal/modal-share-crede
 import { MintDialogProtocol } from '@/components/organisms/mint/mint-modal/mint-dialog-protocol';
 import { ROUTES } from '@/constants/routes';
 import { useMintData } from '@/hooks/use-mint-data';
-import { Protocol_Api_Credential } from '@/services/hasura/types';
+import {
+  Loyalty_Program,
+  Protocol_Api_Credential,
+} from '@/services/hasura/types';
 import { PartialDeep } from 'type-fest';
 
 import { Divider, Stack, SxProps, Typography } from '@mui/material';
@@ -24,9 +27,10 @@ import TriggersCard from './components/triggers-card';
 
 type Props = {
   credential: PartialDeep<Protocol_Api_Credential>;
+  loyalty?: PartialDeep<Loyalty_Program>;
 };
 
-export default function CredentialProtocolView({ credential }: Props) {
+export default function CredentialProtocolView({ credential, loyalty }: Props) {
   const { t } = useTranslation('protocol');
   const router = useRouter();
   const {
@@ -99,7 +103,11 @@ export default function CredentialProtocolView({ credential }: Props) {
           handleClose={() => setShareIsOpen(false)}
           handleOpen={() => setShareIsOpen(true)}
           open={shareIsOpen}
+          isLoyalty={!!loyalty}
           title={t('credential.share-dialog-title')}
+          loyaltyPass={loyalty}
+          actualTier={credential?.claim?.tier ?? null}
+          loyaltyCredentialId={credential?.id}
         />
 
         <RevokeCredential credential={credential} />

@@ -10,7 +10,11 @@ import { getLoyaltyPassImageURLParams } from '@/utils/loyalty-pass/build-image-u
 
 type Props = InferGetServerSidePropsType<typeof getServerSideProps>;
 
-export default function ProtocolCredential({ credential, ogImage }: Props) {
+export default function ProtocolCredential({
+  credential,
+  ogImage,
+  loyalty,
+}: Props) {
   return (
     <>
       {credential.id && (
@@ -31,8 +35,11 @@ export default function ProtocolCredential({ credential, ogImage }: Props) {
               height: '100%',
             }}
           >
-            <Protocol credential={credential}>
-              <CredentialProtocolView credential={credential} />
+            <Protocol credential={credential} loyalty={loyalty}>
+              <CredentialProtocolView
+                loyalty={loyalty}
+                credential={credential}
+              />
             </Protocol>
           </DashboardTemplate>
         </>
@@ -80,6 +87,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   return {
     props: {
       credential,
+      loyalty: filteredLoyalty,
       ogImage,
     },
   };
