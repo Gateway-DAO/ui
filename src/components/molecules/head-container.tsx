@@ -14,7 +14,7 @@ type HeadContainerProps = {
 };
 
 const defaultTexts = {
-  title: 'The standard for credentials - Gateway',
+  title: 'The standard for Private Data Assets - Gateway',
   description:
     'We provide the technology needed to issue, manage, index, and utilize credentials to build a robust digital identity.',
   ogImage: '/social.png',

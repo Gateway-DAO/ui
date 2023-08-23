@@ -2,6 +2,7 @@ import useTranslation from 'next-translate/useTranslation';
 
 import ShareOn from '@/components/atoms/share-on';
 import ModalContent from '@/components/molecules/modal/modal-basic';
+import ModalShareCredential from '@/components/molecules/modal/modal-share-credential';
 import { useActualTier } from '@/hooks/use-actual-tier';
 import { useAuth } from '@/providers/auth';
 import { Loyalty_Program, Protocol_Credential } from '@/services/hasura/types';
@@ -174,21 +175,16 @@ export function Tier({
         )}
       </Stack>
       <TierRuler tiers={loyalty.loyalty_tiers} totalPoints={loyaltyPoints} />
-      <ModalContent
+      <ModalShareCredential
         open={shareLoyaltyIsOpen}
         title={t('common:social.share-on')}
         handleClose={() => setShareLoyaltyIsOpen(false)}
         handleOpen={() => setShareLoyaltyIsOpen(true)}
-        swipeableDrawer={true}
-        fullWidth
-      >
-        <ShareOn
-          isLoyaltyPass={true}
-          loyaltyPass={loyalty}
-          actualTier={actualTier?.tier}
-          loyaltyCredentialId={protocolCredentialId}
-        />
-      </ModalContent>
+        isLoyalty
+        loyaltyPass={loyalty}
+        actualTier={actualTier?.tier}
+        loyaltyCredentialId={protocolCredentialId}
+      />
     </Stack>
   );
 }
