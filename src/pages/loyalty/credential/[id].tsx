@@ -4,7 +4,10 @@ import { DashboardTemplate } from '@/components/templates/dashboard';
 import { ROUTES } from '@/constants/routes';
 import { useAuth } from '@/providers/auth';
 import { hasuraPublicService } from '@/services/hasura/api';
-import { GateQuery, Loyalty_Program_InfoQuery } from '@/services/hasura/types';
+import {
+  Gate_InfoQuery,
+  Loyalty_Program_InfoQuery,
+} from '@/services/hasura/types';
 import { useQuery } from '@tanstack/react-query';
 
 const unaccesible = {
@@ -43,7 +46,17 @@ export default function LoyaltyCredentialPage({ loyalty, id, gate }) {
     }
   );
 
-  console.log(credential, loyaltyCredential);
+  const { data: gateTasks } = useQuery(
+    ['gate', 'tasks', id],
+    () => {
+      return hasuraUserService.tasks_by_gate_id({
+        gate_id: id,
+      });
+    },
+    {
+      enabled: gate?.type === 'task_based',
+    }
+  );
 
   return (
     <>
@@ -60,7 +73,10 @@ export default function LoyaltyCredentialPage({ loyalty, id, gate }) {
       >
         <LoyaltyProgramCredential
           loyalty={loyalty}
-          gate={gate}
+          gate={{
+            ...gate,
+            tasks: gateTasks?.tasks,
+          }}
           credential={credential?.credentials[0]}
           loyaltyCredential={loyaltyCredential?.protocol_credential[0]}
         />
@@ -72,11 +88,11 @@ export default function LoyaltyCredentialPage({ loyalty, id, gate }) {
 export const getServerSideProps = async ({ req, res, params }) => {
   const { id } = params;
 
-  let gate: GateQuery;
+  let gate: Gate_InfoQuery;
   let loyaltyProgram: Loyalty_Program_InfoQuery;
 
   try {
-    gate = await hasuraPublicService.gate({ id });
+    gate = await hasuraPublicService.gate_info({ id });
 
     loyaltyProgram = await hasuraPublicService.loyalty_program_info({
       id: gate?.gates_by_pk?.loyalty_id,

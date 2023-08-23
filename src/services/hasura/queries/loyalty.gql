@@ -16,6 +16,12 @@ query loyalty_program_info($id: uuid!) {
   }
 }
 
+query loyalty_program_gates($id: uuid!) {
+  loyalty_program_by_pk(id: $id) {
+    ...loyalty_gates
+  }
+}
+
 query loyalty_programs_by_organization_id($id: uuid!) {
   loyalty_program(where: { organization_id: { _eq: $id } }) {
     ...loyalty
