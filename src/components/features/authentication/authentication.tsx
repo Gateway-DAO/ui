@@ -30,7 +30,6 @@ export function Authentication() {
         !me?.protocolUser?.gatewayId &&
         step !== 'choose-gatewayid'
       ) {
-        console.log(me?.protocolUser);
         onNewUser();
       } else if (step !== 'choose-email' && step !== 'verify-email-add-code') {
         onGoToSetGatewayId();
