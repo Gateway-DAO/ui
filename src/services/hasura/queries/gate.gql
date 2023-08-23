@@ -78,6 +78,44 @@ query gate($id: uuid!) {
   }
 }
 
+query gate_info($id: uuid!) {
+  gates_by_pk(id: $id) {
+    id
+    title
+    description
+    categories
+    published
+    links
+    image
+    type
+    creator {
+      id
+      name
+      username
+      pfp
+      picture {
+        ...file
+      }
+    }
+    claim_limit
+    expire_date
+    holder_count
+    dao {
+      id
+      name
+      slug
+      logo_url
+      status
+      logo {
+        ...file
+      }
+    }
+    loyalty_id
+    points
+    data_model_id
+  }
+}
+
 query get_create_gate($id: uuid!) {
   gates_by_pk(id: $id) {
     id

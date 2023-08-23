@@ -1,4 +1,4 @@
-fragment loyalty on loyalty_program {
+fragment loyalty_info on loyalty_program {
   id
   name
   description
@@ -8,6 +8,27 @@ fragment loyalty on loyalty_program {
   organization_id
   categories
   details
+  loyalty_tiers {
+    tier
+    id
+    image
+    max_pts
+    min_pts
+  }
+  dao {
+    background_url
+    name
+    logo_url
+    slug
+    id
+    logo {
+      s3_key
+      id
+    }
+  }
+}
+
+fragment loyalty_gates on loyalty_program {
   gates(order_by: { updated_at: desc }) {
     id
     title
@@ -28,23 +49,9 @@ fragment loyalty on loyalty_program {
     updated_at
     created_at
   }
-  details
-  loyalty_tiers {
-    tier
-    id
-    image
-    max_pts
-    min_pts
-  }
-  dao {
-    background_url
-    name
-    logo_url
-    slug
-    id
-    logo {
-      s3_key
-      id
-    }
-  }
+}
+
+fragment loyalty on loyalty_program {
+  ...loyalty_info
+  ...loyalty_gates
 }
