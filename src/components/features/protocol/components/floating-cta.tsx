@@ -3,8 +3,12 @@ import { useEffect, useState } from 'react';
 
 import ShareOn from '@/components/atoms/share-on';
 import ModalContent from '@/components/molecules/modal/modal-basic';
+import ModalShareCredential from '@/components/molecules/modal/modal-share-credential';
 import { errorMessages } from '@/constants/error-messages';
-import { Protocol_Api_Credential } from '@/services/hasura/types';
+import {
+  Loyalty_Program,
+  Protocol_Api_Credential,
+} from '@/services/hasura/types';
 import { brandColors } from '@/theme';
 import { useCreateQrCode } from '@/utils/qr-code/qr-code';
 import { useSnackbar } from 'notistack';
@@ -20,9 +24,11 @@ import { Box } from '@mui/system';
 export default function FloatingCta({
   isCredential,
   credential,
+  loyalty,
 }: {
   isCredential?: boolean;
   credential?: PartialDeep<Protocol_Api_Credential>;
+  loyalty?: PartialDeep<Loyalty_Program>;
 }) {
   const { t } = useTranslation('protocol');
   const { enqueueSnackbar } = useSnackbar();
@@ -123,16 +129,17 @@ export default function FloatingCta({
           ))}
         </SpeedDial>
       </Box>
-      <ModalContent
-        open={shareIsOpen}
-        title={t('common:social.share-on')}
+      <ModalShareCredential
+        credential={credential}
         handleClose={() => setShareIsOpen(false)}
         handleOpen={() => setShareIsOpen(true)}
-        swipeableDrawer={true}
-        fullWidth
-      >
-        <ShareOn isCredential={isCredential} credential={credential} />
-      </ModalContent>
+        open={shareIsOpen}
+        isLoyalty={!!loyalty}
+        title={t('credential.share-dialog-title')}
+        loyaltyPass={loyalty}
+        actualTier={credential?.claim?.tier ?? null}
+        loyaltyCredentialId={credential?.id}
+      />
       <ModalContent
         open={qrCodeIsOpen}
         title={t('credential.qrcode')}
