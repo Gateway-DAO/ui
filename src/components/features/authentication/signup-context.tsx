@@ -29,6 +29,7 @@ type Action = {
     | 'NEW_USER'
     | 'NEW_USER_CODE'
     | 'SET_EMAIL'
+    | 'SKIP_EMAIL'
     | 'SET_GATEWAY_ID'
     | 'COMPLETE';
   payload?: {
@@ -45,7 +46,7 @@ const initializeState = (me: SessionUser): State => {
   let step = initialState.step;
   if (me) {
     if (!me.email_address) {
-      step = 'choose-email';
+      step = 'choose-gatewayid';
     } else if (!me.protocolUser?.gatewayId) {
       step = 'choose-gatewayid';
     } else {
@@ -81,6 +82,11 @@ const reducer = (state: State, action: Action): State => {
         email: action.payload?.email,
         step: 'verify-email-add-code',
       };
+    case 'SKIP_EMAIL':
+      return {
+        ...state,
+        step: 'choose-gatewayid',
+      };
     case 'SET_GATEWAY_ID':
       return {
         ...state,
@@ -100,8 +106,8 @@ type Context = {
   state: State;
   onReset: () => void;
   onNewUser: () => void;
-  onNewUserSubmitEmail: (email: string) => void;
-  onSubmitEmail: (email: string) => void;
+  onNewUserSubmitEmail: (email?: string) => void;
+  onSubmitEmail: (email?: string) => void;
   onGoToSetGatewayId: () => void;
   onCompleteLogin: () => void;
 };
@@ -134,7 +140,12 @@ export function SignUpProvider({ children }: PropsWithChildren<unknown>) {
     });
   };
 
-  const onNewUserSubmitEmail = (email: string) => {
+  const onNewUserSubmitEmail = (email?: string) => {
+    if (!email) {
+      return dispatch({
+        type: 'SKIP_EMAIL',
+      });
+    }
     dispatch({
       type: 'NEW_USER_CODE',
       payload: {

@@ -235,6 +235,7 @@ export function OrgSignUpTemplate({
                       {t('action-next')}
                     </Button>
                   )}
+
                 {formStepControl[currentStep].name === 'telegram' && (
                   <Button
                     variant="contained"

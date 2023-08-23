@@ -23,15 +23,19 @@ export function ChooseEmail() {
   const {
     register,
     formState: { errors },
+    getValues,
     handleSubmit,
     setError,
+    watch,
   } = useForm<EmailSchema>({
     resolver: yupResolver(schemaEmail),
   });
-
+  watch('email_address');
   const addEmail = useMutation(hasuraUserService.protocol_add_email);
-
   const onSubmitEmail = async (data: EmailSchema) => {
+    if (!data.email_address) {
+      return onNewUserSubmitEmail();
+    }
     try {
       await addEmail.mutateAsync({ email: data.email_address });
       onNewUserSubmitEmail(data.email_address);
@@ -69,7 +73,6 @@ export function ChooseEmail() {
         subtitle={t('steps.choose-email.description')}
       />
       <TextField
-        required
         label={t('steps.choose-email.label')}
         type="email"
         id="email_address"
@@ -80,14 +83,15 @@ export function ChooseEmail() {
             t('steps.choose-email.helper-text')) as string
         }
       />
-
       <LoadingButton
-        type="submit"
         variant="contained"
+        type="submit"
         sx={{ mt: 2, height: 48 }}
         isLoading={addEmail.isLoading}
       >
-        {t('steps.initial.btn')}
+        {getValues().email_address !== ''
+          ? t('steps.initial.btn')
+          : t('steps.initial.skip')}
       </LoadingButton>
     </Stack>
   );

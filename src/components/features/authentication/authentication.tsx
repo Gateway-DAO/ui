@@ -25,13 +25,15 @@ export function Authentication() {
     if (me) {
       if (step === 'completed') {
         return;
-      }
-      if (
+      } else if (
         !me?.email_address &&
-        step !== 'choose-email' &&
-        step !== 'verify-email-add-code'
+        !me?.protocolUser?.gatewayId &&
+        step !== 'choose-gatewayid'
       ) {
+        console.log(me?.protocolUser);
         onNewUser();
+      } else if (step !== 'choose-email' && step !== 'verify-email-add-code') {
+        onGoToSetGatewayId();
       } else if (
         !me?.protocolUser?.gatewayId &&
         me?.email_address &&
@@ -39,7 +41,7 @@ export function Authentication() {
       ) {
         onGoToSetGatewayId();
       }
-      if (me?.protocolUser?.gatewayId && me?.email_address) {
+      if (me?.protocolUser?.gatewayId) {
         router.push((router.query?.redirect as string) ?? ROUTES.EXPLORE);
       }
     }

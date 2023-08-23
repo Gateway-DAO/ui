@@ -1,5 +1,6 @@
 import { Users } from '@/services/hasura/types';
 import { object, string, SchemaOf } from 'yup';
+import { optional } from 'zod';
 
 export type EmailSchema = Required<Pick<Users, 'email_address'>>;
 export type GatewayIdSchema = {
@@ -17,7 +18,7 @@ const usernameRegex =
   /^(?!.*\.\.)(?!.*\.\.$)(?!.*--)(?!.*--$)(?!.*__)(?!.*__$)[a-z0-9._-]{2,19}[a-z0-9]$/;
 
 export const schemaEmail: SchemaOf<EmailSchema> = object({
-  email_address: string().min(2).email().defined().label('Email address'),
+  email_address: string().email().label('Email address'),
 });
 
 export const schemaTokenConfirmation: SchemaOf<TokenConfirmationSchema> =

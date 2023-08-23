@@ -12,10 +12,11 @@
       "terms-info": "By continuing you agree to our",
       "terms-of-service": "Terms of Service",
       "or": "or",
-      "btn": "continue"
+      "btn": "continue",
+      "skip": "Skip and Continue"
     },
     "choose-email": {
-      "title": "Connect your email to be notified when you receive a credential",
+      "title": "Connect your email to receive notification for PDAs issuances, updates, and new products!",
       "subtitle": "Email",
       "description": "By email you are notified when you receive a credential",
       "label": "E-mail",
