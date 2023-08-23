@@ -38,6 +38,7 @@ import {
   createGateSchema,
 } from '@/components/features/gates/create/schema';
 import VerticalStepper from '@/components/organisms/stepper/vertical-stepper';
+import { NavigationButtons } from './navigation-buttons';
 
 type Props = {
   formStepControl: {
@@ -87,16 +88,19 @@ export function CreateCredentialTemplate({
 
   const [testing, setTesting] = useState(false);
 
-  const handleNext = async () => {
+  const isformStepEqualsDetails =
+    formStepControl[currentStep].name === t('vertical-steps.details');
+
+  const handleNext = () => {
     changeStep(currentStep + 1);
-    await router.push({
+    router.push({
       hash: `${hash}-${formStepControl[currentStep + 1].name.toLowerCase()}`,
     });
   };
 
-  const handlePrevious = async () => {
+  const handlePrevious = () => {
     changeStep(currentStep - 1);
-    await router.push({
+    router.push({
       hash: `${hash}${currentStep - 1 === 0 ? '' : '-'}${formStepControl[
         currentStep - 1
       ].name.toLowerCase()}`,
@@ -124,7 +128,7 @@ export function CreateCredentialTemplate({
             claim: claimResult.errors,
           }),
         }).length === 0 &&
-        formStepControl[currentStep].name === t('vertical-steps.details') &&
+        isformStepEqualsDetails &&
         testing === false
       ) {
         setTesting(true);
@@ -408,69 +412,51 @@ export function CreateCredentialTemplate({
                   justifyContent={'end'}
                   gap={2}
                 >
-                  <LoadingButton
-                    onClick={() => handleSaveAsDraft()}
+                  <NavigationButtons
+                    handleOnClick={handleSaveAsDraft}
                     variant="outlined"
-                    size="large"
-                    sx={{ marginLeft: 2 }}
+                    title={t('create-quest.save-as-draft')}
+                    disabledCondition={
+                      !(
+                        formStepControl[currentStep].name ===
+                          t('vertical-steps.direct-credential-step') ||
+                        formStepControl[currentStep].name ===
+                          t('vertical-steps.tasks') ||
+                        formStepControl[currentStep].name ===
+                          t('vertical-steps.optional-setting')
+                      )
+                    }
                     isLoading={createGate.isLoading}
-                    // disabled={
-                    //   !(
-                    //     formStepControl[currentStep].name ===
-                    //       t('vertical-steps.recipient') ||
-                    //     formStepControl[currentStep].name ===
-                    //       t('vertical-steps.optional-setting')
-                    //   )
-                    // }
-                  >
-                    {t('create-quest.save-as-draft')}
-                  </LoadingButton>
-                  {formStepControl[currentStep].name ===
-                    t('vertical-steps.details') && (
-                    <LoadingButton
-                      onClick={() => {
+                  />
+                  {isformStepEqualsDetails && (
+                    <NavigationButtons
+                      handleOnClick={() => {
                         setTesting(false);
                         methods.trigger();
                       }}
                       variant="contained"
-                      size="large"
-                      sx={{ marginLeft: 2 }}
-                      isLoading={createGate.isLoading}
-                      //   disabled={
-                      //     !(
-                      //       formStepControl[currentStep].name ===
-                      //       t('vertical-steps.details')
-                      //     )
-                      //   }
-                    >
-                      {t('create-quest.continue')}
-                    </LoadingButton>
+                      title={t('create-quest.continue')}
+                      disabledCondition={!isformStepEqualsDetails}
+                      isLoading={false}
+                    />
                   )}
-                  {/* !( formStepControl[currentStep].name ===
-                  t('vertical-steps.details') ) && */}
-                  {!isLastStep && (
-                    <LoadingButton
-                      type="submit"
+                  {!isformStepEqualsDetails && !isLastStep && (
+                    <NavigationButtons
+                      handleOnClick={handleNext}
+                      title={t('create-quest.continue')}
+                      disabledCondition={!stepValidity[`${currentStep}`]}
+                      isLoading={false}
                       variant="contained"
-                      size="large"
-                      sx={{ marginLeft: 2 }}
-                      onClick={() => handleNext()}
-                      disabled={!stepValidity[`${currentStep}`]}
-                    >
-                      {t('create-quest.continue')}
-                    </LoadingButton>
+                    />
                   )}
                   {isLastStep && (
-                    <LoadingButton
-                      type="submit"
+                    <NavigationButtons
+                      handleOnClick={publish}
+                      title={t('create-quest.save-and-publish')}
+                      disabledCondition={!stepValidity[`${currentStep}`]}
+                      isLoading={createGate.isLoading}
                       variant="contained"
-                      size="large"
-                      sx={{ marginLeft: 2 }}
-                      onClick={() => publish()}
-                      disabled={!stepValidity[`${currentStep}`]}
-                    >
-                      {t('create-quest.save-and-publish')}
-                    </LoadingButton>
+                    />
                   )}
                 </Stack>
               </Stack>
