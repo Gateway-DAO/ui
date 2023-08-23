@@ -5,6 +5,7 @@ import { ROUTES } from '@/constants/routes';
 import { hasuraPublicService, hasuraApi } from '@/services/hasura/api';
 import {
   Credential_By_User_Id_By_Gate_IdQuery,
+  Credential_By_User_Id_By_Gate_Id_LightQuery,
   GateQuery,
   Loyalty_CredentialQuery,
   Loyalty_ProgramQuery,
@@ -62,7 +63,7 @@ export const getServerSideProps = async ({ req, res, params }) => {
   let gate: GateQuery;
   let loyaltyProgram: Loyalty_ProgramQuery;
   let loyaltyCredential: Loyalty_CredentialQuery;
-  let credential: Credential_By_User_Id_By_Gate_IdQuery;
+  let credential: Credential_By_User_Id_By_Gate_Id_LightQuery;
 
   try {
     gate = await hasuraPublicService.gate({ id });
@@ -79,7 +80,7 @@ export const getServerSideProps = async ({ req, res, params }) => {
 
       credential = await hasuraApi(
         session?.token
-      ).credential_by_user_id_by_gate_id({
+      ).credential_by_user_id_by_gate_id_light({
         user_id: session?.hasura_id,
         gate_id: id,
       });
@@ -98,8 +99,6 @@ export const getServerSideProps = async ({ req, res, params }) => {
       id: gate.gates_by_pk?.loyalty_id,
     });
   }
-
-  console.log(loyaltyProgram);
 
   return {
     props: {
