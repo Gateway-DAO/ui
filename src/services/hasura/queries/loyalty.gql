@@ -10,6 +10,12 @@ query loyalty_program($id: uuid!) {
   }
 }
 
+query loyalty_program_info($id: uuid!) {
+  loyalty_program_by_pk(id: $id) {
+    ...loyalty_info
+  }
+}
+
 query loyalty_programs_by_organization_id($id: uuid!) {
   loyalty_program(where: { organization_id: { _eq: $id } }) {
     ...loyalty
@@ -23,14 +29,9 @@ query loyalty_programs_by_data_model_id($id: uuid!) {
 }
 
 query loyalty_credential($dm_id: uuid!, $user_id: uuid!) {
-  protocol_credential(where: {
-    dataModelId: {
-      _eq: $dm_id,
-    }
-    recipientUserId: {
-      _eq: $user_id
-    }
-  }) {
+  protocol_credential(
+    where: { dataModelId: { _eq: $dm_id }, recipientUserId: { _eq: $user_id } }
+  ) {
     id
     title
     claim
