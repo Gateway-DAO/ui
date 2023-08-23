@@ -55,8 +55,6 @@ export function AllTab({
           },
         }}
       >
-        <CardCreditScore />
-        <CardEarnCredential />
       </Stack>
       <Stack
         direction="column"
@@ -113,7 +111,7 @@ export function AllTab({
             ))}
           </SectionWithSliderResponsive>
         )}
-        
+
         <SectionWithSliderResponsive
           title={t('featured-organizations.title')}
           caption={t('featured-organizations.caption')}
