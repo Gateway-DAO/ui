@@ -54,6 +54,7 @@ function MainContent({
         loyalty={loyalty}
         loyaltyPoints={loyaltyPoints}
         protocolCredentialId={protocolCredential?.id}
+        credential={protocolCredential}
       />
       {isGatesLoading ? (
         <Stack maxWidth="100%" alignItems="center" mt={8}>

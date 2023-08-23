@@ -1,7 +1,6 @@
 // eslint-disable-next-line @next/next/no-server-import-in-page
 import { NextRequest } from 'next/server';
 
-import OgImage from '@/components/templates/og-image/og-image';
 import OgImageLoyaltyPass from '@/components/templates/og-image/og-image-loyalty-pass';
 import { ImageResponse } from '@vercel/og';
 

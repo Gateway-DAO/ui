@@ -38,7 +38,7 @@ export default function ModalShareCredential({
     >
       {isLoyalty && loyaltyPass && actualTier && loyaltyCredentialId ? (
         <ShareOn
-          isLoyaltyPass={true}
+          isLoyaltyPass={isLoyalty}
           loyaltyPass={loyaltyPass}
           actualTier={actualTier}
           credential={credential}
