@@ -41,6 +41,7 @@ export default function ModalShareCredential({
           isLoyaltyPass={true}
           loyaltyPass={loyaltyPass}
           actualTier={actualTier}
+          credential={credential}
           loyaltyCredentialId={loyaltyCredentialId}
         />
       ) : (
