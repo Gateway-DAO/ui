@@ -132,5 +132,6 @@ export function useMintData({
     isAllowedToMint,
     isMinting,
     changeChainName,
+    credential,
   };
 }

@@ -41,6 +41,7 @@ testem.log
 Thumbs.db
 .env
 .nvmrc
+.env.*
 
 # Sentry
 .sentryclirc

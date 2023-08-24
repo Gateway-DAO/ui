@@ -30,28 +30,29 @@ export function LoyaltyProgramCard({
   dao,
   loyalty_tiers,
   href,
+  data_model_id,
 }: Props): JSX.Element {
   const { me, hasuraUserService, isAuthenticated } = useAuth();
 
-  const { data: loyaltyProgress, isLoading } = useQuery(
+  const { data: loyaltyCredential, isLoading } = useQuery(
     [
-      query.loyalty_progress_by_user_id_by_loyalty,
+      query.loyalty_credential_by_user_id_by_data_model_id,
       { user_id: me?.id, loyalty_id: id },
     ],
     () =>
-      hasuraUserService.get_loyalty_progress_by_user_id_by_loyalty({
-        user_id: me?.id,
-        loyalty_id: id,
+      hasuraUserService.loyalty_credential({
+        user_id: me?.protocol?.id,
+        dm_id: data_model_id,
       }),
     {
-      select: (data) => data.loyalty_progress.find((lp) => lp),
+      select: (data) => data.protocol_credential.find((lc) => lc),
       enabled: isAuthenticated && !!id,
     }
   );
 
   const actualTier = useActualTier({
     tiers: loyalty_tiers,
-    totalPoints: loyaltyProgress?.points,
+    totalPoints: loyaltyCredential?.claim?.points,
   });
 
   return (
@@ -110,11 +111,11 @@ export function LoyaltyProgramCard({
               <>
                 <TierInfo
                   tier={actualTier?.tier}
-                  totalPoints={loyaltyProgress?.points}
+                  totalPoints={loyaltyCredential?.claim?.points}
                 />
                 <TierRuler
                   tiers={loyalty_tiers}
-                  totalPoints={loyaltyProgress?.points}
+                  totalPoints={loyaltyCredential?.claim?.points}
                   size="small"
                 />
               </>

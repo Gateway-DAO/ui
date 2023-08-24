@@ -10,9 +10,9 @@
       "other": "{{count}} gates"
     },
     "credential": {
-      "0": "No credentials",
-      "one": "{{count}} credential",
-      "other": "{{count}} credentials"
+      "0": "No PDAs",
+      "one": "{{count}} PDA",
+      "other": "{{count}} PDAs"
     },
     "follower": {
       "0": "No followers",
@@ -32,7 +32,7 @@
   "tabs": {
     "all": "All",
     "overview": "Overview",
-    "credentials": "Credentials",
+    "credentials": "PDAs",
     "earn": "Earn",
     "earned": "Earned",
     "issue": "issue",
@@ -47,14 +47,14 @@
   },
   "featured-banner": {
     "tooltip-text": "Gateway x Altitude",
-    "title": "Earn your Altitude Testnet Credential now!",
-    "subtitle": "Only available to Altitude DeFi users",
+    "title": "Did you earn the",
+    "subtitle": "LI.FI Loyalty Pass?",
     "action": "CHECK NOW"
   },
   "featured-credentials": {
-    "title": "Featured Credentials",
-    "caption": "People are really into these credentials. We thought you would too.",
-    "see-more": "View more credentials"
+    "title": "Featured PDAs",
+    "caption": "People are really into these PDAs. We thought you would too.",
+    "see-more": "View more PDAs"
   },
   "featured-organizations": {
     "title": "Recommended Organizations",
@@ -68,7 +68,7 @@
   },
   "org-creation-card": {
     "title": "Create an organization profile",
-    "description": "A space for your organization issue, manage, and consume verifiable credentials.",
+    "description": "A space for your organization issue, manage, and consume verifiable PDAs.",
     "action": "Create Now"
   },
   "actions": {
@@ -117,7 +117,7 @@
   },
   "social": {
     "share-on": "Share on",
-    "share-title": "See my credential",
+    "share-title": "See my PDA",
     "share-anonymous": "[title] issued by [issuer] to [recipient] via @Gateway_xyz\n\n",
     "share-twitter-recipient": "🎉 Just received my official [title] issued by [issuer] via @gateway_xyz 🎉\n\n",
     "email": "E-mail",
@@ -136,12 +136,12 @@
     "issued": "Issued",
     "issued_see-more": "All Issued",
     "issue-credential": {
-      "title": "Issue a credential",
-      "description": "Go to explore and issue a credential"
+      "title": "Issue a PDA",
+      "description": "Go to explore and issue a PDA"
     },
     "earn-credential": {
-      "title": "Earn a credential",
-      "description": "Go to explore and try to earn credentials"
+      "title": "Earn a PDA",
+      "description": "Go to explore and try to earn PDAs"
     }
   },
   "modal-confirm-delete": {

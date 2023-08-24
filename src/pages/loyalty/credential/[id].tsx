@@ -3,6 +3,12 @@ import { HeadContainer } from '@/components/molecules/head-container';
 import { DashboardTemplate } from '@/components/templates/dashboard';
 import { ROUTES } from '@/constants/routes';
 import { hasuraPublicService, hasuraApi } from '@/services/hasura/api';
+import {
+  Credential_By_User_Id_By_Gate_IdQuery,
+  GateQuery,
+  Loyalty_CredentialQuery,
+  Loyalty_ProgramQuery,
+} from '@/services/hasura/types';
 import { getServerSession } from '@/services/next-auth/get-server-session';
 import jwt from 'jsonwebtoken';
 
@@ -15,7 +21,7 @@ const unaccesible = {
 
 export default function LoyaltyCredentialPage({
   loyalty,
-  loyaltyProgress,
+  loyaltyCredential,
   credential,
   gate,
 }) {
@@ -36,7 +42,7 @@ export default function LoyaltyCredentialPage({
           loyalty={loyalty}
           gate={gate}
           credential={credential}
-          loyaltyProgress={loyaltyProgress}
+          loyaltyCredential={loyaltyCredential}
         />
       </DashboardTemplate>
     </>
@@ -53,19 +59,22 @@ export const getServerSideProps = async ({ req, res, params }) => {
   const parsedToken = jwt.decode(session?.token, { json: true });
   expired = !!session && parsedToken.exp < Date.now() / 1000;
 
-  let gate;
-  let loyaltyProgress;
-  let credential;
+  let gate: GateQuery;
+  let loyaltyProgram: Loyalty_ProgramQuery;
+  let loyaltyCredential: Loyalty_CredentialQuery;
+  let credential: Credential_By_User_Id_By_Gate_IdQuery;
 
   try {
-    if (!!session && !expired) {
-      gate = await hasuraApi(session?.token).gate({ id });
+    gate = await hasuraPublicService.gate({ id });
 
-      loyaltyProgress = await hasuraApi(
-        session?.token
-      ).get_loyalty_progress_by_user_id_by_loyalty({
-        user_id: session?.hasura_id,
-        loyalty_id: gate?.gates_by_pk?.loyalty_id,
+    loyaltyProgram = await hasuraPublicService.loyalty_program({
+      id: gate?.gates_by_pk?.loyalty_id,
+    });
+
+    if (!!session && !expired) {
+      loyaltyCredential = await hasuraApi(session?.token).loyalty_credential({
+        user_id: session?.protocol_id,
+        dm_id: loyaltyProgram?.loyalty_program_by_pk?.data_model_id,
       });
 
       credential = await hasuraApi(
@@ -75,10 +84,8 @@ export const getServerSideProps = async ({ req, res, params }) => {
         gate_id: id,
       });
     }
-    if (!gate) {
-      gate = await hasuraPublicService.gate({ id });
-    }
   } catch (e) {
+    console.log(e);
     return unaccesible;
   }
 
@@ -86,16 +93,20 @@ export const getServerSideProps = async ({ req, res, params }) => {
     return unaccesible;
   }
 
-  const { loyalty_program_by_pk } = await hasuraPublicService.loyalty_program({
-    id: gate.gates_by_pk?.loyalty_id,
-  });
+  if (!loyaltyProgram) {
+    loyaltyProgram = await hasuraPublicService.loyalty_program({
+      id: gate.gates_by_pk?.loyalty_id,
+    });
+  }
+
+  console.log(loyaltyProgram);
 
   return {
     props: {
-      loyalty: loyalty_program_by_pk,
+      loyalty: loyaltyProgram.loyalty_program_by_pk,
       gate: gate?.gates_by_pk,
-      loyaltyProgress:
-        loyaltyProgress?.loyalty_progress?.find((lp) => lp) ?? null,
+      loyaltyCredential:
+        loyaltyCredential?.protocol_credential?.find((lc) => lc) ?? null,
       credential: credential?.credentials?.find((c) => c) ?? null,
     },
   };

@@ -13,14 +13,11 @@ export default function Banner(): JSX.Element {
     <Box>
       <Stack position={'absolute'} mt={5} ml={5} direction="row">
         <Box
-          width={{ xs: 15, md: 25 }}
+          width={{ xs: 150, md: 200 }}
           component="img"
-          src="/images/campaigns/altitude/altitude_logo.png"
+          src="/images/campaigns/lifi/gateway_lifi.png"
           alt="altitude logo"
         ></Box>
-        <Typography variant="body1" ml={1}>
-          Altitude DeFi
-        </Typography>
       </Stack>
 
       <Stack
@@ -45,17 +42,20 @@ export default function Banner(): JSX.Element {
             marginTop={{ xs: -4, md: 0 }}
             zIndex={2}
           >
-            <Typography variant="h4" gutterBottom>
+            <Typography variant="h4">
               {t('common:featured-banner.title')}
             </Typography>
-            <Typography variant="body1" color={'text.secondary'} gutterBottom>
+            <Typography variant="h4" color="#D083FF">
               {t('common:featured-banner.subtitle')}
             </Typography>
             <div>
               <Button
                 variant="contained"
                 sx={{ mt: 4 }}
-                href={ROUTES.ALTITUDE}
+                href={ROUTES.LOYALTY_PROGRAM.replace(
+                  '[id]',
+                  process.env.NEXT_PUBLIC_LIFI_LOYALTY_PASS
+                )}
                 id="explore-banner-primary"
               >
                 {t('common:featured-banner.action')}
@@ -65,12 +65,12 @@ export default function Banner(): JSX.Element {
         </Stack>
         <Box
           component="img"
-          alignSelf={'self-start'}
-          height={{ xs: 120, md: 350 }}
-          mt={{ xs: 4, md: 5 }}
-          mb={{ xs: 9, md: 10 }}
-          borderRadius={5}
-          src="/images/campaigns/altitude/altitude_marketing_image.png"
+          alignSelf={'self-end'}
+          justifySelf={'center'}
+          height={{ xs: 150, md: 300 }}
+          mt={{ xs: 4, md: 8 }}
+          mb={{ xs: 9, md: 12 }}
+          src="/images/campaigns/lifi/pass.png"
           alt={t('common:featured-banner.subtitle')}
         />
       </Stack>

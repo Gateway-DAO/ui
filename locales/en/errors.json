@@ -7,7 +7,7 @@
       "ADDRESS_MISMATCH": "Address mismatch, please login to your wallet.",
       "ALREADY_CLAIMED": "You have already claimed this task.",
       "CANNOT_CLAIM": "You cannot claim this task, contact the DAO.",
-      "NOT_CREDENTIAL_ADMIN": "You are not a credential admin, contact the DAO's admin.",
+      "NOT_CREDENTIAL_ADMIN": "You are not a PDA admin, contact the DAO's admin.",
       "NO_VERIFICATION_CODE": "No verification code found.",
       "INVALID_VERIFICATION_CODE": "Invalid verification code.",
       "NO_HOLD": "You don't hold the token, contact the DAO's admin.",
