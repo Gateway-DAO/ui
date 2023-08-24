@@ -85,17 +85,6 @@ export function DaoProfile() {
     ];
     const protocolTabs = [
       {
-        key: 'credentials-issued',
-        label: t('common:tabs.issued'),
-        section: (
-          <GridViewTab
-            columns={issuedColumns}
-            queryString={query.credentialsIssuedByOrg}
-            pageSize={20}
-          />
-        ),
-      },
-      {
         key: 'credentials-signers',
         label: t('dao-profile:signers-tab.title'),
         section: (

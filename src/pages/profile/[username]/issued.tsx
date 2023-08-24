@@ -47,10 +47,14 @@ export const getServerSideProps = async ({ params }) => {
     })
   );
 
+  // return {
+  //   props: {
+  //     dehydratedState: dehydrate(queryClient),
+  //   },
+  // };
+
   return {
-    props: {
-      dehydratedState: dehydrate(queryClient),
-    },
+    notFound: true,
   };
 };
 IssuedProfile.PageLayout = Profile;

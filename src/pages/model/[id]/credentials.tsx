@@ -15,6 +15,13 @@ const GridViewTab = dynamic(
   { ssr: false }
 );
 
+
+export function getStaticProps() {
+  return {
+    notFound: true,
+  };
+}
+
 export default function ProtocolDataModelCredentials() {
   const { t } = useTranslation('protocol');
 

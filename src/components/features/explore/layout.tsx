@@ -17,8 +17,8 @@ export function ExploreLayout({ children }) {
   const router = useRouter();
   let _selectedTab = router.pathname;
   _selectedTab = _selectedTab.slice(_selectedTab.lastIndexOf('/')).slice(1);
-  const routesForTabs = ['', 'earn', 'issue', 'organizations'];
-  const tabs = ['all', 'earn', 'issue', 'organizations'];
+  const routesForTabs = ['', 'quests', 'issue', 'organizations'];
+  const tabs = ['all', 'quests', 'organizations'];
 
   const { data: passes } = useQuery([query.passes, 'only-one'], async () => {
     return (await hasuraPublicService.loyalty_programs({ take: 1, skip: 0 }))

@@ -39,16 +39,8 @@ export default function Profile({ children }) {
   let _selectedTab = router.asPath;
   _selectedTab = _selectedTab.slice(_selectedTab.lastIndexOf('/')).slice(1);
 
-  const routesForTabs = ['', 'issued', 'earned'];
+  const routesForTabs = ['earned'];
   const tabs = [
-    {
-      label: 'received',
-      count: credentialCount?.protocol.totalReceived,
-    },
-    {
-      label: 'issued',
-      count: credentialCount?.protocol.totalIssued,
-    },
     {
       label: 'earned',
       count: user.experiences

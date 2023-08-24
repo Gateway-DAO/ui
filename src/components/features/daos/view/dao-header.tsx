@@ -349,11 +349,7 @@ export function DaoHeader({ followCount, onFollow, onUnfollow }: Props) {
             divider={<span>·</span>}
             sx={{ mt: 12 / 8 }}
           >
-            <Typography variant="body1">
-              {t('common:count.follower', {
-                count: followCount ?? 0,
-              })}
-            </Typography>
+            
             <Typography variant="body1">
               {t('common:count.credential', {
                 count: credentials?.daos_by_pk?.gates.length ?? 0,

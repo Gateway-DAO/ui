@@ -41,22 +41,26 @@ export default function ProtocolCredential({ credential, ogImage }: Props) {
 }
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-  const host = ctx.req.headers.host || null;
+  // const host = ctx.req.headers.host || null;
 
-  const res = await hasuraPublicService.protocol_credential({
-    id: ctx.query.id as string,
-  });
+  // const res = await hasuraPublicService.protocol_credential({
+  //   id: ctx.query.id as string,
+  // });
 
-  const credential = res.protocol.credential;
+  // const credential = res.protocol.credential;
 
-  const urlParams = getCredentialImageURLParams(credential);
+  // const urlParams = getCredentialImageURLParams(credential);
 
-  const ogImage = `https://${host}/api/og-image/credential${urlParams}`;
+  // const ogImage = `https://${host}/api/og-image/credential${urlParams}`;
 
   return {
-    props: {
-      credential,
-      ogImage,
-    },
+    notFound: true,
   };
+
+  // return {
+  //   props: {
+  //     credential,
+  //     ogImage,
+  //   },
+  // };
 };

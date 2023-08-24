@@ -23,16 +23,8 @@ export default function PrivateProfile({ children }) {
   let _selectedTab = router.asPath;
   _selectedTab = _selectedTab.slice(_selectedTab.lastIndexOf('/')).slice(1);
 
-  const routesForTabs = ['', 'issued', 'earned'];
+  const routesForTabs = ['earned'];
   const tabs = [
-    {
-      label: 'received',
-      count: me.protocol.totalOfreceivedCredentials,
-    },
-    {
-      label: 'issued',
-      count: me.protocol.totalOfIssuedCredentials,
-    },
     {
       label: 'earned',
       count: me.experiences

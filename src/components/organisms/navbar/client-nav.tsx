@@ -19,7 +19,6 @@ export function ClientNav() {
   if (typeof window !== 'undefined' && me) {
     return (
       <>
-        <NavBarNotifications />
         <NavBarAvatar />
       </>
     );
