@@ -46,7 +46,7 @@ export function TaskList({
   const isTaskStarted = taskProgress === 0 ? false : true;
   const router = useRouter();
 
-  const refetchLoyaltyProgress = () => {
+  const refetchLoyaltyPoints = () => {
     router.replace(router.asPath);
   };
 
@@ -156,7 +156,7 @@ export function TaskList({
             isEnabled={completedTasksCount + 1 === totalTasksCount}
             onCompleteGate={() => {
               setOpen();
-              refetchLoyaltyProgress();
+              refetchLoyaltyPoints();
             }}
           />
         )}

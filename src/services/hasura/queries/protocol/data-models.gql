@@ -63,6 +63,7 @@ query protocol_data_models($take: Int!, $skip: Int!) {
       }
       gatewayId
     }
+    image
   }
 }
 
@@ -92,6 +93,7 @@ query protocol_data_models_p2p($take: Int!, $skip: Int!) {
       }
       gatewayId
     }
+    image
   }
 }
 

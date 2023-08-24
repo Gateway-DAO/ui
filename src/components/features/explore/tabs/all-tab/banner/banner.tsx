@@ -11,15 +11,15 @@ export default function Banner(): JSX.Element {
   const isMobile = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
   return (
     <Box>
-      <Typography
-        variant="body1"
-        color={'text.secondary'}
-        position={'absolute'}
-        mt={5}
-        ml={5}
-      >
-        {t('common:featured-banner.tooltip-text')}
-      </Typography>
+      <Stack position={'absolute'} mt={5} ml={5} direction="row">
+        <Box
+          width={{ xs: 150, md: 200 }}
+          component="img"
+          src="/images/campaigns/lifi/gateway_lifi.png"
+          alt="altitude logo"
+        ></Box>
+      </Stack>
+
       <Stack
         component={'image'}
         direction={isMobile ? 'column-reverse' : 'row'}
@@ -42,17 +42,20 @@ export default function Banner(): JSX.Element {
             marginTop={{ xs: -4, md: 0 }}
             zIndex={2}
           >
-            <Typography variant="h4" gutterBottom>
+            <Typography variant="h4">
               {t('common:featured-banner.title')}
             </Typography>
-            <Typography variant="body1" color={'text.secondary'} gutterBottom>
+            <Typography variant="h4" color="#D083FF">
               {t('common:featured-banner.subtitle')}
             </Typography>
             <div>
               <Button
                 variant="contained"
                 sx={{ mt: 4 }}
-                href={ROUTES.EXPLORE_ISSUE}
+                href={ROUTES.LOYALTY_PROGRAM.replace(
+                  '[id]',
+                  process.env.NEXT_PUBLIC_LIFI_LOYALTY_PASS
+                )}
                 id="explore-banner-primary"
               >
                 {t('common:featured-banner.action')}
@@ -62,10 +65,12 @@ export default function Banner(): JSX.Element {
         </Stack>
         <Box
           component="img"
-          alignSelf={'self-start'}
-          height={{ xs: 440, md: '100%' }}
-          marginTop={{ xs: 9, md: 0 }}
-          src="/images/issue-credential-model.png"
+          alignSelf={'self-end'}
+          justifySelf={'center'}
+          height={{ xs: 150, md: 300 }}
+          mt={{ xs: 4, md: 8 }}
+          mb={{ xs: 9, md: 12 }}
+          src="/images/campaigns/lifi/pass.png"
           alt={t('common:featured-banner.subtitle')}
         />
       </Stack>

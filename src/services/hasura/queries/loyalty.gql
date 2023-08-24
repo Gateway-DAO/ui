@@ -16,57 +16,14 @@ query loyalty_programs_by_organization_id($id: uuid!) {
   }
 }
 
-query get_loyalty_progress_by_user_id_by_loyalty(
-  $user_id: uuid!
-  $loyalty_id: uuid!
-) {
-  loyalty_progress(where: {loyalty_program_id: {_eq: $loyalty_id}, user_id: {_eq: $user_id}}) {
-    protocol_credential_id
-    loyalty_program_protocol {
-      id
-      txHash
-      nftId
-      title
-      description
-      image
-      expirationDate
-      status
-      tags
-      claim
-      qrCode
-      arweaveInfo
-
-      createdAt
-      updatedAt
-
-      issuerUser {
-        gatewayId
-      }
-
-      issuerOrganization {
-        gatewayId
-        name
-        description
-      }
-
-      recipientUser {
-        gatewayId
-      }
-
-      issuerAuth {
-        user {
-          id
-          gatewayId
-        }
-      }
-
-      recipientAuth {
-        user {
-          id
-          gatewayId
-        }
-      }
-    }
-    points
+query loyalty_credential($dm_id: uuid!, $user_id: uuid!) {
+  protocol_credential(
+    where: { dataModelId: { _eq: $dm_id }, recipientUserId: { _eq: $user_id } }
+  ) {
+    id
+    title
+    claim
+    txHash
+    nftId
   }
 }

@@ -31,13 +31,20 @@ export default async function handler(req, res) {
   });
 
   try {
-    const id = tweet_link.split('/');
+    const match = tweet_link.match(/status\/(\d+)/);
 
-    const response = await client.get('statuses/lookup', {
-      id: id[id.length - 1],
+    if (!match) {
+      res.status(400).json({ error: 'Invalid tweet URL' });
+      return;
+    }
+
+    const id = match[1];
+
+    const response = await client.get('statuses/show', {
+      id,
     });
 
-    if (response[0].retweeted) {
+    if (response.retweeted) {
       return res.status(200).json({ twitter_retweet: true });
     }
     return res.status(200).json({ twitter_retweet: false });

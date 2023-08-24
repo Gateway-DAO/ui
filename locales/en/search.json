@@ -2,7 +2,7 @@
   "loading": "Loading...",
   "results": "result(s) found",
   "gates-found": {
-    "title": "Credential(s) Found"
+    "title": "PDA(s) Found"
   },
   "daos-found": {
     "title": "DAO(s) Found"
