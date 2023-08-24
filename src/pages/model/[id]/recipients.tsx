@@ -14,7 +14,6 @@ const GridViewTab = dynamic(
   { ssr: false }
 );
 
-
 export function getStaticProps() {
   return {
     notFound: true,
@@ -22,7 +21,6 @@ export function getStaticProps() {
 }
 
 export default function ProtocolDataModelRecipients() {
-  // const { t } = useTranslation('protocol');
   const router = useRouter();
 
   const { id: dataModelId } = router.query;
@@ -33,11 +31,6 @@ export default function ProtocolDataModelRecipients() {
       header_name: 'Received Credentials',
       field: 'totalOfreceivedCredentials',
     },
-    // {
-    //   column_name: 'default',
-    //   header_name: 'Minted',
-    //   field: 'id',
-    // },
   ];
 
   return (

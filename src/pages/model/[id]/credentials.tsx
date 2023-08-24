@@ -15,7 +15,6 @@ const GridViewTab = dynamic(
   { ssr: false }
 );
 
-
 export function getStaticProps() {
   return {
     notFound: true,
@@ -54,10 +53,6 @@ export default function ProtocolDataModelCredentials() {
       column_name: 'status',
       header_name: `${t('data-model.credentials-table.status')}`,
     },
-    // {
-    //   column_name: 'minted',
-    //   header_name: `${t('data-model.credentials-table.minted')}`,
-    // },
   ];
 
   return (

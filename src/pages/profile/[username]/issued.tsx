@@ -47,12 +47,6 @@ export const getServerSideProps = async ({ params }) => {
     })
   );
 
-  // return {
-  //   props: {
-  //     dehydratedState: dehydrate(queryClient),
-  //   },
-  // };
-
   return {
     notFound: true,
   };
