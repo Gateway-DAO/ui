@@ -59,9 +59,9 @@ const AccountManagementSettings = () => {
         }
       >
         {/* <YourAccountCredential /> */}
-        <EditId />
+        {/* <EditId />
         <EmailAlias emails={emails ?? []} isLoading={isLoading} />
-        <WalletAlias wallets={wallets ?? []} isLoading={isLoading} />
+        <WalletAlias wallets={wallets ?? []} isLoading={isLoading} /> */}
         <OtherAccount />
         <DeleteId />
       </Stack>
