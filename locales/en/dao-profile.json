@@ -1,12 +1,12 @@
 {
   "edit": "Edit DAO",
-  "earn-tab": "Earn",
+  "earn-tab": "Quests",
   "passes-tab": "Passes",
   "overview-tab": {
     "credentials_stats_card": "Credentials to earn",
     "protocol_credentials_stats_card": "Issued credentials",
     "credentials-section": {
-      "title": "Earn credentials",
+      "title": "Quests credentials",
       "caption": "People are really into these credentials. We thought you would too.",
       "action": "View more"
     },

@@ -1,5 +1,5 @@
 import { PrivateProfile } from '@/components/features/profile';
-import { ReceivedTab } from '@/components/features/profile/tabs';
+import { Earned } from '@/components/features/profile/tabs/Earned';
 import { useAuth } from '@/providers/auth';
 
 export default function PrivateReceivedProfile() {
@@ -7,7 +7,7 @@ export default function PrivateReceivedProfile() {
 
   return me?.id ? (
     <>
-      <ReceivedTab user={me} />
+      <Earned user={me} />
     </>
   ) : null;
 }

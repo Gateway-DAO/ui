@@ -1,10 +1,10 @@
 import { useRouter } from 'next/router';
 
 import { Profile } from '@/components/features/profile';
-import { ReceivedTab } from '@/components/features/profile/tabs';
 import { useAuth } from '@/providers/auth';
 import { hasuraPublicService } from '@/services/hasura/api';
 import { dehydrate, QueryClient, useQuery } from '@tanstack/react-query';
+import { Earned } from '@/components/features/profile/tabs/Earned';
 
 export default function ReceivedProfile() {
   const router = useRouter();
@@ -22,7 +22,7 @@ export default function ReceivedProfile() {
   );
   return (
     <>
-      <ReceivedTab user={user} />
+      <Earned user={user} />
     </>
   );
 }
