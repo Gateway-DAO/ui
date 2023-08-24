@@ -6,7 +6,7 @@
     "credential_isnt_available": "This credential is not available"
   },
   "sidebar": {
-    "see_credential": "See Credential",
+    "see_credential": "View Private Data Asset",
     "claimed": "Claimed",
     "holders": "Holders",
     "created_by": "Created by"

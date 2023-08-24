@@ -10,6 +10,7 @@ type taskStructure = {
   type: TaskType;
   title: string;
   description: string;
+  enabled?: boolean;
 };
 
 const AddTaskCard = ({ tasks, addTask }) => {
@@ -21,31 +22,37 @@ const AddTaskCard = ({ tasks, addTask }) => {
       type: 'self_verify' as TaskType,
       title: 'Open Links',
       description: 'Ask users to access a link address',
+      enabled: true,
     },
     {
       type: 'quiz' as TaskType,
       title: 'Take Quiz',
       description: 'Ask questions with multiple or single answer choices',
+      enabled: true,
     },
     {
       type: 'token_hold' as TaskType,
       title: 'Verify Token',
       description: 'Check if the users hold a token',
+      enabled: true,
     },
     {
       type: 'manual' as TaskType,
       title: 'Manual Submission',
       description: 'Submit links as proof of work',
+      enabled: true,
     },
     {
       type: 'nft_hold' as TaskType,
       title: 'Verify NFT',
       description: 'Check if the users hold a token',
+      enabled: true,
     },
     {
       type: 'meeting_code' as TaskType,
       title: 'Verify Code',
       description: 'Ask users to put a code',
+      enabled: true,
     },
     {
       type: 'track_onchain' as TaskType,
@@ -56,36 +63,43 @@ const AddTaskCard = ({ tasks, addTask }) => {
       type: 'twitter_follow' as TaskType,
       title: 'Follow Profile',
       description: 'Ask users to follow a profile on Twitter',
+      enabled: false,
     },
     {
       type: 'twitter_retweet' as TaskType,
       title: 'Retweet Post',
       description: 'Ask users to retweet a post on Twitter',
+      enabled: false,
     },
     {
       type: 'twitter_like' as TaskType,
       title: 'Like Tweet',
       description: 'Ask users to like a post on Twitter',
+      enabled: false,
     },
     {
       type: 'twitter_tweet' as TaskType,
       title: 'Post Tweet',
       description: 'Ask users to post a tweet on Twitter',
+      enabled: false,
     },
     {
       type: 'github_contribute' as TaskType,
       title: 'Contribute to repository',
       description: 'Check if users contribute to the repository',
+      enabled: true,
     },
     {
       type: 'github_prs' as TaskType,
       title: 'Verify Pull Requests',
       description: 'Check the number of pull requests',
+      enabled: true,
     },
     {
       type: 'snapshot' as TaskType,
       title: 'Verify Proposal',
       description: 'Check if the user created or voted on a proposal',
+      enabled: true,
     },
   ].filter((task) => !hasManualTask || task.type !== 'manual');
   return (
@@ -137,6 +151,7 @@ const AddTaskCard = ({ tasks, addTask }) => {
                 title={task.title}
                 description={task.description}
                 addTask={() => addTask(task.type)}
+                disabled={!task.enabled}
               />
             </Paper>
           </Grid>

@@ -9,9 +9,9 @@
     "send_link": "submitted a link on"
   },
   "protocol_credential": {
-    "credential_updated": "updated the credential",
-    "credential_received": "sent you the credential",
-    "credential_revoked": "revoked the credential",
-    "credential_suspended": "suspended the credential"
+    "credential_updated": "updated the PDA",
+    "credential_received": "sent you the PDA",
+    "credential_revoked": "revoked the PDA",
+    "credential_suspended": "suspended the PDA"
   }
 }

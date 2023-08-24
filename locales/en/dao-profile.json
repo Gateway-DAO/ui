@@ -3,27 +3,27 @@
   "earn-tab": "Earn",
   "passes-tab": "Passes",
   "overview-tab": {
-    "credentials_stats_card": "Credentials to earn",
-    "protocol_credentials_stats_card": "Issued credentials",
+    "credentials_stats_card": "PDAs to earn",
+    "protocol_credentials_stats_card": "Issued PDAs",
     "credentials-section": {
-      "title": "Earn credentials",
-      "caption": "People are really into these credentials. We thought you would too.",
+      "title": "Earn PDAs",
+      "caption": "People are really into these PDAs. We thought you would too.",
       "action": "View more"
     },
     "loyalty-section": {
       "title": "Passes",
-      "caption": "Unlock new milestones with every earned credential",
+      "caption": "Unlock new milestones with every earned PDA",
       "action": "View more"
     },
     "issued-credentials-section": {
-      "title": "Last issued credentials",
-      "caption": "Check out credentials issued using this template!",
+      "title": "Last issued PDAs",
+      "caption": "Check out PDAs issued using this template!",
       "action": "View more"
     }
   },
   "issued-tab": {
     "grid-columns": {
-      "credential_id": "Credential ID",
+      "credential_id": "PDA ID",
       "category": "Category",
       "recipient_id": "Recipient ID",
       "issuance_date": "Issuance Date",

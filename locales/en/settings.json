@@ -36,17 +36,17 @@
     "time-zone": "Time zone"
   },
   "connected-accounts": {
-    "description": "Connect your account to claim credentials with third-party platforms requirements.",
+    "description": "Connect your account to claim PDAs with third-party platforms requirements.",
     "connected": "Connected",
     "connect": "Connect",
     "disconnect": "Disconnect",
     "twitter": {
       "title": "Twitter",
-      "description": "Connect your account to claim credentials with follow profile, retweet and post a tweet requirements."
+      "description": "Connect your account to claim PDAs with follow profile, retweet and post a tweet requirements."
     },
     "github": {
       "title": "Github",
-      "description": "Connect your account to claim credentials with repository contribution and pull requests requirements."
+      "description": "Connect your account to claim PDAs with repository contribution and pull requests requirements."
     }
   },
   "account-management": {
@@ -158,19 +158,19 @@
     },
     "types": {
       "credential_published": {
-        "title": "Credential published",
-        "description": "When a credential of a organization that you follows publishes a credential."
+        "title": "PDA published",
+        "description": "When a PDA of a organization that you follows publishes a PDA."
       },
       "credential_received": {
-        "title": "Credential received",
-        "description": "When you receive a credential"
+        "title": "PDA received",
+        "description": "When you receive a PDA"
       },
       "credential_revoked": {
-        "title": "Credential revoked",
-        "description": "When a credential that you own is revoked"
+        "title": "PDA revoked",
+        "description": "When a PDA that you own is revoked"
       },
       "credential_update": {
-        "title": "Credential update",
+        "title": "PDA update",
         "description": ""
       },
       "manual_task_event_comment": {

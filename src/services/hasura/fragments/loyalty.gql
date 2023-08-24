@@ -8,7 +8,7 @@ fragment loyalty on loyalty_program {
   organization_id
   categories
   details
-  gates(order_by: {updated_at: desc}) {
+  gates(order_by: { updated_at: desc }) {
     id
     title
     description
@@ -42,5 +42,9 @@ fragment loyalty on loyalty_program {
     logo_url
     slug
     id
+    logo {
+      s3_key
+      id
+    }
   }
 }
