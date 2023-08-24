@@ -56,8 +56,6 @@ export function AllTab({
           },
         }}
       >
-        <CardCreditScore />
-        <CardEarnCredential />
       </Stack>
       <Stack
         direction="column"
@@ -114,25 +112,7 @@ export function AllTab({
             ))}
           </SectionWithSliderResponsive>
         )}
-        <SectionWithSliderResponsive
-          title={t('featured-data-models.title')}
-          caption={t('featured-data-models.caption')}
-          action={
-            <Button
-              id="explore-issue-button-viewmore"
-              onClick={() => router.push(ROUTES.EXPLORE_ISSUE)}
-            >
-              {t('featured-data-models.see-more')}
-            </Button>
-          }
-          itemWidth={(theme) => theme.spacing(37.75)}
-          gridSize={{ lg: 4 }}
-        >
-          {dataModels &&
-            dataModels.map((model) => (
-              <DataModelCard key={model.id} {...model} />
-            ))}
-        </SectionWithSliderResponsive>
+
         <SectionWithSliderResponsive
           title={t('featured-organizations.title')}
           caption={t('featured-organizations.caption')}
