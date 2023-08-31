@@ -54,10 +54,11 @@ export default function CredentialCreateForm({
         );
         zodResult.values = {
           ...zodResult.values,
-          description: dataModel.description,
+          title: rawData.title.trim(),
+          description: dataModel.description.trim(),
           tags: [],
           dataModelId: dataModel.id,
-          recipientUserIdentity: rawData.recipientUserIdentity,
+          recipientUserIdentity: rawData.recipientUserIdentity.trim(),
         };
       } else {
         zodResult = await zodResolver(createCredentialSchema)(
@@ -65,6 +66,14 @@ export default function CredentialCreateForm({
           _,
           options as any
         );
+        zodResult.values = {
+          ...zodResult.values,
+          title: rawData.title.trim(),
+          description: dataModel.description.trim(),
+          tags: [],
+          dataModelId: dataModel.id,
+          recipientUserIdentity: rawData.recipientUserIdentity.trim(),
+        };
       }
       const claimResult = await ajvResolver(dataModel?.schema, {
         formats: fullFormats,

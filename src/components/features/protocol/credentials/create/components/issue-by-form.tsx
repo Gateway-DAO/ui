@@ -31,7 +31,7 @@ type Props = {
 };
 
 export default function IssueByForm({ dataModel }: Props) {
-  const { register, setValue } =
+  const { register, setValue, watch } =
     useFormContext<Protocol_Api_CreateCredentialInput>();
 
   const { t } = useTranslation('protocol');
@@ -90,8 +90,12 @@ export default function IssueByForm({ dataModel }: Props) {
           id: dataModel.id,
         },
       });
+    } else {
+      setValue('issuerOrganizationId', setDefaultValue());
     }
   }, []);
+
+  console.log(watch());
 
   return (
     <Stack>
