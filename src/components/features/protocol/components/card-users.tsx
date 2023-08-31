@@ -50,6 +50,7 @@ export default function CardUsers({
         slug: issuerOrganization?.gatewayId,
       }),
     {
+      enabled: !!issuerOrganization?.gatewayId,
       select: (data) => data.daos?.[0],
       refetchOnMount: false,
       refetchOnWindowFocus: false,
@@ -63,6 +64,7 @@ export default function CardUsers({
         wallet: recipientCredential.primaryWallet?.address,
       }),
     {
+      enabled: !!recipientCredential?.primaryWallet?.address,
       select: (data) => data.users?.[0],
       refetchOnMount: false,
       refetchOnWindowFocus: false,
