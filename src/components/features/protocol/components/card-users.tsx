@@ -74,12 +74,14 @@ export default function CardUsers({
     issuerOrganization?.gatewayId ??
     issuer?.data?.username ??
     issuerCredential?.gatewayId ??
-    issuerCredential.primaryWallet.address;
+    issuerCredential?.primaryWallet?.address ??
+    issuerCredential?.id;
 
   const recipientName =
     recipient?.data?.username ??
     recipientCredential?.gatewayId ??
-    recipientCredential.primaryWallet.address;
+    recipientCredential?.primaryWallet?.address ??
+    recipientCredential?.id;
 
   const showPicture = () => {
     if (issuerOrganization && organization?.data)
