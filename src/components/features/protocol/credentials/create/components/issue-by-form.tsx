@@ -90,6 +90,8 @@ export default function IssueByForm({ dataModel }: Props) {
           id: dataModel.id,
         },
       });
+    } else {
+      setValue('issuerOrganizationId', setDefaultValue());
     }
   }, []);
 
