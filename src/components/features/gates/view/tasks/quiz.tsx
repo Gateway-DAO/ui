@@ -203,13 +203,13 @@ const QuizContent = ({
             disabled={isAttemptLocked && attemptLimit === 0}
             isLoading={isLoading}
           >
-            Submit
+            {t('common:actions.submit')}
           </LoadingButton>
         </>
       )}
       {completed && updatedAt && (
         <Typography color="#c5ffe3" variant="subtitle2">
-          Task completed at {formattedDate}
+          {t('tasks.completed-date', { date: formattedDate })}
         </Typography>
       )}
     </Stack>

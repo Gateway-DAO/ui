@@ -7,6 +7,7 @@ import { MintDialogProtocol } from '@/components/organisms/mint/mint-modal/mint-
 import { ROUTES } from '@/constants/routes';
 import { useMintData } from '@/hooks/use-mint-data';
 import {
+  Protocol_Api_Chain,
   Loyalty_Program,
   Protocol_Api_Credential,
 } from '@/services/hasura/types';
@@ -43,6 +44,7 @@ export default function CredentialProtocolView({ credential, loyalty }: Props) {
     mintData,
     isReceivedCredential,
     isAllowedToMint,
+    changeChainName,
   } = useMintData({
     protocolCredentialId: credential?.id,
     protocolCredential: credential,
@@ -80,7 +82,9 @@ export default function CredentialProtocolView({ credential, loyalty }: Props) {
             mintAction={() =>
               mintCredential.mutate({ credentialId: credential.id })
             }
-            chain={credential?.recipientUser?.primaryWallet?.chain}
+            chain={
+              changeChainName(credential?.nft?.chain) as Protocol_Api_Chain
+            }
           />
         )}
 
@@ -88,7 +92,9 @@ export default function CredentialProtocolView({ credential, loyalty }: Props) {
           <MintNFTCard
             title={t('credential.mint-card.title')}
             mintedData={mintData}
-            chain={credential?.recipientUser?.primaryWallet?.chain}
+            chain={
+              changeChainName(credential?.nft?.chain) as Protocol_Api_Chain
+            }
           />
         )}
 

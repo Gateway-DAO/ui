@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import { Session } from 'next-auth';
 import { useSession, signOut } from 'next-auth/react';
+import useTranslation from 'next-translate/useTranslation';
 import {
   PropsWithChildren,
   useMemo,
@@ -9,8 +10,8 @@ import {
   useState,
 } from 'react';
 
-import { AuthConnectingModal } from '@/components/organisms/auth-connecting-modal';
-import { AuthModal } from '@/components/organisms/auth-modal';
+import { WalletConnectModal } from '@/components/organisms/wallet-connect-modal';
+import { WalletConnectingModal } from '@/components/organisms/wallet-connecting-modal';
 import { hasuraApiWithRefresh, hasuraUserHeader } from '@/services/hasura/api';
 
 import { BlockedPage } from './blocked-page';
@@ -25,6 +26,8 @@ export function AuthProvider({
   isAuthPage,
   children,
 }: PropsWithChildren<Props>) {
+  const { t } = useTranslation('auth');
+
   const { data: session } = useSession();
   const token = session?.token;
 
@@ -34,7 +37,7 @@ export function AuthProvider({
     me,
     error,
     onUpdateMe,
-    authStep,
+    WalletModalStep,
     onRetry,
     onSignOut,
     onInvalidateMe,
@@ -100,19 +103,25 @@ export function AuthProvider({
         onSignOut,
         onUpdateMe,
         onInvalidateMe,
-        authenticated: !!me && !!session,
+        isAuthenticated: !!me && !!session,
       }}
     >
       {!isBlocked && children}
-      <AuthModal isOpen={isModalVisible} close={() => setModalVisible(false)} />
-      <AuthConnectingModal
-        step={authStep}
+      <WalletConnectModal
+        title={t('select-wallet.title')}
+        description={t('select-wallet.description')}
+        isOpen={isModalVisible}
+        onCancel={() => setModalVisible(false)}
+        onConnect={() => setModalVisible(false)}
+      />
+      <WalletConnectingModal
+        step={WalletModalStep}
         error={error}
         isOpen={
-          authStep === 'get-nonce' ||
-          authStep === 'send-signature' ||
-          authStep === 'get-me' ||
-          authStep === 'error'
+          WalletModalStep === 'get-nonce' ||
+          WalletModalStep === 'send-signature' ||
+          WalletModalStep === 'get-me' ||
+          WalletModalStep === 'error'
         }
         onRetry={onRetry}
         onCancel={onSignOut}

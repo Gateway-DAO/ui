@@ -16,7 +16,7 @@ type Props = {
 };
 
 export default function ReceivedTab({ user }: Props): JSX.Element {
-  const internalPageSize = 16;
+  const internalPageSize = 12;
   const {
     data: credentials,
     fetchNextPage,

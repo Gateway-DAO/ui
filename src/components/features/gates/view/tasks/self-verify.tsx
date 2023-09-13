@@ -1,3 +1,4 @@
+import useTranslation from 'next-translate/useTranslation';
 import Link from 'next/link';
 import { Fragment, useState } from 'react';
 
@@ -41,6 +42,7 @@ const SelfVerifyContent = ({
   readOnly,
   isLoading,
 }) => {
+  const { t } = useTranslation('gate-profile');
   const formattedDate = new Date(updatedAt.toLocaleString()).toLocaleString();
   const [visit, setVisited] = useState<number>(0);
   const incrementView = () => {
@@ -88,18 +90,18 @@ const SelfVerifyContent = ({
       </List>
       {completed && updatedAt && (
         <Typography color="#c5ffe3" variant="subtitle2" marginTop={3.5}>
-          Task completed at {formattedDate}
+          {t('tasks.completed-date', { date: formattedDate })}
         </Typography>
       )}
       {!readOnly && !completed && (
         <LoadingButton
           variant="contained"
-          sx={{ marginTop: '15px' }}
+          sx={{ mt: 2 }}
           onClick={() => completeTask({})}
           isLoading={isLoading}
           disabled={!(visit == data.files.length)}
         >
-          Done
+          {t('common:actions.done')}
         </LoadingButton>
       )}
     </>

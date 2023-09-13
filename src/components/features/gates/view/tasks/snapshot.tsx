@@ -1,3 +1,5 @@
+import useTranslation from 'next-translate/useTranslation';
+
 import { LoadingButton } from '@/components/atoms/buttons/loading-button';
 
 import { Stack, Typography } from '@mui/material';
@@ -12,6 +14,7 @@ const SnapshotContent = ({
 }) => {
   const { proposal_number } = data;
   const formattedDate = new Date(updatedAt.toLocaleString()).toLocaleString();
+  const { t } = useTranslation('gate-profile');
 
   return (
     <Stack marginTop={5} alignItems="start">
@@ -24,7 +27,9 @@ const SnapshotContent = ({
       >
         {proposal_number}
       </Typography>
-      <Typography variant="caption">Specific Proposal Number</Typography>
+      <Typography variant="caption">
+        {t('tasks.snapshot.specific_proposal_number')}
+      </Typography>
       {!readOnly && !completed && (
         <LoadingButton
           variant="contained"
@@ -32,12 +37,12 @@ const SnapshotContent = ({
           onClick={() => completeTask({})}
           isLoading={isLoading}
         >
-          Check Snapshot
+          {t('common:actions.check-snapshot')}
         </LoadingButton>
       )}
       {completed && updatedAt && (
         <Typography color="#c5ffe3" variant="subtitle2">
-          Task completed at {formattedDate}
+          {t('tasks.completed-date', { date: formattedDate })}
         </Typography>
       )}
     </Stack>

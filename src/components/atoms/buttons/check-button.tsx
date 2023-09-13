@@ -1,82 +1,87 @@
-import { useEffect, useState } from 'react';
+import { ReactNode, useState } from 'react';
 
 import { brandColors } from '@/theme';
 
+import CancelIcon from '@mui/icons-material/Cancel';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import { ButtonProps, CircularProgress, IconButton } from '@mui/material';
+import { Button, ButtonProps, CircularProgress } from '@mui/material';
 
-type Props = {
+type Props<C extends React.ElementType> = {
   isLoading?: boolean;
-  checked?: boolean;
+  isChecked?: boolean;
+  isHover?: boolean;
   clickHandler?: () => any;
   labelOn?: string;
   labelOff?: string;
   labelOffHover?: string;
+  component?: C;
 } & ButtonProps;
 
-export function CheckedButton({
+export function CheckButton<C extends React.ElementType>({
   isLoading,
-  checked,
+  isChecked,
   clickHandler,
   labelOn,
   labelOff,
   labelOffHover,
-}: Props) {
-  const [buttonLabel, setButtonLabel] = useState<string>(
-    checked ? labelOn : labelOff
-  );
+  isHover: isPropHover,
+  ...other
+}: Props<C>) {
+  const [isHover, setIsHover] = useState(false);
+  const onFocus =
+    typeof isPropHover === 'undefined' ? () => setIsHover(true) : undefined;
+  const onBlur =
+    typeof isPropHover === 'undefined' ? () => setIsHover(false) : undefined;
 
-  useEffect(() => {
-    checked ? setButtonLabel(labelOn) : setButtonLabel(labelOff);
-  }, [checked]);
+  const isHoverState = isPropHover ?? isHover;
 
-  const hoverButtonLabel = () => {
-    if (!labelOffHover) return;
-    if (buttonLabel == labelOn) {
-      setButtonLabel(labelOffHover);
-    } else if (buttonLabel == labelOffHover) {
-      setButtonLabel(labelOn);
-    }
+  let buttonLabel = isChecked ? labelOn : labelOff;
+  if (isHoverState && isChecked && labelOffHover) {
+    buttonLabel = labelOffHover;
+  }
+
+  let icon: ReactNode;
+  if (isLoading) {
+    icon = <CircularProgress size={18} />;
+  } else if (isChecked && !isHoverState) {
+    icon = <CheckCircleIcon />;
+  } else if (isChecked && isHoverState) {
+    icon = <CancelIcon />;
+  }
+
+  const hoverStyle = {
+    borderColor: isChecked ? null : brandColors.purple.dark,
+    backgroundColor: isChecked
+      ? brandColors.red.dark
+      : brandColors.background.light,
   };
 
   return (
-    <IconButton
-      onClick={() => (clickHandler ? clickHandler() : null)}
-      onMouseEnter={() => hoverButtonLabel()}
-      onMouseLeave={() => hoverButtonLabel()}
-      sx={(theme) => ({
-        borderRadius: '20px',
-        cursor: 'pointer',
-        background: checked
+    <Button
+      onClick={clickHandler}
+      onMouseEnter={onFocus}
+      onMouseLeave={onBlur}
+      onFocus={onFocus}
+      onBlur={onBlur}
+      startIcon={icon}
+      {...other}
+      disableRipple={!!other.component}
+      sx={{
+        ...other?.sx,
+        background: isChecked
           ? brandColors.green.main
           : brandColors.background.light,
-        fontSize: '11px',
-        textTransform: 'uppercase',
-        fontWeight: theme.typography.fontWeightBold,
-        border: checked
+        border: isChecked
           ? '1px solid transparent'
           : `1px solid ${brandColors.purple.main}`,
-        color: checked ? '#170627' : brandColors.purple.main,
-        padding: '4px 8px',
-        minHeight: '30px',
-        transition: 'all .3s ease',
-        '&:hover': {
-          borderColor: checked
-            ? brandColors.green.dark
-            : brandColors.purple.dark,
-          backgroundColor: checked
-            ? brandColors.green.dark
-            : brandColors.background.light,
-        },
-      })}
+        color: isChecked ? '#170627' : brandColors.purple.main,
+        ...(isHoverState && {
+          ...hoverStyle,
+          '&:hover': hoverStyle,
+        }),
+      }}
     >
-      {isLoading && <CircularProgress size="15px" sx={{ mr: 1 }} />}
-      {checked && !isLoading && (
-        <CheckCircleIcon
-          sx={{ fontSize: '15px', display: checked ? 'block' : 'none', mr: 1 }}
-        />
-      )}
       {buttonLabel}
-    </IconButton>
+    </Button>
   );
 }

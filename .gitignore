@@ -40,6 +40,7 @@ testem.log
 .DS_Store
 Thumbs.db
 .env
+.nvmrc
 .env.*
 
 # Sentry
@@ -59,3 +60,4 @@ storageState.json
 
 .next
 .vscode/settings.json
+src/pages/dev.tsx

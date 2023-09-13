@@ -32,7 +32,7 @@ export function LoyaltyProgramCard({
   href,
   data_model_id,
 }: Props): JSX.Element {
-  const { me, hasuraUserService, authenticated } = useAuth();
+  const { me, hasuraUserService, isAuthenticated } = useAuth();
 
   const { data: loyaltyCredential, isLoading } = useQuery(
     [
@@ -46,7 +46,7 @@ export function LoyaltyProgramCard({
       }),
     {
       select: (data) => data.protocol_credential.find((lc) => lc),
-      enabled: authenticated && !!id,
+      enabled: isAuthenticated && !!id,
     }
   );
 

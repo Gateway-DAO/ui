@@ -55,6 +55,25 @@
     },
     "manual": {
       "title": "Manual Submission Title"
+    },
+    "track_onchain": {
+      "title": "Track on-chain events",
+      "chain": "Chain",
+      "contract_address": "Contract address",
+      "check_contract": "Check contract",
+      "event": "Event",
+      "event_helper": "Can't find the events you are looking for? ",
+      "event_helper_link": "Add the contract ABI manually",
+      "parameters": "Parameters",
+      "parameter": "Parameter",
+      "add_parameter": "Add parameter",
+      "remove": "Remove",
+      "abi": "ABI",
+      "abi_helper_text": "Paste here the ABI of the contract you want to track",
+      "unverified_contract_message": "It seems this contract is not verified please provide its ABI",
+      "invalid_abi_message": "It seems this contract doesn't have valid events please provide its ABI",
+      "check_abi": "Check ABI",
+      "invalid_abi": "Please, provide an ABI with events"
     }
   },
   "direct": {

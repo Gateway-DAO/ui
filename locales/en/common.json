@@ -85,6 +85,7 @@
     "disconnect": "disconnect",
     "cancel": "cancel",
     "submit": "submit",
+    "verify": "verify",
     "got-it": "got it",
     "follow": "Follow",
     "unfollow": "Unfollow",
@@ -93,12 +94,19 @@
     "reject": "Reject",
     "withdraw": "Withdraw invitation",
     "mint": "Mint as NFT",
+    "check-nft": "Check NFT",
     "check-transaction": "Verify Mint Transaction",
     "see-more": "See more",
     "see-less": "See less",
     "share-link": "Share link",
     "download": "Download",
-    "reset": "Reset"
+    "reset": "Reset",
+    "continue": "Continue",
+    "connect-now": "Connect now",
+    "done": "Done",
+    "check-snapshot": "Check Snapshot",
+    "check_token": "Check Token",
+    "check_event": "Check Event"
   },
   "image-drop-field": {
     "default-label": "Drop to upload your avatar",
@@ -135,5 +143,17 @@
       "title": "Earn a PDA",
       "description": "Go to explore and try to earn PDAs"
     }
+  },
+  "modal-confirm-delete": {
+    "text-confirm1": "To confirm, type",
+    "text-confirm2": "into the field and mark the checkbox",
+    "title": "Are you sure you want to disconnect the account?",
+    "subtitle": "Disconnecting the account, be aware:",
+    "text1": "The credentials will be tied only to the",
+    "text2a": "The credentials issued to",
+    "text2b": "won't be available for your ID",
+    "text2c": "and won't be displayed in your profile",
+    "text3": "You will be able to connect this account again, and then tie the credentials to the your ID",
+    "error-message": "Something seems to be wrong, please try again"
   }
 }

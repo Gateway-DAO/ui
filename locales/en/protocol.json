@@ -68,6 +68,7 @@
     "issuers": "Issuers",
     "credentials": "PDAs",
     "issued-credentials": "Issued PDAs",
+    "price-for-consumption": "Price for consumption",
     "recipients": "Recipients",
     "issue-credential-title": "Issue PDA",
     "successfully-title": "PDA issued successfully",

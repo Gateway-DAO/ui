@@ -10,13 +10,20 @@ import { theme } from '@/theme';
 import { useSnackbar } from 'notistack';
 import { useCopyToClipboard } from 'react-use';
 
-import { ArrowDropDown } from '@mui/icons-material';
+import { ArrowDropDown, ManageAccounts } from '@mui/icons-material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import LogoutIcon from '@mui/icons-material/Logout';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import Settings from '@mui/icons-material/Settings';
-import { ListItemText, useMediaQuery } from '@mui/material';
+import {
+  Box,
+  Button,
+  Divider,
+  ListItemText,
+  Stack,
+  useMediaQuery,
+} from '@mui/material';
 import Badge, { badgeClasses } from '@mui/material/Badge';
 import IconButton from '@mui/material/IconButton';
 import ListItem from '@mui/material/ListItem';
@@ -106,20 +113,48 @@ export function NavBarAvatar({ hideProfile }: Props) {
         }}
         open={isOpen}
         onClose={onClose}
+        sx={{
+          minWidth: '320px',
+        }}
       >
         {!hideProfile && (
-          <Link passHref href={ROUTES.MY_PROFILE}>
-            <MenuItem
-              component="a"
-              key="view-profile"
-              sx={{
-                py: '12px',
-              }}
+          <>
+            <Stack
+              minWidth={320}
+              p={2}
+              direction="row"
+              gap={1}
+              alignItems="center"
             >
-              <AccountCircleIcon color="disabled" sx={{ mr: 3.5 }} />
-              <Typography textAlign="center">View my profile</Typography>
-            </MenuItem>
-          </Link>
+              <AvatarFile
+                sx={{
+                  width: '48px',
+                  height: '48px',
+                }}
+                aria-label={me?.name}
+                file={me?.picture}
+                fallback={'/avatar.png'}
+              >
+                {me?.name?.[0]}
+              </AvatarFile>
+              <Box>
+                <Typography variant="body2">
+                  {me?.name ?? me.protocolUser?.gatewayId ?? 'Edit your name'}
+                </Typography>
+                <Typography variant="caption">
+                  @{me.protocolUser?.gatewayId}
+                </Typography>
+              </Box>
+            </Stack>
+            <Box p={2}>
+              <Link passHref href={ROUTES.MY_PROFILE}>
+                <Button variant="outlined" fullWidth size="small">
+                  View my profile
+                </Button>
+              </Link>
+            </Box>
+            <Divider />
+          </>
         )}
         <Link
           passHref
@@ -136,10 +171,21 @@ export function NavBarAvatar({ hideProfile }: Props) {
             <Typography textAlign="center">Settings</Typography>
           </MenuItem>
         </Link>
+        <Link passHref href={ROUTES.SETTINGS_ACCOUNT_MANAGEMENT}>
+          <MenuItem
+            component="a"
+            key="settings"
+            sx={{
+              py: '12px',
+            }}
+          >
+            <ManageAccounts color="disabled" sx={{ mr: 3.5 }} />
+            <Typography textAlign="center">Gateway ID</Typography>
+          </MenuItem>
+        </Link>
         <MenuItem
           key="disconnect"
           onClick={withOnClose(onSignOut)}
-          divider={!!address}
           sx={{
             py: '12px',
           }}
@@ -147,43 +193,6 @@ export function NavBarAvatar({ hideProfile }: Props) {
           <LogoutIcon color="disabled" sx={{ mr: 3.5 }} />
           <Typography textAlign="center">Disconnect</Typography>
         </MenuItem>
-        {address && (
-          <ListItem
-            disablePadding
-            sx={{
-              py: '12px',
-            }}
-          >
-            <IconButton disabled sx={{ mr: 2.5, ml: 1 }}>
-              {wallet?.adapter?.icon}
-            </IconButton>
-
-            <ListItemText
-              primary={address.slice(0, 5) + '...' + address.slice(-4)}
-              secondary={wallet?.chainName}
-            />
-
-            <IconButton
-              sx={{ ml: 3, mr: 0.5, background: '#E5E5E529' }}
-              onClick={withOnClose(copyText)}
-            >
-              <ContentCopyIcon
-                color="disabled"
-                sx={{ height: 20, width: 20, color: '#FFFFFF8F' }}
-              />
-            </IconButton>
-
-            <IconButton
-              sx={{ mr: 1.5, background: '#E5E5E529' }}
-              href={`https://etherscan.io/address/${address}`}
-              target="_blank"
-            >
-              <OpenInNewIcon
-                sx={{ height: 20, width: 20, color: '#FFFFFF8F' }}
-              />
-            </IconButton>
-          </ListItem>
-        )}
       </Menu>
     </>
   );

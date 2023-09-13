@@ -1,0 +1,10 @@
+query limit_usage {
+  protocol {
+    getMontlyUserUsage {
+      credentialsUsageAllowedByMonth
+      datamodelsUsageAllowedByMonth
+      monthlyCredentials
+      monthlyDatamodels
+    }
+  }
+}

@@ -33,6 +33,7 @@ export const errorMessages = {
   FAILED_QUIZ_MINIMUM_AMOUNT: `You didn't correctly answer the minimum amount requested. You will be able to retry in`,
   EMAIL_ALREADY_REGISTERED: `E-mail already registered`,
   GATEWAY_ID_ALREADY_REGISTERED: `Gateway ID already registered`,
+  GATEWAY_ID_UPDATED_RECENTLY: 'You will be able to update in [days] days.',
   ERROR_TRYING_TO_SEND_THE_CODE: `An error ocurred trying to send the code`,
   ERROR_TRYING_TO_CREATE_THE_CODE: `An error ocurred trying to create the code`,
   EXPIRED_CODE: `Expired code`,
@@ -49,4 +50,19 @@ export const errorMessages = {
   EMAIL_ALREADY_IN_USE: 'E-mail already in use',
   USERNAME_ALREADY_IN_USE: 'Username already in use',
   ERROR_UPDATING_USER: `Error updating user, please, contact Gateway or try again.`,
+  WALLET_ALREADY_ASSOCIATED: `Wallet already associated to another user`,
+  CANNOT_REMOVE_LAST_AUTH_METHOD: `You cannot remove the last authentication method of your account`,
+  INVALID_CHAIN_EVENTS: `No event found`,
 };
+
+export const transformErrorObject = ({ error, message }: any) =>
+  errorMessages[message] ??
+  errorMessages[error] ??
+  errorMessages.UNEXPECTED_ERROR;
+
+export const transformErrorMessage = (error: any) =>
+  errorMessages[error?.response?.errors?.[0]?.message] ??
+  error?.response?.errors?.[0]?.message ??
+  error?.response?.errors?.[0]?.error ??
+  error?.message ??
+  errorMessages.UNEXPECTED_ERROR;

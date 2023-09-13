@@ -16,15 +16,7 @@ import { useAuth } from '@/providers/auth';
 import { Button } from '@mui/material';
 
 export default function Index() {
-  const router = useRouter();
-  const { onOpenLogin, authenticated } = useAuth();
-  const handleLogin = () => {
-    if (authenticated) {
-      router.push(ROUTES.EXPLORE);
-    } else {
-      onOpenLogin();
-    }
-  };
+  const { isAuthenticated } = useAuth();
 
   const { t } = useTranslation('index');
   const menuList = t('menu', null, { returnObjects: true }) as MenuListItem[];
@@ -55,14 +47,19 @@ export default function Index() {
       <HeadContainer ogImage="default" />
       <LandingTemplate
         signUpButton={
-          <Button
-            variant="contained"
-            size="large"
-            sx={{ whiteSpace: 'nowrap', height: '56px' }}
-            onClick={handleLogin}
+          <Link
+            passHref
+            href={isAuthenticated ? ROUTES.EXPLORE : ROUTES.AUTHENTICATION}
           >
-            {t('signUp')}
-          </Button>
+            <Button
+              component="a"
+              variant="contained"
+              sx={{ whiteSpace: 'nowrap', height: '56px' }}
+              size="large"
+            >
+              {t('enterButtonTitle')}
+            </Button>
+          </Link>
         }
         theGatewayContent={theGatewayContent}
         buildAppsContent={buildAppsContent}
@@ -74,6 +71,7 @@ export default function Index() {
         connectButton={
           <Link passHref href="/explore">
             <Button
+              component="a"
               variant="outlined"
               size="large"
               sx={(theme) => ({
@@ -95,14 +93,19 @@ export default function Index() {
         menuList={menuList}
         titleDescription={t('titleDescription')}
         enterButton={
-          <Button
-            variant="contained"
-            sx={{ height: '56px', marginTop: '38px' }}
-            size="large"
-            onClick={handleLogin}
+          <Link
+            passHref
+            href={isAuthenticated ? ROUTES.EXPLORE : ROUTES.AUTHENTICATION}
           >
-            {t('enterButtonTitle')}
-          </Button>
+            <Button
+              component="a"
+              variant="contained"
+              sx={{ height: '56px', marginTop: '38px' }}
+              size="large"
+            >
+              {t('enterButtonTitle')}
+            </Button>
+          </Link>
         }
       />
     </>

@@ -21,9 +21,17 @@ export const query = {
   loyalty_credential_by_user_id_by_data_model_id:
     'loyalty_credential_by_user_id_by_data_model_id',
   protocol_credential: 'protocol_credential',
+  authentications_methods_by_user: 'authentications_methods_by_user',
+  limit_usage: 'limit_usage',
+  web3_contract_information: 'get_web3_contract_information',
 };
 
 export const mutation = {
   create_organization: 'create_organization',
   approve_organization: 'approve_organization',
+  signup_email: 'signup_email',
+  signup_token_verification: 'signup_token_verification',
+  update_email: 'update_email',
+  remove_email: 'remove_email',
+  remove_wallet: 'remove_wallet',
 };

@@ -48,7 +48,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 
   return {
     props: {
-      dataModel: dataModel?.protocol?.dataModel,
+      dataModel: dataModel?.protocol_data_model_by_pk,
       stats,
       dataModelStatsUntilDayBefore,
     },

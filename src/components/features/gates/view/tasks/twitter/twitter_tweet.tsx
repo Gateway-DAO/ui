@@ -55,9 +55,8 @@ const TwitterTweetContent = ({
         marginBottom={2}
         sx={{
           color: (theme) => theme.palette.grey[500],
-          fontWeight: '400',
-          size: '.875rem',
-          fontFamily: 'sans-serif',
+          fontWeight: 400,
+          fontSize: 14,
         }}
       >
         {t('tasks.twitter_tweet.description')}
@@ -66,56 +65,51 @@ const TwitterTweetContent = ({
         sx={{
           background: (theme) => theme.palette.secondary.light,
           justifyContent: 'space-between',
-          borderRadius: '8px',
+          borderRadius: 1,
           width: '100%',
         }}
       >
         <Stack
           direction={'row'}
           alignItems={'center'}
-          sx={{ m: '14px 0 0 10px' }}
+          sx={{ mt: 1.75, ml: 1.25 }}
         >
           <Box
             sx={{
               backgroundColor: (theme) => theme.palette.grey[300],
               borderRadius: '50%',
-              width: '40px',
-              height: '40px',
+              width: 40,
+              height: 40,
             }}
           ></Box>
           <Stack direction={'column'} sx={{ ml: 1 }}>
             <Box
               sx={{
                 backgroundColor: (theme) => theme.palette.grey[300],
-                borderRadius: '8px',
-                width: '100px',
-                height: '15px',
-                mb: '4px',
+                borderRadius: 1,
+                width: 100,
+                height: 15,
+                mb: 0.5,
               }}
             ></Box>
             <Box
               sx={{
                 backgroundColor: (theme) => theme.palette.grey[300],
-                borderRadius: '4px',
-                width: '60px',
-                height: '10px',
+                borderRadius: 0.5,
+                width: 60,
+                height: 10,
               }}
             ></Box>
           </Stack>
         </Stack>
-        <Box
-          sx={{
-            padding: '0 12px',
-          }}
-        >
+        <Box sx={{ py: 0, px: 1.5 }}>
           <Typography
             variant="subtitle1"
             marginTop={1}
             sx={{
               color: '#212121',
-              fontWeight: '400',
-              size: '1rem',
-              fontFamily: 'sans-serif',
+              fontWeight: 400,
+              fontSize: 16,
             }}
           >
             {tweet_text}
@@ -124,7 +118,9 @@ const TwitterTweetContent = ({
         <Stack
           sx={{
             borderRadius: '0 0 8px 8px',
-            padding: '8px 12px 10px',
+            px: 1.5,
+            pt: 1,
+            pb: 1.25,
             textAlign: 'right',
             alignItems: 'center',
             flexDirection: 'row',
@@ -141,9 +137,10 @@ const TwitterTweetContent = ({
               sx={{
                 background: '#1DA1F2',
                 color: (theme) => theme.palette.secondary.light,
-                fontSize: '0.75rem',
-                padding: '6px 16px',
-                lineHeight: '24px',
+                fontSize: 12,
+                py: 0.75,
+                px: 2,
+                lineHeight: 2,
                 width: 'auto',
                 '&:hover': {
                   background: '#1c95db',
@@ -160,7 +157,7 @@ const TwitterTweetContent = ({
       {!readOnly && !completed && twitterKeys && (
         <LoadingButton
           variant="contained"
-          sx={{ marginTop: '20px' }}
+          sx={{ mt: 2.5 }}
           onClick={() => checkTwitterTweet.mutate()}
           isLoading={isLoading || checkTwitterTweet.isLoading}
         >
@@ -169,13 +166,8 @@ const TwitterTweetContent = ({
       )}
 
       {completed && updatedAt && (
-        <Typography
-          color="#c5ffe3"
-          variant="subtitle2"
-          sx={{ marginTop: '8px' }}
-        >
-          {t('tasks.completed')}
-          {formattedDate}
+        <Typography color="#c5ffe3" variant="subtitle2" sx={{ mt: 1 }}>
+          {t('tasks.completed-date', { date: formattedDate })}
         </Typography>
       )}
     </Stack>

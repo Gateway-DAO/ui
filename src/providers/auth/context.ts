@@ -13,21 +13,21 @@ type Context = {
     url: string,
     options: Parameters<typeof fetch>[1]
   ) => Promise<any>;
-  authenticated: boolean;
+  isAuthenticated: boolean;
   onSignOut: () => void;
   onOpenLogin: () => void;
   onUpdateMe: (cb: (oldMe: SessionUser) => SessionUser) => SessionUser | void;
-  onInvalidateMe: () => void;
+  onInvalidateMe: () => Promise<unknown>;
 };
 
 export const AuthContext = createContext<Context>({
   hasuraUserService: hasuraPublicService,
-  authenticated: false,
+  isAuthenticated: false,
   fetchAuth: fetch,
   onSignOut: () => {},
   onOpenLogin: () => {},
   onUpdateMe: () => {},
-  onInvalidateMe: () => {},
+  onInvalidateMe: async () => {},
 });
 
 export const useAuth = () => useContext(AuthContext);
