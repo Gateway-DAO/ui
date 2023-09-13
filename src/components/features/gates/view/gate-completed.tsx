@@ -149,7 +149,7 @@ export default function GateCompletedModal({
             >
               {t('completed.you-have-completed-the')}{' '}
               <span style={{ color: '#D083FF' }}>{gate.title}</span>{' '}
-              {t('completed.credential')}
+              {t('completed.credential')}{' '}
               {t('completed.from')}{' '}
               <span style={{ color: '#D083FF' }}>{gate.dao.name}</span>.
             </Typography>
