@@ -1,3 +1,15 @@
+query tasks_by_gate_id($gate_id: uuid!) {
+  tasks(where: { gate_id: { _eq: $gate_id } }) {
+    description
+    gate_id
+    id
+    task_data
+    task_type
+    title
+    order
+  }
+}
+
 query manual_task_events($task_progress_id: uuid!) {
   manual_task_events(
     where: { task_progress_id: { _eq: $task_progress_id } }
@@ -84,7 +96,7 @@ query manual_tasks_submissions($task_id: uuid = "") {
 }
 
 query findTaskProgressOfAUser($id: uuid!) {
-  task_progress(where: { id: { _eq: $id } } ) {
+  task_progress(where: { id: { _eq: $id } }) {
     attempt_count
   }
 }

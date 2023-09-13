@@ -7,19 +7,27 @@ import { hasuraApi, hasuraPublicService } from '@/services/hasura/api';
 import {
   Credentials_By_User_Id_By_Loyalty_IdQuery,
   Loyalty_CredentialQuery,
-  Loyalty_ProgramQuery,
+  Loyalty_Program_InfoQuery,
 } from '@/services/hasura/types';
 import { getServerSession } from '@/services/next-auth/get-server-session';
 import { getLoyaltyPassImageURLParams } from '@/utils/loyalty-pass/build-image-url-params';
+import { useQuery } from '@tanstack/react-query';
 
 type Props = InferGetServerSidePropsType<typeof getServerSideProps>;
 
 export default function LoyaltyPage({
+  id,
   loyalty,
   credentialsByLoyalty,
   loyaltyCredential,
   ogImage,
 }: Props) {
+  const { data: gates, isLoading } = useQuery(['loyalty-gates', id], () =>
+    hasuraPublicService.loyalty_program_gates({
+      id,
+    })
+  );
+
   return (
     <>
       <HeadContainer
@@ -35,7 +43,11 @@ export default function LoyaltyPage({
         }}
       >
         <LoyaltyProgram
-          loyalty={loyalty}
+          loyalty={{
+            ...loyalty,
+            gates: gates?.loyalty_program_by_pk?.gates ?? [],
+          }}
+          isGatesLoading={isLoading}
           loyaltyCredential={loyaltyCredential}
           credentialsByLoyalty={credentialsByLoyalty}
         />
@@ -54,7 +66,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   });
 
   let credentials: Credentials_By_User_Id_By_Loyalty_IdQuery;
-  let loyaltyProgram: Loyalty_ProgramQuery;
+  let loyaltyProgram: Loyalty_Program_InfoQuery;
   let loyaltyCredential: Loyalty_CredentialQuery;
   let ogImage;
 
@@ -65,7 +77,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
       user_id: session?.hasura_id,
       loyalty_id: id,
     });
-    loyaltyProgram = await hasuraApi(session?.token).loyalty_program({
+    loyaltyProgram = await hasuraApi(session?.token).loyalty_program_info({
       id,
     });
     loyaltyCredential = await hasuraApi(session?.token).loyalty_credential({
@@ -107,6 +119,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 
   return {
     props: {
+      id,
       loyalty: loyalty_program_by_pk,
       credentialsByLoyalty: credentials?.credentials ?? [],
       loyaltyCredential:

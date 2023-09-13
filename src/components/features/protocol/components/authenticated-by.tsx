@@ -23,8 +23,10 @@ export default function AuthenticatedBy({
 }: Props) {
   const { t } = useTranslation('protocol');
 
-  const authenticatedByName = authenticatedBy?.gatewayId;
-
+  const authenticatedByName =
+    authenticatedBy?.gatewayId ??
+    authenticatedBy?.primaryWallet?.address ??
+    authenticatedBy.id;
   return (
     <CardCell label={t('credential.authenticated-by')}>
       {hasLink ? (

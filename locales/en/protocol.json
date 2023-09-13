@@ -82,7 +82,7 @@
     "issue-credential": {
       "group-recipient-title": "Send to",
       "group-recipient-description": "Send this PDA directly to someone",
-      "recipient-label": "Gateway ID or wallet address",
+      "recipient-label": "Gateway ID, wallet or email address",
       "group-general-title": "Add details",
       "group-general-description": "Add the details of the PDA",
       "title-label": "Title",

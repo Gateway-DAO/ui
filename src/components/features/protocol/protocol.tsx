@@ -2,7 +2,10 @@ import { useRouter } from 'next/router';
 
 import { ProtocolContext } from '@/components/features/protocol/context';
 import { ClientNav } from '@/components/organisms/navbar/client-nav';
-import { Protocol_Api_Credential } from '@/services/hasura/types';
+import {
+  Loyalty_Program,
+  Protocol_Api_Credential,
+} from '@/services/hasura/types';
 import { theme, TOKENS } from '@/theme';
 import { useCreateQrCode } from '@/utils/qr-code/qr-code';
 import { PartialDeep } from 'type-fest';
@@ -15,9 +18,10 @@ import FloatingCta from './components/floating-cta';
 type Props = {
   children: React.ReactNode;
   credential?: PartialDeep<Protocol_Api_Credential>;
+  loyalty?: PartialDeep<Loyalty_Program>;
 };
 
-export default function Protocol({ children, credential }: Props) {
+export default function Protocol({ children, credential, loyalty }: Props) {
   const router = useRouter();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
   const qrCode = useCreateQrCode();
@@ -25,7 +29,7 @@ export default function Protocol({ children, credential }: Props) {
   const isCredential = router.pathname.includes('/credentials/');
 
   return (
-    <ProtocolContext.Provider value={{ qrCode }}>
+    <ProtocolContext.Provider value={{ qrCode, loyalty }}>
       <Stack
         direction="row"
         alignItems="center"
@@ -58,7 +62,11 @@ export default function Protocol({ children, credential }: Props) {
       >
         {children}
       </Stack>
-      <FloatingCta isCredential={isCredential} credential={credential} />
+      <FloatingCta
+        isCredential={isCredential}
+        credential={credential}
+        loyalty={loyalty}
+      />
     </ProtocolContext.Provider>
   );
 }
