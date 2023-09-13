@@ -86,7 +86,7 @@ export function DataModelLayout({ children }) {
       hasuraPublicService.protocol_data_model({ id: dataModelId as string }),
     {
       select(data) {
-        return data.protocol.dataModel;
+        return data.protocol_data_model_by_pk;
       },
     }
   );
@@ -102,9 +102,13 @@ export function DataModelLayout({ children }) {
     const usersIdAndOrganizationsId = [me?.protocol?.id].concat(
       organizationsId
     );
-    const availableToIssue = dataModel?.allowedUsers
-      .concat(dataModel?.allowedOrganizations as any)
-      .map((availableItem) => availableItem.id);
+    const availableToIssue = dataModel?.allowed_users
+      .map((user) => user.entity_user_id)
+      .concat(
+        dataModel?.allowed_organizations.map(
+          (org) => org.entity_organization_id
+        )
+      );
 
     switch (dataModel?.permissioning) {
       case Protocol_Api_PermissionType.SpecificIds:
@@ -121,7 +125,6 @@ export function DataModelLayout({ children }) {
         return true;
     }
   }, [me]);
-  // MOCK - END
 
   return (
     <>
@@ -163,7 +166,7 @@ export function DataModelLayout({ children }) {
         <Stack
           sx={{
             py: 2,
-            pb: { md: 1, xs: 27 },
+            pb: { md: 1, xs: 2 },
             px: isMobile ? TOKENS.CONTAINER_PX : 0,
           }}
         >
@@ -199,10 +202,14 @@ export function DataModelLayout({ children }) {
                       title={dataModel?.title}
                       labelId={t('data-model.data-model-id')}
                       id={dataModel?.id}
+                      isVerified={dataModel?.verified}
                       copySucessMessage={t('data-model.copy-id')}
                       badgeTooltip={t('data-model.verified-description')}
                     />
-                    <Tags tags={dataModel?.tags} />
+                    {/* Temporary baby seal assassination */}
+                    <Tags
+                      tags={(dataModel?.tags as unknown as string[]) || []}
+                    />
                   </div>
                 </Stack>
                 <Typography sx={{ mb: 3, maxWidth: '610px' }}>
@@ -221,7 +228,8 @@ export function DataModelLayout({ children }) {
                   badgeTooltip={t('data-model.verified-description')}
                   isLoading={isLoading}
                 />
-                <Tags tags={dataModel?.tags} />
+                {/* Temporary baby seal assassination */}
+                <Tags tags={(dataModel?.tags as unknown as string[]) || []} />
                 <Typography sx={{ mb: 3 }}>
                   {isLoading ? (
                     <Skeleton width={400} />
@@ -239,7 +247,7 @@ export function DataModelLayout({ children }) {
             )}
           </Stack>
         </Stack>
-        <Box mt={4}>
+        <Box mt={2}>
           <Box
             sx={{
               borderBottom: 1,
@@ -268,6 +276,7 @@ export function DataModelLayout({ children }) {
                   '&::-webkit-scrollbar': {
                     display: 'none',
                   },
+                  px: { xs: 2, md: 0 },
                 },
               }}
             >

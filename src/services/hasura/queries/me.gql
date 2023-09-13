@@ -22,7 +22,9 @@ query me {
       completed
       updated_at
     }
-    following_dao(where: { status: {_eq: "following"}, dao: {id: {_is_null: false}}}) {
+    following_dao(
+      where: { status: { _eq: "following" }, dao: { id: { _is_null: false } } }
+    ) {
       dao_id
       dao {
         id
@@ -67,7 +69,9 @@ query me_following {
     following {
       user_id
     }
-    following_dao(where: { status: {_eq: "following"}, dao: {id: {_is_null: false}}}) {
+    following_dao(
+      where: { status: { _eq: "following" }, dao: { id: { _is_null: false } } }
+    ) {
       dao_id
       dao {
         id
@@ -122,26 +126,9 @@ query me_protocol {
           name
         }
       }
-      issuedCredentials {
-        dataModel {
-          id
-        }
-        id
-        nft {
-          minted
-        }
-      }
       receivedCredentials {
-        dataModel {
-          id
-        }
         id
-        nft {
-          minted
-        }
       }
-      totalOfIssuedCredentials
-      totalOfreceivedCredentials
     }
   }
 }
@@ -153,4 +140,3 @@ query gatewayId {
     }
   }
 }
-

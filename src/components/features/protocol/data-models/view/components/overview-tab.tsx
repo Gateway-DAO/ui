@@ -10,6 +10,7 @@ import {
   GetDmStatsUntilDayBeforeQuery,
   Protocol_Api_DataModel,
   Protocol_Api_PermissionType,
+  Protocol_Data_Model,
   Protocol_Get_Data_Model_StatsQuery,
 } from '@/services/hasura/types';
 import { theme } from '@/theme';
@@ -34,7 +35,7 @@ import OverviewCardInfo from './overview-card-info';
 import TableSchema from './table-schema';
 
 type Props = {
-  dataModel: PartialDeep<Protocol_Api_DataModel>;
+  dataModel: PartialDeep<Protocol_Data_Model>;
   stats: Protocol_Get_Data_Model_StatsQuery;
   isCredentialCreate?: boolean;
   statsUntilYesterday?: GetDmStatsUntilDayBeforeQuery;
@@ -79,9 +80,13 @@ export default function OverviewTab({
     const usersIdAndOrganizationsId = [me?.protocol?.id].concat(
       organizationsId
     );
-    const availableToIssue = dataModel?.allowedUsers
-      .concat(dataModel?.allowedOrganizations as any)
-      .map((availableItem) => availableItem.id);
+    const availableToIssue = dataModel?.allowed_users
+      .map((user) => user.entity_user_id)
+      .concat(
+        dataModel?.allowed_organizations.map(
+          (org) => org.entity_organization_id
+        )
+      );
 
     switch (dataModel?.permissioning) {
       case Protocol_Api_PermissionType.SpecificIds:
@@ -106,30 +111,34 @@ export default function OverviewTab({
   }, [me]);
 
   return (
-    <>
+    <Stack>
       <Stack
         sx={{
           maxWidth: '726px',
-          pt: 2,
-          py: 3,
-          px: { xs: 0, md: 4, lg: 6 },
+          py: { xs: 0, md: 2 },
+          px: { xs: 2, md: 4, lg: 6 },
         }}
       >
         {isP2PDataModel && (
           <>
-            <Typography
-              sx={{
-                fontStyle: 'normal',
-                fontWeight: 700,
-                fontSize: '20px',
-                lineHeight: '32px',
-                letterSpacing: '0.15px',
-                my: 2,
-              }}
-            >
-              {dataModel?.info}
-            </Typography>
-            <Typography sx={{ mb: 3 }}>{dataModel?.info}</Typography>
+            {dataModel?.info && (
+              <>
+                <Typography
+                  sx={{
+                    fontStyle: 'normal',
+                    fontWeight: 700,
+                    fontSize: '20px',
+                    lineHeight: '32px',
+                    letterSpacing: '0.15px',
+                    my: 2,
+                  }}
+                >
+                  {dataModel?.info}
+                </Typography>
+                <Typography sx={{ mb: 3 }}>{dataModel?.info}</Typography>
+              </>
+            )}
+
             <IssueCredentialButton
               hasAnAccountAvailableToIssue={hasAnAccountAvailableToIssue}
               onClickIssueCredential={toggleModal}
@@ -235,6 +244,6 @@ export default function OverviewTab({
           </ConfirmDialog>
         </>
       )}
-    </>
+    </Stack>
   );
 }

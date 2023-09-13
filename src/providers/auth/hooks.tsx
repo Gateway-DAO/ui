@@ -21,27 +21,28 @@ import { useAccount, useDisconnect, useSignMessage } from 'wagmi';
 
 import { ErrorResponse } from '../../types/graphql';
 import { SessionUser } from '../../types/user';
-import { AuthStep } from './types';
+import type { WalletModalStep } from './types';
+
+/**
+ * Handles disconnect wallets
+ */
+export function useDisconnectWallets() {
+  const { disconnectAsync: disconnectEVM } = useDisconnect();
+  const { disconnect: disconnectSolana } = useWallet();
+
+  return async () => Promise.allSettled([disconnectEVM(), disconnectSolana()]);
+}
 
 /**
  * Handles Logoff session if there's no wallet connected
  */
 function useSignOut(cb?: () => void) {
   const session = useSession();
-  const { disconnectAsync: disconnectEVM } = useDisconnect();
   const token = session?.data?.token;
-  const { disconnect: disconnectSolana } = useWallet();
+  const onDisconnect = useDisconnectWallets();
 
   const onSignOut = useCallback(async () => {
-    try {
-      await disconnectEVM();
-      // eslint-disable-next-line no-empty
-    } catch {}
-
-    try {
-      await disconnectSolana();
-      // eslint-disable-next-line no-empty
-    } catch {}
+    await onDisconnect();
 
     try {
       if (token) {
@@ -51,7 +52,7 @@ function useSignOut(cb?: () => void) {
     } catch {}
 
     cb?.();
-  }, [cb, disconnectEVM, disconnectSolana, token]);
+  }, [cb, token]);
 
   return onSignOut;
 }
@@ -95,7 +96,7 @@ export const useAuthLogin = () => {
   }>();
 
   const nonce = useQuery(
-    [address, 'nonce'],
+    [session?.data?.protocol_id, 'nonce'],
     () =>
       hasuraPublicService.get_nonce({
         wallet: address,
@@ -158,7 +159,7 @@ export const useAuthLogin = () => {
   const signInMutation = useMutation(
     ['signIn', address],
     async (signature: string) => {
-      const res = await signIn('credentials', {
+      const res = await signIn('credential-wallet', {
         redirect: false,
         wallet: address,
         signature,
@@ -254,7 +255,7 @@ export const useAuthLogin = () => {
     }
   );
 
-  const authStep: AuthStep = useMemo(() => {
+  const WalletModalStep: WalletModalStep = useMemo(() => {
     if (error) return 'error';
     if (nonce.isFetching) return 'get-nonce';
     if (sendSignature.isLoading) return 'send-signature';
@@ -275,16 +276,17 @@ export const useAuthLogin = () => {
     cb: (oldMe: PartialDeep<SessionUser>) => PartialDeep<SessionUser>
   ) => queryClient.setQueryData(['me', user[0].data?.id], cb);
 
-  const onInvalidateMe = () => {
-    queryClient.resetQueries(['user_info', session?.data?.hasura_id]);
-    queryClient.resetQueries(['user_permissions', session?.data?.hasura_id]);
-    queryClient.resetQueries(['user_following', session?.data?.hasura_id]);
-    queryClient.resetQueries([
-      'user_task_progresses',
-      session?.data?.hasura_id,
+  const onInvalidateMe = async () =>
+    Promise.all([
+      queryClient.resetQueries(['user_info', session?.data?.hasura_id]),
+      queryClient.resetQueries(['user_permissions', session?.data?.hasura_id]),
+      queryClient.resetQueries(['user_following', session?.data?.hasura_id]),
+      queryClient.resetQueries([
+        'user_task_progresses',
+        session?.data?.hasura_id,
+      ]),
+      queryClient.resetQueries(['user_protocol', session?.data?.hasura_id]),
     ]);
-    queryClient.resetQueries(['user_protocol', session?.data?.hasura_id]);
-  };
 
   const onRetry = () => {
     setError(undefined);
@@ -300,7 +302,7 @@ export const useAuthLogin = () => {
   return {
     me: token ? me.data : undefined,
     error,
-    authStep,
+    WalletModalStep,
     onUpdateMe,
     onSignOut,
     onRetry,
@@ -318,10 +320,14 @@ export function useInitUser(me: PartialDeep<SessionUser>) {
   useEffect(() => {
     if (!me) return;
     // Redirects to New User if authenticated but not registered
-    if (router.pathname !== ROUTES.NEW_USER && me && !me.init) {
+    if (
+      router.pathname !== ROUTES.AUTHENTICATION &&
+      me &&
+      (!me.protocolUser?.gatewayId || !me.email_address)
+    ) {
       router.replace({
-        pathname: ROUTES.NEW_USER,
-        query: { callback: router.asPath },
+        pathname: ROUTES.AUTHENTICATION,
+        query: { redirect: router.asPath },
       });
     }
   }, [me, router]);

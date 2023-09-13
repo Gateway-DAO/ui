@@ -120,8 +120,8 @@ export function GateViewSidebar({
 
   const createdByImage =
     gateProps?.creator?.picture === null
-      ? gateProps?.creator.pfp
-      : gateProps?.creator.picture.id;
+      ? gateProps?.creator?.pfp
+      : gateProps?.creator?.picture?.id;
 
   return (
     <>

@@ -53,9 +53,8 @@ const TwitterFollowContent = ({
         marginBottom={2}
         sx={{
           color: (theme) => theme.palette.grey[500],
-          fontWeight: '400',
-          size: '.875rem',
-          fontFamily: 'sans-serif',
+          fontWeight: 400,
+          fontSize: 14,
         }}
       >
         {t('tasks.twitter_follow.description')}
@@ -65,7 +64,7 @@ const TwitterFollowContent = ({
         sx={{
           background: (theme) => theme.palette.secondary.light,
           justifyContent: 'space-between',
-          borderRadius: '8px',
+          borderRadius: 1,
           width: '100%',
         }}
       >
@@ -73,34 +72,27 @@ const TwitterFollowContent = ({
           direction={'row'}
           alignItems={'center'}
           justifyContent="space-between"
-          sx={{ m: '14px 10px 12px 10px' }}
+          sx={{ mt: 1.75, mx: 1.25, mb: 1.5 }}
         >
           <Box
             sx={{
               backgroundColor: (theme) => theme.palette.grey[300],
               borderRadius: '50%',
-              width: '40px',
-              height: '40px',
+              width: 40,
+              height: 40,
               flexGrow: 0,
             }}
           ></Box>
           <Stack direction={'column'} sx={{ ml: 1, flexGrow: 1 }}>
-            <Typography
-              sx={{
-                color: '#5B7083',
-                size: '1rem',
-                fontFamily: 'sans-serif',
-                mb: '4px',
-              }}
-            >
+            <Typography sx={{ color: '#5B7083', mb: 0.5 }}>
               {data?.username}
             </Typography>
             <Box
               sx={{
                 backgroundColor: (theme) => theme.palette.grey[300],
-                borderRadius: '4px',
-                width: '60px',
-                height: '10px',
+                borderRadius: 0.5,
+                width: 60,
+                height: 10,
               }}
             ></Box>
           </Stack>
@@ -111,11 +103,12 @@ const TwitterFollowContent = ({
               sx={{
                 background: '#1DA1F2',
                 color: (theme) => theme.palette.secondary.light,
-                fontSize: '0.75rem',
-                padding: '6px 16px',
-                lineHeight: '24px',
+                fontSize: 12,
+                py: 0.75,
+                px: 2,
+                lineHeight: 2,
                 width: '100%',
-                maxWidth: '90px',
+                maxWidth: 90,
                 flexGrow: 0,
                 '&:hover': {
                   background: '#1c95db',
@@ -131,7 +124,7 @@ const TwitterFollowContent = ({
             sx={{
               flexDirection: 'row',
               alignItems: 'center',
-              paddingTop: '8px',
+              pt: 1,
             }}
           ></Stack>
           {!twitterKeys && <TwitterConnectionCard />}
@@ -141,7 +134,7 @@ const TwitterFollowContent = ({
       {!readOnly && !completed && twitterKeys && (
         <LoadingButton
           variant="contained"
-          sx={{ marginTop: '20px' }}
+          sx={{ mt: 2.5 }}
           onClick={() => checkTwitterFollow.mutate()}
           isLoading={isLoading || checkTwitterFollow.isLoading}
         >
@@ -149,13 +142,8 @@ const TwitterFollowContent = ({
         </LoadingButton>
       )}
       {completed && updatedAt && (
-        <Typography
-          color="#c5ffe3"
-          variant="subtitle2"
-          sx={{ marginTop: '8px' }}
-        >
-          {t('tasks.completed')}
-          {formattedDate}
+        <Typography color="#c5ffe3" variant="subtitle2" sx={{ mt: 1 }}>
+          {t('tasks.completed-date', { date: formattedDate })}
         </Typography>
       )}
     </Stack>

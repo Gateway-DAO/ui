@@ -10,6 +10,7 @@ import {
   Protocol_Api_DataModel,
   Protocol_Api_PermissionType,
   Protocol_Api_CreateCredentialInput,
+  Protocol_Data_Model,
 } from '@/services/hasura/types';
 import { brandColors } from '@/theme';
 import { useSnackbar } from 'notistack';
@@ -27,7 +28,7 @@ import {
 } from '@mui/material';
 
 type Props = {
-  dataModel: PartialDeep<Protocol_Api_DataModel>;
+  dataModel: PartialDeep<Protocol_Data_Model>;
 };
 
 export default function IssueByForm({ dataModel }: Props) {
@@ -47,15 +48,17 @@ export default function IssueByForm({ dataModel }: Props) {
     return (
       dataModel.permissioning === Protocol_Api_PermissionType.Organizations ||
       (dataModel.permissioning === Protocol_Api_PermissionType.SpecificIds &&
-        !dataModel?.allowedUsers?.find((user) => user.id === me?.protocol?.id))
+        !dataModel?.allowed_users?.find(
+          (user) => user.entity_user_id === me?.protocol?.id
+        ))
     );
   };
 
   const disableOrganizationToIssueCredential = (access) => {
     return (
       dataModel.permissioning === Protocol_Api_PermissionType.SpecificIds &&
-      !dataModel?.allowedOrganizations?.find(
-        (org) => org.id === access.organization.id
+      !dataModel?.allowed_organizations?.find(
+        (org) => org.entity_organization_id === access.organization.id
       )
     );
   };
@@ -63,7 +66,7 @@ export default function IssueByForm({ dataModel }: Props) {
   const users = [
     {
       picture: me?.picture,
-      label: me?.username,
+      label: me?.protocolUser?.gatewayId,
       value: me?.protocol?.id,
       disabled: disableUserToIssueCredential(),
     },

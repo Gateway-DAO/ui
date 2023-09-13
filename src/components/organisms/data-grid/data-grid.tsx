@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import { Fragment, ReactNode } from 'react';
 
+import { AvatarFile } from '@/components/atoms/avatar-file';
 import NetworkTransactionLink from '@/components/atoms/network-transaction-link';
 import { CategoriesList } from '@/components/molecules/categories-list';
 import { ROUTES } from '@/constants/routes';
@@ -93,7 +94,7 @@ const defineCols = (columns: IColumnGrid[]) => {
                 width: '56px',
               }}
             >
-              <Image
+              <img
                 alt={`${params.title}`}
                 width={56}
                 height={56}
@@ -148,9 +149,12 @@ const defineCols = (columns: IColumnGrid[]) => {
       column_name: 'issuer_id_issuers',
       cell: (params) => (
         <Box sx={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <Avatar
+          <AvatarFile
             alt="Name"
-            src="/images/avatar-default.png"
+            file={
+              params?.issuedCredentials?.[0]?.issuerUser.gatewayUser?.picture
+            }
+            fallback="/images/avatar-default.png"
             sx={{ width: 24, height: 24 }}
           />
           <Box sx={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
@@ -165,7 +169,7 @@ const defineCols = (columns: IColumnGrid[]) => {
                 textOverflow: 'ellipsis',
               }}
             >
-              {params?.issuedCredentials[0].issuerUser.gatewayId}
+              {params?.issuedCredentials?.[0]?.issuerUser?.gatewayId}
             </Typography>
           </Box>
         </Box>
@@ -176,9 +180,13 @@ const defineCols = (columns: IColumnGrid[]) => {
       column_name: 'recipient_id_issuers',
       cell: (params) => (
         <Box sx={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <Avatar
+          <AvatarFile
             alt="Name"
-            src="/images/avatar-default.png"
+            file={
+              params?.receivedCredentials?.[0]?.recipientUser?.gatewayUser
+                ?.picture
+            }
+            fallback="/images/avatar-default.png"
             sx={{ width: 24, height: 24 }}
           />
           <Box sx={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
@@ -193,7 +201,7 @@ const defineCols = (columns: IColumnGrid[]) => {
                 textOverflow: 'ellipsis',
               }}
             >
-              {params?.receivedCredentials[0]?.recipientUser?.gatewayId}
+              {params?.receivedCredentials?.[0]?.recipientUser?.gatewayId}
             </Typography>
           </Box>
         </Box>
@@ -204,9 +212,10 @@ const defineCols = (columns: IColumnGrid[]) => {
       column_name: 'issuer_id',
       cell: (params) => (
         <Box sx={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <Avatar
+          <AvatarFile
             alt="Name"
-            src="/images/avatar-default.png"
+            file={params.issuerUser.gatewayUser?.picture}
+            fallback="/images/avatar-default.png"
             sx={{ width: 24, height: 24 }}
           />
           <Box sx={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
@@ -232,9 +241,10 @@ const defineCols = (columns: IColumnGrid[]) => {
       column_name: 'recipient_id',
       cell: (params) => (
         <Box sx={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <Avatar
+          <AvatarFile
             alt="Name"
-            src="/images/avatar-default.png"
+            file={params?.recipientUser?.gatewayUser?.picture}
+            fallback="/images/avatar-default.png"
             sx={{ width: 24, height: 24 }}
           />
           <Box sx={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
@@ -249,7 +259,7 @@ const defineCols = (columns: IColumnGrid[]) => {
                 textOverflow: 'ellipsis',
               }}
             >
-              {params.recipientUser.gatewayId}
+              {params?.recipientUser?.gatewayId}
             </Typography>
           </Box>
         </Box>
@@ -260,9 +270,10 @@ const defineCols = (columns: IColumnGrid[]) => {
       column_name: 'user_id',
       cell: (params) => (
         <Box sx={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <Avatar
+          <AvatarFile
             alt="Name"
-            src="/images/avatar-default.png"
+            file={params?.user?.gatewayUser?.picture}
+            fallback="/images/avatar-default.png"
             sx={{ width: 24, height: 24 }}
           />
           <Box sx={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
@@ -301,7 +312,7 @@ const defineCols = (columns: IColumnGrid[]) => {
       field: 'createdAt',
       column_name: 'issuance_date',
       valueGetter: (params) =>
-        DateTime.fromISO(params.createdAt).toFormat('MMM dd, yyyy'),
+        DateTime.fromISO(params?.createdAt).toFormat('MMM dd, yyyy'),
     },
     {
       field: 'status',
@@ -310,10 +321,10 @@ const defineCols = (columns: IColumnGrid[]) => {
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           <Chip
             variant="outlined"
-            label={params.status}
+            label={params?.status}
             sx={{
-              color: setColorStatus(params.status),
-              borderColor: setColorStatus(params.status),
+              color: setColorStatus(params?.status),
+              borderColor: setColorStatus(params?.status),
             }}
           />
         </Box>
@@ -418,15 +429,15 @@ export default function DataGrid({ columns, data }: Props): JSX.Element {
                         row.issuedCredentials
                           ? ROUTES.PROFILE.replace(
                               '[username]',
-                              page[rowIndex].issuedCredentials[0].issuerUser
-                                .gatewayId
+                              page[rowIndex]?.issuedCredentials?.[0]?.issuerUser
+                                ?.gatewayId
                             )
                           : row.receivedCredentials
                           ? ROUTES.PROFILE.replace(
                               '[username]',
 
-                              page[rowIndex].receivedCredentials[0]
-                                .recipientUser.gatewayId
+                              page[rowIndex]?.receivedCredentials?.[0]
+                                ?.recipientUser?.gatewayId
                             )
                           : ROUTES.PROTOCOL_CREDENTIAL.replace(
                               '[id]',

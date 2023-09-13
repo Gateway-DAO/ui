@@ -1,7 +1,7 @@
 import useTranslation from 'next-translate/useTranslation';
 
 import { ROUTES } from '@/constants/routes';
-import { Protocol_Api_User } from '@/services/hasura/types';
+import { Protocol_Api_Auth, Protocol_Api_User } from '@/services/hasura/types';
 import { brandColors } from '@/theme';
 import { limitCharsCentered } from '@/utils/string';
 import { PartialDeep } from 'type-fest/source/partial-deep';
@@ -12,17 +12,21 @@ import CardCell from './card-cell';
 
 type Props = {
   authenticatedBy: PartialDeep<Protocol_Api_User>;
+  authenticatedAuthData?: PartialDeep<Protocol_Api_Auth>;
   hasLink: boolean;
 };
 
 export default function AuthenticatedBy({
   authenticatedBy,
+  authenticatedAuthData,
   hasLink = false,
 }: Props) {
   const { t } = useTranslation('protocol');
 
   const authenticatedByName =
-    authenticatedBy?.gatewayId ?? authenticatedBy.primaryWallet.address;
+    authenticatedBy?.gatewayId ??
+    authenticatedBy?.primaryWallet?.address ??
+    authenticatedBy.id;
   return (
     <CardCell label={t('credential.authenticated-by')}>
       {hasLink ? (
@@ -39,10 +43,14 @@ export default function AuthenticatedBy({
           }}
           href={ROUTES.PROFILE.replace('[username]', authenticatedByName)}
         >
-          {limitCharsCentered(authenticatedByName, 20)}
+          {limitCharsCentered(authenticatedByName, 20) ||
+            limitCharsCentered(authenticatedAuthData?.id, 8)}
         </Stack>
       ) : (
-        <span>{limitCharsCentered(authenticatedByName, 20)}</span>
+        <span>
+          {limitCharsCentered(authenticatedByName, 20) ||
+            limitCharsCentered(authenticatedAuthData?.id, 8)}
+        </span>
       )}
     </CardCell>
   );

@@ -64,13 +64,6 @@ export function NavBarSettings() {
       href: ROUTES.SETTINGS_ACCOUNT_MANAGEMENT,
     },
     {
-      key: 'connected-accounts',
-      title: t('nav.connected-accounts-title'),
-      description: t('nav.connected-accounts-description'),
-      icon: <Hub {...iconAttr} />,
-      href: ROUTES.SETTINGS_CONNECTED_ACCOUNTS,
-    },
-    {
       key: 'notifications',
       title: t('nav.notifications-title'),
       description: t('nav.notifications-description'),

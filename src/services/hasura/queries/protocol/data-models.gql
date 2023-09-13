@@ -1,26 +1,38 @@
-query protocol_data_model($id: String!) {
-  protocol {
-    dataModel(id: $id) {
+query protocol_data_model($id: uuid!) {
+  protocol_data_model_by_pk(id: $id) {
+    id
+    description
+    schema
+    tags
+    title
+    verified
+    arweaveInfo
+    createdAt
+    organization {
       id
-      description
-      schema
-      tags
-      title
-      arweaveInfo
-      createdAt
-      createdBy {
-        gatewayId
-      }
-      allowedUsers {
-        id
-      }
-      allowedOrganizations {
-        id
-      }
-      permissioning
-      info
+      gatewayId
       image
+      hasuraOrganization {
+        logo {
+          s3_key
+          blur
+          id
+        }
+      }
     }
+    createdBy {
+      gatewayId
+    }
+    allowed_users {
+      entity_user_id
+    }
+    allowed_organizations {
+      entity_organization_id
+    }
+    permissioning
+    info
+    image
+    consumptionPrice
   }
 }
 
@@ -28,10 +40,12 @@ query protocol_data_models($take: Int!, $skip: Int!) {
   protocol_data_model(
     limit: $take
     offset: $skip
-    order_by: { createdAt: desc }
+    order_by: [{ verified: desc }, { createdAt: desc }]
   ) {
     id
     title
+    verified
+    consumptionPrice
     tags
     version
     description
@@ -56,14 +70,16 @@ query protocol_data_models_p2p($take: Int!, $skip: Int!) {
     where: { permissioning: { _eq: "ALL" } }
     limit: $take
     offset: $skip
-    order_by: { createdAt: desc }
+    order_by: [{ verified: desc }, { createdAt: desc }]
   ) {
     id
     title
     tags
     version
+    verified
     description
     permissioning
+    consumptionPrice
     createdBy {
       gatewayUser {
         name
@@ -123,6 +139,16 @@ query protocol_find_recipients_by_data_model_api(
         recipientUser {
           id
           gatewayId
+          gatewayUser {
+            name
+            pfp
+            picture {
+              id
+              s3_key
+              blur
+            }
+            pfp
+          }
         }
         createdAt
         image

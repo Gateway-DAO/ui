@@ -6,7 +6,11 @@ import {
   Loyalty_Program,
   Protocol_Api_Credential,
 } from '@/services/hasura/types';
-import { getCredentialImageURLParams } from '@/utils/credential/build-image-url-params';
+import {
+  getCredentialImageURLParams,
+  issuerName,
+  recipientName,
+} from '@/utils/credential/build-image-url-params';
 import { getLoyaltyPassImageURLParams } from '@/utils/loyalty-pass/build-image-url-params';
 import objectToParams from '@/utils/map-object';
 import { useSnackbar } from 'notistack';
@@ -50,22 +54,12 @@ export default function ShareOn({
   if (isReceivedCredential) {
     tweetText = t('social.share-twitter-recipient')
       .replace('[title]', credential?.title)
-      .replace(
-        '[issuer]',
-        credential?.issuerOrganization?.name ||
-          credential?.issuerOrganization?.gatewayId ||
-          credential?.issuerUser?.gatewayId
-      );
+      .replace('[issuer]', issuerName(credential));
   } else if (isCredential) {
     tweetText = t('social.share-anonymous')
       .replace('[title]', credential?.title)
-      .replace(
-        '[issuer]',
-        credential?.issuerOrganization?.name ||
-          credential?.issuerOrganization?.gatewayId ||
-          credential?.issuerUser?.gatewayId
-      )
-      .replace('[recipient]', credential?.recipientUser?.gatewayId);
+      .replace('[issuer]', issuerName(credential))
+      .replace('[recipient]', recipientName(credential));
   }
 
   const buildUrlToShare = () => {

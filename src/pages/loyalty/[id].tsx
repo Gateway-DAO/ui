@@ -9,7 +9,7 @@ import {
   Loyalty_CredentialQuery,
   Loyalty_Program_InfoQuery,
 } from '@/services/hasura/types';
-import { getServerSession } from '@/services/next-auth';
+import { getServerSession } from '@/services/next-auth/get-server-session';
 import { getLoyaltyPassImageURLParams } from '@/utils/loyalty-pass/build-image-url-params';
 import { useQuery } from '@tanstack/react-query';
 

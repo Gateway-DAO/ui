@@ -18,9 +18,9 @@ import { Box, Button } from '@mui/material';
 export default function Terms() {
   const { t } = useTranslation('index');
   const router = useRouter();
-  const { onOpenLogin, authenticated } = useAuth();
+  const { onOpenLogin, isAuthenticated } = useAuth();
   const handleLogin = () => {
-    if (authenticated) {
+    if (isAuthenticated) {
       router.push(ROUTES.EXPLORE);
     } else {
       onOpenLogin();

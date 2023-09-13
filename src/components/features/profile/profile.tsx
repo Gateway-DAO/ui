@@ -43,11 +43,11 @@ export default function Profile({ children }) {
   const tabs = [
     {
       label: 'received',
-      count: credentialCount?.protocol.totalReceived,
+      count: credentialCount?.totalReceived.aggregate.count,
     },
     {
       label: 'issued',
-      count: credentialCount?.protocol.totalIssued,
+      count: credentialCount?.totalIssued.aggregate.count,
     },
     {
       label: 'earned',

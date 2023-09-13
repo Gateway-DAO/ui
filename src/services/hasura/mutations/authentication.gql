@@ -9,11 +9,36 @@ mutation get_nonce($wallet: String!, $chain: protocol_api_Chain) {
   }
 }
 
-mutation login($signature: String!, $wallet: String!) {
+mutation create_email_nonce($email: String!) {
+  protocol {
+    createEmailNonce(input: {
+      email: $email
+    }) {
+      code
+      email
+    }
+  }
+}
+
+mutation login_wallet($signature: String!, $wallet: String!) {
   protocol {
     loginWallet(input: {
       signature: $signature
       wallet: $wallet
+    }) {
+      token
+      refresh_token
+      hasura_id
+      protocol_id
+    }
+  }
+}
+
+mutation login_email($email: String!, $code: Float!) {
+  protocol {
+    loginEmail(input: {
+      email: $email
+      code: $code
     }) {
       token
       refresh_token
@@ -36,38 +61,73 @@ mutation refresh($refresh_token: String!) {
   }
 }
 
-mutation protocol_signup(
-  $gateway_id: String!
-  $email: String!
-) {
+
+mutation protocol_add_email($email: String!) {
   protocol {
-    signup(input:{
-      gateway_id: $gateway_id
-      email: $email
-    }) {
+    addEmail(email: $email) {
+      code
       email
     }
   }
 }
 
-mutation protocol_signup_confirmation(
-  $gateway_id: String!
-  $email: String!
-  $wallet: String!
-  $code: Float!
-) {
+mutation protocol_add_email_confirmation($email: String!, $code: Float!) {
   protocol {
-    signupConfirmation(input:{
-      gateway_id: $gateway_id
+    addEmailConfirmation(input: {
       email: $email
-      wallet: $wallet
       code: $code
     }) {
       user {
         id
-        email
-        gatewayId
       }
     }
+  }
+}
+
+mutation protocol_remove_email($email: String!) {
+  protocol {
+    removeEmail(email: $email) {
+      email
+    }
+  }
+}
+
+mutation protocol_add_wallet($wallet: String!, $chain: protocol_api_Chain) {
+  protocol {
+    addWallet(input: {
+      wallet: $wallet,
+      chain: $chain
+    }) {
+      message
+    }
+  }
+}
+
+mutation protocol_add_wallet_confirmation($wallet: String!, $chain: protocol_api_Chain, $signature: String!) {
+  protocol {
+    addWalletConfirmation(input: {
+      wallet: $wallet,
+      chain: $chain
+      signature: $signature
+    }) {
+      id
+    }
+  }
+}
+
+mutation protocol_remove_auth_method($id: String!) {
+  protocol {
+    unregisterAuthMethod(input: {
+      id: $id
+    })
+  }
+}
+
+mutation protocol_migrate_auth($authId: String!, $ownerJwt: String!) {
+  protocol {
+    migrateAuthMethod(input: {
+      authId: $authId
+      ownerJwt: $ownerJwt
+    })
   }
 }

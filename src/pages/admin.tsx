@@ -3,7 +3,7 @@ import { DashboardTemplate } from '@/components/templates/dashboard';
 import { ROUTES } from '@/constants/routes';
 import { useAuth } from '@/providers/auth';
 import { hasuraApi } from '@/services/hasura/api';
-import { getServerSession } from '@/services/next-auth';
+import { getServerSession } from '@/services/next-auth/get-server-session';
 import { dehydrate, QueryClient, useQuery } from '@tanstack/react-query';
 
 /** TODO: Prevent template remount when navigating between dashboard pages
