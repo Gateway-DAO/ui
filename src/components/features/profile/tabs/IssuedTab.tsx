@@ -17,7 +17,7 @@ type Props = {
 };
 
 export default function IssuedTab({ user }: Props): JSX.Element {
-  const internalPageSize = 16;
+  const internalPageSize = 12;
 
   const {
     data: credentials,
@@ -36,7 +36,7 @@ export default function IssuedTab({ user }: Props): JSX.Element {
           take: internalPageSize,
           skip: pageParam || 0,
         } as any);
-      return result.protocol.findCredentialsByIssuerUser;
+      return result.protocol_credential;
     },
     {
       getNextPageParam: (lastPage = [], pages) =>

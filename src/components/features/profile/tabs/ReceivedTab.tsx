@@ -16,7 +16,7 @@ type Props = {
 };
 
 export default function ReceivedTab({ user }: Props): JSX.Element {
-  const internalPageSize = 16;
+  const internalPageSize = 12;
   const {
     data: credentials,
     fetchNextPage,
@@ -35,7 +35,7 @@ export default function ReceivedTab({ user }: Props): JSX.Element {
           skip: pageParam || 0,
         } as any);
 
-      return result.protocol.findCredentialsByRecipientUser;
+      return result.protocol_credential;
     },
     {
       getNextPageParam: (lastPage = [], pages) =>

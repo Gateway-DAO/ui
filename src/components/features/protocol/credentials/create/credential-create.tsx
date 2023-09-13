@@ -4,9 +4,9 @@ import { useState } from 'react';
 import { useAuth } from '@/providers/auth';
 import {
   Protocol_Create_CredentialMutationVariables,
-  Protocol_Api_DataModel,
   Protocol_Api_PermissionType,
   Protocol_Api_CreateCredentialInput,
+  Protocol_Data_Model,
 } from '@/services/hasura/types';
 import { ajvResolver } from '@hookform/resolvers/ajv';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -28,14 +28,14 @@ import SuccessfullyCreated from './components/successfully-created';
 import { createCredentialSchema, createCredentialSchemaP2P } from './schema';
 
 type CreateCredentialProps = {
-  dataModel: PartialDeep<Protocol_Api_DataModel>;
+  dataModel: PartialDeep<Protocol_Data_Model>;
   oldData?: Protocol_Api_CreateCredentialInput;
 };
 export default function CredentialCreateForm({
   dataModel,
   oldData,
 }: CreateCredentialProps) {
-  const { hasuraUserService, token } = useAuth();
+  const { hasuraUserService } = useAuth();
   const { enqueueSnackbar } = useSnackbar();
   const { t } = useTranslation('protocol');
   const isP2PDataModel =

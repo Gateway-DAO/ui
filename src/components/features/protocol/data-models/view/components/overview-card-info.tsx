@@ -1,10 +1,8 @@
 import useTranslation from 'next-translate/useTranslation';
 
 import { ROUTES } from '@/constants/routes';
-import { hasuraPublicService } from '@/services/hasura/api';
-import { Protocol_Api_DataModel } from '@/services/hasura/types';
+import { Protocol_Data_Model } from '@/services/hasura/types';
 import { theme } from '@/theme';
-import { useQuery } from '@tanstack/react-query';
 import { DateTime } from 'luxon';
 import { PartialDeep } from 'type-fest';
 
@@ -14,7 +12,7 @@ import CardCell from '../../../components/card-cell';
 import CardUserCell from '../../../components/card-user-cell';
 
 type Props = {
-  dataModel: PartialDeep<Protocol_Api_DataModel>;
+  dataModel: PartialDeep<Protocol_Data_Model>;
 };
 
 export default function OverviewCardInfo({ dataModel }: Props) {

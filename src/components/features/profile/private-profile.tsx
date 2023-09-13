@@ -9,7 +9,9 @@ import { SocialButtons } from '@/components/organisms/social-buttons';
 import { ROUTES } from '@/constants/routes';
 import { generateImageUrl } from '@/hooks/use-file';
 import { useAuth } from '@/providers/auth';
+import { hasuraPublicService } from '@/services/hasura/api';
 import { TOKENS } from '@/theme';
+import { useQuery } from '@tanstack/react-query';
 
 import EditIcon from '@mui/icons-material/Edit';
 import { Box, Stack, Typography, Tabs, Tab, Chip } from '@mui/material';
@@ -23,15 +25,23 @@ export default function PrivateProfile({ children }) {
   let _selectedTab = router.asPath;
   _selectedTab = _selectedTab.slice(_selectedTab.lastIndexOf('/')).slice(1);
 
+  const { data: credentialCount } = useQuery(
+    ['credentialCount', me.protocol.id],
+    () =>
+      hasuraPublicService.protocol_user_credential_count({
+        userId: me.protocol.id,
+      })
+  );
+
   const routesForTabs = ['', 'issued', 'earned'];
   const tabs = [
     {
       label: 'received',
-      count: me.protocol.totalOfreceivedCredentials,
+      count: credentialCount?.totalReceived.aggregate.count,
     },
     {
       label: 'issued',
-      count: me.protocol.totalOfIssuedCredentials,
+      count: credentialCount?.totalIssued.aggregate.count,
     },
     {
       label: 'earned',

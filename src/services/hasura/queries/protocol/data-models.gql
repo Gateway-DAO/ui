@@ -1,40 +1,38 @@
-query protocol_data_model($id: String!) {
-  protocol {
-    dataModel(id: $id) {
+query protocol_data_model($id: uuid!) {
+  protocol_data_model_by_pk(id: $id) {
+    id
+    description
+    schema
+    tags
+    title
+    verified
+    arweaveInfo
+    createdAt
+    organization {
       id
-      description
-      schema
-      tags
-      title
-      verified
-      arweaveInfo
-      createdAt
-      organization {
-        id
-        gatewayId
-        image
-        hasuraOrganization {
-          logo {
-            s3_key
-            blur
-            id
-          }
+      gatewayId
+      image
+      hasuraOrganization {
+        logo {
+          s3_key
+          blur
+          id
         }
       }
-      createdBy {
-        gatewayId
-      }
-      allowedUsers {
-        id
-      }
-      allowedOrganizations {
-        id
-      }
-      permissioning
-      info
-      image
-      consumptionPrice
     }
+    createdBy {
+      gatewayId
+    }
+    allowed_users {
+      entity_user_id
+    }
+    allowed_organizations {
+      entity_organization_id
+    }
+    permissioning
+    info
+    image
+    consumptionPrice
   }
 }
 
