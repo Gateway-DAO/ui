@@ -107,13 +107,27 @@ export function CreditScoreTemplate() {
     }
   );
 
+  const { data: creditScoreCredential } = useQuery(
+    ['cred-api-credit-score-credential', me?.wallet],
+    async () => {
+      const result =
+        await hasuraUserService.protocol_find_credentials_by_campaign({
+          recipientUserId: me?.protocol?.id,
+          dataModelId: DATA_MODEL_ID,
+          skip: 0,
+          take: 1,
+        });
+      return result.protocol_credential[0];
+    },
+    {
+      enabled: !!me?.protocol?.id,
+    }
+  );
+
   const scale = (1000 - 0) / (1000 - 300);
   const creditScore = 0 + (credScore?.value - 300) * scale;
 
   const isCreditScore = !!credScore?.account;
-  const checkIfUserHasCredential = me?.protocol?.receivedCredentials?.find(
-    (something) => something?.dataModel?.id === DATA_MODEL_ID
-  );
 
   const handleNavBack = () => {
     if (window.history.state.idx === 0) {
@@ -297,7 +311,7 @@ export function CreditScoreTemplate() {
               </Typography>
             )}
 
-            {checkIfUserHasCredential?.dataModel?.id ? (
+            {creditScoreCredential?.id ? (
               <Stack flexDirection="row" gap={2}>
                 <Button
                   variant="contained"
@@ -306,7 +320,7 @@ export function CreditScoreTemplate() {
                     router.push(
                       ROUTES.PROTOCOL_CREDENTIAL.replace(
                         '[id]',
-                        checkIfUserHasCredential?.id
+                        creditScoreCredential?.id
                       )
                     )
                   }
@@ -316,7 +330,7 @@ export function CreditScoreTemplate() {
                 >
                   CHECK CREDENTIAL
                 </Button>
-                {!checkIfUserHasCredential?.nft?.minted && (
+                {!creditScoreCredential?.nft?.minted && (
                   <LoadingButton
                     variant="outlined"
                     startIcon={
@@ -325,7 +339,7 @@ export function CreditScoreTemplate() {
                     fullWidth
                     isLoading={isLoadingMintingCred}
                     onClick={() =>
-                      mutate({ credentialId: checkIfUserHasCredential.id })
+                      mutate({ credentialId: creditScoreCredential.id })
                     }
                     sx={{
                       mb: 2,

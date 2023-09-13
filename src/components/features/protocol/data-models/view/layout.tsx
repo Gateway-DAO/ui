@@ -125,7 +125,6 @@ export function DataModelLayout({ children }) {
         return true;
     }
   }, [me]);
-  // MOCK - END
 
   return (
     <>
@@ -207,7 +206,10 @@ export function DataModelLayout({ children }) {
                       copySucessMessage={t('data-model.copy-id')}
                       badgeTooltip={t('data-model.verified-description')}
                     />
-                    <Tags tags={dataModel?.tags} />
+                    {/* Temporary baby seal assassination */}
+                    <Tags
+                      tags={(dataModel?.tags as unknown as string[]) || []}
+                    />
                   </div>
                 </Stack>
                 <Typography sx={{ mb: 3, maxWidth: '610px' }}>
@@ -226,7 +228,8 @@ export function DataModelLayout({ children }) {
                   badgeTooltip={t('data-model.verified-description')}
                   isLoading={isLoading}
                 />
-                <Tags tags={dataModel?.tags} />
+                {/* Temporary baby seal assassination */}
+                <Tags tags={(dataModel?.tags as unknown as string[]) || []} />
                 <Typography sx={{ mb: 3 }}>
                   {isLoading ? (
                     <Skeleton width={400} />
