@@ -39,8 +39,8 @@ export default function CardUsers({
   const issuer = useQuery(
     ['issuer', issuerCredential?.id],
     () =>
-      hasuraPublicService.user_from_wallet({
-        wallet: issuerCredential?.primaryWallet?.address,
+      hasuraPublicService.user_by_protocol_id({
+        id: issuerCredential?.id,
       }),
     {
       select: (data) => data.users?.[0],
@@ -66,11 +66,11 @@ export default function CardUsers({
   const recipient = useQuery(
     ['recipient', recipientCredential?.gatewayId],
     () =>
-      hasuraPublicService.user_from_wallet({
-        wallet: recipientCredential?.primaryWallet?.address,
+      hasuraPublicService.user_by_protocol_id({
+        id: recipientCredential?.id,
       }),
     {
-      enabled: !!recipientCredential?.primaryWallet?.address,
+      enabled: !!recipientCredential?.id,
       select: (data) => data.users?.[0],
       refetchOnMount: false,
       refetchOnWindowFocus: false,
