@@ -16,7 +16,10 @@ import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon';
 
 import { Controller, useFormContext } from 'react-hook-form';
 import { useToggle } from 'react-use';
-import { CreateGateSchema } from '../create-direct-credential';
+import {
+  CreateGateSchema,
+  createGateSchema,
+} from '@/components/features/gates/create/schema';
 import useTranslation from 'next-translate/useTranslation';
 
 export default function OptionalSettingsTemplate({

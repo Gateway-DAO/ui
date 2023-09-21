@@ -20,7 +20,6 @@ import {
 } from '@mui/material';
 import { useMultistepForm } from '@/hooks/use-multistep-form';
 import { useAuth } from '@/providers/auth';
-import VerticalStepper from './components/vertical-setpper';
 import { setUpFormComponents } from './set-up-form-components';
 import { LoadingButton } from '@/components/atoms/buttons/loading-button';
 import { ROUTES } from '@/constants/routes';
@@ -32,10 +31,15 @@ import { ajvResolver } from '@hookform/resolvers/ajv';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { fullFormats } from 'ajv-formats/dist/formats';
 import { FormProvider, useForm } from 'react-hook-form';
-import { createGateSchema } from '../schema';
+import {
+  CreateGateSchema,
+  createGateSchema,
+} from '@/components/features/gates/create/schema';
+
 import { v4 as uuidv4 } from 'uuid';
 import { useDaoProfile } from '../../../context';
 import CredentialPublishedModal from '../credential-published';
+import VerticalStepper from '@/components/organisms/stepper/vertical-stepper';
 
 export function CreateQuestTemplate({
   closeDialog,
@@ -57,10 +61,25 @@ export function CreateQuestTemplate({
   const formStepControl: {
     name: string;
   }[] = [
-    { name: 'template' },
-    { name: 'details' },
-    { name: 'tasks' },
-    { name: 'settings' },
+    { name: t('vertical-steps.template') },
+    { name: t('vertical-steps.details') },
+    { name: t('vertical-steps.tasks') },
+    { name: t('vertical-steps.optional-setting') },
+  ];
+
+  const steps = [
+    {
+      title: t('vertical-steps.template'),
+    },
+    {
+      title: t('vertical-steps.details'),
+    },
+    {
+      title: t('vertical-steps.tasks'),
+    },
+    {
+      title: t('vertical-steps.optional-setting'),
+    },
   ];
 
   const formComponents = setUpFormComponents({
@@ -84,16 +103,18 @@ export function CreateQuestTemplate({
   const handleNext = async () => {
     changeStep(currentStep + 1);
     await router.push({
-      hash: `create-quest_${formStepControl[currentStep + 1].name}`,
+      hash: `create-quest_${formStepControl[
+        currentStep + 1
+      ].name.toLowerCase()}`,
     });
   };
 
   const handlePrevious = async () => {
     changeStep(currentStep - 1);
     await router.push({
-      hash: `create-quest${currentStep - 1 === 0 ? '' : '_'}${
-        formStepControl[currentStep - 1].name
-      }`,
+      hash: `create-quest${currentStep - 1 === 0 ? '' : '_'}${formStepControl[
+        currentStep - 1
+      ].name.toLowerCase()}`,
     });
   };
 
@@ -121,7 +142,7 @@ export function CreateQuestTemplate({
             claim: claimResult.errors,
           }),
         }).length === 0 &&
-        formStepControl[currentStep].name === 'details' &&
+        formStepControl[currentStep].name === t('vertical-steps.details') &&
         testing === false
       ) {
         setTesting(true);
@@ -350,7 +371,11 @@ export function CreateQuestTemplate({
             <Stack gap={5}>
               <Stack>
                 <Stack direction="row" justifyContent="space-between" gap={2}>
-                  <VerticalStepper activeStep={currentStep} />
+                  <VerticalStepper
+                    activeStep={currentStep}
+                    steps={steps}
+                    title={t('create-quest.create')}
+                  />
                 </Stack>
               </Stack>
             </Stack>
@@ -422,8 +447,10 @@ export function CreateQuestTemplate({
                     sx={{ marginLeft: 2 }}
                     disabled={
                       !(
-                        formStepControl[currentStep].name === 'tasks' ||
-                        formStepControl[currentStep].name === 'settings'
+                        formStepControl[currentStep].name ===
+                          t('vertical-steps.tasks') ||
+                        formStepControl[currentStep].name ===
+                          t('vertical-steps.optional-setting')
                       )
                     }
                   >
@@ -436,14 +463,17 @@ export function CreateQuestTemplate({
                     isLoading={false}
                     disabled={
                       !(
-                        formStepControl[currentStep].name === 'tasks' ||
-                        formStepControl[currentStep].name === 'settings'
+                        formStepControl[currentStep].name ===
+                          t('vertical-steps.tasks') ||
+                        formStepControl[currentStep].name ===
+                          t('vertical-steps.optional-setting')
                       )
                     }
                   >
                     {t('create-quest.save-as-draft')}
                   </LoadingButton>
-                  {formStepControl[currentStep].name === 'details' && (
+                  {formStepControl[currentStep].name ===
+                    t('vertical-steps.details') && (
                     <LoadingButton
                       onClick={() => {
                         setTesting(false);
@@ -453,14 +483,20 @@ export function CreateQuestTemplate({
                       sx={{ marginLeft: 2 }}
                       isLoading={false}
                       disabled={
-                        !(formStepControl[currentStep].name === 'details')
+                        !(
+                          formStepControl[currentStep].name ===
+                          t('vertical-steps.details')
+                        )
                       }
                     >
                       {t('create-quest.continue')}
                     </LoadingButton>
                   )}
                   {!isLastStep &&
-                    !(formStepControl[currentStep].name === 'details') && (
+                    !(
+                      formStepControl[currentStep].name ===
+                      t('vertical-steps.details')
+                    ) && (
                       <LoadingButton
                         type="submit"
                         variant="contained"
