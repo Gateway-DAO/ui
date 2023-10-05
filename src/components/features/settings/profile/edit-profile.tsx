@@ -91,30 +91,6 @@ export function EditProfileSettings({ onSubmit, isLoading }: Props) {
         >
           <About />
         </Accordion>
-        <Divider light sx={dividerStyle} />
-        <Accordion
-          id="skills"
-          title={t('profile.skills')}
-          expanded={anchorName == 'skills'}
-        >
-          <Skills />
-        </Accordion>
-        <Divider light sx={dividerStyle} />
-        <Accordion
-          id="languages"
-          title={t('profile.languages')}
-          expanded={anchorName == 'languages'}
-        >
-          <Languages />
-        </Accordion>
-        <Divider light sx={dividerStyle} />
-        <Accordion
-          id="timezones"
-          title={t('profile.time-zone')}
-          expanded={anchorName == 'timezones'}
-        >
-          <TimeZone />
-        </Accordion>
       </FormProvider>
     </Stack>
   );

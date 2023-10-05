@@ -55,10 +55,7 @@ export function AllTab({
             ml: 2,
           },
         }}
-      >
-        <CardCreditScore />
-        <CardEarnCredential />
-      </Stack>
+      ></Stack>
       <Stack
         direction="column"
         divider={<Divider />}
