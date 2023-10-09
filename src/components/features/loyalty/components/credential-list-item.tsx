@@ -18,6 +18,7 @@ type Props = {
   gateIsCompleted: boolean;
   image?: string;
   points?: number;
+  protocol_id: string;
 };
 
 export function CredentialListItem({
@@ -25,10 +26,11 @@ export function CredentialListItem({
   gateIsCompleted,
   image,
   points,
+  protocol_id,
 }: Props) {
   return (
     <Link
-      href={ROUTES.LOYALTY_PROGRAM_CREDENTIAL.replace('[id]', gate.id)}
+      href={ROUTES.PROTOCOL_CREDENTIAL.replace('[id]', protocol_id)}
       passHref
     >
       <Stack

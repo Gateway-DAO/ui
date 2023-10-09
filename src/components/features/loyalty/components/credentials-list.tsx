@@ -23,7 +23,11 @@ export function CredentialsList({ gates, credentialsByLoyalty }: Props) {
     credentials: PartialDeep<Credentials>[],
     gate: PartialDeep<Gates>
   ) => {
-    return credentials?.find((c) => c?.gate?.id === gate?.id) ? 1 : 0;
+    return credentials?.find(
+      (c) => c?.gate?.id === gate?.id && c.credentials_protocol
+    )
+      ? 1
+      : 0;
   };
 
   return (
@@ -63,6 +67,10 @@ export function CredentialsList({ gates, credentialsByLoyalty }: Props) {
             <CredentialListItem
               key={gate.id}
               gate={gate}
+              protocol_id={
+                credentialsByLoyalty?.find((c) => c?.gate?.id === gate?.id)
+                  ?.credentials_protocol?.id
+              }
               image={
                 credentialsByLoyalty?.find((c) => c?.gate?.id === gate?.id)
                   ?.credentials_protocol?.image
