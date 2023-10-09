@@ -30,7 +30,11 @@ export function CredentialListItem({
 }: Props) {
   return (
     <Link
-      href={ROUTES.PROTOCOL_CREDENTIAL.replace('[id]', protocol_id)}
+      href={
+        protocol_id
+          ? ROUTES.PROTOCOL_CREDENTIAL.replace('[id]', protocol_id)
+          : ROUTES.LOYALTY_PROGRAM_CREDENTIAL.replace('[id]', gate?.id)
+      }
       passHref
     >
       <Stack
