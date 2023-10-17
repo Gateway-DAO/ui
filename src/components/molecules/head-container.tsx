@@ -14,7 +14,7 @@ type HeadContainerProps = {
 };
 
 const defaultTexts = {
-  title: 'The standard for Private Data Assets - Gateway',
+  title: 'The standard for Private Data Assets - Odyssey',
   description:
     'We provide the technology needed to issue, manage, index, and utilize credentials to build a robust digital identity.',
   ogImage: '/social.png',
@@ -31,7 +31,7 @@ export function HeadContainer({
   const router = useRouter();
   const currentURL = `${BASE_URL()}${router.asPath}`;
 
-  const customTitle = title ? title + ' - Gateway' : defaultTexts.title;
+  const customTitle = title ? title + ' - Odyssey' : defaultTexts.title;
   const customDescription = description || defaultTexts.description;
   const customOgDescription = ogDescription || description;
 
@@ -39,7 +39,7 @@ export function HeadContainer({
     <Head>
       <title>{customTitle}</title>
       <meta name="viewport" content="width=device-width, initial-scale=1" />
-      <meta name="author" content="Gateway" />
+      <meta name="author" content="Odyssey" />
       <meta name="description" content={customDescription} />
       <meta property="og:url" content={currentURL} />
       <meta
