@@ -15,8 +15,6 @@ import { Button, Divider, Stack } from '@mui/material';
 
 import { ExploreProps } from '../../types';
 import Banner from './banner/banner';
-import { CardCreditScore } from './banner/card-credit-score';
-import { CardEarnCredential } from './banner/card-earn-credential';
 
 type Props = {
   dataModels: PartialDeep<Protocol_Data_Model>[];
