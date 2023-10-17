@@ -32,7 +32,7 @@ export const errorMessages = {
   FAILED_QUIZ_WONT_RETRY: `You didn't correctly answer the minimum amount requested. You won't be able to retry again.`,
   FAILED_QUIZ_MINIMUM_AMOUNT: `You didn't correctly answer the minimum amount requested. You will be able to retry in`,
   EMAIL_ALREADY_REGISTERED: `E-mail already registered`,
-  GATEWAY_ID_ALREADY_REGISTERED: `Gateway ID already registered`,
+  GATEWAY_ID_ALREADY_REGISTERED: `Odyssey ID already registered`,
   GATEWAY_ID_UPDATED_RECENTLY: 'You will be able to update in [days] days.',
   ERROR_TRYING_TO_SEND_THE_CODE: `An error ocurred trying to send the code`,
   ERROR_TRYING_TO_CREATE_THE_CODE: `An error ocurred trying to create the code`,

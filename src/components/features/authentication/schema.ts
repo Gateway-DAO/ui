@@ -30,10 +30,10 @@ export const schemaGatewayId: SchemaOf<GatewayIdSchema> = object({
     .min(2)
     .max(20)
     .test({
-      name: 'Gateway Id',
+      name: 'Odyssey Id',
       message: 'Only lowercase letters, numbers and ._-',
       test: (value) => usernameRegex.test(value),
     })
     .defined()
-    .label('Gateway Id'),
+    .label('Odyssey Id'),
 });

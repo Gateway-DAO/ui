@@ -180,7 +180,7 @@ export function NavBarAvatar({ hideProfile }: Props) {
             }}
           >
             <ManageAccounts color="disabled" sx={{ mr: 3.5 }} />
-            <Typography textAlign="center">Gateway ID</Typography>
+            <Typography textAlign="center">Odyssey ID</Typography>
           </MenuItem>
         </Link>
         <MenuItem
