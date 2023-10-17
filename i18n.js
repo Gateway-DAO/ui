@@ -6,6 +6,7 @@ const config = {
   defaultLocale: 'en',
   pages: {
     '*': [
+      'index',
       'common',
       'auth',
       'notifications',
