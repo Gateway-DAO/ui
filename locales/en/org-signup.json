@@ -1,7 +1,7 @@
 {
-  "logo-alternative-text": "Gateway logo",
+  "logo-alternative-text": "Odyssey logo",
   "page-title": "Create organization",
-  "page-description": "Create your organization on Gateway",
+  "page-description": "Create your organization on Odyssey",
   "action-next": "Continue",
   "action-back": "Back",
   "step-create-profile": {
@@ -16,8 +16,8 @@
     "action": "Continue"
   },
   "step-gatewayId": {
-    "title": "Create your organization's Gateway ID",
-    "description": "Through the ID your organization is recognized and found within the Gateway. Only use lowercase letters, numbers and the symbols  “._-”.",
+    "title": "Create your organization's Odyssey ID",
+    "description": "Through the ID your organization is recognized and found within the Odyssey. Only use lowercase letters, numbers and the symbols  “._-”.",
     "label": "Enter your ID",
     "action": "Continue"
   },

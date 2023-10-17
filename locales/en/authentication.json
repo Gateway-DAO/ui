@@ -1,8 +1,8 @@
 {
-  "logo-alternative-text": "Gateway logo",
+  "logo-alternative-text": "Odyssey logo",
   "steps": {
     "initial": {
-      "title": "Enter the Gateway",
+      "title": "Enter the Odyssey",
       "title-email": "Email",
       "caption-email": "Get started without wallet",
       "connect-wallet": "Connect Wallet",
@@ -30,17 +30,17 @@
       "send-code-again": "Send code again"
     },
     "choose-gateway-id": {
-      "title": "You’re a step closer to entering the Gateway",
-      "title-send-email": "Create your personal Gateway ID",
-      "caption-send-email": "Through the ID you are recognized and found within the Gateway",
+      "title": "You’re a step closer to entering the Odyssey",
+      "title-send-email": "Create your personal Odyssey ID",
+      "caption-send-email": "Through the ID you are recognized and found within the Odyssey",
       "btn": "create id",
-      "label": "Gateway ID",
+      "label": "Odyssey ID",
       "helper-text": "Only lowercase letters, numbers and ._-"
     },
     "completed": {
       "connect-more": {
-        "title": "Connect accounts to make it easier to find you on Gateway and earn credentials",
-        "description": "Connect your social media, wallets, and other platform accounts to Gateway to strengthen your online identity and increase your visibility on the platform.",
+        "title": "Connect accounts to make it easier to find you on Odyssey and earn credentials",
+        "description": "Connect your social media, wallets, and other platform accounts to Odyssey to strengthen your online identity and increase your visibility on the platform.",
         "terms-data": "We never share any of your data with third parties, and we only request the access permissions necessary to provide you with the best possible service when you connect your accounts to Gateway. Check our",
         "terms": "Terms",
         "privacy-policy": "Privacy Policy",

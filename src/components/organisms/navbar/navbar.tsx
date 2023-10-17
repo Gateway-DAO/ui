@@ -60,7 +60,7 @@ export function Navbar({ isInternalPage, ...props }: NavbarProps) {
           )}
           {!isInternalPage && (
             <TextField
-              placeholder="Search on Gateway"
+              placeholder="Search on Odyssey"
               fullWidth
               InputLabelProps={{
                 sx: {

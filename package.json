@@ -2,7 +2,7 @@
   "name": "ui",
   "version": "0.0.0",
   "license": "MIT",
-  "description": "UI Project for Gateway",
+  "description": "UI Project for Odyssey",
   "scripts": {
     "env:local": "./tools/generators/env.sh local",
     "env:dev": "./tools/generators/env.sh dev",
