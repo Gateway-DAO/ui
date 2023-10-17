@@ -49,7 +49,7 @@ test.describe('Organization Signup flow', async () => {
       .type('E2E Test Organization About');
     await page.click('text=Continue');
     await page.locator('input[name="website"]').focus();
-    await page.locator('input[name="website"]').type('mygateway.xyz');
+    await page.locator('input[name="website"]').type('tryodyssey.xyz');
     await page.click('text=Continue');
     await page.locator('input[name="email"]').type('e2e@mygateway.xyz');
     await page.click('text=Continue');

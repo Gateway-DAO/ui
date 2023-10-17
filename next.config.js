@@ -27,6 +27,11 @@ const nextConfig = {
   redirects: () => {
     return [
       {
+        source: '/',
+        destination: '/explore',
+        permanent: true,
+      },
+      {
         source: '/dao/:slug*',
         destination: '/org/:slug*',
         permanent: true,

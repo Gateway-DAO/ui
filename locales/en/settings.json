@@ -3,19 +3,19 @@
   "nav": {
     "public-profile-title": "Public profile",
     "public-profile-description": "Edit all info of your profile",
-    "account-management-title": "Gateway ID",
+    "account-management-title": "Odyssey ID",
     "account-credential-title": "Your account credential",
     "account-credential-caption": "This the credential that represents your account.",
     "account-management-description": "Edit your e-mail and wallet settings",
     "connected-accounts-title": "Connected accounts",
-    "connected-accounts-description": "These are the accounts you connected to your Gateway account",
+    "connected-accounts-description": "These are the accounts you connected to your Odyssey account",
     "notifications-title": "Notifications",
     "notifications-description": "Select the sort of notifications you get about",
     "developer-portal-title": "Developer Portal",
     "developer-portal-description": "Here's all the info needed to connect to our API."
   },
   "profile": {
-    "description": "Information provided will be displayed on your Gateway profile.",
+    "description": "Information provided will be displayed on your Odyssey profile.",
     "submit": "Save",
     "social-links-labels": {
       "discord": "Username"
@@ -52,7 +52,7 @@
   "account-management": {
     "copy-id": "ID copied to clipboard",
     "gateway-id": "Edit ID",
-    "gateway-id-desc": "This is your Gateway ID. You can edit it once a month.",
+    "gateway-id-desc": "This is your Odyssey ID. You can edit it once a month.",
     "gateway-id-helper": "Only lowercase letters, numbers and ._-",
     "gateway-id-action": "save my id",
     "gateway-id-cancel": "cancel",
@@ -64,7 +64,7 @@
     "email-section-btn": "+  add email address",
     "other-wallet": {
       "title": "Other accounts",
-      "desc": "We never share any of your data with third parties, and we only request the access permissions necessary to provide you with the best possible service when you connect your accounts to Gateway. Check our",
+      "desc": "We never share any of your data with third parties, and we only request the access permissions necessary to provide you with the best possible service when you connect your accounts to Odyssey. Check our",
       "tos": " Terms of Service."
     },
     "delete-section": {
@@ -80,9 +80,9 @@
       "modal-explain-topic-3": "will be deactivated",
       "modal-explain-topic-4": "You won't be able undo this action",
       "modal-explain-topic-5": "To confirm deletion, type \"{{confirmDelete}}\" into the field and mark the checkbox",
-      "modal-explain-topic-6": "I acknowledge that upon account deletion and Gateway ID deactivation, I won't be able undo these actions",
+      "modal-explain-topic-6": "I acknowledge that upon account deletion and Odyssey ID deactivation, I won't be able undo these actions",
       "modal-cancel": "Cancel",
-      "modal-delete": "Delete my Gateway ID",
+      "modal-delete": "Delete my Odyssey ID",
       "modal-success": "Account deleted"
     },
     "registered-email-title": "Registered email",
@@ -112,18 +112,18 @@
     },
     "verify-token": {
       "description1": "Please check",
-      "description2": "for an email from Gateway and enter your code below. This code will expire in 30 minutes.",
+      "description2": "for an email from Odyssey and enter your code below. This code will expire in 30 minutes.",
       "card-summary-title": "Code sent to"
     },
     "modal-delete-email": {
       "disconnect-my-account": "disconnect my account",
       "disconnect-account": "Disconnect Account",
-      "checkbox-info": "I acknowledge the account disconnection from my Gateway ID"
+      "checkbox-info": "I acknowledge the account disconnection from my Odyssey ID"
     },
     "message-remove-success": "Account has been disconnected",
     "message-add-success": "Account has been added",
     "modal-migration": {
-      "title": "This account is already connected to another Gateway ID, do you want to migrate to this ID?",
+      "title": "This account is already connected to another Odyssey ID, do you want to migrate to this ID?",
       "success": "Account migrated",
       "qa": {
         "title": "Migrating the account, be aware:",
@@ -135,7 +135,7 @@
       },
       "migrate": {
         "title": "Migrate and Deactivate",
-        "description": "I acknowledge that upon account migration and Gateway ID deactivation, I won't be able undo these actions",
+        "description": "I acknowledge that upon account migration and Odyssey ID deactivation, I won't be able undo these actions",
         "confirm": "migrate account and deactivate ID"
       },
       "migrate-deactivate": {
@@ -147,9 +147,9 @@
   },
   "notifications": {
     "dapp": {
-      "title": "On Gateway",
-      "description": "Select which notifications to get directly on Gateway.",
-      "all": "Turn on all notifications on Gateway"
+      "title": "On Odyssey",
+      "description": "Select which notifications to get directly on Odyssey.",
+      "all": "Turn on all notifications on Odyssey"
     },
     "email": {
       "title": "By email",

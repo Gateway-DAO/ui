@@ -41,7 +41,7 @@ export default function Error404() {
             alignItems: 'center',
           }}
         >
-          <Avatar alt="Gateway" src="/logo.png" />
+          <Avatar alt="Odyssey" src="/logo.png" />
           <Typography variant="subtitle1" color={'#FFFFFF'} marginLeft={1}>
             {t('logo.title')}
           </Typography>

@@ -30,7 +30,6 @@ const config = {
       'credential',
       'protocol',
     ],
-    [ROUTES.LANDING]: ['index'],
     [ROUTES.TERMS]: ['index', 'terms'],
     [ROUTES.CREDIT_SCORE]: ['credit-score'],
     [ROUTES.MY_PROFILE]: ['user-profile'],
