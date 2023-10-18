@@ -4,11 +4,9 @@ import useTranslation from 'next-translate/useTranslation';
 import { Dispatch } from 'react';
 
 export default function RecipientTemplate({
-  updateFormState,
   handleStep,
   input,
 }: {
-  updateFormState: Dispatch<any>;
   handleStep: (value: boolean) => void;
   input: any;
 }) {

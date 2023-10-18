@@ -1,8 +1,8 @@
 import { Dispatch } from 'react';
-import CredentialTemplate from './components/credential-template';
-import DetailsTemplate from './components/details-template';
+import CredentialTemplate from '../base/credential-template';
+import DetailsTemplate from '../base/details-template';
 import TasksTemplate from './components/tasks-template';
-import OptionalSettingsTemplate from './components/optional-settings-template';
+import OptionalSettings from '../base/optional-settings';
 
 type Props = {
   updateFormState: Dispatch<any>;
@@ -24,25 +24,17 @@ export const setUpFormComponents = ({
       fullFormState={fullFormState}
     />,
     <DetailsTemplate
-      updateFormState={updateFormState}
       key={2}
-      fullFormState={fullFormState}
-      handleStep={handleStep}
       input={{
         name: 'details',
       }}
     />,
-    <TasksTemplate
-      updateFormState={updateFormState}
+    <TasksTemplate key={3} handleStep={handleStep} input={{ name: 'task' }} />,
+    <OptionalSettings
       key={3}
       handleStep={handleStep}
       input={{ name: 'task' }}
-    />,
-    <OptionalSettingsTemplate
-      updateFormState={updateFormState}
-      key={3}
-      handleStep={handleStep}
-      input={{ name: 'task' }}
+      enableClaimLimit={true}
     />,
   ];
 };
