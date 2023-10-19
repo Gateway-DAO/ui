@@ -13,10 +13,10 @@ export default function Banner(): JSX.Element {
     <Box>
       <Stack position={'absolute'} mt={5} ml={5} direction="row">
         <Box
-          width={{ xs: 150, md: 200 }}
+          width={{ xs: 160, md: 220 }}
           component="img"
-          src="/images/campaigns/lifi/gateway_lifi.png"
-          alt="altitude logo"
+          src="/images/campaigns/lifi/odyssey_lifi.png"
+          alt="odyssey x lifi logo"
         ></Box>
       </Stack>
 

@@ -40,10 +40,7 @@ export default function DaoProfilePage({
 
   return (
     <>
-      <HeadContainer
-        title={`${daoProps.name} DAO`}
-        description={daoProps.description}
-      />
+      <HeadContainer title={daoProps.name} description={daoProps.description} />
       <DashboardTemplate
         currentDao={daoProps}
         containerProps={{

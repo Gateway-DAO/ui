@@ -24,7 +24,7 @@ export function DeleteModal({
 }) {
   const { t } = useTranslation('settings');
   const { me, hasuraUserService, onSignOut } = useAuth();
-  const stringValidation = 'delete my gateway id';
+  const stringValidation = 'delete my odyssey id';
   const { enqueueSnackbar } = useSnackbar();
   const router = useRouter();
 

@@ -22,9 +22,9 @@
       "UNKNOWN_TASK_TYPE": "There was an error retrieving your task, please, try again.",
       "WRONG_TASK_TYPEL": "This task is not a manual task, please, try again.",
       "NO_BASE64": "There was an error uploading your image, please, try again.",
-      "FILE_NOT_FOUND": "There was an error retrieving your image, please, contact Gateway or try again.",
-      "UNABLE_TO_RETRIEVE_FILE": "There was an error retrieving your image, please, contact Gateway or try again.",
-      "UNEXPECTED_ERROR": "There was an unexpected error, please, contact Gateway or try again."
+      "FILE_NOT_FOUND": "There was an error retrieving your image, please, contact Odyssey or try again.",
+      "UNABLE_TO_RETRIEVE_FILE": "There was an error retrieving your image, please, contact Odyssey or try again.",
+      "UNEXPECTED_ERROR": "There was an unexpected error, please, contact Odyssey or try again."
     },
     "generic": {
       "loading": "An error occurred while loading the task. Try again later!"

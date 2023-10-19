@@ -131,7 +131,7 @@ export function Menu({
                 },
               })}
             >
-              {menuList.map((menuItem, index) => (
+              {[].concat(menuList || []).map((menuItem, index) => (
                 <ListItem
                   role="menuitem"
                   key={menuItem.text + index}

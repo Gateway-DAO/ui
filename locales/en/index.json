@@ -1,15 +1,15 @@
 {
   "menu": [
     {
-      "text": "Gateway Stack",
+      "text": "Odyssey Stack",
       "href": "#stack"
     },
     {
-      "text": "Gateway D-App",
+      "text": "Odyssey D-App",
       "href": "#d-app"
     },
     {
-      "text": "Gateway SDK ",
+      "text": "Odyssey SDK ",
       "href": "#sdk"
     },
     {
@@ -21,19 +21,19 @@
       "href": "https://docs.mygateway.xyz/docs/why-do-credentials-matter"
     }
   ],
-  "title": "Gateway",
+  "title": "Odyssey",
   "openApp": "Open App",
   "signUp": "Sign Up",
   "subtitle": "The Private Data Asset Network",
   "titleDescription": "Your home to issue, manage, and consume Private Data Assets (PDAs).",
-  "enterButtonTitle": "Enter the gateway",
+  "enterButtonTitle": "Enter the Odyssey",
   "forUsers": {
-    "mainTitle": "Gateway Quest Application",
-    "secondaryTitle": "Create a Gateway Quest space to drive your community, protocol, or DAO goals! ",
+    "mainTitle": "Odyssey Quest Application",
+    "secondaryTitle": "Create a Odyssey Quest space to drive your community, protocol, or DAO goals! ",
     "features": [
       {
         "title": "Your dedicated Space",
-        "description": "Gateway’s Quest space is fully customizable and modular, allowing you to control your Gateway to web3!",
+        "description": "Odyssey Quest space is fully customizable and modular, allowing you to control your Odyssey to web3!",
         "image": {
           "url": "/images/join-dao-featured-image.png",
           "width": 423,
@@ -42,7 +42,7 @@
       },
       {
         "title": "Issue PDAs",
-        "description": "Gateway issues PDAs in a decentralized manner via our protocol and covers gas fees for any NFTs minted!",
+        "description": "Odyssey issues PDAs in a decentralized manner via our protocol and covers gas fees for any NFTs minted!",
         "image": {
           "url": "/images/earn-credentials-featured-image.png",
           "width": 439,
@@ -51,7 +51,7 @@
       },
       {
         "title": "Raise Brand Awareness",
-        "description": "Gateway’s Quest space is a tool to drive social presence and promote your product.",
+        "description": "Odyssey Quest space is a tool to drive social presence and promote your product.",
         "image": {
           "url": "/images/showcase-featured-image.png",
           "width": 360,
@@ -71,8 +71,8 @@
   },
   "forOrganizations": {
     "comingSoon": "Coming Soon",
-    "mainTitle": "Gateway SDK: Native PDA Issuance and Management",
-    "secondaryTitle": "Implement Gateway’s SDK by building PDA models, define conditions for issuance, and consumption.",
+    "mainTitle": "Odyssey SDK: Native PDA Issuance and Management",
+    "secondaryTitle": "Implement Odyssey SDK by building PDA models, define conditions for issuance, and consumption.",
     "features": [
       {
         "title": "Build Data Models",
@@ -94,7 +94,7 @@
       },
       {
         "title": "Create Utility ",
-        "description": "Gateway PDAs have endless usage from governance, to loyalty programs, access controls, and more! ",
+        "description": "Odyssey PDAs have endless usage from governance, to loyalty programs, access controls, and more! ",
         "image": {
           "url": "/images/issue-credentials-featured-image.png",
           "width": 539,
@@ -103,7 +103,7 @@
       },
       {
         "title": "Simple Management",
-        "description": "Gateway’s PDA model allows you to revoke a PDA, set expirations, and reissue.",
+        "description": "Odyssey PDA model allows you to revoke a PDA, set expirations, and reissue.",
         "image": {
           "url": "/images/find-talent-featured-image.png",
           "width": 501,
@@ -117,11 +117,11 @@
     "features": [
       {
         "title": "User Sovereignty",
-        "description": "Gateway’s places your autonomy first. Our PDAs are privacy preserving, yet publicly verifiable. We give users control over PDA permissions and access."
+        "description": "Odyssey places your autonomy first. Our PDAs are privacy preserving, yet publicly verifiable. We give users control over PDA permissions and access."
       },
       {
         "title": "Encryption",
-        "description": "Gateway’s PDA data lives on Arweave, allowing for greater encryption over individual data sets. Allowing for you to gate your digital identity and protect your digital rights."
+        "description": "Odyssey PDA data lives on Arweave, allowing for greater encryption over individual data sets. Allowing for you to gate your digital identity and protect your digital rights."
       },
       {
         "title": "Composability",
@@ -135,20 +135,20 @@
     }
   },
   "buildAppsContent": {
-    "title": "The Gateway Standard",
+    "title": "The Odyssey Standard",
     "description": "We provide the technology needed to issue, manage, index, and utilize PDAs to build a robust digital identity.",
     "features": [
       {
         "title": "Consumption",
-        "description": "PDAs issued via Gateway can be used for governance weighting, community scores, credit scores, access controls, and much more!"
+        "description": "PDAs issued via Odyssey can be used for governance weighting, community scores, credit scores, access controls, and much more!"
       },
       {
-        "title": "Gateway Protocol",
-        "description": "Gateway’s protocol allows organizations to easily manage and issue PDAs, while Gateway handles the indexing and curation of data-models."
+        "title": "Odyssey Protocol",
+        "description": "Odyssey protocol allows organizations to easily manage and issue PDAs, while Odyssey handles the indexing and curation of data-models."
       },
       {
         "title": "Data-Providers",
-        "description": "Every engine needs it's fuel. Gateway's data partners support an open-source and composable data network, which serves as the basis of Gateway’s PDA protocol."
+        "description": "Every engine needs it's fuel. Odyssey's data partners support an open-source and composable data network, which serves as the basis of Odyssey PDA protocol."
       }
     ],
     "image": {
@@ -158,7 +158,7 @@
     }
   },
   "investorsContent": {
-    "title": "Guardians of the Gateway",
+    "title": "Guardians of the Odyssey",
     "investorsWithLogos": [
       {
         "name": "Reciprocal ventures",
@@ -257,7 +257,7 @@
     "buttonLabel": "Create now"
   },
   "footerContent": {
-    "copyright": "Copyright © 2023 Gateway. All rights reserved.",
+    "copyright": "Copyright © 2023 Odyssey. All rights reserved.",
     "subscribe": "Subscribe to our newsletter",
     "receiveNews": "Receive news about developments and updates.",
     "subscribeButton": "Subscribe",

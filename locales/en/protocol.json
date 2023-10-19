@@ -59,7 +59,7 @@
   "data-model": {
     "data-model-id": "Data model ID",
     "copy-id": "Data model ID copied to clipboard",
-    "verified-description": "This data model is verified by Gateway",
+    "verified-description": "This data model is verified by Odyssey",
     "issue-credential-button": "Issue PDA",
     "created-by": "Created by",
     "creation-date": "Creation date",
@@ -82,7 +82,7 @@
     "issue-credential": {
       "group-recipient-title": "Send to",
       "group-recipient-description": "Send this PDA directly to someone",
-      "recipient-label": "Gateway ID, wallet or email address",
+      "recipient-label": "Odyssey ID, wallet or email address",
       "group-general-title": "Add details",
       "group-general-description": "Add the details of the PDA",
       "title-label": "Title",

@@ -1,4 +1,3 @@
-// eslint-disable-next-line @next/next/no-server-import-in-page
 import { NextRequest } from 'next/server';
 
 import OgImage from '@/components/templates/og-image/og-image';

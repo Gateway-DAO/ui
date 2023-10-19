@@ -30,7 +30,7 @@ export function EvmWalletsProvider({ children }: PropsWithChildren<unknown>) {
         modalSize="compact"
         theme={theme}
         appInfo={{
-          appName: 'Gateway DAO',
+          appName: 'Odyssey',
         }}
       >
         {children}
