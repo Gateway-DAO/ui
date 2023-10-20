@@ -329,7 +329,7 @@ export default function OgImageLoyaltyPass({
                   left: '56px',
                 }}
               >
-                Gateway
+                Odyssey
               </div>
               <img
                 src={`${origin}/logo.png`}
