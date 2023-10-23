@@ -6,8 +6,9 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { PartialDeep } from 'type-fest/source/partial-deep';
 
-import { CircularProgress, Stack } from '@mui/material';
+import { Stack } from '@mui/material';
 
+import { CredentialListItemSkeleton } from './components/credential-list-item-skeleton';
 import { CredentialsList } from './components/credentials-list';
 import { LoyaltySidebar } from './components/loyalty-sidebar';
 import { Tier } from './components/tier';
@@ -17,7 +18,7 @@ type MainContentProps = {
   loyaltyPoints: number;
   pdas?: PartialDeep<Protocol_Credential>[];
   protocolCredential?: PartialDeep<Protocol_Credential>;
-  isGatesLoading?: boolean;
+  isPDALoading?: boolean;
 };
 
 function MainContent({
@@ -25,7 +26,7 @@ function MainContent({
   loyaltyPoints = 0,
   pdas,
   protocolCredential,
-  isGatesLoading,
+  isPDALoading,
 }: MainContentProps) {
   return (
     <>
@@ -52,9 +53,13 @@ function MainContent({
         protocolCredentialId={protocolCredential?.id}
         credential={protocolCredential}
       />
-      {isGatesLoading ? (
-        <Stack maxWidth="100%" alignItems="center" mt={8}>
-          <CircularProgress />
+      {isPDALoading ? (
+        <Stack>
+          <CredentialListItemSkeleton />
+          <CredentialListItemSkeleton />
+          <CredentialListItemSkeleton />
+          <CredentialListItemSkeleton />
+          <CredentialListItemSkeleton />
         </Stack>
       ) : (
         loyalty?.gates?.length > 0 && <CredentialsList pdas={pdas} />
@@ -93,7 +98,7 @@ export function LoyaltyProgram({
       mainContent={
         <MainContent
           loyalty={loyalty}
-          isGatesLoading={isGatesLoading}
+          isPDALoading={isGatesLoading}
           protocolCredential={loyaltyCredential}
           pdas={credentialsByLoyalty}
           loyaltyPoints={loyaltyCredential?.claim?.points}
