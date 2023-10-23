@@ -14,9 +14,9 @@ type HeadContainerProps = {
 };
 
 const defaultTexts = {
-  title: 'The standard for Private Data Assets - Odyssey',
+  title: 'Odyssey - The only way to engage, educate, and market your product!',
   description:
-    'We provide the technology needed to issue, manage, index, and utilize credentials to build a robust digital identity.',
+    "Odyssey is a platform allowing users to explore the great products across the new era of the web. Complete quizzes, verify activities, and follow your favorite communities. Odyssey is powered by Gateway's Private Data Protocol.",
   ogImage: '/social.png',
 };
 
