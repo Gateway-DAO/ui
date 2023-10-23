@@ -2,7 +2,7 @@ import useTranslation from 'next-translate/useTranslation';
 
 import { AlertCustom } from '@/components/atoms/alert';
 import { useAuth } from '@/providers/auth';
-import { Credentials, Gates } from '@/services/hasura/types';
+import { Protocol_Credential } from '@/services/hasura/types';
 import { TOKENS, brandColors } from '@/theme';
 import { PartialDeep } from 'type-fest/source/partial-deep';
 
@@ -11,24 +11,12 @@ import { Stack, Typography, alpha } from '@mui/material';
 import { CredentialListItem } from './credential-list-item';
 
 type Props = {
-  gates: PartialDeep<Gates>[];
-  credentialsByLoyalty: PartialDeep<Credentials>[];
+  pdas: PartialDeep<Protocol_Credential>[];
 };
 
-export function CredentialsList({ gates, credentialsByLoyalty }: Props) {
+export function CredentialsList({ pdas = [] }: Props) {
   const { t } = useTranslation('loyalty-program');
   const { me } = useAuth();
-
-  const gateIsCompleted = (
-    credentials: PartialDeep<Credentials>[],
-    gate: PartialDeep<Gates>
-  ) => {
-    return credentials?.find(
-      (c) => c?.gate?.id === gate?.id && c.credentials_protocol
-    )
-      ? 1
-      : 0;
-  };
 
   return (
     <Stack sx={{ mb: { xs: 5, md: 12 } }}>
@@ -49,37 +37,25 @@ export function CredentialsList({ gates, credentialsByLoyalty }: Props) {
         >
           {t('missions.title')}
         </Typography>
-        {(credentialsByLoyalty?.length === 0 || !me?.id) && (
+        {(pdas?.length === 0 || !me?.id) && (
           <AlertCustom severity="error">
             {t('missions.message-missions-empty')}
           </AlertCustom>
         )}
       </Stack>
       <Stack direction="column">
-        {gates
-          .sort((a, b) => {
-            return (
-              gateIsCompleted(credentialsByLoyalty, b) -
-              gateIsCompleted(credentialsByLoyalty, a)
-            );
+        {pdas
+          ?.sort((a, b) => {
+            return b.createdAt - a.createdAt;
           })
-          .map((gate) => (
+          .map((pda) => (
             <CredentialListItem
-              key={gate.id}
-              gate={gate}
-              protocol_id={
-                credentialsByLoyalty?.find((c) => c?.gate?.id === gate?.id)
-                  ?.credentials_protocol?.id
-              }
-              image={
-                credentialsByLoyalty?.find((c) => c?.gate?.id === gate?.id)
-                  ?.credentials_protocol?.image
-              }
-              gateIsCompleted={!!gateIsCompleted(credentialsByLoyalty, gate)}
-              points={
-                credentialsByLoyalty.find((c) => c?.gate?.id === gate?.id)
-                  ?.points ?? gate?.points
-              }
+              key={pda.id}
+              gate={pda}
+              protocol_id={pda.id}
+              image={pda.image}
+              gateIsCompleted={true}
+              points={pda?.claim.points}
             />
           ))}
       </Stack>
