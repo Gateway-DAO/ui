@@ -32,7 +32,6 @@ export function CredentialsList({ pdas = [] }: Props) {
           sx={{
             color: alpha(brandColors.white.main, 0.7),
             textTransform: 'uppercase',
-            mb: { xs: 2, md: 3 },
           }}
         >
           {t('missions.title')}
@@ -46,7 +45,10 @@ export function CredentialsList({ pdas = [] }: Props) {
       <Stack direction="column">
         {pdas
           ?.sort((a, b) => {
-            return b.createdAt - a.createdAt;
+            return (
+              new Date(b.createdAt as string).getTime() -
+              new Date(a.createdAt as string).getTime()
+            );
           })
           .map((pda) => (
             <CredentialListItem

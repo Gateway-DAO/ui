@@ -23,16 +23,28 @@ export default function LoyaltyPage({
 }: Props) {
   const { me, hasuraUserService } = useAuth();
 
+  const { data: dataModelIds } = useQuery(
+    ['loyalty-data-model-ids', loyalty.id],
+    () =>
+      hasuraPublicService.loyalty_program_data_model_ids({
+        id: loyalty.id,
+      }),
+    {
+      enabled: !!loyalty,
+      select: (data) => data.gates.map((obj) => obj.data_model_id),
+    }
+  );
+
   const { data: pdas, isLoading } = useQuery(
     ['loyalty-pdas', id],
     () =>
-      hasuraUserService.protocol_find_credentials_by_campaign({
-        dataModelId: loyalty.data_model_id,
+      hasuraUserService.protocol_find_credentials_by_campaigns({
+        dataModelIds: dataModelIds,
         recipientUserId: me?.protocolUser?.id,
         take: 100,
         skip: 0,
       }),
-    { enabled: !!me }
+    { enabled: !!me && !!dataModelIds }
   );
 
   return (
