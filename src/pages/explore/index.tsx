@@ -57,10 +57,7 @@ export default function Explore({
 
   return (
     <>
-      <HeadContainer
-        title={t('meta-data.all-title')}
-        description={t('meta-data.all-description')}
-      />
+      <HeadContainer />
       <AllTab {...data} dataModels={dataModels} />
     </>
   );

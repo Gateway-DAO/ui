@@ -53,7 +53,7 @@ export function HeadContainer({
       {twitterImage && <meta name="twitter:image" content={twitterImage} />}
       <meta property="twitter:url" content={currentURL} />
 
-      {ogTitle && <meta name="og:title" content={ogTitle} />}
+      <meta name="og:title" content={customTitle} />
       <meta name="og:description" content={customOgDescription} />
       <SEOFavicon />
       <SEOSocial />
