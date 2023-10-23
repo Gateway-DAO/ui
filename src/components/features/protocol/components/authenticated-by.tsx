@@ -33,7 +33,6 @@ export default function AuthenticatedBy({
         <Stack
           component="a"
           target="_blank"
-          id="credential-textlink-signerid"
           title={authenticatedByName}
           sx={{
             color: brandColors.purple.main,

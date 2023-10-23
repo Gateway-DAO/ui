@@ -56,7 +56,6 @@ export default function Banner(): JSX.Element {
                   '[id]',
                   process.env.NEXT_PUBLIC_LIFI_LOYALTY_PASS
                 )}
-                id="explore-banner-primary"
               >
                 {t('common:featured-banner.action')}
               </Button>
