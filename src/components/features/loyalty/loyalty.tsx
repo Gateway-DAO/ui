@@ -1,10 +1,6 @@
 import { ClientNav } from '@/components/organisms/navbar/client-nav';
 import LeftSidebarTemplate from '@/components/templates/left-sidebar/left-sidebar';
-import {
-  Credentials,
-  Loyalty_Program,
-  Protocol_Credential,
-} from '@/services/hasura/types';
+import { Loyalty_Program, Protocol_Credential } from '@/services/hasura/types';
 import { TOKENS } from '@/theme';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -19,7 +15,7 @@ import { Tier } from './components/tier';
 type MainContentProps = {
   loyalty: PartialDeep<Loyalty_Program>;
   loyaltyPoints: number;
-  credentialsByLoyalty?: PartialDeep<Credentials>[];
+  pdas?: PartialDeep<Protocol_Credential>[];
   protocolCredential?: PartialDeep<Protocol_Credential>;
   isGatesLoading?: boolean;
 };
@@ -27,7 +23,7 @@ type MainContentProps = {
 function MainContent({
   loyalty,
   loyaltyPoints = 0,
-  credentialsByLoyalty,
+  pdas,
   protocolCredential,
   isGatesLoading,
 }: MainContentProps) {
@@ -61,12 +57,7 @@ function MainContent({
           <CircularProgress />
         </Stack>
       ) : (
-        loyalty?.gates?.length > 0 && (
-          <CredentialsList
-            gates={loyalty?.gates}
-            credentialsByLoyalty={credentialsByLoyalty}
-          />
-        )
+        loyalty?.gates?.length > 0 && <CredentialsList pdas={pdas} />
       )}
       <Stack sx={{ mx: TOKENS.CONTAINER_PX, mb: { xs: 5, md: 12 } }}>
         <ReactMarkdown remarkPlugins={[remarkGfm]}>
@@ -79,7 +70,7 @@ function MainContent({
 
 type LoyaltyProgramProps = {
   loyalty: PartialDeep<Loyalty_Program>;
-  credentialsByLoyalty?: PartialDeep<Credentials>[];
+  credentialsByLoyalty?: PartialDeep<Protocol_Credential>[];
   loyaltyCredential?: PartialDeep<Protocol_Credential>;
   isGatesLoading?: boolean;
 };
@@ -104,7 +95,7 @@ export function LoyaltyProgram({
           loyalty={loyalty}
           isGatesLoading={isGatesLoading}
           protocolCredential={loyaltyCredential}
-          credentialsByLoyalty={credentialsByLoyalty}
+          pdas={credentialsByLoyalty}
           loyaltyPoints={loyaltyCredential?.claim?.points}
         />
       }
