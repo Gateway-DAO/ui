@@ -68,7 +68,6 @@ export function AllTab({
           caption={t('featured-credentials.caption')}
           action={
             <Button
-              id="explore-earn-button-viewmore"
               onClick={() => router.push(ROUTES.EXPLORE_EARN)}
             >
               {t('featured-credentials.see-more')}
@@ -90,7 +89,6 @@ export function AllTab({
             action={
               passes.length > 0 && (
                 <Button
-                  id="explore-pass-button-viewmore"
                   onClick={() => router.push(ROUTES.EXPLORE_PASSES)}
                 >
                   {t('featured-passes.see-more')}
@@ -114,7 +112,6 @@ export function AllTab({
           caption={t('featured-data-models.caption')}
           action={
             <Button
-              id="explore-issue-button-viewmore"
               onClick={() => router.push(ROUTES.EXPLORE_ISSUE)}
             >
               {t('featured-data-models.see-more')}
@@ -133,7 +130,6 @@ export function AllTab({
           caption={t('featured-organizations.caption')}
           action={
             <Button
-              id="explore-org-button-viewmore"
               onClick={() => router.push(ROUTES.EXPLORE_ORGANIZATIONS)}
             >
               {t('featured-organizations.see-more')}

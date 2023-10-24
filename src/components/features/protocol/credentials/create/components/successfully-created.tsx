@@ -106,7 +106,6 @@ export default function SuccessfullyCreated({ credentialId }: Props) {
                   },
                 })
               }
-              id="issuanceflow-button-checkcredential"
               sx={{ mb: 3 }}
             >
               {t('data-model.actions.check-credential')}

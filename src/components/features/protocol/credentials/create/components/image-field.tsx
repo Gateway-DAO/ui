@@ -14,7 +14,6 @@ export function ImageField() {
     <Stack
       justifyContent="center"
       flexDirection="row"
-      id="issuanceflow-image"
       sx={{
         background: alpha(theme.palette.common.black, 0.25),
         borderRadius: 2,
