@@ -58,6 +58,7 @@ const AddTaskCard = ({ tasks, addTask }) => {
       type: 'track_onchain' as TaskType,
       title: 'Track On-Chain events',
       description: 'Check on-chain events from users',
+      enabled: true,
     },
     {
       type: 'twitter_follow' as TaskType,

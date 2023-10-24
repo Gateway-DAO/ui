@@ -3,9 +3,9 @@ import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
 import { LoyaltyProgram } from '@/components/features/loyalty/loyalty';
 import { HeadContainer } from '@/components/molecules/head-container';
 import { DashboardTemplate } from '@/components/templates/dashboard';
+import { useAuth } from '@/providers/auth';
 import { hasuraApi, hasuraPublicService } from '@/services/hasura/api';
 import {
-  Credentials_By_User_Id_By_Loyalty_IdQuery,
   Loyalty_CredentialQuery,
   Loyalty_Program_InfoQuery,
 } from '@/services/hasura/types';
@@ -18,14 +18,33 @@ type Props = InferGetServerSidePropsType<typeof getServerSideProps>;
 export default function LoyaltyPage({
   id,
   loyalty,
-  credentialsByLoyalty,
   loyaltyCredential,
   ogImage,
 }: Props) {
-  const { data: gates, isLoading } = useQuery(['loyalty-gates', id], () =>
-    hasuraPublicService.loyalty_program_gates({
-      id,
-    })
+  const { me, hasuraUserService } = useAuth();
+
+  const { data: dataModelIds } = useQuery(
+    ['loyalty-data-model-ids', loyalty.id],
+    () =>
+      hasuraPublicService.loyalty_program_data_model_ids({
+        id: loyalty.id,
+      }),
+    {
+      enabled: !!loyalty,
+      select: (data) => data.gates.map((obj) => obj.data_model_id),
+    }
+  );
+
+  const { data: pdas, isLoading } = useQuery(
+    ['loyalty-pdas', id],
+    () =>
+      hasuraUserService.protocol_find_credentials_by_campaigns({
+        dataModelIds: dataModelIds,
+        recipientUserId: me?.protocolUser?.id,
+        take: 100,
+        skip: 0,
+      }),
+    { enabled: !!me && !!dataModelIds }
   );
 
   return (
@@ -43,13 +62,10 @@ export default function LoyaltyPage({
         }}
       >
         <LoyaltyProgram
-          loyalty={{
-            ...loyalty,
-            gates: gates?.loyalty_program_by_pk?.gates ?? [],
-          }}
+          loyalty={loyalty}
           isGatesLoading={isLoading}
           loyaltyCredential={loyaltyCredential}
-          credentialsByLoyalty={credentialsByLoyalty}
+          credentialsByLoyalty={pdas?.protocol_credential ?? []}
         />
       </DashboardTemplate>
     </>
@@ -65,18 +81,11 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     id,
   });
 
-  let credentials: Credentials_By_User_Id_By_Loyalty_IdQuery;
   let loyaltyProgram: Loyalty_Program_InfoQuery;
   let loyaltyCredential: Loyalty_CredentialQuery;
   let ogImage;
 
   if (session) {
-    credentials = await hasuraApi(
-      session?.token
-    ).credentials_by_user_id_by_loyalty_id({
-      user_id: session?.hasura_id,
-      loyalty_id: id,
-    });
     loyaltyProgram = await hasuraApi(session?.token).loyalty_program_info({
       id,
     });
@@ -121,7 +130,6 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     props: {
       id,
       loyalty: loyalty_program_by_pk,
-      credentialsByLoyalty: credentials?.credentials ?? [],
       loyaltyCredential:
         loyaltyCredential?.protocol_credential?.find((lc) => lc) ?? null,
       ogImage: ogImage ?? null,

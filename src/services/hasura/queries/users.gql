@@ -35,3 +35,14 @@ query user_by_id($id: uuid!) {
     }
   }
 }
+query user_by_protocol_id($id: uuid!) {
+  users(where: { protocolId: { _eq: $id } }) {
+    id
+    name
+    username
+    wallet
+    picture {
+      ...file
+    }
+  }
+}

@@ -1,14 +1,18 @@
 import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
 
+import OrgSignupDialog from '@/components/features/org/signup/dialog-structure';
+import { CreateOrgCard } from '@/components/molecules/cards/create-org-card';
 import { DaoCard } from '@/components/molecules/cards/dao-card';
 import { DataModelCard } from '@/components/molecules/cards/data-model-card';
 import { GatesCard } from '@/components/molecules/cards/gates-card';
 import { LoyaltyProgramCard } from '@/components/molecules/cards/loyalty-program-card';
 import { SectionWithSliderResponsive } from '@/components/molecules/sections';
 import { ROUTES } from '@/constants/routes';
+import { useAuth } from '@/providers/auth';
 import { Protocol_Data_Model } from '@/services/hasura/types';
-import { theme } from '@/theme';
+import { TOKENS, theme } from '@/theme';
+import { useToggle } from 'react-use';
 import { PartialDeep } from 'type-fest';
 
 import { Button, Divider, Stack } from '@mui/material';
@@ -27,7 +31,9 @@ export function AllTab({
   loyalty_program: passes,
 }: Props) {
   const router = useRouter();
+  const { me } = useAuth();
   const { t } = useTranslation('explore');
+  const [openSignUpOrgDialog, setSignUpOrgDialog] = useToggle(false);
 
   return (
     <Stack
@@ -38,6 +44,20 @@ export function AllTab({
         },
       }}
     >
+      <OrgSignupDialog
+        open={openSignUpOrgDialog}
+        toggleDialog={setSignUpOrgDialog}
+      />
+      {me && (
+        <Stack sx={{ px: TOKENS.CONTAINER_PX, pt: TOKENS.CONTAINER_PX }}>
+          <CreateOrgCard
+            title={t('common:org-creation-card.title')}
+            description={t('common:org-creation-card.description')}
+            buttonLabel={t('common:org-creation-card.action')}
+            buttonAction={() => setSignUpOrgDialog(true)}
+          />
+        </Stack>
+      )}
       <Banner />
       <Stack
         flexDirection={'row'}
