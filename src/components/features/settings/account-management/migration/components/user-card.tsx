@@ -41,17 +41,11 @@ const themeSx: Record<Exclude<Props['variant'], 'normal'>, GatewaySxProps> = {
 
 const WalletChip = ({
   address,
-  chain,
 }: {
   address: string;
   chain: Protocol_Api_Chain;
 }) => (
   <Chip
-    icon={
-      <Avatar sizes="xs" sx={{ width: 24, height: 24 }}>
-        <WalletIconsTransition network={chain} size={14} />
-      </Avatar>
-    }
     label={limitCharsCentered(address, 10)}
     sx={{ justifyContent: 'flex-start', alignSelf: 'flex-start' }}
   />

@@ -1,17 +1,9 @@
-import { useRouter } from 'next/router';
-
-import { AccountHandlerConnection } from '@/types/account';
 import { useMutation } from '@tanstack/react-query';
 import { useLocalStorage } from 'react-use';
 
-type connectTwitterProps = {
-  disconnect?: boolean;
-};
+import { AccountHandlerConnection } from '../components/accounts-card';
 
-export function useConnectionHandlerTwitter(
-  props: connectTwitterProps = { disconnect: false }
-): AccountHandlerConnection {
-  const router = useRouter();
+export function ConnectionHandlerTwitter(): AccountHandlerConnection {
   const [twitterKeys, setTwitterKeys, remove] = useLocalStorage<any>('twitter');
   const [_redirectURL, setRedirectURL, removeRedirectUrl] = useLocalStorage(
     'redirectURL',

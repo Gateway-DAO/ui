@@ -1,21 +1,16 @@
 import { useRouter } from 'next/router';
 
-import { AccountHandlerConnection } from '@/types/account';
 import { useLocalStorage } from 'react-use';
 
-type connectGithubProps = {
-  disconnect?: boolean;
-};
+import { AccountHandlerConnection } from '../components/accounts-card';
 
-export function useConnectionHandlerGithub(
-  props: connectGithubProps = { disconnect: false }
-): AccountHandlerConnection {
+export function ConnectionHandlerGithub(): AccountHandlerConnection {
   const router = useRouter();
   const [githubAccessToken, setGithubAccessToken, remove] = useLocalStorage(
     'github_access_token',
     ''
   );
-  const [githubRedirectUrl, setGithubRedirectUrl, removeGithubRedirectUrl] =
+  const [_githubRedirectUrl, setGithubRedirectUrl, removeGithubRedirectUrl] =
     useLocalStorage('github_redirect_url');
 
   const client_id = process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID;

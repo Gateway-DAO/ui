@@ -1,15 +1,24 @@
 import useTranslation from 'next-translate/useTranslation';
 
 import { useAuth } from '@/providers/auth';
+import { theme } from '@/theme';
+import { useSnackbar } from 'notistack';
+import { useCopyToClipboard } from 'react-use';
 
-import { Stack, Typography } from '@mui/material';
-
-import { CardCopy } from './components/card-copy';
-import { UsageLimit } from './components/usage-limit';
+import { ContentCopy } from '@mui/icons-material';
+import { Button, Card, CardContent, Stack, Typography } from '@mui/material';
 
 const DeveloperPortalSettings = () => {
   const { t } = useTranslation('settings');
   const { token } = useAuth();
+
+  const [state, copyToClipboard] = useCopyToClipboard();
+  const { enqueueSnackbar } = useSnackbar();
+
+  const copy = (value: string) => {
+    copyToClipboard(value);
+    enqueueSnackbar(`Copied!`);
+  };
 
   return (
     <Stack>
@@ -19,18 +28,67 @@ const DeveloperPortalSettings = () => {
           {t('nav.developer-portal-description')}
         </Typography>
       </Stack>
-      <CardCopy
-        title={t('developer-portal.api-key-title')}
-        content={process.env.NEXT_PUBLIC_PLAYGROUND_API_KEY}
-        valueToCopy={process.env.NEXT_PUBLIC_PLAYGROUND_API_KEY}
-        warningText={t('developer-portal.api-key-warning')}
-      />
-      <CardCopy
-        title={t('developer-portal.authentication-token-title')}
-        content={`{"Authorization": "Bearer ${token}"}`}
-        valueToCopy={`Bearer ${token}`}
-      />
-      <UsageLimit />
+      <Stack mb={2}>
+        <Card>
+          <CardContent>
+            <Stack
+              direction="row"
+              justifyContent="space-between"
+              alignItems="center"
+              mb={1}
+            >
+              <Typography variant="body1">API Key</Typography>
+              <Button
+                variant="outlined"
+                startIcon={<ContentCopy />}
+                size="small"
+                onClick={() => copy(process.env.NEXT_PUBLIC_PLAYGROUND_API_KEY)}
+              >
+                Copy
+              </Button>
+            </Stack>
+            <Typography
+              variant="body1"
+              color={theme.palette.secondary.dark}
+              fontFamily="Fira Code"
+            >
+              {process.env.NEXT_PUBLIC_PLAYGROUND_API_KEY}
+            </Typography>
+          </CardContent>
+        </Card>
+      </Stack>
+      <Stack>
+        <Card>
+          <CardContent>
+            <Stack
+              direction="row"
+              justifyContent="space-between"
+              alignItems="center"
+              mb={1}
+            >
+              <Typography variant="body1">Bearer</Typography>
+              <Button
+                variant="outlined"
+                startIcon={<ContentCopy />}
+                size="small"
+                onClick={() => copy(`Bearer ${token}`)}
+              >
+                Copy
+              </Button>
+            </Stack>
+            <Typography
+              variant="body1"
+              color={theme.palette.secondary.dark}
+              fontFamily="Fira Code"
+              sx={{
+                wordBreak: 'break-word',
+              }}
+            >
+              {`Bearer ${token}`}
+            </Typography>
+          </CardContent>
+        </Card>
+      </Stack>
     </Stack>
   );
 };

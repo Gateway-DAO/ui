@@ -9,9 +9,7 @@ import { useQuery } from '@tanstack/react-query';
 import { Divider, Stack, Typography } from '@mui/material';
 
 import { DeleteId } from './delete-id/delete-id';
-import { EditId } from './edit-id/edit-id';
 import { EmailAlias } from './email/email-alias';
-import { OtherAccount } from './others-accounts/other-accounts';
 import { WalletAlias } from './wallet/wallet-alias';
 
 const AccountManagementSettings = () => {
@@ -59,7 +57,8 @@ const AccountManagementSettings = () => {
         }
       >
         {/* <YourAccountCredential /> */}
-        <OtherAccount />
+        <EmailAlias emails={emails} isLoading={isLoading} />
+        <WalletAlias wallets={wallets} isLoading={isLoading} />
         <DeleteId />
       </Stack>
     </Stack>

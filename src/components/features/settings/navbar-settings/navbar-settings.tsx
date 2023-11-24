@@ -11,8 +11,6 @@ import {
   ManageAccounts,
   ChevronRight,
   Hub,
-  Notifications,
-  Code,
 } from '@mui/icons-material';
 import {
   Box,
@@ -62,6 +60,13 @@ export function NavBarSettings() {
       description: t('nav.account-management-description'),
       icon: <ManageAccounts {...iconAttr} />,
       href: ROUTES.SETTINGS_ACCOUNT_MANAGEMENT,
+    },
+    {
+      key: 'connected-accounts',
+      title: t('nav.connected-accounts-title'),
+      description: t('nav.connected-accounts-description'),
+      icon: <Hub {...iconAttr} />,
+      href: ROUTES.SETTINGS_CONNECTED_ACCOUNTS,
     },
   ];
 

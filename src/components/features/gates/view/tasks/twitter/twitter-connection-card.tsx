@@ -1,6 +1,6 @@
 import useTranslation from 'next-translate/useTranslation';
 
-import { useConnectionHandlerTwitter } from '@/services/social-connectors/twitter-connection';
+import { ConnectionHandlerTwitter } from '@/components/features/settings/connected-accounts/connectors/twitter-connection';
 
 import { Box, Button, Stack, Typography } from '@mui/material';
 
@@ -14,7 +14,7 @@ export default function TwitterConnectionCard({
   maxWidth = '100%',
 }: TwitterCardConnectionProps) {
   const { t } = useTranslation('gate-profile');
-  const { connect } = useConnectionHandlerTwitter();
+  const { connect } = ConnectionHandlerTwitter();
 
   return (
     <Stack
