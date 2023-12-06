@@ -15,6 +15,7 @@ export const { chains, provider, webSocketProvider } = configureChains(
 const { connectors } = getDefaultWallets({
   appName: 'Odyssey',
   chains,
+  projectId: process.env.NEXT_PUBLIC_PROJECT_ID,
 });
 
 export const web3client = createClient({

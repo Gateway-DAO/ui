@@ -42,7 +42,7 @@
     "@mui/x-date-pickers": "^5.0.0-beta.1",
     "@next/bundle-analyzer": "^12.2.2",
     "@prisma/client": "5.3.0-dev.52",
-    "@rainbow-me/rainbowkit": "^0.8.1",
+    "@rainbow-me/rainbowkit": "^0.12.18",
     "@react-email/components": "^0.0.3",
     "@solana/wallet-adapter-base": "^0.9.20",
     "@solana/wallet-adapter-react": "^0.15.28",
@@ -112,7 +112,7 @@
     "type-fest": "^2.12.2",
     "use-breakpoint": "^3.0.2",
     "uuid": "^9.0.0",
-    "wagmi": "^0.11.6",
+    "wagmi": "^0.12.19",
     "yup": "^0.32.11",
     "zod": "^3.17.3"
   },
