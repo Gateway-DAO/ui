@@ -2,7 +2,7 @@ import useTranslation from 'next-translate/useTranslation';
 
 import { AlertCustom } from '@/components/atoms/alert';
 import { useAuth } from '@/providers/auth';
-import { Protocol_Credential } from '@/services/hasura/types';
+import { Gates, Protocol_Credential } from '@/services/hasura/types';
 import { TOKENS, brandColors } from '@/theme';
 import { PartialDeep } from 'type-fest/source/partial-deep';
 
@@ -12,9 +12,10 @@ import { CredentialListItem } from './credential-list-item';
 
 type Props = {
   pdas: PartialDeep<Protocol_Credential>[];
+  gates: PartialDeep<Gates>[];
 };
 
-export function CredentialsList({ pdas = [] }: Props) {
+export function CredentialsList({ pdas = [], gates = [] }: Props) {
   const { t } = useTranslation('loyalty-program');
   const { me } = useAuth();
 
@@ -57,7 +58,10 @@ export function CredentialsList({ pdas = [] }: Props) {
               protocol_id={pda.id}
               image={pda.image}
               gateIsCompleted={true}
-              points={pda?.claim.points}
+              points={
+                gates?.find((gate) => gate.data_model_id == pda.dataModelId)
+                  ?.points || pda?.claim.points
+              }
             />
           ))}
       </Stack>

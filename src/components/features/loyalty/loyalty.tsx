@@ -62,7 +62,9 @@ function MainContent({
           <CredentialListItemSkeleton />
         </Stack>
       ) : (
-        loyalty?.gates?.length > 0 && <CredentialsList pdas={pdas} />
+        loyalty?.gates?.length > 0 && (
+          <CredentialsList pdas={pdas} gates={loyalty.gates} />
+        )
       )}
       <Stack sx={{ mx: TOKENS.CONTAINER_PX, mb: { xs: 5, md: 12 } }}>
         <ReactMarkdown remarkPlugins={[remarkGfm]}>
