@@ -33,8 +33,8 @@ export function ChooseEmail() {
 
   const onSubmitEmail = async (data: EmailSchema) => {
     try {
-      await addEmail.mutateAsync({ email: data.email_address });
-      onNewUserSubmitEmail(data.email_address);
+      await addEmail.mutateAsync({ email: data.email_address.toLowerCase() });
+      onNewUserSubmitEmail(data.email_address.toLowerCase());
     } catch (e) {
       (e as any)?.response?.errors?.forEach(({ message }) => {
         if (message === 'EMAIL_ALREADY_REGISTERED') {

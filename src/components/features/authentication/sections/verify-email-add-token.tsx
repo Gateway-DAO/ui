@@ -28,7 +28,7 @@ export function VerifyEmailAddToken() {
 
   const onResendEmail = async () => {
     try {
-      await addEmailNonce.mutateAsync({ email });
+      await addEmailNonce.mutateAsync({ email: email.toLowerCase() });
       setStartCountdown();
     } catch (e) {
       enqueueSnackbar(e.message, {

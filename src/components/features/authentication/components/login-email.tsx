@@ -27,7 +27,9 @@ export function LoginEmail() {
 
   const onSubmit = async (data: EmailSchema) => {
     try {
-      await createEmailNonce.mutateAsync({ email: data.email_address });
+      await createEmailNonce.mutateAsync({
+        email: data.email_address.toLowerCase(),
+      });
       onSubmitEmail(data.email_address);
     } catch (e) {
       setError('email_address', {

@@ -29,7 +29,7 @@ export function VerifyEmailLoginToken() {
 
   const onResendEmail = async () => {
     try {
-      await createEmailNonce.mutateAsync({ email });
+      await createEmailNonce.mutateAsync({ email: email.toLowerCase() });
       setStartCountdown();
     } catch (e) {
       enqueueSnackbar(e.message, {
@@ -43,7 +43,7 @@ export function VerifyEmailLoginToken() {
     [mutation.signup_token_verification],
     async (data: TokenConfirmationSchema) => {
       const res = await signIn('credential-email', {
-        email,
+        email: email.toLowerCase(),
         code: data.code,
         redirect: false,
       });
