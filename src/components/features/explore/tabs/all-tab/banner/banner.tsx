@@ -2,7 +2,7 @@ import useTranslation from 'next-translate/useTranslation';
 
 import { ROUTES } from '@/constants/routes';
 
-import { useMediaQuery, useTheme } from '@mui/material';
+import { Alert, Link, useMediaQuery, useTheme } from '@mui/material';
 import { Box, Button, Stack, Typography } from '@mui/material';
 
 export default function Banner(): JSX.Element {
@@ -35,7 +35,7 @@ export default function Banner(): JSX.Element {
           alignSelf={{ md: 'self-end' }}
           direction={'column'}
           height={'100%'}
-          marginBottom={{ xs: 10, md: 14 }}
+          marginBottom={{ xs: 8, md: 10 }}
         >
           <Stack
             maxWidth={{ xs: '100%', md: 402 }}
@@ -62,14 +62,27 @@ export default function Banner(): JSX.Element {
               </Button>
             </div>
           </Stack>
+
+          <Stack width="100%" mt={4}>
+            <Alert severity="info">
+              Season 2 of LI.FI Loyalty Pass is coming soon!{' '}
+              <Link
+                href="https://twitter.com/JumperExchange/status/1752011906603512257"
+                target="_blank"
+              >
+                Read more
+              </Link>
+            </Alert>
+          </Stack>
         </Stack>
         <Box
           component="img"
           alignSelf={'self-end'}
           justifySelf={'center'}
-          height={{ xs: 150, md: 300 }}
-          mt={{ xs: 4, md: 8 }}
-          mb={{ xs: 9, md: 12 }}
+          height={{ xs: 150, sm: 200, lg: 300 }}
+          mt={{ xs: 4, md: 12 }}
+          mb={{ xs: 9, md: 16 }}
+          ml={{ xs: 9, sm: 6 }}
           src="/images/campaigns/lifi/pass.png"
           alt={t('common:featured-banner.subtitle')}
         />

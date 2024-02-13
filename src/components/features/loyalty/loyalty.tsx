@@ -6,7 +6,7 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { PartialDeep } from 'type-fest/source/partial-deep';
 
-import { Stack } from '@mui/material';
+import { Alert, Box, Link, Stack } from '@mui/material';
 
 import { CredentialListItemSkeleton } from './components/credential-list-item-skeleton';
 import { CredentialsList } from './components/credentials-list';
@@ -47,6 +47,19 @@ function MainContent({
       >
         <ClientNav />
       </Stack>
+      {loyalty.id == process.env.NEXT_PUBLIC_LIFI_LOYALTY_PASS && (
+        <Box m={2}>
+          <Alert severity="info">
+            Season 2 of LI.FI Loyalty Pass is coming soon!{' '}
+            <Link
+              href="https://twitter.com/JumperExchange/status/1752011906603512257"
+              target="_blank"
+            >
+              Read more
+            </Link>
+          </Alert>
+        </Box>
+      )}
       <Tier
         loyalty={loyalty}
         loyaltyPoints={loyaltyPoints}
