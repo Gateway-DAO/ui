@@ -246,23 +246,25 @@ export function GateViewSidebar({
           )}
 
           <Stack direction="row" gap={1} sx={{ mb: 2 }}>
-            <Button
-              variant="outlined"
-              disabled={!protocolCredential?.id}
-              fullWidth
-              size="large"
-              sx={{
-                mb: 2,
-              }}
-              onClick={() =>
-                router.push({
-                  host: ROUTES.PROTOCOL_CREDENTIAL,
-                  query: { id: protocolCredential?.id },
-                })
-              }
+            <Link
+              passHref
+              href={ROUTES.PROTOCOL_CREDENTIAL.replace(
+                '[id]',
+                protocolCredential?.id
+              )}
             >
-              {t('sidebar.see_credential')}
-            </Button>
+              <Button
+                variant="outlined"
+                disabled={!protocolCredential?.id}
+                fullWidth
+                size="large"
+                sx={{
+                  mb: 2,
+                }}
+              >
+                {t('sidebar.see_credential')}
+              </Button>
+            </Link>
             <GateMintButton
               setMintModal={() => {
                 setIsOpen(true);
